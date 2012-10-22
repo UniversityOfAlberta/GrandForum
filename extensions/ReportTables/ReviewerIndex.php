@@ -1,0 +1,51 @@
+<?php
+
+/// Encapsulates the indexing of reviewer reports.
+class ReviewerIndex {
+	private $_uid;
+	private $_person;
+
+	private $_cache;
+
+	function __construct($person, $reviewer) {
+		$this->_person = $person;
+		$this->_reviewer = $reviewer;
+		$this->_uid = $person->getId();
+		$this->_rid = $reviewer->getId();
+
+		$this->_cache = null;
+	}
+
+	function insert_report($rid, $proj) {
+		DBFunctions::execSQL("INSERT INTO mw_review_index (report_id, user_id, project_id, reviewer_id, created) VALUES ({$rid}, {$this->_uid}, {$proj->getId()}, {$this->_rid}, CURRENT_TIMESTAMP());", true);
+		return true;
+	}
+
+	/// Returns an array of project identifiers tied to the user.
+	function list_projects() {
+		$ret = array();
+		$res = DBFunctions::execSQL("SELECT DISTINCT project_id FROM mw_review_index WHERE user_id = {$this->_uid} ORDER BY project_id;");
+		foreach ($res as &$row) {
+			$ret[] = $row['project_id'];
+		}
+		return $ret;
+	}
+
+	function list_reports($proj, $lim = 1) {
+		if (is_object($proj)) {
+			return DBFunctions::execSQL("SELECT i.report_id, n.nsName, p.token, i.created, i.last_download, i.nr_download FROM mw_review_index i LEFT JOIN (mw_pdf_report p, mw_an_extranamespaces n) ON (i.report_id = p.report_id AND i.project_id = n.nsId) WHERE i.user_id = {$this->_uid} AND i.project_id = {$proj->getId()} AND p.special = 1 AND p.submitted = 0 ORDER BY created DESC LIMIT {$lim};");
+		}
+		else {
+			return DBFunctions::execSQL("SELECT i.report_id, n.nsName, p.token, i.created, i.last_download, i.nr_download FROM mw_review_index i LEFT JOIN (mw_pdf_report p, mw_an_extranamespaces n) ON (i.report_id = p.report_id AND i.project_id = n.nsId) WHERE i.user_id = {$this->_uid} AND i.project_id = {$proj} AND p.special = 1 AND p.submitted = 0 ORDER BY created DESC LIMIT {$lim};");
+		}
+	}
+
+	function trigger_download(&$repo, $tok, $fname) {
+		$rid = $repo->metadata('report_id');
+		if (is_numeric($rid)) {
+			DBFunctions::execSQL("UPDATE mw_review_index SET nr_download = nr_download + 1, last_download = CURRENT_TIMESTAMP() WHERE report_id = {$rid};", true);
+		}
+
+		return $repo->trigger_download($tok, $fname);
+	}
+}

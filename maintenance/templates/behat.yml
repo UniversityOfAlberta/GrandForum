@@ -1,0 +1,5 @@
+# behat.yml
+default:
+    context:
+        parameters:
+            base_url: http://grand.cs.ualberta.ca/~dwt/grand_forum_test/index.php/

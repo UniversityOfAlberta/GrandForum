@@ -1,0 +1,125 @@
+<?php
+
+require_once('AbstractTab.php');
+require_once('AbstractEditableTab.php');
+
+class TabbedPage {
+
+    var $id;
+    var $tabs;
+
+    // Constructs the tabbed page, using the given id
+    function TabbedPage($id="tabs"){
+        global $wgOut;
+        $wgOut->addHTML("<style type='text/css'>
+            #bodyContent > h1:first-child {
+                display: none;
+            }
+            
+            #contentSub {
+                display: none;
+            }
+        </style>");
+        $this->id = $id;
+        
+        $this->tabs = array();
+    }
+    
+    // Adds the given tab to the page
+    function addTab($tab){
+        $this->tabs[] = $tab;
+    }
+    
+    // Writes all of the html
+    function showPage($init_tab = 0){
+        global $wgOut, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $active_tab = $init_tab;
+        $activeTabIndex = "";
+        $i = 0;
+        foreach($this->tabs as $tab){
+            if($tab instanceof AbstractEditableTab && $tab->canEdit()){
+                if(isset($_POST['submit']) && $_POST['submit'] == "Save {$tab->name}"){
+                    $activeTabIndex = $tab->id;
+                    $active_tab = $i;
+                    $errors = $tab->handleEdit();
+                    if($errors != null && $errors != ""){
+                        $wgMessage->addError("$errors");
+                        $_POST['submit'] = "Edit {$tab->name}";
+                        $_GET['edit'] = true;
+                    }
+                    else{
+                        $wgMessage->addSuccess("'{$tab->name}' updated successfully.");
+                    }
+                }
+                if(isset($_POST['submit']) && ($_POST['submit'] == "Edit {$tab->name}" || $_POST['submit'] == "Cancel") ) {
+                    $activeTabIndex = $tab->id;
+                    $active_tab = $i;
+                }
+            }
+            $i++;
+        }
+        
+        $url_param = "";
+        if(!isset($_GET['edit'])){
+            $url_param = "?edit";
+        }
+        
+        $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/{$wgTitle->getNsText()}:{$wgTitle->getText()}{$url_param}' method='post' enctype='multipart/form-data'>");
+        $wgOut->addHTML("<div id='{$this->id}'>");
+        $wgOut->addHTML("   <ul>");
+        foreach($this->tabs as $tab){
+            if($tab instanceof AbstractEditableTab){
+                if($tab->canEdit() && isset($_GET['edit'])){
+                    $tab->generateEditBody();
+                    $tab->showSaveButton();
+                    $tab->showCancelButton();
+                }
+                else if($tab->canEdit() && !isset($_GET['edit'])){
+                    $tab->generateBody();
+                    $tab->showEditButton();
+                }
+                else{
+                    $tab->generateBody();
+                }
+            }
+            else{
+                $tab->generateBody();
+            }
+            if($tab->html != ""){
+                $wgOut->addHTML("   <li><a href='#{$tab->id}'>{$tab->name}</a></li>");
+            }
+        }
+        $wgOut->addHTML("   </ul><h1 class='custom-title'>{$wgOut->getPageTitle()}</h1>");
+        $i = 0;
+        foreach($this->tabs as $tab){
+            if($tab->html != ""){
+                $wgOut->addHTML("<div id='{$tab->id}'>{$tab->html}</div>");
+                if($tab->id == $activeTabIndex){
+                    $active_tab = $i;
+                }
+                $i++;
+            }
+        }
+        $wgOut->addHTML("</div>\n</form>");
+        $wgOut->addHTML("<script type='text/javascript'>
+                var selectedTab = $('#{$this->id} .ui-tabs-selected');
+                if(selectedTab.length > 0){
+                    // If the tabs were created previously but removed from the dome, 
+                    // make sure to reselect the same tab as before
+                    var i = 0;
+                    $.each($('#{$this->id} li.ui-state-default'), function(index, val){
+                        if($(val).hasClass('ui-tabs-selected')){
+                            i = index;
+                        }
+                    });
+                    $('#{$this->id}').tabs({ selected: i });
+                }
+                else{
+                    $('#{$this->id}').tabs({ selected: {$active_tab} });
+                }
+        </script>");
+    }
+
+}
+
+?>

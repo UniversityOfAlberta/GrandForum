@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:adobe="http://www.adobe.com/2006/fc">
+	
+	<!--
+		Copyright 2006 Mark E Shepherd
+
+		Licensed under the Apache License, Version 2.0 (the "License");
+		you may not use this file except in compliance with the License.
+		You may obtain a copy of the License at
+
+				http://www.apache.org/licenses/LICENSE-2.0
+
+		Unless required by applicable law or agreed to in writing, software
+		distributed under the License is distributed on an "AS IS" BASIS,
+		WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		See the License for the specific language governing permissions and
+		limitations under the License.
+	-->
+	
+	<!-- This demo app shows 3 different methods of using XML as a dataProvider
+		for the SpringGraph component. XMLSampler.mxml is the only source file of this app.
+		The 3 ways are highlighted in the comments throughout this file. 
+		
+		The first method is used when the application starts up. There are 2 buttons
+		in the UI that let you try out the 2nd and 3rd methods of using XML as 
+		a SpringGraph dataProvider.
+		
+		Note about the 'reset' setting: when this setting is 'true', then we will 
+		reset the springGraph before setting
+		the data provider. This causes the springgraph to forget about all previous nodes.
+		When this setting is 'false', then we don't reset the SpringGraph. In this case,
+		if an item in the new dataProvider has the same id as an item in a previous 
+		dataProvider, then we re-use the same item.
+	-->
+	
+	<!-- Here's our 'User Interface' -->
+	<mx:Button label="Load from mx:XML tag" click="loadExternalXML(reset.selected)" y="10" x="171"/>
+	<mx:Button label="Load from XML in code" click="loadAsXML(reset.selected)" y="10" x="7"/>
+	<mx:CheckBox id="reset" label="reset" selected="true" x="340" y="12"/>
+	<mx:HSlider x="403" y="14" width="114" id="repulsion" value="0.5" minimum="0.0" maximum="1.5" liveDragging="true"/>
+
+	<adobe:SpringGraph id="springgraph" width="100%" bottom="0" top="40" 
+		backgroundColor="#666666" repulsionFactor="{repulsion.value}" xmlNames="[node,edge,source,dest]">
+		<!-- METHOD 1: This is the data that appears when the application first starts up.
+			 The dataProvider property is initialized to static in-line XML. 
+			 The 'xmlNames' property of this component identifies which tags and attributes define
+			 the nodes and edges of the data. -->
+		<adobe:dataProvider>
+			<mx:XML xmlns="">
+				<stuff>
+					<node id="1" prop="aaa"/>
+					<Nodes>
+						<node id="2" prop="bbbb"/>
+						<blah>
+							<node id="3" prop="ccccc"/>
+						</blah>
+					</Nodes>
+					<Edges>
+						<edge source="1" dest="2"/>
+						<edge source="2" dest="3"/>
+						<edge source="3" dest="1"/>
+					</Edges>
+				</stuff>
+			</mx:XML>
+		</adobe:dataProvider>
+		
+		<adobe:itemRenderer>
+			<mx:Component>
+				<mx:Label fontSize="14" text="{data.data.@prop}" color="#ffffff"/>					
+			</mx:Component>
+		</adobe:itemRenderer>
+	</adobe:SpringGraph>
+
+	<!-- this tag supplies the data for METHOD 2 -->
+	<mx:XML id="externalData" source="dataTiny.xml"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import com.adobe.flex.extras.controls.springgraph.Graph;
+			
+			/* METHOD TWO - here we embed static XML from an external file, using the mx:XML tag.
+			 * We set the springgraph's xmlNames property to null to make it use the default
+			 * xmml names (Node, Edge, fromID, toID).
+			 *
+			 * This gets called when you click the "Load from mx:XML tag" button.
+			 */
+			private function loadExternalXML(reset: Boolean): void {
+				if(reset) springgraph.empty();
+				springgraph.xmlNames = null; // use defaults
+				springgraph.dataProvider = externalData;
+			}
+			
+			/* METHOD THREE - here we have XML inline in our ActionScript code.
+			 * We use Graph.fromXML() to translate the XML data into a Graph, which we
+			 * then pass to the springgraph component.
+			 *
+			 * This gets called when you click the "Load from XML in code" button.
+			 */
+			private function loadAsXML(reset: Boolean): void {
+				if(reset) springgraph.empty();
+				var xml: XML = 
+					<otherData>
+						<thing id="1" prop="apple"/>
+						<thing id="2" prop="orange"/>
+						<thing id="3" prop="pear"/>
+						<thing id="4" prop="FRUITS"/>
+						<connect source="4" dest="1"/>
+						<connect source="4" dest="2"/>
+						<connect source="4" dest="3"/>
+					</otherData>;
+				springgraph.dataProvider = Graph.fromXML(xml, ["thing", "connect", "source", "dest"]);
+			}
+		]]>
+	</mx:Script>
+	<mx:Text fontSize="9"
+		htmlText="&lt;a href=&quot;http://mark-shepherd.com&quot;&gt;mark-shepherd.com&lt;/a&gt;" y="12" fontWeight="bold" textAlign="right" right="10" width="114"/>
+</mx:Application>

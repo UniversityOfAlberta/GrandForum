@@ -1,0 +1,301 @@
+<?php
+autoload_register('QueryableTable/DashboardTable/Arrays');
+autoload_register('QueryableTable/DashboardTable/Cells');
+
+//CellTypes
+//// Person Types
+define('PERSON_NAME', 100);
+define('PERSON_ROLES', 101);
+define('PERSON_HQP', 102);
+define('PERSON_PARTNERS', 103);
+define('PERSON_UNIVERSITY', 104);
+define('PERSON_HOURS', 105);
+define('PERSON_PROJECTS', 106);
+define('PERSON_PUBLICATIONS', 107);
+define('PERSON_ARTIFACTS', 108);
+define('PERSON_ACTIVITIES', 109);
+define('PERSON_PRESS', 110);
+define('PERSON_AWARDS', 111);
+define('PERSON_CONTRIBUTIONS', 112);
+define('PERSON_SUPERVISORS', 113);
+define('PERSON_BUDGET', 114);
+define('PERSON_ALLOCATED_BUDGET', 115);
+define('PERSON_MULTIMEDIA', 116);
+define('PERSON_PRESENTATIONS', 117);
+//// Person Array Types
+define('PERSON_PROJECTS_ARRAY', 125);
+
+//// Project Types
+define('PROJECT_NAME', 1001);
+define('PROJECT_PEOPLE', 1002);
+define('PROJECT_ROLES', 1003);
+define('PROJECT_PARTNERS', 1004);
+define('PROJECT_UNIVERSITY', 1005);
+define('PROJECT_HOURS', 1006);
+define('PROJECT_BUDGET', 1007);
+define('PROJECT_ALLOCATED_BUDGET', 1008);
+define('PROJECT_PUBLICATIONS', 1010);
+define('PROJECT_ARTIFACTS', 1011);
+define('PROJECT_ACTIVITIES', 1012);
+define('PROJECT_AWARDS', 1013);
+define('PROJECT_CONTRIBUTIONS', 1014);
+define('PROJECT_PRESS', 1015);
+define('PROJECT_MULTIMEDIA', 1016);
+define('PROJECT_PEOPLE_ROLES', 1017);
+define('PROJECT_PRESENTATIONS', 1018);
+//// Project Array Types
+define('PROJECT_PEOPLE_ARRAY', 1125);
+define('PROJECT_LEADERS_ARRAY', 1126);
+define('PROJECT_PEOPLE_NO_LEADERS_ARRAY', 1127);
+
+$cellTypes[PERSON_NAME] = "PersonNameCell";
+$cellTypes[PERSON_ROLES] = "PersonRolesCell";
+$cellTypes[PERSON_HQP] = "PersonHQPCell";
+$cellTypes[PERSON_SUPERVISORS] = "PersonSupervisorsCell";
+$cellTypes[PERSON_BUDGET] = "PersonBudgetCell";
+$cellTypes[PERSON_ALLOCATED_BUDGET] = "PersonAllocatedBudgetCell";
+$cellTypes[PERSON_PARTNERS] = "PersonPartnersCell";
+$cellTypes[PERSON_UNIVERSITY] = "PersonUniversityCell";
+$cellTypes[PERSON_HOURS] = "PersonHoursCell";
+$cellTypes[PERSON_PROJECTS] = "PersonProjectsCell";
+$cellTypes[PERSON_PUBLICATIONS] = "PersonPublicationsCell";
+$cellTypes[PERSON_ARTIFACTS] = "PersonArtifactsCell";
+$cellTypes[PERSON_ACTIVITIES] = "PersonActivitiesCell";
+$cellTypes[PERSON_PRESS] = "PersonPressCell";
+$cellTypes[PERSON_AWARDS] = "PersonAwardsCell";
+$cellTypes[PERSON_MULTIMEDIA] = "PersonMultimediaCell";
+$cellTypes[PERSON_PRESENTATIONS] = "PersonPresentationsCell";
+$cellTypes[PERSON_CONTRIBUTIONS] = "PersonContributionsCell";
+$arrayTypes[PERSON_PROJECTS_ARRAY] = "PersonProjectsArray";
+
+$cellTypes[PROJECT_NAME] = "ProjectNameCell";
+$cellTypes[PROJECT_PEOPLE] = "ProjectPeopleCell";
+$cellTypes[PROJECT_ROLES] = "ProjectRolesCell";
+$cellTypes[PROJECT_PARTNERS] = "ProjectPartnersCell";
+$cellTypes[PROJECT_UNIVERSITY] = "ProjectUniversityCell";
+$cellTypes[PROJECT_HOURS] = "ProjectHoursCell";
+$cellTypes[PROJECT_BUDGET] = "ProjectBudgetCell";
+$cellTypes[PROJECT_ALLOCATED_BUDGET] = "ProjectAllocatedBudgetCell";
+$cellTypes[PROJECT_PUBLICATIONS] = "ProjectPublicationsCell";
+$cellTypes[PROJECT_ARTIFACTS] = "ProjectArtifactsCell";
+$cellTypes[PROJECT_ACTIVITIES] = "ProjectActivitiesCell";
+$cellTypes[PROJECT_AWARDS] = "ProjectAwardsCell";
+$cellTypes[PROJECT_MULTIMEDIA] = "ProjectMultimediaCell";
+$cellTypes[PROJECT_CONTRIBUTIONS] = "ProjectContributionsCell";
+$cellTypes[PROJECT_PRESS] = "ProjectPressCell";
+$cellTypes[PROJECT_PRESENTATIONS] = "ProjectPresentationsCell";
+$cellTypes[PROJECT_PEOPLE_ROLES] = "ProjectPeopleRolesCell";
+$arrayTypes[PROJECT_PEOPLE_ARRAY] = "ProjectPeopleArray";
+$arrayTypes[PROJECT_LEADERS_ARRAY] = "ProjectLeadersArray";
+$arrayTypes[PROJECT_PEOPLE_NO_LEADERS_ARRAY] = "ProjectPeopleNoLeadersArray";
+
+//DashboardTable Structures
+define('NI_PUBLIC_PROFILE_STRUCTURE', 1);
+define('NI_PRIVATE_PROFILE_STRUCTURE', 2);
+define('HQP_PUBLIC_PROFILE_STRUCTURE', 3);
+define('NI_REPORT_STRUCTURE', 4);
+define('NI_REPORT_PRODUCTIVITY_STRUCTURE', 5);
+define('HQP_REPORT_STRUCTURE', 6);
+
+define('PROJECT_PUBLIC_STRUCTURE', 10);
+define('PROJECT_REPORT_PRODUCTIVITY_STRUCTURE', 12);
+define('PROJECT_REPORT_TIME_STRUCTURE', 13);
+
+$dashboardStructures = array();
+$dashboardStructures[NI_PUBLIC_PROFILE_STRUCTURE] =
+    array(array(HEAD."(Projects)", HEAD."(HQP)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)"),
+          array(HEAD.'(Total:)', PERSON_HQP, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS),
+          STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY) => array(PERSON_PROJECTS,
+                                                          PERSON_HQP, 
+                                                          PERSON_PUBLICATIONS, 
+                                                          PERSON_ARTIFACTS, 
+                                                          PERSON_ACTIVITIES,
+                                                          PERSON_PRESENTATIONS,
+                                                          PERSON_PRESS,
+                                                          PERSON_AWARDS),
+          array(HEAD.'(Total:)', PERSON_HQP, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS)
+    );
+    
+$dashboardStructures[NI_PRIVATE_PROFILE_STRUCTURE] =
+    array(array(HEAD."(Projects)", HEAD."(Partners)", HEAD."(HQP)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Contributions)"),
+    array(HEAD.'(Total:)', PERSON_PARTNERS, PERSON_HQP, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS, PERSON_CONTRIBUTIONS),
+          STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY) => array(PERSON_PROJECTS,
+                                                          PERSON_PARTNERS, 
+                                                          PERSON_HQP, 
+                                                          PERSON_PUBLICATIONS, 
+                                                          PERSON_ARTIFACTS, 
+                                                          PERSON_ACTIVITIES,
+                                                          PERSON_PRESENTATIONS,
+                                                          PERSON_PRESS,
+                                                          PERSON_AWARDS,
+                                                          PERSON_CONTRIBUTIONS),
+          array(HEAD.'(Total:)', PERSON_PARTNERS, PERSON_HQP, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS, PERSON_CONTRIBUTIONS)
+    );
+    
+$dashboardStructures[NI_REPORT_STRUCTURE] =
+    array(array(HEAD."(Projects)", HEAD."(HQP)", HEAD."(Partners)", HEAD."(Hours/Week)", HEAD."(Allocated:<br />".(REPORTING_YEAR)." - ".(REPORTING_YEAR+1).")", HEAD."(Requested:<br />".(REPORTING_YEAR+1)." - ".(REPORTING_YEAR+2).")"),
+    array(HEAD.'(Total:)',
+          STRUCT(PERSON_HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+          STRUCT(PERSON_PARTNERS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+          STRUCT(PERSON_HOURS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+          STRUCT(PERSON_ALLOCATED_BUDGET, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+          STRUCT(PERSON_BUDGET, REPORTING_CYCLE_START, REPORTING_CYCLE_END)), 
+          STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array(PERSON_PROJECTS,
+                                                           STRUCT(PERSON_HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                           STRUCT(PERSON_PARTNERS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                           STRUCT(PERSON_HOURS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                           STRUCT(PERSON_ALLOCATED_BUDGET, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                           STRUCT(PERSON_BUDGET, REPORTING_CYCLE_START, REPORTING_CYCLE_END)), 
+      array(HEAD.'(Total:)', 
+            STRUCT(PERSON_HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+            STRUCT(PERSON_PARTNERS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+            STRUCT(PERSON_HOURS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+            STRUCT(PERSON_ALLOCATED_BUDGET, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+            STRUCT(PERSON_BUDGET, REPORTING_CYCLE_START, REPORTING_CYCLE_END))
+    );
+    
+$dashboardStructures[NI_REPORT_PRODUCTIVITY_STRUCTURE] =
+    array(array(HEAD."(Projects)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Contributions)"), 
+    array(HEAD.'(Total:)',
+          STRUCT(PERSON_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+          STRUCT(PERSON_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+          STRUCT(PERSON_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+          STRUCT(PERSON_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+          STRUCT(PERSON_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+          STRUCT(PERSON_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+          STRUCT(PERSON_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END)), 
+          STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array(PERSON_PROJECTS,
+                                                           STRUCT(PERSON_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                           STRUCT(PERSON_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                           STRUCT(PERSON_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                           STRUCT(PERSON_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                           STRUCT(PERSON_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                           STRUCT(PERSON_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                           STRUCT(PERSON_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END)), 
+      array(HEAD.'(Total:)', 
+            STRUCT(PERSON_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+            STRUCT(PERSON_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+            STRUCT(PERSON_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+            STRUCT(PERSON_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+            STRUCT(PERSON_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+            STRUCT(PERSON_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+            STRUCT(PERSON_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END))
+    );
+    
+$dashboardStructures[HQP_PUBLIC_PROFILE_STRUCTURE] =
+    array(array(HEAD."(Projects)", HEAD."(Supervisors)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)"),
+          array(HEAD.'(Total:)', PERSON_SUPERVISORS, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS),
+          STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY) => array(PERSON_PROJECTS,
+                                                          PERSON_SUPERVISORS, 
+                                                          PERSON_PUBLICATIONS, 
+                                                          PERSON_ARTIFACTS, 
+                                                          PERSON_ACTIVITIES,
+                                                          PERSON_PRESENTATIONS,
+                                                          PERSON_PRESS,
+                                                          PERSON_AWARDS),
+          array(HEAD.'(Total:)', PERSON_SUPERVISORS, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS)
+    );
+    
+$dashboardStructures[HQP_REPORT_STRUCTURE] =
+    array(array(HEAD."(Projects)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)"),
+          array(HEAD.'(Total:)', 
+                STRUCT(PERSON_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PERSON_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                STRUCT(PERSON_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                STRUCT(PERSON_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                STRUCT(PERSON_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                STRUCT(PERSON_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
+          STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array(PERSON_PROJECTS,
+                                                          STRUCT(PERSON_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                            STRUCT(PERSON_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                            STRUCT(PERSON_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                            STRUCT(PERSON_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                            STRUCT(PERSON_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                            STRUCT(PERSON_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
+          array(HEAD.'(Total:)', 
+                STRUCT(PERSON_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PERSON_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                STRUCT(PERSON_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                STRUCT(PERSON_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                STRUCT(PERSON_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                STRUCT(PERSON_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END))
+    );
+    
+$dashboardStructures[PROJECT_PUBLIC_STRUCTURE] = 
+    array(array(HEAD."(People)", HEAD."(Roles)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)"),
+          array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_PUBLICATIONS, PROJECT_ARTIFACTS, PROJECT_ACTIVITIES, PROJECT_PRESENTATIONS, PROJECT_PRESS, PROJECT_AWARDS),
+          STRUCT(GROUP_BY, PROJECT_PEOPLE_ARRAY) => array(PROJECT_PEOPLE,
+                                                         PROJECT_ROLES,
+                                                         PROJECT_PUBLICATIONS, 
+                                                         PROJECT_ARTIFACTS, 
+                                                         PROJECT_ACTIVITIES,
+                                                         PROJECT_PRESENTATIONS,
+                                                         PROJECT_PRESS,
+                                                         PROJECT_AWARDS),
+          array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_PUBLICATIONS, PROJECT_ARTIFACTS, PROJECT_ACTIVITIES, PROJECT_PRESENTATIONS, PROJECT_PRESS, PROJECT_AWARDS)
+    );
+    
+$dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] = 
+    array(array(HEAD."(People)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Contributions)"),
+          array(HEAD.'(Total:)', 
+                STRUCT(PROJECT_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                STRUCT(PROJECT_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
+          STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array(PROJECT_PEOPLE_ROLES,
+                                                         STRUCT(PROJECT_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                        STRUCT(PROJECT_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                        STRUCT(PROJECT_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                        STRUCT(PROJECT_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                        STRUCT(PROJECT_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                        STRUCT(PROJECT_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                        STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
+          STRUCT(GROUP_BY, PROJECT_PEOPLE_NO_LEADERS_ARRAY) => array(PROJECT_PEOPLE_ROLES,
+                                                         STRUCT(PROJECT_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                        STRUCT(PROJECT_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                        STRUCT(PROJECT_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                        STRUCT(PROJECT_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                        STRUCT(PROJECT_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                        STRUCT(PROJECT_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                        STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
+          array(HEAD.'(Total:)', 
+                STRUCT(PROJECT_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                STRUCT(PROJECT_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END))
+    );
+    
+$dashboardStructures[PROJECT_REPORT_TIME_STRUCTURE] = 
+    array(array(HEAD."(People)", HEAD."(Roles, PNI: Principle Network Investigator, CNI: Collaborating Network Investigator, PL: Project Leader, COPL: Co Project Leader)", HEAD."(University &amp; Department)", HEAD."(Hours/Week)", HEAD."(Allocated:<br />".(REPORTING_YEAR)." - ".(REPORTING_YEAR+1).")", HEAD."(Requested:<br />".(REPORTING_YEAR+1)." - ".(REPORTING_YEAR+2).")"),
+          array(HEAD.'(Total:)', 
+                STRUCT(PROJECT_ROLES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_HOURS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_ALLOCATED_BUDGET, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_BUDGET, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
+          STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array(PROJECT_PEOPLE,
+                                                         STRUCT(PROJECT_ROLES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                         STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                         STRUCT(PROJECT_HOURS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                         STRUCT(PROJECT_ALLOCATED_BUDGET, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                         STRUCT(PROJECT_BUDGET, REPORTING_CYCLE_START, REPORTING_CYCLE_END),),
+          STRUCT(GROUP_BY, PROJECT_PEOPLE_NO_LEADERS_ARRAY) => array(PROJECT_PEOPLE,
+                                                         STRUCT(PROJECT_ROLES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                         STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                         STRUCT(PROJECT_HOURS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                         STRUCT(PROJECT_ALLOCATED_BUDGET, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                         STRUCT(PROJECT_BUDGET, REPORTING_CYCLE_START, REPORTING_CYCLE_END),),
+          array(HEAD.'(Total:)', 
+                STRUCT(PROJECT_ROLES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_HOURS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_ALLOCATED_BUDGET, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_BUDGET, REPORTING_CYCLE_START, REPORTING_CYCLE_END), )
+    );
+?>

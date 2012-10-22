@@ -1,0 +1,233 @@
+<?php
+
+class BudgetReportItem extends AbstractReportItem {
+
+	function render(){
+		global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+		if(isset($_GET['downloadBudget'])){
+		    $data = $this->getBlobValue();
+		    if($data != null){
+		        $person = Person::newFromId($wgUser->getId());
+		        header('Content-Type: application/vnd.ms-excel');
+		        header("Content-disposition: attachment; filename='{$person->getNameForForms()}_Budget.xls'");
+		        echo $data;
+		        exit;
+		    }
+		}
+		if(isset($_GET['budgetUploadForm'])){
+		    $this->budgetUploadForm();
+		}
+		$projectGet = "";
+		if(isset($_GET['project'])){
+		    $projectGet = "&project={$_GET['project']}";
+		}
+        $wgOut->addHTML("<script type='text/javascript'>
+                                var frameId = 0;
+                                function alertreload(){
+                                    var lastHeight = $('#budgetFrame' + frameId).height();
+                                    $('#budgetFrame' + frameId).remove();
+                                    frameId++;
+                                    $('#budgetDiv').html(\"<iframe id='budgetFrame\" + frameId + \"' style='border-width:0;width:100%;' frameborder='0' src='../index.php/Special:Report?report=NIReport&section=Budget&budgetUploadForm$projectGet'></iframe>\");
+                                    $('#budgetFrame' + frameId).height(lastHeight);
+                                }
+                                function alertsize(pixels){
+                                    $('#reportMain > div').stop();
+                                    $('#budgetFrame' + frameId).height(pixels);
+                                    $('#budgetFrame' + frameId).css('max-height', pixels);
+                                }
+                            </script>");
+		$wgOut->addHTML("<h2>Budget Preview</h2>");
+		$wgOut->addHTML("<div>");
+		$wgOut->addHTML("<h2>Download Budget Template</h2> <ul><li><a href='$wgServer$wgScriptPath/data/GRAND Researcher Budget Request (2013-14).xls'>".(REPORTING_YEAR+1)."-".(REPORTING_YEAR+2)." Budget Template</a></li></ul>" );
+		
+		$wgOut->addHTML("<h2>Budget Upload</h2>
+		                 <div id='budgetDiv'><iframe id='budgetFrame0' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report=NIReport&section=Budget&budgetUploadForm$projectGet'></iframe></div>");
+		$wgOut->addHTML("</div>");
+	}
+	
+	function renderForPDF(){
+	    global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+        $data = $this->getBlobValue();
+		if($data !== null){
+		    $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
+		    $budget = $this->filterCols($budget);
+		    $wgOut->addHTML($budget->copy()->filterCols(V_PROJ, array(""))->renderForPDF());
+		}
+		else{
+		    $wgOut->addHTML("You have not yet uploaded a budget");
+		}
+	}
+	
+	function budgetUploadForm(){
+	    global $wgServer, $wgScriptPath;
+	    if(isset($_POST['upload'])){
+	        $this->save();
+	    }
+	    $projectGet = "";
+		if(isset($_GET['project'])){
+		    $projectGet = "&project={$_GET['project']}";
+		}
+        echo "<html>
+                <head>
+                    <script type='text/javascript' src='$wgServer$wgScriptPath/scripts/jquery.min.js'></script>
+                    <link rel='stylesheet' href='$wgServer$wgScriptPath/skins/cavendish/basetemplate.css' type='text/css' />
+                    <link rel='stylesheet' href='$wgServer$wgScriptPath/skins/cavendish/template.css' type='text/css' />
+                    <link rel='stylesheet' href='$wgServer$wgScriptPath/skins/cavendish/main.css' type='text/css' />
+                    <link rel='stylesheet' href='$wgServer$wgScriptPath/skins/cavendish/cavendish.css' type='text/css' />
+                    <script type='text/javascript'>
+                        function load_page() {
+                            parent.alertsize($(\"body\").height()+38);
+                        }
+                    </script>
+                    <style type='text/css'>
+                        body {
+                            background: none;
+                            padding-bottom:25px;
+                            overflow-y: hidden;
+                        }
+                        
+                        #bodyContent {
+                            font-size: 9pt;
+                            font-family: Verdana, sans-serif;
+                            -moz-border-radius: 0px;
+                            -webkit-border-radius: 0px;
+                            border-radius: 0px;
+                            
+                            -webkit-box-shadow: none;
+	                        -moz-box-shadow: none;
+	                        box-shadow: none;
+	                        border-width:0;
+	                        padding:0;
+                        }
+                        
+                        table {
+                            line-height: 1.5em;
+                            font-size: 9pt;
+                            font-family: Verdana, sans-serif;
+                        }
+                    </style>";
+        if(isset($_POST['upload'])){
+            echo "<script type='text/javascript'>
+                        parent.alertreload();
+                    </script>";
+        }
+        echo "</head>
+              <body style='margin:0;'>
+                    <div id='bodyContent'>
+                        <form action='$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport&section=Budget&budgetUploadForm$projectGet' method='post' enctype='multipart/form-data'>
+                            <input type='file' name='budget' />
+	                        <input type='submit' name='upload' value='Upload' />
+	                    </form>";
+	            
+	    $data = $this->getBlobValue();
+	    if($data !== null){
+	        echo "<br /><a href='$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport&section=Budget&downloadBudget$projectGet'>Download Uploaded Budget</a>";
+		    $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
+		    $budget = $this->filterCols($budget);
+		    echo $budget->copy()->filterCols(V_PROJ, array(""))->render();
+		}
+		else{
+		    echo "You have not yet uploaded a budget";
+		}
+		echo "      </div>
+		        </body>
+		        <script type='text/javascript'>
+		            load_page();
+		        </script>
+	          </html>";
+	    exit;
+	}
+	
+	function filterCols($budget){
+	    if($this->getReport()->topProjectOnly){
+	        $person = $this->getReport()->person;
+	        $project = $this->getReport()->project;
+            $budget = $budget->copy();
+            $personRow = $budget->copy()->where(HEAD1, array("Name of network investigator submitting request:"));
+            foreach(Project::getAllProjects() as $proj){
+                if($proj->getId() != $project->getId()){
+                    $budget = $budget->filterCols(V_PROJ, array($proj->getName()));
+                }
+            }
+            $personRow->limitCols(0, $budget->nCols());
+            $budget = $budget->filter(HEAD1, array("Name of network investigator submitting request:"));
+            $budget = $personRow->union($budget);
+        }
+        return $budget;
+	}
+	
+	function save(){
+	    if(isset($_FILES['budget']) && $_FILES['budget']['tmp_name'] != ""){
+	        $contents = utf8_encode(file_get_contents($_FILES['budget']['tmp_name']));
+	        $this->setBlobValue($contents);
+	    }
+	    return array();
+	}
+	
+	function addWorksWithRelation($blob){
+	    global $wgUser;
+	    $me = Person::newFromId($wgUser->getId());
+	    $data = $blob->getData();
+        $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
+        
+        // First select the projects
+        $projects = $budget->copy()->select(V_PROJ, array())->where(V_PROJ)->xls;
+        foreach($projects as $row){
+            foreach($row as $proj){
+                $project = Project::newFromName($proj->getValue());
+                if($project != null && $project->getName() != null){
+                    // Now look for the people
+                    $people = $budget->copy()->select(V_PROJ, array($project->getName()))->where(V_PERS)->xls;
+                    foreach($people as $row){
+                        foreach($row as $pers){
+                            $person = null;
+                            $pers = str_replace("'", "", $pers->getValue());
+                            $names = explode(',', $pers);
+                            if(count($names) > 1){
+                                $name = $names[1].' '.$names[0];
+                                $person = Person::newFromNameLike($name);
+                                if($person == null || $person->getName() == null){
+                                    try{
+                                        $person = Person::newFromAlias($name);
+                                    }
+                                    catch(Exception $e){
+
+                                    }
+                                }
+                            }
+                            if($person == null || $person->getName() == null){
+                                $person = Person::newFromNameLike($pers);
+                            }
+                            if($person == null || $person->getName() == null){
+                                try{
+                                    $person = Person::newFromAlias($pers);
+                                }
+                                catch(Exception $e){
+                                
+                                }
+                            }
+                            if($person != null && $person->getName() != null){
+                                // Ok, it is safe to add this person as a relation
+                                $_POST['type'] = WORKS_WITH;
+                                $_POST['name1'] = $me->getName();
+                                $_POST['name2'] = $person->getName();
+                                $_POST['project_relations'] = $project->getName();
+                                APIRequest::doAction('AddRelation', true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+	}
+	
+	function getNFields(){
+	    return 0;
+	}
+	
+	function getNComplete(){
+	    return 0;
+	}
+}
+
+?>

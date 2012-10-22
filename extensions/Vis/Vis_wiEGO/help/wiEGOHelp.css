@@ -1,0 +1,7 @@
+@CHARSET "ISO-8859-1";
+
+div.ego {
+	border-width:1px; 
+	border-style:solid; 
+	background-color: white
+}

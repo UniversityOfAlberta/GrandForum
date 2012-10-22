@@ -1,0 +1,4 @@
+Deny from All
+RewriteEngine on
+RewriteRule ^/images(.*)$ /AnnokiUploadAuth.php/$1 [R]
+RewriteRule ^/AnnokiUploadAuth.php/(.*)$ /AnnokiUploadAuth.php.php?path=/$1

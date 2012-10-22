@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="NI Report" reportType="RP_RESEARCHER" pdfType="RPTP_NORMAL" pdfFiles="NIReportPDF" pdfAllProjects="true" ajax="true" disabled="false">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END">PNI</Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END">CNI</Role>
+    </Permissions>
+    <ReportSection name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <ReportItem id="report_info_head" type="StaticReportItem">
+            <![CDATA[
+                <div class='logo_div'>
+                    <div class='logo'></div>
+                    <div class='report_name' style='text-align:right;'><b>Network Investigator (NI) Report</b><br /><small><b>Generated:</b> {$timestamp}</small></div>
+                    <div class='report_info'><table class='report_info'><tr><td width='100%'></td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="my_progress_head" type="StaticReportItem" private="true">
+            <![CDATA[<td><small><table class='progress_table' cellpadding="1" frame="box" rules="all">]]>
+        </ReportItem>
+        <ReportItem id="ni_progress_head" type="ProgressReportItem" reportType="NIReport" private="true">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="my_hqp_progress_head" type="SupervisorProgressReportItem" private="true">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="NIReport" private="true">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="my_milestone_progress_head" type="NIProgressReportItem" reportType="NIReport" private="true">
+            <![CDATA[{$item}</table></small></td></tr>]]>
+        </ReportItem>
+        <ReportItem id="report_info_foot" type="StaticReportItem">
+            <![CDATA[</table></div></div>]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection name="NI Dashboard" blobSection="RES_MILESTONES" type="HeaderReportSection" renderpdf="true" pagebreak="false">
+        <ReportItem id="basic_info" type="StaticReportItem">
+        <![CDATA[
+            <div class='basic_info' style='margin-bottom:20px;'>
+                <p style='font-size:150%;'><span class='label'>Name:</span> {$user_reversed_name} ({$user_full_roles})</p>
+                <p><span class='label'>Position:</span> {$user_level}</p>
+                <p><span class='label'>Department:</span> {$user_dept}</p>
+                <p><span class='label'>University:</span> {$user_uni}</p>
+                <p><span class='label'>Projects:</span>
+        ]]>
+        </ReportItem>
+        <ReportItemSet id="user_projects" type="PersonProjectReportItemSet">
+            <ReportItem id="user_project" type="StaticReportItem">
+                 <![CDATA[&nbsp;{$project_name}]]>
+            </ReportItem>
+            <ReportItem id="user_project_footnote" type="FootnoteReportItem" text="{$project_full_name}">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="grand_time" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem" private="true">
+            <![CDATA[</p><p><span class='label'>Time Devoted to GRAND Research and Management (hours / week):</span> {$item}</p>]]>
+        </ReportItem>
+        <ReportItem id="grand_percent" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem" private="true">
+            <![CDATA[<span class='label'>GRAND-related Research Activity relative to Overall Research Activity (%):</span> {$item}</p></div>]]>
+        </ReportItem>
+        <ReportItem id="ni_dashboard_bookmark" type="BookmarkReportItem" text="NI Network Dashboard">
+            <![CDATA[<div>{$item}</div>]]>
+        </ReportItem>
+        <ReportItem id="ni_dashboard" type="DashboardReportItem" structure="NI_REPORT_STRUCTURE" table="true" details="false">
+            <![CDATA[<div>{$item}</div>]]>
+        </ReportItem>
+        <ReportItem id="ni_dashboard_productivity_bookmark" type="BookmarkReportItem" text="NI Productivity Dashboard">
+            <![CDATA[<div>{$item}</div>]]>
+        </ReportItem>
+        <ReportItem id="ni_dashboard_productivity" type="DashboardReportItem" structure="NI_REPORT_PRODUCTIVITY_STRUCTURE" table="true" details="false">
+            <![CDATA[<div>{$item}</div>]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection name="Executive Summary: Overview of all of my GRAND Activity" blobSection="RES_RESACTIVITY" type="EditableReportSection" number="1" autosave="true" renderpdf="true">
+    <!-- Ia. Overview of NI Activity -->
+        <ReportItem id="Ia" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="RES_RESACT_OVERALL" type="TextareaReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection name="Assessment: How I contribute towards the NCE Evaluation Criteria" blobSection="RES_RESACTIVITY" type="EditableReportSection" number="2" autosave="true" renderpdf="true">
+    <!-- IIa. Excellence of the Research Program -->
+        <ReportItem id='IIa_head' type="StaticReportItem">
+            <![CDATA[<h2>A. Excellence of the Research Program: How my research contributes to the Network</h2>]]>
+        </ReportItem>
+        <ReportItemSet id="OR" type="ORReportItemSet">
+            <ReportItemSet id="ProjectLimit_IIa" type="LimitReportItemSet" limit="1800">
+                <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+                    <ReportItem id="IIa" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_EXCELLENCE" type="AutoCompleteTextareaReportItem" set="PersonProductsReportItemSet" index="product_id" label="product_title" name="Products">
+                        <![CDATA[<i>{$project_name}:</i><br />{$item}<br /><br />]]>
+                    </ReportItem>
+                </ReportItemSet>
+            </ReportItemSet>
+        </ReportItemSet>
+    <!-- IIb. Development of Highly Qualified Personnel -->
+        <ReportItem id='IIa_head' type="StaticReportItem">
+            <![CDATA[<h2>B. Development of Highly Qualified Personnel: My training strategies and achievements</h2>]]>
+        </ReportItem>
+        <ReportItemSet id="OR" type="ORReportItemSet">
+            <ReportItemSet id="ProjectLimit_IIb" type="LimitReportItemSet" limit="1800">
+                <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+                    <ReportItem id="IIb" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_HQPDEV" type="AutoCompleteTextareaReportItem" set="PersonSupervisesReportItemSet" index="user_name" label="user_id" name="HQP">
+                        <![CDATA[<i>{$project_name}:</i><br />{$item}<br /><br />]]>
+                    </ReportItem>
+                </ReportItemSet>
+            </ReportItemSet>
+        </ReportItemSet>
+    <!-- IIc. Networking and Partnerships -->
+        <ReportItem id='IIc_head' type="StaticReportItem">
+            <![CDATA[<h2>C. Networking and Partnerships: My efforts and successes in building linkages</h2>]]>
+        </ReportItem>
+        <ReportItemSet id="OR" type="ORReportItemSet">
+            <ReportItemSet id="ProjectLimit_IIc" type="LimitReportItemSet" limit="1800">
+                <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+                    <ReportItem id="IIc" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETWORKING" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_name" label="user_id" name="{$project_name} Members">
+                        <![CDATA[<i>{$project_name}:</i><br />{$item}<br /><br />]]>
+                    </ReportItem>
+                </ReportItemSet>
+            </ReportItemSet>
+        </ReportItemSet>
+    <!-- IId. Knowledge and Technology Exchange and Exploitation -->
+        <ReportItem id='IId_head' type="StaticReportItem">
+            <![CDATA[<h2>D. Knowledge &amp; Technology Exchange &amp; Exploitation: My efforts in disseminating research to receptors</h2>]]>
+        </ReportItem>
+        <ReportItemSet id="OR" type="ORReportItemSet">
+            <ReportItemSet id="ProjectLimit_IId" type="LimitReportItemSet" limit="1800">
+                <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+                    <ReportItem id="IId" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_KTEE" type="TextareaReportItem">
+                        <![CDATA[<i>{$project_name}:</i><br />{$item}<br /><br />]]>
+                    </ReportItem>
+                </ReportItemSet>
+            </ReportItemSet>
+        </ReportItemSet>
+    <!-- IIe. Management of the Network -->
+        <ReportItem id='IIe_head' type="StaticReportItem" private="true">
+            <![CDATA[<h2>E. Management of the Network: My role in or contribution to Network operations and governance</h2>]]>
+        </ReportItem>
+        <ReportItem id="IIe" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETMAN" type="AutoCompleteTextareaReportItem" set="AllPeopleReportItemSet" index="user_name" label="user_id" name="Members">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection name="Reflections: Other Aspects of my involvement in GRAND" blobSection="RES_RESACTIVITY" type="EditableReportSection" number="3" autosave="true" renderpdf="true" private="true">
+    <!-- IIIa. Plans for next year -->
+        <ReportItem id='IIIa_head' type="StaticReportItem">
+            <![CDATA[<h2>Proposed Activity: My Plans for {$next_year} in GRAND</h2>]]>
+        </ReportItem>
+        <ReportItem id="IIIa" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="RES_RESACT_NEXTPLANS" type="TextareaReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    <!-- IIIb. Benefits from being involved in the Network -->
+        <ReportItem id='IIIb_head' type="StaticReportItem">
+            <![CDATA[<h2>Benefits of Networking: The value to my research program of my participation in GRAND</h2>]]>
+        </ReportItem>
+        <ReportItem id="IIIb" rows="12" limit="600" blobType="BLOB_TEXT" blobItem="RES_RESACT_BENEF" type="TextareaReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    <!-- IIIc. Additional Comments -->
+        <ReportItem id='IIIc_head' type="StaticReportItem">
+            <![CDATA[<h2>Additional Comments</h2>]]>
+        </ReportItem>
+        <ReportItem id="IIIc" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="RES_RESACT_OTHER" type="TextareaReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection name="Budget" blobSection="RES_BUDGET" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true">
+        <ReportItem id="budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="BudgetReportItem" />
+        <ReportItem id="budget_just" rows="10" limit="600" blobType="BLOB_TEXT" blobItem="RES_BUD_JUSTIF" type="TextareaReportItem">
+            <![CDATA[<h3>Budget Justification</h3> {$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection name="HQP Details" blobSection="SEC_NONE" type="ReportSection" number="5" pagebreak="true" renderpdf="true">
+        <ReportItem id="ni_dashboard" type="DashboardReportItem" structure="NI_REPORT_STRUCTURE" table="false" details="true" totalOnly="true">
+            <![CDATA[<div>{$item}</div>]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection name="Productivity Details" blobSection="SEC_NONE" type="ReportSection" number="6" pagebreak="false" renderpdf="true">
+        <ReportItem id="ni_dashboard_productivity" type="DashboardReportItem" structure="NI_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
+            <![CDATA[<div>{$item}</div>]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection name="Milestone Comments" blobSection="RES_MILESTONES" type="EditableReportSection" autosave="true" number="7" pagebreak="false" renderpdf="true" previewonly="true">
+        <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+            <ReportItem id="project_bookmark" type="SubBookmarkReportItem" text="{$project_name}">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+            <ReportItem id="project_name" type="StaticReportItem">
+                <![CDATA[<h2>{$project_name}</h2>]]>
+            </ReportItem>
+            <ReportItem id="milestone_summary" width="100%" height="250px" blobType="BLOB_TEXT" blobItem="RES_MIL_SUMMARY" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="milestones" type="MilestoneRadioReportItemSet" blobIndex="milestoneId">
+                <ReportItem id="static3" type="SnippetReportItem" limit="280" text="{$milestone_description}">
+                <![CDATA[
+                    <h3>{$milestone_title}</h3>
+                    <small>{$item}</small><br />
+                ]]>
+                </ReportItem>
+                <ReportItem id="contribution" type="RadioReportItem" options="No|Yes" orientation="vertical" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS">
+                <![CDATA[
+                    <b>Worked On:</b> {$item}
+                ]]>
+                </ReportItem>
+                <ReportItem id="comment" type="TextareaReportItem" limit="300" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" recommended="true">
+                <![CDATA[
+                    <br />
+                    <b>Comments:</b> {$item}<br />
+                ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="" type="PageBreakReportItem">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
+    </ReportSection>
+</Report>

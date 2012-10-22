@@ -1,0 +1,156 @@
+<html>
+<head>
+    <title>Doughnut Documentation</title>
+</head>
+<body>
+    <h1>Table of Contents</h1>
+    <ol>
+        <li><a href='#installation'>Installation</a></li>
+        <li><a href='#json'>JSON Format</a></li>
+    </ol>
+    <h2 id='installation'>Installation</h2>
+    Copy the following files:
+    <ol>
+        <li>jquery.js</li>
+        <li>raphael.js</li>
+        <li>popup.js</li>
+        <li>doughnut.js</li>
+    </ol>
+    After the files are copied, a new instance of a doughnut chart can be created by making the following call:
+    <pre>
+        $("#holder").doughnut(data);
+    </pre>
+    Where "#holder" is the div tag that the chart will reside.  data is either a url to a json file, or the javascript object itself.
+    <h2 id='json'>JSON Format</h2>
+    Example Json file:
+    <pre>
+        [
+    {
+        "data_type_singular": "object",
+        "data_type_plural": "objects",
+        "sort": "desc",
+        "limit": "15",
+        "width": "575",
+        "height": "300",
+        "legend": [
+            {
+                "name": "Series 1",
+                "color": "#D38946"
+            },
+            {
+                "name": "Series 2",
+                "color": "#82D868"
+            },
+            {
+                "name": "Series 3",
+                "color": "#6191B3"
+            }
+        ],
+        "levels": [
+            {
+                "labels": [
+                    "Hello",
+                    "Hello World",
+                    "Hi There",
+                    "Bye"
+                ],
+                "values": [
+                    33,
+                    1,
+                    14,
+                    2
+                ]
+            },
+            {
+                "labels": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "F"
+                ],
+                "values": [
+                    37,
+                    13,
+                    1,
+                    4,
+                    2,
+                    1
+                ]
+            },
+            {
+                "labels": [
+                    "a",
+                    "b",
+                    "c",
+                    "d",
+                    "e",
+                    "f",
+                    "g",
+                    "h"
+                ],
+                "values": [
+                    15,
+                    17,
+                    17,
+                    9,
+                    13,
+                    2,
+                    2
+                ]
+            }
+        ]
+    }
+]
+    </pre>
+    
+    <h3>Doughnut Properties</h3>
+    <table cellspacing='1px' cellpadding='5px' border='1' width='600'>
+        <tr>
+            <td>'data_type_singular'</td><td><pre>string</pre>required</td><td>Used to display beside the value in the popup text when the value = 1</td>
+        </tr>
+        <tr>
+            <td>'data_type_plural'</td><td><pre>string</pre>required</td><td>Used to display beside the value in the popup text when the value != 1</td>
+        </tr>
+        <tr>
+            <td>'sort'</td><td><pre>string</pre></td><td>Whether to sort the values or not.  Options are "desc", "asc", "none" (default is "none)</td>
+        </tr>
+        <tr>
+            <td>'limit'</td><td><pre>integer</pre></td><td>The number of arcs to display per ring.  If there are more than the specified limit, then the remaing entries are grouped into "Others" (default is no limit)</td>
+        </tr>
+        <tr>
+            <td>'width'</td><td><pre>integer</pre></td><td>The width of the drawing area (Default is the width of the container)</td>
+        </tr>
+        <tr>
+            <td>'height'</td><td><pre>integer</pre></td><td>The height of the drawing area (Default is the height of the container)</td>
+        </tr>
+        <tr>
+            <td>'legend'</td><td><pre>Array</pre> required</td><td>The legend used for the chart (see below)</td>
+        </tr>
+        <tr>
+            <td>'levels'</td><td><pre>Array</pre> required</td><td>The height of the drawing area (see below)</td>
+        </tr>
+    </table>
+    <h3>Legend Properties</h3>
+    <table cellspacing='1px' cellpadding='5px' border='1' width='600'>
+        <tr>
+            <td>'name'</td><td><pre>string</pre>required</td><td>The name of the data series</td>
+        </tr>
+        <tr>
+            <td>'color'</td><td><pre>string</pre>required</td><td>The color of the data series</td>
+        </tr>
+    </table>
+    <h3>Levels Properties</h3>
+    <table cellspacing='1px' cellpadding='5px' border='1' width='600'>
+        <tr>
+            <td>'labels'</td><td><pre>Array&lt;string&gt;</pre>required</td><td>The labels Array for the data series</td>
+        </tr>
+        <tr>
+            <td>'values'</td><td><pre>Array&lt;integer&gt;</pre>required</td><td>The values Array of the data series</td>
+        </tr>
+    </table>
+</body>
+
+
+</html>

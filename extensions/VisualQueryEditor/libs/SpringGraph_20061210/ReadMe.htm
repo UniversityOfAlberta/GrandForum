@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>SpringGraph Flex Component - Read Me</title>
+<style type="text/css">
+<!--
+.style3 {font-size: small}
+.style4 {
+	font-size: x-small;
+	font-style: italic;
+}
+-->
+</style>
+</head>
+
+<body>
+<h2>SpringGraph Flex Component<br />
+  <span class="style3">Version 2006/12/10<br />
+  </span>
+</h2>
+<p>&nbsp;</p>
+<p><strong>SpringGraph</strong>  is a Flex 2.0 component that displays a set of items that linked to each other. The component finds an appropriate layout for the items based on tthe size and links of each item,. and draws lines to represent the links. The component allows the end user to drag and/or interact with individual items. You can try some samples <a href="http://mark-shepherd.com/">here</a>. </p>
+<h3>What's in this document</h3>
+<ul>
+  <li>intro</li>
+  <li>contents of the zipfile</li>
+  <li>install instructions </li>
+  <li>how to use SpringGraph in a Flex Application</li>
+  <li>how to build SpringGraph and the samples</li>
+  <li>how to work with the enclosed source code in FlexBuilder</li>
+  <li>change log </li>
+  <li>disclaimer, acknowledgements, contact info </li>
+</ul>
+<h3>Contents of the zipfile </h3>
+<blockquote>
+  <p><em>component_license.htm </em>- you should read and agree to this license before using the SpringGraph component and sample applications. </p>
+  <p><em>docs/</em> -  <a href="docs/springgraph-asdoc/index.html">API documentation </a>for the SpringGraph component and associated classes.</p>
+  <p>Samples/ - source code  for various demo Flex applications </p>
+  <blockquote>
+    <p> <em>Samples/SpringGraphDemo/ </em>- interactively demonstrates various features of SpringGraph component . <a href="Samples/SpringGraphDemo/bin/SpringGraphDemo.html"></a></p>
+    <p><em>Samples/AmazonDemo/ </em>- uses SpringGraph to explore Amazon.com.</p>
+    <p><em>Samples/XMLDemo/ </em>- shows different ways of providing XML data to a SpringGraph. <a href="Samples/XMLDemo/bin/XMLDemo.html"></a></p>
+    <p><em>Samples/RoamerDemo/ </em>- uses the Roamer component to explore large graphs. <a href="Samples/XMLDemo/bin/XMLDemo.html"></a></p>
+    <p><em>Samples/MoleculeViewer/ </em>- uses the SpringGraph to draw schematic diagrams of organic molecules </p>
+  </blockquote>
+  <p><em>SpringGraph/</em> - source code and binaries for the SpringGraph component. There are 2 packages. The <strong>forcelayout</strong> package implements the iterative force-directed layout algorithm. This is pure actionscript code that is not coupled to the UI. The <strong>springgraph</strong> package contains the SpringGraph and Roamer components and their associated classes. This package takes care of managing the itemRenderers,  link-drawing, timing, and other UI-related tasks. </p>
+  <p> <em>build.bat</em> - a Windows batch file to build the component and the sample applications using the  Flex SDK</p>
+</blockquote>
+<h3>Install Instructions</h3>
+<p>Extract contents of zip file to any folder on your machine, mac or win. </p>
+<h3>To use this component in a Flex application</h3>
+<p>If you're using a Flex Builder project, select Project &gt; Properties, go to &quot;Flex Build Path&quot; &gt; &quot;Library path&quot; and add the file <em>SpringGraph/bin/SpringGraph.swc</em> (this is the  binary library file that contains the SpringGraph and Roamer components). </p>
+<p> If using command line compiler, copy SpringGraph.swc file to &quot;\frameworks\libs&quot; folder of your Flex SDK installation, or use the command line compiler's &quot;library-path&quot; configuration parameter.</p>
+<p>To use the component, you provide  a couple of things</p>
+<ul>
+  <li>a <strong>dataProvider - </strong>information about what the items are, and what the links are. The dataProvider is an object of type <strong>Graph</strong> (which is included with the component), which has a simple API for defining items and links</li>
+  <li>an <strong>itemRenderer</strong> -  an MXML component that knows how to display an item. This can be a simple inline fragment of MXML, or a separate component that you've created. </li>
+</ul>
+<p>You can find out how to use the SpringGraph component, the Graph class, and the Item class by consulting the <a href="docs/springgraph-asdoc/index.html">API documentation</a> and/or the example applications. </p>
+<h3>To build the component and the samples in the free Flex SDK </h3>
+<p>Make sure that your Flex SDK's bin folder is in your class path, open a command shell, cd to the SpringGraph_<span class="style4">version</span> folder, and  run &quot;build.bat&quot; file. FlexBuilder users can find a copy of the Flex SDK inside their installation of FlexBuilder. See the batch file for more info. </p>
+<h3>To work with component  or sample applications in FlexBuilder </h3>
+<p>These instructions  should work on either mac or win.</p>
+<p>1. New &gt; Flex Library Project</p>
+<ul>
+  <li>name: <strong>SpringGraph</strong></li>
+  <li>use default location: &lt;unchecked&gt;</li>
+  <li>folder: <strong>SpringGraph_<span class="style4">version</span>/SpringGraph</strong></li>
+  <li>classes to include: &lt;all&gt; </li>
+  <li>all other settings: &lt;leave as default&gt;</li>
+</ul>
+<p>Go to the Project Properties &gt; Flex Library Compiler</p>
+<ul>
+  <li>namespace URL: <strong>http://www.adobe.com/2006/fc</strong></li>
+  <li>manifest file: <strong>manifest.xml</strong></li>
+</ul>
+<p>Build the project. The resulting swc file appears in the bin folder.</p>
+<p>2. New &gt; Flex (or Apollo) Project</p>
+<ul>
+  <li>access data: <strong>Basic</strong> (e.g XML or web service)</li>
+  <li>project name:<strong>SpringGraphDemo</strong></li>
+  <li>use default location: &lt;unchecked&gt;</li>
+  <li>folder: <strong>SpringGraph_<span class="style4">version</span>/Samples/SpringGraphDemo</strong></li>
+  <li>library path:
+    <ul>
+      <li>either Add Project ... <strong>SpringGraph</strong>, </li>
+      <li>or Add SWC.. and locate <strong>SpringGraph/bin/SpringGraph.swc</strong></li>
+    </ul>
+  </li>
+  <li>all other settings: &lt;leave as default&gt;</li>
+</ul>
+<p>You can now build and run the project.</p>
+<p>3. repeat number 2 with <strong>AmazonDemo</strong>, <strong>XMLDemo</strong>, <strong>MoleculeViewer</strong>, and <strong>RoamerDemo</strong>  as the project name and folder</p>
+<h3>Future possible improvements</h3>
+<p>Here's a few thoughts. Let me know your ideas. </p>
+<ul><li>build a generic roaming framework</li>
+  <li>improve performance on large graphs</li>
+</ul>
+<h3>Change Log </h3>
+<h5>Version 2006/12/10</h5>
+<ul>
+  <li>added IViewFactory, SpringGraph.viewFactory</li>
+  <li>added Roamer.back(), backOK, forward(), forwardOK</li>
+  <li>added Roamer.history, historyIndex, tidyHistory, visibleHistoryItems</li>
+</ul>
+<h5>Version 2006/12/02</h5>
+<ul>
+  <li>moved Roamer.autoFit to be SpringGraph.autoFit</li>
+  <li>SpringGraph docs now tell you how to control the appearance of links</li>
+  <li>new property SpringGraph.edgeRenderer </li>
+  <li>new property Roamer.showHistory</li>
+  <li>new functions Roamer.hideItem, resetHistory, resetShowHide, and showItem</li>
+  <li>various small improvements to RoamerDemo </li>
+</ul>
+<h5>Version 2006/11/19</h5>
+<ul>
+  <li>Graph.firstItem is now called Graph.distinguishedItem, and you can get/set it</li>
+  <li>new function Roamer.setDataProvider</li>
+  <li>new property Roamer.autoFit</li>
+  <li>new properties Roamer.forceInvisible and Roamer.forceVisible </li>
+  <li>new property SpringGraph.motionThreshold  </li>
+  <li>RoamerDemo has been updated with controls for autoFit, history, and hide item. </li>
+</ul>
+<h5>Version 2006/11/06</h5>
+<ul>
+  <li>SpringGraph.dataProvider can now be an XML structure such as
+    <pre>   &lt;stuff&gt;<br />      &lt;Nodes&gt;<br />         &lt;node id=&quot;2&quot; otherstuff=&quot;bbb....&quot;/&gt;<br />         &lt;node id=&quot;1&quot; otherstuff=&quot;aaa....&quot;/&gt;<br />         &lt;node id=&quot;3&quot; otherstuff=&quot;ccc....&quot;/&gt;<br />      &lt;/Nodes&gt;<br />      &lt;Edges&gt;<br />         &lt;edge from=&quot;1&quot; to=&quot;2&quot;/&gt;<br />         &lt;edge from=&quot;2&quot; to=&quot;3&quot;/&gt;<br />         &lt;edge from=&quot;3&quot; to=&quot;1&quot;/&gt;<br />      &lt;/Edges&gt;<br />   &lt;/stuff&gt;</pre>
+  </li>
+  <li>you can scroll the graph by clicking and dragging on the background</li>
+  <li>a new Roamer component extends the SpringGraph by providing support for browsing large graphs (10,000's of items) </li>
+  <li>you can define effects that are applied to items when adding or removing items from the view </li>
+  <li>the SimpleGraph now automatically updates itself when the dataProvider Graph changes </li>
+</ul>
+<h5>2009-09-03</h5>
+<ul>
+  <li>updated the license to be the Apache 2.0 open source license. The version number is unchanged.</li>
+</ul>
+<p>&nbsp;</p>
+<h3></h3>
+<h3>Etc	</h3>
+<p>This software is offered without support for any purpose you see fit. It is informally maintained by Mark Shepherd of Adobe FlexBuilder Engineering. Please let me know how you like it and whether it's working for you. </p>
+<p>SpringGraph was written by Mark Shepherd of Adobe Flex Builder Engineering. The force-directed layout algorithm was translated and adapted to ActionScript 3 from Java code written by Alexander Shapiro of TouchGraph, Inc. (http://www.touchgraph.com).</p>
+<p>Check out my blog at <a href="http://mark-shepherd.com/">http://mark-shepherd.com</a></p>
+<p>You can email me at <em>mark.shepherd@adobe.com</em>.  My AIM address is me1shepherd.</p>
+<p>-- Mark S, Dec 10, 2006</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

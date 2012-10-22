@@ -1,0 +1,8 @@
+Installation:
+
+Use AnnokiControl
+
+-- or --
+
+Add the following line to LocalSettings.php:
+require_once("extensions/Vis/Vis.php");

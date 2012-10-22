@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:fc="http://www.adobe.com/2006/fc" layout="absolute" backgroundColor="#FFFFFF" initialize="init()">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.core.IFlexDisplayObject;
+			import vqe.*;
+			import com.adobe.flex.extras.controls.springgraph.Graph;
+			import mx.managers.PopUpManager;
+			import mx.controls.Alert;
+			import mx.collections.ArrayCollection;
+			
+			private var g: Graph = new Graph();
+			private var actorList: Array = new Array();
+			private var relationList: Array = new Array();
+			private var propertyList: ArrayCollection = new ArrayCollection();
+			private var conditionList: Array = new Array();
+			
+			//popup windows
+			private var actorWindow:ActorWindow = new ActorWindow();
+			private var relationWindow:RelationWindow = new RelationWindow();
+			
+			//base url
+			private var baseUrlQuery: String = "http://forum.grand-nce.ca/index.php/Special:SociQL";
+			private var baseUrlModel: String = "http://forum.grand-nce.ca/extensions/SociQL/modelService.php";
+			
+			//Old Connection
+			//private var baseUrlQuery: String = "http://hypatia.cs.ualberta.ca/reason/index.php/Special:Queries";
+			//private var baseUrlModel: String = "http://hypatia.cs.ualberta.ca/~dwt/grand_forum_test/extensions/SociQL/modelService.php";
+			
+			public function init():void
+			{
+				if (mx.core.Application.application.parameters.queryUrl != undefined) 
+				{
+					baseUrlQuery = mx.core.Application.application.parameters.queryUrl;
+				}
+				
+				if (mx.core.Application.application.parameters.modelUrl != undefined) 
+				{
+					baseUrlModel = mx.core.Application.application.parameters.modelUrl;
+				}	
+				trace("BASE URL READY");
+			}
+			
+			public function getUrlModel(): String
+			{
+				return baseUrlModel;
+			}
+			
+			public function getUrlQuery(): String
+			{
+				return baseUrlQuery;
+			}
+			
+			public function openActorWindow():void
+            {
+				//prepare the popup
+				actorWindow = ActorWindow(PopUpManager.createPopUp(this, ActorWindow, false));
+				PopUpManager.centerPopUp(actorWindow);
+            }
+            
+            public function openRelationWindow():void
+            {
+				//prepare the popup
+				relationWindow = RelationWindow(PopUpManager.createPopUp(this, RelationWindow, false));
+				PopUpManager.centerPopUp(relationWindow);
+            }
+            
+            public function getGraph():Graph {
+            	return g;
+            }
+            
+            public function addActor(a: Actor):void {
+            	actorList.push(a);
+            }
+            
+            public function addRelation(r: Relation):void {
+            	relationList.push(r);
+            }
+            
+            public function addProperty(p: Property):void {
+            	propertyList.addItem(p);
+            }
+            
+            public function addCondition(c: Condition):void {
+            	conditionList.push(c);
+            }
+            
+            public function getNumConditions() :int {
+            	return conditionList.length;
+            } 
+            
+            public function getCondition(index:int) :Condition {
+            	return conditionList[index];
+            } 
+            
+            public function removeProperty(p: Property):void {
+            	var index:int = propertyList.getItemIndex(p);
+            	propertyList.removeItemAt(index);
+            }
+            
+            public function getActors():Array {
+            	return actorList;
+            }
+            
+            
+            public function getActorsById(id: int):Array {
+            	var tmpArray:Array = new Array();
+            	
+            	for (var i:int=0; i<actorList.length; i++) {
+            		
+            		if (actorList[i].getId() == id) {
+            			tmpArray.push(actorList[i]);
+            		}
+            	}
+            	
+            	return tmpArray;
+            }
+            
+            public function getPropertyById(id: int):Property {
+            	for (var i:int=0; i<propertyList.length; i++) {
+            		
+            		if (propertyList[i].getId() == id) {
+            			return propertyList[i];
+            		}
+            	}
+            	
+            	return null;
+            }
+            
+            public function translateQuery(): void {
+            	var query:String;
+            	
+            	query = "SELECT ";
+            	
+            	for (var i:int=0; i<propertyList.length; i++) {
+            		var tmpProp:Property = Property(propertyList.getItemAt(i));
+            		query += tmpProp.getActorName()+"."+tmpProp.getName();
+            		
+            		if (i<propertyList.length-1) {
+            			query += ", ";
+            		}
+            	}
+            	
+            	query += "\nFROM ";
+            	
+            	for (i=0; i<actorList.length; i++) {
+            		var tmpActor:Actor = Actor(actorList[i]);
+            		query += tmpActor.getName()+" "+tmpActor.getAlias();
+            		
+            		if (i<actorList.length-1) {
+            			query += ", ";
+            		}
+            	}
+            	
+				if(relationList.length>0 || conditionList.length>0)
+				{
+					query += "\nWHERE ";
+					
+					for (i=0; i<relationList.length; i++) {
+						var tmpRel:Relation = Relation(relationList[i]);
+						
+						if (tmpRel.getType() == "relation") {
+							if (tmpRel.getName() != "UNDEF") {
+								query += tmpRel.getName()+"("+tmpRel.getActor1()+","+tmpRel.getActor2()+")";
+							} else {
+								query += tmpRel.getName()+"("+tmpRel.getActor1()+","+tmpRel.getActor2()+","+tmpRel.getSteps()+")";
+							}
+						} else {
+							query += tmpRel.getName()+"("+tmpRel.getActor1()+","+tmpRel.getActor2()+","+
+								tmpRel.getName()+"-"+tmpRel.getActor1()+"-"+tmpRel.getActor2()+")";
+							query += " AND "+tmpRel.getName().replace(/./, "_")+"_"+tmpRel.getActor1()+"_"+tmpRel.getActor2()+tmpRel.getVarOperator();
+							
+							if (tmpRel.getVarType() == "ordinal") {
+								query += tmpRel.getvarValue();
+							} else {
+								query += "'"+tmpRel.getvarValue()+"'";
+							}			
+						}
+						query += " AND ";
+					}
+					
+					for (i=0; i<conditionList.length; i++) {
+						var tmpCond:Condition = Condition(conditionList[i]);
+						query += tmpCond.getProperty().getActorName()+"."+tmpCond.getProperty().getName()+
+							tmpCond.getOperator()
+						
+						if (tmpCond.getValue() != "") {
+							if (tmpCond.getProperty().getType() == "ordinal") {
+								query += tmpCond.getValue();
+							} else {
+								query += "\""+tmpCond.getValue()+"\"";
+							}
+						}
+						else {
+							query += tmpCond.getActorNameValue()+"."+tmpCond.getPropNameValue();
+						}
+						
+						query += " AND ";
+					}
+					query = query.substr(0, query.length-5);
+				}
+            	
+            	txt.text = query;
+            	
+            	var urlRequest:URLRequest = new URLRequest(baseUrlQuery+"?txt_query="+encodeURIComponent(query));
+                navigateToURL(urlRequest, "_blank");
+            }
+            
+		]]>
+	</mx:Script> 
+	
+	<mx:Button click="openActorWindow()" x="29" y="18" label="New Actor"/>
+	<mx:Button click="translateQuery()" x="130" y="18" label="Query"/>
+	<mx:HSlider id="repulsionSlider" x="117" y="53" value="0.5" minimum="0.02" maximum="1.5" change="s.refresh()" liveDragging="true" width="147"/>
+	<mx:Label x="29" y="53" text="Repulsion"/>
+	<mx:Label y="6" text="Visual Query Editor" right="10" fontSize="18"/>
+	
+	
+	<fc:SpringGraph id="s" backgroundColor="#E3DFDF" 
+		lineColor="#6666ff" repulsionFactor="{repulsionSlider.value}" left="10" right="10" top="80" bottom="10" 
+		itemRenderer="ItemView"> 
+	</fc:SpringGraph>
+	<mx:TextArea x="389" y="22" height="81" id="txt" visible="false"/>
+</mx:Application>

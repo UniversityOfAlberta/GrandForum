@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Project Report" reportType="RP_LEADER" pdfType="RPTP_LEADER" pdfFiles="ProjectReportPDF" personId="0" ajax="true" disabled="false">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL"></Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="COPL"></Role>
+    </Permissions>
+    <ReportSection name="Header" type="HeaderReportSection" blobSection="SEC_NONE" pagebreak="false" renderpdf="true">
+        <ReportItem id="report_info_head" type="StaticReportItem">
+            <![CDATA[
+                <div class='logo_div'>
+                    <div class='logo'></div>
+                    <div class='report_name' style='text-align:right;'><b>{$report_name}</b>]]>
+        </ReportItem>
+        <ReportItem id="report_info_head" type="FootnoteReportItem" text="{$project_full_name}">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="report_info_head2" type="StaticReportItem">
+            <![CDATA[<br /><small><b>Generated:</b> {$timestamp}</small></div>
+                    <div class='report_info'><table class='report_info'><tr><td width='100%'></td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="my_progress_head" type="StaticReportItem">
+            <![CDATA[<td><small><table class='progress_table' cellpadding="1" frame="box" rules="all">]]>
+        </ReportItem>
+        <ReportItem id="report_progress" type="ProgressReportItem" reportType="ProjectReport">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="report_pl_progress" type="PLProgressReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="report_pni_progress" type="ProjectNIProgressReportItem">
+            <![CDATA[{$item}</table></small></td></tr>]]>
+        </ReportItem>
+        <ReportItem id="report_info_foot" type="StaticReportItem">
+            <![CDATA[</table></div></div>]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection name="Project Dashboard" blobSection="SEC_NONE" type="HeaderReportSection" renderpdf="true" pagebreak="false">
+        <ReportItem id="project_dashboard_time_bookmark" type="BookmarkReportItem" text="Time and Budget Dashboard">
+            <![CDATA[<div>{$item}</div>]]>
+        </ReportItem>
+        <ReportItem id="project_dashboard_time" type="DashboardReportItem" structure="PROJECT_REPORT_TIME_STRUCTURE" table="true" details="false">
+            <![CDATA[<div>{$item}</div>]]>
+        </ReportItem>
+        <ReportItem id="project_dashboard_prod_bookmark" type="BookmarkReportItem" text="Productivity Dashboard">
+            <![CDATA[<div>{$item}</div>]]>
+        </ReportItem>
+        <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="true" details="false">
+            <![CDATA[<div>{$item}</div>]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection name="Executive Summary: Overview of all of my project's GRAND Activity" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="1" renderpdf="true">
+    <!-- Ia. Overview of Activity -->
+        <ReportItem id="Ia" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OVERALL" type="TextareaReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection name="Assessment: How my project contributes towards the NCE Evaluation Criteria" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="2" renderpdf="true">
+    <!-- IIa. Excellence of the Research Program -->
+        <ReportItem id='IIa_head' type="StaticReportItem">
+            <![CDATA[<h2>A. Excellence of the Research Program: How my research contributes to the Network</h2>]]>
+        </ReportItem>
+        <ReportItem id="IIa" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_EXCELLENCE" type="AutoCompleteTextareaReportItem" set="ProjectProductsReportItemSet" index="product_id" label="product_title" name="Products">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    <!-- IIb. Development of Highly Qualified Personnel -->
+        <ReportItem id='IIa_head' type="StaticReportItem">
+            <![CDATA[<h2>B. Development of Highly Qualified Personnel: My training strategies and achievements</h2>]]>
+        </ReportItem>
+        <ReportItem id="IIb" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_HQPDEV" type="AutoCompleteTextareaReportItem" set="ProjectAllPeopleReportItemSet" index="user_name" label="user_id" name="People">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    <!-- IIc. Networking and Partnerships -->
+        <ReportItem id='IIc_head' type="StaticReportItem">
+            <![CDATA[<h2>C. Networking and Partnerships: My efforts and successes in building linkages</h2>]]>
+        </ReportItem>
+        <ReportItem id="IIc" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETWORKING" type="AutoCompleteTextareaReportItem" set="ProjectAllPeopleReportItemSet" index="user_name" label="user_id" name="People">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    <!-- IId. Knowledge and Technology Exchange and Exploitation -->
+        <ReportItem id='IId_head' type="StaticReportItem">
+            <![CDATA[<h2>D. Knowledge &amp; Technology Exchange &amp; Exploitation: My efforts in disseminating research to receptors</h2>]]>
+        </ReportItem>
+        <ReportItem id="IId" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_KTEE" type="TextareaReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    <!-- IIe. Other Project Outcomes -->
+        <ReportItem id='IIe_head' type="StaticReportItem">
+            <![CDATA[<h2>E. Other Project Outcomes</h2>]]>
+        </ReportItem>
+        <ReportItem id="IIe" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHEROUTCOMES" type="TextareaReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection name="Reflections: Other Aspects of my project's involvement in GRAND" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="3" renderpdf="true">
+    <!-- IIIa. Plans for Next Year -->
+        <ReportItem id='IIIa_head' type="StaticReportItem">
+            <![CDATA[<h2>Proposed Activity: My Plans for {$next_year} in GRAND</h2>]]>
+        </ReportItem>
+        <ReportItem id="IIIa" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="TextareaReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    <!-- IIIb. Benefits from being involved in the Network -->
+        <ReportItem id='IIIb_head' type="StaticReportItem">
+            <![CDATA[<h2>Benefits of Networking: The value to my research program of my participation in GRAND</h2>]]>
+        </ReportItem>
+        <ReportItem id="IIIb" rows="12" limit="600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETBENEFITS" type="TextareaReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    <!-- IIIc. Additional Comments -->
+        <ReportItem id='IIIc_head' type="StaticReportItem">
+            <![CDATA[<h2>Additional Comments</h2>]]>
+        </ReportItem>
+        <ReportItem id="IIIc" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHER" type="TextareaReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection name="Comments" blobSection="LDR_NICOMMENTS" type="EditableReportSection" autosave="true" pagebreak="false" renderpdf="false">
+        <ReportItemSet id="members_noleaders" type="ProjectPeopleNoLeadersReportItemSet" blobIndex="personId">
+            <ReportItemSet id='comment_head' type="ToggleHeaderReportItemSet" level="3" title="{$user_reversed_name} ({$user_roles})">
+                <ReportItem id="" rows="12" limit="600" type="TextareaReportItem" blobType="BLOB_ARRAY" blobItem="LDR_NICOMMENTS_COMMENTS">
+                    <![CDATA[{$item}]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection name="Project Budget" blobSection="LDR_BUDGET" type="EditableReportSection" number="4" renderpdf="true">
+        <ReportItem id="budget" type="ProjectBudgetReportItem" />
+        <ReportItem id="budget_just" rows="10" limit="600" blobType="BLOB_TEXT" blobItem="LDR_BUD_JUST" type="TextareaReportItem">
+            <![CDATA[<h2>Budget Justification</h2> {$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection name="Productivity Details" type="EditableReportSection" pagebreak="true" number="5" renderpdf="true">
+        <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true">
+            <![CDATA[<div id='appendix'>{$item}</div>]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection name="Milestones" blobSection="LDR_MILESTONE" type="ReportSection" pagebreak="false" number="6" renderpdf="true">
+        <ReportItem id="milestone_desc" height="250px" blobType="BLOB_TEXT" blobItem="LDR_MILE_REPORT" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" showNotReferenced="true" anchor="true">
+            <![CDATA[
+                <h2>Milestone Report</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="milestones" type="MilestoneReportItemSet">
+            <ReportItem id="milestone_data" type="StaticReportItem">
+                <![CDATA[
+                    <div>
+                        <h3><a class='anchor' id='milestone_desc_{$milestone_id}'>{$milestone_title}</a></h3>
+                        <table>
+                            <tr><td width='50'><b>Id:</b></td><td align='left'>{$milestone_id}</td></tr>
+                            <tr><td width='50'><b>Status:</b></td><td align='left'>{$milestone_status}</td></tr>
+                            <tr><td width='50'><b>Changes&nbsp;since&nbsp;last&nbsp;year:</b></td><td align='left'>{$milestone_changes}</td></tr>
+                            <tr><td colspan='2'>
+                ]]>
+            </ReportItem>
+            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_oldtitle}" newText="{$milestone_title}">
+                <![CDATA[
+                    <p><b>Title:</b> {$item}</p>
+                ]]>
+            </ReportItem>
+            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_olddescription}" newText="{$milestone_description}">
+                <![CDATA[
+                    <p><b>Description:</b> {$item}</p>
+                ]]>
+            </ReportItem>
+            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_oldassessment}" newText="{$milestone_assessment}">
+                <![CDATA[
+                    <p><b>Assessment:</b> {$item}</p>
+                ]]>
+            </ReportItem>
+            <ReportItem id="milestone_data" type="StaticReportItem">
+                <![CDATA[
+                    </td></tr></table></div>
+                ]]>
+            </ReportItem>
+            
+        </ReportItemSet>
+    </ReportSection>
+</Report>

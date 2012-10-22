@@ -1,0 +1,9 @@
+This extension controls all other Annoki-related extensions (allows
+for enabling and disabling, and manages dependencies between
+extensions).  Handles loading of other Annoki extensions so no other
+changes to LocalSettings.php are needed.
+
+Installation:
+
+Add the following line to LocalSettings.php:
+require_once("$IP/extensions/AnnokiControl/AnnokiControl.php");

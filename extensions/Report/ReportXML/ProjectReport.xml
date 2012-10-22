@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Project Report" reportType="RP_LEADER" pdfType="RPTP_LEADER" pdfFiles="ProjectReportPDF,ProjectReportComments" personId="0" ajax="true" disabled="true">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
+            <SectionPermission id="status" permissions="rw" />
+            <SectionPermission id="dashboard" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="comments" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="COPL">
+            <SectionPermission id="status" permissions="rw" />
+            <SectionPermission id="dashboard" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="comments" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PM">
+            <SectionPermission id="status" permissions="rw" />
+            <SectionPermission id="dashboard" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="comments" permissions="r" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="" />
+        </Role>
+    </Permissions>
+    <ReportSection id="status" name="Report Completion Status" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+                <p>
+                    This page provides an overview of the degree to which your On-Line Report and the On-Line Reports of those whose input you require are complete.
+                </p>
+                <p>
+                    Completion is determined by two factors:
+                    <ol>
+                        <li><b>Number of Fields Complete:</b> A field is considered complete if it is not blank.  In some cases, like the <i>Milestone Comments</i> Section, selecting 'No' will consider the comment for that milestone unessesary to fill out.  Selecting Yes requires a comment though to be considered complete.</li>
+                        <li><b>Average % of characters used:</b> Any textarea which has a recommended limit to the number of characters used, is used in this calculation.  This is the percent of those characters used.  Generally speaking, the higher the percentage the better, however it is up to the discretion of the Supervisor and Project Leader.</li>
+                    </ol>
+                </p>
+            ]]>
+        </Instructions>
+        <ReportItem id="my_progress_head" type="ProgressReportItem" reportType="ProjectReport">
+            <![CDATA[<h3>PL Progress</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">{$item}]]>
+        </ReportItem>
+        <ReportItem id="report_pl_progress" type="PLProgressReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="report_pni_progress" type="ProjectNIProgressReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="progress_head" type="StaticReportItem">
+            <![CDATA[</table><h3>NI Progress</h3>]]>
+        </ReportItem>
+        <ReportItem id="static_pni_progress" type="StaticReportItem">
+            <![CDATA[<style>#ni_completion table tr:first-child td:first-child {display:none;}</style><table id="ni_completion" style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'><tr><th>NI</th><th>Completion Status</th><th>Actions</th></tr>]]>
+        </ReportItem>
+        <ReportItemSet id="people_supervises" type="ProjectPeopleReportItemSet">
+            <ReportItem id="ni_progress" type="ProgressReportItem" reportType="NIReport">
+                <![CDATA[
+                    <tr><td valgin='top'><a href='{$user_url}' target='_blank'><small><b>{$user_reversed_name}</b></small></a></td><td style='white-space:nowrap;padding:0;'><small><table cellpadding="1" frame="void" rules="all" height="95px" width="100%">{$item}</table></small></td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="ni_pdf" type="PDFReportItem" reportType="NIReport" project="false" width="90px">
+                <![CDATA[<td valign='top'>{$item}<br />]]>
+            </ReportItem>
+            <ReportItem id="ni_report" type="SeeReportReportItem" reportType="NIReport" project="true" width="90px">
+                <![CDATA[{$item}<br />]]>
+            </ReportItem>
+            <ReportItem id="ni_notify" type="NotificationReportItem" title="Notify NI" url="Special:Report?report=NIReport" width="90px">
+                <![CDATA[{$item}</td></tr>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="progress_foot" type="StaticReportItem">
+            <![CDATA[</table>]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="dashboard" name="Project Dashboard" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
+        <Instructions>
+            <![CDATA[
+                <p>The Dashboard is designed to provide an overview of the collective activity of researchers on a given project in GRAND. There are two tables: "Time and Budget" and "Productivity".  The data reported in these tables has been input to the Forum through the Individual Reports and the various functionalities of the "Toolbox".</p>
+
+<h3>A. Time and Budget</h3>
+
+<ol>
+<li>The initial three columns identify the researchers on the Project by name, role in GRAND, and Department/University. Note that the 
+Project Leader and Co-Leader are always the first two listed, but the remaining researchers can be ordered by any of the columns.</li>
+<li>The "Hours/Week" column is drawn from that researcher's Individual Report where the time commitment for this project was reported.</li>
+<li>The "Allocated 2011-12" column is drawn from that researcher's revised budget for 2011-12, which indicated the amount of the researcher's overall award for the current year that has been allocated to the project.</li>
+<li>The "Requested 2012-13" column is drawn from that researcher's budget request for 2012-13, which is part of the Individual Report, and which indicates the amount of funding requested by that researcher for this project.</li>
+</ol>
+<h3>B. Productivity</h3>
+<ol>
+<li>The initial two columns identify the researchers on the Project by name and role in GRAND. Note that the Project Leader and Co-Leader are always the first two listed, but the remaining researchers can be ordered by any of the columns.</li>
+<li>The "Partner" column reports for each researcher (a) organizations that have contributed funds to that individual's research, or (b) organizations of individuals with whom that researcher works (e.g., project champions or other partner representatives).</li>
+<li>The "HQP" column reports the number of HQP that the researcher supervised within the reporting period; note that some of the individuals here may be inactive, i.e., they may have graduated or otherwise moved on.</li>
+<li>The "Publications" column reports the number of the researcher's publications, by category, that relate to this project.</li>
+<li>Similarly, the "Artifacts", "Activities" and "Awards" columns report the number of the researcher's artifacts, etc., by category, related to this project.</li>
+<li>Finally, the "Contributions" column reports the amounts that other organizations have contributed to that researcher's GRAND-related activity for this project, whether in cash or the cash-equivalent of in-kind contributions.</li>
+</ol>
+            ]]>
+        </Instructions>
+        <ReportItem id="project_dashboard_time" type="DashboardReportItem" structure="PROJECT_REPORT_TIME_STRUCTURE">
+            <![CDATA[<h3>Time and Budget:</h3><div>{$item}</div>]]>
+        </ReportItem>
+        <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE">
+            <![CDATA[<h3>Productivity:</h3><div>{$item}</div>]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="milestones" name="Project Milestones" blobSection="LDR_MILESTONE" type="EditableReportSection" renderpdf="true" reportCharLimits="false">
+        <Instructions>
+            <![CDATA[
+                <p>
+                    The <b>Milestone Report</b> is to be a report describing the progress of all the Project Milestones which were active at some point during the year.  You should reference a milestone by writing @&lt;Milestone ID&gt; in the text box.  You can also start typing @&lt;Milestone Title&gt;, and a drop-down box will appear below the text box where you can select the milestone you wish to reference.
+                </p>
+                <p>
+                    The Milestones section is designed to gather data regarding progress against project milestones, and to allow for the revision of those milestones and for the addition of new milestones.</p>
+<p>The reporting of individual researchers regarding each of the milestones can be viewed by clicking on "See NI Comments" at the bottom of the field for each applicable milestone.  Each milestone is compared to the state it was in last year.  Red highlighted text means that that word or phrase was removed, while green means that it was added.</p>
+                <p>
+            ]]>
+        </Instructions>
+        <ReportItem id="milestone_desc" width="100%" height="250px" blobType="BLOB_TEXT" blobItem="LDR_MILE_REPORT" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones" showNotReferenced="true" anchor="true">
+            <![CDATA[
+                <h3>Milestone Report</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ni_summary" type="PopupReportItem" title="See NI Comments" text="{$milestone_ni_summaries}">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="edit" type="StaticReportItem">
+            <![CDATA[<h3>Milestones</h3><p>You can edit the project milestones at <a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/{$project_name}:Main'><b>{$project_name}</b></a></p>]]>
+        </ReportItem>
+        <ReportItem id="table_head" type="StaticReportItem">
+            <![CDATA[
+                <table style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'>
+                    <tr>
+                        <th>Milestone</th><th>Last Year/Current Year Diff</th>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="milestones" type="MilestoneReportItemSet">
+            <ReportItem id="milestone_data" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td style='white-space:nowrap;'>
+                            <table>
+                                <tr><td><b>Id:</b></td><td align='left'>{$milestone_id}</td></tr>
+                                <tr><td><b>Status:</b></td><td align='left'>{$milestone_status}</td></tr>
+                                <tr><td style='white-space:nowrap;'><b>Changes:</b></td><td align='left'>{$milestone_changes}</td></tr>
+                            </table>
+                ]]>
+            </ReportItem>
+            <ReportItem id="milestone_history" type="PopupReportItem" title="See Milestone History" url="{$wgServer}{$wgScriptPath}/index.php?action=api.getProjectMilestoneHistory/{$milestone_id}/{$last_year}-12-01" text="Loading...">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+            <ReportItem id="milestone_data" type="StaticReportItem">
+                <![CDATA[
+                    </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_oldtitle}" newText="{$milestone_title}">
+                <![CDATA[
+                    <td><p><b>Title:</b> {$item}</p>
+                ]]>
+            </ReportItem>
+            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_olddescription}" newText="{$milestone_description}">
+                <![CDATA[
+                    <p><b>Description:</b> {$item}</p>
+                ]]>
+            </ReportItem>
+            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_oldassessment}" newText="{$milestone_assessment}">
+                <![CDATA[
+                    <p><b>Assessment:</b> {$item}</p>
+                ]]>
+            </ReportItem>
+            <ReportItem id="milestone_data" type="StaticReportItem">
+                <![CDATA[
+                    </td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="table_foot" type="StaticReportItem">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="report" name="Project Report" blobSection="LDR_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" number="1,2,3">
+        <Instructions>
+            <![CDATA[
+                <h3>I. Executive Summary</h3>
+<h4>Overview of Activity</h4>
+<p>Your task here is to help the RMC members who are evaluating your report understand your project's importance, progress, and the contributions of individual researchers. In writing this summary, you are encouraged to draw from the content provided by the individual PNI and CNI reports, in particular where the researcher has made important contributions to certain aspects of the project, and refer to the impact of your project's main artifacts, e.g., publications, performances, etc., which highlight the achievements of the researchers on your project.</p>
+<p>Please provide a brief narrative overview of the accomplishments of your project over the past year, highlighting the ways in which this project is contributing to the NCE program objectives of connecting research and development to the economic and social well-being of Canada. The executive summary should try to answer the following questions:</p>
+<ol>
+<li>What's the problem in the real world?</li>
+<li>Why is it important and to whom is it important to solve this problem?</li>
+<li>What did you do to address the problem?</li>
+<li>What evidence do you have that your approach is a good one?</li>
+</ol>
+
+<h3>II. NCE Criteria</h3>
+<p>The five NCE criteria used in assessing GRAND and other such networks are described in detail on the NCE site. Note that these are written to describe the evaluation of the overall network, but we seek information from each project that can help build a composite story for progress, success and good management in the area of each criterion. Each of the sections for an individual criterion has the definition of the NCE criterion that is required for the entire GRAND network, and some suggestions of information to be provided about the project to elicit information relevant to the criterion. (Note that "Management of the Network" is not included here since this applies more to the level of individual researchers than to projects as a whole.)</p>
+<p>It is not expected that each project will contribute equally to success against each criterion, but projects with stronger contributions in several of the criteria will receive a more positive evaluation than those without strong contributions in most of the criteria. As such, please provide information on any and all these criteria if relevant and significant.</p>
+<p>The reporting of individual researchers regarding each criterion can be viewed by clicking on "See NI Comments" at the bottom of the field for each applicable criterion.</p>
+
+<h4>A. Excellence of the Research Program</h4>
+<p><i>The Network's research program must be driven to address Canadian needs and problems, and is therefore expected to be multidisciplinary and multi-sectoral.</i></p>
+<ul>
+<li>Describe the excellence of the research on a world scale. How is it leading efforts in other places?</li>
+<li>Describe the ways in which this research is tailored to the Canadian context in terms of topic and content, or in terms of needs of Canadian companies or other receptors.</li>
+<li>Describe the multidisciplinary nature of the work or the research team that gives this work more excellence or potential for impact. Does this enable more multi-sectoral applicability of the results or interactions with receptors?</li>
+</ul>
+
+<h4>B. Development of Highly Qualified Personnel</h4>
+
+<p><i>The training and retention of HQP is imperative to maximize the effectiveness of the Networks' contribution to the wealth, wellness and well being of Canadians. The Training Program proposed by the Network is expected to add value to the formal training initiatives already available through the academic community and should aim at helping students find employment in the Canadian economy (i.e., private sector partners, government, etc.). The multidisciplinary and multi-sectoral nature of a Network should be utilized to provide unique mentorship and training opportunities to maximize HQP retention and integration in all facets of the workforce.</i></p>
+<ul>
+<li>Summarize the numbers of HQP of various categories involved in the project and describe any highlights of their contributions.</li>
+<li>Describe HQP interactions with receptors and industry, including interactions between the project and any "graduated" HQP.</li>
+<li>Describe tech transfer, commercialization and professional activities undertaken by HQP.</li>
+</ul>
+
+<h4>C. Networking and Partnerships</h4>
+<p><i>The Network must demonstrate that it has brought together the key individuals and organizations needed to generate and implement multifaceted solutions to the complex Canadian challenges it is designed to address.</i></p>
+<ul>
+<li>Describe networking with other GRAND projects and researchers outside of GRAND.</li>
+<li>What receptor organizations, industry partners and project champions are associated with the project? Describe their involvement.</li>
+<li>How have these connections accelerated the research and broadened its scope and applicability?</li>
+</ul>
+
+<h4>D. Knowledge and Technology Exchange and Exploitation</h4>
+<p><i>NCE Networks and Centres are expected to generate social and economic benefits by ensuring the rapid flow of ideas and innovations from researchers to Canadian receptors. Applicants are expected to demonstrate that the appropriate activities will be undertaken and the appropriate resources allocated to maximize those benefits.</i></p>
+<ul>
+<li>Describe the interactions with receptors, companies, Project Champions and others in which research challenges and outcomes from the project were discussed or presented.</li>
+<li>Describe any student internships, transfers of technology, unique publications, or other means of impact of the results of this project.</li>
+<li>How has the existence of GRAND, or GRAND personnel, influenced these activities?</li>
+</ul>
+
+<h4>E. Other Project Outcomes</h4>
+<p>Describe other contributions of the project that may not have been adequately captured under the four criteria above.</p>
+
+<h3>III. Supplemental</h3>
+Plans for Next Year
+<ul><li>Tell us what the objectives of your project are for the upcoming year.</li></ul>
+Benefits from being involved in the Network
+<ul><li>In GRAND's reports to the NCE Secretariat, it is helpful to describe ways that the existence of GRAND has benefited researchers and projects. If appropriate, please explain how GRAND has benefited your research or projects.</li></ul>
+            ]]>
+        </Instructions>
+<!-- I. Executive Summary -->
+        <ReportItem id='I_head' type="StaticReportItem">
+            <![CDATA[<h2>I. Executive Summary: Overview of all of my project's GRAND Activity</h2>]]>
+        </ReportItem>
+    <!-- Ia. Overview of Activity -->
+        <ReportItemSet id='Ia_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Overview of Activity">
+            <ReportItem id="Ia" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OVERALL" type="TextareaReportItem">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
+<!-- II. NCE Criteria -->
+        <ReportItem id='II_head' type="StaticReportItem">
+            <![CDATA[<h2>II. Assessment: How my project contributes towards the NCE Evaluation Criteria</h2>]]>
+        </ReportItem>
+    <!-- IIa. Excellence of the Research Program -->
+        <ReportItemSet id='IIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="A. Excellence of the Research Program: How my research contributes to the Network">
+            <ReportItem id="IIa" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_EXCELLENCE" type="TextareaReportItem" set="ProjectProductsReportItemSet" index="product_id" label="product_title" name="Products">
+                <![CDATA[{$item}<br />]]>
+            </ReportItem>
+            <ReportItem id="IIa_comments" type="PopupReportItem" title="See NI Comments" text="{$report_excellence_ni_comments}">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
+    <!-- IIb. Development of Highly Qualified Personnel -->
+        <ReportItemSet id='IIb_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="B. Development of Highly Qualified Personnel: My training strategies and achievements">
+            <ReportItem id="IIb" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_HQPDEV" type="TextareaReportItem" set="ProjectAllPeopleReportItemSet" index="user_name" label="user_id" name="People">
+                <![CDATA[{$item}<br />]]>
+            </ReportItem>
+            <ReportItem id="IIb_comments" type="PopupReportItem" title="See NI Comments" text="{$report_hqpdev_ni_comments}">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
+    <!-- IIc. Networking and Partnerships -->
+        <ReportItemSet id='IIc_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="C. Networking and Partnerships: My efforts and successes in building linkages">
+            <ReportItem id="IIc" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETWORKING" type="TextareaReportItem" set="ProjectAllPeopleReportItemSet" index="user_name" label="user_id" name="{$project_name} Members">
+                <![CDATA[{$item}<br />]]>
+            </ReportItem>
+            <ReportItem id="IIc_comments" type="PopupReportItem" title="See NI Comments" text="{$report_networking_ni_comments}">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
+    <!-- IId. Knowledge and Technology Exchange and Exploitation -->
+        <ReportItemSet id='IId_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="D. Knowledge &amp; Technology Exchange &amp; Exploitation: My efforts in disseminating research to receptors">
+            <ReportItem id="IId" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_KTEE" type="TextareaReportItem">
+                <![CDATA[{$item}<br />]]>
+            </ReportItem>
+            <ReportItem id="IId_comments" type="PopupReportItem" title="See NI Comments" text="{$report_ktee_ni_comments}">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
+    <!-- IIe. Other Project Outcomes -->
+        <ReportItemSet id='IIe_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="E. Other Project Outcomes">
+            <ReportItem id="IIe" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHEROUTCOMES" type="TextareaReportItem">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
+<!-- III. Supplemental -->
+        <ReportItem id='III_head' type="StaticReportItem">
+            <![CDATA[<h2>III. Reflections: Other Aspects of my project's involvement in GRAND</h2>]]>
+        </ReportItem>
+    <!-- IIIa. Plans for Next Year -->
+        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Proposed Activity: My Plans for {$next_year} in GRAND">
+            <ReportItem id="IIIa" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="TextareaReportItem">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
+    <!-- IIIb. Benefits from being involved in the Network -->
+        <ReportItemSet id='IIIb_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Benefits of Networking: The value to my research program of my participation in GRAND">
+            <ReportItem id="IIIb" rows="12" width="100%" limit="600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETBENEFITS" type="TextareaReportItem">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
+    <!-- IIIc. Additional Comments -->
+        <ReportItemSet id='IIIc_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Additional Comments">
+            <ReportItem id="IIIc" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHER" type="TextareaReportItem">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="comments" name="Comments" blobSection="LDR_NICOMMENTS" type="EditableReportSection" autosave="true" renderpdf="false" reportCharLimits="false">
+        <Instructions>
+            <![CDATA[
+                <p>In this section, the Project Leader and/or Co-Leader can provide comments on the contributions of individual NIs who are involved in the project. Clicking on the name of the researcher will open a text box. These comments are not reviewed by the RMC as part of the Project Report, however the comments here will be included as part of the Individual Network-Investigator Reports as part of the evaluation of individual researchers.</p>
+            ]]>
+        </Instructions>
+        <ReportItemSet id="members_noleaders" type="ProjectPeopleNoLeadersReportItemSet" blobIndex="personId">
+            <ReportItemSet id='comment_head' type="ToggleHeaderReportItemSet" changeColor="true" level="3" title="{$user_reversed_name} ({$user_roles})">
+                <ReportItem id="" rows="12" width="100%" limit="600" type="TextareaReportItem" blobType="BLOB_ARRAY" blobItem="LDR_NICOMMENTS_COMMENTS">
+                    <![CDATA[{$item}]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="budget" name="Project Budget" blobSection="LDR_BUDGET" type="EditableReportSection" autosave="true" renderpdf="true">
+        <Instructions>
+            <![CDATA[
+                <p>This section includes a roll-up of the Budget Request for this project from each of the listed researchers.</p>
+<p>Under "Budget Justification", there is a text field to allow for a brief comment on the overall budget request for this project.</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="budget_just" rows="10" width="100%" limit="600" blobType="BLOB_TEXT" blobItem="LDR_BUD_JUST" type="TextareaReportItem">
+            <![CDATA[<h3>Budget Justification</h3> {$item}</p>]]>
+        </ReportItem>
+        <ReportItem id="budget" type="ProjectBudgetReportItem" />
+    </ReportSection>
+    <ReportSection id="review" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+                    This section will provide an approximation of what the resulting PDF document will look like.
+            ]]>
+        </Instructions>
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+                    To submit your report, please follow the following three steps.<br />
+                    <p><b>1. Generate a new report for submission</b></p>
+                    <p><b>2. Download the report submitted for reviewing</b></p>
+                    <p><b>3. Submit the report</b><br />
+                        You can submit your report for evaluation. Make sure you review it before submitting.
+Please note:
+                        <ul>
+                            <li>If you need to make a correction to your report that is already submitted, you can generate and submit again</li>
+                            <li>The most recently generated pdf is used for evaluation</li>
+                            <li>If you encounter any issues, please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a></li>
+                        </ul>
+                    </p>
+            ]]>
+        </Instructions>
+        <ReportItem id="my_progress_head" type="ProgressReportItem" reportType="ProjectReport">
+            <![CDATA[<h3>Report Completion Status</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">{$item}]]>
+        </ReportItem>
+        <ReportItem id="report_pl_progress" type="PLProgressReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="report_pni_progress" type="ProjectNIProgressReportItem">
+            <![CDATA[{$item}</table>]]>
+        </ReportItem>
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
+    </ReportSection>
+</Report>
