@@ -574,7 +574,7 @@ abstract class AbstractReport extends SpecialPage {
             }
             $section->renderTab();
         }
-        $wgOut->addHTML("<div id='autosaveDiv'><span style='float:left;width:100%;text-align:left'><span style='float:right;' id='autosaveSpan'></span></span></div>
+        $wgOut->addHTML("<div id='autosaveDiv'><span style='float:left;width:100%;text-align:left'><span style='float:right;' class='autosaveSpan'></span></span></div>
                             <div id='optionsDiv'>");
         $this->renderOptions();
         $this->renderBackup();                 
@@ -593,7 +593,7 @@ abstract class AbstractReport extends SpecialPage {
                             </div></div></div>\n");
         $wgOut->addHTML("</div>\n");
         $wgOut->addHTML("<script type='text/javascript'>
-            autosaveDiv = $('#autosaveSpan');
+            autosaveDiv = $('.autosaveSpan');
         </script>");
     }
     

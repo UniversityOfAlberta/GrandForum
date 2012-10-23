@@ -15,7 +15,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		            var errors = $('#reportBody .inlineError').length + $('#reportBody .inlineWarning').length;
 		            
 		            if(errors > 0){
-		                $('#reportBody').append(\"<div id='reportErrors' style='display:none;' title='Report Errors'>There are errors in your report.  Are you sure you want to submit?</div>\");
+		                $('#reportBody').append(\"<div id='reportErrors' style='display:none;' title='Report Errors'>There were warnings and/or errors in your Report. Do you still want to submit it?</div>\");
 		            }
 		            
 		            $('#submitCheck').change(function(){

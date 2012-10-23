@@ -11,10 +11,12 @@ function Autosave(value){
         $(value).html("<div id='" + $(this.value).attr("id") + "auto' style='color:#222222;text-shadow:1px 1px 0px #FFFFFF;padding:5px;background:#EADDED;border:1px solid #AAAAAA;display:none; right:25px;position:absolute;'><b>Saving</b></div>" + $(value).html());
     }
     else{
-        $(autosaveDiv).html("<div id='" + $(this.value).attr("id") + "auto' style='color:#222222;text-shadow:1px 1px 0px #FFFFFF;padding:5px;background:#EADDED;border:1px solid #AAAAAA;display:none;'><b>Saving</b></div>");
+        $.each($(autosaveDiv), function(index, val){
+            $(val).html("<div class='" + $(this.value).attr("id") + "auto' style='color:#222222;text-shadow:1px 1px 0px #FFFFFF;padding:5px;background:#EADDED;border:1px solid #AAAAAA;display:none;'><b>Saving</b></div>");
+        });
     }
     this.value = value;
-    this.auto = $("#" + $(this.value).attr("id") + "auto");
+    this.auto = $("." + $(this.value).attr("id") + "auto");
     this.isAutoSave = true;
     var obj = this;
     
