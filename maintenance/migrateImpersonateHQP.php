@@ -3,16 +3,16 @@ require_once('commandLine.inc');
 
 $totalQueries = 9;
 $queriesSoFar = 0;
-
+global $wgDBname;
 // PDF Table
-$data = DBFunctions::execSQL("select * from information_schema.columns where table_name = 'mw_pdf_report' and column_name = 'submission_user_id'");
+$data = DBFunctions::execSQL("select * from information_schema.columns where table_name = 'mw_pdf_report' and column_name = 'submission_user_id' and table_schema = '$wgDBname'");
 
 if(count($data) > 0){
     DBFunctions::execSQL("ALTER TABLE `mw_pdf_report`
                             DROP `submission_user_id`", true);
 }
 show_status(++$queriesSoFar, $totalQueries);
-$data = DBFunctions::execSQL("select * from information_schema.columns where table_name = 'mw_pdf_report' and column_name = 'generation_user_id'");
+$data = DBFunctions::execSQL("select * from information_schema.columns where table_name = 'mw_pdf_report' and column_name = 'generation_user_id' and table_schema = '$wgDBname'");
 
 if(count($data) > 0){
     DBFunctions::execSQL("ALTER TABLE `mw_pdf_report`
@@ -33,7 +33,7 @@ DBFunctions::execSQL("UPDATE `mw_pdf_report`
 show_status(++$queriesSoFar, $totalQueries);
 
 // Blob Table
-$data = DBFunctions::execSQL("select * from information_schema.columns where table_name = 'grand_report_blobs' and column_name = 'edited_by'");
+$data = DBFunctions::execSQL("select * from information_schema.columns where table_name = 'grand_report_blobs' and column_name = 'edited_by' and table_schema = '$wgDBname'");
 
 if(count($data) > 0){
     DBFunctions::execSQL("ALTER TABLE `grand_report_blobs`
