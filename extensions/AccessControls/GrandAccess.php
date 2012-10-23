@@ -6,6 +6,10 @@ class GrandAccess {
         global $wgRoleValues;
 	    $me = Person::newFromId($user->getId());
 	    $i = 1000;
+	    $oldRights = $aRights;
+	    foreach($oldRights as $right){
+	        $aRights[$i++] = $right;
+	    }
 	    if(count($me->getProjects()) > 0){
 	        foreach($me->getProjects() as $project){
 	            $aRights[$i++] = $project->getName();

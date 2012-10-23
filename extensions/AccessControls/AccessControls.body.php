@@ -222,14 +222,15 @@ function onUserCan(&$title, &$user, $action, &$result) {
             $result = false;
             return false;
         }
+        
       }
-	  if ($uploadNS && $uploadNS !== null){
+	  if ($uploadNS && ($uploadNS !== null || $uploadNS == false)){
 	    if (!AnnokiNamespaces::canUserAccessNamespace($user, $uploadNS)){
 	      $result = false;
 	      return false;
 	    }
 	  }
-	  else if($uploadNS === null){
+	  else if($uploadNS === null || $uploadNS == false){
 	    $result = true;
 	    return true;
 	  }

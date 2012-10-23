@@ -458,6 +458,7 @@ class UploadForm {
 			$resultDetails = array( 'permissionserrors' => $permErrors );
 			return self::PROTECTED_PAGE;
 		}
+		
 
 		/**
 		 * In some cases we may forbid overwriting of existing files.
