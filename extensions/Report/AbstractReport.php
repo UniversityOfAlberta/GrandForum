@@ -136,8 +136,10 @@ abstract class AbstractReport extends SpecialPage {
             if(isset($_POST['loadBackup']) && !$this->readOnly){
                 $status = $parser->loadBackup();
                 if($status){
+                    $parser->parse();
                     setcookie('showSuccess', 'true', time()+(60), '/');
                     header("Location: {$wgServer}{$_SERVER["REQUEST_URI"]}");
+                    exit;
                 }
             }
             $parser->parse();

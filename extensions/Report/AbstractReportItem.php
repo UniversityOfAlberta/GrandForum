@@ -239,6 +239,7 @@ abstract class AbstractReportItem {
             case BLOB_TEXT:
             case BLOB_WIKI:
             case BLOB_HTML:
+                $value = str_replace("\00", "", $value); // Fixes problem with the xml backup putting in random null escape sequences
                 if(is_string($value)){
                     $blob->store(trim($value), $blob_address);
                 }
@@ -255,6 +256,7 @@ abstract class AbstractReportItem {
                     }
                     $parent = $parent->getParent();
                 }
+                $value = str_replace("\00", "", $value); // Fixes problem with the xml backup putting in random null escape sequences
                 eval("\$blob_data$accessStr = \$value;");
                 $blob->store($blob_data, $blob_address);
                 break;
