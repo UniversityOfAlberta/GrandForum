@@ -109,9 +109,9 @@ class Paper{
 	            $sql .= "\nAND projects LIKE '%$project%'";
             }
             if($category != "all"){
-                if($project != "all"){
-                    $sql .= "\nAND ";
-                }
+                //if($project != "all"){
+                //    $sql .= "\nAND ";
+                //}
                 $sql .= "AND category = '$category'";
             }
             $sql .= "\nORDER BY `type`, `title`";
