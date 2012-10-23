@@ -9,7 +9,7 @@ $wgHooks['SkinTemplateContentActions'][] = array($publicationPage, 'removeTabs')
 $publicationTypes = array("Proceedings Paper" => "an article written for submission to a workshop, symposium, or conference",
                           "Collections Paper" => "an article written as part of a collection in a specified subject area",
                           "Journal Paper" => "an article written for submission to a periodical in a specified subject area", 
-                          "Journal Abstract" => "",
+                          "Journal Abstract" => "the summary abstract of a longer journal paper",
                           "Book" => "a published monograph of non-trivial length in a specified subject area",
                           "Edited Book" => "a compilation of chapters written by specialists",
                           "Book Chapter" => "a chapter written as part of a book",
@@ -73,6 +73,7 @@ $optionDefs = array("Address" => "the city, country of the publisher",
                     "Event Location" => "the city, country where the event took place",
                     "How Published" => "the form of publication (text, video, etc.)",
                     "ISBN" => "International Standard Book Number",
+                    "ISSN" => "International Standard Serial Number",
                     "Journal Title" => "the name of the journal in which the item appears",
                     "Magazine/Newspaper Title" => "the name of the publication in which this item appears",
                     "Number" => "the issue number of the journal in which this article appears",
@@ -337,7 +338,7 @@ class PublicationPage {
                                         addAttr("URL");
                                         break;
                                     case "Journal Paper":
-                                        addAttr("Journal Title");
+                                        addAttrDefn('.$this->get_defn("Journal Title").');
                                         addAttrDefn('.$this->get_defn("Volume").');
                                         addAttrDefn('.$this->get_defn("Number").');
                                         addAttrDefn('.$this->get_defn("Pages").');
@@ -348,11 +349,11 @@ class PublicationPage {
                                         addAttr("URL");
                                         break;
                                     case "Journal Abstract":
-                                        addAttr("Journal Title");
-                                        addAttr("Volume");
-                                        addAttr("Number");
-                                        addAttr("Pages");
-                                        addAttr("Publisher");
+                                        addAttrDefn('.$this->get_defn("Journal Title").');
+                                        addAttrDefn('.$this->get_defn("Volume").');
+                                        addAttrDefn('.$this->get_defn("Number").');
+                                        addAttrDefn('.$this->get_defn("Pages").');
+                                        addAttrDefn('.$this->get_defn("Publisher").');
                                         addAttr("ISBN");
                                         addAttr("ISSN");
                                         addAttr("DOI");
@@ -362,7 +363,6 @@ class PublicationPage {
                                         addAttrDefn('.$this->get_defn("Event Location").');
                                         addAttrDefn('.$this->get_defn("Pages").');
                                         addAttrDefn('.$this->get_defn("Publisher").');
-                                        addAttr("Publisher");
                                         addAttr("ISBN");
                                         addAttr("ISSN");
                                         addAttr("DOI");
@@ -407,7 +407,6 @@ class PublicationPage {
                                         addAttrDefn('.$this->get_defn("Event Location").');
                                         addAttrDefn('.$this->get_defn("Pages").');
                                         addAttrDefn('.$this->get_defn("Publisher").');
-                                        addAttr("Publisher");
                                         addAttr("ISBN");
                                         addAttr("ISSN");
                                         addAttr("DOI");
@@ -441,8 +440,6 @@ class PublicationPage {
                                         addAttrDefn('.$this->get_defn("Venue").');
                                         addAttrDefn('.$this->get_defn("How Published").');
                                         addAttrDefn('.$this->get_defn("Note").');
-                                        addAttr("How Published");
-                                        addAttr("Note");
                                         addAttr("ISBN");
                                         addAttr("ISSN");
                                         addAttr("DOI");
@@ -717,6 +714,9 @@ class PublicationPage {
                     $data = $paper->getData();
                     if(!isset($data['isbn'])){
                         $this->addAttrRow("ISBN","");
+                    }
+                    if(!isset($data['issn'])){
+                        $this->addAttrRow("ISSN","");
                     }
                     if(!isset($data['doi'])){
                         $this->addAttrRow("DOI","");
