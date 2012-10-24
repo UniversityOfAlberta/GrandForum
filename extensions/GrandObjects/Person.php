@@ -830,12 +830,11 @@ class Person{
                 WHERE user = '{$this->id}'
                 AND ( 
                 ( (end_date != '0000-00-00 00:00:00') AND
-                ( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' )) 
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' )))
                 OR
                 ( (end_date = '0000-00-00 00:00:00') AND
-                ( start_date BETWEEN '$startRange' AND '$endRange' ) || ( start_date <= '$startRange' ))
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( start_date <= '$startRange' )))
                 )";
-
         $data = DBFunctions::execSQL($sql);
 		$roles = array();
 		foreach($data as $row){
@@ -1222,6 +1221,31 @@ class Person{
 		}
         $this->hqps = $hqps;
 		return $this->hqps;
+    }
+    
+    function getChampionsDuring($startRange = false, $endRange = false){
+        if($startRange === false || $endRange === false ){
+            $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
+            $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+        }
+        $champions = array();
+        $relations = $this->getRelations(WORKS_WITH, true);
+        foreach($relations as $relation){
+            $start = $relation->getStartDate();
+            $end = $relation->getEndDate();
+            if((strcmp($end, $startRange) >= 0 && strcmp($end, $endRange) <= 0 && strcmp($end, "0000-00-00 00:00:00") != 0) ||
+                (strcmp($start, $startRange) >= 0 && (strcmp($end, $endRange) >= 0 || strcmp($end, "0000-00-00 00:00:00") == 0))){
+                $user1 = $relation->getUser1();
+                $user2 = $relation->getUser2();
+                if($user1->getId() != $this->id && $user1->isRoleDuring(CHAMP, $startRange, $endRange)){
+                    $champions[] = $user1;
+                }
+                else if($user2->getId() != $this->id && $user2->isRoleDuring(CHAMP, $startRange, $endRange)){
+                    $champions[] = $user2;
+                }
+            }
+        }
+        return $champions;
     }
     
     function getHQPDuring($startRange = false, $endRange = false){

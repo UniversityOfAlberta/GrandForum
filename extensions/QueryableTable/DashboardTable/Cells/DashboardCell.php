@@ -19,7 +19,7 @@ abstract class DashboardCell extends Cell {
         $types = array();
         $simples = array();
         foreach($values as $type => $value){
-            $types[] = $type.';'.implode(';', $value);
+            @$types[] = $type.';'.implode(';', $value);
             $simples[] = $this->simpleDashboardRow($type);
         }
         $this->value = implode("\n", $simples);

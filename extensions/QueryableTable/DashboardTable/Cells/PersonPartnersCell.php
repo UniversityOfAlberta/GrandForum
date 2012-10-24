@@ -3,7 +3,7 @@
 class PersonPartnersCell extends DashboardCell {
     
     function PersonPartnersCell($cellType, $params, $cellValue, $rowN, $colN, $table){
-        $this->label = "Partners";
+        $this->label = "Partners/Champions";
         $start = "0000";
         $end = "2100";
         if(count($params) == 1){
@@ -29,8 +29,14 @@ class PersonPartnersCell extends DashboardCell {
                 foreach($contributions as $contribution){
                     if($contribution->belongsToProject($project) && $contribution->getYear() >= $start && $contribution->getYear() <= $end){
                         foreach($contribution->getPartners() as $partner){
-                            $values['All'][$partner->getId()] = $partner->getId();
+                            $values['Partner'][] = array('type' => 'Partner', 'id' => $partner->getId());
                         }
+                    }
+                }
+                $champions = $person->getChampionsDuring($start.REPORTING_CYCLE_START_MONTH, $end.REPORTING_CYCLE_END_MONTH);
+                foreach($champions as $champ){
+                    if($champ->isMemberOfDuring($project, $start, $end)){
+                        $values['Champion'][] = array('type' => 'Champion', 'id' => $champ->getId());
                     }
                 }
                 $this->setValues($values);
@@ -43,9 +49,13 @@ class PersonPartnersCell extends DashboardCell {
             foreach($contributions as $contribution){
                 if($contribution->getYear() >= $start && $contribution->getYear() <= $end){
                     foreach($contribution->getPartners() as $partner){
-                        $values['All'][$partner->getId()] = $partner->getId();
+                        $values['All'][] = array('type' => 'Partner', 'id' => $partner->getId());
                     }
                 }
+            }
+            $champions = $person->getChampionsDuring($start.REPORTING_CYCLE_START_MONTH, $end.REPORTING_CYCLE_END_MONTH);
+            foreach($champions as $champ){
+                $values['All'][] = array('type' => 'Champion', 'id' => $champ->getId());
             }
             $this->setValues($values);
         }
@@ -60,13 +70,21 @@ class PersonPartnersCell extends DashboardCell {
     }
     
     function getHeaders(){
-        return array("Organization");
+        return array("Type", "Name");
     }
     
     function detailsRow($item){
         global $wgServer, $wgScriptPath;
-        $partner = Partner::newFromId($item);
-        $details = "<td>{$partner->getOrganization()}</td>";
+        $details = "<td></td><td></td>";
+        $type = $item['type'];
+        if($type == "Partner"){
+            $partner = Partner::newFromId($item['id']);
+            $details = "<td>Partner<span class='pdfOnly'><br /></span></td><td>{$partner->getOrganization()}</td>";
+        }
+        else if($type == "Champion"){
+            $champion = Person::newFromId($item['id']);
+            $details = "<td>Champion<span class='pdfOnly'><br /></span></td><td>{$champion->getName()}</td>";
+        }
         return $details;
     }
 }

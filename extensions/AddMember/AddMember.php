@@ -215,9 +215,12 @@ class AddMember extends SpecialPage{
 						<td class='mw-label'><label for='wpType'>User Roles:</label></td>
 						<td class='mw-input'>");
         foreach($wgRoles as $role){
-            if($user->isRoleAtLeast($role)){
+            if($user->isRoleAtLeast($role) && $role != CHAMP){
                 $wgOut->addHTML("&nbsp;<input type='checkbox' name='wpUserType[]' value='$role' />$role<br />\n");
             }
+        }
+        if($user->isRoleAtLeast(CNI)){
+            $wgOut->addHTML("&nbsp;<input type='checkbox' name='wpUserType[]' value='".CHAMP."' />".CHAMP."<br />\n");
         }
 		$wgOut->addHTML("</td>
 					</tr>

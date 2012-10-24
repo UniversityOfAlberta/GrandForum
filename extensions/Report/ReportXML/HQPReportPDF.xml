@@ -104,7 +104,7 @@
     </ReportSection>
     <ReportSection name="Productivity Details" blobSection="SEC_NONE" type="ReportSection" number="2" pagebreak="false" renderpdf="true">
         <ReportItem id="hqp_dashboard_productivity" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true">
-            <![CDATA[<div>{$item}</div>]]>
+            <![CDATA[If there is an error in any of the information reported in the dashboard, please edit the corresponding element through the appropriate tool. If the error is in a system-controlled field, please contact support.<br /><br /><div>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
     <ReportSection name="Milestone Comments" blobSection="HQP_MILESTONES" type="EditableReportSection" autosave="true" renderpdf="true" previewonly="true">

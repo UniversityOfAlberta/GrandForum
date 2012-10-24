@@ -173,7 +173,7 @@
     </ReportSection>
     <ReportSection name="Productivity Details" blobSection="SEC_NONE" type="ReportSection" number="6" pagebreak="false" renderpdf="true">
         <ReportItem id="ni_dashboard_productivity" type="DashboardReportItem" structure="NI_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
-            <![CDATA[<div>{$item}</div>]]>
+            <![CDATA[If there is an error in any of the information reported in the dashboard, please edit the corresponding element through the appropriate tool. If the error is in a system-controlled field, please contact support.<br /><br /><div>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
     <ReportSection name="Milestone Comments" blobSection="RES_MILESTONES" type="EditableReportSection" autosave="true" number="7" pagebreak="false" renderpdf="true" previewonly="true">

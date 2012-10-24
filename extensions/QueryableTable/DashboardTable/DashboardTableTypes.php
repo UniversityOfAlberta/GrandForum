@@ -117,7 +117,7 @@ $dashboardStructures[NI_PUBLIC_PROFILE_STRUCTURE] =
     );
     
 $dashboardStructures[NI_PRIVATE_PROFILE_STRUCTURE] =
-    array(array(HEAD."(Projects)", HEAD."(Partners)", HEAD."(HQP)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Contributions)"),
+    array(array(HEAD."(Projects)", HEAD."(Partners/Champions)", HEAD."(HQP)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Contributions)"),
     array(HEAD.'(Total:)', PERSON_PARTNERS, PERSON_HQP, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS, PERSON_CONTRIBUTIONS),
           STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY) => array(PERSON_PROJECTS,
                                                           PERSON_PARTNERS, 
@@ -133,7 +133,7 @@ $dashboardStructures[NI_PRIVATE_PROFILE_STRUCTURE] =
     );
     
 $dashboardStructures[NI_REPORT_STRUCTURE] =
-    array(array(HEAD."(Projects)", HEAD."(HQP)", HEAD."(Partners)", HEAD."(Hours/Week)", HEAD."(Allocated:<br />".(REPORTING_YEAR)." - ".(REPORTING_YEAR+1).")", HEAD."(Requested:<br />".(REPORTING_YEAR+1)." - ".(REPORTING_YEAR+2).")"),
+    array(array(HEAD."(Projects)", HEAD."(HQP)", HEAD."(Partners/Champions)", HEAD."(Hours/Week)", HEAD."(Allocated:<br />".(REPORTING_YEAR)." - ".(REPORTING_YEAR+1).")", HEAD."(Requested:<br />".(REPORTING_YEAR+1)." - ".(REPORTING_YEAR+2).")"),
     array(HEAD.'(Total:)',
           STRUCT(PERSON_HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
           STRUCT(PERSON_PARTNERS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
