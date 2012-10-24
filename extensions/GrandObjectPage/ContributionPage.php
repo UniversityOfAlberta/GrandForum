@@ -503,10 +503,12 @@ class ContributionPage {
                             $i++;
                         }
                         $wgOut->addHTML("</table>");
-                        foreach($projects as $project){
-	                        // Add any deleted projects so that they remain as part of this project
-	                        if($project->deleted){
-	                            $wgOut->addHTML("<input style='display:none;' type='checkbox' name='projects[]' value='{$project->getName()}' checked='checked' />");
+                        if(count($projects) > 0){
+                            foreach($projects as $project){
+	                            // Add any deleted projects so that they remain as part of this project
+	                            if($project->deleted){
+	                                $wgOut->addHTML("<input style='display:none;' type='checkbox' name='projects[]' value='{$project->getName()}' checked='checked' />");
+	                            }
 	                        }
 	                    }
                     }
