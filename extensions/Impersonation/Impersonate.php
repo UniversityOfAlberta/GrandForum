@@ -71,7 +71,31 @@ function impersonate(){
         $realPerson = Person::newFromId($wgUser->getId());
         $wgRealUser = $wgUser;
         $wgImpersonating = true;
+        $isSupervisor = false;
+        $showReadOnly = true;
+        $pageAllowed = false;
         $wgUser = User::newFromId($person->getId());
+        
+        if($person->isRoleDuring(HQP)){
+            $hqps = $realPerson->getHQPDuring();
+            foreach($hqps as $hqp){
+                if($hqp->getId() == $person->getId()){
+                    if(("$ns:$title" == "Special:Report" &&
+                       @$_GET['report'] == "HQPReport") || ("$ns:$title" == "Special:ReportArchive" && checkSupervisesImpersonee())){
+                        $pageAllowed = true;
+                        $isSupervisor = true;
+                        $showReadOnly = false;
+                    }
+                    break;
+                }
+            }
+        }
+        
+        $readOnly = "";
+        if($showReadOnly){
+            $readOnly = " in read-only mode";
+        }
+        
         if(!isset($_GET['nocookie'])){
             if(strstr($page, "?") !== false){
                 $stopImpersonating = "&stopImpersonating";
@@ -83,14 +107,16 @@ function impersonate(){
                 $impersonate = "?impersonate={$person->getName()}";
                 $renewSession = "?renewSession";
             }
-            $wgMessage->addInfo("<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a> in read-only mode.  This session will expire in ".ceil($time/(60))." minutes.<br />
+            $wgMessage->addInfo("<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>$readOnly.  This session will expire in ".ceil($time/(60))." minutes.<br />
                                 <a href='{$wgServer}{$page}{$renewSession}'>Renew My Session as {$person->getNameForForms()}</a> | <a href='{$wgServer}{$page}{$stopImpersonating}'>Stop Impersonating and Resume as {$realPerson->getNameForForms()}</a>");
         }
         else{
-            $wgMessage->addInfo("<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a> in read-only mode.  This session will expire once you navigate away from this page");
+            $wgMessage->addInfo("<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>$readOnly.  This session will expire once you navigate away from this page");
+        }
+        if($isSupervisor){
+            $wgMessage->addInfo("As a supervisor, you are able to edit, generate and submit the report of your HQP.  The user who edits, generates and submits the report is recorded.");
         }
         
-        $pageAllowed = false;
         if($realPerson->isRoleAtLeast(MANAGER)){
             $pageAllowed = true;
         }
@@ -105,19 +131,6 @@ function impersonate(){
                            @$_GET['project'] == $proj->getName()){
                             $pageAllowed = true;
                         }
-                    }
-                }
-            }
-            if($person->isRoleDuring(HQP)){
-                $hqps = $realPerson->getHQPDuring();
-                foreach($hqps as $hqp){
-                    if($hqp->getId() == $person->getId()){
-                        if(("$ns:$title" == "Special:Report" &&
-                           @$_GET['report'] == "HQPReport") || ("$ns:$title" == "Special:ReportArchive" && checkSupervisesImpersonee())){
-                            $pageAllowed = true;
-                            $wgMessage->addInfo("As a supervisor, you are able to edit, generate and submit the report of your HQP.  The user who edits, generates and submits the report is recorded.");
-                        }
-                        break;
                     }
                 }
             }
