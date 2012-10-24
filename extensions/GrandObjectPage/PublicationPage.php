@@ -139,6 +139,18 @@ class PublicationPage {
             
             if(($name == "Activity" || $name == "Press" || $name == "Award" || $name == "Publication" || $name == "Artifact" || $name == "Presentation") && 
                (($paper->getTitle() != null && $paper->getCategory() == $name) || $create)){
+               if(!$me->isRoleAtLeast(INACTIVE) && 
+                  ($paper->getCategory() != "Publication" || 
+                   ($paper->getCategory() == "Publication" && $paper->getStatus() != "Published"))){ // Check that the user is logged in
+                    $wgOut->clearHTML();
+                        
+                    $wgOut->setPageTitle("Permission error");
+                    $wgOut->addHTML("You must be logged in to view this page.");
+                    
+                    $wgOut->output();
+                    $wgOut->disable();
+                    return;
+                }
                 $category = $name;
                 $authorTitle = self::getAuthorTitle($category);
                 if($post){
