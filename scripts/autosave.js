@@ -29,13 +29,13 @@ function Autosave(value){
         this.auto.stop();
         this.auto.css("opacity", 100);
         this.auto.css("display", "inline");
-        $('#submit_throbber').css('display', 'inline-block');
+        //$('#submit_throbber').css('display', 'inline-block');
         this.auto.html("<b>Saving</b>&nbsp;<img width='16' height='16' src='../skins/Throbber.gif' />");
         if(dataStr == lastSaveString){
             obj.auto.html("<b>Saved</b>");
             obj.auto.fadeOut(2500);
             $(button).removeAttr('disabled');
-            $('#submit_throbber').css('display', 'none');
+            //$('#submit_throbber').css('display', 'none');
             if(fn != null){
                 fn();
             }
