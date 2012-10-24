@@ -132,7 +132,10 @@ class BudgetReportItem extends AbstractReportItem {
 		echo "      </div>
 		        </body>
 		        <script type='text/javascript'>
-		            load_page();
+		            $(document).ready(function(){
+		                load_page();
+		                setTimeout(load_page, 200);
+		            });
 		        </script>
 	          </html>";
 	    exit;
