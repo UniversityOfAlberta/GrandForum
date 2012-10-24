@@ -16,7 +16,9 @@ $wgHooks['UnknownAction'][] = 'handleDuplicates';
 
 function handleDuplicates($action, $request){
     global $wgServer, $wgScriptPath;
-    if($action == 'handleDuplicates'){
+    if($action == 'getDuplicates' ||
+       $action == 'deleteDuplicates' ||
+       $action == 'ignoreDuplicates'){
         foreach(AbstractDuplicatesHandler::$handlers as $handler){
             if($_GET['handler'] == $handler->id){
                 if($action == "getDuplicates"){
