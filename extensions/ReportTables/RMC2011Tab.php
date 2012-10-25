@@ -374,6 +374,7 @@ EOF;
                     $ls = array();
                 }
                 $none = true;
+                $download1 = "";
                 foreach ($ls as &$row) {
                     $none = false;
                     $download1 = "<a href='{$pg}?getpdf={$row['token']}'>Download&nbsp;PDF</a></td>";

@@ -1,9 +1,9 @@
 <?php
 
-require_once("Evaluate_Budget.php");
-require_once("Evaluate_Form.php");
+//require_once("Evaluate_Budget.php");
+//require_once("Evaluate_Form.php");
 
-define("EVAL_YEAR", REPORTING_YEAR);
+//define("EVAL_YEAR", REPORTING_YEAR);
 
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['Evaluate'] = 'Evaluate'; # Let MediaWiki know about the special page.

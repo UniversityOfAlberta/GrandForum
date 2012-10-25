@@ -1,5 +1,6 @@
 <?php
 
+define("EVAL_YEAR", REPORTING_YEAR);
 class Evaluate_Form {
 	static function cniOutput($person){
         global $wgOut;
