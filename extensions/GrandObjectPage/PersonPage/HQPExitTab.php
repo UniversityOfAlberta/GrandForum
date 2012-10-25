@@ -177,7 +177,7 @@ class HQPExitTab extends AbstractEditableTab {
                                 <fieldset><legend>Reason for ".HQP." Inactivation</legend>
                                 <table>
                                 <tr>
-                                    <td colspan='2'>Date&nbsp;Effective:</td><td></td>
+                                    <td>Date&nbsp;Effective:</td><td>{$lastHQPRole->getEndDate()}</td>
                                 </tr>
                                 <tr id='step1'>
                                     <td colspan='2'><input type='radio' name='reason' value='graduated' onChange='updateStep2()'$checkedGraduated /> Graduated</td>
