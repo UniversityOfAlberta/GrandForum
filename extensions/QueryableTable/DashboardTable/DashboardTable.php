@@ -36,9 +36,9 @@ class DashboardTable extends QueryableTable{
             foreach($row as $colN => $cell){
 	            $params = array();
 	            if(!is_numeric($cell)){
-                    $splitCell = explode('(', $cell);
-	                $cell = $splitCell[0];
-	                $params = explode(',', str_replace(', ', ',', str_replace(')', '', $splitCell[1])));
+	                $params = $this->parseParams($cell);
+	                $splitCell = explode('(', $cell);
+                    $cell = $splitCell[0];
 	                $this->structure[$rowN][$colN] = $cell;
 	            }
 	            $cellValue = $this->processCell($cell, $params, "", $rowN, $colN);

@@ -133,7 +133,12 @@ $dashboardStructures[NI_PRIVATE_PROFILE_STRUCTURE] =
     );
     
 $dashboardStructures[NI_REPORT_STRUCTURE] =
-    array(array(HEAD."(Projects)", HEAD."(HQP)", HEAD."(Partners/Champions)", HEAD."(Hours/Week)", HEAD."(Allocated:<br />".(REPORTING_YEAR)." - ".(REPORTING_YEAR+1).")", HEAD."(Requested:<br />".(REPORTING_YEAR+1)." - ".(REPORTING_YEAR+2).")"),
+    array(array(STRUCT(HEAD, "Projects"), 
+                STRUCT(HEAD, "HQP", "tooltip=\"Under HQP, the network table reports HQP who have been listed as being supervised by the NI during the current reporting period. The detailed listing of the HQP (accessible when you click on and of the HQP column links) documents more precisely why each individual HQP is listed.\""), 
+                STRUCT(HEAD, "Partners/Champions", "tooltip=\"Under Partners/Champions, the network table reports the organizations that have made a contribution (cash, in-kind or otherwise) towards the GRAND-related activities of the NI (i.e., Partners), and the champions(individuals) with whom the NI is working. An individual is a Champion if the NI has been collaborating with him/her in the context of a project, even if the relation is not formal yet. To specify a \\\"Champion\\\" you have to (a) add them on the forum (using the \\\"add user\\\" tool) and give them the \\\"Champion\\\" role, and (b) specify that you are \\\"working with\\\" them (using the \\\"edit relations\\\" tool).\""), 
+                STRUCT(HEAD, "Hours/Week"), 
+                STRUCT(HEAD, "Allocated:<br />".(REPORTING_YEAR)." - ".(REPORTING_YEAR+1), "tooltip=\"The last two columns of the network table reports are the (NI) budget allocation for the current funding year (2012-13) and the budget request for the forthcoming funding year (2013-14). If the first budget amount is missing, then you must upload your budget reflecting your actual 2012-13 allocation (not including carryover), through the \\\"My Profile\\\" - \\\"Budget\\\" page. If the second budget amount is missing, then you have not yet uploaded a proper budget request for 2013-14 in the \\\"NI budget\\\" step of the reporting workflow; a corresponding error message will appear in your report-completion status.\""), 
+                STRUCT(HEAD, "Requested:<br />".(REPORTING_YEAR+1)." - ".(REPORTING_YEAR+2), "tooltip=\"The last two columns of the network table reports are the (NI) budget allocation for the current funding year (2012-13) and the budget request for the forthcoming funding year (2013-14). If the first budget amount is missing, then you must upload your budget reflecting your actual 2012-13 allocation (not including carryover), through the \\\"My Profile\\\" - \\\"Budget\\\" page. If the second budget amount is missing, then you have not yet uploaded a proper budget request for 2013-14 in the \\\"NI budget\\\" step of the reporting workflow; a corresponding error message will appear in your report-completion status.\"")),
     array(HEAD.'(Total:)',
           STRUCT(PERSON_HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
           STRUCT(PERSON_PARTNERS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
@@ -155,7 +160,14 @@ $dashboardStructures[NI_REPORT_STRUCTURE] =
     );
     
 $dashboardStructures[NI_REPORT_PRODUCTIVITY_STRUCTURE] =
-    array(array(HEAD."(Projects)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Contributions)"), 
+    array(array(STRUCT(HEAD, "Projects"), 
+                STRUCT(HEAD, "Publications", "PB: Published", "tooltip=\"Under Publications, the productivity table reports any publication co-authored by the NI, with a date within current reporting year and two years into the future (to account for 'to appear' publications). Publications are of different types but, in principle, are documents that appear in archival venues and can be cited.\""), 
+                STRUCT(HEAD, "Artifacts", "PR: Peer Reviewed", "tooltip=\"Under Artifacts, the productivity table reports any artifact co-produced by the NI, with a date within the current reporting year and two years into the future (to account for things like scheduled software releases and planned artistic installations). This category of productivity evidence includes curated data repositories, open-source software, artistic works. They are annotated as \\\"peer reviewed\\\" or \\\"non peer-reviewed\\\".\""), 
+                STRUCT(HEAD, "Activities", "tooltip=\"Under Activities, the productivity table reports any activity in which the NI was involved, with a date the current reporting year and two years beyond. This category is meant to include conference organization and similar activities.\""), 
+                STRUCT(HEAD, "Presentations", "tooltip=\"Under Presentations, the productivity table reports any activity in which the NI was involved, with a date within the current reporting year and two years into the future. This category is meant to include conference organization and similar activities.\""), 
+                STRUCT(HEAD, "Press"), 
+                STRUCT(HEAD, "Awards", "tooltip=\"Under Awards, the productivity table reports awards bestowed to the NI within the current reporting year.\""), 
+                STRUCT(HEAD, "Contributions", "tooltip=\"Under Contributions, the productivity table reports cash and in-kind contributions to the NI's GRAND-related research activities by agencies outside GRAND during the current reporting year.\"")), 
     array(HEAD.'(Total:)',
           STRUCT(PERSON_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
           STRUCT(PERSON_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 

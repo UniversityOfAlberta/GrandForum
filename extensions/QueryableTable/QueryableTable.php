@@ -152,6 +152,58 @@ abstract class QueryableTable {
         return $cell;
     }
     
+    // Returns an associative array of parameters
+    function parseParams($cell){
+        $params = array();
+        
+        $chars = str_split($cell);
+        $quoteFound = false;
+        $strVars = array();
+        $currentStr = "";
+        foreach($chars as $key => $char){
+            if($char == "\"" && ($key == 0 || $chars[$key-1] != "\\")){
+                $quoteFound = !$quoteFound;
+                if(!$quoteFound){
+                    $strVars[] = str_replace("'", "&#39;", $currentStr."\"");
+                    $currentStr = "";
+                }
+            }
+            if($quoteFound){
+                $currentStr .= $char;
+            }
+        }
+        
+        foreach($strVars as $key => $var){
+            $cell = str_replace(str_replace("&#39;", "'", $var), "{\$".$key."}", $cell);
+        }
+        
+        $splitCell = explode('(', $cell);
+        $cell = $splitCell[0];
+        $tmpParams = explode(',', str_replace(', ', ',', str_replace(')', '', $splitCell[1])));
+        $params = array();
+        $i = 0;
+        foreach($tmpParams as $param){
+            $exp = explode("=", $param);
+            if(count($exp) > 1){
+                $value = $exp[1];
+                list($index) = sscanf($exp[1], "{\$%d}");
+                if(isset($strVars[$index])){
+                    $value = str_replace("\\\"", '"', substr($strVars[$index], 1, strlen($strVars[$index])-2));
+                }
+                $params[$exp[0]] = trim($value);
+            }
+            else{
+                $value = $param;
+                list($index) = sscanf($param, "{\$%d}");
+                if(isset($strVars[$index])){
+                    $value = str_replace("\\\"", '"', substr($strVars[$index], 1, strlen($strVars[$index])-2));
+                }
+                $params[$i++] = trim($value);
+            }
+        }
+        return $params;
+    }
+    
     abstract static function union_tables($tables);
     
     abstract static function join_tables($tables);
