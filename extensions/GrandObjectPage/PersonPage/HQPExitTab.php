@@ -81,7 +81,7 @@ class HQPExitTab extends AbstractEditableTab {
                 if(strlen($thesis->getTitle()) > 50){
                     $title = substr($title, 0, 50)."...";
                 }
-                $wgOut->addScript("theses[{$thesis->getId()}] = '$title';\n");
+                $wgOut->addScript("theses[{$thesis->getId()}] = '".str_replace("'", "&#39;", $title)."';\n");
             }
             $partners = array();
             foreach(Partner::getAllPartners() as $partner){
