@@ -76,8 +76,21 @@ class NIProgressReportItem extends StaticReportItem {
             if($budget == null){
                 $errorMsg .= "$tr<td><span class='inlineError'>You have not uploaded a budget request</span></td></tr>\n";
             }
-            else if($budget->isError()){
-                $errorMsg .= "$tr<td><span class='inlineError'>There are errors in your budget request</span></td></tr>\n";
+            else{
+                if($person->isRoleDuring(CNI)){
+		            $rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_BUDGET, 0, 0);
+		            $budget_blob = new ReportBlob(BLOB_EXCEL, REPORTING_YEAR, $person->getId(), 0);
+		            $budget_blob->load($rep_addr);
+		            $data = $budget_blob->getData();
+                    
+                    $errors = BudgetReportItem::addWorksWithRelation($data, true);
+                    foreach($errors as $key => $error){
+		                $budget->errors[0][] = $error;
+		            }
+		        }
+		        if($budget->isError()){
+                    $errorMsg .= "$tr<td><span class='inlineError'>There are errors in your budget request</span></td></tr>\n";
+                }
             }
         }
         

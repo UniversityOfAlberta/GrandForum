@@ -263,7 +263,7 @@ abstract class AbstractReportItem {
             case BLOB_EXCEL:
                 $blob->store(utf8_decode($value), $blob_address);
 	            $blob->load($blob_address);
-	            $this->addWorksWithRelation($blob);
+	            $this->addWorksWithRelation($blob->getData(), false);
 	            break;
         }
 	    

@@ -124,7 +124,16 @@ class BudgetReportItem extends AbstractReportItem {
 	        echo "<br /><a href='$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport&section=Budget&downloadBudget$projectGet'>Download Uploaded Budget</a>";
 		    $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
 		    $budget = $this->filterCols($budget);
-		    echo $budget->copy()->filterCols(V_PROJ, array(""))->render();
+		    $budget = $budget->copy()->filterCols(V_PROJ, array(""));
+		    $person = Person::newFromId($this->personId);
+		    
+		    if($person->isRoleDuring(CNI)){
+		        $errors = self::addWorksWithRelation($data, true);
+		        foreach($errors as $key => $error){
+		            $budget->errors[0][] = $error;
+		        }
+		    }
+		    echo $budget->render();
 		}
 		else{
 		    echo "You have not yet uploaded a budget";
@@ -167,10 +176,10 @@ class BudgetReportItem extends AbstractReportItem {
 	    return array();
 	}
 	
-	function addWorksWithRelation($blob){
+	static function addWorksWithRelation($data, $dryRun=false){
 	    global $wgUser;
+	    $errors = array();
 	    $me = Person::newFromId($wgUser->getId());
-	    $data = $blob->getData();
         $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
         
         // First select the projects
@@ -181,6 +190,7 @@ class BudgetReportItem extends AbstractReportItem {
                 if($project != null && $project->getName() != null){
                     // Now look for the people
                     $people = $budget->copy()->select(V_PROJ, array($project->getName()))->where(V_PERS)->xls;
+                    $nPeople = 0;
                     foreach($people as $row){
                         foreach($row as $pers){
                             $person = null;
@@ -209,19 +219,38 @@ class BudgetReportItem extends AbstractReportItem {
                                 
                                 }
                             }
-                            if($person != null && $person->getName() != null){
+                            if(!$dryRun && $person != null && $person->getName() != null && $person->isRoleDuring(PNI) && $person->isMemberOfDuring($project)){
                                 // Ok, it is safe to add this person as a relation
                                 $_POST['type'] = WORKS_WITH;
                                 $_POST['name1'] = $me->getName();
                                 $_POST['name2'] = $person->getName();
                                 $_POST['project_relations'] = $project->getName();
                                 APIRequest::doAction('AddRelation', true);
+                                $nPeople++;
+                            }
+                            else{
+                                if($dryRun){
+                                    $nPeople++;
+                                }
+                            }
+                            
+                            if($person != null && $person->getName() != null){
+                                if(!$person->isRoleDuring(PNI)){
+                                    $errors[] = "'{$pers}' is not a PNI";
+                                }
+                                if(!$person->isMemberOfDuring($project)){
+                                    $errors[] = "'{$pers}' is not on {$project->getName()}";
+                                }
                             }
                         }
+                    }
+                    if($nPeople == 0){
+                        $errors[] = "You have not specified any PNIs that you collaborate with on {$project->getName()}";
                     }
                 }
             }
         }
+        return $errors;
 	}
 	
 	function getNFields(){

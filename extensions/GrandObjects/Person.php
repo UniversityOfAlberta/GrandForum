@@ -423,7 +423,11 @@ class Person{
 	}
 	
 	// Returns whether this Person is a member of the given Project during the given dates
-	function isMemberOfDuring($project, $start, $end){
+	function isMemberOfDuring($project, $start=false, $end=false){
+	    if( $start === false || $end === false ){
+	        $start = date(REPORTING_CYCLE_START);
+	        $end = date(REPORTING_CYCLE_END);
+	    }
 	    $projects = $this->getProjectsDuring($start, $end);
 	    if(count($projects) > 0 && $project != null){
 		    foreach($projects as $project1){
@@ -594,8 +598,8 @@ class Person{
 		 //If no range end are provided, assume it's for the current year.
 	    if( $startRange === false || $endRange === false ){
 	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
-	        //$endRange = date(REPORTING_YEAR."-12-31 23:59:59");
-	        $endRange = date("2012-08-31 23:59:59");
+	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+	        //$endRange = date("2012-08-31 23:59:59");
 	    }
 
 	    $sql = "SELECT `user_id`
