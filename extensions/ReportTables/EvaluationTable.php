@@ -1,6 +1,7 @@
 <?php
 
 
+autoload_register('ReportTables');
 
 $dir = dirname(__FILE__) . '/';
 
@@ -68,6 +69,8 @@ class EvaluationTable extends SpecialPage {
 	}
 	
 	static function show(){
+		require_once('RMC2013Tab.php');
+        require_once('NSERC2013Tab.php');
 	    require_once('RMC2012Tab.php');
         require_once('NSERC2012Tab.php');
         require_once('RMC2011Tab.php');
@@ -119,6 +122,7 @@ EOF;
 		if(isset($_GET['section']) && $_GET['section'] == 'NSERC'){
 		    $tabbedPage = new TabbedPage("tabs_nserc");
 		    //if(isset($_GET['year']) && $_GET['year'] == '2011'){
+		    	$tabbedPage->addTab(new NSERC2013Tab());
 		    	$tabbedPage->addTab(new NSERC2012Tab());
 		    	$tabbedPage->addTab(new NSERC2011Tab());
 			//}else{
@@ -129,6 +133,7 @@ EOF;
     	else{
     		$tabbedPage = new TabbedPage("tabs_rmc");
     		//if(isset($_GET['year']) && $_GET['year'] == '2011'){
+    			$tabbedPage->addTab(new RMC2013Tab());
 		    	$tabbedPage->addTab(new RMC2012Tab());
 		    	$tabbedPage->addTab(new RMC2011Tab());
 			//}else{
