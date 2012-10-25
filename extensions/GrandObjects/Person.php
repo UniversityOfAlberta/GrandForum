@@ -1272,7 +1272,7 @@ class Person{
         foreach($data as $row){
             
             $hqp = Person::newFromId($row['user2']);
-            if( !in_array($hqp->getId(), $hqps_uniq_ids) ){
+            if( !in_array($hqp->getId(), $hqps_uniq_ids) && $hqp->getId() != null){
                 $hqps_uniq_ids[] = $hqp->getId();
                 
             //Comment out below condition for performance: IMPORTANT assumption is that 'Supervises' only applies to HQPs
