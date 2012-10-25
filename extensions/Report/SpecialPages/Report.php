@@ -28,10 +28,10 @@ class Report extends AbstractReport{
 		else if($person->isRole(CNI) || $person->isRole(PNI) || $person->isRoleAtLeast(MANAGER)){
 		    $page = "Report?report=NIReport";
 		}
-		else if(count($person->leadership()) > 0){
+		/*else if(count($person->leadership()) > 0){
 		    $projects = $person->leadership();
 		    $page = "Report?report=ProjectReport&project={$projects[0]->getName()}";
-		}
+		}*/
 		/*else if($person->isEvaluator()){
 		    $page = "Report?report=NIReport";
 		}*/
@@ -79,7 +79,7 @@ class Report extends AbstractReport{
             }
             
             // Project Leader Report
-            $leadership = $person->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+            /*$leadership = $person->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
             if(count($leadership) > 0){
                 foreach($leadership as $project){
                     @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "ProjectReport" && $_GET['project'] == $project->getName()) ? "selected" : false;
@@ -90,7 +90,7 @@ class Report extends AbstractReport{
                             );
                 }
             }
-            
+            */
             // Evaluator Report
             /*
             if($person->isEvaluator()){
