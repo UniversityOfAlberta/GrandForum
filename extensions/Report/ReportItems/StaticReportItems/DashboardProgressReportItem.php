@@ -85,7 +85,7 @@ class DashboardProgressReportItem extends StaticReportItem {
 		}
 		if($nNoPublisher > 0){
 		    $tr = "";
-		    if($nNoPages > 0 && $nNoVenue > 0){
+		    if($nNoPages > 0 || $nNoVenue > 0){
 		        $tr = "<tr>";
 		    }
 		    if($nNoPublisher == 1){
