@@ -267,7 +267,14 @@ class ReportStorage {
 		if (strlen($uarr) === 0)
 			return array();
 
-		$sql = "SELECT user_id, report_id, submitted, auto, token, timestamp FROM mw_pdf_report WHERE user_id IN ({$uarr}) AND submitted = {$subm} AND type = {$type} AND special = {$special} ORDER BY timestamp DESC LIMIT {$lim};";
+		$sql = "SELECT user_id, report_id, submitted, auto, token, timestamp 
+		        FROM mw_pdf_report 
+		        WHERE user_id IN ({$uarr}) 
+		        AND submitted = {$subm} 
+		        AND type = {$type} 
+		        AND special = {$special} 
+		        AND report_id NOT IN (SELECT `report_id` FROM mw_pdf_index)
+		        ORDER BY timestamp DESC LIMIT {$lim};";
 		return DBFunctions::execSQL($sql);
 	}
 	
@@ -279,7 +286,15 @@ class ReportStorage {
 		if (strlen($uarr) === 0)
 			return array();
 
-		$sql = "SELECT user_id, report_id, submitted, auto, token, timestamp FROM mw_pdf_report WHERE user_id IN ({$uarr}) AND submitted = {$subm} AND type = {$type} AND special = {$special} AND YEAR(timestamp) = {$year} ORDER BY timestamp DESC LIMIT {$lim};";
+		$sql = "SELECT user_id, report_id, submitted, auto, token, timestamp 
+		        FROM mw_pdf_report 
+		        WHERE user_id IN ({$uarr}) 
+		        AND submitted = {$subm} 
+		        AND type = {$type} 
+		        AND special = {$special} 
+		        AND YEAR(timestamp) = {$year} 
+		        AND report_id NOT IN (SELECT `report_id` FROM mw_pdf_index)
+		        ORDER BY timestamp DESC LIMIT {$lim};";
        
 		return DBFunctions::execSQL($sql);
 	}
@@ -292,7 +307,14 @@ class ReportStorage {
 		if (strlen($uarr) === 0)
 			return array();
 
-		$sql = "SELECT user_id, report_id, submitted, auto, token, timestamp FROM mw_pdf_report WHERE user_id IN ({$uarr}) AND type = {$type} AND special = {$special} AND DATE(timestamp) > DATE('".REPORTING_PRODUCTION."') ORDER BY timestamp DESC LIMIT {$lim};";
+		$sql = "SELECT user_id, report_id, submitted, auto, token, timestamp 
+		        FROM mw_pdf_report 
+		        WHERE user_id IN ({$uarr}) 
+		        AND type = {$type} 
+		        AND special = {$special} 
+		        AND DATE(timestamp) > DATE('".REPORTING_PRODUCTION."') 
+		        AND report_id NOT IN (SELECT `report_id` FROM mw_pdf_index)
+		        ORDER BY timestamp DESC LIMIT {$lim};";
         $res = DBFunctions::execSQL($sql);
 
 		return $res;
