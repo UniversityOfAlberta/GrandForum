@@ -105,7 +105,7 @@ class LimitReportItemSet extends ReportItemSet {
             var blobValues = Array();
             
             $.each($('#div_{$this->getPostId()} textarea'), function(index, value){
-                var regex = RegExp('@\\\\[[^-]+-([^\\\\]\\\\[@]*)]','g');
+                var regex = RegExp('@\\\\[[^-]+-([^\\\\]]*)]','g');
                 if(!recommended){
                     var blobValue = '';
                     var replacedLength = $(value).val().replace(regex, ' ').length;

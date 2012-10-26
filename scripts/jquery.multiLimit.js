@@ -19,7 +19,7 @@
 		        var length = 0;
 		        for(i in textareas){
 		            var textarea = textareas[i];
-		            var regex = RegExp('@\\[[^-]+-([^\\]\\[@]*)]','g');
+		            var regex = RegExp('@\\[[^-]+-([^\\]]*)]','g');
 		            length += $(textarea).val().replace(regex, ' ').length;
 		        }
 		        if($(element).prop("tagName") == "SPAN" ||

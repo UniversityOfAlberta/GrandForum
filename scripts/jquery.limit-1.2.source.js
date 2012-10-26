@@ -16,7 +16,7 @@
 			
 			function substring(){ 
 			    var val = $(self).val();
-			    var regex = RegExp('@\\[[^-]+-([^\\]\\[@]*)]','g');
+			    var regex = RegExp('@\\[[^-]+-([^\\]]*)]','g');
 			    var length = val.replace(regex, ' ').length;
 			    if(length > limit){
 			        $(self).val($(self).val().substring(0,limit));
