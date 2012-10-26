@@ -348,7 +348,7 @@ No individual budget request for a PNI for 2013-14 should exceed $55,000, and no
                 <ReportItem id="0']['time" width="40px" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem">
                     <![CDATA[<span><b>Time Commitment:</b> {$item} hours / week</span>]]>
                 </ReportItem>
-                <ReportItem id="milestone_summary" width="100%" height="250px" blobType="BLOB_TEXT" blobItem="RES_MIL_SUMMARY" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones">
+                <ReportItem id="milestone_summary" width="100%" height="250px" blobType="BLOB_TEXT" blobItem="RES_MIL_SUMMARY" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones" anchor="true" anchorFormat="{$milestone_title}" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1000">
                     <![CDATA[
                         <h3>Milestone Report</h3>
                         {$item}
@@ -393,13 +393,10 @@ No individual budget request for a PNI for 2013-14 should exceed $55,000, and no
                         ]]>
                     </ReportItem>
                     <ReportItem id="milestone_description_full" type="PopupReportItem" title="Full Description" text="{$milestone_description}">
-                        <![CDATA[{$item}&nbsp;&nbsp;&nbsp;]]>
+                        <![CDATA[{$item}<br />]]>
                     </ReportItem>
                     <ReportItem id="milestone_history" type="PopupReportItem" title="Milestone History" url="{$wgServer}{$wgScriptPath}/index.php?action=api.getProjectMilestoneHistory/{$milestone_id}/{$last_year}-12-01" text="Loading...">
-                        <![CDATA[{$item}]]>
-                    </ReportItem>
-                    <ReportItem id="static_space" type="StaticReportItem">
-                        <![CDATA[&nbsp;]]>
+                        <![CDATA[{$item}<br />]]>
                     </ReportItem>
                     <ReportItem id="milestone_hqp_comments" type="PopupReportItem" title="See HQP Comments" text="{$milestone_hqp_comments}">
                         <![CDATA[{$item}]]>

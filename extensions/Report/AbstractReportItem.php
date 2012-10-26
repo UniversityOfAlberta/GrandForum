@@ -269,8 +269,13 @@ abstract class AbstractReportItem {
 	    
     }
     
-    function getAttr($attr, $default=""){
-        $value = (isset($this->attributes[$attr])) ? $this->varSubstitute($this->attributes[$attr]) : $default;
+    function getAttr($attr, $default="", $varSubstitute=true){
+        if($varSubstitute){
+            $value = (isset($this->attributes[$attr])) ? $this->varSubstitute($this->attributes[$attr]) : $default;
+        }
+        else{
+            $value = (isset($this->attributes[$attr])) ? $this->attributes[$attr] : $default;
+        }
         return "$value";
     }
 

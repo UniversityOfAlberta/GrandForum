@@ -8,6 +8,8 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		$index = $this->getAttr("index", "");
 		$label = $this->getAttr("label", "");
 		$name = $this->getAttr("name", "");
+		$tooltipOptionId = $this->getAttr("tooltipOptionId", "ID");
+		$tooltipOptionName = $this->getAttr("tooltipOptionId", "Name");
 		$notReferenced = $this->getAttr("showNotReferenced", "false");
 		$item = "";
 		$reportItemSet = $this->getSet();
@@ -38,7 +40,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		    }
 		    $item .= "</script>";
 		}
-		$item .= $this->getHTML();
+		$item .= "<span style='float:right;margin-right:30px;' class='pdfnodisplay tooltip' title='You should reference $name by writing <code>@$tooltipOptionId</code> in the text box. You can also start typing <code>@$tooltipOptionName</code> and a drop-down box will appear below the text box where you can select the one you wish to reference.'><b>@autocomplete:</b> {$name}</span>".$this->getHTML();
 		$item .= "<div id='{$this->id}_div'></div>";
 		$item .= "<script type='text/javascript'>
 		            $('textarea[name={$this->getPostId()}]').triggeredAutocomplete({
@@ -57,8 +59,12 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
                                 
                                 var value = item.value;
                                 var label = item.label;
+                                
+                                var str = label.replace('[', '\\\[')
+                                               .replace('(', '\\\(')
+                                               .replace(')', '\\\)');
                                 var val = $('textarea[name={$this->getPostId()}]').val();
-                                regex = RegExp('@' + value + '([^0-9]+?|$)','');
+                                regex = RegExp('@\\\[' + str + '](.*?|$)','');
                                 if(regex.test(val) == false){
                                     innerHTML += '<li>' + label + '</li>';
                                     left++;
@@ -80,7 +86,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		    </script>";
 		}
 		$item = $this->processCData($item);
-		$item = "<span style='float:right;' class='pdfnodisplay tooltip' title='You should reference a milestone by writing <pre>@Milestone ID</pre> in the text box. You can also start typing <pre>@Milestone Title</pre> and a drop-down box will appear below the text box where you can select the milestone you wish to reference.'><b>@autocomplete:</b> {$name}</span>".$item;
+		//$item = .$item;
 		$wgOut->addHTML($item);
 	}
 	
@@ -91,6 +97,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 	        $reportItemSet->setPersonId($this->personId);
 		    $reportItemSet->setProjectId($this->projectId);
 		    $reportItemSet->setMilestoneId($this->milestoneId);
+		    $reportItemSet->setProductId($this->productId);
 		    return $reportItemSet;
 	    }
 	    return null;
@@ -117,11 +124,8 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		$index = $this->getAttr("index", "");
 		$label = $this->getAttr("label", "");
 		if(class_exists($set)){
-		    $reportItemSet = new $set();
-		    $reportItemSet->setPersonId($this->personId);
-		    $reportItemSet->setProjectId($this->projectId);
-		    $reportItemSet->setMilestoneId($this->milestoneId);
-		    $reportItemSet->setProductId($this->productId);
+		    $reportItemSet = $this->getSet();
+		    $anchorFormat = $this->getAttr("anchorFormat", "", false);
 		    foreach($reportItemSet->getData() as $tuple){
 		        $staticValue = new StaticReportItem();
 		        $staticValue->setPersonId($tuple['person_id']);
@@ -130,14 +134,48 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		        $staticValue->setProductId($tuple['product_id']);
 		        $staticValue->setValue('{$'.$index.'}');
 		        $id = $staticValue->processCData("");
-		        if($anchor){
-		            $value = preg_replace("/(@{$id})([^0-9]+?|$)/", "<a class='anchor' href='#{$this->id}_{$id}'>$1</a>$2", $value);
+		        $staticValue->setValue($anchorFormat);
+		        $anchorText = $staticValue->processCData("");
+		        
+		        if($anchor && !isset($_GET['preview'])){
+		            $value = preg_replace("/(@\[{$id}[^]]*])(.*?|$)/", "<a class='anchor' href='#{$this->id}_{$id}'>{$anchorText}</a>$2", $value);
+		        }
+		        else{
+		            $value = preg_replace("/(@\[{$id}[^]]*])(.*?|$)/", "<b>{$anchorText}</b>$2", $value);
 		        }
 		    }
 		}
 		$html .= "<p>$value</p>";
 	    $item = $this->processCData($value);
 		$wgOut->addHTML($item);
+	}
+	
+	function getNChars(){
+	    
+	    return min($this->getLimit(), $this->getActualNChars());
+	}
+	
+	function getActualNChars(){
+	    $set = $this->getAttr("set", "");
+		$index = $this->getAttr("index", "");
+		$label = $this->getAttr("label", "");
+		
+		$value = str_replace("\r", "", $this->getBlobValue());
+		if(class_exists($set)){
+		    $reportItemSet = $this->getSet();
+		    $anchorFormat = $this->getAttr("anchorFormat", "", false);
+		    foreach($reportItemSet->getData() as $tuple){
+		        $staticValue = new StaticReportItem();
+		        $staticValue->setPersonId($tuple['person_id']);
+		        $staticValue->setProjectId($tuple['project_id']);
+		        $staticValue->setMilestoneId($tuple['milestone_id']);
+		        $staticValue->setProductId($tuple['product_id']);
+		        $staticValue->setValue('{$'.$index.'}');
+		        $id = $staticValue->processCData("");
+		        $value = preg_replace("/(@\[{$id}[^]]*])(.*?|$)/", " ", $value);
+		    }
+		}
+	    return strlen($value);
 	}
 }
 ?>

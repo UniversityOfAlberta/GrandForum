@@ -33,7 +33,8 @@ class TextareaReportItem extends AbstractReportItem {
                     $('textarea[name={$this->getPostId()}]').off('keypress');
                     $('textarea[name={$this->getPostId()}]').limit(1000000000000, '#{$this->getPostId()}_chars_left');
                     function changeColor{$this->getPostId()}(element){
-                        var strlen = $(element).val().length;
+                        regex = RegExp('@\\\\[.*[^]]','g');
+                        var strlen = $(element).val().replace(regex, ' ').length;
                         if(strlen > $limit){
                             $('#limit_{$this->getPostId()} > span').addClass('inlineError');
                             $('#limit_{$this->getPostId()} > span').removeClass('warningError');

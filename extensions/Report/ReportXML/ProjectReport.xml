@@ -4,8 +4,8 @@
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="status" permissions="rw" />
             <SectionPermission id="dashboard" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="comments" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
@@ -14,8 +14,8 @@
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="COPL">
             <SectionPermission id="status" permissions="rw" />
             <SectionPermission id="dashboard" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="comments" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
@@ -24,8 +24,8 @@
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PM">
             <SectionPermission id="status" permissions="rw" />
             <SectionPermission id="dashboard" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="comments" permissions="r" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
@@ -112,85 +112,6 @@ Project Leader and Co-Leader are always the first two listed, but the remaining 
         </ReportItem>
         <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE">
             <![CDATA[<h3>Productivity:</h3><div>{$item}</div>]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="milestones" name="Project Milestones" blobSection="LDR_MILESTONE" type="EditableReportSection" renderpdf="true" reportCharLimits="false">
-        <Instructions>
-            <![CDATA[
-                <p>
-                    The <b>Milestone Report</b> is to be a report describing the progress of all the Project Milestones which were active at some point during the year.  You should reference a milestone by writing @&lt;Milestone ID&gt; in the text box.  You can also start typing @&lt;Milestone Title&gt;, and a drop-down box will appear below the text box where you can select the milestone you wish to reference.
-                </p>
-                <p>
-                    The Milestones section is designed to gather data regarding progress against project milestones, and to allow for the revision of those milestones and for the addition of new milestones.</p>
-<p>The reporting of individual researchers regarding each of the milestones can be viewed by clicking on "See NI Comments" at the bottom of the field for each applicable milestone.  Each milestone is compared to the state it was in last year.  Red highlighted text means that that word or phrase was removed, while green means that it was added.</p>
-                <p>
-            ]]>
-        </Instructions>
-        <ReportItem id="milestone_desc" width="100%" height="250px" blobType="BLOB_TEXT" blobItem="LDR_MILE_REPORT" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones" showNotReferenced="true" anchor="true">
-            <![CDATA[
-                <h3>Milestone Report</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="ni_summary" type="PopupReportItem" title="See NI Comments" text="{$milestone_ni_summaries}">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="edit" type="StaticReportItem">
-            <![CDATA[<h3>Milestones</h3><p>You can edit the project milestones at <a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/{$project_name}:Main'><b>{$project_name}</b></a></p>]]>
-        </ReportItem>
-        <ReportItem id="table_head" type="StaticReportItem">
-            <![CDATA[
-                <table style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'>
-                    <tr>
-                        <th>Milestone</th><th>Last Year/Current Year Diff</th>
-                    </tr>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="milestones" type="MilestoneReportItemSet">
-            <ReportItem id="milestone_data" type="StaticReportItem">
-                <![CDATA[
-                    <tr>
-                        <td style='white-space:nowrap;'>
-                            <table>
-                                <tr><td><b>Id:</b></td><td align='left'>{$milestone_id}</td></tr>
-                                <tr><td><b>Status:</b></td><td align='left'>{$milestone_status}</td></tr>
-                                <tr><td style='white-space:nowrap;'><b>Changes:</b></td><td align='left'>{$milestone_changes}</td></tr>
-                            </table>
-                ]]>
-            </ReportItem>
-            <ReportItem id="milestone_history" type="PopupReportItem" title="See Milestone History" url="{$wgServer}{$wgScriptPath}/index.php?action=api.getProjectMilestoneHistory/{$milestone_id}/{$last_year}-12-01" text="Loading...">
-                <![CDATA[{$item}]]>
-            </ReportItem>
-            <ReportItem id="milestone_data" type="StaticReportItem">
-                <![CDATA[
-                    </td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_oldtitle}" newText="{$milestone_title}">
-                <![CDATA[
-                    <td><p><b>Title:</b> {$item}</p>
-                ]]>
-            </ReportItem>
-            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_olddescription}" newText="{$milestone_description}">
-                <![CDATA[
-                    <p><b>Description:</b> {$item}</p>
-                ]]>
-            </ReportItem>
-            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_oldassessment}" newText="{$milestone_assessment}">
-                <![CDATA[
-                    <p><b>Assessment:</b> {$item}</p>
-                ]]>
-            </ReportItem>
-            <ReportItem id="milestone_data" type="StaticReportItem">
-                <![CDATA[
-                    </td></tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="table_foot" type="StaticReportItem">
-            <![CDATA[
-                </table>
-            ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="report" name="Project Report" blobSection="LDR_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" number="1,2,3">
@@ -333,6 +254,85 @@ Benefits from being involved in the Network
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="milestones" name="Project Milestones" blobSection="LDR_MILESTONE" type="EditableReportSection" renderpdf="true" reportCharLimits="false">
+        <Instructions>
+            <![CDATA[
+                <p>
+                    The <b>Milestone Report</b> is to be a report describing the progress of all the Project Milestones which were active at some point during the year.  You should reference a milestone by writing @&lt;Milestone ID&gt; in the text box.  You can also start typing @&lt;Milestone Title&gt;, and a drop-down box will appear below the text box where you can select the milestone you wish to reference.
+                </p>
+                <p>
+                    The Milestones section is designed to gather data regarding progress against project milestones, and to allow for the revision of those milestones and for the addition of new milestones.</p>
+<p>The reporting of individual researchers regarding each of the milestones can be viewed by clicking on "See NI Comments" at the bottom of the field for each applicable milestone.  Each milestone is compared to the state it was in last year.  Red highlighted text means that that word or phrase was removed, while green means that it was added.</p>
+                <p>
+            ]]>
+        </Instructions>
+        <ReportItem id="milestone_desc" width="100%" height="250px" blobType="BLOB_TEXT" blobItem="LDR_MILE_REPORT" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones" showNotReferenced="true" anchor="true" anchorFormat="{$milestone_title}" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1000">
+            <![CDATA[
+                <h3>Milestone Report</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ni_summary" type="PopupReportItem" title="See NI Comments" text="{$milestone_ni_summaries}">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="edit" type="StaticReportItem">
+            <![CDATA[<h3>Milestones</h3><p>You can edit the project milestones at <a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/{$project_name}:Main'><b>{$project_name}</b></a></p>]]>
+        </ReportItem>
+        <ReportItem id="table_head" type="StaticReportItem">
+            <![CDATA[
+                <table style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'>
+                    <tr>
+                        <th>Milestone</th><th>Last Year/Current Year Diff</th>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="milestones" type="MilestoneReportItemSet">
+            <ReportItem id="milestone_data" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td style='white-space:nowrap;'>
+                            <table>
+                                <tr><td><b>Id:</b></td><td align='left'>{$milestone_id}</td></tr>
+                                <tr><td><b>Status:</b></td><td align='left'>{$milestone_status}</td></tr>
+                                <tr><td style='white-space:nowrap;'><b>Changes:</b></td><td align='left'>{$milestone_changes}</td></tr>
+                            </table>
+                ]]>
+            </ReportItem>
+            <ReportItem id="milestone_history" type="PopupReportItem" title="See Milestone History" url="{$wgServer}{$wgScriptPath}/index.php?action=api.getProjectMilestoneHistory/{$milestone_id}/{$last_year}-12-01" text="Loading...">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+            <ReportItem id="milestone_data" type="StaticReportItem">
+                <![CDATA[
+                    </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_oldtitle}" newText="{$milestone_title}">
+                <![CDATA[
+                    <td><p><b>Title:</b> {$item}</p>
+                ]]>
+            </ReportItem>
+            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_olddescription}" newText="{$milestone_description}">
+                <![CDATA[
+                    <p><b>Description:</b> {$item}</p>
+                ]]>
+            </ReportItem>
+            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_oldassessment}" newText="{$milestone_assessment}">
+                <![CDATA[
+                    <p><b>Assessment:</b> {$item}</p>
+                ]]>
+            </ReportItem>
+            <ReportItem id="milestone_data" type="StaticReportItem">
+                <![CDATA[
+                    </td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="table_foot" type="StaticReportItem">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="comments" name="Comments" blobSection="LDR_NICOMMENTS" type="EditableReportSection" autosave="true" renderpdf="false" reportCharLimits="false">
         <Instructions>

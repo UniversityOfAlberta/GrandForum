@@ -120,7 +120,7 @@ class PLProgressReportItem extends StaticReportItem {
 		        $staticValue->setValue('{$'.$index.'}');
 		        $id = $staticValue->processCData("");
 		        
-		        $val = preg_match("/(@{$id})([^0-9]+?|$)/", $value);
+		        $val = preg_match("/(@\[{$id}.*])([^0-9]+?|$)/", $value);
 		        if($val == 1){
 		            $total['total']++;
 		        }

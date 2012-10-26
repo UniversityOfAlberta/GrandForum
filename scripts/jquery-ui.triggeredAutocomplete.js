@@ -54,7 +54,7 @@
 				var start = contents.substring(0, cursorPos);
 				start = start.substring(0, start.lastIndexOf(self.options.trigger));
 
-				this.value = start + self.options.trigger+ui.item.value+' ' + end;
+				this.value = start + self.options.trigger + '[' + ui.item.label + ']' + end;
 
 				// Create an id map so we can create a hidden version of this string with id's instead of labels.
 
@@ -85,7 +85,7 @@
 			else {	
 				return $( "<li></li>" )
 					.data( "item.autocomplete", item )
-					.append( $( "<a></a>" ).text( item.label ) )
+					.append( $( "<a></a>" ).text(item.label ) )
 					.appendTo( ul );
 			}
 		},
@@ -106,7 +106,6 @@
 		},
 
 		search: function(value, event) {
-
 			var contents = this.element.val();
 			var cursorPos = this.getCursor();
 			this.contents = contents;

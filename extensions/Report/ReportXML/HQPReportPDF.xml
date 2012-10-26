@@ -107,7 +107,7 @@
             <![CDATA[If there is an error in any of the information reported in the dashboard, please edit the corresponding element through the appropriate tool. If the error is in a system-controlled field, please contact support.<br /><br /><div>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Milestone Comments" blobSection="HQP_MILESTONES" type="EditableReportSection" autosave="true" renderpdf="true" previewonly="true">
+    <ReportSection name="Milestone Comments" blobSection="HQP_MILESTONES" type="EditableReportSection" autosave="true" renderpdf="true" pagebreak="false" previewonly="true">
         <ReportItemSet id="projects" pdfBookmark="true" type="PersonProjectReportItemSet">
             <ReportItem id="" type="StaticReportItem">
                 <![CDATA[<h2>{$project_name}</h2>]]>

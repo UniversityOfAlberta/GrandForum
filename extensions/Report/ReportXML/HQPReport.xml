@@ -173,15 +173,9 @@ Briefly describe your interactions (if any) with receptors, companies, Project C
                         ]]>
                     </ReportItem>
                     <ReportItem id="milestone_description_full" type="PopupReportItem" title="Full Description" text="{$milestone_description}">
-                        <![CDATA[{$item}&nbsp;&nbsp;&nbsp;]]>
+                        <![CDATA[{$item}<br />]]>
                     </ReportItem>
                     <ReportItem id="milestone_history" type="PopupReportItem" title="Milestone History" url="{$wgServer}{$wgScriptPath}/index.php?action=api.getProjectMilestoneHistory/{$milestone_id}/{$last_year}-12-01" text="Loading...">
-                        <![CDATA[{$item}]]>
-                    </ReportItem>
-                    <ReportItem id="static_space" type="StaticReportItem">
-                        <![CDATA[&nbsp;]]>
-                    </ReportItem>
-                    <ReportItem id="milestone_hqp_comments" type="PopupReportItem" title="See HQP Comments" text="{$milestone_hqp_comments}">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                     <ReportItem id="static4" type="StaticReportItem">

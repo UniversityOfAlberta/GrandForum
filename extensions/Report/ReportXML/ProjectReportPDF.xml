@@ -136,7 +136,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection name="Milestones" blobSection="LDR_MILESTONE" type="ReportSection" pagebreak="false" number="6" renderpdf="true">
-        <ReportItem id="milestone_desc" height="250px" blobType="BLOB_TEXT" blobItem="LDR_MILE_REPORT" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" showNotReferenced="true" anchor="true">
+        <ReportItem id="milestone_desc" height="250px" blobType="BLOB_TEXT" blobItem="LDR_MILE_REPORT" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" showNotReferenced="true" anchor="true" anchorFormat="{$milestone_title}">
             <![CDATA[
                 <h2>Milestone Report</h2>
                 {$item}
