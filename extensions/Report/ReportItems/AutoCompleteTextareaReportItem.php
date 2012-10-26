@@ -9,7 +9,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		$label = $this->getAttr("label", "");
 		$name = $this->getAttr("name", "");
 		$tooltipOptionId = $this->getAttr("tooltipOptionId", "ID");
-		$tooltipOptionName = $this->getAttr("tooltipOptionId", "Name");
+		$tooltipOptionName = $this->getAttr("tooltipOptionName", "Name");
 		$notReferenced = $this->getAttr("showNotReferenced", "false");
 		$item = "";
 		$reportItemSet = $this->getSet();
@@ -64,7 +64,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
                                                .replace('(', '\\\(')
                                                .replace(')', '\\\)');
                                 var val = $('textarea[name={$this->getPostId()}]').val();
-                                regex = RegExp('@\\\[' + str + '](.*?|$)','');
+                                var regex = RegExp('@\\\[[^-]+-([^\\\]\\\[@]*)]','g');
                                 if(regex.test(val) == false){
                                     innerHTML += '<li>' + label + '</li>';
                                     left++;
@@ -120,6 +120,16 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 	        }
 	        $html .= "<span style='color:#888888;'><small>(<i>currently {$this->getNChars()} chars out of a {$type} {$limit}.</i>)</small></span>";
 	    }
+	    $value = $this->getReplacedBlobValue();
+		$html .= "<p>$value</p>";
+	    $item = $this->processCData($value);
+		$wgOut->addHTML($item);
+	}
+	
+	function getReplacedBlobValue(){
+	    $value = $this->getBlobValue();
+	    $limit = $this->getLimit();
+	    $anchor = ($this->getAttr("anchor", "false") == "true");
 	    $set = $this->getAttr("set", "");
 		$index = $this->getAttr("index", "");
 		$label = $this->getAttr("label", "");
@@ -138,20 +148,17 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		        $anchorText = $staticValue->processCData("");
 		        
 		        if($anchor && !isset($_GET['preview'])){
-		            $value = preg_replace("/(@\[{$id}[^]]*])(.*?|$)/", "<a class='anchor' href='#{$this->id}_{$id}'>{$anchorText}</a>$2", $value);
+		            $value = preg_replace("/@\[[^-]+-([^\]\[@]*)]/", "<a class='anchor' href='#{$this->id}_{$id}'>$1</a>$2", $value);
 		        }
 		        else{
-		            $value = preg_replace("/(@\[{$id}[^]]*])(.*?|$)/", "<b>{$anchorText}</b>$2", $value);
+		            $value = preg_replace("/@\[[^-]+-([^\]\[@]*)]/", "<b>$1</b>$2", $value);
 		        }
 		    }
 		}
-		$html .= "<p>$value</p>";
-	    $item = $this->processCData($value);
-		$wgOut->addHTML($item);
+		return str_replace("\r", "", $value);
 	}
 	
 	function getNChars(){
-	    
 	    return min($this->getLimit(), $this->getActualNChars());
 	}
 	
@@ -161,20 +168,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		$label = $this->getAttr("label", "");
 		
 		$value = str_replace("\r", "", $this->getBlobValue());
-		if(class_exists($set)){
-		    $reportItemSet = $this->getSet();
-		    $anchorFormat = $this->getAttr("anchorFormat", "", false);
-		    foreach($reportItemSet->getData() as $tuple){
-		        $staticValue = new StaticReportItem();
-		        $staticValue->setPersonId($tuple['person_id']);
-		        $staticValue->setProjectId($tuple['project_id']);
-		        $staticValue->setMilestoneId($tuple['milestone_id']);
-		        $staticValue->setProductId($tuple['product_id']);
-		        $staticValue->setValue('{$'.$index.'}');
-		        $id = $staticValue->processCData("");
-		        $value = preg_replace("/(@\[{$id}[^]]*])(.*?|$)/", " ", $value);
-		    }
-		}
+		$value = preg_replace("/@\[[^-]+-([^\]\[@]*)]/", " ", $value);
 	    return strlen($value);
 	}
 }

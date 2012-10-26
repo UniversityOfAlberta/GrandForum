@@ -19,7 +19,8 @@
 		        var length = 0;
 		        for(i in textareas){
 		            var textarea = textareas[i];
-		            length += $(textarea).val().length;
+		            var regex = RegExp('@\\[[^-]+-([^\\]\\[@]*)]','g');
+		            length += $(textarea).val().replace(regex, ' ').length;
 		        }
 		        if($(element).prop("tagName") == "SPAN" ||
 		           $(element).prop("tagName") == "DIV"){

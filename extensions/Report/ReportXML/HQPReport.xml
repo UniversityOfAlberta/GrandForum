@@ -88,7 +88,7 @@ Briefly describe your interactions (if any) with receptors, companies, Project C
             <ReportItemSet id="OR" type="ORReportItemSet">
                 <ReportItemSet id="ProjectLimit_Ia" type="LimitReportItemSet" limit="1800">
                     <ReportItemSet id="projects" type="PersonProjectReportItemSet">
-                        <ReportItem id="Ia" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="HQP_RESACT_EXCELLENCE" type="TextareaReportItem" set="PersonProductsReportItemSet" index="product_id" label="product_title" name="Products">
+                        <ReportItem id="Ia" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="HQP_RESACT_EXCELLENCE" type="AutoCompleteTextareaReportItem" set="PersonProductsReportItemSet" index="product_id" label="product_title" name="Products" tooltipOptionId="Product ID" tooltipOptionName="Product Title">
                             <![CDATA[<i>{$project_name}</i><br />{$item}<br />]]>
                         </ReportItem>
                     </ReportItemSet>
@@ -100,7 +100,7 @@ Briefly describe your interactions (if any) with receptors, companies, Project C
             <ReportItemSet id="OR" type="ORReportItemSet">
                 <ReportItemSet id="ProjectLimit_Ib" type="LimitReportItemSet" limit="1800">
                     <ReportItemSet id="projects" type="PersonProjectReportItemSet">
-                        <ReportItem id="Ib" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="HQP_RESACT_NETWORKING" type="TextareaReportItem" set="ProjectPeopleReportItemSet" index="user_name" label="user_id" name="{$project_name} Members">
+                        <ReportItem id="Ib" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="HQP_RESACT_NETWORKING" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members" tooltipOptionId="Member ID" tooltipOptionName="Member Title">
                             <![CDATA[<i>{$project_name}</i><br />{$item}<br />]]>
                         </ReportItem>
                     </ReportItemSet>

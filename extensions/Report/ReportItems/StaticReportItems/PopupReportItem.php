@@ -37,7 +37,7 @@ class PopupReportItem extends StaticReportItem {
             </script>";
         }
         $html .= <<<EOF
-            <a style="font-style:italic; font-size:11px; font-weight:bold;" onclick="openDialog{$this->getPostId()}(); return false;" href="#">{$title}</a>
+            <a class='pdfnodisplay' style="font-style:italic; font-size:11px; font-weight:bold;" onclick="openDialog{$this->getPostId()}(); return false;" href="#">{$title}</a>
             <div title="{$title}" style="white-space: pre-line;" id="{$this->getPostId()}">{$text}</div>
             <script type='text/javascript'>
                 $(document).ready(function(){

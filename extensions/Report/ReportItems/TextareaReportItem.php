@@ -33,7 +33,7 @@ class TextareaReportItem extends AbstractReportItem {
                     $('textarea[name={$this->getPostId()}]').off('keypress');
                     $('textarea[name={$this->getPostId()}]').limit(1000000000000, '#{$this->getPostId()}_chars_left');
                     function changeColor{$this->getPostId()}(element){
-                        regex = RegExp('@\\\\[.*[^]]','g');
+                        var regex = RegExp('@\\\\[[^-]+-([^\\\\]\\\\[@]*)]','g');
                         var strlen = $(element).val().replace(regex, ' ').length;
                         if(strlen > $limit){
                             $('#limit_{$this->getPostId()} > span').addClass('inlineError');
@@ -114,7 +114,11 @@ EOF;
 	        else{
 	            $type = "recommended";
 	        }
-	        $html .= "<span class='$class'><small>(<i>currently {$length} chars out of a {$type} {$limit}</i>)</small></span>";
+	        $plural = "s";
+	        if($length == 1){
+	            $plural = "";
+	        }
+	        $html .= "<span class='$class'><small>(<i>currently {$length} character{$plural} out of a {$type} {$limit}</i>)</small></span>";
 	    }
 	    $html .= nl2br("<p>{$blobValue}</p>");
 	    $item = $this->processCData($html);
