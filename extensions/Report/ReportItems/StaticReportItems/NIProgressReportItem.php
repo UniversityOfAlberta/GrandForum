@@ -53,7 +53,20 @@ class NIProgressReportItem extends StaticReportItem {
         $rowspan = 0;
         if($reportType == "NIReport"){
             $allocatedBudget = $person->getAllocatedBudget(REPORTING_YEAR-1);
-            $budget = $this->findBudget($report);
+            $budget = null;
+            $rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_BUDGET, 0, 0);
+            $budget_blob = new ReportBlob(BLOB_EXCEL, REPORTING_YEAR, $person->getId(), 0);
+            $budget_blob->load($rep_addr);
+            $budgetData = $budget_blob->getData();
+            if($budgetData != null){
+                $budget = new Budget("XLS", REPORT2_STRUCTURE, $budgetData);
+                if($person->isRoleDuring(CNI)){
+                    $errors = BudgetReportItem::addWorksWithRelation($budgetData, true);
+                    foreach($errors as $key => $error){
+	                    $budget->errors[0][] = $error;
+	                }
+                }
+            }
             if($allocatedBudget == null){
                 $rowspan++;
             }
@@ -77,17 +90,6 @@ class NIProgressReportItem extends StaticReportItem {
                 $errorMsg .= "$tr<td><span class='inlineError'>You have not uploaded a budget request</span></td></tr>\n";
             }
             else{
-                if($person->isRoleDuring(CNI)){
-		            $rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_BUDGET, 0, 0);
-		            $budget_blob = new ReportBlob(BLOB_EXCEL, REPORTING_YEAR, $person->getId(), 0);
-		            $budget_blob->load($rep_addr);
-		            $data = $budget_blob->getData();
-                    
-                    $errors = BudgetReportItem::addWorksWithRelation($data, true);
-                    foreach($errors as $key => $error){
-		                $budget->errors[0][] = $error;
-		            }
-		        }
 		        if($budget->isError()){
                     $errorMsg .= "$tr<td><span class='inlineError'>There are errors in your budget request</span></td></tr>\n";
                 }
@@ -148,7 +150,7 @@ class NIProgressReportItem extends StaticReportItem {
 	                 'nNotMentioned' => 0,
 	                 'nMilestones' => 0);
 	}
-	
+	/*
 	function findBudget($report){
 	    $reportType = $this->getAttr('reportType', 'NIReport');
 	    foreach($report->sections as $section){
@@ -164,6 +166,7 @@ class NIProgressReportItem extends StaticReportItem {
 	        }
 	    }
 	}
+	*/
 }
 
 ?>
