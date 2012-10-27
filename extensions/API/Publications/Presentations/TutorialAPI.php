@@ -1,8 +1,8 @@
 <?php
 
-class WIPAPI extends PaperAPI{
-	function WIPAPI($update=false){
-	    parent::PaperAPI($update, "WIP", "Presentation");
+class TutorialAPI extends PaperAPI{
+	function TutorialAPI($update=false){
+	    parent::PaperAPI($update, "Tutorial", "Presentation");
 	    $this->addPOST("description",false,"The description of the presentation","My Description");
 	    $this->addPOST("date",false,"The date of the presentation","2011-06-12");
 	    $this->addPOST("status",false,"Whether or not the presentation was invited.  Can be either Invited or Not Invited","Not Invited");

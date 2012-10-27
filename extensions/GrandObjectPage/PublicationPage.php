@@ -38,10 +38,18 @@ $artifactTypes = array("Repository" => "repository",
                        "Misc" => "misc");
 
 
-$presentationTypes = array( "2MM"=>"2MM",
-                            "RNotes"=>"RNotes",
-                            "WIP"=>"WIP",
-                            "Misc"=>"Misc"
+$presentationTypes = array( "Paper Session"=>"presented as part of a workshop, symposium, or conference",
+                            "Panel"=>"participated in a public panel discussion",
+                            "Tutorial"=>"taught a tutorial at a workshop, symposium, or conference",
+                            "Keynote"=>"a keynote talk at a workshop, symposium, or conference",
+                            "Distinguished Lecture"=>"presented as part of a distiguished lecture series",
+                            "Departmental Lecture"=>"presented as part of a faculty lecture series",
+                            "Departmental Seminar"=>"presented as visitor to a host department",
+                            "Group Seminar"=>"presented as visitor to a host research group",
+                            "2MM"=>"Two-Minute Madness",
+                            "WIP"=>"Work in Progress",
+                            "RNotes"=>"Research Notes",
+                            "Misc" => "any item not fitting the other listed types:\nenter its type in the text box provided"
                             );
 
 $pressTypes = array("University Press" => "university press",
@@ -72,11 +80,15 @@ $optionDefs = array("Address" => "the city, country of the publisher",
                     "Event Title" => "the official name of the event",
                     "Event Location" => "the city, country where the event took place",
                     "How Published" => "the form of publication (text, video, etc.)",
+                    "Host Institution" => "the university or company where presented",
+                    "Host Department" => "the department where presented",
+                    "Host Research Group" => "the research group to whom presented",
                     "ISBN" => "International Standard Book Number",
                     "ISSN" => "International Standard Serial Number",
                     "Journal Title" => "the name of the journal in which the item appears",
                     "Magazine/Newspaper Title" => "the name of the publication in which this item appears",
                     "Number" => "the issue number of the journal in which this article appears",
+                    "Organizing Body" => "the association organizing the event, e.g. ACM, GRAND, etc.",
                     "Pages" => "the item's page range in the publication",
                     "Published In" => "the name of the publication in which this item appears",
                     "Publisher" => "the name of the publishing company",
@@ -139,18 +151,6 @@ class PublicationPage {
             
             if(($name == "Activity" || $name == "Press" || $name == "Award" || $name == "Publication" || $name == "Artifact" || $name == "Presentation") && 
                (($paper->getTitle() != null && $paper->getCategory() == $name) || $create)){
-               if(!$me->isRoleAtLeast(INACTIVE) && 
-                  ($paper->getCategory() != "Publication" || 
-                   ($paper->getCategory() == "Publication" && $paper->getStatus() != "Published"))){ // Check that the user is logged in
-                    $wgOut->clearHTML();
-                        
-                    $wgOut->setPageTitle("Permission error");
-                    $wgOut->addHTML("You must be logged in to view this page.");
-                    
-                    $wgOut->output();
-                    $wgOut->disable();
-                    return;
-                }
                 $category = $name;
                 $authorTitle = self::getAuthorTitle($category);
                 if($post){
@@ -276,10 +276,82 @@ class PublicationPage {
                                 break;
                             case "Presentation":
                                 switch(type){
+                                    case "Paper Session":
+                                        addAttrDefn('.$this->get_defn("Event Title").');
+                                        addAttrDefn('.$this->get_defn("Event Location").');
+                                        addAttrDefn('.$this->get_defn("Organizing Body").');
+                                        addAttr("URL");
+                                        break;
+                                    case "Panel":
+                                        addAttrDefn('.$this->get_defn("Event Title").');
+                                        addAttrDefn('.$this->get_defn("Event Location").');
+                                        addAttrDefn('.$this->get_defn("Organizing Body").');
+                                        addAttr("URL");
+                                        break;
+                                    case "Tutorial":
+                                        addAttrDefn('.$this->get_defn("Event Title").');
+                                        addAttrDefn('.$this->get_defn("Event Location").');
+                                        addAttrDefn('.$this->get_defn("Organizing Body").');
+                                        addAttr("URL");
+                                        break;
+                                    case "Keynote":
+                                        addAttrDefn('.$this->get_defn("Event Title").');
+                                        addAttrDefn('.$this->get_defn("Event Location").');
+                                        addAttrDefn('.$this->get_defn("Organizing Body").');
+                                        addAttr("URL");
+                                        break;
+                                    case "Distinguished Lecture":
+                                        addAttrDefn('.$this->get_defn("Event Title").');
+                                        addAttrDefn('.$this->get_defn("Host Institution").');
+                                        addAttrDefn('.$this->get_defn("Host Department").');
+                                        addAttr("URL");
+                                        break;
+                                    case "Departmental Lecture":
+                                        addAttrDefn('.$this->get_defn("Event Title").');
+                                        addAttrDefn('.$this->get_defn("Host Institution").');
+                                        addAttrDefn('.$this->get_defn("Host Department").');
+                                        addAttr("URL");
+                                        break;
+                                    case "Departmental Seminar":
+                                        addAttrDefn('.$this->get_defn("Event Title").');
+                                        addAttrDefn('.$this->get_defn("Host Institution").');
+                                        addAttrDefn('.$this->get_defn("Host Department").');
+                                        addAttr("URL");
+                                        break;
+                                    case "Group Seminar":
+                                        addAttrDefn('.$this->get_defn("Event Title").');
+                                        addAttrDefn('.$this->get_defn("Host Institution").');
+                                        addAttrDefn('.$this->get_defn("Host Department").');
+                                        addAttrDefn('.$this->get_defn("Host Research Group").');
+                                        addAttr("URL");
+                                        break;
+                                    case "2mm":
+                                        addAttrDefn('.$this->get_defn("Event Title").');
+                                        addAttrDefn('.$this->get_defn("Event Location").');
+                                        addAttrDefn('.$this->get_defn("Organizing Body").');
+                                        addAttr("URL");
+                                        break;
+                                    case "WIP":
+                                        addAttrDefn('.$this->get_defn("Event Title").');
+                                        addAttrDefn('.$this->get_defn("Event Location").');
+                                        addAttrDefn('.$this->get_defn("Organizing Body").');
+                                        addAttr("URL");
+                                        break;
+                                    case "RNotes":
+                                        addAttrDefn('.$this->get_defn("Event Title").');
+                                        addAttrDefn('.$this->get_defn("Event Location").');
+                                        addAttrDefn('.$this->get_defn("Organizing Body").');
+                                        addAttr("URL");
+                                        break;
                                     default:
-                                        addAttr("Conference");
-                                        addAttr("Location");
-                                        addAttr("Organizing Body");
+                                    case "Misc":
+                                        $("select[name=type]").parent().append("<input type=\'text\' name=\'misc_type\' value=\''.str_replace("Misc: ", "", $paper->getType()).'\' />");
+                                        $("input[name=misc_type]").autocomplete({
+                                            source: misc_types
+                                        });
+                                        addAttrDefn('.$this->get_defn("Event Title").');
+                                        addAttrDefn('.$this->get_defn("Event Location").');
+                                        addAttrDefn('.$this->get_defn("Organizing Body").');
                                         addAttr("URL");
                                         break;
                                 }
@@ -371,7 +443,7 @@ class PublicationPage {
                                         addAttr("DOI");
                                         break;
                                     case "Proceedings Paper":
-                                        addAttrDefn("Event Title", "the name of the event");
+                                        addAttrDefn('.$this->get_defn("Event Title").');
                                         addAttrDefn('.$this->get_defn("Event Location").');
                                         addAttrDefn('.$this->get_defn("Pages").');
                                         addAttrDefn('.$this->get_defn("Publisher").');
@@ -715,7 +787,7 @@ class PublicationPage {
                         $html = $dateTime->format('M j, Y');
                     }
                     if($html != ""){
-                        $wgOut->addHTML("<tr>
+                        $wgOut->addHTML("<tr title='the date of publication'>
                                             <td><b>Date:</b></td>
                                             <td>$html</td>
                                         </tr>");
@@ -759,8 +831,8 @@ class PublicationPage {
                         if($invitedSelected == "" && $notinvitedSelected == ""){
                             $notinvitedSelected = "checked='checked'";
                         }
-                        $wgOut->addHTML("<tr>
-                                            <td align='right'><b>Sub-Type:</b><br /><br /></td>
+                        $wgOut->addHTML("<tr title='whether or not the presentation was invited'>
+                                            <td align='right'><b>Status:</b><br /><br /></td>
                                             <td>
                                                 <input type='radio' name='status' value='Not Invited' $notinvitedSelected /> Not Invited<br />
                                                 <input type='radio' name='status' value='Invited' $invitedSelected /> Invited
@@ -773,6 +845,10 @@ class PublicationPage {
                                             <td><b>Status:</b></td>
                                             <td>{$paper->getStatus()}</td>
                                         </tr>");
+                    }
+                    $data = $paper->getData();
+                    if(!isset($data['url'])){
+                        $this->addAttrRow("URL", "");
                     }
                 }
                 else if($category == "Activity"){
@@ -999,6 +1075,30 @@ class PublicationPage {
             case "Presentation":
                 switch($_POST['type']){
                     default:
+                    case "Paper Session":
+                        $api = new PaperSessionAPI(true);
+                        break;
+                    case "Panel":
+                        $api = new PanelAPI(true);
+                        break;
+                    case "Tutorial":
+                        $api = new TutorialAPI(true);
+                        break;
+                    case "Keynote":
+                        $api = new KeynoteAPI(true);
+                        break;
+                    case "2MM":
+                        $api = new DistinguishedLectureAPI(true);
+                        break;
+                    case "Departmental Lecture":
+                        $api = new DeptLectureAPI(true);
+                        break;
+                    case "Departmental Seminar":
+                        $api = new DeptSeminarAPI(true);
+                        break;
+                    case "Group Seminar":
+                        $api = new GroupSeminarAPI(true);
+                        break;
                     case "2MM":
                         $api = new TwoMMAPI(true);
                         break;
