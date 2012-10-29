@@ -33,7 +33,7 @@ class ProgressReportItem extends StaticReportItem {
         $nTextareas = 0;
         $sections = array();
         foreach($report->sections as $section){
-            if($section instanceof EditableReportSection){
+            if($section instanceof EditableReportSection && !$section->private){
                 if($section->reportCharLimits){
                     if(count($section->number) > 0){
                         $numbers = array();

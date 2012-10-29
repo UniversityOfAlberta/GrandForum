@@ -49,37 +49,37 @@
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Executive Summary: Overview of all of my project's GRAND Activity" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="1" renderpdf="true">
+    <ReportSection name="Executive Summary: Overview of {$project_name} Activity" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="1" renderpdf="true">
     <!-- Ia. Overview of Activity -->
         <ReportItem id="Ia" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OVERALL" type="TextareaReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Assessment: How my project contributes towards the NCE Evaluation Criteria" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="2" renderpdf="true">
+    <ReportSection name="Assessment: How {$project_name} contributes towards the NCE Evaluation Criteria" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="2" renderpdf="true">
     <!-- IIa. Excellence of the Research Program -->
         <ReportItem id='IIa_head' type="StaticReportItem">
-            <![CDATA[<h2>A. Excellence of the Research Program: How my research contributes to the Network</h2>]]>
+            <![CDATA[<h2>A. Excellence of the Research Program: How {$project_name} contributes to the Network</h2>]]>
         </ReportItem>
         <ReportItem id="IIa" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_EXCELLENCE" type="AutoCompleteTextareaReportItem" set="ProjectProductsReportItemSet" index="product_id" label="product_title" name="Products" tooltipOptionId="Product ID" tooltipOptionName="Product Title">
             <![CDATA[{$item}]]>
         </ReportItem>
     <!-- IIb. Development of Highly Qualified Personnel -->
         <ReportItem id='IIa_head' type="StaticReportItem">
-            <![CDATA[<h2>B. Development of Highly Qualified Personnel: My training strategies and achievements</h2>]]>
+            <![CDATA[<h2>B. Development of Highly Qualified Personnel: {$project_name} strategies and achievements</h2>]]>
         </ReportItem>
         <ReportItem id="IIb" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_HQPDEV" type="AutoCompleteTextareaReportItem" set="ProjectAllPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     <!-- IIc. Networking and Partnerships -->
         <ReportItem id='IIc_head' type="StaticReportItem">
-            <![CDATA[<h2>C. Networking and Partnerships: My efforts and successes in building linkages</h2>]]>
+            <![CDATA[<h2>C. Networking and Partnerships: {$project_name} successes in building linkages</h2>]]>
         </ReportItem>
         <ReportItem id="IIc" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETWORKING" type="AutoCompleteTextareaReportItem" set="ProjectAllPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     <!-- IId. Knowledge and Technology Exchange and Exploitation -->
         <ReportItem id='IId_head' type="StaticReportItem">
-            <![CDATA[<h2>D. Knowledge &amp; Technology Exchange &amp; Exploitation: My efforts in disseminating research to receptors</h2>]]>
+            <![CDATA[<h2>D. Knowledge &amp; Technology Exchange &amp; Exploitation: {$project_name} efforts in disseminating research to receptors</h2>]]>
         </ReportItem>
         <ReportItem id="IId" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_KTEE" type="TextareaReportItem">
             <![CDATA[{$item}]]>
@@ -95,7 +95,7 @@
     <ReportSection name="Reflections: Other Aspects of my project's involvement in GRAND" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="3" renderpdf="true">
     <!-- IIIa. Plans for Next Year -->
         <ReportItem id='IIIa_head' type="StaticReportItem">
-            <![CDATA[<h2>Proposed Activity: My Plans for {$next_year} in GRAND</h2>]]>
+            <![CDATA[<h2>Planed activities for {$project_name} in GRAND</h2>]]>
         </ReportItem>
         <ReportItem id="IIIa" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="TextareaReportItem">
             <![CDATA[{$item}]]>

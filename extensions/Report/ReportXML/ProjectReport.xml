@@ -178,20 +178,20 @@ Benefits from being involved in the Network
         </Instructions>
 <!-- I. Executive Summary -->
         <ReportItem id='I_head' type="StaticReportItem">
-            <![CDATA[<h2>I. Executive Summary: Overview of all of my project's GRAND Activity</h2>]]>
+            <![CDATA[<h2>I. Executive Summary: Overview of {$project_name} Activity</h2>]]>
         </ReportItem>
     <!-- Ia. Overview of Activity -->
-        <ReportItemSet id='Ia_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Overview of Activity">
+        <ReportItemSet id='Ia_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Overview of {$project_name} Activity">
             <ReportItem id="Ia" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OVERALL" type="TextareaReportItem">
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
 <!-- II. NCE Criteria -->
         <ReportItem id='II_head' type="StaticReportItem">
-            <![CDATA[<h2>II. Assessment: How my project contributes towards the NCE Evaluation Criteria</h2>]]>
+            <![CDATA[<h2>II. Assessment: How {$project_name} contributes towards the NCE Evaluation Criteria</h2>]]>
         </ReportItem>
     <!-- IIa. Excellence of the Research Program -->
-        <ReportItemSet id='IIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="A. Excellence of the Research Program: How my research contributes to the Network">
+        <ReportItemSet id='IIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="A. Excellence of the Research Program: How {$project_name} contributes to the Network">
             <ReportItem id="IIa" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_EXCELLENCE" type="AutoCompleteTextareaReportItem" set="ProjectProductsReportItemSet" index="product_id" label="product_title" name="Products" tooltipOptionId="Product ID" tooltipOptionName="Product Title">
                 <![CDATA[{$item}<br />]]>
             </ReportItem>
@@ -200,7 +200,7 @@ Benefits from being involved in the Network
             </ReportItem>
         </ReportItemSet>
     <!-- IIb. Development of Highly Qualified Personnel -->
-        <ReportItemSet id='IIb_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="B. Development of Highly Qualified Personnel: My training strategies and achievements">
+        <ReportItemSet id='IIb_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="B. Development of Highly Qualified Personnel: {$project_name} strategies and achievements">
             <ReportItem id="IIb" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_HQPDEV" type="AutoCompleteTextareaReportItem" set="ProjectAllPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
                 <![CDATA[{$item}<br />]]>
             </ReportItem>
@@ -209,7 +209,7 @@ Benefits from being involved in the Network
             </ReportItem>
         </ReportItemSet>
     <!-- IIc. Networking and Partnerships -->
-        <ReportItemSet id='IIc_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="C. Networking and Partnerships: My efforts and successes in building linkages">
+        <ReportItemSet id='IIc_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="C. Networking and Partnerships: {$project_name} successes in building linkages">
             <ReportItem id="IIc" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETWORKING" type="AutoCompleteTextareaReportItem" set="ProjectAllPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
                 <![CDATA[{$item}<br />]]>
             </ReportItem>
@@ -218,7 +218,7 @@ Benefits from being involved in the Network
             </ReportItem>
         </ReportItemSet>
     <!-- IId. Knowledge and Technology Exchange and Exploitation -->
-        <ReportItemSet id='IId_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="D. Knowledge &amp; Technology Exchange &amp; Exploitation: My efforts in disseminating research to receptors">
+        <ReportItemSet id='IId_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="D. Knowledge &amp; Technology Exchange &amp; Exploitation: {$project_name} efforts in disseminating research to receptors">
             <ReportItem id="IId" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_KTEE" type="TextareaReportItem">
                 <![CDATA[{$item}<br />]]>
             </ReportItem>
@@ -234,16 +234,16 @@ Benefits from being involved in the Network
         </ReportItemSet>
 <!-- III. Supplemental -->
         <ReportItem id='III_head' type="StaticReportItem">
-            <![CDATA[<h2>III. Reflections: Other Aspects of my project's involvement in GRAND</h2>]]>
+            <![CDATA[<h2>III. Reflections: {$project_name} and GRAND</h2>]]>
         </ReportItem>
     <!-- IIIa. Plans for Next Year -->
-        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Proposed Activity: My Plans for {$next_year} in GRAND">
+        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Planed activities for {$project_name} in GRAND">
             <ReportItem id="IIIa" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="TextareaReportItem">
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
     <!-- IIIb. Benefits from being involved in the Network -->
-        <ReportItemSet id='IIIb_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Benefits of Networking: The value to my research program of my participation in GRAND">
+        <ReportItemSet id='IIIb_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Benefits of Networking: Benefits from being involved in the Network">
             <ReportItem id="IIIb" rows="12" width="100%" limit="600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETBENEFITS" type="TextareaReportItem">
                 <![CDATA[{$item}]]>
             </ReportItem>

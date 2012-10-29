@@ -1,6 +1,6 @@
 <?php
 
-define("REPORTING_YEAR_REAL", 2011); // Hard-coded year for the reporting period
+define("REPORTING_YEAR_REAL", 2012); // Hard-coded year for the reporting period
 if(isset($_GET['reportingYear'])){
     //define("REPORTING_YEAR", $_GET['reportingYear']);
     define("REPORTING_YEAR", REPORTING_YEAR_REAL);

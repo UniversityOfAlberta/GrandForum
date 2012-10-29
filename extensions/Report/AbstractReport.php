@@ -663,7 +663,8 @@ abstract class AbstractReport extends SpecialPage {
                             }
                             $number = implode(', ', $numbers).'. ';
                         }
-                        PDFGenerator::addChapter($number.$section->name);
+                        $name = $section->varSubstitute($section->name);
+                        PDFGenerator::addChapter($number.$name);
                     }
                     $section->renderForPDF();
                     if(!($section instanceof HeaderReportSection)){

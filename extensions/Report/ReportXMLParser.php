@@ -246,6 +246,10 @@ class ReportXMLParser {
                 if(isset($attributes->private)){
                     $section->setPrivate(strtolower($attributes->private) == "true");
                 }
+                if($this->report->project != null){
+                    $section->setProjectId($this->report->project->getId());
+                }
+                $section->setPersonId($this->report->person->getId());
                 foreach($children as $c){
                     if($c->getName() == "Instructions"){
                         $section->setInstructions("{$children->Instructions}");

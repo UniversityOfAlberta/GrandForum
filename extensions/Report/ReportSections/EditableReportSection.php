@@ -79,6 +79,9 @@ class EditableReportSection extends AbstractReportSection {
     
     // Returns the percentage of completion for this section
     function getPercentComplete(){
+        if($this->getParent()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         $nComplete = $this->getNComplete();
         $nFields = $this->getNFields();
         if($nFields == 0){
@@ -88,6 +91,9 @@ class EditableReportSection extends AbstractReportSection {
     }
     
     function getNComplete(){
+        if($this->getParent()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         $nComplete = 0;
         foreach($this->items as $item){
             $nComplete += $item->getNComplete();
@@ -96,6 +102,9 @@ class EditableReportSection extends AbstractReportSection {
     }
     
     function getNFields(){
+        if($this->getParent()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         $nFields = 0;
         foreach($this->items as $item){
             $nFields += $item->getNfields();
@@ -104,6 +113,9 @@ class EditableReportSection extends AbstractReportSection {
     }
     
     function getNTextareas(){
+        if($this->getParent()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         $nTextareas = 0;
         foreach($this->items as $item){
             if($item instanceof ReportItemSet){
