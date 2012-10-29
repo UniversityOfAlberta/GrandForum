@@ -493,9 +493,13 @@ EOF;
         $fullBudget = array();
         if($type == PNI || $type == CNI){
             $fullBudget[] = new Budget(array(array(HEAD, HEAD, HEAD, HEAD)), array(array($type, "Number of Projects", "Total Request", "Project Requests")));
-            foreach(Person::getAllPeople($type) as $person){
-                $budget = $person->getRequestedBudget(2011);
+            foreach(Person::getAllPeopleDuring($type, "2012-01-01 00:00:00", "2013-01-01 00:00:00") as $person){
+                $budget = $person->getRequestedBudget(2012);
                 if($budget != null){
+                    $error = false;
+                    if($budget->isError()){
+                        $error = true;
+                    }
                     $projects = $budget->copy()->where(HEAD1, array("Project Name:"))->select(V_PROJ);
                     $projectTotals = $budget->copy()->rasterize()->where(HEAD1, array("TOTALS for April 1, 2013, to March 31, 2014"));
                     $budgetProjects = array();
@@ -503,6 +507,9 @@ EOF;
                     $budgetProjects[] = $budget->copy()->where(V_PERS_NOT_NULL)->limit(0, 1)->select(V_PERS_NOT_NULL);
                     $budgetProjects[] = $projects->copy()->count();
                     $budgetProjects[] = $projectTotals->copy()->select(ROW_TOTAL);
+                    if($error){
+                        $budgetProjects[0]->xls[0][1]->error = "There is a problem with budget for ".$budgetProjects[0]->xls[0][1]->value;
+                    }
                     
                     for($i = 0; $i < 6; $i++){
                         if($projectTotals->nCols() > 0 && isset($projects->xls[1][$i + 1])){
@@ -527,7 +534,7 @@ EOF;
             $fullBudget = array();
             $fullBudget[] = new Budget(array(array(HEAD, HEAD, HEAD, HEAD)), array(array($type, "Number of Researchers", "Total Request", "Researcher Requests")));
             foreach(Project::getAllProjects() as $project){
-                $budget = $project->getRequestedBudget(2011);
+                $budget = $project->getRequestedBudget(2012);
                 if($budget != null){
                     $people = $budget->copy()->where(HEAD1, array("Name of network investigator submitting request:"))->select(V_PERS_NOT_NULL);
                 
@@ -562,13 +569,13 @@ EOF;
             $pniTotals = array();
             $cniTotals = array();
             foreach(Person::getAllPeople(PNI) as $person){
-                $budget = $person->getRequestedBudget(2011);
+                $budget = $person->getRequestedBudget(2012);
                 if($budget != null){
                     $pniTotals[] = $budget->copy()->limit(8, 14)->rasterize()->select(ROW_TOTAL);
                 }
             }
             foreach(Person::getAllPeople(CNI) as $person){
-                $budget = $person->getRequestedBudget(2011);
+                $budget = $person->getRequestedBudget(2012);
                 if($budget != null){
                     $cniTotals[] = $budget->copy()->limit(8, 14)->rasterize()->select(ROW_TOTAL);
                 }
