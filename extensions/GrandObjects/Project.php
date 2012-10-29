@@ -206,13 +206,13 @@ class Project{
         INNER JOIN mw_user u ON (p.user=u.user_id) 
         INNER JOIN grand_roles r ON (p.user=r.user)
         WHERE r.role = 'HQP'
-        AND  ( 
+        AND ( 
                 ( (r.end_date != '0000-00-00 00:00:00') AND
-                ( r.start_date BETWEEN '$startRange' AND '$endRange' ) || ( r.end_date BETWEEN '$startRange' AND '$endRange' )) 
+                (( r.start_date BETWEEN '$startRange' AND '$endRange' ) || ( r.end_date BETWEEN '$startRange' AND '$endRange' ) || (r.start_date <= '$startRange' AND r.end_date >= '$endRange') ))
                 OR
                 ( (r.end_date = '0000-00-00 00:00:00') AND
-                ( r.start_date BETWEEN '$startRange' AND '$endRange' ) || ( r.start_date <= '$startRange' ))
-                )                
+                ((r.start_date <= '$endRange')))
+                )              
         AND u.deleted != '1'
         GROUP BY p.user) AS s
         GROUP BY s.num_projects
@@ -377,10 +377,10 @@ EOF;
                 AND project_id = '{$this->id}'
                 AND ( 
                 ( (end_date != '0000-00-00 00:00:00') AND
-                ( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' )) 
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
                 OR
                 ( (end_date = '0000-00-00 00:00:00') AND
-                ( start_date BETWEEN '$startRange' AND '$endRange' ) || ( start_date <= '$startRange' ))
+                ((start_date <= '$endRange')))
                 )
                 AND `deleted` != '1'
                 ORDER BY last_name ASC";
@@ -825,6 +825,9 @@ EOF;
 	    if($year == '0000'){
 	        $year = date('Y');
 	    }
+	    $startRange = $year.'01-01 00:00:00';
+	    $endRange = $year.'-12-31 23:59:59';
+	    
 	    $milestones = array();
 	    $milestoneIds = array();
 	    $preds = $this->getPreds();
@@ -849,6 +852,13 @@ EOF;
 	        $sql2 = "SELECT milestone_id
     	             FROM grand_milestones
     	             WHERE id = '{$max_id}'
+    	             AND ( 
+                        ( (end_date != '0000-00-00 00:00:00') AND
+                        (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                        OR
+                        ( (end_date = '0000-00-00 00:00:00') AND
+                        ((start_date <= '$endRange')))
+                     )
                      AND ( (start_date > end_date AND status != 'Closed') OR ( $year BETWEEN YEAR(start_date)  AND YEAR(end_date) ) )";
             
             $data2 = DBFunctions::execSQL($sql2);

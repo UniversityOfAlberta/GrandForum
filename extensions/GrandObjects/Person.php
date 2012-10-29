@@ -834,10 +834,10 @@ class Person{
                 WHERE user = '{$this->id}'
                 AND ( 
                 ( (end_date != '0000-00-00 00:00:00') AND
-                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' )))
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
                 OR
                 ( (end_date = '0000-00-00 00:00:00') AND
-                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( start_date <= '$startRange' )))
+                ((start_date <= '$endRange')))
                 )";
         $data = DBFunctions::execSQL($sql);
 		$roles = array();
@@ -1264,10 +1264,10 @@ class Person{
                 AND type = 'Supervises'
                 AND ( 
                 ( (end_date != '0000-00-00 00:00:00') AND
-                ( (start_date <= '$startRange' AND end_date >= '$startRange') OR (start_date BETWEEN '$startRange' AND '$endRange' )))
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
                 OR
                 ( (end_date = '0000-00-00 00:00:00') AND
-                ( (start_date BETWEEN '$startRange' AND '$endRange' ) OR ( start_date <= '$startRange' )))
+                ((start_date <= '$endRange')))
                 )";
     
         $data = DBFunctions::execSQL($sql);
@@ -1515,10 +1515,10 @@ class Person{
                 WHERE user_id = '{$this->id}'
                 AND ( 
                 ( (end_date != '0000-00-00 00:00:00') AND
-                ( (start_date <= '$startRange' AND end_date >= '$startRange') OR (start_date BETWEEN '$startRange' AND '$endRange' )))
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
                 OR
-                ( (end_date = '0000-00-00 00:00:00' ) AND
-                ( (start_date BETWEEN '$startRange' AND '$endRange' ) OR ( start_date <= '$startRange' )))
+                ( (end_date = '0000-00-00 00:00:00') AND
+                ((start_date <= '$endRange')))
                 )";
         $data = DBFunctions::execSQL($sql);
 		$projects = array();
