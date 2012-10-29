@@ -63,21 +63,21 @@ class PLProgressReportItem extends StaticReportItem {
 		
         $details .= "<tr><td><b>Milestones</b></td>";
         $details .= "<td>{$total} of the {$nItems} milestones have been cited in your milestone status overview\n</td></tr>";
-        $details .= "<tr><td rowspan='2' valign='top' style='white-space:nowrap;'><b>NI Comments</b></td>";
+        $details .= "<tr><td valign='top' style='white-space:nowrap;'><b>NI Comments</b></td>";
         $pniComments = "{$totalPNIs} of the {$nPNIs}";
         $cniComments = "{$totalCNIs} of the {$nCNIs}";
         
         if($totalPNIs < $nPNIs){
-            $details .= "<td><span class='inlineError'>$pniComments</span> PNIs\n</td></tr>";
+            $details .= "<td><span class='inlineError'>$pniComments</span> PNIs; ";
         }
         else{
-            $details .= "<td>$pniComments\n PNIs</td></tr>";
+            $details .= "<td>$pniComments PNIs; ";
         }
         if($totalCNIs < $nCNIs){
-            $details .= "<tr><td><span class='inlineError'>$cniComments</span> CNIs\n</td></tr>";
+            $details .= "<span class='inlineError'>$cniComments</span> CNIs\n</td></tr>";
         }
         else{
-            $details .= "<tr><td>$cniComments CNIs\n</td></tr>";
+            $details .= "$cniComments CNIs\n</td></tr>";
         }
         return $details;
 	}
