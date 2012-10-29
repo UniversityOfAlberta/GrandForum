@@ -291,7 +291,7 @@ Benefits from being involved in the Network
             <ReportItem id="milestone_data" type="StaticReportItem">
                 <![CDATA[
                     <tr>
-                        <td style='white-space:nowrap;'>
+                        <td style='white-space:nowrap;' valign='top'>
                             <table>
                                 <tr><td><b>Id:</b></td><td align='left'>{$milestone_id}</td></tr>
                                 <tr><td><b>Status:</b></td><td align='left'>{$milestone_status}</td></tr>
@@ -299,7 +299,13 @@ Benefits from being involved in the Network
                             </table>
                 ]]>
             </ReportItem>
-            <ReportItem id="milestone_history" type="PopupReportItem" title="See Milestone History" url="{$wgServer}{$wgScriptPath}/index.php?action=api.getProjectMilestoneHistory/{$milestone_id}/{$last_year}-12-01" text="Loading...">
+            <ReportItem id="milestone_full_description" type="PopupReportItem" title="Full Description" text="{$milestone_description}">
+                <![CDATA[<br />{$item}<br />]]>
+            </ReportItem>
+            <ReportItem id="milestone_history" type="PopupReportItem" title="Milestone History" url="{$wgServer}{$wgScriptPath}/index.php?action=api.getProjectMilestoneHistory/{$milestone_id}/{$last_year}-12-01" text="Loading...">
+                <![CDATA[{$item}<br />]]>
+            </ReportItem>
+            <ReportItem id="milestone_ni_comments" type="PopupReportItem" title="See NI Comments" text="{$milestone_ni_comments}">
                 <![CDATA[{$item}]]>
             </ReportItem>
             <ReportItem id="milestone_data" type="StaticReportItem">
@@ -309,7 +315,7 @@ Benefits from being involved in the Network
             </ReportItem>
             <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_oldtitle}" newText="{$milestone_title}">
                 <![CDATA[
-                    <td><p><b>Title:</b> {$item}</p>
+                    <td valign='top'><p><b>Title:</b> {$item}</p>
                 ]]>
             </ReportItem>
             <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_olddescription}" newText="{$milestone_description}">
