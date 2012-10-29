@@ -507,10 +507,18 @@ EOF;
                     $budgetProjects[] = $budget->copy()->where(V_PERS_NOT_NULL)->limit(0, 1)->select(V_PERS_NOT_NULL);
                     $budgetProjects[] = $projects->copy()->count();
                     $budgetProjects[] = $projectTotals->copy()->select(ROW_TOTAL);
+                    //if($type == CNI){var_dump( $projectTotals->copy()->select(ROW_TOTAL)); }// . "<br>";
                     if($error){
                         $budgetProjects[0]->xls[0][1]->error = "There is a problem with budget for ".$budgetProjects[0]->xls[0][1]->value;
                     }
                     
+                    if(empty($budgetProjects[2]->xls)){
+                        //var_dump($budgetProjects[0]); 
+                        //break;
+                        //$budgetProjects[0]->xls = array(array("error"=>""));
+                        @$budgetProjects[0]->xls[0][1]->error = "There is a problem with budget for ".@$budgetProjects[0]->xls[0][1]->value;
+                    }
+
                     for($i = 0; $i < 6; $i++){
                         if($projectTotals->nCols() > 0 && isset($projects->xls[1][$i + 1])){
                             $budgetProjects[] = @$budget->copy()->where(HEAD1, array("Project Name:"))->select(V_PROJ, array($projects->xls[1][$i + 1]->getValue()))->join(
@@ -536,6 +544,10 @@ EOF;
             foreach(Project::getAllProjects() as $project){
                 $budget = $project->getRequestedBudget(2012);
                 if($budget != null){
+                    $error = false;
+                    if($budget->isError()){
+                        $error = true;
+                    }
                     $people = $budget->copy()->where(HEAD1, array("Name of network investigator submitting request:"))->select(V_PERS_NOT_NULL);
                 
                     $budgetPeople = array();
@@ -543,6 +555,10 @@ EOF;
                     $budgetPeople[] = $people->copy()->count();
                     $budgetPeople[] = $budgetTotal = $budget->copy()->where(CUBE_TOTAL)->select(CUBE_TOTAL);
                     
+                    if($error){
+                        $budgetPeople[0]->xls[0][0]->error = "There is a problem with budget for ".$budgetPeople[0]->xls[0][0]->value;
+                    }
+
                     $nCols = $people->nCols();
                     for($i = 0; $i < $nCols; $i++){
                         if(isset($people->xls[0][$i + 1])){
