@@ -299,10 +299,10 @@ Benefits from being involved in the Network
                             </table>
                 ]]>
             </ReportItem>
-            <ReportItem id="milestone_full_description" type="PopupReportItem" title="Full Description" text="{$milestone_description}">
+            <ReportItem id="milestone_full_description" type="PopupReportItem" title="See Description" text="{$milestone_description}">
                 <![CDATA[<br />{$item}<br />]]>
             </ReportItem>
-            <ReportItem id="milestone_history" type="PopupReportItem" title="Milestone History" url="{$wgServer}{$wgScriptPath}/index.php?action=api.getProjectMilestoneHistory/{$milestone_id}/{$last_year}-12-01" text="Loading...">
+            <ReportItem id="milestone_history" type="PopupReportItem" title="See History" url="{$wgServer}{$wgScriptPath}/index.php?action=api.getProjectMilestoneHistory/{$milestone_id}/{$last_year}-12-01" text="Loading...">
                 <![CDATA[{$item}<br />]]>
             </ReportItem>
             <ReportItem id="milestone_ni_comments" type="PopupReportItem" title="See NI Comments" text="{$milestone_ni_comments}">

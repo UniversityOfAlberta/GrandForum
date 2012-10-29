@@ -392,10 +392,10 @@ No individual budget request for a PNI for 2013-14 should exceed $55,000, and no
                             <td width="35%">{$item}<br />
                         ]]>
                     </ReportItem>
-                    <ReportItem id="milestone_description_full" type="PopupReportItem" title="Full Description" text="{$milestone_description}">
+                    <ReportItem id="milestone_description_full" type="PopupReportItem" title="See Description" text="{$milestone_description}">
                         <![CDATA[{$item}<br />]]>
                     </ReportItem>
-                    <ReportItem id="milestone_history" type="PopupReportItem" title="Milestone History" url="{$wgServer}{$wgScriptPath}/index.php?action=api.getProjectMilestoneHistory/{$milestone_id}/{$last_year}-12-01" text="Loading...">
+                    <ReportItem id="milestone_history" type="PopupReportItem" title="See History" url="{$wgServer}{$wgScriptPath}/index.php?action=api.getProjectMilestoneHistory/{$milestone_id}/{$last_year}-12-01" text="Loading...">
                         <![CDATA[{$item}<br />]]>
                     </ReportItem>
                     <ReportItem id="milestone_hqp_comments" type="PopupReportItem" title="See HQP Comments" text="{$milestone_hqp_comments}">
