@@ -60,21 +60,21 @@
         <ReportItem id='IIa_head' type="StaticReportItem">
             <![CDATA[<h2>A. Excellence of the Research Program: How my research contributes to the Network</h2>]]>
         </ReportItem>
-        <ReportItem id="IIa" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_EXCELLENCE" type="AutoCompleteTextareaReportItem" set="ProjectProductsReportItemSet" index="product_id" label="product_title" name="Products">
+        <ReportItem id="IIa" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_EXCELLENCE" type="AutoCompleteTextareaReportItem" set="ProjectProductsReportItemSet" index="product_id" label="product_title" name="Products" tooltipOptionId="Product ID" tooltipOptionName="Product Title">
             <![CDATA[{$item}]]>
         </ReportItem>
     <!-- IIb. Development of Highly Qualified Personnel -->
         <ReportItem id='IIa_head' type="StaticReportItem">
             <![CDATA[<h2>B. Development of Highly Qualified Personnel: My training strategies and achievements</h2>]]>
         </ReportItem>
-        <ReportItem id="IIb" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_HQPDEV" type="AutoCompleteTextareaReportItem" set="ProjectAllPeopleReportItemSet" index="user_name" label="user_id" name="People">
+        <ReportItem id="IIb" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_HQPDEV" type="AutoCompleteTextareaReportItem" set="ProjectAllPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     <!-- IIc. Networking and Partnerships -->
         <ReportItem id='IIc_head' type="StaticReportItem">
             <![CDATA[<h2>C. Networking and Partnerships: My efforts and successes in building linkages</h2>]]>
         </ReportItem>
-        <ReportItem id="IIc" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETWORKING" type="AutoCompleteTextareaReportItem" set="ProjectAllPeopleReportItemSet" index="user_name" label="user_id" name="People">
+        <ReportItem id="IIc" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETWORKING" type="AutoCompleteTextareaReportItem" set="ProjectAllPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     <!-- IId. Knowledge and Technology Exchange and Exploitation -->
@@ -136,7 +136,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection name="Milestones" blobSection="LDR_MILESTONE" type="ReportSection" pagebreak="false" number="6" renderpdf="true">
-        <ReportItem id="milestone_desc" height="250px" blobType="BLOB_TEXT" blobItem="LDR_MILE_REPORT" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" showNotReferenced="true" anchor="true" anchorFormat="{$milestone_title}">
+        <ReportItem id="milestone_desc" height="250px" blobType="BLOB_TEXT" blobItem="LDR_MILE_REPORT" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" showNotReferenced="true" anchor="true" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1800">
             <![CDATA[
                 <h2>Milestone Report</h2>
                 {$item}
