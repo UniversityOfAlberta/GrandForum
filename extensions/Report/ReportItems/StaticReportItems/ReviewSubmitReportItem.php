@@ -9,6 +9,10 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		if($this->getReport()->project != null){
 		    $projectGet = "&project={$this->getReport()->project->getName()}";
 		}
+		$year = "";
+        if(isset($_GET['reportingYear'])){
+            $year = "&reportingYear={$_GET['reportingYear']}";
+        }
 		if(!$wgImpersonating || checkSupervisesImpersonee()){
 		    $wgOut->addHTML("<script type='text/javascript'>
 		        $(document).ready(function(){
@@ -37,7 +41,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
                         $('#generate_error').css('display', 'none');
                         $('#generate_throbber').css('display', 'inline-block');
 		                $.ajax({
-		                        url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}&generatePDF', 
+		                        url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&generatePDF', 
 		                        success : function(data){
 		                                        //var data = jQuery.parseJSON(response);
 		                                        for(index in data){
@@ -108,7 +112,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		            function submitReport(button){
 		                $('#submitButton').prop('disabled', true);
 		                $('#submit_throbber').css('display', 'inline-block');
-		                $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}&submitReport&tok=' + $(button).val() ,function(data){
+		                $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&submitReport&tok=' + $(button).val() ,function(data){
 		                    $('.submit_status_cell').css('background', '#008800');
 		                    $('.submit_status_cell').html('<b>Yes</b>');
 		                    $('#submitButton').removeAttr('disabled');
