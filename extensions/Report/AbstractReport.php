@@ -311,9 +311,9 @@ abstract class AbstractReport extends SpecialPage {
     	foreach($check as $c){
     	    $tok = $c['token'];
     	    $sto->select_report($tok);
+    	    $year = $c['year'];
     	    $tst = $sto->metadata('timestamp');
-    	    if(strcmp($tst, ($this->year).REPORTING_NCE_START_MONTH) >= 0 &&
-    	       strcmp($tst, ($this->year+1).REPORTING_NCE_END_MONTH) <= 0 && 
+    	    if($year == $this->year && 
     	       strcmp($tst, $largestDate) > 0){
     	        $largestDate = $tst;
     	        $return = array($c);
@@ -489,7 +489,7 @@ abstract class AbstractReport extends SpecialPage {
                     $data = "";
                     $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, false);
                     $sto = new ReportStorage($this->person);
-                    $sto->store_report($data, $pdf, 0, 0, $report->pdfType);
+                    $sto->store_report($data, $pdf, 0, 0, $report->pdfType, $this->year);
                     if($project != null){
                         $ind = new ReportIndex($this->person);
                         $rid = $sto->metadata('report_id');
@@ -509,7 +509,7 @@ abstract class AbstractReport extends SpecialPage {
                 exit;
             }
             $sto = new ReportStorage($this->person);
-            $sto->store_report($data, $pdf, 0, 0, $report->pdfType);
+            $sto->store_report($data, $pdf, 0, 0, $report->pdfType, $this->year);
             if($report->project != null){
                 $ind = new ReportIndex($this->person);
                 $rid = $sto->metadata('report_id');

@@ -286,6 +286,18 @@ function showIndividualReport($person, $year){
         		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (submitted $tst)<br />");
         	}
         	$check = array();
+        	if($role->getRole() == HQP){
+                $usedRoles[HQP] = true;
+                $report = new DummyReport("HQPReportComments", $person, null, $year);
+                $check = $report->getPDF();
+            }
+            if (count($check) > 0) {
+        		$tok = $check[0]['token'];
+        		$sto->select_report($tok);    	
+        		$tst = $sto->metadata('timestamp');
+        		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (submitted $tst)<br />");
+        	}
+        	$check = array();
         	if($role->getRole() == PNI || $role->getRole() == CNI){
                 $usedRoles[PNI] = true;
                 $usedRoles[CNI] = true;
@@ -327,7 +339,6 @@ function showProjectReports($person, $year){
         $commentHTML = "";
         $milestonesHTML = "";
         foreach ($projs as &$pj) {
-
             $plReport = new DummyReport("ProjectReport", $person, $pj, $year);
             $commentReport = new DummyReport("ProjectReportComments", $person, $pj, $year);
             $milestonesReport = new DummyReport("ProjectReportMilestones", $person, $pj, $year);
@@ -343,13 +354,13 @@ function showProjectReports($person, $year){
         	}
         	if (count($commentCheck) > 0) {
         		$tok = $commentCheck[0]['token'];
-        		$sto->select_report($tok);    	
+        		$sto->select_report($tok);
         		$tst = $plCheck[0]['timestamp'];
         		$commentHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Comments PDF</a></td><td>(submitted $tst)</td></tr>";
         	}
         	if (count($milestonesCheck) > 0) {
         		$tok = $milestonesCheck[0]['token'];
-        		$sto->select_report($tok);    	
+        		$sto->select_report($tok);
         		$tst = $plCheck[0]['timestamp'];
         		$milestonesHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Milestones PDF</a></td><td>(submitted $tst)</td></tr>";
         	}
@@ -384,7 +395,7 @@ function showProjectComments($person, $year){
             // Looping through everybody is pretty slow, but for the moment, is an easy way to find all the leader reports
             $ls = $sto->list_project_reports($pj->getId(), 10000, 0, RPTP_LEADER_COMMENTS);
             foreach ($ls as &$row) {
-                if($row['timestamp'] >= ($year).REPORTING_PRODUCTION_MONTH && $row['timestamp'] <= ($year+1).REPORTING_PRODUCTION_MONTH){
+                if($row['year'] == $year){
 	                $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$row['token']}&amp;project={$pj->getName()}'>{$year} {$pj->getName()} Project Comments PDF</a> (submitted {$row['timestamp']})<br />");
 	                $found = true;
 	                break;
