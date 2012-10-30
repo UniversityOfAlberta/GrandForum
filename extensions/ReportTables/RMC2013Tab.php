@@ -500,22 +500,22 @@ EOF;
                     if($budget->isError()){
                         $error = true;
                     }
+                    /*
                     $projects = $budget->copy()->where(HEAD1, array("Project Name:"))->select(V_PROJ);
-                    $projectTotals = $budget->copy()->rasterize()->where(HEAD1, array("TOTALS for April 1, 2013, to March 31, 2014"));
+                    $projectTotals = $budget->copy()->rasterize()->where(HEAD1, array("TOTALS for April 1, 201[2-3], to March 31, 201[3-4]"));
+                    //$projectTotals = $budget->copy()->select(V_PROJ, array());
                     $budgetProjects = array();
                     
                     $budgetProjects[] = $budget->copy()->where(V_PERS_NOT_NULL)->limit(0, 1)->select(V_PERS_NOT_NULL);
                     $budgetProjects[] = $projects->copy()->count();
                     $budgetProjects[] = $projectTotals->copy()->select(ROW_TOTAL);
-                    //if($type == CNI){var_dump( $projectTotals->copy()->select(ROW_TOTAL)); }// . "<br>";
+                   
                     if($error){
                         $budgetProjects[0]->xls[0][1]->error = "There is a problem with budget for ".$budgetProjects[0]->xls[0][1]->value;
                     }
                     
                     if(empty($budgetProjects[2]->xls)){
-                        //var_dump($budgetProjects[0]); 
-                        //break;
-                        //$budgetProjects[0]->xls = array(array("error"=>""));
+                        
                         @$budgetProjects[0]->xls[0][1]->error = "There is a problem with budget for ".@$budgetProjects[0]->xls[0][1]->value;
                     }
 
@@ -531,6 +531,47 @@ EOF;
                     }
                     $rowBudget = Budget::join_tables($budgetProjects);
                     $fullBudget[] = $rowBudget;
+                    */
+
+                    $projects = $budget->copy()->where(HEAD1, array("Project Name:"))->select(V_PROJ);
+                    $pers_total = $budget->copy()->rasterize()->select(HEAD1, array("Total"))->where(ROW_TOTAL);
+
+                    $budgetProjects = array();
+                    $budgetProjects[] = $budget->copy()->where(V_PERS_NOT_NULL)->limit(0, 1)->select(V_PERS_NOT_NULL);
+                    $budgetProjects[] = $projects->copy()->count();
+                    $budgetProjects[] = $pers_total->limit($pers_total->nRows()-1,1);
+
+                    //echo $budget->copy()->rasterize()->render();
+                    $cur_year_total = $budget->copy()->rasterize()->where(HEAD1, array("TOTALS for April 1, 2013, to March 31, 2014"));
+                    
+
+                    $i = 0;
+                    foreach($projects->xls as $index => $project_arr){
+                        foreach($project_arr as $project){
+                            $proj_name = $project->toString();
+                            $concat_budget = new Budget(array(array(READ)), array(array($proj_name)));
+                            $budgetProjects[] = $concat_budget->join($budget->copy()->rasterize()->select(V_PROJ, array($proj_name))->where(COL_TOTAL)->limitCols(0,1))->concat();
+                            $i++;
+                        }
+                    }
+                    for(; $i < 6; $i++){
+                        $budgetProjects[] = new Budget();
+                    }    
+                    
+                    if($error){
+                        @$budgetProjects[0]->xls[0][1]->error = "There is a problem with budget for ".@$budgetProjects[0]->xls[0][1]->value;
+                    }
+                    
+                    if(empty($cur_year_total->xls)){
+                        @$budgetProjects[0]->xls[0][1]->style = "background-color:#FFFF88 !important;";
+                        @$budgetProjects[0]->xls[0][1]->error = "Last year's template is used by ".@$budgetProjects[0]->xls[0][1]->value;
+                    }
+
+                    $rowBudget = Budget::join_tables($budgetProjects);
+                    $fullBudget[] = $rowBudget;
+
+
+
                 }
             }
             $fullBudget = Budget::union_tables($fullBudget);
