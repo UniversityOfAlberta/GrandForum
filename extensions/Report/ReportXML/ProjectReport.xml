@@ -354,7 +354,7 @@ Benefits from being involved in the Network
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="budget" name="Project Budget" blobSection="LDR_BUDGET" type="EditableReportSection" autosave="true" renderpdf="true">
+    <ReportSection id="budget" name="Project Budget Request" blobSection="LDR_BUDGET" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
                 <p>This section includes a roll-up of the Budget Request for this project from each of the listed researchers.</p>

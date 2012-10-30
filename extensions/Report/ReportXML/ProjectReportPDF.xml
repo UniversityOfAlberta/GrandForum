@@ -124,7 +124,7 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection name="Project Budget" blobSection="LDR_BUDGET" type="EditableReportSection" number="4" renderpdf="true">
+    <ReportSection name="Project Budget Request" blobSection="LDR_BUDGET" type="EditableReportSection" number="4" renderpdf="true">
         <ReportItem id="budget" type="ProjectBudgetReportItem" />
         <ReportItem id="budget_just" rows="10" limit="600" blobType="BLOB_TEXT" blobItem="LDR_BUD_JUST" type="TextareaReportItem">
             <![CDATA[<h2>Budget Justification</h2> {$item}]]>

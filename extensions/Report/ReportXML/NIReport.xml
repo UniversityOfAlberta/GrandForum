@@ -311,7 +311,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="budget" name="Budget" blobSection="RES_BUDGET" tooltip="Budget request and justification" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true">
+    <ReportSection id="budget" name="Budget Request" blobSection="RES_BUDGET" tooltip="Budget request and justification" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true">
         <Instructions>
             <![CDATA[
                 <p>Below find a budget template, which you should download, complete with your funding request for 2013-14 and upload. As with the past year, the amounts you will be allocating to different projects should be listed in different columns. Please note:<br />
