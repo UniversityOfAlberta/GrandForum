@@ -21,13 +21,17 @@ class BudgetReportItem extends AbstractReportItem {
 		if(isset($_GET['project'])){
 		    $projectGet = "&project={$_GET['project']}";
 		}
+		$year = "";
+        if(isset($_GET['reportingYear'])){
+            $year = "&reportingYear={$_GET['reportingYear']}";
+        }
         $wgOut->addHTML("<script type='text/javascript'>
                                 var frameId = 0;
                                 function alertreload(){
                                     var lastHeight = $('#budgetFrame' + frameId).height();
                                     $('#budgetFrame' + frameId).remove();
                                     frameId++;
-                                    $('#budgetDiv').html(\"<iframe id='budgetFrame\" + frameId + \"' style='border-width:0;width:100%;' frameborder='0' src='../index.php/Special:Report?report=NIReport&section=Budget&budgetUploadForm$projectGet'></iframe>\");
+                                    $('#budgetDiv').html(\"<iframe id='budgetFrame\" + frameId + \"' style='border-width:0;width:100%;' frameborder='0' src='../index.php/Special:Report?report=NIReport&section=Budget+Request&budgetUploadForm{$projectGet}{$year}'></iframe>\");
                                     $('#budgetFrame' + frameId).height(lastHeight);
                                 }
                                 function alertsize(pixels){
@@ -41,7 +45,7 @@ class BudgetReportItem extends AbstractReportItem {
 		$wgOut->addHTML("<h2>Download Budget Template</h2> <ul><li><a href='$wgServer$wgScriptPath/data/GRAND Researcher Budget Request (2013-14).xls'>".(REPORTING_YEAR+1)."-".(REPORTING_YEAR+2)." Budget Template</a></li></ul>" );
 		
 		$wgOut->addHTML("<h2>Budget Upload</h2>
-		                 <div id='budgetDiv'><iframe id='budgetFrame0' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report=NIReport&section=Budget&budgetUploadForm$projectGet'></iframe></div>");
+		                 <div id='budgetDiv'><iframe id='budgetFrame0' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report=NIReport&section=Budget+Request&budgetUploadForm{$projectGet}{$year}'></iframe></div>");
 		$wgOut->addHTML("</div>");
 	}
 	
@@ -67,6 +71,10 @@ class BudgetReportItem extends AbstractReportItem {
 		if(isset($_GET['project'])){
 		    $projectGet = "&project={$_GET['project']}";
 		}
+		$year = "";
+        if(isset($_GET['reportingYear'])){
+            $year = "&reportingYear={$_GET['reportingYear']}";
+        }
         echo "<html>
                 <head>
                     <script type='text/javascript' src='$wgServer$wgScriptPath/scripts/jquery.min.js'></script>
@@ -114,14 +122,14 @@ class BudgetReportItem extends AbstractReportItem {
         echo "</head>
               <body style='margin:0;'>
                     <div id='bodyContent'>
-                        <form action='$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport&section=Budget&budgetUploadForm$projectGet' method='post' enctype='multipart/form-data'>
+                        <form action='$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport&section=Budget+Request&budgetUploadForm{$projectGet}{$year}' method='post' enctype='multipart/form-data'>
                             <input type='file' name='budget' />
 	                        <input type='submit' name='upload' value='Upload' />
 	                    </form>";
 	            
 	    $data = $this->getBlobValue();
 	    if($data !== null){
-	        echo "<br /><a href='$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport&section=Budget&downloadBudget$projectGet'>Download Uploaded Budget</a>";
+	        echo "<br /><a href='$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport&section=Budget+Request&downloadBudget{$projectGet}{$year}'>Download Uploaded Budget</a>";
 		    $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
 		    $budget = $this->filterCols($budget);
 		    $budget = $budget->copy()->filterCols(V_PROJ, array(""));
