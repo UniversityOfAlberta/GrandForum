@@ -135,7 +135,7 @@
             <![CDATA[<div id='appendix'>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Milestones" blobSection="LDR_MILESTONE" type="ReportSection" pagebreak="false" number="6" renderpdf="true">
+    <ReportSection name="Milestones" blobSection="LDR_MILESTONE" type="ReportSection" pagebreak="false" number="6" renderpdf="true" previewonly="true">
         <ReportItem id="milestone_desc" height="250px" blobType="BLOB_TEXT" blobItem="LDR_MILE_REPORT" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" showNotReferenced="true" anchor="true" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1800">
             <![CDATA[
                 <h2>Milestone Report</h2>

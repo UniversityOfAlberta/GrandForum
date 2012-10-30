@@ -77,6 +77,7 @@ class ReportArchive extends SpecialPage {
 				        }
 				        else{
 				            $report = AbstractReport::newFromToken($tok);
+				            
 				            if($report->project != null){
 				                if($report->person->getId() == 0){
 				                    $name = "{$report->name}.{$ext}";
