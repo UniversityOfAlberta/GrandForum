@@ -92,7 +92,7 @@ class PersonBudgetTab extends AbstractEditableTab {
                 }
                 $this->html .= "</div>";
             }
-            $this-> html .= "</div>";
+            $this->html .= "</div>";
         }
     }
     

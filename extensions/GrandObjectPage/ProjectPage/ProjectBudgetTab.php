@@ -38,16 +38,32 @@ class ProjectBudgetTab extends AbstractTab {
         $project = $this->project;
         
         if($isLead){
-            $budget = $project->getRequestedBudget(REPORTING_YEAR);
-            if($budget->nRows()*$budget->nCols() <= 6){
-                $budget = $project->getRequestedBudget(REPORTING_YEAR-1);
+            $wgOut->addScript("<script type='text/javascript'>
+                $(document).ready(function(){
+                    $('#budgetAccordion').accordion({autoHeight: false,
+                                                     collapsible: true});
+                });
+            </script>");
+            //$this->html .= "<h2><span class='mw-headline'>Budgets</span></h2>";
+            $this->html .= "<div id='budgetAccordion'>";
+            for($i=REPORTING_YEAR; $i >= 2011; $i--){
+                $this->html .= "<h3><a href='#'>".$i."</a></h3>";
+                $this->html .= "<div style='overflow: auto;'>";
+
+                $budget = $project->getAllocatedBudget($i-1);
+                //if($i==REPORTING_YEAR && $budget->nRows()*$budget->nCols() <= 6){
+                //    $budget = $project->getRequestedBudget($i-1);
+                //}
+                if($budget != null){
+                    $this->html .= $budget->render();
+                }
+                else {
+                    $this->html .= "No budget could be found for $i";
+                }
+                $this->html .="</div>";
             }
-            if($budget != null){
-                $this->html .= "<h2><span class='mw-headline'>Budget</span></h2>";
-            }
-            $this->html .= "<div style='overflow: auto;'>";
-            $this->html .= $budget->render();
-            $this->html .="</div>";
+            $this->html .= "</div>";
+
         }
     }
 }    
