@@ -492,52 +492,29 @@ EOF;
         $this->html .= "<h3>$type Budget Summary</h3>";
         $fullBudget = array();
         if($type == PNI || $type == CNI){
-            $fullBudget[] = new Budget(array(array(HEAD, HEAD, HEAD, HEAD)), array(array($type, "Number of Projects", "Total Request", "Project Requests")));
+            $fullBudget[] = new Budget(array(array(HEAD, HEAD, HEAD, HEAD, HEAD)), array(array($type, "Allocated in 2012", "Number of Projects", "Total Request", "Project Requests")));
             foreach(Person::getAllPeopleDuring($type, "2012-01-01 00:00:00", "2013-01-01 00:00:00") as $person){
                 $budget = $person->getRequestedBudget(2012);
                 if($budget != null){
-                    $error = false;
-                    if($budget->isError()){
-                        $error = true;
-                    }
-                    /*
-                    $projects = $budget->copy()->where(HEAD1, array("Project Name:"))->select(V_PROJ);
-                    $projectTotals = $budget->copy()->rasterize()->where(HEAD1, array("TOTALS for April 1, 201[2-3], to March 31, 201[3-4]"));
-                    //$projectTotals = $budget->copy()->select(V_PROJ, array());
-                    $budgetProjects = array();
                     
-                    $budgetProjects[] = $budget->copy()->where(V_PERS_NOT_NULL)->limit(0, 1)->select(V_PERS_NOT_NULL);
-                    $budgetProjects[] = $projects->copy()->count();
-                    $budgetProjects[] = $projectTotals->copy()->select(ROW_TOTAL);
-                   
-                    if($error){
-                        $budgetProjects[0]->xls[0][1]->error = "There is a problem with budget for ".$budgetProjects[0]->xls[0][1]->value;
-                    }
-                    
-                    if(empty($budgetProjects[2]->xls)){
-                        
-                        @$budgetProjects[0]->xls[0][1]->error = "There is a problem with budget for ".@$budgetProjects[0]->xls[0][1]->value;
-                    }
-
-                    for($i = 0; $i < 6; $i++){
-                        if($projectTotals->nCols() > 0 && isset($projects->xls[1][$i + 1])){
-                            $budgetProjects[] = @$budget->copy()->where(HEAD1, array("Project Name:"))->select(V_PROJ, array($projects->xls[1][$i + 1]->getValue()))->join(
-                                        new Budget(array(array(MONEY)), array(array($projectTotals->xls[22][$i + 1])))
-                                    )->concat();
-                        }
-                        else{
-                            $budgetProjects[] = new Budget();
-                        }
-                    }
-                    $rowBudget = Budget::join_tables($budgetProjects);
-                    $fullBudget[] = $rowBudget;
-                    */
+                    $error = ($budget->isError())? true : false;
 
                     $projects = $budget->copy()->where(HEAD1, array("Project Name:"))->select(V_PROJ);
                     $pers_total = $budget->copy()->rasterize()->select(HEAD1, array("Total"))->where(ROW_TOTAL);
 
                     $budgetProjects = array();
                     $budgetProjects[] = $budget->copy()->where(V_PERS_NOT_NULL)->limit(0, 1)->select(V_PERS_NOT_NULL);
+
+                    //Allocated:
+                    $budget_a = $person->getAllocatedBudget(2011);
+                    if($budget_a != null){
+                        $pers_total_a = $budget_a->copy()->rasterize()->select(HEAD1, array("Total"))->where(ROW_TOTAL);
+                        //echo $pers_total_a->render();
+                        $budgetProjects[] = $pers_total_a->limit($pers_total_a->nRows()-1,1);
+                    }else{
+                        $budgetProjects[] = new Budget();
+                    }
+                    
                     $budgetProjects[] = $projects->copy()->count();
                     $budgetProjects[] = $pers_total->limit($pers_total->nRows()-1,1);
 
@@ -566,6 +543,7 @@ EOF;
                         @$budgetProjects[0]->xls[0][1]->style = "background-color:#FFFF88 !important;";
                         @$budgetProjects[0]->xls[0][1]->error = "Last year's template is used by ".@$budgetProjects[0]->xls[0][1]->value;
                     }
+
 
                     $rowBudget = Budget::join_tables($budgetProjects);
                     $fullBudget[] = $rowBudget;
