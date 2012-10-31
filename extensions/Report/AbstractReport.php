@@ -367,6 +367,16 @@ abstract class AbstractReport extends SpecialPage {
         $this->sections[] = $section;
     }
     
+    // Returns the section with the given id, or null if there is no such section
+    function getSectionById($sectionId){
+        foreach($this->sections as $section){
+            if($section->id == $sectionId){
+                return $section;
+            }
+        }
+        return null;
+    }
+    
     // Adds a new Permission to this Report
     function addPermission($type, $permission, $start=null, $end=null){
         if($start == null){

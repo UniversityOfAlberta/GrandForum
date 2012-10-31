@@ -142,6 +142,16 @@ abstract class ReportItemSet extends AbstractReportItem{
         $item->setPersonId($this->personId);
     }
     
+    // Returns the ReportItem with the given id, or null if it does not exist
+    function getReportItemById($itemId){
+        foreach($this->items as $item){
+            if($item->id == $itemId){
+                return $item;
+            }
+        }
+        return null;
+    }
+    
     function save(){
         $errors = array();
         foreach($this->items as $item){

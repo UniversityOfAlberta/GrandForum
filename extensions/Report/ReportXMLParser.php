@@ -211,14 +211,20 @@ class ReportXMLParser {
         foreach($node as $key => $n){
             $attributes = $n->attributes();
             $children = $n->children();
-            if(isset($attributes->type)){
-                $type = "{$attributes->type}";
-                if(!class_exists($type)){
-                    $this->errors[] = "ReportSection '{$type}' does not exists";
-                    continue;
+            $section = $this->report->getSectionById("{$attributes->id}");
+            if(isset($attributes->type) || $section != null){
+                if(isset($attributes->type)){
+                    $type = "{$attributes->type}";
+                    if(!class_exists($type)){
+                        $this->errors[] = "ReportSection '{$type}' does not exists";
+                        continue;
+                    }
+                    $section = new $type();
+                    $this->report->addSection($section);
                 }
-                $section = new $type();
-                $this->report->addSection($section);
+                else{
+                    $type = get_class($section);
+                }
                 if(isset($attributes->id)){
                     $section->setId("{$attributes->id}");
                 }
@@ -302,6 +308,7 @@ class ReportXMLParser {
     function parseReportItemSet(&$section, $node, $data=array()){
         $attributes = $node->attributes();
         $children = $node->children();
+        $itemset = $section->getReportItemById("{$attributes->id}");
         if(isset($attributes->type)){
             $type = "{$attributes->type}";
             if(class_exists($type)){
@@ -311,12 +318,16 @@ class ReportXMLParser {
                 $this->errors[] = "ReportItemSet '{$attributes->type}' does not exists";
                 return;
             }
+            $section->addReportItem($itemset);
+        }
+        else if($itemset != null){
+            // DO nothing
+            $type = get_class($itemset);
         }
         else{
             $this->errors[] = "ReportItemSet '' does not exists";
             return;
         }
-        $section->addReportItem($itemset);
         if(isset($attributes->id)){
             $itemset->setId("{$attributes->id}");
         }
@@ -380,14 +391,20 @@ class ReportXMLParser {
     // Parses the <ReportItem> element of the XML
     function parseReportItem(&$section, $node){
         $attributes = $node->attributes();
-        if(isset($attributes->type)){
-            $type = "{$attributes->type}";
-            if(!class_exists($type)){
-                $this->errors[] = "ReportItem '{$type}' does not exists";
-                return;
+        $item = $section->getReportItemById("{$attributes->id}");
+        if(isset($attributes->type) || $item != null){
+            if(isset($attributes->type)){
+                $type = "{$attributes->type}";
+                if(!class_exists($type)){
+                    $this->errors[] = "ReportItem '{$type}' does not exists";
+                    return;
+                }
+                $item = new $type();
+                $section->addReportItem($item);
             }
-            $item = new $type();
-            $section->addReportItem($item);
+            else{
+                $type = get_class($item);
+            }
             if(!$this->report->topProjectOnly && $this->report->project != null){
                 $item->setProjectId($this->report->project->getId());
             }

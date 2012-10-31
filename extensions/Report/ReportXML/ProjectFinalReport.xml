@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report extends="ProjectReport">
-    
+    <ReportSection id="report" name="HELLO WORLD">
+        <ReportItemSet id='Ia_head' title="HELLO WORLD">
+            <ReportItem id="Ia">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
+    </ReportSection>
 </Report>

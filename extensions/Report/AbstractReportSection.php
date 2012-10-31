@@ -223,6 +223,16 @@ abstract class AbstractReportSection {
         $item->setPersonId($this->parent->person->getId());
     }
     
+    // Returns the ReportItem with the given id, or null if it does not exist
+    function getReportItemById($itemId){
+        foreach($this->items as $item){
+            if($item->id == $itemId){
+                return $item;
+            }
+        }
+        return null;
+    }
+    
     // Returns whether or not this section has the given $perm or not
     function checkPermission($perm){
         $permissions = $this->getParent()->getSectionPermissions($this);
