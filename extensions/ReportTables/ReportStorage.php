@@ -33,10 +33,13 @@ class ReportStorage {
 
 	/// Store a new report.
 	function store_report(&$data, &$pdf, $special = 0, $auto = 0, $type = 0, $year = REPORTING_YEAR) {
-	    global $wgImpersonating, $wgRealUser;
+	    global $wgImpersonating, $wgRealUser, $wgUser;
 	    $impersonateId = $this->_uid;
 	    if($wgImpersonating){
 	        $impersonateId = $wgRealUser->getId();
+	    }
+	    else{
+	        $impersonateId = $wgUser->getId();
 	    }
 	    
 		$uname = $this->_person->getName();

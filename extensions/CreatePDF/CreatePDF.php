@@ -12,7 +12,7 @@ function runCreatePDF($par) {
 
 class CreatePDF extends SpecialPage {
 
-    static $types = array('individual' => 'Individual',
+    static $types = array('ni' => 'NI',
                           'hqp' => 'HQP',
                           'project' => 'Project');
 
@@ -24,7 +24,7 @@ class CreatePDF extends SpecialPage {
 	function run(){
 	    global $wgUser, $wgOut, $wgServer, $wgScriptPath;
 	    $year = (isset($_GET['reportingYear'])) ? $_GET['reportingYear'] : REPORTING_YEAR;
-	    $type = (isset($_GET['type'])) ? $_GET['type'] : 'individual';
+	    $type = (isset($_GET['type'])) ? $_GET['type'] : 'ni';
 	    if(isset($_GET['generatePDF'])){
 	        $person = @Person::newFromId($_GET['person']);
 	        $project = @Project::newFromId($_GET['project']);
@@ -40,19 +40,19 @@ class CreatePDF extends SpecialPage {
 	        exit;
 	    }
 	    if(isset($_GET['downloadAll'])){
+	        $people = array();
 	        $me = Person::newFromId($wgUser->getId());
-	        if($type == 'individual'){
+	        if($type == 'ni'){
 	            foreach(Person::getAllPeopleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $person){
 	                $people[] = $person;
 	            }
 	            foreach(Person::getAllPeopleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $person){
 	                $people[] = $person;
 	            }
-	            $projects = Project::getAllProjects();
 	            $command = "zip -9 /tmp/NIReports.zip";
 	            foreach($people as $person){
                     $sto = new ReportStorage($person);
-                    $report = new DummyReport("NIReportPDF", $person);
+                    $report = new DummyReport("NIReportPDF", $person, null, $year);
                     $check = $report->getPDF();
                     if(count($check) > 0){
                         $tok = $check[0]['token'];
@@ -80,21 +80,20 @@ class CreatePDF extends SpecialPage {
                 echo json_encode($json);
 	        }
 	        else if($type == 'hqp'){
-	            foreach(Person::getAllPeople(HQP, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $hqp){
-	                $people[] = $person;
+	            foreach(Person::getAllPeopleDuring(HQP, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $hqp){
+	                $people[] = $hqp;
 	            }
-	            $projects = Project::getAllProjects();
-	            $command = "zip -9 /tmp/NIReports.zip";
+	            $command = "zip -9 /tmp/HQPReports.zip";
 	            foreach($people as $person){
                     $sto = new ReportStorage($person);
-                    $report = new DummyReport("HQPReportPDF", $person);
+                    $report = new DummyReport("HQPReportPDF", $person, null, $year);
                     $check = $report->getPDF();
                     if(count($check) > 0){
                         $tok = $check[0]['token'];
                         $sto->select_report($tok);
                         $year = REPORTING_YEAR;
                         $pdf = $sto->fetch_pdf($tok, false);
-                        $fileName = "/tmp/{$person->getReversedName()} NI Report {$year}.pdf";
+                        $fileName = "/tmp/{$person->getReversedName()} HQP Report {$year}.pdf";
                         file_put_contents($fileName, $pdf);
                         $command .= " \"$fileName\"";
                     }
@@ -121,7 +120,7 @@ class CreatePDF extends SpecialPage {
 	                $leader = $project->getLeader();
 	                if($leader != null){
 	                    $sto = new ReportStorage($leader);
-	                    $report = new DummyReport("ProjectReport", $leader, $project);
+	                    $report = new DummyReport("ProjectReport", $leader, $project, $year);
 	                    $check = $report->getPDF();
 	                    if(count($check) > 0){
 	                        $tok = $check[0]['token'];
@@ -154,7 +153,7 @@ class CreatePDF extends SpecialPage {
 	    $url = "";
 	    $names = array();
 	    $ids = array();
-	    if($type == 'individual'){
+	    if($type == 'ni'){
 	        foreach(Person::getAllPeopleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $person){
 	            $names[] = $person->getName();
 	            $ids[] = $person->getId();
@@ -163,26 +162,26 @@ class CreatePDF extends SpecialPage {
 	            $names[] = $person->getName();
 	            $ids[] = $person->getId();
 	        }
-	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=NIReportPDF&person=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
+	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=NIReport&person=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
 	    else if($type == 'hqp'){
 	        foreach(Person::getAllPeopleDuring(HQP, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $person){
 	            $names[] = $person->getName();
 	            $ids[] = $person->getId();
 	        }
-	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=HQPReportPDF&person=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
+	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=HQPReport&person=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
 	    else if($type == 'project'){
 	        foreach(Project::getAllProjects() as $project){
 	            $names[] = $project->getName();
 	            $ids[] = $project->getId();
 	        }
-	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectReportPDF&person=3&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
+	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectReport&person=3&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
 	    $wgOut->addHTML("<iframe name='downloadIframe' id='downloadIframe' style='display:none;'></iframe>");
 	    CreatePDF::showScript($names, $ids, $url);
-	    if($type == 'individual'){
-	        CreatePDF::showIndividualTable($names, $ids);
+	    if($type == 'ni'){
+	        CreatePDF::showNITable($names, $ids);
 	    }
 	    else if($type == 'hqp'){
 	        CreatePDF::showHQPTable($names, $ids);
@@ -315,13 +314,13 @@ class CreatePDF extends SpecialPage {
 	    </script>");
 	}
 	
-	static function showIndividualTable($names, $ids){
+	static function showNITable($names, $ids){
 	    global $wgOut, $wgServer, $wgScriptPath;
-	    $wgOut->setPageTitle("Evaluator Individual Report PDFs");
+	    $wgOut->setPageTitle("NI Report PDFs");
 	    CreatePDF::tableHead();
 	    foreach($names as $pName){
 	        $person = Person::newFromName($pName);
-	        $report = new DummyReport("NIReportPDF", $person);
+	        $report = new DummyReport("NIReport", $person);
 	        CreatePDF::tableRow($report, $person->getId(), $person->getName(), $person->getReversedName());
 	    }
 	    CreatePDF::tableFoot();
@@ -329,11 +328,11 @@ class CreatePDF extends SpecialPage {
 	
 	static function showHQPTable($names, $ids){
 	    global $wgOut, $wgServer, $wgScriptPath;
-	    $wgOut->setPageTitle("Evaluator Individual Report PDFs");
+	    $wgOut->setPageTitle("HQP Report PDFs");
 	    CreatePDF::tableHead();
 	    foreach($names as $pName){
 	        $person = Person::newFromName($pName);
-	        $report = new DummyReport("HQPReportPDF", $person);
+	        $report = new DummyReport("HQPReport", $person);
 	        CreatePDF::tableRow($report, $person->getId(), $person->getName(), $person->getReversedName());
 	    }
 	    CreatePDF::tableFoot();
@@ -341,7 +340,7 @@ class CreatePDF extends SpecialPage {
 	
 	static function showProjectTable($names, $ids){
 	    global $wgOut, $wgServer, $wgScriptPath;
-	    $wgOut->setPageTitle("Evaluator Project Report PDFs");
+	    $wgOut->setPageTitle("Project Report PDFs");
 	    CreatePDF::tableHead();
 	    foreach($names as $pName){
 	        $project = Project::newFromName($pName);
@@ -384,7 +383,7 @@ class CreatePDF extends SpecialPage {
     
     static function showTabs(&$content_actions){
         global $wgTitle, $wgUser, $wgServer, $wgScriptPath;
-        $current_selection = (isset($_GET['type'])) ? $_GET['type'] : "individual";
+        $current_selection = (isset($_GET['type'])) ? $_GET['type'] : "ni";
         
         if($wgTitle->getText() == "CreatePDF"){
             $content_actions = array();
