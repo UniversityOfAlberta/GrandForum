@@ -22,8 +22,8 @@ class BudgetReportItem extends AbstractReportItem {
 		    $projectGet = "&project={$_GET['project']}";
 		}
 		$year = "";
-        if(isset($_GET['reportingYear'])){
-            $year = "&reportingYear={$_GET['reportingYear']}";
+        if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
+            $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
         }
         $wgOut->addHTML("<script type='text/javascript'>
                                 var frameId = 0;
@@ -72,8 +72,8 @@ class BudgetReportItem extends AbstractReportItem {
 		    $projectGet = "&project={$_GET['project']}";
 		}
 		$year = "";
-        if(isset($_GET['reportingYear'])){
-            $year = "&reportingYear={$_GET['reportingYear']}";
+        if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
+            $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
         }
         echo "<html>
                 <head>
