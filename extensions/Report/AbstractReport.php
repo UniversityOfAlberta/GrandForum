@@ -44,6 +44,9 @@ abstract class AbstractReport extends SpecialPage {
             case RPTP_NORMAL:
                 $type = "NIReport";
                 break;
+            case RPTP_NI_COMMENTS:
+                $type = "NIReportComments";
+                break;
             case RPTP_INPUT:
                 break;
             case RPTP_LEADER:
@@ -62,9 +65,15 @@ abstract class AbstractReport extends SpecialPage {
             case RPTP_LEADER_COMMENTS:
                 $type = "ProjectReportComments";
                 break;
+            case RPTP_LEADER_MILESTONES:
+                $type = "ProjectReportMilestones";
+                break;
             case RPTP_EXIT_HQP:
             case RPTP_HQP:
                 $type = "HQPReport";
+                break;
+            case RPTP_HQP_COMMENTS:
+                $type = "HQPReportComments";
                 break;
         }
         
@@ -663,7 +672,8 @@ abstract class AbstractReport extends SpecialPage {
                             }
                             $number = implode(', ', $numbers).'. ';
                         }
-                        PDFGenerator::addChapter($number.$section->name);
+                        $name = $section->varSubstitute($section->name);
+                        PDFGenerator::addChapter($number.$name);
                     }
                     $section->renderForPDF();
                     if(!($section instanceof HeaderReportSection)){

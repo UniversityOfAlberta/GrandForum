@@ -29,6 +29,9 @@ abstract class ReportItemSet extends AbstractReportItem{
     }
     
     function getLimit(){
+        if($this->getReport()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         $limit = 0;
         foreach($this->items as $item){
             if($item instanceof ReportItemSet){
@@ -46,6 +49,9 @@ abstract class ReportItemSet extends AbstractReportItem{
     }
     
     function getNChars(){
+        if($this->getReport()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         $nChars = 0;
         foreach($this->items as $item){
             if($item instanceof ReportItemSet){
@@ -63,6 +69,9 @@ abstract class ReportItemSet extends AbstractReportItem{
     }
     
     function getActualNChars(){
+        if($this->getReport()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         $nChars = 0;
         foreach($this->items as $item){
             if($item instanceof ReportItemSet){
@@ -80,6 +89,9 @@ abstract class ReportItemSet extends AbstractReportItem{
     }
     
     function getExceedingFields(){
+        if($this->getReport()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         $nFields = 0;
         foreach($this->items as $item){
             if($item instanceof ReportItemSet){
@@ -99,6 +111,9 @@ abstract class ReportItemSet extends AbstractReportItem{
     }
     
     function getEmptyFields(){
+        if($this->getReport()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         $nFields = 0;
         foreach($this->items as $item){
             if($item instanceof ReportItemSet){
@@ -163,6 +178,9 @@ abstract class ReportItemSet extends AbstractReportItem{
     
     // Returns the number of completed values (usually 1, or 0)
     function getNComplete(){
+        if($this->getReport()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         $nComplete = 0;
         foreach($this->items as $item){
             $nComplete += $item->getNComplete();
@@ -172,6 +190,9 @@ abstract class ReportItemSet extends AbstractReportItem{
     
     // Returns the number of fields which are associated with this AbstractReportItem (usually 1)
     function getNFields(){
+        if($this->getReport()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         $nFields = 0;
         foreach($this->items as $item){
             $nFields += $item->getNFields();
@@ -180,6 +201,9 @@ abstract class ReportItemSet extends AbstractReportItem{
     }
     
     function getNTextareas(){
+        if($this->getReport()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         $nTextareas = 0;
         foreach($this->items as $item){
             if($item instanceof ReportItemSet){

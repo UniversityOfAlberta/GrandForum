@@ -17,8 +17,7 @@ class LimitReportItemSet extends ReportItemSet {
         $textareas = $this->getTextareas();
         $nChars = 0;
         foreach($textareas as $textarea){
-            $blobValue = str_replace("\r", "", $textarea->getBlobValue());
-            $nChars += strlen($blobValue);
+            $nChars += $textarea->getNChars();
         }
         return min($this->getLimit(), $nChars);
     }
@@ -27,8 +26,7 @@ class LimitReportItemSet extends ReportItemSet {
         $textareas = $this->getTextareas();
         $nChars = 0;
         foreach($textareas as $textarea){
-            $blobValue = str_replace("\r", "", $textarea->getBlobValue());
-            $nChars += strlen($blobValue);
+            $nChars += $textarea->getActualNChars();
         }
         return $nChars;
     }
@@ -101,15 +99,19 @@ class LimitReportItemSet extends ReportItemSet {
         
         function popup{$this->getPostId()}(){
             $('#preview_{$this->getPostId()}').html($('#div_{$this->getPostId()}').html());
+            $('#preview_{$this->getPostId()} .pdfnodisplay').remove();
             var limit = {$limit};
             var recommended = {$rec};
             var blobValues = Array();
             
             $.each($('#div_{$this->getPostId()} textarea'), function(index, value){
+                var regex = RegExp('@\\\\[[^-]+-([^\\\\]]*)]','g');
                 if(!recommended){
                     var blobValue = '';
-                    var blobValue1 = $(value).val().substr(0, limit);
-                    var blobValue2 = $(value).val().substr(limit);
+                    var replacedLength = $(value).val().replace(regex, ' ').length;
+                    var lengthDiff = $(value).val().length - replacedLength;
+                    var blobValue1 = $(value).val().substr(0, limit + lengthDiff);
+                    var blobValue2 = $(value).val().substr(limit + lengthDiff);
                     if(blobValue2 != ''){
 	                    blobValue = blobValue1 + '<s style=\"color:red;\">' + blobValue2 + '</s>';
 	                }
@@ -121,7 +123,7 @@ class LimitReportItemSet extends ReportItemSet {
                 else{
                     var blobValue = $(value).val();
                 }
-                blobValues.push(blobValue);
+                blobValues.push(blobValue.replace(regex, '<b>\$1</b>'));
             });
             
             $('#preview_{$this->getPostId()} .autocomplete').css('display', 'none');
@@ -158,8 +160,15 @@ class LimitReportItemSet extends ReportItemSet {
 	        foreach($textareas as $textarea){
 	            $blobValue = str_replace("\r", "", $textarea->getBlobValue());
 	            if(!$recommended){
-	                $blobValue1 = substr($blobValue, 0, $limit);
-	                $blobValue2 = substr($blobValue, $limit);
+	                $replacedLength = 0;
+	                $lengthDiff = 0;
+	                if($textarea instanceof AutoCompleteTextareaReportItem){
+	                    $blobValue = $textarea->getReplacedBlobValue();
+                        $replacedLength = $textarea->getActualNChars();
+                        $lengthDiff = strlen($blobValue) - $replacedLength;
+                    }
+	                $blobValue1 = substr($blobValue, 0, $limit + $lengthDiff);
+	                $blobValue2 = substr($blobValue, $limit + $lengthDiff);
 	                $limit -= strlen($blobValue1);
 	                if($blobValue2 != ""){
 	                    if(isset($_GET['preview'])){
@@ -181,7 +190,11 @@ class LimitReportItemSet extends ReportItemSet {
 	                $class = "inlineWarning";
 	            }
 	        }
-	        $html .= "<span class='$class'><small>(<i>Reported By {$noun} - currently {$length} chars out of a {$type} {$this->getLimit()} accross all {$pluralNoun}.</i>)</small></span>";
+	        $plural = "s";
+	        if($length == 1){
+	            $plural = "";
+	        }
+	        $html .= "<span class='$class'><small>(<i>Reported By {$noun} - currently {$length} character{$plural} out of a {$type} {$this->getLimit()} accross all {$pluralNoun}.</i>)</small></span>";
 	        $html .= nl2br("<p>{$text}</p>");
 	    }
 	    $wgOut->addHTML($html);

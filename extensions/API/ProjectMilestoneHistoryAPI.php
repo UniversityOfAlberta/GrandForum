@@ -66,7 +66,7 @@ class ProjectMilestoneHistoryAPI extends API{
         $lastLabel = "";
         $lastPeople = "";
         $lastRev = null;
-        foreach($parents as $key => $m_parent){    
+        foreach($parents as $key => $m_parent){
             $p_status = $m_parent->getStatus();
             if($p_status == "Continuing"){
                 continue;
@@ -134,7 +134,7 @@ EOF;
             else{
                 $history_html .= "$('#milestone_{$m_parent->getId()} a.prev').addClass('disabledButton');\n";
             }
-            if(isset($parents[$key+1]) != null){
+            if(isset($parents[$key+1]) && $parents[$key+1] != null && $parents[$key+1]->getStatus() != "Continuing"){
                 $nextParent = $parents[$key+1];
                 $history_html .= "
                     $('#milestone_{$m_parent->getId()} a.next').click(function(){

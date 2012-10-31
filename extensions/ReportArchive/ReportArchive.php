@@ -77,6 +77,7 @@ class ReportArchive extends SpecialPage {
 				        }
 				        else{
 				            $report = AbstractReport::newFromToken($tok);
+				            
 				            if($report->project != null){
 				                if($report->person->getId() == 0){
 				                    $name = "{$report->name}.{$ext}";
@@ -324,28 +325,37 @@ function showProjectReports($person, $year){
         
         $plHTML = "";
         $commentHTML = "";
+        $milestonesHTML = "";
         foreach ($projs as &$pj) {
 
             $plReport = new DummyReport("ProjectReport", $person, $pj, $year);
             $commentReport = new DummyReport("ProjectReportComments", $person, $pj, $year);
+            $milestonesReport = new DummyReport("ProjectReportMilestones", $person, $pj, $year);
             
             $plCheck = $plReport->getPDF();
             $commentCheck = $commentReport->getPDF();
+            $milestonesCheck = $commentReport->getPDF();
             if (count($plCheck) > 0) {
         		$tok = $plCheck[0]['token'];
         		$sto->select_report($tok);    	
-        		$tst = $sto->metadata('timestamp');
+        		$tst = $plCheck[0]['timestamp'];
         		$plHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Report PDF</a></td><td>(submitted $tst)</td></tr>";
         	}
         	if (count($commentCheck) > 0) {
         		$tok = $commentCheck[0]['token'];
         		$sto->select_report($tok);    	
-        		$tst = $sto->metadata('timestamp');
+        		$tst = $plCheck[0]['timestamp'];
         		$commentHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Comments PDF</a></td><td>(submitted $tst)</td></tr>";
         	}
+        	if (count($milestonesCheck) > 0) {
+        		$tok = $milestonesCheck[0]['token'];
+        		$sto->select_report($tok);    	
+        		$tst = $plCheck[0]['timestamp'];
+        		$milestonesHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Milestones PDF</a></td><td>(submitted $tst)</td></tr>";
+        	}
         }
-        if($plHTML != "" || $commentHTML != ""){
-            $wgOut->addHTML("<table>$plHTML</table><br /><table>$commentHTML</table>");
+        if($plHTML != "" || $commentHTML != "" || $milestonesHTML != ""){
+            $wgOut->addHTML("<table>$plHTML</table><br /><table>$commentHTML</table><br /><table>$milestonesHTML</table>");
         }
         else{
             $wgOut->addHTML("<b>No Archived PDFs were found.</b><br />");

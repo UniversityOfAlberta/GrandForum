@@ -16,6 +16,9 @@ abstract class AbstractReportSection {
     var $pageBreak;
     var $number;
     var $tooltip;
+    var $reportCallback;
+    var $projectId;
+    var $personId;
     
     // Creates a new AbstractReportSection
     function AbstractReportSection(){
@@ -31,6 +34,9 @@ abstract class AbstractReportSection {
         $this->private = false;
         $this->pageBreak = true;
         $this->number = array();
+        $this->personId = 0;
+        $this->projectId = 0;
+        $this->reportCallback = new ReportItemCallback($this);
     }
     
     function getParent(){
@@ -38,6 +44,9 @@ abstract class AbstractReportSection {
     }
     
     function getLimit(){
+        if($this->getParent()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         $limit = 0;
         foreach($this->items as $item){
             if($item instanceof ReportItemSet){
@@ -55,6 +64,9 @@ abstract class AbstractReportSection {
     }
     
     function getNChars(){
+        if($this->getParent()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         $nChars = 0;
         foreach($this->items as $item){
             if($item instanceof ReportItemSet){
@@ -72,6 +84,9 @@ abstract class AbstractReportSection {
     }
     
     function getActualNChars(){
+        if($this->getParent()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         $nChars = 0;
         foreach($this->items as $item){
             if($item instanceof ReportItemSet){
@@ -96,6 +111,9 @@ abstract class AbstractReportSection {
     }
     
     function getExceedingFields(){
+        if($this->getParent()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         $nFields = 0;
         foreach($this->items as $item){
             if($item instanceof ReportItemSet){
@@ -115,6 +133,9 @@ abstract class AbstractReportSection {
     }
     
     function getEmptyFields(){
+        if($this->getParent()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         $nFields = 0;
         foreach($this->items as $item){
             if($item instanceof ReportItemSet){
@@ -136,6 +157,14 @@ abstract class AbstractReportSection {
     // Sets the ID of the section
     function setId($id){
         $this->id = $id;
+    }
+    
+    function setProjectId($projectId){
+        $this->projectId = $projectId;
+    }
+    
+    function setPersonId($personId){
+        $this->personId = $personId;
     }
     
     // Sets the Instructions for this AbstractReportSection
@@ -273,7 +302,7 @@ abstract class AbstractReportSection {
             }
             $number = implode(', ', $numbers).'. ';
         }
-        $wgOut->addHTML("<center><h1>{$number}{$this->name}</h1></center>");
+        $wgOut->addHTML("<center><h1>{$number}{$this->varSubstitute($this->name)}</h1></center>");
         if($this->previewOnly){
             $wgOut->addHTML("<span style='color:#FF0000;'>(This section is not part of the document that will be reviewed by the Research Management Committee (RMC). If there is information here that you want to be considered as part of your evaluation, it should be included in a previous section. Provide the full details here. This section will be provided to your project leaders to assist with their project reporting.)</span>");
         }
@@ -284,6 +313,21 @@ abstract class AbstractReportSection {
                 $item->renderForPDF();
             }
         }
+    }
+    
+    function varSubstitute($cdata){
+        $matches = array();
+        preg_match_all('/{\$(.+?)}/', $cdata, $matches);
+        
+        foreach($matches[1] as $k => $m){
+            if(isset(ReportItemCallback::$callbacks[$m])){
+                $v = call_user_func(array($this->reportCallback, ReportItemCallback::$callbacks[$m]));
+                $regex = '/{\$'.$m.'}/';
+                $cdata = preg_replace($regex, $v, $cdata);
+            }
+        }
+        
+        return $cdata;
     }
     
 }

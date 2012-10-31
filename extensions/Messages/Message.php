@@ -74,7 +74,7 @@ class Message {
             }
             
             $(document).ready(function(){
-                $('.error, .warning, .success, .info').append('<a style=\'float:right;text-decoration:none;cursor:pointer;\' onClick=\'closeParent(this)\'>X</a>');
+                $('.error, .warning, .success, .info').append('<a class=\'error_box_close\' onClick=\'closeParent(this)\'>X</a>');
             });
         </script>";
     }

@@ -21,7 +21,7 @@ class ProjectNIProgressReportItem extends StaticReportItem {
 	function getTableHTML(){
 	    $person = Person::newFromId($this->personId);
         $project = Project::newFromId($this->projectId);
-        $reportItemSet = new ProjectPeopleNoLeadersReportItemSet();
+        $reportItemSet = new ProjectPeopleReportItemSet();
         $reportItemSet->setPersonId($this->personId);
 		$reportItemSet->setProjectId($this->projectId);
 		$reportItemSet->setMilestoneId($this->milestoneId);
@@ -29,7 +29,6 @@ class ProjectNIProgressReportItem extends StaticReportItem {
 		$people = $reportItemSet->getData();
         $nPeople = count($people);
         $nSubmitted = 0;
-        $doneAlready = array();
         $details = "";
 	    foreach($people as $p){
 	        $pers = Person::newFromId($p['person_id']);
@@ -38,7 +37,28 @@ class ProjectNIProgressReportItem extends StaticReportItem {
                 $nSubmitted++;
             }
         }
-        $details .= "<tr><td style='white-space:nowrap;'><b>NI Progress</b></td><td>{$nSubmitted} of the {$nPeople} NIs have submitted their reports\n</td></tr>";
+        
+        // Budgets
+        $allocatedBudget = $project->getAllocatedBudget(REPORTING_YEAR);
+		$requestedBudget = $project->getRequestedBudget(REPORTING_YEAR);
+        
+        $nAllocated = 0;
+        $nRequested = 0;
+
+		foreach($people as $p){
+		    $pers = Person::newFromId($p['person_id']);
+            $allocBudget = $allocatedBudget->copy()->select(V_PERS_NOT_NULL, array($pers->getReversedName()));
+            if(($allocBudget->nRows() * $allocBudget->nCols()) > 0){
+                $nAllocated++;
+            }
+            $reqBudget = $requestedBudget->copy()->select(V_PERS_NOT_NULL, array($pers->getReversedName()));
+            if(($reqBudget->nRows() * $reqBudget->nCols()) > 0){
+                $nRequested++;
+            }
+        }
+        $details .= "<tr><td style='white-space:nowrap;' valign='top' rowspan='3'><b>NI Progress</b></td><td>{$nSubmitted} of the {$nPeople} NIs have submitted their reports\n</td></tr>";
+        $details .= "<tr><td>{$nAllocated} of the {$nPeople} NIs have uploaded a revised budget for 2012 allocated funds\n</td></tr>";
+        $details .= "<tr><td>{$nRequested} of the {$nPeople} NIs have uploaded a budget request\n</td></tr>";
         return $details;
 	}
 }

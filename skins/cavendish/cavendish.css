@@ -934,11 +934,21 @@ del {
 
 /* Messages */
 
+a.error_box_close {
+	float: right;
+	text-decoration: none;
+	cursor: pointer;
+	position: absolute;
+	top: 5px;
+	right: 10px;
+}
+
 .error, .warning, .success, .info {
     background-repeat: no-repeat !important;
     background-position: 5px center !important;
     margin: 10px 0;
     padding:10px 5px 10px 40px;
+    position: relative;
 }
 
 .inlineError, .inlineWarning, .inlineSuccess, .inlineInfo, .inlineMessage {

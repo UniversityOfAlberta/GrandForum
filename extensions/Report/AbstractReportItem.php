@@ -40,6 +40,7 @@ abstract class AbstractReportItem {
         $this->blobSubItem = 0;
         $this->attributes = array();
         $this->personId = 0;
+        $this->projectId = 0;
         $this->milestoneId = 0;
         $this->productId = 0;
         $this->private = false;
@@ -135,6 +136,10 @@ abstract class AbstractReportItem {
     
     // Returns the number of completed values (usually 1, or 0)
     function getNComplete(){
+        if($this->getReport()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
+        
         $blob = $this->getBlobValue();
         if($blob !== "" && $blob != null){
             return 1;
@@ -146,6 +151,9 @@ abstract class AbstractReportItem {
     
     // Returns the number of fields which are associated with this AbstractReportItem (usually 1)
     function getNFields(){
+        if($this->getReport()->topProjectOnly && $this->private && $this->projectId == 0){
+            return 0;
+        }
         return 1;
     }
     
@@ -269,8 +277,13 @@ abstract class AbstractReportItem {
 	    
     }
     
-    function getAttr($attr, $default=""){
-        $value = (isset($this->attributes[$attr])) ? $this->varSubstitute($this->attributes[$attr]) : $default;
+    function getAttr($attr, $default="", $varSubstitute=true){
+        if($varSubstitute){
+            $value = (isset($this->attributes[$attr])) ? $this->varSubstitute($this->attributes[$attr]) : $default;
+        }
+        else{
+            $value = (isset($this->attributes[$attr])) ? $this->attributes[$attr] : $default;
+        }
         return "$value";
     }
 

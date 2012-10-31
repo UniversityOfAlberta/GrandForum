@@ -248,7 +248,7 @@ $dashboardStructures[PROJECT_PUBLIC_STRUCTURE] =
     );
     
 $dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] = 
-    array(array(HEAD."(People)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Contributions)"),
+    array(array(HEAD."(People)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Partners)",  HEAD."(Contributions)"),
           array(HEAD.'(Total:)', 
                 STRUCT(PROJECT_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                 STRUCT(PROJECT_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
@@ -256,6 +256,7 @@ $dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] =
                 STRUCT(PROJECT_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                 STRUCT(PROJECT_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                 STRUCT(PROJECT_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_PARTNERS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                 STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
           STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array(PROJECT_PEOPLE_ROLES,
                                                          STRUCT(PROJECT_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
@@ -263,7 +264,8 @@ $dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] =
                                                         STRUCT(PROJECT_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                                                         STRUCT(PROJECT_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                                                         STRUCT(PROJECT_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
-                                                        STRUCT(PROJECT_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                        STRUCT(PROJECT_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                        STRUCT(PROJECT_PARTNERS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),  
                                                         STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
           STRUCT(GROUP_BY, PROJECT_PEOPLE_NO_LEADERS_ARRAY) => array(PROJECT_PEOPLE_ROLES,
                                                          STRUCT(PROJECT_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
@@ -272,6 +274,7 @@ $dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] =
                                                         STRUCT(PROJECT_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                                                         STRUCT(PROJECT_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                                                         STRUCT(PROJECT_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                        STRUCT(PROJECT_PARTNERS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                                                         STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
           array(HEAD.'(Total:)', 
                 STRUCT(PROJECT_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
@@ -280,6 +283,7 @@ $dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] =
                 STRUCT(PROJECT_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                 STRUCT(PROJECT_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                 STRUCT(PROJECT_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_PARTNERS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                 STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END))
     );
     

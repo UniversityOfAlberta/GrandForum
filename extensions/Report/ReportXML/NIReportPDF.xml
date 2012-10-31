@@ -84,7 +84,7 @@
         <ReportItemSet id="OR" type="ORReportItemSet">
             <ReportItemSet id="ProjectLimit_IIa" type="LimitReportItemSet" limit="1800">
                 <ReportItemSet id="projects" type="PersonProjectReportItemSet">
-                    <ReportItem id="IIa" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_EXCELLENCE" type="AutoCompleteTextareaReportItem" set="PersonProductsReportItemSet" index="product_id" label="product_title" name="Products">
+                    <ReportItem id="IIa" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_EXCELLENCE" type="AutoCompleteTextareaReportItem" set="PersonProductsReportItemSet" index="product_id" label="product_title" name="Products" tooltipOptionId="Product ID" tooltipOptionName="Product Title">
                         <![CDATA[<i>{$project_name}:</i><br />{$item}<br /><br />]]>
                     </ReportItem>
                 </ReportItemSet>
@@ -97,7 +97,7 @@
         <ReportItemSet id="OR" type="ORReportItemSet">
             <ReportItemSet id="ProjectLimit_IIb" type="LimitReportItemSet" limit="1800">
                 <ReportItemSet id="projects" type="PersonProjectReportItemSet">
-                    <ReportItem id="IIb" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_HQPDEV" type="AutoCompleteTextareaReportItem" set="PersonSupervisesReportItemSet" index="user_name" label="user_id" name="HQP">
+                    <ReportItem id="IIb" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_HQPDEV" type="AutoCompleteTextareaReportItem" set="PersonSupervisesReportItemSet" index="user_id" label="user_name" name="HQP" tooltipOptionId="HQP ID" tooltipOptionName="HQP Name">
                         <![CDATA[<i>{$project_name}:</i><br />{$item}<br /><br />]]>
                     </ReportItem>
                 </ReportItemSet>
@@ -110,7 +110,7 @@
         <ReportItemSet id="OR" type="ORReportItemSet">
             <ReportItemSet id="ProjectLimit_IIc" type="LimitReportItemSet" limit="1800">
                 <ReportItemSet id="projects" type="PersonProjectReportItemSet">
-                    <ReportItem id="IIc" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETWORKING" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_name" label="user_id" name="{$project_name} Members">
+                    <ReportItem id="IIc" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETWORKING" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members">
                         <![CDATA[<i>{$project_name}:</i><br />{$item}<br /><br />]]>
                     </ReportItem>
                 </ReportItemSet>
@@ -133,7 +133,7 @@
         <ReportItem id='IIe_head' type="StaticReportItem" private="true">
             <![CDATA[<h2>E. Management of the Network: My role in or contribution to Network operations and governance</h2>]]>
         </ReportItem>
-        <ReportItem id="IIe" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETMAN" type="AutoCompleteTextareaReportItem" set="AllPeopleReportItemSet" index="user_name" label="user_id" name="Members">
+        <ReportItem id="IIe" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETMAN" type="AutoCompleteTextareaReportItem" set="AllPeopleReportItemSet" index="user_id" label="user_name" name="Members">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
@@ -160,7 +160,7 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Budget" blobSection="RES_BUDGET" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true">
+    <ReportSection name="Budget Request" blobSection="RES_BUDGET" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true">
         <ReportItem id="budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="BudgetReportItem" />
         <ReportItem id="budget_just" rows="10" limit="600" blobType="BLOB_TEXT" blobItem="RES_BUD_JUSTIF" type="TextareaReportItem">
             <![CDATA[<h3>Budget Justification</h3> {$item}]]>
@@ -184,7 +184,7 @@
             <ReportItem id="project_name" type="StaticReportItem">
                 <![CDATA[<h2>{$project_name}</h2>]]>
             </ReportItem>
-            <ReportItem id="milestone_summary" width="100%" height="250px" blobType="BLOB_TEXT" blobItem="RES_MIL_SUMMARY" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones">
+            <ReportItem id="milestone_summary" width="100%" height="250px" blobType="BLOB_TEXT" blobItem="RES_MIL_SUMMARY" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1000">
                 <![CDATA[
                     {$item}
                 ]]>
