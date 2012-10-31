@@ -88,6 +88,11 @@ class CreatePDF extends SpecialPage {
                     $sto = new ReportStorage($person);
                     $report = new DummyReport("HQPReportPDF", $person, null, $year);
                     $check = $report->getPDF();
+                    if(count($check) == 0){
+                        $report = new DummyReport("NIReportPDF", $person, null, $year);
+                        $check = $report->getPDF();
+                        $report->setName("HQP Report");
+                    }
                     if(count($check) > 0){
                         $tok = $check[0]['token'];
                         $sto->select_report($tok);
@@ -333,6 +338,12 @@ class CreatePDF extends SpecialPage {
 	    foreach($names as $pName){
 	        $person = Person::newFromName($pName);
 	        $report = new DummyReport("HQPReport", $person);
+	        $check = $report->getPDF();
+            if(count($check) == 0){
+                $report = new DummyReport("NIReport", $person);
+                $check = $report->getPDF();
+                $report->setName("HQP Report");
+            }
 	        CreatePDF::tableRow($report, $person->getId(), $person->getName(), $person->getReversedName());
 	    }
 	    CreatePDF::tableFoot();
