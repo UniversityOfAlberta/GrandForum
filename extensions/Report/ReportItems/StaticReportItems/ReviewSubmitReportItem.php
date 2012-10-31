@@ -10,8 +10,8 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		    $projectGet = "&project={$this->getReport()->project->getName()}";
 		}
 		$year = "";
-        if(isset($_GET['reportingYear'])){
-            $year = "&reportingYear={$_GET['reportingYear']}";
+        if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
+            $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
         }
 		if(!$wgImpersonating || checkSupervisesImpersonee()){
 		    $wgOut->addHTML("<script type='text/javascript'>

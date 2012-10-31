@@ -5,6 +5,23 @@ require_once('commandLine.inc');
 $queriesSoFar = 0;
 $totalQueries = 0;
 
+$sql = "DROP TABLE IF EXISTS `grand_reporting_year_ticket`";
+DBFunctions::execSQL($sql, true);
+
+$sql = "CREATE TABLE IF NOT EXISTS `grand_reporting_year_ticket` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `report_type` int(11) NOT NULL,
+  `year` int(11) NOT NULL,
+  `ticket` varchar(256) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `expires` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
+DBFunctions::execSQL($sql, true);
+
 $sql = "SELECT * FROM mw_pdf_report";
 $rows = DBFunctions::execSQL($sql);
 $totalQueries += count($rows);

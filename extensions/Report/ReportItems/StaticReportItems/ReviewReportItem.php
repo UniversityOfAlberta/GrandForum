@@ -10,8 +10,8 @@ class ReviewReportItem extends StaticReportItem {
 		    $projectGet = "&project={$project->getName()}";
 		}
 		$year = "";
-        if(isset($_GET['reportingYear'])){
-            $year = "&reportingYear={$_GET['reportingYear']}";
+        if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
+            $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
         }
 		$html = "<script type='text/javascript'>
 		    function hideProgress(){

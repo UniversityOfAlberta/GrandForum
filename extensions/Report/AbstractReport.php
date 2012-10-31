@@ -409,6 +409,15 @@ abstract class AbstractReport extends SpecialPage {
     function checkPermissions(){
         global $wgUser;
         $me = Person::newFromId($wgUser->getId());
+        if(isset($_GET['reportingYear']) && !$me->isRoleAtLeast(MANAGER)){
+            // Check that the user has a ticket for the specified report year
+            $year = $_GET['reportingYear'];
+            $ticket = @$_GET['ticket'];
+            if(!$me->hasReportingTicket($this->project, $year, $this->reportType, $ticket)){
+                return false;
+            }
+        }
+        $me = Person::newFromId($wgUser->getId());
         $result = $me->isRoleAtLeast(MANAGER);
         foreach($this->permissions as $type => $perms){
             foreach($perms as $perm){

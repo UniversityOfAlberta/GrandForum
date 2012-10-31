@@ -249,8 +249,8 @@ abstract class AbstractReportSection {
             $number = implode(', ', $numbers).'. ';
         }
         $year = "";
-        if(isset($_GET['reportingYear'])){
-            $year = "&reportingYear={$_GET['reportingYear']}";
+        if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
+            $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
         }
         $wgOut->addHTML("<a title='{$this->tooltip}' class='reportTab$selected tooltip' id='".str_replace(" ", "", $this->name)."' href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getParent()->xmlName}{$project}&section=".urlencode($this->name)."{$year}'>{$this->name}</a>\n");
     }
