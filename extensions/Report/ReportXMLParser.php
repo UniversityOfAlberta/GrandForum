@@ -121,6 +121,16 @@ class ReportXMLParser {
         if($this->parser->getName() == "Report"){
             $attributes = $this->parser->attributes();
             $children = $this->parser->children();
+            if(isset($attributes->extends)){
+                $xmlFileName = dirname(__FILE__)."/ReportXML/{$attributes->extends}.xml";
+                if(file_exists($xmlFileName)){
+                    $exploded = explode(".", $xmlFileName);
+                    $exploded = explode("/", $exploded[count($exploded)-2]);
+                    $xml = file_get_contents($xmlFileName);
+                    $parser = new ReportXMLParser($xml, $this->report);
+                    $parser->parse();
+                }
+            }
             if(isset($attributes->name)){
                 $this->report->setName("{$attributes->name}");
             }

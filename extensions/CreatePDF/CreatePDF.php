@@ -1,4 +1,5 @@
 <?php
+
 $wgHooks['SkinTemplateContentActions'][] = 'CreatePDF::showTabs';
 
 $dir = dirname(__FILE__) . '/';
