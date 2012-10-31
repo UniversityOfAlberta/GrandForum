@@ -124,6 +124,7 @@ class ReportXMLParser {
             if(isset($attributes->extends)){
                 $xmlFileName = dirname(__FILE__)."/ReportXML/{$attributes->extends}.xml";
                 if(file_exists($xmlFileName)){
+                    $this->report->setExtends("{$attributes->extends}");
                     $exploded = explode(".", $xmlFileName);
                     $exploded = explode("/", $exploded[count($exploded)-2]);
                     $xml = file_get_contents($xmlFileName);

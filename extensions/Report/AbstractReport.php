@@ -15,6 +15,7 @@ abstract class AbstractReport extends SpecialPage {
     var $name;
     var $year;
     var $xmlName;
+    var $extends;
     var $reportType;
     var $ajax;
     var $header;
@@ -103,6 +104,7 @@ abstract class AbstractReport extends SpecialPage {
     function AbstractReport($xmlFileName, $personId=-1, $projectName=false, $topProjectOnly=false, $year=REPORTING_YEAR){
         global $wgUser, $wgMessage;
         $this->name = "";
+        $this->extends = "";
         $this->year = $year;
         $this->reportType = RP_RESEARCHER;
         $this->disabled = false;
@@ -332,6 +334,12 @@ abstract class AbstractReport extends SpecialPage {
         }
     }
     
+    // Specifies which report this one inherits from
+    function setExtends($extends){
+        $this->extends = $extends;
+    }
+    
+    // Sets whether or not this Report should be disabled or not
     function setDisabled($disabled){
         $this->disabled = $disabled;
     }
@@ -615,7 +623,9 @@ abstract class AbstractReport extends SpecialPage {
         $wgOut->addHTML("<div id='autosaveDiv'><span style='float:left;width:100%;text-align:left'><span style='float:right;' class='autosaveSpan'></span></span></div>
                             <div id='optionsDiv'>");
         $this->renderOptions();
-        $this->renderBackup();                 
+        if($this->extends == ""){
+            $this->renderBackup();  
+        }
         $wgOut->addHTML("</div></div>
                             </div>");
         
