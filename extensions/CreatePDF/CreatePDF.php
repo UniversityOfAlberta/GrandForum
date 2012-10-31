@@ -290,6 +290,7 @@ class CreatePDF extends SpecialPage {
                                 else{
                                     $('#status' + Id + ' > span').html('<b style=\"color:#FF0000;\">ERROR</b>');
                                 }
+                                break;
 		                    }
 		                },
 		                error : function(data){
