@@ -142,6 +142,16 @@ abstract class ReportItemSet extends AbstractReportItem{
         $item->setPersonId($this->personId);
     }
     
+    // Deleted the given ReportItem from this ReportItemSet
+    function deleteReportItem($item){
+        foreach($this->items as $key => $it){
+            if($item->id == $it->id){
+                unset($this->items[$key]);
+                return;
+            }
+        }
+    }
+    
     // Returns the ReportItem with the given id, or null if it does not exist
     function getReportItemById($itemId){
         foreach($this->items as $item){

@@ -223,6 +223,16 @@ abstract class AbstractReportSection {
         $item->setPersonId($this->parent->person->getId());
     }
     
+    // Deleted the given ReportItem from this ReportSection
+    function deleteReportItem($item){
+        foreach($this->items as $key => $it){
+            if($item->id == $it->id){
+                unset($this->items[$key]);
+                return;
+            }
+        }
+    }
+    
     // Returns the ReportItem with the given id, or null if it does not exist
     function getReportItemById($itemId){
         foreach($this->items as $item){

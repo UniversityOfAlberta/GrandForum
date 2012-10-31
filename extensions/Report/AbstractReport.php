@@ -367,6 +367,16 @@ abstract class AbstractReport extends SpecialPage {
         $this->sections[] = $section;
     }
     
+    // Deleted the given ReportItem from this AbstractReport
+    function deleteSection($section){
+        foreach($this->sections as $key => $sec){
+            if($section->id == $sec->id){
+                unset($this->sections[$key]);
+                return;
+            }
+        }
+    }
+    
     // Returns the section with the given id, or null if there is no such section
     function getSectionById($sectionId){
         foreach($this->sections as $section){
