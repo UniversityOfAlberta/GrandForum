@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report extends="ProjectReport" name="Project Final Report">
     <ReportSection id="report" name="Project Report">
-        <ReportItemSet id='IIIa_head' delete="true" />
+        <ReportItemSet id='IIIa_head' title="Project Retrospective"/>
     </ReportSection>
-    <ReportSection id="budget" name="Project Budget" delete="true" />
+    <ReportSection id="budget" name="Project Budget">
+        <ReportItem id="budget_just" delete="true" />
+        <ReportItem id="budget" delete="true" />
+    </ReportSection>
 </Report>
