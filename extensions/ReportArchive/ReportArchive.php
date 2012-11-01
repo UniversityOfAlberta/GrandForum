@@ -226,10 +226,8 @@ function generateHQPReportsHTML($person, $year, $preview=false, $isactivehqp=fal
             foreach($check as $c){
                 $sto->select_report($c['token']);
                 $tst = $sto->metadata('timestamp');
-                if($tst >= ($year).REPORTING_PRODUCTION_MONTH && $tst <= ($year+1).REPORTING_PRODUCTION_MONTH){
-                    $tok = $sto->metadata('token');
-                    break;
-                }
+                $tok = $sto->metadata('token');
+                break;
             }
         }
         if($tok != false){
