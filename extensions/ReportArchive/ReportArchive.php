@@ -212,15 +212,14 @@ function generateHQPReportsHTML($person, $year, $preview=false, $isactivehqp=fal
         }
         
         $hqpProcessed[$hqp->getId()] = true;
-        $report = new DummyReport("HQPReport", $person, null, $year);
+        $report = new DummyReport("HQPReport", $hqp, null, $year);
         $check = $report->getPDF();
         if(count($check) == 0){
-            $report = new DummyReport("NIReport", $person, null, $year);
+            $report = new DummyReport("NIReport", $hqp, null, $year);
             $check = $report->getPDF();
             $report->setName("HQP Report");
         }
         $sto = new ReportStorage($hqp);
-
         $tok = false;
         if (count($check) > 0) {
             foreach($check as $c){
