@@ -25,7 +25,7 @@ foreach(explode("\n", $string) as $line){
     	if($year == "2012" && $type == "2MM"){
     		//echo "===".$paper->getTitle() ."\n";
     		$data = $paper->getData();
-    		$data['url'] = "{$wgServer}{$wgScriptPath}/index.php/File:{$file}";
+    		$data['url'] = "https://forum.grand-nce.ca/index.php/File:{$file}";
     		//echo "===".$data['url'] ."\n";
     		
     		$new_data = serialize($data);
