@@ -53,6 +53,8 @@ class ReportItemCallback {
 			"user_uni" => "getUserUni",
 			"user_supervisors" => "getUserSupervisors",
 			"user_projects" => "getUserProjects",
+			"user_requested_budget" => "getUserRequestedBudget",
+			"user_allocated_budget" => "getUserAllocatedBudget",
 			// Products
 			"product_id" => "getProductId",
 			"product_title" => "getProductTitle",
@@ -500,6 +502,34 @@ class ReportItemCallback {
 	        $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";
 	    }
 	    return implode(", ", $projects);
+	}
+	
+	function getUserRequestedBudget(){
+	    $person = Person::newFromId($this->reportItem->personId);
+	    $project = Project::newFromId($this->reportItem->projectId);
+	    
+	    $budget = $person->getRequestedBudget(REPORTING_YEAR);
+	    if($project != null && $project->getName() != ""){
+	        $budgetFirstCol = $budget->copy()->limitCols(0, 1);
+	        $budget = $budget->copy()->select(V_PROJ, array($project->getName()));
+            $budget = $budgetFirstCol->join($budget);
+            $budget->xls[0][1]->value = $person->getReversedName();
+	    }
+	    return $budget->render();
+	}
+	
+	function getUserAllocatedBudget(){
+	    $person = Person::newFromId($this->reportItem->personId);
+	    $project = Project::newFromId($this->reportItem->projectId);
+	    
+	    $budget = $person->getAllocatedBudget(REPORTING_YEAR);
+	    if($project != null && $project->getName() != ""){
+	        $budgetFirstCol = $budget->copy()->limitCols(0, 1);
+	        $budget = $budget->copy()->select(V_PROJ, array($project->getName()));
+            $budget = $budgetFirstCol->join($budget);
+            $budget->xls[0][1]->value = $person->getReversedName();
+	    }
+	    return $budget->render();
 	}
 	
 	function getProductId(){
