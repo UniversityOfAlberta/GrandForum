@@ -32,13 +32,7 @@ class DashboardProgressReportItem extends StaticReportItem {
 		    if(($project == null || $paper->belongsToProject($project)) && $paper->getStatus() == "Published"){
 		        $data = $paper->getData();
 		        $vn = $paper->getVenue();
-                if($vn == ""){
-                    $vn = ArrayUtils::get_string($data, 'event_title');
-                }
-                if($vn == ""){
-                    $vn = ArrayUtils::get_string($data, 'journal_title');
-                }
-                if($vn == ""){
+		        if($paper->getType() == "Proceedings Paper" && $vn == ""){
                     $nNoVenue++;
                 }
                 
@@ -63,10 +57,10 @@ class DashboardProgressReportItem extends StaticReportItem {
 		$rowspan = 0;
 		if($nNoVenue > 0){
 		    if($nNoVenue == 1){
-		        $noVenue = "<td>{$nNoVenue} does not have a venue/journal title\n</td></tr>";
+		        $noVenue = "<td>{$nNoVenue} does not have a venue\n</td></tr>";
 		    }
 		    else{
-		        $noVenue = "<td>{$nNoVenue} do not have a venue/journal title\n</td></tr>";
+		        $noVenue = "<td>{$nNoVenue} do not have a venue\n</td></tr>";
 		    }
 		    $rowspan++;
 		}
