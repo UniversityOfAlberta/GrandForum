@@ -418,7 +418,25 @@ class Paper{
 	
 	// Returns the venue for this Paper
 	function getVenue(){
-	    return $this->venue;
+		$venue = $this->venue;
+
+		if( empty($venue) ){
+			$venue = ArrayUtils::get_string($this->data, 'event_title');
+		}
+
+		if( empty($venue) ){
+			$venue = ArrayUtils::get_string($this->data, 'conference');
+		}
+
+		if( empty($venue) ){
+			$venue = ArrayUtils::get_string($this->data, 'event_location');
+		}
+
+		if(empty($venue)){
+			$venue = ArrayUtils::get_string($this->data, 'location');
+		}
+
+	    return $venue;
 	}
 	
 	// Returns the domain specific data for this Paper
@@ -471,15 +489,17 @@ class Paper{
         $au = implode(',&nbsp;', $au);
         $yr = substr($this->getDate(), 0, 4);
         $vn = $this->getVenue();
-        if($vn == ""){
-            $vn = ArrayUtils::get_string($data, 'event_title');
-        }
-        if($vn == ""){
-            $vn = ArrayUtils::get_string($data, 'journal_title');
-        }
-        if($vn == ""){
+
+        if(($type == "Proceedings Paper" || $category == "Presentation") && empty($vn)){
             $vn = "(no venue)";
         }
+
+        //This is not really a venue, but this is how we want to put this into the proper citation
+        if(($type == "Journal Paper" || $type == "Journal Abstract") && empty($vn)){
+            $vn = ArrayUtils::get_string($data, 'journal_title');
+        }
+
+
         $pg = ArrayUtils::get_string($data, 'pages');
         if (strlen($pg) > 0){
             $pg = "{$pg}pp.";
@@ -488,19 +508,14 @@ class Paper{
             $pg = "(no pages)";
         }
         $pb = ArrayUtils::get_string($data, 'publisher', '(no publisher)');
-        /*$issub = ArrayUtils::get_field($data, 'submitted');
-        if ($issub !== false){
-            $ptr = &$list_sub;
-        }
-        else{
-            $ptr = &$list_pub;
-        }*/
+        
 
         $peer_rev = "";
         if($category == "Publication"){
         	if(isset($data['peer_reviewed']) && $data['peer_reviewed'] == "Yes"){
         		$peer_rev = ",&nbsp;Peer Reviewed";
-        	}else if(isset($data['peer_reviewed']) && $data['peer_reviewed'] == "No"){
+        	}
+        	else if(isset($data['peer_reviewed']) && $data['peer_reviewed'] == "No"){
         		$peer_rev = ",&nbsp;Not Peer Reviewed";
         	}
         }
