@@ -158,7 +158,7 @@ $wgAllowCopyUploads = true;
 $wgAllowTitlesInSVG = true;
 $wgMaxShellMemory = 402400;
 $key = array_search("application/zip", $wgMimeTypeBlacklist);
-$wgPasswordReminderResendTime = 1;
+$wgPasswordReminderResendTime = 0.5;
 $wgImpersonating = false;
 $wgRealUser;
 

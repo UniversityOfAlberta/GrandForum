@@ -477,8 +477,18 @@ class cavendishTemplate extends QuickTemplate {
 		    global $wgSiteName, $wgTitle;
 		    $loginFailed = (isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword']));
 		    if($loginFailed){
-		        if(isset($_POST['wpMailmypassword'])){
-		            $failMessage = "<p>A new password has been sent to the e-mail address registered for \"{$_POST['wpName']}\".  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>.<br /><b>NOTE: Only one password reset can be requested per hour.</b></p>";
+		        $person = Person::newFromName($_POST['wpName']);
+		        if($person == null || $person->getName() == ""){
+		            $failMessage = "<p class='inlineError'>There is no user by the name of <b>{$_POST['wpName']}</b>.  If you are an HQP and do not have an account, please ask your supervisor to create one for you.<br />";
+		            if(isset($_POST['wpMailmypassword'])){
+		                $failMessage .= "<b>Password request failed</b>";
+		            }
+		            $failMessage .= "</p>";
+		        }
+		        else if(isset($_POST['wpMailmypassword'])){
+		            $user = User::newFromName($_POST['wpName']);
+		            $user->load();
+		            $failMessage = "<p>A new password has been sent to the e-mail address registered for \"{$_POST['wpName']}\".  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>.<br /><b>NOTE: Only one password reset can be requested every half hour.</b></p>";
 		        }
 		        else{
 		            $failMessage = "<p>Incorrect password entered. Please try again.</p>";
@@ -488,7 +498,7 @@ class cavendishTemplate extends QuickTemplate {
 You must have cookies enabled to log in to $wgSiteName.<br />
 </p>
 <p>
-Your login ID is a concatenation of your first and last names: First.Last;
+Your login ID is a concatenation of your first and last names: <b>First.Last</b> (case sensitive)
 If you have forgotten your password please enter your login and ID and request a new random password to be sent to the email address associated with your Forum account.</p></td></tr>";
 		        $emailPassword = "<br /><br /><input class='dark' type='submit' name='wpMailmypassword' id='wpMailmypassword' tabindex='6' value='E-mail new password' />";
 		    }
@@ -514,7 +524,7 @@ If you have forgotten your password please enter your login and ID and request a
 <form style='position:relative;left:5px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
 	<table style='width:185px;'>
 	    $message
-		<tr class='tooltip' title="Your username is in the form of 'First.Last'">
+		<tr class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)">
 			<td valign='middle' align='right'>Username:</td>
 			<td class="mw-input">
 				<input type='text' class='loginText dark' style='width:97%;' name="wpName" value="$name" id="wpName1"
