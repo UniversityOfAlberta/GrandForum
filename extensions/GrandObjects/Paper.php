@@ -27,7 +27,8 @@ class Paper{
 	    }
 		$sql = "SELECT *
 			    FROM grand_products
-			    WHERE id = '$id'";
+			    WHERE id = '$id'
+			    AND deleted != '1'";
 		$data = DBFunctions::execSQL($sql);
 		$paper = new Paper($data);
         self::$cache[$paper->id] = &$paper;
@@ -44,8 +45,9 @@ class Paper{
 	    }
 		$sql = "SELECT *
 			    FROM grand_products
-			    WHERE title = '$title'
-			    OR title = '".str_replace(" ", "_", $title)."'";
+			    WHERE (title = '$title' OR
+			           title = '".str_replace(" ", "_", $title)."')
+			    AND deleted != '1'";
 		$data = DBFunctions::execSQL($sql);
 		$paper = new Paper($data);
         self::$cache[$paper->id] = &$paper;
@@ -231,7 +233,8 @@ class Paper{
 	static function search($phrase, $category='all'){
 	    $splitPhrase = explode(" ", $phrase);
 	    $sql = "SELECT id, title, date, projects FROM grand_products
-	            WHERE title LIKE '%'\n";
+	            WHERE title LIKE '%'
+	            AND deleted != '1'\n";
 	    foreach($splitPhrase as $word){
 	        $sql .= "AND title LIKE '%$word%'\n";
 	    }
