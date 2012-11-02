@@ -1,16 +1,16 @@
 <?php
 
-class MagazineAPI extends PaperAPI{
+class BibtexArticleAPI extends PaperAPI{
 	
-	function MagazineAPI($update=false){
-	    parent::PaperAPI($update, "Magazine/Newspaper Article", "Publication");
+	function BibtexArticleAPI($update=false){
+	    parent::PaperAPI($update, "BibTex Article", "Publication");
 	    $this->addPOST("abstract",false,"The abstract of the publication","My Abstract");
 	    $this->addPOST("date",false,"The date this publication was published, in the form YYYY-MM-DD","2010-10-15");
 	    $this->addPOST("status",false,"The status of the publication.  Can be either Submitted,Under Revision,Published,Rejected","Submitted");
-	    $this->addPOST("published_in",false,"The title of the journal that this publication was published in","Sunday Review Magazine");
-	    $this->addPOST("pages",false,"The pages where this article appears", "11-12");
-	    $this->addPOST("volume",false,"The volume of this magazine", "2");
-	    $this->addPOST("number",false,"The number of this magazine", "11-12");
+	    $this->addPOST("published_in",false,"The title of the journal that this publication was published in","Scientific Journal");
+	    $this->addPOST("pages",false,"The page numbers where this publication was located in the aforementioned journal","183-194");
+	    $this->addPOST("volume",false,"The volume of the journal","3");
+	    $this->addPOST("number",false,"The number of the journal","2");
 	    $this->addPOST("publisher",false,"The name of the publisher","My Publishing Company");
 	    $this->addPOST("isbn",false,"The ISBN of the publication","90-70002-34-5");
 	    $this->addPOST("issn",false,"The ISSN of the publication","90-70002-34-5");

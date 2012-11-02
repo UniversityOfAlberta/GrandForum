@@ -21,8 +21,11 @@ $publicationTypes = array("Proceedings Paper" => "an article written for submiss
                           "Masters Thesis" => "as awarded by an accredited institution",
                           "Bachelors Thesis" => "as awarded by an accredited institution",
                           "Tech Report" => "internal to the author&#39s institution",
-                          "Poster" => "as presented at a workshop, symposium, or conference",
+                          "Poster" => "written description in proceedings of a workshop, symposium, or conference",
                           "Manual" => "an instructional user guide",
+                          "BibTex Article" => "FLAGS BIBTEX ARTICLE",
+                          "BibTex Book" => "FLAGS BIBTEX BOOK",
+                          "BibTex Collection" => "FLAGS BIBTEX COLLECTION",
                           "Misc" => "any item not fitting the other listed types:\nenter its type in the text box provided");
 
 $activityTypes = array("Panel" => "panel",
@@ -67,6 +70,9 @@ $types = array("Artifact" => $artifactTypes,
                "Award" => $awardTypes,
                "Presentation" => $presentationTypes);
 
+$bibtexTypes = array("BibTex Article", "BibTex Book", "BibTex Collection");
+
+// Not currently used:
 $refereedTypes = array("Proceedings Paper", "Collections Paper", "Journal Paper", "Book Chapter", "Book Review", "Review Article",
                        "White Paper", "Poster", "Misc");
 
@@ -83,6 +89,7 @@ $optionDefs = array("Address" => "the city, country of the publisher",
                     "Host Institution" => "the university or company where presented",
                     "Host Department" => "the department where presented",
                     "Host Research Group" => "the research group to whom presented",
+										"In Publication" => "the name of the publication in which the article appears",
                     "ISBN" => "International Standard Book Number",
                     "ISSN" => "International Standard Serial Number",
                     "Journal Title" => "the name of the journal in which the item appears",
@@ -104,7 +111,7 @@ $optionDefs = array("Address" => "the city, country of the publisher",
 class PublicationPage {
 
     function processPage($article, $outputDone, $pcache){
-        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $types, $refereedTypes;
+        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $types, $bibtexTypes;
         
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
@@ -184,6 +191,16 @@ class PublicationPage {
                             type = "Proceedings Paper";
                         }
                         showHideAttr(type);
+
+                        // Remove warning flag from selection options
+                        $("select").one("click",function(e){
+                          var text = $(this).prop("selectedindex",0).val();
+                          if (text.indexOf("SELECT") == 0){
+                            $("option:first",this).remove();
+                          }
+													$(this).css("background-color", "white");
+                        });
+
                     });
                     
                     function showHideAttr(type){
@@ -358,13 +375,30 @@ class PublicationPage {
                                 break;
                             case "Publication":
                                 switch(type){
-                                    case "Book":
+                                    case "BibTex Article":
+                                        addAttrDefn('.$this->get_defn("Published In").');
+                                        addAttrDefn('.$this->get_defn("Volume").');
+                                        addAttrDefn('.$this->get_defn("Number").');
+                                        addAttrDefn('.$this->get_defn("Pages").');
                                         addAttrDefn('.$this->get_defn("Publisher").');
                                         addAttr("ISBN");
                                         addAttr("ISSN");
                                         addAttr("DOI");
                                         addAttr("URL");
                                         break;
+                                    case "BibTex Collection":
+                                        addAttrDefn('.$this->get_defn("Book Title").');
+                                        addAttrDefn('.$this->get_defn("Editors").');
+                                        addAttrDefn('.$this->get_defn("Pages").');
+                                        addAttrDefn('.$this->get_defn("Publisher").');
+                                        addAttrDefn('.$this->get_defn("Address").');
+                                        addAttr("ISBN");
+                                        addAttr("ISSN");
+                                        addAttr("DOI");
+                                        addAttr("URL");
+                                        break;
+                                    case "BibTex Book":
+                                    case "Book":
                                     case "Edited Book":
                                         addAttrDefn('.$this->get_defn("Publisher").');
                                         addAttr("ISBN");
@@ -405,13 +439,14 @@ class PublicationPage {
                                         addAttr("URL");
                                         break;
                                     case "White Paper":
+                                        addAttrDefn('.$this->get_defn("Published In").');
                                         addAttrDefn('.$this->get_defn("Pages").');
                                         addAttrDefn('.$this->get_defn("Editor").');
                                         addAttrDefn('.$this->get_defn("Publisher").');
                                         addAttr("URL");
                                         break;
                                     case "Magazine/Newspaper Article":
-                                        addAttrDefn('.$this->get_defn("Magazine/Newspaper Title").');
+                                        addAttrDefn('.$this->get_defn("Published In").');
                                         addAttrDefn('.$this->get_defn("Volume").');
                                         addAttrDefn('.$this->get_defn("Number").');
                                         addAttrDefn('.$this->get_defn("Pages").');
@@ -422,7 +457,7 @@ class PublicationPage {
                                         addAttr("URL");
                                         break;
                                     case "Journal Paper":
-                                        addAttrDefn('.$this->get_defn("Journal Title").');
+                                        addAttrDefn('.$this->get_defn("Published In").');
                                         addAttrDefn('.$this->get_defn("Volume").');
                                         addAttrDefn('.$this->get_defn("Number").');
                                         addAttrDefn('.$this->get_defn("Pages").');
@@ -433,7 +468,7 @@ class PublicationPage {
                                         addAttr("URL");
                                         break;
                                     case "Journal Abstract":
-                                        addAttrDefn('.$this->get_defn("Journal Title").');
+                                        addAttrDefn('.$this->get_defn("Published In").');
                                         addAttrDefn('.$this->get_defn("Volume").');
                                         addAttrDefn('.$this->get_defn("Number").');
                                         addAttrDefn('.$this->get_defn("Pages").');
@@ -454,6 +489,7 @@ class PublicationPage {
                                         break;
                                     case "Collections Paper":
                                         addAttrDefn('.$this->get_defn("Book Title").');
+                                        addAttrDefn('.$this->get_defn("Editors").');
                                         addAttrDefn('.$this->get_defn("Pages").');
                                         addAttrDefn('.$this->get_defn("Publisher").');
                                         addAttrDefn('.$this->get_defn("Address").');
@@ -553,7 +589,7 @@ class PublicationPage {
                         }
                     }
 
-                    function addAttrDefn(attr, defn){
+                    function addAttrDefn(attr, defn){   // MARK
                         if(typeof oldAttr[attr.toLowerCase()] == "undefined"){
                             var newAttr = document.createElement("tr");
                             newAttr.setAttribute("name", attr.toLowerCase());
@@ -656,34 +692,75 @@ class PublicationPage {
                 $wgOut->addWikiText("== $category Information ==
                                      __NOEDITSECTION__\n");
                 $wgOut->addHTML("<table border=0 id='attributes'>");
+
+								$hasBibtex = false;
                 if($category == "Publication"){
+
+										$type = $paper->getType();
+										if($create){
+												$type = "Misc";
+										}
+										$typeOpts = "";
+
                     if($edit){
+												// BIBTEX: check here, add warnings as necessary
+												if (strpos($type, "BibTex") === 0){
+														$hasBibtex = true;
+														$typeOpts = "<option selected=selected >SELECT ARTICLE TYPE</option>"; // DEFAULT
+														if(strpos($type, "Book") > 0)
+															$typeOpts = "<option selected=selected >Edited Book</option>";
+														if(strpos($type, "Collection") > 0)
+															$typeOpts = "<option selected=selected >Collections Paper</option>";
+												}
+
+												foreach($types[$category] as $pType => $pDescription){
+														if(strpos($pType, "BibTex") === 0) // bibtex types should never be visible as options
+                                continue;
+														$selected = "";
+														if($type == $pType || (strstr($type, "Misc") !== false && strstr($pType, "Misc") !== false)){
+																$selected = " selected='selected'";
+														}
+														$typeOpts = $typeOpts."<option$selected title='$pDescription'>$pType</option>";
+												}
+
+												// STATUS
+												$statusOpts = "";
+                        if($hasBibtex){    // Pre-pend warning to option list
+                            $statusOpts = "<option selected=selected >SELECT PUBLICATION STATUS</option>";
+                        }
                         $submittedSelected = ($paper->getStatus() == "Submitted") ? " selected='selected'" : "";
                         $toappearSelected = ($paper->getStatus() == "To Appear") ? " selected='selected'" : "";
                         $revisionSelected = ($paper->getStatus() == "Under Revision") ? " selected='selected'" : "";
                         $publishedSelected = ($paper->getStatus() == "Published") ? " selected='selected'" : "";
                         $toAppearSelected = ($paper->getStatus() == "To Appear") ? " selected='selected'" : "";
                         $rejectedSelected = ($paper->getStatus() == "Rejected") ? " selected='selected'" : "";
+                        $statusOpts = $statusOpts."<option$submittedSelected title='draft submitted to venue, not yet accepted'>Submitted</option>
+                                                   <option$toappearSelected title='Accepted/In Press/To Appear: will be published, not yet released.'>To Appear</option>
+                                                   <option$revisionSelected title='accepted and undergoing final changes'>Under Revision</option>
+                                                   <option$publishedSelected title='appears in specified venue'>Published</option>
+                                                   <option$rejectedSelected title='was not accepted for publication'>Rejected</option>";
                         $wgOut->addHTML("<tr title='the publication status of the paper'>
                                             <td align='right'><b>Status:</b></td>
-                                            <td>
-                                                <select name='status'>
-                                                    <option$submittedSelected title='draft submitted to venue, not yet accepted'>Submitted</option>
-                                                    <option$toappearSelected title='Accepted/In Press/To Appear: will be published, not yet released.'>To Appear</option>
-                                                    <option$revisionSelected title='accepted and undergoing final changes'>Under Revision</option>
-                                                    <option$publishedSelected title='appears in specified venue'>Published</option>
-                                                    <option$rejectedSelected title='was not accepted for publication'>Rejected</option>
-                                                </select>
+                                            <td>");
+												if($hasBibtex)
+														$wgOut->addHTML("<select name='status' style='background-color:orange' >");
+												else
+														$wgOut->addHTML("<select name='status'>");
+												$wgOut->addHTML($statusOpts);
+												$wgOut->addHTML("</select>
                                                 <a href='#' title='Mouse-over options to see definitions'
                                                             onclick='return false'><img src='../skins/common/images/q_white.png'></a>
                                             </td>
                                         </tr>");
-                    }
-                    else{
+
+                    } else {
                         $wgOut->addHTML("<tr>
-                                            <td align='left'><b>Status:</b><br /></td>
-                                            <td>{$paper->getStatus()}<br /></td>
-                                        </tr>");
+                                            <td align='left'><b>Status:</b><br /></td>");
+                        $status = $paper->getStatus();
+                        if ($status !== '')
+                            $wgOut->addHTML("<td>{$status}<br /></td> </tr>");
+                        else
+                            $wgOut->addHTML("<td style='background-color: orange'><br /></td> <td>&nbsp;&nbsp;&nbsp;&nbsp;Please click <b>Edit Publication</b> to specify the publication's status.</td></tr>");
                     }
                 }
                 else if($category == "Artifact"){
@@ -706,31 +783,38 @@ class PublicationPage {
                     }
                 }
 
+                // TYPE
                 $align = ($edit) ? "align='right'" : "align='left'";
- 
                 $wgOut->addHTML("<tr title='the type of publication''>
                                         <td $align><b>Type:</b></td>");
-                $type = $paper->getType();
                 if($create){
                     $type = "Misc";
                 }
                 $currType = "";
+
                 if($edit){
-                    $wgOut->addHTML("<td><select onChange='showHideAttr(this.value);' name='type'>");
-                    foreach($types[$category] as $pType => $pDescription){
-                        $selected = "";
-                        if($type == $pType || (strstr($type, "Misc") !== false && strstr($pType, "Misc") !== false)){
-                            $selected = " selected='selected'";
-                        }
-                        $wgOut->addHTML("<option$selected title='$pDescription'>$pType</option>");
+
+                  if($hasBibtex)
+                      $wgOut->addHTML("<td><select style='background-color:orange' onChange='showHideAttr(this.value);' name='type'>");
+                  else
+                      $wgOut->addHTML("<td><select onChange='showHideAttr(this.value);' name='type'>");
+                  $wgOut->addHTML($typeOpts);
+                  $wgOut->addHTML("</select></td>");
+                  if($hasBibtex && !strpos($type, "Article"))
+                      $wgOut->addHTML("<td><b>Please ensure that the default type is correct.</b></td>");
+
+                } else {
+                    $type = $paper->getType();
+                    if(strpos($type, "BibTex") === 0){
+                        $wgOut->addHTML("<td style='background-color:orange'>".str_replace("Misc: ", "", $type)."</td>");
+                        $wgOut->addHTML("<td>&nbsp;&nbsp;&nbsp;&nbsp;Please click <b>Edit Publication</b> to select the specific publication type.</td>");
+                    } else {
+                        $wgOut->addHTML("<td>".str_replace("Misc: ", "", $type)."</td>");
                     }
-                    $wgOut->addHTML("</select></td>");
-                }
-                else{
-                    $wgOut->addHTML("<td>".str_replace("Misc: ", "", $paper->getType())."</td>");
                 }
                 $wgOut->addHTML("</tr>");
 
+								// PEER REVIEW
                 if($category == "Publication"){
                     if($edit){
                         $arr = $paper->getData();
@@ -751,6 +835,7 @@ class PublicationPage {
                     }
                 }
 
+								// DATE
                 if($edit){
                     $today = getdate();
 
@@ -793,7 +878,8 @@ class PublicationPage {
                                         </tr>");
                     }
                 }
-                
+
+                // DEFAULT FIELDS for all types in category
                 if($category == "Publication"){
                     $data = $paper->getData();
                     if(!isset($data['isbn'])){
@@ -1166,6 +1252,15 @@ class PublicationPage {
                 break;
             case "Publication":
                 switch($_POST['type']){
+                    case "BibTex Article":
+                        $api = new BibtexArticleAPI(true);
+                        break;
+                    case "BibTex Book":
+                        $api = new BibtexArticleAPI(true);
+                        break;
+                    case "BibTex Collection":
+                        $api = new BibtexArticleAPI(true);
+                        break;
                     case "Book":
                         $api = new BookAPI(true);
                         break;
