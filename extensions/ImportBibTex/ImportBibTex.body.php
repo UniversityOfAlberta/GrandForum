@@ -20,6 +20,7 @@ class ImportBibTex extends SpecialPage{
 	/// delimiter) .  In addition, #ind is updated as the starting index of
 	/// a future request.
 	function nextEntry(&$text, &$ind, &$bibtype) {
+    global $wgOut;
 		$at = strpos($text, '@', $ind);
 		if ($at === false) {
 			return null;
@@ -37,18 +38,25 @@ class ImportBibTex extends SpecialPage{
 		while ($fini < $rem && $stack > 0) {
 			// Skip non-braces until a brace.
 			$fini += strcspn($text, "{}", $fini);
+
+      // Prevent "Uninitialized string offset" error:
+      if ($fini >= strlen($text)){
+          break;
+      }
+
 			// Add 1 every opening brace, subtract 1 every closing brace.
 			$stack += ($text[$fini] === '{') - ($text[$fini] === '}');
 			// Skip brace.
 			$fini++;
 		}
 
-		// Update cursor for a future query.
-		$ind = $fini;
 		if ($stack === 0) {
+		  // Update cursor for a future query.
+		  $ind = $fini;
 			// BibTeX chunk looks good.
 			return substr($text, $at, $fini - $at);
 		}
+
 		return null;
 	}
 
@@ -56,6 +64,7 @@ class ImportBibTex extends SpecialPage{
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
 		if($wgUser->isLoggedIn()){
 			if(isset($_POST['submit'])){
+
 				// Identify chunks of BibTeX entries.
 				$ind = 0;
 				$rejects = "";
@@ -78,21 +87,21 @@ class ImportBibTex extends SpecialPage{
 					switch (strtolower($bibtype)) {
 					    case 'article':
 						    ImportBibTex::parseBibTeX($lines);
-						    $api = new JournalPaperAPI(ImportBibTex::alreadyExists());
+						    $api = new BibtexArticleAPI(ImportBibTex::alreadyExists());
 						    break;
 					    case 'book':
 						    ImportBibTex::parseBibTeX($lines);
-						    $api = new BookAPI(ImportBibTex::alreadyExists());
+						    $api = new BibtexBookAPI(ImportBibTex::alreadyExists());
 						    break;
 					    case 'proceedings':
 					    case 'inproceedings':
 						    ImportBibTex::parseBibTeX($lines);
 						    $api = new ProceedingsPaperAPI(ImportBibTex::alreadyExists());
 						    break;
-				        case 'collection':
-				        case 'incollection':
-				            ImportBibTex::parseBibTeX($lines);
-						    $api = new CollectionAPI(ImportBibTex::alreadyExists());
+			        case 'collection':
+			        case 'incollection':
+		            ImportBibTex::parseBibTeX($lines);
+						    $api = new BibtexCollectionAPI(ImportBibTex::alreadyExists());
 						    break;
 					    case 'manual':
 						    ImportBibTex::parseBibTeX($lines);
@@ -102,19 +111,19 @@ class ImportBibTex extends SpecialPage{
 						    ImportBibTex::parseBibTeX($lines);
 						    $api = new MastersThesisAPI(ImportBibTex::alreadyExists());
 						    break;
-                        case 'bachelorsthesis' :
-                            ImportBibTex::parseBibTeX($lines);
-                            $api = new BachelorsThesisAPI(ImportBibTex::alreadyExists());
-                            break;
+                case 'bachelorsthesis' :
+                  ImportBibTex::parseBibTeX($lines);
+                  $api = new BachelorsThesisAPI(ImportBibTex::alreadyExists());
+                  break;
 					    case 'phdthesis':
 					    case 'thesis':
 						    ImportBibTex::parseBibTeX($lines);
 						    $api = new PHDThesisAPI(ImportBibTex::alreadyExists());
 						    break;
-                        case 'poster':
-                            ImportBibTex::parseBibTeX($lines);
-                            $api = new PosterAPI(ImportBibTex::alreadyExists());
-                            break;
+              case 'poster':
+                ImportBibTex::parseBibTeX($lines);
+                $api = new PosterAPI(ImportBibTex::alreadyExists());
+                break;
 					    case 'techreport':
 						    ImportBibTex::parseBibTeX($lines);
 						    $api = new TechReportAPI(ImportBibTex::alreadyExists());
@@ -138,18 +147,24 @@ class ImportBibTex extends SpecialPage{
 					    $returns[] = $return;
 					}
 				}
+
+        // If the bibtex is broken (e.g. missing closing brace), then all following the
+        // last valid entry will be here:
+        $remError = trim(substr($text, $ind));
+
 				if(count($returns) > 0){
-				    $wgOut->addHTML("Please verify that the entered products are correct.<br />");
+				    $wgOut->addHTML("<br/><b>The following entries were successfully imported. <br/></b>
+            Please follow each of the following links to verify the entry, and add any additional information:<br />");
 				    $wgOut->addHTML("<ul>");
 				    foreach($returns as $return){
 				        $wgOut->addHTML("<li>$return</li>");
 				    }
-				    $wgOut->addHTML("</ul>");
+				    $wgOut->addHTML("</ul><br/>");
 				}
-				ImportBibTex::generateFormHTML($wgOut);
+				ImportBibTex::generateFormHTML($wgOut, $remError);
 			}
 			else {
-				ImportBibTex::generateFormHTML($wgOut);
+				ImportBibTex::generateFormHTML($wgOut, '');
 			}
 		}
 		else {
@@ -197,7 +212,7 @@ class ImportBibTex extends SpecialPage{
 				$_POST['book_title'] = ImportBibTex::getBibTexVariable($line, "booktitle");
 			}
 			else if(ImportBibTex::getBibTexVariable($line, "journal") !== false){
-				$_POST['journal_title'] = ImportBibTex::getBibTexVariable($line, "journal");
+				$_POST['published_in'] = ImportBibTex::getBibTexVariable($line, "journal");
 			}
 			else if(ImportBibTex::getBibTexVariable($line, "publisher") !== false){
 				$_POST['publisher'] = ImportBibTex::getBibTexVariable($line, "publisher");
@@ -288,11 +303,15 @@ class ImportBibTex extends SpecialPage{
 	    }
 	}
 	
-	function generateFormHTML($wgOut){
+	function generateFormHTML($wgOut, $remError){
 		global $wgServer, $wgScriptPath;
-		$wgOut->addHTML("<p>Paste BibTeX entries in the text box below for importing:
-				<form action='$wgServer$wgScriptPath/index.php/Special:ImportBibTex' method='post'>
-					<textarea name='text' style='width:650px; height:300px;'></textarea><br /><br />
+    if(strlen($remError) > 0){
+        $wgOut->addHTML("<p><b>WARNING: The following bibtex contains errors and was not imported.</b> <br/> The first entry listed contains an error. <br/> If more than one entry is listed, then none were imported and may also contain errors. <br/> Please fix the error(s) and submit again. Valid entries will be imported until the next error. <br/> The most common error is usually a missing brace.");
+		} else {
+        $wgOut->addHTML("<p>Paste BibTeX entries in the text box below for importing:");
+    }
+		$wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/Special:ImportBibTex' method='post'>
+					<textarea name='text' style='width:650px; height:300px;'>$remError</textarea><br /><br />
 					<input type='submit' name='submit' value='Submit' />
 				</form>
 <h2>Example Usage</h2>
