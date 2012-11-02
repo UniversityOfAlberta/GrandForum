@@ -33,10 +33,10 @@ class ReportIndex {
 	/// which is either a Project instance or a project ID (integer).
 	function list_reports($proj, $lim = 1, $spec = 1) {
 		if (is_object($proj)) {
-			return DBFunctions::execSQL("SELECT i.report_id, n.nsName, p.token, i.created, i.last_download, i.nr_download FROM mw_pdf_index i LEFT JOIN (mw_pdf_report p, mw_an_extranamespaces n) ON (i.report_id = p.report_id AND i.project_id = n.nsId) WHERE i.user_id = {$this->_uid} AND i.project_id = {$proj->getId()} AND p.special = {$spec} AND p.submitted = 0 ORDER BY created DESC LIMIT {$lim};");
+			return DBFunctions::execSQL("SELECT i.report_id, n.nsName, p.token, i.created, i.last_download, i.nr_download, p.year FROM mw_pdf_index i LEFT JOIN (mw_pdf_report p, mw_an_extranamespaces n) ON (i.report_id = p.report_id AND i.project_id = n.nsId) WHERE i.user_id = {$this->_uid} AND i.project_id = {$proj->getId()} AND p.special = {$spec} AND p.submitted = 0 ORDER BY created DESC LIMIT {$lim};");
 		}
 		else {
-			return DBFunctions::execSQL("SELECT i.report_id, n.nsName, p.token, i.created, i.last_download, i.nr_download FROM mw_pdf_index i LEFT JOIN (mw_pdf_report p, mw_an_extranamespaces n) ON (i.report_id = p.report_id AND i.project_id = n.nsId) WHERE i.user_id = {$this->_uid} AND i.project_id = {$proj} AND p.special = {$spec} AND p.submitted = 0 ORDER BY created DESC LIMIT {$lim};");
+			return DBFunctions::execSQL("SELECT i.report_id, n.nsName, p.token, i.created, i.last_download, i.nr_download, p.year FROM mw_pdf_index i LEFT JOIN (mw_pdf_report p, mw_an_extranamespaces n) ON (i.report_id = p.report_id AND i.project_id = n.nsId) WHERE i.user_id = {$this->_uid} AND i.project_id = {$proj} AND p.special = {$spec} AND p.submitted = 0 ORDER BY created DESC LIMIT {$lim};");
 		}
 	}
 

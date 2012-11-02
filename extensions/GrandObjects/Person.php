@@ -2039,6 +2039,37 @@ class Person{
         }
     }
     
+    function hasReportingTicket($project, $year, $reportType, $ticket){
+        $year = str_replace("'", "", $year);
+        $ticket = str_replace("'", "", $ticket);
+        if(!($project instanceof Project)){
+            if(is_numeric($project)){
+                $project = Project::newFromId($project);
+            }
+            else{
+                $project = Project::newFromName($project);
+            }
+            if($project == null){
+                $project = new Project(array());
+                $project->id = 0;
+            }
+        }
+        $sql = "SELECT *
+                FROM `grand_reporting_year_ticket`
+                WHERE `year` = '$year'
+                AND `report_type` = '$reportType'
+                AND `ticket` = '$ticket'
+                AND `user_id` = '{$this->id}'
+                AND `project_id` = '{$project->getId()}'
+                AND `expires` >= CURRENT_TIMESTAMP
+                LIMIT 1";
+        $data = DBFunctions::execSQL($sql);
+        if(count($data) > 0){
+            return true;
+        }
+        return false;
+    }
+    
     // Returns whether or not this person is waiting to be inactivated or not
     function isPendingInactivation(){
         $sql = "SELECT *
