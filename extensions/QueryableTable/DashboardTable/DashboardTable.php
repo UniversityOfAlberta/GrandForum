@@ -215,15 +215,21 @@ class DashboardTable extends QueryableTable{
                                 if(($cell->label == "Publications" || $cell->label == "Artifacts") && 
                                     $cell instanceof PublicationCell){
                                     $paper = Paper::newFromId($item);
-                                    if(!isset($firstTimeStatus[$paper->getStatus()])){
+                                    $data = $paper->getData();
+                                    if(!isset($data['peer_reviewed'])){
+                                        $pr = "No";
+                                    }
+                                    else{
+                                        $pr = $data['peer_reviewed'];
+                                    }
+                                    $status = $paper->getStatus().$pr;
+                                    if(!isset($firstTimeStatus[$status])){
                                         if(count($firstTimeStatus) > 0){
                                             $details .= "</ul></li>\n";
                                         }
-                                        
-                                        $data = $paper->getData();
                                         $peerReviewedStatus = "";
-                                        if(isset($data['peer_reviewed'])){
-                                            if($data['peer_reviewed'] == "Yes"){
+                                        if($cell->label == "Publications"){
+                                            if($pr == "Yes"){
                                                 $peerReviewedStatus = "<span class='pdfOnly'> / Peer Reviewed</span>";
                                             }
                                             else{
@@ -231,7 +237,7 @@ class DashboardTable extends QueryableTable{
                                             }
                                         }
                                         $details .= "<li>".$paper->getStatus()."{$peerReviewedStatus}<ul>";
-                                        $firstTimeStatus[$paper->getStatus()] = true;
+                                        $firstTimeStatus[$status] = true;
                                     }
                                 }
                                 $details .= "<li>".$row."</li>\n";
