@@ -694,13 +694,13 @@ class PublicationPage {
                 $wgOut->addHTML("<table border=0 id='attributes'>");
 
 								$hasBibtex = false;
+                                $typeOpts = "";
                 if($category == "Publication"){
 
 										$type = $paper->getType();
 										if($create){
 												$type = "Misc";
 										}
-										$typeOpts = "";
 
                     if($edit){
 												// BIBTEX: check here, add warnings as necessary
@@ -793,6 +793,16 @@ class PublicationPage {
                 $currType = "";
 
                 if($edit){
+                  if($typeOpts == ""){
+                    $type = $paper->getType();
+                    foreach($types[$category] as $pType => $pDescription){                        
+                        $selected = "";
+                        if($type == $pType || (strstr($type, "Misc") !== false && strstr($pType, "Misc") !== false)){
+                                $selected = " selected='selected'";
+                        }
+                        $typeOpts = $typeOpts."<option$selected title='$pDescription'>$pType</option>";
+                    }
+                  }
 
                   if($hasBibtex)
                       $wgOut->addHTML("<td><select style='background-color:orange' onChange='showHideAttr(this.value);' name='type'>");
