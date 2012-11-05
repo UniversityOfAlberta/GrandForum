@@ -215,18 +215,6 @@ class PublicationPage {
                             case "Activity":
                                 switch(type){
                                     default:
-                                    case "Panel":
-                                        addAttr("Conference");
-                                        addAttr("Location");
-                                        addAttr("Organizing Body");
-                                        addAttr("URL");
-                                        break;
-                                    case "Tutorial":
-                                        addAttr("Conference");
-                                        addAttr("Location");
-                                        addAttr("Organizing Body");
-                                        addAttr("URL");
-                                        break;
                                     case "Event Organization":
                                         addAttr("Conference");
                                         addAttr("Location");
@@ -1147,12 +1135,6 @@ class PublicationPage {
             case "Activity":
                 switch($_POST['type']){
                     default:
-                    case "Panel":
-                        $api = new PanelAPI(true);
-                        break;
-                    case "Tutorial":
-                        $api = new TutorialAPI(true);
-                        break;
                     case "Event Organization":
                         $api = new EventOrganizationAPI(true);
                         break;
