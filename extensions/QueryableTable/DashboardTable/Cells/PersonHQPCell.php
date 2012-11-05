@@ -45,7 +45,7 @@ class PersonHQPCell extends DashboardCell {
             foreach($hqps as $hqp){
                 $university = $hqp->getUniversity();
                 $position = $university['position'];
-                $tmp[$position] = $hqp->getId();
+                $tmp[] = $hqp->getId();
             }
             
             foreach($tmp as $hqpId){
