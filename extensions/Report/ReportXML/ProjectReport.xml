@@ -32,7 +32,7 @@
             <SectionPermission id="submit" permissions="" />
         </Role>
     </Permissions>
-    <ReportSection id="status" name="Report Completion Status" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <ReportSection id="status" tooltip="Evaluation of the project report against the reporting rules" name="Report Completion Status" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
                 <p>This page provides an overview of the degree to which the project report and the project-related reports of the associated NIs are complete. Five aspects of the project report are inspected:</p>
@@ -94,7 +94,7 @@
             <![CDATA[</table>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="dashboard" name="Project Dashboard" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
+    <ReportSection id="dashboard" tooltip="Overview of this year's activity and productivity" name="Project Dashboard" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
         <Instructions>
             <![CDATA[
                 <p>The Dashboard is designed to provide an overview of all project-related activity in GRAND, by all project NIs (each represented by a row in the Dashboard table) and overall (reflected in the final "Totals" row of the table). The data reported in the dashboard has already been input to the Forum through the various functionalities of the "Toolbox".</p>
@@ -109,7 +109,7 @@
             <![CDATA[<h3>Productivity:</h3><div>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="report" name="Project Report" blobSection="LDR_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" number="1,2,3">
+    <ReportSection id="report" tooltip="Open-ended report narratives" name="Project Report" blobSection="LDR_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" number="1,2,3">
         <Instructions>
             <![CDATA[
                 <p>The intent of this section is to enable the project co-PLs to report in an open-ended format on the activities and accomplishments of the project researchers during the term of the report.</p>
@@ -196,7 +196,7 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="milestones" name="Project Milestones" blobSection="LDR_MILESTONE" type="EditableReportSection" renderpdf="true" reportCharLimits="false">
+    <ReportSection id="milestones" tooltip="Discussion of progress against projects' milestones" name="Project Milestones" blobSection="LDR_MILESTONE" type="EditableReportSection" renderpdf="true" reportCharLimits="false">
         <Instructions>
             <![CDATA[
                 <p>In the "Milestone Report" an overview of the project progress against the milestones that were "active" during the past year is reported. You can reference Milestones by writing "@Milestone ID" in the text box or you can start typing "@Milestone Title" and select the milestone from the drop-down box appearing below the overview textbox.</p>
@@ -275,7 +275,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="comments" name="Comments" blobSection="LDR_NICOMMENTS" type="EditableReportSection" autosave="true" renderpdf="false" reportCharLimits="false">
+    <ReportSection id="comments" tooltip="Comments on contributions of NIs to the project" name="Comments" blobSection="LDR_NICOMMENTS" type="EditableReportSection" autosave="true" renderpdf="false" reportCharLimits="false">
         <Instructions>
             <![CDATA[
                 <p>In this section, the project co-PLs provide comments on the contributions of individual NIs who are involved in the project. Clicking on the name of the researcher will open a text box. These comments are not reviewed by the RMC as part of the Project Report, however the comments here will be included as part of the Individual Network-Investigator Reports as part of the evaluation of individual researchers.</p>
@@ -289,7 +289,7 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="budget" name="Project Budget Request" blobSection="LDR_BUDGET" type="EditableReportSection" autosave="true" renderpdf="true">
+    <ReportSection id="budget" tooltip="Budget-request roll-up and justification" name="Project Budget Request" blobSection="LDR_BUDGET" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
                 <p>This section includes a roll-up of the Budget Request for this project from each of the listed project NIs. Under "Budget Justification", there is a text field to allow for a brief comment on the overall budget request for this project.</p>
@@ -300,7 +300,7 @@
         </ReportItem>
         <ReportItem id="budget" type="ProjectBudgetReportItem" />
     </ReportSection>
-    <ReportSection id="review" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
                     <p>This section provides (a) an online document with all the information currently contained in the report pages, and (b) an online approximation of what the resulting PDF document will look like. If you are satisfied with this content, then you can proceed to the final step of the reporting workflow where you can "Submit" your report to be forwarded to the RMC.</p>
@@ -311,7 +311,7 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
                     <p>To submit the project report, follow the following three steps.</p>
