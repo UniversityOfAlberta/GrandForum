@@ -65,10 +65,9 @@ $wgEnotifWatchlist = true; # UPO
 $wgEmailAuthentication = true;
 
 ## Database settings
-$wgDBtype           = "mysql";
-$wgDBserver         = "localhost";
-$wgDBname           = "grand_giga";
-
+#$wgDBtype           = "";
+#$wgDBserver         = "";
+#$wgDBname           = "";
 
 ## Please edit Credentials.php for configuring $wgDBuser, $wgDBpassword,
 ## $wgDBadminuser, and $wgDBadminpassword.
