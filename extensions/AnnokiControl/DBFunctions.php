@@ -38,8 +38,10 @@ class DBFunctions {
 		self::$lastResult = $result;
 	    $rows = array();
 	    // I would like to use MYSQL_ASSOC here, but that causes breakage at the moment
-	    while ($row = mysql_fetch_array($result->result, MYSQL_BOTH)) {
-		    $rows[] = $row;
+	    if($result != null){
+	        while ($row = mysql_fetch_array($result->result, MYSQL_BOTH)) {
+		        $rows[] = $row;
+	        }
 	    }
 		return $rows;
 	}
@@ -58,7 +60,12 @@ class DBFunctions {
 	
 	// Returns the number of rows returned in the last resultset
 	static function getNRows(){
-	    return mysql_num_rows(self::$lastResult->result);
+	    if(self::$lastResult->result != null){
+	        return mysql_num_rows(self::$lastResult->result);
+	    }
+	    else{
+	        return 0;
+	    }
 	}
 }
 ?>
