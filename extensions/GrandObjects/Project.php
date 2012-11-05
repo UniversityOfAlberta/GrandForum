@@ -786,7 +786,6 @@ EOF;
 	    $sql = "SELECT DISTINCT milestone_id
 	            FROM grand_milestones
 	            WHERE project_id = '{$this->id}'
-	            AND start_date > end_date
                 AND status IN ('Abandoned','Closed') 
                 ORDER BY projected_end_date";
 	    
