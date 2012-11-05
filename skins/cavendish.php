@@ -250,7 +250,7 @@ class cavendishTemplate extends QuickTemplate {
 			        echo "selected";
 			    } ?>" >
 				<span class="top-nav-left">&nbsp;</span>
-				<a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Special:Survey">Survey</a>	
+				<a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Special:Survey">NAVEL Survey</a>	
 				<span class="top-nav-right">&nbsp;</span>
 			</li>
 			<?php foreach($this->data['personal_urls'] as $key => $item) {
