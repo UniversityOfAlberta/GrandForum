@@ -11,23 +11,29 @@ abstract class PublicationCell extends DashboardCell {
             foreach($values as $item){
                 $paper = Paper::newFromId($item);
                 $status = $paper->getStatus();
+                $value = $this->getTypeValue($paper->getType());
+                $data = $paper->getData();
+                $extra = 0;
+                if(!isset($data['peer_reviewed']) || $data['peer_reviewed'] == "No"){
+                    $extra = 1;
+                }
                 switch($status){
                     case "Peer Reviewed":
                     case "Published":
-                        $newValues[0][$type][$this->getTypeValue($paper->getType())][] = $item;
+                        $newValues[0+$extra][$type][$value][] = $item;
                         break;
                     case "Not Peer Reviewed":
                     case "To Appear":
-                        $newValues[1][$type][$this->getTypeValue($paper->getType())][] = $item;
+                        $newValues[2+$extra][$type][$value][] = $item;
                         break;
                     case "Under Revision":
-                        $newValues[2][$type][$this->getTypeValue($paper->getType())][] = $item;
+                        $newValues[4+$extra][$type][$value][] = $item;
                         break;
                     case "Submitted":
-                        $newValues[3][$type][$this->getTypeValue($paper->getType())][] = $item;
+                        $newValues[6+$extra][$type][$value][] = $item;
                         break;
                     case "Rejected":
-                        $newValues[4][$type][$this->getTypeValue($paper->getType())][] = $item;
+                        $newValues[8+$extra][$type][$value][] = $item;
                         break;
                 }
             }

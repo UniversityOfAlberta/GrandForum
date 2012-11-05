@@ -67,7 +67,7 @@ $wgEmailAuthentication = true;
 ## Database settings
 $wgDBtype           = "mysql";
 $wgDBserver         = "localhost";
-$wgDBname           = "grand_giga_test";
+$wgDBname           = "grand_giga";
 
 
 ## Please edit Credentials.php for configuring $wgDBuser, $wgDBpassword,
