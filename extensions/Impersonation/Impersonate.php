@@ -4,6 +4,7 @@ require_once("SpecialImpersonate.php");
 
 $wgHooks['AuthPluginSetup'][] = 'impersonate';
 $wgHooks['UserGetRights'][] = 'changeGroups';
+$wgHooks['UserLogoutComplete'][] = 'clearImpersonation';
 
 function impersonate(){
     global $wgRequest, $wgServer, $wgScriptPath, $wgUser, $wgMessage, $wgRealUser, $wgImpersonating, $wgTitle;
@@ -58,7 +59,12 @@ function impersonate(){
         }
     }
     if(isset($_GET['stopImpersonating'])){
-        $urlBeforeImpersonate = $_COOKIE['urlBeforeImpersonate'];
+        if(isset($_COOKIE['urlBeforeImpersonate'])){
+            $urlBeforeImpersonate = $_COOKIE['urlBeforeImpersonate'];
+        }
+        else{
+            $urlBeforeImpersonate = "$wgScriptPath/index.php/Main_Page";
+        }
         setcookie('impersonate', '', time()-(60*60), '/'); // Delete Cookie
         setcookie('urlBeforeImpersonate', '', time()-(60*60), '/'); // Delete Cookie
         header("Location: {$wgServer}{$urlBeforeImpersonate}");
@@ -180,6 +186,22 @@ function changeGroups($user, &$aRights){
         unset($aRights[$key]);
     }
     $aRights[0] = 'read';
+    return true;
+}
+
+function clearImpersonation( &$user, &$inject_html, $old_name ){
+    global $wgImpersonating, $wgScriptPath;
+    if($wgImpersonating){
+        if(isset($_COOKIE['urlBeforeImpersonate'])){
+            $urlBeforeImpersonate = $_COOKIE['urlBeforeImpersonate'];
+        }
+        else{
+            $urlBeforeImpersonate = "$wgScriptPath/index.php/Main_Page";
+        }
+        setcookie('impersonate', '', time()-(60*60), '/'); // Delete Cookie
+        setcookie('urlBeforeImpersonate', '', time()-(60*60), '/'); // Delete Cookie
+        header("Location: {$wgServer}{$urlBeforeImpersonate}");
+    }
     return true;
 }
 

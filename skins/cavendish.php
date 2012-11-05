@@ -253,7 +253,8 @@ class cavendishTemplate extends QuickTemplate {
 				<a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Special:Survey">NAVEL Survey</a>	
 				<span class="top-nav-right">&nbsp;</span>
 			</li>
-			<?php foreach($this->data['personal_urls'] as $key => $item) {
+			<?php global $wgImpersonating;
+			    foreach($this->data['personal_urls'] as $key => $item) {
 			    //echo $key;
 			    $selected = "";
 			    $tabLeft = "";
@@ -270,7 +271,7 @@ class cavendishTemplate extends QuickTemplate {
 			    else if($key == "mytalk" || $key == "mycontris" || $key == "watchlist" || $key == "anonuserpage" || $key == "anontalk" || $key == "preferences"){
 			        continue;
 			    }
-			    else if($key == "logout"){
+			    else if($key == "logout" && !$wgImpersonating){
 			        $item['text'] = "Logout";
 			        $tabLeft = "tab-right";
 			    }
