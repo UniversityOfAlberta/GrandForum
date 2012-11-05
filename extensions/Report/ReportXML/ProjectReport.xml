@@ -275,7 +275,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="comments" tooltip="Comments on contributions of NIs to the project" name="Comments" blobSection="LDR_NICOMMENTS" type="EditableReportSection" autosave="true" renderpdf="false" reportCharLimits="false">
+    <ReportSection id="comments" tooltip="Comments on NI contributions to the project" name="Comments" blobSection="LDR_NICOMMENTS" type="EditableReportSection" autosave="true" renderpdf="false" reportCharLimits="false">
         <Instructions>
             <![CDATA[
                 <p>In this section, the project co-PLs provide comments on the contributions of individual NIs who are involved in the project. Clicking on the name of the researcher will open a text box. These comments are not reviewed by the RMC as part of the Project Report, however the comments here will be included as part of the Individual Network-Investigator Reports as part of the evaluation of individual researchers.</p>
