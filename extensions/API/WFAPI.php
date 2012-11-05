@@ -72,11 +72,21 @@ class WFAPI extends API{
             foreach($person->getProjects() as $project){
                 $leader = " leader='false'";
                 $coLeader = " coleader='false'";
-                if($project->getLeader()->getId() == $person->getId()){
-                    $leader = " leader='true'";
+                $leaders = $project->getLeaders();
+                $coLeaders = $project->getCoLeaders();
+                if(count($leaders) > 0){
+                    foreach($leaders as $l){
+                        if($l->getId() == $person->getId()){
+                            $leader = " leader='true'";
+                        }
+                    }
                 }
-                if($project->getCoLeader() != null && $project->getCoLeader()->getId() == $person->getId()){
-                    $coLeader = " coleader='true'";
+                if(count($coLeaders) > 0){
+                    foreach($coLeaders as $l){
+                        if($l->getId() == $person->getId()){
+                            $coLeader = " coleader='true'";
+                        }
+                    }
                 }
                 $xml .= "\t\t\t<project id=\"{$project->getId()}\" name=\"{$project->getName()}\" $leader $coLeader />\n";
             }
@@ -110,11 +120,21 @@ class WFAPI extends API{
             foreach($person->getProjects() as $project){
                 $leader = "false";
                 $coLeader = "false";
-                if($project->getLeader() != null && $project->getLeader()->getId() == $person->getId()){
-                    $leader = "true";
+                $leaders = $project->getLeaders();
+                $coLeaders = $project->getCoLeaders();
+                if(count($leaders) > 0){
+                    foreach($leaders as $l){
+                        if($l->getId() == $person->getId()){
+                            $leader = "true";
+                        }
+                    }
                 }
-                if($project->getCoLeader() != null && $project->getCoLeader()->getId() == $person->getId()){
-                    $coLeader = "true";
+                if(count($coLeaders) > 0){
+                    foreach($coLeaders as $l){
+                        if($l->getId() == $person->getId()){
+                            $coLeader = "true";
+                        }
+                    }
                 }
                 $projects[] = array("id" => $project->getId(), "name" => $project->getName(), "leader" => $leader, "coleader" => $coLeader);
             }
