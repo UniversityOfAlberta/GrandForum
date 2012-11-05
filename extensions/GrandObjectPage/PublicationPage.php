@@ -28,8 +28,8 @@ $publicationTypes = array("Proceedings Paper" => "an article written for submiss
                           "BibTex Collection" => "FLAGS BIBTEX COLLECTION",
                           "Misc" => "any item not fitting the other listed types:\nenter its type in the text box provided");
 
-$activityTypes = array("Panel" => "panel",
-                       "Tutorial" => "tutorial",
+$activityTypes = array(/*"Panel" => "panel",
+                       "Tutorial" => "tutorial",*/
                        "Event Organization" => "event"); 
 
                        
