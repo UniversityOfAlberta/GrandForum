@@ -62,6 +62,9 @@
         <ReportItem id="report_pl_progress" type="PLProgressReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
+        <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="ProjectReport">
+            <![CDATA[{$item}]]>
+        </ReportItem>
         <ReportItem id="report_pni_progress" type="ProjectNIProgressReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
@@ -322,6 +325,9 @@
             <![CDATA[<h3>Report Completion Status</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">{$item}]]>
         </ReportItem>
         <ReportItem id="report_pl_progress" type="PLProgressReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="ProjectReport">
             <![CDATA[{$item}]]>
         </ReportItem>
         <ReportItem id="report_pni_progress" type="ProjectNIProgressReportItem">

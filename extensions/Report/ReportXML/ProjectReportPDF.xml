@@ -28,6 +28,9 @@
         <ReportItem id="report_pl_progress" type="PLProgressReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
+        <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="ProjectReport">
+            <![CDATA[{$item}]]>
+        </ReportItem>
         <ReportItem id="report_pni_progress" type="ProjectNIProgressReportItem">
             <![CDATA[{$item}</table></small></td></tr>]]>
         </ReportItem>
