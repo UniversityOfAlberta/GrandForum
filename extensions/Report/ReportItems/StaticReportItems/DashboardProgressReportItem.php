@@ -22,7 +22,12 @@ class DashboardProgressReportItem extends StaticReportItem {
 	    $person = Person::newFromId($this->personId);
         $project = $this->getReport()->project;
 		
-		$papers = $person->getPapersAuthored("Publication", REPORTING_CYCLE_START, REPORTING_CYCLE_END, true);
+		if($person->getId() == 0){
+		    $papers = $project->getPapers("Publication", REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+		}
+		else{
+		    $papers = $person->getPapersAuthored("Publication", REPORTING_CYCLE_START, REPORTING_CYCLE_END, true);
+		}
 		
 		$nPublications = 0;
 		$nNoVenue = 0;
