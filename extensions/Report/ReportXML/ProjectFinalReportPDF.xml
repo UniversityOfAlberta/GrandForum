@@ -9,10 +9,11 @@
     <ReportSection id="budget" delete="true">
         
     </ReportSection>
-    <ReportSection id="prod_details" number="4">
+    <ReportSection id="prod_details" number="4" pagebreak="false">
     
     </ReportSection>
     <ReportSection id="milestones" number="5">
     
     </ReportSection>
+    
 </Report>
