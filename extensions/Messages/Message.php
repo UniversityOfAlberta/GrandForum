@@ -89,7 +89,7 @@ class Message {
             }
             
             $(document).ready(function(){
-                $('.error, .warning, .success, .info, .purpleInfo').append('<a class=\'error_box_close\' onClick=\'closeParent(this)\'>X</a>');
+                $('.error, .warning, .success, .info, .purpleInfo').not('.notQuitable').append('<a class=\'error_box_close\' onClick=\'closeParent(this)\'>X</a>');
             });
         </script>";
     }
