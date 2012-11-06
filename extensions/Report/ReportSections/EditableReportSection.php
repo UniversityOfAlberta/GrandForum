@@ -58,7 +58,9 @@ class EditableReportSection extends AbstractReportSection {
                              
         if($this->getParent()->project != null && $this->getParent()->project->isDeleted()){
             $project = $this->getParent()->project;
-            $wgOut->addHTML("<div class='purpleInfo'>This is a final report for the project <a href='{$project->getUrl()}'>{$project->getName()}</div>");
+            $date = new DateTime($project->getProjectEndDate());
+            $datestr = date_format($date, 'F d, Y');
+            $wgOut->addHTML("<div class='purpleInfo'>This is a final report for the project <a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>.  The project was deleted $datestr.</div>");
         }
         
         //Render all the ReportItems's in the section    
