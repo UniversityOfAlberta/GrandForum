@@ -60,7 +60,7 @@ class EditableReportSection extends AbstractReportSection {
             $project = $this->getParent()->project;
             $date = new DateTime($project->getProjectEndDate());
             $datestr = date_format($date, 'F d, Y');
-            $wgOut->addHTML("<div class='purpleInfo'>This is a final report for the project <a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>.  The project was deleted $datestr.</div>");
+            $wgOut->addHTML("<div class='purpleInfo'>This is a final report for the project <a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>.  The project will be inactive, effective $datestr.</div>");
         }
         
         //Render all the ReportItems's in the section    
