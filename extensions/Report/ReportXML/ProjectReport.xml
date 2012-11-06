@@ -31,6 +31,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="" />
         </Role>
+        <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
     <ReportSection id="status" name="Report Completion Status" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>

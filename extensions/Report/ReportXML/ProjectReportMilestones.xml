@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Project Milestones" reportType="RP_LEADER" pdfType="RPTP_LEADER_MILESTONES" pdfFiles="ProjectReportMilestones" personId="0" ajax="true" disabled="false">
     <Permissions>
+        <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false"></Project>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL"></Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="COPL"></Role>
     </Permissions>

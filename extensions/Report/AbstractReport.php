@@ -449,25 +449,37 @@ abstract class AbstractReport extends SpecialPage {
         $result = $me->isRoleAtLeast(MANAGER);
         foreach($this->permissions as $type => $perms){
             foreach($perms as $perm){
-                if($type == "Role"){
-                    if($this->project != null && ($perm['perm'] == PL || $perm['perm'] == COPL) && !$me->isProjectManager()){
-                        $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
-                        if(count($project_objs) > 0){
-                            foreach($project_objs as $project){
-                                if($project->getId() == $this->project->getId()){
-                                    $result = true;
+                switch($type){
+                    case "Role":
+                        if($this->project != null && ($perm['perm'] == PL || $perm['perm'] == COPL) && !$me->isProjectManager()){
+                            $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
+                            if(count($project_objs) > 0){
+                                foreach($project_objs as $project){
+                                    if($project->getId() == $this->project->getId()){
+                                        $result = true;
+                                    }
                                 }
                             }
                         }
-                    }
-                    else if($this->project != null && ($perm['perm'] == PM)){
-                        if($me->isProjectManager()){
-                            $result = true;
+                        else if($this->project != null && ($perm['perm'] == PM)){
+                            if($me->isProjectManager()){
+                                $result = true;
+                            }
                         }
-                    }
-                    else{
-                        $result = ($result || $me->isRoleDuring($perm['perm'], $perm['start'], $perm['end']));
-                    }
+                        else{
+                            $result = ($result || $me->isRoleDuring($perm['perm'], $perm['start'], $perm['end']));
+                        }
+                        break;
+                    case "Project":
+                        if($this->project != null){
+                            $result = (($perm['perm']['deleted'] && 
+                                       $this->project->isDeleted() && 
+                                       substr($this->project->getProjectEndDate(), 0, 4) >= substr($perm['start'], 0, 4) && 
+                                       substr($this->project->getProjectEndDate(), 0, 4) <= substr($perm['end'], 0, 4)) || 
+                                      (!$perm['perm']['deleted'] && 
+                                       !$this->project->isDeleted()));
+                        }
+                        break;
                 }
             }
         }

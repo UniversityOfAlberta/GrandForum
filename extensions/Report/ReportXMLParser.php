@@ -193,6 +193,19 @@ class ReportXMLParser {
                 $this->parseRoleSectionPermissions($child, $role);
                 $this->report->addPermission("Role", "{$role}", "{$start}", "{$end}");
             }
+            else if($key == "Project"){
+                $attributes = $child->attributes();
+                $deleted = (isset($attributes->deleted)) ? (strtolower("{$attributes->deleted}") == "true") : false;
+                $start = (isset($attributes->start)) ? @constant($attributes->start) : "0000-00-00";
+                $end = (isset($attributes->end)) ? @constant($attributes->end) : "2100-12-31";
+                if($start == null){
+                    $this->errors[] = "Start time '{$attributes->start}' does not exist";
+                }
+                if($end == null){
+                    $this->errors[] = "Start time '{$attributes->end}' does not exist";
+                }
+                $this->report->addPermission("Project", array("deleted" => $deleted), "{$start}", "{$end}");
+            }
         }
     }
     

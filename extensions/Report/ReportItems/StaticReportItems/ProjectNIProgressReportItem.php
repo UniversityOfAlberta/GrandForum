@@ -56,6 +56,7 @@ class ProjectNIProgressReportItem extends StaticReportItem {
                 $nRequested++;
             }
         }
+        $error = "";
         if($project->isDeleted() && $nRequested > 0){
             $error = "class='inlineError'";
         }

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report extends="ProjectReport" name="Project Final Report" pdfType="RPTP_LEADER" pdfFiles="ProjectFinalReportPDF,ProjectFinalReportComments,ProjectFinalReportMilestones">
+    <Permissions>
+        <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="true" />
+    </Permissions>
     <ReportSection id="report" name="Project Report">
         <ReportItemSet id='IIIa_head' title="Project Retrospective"/>
     </ReportSection>
