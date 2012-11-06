@@ -55,6 +55,12 @@ class EditableReportSection extends AbstractReportSection {
                             <div id='reportHeader'>{$this->name}{$projectName}<span id='reportProgress'><span style='width:{$this->getPercentComplete()}%;' id='reportProgressBar'></span></span><span id='reportProgressLabel'>Progress:&nbsp;</span></div>
                              <hr />
                              <div id='reportBody'>");
+                             
+        if($this->getParent()->project != null && $this->getParent()->project->isDeleted()){
+            $project = $this->getParent()->project;
+            $wgOut->addHTML("<div class='purpleInfo'>This is a final report for the project <a href='{$project->getUrl()}'>{$project->getName()}</div>");
+        }
+        
         //Render all the ReportItems's in the section    
         foreach ($this->items as $item){
             if(!$this->getParent()->topProjectOnly || ($this->getParent()->topProjectOnly && !$item->private)){

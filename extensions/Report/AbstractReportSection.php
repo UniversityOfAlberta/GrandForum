@@ -297,7 +297,12 @@ abstract class AbstractReportSection {
         $wgOut->addHTML("<div><div id='reportHeader'>{$number}{$this->name}{$projectName}</div>
         <hr />
         <div id='reportBody'>");
-        
+        if($this->getParent()->project != null && $this->getParent()->project->isDeleted()){
+            $project = $this->getParent()->project;
+            $date = new DateTime($project->getProjectEndDate());
+            $datestr = date_format($date, 'F d, Y');
+            $wgOut->addHTML("<div class='purpleInfo'>This is a final report for the project <a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>.  The project was deleted $datestr.</div>");
+        }
         //Render all the ReportItems's in the section    
         foreach ($this->items as $item){
             if(!$this->getParent()->topProjectOnly || ($this->getParent()->topProjectOnly && !$item->private)){
