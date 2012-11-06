@@ -4,6 +4,8 @@ abstract class ReportItemSet extends AbstractReportItem{
 
     var $items;
     var $blobIndex;
+    var $count;
+    var $iteration;
 
     // Creates a new ReportItemSet
     function ReportItemSet(){
@@ -136,9 +138,14 @@ abstract class ReportItemSet extends AbstractReportItem{
         $this->blobIndex = $blobIndex;
     }
 
-    function addReportItem($item){
+    function addReportItem($item, $position=null){
         $item->setParent($this);
-        $this->items[] = $item;
+        if($position == null){
+            $this->items[] = $item;
+        }
+        else{
+            array_splice($this->items, ($position) + ($this->count*$this->iteration) + ($this->iteration), 0, array($item));
+        }
         $item->setPersonId($this->personId);
     }
     

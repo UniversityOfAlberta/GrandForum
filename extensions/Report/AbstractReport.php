@@ -370,9 +370,14 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     // Adds a new section to this Report
-    function addSection($section){
+    function addSection($section, $position=null){
         $section->setParent($this);
-        $this->sections[] = $section;
+        if($position == null){
+            $this->sections[] = $section;
+        }
+        else{
+            array_splice($this->sections, $position, 0, $section);
+        }
     }
     
     // Deleted the given ReportItem from this AbstractReport

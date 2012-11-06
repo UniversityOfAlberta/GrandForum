@@ -217,9 +217,14 @@ abstract class AbstractReportSection {
     }
     
     // Adds a ReportItem to this AbstractReportSection
-    function addReportItem($item){
+    function addReportItem($item, $position=null){
         $item->setParent($this);
-        $this->items[] = $item;
+        if($position == null){
+            $this->items[] = $item;
+        }
+        else{
+            array_splice($this->items, $position, 0, $item);
+        }
         $item->setPersonId($this->parent->person->getId());
     }
     

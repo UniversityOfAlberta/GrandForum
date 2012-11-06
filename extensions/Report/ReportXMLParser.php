@@ -234,7 +234,8 @@ class ReportXMLParser {
                         continue;
                     }
                     $section = new $type();
-                    $this->report->addSection($section);
+                    $position = isset($attributes->position) ? "{$attributes->position}" : null;
+                    $this->report->addSection($section, $position);
                 }
                 else{
                     $type = get_class($section);
@@ -326,6 +327,10 @@ class ReportXMLParser {
         $attributes = $node->attributes();
         $children = $node->children();
         $itemset = $section->getReportItemById("{$attributes->id}");
+        if($itemset != null){
+            $itemset->count = count($itemset->items)/count($itemset->getData());
+            $itemset->iteration = 0;
+        }
         if(isset($attributes->type)){
             $type = "{$attributes->type}";
             if(class_exists($type)){
@@ -335,7 +340,8 @@ class ReportXMLParser {
                 $this->errors[] = "ReportItemSet '{$attributes->type}' does not exists";
                 return;
             }
-            $section->addReportItem($itemset);
+            $position = isset($attributes->position) ? "{$attributes->position}" : null;
+            $section->addReportItem($itemset, $position);
         }
         else if($itemset != null){
             // DO nothing
@@ -391,6 +397,7 @@ class ReportXMLParser {
                     $item->setProductId($value['product_id']);
                     $item->setPersonId($value['person_id']);
                 }
+                $itemset->iteration++;
             }
         }
         foreach($attributes as $key => $value){
@@ -420,7 +427,8 @@ class ReportXMLParser {
                     return;
                 }
                 $item = new $type();
-                $section->addReportItem($item);
+                $position = isset($attributes->position) ? "{$attributes->position}" : null;
+                $section->addReportItem($item, $position);
             }
             else{
                 $type = get_class($item);
