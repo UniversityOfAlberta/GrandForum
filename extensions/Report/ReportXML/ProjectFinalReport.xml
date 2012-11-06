@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report extends="ProjectReport" name="Project Final Report">
+<Report extends="ProjectReport" name="Project Final Report" pdfType="RPTP_LEADER" pdfFiles="ProjectFinalReportPDF,ProjectFinalReportComments,ProjectFinalReportMilestones">
     <ReportSection id="report" name="Project Report">
         <ReportItemSet id='IIIa_head' title="Project Retrospective"/>
     </ReportSection>

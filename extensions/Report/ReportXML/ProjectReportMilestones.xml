@@ -4,7 +4,7 @@
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL"></Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="COPL"></Role>
     </Permissions>
-    <ReportSection name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+    <ReportSection id="header" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
                 <div class='logo_div'>
@@ -23,7 +23,7 @@
             <![CDATA[</div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Milestones" blobSection="LDR_MILESTONE" type="ReportSection" pagebreak="false" number="6" renderpdf="true" previewonly="false">
+    <ReportSection id="milestones" name="Milestones" blobSection="LDR_MILESTONE" type="ReportSection" pagebreak="false" number="6" renderpdf="true" previewonly="false">
         <ReportItem id="milestone_desc" height="250px" blobType="BLOB_TEXT" blobItem="LDR_MILE_REPORT" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" showNotReferenced="true" anchor="true" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1800">
             <![CDATA[
                 <h2>Milestone Report</h2>

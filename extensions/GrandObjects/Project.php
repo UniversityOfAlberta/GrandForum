@@ -16,7 +16,8 @@ class Project{
 	var $comments;
 	var $milestones;
 	var $budgets;
-	var $deleted;
+	var $deleted; // Deletion takes effect immediatly if deleted == 1
+	var $projectEndDate; // This is just used to say when the deletion actually happened, or when it will happen
 	private $succ;
 	private $preds;
 
@@ -36,7 +37,7 @@ class Project{
 	        return $project;
 	    }
 		
-		$sql = "SELECT p.id, p.name, d.full_name, p.deleted
+		$sql = "SELECT p.id, p.name, d.full_name, p.deleted, p.project_end_date
 				FROM grand_project p
 				LEFT JOIN grand_project_descriptions d ON(p.id = d.project_id)
 				WHERE p.id = '$id'
@@ -59,7 +60,7 @@ class Project{
 	        return self::$cache[$name];
 	    }
 		
-		$sql = "SELECT p.id, p.name, d.full_name, p.deleted
+		$sql = "SELECT p.id, p.name, d.full_name, p.deleted, p.project_end_date
 				FROM grand_project p
 				LEFT JOIN grand_project_descriptions d ON(p.id = d.project_id)
 				WHERE p.name = '$name'
@@ -89,7 +90,7 @@ class Project{
 	
 	// Returns a Project from the given historic ID
 	static function newFromHistoricId($id){
-	    $sql = "SELECT p.id, p.name, d.full_name, p.deleted
+	    $sql = "SELECT p.id, p.name, d.full_name, p.deleted, p.project_end_date
 				FROM grand_project p
 				LEFT JOIN grand_project_descriptions d ON(p.id = d.project_id)
 				WHERE p.id = '$id'
@@ -103,7 +104,7 @@ class Project{
 	
 	// Returns a Project from the given historic name
 	static function newFromHistoricName($name){
-	    $sql = "SELECT p.id, p.name, d.full_name, p.deleted
+	    $sql = "SELECT p.id, p.name, d.full_name, p.deleted, p.project_end_date
 				FROM grand_project p
 				LEFT JOIN grand_project_descriptions d ON(p.id = d.project_id)
 				WHERE p.name = '$name'
@@ -241,6 +242,7 @@ EOF;
 			else{
 			    $this->deleted = false;
 			}
+			$this->projectEndDate = $data[0]['project_end_date'];
 		}
 	}
 	
@@ -325,6 +327,11 @@ EOF;
 	// Returns whether or not this project had been deleted or not
 	function isDeleted(){
 	    return $this->deleted;
+	}
+	
+	// Returns when the project was/is to be deleted
+	function getProjectEndDate(){
+	    return $this->projectEndDate;
 	}
 	
 	// Returns an array of Person objects which represent
