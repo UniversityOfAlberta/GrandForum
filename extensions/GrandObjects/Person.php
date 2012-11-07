@@ -1535,7 +1535,6 @@ class Person{
 		                             WHERE l.project_id = p.id
 									 AND l.user_id = '{$this->id}'
 		                             AND p.name = '{$project_name}' 
-		                             AND p.deleted != '1'
 		                             AND (l.end_date = '0000-00-00 00:00:00'
                                           OR l.end_date > CURRENT_TIMESTAMP)");
 	   
