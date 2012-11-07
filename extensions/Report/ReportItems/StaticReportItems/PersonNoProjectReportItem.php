@@ -32,12 +32,12 @@ class PersonNoProjectReportItem extends StaticReportItem {
         }
         
         if($count == 0){
-            return "<span id='{$person->getId()}_{$project->getId()}_noProject'><b>Yes</b></span>
+            return "<span id='{$person->getId()}_{$project->getId()}_noProject'><b>No</b></span>
             <script type='text/javascript'>
                 $('#{$person->getId()}_{$project->getId()}_noProject').parent().addClass('inlineWarning');
             </script>";
         }
-        return "<span id='{$person->getId()}_{$project->getId()}_noProject'><b>No</b></span>";
+        return "<span id='{$person->getId()}_{$project->getId()}_noProject'><b>Yes</b></span>";
 	}
 }
 

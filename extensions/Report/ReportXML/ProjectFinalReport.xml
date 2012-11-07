@@ -5,7 +5,7 @@
     </Permissions>
     <ReportSection id="status">
         <ReportItem id="static_pni_progress">
-            <![CDATA[<style>#ni_completion table tr:first-child td:first-child {display:none;}</style><table id="ni_completion" style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'><tr><th>NI</th><th>Completion Status</th><th>No other project</th><th>Actions</th></tr>]]>
+            <![CDATA[<style>#ni_completion table tr:first-child td:first-child {display:none;}</style><table id="ni_completion" style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'><tr><th>NI</th><th>Completion Status</th><th class='tooltip' title='This column highlights the NIs who will no longer be a member of any other projects next year once this project is deleted.'>More Projects?</th><th>Actions</th></tr>]]>
         </ReportItem>
         <ReportItemSet id="project_people">
             <ReportItem id="no_project" type="PersonNoProjectReportItem" position="1">
