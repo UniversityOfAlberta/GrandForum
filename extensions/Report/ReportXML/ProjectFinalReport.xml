@@ -4,6 +4,9 @@
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="true" />
     </Permissions>
     <ReportSection id="status">
+        <ReportItem id="my_progress_head" reportType="ProjectFinalReport">
+            <![CDATA[<h3>PL Progress</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">{$item}]]>
+        </ReportItem>
         <ReportItem id="static_pni_progress">
             <![CDATA[<style>#ni_completion table tr:first-child td:first-child {display:none;}</style><table id="ni_completion" style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'><tr><th>NI</th><th>Completion Status</th><th class='tooltip' title='This column highlights the NIs who will no longer be a member of any other projects next year once this project is deleted.'>More Projects?</th><th>Actions</th></tr>]]>
         </ReportItem>
@@ -41,6 +44,11 @@
         </ReportItemSet>
         <ReportItem id="table_foot" type="StaticReportItem">
             <![CDATA[</table>]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit">
+         <ReportItem id="my_progress_head" reportType="ProjectFinalReport">
+            <![CDATA[<h3>PL Progress</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">{$item}]]>
         </ReportItem>
     </ReportSection>
 </Report>

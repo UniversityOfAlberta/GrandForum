@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Project Final Report" extends="ProjectReportPDF">
+    <ReportSection id="status">
+        <ReportItem id="report_progress" reportType="ProjectFinalReport">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="report3">
     <!-- IIIa. Plans for Next Year -->
         <ReportItem id='IIIa_head'>
