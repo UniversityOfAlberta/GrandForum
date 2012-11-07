@@ -52,7 +52,12 @@ class NIProgressReportItem extends StaticReportItem {
         $errorMsg = "";
         $rowspan = 0;
         if($reportType == "NIReport"){
-            $allocatedBudget = $person->getAllocatedBudget(REPORTING_YEAR-1);
+            $allocatedBudget = null;
+            $wasNILastYear = ($person->isRoleDuring(CNI, (REPORTING_YEAR-1).REPORTING_CYCLE_START_MONTH, (REPORTING_YEAR-1).REPORTING_CYCLE_END_MONTH) || 
+                              $person->isRoleDuring(PNI, (REPORTING_YEAR-1).REPORTING_CYCLE_START_MONTH, (REPORTING_YEAR-1).REPORTING_CYCLE_END_MONTH));
+            if($wasNILastYear){
+                $allocatedBudget = $person->getAllocatedBudget(REPORTING_YEAR-1);
+            }
             $budget = null;
             $rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_BUDGET, 0, 0);
             $budget_blob = new ReportBlob(BLOB_EXCEL, REPORTING_YEAR, $person->getId(), 0);
@@ -67,7 +72,7 @@ class NIProgressReportItem extends StaticReportItem {
 	                }
                 }
             }
-            if($allocatedBudget == null){
+            if($allocatedBudget == null && $wasNILastYear){
                 $rowspan++;
             }
             if($budget == null || $budget->isError()){
@@ -77,13 +82,13 @@ class NIProgressReportItem extends StaticReportItem {
             if($rowspan > 0){
                 $errorMsg .= "<tr><td rowspan='$rowspan'><b>Budget</b></td>";
             }
-            if($allocatedBudget == null){
+            if($allocatedBudget == null && $wasNILastYear){
                 $rowspan++;
                 $errorMsg .= "<td><span class='inlineError'>You have not uploaded a revised budget for your ".REPORTING_YEAR." allocated funds</span></td></tr>\n";
             }
             
             $tr = "";
-            if($allocatedBudget == null){
+            if($allocatedBudget == null && $wasNILastYear){
                 $tr = "<tr>";
             }
             if($budget == null){
