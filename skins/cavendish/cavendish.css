@@ -1029,7 +1029,7 @@ a.error_box_close {
 }
 
 .purpleInfo, .inlinePurpleInfo, .purpleInfo:hover, .inlinePurpleError:hover {
-    color: #8C529D !important;
+    color: #784288 !important;
     background-color: #e3d1e7 !important;
     border-radius: 3px;
     -moz-border-radius: 3px;
@@ -1037,7 +1037,7 @@ a.error_box_close {
 }
 
 .purpleInfo {
-    border: 1px solid #8C529D;
+    border: 1px solid #784288;
     background-image:url('purpleInfo.png');
 }
 
