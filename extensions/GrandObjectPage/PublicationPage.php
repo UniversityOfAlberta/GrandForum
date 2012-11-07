@@ -139,7 +139,7 @@ class PublicationPage {
             }
             else{
                 $title = str_replace("_", " ", $title);
-                $paper = Paper::newFromTitle(str_replace(":", "&#58;", $title));
+                $paper = Paper::newFromTitle(str_replace(":", "&#58;", $title), $name);
                 $product_id = $paper->getId();
             }
             

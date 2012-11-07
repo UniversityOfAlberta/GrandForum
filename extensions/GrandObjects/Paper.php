@@ -37,7 +37,7 @@ class Paper{
 	}
 	
 	// Returns a new Paper from the given id
-	static function newFromTitle($title){
+	static function newFromTitle($title, $category = "%"){
 	    $title = str_replace("&#58;", ":", $title);
 	    $title = str_replace("'", "&#39;", $title);
 	    if(isset(self::$cache[$title])){
@@ -47,6 +47,7 @@ class Paper{
 			    FROM grand_products
 			    WHERE (title = '$title' OR
 			           title = '".str_replace(" ", "_", $title)."')
+				AND category LIKE '$category'
 			    AND deleted != '1'";
 		$data = DBFunctions::execSQL($sql);
 		$paper = new Paper($data);
