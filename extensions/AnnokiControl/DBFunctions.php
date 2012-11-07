@@ -60,7 +60,7 @@ class DBFunctions {
 	
 	// Returns the number of rows returned in the last resultset
 	static function getNRows(){
-	    if(self::$lastResult->result != null){
+	    if(self::$lastResult != null && self::$lastResult->result != null){
 	        return mysql_num_rows(self::$lastResult->result);
 	    }
 	    else{
