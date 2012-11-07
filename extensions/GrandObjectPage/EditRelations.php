@@ -70,11 +70,9 @@ class EditRelations extends SpecialPage{
                     }
                     $_POST['project_relations'] = '';
 	                if(isset($_POST['s_projects'][$user2->getId()])){
-	                    $i = 0;
 	                    $projects = array();
-                        while(isset($_POST['s_projects'][$user2->getId()][$i])){
-                            $projects[] = $_POST['s_projects'][$user2->getId()][$i];
-                            $i++;
+                        foreach($_POST['s_projects'][$user2->getId()] as $proj){
+                            $projects[] = $proj;
                         }
                         $_POST['project_relations'] = implode(",", $projects);
 	                }
@@ -116,11 +114,9 @@ class EditRelations extends SpecialPage{
                     }
                     $_POST['project_relations'] = '';
 	                if(isset($_POST['w_projects'][$user2->getId()])){
-	                    $i = 0;
 	                    $projects = array();
-                        while(isset($_POST['w_projects'][$user2->getId()][$i])){
-                            $projects[] = $_POST['w_projects'][$user2->getId()][$i];
-                            $i++;
+                        foreach($_POST['w_projects'][$user2->getId()] as $proj){
+                            $projects[] = $proj;
                         }
                         $_POST['project_relations'] = implode(",", $projects);
 	                }
@@ -212,13 +208,13 @@ class EditRelations extends SpecialPage{
 	    $me = Person::newFromId($wgUser->getId());
 	    $relations = $person->getRelations($relationType);
 	    $wgOut->addHTML("<h2>{$relationType}</h2>");
-        $i = 0;
         $projects = Project::getAllProjects();
         if(count($relations) == 0){
             $wgOut->addHTML("There are no relations entered");
         }
         $wgOut->addHTML("<table>");
         foreach($relations as $relation){
+            $i = 0;
             $prefix = 's_';
             if($relation->getType() == "Works With"){
                 $wgOut->addHTML("<tr><td><b>{$relation->getUser2()->getNameForForms()}</b></td><td>works with me on</td>");
@@ -239,8 +235,10 @@ class EditRelations extends SpecialPage{
                 else{
                     $wgOut->addHTML("<td>&nbsp;&nbsp;&nbsp;&nbsp;{$proj->getName()} <input type='checkbox' name='{$prefix}projects[{$relation->getUser2()->getId()}][$i]' value='{$proj->getName()}' /></td>");
                 }
+                $i++;
             }
             $wgOut->addHTML("</tr>");
+            
         }
         $wgOut->addHTML("</table>");
 	}
