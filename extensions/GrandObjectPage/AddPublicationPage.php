@@ -124,7 +124,7 @@ function generateScript($category){
 class AddActivityPage extends SpecialPage{
     function AddActivityPage() {
 		wfLoadExtensionMessages('AddActivityPage');
-		SpecialPage::SpecialPage("AddActivityPage", INACTIVE.'+', true, 'runAddActivityPage');
+		SpecialPage::SpecialPage("AddActivityPage", HQP.'During+', true, 'runAddActivityPage');
 	}
 
 	function run($par){
@@ -148,7 +148,7 @@ class AddActivityPage extends SpecialPage{
 class AddArtifactPage extends SpecialPage{
     function AddArtifactPage() {
 		wfLoadExtensionMessages('AddArtifactPage');
-		SpecialPage::SpecialPage("AddArtifactPage", INACTIVE.'+', true, 'runAddArtifactPage');
+		SpecialPage::SpecialPage("AddArtifactPage", HQP.'During+', true, 'runAddArtifactPage');
 	}
 
 	function run($par){
@@ -173,7 +173,7 @@ class AddPublicationPage extends SpecialPage{
 
 	function AddPublicationPage() {
 		wfLoadExtensionMessages('AddPublicationPage');
-		SpecialPage::SpecialPage("AddPublicationPage", INACTIVE.'+', true, 'runAddPublicationPage');
+		SpecialPage::SpecialPage("AddPublicationPage", HQP.'During+', true, 'runAddPublicationPage');
 	}
 
 	function run($par){
@@ -198,7 +198,7 @@ class AddPressPage extends SpecialPage{
 
 	function AddPressPage() {
 		wfLoadExtensionMessages('AddPressPage');
-		SpecialPage::SpecialPage("AddPressPage", INACTIVE.'+', true, 'runAddPressPage');
+		SpecialPage::SpecialPage("AddPressPage", HQP.'During+', true, 'runAddPressPage');
 	}
 
 	function run($par){
@@ -223,7 +223,7 @@ class AddAwardPage extends SpecialPage{
 
 	function AddAwardPage() {
 		wfLoadExtensionMessages('AddAwardPage');
-		SpecialPage::SpecialPage("AddAwardPage", INACTIVE.'+', true, 'runAddAwardPage');
+		SpecialPage::SpecialPage("AddAwardPage", HQP.'During+', true, 'runAddAwardPage');
 	}
 
 	function run($par){
@@ -248,7 +248,7 @@ class AddPresentationPage extends SpecialPage{
 
 	function AddPresentationPage() {
 		wfLoadExtensionMessages('AddPresentationPage');
-		SpecialPage::SpecialPage("AddPresentationPage", INACTIVE.'+', true, 'runAddPresentationPage');
+		SpecialPage::SpecialPage("AddPresentationPage", HQP.'During+', true, 'runAddPresentationPage');
 	}
 
 	function run($par){

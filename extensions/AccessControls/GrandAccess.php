@@ -38,6 +38,7 @@ class GrandAccess {
 	    foreach(array_keys($wgRoleValues) as $role){
 	        if($me->isRoleAtLeast($role)){
 	            $aRights[$i++] = $role.'+';
+	            $aRights[$i++] = $role.'During+';
 	            if(($role == STAFF || $role == MANAGER) && array_search('Leadership+', $aRights) === false){
 	                $aRights[$i++] = 'Leadership+';
 	            }
