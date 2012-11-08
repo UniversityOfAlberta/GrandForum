@@ -22,14 +22,16 @@ class Report extends AbstractReport{
 		global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
 		$person = Person::newFromId($wgUser->getId());
 		$page = "Report";
-		if($person->isRole(HQP)){
+		if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
 		    $page = "Report?report=HQPReport";
 		}
-		else if($person->isRole(CNI) || $person->isRole(PNI) || $person->isRoleAtLeast(MANAGER)){
+		else if($person->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
+		        $person->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
+		        $person->isRoleAtLeast(MANAGER)){
 		    $page = "Report?report=NIReport";
 		}
-		else if(count($person->leadership()) > 0){
-		    $projects = $person->leadership();
+		else if(count($person->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END)) > 0){
+		    $projects = $person->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
 		    $page = "Report?report=ProjectReport&project={$projects[0]->getName()}";
 		}
 		/*else if($person->isEvaluator()){
