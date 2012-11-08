@@ -66,6 +66,7 @@ class PersonHQPCell extends DashboardCell {
                 switch($position){
                     case "PostDoc":
                         $newValues[0][$type][1][] = $item;
+                        break;
                     case "PhD Student":
                         $newValues[1][$type][1][] = $item;
                         break;
