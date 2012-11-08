@@ -49,6 +49,10 @@ class GrandAccess {
 	            }
 	        }
 	    }
+	    foreach($me->getRolesDuring() as $role){
+	        $aRights[$i++] = $role->getRole().'During';
+	        $aRights[$i++] = $role->getRole().'During+';
+	    }
 	    if(count($me->getRoles()) > 0){
 	        foreach($me->getRoles() as $role){
 	            $aRights[$i++] = $role->getRole();
