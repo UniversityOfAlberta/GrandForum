@@ -932,6 +932,12 @@ del {
     display: none;
 }
 
+.label {
+    text-align:right;
+    font-weight: bold;
+    vertical-align: top;
+}
+
 /* Messages */
 
 a.error_box_close {
