@@ -253,6 +253,11 @@ $egAnnokiExtensions['AllocatedBudgets']     = array( 'name' => 'Allocated Budget
 					      'path' => "$IP/extensions/AllocatedBudgets/AllocatedBudgets.php",
 					      'enabled' => true,
 					      );
+					      
+$egAnnokiExtensions['ProjectEvolution']     = array( 'name' => 'Project Evolution',
+					      'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php",
+					      'enabled' => true,
+					      );
 
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){

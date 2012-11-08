@@ -38,20 +38,21 @@ class TabbedPage {
         $i = 0;
         foreach($this->tabs as $tab){
             if($tab instanceof AbstractEditableTab && $tab->canEdit()){
-                if(isset($_POST['submit']) && $_POST['submit'] == "Save {$tab->name}"){
+                if(isset($_POST['submit']) && 
+                   ($_POST['submit'] == "Save {$tab->name}" || ($tab instanceof AbstractInlineEditableTab && $_POST['submit'] == "{$tab->name}"))){
                     $activeTabIndex = $tab->id;
                     $active_tab = $i;
                     $errors = $tab->handleEdit();
                     if($errors != null && $errors != ""){
                         $wgMessage->addError("$errors");
                         $_POST['submit'] = "Edit {$tab->name}";
-                        $_GET['edit'] = true;
+                        $_POST['edit'] = true;
                     }
                     else{
                         $wgMessage->addSuccess("'{$tab->name}' updated successfully.");
                     }
                 }
-                if(isset($_POST['submit']) && ($_POST['submit'] == "Edit {$tab->name}" || $_POST['submit'] == "Cancel") ) {
+                if(isset($_POST['submit']) && ($_POST['submit'] == "Edit {$tab->name}" || $_POST['submit'] == "{$tab->name}" || $_POST['submit'] == "Cancel" ) ) {
                     $activeTabIndex = $tab->id;
                     $active_tab = $i;
                 }
@@ -64,17 +65,17 @@ class TabbedPage {
             $url_param = "?edit";
         }
         
-        $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/{$wgTitle->getNsText()}:{$wgTitle->getText()}{$url_param}' method='post' enctype='multipart/form-data'>");
+        $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/{$wgTitle->getNsText()}:{$wgTitle->getText()}' method='post' enctype='multipart/form-data'>");
         $wgOut->addHTML("<div id='{$this->id}'>");
         $wgOut->addHTML("   <ul>");
         foreach($this->tabs as $tab){
             if($tab instanceof AbstractEditableTab){
-                if($tab->canEdit() && isset($_GET['edit'])){
+                if($tab->canEdit() && isset($_POST['edit'])){
                     $tab->generateEditBody();
                     $tab->showSaveButton();
                     $tab->showCancelButton();
                 }
-                else if($tab->canEdit() && !isset($_GET['edit'])){
+                else if($tab->canEdit() && !isset($_POST['edit'])){
                     $tab->generateBody();
                     $tab->showEditButton();
                 }
