@@ -8,10 +8,11 @@ class ProceedingsPaperAPI extends PaperAPI{
 	    $this->addPOST("date",false,"The date this publication was published, in the form YYYY-MM-DD","2010-10-15");
 	    $this->addPOST("event_title",false,"The title of the event where this publication was published","SIGMOD");
 	    $this->addPOST("event_location",false,"The location of the event where this publication was published","Vancouver");
-	    $this->addPOST("book_title",false,"The title of the book, or proceedings that this publication was in","2009 SIGMOD Proceedings");
+#	    $this->addPOST("book_title",false,"The title of the book, or proceedings that this publication was in","2009 SIGMOD Proceedings");
 	    $this->addPOST("status",false,"The status of the publication.  Can be either Submitted,Accepted,Under Revision,Published,Rejected","Submitted");
 	    $this->addPOST("pages",false,"The page numbers where this publication was located.","183-194");
 	    $this->addPOST("publisher",false,"The name of the publisher","My Publishing Company");
+	    $this->addPOST("address",false,"The address of the publisher","City, State, Country");
 	    $this->addPOST("isbn",false,"The ISBN of the publication","90-70002-34-5");
 	    $this->addPOST("issn",false,"The ISSN of the publication","90-70002-34-5");
 	    $this->addPOST("doi",false,"The doi of the publication","10.1000/182");
