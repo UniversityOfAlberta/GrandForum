@@ -382,7 +382,6 @@ class EditMember extends SpecialPage{
 	private function processHQPInactivation($person, &$r_nss, &$r_comments, &$r_effectiveDates, &$other){
 	    global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgMessage;
 	    $me = Person::newFromId($wgUser->getId());
-	    Notification::addNotification($me, $person, "HQP Inactivation Report", "{$me->getNameForForms()} has requested that you fill out the HQP Inactivation report.", "$wgServer$wgScriptPath/index.php/Special:Report?report=HQPReport", true);
         $sql = "INSERT INTO grand_role_request (`effective_date`,`staff`,`requesting_user`, `role`, `comment`,`other`,`user`, `type`, `created`, `ignore`)
                 VALUES ('".EditMember::parse($r_effectiveDates)."','GRAND Forum','".EditMember::parse($wgUser->getName())."', '".EditMember::parse($r_nss)."', '".EditMember::parse($r_comments)."','".serialize($other)."','".EditMember::parse($person->getName())."', 'ROLE', 'true', 'false')";
         DBFunctions::execSQL($sql, true);
@@ -438,7 +437,11 @@ class EditMember extends SpecialPage{
 	    
 	    Person::$cache = array();
         $person = Person::newFromName($_POST['user']);
-        $wgOut->addHTML("{$person->getNameForForms()} has been sent a notification to fill out their HQP Inactivation Report.  When they have completed the report, you will be notified.<br />");
+        $year = substr($date, 0, 4);
+	    if($year == REPORTING_YEAR){
+	        Notification::addNotification($me, $person, "HQP Inactivation Report", "{$me->getNameForForms()} has requested that you fill out the HQP Inactivation report.", "$wgServer$wgScriptPath/index.php/Special:Report?report=HQPReport", true);
+            $wgOut->addHTML("{$person->getNameForForms()} has been sent a notification to fill out their HQP Inactivation Report.  When they have completed the report, you will be notified.<br />");
+        }
 	}
 	
 	// Changes/Inserts the data in the moved on/thesis tables if needed
