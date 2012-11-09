@@ -135,7 +135,7 @@ class BudgetReportItem extends AbstractReportItem {
 		    $budget = $budget->copy()->filterCols(V_PROJ, array(""));
 		    $person = Person::newFromId($this->personId);
 		    
-		    if($person->isRoleDuring(CNI)){
+		    if($person->isRoleDuring(CNI) && !$person->isRole(PNI)){
 		        $errors = self::addWorksWithRelation($data, true);
 		        foreach($errors as $key => $error){
 		            $budget->errors[0][] = $error;
