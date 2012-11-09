@@ -271,9 +271,14 @@ class cavendishTemplate extends QuickTemplate {
 			    else if($key == "mytalk" || $key == "mycontris" || $key == "watchlist" || $key == "anonuserpage" || $key == "anontalk" || $key == "preferences"){
 			        continue;
 			    }
-			    else if($key == "logout" && !$wgImpersonating){
-			        $item['text'] = "Logout";
-			        $tabLeft = "tab-right";
+			    else if($key == "logout"){
+			        if(!$wgImpersonating){
+			            $item['text'] = "Logout";
+			            $tabLeft = "tab-right";
+			        }
+			        else {
+			            continue;
+			        }
 			    }
 			    else if($key == "anonlogin"){
 			        continue;
