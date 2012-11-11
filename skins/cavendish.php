@@ -185,10 +185,40 @@ class cavendishTemplate extends QuickTemplate {
 		        });
 		    });
 		</script>
+<!-- TEMPORARY SURVEY REMINDER POPUP STARTS HERE -->	
+		<?php
+		$autoOpen = "true";
+		$loggedin_user_id = $wgUser->getId();
+		$loggedin_user = Person::newFromId($loggedin_user_id);
+		if($wgUser->isLoggedIn() && ($loggedin_user->isPNI() || $loggedin_user->isCNI())){
+			$sql = "SELECT * FROM survey_results WHERE user_id = $loggedin_user_id";
+		    $data = DBFunctions::execSQL($sql);
+		    if(count($data) > 0){
+		    	$autoOpen = "true";
+		    }
+		}
+		?>
+		<script type="text/javascript">
+		$(document).ready(function() {
+			$( "#survey_reminder_dialog" ).dialog({
+			title: "NAVEL Survey",
+			autoOpen: <?php echo $autoOpen; ?>,
+			height: 250,
+			width: 450,
+			modal: true
+			});
+		});
+		</script>
+<!-- TEMPORARY SURVEY REMINDER POPUP ENDS HERE -->
 	</head>
 <body <?php if($this->data['body_ondblclick']) { ?> ondblclick="<?php $this->text('body_ondblclick') ?>"<?php } ?>
 <?php if($this->data['body_onload']) { ?> onload="<?php $this->text('body_onload') ?>"<?php } ?>
  class="mediawiki <?php $this->text('dir') ?> <?php $this->text('pageclass') ?> <?php $this->text('skinnameclass') ?>">
+
+<div id="survey_reminder_dialog" style="display:none;">
+	<p>Please remember to complete the NAVEL Survey!</p>
+	<p><a href="/index.php/Special:Survey">Click here</a> to visit the Survey now.</p>
+</div>
 <div id="internal"></div>
 <div id="container">
 
