@@ -195,12 +195,12 @@ class cavendishTemplate extends QuickTemplate {
 			$sql = "SELECT * FROM survey_results WHERE user_id = $loggedin_user_id";
 		    $data = DBFunctions::execSQL($sql);
 		    //print_r($data);
-		    if(count($data) == 0){
+		    if(count($data) == 0 || (count($data) > 0 && isset($data[0]['submitted']) && $data[0]['submitted'] == 0) ){
 		    	if(isset($_SESSION['last_forum_visit'])){
 					$last_visit = $_SESSION['last_forum_visit'];
 					$now = time();
 					//echo $now - $last_visit ;
-					if($now - $last_visit > 180 /*75600*/ ){
+					if($now - $last_visit > 75600 ){
 						$autoOpen = "true";
 					}
 					$_SESSION['last_forum_visit'] = $now;
@@ -209,6 +209,24 @@ class cavendishTemplate extends QuickTemplate {
 					$_SESSION['last_forum_visit'] = time();
 					$autoOpen = "true";
 				}
+				$message = "<p>Please remember to complete the NAVEL survey. We are extending the deadline as members requested!</p>
+							<p><a href='/index.php/Special:Survey'>Click here</a> to visit the Survey now.</p>";
+		    }
+		    else if( count($data) > 0 && isset($data[0]['submitted']) && $data[0]['submitted'] == 1 ){
+		    	if(isset($_SESSION['last_forum_visit'])){
+					$last_visit = $_SESSION['last_forum_visit'];
+					$now = time();
+					//echo $now - $last_visit ;
+					if($now - $last_visit > 31536000 ){
+						$autoOpen = "true";
+					}
+					$_SESSION['last_forum_visit'] = $now;
+				}
+				else{
+					$_SESSION['last_forum_visit'] = time();
+					$autoOpen = "true";
+				}
+				$message = "Thank you for completing the NAVEL survey. We truly appreciate your help!";
 		    }
 		}
 		?>
@@ -231,8 +249,7 @@ class cavendishTemplate extends QuickTemplate {
 
 <div id="survey_reminder_dialog" style="display:none;">
 	<br /><br />
-	<p>Please remember to complete the NAVEL survey. We are extending the deadline as members requested!</p>
-	<p><a href="/index.php/Special:Survey">Click here</a> to visit the Survey now.</p>
+	<?php echo $message; ?>
 </div>
 <div id="internal"></div>
 <div id="container">
