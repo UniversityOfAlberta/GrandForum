@@ -187,14 +187,28 @@ class cavendishTemplate extends QuickTemplate {
 		</script>
 <!-- TEMPORARY SURVEY REMINDER POPUP STARTS HERE -->	
 		<?php
-		$autoOpen = "true";
+		//print_r($_SESSION);
+		$autoOpen = "false";
 		$loggedin_user_id = $wgUser->getId();
 		$loggedin_user = Person::newFromId($loggedin_user_id);
 		if($wgUser->isLoggedIn() && ($loggedin_user->isPNI() || $loggedin_user->isCNI())){
 			$sql = "SELECT * FROM survey_results WHERE user_id = $loggedin_user_id";
 		    $data = DBFunctions::execSQL($sql);
-		    if(count($data) > 0){
-		    	$autoOpen = "true";
+		    //print_r($data);
+		    if(count($data) == 0){
+		    	if(isset($_SESSION['last_forum_visit'])){
+					$last_visit = $_SESSION['last_forum_visit'];
+					$now = time();
+					//echo $now - $last_visit ;
+					if($now - $last_visit > 180 /*75600*/ ){
+						$autoOpen = "true";
+					}
+					$_SESSION['last_forum_visit'] = $now;
+				}
+				else{
+					$_SESSION['last_forum_visit'] = time();
+					$autoOpen = "true";
+				}
 		    }
 		}
 		?>
@@ -216,7 +230,8 @@ class cavendishTemplate extends QuickTemplate {
  class="mediawiki <?php $this->text('dir') ?> <?php $this->text('pageclass') ?> <?php $this->text('skinnameclass') ?>">
 
 <div id="survey_reminder_dialog" style="display:none;">
-	<p>Please remember to complete the NAVEL Survey!</p>
+	<br /><br />
+	<p>Please remember to complete the NAVEL survey. We are extending the deadline as members requested!</p>
 	<p><a href="/index.php/Special:Survey">Click here</a> to visit the Survey now.</p>
 </div>
 <div id="internal"></div>
