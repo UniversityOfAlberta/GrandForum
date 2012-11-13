@@ -65,6 +65,7 @@ class NIProgressReportItem extends StaticReportItem {
             $budgetData = $budget_blob->getData();
             if($budgetData != null){
                 $budget = new Budget("XLS", REPORT2_STRUCTURE, $budgetData);
+                $budget->filterCols(V_PROJ, array(""));
                 if($person->isRoleDuring(CNI) && !$person->isRole(PNI)){
                     $errors = BudgetReportItem::addWorksWithRelation($budgetData, true);
                     foreach($errors as $key => $error){
