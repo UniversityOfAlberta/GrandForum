@@ -18,27 +18,32 @@ foreach($papers as $paper){
     $type = $paper->getType();
     if($type == "2MM" || $type == "WIP" || $type == "RNotes"){
         $id = $paper->getId();
-        $status = "Not Invited";
-        
+       
         $data = $paper->getData();
-        $event_title = $data['event_title'];
-        $event_location = $data['event_location'];
-        $new_data = array();
-        $new_data['conference'] = $event_title;
-        $new_data['location'] = $event_location;
-        $new_data['organizing_body'] = "GRAND NCE";
-        $new_data['url'] = "";
-        $new_data = serialize($new_data);
+        if( !isset($data['event_title']) && !isset($data['event_location']) ){
+            $conference = (isset($data['conference']))? $data['conference'] : "";
+            $location = (isset($data['location']))? $data['location'] : "";
+            unset($data['conference']);
+            unset($data['location']);
 
-        $sql = "UPDATE grand_products
-                SET status = '{$status}',
-                data = '{$new_data}'
-                WHERE id = {$id}";
-        
-        DBFunctions::execSQL($sql, true);
-        echo "$id \n";
-        
-        $i++;
+            //$event_title = $data['event_title'];
+            //$event_location = $data['event_location'];
+            //$new_data = array();
+            $data['event_title'] = $conference;
+            $data['event_location'] = $location;
+            //$new_data['organizing_body'] = "GRAND NCE";
+            //$new_data['url'] = "";
+            $new_data = serialize($data);
+
+            $sql = "UPDATE grand_products
+                    SET data = '{$new_data}'
+                    WHERE id = {$id}";
+            
+            DBFunctions::execSQL($sql, true);
+            echo "$id \n";
+
+            $i++;
+        }
     }
     else{
         continue;
@@ -48,7 +53,7 @@ foreach($papers as $paper){
 
 echo "Total Presentations Changed = $i \n\n";
 
-
+/*
 //Change Activities
 $papers = Paper::getAllPapers('all', 'Activity', 'both');
 
@@ -78,7 +83,7 @@ foreach($papers as $paper){
 }
 
 echo "Total Activities Changed = $i \n\n";
-
+*/
 
 function showHelp() {
 		echo( <<<EOF
