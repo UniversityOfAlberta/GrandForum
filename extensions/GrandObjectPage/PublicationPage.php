@@ -163,6 +163,7 @@ class PublicationPage {
                 if($post){
                     // The user has submitted the form
                     self::proccessPost($category);
+                    session_write_close();
                     if(!$create){
                         header("Location: $wgServer$wgScriptPath/index.php/$category:".str_replace("?", "%3F", str_replace("&#39;", "'", $title)));
                     }
