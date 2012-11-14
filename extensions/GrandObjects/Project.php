@@ -7,6 +7,8 @@ class Project{
 	var $id;
 	var $fullName;
 	var $name;
+	var $status;
+	var $type;
 	var $themes;
 	var $people;
 	var $contributions;
@@ -16,7 +18,7 @@ class Project{
 	var $comments;
 	var $milestones;
 	var $budgets;
-	var $deleted;
+	var $deleted; // TODO: Get rid of this
 	private $succ;
 	private $preds;
 

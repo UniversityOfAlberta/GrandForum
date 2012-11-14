@@ -5,6 +5,7 @@ class ProjectDescriptionAPI extends API{
     function ProjectDescriptionAPI(){
         $this->addPOST("project",true,"The name of the project","MEOW");
 	    $this->addPOST("description",true,"The description for this project","MEOW is great");
+	    $this->addPOST("themes",false,"The theme distribution of this project", "10,20,30,20,20");
     }
 
     function processParams($params){
@@ -37,7 +38,12 @@ class ProjectDescriptionAPI extends API{
             }
 		}
 		
-		$themes = explode(",", $_POST['themes']);
+		if(isset($_POST['themes'])){
+		    $themes = explode(",", $_POST['themes']);
+		}
+		else{
+		    $themes = array($project->getTheme(1), $project->getTheme(2), $project->getTheme(3), $project->getTheme(4), $project->getTheme(5));
+		}
         
         $sql = "UPDATE grand_project_descriptions
                 SET `end_date` = CURRENT_TIMESTAMP

@@ -14,11 +14,11 @@ class CreateProjectTab extends ProjectTab {
         
         $acronymRow = new FormTableRow("{$pre}_acronym_row");
         $acronymRow->append(new Label("{$pre}_acronym_label", "Acronym", "The acronym/name for the project ie. MEOW", VALIDATE_NOT_NULL));
-        $acronymRow->append(new TextField("new_acronym", "Acronym", "", 12, VALIDATE_NOT_NULL));
+        $acronymRow->append(new TextField("{$pre}_acronym", "Acronym", "", 12, VALIDATE_NOT_NULL + VALIDATE_IS_NOT_PROJECT));
         
         $fullNameRow = new FormTableRow("{$pre}_full_name_row");
         $fullNameRow->append(new Label("{$pre}_full_name_label", "Full Name", "The project's full name ie. Media Enabled Organizational Worldflow", VALIDATE_NOT_NULL));
-        $fullNameRow->append(new TextField("new_full_name", "Full Name", "", 40, VALIDATE_NOT_NULL));
+        $fullNameRow->append(new TextField("{$pre}_full_name", "Full Name", "", 40, VALIDATE_NOT_NULL));
         
         $statusRow = new FormTableRow("{$pre}_status_row");
         $statusRow->append(new Label("{$pre}_status_label", "Status", "The status of this project", VALIDATE_NOT_NULL));
@@ -97,13 +97,14 @@ class CreateProjectTab extends ProjectTab {
             $form->getElementById("new_full_name")->setPOST("fullName");
             $form->getElementById("new_status")->setPOST("status");
             $form->getElementById("new_type")->setPOST("type");
+            $form->getElementById("new_effective")->setPOST("effective_date");
             $form->getElementById("new_description")->setPOST("description");
             $form->getElementById("new_theme1")->setPOST("theme1");
             $form->getElementById("new_theme2")->setPOST("theme2");
             $form->getElementById("new_theme3")->setPOST("theme3");
             $form->getElementById("new_theme4")->setPOST("theme4");
             $form->getElementById("new_theme5")->setPOST("theme5");
-            //APIRequest::doAction('CreateProject', true);
+            APIRequest::doAction('CreateProject', true);
             $form->reset();
         }
         return implode("<br />\n", $errors);

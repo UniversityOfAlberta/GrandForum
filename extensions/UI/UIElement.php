@@ -4,7 +4,9 @@ define('VALIDATE_NOT_NULL', 1);
 define('VALIDATE_IS_NUMERIC', 2);
 define('VALIDATE_IS_PERCENT', 4);
 define('VALIDATE_IS_PROJECT', 8);
-define('VALIDATE_IS_PERSON', 16);
+define('VALIDATE_IS_NOT_PROJECT', 16);
+define('VALIDATE_IS_PERSON', 32);
+define('VALIDATE_IS_NOT_PERSON', 64);
 
 /*
  * This class is to help make creating forms easier to make,
@@ -103,6 +105,24 @@ abstract class UIElement {
             $result = $this->validateIsProject();
             if(!$result){
                 $fails[] = "The field '".ucfirst($this->name)."' must be a valid Project";
+            }
+        }
+        if($this->isValidationSet(VALIDATE_IS_NOT_PROJECT)){
+            $result = !$this->validateIsProject();
+            if(!$result){
+                $fails[] = "The field '".ucfirst($this->name)."' must not be an already existing Project";
+            }
+        }
+        if($this->isValidationSet(VALIDATE_IS_PERSON)){
+            $result = $this->validateIsPerson();
+            if(!$result){
+                $fails[] = "The field '".ucfirst($this->name)."' must be a valid Person";
+            }
+        }
+        if($this->isValidationSet(VALIDATE_IS_NOT_PERSON)){
+            $result = !$this->validateIsPerson();
+            if(!$result){
+                $fails[] = "The field '".ucfirst($this->name)."' must not be an already existing Person";
             }
         }
         return $fails;
