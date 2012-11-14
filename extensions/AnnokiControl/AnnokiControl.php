@@ -49,6 +49,11 @@ $egAnnokiExtensions['GrandObjects']     = array( 'name' => 'GrandObjects',
 					      'enabled' => true,
 					      );
 					      
+$egAnnokiExtensions['UI'] = array( 'name' => 'User Interface',
+					      'path' => "$IP/extensions/UI/UIElement.php",
+					      'enabled' => true,
+					      );
+					      
 $egAnnokiExtensions['Notification']     = array( 'name' => 'Notification',
 					      'path' => "$IP/extensions/Notification/Notification.body.php",
 					      'enabled' => true,

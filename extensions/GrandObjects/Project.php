@@ -269,7 +269,7 @@ EOF;
 	        $this->preds = array();
             foreach($data as $row){
                 $pred = Project::newFromHistoricId($row['project_id']);
-                if($pred != null){
+                if($pred != null && $pred->getName() != ""){
                     $this->preds[] = $pred;
                 }
             }
