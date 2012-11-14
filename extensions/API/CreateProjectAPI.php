@@ -67,6 +67,7 @@ class CreateProjectAPI extends API{
 	    Project::$cache = array();
 	    $project = Project::newFromId($nsId);
 	    $_POST['project'] = $_POST['acronym'];
+	    $_POST['themes'] = "{$theme1},{$theme2},{$theme3},{$theme4},{$theme5}";
 	    APIRequest::doAction('ProjectDescription', true);
 	    //MailingList::createMailingList($project);
 	}
