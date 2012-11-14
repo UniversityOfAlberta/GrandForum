@@ -13,5 +13,4 @@ class PercentField extends UIElement {
     
 }
 
-
 ?>

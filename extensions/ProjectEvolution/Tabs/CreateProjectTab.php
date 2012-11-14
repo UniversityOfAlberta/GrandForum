@@ -25,8 +25,12 @@ class CreateProjectTab extends ProjectTab {
         $statusRow->append(new VerticalRadioBox("{$pre}_status", "Status", "Proposed", array("Proposed", "Active", "Completed"), VALIDATE_NOT_NULL));
         
         $typeRow = new FormTableRow("{$pre}_type_row");
-        $typeRow->append(new Label("{$pre}_type_label", "Type", "The status of this project", VALIDATE_NOT_NULL));
-        $typeRow->append(new VerticalRadioBox("{$pre}_status", "Type", "Research", array("Research", "Administrative", "Strategic"), VALIDATE_NOT_NULL));
+        $typeRow->append(new Label("{$pre}_type_label", "Type", "The type of this project", VALIDATE_NOT_NULL));
+        $typeRow->append(new VerticalRadioBox("{$pre}_type", "Type", "Research", array("Research", "Administrative", "Strategic"), VALIDATE_NOT_NULL));
+        
+        $effectiveRow = new FormTableRow("{$pre}_effective_row");
+        $effectiveRow->append(new Label("{$pre}_effective_label", "Effective Date", "When this action is to take place", VALIDATE_NOT_NULL));
+        $effectiveRow->append(new CalendarField("{$pre}_effective", "Effective Date", "", VALIDATE_NOT_NULL));
         
         $descRow = new FormTableRow("{$pre}_description_row");
         $descRow->append(new Label("{$pre}_description_label", "Description", "The description of the project", VALIDATE_NOTHING));
@@ -66,6 +70,7 @@ class CreateProjectTab extends ProjectTab {
         $table->append($fullNameRow);
         $table->append($statusRow);
         $table->append($typeRow);
+        $table->append($effectiveRow);
         $table->append($descRow);
         
         $form->append($table);
