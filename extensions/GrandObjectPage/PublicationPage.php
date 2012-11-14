@@ -709,7 +709,8 @@ class PublicationPage {
 														if($type == $pType || (strstr($type, "Misc") !== false && strstr($pType, "Misc") !== false)){
 																$selected = " selected='selected'";
 														}
-														$typeOpts = $typeOpts."<option$selected title='$pDescription'>$pType</option>";
+														if (strpos($typeOpts, ">".$pType."<") === false) // skip duplicate bibtex default types, if any
+															$typeOpts = $typeOpts."<option$selected title='$pDescription'>$pType</option>";
 												}
 
 												// STATUS
