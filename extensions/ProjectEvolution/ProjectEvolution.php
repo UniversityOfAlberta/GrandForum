@@ -22,10 +22,8 @@ class ProjectEvolution extends SpecialPage {
         global $wgOut;
         $tabbedPage = new TabbedPage("project");
         $tabbedPage->addTab(new CreateProjectTab());
-        //$tabbedPage->addTab(new EvolveProjectTab());
+        $tabbedPage->addTab(new EvolveProjectTab());
         //$tabbedPage->addTab(new MergeProjectTab());
-        //$tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
-        //$tabbedPage->addTab(new ProjectVisualisationsTab($project, $visibility));
         $tabbedPage->showPage();
         
         $wgOut->output();

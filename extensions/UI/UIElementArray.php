@@ -27,6 +27,21 @@ class UIElementArray {
         return null;
     }
     
+    function getElementByName($name){
+        foreach($this->elements as $element){
+            if($element instanceof UIElement && $element->name == $name){
+                return $element;
+            }
+            else if(!($element instanceof UIElement)){
+                $el = $element->getElementByName($name);
+                if($el != null){
+                    return $el;
+                }
+            }
+        }
+        return null;
+    }
+    
     function render(){
         $html = "";
         foreach($this->elements as $element){
