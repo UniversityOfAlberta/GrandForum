@@ -1,6 +1,6 @@
 <?php
 
-class RadioBox extends UIElement {
+abstract class RadioBox extends UIElement {
 
     var $options = array();
     

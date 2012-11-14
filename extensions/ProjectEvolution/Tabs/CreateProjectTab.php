@@ -20,9 +20,13 @@ class CreateProjectTab extends ProjectTab {
         $fullNameRow->append(new Label("{$pre}_full_name_label", "Full Name", "The project's full name ie. Media Enabled Organizational Worldflow", VALIDATE_NOT_NULL));
         $fullNameRow->append(new TextField("new_full_name", "Full Name", "", 40, VALIDATE_NOT_NULL));
         
-        $proposedRow = new FormTableRow("{$pre}_proposed_row");
-        $proposedRow->append(new Label("{$pre}_proposed_label", "Proposed?", "Whether or not this project is proposed(loi) or not", VALIDATE_NOT_NULL));
-        $proposedRow->append(new RadioBox("{$pre}_proposed", "Proposed?", "No", array("Yes", "No"), VALIDATE_NOT_NULL));
+        $statusRow = new FormTableRow("{$pre}_status_row");
+        $statusRow->append(new Label("{$pre}_status_label", "Status", "The status of this project", VALIDATE_NOT_NULL));
+        $statusRow->append(new VerticalRadioBox("{$pre}_status", "Status", "Proposed", array("Proposed", "Active", "Completed"), VALIDATE_NOT_NULL));
+        
+        $typeRow = new FormTableRow("{$pre}_type_row");
+        $typeRow->append(new Label("{$pre}_type_label", "Type", "The status of this project", VALIDATE_NOT_NULL));
+        $typeRow->append(new VerticalRadioBox("{$pre}_status", "Type", "Research", array("Research", "Administrative", "Strategic"), VALIDATE_NOT_NULL));
         
         $descRow = new FormTableRow("{$pre}_description_row");
         $descRow->append(new Label("{$pre}_description_label", "Description", "The description of the project", VALIDATE_NOTHING));
@@ -60,7 +64,8 @@ class CreateProjectTab extends ProjectTab {
         
         $table->append($acronymRow);
         $table->append($fullNameRow);
-        $table->append($proposedRow);
+        $table->append($statusRow);
+        $table->append($typeRow);
         $table->append($descRow);
         
         $form->append($table);
@@ -85,7 +90,8 @@ class CreateProjectTab extends ProjectTab {
             // Call the API
             $form->getElementById("new_acronym")->setPOST("acronym");
             $form->getElementById("new_full_name")->setPOST("fullName");
-            $form->getElementById("new_proposed")->setPOST("proposed");
+            $form->getElementById("new_status")->setPOST("status");
+            $form->getElementById("new_type")->setPOST("type");
             $form->getElementById("new_description")->setPOST("description");
             $form->getElementById("new_theme1")->setPOST("theme1");
             $form->getElementById("new_theme2")->setPOST("theme2");
