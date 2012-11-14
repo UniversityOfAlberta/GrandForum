@@ -4,8 +4,8 @@ class FieldSet extends UIElementArray {
     
     var $legend;
     
-    function FieldSet($legend){
-        parent::UIElementArray();
+    function FieldSet($id, $legend){
+        parent::UIElementArray($id);
         $this->legend = $legend;
     }
     

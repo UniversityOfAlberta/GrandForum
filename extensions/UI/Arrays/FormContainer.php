@@ -2,6 +2,10 @@
 
 class FormContainer extends UIElementArray {
     
+    function FormContainer($id){
+        parent::UIElementArray($id);
+    }
+    
     function render(){
         $html = "<div>";
         foreach($this->elements as $element){

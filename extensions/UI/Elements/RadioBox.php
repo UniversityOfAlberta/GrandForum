@@ -1,10 +1,10 @@
 <?php
 
-class RadioField extends UIElement {
+class RadioBox extends UIElement {
 
     var $options = array();
     
-    function RadioField($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
+    function RadioBox($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
         parent::UIElement($id, $name, $value, $validations);
         $this->options = $options;
     }

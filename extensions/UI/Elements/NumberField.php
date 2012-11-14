@@ -9,5 +9,4 @@ class NumberField extends UIElement {
     
 }
 
-
 ?>

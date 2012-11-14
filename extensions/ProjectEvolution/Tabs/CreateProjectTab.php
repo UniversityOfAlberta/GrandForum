@@ -8,63 +8,63 @@ class CreateProjectTab extends ProjectTab {
     
     static function createForm($pre){
     
-        $form = new FormContainer();
+        $form = new FormContainer("{$pre}_form_container");
     
-        $table = new FormTable();
+        $table = new FormTable("{$pre}_form_table");
         
-        $acronymRow = new FormTableRow();
-        $acronymRow->addElement(new Label("{$pre}_acronym_label", "Acronym", "The acronym/name for the project ie. MEOW", VALIDATE_NOT_NULL));
-        $acronymRow->addElement(new TextField("new_acronym", "Acronym", "", 12, VALIDATE_NOT_NULL));
+        $acronymRow = new FormTableRow("{$pre}_acronym_row");
+        $acronymRow->append(new Label("{$pre}_acronym_label", "Acronym", "The acronym/name for the project ie. MEOW", VALIDATE_NOT_NULL));
+        $acronymRow->append(new TextField("new_acronym", "Acronym", "", 12, VALIDATE_NOT_NULL));
         
-        $fullNameRow = new FormTableRow();
-        $fullNameRow->addElement(new Label("{$pre}_full_name_label", "Full Name", "The project's full name ie. Media Enabled Organizational Worldflow", VALIDATE_NOT_NULL));
-        $fullNameRow->addElement(new TextField("new_full_name", "Full Name", "", 40, VALIDATE_NOT_NULL));
+        $fullNameRow = new FormTableRow("{$pre}_full_name_row");
+        $fullNameRow->append(new Label("{$pre}_full_name_label", "Full Name", "The project's full name ie. Media Enabled Organizational Worldflow", VALIDATE_NOT_NULL));
+        $fullNameRow->append(new TextField("new_full_name", "Full Name", "", 40, VALIDATE_NOT_NULL));
         
-        $proposedRow = new FormTableRow();
-        $proposedRow->addElement(new Label("{$pre}_proposed_label", "Proposed?", "Whether or not this project is proposed(loi) or not", VALIDATE_NOT_NULL));
-        $proposedRow->addElement(new RadioField("{$pre}_proposed", "Proposed?", "No", array("Yes", "No"), VALIDATE_NOT_NULL));
+        $proposedRow = new FormTableRow("{$pre}_proposed_row");
+        $proposedRow->append(new Label("{$pre}_proposed_label", "Proposed?", "Whether or not this project is proposed(loi) or not", VALIDATE_NOT_NULL));
+        $proposedRow->append(new RadioBox("{$pre}_proposed", "Proposed?", "No", array("Yes", "No"), VALIDATE_NOT_NULL));
         
-        $descRow = new FormTableRow();
-        $descRow->addElement(new Label("{$pre}_description_label", "Description", "The description of the project", VALIDATE_NOTHING));
-        $descRow->addElement(new TextareaField("{$pre}_description", "Description", "", VALIDATE_NOTHING));
+        $descRow = new FormTableRow("{$pre}_description_row");
+        $descRow->append(new Label("{$pre}_description_label", "Description", "The description of the project", VALIDATE_NOTHING));
+        $descRow->append(new TextareaField("{$pre}_description", "Description", "", VALIDATE_NOTHING));
         
-        $themeFieldSet = new FieldSet("Themes");
-        $themeTable = new FormTable();
+        $themeFieldSet = new FieldSet("{$pre}_themes_set", "Themes");
+        $themeTable = new FormTable("{$pre}_themes_table");
         
-        $theme1Row = new FormTableRow();
-        $theme1Row->addElement(new Label("{$pre}_theme1_label", "AnImage", "", VALIDATE_NOTHING));
-        $theme1Row->addElement(new PercentField("{$pre}_theme1", "AnImage", "", VALIDATE_NOTHING));
+        $theme1Row = new FormTableRow("{$pre}_theme1_row");
+        $theme1Row->append(new Label("{$pre}_theme1_label", "AnImage", "", VALIDATE_NOTHING));
+        $theme1Row->append(new PercentField("{$pre}_theme1", "AnImage", "", VALIDATE_NOTHING));
         
-        $theme2Row = new FormTableRow();
-        $theme2Row->addElement(new Label("{$pre}_theme2_label", "GamSim", "", VALIDATE_NOTHING));
-        $theme2Row->addElement(new PercentField("{$pre}_theme2", "GamSim", "", VALIDATE_NOTHING));
+        $theme2Row = new FormTableRow("{$pre}_theme2_row");
+        $theme2Row->append(new Label("{$pre}_theme2_label", "GamSim", "", VALIDATE_NOTHING));
+        $theme2Row->append(new PercentField("{$pre}_theme2", "GamSim", "", VALIDATE_NOTHING));
         
-        $theme3Row = new FormTableRow();
-        $theme3Row->addElement(new Label("{$pre}_theme3_label", "nMEDIA", "", VALIDATE_NOTHING));
-        $theme3Row->addElement(new PercentField("{$pre}_theme3", "nMEDIA", "", VALIDATE_NOTHING));
+        $theme3Row = new FormTableRow("{$pre}_theme3_row");
+        $theme3Row->append(new Label("{$pre}_theme3_label", "nMEDIA", "", VALIDATE_NOTHING));
+        $theme3Row->append(new PercentField("{$pre}_theme3", "nMEDIA", "", VALIDATE_NOTHING));
         
-        $theme4Row = new FormTableRow();
-        $theme4Row->addElement(new Label("{$pre}_theme4_label", "SocLeg", "", VALIDATE_NOTHING));
-        $theme4Row->addElement(new PercentField("{$pre}_theme4", "SocLeg", "", VALIDATE_NOTHING));
+        $theme4Row = new FormTableRow("{$pre}_theme4_row");
+        $theme4Row->append(new Label("{$pre}_theme4_label", "SocLeg", "", VALIDATE_NOTHING));
+        $theme4Row->append(new PercentField("{$pre}_theme4", "SocLeg", "", VALIDATE_NOTHING));
         
-        $theme5Row = new FormTableRow();
-        $theme5Row->addElement(new Label("{$pre}_theme5_label", "TechMeth", "", VALIDATE_NOTHING));
-        $theme5Row->addElement(new PercentField("{$pre}_theme5", "TechMeth", "", VALIDATE_NOTHING));
+        $theme5Row = new FormTableRow("{$pre}_theme5_row");
+        $theme5Row->append(new Label("{$pre}_theme5_label", "TechMeth", "", VALIDATE_NOTHING));
+        $theme5Row->append(new PercentField("{$pre}_theme5", "TechMeth", "", VALIDATE_NOTHING));
         
-        $themeTable->addElement($theme1Row);
-        $themeTable->addElement($theme2Row);
-        $themeTable->addElement($theme3Row);
-        $themeTable->addElement($theme4Row);
-        $themeTable->addElement($theme5Row);
-        $themeFieldSet->addElement($themeTable);
+        $themeTable->append($theme1Row);
+        $themeTable->append($theme2Row);
+        $themeTable->append($theme3Row);
+        $themeTable->append($theme4Row);
+        $themeTable->append($theme5Row);
+        $themeFieldSet->append($themeTable);
         
-        $table->addElement($acronymRow);
-        $table->addElement($fullNameRow);
-        $table->addElement($proposedRow);
-        $table->addElement($descRow);
+        $table->append($acronymRow);
+        $table->append($fullNameRow);
+        $table->append($proposedRow);
+        $table->append($descRow);
         
-        $form->addElement($table);
-        $form->addElement($themeFieldSet);
+        $form->append($table);
+        $form->append($themeFieldSet);
         
         return $form;
     }
@@ -73,16 +73,6 @@ class CreateProjectTab extends ProjectTab {
         global $wgUser, $wgServer, $wgScriptPath;
         $form = self::createForm('new');
         $this->html = $form->render();
-        return $this->html;
-        $this->html .= "<tr><td colspan='2'><fieldset><legend>Themes</legend>
-                            <table>
-                                <tr><td class='label'>AnImage:</td><td><input type='text' name='theme1' size='3' value='{$this->theme1}' />%</td></tr>
-                                <tr><td class='label'>GamSim:</td><td><input type='text' name='theme2' size='3' value='{$this->theme2}' />%</td></tr>
-                                <tr><td class='label'>nMEDIA:</td><td><input type='text' name='theme3' size='3' value='{$this->theme3}' />%</td></tr>
-                                <tr><td class='label'>SocLeg:</td><td><input type='text' name='theme4' size='3' value='{$this->theme4}' />%</td></tr>
-                                <tr><td class='label'>TechMeth:</td><td><input type='text' name='theme5' size='3' value='{$this->theme5}' />%</td></tr>
-                            </table></fieldset></td></tr>";
-        $this->html .= "</table>";
         return $this->html;
     }
     
@@ -102,7 +92,7 @@ class CreateProjectTab extends ProjectTab {
             $form->getElementById("new_theme3")->setPOST("theme3");
             $form->getElementById("new_theme4")->setPOST("theme4");
             $form->getElementById("new_theme5")->setPOST("theme5");
-            APIRequest::doAction('CreateProject', true);
+            //APIRequest::doAction('CreateProject', true);
             $form->reset();
         }
         return implode("<br />\n", $errors);

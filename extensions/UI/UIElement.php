@@ -3,6 +3,8 @@ define('VALIDATE_NOTHING', 0);
 define('VALIDATE_NOT_NULL', 1);
 define('VALIDATE_IS_NUMERIC', 2);
 define('VALIDATE_IS_PERCENT', 4);
+define('VALIDATE_IS_PROJECT', 8);
+define('VALIDATE_IS_PERSON', 16);
 
 /*
  * This class is to help make creating forms easier to make,
@@ -18,6 +20,7 @@ autoload_register('UI/Elements');
 
 abstract class UIElement {
     
+    var $parent;
     var $id;
     var $name;
     var $value;
@@ -26,6 +29,7 @@ abstract class UIElement {
     var $validations;
     
     function UIElement($id, $name, $value, $validations){
+        $this->parent = null;
         $this->id = $id;
         $this->name = $name;
         $this->default = str_replace("'", "&#39;", trim($value));
@@ -36,6 +40,32 @@ abstract class UIElement {
             $this->value = str_replace("'", "&#39;", trim($value));
         }
         $this->validations = $validations;
+    }
+    
+    // Returns this UIElement's parent
+    function parent(){
+        return $this->parent;
+    }
+    
+    // Inserts $element before this UIElement
+    function insertBefore($element){
+        if($this->parent() != null){
+            $this->parent()->insertBefore($element, $this->id);
+        }
+    }
+    
+    // Inserts $element after this UIElement
+    function insertAfter($element){
+        if($this->parent() != null){
+            $this->parent()->insertAfter($element, $this->id);
+        }
+    }
+    
+    // Removes this UIElement from it's parent
+    function remove(){
+        if($this->parent() != null){
+            $this->parent()->remove($this->id);
+        }
     }
     
     abstract function render();
@@ -69,6 +99,12 @@ abstract class UIElement {
                 $fails[] = "The field '".ucfirst($this->name)."' must be a valid percent";
             }
         }
+        if($this->isValidationSet(VALIDATE_IS_PROJECT)){
+            $result = $this->validateIsProject();
+            if(!$result){
+                $fails[] = "The field '".ucfirst($this->name)."' must be a valid Project";
+            }
+        }
         return $fails;
     }
     
@@ -92,6 +128,16 @@ abstract class UIElement {
     
     function validateIsPercent(){
         return (!$this->validateNotNull() || (is_numeric($this->value) && $this->value >= 0 && $this->value <= 100));
+    }
+    
+    function validateIsProject(){
+        $project = Project::newFromName($this->value);
+        return ($project != null && $project->getName() != "");
+    }
+    
+    function validateIsPerson(){
+        $person = Person::newFromNameLike($this->value);
+        return ($person != null && $person->getName() != "");
     }
 }
 
