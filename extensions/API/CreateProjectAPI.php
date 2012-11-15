@@ -2,7 +2,7 @@
 
 class CreateProjectAPI extends API{
 
-    function ProjectDescriptionAPI(){
+    function CreateProjectAPI(){
         $this->addPOST("acronym",true,"The name of the project","MEOW");
 	    $this->addPOST("fullName",true,"The full name of the project","Media Enabled Organizational Workflow");
 	    $this->addPOST("status",true,"The status of this project","Proposed");
@@ -54,12 +54,14 @@ class CreateProjectAPI extends API{
 	    $status = (isset($_POST['status'])) ? $_POST['status'] : 'Proposed';
 	    $type = (isset($_POST['type'])) ? $_POST['type'] : 'Research';
 	    $effective_date = (isset($_POST['effective_date'])) ? $_POST['effective_date'] : 'CURRENT_TIMESTAMP';
-	    $themes = @"{$theme1}\n{$theme2}\n{$theme3}\n{$theme4}\n{$theme5}";
-	    $sql = "INSERT INTO `mw_an_extranamespaces` (`nsId`,`nsName`,`public`,`themes`,`fullName`)
-	            VALUES ('{$nsId}','{$_POST['acronym']}','1','{$themes}','{$_POST['fullName']}')";
+	    $sql = "INSERT INTO `mw_an_extranamespaces` (`nsId`,`nsName`,`public`)
+	            VALUES ('{$nsId}','{$_POST['acronym']}','1')";
 	    DBFunctions::execSQL($sql, true);
-	    $sql = "INSERT INTO `grand_project` (`id`,`name`,`status`,`type`)
-	            VALUES ('{$nsId}','{$_POST['acronym']}','{$status}','{$type}')";
+	    $sql = "INSERT INTO `grand_project` (`id`,`name`)
+	            VALUES ('{$nsId}','{$_POST['acronym']}')";
+	    DBFunctions::execSQL($sql, true);
+	    $sql = "INSERT INTO `grand_project_status` (`project_id`,`status`,`type`)
+	            VALUES ('{$nsId}','{$status}','{$type}')";
 	    DBFunctions::execSQL($sql, true);
 	    $sql = "INSERT INTO `grand_project_evolution` (`project_id`,`new_id`,`action`,`effective_date`)
 	            VALUES ('-1','{$nsId}','CREATE','{$effective_date}')";

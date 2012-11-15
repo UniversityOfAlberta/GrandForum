@@ -5,6 +5,7 @@ class Project{
     static $cache = array();
 
 	var $id;
+	var $evolutionId;
 	var $fullName;
 	var $name;
 	var $status;
@@ -30,6 +31,7 @@ class Project{
 	    $sql = "SELECT *
 	            FROM `grand_project_evolution`
 	            WHERE `project_id` = '{$id}'
+	            AND `new_id` != '{$id}'
 	            ORDER BY `date` DESC LIMIT 1";
 	    $data = DBFunctions::execSQL($sql);
 	    if(count($data) > 0){
@@ -38,12 +40,12 @@ class Project{
 	        return $project;
 	    }
 		
-		$sql = "SELECT p.id, p.name, d.full_name, p.deleted
-				FROM grand_project p
-				LEFT JOIN grand_project_descriptions d ON(p.id = d.project_id)
+		$sql = "SELECT p.id, p.name, d.full_name, p.deleted, e.id as evolutionId
+				FROM grand_project p, grand_project_evolution e, grand_project_descriptions d
 				WHERE p.id = '$id'
-				ORDER BY d.id DESC LIMIT 1";
-		
+				AND p.id = d.project_id
+				AND e.new_id = p.id
+				ORDER BY d.id, e.id DESC LIMIT 1";
 		$data = DBFunctions::execSQL($sql);
 		if (DBFunctions::getNRows() > 0){
 			$project = new Project($data);
@@ -61,17 +63,19 @@ class Project{
 	        return self::$cache[$name];
 	    }
 		
-		$sql = "SELECT p.id, p.name, d.full_name, p.deleted
-				FROM grand_project p
-				LEFT JOIN grand_project_descriptions d ON(p.id = d.project_id)
+		$sql = "SELECT p.id, p.name, d.full_name, p.deleted, e.id as evolutionId
+				FROM grand_project p, grand_project_evolution e, grand_project_descriptions d
 				WHERE p.name = '$name'
-				ORDER BY d.id DESC LIMIT 1";
+				AND p.id = d.project_id
+				AND e.new_id = p.id
+				ORDER BY d.id, e.id DESC LIMIT 1";
 				
 		$data = DBFunctions::execSQL($sql);
 		if (DBFunctions::getNRows() > 0){
 		    $sql = "SELECT *
 	                FROM `grand_project_evolution`
 	                WHERE `project_id` = '{$data[0]['id']}'
+	                AND `new_id` != '{$data[0]['id']}'
 	                ORDER BY `date` DESC LIMIT 1";
 	        $data1 = DBFunctions::execSQL($sql);
 	        if(count($data1) > 0){
@@ -90,29 +94,36 @@ class Project{
 	}
 	
 	// Returns a Project from the given historic ID
-	static function newFromHistoricId($id){
-	    $sql = "SELECT p.id, p.name, d.full_name, p.deleted
-				FROM grand_project p
-				LEFT JOIN grand_project_descriptions d ON(p.id = d.project_id)
+	static function newFromHistoricId($id, $evolutionId=null){
+	    $sql = "SELECT p.id, p.name, d.full_name, p.deleted, e.id as evolutionId
+				FROM grand_project p, grand_project_evolution e, grand_project_descriptions d
 				WHERE p.id = '$id'
-				ORDER BY d.id DESC";
+				AND p.id = d.project_id
+				AND e.new_id = p.id
+				ORDER BY d.id, e.id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
 		if (DBFunctions::getNRows() > 0){
 		    $project = new Project($data);
+		    $project->evolutionId = $evolutionId;
 		    return $project;
 		}
 	}
 	
 	// Returns a Project from the given historic name
 	static function newFromHistoricName($name){
-	    $sql = "SELECT p.id, p.name, d.full_name, p.deleted
-				FROM grand_project p
-				LEFT JOIN grand_project_descriptions d ON(p.id = d.project_id)
+	    if(isset(self::$cache['h_'.$name])){
+	        return self::$cache['h_'.$name];
+	    }
+	    $sql = "SELECT p.id, p.name, d.full_name, p.deleted, e.id as evolutionId
+				FROM grand_project p, grand_project_evolution e, grand_project_descriptions d
 				WHERE p.name = '$name'
-				ORDER BY d.id DESC";
+				AND p.id = d.project_id
+				AND e.new_id = p.id
+				ORDER BY d.id, e.id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
 		if (DBFunctions::getNRows() > 0){
 		    $project = new Project($data);
+		    self::$cache['h_'.$name] = &$project;
 		    return $project;
 		}
 	}
@@ -235,6 +246,7 @@ EOF;
 			$this->id = $data[0]['id'];
 			$this->name = $data[0]['name'];
 			$this->fullName = $data[0]['full_name'];
+			$this->evolutionId = $data[0]['evolutionId'];
 			$this->succ = false;
 			$this->preds = false;
 			if(isset($data[0]['deleted'])){
@@ -263,14 +275,17 @@ EOF;
 	
 	// Returns the Predecessors of this Project
 	function getPreds(){
-        if($this->preds == false){
-	        $sql = "SELECT e.project_id FROM
+        if(!is_array($this->preds) && $this->preds == false){
+	        $sql = "SELECT e.id, e.project_id FROM
 	                `grand_project_evolution` e
 	                WHERE e.new_id = '{$this->id}'";
+	        if($this->evolutionId != null){
+	            $sql .= "\nAND id < '{$this->evolutionId}'";
+	        }
 	        $data = DBFunctions::execSQL($sql);
 	        $this->preds = array();
             foreach($data as $row){
-                $pred = Project::newFromHistoricId($row['project_id']);
+                $pred = Project::newFromHistoricId($row['project_id'], $row['id']);
                 if($pred != null && $pred->getName() != ""){
                     $this->preds[] = $pred;
                 }
@@ -291,7 +306,7 @@ EOF;
 	
 	// Returns the Successor Project
 	function getSucc(){
-	    if($this->succ == false){
+	    if(!is_array($this->succ) && $this->succ == false){
 	        $sql = "SELECT e.new_id FROM
 	                `grand_project_evolution` e
 	                WHERE e.project_id = '{$this->id}'";

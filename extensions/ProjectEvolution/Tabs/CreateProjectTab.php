@@ -81,8 +81,9 @@ class CreateProjectTab extends ProjectTab {
     
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath;
+        $this->html = "'Create Project' will create a new project, and automatically set up the mailing list.  Once the project is completed, project leaders can be created from the EditMember page.<br />";
         $form = self::createForm('new');
-        $this->html = $form->render();
+        $this->html .= $form->render();
         return $this->html;
     }
     
@@ -104,7 +105,7 @@ class CreateProjectTab extends ProjectTab {
             $form->getElementById("new_theme3")->setPOST("theme3");
             $form->getElementById("new_theme4")->setPOST("theme4");
             $form->getElementById("new_theme5")->setPOST("theme5");
-            APIRequest::doAction('CreateProject', true);
+            //APIRequest::doAction('CreateProject', true);
             $form->reset();
         }
         return implode("<br />\n", $errors);

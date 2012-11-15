@@ -23,7 +23,6 @@ class DBFunctions {
     // If $update is set to true, then an update is performed instead.
     static function execSQL($sql, $update=false){
         global $wgImpersonating, $wgRealUser, $wgUser;
-        
         DBFunctions::initDB();
         self::$queryCount++;
         //echo $sql."<br />\n";
