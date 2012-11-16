@@ -78,12 +78,12 @@ EOF;
 	}
 	
 	function getNChars(){
-	    $blobValue = str_replace("\r", "", $this->getBlobValue());
+	    $blobValue = utf8_decode(str_replace("\r", "", $this->getBlobValue()));
 	    return min($this->getLimit(), strlen($blobValue));
 	}
 	
 	function getActualNChars(){
-	    $blobValue = str_replace("\r", "", $this->getBlobValue());
+	    $blobValue = utf8_decode(str_replace("\r", "", $this->getBlobValue()));
 	    return strlen($blobValue);
 	}
 	
@@ -93,7 +93,7 @@ EOF;
 	    $html = "";
 	    $blobValue = str_replace("\r", "", $this->getBlobValue());
 	    $recommended = $this->getAttr('recommended', false);
-	    $length = strlen($blobValue);
+	    $length = strlen(utf8_decode($blobValue));
 	    $class = "inlineMessage";
 	    if($limit > 0){
 	        if(!$recommended){

@@ -106,10 +106,14 @@ class LimitReportItemSet extends ReportItemSet {
             var blobValues = Array();
             
             $.each($('#div_{$this->getPostId()} textarea'), function(index, value){
+                
                 var regex = RegExp('@\\\\[[^-]+-([^\\\\]]*)]','g');
                 if(!recommended){
                     var blobValue = '';
-                    var replacedLength = $(value).val().replace(regex, ' ').length;
+                    var replacedLength = $(value).val().length;
+                    if($(value).hasClass('autocomplete')){
+                        replacedLength = $(value).val().replace(regex, ' ').length;
+                    }
                     var lengthDiff = $(value).val().length - replacedLength;
                     var blobValue1 = $(value).val().substr(0, limit + lengthDiff);
                     var blobValue2 = $(value).val().substr(limit + lengthDiff);
@@ -119,12 +123,17 @@ class LimitReportItemSet extends ReportItemSet {
 	                else{
 	                    blobValue = blobValue1;
 	                }
-                    limit -= blobValue1.length;
+                    limit -= (blobValue1.length - lengthDiff);
                 }
                 else{
                     var blobValue = $(value).val();
                 }
-                blobValues.push(blobValue.replace(regex, '<b>\$1</b>'));
+                if($(value).hasClass('autocomplete')){
+                    blobValues.push(blobValue.replace(regex, '<b>\$1</b>'));
+                }
+                else{
+                    blobValues.push(blobValue);
+                }
             });
             
             $('#preview_{$this->getPostId()} .autocomplete').css('display', 'none');
@@ -166,11 +175,11 @@ class LimitReportItemSet extends ReportItemSet {
 	                if($textarea instanceof AutoCompleteTextareaReportItem){
 	                    $blobValue = $textarea->getReplacedBlobValue();
                         $replacedLength = $textarea->getActualNChars();
-                        $lengthDiff = strlen($blobValue) - $replacedLength;
+                        $lengthDiff = strlen(utf8_decode($blobValue)) - $replacedLength;
                     }
 	                $blobValue1 = substr($blobValue, 0, $limit + $lengthDiff);
 	                $blobValue2 = substr($blobValue, $limit + $lengthDiff);
-	                $limit -= strlen($blobValue1);
+	                $limit -= (strlen(utf8_decode($blobValue1)) - $lengthDiff);
 	                if($blobValue2 != ""){
 	                    if(isset($_GET['preview'])){
 	                        $blobValue = "{$blobValue1}<s style='color:red;'>{$blobValue2}</s>";

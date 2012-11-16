@@ -189,7 +189,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		
 		$value = str_replace("\r", "", $this->getBlobValue());
 		$value = preg_replace("/@\[[^-]+-([^\]]*)]/", " ", $value);
-	    return strlen($value);
+	    return strlen(utf8_decode($value));
 	}
 }
 ?>
