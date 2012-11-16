@@ -10,7 +10,6 @@ class Project{
 	var $name;
 	var $status;
 	var $type;
-	var $themes;
 	var $people;
 	var $contributions;
 	var $multimedia;
@@ -20,6 +19,7 @@ class Project{
 	var $milestones;
 	var $budgets;
 	var $deleted; // TODO: Get rid of this
+	private $themes;
 	private $succ;
 	private $preds;
 
@@ -251,6 +251,7 @@ EOF;
 			    $this->deleted = false;
 			}
 			$this->fullName = false;
+			$this->themes = null;
 		}
 	}
 	
@@ -592,18 +593,29 @@ EOF;
 	// Returns the theme percentage of this project of the given theme index $i
 	function getTheme($i, $history=false){
 	    if(!($i >= 1 && $i <= 5)) return 0; // Fail Gracefully if the index was out of bounds, and return 0
-	    $sql = "SELECT themes 
-	            FROM grand_project_descriptions d
-	            WHERE d.project_id = '{$this->id}'\n";
-	    if(!$history){
-            $sql .= "AND evolution_id = '{$this->evolutionId}'\n";
+	    if($this->themes == null){
+	        $this->themes = array();
+	        
+	        $sql = "(SELECT themes 
+	                FROM grand_project_descriptions d
+	                WHERE d.project_id = '{$this->id}'\n";
+	        if(!$history){
+                $sql .= "AND evolution_id = '{$this->evolutionId}')
+                        UNION
+                        (SELECT themes
+                         FROM grand_project_descriptions d
+                         WHERE d.project_id = '{$this->id}'";
+            }
+		    $sql .= "ORDER BY id DESC)";
+            
+		    $data = DBFunctions::execSQL($sql);
+            if(DBFunctions::getNRows() > 0){
+                $themes = explode("\n", $data[0]['themes']);
+                $this->themes = $themes;
+            }
         }
-		$sql .= "ORDER BY id DESC";
-        
-		$data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
-            $themes = explode("\n", $data[0]['themes']);
-	        return @str_replace("\r", "", $themes[$i - 1]);
+        if(isset($this->themes[$i-1])){
+            return $this->themes[$i-1];
         }
         return 0;
 	}
