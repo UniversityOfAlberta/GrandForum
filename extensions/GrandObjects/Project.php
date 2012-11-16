@@ -267,13 +267,21 @@ EOF;
 	// Returns the full name of this Project
 	function getFullName(){
 	    if($this->fullName === false){
-	        $sql = "SELECT d.full_name
-	                FROM `grand_project_descriptions` d
-	                WHERE d.evolution_id = '{$this->evolutionId}'
-				    ORDER BY d.id DESC LIMIT 1";
+	        $sql = "(SELECT d.full_name
+	                 FROM `grand_project_descriptions` d
+	                 WHERE d.evolution_id = '{$this->evolutionId}'
+				     ORDER BY d.id DESC LIMIT 1)
+				    UNION
+				    (SELECT d.full_name
+				     FROM `grand_project_descriptions` d
+				     WHERE d.project_id = '{$this->id}'
+				     ORDER BY d.evolution_id LIMIT 1)";
 	        $data = DBFunctions::execSQL($sql);
 	        if(DBFunctions::getNRows() > 0){
 	            $this->fullName = $data[0]['full_name'];
+	        }
+	        else{
+	            $this->fullName = $this->name;
 	        }
 	    }
 	    return $this->fullName;
@@ -613,13 +621,18 @@ EOF;
 	
 	// Returns the description of the Project
 	function getDescription($history=false){
-	    $sql = "SELECT description 
+	    $sql = "(SELECT description 
 	            FROM grand_project_descriptions d
 	            WHERE d.project_id = '{$this->id}'\n";
 	    if(!$history){
-            $sql .= "AND evolution_id = '{$this->evolutionId}'\n";
+	        $sql .= "AND evolution_id = '{$this->evolutionId}' 
+	                 ORDER BY id DESC)
+	                UNION
+				    (SELECT d.full_name
+				     FROM `grand_project_descriptions` d
+				     WHERE d.project_id = '{$this->id}'";
         }
-		$sql .= "ORDER BY id DESC";
+		$sql .= "ORDER BY id DESC)";
 		
         $data = DBFunctions::execSQL($sql);
         if(DBFunctions::getNRows() > 0){
