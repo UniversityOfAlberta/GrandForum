@@ -28,18 +28,18 @@ class Project{
 	    if(isset(self::$cache[$id])){
 	        return self::$cache[$id];
 	    }
-
-		
-		$sql = "(SELECT p.id, p.name, p.deleted, e.id as evolutionId
-	            FROM grand_project p, grand_project_evolution e
+		$sql = "(SELECT p.id, p.name, p.deleted, e.id as evolutionId, s.type, s.status
+	            FROM grand_project p, grand_project_evolution e, grand_project_status s
 	            WHERE e.`project_id` = '{$id}'
 	            AND e.`new_id` = p.id
 	            AND `new_id` != '{$id}'
+	            AND s.evolution_id = e.id
 	            ORDER BY `date` DESC LIMIT 1)
-	            UNION (SELECT p.id, p.name, p.deleted, e.id as evolutionId
-				FROM grand_project p, grand_project_evolution e
+	            UNION (SELECT p.id, p.name, p.deleted, e.id as evolutionId, s.type, s.status
+				FROM grand_project p, grand_project_evolution e, grand_project_status s
 				WHERE p.id = '$id'
 				AND e.new_id = p.id
+				AND s.evolution_id = e.id
 				ORDER BY e.id DESC LIMIT 1)";
 		$data = DBFunctions::execSQL($sql);
 		if (DBFunctions::getNRows() > 0){
@@ -58,10 +58,11 @@ class Project{
 	        return self::$cache[$name];
 	    }
 		
-		$sql = "SELECT p.id, p.name, p.deleted, e.id as evolutionId
-				FROM grand_project p, grand_project_evolution e
+		$sql = "SELECT p.id, p.name, p.deleted, e.id as evolutionId, s.type, s.status
+				FROM grand_project p, grand_project_evolution e, grand_project_status s
 				WHERE p.name = '$name'
 				AND e.new_id = p.id
+				AND s.evolution_id = e.id
 				ORDER BY e.id DESC LIMIT 1";
 				
 		$data = DBFunctions::execSQL($sql);
@@ -89,10 +90,11 @@ class Project{
 	
 	// Returns a Project from the given historic ID
 	static function newFromHistoricId($id, $evolutionId=null){
-	    $sql = "SELECT p.id, p.name, p.deleted, e.id as evolutionId
-				FROM grand_project p, grand_project_evolution e
+	    $sql = "SELECT p.id, p.name, p.deleted, e.id as evolutionId, s.type, s.status
+				FROM grand_project p, grand_project_evolution e, grand_project_status s
 				WHERE p.id = '$id'
 				AND e.new_id = p.id
+				AND s.evolution_id = e.id
 				ORDER BY e.id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
 		if (DBFunctions::getNRows() > 0){
@@ -107,10 +109,11 @@ class Project{
 	    if(isset(self::$cache['h_'.$name])){
 	        return self::$cache['h_'.$name];
 	    }
-	    $sql = "SELECT p.id, p.name, p.deleted, e.id as evolutionId
-				FROM grand_project p, grand_project_evolution e
+	    $sql = "SELECT p.id, p.name, p.deleted, e.id as evolutionId, s.type, s.status
+				FROM grand_project p, grand_project_evolution e, grand_project_status s
 				WHERE p.name = '$name'
 				AND e.new_id = p.id
+				AND s.evolution_id = e.id
 				ORDER BY e.id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
 		if (DBFunctions::getNRows() > 0){
@@ -238,6 +241,8 @@ EOF;
 			$this->id = $data[0]['id'];
 			$this->name = $data[0]['name'];
 			$this->evolutionId = $data[0]['evolutionId'];
+			$this->status = $data[0]['status'];
+			$this->type = $data[0]['type'];
 			$this->succ = false;
 			$this->preds = false;
 			if(isset($data[0]['deleted'])){
@@ -254,6 +259,12 @@ EOF;
 	// Returns the id of this Project
 	function getId(){
 		return $this->id;
+	}
+	
+	// Returns the evolutionId of this Project
+	// The evolution id is like a revision of the project since projects can merge, change status/type etc.
+	function getEvolutionId(){
+	    return $this->evolutionId;
 	}
 	
 	// Returns the name of this Project
@@ -282,6 +293,16 @@ EOF;
 	        }
 	    }
 	    return $this->fullName;
+	}
+	
+	// Returns the status of this Project
+	function getStatus(){
+	    return $this->status;
+	}
+	
+	// Returns the type of this Project
+	function getType(){
+	    return $this->type;
 	}
 	
 	// Returns the Predecessors of this Project
