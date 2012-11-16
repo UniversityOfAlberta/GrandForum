@@ -3,7 +3,7 @@
 class PHDThesisAPI extends PaperAPI{
 	
 	function PHDThesisAPI($update=false){
-	    parent::PaperAPI($update, "PhD Thesis", "Publication");
+	    parent::PaperAPI($update, "PHD Thesis", "Publication");
 	    $this->addPOST("abstract",false,"The abstract of the publication","My Abstract");
 	    $this->addPOST("date",false,"The date this publication was published, in the form YYYY-MM-DD","2010-10-15");
 	    $this->addPOST("status",false,"The status of the publication.  Can be either Submitted,Under Revision,Published,Rejected","Submitted");

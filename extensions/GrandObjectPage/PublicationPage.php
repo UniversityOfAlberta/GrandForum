@@ -180,6 +180,7 @@ class PublicationPage {
                 }
                 if($edit){
                     $misc_types = Paper::getAllMiscTypes($paper->getCategory());
+                    
                     $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/scripts/switcheroo.js'></script>");
                     $wgOut->addScript('<script type="text/javascript">
                     var oldAttr = Array();
@@ -487,7 +488,7 @@ class PublicationPage {
                                         addAttr("DOI");
                                         addAttr("URL");
                                         break;
-                                    case "PhD Thesis":
+                                    case "PHD Thesis":
                                         addAttrDefn('.$this->get_defn("University").');
                                         addAttrDefn('.$this->get_defn("Department").');
                                         addAttr("ISBN");
@@ -1288,7 +1289,7 @@ class PublicationPage {
                     case "Collections Paper":
                         $api = new CollectionAPI(true);
                         break;
-                    case "PhD Thesis":
+                    case "PHD Thesis":
                         $api = new PHDThesisAPI(true);
                         break;
                     case "Masters Thesis":
