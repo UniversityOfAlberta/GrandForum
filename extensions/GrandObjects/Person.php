@@ -23,6 +23,8 @@ class Person{
 	var $isProjectCoLeader;
 	var $groups;
 	var $roles;
+	var $isEvaluator = null;
+	var $isProjectManager = null;
 	var $relations;
 	var $hqps;
 	var $contributions;
@@ -1576,19 +1578,24 @@ class Person{
 	
 	// Returns true if the person is a manager of at least one project
 	function isProjectManager(){
-	    $sql = "SELECT *
-                FROM grand_project_leaders, grand_project p
-                WHERE manager = '1'
-                AND p.id = project_id
-                AND p.deleted != '1'
-                AND user_id = '{$this->id}' 
-                AND (end_date = '0000-00-00 00:00:00'
-                     OR end_date > CURRENT_TIMESTAMP)";
-        $data = DBFunctions::execSQL($sql);
-        if(count($data) > 0){
-            return true;
+	    if($this->isProjectManager === null){
+	        $sql = "SELECT *
+                    FROM grand_project_leaders, grand_project p
+                    WHERE manager = '1'
+                    AND p.id = project_id
+                    AND p.deleted != '1'
+                    AND user_id = '{$this->id}' 
+                    AND (end_date = '0000-00-00 00:00:00'
+                         OR end_date > CURRENT_TIMESTAMP)";
+            $data = DBFunctions::execSQL($sql);
+            if(count($data) > 0){
+                $this->isProjectManager = true;
+            }
+            else{
+                $this->isProjectManager = false;
+            }
         }
-        return false;
+        return $this->isProjectManager;
 	}
 	
 	function managementOf($project) {
@@ -1917,17 +1924,20 @@ class Person{
 	
 	// Returns true if the person is an evaluator
 	function isEvaluator(){
-	    $eTable = getTableName("eval");
-	    $sql = "SELECT *
-	            FROM $eTable
-	            WHERE eval_id = '{$this->id}'";
-	    $data = DBFunctions::execSQL($sql);
-	    if(count($data) > 0){
-	        return true;
+	    if($this->isEvaluator === null){
+	        $eTable = getTableName("eval");
+	        $sql = "SELECT *
+	                FROM $eTable
+	                WHERE eval_id = '{$this->id}'";
+	        $data = DBFunctions::execSQL($sql);
+	        if(count($data) > 0){
+	            $this->isEvaluator = true;
+	        }
+	        else {
+	            $this->isEvaluator = false;
+	        }
 	    }
-	    else {
-	        return false;
-	    }
+	    return $this->isEvaluator;
 	}
 	
 	// Returns the list of Evaluation Submissions for this person

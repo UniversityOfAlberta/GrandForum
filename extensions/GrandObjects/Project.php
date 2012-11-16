@@ -588,7 +588,7 @@ EOF;
 	            FROM grand_project_descriptions d
 	            WHERE d.project_id = '{$this->id}'\n";
 	    if(!$history){
-            $sql .= "AND start_date > end_date\n";
+            $sql .= "AND evolution_id = '{$this->evolutionId}'\n";
         }
 		$sql .= "ORDER BY id DESC";
         
@@ -617,7 +617,7 @@ EOF;
 	            FROM grand_project_descriptions d
 	            WHERE d.project_id = '{$this->id}'\n";
 	    if(!$history){
-            $sql .= "AND start_date > end_date\n";
+            $sql .= "AND evolution_id = '{$this->evolutionId}'\n";
         }
 		$sql .= "ORDER BY id DESC";
 		
