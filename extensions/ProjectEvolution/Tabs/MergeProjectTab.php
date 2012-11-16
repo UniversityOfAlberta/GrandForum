@@ -6,37 +6,56 @@ class MergeProjectTab extends ProjectTab {
         parent::ProjectTab("Merge");
     }
     
-    function generateBody(){
-        global $wgUser, $wgServer, $wgScriptPath;
-        $yesSelected = "";
-        $noSelected = " checked";
-        if($this->proposed == "true"){
-            $yesSelected = " checked";
-            $noSelected = "";
+    static function createForm(){
+        $projectNames = array();
+        $projectNames[] = "NO PROJECT";
+        foreach(Project::getAllProjects() as $project){
+            $projectNames[] = $project->getName();
         }
-        $this->html = "<table>";
-        $this->html .= "<tr><td class='tooltip label' title='The acronym/name for the project ie. MEOW'>Acronym<span style='color:red;'>*</span>:</td><td><input type='text' name='acronym' value='{$this->acronym}' /></td></tr>";
-        $this->html .= "<tr><td class='tooltip label' title='The project&#39;s full name ie. Media Enabled Organizational Worldflow' class='tooltip'>Full Name<span style='color:red;'>*</span>:</td><td><input style='width:400px;' type='text' name='fullName' value='{$this->fullName}' /></td></tr>";
-        $this->html .= "<tr><td class='tooltip label' title='Whether or not this project is proposed or not'>Proposed?<span style='color:red;'>*</span>:</td><td><input type='radio' name='proposed' value='true' $yesSelected />Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='radio' name='proposed' value='false' $noSelected />No</td></tr>";
-        $this->html .= "<tr><td class='tooltip label' title='The description of the project' class='tooltip'>Description:</td><td><textarea style='width:408px;height:100px;' name='description'>{$this->description}</textarea></td></tr>";
-        $this->html .= "<tr><td colspan='2'><fieldset><legend>Themes</legend>
-                            <table>
-                                <tr><td class='label'>AnImage:</td><td><input type='text' name='theme1' size='3' value='{$this->theme1}' />%</td></tr>
-                                <tr><td class='label'>GamSim:</td><td><input type='text' name='theme2' size='3' value='{$this->theme2}' />%</td></tr>
-                                <tr><td class='label'>nMEDIA:</td><td><input type='text' name='theme3' size='3' value='{$this->theme3}' />%</td></tr>
-                                <tr><td class='label'>SocLeg:</td><td><input type='text' name='theme4' size='3' value='{$this->theme4}' />%</td></tr>
-                                <tr><td class='label'>TechMeth:</td><td><input type='text' name='theme5' size='3' value='{$this->theme5}' />%</td></tr>
-                            </table></fieldset></td></tr>";
-        $this->html .= "</table>";
-        return $this->html;
+        $form = new FormContainer("merge_project_container");
+        
+        $projRow = new FormTableRow("merge_project_row");
+        $projRow->append(new Label("merge_project_label", "Projects", "Which projects to merge (Hold Ctrl to select multiple projects)", VALIDATE_NOT_NULL));
+        $projRow->append(new MultiSelectBox("merge_project", "Projects", "NO PROJECT", $projectNames, VALIDATE_NOT_NULL + VALIDATE_IS_PROJECT));
+        
+        $create = CreateProjectTab::createForm('merge');
+        $create->getElementById("merge_acronym")->validations = VALIDATE_NOT_NULL;
+        $create->getElementById("merge_themes_set")->remove();
+        $create->getElementById("merge_description_row")->remove();
+        $create->getElementById("merge_form_table")->insertBefore($projRow, 'merge_acronym_row');
+        
+        //$form->append($projSelect);
+        $form->append($create);
+        
+        return $form;
     }
     
-    function generateEditBody(){
-        $this->generateBody();
+    function generateBody(){
+        global $wgUser, $wgServer, $wgScriptPath;
+        $this->html = "'Merge Projects' will allow two or more existing projects to be merged into a single project.<br />";
+        $form = self::createForm();
+        $this->html .= $form->render();
+        return $this->html;
     }
     
     function handleEdit(){
         global $wgMessages;
+        
+        $form = self::createForm();
+        $errors = $form->validate();
+        
+        if(count($errors) == 0){
+            // Call the API
+            $form->getElementById("merge_project")->setPOST("project");
+            $form->getElementById("merge_acronym")->setPOST("acronym");
+            $form->getElementById("merge_full_name")->setPOST("fullName");
+            $form->getElementById("merge_status")->setPOST("status");
+            $form->getElementById("merge_type")->setPOST("type");
+            $form->getElementById("merge_effective")->setPOST("effective_date");
+            APIRequest::doAction('EvolveProject', true);
+            $form->reset();
+        }
+        return implode("<br />\n", $errors);
         
     }
 }    
