@@ -20,7 +20,8 @@ class ProjectMainTab extends AbstractEditableTab {
         if($wgUser->isLoggedIn() && $me->isMemberOf($project)){
             $this->html .="<h3><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:Mail_Index'>{$project->getName()} Mailing List</a></h3>";
         }
-        
+        $this->html .= "<b>Type:</b> {$this->project->getType()}<br />
+                        <b>Status:</b> {$this->project->getStatus()}<br />";
         $this->showThemes();
         $this->showPeople();
         $this->showDescription();
