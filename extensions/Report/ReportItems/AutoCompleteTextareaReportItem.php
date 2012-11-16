@@ -42,7 +42,28 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		}
 		$item .= "<span style='float:right;margin-right:30px;' class='pdfnodisplay tooltip' title='You should reference $name by writing <code>@$tooltipOptionId</code> in the text box. You can also start typing <code>@$tooltipOptionName</code> and a drop-down box will appear below the text box where you can select the one you wish to reference.'><b>@autocomplete:</b> {$name}</span>".$this->getHTML();
 		$item .= "<div id='{$this->id}_div'></div>";
-		$item .= "<script type='text/javascript'>
+		$item .= "<script type='text/javascript'>";
+	    if($this->getLimit() > 0){
+	        $item .= "
+		            $(document).ready(function(){
+		                var regex = RegExp('@\\\\[[^-]+-([^\\\\]]*)]','g');
+                        var strlen = $('textarea[name={$this->getPostId()}]').val().replace(regex, ' ').length;
+                        changeColor{$this->getPostId()}($('textarea[name={$this->getPostId()}]'), strlen);
+                        $('textarea[name={$this->getPostId()}]').off('keypress');
+                        $('textarea[name={$this->getPostId()}]').off('keyup');
+                        $('textarea[name={$this->getPostId()}]').keypress(function(){
+                            var regex = RegExp('@\\\\[[^-]+-([^\\\\]]*)]','g');
+                            var strlen = $(this).val().replace(regex, ' ').length;
+                            changeColor{$this->getPostId()}(this, strlen);
+                        });
+                        $('textarea[name={$this->getPostId()}]').keyup(function(){
+                            var regex = RegExp('@\\\\[[^-]+-([^\\\\]]*)]','g');
+                            var strlen = $(this).val().replace(regex, ' ').length;
+                            changeColor{$this->getPostId()}(this, strlen);
+                        });
+                    });";
+        }
+        $item .= "
 		            $('textarea[name={$this->getPostId()}]').triggeredAutocomplete({
                         hidden: '#hidden_inputbox{$this->id}',
                         source: {$this->id},

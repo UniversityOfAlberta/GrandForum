@@ -16,8 +16,14 @@
 			
 			function substring(){ 
 			    var val = $(self).val();
-			    var regex = RegExp('@\\[[^-]+-([^\\]]*)]','g');
-			    var length = val.replace(regex, ' ').length;
+			    var length = 0;
+			    if($(self).hasClass('ui-autocomplete-input')){
+			        var regex = RegExp('@\\[[^-]+-([^\\]]*)]','g');
+			        length = val.replace(regex, ' ').length;
+			    }
+			    else{
+			        length = val.length;
+			    }
 			    if(length > limit){
 			        $(self).val($(self).val().substring(0,limit));
 			    }
