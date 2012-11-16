@@ -187,45 +187,28 @@ class cavendishTemplate extends QuickTemplate {
 		</script>
 <!-- TEMPORARY SURVEY REMINDER POPUP STARTS HERE -->	
 		<?php
-		//print_r($_SESSION);
 		$autoOpen = "false";
 		$loggedin_user_id = $wgUser->getId();
 		$loggedin_user = Person::newFromId($loggedin_user_id);
 		if($wgUser->isLoggedIn() && ($loggedin_user->isPNI() || $loggedin_user->isCNI())){
 			$sql = "SELECT * FROM survey_results WHERE user_id = $loggedin_user_id";
 		    $data = DBFunctions::execSQL($sql);
-		    //print_r($data);
+		  
 		    if(count($data) == 0 || (count($data) > 0 && isset($data[0]['submitted']) && $data[0]['submitted'] == 0) ){
-		    	if(isset($_SESSION['last_forum_visit'])){
-					$last_visit = $_SESSION['last_forum_visit'];
-					$now = time();
-					//echo $now - $last_visit ;
-					if($now - $last_visit > 75600 ){
-						$autoOpen = "true";
-					}
-					$_SESSION['last_forum_visit'] = $now;
-				}
-				else{
-					$_SESSION['last_forum_visit'] = time();
+		    	if(! isset($_COOKIE['survey_reminder'])){
+					setcookie("survey_reminder", 1, time()+75600);
 					$autoOpen = "true";
 				}
+				
 				$message = "<p>Please remember to complete the NAVEL survey. We are extending the deadline as members requested!</p>
 							<p><a href='/index.php/Special:Survey'>Click here</a> to visit the Survey now.</p>";
 		    }
 		    else if( count($data) > 0 && isset($data[0]['submitted']) && $data[0]['submitted'] == 1 ){
-		    	if(isset($_SESSION['last_forum_visit'])){
-					$last_visit = $_SESSION['last_forum_visit'];
-					$now = time();
-					//echo $now - $last_visit ;
-					if($now - $last_visit > 31536000 ){
-						$autoOpen = "true";
-					}
-					$_SESSION['last_forum_visit'] = $now;
-				}
-				else{
-					$_SESSION['last_forum_visit'] = time();
+		    	if(!isset($_COOKIE['survey_thanks'])){
+					setcookie("survey_thanks", 1, time()+31536000);
 					$autoOpen = "true";
 				}
+				
 				$message = "Thank you for completing the NAVEL survey. We truly appreciate your help!";
 		    }
 		}
@@ -307,6 +290,11 @@ class cavendishTemplate extends QuickTemplate {
 				<span class="top-nav-right">&nbsp;</span>
 			</li>
 			<?php } ?>
+
+			<?php 
+			$user = Person::newFromId($wgUser->getId());
+			if($user->isPNI() ||  $user->isCNI()){
+			?>
 			<li id='grand-tab' class="top-nav-element 
 			    <?php if($wgTitle->getText() == "Survey"){
 			        echo "selected";
@@ -315,6 +303,9 @@ class cavendishTemplate extends QuickTemplate {
 				<a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Special:Survey">NAVEL Survey</a>	
 				<span class="top-nav-right">&nbsp;</span>
 			</li>
+			<?php
+			}
+			?>
 			<?php global $wgImpersonating;
 			    foreach($this->data['personal_urls'] as $key => $item) {
 			    //echo $key;
