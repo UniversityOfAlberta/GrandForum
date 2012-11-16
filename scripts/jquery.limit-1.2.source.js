@@ -17,7 +17,7 @@
 			function substring(){ 
 			    var val = $(self).val();
 			    var length = 0;
-			    if($(self).hasClass('ui-autocomplete-input')){
+			    if($(self).hasClass('autocomplete')){
 			        var regex = RegExp('@\\[[^-]+-([^\\]]*)]','g');
 			        length = val.replace(regex, ' ').length;
 			    }
@@ -33,7 +33,11 @@
 				    }
 				}
 			}
-			substring();
+			$(document).ready(function(){
+		        substring();
+		        setTimeout(substring, 100);
+		        setTimeout(substring, 250);
+		    });
         } 
     }); 
 })(jQuery);

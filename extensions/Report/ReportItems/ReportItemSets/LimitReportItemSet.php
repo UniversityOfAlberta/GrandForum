@@ -89,14 +89,15 @@ class LimitReportItemSet extends ReportItemSet {
         $wgOut->addHTML("</div>");
         // Scripts
         $wgOut->addHTML("<script type='text/javascript'>
+            $(document).ready(function(){
             var textareas = Array();\n");
         foreach($textareas as $textarea){
             $postId = $textarea->getId();
             $wgOut->addHTML("textareas.push($('textarea[name={$textarea->getPostId()}]'));\n");
         }
         $wgOut->addHTML("$('#div_{$this->getPostId()}').multiLimit($limit, $('#{$this->getPostId()}_chars_left'), textareas);
-        $('#preview_{$this->getPostId()}').dialog({ autoOpen: false, width: '700', height: '450'});
-        
+            $('#preview_{$this->getPostId()}').dialog({ autoOpen: false, width: '700', height: '450'});
+        });
         function popup{$this->getPostId()}(){
             $('#preview_{$this->getPostId()}').html($('#div_{$this->getPostId()}').html());
             $('#preview_{$this->getPostId()} .pdfnodisplay').remove();

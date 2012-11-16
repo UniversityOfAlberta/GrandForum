@@ -43,6 +43,12 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		$item .= "<span style='float:right;margin-right:30px;' class='pdfnodisplay tooltip' title='You should reference $name by writing <code>@$tooltipOptionId</code> in the text box. You can also start typing <code>@$tooltipOptionName</code> and a drop-down box will appear below the text box where you can select the one you wish to reference.'><b>@autocomplete:</b> {$name}</span>".$this->getHTML();
 		$item .= "<div id='{$this->id}_div'></div>";
 		$item .= "<script type='text/javascript'>";
+		$item .= "$('textarea[name={$this->getPostId()}]').addClass('autocomplete');
+		            $('textarea[name={$this->getPostId()}]').triggeredAutocomplete({
+                        hidden: '#hidden_inputbox{$this->id}',
+                        source: {$this->id},
+                        trigger: '@'
+                    });";
 	    if($this->getLimit() > 0){
 	        $item .= "
 		            $(document).ready(function(){
@@ -63,13 +69,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
                         });
                     });";
         }
-        $item .= "
-		            $('textarea[name={$this->getPostId()}]').triggeredAutocomplete({
-                        hidden: '#hidden_inputbox{$this->id}',
-                        source: {$this->id},
-                        trigger: '@'
-                    });
-		</script>";
+        $item .= "</script>";
 		if($notReferenced == "true"){
 		    $item .= "<script type='text/javascript'>
 		                function autocompleteLeft{$this->id}(){
