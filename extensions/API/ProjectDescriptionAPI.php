@@ -57,8 +57,8 @@ class ProjectDescriptionAPI extends API{
                 SET `end_date` = CURRENT_TIMESTAMP
                 WHERE project_id = '{$project->getId()}' AND id = '{$project->getLastHistoryId()}'";
         DBFunctions::execSQL($sql, true);
-        $sql = "INSERT INTO grand_project_descriptions (`project_id`,`full_name`,`themes`,`description`,`start_date`)
-                VALUES ('{$project->getId()}','{$fullName}','{$themes[0]}\n{$themes[1]}\n{$themes[2]}\n{$themes[3]}\n{$themes[4]}','{$_POST['description']}',CURRENT_TIMESTAMP)";
+        $sql = "INSERT INTO grand_project_descriptions (`project_id`,`evolution_id`,`full_name`,`themes`,`description`,`start_date`)
+                VALUES ('{$project->getId()}','{$project->evolutionId}','{$fullName}','{$themes[0]}\n{$themes[1]}\n{$themes[2]}\n{$themes[3]}\n{$themes[4]}','{$_POST['description']}',CURRENT_TIMESTAMP)";
         DBFunctions::execSQL($sql, true);
         if(!$noEcho){
             echo "Project description updated\n";

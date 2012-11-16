@@ -97,7 +97,12 @@ class Paper{
 	    else{
 	        $papers = array();
 	        if($project != "all"){
-	            $p = Project::newFromHistoricName($project);
+	            if($project instanceof Project){
+	                $p = $project;
+	            }
+	            else{
+                    $p = Project::newFromHistoricName($project);
+                }
 	            $preds = $p->getPreds();
 	            foreach($preds as $pred){
 	                foreach(Paper::getAllPapers($pred->getName(), $category, $grand) as $paper){
@@ -105,6 +110,9 @@ class Paper{
 	                }
 	            }
 	        }
+	        if($project instanceof Project){
+                $project = $project->getName();
+            }
 	        $sql = "SELECT *
 			        FROM `grand_products`
 			        WHERE `deleted` = '0' ";
@@ -155,13 +163,21 @@ class Paper{
 	    }
 	    $papers = array();
 	    if($project != "all"){
-            $p = Project::newFromHistoricName($project);
+	        if($project instanceof Project){
+	            $p = $project;
+	        }
+	        else{
+                $p = Project::newFromHistoricName($project);
+            }
             $preds = $p->getPreds();
             foreach($preds as $pred){
-                foreach(Paper::getAllPapersDuring($pred->getName(), $category, $grand, $startRange, $endRange) as $paper){
+                foreach(Paper::getAllPapersDuring($pred, $category, $grand, $startRange, $endRange) as $paper){
                     $papers[$paper->getId()] = $paper;
                 }
             }
+        }
+        if($project instanceof Project){
+            $project = $project->getName();
         }
 	    $data = array();
 	    

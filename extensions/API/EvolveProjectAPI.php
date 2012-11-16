@@ -65,8 +65,8 @@ class EvolveProjectAPI extends API{
 	    $sql = "INSERT INTO `grand_project_status` (`project_id`,`status`,`type`)
 	            VALUES ('{$nsId}','{$status}','{$type}')";
 	    DBFunctions::execSQL($sql, true);
-	    $sql = "INSERT INTO `grand_project_evolution` (`project_id`,`new_id`,`action`,`effective_date`)
-	            VALUES ('{$oldProject->getId()}','{$nsId}','{$action}','{$effective_date}')";
+	    $sql = "INSERT INTO `grand_project_evolution` (`last_id`,`project_id`,`new_id`,`action`,`effective_date`)
+	            VALUES ('{$oldProject->evolutionId}','{$oldProject->getId()}','{$nsId}','{$action}','{$effective_date}')";
 	    DBFunctions::execSQL($sql, true);
 	    Project::$cache = array();
 	    $project = Project::newFromId($nsId);

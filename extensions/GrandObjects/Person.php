@@ -1529,12 +1529,21 @@ class Person{
 	}  
 	
 	// Returns true if this person is a leader or co-leader of a given project, false otherwise
-	function leadershipOf($project_name) {
+	function leadershipOf($project) {
+	    if($project instanceof Project){
+            $p = $project;
+        }
+        else{
+            $p = Project::newFromHistoricName($project);
+        }
+        if($p == null || $p->getName() == ""){
+            return false;
+        }
 	    $data = DBFunctions::execSQL("SELECT 1
 		                             FROM grand_project_leaders l, grand_project p 
 		                             WHERE l.project_id = p.id
 									 AND l.user_id = '{$this->id}'
-		                             AND p.name = '{$project_name}' 
+		                             AND p.name = '{$p->getName()}' 
 		                             AND p.deleted != '1'
 		                             AND (l.end_date = '0000-00-00 00:00:00'
                                           OR l.end_date > CURRENT_TIMESTAMP)");
@@ -1542,9 +1551,8 @@ class Person{
         if(DBFunctions::getNRows() > 0){
             return true;
         }
-        $project = Project::newFromHistoricName($project_name);
-	    foreach($project->getPreds() as $pred){
-	        if($this->leadershipOf($pred->getName())){
+        foreach($p->getPreds() as $pred){
+	        if($this->leadershipOf($pred)){
 	            return true;
 	        }
 	    }
@@ -1583,12 +1591,21 @@ class Person{
         return false;
 	}
 	
-	function managementOf($project_name) {
+	function managementOf($project) {
+	    if($project instanceof Project){
+            $p = $project;
+        }
+        else{
+            $p = Project::newFromHistoricName($project);
+        }
+        if($p == null || $p->getName() == ""){
+            return false;
+        }
 	    $data = DBFunctions::execSQL("SELECT 1
 		                             FROM grand_project_leaders l, grand_project p 
 		                             WHERE l.project_id = p.id
 									 AND l.user_id = '{$this->id}'
-		                             AND p.name = '{$project_name}' 
+		                             AND p.name = '{$p->getName()}' 
 		                             AND p.deleted != '1'
 		                             AND l.manager = '1'
 		                             AND (l.end_date = '0000-00-00 00:00:00'
@@ -1597,9 +1614,8 @@ class Person{
         if(DBFunctions::getNRows() > 0){
             return true;
         }
-        $project = Project::newFromHistoricName($project_name);
-	    foreach($project->getPreds() as $pred){
-	        if($this->managementOf($pred->getName())){
+	    foreach($p->getPreds() as $pred){
+	        if($this->managementOf($pred)){
 	            return true;
 	        }
 	    }

@@ -40,12 +40,11 @@ class Project{
 	        return $project;
 	    }
 		
-		$sql = "SELECT p.id, p.name, d.full_name, p.deleted, e.id as evolutionId
-				FROM grand_project p, grand_project_evolution e, grand_project_descriptions d
+		$sql = "SELECT p.id, p.name, p.deleted, e.id as evolutionId
+				FROM grand_project p, grand_project_evolution e
 				WHERE p.id = '$id'
-				AND p.id = d.project_id
 				AND e.new_id = p.id
-				ORDER BY d.id, e.id DESC LIMIT 1";
+				ORDER BY e.id DESC LIMIT 1";
 		$data = DBFunctions::execSQL($sql);
 		if (DBFunctions::getNRows() > 0){
 			$project = new Project($data);
@@ -63,12 +62,11 @@ class Project{
 	        return self::$cache[$name];
 	    }
 		
-		$sql = "SELECT p.id, p.name, d.full_name, p.deleted, e.id as evolutionId
-				FROM grand_project p, grand_project_evolution e, grand_project_descriptions d
+		$sql = "SELECT p.id, p.name, p.deleted, e.id as evolutionId
+				FROM grand_project p, grand_project_evolution e
 				WHERE p.name = '$name'
-				AND p.id = d.project_id
 				AND e.new_id = p.id
-				ORDER BY d.id, e.id DESC LIMIT 1";
+				ORDER BY e.id DESC LIMIT 1";
 				
 		$data = DBFunctions::execSQL($sql);
 		if (DBFunctions::getNRows() > 0){
@@ -95,12 +93,11 @@ class Project{
 	
 	// Returns a Project from the given historic ID
 	static function newFromHistoricId($id, $evolutionId=null){
-	    $sql = "SELECT p.id, p.name, d.full_name, p.deleted, e.id as evolutionId
-				FROM grand_project p, grand_project_evolution e, grand_project_descriptions d
+	    $sql = "SELECT p.id, p.name, p.deleted, e.id as evolutionId
+				FROM grand_project p, grand_project_evolution e
 				WHERE p.id = '$id'
-				AND p.id = d.project_id
 				AND e.new_id = p.id
-				ORDER BY d.id, e.id DESC LIMIT 1";
+				ORDER BY e.id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
 		if (DBFunctions::getNRows() > 0){
 		    $project = new Project($data);
@@ -114,12 +111,11 @@ class Project{
 	    if(isset(self::$cache['h_'.$name])){
 	        return self::$cache['h_'.$name];
 	    }
-	    $sql = "SELECT p.id, p.name, d.full_name, p.deleted, e.id as evolutionId
-				FROM grand_project p, grand_project_evolution e, grand_project_descriptions d
+	    $sql = "SELECT p.id, p.name, p.deleted, e.id as evolutionId
+				FROM grand_project p, grand_project_evolution e
 				WHERE p.name = '$name'
-				AND p.id = d.project_id
 				AND e.new_id = p.id
-				ORDER BY d.id, e.id DESC LIMIT 1";
+				ORDER BY e.id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
 		if (DBFunctions::getNRows() > 0){
 		    $project = new Project($data);
@@ -245,7 +241,6 @@ EOF;
 		if(isset($data[0])){
 			$this->id = $data[0]['id'];
 			$this->name = $data[0]['name'];
-			$this->fullName = $data[0]['full_name'];
 			$this->evolutionId = $data[0]['evolutionId'];
 			$this->succ = false;
 			$this->preds = false;
@@ -255,6 +250,7 @@ EOF;
 			else{
 			    $this->deleted = false;
 			}
+			$this->fullName = false;
 		}
 	}
 	
@@ -270,22 +266,31 @@ EOF;
 	
 	// Returns the full name of this Project
 	function getFullName(){
+	    if($this->fullName === false){
+	        $sql = "SELECT d.full_name
+	                FROM `grand_project_descriptions` d
+	                WHERE d.evolution_id = '{$this->evolutionId}'
+				    ORDER BY d.id DESC LIMIT 1";
+	        $data = DBFunctions::execSQL($sql);
+	        if(DBFunctions::getNRows() > 0){
+	            $this->fullName = $data[0]['full_name'];
+	        }
+	    }
 	    return $this->fullName;
 	}
 	
 	// Returns the Predecessors of this Project
 	function getPreds(){
-        if(!is_array($this->preds) && $this->preds == false){
-	        $sql = "SELECT e.id, e.project_id FROM
-	                `grand_project_evolution` e
-	                WHERE e.new_id = '{$this->id}'";
-	        if($this->evolutionId != null){
-	            $sql .= "\nAND id < '{$this->evolutionId}'";
-	        }
+        if($this->preds === false){
+	        $sql = "SELECT DISTINCT e.project_id, e.last_id
+	                FROM `grand_project_evolution` e
+	                WHERE e.new_id = '{$this->id}'
+	                AND e.id = '{$this->evolutionId}'
+	                ORDER BY e.id DESC";
 	        $data = DBFunctions::execSQL($sql);
 	        $this->preds = array();
             foreach($data as $row){
-                $pred = Project::newFromHistoricId($row['project_id'], $row['id']);
+                $pred = Project::newFromHistoricId($row['project_id'], $row['last_id']);
                 if($pred != null && $pred->getName() != ""){
                     $this->preds[] = $pred;
                 }
