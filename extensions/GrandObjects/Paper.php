@@ -161,64 +161,74 @@ class Paper{
 	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
 	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
 	    }
-	    $papers = array();
-	    if($project != "all"){
-	        if($project instanceof Project){
-	            $p = $project;
-	        }
-	        else{
-                $p = Project::newFromHistoricName($project);
-            }
-            $preds = $p->getPreds();
-            foreach($preds as $pred){
-                foreach(Paper::getAllPapersDuring($pred, $category, $grand, $startRange, $endRange) as $paper){
-                    $papers[$paper->getId()] = $paper;
+	    $str = ($strict) ? 'true' : 'false';
+	    $proj = $project;
+	    if($project instanceof Project){
+	        $proj = $project->getName();
+	    }
+	    if(isset(self::$dataCache[$proj.$category.$grand.$startRange.$endRange.$str])){
+	        return self::$dataCache[$proj.$category.$grand.$startRange.$endRange.$str];
+	    }
+	    else{
+	        $papers = array();
+	        if($project != "all"){
+	            if($project instanceof Project){
+	                $p = $project;
+	            }
+	            else{
+                    $p = Project::newFromHistoricName($project);
+                }
+                $preds = $p->getPreds();
+                foreach($preds as $pred){
+                    foreach(Paper::getAllPapersDuring($pred, $category, $grand, $startRange, $endRange) as $paper){
+                        $papers[$paper->getId()] = $paper;
+                    }
                 }
             }
-        }
-        if($project instanceof Project){
-            $project = $project->getName();
-        }
-	    $data = array();
-	    
-        $sql = "SELECT *
-		        FROM grand_products
-		        WHERE deleted = '0' AND ";
-        if($project != "all" || $category != "all"){
-            //$sql .= "WHERE ";
-        }
-        if($project != "all"){
-            $sql .= "projects LIKE '%$project%' AND ";
-        }
-        if($category != "all"){
-            //if($project != "all"){
-            //    $sql .= "\nAND ";
-            //}
-            $sql .= "category = '$category' AND ";
-        }
-        if($strict){
-            $sql .= "\n date BETWEEN '$startRange' AND '$endRange'";
-        }
-        else{
-            $sql .= "\n(date BETWEEN '$startRange' AND '$endRange' OR (date >= '$startRange' AND category = 'Publication' AND status != 'Published' AND status != 'Submitted' ))";
-        }
-        $sql .= "\nORDER BY `type`, `title`";
-        
-        $data = DBFunctions::execSQL($sql);
-        foreach($data as $row){
-            $rowA = array();
-            $rowA[0] = $row;
-            $unserialized = unserialize($row['projects']);
-            if(($grand == 'grand' && count($unserialized) > 0) ||
-               ($grand == 'nonGrand' && count($unserialized) == 0) ||
-                $grand == 'both'){
-                $paper = new Paper($rowA);
-                $papers[$paper->getId()] = $paper;
-                
+            if($project instanceof Project){
+                $project = $project->getName();
             }
-        }
-	    
-	    return $papers;
+	        $data = array();
+	        
+            $sql = "SELECT *
+		            FROM grand_products
+		            WHERE deleted = '0' AND ";
+            if($project != "all" || $category != "all"){
+                //$sql .= "WHERE ";
+            }
+            if($project != "all"){
+                $sql .= "projects LIKE '%$project%' AND ";
+            }
+            if($category != "all"){
+                //if($project != "all"){
+                //    $sql .= "\nAND ";
+                //}
+                $sql .= "category = '$category' AND ";
+            }
+            if($strict){
+                $sql .= "\n date BETWEEN '$startRange' AND '$endRange'";
+            }
+            else{
+                $sql .= "\n(date BETWEEN '$startRange' AND '$endRange' OR (date >= '$startRange' AND category = 'Publication' AND status != 'Published' AND status != 'Submitted' ))";
+            }
+            $sql .= "\nORDER BY `type`, `title`";
+            
+            $data = DBFunctions::execSQL($sql);
+            foreach($data as $row){
+                $rowA = array();
+                $rowA[0] = $row;
+                $unserialized = unserialize($row['projects']);
+                if(($grand == 'grand' && count($unserialized) > 0) ||
+                   ($grand == 'nonGrand' && count($unserialized) == 0) ||
+                    $grand == 'both'){
+                    $paper = new Paper($rowA);
+                    $papers[$paper->getId()] = $paper;
+                    
+                }
+            }
+	        self::$dataCache[$proj.$category.$grand.$startRange.$endRange.$str] = $papers;
+	        return $papers;
+	    }
 	}
 
 	// Returns all Papers in the DB.

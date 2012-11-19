@@ -23,6 +23,7 @@ class Project{
 	private $succ;
 	private $preds;
 	private $peopleCache = null;
+	private $leaderCache = array();
 
 	// Returns a new Project from the given id
 	static function newFromId($id){
@@ -545,6 +546,11 @@ EOF;
 	/// resulting array contains instances of Person.  If #onlyid is set to
 	/// true, then the resulting array contains only numerical user IDs.
 	function getCoLeaders($onlyid = false){
+	    $onlyIdStr = ($onlyid) ? 'true' : 'false';
+	    if(isset($this->leaderCache['coleaders'.$onlyIdStr])){
+	        echo "HELLO";
+	        return $this->leaderCache['coleaders'.$onlyIdStr];
+	    }
 	    $ret = array();
 	    $preds = $this->getPreds();
         foreach($preds as $pred){
@@ -574,7 +580,7 @@ EOF;
 			foreach ($data as &$row)
 				$ret[$row['user_id']] = Person::newFromId($row['user_id']);
 		}
-
+        $this->leaderCache['coleaders'.$onlyIdStr] = $ret;
 		return $ret;
 	}
 
@@ -582,6 +588,10 @@ EOF;
 	/// resulting array contains instances of Person.  If #onlyid is set to
 	/// true, then the resulting array contains only numerical user IDs.
 	function getLeaders($onlyid = false) {
+	    $onlyIdStr = ($onlyid) ? 'true' : 'false';
+	    if(isset($this->leaderCache['leaders'.$onlyIdStr])){
+	        return $this->leaderCache['leaders'.$onlyIdStr];
+	    }
 	    $ret = array();
 	    $preds = $this->getPreds();
         foreach($preds as $pred){
@@ -611,7 +621,7 @@ EOF;
 			foreach ($data as &$row)
 				$ret[$row['user_id']] = Person::newFromId($row['user_id']);
 		}
-
+        $this->leaderCache['leaders'.$onlyIdStr] = $ret;
 		return $ret;
 	}
 	
