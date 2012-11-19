@@ -204,12 +204,14 @@ class APIRequest{
 		$actions['Contributions']['updateContribution'] = new AddContributionAPI();
 		
 		//POST
+		$actions['Projects']['createProject'] = new CreateProjectAPI();
 		$actions['Projects']['addProjectMember'] = new AddProjectMemberAPI();
 		$actions['Projects']['addProjectMilestone'] = new ProjectMilestoneAPI();
 		$actions['Projects']['updateProjectDescription'] = new ProjectDescriptionAPI();
-		$actions['Projects']['updateProjectThemes'] = new ProjectThemesAPI();
 		$actions['Projects']['updateProjectMilestone'] = new ProjectMilestoneAPI(true);
+		$actions['Projects']['evolveProject'] = new EvolveProjectAPI();
 		$actions['Projects']['deleteProjectMember'] = new DeleteProjectMemberAPI();
+		$actions['Projects']['deleteProject'] = new DeleteProjectAPI();
 		//GET
 		$actions['Projects']['getProjectInfo'] = new ProjectAPI();
 		

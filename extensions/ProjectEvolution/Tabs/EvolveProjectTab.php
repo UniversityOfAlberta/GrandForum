@@ -23,8 +23,7 @@ class EvolveProjectTab extends ProjectTab {
         $create->getElementById("evolve_themes_set")->remove();
         $create->getElementById("evolve_description_row")->remove();
         $create->getElementById("evolve_form_table")->insertBefore($projRow, 'evolve_acronym_row');
-        
-        //$form->append($projSelect);
+
         $form->append($create);
         
         return $form;

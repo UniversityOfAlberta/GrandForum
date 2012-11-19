@@ -22,6 +22,11 @@ class EvolveProjectAPI extends API{
     }
 
 	function doAction($noEcho=false){
+	    global $wgUser;
+	    $me = Person::newFromUser($wgUser);
+	    if(!$me->isRoleAtLeast(MANAGER)){
+	        return;
+	    }
 	    $oldProject = Project::newFromName($_POST['project']);
 	    $theme1 = $oldProject->getTheme(1);
 	    $theme2 = $oldProject->getTheme(2);

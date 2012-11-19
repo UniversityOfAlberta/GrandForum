@@ -7,7 +7,7 @@ class CreateProjectAPI extends API{
 	    $this->addPOST("fullName",true,"The full name of the project","Media Enabled Organizational Workflow");
 	    $this->addPOST("status",true,"The status of this project","Proposed");
 	    $this->addPOST("type",true,"The type of this project","Research");
-	    $this->addPOST("effective_date", "The date that this action should take place", "2012-10-15");
+	    $this->addPOST("effective_date", true, "The date that this action should take place", "2012-10-15");
 	    $this->addPOST("description",false,"The description for this project","MEOW is great");
 	    $this->addPOST("theme1",false,"The percent value for theme 1","20");
 	    $this->addPOST("theme2",false,"The percent value for theme 2","20");
@@ -31,6 +31,11 @@ class CreateProjectAPI extends API{
     }
 
 	function doAction($noEcho=false){
+	    global $wgUser;
+	    $me = Person::newFromUser($wgUser);
+	    if(!$me->isRoleAtLeast(MANAGER)){
+	        return;
+	    }
 		$project = Project::newFromName($_POST['acronym']);
 		if($project != null && $project->getName() != ""){
 		    if(!$noEcho){
