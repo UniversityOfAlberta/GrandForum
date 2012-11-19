@@ -326,8 +326,22 @@ class cavendishTemplate extends QuickTemplate {
 			    }
 			    else if($key == "logout"){
 			        if(!$wgImpersonating){
+			            $getStr = "";
+		                foreach($_GET as $key => $get){
+		                    if($key == "title" || $key == "returnto"){
+		                        continue;
+		                    }
+		                    if(strlen($getStr) == 0){
+		                        $getStr .= "?$key=$get";
+		                    }
+		                    else{
+		                        $getStr .= "&$key=$get";
+		                    }
+		                }
 			            $item['text'] = "Logout";
+			            $item['href'].= urlencode($getStr);
 			            $tabLeft = "tab-right";
+			            
 			        }
 			        else {
 			            continue;
@@ -571,12 +585,31 @@ If you have forgotten your password please enter your login and ID and request a
 		    $wgUser->setCookies();
 		    $token = LoginForm::getLoginToken();
 		    $name = $wgRequest->getText( 'wpName' );
-		    
-		    $returnTo = "";
-		    if($wgTitle->getNsText() != ""){
-		        $returnTo = str_replace(" ", "_", $wgTitle->getNsText()).':';
+		    $getStr = "";
+		    foreach($_GET as $key => $get){
+		        if($key == "title" || $key == "returnto"){
+		            continue;
+		        }
+		        if(strlen($getStr) == 0){
+		            $getStr .= "?$key=$get";
+		        }
+		        else{
+		            $getStr .= "&$key=$get";
+		        }
 		    }
-		    $returnTo .= str_replace(" ", "_", $wgTitle->getText());
+		    $returnTo = "";
+		    if(isset($_GET['returnto'])){
+		        $returnTo = $_GET['returnto'];
+		    }
+		    else if($wgTitle->getNsText() != ""){
+		        $returnTo .= str_replace(" ", "_", $wgTitle->getNsText()).':';
+		    }
+		    
+		    if(!isset($_GET['returnto'])){
+		        $returnTo .= str_replace(" ", "_", $wgTitle->getText());
+		    }
+		    $returnTo .= $getStr;
+		    $returnTo = urlencode($returnTo);
 		    echo "<span>Login</span>
 			<ul class='pBody' style='background:#F3EBF5'>";
 		    echo <<< EOF

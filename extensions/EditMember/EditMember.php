@@ -439,8 +439,8 @@ class EditMember extends SpecialPage{
         $person = Person::newFromName($_POST['user']);
         $year = substr($date, 0, 4);
 	    if($year == REPORTING_YEAR){
-	        Notification::addNotification($me, $person, "HQP Inactivation Report", "{$me->getNameForForms()} has requested that you fill out the HQP Inactivation report.", "$wgServer$wgScriptPath/index.php/Special:Report?report=HQPReport", true);
-            $wgOut->addHTML("{$person->getNameForForms()} has been sent a notification to fill out their HQP Inactivation Report.  When they have completed the report, you will be notified.<br />");
+	        Notification::addNotification($me, $person, "HQP Report", "{$me->getNameForForms()} has inactivated your account.  You will still have access to your HQP report until the end of the year.  You should fill in this report as soon as possible.", "$wgServer$wgScriptPath/index.php/Special:Report?report=HQPReport", true);
+            $wgOut->addHTML("{$person->getNameForForms()} has been sent a notification to fill out their HQP Report.  When they have completed the report, you will be notified.<br />");
         }
 	}
 	
