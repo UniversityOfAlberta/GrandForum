@@ -131,7 +131,7 @@ function impersonate(){
             if(count($leadership) > 0){
                 foreach($leadership as $proj){
                     if(($person->isRoleDuring(PNI) || $person->isRoleDuring(CNI)) &&
-                       $person->isMemberOf($proj)){
+                       $person->isMemberOfDuring($proj)){
                         if("$ns:$title" == "Special:Report" &&
                            @$_GET['report'] == "NIReport" &&
                            @$_GET['project'] == $proj->getName()){
