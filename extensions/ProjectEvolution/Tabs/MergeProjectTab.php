@@ -14,9 +14,9 @@ class MergeProjectTab extends ProjectTab {
         }
         $form = new FormContainer("merge_project_container");
         
-        $projRow = new FormTableRow("merge_project_row");
-        $projRow->append(new Label("merge_project_label", "Projects", "Which projects to merge (Hold Ctrl to select multiple projects)", VALIDATE_NOT_NULL));
-        $projRow->append(new MultiSelectBox("merge_project", "Projects", "NO PROJECT", $projectNames, VALIDATE_NOT_NULL + VALIDATE_IS_PROJECT));
+        $projRow = new FormTableRow("merge_projects_row");
+        $projRow->append(new Label("merge_projects_label", "Projects", "Which projects to merge (Hold Ctrl to select multiple projects)", VALIDATE_NOT_NULL));
+        $projRow->append(new MultiSelectBox("merge_projects", "Projects", "NO PROJECT", $projectNames, VALIDATE_NOT_NULL + VALIDATE_IS_PROJECT));
         
         $create = CreateProjectTab::createForm('merge');
         $create->getElementById("merge_acronym")->validations = VALIDATE_NOT_NULL;
@@ -40,19 +40,23 @@ class MergeProjectTab extends ProjectTab {
     
     function handleEdit(){
         global $wgMessages;
-        
         $form = self::createForm();
         $errors = $form->validate();
         
         if(count($errors) == 0){
             // Call the API
-            $form->getElementById("merge_project")->setPOST("project");
+            
+            $form->getElementById("merge_projects")->setPOST("projects");
             $form->getElementById("merge_acronym")->setPOST("acronym");
             $form->getElementById("merge_full_name")->setPOST("fullName");
             $form->getElementById("merge_status")->setPOST("status");
             $form->getElementById("merge_type")->setPOST("type");
             $form->getElementById("merge_effective")->setPOST("effective_date");
-            APIRequest::doAction('EvolveProject', true);
+            $_POST['action'] = "MERGE";
+            foreach($_POST['projects'] as $project){
+                $_POST['project'] = $project;
+                APIRequest::doAction('EvolveProject', true);
+            }
             $form->reset();
         }
         return implode("<br />\n", $errors);

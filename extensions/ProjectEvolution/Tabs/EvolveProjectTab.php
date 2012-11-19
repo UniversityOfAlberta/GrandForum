@@ -52,6 +52,12 @@ class EvolveProjectTab extends ProjectTab {
             $form->getElementById("evolve_status")->setPOST("status");
             $form->getElementById("evolve_type")->setPOST("type");
             $form->getElementById("evolve_effective")->setPOST("effective_date");
+            if($_POST['status'] == "Completed"){
+                $_POST['action'] = "DELETE";
+            }
+            else{
+                $_POST['action'] = "EVOLVE";
+            }
             APIRequest::doAction('EvolveProject', true);
             $form->reset();
         }

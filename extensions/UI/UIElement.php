@@ -34,14 +34,29 @@ abstract class UIElement {
         $this->parent = null;
         $this->id = $id;
         $this->name = $name;
-        $this->default = str_replace("'", "&#39;", trim($value));
+        $this->default = $this->clearValue($value);
         if(isset($_POST[$this->id])){
-            $this->value = str_replace("'", "&#39;", trim($_POST[$this->id]));
+            $this->value = $this->clearValue($_POST[$this->id]);
         }
         else{
-            $this->value = str_replace("'", "&#39;", trim($value));
+            $this->value = $this->clearValue($value);
         }
         $this->validations = $validations;
+    }
+    
+    private function clearValue($value){
+        if(is_array($value)){
+            $newValue = array();
+            foreach($value as $key => $v){
+                $v = $this->clearValue($v);
+                $newValue[$key] = $v;
+            }
+            $value = $newValue;
+        }
+        else{
+            $value = str_replace("'", "&#39;", trim($value));
+        }
+        return $value;
     }
     
     // Returns this UIElement's parent
@@ -81,48 +96,61 @@ abstract class UIElement {
     }
     
     // Returns an array containing all the failed validations
-    function validate(){
+    // if $value is false, then use the $this->value, otherwise use $value
+    function validate($value=false){
         $fails = array();
+        if($value === false){
+            if(is_array($this->value)){
+                foreach($this->value as $value){
+                    $fails = array_merge($fails, $this->validate($value));
+                }
+            }
+            else{
+                $fails = $this->validate($this->value);
+            }
+            return $fails;
+        }
+        
         if($this->isValidationSet(VALIDATE_NOT_NULL)){
-            $result = $this->validateNotNull();
+            $result = $this->validateNotNull($value);
             if(!$result){
                 $fails[] = "The field '".ucfirst($this->name)."' must not be empty";
             }
         }
         if($this->isValidationSet(VALIDATE_IS_NUMERIC)){
-            $result = $this->validateIsNumeric();
+            $result = $this->validateIsNumeric($value);
             if(!$result){
                 $fails[] = "The field '".ucfirst($this->name)."' must be a valid number";
             }
         }
         if($this->isValidationSet(VALIDATE_IS_PERCENT)){
-            $result = $this->validateIsPercent();
+            $result = $this->validateIsPercent($value);
             if(!$result){
                 $fails[] = "The field '".ucfirst($this->name)."' must be a valid percent";
             }
         }
         if($this->isValidationSet(VALIDATE_IS_PROJECT)){
-            $result = $this->validateIsProject();
+            $result = $this->validateIsProject($value);
             if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must be a valid Project";
+                $fails[] = "The field '".ucfirst($this->name)."' must be a valid Project (value used: $value)";
             }
         }
         if($this->isValidationSet(VALIDATE_IS_NOT_PROJECT)){
-            $result = !$this->validateIsProject();
+            $result = !$this->validateIsProject($value);
             if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must not be an already existing Project";
+                $fails[] = "The field '".ucfirst($this->name)."' must not be an already existing Project (value used: $value)";
             }
         }
         if($this->isValidationSet(VALIDATE_IS_PERSON)){
-            $result = $this->validateIsPerson();
+            $result = $this->validateIsPerson($value);
             if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must be a valid Person";
+                $fails[] = "The field '".ucfirst($this->name)."' must be a valid Person (value used: $value)";
             }
         }
         if($this->isValidationSet(VALIDATE_IS_NOT_PERSON)){
-            $result = !$this->validateIsPerson();
+            $result = !$this->validateIsPerson($value);
             if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must not be an already existing Person";
+                $fails[] = "The field '".ucfirst($this->name)."' must not be an already existing Person (value used: $value)";
             }
         }
         return $fails;
@@ -131,32 +159,40 @@ abstract class UIElement {
     // Sets the specified POST value to this UIElement's value
     // (used for preparing API calls)
     function setPOST($index){
-        $_POST[$index] = mysql_real_escape_string($this->value);
+        if(is_array($this->value)){
+            foreach($this->value as $key => $value){
+                $_POST[$index][$key] = mysql_real_escape_string($value);
+            }
+        }
+        else{
+            $_POST[$index] = mysql_real_escape_string($this->value);
+        }
     }
     
     function isValidationSet($validation){
         return (($this->validations & $validation) !== 0);
     }
     
-    function validateNotNull(){
-        return !($this->value == null || $this->value == "");
+    function validateNotNull($value){
+        
+        return !($value == null || $value == "");
     }
     
-    function validateIsNumber(){
-        return (!$this->validateNotNull() || is_numeric($this->value));
+    function validateIsNumber($value){
+        return (!$this->validateNotNull($value) || is_numeric($value));
     }
     
-    function validateIsPercent(){
-        return (!$this->validateNotNull() || (is_numeric($this->value) && $this->value >= 0 && $this->value <= 100));
+    function validateIsPercent($value){
+        return (!$this->validateNotNull($value) || (is_numeric($value) && $value >= 0 && $value <= 100));
     }
     
-    function validateIsProject(){
-        $project = Project::newFromName($this->value);
+    function validateIsProject($value){
+        $project = Project::newFromName($value);
         return ($project != null && $project->getName() != "");
     }
     
-    function validateIsPerson(){
-        $person = Person::newFromNameLike($this->value);
+    function validateIsPerson($value){
+        $person = Person::newFromNameLike($value);
         return ($person != null && $person->getName() != "");
     }
 }

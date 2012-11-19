@@ -22,6 +22,7 @@ class Project{
 	private $themes;
 	private $succ;
 	private $preds;
+	private $peopleCache = null;
 
 	// Returns a new Project from the given id
 	static function newFromId($id){
@@ -316,7 +317,7 @@ EOF;
 	        $sql = "SELECT DISTINCT e.project_id, e.last_id
 	                FROM `grand_project_evolution` e
 	                WHERE e.new_id = '{$this->id}'
-	                AND e.id = '{$this->evolutionId}'
+	                AND (e.id = '{$this->evolutionId}' OR e.action = 'MERGE')
 	                ORDER BY e.id DESC";
 	        $data = DBFunctions::execSQL($sql);
 	        $this->preds = array();
@@ -391,15 +392,17 @@ EOF;
                 $people[$person->getId()] = $person;
             }
         }
-	    $sql = "SELECT user, user_name, SUBSTR(user_name, LOCATE('.', user_name) + 1) as last_name
-                FROM grand_user_projects, mw_user
-                WHERE (end_date > CURRENT_TIMESTAMP OR end_date = '0000-00-00 00:00:00')
-                AND user = user_id
-                AND project_id = '{$this->id}'
-                AND `deleted` != '1'
-                ORDER BY last_name ASC";
-	    $data = DBFunctions::execSQL($sql);
-	    foreach($data as $row){
+        if($this->peopleCache == null){
+	        $sql = "SELECT user, user_name, SUBSTR(user_name, LOCATE('.', user_name) + 1) as last_name
+                    FROM grand_user_projects, mw_user
+                    WHERE (end_date > CURRENT_TIMESTAMP OR end_date = '0000-00-00 00:00:00')
+                    AND user = user_id
+                    AND project_id = '{$this->id}'
+                    AND `deleted` != '1'
+                    ORDER BY last_name ASC";
+	        $this->peopleCache = DBFunctions::execSQL($sql);
+	    }
+	    foreach($this->peopleCache as $row){
 	        $id = $row['user'];
 	        $person = Person::newFromId($id);
 	        if(($filter == null || $person->isRole($filter)) && !$person->isRole(MANAGER)){

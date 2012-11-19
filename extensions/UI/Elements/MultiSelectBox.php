@@ -10,7 +10,7 @@ class MultiSelectBox extends UIElement {
     }
     
     function render(){
-        $html = "<select name='{$this->id}' size='6' multiple='multiple'>";
+        $html = "<select name='{$this->id}[]' size='6' multiple='multiple'>";
         foreach($this->options as $option){
             $selected = "";
             if($this->value == $option){

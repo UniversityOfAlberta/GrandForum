@@ -8,7 +8,8 @@ class EvolveProjectAPI extends API{
 	    $this->addPOST("fullName",true,"The full name of the project","Media Enabled Organizational Workflow");
 	    $this->addPOST("status",true,"The status of this project","Proposed");
 	    $this->addPOST("type",true,"The type of this project","Research");
-	    $this->addPOST("effective_date", "The date that this action should take place", "2012-10-15");
+	    $this->addPOST("effective_date",true, "The date that this action should take place", "2012-10-15");
+	    $this->addPOST("action",false, "What type of action this is (Default: EVOLVE)", "MERGE");
     }
 
     function processParams($params){
@@ -17,6 +18,7 @@ class EvolveProjectAPI extends API{
         $_POST['status'] = @mysql_real_escape_string($_POST['status']);
         $_POST['type'] = @mysql_real_escape_string($_POST['type']);
         $_POST['effective_date'] = @mysql_real_escape_string($_POST['effective_date']);
+        $_POST['action'] = @mysql_real_escape_string($_POST['action']);
     }
 
 	function doAction($noEcho=false){
@@ -26,6 +28,11 @@ class EvolveProjectAPI extends API{
 	    $theme3 = $oldProject->getTheme(3);
 	    $theme4 = $oldProject->getTheme(4);
 	    $theme5 = $oldProject->getTheme(5);
+	    
+	    if(!isset($_POST['action']) || $_POST['action'] == ""){
+	        $_POST['action'] = "EVOLVE";
+	    }
+	    $action = $_POST['action'];
 	    
 		$project = Project::newFromName($_POST['acronym']);
 		$alreadyExists = false;
@@ -46,11 +53,6 @@ class EvolveProjectAPI extends API{
 	        $nsId = $project->getId();
 	    }
 	    $status = (isset($_POST['status'])) ? $_POST['status'] : 'Proposed';
-	    
-	    $action = "EVOLVE";
-	    if($status == "Completed"){
-	        $action = "DELETE";
-	    }
 	    
 	    $type = (isset($_POST['type'])) ? $_POST['type'] : 'Research';
 	    $effective_date = (isset($_POST['effective_date'])) ? $_POST['effective_date'] : 'CURRENT_TIMESTAMP';
