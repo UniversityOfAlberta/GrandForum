@@ -22,7 +22,7 @@ class CreateProjectTab extends ProjectTab {
         
         $statusRow = new FormTableRow("{$pre}_status_row");
         $statusRow->append(new Label("{$pre}_status_label", "Status", "The status of this project", VALIDATE_NOT_NULL));
-        $statusRow->append(new VerticalRadioBox("{$pre}_status", "Status", "Proposed", array("Proposed", "Active", "Completed"), VALIDATE_NOT_NULL));
+        $statusRow->append(new VerticalRadioBox("{$pre}_status", "Status", "Proposed", array("Proposed", "Active"), VALIDATE_NOT_NULL));
         
         $typeRow = new FormTableRow("{$pre}_type_row");
         $typeRow->append(new Label("{$pre}_type_label", "Type", "The type of this project", VALIDATE_NOT_NULL));
