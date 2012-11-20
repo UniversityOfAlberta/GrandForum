@@ -44,7 +44,7 @@ class DeleteProjectAPI extends API{
 	    $_POST['description'] = @mysql_real_escape_string($project->getDescription());
 	    $_POST['themes'] = "{$theme1},{$theme2},{$theme3},{$theme4},{$theme5}";
 	    APIRequest::doAction('ProjectDescription', true);
-	    //MailingList::createMailingList($project);
+	    //MailingList::removeMailingList($project);
 	}
 	
 	function isLoginRequired(){

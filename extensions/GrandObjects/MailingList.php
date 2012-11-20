@@ -119,11 +119,13 @@ $listname-unsubscribe:  |/usr/lib/mailman/mail/mailman unsubscribe $listname";
         DBFunctions::execSQL($sql, true);
     }
     
-    // This could be tricky, and for the moment, not entirely useful,
-    // but it could be in the future.
+    // Removes the specified mailman mailing list
     static function removeMailingList($project){
         $listname = strtolower($project->getName());
-        $command = "/usr/lib/mailman/bin/rmlist $listname";
+        exec("/usr/lib/mailman/bin/rmlist $listname");
+        $sql = "DELETE FROM `wikidev_projects`
+                WHERE `mailListName` = '$listname'";
+        DBFunctions::execSQL($sql, true);
     }
 }
 

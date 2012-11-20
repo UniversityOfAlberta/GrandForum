@@ -60,11 +60,6 @@ class TabbedPage {
             $i++;
         }
         
-        $url_param = "";
-        if(!isset($_POST['edit'])){
-            $url_param = "?edit";
-        }
-        
         $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/{$wgTitle->getNsText()}:{$wgTitle->getText()}' method='post' enctype='multipart/form-data'>");
         $wgOut->addHTML("<div id='{$this->id}'>");
         $wgOut->addHTML("   <ul>");
