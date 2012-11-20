@@ -52,7 +52,7 @@ class ProjectDescriptionAPI extends API{
 		else{
 		    $fullName = $project->getFullName();
 		}
-        
+        DBFunctions::begin();
         $sql = "UPDATE grand_project_descriptions
                 SET `end_date` = CURRENT_TIMESTAMP
                 WHERE project_id = '{$project->getId()}' AND id = '{$project->getLastHistoryId()}'";

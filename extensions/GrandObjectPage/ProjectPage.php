@@ -62,7 +62,7 @@ class ProjectPage {
             
             $isLead = ( $isLead && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
             $isMember = ($isMember && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
-            $edit = (isset($_GET['edit']) && $isLead);
+            $edit = (isset($_POST['edit']) && $isLead);
             
             // Project Exists and it is the right Namespace
             if($project != null && $project->getName() != null){
@@ -70,7 +70,7 @@ class ProjectPage {
                 $wgOut->setPageTitle($project->getFullName());
                 
                 $visibility = array();
-                if(!$project->deleted){
+                if(!$project->isDeleted()){
                     $visibility['edit'] = $edit;
                     $visibility['isLead'] = $isLead;
                     $visibility['isMember'] = $isMember;
@@ -95,7 +95,6 @@ class ProjectPage {
         }
         return true;
     }
-    
     
     function removeTabs($skin, &$content_actions){
         global $wgArticle, $wgRoles;

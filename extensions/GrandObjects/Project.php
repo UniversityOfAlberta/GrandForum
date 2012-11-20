@@ -645,13 +645,14 @@ EOF;
 	                FROM grand_project_descriptions d
 	                WHERE d.project_id = '{$this->id}'\n";
 	        if(!$history){
-                $sql .= "AND evolution_id = '{$this->evolutionId}')
+                $sql .= "AND evolution_id = '{$this->evolutionId}'
+                         ORDER BY id DESC LIMIT 1)
                         UNION
                         (SELECT themes
                          FROM grand_project_descriptions d
                          WHERE d.project_id = '{$this->id}'";
             }
-		    $sql .= "ORDER BY id DESC)";
+		    $sql .= "ORDER BY id DESC LIMIT 1)";
             
 		    $data = DBFunctions::execSQL($sql);
             if(DBFunctions::getNRows() > 0){
@@ -683,13 +684,13 @@ EOF;
 	            WHERE d.project_id = '{$this->id}'\n";
 	    if(!$history){
 	        $sql .= "AND evolution_id = '{$this->evolutionId}' 
-	                 ORDER BY id DESC)
+	                 ORDER BY id DESC LIMIT 1)
 	                UNION
-				    (SELECT d.full_name
+				    (SELECT description
 				     FROM `grand_project_descriptions` d
 				     WHERE d.project_id = '{$this->id}'";
         }
-		$sql .= "ORDER BY id DESC)";
+		$sql .= "ORDER BY id DESC LIMIT 1)";
 		
         $data = DBFunctions::execSQL($sql);
         if(DBFunctions::getNRows() > 0){

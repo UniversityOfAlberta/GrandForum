@@ -23,7 +23,9 @@ class ProjectMainTab extends AbstractEditableTab {
         $this->html .= "<b>Type:</b> {$this->project->getType()}<br />
                         <b>Status:</b> {$this->project->getStatus()}<br />";
         $this->showThemes();
-        $this->showPeople();
+        if(!$this->visibility['edit']){
+            $this->showPeople();
+        }
         $this->showDescription();
         
         return $this->html;

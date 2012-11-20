@@ -61,7 +61,7 @@ class TabbedPage {
         }
         
         $url_param = "";
-        if(!isset($_GET['edit'])){
+        if(!isset($_POST['edit'])){
             $url_param = "?edit";
         }
         

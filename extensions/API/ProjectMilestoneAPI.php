@@ -69,7 +69,7 @@ class ProjectMilestoneAPI extends API{
 		}
 		
 		$people = array();
-		if(count($_POST['people']) > 0){
+		if(isset($_POST['people']) && count($_POST['people']) > 0){
             foreach($_POST['people'] as $person){
                 $p = Person::newFromNameLike($person);
                 if($p != null && $p->getName() != ""){
