@@ -31,24 +31,20 @@ class Project{
 	    if(isset(self::$cache[$id])){
 	        return self::$cache[$id];
 	    }
-	    $sql = "SELECT *
-	            FROM `grand_project_evolution`
-	            WHERE `project_id` = '{$id}'
-	            AND `new_id` != '{$id}'
-	            ORDER BY `date` DESC LIMIT 1";
-	    $data = DBFunctions::execSQL($sql);
-	    if(count($data) > 0){
-	        $project = Project::newFromId($data[0]['new_id']);
-	        self::$cache[$project->id] = &$project;
-	        return $project;
-	    }
-		
-		$sql = "SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.status, s.type
-				FROM grand_project p, grand_project_evolution e, grand_project_status s
-				WHERE p.id = '$id'
-				AND e.new_id = p.id
-				AND s.evolution_id = e.id
-				ORDER BY e.id DESC LIMIT 1";
+		$sql = "(SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.status, s.type
+	             FROM grand_project p, grand_project_evolution e, grand_project_status s
+	             WHERE e.`project_id` = '{$id}'
+	             AND e.`new_id` != '{$id}'
+	             AND e.new_id = p.id
+				 AND s.evolution_id = e.id
+	             ORDER BY `date` DESC LIMIT 1)
+	            UNION 
+	            (SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.status, s.type
+				 FROM grand_project p, grand_project_evolution e, grand_project_status s
+				 WHERE p.id = '$id'
+				 AND e.new_id = p.id
+				 AND s.evolution_id = e.id
+				 ORDER BY e.id DESC LIMIT 1)";
 		$data = DBFunctions::execSQL($sql);
 		if (DBFunctions::getNRows() > 0){
 			$project = new Project($data);

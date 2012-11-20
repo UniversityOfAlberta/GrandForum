@@ -6,6 +6,7 @@ class DBFunctions {
     static $lastResult;
     static $dbr;
     static $dbw;
+    static $queryDebug = false;
     
     static function initDB(){
         if(DBFunctions::$dbr == null){
@@ -22,10 +23,19 @@ class DBFunctions {
     // Executes an sql statement.  By default a query is assumed, and processes the resultset into an array.
     // If $update is set to true, then an update is performed instead.
     static function execSQL($sql, $update=false){
-        global $wgImpersonating, $wgRealUser, $wgUser;
+        global $wgImpersonating, $wgRealUser, $wgUser, $wgOut;
         DBFunctions::initDB();
         self::$queryCount++;
-        //echo $sql."<br />\n";
+        if(self::$queryDebug){
+            $printedSql = str_replace("\n", " ", $sql);
+            $printedSql = str_replace("\t", " ", $printedSql);
+            while(strstr($printedSql, "  ") !== false){
+                $printedSql = str_replace("  ", " ", $printedSql);
+            }
+            $printedSql = "<!-- $printedSql -->\n";
+            echo $printedSql;
+            $wgOut->addHTML($printedSql);
+        }
 		if($update != false){
 		    $supervisesImpersonee = checkSupervisesImpersonee();
 		    if($wgImpersonating && !$supervisesImpersonee){
