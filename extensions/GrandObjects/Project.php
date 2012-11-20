@@ -18,7 +18,8 @@ class Project{
 	var $comments;
 	var $milestones;
 	var $budgets;
-	var $deleted; // TODO: Get rid of this
+	var $deleted;
+	var $effectiveDate;
 	private $themes;
 	private $succ;
 	private $preds;
@@ -42,7 +43,7 @@ class Project{
 	        return $project;
 	    }
 		
-		$sql = "SELECT p.id, p.name, p.deleted, e.id as evolutionId, s.status, s.type
+		$sql = "SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.status, s.type
 				FROM grand_project p, grand_project_evolution e, grand_project_status s
 				WHERE p.id = '$id'
 				AND e.new_id = p.id
@@ -65,7 +66,7 @@ class Project{
 	        return self::$cache[$name];
 	    }
 		
-		$sql = "SELECT p.id, p.name, p.deleted, e.id as evolutionId, s.type, s.status
+		$sql = "SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.type, s.status
 				FROM grand_project p, grand_project_evolution e, grand_project_status s
 				WHERE p.name = '$name'
 				AND e.new_id = p.id
@@ -97,7 +98,7 @@ class Project{
 	
 	// Returns a Project from the given historic ID
 	static function newFromHistoricId($id, $evolutionId=null){
-	    $sql = "SELECT p.id, p.name, p.deleted, e.id as evolutionId, s.type, s.status
+	    $sql = "SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.type, s.status
 				FROM grand_project p, grand_project_evolution e, grand_project_status s
 				WHERE p.id = '$id'
 				AND e.new_id = p.id
@@ -116,7 +117,7 @@ class Project{
 	    if(isset(self::$cache['h_'.$name])){
 	        return self::$cache['h_'.$name];
 	    }
-	    $sql = "SELECT p.id, p.name, p.deleted, e.id as evolutionId, s.type, s.status
+	    $sql = "SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.type, s.status
 				FROM grand_project p, grand_project_evolution e, grand_project_status s
 				WHERE p.name = '$name'
 				AND e.new_id = p.id
@@ -134,16 +135,17 @@ class Project{
 	static function getAllProjects(){
 		$sql = "SELECT *
 				FROM grand_project p
-				WHERE deleted != '1'
  				ORDER BY p.name";
 		$data = DBFunctions::execSQL($sql);
 		$projects = array();
 		$projectNames = array();
 		foreach($data as $row){
 		    $project = Project::newFromId($row['id']);
-		    if(!isset($projectNames[$project->name])){
-		        $projectNames[$project->name] = true;
-			    $projects[] = $project;
+		    if($project != null && $project->getName() != ""){
+		        if(!isset($projectNames[$project->name]) && !$project->isDeleted()){
+		            $projectNames[$project->name] = true;
+			        $projects[] = $project;
+			    }
 			}
 		}
 		return $projects;
@@ -206,6 +208,34 @@ class Project{
 		return $projects;
 	}
 	
+	// Constructor
+	// Takes in a resultset containing the 'project id' and 'project name'
+	function Project($data){
+		if(isset($data[0])){
+			$this->id = $data[0]['id'];
+			$this->name = $data[0]['name'];
+			$this->evolutionId = $data[0]['evolutionId'];
+			$this->status = $data[0]['status'];
+			$this->type = $data[0]['type'];
+			$this->succ = false;
+			$this->preds = false;
+			if(isset($data[0]['action']) && $data[0]['action'] == 'DELETE'){
+			    $this->deleted = true;
+			}
+			else{
+			    $this->deleted = false;
+			}
+			if(isset($data[0]['effective_date'])){
+			    $this->effectiveDate = $data[0]['effective_date'];
+			}
+			else{
+			    $this->effectiveDate = "0000-00-00 00:00:00";
+			}
+			$this->fullName = false;
+			$this->themes = null;
+		}
+	}
+	
     static function getHQPDistributionDuring($startRange = false, $endRange = false){
          //If no range end are provided, assume it's for the current year.
         if( $startRange === false || $endRange === false ){
@@ -240,28 +270,6 @@ EOF;
         
         return $distribution;
     }
-    
-	// Constructor
-	// Takes in a resultset containing the 'project id' and 'project name'
-	function Project($data){
-		if(isset($data[0])){
-			$this->id = $data[0]['id'];
-			$this->name = $data[0]['name'];
-			$this->evolutionId = $data[0]['evolutionId'];
-			$this->status = $data[0]['status'];
-			$this->type = $data[0]['type'];
-			$this->succ = false;
-			$this->preds = false;
-			if(isset($data[0]['deleted'])){
-			    $this->deleted = $data[0]['deleted'];
-			}
-			else{
-			    $this->deleted = false;
-			}
-			$this->fullName = false;
-			$this->themes = null;
-		}
-	}
 	
 	// Returns the id of this Project
 	function getId(){
@@ -379,7 +387,10 @@ EOF;
 	
 	// Returns whether or not this project had been deleted or not
 	function isDeleted(){
-	    return $this->deleted;
+	    if(strcmp($this->effectiveDate, date('Y-m-d H:i:s')) >= 0){
+	        return $this->deleted;
+	    }
+	    return false;
 	}
 	
 	// Returns an array of Person objects which represent
@@ -548,7 +559,6 @@ EOF;
 	function getCoLeaders($onlyid = false){
 	    $onlyIdStr = ($onlyid) ? 'true' : 'false';
 	    if(isset($this->leaderCache['coleaders'.$onlyIdStr])){
-	        echo "HELLO";
 	        return $this->leaderCache['coleaders'.$onlyIdStr];
 	    }
 	    $ret = array();

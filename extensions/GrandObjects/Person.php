@@ -226,7 +226,6 @@ class Person{
 	                FROM grand_project_leaders, grand_project p
 	                WHERE co_lead = 'True'
 	                AND p.id = project_id
-	                AND p.deleted != '1'
 	                AND (end_date = '0000-00-00 00:00:00'
                          OR end_date > CURRENT_TIMESTAMP)";
 	        $data = DBFunctions::execSQL($sql);
@@ -243,7 +242,6 @@ class Person{
 	                FROM grand_project_leaders, grand_project p
 	                WHERE co_lead = 'False'
 	                AND p.id = project_id
-	                AND p.deleted != '1'
 	                AND (end_date = '0000-00-00 00:00:00'
                          OR end_date > CURRENT_TIMESTAMP)";
 	        $data = DBFunctions::execSQL($sql);
@@ -861,22 +859,23 @@ class Person{
                          AND p.id = u.project_id\n";
             if($history === false){
                 $sql .= "AND (end_date = '0000-00-00 00:00:00'
-                         OR end_date > CURRENT_TIMESTAMP)
-                         AND p.deleted != '1'\n";
+                         OR end_date > CURRENT_TIMESTAMP)\n";
             }
             else if($history !== true){
                 $sql .= "AND start_date <= '{$history}'
-                         AND (end_date >= '{$history}' OR (end_date = '0000-00-00 00:00:00' AND p.deleted != '1'))\n";
+                         AND (end_date >= '{$history}' OR (end_date = '0000-00-00 00:00:00' AND))\n";
             }
             $sql .= "ORDER BY project_id";
 			$data = DBFunctions::execSQL($sql);
 			$projectNames = array();
 			foreach($data as $row){
 			    $project = Project::newFromId($row['project_id']);
-			    if(!isset($projectNames[$project->getName()])){
-			        // Make sure that the project is not being added twice
-			        $projectNames[$project->getName()] = true;
-				    $this->projects[] = $project;
+			    if($project != null && $project->getName() != ""){
+			        if(!isset($projectNames[$project->getName()]) && !$project->isDeleted()){
+			            // Make sure that the project is not being added twice
+			            $projectNames[$project->getName()] = true;
+				        $this->projects[] = $project;
+				    }
 				}
 			}
 		}
@@ -1492,11 +1491,13 @@ class Person{
 	        $res = DBFunctions::execSQL("SELECT p.name AS project_name 
 		                                 FROM grand_project_leaders l, grand_project p
 		                                 WHERE l.project_id = p.id
-										 AND l.user_id = '{$this->id}'
-										 AND p.deleted != '1'");
+										 AND l.user_id = '{$this->id}'");
 	    }
 		foreach ($res as &$row) {
-			$ret[] = Project::newFromName($row['project_name']);
+		    $project = Project::newFromName($row['project_name']);
+		    if($project != null && $project->getName() != "" && !$project->isDeleted()){
+			    $ret[] = $project;
+			}
 		}
 		return $ret;
 	}
@@ -1546,7 +1547,6 @@ class Person{
 		                             WHERE l.project_id = p.id
 									 AND l.user_id = '{$this->id}'
 		                             AND p.name = '{$p->getName()}' 
-		                             AND p.deleted != '1'
 		                             AND (l.end_date = '0000-00-00 00:00:00'
                                           OR l.end_date > CURRENT_TIMESTAMP)");
 	   
@@ -1579,17 +1579,23 @@ class Person{
 	// Returns true if the person is a manager of at least one project
 	function isProjectManager(){
 	    if($this->isProjectManager === null){
-	        $sql = "SELECT *
+	        $sql = "SELECT p.id
                     FROM grand_project_leaders, grand_project p
                     WHERE manager = '1'
                     AND p.id = project_id
-                    AND p.deleted != '1'
                     AND user_id = '{$this->id}' 
                     AND (end_date = '0000-00-00 00:00:00'
                          OR end_date > CURRENT_TIMESTAMP)";
             $data = DBFunctions::execSQL($sql);
             if(count($data) > 0){
-                $this->isProjectManager = true;
+                $this->isProjectManager = false;
+                foreach($data as $row){
+                    $project = Project::newFromId($row['id']);
+                    if(!$project->isDeleted()){
+                        $this->isProjectManager = true;
+                        break;
+                    }
+                }
             }
             else{
                 $this->isProjectManager = false;
@@ -1613,7 +1619,6 @@ class Person{
 		                             WHERE l.project_id = p.id
 									 AND l.user_id = '{$this->id}'
 		                             AND p.name = '{$p->getName()}' 
-		                             AND p.deleted != '1'
 		                             AND l.manager = '1'
 		                             AND (l.end_date = '0000-00-00 00:00:00'
                                           OR l.end_date > CURRENT_TIMESTAMP)");

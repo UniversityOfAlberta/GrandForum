@@ -18,6 +18,20 @@ if(count($data) > 0){
                             DROP `fullName`", true);
 }
 
+$data = DBFunctions::execSQL("select * from information_schema.columns where table_name = 'grand_project' and column_name = 'deleted' and table_schema = '$wgDBname'");
+
+if(count($data) > 0){
+    DBFunctions::execSQL("ALTER TABLE `grand_project`
+                            DROP `deleted`", true);
+}
+
+$data = DBFunctions::execSQL("select * from information_schema.columns where table_name = 'grand_project' and column_name = 'project_end_date' and table_schema = '$wgDBname'");
+
+if(count($data) > 0){
+    DBFunctions::execSQL("ALTER TABLE `grand_project`
+                            DROP `project_end_date`", true);
+}
+
 DBFunctions::execSQL("DROP TABLE IF EXISTS `grand_project_status`", true);
 DBFunctions::execSQL("DROP TABLE IF EXISTS `grand_project_evolution`", true);
 DBFunctions::execSQL("CREATE TABLE IF NOT EXISTS `grand_project_status` (
