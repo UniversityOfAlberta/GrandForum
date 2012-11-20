@@ -67,12 +67,7 @@ class ProjectPage {
             // Project Exists and it is the right Namespace
             if($project != null && $project->getName() != null){
                 $wgOut->clearHTML();
-                if($project->deleted){
-                    $wgOut->setPageTitle($project->getFullName()." (Deleted)");
-                }
-                else{
-                    $wgOut->setPageTitle($project->getFullName());
-                }
+                $wgOut->setPageTitle($project->getFullName());
                 
                 $visibility = array();
                 if(!$project->deleted){
