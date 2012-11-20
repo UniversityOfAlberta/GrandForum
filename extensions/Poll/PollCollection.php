@@ -28,13 +28,7 @@ class PollCollection {
 			$groups = array();
 			$pTable = getTableName("an_poll");
 			$gTable = getTableName("an_poll_groups");
-			$sql = "SELECT p.poll_id
-				FROM $pTable p
-				WHERE p.collection_id = '$id'";
-			$rows1 = DBFunctions::execSQL($sql);
-			foreach($rows1 as $row1){
-				$polls[] = Poll::newFromId($row1['poll_id']);
-			}
+			
 			
 			$sql = "SELECT g.group_name
 				FROM $gTable g
@@ -44,12 +38,27 @@ class PollCollection {
 				$groups[] = $row1['group_name'];
 			}
 			
-			$poll = new PollCollection($id, $author, $name, $selfVote, $polls, $groups, $created, $timeLimit);
+			$poll = new PollCollection($id, $author, $name, $selfVote, null, $groups, $created, $timeLimit);
 			return $poll;
 		}
 		else {
 			return null;
 		}
+	}
+	
+	function getPolls(){
+	    if($this->polls == null){
+	        $pTable = getTableName("an_poll");
+	        $sql = "SELECT p.poll_id
+			    FROM $pTable p
+			    WHERE p.collection_id = '$id'";
+		    $rows1 = DBFunctions::execSQL($sql);
+		    foreach($rows1 as $row1){
+			    $polls[] = Poll::newFromId($row1['poll_id']);
+		    }
+		    $this->polls = $polls;
+		}
+		return $this->polls;
 	}
 	
 	function isPollExpired(){
@@ -84,7 +93,7 @@ class PollCollection {
 		if($userId == $this->author->getId() && $this->selfVote == 'false'){
 			return true;
 		}
-		foreach($this->polls as $poll){
+		foreach($this->getPolls() as $poll){
 			$voted = false;
 			foreach($poll->options as $option){
 				foreach($option->votes as $vote){
@@ -112,6 +121,7 @@ class PollCollection {
 	
 	function getTotalVotes(){
 		// A user must submit all questions, so the first question should be enough to determine the total votes
+		$this->getPolls();
 		$total = $this->polls[0]->getTotalVotes(); 
 		return $total;
 	}
