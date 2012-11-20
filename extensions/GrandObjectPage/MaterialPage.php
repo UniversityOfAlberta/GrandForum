@@ -39,6 +39,7 @@ class MaterialPage {
                     $wgOut->redirect('');
                     if($errors == ""){
                         header("Location: $wgServer$wgScriptPath/index.php/{$name}:{$material->getId()}");
+                        exit;
                     }
                     else{
                         $wgOut->clearHTML();

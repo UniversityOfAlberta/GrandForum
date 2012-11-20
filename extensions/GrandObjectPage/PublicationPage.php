@@ -170,6 +170,7 @@ class PublicationPage {
                     else{
                         header("Location: $wgServer$wgScriptPath/index.php/$category:".str_replace("?", "%3F", $title));
                     }
+                    exit;
                 }
                 $wgOut->clearHTML();
                 if(!$create){

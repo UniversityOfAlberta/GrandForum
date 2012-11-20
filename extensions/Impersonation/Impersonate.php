@@ -56,6 +56,7 @@ function impersonate(){
             setcookie('urlBeforeImpersonate', $urlBeforeImpersonate, time()+(60*60), '/');
             setcookie('impersonate', "{$_GET['impersonate']}|".(time()+(60*60)), time()+(60*60), '/'); // Cookie will expire in one hour
             header("Location: {$wgServer}{$page}");
+            exit;
         }
     }
     if(isset($_GET['stopImpersonating'])){
@@ -68,6 +69,7 @@ function impersonate(){
         setcookie('impersonate', '', time()-(60*60), '/'); // Delete Cookie
         setcookie('urlBeforeImpersonate', '', time()-(60*60), '/'); // Delete Cookie
         header("Location: {$wgServer}{$urlBeforeImpersonate}");
+        exit;
     }
     if(isset($_COOKIE['impersonate'])){
         $exploded = explode("|", $_COOKIE['impersonate']);
@@ -201,6 +203,7 @@ function clearImpersonation( &$user, &$inject_html, $old_name ){
         setcookie('impersonate', '', time()-(60*60), '/'); // Delete Cookie
         setcookie('urlBeforeImpersonate', '', time()-(60*60), '/'); // Delete Cookie
         header("Location: {$wgServer}{$urlBeforeImpersonate}");
+        exit;
     }
     return true;
 }
