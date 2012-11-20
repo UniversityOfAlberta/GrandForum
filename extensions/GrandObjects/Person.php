@@ -32,6 +32,7 @@ class Person{
 	var $multimedia;
 	var $acknowledgements;
 	var $budgets = array();
+	var $leadershipCache = array();
 	
 	// Returns a new Person from the given id
 	static function newFromId($id){
@@ -1492,6 +1493,9 @@ class Person{
 	function leadership($history=false) {
 		$ret = array();
 		if(!$history){
+		    if(isset($this->leadershipCache['current'])){
+		        return $this->leadershipCache['current'];
+		    }
 		    $res = DBFunctions::execSQL("SELECT p.name AS project_name 
 		                                 FROM grand_project_leaders l, grand_project p
 		                                 WHERE l.project_id = p.id
@@ -1500,6 +1504,9 @@ class Person{
                                               OR l.end_date > CURRENT_TIMESTAMP)");
 	    }
 	    else{
+	        if(isset($this->leadershipCache['history'])){
+		        return $this->leadershipCache['history'];
+		    }
 	        $res = DBFunctions::execSQL("SELECT p.name AS project_name 
 		                                 FROM grand_project_leaders l, grand_project p
 		                                 WHERE l.project_id = p.id
@@ -1510,6 +1517,12 @@ class Person{
 		    if($project != null && $project->getName() != "" && !$project->isDeleted()){
 			    $ret[] = $project;
 			}
+		}
+		if(!$history){
+		    $this->leadershipCache['current'] = $ret;
+		}
+		else{
+		    $this->leadershipCache['history'] = $ret;
 		}
 		return $ret;
 	}
@@ -1522,8 +1535,9 @@ class Person{
 	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
 	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
 	    }
-	    
-	    $this->roles = array();
+	    if(isset($this->leadershipCache[$startRange.$endRange])){
+	        return $this->leadershipCache[$startRange.$endRange];
+	    }
 	    
 	    $sql = "SELECT DISTINCT project_id
                 FROM grand_project_leaders
@@ -1540,6 +1554,7 @@ class Person{
 		foreach($data as $row){
 			$projects[] = Project::newFromId($row['project_id']);
 		}
+		$this->leadershipCache[$startRange.$endRange] = $projects;
 		return $projects;
 	}  
 	
