@@ -27,6 +27,7 @@ class Person{
 	var $isProjectManager = null;
 	var $relations;
 	var $hqps;
+	var $historyHqps;
 	var $contributions;
 	var $multimedia;
 	var $acknowledgements;
@@ -357,6 +358,8 @@ class Person{
 			$this->gender = $data[0]['user_gender'];
 			$this->nationality = $data[0]['user_nationality'];
 			$this->twitter = $data[0]['user_twitter'];
+			$this->hqps = null;
+			$this->historyHqps = null;
 		}
 	}
 	
@@ -1083,13 +1086,13 @@ class Person{
         else{
             return false;
         }
-        if($this->isProjectLeader() && !$this->isProjectManager()){
+        if($role == PL && $this->isProjectLeader() && !$this->isProjectManager()){
             $roles[] = PL;
         }
-        if($this->isProjectCoLeader() && !$this->isProjectManager()){
+        if($role == COPL && $this->isProjectCoLeader() && !$this->isProjectManager()){
             $roles[] = COPL;
         }
-        if($this->isEvaluator()){
+        if($role == EVALUATOR && $this->isEvaluator()){
             $roles[] = EVALUATOR;
         }
         return (array_search($role, $roles) !== false);
@@ -1191,6 +1194,9 @@ class Person{
         if($history !== false && $this->id != null){
 			$this->roles = array();
 			if($history === true){
+			    if($this->historyHqps != null){
+			        return $this->historyHqps;
+			    }
 			    $sql = "SELECT *
                         FROM grand_relations
                         WHERE user1 = '{$this->id}'
@@ -1209,7 +1215,13 @@ class Person{
 			foreach($data as $row){
 				$hqps[] = Person::newFromId($row['user2']);
 			}
+			if($history === true){
+			    $this->historyHqps = $hqps;
+			}
 			return $hqps;
+		}
+		if($this->hqps != null){
+		    return $this->hqps;
 		}
 	    $sql = "SELECT *
                 FROM grand_relations
@@ -1220,7 +1232,7 @@ class Person{
 		$hqps = array();
 		foreach($data as $row){
 			$hqp = Person::newFromId($row['user2']);
-			if($hqp->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
+			if($hqp->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
 			    $hqps[] = $hqp;
 			}
 		}
