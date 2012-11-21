@@ -42,6 +42,8 @@ class ProjectMainTab extends AbstractEditableTab {
            stripslashes($_POST['t4']) != $this->project->getTheme(4) ||
            stripslashes($_POST['t5']) != $this->project->getTheme(5)){
             APIRequest::doAction('ProjectDescription', true);
+            Project::$cache = array();
+            $this->project = Project::newFromId($this->project->getId());
         }
     }
     
@@ -99,6 +101,7 @@ class ProjectMainTab extends AbstractEditableTab {
         $coleaders = $project->getCoLeaders(true);
         $pnis = $project->getAllPeople(PNI);
         $cnis = $project->getAllPeople(CNI);
+        $ars = $project->getAllPeople(AR);
         $hqps = $project->getAllPeople(HQP);
         
         if(!$edit){
@@ -142,6 +145,20 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         
         $this->html .= "<table width='100%'><tr><td valign='top' width='50%'>";
+        if($edit || !$edit && count($pnis) > 0){
+            $this->html .= "<h2><span class='mw-headline'>Associated Researchers</span></h2>";
+        }
+        $this->html .= "<ul>";
+        foreach($ars as $ar){
+            if((!empty($leaders) && in_array($ar->getId(), $leaders)) || (!empty($coleaders) && in_array($ar->getId(), $coleaders))){
+                continue;
+            }
+            $target = "";
+            if($edit){
+                $target = " target='_blank'";
+            }
+            $this->html .= "<li><a href='{$ar->getUrl()}'$target>{$ar->getReversedName()}</a></li>";
+        }
         if($edit || !$edit && count($pnis) > 0){
             $this->html .= "<h2><span class='mw-headline'>PNIs</span></h2>";
         }

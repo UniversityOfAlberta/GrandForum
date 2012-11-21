@@ -272,7 +272,7 @@ class ProjectVisualisationsTab extends AbstractTab {
             foreach($project->getPapers('all', '0000-00-00 00:00:00', '2100-00-00 00:00:00') as $paper){
                 $start = str_replace("-", "/", $paper->getDate());
                 $content = "&lt;a href='{$paper->getUrl()}' target='_blank'&gt;Wiki Page&lt;/a&gt;";
-                echo "<event start='$start' title='".str_replace("&amp;#39;", "&#39;", str_replace("&", "&amp;", $paper->getTitle()))."' link='' icon='$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/yellow-circle.png' color='#BCB326'>$content</event>\n";
+                echo "<event start='$start' title='".str_replace("'", "&#39;", str_replace("&amp;#39;", "&#39;", str_replace("&", "&amp;", $paper->getTitle())))."' link='' icon='$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/yellow-circle.png' color='#BCB326'>$content</event>\n";
             }
             echo "</data>";
             exit;

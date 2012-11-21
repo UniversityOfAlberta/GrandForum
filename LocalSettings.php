@@ -176,6 +176,7 @@ define("INACTIVE", "Inactive"); // This is an implied role.
 define("HQP", "HQP");
 define("CNI", "CNI");
 define("PNI", "PNI");
+define("AR", "Associated Researcher");
 define("COPL", "Project Co-Leader"); // This is a special role.
 define("PL", "Project Leader"); // This is a special role.
 define("PM", "Project Manager"); // This is a special role.
@@ -194,6 +195,7 @@ $wgRoleValues = array(INACTIVE => 0,
                       HQP => 1,
                       CNI => 5,
                       PNI => 6,
+                      AR => 6,
                       #PNIA => 6,
                       COPL => 7,
                       PL => 8,
@@ -208,7 +210,7 @@ $wgRoleValues = array(INACTIVE => 0,
                       STAFF => 15,
                       MANAGER => 16);
                      
-$wgRoles = array(HQP, CNI, PNI, RMC, BOD, CHAMP, GOV, STAFF, MANAGER);
+$wgRoles = array(HQP, CNI, PNI, AR, RMC, BOD, CHAMP, GOV, STAFF, MANAGER);
 
 // Defining Custom Namespace Constants
 define("NS_GRAND_PROJ", 122);

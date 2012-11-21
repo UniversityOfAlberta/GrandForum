@@ -25,8 +25,8 @@ class DBFunctions {
     static function execSQL($sql, $update=false){
         global $wgImpersonating, $wgRealUser, $wgUser, $wgOut;
         DBFunctions::initDB();
-        self::$queryCount++;
         if(self::$queryDebug){
+            self::$queryCount++;
             $printedSql = str_replace("\n", " ", $sql);
             $printedSql = str_replace("\t", " ", $printedSql);
             while(strstr($printedSql, "  ") !== false){
