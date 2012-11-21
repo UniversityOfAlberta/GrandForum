@@ -173,6 +173,10 @@ $egAnnokiExtensions['ReportTables']     = array( 'name' => 'ReportTables',
 					      'path' => "$IP/extensions/ReportTables/Report.php",
 					      'enabled' => true,
 					      );
+$egAnnokiExtensions['ReportStats']     = array( 'name' => 'ReportStats',
+					      'path' => "$IP/extensions/ReportStats/ReportStats.php",
+					      'enabled' => true,
+					      );
 					      
 $egAnnokiExtensions['ProjectMilestones']     = array( 'name' => 'Project Milestones',
 					      'path' => "$IP/extensions/ProjectMilestones/ProjectMilestones.php",
