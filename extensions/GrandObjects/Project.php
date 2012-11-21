@@ -94,6 +94,9 @@ class Project{
 	
 	// Returns a Project from the given historic ID
 	static function newFromHistoricId($id, $evolutionId=null){
+	    if(isset(self::$cache[$id.'_'.$evolutionId])){
+	        return self::$cache[$id.'_'.$evolutionId];
+	    }
 	    $sql = "SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.type, s.status
 				FROM grand_project p, grand_project_evolution e, grand_project_status s
 				WHERE p.id = '$id'
@@ -104,6 +107,7 @@ class Project{
 		if (DBFunctions::getNRows() > 0){
 		    $project = new Project($data);
 		    $project->evolutionId = $evolutionId;
+		    self::$cache[$id.'_'.$evolutionId] = $project;
 		    return $project;
 		}
 	}
@@ -329,6 +333,17 @@ EOF;
             foreach($data as $row){
                 $pred = Project::newFromHistoricId($row['project_id'], $row['last_id']);
                 if($pred != null && $pred->getName() != ""){
+                    if($pred->getId() == $this->id){
+		                // These are the same project id, just different evolution id.  Copy over some of the data
+		                $pred->milestones = $this->milestones;
+		                $pred->people = $this->people;
+		                $pred->contributions = $this->contributions;
+	                    $pred->multimedia = $this->multimedia;
+	                    $pred->startDates = $this->startDates;
+	                    $pred->endDates = $this->endDates;
+	                    $pred->comments = $this->comments;
+	                    $pred->budgets = $this->budgets;
+		            }
                     $this->preds[] = $pred;
                 }
             }
@@ -840,11 +855,20 @@ EOF;
 	// Returns the current milestones of this project
 	// If $history is set to true, all the milestones ever for this project are included
 	function getMilestones($history=false){
-	    $this->milestones = array();
+	    if($this->milestones != null && !$history){
+	        echo "HELLO";
+	        return $this->milestones;
+	    }
+	    $milestones = array();
+	    $milestonesIds = array();
 	    $preds = $this->getPreds();
         foreach($preds as $pred){
             foreach($pred->getMilestones($history) as $milestone){
-                $this->milestones[] = $milestone;
+                if(isset($milestoneIds[$milestone->getMilestoneId()])){
+                    continue;
+                }
+                $milestoneIds[$milestone->getMilestoneId()] = true;
+                $milestones[] = $milestone;
             }
         }
 	    $sql = "SELECT DISTINCT milestone_id
@@ -858,18 +882,32 @@ EOF;
 	    $data = DBFunctions::execSQL($sql);
 	    
 	    foreach($data as $row){
-	        $this->milestones[] = Milestone::newFromId($row['milestone_id']);
+	        if(isset($milestoneIds[$row['milestone_id']])){
+                continue;
+            }
+            $milestone = Milestone::newFromId($row['milestone_id']);
+            $milestoneIds[$milestone->getMilestoneId()] = true;
+            $milestones[] = $milestone;
 	    }
-	    return $this->milestones;
+	    
+	    if(!$history){
+	        $this->milestones = $milestones;
+	    }
+	    return $milestones;
 	}
 
 	// Returns the past milestones of this project
 	function getPastMilestones(){
-	    $this->milestones = array();
+	    $milestoneIds = array();
+	    $milestones = array();
 	    $preds = $this->getPreds();
         foreach($preds as $pred){
             foreach($pred->getPastMilestones() as $milestone){
-                $this->milestones[] = $milestone;
+                if(isset($milestoneIds[$milestone->getMilestoneId()])){
+                    continue;
+                }
+                $milestoneIds[$milestone->getMilestoneId()] = true;
+                $milestones[] = $milestone;
             }
         }
 	    $sql = "SELECT DISTINCT milestone_id
@@ -880,30 +918,12 @@ EOF;
 	    
 	    $data = DBFunctions::execSQL($sql);
 	    foreach($data as $row){
-	        $this->milestones[] = Milestone::newFromId($row['milestone_id']);
-	    }
-	    return $this->milestones;
-	}
-	
-	// Returns an array of milestones where all the milestones which were active at some point after $timestamp are included
-	//NOTE OCT26, 2011: This function is incorrect; We need a function that returns Milestones that were active at any point during the given year. See getMilestonesDuring
-	function getMilestonesSince($timestamp='0000-00-00 00:00:00'){
-	    $milestones = array();
-	    $preds = $this->getPreds();
-        foreach($preds as $pred){
-            foreach($pred->getMilestonesSince($timestamp) as $milestone){
-                $milestones[] = $milestone;
+	        if(isset($milestoneIds[$row['milestone_id']])){
+                continue;
             }
-        }
-	    $sql = "SELECT DISTINCT milestone_id
-	            FROM grand_milestones
-	            WHERE project_id = '{$this->id}'
-	            AND start_date >= '$timestamp'
-	            AND status != 'Abandoned' AND status != 'Closed'
-	            ORDER BY projected_end_date";
-	    $data = DBFunctions::execSQL($sql);
-	    foreach($data as $row){
-	        $milestones[] = Milestone::newFromId($row['milestone_id']);
+            $milestone = Milestone::newFromId($row['milestone_id']);
+            $milestoneIds[$milestone->getMilestoneId()] = true;
+            $milestones[] = $milestone;
 	    }
 	    return $milestones;
 	}
