@@ -23,6 +23,13 @@ class ProjectRolesCell extends Cell{
             $values = array();
             $leads = $person->getLeadProjects();
             $coLeads = $person->getCoLeadProjects();
+            $managers = $person->getManagerProjects();
+            foreach($managers as $manage){
+                if($manage->getId() == $table->obj->getId()){
+                    $values[] = "PM";
+                    break;
+                }
+            }
             foreach($leads as $lead){
                 if($lead->getId() == $table->obj->getId()){
                     $values[] = "PL";

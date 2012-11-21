@@ -32,7 +32,10 @@ class PersonPage {
                 $role = $split[0];
             }
             $person = Person::newFromName($name);
-            if((array_search($role, $wgRoles) !== false || $role == INACTIVE) && 
+            if((array_search($role, $wgRoles) !== false || $role == INACTIVE || 
+                                                           $role == PL || $role == 'PL' ||
+                                                           $role == COPL || $role == 'COPL' ||
+                                                           $role == PM || $role == 'PM') && 
                $person->getName() != null && 
                $person != null && $person->isRole($role)){
                 $supervisors = $person->getSupervisors();

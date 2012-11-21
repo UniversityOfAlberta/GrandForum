@@ -36,9 +36,14 @@ class ProjectPeopleRolesCell extends Cell{
                 }
             }
             foreach($person->getRoles() as $role){
-                if($role->getRole() == HQP || $role->getRole() == PNI || $role->getRole() == CNI){
+                if($role->getRole() == HQP || 
+                    $role->getRole() == PNI || 
+                    $role->getRole() == CNI){
                     $values[] = $role->getRole();
                 }
+            }
+            foreach($person->getLeadershipRoles() as $role){
+                $values[] = $role->getRole();
             }
             $this->value = "<a href='{$person->getUrl()}' target = '_blank'><b>{$person->getReversedName()}</b></a><br />(".implode(", ", $values).")";
         }

@@ -727,8 +727,15 @@ class Person{
 	// Since a person may belong to multiple roles, this only picks one of those roles.  This method may be useful for making urls for a PersonPage
 	function getType(){
 	    $roles = $this->getRoles();
-	    if($roles != null){
-	        return $this->roles[count($roles) - 1]->getRole();
+	    $leadershipRoles = $this->getLeadershipRoles();
+	    if($roles == null){
+	        $roles = $leadershipRoles;
+	    }
+	    else{
+	        $roles = array_merge($roles, $leadershipRoles);
+	    }
+	    if($roles != null && count($roles) > 0){
+	        return $roles[count($roles) - 1]->getRole();
 	    }
 		return null;
 	}
@@ -775,6 +782,67 @@ class Person{
 		    }
 		}
 		return $this->roles;
+	}
+	
+	
+	function getLeadershipRoles(){
+	    $roles = array();
+	    $pm = $this->isProjectManager();
+	    if($this->isProjectLeader() && !$pm){
+		    $roles[] = new Role(array(0 => array('id' => -1,
+		                                               'user' => $this->id,
+		                                               'role' => "PL",
+		                                               'start_date' => '0000-00-00 00:00:00',
+		                                               'end_date' => '0000-00-00 00:00:00',
+		                                               'comment' => '')));
+		}
+		if($this->isProjectCoLeader() && !$pm){
+		    $roles[] = new Role(array(0 => array('id' => -1,
+		                                               'user' => $this->id,
+		                                               'role' => "COPL",
+		                                               'start_date' => '0000-00-00 00:00:00',
+		                                               'end_date' => '0000-00-00 00:00:00',
+		                                               'comment' => '')));
+		}
+		if($pm){
+		    $roles[] = new Role(array(0 => array('id' => -1,
+		                                               'user' => $this->id,
+		                                               'role' => "PM",
+		                                               'start_date' => '0000-00-00 00:00:00',
+		                                               'end_date' => '0000-00-00 00:00:00',
+		                                               'comment' => '')));
+		}
+		return $roles;
+	}
+	
+	function getLeadershipRolesDuring($startDate=false, $endDate=false){
+	    $roles = array();
+	    $pm = $this->isProjectManagerDuring($startDate, $endDate);
+	    if($this->isProjectLeaderDuring($startDate, $endDate) && !$pm){
+		    $roles[] = new Role(array(0 => array('id' => -1,
+		                                               'user' => $this->id,
+		                                               'role' => "PL",
+		                                               'start_date' => '0000-00-00 00:00:00',
+		                                               'end_date' => '0000-00-00 00:00:00',
+		                                               'comment' => '')));
+		}
+		if($this->isProjectCoLeaderDuring($startDate, $endDate) && !$pm){
+		    $roles[] = new Role(array(0 => array('id' => -1,
+		                                               'user' => $this->id,
+		                                               'role' => "COPL",
+		                                               'start_date' => '0000-00-00 00:00:00',
+		                                               'end_date' => '0000-00-00 00:00:00',
+		                                               'comment' => '')));
+		}
+		if($pm){
+		    $roles[] = new Role(array(0 => array('id' => -1,
+		                                               'user' => $this->id,
+		                                               'role' => "PM",
+		                                               'start_date' => '0000-00-00 00:00:00',
+		                                               'end_date' => '0000-00-00 00:00:00',
+		                                               'comment' => '')));
+		}
+		return $roles;
 	}
 	
 	// Returns the last role that this Person had before they were Inactivated, null if this Person has never had any Roles
@@ -849,7 +917,6 @@ class Person{
 			$roles[] = new Role(array(0 => $row));
 		}
 		return $roles;        
-	    
 	}    
 	
 	// Returns an array of Projects that this Person is a part of
@@ -1092,6 +1159,10 @@ class Person{
         }
         if($role == COPL && $this->isProjectCoLeader() && !$this->isProjectManager()){
             $roles[] = COPL;
+        }
+        if(($role == PM || $role == 'PM') && $this->isProjectManager()){
+            $roles[] = PM;
+            $roles[] = 'PM';
         }
         if($role == EVALUATOR && $this->isEvaluator()){
             $roles[] = EVALUATOR;
@@ -1603,6 +1674,34 @@ class Person{
 	    return $this->isProjectLeader;
 	}
 	
+	function isProjectLeaderDuring($startRange = false, $endRange = false){
+	    //If no range end are provided, assume it's for the current year.
+	    if( $startRange === false || $endRange === false ){
+	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
+	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+	    }
+	    $sql = "SELECT p.id
+                FROM grand_project_leaders, grand_project p
+                WHERE manager = '0'
+                AND co_lead <> 'True'
+                AND p.id = project_id
+                AND user_id = '{$this->id}' 
+                AND ( 
+                ( (end_date != '0000-00-00 00:00:00') AND
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                OR
+                ( (end_date = '0000-00-00 00:00:00') AND
+                ((start_date <= '$endRange')))
+                )";
+        $data = DBFunctions::execSQL($sql);
+        if(count($data) > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+	}
+	
 	// Returns true if the person is a manager of at least one project
 	function isProjectManager(){
 	    if($this->isProjectManager === null){
@@ -1629,6 +1728,33 @@ class Person{
             }
         }
         return $this->isProjectManager;
+	}
+	
+	function isProjectManagerDuring($startRange = false, $endRange = false){
+	    //If no range end are provided, assume it's for the current year.
+	    if( $startRange === false || $endRange === false ){
+	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
+	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+	    }
+	    $sql = "SELECT p.id
+                FROM grand_project_leaders, grand_project p
+                WHERE manager = '1'
+                AND p.id = project_id
+                AND user_id = '{$this->id}' 
+                AND ( 
+                ( (end_date != '0000-00-00 00:00:00') AND
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                OR
+                ( (end_date = '0000-00-00 00:00:00') AND
+                ((start_date <= '$endRange')))
+                )";
+        $data = DBFunctions::execSQL($sql);
+        if(count($data) > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
 	}
 	
 	function managementOf($project) {
@@ -1676,11 +1802,40 @@ class Person{
 	    return $this->isProjectCoLeader;
 	}
 	
+	function isProjectCoLeaderDuring($startRange = false, $endRange = false){
+	    //If no range end are provided, assume it's for the current year.
+	    if( $startRange === false || $endRange === false ){
+	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
+	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+	    }
+	    $sql = "SELECT p.id
+                FROM grand_project_leaders, grand_project p
+                WHERE manager = '0'
+                AND co_lead = 'True'
+                AND p.id = project_id
+                AND user_id = '{$this->id}' 
+                AND ( 
+                ( (end_date != '0000-00-00 00:00:00') AND
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                OR
+                ( (end_date = '0000-00-00 00:00:00') AND
+                ((start_date <= '$endRange')))
+                )";
+        $data = DBFunctions::execSQL($sql);
+        if(count($data) > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+	}
+	
 	function getLeadProjects($history=false){
 	    $sql = "SELECT l.*
 	            FROM grand_project_leaders l
 	            WHERE l.user_id = '{$this->id}'
-	            AND l.co_lead <> 'True'\n";
+	            AND l.co_lead <> 'True'
+	            AND l.manager = '0'\n";
 	    if(!$history){
 	        $sql .= "AND (l.end_date = '0000-00-00 00:00:00'
                           OR l.end_date > CURRENT_TIMESTAMP)";
@@ -1695,9 +1850,10 @@ class Person{
 	
 	function getCoLeadProjects($history=false){
 	    $sql = "SELECT *
-	            FROM grand_project_leaders
-	            WHERE user_id = '{$this->id}'
-	            AND co_lead = 'True'\n";
+	            FROM grand_project_leaders l
+	            WHERE l.user_id = '{$this->id}'
+	            AND l.co_lead = 'True'
+	            AND l.manager = '0'\n";
 	    if(!$history){
 	        $sql .= "AND (end_date = '0000-00-00 00:00:00'
                           OR end_date > CURRENT_TIMESTAMP)";
@@ -1712,8 +1868,9 @@ class Person{
 	
 	function getLeadAndCoLeadProjects($history=false){
 	    $sql = "SELECT *
-	            FROM grand_project_leaders
-	            WHERE user_id = '{$this->id}'\n";
+	            FROM grand_project_leaders l
+	            WHERE l.user_id = '{$this->id}'
+	            AND l.manager = '0'\n";
 	    if(!$history){
 	        $sql .= "AND (end_date = '0000-00-00 00:00:00'
                           OR end_date > CURRENT_TIMESTAMP)";
