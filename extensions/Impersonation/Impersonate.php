@@ -8,6 +8,9 @@ $wgHooks['UserLogoutComplete'][] = 'clearImpersonation';
 
 function impersonate(){
     global $wgRequest, $wgServer, $wgScriptPath, $wgUser, $wgMessage, $wgRealUser, $wgImpersonating, $wgTitle;
+    if(!$wgUser->isLoggedIn()){
+        return true;
+    }
     $exploded = explode("?", @$_SERVER["REQUEST_URI"]);
     $page = $exploded[0];
     $title = explode("/", $page);
