@@ -36,7 +36,7 @@ class DeleteProjectAPI extends API{
 	            VALUES ('{$project->evolutionId}','{$project->getId()}','{$nsId}','DELETE','{$effective_date}')";
 	    DBFunctions::execSQL($sql, true);
 	    $sql = "INSERT INTO `grand_project_status` (`evolution_id`,`project_id`,`status`,`type`)
-	            VALUES ((SELECT MAX(id) FROM grand_project_evolution),'{$nsId}','{$status}','{$type}')";
+	            VALUES ((SELECT MAX(id) FROM grand_project_evolution),'{$nsId}','Ended','{$type}')";
 	    DBFunctions::execSQL($sql, true);
 	    Project::$cache = array();
 	    $project = Project::newFromId($nsId);

@@ -118,7 +118,7 @@ for($i = 248; $i <= 260; $i+=2){
         DBFunctions::execSQL("INSERT INTO `grand_project_evolution` (`last_id`,`project_id`, `new_id`, `action`, `effective_date`, `date`)
                       VALUES ('{$p->evolutionId}','{$i}', '{$i}', 'DELETE', '2012-08-01 00:00:00', '2012-08-01 00:00:00')", true);
         DBFunctions::execSQL("INSERT INTO `grand_project_status` (`evolution_id`,`project_id`, `status`, `type`)
-                          VALUES ((SELECT COUNT(*) FROM grand_project_evolution), '{$i}', 'Completed', 'Research')", true);
+                          VALUES ((SELECT COUNT(*) FROM grand_project_evolution), '{$i}', 'Ended', 'Research')", true);
     }
 }
 DBFunctions::execSQL("INSERT INTO `grand_project_evolution` (`last_id`,`project_id`, `new_id`, `action`, `effective_date`, `date`)
