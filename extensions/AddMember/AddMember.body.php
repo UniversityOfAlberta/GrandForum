@@ -37,22 +37,27 @@ class UserCreate {
 		DBFunctions::begin();
 		
 		if(isset($_POST['wpUserType'])){
-			foreach($_POST['wpUserType'] as $role){
-				//Add Role to DB
-				$sql = "INSERT INTO mw_user_groups (`ug_user`, `ug_group`) VALUES ('$id', '$role')";
-		        DBFunctions::execSQL($sql, true);
-                $sql = "INSERT INTO grand_roles (`user`, `role`, `start_date`) VALUES ('$id', '$role', CURRENT_TIMESTAMP)";
-		        DBFunctions::execSQL($sql, true);
-		        if($role == PNI || $role == CNI){
-		            $person = Person::newFromId($wgUser->getId());
-		            $command = "echo \"{$person->getEmail()}\" | /usr/lib/mailman/bin/add_members --admin-notify=n --welcome-msg=n -r - grand-forum-researchers";
-		            exec($command);
-		        }
-		        else if($role == HQP){
-		            $person = Person::newFromId($wgUser->getId());
-		            $command = "echo \"{$person->getEmail()}\" | /usr/lib/mailman/bin/add_members --admin-notify=n --welcome-msg=n -r - grand-forum-hqps";
-		            exec($command);
-		        }
+		    if($_POST['wpUserType'] != ""){
+			    foreach($_POST['wpUserType'] as $role){
+			        if($role == ""){
+			            continue;
+			        }
+				    //Add Role to DB
+				    $sql = "INSERT INTO mw_user_groups (`ug_user`, `ug_group`) VALUES ('$id', '$role')";
+		            DBFunctions::execSQL($sql, true);
+                    $sql = "INSERT INTO grand_roles (`user`, `role`, `start_date`) VALUES ('$id', '$role', CURRENT_TIMESTAMP)";
+		            DBFunctions::execSQL($sql, true);
+		            if($role == PNI || $role == CNI){
+		                $person = Person::newFromId($wgUser->getId());
+		                $command = "echo \"{$person->getEmail()}\" | /usr/lib/mailman/bin/add_members --admin-notify=n --welcome-msg=n -r - grand-forum-researchers";
+		                exec($command);
+		            }
+		            else if($role == HQP){
+		                $person = Person::newFromId($wgUser->getId());
+		                $command = "echo \"{$person->getEmail()}\" | /usr/lib/mailman/bin/add_members --admin-notify=n --welcome-msg=n -r - grand-forum-hqps";
+		                exec($command);
+		            }
+			    }
 			}
 		}
 		

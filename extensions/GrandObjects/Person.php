@@ -1134,7 +1134,7 @@ class Person{
         }
         if($this->getRoles() != null){
             foreach($this->getRoles() as $r){
-                if($wgRoleValues[$r->getRole()] >= $wgRoleValues[$role]){
+                if($r->getRole() != "" && $wgRoleValues[$r->getRole()] >= $wgRoleValues[$role]){
                     return true;
                 }
             }
@@ -1156,7 +1156,7 @@ class Person{
             }
         }
         foreach($this->getRoles() as $r){
-            if($wgRoleValues[$r->getRole()] <= $wgRoleValues[$role]){
+            if($r->getRole() != "" && $wgRoleValues[$r->getRole()] <= $wgRoleValues[$role]){
                 return true;
             }
         }

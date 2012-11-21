@@ -6,7 +6,7 @@ class RequestUserAPI extends API{
         $this->addPOST("wpName", true, "The User Name of the user to add", "UserName");
         $this->addPOST("wpEmail", true, "The User's email address", "me@email.com");
         $this->addPOST("wpRealName", false, "The User's real name", "Real Name");
-        $this->addPOST("wpUserName", true, "The User Roles Must be in the form \"Role1, Role2, ...\"", "HQP, RMC");
+        $this->addPOST("wpUserType", true, "The User Roles Must be in the form \"Role1, Role2, ...\"", "HQP, RMC");
         $this->addPOST("wpNS", false, "The list of projects that the user is a part of.  Must be in the form\"Project1, Project2, ...\"", "MEOW, NAVEL");
     }
 
@@ -16,6 +16,7 @@ class RequestUserAPI extends API{
 
 	function doAction($doEcho=true){
 		global $wgRequest, $wgUser, $wgOut, $wgMessage;
+		$me = Person::newFromUser($wgUser);
 		if(!isset($_POST['wpName']) || $_POST['wpName'] == null){
 			if($doEcho){
 			    echo "A User Name must be provided.\n";
@@ -74,7 +75,7 @@ class RequestUserAPI extends API{
 			    return $message;
 		    }
 		}
-		if(!isset($_POST['wpUserType']) || $_POST['wpUserType'] == null){
+		if(!$me->isRoleAtLeast(MANAGER) && (!isset($_POST['wpUserType']) || $_POST['wpUserType'] == null)){
 		    if($doEcho){
 			    echo "User Roles must be provided\n";
 			    exit;
