@@ -1154,11 +1154,13 @@ class Person{
         else{
             return false;
         }
-        if($role == PL && $this->isProjectLeader() && !$this->isProjectManager()){
+        if(($role == PL || $role == 'PL') && $this->isProjectLeader() && !$this->isProjectManager()){
             $roles[] = PL;
+            $roles[] = 'PL';
         }
-        if($role == COPL && $this->isProjectCoLeader() && !$this->isProjectManager()){
+        if(($role == COPL || $role == 'COPL') && $this->isProjectCoLeader() && !$this->isProjectManager()){
             $roles[] = COPL;
+            $roles[] = 'COPL';
         }
         if(($role == PM || $role == 'PM') && $this->isProjectManager()){
             $roles[] = PM;
