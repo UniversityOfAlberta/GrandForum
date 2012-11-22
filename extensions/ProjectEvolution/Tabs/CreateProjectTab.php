@@ -105,8 +105,12 @@ class CreateProjectTab extends ProjectTab {
             $form->getElementById("new_theme3")->setPOST("theme3");
             $form->getElementById("new_theme4")->setPOST("theme4");
             $form->getElementById("new_theme5")->setPOST("theme5");
-            APIRequest::doAction('CreateProject', true);
-            $form->reset();
+            if(!APIRequest::doAction('CreateProject', true)){
+                $errors[] = "There was an error Creating the Project";
+            }
+            else{
+                $form->reset();
+            }
         }
         return implode("<br />\n", $errors);
     }

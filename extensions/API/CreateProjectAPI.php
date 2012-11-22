@@ -59,24 +59,46 @@ class CreateProjectAPI extends API{
 	    $status = (isset($_POST['status'])) ? $_POST['status'] : 'Proposed';
 	    $type = (isset($_POST['type'])) ? $_POST['type'] : 'Research';
 	    $effective_date = (isset($_POST['effective_date'])) ? $_POST['effective_date'] : 'CURRENT_TIMESTAMP';
-	    $sql = "INSERT INTO `mw_an_extranamespaces` (`nsId`,`nsName`,`public`)
-	            VALUES ('{$nsId}','{$_POST['acronym']}','1')";
-	    DBFunctions::execSQL($sql, true);
-	    $sql = "INSERT INTO `grand_project` (`id`,`name`)
-	            VALUES ('{$nsId}','{$_POST['acronym']}')";
-	    DBFunctions::execSQL($sql, true);
-	    $sql = "INSERT INTO `grand_project_evolution` (`last_id`,`project_id`,`new_id`,`action`,`effective_date`)
-	            VALUES ('-1','-1','{$nsId}','CREATE','{$effective_date}')";
-	    DBFunctions::execSQL($sql, true);
-	    $sql = "INSERT INTO `grand_project_status` (`evolution_id`,`project_id`,`status`,`type`)
-	            VALUES ((SELECT MAX(id) FROM grand_project_evolution),'{$nsId}','{$status}','{$type}')";
-	    DBFunctions::execSQL($sql, true);
-	    Project::$cache = array();
-	    $project = Project::newFromId($nsId);
-	    $_POST['project'] = $_POST['acronym'];
-	    $_POST['themes'] = "{$theme1},{$theme2},{$theme3},{$theme4},{$theme5}";
-	    APIRequest::doAction('ProjectDescription', true);
-	    //MailingList::createMailingList($project);
+	    // It is important not to get the database into an unstable state, so start a transaction
+	    DBFunctions::begin();
+	    $sql = "SELECT nsId
+	            FROM `mw_an_extranamespaces`
+	            WHERE nsName = '{$_POST['acronym']}'";
+	    $data = DBFunctions::execSQL($sql);
+	    $status = true;
+	    if(count($data) > 0){
+	        $nsId = $data[0]['nsId'];
+	    }
+	    else{
+	        $sql = "INSERT INTO `mw_an_extranamespaces` (`nsId`,`nsName`,`public`)
+	                VALUES ('{$nsId}','{$_POST['acronym']}','1')";
+	        $status = DBFunctions::execSQL($sql, true, true);
+	    }
+	    if($status){
+	        $sql = "INSERT INTO `grand_project` (`id`,`name`)
+	                VALUES ('{$nsId}','{$_POST['acronym']}')";
+	        $status = DBFunctions::execSQL($sql, true, true);
+	    }
+	    if($status){
+	        $sql = "INSERT INTO `grand_project_evolution` (`last_id`,`project_id`,`new_id`,`action`,`effective_date`)
+	                VALUES ('-1','-1','{$nsId}','CREATE','{$effective_date}')";
+	        $status = DBFunctions::execSQL($sql, true, true);
+	    }
+	    if($status){
+	        $sql = "INSERT INTO `grand_project_status` (`evolution_id`,`project_id`,`status`,`type`)
+	                VALUES ((SELECT MAX(id) FROM grand_project_evolution),'{$nsId}','{$status}','{$type}')";
+	        $sql = DBFunctions::execSQL($sql, true, true);
+	    }
+	    if($status){
+	        Project::$cache = array();
+	        $project = Project::newFromId($nsId);
+	        $_POST['project'] = $_POST['acronym'];
+	        $_POST['themes'] = "{$theme1},{$theme2},{$theme3},{$theme4},{$theme5}";
+	        APIRequest::doAction('ProjectDescription', true);
+	        //MailingList::createMailingList($project);
+	    }
+	    DBFunctions::commit();
+	    return $status;
 	}
 	
 	function isLoginRequired(){
