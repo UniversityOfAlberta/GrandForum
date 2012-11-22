@@ -12,6 +12,7 @@ class BibtexArticleAPI extends PaperAPI{
 	    $this->addPOST("volume",false,"The volume of the journal","3");
 	    $this->addPOST("number",false,"The number of the journal","2");
 	    $this->addPOST("publisher",false,"The name of the publisher","My Publishing Company");
+	    $this->addPOST("address",false,"The address of the publisher","City, State, Country");
 	    $this->addPOST("isbn",false,"The ISBN of the publication","90-70002-34-5");
 	    $this->addPOST("issn",false,"The ISSN of the publication","90-70002-34-5");
 	    $this->addPOST("doi",false,"The doi of the publication","10.1000/182");

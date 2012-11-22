@@ -9,7 +9,11 @@ class CalendarReportItem extends AbstractReportItem {
 		$item = "<input type='text' name='{$this->getPostId()}' style='width:{$width};' value='{$value}' />";
 		$item = $this->processCData($item);
 		$item .= "<script type='text/javascript'>
-		    $('input[name={$this->getPostId()}]').datepicker({ dateFormat: 'yy-mm-dd'});
+		    $('input[name={$this->getPostId()}]').datepicker(
+		        {dateFormat: 'yy-mm-dd',
+		         changeMonth: true,
+                 changeYear: true
+		        });
             $('input[name={$this->getPostId()}]').keydown(function(){
                 return false;
             });

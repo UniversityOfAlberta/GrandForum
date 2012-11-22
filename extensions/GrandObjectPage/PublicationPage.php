@@ -163,12 +163,14 @@ class PublicationPage {
                 if($post){
                     // The user has submitted the form
                     self::proccessPost($category);
+                    session_write_close();
                     if(!$create){
                         header("Location: $wgServer$wgScriptPath/index.php/$category:".str_replace("?", "%3F", str_replace("&#39;", "'", $title)));
                     }
                     else{
                         header("Location: $wgServer$wgScriptPath/index.php/$category:".str_replace("?", "%3F", $title));
                     }
+                    exit;
                 }
                 $wgOut->clearHTML();
                 if(!$create){
@@ -179,6 +181,7 @@ class PublicationPage {
                 }
                 if($edit){
                     $misc_types = Paper::getAllMiscTypes($paper->getCategory());
+                    
                     $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/scripts/switcheroo.js'></script>");
                     $wgOut->addScript('<script type="text/javascript">
                     var oldAttr = Array();
@@ -486,7 +489,7 @@ class PublicationPage {
                                         addAttr("DOI");
                                         addAttr("URL");
                                         break;
-                                    case "PhD Thesis":
+                                    case "PHD Thesis":
                                         addAttrDefn('.$this->get_defn("University").');
                                         addAttrDefn('.$this->get_defn("Department").');
                                         addAttr("ISBN");
@@ -708,7 +711,8 @@ class PublicationPage {
 														if($type == $pType || (strstr($type, "Misc") !== false && strstr($pType, "Misc") !== false)){
 																$selected = " selected='selected'";
 														}
-														$typeOpts = $typeOpts."<option$selected title='$pDescription'>$pType</option>";
+														if (strpos($typeOpts, ">".$pType."<") === false) // skip duplicate bibtex default types, if any
+															$typeOpts = $typeOpts."<option$selected title='$pDescription'>$pType</option>";
 												}
 
 												// STATUS
@@ -1286,7 +1290,7 @@ class PublicationPage {
                     case "Collections Paper":
                         $api = new CollectionAPI(true);
                         break;
-                    case "PhD Thesis":
+                    case "PHD Thesis":
                         $api = new PHDThesisAPI(true);
                         break;
                     case "Masters Thesis":

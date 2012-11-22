@@ -16,8 +16,14 @@
 			
 			function substring(){ 
 			    var val = $(self).val();
-			    var regex = RegExp('@\\[[^-]+-([^\\]]*)]','g');
-			    var length = val.replace(regex, ' ').length;
+			    var length = 0;
+			    if($(self).hasClass('autocomplete')){
+			        var regex = RegExp('@\\[[^-]+-([^\\]]*)]','g');
+			        length = val.replace(regex, ' ').length;
+			    }
+			    else{
+			        length = val.length;
+			    }
 			    if(length > limit){
 			        $(self).val($(self).val().substring(0,limit));
 			    }
@@ -27,7 +33,11 @@
 				    }
 				}
 			}
-			substring();
+			$(document).ready(function(){
+		        substring();
+		        setTimeout(substring, 100);
+		        setTimeout(substring, 250);
+		    });
         } 
     }); 
 })(jQuery);

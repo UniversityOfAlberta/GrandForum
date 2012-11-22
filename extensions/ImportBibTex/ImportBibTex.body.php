@@ -70,6 +70,7 @@ class ImportBibTex extends SpecialPage{
 				$rejects = "";
 				$text = $_POST['text'];
 				$returns = array();
+
 				while (($nextbib = self::nextEntry($text, $ind, $bibtype)) !== null) {
 				    //Sort of a hack to prevent poorly formatted bibtex
 
@@ -82,55 +83,63 @@ class ImportBibTex extends SpecialPage{
 				    $nextbib = str_replace("\n\n", "", $nextbib);
 				    $nextbib = str_replace("  ", " ", $nextbib);
 
+#          $wgOut->addHTML("<br/><b>nextbib $ind<br/><pre> $nextbib </pre></b><br/>");
+#          $wgOut->addHTML($bibtype."<br/>");
+
+					unset($fieldMap);
+					$fieldMap = array();
+
 					$api = null;
 					$lines = explode("\n", $nextbib);
 					switch (strtolower($bibtype)) {
 					    case 'article':
-						    ImportBibTex::parseBibTeX($lines);
+						    ImportBibTex::parseBibTeX($lines, $fieldMap); 
 						    $api = new BibtexArticleAPI(ImportBibTex::alreadyExists());
 						    break;
 					    case 'book':
-						    ImportBibTex::parseBibTeX($lines);
+						    ImportBibTex::parseBibTeX($lines, $fieldMap);
 						    $api = new BibtexBookAPI(ImportBibTex::alreadyExists());
 						    break;
 					    case 'proceedings':
 					    case 'inproceedings':
-						    ImportBibTex::parseBibTeX($lines);
+						    $fieldMap['booktitle'] = 'event_title';
+						    ImportBibTex::parseBibTeX($lines, $fieldMap);
 						    $api = new ProceedingsPaperAPI(ImportBibTex::alreadyExists());
 						    break;
 			        case 'collection':
 			        case 'incollection':
-		            ImportBibTex::parseBibTeX($lines);
+		            ImportBibTex::parseBibTeX($lines, $fieldMap);
 						    $api = new BibtexCollectionAPI(ImportBibTex::alreadyExists());
 						    break;
 					    case 'manual':
-						    ImportBibTex::parseBibTeX($lines);
+						    ImportBibTex::parseBibTeX($lines, $fieldMap);
 						    $api = new ManualAPI(ImportBibTex::alreadyExists());
 						    break;
 					    case 'mastersthesis':
-						    ImportBibTex::parseBibTeX($lines);
+						    ImportBibTex::parseBibTeX($lines, $fieldMap);
 						    $api = new MastersThesisAPI(ImportBibTex::alreadyExists());
 						    break;
-                case 'bachelorsthesis' :
-                  ImportBibTex::parseBibTeX($lines);
-                  $api = new BachelorsThesisAPI(ImportBibTex::alreadyExists());
-                  break;
+              case 'bachelorsthesis' :
+                ImportBibTex::parseBibTeX($lines, $fieldMap);
+                $api = new BachelorsThesisAPI(ImportBibTex::alreadyExists());
+                break;
 					    case 'phdthesis':
 					    case 'thesis':
-						    ImportBibTex::parseBibTeX($lines);
+						    ImportBibTex::parseBibTeX($lines, $fieldMap);
 						    $api = new PHDThesisAPI(ImportBibTex::alreadyExists());
 						    break;
               case 'poster':
-                ImportBibTex::parseBibTeX($lines);
+						    $fieldMap['booktitle'] = 'event_title';
+                ImportBibTex::parseBibTeX($lines, $fieldMap);
                 $api = new PosterAPI(ImportBibTex::alreadyExists());
                 break;
 					    case 'techreport':
-						    ImportBibTex::parseBibTeX($lines);
+						    ImportBibTex::parseBibTeX($lines, $fieldMap);
 						    $api = new TechReportAPI(ImportBibTex::alreadyExists());
 						    break;
 					    default:
 					    case 'misc':
-						    ImportBibTex::parseBibTeX($lines);
+						    ImportBibTex::parseBibTeX($lines, $fieldMap);
 						    $api = new MiscAPI(ImportBibTex::alreadyExists());
 						    break;
 					}
@@ -151,6 +160,9 @@ class ImportBibTex extends SpecialPage{
         // If the bibtex is broken (e.g. missing closing brace), then all following the
         // last valid entry will be here:
         $remError = trim(substr($text, $ind));
+
+//        $wgOut->addHTML("<br/><b>text $ind $bibtype ".strlen($text)." <br/> 
+//                         <pre>[".$remError."]</pre></b><br/><br/>");
 
 				if(count($returns) > 0){
 				    $wgOut->addHTML("<br/><b>The following entries were successfully imported. <br/></b>
@@ -191,9 +203,23 @@ class ImportBibTex extends SpecialPage{
         return null;
 	}
 	
-	function parseBibTeX($lines){
+	function parseBibTeX($lines, $fieldMap){
+      global $wgOut;
+
 	    foreach($lines as $line){
-			if(ImportBibTex::getBibTexVariable($line, "author") !== false){
+
+			// Custom field map: map the bibtex (first) field onto GRAND (second) field
+      if(!empty($fieldMap)){
+        foreach($fieldMap as $from => $to){
+					if(ImportBibTex::getBibTexVariable($line, $from) !== false){
+#						$wgOut->addHTML($from." >> ".$to."<br/>");
+						$_POST[$to] = ImportBibTex::getBibTexVariable($line, $from);
+						continue 2; // next line
+					}
+			  }
+      }
+
+      if(ImportBibTex::getBibTexVariable($line, "author") !== false){
 				$author = ImportBibTex::getBibTexVariable($line, "author");
 				$authors = explode(" and ", $author);
 				$names = array();
@@ -263,6 +289,7 @@ class ImportBibTex extends SpecialPage{
 			    $_POST['note'] = ImportBibTex::getBibTexVariable($line, "note");
 			}
 		}
+
 		$_POST['date'] = "";
 		if(isset($_POST['year'])){
 		    $_POST['date'] = $_POST['year']."-";
@@ -331,7 +358,7 @@ Each type is accompanied of a fictitious entry that can serve as a reference, if
 	<li><b>@article</b><br /><div><pre>
 @article{Article2002,
 	author = {First Author and Second Author and Third Author},
-	title = {An Incredible Research},
+	title = {An Incredible Research Article},
 	journal = {Super Journal of Computing},
 	volume = {2122},
 	number = {33},
@@ -345,7 +372,7 @@ Each type is accompanied of a fictitious entry that can serve as a reference, if
 	<li><b>@inproceedings</b><br /><div><pre>
 @inproceedings{Paper2002,
 	author = {First Author and Second Author and Third Author},
-	title = {An Incredible Research Paper},
+	title = {An Incredible Conference Paper},
 	booktitle = {Super Conference of Computing},
 	pages = {10--19},
 	publisher = {Some Publisher},
@@ -358,8 +385,8 @@ Each type is accompanied of a fictitious entry that can serve as a reference, if
     <li><b>@incollection</b><br /><div><pre>
 @incollection{Paper2002,
 	author = {First Author and Second Author and Third Author},
-	title = {An Incredible Research Paper},
-	booktitle = {Super Conference of Computing},
+	title = {An Incredible Book Chapter},
+	booktitle = {Super Book of Computing},
 	pages = {10--19},
 	publisher = {Some Publisher},
 	address = {Publisher City, State, Country},
@@ -382,7 +409,7 @@ Each type is accompanied of a fictitious entry that can serve as a reference, if
 	<li><b>@mastersthesis</b><br /><div><pre>
 @mastersthesis{Thesis2004,
 	author = {First Author},
-	title = {The Tome of Computing},
+	title = {The Mini-Tome of Computing},
 	school = {University of Fine Studies},
 	year = {2004},
 	month = {sep},
@@ -393,7 +420,7 @@ Each type is accompanied of a fictitious entry that can serve as a reference, if
 	<li><b>@bachelorsthesis</b><br /><div><pre>
 @bachelorsthesis{Thesis2004,
 	author = {First Author},
-	title = {The Tome of Computing},
+	title = {The Micro-Tome of Computing},
 	school = {University of Fine Studies},
 	year = {2004},
 	month = {sep},
@@ -413,7 +440,7 @@ Each type is accompanied of a fictitious entry that can serve as a reference, if
 	<li><b>@techreport</b><br /><div><pre>
 @techreport{Thesis2004,
 	author = {First Author},
-	title = {The Tome of Computing},
+	title = {The Most Awesome Tech Report},
 	school = {University of Fine Studies},
 	year = {2004},
 	month = {sep},

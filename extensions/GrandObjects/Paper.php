@@ -258,6 +258,7 @@ class Paper{
 	// Searches for the given phrase in the table of publications
 	// Returns an array of publications which fit the search
 	static function search($phrase, $category='all'){
+	    session_write_close();
 	    $splitPhrase = explode(" ", $phrase);
 	    $sql = "SELECT id, title, date, projects FROM grand_products
 	            WHERE title LIKE '%'

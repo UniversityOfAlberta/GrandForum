@@ -33,6 +33,7 @@ class Person{
 	var $acknowledgements;
 	var $budgets = array();
 	var $leadershipCache = array();
+	var $hqpCache = array();
 	
 	// Returns a new Person from the given id
 	static function newFromId($id){
@@ -1346,7 +1347,9 @@ class Person{
             $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
             $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
         }
-        
+        if(isset($this->hqpCache[$startRange.$endRange])){
+            return $this->hqpCache[$startRange.$endRange];
+        }
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user1 = '{$this->id}'
@@ -1363,21 +1366,17 @@ class Person{
         $hqps = array();
         $hqps_uniq_ids = array();
         foreach($data as $row){
-            
             $hqp = Person::newFromId($row['user2']);
             if( !in_array($hqp->getId(), $hqps_uniq_ids) && $hqp->getId() != null){
                 $hqps_uniq_ids[] = $hqp->getId();
                 if(!$hqp->isRoleDuring(HQP, $startRange, $endRange)){
                     continue;
                 }
-            //Comment out below condition for performance: IMPORTANT assumption is that 'Supervises' only applies to HQPs
-            //if($hqp->isRoleDuring(HQP, $startRange, $endRange)){
                 $hqps[] = $hqp;
-            //}
             }
         }
-        $this->hqps = $hqps;
-        return $this->hqps;
+        $this->hqpCache[$startRange.$endRange] = $hqps;
+        return $hqps;
     }
     
     function getSupervisors($history=false){

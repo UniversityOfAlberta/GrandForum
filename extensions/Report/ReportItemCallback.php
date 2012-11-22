@@ -532,7 +532,7 @@ class ReportItemCallback {
 	}
 	
 	function getTimestamp(){ 
-        return date("Y-m-d H:i:s T", time()+60*60); 
+        return date("Y-m-d H:i:s T", time()); 
 	}
 	
 	function getReportName(){

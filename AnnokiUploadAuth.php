@@ -64,7 +64,7 @@ if ($egAnProtectUploads){
     $unarchivedTitle =  Title::makeTitleSafe( NS_IMAGE, $match);
   }
   
-  if (!$unarchivedTitle->userCanRead()){
+  if (!$unarchivedTitle->userCanRead() || !$wgUser->isLoggedIn()){
     wfDebugLog( 'AnnokiUploadAuth', 'User does not have access to '.$unarchivedTitle->getPrefixedText());
     $errorFile = 'extensions/AccessControls/images/errorFile.gif';
     wfStreamFile( $errorFile, array( 'Cache-Control: private', 'Vary: Cookie' ) );
@@ -106,6 +106,8 @@ if( is_dir( $filename ) ) {
 	wfDebugLog( 'AnnokiUploadAuth', "`{$filename}` is a directory" );
 	wfForbidden();
 }
+
+
 
 // Stream the requested file
 wfDebugLog( 'AnnokiUploadAuth', "Streaming `{$filename}`" );

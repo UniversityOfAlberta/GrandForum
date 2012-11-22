@@ -131,9 +131,11 @@ class EditRelations extends SpecialPage{
 	                }
 	            }
 	            header("Location: $wgServer$wgScriptPath/index.php/Special:EditRelations");
+	            exit;
 	        }
 	        else{
 	            header("Location: $wgServer$wgScriptPath/index.php/Special:EditRelations?editProjects");
+	            exit;
 	        }
 	    }
 	    $editProjects = "";

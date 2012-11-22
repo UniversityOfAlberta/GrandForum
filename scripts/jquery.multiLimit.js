@@ -12,15 +12,23 @@
 			        limitChars();
 		        });
 		    }
-		    
-		    limitChars();
+		    $(document).ready(function(){
+		        limitChars();
+		        setTimeout(limitChars, 100);
+		        setTimeout(limitChars, 250);
+		    });
 		    
 		    function limitChars(){
 		        var length = 0;
 		        for(i in textareas){
 		            var textarea = textareas[i];
-		            var regex = RegExp('@\\[[^-]+-([^\\]]*)]','g');
-		            length += $(textarea).val().replace(regex, ' ').length;
+		            if($(textarea).hasClass('autocomplete')){
+		                var regex = RegExp('@\\[[^-]+-([^\\]]*)]','g');
+		                length += $(textarea).val().replace(regex, ' ').length;
+		            }
+		            else{
+		                length += $(textarea).val().length;
+		            }
 		        }
 		        if($(element).prop("tagName") == "SPAN" ||
 		           $(element).prop("tagName") == "DIV"){

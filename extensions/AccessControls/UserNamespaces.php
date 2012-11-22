@@ -73,11 +73,12 @@ END;
 
 	static function getUserNamespace($user) {
 		global $wgUserNamespaces;
-
-		foreach ($wgUserNamespaces as $nsKey => $nsValue) {
-			if ($nsValue['id'] == $user->getID()) {
-				return $nsKey;
-			}
+        if($wgUserNamespaces != null){
+		    foreach ($wgUserNamespaces as $nsKey => $nsValue) {
+			    if ($nsValue['id'] == $user->getID()) {
+				    return $nsKey;
+			    }
+		    }
 		}
 
 		return null;
