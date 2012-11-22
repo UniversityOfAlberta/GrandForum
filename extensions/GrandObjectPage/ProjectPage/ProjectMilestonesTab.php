@@ -185,6 +185,8 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 }
             }
         }
+        Project::$cache = array();
+        $this->project = Project::newFromId($this->project->getId());
         return $errors;
     }
     

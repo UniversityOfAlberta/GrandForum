@@ -295,16 +295,20 @@ function onUserCan(&$title, &$user, $action, &$result) {
 	    $result = true;
 	    return true;
 	  }
-	  if (array_key_exists($group, $wgExtraNamespaces)){
-	    $allowedGroups[$index] = $wgExtraNamespaces[$group];
+	  if($wgExtraNamespaces != null){
+	      if (array_key_exists($group, $wgExtraNamespaces)){
+	        $allowedGroups[$index] = $wgExtraNamespaces[$group];
+	      }
 	  }
 	}
 
 	$userGroups = $user->getGroups();
 	
 	$userNS = UserNamespaces::getUserNamespace($user);
-	if (array_key_exists($userNS, $wgExtraNamespaces)){
-	  $userNS = $wgExtraNamespaces[$userNS];
+	if($wgExtraNamespaces != null){
+	    if (array_key_exists($userNS, $wgExtraNamespaces)){
+	      $userNS = $wgExtraNamespaces[$userNS];
+	    }
 	}
 
 	$userGroups[] = $userNS;

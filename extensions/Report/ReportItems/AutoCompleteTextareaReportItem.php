@@ -33,8 +33,8 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		        $staticLabel->setValue('{$'.$label.'}');
 		        $staticValue->setValue('{$'.$index.'}');
 		        
-		        $javascriptLabel = str_replace("'", "\\'", $staticLabel->processCData(""));
-		        $javascriptValue = str_replace("'", "\\'", $staticValue->processCData(""));
+		        $javascriptLabel = str_replace("'", "\'", str_replace("\'", "'", $staticLabel->processCData("")));
+		        $javascriptValue = str_replace("'", "\'", str_replace("\'", "'", $staticValue->processCData("")));
 		        
 		        $item .= "{$this->id}.push({'value':'{$javascriptValue}', 'label':'{$javascriptValue} - {$javascriptLabel}'});\n";
 		    }
@@ -42,13 +42,34 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		}
 		$item .= "<span style='float:right;margin-right:30px;' class='pdfnodisplay tooltip' title='You should reference $name by writing <code>@$tooltipOptionId</code> in the text box. You can also start typing <code>@$tooltipOptionName</code> and a drop-down box will appear below the text box where you can select the one you wish to reference.'><b>@autocomplete:</b> {$name}</span>".$this->getHTML();
 		$item .= "<div id='{$this->id}_div'></div>";
-		$item .= "<script type='text/javascript'>
+		$item .= "<script type='text/javascript'>";
+		$item .= "$('textarea[name={$this->getPostId()}]').addClass('autocomplete');
 		            $('textarea[name={$this->getPostId()}]').triggeredAutocomplete({
                         hidden: '#hidden_inputbox{$this->id}',
                         source: {$this->id},
                         trigger: '@'
-                    });
-		</script>";
+                    });";
+	    if($this->getLimit() > 0){
+	        $item .= "
+		            $(document).ready(function(){
+		                var regex = RegExp('@\\\\[[^-]+-([^\\\\]]*)]','g');
+                        var strlen = $('textarea[name={$this->getPostId()}]').val().replace(regex, ' ').length;
+                        changeColor{$this->getPostId()}($('textarea[name={$this->getPostId()}]'), strlen);
+                        $('textarea[name={$this->getPostId()}]').off('keypress');
+                        $('textarea[name={$this->getPostId()}]').off('keyup');
+                        $('textarea[name={$this->getPostId()}]').keypress(function(){
+                            var regex = RegExp('@\\\\[[^-]+-([^\\\\]]*)]','g');
+                            var strlen = $(this).val().replace(regex, ' ').length;
+                            changeColor{$this->getPostId()}(this, strlen);
+                        });
+                        $('textarea[name={$this->getPostId()}]').keyup(function(){
+                            var regex = RegExp('@\\\\[[^-]+-([^\\\\]]*)]','g');
+                            var strlen = $(this).val().replace(regex, ' ').length;
+                            changeColor{$this->getPostId()}(this, strlen);
+                        });
+                    });";
+        }
+        $item .= "</script>";
 		if($notReferenced == "true"){
 		    $item .= "<script type='text/javascript'>
 		                function autocompleteLeft{$this->id}(){
@@ -168,7 +189,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		
 		$value = str_replace("\r", "", $this->getBlobValue());
 		$value = preg_replace("/@\[[^-]+-([^\]]*)]/", " ", $value);
-	    return strlen($value);
+	    return strlen(utf8_decode($value));
 	}
 }
 ?>

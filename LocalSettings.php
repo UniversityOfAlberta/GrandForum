@@ -65,10 +65,9 @@ $wgEnotifWatchlist = true; # UPO
 $wgEmailAuthentication = true;
 
 ## Database settings
-$wgDBtype           = "mysql";
-$wgDBserver         = "localhost";
-$wgDBname           = "grand_giga_test";
-
+#$wgDBtype           = "";
+#$wgDBserver         = "";
+#$wgDBname           = "";
 
 ## Please edit Credentials.php for configuring $wgDBuser, $wgDBpassword,
 ## $wgDBadminuser, and $wgDBadminpassword.
@@ -158,7 +157,7 @@ $wgAllowCopyUploads = true;
 $wgAllowTitlesInSVG = true;
 $wgMaxShellMemory = 402400;
 $key = array_search("application/zip", $wgMimeTypeBlacklist);
-$wgPasswordReminderResendTime = 1;
+$wgPasswordReminderResendTime = 0.5;
 $wgImpersonating = false;
 $wgRealUser;
 
@@ -177,6 +176,7 @@ define("INACTIVE", "Inactive"); // This is an implied role.
 define("HQP", "HQP");
 define("CNI", "CNI");
 define("PNI", "PNI");
+define("AR", "Associated Researcher");
 define("COPL", "Project Co-Leader"); // This is a special role.
 define("PL", "Project Leader"); // This is a special role.
 define("PM", "Project Manager"); // This is a special role.
@@ -195,21 +195,24 @@ $wgRoleValues = array(INACTIVE => 0,
                       HQP => 1,
                       CNI => 5,
                       PNI => 6,
-                      #PNIA => 6,
-                      COPL => 7,
-                      PL => 8,
-                      PM => 9,
-                      COTL => 10,
-                      TL => 10,
-                      RMC => 11,
-                      EVALUATOR => 11,
-                      BOD => 11,
-                      CHAMP => 11,
-                      GOV => 12,
-                      STAFF => 15,
-                      MANAGER => 16);
+                      AR => 7,
+                      COPL => 8,
+                      'COPL' => 8,
+                      PL => 9,
+                      'PL' => 9,
+                      PM => 10,
+                      'PM' => 10,
+                      COTL => 11,
+                      TL => 11,
+                      RMC => 12,
+                      EVALUATOR => 12,
+                      BOD => 12,
+                      CHAMP => 12,
+                      GOV => 13,
+                      STAFF => 16,
+                      MANAGER => 17);
                      
-$wgRoles = array(HQP, CNI, PNI, RMC, BOD, CHAMP, GOV, STAFF, MANAGER);
+$wgRoles = array(HQP, CNI, PNI, AR, RMC, BOD, CHAMP, GOV, STAFF, MANAGER);
 
 // Defining Custom Namespace Constants
 define("NS_GRAND_PROJ", 122);

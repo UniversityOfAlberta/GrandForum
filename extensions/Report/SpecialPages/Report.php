@@ -22,16 +22,18 @@ class Report extends AbstractReport{
 		global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
 		$person = Person::newFromId($wgUser->getId());
 		$page = "Report";
-		if($person->isRole(HQP)){
+		if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
 		    $page = "Report?report=HQPReport";
 		}
-		else if($person->isRole(CNI) || $person->isRole(PNI) || $person->isRoleAtLeast(MANAGER)){
+		else if($person->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
+		        $person->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
+		        $person->isRoleAtLeast(MANAGER)){
 		    $page = "Report?report=NIReport";
 		}
 		else if(count($person->leadership()) > 0){
 		    $projects = $person->leadership();
 		    $project = $projects[0];
-		    if($project->isDeleted() && substr($project->getProjectEndDate(), 0, 4) == REPORTING_YEAR){
+		    if($project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
 		        $page = "Report?report=ProjectFinalReport&project={$project->getName()}";
 		    }
 		    else if(!$project->isDeleted()){
@@ -88,7 +90,7 @@ class Report extends AbstractReport{
             $leadership = $person->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
             if(count($leadership) > 0){
                 foreach($leadership as $project){
-                    if($project->isDeleted() && substr($project->getProjectEndDate(), 0, 4) == REPORTING_YEAR){
+                    if($project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
 		                $type = "ProjectFinalReport";
 		            }
 		            else if(!$project->isDeleted()){

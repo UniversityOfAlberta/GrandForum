@@ -43,7 +43,7 @@ abstract class PaperAPI extends API{
 	    global $wgUser, $wgServer, $wgScriptPath, $wgOut;
 	    $me = Person::newFromId($wgUser->getId());
 	    $title = @stripslashes($this->stripQuotes($_POST['title']));
-	    $new_title = ($_POST['new_title'])? @stripslashes($this->stripQuotes($_POST['new_title'])) : $title;
+	    $new_title = (isset($_POST['new_title']))? @stripslashes($this->stripQuotes($_POST['new_title'])) : $title;
 		$product_id = @$_POST['product_id'];
 	    $authors = array();
 	    if(isset($_POST['authors']) && count($_POST['authors']) > 0){
@@ -81,7 +81,7 @@ abstract class PaperAPI extends API{
 	        }
 	    }
 
-	    $paper = Paper::newFromTitle($title);
+	    $paper = Paper::newFromTitle($title, $this->category);
 	    if(strstr($this->type, "Misc") !== false && isset($_POST['misc_type'])){
             $type = "Misc: ".str_replace("'", "&#39", $_POST['misc_type']);
         }
@@ -106,7 +106,7 @@ abstract class PaperAPI extends API{
 	        $result = DBFunctions::execSQL($sql, true);
 	         
 	        Paper::$cache = array();
-	        $paperAfter = Paper::newFromTitle($title);
+	        $paperAfter = Paper::newFromTitle($title, $this->category);
 	        // Notification for new authors
 	        foreach($paperAfter->getAuthors() as $author){
                 $found = false;
@@ -143,7 +143,7 @@ abstract class PaperAPI extends API{
 	                VALUES ('$description','{$this->category}','".serialize($projects)."','{$type}','$title','$date','$venue','$status','".serialize($authors)."','".serialize($data)."')";
 	        $result = DBFunctions::execSQL($sql, true);
 	        Paper::$cache = array();
-	        $paper = Paper::newFromTitle($title);
+	        $paper = Paper::newFromTitle($title, $this->category);
 	        foreach($authors as $author){
 	            $person = Person::newFromNameLike($author);
                 if($person == null || $person->getName() == null){

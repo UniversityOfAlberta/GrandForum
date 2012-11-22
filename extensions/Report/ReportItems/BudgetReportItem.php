@@ -135,7 +135,7 @@ class BudgetReportItem extends AbstractReportItem {
 		    $budget = $budget->copy()->filterCols(V_PROJ, array(""));
 		    $person = Person::newFromId($this->personId);
 		    
-		    if($person->isRoleDuring(CNI)){
+		    if($person->isRoleDuring(CNI) && !$person->isRole(PNI)){
 		        $errors = self::addWorksWithRelation($data, true);
 		        foreach($errors as $key => $error){
 		            $budget->errors[0][] = $error;
@@ -197,7 +197,7 @@ class BudgetReportItem extends AbstractReportItem {
             foreach($row as $proj){
                 $project = Project::newFromName($proj->getValue());
                 if($project != null && $project->getName() != null){
-                    if(substr($project->getProjectEndDate(), 0, 4) == REPORTING_YEAR){
+                    if(substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
                         $errors[] = "'{$project->getName()}' is not continuing next year";
                     }
                 }
@@ -218,7 +218,7 @@ class BudgetReportItem extends AbstractReportItem {
             foreach($row as $proj){
                 $project = Project::newFromName($proj->getValue());
                 if($project != null && $project->getName() != null){
-                    if(substr($project->getProjectEndDate(), 0, 4) == REPORTING_YEAR){
+                    if(substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
                         $errors[] = "'{$project->getName()}' is not continuing next year";
                     }
                     // Now look for the people

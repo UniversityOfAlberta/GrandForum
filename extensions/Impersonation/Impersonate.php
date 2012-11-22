@@ -4,9 +4,13 @@ require_once("SpecialImpersonate.php");
 
 $wgHooks['AuthPluginSetup'][] = 'impersonate';
 $wgHooks['UserGetRights'][] = 'changeGroups';
+$wgHooks['UserLogoutComplete'][] = 'clearImpersonation';
 
 function impersonate(){
     global $wgRequest, $wgServer, $wgScriptPath, $wgUser, $wgMessage, $wgRealUser, $wgImpersonating, $wgTitle;
+    if(!$wgUser->isLoggedIn()){
+        return true;
+    }
     $exploded = explode("?", @$_SERVER["REQUEST_URI"]);
     $page = $exploded[0];
     $title = explode("/", $page);
@@ -55,13 +59,20 @@ function impersonate(){
             setcookie('urlBeforeImpersonate', $urlBeforeImpersonate, time()+(60*60), '/');
             setcookie('impersonate', "{$_GET['impersonate']}|".(time()+(60*60)), time()+(60*60), '/'); // Cookie will expire in one hour
             header("Location: {$wgServer}{$page}");
+            exit;
         }
     }
     if(isset($_GET['stopImpersonating'])){
-        $urlBeforeImpersonate = $_COOKIE['urlBeforeImpersonate'];
+        if(isset($_COOKIE['urlBeforeImpersonate'])){
+            $urlBeforeImpersonate = $_COOKIE['urlBeforeImpersonate'];
+        }
+        else{
+            $urlBeforeImpersonate = "$wgScriptPath/index.php/Main_Page";
+        }
         setcookie('impersonate', '', time()-(60*60), '/'); // Delete Cookie
         setcookie('urlBeforeImpersonate', '', time()-(60*60), '/'); // Delete Cookie
         header("Location: {$wgServer}{$urlBeforeImpersonate}");
+        exit;
     }
     if(isset($_COOKIE['impersonate'])){
         $exploded = explode("|", $_COOKIE['impersonate']);
@@ -125,7 +136,7 @@ function impersonate(){
             if(count($leadership) > 0){
                 foreach($leadership as $proj){
                     if(($person->isRoleDuring(PNI) || $person->isRoleDuring(CNI)) &&
-                       $person->isMemberOf($proj)){
+                       $person->isMemberOfDuring($proj)){
                         if("$ns:$title" == "Special:Report" &&
                            @$_GET['report'] == "NIReport" &&
                            @$_GET['project'] == $proj->getName()){
@@ -180,6 +191,23 @@ function changeGroups($user, &$aRights){
         unset($aRights[$key]);
     }
     $aRights[0] = 'read';
+    return true;
+}
+
+function clearImpersonation( &$user, &$inject_html, $old_name ){
+    global $wgImpersonating, $wgScriptPath;
+    if($wgImpersonating){
+        if(isset($_COOKIE['urlBeforeImpersonate'])){
+            $urlBeforeImpersonate = $_COOKIE['urlBeforeImpersonate'];
+        }
+        else{
+            $urlBeforeImpersonate = "$wgScriptPath/index.php/Main_Page";
+        }
+        setcookie('impersonate', '', time()-(60*60), '/'); // Delete Cookie
+        setcookie('urlBeforeImpersonate', '', time()-(60*60), '/'); // Delete Cookie
+        header("Location: {$wgServer}{$urlBeforeImpersonate}");
+        exit;
+    }
     return true;
 }
 

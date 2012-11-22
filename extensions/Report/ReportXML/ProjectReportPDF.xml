@@ -28,6 +28,9 @@
         <ReportItem id="report_pl_progress" type="PLProgressReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
+        <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="ProjectReport">
+            <![CDATA[{$item}]]>
+        </ReportItem>
         <ReportItem id="report_pni_progress" type="ProjectNIProgressReportItem">
             <![CDATA[{$item}</table></small></td></tr>]]>
         </ReportItem>
@@ -95,7 +98,7 @@
     <ReportSection id="report3" name="Reflections: Other Aspects of my project's involvement in GRAND" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="3" renderpdf="true">
     <!-- IIIa. Plans for Next Year -->
         <ReportItem id='IIIa_head' type="StaticReportItem">
-            <![CDATA[<h2>Planed activities for {$project_name} in GRAND</h2>]]>
+            <![CDATA[<h2>Planned activities for {$project_name} in GRAND</h2>]]>
         </ReportItem>
         <ReportItem id="IIIa" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="TextareaReportItem">
             <![CDATA[{$item}]]>

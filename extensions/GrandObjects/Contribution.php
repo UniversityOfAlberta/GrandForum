@@ -105,6 +105,7 @@ class Contribution {
     // Searches for the given phrase in the table of publications
 	// Returns an array of publications which fit the search
 	static function search($phrase, $category='all'){
+	    session_write_close();
 	    $splitPhrase = explode(" ", $phrase);
 	    $sql = "SELECT id, name
                 FROM(SELECT id, name, rev_id

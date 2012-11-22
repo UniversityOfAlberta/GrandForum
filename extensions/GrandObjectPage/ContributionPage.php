@@ -93,11 +93,14 @@ class ContributionPage {
                         APIRequest::doAction('AddContribution', true);
                         Contribution::$cache = array();
                         $contribution = Contribution::newFromName($_POST['title']);
+                        session_write_close();
                         if(!$create && count($wgMessage->errors) == 0){
                             header("Location: {$contribution->getUrl()}");
+                            exit;
                         }
                         else if(count($wgMessage->errors) == 0){
                             header("Location: {$contribution->getUrl()}");
+                            exit;
                         }
                     }
                     $wgOut->clearHTML();

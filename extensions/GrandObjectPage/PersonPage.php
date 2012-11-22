@@ -13,12 +13,13 @@ class PersonPage {
     function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues;
         $me = Person::newFromId($wgUser->getId());
-        if(!isset($wgRoleValues[$article->getTitle()->getNsText()])){
+        $nsText = str_replace("_", " ", $article->getTitle()->getNsText());
+        if(!isset($wgRoleValues[$nsText])){
             // Namespace is not a role namespace
             return true;
         }
         if(!$wgOut->isDisabled()){
-            $role = $article->getTitle()->getNsText();
+            $role = $nsText;
             $name = $article->getTitle()->getText();
             if($role == ""){
                 $split = explode(":", $name);
@@ -31,7 +32,10 @@ class PersonPage {
                 $role = $split[0];
             }
             $person = Person::newFromName($name);
-            if((array_search($role, $wgRoles) !== false || $role == INACTIVE) && 
+            if((array_search($role, $wgRoles) !== false || $role == INACTIVE || 
+                                                           $role == PL || $role == 'PL' ||
+                                                           $role == COPL || $role == 'COPL' ||
+                                                           $role == PM || $role == 'PM') && 
                $person->getName() != null && 
                $person != null && $person->isRole($role)){
                 $supervisors = $person->getSupervisors();
@@ -139,6 +143,10 @@ class PersonPage {
         }
         foreach($roleNames as $key => $role){
             if($role == "Inactive"){
+                if($person->isProjectManager() || $person->isProjectLeader() || $person->isProjectCoLeader()){
+                    unset($roleNames[$key]);
+                    continue;
+                }
                 $lastRole = $person->getLastRole();
                 if($lastRole != null){
                     $roleNames[$key] = "Inactive-".$lastRole->getRole();

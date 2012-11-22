@@ -13,7 +13,7 @@ require_once("ProjectReport.php");
 */
 // Not exactly required, but closely related:
 
-
+/*
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['OldReport'] = 'OldReport'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['OldReport'] = $dir . 'OldReport.i18n.php';
@@ -107,7 +107,7 @@ EOF;
         /*
          * INITIAL CLEANUP
          */
-          
+/*          
         $html = str_get_html($wgOut->getHTML(), true, true, DEFAULT_TARGET_CHARSET, false); // Create the dom object
         foreach($html->find('a') as $a){
             $a->tag = 'b';  // Convert all links to bold text
@@ -261,7 +261,7 @@ EOD;
         /*
          * BUDGET MANIPULATION
          */
-
+/*
         $budget_just = $html->find('[id=div_budget_just]', 0);
         $budget_just2 = $html2->find('[id=div_budget_just]', 0);
         if($budget_just != null){
@@ -305,7 +305,7 @@ EOD;
          * ALL MANIPULATIONS SHOULD BE DONE AT THIS POINT.
          * PREPARE THE PDF GENERATOR
          */
-        
+/*        
         $dompdf = "";
         try {
             $dompdf = PDFGenerator::generate("Report" , $html, $head, false);
@@ -354,7 +354,7 @@ EOF;
         /*
          * INITIAL CLEANUP
          */
-          
+/*          
         $html = str_get_html($wgOut->getHTML(), true, true, DEFAULT_TARGET_CHARSET, false); // Create the dom object
         foreach($html->find('.pdfnodisplay') as $nodisplay){
             $nodisplay->innertext = "";
@@ -400,7 +400,7 @@ EOF;
         /*
          * DASHBOARD MANIPULATION
          */
-
+/*
         //Remove all 'Save' buttons
         foreach( $html->find("input[type=submit]") as $submit ){
             $submit->outertext = "";
@@ -505,7 +505,7 @@ EOD;
          * BUDGET MANIPULATION
          */
 
-
+/*
         $budget_just = $html->find('[id=div_budget_just]', 0);
         $budget_just2 = $html2->find('[id=div_budget_just]', 0);
         if($budget_just != null){
@@ -540,7 +540,7 @@ EOD;
          * ALL MANIPULATIONS SHOULD BE DONE AT THIS POINT.
          * PREPARE THE PDF GENERATOR
          */
-       
+/*       
         $newpdf = "";
         try {
             $newpdf = PDFGenerator::generate("Report" , $html, $head, false);
@@ -855,5 +855,5 @@ EOF;
         } 
 	}
 }
-
+*/
 ?>

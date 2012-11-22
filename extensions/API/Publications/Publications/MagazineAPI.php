@@ -7,6 +7,7 @@ class MagazineAPI extends PaperAPI{
 	    $this->addPOST("abstract",false,"The abstract of the publication","My Abstract");
 	    $this->addPOST("date",false,"The date this publication was published, in the form YYYY-MM-DD","2010-10-15");
 	    $this->addPOST("status",false,"The status of the publication.  Can be either Submitted,Under Revision,Published,Rejected","Submitted");
+	    $this->addPOST("published_in",false,"The title of the journal that this publication was published in","Sunday Review Magazine");
 	    $this->addPOST("pages",false,"The pages where this article appears", "11-12");
 	    $this->addPOST("volume",false,"The volume of this magazine", "2");
 	    $this->addPOST("number",false,"The number of this magazine", "11-12");

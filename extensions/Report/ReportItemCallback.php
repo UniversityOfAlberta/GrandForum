@@ -86,7 +86,7 @@ class ReportItemCallback {
     	$project_name = "";
     	if($this->reportItem->projectId != 0 ){
     		$project = Project::newFromId($this->reportItem->projectId);
-    		$deleted = ($project->isDeleted()) ? " (Deleted)" : "";
+    		$deleted = ($project->isDeleted()) ? " (Ended)" : "";
     		$project_name = $project->getName().$deleted;
     	}
     	return $project_name;
@@ -498,7 +498,7 @@ class ReportItemCallback {
 	    $person = Person::newFromId($this->reportItem->personId);
 	    $projects = array();
 	    foreach($person->getProjectsDuring() as $project){
-	        $deleted = ($project->isDeleted()) ? " (Deleted)" : "";
+	        $deleted = ($project->isDeleted()) ? " (Ended)" : "";
 	        $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";
 	    }
 	    return implode(", ", $projects);
@@ -562,7 +562,7 @@ class ReportItemCallback {
 	}
 	
 	function getTimestamp(){ 
-        return date("Y-m-d H:i:s T", time()+60*60); 
+        return date("Y-m-d H:i:s T", time()); 
 	}
 	
 	function getReportName(){

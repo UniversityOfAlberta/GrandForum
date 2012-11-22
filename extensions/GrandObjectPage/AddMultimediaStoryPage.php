@@ -86,7 +86,7 @@ class AddMultimediaStoryPage extends SpecialPage{
 
 	function AddMultimediaStoryPage() {
 		wfLoadExtensionMessages('AddMultimediaStoryPage');
-		SpecialPage::SpecialPage("AddMultimediaStoryPage", HQP.'+', true, 'runAddMultimediaStoryPage');
+		SpecialPage::SpecialPage("AddMultimediaStoryPage", HQP.'During+', true, 'runAddMultimediaStoryPage');
 	}
 
 	function run($par){

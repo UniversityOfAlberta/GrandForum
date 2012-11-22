@@ -67,7 +67,7 @@ class DashboardReportItem extends StaticReportItem {
             $dashboard = new DashboardTable($struct, $person);
         }
         if($project != null && $project->getName() != null && 
-           substr($project->getProjectEndDate(), 0, 4) == REPORTING_YEAR &&
+           substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR &&
            $struct == PROJECT_REPORT_TIME_STRUCTURE){
             $dashboard->filterCols(HEAD, array("Requested.*"));
         }

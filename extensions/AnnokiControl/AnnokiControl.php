@@ -49,6 +49,11 @@ $egAnnokiExtensions['GrandObjects']     = array( 'name' => 'GrandObjects',
 					      'enabled' => true,
 					      );
 					      
+$egAnnokiExtensions['UI'] = array( 'name' => 'User Interface',
+					      'path' => "$IP/extensions/UI/UIElement.php",
+					      'enabled' => true,
+					      );
+					      
 $egAnnokiExtensions['Notification']     = array( 'name' => 'Notification',
 					      'path' => "$IP/extensions/Notification/Notification.body.php",
 					      'enabled' => true,
@@ -173,6 +178,10 @@ $egAnnokiExtensions['ReportTables']     = array( 'name' => 'ReportTables',
 					      'path' => "$IP/extensions/ReportTables/Report.php",
 					      'enabled' => true,
 					      );
+$egAnnokiExtensions['ReportStats']     = array( 'name' => 'ReportStats',
+					      'path' => "$IP/extensions/ReportStats/ReportStats.php",
+					      'enabled' => true,
+					      );
 					      
 $egAnnokiExtensions['ProjectMilestones']     = array( 'name' => 'Project Milestones',
 					      'path' => "$IP/extensions/ProjectMilestones/ProjectMilestones.php",
@@ -251,6 +260,11 @@ $egAnnokiExtensions['Acknowledgements']     = array( 'name' => 'Acknowledgements
 					      
 $egAnnokiExtensions['AllocatedBudgets']     = array( 'name' => 'Allocated Budgets',
 					      'path' => "$IP/extensions/AllocatedBudgets/AllocatedBudgets.php",
+					      'enabled' => true,
+					      );
+					      
+$egAnnokiExtensions['ProjectEvolution']     = array( 'name' => 'Project Evolution',
+					      'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php",
 					      'enabled' => true,
 					      );
 

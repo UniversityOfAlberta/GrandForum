@@ -5,9 +5,11 @@ class Project{
     static $cache = array();
 
 	var $id;
+	var $evolutionId;
 	var $fullName;
 	var $name;
-	var $themes;
+	var $status;
+	var $type;
 	var $people;
 	var $contributions;
 	var $multimedia;
@@ -16,33 +18,33 @@ class Project{
 	var $comments;
 	var $milestones;
 	var $budgets;
-	var $deleted; // Deletion takes effect immediatly if deleted == 1
-	var $projectEndDate; // This is just used to say when the deletion actually happened, or when it will happen
+	var $deleted;
+	var $effectiveDate;
+	private $themes;
 	private $succ;
 	private $preds;
+	private $peopleCache = null;
+	private $leaderCache = array();
 
 	// Returns a new Project from the given id
 	static function newFromId($id){
 	    if(isset(self::$cache[$id])){
 	        return self::$cache[$id];
 	    }
-	    $sql = "SELECT *
-	            FROM `grand_project_evolution`
-	            WHERE `project_id` = '{$id}'
-	            ORDER BY `date` DESC LIMIT 1";
-	    $data = DBFunctions::execSQL($sql);
-	    if(count($data) > 0){
-	        $project = Project::newFromId($data[0]['new_id']);
-	        self::$cache[$project->id] = &$project;
-	        return $project;
-	    }
-		
-		$sql = "SELECT p.id, p.name, d.full_name, p.deleted, p.project_end_date
-				FROM grand_project p
-				LEFT JOIN grand_project_descriptions d ON(p.id = d.project_id)
-				WHERE p.id = '$id'
-				ORDER BY d.id DESC LIMIT 1";
-		
+		$sql = "(SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.status, s.type
+	             FROM grand_project p, grand_project_evolution e, grand_project_status s
+	             WHERE e.`project_id` = '{$id}'
+	             AND e.`new_id` != '{$id}'
+	             AND e.new_id = p.id
+				 AND s.evolution_id = e.id
+	             ORDER BY `date` DESC LIMIT 1)
+	            UNION 
+	            (SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.status, s.type
+				 FROM grand_project p, grand_project_evolution e, grand_project_status s
+				 WHERE p.id = '$id'
+				 AND e.new_id = p.id
+				 AND s.evolution_id = e.id
+				 ORDER BY e.id DESC LIMIT 1)";
 		$data = DBFunctions::execSQL($sql);
 		if (DBFunctions::getNRows() > 0){
 			$project = new Project($data);
@@ -59,18 +61,19 @@ class Project{
 	    if(isset(self::$cache[$name])){
 	        return self::$cache[$name];
 	    }
-		
-		$sql = "SELECT p.id, p.name, d.full_name, p.deleted, p.project_end_date
-				FROM grand_project p
-				LEFT JOIN grand_project_descriptions d ON(p.id = d.project_id)
+		$sql = "SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.type, s.status
+				FROM grand_project p, grand_project_evolution e, grand_project_status s
 				WHERE p.name = '$name'
-				ORDER BY d.id DESC LIMIT 1";
+				AND e.new_id = p.id
+				AND s.evolution_id = e.id
+				ORDER BY e.id DESC LIMIT 1";
 				
 		$data = DBFunctions::execSQL($sql);
 		if (DBFunctions::getNRows() > 0){
 		    $sql = "SELECT *
 	                FROM `grand_project_evolution`
 	                WHERE `project_id` = '{$data[0]['id']}'
+	                AND `new_id` != '{$data[0]['id']}'
 	                ORDER BY `date` DESC LIMIT 1";
 	        $data1 = DBFunctions::execSQL($sql);
 	        if(count($data1) > 0){
@@ -89,29 +92,40 @@ class Project{
 	}
 	
 	// Returns a Project from the given historic ID
-	static function newFromHistoricId($id){
-	    $sql = "SELECT p.id, p.name, d.full_name, p.deleted, p.project_end_date
-				FROM grand_project p
-				LEFT JOIN grand_project_descriptions d ON(p.id = d.project_id)
+	static function newFromHistoricId($id, $evolutionId=null){
+	    if(isset(self::$cache[$id.'_'.$evolutionId])){
+	        return self::$cache[$id.'_'.$evolutionId];
+	    }
+	    $sql = "SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.type, s.status
+				FROM grand_project p, grand_project_evolution e, grand_project_status s
 				WHERE p.id = '$id'
-				ORDER BY d.id DESC";
+				AND e.new_id = p.id
+				AND s.evolution_id = e.id
+				ORDER BY e.id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
 		if (DBFunctions::getNRows() > 0){
 		    $project = new Project($data);
+		    $project->evolutionId = $evolutionId;
+		    self::$cache[$id.'_'.$evolutionId] = $project;
 		    return $project;
 		}
 	}
 	
 	// Returns a Project from the given historic name
 	static function newFromHistoricName($name){
-	    $sql = "SELECT p.id, p.name, d.full_name, p.deleted, p.project_end_date
-				FROM grand_project p
-				LEFT JOIN grand_project_descriptions d ON(p.id = d.project_id)
+	    if(isset(self::$cache['h_'.$name])){
+	        return self::$cache['h_'.$name];
+	    }
+	    $sql = "SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.type, s.status
+				FROM grand_project p, grand_project_evolution e, grand_project_status s
 				WHERE p.name = '$name'
-				ORDER BY d.id DESC";
+				AND e.new_id = p.id
+				AND s.evolution_id = e.id
+				ORDER BY e.id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
 		if (DBFunctions::getNRows() > 0){
 		    $project = new Project($data);
+		    self::$cache['h_'.$name] = &$project;
 		    return $project;
 		}
 	}
@@ -120,16 +134,17 @@ class Project{
 	static function getAllProjects(){
 		$sql = "SELECT *
 				FROM grand_project p
-				WHERE deleted != '1'
  				ORDER BY p.name";
 		$data = DBFunctions::execSQL($sql);
 		$projects = array();
 		$projectNames = array();
 		foreach($data as $row){
 		    $project = Project::newFromId($row['id']);
-		    if(!isset($projectNames[$project->name])){
-		        $projectNames[$project->name] = true;
-			    $projects[] = $project;
+		    if($project != null && $project->getName() != ""){
+		        if(!isset($projectNames[$project->name]) && !$project->isDeleted()){
+		            $projectNames[$project->name] = true;
+			        $projects[] = $project;
+			    }
 			}
 		}
 		return $projects;
@@ -192,6 +207,34 @@ class Project{
 		return $projects;
 	}
 	
+	// Constructor
+	// Takes in a resultset containing the 'project id' and 'project name'
+	function Project($data){
+		if(isset($data[0])){
+			$this->id = $data[0]['id'];
+			$this->name = $data[0]['name'];
+			$this->evolutionId = $data[0]['evolutionId'];
+			$this->status = $data[0]['status'];
+			$this->type = $data[0]['type'];
+			$this->succ = false;
+			$this->preds = false;
+			if(isset($data[0]['action']) && $data[0]['action'] == 'DELETE'){
+			    $this->deleted = true;
+			}
+			else{
+			    $this->deleted = false;
+			}
+			if(isset($data[0]['effective_date'])){
+			    $this->effectiveDate = $data[0]['effective_date'];
+			}
+			else{
+			    $this->effectiveDate = "0000-00-00 00:00:00";
+			}
+			$this->fullName = false;
+			$this->themes = null;
+		}
+	}
+	
     static function getHQPDistributionDuring($startRange = false, $endRange = false){
          //If no range end are provided, assume it's for the current year.
         if( $startRange === false || $endRange === false ){
@@ -226,29 +269,16 @@ EOF;
         
         return $distribution;
     }
-    
-	// Constructor
-	// Takes in a resultset containing the 'project id' and 'project name'
-	function Project($data){
-		if(isset($data[0])){
-			$this->id = $data[0]['id'];
-			$this->name = $data[0]['name'];
-			$this->fullName = $data[0]['full_name'];
-			$this->succ = false;
-			$this->preds = false;
-			if(isset($data[0]['deleted'])){
-			    $this->deleted = $data[0]['deleted'];
-			}
-			else{
-			    $this->deleted = false;
-			}
-			$this->projectEndDate = $data[0]['project_end_date'];
-		}
-	}
 	
 	// Returns the id of this Project
 	function getId(){
 		return $this->id;
+	}
+	
+	// Returns the evolutionId of this Project
+	// The evolution id is like a revision of the project since projects can merge, change status/type etc.
+	function getEvolutionId(){
+	    return $this->evolutionId;
 	}
 	
 	// Returns the name of this Project
@@ -258,20 +288,61 @@ EOF;
 	
 	// Returns the full name of this Project
 	function getFullName(){
+	    if($this->fullName === false){
+	        $sql = "(SELECT d.full_name
+	                 FROM `grand_project_descriptions` d
+	                 WHERE d.evolution_id = '{$this->evolutionId}'
+				     ORDER BY d.id DESC LIMIT 1)
+				    UNION
+				    (SELECT d.full_name
+				     FROM `grand_project_descriptions` d
+				     WHERE d.project_id = '{$this->id}'
+				     ORDER BY d.evolution_id LIMIT 1)";
+	        $data = DBFunctions::execSQL($sql);
+	        if(DBFunctions::getNRows() > 0){
+	            $this->fullName = $data[0]['full_name'];
+	        }
+	        else{
+	            $this->fullName = $this->name;
+	        }
+	    }
 	    return $this->fullName;
+	}
+	
+	// Returns the status of this Project
+	function getStatus(){
+	    return $this->status;
+	}
+	
+	// Returns the type of this Project
+	function getType(){
+	    return $this->type;
 	}
 	
 	// Returns the Predecessors of this Project
 	function getPreds(){
-        if($this->preds == false){
-	        $sql = "SELECT e.project_id FROM
-	                `grand_project_evolution` e
-	                WHERE e.new_id = '{$this->id}'";
+        if($this->preds === false){
+	        $sql = "SELECT DISTINCT e.project_id, e.last_id
+	                FROM `grand_project_evolution` e
+	                WHERE e.new_id = '{$this->id}'
+	                AND (e.id = '{$this->evolutionId}' OR e.action = 'MERGE')
+	                ORDER BY e.id DESC";
 	        $data = DBFunctions::execSQL($sql);
 	        $this->preds = array();
             foreach($data as $row){
-                $pred = Project::newFromHistoricId($row['project_id']);
-                if($pred != null){
+                $pred = Project::newFromHistoricId($row['project_id'], $row['last_id']);
+                if($pred != null && $pred->getName() != ""){
+                    if($pred->getId() == $this->id){
+		                // These are the same project id, just different evolution id.  Copy over some of the data
+		                $pred->milestones = $this->milestones;
+		                $pred->people = $this->people;
+		                $pred->contributions = $this->contributions;
+	                    $pred->multimedia = $this->multimedia;
+	                    $pred->startDates = $this->startDates;
+	                    $pred->endDates = $this->endDates;
+	                    $pred->comments = $this->comments;
+	                    $pred->budgets = $this->budgets;
+		            }
                     $this->preds[] = $pred;
                 }
             }
@@ -291,7 +362,7 @@ EOF;
 	
 	// Returns the Successor Project
 	function getSucc(){
-	    if($this->succ == false){
+	    if(!is_array($this->succ) && $this->succ == false){
 	        $sql = "SELECT e.new_id FROM
 	                `grand_project_evolution` e
 	                WHERE e.project_id = '{$this->id}'";
@@ -326,12 +397,15 @@ EOF;
 	
 	// Returns whether or not this project had been deleted or not
 	function isDeleted(){
-	    return $this->deleted;
+	    if(strcmp($this->effectiveDate, date('Y-m-d H:i:s')) <= 0){
+	        return $this->deleted;
+	    }
+	    return false;
 	}
 	
-	// Returns when the project was/is to be deleted
-	function getProjectEndDate(){
-	    return $this->projectEndDate;
+	// Returns when the evolution state took place
+	function getEffectiveDate(){
+	    return $this->effectiveDate;
 	}
 	
 	// Returns an array of Person objects which represent
@@ -345,15 +419,17 @@ EOF;
                 $people[$person->getId()] = $person;
             }
         }
-	    $sql = "SELECT user, user_name, SUBSTR(user_name, LOCATE('.', user_name) + 1) as last_name
-                FROM grand_user_projects, mw_user
-                WHERE (end_date > CURRENT_TIMESTAMP OR end_date = '0000-00-00 00:00:00')
-                AND user = user_id
-                AND project_id = '{$this->id}'
-                AND `deleted` != '1'
-                ORDER BY last_name ASC";
-	    $data = DBFunctions::execSQL($sql);
-	    foreach($data as $row){
+        if($this->peopleCache == null){
+	        $sql = "SELECT user, user_name, SUBSTR(user_name, LOCATE('.', user_name) + 1) as last_name
+                    FROM grand_user_projects, mw_user
+                    WHERE (end_date > CURRENT_TIMESTAMP OR end_date = '0000-00-00 00:00:00')
+                    AND user = user_id
+                    AND project_id = '{$this->id}'
+                    AND `deleted` != '1'
+                    ORDER BY last_name ASC";
+	        $this->peopleCache = DBFunctions::execSQL($sql);
+	    }
+	    foreach($this->peopleCache as $row){
 	        $id = $row['user'];
 	        $person = Person::newFromId($id);
 	        if(($filter == null || $person->isRole($filter)) && !$person->isRole(MANAGER)){
@@ -496,6 +572,10 @@ EOF;
 	/// resulting array contains instances of Person.  If #onlyid is set to
 	/// true, then the resulting array contains only numerical user IDs.
 	function getCoLeaders($onlyid = false){
+	    $onlyIdStr = ($onlyid) ? 'true' : 'false';
+	    if(isset($this->leaderCache['coleaders'.$onlyIdStr])){
+	        return $this->leaderCache['coleaders'.$onlyIdStr];
+	    }
 	    $ret = array();
 	    $preds = $this->getPreds();
         foreach($preds as $pred){
@@ -525,7 +605,7 @@ EOF;
 			foreach ($data as &$row)
 				$ret[$row['user_id']] = Person::newFromId($row['user_id']);
 		}
-
+        $this->leaderCache['coleaders'.$onlyIdStr] = $ret;
 		return $ret;
 	}
 
@@ -533,6 +613,10 @@ EOF;
 	/// resulting array contains instances of Person.  If #onlyid is set to
 	/// true, then the resulting array contains only numerical user IDs.
 	function getLeaders($onlyid = false) {
+	    $onlyIdStr = ($onlyid) ? 'true' : 'false';
+	    if(isset($this->leaderCache['leaders'.$onlyIdStr])){
+	        return $this->leaderCache['leaders'.$onlyIdStr];
+	    }
 	    $ret = array();
 	    $preds = $this->getPreds();
         foreach($preds as $pred){
@@ -562,25 +646,37 @@ EOF;
 			foreach ($data as &$row)
 				$ret[$row['user_id']] = Person::newFromId($row['user_id']);
 		}
-
+        $this->leaderCache['leaders'.$onlyIdStr] = $ret;
 		return $ret;
 	}
 	
 	// Returns the theme percentage of this project of the given theme index $i
 	function getTheme($i, $history=false){
 	    if(!($i >= 1 && $i <= 5)) return 0; // Fail Gracefully if the index was out of bounds, and return 0
-	    $sql = "SELECT themes 
-	            FROM grand_project_descriptions d
-	            WHERE d.project_id = '{$this->id}'\n";
-	    if(!$history){
-            $sql .= "AND start_date > end_date\n";
+	    if($this->themes == null){
+	        $this->themes = array();
+	        
+	        $sql = "(SELECT themes 
+	                FROM grand_project_descriptions d
+	                WHERE d.project_id = '{$this->id}'\n";
+	        if(!$history){
+                $sql .= "AND evolution_id = '{$this->evolutionId}'
+                         ORDER BY id DESC LIMIT 1)
+                        UNION
+                        (SELECT themes
+                         FROM grand_project_descriptions d
+                         WHERE d.project_id = '{$this->id}'";
+            }
+		    $sql .= "ORDER BY id DESC LIMIT 1)";
+            
+		    $data = DBFunctions::execSQL($sql);
+            if(DBFunctions::getNRows() > 0){
+                $themes = explode("\n", $data[0]['themes']);
+                $this->themes = $themes;
+            }
         }
-		$sql .= "ORDER BY id DESC";
-        
-		$data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
-            $themes = explode("\n", $data[0]['themes']);
-	        return @str_replace("\r", "", $themes[$i - 1]);
+        if(isset($this->themes[$i-1])){
+            return $this->themes[$i-1];
         }
         return 0;
 	}
@@ -598,13 +694,18 @@ EOF;
 	
 	// Returns the description of the Project
 	function getDescription($history=false){
-	    $sql = "SELECT description 
+	    $sql = "(SELECT description 
 	            FROM grand_project_descriptions d
 	            WHERE d.project_id = '{$this->id}'\n";
 	    if(!$history){
-            $sql .= "AND start_date > end_date\n";
+	        $sql .= "AND evolution_id = '{$this->evolutionId}' 
+	                 ORDER BY id DESC LIMIT 1)
+	                UNION
+				    (SELECT description
+				     FROM `grand_project_descriptions` d
+				     WHERE d.project_id = '{$this->id}'";
         }
-		$sql .= "ORDER BY id DESC";
+		$sql .= "ORDER BY id DESC LIMIT 1)";
 		
         $data = DBFunctions::execSQL($sql);
         if(DBFunctions::getNRows() > 0){
@@ -758,11 +859,20 @@ EOF;
 	// Returns the current milestones of this project
 	// If $history is set to true, all the milestones ever for this project are included
 	function getMilestones($history=false){
-	    $this->milestones = array();
+	    if($this->milestones != null && !$history){
+	        echo "HELLO";
+	        return $this->milestones;
+	    }
+	    $milestones = array();
+	    $milestonesIds = array();
 	    $preds = $this->getPreds();
         foreach($preds as $pred){
             foreach($pred->getMilestones($history) as $milestone){
-                $this->milestones[] = $milestone;
+                if(isset($milestoneIds[$milestone->getMilestoneId()])){
+                    continue;
+                }
+                $milestoneIds[$milestone->getMilestoneId()] = true;
+                $milestones[] = $milestone;
             }
         }
 	    $sql = "SELECT DISTINCT milestone_id
@@ -776,53 +886,48 @@ EOF;
 	    $data = DBFunctions::execSQL($sql);
 	    
 	    foreach($data as $row){
-	        $this->milestones[] = Milestone::newFromId($row['milestone_id']);
+	        if(isset($milestoneIds[$row['milestone_id']])){
+                continue;
+            }
+            $milestone = Milestone::newFromId($row['milestone_id']);
+            $milestoneIds[$milestone->getMilestoneId()] = true;
+            $milestones[] = $milestone;
 	    }
-	    return $this->milestones;
+	    
+	    if(!$history){
+	        $this->milestones = $milestones;
+	    }
+	    return $milestones;
 	}
 
 	// Returns the past milestones of this project
 	function getPastMilestones(){
-	    $this->milestones = array();
-	    $preds = $this->getPreds();
-        foreach($preds as $pred){
-            foreach($pred->getPastMilestones() as $milestone){
-                $this->milestones[] = $milestone;
-            }
-        }
-	    $sql = "SELECT DISTINCT milestone_id
-	            FROM grand_milestones
-	            WHERE project_id = '{$this->id}'
-	            AND start_date > end_date
-                AND status IN ('Abandoned','Closed') 
-                ORDER BY projected_end_date";
-	    
-	    $data = DBFunctions::execSQL($sql);
-	    foreach($data as $row){
-	        $this->milestones[] = Milestone::newFromId($row['milestone_id']);
-	    }
-	    return $this->milestones;
-	}
-	
-	// Returns an array of milestones where all the milestones which were active at some point after $timestamp are included
-	//NOTE OCT26, 2011: This function is incorrect; We need a function that returns Milestones that were active at any point during the given year. See getMilestonesDuring
-	function getMilestonesSince($timestamp='0000-00-00 00:00:00'){
+	    $milestoneIds = array();
 	    $milestones = array();
 	    $preds = $this->getPreds();
         foreach($preds as $pred){
-            foreach($pred->getMilestonesSince($timestamp) as $milestone){
+            foreach($pred->getPastMilestones() as $milestone){
+                if(isset($milestoneIds[$milestone->getMilestoneId()])){
+                    continue;
+                }
+                $milestoneIds[$milestone->getMilestoneId()] = true;
                 $milestones[] = $milestone;
             }
         }
 	    $sql = "SELECT DISTINCT milestone_id
 	            FROM grand_milestones
 	            WHERE project_id = '{$this->id}'
-	            AND start_date >= '$timestamp'
-	            AND status != 'Abandoned' AND status != 'Closed'
-	            ORDER BY projected_end_date";
+                AND status IN ('Abandoned','Closed') 
+                ORDER BY projected_end_date";
+	    
 	    $data = DBFunctions::execSQL($sql);
 	    foreach($data as $row){
-	        $milestones[] = Milestone::newFromId($row['milestone_id']);
+	        if(isset($milestoneIds[$row['milestone_id']])){
+                continue;
+            }
+            $milestone = Milestone::newFromId($row['milestone_id']);
+            $milestoneIds[$milestone->getMilestoneId()] = true;
+            $milestones[] = $milestone;
 	    }
 	    return $milestones;
 	}

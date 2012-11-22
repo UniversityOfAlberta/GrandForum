@@ -479,8 +479,8 @@ abstract class AbstractReport extends SpecialPage {
                         if($this->project != null){
                             $result = (($perm['perm']['deleted'] && 
                                        $this->project->isDeleted() && 
-                                       substr($this->project->getProjectEndDate(), 0, 4) >= substr($perm['start'], 0, 4) && 
-                                       substr($this->project->getProjectEndDate(), 0, 4) <= substr($perm['end'], 0, 4)) || 
+                                       substr($this->project->getEffectiveDate(), 0, 4) >= substr($perm['start'], 0, 4) && 
+                                       substr($this->project->getEffectiveDate(), 0, 4) <= substr($perm['end'], 0, 4)) || 
                                       (!$perm['perm']['deleted'] && 
                                        !$this->project->isDeleted()));
                         }

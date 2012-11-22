@@ -5,6 +5,8 @@ class ProjectDescriptionAPI extends API{
     function ProjectDescriptionAPI(){
         $this->addPOST("project",true,"The name of the project","MEOW");
 	    $this->addPOST("description",true,"The description for this project","MEOW is great");
+	    $this->addPOST("themes",false,"The theme distribution of this project", "10,20,30,20,20");
+	    $this->addPOST("fullName",false,"The full name of the project", "Media Enabled Organizational Workflow");
     }
 
     function processParams($params){
@@ -37,14 +39,26 @@ class ProjectDescriptionAPI extends API{
             }
 		}
 		
-		$themes = explode(",", $_POST['themes']);
-        
+		if(isset($_POST['themes'])){
+		    $themes = explode(",", $_POST['themes']);
+		}
+		else{
+		    $themes = array($project->getTheme(1), $project->getTheme(2), $project->getTheme(3), $project->getTheme(4), $project->getTheme(5));
+		}
+		
+		if(isset($_POST['fullName'])){
+		    $fullName = $_POST['fullName'];
+		}
+		else{
+		    $fullName = $project->getFullName();
+		}
+        DBFunctions::begin();
         $sql = "UPDATE grand_project_descriptions
                 SET `end_date` = CURRENT_TIMESTAMP
                 WHERE project_id = '{$project->getId()}' AND id = '{$project->getLastHistoryId()}'";
         DBFunctions::execSQL($sql, true);
-        $sql = "INSERT INTO grand_project_descriptions (`project_id`,`full_name`,`themes`,`description`,`start_date`)
-                VALUES ('{$project->getId()}','{$project->getFullName()}','{$themes[0]}\n{$themes[1]}\n{$themes[2]}\n{$themes[3]}\n{$themes[4]}','{$_POST['description']}',CURRENT_TIMESTAMP)";
+        $sql = "INSERT INTO grand_project_descriptions (`project_id`,`evolution_id`,`full_name`,`themes`,`description`,`start_date`)
+                VALUES ('{$project->getId()}','{$project->evolutionId}','{$fullName}','{$themes[0]}\n{$themes[1]}\n{$themes[2]}\n{$themes[3]}\n{$themes[4]}','{$_POST['description']}',CURRENT_TIMESTAMP)";
         DBFunctions::execSQL($sql, true);
         if(!$noEcho){
             echo "Project description updated\n";

@@ -250,7 +250,7 @@ class ReportXMLParser {
                     $section->setName("{$attributes->name}");
                 }
                 if(isset($attributes->tooltip)){
-                    $section->setTooltip("{$attributes->tooltip}");
+                    $section->setTooltip(str_replace("'", "&#39;", "{$attributes->tooltip}"));
                 }
                 if(isset($attributes->blobSection)){
                     if(!defined($attributes->blobSection)){

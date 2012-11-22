@@ -144,7 +144,7 @@ class Budget extends QueryableTable{
 		    $newStructure = array();
 		    $objReader = PHPExcel_IOFactory::createReaderForFile($tmpn);
 		    $class = get_class($objReader);
-		    if($class != "PHPExcel_Reader_Excel5"){
+		    if($class != "PHPExcel_Reader_Excel5" && $class != "PHPExcel_Reader_Excel2007"){
 		        return false;
 		    }
 		    $objReader->setReadDataOnly(true);

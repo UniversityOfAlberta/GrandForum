@@ -149,6 +149,7 @@ class PublicationJSONCache extends SerializedCache{
     
     function run(){
         $pAuthors = $this->paper->getAuthors();
+        $json = array();
         if(count($pAuthors) > 0){
             $authors = array();
             $authorCount = 0;

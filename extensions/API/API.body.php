@@ -77,6 +77,9 @@ class APIRequest{
 		$actions = array();
 		
 		//POST
+		$actions['Publications']['addBibtexArticleRef'] = new BibtexArticleAPI();
+		$actions['Publications']['addBibtexBookRef'] = new BibtexBookAPI();
+		$actions['Publications']['addBibtexCollectionRef'] = new BibtexCollectionAPI();
 		$actions['Publications']['addProceedingsPaperRef'] = new ProceedingsPaperAPI();
 		$actions['Publications']['addCollectionRef'] = new CollectionAPI();
 		$actions['Publications']['addJournalPaperRef'] = new JournalPaperAPI();
@@ -95,6 +98,9 @@ class APIRequest{
 		$actions['Publications']['addPosterRef'] = new PosterAPI();
 		$actions['Publications']['addManualRef'] = new ManualAPI();
 		$actions['Publications']['addMiscRef'] = new MiscAPI();
+		$actions['Publications']['updateBibtexArticleRef'] = new BibtexArticleAPI(true);
+		$actions['Publications']['updateBibtexBookRef'] = new BibtexBookAPI(true);
+		$actions['Publications']['updateBibtexCollectionRef'] = new BibtexCollectionAPI(true);
 		$actions['Publications']['updateProceedingsPaperRef'] = new ProceedingsPaperAPI(true);
 		$actions['Publications']['updateCollectionRef'] = new CollectionAPI(true);
 		$actions['Publications']['updateJournalPaperRef'] = new JournalPaperAPI(true);
@@ -198,12 +204,14 @@ class APIRequest{
 		$actions['Contributions']['updateContribution'] = new AddContributionAPI();
 		
 		//POST
+		$actions['Projects']['createProject'] = new CreateProjectAPI();
 		$actions['Projects']['addProjectMember'] = new AddProjectMemberAPI();
 		$actions['Projects']['addProjectMilestone'] = new ProjectMilestoneAPI();
 		$actions['Projects']['updateProjectDescription'] = new ProjectDescriptionAPI();
-		$actions['Projects']['updateProjectThemes'] = new ProjectThemesAPI();
 		$actions['Projects']['updateProjectMilestone'] = new ProjectMilestoneAPI(true);
+		$actions['Projects']['evolveProject'] = new EvolveProjectAPI();
 		$actions['Projects']['deleteProjectMember'] = new DeleteProjectMemberAPI();
+		$actions['Projects']['deleteProject'] = new DeleteProjectAPI();
 		//GET
 		$actions['Projects']['getProjectInfo'] = new ProjectAPI();
 		

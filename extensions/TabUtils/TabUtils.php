@@ -48,6 +48,8 @@ class TabUtils {
            $wgTitle->getText() == "Impersonate" ||
            $wgTitle->getText() == "Duplicates" ||
            $wgTitle->getText() == "EmptyEmailList" ||
+           $wgTitle->getText() == "ProjectEvolution" ||
+           $wgTitle->getText() == "ReportStatsTable" ||
            $wgTitle->getText() == "InactiveUsers"){
             $content_actions = array();
             $rmcClass = false;
@@ -76,14 +78,20 @@ class TabUtils {
                                                 'text' => "Duplicates",
                                                 'href' => "$wgServer$wgScriptPath/index.php/Special:Duplicates");
                 $content_actions['emptyemail'] = array('class' => false,
-                                                'text' => "Empty Email List",
+                                                'text' => "Empty Emails",
                                                 'href' => "$wgServer$wgScriptPath/index.php/Special:EmptyEmailList");
                 $content_actions['inactiveusers'] = array('class' => false,
                                                 'text' => "Inactive Users",
                                                 'href' => "$wgServer$wgScriptPath/index.php/Special:InactiveUsers");
+                $content_actions['reportstats'] = array('class' => false,
+                                                'text' => "Reporting Stats",
+                                                'href' => "$wgServer$wgScriptPath/index.php/Special:ReportStatsTable");
                 $content_actions['impersonate'] = array('class' => false,
                                                 'text' => "Impersonate",
                                                 'href' => "$wgServer$wgScriptPath/index.php/Special:Impersonate");
+                $content_actions['projectevolution'] = array('class' => false,
+                                                'text' => "Project Evolution",
+                                                'href' => "$wgServer$wgScriptPath/index.php/Special:ProjectEvolution");
                 if($wgTitle->getText() == "AcknowledgementsTable"){
                     $content_actions['ack']['class'] = 'selected';
                 }
@@ -92,6 +100,9 @@ class TabUtils {
                 }
                 else if($wgTitle->getText() == "EmptyEmailList"){
                     $content_actions['emptyemail']['class'] = 'selected';
+                }
+                else if($wgTitle->getText() == "ReportStatsTable"){
+                    $content_actions['reportstats']['class'] = 'selected';
                 }
                 else if($wgTitle->getText() == "InactiveUsers"){
                     $content_actions['inactiveusers']['class'] = 'selected';

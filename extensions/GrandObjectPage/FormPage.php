@@ -37,6 +37,7 @@ class FormPage {
                     $wgOut->redirect('');
                     if($errors == ""){
                         header("Location: $wgServer$wgScriptPath/index.php/{$name}:{$form->getId()}");
+                        exit;
                     }
                     else{
                         $wgOut->clearHTML();

@@ -69,7 +69,7 @@ class PollView {
 						}
 						$wgOut->addHTML("<form action='index.php?action=viewPoll&id={$this->pollCollection->id}' method='post'>");
 					}
-					foreach($this->pollCollection->polls as $poll){
+					foreach($this->pollCollection->getPolls() as $poll){
 						if($isOwner){
 							// User is the owner of this poll, and is allowed to view the poll
 							// (We have to check this because the user could have been a part
@@ -94,7 +94,7 @@ class PollView {
 					$wgOut->addHTML("This poll is expired");
 					if($isOwner){
 						// Even though the poll is expired, the owner can still view the results of the poll, but cannot vote
-						foreach($this->pollCollection->polls as $poll){
+						foreach($this->pollCollection->getPolls() as $poll){
 							$this->ownerViews($poll);
 						}
 					}
@@ -111,7 +111,7 @@ class PollView {
 	}
 	
 	function allQuestionsAnswered(){
-		foreach($this->pollCollection->polls as $poll){
+		foreach($this->pollCollection->getPolls() as $poll){
 			if(!isset($_POST["choice{$poll->id}"])){
 				return false;
 			}
