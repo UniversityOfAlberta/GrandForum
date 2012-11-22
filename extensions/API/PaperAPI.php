@@ -46,13 +46,13 @@ abstract class PaperAPI extends API{
 	    $new_title = (isset($_POST['new_title']))? @stripslashes($this->stripQuotes($_POST['new_title'])) : $title;
 		$product_id = @$_POST['product_id'];
 	    $authors = array();
-	    if(isset($_POST['authors']) && count($_POST['authors']) > 0){
-	        foreach($_POST['authors'] as $author){
+	    if(isset($_POST['authors']) && count($_POST['authors']) > 0 && is_array($_POST['authors'])){
+	        foreach(@$_POST['authors'] as $author){
 	            $authors[] = @stripslashes($this->stripQuotes($author));
 	        }
 	    }
 	    $projects = array();
-	    if(isset($_POST['projects']) && count($_POST['projects']) > 0){
+	    if(isset($_POST['projects']) && count($_POST['projects']) > 0 && is_array($_POST['projects'])){
 	        foreach(@$_POST['projects'] as $project){
 	            $projects[] = @stripslashes($this->stripQuotes($project));
 	        }
