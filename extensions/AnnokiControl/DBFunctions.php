@@ -6,7 +6,7 @@ class DBFunctions {
     static $lastResult;
     static $dbr;
     static $dbw;
-    static $queryDebug = true;
+    static $queryDebug = false;
     
     static function initDB(){
         if(DBFunctions::$dbr == null){
