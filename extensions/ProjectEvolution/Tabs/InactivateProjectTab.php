@@ -52,8 +52,12 @@ class InactivateProjectTab extends ProjectTab {
             $form->getElementById("delete_project")->setPOST("project");
             $form->getElementById("delete_effective")->setPOST("effective_date");
             
-            APIRequest::doAction('DeleteProject', true);
-            $form->reset();
+            if(!APIRequest::doAction('DeleteProject', true)){
+                $errors[] = "There was an error Inactivating the Project";
+            }
+            else{
+                $form->reset();
+            }
         }
         return implode("<br />\n", $errors);
         

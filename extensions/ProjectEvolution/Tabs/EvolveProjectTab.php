@@ -57,8 +57,12 @@ class EvolveProjectTab extends ProjectTab {
             else{
                 $_POST['action'] = "EVOLVE";
             }
-            APIRequest::doAction('EvolveProject', true);
-            $form->reset();
+            if(!APIRequest::doAction('EvolveProject', true)){
+                $errors[] = "There was an error Evolving the Project";
+            }
+            else{
+                $form->reset();
+            }
         }
         return implode("<br />\n", $errors);
         

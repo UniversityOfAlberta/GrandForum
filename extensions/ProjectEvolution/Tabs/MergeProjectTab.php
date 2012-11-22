@@ -55,9 +55,14 @@ class MergeProjectTab extends ProjectTab {
             $_POST['action'] = "MERGE";
             foreach($_POST['projects'] as $project){
                 $_POST['project'] = $project;
-                APIRequest::doAction('EvolveProject', true);
+                if(!APIRequest::doAction('EvolveProject', true)){
+                    $errors[] = "There was an error Merging the Projects";
+                    break;
+                }
             }
-            $form->reset();
+            if(count($errors) == 0){
+                $form->reset();
+            }
         }
         return implode("<br />\n", $errors);
         

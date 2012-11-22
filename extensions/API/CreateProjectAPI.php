@@ -65,31 +65,31 @@ class CreateProjectAPI extends API{
 	            FROM `mw_an_extranamespaces`
 	            WHERE nsName = '{$_POST['acronym']}'";
 	    $data = DBFunctions::execSQL($sql);
-	    $status = true;
+	    $stat = true;
 	    if(count($data) > 0){
 	        $nsId = $data[0]['nsId'];
 	    }
 	    else{
 	        $sql = "INSERT INTO `mw_an_extranamespaces` (`nsId`,`nsName`,`public`)
 	                VALUES ('{$nsId}','{$_POST['acronym']}','1')";
-	        $status = DBFunctions::execSQL($sql, true, true);
+	        $stat = DBFunctions::execSQL($sql, true, true);
 	    }
-	    if($status){
+	    if($stat){
 	        $sql = "INSERT INTO `grand_project` (`id`,`name`)
 	                VALUES ('{$nsId}','{$_POST['acronym']}')";
-	        $status = DBFunctions::execSQL($sql, true, true);
+	        $stat = DBFunctions::execSQL($sql, true, true);
 	    }
-	    if($status){
+	    if($stat){
 	        $sql = "INSERT INTO `grand_project_evolution` (`last_id`,`project_id`,`new_id`,`action`,`effective_date`)
 	                VALUES ('-1','-1','{$nsId}','CREATE','{$effective_date}')";
-	        $status = DBFunctions::execSQL($sql, true, true);
+	        $stat = DBFunctions::execSQL($sql, true, true);
 	    }
-	    if($status){
+	    if($stat){
 	        $sql = "INSERT INTO `grand_project_status` (`evolution_id`,`project_id`,`status`,`type`)
 	                VALUES ((SELECT MAX(id) FROM grand_project_evolution),'{$nsId}','{$status}','{$type}')";
 	        $sql = DBFunctions::execSQL($sql, true, true);
 	    }
-	    if($status){
+	    if($stat){
 	        Project::$cache = array();
 	        $project = Project::newFromId($nsId);
 	        $_POST['project'] = $_POST['acronym'];
@@ -98,7 +98,7 @@ class CreateProjectAPI extends API{
 	        //MailingList::createMailingList($project);
 	    }
 	    DBFunctions::commit();
-	    return $status;
+	    return $stat;
 	}
 	
 	function isLoginRequired(){
