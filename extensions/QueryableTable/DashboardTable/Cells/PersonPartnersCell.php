@@ -29,7 +29,12 @@ class PersonPartnersCell extends DashboardCell {
                 foreach($contributions as $contribution){
                     if($contribution->belongsToProject($project) && $contribution->getYear() >= $start && $contribution->getYear() <= $end){
                         foreach($contribution->getPartners() as $partner){
-                            $values['Partner'][] = array('type' => 'Partner', 'id' => $partner->getId());
+                            if($partner->getId() != ""){
+                                $values['Partner'][] = array('type' => 'Partner', 'id' => $partner->getId());
+                            }
+                            else{
+                                $values['Partner'][] = array('type' => 'Partner', 'organization' => $partner->getOrganization());
+                            }
                         }
                     }
                 }
@@ -49,7 +54,12 @@ class PersonPartnersCell extends DashboardCell {
             foreach($contributions as $contribution){
                 if($contribution->getYear() >= $start && $contribution->getYear() <= $end){
                     foreach($contribution->getPartners() as $partner){
-                        $values['All'][] = array('type' => 'Partner', 'id' => $partner->getId());
+                        if($partner->getId() != ""){
+                            $values['All'][] = array('type' => 'Partner', 'id' => $partner->getId());
+                        }
+                        else{
+                            $values['All'][] = array('type' => 'Partner', 'organization' => $partner->getOrganization());
+                        }
                     }
                 }
             }
@@ -78,8 +88,15 @@ class PersonPartnersCell extends DashboardCell {
         $details = "<td></td><td></td>";
         $type = $item['type'];
         if($type == "Partner"){
-            $partner = Partner::newFromId($item['id']);
-            $details = "<td>Partner<span class='pdfOnly'><br /></span></td><td>{$partner->getOrganization()}</td>";
+            $organization = "";
+            if(isset($item['id'])){
+                $partner = Partner::newFromId($item['id']);
+                $organization = $partner->getOrganization();
+            }
+            else if(isset($item['organization'])){
+                $organization = $item['organization'];
+            }
+            $details = "<td>Partner<span class='pdfOnly'><br /></span></td><td>{$organization}</td>";
         }
         else if($type == "Champion"){
             $champion = Person::newFromId($item['id']);

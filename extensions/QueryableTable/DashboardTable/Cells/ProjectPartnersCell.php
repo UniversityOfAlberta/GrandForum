@@ -33,7 +33,12 @@ class ProjectPartnersCell extends DashboardCell {
                             if($p instanceof Person){
                                 if($p instanceof Person && $p->getId() == $person->getId()){
                                     foreach($contribution->getPartners() as $partner){
-                                        $values['Partner'][] = array('type' => 'Partner', 'id' => $partner->getId());
+                                        if($partner->getId() != ""){
+                                            $values['Partner'][] = array('type' => 'Partner', 'id' => $partner->getId());
+                                        }
+                                        else{
+                                            $values['Partner'][] = array('type' => 'Partner', 'organization' => $partner->getOrganization());
+                                        }
                                     }
                                     break;
                                 }
@@ -51,7 +56,12 @@ class ProjectPartnersCell extends DashboardCell {
             foreach($contributions as $contribution){
                 if($contribution->getYear() >= $start && $contribution->getYear() <= $end){
                     foreach($contribution->getPartners() as $partner){
-                        $values['All'][] = array('type' => 'Partner', 'id' => $partner->getId());
+                        if($partner->getId() != ""){
+                            $values['All'][] = array('type' => 'Partner', 'id' => $partner->getId());
+                        }
+                        else{
+                            $values['All'][] = array('type' => 'Partner', 'organization' => $partner->getOrganization());
+                        }
                     }
                 }
             }
@@ -76,8 +86,15 @@ class ProjectPartnersCell extends DashboardCell {
         $details = "<td></td>";
         $type = $item['type'];
         if($type == "Partner"){
-            $partner = Partner::newFromId($item['id']);
-            $details = "<td>{$partner->getOrganization()}</td>";
+            $organization = "";
+            if(isset($item['id'])){
+                $partner = Partner::newFromId($item['id']);
+                $organization = $partner->getOrganization();
+            }
+            else if(isset($item['organization'])){
+                $organization = $item['organization'];
+            }
+            $details = "<td>{$organization}</td>";
         }
         return $details;
     }
