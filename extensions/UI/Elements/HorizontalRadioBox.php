@@ -13,7 +13,7 @@ class HorizontalRadioBox extends RadioBox {
             if($this->value == $option){
                 $checked = " checked";
             }
-            $html .= "<input type='radio' name='{$this->id}' value='{$option}' $checked/>{$option}&nbsp;&nbsp;&nbsp;&nbsp;";
+            $html .= "<input type='radio' {$this->renderAttr()} name='{$this->id}' value='{$option}' $checked/>{$option}&nbsp;&nbsp;&nbsp;&nbsp;";
         }
         return $html;
     }

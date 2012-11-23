@@ -15,12 +15,14 @@ class UIElementArray extends UIElement {
         $newArray[] = $element;
         $this->elements = array_merge($newArray, $this->elements);
         $element->parent = $this;
+        return $this;
     }
     
     // Appends $element to the end of this UIElementArray
     function append($element){
         $this->elements[] = $element;
         $element->parent = $this;
+        return $this;
     }
     
     // Removes the UIElement with the id $elementId
@@ -51,6 +53,7 @@ class UIElementArray extends UIElement {
             $newElements[] = $el;
         }
         $this->elements = $newElements;
+        return $this;
     }
     
     // Inserts $element after the UIElement with the id $afterId
@@ -64,6 +67,7 @@ class UIElementArray extends UIElement {
             }
         }
         $this->elements = $newElements;
+        return $this;
     }
     
     // Returns the element with the id $id

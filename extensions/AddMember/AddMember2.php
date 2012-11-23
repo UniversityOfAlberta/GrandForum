@@ -1,23 +1,23 @@
 <?php
 
 $dir = dirname(__FILE__) . '/';
-$wgSpecialPages['AddMember'] = 'AddMember'; # Let MediaWiki know about the special page.
-$wgExtensionMessagesFiles['AddMember'] = $dir . 'AddMember.i18n.php';
-$wgSpecialPageGroups['AddMember'] = 'grand-tools';
+$wgSpecialPages['AddMember2'] = 'AddMember2'; # Let MediaWiki know about the special page.
+$wgExtensionMessagesFiles['AddMember2'] = $dir . 'AddMember2.i18n.php';
+$wgSpecialPageGroups['AddMember2'] = 'grand-tools';
 
-function runAddMember($par) {
-  AddMember::run($par);
+function runAddMember2($par) {
+  AddMember2::run($par);
 }
 
-class AddMember extends SpecialPage{
+class AddMember2 extends SpecialPage{
 
-	function AddMember() {
-		wfLoadExtensionMessages('AddMember');
+	function AddMember2() {
+		wfLoadExtensionMessages('AddMember2');
 		if(FROZEN){
-		    SpecialPage::SpecialPage("AddMember", STAFF.'+', true, 'runAddMember');
+		    SpecialPage::SpecialPage("AddMember2", STAFF.'+', true, 'runAddMember2');
 	    }
 	    else{
-	        SpecialPage::SpecialPage("AddMember", CNI.'+', true, 'runAddMember');
+	        SpecialPage::SpecialPage("AddMember2", CNI.'+', true, 'runAddMember2');
 	    }
 	}
 
@@ -52,11 +52,11 @@ class AddMember extends SpecialPage{
 				DBFunctions::execSQL($sql, true);
 				$wgMessage->addSuccess("User '{$_POST['wpName']}' Ignored");
 			}
-			AddMember::generateViewHTML($wgOut);
+			AddMember2::generateViewHTML($wgOut);
 		}
 		else if(!isset($_POST['submit'])){
 			// Form not entered yet
-			AddMember::generateFormHTML($wgOut);
+			AddMember2::generateFormHTML($wgOut);
 		}
 		else{
 			// The Form has been entered
@@ -82,7 +82,7 @@ class AddMember extends SpecialPage{
 			$_POST['wpNS'] = $nss;
 			$_POST['user_name'] = $user->getName();
             APIRequest::doAction('RequestUser', false);
-            AddMember::generateFormHTML($wgOut);
+            AddMember2::generateFormHTML($wgOut);
 		}
 	}
 	
@@ -172,6 +172,34 @@ class AddMember extends SpecialPage{
 		                                 </script>");
 	}
 	
+	function createForm(){
+	    $formContainer = new FormContainer("form_container");
+		$formTable = new FormTable("form_table");
+		
+		$firstNameLabel = new Label("first_name_label", "First Name", "The first name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
+		$firstNameField = new TextField("first_name_field", "First Name", "", VALIDATE_NOT_NULL);
+		$firstNameRow = new FormTableRow("first_name_row");
+		$firstNameRow->append($firstNameLabel)->append($firstNameField->attr('size', 20));
+		
+		$lastNameLabel = new Label("last_name_label", "Last Name", "The last name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
+		$lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOT_NULL);
+		$lastNameRow = new FormTableRow("last_name_row");
+		$lastNameRow->append($lastNameLabel)->append($lastNameField->attr('size', 20));
+		
+		$emailLabel = new Label("email_label", "Email", "The email address of the user", VALIDATE_NOT_NULL);
+		$emailField = new EmailField("email_field", "Email", "", VALIDATE_NOT_NULL);
+		$emailRow = new FormTableRow("email_row");
+		$emailRow->append($emailLabel)->append($emailField);
+		
+		$formTable->append($firstNameRow)
+		          ->append($lastNameRow)
+		          ->append($emailRow);
+		
+		$formContainer->append($formTable);
+		
+		return $formContainer;
+	}
+	
 	function generateFormHTML($wgOut){
 		global $wgUser, $wgServer, $wgScriptPath, $wgRoles;
 		$user = Person::newFromId($wgUser->getId());
@@ -182,7 +210,11 @@ class AddMember extends SpecialPage{
 	        $wgOut->addHTML("<b><a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view'>View Requests</a></b><br /><br />");
 	    }
 	    $wgOut->addHTML("Adding a member to the forum will allow them to access content relevant to the user roles and projects which are selected below.  By selecting projects, the user will be automatically added to the projects on the forum, and subscribed to the project mailing lists.  The new user's email must be provided as it will be used to send a randomly generated password to the user.  After pressing the 'Submit Request' button, an administrator will be able to accept the request.  If there is a problem in the request (ie. there was an obvious typo in the name), then you may be contacted by the administrator about the request.<br /><br />");
-		$wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:AddMember' method='post'>\n");
+		$wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:AddMember2' method='post'>\n");
+		
+		$form = AddMember2::createForm();
+		$wgOut->addHTML($form->render());
+		
 		$wgOut->addHTML("<table>
 					<tr>
 						<td class='mw-label'><label for='wpFirstName'>First Name:</label></td>

@@ -1,5 +1,6 @@
 <?php
 require_once("AddMember.php");
+require_once("AddMember2.php");
 
 $userCreate = new UserCreate();
 

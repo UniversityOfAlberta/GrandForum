@@ -7,10 +7,11 @@ class FieldSet extends UIElementArray {
     function FieldSet($id, $legend){
         parent::UIElementArray($id);
         $this->legend = $legend;
+        $this->attr('style', 'display:inline;min-width:500px;');
     }
     
     function render(){
-        $html = "<fieldset style='display:inline;min-width:500px;'><legend>{$this->legend}</legend>";
+        $html = "<fieldset {$this->renderAttr()}><legend>{$this->legend}</legend>";
         foreach($this->elements as $element){
             $html .= $element->render();
         }

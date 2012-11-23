@@ -1,12 +1,18 @@
 <?php
-define('VALIDATE_NOTHING', 0);
-define('VALIDATE_NOT_NULL', 1);
-define('VALIDATE_IS_NUMERIC', 2);
-define('VALIDATE_IS_PERCENT', 4);
-define('VALIDATE_IS_PROJECT', 8);
-define('VALIDATE_IS_NOT_PROJECT', 16);
-define('VALIDATE_IS_PERSON', 32);
-define('VALIDATE_IS_NOT_PERSON', 64);
+global $formValidations;
+$formValidations = array('VALIDATE_NOTHING',
+                         'VALIDATE_NOT_NULL',
+                         'VALIDATE_IS_NUMERIC',
+                         'VALIDATE_IS_PERCENT',
+                         'VALIDATE_IS_PROJECT',
+                         'VALIDATE_IS_NOT_PROJECT',
+                         'VALIDATE_IS_PERSON',
+                         'VALIDATE_IS_NOT_PERSON',
+                         'VALIDATE_IS_EMAIL');
+                         
+foreach($formValidations as $key => $validation){
+    define($validation, pow(2, $key));
+}
 
 /*
  * This class is to help make creating forms easier to make,
@@ -16,9 +22,11 @@ define('VALIDATE_IS_NOT_PERSON', 64);
  */
  
 require_once("UIElementArray.php");
+require_once("UIValidation.php");
 
 autoload_register('UI/Arrays');
 autoload_register('UI/Elements');
+autoload_register('UI/Validations');
 
 abstract class UIElement {
     
@@ -29,11 +37,14 @@ abstract class UIElement {
     var $default;
     var $tooltip;
     var $validations;
+    var $validationFunctions;
+    var $attr;
     
     function UIElement($id, $name, $value, $validations){
         $this->parent = null;
         $this->id = $id;
         $this->name = $name;
+        $this->attr = array();
         $this->default = $this->clearValue($value);
         if(isset($_POST[$this->id])){
             $this->value = $this->clearValue($_POST[$this->id]);
@@ -42,6 +53,7 @@ abstract class UIElement {
             $this->value = $this->clearValue($value);
         }
         $this->validations = $validations;
+        $this->validationFunctions = array();
     }
     
     private function clearValue($value){
@@ -85,6 +97,34 @@ abstract class UIElement {
         }
     }
     
+    // Sets the value of an attribute
+    // If $value is null, the value of the attr is instead returned
+    function attr($attr, $value=null){
+        if($value == null){
+            if(isset($this->attr[$attr])){
+                return $this->attr[$attr];
+            }
+            else{
+                return "";
+            }
+        }
+        else{
+            $this->attr[$attr] = $value;
+            return $this;
+        }
+    }
+    
+    // Returns a string for the attributes as html attributes
+    protected function renderAttr(){
+        $str = "";
+        if(count($this->attr) > 0){
+            foreach($this->attr as $attr => $value){
+                $str .= "{$attr}='{$value}' ";
+            }
+        }
+        return $str;
+    }
+    
     abstract function render();
     
     // Resets the UIElements value to the default, and unsets the $_POST variable's index
@@ -93,6 +133,11 @@ abstract class UIElement {
             unset($_POST[$this->id]);
         }
         $this->value = $this->default;
+    }
+    
+    function registerValidationFunction($functionName, $functionParams=array()){
+        $this->validationFunctions[] = array('function' => $functionName, 
+                                             'params' => $functionParams);
     }
     
     // Returns an array containing all the failed validations
@@ -153,6 +198,18 @@ abstract class UIElement {
                 $fails[] = "The field '".ucfirst($this->name)."' must not be an already existing Person (value used: $value)";
             }
         }
+        if($this->isValidationSet(VALIDATE_IS_EMAIL)){
+            $result = !$this->validateIsEmail($value);
+            if(!$result){
+                $fails[] = "The field '".ucfirst($this->name)."' must be a valid email address";
+            }
+        }
+        // Custom validations
+        if(count($this->validationFunctions) > 0){
+            foreach($this->validationFuncctions as $function){
+                $result = call_user_func($function['function'], $function['params']);
+            }
+        }
         return $fails;
     }
     
@@ -174,7 +231,6 @@ abstract class UIElement {
     }
     
     function validateNotNull($value){
-        
         return !($value == null || $value == "");
     }
     
@@ -184,6 +240,10 @@ abstract class UIElement {
     
     function validateIsPercent($value){
         return (!$this->validateNotNull($value) || (is_numeric($value) && $value >= 0 && $value <= 100));
+    }
+    
+    function validateIsEmail($value){
+        return User::isValidEmailAddr($value);
     }
     
     function validateIsProject($value){

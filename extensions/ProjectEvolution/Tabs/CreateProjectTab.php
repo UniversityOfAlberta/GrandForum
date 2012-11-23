@@ -13,12 +13,14 @@ class CreateProjectTab extends ProjectTab {
         $table = new FormTable("{$pre}_form_table");
         
         $acronymRow = new FormTableRow("{$pre}_acronym_row");
-        $acronymRow->append(new Label("{$pre}_acronym_label", "Acronym", "The acronym/name for the project ie. MEOW", VALIDATE_NOT_NULL));
-        $acronymRow->append(new TextField("{$pre}_acronym", "Acronym", "", 12, VALIDATE_NOT_NULL + VALIDATE_IS_NOT_PROJECT));
+        $acronymLabel = new Label("{$pre}_acronym_label", "Acronym", "The acronym/name for the project ie. MEOW", VALIDATE_NOT_NULL);
+        $acronymField = new TextField("{$pre}_acronym", "Acronym", "", VALIDATE_NOT_NULL + VALIDATE_IS_NOT_PROJECT);
+        $acronymRow->append($acronymLabel)->append($acronymField->attr('size', 12));
         
         $fullNameRow = new FormTableRow("{$pre}_full_name_row");
-        $fullNameRow->append(new Label("{$pre}_full_name_label", "Full Name", "The project's full name ie. Media Enabled Organizational Worldflow", VALIDATE_NOT_NULL));
-        $fullNameRow->append(new TextField("{$pre}_full_name", "Full Name", "", 40, VALIDATE_NOT_NULL));
+        $fullNameLabel = new Label("{$pre}_full_name_label", "Full Name", "The project's full name ie. Media Enabled Organizational Worldflow", VALIDATE_NOT_NULL);
+        $fullNameField = new TextField("{$pre}_full_name", "Full Name", "", VALIDATE_NOT_NULL);
+        $fullNameRow->append($fullNameLabel)->append($fullNameField->attr('size', 40));
         
         $statusRow = new FormTableRow("{$pre}_status_row");
         $statusRow->append(new Label("{$pre}_status_label", "Status", "The status of this project", VALIDATE_NOT_NULL));
@@ -105,12 +107,13 @@ class CreateProjectTab extends ProjectTab {
             $form->getElementById("new_theme3")->setPOST("theme3");
             $form->getElementById("new_theme4")->setPOST("theme4");
             $form->getElementById("new_theme5")->setPOST("theme5");
-            if(!APIRequest::doAction('CreateProject', true)){
+            /*if(!APIRequest::doAction('CreateProject', true)){
                 $errors[] = "There was an error Creating the Project";
             }
             else{
                 $form->reset();
-            }
+            }*/
+            $form->reset();
         }
         return implode("<br />\n", $errors);
     }
