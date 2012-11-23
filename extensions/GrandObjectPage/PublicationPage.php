@@ -30,7 +30,8 @@ $publicationTypes = array("Proceedings Paper" => "an article written for submiss
 
 $activityTypes = array(/*"Panel" => "panel",
                        "Tutorial" => "tutorial",*/
-                       "Event Organization" => "event"); 
+                       "Event Organization" => "event",
+                       "Misc" => "misc"); 
 
                        
 $artifactTypes = array("Repository" => "repository",
@@ -217,8 +218,18 @@ class PublicationPage {
                         switch(category){
                             case "Activity":
                                 switch(type){
-                                    default:
                                     case "Event Organization":
+                                        addAttr("Conference");
+                                        addAttr("Location");
+                                        addAttr("Organizing Body");
+                                        addAttr("URL");
+                                        break;
+                                    default:
+                                    case "Misc":
+                                        $("select[name=type]").parent().append("<input type=\'text\' name=\'misc_type\' value=\''.str_replace("Misc: ", "", $paper->getType()).'\' />");
+                                        $("input[name=misc_type]").autocomplete({
+                                            source: misc_types
+                                        });
                                         addAttr("Conference");
                                         addAttr("Location");
                                         addAttr("Organizing Body");
