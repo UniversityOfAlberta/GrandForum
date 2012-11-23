@@ -1163,6 +1163,9 @@ class PublicationPage {
                     case "Event Organization":
                         $api = new EventOrganizationAPI(true);
                         break;
+                    case "Misc":
+                        $api = new MiscActivityAPI(true);
+                        break;
                 }
                 break;
             case "Presentation":
