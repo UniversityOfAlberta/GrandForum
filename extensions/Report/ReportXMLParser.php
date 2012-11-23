@@ -121,6 +121,17 @@ class ReportXMLParser {
         if($this->parser->getName() == "Report"){
             $attributes = $this->parser->attributes();
             $children = $this->parser->children();
+            if(isset($attributes->extends)){
+                $xmlFileName = dirname(__FILE__)."/ReportXML/{$attributes->extends}.xml";
+                if(file_exists($xmlFileName)){
+                    $this->report->setExtends("{$attributes->extends}");
+                    $exploded = explode(".", $xmlFileName);
+                    $exploded = explode("/", $exploded[count($exploded)-2]);
+                    $xml = file_get_contents($xmlFileName);
+                    $parser = new ReportXMLParser($xml, $this->report);
+                    $parser->parse();
+                }
+            }
             if(isset($attributes->name)){
                 $this->report->setName("{$attributes->name}");
             }
@@ -182,6 +193,19 @@ class ReportXMLParser {
                 $this->parseRoleSectionPermissions($child, $role);
                 $this->report->addPermission("Role", "{$role}", "{$start}", "{$end}");
             }
+            else if($key == "Project"){
+                $attributes = $child->attributes();
+                $deleted = (isset($attributes->deleted)) ? (strtolower("{$attributes->deleted}") == "true") : false;
+                $start = (isset($attributes->start)) ? @constant($attributes->start) : "0000-00-00";
+                $end = (isset($attributes->end)) ? @constant($attributes->end) : "2100-12-31";
+                if($start == null){
+                    $this->errors[] = "Start time '{$attributes->start}' does not exist";
+                }
+                if($end == null){
+                    $this->errors[] = "Start time '{$attributes->end}' does not exist";
+                }
+                $this->report->addPermission("Project", array("deleted" => $deleted), "{$start}", "{$end}");
+            }
         }
     }
     
@@ -201,14 +225,24 @@ class ReportXMLParser {
         foreach($node as $key => $n){
             $attributes = $n->attributes();
             $children = $n->children();
-            if(isset($attributes->type)){
-                $type = "{$attributes->type}";
-                if(!class_exists($type)){
-                    $this->errors[] = "ReportSection '{$type}' does not exists";
-                    continue;
+            $section = $this->report->getSectionById("{$attributes->id}");
+            if(isset($attributes->type) || $section != null){
+                if(isset($attributes->type)){
+                    $type = "{$attributes->type}";
+                    if(!class_exists($type)){
+                        $this->errors[] = "ReportSection '{$type}' does not exists";
+                        continue;
+                    }
+                    $section = new $type();
+                    $position = isset($attributes->position) ? "{$attributes->position}" : null;
+                    $this->report->addSection($section, $position);
                 }
-                $section = new $type();
-                $this->report->addSection($section);
+                else{
+                    $type = get_class($section);
+                }
+                if(isset($attributes->delete) && strtolower("{$attributes->delete}") == "true"){
+                    $this->report->deleteSection($section);
+                }
                 if(isset($attributes->id)){
                     $section->setId("{$attributes->id}");
                 }
@@ -292,6 +326,11 @@ class ReportXMLParser {
     function parseReportItemSet(&$section, $node, $data=array()){
         $attributes = $node->attributes();
         $children = $node->children();
+        $itemset = $section->getReportItemById("{$attributes->id}");
+        if($itemset != null){
+            $itemset->count = count($itemset->items)/count($itemset->getData());
+            $itemset->iteration = 0;
+        }
         if(isset($attributes->type)){
             $type = "{$attributes->type}";
             if(class_exists($type)){
@@ -301,17 +340,25 @@ class ReportXMLParser {
                 $this->errors[] = "ReportItemSet '{$attributes->type}' does not exists";
                 return;
             }
+            $position = isset($attributes->position) ? "{$attributes->position}" : null;
+            $section->addReportItem($itemset, $position);
+        }
+        else if($itemset != null){
+            // DO nothing
+            $type = get_class($itemset);
         }
         else{
             $this->errors[] = "ReportItemSet '' does not exists";
             return;
         }
-        $section->addReportItem($itemset);
         if(isset($attributes->id)){
             $itemset->setId("{$attributes->id}");
         }
         else{
             $this->errors[] = "ReportItemSet does not contain an id";
+        }
+        if(isset($attributes->delete) && strtolower("{$attributes->delete}") == "true"){
+            $section->deleteReportItem($itemset);
         }
         if(isset($attributes->blobIndex)){
             $itemset->setBlobIndex("{$attributes->blobIndex}");
@@ -350,6 +397,7 @@ class ReportXMLParser {
                     $item->setProductId($value['product_id']);
                     $item->setPersonId($value['person_id']);
                 }
+                $itemset->iteration++;
             }
         }
         foreach($attributes as $key => $value){
@@ -370,14 +418,21 @@ class ReportXMLParser {
     // Parses the <ReportItem> element of the XML
     function parseReportItem(&$section, $node){
         $attributes = $node->attributes();
-        if(isset($attributes->type)){
-            $type = "{$attributes->type}";
-            if(!class_exists($type)){
-                $this->errors[] = "ReportItem '{$type}' does not exists";
-                return;
+        $item = $section->getReportItemById("{$attributes->id}");
+        if(isset($attributes->type) || $item != null){
+            if(isset($attributes->type)){
+                $type = "{$attributes->type}";
+                if(!class_exists($type)){
+                    $this->errors[] = "ReportItem '{$type}' does not exists";
+                    return;
+                }
+                $item = new $type();
+                $position = isset($attributes->position) ? "{$attributes->position}" : null;
+                $section->addReportItem($item, $position);
             }
-            $item = new $type();
-            $section->addReportItem($item);
+            else{
+                $type = get_class($item);
+            }
             if(!$this->report->topProjectOnly && $this->report->project != null){
                 $item->setProjectId($this->report->project->getId());
             }
@@ -386,6 +441,9 @@ class ReportXMLParser {
             }
             else{
                 $this->errors[] = "ReportItem does not contain an id";
+            }
+            if(isset($attributes->delete) && strtolower("{$attributes->delete}") == "true"){
+                $section->deleteReportItem($item);
             }
             if(isset($attributes->private)){
                 $item->setPrivate(strtolower($attributes->private) == "true");

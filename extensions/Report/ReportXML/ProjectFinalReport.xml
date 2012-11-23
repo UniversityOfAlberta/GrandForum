@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report extends="ProjectReport" name="Project Final Report" pdfType="RPTP_LEADER" pdfFiles="ProjectFinalReportPDF,ProjectFinalReportComments,ProjectFinalReportMilestones">
+    <Permissions>
+        <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="true" />
+    </Permissions>
+    <ReportSection id="status">
+        <ReportItem id="my_progress_head" reportType="ProjectFinalReport">
+            <![CDATA[<h3>PL Progress</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">{$item}]]>
+        </ReportItem>
+        <ReportItem id="static_pni_progress">
+            <![CDATA[<style>#ni_completion table tr:first-child td:first-child {display:none;}</style><table id="ni_completion" style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'><tr><th>NI</th><th>Completion Status</th><th class='tooltip' title='This column highlights the NIs who will no longer be a member of any other projects next year once this project is deleted.'>More Projects?</th><th>Actions</th></tr>]]>
+        </ReportItem>
+        <ReportItemSet id="project_people">
+            <ReportItem id="no_project" type="PersonNoProjectReportItem" position="1">
+                <![CDATA[<td align='center'>{$item}</td>]]>
+            </ReportItem>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="report" name="Project Report">
+        <ReportItemSet id='IIIa_head' title="Project Retrospective"/>
+    </ReportSection>
+    <ReportSection id="budget" name="Project Budget">
+        <ReportItem id="budget_just" delete="true" />
+        <ReportItem id="budget" delete="true" />
+        <ReportItem id="budget_message" type="StaticReportItem">
+            <![CDATA[Since {$project_name} is not continuing as a project in GRAND, there should be no budget requests for this project.  If there were any requests made by any of the project members, the names of the NIs will be shown below.<br /><br />]]>
+        </ReportItem>
+        <ReportItem id="table_head" type="StaticReportItem">
+            <![CDATA[<table style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'>]]>
+        </ReportItem>
+        <ReportItemSet id="people_with_budgets" type="ProjectPeopleWithBudgetsReportItemSet">
+            <ReportItem id="row_head" type="StaticReportItem">
+                <![CDATA[<tr>]]>
+            </ReportItem>
+            <ReportItem id="person_budget" type="PopupReportItem" text="{$user_requested_budget}" title="{$user_reversed_name}">
+                <![CDATA[<td>{$item}</td>]]>
+            </ReportItem>
+            <ReportItem id="ni_notify" type="NotificationReportItem" title="Notify NI" message="You should not have a budget request for {$project_name} since it is not continuing" url="Special:Report?report=HQPReport" width="90px">
+                <![CDATA[<td>{$item}</td>]]>
+            </ReportItem>
+            <ReportItem id="row_foot" type="StaticReportItem">
+                <![CDATA[</tr>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="table_foot" type="StaticReportItem">
+            <![CDATA[</table>]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit">
+         <ReportItem id="my_progress_head" reportType="ProjectFinalReport">
+            <![CDATA[<h3>PL Progress</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">{$item}]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

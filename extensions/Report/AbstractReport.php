@@ -15,6 +15,7 @@ abstract class AbstractReport extends SpecialPage {
     var $name;
     var $year;
     var $xmlName;
+    var $extends;
     var $reportType;
     var $ajax;
     var $header;
@@ -103,6 +104,7 @@ abstract class AbstractReport extends SpecialPage {
     function AbstractReport($xmlFileName, $personId=-1, $projectName=false, $topProjectOnly=false, $year=REPORTING_YEAR){
         global $wgUser, $wgMessage;
         $this->name = "";
+        $this->extends = "";
         $this->year = $year;
         $this->reportType = RP_RESEARCHER;
         $this->disabled = false;
@@ -332,6 +334,12 @@ abstract class AbstractReport extends SpecialPage {
         }
     }
     
+    // Specifies which report this one inherits from
+    function setExtends($extends){
+        $this->extends = $extends;
+    }
+    
+    // Sets whether or not this Report should be disabled or not
     function setDisabled($disabled){
         $this->disabled = $disabled;
     }
@@ -362,9 +370,34 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     // Adds a new section to this Report
-    function addSection($section){
+    function addSection($section, $position=null){
         $section->setParent($this);
-        $this->sections[] = $section;
+        if($position == null){
+            $this->sections[] = $section;
+        }
+        else{
+            array_splice($this->sections, $position, 0, $section);
+        }
+    }
+    
+    // Deleted the given ReportItem from this AbstractReport
+    function deleteSection($section){
+        foreach($this->sections as $key => $sec){
+            if($section->id == $sec->id){
+                unset($this->sections[$key]);
+                return;
+            }
+        }
+    }
+    
+    // Returns the section with the given id, or null if there is no such section
+    function getSectionById($sectionId){
+        foreach($this->sections as $section){
+            if($section->id == $sectionId){
+                return $section;
+            }
+        }
+        return null;
     }
     
     // Adds a new Permission to this Report
@@ -421,25 +454,37 @@ abstract class AbstractReport extends SpecialPage {
         $result = $me->isRoleAtLeast(MANAGER);
         foreach($this->permissions as $type => $perms){
             foreach($perms as $perm){
-                if($type == "Role"){
-                    if($this->project != null && ($perm['perm'] == PL || $perm['perm'] == COPL) && !$me->isProjectManager()){
-                        $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
-                        if(count($project_objs) > 0){
-                            foreach($project_objs as $project){
-                                if($project->getId() == $this->project->getId()){
-                                    $result = true;
+                switch($type){
+                    case "Role":
+                        if($this->project != null && ($perm['perm'] == PL || $perm['perm'] == COPL) && !$me->isProjectManager()){
+                            $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
+                            if(count($project_objs) > 0){
+                                foreach($project_objs as $project){
+                                    if($project->getId() == $this->project->getId()){
+                                        $result = true;
+                                    }
                                 }
                             }
                         }
-                    }
-                    else if($this->project != null && ($perm['perm'] == PM)){
-                        if($me->isProjectManager()){
-                            $result = true;
+                        else if($this->project != null && ($perm['perm'] == PM)){
+                            if($me->isProjectManager()){
+                                $result = true;
+                            }
                         }
-                    }
-                    else{
-                        $result = ($result || $me->isRoleDuring($perm['perm'], $perm['start'], $perm['end']));
-                    }
+                        else{
+                            $result = ($result || $me->isRoleDuring($perm['perm'], $perm['start'], $perm['end']));
+                        }
+                        break;
+                    case "Project":
+                        if($this->project != null){
+                            $result = (($perm['perm']['deleted'] && 
+                                       $this->project->isDeleted() && 
+                                       substr($this->project->getEffectiveDate(), 0, 4) >= substr($perm['start'], 0, 4) && 
+                                       substr($this->project->getEffectiveDate(), 0, 4) <= substr($perm['end'], 0, 4)) || 
+                                      (!$perm['perm']['deleted'] && 
+                                       !$this->project->isDeleted()));
+                        }
+                        break;
                 }
             }
         }
@@ -595,7 +640,9 @@ abstract class AbstractReport extends SpecialPage {
         $wgOut->addHTML("<div id='autosaveDiv'><span style='float:left;width:100%;text-align:left'><span style='float:right;' class='autosaveSpan'></span></span></div>
                             <div id='optionsDiv'>");
         $this->renderOptions();
-        $this->renderBackup();                 
+        if($this->extends == ""){
+            $this->renderBackup();  
+        }
         $wgOut->addHTML("</div></div>
                             </div>");
         

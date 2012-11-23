@@ -153,10 +153,9 @@ EOF;
             $report = new DummyReport($file, $person, $project);
         	$check = $report->getPDF();
         	if (count($check) > 0) {
-        		$tok = $check[0]['token'];
-        		$sto->select_report($tok);    	
+        		$tok = $check[0]['token']; 	
         		$tst = $check[0]['timestamp'];
-        		$sub = $sto->metadata('submitted');
+        		$sub = $check[0]['submitted'];
         	}
         	
         	// Present some data on available reports.

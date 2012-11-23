@@ -61,7 +61,6 @@ class Project{
 	    if(isset(self::$cache[$name])){
 	        return self::$cache[$name];
 	    }
-		
 		$sql = "SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.type, s.status
 				FROM grand_project p, grand_project_evolution e, grand_project_status s
 				WHERE p.name = '$name'
@@ -402,6 +401,11 @@ EOF;
 	        return $this->deleted;
 	    }
 	    return false;
+	}
+	
+	// Returns when the evolution state took place
+	function getEffectiveDate(){
+	    return $this->effectiveDate;
 	}
 	
 	// Returns an array of Person objects which represent

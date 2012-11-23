@@ -30,9 +30,15 @@ class Report extends AbstractReport{
 		        $person->isRoleAtLeast(MANAGER)){
 		    $page = "Report?report=NIReport";
 		}
-		else if(count($person->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END)) > 0){
-		    $projects = $person->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
-		    $page = "Report?report=ProjectReport&project={$projects[0]->getName()}";
+		else if(count($person->leadership()) > 0){
+		    $projects = $person->leadership();
+		    $project = $projects[0];
+		    if($project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
+		        $page = "Report?report=ProjectFinalReport&project={$project->getName()}";
+		    }
+		    else if(!$project->isDeleted()){
+		        $page = "Report?report=ProjectReport&project={$project->getName()}";
+		    }
 		}
 		/*else if($person->isEvaluator()){
 		    $page = "Report?report=NIReport";
@@ -84,11 +90,20 @@ class Report extends AbstractReport{
             $leadership = $person->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
             if(count($leadership) > 0){
                 foreach($leadership as $project){
-                    @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "ProjectReport" && $_GET['project'] == $project->getName()) ? "selected" : false;
+                    if($project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
+		                $type = "ProjectFinalReport";
+		            }
+		            else if(!$project->isDeleted()){
+		                $type = "ProjectReport";
+		            }
+		            else{
+		                continue;
+		            }
+                    @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "$type" && $_GET['project'] == $project->getName()) ? "selected" : false;
                     $content_actions[] = array (
                              'class' => $class,
                              'text'  => "{$project->getName()}",
-                             'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=ProjectReport&project={$project->getName()}",
+                             'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=$type&project={$project->getName()}",
                             );
                 }
             }

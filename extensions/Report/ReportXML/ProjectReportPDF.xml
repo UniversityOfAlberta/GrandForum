@@ -4,7 +4,7 @@
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL"></Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="COPL"></Role>
     </Permissions>
-    <ReportSection name="Header" type="HeaderReportSection" blobSection="SEC_NONE" pagebreak="false" renderpdf="true">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" blobSection="SEC_NONE" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
                 <div class='logo_div'>
@@ -38,7 +38,7 @@
             <![CDATA[</table></div></div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Project Dashboard" blobSection="SEC_NONE" type="HeaderReportSection" renderpdf="true" pagebreak="false">
+    <ReportSection id="dashboard" name="Project Dashboard" blobSection="SEC_NONE" type="HeaderReportSection" renderpdf="true" pagebreak="false">
         <ReportItem id="project_dashboard_time_bookmark" type="BookmarkReportItem" text="Time and Budget Dashboard">
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
@@ -52,13 +52,13 @@
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Executive Summary: Overview of {$project_name} Activity" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="1" renderpdf="true">
+    <ReportSection id="report1" name="Executive Summary: Overview of {$project_name} Activity" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="1" renderpdf="true">
     <!-- Ia. Overview of Activity -->
         <ReportItem id="Ia" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OVERALL" type="TextareaReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Assessment: How {$project_name} contributes towards the NCE Evaluation Criteria" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="2" renderpdf="true">
+    <ReportSection id="report2" name="Assessment: How {$project_name} contributes towards the NCE Evaluation Criteria" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="2" renderpdf="true">
     <!-- IIa. Excellence of the Research Program -->
         <ReportItem id='IIa_head' type="StaticReportItem">
             <![CDATA[<h2>A. Excellence of the Research Program: How {$project_name} contributes to the Network</h2>]]>
@@ -95,7 +95,7 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Reflections: Other Aspects of my project's involvement in GRAND" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="3" renderpdf="true">
+    <ReportSection id="report3" name="Reflections: Other Aspects of my project's involvement in GRAND" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="3" renderpdf="true">
     <!-- IIIa. Plans for Next Year -->
         <ReportItem id='IIIa_head' type="StaticReportItem">
             <![CDATA[<h2>Planned activities for {$project_name} in GRAND</h2>]]>
@@ -105,7 +105,7 @@
         </ReportItem>
     <!-- IIIb. Benefits from being involved in the Network -->
         <ReportItem id='IIIb_head' type="StaticReportItem">
-            <![CDATA[<h2>Benefits of Networking: The value to my research program of my participation in GRAND</h2>]]>
+            <![CDATA[<h2>Benefits from being involved in the Network</h2>]]>
         </ReportItem>
         <ReportItem id="IIIb" rows="12" limit="600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETBENEFITS" type="TextareaReportItem">
             <![CDATA[{$item}]]>
@@ -118,7 +118,7 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Comments" blobSection="LDR_NICOMMENTS" type="EditableReportSection" autosave="true" pagebreak="false" renderpdf="false">
+    <ReportSection id="comments" name="Comments" blobSection="LDR_NICOMMENTS" type="EditableReportSection" autosave="true" pagebreak="false" renderpdf="false">
         <ReportItemSet id="members_noleaders" type="ProjectPeopleNoLeadersReportItemSet" blobIndex="personId">
             <ReportItemSet id='comment_head' type="ToggleHeaderReportItemSet" level="3" title="{$user_reversed_name} ({$user_roles})">
                 <ReportItem id="" rows="12" limit="600" type="TextareaReportItem" blobType="BLOB_ARRAY" blobItem="LDR_NICOMMENTS_COMMENTS">
@@ -127,18 +127,18 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection name="Project Budget Request" blobSection="LDR_BUDGET" type="EditableReportSection" number="4" renderpdf="true">
+    <ReportSection id="budget" name="Project Budget Request" blobSection="LDR_BUDGET" type="EditableReportSection" number="4" renderpdf="true">
         <ReportItem id="budget" type="ProjectBudgetReportItem" />
         <ReportItem id="budget_just" rows="10" limit="600" blobType="BLOB_TEXT" blobItem="LDR_BUD_JUST" type="TextareaReportItem">
             <![CDATA[<h2>Budget Justification</h2> {$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Productivity Details" type="EditableReportSection" pagebreak="true" number="5" renderpdf="true">
+    <ReportSection id="prod_details" name="Productivity Details" type="EditableReportSection" pagebreak="true" number="5" renderpdf="true">
         <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true">
             <![CDATA[<div id='appendix'>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Milestones" blobSection="LDR_MILESTONE" type="ReportSection" pagebreak="false" number="6" renderpdf="true" previewonly="true">
+    <ReportSection id="milestones" name="Milestones" blobSection="LDR_MILESTONE" type="ReportSection" pagebreak="false" number="6" renderpdf="true" previewonly="true">
         <ReportItem id="milestone_desc" height="250px" blobType="BLOB_TEXT" blobItem="LDR_MILE_REPORT" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" showNotReferenced="true" anchor="true" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1800">
             <![CDATA[
                 <h2>Milestone Report</h2>

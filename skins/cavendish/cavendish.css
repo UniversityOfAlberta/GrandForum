@@ -949,7 +949,7 @@ a.error_box_close {
 	right: 10px;
 }
 
-.error, .warning, .success, .info {
+.error, .warning, .success, .info, .purpleInfo {
     background-repeat: no-repeat !important;
     background-position: 5px center !important;
     margin: 10px 0;
@@ -1034,6 +1034,23 @@ a.error_box_close {
     font-weight: bold;
 }
 
+.purpleInfo, .inlinePurpleInfo, .purpleInfo:hover, .inlinePurpleError:hover {
+    color: #784288 !important;
+    background-color: #e3d1e7 !important;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+.purpleInfo {
+    border: 1px solid #784288;
+    background-image:url('purpleInfo.png');
+}
+
+.purpleInfo a, .purpleInfo a:visited, .inlinePurpleInfo a, .inlinePurpleInfo a:visited {
+    color: #8C529D;
+    font-weight: bold;
+}
 /* jQuery dialogs */
 .ui-dialog{
 				border: 1px solid #ccc;

@@ -72,6 +72,10 @@ class NIProgressReportItem extends StaticReportItem {
 	                    $budget->errors[0][] = $error;
 	                }
                 }
+                $errors = BudgetReportItem::checkDeletedProjects($budgetData);
+                foreach($errors as $key => $error){
+                    $budget->errors[0][] = $error;
+                }
             }
             if($allocatedBudget == null && $wasNILastYear){
                 $rowspan++;

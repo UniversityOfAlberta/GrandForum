@@ -56,9 +56,13 @@ class ProjectNIProgressReportItem extends StaticReportItem {
                 $nRequested++;
             }
         }
+        $error = "";
+        if($project->isDeleted() && $nRequested > 0){
+            $error = "class='inlineError'";
+        }
         $details .= "<tr><td style='white-space:nowrap;' valign='top' rowspan='3'><b>NI Progress</b></td><td>{$nSubmitted} of the {$nPeople} NIs have submitted their reports\n</td></tr>";
         $details .= "<tr><td>{$nAllocated} of the {$nPeople} NIs have uploaded a revised budget for 2012 allocated funds\n</td></tr>";
-        $details .= "<tr><td>{$nRequested} of the {$nPeople} NIs have uploaded a budget request\n</td></tr>";
+        $details .= "<tr><td><span $error>{$nRequested} of the {$nPeople} NIs have uploaded a budget request</span>\n</td></tr>";
         return $details;
 	}
 }

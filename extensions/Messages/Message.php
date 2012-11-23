@@ -8,6 +8,7 @@ class Message {
     var $warnings = array();
     var $success = array();
     var $info = array();
+    var $purpleInfo = array();
     
     // Adds a (red) error message
     function addError($message){
@@ -27,6 +28,11 @@ class Message {
     // Adds a (blue) info message
     function addInfo($message){
         $this->info[] = $message;
+    }
+    
+    // Adds a (purple) info message
+    function addPurpleInfo($message){
+        $this->purpleInfo[] = $message;
     }
     
     // Empties all error messages
@@ -49,12 +55,18 @@ class Message {
         $this->info = array();
     }
     
+    // Empties all purple info messages
+    function clearPurpleInfo(){
+        $this->purpleInfo = array();
+    }
+    
     // Displays the messages
     function showMessages(){
         $errors = implode("<br />\n", $this->errors);
         $warnings = implode("<br />\n", $this->warnings);
         $success = implode("<br />\n", $this->success);
         $info = implode("<br />\n", $this->info);
+        $purpleInfo = implode("<br />\n", $this->purpleInfo);
         if($errors != ""){
             $errors = "<div class='error'><span style='display:inline-block;'>$errors</span></div>\n";
         }
@@ -67,14 +79,17 @@ class Message {
         if($info != ""){
             $info = "<div class='info'><span style='display:inline-block;'>$info</span></div>\n";
         }
-        echo $errors.$warnings.$success.$info;
+        if($purpleInfo != ""){
+            $purpleInfo = "<div class='info'><span style='display:inline-block;'>$purpleInfo</span></div>\n";
+        }
+        echo $errors.$warnings.$success.$info.$purpleInfo;
         echo "<script type='text/javascript'>
             function closeParent(link){
                 $(link).parent().remove();
             }
             
             $(document).ready(function(){
-                $('.error, .warning, .success, .info').append('<a class=\'error_box_close\' onClick=\'closeParent(this)\'>X</a>');
+                $('.error, .warning, .success, .info, .purpleInfo').not('.notQuitable').append('<a class=\'error_box_close\' onClick=\'closeParent(this)\'>X</a>');
             });
         </script>";
     }

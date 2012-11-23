@@ -217,10 +217,35 @@ abstract class AbstractReportSection {
     }
     
     // Adds a ReportItem to this AbstractReportSection
-    function addReportItem($item){
+    function addReportItem($item, $position=null){
         $item->setParent($this);
-        $this->items[] = $item;
+        if($position == null){
+            $this->items[] = $item;
+        }
+        else{
+            array_splice($this->items, $position, 0, $item);
+        }
         $item->setPersonId($this->parent->person->getId());
+    }
+    
+    // Deleted the given ReportItem from this ReportSection
+    function deleteReportItem($item){
+        foreach($this->items as $key => $it){
+            if($item->id == $it->id){
+                unset($this->items[$key]);
+                return;
+            }
+        }
+    }
+    
+    // Returns the ReportItem with the given id, or null if it does not exist
+    function getReportItemById($itemId){
+        foreach($this->items as $item){
+            if($item->id == $itemId){
+                return $item;
+            }
+        }
+        return null;
     }
     
     // Returns whether or not this section has the given $perm or not
@@ -277,7 +302,12 @@ abstract class AbstractReportSection {
         $wgOut->addHTML("<div><div id='reportHeader'>{$number}{$this->name}{$projectName}</div>
         <hr />
         <div id='reportBody'>");
-        
+        if($this->getParent()->project != null && $this->getParent()->project->isDeleted()){
+            $project = $this->getParent()->project;
+            $date = new DateTime($project->getEffectiveDate());
+            $datestr = date_format($date, 'F d, Y');
+            $wgOut->addHTML("<div class='purpleInfo notQuitable'>This is a final report for the project <a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>.  The project will be inactive, effective $datestr.</div>");
+        }
         //Render all the ReportItems's in the section    
         foreach ($this->items as $item){
             if(!$this->getParent()->topProjectOnly || ($this->getParent()->topProjectOnly && !$item->private)){

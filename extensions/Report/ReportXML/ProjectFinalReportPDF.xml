@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Project Final Report" extends="ProjectReportPDF">
+    <ReportSection id="status">
+        <ReportItem id="report_progress" reportType="ProjectFinalReport">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="report3">
+    <!-- IIIa. Plans for Next Year -->
+        <ReportItem id='IIIa_head'>
+            <![CDATA[<h2>Project Retrospective</h2>]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="budget" delete="true">
+        
+    </ReportSection>
+    <ReportSection id="prod_details" number="4" pagebreak="false">
+    
+    </ReportSection>
+    <ReportSection id="milestones" number="5">
+    
+    </ReportSection>
+    
+</Report>

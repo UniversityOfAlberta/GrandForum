@@ -141,6 +141,11 @@ class BudgetReportItem extends AbstractReportItem {
 		            $budget->errors[0][] = $error;
 		        }
 		    }
+		    $errors = self::checkDeletedProjects($data);
+		    foreach($errors as $key => $error){
+	            $budget->errors[0][] = $error;
+	        }
+		    
 		    echo $budget->render();
 		}
 		else{
@@ -184,6 +189,23 @@ class BudgetReportItem extends AbstractReportItem {
 	    return array();
 	}
 	
+	static function checkDeletedProjects($data){
+	    $errors = array();
+        $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
+        $projects = $budget->copy()->select(V_PROJ, array())->where(V_PROJ)->xls;
+        foreach($projects as $row){
+            foreach($row as $proj){
+                $project = Project::newFromName($proj->getValue());
+                if($project != null && $project->getName() != null){
+                    if(substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
+                        $errors[] = "'{$project->getName()}' is not continuing next year";
+                    }
+                }
+            }
+        }
+        return $errors;
+	}
+	
 	static function addWorksWithRelation($data, $dryRun=false){
 	    global $wgUser;
 	    $errors = array();
@@ -196,6 +218,9 @@ class BudgetReportItem extends AbstractReportItem {
             foreach($row as $proj){
                 $project = Project::newFromName($proj->getValue());
                 if($project != null && $project->getName() != null){
+                    if(substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
+                        $errors[] = "'{$project->getName()}' is not continuing next year";
+                    }
                     // Now look for the people
                     $people = $budget->copy()->select(V_PROJ, array($project->getName()))->where(V_PERS)->xls;
                     $nPeople = 0;

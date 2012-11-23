@@ -4,6 +4,8 @@ abstract class ReportItemSet extends AbstractReportItem{
 
     var $items;
     var $blobIndex;
+    var $count;
+    var $iteration;
 
     // Creates a new ReportItemSet
     function ReportItemSet(){
@@ -136,10 +138,35 @@ abstract class ReportItemSet extends AbstractReportItem{
         $this->blobIndex = $blobIndex;
     }
 
-    function addReportItem($item){
+    function addReportItem($item, $position=null){
         $item->setParent($this);
-        $this->items[] = $item;
+        if($position == null){
+            $this->items[] = $item;
+        }
+        else{
+            array_splice($this->items, ($position) + ($this->count*$this->iteration) + ($this->iteration), 0, array($item));
+        }
         $item->setPersonId($this->personId);
+    }
+    
+    // Deleted the given ReportItem from this ReportItemSet
+    function deleteReportItem($item){
+        foreach($this->items as $key => $it){
+            if($item->id == $it->id){
+                unset($this->items[$key]);
+                return;
+            }
+        }
+    }
+    
+    // Returns the ReportItem with the given id, or null if it does not exist
+    function getReportItemById($itemId){
+        foreach($this->items as $item){
+            if($item->id == $itemId){
+                return $item;
+            }
+        }
+        return null;
     }
     
     function save(){
