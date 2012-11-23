@@ -218,6 +218,7 @@ class Project{
 			$this->type = $data[0]['type'];
 			$this->succ = false;
 			$this->preds = false;
+			
 			if(isset($data[0]['action']) && $data[0]['action'] == 'DELETE'){
 			    $this->deleted = true;
 			}
