@@ -38,8 +38,7 @@ class MaterialPage {
                     $material = Material::newFromTitle($_POST['title']);
                     $wgOut->redirect('');
                     if($errors == ""){
-                        header("Location: $wgServer$wgScriptPath/index.php/{$name}:{$material->getId()}");
-                        exit;
+                        redirect("$wgServer$wgScriptPath/index.php/{$name}:{$material->getId()}");
                     }
                     else{
                         $wgOut->clearHTML();

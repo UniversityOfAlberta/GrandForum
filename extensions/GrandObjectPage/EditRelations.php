@@ -130,12 +130,10 @@ class EditRelations extends SpecialPage{
 	                    APIRequest::doAction('DeleteRelation', true);
 	                }
 	            }
-	            header("Location: $wgServer$wgScriptPath/index.php/Special:EditRelations");
-	            exit;
+	            redirect("$wgServer$wgScriptPath/index.php/Special:EditRelations");
 	        }
 	        else{
-	            header("Location: $wgServer$wgScriptPath/index.php/Special:EditRelations?editProjects");
-	            exit;
+	            redirect("$wgServer$wgScriptPath/index.php/Special:EditRelations?editProjects");
 	        }
 	    }
 	    $editProjects = "";
