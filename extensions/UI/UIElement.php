@@ -11,7 +11,7 @@ $formValidations = array('VALIDATE_NOTHING',
                          'VALIDATE_IS_EMAIL');
                          
 foreach($formValidations as $key => $validation){
-    define($validation, pow(2, $key));
+    define($validation, pow(2, $key-1));
 }
 
 /*
@@ -135,7 +135,7 @@ abstract class UIElement {
         $this->value = $this->default;
     }
     
-    function registerValidationFunction($functionName, $functionParams=array()){
+    function registerValidation($functionName, $functionParams=array()){
         $this->validationFunctions[] = array('function' => $functionName, 
                                              'params' => $functionParams);
     }
