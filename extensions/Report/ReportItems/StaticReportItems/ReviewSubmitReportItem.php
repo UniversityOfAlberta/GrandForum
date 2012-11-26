@@ -62,7 +62,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
                                                         $('#generate_success').html('PDF Generated Successfully.');
                                                         $('#generate_success').css('display', 'block');
                                                         $('#download_tok_' + index).attr('value', tok);
-                                                        $('#download_button_' + index+' button').text(name + ' PDF');
+                                                        $('#download_button_' + index).text(name + ' PDF');
                                                         $('.submit_status_cell').css('background', 'red');
 		                                                $('.submit_status_cell').html('<b>No</b>');
                                                     }
