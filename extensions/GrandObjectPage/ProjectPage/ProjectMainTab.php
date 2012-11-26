@@ -145,7 +145,7 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         
         $this->html .= "<table width='100%'><tr><td valign='top' width='50%'>";
-        if($edit || !$edit && count($pnis) > 0){
+        if($edit || !$edit && count($ars) > 0){
             $this->html .= "<h2><span class='mw-headline'>Associated Researchers</span></h2>";
         }
         $this->html .= "<ul>";
