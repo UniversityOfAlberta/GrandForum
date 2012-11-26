@@ -3,7 +3,7 @@
 class NumberField extends TextField {
     
     function NumberField($id, $name, $value, $validations=VALIDATE_NOTHING){
-        parent::TextField($id, $name, $value, $validations + VALIDATE_IS_NUMBER);
+        parent::TextField($id, $name, $value, $validations + VALIDATE_NUMBER);
         $this->attr('size', 5);
     }
     

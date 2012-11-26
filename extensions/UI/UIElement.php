@@ -1,17 +1,16 @@
 <?php
 global $formValidations;
-$formValidations = array('VALIDATE_NOTHING',
-                         'VALIDATE_NOT_NULL',
-                         'VALIDATE_IS_NUMERIC',
-                         'VALIDATE_IS_PERCENT',
-                         'VALIDATE_IS_PROJECT',
-                         'VALIDATE_IS_NOT_PROJECT',
-                         'VALIDATE_IS_PERSON',
-                         'VALIDATE_IS_NOT_PERSON',
-                         'VALIDATE_IS_EMAIL');
-                         
+$formValidations = array('NOTHING',
+                         'NULL',
+                         'NUMERIC',
+                         'PERCENT',
+                         'PROJECT',
+                         'PERSON',
+                         'EMAIL');
+
 foreach($formValidations as $key => $validation){
-    define($validation, pow(2, $key-1));
+    define('VALIDATE_'.$validation, pow(2, ($key)*2));
+    define('VALIDATE_NOT_'.$validation, pow(2, ($key)*2 + 1));
 }
 
 /*
@@ -53,6 +52,7 @@ abstract class UIElement {
             $this->value = $this->clearValue($value);
         }
         $this->validations = $validations;
+        echo $validations.'<br />';
         $this->validationFunctions = array();
     }
     
@@ -162,43 +162,43 @@ abstract class UIElement {
                 $fails[] = "The field '".ucfirst($this->name)."' must not be empty";
             }
         }
-        if($this->isValidationSet(VALIDATE_IS_NUMERIC)){
+        if($this->isValidationSet(VALIDATE_NUMERIC)){
             $result = $this->validateIsNumeric($value);
             if(!$result){
                 $fails[] = "The field '".ucfirst($this->name)."' must be a valid number";
             }
         }
-        if($this->isValidationSet(VALIDATE_IS_PERCENT)){
+        if($this->isValidationSet(VALIDATE_PERCENT)){
             $result = $this->validateIsPercent($value);
             if(!$result){
                 $fails[] = "The field '".ucfirst($this->name)."' must be a valid percent";
             }
         }
-        if($this->isValidationSet(VALIDATE_IS_PROJECT)){
+        if($this->isValidationSet(VALIDATE_PROJECT)){
             $result = $this->validateIsProject($value);
             if(!$result){
                 $fails[] = "The field '".ucfirst($this->name)."' must be a valid Project (value used: $value)";
             }
         }
-        if($this->isValidationSet(VALIDATE_IS_NOT_PROJECT)){
+        if($this->isValidationSet(VALIDATE_NOT_PROJECT)){
             $result = !$this->validateIsProject($value);
             if(!$result){
                 $fails[] = "The field '".ucfirst($this->name)."' must not be an already existing Project (value used: $value)";
             }
         }
-        if($this->isValidationSet(VALIDATE_IS_PERSON)){
+        if($this->isValidationSet(VALIDATE_PERSON)){
             $result = $this->validateIsPerson($value);
             if(!$result){
                 $fails[] = "The field '".ucfirst($this->name)."' must be a valid Person (value used: $value)";
             }
         }
-        if($this->isValidationSet(VALIDATE_IS_NOT_PERSON)){
+        if($this->isValidationSet(VALIDATE_NOT_PERSON)){
             $result = !$this->validateIsPerson($value);
             if(!$result){
                 $fails[] = "The field '".ucfirst($this->name)."' must not be an already existing Person (value used: $value)";
             }
         }
-        if($this->isValidationSet(VALIDATE_IS_EMAIL)){
+        if($this->isValidationSet(VALIDATE_EMAIL)){
             $result = !$this->validateIsEmail($value);
             if(!$result){
                 $fails[] = "The field '".ucfirst($this->name)."' must be a valid email address";
