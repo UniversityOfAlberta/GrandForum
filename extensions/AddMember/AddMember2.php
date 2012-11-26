@@ -59,6 +59,11 @@ class AddMember2 extends SpecialPage{
 			AddMember2::generateFormHTML($wgOut);
 		}
 		else{
+		    $form = self::createForm();
+		    $errors = $form->validate();
+		    AddMember2::generateFormHTML($wgOut);
+		    $wgMessage->addError(implode("<br />\n", $errors));
+		    return;
 			// The Form has been entered
 			if(isset($_POST['wpNS'])){
 			    $nss = implode(", ", $_POST['wpNS']);

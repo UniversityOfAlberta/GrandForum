@@ -1,16 +1,20 @@
 <?php
 global $formValidations;
-$formValidations = array('NOTHING',
-                         'NULL',
-                         'NUMERIC',
-                         'PERCENT',
-                         'PROJECT',
-                         'PERSON',
-                         'EMAIL');
+$formValidations = array('NOTHING' => 'NothingValidation',
+                         'NULL'    => 'NullValidation',
+                         'NUMERIC' => 'NumericValidation',
+                         'PERCENT' => 'PercentValidation',
+                         'PROJECT' => 'ProjectValidation',
+                         'PERSON'  => 'PersonValidation',
+                         'EMAIL'   => 'EmailValidation');
 
+$i = 0;
 foreach($formValidations as $key => $validation){
-    define('VALIDATE_'.$validation, pow(2, ($key)*2));
-    define('VALIDATE_NOT_'.$validation, pow(2, ($key)*2 + 1));
+    define('VALIDATE_'.$key, pow(2, ($i)*2));
+    define('VALIDATE_NOT_'.$key, pow(2, ($i)*2 + 1));
+    $formValidations[pow(2, ($i)*2)] = $validation;
+    $formValidations[pow(2, ($i)*2 + 1)] = $validation;
+    $i++;
 }
 
 /*
@@ -52,7 +56,6 @@ abstract class UIElement {
             $this->value = $this->clearValue($value);
         }
         $this->validations = $validations;
-        echo $validations.'<br />';
         $this->validationFunctions = array();
     }
     
@@ -143,6 +146,7 @@ abstract class UIElement {
     // Returns an array containing all the failed validations
     // if $value is false, then use the $this->value, otherwise use $value
     function validate($value=false){
+        global $formValidations;
         $fails = array();
         if($value === false){
             if(is_array($this->value)){
@@ -199,9 +203,11 @@ abstract class UIElement {
             }
         }
         if($this->isValidationSet(VALIDATE_EMAIL)){
-            $result = !$this->validateIsEmail($value);
+            $type = $formValidations[VALIDATE_EMAIL];
+            $validation = new $type();
+            $result = $validation->validate($value);
             if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must be a valid email address";
+                $fails[] = $validation->failMessage($this->name);
             }
         }
         // Custom validations
