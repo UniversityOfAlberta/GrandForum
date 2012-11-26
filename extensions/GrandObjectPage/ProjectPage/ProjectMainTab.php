@@ -159,6 +159,7 @@ class ProjectMainTab extends AbstractEditableTab {
             }
             $this->html .= "<li><a href='{$ar->getUrl()}'$target>{$ar->getReversedName()}</a></li>";
         }
+        $this->html .= "</ul>";
         if($edit || !$edit && count($pnis) > 0){
             $this->html .= "<h2><span class='mw-headline'>PNIs</span></h2>";
         }
