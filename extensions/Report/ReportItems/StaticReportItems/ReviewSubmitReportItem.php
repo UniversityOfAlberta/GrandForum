@@ -54,14 +54,14 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		                                                
 		                                                $('#ex_token_' + index).html(tok);
                                                         $('#ex_time_' + index).html(time);
-                                                        $('#ex_token2_' + index).val(tok);
-                                                        $('#generate_button_' + index).val(tok);
+                                                        $('#ex_token2_' + index).attr('value', tok);
+                                                        $('#generate_button_' + index).attr('value', tok);
                                                         $('#download_button_' + index).removeAttr('disabled');
                                                         $('#report_submit_div').show();
                                                         
                                                         $('#generate_success').html('PDF Generated Successfully.');
                                                         $('#generate_success').css('display', 'block');
-                                                        $('#download_tok_' + index).val(tok);
+                                                        $('#download_tok_' + index).attr('value', tok);
                                                         $('#download_button_' + index+' button').text(name + ' PDF');
                                                         $('.submit_status_cell').css('background', 'red');
 		                                                $('.submit_status_cell').html('<b>No</b>');
