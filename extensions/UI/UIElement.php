@@ -146,7 +146,7 @@ abstract class UIElement {
     // Returns an array containing all the failed validations
     // if $value is false, then use the $this->value, otherwise use $value
     function validate($value=false){
-        global $formValidations;
+        global $formValidations, $wgMessage;
         $fails = array();
         if($value === false){
             if(is_array($this->value)){
@@ -156,6 +156,14 @@ abstract class UIElement {
             }
             else{
                 $fails = $this->validate($this->value);
+            }
+            foreach($fails as $fail){
+                if(isset($fail['warning'])){
+                    $wgMessage->addWarning($fail['warning']);
+                }
+                else{
+                    $wgMessage->addError($fail['error']);
+                }
             }
             return $fails;
         }

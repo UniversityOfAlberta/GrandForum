@@ -22,18 +22,18 @@ abstract class UIValidation {
     function getMessage($name){
         if($this->neg){
             if($this->warning){
-                return $this->warningNegMessage($name);
+                return array('warning' => $this->warningNegMessage($name));
             }
             else{
-                return $this->failNegMessage($name);
+                return array('error' => $this->failNegMessage($name));
             }
         }
         else{
             if($this->warning){
-                return $this->warningMessage($name);
+                return array('warning' => $this->warningMessage($name));
             }
             else{
-                return $this->failMessage($name);
+                return array('error' => $this->failMessage($name));
             }
         }
     }
