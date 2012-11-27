@@ -54,14 +54,13 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		                                                
 		                                                $('#ex_token_' + index).html(tok);
                                                         $('#ex_time_' + index).html(time);
-                                                        $('#ex_token2_' + index).attr('value', tok);
                                                         $('#generate_button_' + index).attr('value', tok);
                                                         $('#download_button_' + index).removeAttr('disabled');
                                                         $('#report_submit_div').show();
                                                         
                                                         $('#generate_success').html('PDF Generated Successfully.');
                                                         $('#generate_success').css('display', 'block');
-                                                        $('#download_tok_' + index).attr('value', tok);
+                                                        $('#download_button_' + index).attr('name', tok);
                                                         $('#download_button_' + index).text(name + ' PDF');
                                                         $('.submit_status_cell').css('background', 'red');
 		                                                $('.submit_status_cell').html('<b>No</b>');
@@ -120,6 +119,10 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		                });
 		            }
 		        });
+		        
+		        function clickButton(button){
+	                $('#pdf_download_frame').attr('src',  '{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf=' + button.name);
+	            }
 		    </script>");
 		}
 		$disabled = "";
@@ -144,6 +147,7 @@ EOF;
 
 		$wgOut->addHTML($temp_html);
 		$pdfcount = 1;
+		$wgOut->addHTML("<iframe id='pdf_download_frame' style='position:absolute;top:-1000px;left:-1000px;width:1px;height:1px;'></iframe>");
         foreach($this->getReport()->pdfFiles as $file){
             $tok = false;
             $tst = '';
@@ -187,11 +191,7 @@ EOF;
 		    	<span style="font-size:8pt; font-family: monospace;" id='ex_token_{$file}'>{$tok}</span>
 		    	<span id='ex_time_{$file}'>{$show_pdf}</span></td>
             <td>
-            	<input id='ex_token2_{$file}' type='hidden' name='pdftoken' value='{$tok}'/>
-            	<form method="GET" action="$wgServer$wgScriptPath/index.php/Special:ReportArchive">
-            	<input id='download_tok_{$file}' type="hidden" name="getpdf" value="{$tok}">
-            	<button id='download_button_{$file}' {$style1} type="submit" >{$report->name} PDF</button>
-            	</form>
+            	<button id='download_button_{$file}' name='{$tok}' onClick='clickButton(this)' {$style1}>{$report->name} PDF</button>
             </td>
 EOF;
 			if($pdfcount == 1 ){
