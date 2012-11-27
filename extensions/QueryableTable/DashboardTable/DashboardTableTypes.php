@@ -103,8 +103,8 @@ define('PROJECT_REPORT_TIME_STRUCTURE', 13);
 
 $dashboardStructures = array();
 $dashboardStructures[NI_PUBLIC_PROFILE_STRUCTURE] =
-    array(array(HEAD."(Projects)", HEAD."(HQP)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)"),
-          array(HEAD.'(Total:)', PERSON_HQP, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS),
+    array(array(HEAD."(Projects)", HEAD."(HQP)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Multimedia)"),
+          array(HEAD.'(Total:)', PERSON_HQP, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS, PERSON_MULTIMEDIA),
           STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY) => array(PERSON_PROJECTS,
                                                           PERSON_HQP, 
                                                           PERSON_PUBLICATIONS, 
@@ -112,13 +112,14 @@ $dashboardStructures[NI_PUBLIC_PROFILE_STRUCTURE] =
                                                           PERSON_ACTIVITIES,
                                                           PERSON_PRESENTATIONS,
                                                           PERSON_PRESS,
-                                                          PERSON_AWARDS),
-          array(HEAD.'(Total:)', PERSON_HQP, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS)
+                                                          PERSON_AWARDS,
+                                                          PERSON_MULTIMEDIA),
+          array(HEAD.'(Total:)', PERSON_HQP, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS, PERSON_MULTIMEDIA)
     );
     
 $dashboardStructures[NI_PRIVATE_PROFILE_STRUCTURE] =
-    array(array(HEAD."(Projects)", HEAD."(Partners/Champions)", HEAD."(HQP)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Contributions)"),
-    array(HEAD.'(Total:)', PERSON_PARTNERS, PERSON_HQP, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS, PERSON_CONTRIBUTIONS),
+    array(array(HEAD."(Projects)", HEAD."(Partners/Champions)", HEAD."(HQP)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Multimedia)", HEAD."(Contributions)"),
+    array(HEAD.'(Total:)', PERSON_PARTNERS, PERSON_HQP, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS, PERSON_MULTIMEDIA, PERSON_CONTRIBUTIONS),
           STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY) => array(PERSON_PROJECTS,
                                                           PERSON_PARTNERS, 
                                                           PERSON_HQP, 
@@ -128,8 +129,9 @@ $dashboardStructures[NI_PRIVATE_PROFILE_STRUCTURE] =
                                                           PERSON_PRESENTATIONS,
                                                           PERSON_PRESS,
                                                           PERSON_AWARDS,
+                                                          PERSON_MULTIMEDIA,
                                                           PERSON_CONTRIBUTIONS),
-          array(HEAD.'(Total:)', PERSON_PARTNERS, PERSON_HQP, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS, PERSON_CONTRIBUTIONS)
+          array(HEAD.'(Total:)', PERSON_PARTNERS, PERSON_HQP, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS, PERSON_MULTIMEDIA, PERSON_CONTRIBUTIONS)
     );
     
 $dashboardStructures[NI_REPORT_STRUCTURE] =
@@ -167,6 +169,7 @@ $dashboardStructures[NI_REPORT_PRODUCTIVITY_STRUCTURE] =
                 STRUCT(HEAD, "Presentations", "tooltip=\"Under Presentations, the productivity table reports any activity in which the NI was involved, with a date within the current reporting year and two years into the future. This category is meant to include conference organization and similar activities.\""), 
                 STRUCT(HEAD, "Press"), 
                 STRUCT(HEAD, "Awards", "tooltip=\"Under Awards, the productivity table reports awards bestowed to the NI within the current reporting year.\""), 
+                STRUCT(HEAD, "Multimedia", "tooltip=\"Under Multimedia, the productivity table reports multimedia stories in which the NI was involved within the current reporting year.\""), 
                 STRUCT(HEAD, "Contributions", "tooltip=\"Under Contributions, the productivity table reports cash and in-kind contributions to the NI's GRAND-related research activities by agencies outside GRAND during the current reporting year.\"")), 
     array(HEAD.'(Total:)',
           STRUCT(PERSON_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
@@ -175,6 +178,7 @@ $dashboardStructures[NI_REPORT_PRODUCTIVITY_STRUCTURE] =
           STRUCT(PERSON_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
           STRUCT(PERSON_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
           STRUCT(PERSON_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+          STRUCT(PERSON_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
           STRUCT(PERSON_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END)), 
           STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array(PERSON_PROJECTS,
                                                            STRUCT(PERSON_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
@@ -183,6 +187,7 @@ $dashboardStructures[NI_REPORT_PRODUCTIVITY_STRUCTURE] =
                                                            STRUCT(PERSON_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                                                            STRUCT(PERSON_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                                                            STRUCT(PERSON_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                           STRUCT(PERSON_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                                                            STRUCT(PERSON_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END)), 
       array(HEAD.'(Total:)', 
             STRUCT(PERSON_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
@@ -191,12 +196,13 @@ $dashboardStructures[NI_REPORT_PRODUCTIVITY_STRUCTURE] =
             STRUCT(PERSON_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
             STRUCT(PERSON_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
             STRUCT(PERSON_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+            STRUCT(PERSON_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
             STRUCT(PERSON_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END))
     );
     
 $dashboardStructures[HQP_PUBLIC_PROFILE_STRUCTURE] =
-    array(array(HEAD."(Projects)", HEAD."(Supervisors)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)"),
-          array(HEAD.'(Total:)', PERSON_SUPERVISORS, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS),
+    array(array(HEAD."(Projects)", HEAD."(Supervisors)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Multimedia)"),
+          array(HEAD.'(Total:)', PERSON_SUPERVISORS, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS, PERSON_MULTIMEDIA),
           STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY) => array(PERSON_PROJECTS,
                                                           PERSON_SUPERVISORS, 
                                                           PERSON_PUBLICATIONS, 
@@ -204,38 +210,42 @@ $dashboardStructures[HQP_PUBLIC_PROFILE_STRUCTURE] =
                                                           PERSON_ACTIVITIES,
                                                           PERSON_PRESENTATIONS,
                                                           PERSON_PRESS,
-                                                          PERSON_AWARDS),
-          array(HEAD.'(Total:)', PERSON_SUPERVISORS, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS)
+                                                          PERSON_AWARDS,
+                                                          PERSON_MULTIMEDIA),
+          array(HEAD.'(Total:)', PERSON_SUPERVISORS, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS, PERSON_MULTIMEDIA)
     );
     
 $dashboardStructures[HQP_REPORT_STRUCTURE] =
-    array(array(HEAD."(Projects)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)"),
+    array(array(HEAD."(Projects)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Multimedia)"),
           array(HEAD.'(Total:)', 
                 STRUCT(PERSON_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                 STRUCT(PERSON_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                 STRUCT(PERSON_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                 STRUCT(PERSON_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                 STRUCT(PERSON_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
-                STRUCT(PERSON_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
+                STRUCT(PERSON_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                STRUCT(PERSON_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
           STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array(PERSON_PROJECTS,
                                                           STRUCT(PERSON_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                                                             STRUCT(PERSON_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                                                             STRUCT(PERSON_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                                                             STRUCT(PERSON_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                                                             STRUCT(PERSON_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
-                                                            STRUCT(PERSON_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
+                                                            STRUCT(PERSON_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                            STRUCT(PERSON_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
           array(HEAD.'(Total:)', 
                 STRUCT(PERSON_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                 STRUCT(PERSON_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                 STRUCT(PERSON_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                 STRUCT(PERSON_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                 STRUCT(PERSON_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
-                STRUCT(PERSON_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END))
+                STRUCT(PERSON_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                STRUCT(PERSON_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_CYCLE_END))
     );
     
 $dashboardStructures[PROJECT_PUBLIC_STRUCTURE] = 
-    array(array(HEAD."(People)", HEAD."(Roles)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)"),
-          array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_PUBLICATIONS, PROJECT_ARTIFACTS, PROJECT_ACTIVITIES, PROJECT_PRESENTATIONS, PROJECT_PRESS, PROJECT_AWARDS),
+    array(array(HEAD."(People)", HEAD."(Roles)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Multimedia)"),
+          array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_PUBLICATIONS, PROJECT_ARTIFACTS, PROJECT_ACTIVITIES, PROJECT_PRESENTATIONS, PROJECT_PRESS, PROJECT_AWARDS, PROJECT_MULTIMEDIA),
           STRUCT(GROUP_BY, PROJECT_PEOPLE_ARRAY) => array(PROJECT_PEOPLE,
                                                          PROJECT_ROLES,
                                                          PROJECT_PUBLICATIONS, 
@@ -243,12 +253,13 @@ $dashboardStructures[PROJECT_PUBLIC_STRUCTURE] =
                                                          PROJECT_ACTIVITIES,
                                                          PROJECT_PRESENTATIONS,
                                                          PROJECT_PRESS,
-                                                         PROJECT_AWARDS),
-          array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_PUBLICATIONS, PROJECT_ARTIFACTS, PROJECT_ACTIVITIES, PROJECT_PRESENTATIONS, PROJECT_PRESS, PROJECT_AWARDS)
+                                                         PROJECT_AWARDS,
+                                                         PROJECT_MULTIMEDIA),
+          array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_PUBLICATIONS, PROJECT_ARTIFACTS, PROJECT_ACTIVITIES, PROJECT_PRESENTATIONS, PROJECT_PRESS, PROJECT_AWARDS, PROJECT_MULTIMEDIA)
     );
     
 $dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] = 
-    array(array(HEAD."(People)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Partners)",  HEAD."(Contributions)"),
+    array(array(HEAD."(People)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Multimedia)", HEAD."(Partners)",  HEAD."(Contributions)"),
           array(HEAD.'(Total:)', 
                 STRUCT(PROJECT_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                 STRUCT(PROJECT_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
@@ -256,6 +267,7 @@ $dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] =
                 STRUCT(PROJECT_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                 STRUCT(PROJECT_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                 STRUCT(PROJECT_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                 STRUCT(PROJECT_PARTNERS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                 STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
           STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array(PROJECT_PEOPLE_ROLES,
@@ -265,7 +277,8 @@ $dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] =
                                                         STRUCT(PROJECT_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                                                         STRUCT(PROJECT_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                                                         STRUCT(PROJECT_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
-                                                        STRUCT(PROJECT_PARTNERS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),  
+                                                        STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                        STRUCT(PROJECT_PARTNERS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                                                         STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
           STRUCT(GROUP_BY, PROJECT_PEOPLE_NO_LEADERS_ARRAY) => array(PROJECT_PEOPLE_ROLES,
                                                          STRUCT(PROJECT_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
@@ -273,8 +286,9 @@ $dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] =
                                                         STRUCT(PROJECT_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                                                         STRUCT(PROJECT_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                                                         STRUCT(PROJECT_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
-                                                        STRUCT(PROJECT_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
-                                                        STRUCT(PROJECT_PARTNERS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                                                        STRUCT(PROJECT_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                        STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                        STRUCT(PROJECT_PARTNERS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                                                         STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
           array(HEAD.'(Total:)', 
                 STRUCT(PROJECT_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
@@ -282,8 +296,9 @@ $dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] =
                 STRUCT(PROJECT_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                 STRUCT(PROJECT_PRESENTATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                 STRUCT(PROJECT_PRESS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
-                STRUCT(PROJECT_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
-                STRUCT(PROJECT_PARTNERS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
+                STRUCT(PROJECT_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                STRUCT(PROJECT_PARTNERS, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                 STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END))
     );
     

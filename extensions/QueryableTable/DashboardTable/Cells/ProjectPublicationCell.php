@@ -36,19 +36,19 @@ abstract class ProjectPublicationCell extends PublicationCell {
                         if($paper->getCategory() == "Publication"){
                             $status = $paper->getStatus();
                             if($status == "Published"){
-                                $type .= " (PB)";
+                                $type .= "(PB)";
                             }
                             else{
-                                $type .= " (Not PB)";
+                                $type .= "(Not PB)";
                             }
                         }
                         else if($paper->getCategory() == "Artifact"){
                             $status = $paper->getStatus();
                             if($status == "Peer Reviewed"){
-                                $type .= " (PR)";
+                                $type .= "(PR)";
                             }
                             else{
-                                $type .= " (Not PR)";
+                                $type .= "(Not PR)";
                             }
                         }
                         $values[$type][] = $paper->getId();
@@ -60,19 +60,19 @@ abstract class ProjectPublicationCell extends PublicationCell {
                                 if($paper->getCategory() == "Publication"){
                                     $status = $paper->getStatus();
                                     if($status == "Published"){
-                                        $type .= " (PB)";
+                                        $type .= "(PB)";
                                     }
                                     else{
-                                        $type .= " (Not PB)";
+                                        $type .= "(Not PB)";
                                     }
                                 }
                                 else if($paper->getCategory() == "Artifact"){
                                     $status = $paper->getStatus();
                                     if($status == "Peer Reviewed"){
-                                        $type .= " (PR)";
+                                        $type .= "(PR)";
                                     }
                                     else{
-                                        $type .= " (Not PR)";
+                                        $type .= "(Not PR)";
                                     }
                                 }
                                 $values[$type][] = $paper->getId();

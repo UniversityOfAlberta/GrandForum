@@ -309,12 +309,12 @@ EOF;
 		    }
 		    
 		    #pdfBody small {
-		        font-size: ".($fontSize+(-2*DPI_CONSTANT))."px;
+		        font-size: ".max(10, ($fontSize+(-3*DPI_CONSTANT)))."px;
 		        display:inline;
 		    }
 		    
 		    #pdfBody .smaller {
-		        font-size: ".($fontSize+(-3*DPI_CONSTANT))."px;
+		        font-size: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
 		    }
 		    
 		    #pdfBody li {
