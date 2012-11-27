@@ -176,7 +176,7 @@ class ReviewerConflicts extends SpecialPage {
         </script>
 EOF;
         
-        //$wgOut->addScript($js);    
+        $wgOut->addScript($js);    
         //$html .= $js;    
 
         $html .=<<<EOF
@@ -184,15 +184,17 @@ EOF;
 
         <div id='div_new_connections'>
         
-        <!--strong>Search:</strong> <input style='width:93%;' id='search' type='text' onKeyUp='filterResults(this.value);' /-->
+        <strong>Search:</strong> <input style='width:73%;' id='search' type='text' onKeyUp='filterResults(this.value);' />
         <div style='padding:2px;'></div>
         <table id='ni_conflicts' class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
         <thead>
         <tr bgcolor='#F2F2F2'>
         <th width='40%' name="search_lastname_header">Name</th>
-        <th width='15%' name="search_firstname_header" title='Sort by first name'>Same Organization</th>
-        <th width='15%' name="search_projects_header" title='Sort by projects'>Same Projects</th>
-        <th width='15%' name="search_university_header" title='Sort by university'>Co-authorship</th>
+        <th width='15%' name="search_firstname_header" title=''>Work With</th>
+        <th width='15%' name="search_firstname_header" title=''>Same Organization</th>
+        <th width='15%' name="search_projects_header" title=''>Same Projects</th>
+        <th width='15%' name="search_university_header" title=''>Co-authorship</th>
+        <th width='15%' name="search_university_header" title=''>Co-supervision</th>
         <th width='15%' class='sorter-false' title=''>
             Conflict? <!--input type='checkbox' name="search_selectall_checkbox" onchange="toggleChecked(this.checked, '#new_connections tbody tr:visible input.search_conn_chkbox');" /-->
             
@@ -216,6 +218,17 @@ EOF;
         	$my_papers[] = $paper->getId();
         }
 
+        //Works With
+        $my_coworkers = array();
+        foreach($me->getRelations("Works With", true) as $rel){
+        	$my_coworkers[] = $rel->getUser2();
+        }
+
+        $my_hqp = array();
+        foreach($me->getHQP(true) as $hqp){
+        	$my_hqp[] = $hqp->getId();
+        }
+
         foreach($allPeople as $person){
             if($person->getName() == $me->getName()){
                 continue;
@@ -226,6 +239,17 @@ EOF;
             $fname = $person_name[0];
             $lname = implode(' ', array_slice($person_name, 1));
 
+            //Work With 
+            $works_with = "No";            
+            $co_workers = array();
+        	foreach($person->getRelations("Works With", true) as $rel){
+        		$co_workers[] = $rel->getUser2();
+        	}
+            if($person->relatedTo($me, 'Works With') || $me->relatedTo($person, 'Works With') || in_array($me->getId(), $co_workers)){
+            	$works_with = "Yes";
+            }
+
+            
             //Organization
             $position = $person->getUniversity();
             $position = $position['university'];
@@ -244,7 +268,7 @@ EOF;
             	}
             }
            
-      
+      		//Papers
             $papers = $person->getPapers("all", true);
             $co_authorship = "No";
 	        foreach($papers as $paper){
@@ -253,18 +277,32 @@ EOF;
 	        		break;
 	        	}
 	        }
-
+	        //HQP
+	        $co_supervision = "No";
+	        foreach($person->getHQP(true) as $hqp){
+	        	if(in_array($hqp->getId(), $my_hqp)){
+	        		$co_supervision = "Yes";
+	        		break;
+	        	}
+	        }
             
-          
-            $bgcolor = ($same_organization == "Yes" || $same_projects == "Yes" || $co_authorship == "Yes")? "#DD3333" : "#FFFFFF";
+            $bgcolor = "#FFFFFF";
+            $checked = "";
+          	if($works_with == "Yes" || $same_organization == "Yes" || $same_projects == "Yes" || $co_authorship == "Yes" || $co_supervision == "Yes"){
+          		$bgcolor = "#DD3333";
+          		$checked = "checked='checked' disabled='disabled'";
+          	}
+            
             $row_id = $person->getName();
             $html .= <<<EOF
             <tr style='background-color:{$bgcolor};' name='search' id='{$row_id}' class=''>
                 <td class='lname'>{$lname}, {$fname}</td>
+                <td class=''>{$works_with}</td>
                 <td class=''>{$same_organization}</td>
                 <td class=''>{$same_projects}</td>
                 <td class=''>{$co_authorship}</td>
-                <td><input class="conflict_checkbox" type="checkbox" /></td>
+                <td class=''>{$co_supervision}</td>
+                <td align='center'><input class="conflict_checkbox" type="checkbox" {$checked} /></td>
             </tr>
 EOF;
         }
