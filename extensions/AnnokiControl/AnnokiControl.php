@@ -273,6 +273,10 @@ $egAnnokiExtensions['ProjectEvolution']     = array( 'name' => 'Project Evolutio
 					      'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php",
 					      'enabled' => true,
 					      );
+$egAnnokiExtensions['ReviewerConflicts']     = array( 'name' => 'Reviewer Conflicts',
+					      'path' => "$IP/extensions/ReviewerConflicts/ReviewerConflicts.php",
+					      'enabled' => true,
+					      );
 
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
