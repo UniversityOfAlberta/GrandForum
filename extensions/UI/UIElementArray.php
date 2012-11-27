@@ -5,6 +5,7 @@ class UIElementArray extends UIElement {
     var $elements;
     
     function UIElementArray($id){
+        parent::UIElement($id, $id, "", VALIDATE_NOTHING);
         $this->id = $id;
         $this->elements = array();
     }
@@ -119,11 +120,11 @@ class UIElementArray extends UIElement {
     }
     
     function validate(){
-        $fails = array();
+        $result = true;
         foreach($this->elements as $element){
-            $fails = array_merge($fails, $element->validate());
+            $result = ($element->validate()) && $result;
         }
-        return $fails;
+        return $result;
     }
 }
 

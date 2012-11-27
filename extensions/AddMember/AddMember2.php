@@ -60,9 +60,8 @@ class AddMember2 extends SpecialPage{
 		}
 		else{
 		    $form = self::createForm();
-		    $errors = $form->validate();
+		    $status = $form->validate();
 		    AddMember2::generateFormHTML($wgOut);
-		    $wgMessage->addError(implode("<br />\n", $errors));
 		    return;
 			// The Form has been entered
 			if(isset($_POST['wpNS'])){
@@ -201,7 +200,6 @@ class AddMember2 extends SpecialPage{
 		          ->append($emailRow);
 		
 		$formContainer->append($formTable);
-		
 		return $formContainer;
 	}
 	
@@ -217,7 +215,7 @@ class AddMember2 extends SpecialPage{
 	    $wgOut->addHTML("Adding a member to the forum will allow them to access content relevant to the user roles and projects which are selected below.  By selecting projects, the user will be automatically added to the projects on the forum, and subscribed to the project mailing lists.  The new user's email must be provided as it will be used to send a randomly generated password to the user.  After pressing the 'Submit Request' button, an administrator will be able to accept the request.  If there is a problem in the request (ie. there was an obvious typo in the name), then you may be contacted by the administrator about the request.<br /><br />");
 		$wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:AddMember2' method='post'>\n");
 		
-		$form = AddMember2::createForm();
+		$form = self::createForm();
 		$wgOut->addHTML($form->render());
 		
 		$wgOut->addHTML("<table>

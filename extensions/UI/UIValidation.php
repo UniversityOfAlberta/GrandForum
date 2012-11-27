@@ -4,6 +4,7 @@ abstract class UIValidation {
     
     var $negation;
     var $result;
+    var $valud;
     var $warning;
     
     function UIValidation($neg=false, $warning=false){
@@ -12,6 +13,7 @@ abstract class UIValidation {
     }
     
     function validate($value){
+        $this->value = $value;
         $this->result = $this->validateFn($value);
         if($this->negation){
             $this->result = !$this->result;
@@ -20,7 +22,7 @@ abstract class UIValidation {
     }
     
     function getMessage($name){
-        if($this->neg){
+        if($this->negation){
             if($this->warning){
                 return array('warning' => $this->warningNegMessage($name));
             }

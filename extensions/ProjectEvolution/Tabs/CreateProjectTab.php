@@ -92,9 +92,8 @@ class CreateProjectTab extends ProjectTab {
     function handleEdit(){
         global $wgMessages;
         $form = self::createForm('new');
-        $errors = $form->validate();
-        
-        if(count($errors) == 0){
+        $status = $form->validate();
+        if($status){
             // Call the API
             $form->getElementById("new_acronym")->setPOST("acronym");
             $form->getElementById("new_full_name")->setPOST("fullName");
@@ -107,15 +106,16 @@ class CreateProjectTab extends ProjectTab {
             $form->getElementById("new_theme3")->setPOST("theme3");
             $form->getElementById("new_theme4")->setPOST("theme4");
             $form->getElementById("new_theme5")->setPOST("theme5");
-            /*if(!APIRequest::doAction('CreateProject', true)){
-                $errors[] = "There was an error Creating the Project";
+            if(!APIRequest::doAction('CreateProject', true)){
+                return "There was an error Creating the Project";
             }
             else{
                 $form->reset();
-            }*/
-            $form->reset();
+            }
         }
-        return implode("<br />\n", $errors);
+        else{
+            return "The project was not created";
+        }
     }
 }    
     

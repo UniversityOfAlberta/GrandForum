@@ -16,7 +16,7 @@ class EvolveProjectTab extends ProjectTab {
         
         $projRow = new FormTableRow("evolve_project_row");
         $projRow->append(new Label("evolve_project_label", "Project", "Which project to evolve", VALIDATE_NOT_NULL));
-        $projRow->append(new SelectBox("evolve_project", "Project", "NO PROJECT", $projectNames, VALIDATE_NOT_NULL + VALIDATE_IS_PROJECT));
+        $projRow->append(new SelectBox("evolve_project", "Project", "NO PROJECT", $projectNames, VALIDATE_NOT_NULL + VALIDATE_PROJECT));
         
         $create = CreateProjectTab::createForm('evolve');
         $create->getElementById("evolve_acronym")->validations = VALIDATE_NOT_NULL;
@@ -39,11 +39,9 @@ class EvolveProjectTab extends ProjectTab {
     
     function handleEdit(){
         global $wgMessages;
-        
         $form = self::createForm();
-        $errors = $form->validate();
-        
-        if(count($errors) == 0){
+        $status = $form->validate();
+        if($status){
             // Call the API
             $form->getElementById("evolve_project")->setPOST("project");
             $form->getElementById("evolve_acronym")->setPOST("acronym");
@@ -58,14 +56,15 @@ class EvolveProjectTab extends ProjectTab {
                 $_POST['action'] = "EVOLVE";
             }
             if(!APIRequest::doAction('EvolveProject', true)){
-                $errors[] = "There was an error Evolving the Project";
+                return "There was an error Evolving the Project";
             }
             else{
                 $form->reset();
             }
         }
-        return implode("<br />\n", $errors);
-        
+        else{
+            return "The Project was not evolved";
+        }
     }
 }    
     

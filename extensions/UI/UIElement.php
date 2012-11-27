@@ -1,5 +1,5 @@
 <?php
-global $formValidations;
+global $formValidations, $validations;
 $formValidations = array('NOTHING' => 'NothingValidation',
                          'NULL'    => 'NullValidation',
                          'NUMERIC' => 'NumericValidation',
@@ -12,8 +12,8 @@ $i = 0;
 foreach($formValidations as $key => $validation){
     define('VALIDATE_'.$key, pow(2, ($i)*2));
     define('VALIDATE_NOT_'.$key, pow(2, ($i)*2 + 1));
-    $formValidations[pow(2, ($i)*2)] = $validation;
-    $formValidations[pow(2, ($i)*2 + 1)] = $validation;
+    $validations[pow(2, ($i)*2)] = $validation;
+    $validations[pow(2, ($i)*2 + 1)] = $validation;
     $i++;
 }
 
@@ -40,7 +40,6 @@ abstract class UIElement {
     var $default;
     var $tooltip;
     var $validations;
-    var $validationFunctions;
     var $attr;
     
     function UIElement($id, $name, $value, $validations){
@@ -56,7 +55,7 @@ abstract class UIElement {
             $this->value = $this->clearValue($value);
         }
         $this->validations = $validations;
-        $this->validationFunctions = array();
+        //$this->validationFunctions = array();
     }
     
     private function clearValue($value){
@@ -146,7 +145,7 @@ abstract class UIElement {
     // Returns an array containing all the failed validations
     // if $value is false, then use the $this->value, otherwise use $value
     function validate($value=false){
-        global $formValidations, $wgMessage;
+        global $validations, $wgMessage;
         $fails = array();
         if($value === false){
             if(is_array($this->value)){
@@ -157,73 +156,38 @@ abstract class UIElement {
             else{
                 $fails = $this->validate($this->value);
             }
+            $result = true;
             foreach($fails as $fail){
                 if(isset($fail['warning'])){
                     $wgMessage->addWarning($fail['warning']);
+                    $result = false;
                 }
                 else{
                     $wgMessage->addError($fail['error']);
+                    $result = false;
                 }
             }
-            return $fails;
+            return $result;
         }
-        
-        if($this->isValidationSet(VALIDATE_NOT_NULL)){
-            $result = $this->validateNotNull($value);
-            if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must not be empty";
-            }
-        }
-        if($this->isValidationSet(VALIDATE_NUMERIC)){
-            $result = $this->validateIsNumeric($value);
-            if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must be a valid number";
-            }
-        }
-        if($this->isValidationSet(VALIDATE_PERCENT)){
-            $result = $this->validateIsPercent($value);
-            if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must be a valid percent";
-            }
-        }
-        if($this->isValidationSet(VALIDATE_PROJECT)){
-            $result = $this->validateIsProject($value);
-            if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must be a valid Project (value used: $value)";
-            }
-        }
-        if($this->isValidationSet(VALIDATE_NOT_PROJECT)){
-            $result = !$this->validateIsProject($value);
-            if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must not be an already existing Project (value used: $value)";
-            }
-        }
-        if($this->isValidationSet(VALIDATE_PERSON)){
-            $result = $this->validateIsPerson($value);
-            if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must be a valid Person (value used: $value)";
-            }
-        }
-        if($this->isValidationSet(VALIDATE_NOT_PERSON)){
-            $result = !$this->validateIsPerson($value);
-            if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must not be an already existing Person (value used: $value)";
-            }
-        }
-        if($this->isValidationSet(VALIDATE_EMAIL)){
-            $type = $formValidations[VALIDATE_EMAIL];
-            $validation = new $type();
-            $result = $validation->validate($value);
-            if(!$result){
-                $fails[] = $validation->failMessage($this->name);
+
+        foreach($validations as $key => $val){
+            if($this->isValidationSet($key)){
+                $neg = (log($key, 2) % 2 == 1);
+                
+                $type = $val;
+                $validation = new $type($neg);
+                $result = $validation->validate($value);
+                if(!$result){
+                    $fails[] = $validation->getMessage($this->name);
+                }
             }
         }
         // Custom validations
-        if(count($this->validationFunctions) > 0){
+        /*(if(count($this->validationFunctions) > 0){
             foreach($this->validationFuncctions as $function){
                 $result = call_user_func($function['function'], $function['params']);
             }
-        }
+        }*/
         return $fails;
     }
     
@@ -242,32 +206,6 @@ abstract class UIElement {
     
     function isValidationSet($validation){
         return (($this->validations & $validation) !== 0);
-    }
-    
-    function validateNotNull($value){
-        return !($value == null || $value == "");
-    }
-    
-    function validateIsNumber($value){
-        return (!$this->validateNotNull($value) || is_numeric($value));
-    }
-    
-    function validateIsPercent($value){
-        return (!$this->validateNotNull($value) || (is_numeric($value) && $value >= 0 && $value <= 100));
-    }
-    
-    function validateIsEmail($value){
-        return User::isValidEmailAddr($value);
-    }
-    
-    function validateIsProject($value){
-        $project = Project::newFromName($value);
-        return ($project != null && $project->getName() != "");
-    }
-    
-    function validateIsPerson($value){
-        $person = Person::newFromNameLike($value);
-        return ($person != null && $person->getName() != "");
     }
 }
 
