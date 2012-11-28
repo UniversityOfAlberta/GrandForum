@@ -235,26 +235,30 @@ EOF;
             //Check if they have submitted their report
             $sto = new ReportStorage($person);
             $rep_year = REPORTING_YEAR;
-            $check = $sto->list_reports($person->getId(), SUBM, 10000, 0, 0);
+            $check = $sto->list_reports($person->getId(), SUBM, 1000, 0, 0);
             $largestDate = "{$rep_year}-09-01 00:00:00";
-            
+            //var_dump($check);
+
             $latest_pdf = null;
             foreach($check as $c){
+               // var_dump($c);
+               // echo "<br><br>";
                 $tok = $c['token'];
-                $sto->select_report($tok);
+                //$sto->select_report($tok);
                 $year = $c['year'];
-                $tst = $sto->metadata('timestamp');
+                $tst = $c['timestamp']; //$sto->metadata('timestamp');
 
                 if($year == $rep_year && strcmp($tst, $largestDate) > 0){
                     $largestDate = $tst;
                     $latest_pdf = $c;   
                 }
             }
-
+            //exit;
             if(is_null($latest_pdf) || !$latest_pdf['submitted']){
                 continue;
             }
 
+            
 
             //Name
             $person_name = explode('.', $person->getName()); 
