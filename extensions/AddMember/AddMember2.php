@@ -63,32 +63,40 @@ class AddMember2 extends SpecialPage{
 		else{
 		    $form = self::createForm();
 		    $status = $form->validate();
-		    AddMember2::generateFormHTML($wgOut);
+		    if($status){
+		        $form->getElementById('first_name_field')->setPOST('wpFirstName');
+		        $form->getElementById('last_name_field')->setPOST('wpLastName');
+		        $form->getElementById('email_field')->setPOST('wpEmail');
+		        $form->getElementById('role_field')->setPOST('wpUserType');
+		        $form->getElementById('project_field')->setPOST('wpNS');
+		        
+		        if(isset($_POST['wpNS'])){
+			        $nss = implode(", ", $_POST['wpNS']);
+			    }
+			    else{
+			        $nss = "";
+			    }
+			    if(isset($_POST['wpUserType'])){
+			        $types = implode(", ", $_POST['wpUserType']);
+			    }
+			    else{
+			        $types = "";
+			    }
+		        
+		        $_POST['wpFirstName'] = ucfirst($_POST['wpFirstName']);
+		        $_POST['wpLastName'] = ucfirst($_POST['wpLastName']);
+		        $_POST['wpName'] = ucfirst(strtolower($_POST['wpFirstName'])).".".ucfirst(strtolower($_POST['wpLastName']));
+			    $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
+			    $_POST['user_name'] = $user->getName();
+			    $_POST['wpUserType'] = $types;
+			    $_POST['wpNS'] = $nss;
+			    
+		        APIRequest::doAction('RequestUser', false);
+		        
+		        $form->reset();
+		        AddMember2::generateFormHTML($wgOut);
+		    }
 		    return;
-			// The Form has been entered
-			if(isset($_POST['wpNS'])){
-			    $nss = implode(", ", $_POST['wpNS']);
-			}
-			else{
-			    $nss = "";
-			}
-			if(isset($_POST['wpUserType'])){
-			    $types = implode(", ", $_POST['wpUserType']);
-			}
-			else{
-			    $types = "";
-			}
-			
-			$_POST['wpFirstName'] = str_replace(" ", "-", preg_replace('/\s\s+/', ' ', trim($_POST['wpFirstName'])));
-			$_POST['wpLastName'] = str_replace(" ", "-", preg_replace('/\s\s+/', ' ', trim($_POST['wpLastName'])));
-			
-			$_POST['wpName'] = ucfirst(strtolower($_POST['wpFirstName'])).".".ucfirst(strtolower($_POST['wpLastName']));
-			$_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
-			$_POST['wpUserType'] = $types;
-			$_POST['wpNS'] = $nss;
-			$_POST['user_name'] = $user->getName();
-            APIRequest::doAction('RequestUser', false);
-            AddMember2::generateFormHTML($wgOut);
 		}
 	}
 	
@@ -202,6 +210,10 @@ class AddMember2 extends SpecialPage{
 		$emailRow = new FormTableRow("email_row");
 		$emailRow->append($emailLabel)->append($emailField);
 		
+		$roleValidations = VALIDATE_NOT_NULL;
+		if($me->isRoleAtLeast(MANAGER)){
+		    $roleValidations = VALIDATE_NOTHING;
+		}
 		$roleOptions = array();
 		foreach($wgRoles as $role){
             if($me->isRoleAtLeast($role) && $role != CHAMP){
@@ -211,15 +223,32 @@ class AddMember2 extends SpecialPage{
         if($me->isRoleAtLeast(CNI)){
             $roleOptions[] = CHAMP;
         }
-		$rolesLabel = new Label("role_label", "Roles", "The email address of the user", VALIDATE_NOT_NULL);
-		$rolesField = new VerticalCheckBox("role_field", "Roles", array(), $roleOptions, VALIDATE_NOT_NULL);
+		$rolesLabel = new Label("role_label", "Roles", "The roles the new user should belong to", $roleValidations);
+		$rolesField = new VerticalCheckBox("role_field", "Roles", array(), $roleOptions, $roleValidations);
 		$rolesRow = new FormTableRow("role_row");
 		$rolesRow->append($rolesLabel)->append($rolesField);
+		
+		$projects = Project::getAllProjects();
+		$projectOptions = array();
+		foreach($projects as $project){
+		    $projectOptions[] = $project->getName();
+		}
+		$projectsLabel = new Label("project_label", "Associated Projects", "The projects the user is a member of", VALIDATE_NOTHING);
+		$projectsField = new MultiColumnVerticalCheckBox("project_field", "Associated Projects", array(), $projectOptions, VALIDATE_NOTHING);
+		$projectsRow = new FormTableRow("project_row");
+		$projectsRow->append($projectsLabel)->append($projectsField);
+		
+		$submitCell = new EmptyElement();
+		$submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
+		$submitRow = new FormTableRow("submit_row");
+		$submitRow->append($submitCell)->append($submitField);
 		
 		$formTable->append($firstNameRow)
 		          ->append($lastNameRow)
 		          ->append($emailRow)
-		          ->append($rolesRow);
+		          ->append($rolesRow)
+		          ->append($projectsRow)
+		          ->append($submitRow);
 		
 		$formContainer->append($formTable);
 		return $formContainer;
@@ -228,9 +257,6 @@ class AddMember2 extends SpecialPage{
 	function generateFormHTML($wgOut){
 		global $wgUser, $wgServer, $wgScriptPath, $wgRoles;
 		$user = Person::newFromId($wgUser->getId());
-		$first = @str_replace("'", "&#39;", $_POST['wpFirstName']);
-		$last = @str_replace("'", "&#39;", $_POST['wpLastName']);
-		$email = @str_replace("'", "&#39;", $_POST['wpEmail']);
 		if($user->isRoleAtLeast(STAFF)){
 	        $wgOut->addHTML("<b><a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view'>View Requests</a></b><br /><br />");
 	    }
@@ -239,95 +265,6 @@ class AddMember2 extends SpecialPage{
 		
 		$form = self::createForm();
 		$wgOut->addHTML($form->render());
-		
-		$wgOut->addHTML("<table>");
-        
-		$wgOut->addHTML("
-					<tr>
-						<td class='mw-label'><label for='wpNs'>Associated Projects:</label></td>
-						<td class='mw-input'>");
-
-			$rows = array();
-			$projects = Project::getAllProjects();
-			$rows = array();
-			foreach($projects as $project){
-			    $rows[] = $project->getName();
-			}
-			
-			$nPerCol = ceil(count($rows)/3);
-			$remainder = count($rows) % 3;
-			if($remainder == 0){
-				$j = $nPerCol;
-				$k = $nPerCol*2;
-				$jEnd = $nPerCol*2;
-				$kEnd = $nPerCol*3;
-			}
-			else if($remainder == 1){
-				$j = $nPerCol;
-				$k = $nPerCol*2 - 1;
-				$jEnd = $nPerCol*2 - 1;
-				$kEnd = $nPerCol*3 - 2;
-			}
-			else if($remainder == 2){
-				$j = $nPerCol;
-				$k = $nPerCol*2;
-				$jEnd = $nPerCol*2;
-				$kEnd = $nPerCol*3 - 1;
-			}
-			for($i = 0; $i < $nPerCol; $i++){
-				if(isset($rows[$i])){
-					$col1[] = $rows[$i];
-				}
-				if(isset($rows[$j]) && $j < $jEnd){
-					$col2[] = $rows[$j];
-				}
-				if(isset($rows[$k]) && $k < $kEnd){
-					$col3[] = $rows[$k];
-				}
-				$j++;
-				$k++;
-			}
-			
-			$rows = array();
-			$i = 0;
-			foreach($col1 as $row){
-				if(isset($col1[$i])){
-					$rows[] = $col1[$i];
-				}
-				if(isset($col2[$i])){
-					$rows[] = $col2[$i];
-				}
-				if(isset($col3[$i])){
-					$rows[] = $col3[$i];
-				}
-				$i++;
-			}
-			
-			$wgOut->addHTML("<table border='0' cellspacing='2' width='500'>
-				<tr>\n");
-			$i = 0;
-			foreach($rows as $row){
-				if($i % 3 == 0){
-					$wgOut->addHTML("</tr><tr>\n");
-				}
-				$wgOut->addHTML("<td><input type='checkbox' name='wpNS[]' value='{$row}' /> {$row}</td>\n");
-				$i++;
-			}
-			$wgOut->addHTML("</tr></table>\n");
-			$wgOut->addHTML("<tr>
-						<td class='mw-label'></td>
-						<td class='mw-input'>
-							<input type='submit' name='submit' value='Submit Request' />
-						</td>
-					</tr>");
-			$wgOut->addHTML("</td></tr></table\n");
-		$wgOut->addHTML("</form>\n");
-	}
-	
-	function parse($text){
-		$text = str_replace("'", "&#39;", $text);
-		$text = str_replace("\"", "&quot;", $text); 
-		return $text;
 	}
 }
 
