@@ -15,19 +15,19 @@ class UniqueEmailValidation extends UIValidation {
     }
     
     function failMessage($name){
-        return "This email address has already been taken";
+        return "This email address '<i>{$this->value}</i>' has already been taken";
     }
     
     function failNegMessage($name){
-        return "This email address has not yet been taken";
+        return "This email address '<i>{$this->value}</i>' has not yet been taken";
     }
     
     function warningMessage($name){
-        return "This email address has already been taken";
+        return "This email address '<i>{$this->value}</i>' has already been taken";
     }
     
     function warningNegMessage($name){
-        return "This email address has not yet been taken";
+        return "This email address '<i>{$this->value}</i>' has not yet been taken";
     }
     
 }

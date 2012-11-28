@@ -29,7 +29,12 @@ class SimilarUserValidation extends UIValidation {
         foreach($this->duplicatePeople as $person){
             $names[] = "<a href='{$person->getURL()}' target='_blank'>{$person->getName()}</a>";
         }
-        return "The name provided is similar to the following people: ".implode(", ", $names);
+        if(count($names) > 1){
+            return "The name provided is similar to the following people: ".implode(", ", $names);
+        }
+        else{
+            return "The name provided is similar to the following person: ".implode(", ", $names);
+        }
     }
     
     function failNegMessage($name){

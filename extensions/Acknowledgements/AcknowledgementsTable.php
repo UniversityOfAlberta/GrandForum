@@ -16,7 +16,7 @@ function getack($action, $article){
     if($action == 'getack'){
         $ack = Acknowledgement::newFromMd5(@$_GET['ack']);
         if($ack == null || $ack->getPdf() == ""){
-            return false;
+            return true;
         }
         else{
             $wgOut->disable();
@@ -30,7 +30,7 @@ function getack($action, $article){
 	        exit;
 	    }
     }
-    return false;
+    return true;
 }
 
 class AcknowledgementsTable extends SpecialPage {
