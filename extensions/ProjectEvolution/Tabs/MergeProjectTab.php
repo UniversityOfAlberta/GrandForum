@@ -57,9 +57,7 @@ class MergeProjectTab extends ProjectTab {
                     return "There was an error Merging the Projects";
                 }
             }
-            if(count($errors) == 0){
-                $form->reset();
-            }
+            $form->reset();
         }
         else{
             return "The Projects were not merged";

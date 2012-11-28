@@ -11,7 +11,7 @@ class MultiSelectBox extends UIElement {
     }
     
     function render(){
-        $html = "<select name='{$this->id}' {$this->renderAttr()} multiple='multiple'>";
+        $html = "<select name='{$this->id}[]' {$this->renderAttr()} multiple='multiple'>";
         foreach($this->options as $option){
             $selected = "";
             if($this->value == $option){
