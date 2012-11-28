@@ -80,9 +80,10 @@ class AddMember extends SpecialPage{
 			    $_POST['wpUserType'] = $types;
 			    $_POST['wpNS'] = $nss;
 			    
-		        APIRequest::doAction('RequestUser', false);
-		        
-		        $form->reset();
+		        $result = APIRequest::doAction('RequestUser', false);
+		        if($result){
+		            $form->reset();
+		        }
 		    }
 		    AddMember::generateFormHTML($wgOut);
 		    return;

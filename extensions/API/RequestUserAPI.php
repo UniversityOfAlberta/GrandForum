@@ -25,7 +25,7 @@ class RequestUserAPI extends API{
 		    else{
 		        $message = "A User Name must be provided.";
 			    $wgMessage->addError($message);
-			    return $message;
+			    return false;
 		    }
 		}
 		$name = $_POST['wpName'];
@@ -37,7 +37,7 @@ class RequestUserAPI extends API{
 		    else{
 		        $message = "This User Name is not in the format 'FirstName.LastName'.";
 			    $wgMessage->addError($message);
-			    return $message;
+			    return false;
 		    }
 		}
 		$person = Person::newFromName($name);
@@ -49,7 +49,7 @@ class RequestUserAPI extends API{
 		    else{
 		        $message = "A user by the name of '{$person->getName()}' already exists.";
 			    $wgMessage->addError($message);
-			    return $message;
+			    return false;
 		    }
 		}
 		if(!isset($_POST['wpEmail']) || $_POST['wpEmail'] == null){
@@ -60,7 +60,7 @@ class RequestUserAPI extends API{
 			else{
 			    $message = "An email address must be provided.";
 			    $wgMessage->addError($message);
-			    return $message;
+			    return false;
 		    }
 		}
 		$email = $_POST['wpEmail'];
@@ -72,7 +72,7 @@ class RequestUserAPI extends API{
 		    else{
 		        $message = "A valid email address must be provided.";
 			    $wgMessage->addError($message);
-			    return $message;
+			    return false;
 		    }
 		}
 		if(!$me->isRoleAtLeast(MANAGER) && (!isset($_POST['wpUserType']) || $_POST['wpUserType'] == null)){
@@ -83,7 +83,7 @@ class RequestUserAPI extends API{
 			else{
 			    $message = "At least one User Role must be provided";
 			    $wgMessage->addError($message);
-			    return $message;
+			    return false;
 		    }
 		}
 		// Finished manditory checks
@@ -107,7 +107,7 @@ class RequestUserAPI extends API{
 		else{
 		    $message = "User Creation Request Submitted.  Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you.";
 		    $wgMessage->addSuccess($message);
-		    return $message;
+		    return true;
 		}
         
 	}
