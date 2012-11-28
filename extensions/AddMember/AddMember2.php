@@ -9,6 +9,8 @@ function runAddMember2($par) {
   AddMember2::run($par);
 }
 
+autoload_register('AddMember/Validations');
+
 class AddMember2 extends SpecialPage{
 
 	function AddMember2() {
@@ -192,6 +194,7 @@ class AddMember2 extends SpecialPage{
 		
 		$emailLabel = new Label("email_label", "Email", "The email address of the user", VALIDATE_NOT_NULL);
 		$emailField = new EmailField("email_field", "Email", "", VALIDATE_NOT_NULL);
+		$emailField->registerValidation(new UniqueEmailValidation(VALIDATION_POSITIVE, VALIDATION_WARNING));
 		$emailRow = new FormTableRow("email_row");
 		$emailRow->append($emailLabel)->append($emailField);
 		

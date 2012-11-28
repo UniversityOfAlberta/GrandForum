@@ -1,5 +1,10 @@
 <?php
 
+define('VALIDATION_NEGATION', true);
+define('VALIDATION_POSITIVE', false);
+define('VALIDATION_WARNING', true);
+define('VALIDATION_ERROR', false);
+
 abstract class UIValidation {
     
     var $negation;

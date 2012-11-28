@@ -40,6 +40,7 @@ abstract class UIElement {
     var $default;
     var $tooltip;
     var $validations;
+    var $extraValidations;
     var $attr;
     
     function UIElement($id, $name, $value, $validations){
@@ -55,7 +56,7 @@ abstract class UIElement {
             $this->value = $this->clearValue($value);
         }
         $this->validations = $validations;
-        //$this->validationFunctions = array();
+        $this->extraValidations = array();
     }
     
     private function clearValue($value){
@@ -137,9 +138,10 @@ abstract class UIElement {
         $this->value = $this->default;
     }
     
-    function registerValidation($functionName, $functionParams=array()){
-        $this->validationFunctions[] = array('function' => $functionName, 
-                                             'params' => $functionParams);
+    function registerValidation($validation){
+        if($validation instanceof UIValidation){
+            $this->extraValidations[] = $validation;
+        }
     }
     
     // Returns an array containing all the failed validations
@@ -159,13 +161,29 @@ abstract class UIElement {
             $result = true;
             foreach($fails as $fail){
                 if(isset($fail['warning'])){
+                    if(isset($_POST['ignore_warnings'])){
+                        // User has pressed the Ignore button
+                        continue;
+                    }
                     $wgMessage->addWarning($fail['warning']);
+                    $postArr = array();
+                    foreach($_POST as $key => $post){
+                        $postArr[] = "<input type='hidden' name='$key' value='{$post}' />";
+                    }
+                    $wgMessage->addWarning("<form action='' method='post' enctype='multipart/form-data'>
+                        <br />There are warnings with this form submission, do you still want to continue with the submission?<br />
+                        ".implode("", $postArr)."
+                        <input type='submit' name='ignore_warnings' value='Yes' /> <button onClick='closeParent($(this).parent().parent());return false;'>Cancel</buttton>
+                    </form>", 100);
                     $result = false;
                 }
                 else{
                     $wgMessage->addError($fail['error']);
                     $result = false;
                 }
+            }
+            if(count($wgMessage->errors) > 0){
+                unset($wgMessage->warnings[100]);
             }
             return $result;
         }
@@ -182,12 +200,15 @@ abstract class UIElement {
                 }
             }
         }
-        // Custom validations
-        /*(if(count($this->validationFunctions) > 0){
-            foreach($this->validationFuncctions as $function){
-                $result = call_user_func($function['function'], $function['params']);
+        // Extra Validations
+        if(count($this->extraValidations) > 0){
+            foreach($this->extraValidations as $validation){
+                $result = $validation->validate($value);
+                if(!$result){
+                    $fails[] = $validation->getMessage($this->name);
+                }
             }
-        }*/
+        }
         return $fails;
     }
     

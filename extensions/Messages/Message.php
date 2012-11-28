@@ -16,22 +16,32 @@ class Message {
     }
     
     // Adds a (yellow) warning message
-    function addWarning($message){
-        $this->warnings[] = $message;
+    function addWarning($message, $index=false){
+        if($index !== false){
+            $this->warnings[$index] = $message;
+        }
+        else{
+            $this->warnings[] = $message;
+        }
     }
     
     // Adds a (green) success message
-    function addSuccess($message){
-        $this->success[] = $message;
+    function addSuccess($message, $index=false){
+        if($index !== false){
+            $this->success[$index] = $message;
+        }
+        else{
+            $this->success[] = $message;
+        }
     }
     
     // Adds a (blue) info message
-    function addInfo($message){
+    function addInfo($message, $index=false){
         $this->info[] = $message;
     }
     
     // Adds a (purple) info message
-    function addPurpleInfo($message){
+    function addPurpleInfo($message, $index=false){
         $this->purpleInfo[] = $message;
     }
     
