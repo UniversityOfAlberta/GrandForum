@@ -49,25 +49,27 @@ class ReviewerConflicts extends SpecialPage {
 	    $wgOut->setPageTitle("Reviewer Conflicts");
 	    $wgOut->addHTML("<div id='ackTabs'>
 	                        <ul>
-		                        <li><a href='#cnis'>CNIs</a></li>
-                                <li><a href='#pnis'>PNIs</a></li>
+		                        <li><a href='#pnis'>PNIs</a></li>
+                                <li><a href='#cnis'>CNIs</a></li>
 		                        <li><a href='#projects'>Projects</a></li>
 	                        </ul>");
 
         $cnis = Person::getAllPeople(CNI);
         $pnis = Person::getAllPeople(PNI);
-		$wgOut->addHTML("<div id='cnis'>");
-	    $overall['CNI'] = ReviewerConflicts::niTable($cnis, 'CNI');           
-	    $wgOut->addHTML("</div><div id='pnis'>");
-        $overall['PNI'] = ReviewerConflicts::niTable($pnis, 'PNI');           
+		$wgOut->addHTML("<div id='pnis'>");
+	    $overall['PNI'] = ReviewerConflicts::niTable($pnis, 'PNI');           
+	    $wgOut->addHTML("</div><div id='cnis'>");
+        $overall['CNI'] = ReviewerConflicts::niTable($cnis, 'CNI');           
         $wgOut->addHTML("</div><div id='projects'>");
 		$overall['PROJECTS'] = ReviewerConflicts::projectTable($projects);
 		$wgOut->addHTML("</div></div>");
 	 	
 	  
 	    $wgOut->addScript("<script src='../scripts/jquery.tablesorter.js' type='text/javascript' charset='utf-8';></script>
+                           <script src='../scripts/jquery.qtip.min.js' type='text/javascript' charset='utf-8';></script>
 	    				   <script type='text/javascript'>
                                 $(document).ready(function(){
+                                    $('td[title], input[title]').qtip({position: {my: 'top left', at: 'center center'}});
 	                                $('.indexTable').dataTable({'iDisplayLength': 100,
 	                                                            'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
                                     $('.dataTables_filter input').css('width', 250);
@@ -138,8 +140,6 @@ class ReviewerConflicts extends SpecialPage {
         var sort = "first";
         var allPeople = new Array('{$names}');
 
-        var oldOptions = Array();
-
         function filterResultsCNI(value){
             if(typeof value != 'undefined'){
                 value = $.trim(value);
@@ -171,13 +171,6 @@ class ReviewerConflicts extends SpecialPage {
                 });
             }
         }
-
-        //SEARCH
-        var no = $("#no").detach();
-        if(no.length > 0){
-            oldOptions["no"] = no;
-        }
-       
             
         </script>
 EOF;
@@ -189,7 +182,7 @@ EOF;
 
         <div id='div_new_connections'>
         
-        <strong>Search:</strong> <input style='width:73%;' id='search_{$type}' type='text' onKeyUp='filterResults{$type}(this.value);' />
+        <strong>Search:</strong> <input title='You can search by Name, Organization or Projects' style='width:73%;' id='search_{$type}' type='text' onKeyUp='filterResults{$type}(this.value);' />
         <div style='padding:2px;'></div>
         <table width='850' id='{$type}_conflicts' class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
         <thead>
@@ -237,7 +230,31 @@ EOF;
         foreach($allPeople as $person){
             if($person->getName() == $me->getName()){
                 continue;
-            }    
+            }
+
+            //Check if they have submitted their report
+            $sto = new ReportStorage($person);
+            $rep_year = REPORTING_YEAR;
+            $check = $sto->list_reports($person->getId(), SUBM, 10000, 0, 0);
+            $largestDate = "{$rep_year}-09-01 00:00:00";
+            
+            $latest_pdf = null;
+            foreach($check as $c){
+                $tok = $c['token'];
+                $sto->select_report($tok);
+                $year = $c['year'];
+                $tst = $sto->metadata('timestamp');
+
+                if($year == $rep_year && strcmp($tst, $largestDate) > 0){
+                    $largestDate = $tst;
+                    $latest_pdf = $c;   
+                }
+            }
+
+            if(is_null($latest_pdf) || !$latest_pdf['submitted']){
+                continue;
+            }
+
 
             //Name
             $person_name = explode('.', $person->getName()); 
