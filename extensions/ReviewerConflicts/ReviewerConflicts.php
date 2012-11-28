@@ -49,14 +49,18 @@ class ReviewerConflicts extends SpecialPage {
 	    $wgOut->setPageTitle("Reviewer Conflicts");
 	    $wgOut->addHTML("<div id='ackTabs'>
 	                        <ul>
-		                        <li><a href='#nis'>NIs</a></li>
+		                        <li><a href='#cnis'>CNIs</a></li>
+                                <li><a href='#pnis'>PNIs</a></li>
 		                        <li><a href='#projects'>Projects</a></li>
 	                        </ul>");
 
-
-		$wgOut->addHTML("<div id='nis'>");
-	    $overall['NI'] = ReviewerConflicts::niTable($nis);           
-	    $wgOut->addHTML("</div><div id='projects'>");
+        $cnis = Person::getAllPeople(CNI);
+        $pnis = Person::getAllPeople(PNI);
+		$wgOut->addHTML("<div id='cnis'>");
+	    $overall['CNI'] = ReviewerConflicts::niTable($cnis, 'CNI');           
+	    $wgOut->addHTML("</div><div id='pnis'>");
+        $overall['PNI'] = ReviewerConflicts::niTable($pnis, 'PNI');           
+        $wgOut->addHTML("</div><div id='projects'>");
 		$overall['PROJECTS'] = ReviewerConflicts::projectTable($projects);
 		$wgOut->addHTML("</div></div>");
 	 	
@@ -71,9 +75,12 @@ class ReviewerConflicts extends SpecialPage {
                                     
                                     $('input[name=date]').datepicker();
                                     $('input[name=date]').datepicker('option', 'dateFormat', 'dd-mm-yy');
-                                	$('#ni_conflicts').tablesorter({ 
+                                	$('#CNI_conflicts').tablesorter({ 
 										sortList: [[0,0], [1,0], [2,0], [3,0]],
 									});
+                                    $('#PNI_conflicts').tablesorter({ 
+                                        sortList: [[0,0], [1,0], [2,0], [3,0]],
+                                    });
 	    							$('#project_conflicts').tablesorter({ 
 										sortList: [[0,0], [1,0]],
 									});
@@ -110,13 +117,13 @@ class ReviewerConflicts extends SpecialPage {
 
     
     
-    static function niTable($nis){
+    static function niTable($nis, $type='CNI'){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
         
         $html = "";
 
         $me = Person::newFromId($wgUser->getId());
-        $allPeople = array_merge(Person::getAllPeople(CNI), Person::getAllPeople(PNI));
+        $allPeople = $nis; //array_merge(Person::getAllPeople(CNI), Person::getAllPeople(PNI));
         $i = 0;
         $names = array();
         foreach($allPeople as $person){
@@ -133,45 +140,44 @@ class ReviewerConflicts extends SpecialPage {
 
         var oldOptions = Array();
 
+        function filterResultsCNI(value){
+            if(typeof value != 'undefined'){
+                value = $.trim(value);
+                value = value.replace(/\s+/g, '|');
+                //console.log(value);
+                $.each($("table#CNI_conflicts tr[name=search]"), function(index, val){
+                    if($(val).attr("class").toLowerCase().regexIndexOf(value.toLowerCase()) != -1){
+                        $(val).show();
+                    }
+                    else{
+                        $(val).hide();
+                    }
+                });
+            }
+        }
+
+        function filterResultsPNI(value){
+            if(typeof value != 'undefined'){
+                value = $.trim(value);
+                value = value.replace(/\s+/g, '|');
+                //console.log(value);
+                $.each($("table#PNI_conflicts tr[name=search]"), function(index, val){
+                    if($(val).attr("class").toLowerCase().regexIndexOf(value.toLowerCase()) != -1){
+                        $(val).show();
+                    }
+                    else{
+                        $(val).hide();
+                    }
+                });
+            }
+        }
+
         //SEARCH
         var no = $("#no").detach();
         if(no.length > 0){
             oldOptions["no"] = no;
         }
-        filterResults($("#search").attr("value"));
-        
-        $("#search").keypress(function(event) {
-            if(event.keyCode == 40){        //DOWN
-                $.each($("#names").children(":selected").not("#no"), function(index, value){
-                    if($(value).next().length > 0){
-                        $(value).attr("selected", false);
-                        $(value).next().attr("selected", true);
-                    }
-                });
-            }
-            else if(event.keyCode == 38){   //UP
-                $.each($("#names").children(":selected").not("#no"), function(index, value){
-                    if($(value).prev().length > 0){
-                        $(value).attr("selected", false);
-                        $(value).prev().attr("selected", true);
-                    }
-                });
-            }
-            colorSearchRows();
-        });
-        
-        $("#search").keyup(function(event) {
-            if(event.keyCode == 13){
-                // Enter key was pressed
-                var page = $("select option:selected").attr("name");
-                if(typeof page != "undefined"){
-                    document.location = "{$wgServer}{$wgScriptPath}/index.php/" + page;
-                }
-            }
-            if(event.keyCode != 40 && event.keyCode != 38){
-                filterResults(this.value);
-            }
-        });
+       
             
         </script>
 EOF;
@@ -180,13 +186,12 @@ EOF;
         //$html .= $js;    
 
         $html .=<<<EOF
-        <h3>CNI/PNI</h3>
 
         <div id='div_new_connections'>
         
-        <strong>Search:</strong> <input style='width:73%;' id='search' type='text' onKeyUp='filterResults(this.value);' />
+        <strong>Search:</strong> <input style='width:73%;' id='search_{$type}' type='text' onKeyUp='filterResults{$type}(this.value);' />
         <div style='padding:2px;'></div>
-        <table id='ni_conflicts' class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
+        <table width='850' id='{$type}_conflicts' class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
         <thead>
         <tr bgcolor='#F2F2F2'>
         <th width='40%' name="search_lastname_header">Name</th>
@@ -260,13 +265,15 @@ EOF;
 
             //Projects
             $projects = $person->getProjects();
+            $proj_names = array();
             $same_projects = "No";
             foreach($projects as $project){
             	if(in_array($project->getName(), $my_projects)){
             		$same_projects = "Yes";
-            		break;
             	}
+                $proj_names[] = $project->getName();
             }
+            $proj_names = implode(' ', $proj_names);
            
       		//Papers
             $papers = $person->getPapers("all", true);
@@ -295,7 +302,7 @@ EOF;
             
             $row_id = $person->getName();
             $html .= <<<EOF
-            <tr style='background-color:{$bgcolor};' name='search' id='{$row_id}' class=''>
+            <tr style='background-color:{$bgcolor};' name='search' id='{$row_id}' class='{$row_id} {$proj_names} {$position}'>
                 <td class='lname'>{$lname}, {$fname}</td>
                 <td class=''>{$works_with}</td>
                 <td class=''>{$same_organization}</td>
@@ -332,7 +339,6 @@ EOF;
 
 
         $html .=<<<EOF
-        <h3>Projects</h3>
 
         <div id='div_projects'>
         
