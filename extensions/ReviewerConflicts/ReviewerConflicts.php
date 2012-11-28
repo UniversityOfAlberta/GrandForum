@@ -303,7 +303,7 @@ EOF;
             $row_id = $person->getName();
             $html .= <<<EOF
             <tr style='background-color:{$bgcolor};' name='search' id='{$row_id}' class='{$row_id} {$proj_names} {$position}'>
-                <td class='lname'>{$lname}, {$fname}</td>
+                <td class='lname' title='{$proj_names}; {$position}'>{$lname}, {$fname}</td>
                 <td class=''>{$works_with}</td>
                 <td class=''>{$same_organization}</td>
                 <td class=''>{$same_projects}</td>
