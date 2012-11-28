@@ -179,6 +179,8 @@ class AddMember2 extends SpecialPage{
 	}
 	
 	function createForm(){
+	    global $wgRoles, $wgUser;
+	    $me = Person::newFromUser($wgUser);
 	    $formContainer = new FormContainer("form_container");
 		$formTable = new FormTable("form_table");
 		
@@ -200,9 +202,24 @@ class AddMember2 extends SpecialPage{
 		$emailRow = new FormTableRow("email_row");
 		$emailRow->append($emailLabel)->append($emailField);
 		
+		$roleOptions = array();
+		foreach($wgRoles as $role){
+            if($me->isRoleAtLeast($role) && $role != CHAMP){
+                $roleOptions[] = $role;
+            }
+        }
+        if($me->isRoleAtLeast(CNI)){
+            $roleOptions[] = CHAMP;
+        }
+		$rolesLabel = new Label("role_label", "Roles", "The email address of the user", VALIDATE_NOT_NULL);
+		$rolesField = new VerticalCheckBox("role_field", "Roles", array(), $roleOptions, VALIDATE_NOT_NULL);
+		$rolesRow = new FormTableRow("role_row");
+		$rolesRow->append($rolesLabel)->append($rolesField);
+		
 		$formTable->append($firstNameRow)
 		          ->append($lastNameRow)
-		          ->append($emailRow);
+		          ->append($emailRow)
+		          ->append($rolesRow);
 		
 		$formContainer->append($formTable);
 		return $formContainer;
@@ -223,20 +240,9 @@ class AddMember2 extends SpecialPage{
 		$form = self::createForm();
 		$wgOut->addHTML($form->render());
 		
-		$wgOut->addHTML("<table>
-					<tr>
-						<td class='mw-label'><label for='wpType'>User Roles:</label></td>
-						<td class='mw-input'>");
-        foreach($wgRoles as $role){
-            if($user->isRoleAtLeast($role) && $role != CHAMP){
-                $wgOut->addHTML("&nbsp;<input type='checkbox' name='wpUserType[]' value='$role' />$role<br />\n");
-            }
-        }
-        if($user->isRoleAtLeast(CNI)){
-            $wgOut->addHTML("&nbsp;<input type='checkbox' name='wpUserType[]' value='".CHAMP."' />".CHAMP."<br />\n");
-        }
-		$wgOut->addHTML("</td>
-					</tr>
+		$wgOut->addHTML("<table>");
+        
+		$wgOut->addHTML("
 					<tr>
 						<td class='mw-label'><label for='wpNs'>Associated Projects:</label></td>
 						<td class='mw-input'>");

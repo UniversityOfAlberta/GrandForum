@@ -7,6 +7,10 @@ class NullValidation extends UIValidation {
     }
     
     function validateFn($value){
+        if(is_array($value)){
+            
+            return (count($value) == 0);
+        }
         return ($value == null || $value == "");
     }
     

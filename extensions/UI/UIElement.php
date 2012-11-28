@@ -1,4 +1,5 @@
 <?php
+
 global $formValidations, $validations;
 $formValidations = array('NOTHING' => 'NothingValidation',
                          'NULL'    => 'NullValidation',
@@ -151,6 +152,12 @@ abstract class UIElement {
         $fails = array();
         if($value === false){
             if(is_array($this->value)){
+                if($this->isValidationSet(VALIDATE_NOT_NULL)){
+                    $validation = new NullValidation(VALIDATION_NEGATION, VALIDATION_ERROR);
+                    if(!$validation->validate($this->value)){
+                        $fails[] = $validation->getMessage($this->name);
+                    }
+                }
                 foreach($this->value as $value){
                     $fails = array_merge($fails, $this->validate($value));
                 }
@@ -168,7 +175,14 @@ abstract class UIElement {
                     $wgMessage->addWarning($fail['warning']);
                     $postArr = array();
                     foreach($_POST as $key => $post){
-                        $postArr[] = "<input type='hidden' name='$key' value='{$post}' />";
+                        if(is_array($post) && count($post) > 0){
+                            foreach($post as $k => $p){
+                                $postArr[] = "<input type='hidden' name='{$key}[]' value='{$p}' />";
+                            }
+                        }
+                        else{
+                            $postArr[] = "<input type='hidden' name='$key' value='{$post}' />";
+                        }
                     }
                     $wgMessage->addWarning("<form action='' method='post' enctype='multipart/form-data'>
                         <br />Do you still want to continue with the submission?<br />
