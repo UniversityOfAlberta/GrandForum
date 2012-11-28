@@ -12,7 +12,7 @@ class Label extends UIElement {
         if($this->isValidationSet(VALIDATE_NOT_NULL)){
             $redStar = "<span style='color:red;'>*</span>";
         }
-        return "<div id='{$this->id}' {$this->renderAttr()} title='{$this->value}'>{$this->name}{$redStar}:</div>";
+        return "<div id='{$this->id}' {$this->renderAttr()} title='{$this->value}'>{$this->name}:<sup>{$redStar}</sup></div>";
     }
 }
 

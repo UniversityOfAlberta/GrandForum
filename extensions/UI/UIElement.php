@@ -171,9 +171,9 @@ abstract class UIElement {
                         $postArr[] = "<input type='hidden' name='$key' value='{$post}' />";
                     }
                     $wgMessage->addWarning("<form action='' method='post' enctype='multipart/form-data'>
-                        <br />There are warnings with this form submission, do you still want to continue with the submission?<br />
+                        <br />Do you still want to continue with the submission?<br />
                         ".implode("", $postArr)."
-                        <input type='submit' name='ignore_warnings' value='Yes' /> <button onClick='closeParent($(this).parent().parent());return false;'>Cancel</buttton>
+                        <input type='submit' name='ignore_warnings' value='Yes' /> <button onClick='closeParent($(this).parent().parent());return false;'>Cancel</button>
                     </form>", 100);
                     $result = false;
                 }

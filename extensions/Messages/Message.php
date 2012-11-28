@@ -9,10 +9,20 @@ class Message {
     var $success = array();
     var $info = array();
     var $purpleInfo = array();
+    var $errorIndex = 0;
+    var $warningIndex = 0;
+    var $successIndex = 0;
+    var $infoIndex = 0;
+    var $purpleIndex = 0;
     
     // Adds a (red) error message
-    function addError($message){
-        $this->errors[] = $message;
+    function addError($message, $index=false){
+        if($index !== false){
+            $this->errors[$index] = $message;
+        }
+        else{
+            $this->errors[$this->errorIndex++] = $message;
+        }
     }
     
     // Adds a (yellow) warning message
@@ -21,7 +31,7 @@ class Message {
             $this->warnings[$index] = $message;
         }
         else{
-            $this->warnings[] = $message;
+            $this->warnings[$this->warningIndex++] = $message;
         }
     }
     
@@ -31,47 +41,64 @@ class Message {
             $this->success[$index] = $message;
         }
         else{
-            $this->success[] = $message;
+            $this->success[$this->successIndex++] = $message;
         }
     }
     
     // Adds a (blue) info message
     function addInfo($message, $index=false){
-        $this->info[] = $message;
+        if($index !== false){
+            $this->info[$index] = $message;
+        }
+        else{
+            $this->info[$this->infoIndex++] = $message;
+        }
     }
     
     // Adds a (purple) info message
     function addPurpleInfo($message, $index=false){
-        $this->purpleInfo[] = $message;
+        if($index !== false){
+            $this->purpleInfo[$index] = $message;
+        }
+        else{
+            $this->purpleInfo[$this->purpleIndex++] = $message;
+        }
     }
     
     // Empties all error messages
     function clearError(){
         $this->errors = array();
+        $this->errorIndex = 0;
     }
     
     // Empties all warning messages
     function clearWarning(){
         $this->warnings = array();
+        $this->warningIndex = 0;
     }
     
     // Empties all success messages
     function clearSuccess(){
         $this->success = array();
+        $this->successIndex = 0;
     }
     
     // Empties all info messages
     function clearInfo(){
         $this->info = array();
+        $this->infoIndex = 0;
     }
     
     // Empties all purple info messages
     function clearPurpleInfo(){
         $this->purpleInfo = array();
+        $this->purpleIndex = 0;
     }
     
     // Displays the messages
     function showMessages(){
+        ksort($this->errors);
+        ksort($this->warnings);
         $errors = implode("<br />\n", $this->errors);
         $warnings = implode("<br />\n", $this->warnings);
         $success = implode("<br />\n", $this->success);

@@ -189,6 +189,8 @@ class AddMember2 extends SpecialPage{
 		
 		$lastNameLabel = new Label("last_name_label", "Last Name", "The last name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
 		$lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOT_NULL);
+		$lastNameField->registerValidation(new SimilarUserValidation(VALIDATION_POSITIVE, VALIDATION_WARNING));
+		$lastNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
 		$lastNameRow = new FormTableRow("last_name_row");
 		$lastNameRow->append($lastNameLabel)->append($lastNameField->attr('size', 20));
 		
@@ -222,32 +224,6 @@ class AddMember2 extends SpecialPage{
 		$wgOut->addHTML($form->render());
 		
 		$wgOut->addHTML("<table>
-					<tr>
-						<td class='mw-label'><label for='wpFirstName'>First Name:</label></td>
-						<td class='mw-input'>
-							&nbsp;&nbsp;<input type='text' class='loginText' name='wpFirstName' id='wpFirstName'
-								tabindex='1'
-								value='$first' size='20' /> 
-						</td>
-					</tr>
-					<tr>
-						<td class='mw-label'><label for='wpLastName'>Last Name:</label></td>
-						<td class='mw-input'>
-							&nbsp;&nbsp;<input type='text' class='loginText' name='wpLastName' id='wpLastName'
-								tabindex='1'
-								value='$last' size='20' /> 
-						</td>
-					</tr>
-					<tr>
-					</tr>
-					<tr>
-						<td class='mw-label'><label for='wpEmail'>Email:</label></td>
-						<td class='mw-input'>
-							&nbsp;&nbsp;<input type='text' class='loginText' name='wpEmail' id='wpEmail'
-								tabindex='1'
-								value='$email' size='20' />
-						</td>
-					</tr>
 					<tr>
 						<td class='mw-label'><label for='wpType'>User Roles:</label></td>
 						<td class='mw-input'>");
