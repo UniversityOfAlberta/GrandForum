@@ -208,7 +208,7 @@ class Person{
 		        self::$namesCache[$row['user_name']] = $row;
 		        self::$idsCache[$row['user_id']] = $row;
 		        if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
-		            self::$namesCache[$row['user_real_name']] = $row;
+		            self::$namesCache[str_replace("&nbsp;", " ", $row['user_real_name'])] = $row;
 		        }
 		    }
 		}
