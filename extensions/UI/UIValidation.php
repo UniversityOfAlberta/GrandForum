@@ -9,7 +9,7 @@ abstract class UIValidation {
     
     var $negation;
     var $result;
-    var $valud;
+    var $value;
     var $warning;
     
     function UIValidation($neg=false, $warning=false){
