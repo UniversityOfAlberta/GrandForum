@@ -87,7 +87,7 @@ class MaterialPage {
                 if(!$create){
                     foreach($people as $person){
                         if($person instanceof Person){
-                            $personNames[] = $person->getName();
+                            $personNames[] = $person->getNameForForms();
                         }
                         else{
                             $personNames[] = $person;
@@ -98,10 +98,10 @@ class MaterialPage {
                 if($edit){
                     $allPeople = Person::getAllPeople('all');
                     foreach($allPeople as $person){
-                        if(array_search($person->getName(), $personNames) === false &&
-                           $person->getName() != "WikiSysop" &&
+                        if(array_search($person->getNameForForms(), $personNames) === false &&
+                           $person->getNameForForms() != "WikiSysop" &&
                            $person->isRoleAtLeast(HQP)){
-                            $list[] = $person->getName();
+                            $list[] = $person->getNameForForms();
                         }
                     }
                     $wgOut->addHTML("<div class='switcheroo noCustom' name='Person' id='people'>
