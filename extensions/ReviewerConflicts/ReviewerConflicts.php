@@ -22,30 +22,46 @@ class ReviewerConflicts extends SpecialPage {
 	static function run(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 	    
-	   
-	    $overall = array();
+	    $reviewer_id = $wgUser->getId();
+	    
+        $overall = array();
 	    $projects = array();
 	    $nis = array();
-	    
-	    
-	    $people = Person::getAllPeople();
-	    /*foreach($people as $person){
-	        $roles = $person->getRoles();
-	        foreach($roles as $role){
-	            if($role->getRole() == HQP){
-	                $hqps[$person->getId()] = $person;
-	            }
-	            else if($role->getRole() == PNI){
-	            	$pnis[$person->getId()] = $person;
-	            	$nis[$person->getId()] = $person;
-	            }
-	            else if($role->getRole() == CNI){ 
-	                $cnis[$person->getId()] = $person;  
-	                $nis[$person->getId()] = $person;
-	            }
-	        }
-	    }*/
-	    
+	    $active = 0;
+
+	    if(isset($_POST['Submit']) && ($_POST['Submit'] == "Confirm CNI Conflicts" || $_POST['Submit'] == "Confirm PNI Conflicts")){
+            if(isset($_POST['reviewee_id'])){
+                foreach($_POST['reviewee_id'] as $reviewee_id){
+                    if(isset($_POST['conflict_'.$reviewee_id]) && $_POST['conflict_'.$reviewee_id]){
+                        $conflict = 1;
+                    }
+                    else{
+                        $conflict = 0;
+                    }
+
+                    $sql = "INSERT INTO grand_reviewer_conflicts(reviewer_id, reviewee_id, conflict) VALUES('{$reviewer_id}', '{$reviewee_id}', '$conflict' ) ON DUPLICATE KEY UPDATE conflict='{$conflict}'";
+                    $data = DBFunctions::execSQL($sql, true);
+                }
+
+            }
+            
+
+            if(isset($_POST['type'])){
+                if($_POST['type'] == 'PNI'){
+                    $active = 0;
+                }
+                else if($_POST['type'] == 'CNI'){
+                    $active = 1;
+                }   
+                else if($_POST['type'] == 'PROJECTS'){
+                    $active = 2;
+                }  
+            }
+            
+        }
+
+        
+
 	    $wgOut->setPageTitle("Reviewer Conflicts");
 	    $wgOut->addHTML("<div id='ackTabs'>
 	                        <ul>
@@ -74,7 +90,7 @@ class ReviewerConflicts extends SpecialPage {
 	                                                            'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
                                     $('.dataTables_filter input').css('width', 250);
                                     $('#ackTabs').tabs();
-                                    
+                                    $('#ackTabs').tabs( 'select', $active);
                                     $('input[name=date]').datepicker();
                                     $('input[name=date]').datepicker('option', 'dateFormat', 'dd-mm-yy');
                                 	$('#CNI_conflicts').tablesorter({ 
@@ -86,6 +102,10 @@ class ReviewerConflicts extends SpecialPage {
 	    							$('#project_conflicts').tablesorter({ 
 										sortList: [[0,0], [1,0]],
 									});
+
+                                    $('.conflict_found').click(function(e){
+                                        e.preventDefault();
+                                    });
                                 });
                             </script>");
     	
@@ -184,6 +204,7 @@ EOF;
         
         <strong>Search:</strong> <input title='You can search by Name, Organization or Projects' style='width:73%;' id='search_{$type}' type='text' onKeyUp='filterResults{$type}(this.value);' />
         <div style='padding:2px;'></div>
+        <form id='submitForm' action='$wgServer$wgScriptPath/index.php/Special:ReviewerConflicts' method='post'>
         <table width='850' id='{$type}_conflicts' class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
         <thead>
         <tr bgcolor='#F2F2F2'>
@@ -226,6 +247,19 @@ EOF;
         foreach($me->getHQP(true) as $hqp){
         	$my_hqp[] = $hqp->getId();
         }
+
+
+        //Get saved conflicts data if any
+        $reviewer_id = $me->getId();
+        $sql = "SELECT * FROM grand_reviewer_conflicts WHERE reviewer_id = '{$reviewer_id}'";
+        $data = DBFunctions::execSQL($sql);    
+
+        $conflicts = array();
+        foreach($data as $row){
+            $conflicts["'".$row['reviewee_id']."'"] = $row['conflict'];
+        }
+
+        //print_r($conflicts);
 
         foreach($allPeople as $person){
             if($person->getName() == $me->getName()){
@@ -316,12 +350,28 @@ EOF;
             
             $bgcolor = "#FFFFFF";
             $checked = "";
+            $disabled = "";
           	if($works_with == "Yes" || $same_organization == "Yes" || $same_projects == "Yes" || $co_authorship == "Yes" || $co_supervision == "Yes"){
           		$bgcolor = "#DD3333";
-          		$checked = "checked='checked' disabled='disabled'";
+          		$checked = "checked='checked'";
+                $disabled = "class='conflict_found'";
           	}
             
             $row_id = $person->getName();
+            $reviewee_id = $person->getId();
+
+            $saved_conflict = 0;
+            //echo $conflicts["'".$reviewee_id."'"]."<br>";
+            if(isset($conflicts["'".$reviewee_id."'"])) {
+                if($conflicts["'".$reviewee_id."'"]){
+                    $checked = "checked='checked'";
+                }
+                else{
+                    $checked = 0;
+                }
+            }
+
+
             $html .= <<<EOF
             <tr style='background-color:{$bgcolor};' name='search' id='{$row_id}' class='{$row_id} {$proj_names} {$position}'>
                 <td class='lname' title='{$proj_names}; {$position}'>{$lname}, {$fname}</td>
@@ -330,7 +380,11 @@ EOF;
                 <td class=''>{$same_projects}</td>
                 <td class=''>{$co_authorship}</td>
                 <td class=''>{$co_supervision}</td>
-                <td align='center'><input class="conflict_checkbox" type="checkbox" {$checked} /></td>
+                <td align='center'>
+
+                <input type="hidden" name="reviewee_id[]" value="{$reviewee_id}" />
+                <input type="checkbox" name="conflict_{$reviewee_id}" {$checked} {$disabled} />
+                </td>
             </tr>
 EOF;
         }
@@ -338,7 +392,9 @@ EOF;
         $html .=<<<EOF
         </tbody>
         </table>
-        <button id="confirm_new_connections">Confirm Selected</button>
+        <input type="hidden" name="type" value="{$type}" />
+        <input type="submit" name="Submit" value="Confirm {$type} Conflicts" />
+        </form>
         </div>
 EOF;
 
@@ -397,7 +453,9 @@ EOF;
                 <td class=''>{$same_projects}</td>
                 <!--td class=''></td>
                 <td class=''></td-->
-                <td><input class="conflict_checkbox" type="checkbox" /></td>
+                <td>
+                <input class="conflict_checkbox" type="checkbox" />
+                </td>
             </tr>
 EOF;
 
@@ -406,7 +464,7 @@ EOF;
         $html .=<<<EOF
         </tbody>
         </table>
-        <button id="confirm_new_connections">Confirm Selected</button>
+        <!--button id="confirm_new_connections">Confirm Conflicts</button-->
         </div>
 EOF;
 
