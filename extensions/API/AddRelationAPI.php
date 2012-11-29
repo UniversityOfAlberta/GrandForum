@@ -20,8 +20,8 @@ class AddRelationAPI extends API{
 		global $wgRequest, $wgUser, $wgServer, $wgScriptPath;
 		$me = Person::newFromId($wgUser->getId());
 
-		$person1 = Person::newFromName($_POST['name1']);
-		$person2 = Person::newFromName($_POST['name2']);
+		$person1 = Person::newFromNameLike($_POST['name1']);
+		$person2 = Person::newFromNameLike($_POST['name2']);
 		if(!$noEcho){
             if($person1->getName() == null){
                 echo "There is no person by the name of '{$_POST['name1']}'\n";
@@ -56,16 +56,16 @@ class AddRelationAPI extends API{
                                   (`user1`,`user2`,`type`,`projects`,`start_date`)
                                   VALUES ('{$person1->getId()}','{$person2->getId()}','{$_POST['type']}','".serialize($projectIds)."',CURRENT_TIMESTAMP)", true);
             if(!$noEcho){
-                echo "{$person1->getName()} relation with {$person2->getName()} added.\n";
+                echo "{$person1->getNameForForms()} relation with {$person2->getNameForForms()} added.\n";
             }
-            Notification::addNotification($me, $person1, "Relation Added", "You and {$person2->getName()} are related through the '{$_POST['type']}' relation", "{$person2->getUrl()}");
-            Notification::addNotification($me, $person2, "Relation Added", "You and {$person1->getName()} are related through the '{$_POST['type']}' relation", "{$person1->getUrl()}");
+            Notification::addNotification($me, $person1, "Relation Added", "You and {$person2->getNameForForms()} are related through the '{$_POST['type']}' relation", "{$person2->getUrl()}");
+            Notification::addNotification($me, $person2, "Relation Added", "You and {$person1->getNameForForms()} are related through the '{$_POST['type']}' relation", "{$person1->getUrl()}");
             if($_POST['type'] == SUPERVISES){
                 $supervisors = $person2->getSupervisors();
                 if(count($supervisors) > 0){
                     foreach($supervisors as $supervisor){
                         if($person1->getName() != $supervisor->getName()){
-                            Notification::addNotification($me, $supervisor, "Relation Added", "{$person2->getName()} has been added to the Relation '{$person1->getName()} {$_POST['type']} {$person2->getName()}'", "{$person2->getUrl()}");
+                            Notification::addNotification($me, $supervisor, "Relation Added", "{$person2->getNameForForms()} has been added to the Relation '{$person1->getNameForForms()} {$_POST['type']} {$person2->getNameForForms()}'", "{$person2->getUrl()}");
                         }
                     }
                 }

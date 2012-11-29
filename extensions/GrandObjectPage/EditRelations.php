@@ -43,19 +43,19 @@ class EditRelations extends SpecialPage{
 	        if(!isset($_GET['editProjects'])){
 	            $currentHQPNames = array();
 	            foreach($person->getHQP() as $hqp){
-	                $currentHQPNames[] = str_replace("'", "&#39;", $hqp->getName());
+	                $currentHQPNames[] = str_replace("'", "&#39;", $hqp->getNameForForms());
 	            }
 	            $names = array();
 	            if(isset($_POST['hqps'])){
 	                foreach($_POST['hqps'] as $name){
-	                    $names[] = str_replace("'", "&#39;", str_replace(" ", ".", $name));
+	                    $names[] = str_replace("'", "&#39;", $name);
 	                }
 	            }
-	            $_POST['name1'] = str_replace("'", "&#39;", $person->getName());
+	            $_POST['name1'] = str_replace("'", "&#39;", $person->getNameForForms());
 	            // 'Supervises' Relation
 	            $_POST['type'] = 'Supervises';
 	            foreach($names as $name){
-	                $user2 = Person::newFromName($name);
+	                $user2 = Person::newFromNameLike($name);
 	                if(array_search($name, $currentHQPNames) === false){
 	                    $_POST['name2'] = $name;
 	                    APIRequest::doAction('AddRelation', true);
@@ -63,7 +63,7 @@ class EditRelations extends SpecialPage{
 	                $relations = $person->getRelations('Supervises');
                     $_POST['id'] = null;
                     foreach($relations as $relation){
-                        if($user2->getName() == $relation->getUser2()->getName()){
+                        if($user2->getNameForForms() == $relation->getUser2()->getNameForForms()){
                             $_POST['id'] = $relation->getId();
                             break;
                         }
@@ -89,17 +89,17 @@ class EditRelations extends SpecialPage{
 	            // 'Works With' Relation
 	            $currentWorksWithNames = array();
 	            foreach($person->getRelations('Works With') as $relation){
-	                $currentWorksWithNames[] = str_replace("'", "&#39;", $relation->getUser2()->getName());
+	                $currentWorksWithNames[] = str_replace("'", "&#39;", $relation->getUser2()->getNameForForms());
 	            }
 	            $names = array();
 	            if(isset($_POST['coworkers'])){
 	                foreach($_POST['coworkers'] as $name){
-	                    $names[] = str_replace("'", "&#39;", str_replace(" ", ".", $name));
+	                    $names[] = str_replace("'", "&#39;", $name);
 	                }
 	            }
 	            $_POST['type'] = 'Works With';
 	            foreach($names as $name){
-	                $user2 = Person::newFromName($name);
+	                $user2 = Person::newFromNameLike($name);
 	                if(array_search($name, $currentWorksWithNames) === false){
 	                    $_POST['name2'] = $name; 
 	                    APIRequest::doAction('AddRelation', true);
@@ -107,7 +107,7 @@ class EditRelations extends SpecialPage{
 	                $relations = $person->getRelations('Works With');
                     $_POST['id'] = null;
                     foreach($relations as $relation){
-                        if($user2->getName() == $relation->getUser2()->getName()){
+                        if($user2->getNameForForms() == $relation->getUser2()->getNameForForms()){
                             $_POST['id'] = $relation->getId();
                             break;
                         }
@@ -169,12 +169,12 @@ class EditRelations extends SpecialPage{
 	    $list = array();
 	    $relations = $person->getRelations('Supervises');
 	    foreach($relations as $relation){
-	        $names[] = $relation->getUser2()->getName();
+	        $names[] = $relation->getUser2()->getNameForForms();
 	    }
 	    $allHQP = Person::getAllPeople(HQP);
 	    foreach($allHQP as $hqp){
-	        if(array_search($hqp->getName(), $names) === false){
-	            $list[] = $hqp->getName();
+	        if(array_search($hqp->getNameForForms(), $names) === false){
+	            $list[] = $hqp->getNameForForms();
 	        }
 	    }
         $wgOut->addHTML("<div class='switcheroo' name='HQP' id='hqps'>
@@ -189,12 +189,12 @@ class EditRelations extends SpecialPage{
 	    $list = array();
 	    $relations = $person->getRelations('Works With');
 	    foreach($relations as $relation){
-	        $names[] = $relation->getUser2()->getName();
+	        $names[] = $relation->getUser2()->getNameForForms();
 	    }
 	    $all = Person::getAllPeople();
 	    foreach($all as $person){
-	        if(array_search($person->getName(), $names) === false){
-	            $list[] = $person->getName();
+	        if(array_search($person->getNameForForms(), $names) === false){
+	            $list[] = $person->getNameForForms();
 	        }
 	    }
         $wgOut->addHTML("<div class='switcheroo' name='CoWorker' id='coworkers'>
