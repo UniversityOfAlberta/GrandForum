@@ -149,8 +149,7 @@ abstract class AbstractReport extends SpecialPage {
                 if($status){
                     $parser->parse();
                     setcookie('showSuccess', 'true', time()+(60), '/');
-                    header("Location: {$wgServer}{$_SERVER["REQUEST_URI"]}");
-                    exit;
+                    redirect("{$wgServer}{$_SERVER["REQUEST_URI"]}");
                 }
             }
             $parser->parse();

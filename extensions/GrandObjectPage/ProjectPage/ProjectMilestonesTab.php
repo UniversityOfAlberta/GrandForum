@@ -120,7 +120,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     $milestone->getComment() == $_POST['comment'] && 
                     $milestone->getProjectedEndDate() == $_POST["end_date"]."-00" && count($milestone->getPeople()) == count($_POST['people'])){
                     foreach($milestone->getPeople() as $person){
-                        if(array_search($person->getName(), $_POST['people'])){
+                        if(array_search($person->getNameForForms(), $_POST['people'])){
                             $nochange = true;
                         }
                         else {
@@ -254,7 +254,7 @@ EOF;
             }
             $people = "";
             if(count($peopleInvolved) > 0){
-                $people = implode(", ", $peopleInvolved);
+                $people = implode("; ", $peopleInvolved);
                 $people = "<tr>
                             <td align='right' valign='top'><b>People Involved:</b></td>
                             <td>{$people}</td>
@@ -375,7 +375,7 @@ EOF;
             }
             $people = "";
             if(count($peopleInvolved) > 0){
-                $people = implode(", ", $peopleInvolved);
+                $people = implode("; ", $peopleInvolved);
                 $people = "<tr>
                             <td align='right' valign='top'><b>People Involved:</b></td>
                             <td>{$people}</td>
@@ -452,8 +452,8 @@ EOF;
         $list = array();
         foreach($allPeople as $person){
             if($person->isRoleAtLeast(CNI) && $person->isMemberOf($project)){
-                if(array_search($person->getName(), $personNames) === false){
-                    $list[] = $person->getName();
+                if(array_search($person->getNameForForms(), $personNames) === false){
+                    $list[] = $person->getNameForForms();
                 }
             }
         }
@@ -584,7 +584,7 @@ EOF;
                 }
                 $people = "";
                 if(count($peopleInvolved) > 0){
-                    $people = implode(", ", $peopleInvolved);
+                    $people = implode("; ", $peopleInvolved);
                     $people = "<strong>People Involved:</strong> $people<br />";
                 }
                 
@@ -643,15 +643,15 @@ EOF;
             $peopleInvolved = $milestone->getPeople();
             $personNames = array();
             foreach($peopleInvolved as $person){
-                $personNames[] = $person->getName();
+                $personNames[] = $person->getNameForForms();
             }
             
             $allPeople = Person::getAllPeople('all');
             $list = array();
             foreach($allPeople as $person){
                 if($person->isRoleAtLeast(CNI) && $person->isMemberOf($milestone->getProject())){
-                    if(array_search($person->getName(), $personNames) === false){
-                        $list[] = $person->getName();
+                    if(array_search($person->getNameForForms(), $personNames) === false){
+                        $list[] = $person->getNameForForms();
                     }
                 }
             }

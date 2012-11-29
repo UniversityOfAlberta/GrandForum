@@ -218,6 +218,7 @@ class Project{
 			$this->type = $data[0]['type'];
 			$this->succ = false;
 			$this->preds = false;
+			
 			if(isset($data[0]['action']) && $data[0]['action'] == 'DELETE'){
 			    $this->deleted = true;
 			}
@@ -511,7 +512,7 @@ EOF;
 	        $preds = $this->getPreds();
 	        foreach($preds as $pred){
 	            foreach($pred->getMultimedia() as $multimedia){
-	                $this->contributions[$multimedia->getId()] = $multimedia;
+	                $this->multimedia[$multimedia->getId()] = $multimedia;
 	            }
 	        }
 	        $sql = "SELECT m.id
@@ -860,7 +861,6 @@ EOF;
 	// If $history is set to true, all the milestones ever for this project are included
 	function getMilestones($history=false){
 	    if($this->milestones != null && !$history){
-	        echo "HELLO";
 	        return $this->milestones;
 	    }
 	    $milestones = array();

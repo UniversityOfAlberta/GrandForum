@@ -20,7 +20,7 @@ class AddContributionAPI extends API{
         $users = explode(", ", $_POST['users']);
         $_POST['users'] = array();
         foreach($users as $user){
-            $person = Person::newFromName($user)->getId();
+            $person = Person::newFromNameLike($user)->getId();
             if($person != null && $person->getName() != null){
                 $_POST['users'][] = $person->getId();
             }

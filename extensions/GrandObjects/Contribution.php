@@ -205,7 +205,13 @@ class Contribution {
                     $people[] = Person::newFromId($pId);
                 }
                 else{
-                    $people[] = $pId;
+                    $person = Person::newFromNameLike($pId);
+                    if($person != null && $person->getName() != ""){
+                        $people[] = $person;
+                    }
+                    else{
+                        $people[] = $pId;
+                    }
                 }
             }
             $this->people = $people;

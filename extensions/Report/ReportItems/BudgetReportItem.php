@@ -197,7 +197,7 @@ class BudgetReportItem extends AbstractReportItem {
             foreach($row as $proj){
                 $project = Project::newFromName($proj->getValue());
                 if($project != null && $project->getName() != null){
-                    if(substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
+                    if($project->deleted && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
                         $errors[] = "'{$project->getName()}' is not continuing next year";
                     }
                 }
@@ -218,7 +218,7 @@ class BudgetReportItem extends AbstractReportItem {
             foreach($row as $proj){
                 $project = Project::newFromName($proj->getValue());
                 if($project != null && $project->getName() != null){
-                    if(substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
+                    if($project->deleted && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
                         $errors[] = "'{$project->getName()}' is not continuing next year";
                     }
                     // Now look for the people

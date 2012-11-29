@@ -164,14 +164,12 @@ class PublicationPage {
                 if($post){
                     // The user has submitted the form
                     self::proccessPost($category);
-                    session_write_close();
                     if(!$create){
-                        header("Location: $wgServer$wgScriptPath/index.php/$category:".str_replace("?", "%3F", str_replace("&#39;", "'", $title)));
+                        redirect("$wgServer$wgScriptPath/index.php/$category:".str_replace("?", "%3F", str_replace("&#39;", "'", $title)));
                     }
                     else{
-                        header("Location: $wgServer$wgScriptPath/index.php/$category:".str_replace("?", "%3F", $title));
+                        redirect("$wgServer$wgScriptPath/index.php/$category:".str_replace("?", "%3F", $title));
                     }
-                    exit;
                 }
                 $wgOut->clearHTML();
                 if(!$create){
@@ -643,14 +641,14 @@ class PublicationPage {
                 $authorNames = array();
                 if(!$create){
                     foreach($authors as $author){
-                        $authorNames[] = $author->getName();
+                        $authorNames[] = $author->getNameForForms();
                     }
                 }
                 if($edit){
                     $allPeople = Person::getAllPeople('all');
                     foreach($allPeople as $person){
-                        if(array_search($person->getName(), $authorNames) === false){
-                            $list[] = $person->getName();
+                        if(array_search($person->getNameForForms(), $authorNames) === false){
+                            $list[] = $person->getNameForForms();
                         }
                     }
                     $wgOut->addHTML("<div class='switcheroo' name='{$authorTitle}' id='authors'>

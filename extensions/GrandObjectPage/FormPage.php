@@ -36,8 +36,7 @@ class FormPage {
                     $form = Form::newFromTitle($_POST['title']);
                     $wgOut->redirect('');
                     if($errors == ""){
-                        header("Location: $wgServer$wgScriptPath/index.php/{$name}:{$form->getId()}");
-                        exit;
+                        redirect("$wgServer$wgScriptPath/index.php/{$name}:{$form->getId()}");
                     }
                     else{
                         $wgOut->clearHTML();

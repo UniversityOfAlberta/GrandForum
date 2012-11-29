@@ -54,7 +54,7 @@ class Person{
 	
 	// Returns a new Person from the given name
 	static function newFromName($name){
-	    $name = str_replace(" ", ".", $name);
+	    $name = str_replace(' ', '.', $name);
 	    if(isset(Person::$cache[$name])){
 	        return Person::$cache[$name];
 	    }
@@ -97,6 +97,7 @@ class Person{
 	
 	// Returns a new Person from the given name
 	static function newFromNameLike($name){
+	    global $wgSitename;
 	    $name = str_replace(".", ".*", $name);
         $name = str_replace(" ", ".*", $name);
 	    if(isset(Person::$cache[$name])){
@@ -104,8 +105,13 @@ class Person{
 	    }
 	    self::generateNamesCache();
 		$data = array();
-		
-		$possibleNames = preg_grep("/.*$name.*/i", array_keys(self::$namesCache));
+		if(apc_exists($wgSitename.'person_name'.$name)){
+		    $possibleNames = unserialize(apc_fetch($wgSitename.'person_name'.$name));
+		}
+		else{
+		    $possibleNames = preg_grep("/.*$name.*/i", array_keys(self::$namesCache));
+		    apc_store($wgSitename.'person_name'.$name, serialize($possibleNames), 60*60);
+		}
 		foreach($possibleNames as $possible){
 		    $data[] = self::$namesCache[$possible];
 		}
@@ -199,6 +205,9 @@ class Person{
 		    foreach($data as $row){
 		        self::$namesCache[$row['user_name']] = $row;
 		        self::$idsCache[$row['user_id']] = $row;
+		        if(trim($row['user_real_name']) != '' && str_replace(".", " ", $row['user_name'] != trim($row['user_real_name']))){
+		            self::$namesCache[$row['user_real_name']] = $row;
+		        }
 		    }
 		}
 	}
@@ -531,19 +540,28 @@ class Person{
 	
 	// Returns an array of the name in the form ["first", "last"]
 	function splitName(){
-        $names = explode(".", $this->name, 2);
-        $lastname = "";
-        if(count($names) > 1){
-            $lastname = str_ireplace(".", " ", $names[1]);
+        if(!empty($this->realname)){
+            $names = explode(" ", $this->realname);
+            $lastname = ucfirst($names[count($names)-1]);
+            unset($names[count($names)-1]);
+            $firstname = implode(" ", $names);
         }
-        else if(strstr($names[0], " ") != false){
-        // Some names do not follow the First.Last convention, so we need to do some extra work
-            $names = explode(" ", $this->name, 2);
-            if(count($names > 1)){
-                $lastname = $names[1];
+        else{
+            $names = explode(".", $this->name, 2);
+            $lastname = "";
+            if(count($names) > 1){
+                $lastname = str_ireplace(".", " ", $names[1]);
             }
+            else if(strstr($names[0], " ") != false){
+            // Some names do not follow the First.Last convention, so we need to do some extra work
+                $names = explode(" ", $this->name, 2);
+                if(count($names > 1)){
+                    $lastname = $names[1];
+                }
+            }
+            $firstname = $names[0];
         }
-        return array("first" => $names[0], "last" => $lastname);
+        return array("first" => ucfirst($firstname), "last" => ucfirst($lastname));
 	}
 	
 	function getFirstName(){
@@ -570,7 +588,7 @@ class Person{
 	// Returns a name usable in forms.
 	function getNameForForms($sep = ' ') {
 		if (!empty($this->realname))
-			return $this->realname;
+			return ucfirst($this->realname);
 		else
 			return str_replace('.', $sep, $this->name);
 	}

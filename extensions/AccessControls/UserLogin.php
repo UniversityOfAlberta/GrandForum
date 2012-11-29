@@ -17,7 +17,7 @@ function disableLoginForm($template){
 function redirectTo($user, $html){
     global $wgServer, $wgScriptPath;
     $returnto = urldecode($_GET['returnto']);
-    header("Location: $wgServer$wgScriptPath/index.php/$returnto");
+    redirect("$wgServer$wgScriptPath/index.php/$returnto");
 }
 
 ?>

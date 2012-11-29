@@ -112,7 +112,7 @@ EOF;
             foreach($partners as $partner){
                 $parts[] = $partner->getOrganization();
             }
-            $details = "<td style='white-space:nowrap;text-align:center;'>{$date} </td><td style='text-align:right;'>\$".number_format($contribution->getTotal())." </td><td>".implode(", ", $projs)."<br /></td><td>".implode(", ", $parts)."</td><td><a href='{$contribution->getUrl()}' target='_blank'><i>{$contribution->getName()}</i></a><br /></td>";
+            $details = "<td style='white-space:nowrap;text-align:center;'>{$date} </td><td style='text-align:right;'>\$".number_format($contribution->getTotal())." </td><td>".implode(", ", $projs)."<br /></td><td>".implode(", ", $parts)."</td><td> <a href='{$contribution->getUrl()}' target='_blank'><i>{$contribution->getName()}</i></a><br /></td>";
             return $details;
         }
         

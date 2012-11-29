@@ -146,20 +146,6 @@ class ProjectMainTab extends AbstractEditableTab {
         
         $this->html .= "<table width='100%'><tr><td valign='top' width='50%'>";
         if($edit || !$edit && count($pnis) > 0){
-            $this->html .= "<h2><span class='mw-headline'>Associated Researchers</span></h2>";
-        }
-        $this->html .= "<ul>";
-        foreach($ars as $ar){
-            if((!empty($leaders) && in_array($ar->getId(), $leaders)) || (!empty($coleaders) && in_array($ar->getId(), $coleaders))){
-                continue;
-            }
-            $target = "";
-            if($edit){
-                $target = " target='_blank'";
-            }
-            $this->html .= "<li><a href='{$ar->getUrl()}'$target>{$ar->getReversedName()}</a></li>";
-        }
-        if($edit || !$edit && count($pnis) > 0){
             $this->html .= "<h2><span class='mw-headline'>PNIs</span></h2>";
         }
         $this->html .= "<ul>";
@@ -188,6 +174,21 @@ class ProjectMainTab extends AbstractEditableTab {
                 $target = " target='_blank'";
             }
             $this->html .= "<li><a href='{$cni->getUrl()}'$target>{$cni->getReversedName()}</a></li>";
+        }
+        $this->html .= "</ul>";
+        if($edit || !$edit && count($ars) > 0){
+            $this->html .= "<h2><span class='mw-headline'>Associated Researchers</span></h2>";
+        }
+        $this->html .= "<ul>";
+        foreach($ars as $ar){
+            if((!empty($leaders) && in_array($ar->getId(), $leaders)) || (!empty($coleaders) && in_array($ar->getId(), $coleaders))){
+                continue;
+            }
+            $target = "";
+            if($edit){
+                $target = " target='_blank'";
+            }
+            $this->html .= "<li><a href='{$ar->getUrl()}'$target>{$ar->getReversedName()}</a></li>";
         }
         $this->html .= "</ul></td>";
         if($wgUser->isLoggedIn()){
