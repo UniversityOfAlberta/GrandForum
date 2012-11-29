@@ -113,7 +113,9 @@ class Person{
 		    apc_store($wgSitename.'person_name'.$name, serialize($possibleNames), 60*60);
 		}
 		foreach($possibleNames as $possible){
-		    $data[] = self::$namesCache[$possible];
+		    if(isset(self::$namesCache[$possible])){
+		        $data[] = self::$namesCache[$possible];
+		    }
 		}
 		$person = new Person($data);
 		if(isset(self::$cache[$person->id]) && $person->id != ""){
@@ -205,7 +207,7 @@ class Person{
 		    foreach($data as $row){
 		        self::$namesCache[$row['user_name']] = $row;
 		        self::$idsCache[$row['user_id']] = $row;
-		        if(trim($row['user_real_name']) != '' && str_replace(".", " ", $row['user_name'] != trim($row['user_real_name']))){
+		        if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
 		            self::$namesCache[$row['user_real_name']] = $row;
 		        }
 		    }
@@ -561,7 +563,7 @@ class Person{
             }
             $firstname = $names[0];
         }
-        return array("first" => ucfirst($firstname), "last" => ucfirst($lastname));
+        return array("first" => str_replace("&nbsp;", " ", ucfirst($firstname)), "last" => str_replace("&nbsp;", " ", ucfirst($lastname)));
 	}
 	
 	function getFirstName(){
@@ -588,9 +590,9 @@ class Person{
 	// Returns a name usable in forms.
 	function getNameForForms($sep = ' ') {
 		if (!empty($this->realname))
-			return ucfirst($this->realname);
+			return str_replace("&nbsp;", " ", ucfirst($this->realname));
 		else
-			return str_replace('.', $sep, $this->name);
+			return str_replace("&nbsp;", " ", str_replace('.', $sep, $this->name));
 	}
 	
 	// Returns the user's profile.
