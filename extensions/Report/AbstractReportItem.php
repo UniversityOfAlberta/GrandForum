@@ -213,6 +213,9 @@ abstract class AbstractReportItem {
             case BLOB_TEXT:
             case BLOB_WIKI:
             case BLOB_HTML:
+                $blob_data = str_replace("\00", "", $blob_data);
+                $blob_data = str_replace("", "", $blob_data);
+                $blob_data = str_replace("", "", $blob_data);
             case BLOB_EXCEL:
                 $value = $blob_data;
                 break;
