@@ -12,23 +12,25 @@ class DeletePaperAPI extends API{
         $_POST['notify'] = (@str_replace("'", "&#39", $_POST['notify']) == "true");
     }
 
-	function doAction($noEcho=false){
+	function doAction(){
 		global $wgRequest, $wgUser, $wgServer, $wgScriptPath;
 		$me = Person::newFromId($wgUser->getId());
         $paper = Paper::newFromId($_POST['id']);
-		if(!$noEcho){
-            if($paper == null || $paper->getTitle() == null){
-                $this->addError("There is no paper by the id of '{$_POST['id']}'\n");
-                return;
-            }
+        if($paper == null || $paper->getTitle() == null){
+            $this->addError("There is no product with the id '{$_POST['id']}'\n");
+            return;
+        }
+        if($paper->deleted){
+            $this->addError("This product is already deleted\n");
+            return;
         }
 		if($me->isRoleAtLeast(HQP)){
             // Actually Delete the Paper
             $status = DBFunctions::execSQL("UPDATE `grand_products`
                                            SET `deleted` = '1'
                                            WHERE `id` = '{$paper->getId()}'", true);
-            if(!$noEcho && $status){
-                $this->addMessage("Paper <i>{$paper->getTitle()}</i> Deleted.\n");
+            if($status){
+                $this->addMessage("The {$paper->getCategory()} <i>{$paper->getTitle()}</i> was Deleted\n");
             }
             else{
                 $this->addError("There was an error deleting the product");
@@ -42,10 +44,8 @@ class DeletePaperAPI extends API{
             }
 		}
 		else {
-		    if(!$noEcho){
-			    $this->addError("You do not have the correct permissions to delete this paper\n");
-			    return;
-			}
+		    $this->addError("You do not have the correct permissions to delete this product\n");
+		    return;
 		}
 	}
 	

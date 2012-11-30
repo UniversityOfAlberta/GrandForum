@@ -111,8 +111,10 @@ $optionDefs = array("Address" => "the city, country of the publisher",
 
 class PublicationPage {
 
+    var $paper;
+
     function processPage($article, $outputDone, $pcache){
-        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $types, $bibtexTypes;
+        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $types, $bibtexTypes, $wgMessage;
         
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
@@ -148,11 +150,16 @@ class PublicationPage {
                 unset($_GET['create']);
                 $_GET['edit'] = "true";
             }
+            $this->paper = $paper;
+            if($this->paper->deleted){
+                $wgMessage->addInfo("This publication has been deleted, and will not show up anywhere else on the forum.");
+            }
             
             $create = isset($_GET['create']);
             $create = ( $create && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
             $edit = (isset($_GET['edit']) || $create);
             $edit = ( $edit && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
+            $edit = ($edit && !$paper->deleted);
             
             $post = (isset($_POST['submit']) && ($_POST['submit'] == "Save $name" || $_POST['submit'] == "Create $name"));
             $post = ( $post && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
@@ -643,6 +650,10 @@ class PublicationPage {
                                        };
                                 $.post("'.$wgServer.$wgScriptPath.'/index.php?action=api.deletePaperRef", data, function(response){
                                     addAPIMessages(response);
+                                    if(response.errors.length == 0){
+                                        $("#delete_button").prop("disabled", true);
+                                        $("#edit_button").prop("disabled", true);
+                                    }
                                     $("#delete_popup").dialog("close");
                                 });
                             });
@@ -1086,8 +1097,12 @@ class PublicationPage {
                             Are you sure you want to delete the $category <i>{$paper->getTitle()}</i>?<br />
                             <center><button id='delete_yes'>Yes</button> <button id='delete_no'>No</button></center>
                         </div>");
-                        $wgOut->addHTML("<br /><input type='button' name='edit' value='Edit $category' onClick='document.location=\"$wgServer$wgScriptPath/index.php/$category:".$paper->getId()."?edit\";' />");
-                        $wgOut->addHTML("&nbsp;<input type='button' name='delete' id='delete_button' value='Delete $category' />");
+                        $disabled = "";
+                        if($paper->deleted){
+                            $disabled = " disabled='disabled'";
+                        }
+                        $wgOut->addHTML("<br /><input type='button' name='edit' id='edit_button' value='Edit $category' onClick='document.location=\"$wgServer$wgScriptPath/index.php/$category:".$paper->getId()."?edit\";' $disabled />");
+                        $wgOut->addHTML("&nbsp;<input type='button' name='delete' id='delete_button' value='Delete $category' $disabled />");
                     }
                 }
                 $wgOut->output();
@@ -1444,6 +1459,9 @@ class PublicationPage {
         $me = Person::newFromId($wgUser->getId());
         $edit = (isset($_GET['edit']) || isset($_GET['create']));
         $edit = ( $edit && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
+        if($this->paper != null){
+            $edit = ($edit && !$this->paper->deleted);
+        }
         
         if($edit || !$edit && $value != ""){
             $align = ($edit) ? "align='right'" : "align='left'";

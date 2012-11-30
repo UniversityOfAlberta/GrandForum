@@ -1520,10 +1520,12 @@ class Person{
             }
         }
 	    foreach($papers as $paper){
-            foreach($paper->getAuthors() as $author){
-                if($author->getName() == $this->name || array_search($author->getName(), $hqps) !== false){
-                    $papersArray[] = $paper;
-                    break;
+	        if(!$paper->deleted){
+                foreach($paper->getAuthors() as $author){
+                    if($author->getName() == $this->name || array_search($author->getName(), $hqps) !== false){
+                        $papersArray[] = $paper;
+                        break;
+                    }
                 }
             }
 	    }
@@ -1542,10 +1544,12 @@ class Person{
             }
         }
         foreach($papers as $paper){
-            foreach($paper->getAuthors() as $author){
-                if($author->getName() == $this->name || array_search($author->getName(), $hqps) !== false){
-                    $papersArray[] = $paper;
-                    break;
+            if(!$paper->deleted){
+                foreach($paper->getAuthors() as $author){
+                    if($author->getName() == $this->name || array_search($author->getName(), $hqps) !== false){
+                        $papersArray[] = $paper;
+                        break;
+                    }
                 }
             }
         }
