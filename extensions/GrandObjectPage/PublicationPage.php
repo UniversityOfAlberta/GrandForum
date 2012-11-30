@@ -638,7 +638,9 @@ class PublicationPage {
                             });
                             
                             $("#delete_yes").click(function(){
-                                data = {"id" : '.$paper->getId().'};
+                                data = {"id" : '.$paper->getId().',
+                                        "notify" : true
+                                       };
                                 $.post("'.$wgServer.$wgScriptPath.'/index.php?action=api.deletePaperRef", data, function(response){
                                     addAPIMessages(response);
                                     $("#delete_popup").dialog("close");

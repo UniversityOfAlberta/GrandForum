@@ -24,11 +24,21 @@ class DeletePaperAPI extends API{
         }
 		if($me->isRoleAtLeast(HQP)){
             // Actually Delete the Paper
-            DBFunctions::execSQL("UPDATE `grand_products`
-                                  SET `deleted` = '1'
-                                  WHERE `id` = '{$paper->getId()}'", true);
-            if(!$noEcho){
+            $status = DBFunctions::execSQL("UPDATE `grand_products`
+                                           SET `deleted` = '1'
+                                           WHERE `id` = '{$paper->getId()}'", true);
+            if(!$noEcho && $status){
                 $this->addMessage("Paper <i>{$paper->getTitle()}</i> Deleted.\n");
+            }
+            else{
+                $this->addError("There was an error deleting the product");
+            }
+            if($status && isset($_POST['notify']) && $_POST['notify'] === true){
+                foreach($paper->getAuthors() as $author){
+                    if($author instanceof Person){
+                        Notification::addNotification($me, $author, "{$paper->getCategory()} Deleted", "Your ".strtolower($paper->getCategory())." entitled <i>{$paper->getTitle()}</i> has been deleted", "{$paper->getUrl()}");
+                    }
+                }
             }
 		}
 		else {
