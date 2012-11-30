@@ -5,6 +5,7 @@ require_once("AbstractDuplicatesHandler.php");
 require_once("DuplicatesTab.php");
 require_once("Handlers/ProductHandler.php");
 require_once("Handlers/PersonHandler.php");
+require_once("MyDuplicateProducts.php");
 
 $dir = dirname(__FILE__) . '/';
 
