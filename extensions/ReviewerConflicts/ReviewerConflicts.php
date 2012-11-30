@@ -7,6 +7,8 @@ $wgSpecialPages['ReviewerConflicts'] = 'ReviewerConflicts';
 $wgExtensionMessagesFiles['ReviewerConflicts'] = $dir . 'ReviewerConflicts.i18n.php';
 $wgSpecialPageGroups['ReviewerConflicts'] = 'grand-tools';
 
+$wgHooks['SkinTemplateContentActions'][] = 'ReviewerConflicts::showTabs';
+
 function runReviewerConflicts($par) {
 	ReviewerConflicts::run($par);
 }
@@ -18,6 +20,51 @@ class ReviewerConflicts extends SpecialPage {
 		wfLoadExtensionMessages('ReviewerConflicts');
 		SpecialPage::SpecialPage("ReviewerConflicts", CNI.'+', true, 'runReviewerConflicts');
 	}
+
+
+    static function createTab(){
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
+        $person = Person::newFromId($wgUser->getId());
+        $page = "Report";
+        if($person->isEvaluator()){
+            $page = "ReviewerConflicts";
+            $selected = "";
+            if($wgTitle->getText() == "ReviewerConflicts"){
+                $selected = "selected";
+            }
+        
+            echo "<li class='top-nav-element $selected'>\n";
+            echo "  <span class='top-nav-left'>&nbsp;</span>\n";
+            echo "  <a id='lnk-my_report' class='top-nav-mid' href='$wgServer$wgScriptPath/index.php/Special:$page' class='{$selected}'>Evaluator</a>\n";
+            echo "  <span class='top-nav-right'>&nbsp;</span>\n";
+            echo "</li>";
+        }
+    }
+
+    static function showTabs(&$content_actions){
+        global $wgTitle, $wgUser, $wgServer, $wgScriptPath;
+        if($wgTitle->getText() == "ReviewerConflicts"){
+            $content_actions = array();
+            $person = Person::newFromId($wgUser->getId());
+            
+           
+            if($person->isEvaluator()){
+                @$class = ($wgTitle->getText() == "ReviewerConflicts" ) ? "selected" : false;
+                /*$content_actions[] = array (
+                         'class' => $class,
+                         'text'  => "Evaluator",
+                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport",
+                        );*/
+                $content_actions[] = array (
+                         'class' => $class,
+                         'text'  => "Reviewer Conflicts",
+                         'href'  => "$wgServer$wgScriptPath/index.php/Special:ReviewerConflicts",
+                        );
+            }
+            
+        }
+        return true;
+    }
 	
 	static function run(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;

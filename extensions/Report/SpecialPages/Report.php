@@ -109,20 +109,16 @@ class Report extends AbstractReport{
             }
             
             // Evaluator Report
-            
+            /*
             if($person->isEvaluator()){
                     @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalReport") ? "selected" : false;
-                    /*$content_actions[] = array (
-                             'class' => $class,
-                             'text'  => "Evaluator",
-                             'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport",
-                            );*/
+                    
                     $content_actions[] = array (
                              'class' => $class,
                              'text'  => "Reviewer Conflicts",
                              'href'  => "$wgServer$wgScriptPath/index.php/Special:ReviewerConflicts",
                             );
-            }
+            }*/
             
         }
         return true;
