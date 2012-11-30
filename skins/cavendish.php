@@ -139,6 +139,20 @@ class cavendishTemplate extends QuickTemplate {
 	            });
 	            $("html").css('min-width', minWidth);
 	        }
+	        
+	        function addAPIMessages(response){
+	            clearError();
+	            clearSuccess();
+	            errors = response.errors;
+	            messages = response.messages;
+	            for(i in errors){
+	                addError(errors[i]);
+	            }
+	            for(i in messages){
+	                addSuccess(messages[i]);
+	            }
+	        }
+	        
 	        var sideToggled = 'out';
 		    $(document).ready(function(){
 		        $('a.disabledButton').click(function(e){

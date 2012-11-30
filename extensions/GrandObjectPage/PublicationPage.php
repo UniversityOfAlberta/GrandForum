@@ -200,9 +200,8 @@ class PublicationPage {
                           if (text.indexOf("SELECT") == 0){
                             $("option:first",this).remove();
                           }
-													$(this).css("background-color", "white");
+                            $(this).css("background-color", "white");
                         });
-
                     });
                     
                     function showHideAttr(type){
@@ -622,6 +621,32 @@ class PublicationPage {
                     
 			        </script>');
 				}
+				else{
+				    $wgOut->addScript('<script type="text/javascript">
+				        $(document).ready(function(){
+				            $("#delete_popup").dialog({autoOpen: false, 
+				                                       position: "center", 
+				                                       draggable: false, 
+				                                       resizable: false,
+				                                       modal: true });
+                            $("#delete_button").click(function(){
+                                $("#delete_popup").dialog("open");
+                            });
+                            
+                            $("#delete_no").click(function(){
+                                $("#delete_popup").dialog("close");
+                            });
+                            
+                            $("#delete_yes").click(function(){
+                                data = {"id" : '.$paper->getId().'};
+                                $.post("'.$wgServer.$wgScriptPath.'/index.php?action=api.deletePaperRef", data, function(response){
+                                    addAPIMessages(response);
+                                    $("#delete_popup").dialog("close");
+                                });
+                            });
+                        });
+                    </script>');
+				}
                 
                 if($edit){
                     if($create){
@@ -629,7 +654,7 @@ class PublicationPage {
                                         <input type='hidden' name='title' value='".str_replace("'", "&#39;", $title)."' /><input type='hidden' name='product_id' value='$product_id' />");
                     }
                     else{
-                        $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/{$category}:{$product_id}?edit' method='post'>
+                        $wgOut->addHTML("<form action='{$paper->getURL()}?edit' method='post'>
                                             <input type='hidden' name='title' value='{$paper->getTitle()}' /><input type='hidden' name='product_id' value='$product_id' /><div style='font-weight:bold; font-size:14px;padding: 10px 0;'>Change Title: <input type='text' value='{$paper->getTitle()}' name='new_title' size='80' /></div>");
                     }
                 }
@@ -1055,7 +1080,12 @@ class PublicationPage {
                         $wgOut->addHTML("</form>");
                     }
                     else if( (!FROZEN || $me->isRoleAtLeast(STAFF)) ){
-                        $wgOut->addHTML("<input type='button' name='edit' value='Edit $category' onClick='document.location=\"$wgServer$wgScriptPath/index.php/$category:".$paper->getId()."?edit\";' />");
+                        $wgOut->addHTML("<div title='Delete $category?' style='white-space: pre-line;' id='delete_popup'>
+                            Are you sure you want to delete the $category <i>{$paper->getTitle()}</i>?<br />
+                            <center><button id='delete_yes'>Yes</button> <button id='delete_no'>No</button></center>
+                        </div>");
+                        $wgOut->addHTML("<br /><input type='button' name='edit' value='Edit $category' onClick='document.location=\"$wgServer$wgScriptPath/index.php/$category:".$paper->getId()."?edit\";' />");
+                        $wgOut->addHTML("&nbsp;<input type='button' name='delete' id='delete_button' value='Delete $category' />");
                     }
                 }
                 $wgOut->output();

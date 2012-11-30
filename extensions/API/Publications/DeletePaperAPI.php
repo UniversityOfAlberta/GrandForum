@@ -4,10 +4,12 @@ class DeletePaperAPI extends API{
 
     function DeletePaperAPI(){
         $this->addPOST("id",true,"The id of the paper to delete","18");
+        $this->addPOST("notify",false,"Whether or not to send out notifications",'false');
     }
 
     function processParams($params){
-        $_POST['id'] = str_replace("'", "&#39;", $_POST['id']);
+        $_POST['id'] = @str_replace("'", "&#39;", $_POST['id']);
+        $_POST['notify'] = (@str_replace("'", "&#39", $_POST['notify']) == "true");
     }
 
 	function doAction($noEcho=false){
@@ -16,8 +18,8 @@ class DeletePaperAPI extends API{
         $paper = Paper::newFromId($_POST['id']);
 		if(!$noEcho){
             if($paper == null || $paper->getTitle() == null){
-                echo "There is no paper by the id of '{$_POST['id']}'\n";
-                exit;
+                $this->addError("There is no paper by the id of '{$_POST['id']}'\n");
+                return;
             }
         }
 		if($me->isRoleAtLeast(HQP)){
@@ -26,12 +28,13 @@ class DeletePaperAPI extends API{
                                   SET `deleted` = '1'
                                   WHERE `id` = '{$paper->getId()}'", true);
             if(!$noEcho){
-                echo "Paper {$paper->getTitle()} Deleted.\n";
+                $this->addMessage("Paper <i>{$paper->getTitle()}</i> Deleted.\n");
             }
 		}
 		else {
 		    if(!$noEcho){
-			    echo "You do not have the correct permissions to delete this paper\n";
+			    $this->addError("You do not have the correct permissions to delete this paper\n");
+			    return;
 			}
 		}
 	}

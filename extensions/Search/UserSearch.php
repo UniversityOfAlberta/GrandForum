@@ -184,7 +184,6 @@ class UserSearch extends SpecialPage{
             $("#button").click(function(){
                 if($("#button").val() == "Go To User\'s Page"){
                     var page = $("select option:selected").attr("name");
-                    console.log(page);
                     if(typeof page != "undefined"){
                         document.location = "'.$wgServer.$wgScriptPath.'/index.php/" + page;
                     }

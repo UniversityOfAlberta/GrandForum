@@ -58,6 +58,7 @@ class WFAPI extends API{
 	    }
 	    $cache = new WFCache($this);
 		echo $cache->getCache();
+		exit;
 	}
 	
 	function outputXML($people){

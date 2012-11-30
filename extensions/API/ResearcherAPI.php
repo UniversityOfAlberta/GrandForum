@@ -52,6 +52,7 @@ class ResearcherAPI extends API{
 	    }
 	    $cache = new ResearcherFullCache($this);
 		echo $cache->getCache();
+		exit;
 		/*
 	    $finish = microtime(true);
 	
