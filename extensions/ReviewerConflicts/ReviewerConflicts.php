@@ -289,7 +289,7 @@ EOF;
             }
             //exit;
             if(is_null($latest_pdf) || !$latest_pdf['submitted']){
-                continue;
+            //    continue;
             }
 
             
