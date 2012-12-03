@@ -13,6 +13,10 @@ class PersonHandler extends AbstractDuplicatesHandler {
         return $people;
     }
     
+    function getArray2(){
+        return $this->getArray();
+    }
+    
     function showResult($person1, $person2){
         global $wgServer, $wgScriptPath;
         if(!$this->areIgnored($person1->getId(), $person2->getId())){

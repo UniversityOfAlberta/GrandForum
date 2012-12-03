@@ -19,6 +19,8 @@ abstract class AbstractDuplicatesHandler {
     
     abstract function getArray();
     
+    abstract function getArray2();
+    
     abstract function handleDelete();
     
     function handleIgnore(){
@@ -28,28 +30,45 @@ abstract class AbstractDuplicatesHandler {
     }
     
     function handleGet(){
+    	ini_set('max_execution_time', 60*3);
         $array = $this->getArray();
+        $array2 = $this->getArray2();
         $i = 0;
         $lastPerc = 0;
         $nResults = count($array);
         echo "<span style='display:none;' class='0'></span>";
         ob_flush();
         flush();
-        foreach($array as $obj1){
-            for($j=$i+1; $j < count($array); $j++){
-                $obj2 = $array[$j];
-                $percent = 0;
-                echo $this->showResult($obj1, $obj2);
-                ob_flush();
-                flush();
+        if($nResults > 0){
+            foreach($array as $obj1){
+                $found = false;
+                foreach($array2 as $obj2){
+                    if($obj1 != $obj2){
+                        if($found){
+                            $percent = 0;
+                            echo $this->showResult($obj1, $obj2);
+                            ob_flush();
+                            flush();
+                        }
+                    }
+                    else{
+                        $found = true;
+                    }
+                }
+                $i++;
+                if(round(($i/$nResults)*100) != $lastPerc){
+                    echo "<span style='display:none;' class='".round(($i/$nResults)*100)."'></span>";
+                    ob_flush();
+                    flush();
+                }
+                $lastPerc = round(($i/$nResults)*100);
+                $found = false;
             }
-            $i++;
-            if(round(($i/$nResults)*100) != $lastPerc){
-                echo "<span style='display:none;' class='".round(($i/$nResults)*100)."'></span>";
-                ob_flush();
-                flush();
-            }
-            $lastPerc = round(($i/$nResults)*100);
+        }
+        else{
+            echo "<span style='display:none;' class='".round((1)*100)."'></span>";
+            ob_flush();
+            flush();
         }
     }
     

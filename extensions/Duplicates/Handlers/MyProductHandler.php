@@ -1,23 +1,24 @@
 <?php
 
-$publicationHandler = new ProductHandler('publication', 'Publication');
-$publicationHandler = new ProductHandler('artifact', 'Artifact');
-$publicationHandler = new ProductHandler('activity', 'Activity');
-$publicationHandler = new ProductHandler('press', 'Press');
-$publicationHandler = new ProductHandler('award', 'Award');
-$publicationHandler = new ProductHandler('presentation', 'Presentation');
+$publicationHandler = new MyProductHandler('myPublication', 'Publication');
+$publicationHandler = new MyProductHandler('myArtifact', 'Artifact');
+$publicationHandler = new MyProductHandler('myActivity', 'Activity');
+$publicationHandler = new MyProductHandler('myPress', 'Press');
+$publicationHandler = new MyProductHandler('myAward', 'Award');
+$publicationHandler = new MyProductHandler('myPresentation', 'Presentation');
 
-class ProductHandler extends AbstractDuplicatesHandler {
+class MyProductHandler extends AbstractDuplicatesHandler {
         
     var $type;
         
-    function ProductHandler($id, $type){
+    function MyProductHandler($id, $type){
         $this->AbstractDuplicatesHandler($id);
         $this->type = $type;
     }
     
     function getArray(){
-        $papers = Paper::getAllPapers('all', $this->type, 'both');
+        $me = Person::newFromWgUser();
+        $papers = $me->getPapers($this->type, false, 'both');
         $paperArray = array();
         foreach($papers as $paper){
             $paperArray[] = $paper;
@@ -26,7 +27,12 @@ class ProductHandler extends AbstractDuplicatesHandler {
     }
     
     function getArray2(){
-        return $this->getArray();
+        $papers = Paper::getAllPapers('all', $this->type, 'both');
+        $paperArray = array();
+        foreach($papers as $paper){
+            $paperArray[] = $paper;
+        }
+        return $paperArray;
     }
     
     function showResult($paper1, $paper2){

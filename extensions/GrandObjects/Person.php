@@ -1510,8 +1510,8 @@ class Person{
     
 	
 	// Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
-	function getPapers($category="all", $history=false){
-	    $papers = Paper::getAllPapers("all", $category);
+	function getPapers($category="all", $history=false, $grand='grand'){
+	    $papers = Paper::getAllPapers("all", $category, $grand);
 	    $papersArray = array();
 	    $hqps = array();
 	    if(!$this->isRole(HQP)){
