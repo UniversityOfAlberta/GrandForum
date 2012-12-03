@@ -118,7 +118,7 @@ class ReportArchive extends SpecialPage {
         }
         else{
             showProjectReports($person, $year);
-            if($year <= 2011){
+            if($year < 2011){
                 showProjectComments($person, $year);
             }
         }
@@ -224,6 +224,7 @@ function generateHQPReportsHTML($person, $year, $preview=false, $isactivehqp=fal
         if (count($check) > 0) {
             foreach($check as $c){
                 $sto->select_report($c['token']);
+                $subm = ($c['submitted']) ? "(Submitted)" : "(Not Submitted)";
                 $tst = $sto->metadata('timestamp');
                 $tok = $sto->metadata('token');
                 break;
@@ -231,7 +232,7 @@ function generateHQPReportsHTML($person, $year, $preview=false, $isactivehqp=fal
         }
         if($tok != false){
             $wgOut->addHTML("<tr>");
-            $wgOut->addHTML("<td><a id='tok{$hqp->getId()}' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download {$hqp->getNameForForms()}'s $year Report PDF</a></td><td>(submitted <span id='tst{$hqp->getId()}'>$tst</span>)</span></td>");
+            $wgOut->addHTML("<td><a id='tok{$hqp->getId()}' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download {$hqp->getNameForForms()}'s $year Report PDF</a></td><td>(generated <span id='tst{$hqp->getId()}'>$tst</span>) $subm</span></td>");
             $noReports = false;
             $wgOut->addHTML("</tr>");
         }
@@ -278,9 +279,10 @@ function showIndividualReport($person, $year){
             }
             if (count($check) > 0) {
         		$tok = $check[0]['token'];
+        		$subm = ($check[0]['submitted']) ? "(Submitted)" : "(Not Submitted)";
         		$sto->select_report($tok);    	
         		$tst = $sto->metadata('timestamp');
-        		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (submitted $tst)<br />");
+        		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst) $subm<br />");
         	}
         	$check = array();
         	if($role->getRole() == HQP){
@@ -292,7 +294,7 @@ function showIndividualReport($person, $year){
         		$tok = $check[0]['token'];
         		$sto->select_report($tok);    	
         		$tst = $sto->metadata('timestamp');
-        		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (submitted $tst)<br />");
+        		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst)<br />");
         	}
         	$check = array();
         	if($role->getRole() == PNI || $role->getRole() == CNI){
@@ -305,7 +307,7 @@ function showIndividualReport($person, $year){
         		$tok = $check[0]['token'];
         		$sto->select_report($tok);    	
         		$tst = $sto->metadata('timestamp');
-        		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (submitted $tst)<br />");
+        		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst)<br />");
         	}
         }
     }
@@ -347,19 +349,20 @@ function showProjectReports($person, $year){
         		$tok = $plCheck[0]['token'];
         		$sto->select_report($tok);    	
         		$tst = $plCheck[0]['timestamp'];
-        		$plHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Report PDF</a></td><td>(submitted $tst)</td></tr>";
+        		$subm = ($plCheck[0]['submitted']) ? "(Submitted)" : "(Not Submitted)";
+        		$plHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Report PDF</a></td><td>(generated $tst) $subm</td></tr>";
         	}
         	if (count($commentCheck) > 0) {
         		$tok = $commentCheck[0]['token'];
         		$sto->select_report($tok);
         		$tst = $plCheck[0]['timestamp'];
-        		$commentHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Comments PDF</a></td><td>(submitted $tst)</td></tr>";
+        		$commentHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Comments PDF</a></td><td>(generated $tst)</td></tr>";
         	}
         	if (count($milestonesCheck) > 0) {
         		$tok = $milestonesCheck[0]['token'];
         		$sto->select_report($tok);
         		$tst = $plCheck[0]['timestamp'];
-        		$milestonesHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Milestones PDF</a></td><td>(submitted $tst)</td></tr>";
+        		$milestonesHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Milestones PDF</a></td><td>(generated $tst)</td></tr>";
         	}
         }
         if($plHTML != "" || $commentHTML != "" || $milestonesHTML != ""){
@@ -393,7 +396,7 @@ function showProjectComments($person, $year){
             $ls = $sto->list_project_reports($pj->getId(), 10000, 0, RPTP_LEADER_COMMENTS);
             foreach ($ls as &$row) {
                 if($row['year'] == $year){
-	                $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$row['token']}&amp;project={$pj->getName()}'>{$year} {$pj->getName()} Project Comments PDF</a> (submitted {$row['timestamp']})<br />");
+	                $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$row['token']}&amp;project={$pj->getName()}'>{$year} {$pj->getName()} Project Comments PDF</a> (generated {$row['timestamp']})<br />");
 	                $found = true;
 	                break;
 	            }
@@ -430,7 +433,7 @@ function showPLReport($person, $year){
 	            $ls = $repi->list_reports($pj);
 	            foreach ($ls as &$row) {
 	                if($row['created'] >= ($year).REPORTING_PRODUCTION_MONTH && $row['created'] <= ($year+1).REPORTING_PRODUCTION_MONTH){
-		                $wgOut->addHTML("<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$row['token']}&amp;project={$pj->getName()}'>{$year} {$pj->getName()} Project Summary</a></td><td>(submitted {$row['created']})</td></tr>");
+		                $wgOut->addHTML("<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$row['token']}&amp;project={$pj->getName()}'>{$year} {$pj->getName()} Project Summary</a></td><td>(generated {$row['created']})</td></tr>");
 		            }
 	            }
 	            if(count($ls) > 0){
@@ -477,7 +480,7 @@ function showPLReport($person, $year){
 	            $tok = $sto->select_report($tok);
 		        foreach($projs as $project){
 		            if($project->getId() == $proj){
-		                $wgOut->addHTML("<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download archived {$year} {$project->getName()} $type Report PDF</a></td><td> (submitted by {$p->getNameForForms()} on $tst)</td></tr>");
+		                $wgOut->addHTML("<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download archived {$year} {$project->getName()} $type Report PDF</a></td><td> (generated by {$p->getNameForForms()} on $tst)</td></tr>");
 		                $found = true;
 		                break;
 		            }
