@@ -86,7 +86,17 @@ class ReviewerConflicts extends SpecialPage {
                         $conflict = 0;
                     }
 
-                    $sql = "INSERT INTO grand_reviewer_conflicts(reviewer_id, reviewee_id, conflict) VALUES('{$reviewer_id}', '{$reviewee_id}', '$conflict' ) ON DUPLICATE KEY UPDATE conflict='{$conflict}'";
+                    if(isset($_POST['user_conflict_'.$reviewee_id]) && $_POST['user_conflict_'.$reviewee_id]){
+                        $user_conflict = 1;
+                    }
+                    else{
+                        $user_conflict = 0;
+                    }
+
+                    $sql = "INSERT INTO grand_reviewer_conflicts(reviewer_id, reviewee_id, conflict, user_conflict) 
+                            VALUES('{$reviewer_id}', '{$reviewee_id}', '$conflict', '$user_conflict' ) 
+                            ON DUPLICATE KEY UPDATE conflict='{$conflict}', user_conflict='{$user_conflict}'";
+
                     $data = DBFunctions::execSQL($sql, true);
                 }
 
@@ -249,22 +259,20 @@ EOF;
 
         <div id='div_new_connections'>
         
-        <strong>Search:</strong> <input title='You can search by Name, Organization or Projects' style='width:73%;' id='search_{$type}' type='text' onKeyUp='filterResults{$type}(this.value);' />
+        <strong>Search:</strong> <input title='You can search by Name, Organization or Projects' style='width:82%;' id='search_{$type}' type='text' onKeyUp='filterResults{$type}(this.value);' />
         <div style='padding:2px;'></div>
         <form id='submitForm' action='$wgServer$wgScriptPath/index.php/Special:ReviewerConflicts' method='post'>
-        <table width='850' id='{$type}_conflicts' class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
+        <table width='950' id='{$type}_conflicts' class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
         <thead>
         <tr bgcolor='#F2F2F2'>
-        <th width='40%' name="search_lastname_header">Name</th>
-        <th width='15%' name="search_firstname_header" title=''>Work With</th>
-        <th width='15%' name="search_firstname_header" title=''>Same Organization</th>
-        <th width='15%' name="search_projects_header" title=''>Same Projects</th>
-        <th width='15%' name="search_university_header" title=''>Co-authorship</th>
-        <th width='15%' name="search_university_header" title=''>Co-supervision</th>
-        <th width='15%' class='sorter-false' title=''>
-            Conflict? <!--input type='checkbox' name="search_selectall_checkbox" onchange="toggleChecked(this.checked, '#new_connections tbody tr:visible input.search_conn_chkbox');" /-->
-            
-        </th>
+        <th width='25%' name="search_lastname_header">Name</th>
+        <th width='10%' name="search_firstname_header" title=''>Work With</th>
+        <th width='10%' name="search_firstname_header" title=''>Same Organization</th>
+        <th width='10%' name="search_projects_header" title=''>Same Projects</th>
+        <th width='10%' name="search_university_header" title=''>Co-authorship</th>
+        <th width='10%' name="search_university_header" title=''>Co-supervision</th>
+        <th width='10%' class='sorter-false' title=''>Conflict Found</th>
+        <th width='15%' class='sorter-false' title=''>Do you think there is a conflict?</th>
         </tr>
         </thead>
         <tbody>
@@ -303,7 +311,7 @@ EOF;
 
         $conflicts = array();
         foreach($data as $row){
-            $conflicts["'".$row['reviewee_id']."'"] = $row['conflict'];
+            $conflicts["'".$row['reviewee_id']."'"] = $row['user_conflict'];
         }
 
         //print_r($conflicts);
@@ -394,28 +402,31 @@ EOF;
 	        		break;
 	        	}
 	        }
-            
-            $bgcolor = "#FFFFFF";
-            $checked = "";
-            $disabled = "";
-          	if($works_with == "Yes" || $same_organization == "Yes" || $same_projects == "Yes" || $co_authorship == "Yes" || $co_supervision == "Yes"){
-          		$bgcolor = "#DD3333";
-          		$checked = "checked='checked'";
-                $disabled = "class='conflict_found'";
-          	}
-            
+
+
             $row_id = $person->getName();
             $reviewee_id = $person->getId();
 
-            $saved_conflict = 0;
-            //echo $conflicts["'".$reviewee_id."'"]."<br>";
+            $bgcolor = "#FFFFFF";
+            $conflict_checked = 0;
+            $user_conflict_checked = "";
+            $conflict_found = "No";
+          	if($works_with == "Yes" || $same_organization == "Yes" || $same_projects == "Yes" || $co_authorship == "Yes" || $co_supervision == "Yes"){
+          		$bgcolor = "#DD3333";
+          		$conflict_checked = 1;
+                $conflict_found = "Yes";
+                $user_conflict_checked = "checked='checked'";
+          	}
+
+            
             if(isset($conflicts["'".$reviewee_id."'"])) {
-                if($conflicts["'".$reviewee_id."'"]){
-                    $checked = "checked='checked'";
-                }
-                else{
-                    $checked = 0;
-                }
+                //if($conflicts["'".$reviewee_id."'"]){
+                //    $conflict_checked = "checked='checked'";
+                //}
+                
+                $user_conflict_checked = ($conflicts["'".$reviewee_id."'"])? "checked='checked'" : "";
+            
+                
             }
 
 
@@ -427,10 +438,10 @@ EOF;
                 <td class=''>{$same_projects}</td>
                 <td class=''>{$co_authorship}</td>
                 <td class=''>{$co_supervision}</td>
+                <td>{$conflict_found}<input type="hidden" name="conflict_{$reviewee_id}" value="{$conflict_checked}" /></td> 
                 <td align='center'>
-
                 <input type="hidden" name="reviewee_id[]" value="{$reviewee_id}" />
-                <input type="checkbox" name="conflict_{$reviewee_id}" {$checked} {$disabled} />
+                <input type="checkbox" name="user_conflict_{$reviewee_id}" {$user_conflict_checked} />
                 </td>
             </tr>
 EOF;
