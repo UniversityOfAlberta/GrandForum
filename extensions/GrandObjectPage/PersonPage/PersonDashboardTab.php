@@ -12,7 +12,6 @@ class PersonDashboardTab extends AbstractTab {
     }
 
     function generateBody(){
-        //$this->showProducts($this->person, $this->visibility);
         $this->showDashboard($this->person, $this->visibility);
         return $this->html;
     }

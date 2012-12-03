@@ -536,14 +536,14 @@ class cavendishTemplate extends QuickTemplate {
 			<ul class='pBody' style='background:#F3EBF5'>";
 		    $me = Person::newFromId($wgUser->getId());
 		    echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:UserSearch'>Find Member</a></li>";
-		    if($me->isRoleAtLeast(CNI)){    
+		    if($me->isRoleAtLeast(CNI)){
 		        echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:AddMember'>Add Member</a></li>";
 		        echo "<li id='userEditRequest'><a href='{$wgScriptPath}/index.php/Special:EditMember'>Edit Member</a></li>";
 		        echo "<li id='userEditRelation'><a href='{$wgScriptPath}/index.php/Special:EditRelations'>Edit Relations</a></li>";
 		    }
 		    echo "</ul>";
 		    echo "<span>Products</span>
-			<ul class='pBody' style='background:#F3EBF5'>";
+				<ul class='pBody' style='background:#F3EBF5'>";
 		    echo "<li id='addPublication'><a href='{$wgScriptPath}/index.php/Special:AddPublicationPage'>Add/Edit Publication</a></li>";
 		    echo "<li id='addArtifact'><a href='{$wgScriptPath}/index.php/Special:AddArtifactPage'>Add/Edit Artifact</a></li>";
 		    echo "<li id='addPresentation'><a href='{$wgScriptPath}/index.php/Special:AddPresentationPage'>Add/Edit Presentation</a></li>";
@@ -555,8 +555,12 @@ class cavendishTemplate extends QuickTemplate {
 			}
 			echo "<li id='addMultimedia'><a href='{$wgScriptPath}/index.php/Special:AddMultimediaStoryPage'>Add/Edit Multimedia Story</a></li>";
 			echo "</ul>";
+			echo "<span style='padding-top: 2px; padding-bottom: 2px;'></span>
+				<ul class='pBody' style='background:#F3EBF5'>";
+			echo "<li id='addMultimedia'><a href='{$wgScriptPath}/index.php/Special:MyDuplicateProducts'>Manage Duplicate Products</a></li>";
+			echo "</ul>";
 		    echo "<span>Other</span>
-			<ul class='pBody' style='background:#F3EBF5'>";
+				<ul class='pBody' style='background:#F3EBF5'>";
 			echo "<li id='messageBoard'><a href='{$wgScriptPath}/index.php/GRAND:Instructions'>Instructions</a></li>";
 			echo "<li id='messageBoard'><a href='{$wgScriptPath}/index.php/Special:Postings'>Message Board</a></li>";
 			echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php?action=getNews'>Recent News</a></li>";
