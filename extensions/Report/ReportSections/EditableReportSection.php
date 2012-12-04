@@ -41,6 +41,9 @@ class EditableReportSection extends AbstractReportSection {
             return;
         }
         $action = $wgTitle->getFullUrl()."?report=".urlencode($this->getParent()->xmlName)."&section=".urlencode($this->name)."&showSection";
+        if($this->getParent()->project != null){
+            $action .= "&project=".urlencode($this->getParent()->project->getName());
+        }
         $autosave = " class='noautosave'";
         if($this->autosave && $this->checkPermission('w')){
             $autosave = " class='autosave'";

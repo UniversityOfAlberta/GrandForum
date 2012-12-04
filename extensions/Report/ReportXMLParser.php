@@ -331,7 +331,7 @@ class ReportXMLParser {
         $children = $node->children();
         $itemset = $section->getReportItemById("{$attributes->id}");
         if($itemset != null){
-            $itemset->count = count($itemset->items)/count($itemset->getData());
+            $itemset->count = count($itemset->items)/max(1, count($itemset->getData()));
             $itemset->iteration = 0;
         }
         if(isset($attributes->type)){
