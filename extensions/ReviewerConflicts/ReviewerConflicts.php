@@ -322,6 +322,7 @@ EOF;
             }
 
             //Check if they have submitted their report
+            /*
             $sto = new ReportStorage($person);
             $rep_year = REPORTING_YEAR;
             $check = $sto->list_reports($person->getId(), SUBM, 1000, 0, 0);
@@ -346,7 +347,7 @@ EOF;
             if(is_null($latest_pdf) || !$latest_pdf['submitted']){
                 continue;
             }
-
+            */
             
 
             //Name
