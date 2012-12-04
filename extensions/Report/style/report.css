@@ -132,6 +132,8 @@
     display: table-cell;
     overflow: hidden;
     vertical-align:top;
+    min-height:600px;
+    height:600px;
 }
 
 #reportMain > div {
@@ -141,6 +143,8 @@
     height:100%;
     position:relative;
     margin-left:1px;
+    min-height:600px;
+    height:600px;
 }
 
 #reportMain > div > div {

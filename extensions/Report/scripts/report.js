@@ -121,7 +121,7 @@ function toggleFullscreen(){
     }
     else{
         var paddingHeight = parseInt($('#reportMain > div > div').css('padding-top')) + parseInt($('#reportMain > div > div').css('padding-bottom'));
-        var height = $('#outerReport #reportMain > div > div').height() + paddingHeight;
+        var height = Math.max(parseInt($('#outerReport').css('min-height')), $('#outerReport #reportMain > div > div').height()) + paddingHeight;
         bottom = $(window).height() - height - 14 - top;
         $('#bodyContent').toggleClass('bodyContentCustom');
         $('#bodyContent').css('position', 'absolute');
