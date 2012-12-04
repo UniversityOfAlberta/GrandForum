@@ -382,7 +382,7 @@ class cavendishTemplate extends QuickTemplate {
 					    ReportArchive::createTab();
 					}
 					    Report::createTab();
-					if($p->isEvaluator()){
+					if($p->isUnassignedEvaluator()){
 						ReviewerConflicts::createTab();
 					}
 					if(!$user->isRoleAtLeast(MANAGER)){
