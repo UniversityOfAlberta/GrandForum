@@ -9,6 +9,7 @@ abstract class AbstractReportSection {
     var $name;
     var $sec;
     var $items;
+    var $attributes;
     var $selected;
     var $renderPDF;
     var $previewOnly;
@@ -28,6 +29,7 @@ abstract class AbstractReportSection {
         $this->tooltip = "";
         $this->sec = SEC_NONE;
         $this->items = array();
+        $this->attributes = array();
         $this->selected = false;
         $this->renderPDF = true;
         $this->previewOnly = false;
@@ -37,6 +39,20 @@ abstract class AbstractReportSection {
         $this->personId = 0;
         $this->projectId = 0;
         $this->reportCallback = new ReportItemCallback($this);
+    }
+    
+    function setAttribute($key, $value){
+        $this->attributes[$key] = $value;
+    }
+    
+    function getAttr($attr, $default="", $varSubstitute=true){
+        if($varSubstitute){
+            $value = (isset($this->attributes[$attr])) ? $this->varSubstitute($this->attributes[$attr]) : $default;
+        }
+        else{
+            $value = (isset($this->attributes[$attr])) ? $this->attributes[$attr] : $default;
+        }
+        return "$value";
     }
     
     function getParent(){
@@ -170,6 +186,11 @@ abstract class AbstractReportSection {
     // Sets the Instructions for this AbstractReportSection
     function setInstructions($instructions){
         $this->instructions = $instructions;
+    }
+    
+    // Returns the instructions for this AbstractReportSection
+    function getInstructions(){
+        return $this->instructions;
     }
     
     // Sets the parent AbstractReport for this AbstractReportSection

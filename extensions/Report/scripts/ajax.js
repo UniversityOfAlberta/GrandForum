@@ -1,3 +1,5 @@
+var currentSectionHref = "";
+
 $(document).ready(function(){
     var animationTime = 250;
     var animationEasingOut = 'easeInQuad';
@@ -9,6 +11,9 @@ $(document).ready(function(){
     
     $.each($("a.reportTab"), function(index, val){
         var href = $(this).attr('href');
+        if($(this).hasClass('selectedReportTab')){
+            currentSectionHref = href;
+        }
         $(this).removeAttr('href');
         
         $(this).click(function(){
@@ -78,6 +83,7 @@ $(document).ready(function(){
                     return;
                 }
                 ajaxSection = $.get(href + '&showSection', function(response){
+                    currentSectionHref = href;
                     $(that).children("img").remove();
                     $("#reportMain > div").stop();
                     $("#reportMain > div").html(response);

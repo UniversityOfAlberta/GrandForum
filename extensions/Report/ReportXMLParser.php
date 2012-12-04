@@ -235,6 +235,9 @@ class ReportXMLParser {
                     }
                     $section = new $type();
                     $position = isset($attributes->position) ? "{$attributes->position}" : null;
+                    foreach($attributes as $key => $value){
+		            	$section->setAttribute("{$key}", "{$value}");
+		            }
                     $this->report->addSection($section, $position);
                 }
                 else{
