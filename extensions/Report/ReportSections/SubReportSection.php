@@ -13,6 +13,10 @@ class SubReportSection extends AbstractReportSection {
     function setParent($report){
         $me = Person::newFromWgUser();
         $this->parent = $report;
+        if($this->getParent()->xmlName == $this->getAttr('reportType')){
+            // Prevent infinite recursion
+            return;
+        }
         $this->subReport = new DummyReport($this->getAttr('reportType'), 
                                            $me, 
                                            $this->getParent()->project,
@@ -23,19 +27,28 @@ class SubReportSection extends AbstractReportSection {
     }
     
     function render(){
-        $this->subReport->currentSection->render();
+        if($this->subReport != null){
+            $this->subReport->currentSection->render();
+        }
     }
     
     function renderForPDF(){
-        $this->subReport->renderForPDF();
+        if($this->subReport != null){
+            $this->subReport->renderForPDF();
+        }
     }
     
     function renderTab(){
-        $this->subReport->renderTabs();
+        if($this->subReport != null){
+            $this->subReport->renderTabs();
+        }
     }
     
     function getInstructions(){
-        return $this->subReport->currentSection->getInstructions();
+        if($this->subReport != null){
+            return $this->subReport->currentSection->getInstructions();
+        }
+        return "";
     }
 }
 
