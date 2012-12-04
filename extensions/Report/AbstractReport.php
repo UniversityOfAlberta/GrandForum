@@ -159,7 +159,7 @@ abstract class AbstractReport extends SpecialPage {
             
             $currentSection = @$_GET['section'];
             foreach($this->sections as $section){
-                if($section->name == $currentSection){
+                if($section->name == $currentSection && $currentSection != ""){
                     $this->currentSection = $section;
                     break;
                 }
@@ -177,10 +177,10 @@ abstract class AbstractReport extends SpecialPage {
                         $permissions = $this->getSectionPermissions($this->sections[$i]);
                     }
                 }
+                
                 $this->currentSection = @$this->sections[$i];
             }
             $this->currentSection->selected = true;
-            
             wfLoadExtensionMessages("Report");
             SpecialPage::SpecialPage("Report", HQP.'+', true);
         }
@@ -225,7 +225,7 @@ abstract class AbstractReport extends SpecialPage {
             }
             else if(isset($_GET['showInstructions'])){
                 session_write_close();
-                echo $this->currentSection->instructions;
+                echo $this->currentSection->getInstructions();
                 exit;
             }
             else if(isset($_GET['getProgress'])){
@@ -397,6 +397,16 @@ abstract class AbstractReport extends SpecialPage {
             }
         }
         return null;
+    }
+    
+    // Returns whether or not this AbstractReport has a section of type SubReportSection
+    function hasSubReport(){
+        foreach($this->sections as $section){
+            if(get_class($section) == "SubReportSection"){
+                return true;
+            }
+        }
+        return false;
     }
     
     // Adds a new Permission to this Report
@@ -626,20 +636,11 @@ abstract class AbstractReport extends SpecialPage {
         $wgOut->addHTML("<div id='outerReport'>
                             <div class='displayTableCell'><div id='aboveTabs'></div>
                                 <div id='reportTabs'>\n");
-        foreach($this->sections as $section){
-            $permissions = $this->getSectionPermissions($section);
-            if(!isset($permissions['r'])){
-                continue;
-            }
-            if($this->topProjectOnly && $section->private){
-                continue;
-            }
-            $section->renderTab();
-        }
+        $this->renderTabs();
         $wgOut->addHTML("<div id='autosaveDiv'><span style='float:left;width:100%;text-align:left'><span style='float:right;' class='autosaveSpan'></span></span></div>
                             <div id='optionsDiv'>");
         $this->renderOptions();
-        if($this->extends == ""){
+        if($this->extends == "" && !$this->hasSubReport()){
             $this->renderBackup();  
         }
         $wgOut->addHTML("</div></div>
@@ -653,12 +654,25 @@ abstract class AbstractReport extends SpecialPage {
         $wgOut->addHTML("   <div id='instructionsToggle'>.<br />.<br />.</div>\n");
         $wgOut->addHTML("   <div id='reportInstructions' class='displayTableCell'><div><div>
                                 <span id='instructionsHeader'>Instructions</span>
-                                {$this->currentSection->instructions}
+                                {$this->currentSection->getInstructions()}
                             </div></div></div>\n");
         $wgOut->addHTML("</div>\n");
         $wgOut->addHTML("<script type='text/javascript'>
             autosaveDiv = $('.autosaveSpan');
         </script>");
+    }
+    
+    function renderTabs(){
+        foreach($this->sections as $section){
+            $permissions = $this->getSectionPermissions($section);
+            if(!isset($permissions['r'])){
+                continue;
+            }
+            if($this->topProjectOnly && $section->private){
+                continue;
+            }
+            $section->renderTab();
+        }
     }
     
     function renderOptions(){

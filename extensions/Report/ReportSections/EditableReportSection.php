@@ -34,13 +34,16 @@ class EditableReportSection extends AbstractReportSection {
     }
     
     function render(){
-        global $wgOut, $wgServer, $wgScriptPath;
+        global $wgOut, $wgServer, $wgScriptPath, $wgTitle;
         if(!$this->checkPermission('r')){
             // User cannot view section
             $wgOut->addHTML("<div><div id='reportHeader'>Permission Error</div><hr /><div id='reportBody'>You are not permitted to view this section</div></div>");
             return;
         }
-        $action = $_SERVER["REQUEST_URI"];
+        $action = $wgTitle->getFullUrl()."?report=".urlencode($this->getParent()->xmlName)."&section=".urlencode($this->name)."&showSection";
+        if($this->getParent()->project != null){
+            $action .= "&project=".urlencode($this->getParent()->project->getName());
+        }
         $autosave = " class='noautosave'";
         if($this->autosave && $this->checkPermission('w')){
             $autosave = " class='autosave'";
