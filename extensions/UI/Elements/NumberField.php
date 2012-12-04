@@ -1,10 +1,10 @@
 <?php
 
-class NumberField extends UIElement {
+class NumberField extends TextField {
     
-    function NumberField($name, $value, $size=5, $validations=VALIDATE_NOTHING){
-        parent::UIElement($name, $value, $validations + VALIDATE_IS_NUMBER);
-        $this->size = $size;
+    function NumberField($id, $name, $value, $validations=VALIDATE_NOTHING){
+        parent::TextField($id, $name, $value, $validations + VALIDATE_NUMBER);
+        $this->attr('size', 5);
     }
     
 }

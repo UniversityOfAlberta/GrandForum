@@ -35,6 +35,9 @@ abstract class PublicationCell extends DashboardCell {
                     case "Rejected":
                         $newValues[8+$extra][$type][$value][] = $item;
                         break;
+                    default:
+                        $newValues[10+$extra][$type][$value][] = $item;
+                        break;
                 }
             }
         }

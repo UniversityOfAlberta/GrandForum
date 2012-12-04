@@ -62,6 +62,7 @@ class ResearcherEmailAPI extends API{
 	    }
 	    $cache = new ResearcherEmailCache($this);
 		echo $cache->getCache();
+		exit;
 	}
 	
 	function outputXML($people){

@@ -7,7 +7,7 @@ class FormTableRow extends UIElementArray {
     }
     
     function render(){
-        $html = "\n<tr>";
+        $html = "\n<tr {$this->renderAttr()}>";
         foreach($this->elements as $element){
             if($element instanceof Label){
                 $html .= "<td style='vertical-align:top;'>".$element->render()."</td>";

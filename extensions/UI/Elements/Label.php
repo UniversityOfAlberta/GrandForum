@@ -2,8 +2,9 @@
 
 class Label extends UIElement {
     
-    function Label($id, $name, $value, $validations=0){
+    function Label($id, $name, $value, $validations=VALIDATE_NOTHING){
         parent::UIElement($id, $name, $value, $validations);
+        $this->attr('class', 'label tooltip');
     }
     
     function render(){
@@ -11,9 +12,8 @@ class Label extends UIElement {
         if($this->isValidationSet(VALIDATE_NOT_NULL)){
             $redStar = "<span style='color:red;'>*</span>";
         }
-        return "<div id='{$this->id}' class='label tooltip' title='{$this->value}'>{$this->name}{$redStar}:</div>";
+        return "<div id='{$this->id}' {$this->renderAttr()} title='{$this->value}'>{$this->name}:<sup>{$redStar}</sup></div>";
     }
 }
-
 
 ?>

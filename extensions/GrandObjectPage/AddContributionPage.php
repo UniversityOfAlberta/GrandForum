@@ -33,7 +33,6 @@ function generateContributionScript($category){
 		                                if(phrase != ''){
 		                                    phrase = phrase.replace(/'/g, ' ');
 		                                    lastCall = $.get('$wgServer$wgScriptPath/index.php?action=contributionSearch&phrase=' + phrase + '&category={$category}', function(data) {
-		                                        console.log('hello');
 		                                        $('#suggestions').html('');
 		                                        var html = '';
 		                                        if(data.length > 0){

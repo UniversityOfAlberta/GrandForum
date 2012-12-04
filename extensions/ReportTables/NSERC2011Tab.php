@@ -275,7 +275,6 @@ EOF;
         global $wgOut;
         $wgOut->addScript("<script type='text/javascript'>
             function showHideTable(id){
-                console.log(id);
                 $('#' + id).toggle();
             }
         </script>");

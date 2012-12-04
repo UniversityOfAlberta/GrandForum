@@ -5,6 +5,7 @@ $publicationHandler = new ProductHandler('artifact', 'Artifact');
 $publicationHandler = new ProductHandler('activity', 'Activity');
 $publicationHandler = new ProductHandler('press', 'Press');
 $publicationHandler = new ProductHandler('award', 'Award');
+$publicationHandler = new ProductHandler('presentation', 'Presentation');
 
 class ProductHandler extends AbstractDuplicatesHandler {
         
@@ -16,12 +17,16 @@ class ProductHandler extends AbstractDuplicatesHandler {
     }
     
     function getArray(){
-        $papers = Paper::getAllPapers('all', $this->type);
+        $papers = Paper::getAllPapers('all', $this->type, 'both');
         $paperArray = array();
         foreach($papers as $paper){
             $paperArray[] = $paper;
         }
         return $paperArray;
+    }
+    
+    function getArray2(){
+        return $this->getArray();
     }
     
     function showResult($paper1, $paper2){

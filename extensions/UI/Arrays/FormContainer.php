@@ -7,7 +7,7 @@ class FormContainer extends UIElementArray {
     }
     
     function render(){
-        $html = "<div>";
+        $html = "<div {$this->renderAttr()}>";
         foreach($this->elements as $element){
             $html .= $element->render();
         }

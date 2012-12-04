@@ -45,6 +45,7 @@ class ProjectAPI extends API{
 	    }
 	    $cache = new ProjectFullCache($this);
 		echo $cache->getCache();
+		exit;
 	}
 	
 	function outputXML($projects){

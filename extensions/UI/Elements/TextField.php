@@ -2,15 +2,13 @@
 
 class TextField extends UIElement {
     
-    var $size;
-    
-    function TextField($id, $name, $value, $size=40, $validations=VALIDATE_NOTHING){
+    function TextField($id, $name, $value, $validations=VALIDATE_NOTHING){
         parent::UIElement($id, $name, $value, $validations);
-        $this->size = $size;
+        $this->attr('size', 40);
     }
     
     function render(){
-        return "<input type='text' size='{$this->size}' name='{$this->id}' value='{$this->value}' />";
+        return "<input type='text' {$this->renderAttr()} name='{$this->id}' value='{$this->value}' />";
     }
     
 }

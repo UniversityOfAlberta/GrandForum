@@ -49,7 +49,7 @@ class ContributionPage {
                         if(isset($_POST['researchers'])){
                             $researchers = array();
                             foreach(array_unique($_POST['researchers']) as $researcher){
-                                 $person = Person::newFromName(str_replace(" ", ".", $researcher));
+                                 $person = Person::newFromNameLike(str_replace(" ", ".", $researcher));
                                  if($person != null && $person->getName() != null){
                                     $researchers[] = $person->getId();
                                  }
@@ -296,7 +296,7 @@ class ContributionPage {
                         if(!$create){
                             foreach($people as $person){
                                 if($person instanceof Person){
-                                    $personNames[] = $person->getName();
+                                    $personNames[] = $person->getNameForForms();
                                 }
                                 else{
                                     $personNames[] = $person;
@@ -310,10 +310,10 @@ class ContributionPage {
                             }
                             $allPeople = Person::getAllPeople('all');
                             foreach($allPeople as $person){
-                                if(array_search($person->getName(), $personNames) === false &&
-                                   $person->getName() != "WikiSysop" &&
+                                if(array_search($person->getNameForForms(), $personNames) === false &&
+                                   $person->getNameForForms() != "WikiSysop" &&
                                    $person->isRoleAtLeast(CNI)){
-                                    $list[] = $person->getName();
+                                    $list[] = $person->getNameForForms();
                                 }
                             }
                             $wgOut->addHTML("<div class='switcheroo' name='Researcher' id='researchers'>

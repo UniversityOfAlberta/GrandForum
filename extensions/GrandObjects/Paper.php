@@ -27,8 +27,7 @@ class Paper{
 	    }
 		$sql = "SELECT *
 			    FROM grand_products
-			    WHERE id = '$id'
-			    AND deleted != '1'";
+			    WHERE id = '$id'";
 		$data = DBFunctions::execSQL($sql);
 		$paper = new Paper($data);
         self::$cache[$paper->id] = &$paper;
@@ -47,8 +46,7 @@ class Paper{
 			    FROM grand_products
 			    WHERE (title = '$title' OR
 			           title = '".str_replace(" ", "_", $title)."')
-				AND category LIKE '$category'
-			    AND deleted != '1'";
+				AND category LIKE '$category'";
 		$data = DBFunctions::execSQL($sql);
 		$paper = new Paper($data);
         self::$cache[$paper->id] = &$paper;

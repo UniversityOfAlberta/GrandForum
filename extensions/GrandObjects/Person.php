@@ -54,7 +54,7 @@ class Person{
 	
 	// Returns a new Person from the given name
 	static function newFromName($name){
-	    $name = str_replace(" ", ".", $name);
+	    $name = str_replace(' ', '.', $name);
 	    if(isset(Person::$cache[$name])){
 	        return Person::$cache[$name];
 	    }
@@ -67,6 +67,21 @@ class Person{
         self::$cache[$person->id] = &$person;
         self::$cache[$person->name] = &$person;
 		return $person;
+	}
+	
+	// Returns a new Person from the given email (null if not found)
+	// In the event of a collision, the first user is returned
+	static function newFromEmail($email){
+	    $sql = "SELECT user_id
+	            FROM mw_user
+	            WHERE user_email = '$email'";
+	    $data = DBFunctions::execSQL($sql);
+	    if(count($data) > 0){
+	        return Person::newFromId($data[0]['user_id']);
+	    }
+	    else{
+	        return null;
+	    }
 	}
 	
 	// Creates a new Person from the given Mediawiki User
@@ -82,6 +97,7 @@ class Person{
 	
 	// Returns a new Person from the given name
 	static function newFromNameLike($name){
+	    global $wgSitename;
 	    $name = str_replace(".", ".*", $name);
         $name = str_replace(" ", ".*", $name);
 	    if(isset(Person::$cache[$name])){
@@ -89,10 +105,17 @@ class Person{
 	    }
 	    self::generateNamesCache();
 		$data = array();
-		
-		$possibleNames = preg_grep("/.*$name.*/i", array_keys(self::$namesCache));
+		if(apc_exists($wgSitename.'person_name'.$name)){
+		    $possibleNames = unserialize(apc_fetch($wgSitename.'person_name'.$name));
+		}
+		else{
+		    $possibleNames = preg_grep("/.*$name.*/i", array_keys(self::$namesCache));
+		    apc_store($wgSitename.'person_name'.$name, serialize($possibleNames), 60*60);
+		}
 		foreach($possibleNames as $possible){
-		    $data[] = self::$namesCache[$possible];
+		    if(isset(self::$namesCache[$possible])){
+		        $data[] = self::$namesCache[$possible];
+		    }
 		}
 		$person = new Person($data);
 		if(isset(self::$cache[$person->id]) && $person->id != ""){
@@ -184,6 +207,9 @@ class Person{
 		    foreach($data as $row){
 		        self::$namesCache[$row['user_name']] = $row;
 		        self::$idsCache[$row['user_id']] = $row;
+		        if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
+		            self::$namesCache[str_replace("&nbsp;", " ", $row['user_real_name'])] = $row;
+		        }
 		    }
 		}
 	}
@@ -516,19 +542,28 @@ class Person{
 	
 	// Returns an array of the name in the form ["first", "last"]
 	function splitName(){
-        $names = explode(".", $this->name, 2);
-        $lastname = "";
-        if(count($names) > 1){
-            $lastname = str_ireplace(".", " ", $names[1]);
+        if(!empty($this->realname)){
+            $names = explode(" ", $this->realname);
+            $lastname = ucfirst($names[count($names)-1]);
+            unset($names[count($names)-1]);
+            $firstname = implode(" ", $names);
         }
-        else if(strstr($names[0], " ") != false){
-        // Some names do not follow the First.Last convention, so we need to do some extra work
-            $names = explode(" ", $this->name, 2);
-            if(count($names > 1)){
-                $lastname = $names[1];
+        else{
+            $names = explode(".", $this->name, 2);
+            $lastname = "";
+            if(count($names) > 1){
+                $lastname = str_ireplace(".", " ", $names[1]);
             }
+            else if(strstr($names[0], " ") != false){
+            // Some names do not follow the First.Last convention, so we need to do some extra work
+                $names = explode(" ", $this->name, 2);
+                if(count($names > 1)){
+                    $lastname = $names[1];
+                }
+            }
+            $firstname = $names[0];
         }
-        return array("first" => $names[0], "last" => $lastname);
+        return array("first" => str_replace("&nbsp;", " ", ucfirst($firstname)), "last" => str_replace("&nbsp;", " ", ucfirst($lastname)));
 	}
 	
 	function getFirstName(){
@@ -555,9 +590,9 @@ class Person{
 	// Returns a name usable in forms.
 	function getNameForForms($sep = ' ') {
 		if (!empty($this->realname))
-			return $this->realname;
+			return str_replace("&nbsp;", " ", ucfirst($this->realname));
 		else
-			return str_replace('.', $sep, $this->name);
+			return str_replace("&nbsp;", " ", str_replace('.', $sep, $this->name));
 	}
 	
 	// Returns the user's profile.
@@ -1475,8 +1510,8 @@ class Person{
     
 	
 	// Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
-	function getPapers($category="all", $history=false){
-	    $papers = Paper::getAllPapers("all", $category);
+	function getPapers($category="all", $history=false, $grand='grand'){
+	    $papers = Paper::getAllPapers("all", $category, $grand);
 	    $papersArray = array();
 	    $hqps = array();
 	    if(!$this->isRole(HQP)){
@@ -1485,10 +1520,12 @@ class Person{
             }
         }
 	    foreach($papers as $paper){
-            foreach($paper->getAuthors() as $author){
-                if($author->getName() == $this->name || array_search($author->getName(), $hqps) !== false){
-                    $papersArray[] = $paper;
-                    break;
+	        if(!$paper->deleted){
+                foreach($paper->getAuthors() as $author){
+                    if($author->getName() == $this->name || array_search($author->getName(), $hqps) !== false){
+                        $papersArray[] = $paper;
+                        break;
+                    }
                 }
             }
 	    }
@@ -1507,10 +1544,12 @@ class Person{
             }
         }
         foreach($papers as $paper){
-            foreach($paper->getAuthors() as $author){
-                if($author->getName() == $this->name || array_search($author->getName(), $hqps) !== false){
-                    $papersArray[] = $paper;
-                    break;
+            if(!$paper->deleted){
+                foreach($paper->getAuthors() as $author){
+                    if($author->getName() == $this->name || array_search($author->getName(), $hqps) !== false){
+                        $papersArray[] = $paper;
+                        break;
+                    }
                 }
             }
         }

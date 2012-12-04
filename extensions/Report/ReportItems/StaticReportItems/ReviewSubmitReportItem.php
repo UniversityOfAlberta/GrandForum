@@ -119,12 +119,13 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		                });
 		            }
 		        });
-		        
-		        function clickButton(button){
-	                $('#pdf_download_frame').attr('src',  '{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf=' + button.name);
-	            }
 		    </script>");
 		}
+		$wgOut->addHTML("<script type='text/javascript'>
+		    function clickButton(button){
+                $('#pdf_download_frame').attr('src',  '{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf=' + button.name);
+            }
+		</script>");
 		$disabled = "";
 		if($wgImpersonating && !checkSupervisesImpersonee()){
 		    $disabled = "disabled='true'";

@@ -16,7 +16,7 @@ class InactivateProjectTab extends ProjectTab {
         
         $projRow = new FormTableRow("delete_project_row");
         $projRow->append(new Label("delete_project_label", "Project", "Which project to evolve", VALIDATE_NOT_NULL));
-        $projRow->append(new SelectBox("delete_project", "Project", "NO PROJECT", $projectNames, VALIDATE_NOT_NULL + VALIDATE_IS_PROJECT));
+        $projRow->append(new SelectBox("delete_project", "Project", "NO PROJECT", $projectNames, VALIDATE_NOT_NULL + VALIDATE_PROJECT));
         
         $create = CreateProjectTab::createForm('delete');
         
@@ -43,24 +43,23 @@ class InactivateProjectTab extends ProjectTab {
     
     function handleEdit(){
         global $wgMessages;
-        
         $form = self::createForm();
-        $errors = $form->validate();
-        
-        if(count($errors) == 0){
+        $status = $form->validate();
+        if($status){
             // Call the API
             $form->getElementById("delete_project")->setPOST("project");
             $form->getElementById("delete_effective")->setPOST("effective_date");
             
             if(!APIRequest::doAction('DeleteProject', true)){
-                $errors[] = "There was an error Inactivating the Project";
+                return "There was an error Inactivating the Project";
             }
             else{
                 $form->reset();
             }
         }
-        return implode("<br />\n", $errors);
-        
+        else{
+            return "The Project was not inactivated";
+        }
     }
 }    
     

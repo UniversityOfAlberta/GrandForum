@@ -82,6 +82,7 @@ class cavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.limit-1.2.source.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.multiLimit.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery-ui.triggeredAutocomplete.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.filterByText.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/js/jquery.dataTables.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/filter.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/autosave.js"></script>
@@ -138,6 +139,20 @@ class cavendishTemplate extends QuickTemplate {
 	            });
 	            $("html").css('min-width', minWidth);
 	        }
+	        
+	        function addAPIMessages(response){
+	            clearError();
+	            clearSuccess();
+	            errors = response.errors;
+	            messages = response.messages;
+	            for(i in errors){
+	                addError(errors[i]);
+	            }
+	            for(i in messages){
+	                addSuccess(messages[i]);
+	            }
+	        }
+	        
 	        var sideToggled = 'out';
 		    $(document).ready(function(){
 		        $('a.disabledButton').click(function(e){
@@ -525,14 +540,14 @@ class cavendishTemplate extends QuickTemplate {
 			<ul class='pBody' style='background:#F3EBF5'>";
 		    $me = Person::newFromId($wgUser->getId());
 		    echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:UserSearch'>Find Member</a></li>";
-		    if($me->isRoleAtLeast(CNI)){    
+		    if($me->isRoleAtLeast(CNI)){
 		        echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:AddMember'>Add Member</a></li>";
 		        echo "<li id='userEditRequest'><a href='{$wgScriptPath}/index.php/Special:EditMember'>Edit Member</a></li>";
 		        echo "<li id='userEditRelation'><a href='{$wgScriptPath}/index.php/Special:EditRelations'>Edit Relations</a></li>";
 		    }
 		    echo "</ul>";
 		    echo "<span>Products</span>
-			<ul class='pBody' style='background:#F3EBF5'>";
+				<ul class='pBody' style='background:#F3EBF5'>";
 		    echo "<li id='addPublication'><a href='{$wgScriptPath}/index.php/Special:AddPublicationPage'>Add/Edit Publication</a></li>";
 		    echo "<li id='addArtifact'><a href='{$wgScriptPath}/index.php/Special:AddArtifactPage'>Add/Edit Artifact</a></li>";
 		    echo "<li id='addPresentation'><a href='{$wgScriptPath}/index.php/Special:AddPresentationPage'>Add/Edit Presentation</a></li>";
@@ -544,8 +559,12 @@ class cavendishTemplate extends QuickTemplate {
 			}
 			echo "<li id='addMultimedia'><a href='{$wgScriptPath}/index.php/Special:AddMultimediaStoryPage'>Add/Edit Multimedia Story</a></li>";
 			echo "</ul>";
+			echo "<span style='padding-top: 2px; padding-bottom: 2px;'></span>
+				<ul class='pBody' style='background:#F3EBF5'>";
+			echo "<li id='addMultimedia'><a href='{$wgScriptPath}/index.php/Special:MyDuplicateProducts'>Manage Duplicate Products</a></li>";
+			echo "</ul>";
 		    echo "<span>Other</span>
-			<ul class='pBody' style='background:#F3EBF5'>";
+				<ul class='pBody' style='background:#F3EBF5'>";
 			echo "<li id='messageBoard'><a href='{$wgScriptPath}/index.php/GRAND:Instructions'>Instructions</a></li>";
 			echo "<li id='messageBoard'><a href='{$wgScriptPath}/index.php/Special:Postings'>Message Board</a></li>";
 			echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php?action=getNews'>Recent News</a></li>";

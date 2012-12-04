@@ -1,12 +1,22 @@
 <?php
-define('VALIDATE_NOTHING', 0);
-define('VALIDATE_NOT_NULL', 1);
-define('VALIDATE_IS_NUMERIC', 2);
-define('VALIDATE_IS_PERCENT', 4);
-define('VALIDATE_IS_PROJECT', 8);
-define('VALIDATE_IS_NOT_PROJECT', 16);
-define('VALIDATE_IS_PERSON', 32);
-define('VALIDATE_IS_NOT_PERSON', 64);
+
+global $formValidations, $validations;
+$formValidations = array('NOTHING' => 'NothingValidation',
+                         'NULL'    => 'NullValidation',
+                         'NUMERIC' => 'NumericValidation',
+                         'PERCENT' => 'PercentValidation',
+                         'PROJECT' => 'ProjectValidation',
+                         'PERSON'  => 'PersonValidation',
+                         'EMAIL'   => 'EmailValidation');
+
+$i = 0;
+foreach($formValidations as $key => $validation){
+    define('VALIDATE_'.$key, pow(2, ($i)*2));
+    define('VALIDATE_NOT_'.$key, pow(2, ($i)*2 + 1));
+    $validations[pow(2, ($i)*2)] = $validation;
+    $validations[pow(2, ($i)*2 + 1)] = $validation;
+    $i++;
+}
 
 /*
  * This class is to help make creating forms easier to make,
@@ -16,9 +26,11 @@ define('VALIDATE_IS_NOT_PERSON', 64);
  */
  
 require_once("UIElementArray.php");
+require_once("UIValidation.php");
 
 autoload_register('UI/Arrays');
 autoload_register('UI/Elements');
+autoload_register('UI/Validations');
 
 abstract class UIElement {
     
@@ -29,11 +41,14 @@ abstract class UIElement {
     var $default;
     var $tooltip;
     var $validations;
+    var $extraValidations;
+    var $attr;
     
     function UIElement($id, $name, $value, $validations){
         $this->parent = null;
         $this->id = $id;
         $this->name = $name;
+        $this->attr = array();
         $this->default = $this->clearValue($value);
         if(isset($_POST[$this->id])){
             $this->value = $this->clearValue($_POST[$this->id]);
@@ -42,6 +57,7 @@ abstract class UIElement {
             $this->value = $this->clearValue($value);
         }
         $this->validations = $validations;
+        $this->extraValidations = array();
     }
     
     private function clearValue($value){
@@ -85,6 +101,34 @@ abstract class UIElement {
         }
     }
     
+    // Sets the value of an attribute
+    // If $value is null, the value of the attr is instead returned
+    function attr($attr, $value=null){
+        if($value == null){
+            if(isset($this->attr[$attr])){
+                return $this->attr[$attr];
+            }
+            else{
+                return "";
+            }
+        }
+        else{
+            $this->attr[$attr] = $value;
+            return $this;
+        }
+    }
+    
+    // Returns a string for the attributes as html attributes
+    protected function renderAttr(){
+        $str = "";
+        if(count($this->attr) > 0){
+            foreach($this->attr as $attr => $value){
+                $str .= "{$attr}='{$value}' ";
+            }
+        }
+        return $str;
+    }
+    
     abstract function render();
     
     // Resets the UIElements value to the default, and unsets the $_POST variable's index
@@ -95,12 +139,25 @@ abstract class UIElement {
         $this->value = $this->default;
     }
     
+    function registerValidation($validation){
+        if($validation instanceof UIValidation){
+            $this->extraValidations[] = $validation;
+        }
+    }
+    
     // Returns an array containing all the failed validations
     // if $value is false, then use the $this->value, otherwise use $value
     function validate($value=false){
+        global $validations, $wgMessage;
         $fails = array();
         if($value === false){
             if(is_array($this->value)){
+                if($this->isValidationSet(VALIDATE_NOT_NULL)){
+                    $validation = new NullValidation(VALIDATION_NEGATION, VALIDATION_ERROR);
+                    if(!$validation->validate($this->value)){
+                        $fails[] = $validation->getMessage($this->name);
+                    }
+                }
                 foreach($this->value as $value){
                     $fails = array_merge($fails, $this->validate($value));
                 }
@@ -108,49 +165,62 @@ abstract class UIElement {
             else{
                 $fails = $this->validate($this->value);
             }
-            return $fails;
+            $result = true;
+            foreach($fails as $fail){
+                if(isset($fail['warning'])){
+                    if(isset($_POST['ignore_warnings'])){
+                        // User has pressed the Ignore button
+                        continue;
+                    }
+                    $wgMessage->addWarning($fail['warning']);
+                    $postArr = array();
+                    foreach($_POST as $key => $post){
+                        if(is_array($post) && count($post) > 0){
+                            foreach($post as $k => $p){
+                                $postArr[] = "<input type='hidden' name='{$key}[]' value='{$p}' />";
+                            }
+                        }
+                        else{
+                            $postArr[] = "<input type='hidden' name='$key' value='{$post}' />";
+                        }
+                    }
+                    $wgMessage->addWarning("<form action='' method='post' enctype='multipart/form-data'>
+                        <br />Do you still want to continue with the submission?<br />
+                        ".implode("", $postArr)."
+                        <input type='submit' name='ignore_warnings' value='Yes' /> <button onClick='closeParent($(this).parent().parent());return false;'>Cancel</button>
+                    </form>", 100);
+                    $result = false;
+                }
+                else{
+                    $wgMessage->addError($fail['error']);
+                    $result = false;
+                }
+            }
+            if(count($wgMessage->errors) > 0){
+                unset($wgMessage->warnings[100]);
+            }
+            return $result;
         }
-        
-        if($this->isValidationSet(VALIDATE_NOT_NULL)){
-            $result = $this->validateNotNull($value);
-            if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must not be empty";
+
+        foreach($validations as $key => $val){
+            if($this->isValidationSet($key)){
+                $neg = (log($key, 2) % 2 == 1);
+                
+                $type = $val;
+                $validation = new $type($neg);
+                $result = $validation->validate($value);
+                if(!$result){
+                    $fails[] = $validation->getMessage($this->name);
+                }
             }
         }
-        if($this->isValidationSet(VALIDATE_IS_NUMERIC)){
-            $result = $this->validateIsNumeric($value);
-            if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must be a valid number";
-            }
-        }
-        if($this->isValidationSet(VALIDATE_IS_PERCENT)){
-            $result = $this->validateIsPercent($value);
-            if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must be a valid percent";
-            }
-        }
-        if($this->isValidationSet(VALIDATE_IS_PROJECT)){
-            $result = $this->validateIsProject($value);
-            if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must be a valid Project (value used: $value)";
-            }
-        }
-        if($this->isValidationSet(VALIDATE_IS_NOT_PROJECT)){
-            $result = !$this->validateIsProject($value);
-            if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must not be an already existing Project (value used: $value)";
-            }
-        }
-        if($this->isValidationSet(VALIDATE_IS_PERSON)){
-            $result = $this->validateIsPerson($value);
-            if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must be a valid Person (value used: $value)";
-            }
-        }
-        if($this->isValidationSet(VALIDATE_IS_NOT_PERSON)){
-            $result = !$this->validateIsPerson($value);
-            if(!$result){
-                $fails[] = "The field '".ucfirst($this->name)."' must not be an already existing Person (value used: $value)";
+        // Extra Validations
+        if(count($this->extraValidations) > 0){
+            foreach($this->extraValidations as $validation){
+                $result = $validation->validate($value);
+                if(!$result){
+                    $fails[] = $validation->getMessage($this->name);
+                }
             }
         }
         return $fails;
@@ -171,29 +241,6 @@ abstract class UIElement {
     
     function isValidationSet($validation){
         return (($this->validations & $validation) !== 0);
-    }
-    
-    function validateNotNull($value){
-        
-        return !($value == null || $value == "");
-    }
-    
-    function validateIsNumber($value){
-        return (!$this->validateNotNull($value) || is_numeric($value));
-    }
-    
-    function validateIsPercent($value){
-        return (!$this->validateNotNull($value) || (is_numeric($value) && $value >= 0 && $value <= 100));
-    }
-    
-    function validateIsProject($value){
-        $project = Project::newFromName($value);
-        return ($project != null && $project->getName() != "");
-    }
-    
-    function validateIsPerson($value){
-        $person = Person::newFromNameLike($value);
-        return ($person != null && $person->getName() != "");
     }
 }
 

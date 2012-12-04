@@ -66,6 +66,7 @@ class MaterialAPI extends API{
 	    }
 	    $cache = new MaterialFullCache($this);
 		echo $cache->getCache();
+		exit;
 	}
 	
 	function outputXML($materials){

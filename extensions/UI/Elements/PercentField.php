@@ -3,12 +3,12 @@
 class PercentField extends UIElement {
     
     function PercentField($id, $name, $value, $validations=VALIDATE_NOTHING){
-        parent::UIElement($id, $name, $value, $validations + VALIDATE_IS_PERCENT);
-        $this->size = 3;
+        parent::UIElement($id, $name, $value, $validations + VALIDATE_PERCENT);
+        $this->attr('size', 3);
     }
     
     function render(){
-        return "<input type='text' size='{$this->size}' name='{$this->id}' value='{$this->value}' />%";
+        return "<input type='text' {$this->renderAttr()} name='{$this->id}' value='{$this->value}' />%";
     }
     
 }

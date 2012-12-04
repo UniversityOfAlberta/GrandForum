@@ -224,8 +224,11 @@ class APIRequest{
 
 abstract class API {
 
+    var $errors = array();
     var $posts = array();
     var $gets = array();
+    var $messages = array();
+    var $data = array();
 
 	function processRequest($params=null){
 		global $wgUser;
@@ -240,21 +243,30 @@ abstract class API {
 				$user = User::newFromName($user_name);
 				if($user != false && $user->checkPassword($password) || $wgUser->isLoggedIn()){ 
 					// UserName and password are correct, or the user is in the browser and is already logged in
-					$wgUser = $user;
+					if(!$wgUser->isLoggedIn()){
+					    $wgUser = $user;
+					}
 					$this->processParams($params);
-					$this->checkRequiredParams();
-					$this->doAction();
+					if($this->checkRequiredParams()){
+				        $this->doAction();
+				    }
 				}
 				else { 
 					// Authentication failed
-					echo "Authentication Failed\n";
+					$this->addError("Authentication Failed\n");
 				}
 			}
 			else{
                 $this->processParams($params);
-                $this->checkRequiredParams();
-				$this->doAction();
+                if($this->checkRequiredParams()){
+				    $this->doAction();
+				}
 			}
+			header('Content-Type: application/json');
+			echo json_encode(array('errors' => $this->errors,
+			                       'messages' => $this->messages,
+			                       'data' => $this->data));
+			exit;
 		}
 	}
 	
@@ -272,23 +284,37 @@ abstract class API {
 	                               "example" => $example);
 	}
 	
+	function addError($error){
+	    $this->errors[] = $error;
+	}
+	
+	function addMessage($message){
+	    $this->messages[] = $message;
+	}
+	
+	function addData($key, $value){
+	    $this->data[$key] = $value;
+	}
+	
 	function checkRequiredParams(){
+	    $result = true;
 	    foreach($this->posts as $post){
 	        if($post['required']){
 	            if(!isset($_POST[$post['name']])){
-	                echo "POST {$post['name']} must be provided\n";
-	                exit;
+	                $this->addError("POST {$post['name']} must be provided\n");
+	                $result = false;
 	            }
 	        }
 	    }
 	    foreach($this->gets as $get){
 	        if($get['required']){
 	            if(!isset($_GET[$get['name']])){
-	                echo "GET {$get['name']} must be provided\n";
-	                exit;
+	                $this->addError("GET {$get['name']} must be provided\n");
+	                $result = false;
 	            }
 	        }
 	    }
+	    return $result;
 	}
 	
 	function getHelp(){

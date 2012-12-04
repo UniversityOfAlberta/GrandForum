@@ -151,7 +151,6 @@ $(document).ready(function(){
                     clearTimeout(timeout);
                 }
                 autosaveDiv = $('.autosaveSpan');
-                console.log($('.autosaveSpan'));
                 findAutosaves(updateProgress);
                 saveAll(updateProgress);
                 return false;

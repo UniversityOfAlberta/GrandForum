@@ -13,7 +13,7 @@ class VerticalRadioBox extends RadioBox {
             if($this->value == $option){
                 $checked = " checked";
             }
-            $html .= "<input type='radio' name='{$this->id}' value='{$option}' $checked/>{$option}<br />";
+            $html .= "<input {$this->renderAttr()} type='radio' name='{$this->id}' value='{$option}' $checked/>{$option}<br />";
         }
         return $html;
     }

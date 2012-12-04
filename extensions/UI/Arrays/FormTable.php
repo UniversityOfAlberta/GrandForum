@@ -7,7 +7,7 @@ class FormTable extends UIElementArray {
     }
     
     function render(){
-        $html = "<table>";
+        $html = "<table {$this->renderAttr()}>";
         foreach($this->elements as $element){
             $html .= $element->render();
         }

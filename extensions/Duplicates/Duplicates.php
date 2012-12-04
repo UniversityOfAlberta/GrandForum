@@ -4,7 +4,9 @@ require_once("Classes/simplediff/simplediff.php");
 require_once("AbstractDuplicatesHandler.php");
 require_once("DuplicatesTab.php");
 require_once("Handlers/ProductHandler.php");
+require_once("Handlers/MyProductHandler.php");
 require_once("Handlers/PersonHandler.php");
+require_once("MyDuplicateProducts.php");
 
 $dir = dirname(__FILE__) . '/';
 
@@ -63,6 +65,7 @@ class Duplicates extends SpecialPage{
             $tabbedPage->addTab(new DuplicatesTab("Activities", $handlers['activity']));
             $tabbedPage->addTab(new DuplicatesTab("Press", $handlers['press']));
             $tabbedPage->addTab(new DuplicatesTab("Awards", $handlers['award']));
+            $tabbedPage->addTab(new DuplicatesTab("Presentations", $handlers['presentation']));
             $tabbedPage->addTab(new DuplicatesTab("People", $handlers['people']));
             $tabbedPage->showPage();
         }

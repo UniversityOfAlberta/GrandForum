@@ -7,10 +7,11 @@ class MultiSelectBox extends UIElement {
     function MultiSelectBox($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
         parent::UIElement($id, $name, $value, $validations);
         $this->options = $options;
+        $this->attr('size', '6');
     }
     
     function render(){
-        $html = "<select name='{$this->id}[]' size='6' multiple='multiple'>";
+        $html = "<select name='{$this->id}[]' {$this->renderAttr()} multiple='multiple'>";
         foreach($this->options as $option){
             $selected = "";
             if($this->value == $option){
