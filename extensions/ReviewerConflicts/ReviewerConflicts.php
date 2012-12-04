@@ -26,7 +26,7 @@ class ReviewerConflicts extends SpecialPage {
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $person = Person::newFromId($wgUser->getId());
         $page = "Report";
-        if($person->isEvaluator()){
+        if($person->isUnassignedEvaluator()){
             $page = "ReviewerConflicts";
             $selected = "";
             if($wgTitle->getText() == "ReviewerConflicts"){
@@ -48,7 +48,7 @@ class ReviewerConflicts extends SpecialPage {
             $person = Person::newFromId($wgUser->getId());
             
            
-            if($person->isEvaluator()){
+            if($person->isUnassignedEvaluator()){
                 @$class = ($wgTitle->getText() == "ReviewerConflicts" ) ? "selected" : false;
                 /*$content_actions[] = array (
                          'class' => $class,
