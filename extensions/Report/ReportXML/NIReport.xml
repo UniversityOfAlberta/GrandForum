@@ -57,9 +57,14 @@
             <![CDATA[<style>#hqp_completion table tr:first-child td:first-child {display:none;}</style><table id="hqp_completion" style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'><tr><th>HQP</th><th>Completion Status</th><th>Actions</th></tr>]]>
         </ReportItem>
         <ReportItemSet id="people_supervises" type="PersonSupervisesReportItemSet">
+        	<ReportItem id="hqp_submission" type="ReportSubmissionStatusItem" reportType="HQPReport">
+                <![CDATA[
+                    <tr><td valgin='top'><a href='{$user_url}' target='_blank'><small><b>{$user_reversed_name}</b></small></a><br /><small>({$item})</small></td>
+                ]]>
+            </ReportItem>
             <ReportItem id="hqp_progress" type="ProgressReportItem" reportType="HQPReport">
                 <![CDATA[
-                    <tr><td valgin='top'><a href='{$user_url}' target='_blank'><small><b>{$user_reversed_name}</b></small></a></td><td style='padding:0;'><small><table cellpadding="1" frame="void" rules="all" height="95px" width="100%">{$item}</table></small></td>
+                    <td style='padding:0;'><small><table cellpadding="1" frame="void" rules="all" height="95px" width="100%">{$item}</table></small></td>
                 ]]>
             </ReportItem>
             <ReportItem id="hqp_pdf" type="PDFReportItem" reportType="HQPReport" width="90px">

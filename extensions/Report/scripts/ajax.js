@@ -84,9 +84,8 @@ $(document).ready(function(){
                     $("#reportMain > div .tooltip").qtip();
                     updateProgress();
                     var heightDifference = oldHeight - $("#reportMain > div > div").height();
-
+					var height = Math.max(parseInt($('#outerReport').css('min-height')), $('#reportMain > div > div').height());
                     if(selectedIndex < clickedIndex){
-                        var height = $("#reportMain > div > div").height();
                         $("#reportMain > div > div").css('margin-top', height + heightDifference);
                         $("#reportMain > div > div").height(0);
                         $("#reportMain > div > div").css('overflow-y', 'hidden');
@@ -106,7 +105,6 @@ $(document).ready(function(){
                                                  }, animationTime, animationEasingIn);
                     }
                     else if(selectedIndex > clickedIndex){
-                        var height = $("#reportMain > div > div").height();
                         $("#reportMain > div > div").css('margin-top', -height);
                         $("#reportMain > div > div").height(height*2 + heightDifference);
                         $("#reportMain > div > div").css('overflow-y', 'hidden');
@@ -126,7 +124,6 @@ $(document).ready(function(){
                                                  }, animationTime, animationEasingIn);
                     }
                     else{
-                        var height = $("#reportMain > div > div").height();
                         $("#reportMain > div").animate({
                                                     'height' : height + paddingHeight + 'px'
                                                  }, animationTime, animationEasingIn);
