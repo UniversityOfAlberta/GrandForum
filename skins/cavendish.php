@@ -397,12 +397,16 @@ class cavendishTemplate extends QuickTemplate {
 					    ReportArchive::createTab();
 					}
 					    Report::createTab();
+					if($p->isUnassignedEvaluator()){
+						ReviewerConflicts::createTab();
+					}
 					if(!$user->isRoleAtLeast(MANAGER)){
 					    MyMailingLists::createTab();
 					}
 					Notification::createTab();
 				}
 			?>
+
 		</ul>
 		
 		<form name="searchform" action="<?php $this->text('wgScript') ?>" id="searchform">

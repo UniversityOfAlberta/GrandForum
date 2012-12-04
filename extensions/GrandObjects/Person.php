@@ -2152,6 +2152,16 @@ class Person{
 	        return null;
 	    }
 	}
+
+	function isUnassignedEvaluator(){
+		$current_evals = array(17,563,152,25,90,27,28,564,32,565,566,36,38,41,48,55,60,61,150,717);
+		if(in_array($this->id, $current_evals)){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 	
 	// Returns true if the person is an evaluator
 	function isEvaluator(){
