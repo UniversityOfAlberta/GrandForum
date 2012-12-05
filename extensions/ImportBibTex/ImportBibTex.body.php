@@ -86,6 +86,10 @@ class ImportBibTex extends SpecialPage{
 #          $wgOut->addHTML("<br/><b>nextbib $ind<br/><pre> $nextbib </pre></b><br/>");
 #          $wgOut->addHTML($bibtype."<br/>");
 
+          // Prevent fields from carrying over into next Bibtex record's unset fields
+          unset($_POST);
+          $_POST = array();
+
 					unset($fieldMap);
 					$fieldMap = array();
 

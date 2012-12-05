@@ -77,6 +77,8 @@ abstract class PaperAPI extends API{
 	           $post['name'] != "description" &&
 	           $post['name'] != "abstract" &&
 	           $post['name'] != "misc_type"){
+          // Prevent empty parameters in DB:
+					if (isset($_POST[$post['name']]) && trim($_POST[$post['name']])!=='')
 	            $data[$post['name']] = @stripslashes($this->stripQuotes($_POST[$post['name']]));
 	        }
 	    }

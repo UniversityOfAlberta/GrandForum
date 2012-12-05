@@ -704,7 +704,7 @@ class PublicationPage {
                             $texts[] = $author->getNameForForms();
                         }
                     }
-                    $wgOut->addHTML(implode(", ", $texts));
+                    $wgOut->addHTML("<span id=test_authors>".implode(", ", $texts)."</span>");
                 }
                 
                 if($category == "Publication"){
