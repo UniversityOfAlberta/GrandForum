@@ -110,7 +110,7 @@ class Person{
 		}
 		else{
 		    $possibleNames = preg_grep("/.*$name.*/i", array_keys(self::$namesCache));
-		    if(function_exists('apc_store'){
+		    if(function_exists('apc_store')){
 		        apc_store($wgSitename.'person_name'.$name, serialize($possibleNames), 60*60);
 		    }
 		}
