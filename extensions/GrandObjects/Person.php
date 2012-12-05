@@ -105,12 +105,14 @@ class Person{
 	    }
 	    self::generateNamesCache();
 		$data = array();
-		if(apc_exists($wgSitename.'person_name'.$name)){
+		if(function_exists('apc_exists') && apc_exists($wgSitename.'person_name'.$name)){
 		    $possibleNames = unserialize(apc_fetch($wgSitename.'person_name'.$name));
 		}
 		else{
 		    $possibleNames = preg_grep("/.*$name.*/i", array_keys(self::$namesCache));
-		    apc_store($wgSitename.'person_name'.$name, serialize($possibleNames), 60*60);
+		    if(function_exists('apc_store'){
+		        apc_store($wgSitename.'person_name'.$name, serialize($possibleNames), 60*60);
+		    }
 		}
 		foreach($possibleNames as $possible){
 		    if(isset(self::$namesCache[$possible])){
