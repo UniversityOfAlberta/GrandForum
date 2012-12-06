@@ -44,9 +44,9 @@ class ProjectNIProgressReportItem extends StaticReportItem {
         
         $nAllocated = 0;
         $nRequested = 0;
-
 		foreach($people as $p){
 		    $pers = Person::newFromId($p['person_id']);
+		    
             $allocBudget = $allocatedBudget->copy()->select(V_PERS_NOT_NULL, array($pers->getReversedName()));
             if(($allocBudget->nRows() * $allocBudget->nCols()) > 0){
                 $nAllocated++;

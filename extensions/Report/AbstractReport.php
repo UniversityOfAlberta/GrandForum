@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @package Report
+ * @abstract
+ */
+
 require_once("ReportConstants.php");
 require_once("SpecialPages/Report.php");
 require_once("SpecialPages/DummyReport.php");
@@ -32,6 +37,10 @@ abstract class AbstractReport extends SpecialPage {
     var $pdfFiles;
     var $pdfAllProjects;
     
+    /**
+     * @param string $tok
+     * @return DummyReport Returns the DummyReport associated with the given $tok
+     */
     static function newFromToken($tok){
         global $wgUser;
         $person = Person::newFromId($wgUser->getId());

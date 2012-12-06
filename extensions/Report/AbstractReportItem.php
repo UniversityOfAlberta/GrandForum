@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This class is used to display widgets for reporting.
+ * ReportItems are (generally) associated with a blob and 
+ * the saving/loading is done automatically.
+ * @package Report
+ * @abstract
+ */
+
 // ReportItems
 require_once("ReportItems/StaticReportItem.php");
 require_once("ReportItems/TextReportItem.php");

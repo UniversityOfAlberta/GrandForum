@@ -1079,9 +1079,6 @@ EOF;
                 $budget = $member->getAllocatedBudget($year);
                 if($budget != null){
                     $budget = $budget->copy();
-                    if(isset($budget->xls[0][1])){
-                        $budget->xls[0][1]->setValue($member->getNameForForms());
-                    }
                     if(count($projectBudget) == 0){
                         $nameBudget[] = new Budget(array(array(HEAD1),
                                                          array(BLANK)),
@@ -1103,7 +1100,7 @@ EOF;
                                                            array(HEAD2),
                                                            array(HEAD2),
                                                            array(HEAD2)),
-                                                     array(array("Budget Categories for April 1, 2011, to March 31, 2012"),
+                                                     array(array("Budget Categories for April 1, ".($year).", to March 31, ".($year+1).""),
                                                            array("1) Salaries and stipends"),
                                                            array("a) Graduate students"),
                                                            array("b) Postdoctoral fellows"),

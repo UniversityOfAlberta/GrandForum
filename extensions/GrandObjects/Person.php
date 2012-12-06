@@ -2138,8 +2138,7 @@ class Person{
 		        }
 		    }
             if($this->budgets[$index]->nRows()*$this->budgets[$index]->nCols() > 1){
-                $names = $this->splitName();
-                $this->budgets[$index]->xls[0][1]->setValue($names['last'].', '.$names['first']);
+                $this->budgets[$index]->xls[0][1]->setValue($this->getReversedName());
             }
             if(is_writable(CACHE_FOLDER)){
                 $contents = array($lastChanged, $this->budgets[$index]);

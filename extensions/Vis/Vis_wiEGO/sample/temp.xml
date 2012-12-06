@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<graph>
-  <Node id="1" prop="root"/>
-  <Node id="2" prop="child"/>
-  <Node id="3" prop="child"/>
-  <Edge fromID="1" toID="2"/>
-  <Edge fromID="1" toID="3"/>
-</graph>
-

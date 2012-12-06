@@ -5,6 +5,8 @@
 
 # Configuration:
 PROVE_BIN="prove"
+DOC_BIN="phpdoc"
+PHP_DOCS_IGNORE=-i "AccessControls/, AnnokiControl/, SociQL/, MaintenanceService/, VisualQueryEditor/, TemplateEditor/, TextReplace/, Calendar/"
 
 # Describe our tests:
 BASE_TEST=$(wildcard t/*.t)
@@ -26,3 +28,6 @@ maint:
 
 verbose: t/Test.php
 	$(PROVE_BIN) -v $(ALL_TESTS) | egrep -v '^ok'
+
+docs: extensions/
+	$(DOC_BIN) $(PHP_DOCS_IGNORE) --title "The GRAND Forum" -d extensions/ -t /local/data/www-root/html/docs
