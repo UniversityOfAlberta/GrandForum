@@ -16,6 +16,7 @@
 	    $role = "Other";
 	    if($person->isHQP()){
 	    	$role="HQP";
+	    	continue;
 	    }
 	    else if($person->isCNI()){
 	    	$role="CNI";
