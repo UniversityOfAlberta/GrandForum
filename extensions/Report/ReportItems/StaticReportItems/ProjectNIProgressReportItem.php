@@ -39,7 +39,7 @@ class ProjectNIProgressReportItem extends StaticReportItem {
         }
         
         // Budgets
-        $allocatedBudget = $project->getAllocatedBudget(REPORTING_YEAR);
+        $allocatedBudget = $project->getAllocatedBudget(REPORTING_YEAR-1);
 		$requestedBudget = $project->getRequestedBudget(REPORTING_YEAR);
         
         $nAllocated = 0;
