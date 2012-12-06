@@ -102,21 +102,45 @@ class ReviewerConflicts extends SpecialPage {
 
             }
             
+        }
+        else if(isset($_POST['Submit']) && $_POST['Submit'] == "Confirm Projects Conflicts"){
+            if(isset($_POST['project_id'])){
+                foreach($_POST['project_id'] as $project_id){
+                    if(isset($_POST['conflict_'.$project_id]) && $_POST['conflict_'.$project_id]){
+                        $conflict = 1;
+                    }
+                    else{
+                        $conflict = 0;
+                    }
 
-            if(isset($_POST['type'])){
-                if($_POST['type'] == 'PNI'){
-                    $active = 0;
+                    if(isset($_POST['user_conflict_'.$project_id]) && $_POST['user_conflict_'.$project_id]){
+                        $user_conflict = 1;
+                    }
+                    else{
+                        $user_conflict = 0;
+                    }
+
+                    $sql = "INSERT INTO grand_project_conflicts(reviewer_id, project_id, conflict, user_conflict) 
+                            VALUES('{$reviewer_id}', '{$project_id}', '$conflict', '$user_conflict' ) 
+                            ON DUPLICATE KEY UPDATE conflict='{$conflict}', user_conflict='{$user_conflict}'";
+
+                    $data = DBFunctions::execSQL($sql, true);
                 }
-                else if($_POST['type'] == 'CNI'){
-                    $active = 1;
-                }   
-                else if($_POST['type'] == 'PROJECTS'){
-                    $active = 2;
-                }  
+
             }
-            
         }
 
+        if(isset($_POST['type'])){
+            if($_POST['type'] == 'PNI'){
+                $active = 0;
+            }
+            else if($_POST['type'] == 'CNI'){
+                $active = 1;
+            }   
+            else if($_POST['type'] == 'PROJECTS'){
+                $active = 2;
+            }  
+        }
         
 
 	    $wgOut->setPageTitle("Reviewer Conflicts");
@@ -480,40 +504,62 @@ EOF;
         
         
         <div style='padding:2px;'></div>
+        <form id='submitForm' action='$wgServer$wgScriptPath/index.php/Special:ReviewerConflicts' method='post'>
         <table id='project_conflicts' class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
         <thead>
         <tr bgcolor='#F2F2F2'>
-        <th width='40%' name="search_lastname_header">Project Name</th>
-        <th width='15%' name="search_firstname_header" title=''>My Project</th>
-        <!--th width='15%' name="search_projects_header" title='Sort by projects'>Same Projects</th>
-        <th width='15%' name="search_university_header" title='Sort by university'>Co-authorship</th-->
-        <th width='15%' class='sorter-false' title=''>
-            Conflict? <!--input type='checkbox' name="search_selectall_checkbox" onchange="toggleChecked(this.checked, '#new_connections tbody tr:visible input.search_conn_chkbox');" /-->
-            
+        <th width='35%' name="search_lastname_header">Project Name</th>
+        <th width='10%' name="search_firstname_header" title=''>Conflict Found</th>
+        <th width='25%' class='sorter-false' title=''>
+            Do you think there is a conflict? 
         </th>
         </tr>
         </thead>
         <tbody>
 EOF;
 
+        //Get saved conflicts data if any
+        $reviewer_id = $me->getId();
+        $sql = "SELECT * FROM grand_project_conflicts WHERE reviewer_id = '{$reviewer_id}'";
+        $data = DBFunctions::execSQL($sql);    
+
+        $conflicts = array();
+        foreach($data as $row){
+            $conflicts["'".$row['project_id']."'"] = $row['user_conflict'];
+        }
+
         $allProjects = Project::getAllProjects();
         foreach($allProjects as $project){
         	$project_name = $project->getName();
+            $project_id = $project->getId();
             $same_projects = "No";
             if(in_array($project_name, $my_projects)){
                 $same_projects = "Yes";
             }   
 
-			$bgcolor = ($same_projects == "Yes")? "#DD3333" : "#FFFFFF";
+            $bgcolor = "#FFFFFF";
+            $conflict_checked = 0;
+            $user_conflict_checked = "";
+            if($same_projects == "Yes"){
+                $bgcolor = "#DD3333";
+                $conflict_checked = 1;
+                $user_conflict_checked = "checked='checked'";
+            }
+			
+            if(isset($conflicts["'".$project_id."'"])) {
+                $user_conflict_checked = ($conflicts["'".$project_id."'"])? "checked='checked'" : "";
+            }
+
             $row_id = $project_name;
             $html .= <<<EOF
             <tr style='background-color:{$bgcolor};' name='search' id='{$row_id}' class=''>
-                <td class=''>{$project_name}</td>
-                <td class=''>{$same_projects}</td>
-                <!--td class=''></td>
-                <td class=''></td-->
+                <td>{$project_name}</td>
                 <td>
-                <input class="conflict_checkbox" type="checkbox" />
+                    {$same_projects}
+                    <input type="hidden" name="conflict_{$project_id}" value="{$conflict_checked}" /></td>
+                <td align='center'>
+                <input type="hidden" name="project_id[]" value="{$project_id}" />
+                <input type="checkbox" name="user_conflict_{$project_id}" {$user_conflict_checked} />
                 </td>
             </tr>
 EOF;
@@ -523,7 +569,9 @@ EOF;
         $html .=<<<EOF
         </tbody>
         </table>
-        <!--button id="confirm_new_connections">Confirm Conflicts</button-->
+        <input type="hidden" name="type" value="PROJECTS" />
+        <input type="submit" name="Submit" value="Confirm Projects Conflicts" />
+        </form>
         </div>
 EOF;
 
