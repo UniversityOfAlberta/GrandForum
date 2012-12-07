@@ -301,7 +301,9 @@ abstract class API {
 	 * @return string Returns the value of the POST parameter
 	 */
 	function POST($key){
-	    return (isset($_POST[$key])) ? $_POST[$key] : "";
+	    if(isset($_POST[$key])) return $_POST[$key];
+	    $model = (isset($_POST['model'])) ? json_decode($_POST['model']) : array();
+	    if(isset($model->$key)) return $model->$key;
 	}
 	
 	/**

@@ -417,7 +417,34 @@ class Person extends BackboneModel {
 	}
 	
 	function create(){
-	    
+	    global $wgRequest;
+	    $me = Person::newFromWGUser();
+	    if($me->isRoleAtLeast(STAFF)){
+	        $wgRequest->setVal('wpCreateaccountMail', true);
+	        $wgRequest->setSessionData('wsCreateaccountToken', 'true');
+	        $wgRequest->setVal('wpCreateaccountToken', 'true');
+	        $wgRequest->setVal('wpName', $this->name);
+	        $wgRequest->setVal('wpEmail', $this->email);
+	        $_POST['wpCreateaccountMail'] = 'true';
+	        $_POST['wpCreateaccountToken'] = 'true';
+	        $_POST['wpName'] = $this->name;
+	        $_POST['wpEmail'] = $this->email;
+	        $_POST['wpRealName'] = $this->realname;
+	        $_POST['wpUserType'] = array();
+	        $_POST['wpNS'] = array();
+	        $_POST['wpSendMail'] = true;
+	        $specialUserLogin = new LoginForm($wgRequest, 'signup');
+	        $specialUserLogin->execute();
+	        Person::$cache = array();
+		    Person::$namesCache = array();
+		    Person::$aliasCache = array();
+		    Person::$idsCache = array();
+	        $person = Person::newFromName($_POST['wpName']);
+	        if($person->exists()){
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 	
 	function update(){
@@ -426,6 +453,14 @@ class Person extends BackboneModel {
 	
 	function delete(){
 	    
+	}
+	
+	function exists(){
+	    $person = Person::newFromName($this->getName());
+	    if($person != null && $person->getName() != ""){
+	        return true;
+	    }
+	    return false;
 	}
 	
 	// Returns the Mediawiki User object for this Person

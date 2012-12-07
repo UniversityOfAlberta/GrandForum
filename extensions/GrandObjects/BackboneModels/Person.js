@@ -1,14 +1,14 @@
 Person = Backbone.Model.extend({
     initialize: function(){
         this.bind("error", function(model, error){
-            addError(error);
+            //addError(error);
         });
     },
     
     urlRoot: 'index.php?action=api.person',
     
     defaults: {
-        id: 0,
+        id: null,
         name: '',
         realName: '',
         reversedName: '',
@@ -48,9 +48,21 @@ Person = Backbone.Model.extend({
     }
 });
 
-var person = new Person({id : 3});
-person.fetch({
-    success: function(p){
-        console.log(p.toJSON());
-    }
+person2 = new Person({
+    id: null,
+    name: 'New.Name7',
+    realName: 'New Name',
+    reversedName: 'Name, New',
+    email: 'dwt@ualberta.ca',
+    nationality: 'Canadian',
+    gender: '',
+    photo: '',
+    twitter: '',
+    university: '',
+    position: '',
+    department: '',
+    publicProfile: '',
+    privateProfile: ''
 });
+
+person2.save();

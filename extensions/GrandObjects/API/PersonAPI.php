@@ -25,9 +25,17 @@ class PersonAPI extends RESTAPI {
     }
     
     function doPOST(){
-        $person = Person::newFromId($this->id);
+        $person = new Person(array());
+        $person->email = $this->POST('email');
+        $person->name = $this->POST('name');
+        if($person->exists()){
+            $this->throwError("This user already exists");
+        }
         header('Content-Type: application/json');
         $person->create();
+        
+        $person = Person::newFromName($person->getName());
+        return $person->toJSON();
     }
     
     function doPUT(){

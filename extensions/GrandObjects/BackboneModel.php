@@ -34,10 +34,16 @@ abstract class BackboneModel {
     abstract function update();
     
     /**
-     * Deleted the record in the DB for this BackboneModel
+     * Deletes the record in the DB for this BackboneModel
      * @return boolean Returns whether or not the deletion was successful or not
      */
     abstract function delete();
+    
+    /**
+     * Returns whether or not this BackboneModel exists or not
+     * @return boolean Returns whether or not this BackboneModel exists or not
+     */
+    abstract function exists();
 }
 
 ?>
