@@ -19,7 +19,9 @@ Person = Backbone.Model.extend({
         twitter: '',
         university: '',
         position: '',
-        department: ''
+        department: '',
+        publicProfile: '',
+        privateProfile: ''
     },
     
     validate: function(attr){

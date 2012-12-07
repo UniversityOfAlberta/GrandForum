@@ -393,6 +393,12 @@ class Person extends BackboneModel {
 	}
 	
 	function toJSON(){
+	    global $wgUser;
+	    $privateProfile = "";
+	    $publicProfile = $this->getProfile(false);
+	    if($wgUser->isLoggedIn()){
+	        $privateProfile = $this->getProfile(true);
+	    }
 	    $json = array('id' => $this->getId(),
 	                  'name' => $this->getName(),
 	                  'realname' => $this->getRealName(),
@@ -404,7 +410,9 @@ class Person extends BackboneModel {
 	                  'photo' => $this->getPhoto(),
 	                  'university' => $this->getUni(),
 	                  'department' => $this->getDepartment(),
-	                  'position' => $this->getPosition());
+	                  'position' => $this->getPosition(),
+	                  'publicProfile' => $publicProfile,
+	                  'privateProfile' => $publicProfile);
 	    return json_encode($json);
 	}
 	

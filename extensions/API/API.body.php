@@ -442,9 +442,11 @@ abstract class RESTAPI extends API {
 	
 	/**
 	 * Generates a error message via the HTTP 400 return code, and exits execution
+	 * @param string $message The message to display
+	 * @param int $code the HTTP error code
 	 */
-	function throwError($message){
-	    header("HTTP/1.0: 400 $message");
+	function throwError($message, $code=400){
+	    header("HTTP/1.0: $code $message");
 	    exit;
 	}
     
@@ -464,12 +466,11 @@ abstract class RESTAPI extends API {
             $json = $this->doPOST();
         }
         header('Content-Type: application/json');
+        echo $json;
         exit;
     }
     
-    function processParams($params){
-
-    }
+    function processParams($params){ }
     
     /**
      * CREATE/POST

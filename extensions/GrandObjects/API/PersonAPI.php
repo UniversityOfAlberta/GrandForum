@@ -21,16 +21,13 @@ class PersonAPI extends RESTAPI {
         if($person == null || $person->getName() == ""){
             $this->throwError("This user does not exist");
         }
-        header('Content-Type: application/json');
-        echo $person->toJSON();
-        exit;
+        return $person->toJSON();
     }
     
     function doPOST(){
         $person = Person::newFromId($this->id);
         header('Content-Type: application/json');
         $person->create();
-        exit;
     }
     
     function doPUT(){
@@ -40,7 +37,6 @@ class PersonAPI extends RESTAPI {
         }
         header('Content-Type: application/json');
         $person->update();
-        exit;
     }
     
     function doDELETE(){
@@ -50,7 +46,6 @@ class PersonAPI extends RESTAPI {
         }
         header('Content-Type: application/json');
         $person->delete();
-        exit;
     }
 	
 }
