@@ -44,7 +44,7 @@ class cavendishTemplate extends QuickTemplate {
 	 * @access private
 	 */
 	function execute() {
-		global $wgRequest, $wgServer, $wgScriptPath, $wgLogo, $wgTitle, $wgUser, $wgMessage;
+		global $wgRequest, $wgServer, $wgScriptPath, $wgLogo, $wgTitle, $wgUser, $wgMessage, $wgImpersonating;
 		$this->skin = $skin = $this->data['skin'];
 		$action = $wgRequest->getText( 'action' );
 
@@ -205,7 +205,8 @@ class cavendishTemplate extends QuickTemplate {
 		$autoOpen = "false";
 		$loggedin_user_id = $wgUser->getId();
 		$loggedin_user = Person::newFromId($loggedin_user_id);
-		if($wgUser->isLoggedIn() && ($loggedin_user->isPNI() || $loggedin_user->isCNI())){
+		
+		if($wgUser->isLoggedIn() && ($loggedin_user->isPNI() || $loggedin_user->isCNI()) && !$wgImpersonating ){
 			$sql = "SELECT * FROM survey_results WHERE user_id = $loggedin_user_id";
 		    $data = DBFunctions::execSQL($sql);
 		  
