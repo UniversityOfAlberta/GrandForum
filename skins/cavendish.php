@@ -156,6 +156,9 @@ class cavendishTemplate extends QuickTemplate {
 	        }
 	        
 	        var sideToggled = 'out';
+	        
+	        Backbone.emulateHTTP = true;
+	        
 		    $(document).ready(function(){
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();
