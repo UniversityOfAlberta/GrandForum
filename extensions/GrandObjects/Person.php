@@ -1,6 +1,6 @@
 <?php
 
-class Person{
+class Person extends BackboneModel {
 
     static $cache = array();
     static $rolesCache = array();
@@ -10,7 +10,6 @@ class Person{
     static $namesCache = array();
     static $idsCache = array();
 
-	var $id;
 	var $name;
 	var $email;
 	var $nationality;
@@ -393,6 +392,34 @@ class Person{
 		}
 	}
 	
+	function toJSON(){
+	    $json = array('id' => $this->getId(),
+	                  'name' => $this->getName(),
+	                  'realname' => $this->getRealName(),
+	                  'reversedName' => $this->getReversedName(),
+	                  'email' => $this->getEmail(),
+	                  'gender' => $this->getGender(),
+	                  'nationality' => $this->getNationality(),
+	                  'twitter' => $this->getTwitter(),
+	                  'photo' => $this->getPhoto(),
+	                  'university' => $this->getUni(),
+	                  'department' => $this->getDepartment(),
+	                  'position' => $this->getPosition());
+	    return json_encode($json);
+	}
+	
+	function create(){
+	    
+	}
+	
+	function update(){
+	
+	}
+	
+	function delete(){
+	    
+	}
+	
 	// Returns the Mediawiki User object for this Person
 	function getUser(){
 	    return User::newFromId($this->id);
@@ -478,11 +505,6 @@ class Person{
 	        trigger_error("Deprecated function 'is_member()' called.", E_USER_NOTICE);
 	    }
 	    return isMemberOf($proj);
-	}
-	
-	// Returns the Id of this Person
-	function getId(){
-		return $this->id;
 	}
 	
 	// Returns the name of this Person
@@ -740,6 +762,21 @@ class Person{
         else{
             return null;
         }
+	}
+	
+	function getUni(){
+	    $university = $this->getUniversity();
+	    return (isset($university['university'])) ? $university['university'] : "";
+	}
+	
+	function getDepartment(){
+	    $university = $this->getUniversity();
+	    return (isset($university['department'])) ? $university['department'] : "";
+	}
+	
+	function getPosition(){
+	    $university = $this->getUniversity();
+	    return (isset($university['position'])) ? $university['position'] : "";
 	}
 	
 	// Returns an array of Strings, representing each user group name

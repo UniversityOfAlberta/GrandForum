@@ -8,14 +8,18 @@ autoload_register('API/Publications/Awards');
 autoload_register('API/Publications/Press');
 autoload_register('API/Publications/Publications');
 autoload_register('API/Publications/Presentations');
-
+global $apiRequest;
 $apiRequest = new APIRequest();
 
 $wgHooks['UnknownAction'][] = array($apiRequest, 'processRequest');
 
+/**
+ * @package API
+ */
 class APIRequest{
 
     static $action;
+    var $actions = array();
 
 	function processRequest($action, $article){
 		global $wgServer, $wgScriptPath;
@@ -24,7 +28,8 @@ class APIRequest{
 			if(isset($actions[1])){
 				self::$action = $actions[1];
 				$params = explode("/", self::$action);
-				$apiCategories = $this->createActions();
+				$this->createActions();
+				$apiCategories = $this->actions;
 				if($params[0] == "index"){
 					// This is a special action, which lists all the actions and their help pages
 					echo "<h1>API Actions</h1>\n";
@@ -71,157 +76,164 @@ class APIRequest{
 	    return $api::doAction($param);
 	}
 	
+	function addAction($category, $action, $apiObj){
+	    $this->actions[$category][$action] = $apiObj;
+	}
+	
 	function createActions(){
 	    global $apiPaths;
 		// All API actions should be put into this array
 		$actions = array();
 		
 		//POST
-		$actions['Publications']['addBibtexArticleRef'] = new BibtexArticleAPI();
-		$actions['Publications']['addBibtexBookRef'] = new BibtexBookAPI();
-		$actions['Publications']['addBibtexCollectionRef'] = new BibtexCollectionAPI();
-		$actions['Publications']['addProceedingsPaperRef'] = new ProceedingsPaperAPI();
-		$actions['Publications']['addCollectionRef'] = new CollectionAPI();
-		$actions['Publications']['addJournalPaperRef'] = new JournalPaperAPI();
-		$actions['Publications']['addJournalAbstractRef'] = new JournalAbstractAPI();
-		$actions['Publications']['addBookRef'] = new BookAPI();
-		$actions['Publications']['addEditedBookRef'] = new EditedBookAPI();
-		$actions['Publications']['addBookChapterRef'] = new BookChapterAPI();
-		$actions['Publications']['addBookReviewRef'] = new BookReviewAPI();
-		$actions['Publications']['addReviewArticleRef'] = new ReviewArticleAPI();
-		$actions['Publications']['addWhitePaperRef'] = new WhitePaperAPI();
-		$actions['Publications']['addMagazineRef'] = new MagazineAPI();
-		$actions['Publications']['addPHDThesisRef'] = new PHDThesisAPI();
-		$actions['Publications']['addMastersThesisRef'] = new MastersThesisAPI();
-		$actions['Publications']['addBachelorsThesisRef'] = new BachelorsThesisAPI();
-		$actions['Publications']['addTechReportRef'] = new TechReportAPI();
-		$actions['Publications']['addPosterRef'] = new PosterAPI();
-		$actions['Publications']['addManualRef'] = new ManualAPI();
-		$actions['Publications']['addMiscRef'] = new MiscAPI();
-		$actions['Publications']['updateBibtexArticleRef'] = new BibtexArticleAPI(true);
-		$actions['Publications']['updateBibtexBookRef'] = new BibtexBookAPI(true);
-		$actions['Publications']['updateBibtexCollectionRef'] = new BibtexCollectionAPI(true);
-		$actions['Publications']['updateProceedingsPaperRef'] = new ProceedingsPaperAPI(true);
-		$actions['Publications']['updateCollectionRef'] = new CollectionAPI(true);
-		$actions['Publications']['updateJournalPaperRef'] = new JournalPaperAPI(true);
-		$actions['Publications']['updateJournalAbstractRef'] = new JournalAbstractAPI(true);
-		$actions['Publications']['updateBookRef'] = new BookAPI(true);
-		$actions['Publications']['updateEditedBookRef'] = new EditedBookAPI(true);
-		$actions['Publications']['updateBookChapterRef'] = new BookChapterAPI(true);
-		$actions['Publications']['updateBookReviewRef'] = new BookReviewAPI(true);
-		$actions['Publications']['updateReviewArticleRef'] = new ReviewArticleAPI(true);
-		$actions['Publications']['updateWhitePaperRef'] = new WhitePaperAPI(true);
-		$actions['Publications']['updateMagazineRef'] = new MagazineAPI(true);
-		$actions['Publications']['updatePHDThesisRef'] = new PHDThesisAPI(true);
-		$actions['Publications']['updateMastersThesisRef'] = new MastersThesisAPI(true);
-		$actions['Publications']['updateBachelorsThesisRef'] = new BachelorsThesisAPI(true);
-		$actions['Publications']['updateTechReportRef'] = new TechReportAPI(true);
-		$actions['Publications']['updatePosterRef'] = new PosterAPI(true);
-		$actions['Publications']['updateManualRef'] = new ManualAPI(true);
-		$actions['Publications']['updateMiscRef'] = new MiscAPI(true);
+		$this->addAction('Publications', 'addBibtexArticleRef', new BibtexArticleAPI());
+		$this->addAction('Publications', 'addBibtexBookRef', new BibtexBookAPI());
+		$this->addAction('Publications', 'addBibtexCollectionRef', new BibtexCollectionAPI());
+		$this->addAction('Publications', 'addProceedingsPaperRef', new ProceedingsPaperAPI());
+		$this->addAction('Publications', 'addCollectionRef', new CollectionAPI());
+		$this->addAction('Publications', 'addJournalPaperRef', new JournalPaperAPI());
+		$this->addAction('Publications', 'addJournalAbstractRef', new JournalAbstractAPI());
+		$this->addAction('Publications', 'addBookRef', new BookAPI());
+		$this->addAction('Publications', 'addEditedBookRef', new EditedBookAPI());
+		$this->addAction('Publications', 'addBookChapterRef', new BookChapterAPI());
+		$this->addAction('Publications', 'addBookReviewRef', new BookReviewAPI());
+		$this->addAction('Publications', 'addReviewArticleRef', new ReviewArticleAPI());
+		$this->addAction('Publications', 'addWhitePaperRef', new WhitePaperAPI());
+		$this->addAction('Publications', 'addMagazineRef', new MagazineAPI());
+		$this->addAction('Publications', 'addPHDThesisRef', new PHDThesisAPI());
+		$this->addAction('Publications', 'addMastersThesisRef', new MastersThesisAPI());
+		$this->addAction('Publications', 'addBachelorsThesisRef', new BachelorsThesisAPI());
+		$this->addAction('Publications', 'addTechReportRef', new TechReportAPI());
+		$this->addAction('Publications', 'addPosterRef', new PosterAPI());
+		$this->addAction('Publications', 'addManualRef', new ManualAPI());
+		$this->addAction('Publications', 'addMiscRef', new MiscAPI());
+		$this->addAction('Publications', 'updateBibtexArticleRef', new BibtexArticleAPI(true));
+		$this->addAction('Publications', 'updateBibtexBookRef', new BibtexBookAPI(true));
+		$this->addAction('Publications', 'updateBibtexCollectionRef', new BibtexCollectionAPI(true));
+		$this->addAction('Publications', 'updateProceedingsPaperRef', new ProceedingsPaperAPI(true));
+		$this->addAction('Publications', 'updateCollectionRef', new CollectionAPI(true));
+		$this->addAction('Publications', 'updateJournalPaperRef', new JournalPaperAPI(true));
+		$this->addAction('Publications', 'updateJournalAbstractRef', new JournalAbstractAPI(true));
+		$this->addAction('Publications', 'updateBookRef', new BookAPI(true));
+		$this->addAction('Publications', 'updateEditedBookRef', new EditedBookAPI(true));
+		$this->addAction('Publications', 'updateBookChapterRef', new BookChapterAPI(true));
+		$this->addAction('Publications', 'updateBookReviewRef', new BookReviewAPI(true));
+		$this->addAction('Publications', 'updateReviewArticleRef', new ReviewArticleAPI(true));
+		$this->addAction('Publications', 'updateWhitePaperRef', new WhitePaperAPI(true));
+		$this->addAction('Publications', 'updateMagazineRef', new MagazineAPI(true));
+		$this->addAction('Publications', 'updatePHDThesisRef', new PHDThesisAPI(true));
+		$this->addAction('Publications', 'updateMastersThesisRef', new MastersThesisAPI(true));
+		$this->addAction('Publications', 'updateBachelorsThesisRef', new BachelorsThesisAPI(true));
+		$this->addAction('Publications', 'updateTechReportRef', new TechReportAPI(true));
+		$this->addAction('Publications', 'updatePosterRef', new PosterAPI(true));
+		$this->addAction('Publications', 'updateManualRef', new ManualAPI(true));
+		$this->addAction('Publications', 'updateMiscRef', new MiscAPI(true));
 		//GET
-		$actions['Publications']['getPublicationInfo'] = new PublicationAPI();
+		$this->addAction('Publications', 'getPublicationInfo', new PublicationAPI());
 		
 		//POST
-		$actions['Artifacts']['addRepositoryRef'] = new RepositoryAPI();
-		$actions['Artifacts']['addOpenSoftwareRef'] = new SoftwareAPI();
-		$actions['Artifacts']['addPatentRef'] = new PatentAPI();
-		$actions['Artifacts']['addDeviceRef'] = new DeviceAPI();
-		$actions['Artifacts']['addAestheticObjectRef'] = new AestheticObjectAPI();
-		$actions['Artifacts']['addMiscArtifactRef'] = new ArtifactAPI();
-		$actions['Artifacts']['updateRepositoryRef'] = new RepositoryAPI(true);
-		$actions['Artifacts']['updateOpenSoftwareRef'] = new SoftwareAPI(true);
-		$actions['Artifacts']['updatePatentRef'] = new PatentAPI(true);
-		$actions['Artifacts']['updateDeviceRef'] = new DeviceAPI(true);
-		$actions['Artifacts']['updateAestheticObjectRef'] = new AestheticObjectAPI(true);
-		$actions['Artifacts']['updateMiscArtifactRef'] = new ArtifactAPI(true);
+		$this->addAction('Artifacts', 'addRepositoryRef', new RepositoryAPI());
+		$this->addAction('Artifacts', 'addOpenSoftwareRef', new SoftwareAPI());
+		$this->addAction('Artifacts', 'addPatentRef', new PatentAPI());
+		$this->addAction('Artifacts', 'addDeviceRef', new DeviceAPI());
+		$this->addAction('Artifacts', 'addAestheticObjectRef', new AestheticObjectAPI());
+		$this->addAction('Artifacts', 'addMiscArtifactRef', new ArtifactAPI());
+		$this->addAction('Artifacts', 'updateRepositoryRef', new RepositoryAPI(true));
+		$this->addAction('Artifacts', 'updateOpenSoftwareRef', new SoftwareAPI(true));
+		$this->addAction('Artifacts', 'updatePatentRef', new PatentAPI(true));
+		$this->addAction('Artifacts', 'updateDeviceRef', new DeviceAPI(true));
+		$this->addAction('Artifacts', 'updateAestheticObjectRef', new AestheticObjectAPI(true));
+		$this->addAction('Artifacts', 'updateMiscArtifactRef', new ArtifactAPI(true));
 		
 		//POST
-		//$actions['Activities']['addInvitedPresentationRef'] = new InvitedPresentationAPI();
-		//$actions['Activities']['addPresentationRef'] = new PresentationAPI();
-		$actions['Activities']['addPanelRef'] = new PanelAPI();
-		$actions['Activities']['addTutorialRef'] = new TutorialAPI();
-		$actions['Activities']['addEventOrganizationRef'] = new EventOrganizationAPI();
-		//$actions['Activities']['updateInvitedPresntaqtionRef'] = new InvitedPresentationAPI(true);
-		//$actions['Activities']['updatePresentationRef'] = new PresentationAPI(true);
-		$actions['Activities']['updatePanelRef'] = new PanelAPI(true);
-		$actions['Activities']['updateTutorialRef'] = new TutorialAPI(true);
-		$actions['Activities']['updateEventOrganizationRef'] = new EventOrganizationAPI(true);
+		//$this->addAction('Activities', 'addInvitedPresentationRef', new InvitedPresentationAPI());
+		//$this->addAction('Activities', 'addPresentationRef', new PresentationAPI());
+		$this->addAction('Activities', 'addPanelRef', new PanelAPI());
+		$this->addAction('Activities', 'addTutorialRef', new TutorialAPI());
+		$this->addAction('Activities', 'addEventOrganizationRef', new EventOrganizationAPI());
+		//$this->addAction('Activities', 'updateInvitedPresntaqtionRef', new InvitedPresentationAPI(true));
+		//$this->addAction('Activities', 'updatePresentationRef', new PresentationAPI(true));
+		$this->addAction('Activities', 'updatePanelRef', new PanelAPI(true));
+		$this->addAction('Activities', 'updateTutorialRef', new TutorialAPI(true));
+		$this->addAction('Activities', 'updateEventOrganizationRef', new EventOrganizationAPI(true));
 		
 		//POST
-		$actions['Press']['addUniveristyPressRef'] = new UniversityPressAPI();
-		$actions['Press']['addProvincialPressRef'] = new ProvincialPressAPI();
-		$actions['Press']['addNationalPressRef'] = new NationalPressAPI();
-		$actions['Press']['addInternationalPressRef'] = new InternationalPressAPI();
-		$actions['Press']['addMiscPressRef'] = new PressAPI();
-		$actions['Press']['updateUniveristyPressRef'] = new UniversityPressAPI(true);
-		$actions['Press']['updateProvincialPressRef'] = new ProvincialPressAPI(true);
-		$actions['Press']['updateNationalPressRef'] = new NationalPressAPI(true);
-		$actions['Press']['updateInternationalPressRef'] = new InternationalPressAPI(true);
-		$actions['Press']['updateMiscPressRef'] = new PressAPI(true);
+		$this->addAction('Press', 'addUniveristyPressRef', new UniversityPressAPI());
+		$this->addAction('Press', 'addProvincialPressRef', new ProvincialPressAPI());
+		$this->addAction('Press', 'addNationalPressRef', new NationalPressAPI());
+		$this->addAction('Press', 'addInternationalPressRef', new InternationalPressAPI());
+		$this->addAction('Press', 'addMiscPressRef', new PressAPI());
+		$this->addAction('Press', 'updateUniveristyPressRef', new UniversityPressAPI(true));
+		$this->addAction('Press', 'updateProvincialPressRef', new ProvincialPressAPI(true));
+		$this->addAction('Press', 'updateNationalPressRef', new NationalPressAPI(true));
+		$this->addAction('Press', 'updateInternationalPressRef', new InternationalPressAPI(true));
+		$this->addAction('Press', 'updateMiscPressRef', new PressAPI(true));
 		
 		//POST
-		$actions['Awards']['addAwardRef'] = new AwardsAPI();
-		$actions['Awards']['updateAwardRef'] = new AwardsAPI(true);
+		$this->addAction('Awards', 'addAwardRef', new AwardsAPI());
+		$this->addAction('Awards', 'updateAwardRef', new AwardsAPI(true));
 		
 		//POST
-		$actions['Products']['deletePaperRef'] = new DeletePaperAPI();
+		$this->addAction('Products', 'deletePaperRef', new DeletePaperAPI());
 		
 		//POST
-		$actions['Materials']['addMaterialRef'] = new AwardsAPI();
-		$actions['Materials']['updateMaterialRef'] = new AwardsAPI(true);
+		$this->addAction('Materials', 'addMaterialRef', new AwardsAPI());
+		$this->addAction('Materials', 'updateMaterialRef', new AwardsAPI(true));
 		//GET
-		$actions['Materials']['getMaterialList'] = new MaterialListAPI();
-		$actions['Materials']['getMaterialInfo'] = new MaterialAPI();
+		$this->addAction('Materials', 'getMaterialList', new MaterialListAPI());
+		$this->addAction('Materials', 'getMaterialInfo', new MaterialAPI());
 		
 		//POST
-		$actions['User Accounts']['addUserAccount'] = new CreateUserAPI();
-		$actions['User Accounts']['addUserRequest'] = new RequestUserAPI();
-		$actions['User Accounts']['addUserRole'] = new AddRoleAPI();
-		$actions['User Accounts']['addProjectLeader'] = new AddProjectLeaderAPI();
-		$actions['User Accounts']['addThemeLeader'] = new AddThemeLeaderAPI();
-		$actions['User Accounts']['addHQPThesis'] = new AddHQPThesisAPI();
-		$actions['User Accounts']['addHQPMovedOn'] = new AddHQPMovedOnAPI();
-		$actions['User Accounts']['addRelation'] = new AddRelationAPI();
-		$actions['User Accounts']['addUserPartner'] = new UserPartnerAPI();
-		$actions['User Accounts']['updateUserTwitterAccount'] = new UserTwitterAccountAPI();
-		$actions['User Accounts']['updateUserNationality'] = new UserNationalityAPI();
-        $actions['User Accounts']['updateUserEmail'] = new UserEmailAPI();
-        $actions['User Accounts']['updateUserGender'] = new UserGenderAPI();
-		$actions['User Accounts']['updateUserUniversity'] = new UserUniversityAPI();
-		$actions['User Accounts']['updateUserProfile'] = new UserProfileAPI();
-		$actions['User Accounts']['updateProjectRelation'] = new UpdateProjectRelationAPI();
-		$actions['User Accounts']['updateUserPartner'] = new UserPartnerAPI();
-		$actions['User Accounts']['deleteUserRole'] = new DeleteRoleAPI();
-		$actions['User Accounts']['deleteProjectLeader'] = new DeleteProjectLeaderAPI();
-		$actions['User Accounts']['deleteThemeLeader'] = new DeleteThemeLeaderAPI();
+		$this->addAction('User Accounts', 'addUserAccount', new CreateUserAPI());
+		$this->addAction('User Accounts', 'addUserRequest', new RequestUserAPI());
+		$this->addAction('User Accounts', 'addUserRole', new AddRoleAPI());
+		$this->addAction('User Accounts', 'addProjectLeader', new AddProjectLeaderAPI());
+		$this->addAction('User Accounts', 'addThemeLeader', new AddThemeLeaderAPI());
+		$this->addAction('User Accounts', 'addHQPThesis', new AddHQPThesisAPI());
+		$this->addAction('User Accounts', 'addHQPMovedOn', new AddHQPMovedOnAPI());
+		$this->addAction('User Accounts', 'addRelation', new AddRelationAPI());
+		$this->addAction('User Accounts', 'addUserPartner', new UserPartnerAPI());
+		$this->addAction('User Accounts', 'updateUserTwitterAccount', new UserTwitterAccountAPI());
+		$this->addAction('User Accounts', 'updateUserNationality', new UserNationalityAPI());
+        $this->addAction('User Accounts', 'updateUserEmail', new UserEmailAPI());
+        $this->addAction('User Accounts', 'updateUserGender', new UserGenderAPI());
+		$this->addAction('User Accounts', 'updateUserUniversity', new UserUniversityAPI());
+		$this->addAction('User Accounts', 'updateUserProfile', new UserProfileAPI());
+		$this->addAction('User Accounts', 'updateProjectRelation', new UpdateProjectRelationAPI());
+		$this->addAction('User Accounts', 'updateUserPartner', new UserPartnerAPI());
+		$this->addAction('User Accounts', 'deleteUserRole', new DeleteRoleAPI());
+		$this->addAction('User Accounts', 'deleteProjectLeader', new DeleteProjectLeaderAPI());
+		$this->addAction('User Accounts', 'deleteThemeLeader', new DeleteThemeLeaderAPI());
 		//GET
-		$actions['User Accounts']['getResearcherInfo'] = new ResearcherAPI();
-		$actions['User Accounts']['getResearcherCompleteInfo'] = new ResearcherCompleteAPI();
+		$this->addAction('User Accounts', 'getResearcherInfo', new ResearcherAPI());
+		$this->addAction('User Accounts', 'getResearcherCompleteInfo', new ResearcherCompleteAPI());
 		
 		//POST
-		$actions['Contributions']['addContribution'] = new AddContributionAPI();
-		$actions['Contributions']['updateContribution'] = new AddContributionAPI();
+		$this->addAction('Contributions', 'addContribution', new AddContributionAPI());
+		$this->addAction('Contributions', 'updateContribution', new AddContributionAPI());
 		
 		//POST
-		$actions['Projects']['createProject'] = new CreateProjectAPI();
-		$actions['Projects']['addProjectMember'] = new AddProjectMemberAPI();
-		$actions['Projects']['addProjectMilestone'] = new ProjectMilestoneAPI();
-		$actions['Projects']['updateProjectDescription'] = new ProjectDescriptionAPI();
-		$actions['Projects']['updateProjectMilestone'] = new ProjectMilestoneAPI(true);
-		$actions['Projects']['evolveProject'] = new EvolveProjectAPI();
-		$actions['Projects']['deleteProjectMember'] = new DeleteProjectMemberAPI();
-		$actions['Projects']['deleteProject'] = new DeleteProjectAPI();
+		$this->addAction('Projects', 'createProject', new CreateProjectAPI());
+		$this->addAction('Projects', 'addProjectMember', new AddProjectMemberAPI());
+		$this->addAction('Projects', 'addProjectMilestone', new ProjectMilestoneAPI());
+		$this->addAction('Projects', 'updateProjectDescription', new ProjectDescriptionAPI());
+		$this->addAction('Projects', 'updateProjectMilestone', new ProjectMilestoneAPI(true));
+		$this->addAction('Projects', 'evolveProject', new EvolveProjectAPI());
+		$this->addAction('Projects', 'deleteProjectMember', new DeleteProjectMemberAPI());
+		$this->addAction('Projects', 'deleteProject', new DeleteProjectAPI());
 		//GET
-		$actions['Projects']['getProjectInfo'] = new ProjectAPI();
+		$this->addAction('Projects', 'getProjectInfo', new ProjectAPI());
 		
-		$actions['Hidden']['getWFInfo'] = new WFAPI();
-		$actions['Hidden']['getProjectMilestoneHistory'] = new ProjectMilestoneHistoryAPI();
+		$this->addAction('Hidden', 'getWFInfo', new WFAPI());
+		$this->addAction('Hidden', 'getProjectMilestoneHistory', new ProjectMilestoneHistoryAPI());
 		
 		return $actions;
 	}
 }
 
+/**
+ * @package API
+ */
 abstract class API {
 
     var $errors = array();
@@ -282,6 +294,22 @@ abstract class API {
 	                               "required" => $required,
 	                               "description" => $description,
 	                               "example" => $example);
+	}
+	
+	/**
+	 * @param string $key The key of the POST parameter
+	 * @return string Returns the value of the POST parameter
+	 */
+	function POST($key){
+	    return (isset($_POST[$key])) ? $_POST[$key] : "";
+	}
+	
+	/**
+	 * @param string $key The key of the GET parameter
+	 * @return string Returns the value of the GET parameter
+	 */
+	function GET($key){
+	    return (isset($_GET[$key])) ? $_GET[$key] : "";
 	}
 	
 	function addError($error){
@@ -375,10 +403,97 @@ abstract class API {
 		exit;
 	}
 	
+	/**
+	 * Does some pre-proccessing to the parameters
+	 * @param array $params The array of GET parameters
+	 */
 	abstract function processParams($params);
 	
+	/**
+	 * @return boolean Returns whether or not a login is required to execute this action
+	 */
 	abstract function isLoginRequired();
 	
+	/**
+	 * Runs the API action
+	 */
 	abstract function doAction();
+}
+
+/**
+ * @package API
+ */
+abstract class RESTAPI extends API {
+    
+    function processRequest($params=null){
+		global $wgUser;
+		if(isset($_GET['getHelp'])){
+			$this->getHelp();
+		}
+		else{
+			if($this->isLoginRequired() && !$wgUser->isLoggedIn()){
+                header("HTTP/1.0: 403 Authentication Required");
+                exit;
+            }
+			$this->processParams($params);
+		    $this->doAction();
+		}
+	}
+	
+	/**
+	 * Generates a error message via the HTTP 400 return code, and exits execution
+	 */
+	function throwError($message){
+	    header("HTTP/1.0: 400 $message");
+	    exit;
+	}
+    
+    function doAction(){
+        global $wgUser;
+        $method = $_SERVER['REQUEST_METHOD'];
+        if($method == "GET"){
+            $json = $this->doGET();
+        }
+        else if($method == "PUT" || ($method == "POST" && @$_POST['_method'] == "PUT")){
+            $json = $this->doPUT();
+        }
+        else if($method == "DELETE" || ($method == "POST" && @$_POST['_method'] == "DELETE")){
+            $json = $this->doDELETE();
+        }
+        else if($method == "POST"){
+            $json = $this->doPOST();
+        }
+        header('Content-Type: application/json');
+        exit;
+    }
+    
+    function processParams($params){
+
+    }
+    
+    /**
+     * CREATE/POST
+     * @abstract
+     */
+    abstract function doPOST();
+    
+    /**
+     * READ/GET
+     * @abstract
+     */
+    abstract function doGET();
+
+    /**
+     * UPDATE/PUT
+     * @abstract
+     */
+    abstract function doPUT();
+    
+    /**
+     * DELETE/DELETE
+     * @abstract
+     */
+    abstract function doDELETE();
+    
 }
 ?>

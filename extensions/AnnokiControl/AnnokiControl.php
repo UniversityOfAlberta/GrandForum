@@ -50,6 +50,11 @@ $egAnnokiExtensions['TabUtils']     = array( 'name' => 'TabUtils',
 					      'enabled' => true,
 					      );
 					      
+$egAnnokiExtensions['API']     = array( 'name' => 'API',
+					      'path' => "$IP/extensions/API/API.body.php",
+					      'enabled' => true,
+					      );
+					      
 $egAnnokiExtensions['GrandObjects']     = array( 'name' => 'GrandObjects',
 					      'path' => "$IP/extensions/GrandObjects/GrandObjects.php",
 					      'enabled' => true,
@@ -152,11 +157,6 @@ $egAnnokiExtensions['AddMember']     = array( 'name' => 'AddMember',
 					      
 $egAnnokiExtensions['EditMember']     = array( 'name' => 'EditMember',
 					      'path' => "$IP/extensions/EditMember/EditMember.php",
-					      'enabled' => true,
-					      );
-					      
-$egAnnokiExtensions['API']     = array( 'name' => 'API',
-					      'path' => "$IP/extensions/API/API.body.php",
 					      'enabled' => true,
 					      );
 					      

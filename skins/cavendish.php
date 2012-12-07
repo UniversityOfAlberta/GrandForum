@@ -514,8 +514,7 @@ class cavendishTemplate extends QuickTemplate {
     <?php 			}
 			    }
 		    }
-	    echo "					<li id='f-disclaimer'><a href='index.php?action=api.index'>API</a></li>
-						    <li id='f-disclaimer'><a href='mailto:support@forum.grand-nce.ca'>Support</a></li>\n";
+	    echo "<li id='f-disclaimer'><a href='mailto:support@forum.grand-nce.ca'>Support</a></li>\n";
     ?>
     </ul></td><td align="right" width="1%" nowrap="nowrap"><?php if($this->data['poweredbyico']) { ?><div id="f-poweredbyico"><?php $this->html('poweredbyico') ?></div><?php } ?></td></tr></table><img style='display:none;' src='../skins/Throbber.gif' />
 	    </div><!-- end of the FOOTER div -->
