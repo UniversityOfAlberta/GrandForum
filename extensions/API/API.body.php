@@ -244,6 +244,7 @@ abstract class API {
 
 	function processRequest($params=null){
 		global $wgUser;
+		session_write_close();
 		if(isset($_GET['getHelp'])){
 			$this->getHelp();
 		}

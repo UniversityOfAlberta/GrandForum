@@ -4,6 +4,7 @@ class Person extends BackboneModel {
 
     static $cache = array();
     static $rolesCache = array();
+    static $universityCache = array();
     static $coLeaderCache = array();
     static $leaderCache = array();
     static $aliasCache = array();
@@ -16,12 +17,15 @@ class Person extends BackboneModel {
 	var $gender;
 	var $photo;
 	var $twitter;
+	var $publicProfile;
+	var $privateProfile;
 	var $realname;
 	var $projects;
 	var $isProjectLeader;
 	var $isProjectCoLeader;
 	var $groups;
 	var $roles;
+	var $university;
 	var $isEvaluator = null;
 	var $isProjectManager = null;
 	var $relations;
@@ -186,7 +190,7 @@ class Person extends BackboneModel {
 	    if(count(self::$aliasCache) == 0){
 			$uaTable = getTableName("user_aliases");
 			$uTable = getTableName("user");
-			$sql = "SELECT ua.alias, u.user_id, u.user_name, u.user_real_name, u.user_email, u.user_twitter, user_nationality, user_gender
+			$sql = "SELECT ua.alias, u.user_id, u.user_name, u.user_real_name, u.user_email, u.user_twitter, user_public_profile, user_private_profile, user_nationality, user_gender
 				FROM {$uaTable} as ua, {$uTable} as u 
 				WHERE ua.user_id = u.user_id
 				AND u.deleted != '1'";
@@ -201,7 +205,7 @@ class Person extends BackboneModel {
 	static function generateNamesCache(){
 	    if(count(self::$namesCache) == 0){
 		    $uTable = getTableName("user");
-		    $sql = "SELECT `user_id`,`user_name`,`user_real_name`,`user_email`,`user_twitter`,`user_nationality`,`user_gender`
+		    $sql = "SELECT `user_id`,`user_name`,`user_real_name`,`user_email`,`user_twitter`,`user_public_profile`,`user_private_profile`,`user_nationality`,`user_gender`
 			    FROM $uTable u
 			    WHERE `deleted` != '1'";
 		    $data = DBFunctions::execSQL($sql);
@@ -247,6 +251,27 @@ class Person extends BackboneModel {
                                                                   'comment' => ''));
             }
 	    }
+	}
+	
+	static function generateUniversityCache(){
+	    if(count(self::$universityCache) == 0){
+            $sql = "SELECT * 
+                    FROM mw_user_university uu, mw_universities u
+                    WHERE u.university_id = uu.university_id
+                    GROUP BY uu.user_id
+                    HAVING uu.id = MAX(uu.id)";
+            $data = DBFunctions::execSQL($sql);
+            if(DBFunctions::getNRows() > 0){
+                foreach($data as $row){
+                    if(!isset(self::$universityCache[$row['user_id']])){
+                        self::$universityCache[$row['user_id']] = 
+                            array("university" => str_replace("&", "&amp;", $row['university_name']),
+                                  "department" => str_replace("&", "&amp;", $row['department']),
+                                  "position"   => str_replace("&", "&amp;", $row['position']));
+                    }
+                }
+            }
+        }
 	}
 	
 	// Caches the resultset of the co leaders
@@ -295,7 +320,7 @@ class Person extends BackboneModel {
 	
 	static function getAllStaff(){
 	    $uTable = getTableName("user");
-	    $sql = "SELECT *
+	    $sql = "SELECT `user_id`, `user_name`
 	            FROM $uTable
 	            ORDER BY user_name ASC";
 	    $data = DBFunctions::execSQL($sql);
@@ -315,7 +340,7 @@ class Person extends BackboneModel {
 	// If $filter='all' then, even people with no projects are included.
 	static function getAllPeople($filter=null){
 	    $uTable = getTableName("user");
-	    $sql = "SELECT *
+	    $sql = "SELECT `user_id`, `user_name`
 	            FROM $uTable
 	            WHERE `deleted` != '1'
 	            ORDER BY user_name ASC
@@ -338,7 +363,7 @@ class Person extends BackboneModel {
     // If $filter='all' then, even people with no projects are included.
     static function getAllPeopleDuring($filter=null, $startRange = false, $endRange = false){
         $uTable = getTableName("user");
-        $sql = "SELECT *
+        $sql = "SELECT `user_id`, `user_name`
                 FROM $uTable
                 WHERE `deleted` != '1'
                 ORDER BY user_name ASC";
@@ -386,13 +411,16 @@ class Person extends BackboneModel {
 			$this->email = $data[0]['user_email'];
 			$this->gender = $data[0]['user_gender'];
 			$this->nationality = $data[0]['user_nationality'];
+			$this->university = false;
 			$this->twitter = $data[0]['user_twitter'];
+			$this->publicProfile = $data[0]['user_public_profile'];
+			$this->privateProfile = $data[0]['user_private_profile'];
 			$this->hqps = null;
 			$this->historyHqps = null;
 		}
 	}
 	
-	function toJSON(){
+	function toArray(){
 	    global $wgUser;
 	    $privateProfile = "";
 	    $publicProfile = $this->getProfile(false);
@@ -413,7 +441,7 @@ class Person extends BackboneModel {
 	                  'position' => $this->getPosition(),
 	                  'publicProfile' => $publicProfile,
 	                  'privateProfile' => $publicProfile);
-	    return json_encode($json);
+	    return $json;
 	}
 	
 	function create(){
@@ -665,19 +693,12 @@ class Person extends BackboneModel {
 	// Returns the user's profile.
 	// If $private is true, then it grabs the private version, otherwise it gets the public
 	function getProfile($private=false){
-	    $uTable = getTableName("user");
-	    $profile = "user_public_profile";
 	    if($private){
-	        $profile = "user_private_profile";
+	        return $this->privateProfile;
 	    }
-	    $sql = "SELECT $profile as profile
-		        FROM $uTable u
-		        WHERE user_name = '{$this->name}'";
-	    $data = DBFunctions::execSQL($sql);
-		if(DBFunctions::getNRows() > 0){
-		    return $data[0]['profile'];
-		}
-		else return "";
+	    else{
+	        return $this->publicProfile;
+	    }
 	}
 	
 	// Returns the moved on row for when HQPs are inactivated
@@ -789,22 +810,12 @@ class Person extends BackboneModel {
 	
 	// Returns the University information of the Person
 	function getUniversity(){
-        $uTable = getTableName("universities");
-        $uuTable = getTableName("user_university");
-        $sql = "SELECT * 
-	            FROM $uuTable uu, $uTable u
-	            WHERE uu.user_id = '{$this->id}'
-	            AND u.university_id = uu.university_id
-				ORDER BY uu.id DESC";
-	    $data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
-            return array("university" => str_replace("&", "&amp;", $data[0]['university_name']),
-	                     "department" => str_replace("&", "&amp;", $data[0]['department']),
-	                     "position"   => str_replace("&", "&amp;", $data[0]['position']));
-        }
-        else{
-            return null;
-        }
+	    self::generateUniversityCache();
+	    if($this->university !== false){
+	        return $this->university;
+	    }
+	    $this->university = @self::$universityCache[$this->id];
+	    return $this->university;
 	}
 	
 	function getUni(){

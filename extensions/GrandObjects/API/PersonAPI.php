@@ -3,13 +3,11 @@
 class PersonAPI extends RESTAPI {
 
     var $id;
+    var $action;
 
     function processParams($params){
-        foreach($params as $key => $param){
-            if($key == 1){
-                $this->id = $param;
-            }
-        }
+        $this->id = @$params[1];
+        $this->action = @$params[2];
     }
 
     function isLoginRequired(){
@@ -17,11 +15,21 @@ class PersonAPI extends RESTAPI {
     }
     
     function doGET(){
-        $person = Person::newFromId($this->id);
-        if($person == null || $person->getName() == ""){
-            $this->throwError("This user does not exist");
+        if($this->id != ""){
+            $person = Person::newFromId($this->id);
+            if($person == null || $person->getName() == ""){
+                $this->throwError("This user does not exist");
+            }
+            return $person->toJSON();
         }
-        return $person->toJSON();
+        else{
+            $json = array();
+            $people = Person::getAllPeople('all');
+            foreach($people as $person){
+                $json[] = $person->toArray();
+            }
+            return json_encode($json);
+        }
     }
     
     function doPOST(){

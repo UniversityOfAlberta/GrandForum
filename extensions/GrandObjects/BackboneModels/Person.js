@@ -1,4 +1,4 @@
-Person = Backbone.Model.extend({
+Person = Backbone.RelationalModel.extend({
     initialize: function(){
         this.bind("error", function(model, error){
             //addError(error);
@@ -28,9 +28,6 @@ Person = Backbone.Model.extend({
         if(attr.email == ''){
             return "Email address cannot be empty";
         }
-        if(attr.id == ''){
-            return "Id cannot be empty";
-        }
         if(attr.name == ''){
             return "Name cannot be empty";
         }
@@ -48,21 +45,8 @@ Person = Backbone.Model.extend({
     }
 });
 
-person2 = new Person({
-    id: null,
-    name: 'New.Name7',
-    realName: 'New Name',
-    reversedName: 'Name, New',
-    email: 'dwt@ualberta.ca',
-    nationality: 'Canadian',
-    gender: '',
-    photo: '',
-    twitter: '',
-    university: '',
-    position: '',
-    department: '',
-    publicProfile: '',
-    privateProfile: ''
+People = Backbone.Collection.extend({
+    model: Person,
+    
+    url: 'index.php?action=api.person'
 });
-
-person2.save();
