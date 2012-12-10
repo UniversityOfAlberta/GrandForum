@@ -15,7 +15,7 @@ Project = Backbone.RelationalModel.extend({
         status: '',
         type: '',
         deleted: ''
-    }
+    },
 });
 
 Projects = Backbone.Collection.extend({

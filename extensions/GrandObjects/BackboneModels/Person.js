@@ -1,5 +1,6 @@
 Person = Backbone.RelationalModel.extend({
     initialize: function(){
+        this.get('projects').url = this.urlRoot + '/' + this.get('id') + '/projects';
         this.bind('change:id', function(){
             this.get('projects').url = 'index.php?action=api.person/' + this.get('id') + '/projects';
         });
@@ -8,12 +9,8 @@ Person = Backbone.RelationalModel.extend({
     relations: [{
         type: Backbone.HasMany,
         key: 'projects',
-        relatedModel: 'Project',
-        collectionType: 'Projects',
-        reverseRelation: {
-            key: 'isMemberOf',
-            includeInJSON: 'id'
-        }
+        relatedModel: 'PersonProject',
+        collectionType: 'PersonProjects'
     }],
     
     urlRoot: 'index.php?action=api.person',
@@ -33,33 +30,44 @@ Person = Backbone.RelationalModel.extend({
         department: '',
         publicProfile: '',
         privateProfile: ''
+    }
+});
+
+PersonProject = Backbone.RelationalModel.extend({
+    
+    initialize: function(){
+
     },
     
-    /*
-    validate: function(attr){
-        if(attr.email == ''){
-            return "Email address cannot be empty";
-        }
-        if(attr.name == ''){
-            return "Name cannot be empty";
-        }
-        if(attr.gender != '' &&
-           attr.gender != 'Male' &&
-           attr.gender != 'Female'){
-            return "Gender must be either Male/Female";
-        }
-        if(attr.nationality != '' &&
-           attr.nationality != 'Canadian' &&
-           attr.nationality != 'Landed Immigrant' &&
-           attr.nationality != 'Visa Holder'){
-            return "Nationality must be either Canadian/Landed Immigrant/Visa Holder";
-        }
+    relations: [{
+        type: Backbone.HasOne,
+        key: 'project',
+        relatedModel: 'Project'
+    },
+    {
+        type: Backbone.HasOne,
+        key: 'person',
+        relatedModel: 'Person'
+    }],
+
+    urlRoot: function(){
+        return 'index.php?action=api.person/' + this.personId + '/projects'
+    },
+    
+    defaults: {
+        projectId: "",
+        personId: "",
+        startDate: "",
+        endDate: ""
     }
-    */
 });
 
 People = Backbone.Collection.extend({
     model: Person,
     
     url: 'index.php?action=api.person'
+});
+
+PersonProjects = Backbone.Collection.extend({
+    model: PersonProject,
 });

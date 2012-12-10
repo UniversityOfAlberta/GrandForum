@@ -132,6 +132,9 @@ class cavendishTemplate extends QuickTemplate {
 		<link rel="stylesheet" type="text/css" media="print" href="<?php $this->text('stylepath') ?>/common/commonPrint.css" />
 		<script type="text/javascript" src="<?php $this->text('stylepath' ) ?>/common/wikibits.js"></script>
 		<script type='text/javascript'>
+		
+		    me = new Person({id: <?php echo $wgUser->getId(); ?>});
+		
 		    function setMinWidth(){
 	            $("body").css('min-width', '0');
 	            minWidth = parseInt($("#header ul").css('left')) +

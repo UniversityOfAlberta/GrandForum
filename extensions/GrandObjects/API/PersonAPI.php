@@ -22,9 +22,12 @@ class PersonAPI extends RESTAPI {
             }
             if($this->action == "projects"){
                 $json = array();
-                $projects = $person->getProjects(); //TODO: Might need to get full history here
+                $projects = $person->getProjects(true); //TODO: Might need to get full history here
                 foreach($projects as $project){
-                    $json[] = $project->toArray();
+                    $json[] = array('projectId' => $project->getId(),
+                                    'personId' => $person->getId(),
+                                    'startDate' => $project->getJoinDate($person),
+                                    'endDate' => $project->getEndDate($person));
                 }
                 return json_encode($json);
             }
