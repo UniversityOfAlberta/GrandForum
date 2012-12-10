@@ -672,5 +672,12 @@ class Paper extends BackboneModel{
 	function delete(){
 	    
 	}
+
+	function toArray(){
+
+	}
+	function exists(){
+
+	}
 }
 ?>
