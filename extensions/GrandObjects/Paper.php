@@ -1,6 +1,6 @@
 <?php
 
-class Paper{
+class Paper extends BackboneModel{
 
     static $cache = array();
     static $dataCache = array();
@@ -634,6 +634,43 @@ class Paper{
 	        $return[] = $row['type'];
 	    }
 	    return $return;
+	}
+
+	function toJSON(){
+	    global $wgUser;
+	    //$privateProfile = "";
+	    //$publicProfile = $this->getProfile(false);
+	    //if($wgUser->isLoggedIn()){
+	    //    $privateProfile = $this->getProfile(true);
+	    //}
+
+	   
+	    $json = array('id' => $this->getId(),
+	                  'title' => $this->getTitle(),
+	                  'category' => $this->getCategory(),
+	                  'type' => $this->getType(),
+	                  'description' => $this->getDescription(),
+	                  'date' => $this->getDate(),
+	                  //'venue' => $this->getVenue(),
+	                  'status' => $this->getStatus(),
+	                  //'deleted' => $this->getTwitter(),
+	                  'projects' => $this->getProjects(),
+	                  'authors' => unserialize($this->authors),
+	                  'data' => $this->getData(),
+	                  'lastModified' => $this->lastModified);
+	    return json_encode($json);
+	}
+
+	function create(){
+	    
+	}
+	
+	function update(){
+	
+	}
+	
+	function delete(){
+	    
 	}
 }
 ?>
