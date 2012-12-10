@@ -28,7 +28,7 @@ class NIProgressReportItem extends StaticReportItem {
             $projects = array($project);
         }
         else{
-            $projects = $person->getProjects();
+            $projects = $person->getProjectsDuring();
         }
 		
 		$nMilestones = 0;
