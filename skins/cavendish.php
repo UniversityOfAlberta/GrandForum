@@ -210,7 +210,10 @@ class cavendishTemplate extends QuickTemplate {
 			$sql = "SELECT * FROM survey_results WHERE user_id = $loggedin_user_id";
 		    $data = DBFunctions::execSQL($sql);
 		  
-		    if(count($data) == 0 || (count($data) > 0 && isset($data[0]['submitted']) && $data[0]['submitted'] == 0) ){
+		    if(count($data) == 0 || (count($data) > 0 && 
+		    		isset($data[0]['consent']) && $data[0]['consent'] == 1 &&
+		    		isset($data[0]['submitted']) && $data[0]['submitted'] == 0) ){
+
 		    	if(! isset($_COOKIE['survey_reminder'])){
 					setcookie("survey_reminder", 1, time()+75600);
 					$autoOpen = "true";
