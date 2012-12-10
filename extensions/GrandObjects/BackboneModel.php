@@ -16,10 +16,18 @@ abstract class BackboneModel {
     }
 
     /**
-     * Generates and returns a jsonified version of this object
-     * @return mixed Returns a jsonified version of this object
+     * Generates and returns a jsonified version of this BackboneModel
+     * @return mixed Returns a jsonified version of this BackboneModel
      */
-    abstract function toJSON();
+    function toJSON(){
+        return json_encode($this->toArray());
+    }
+    
+    /**
+     * Generates and returns an array version of this BackboneModel
+     * @return array Returns an array version of this BackboneModel
+     */
+    abstract function toArray();
     
     /**
      * Creates a new record in the DB for this BackboneModel
