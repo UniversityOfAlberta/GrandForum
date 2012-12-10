@@ -5,6 +5,17 @@ Person = Backbone.RelationalModel.extend({
         });
     },
     
+    relations: [{
+        type: Backbone.HasMany,
+        key: 'projects',
+        relatedModel: 'Project',
+        collectionType: 'Projects',
+        reverseRelation: {
+            key: 'isMemberOf',
+            includeInJSON: 'id'
+        }
+    }],
+    
     urlRoot: 'index.php?action=api.person',
     
     defaults: {
@@ -23,6 +34,7 @@ Person = Backbone.RelationalModel.extend({
         publicProfile: '',
         privateProfile: ''
     },
+    
     /*
     validate: function(attr){
         if(attr.email == ''){
