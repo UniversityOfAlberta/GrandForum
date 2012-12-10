@@ -20,6 +20,14 @@ class PersonAPI extends RESTAPI {
             if($person == null || $person->getName() == ""){
                 $this->throwError("This user does not exist");
             }
+            if($this->action == "projects"){
+                $json = array();
+                $projects = $person->getProjects(); //TODO: Might need to get full history here
+                foreach($projects as $project){
+                    $json[] = $project->toArray();
+                }
+                return json_encode($json);
+            }
             return $person->toJSON();
         }
         else{

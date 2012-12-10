@@ -1,7 +1,7 @@
 Person = Backbone.RelationalModel.extend({
     initialize: function(){
-        this.bind("error", function(model, error){
-            //addError(error);
+        this.bind('change:id', function(){
+            this.get('projects').url = 'index.php?action=api.person/' + this.get('id') + '/projects';
         });
     },
     
