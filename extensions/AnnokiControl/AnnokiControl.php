@@ -40,6 +40,11 @@ $egAnnokiExtensions['AccessControl'] = array( 'name' => 'Annoki Access Controls'
 					      'enabled' => true,
 					      );
 					      
+$egAnnokiExtensions['Cache']     = array( 'name' => 'Cache',
+					      'path' => "$IP/extensions/Cache/Cache.php",
+					      'enabled' => true,
+					      );
+					      
 $egAnnokiExtensions['Messages']     = array( 'name' => 'Messages',
 					      'path' => "$IP/extensions/Messages/Message.php",
 					      'enabled' => true,
@@ -72,11 +77,6 @@ $egAnnokiExtensions['Notification']     = array( 'name' => 'Notification',
 					      
 $egAnnokiExtensions['GrandObjectPage']     = array( 'name' => 'GrandObjectPage',
 					      'path' => "$IP/extensions/GrandObjectPage/GrandObjectPage.php",
-					      'enabled' => true,
-					      );
-					      
-$egAnnokiExtensions['Cache']     = array( 'name' => 'Cache',
-					      'path' => "$IP/extensions/Cache/Cache.php",
 					      'enabled' => true,
 					      );
 

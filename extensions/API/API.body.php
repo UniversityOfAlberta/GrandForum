@@ -222,7 +222,7 @@ class APIRequest{
 		$this->addAction('Projects', 'deleteProjectMember', new DeleteProjectMemberAPI());
 		$this->addAction('Projects', 'deleteProject', new DeleteProjectAPI());
 		//GET
-		$this->addAction('Projects', 'getProjectInfo', new ProjectAPI());
+		$this->addAction('Projects', 'getProjectInfo', new ProjectInfoAPI());
 		
 		$this->addAction('Hidden', 'getWFInfo', new WFAPI());
 		$this->addAction('Hidden', 'getProjectMilestoneHistory', new ProjectMilestoneHistoryAPI());

@@ -23,7 +23,7 @@ Person = Backbone.RelationalModel.extend({
         publicProfile: '',
         privateProfile: ''
     },
-    
+    /*
     validate: function(attr){
         if(attr.email == ''){
             return "Email address cannot be empty";
@@ -43,6 +43,7 @@ Person = Backbone.RelationalModel.extend({
             return "Nationality must be either Canadian/Landed Immigrant/Visa Holder";
         }
     }
+    */
 });
 
 People = Backbone.Collection.extend({

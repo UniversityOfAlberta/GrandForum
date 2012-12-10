@@ -1,6 +1,6 @@
 <?php
 
-class Project{
+class Project extends BackboneModel {
 
     static $cache = array();
 
@@ -234,6 +234,33 @@ class Project{
 			$this->fullName = false;
 			$this->themes = null;
 		}
+	}
+	
+	function toArray(){
+	    $array = array('id' => $this->getId(),
+	                   'name' => $this->getName(),
+	                   'fullname' => $this->getFullName(),
+	                   'description' => $this->getDescription(),
+	                   'status' => $this->getStatus(),
+	                   'type' => $this->getType(),
+	                   'deleted' => $this->isDeleted());
+	    return $array;
+	}
+	
+	function create(){
+	
+	}
+	
+	function update(){
+	
+	}
+	
+	function delete(){
+	
+	}
+	
+	function exists(){
+	
 	}
 	
     static function getHQPDistributionDuring($startRange = false, $endRange = false){
