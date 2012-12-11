@@ -638,31 +638,6 @@ class Paper extends BackboneModel{
 	    return $return;
 	}
 
-	function toJSON(){
-	    global $wgUser;
-	    //$privateProfile = "";
-	    //$publicProfile = $this->getProfile(false);
-	    //if($wgUser->isLoggedIn()){
-	    //    $privateProfile = $this->getProfile(true);
-	    //}
-
-	   
-	    $json = array('id' => $this->getId(),
-	                  'title' => $this->getTitle(),
-	                  'category' => $this->getCategory(),
-	                  'type' => $this->getType(),
-	                  'description' => $this->getDescription(),
-	                  'date' => $this->getDate(),
-	                  //'venue' => $this->getVenue(),
-	                  'status' => $this->getStatus(),
-	                  //'deleted' => $this->getTwitter(),
-	                  'projects' => $this->getProjects(),
-	                  'authors' => unserialize($this->authors),
-	                  'data' => $this->getData(),
-	                  'lastModified' => $this->lastModified);
-	    return json_encode($json);
-	}
-
 	function create(){
 	    
 	}
@@ -676,8 +651,20 @@ class Paper extends BackboneModel{
 	}
 
 	function toArray(){
-
+        $json = array('id' => $this->getId(),
+	                  'title' => $this->getTitle(),
+	                  'category' => $this->getCategory(),
+	                  'type' => $this->getType(),
+	                  'description' => $this->getDescription(),
+	                  'date' => $this->getDate(),
+	                  //'venue' => $this->getVenue(),
+	                  'status' => $this->getStatus(),
+	                  //'deleted' => $this->getTwitter(),
+	                  'data' => unserialize($this->getData()),
+	                  'lastModified' => $this->lastModified);
+	    return $json;
 	}
+	
 	function exists(){
 
 	}
