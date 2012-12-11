@@ -11,12 +11,16 @@ $wgHooks['OutputPageParserOutput'][] = 'createModels';
 
 global $apiRequest;
 $apiRequest->addAction('Hidden','person', new PersonAPI());
+$apiRequest->addAction('Hidden','project', new ProjectAPI());
 $apiRequest->addAction('Hidden','product', new ProductAPI());
+
 
 function createModels($out, $parserout){
     global $wgServer, $wgScriptPath;
     $out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Person.js'></script>");
+	$out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Project.js'></script>");
     $out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Product.js'></script>");
+    
     return true;
 }
 ?>

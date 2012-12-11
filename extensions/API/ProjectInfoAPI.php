@@ -1,8 +1,8 @@
 <?php
 
-class ProjectAPI extends API{
+class ProjectInfoAPI extends API{
 
-    function ProjectAPI(){
+    function ProjectInfoAPI(){
         $this->addGET("name", false, "The Project Name", "MEOW");
         $this->addGET("id", false, "The Project ID", "172");
         $this->addGET("format", false, "The format of the output(can either be 'xml' or 'json').  If this value is not provided, then xml is assumed", "xml");
