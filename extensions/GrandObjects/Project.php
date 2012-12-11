@@ -327,6 +327,7 @@ EOF;
 	                FROM `grand_project_evolution` e
 	                WHERE e.new_id = '{$this->id}'
 	                AND (e.id = '{$this->evolutionId}' OR e.action = 'MERGE')
+	                AND '{$this->evolutionId}' > e.last_id
 	                ORDER BY e.id DESC";
 	        $data = DBFunctions::execSQL($sql);
 	        $this->preds = array();
