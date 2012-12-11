@@ -982,10 +982,12 @@ class Person{
 			foreach($data as $row){
 			    $project = Project::newFromId($row['project_id']);
 			    if($project != null && $project->getName() != ""){
-			        if(!isset($projectNames[$project->getName()]) && !$project->isDeleted()){
-			            // Make sure that the project is not being added twice
-			            $projectNames[$project->getName()] = true;
-				        $this->projects[] = $project;
+			        if(!isset($projectNames[$project->getName()])){
+			            if(!$project->isDeleted() || ($project->isDeleted() && $history)){
+			                // Make sure that the project is not being added twice
+			                $projectNames[$project->getName()] = true;
+				            $this->projects[] = $project;
+				        }
 				    }
 				}
 			}
@@ -1003,11 +1005,15 @@ class Person{
 	    $projects = $this->getProjects(true);
 	    if(count($projects) > 0){
 	        foreach($projects as $project){
-	            $members = $project->getAllPeopleDuring(null, $start, $end, true);
-	            foreach($members as $member){
-	                if($member->getId() == $this->id){
-	                    $projectsDuring[] = $project;
-	                    break;
+	            if(!$project->isDeleted() || ($project->isDeleted() && 
+	                                          strcmp($project->effectiveDate, $end) < 0 && 
+	                                          strcmp($project->effectiveDate, $start) > 0)){
+	                $members = $project->getAllPeopleDuring(null, $start, $end, true);
+	                foreach($members as $member){
+	                    if($member->getId() == $this->id){
+	                        $projectsDuring[] = $project;
+	                        break;
+	                    }
 	                }
 	            }
 	        }
