@@ -75,6 +75,7 @@ class cavendishTemplate extends QuickTemplate {
 		<![endif]-->
 		
 		<?php print Skin::makeGlobalVariablesScript( $this->data ); ?>
+		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/date.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery-ui.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.cookie.js"></script>
@@ -133,7 +134,18 @@ class cavendishTemplate extends QuickTemplate {
 		<script type="text/javascript" src="<?php $this->text('stylepath' ) ?>/common/wikibits.js"></script>
 		<script type='text/javascript'>
 		
+		    function between(object, startDate, endDate){
+		        return ((object.get('endDate') >= endDate && object.get('startDate') <= startDate) ||
+		                (object.get('startDate') <= startDate && object.get('endDate') >= startDate) ||
+		                (object.get('startDate') <= endDate) ||
+		                (object.get('endDate') >= endDate && object.get('startDate') <= endDate));
+		    }
+		
 		    me = new Person({id: <?php echo $wgUser->getId(); ?>});
+		    me.fetch();
+		    
+		    projects = new Projects();
+		    projects.fetch();
 		
 		    function setMinWidth(){
 	            $("body").css('min-width', '0');
