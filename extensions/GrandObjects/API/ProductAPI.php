@@ -11,10 +11,6 @@ class ProductAPI extends RESTAPI {
             }
         }
     }
-
-    function isLoginRequired(){
-        return true;
-    }
     
     function doGET(){
         $paper = Paper::newFromId($this->id);

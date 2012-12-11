@@ -444,6 +444,14 @@ abstract class RESTAPI extends API {
 	}
 	
 	/**
+	 * In most cases for the RESTAPI login should not be required.
+	 * This should instead be implemented for each of the doACTION functions.
+	 */
+	function isLoginRequired(){
+        return false;
+    }
+	
+	/**
 	 * Generates a error message via the HTTP 400 return code, and exits execution
 	 * @param string $message The message to display
 	 * @param int $code the HTTP error code

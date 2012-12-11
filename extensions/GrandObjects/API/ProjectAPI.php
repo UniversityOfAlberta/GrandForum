@@ -9,10 +9,6 @@ class ProjectAPI extends RESTAPI {
         $this->id = @$params[1];
         $this->action = @$params[2];
     }
-
-    function isLoginRequired(){
-        return true;
-    }
     
     function doGET(){
         if($this->id != ""){
