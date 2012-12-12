@@ -11,12 +11,8 @@ class ProjectAPI extends RESTAPI {
             return $project->toJSON();
         }
         else{
-            $json = array();
-            $projects = Project::getAllProjects();
-            foreach($projects as $project){
-                $json[] = $project->toArray();
-            }
-            return json_encode($json);
+            $projects = new Collection(Project::getAllProjects());
+            return $projects->toJSON();
         }
     }
     
