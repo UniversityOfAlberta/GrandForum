@@ -17,6 +17,7 @@ $apiRequest->addAction('Hidden','person/:id/roles', new PersonRolesAPI());
 $apiRequest->addAction('Hidden','role', new RoleAPI());
 $apiRequest->addAction('Hidden','role/:id', new RoleAPI());
 $apiRequest->addAction('Hidden','project', new ProjectAPI());
+$apiRequest->addAction('Hidden','project/:id', new ProjectAPI());
 $apiRequest->addAction('Hidden','product', new ProductAPI());
 
 

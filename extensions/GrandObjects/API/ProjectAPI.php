@@ -1,18 +1,10 @@
 <?php
 
 class ProjectAPI extends RESTAPI {
-
-    var $id;
-    var $action;
-
-    function processParams($params){
-        $this->id = @$params[1];
-        $this->action = @$params[2];
-    }
     
     function doGET(){
-        if($this->id != ""){
-            $project = Project::newFromId($this->id);
+        if($this->getParam('id') != ""){
+            $project = Project::newFromId($this->getParam('id'));
             if($project == null || $project->getName() == ""){
                 $this->throwError("This project does not exist");
             }
