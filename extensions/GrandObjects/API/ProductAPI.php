@@ -5,19 +5,25 @@ class ProductAPI extends RESTAPI {
     var $id;
 
     function processParams($params){
-        foreach($params as $key => $param){
-            if($key == 1){
-                $this->id = $param;
-            }
-        }
+        $this->id = @$params[1];
     }
     
     function doGET(){
-        $paper = Paper::newFromId($this->id);
-        if($paper == null || $paper->getTitle() == ""){
-            $this->throwError("This product does not exist");
+        if($this->id != ""){
+            $paper = Paper::newFromId($this->id);
+            if($paper == null || $paper->getTitle() == ""){
+                $this->throwError("This product does not exist");
+            }
+            return $paper->toJSON();
         }
-        return $paper->toJSON();
+        else{
+            $json = array();
+            $papers = Paper::getAllPapers('all', 'all', 'both');
+            foreach($papers as $paper){
+                $json[] = $paper->toArray();
+            }
+            return json_encode($json);
+        }
     }
     
     function doPOST(){

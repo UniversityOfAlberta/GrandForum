@@ -1,21 +1,9 @@
-Person = Backbone.RelationalModel.extend({
+Person = Backbone.Model.extend({
 
     initialize: function(){
-        this.get('projects').url = this.urlRoot + '/' + this.get('id') + '/projects';
-        this.bind('change:id', function(){
-            this.get('projects').url = this.urlRoot + '/' + this.get('id') + '/projects';
-        });
+        this.projects = new PersonProjects();
+        this.projects.url = this.urlRoot + '/' + this.get('id') + '/projects';
     },
-    
-    relations: [{
-        type: Backbone.HasMany,
-        key: 'projects',
-        relatedModel: 'PersonProject',
-        collectionType: 'PersonProjects',
-        reverseRelation: {
-            key: 'person'
-        }
-    }],
 
     urlRoot: 'index.php?action=api.person',
     
@@ -37,7 +25,13 @@ Person = Backbone.RelationalModel.extend({
     }
 });
 
-PersonProject = Backbone.RelationalModel.extend({
+People = Backbone.Collection.extend({
+    model: Person,
+    
+    url: 'index.php?action=api.person'
+});
+
+PersonProject = Backbone.Model.extend({
     initialize: function(){
         
     },
@@ -46,11 +40,16 @@ PersonProject = Backbone.RelationalModel.extend({
         return 'index.php?action=api.person/' + this.personId + '/projects'
     },
     
+    getPerson: function(){
+        return people.get(this.get('personId'));
+    },
+    
     getProject: function(){
         return projects.get(this.get('projectId'));
     },
     
     defaults: {
+        personId: "",
         projectId: "",
         startDate: "",
         endDate: ""
@@ -83,10 +82,4 @@ PersonProjects = Backbone.Collection.extend({
         });
         return projectsDuring;
     }
-});
-
-People = Backbone.Collection.extend({
-    model: Person,
-    
-    url: 'index.php?action=api.person'
 });

@@ -1,4 +1,4 @@
-Project = Backbone.RelationalModel.extend({
+Project = Backbone.Model.extend({
     initialize: function(){
 
     },

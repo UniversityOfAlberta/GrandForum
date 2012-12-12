@@ -657,10 +657,8 @@ class Paper extends BackboneModel{
 	                  'type' => $this->getType(),
 	                  'description' => $this->getDescription(),
 	                  'date' => $this->getDate(),
-	                  //'venue' => $this->getVenue(),
 	                  'status' => $this->getStatus(),
-	                  //'deleted' => $this->getTwitter(),
-	                  'data' => unserialize($this->getData()),
+	                  'data' => $this->getData(),
 	                  'lastModified' => $this->lastModified);
 	    return $json;
 	}

@@ -91,7 +91,7 @@ class cavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.qtip.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/underscore-min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-min.js"></script>
-        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-relational-min.js"></script>
+        <!--<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-relational-min.js"></script>-->
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/extensions/Messages/messages.js"></script>
         <script type='text/javascript'>
             Backbone.emulateHTTP = true;
@@ -140,12 +140,21 @@ class cavendishTemplate extends QuickTemplate {
 		                (object.get('startDate') <= endDate) ||
 		                (object.get('endDate') >= endDate && object.get('startDate') <= endDate));
 		    }
+		    
+		    // TODO: For now I am just caching all common models, but this might no longer make sense
+		    // when the data sets become huge
+		    
+		    people = new People();
+		    people.fetch();
 		
 		    me = new Person({id: <?php echo $wgUser->getId(); ?>});
 		    me.fetch();
 		    
 		    projects = new Projects();
 		    projects.fetch();
+		    
+		    products = new Products();
+		    products.fetch();
 		
 		    function setMinWidth(){
 	            $("body").css('min-width', '0');

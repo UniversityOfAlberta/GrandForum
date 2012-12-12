@@ -7,13 +7,18 @@ Product = Backbone.Model.extend({
     
     defaults: {
         id : null,
-        title: "",
-        category: "",
-        type: "",
-        description: "",
-        date: "",
-        status: "",
-        data: new Array(),
-        lastModified: ""
+
     },
+});
+
+Products = Backbone.Collection.extend({
+    initialize: function(){
+        this.on('all', function(event){
+            console.log(event);
+        });
+    },
+
+    model: Product,
+    
+    url: 'index.php?action=api.product'
 });

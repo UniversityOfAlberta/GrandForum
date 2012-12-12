@@ -21,6 +21,7 @@ class PersonAPI extends RESTAPI {
                 $projects = $person->getProjects(true); //TODO: Might need to get full history here
                 foreach($projects as $project){
                     $json[] = array('projectId' => $project->getId(),
+                                    'personId' => $person->getId(),
                                     'startDate' => $project->getJoinDate($person),
                                     'endDate' => $project->getEndDate($person));
                 }
