@@ -529,7 +529,16 @@ class Paper{
             if(empty($vn)){
             	$vn = ArrayUtils::get_string($data, 'published_in');
             }
-            
+        }
+        if(($type == "Journal Paper")){
+            $volume = ArrayUtils::get_string($data, 'volume');
+            $number = ArrayUtils::get_string($data, 'number');
+            if(!empty($volume)){
+                $vn .= " $volume";
+            }
+            if(!empty($number)){
+                $vn .= "($number)";
+            }
         }
 
 
