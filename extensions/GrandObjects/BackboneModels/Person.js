@@ -31,7 +31,7 @@ People = Backbone.Collection.extend({
     url: 'index.php?action=api.person'
 });
 
-PersonProject = Backbone.Model.extend({
+PersonProject = RelationModel.extend({
     initialize: function(){
         
     },
@@ -40,11 +40,11 @@ PersonProject = Backbone.Model.extend({
         return 'index.php?action=api.person/' + this.personId + '/projects'
     },
     
-    getPerson: function(){
+    getOwner: function(){
         return people.get(this.get('personId'));
     },
     
-    getProject: function(){
+    getTarget: function(){
         return projects.get(this.get('projectId'));
     },
     
@@ -56,30 +56,10 @@ PersonProject = Backbone.Model.extend({
     }
 });
 
-PersonProjects = Backbone.Collection.extend({
+PersonProjects = RangeCollection.extend({
     model: PersonProject,
     
-    /**
-     * Returns a collection of Projects which the Person is currently in
-     */
-    getProjects: function(){
-        var now = new Date();
-        var date = Date.format(now, 'yyyy-MM-dd HH:mm:ss');
-        return this.getProjectsDuring(date, '5000');  
+    newModel: function(){
+        return new Projects();
     },
-    
-    /**
-     * Returns a collection of Project which fall between startDate and endDate
-     */
-    getProjectsDuring: function(startDate, endDate){
-        personProjects = _.filter(this.models, function(personProject){ 
-            return between(personProject, startDate, endDate);
-        });
-        
-        projectsDuring = new Projects();
-        _.each(personProjects, function(personProject){
-            projectsDuring.add(personProject.getProject());
-        });
-        return projectsDuring;
-    }
 });
