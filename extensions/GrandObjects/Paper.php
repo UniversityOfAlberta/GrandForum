@@ -526,6 +526,10 @@ class Paper{
         //This is not really a venue, but this is how we want to put this into the proper citation
         if(($type == "Journal Paper" || $type == "Journal Abstract") && empty($vn)){
             $vn = ArrayUtils::get_string($data, 'journal_title');
+            if(empty($vn)){
+            	$vn = ArrayUtils::get_string($data, 'published_in');
+            }
+            
         }
 
 
