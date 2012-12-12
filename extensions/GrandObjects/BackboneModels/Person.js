@@ -11,7 +11,15 @@ Person = Backbone.RelationalModel.extend({
         key: 'projects',
         relatedModel: 'PersonProject',
         collectionType: 'PersonProjects'
-    }],
+    },
+    /*{
+        type: Backbone.HasMany,
+        key: 'products',
+        relatedModel: 'PersonProduct',
+        reverseRelation: {
+            key: 'product'
+        }
+    }*/],
     
     urlRoot: 'index.php?action=api.person',
     

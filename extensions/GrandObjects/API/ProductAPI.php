@@ -3,13 +3,16 @@
 class ProductAPI extends RESTAPI {
 
     var $id;
+//    var $action;
 
     function processParams($params){
-        foreach($params as $key => $param){
+        $this->id = @$params[1];
+//        $this->action = @$params[2];
+        /*foreach($params as $key => $param){
             if($key == 1){
                 $this->id = $param;
             }
-        }
+        }*/
     }
 
     function isLoginRequired(){
@@ -49,5 +52,6 @@ class ProductAPI extends RESTAPI {
     }
 	
 }
+
 
 ?>

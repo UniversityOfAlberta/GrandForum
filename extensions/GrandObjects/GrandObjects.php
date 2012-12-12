@@ -13,6 +13,7 @@ global $apiRequest;
 $apiRequest->addAction('Hidden','person', new PersonAPI());
 $apiRequest->addAction('Hidden','project', new ProjectAPI());
 $apiRequest->addAction('Hidden','product', new ProductAPI());
+$apiRequest->addAction('Hidden','person_product', new PersonProductAPI());
 
 
 function createModels($out, $parserout){

@@ -475,6 +475,11 @@ class Paper extends BackboneModel{
 	    return $this->data;
 	}
 	
+	// Return the deleted flag for this Paper
+	function isDeleted(){
+		return $this->deleted;
+	}
+
 	// Returns whether or not this Paper has been reported in the given year, with the reported type (must be either 'RMC' or 'NCE')
 	function hasBeenReported($year, $reportedType){
 	    if(($reportedType == 'RMC' || $reportedType == 'NCE')){
@@ -653,15 +658,15 @@ class Paper extends BackboneModel{
 	function toArray(){
         $json = array('id' => $this->getId(),
 	                  'title' => $this->getTitle(),
+	                  'description' => $this->getDescription(),
 	                  'category' => $this->getCategory(),
 	                  'type' => $this->getType(),
-	                  'description' => $this->getDescription(),
+	                  'status' => $this->getStatus(),
 	                  'date' => $this->getDate(),
 	                  //'venue' => $this->getVenue(),
-	                  'status' => $this->getStatus(),
-	                  //'deleted' => $this->getTwitter(),
-	                  'data' => unserialize($this->getData()),
-	                  'lastModified' => $this->lastModified);
+	                  'data' => $this->getData(),
+	                  'lastModified' => $this->lastModified,
+	                  'deleted' => $this->isDeleted());
 	    return $json;
 	}
 	
