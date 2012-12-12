@@ -11,6 +11,11 @@ $wgHooks['OutputPageParserOutput'][] = 'createModels';
 
 global $apiRequest;
 $apiRequest->addAction('Hidden','person', new PersonAPI());
+$apiRequest->addAction('Hidden','person/:id', new PersonAPI());
+$apiRequest->addAction('Hidden','person/:id/projects', new PersonProjectsAPI());
+$apiRequest->addAction('Hidden','person/:id/roles', new PersonRolesAPI());
+$apiRequest->addAction('Hidden','role', new RoleAPI());
+$apiRequest->addAction('Hidden','role/:id', new RoleAPI());
 $apiRequest->addAction('Hidden','project', new ProjectAPI());
 $apiRequest->addAction('Hidden','product', new ProductAPI());
 
@@ -21,6 +26,7 @@ function createModels($out, $parserout){
     $out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/RangeCollection.js'></script>");
     
     $out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Person.js'></script>");
+    $out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Role.js'></script>");
 	$out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Project.js'></script>");
     $out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Product.js'></script>");
     

@@ -1,36 +1,16 @@
 <?php
 
 class PersonAPI extends RESTAPI {
-
-    var $id;
-    var $action;
-
-    function processParams($params){
-        $this->id = @$params[1];
-        $this->action = @$params[2];
-    }
     
     function doGET(){
-        if($this->id != ""){
-            $person = Person::newFromId($this->id);
+        if($this->getParam('id') != ""){
+            $person = Person::newFromId($this->getParam('id'));
             if($person == null || $person->getName() == ""){
                 $this->throwError("This user does not exist");
-            }
-            if($this->action == "projects"){
-                $json = array();
-                $projects = $person->getProjects(true);
-                foreach($projects as $project){
-                    $json[] = array('projectId' => $project->getId(),
-                                    'personId' => $person->getId(),
-                                    'startDate' => $project->getJoinDate($person),
-                                    'endDate' => $project->getEndDate($person));
-                }
-                return json_encode($json);
             }
             return $person->toJSON();
         }
         else{
-            $json = array();
             $people = new Collection(Person::getAllPeople('all'));
             return $people->toJSON();
         }
@@ -51,7 +31,7 @@ class PersonAPI extends RESTAPI {
     }
     
     function doPUT(){
-        $person = Person::newFromId($this->id);
+        $person = Person::newFromId($this->getParam('id'));
         if($person == null || $person->getName() == ""){
             $this->throwError("This user does not exist");
         }
@@ -60,14 +40,69 @@ class PersonAPI extends RESTAPI {
     }
     
     function doDELETE(){
-        $person = Person::newFromId($this->id);
+        $person = Person::newFromId($this->getParam('id'));
         if($person == null || $person->getName() == ""){
             $this->throwError("This user does not exist");
         }
         header('Content-Type: application/json');
         $person->delete();
     }
-	
+}
+
+class PersonProjectsAPI extends RESTAPI {
+
+    function doGET(){
+        $person = Person::newFromId($this->getParam('id'));
+        $json = array();
+        $projects = $person->getProjects(true);
+        foreach($projects as $project){
+            $json[] = array('projectId' => $project->getId(),
+                            'personId' => $person->getId(),
+                            'startDate' => $project->getJoinDate($person),
+                            'endDate' => $project->getEndDate($person));
+        }
+        return json_encode($json);
+    }
+    
+    function doPOST(){
+        return doGET();
+    }
+    
+    function doPUT(){
+        return doGET();
+    }
+    
+    function doDELETE(){
+        return doGET();
+    }
+}
+
+class PersonRolesAPI extends RESTAPI {
+
+    function doGET(){
+        $person = Person::newFromId($this->getParam('id'));
+        $json = array();
+        $roles = $person->getRoles(true);
+        foreach($roles as $role){
+            $json[] = array('roleId' => $role->getId(),
+                            'personId' => $person->getId(),
+                            'startDate' => $role->getStartDate(),
+                            'endDate' => $role->getEndDate());
+        }
+        return json_encode($json);
+    }
+    
+    function doPOST(){
+        return doGET();
+    }
+    
+    function doPUT(){
+        return doGET();
+    }
+    
+    function doDELETE(){
+        return doGET();
+    }
 }
 
 ?>

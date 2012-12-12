@@ -48,14 +48,46 @@ class APIRequest{
 				}
 				else {
 				    $api = null;
+				    foreach($params as $key => $param){
+		                if($param == ""){
+		                    unset($params[$key]);
+		                }
+		            }
 				    foreach($apiCategories as $apiActions){
-					    if(isset($apiActions[$params[0]])){
-						    $api = $apiActions[$params[0]];
-						    break;
+				        foreach($apiActions as $route => $a){
+				            $routeParams = explode("/", $route);
+				            
+				            $match = true;
+				            foreach($routeParams as $key => $param){
+				                $match = $match && (isset($params[$key]) && ($param == $params[$key] || 
+				                                    strstr($param, ":") !== false));
+				                if($match && strstr($param, ":") !== false){
+				                    $a->params[str_replace(":", "", $param)] = $params[$key];
+				                }
+				            }
+				            foreach($params as $key => $param){
+				                $match = $match && (isset($routeParams[$key]) && ($param == $routeParams[$key] || 
+				                                    strstr($routeParams[$key], ":") !== false));
+				                if($route == "person/:id"){
+				                    //echo $param."<br />";
+				                    //var_dump($match);
+				                }
+				            }
+				            if($match){
+				                $api = $a;
+				                break;
+				            }
+				        }
+				        if($api == null){
+					        if(isset($apiActions[$params[0]])){
+						        $api = $apiActions[$params[0]];
+						        break;
+					        }
 					    }
 					}
 					if($api != null){
 					    $api->processRequest($params);
+					    
 				    }
 				    else {
 					    echo "There is no such API action\n";
@@ -427,6 +459,8 @@ abstract class API {
  * @package API
  */
 abstract class RESTAPI extends API {
+
+    var $params = array();
     
     function processRequest($params=null){
 		global $wgUser;
@@ -441,6 +475,15 @@ abstract class RESTAPI extends API {
 			$this->processParams($params);
 		    $this->doAction();
 		}
+	}
+	
+	/**
+	 * Returns the value of the specified parameter if it exists ("" otherwise)
+	 * @param string $id The id of the parameter
+	 * @return string Returns the value of the parameter
+	 */
+	function getParam($id){
+	    return (isset($this->params[$id])) ? $this->params[$id] : "";
 	}
 	
 	/**

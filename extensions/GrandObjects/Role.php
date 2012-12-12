@@ -1,6 +1,6 @@
 <?php
 
-class Role{
+class Role extends BackboneModel {
 
     static $cache = array();
 
@@ -35,6 +35,31 @@ class Role{
 			$this->endDate = $data[0]['end_date'];
 			$this->comment = $data[0]['comment'];
 		}
+	}
+	
+	function toArray(){
+	    $json = array('id' => $this->getId(),
+	                  'name' => $this->getRole(),
+	                  'comment' => $this->getComment(),
+	                  'startDate' => $this->getStartDate(),
+	                  'endDate' => $this->getEndDate());
+	    return $json;
+	}
+	
+	function create(){
+	
+	}
+	
+	function update(){
+	
+	}
+	
+	function delete(){
+	
+	}
+	
+	function exists(){
+	
 	}
 	
 	// Returns whether this Role is still active or not

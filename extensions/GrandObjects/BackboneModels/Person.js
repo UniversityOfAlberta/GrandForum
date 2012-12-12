@@ -3,6 +3,9 @@ Person = Backbone.Model.extend({
     initialize: function(){
         this.projects = new PersonProjects();
         this.projects.url = this.urlRoot + '/' + this.get('id') + '/projects';
+        
+        this.roles = new PersonRoles();
+        this.roles.url = this.urlRoot + '/' + this.get('id') + '/roles';
     },
 
     urlRoot: 'index.php?action=api.person',
@@ -61,5 +64,40 @@ PersonProjects = RangeCollection.extend({
     
     newModel: function(){
         return new Projects();
+    },
+});
+
+PersonRole = RelationModel.extend({
+    initialize: function(){
+    
+    },
+    
+    urlRoot: function(){
+        return 'index.php?action=api.person/' + this.personId + '/roles'
+    },
+    
+    getOwner: function(){
+        return people.get(this.get('personId'));
+    },
+    
+    getTarget: function(){
+        var role = new Role({id: parseInt(this.get('roleId'))});
+        role.fetch();
+        return role;
+    },
+    
+    defaults: {
+        personId: "",
+        roleId: "",
+        startDate: "",
+        endDate: ""
+    }
+});
+
+PersonRoles = RangeCollection.extend({
+    model: PersonRole,
+    
+    newModel: function(){
+        return new Roles();
     },
 });
