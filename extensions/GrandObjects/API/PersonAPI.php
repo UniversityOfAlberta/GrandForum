@@ -18,7 +18,7 @@ class PersonAPI extends RESTAPI {
             }
             if($this->action == "projects"){
                 $json = array();
-                $projects = $person->getProjects(true); //TODO: Might need to get full history here
+                $projects = $person->getProjects(true);
                 foreach($projects as $project){
                     $json[] = array('projectId' => $project->getId(),
                                     'personId' => $person->getId(),
@@ -31,11 +31,8 @@ class PersonAPI extends RESTAPI {
         }
         else{
             $json = array();
-            $people = Person::getAllPeople('all');
-            foreach($people as $person){
-                $json[] = $person->toArray();
-            }
-            return json_encode($json);
+            $people = new Collection(Person::getAllPeople('all'));
+            return $people->toJSON();
         }
     }
     
