@@ -13,9 +13,7 @@ Product = Backbone.Model.extend({
 
 Products = Backbone.Collection.extend({
     initialize: function(){
-        this.on('all', function(event){
-            console.log(event);
-        });
+
     },
 
     model: Product,
