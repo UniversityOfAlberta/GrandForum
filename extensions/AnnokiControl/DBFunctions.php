@@ -1,5 +1,57 @@
 <?php
 
+function NEQ($value){
+    if(!is_numeric($value)){
+        $value = "'".mysql_real_escape_string($value)."'";
+    }
+    return "### != {$value}";
+}
+
+function EQ($value){
+    if(!is_numeric($value)){
+        $value = "'".mysql_real_escape_string($value)."'";
+    }
+    return "### = {$value}";
+}
+
+function GT($value){
+    if(!is_numeric($value)){
+        $value = "'".mysql_real_escape_string($value)."'";
+    }
+    return "### > {$value}";
+}
+
+function LT($value){
+    if(!is_numeric($value)){
+        $value = "'".mysql_real_escape_string($value)."'";
+    }
+    return "### < {$value}";
+}
+
+function GTEQ($value){
+    if(!is_numeric($value)){
+        $value = "'".mysql_real_escape_string($value)."'";
+    }
+    return "### >= {$value}";
+}
+
+function LTEQ($value){
+    if(!is_numeric($value)){
+        $value = "'".mysql_real_escape_string($value)."'";
+    }
+    return "### <= {$value}";
+}
+
+function LIKE($value){
+    if(!is_numeric($value)){
+        $value = "'".mysql_real_escape_string($value)."'";
+    }
+    return "### LIKE {$value}";
+}
+
+/**
+ * @package AnnokiControl
+ */
 class DBFunctions {
 
     static $queryCount = 0;
@@ -80,25 +132,165 @@ class DBFunctions {
 		}
 	}
 	
-	// Begins a Transaction
+	/**
+	 * Performs a sanitized DB Selection
+	 * @param array $tables The hash of tables to select (<b>key:</b> The name of the table; <b>value:<b> The alias of the table)
+	 * @param array $cols The hash of columns to select (<b>key:</b> The name of the column; <b>value:</b> The alias of the column)
+	 * @param array $where The hash of column/values for the where clause
+	 * @param array $order The hash of columns to order by (<b>key:</b> The name of the column; <b>value:</b> DESC/ASC)
+	 * @param array $limit How to limit results (array of 1 or 2 values)
+	 * @return array Returns the result set
+	 * TODO: This is not yet fully tested
+	 */
+	static function select($tables=array(), $cols=array(), $where=array(), $order=array(), $limit=array()){
+	    $colSQL = array();
+	    $fromSQL = array();
+	    $whereSQL = array();
+	    $orderSQL = array();
+	    $limitSQL = array();
+	    if(count($cols) > 0){
+	        foreach($cols as $key => $col){
+	            $key = mysql_real_escape_string($key);
+	            $col = mysql_real_escape_string($col);
+	            if(is_numeric($key)){
+	                $colSQL[] = "$col";
+	            }
+	            else{
+	                $colSQL[] = "$key as $col";
+	            }
+	        }
+	    }
+	    else{
+	        $colSQL[] = "*";
+	    }
+	    foreach($tables as $key => $table){
+	        $key = mysql_real_escape_string($key);
+	        $table = mysql_real_escape_string($table);
+	        if(is_numeric($key)){
+	            $fromSQL[] = "$table";
+	        }
+	        else{
+	            $fromSQL[] = "$key $table";
+	        }
+	    }
+	    foreach($where as $key => $value){
+            $key = mysql_real_escape_string($key);
+            if(strstr($value, "### ") !== false){
+                $value = str_replace("### ", "", $value);
+                $whereSQL[] = "`{$key}` {$value} ";
+            }
+            else{
+                $value = mysql_real_escape_string($value);
+                $whereSQL[] = "`{$key}` = '{$value}' ";
+            }
+        }
+        foreach($order as $key => $value){
+            $key = mysql_real_escape_string($key);
+            $value = mysql_real_escape_string($value);
+            $orderSQL[] = "{$key} {$value} ";
+        }
+        foreach($limit as $key => $value){
+            $value = mysql_real_escape_string($value);
+            $limitSQL[] = "{$value} ";
+        }
+        $sql = "SELECT ".implode(", ", $colSQL)." FROM ".implode(", ", $fromSQL)." ";
+        if(count($whereSQL) > 0){
+            $sql .= "WHERE ".implode(" AND\n", $whereSQL);
+        }
+        if(count($orderSQL) > 0){
+            $sql .= "ORDER BY ".implode(", ", $orderSQL);
+        }
+        if(count($limitSQL) > 0){
+            $sql .= "LIMIT ".implode(", ", $limitSQL);
+        }
+        return DBFunctions::execSQL($sql);
+	}
+	
+	/**
+	 * Performs a sanitized DB Insertion
+	 * @param string $table The name of the table to insert
+	 * @param array $values The hash of the column/values for the insertion
+	 * @return boolean Returns whether the insertion was successful or not
+	 * TODO: This is not yet fully tested
+	 */
+	static function insert($table, $values=array(), $rollback=false){
+	    $table = mysql_real_escape_string($table);
+	    $sql = "INSERT INTO `{$table}` (";
+	    $cols = array();
+	    $vals = array();
+        foreach($values as $key => $value){
+            $key = mysql_real_escape_string($key);
+            $value = mysql_real_escape_string($value);
+            $cols[] = "`{$key}`";
+            $values[] = "'{$value}'";
+        }
+        $sql .= implode(",", $cols).") VALUES(".implode(",", $vals).")";
+        return DBFunctions::execSQL($sql, true, $rollback);
+	}
+	
+	/**
+	 * Performs a sanitized DB Update
+	 * @param string $table The name of the table to update
+	 * @param array $values The hash of column/values to update
+	 * @param array $where The hash for column/values for the where clause
+	 * @param boolean $rollback Whether or not to perform a rollback if the update fails
+	 * @return boolean Returns whether or not the update was successfull
+	 * TODO: This is not yet fully tested
+	 */
+    static function update($table, $values=array(), $where=array(), $rollback=false){
+        $table = mysql_real_escape_string($table);
+        $sql = "UPDATE `{$table}`\nSET ";
+        $sets = array();
+        foreach($values as $key => $value){
+            $key = mysql_real_escape_string($key);
+            $value = mysql_real_escape_string($value);
+            $sets[] = "`{$key}` = '{$value}' ";
+        }
+        $sql .= implode(",\n", $sets);
+        $sql .= "WHERE ";
+        $wheres = array();
+        foreach($where as $key => $value){
+            $key = mysql_real_escape_string($key);
+            if(strstr($value, "### ") !== false){
+                $value = str_replace("### ", "", $value);
+                $wheres[] = "`{$key}` {$value} ";
+            }
+            else{
+                $value = mysql_real_escape_string($value);
+                $wheres[] = "`{$key}` = '{$value}' ";
+            }
+        }
+        $sql .= implode("\n", $wheres);
+        return DBFunctions::execSQL($sql, true, $rollback);
+    }
+	
+	/**
+	 * Begins a Transaction
+	 */
 	static function begin(){
 	    DBFunctions::initDB();
 	    DBFunctions::$dbw->begin();
 	}
 	
-	// Commits the transaction to the DB
+	/**
+	 * Commits the transaction to the DB
+	 */
 	static function commit(){
 	    DBFunctions::initDB();
 		DBFunctions::$dbw->commit();
 	}
 	
-	// Rolls the DB back to the previous state
+	/**
+	 * Rolls the DB back to the previous state
+	 */
 	static function rollback(){
 	    DBFunctions::initDB();
 	    DBFunctions::$dbw->rollback();
 	}
 	
-	// Returns the number of rows returned in the last resultset
+	/**
+	 * Returns the number of rows returned in the last resultset
+	 */
 	static function getNRows(){
 	    if(self::$lastResult != null && self::$lastResult->result != null){
 	        return mysql_num_rows(self::$lastResult->result);

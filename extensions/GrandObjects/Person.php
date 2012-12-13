@@ -319,11 +319,10 @@ class Person extends BackboneModel {
 	}
 	
 	static function getAllStaff(){
-	    $uTable = getTableName("user");
-	    $sql = "SELECT `user_id`, `user_name`
-	            FROM $uTable
-	            ORDER BY user_name ASC";
-	    $data = DBFunctions::execSQL($sql);
+	    $data = DBFunctions::select(array('mw_user'),
+	                                array('user_id', 'user_name'),
+	                                array('deleted' => NEQ(1)),
+	                                array('user_name' => 'ASC'));
 	    $people = array();
 	    foreach($data as $row){
 	        $rowA = array();
@@ -339,13 +338,10 @@ class Person extends BackboneModel {
 	// Returns an array of People of the type $filter, and have at least one project
 	// If $filter='all' then, even people with no projects are included.
 	static function getAllPeople($filter=null){
-	    $uTable = getTableName("user");
-	    $sql = "SELECT `user_id`, `user_name`
-	            FROM $uTable
-	            WHERE `deleted` != '1'
-	            ORDER BY user_name ASC
-	            ";
-	    $data = DBFunctions::execSQL($sql);
+	    $data = DBFunctions::select(array('mw_user'),
+	                                array('user_id', 'user_name'),
+	                                array('deleted' => NEQ(1)),
+	                                array('user_name' => 'ASC'));
 	    $people = array();
 	    foreach($data as $row){
 	        $rowA = array();
@@ -362,12 +358,10 @@ class Person extends BackboneModel {
     // Returns an array of People of the type $filter, and have at least one project
     // If $filter='all' then, even people with no projects are included.
     static function getAllPeopleDuring($filter=null, $startRange = false, $endRange = false){
-        $uTable = getTableName("user");
-        $sql = "SELECT `user_id`, `user_name`
-                FROM $uTable
-                WHERE `deleted` != '1'
-                ORDER BY user_name ASC";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('mw_user'),
+	                                array('user_id', 'user_name'),
+	                                array('deleted' => NEQ(1)),
+	                                array('user_name' => 'ASC'));
         $people = array();
         foreach($data as $row){
             $rowA = array();
@@ -440,7 +434,8 @@ class Person extends BackboneModel {
 	                  'department' => $this->getDepartment(),
 	                  'position' => $this->getPosition(),
 	                  'publicProfile' => $publicProfile,
-	                  'privateProfile' => $publicProfile);
+	                  'privateProfile' => $publicProfile,
+	                  'url' => $this->getURL());
 	    return $json;
 	}
 	
@@ -463,13 +458,19 @@ class Person extends BackboneModel {
 	        $_POST['wpSendMail'] = true;
 	        $specialUserLogin = new LoginForm($wgRequest, 'signup');
 	        $specialUserLogin->execute();
+	        $status = DBFunctions::update('mw_user', 
+		                            array('user_twitter' => $this->getTwitter(),
+		                                  'user_gender' => $this->getGender(),
+		                                  'user_nationality' => $this->getNationality()),
+		                            array('user_name' => EQ($this->getName())));
+		    DBFunctions::commit();
 	        Person::$cache = array();
 		    Person::$namesCache = array();
 		    Person::$aliasCache = array();
 		    Person::$idsCache = array();
-	        $person = Person::newFromName($_POST['wpName']);
+		    $person = Person::newFromName($_POST['wpName']);
 	        if($person->exists()){
-	            return true;
+	            return $status;
 	        }
 	    }
 	    return false;

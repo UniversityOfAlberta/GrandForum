@@ -20,6 +20,9 @@ class PersonAPI extends RESTAPI {
         $person = new Person(array());
         $person->email = $this->POST('email');
         $person->name = $this->POST('name');
+        $person->twitter = $this->POST('twitter');
+        $person->gender = $this->POST('gender');
+        $person->nationality = $this->POST('nationality');
         if($person->exists()){
             $this->throwError("This user already exists");
         }
