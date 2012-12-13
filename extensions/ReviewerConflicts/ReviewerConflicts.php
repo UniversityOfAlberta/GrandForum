@@ -181,7 +181,7 @@ class ReviewerConflicts extends SpecialPage {
             $wgOut->addHTML("</div><div id='projects'>");
     		$overall['PROJECTS'] = ReviewerConflicts::projectTable($projects);
 		}
-        
+
         $wgOut->addHTML("</div></div>");
 	 	
 	  
@@ -379,6 +379,8 @@ EOF;
             }
             $proj_names = implode(' ', $proj_names);
 
+            $papers = $person->getPapers("all", true);
+
             $bgcolor = "#FFFFFF";
             $html .=<<<EOF
             <tr style='background-color:{$bgcolor};' name='search' id='{$row_id}' class='{$row_id} {$proj_names} {$position}'>
@@ -467,7 +469,6 @@ EOF;
                     }
                    
                     //Papers
-                    $papers = $person->getPapers("all", true);
                     $co_authorship = "No";
                     foreach($papers as $paper){
                         if(in_array($paper->getId(), $eval_papers)){
