@@ -74,7 +74,7 @@ class ReviewerConflicts extends SpecialPage {
 
         if(isset($_GET['download_csv'])){
             $csv_type = $_GET['download_csv'];
-            $filename = "/Library/WebServer/Documents/giga_forum/data/{$csv_type}_Conflicts_Rollup.csv";
+            $filename = "/local/data/www-root/grand_forum/data/{$csv_type}_Conflicts_Rollup.csv";
             $wgOut->disable();
             ob_clean();
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
