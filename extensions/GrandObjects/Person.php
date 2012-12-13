@@ -519,10 +519,7 @@ class Person extends BackboneModel {
 	
 	function exists(){
 	    $person = Person::newFromName($this->getName());
-	    if($person != null && $person->getName() != ""){
-	        return true;
-	    }
-	    return false;
+	    return ($person != null && $person->getName() != "");
 	}
 	
 	// Returns the Mediawiki User object for this Person

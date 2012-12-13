@@ -6,6 +6,24 @@ Person = Backbone.Model.extend({
         
         this.roles = new PersonRoles();
         this.roles.url = this.urlRoot + '/' + this.get('id') + '/roles';
+        
+        
+        this.bind("sync", function(model, response, options){
+            clearAllMessages();
+            if(options.changes.id == true){
+                // Creation
+                addSuccess("<i>" + this.get('name') + "</i> was created successfully");
+            }
+            else{
+                // Update
+                addSuccess("<i>" + this.get('name') + "</i> was updated successfully");
+            }
+        });
+        
+        this.bind("error", function(e, response, options){
+            clearAllMessages();
+            addError(response.responseText);
+        });
     },
 
     urlRoot: 'index.php?action=api.person',

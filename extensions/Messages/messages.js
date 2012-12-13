@@ -63,6 +63,14 @@ function clearPurpleInfo(){
     clearMessage('purpleInfo');
 }
 
+function clearAllMessages(){
+    clearError();
+	clearSuccess();
+	clearWarning();
+	clearInfo();
+	clearPurpleInfo();
+}
+
 function addClose(messageBox){
     $(messageBox).append("<a class='error_box_close' onClick='closeParent(this)'>X</a>");
 }

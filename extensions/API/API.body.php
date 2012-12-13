@@ -496,6 +496,7 @@ abstract class RESTAPI extends API {
 	 */
 	function throwError($message, $code=400){
 	    header("HTTP/1.0: $code $message");
+	    echo $message;
 	    exit;
 	}
     

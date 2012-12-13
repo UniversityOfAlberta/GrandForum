@@ -26,11 +26,12 @@ class PersonAPI extends RESTAPI {
         $person->privateProfile = $this->POST('privateProfile');
         $person->nationality = $this->POST('nationality');
         if($person->exists()){
-            $this->throwError("This user already exists");
+            $this->throwError("A user by the name of <i>{$person->getName()}</i> already exists");
         }
-        header('Content-Type: application/json');
-        $person->create();
-        
+        $status = $person->create();
+        if(!$status){
+            $this->throwError("The user <i>{$person->getName()}</i> could not be created");
+        }
         $person = Person::newFromName($person->getName());
         return $person->toJSON();
     }
@@ -49,8 +50,10 @@ class PersonAPI extends RESTAPI {
         $person->publicProfile = $this->POST('publicProfile');
         $person->privateProfile = $this->POST('privateProfile');
         $person->nationality = $this->POST('nationality');
-        $person->update();
-        header('Content-Type: application/json');
+        $status = $person->update();
+        if(!$status){
+            $this->throwError("The user <i>{$person->getName()}</i> could not be updated");
+        }
         $person = Person::newFromId($this->getParam('id'));
         return $person->toJSON();
     }
@@ -60,8 +63,10 @@ class PersonAPI extends RESTAPI {
         if($person == null || $person->getName() == ""){
             $this->throwError("This user does not exist");
         }
-        header('Content-Type: application/json');
-        $person->delete();
+        $status = $person->delete();
+        if(!$status){
+            $this->throwError("The user <i>{$person->getName()}</i> could not be deleted");
+        }
     }
 }
 
