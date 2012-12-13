@@ -6,6 +6,12 @@ class ProductAPI extends RESTAPI {
 
     function processParams($params){
         $this->id = @$params[1];
+
+    }
+
+    function isLoginRequired(){
+        return true;
+
     }
     
     function doGET(){
@@ -51,5 +57,6 @@ class ProductAPI extends RESTAPI {
     }
 	
 }
+
 
 ?>

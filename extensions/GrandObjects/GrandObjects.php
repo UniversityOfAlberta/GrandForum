@@ -19,6 +19,7 @@ $apiRequest->addAction('Hidden','role/:id', new RoleAPI());
 $apiRequest->addAction('Hidden','project', new ProjectAPI());
 $apiRequest->addAction('Hidden','project/:id', new ProjectAPI());
 $apiRequest->addAction('Hidden','product', new ProductAPI());
+$apiRequest->addAction('Hidden','person_product', new PersonProductAPI());
 
 function createModels($out, $parserout){
     global $wgServer, $wgScriptPath;
