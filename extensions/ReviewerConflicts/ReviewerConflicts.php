@@ -353,7 +353,19 @@ EOF;
         <tbody>
 EOF;
 
+        $sql = "SELECT * FROM grand_reviewer_conflicts";
+        $data = DBFunctions::execSQL($sql);
+        $conflicts = array();
+        foreach($data as $row){
+            $eval_id = $row['reviewer_id'];
+            $rev_id = $row['reviewee_id'];
+            $conflict = $row['conflict'];
+            $user_conflict = $row['user_conflict'];
 
+            $inner = array("conflict"=>$conflict, 'user_conflict'=>$user_conflict);
+            $conflicts[$eval_id][$rev_id] = $inner;
+        }
+        
         foreach($allPeople as $person){
             $reviewee_id = $person->getId();
 
@@ -397,12 +409,15 @@ EOF;
                 $efname = $eval_name_prop[0];
                 $elname = implode(' ', array_slice($eval_name_prop, 1));
         
-                $sql = "SELECT * FROM grand_reviewer_conflicts WHERE reviewer_id = '{$eval_id}' AND reviewee_id = '{$reviewee_id}'";
-                $data = DBFunctions::execSQL($sql);
+                //$sql = "SELECT * FROM grand_reviewer_conflicts WHERE reviewer_id = '{$eval_id}' AND reviewee_id = '{$reviewee_id}'";
+                //$data = DBFunctions::execSQL($sql);
+                
+
                 $bgcolor = "#FFFFFF";
-                if(count($data) > 0){
-                    $conflict = ($data[0]['conflict'] == 1)? "Y" : "N";
-                    $user_conflict = ($data[0]['user_conflict'] == 1)? "Y" : "N";
+                if(isset($conflicts[$eval_id][$reviewee_id])){
+                    $data = $conflicts[$eval_id][$reviewee_id];
+                    $conflict = ($data['conflict'] == 1)? "Y" : "N";
+                    $user_conflict = ($data['user_conflict'] == 1)? "Y" : "N";
 
                     if($conflict != $user_conflict){
                         $bgcolor = "yellow";
