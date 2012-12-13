@@ -1,8 +1,6 @@
-Project = Backbone.RelationalModel.extend({
+Project = Backbone.Model.extend({
     initialize: function(){
-        this.bind("error", function(model, error){
-            //addError(error);
-        });
+
     },
     
     urlRoot: 'index.php?action=api.project',

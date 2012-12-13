@@ -75,6 +75,7 @@ class cavendishTemplate extends QuickTemplate {
 		<![endif]-->
 		
 		<?php print Skin::makeGlobalVariablesScript( $this->data ); ?>
+		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/date.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery-ui.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.cookie.js"></script>
@@ -90,7 +91,7 @@ class cavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.qtip.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/underscore-min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-min.js"></script>
-        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-relational-min.js"></script>
+        <!--<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-relational-min.js"></script>-->
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/extensions/Messages/messages.js"></script>
         <script type='text/javascript'>
             Backbone.emulateHTTP = true;
@@ -132,8 +133,20 @@ class cavendishTemplate extends QuickTemplate {
 		<link rel="stylesheet" type="text/css" media="print" href="<?php $this->text('stylepath') ?>/common/commonPrint.css" />
 		<script type="text/javascript" src="<?php $this->text('stylepath' ) ?>/common/wikibits.js"></script>
 		<script type='text/javascript'>
+		    // TODO: For now I am just caching all common models, but this might no longer make sense
+		    // when the data sets become huge
+		    
+		    people = new People();
+		    people.fetch();
 		
 		    me = new Person({id: <?php echo $wgUser->getId(); ?>});
+		    me.fetch();
+		    
+		    projects = new Projects();
+		    projects.fetch();
+		    
+		    products = new Products();
+		    products.fetch();
 		
 		    function setMinWidth(){
 	            $("body").css('min-width', '0');

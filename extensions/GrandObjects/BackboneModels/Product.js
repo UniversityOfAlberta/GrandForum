@@ -1,4 +1,4 @@
-Product = Backbone.RelationalModel.extend({
+Product = Backbone.Model.extend({
     initialize: function(){
         //this.get('authors').url = this.urlRoot + '/' + this.get('id') + '/authors';
     //    this.bind('change:id', function(){
@@ -6,17 +6,6 @@ Product = Backbone.RelationalModel.extend({
     //    });
     },
 
-   relations: [{
-        type: Backbone.HasMany,
-        key: 'authors',
-        relatedModel: 'ProductAuthor',
-        reverseRelation: {
-            key: 'productId',
-            includeInJSON: 'id',
-        },
-        collectionType: 'ProductAuthors',
-
-    }],
 
     urlRoot: 'index.php?action=api.product',
     
@@ -35,7 +24,7 @@ Product = Backbone.RelationalModel.extend({
 });
 
 
-ProductAuthor = Backbone.RelationalModel.extend({
+ProductAuthor = Backbone.Model.extend({
 
     urlRoot: 'index.php?action=api.person_product/product_id',
     idAttribute: 'productId',
@@ -84,4 +73,14 @@ Products = Backbone.Collection.extend({
 
 ProductAuthors = Backbone.Collection.extend({
     model: ProductAuthor,
+});
+
+Products = Backbone.Collection.extend({
+    initialize: function(){
+
+    },
+
+    model: Product,
+    
+    url: 'index.php?action=api.product'
 });

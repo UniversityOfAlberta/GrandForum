@@ -1,26 +1,13 @@
-Person = Backbone.RelationalModel.extend({
+Person = Backbone.Model.extend({
+
     initialize: function(){
-        this.get('projects').url = this.urlRoot + '/' + this.get('id') + '/projects';
-        this.bind('change:id', function(){
-            this.get('projects').url = this.urlRoot + '/' + this.get('id') + '/projects';
-        });
+        this.projects = new PersonProjects();
+        this.projects.url = this.urlRoot + '/' + this.get('id') + '/projects';
+        
+        this.roles = new PersonRoles();
+        this.roles.url = this.urlRoot + '/' + this.get('id') + '/roles';
     },
-    
-    relations: [{
-        type: Backbone.HasMany,
-        key: 'projects',
-        relatedModel: 'PersonProject',
-        collectionType: 'PersonProjects'
-    },
-    /*{
-        type: Backbone.HasMany,
-        key: 'products',
-        relatedModel: 'PersonProduct',
-        reverseRelation: {
-            key: 'product'
-        }
-    }*/],
-    
+
     urlRoot: 'index.php?action=api.person',
     
     defaults: {
@@ -41,41 +28,76 @@ Person = Backbone.RelationalModel.extend({
     }
 });
 
-PersonProject = Backbone.RelationalModel.extend({
-    
-    initialize: function(){
-
-    },
-    
-    relations: [{
-        type: Backbone.HasOne,
-        key: 'project',
-        relatedModel: 'Project'
-    },
-    {
-        type: Backbone.HasOne,
-        key: 'person',
-        relatedModel: 'Person'
-    }],
-
-    urlRoot: function(){
-        return 'index.php?action=api.person/' + this.personId + '/projects'
-    },
-    
-    defaults: {
-        projectId: "",
-        personId: "",
-        startDate: "",
-        endDate: ""
-    }
-});
-
 People = Backbone.Collection.extend({
     model: Person,
     
     url: 'index.php?action=api.person'
 });
 
-PersonProjects = Backbone.Collection.extend({
+PersonProject = RelationModel.extend({
+    initialize: function(){
+        
+    },
+
+    urlRoot: function(){
+        return 'index.php?action=api.person/' + this.personId + '/projects'
+    },
+    
+    getOwner: function(){
+        return people.get(this.get('personId'));
+    },
+    
+    getTarget: function(){
+        return projects.get(this.get('projectId'));
+    },
+    
+    defaults: {
+        personId: "",
+        projectId: "",
+        startDate: "",
+        endDate: ""
+    }
+});
+
+PersonProjects = RangeCollection.extend({
     model: PersonProject,
+    
+    newModel: function(){
+        return new Projects();
+    },
+});
+
+PersonRole = RelationModel.extend({
+    initialize: function(){
+    
+    },
+    
+    urlRoot: function(){
+        return 'index.php?action=api.person/' + this.personId + '/roles'
+    },
+    
+    getOwner: function(){
+        return people.get(this.get('personId'));
+    },
+    
+    getTarget: function(){
+        var role = new Role({id: parseInt(this.get('roleId'))});
+        role.fetch();
+        return role;
+    },
+    
+    defaults: {
+        personId: "",
+        roleId: "",
+        startDate: "",
+        endDate: ""
+    }
+});
+
+PersonRoles = RangeCollection.extend({
+    model: PersonRole,
+    
+    newModel: function(){
+        return new Roles();
+    },
 });
