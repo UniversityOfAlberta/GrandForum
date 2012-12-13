@@ -25,6 +25,7 @@ class APIRequest{
 		global $wgServer, $wgScriptPath;
 		$actions = explode(".", $action, 2);
 		if($actions[0] == "api"){
+		    session_write_close();
 			if(isset($actions[1])){
 				self::$action = $actions[1];
 				$params = explode("/", self::$action);
@@ -56,7 +57,6 @@ class APIRequest{
 				    foreach($apiCategories as $apiActions){
 				        foreach($apiActions as $route => $a){
 				            $routeParams = explode("/", $route);
-				            
 				            $match = true;
 				            foreach($routeParams as $key => $param){
 				                $match = $match && (isset($params[$key]) && ($param == $params[$key] || 
@@ -68,10 +68,6 @@ class APIRequest{
 				            foreach($params as $key => $param){
 				                $match = $match && (isset($routeParams[$key]) && ($param == $routeParams[$key] || 
 				                                    strstr($routeParams[$key], ":") !== false));
-				                if($route == "person/:id"){
-				                    //echo $param."<br />";
-				                    //var_dump($match);
-				                }
 				            }
 				            if($match){
 				                $api = $a;
@@ -276,7 +272,6 @@ abstract class API {
 
 	function processRequest($params=null){
 		global $wgUser;
-		session_write_close();
 		if(isset($_GET['getHelp'])){
 			$this->getHelp();
 		}

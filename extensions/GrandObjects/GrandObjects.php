@@ -21,7 +21,6 @@ $apiRequest->addAction('Hidden','project/:id', new ProjectAPI());
 $apiRequest->addAction('Hidden','product', new ProductAPI());
 $apiRequest->addAction('Hidden','person_product', new PersonProductAPI());
 
-
 function createModels($out, $parserout){
     global $wgServer, $wgScriptPath;
     $out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/RelationModel.js'></script>");
