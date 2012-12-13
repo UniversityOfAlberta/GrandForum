@@ -58,5 +58,4 @@ class ProductAPI extends RESTAPI {
 	
 }
 
-
 ?>

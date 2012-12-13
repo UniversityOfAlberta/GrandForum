@@ -64,6 +64,9 @@ class APIRequest{
 				                if($match && strstr($param, ":") !== false){
 				                    $a->params[str_replace(":", "", $param)] = $params[$key];
 				                }
+				                else if($match){
+				                    $a->params[$key] = $params[$key];
+				                }
 				            }
 				            foreach($params as $key => $param){
 				                $match = $match && (isset($routeParams[$key]) && ($param == $routeParams[$key] || 

@@ -1,12 +1,14 @@
 Person = Backbone.Model.extend({
 
     initialize: function(){
-    
         this.projects = new PersonProjects();
         this.projects.url = this.urlRoot + '/' + this.get('id') + '/projects';
         
         this.roles = new PersonRoles();
         this.roles.url = this.urlRoot + '/' + this.get('id') + '/roles';
+        
+        this.products = new PersonProducts();
+        this.products.url = this.urlRoot + '/' + this.get('id') + '/products';
         
         this.bind("sync", function(model, response, options){
             clearAllMessages();
@@ -34,6 +36,11 @@ Person = Backbone.Model.extend({
     getRoles: function(){
         this.roles.fetch();
         return this.roles;
+    },
+    
+    getProducts: function(){
+        this.products.fetch();
+        return this.products;
     },
 
     urlRoot: 'index.php?action=api.person',
@@ -134,4 +141,35 @@ PersonRoles = RangeCollection.extend({
     newModel: function(){
         return new Roles();
     },
+});
+
+PersonProduct = RelationModel.extend({
+    initialize: function(){
+    
+    },
+    
+    urlRoot: function(){
+        return 'index.php?action=api.person/' + this.personId + '/products'
+    },
+    
+    getOwner: function(){
+        person = new Person({id: this.get('personId')});
+        person.fetch();
+        return person;
+    },
+    
+    getTarget: function(){
+        var product = new Product({id: this.get('productId')});
+        product.fetch();
+        return product;
+    },
+    
+    defaults: {
+        personId: "",
+        productId: ""
+    }
+});
+
+PersonProducts = Backbone.Collection.extend({
+    model: PersonProduct,
 });

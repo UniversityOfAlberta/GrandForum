@@ -14,12 +14,13 @@ $apiRequest->addAction('Hidden','person', new PersonAPI());
 $apiRequest->addAction('Hidden','person/:id', new PersonAPI());
 $apiRequest->addAction('Hidden','person/:id/projects', new PersonProjectsAPI());
 $apiRequest->addAction('Hidden','person/:id/roles', new PersonRolesAPI());
+$apiRequest->addAction('Hidden','person/:id/products', new PersonProductAPI());
 $apiRequest->addAction('Hidden','role', new RoleAPI());
 $apiRequest->addAction('Hidden','role/:id', new RoleAPI());
 $apiRequest->addAction('Hidden','project', new ProjectAPI());
 $apiRequest->addAction('Hidden','project/:id', new ProjectAPI());
 $apiRequest->addAction('Hidden','product', new ProductAPI());
-$apiRequest->addAction('Hidden','person_product', new PersonProductAPI());
+$apiRequest->addAction('Hidden','product/:id/authors', new PersonProductAPI());
 
 function createModels($out, $parserout){
     global $wgServer, $wgScriptPath;

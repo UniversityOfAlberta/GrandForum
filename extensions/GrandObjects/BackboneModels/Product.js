@@ -1,11 +1,13 @@
 Product = Backbone.Model.extend({
     initialize: function(){
-        //this.get('authors').url = this.urlRoot + '/' + this.get('id') + '/authors';
-    //    this.bind('change:id', function(){
-    //        this.get('authors').url = this.urlRoot + '/' + this.get('id') + '/authors';
-    //    });
+        this.authors = new ProductAuthors();
+        this.authors.url = this.urlRoot + '/' + this.get('id') + '/authors';
     },
 
+    getAuthors: function(){
+        this.authors.fetch();
+        return this.authors;
+    },
 
     urlRoot: 'index.php?action=api.product',
     
@@ -23,47 +25,29 @@ Product = Backbone.Model.extend({
     },
 });
 
+ProductAuthor = RelationModel.extend({
 
-ProductAuthor = Backbone.Model.extend({
-
-    urlRoot: 'index.php?action=api.person_product/product_id',
-    idAttribute: 'productId',
+    urlRoot: function(){
+        return 'index.php?action=api.product/' + this.productId + '/authors'
+    },
+    
+    getOwner: function(){
+        product = new Product({id: this.get('productId')});
+        person.fetch();
+        return person;
+    },
+    
+    getTarget: function(){
+        person = new Person({id: this.get('personId')});
+        person.fetch();
+        return person;
+    },
     
     defaults: {
         productId: null,
         personId: null
     }
 });
-
-/*AuthorProducts = Backbone.RelationalModel.extend({
-    
-    initialize: function(){
-
-    },
-    
-    relations: [{
-        type: Backbone.HasOne,
-        key: 'person',
-        relatedModel: 'Person'
-    },
-    {
-        type: Backbone.HasOne,
-        key: 'product',
-        relatedModel: 'Product'
-    }],
-
-    urlRoot: function(){
-        return 'index.php?action=api.person/' + this.personId + '/projects'
-    },
-    
-    defaults: {
-        projectId: "",
-        personId: "",
-        startDate: "",
-        endDate: ""
-    }
-});*/
-
 
 Products = Backbone.Collection.extend({
     model: Product,
@@ -73,14 +57,4 @@ Products = Backbone.Collection.extend({
 
 ProductAuthors = Backbone.Collection.extend({
     model: ProductAuthor,
-});
-
-Products = Backbone.Collection.extend({
-    initialize: function(){
-
-    },
-
-    model: Product,
-    
-    url: 'index.php?action=api.product'
 });

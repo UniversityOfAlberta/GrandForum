@@ -127,37 +127,24 @@ class PersonRolesAPI extends RESTAPI {
 }
 
 class PersonProductAPI extends RESTAPI {
-
-    var $id_type;
-    var $id;
-
-    function processParams($params){
-        $this->id_type = @$params[1];
-        $this->id = @$params[2]; 
-    }
-
-    function isLoginRequired(){
-        return true;
-    }
     
     function doGET(){
-
-        if($this->id_type == "person_id"){
-            $person = Person::newFromId($this->id);
+        if($this->getParam(0) == "person"){
+            $person = Person::newFromId($this->getParam('id'));
             $json = array();
             $products = $person->getPapersAuthored("all", false, false, false); 
             foreach($products as $product){
-                $json[] = array('productId' => $product->getId(), 'personId'=>$this->id);
+                $json[] = array('productId' => $product->getId(), 'personId'=>$this->getParam('id'));
             }
             return json_encode($json);
         }
-        else if($this->id_type == "product_id"){
-            $product = Paper::newFromId($this->id);
+        else if($this->getParam(0) == "product"){
+            $product = Paper::newFromId($this->getParam('id'));
             $json = array();
             $authors = $product->getAuthors(); 
             foreach($authors as $author){
                 if($author->getId()){
-                    $json[] = array('productId' => $this->id, 'personId' => $author->getId());
+                    $json[] = array('productId' => $this->getParam('id'), 'personId' => $author->getId());
                 }
             }
             return json_encode($json);
