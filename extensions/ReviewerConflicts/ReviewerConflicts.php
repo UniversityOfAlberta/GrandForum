@@ -319,6 +319,8 @@ EOF;
         $total_conflict_submissions = count($data);
         $total_evaluators = count($current_evals);
 
+        $eval_papers = array();
+
         $html .=<<<EOF
 
         <div id='div_new_connections'>
@@ -344,6 +346,12 @@ EOF;
             
             $html .= "<th name='' title='' class='sorter-false'>{$elname}<br />{$efname}</th>";
             $csv .= ',"'.$elname.','.$efname.'"';
+
+            //cache eval papers
+            $eval_papers[$eval_id] = array();
+            foreach($eval->getPapers("all", true) as $epaper){
+                $eval_papers[$eval_id][] = $epaper->getId();
+            }
         }
         $csv .= "\n";
 
@@ -439,10 +447,10 @@ EOF;
                         $eval_projects[] = $eproject->getName();
                     }
 
-                    $eval_papers = array();
-                    foreach($eval->getPapers("all", true) as $epaper){
-                        $eval_papers[] = $epaper->getId();
-                    }
+                    //$eval_papers = array();
+                    //foreach($eval->getPapers("all", true) as $epaper){
+                    //    $eval_papers[] = $epaper->getId();
+                    //}
 
                     //Works With
                     $eval_coworkers = array();
@@ -485,7 +493,7 @@ EOF;
                     //Papers
                     $co_authorship = "No";
                     foreach($papers as $paper){
-                        if(in_array($paper->getId(), $eval_papers)){
+                        if(in_array($paper->getId(), $eval_papers[$eval_id])){
                             $co_authorship = "Yes";
                             break;
                         }
