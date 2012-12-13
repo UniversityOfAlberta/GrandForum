@@ -50,11 +50,7 @@ class ReviewerConflicts extends SpecialPage {
            
             if($person->isUnassignedEvaluator()){
                 @$class = ($wgTitle->getText() == "ReviewerConflicts" ) ? "selected" : false;
-                /*$content_actions[] = array (
-                         'class' => $class,
-                         'text'  => "Evaluator",
-                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport",
-                        );*/
+                
                 $content_actions[] = array (
                          'class' => $class,
                          'text'  => "Reviewer Conflicts",
@@ -75,6 +71,21 @@ class ReviewerConflicts extends SpecialPage {
 	    $projects = array();
 	    $nis = array();
 	    $active = 0;
+
+        if(isset($_GET['download_csv'])){
+            $csv_type = $_GET['download_csv'];
+            $filename = "/Library/WebServer/Documents/giga_forum/data/{$csv_type}_Conflicts_Rollup.csv";
+            $wgOut->disable();
+            ob_clean();
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header('Content-Description: File Transfer');
+            header("Content-type: text/csv");
+            header("Content-Disposition: attachment; filename=mycsv.csv");
+            header("Expires: 0");
+            header("Pragma: public");
+            readfile($filename);
+            exit;
+        }
 
 	    if(isset($_POST['Submit']) && ($_POST['Submit'] == "Confirm CNI Conflicts" || $_POST['Submit'] == "Confirm PNI Conflicts")){
             if(isset($_POST['reviewee_id'])){
@@ -154,12 +165,24 @@ class ReviewerConflicts extends SpecialPage {
         $cnis = Person::getAllPeople(CNI);
         $pnis = Person::getAllPeople(PNI);
 		$wgOut->addHTML("<div id='pnis'>");
-	    $overall['PNI'] = ReviewerConflicts::niTable($pnis, 'PNI');           
-	    $wgOut->addHTML("</div><div id='cnis'>");
-        $overall['CNI'] = ReviewerConflicts::niTable($cnis, 'CNI');           
-        $wgOut->addHTML("</div><div id='projects'>");
-		$overall['PROJECTS'] = ReviewerConflicts::projectTable($projects);
-		$wgOut->addHTML("</div></div>");
+
+        $me = Person::newFromId($wgUser->getId());
+        if($me->isRole(MANAGER)){
+            $overall['PNI'] = ReviewerConflicts::managerNiTable($pnis, 'PNI');           
+            $wgOut->addHTML("</div><div id='cnis'>");
+            $overall['CNI'] = ReviewerConflicts::managerNiTable($cnis, 'CNI');           
+            $wgOut->addHTML("</div><div id='projects'>");
+            $overall['PROJECTS'] = ReviewerConflicts::managerProjectTable($projects);
+        }
+        else{
+            $overall['PNI'] = ReviewerConflicts::niTable($pnis, 'PNI');           
+    	    $wgOut->addHTML("</div><div id='cnis'>");
+            $overall['CNI'] = ReviewerConflicts::niTable($cnis, 'CNI');           
+            $wgOut->addHTML("</div><div id='projects'>");
+    		$overall['PROJECTS'] = ReviewerConflicts::projectTable($projects);
+		}
+        
+        $wgOut->addHTML("</div></div>");
 	 	
 	  
 	    $wgOut->addScript("<script src='../scripts/jquery.tablesorter.js' type='text/javascript' charset='utf-8';></script>
@@ -167,6 +190,7 @@ class ReviewerConflicts extends SpecialPage {
 	    				   <script type='text/javascript'>
                                 $(document).ready(function(){
                                     $('td[title], input[title]').qtip({position: {my: 'top left', at: 'center center'}});
+
 	                                $('.indexTable').dataTable({'iDisplayLength': 100,
 	                                                            'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
                                     $('.dataTables_filter input').css('width', 250);
@@ -180,9 +204,18 @@ class ReviewerConflicts extends SpecialPage {
                                     $('#PNI_conflicts').tablesorter({ 
                                         sortList: [[0,0], [1,0], [2,0], [3,0]],
                                     });
+                                    $('#CNI_conflicts_man').tablesorter({ 
+                                        sortList: [[0,0]],
+                                    });
+                                    $('#PNI_conflicts_man').tablesorter({ 
+                                        sortList: [[0,0]],
+                                    });
 	    							$('#project_conflicts').tablesorter({ 
 										sortList: [[0,0], [1,0]],
 									});
+                                    $('#project_conflicts_man').tablesorter({ 
+                                        sortList: [[0,0]],
+                                    });
 
                                     $('.conflict_found').click(function(e){
                                         e.preventDefault();
@@ -219,6 +252,278 @@ class ReviewerConflicts extends SpecialPage {
     }
 
     
+    static function managerNiTable($nis, $type='CNI'){
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+        
+        $html = "";
+        $csv = "";
+
+        $me = Person::newFromId($wgUser->getId());
+        $allPeople = $nis; //array_merge(Person::getAllPeople(CNI), Person::getAllPeople(PNI));
+        $i = 0;
+        $names = array();
+        foreach($allPeople as $person){
+            if($person->getName() != $me->getName()){
+                $names[] = $person->getName();
+            }
+        }
+        $names = implode("','", $names);
+        
+        $js =<<<EOF
+        <script type="text/javascript">
+        var sort = "first";
+        var allPeople = new Array('{$names}');
+
+        function filterResultsCNI(value){
+            if(typeof value != 'undefined'){
+                value = $.trim(value);
+                value = value.replace(/\s+/g, '|');
+                //console.log(value);
+                $.each($("table#CNI_conflicts tr[name=search]"), function(index, val){
+                    if($(val).attr("class").toLowerCase().regexIndexOf(value.toLowerCase()) != -1){
+                        $(val).show();
+                    }
+                    else{
+                        $(val).hide();
+                    }
+                });
+            }
+        }
+
+        function filterResultsPNI(value){
+            if(typeof value != 'undefined'){
+                value = $.trim(value);
+                value = value.replace(/\s+/g, '|');
+                //console.log(value);
+                $.each($("table#PNI_conflicts tr[name=search]"), function(index, val){
+                    if($(val).attr("class").toLowerCase().regexIndexOf(value.toLowerCase()) != -1){
+                        $(val).show();
+                    }
+                    else{
+                        $(val).hide();
+                    }
+                });
+            }
+        }
+            
+        </script>
+EOF;
+        
+        $wgOut->addScript($js);    
+        //$html .= $js;    
+
+        $current_evals = array(17,563,152,25,90,27,28,564,32,565,566,36,38,41,48,55,60,61,1263);
+
+        $sql = "SELECT DISTINCT reviewer_id FROM grand_reviewer_conflicts";
+        $data = DBFunctions::execSQL($sql);
+        $total_conflict_submissions = count($data);
+        $total_evaluators = count($current_evals);
+
+        $html .=<<<EOF
+
+        <div id='div_new_connections'>
+        <p style="background-color:yellow; display:inline-block;">{$total_conflict_submissions} out of {$total_evaluators} Evaluators have submitted their NI Conflict Reviews.</p><br />
+        <strong>Search:</strong> <input title='You can search by Name, Organization or Projects' style='width:82%;' id='search_{$type}' type='text' onKeyUp='filterResults{$type}(this.value);' />
+        <div style='padding:2px;'></div>
+        <form id='submitForm' action='$wgServer$wgScriptPath/index.php/Special:ReviewerConflicts' method='post'>
+        <div style="width:1000px; overflow: scroll;">
+        <table id='{$type}_conflicts_man' class='wikitable' cellspacing='1' cellpadding='5' frame='box' rules='all'>
+        <thead>
+        <tr bgcolor='#F2F2F2'>
+        <th name="search_lastname_header">Names</th>
+EOF;
+        
+        $csv .= '"Names"';
+
+        foreach($current_evals as $eval_id){
+            $eval = Person::newFromId($eval_id);
+            $eval_name = $eval->getName();
+            $eval_name_prop = explode('.', $eval_name); 
+            $efname = $eval_name_prop[0];
+            $elname = implode(' ', array_slice($eval_name_prop, 1));
+            
+            $html .= "<th name='' title='' class='sorter-false'>{$elname}<br />{$efname}</th>";
+            $csv .= ',"'.$elname.','.$efname.'"';
+        }
+        $csv .= "\n";
+
+        $html .=<<<EOF
+        </tr>
+        </thead>
+        <tbody>
+EOF;
+
+
+        foreach($allPeople as $person){
+            $reviewee_id = $person->getId();
+
+            if(in_array($reviewee_id, $current_evals)){
+                continue;
+            }
+
+            $row_id = $person->getName();
+            $person_name = explode('.', $person->getName()); 
+            $fname = $person_name[0];
+            $lname = implode(' ', array_slice($person_name, 1));
+
+            //Organization
+            $position = $person->getUniversity();
+            $position = $position['university'];
+            
+            //Projects
+            $projects = $person->getProjects();
+            $proj_names = array();
+            
+            foreach($projects as $project){
+                $proj_names[] = $project->getName();
+            }
+            $proj_names = implode(' ', $proj_names);
+
+            $bgcolor = "#FFFFFF";
+            $html .=<<<EOF
+            <tr style='background-color:{$bgcolor};' name='search' id='{$row_id}' class='{$row_id} {$proj_names} {$position}'>
+            <td class=''>{$lname}, {$fname}</td>
+EOF;
+            $csv .= '"'.$lname.','.$fname.'"';
+            foreach($current_evals as $eval_id){
+
+                $eval = Person::newFromId($eval_id);
+                $eval_name = $eval->getName();
+                $eval_name_prop = explode('.', $eval_name); 
+                $efname = $eval_name_prop[0];
+                $elname = implode(' ', array_slice($eval_name_prop, 1));
+        
+                $sql = "SELECT * FROM grand_reviewer_conflicts WHERE reviewer_id = '{$eval_id}' AND reviewee_id = '{$reviewee_id}'";
+                $data = DBFunctions::execSQL($sql);
+                $bgcolor = "#FFFFFF";
+                if(count($data) > 0){
+                    $conflict = ($data[0]['conflict'] == 1)? "Y" : "N";
+                    $user_conflict = ($data[0]['user_conflict'] == 1)? "Y" : "N";
+
+                    if($conflict != $user_conflict){
+                        $bgcolor = "yellow";
+                    }
+                    else if($conflict == "Y") {
+                        $bgcolor = "#DD3333";
+                    }
+                    $html .= "<td style='background-color:{$bgcolor};' align='center' title='Evaluator: {$efname} {$elname}<br />NI: {$fname} {$lname}' name='' title=''>O=$conflict<br />U=$user_conflict</td>";    
+                    $csv .= ',"O='.$conflict.'; U='.$user_conflict.'"';
+                }
+                else{
+
+                    //EVAL DATA
+                    $eval_organization = $eval->getUniversity();      
+                    $eval_organization = $eval_organization['university'];
+
+                    $eval_projects = array();
+                    foreach($eval->getProjects() as $eproject){
+                        $eval_projects[] = $eproject->getName();
+                    }
+
+                    $eval_papers = array();
+                    foreach($eval->getPapers("all", true) as $epaper){
+                        $eval_papers[] = $epaper->getId();
+                    }
+
+                    //Works With
+                    $eval_coworkers = array();
+                    foreach($eval->getRelations("Works With", true) as $erel){
+                        $eval_coworkers[] = $erel->getUser2();
+                    }
+
+                    $eval_hqp = array();
+                    foreach($eval->getHQP(true) as $ehqp){
+                        $eval_hqp[] = $ehqp->getId();
+                    }
+
+                    //NI DATA
+                    //Work With 
+                    $works_with = "No";            
+                    $co_workers = array();
+                    foreach($person->getRelations("Works With", true) as $rel){
+                        $co_workers[] = $rel->getUser2()->getId();
+                    }
+
+                    if($person->relatedTo($eval, 'Works With') || $eval->relatedTo($person, 'Works With') || in_array($eval_id, $co_workers)){
+                        $works_with = "Yes";
+                    }
+
+                    
+                    //Organization
+                    $position = $person->getUniversity();
+                    $position = $position['university'];
+                    $same_organization = "No";
+                    if(!empty($position) && $eval_organization == $position){
+                        $same_organization = "Yes";
+                    }
+
+                    //Projects
+                    $projects = $person->getProjects();
+                    $same_projects = "No";
+                    foreach($projects as $project){
+                        if(in_array($project->getName(), $eval_projects)){
+                            $same_projects = "Yes";
+                        }
+                    }
+                   
+                    //Papers
+                    $papers = $person->getPapers("all", true);
+                    $co_authorship = "No";
+                    foreach($papers as $paper){
+                        if(in_array($paper->getId(), $eval_papers)){
+                            $co_authorship = "Yes";
+                            break;
+                        }
+                    }
+
+                    //HQP
+                    $co_supervision = "No";
+                    foreach($person->getHQP(true) as $hqp){
+                        if(in_array($hqp->getId(), $eval_hqp)){
+                            $co_supervision = "Yes";
+                            break;
+                        }
+                    }
+
+                    if($works_with == "Yes" || $same_organization == "Yes" || $same_projects == "Yes" || $co_authorship == "Yes" || $co_supervision == "Yes"){
+                        $conflict = "Y";
+                        $bgcolor = "#DD3333";
+                    }
+                    else{
+                        $conflict = "N";
+                    }
+                    $user_conflict = "N/A";
+
+                    $html .= "<td style='background-color:{$bgcolor};' align='center' title='Evaluator: {$efname} {$elname}<br />NI: {$fname} {$lname}' width='10%' name='' title=''>O=$conflict<br />U=$user_conflict</td>";
+                
+                    $csv .= ',"O='.$conflict.'; U='.$user_conflict.'"';
+                }
+               
+            }
+            $csv .= "\n";
+        }
+
+        $myFile = $type."_Conflicts_Rollup.csv";
+        $fh = fopen('/local/data/www-root/grand_forum/data/'.$myFile, 'w');
+        //$fh = fopen('/Library/WebServer/Documents/giga_forum/data/'.$myFile, 'w');
+        fwrite($fh, $csv);
+        fclose($fh);
+        
+        $html .=<<<EOF
+        </tbody>
+        </table>
+        </div>
+        <input type="hidden" name="type" value="{$type}" />
+        <a href="/grand_forum/index.php/Special:ReviewerConflicts?download_csv={$type}" target="_blank">[Download as CSV]</a>
+        </form>
+        </div>
+EOF;
+
+        $wgOut->addHTML($html);
+        
+    }
+
+
     
     static function niTable($nis, $type='CNI'){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
@@ -576,6 +881,137 @@ EOF;
 EOF;
 
 		$wgOut->addHTML($html);
+    }
+
+    static function managerProjectTable($nis){
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+        
+        $html = "";
+        $csv = "";
+        //$me = Person::newFromId($wgUser->getId());
+        
+        $current_evals = array(17,563,152,25,90,27,28,564,32,565,566,36,38,41,48,55,60,61,1263);
+        $sql = "SELECT DISTINCT reviewer_id FROM grand_project_conflicts";
+        $data = DBFunctions::execSQL($sql);
+        $total_conflict_submissions = count($data);
+        $total_evaluators = count($current_evals);
+
+        $html .=<<<EOF
+
+        <div id='div_projects'>
+        
+        <p style="background-color:yellow; display:inline-block;">{$total_conflict_submissions} out of {$total_evaluators} Evaluators have submitted their Project Conflict Reviews.</p><br />
+
+        <div style='padding:2px;'></div>
+        <form id='submitForm' action='$wgServer$wgScriptPath/index.php/Special:ReviewerConflicts' method='post'>
+        <div style="width:1000px; overflow: scroll;">
+        <table id='project_conflicts_man' class='wikitable' cellspacing='1' cellpadding='5' frame='box' rules='all'>
+        <thead>
+        <tr bgcolor='#F2F2F2'>
+        <th name="search_lastname_header">Project Name</th>
+EOF;
+
+        $csv .= '"Names"';        
+        foreach($current_evals as $eval_id){
+            $eval = Person::newFromId($eval_id);
+            $eval_name = $eval->getName();
+            $eval_name_prop = explode('.', $eval_name); 
+            $efname = $eval_name_prop[0];
+            $elname = implode(' ', array_slice($eval_name_prop, 1));
+            
+            $html .= "<th name='' title='' class='sorter-false'>{$elname}<br />{$efname}</th>";
+            $csv .= ',"'.$elname.','.$efname.'"';
+        }
+        $csv .= "\n";
+
+        $html .=<<<EOF
+        </tr>
+        </thead>
+        <tbody>
+EOF;
+
+
+        $allProjects = Project::getAllProjects();
+        foreach($allProjects as $project){
+            $project_name = $project->getName();
+            $project_id = $project->getId();            
+           
+            $row_id = $project_name;
+            $html .= <<<EOF
+            <tr name='search' id='{$row_id}' class=''>
+                <td>{$project_name}</td>
+EOF;
+            $csv .= '"'.$project_name.'"';
+
+            foreach($current_evals as $eval_id){
+                $eval = Person::newFromId($eval_id);
+                $eval_name = $eval->getName();
+                $eval_name_prop = explode('.', $eval_name); 
+                $efname = $eval_name_prop[0];
+                $elname = implode(' ', array_slice($eval_name_prop, 1));
+
+                 //Get saved conflicts data if any
+                $sql = "SELECT * FROM grand_project_conflicts WHERE reviewer_id = '{$eval_id}' AND project_id = '{$project_id}'";
+                $data = DBFunctions::execSQL($sql);
+                $bgcolor = "#FFFFFF";    
+                if(count($data) > 0){
+                    $conflict = ($data[0]['conflict'] == 1)? "Y" : "N";
+                    $user_conflict = ($data[0]['user_conflict'] == 1)? "Y" : "N";
+
+                    if($conflict != $user_conflict){
+                        $bgcolor = "yellow";
+                    }
+                    else if($conflict == "Y") {
+                        $bgcolor = "#DD3333";
+                    }
+                   
+                    $html .= "<td style='background-color:{$bgcolor};' align='center' title='Evaluator: {$efname} {$elname}<br />Project: {$project_name}' name='' title=''>O=$conflict<br />U=$user_conflict</td>";    
+                    $csv .= ',"O='.$conflict.'; U='.$user_conflict.'"';
+                }
+                else{
+                    $eval_projects = array();
+                    foreach($eval->getProjects() as $eproject){
+                        $eval_projects[] = $eproject->getName();
+                    }
+                    
+                    $bgcolor = "#FFFFFF";
+                    if(in_array($project_name, $eval_projects)){
+                        $conflict = "Y";
+                        $bgcolor = "#DD3333";
+                    }
+                    else{
+                        $conflict = "N";
+                    }   
+                    $user_conflict = "N/A";
+
+                    $html .= "<td style='background-color:{$bgcolor};' align='center' title='Evaluator: {$efname} {$elname}<br />Project: {$project_name}' name='' title=''>O=$conflict<br />U=$user_conflict</td>";
+                
+                    $csv .= ',"O='.$conflict.'; U='.$user_conflict.'"';
+                }
+
+            }
+            $csv .= "\n";
+                
+            $html .= "</tr>";
+
+        }
+
+        $myFile = "Project_Conflicts_Rollup.csv";
+        $fh = fopen('/local/data/www-root/grand_forum/data/'.$myFile, 'w');
+        //$fh = fopen('/Library/WebServer/Documents/giga_forum/data/'.$myFile, 'w');
+        fwrite($fh, $csv);
+        fclose($fh);
+
+        $html .=<<<EOF
+        </tbody>
+        </table>
+        <input type="hidden" name="type" value="PROJECTS" />
+        <a href="/grand_forum/index.php/Special:ReviewerConflicts?download_csv=Project" target="_blank">[Download as CSV]</a>
+        </form>
+        </div>
+EOF;
+
+        $wgOut->addHTML($html);
     }
 }
 
