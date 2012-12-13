@@ -80,7 +80,7 @@ class ReviewerConflicts extends SpecialPage {
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
             header('Content-Description: File Transfer');
             header("Content-type: text/csv");
-            header("Content-Disposition: attachment; filename=mycsv.csv");
+            header("Content-Disposition: attachment; filename={$csv_type}-Reviewer_Conflicts.csv");
             header("Expires: 0");
             header("Pragma: public");
             readfile($filename);
@@ -537,7 +537,7 @@ EOF;
         </table>
         </div>
         <input type="hidden" name="type" value="{$type}" />
-        <a href="/grand_forum/index.php/Special:ReviewerConflicts?download_csv={$type}" target="_blank">[Download as CSV]</a>
+        <a href="/index.php/Special:ReviewerConflicts?download_csv={$type}" target="_blank">[Download as CSV]</a>
         </form>
         </div>
 EOF;
@@ -1029,7 +1029,7 @@ EOF;
         </tbody>
         </table>
         <input type="hidden" name="type" value="PROJECTS" />
-        <a href="/grand_forum/index.php/Special:ReviewerConflicts?download_csv=Project" target="_blank">[Download as CSV]</a>
+        <a href="/index.php/Special:ReviewerConflicts?download_csv=Project" target="_blank">[Download as CSV]</a>
         </form>
         </div>
 EOF;
