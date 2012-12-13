@@ -45,7 +45,9 @@ ProductAuthor = RelationModel.extend({
     
     defaults: {
         productId: null,
-        personId: null
+        personId: null,
+        startDate: "",
+        endDate: "",
     }
 });
 
@@ -55,6 +57,10 @@ Products = Backbone.Collection.extend({
     url: 'index.php?action=api.product'
 });
 
-ProductAuthors = Backbone.Collection.extend({
+ProductAuthors = RangeCollection.extend({
     model: ProductAuthor,
+    
+    newModel: function(){
+        return new People();
+    },
 });

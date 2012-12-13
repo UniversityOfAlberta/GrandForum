@@ -134,7 +134,10 @@ class PersonProductAPI extends RESTAPI {
             $json = array();
             $products = $person->getPapersAuthored("all", false, false, false); 
             foreach($products as $product){
-                $json[] = array('productId' => $product->getId(), 'personId'=>$this->getParam('id'));
+                $json[] = array('productId' => $product->getId(), 
+                                'personId'=>$this->getParam('id'),
+                                'startDate' => $product->getDate(),
+                                'endDate' => $product->getDate());
             }
             return json_encode($json);
         }
@@ -144,7 +147,10 @@ class PersonProductAPI extends RESTAPI {
             $authors = $product->getAuthors(); 
             foreach($authors as $author){
                 if($author->getId()){
-                    $json[] = array('productId' => $this->getParam('id'), 'personId' => $author->getId());
+                    $json[] = array('productId' => $this->getParam('id'), 
+                                    'personId' => $author->getId(),
+                                    'startDate' => $product->getDate(),
+                                    'endDate' => $product->getDate());
                 }
             }
             return json_encode($json);

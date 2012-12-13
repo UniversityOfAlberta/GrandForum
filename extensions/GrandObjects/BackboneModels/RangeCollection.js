@@ -1,7 +1,7 @@
 function between(object, startDate, endDate){
     return ((object.get('endDate') >= endDate && object.get('startDate') <= startDate) ||
             (object.get('startDate') <= startDate && object.get('endDate') >= startDate) ||
-            (object.get('startDate') <= endDate) ||
+            (object.get('startDate') <= endDate && object.get('startDate') >= startDate) ||
             (object.get('endDate') >= endDate && object.get('startDate') <= endDate));
 }
 

@@ -166,10 +166,16 @@ PersonProduct = RelationModel.extend({
     
     defaults: {
         personId: "",
-        productId: ""
+        productId: "",
+        startDate: "",
+        endDate: "",
     }
 });
 
-PersonProducts = Backbone.Collection.extend({
+PersonProducts = RangeCollection.extend({
     model: PersonProduct,
+    
+    newModel: function(){
+        return new Products();
+    },
 });
