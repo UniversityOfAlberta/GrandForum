@@ -135,18 +135,13 @@ class cavendishTemplate extends QuickTemplate {
 		<script type='text/javascript'>
 		    // TODO: For now I am just caching all common models, but this might no longer make sense
 		    // when the data sets become huge
-		    
-		    people = new People();
-		    people.fetch();
 		
-		    me = new Person({id: <?php echo $wgUser->getId(); ?>});
-		    me.fetch();
-		    
-		    projects = new Projects();
-		    projects.fetch();
-		    
-		    products = new Products();
-		    products.fetch();
+		    me = new Person(
+		    <?php
+		        $me = Person::newFromWGUser();
+		        echo $me->toJSON();
+		    ?>
+		    );
 		
 		    function setMinWidth(){
 	            $("body").css('min-width', '0');

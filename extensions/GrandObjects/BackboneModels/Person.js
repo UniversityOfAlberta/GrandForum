@@ -1,12 +1,12 @@
 Person = Backbone.Model.extend({
 
     initialize: function(){
+    
         this.projects = new PersonProjects();
         this.projects.url = this.urlRoot + '/' + this.get('id') + '/projects';
         
         this.roles = new PersonRoles();
         this.roles.url = this.urlRoot + '/' + this.get('id') + '/roles';
-        
         
         this.bind("sync", function(model, response, options){
             clearAllMessages();
@@ -24,6 +24,16 @@ Person = Backbone.Model.extend({
             clearAllMessages();
             addError(response.responseText);
         });
+    },
+    
+    getProjects: function(){
+        this.projects.fetch();
+        return this.projects;
+    },
+    
+    getRoles: function(){
+        this.roles.fetch();
+        return this.roles;
     },
 
     urlRoot: 'index.php?action=api.person',
@@ -62,11 +72,15 @@ PersonProject = RelationModel.extend({
     },
     
     getOwner: function(){
-        return people.get(this.get('personId'));
+        person = new Person({id: this.get('personId')});
+        person.fetch();
+        return person;
     },
     
     getTarget: function(){
-        return projects.get(this.get('projectId'));
+        project = new Project({id: this.get('projectId')});
+        project.fetch();
+        return project;
     },
     
     defaults: {
@@ -95,7 +109,9 @@ PersonRole = RelationModel.extend({
     },
     
     getOwner: function(){
-        return people.get(this.get('personId'));
+        person = new Person({id: this.get('personId')});
+        person.fetch();
+        return person;
     },
     
     getTarget: function(){
