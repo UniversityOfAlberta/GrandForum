@@ -380,6 +380,8 @@ EOF;
             $proj_names = implode(' ', $proj_names);
 
             $papers = $person->getPapers("all", true);
+            $projects = $person->getProjects();
+            $person_position = $person->getUniversity();
 
             $bgcolor = "#FFFFFF";
             $html .=<<<EOF
@@ -449,18 +451,15 @@ EOF;
                     if($person->relatedTo($eval, 'Works With') || $eval->relatedTo($person, 'Works With') || in_array($eval_id, $co_workers)){
                         $works_with = "Yes";
                     }
-
                     
                     //Organization
-                    $position = $person->getUniversity();
-                    $position = $position['university'];
+                    $position = $person_position['university'];
                     $same_organization = "No";
                     if(!empty($position) && $eval_organization == $position){
                         $same_organization = "Yes";
                     }
 
                     //Projects
-                    $projects = $person->getProjects();
                     $same_projects = "No";
                     foreach($projects as $project){
                         if(in_array($project->getName(), $eval_projects)){
