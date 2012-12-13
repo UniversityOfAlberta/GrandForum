@@ -22,6 +22,8 @@ class PersonAPI extends RESTAPI {
         $person->name = $this->POST('name');
         $person->twitter = $this->POST('twitter');
         $person->gender = $this->POST('gender');
+        $person->publicProfile = $this->POST('publicProfile');
+        $person->privateProfile = $this->POST('privateProfile');
         $person->nationality = $this->POST('nationality');
         if($person->exists()){
             $this->throwError("This user already exists");
@@ -38,8 +40,19 @@ class PersonAPI extends RESTAPI {
         if($person == null || $person->getName() == ""){
             $this->throwError("This user does not exist");
         }
-        header('Content-Type: application/json');
+        $person->name = $this->POST('name');
+        $person->realname = $this->POST('realName');
+        $person->email = $this->POST('email');
+        $person->name = $this->POST('name');
+        $person->twitter = $this->POST('twitter');
+        $person->gender = $this->POST('gender');
+        $person->publicProfile = $this->POST('publicProfile');
+        $person->privateProfile = $this->POST('privateProfile');
+        $person->nationality = $this->POST('nationality');
         $person->update();
+        header('Content-Type: application/json');
+        $person = Person::newFromId($this->getParam('id'));
+        return $person->toJSON();
     }
     
     function doDELETE(){

@@ -461,7 +461,9 @@ class Person extends BackboneModel {
 	        $status = DBFunctions::update('mw_user', 
 		                            array('user_twitter' => $this->getTwitter(),
 		                                  'user_gender' => $this->getGender(),
-		                                  'user_nationality' => $this->getNationality()),
+		                                  'user_nationality' => $this->getNationality(),
+		                                  'user_public_profile' => $this->getProfile(false),
+		                                  'user_private_profile' => $this->getProfile(true)),
 		                            array('user_name' => EQ($this->getName())));
 		    DBFunctions::commit();
 	        Person::$cache = array();
@@ -477,11 +479,42 @@ class Person extends BackboneModel {
 	}
 	
 	function update(){
-	
+	    $me = Person::newFromWGUser();
+	    foreach($this->getSupervisors() as $supervisor){
+            if($supervisor->getId() == $me->getId()){
+                $isSupervisor = true;
+                break;
+            }
+        }
+	    if($me->getId() == $this->getId() ||
+	       $me->isRoleAtLeast(MANAGER) ||
+	       $isSupervisor){
+	        $status = DBFunctions::update('mw_user', 
+		                            array('user_name' => $this->getName(),
+		                                  'user_real_name' => $this->getRealName(),
+		                                  'user_twitter' => $this->getTwitter(),
+		                                  'user_gender' => $this->getGender(),
+		                                  'user_nationality' => $this->getNationality(),
+		                                  'user_public_profile' => $this->getProfile(false),
+		                                  'user_private_profile' => $this->getProfile(true)),
+		                            array('user_id' => EQ($this->getId())));
+		    Person::$cache = array();
+		    Person::$namesCache = array();
+		    Person::$aliasCache = array();
+		    Person::$idsCache = array();
+		    return $status;
+        }
+        return false;
 	}
 	
 	function delete(){
-	    
+	    $me = Person::newFromWGUser();
+	    if($me->isRoleAtLeast(MANAGER)){
+	        return DBFunctions::update('mw_user',
+	                      array('deleted' => 1),
+	                      array('user_id' => EQ($this->getId())));
+	    }
+	    return false;
 	}
 	
 	function exists(){
