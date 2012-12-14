@@ -6,7 +6,7 @@
             $project = $table->obj;
             $people = $project->getAllPeople();
             foreach($people as $person){
-                if($person->isRole(PNI) || $person->isRole(CNI) || $person->leadershipOf($project)){
+                if($person->isRole(PNI) || $person->isRole(CNI) || $person->isRole(AR) || $person->leadershipOf($project)){
                     $this->array[] = $person->getName();
                 }
             }
