@@ -1074,9 +1074,9 @@ EOF;
 	    foreach($this->getAllPreds() as $pred){
 	        $projectNames[] = $pred->getName();
 	    }
-	    foreach($this->getAllPeopleDuring(null, ($year)."-00-00 00:00:00", ($year + 1)."-00-00 00:00:00") as $member){
-            if($member->isRole(PNI, ($year)."-00-00 00:00:00", ($year + 1)."-00-00 00:00:00") || 
-               $member->isRole(CNI, ($year)."-00-00 00:00:00", ($year + 1)."-00-00 00:00:00")){
+	    foreach($this->getAllPeopleDuring(null, ($year+1)."-00-00 00:00:00", ($year + 2)."-00-00 00:00:00") as $member){
+            if($member->isRole(PNI, ($year+1)."-00-00 00:00:00", ($year + 2)."-00-00 00:00:00") || 
+               $member->isRole(CNI, ($year+1)."-00-00 00:00:00", ($year + 2)."-00-00 00:00:00")){
                 $budget = $member->getAllocatedBudget($year);
                 if($budget != null){
                     $budget = $budget->copy();
