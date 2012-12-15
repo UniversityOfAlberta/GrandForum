@@ -57,6 +57,7 @@ abstract class PDFGenerator {
         if($person == null){
             $person = Person::newFromId($wgUser->getId());
         }
+        ini_set("max_execution_time","500");
         ini_set("memory_limit","1024M");
         
         $previewScript = "";
