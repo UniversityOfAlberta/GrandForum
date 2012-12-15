@@ -98,8 +98,8 @@ EOF;
 	    if($limit > 0){
 	        if(!$recommended){
 	            $type = "maximum of";
-	            $blobValue1 = substr($blobValue, 0, $limit);
-	            $blobValue2 = substr($blobValue, $limit);
+	            $blobValue1 = substr(utf8_decode($blobValue), 0, $limit);
+	            $blobValue2 = substr(utf8_decode($blobValue), $limit);
 	            if($blobValue2 != ""){
 	                if(isset($_GET['preview'])){
 	                    $blobValue = "{$blobValue1}<s style='color:red;'>{$blobValue2}</s>";
