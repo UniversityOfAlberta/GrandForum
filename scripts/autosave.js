@@ -65,6 +65,10 @@ function Autosave(value){
                 if(fn != null){
                     fn(data);
                 }
+            },
+            error: function(data){
+                obj.auto.html("<b>Error Saving</b>");
+                addError('There was an error saving this page.  Please verify that you are logged in.');
             }
         });
     }

@@ -200,7 +200,7 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     function execute(){
-        global $wgOut, $wgServer, $wgScriptPath, $wgUser;
+        global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating;
         if($this->name != ""){
             if(!$this->checkPermissions()){
                 $wgOut->setPageTitle("Permission error");
@@ -209,6 +209,10 @@ abstract class AbstractReport extends SpecialPage {
                 return;
             }
             if(isset($_POST['submit']) && $_POST['submit'] == "Save"){
+                if(!$wgUser->isLoggedIn()){
+                    header('HTTP/1.1 403 Authentication Required');
+                    exit;
+                }
                 $oldData = array();
                 parse_str($_POST['oldData'], $oldData);
                 $_POST['oldData'] = $oldData;
