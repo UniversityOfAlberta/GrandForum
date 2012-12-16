@@ -74,9 +74,6 @@ class cavendishTemplate extends QuickTemplate {
 		<meta http-equiv="imagetoolbar" content="no" />
 		<![endif]-->
 		
-		<script type="text/javascript">
-		    var wgImpersonating = <?php global $wgImpersonating; echo $wgImpersonating; ?>;
-		</script>
 		<?php print Skin::makeGlobalVariablesScript( $this->data ); ?>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery-ui.min.js"></script>
