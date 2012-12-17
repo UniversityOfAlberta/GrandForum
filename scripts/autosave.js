@@ -21,7 +21,7 @@ function Autosave(value){
     var obj = this;
     
     // Submits the form, using an ajax call.
-    this.save = function(fn){
+    this.save = function(fn, failFn){
         var button = $('input[type=submit]', this.value);
         $(button).prop('disabled', true);
         var dataStr = $(this.value).serialize() + "&" + encodeURIComponent($(button).attr("name")) + "=" + encodeURIComponent($(button).attr("value"));
@@ -62,13 +62,20 @@ function Autosave(value){
                 obj.auto.fadeOut(2500);
                 $(button).removeAttr('disabled');
                 $('#submit_throbber').css('display', 'none');
+                clearError();
                 if(fn != null){
                     fn(data);
                 }
             },
             error: function(data){
                 obj.auto.html("<b>Error Saving</b>");
-                addError('There was an error saving this page.  Please verify that you are logged in.');
+                clearError();
+                addError('There was an error saving this page.  Please verify that you are logged in, and not impersonating anyone.');
+                $(button).removeAttr('disabled');
+                $('#submit_throbber').css('display', 'none');
+                if(failFn != null){
+                    failFn(data);
+                }
             }
         });
     }
@@ -76,13 +83,13 @@ function Autosave(value){
 
 var autosaves = Array();
 
-function saveAll(fn){
+function saveAll(fn, failFn){
     var count = 0;
     for(i in autosaves){
         var autosave = autosaves[i];
         if(typeof autosave == 'object'){
             count++;
-            autosave.save(fn);
+            autosave.save(fn, failFn);
         }
     }
     if(count == 0){
@@ -94,14 +101,14 @@ function saveAll(fn){
     return true;
 }
 
-function saveAllAutosaves(fn){
+function saveAllAutosaves(fn, failFn){
     var count = 0;
     for(i in autosaves){
         var autosave = autosaves[i];
         if(typeof autosave == 'object'){
             if(autosave.isAutoSave && autosaveEnabled){
                 count++;
-                autosave.save(fn);
+                autosave.save(fn, failFn);
             }
         }
     }
@@ -121,7 +128,7 @@ $(document).ready(function(){
     }, 1000);
 });
 
-function findAutosaves(fn){
+function findAutosaves(fn, failFn){
     // Go throught the document and construct Autosaves
     autosaves = Array();
     $.each($(".autosave"), function(index, value){
@@ -136,7 +143,7 @@ function findAutosaves(fn){
         clearInterval(sTimeout);
     }
     sTimeout = setInterval(function() {
-        saveAllAutosaves(fn);
+        saveAllAutosaves(fn, failFn);
         nextSave = sInterval/1000;
     }, sInterval);
     nextSave = sInterval/1000;

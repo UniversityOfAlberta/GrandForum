@@ -202,17 +202,19 @@ abstract class AbstractReport extends SpecialPage {
     function execute(){
         global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating;
         if($this->name != ""){
-            if(!$this->checkPermissions()){
-                $wgOut->setPageTitle("Permission error");
-                $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>
-                                <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
-                return;
-            }
-            if(isset($_POST['submit']) && $_POST['submit'] == "Save"){
-                if(!$wgUser->isLoggedIn()){
+            if((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions'])){
+                if(!$wgUser->isLoggedIn() || ($wgImpersonating && !$this->checkPermissions()) || !DBFunctions::DBWritable()){
                     header('HTTP/1.1 403 Authentication Required');
                     exit;
                 }
+            }
+            if(!$this->checkPermissions()){
+                $wgOut->setPageTitle("Permission error");
+                $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>
+                                 <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
+                return;
+            }
+            if(isset($_POST['submit']) && $_POST['submit'] == "Save"){
                 $oldData = array();
                 parse_str($_POST['oldData'], $oldData);
                 $_POST['oldData'] = $oldData;
@@ -636,7 +638,14 @@ abstract class AbstractReport extends SpecialPage {
             $wgOut->addHTML("<div id='outerReport'>This report is currently disabled until futher notice.</div>");
             return;
         }
+        $writable = "true";
+        if(!DBFunctions::DBWritable()){
+            $writable = "false";
+        }
         $wgOut->addStyle("../extensions/Report/style/report.css");
+        $wgOut->addScript("<script type='text/javascript'>
+            var dbWritable = {$writable};
+        </script>");
         $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Report/scripts/report.js'></script>");
         $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Report/scripts/instructions.js'></script>");
         $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Report/scripts/progress.js'></script>");

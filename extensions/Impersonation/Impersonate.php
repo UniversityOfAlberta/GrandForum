@@ -145,7 +145,7 @@ function impersonate(){
             }
         }
         
-        if(!$pageAllowed){
+        if(!$pageAllowed && !((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions']))){
             permissionError($ns, $title);
             return true;
         }

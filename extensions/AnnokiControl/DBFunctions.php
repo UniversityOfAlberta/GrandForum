@@ -19,6 +19,12 @@ class DBFunctions {
     static function getQueryCount(){
 	    return self::$queryCount;
 	}
+	
+	static function DBWritable(){
+	    global $wgImpersonating;
+	    $supervisesImpersonee = checkSupervisesImpersonee();
+	    return !($wgImpersonating && !$supervisesImpersonee);
+	}
     
     // Executes an sql statement.  By default a query is assumed, and processes the resultset into an array.
     // If $update is set to true, then an update is performed instead.
@@ -39,8 +45,7 @@ class DBFunctions {
                 $wgOut->addHTML($printedSql);
             }
 		    if($update != false){
-		        $supervisesImpersonee = checkSupervisesImpersonee();
-		        if($wgImpersonating && !$supervisesImpersonee){
+		        if(!DBFunctions::DBWritable()){
 		            return true;
 		        }
 			    $status = DBFunctions::$dbw->query($sql);
