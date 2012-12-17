@@ -45,7 +45,7 @@ function Autosave(value){
         $.ajax({
             type: "POST",
             url: url,
-            data: dataStr + "&oldData=" + encodeURIComponent(lastSaveString),
+            data: dataStr + "&oldData=" + encodeURIComponent(lastSaveString) + '&user=' + wgUserName,
             success: function (data) {
                 if(data != undefined && data.length > 0){
                     // Do not change the lastSaveString values which have conflicts

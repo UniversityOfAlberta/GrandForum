@@ -203,7 +203,7 @@ abstract class AbstractReport extends SpecialPage {
         global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating;
         if($this->name != ""){
             if((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions'])){
-                if(!$wgUser->isLoggedIn() || ($wgImpersonating && !$this->checkPermissions()) || !DBFunctions::DBWritable()){
+                if(!$wgUser->isLoggedIn() || ($wgImpersonating && !$this->checkPermissions()) || !DBFunctions::DBWritable() || (isset($_POST['user']) && $_POST['user'] != $wgUser->getName())){
                     header('HTTP/1.1 403 Authentication Required');
                     exit;
                 }
