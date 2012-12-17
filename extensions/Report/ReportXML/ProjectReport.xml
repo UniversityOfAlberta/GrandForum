@@ -224,7 +224,7 @@
             <![CDATA[
                 <table style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'>
                     <tr>
-                        <th>Milestone</th><th>Last Year/Current Year Diff</th>
+                        <th>Milestone</th><th>Description</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -254,19 +254,19 @@
                     </td>
                 ]]>
             </ReportItem>
-            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_oldtitle}" newText="{$milestone_title}">
+            <ReportItem id="milestone_diff" type="StaticReportItem" oldText="{$milestone_oldtitle}" newText="{$milestone_title}">
                 <![CDATA[
-                    <td valign='top'><p><b>Title:</b> {$item}</p>
+                    <td valign='top' style='border-bottom:0;'><p><b>Title:</b> {$milestone_title}</p>
                 ]]>
             </ReportItem>
-            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_olddescription}" newText="{$milestone_description}">
+            <ReportItem id="milestone_diff2" type="StaticReportItem" oldText="{$milestone_olddescription}" newText="{$milestone_description}">
                 <![CDATA[
-                    <p><b>Description:</b> {$item}</p>
+                    <p><b>Description:</b> {$milestone_description}</p>
                 ]]>
             </ReportItem>
-            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_oldassessment}" newText="{$milestone_assessment}">
+            <ReportItem id="milestone_diff3" type="StaticReportItem" oldText="{$milestone_oldassessment}" newText="{$milestone_assessment}">
                 <![CDATA[
-                    <p><b>Assessment:</b> {$item}</p>
+                    <p><b>Assessment:</b> {$milestone_assessment}</p>
                 ]]>
             </ReportItem>
             <ReportItem id="milestone_data" type="StaticReportItem">
