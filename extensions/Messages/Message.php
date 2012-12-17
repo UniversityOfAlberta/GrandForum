@@ -128,15 +128,23 @@ class Message {
             }
             
             function addMessage(type, message){
-                if($('#wgMessages .' + type).length && !$('#wgMessages .' + type).is(':animated')){
+                var isAnimated = $('#wgMessages .' + type).is(':animated');
+                if($('#wgMessages .' + type).length && !isAnimated){
                     $('#wgMessages .' + type).append('<br />' + message);
                 }
                 else{
-                    $('#wgMessages .' + type).stop();
+                    if(isAnimated){
+                        $('#wgMessages .' + type).stop();
+                    }
                     $('#wgMessages .' + type).remove();
                     $('#wgMessages').append('<div class=\"' + type + '\" style=\"display:none\"><span style=\"display:inline-block;\">' + message + '</span></div>');
                     addClose($('#wgMessages .' + type));
-                    $('#wgMessages .' + type).fadeIn(300);
+                    if(!isAnimated){
+                        $('#wgMessages .' + type).fadeIn(300);
+                    }
+                    else{
+                        $('#wgMessages .' + type).fadeIn(0);
+                    }
                 }
             }
             

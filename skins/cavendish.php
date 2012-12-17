@@ -155,6 +155,21 @@ class cavendishTemplate extends QuickTemplate {
 	        
 	        var sideToggled = 'out';
 		    $(document).ready(function(){
+		        $('div#bodyContent').ajaxComplete(function(e, xhr, settings) {
+		            if(settings.url.indexOf("action=getUserMode") == -1){
+		                $.get("<?php echo $wgServer.$wgScriptPath; ?>/index.php?action=getUserMode", function(response){
+		                    if($('#wgMessages .info').text() != response.message){
+		                        clearInfo();
+		                    }
+		                    if(response.mode == 'loggedOut'){
+		                        addInfo(response.message);
+		                    }
+		                    else if(response.mode == 'impersonating'){
+		                        addInfo(response.message);
+		                    }
+		                });
+		            }
+                });
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();
                 });

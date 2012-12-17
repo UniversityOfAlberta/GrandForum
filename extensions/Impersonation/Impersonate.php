@@ -5,6 +5,36 @@ require_once("SpecialImpersonate.php");
 $wgHooks['AuthPluginSetup'][] = 'impersonate';
 $wgHooks['UserGetRights'][] = 'changeGroups';
 $wgHooks['UserLogoutComplete'][] = 'clearImpersonation';
+$wgHooks['UnknownAction'][] = 'getUserMode';
+
+function getUserMode($action, $page){
+    global $wgUser, $wgImpersonating;
+    if($action == 'getUserMode'){
+        $json = array();
+        if(!$wgUser->isLoggedIn()){
+            $json = array('mode' => 'loggedOut',
+                          'message' => 'You are currently logged out');
+            header('Content-Type: application/json');
+            echo json_encode($json);
+            exit;
+        }
+        else if($wgImpersonating){
+            $json = array('mode' => 'impersonating',
+                          'message' => getImpersonatingMessage());
+            header('Content-Type: application/json');
+            echo json_encode($json);
+            exit;
+        }
+        else{
+            $json = array('mode' => 'loggedIn',
+                          'message' => "");
+            header('Content-Type: application/json');
+            echo json_encode($json);
+            exit;
+        }
+    }
+    return true;
+}
 
 function impersonate(){
     global $wgRequest, $wgServer, $wgScriptPath, $wgUser, $wgMessage, $wgRealUser, $wgImpersonating, $wgTitle;
@@ -75,16 +105,12 @@ function impersonate(){
     if(isset($_COOKIE['impersonate'])){
         $exploded = explode("|", $_COOKIE['impersonate']);
         $name = $exploded[0];
-        $time = $exploded[1] - time();
         $person = Person::newFromName($name);
-        $realPerson = Person::newFromId($wgUser->getId());
-        $wgRealUser = $wgUser;
-        $wgImpersonating = true;
-        $isSupervisor = false;
-        $showReadOnly = true;
-        $pageAllowed = false;
-        $wgUser = User::newFromId($person->getId());
+        $message = getImpersonatingMessage();
+        $realPerson = Person::newFromId($wgRealUser->getId());
+        $wgMessage->addInfo($message);
         
+        $pageAllowed = false;
         if($person->isRoleDuring(HQP)){
             $hqps = $realPerson->getHQPDuring();
             foreach($hqps as $hqp){
@@ -92,38 +118,10 @@ function impersonate(){
                     if(("$ns:$title" == "Special:Report" &&
                        @$_GET['report'] == "HQPReport") || ("$ns:$title" == "Special:ReportArchive" && checkSupervisesImpersonee())){
                         $pageAllowed = true;
-                        $isSupervisor = true;
-                        $showReadOnly = false;
                     }
                     break;
                 }
             }
-        }
-        
-        $readOnly = "";
-        if($showReadOnly){
-            $readOnly = " in read-only mode";
-        }
-        
-        if(!isset($_GET['nocookie'])){
-            if(strstr($page, "?") !== false){
-                $stopImpersonating = "&stopImpersonating";
-                $impersonate = "&impersonate={$person->getName()}";
-                $renewSession = "&renewSession";
-            }
-            else{
-                $stopImpersonating = "?stopImpersonating";
-                $impersonate = "?impersonate={$person->getName()}";
-                $renewSession = "?renewSession";
-            }
-            $wgMessage->addInfo("<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>$readOnly.  This session will expire in ".ceil($time/(60))." minutes.<br />
-                                <a href='{$wgServer}{$page}{$renewSession}'>Renew My Session as {$person->getNameForForms()}</a> | <a href='{$wgServer}{$page}{$stopImpersonating}'>Stop Impersonating and Resume as {$realPerson->getNameForForms()}</a>");
-        }
-        else{
-            $wgMessage->addInfo("<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>$readOnly.  This session will expire once you navigate away from this page");
-        }
-        if($isSupervisor){
-            $wgMessage->addInfo("As a supervisor, you are able to edit, generate and submit the report of your HQP.  The user who edits, generates and submits the report is recorded.");
         }
         
         if($realPerson->isRoleAtLeast(MANAGER)){
@@ -145,12 +143,76 @@ function impersonate(){
             }
         }
         
-        if(!$pageAllowed && !((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions']))){
+        if(!$pageAllowed && !((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions']) || (isset($_GET['action']) && $_GET['action'] == 'getUserMode'))){
             permissionError($ns, $title);
             return true;
         }
     }
     return true;
+}
+
+function getImpersonatingMessage(){
+    global $wgRequest, $wgServer, $wgScriptPath, $wgUser, $wgMessage, $wgRealUser, $wgImpersonating, $wgTitle;
+    $exploded = explode("?", @$_SERVER["REQUEST_URI"]);
+    $page = $exploded[0];
+    $title = explode("/", $page);
+    $title = @$title[count($title)-1];
+    $ns = explode(":", $title);
+    $title = @$ns[1];
+    $ns = @$ns[0];
+    $exploded = explode("|", $_COOKIE['impersonate']);
+    
+    $name = $exploded[0];
+    $time = $exploded[1] - time();
+    $person = Person::newFromName($name);
+    if($wgRealUser == null){
+        $wgRealUser = $wgUser;
+    }
+    $realPerson = Person::newFromId($wgRealUser->getId());
+    $wgImpersonating = true;
+    $isSupervisor = false;
+    $showReadOnly = true;
+    $wgUser = User::newFromId($person->getId());
+    
+    if($person->isRoleDuring(HQP)){
+        $hqps = $realPerson->getHQPDuring();
+        foreach($hqps as $hqp){
+            if($hqp->getId() == $person->getId()){
+                if(checkSupervisesImpersonee()){
+                    $showReadOnly = false;
+                }
+                $isSupervisor = false;
+                break;
+            }
+        }
+    }
+    
+    $readOnly = "";
+    if($showReadOnly){
+        $readOnly = " in read-only mode";
+    }
+    $message = "";
+    if(!isset($_GET['nocookie'])){
+        if(strstr($page, "?") !== false){
+            $stopImpersonating = "&stopImpersonating";
+            $impersonate = "&impersonate={$person->getName()}";
+            $renewSession = "&renewSession";
+        }
+        else{
+            $stopImpersonating = "?stopImpersonating";
+            $impersonate = "?impersonate={$person->getName()}";
+            $renewSession = "?renewSession";
+        }
+        $message .= "<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>$readOnly.  This session will expire in ".ceil($time/(60))." minutes.<br />
+                            <a href='{$wgServer}{$page}{$renewSession}'>Renew My Session as {$person->getNameForForms()}</a> | <a href='{$wgServer}{$page}{$stopImpersonating}'>Stop Impersonating and Resume as {$realPerson->getNameForForms()}</a>";
+    }
+    else{
+        $message .= "<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>$readOnly.  This session will expire once you navigate away from this page";
+    }
+    if($isSupervisor){
+        $message .= "<br />As a supervisor, you are able to edit, generate and submit the report of your HQP.  The user who edits, generates and submits the report is recorded.";
+    }
+    return $message;
 }
 
 function checkSupervisesImpersonee(){
