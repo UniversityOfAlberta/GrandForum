@@ -374,19 +374,25 @@ class Paper extends BackboneModel{
 	function getAuthors($evaluate=true){
 	    if($this->authorsWaiting && $evaluate){
 	        $authors = array();
-	        foreach(unserialize($this->authors) as $author){
+	        $unserialized = unserialize($this->authors);
+	        foreach(@$unserialized as $author){
 	            if($author == ""){
 	                continue;
 	            }
 			    $person = null;
-                $person = Person::newFromNameLike($author);
-                if($person == null || $person->getName() == null || $person->getName() == ""){
-                    // The name might not match exactly what is in the db, try aliases
-                    try{
-                        $person = Person::newFromAlias($author);
-                    }
-                    catch(DomainException $e){
-                        $person = null;
+			    if(is_numeric($author)){
+			        $person = Person::newFromId($author);
+			    }
+			    else{
+                    $person = Person::newFromNameLike($author);
+                    if($person == null || $person->getName() == null || $person->getName() == ""){
+                        // The name might not match exactly what is in the db, try aliases
+                        try{
+                            $person = Person::newFromAlias($author);
+                        }
+                        catch(DomainException $e){
+                            $person = null;
+                        }
                     }
                 }
 	            if($person == null || $person->getName() == null || $person->getName() == ""){

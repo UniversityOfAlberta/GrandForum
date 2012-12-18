@@ -75,7 +75,7 @@ PersonProject = RelationModel.extend({
     },
 
     urlRoot: function(){
-        return 'index.php?action=api.person/' + this.personId + '/projects'
+        return 'index.php?action=api.person/' + this.get('personId') + '/projects'
     },
     
     getOwner: function(){
@@ -112,7 +112,7 @@ PersonRole = RelationModel.extend({
     },
     
     urlRoot: function(){
-        return 'index.php?action=api.person/' + this.personId + '/roles'
+        return 'index.php?action=api.person/' + this.get('personId') + '/roles'
     },
     
     getOwner: function(){
@@ -149,7 +149,7 @@ PersonProduct = RelationModel.extend({
     },
     
     urlRoot: function(){
-        return 'index.php?action=api.person/' + this.personId + '/products'
+        return 'index.php?action=api.person/' + this.get('personId') + '/products/' + this.get('productId');
     },
     
     getOwner: function(){

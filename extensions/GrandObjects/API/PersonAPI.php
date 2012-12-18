@@ -132,12 +132,18 @@ class PersonProductAPI extends RESTAPI {
         if($this->getParam(0) == "person"){
             $person = Person::newFromId($this->getParam('id'));
             $json = array();
-            $products = $person->getPapersAuthored("all", false, false, false); 
+            $products = $person->getPapersAuthored("all", false, false, false);
             foreach($products as $product){
-                $json[] = array('productId' => $product->getId(), 
-                                'personId'=>$this->getParam('id'),
-                                'startDate' => $product->getDate(),
-                                'endDate' => $product->getDate());
+                $array = array('productId' => $product->getId(), 
+                               'personId'=> $this->getParam('id'),
+                               'startDate' => $product->getDate(),
+                               'endDate' => $product->getDate());
+                if($this->getParam('productId') != null && $product->getId() == $this->getParam('productId')){
+                    return json_encode($array);
+                }
+                else if($this->getParam('productId') == null){
+                    $json[] = $array;
+                }
             }
             return json_encode($json);
         }
@@ -147,10 +153,16 @@ class PersonProductAPI extends RESTAPI {
             $authors = $product->getAuthors(); 
             foreach($authors as $author){
                 if($author->getId()){
-                    $json[] = array('productId' => $this->getParam('id'), 
-                                    'personId' => $author->getId(),
-                                    'startDate' => $product->getDate(),
-                                    'endDate' => $product->getDate());
+                    $array = array('productId' => $this->getParam('id'), 
+                                   'personId' => $author->getId(),
+                                   'startDate' => $product->getDate(),
+                                   'endDate' => $product->getDate());
+                    if($this->getParam('personId') != null && $author->getId() == $this->getParam('personId')){
+                        return json_encode($array);
+                    }
+                    else if($this->getParam('personId') == null){
+                        $json[] = $array;
+                    }
                 }
             }
             return json_encode($json);
@@ -159,11 +171,42 @@ class PersonProductAPI extends RESTAPI {
     }
     
     function doPOST(){
-       
+        global $wgUser;
+        if($this->getParam(0) == "person"){
+            $person = Person::newFromId($this->getParam('id'));
+            if($this->getParam('productId') != null){
+                $product = Paper::newFromId($this->getParam('productId'));
+            }
+        }
+        else if($this->getParam(0) == "product"){
+            $product = Paper::newFromId($this->getParam('id'));
+            if($this->getParam('personId') != null){
+                $person = Person::newFromId($this->getParam('personId'));
+                
+            }
+        }
+        $unserializedAuthors = $product->authors;
+        $authors = $product->getAuthors();
+        $found = false;
+        foreach($authors as $author){
+            if($author->getId() == $person->getId()){
+                $found = true;
+            }
+        }
+        if(!$found){
+            $authors = unserialize($unserializedAuthors);
+            $authors[] = $person->getId();
+            DBFunctions::update('grand_products',
+                                array('authors' => serialize($authors)),
+                                array('id' => $product->getId()));
+            Paper::$cache = array();
+            Paper::$dataCache = array();
+        }
+        return $this->doGET();
     }
     
     function doPUT(){
-        
+        return $this->doPOST();
     }
     
     function doDELETE(){

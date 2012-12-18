@@ -75,10 +75,9 @@ class Person extends BackboneModel {
 	// Returns a new Person from the given email (null if not found)
 	// In the event of a collision, the first user is returned
 	static function newFromEmail($email){
-	    $sql = "SELECT user_id
-	            FROM mw_user
-	            WHERE user_email = '$email'";
-	    $data = DBFunctions::execSQL($sql);
+	    $data = DBFunctions::select(array('mw_user'),
+	                                array('user_id'),
+	                                array('user_email' => $email));
 	    if(count($data) > 0){
 	        return Person::newFromId($data[0]['user_id']);
 	    }
