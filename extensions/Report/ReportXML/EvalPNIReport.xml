@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="PNI Evaluation" reportType="RP_EVAL_RESEARCHER" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="reviews" permissions="rw" />
+        </Role>
+    </Permissions>
+    
+    <!-- PNI Materials -->
+    <ReportSection id="status" name="PNI Materials" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
+        <Instructions>
+            <![CDATA[
+               <p>Instructions needed</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="pni_materials_head" type="StaticReportItem">
+            <![CDATA[<table>]]>
+        </ReportItem>
+        <ReportItemSet id="pni_materials" type="PNIMaterialsReportItemSet">
+            <ReportItem id="pni_pdf" type="SubPDFReportItem" reportType="NIReport">
+                <![CDATA[<tr>{$item}</tr>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="pni_materials_tail" type="StaticReportItem">
+            <![CDATA[</table>]]>
+        </ReportItem>
+        
+    </ReportSection>
+
+    <!-- PNI Budget -->
+    <ReportSection id="status" name="PNI Budget" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
+        <Instructions>
+            <![CDATA[
+               <p>Instructions needed</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="pni_budget_head" type="StaticReportItem">
+            <![CDATA[
+            <script type="text/javascript">
+                $(document).ready(function(){ 
+                    $('.pni_budget_accordions').accordion({active: false, collapsible: true, icons: false }); 
+                })
+            </script>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="pni_materials" type="PNIMaterialsReportItemSet">
+            <ReportItem id="pni_budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="EvalBudgetReportItem" />
+        </ReportItemSet>
+    </ReportSection>
+
+    <!-- PNI Reviews -->
+    <ReportSection id="status" name="PNI Reviews" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
+        <Instructions>
+            <![CDATA[
+               <p>Instructions needed</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="pni_review_head" type="StaticReportItem">
+            <![CDATA[
+            <script type="text/javascript">
+                $(document).ready(function(){ 
+                    $('.pni_review_accordions').accordion({active: false, collapsible: true, icons: false }); 
+                })
+            </script>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="pni_materials" type="PNIMaterialsReportItemSet">
+
+            <!-- I. Excellence of the Research Program -->
+            <!--ReportItemSet id='Ia_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Overview of NI Activity"-->
+                <ReportItem id="Ia" type="RadioReportItem" options="Exceptional|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS">
+                <![CDATA[{$item}]]>
+                </ReportItem>
+            <!--/ReportItemSet-->
+        
+        </ReportItemSet>
+    </ReportSection>
+
+<!--
+    <ReportSection id="dashboard" name="HQP Dashboard" tooltip="Overview of this year's activity and productivity" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
+        <Instructions>
+            <![CDATA[
+                <p>The Dashboard is designed to provide an overview of an HQP's activity in GRAND. The data reported in the dashboard has already been input to the Forum through the various functionalities of the "Toolbox".</p>
+<ol>
+<li>The header indicates the name, level, department, university and supervisor(s) of the HQP, along with the GRAND project(s) involved.</li>
+<li>The table has a column for publications, artifacts, activities and awards.</li>
+<li>The "Publications" column reports the number of your publications, by category. You should "edit each publication" in order to ensure that its data and status are correct.  Please note, the dashboard will only show publications entered in 2011 (i.e., it will not include those publications that were included in last year's reporting.</li>
+<li>Similarly, the "Artifacts", "Activities" and "Awards" columns report the number of your artifacts, etc., by category.</li>
+</ol>   
+            ]]>
+        </Instructions>
+        <ReportItem id="basic_info" type="StaticReportItem">
+        <![CDATA[
+            <div class='basic_info' style='margin-bottom:20px;'>
+                <p><span class='label'>Name:</span> {$user_reversed_name} ({$user_full_roles})</p>
+                <p><span class='label'>Position:</span> {$user_level}</p>
+                <p><span class='label'>Department:</span> {$user_dept}</p>
+                <p><span class='label'>University:</span> {$user_uni}</p>
+                <p><span class='label'>Supervisor(s):</span> {$user_supervisors}</p>
+                <p><span class='label'>Projects:</span> {$user_projects}</p>
+            </div>
+        ]]>
+        </ReportItem>
+        <ReportItem id="ni_dashboard" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE">
+            <![CDATA[<div style='max-width:900px;'>If there is an error in any of the information reported in the dashboard, please edit the corresponding element through the appropriate tool. If the error is in a system-controlled field, please contact <a href='mailto:support@forum.grand-nce.ca'>support</a>.</div><div>{$item}</div>]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="report" name="HQP Report" tooltip="Open-ended report narratives" blobSection="HQP_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" number="1">
+        <Instructions>
+            <![CDATA[
+                <p style="font-weight: bold; font-style: italic;">*NOTE: Clicking on the bold blue headings will cause the page to expand (contract) to show (hide) text boxes in which you can provide your information.</p>
+<p>The Report section consists of three text boxes:  Research; Networking; and Knowledge Transfer.  Note that each the text boxes is "split" into a number of text boxes corresponding to the projects with which you are involved. Your project-specific entries will be made available to your corresponding project supervisor(s) to assist with the completion of a similar portion of his/her(their) report(s).</p>
+<p>
+The various project-specific sections are meant to be concatenated into a single coherent text to be read as a whole, so feel free to devote unequal space to the individual project text boxes and to make sure that the overall text reads well and communicates the information you want to communicate about your activity. You can see the overall text corresponding to each of the three report headings by clicking the "Preview" link right next to each heading.</p>
+
+<p><strong>A. &nbsp;Research</strong> <i>(up to 900 characters over all projects)</i><br />
+Briefly summarize your research activity in relation to GRAND projects.  For those with multiple projects, the field will be subdivided by project.</p>
+<p><strong>B. &nbsp;Networking</strong> <i>(up to 600 characters over all projects)</i><br />
+Briefly describe your activities networking with other GRAND researchers and projects, and researchers outside of GRAND. For those with multiple projects, the field will be subdivided by project.</p>
+<p><strong>C. &nbsp;Knowledge Transfer</strong> <i>(up to 600 characters over all projects)</i><br />
+Briefly describe your interactions (if any) with receptors, companies, Project Champions and others in which research challenges and outcomes were discussed or presented.  For those with multiple projects, the field will be subdivided by project.</p>
+            ]]>
+        </Instructions>
+    
+        <ReportItemSet id='Ia_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Excellence of the Research Program: How my research contributes to the Network">
+            <ReportItemSet id="OR" type="ORReportItemSet">
+                <ReportItemSet id="ProjectLimit_Ia" type="LimitReportItemSet" limit="1800">
+                    <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+                        <ReportItem id="Ia" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="HQP_RESACT_EXCELLENCE" type="AutoCompleteTextareaReportItem" set="PersonProductsReportItemSet" index="product_id" label="product_title" name="Products" tooltipOptionId="Product ID" tooltipOptionName="Product Title">
+                            <![CDATA[<i>{$project_name}</i><br />{$item}<br />]]>
+                        </ReportItem>
+                    </ReportItemSet>
+                </ReportItemSet>
+            </ReportItemSet>
+        </ReportItemSet>
+    
+        <ReportItemSet id='Ib_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Networking and Partnerships: My efforts and successes in building linkages">
+            <ReportItemSet id="OR" type="ORReportItemSet">
+                <ReportItemSet id="ProjectLimit_Ib" type="LimitReportItemSet" limit="1800">
+                    <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+                        <ReportItem id="Ib" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="HQP_RESACT_NETWORKING" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members" tooltipOptionId="Member ID" tooltipOptionName="Member Title">
+                            <![CDATA[<i>{$project_name}</i><br />{$item}<br />]]>
+                        </ReportItem>
+                    </ReportItemSet>
+                </ReportItemSet>
+            </ReportItemSet>
+        </ReportItemSet>
+    
+        <ReportItemSet id='Ic_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Knowledge &amp; Technology Exchange &amp; Exploitation: My efforts in disseminating research to receptors">
+            <ReportItemSet id="OR" type="ORReportItemSet">
+                <ReportItemSet id="ProjectLimit_Ic" type="LimitReportItemSet" limit="1800">
+                    <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+                        <ReportItem id="Ic" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="HQP_RESACT_KTEE" type="TextareaReportItem">
+                            <![CDATA[<i>{$project_name}</i><br />{$item}<br />]]>
+                        </ReportItem>
+                    </ReportItemSet>
+                </ReportItemSet>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="milestones" name="HQP Milestone Comments" tooltip="Discussion of progress against projects' milestones" blobSection="HQP_MILESTONES" type="EditableReportSection" autosave="true" reportCharLimits="false" renderpdf="true">
+        <Instructions>
+            <![CDATA[
+                <p style="font-weight: bold; font-style: italic;">*NOTE: Clicking on the bold blue headings will cause the page to expand (contract) to show (hide) text boxes in which you can provide your information.</p>
+<p>The Questionnaire is designed to gather additional data regarding specific involvement with GRAND Research.</p>
+<ol>
+<li>The header notes the actual or expected duration of the involvement with GRAND, and should include the month and year when activity with GRAND (as an HQP) commenced as well as the month and year when activity with GRAND (as an HQP) was, or is expected to be, completed (e.g., expected graduation date, etc.).</li>
+<li>The table allows for each applicable project to be selected. For each project, the milestones are listed (click on each milestone for a more detailed description).  Please indicate those milestones with which you were involved by checking the box on the "Worked On" column, and add a brief comment regarding your involvement with this milestone.  Your comments on the applicable milestones will be made available to your supervisor to assist with the completion of a similar questionnaire as part of his/her report.</li>
+</ol>
+            ]]>
+        </Instructions>
+        <ReportItemSet id="AND" type="ANDReportItemSet">
+            <ReportItem id="involved_since" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS" type="CalendarReportItem">
+                <![CDATA[<h3>Involved With Grand</h3><table><tr><td><b>Involved Since:</b></td><td align='left' width='250px'>{$item}</td></tr>]]>
+            </ReportItem>
+            <ReportItem id="involved_until" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS" type="CalendarReportItem">
+                <![CDATA[<tr><td><b>Involved Until:</b></td><td width='250px' align='left' style='white-space:nowrap;'>{$item}&nbsp;<i>(actual&nbsp;or&nbsp;anticipated)</i></td></tr></table>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+            <ReportItemSet id='project_head' type="ToggleHeaderReportItemSet" level="3" title="{$project_name}">
+                <ReportItem id="static1" type="StaticReportItem">
+                <![CDATA[
+                <table cellpadding='5' cellspacing='0' frame='box' rules='all' class="milestones_hdr_table">
+                <thead>
+                <tr>
+                <th width="10%">Worked On</th>
+                <th width="35%">Milestone Description</th>                
+                <th width="55%">Comments<br />
+                <span style="font-size:10px; font-style: italic;font-weight: normal;">up to 300 characters</span></th></th>
+                </tr>
+                </thead>
+                <tbody>
+                ]]>
+                </ReportItem>
+            
+                <ReportItemSet id="milestones" type="MilestoneRadioReportItemSet" blobIndex="milestoneId">
+                    <ReportItem id="static2" type="StaticReportItem">
+                        <![CDATA[
+                        <tr>
+                        <td align="left" width="10%" style="padding-left:15px;">
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="contribution" type="RadioReportItem" options="No|Yes" orientation="vertical" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS">
+                        <![CDATA[{$item}]]>
+                    </ReportItem>
+                    <ReportItem id="static3" type="SnippetReportItem" limit="280" text="{$milestone_description}">
+                        <![CDATA[
+                            </td>
+                            <td width="35%">{$item}<br />
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="milestone_description_full" type="PopupReportItem" title="See Description" text="{$milestone_description}">
+                        <![CDATA[{$item}<br />]]>
+                    </ReportItem>
+                    <ReportItem id="milestone_history" type="PopupReportItem" title="See History" url="{$wgServer}{$wgScriptPath}/index.php?action=api.getProjectMilestoneHistory/{$milestone_id}/{$last_year}-12-01" text="Loading...">
+                        <![CDATA[{$item}]]>
+                    </ReportItem>
+                    <ReportItem id="static4" type="StaticReportItem">
+                        <![CDATA[</td>
+                            <td width="55%">
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="comment" type="TextareaReportItem" height="100px" limit="300" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS" recommended="true">
+                        <![CDATA[{$item}]]>
+                    </ReportItem>
+                    <ReportItem id="static5" type="StaticReportItem">
+                        <![CDATA[
+                        </td>
+                        </tr> 
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+
+                <ReportItem id="static2" type="StaticReportItem">
+                <![CDATA[ 
+                </tbody>
+                </table>
+                <br />
+                ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="review" name="Review" tooltip="Review of on-line report content" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+                    This section will provide an approximation of what the resulting PDF document will look like.
+            ]]>
+        </Instructions>
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" name="Submit" tooltip="PDF generation and submission to the Supervisor" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
+        <ReportItem id="my_progress_head" type="StaticReportItem">
+            <![CDATA[<h3>HQP Progress</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">]]>
+        </ReportItem>
+        <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="HQPReport">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="my_progress_head" type="ProgressReportItem" reportType="HQPReport">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="my_milestone_progress_head" type="NIProgressReportItem" reportType="HQPReport">
+            <![CDATA[{$item}</table>]]>
+        </ReportItem>
+        <Instructions>
+            <![CDATA[
+                    To submit your report, please follow the following three steps.<br />
+                    <p><b>1. Generate a new report for submission</b></p>
+                    <p><b>2. Download the report submitted for reviewing</b></p>
+                    <p><b>3. Submit the report</b><br />
+                        You can submit your report for evaluation. Make sure you review it before submitting.
+Please note:
+                        <ul>
+                            <li>If you need to make a correction to your report that is already submitted, you can generate and submit again</li>
+                            <li>The most recently generated pdf is used for evaluation</li>
+                            <li>If you encounter any issues, please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a></li>
+                        </ul>
+                    </p>
+                    <p><b>Note: All your Supervisors have access to your on-line project-specific dashboard rows; your project-specific comments under criteria A B C; and your project-specific milestone comments.</b></p>
+            ]]>
+        </Instructions>
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
+    </ReportSection>
+-->
+</Report>
