@@ -297,7 +297,12 @@ class Paper extends BackboneModel{
 			$this->authors = $data[0]['authors'];
 			$this->authorsWaiting = true;
 			foreach(unserialize($data[0]['projects']) as $project){
-                $proj = Project::newFromName($project);
+			    if(is_numeric($project)){
+			        $proj = Project::newFromId($project);
+			    }
+                else{
+                    $proj = Project::newFromName($project);
+                }
 	            $this->projects[] = $proj;
             }
 			$this->data = unserialize($data[0]['data']);

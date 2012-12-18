@@ -172,35 +172,35 @@ class PersonProductAPI extends RESTAPI {
     
     function doPOST(){
         global $wgUser;
-        if($this->getParam(0) == "person"){
-            $person = Person::newFromId($this->getParam('id'));
-            if($this->getParam('productId') != null){
+        if($wgUser->isLoggedIn()){
+            if($this->getParam(0) == "person"){
+                $person = Person::newFromId($this->getParam('id'));
                 $product = Paper::newFromId($this->getParam('productId'));
             }
-        }
-        else if($this->getParam(0) == "product"){
-            $product = Paper::newFromId($this->getParam('id'));
-            if($this->getParam('personId') != null){
+            else if($this->getParam(0) == "product"){
+                $product = Paper::newFromId($this->getParam('id'));
                 $person = Person::newFromId($this->getParam('personId'));
-                
+            }
+            $serializedAuthors = $product->authors;
+            $authors = $product->getAuthors();
+            $found = false;
+            foreach($authors as $author){
+                if($author->getId() == $person->getId()){
+                    $found = true;
+                }
+            }
+            if(!$found){
+                $authors = unserialize($serializedAuthors);
+                $authors[] = $person->getId();
+                DBFunctions::update('grand_products',
+                                    array('authors' => serialize($authors)),
+                                    array('id' => $product->getId()));
+                Paper::$cache = array();
+                Paper::$dataCache = array();
             }
         }
-        $serializedAuthors = $product->authors;
-        $authors = $product->getAuthors();
-        $found = false;
-        foreach($authors as $author){
-            if($author->getId() == $person->getId()){
-                $found = true;
-            }
-        }
-        if(!$found){
-            $authors = unserialize($serializedAuthors);
-            $authors[] = $person->getId();
-            DBFunctions::update('grand_products',
-                                array('authors' => serialize($authors)),
-                                array('id' => $product->getId()));
-            Paper::$cache = array();
-            Paper::$dataCache = array();
+        else{
+            $this->throwError("Author was not added");
         }
         return $this->doGET();
     }
@@ -210,30 +210,31 @@ class PersonProductAPI extends RESTAPI {
     }
     
     function doDELETE(){
-        if($this->getParam(0) == "person"){
-            $person = Person::newFromId($this->getParam('id'));
-            if($this->getParam('productId') != null){
+        global $wgUser;
+        if($wgUser->isLoggedIn()){
+            if($this->getParam(0) == "person"){
+                $person = Person::newFromId($this->getParam('id'));
                 $product = Paper::newFromId($this->getParam('productId'));
             }
-        }
-        else if($this->getParam(0) == "product"){
-            $product = Paper::newFromId($this->getParam('id'));
-            if($this->getParam('personId') != null){
+            else if($this->getParam(0) == "product"){
+                $product = Paper::newFromId($this->getParam('id'));
                 $person = Person::newFromId($this->getParam('personId'));
-                
+            }
+            $serializedAuthors = $product->authors;
+            $authors = $product->getAuthors();
+            foreach($authors as $key => $author){
+                if($author->getId() == $person->getId()){
+                    $serializedAuthors = unserialize($serializedAuthors);
+                    unset($serializedAuthors[$key]);
+                    DBFunctions::update('grand_products',
+                                        array('authors' => serialize($serializedAuthors)),
+                                        array('id' => $product->getId()));
+                    return;
+                }
             }
         }
-        $serializedAuthors = $product->authors;
-        $authors = $product->getAuthors();
-        foreach($authors as $key => $author){
-            if($author->getId() == $person->getId()){
-                $serializedAuthors = unserialize($serializedAuthors);
-                unset($serializedAuthors[$key]);
-                DBFunctions::update('grand_products',
-                                    array('authors' => serialize($serializedAuthors)),
-                                    array('id' => $product->getId()));
-                return;
-            }
+        else{
+            $this->throwError("Author was not deleted");
         }
     }
     

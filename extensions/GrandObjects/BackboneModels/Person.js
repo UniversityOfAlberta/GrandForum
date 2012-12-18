@@ -1,3 +1,6 @@
+/**
+ * Person Model
+ */
 Person = Backbone.Model.extend({
 
     initialize: function(){
@@ -63,12 +66,18 @@ Person = Backbone.Model.extend({
     }
 });
 
+/**
+ * People Collection
+ */
 People = Backbone.Collection.extend({
     model: Person,
     
     url: 'index.php?action=api.person'
 });
 
+/**
+ * PersonProject RelationModel
+ */
 PersonProject = RelationModel.extend({
     initialize: function(){
         
@@ -98,6 +107,9 @@ PersonProject = RelationModel.extend({
     }
 });
 
+/**
+ * PersonProjects RangeCollection
+ */
 PersonProjects = RangeCollection.extend({
     model: PersonProject,
     
@@ -106,6 +118,9 @@ PersonProjects = RangeCollection.extend({
     },
 });
 
+/**
+ * Personrole RelationModel
+ */
 PersonRole = RelationModel.extend({
     initialize: function(){
     
@@ -135,6 +150,9 @@ PersonRole = RelationModel.extend({
     }
 });
 
+/**
+ * PersonRoles RangeCollection
+ */
 PersonRoles = RangeCollection.extend({
     model: PersonRole,
     
@@ -143,6 +161,9 @@ PersonRoles = RangeCollection.extend({
     },
 });
 
+/**
+ * PersonProduct RelationModel
+ */
 PersonProduct = RelationModel.extend({
     initialize: function(){
     
@@ -174,6 +195,9 @@ PersonProduct = RelationModel.extend({
     }
 });
 
+/**
+ * PersonProducts RangeCollection
+ */
 PersonProducts = RangeCollection.extend({
     model: PersonProduct,
     
