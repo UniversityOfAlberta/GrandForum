@@ -63,7 +63,7 @@ function pubSearch($action, $request){
 
 function getMyPapers($cat){
 	global $wgUser, $wgServer, $wgScriptPath;
-    $me = Person::newFromId(3);
+    $me = Person::newFromId($wgUser->getId());
 
 	$html  = "<div id='my_papers'>";
 	$html .= "<table id='mypubtable' class='wikitable sortable' width='100%' cellspacing='1' cellpadding='2' rules='all' frame='box'><tr><th>Date</th><th>Project</th><th>Product</th></tr>";
