@@ -354,7 +354,7 @@ No individual budget request for a PNI for 2013-14 should exceed $55,000, and no
                 <ReportItem id="0']['time" width="40px" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem">
                     <![CDATA[<span><b>Time Commitment:</b> {$item} hours / week</span>]]>
                 </ReportItem>
-                <ReportItem id="milestone_summary" width="100%" height="250px" blobType="BLOB_TEXT" blobItem="RES_MIL_SUMMARY" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones" anchor="true" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1800">
+                <ReportItem id="milestone_summary" width="100%" blobType="BLOB_TEXT" blobItem="RES_MIL_SUMMARY" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones" anchor="true" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1800">
                     <![CDATA[
                         <h3>Milestone Report</h3>
                         {$item}
@@ -412,7 +412,7 @@ No individual budget request for a PNI for 2013-14 should exceed $55,000, and no
                             <td width="55%">
                         ]]>
                     </ReportItem>
-                    <ReportItem id="comment" type="TextareaReportItem" height="100px" limit="300" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" recommended="true">
+                    <ReportItem id="comment" type="TextareaReportItem" limit="300" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" recommended="true">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                     <ReportItem id="static5" type="StaticReportItem">

@@ -91,9 +91,12 @@ class LimitReportItemSet extends ReportItemSet {
         $wgOut->addHTML("<script type='text/javascript'>
             $(document).ready(function(){
             var textareas = Array();\n");
+        $nTextareas = count($textareas);
         foreach($textareas as $textarea){
             $postId = $textarea->getId();
-            $wgOut->addHTML("textareas.push($('textarea[name={$textarea->getPostId()}]'));\n");
+            $h = $textarea->calculateHeight($limit/$nTextareas);
+            $wgOut->addHTML("textareas.push($('textarea[name={$textarea->getPostId()}]'));
+                             $('textarea[name={$textarea->getPostId()}]').height('$h');\n");
         }
         $wgOut->addHTML("$('#div_{$this->getPostId()}').multiLimit($limit, $('#{$this->getPostId()}_chars_left'), textareas);
             $('#preview_{$this->getPostId()}').dialog({ autoOpen: false, width: '700', height: '450'});

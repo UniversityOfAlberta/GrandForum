@@ -17,12 +17,23 @@ class TextareaReportItem extends AbstractReportItem {
 		$wgOut->addHTML($item);
 	}
 	
+	function calculateHeight($limit){
+	    if($limit > 0){
+            $height = max(150, ($limit / 8))."px";
+        }
+        else{
+            $height = "200px";
+        }
+        return $height;
+	}
+	
 	function getHTML(){
 	    $value = $this->getBlobValue();
         $rows = $this->getAttr('rows', 5);
         $width = $this->getAttr('width', '100%');
-        $height = $this->getAttr('height', '200px');
+        $height = $this->getAttr('height', '');
         $limit = $this->getLimit();
+        $height = $this->calculateHeight($limit);
         $item = "";
         if($limit > 0){
             $recommended = $this->getAttr('recommended', false);
