@@ -1,8 +1,11 @@
-function between(object, startDate, endDate){
-    return ((object.get('endDate') >= endDate && object.get('startDate') <= startDate) ||
-            (object.get('startDate') <= startDate && object.get('endDate') >= startDate) ||
-            (object.get('startDate') <= endDate && object.get('startDate') >= startDate) ||
-            (object.get('endDate') >= endDate && object.get('startDate') <= endDate));
+function between(object, start, end){
+    var start1 = object.get('startDate');
+    var end1 = object.get('endDate');
+    return ((start1 <= start && end1   >= end)   ||             // ---s1----s----e----e1---
+            (end1   >= start && end1   <= end)   ||             // ---s----e1----e---
+            (start1 >= start && start1 <= end)   ||             // ---s----s1----e---
+            (start1 <= start && end1 == '0000-00-00 00:00:00')  // ---s----s1----infinity=e1
+           );
 }
 
 RangeCollection = Backbone.Collection.extend({
@@ -13,6 +16,17 @@ RangeCollection = Backbone.Collection.extend({
      */
     newModel: function(){
         return new RelationModel();
+    },
+    
+    /**
+     * Returns a collection of all the Models
+     */
+    getAll: function(){
+        allModels = this.newModel();
+        _.each(this.models, function(model){
+            allModels.add(model.getTarget());
+        });
+        return allModels;
     },
 
     /**
