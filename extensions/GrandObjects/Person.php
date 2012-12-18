@@ -376,7 +376,26 @@ class Person{
 		}
 		return $ret;
 	}
-	
+
+	static function getAllProjectManagers() {
+		
+		$ret = array();
+		$sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
+				WHERE pl.user_id NOT IN (4, 150)
+				AND pl.manager = '1'
+				AND u.user_id = pl.user_id
+				AND u.deleted != '1'
+				AND (pl.end_date = '0000-00-00 00:00:00'
+                     OR pl.end_date > CURRENT_TIMESTAMP)";
+		$data = DBFunctions::execSQL($sql);
+		
+		foreach ($data as &$row){
+			$ret[$row['user_id']] = Person::newFromId($row['user_id']);
+		}
+
+		return $ret;
+	}
+
 	// Constructor
 	// Takes in a resultset containing the 'user id' and 'user name'
 	function Person($data){
@@ -2201,6 +2220,22 @@ class Person{
                 $subs[] = Project::newFromId($row['sub_id']);
             }
             else if($row['type'] == "Researcher"){
+                $subs[] = Person::newFromId($row['sub_id']);
+            }
+        }
+        return $subs;
+	}
+
+	function getEvaluatePNIs(){
+	    $eTable = getTableName("eval");
+	    $sql = "SELECT *
+	            FROM $eTable
+	            WHERE eval_id = '{$this->id}'
+	            AND type = 'PNI'";
+	    $data = DBFunctions::execSQL($sql);
+	    $subs = array();
+        foreach($data as $row){
+            if($row['type'] == "PNI"){
                 $subs[] = Person::newFromId($row['sub_id']);
             }
         }

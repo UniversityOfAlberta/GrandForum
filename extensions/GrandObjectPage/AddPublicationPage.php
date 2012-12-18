@@ -61,11 +61,52 @@ function pubSearch($action, $request){
     return true;
 }
 
+function getMyPapers($cat){
+	global $wgUser, $wgServer, $wgScriptPath;
+    $me = Person::newFromId(3);
+
+	$html  = "<div id='my_papers'>";
+	$html .= "<table id='mypubtable' class='wikitable sortable' width='100%' cellspacing='1' cellpadding='2' rules='all' frame='box'><tr><th>Date</th><th>Project</th><th>Product</th></tr>";
+
+	$myPapers = $me->getPapersAuthored($cat);
+	   	
+   	foreach($myPapers as $paper){
+   		$id = $paper->getId();
+   		$date = $paper->getDate();
+   		$projects = $paper->getProjects();
+   		$project_names = array();
+   		foreach ($projects as $p){
+   			$project_names[] = $p->getName();
+   		}
+   		$category = $paper->getCategory();
+   		$title = $paper->getTitle();
+   		$html .= "<tr><td style='white-space:nowrap;'>";
+   		$html .= $date;
+   		$html .= "</td><td>";
+   		$html .= implode(", ", $project_names);
+   		$html .= "</td><td><a href='$wgServer$wgScriptPath/index.php/{$category}:{$id}?edit'>{$title}</a></td></tr>";
+   		
+   	}
+   	if(count($myPapers) == 0){
+   		$html .= "<tr><td align='center' colspan='3'>You have no products in this category</td></tr>";
+   	}
+
+	$html .= "</table>";
+	$html .= "</div>";
+    
+    return $html;
+}
+
 function generateScript($category){
     global $wgServer, $wgScriptPath;
+	
     $script = "<script type='text/javascript'>
+    			$(function() {
+			        $( '#addpub_accordion' ).accordion({ heightStyle: 'fill' });
+			    });
+
                 var lastCall;
-                
+
                 function search(phrase){
                     if(lastCall != null){
                         lastCall.abort();
@@ -117,7 +158,15 @@ function generateScript($category){
                     search($('#title').attr('value'));
                     $('#title').attr('autocomplete', 'off');
                 });
-           </script>";
+           </script>
+	    	<style type='text/css'>
+    			div#add-edit_publications{
+    				height: auto !important;
+    			}
+    			span.ui-icon-triangle-1-s, span.ui-icon-triangle-1-e {
+    				left: -3px !important;
+    			}
+    		</style>";
     return $script;
 }
 
@@ -134,7 +183,17 @@ class AddActivityPage extends SpecialPage{
 	        echo Paper::search($_GET['phrase']);
 	        exit;
 	    }
+
 	    $wgOut->addScript(generateScript("Activity"));
+		
+		$wgOut->addHTML("<div id='addpub_accordion'>");
+	    $wgOut->addHTML("<h3>My Activities</h3>");
+	    
+	   	$myPapers_html = getMyPapers("Activity");
+	   	$wgOut->addHTML($myPapers_html);
+
+	   	$wgOut->addHTML("<h3>Add/Edit Activity</h3>");
+		$wgOut->addHTML("<div id='add-edit_publications'>");
 		$wgOut->addHTML("Enter in the title of the activity in the text field below.  If there is an already existing activity with the same or similar name, it will be listed below the text field.  If you see the activity in the list, then you can click on the title to edit its information, otherwise you can choose to create the activity with the title you have entered by clicking the 'Create' button.<br /><br />
 		                 <b>Title:</b> <input onKeyPress='submitOnEnter(event)' type='text' id='title' name='title' size='50' onKeyUp='search(this.value);' /> <input type='button' onClick='changeLocation();' name='submit' value='Create' /><br />
 		                 <fieldset id='sug' style='display:none;'>
@@ -142,6 +201,9 @@ class AddActivityPage extends SpecialPage{
 		                    It looks like there might be an activity with a similar name to the one entered.<br /><br />
 		                    <div id='suggestions'></div>
 		                 </fieldset>");
+
+		$wgOut->addHTML("</div>");
+		$wgOut->addHTML("</div>");
 	}
 }
 
@@ -159,6 +221,15 @@ class AddArtifactPage extends SpecialPage{
 	        exit;
 	    }
 	    $wgOut->addScript(generateScript("Artifact"));
+		
+	    $wgOut->addHTML("<div id='addpub_accordion'>");
+	    $wgOut->addHTML("<h3>My Artifacts</h3>");
+	    
+	   	$myPapers_html = getMyPapers("Artifact");
+	   	$wgOut->addHTML($myPapers_html);
+
+	   	$wgOut->addHTML("<h3>Add/Edit Artifact</h3>");
+		$wgOut->addHTML("<div id='add-edit_publications'>");
 		$wgOut->addHTML("Enter in the title of the artifact in the text field below.  If there is an already existing artifact with the same or similar name, it will be listed below the text field.  If you see the artifact in the list, then you can click on the title to edit its information, otherwise you can choose to create the artifact with the title you have entered by clicking the 'Create' button.<br /><br />
 		                 <b>Title:</b> <input onKeyPress='submitOnEnter(event)' type='text' id='title' name='title' size='50' onKeyUp='search(this.value);' /> <input type='button' onClick='changeLocation();' name='submit' value='Create' /><br />
 		                 <fieldset id='sug' style='display:none;'>
@@ -166,6 +237,9 @@ class AddArtifactPage extends SpecialPage{
 		                    It looks like there might be an artifact with a similar name to the one entered.<br /><br />
 		                    <div id='suggestions'></div>
 		                 </fieldset>");
+
+		$wgOut->addHTML("</div>");
+		$wgOut->addHTML("</div>");
 	}
 }
 
@@ -184,13 +258,25 @@ class AddPublicationPage extends SpecialPage{
 	        exit;
 	    }
 	    $wgOut->addScript(generateScript("Publication"));
-		$wgOut->addHTML("Enter in the title of the publication in the text field below.  If there is an already existing publication with the same or similar title, it will be listed below the text field.  If you see the publication in the list, then you can click on the title to edit its information, otherwise you can choose to create the publication with the title you have entered by clicking the 'Create' button. You can also add a new publication using the <a href='$wgServer$wgScriptPath/index.php/Special:ImportBibTex'>Import BibTeX</a> page.<br /><br />You can review the complete list of publications in the forum and search by title, author and project (if applicable) at <a href='http://forum.grand-nce.ca/index.php/GRAND:Publications'>GRAND Publications</a>.<br /><br />
+
+	    $wgOut->addHTML("<div id='addpub_accordion'>");
+	    $wgOut->addHTML("<h3>My Publications</h3>");
+	    
+	   	$myPapers_html = getMyPapers("Publication");
+	   	$wgOut->addHTML($myPapers_html);
+		
+		$wgOut->addHTML("<h3>Add/Edit Publication</h3>");
+		$wgOut->addHTML("<div id='add-edit_publications'>");
+	    $wgOut->addHTML("Enter in the title of the publication in the text field below.  If there is an already existing publication with the same or similar title, it will be listed below the text field.  If you see the publication in the list, then you can click on the title to edit its information, otherwise you can choose to create the publication with the title you have entered by clicking the 'Create' button. You can also add a new publication using the <a href='$wgServer$wgScriptPath/index.php/Special:ImportBibTex'>Import BibTeX</a> page.<br /><br />You can review the complete list of publications in the forum and search by title, author and project (if applicable) at <a href='http://forum.grand-nce.ca/index.php/GRAND:Publications'>GRAND Publications</a>.<br /><br />
 		                 <b>Title:</b> <input onKeyPress='submitOnEnter(event)' type='text' id='title' name='title' size='50' onKeyUp='search(this.value);' /> <input type='button' onClick='changeLocation();' name='submit' value='Create' /><br />
 		                 <fieldset id='sug' style='display:none;'>
 		                    <legend>Suggestions</legend>
 		                    It looks like there might be a publication with a similar title to the one entered.<br /><br />
 		                    <div id='suggestions'></div>
 		                 </fieldset>");
+
+		$wgOut->addHTML("</div>");
+		$wgOut->addHTML("</div>");
 	}
 }
 
@@ -209,6 +295,15 @@ class AddPressPage extends SpecialPage{
 	        exit;
 	    }
 	    $wgOut->addScript(generateScript("Press"));
+
+	    $wgOut->addHTML("<div id='addpub_accordion'>");
+	    $wgOut->addHTML("<h3>My Press</h3>");
+	    
+	   	$myPapers_html = getMyPapers("Press");
+	   	$wgOut->addHTML($myPapers_html);
+
+	   	$wgOut->addHTML("<h3>Add/Edit Press</h3>");
+		$wgOut->addHTML("<div id='add-edit_publications'>");
 		$wgOut->addHTML("Enter in the title of press item in the text field below.  If there is an already existing press item with the same or similar title, it will be listed below the text field.  If you see the press item in the list, then you can click on the title to edit its information, otherwise you can choose to create the press item with the title you have entered by clicking the 'Create' button.<br /><br />
 		                 <b>Title:</b> <input onKeyPress='submitOnEnter(event)' type='text' id='title' name='title' size='50' onKeyUp='search(this.value);' /> <input type='button' onClick='changeLocation();' name='submit' value='Create' /><br />
 		                 <fieldset id='sug' style='display:none;'>
@@ -216,6 +311,9 @@ class AddPressPage extends SpecialPage{
 		                    It looks like there might be a press item with a similar title to the one entered.<br /><br />
 		                    <div id='suggestions'></div>
 		                 </fieldset>");
+
+		$wgOut->addHTML("</div>");
+		$wgOut->addHTML("</div>");
 	}
 }
 
@@ -234,6 +332,16 @@ class AddAwardPage extends SpecialPage{
 	        exit;
 	    }
 	    $wgOut->addScript(generateScript("Award"));
+
+	    $wgOut->addHTML("<div id='addpub_accordion'>");
+	    $wgOut->addHTML("<h3>My Awards</h3>");
+	    
+	   	$myPapers_html = getMyPapers("Award");
+	   	$wgOut->addHTML($myPapers_html);
+
+	   	$wgOut->addHTML("<h3>Add/Edit Award</h3>");
+		$wgOut->addHTML("<div id='add-edit_publications'>");
+
 		$wgOut->addHTML("Enter in the title of the award in the text field below.  If there is an already existing award with the same or similar name, it will be listed below the text field.  If you see the award in the list, then you can click on the title to edit its information, otherwise you can choose to create the award with the title you have entered by clicking the 'Create' button.<br /><br />
 		                 <b>Title:</b> <input onKeyPress='submitOnEnter(event)' type='text' id='title' name='title' size='50' onKeyUp='search(this.value);' /> <input type='button' onClick='changeLocation();' name='submit' value='Create' /><br />
 		                 <fieldset id='sug' style='display:none;'>
@@ -241,6 +349,9 @@ class AddAwardPage extends SpecialPage{
 		                    It looks like there might be a award with a similar name to the one entered.<br /><br />
 		                    <div id='suggestions'></div>
 		                 </fieldset>");
+
+		$wgOut->addHTML("</div>");
+		$wgOut->addHTML("</div>");
 	}
 }
 
@@ -259,6 +370,16 @@ class AddPresentationPage extends SpecialPage{
 	        exit;
 	    }
 	    $wgOut->addScript(generateScript("Presentation"));
+
+	    $wgOut->addHTML("<div id='addpub_accordion'>");
+	    $wgOut->addHTML("<h3>My Presentations</h3>");
+	    
+	   	$myPapers_html = getMyPapers("Presentation");
+	   	$wgOut->addHTML($myPapers_html);
+
+	   	$wgOut->addHTML("<h3>Add/Edit Presentation</h3>");
+		$wgOut->addHTML("<div id='add-edit_publications'>");
+
 		$wgOut->addHTML("Enter in the title of the presentation in the text field below.  If there is an already existing presentation with the same or similar name, it will be listed below the text field.  If you see the presentation in the list, then you can click on the title to edit its information, otherwise you can choose to create the presentation with the title you have entered by clicking the 'Create' button.<br /><br />
 		                 <b>Title:</b> <input onKeyPress='submitOnEnter(event)' type='text' id='title' name='title' size='50' onKeyUp='search(this.value);' /> <input type='button' onClick='changeLocation();' name='submit' value='Create' /><br />
 		                 <fieldset id='sug' style='display:none;'>
@@ -266,6 +387,9 @@ class AddPresentationPage extends SpecialPage{
 		                    It looks like there might be a award with a similar name to the one entered.<br /><br />
 		                    <div id='suggestions'></div>
 		                 </fieldset>");
+
+		$wgOut->addHTML("</div>");
+		$wgOut->addHTML("</div>");
 	}
 }
 
