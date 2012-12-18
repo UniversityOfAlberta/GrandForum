@@ -132,8 +132,6 @@ class cavendishTemplate extends QuickTemplate {
 		<link rel="stylesheet" type="text/css" media="print" href="<?php $this->text('stylepath') ?>/common/commonPrint.css" />
 		<script type="text/javascript" src="<?php $this->text('stylepath' ) ?>/common/wikibits.js"></script>
 		<script type='text/javascript'>
-		    // TODO: For now I am just caching all common models, but this might no longer make sense
-		    // when the data sets become huge
 		
 		    me = new Person(
 		    <?php

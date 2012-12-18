@@ -7,7 +7,7 @@ define("SUPERVISES", 'Supervises');
 
 autoload_register('GrandObjects');
 autoload_register('GrandObjects/API');
-$wgHooks['OutputPageParserOutput'][] = 'createModels';
+$wgHooks['BeforePageDisplay'][] = 'createModels';
 
 global $apiRequest;
 // Person
@@ -26,7 +26,7 @@ $apiRequest->addAction('Hidden','project/:id', new ProjectAPI());
 $apiRequest->addAction('Hidden','product', new ProductAPI());
 $apiRequest->addAction('Hidden','product/:id/authors', new PersonProductAPI());
 
-function createModels($out, $parserout){
+function createModels($out, $skin){
     global $wgServer, $wgScriptPath;
     $out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/RelationModel.js'></script>");
     $out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/RangeCollection.js'></script>");
