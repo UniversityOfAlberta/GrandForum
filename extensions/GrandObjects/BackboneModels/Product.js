@@ -26,10 +26,15 @@ Product = Backbone.Model.extend({
 });
 
 ProductAuthor = RelationModel.extend({
+    initialize: function(){
+    
+    },
 
     urlRoot: function(){
-        return 'index.php?action=api.product/' + this.get('productId') + '/authors/' + this.get('personId')
+        return 'index.php?action=api.product/' + this.get('productId') + '/authors'
     },
+    
+    idAttribute: 'personId',
     
     getOwner: function(){
         product = new Product({id: this.get('productId')});

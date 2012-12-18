@@ -149,8 +149,10 @@ PersonProduct = RelationModel.extend({
     },
     
     urlRoot: function(){
-        return 'index.php?action=api.person/' + this.get('personId') + '/products/' + this.get('productId');
+        return 'index.php?action=api.person/' + this.get('personId') + '/products'
     },
+    
+    idAttribute: 'productId',
     
     getOwner: function(){
         person = new Person({id: this.get('personId')});

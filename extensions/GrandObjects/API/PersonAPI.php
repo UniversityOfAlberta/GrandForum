@@ -185,7 +185,7 @@ class PersonProductAPI extends RESTAPI {
                 
             }
         }
-        $unserializedAuthors = $product->authors;
+        $serializedAuthors = $product->authors;
         $authors = $product->getAuthors();
         $found = false;
         foreach($authors as $author){
@@ -194,7 +194,7 @@ class PersonProductAPI extends RESTAPI {
             }
         }
         if(!$found){
-            $authors = unserialize($unserializedAuthors);
+            $authors = unserialize($serializedAuthors);
             $authors[] = $person->getId();
             DBFunctions::update('grand_products',
                                 array('authors' => serialize($authors)),
@@ -210,7 +210,31 @@ class PersonProductAPI extends RESTAPI {
     }
     
     function doDELETE(){
-       
+        if($this->getParam(0) == "person"){
+            $person = Person::newFromId($this->getParam('id'));
+            if($this->getParam('productId') != null){
+                $product = Paper::newFromId($this->getParam('productId'));
+            }
+        }
+        else if($this->getParam(0) == "product"){
+            $product = Paper::newFromId($this->getParam('id'));
+            if($this->getParam('personId') != null){
+                $person = Person::newFromId($this->getParam('personId'));
+                
+            }
+        }
+        $serializedAuthors = $product->authors;
+        $authors = $product->getAuthors();
+        foreach($authors as $key => $author){
+            if($author->getId() == $person->getId()){
+                $serializedAuthors = unserialize($serializedAuthors);
+                unset($serializedAuthors[$key]);
+                DBFunctions::update('grand_products',
+                                    array('authors' => serialize($serializedAuthors)),
+                                    array('id' => $product->getId()));
+                return;
+            }
+        }
     }
     
 }
