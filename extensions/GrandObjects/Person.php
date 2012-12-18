@@ -993,7 +993,7 @@ class Person{
             }
             else if($history !== true){
                 $sql .= "AND start_date <= '{$history}'
-                         AND (end_date >= '{$history}' OR (end_date = '0000-00-00 00:00:00' AND))\n";
+                         AND (end_date >= '{$history}' OR (end_date = '0000-00-00 00:00:00'))\n";
             }
             $sql .= "ORDER BY project_id";
 			$data = DBFunctions::execSQL($sql);
