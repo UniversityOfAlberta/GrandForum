@@ -208,7 +208,7 @@
                 <p>In the "Milestone Report" an overview of the project progress against the milestones that were "active" during the past year is reported. You can reference Milestones by writing "@Milestone ID" in the text box or you can start typing "@Milestone Title" and select the milestone from the drop-down box appearing below the overview textbox.</p>
             ]]>
         </Instructions>
-        <ReportItem id="milestone_desc" width="100%" height="250px" blobType="BLOB_TEXT" blobItem="LDR_MILE_REPORT" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones" showNotReferenced="true" anchor="true" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1800">
+        <ReportItem id="milestone_desc" width="100%" blobType="BLOB_TEXT" blobItem="LDR_MILE_REPORT" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones" showNotReferenced="true" anchor="true" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1800">
             <![CDATA[
                 <h3>Milestone Report</h3>
                 {$item}

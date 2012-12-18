@@ -183,7 +183,7 @@ Briefly describe your interactions (if any) with receptors, companies, Project C
                             <td width="55%">
                         ]]>
                     </ReportItem>
-                    <ReportItem id="comment" type="TextareaReportItem" height="100px" limit="300" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS" recommended="true">
+                    <ReportItem id="comment" type="TextareaReportItem" limit="300" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS" recommended="true">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                     <ReportItem id="static5" type="StaticReportItem">
