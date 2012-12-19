@@ -747,11 +747,13 @@ class EditMember extends SpecialPage{
 		    $req_user = Person::newFromName($row['requesting_user']);
 		    $projects = array();
 		    $roles = array();
-		    foreach($req_user->getProjects() as $project){
-		        $projects[] = $project->getName();
-		    }
-		    foreach($req_user->getRoles() as $role){
-		        $roles[] = $role->getRole();
+		    if($req_user->getName() != null){
+		        foreach($req_user->getProjects() as $project){
+		            $projects[] = $project->getName();
+		        }
+		        foreach($req_user->getRoles() as $role){
+		            $roles[] = $role->getRole();
+		        }
 		    }
 		    if($history){
 		        $diff = EditMember::roleDiff(Person::newFromName($row['user']), $row['role'], $row['type'], $row['last_modified']);
