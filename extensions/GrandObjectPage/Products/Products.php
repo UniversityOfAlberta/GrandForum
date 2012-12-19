@@ -15,7 +15,7 @@ class Products extends BackbonePage {
     function getModels(){
         return array();
     }
-    
+
 }
 
 ?>
