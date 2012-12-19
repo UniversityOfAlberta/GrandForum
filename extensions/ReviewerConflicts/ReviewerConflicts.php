@@ -408,7 +408,7 @@ EOF;
             <tr style='background-color:{$bgcolor};' name='search' id='{$row_id}' class='{$row_id} {$proj_names} {$position}'>
             <td class=''>{$lname}, {$fname}</td>
 EOF;
-            $csv .= '"'.$lname.','.$fname.'"';
+            $csv .= '"'.$person->getName().'"';
             foreach($current_evals as $eval_id){
 
                 $eval = Person::newFromId($eval_id);
