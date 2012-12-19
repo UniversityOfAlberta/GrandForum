@@ -1,6 +1,6 @@
 <?php
 
-BackbonePage::register('Products', 'Products', 'grand-tools');
+BackbonePage::register('Products', 'Products', 'grand-tools', dirname(__FILE__));
 
 class Products extends BackbonePage {
     
@@ -9,6 +9,10 @@ class Products extends BackbonePage {
     }
     
     function getViews(){
+        return array();
+    }
+    
+    function getModels(){
         return array();
     }
     
