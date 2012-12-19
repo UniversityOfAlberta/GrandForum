@@ -33,6 +33,9 @@ abstract class BackbonePage extends SpecialPage {
             if(!is_dir("$dir/Views")){
                 throw new Exception("BackbonePage <b>{$class}</b> is missing <i>Views</i> directory");
             }
+            if(!is_dir("$dir/Models")){
+                throw new Exception("BackbonePage <b>{$class}</b> is missing <i>Models</i> directory");
+            }
             if(!file_exists("$dir/routes.js")){
                 throw new Exception("BackbonePage <b>{$class}</b> is missing a <i>routes.js</i> file");
             }
