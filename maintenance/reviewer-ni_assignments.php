@@ -69,10 +69,6 @@ if (($handle = fopen("/local/data/www-root/grand_forum/data/Evaluator-Project_Co
     foreach($allPeople as $person){
         $reviewee_id = $person->getId();
 
-        if(in_array($reviewee_id, $current_evals)){
-            continue;
-        }
-
         $person_name = $person->getName(); 
        
         //Organization
