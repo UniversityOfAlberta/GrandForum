@@ -3,8 +3,8 @@ require_once('commandLine.inc');
 $NI_type = 'PNI';
     
 $row = 1;
-//if (($handle = fopen("/local/data/www-root/grand_forum/data/Evaluator-Project_Conflicts.csv", "r")) !== FALSE) {
-if (($handle = fopen("/Library/WebServer/Documents/grand_forum/data/Evaluator-Project_Conflicts.csv", "r")) !== FALSE) {
+if (($handle = fopen("/local/data/www-root/grand_forum/data/Evaluator-Project_Conflicts.csv", "r")) !== FALSE) {
+//if (($handle = fopen("/Library/WebServer/Documents/grand_forum/data/Evaluator-Project_Conflicts.csv", "r")) !== FALSE) {
     
     $eval_proj = array();
     $eval_index = array();
@@ -215,8 +215,8 @@ if (($handle = fopen("/Library/WebServer/Documents/grand_forum/data/Evaluator-Pr
     }
 
     $myFile = "Evaluator-{$NI_type}_Conflicts.csv";
-    //$fh = fopen('/local/data/www-root/grand_forum/data/'.$myFile, 'w');
-    $fh = fopen('/Library/WebServer/Documents/grand_forum/data/'.$myFile, 'w');
+    $fh = fopen('/local/data/www-root/grand_forum/data/'.$myFile, 'w');
+    //$fh = fopen('/Library/WebServer/Documents/grand_forum/data/'.$myFile, 'w');
     fwrite($fh, $csv);
     fclose($fh);
 
