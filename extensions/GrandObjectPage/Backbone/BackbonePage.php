@@ -65,9 +65,9 @@ abstract class BackbonePage extends SpecialPage {
                                 #bodyContent > h1 { display:none !important; }
                                 #pageTitle { margin-top:0; }
                                 #contentSub { display:none; }
+                                #currentViewSpinner {text-align: center; margin-top:10%;}
                            </style>");
         $wgOut->addHTML("<div id='backbone_main'></div>");
-        $this->loadRoutes();
         $this->loadTemplates();
         $this->loadModels();
         $this->loadViews();
@@ -75,6 +75,7 @@ abstract class BackbonePage extends SpecialPage {
             main = new Main({title: '".str_replace("'", "&#39;", self::$messages[strtolower($class)])."'});
             mainView = new MainView({el: $('#backbone_main'), model: main}).render();
         </script>\n");
+        $this->loadRoutes();
         $this->loadMain();
     }
     

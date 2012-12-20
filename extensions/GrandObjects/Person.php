@@ -119,6 +119,7 @@ class Person extends BackboneModel {
 		foreach($possibleNames as $possible){
 		    if(isset(self::$namesCache[$possible])){
 		        $data[] = self::$namesCache[$possible];
+		        break;
 		    }
 		}
 		$person = new Person($data);

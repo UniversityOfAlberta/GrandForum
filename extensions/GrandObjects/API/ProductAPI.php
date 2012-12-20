@@ -1,21 +1,9 @@
 <?php
 
 class ProductAPI extends RESTAPI {
-
-    var $id;
-
-    function processParams($params){
-        $this->id = @$params[1];
-
-    }
-
-    function isLoginRequired(){
-        return true;
-
-    }
     
     function doGET(){
-        if($this->id != ""){
+        if($this->getParam('id') != ""){
             $paper = Paper::newFromId($this->id);
             if($paper == null || $paper->getTitle() == ""){
                 $this->throwError("This product does not exist");
@@ -24,7 +12,16 @@ class ProductAPI extends RESTAPI {
         }
         else{
             $json = array();
-            $papers = Paper::getAllPapers('all', 'all', 'both');
+            if($this->getParam('category') != "" && 
+               $this->getParam('projectId') != "" &&
+               $this->getParam('grand')){
+                $papers = Paper::getAllPapers($this->getParam('projectId'), 
+                                              $this->getParam('category'), 
+                                              $this->getParam('grand'));
+            }
+            else{
+                $papers = Paper::getAllPapers('all', 'all', 'both');
+            }
             foreach($papers as $paper){
                 $json[] = $paper->toArray();
             }

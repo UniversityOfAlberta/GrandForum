@@ -29,8 +29,11 @@ Product = Backbone.Model.extend({
         type: "",
         description: "",
         date: "",
+        url: "",
         status: "",
         data: new Array(),
+        authors: new Array(),
+        projects: new Array(),
         lastModified: "",
         deleted: ""
     },
@@ -40,9 +43,19 @@ Product = Backbone.Model.extend({
  * Products Collection
  */
 Products = Backbone.Collection.extend({
+    
     model: Product,
     
-    url: 'index.php?action=api.product'
+    project: 'all',
+    
+    category: 'all',
+    
+    grand: 'both',
+    
+    url: function(){
+        var url = 'index.php?action=api.product/' + this.project + '/' + this.category + '/' + this.grand;
+        return url;
+    }
 });
 
 /**
@@ -128,6 +141,7 @@ ProductProject = RelationModel.extend({
  * ProductProjects RangeCollection
  */
 ProductProjects = RangeCollection.extend({
+
     model: ProductProject,
     
     newModel: function(){

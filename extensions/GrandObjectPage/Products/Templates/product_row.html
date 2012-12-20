@@ -1,0 +1,17 @@
+<td style='white-space:nowrap;'><%= date %></td>
+<td style='white-space:nowrap;'><%= type %></td>
+<td align='left'><a href='<%= url %>'><%= title %></a></td>
+<td align='left'>
+<% _.each(authors, function(author, index) { %> 
+    <%if (index>0) {%>, <%}%>
+    <%if (author.url != '') {%><a target='_blank' href='<%= author.url %>'><%}%>
+    <%= author.name %>
+    <%if (author.url != '') {%></a><%}%>
+<% }); %>
+</td>
+<td align='left'>
+<% _.each(projects, function(project, index) { %> 
+    <%if (index>0) {%>, <%}%>
+    <a target='_blank' href='<%= project.url %>'><%= project.name %></a>
+<% }); %>
+</td>

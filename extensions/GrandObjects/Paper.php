@@ -372,11 +372,11 @@ class Paper extends BackboneModel{
 	// Returns the url of this Paper's page
 	function getUrl(){
 	    global $wgServer, $wgScriptPath;
-	    return "{$wgServer}{$wgScriptPath}/index.php/{$this->getCategory()}:{$this->getId()}";
+	    return "{$wgServer}{$wgScriptPath}/index.php/Special:Products#/{$this->getCategory()}/{$this->getId()}";
 	}
 	
 	// Returns an array of authors who wrote this Paper
-	function getAuthors($evaluate=true){
+	function getAuthors($evaluate=true, $cache=true){
 	    if($this->authorsWaiting && $evaluate){
 	        $authors = array();
 	        $unserialized = unserialize($this->authors);
@@ -413,10 +413,13 @@ class Paper extends BackboneModel{
 	                $pdata[0]['user_public_profile'] = "";
 	                $pdata[0]['user_private_profile'] = "";
 	                $person = new Person($pdata);
-	                Person::$cache[$author] = $person;
+	                if($cache){
+	                    Person::$cache[$author] = $person;
+	                }
 	            }
 	            $authors[] = $person;
             }
+            return $authors;
             $this->authorsWaiting = false;
             $this->authors = $authors;
 	    }
@@ -667,18 +670,69 @@ class Paper extends BackboneModel{
 	}
 
 	function toArray(){
-        $json = array('id' => $this->getId(),
-	                  'title' => $this->getTitle(),
-	                  'description' => $this->getDescription(),
-	                  'category' => $this->getCategory(),
-	                  'type' => $this->getType(),
-	                  'status' => $this->getStatus(),
-	                  'date' => $this->getDate(),
-	                  //'venue' => $this->getVenue(),
-	                  'data' => $this->getData(),
-	                  'lastModified' => $this->lastModified,
-	                  'deleted' => $this->isDeleted());
-	    return $json;
+	    global $wgSitename;
+	    if(function_exists('apc_exists') && apc_exists($wgSitename.'project'.$this->getTitle())){
+	        $json = apc_fetch($wgSitename.'project'.$this->getTitle());
+	        $authors = $json['authors'];
+	        $change = false;
+	        foreach($authors as $key => $author){
+	            // Make sure new authors have not been added, and if so re-cache
+	            if($author['id'] == 0){
+	                $person = Person::newFromName($author['name']);
+	                if($person == null || $person->getName() == ""){
+	                    $person = Person::newFromNameLike($author['name']);
+	                }
+	                if($person == null || $person->getName() == ""){
+	                    $person = Person::newFromAlias($author['name']);
+	                }
+	                
+	                if($person != null && $person->getName() != ""){
+	                    $change = true;
+	                    $authors[$key] = array('id' => $person->getId(),
+	                                           'name' => $person->getNameForForms(),
+	                                           'url' => $person->getUrl());
+	                }
+	            }
+	        }
+	        $json['authors'] = $authors;
+	        if($change && function_exists('apc_store')){
+	            apc_store($wgSitename.'project'.$this->getTitle(), $json, 60*60);
+	        }
+	        return $json;
+	    }
+	    else{
+	        $authors = array();
+	        $projects = array();
+	        foreach($this->getAuthors(true, false) as $author){
+	            $authors[] = array('id' => $author->getId(),
+	                               'name' => $author->getNameForForms(),
+	                               'url' => $author->getUrl());
+	        }
+	        foreach($this->getProjects() as $project){
+	            $projects[] = array('id' => $project->getId(),
+	                                'name' => $project->getName(),
+	                                'url' => $project->getUrl());
+	        }
+	        
+            $json = array('id' => $this->getId(),
+	                      'title' => $this->getTitle(),
+	                      'description' => $this->getDescription(),
+	                      'category' => $this->getCategory(),
+	                      'type' => $this->getType(),
+	                      'status' => $this->getStatus(),
+	                      'date' => $this->getDate(),
+	                      'url' => $this->getUrl(),
+	                      'data' => $this->getData(),
+	                      'authors' => $authors,
+	                      'projects' => $projects,
+	                      'lastModified' => $this->lastModified,
+	                      'deleted' => $this->isDeleted());
+	        
+	        if(function_exists('apc_store')){
+	            apc_store($wgSitename.'project'.$this->getTitle(), $json, 60*60);
+	        }
+	        return $json;
+	    }
 	}
 	
 	function exists(){

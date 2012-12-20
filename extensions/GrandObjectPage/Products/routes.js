@@ -1,4 +1,12 @@
 PageRouter = Backbone.Router.extend({
+    
+    initialize: function(){
+        this.bind('all', function(event){
+            $("#currentView").html("<div id='currentViewSpinner'></div>");
+            spin = spinner("currentViewSpinner", 40, 75, 12, 10, '#888');
+        });
+    },
+
     routes: {
         ":category": "showProducts",
         ":category/new": "newProduct",
@@ -13,6 +21,9 @@ var pageRouter = new PageRouter;
 pageRouter.on('route:showProducts', function(category){
     // Get All Products
     products = new Products();
+    products.category = category;
+    products.grand = 'grand';
+    productListView = new ProductListView({el: $("#currentView"), model: products});
 });
 
 pageRouter.on('route:newProduct', function(category){
