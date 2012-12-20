@@ -345,7 +345,7 @@ EOF;
             $elname = implode(' ', array_slice($eval_name_prop, 1));
             
             $html .= "<th name='' title='' class='sorter-false'>{$elname}<br />{$efname}</th>";
-            $csv .= ',"'.$elname.','.$efname.'"';
+            $csv .= ',"'.$eval_name.'"';
 
             //cache eval papers
             $eval_papers[$eval_id] = array();
@@ -377,9 +377,9 @@ EOF;
         foreach($allPeople as $person){
             $reviewee_id = $person->getId();
 
-            if(in_array($reviewee_id, $current_evals)){
-                continue;
-            }
+            //if(in_array($reviewee_id, $current_evals)){
+            //    continue;
+            //}
 
             $row_id = $person->getName();
             $person_name = explode('.', $person->getName()); 
@@ -408,7 +408,7 @@ EOF;
             <tr style='background-color:{$bgcolor};' name='search' id='{$row_id}' class='{$row_id} {$proj_names} {$position}'>
             <td class=''>{$lname}, {$fname}</td>
 EOF;
-            $csv .= '"'.$lname.','.$fname.'"';
+            $csv .= '"'.$person->getName().'"';
             foreach($current_evals as $eval_id){
 
                 $eval = Person::newFromId($eval_id);
