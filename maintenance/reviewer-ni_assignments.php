@@ -1,10 +1,10 @@
 <?php
 require_once('commandLine.inc');
-$NI_type = 'CNI';
+$NI_type = 'PNI';
     
 $row = 1;
-if (($handle = fopen("/local/data/www-root/grand_forum/data/Evaluator-Project_Conflicts.csv", "r")) !== FALSE) {
-//if (($handle = fopen("/Library/WebServer/Documents/grand_forum/data/Evaluator-Project_Conflicts.csv", "r")) !== FALSE) {
+//if (($handle = fopen("/local/data/www-root/grand_forum/data/Evaluator-Project_Conflicts.csv", "r")) !== FALSE) {
+if (($handle = fopen("/Library/WebServer/Documents/grand_forum/data/Evaluator-Project_Conflicts.csv", "r")) !== FALSE) {
     
     $eval_proj = array();
     $eval_index = array();
@@ -32,7 +32,7 @@ if (($handle = fopen("/local/data/www-root/grand_forum/data/Evaluator-Project_Co
     //Let's do it
     $current_evals = array(17,563,152,25,90,27,28,564,32,565,566,36,38,41,48,55,60,61,1263);
 
-    $allPeople = Person::getAllPeople($NI_type); //array_merge(Person::getAllPeople(CNI), Person::getAllPeople(PNI));
+    $allPeople = Person::getAllPeople(PNI); //array_merge(Person::getAllPeople(CNI), Person::getAllPeople(PNI));
 
     $csv = '"Names"';
 
@@ -86,6 +86,8 @@ if (($handle = fopen("/local/data/www-root/grand_forum/data/Evaluator-Project_Co
         foreach($projects as $project){
             $proj_names[] = $project->getName();
         }
+
+
         $proj_names = implode(' ', $proj_names);
 
         $papers = $person->getPapers("all", true);
@@ -104,108 +106,105 @@ if (($handle = fopen("/local/data/www-root/grand_forum/data/Evaluator-Project_Co
             $eval_name = $eval->getName();
 
             $affinity = 0;
+
+            if($reviewee_id == $eval_id){
+                $affinity -= 2000;
+            }
+            else if(isset($conflicts[$eval_id][$reviewee_id])){
+                $data = $conflicts[$eval_id][$reviewee_id];
+                $conflict = $data['conflict'];
+                $user_conflict = $data['user_conflict'];
+
+                if($conflict || $user_conflict){
+                    $affinity -= 2000;
+                }
+            }
+            else{
+                //EVAL DATA
+                $eval_organization = $eval->getUniversity();      
+                $eval_organization = $eval_organization['university'];
+
+                $eval_projects = array();
+                foreach($eval->getProjects() as $eproject){
+                    $eval_projects[] = $eproject->getName();
+                }
+
+                $eval_papers = array();
+                foreach($eval->getPapers("all", true) as $epaper){
+                    $eval_papers[] = $epaper->getId();
+                }
+
+                //Works With
+                $eval_coworkers = array();
+                foreach($eval->getRelations("Works With", true) as $erel){
+                    $eval_coworkers[] = $erel->getUser2();
+                }
+
+                $eval_hqp = array();
+                foreach($eval->getHQP(true) as $ehqp){
+                    $eval_hqp[] = $ehqp->getId();
+                }
+
+                //NI DATA
+                //Work With 
+                $works_with = 0;            
+                $co_workers = array();
+                foreach($person->getRelations("Works With", true) as $rel){
+                    $co_workers[] = $rel->getUser2()->getId();
+                }
+                if($person->relatedTo($eval, 'Works With') || $eval->relatedTo($person, 'Works With') || in_array($eval_id, $co_workers)){
+                    $works_with = 1;
+                }
+                
+                //Organization
+                $position = $person_position['university'];
+                $same_organization = 0;
+                if(!empty($position) && $eval_organization == $position){
+                    $same_organization = 1;
+                }
+
+                //Projects
+                $same_projects = 0;
+                foreach($projects as $project){
+                    if(in_array($project->getName(), $eval_projects)){
+                        $same_projects = 1;
+                        break;
+                    }
+                }
+               
+                //Papers
+                $co_authorship = 0;
+                foreach($papers as $paper){
+                    if(in_array($paper->getId(), $eval_papers)){
+                        $co_authorship = 1;
+                        break;
+                    }
+                }
+
+                //HQP
+                $co_supervision = 0;
+                foreach($person->getHQP(true) as $hqp){
+                    if(in_array($hqp->getId(), $eval_hqp)){
+                        $co_supervision = 1;
+                        break;
+                    }
+                }
+
+                if($works_with || $same_organization || $same_projects || $co_authorship || $co_supervision ){
+                    $affinity -= 2000;
+                }
+            }
+
+            //Now check if evaluator have been assigned one of my projects. If so, increase by 100
             foreach($person_projects as $pers_proj){
+            
             	if( isset($eval_proj[$eval_name][$pers_proj]) && $eval_proj[$eval_name][$pers_proj] > 0){
+                    echo $eval_proj[$eval_name][$pers_proj]. "\n";
             		$affinity += 100;
             	}
 
-            	//if ($eval_name == "Vic.diCiccio" && $pers_proj == "HLTHSIM"){
-            	//	echo "Person NAME=$person_name ; AFFIN=".$eval_proj[$eval_name][$pers_proj]."\n";
-            	//	echo "AFFINITY=".$affinity ."\n\n";
-            	//}
-
             }
-
-            //Could not determine affinity from project assignments
-            if($affinity == 0){
-
-            	if(isset($conflicts[$eval_id][$reviewee_id])){
-                    $data = $conflicts[$eval_id][$reviewee_id];
-                    $conflict = $data['conflict'];
-                    $user_conflict = $data['user_conflict'];
-
-                   	if($conflict || $user_conflict){
-	                    $affinity = "-2000";
-    				}
-                }
-                else{
-                	//EVAL DATA
-                    $eval_organization = $eval->getUniversity();      
-                    $eval_organization = $eval_organization['university'];
-
-                    $eval_projects = array();
-                    foreach($eval->getProjects() as $eproject){
-                        $eval_projects[] = $eproject->getName();
-                    }
-
-                    $eval_papers = array();
-                    foreach($eval->getPapers("all", true) as $epaper){
-                    	$eval_papers[] = $epaper->getId();
-                    }
-
-                    //Works With
-                    $eval_coworkers = array();
-                    foreach($eval->getRelations("Works With", true) as $erel){
-                        $eval_coworkers[] = $erel->getUser2();
-                    }
-
-                    $eval_hqp = array();
-                    foreach($eval->getHQP(true) as $ehqp){
-                        $eval_hqp[] = $ehqp->getId();
-                    }
-
-                    //NI DATA
-                    //Work With 
-                    $works_with = 0;            
-                    $co_workers = array();
-                    foreach($person->getRelations("Works With", true) as $rel){
-                        $co_workers[] = $rel->getUser2()->getId();
-                    }
-                    if($person->relatedTo($eval, 'Works With') || $eval->relatedTo($person, 'Works With') || in_array($eval_id, $co_workers)){
-                        $works_with = 1;
-                    }
-                    
-                    //Organization
-                    $position = $person_position['university'];
-                    $same_organization = 0;
-                    if(!empty($position) && $eval_organization == $position){
-                        $same_organization = 1;
-                    }
-
-                    //Projects
-                    $same_projects = 0;
-                    foreach($projects as $project){
-                        if(in_array($project->getName(), $eval_projects)){
-                            $same_projects = 1;
-                            break;
-                        }
-                    }
-                   
-                    //Papers
-                    $co_authorship = 0;
-                    foreach($papers as $paper){
-                        if(in_array($paper->getId(), $eval_papers)){
-                            $co_authorship = 1;
-                            break;
-                        }
-                    }
-
-                    //HQP
-                    $co_supervision = 0;
-                    foreach($person->getHQP(true) as $hqp){
-                        if(in_array($hqp->getId(), $eval_hqp)){
-                            $co_supervision = 1;
-                            break;
-                        }
-                    }
-
-                    if($works_with || $same_organization || $same_projects || $co_authorship || $co_supervision ){
-                        $affinity = "-2000";
-                    }
-
-                }
-                
-            }
+            
             $csv .= ',"'.$affinity.'"';
 
 
@@ -216,8 +215,8 @@ if (($handle = fopen("/local/data/www-root/grand_forum/data/Evaluator-Project_Co
     }
 
     $myFile = "Evaluator-{$NI_type}_Conflicts.csv";
-    $fh = fopen('/local/data/www-root/grand_forum/data/'.$myFile, 'w');
-    //$fh = fopen('/Library/WebServer/Documents/grand_forum/data/'.$myFile, 'w');
+    //$fh = fopen('/local/data/www-root/grand_forum/data/'.$myFile, 'w');
+    $fh = fopen('/Library/WebServer/Documents/grand_forum/data/'.$myFile, 'w');
     fwrite($fh, $csv);
     fclose($fh);
 
