@@ -409,13 +409,13 @@ class ContributionPage {
                                     if($type == "inki" || $type == "caki"){
                                         $wgOut->addHTML("<tr><td align='right'><b>Sub-Type:</b></td><td>{$hrSubType}</td></tr>");
                                     }
-                                    if($contribution->getType() == "inki"){
+                                    if($type == "inki"){
                                         $wgOut->addHTML("<tr><td align='right'><b>In-Kind:</b></td><td>{$kind}</td></tr>");
                                     }
-                                    else if($contribution->getType() == "cash"){
+                                    else if($type == "cash"){
                                         $wgOut->addHTML("<tr><td align='right'><b>Cash:</b></td><td>{$cash}</td></tr>");
                                     }
-                                    else if($contribution->getType() == "caki"){
+                                    else if($type == "caki"){
                                         $wgOut->addHTML("<tr><td align='right'><b>In-Kind:</b></td><td>{$kind}</td></tr>");
                                         $wgOut->addHTML("<tr><td align='right'><b>Cash:</b></td><td>{$cash}</td></tr>");
                                     }
