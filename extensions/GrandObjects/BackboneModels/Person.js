@@ -31,6 +31,14 @@ Person = Backbone.Model.extend({
         });
     },
     
+    getLink: function(){
+        return new Link({id: this.get('id'),
+                         text: this.get('reversedName'),
+                         url: this.get('url'),
+                         target: ''});
+                               
+    },
+    
     getProjects: function(){
         this.projects.fetch();
         return this.projects;

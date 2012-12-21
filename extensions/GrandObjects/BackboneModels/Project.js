@@ -14,6 +14,14 @@ Project = Backbone.Model.extend({
         return this.products;
     },
     
+    getLink: function(){
+        return new Link({id: this.get('id'),
+                         text: this.get('name'),
+                         url: this.get('url'),
+                         target: ''});
+                               
+    },
+    
     defaults: {
         id: null,
         name: '',

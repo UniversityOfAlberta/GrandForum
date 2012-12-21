@@ -643,7 +643,10 @@ class Person extends BackboneModel {
 	// Returns the url of this Person's profile page
 	function getUrl(){
 	    global $wgServer, $wgScriptPath;
-	    return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}";
+	    if($this->id > 0){
+	        return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}";
+	    }
+	    return "";
 	}
 	
 	// Returns the path to a photo of this Person if it exists

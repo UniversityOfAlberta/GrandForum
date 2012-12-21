@@ -4,7 +4,7 @@ class ProductAPI extends RESTAPI {
     
     function doGET(){
         if($this->getParam('id') != ""){
-            $paper = Paper::newFromId($this->id);
+            $paper = Paper::newFromId($this->getParam('id'));
             if($paper == null || $paper->getTitle() == ""){
                 $this->throwError("This product does not exist");
             }
@@ -30,13 +30,13 @@ class ProductAPI extends RESTAPI {
     }
     
     function doPOST(){
-        $paper = Paper::newFromId($this->id);
+        $paper = Paper::newFromId($this->getParam('id'));
         header('Content-Type: application/json');
         $paper->create();
     }
     
     function doPUT(){
-        $paper = Paper::newFromId($this->id);
+        $paper = Paper::newFromId($this->getParam('id'));
         if($paper == null || $paper->getName() == ""){
             $this->throwError("This product does not exist");
         }
@@ -45,7 +45,7 @@ class ProductAPI extends RESTAPI {
     }
     
     function doDELETE(){
-        $paper = Paper::newFromId($this->id);
+        $paper = Paper::newFromId($this->getParam('id'));
         if($paper == null || $paper->getName() == ""){
             $this->throwError("This product does not exist");
         }

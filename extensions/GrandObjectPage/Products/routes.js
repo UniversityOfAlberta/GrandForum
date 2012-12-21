@@ -52,6 +52,7 @@ pageRouter.on('route:newProduct', function(category){
 pageRouter.on('route:showProduct', function (category, id) {
     // Get A single product
     product = new Product({'id': id});
+    productView = new ProductView({el: $("#currentView"), model: product});
 });
 
 pageRouter.on('route:editProduct', function (category, id) {

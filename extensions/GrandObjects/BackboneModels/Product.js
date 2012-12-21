@@ -19,6 +19,14 @@ Product = Backbone.Model.extend({
         this.projects.fetch();
         return this.projects;
     },
+    
+    getLink: function(){
+        return new Link({id: this.get('id'),
+                         text: this.get('title'),
+                         url: this.get('url'),
+                         target: ''});
+                               
+    },
 
     urlRoot: 'index.php?action=api.product',
     
