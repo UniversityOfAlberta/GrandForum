@@ -42,6 +42,9 @@ abstract class BackbonePage extends SpecialPage {
             if(!file_exists("$dir/main.js")){
                 throw new Exception("BackbonePage <b>{$class}</b> is missing a <i>main.js</i> file");
             }
+            if(!file_exists("$dir/helpers.js")){
+                throw new Exception("BackbonePage <b>{$class}</b> is missing a <i>helpers.js</i> file");
+            }
             $wgSpecialPages[$class] = $class; # Let MediaWiki know about the special page.
             $backboneDir = dirname(__FILE__) . '/';
             $wgExtensionMessagesFiles[$class] = $backboneDir . 'BackbonePage.i18n.php';
@@ -71,6 +74,7 @@ abstract class BackbonePage extends SpecialPage {
         $this->loadTemplates();
         $this->loadModels();
         $this->loadViews();
+        $this->loadHelpers();
         $wgOut->addHTML("<script type='text/javascript'>
             main = new Main({title: '".str_replace("'", "&#39;", self::$messages[strtolower($class)])."'});
             mainView = new MainView({el: $('#backbone_main'), model: main}).render();
@@ -94,7 +98,18 @@ abstract class BackbonePage extends SpecialPage {
     function loadMain(){
         global $wgServer, $wgScriptPath, $wgOut;
         $exploded = explode("extensions/", self::$dirs[strtolower(get_class($this))]);
+        $wgOut->addHTML("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/GrandObjectPage/Backbone/main.js'></script>");
         $wgOut->addHTML("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/main.js'></script>");
+    }
+    
+    /**
+     * Adds the helpers script to the OutputPage
+     */
+    function loadHelpers(){
+        global $wgServer, $wgScriptPath, $wgOut;
+        $exploded = explode("extensions/", self::$dirs[strtolower(get_class($this))]);
+        $wgOut->addHTML("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/GrandObjectPage/Backbone/helpers.js'></script>");
+        $wgOut->addHTML("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/helpers.js'></script>");
     }
     
     /**
