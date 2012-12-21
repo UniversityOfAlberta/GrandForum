@@ -19,7 +19,13 @@ ProductView = Backbone.View.extend({
     },
     
     renderData: function(){
-        
+        var dataTag = this.$el.find('#productData');
+        _.each(this.model.get('data'), function(field, index){
+            if(field.trim() != ''){
+                var label = index.replace('_', ' ').toTitleCase();
+                dataTag.append("<tr><td><b>" + label + ":</b></td><td>" + field + "</td></tr>");
+            }
+        });
     },
     
     renderProjects: function(){
