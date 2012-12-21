@@ -2,6 +2,7 @@ PageRouter = Backbone.Router.extend({
         
     initialize: function(){
         this.bind('all', function(event){
+            clearAllMessages();
             $("#currentView").html("<div id='currentViewSpinner'></div>");
             spin = spinner("currentViewSpinner", 40, 75, 12, 10, '#888');
         });

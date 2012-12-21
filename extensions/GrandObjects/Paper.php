@@ -666,7 +666,27 @@ class Paper extends BackboneModel{
 	}
 	
 	function delete(){
-	    
+	    global $wgSitename;
+	    $me = Person::newFromWGUser();
+	    if($me->isLoggedIn()){
+	        $status = DBFunctions::update('grand_products',
+	                                array('deleted' => '1'),
+	                                array('id' => $this->getId()));
+	        if($status){
+	            if(function_exists('apc_delete')){
+	                apc_delete($wgSitename.'project'.$this->getTitle());
+	            }
+                foreach($this->getAuthors() as $author){
+                    if($author instanceof Person && $me->getId() != $author->getId()){
+                        Notification::addNotification($me, $author, "{$this->getCategory()} Deleted", "Your ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i> has been deleted", "{$this->getUrl()}");
+                    }
+                }
+                self::$cache = array();
+                self::$dataCache = array();
+            }
+	        return $status;
+	    }
+	    return false;
 	}
 
 	function toArray(){

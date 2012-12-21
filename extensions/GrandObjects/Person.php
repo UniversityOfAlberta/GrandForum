@@ -511,8 +511,8 @@ class Person extends BackboneModel {
 	    $me = Person::newFromWGUser();
 	    if($me->isRoleAtLeast(MANAGER)){
 	        return DBFunctions::update('mw_user',
-	                      array('deleted' => 1),
-	                      array('user_id' => EQ($this->getId())));
+	                             array('deleted' => 1),
+	                             array('user_id' => EQ($this->getId())));
 	    }
 	    return false;
 	}
