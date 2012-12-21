@@ -6,6 +6,19 @@ ProductView = Backbone.View.extend({
         this.template = _.template($('#product_template').html());
     },
     
+    events: {
+        "click #editProduct": "editProduct",
+        "click #deleteProduct": "deleteProduct"
+    },
+    
+    editProduct: function(){
+        document.location = document.location + '/edit';
+    },
+    
+    deleteProduct: function(){
+        
+    },
+    
     renderAuthors: function(){
         var views = Array();
         _.each(this.model.get('authors'), function(author, index){
