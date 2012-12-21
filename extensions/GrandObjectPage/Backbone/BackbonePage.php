@@ -73,8 +73,8 @@ abstract class BackbonePage extends SpecialPage {
         $wgOut->addHTML("<div id='backbone_main'></div>");
         $this->loadTemplates();
         $this->loadModels();
-        $this->loadViews();
         $this->loadHelpers();
+        $this->loadViews();
         $wgOut->addHTML("<script type='text/javascript'>
             main = new Main({title: '".str_replace("'", "&#39;", self::$messages[strtolower($class)])."'});
             mainView = new MainView({el: $('#backbone_main'), model: main}).render();
