@@ -81,7 +81,7 @@ class LimitReportItemSet extends ReportItemSet {
             $type = "maximum of";
             $rec = 'false';
         }
-        $wgOut->addHTML("<p id='limit_{$this->getPostId()}'><span class='pdf_hide inlineMessage'>(Reported By {$noun} - currently <span id='{$this->getPostId()}_chars_left'>{$nChars}</span> characters out of an overall {$type} {$limit} accross all $pluralNoun)</span>&nbsp;<a style='font-style:italic; font-size:11px; font-weight:bold;cursor:pointer;' onClick='popup{$this->getPostId()}();'><i>Preview</i></a><div id='preview_{$this->getPostId()}' style='display:none;'></div></p>
+        $wgOut->addHTML("<p id='limit_{$this->getPostId()}'><span class='pdf_hide inlineMessage'>(Reported By {$noun} - currently <span id='{$this->getPostId()}_chars_left'>{$nChars}</span> characters out of an overall {$type} {$limit} across all $pluralNoun)</span>&nbsp;<a style='font-style:italic; font-size:11px; font-weight:bold;cursor:pointer;' onClick='popup{$this->getPostId()}();'><i>Preview</i></a><div id='preview_{$this->getPostId()}' style='display:none;'></div></p>
         <div id='div_{$this->getPostId()}'>");
         foreach($this->items as $item){
             $item->render();
@@ -207,7 +207,7 @@ class LimitReportItemSet extends ReportItemSet {
 	        if($length == 1){
 	            $plural = "";
 	        }
-	        $html .= "<span class='$class'><small>(<i>Reported By {$noun} - currently {$length} character{$plural} out of a {$type} {$this->getLimit()} accross all {$pluralNoun}.</i>)</small></span>";
+	        $html .= "<span class='$class'><small>(<i>Reported By {$noun} - currently {$length} character{$plural} out of a {$type} {$this->getLimit()} across all {$pluralNoun}.</i>)</small></span>";
 	        $html .= nl2br("<p>{$text}</p>");
 	    }
 	    $wgOut->addHTML($html);
