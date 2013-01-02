@@ -9,12 +9,20 @@ $wgHooks['UnknownAction'][] = 'getUserMode';
 
 function getUserMode($action, $page){
     global $wgUser, $wgImpersonating;
+    $me = Person::newFromUser($wgUser);
     if($action == 'getUserMode'){
         session_write_close();
         $json = array();
         if(!$wgUser->isLoggedIn()){
             $json = array('mode' => 'loggedOut',
                           'message' => 'You are currently logged out');
+            header('Content-Type: application/json');
+            echo json_encode($json);
+            exit;
+        }
+        else if(FROZEN && !$me->isRoleAtLeast(MANAGER)){
+            $json = array('mode' => 'frozen',
+                          'message' => "The Forum is currently not available for edits during the RMC review-and-deliberation period.");
             header('Content-Type: application/json');
             echo json_encode($json);
             exit;

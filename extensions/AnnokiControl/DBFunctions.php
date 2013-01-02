@@ -22,8 +22,9 @@ class DBFunctions {
 	
 	static function DBWritable(){
 	    global $wgImpersonating;
+	    $me = Person::newFromWGUser();
 	    $supervisesImpersonee = checkSupervisesImpersonee();
-	    return !($wgImpersonating && !$supervisesImpersonee);
+	    return (!($wgImpersonating && !$supervisesImpersonee) && (!FROZEN || $me->isRoleAtLeast(MANAGER)));
 	}
     
     // Executes an sql statement.  By default a query is assumed, and processes the resultset into an array.

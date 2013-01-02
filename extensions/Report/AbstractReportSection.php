@@ -271,6 +271,9 @@ abstract class AbstractReportSection {
     
     // Returns whether or not this section has the given $perm or not
     function checkPermission($perm){
+        if($perm == 'w' && !DBFunctions::DBWritable()){
+            return false;
+        }
         $permissions = $this->getParent()->getSectionPermissions($this);
         return isset($permissions[$perm]);
     }

@@ -322,14 +322,14 @@ function showProjectReports($person, $year){
     global $wgTitle, $wgServer, $wgScriptPath, $wgOut;
 
     $projs = $person->leadershipDuring(($year).REPORTING_PRODUCTION_MONTH, ($year+1).REPORTING_PRODUCTION_MONTH);
-
+    
     foreach($projs as $proj){
         foreach($proj->getAllPreds() as $pred){
             $projs[] = $pred;
         }
     }
     $tbrows = "";
-
+    $projNames = array();
     if(count($projs) > 0){
         $wgOut->addHTML("<h3>Project Leader Report</h3>");
         $sto = new ReportStorage($person);
@@ -338,6 +338,10 @@ function showProjectReports($person, $year){
         $commentHTML = "";
         $milestonesHTML = "";
         foreach ($projs as &$pj) {
+            if(isset($projNames[$pj->getName()])){
+                continue;
+            }
+            $projNames[$pj->getName()] = true;
             $plReport = new DummyReport("ProjectReport", $person, $pj, $year);
             $commentReport = new DummyReport("ProjectReportComments", $person, $pj, $year);
             $milestonesReport = new DummyReport("ProjectReportMilestones", $person, $pj, $year);
