@@ -548,7 +548,7 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     // Generates the PDF for the report, and saves it to the Database
-    function generatePDF($person=null){
+    function generatePDF($person=null, $submit=false){
         global $wgOut, $wgUser;
         session_write_close();
         $me = $person;
@@ -598,7 +598,9 @@ abstract class AbstractReport extends SpecialPage {
             $len = $sto->metadata('pdf_len');
             $json[$pdfFile] = array('tok'=>$tok, 'time'=>$tst, 'len'=>$len, 'name'=>"{$report->name}");
         }
-        
+        if($submit){
+            $this->submitReport($person);
+        }
         header('Content-Type: application/json');
         header('Content-Length: '.strlen(json_encode($json)));
         echo json_encode($json);
@@ -608,9 +610,14 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     // Marks the report as submitted
-    function submitReport(){
+    function submitReport($person=null){
         global $wgUser;
-        $me = Person::newFromId($wgUser->getId());
+        if($person == null){
+            $me = Person::newFromId($wgUser->getId());
+        }
+        else{
+            $me = $person;
+        }
         $sto = new ReportStorage($me);
         $check = $this->getPDF();
         if(count($check) > 0){

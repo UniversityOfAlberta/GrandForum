@@ -30,13 +30,17 @@ class CreatePDF extends SpecialPage {
 	        $person = @Person::newFromId($_GET['person']);
 	        $project = @Project::newFromId($_GET['project']);
 	        $report = new DummyReport($_GET['report'], $person, $project);
+	        $submitted = $report->isSubmitted();
 	        if($project != null){
 	            $leader = $project->getLeader();
 	            $report->person = $leader;
-	            $report->generatePDF(null);
+	            $report->generatePDF(null, $submitted);
+	            if($submitted){
+	                $report->submitReport();
+	            }
 	        }
 	        else{
-	            $report->generatePDF($person);
+	            $report->generatePDF($person, $submitted);
 	        }
 	        exit;
 	    }

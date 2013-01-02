@@ -150,6 +150,36 @@ class Project{
 		return $projects;
 	}
 	
+	static function getAllProjectsDuring($startDate=false, $endDate=false){
+	    if($startDate == false){
+	        $startDate = REPORTING_CYCLE_START;
+	    }
+	    if($endDate == false){
+	        $endDate = REPORTING_CYCLE_END;
+	    }
+	    $sql = "SELECT *
+				FROM grand_project p
+ 				ORDER BY p.name";
+		$data = DBFunctions::execSQL($sql);
+		$projects = array();
+		$projectNames = array();
+		foreach($data as $row){
+		    $project = Project::newFromId($row['id']);
+		    if($project != null && $project->getName() != ""){
+		        if(!isset($projectNames[$project->name])){
+		            if(($project->deleted &&
+		                strcmp($project->effectiveDate, $endDate) <= 0 &&
+		                strcmp($project->effectiveDate, $startDate) >= 0) ||
+		               !$project->deleted){
+		                $projectNames[$project->name] = true;
+			            $projects[] = $project;
+			        }
+			    }
+			}
+		}
+		return $projects;
+	}
+	
 	// Orders the projects alphabetically so that they are sorted vertically in columns rather than rows.
 	// Returns an array in a format which is useful for outputing a 3 column html table.
 	static function orderProjects($projects){
