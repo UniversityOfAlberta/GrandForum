@@ -51,6 +51,10 @@ class cavendishTemplate extends QuickTemplate {
         if(FROZEN){
             $wgMessage->addInfo("The Forum is currently not available for edits during the RMC review-and-deliberation period.");
         }
+        
+        if($wgUser->isLoggedIn()){
+            $wgMessage->addInfo("The Reports are currently not available for edits during the RMC review-and-deliberation period.");
+        }
 
 		// Suppress warnings to prevent notices about missing indexes in $this->data
 		wfSuppressWarnings();
