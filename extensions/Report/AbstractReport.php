@@ -592,6 +592,7 @@ abstract class AbstractReport extends SpecialPage {
                         $rid = $sto->metadata('report_id');
                         $ind->insert_report($rid, $report->project);
                     }
+                    $report->submitReport($person);
                 }
             }
         }
