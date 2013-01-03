@@ -69,7 +69,7 @@ class Project{
 				ORDER BY e.id DESC LIMIT 1";
 				
 		$data = DBFunctions::execSQL($sql);
-		if (DBFunctions::getNRows() > 0){
+		if (count($data) > 0)){
 		    $sql = "SELECT *
 	                FROM `grand_project_evolution`
 	                WHERE `project_id` = '{$data[0]['id']}'
