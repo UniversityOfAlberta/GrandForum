@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="NI Report" reportType="RP_RESEARCHER" pdfType="RPTP_NORMAL" pdfFiles="NIReportPDF,NIReportComments" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
+        <!--
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PNI">
             <SectionPermission id="status" permissions="rw" />
             <SectionPermission id="dashboard" permissions="rw" />
@@ -18,6 +19,25 @@
             <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        -->
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PNI">
+            <SectionPermission id="status" permissions="r" />
+            <SectionPermission id="dashboard" permissions="r" />
+            <SectionPermission id="report" permissions="r" />
+            <SectionPermission id="budget" permissions="r" />
+            <SectionPermission id="milestones" permissions="r" />
+            <SectionPermission id="review" permissions="r" />
+            <SectionPermission id="submit" permissions="r" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="CNI">
+            <SectionPermission id="status" permissions="r" />
+            <SectionPermission id="dashboard" permissions="r" />
+            <SectionPermission id="report" permissions="r" />
+            <SectionPermission id="budget" permissions="r" />
+            <SectionPermission id="milestones" permissions="r" />
+            <SectionPermission id="review" permissions="r" />
+            <SectionPermission id="submit" permissions="r" />
         </Role>
     </Permissions>
     <ReportSection id="status" name="Report Completion Status" tooltip="Evaluation of your report against the reporting rules" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
