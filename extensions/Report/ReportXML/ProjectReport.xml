@@ -64,6 +64,17 @@
             <SectionPermission id="submit" permissions="" />
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
+        <!--
+        <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" project="HLTHSIM">
+            <SectionPermission id="status" permissions="rw" />
+            <SectionPermission id="dashboard" permissions="rw" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="comments" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Project>-->
     </Permissions>
     <ReportSection id="status" tooltip="Evaluation of the project report against the reporting rules" name="Report Completion Status" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>

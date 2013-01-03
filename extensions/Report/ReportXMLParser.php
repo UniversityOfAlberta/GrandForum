@@ -201,6 +201,7 @@ class ReportXMLParser {
             else if($key == "Project"){
                 $attributes = $child->attributes();
                 $deleted = (isset($attributes->deleted)) ? (strtolower("{$attributes->deleted}") == "true") : false;
+                $projName = (isset($attributes->project)) ? "{$attributes->project}" : "";
                 $start = (isset($attributes->start)) ? @constant($attributes->start) : "0000-00-00";
                 $end = (isset($attributes->end)) ? @constant($attributes->end) : "2100-12-31";
                 if($start == null){
@@ -209,7 +210,8 @@ class ReportXMLParser {
                 if($end == null){
                     $this->errors[] = "Start time '{$attributes->end}' does not exist";
                 }
-                $this->report->addPermission("Project", array("deleted" => $deleted), "{$start}", "{$end}");
+                $this->parseProjectSectionPermissions($child, $projName);
+                $this->report->addPermission("Project", array("deleted" => $deleted, "project" => $projName), "{$start}", "{$end}");
             }
         }
     }
@@ -222,6 +224,17 @@ class ReportXMLParser {
             $permissions = (isset($attributes->permissions)) ? "{$attributes->permissions}" : "r";
             $sectionId = (isset($attributes->id)) ? "{$attributes->id}" : "";
             $this->report->addSectionPermission($sectionId, $role, $permissions);
+        }
+    }
+    
+    // Parses the <SectionPermission> elements of a <Project> element
+    function parseProjectSectionPermissions($node, $project){
+        $children = $node->children();
+        foreach($children as $key => $child){
+            $attributes = $child->attributes();
+            $permissions = (isset($attributes->permissions)) ? "{$attributes->permissions}" : "r";
+            $sectionId = (isset($attributes->id)) ? "{$attributes->id}" : "";
+            $this->report->addSectionPermission($sectionId, $project, $permissions);
         }
     }
     

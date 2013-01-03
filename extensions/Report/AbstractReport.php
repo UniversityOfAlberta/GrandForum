@@ -475,7 +475,9 @@ abstract class AbstractReport extends SpecialPage {
             }
         }
         $me = Person::newFromId($wgUser->getId());
-        $result = $me->isRoleAtLeast(MANAGER);
+        $rResult = $me->isRoleAtLeast(MANAGER);
+        $pResult = false;
+        $nProjectTags = 0;
         foreach($this->permissions as $type => $perms){
             foreach($perms as $perm){
                 switch($type){
@@ -485,34 +487,43 @@ abstract class AbstractReport extends SpecialPage {
                             if(count($project_objs) > 0){
                                 foreach($project_objs as $project){
                                     if($project->getId() == $this->project->getId()){
-                                        $result = true;
+                                        $rResult = true;
                                     }
                                 }
                             }
                         }
                         else if($this->project != null && ($perm['perm'] == PM)){
                             if($me->isProjectManager()){
-                                $result = true;
+                                $rResult = true;
                             }
                         }
                         else{
-                            $result = ($result || $me->isRoleDuring($perm['perm'], $perm['start'], $perm['end']));
+                            $rResult = ($rResult || $me->isRoleDuring($perm['perm'], $perm['start'], $perm['end']));
                         }
                         break;
                     case "Project":
+                        $nProjectTags++;
                         if($this->project != null){
-                            $result = (($perm['perm']['deleted'] && 
-                                       $this->project->isDeleted() && 
-                                       substr($this->project->getEffectiveDate(), 0, 4) >= substr($perm['start'], 0, 4) && 
-                                       substr($this->project->getEffectiveDate(), 0, 4) <= substr($perm['end'], 0, 4)) || 
-                                      (!$perm['perm']['deleted'] && 
-                                       !$this->project->isDeleted()));
+                            if(isset($perm['perm']['deleted'])){
+                                $pResult = ($pResult || (($perm['perm']['deleted'] && 
+                                           $this->project->isDeleted() && 
+                                           substr($this->project->getEffectiveDate(), 0, 4) >= substr($perm['start'], 0, 4) && 
+                                           substr($this->project->getEffectiveDate(), 0, 4) <= substr($perm['end'], 0, 4)) || 
+                                          (!$perm['perm']['deleted'] && 
+                                           !$this->project->isDeleted())));
+                            }
+                            else if(isset($perm['perm']['project'])){
+                                $pResult = ($pResult || $this->project->getName() == $perm['project']);
+                            }
                         }
                         break;
                 }
             }
         }
-        return $result;
+        if($nProjectTags == 0){
+            $pResult = true;
+        }
+        return ($pResult && $rResult);
     }
     
     function getSectionPermissions($section){
@@ -540,6 +551,14 @@ abstract class AbstractReport extends SpecialPage {
         foreach($roles as $role){
             if(isset($this->sectionPermissions[$role][$section->id])){
                 foreach($this->sectionPermissions[$role][$section->id] as $key => $perm){
+                    $permissions[$key] = $perm;
+                }
+            }
+        }
+        if($this->person->getId() == 0 &&
+           $this->project != null){
+            if(isset($this->sectionPermissions[$this->project->getName()][$section->id])){
+                foreach($this->sectionPermissions[$this->project->getName()][$section->id] as $key => $perm){
                     $permissions[$key] = $perm;
                 }
             }
