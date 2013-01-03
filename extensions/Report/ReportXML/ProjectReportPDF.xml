@@ -133,7 +133,7 @@
             <![CDATA[<h2>Budget Justification</h2> {$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="prod_details" name="Productivity Details" type="EditableReportSection" pagebreak="true" number="5" renderpdf="true">
+    <ReportSection id="prod_details" name="Productivity Details" type="EditableReportSection" pagebreak="false" number="5" renderpdf="true">
         <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true">
             <![CDATA[<div id='appendix'>{$item}</div>]]>
         </ReportItem>

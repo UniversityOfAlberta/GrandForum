@@ -35,9 +35,6 @@ class CreatePDF extends SpecialPage {
 	            $leader = $project->getLeader();
 	            $report->person = $leader;
 	            $report->generatePDF(null, $submitted);
-	            if($submitted){
-	                $report->submitReport();
-	            }
 	        }
 	        else{
 	            $report->generatePDF($person, $submitted);
