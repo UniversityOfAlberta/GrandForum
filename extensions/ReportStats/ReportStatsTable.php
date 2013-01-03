@@ -47,29 +47,28 @@ class ReportStatsTable extends SpecialPage {
 	    $overall = array( "HQP"=>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
 						  "NI" =>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
 						  "CNI"=>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
-						  "PNI"=>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0));
+						  "PNI"=>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
+						  "Projects"=>array('total'=>0, 'report'=>0,'pdf'=>0, 'submitted'=>0));
 	    
 	    $hqps = array();
 	    $nis = array();
 	    $cnis = array();
 	    $pnis = array();
+	    $projects = Project::getAllProjectsDuring();
 	    
 	    $people = Person::getAllPeople();
 	    foreach($people as $person){
-	        $roles = $person->getRoles();
-	        foreach($roles as $role){
-	            if($role->getRole() == HQP){
-	                $hqps[$person->getId()] = $person;
-	            }
-	            else if($role->getRole() == PNI){
-	            	$pnis[$person->getId()] = $person;
-	            	$nis[$person->getId()] = $person;
-	            }
-	            else if($role->getRole() == CNI){ 
-	                $cnis[$person->getId()] = $person;  
-	                $nis[$person->getId()] = $person;
-	            }
-	        }
+            if($person->isRoleDuring(HQP)){
+                $hqps[$person->getId()] = $person;
+            }
+            else if($person->isRoleDuring(PNI)){
+            	$pnis[$person->getId()] = $person;
+            	$nis[$person->getId()] = $person;
+            }
+            else if($person->isRoleDuring(CNI)){ 
+                $cnis[$person->getId()] = $person;
+                $nis[$person->getId()] = $person;
+            }
 	    }
 	    
 	    $wgOut->setPageTitle("Reporting Statistics");
@@ -79,6 +78,7 @@ class ReportStatsTable extends SpecialPage {
 		                        <li><a href='#ni'>NI</a></li>
 		                        <li><a href='#cni'>CNI</a></li>
 		                        <li><a href='#pni'>PNI</a></li>
+		                        <li><a href='#project'>Projects</a></li>
 		                        <li><a href='#all'>Overall</a></li>
 	                        </ul>");
 
@@ -91,6 +91,8 @@ class ReportStatsTable extends SpecialPage {
 		$overall['CNI'] = ReportStatsTable::niTable($cnis);
 		$wgOut->addHTML("</div><div id='pni'>");
 		$overall['PNI'] = ReportStatsTable::niTable($pnis);
+		$wgOut->addHTML("</div><div id='project'>");
+		$overall['Projects'] = ReportStatsTable::projectTable($projects);
 		$wgOut->addHTML("</div><div id='all'>");
 		ReportStatsTable::overallTable($overall);
 	    $wgOut->addHTML("</div></div>");
@@ -240,10 +242,6 @@ class ReportStatsTable extends SpecialPage {
                                 <td>{$pdf_found}</td>
                                 <td>{$submitted}</td>
                              </tr>\n");
-            
-     
-        
-	        
 	    }
 	    $wgOut->addHTML("</tbody></table>");
 	    return $overall;
@@ -348,7 +346,62 @@ class ReportStatsTable extends SpecialPage {
 	    return $overall;
     }
     
+    function projectTable($projects){
+        global $wgOut, $wgServer, $wgScriptPath;
+        $overall = array('total'=>0, 'report'=>0, 'budget'=>'N/A', 'pdf'=>0, 'submitted'=>0);
 
+        $wgOut->addHTML("<table class='indexTable' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+	                        <thead>
+	                            <tr bgcolor='#F2F2F2'>
+	                                <th>Name</th>
+	                                <th>Report</th>
+	                                <th>PDF</th>
+	                                <th>Submitted</th>
+	                            </tr>
+	                        </thead>
+	                        <tbody>\n");
+
+        
+	    foreach($projects as $project){
+	    	$overall['total']++;
+
+            //Report Stats
+            $rep_year = REPORTING_YEAR;
+            $p_id = 0;
+            $rp_type = RP_LEADER;
+            $rep_started = "No";
+            $pdf_found = "No";
+            $submitted = "No";
+            $check_report_record = "SELECT * FROM grand_report_blobs WHERE year=$rep_year AND rp_type=$rp_type AND proj_id={$project->getId()}";
+            $res = DBFunctions::execSQL($check_report_record);
+            
+            if(count($res)>0){
+            	$rep_started = "Yes";
+            	$overall['report']++;
+            }	
+            
+            $report = new DummyReport("ProjectReport", Person::newFromId(0), $project);
+
+            $pdf = $report->getPDF();
+            if(count($pdf) > 0){
+                $pdf_found = "Yes";
+                $overall['pdf']++;
+            }
+            
+            if($report->isSubmitted()){
+                $submitted = "Yes";
+                $overall['submitted']++;
+            }
+            $wgOut->addHTML("<tr>
+                                <td><a href='{$project->getUrl()}' target='_blank'>{$project->getName()}</a></td>
+                                <td>{$rep_started}</td>
+                                <td>{$pdf_found}</td>
+                                <td>{$submitted}</td>
+                             </tr>\n");
+	    }
+	    $wgOut->addHTML("</tbody></table>");
+	    return $overall;    
+    }
 
     function addAck(){
         global $wgOut, $wgServer, $wgScriptPath, $wgMessage;
