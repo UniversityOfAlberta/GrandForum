@@ -29,6 +29,9 @@ class CreatePDF extends SpecialPage {
 	    if(isset($_GET['generatePDF'])){
 	        $person = @Person::newFromId($_GET['person']);
 	        $project = @Project::newFromId($_GET['project']);
+	        if($project != null && $project->deleted){
+	            $_GET['report'] = "ProjectFinalReport";
+	        }
 	        $report = new DummyReport($_GET['report'], $person, $project);
 	        $submitted = $report->isSubmitted();
 	        if($project != null){
@@ -121,13 +124,18 @@ class CreatePDF extends SpecialPage {
                 echo json_encode($json);
 	        }
 	        else if($type == 'project'){
-	            $projects = Project::getAllProjects();
+	            $projects = Project::getAllProjectsDuring();
 	            $command = "zip -9 /tmp/ProjectReports.zip";
 	            foreach($projects as $project){
 	                $leader = $project->getLeader();
 	                if($leader != null){
 	                    $sto = new ReportStorage($leader);
-	                    $report = new DummyReport("ProjectReport", $leader, $project, $year);
+	                    if($project->deleted){
+	                        $report = new DummyReport("ProjectFinalReport", $leader, $project, $year);
+	                    }
+	                    else{
+	                        $report = new DummyReport("ProjectReport", $leader, $project, $year);
+	                    }
 	                    $check = $report->getPDF();
 	                    if(count($check) > 0){
 	                        $tok = $check[0]['token'];
@@ -179,7 +187,7 @@ class CreatePDF extends SpecialPage {
 	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=HQPReport&person=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
 	    else if($type == 'project'){
-	        foreach(Project::getAllProjects() as $project){
+	        foreach(Project::getAllProjectsDuring() as $project){
 	            $names[] = $project->getName();
 	            $ids[] = $project->getId();
 	        }
