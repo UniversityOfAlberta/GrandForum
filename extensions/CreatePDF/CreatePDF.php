@@ -329,7 +329,12 @@ class CreatePDF extends SpecialPage {
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    $wgOut->setPageTitle("NI Report PDFs");
 	    CreatePDF::tableHead();
+	    $alreadyDone = array();
 	    foreach($names as $pName){
+	        if(isset($alreadyDone[$pName])){
+	            continue;
+	        }
+	        $alreadyDone[$pName] = true;
 	        $person = Person::newFromName($pName);
 	        $report = new DummyReport("NIReport", $person);
 	        CreatePDF::tableRow($report, $person->getId(), $person->getName(), $person->getReversedName());
@@ -341,7 +346,12 @@ class CreatePDF extends SpecialPage {
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    $wgOut->setPageTitle("HQP Report PDFs");
 	    CreatePDF::tableHead();
+	    $alreadyDone = array();
 	    foreach($names as $pName){
+	        if(isset($alreadyDone[$pName])){
+	            continue;
+	        }
+	        $alreadyDone[$pName] = true;
 	        $person = Person::newFromName($pName);
 	        $report = new DummyReport("HQPReport", $person);
 	        $check = $report->getPDF();
@@ -359,7 +369,12 @@ class CreatePDF extends SpecialPage {
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    $wgOut->setPageTitle("Project Report PDFs");
 	    CreatePDF::tableHead();
+	    $alreadyDone = array();
 	    foreach($names as $pName){
+	        if(isset($alreadyDone[$pName])){
+	            continue;
+	        }
+	        $alreadyDone[$pName] = true;
 	        $project = Project::newFromName($pName);
 	        $leader = $project->getLeader();
 	        if($leader != null){
