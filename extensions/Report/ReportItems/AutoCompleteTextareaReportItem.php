@@ -151,7 +151,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
             if(!$recommended){
                 $blobValue = $this->getReplacedBlobValue();
                 $replacedLength = $this->getActualNChars();
-                $lengthDiff = strlen(utf8_decode($blobValue)) - $replacedLength;
+                $lengthDiff = strlen($blobValue) - $replacedLength;
                 $blobValue1 = substr($blobValue, 0, $limit + $lengthDiff);
                 $blobValue2 = substr($blobValue, $limit + $lengthDiff);
                 $limit -= (strlen(utf8_decode($blobValue1)) - $lengthDiff);
