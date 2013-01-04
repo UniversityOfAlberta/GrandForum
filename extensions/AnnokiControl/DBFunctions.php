@@ -72,7 +72,7 @@ class DBFunctions {
 		        $wgMessage->addError("<pre class='inlineError' style='font-weight:bold;background:none;border:none;padding:0;overflow:hidden;margin:0;'>".$e->getMessage()."</pre>");
 		    }
 		    else{
-		        $wgMessage->addError("A Database error #{$e->errno} has occured, please contact <a href='mailto:support@grand-nce.ca'>support@grand-nce.ca</a>.");
+		        $wgMessage->addError("A Database error #{$e->errno} has occurred, please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>.");
 		    }
 		    if($rollback){
 		        DBFunctions::rollback();

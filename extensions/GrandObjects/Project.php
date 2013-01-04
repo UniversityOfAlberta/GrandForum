@@ -61,9 +61,10 @@ class Project{
 	    if(isset(self::$cache[$name])){
 	        return self::$cache[$name];
 	    }
+	    $nameSQL = mysql_real_escape_string($name);
 		$sql = "SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.type, s.status
 				FROM grand_project p, grand_project_evolution e, grand_project_status s
-				WHERE p.name = '$name'
+				WHERE p.name = '$nameSQL'
 				AND e.new_id = p.id
 				AND s.evolution_id = e.id
 				ORDER BY e.id DESC LIMIT 1";
