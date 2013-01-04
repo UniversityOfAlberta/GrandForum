@@ -87,6 +87,7 @@ define('EVL_OVERALLSCORE',		6);
 define('EVL_OTHERCOMMENTS',		7);
 define('EVL_REPORTQUALITY',		8);
 define('EVL_CONFIDENCE',		9);
+define('EVL_STOCKCOMMENTS',		10); //New in 2012-2013
 
 // Second-level identifiers for Supplemental Report.
 define('SUP_HQPS',			1);
