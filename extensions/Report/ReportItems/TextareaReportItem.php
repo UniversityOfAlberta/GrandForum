@@ -105,12 +105,13 @@ EOF;
 	    $blobValue = str_replace("\r", "", $this->getBlobValue());
 	    $recommended = $this->getAttr('recommended', false);
 	    $length = strlen(utf8_decode($blobValue));
+	    $lengthDiff = strlen($blobValue) - $length;
 	    $class = "inlineMessage";
 	    if($limit > 0){
 	        if(!$recommended){
 	            $type = "maximum of";
-	            $blobValue1 = substr(utf8_decode($blobValue), 0, $limit);
-	            $blobValue2 = substr(utf8_decode($blobValue), $limit);
+	            $blobValue1 = substr($blobValue, 0, $limit + $lengthDiff);
+	            $blobValue2 = substr($blobValue, $limit + $lengthDiff);
 	            if($blobValue2 != ""){
 	                if(isset($_GET['preview'])){
 	                    $blobValue = "{$blobValue1}<s style='color:red;'>{$blobValue2}</s>";
