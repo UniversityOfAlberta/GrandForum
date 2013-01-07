@@ -43,7 +43,7 @@
     </ReportSection>
 
     <!-- Project Budget -->
-    <!--ReportSection id="budget" name="Project Budget" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+    <ReportSection id="budget" name="Project Budgets" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
                <p>Here you can see the Project Budget requests for 2013-2014.</p>
@@ -61,7 +61,7 @@
         <ReportItemSet id="project_materials" type="ProjectMaterialsReportItemSet">
             <ReportItem id="project_budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="ProjectBudgetReportItem" />
         </ReportItemSet>
-    </ReportSection-->
+    </ReportSection>
 
     <!-- PNI Reviews -->
     <!--ReportSection id="reviews" name="PNI Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="false" private="false">
