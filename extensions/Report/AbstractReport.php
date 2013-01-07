@@ -549,6 +549,9 @@ abstract class AbstractReport extends SpecialPage {
         if($me->isProjectManager()){
             $roles[] = PM;
         }
+        if($me->isEvaluator()){
+            $roles[] = EVALUATOR;
+        }
         
         $permissions = array();
         foreach($roles as $role){
