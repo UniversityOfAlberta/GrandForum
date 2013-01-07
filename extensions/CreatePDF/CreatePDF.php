@@ -14,6 +14,7 @@ function runCreatePDF($par) {
 class CreatePDF extends SpecialPage {
 
     static $types = array('ni' => 'NI',
+                          'ni_comments' => 'Project NI Comments',
                           'hqp' => 'HQP',
                           'project' => 'Project');
 
@@ -47,7 +48,7 @@ class CreatePDF extends SpecialPage {
 	    if(isset($_GET['downloadAll'])){
 	        $people = array();
 	        $me = Person::newFromId($wgUser->getId());
-	        if($type == 'ni'){
+	        if($type == 'ni' || $type == 'ni_comments'){
 	            foreach(Person::getAllPeopleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $person){
 	                $people[] = $person;
 	            }
@@ -57,14 +58,25 @@ class CreatePDF extends SpecialPage {
 	            $command = "zip -9 /tmp/NIReports.zip";
 	            foreach($people as $person){
                     $sto = new ReportStorage($person);
-                    $report = new DummyReport("NIReportPDF", $person, null, $year);
+                    if($type == 'ni_comments'){
+                        $report = new DummyReport("ProjectNIComments", $person, null, $year);
+                    }
+                    else{
+                        $report = new DummyReport("NIReportPDF", $person, null, $year);
+                    }
                     $check = $report->getPDF();
                     if(count($check) > 0){
                         $tok = $check[0]['token'];
                         $sto->select_report($tok);
                         $year = REPORTING_YEAR;
                         $pdf = $sto->fetch_pdf($tok, false);
-                        $fileName = "/tmp/{$person->getReversedName()} NI Report {$year}.pdf";
+                        $personName = str_replace("ü", "u", $person->getReversedName());
+                        if($type == 'ni_comments'){
+                            $fileName = "/tmp/{$personName} Project NI Comments {$year}.pdf";
+                        }
+                        else{
+                            $fileName = "/tmp/{$personName} NI Report {$year}.pdf";
+                        }
                         file_put_contents($fileName, $pdf);
                         $command .= " \"$fileName\"";
                     }
@@ -168,7 +180,7 @@ class CreatePDF extends SpecialPage {
 	    $url = "";
 	    $names = array();
 	    $ids = array();
-	    if($type == 'ni'){
+	    if($type == 'ni' || $type == 'ni_comments'){
 	        foreach(Person::getAllPeopleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $person){
 	            $names[] = $person->getName();
 	            $ids[] = $person->getId();
@@ -177,7 +189,12 @@ class CreatePDF extends SpecialPage {
 	            $names[] = $person->getName();
 	            $ids[] = $person->getId();
 	        }
-	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=NIReport&person=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
+	        if($type == 'ni_comments'){
+	            $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectNIComments&person=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
+	        }
+	        else{
+	            $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=NIReport&person=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
+	        }
 	    }
 	    else if($type == 'hqp'){
 	        foreach(Person::getAllPeopleDuring(HQP, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $person){
@@ -197,6 +214,9 @@ class CreatePDF extends SpecialPage {
 	    CreatePDF::showScript($names, $ids, $url);
 	    if($type == 'ni'){
 	        CreatePDF::showNITable($names, $ids);
+	    }
+	    else if($type == 'ni_comments'){
+	        CreatePDF::showNICommentsTable($names, $ids);
 	    }
 	    else if($type == 'hqp'){
 	        CreatePDF::showHQPTable($names, $ids);
@@ -342,6 +362,23 @@ class CreatePDF extends SpecialPage {
 	        $alreadyDone[$pName] = true;
 	        $person = Person::newFromName($pName);
 	        $report = new DummyReport("NIReport", $person);
+	        CreatePDF::tableRow($report, $person->getId(), $person->getName(), $person->getReversedName());
+	    }
+	    CreatePDF::tableFoot();
+	}
+	
+	static function showNICommentsTable($names, $ids){
+	    global $wgOut, $wgServer, $wgScriptPath;
+	    $wgOut->setPageTitle("Project NI Comments Report PDFs");
+	    CreatePDF::tableHead();
+	    $alreadyDone = array();
+	    foreach($names as $pName){
+	        if(isset($alreadyDone[$pName])){
+	            continue;
+	        }
+	        $alreadyDone[$pName] = true;
+	        $person = Person::newFromName($pName);
+	        $report = new DummyReport("ProjectNIComments", $person);
 	        CreatePDF::tableRow($report, $person->getId(), $person->getName(), $person->getReversedName());
 	    }
 	    CreatePDF::tableFoot();
