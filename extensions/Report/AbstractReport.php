@@ -145,7 +145,6 @@ abstract class AbstractReport extends SpecialPage {
         if(isset($_GET['generatePDF'])){
             $this->generatePDF = true;
         }
-        echo $xmlFileName;
         if(file_exists($xmlFileName)){
             $exploded = explode(".", $xmlFileName);
             $exploded = explode("/", $exploded[count($exploded)-2]);
