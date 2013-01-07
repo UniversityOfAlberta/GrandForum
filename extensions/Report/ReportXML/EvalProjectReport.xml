@@ -1,46 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="PNI Evaluation" reportType="RP_EVAL_RESEARCHER" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
+<Report name="Project Evaluation" reportType="RP_EVAL_PROJECT" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PNI">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="reviews" permissions="rw" />
-            <SectionPermission id="overviews" permissions="rw" />
+            <!--SectionPermission id="reviews" permissions="rw" />
+            <SectionPermission id="overviews" permissions="rw" /-->
         </Role>
     </Permissions>
 
-    <!-- PNI Materials -->
-    <ReportSection id="materials" name="PNI Materials" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
+    <!-- Project Materials -->
+    <ReportSection id="materials" name="Project Materials" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
         <Instructions>
             <![CDATA[
-               <p>You can download the NI Report PDFs and the Project Leader Comments PDFs for your reference.</p>
+               <p>You can download the Project Report PDFs for your reference.</p>
             ]]>
         </Instructions>
-        <ReportItem id="pni_materials_head" type="StaticReportItem">
+        <ReportItem id="project_materials_head" type="StaticReportItem">
             <![CDATA[<table>]]>
         </ReportItem>
-        <ReportItemSet id="pni_materials" type="PNIMaterialsReportItemSet">
-            <ReportItem id="pni_pdf" type="PDFReportItem" reportType="NIReport" buttonName="NI Report PDF">
-                <![CDATA[<tr><td>{$user_reversed_name}</td><td>{$item}</td>]]>
-            </ReportItem>
-            <ReportItem id="pni_pdf" type="PDFReportItem" reportType="ProjectNIComments" buttonName="PL Comments PDF">
-                <![CDATA[<td>{$item}</td></tr>]]>
+        <ReportItemSet id="project_materials" type="ProjectMaterialsReportItemSet">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true">
+                <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="pni_materials_tail" type="StaticReportItem">
+        <ReportItem id="project_materials_tail" type="StaticReportItem">
             <![CDATA[</table>]]>
         </ReportItem>
         
     </ReportSection>
 
-    <!-- PNI Budget -->
-    <ReportSection id="budget" name="PNI Budgets" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+    <!-- Project Budget -->
+    <!--ReportSection id="budget" name="Project Budget" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
-               <p>Here you can see the NI Budget requests for 2013-2014.</p>
+               <p>Here you can see the Project Budget requests for 2013-2014.</p>
             ]]>
         </Instructions>
-        <ReportItem id="pni_budget_head" type="StaticReportItem">
+        <ReportItem id="project_budget_head" type="StaticReportItem">
             <![CDATA[
             <script type="text/javascript">
                 $(document).ready(function(){ 
@@ -49,10 +46,10 @@
             </script>
             ]]>
         </ReportItem>
-        <ReportItemSet id="pni_materials" type="PNIMaterialsReportItemSet">
-            <ReportItem id="pni_budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="EvalBudgetReportItem" />
+        <ReportItemSet id="project_materials" type="ProjectMaterialsReportItemSet">
+            <ReportItem id="project_budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="ProjectBudgetReportItem" />
         </ReportItemSet>
-    </ReportSection>
+    </ReportSection-->
 
     <!-- PNI Reviews -->
     <!--ReportSection id="reviews" name="PNI Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="false" private="false">
@@ -172,7 +169,7 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection-->
-
+    
      <!-- PNI Overviews -->
     <!--ReportSection id="overviews" name="PNI Overviews" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>

@@ -79,7 +79,7 @@ define('LDR_BUDGETJUSTIF',		12);
 
 // Second-level identifiers for Evaluator Report.
 define('EVL_EXCELLENCE',		1);
-define('EVL_HQPDEVELOPMENT',		2);
+define('EVL_HQPDEVELOPMENT',	2);
 define('EVL_NETWORKING',		3);
 define('EVL_KNOWLEDGE',			4);
 define('EVL_MANAGEMENT',		5);
@@ -87,7 +87,14 @@ define('EVL_OVERALLSCORE',		6);
 define('EVL_OTHERCOMMENTS',		7);
 define('EVL_REPORTQUALITY',		8);
 define('EVL_CONFIDENCE',		9);
-define('EVL_STOCKCOMMENTS',		10); //New in 2012-2013
+//New in 2012-2013
+define('EVL_STOCKCOMMENTS',		10); 
+define('EVL_EXCELLENCE_COM',	11);
+define('EVL_HQPDEVELOPMENT_COM',12);
+define('EVL_NETWORKING_COM',	13);
+define('EVL_KNOWLEDGE_COM',		14);
+define('EVL_MANAGEMENT_COM',	15);
+define('EVL_REPORTQUALITY_COM',	16);
 
 // Second-level identifiers for Supplemental Report.
 define('SUP_HQPS',			1);

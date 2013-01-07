@@ -10,16 +10,18 @@ class EvalReviewSelectReportItem extends AbstractReportItem {
 
 	function render(){
 		global $wgOut;
-        //$options = $this->parseOptions();
+        
 
         $value = $this->getBlobValue();
-        $options = array(
+        /*$options = array(
         	"option 1",
         	"option 2",
         	"option 3",
         	"option 4",
         	"option 5"
-        );
+        );*/
+		$options = array("Please select the most relevant comment.");
+        $options = array_merge($options, $this->parseOptions());
 
         $output = "<select name='{$this->getPostId()}'>";
 		foreach($options as $option){
@@ -35,7 +37,7 @@ class EvalReviewSelectReportItem extends AbstractReportItem {
 	    //$addr = "BlobType=".$this->blobType."; Year=". $this->getReport()->year ."; PersonID=". $this->getReport()->person->getId()."; ProjectID=". $this->projectId."<br />";
         //$addr .= "ReportType=".$this->getReport()->reportType."; Section=". $this->getSection()->sec ."; BlobItem=". $this->blobItem ."; SubItem=". $this->blobSubItem ."<br />";
 
-        $output = $this->processCData("<div style='padding-left:20px;'>{$output}</div>");
+        $output = $this->processCData("<div style='padding-left:20px;padding-top:10px;'>{$output}</div>");
 		$wgOut->addHTML($output);
 	}
 	

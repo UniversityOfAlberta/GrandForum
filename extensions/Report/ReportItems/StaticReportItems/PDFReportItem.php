@@ -6,6 +6,7 @@ class PDFReportItem extends StaticReportItem {
         global $wgServer, $wgScriptPath, $wgOut;
         $reportType = $this->getAttr("reportType", 'HQPReport');
         $useProject = $this->getAttr("project", false);
+        $buttonName = $this->getAttr("buttonName", "Report PDF");
         $width = $this->getAttr("width", 'auto');
         $project = null;
         if($useProject){
@@ -25,7 +26,7 @@ class PDFReportItem extends StaticReportItem {
     		$tst = $sto->metadata('timestamp');
     		$len = $sto->metadata('len_pdf');
     		$sub = $sto->metadata('submitted');
-    		$item = "<a class='button' style='width:{$width};' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Report PDF</a>";
+    		$item = "<a class='button' style='width:{$width};' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>{$buttonName}</a>";
     		$item = $this->processCData($item);
 		    $wgOut->addHTML($item);
     	}

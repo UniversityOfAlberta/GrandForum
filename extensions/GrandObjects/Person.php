@@ -2259,13 +2259,30 @@ class Person{
         return $subs;
 	}
 	
+	function getEvaluateProjects(){
+	    $eTable = getTableName("eval");
+	    $sql = "SELECT *
+	            FROM $eTable
+	            WHERE eval_id = '{$this->id}'
+	            AND type = 'Project'";
+	    $data = DBFunctions::execSQL($sql);
+	    $subs = array();
+        foreach($data as $row){
+            if($row['type'] == "Project"){
+                $subs[] = Project::newFromId($row['sub_id']);
+            }
+        }
+        return $subs;
+	}
+
 	// Returns a list of the evaluators who are evaluating this Person
-	function getEvaluators(){
+	// Provide type 
+	function getEvaluators($type='Researcher'){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE sub_id = '{$this->id}'
-	            AND type = 'Researcher'";
+	            AND type = '{$type}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
