@@ -348,7 +348,7 @@ function showProjectReports($person, $year){
             
             $plCheck = $plReport->getPDF();
             $commentCheck = $commentReport->getPDF();
-            $milestonesCheck = $commentReport->getPDF();
+            $milestonesCheck = $milestonesReport->getPDF();
             if (count($plCheck) > 0) {
         		$tok = $plCheck[0]['token'];
         		$sto->select_report($tok);    	
