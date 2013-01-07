@@ -7,6 +7,12 @@
             <!--SectionPermission id="reviews" permissions="rw" />
             <SectionPermission id="overviews" permissions="rw" /-->
         </Role>
+         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="CNI">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <!--SectionPermission id="reviews" permissions="rw" />
+            <SectionPermission id="overviews" permissions="rw" /-->
+        </Role>
     </Permissions>
 
     <!-- Project Materials -->
