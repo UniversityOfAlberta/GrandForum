@@ -5,15 +5,6 @@
             <SectionPermission id="eval_pni_report" permissions="rw" />
             <SectionPermission id="eval_project_report" permissions="rw" />
         </Role>
-        <!--
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="CNI">
-            <SectionPermission id="eval_pni_report" permissions="rw" />
-            <SectionPermission id="eval_project_report" permissions="rw" />
-        </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
-            <SectionPermission id="eval_pni_report" permissions="rw" />
-            <SectionPermission id="eval_project_report" permissions="rw" />
-        </Role>-->
     </Permissions>
     <!-- PNI -->
     <ReportSection id="eval_pni_report" reportType="EvalPNIReport" blobSection="SEC_NONE" type="SubReportSection" renderpdf="false" private="true">
