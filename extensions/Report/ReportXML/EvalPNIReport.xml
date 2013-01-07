@@ -64,7 +64,7 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="pni_materials" type="PNIMaterialsReportItemSet">
-            <ReportItem id="pni_budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="EvalBudgetReportItem" />
+            <ReportItem id="pni_budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="EvalBudgetReportItem" person="true" />
         </ReportItemSet>
     </ReportSection>
 

@@ -60,7 +60,7 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="ProjectMaterialsReportItemSet">
-            <ReportItem id="project_budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="ProjectBudgetReportItem" />
+            <ReportItem id="project_budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="EvalBudgetReportItem" project="true"/>
         </ReportItemSet>
     </ReportSection>
 

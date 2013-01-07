@@ -14,14 +14,31 @@ class EvalBudgetReportItem extends AbstractReportItem {
 		        exit;
 		    }
 		}*/
+		$person_attr = $this->getAttr("person", "false");
+		$project_attr = $this->getAttr("project", "false");
+		if($person_attr == "true"){ 
+			$person = Person::newFromId($this->personId);
+	        $name = $person->getName();
+	        $read_name = $person->getReversedName();
+	        $budget = $person->getRequestedBudget(REPORTING_YEAR);
+	        
+		}
+		else if($project_attr == "true"){
+			$project = Project::newFromId($this->projectId);
+			$name = $read_name = $project->getName();
+			$budget = $project->getRequestedBudget(REPORTING_YEAR);
+			
+		}
 		
-		$person = Person::newFromId($this->personId);
-        $name = $person->getName();
-        $read_name = $person->getReversedName();
-        $budget = $person->getRequestedBudget(REPORTING_YEAR);
 		
         if($budget instanceof Budget){
-            $budget = $budget->filterCols(V_PROJ, array(""))->render();
+            if($person_attr == "true"){
+            	$budget = $budget->filterCols(V_PROJ, array(""))->render();
+            }
+            else if($project_attr == "true"){
+            	$budget = $budget->render();
+            }
+
             $budget_lbl = "<span style='color:green;'>Budget Preview</span>";
         }
         else{
