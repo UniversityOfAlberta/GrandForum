@@ -40,9 +40,9 @@ class Report extends AbstractReport{
 		        $page = "Report?report=ProjectReport&project={$project->getName()}";
 		    }
 		}
-		//else if($person->isEvaluator() && $wgTitle->getText() == "ReviewerConflicts"){
-        //    $page = "ReviewerConflicts";
-		//}
+		else if($person->isEvaluator() && $wgTitle->getText() == "Evaluator"){
+            $page = "Report?report=EvalReport";
+		}
 		
 		$selected = "";
 		if($wgTitle->getText() == "Report"){
@@ -109,16 +109,16 @@ class Report extends AbstractReport{
             }
             
             // Evaluator Report
-            /*
+            
             if($person->isEvaluator()){
                     @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalReport") ? "selected" : false;
                     
                     $content_actions[] = array (
                              'class' => $class,
-                             'text'  => "Reviewer Conflicts",
-                             'href'  => "$wgServer$wgScriptPath/index.php/Special:ReviewerConflicts",
+                             'text'  => "Evaluator",
+                             'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalReport",
                             );
-            }*/
+            }
             
         }
         return true;
