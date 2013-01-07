@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="PNI Evaluation" reportType="RP_EVAL_RESEARCHER" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PNI">
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="reviews" permissions="rw" />
             <SectionPermission id="overviews" permissions="rw" />
         </Role>
+        <!--
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="CNI">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
@@ -19,6 +20,7 @@
             <SectionPermission id="reviews" permissions="rw" />
             <SectionPermission id="overviews" permissions="rw" />
         </Role>
+        -->
     </Permissions>
 
     <!-- PNI Materials -->

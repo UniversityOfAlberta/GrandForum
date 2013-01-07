@@ -1251,7 +1251,10 @@ class Person{
                 $roles[] = $r->getRole();
             }
         }
-        if(count($role_objs) == 0 && count($project_objs) == 0){
+        if($role == EVALUATOR && $this->isEvaluator()){
+            $roles[] = EVALUATOR;
+        }
+        if(count($roles) == 0){
             return false;
         }
         return (array_search($role, $roles) !== false);

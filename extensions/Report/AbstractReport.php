@@ -85,6 +85,9 @@ abstract class AbstractReport extends SpecialPage {
             case RPTP_HQP_COMMENTS:
                 $type = "HQPReportComments";
                 break;
+            case RPTP_NI_PROJECT_COMMENTS:
+                $type = "ProjectNIComments";
+                break;
         }
         
         $proj = null;
@@ -545,6 +548,9 @@ abstract class AbstractReport extends SpecialPage {
         }
         if($me->isProjectManager()){
             $roles[] = PM;
+        }
+        if($me->isEvaluator()){
+            $roles[] = EVALUATOR;
         }
         
         $permissions = array();
