@@ -2,7 +2,6 @@
 $contributionPage = new ContributionPage();
 
 $wgHooks['ArticleViewHeader'][] = array($contributionPage, 'processPage');
-$wgHooks['SkinTemplateContentActions'][] = array($contributionPage, 'removeTabs');
 
 class ContributionPage {
 
@@ -40,6 +39,7 @@ class ContributionPage {
                 $post = (isset($_POST['submit']) && ($_POST['submit'] == "Save $name" || $_POST['submit'] == "Create $name"));
                 $post = ( $post && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
                 if(($contribution->getId() != null) || $create){
+                    TabUtils::removeActions();
                     if($post){
                         if(!$create){
                             $_POST['id'] = $contribution->getId();
@@ -559,38 +559,6 @@ class ContributionPage {
                 $wgOut->addHTML("You must be at least a CNI to view this page");
                 $wgOut->output();
                 $wgOut->disable();
-            }
-        }
-        return true;
-    }
-    
-    function removeTabs(&$content_actions){
-        global $wgArticle, $wgRoles;
-        if($wgArticle != null){
-            $name = $wgArticle->getTitle()->getNsText();
-            $title = $wgArticle->getTitle()->getText();
-            if($name == ""){
-                $split = explode(":", $title);
-                if(count($split) > 1){
-                    $title = $split[1];
-                }
-                else{
-                    $title = "";
-                }
-                $name = $split[0];
-            }
-            
-            if($name == "Contribution"){
-                unset($content_actions['protect']);
-                unset($content_actions['watch']);
-                unset($content_actions['unwatch']);
-                unset($content_actions['create']);
-                unset($content_actions['history']);
-                unset($content_actions['delete']);
-                unset($content_actions['talk']);
-                unset($content_actions['move']);
-                unset($content_actions['edit']);
-                return false;
             }
         }
         return true;
