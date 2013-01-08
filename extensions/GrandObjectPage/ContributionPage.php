@@ -39,7 +39,7 @@ class ContributionPage {
                 $post = (isset($_POST['submit']) && ($_POST['submit'] == "Save $name" || $_POST['submit'] == "Create $name"));
                 $post = ( $post && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
                 if(($contribution->getId() != null) || $create){
-                    TabUtils::removeActions();
+                    TabUtils::clearActions();
                     if($post){
                         if(!$create){
                             $_POST['id'] = $contribution->getId();
