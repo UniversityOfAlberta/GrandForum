@@ -1,23 +1,50 @@
 <?php
 
-$wgHooks['SkinTemplateTabs'][1000] = 'TabUtils::removeTabs';
+$wgHooks['SkinTemplateTabs'][1000] = 'TabUtils::actionTabs';
 
 class TabUtils {
 
-    static function removeTabs($skin, &$content_actions){
-        global $wgTitle;
+    static function actionTabs($skin, &$content_actions){
+        global $wgTitle, $wgScriptPath, $wgOut;
         $new_actions = array();
-        foreach($content_actions as $action){
-            if($action['class'] == 'selected'){
-                $action['text'] = $wgTitle->getText();
-                if(isset($_GET['action'])){
-                    $action['class'] = false;
-                }
-                $new_actions[] = $action;
+        foreach($content_actions as $key => $action){
+            if(strstr($action['class'], 'selected') !== false){
+                continue;
             }
+            $action['class'] = 'action';
+            $new_actions[$key] = $action;
+        }
+        
+        if(count($new_actions) > 0){
+            $wgOut->addHTML("<script type='text/javascript'>
+                $(document).ready(function(){
+                    if($('li.action').length > 0){
+                        $('li.action').css('display', 'block');
+                        $('li.action').wrapAll('<div class=\'actions\' />').wrapAll('<ul>');
+                        $('div#submenu > ul').append('<li class=\'actions\'><a>Actions</a></li>');
+                        $('div#submenu li.actions').click(function(e){
+                            e.stopPropagation();
+                            $('div#submenu div.actions').fadeToggle(250);
+                        });
+                        $(document).click(function(){
+                            $('div#submenu div.actions').fadeOut(250);
+                        });
+                    }
+                });
+            </script>");
         }
         $content_actions = $new_actions;
         return true;
+    }
+    
+    static function clearTabs($skin, &$content_actions){
+        $content_actions = array();
+        return true;
+    }
+    
+    static function clearActions(){
+        global $wgHooks;
+        $wgHooks['SkinTemplateTabs'][] = 'TabUtils::clearTabs';
     }
     
     static function grandTabs(&$content_actions){

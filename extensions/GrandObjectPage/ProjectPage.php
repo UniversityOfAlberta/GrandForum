@@ -4,7 +4,8 @@ autoload_register('GrandObjectPage/ProjectPage');
 
 $projectPage = new ProjectPage();
 $wgHooks['ArticleViewHeader'][] = array($projectPage, 'processPage');
-$wgHooks['SkinTemplateTabs'][] = array($projectPage, 'removeTabs');
+//$wgHooks['SkinTemplateTabs'][] = array($projectPage, 'removeTabs');
+
 $wgHooks['SkinTemplateTabs'][] = array($projectPage, 'showTabs');
 
 class ProjectPage {
@@ -47,7 +48,7 @@ class ProjectPage {
             if($title != "Main"){
                 return true;
             }
-            
+            TabUtils::clearActions();
             $isLead = false;
             if($project != null){
                 if($me->isRoleAtLeast(MANAGER)){
