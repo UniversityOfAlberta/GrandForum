@@ -22,7 +22,7 @@
             <ReportItem id="project_name" type="StaticReportItem">
                 <![CDATA[<h2>{$project_name}</h2>]]>
             </ReportItem>
-            <ReportItem id="milestone_summary" width="100%" height="250px" blobType="BLOB_TEXT" blobItem="RES_MIL_SUMMARY" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1000">
+            <ReportItem id="milestone_summary" width="100%" height="250px" blobType="BLOB_TEXT" blobItem="RES_MIL_SUMMARY" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1800">
                 <![CDATA[
                     {$item}
                 ]]>

@@ -182,12 +182,16 @@ class CreatePDF extends SpecialPage {
 	    $ids = array();
 	    if($type == 'ni' || $type == 'ni_comments'){
 	        foreach(Person::getAllPeopleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $person){
-	            $names[] = $person->getName();
-	            $ids[] = $person->getId();
+	            if(array_search($person->getId(), $ids) === false){
+	                $names[] = $person->getName();
+	                $ids[] = $person->getId();
+	            }
 	        }
 	        foreach(Person::getAllPeopleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $person){
-	            $names[] = $person->getName();
-	            $ids[] = $person->getId();
+	            if(array_search($person->getId(), $ids) === false){
+	                $names[] = $person->getName();
+	                $ids[] = $person->getId();
+	            }
 	        }
 	        if($type == 'ni_comments'){
 	            $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectNIComments&person=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
@@ -198,15 +202,19 @@ class CreatePDF extends SpecialPage {
 	    }
 	    else if($type == 'hqp'){
 	        foreach(Person::getAllPeopleDuring(HQP, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $person){
-	            $names[] = $person->getName();
-	            $ids[] = $person->getId();
+	            if(array_search($person->getId(), $ids) === false){
+	                $names[] = $person->getName();
+	                $ids[] = $person->getId();
+	            }
 	        }
 	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=HQPReport&person=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
 	    else if($type == 'project'){
 	        foreach(Project::getAllProjectsDuring() as $project){
-	            $names[] = $project->getName();
-	            $ids[] = $project->getId();
+	            if(array_search($project->getId(), $ids) === false){
+	                $names[] = $project->getName();
+	                $ids[] = $project->getId();
+	            }
 	        }
 	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectReport&person=3&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
