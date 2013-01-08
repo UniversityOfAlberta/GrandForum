@@ -10,20 +10,13 @@ class EvalReviewSelectReportItem extends AbstractReportItem {
 
 	function render(){
 		global $wgOut;
-        
 
         $value = $this->getBlobValue();
-        /*$options = array(
-        	"option 1",
-        	"option 2",
-        	"option 3",
-        	"option 4",
-        	"option 5"
-        );*/
-		$options = array("Please select the most relevant comment.");
-        $options = array_merge($options, $this->parseOptions());
+		
+        $options = $this->parseOptions();
 
         $output = "<select name='{$this->getPostId()}'>";
+        $output .= "<option value=''>Please select the most relevant comment.</option>";
 		foreach($options as $option){
 		    $checked = "";
 		    if($value == $option){
