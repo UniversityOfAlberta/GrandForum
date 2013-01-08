@@ -9,7 +9,7 @@ $wgHooks['SkinTemplateTabs'][] = array($projectPage, 'showTabs');
 class ProjectPage {
 
     function processPage($article, $outputDone, $pcache){
-        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath;
+        global $wgOut, $wgTitle, $wgUser, $wgRoles, $wgServer, $wgScriptPath;
         
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
@@ -44,9 +44,12 @@ class ProjectPage {
                 $name = $split[0];
             }
             if($title != "Main"){
+                if($wgTitle->getText() == "Mail Index"){
+                    TabUtils::clearActions();
+                }
                 return true;
             }
-            TabUtils::clearActions();
+            
             $isLead = false;
             if($project != null){
                 if($me->isRoleAtLeast(MANAGER)){
@@ -65,6 +68,7 @@ class ProjectPage {
             
             // Project Exists and it is the right Namespace
             if($project != null && $project->getName() != null){
+                TabUtils::clearActions();
                 $wgOut->clearHTML();
                 $wgOut->setPageTitle($project->getFullName());
                 

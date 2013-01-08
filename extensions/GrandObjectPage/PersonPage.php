@@ -110,7 +110,7 @@ class PersonPage {
                 $wgOut->output();
                 $wgOut->disable();
             }
-            else if(array_search($role, $wgRoles) !== false && stripos($wgTitle->getText(), "Mail") !== 0){
+            else if(array_search($role, $wgRoles) !== false && $wgTitle->getText() != "Mail Index"){
                 // User does not exist
                 TabUtils::clearActions();
                 $wgOut->clearHTML();
@@ -118,6 +118,9 @@ class PersonPage {
                 $wgOut->addHTML("There is no user '$role:$name'");
                 $wgOut->output();
                 $wgOut->disable();
+            }
+            else if($wgTitle->getText() == "Mail Index"){
+                TabUtils::clearActions();
             }
         }
         return true;
