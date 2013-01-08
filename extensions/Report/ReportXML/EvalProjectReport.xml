@@ -16,16 +16,48 @@
                <p>You can download the Project Report PDFs for your reference.</p>
             ]]>
         </Instructions>
+        <ReportItem id="project_budget_head" type="StaticReportItem">
+            <![CDATA[
+            <script type="text/javascript">
+                $(document).ready(function(){ 
+                    $('.project_materials_accordion').accordion({heightStyle: "content", collapsible: true, icons: false, header: "h2" }); 
+                })
+            </script>
+            ]]>
+        </ReportItem>
         <ReportItem id="project_materials_head" type="StaticReportItem">
-            <![CDATA[<table>]]>
+            <![CDATA[
+           
+            <div style="float: left; padding: 1em 2.2em;">
+            <table align="left">
+            ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="ProjectMaterialsReportItemSet">
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true">
-                <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
+                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_tail" type="StaticReportItem">
-            <![CDATA[</table>]]>
+            <![CDATA[
+            </table>
+            </div>
+            <div class="project_materials_accordion" style="float: left;">
+            <h2>All Project Materials</h2>
+            <div>
+            <table align="left">
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="project_materials" type="AllProjectsReportItemSet">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true">
+                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="project_materials_tail" type="StaticReportItem">
+            <![CDATA[
+            </table>
+            </div>
+            </div>
+            ]]>
         </ReportItem>
         
     </ReportSection>

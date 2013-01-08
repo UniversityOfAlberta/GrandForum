@@ -21,7 +21,7 @@
         </ReportItem>
         <ReportItemSet id="pni_materials" type="PNIMaterialsReportItemSet">
             <ReportItem id="pni_pdf" type="PDFReportItem" reportType="NIReport" buttonName="NI Report PDF">
-                <![CDATA[<tr><td>{$user_reversed_name}</td><td>{$item}</td>]]>
+                <![CDATA[<tr><td><span style="font-size:16px;">{$user_reversed_name}</span></td><td>{$item}</td>]]>
             </ReportItem>
             <ReportItem id="pni_pdf" type="PDFReportItem" reportType="ProjectNIComments" buttonName="PL Comments PDF">
                 <![CDATA[<td>{$item}</td></tr>]]>
