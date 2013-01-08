@@ -5,7 +5,7 @@ $wgHooks['SkinTemplateTabs'][1000] = 'TabUtils::actionTabs';
 class TabUtils {
 
     static function actionTabs($skin, &$content_actions){
-        global $wgTitle, $wgScriptPath, $wgOut;
+        global $wgTitle, $wgServer, $wgScriptPath, $wgOut;
         $new_actions = array();
         foreach($content_actions as $key => $action){
             if(strstr($action['class'], 'selected') !== false){
@@ -22,8 +22,12 @@ class TabUtils {
                         $('li.action').css('display', 'block');
                         $('li.action').wrapAll('<div class=\'actions\' />').wrapAll('<ul>');
                         $('div#submenu > ul').append('<li class=\'actions\'><a>Actions</a></li>');
+                        $('div#submenu div.actions').append('<img class=\'dropdowntop\' src=\'$wgScriptPath/skins/dropdowntop.png\' />');
                         $('div#submenu li.actions').click(function(e){
                             e.stopPropagation();
+                            $('.dropdowntop').css('position', 'absolute');
+                            $('.dropdowntop').css('top', -5);
+                            $('.dropdowntop').css('right', 39);
                             $('div#submenu div.actions').fadeToggle(250);
                         });
                         $(document).click(function(){
