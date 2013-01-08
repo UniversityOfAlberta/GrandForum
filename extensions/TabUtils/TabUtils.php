@@ -4,6 +4,8 @@ $wgHooks['SkinTemplateTabs'][1000] = 'TabUtils::actionTabs';
 
 class TabUtils {
 
+    static $customActions = array();
+
     static function actionTabs($skin, &$content_actions){
         global $wgTitle, $wgServer, $wgScriptPath, $wgOut;
         $new_actions = array();
@@ -14,7 +16,9 @@ class TabUtils {
             $action['class'] = 'action';
             $new_actions[$key] = $action;
         }
-        
+        foreach(self::$customActions as $key => $action){
+            $new_actions[$key] = $action;
+        }
         if(count($new_actions) > 0){
             $wgOut->addHTML("<script type='text/javascript'>
                 $(document).ready(function(){
@@ -42,10 +46,33 @@ class TabUtils {
     }
     
     static function clearTabs($skin, &$content_actions){
-        $content_actions = array();
+        unset($content_actions['protect']);
+        unset($content_actions['watch']);
+        unset($content_actions['unwatch']);
+        unset($content_actions['create']);
+        unset($content_actions['history']);
+        unset($content_actions['delete']);
+        unset($content_actions['talk']);
+        unset($content_actions['move']);
+        unset($content_actions['edit']);
         return true;
     }
     
+    /**
+     * Adds an action to the sub-menu
+     * @param string $text The visible text of the action
+     * @param string $href The url of the action
+     */
+    static function addAction($text, $href){
+        self::$customActions[str_replace(" ", "", $text)] = 
+                                array('text' => $text,
+                                      'href' => $href,
+                                      'class' => 'action');
+    }
+    
+    /**
+     * Clears most of the built in wiki actions of the sub-menu
+     */
     static function clearActions(){
         global $wgHooks;
         $wgHooks['SkinTemplateTabs'][] = 'TabUtils::clearTabs';

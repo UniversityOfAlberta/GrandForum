@@ -4,8 +4,6 @@ autoload_register('GrandObjectPage/ProjectPage');
 
 $projectPage = new ProjectPage();
 $wgHooks['ArticleViewHeader'][] = array($projectPage, 'processPage');
-//$wgHooks['SkinTemplateTabs'][] = array($projectPage, 'removeTabs');
-
 $wgHooks['SkinTemplateTabs'][] = array($projectPage, 'showTabs');
 
 class ProjectPage {
@@ -92,46 +90,6 @@ class ProjectPage {
                 
                 $wgOut->output();
                 $wgOut->disable();
-            }
-        }
-        return true;
-    }
-    
-    function removeTabs($skin, &$content_actions){
-        global $wgArticle, $wgRoles;
-        if($wgArticle != null){
-            $name = $wgArticle->getTitle()->getNsText();
-            $title = $wgArticle->getTitle()->getText();
-            if($name == ""){
-                $split = explode(":", $name);
-                if(count($split) > 1){
-                    $title = $split[1];
-                }
-                else{
-                    $title = "";
-                }
-                $name = $split[0];
-            }
-            if($title != "Main"){
-                return true;
-            }
-            $project = Project::newFromName($name);
-            $projects = array();
-            foreach(Project::getAllProjects() as $proj){
-                $projects[] = $proj->getName();
-            }
-            if(array_search($name, $projects) !== false && 
-               $project->getName() != null){
-                unset($content_actions['protect']);
-                unset($content_actions['watch']);
-                unset($content_actions['unwatch']);
-                unset($content_actions['create']);
-                unset($content_actions['history']);
-                unset($content_actions['delete']);
-                unset($content_actions['talk']);
-                unset($content_actions['move']);
-                unset($content_actions['edit']);
-                return true;
             }
         }
         return true;
