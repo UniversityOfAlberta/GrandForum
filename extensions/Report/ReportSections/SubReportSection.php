@@ -21,9 +21,7 @@ class SubReportSection extends AbstractReportSection {
                                            $me, 
                                            $this->getParent()->project,
                                            $this->getParent()->year);
-        if(!isset($_GET['section']) && count($this->getParent()->sections) == 1){
-            $this->subReport->currentSection->selected = false;
-        }
+        $this->subReport->currentSection->selected = false;
     }
     
     function render(){
@@ -39,6 +37,11 @@ class SubReportSection extends AbstractReportSection {
     }
     
     function renderTab(){
+        if((!isset($_GET['section']) && $this->getParent()->currentSection == $this) ||
+           (isset($_GET['section']) && $this->subReport->currentSection->name == $_GET['section'])){
+            $this->subReport->currentSection->selected = true;
+        }
+        
         if($this->subReport != null){
             $this->subReport->renderTabs();
         }
