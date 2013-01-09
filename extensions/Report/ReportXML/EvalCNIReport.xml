@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="PNI Evaluation" reportType="RP_EVAL_RESEARCHER" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
+<Report name="CNI Evaluation" reportType="RP_EVAL_RESEARCHER" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
-            <SectionPermission id="pni_materials" permissions="rw" />
-            <SectionPermission id="pni_budget" permissions="rw" />
-            <SectionPermission id="pni_reviews" permissions="rw" />
-            <SectionPermission id="pni_overviews" permissions="rw" />
+            <SectionPermission id="cni_materials" permissions="rw" />
+            <SectionPermission id="cni_budget" permissions="rw" />
+            <SectionPermission id="cni_reviews" permissions="rw" />
+            <SectionPermission id="cni_overviews" permissions="rw" />
         </Role>
     </Permissions>
 
-    <!-- PNI Materials -->
-    <ReportSection id="pni_materials" name="PNI Materials" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
+    <!-- CNI Materials -->
+    <ReportSection id="cni_materials" name="CNI Materials" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
         <Instructions>
             <![CDATA[
                <p>You can download the NI Report PDFs and the Project Leader Comments PDFs for your reference.</p>
             ]]>
         </Instructions>
-        <ReportItem id="pni_materials_head" type="StaticReportItem">
+        <ReportItem id="cni_materials_head" type="StaticReportItem">
             <![CDATA[<table>]]>
         </ReportItem>
-        <ReportItemSet id="pni_materials" type="MaterialsReportItemSet" subType="PNI">
-            <ReportItem id="pni_pdf" type="PDFReportItem" reportType="NIReport" buttonName="NI Report PDF">
+        <ReportItemSet id="cni_materials" type="MaterialsReportItemSet" subType="CNI">
+            <ReportItem id="cni_pdf" type="PDFReportItem" reportType="NIReport" buttonName="NI Report PDF">
                 <![CDATA[<tr><td><span style="font-size:16px;">{$user_reversed_name}</span></td><td>{$item}</td>]]>
             </ReportItem>
-            <ReportItem id="pni_pdf" type="PDFReportItem" reportType="ProjectNIComments" buttonName="PL Comments PDF">
+            <ReportItem id="cni_pdf" type="PDFReportItem" reportType="ProjectNIComments" buttonName="PL Comments PDF">
                 <![CDATA[<td>{$item}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="pni_materials_tail" type="StaticReportItem">
+        <ReportItem id="cni_materials_tail" type="StaticReportItem">
             <![CDATA[</table>]]>
         </ReportItem>
         
     </ReportSection>
 
-    <!-- PNI Budget -->
-    <ReportSection id="pni_budget" name="PNI Budgets" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+    <!-- CNI Budget -->
+    <ReportSection id="cni_budget" name="CNI Budgets" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
                <p>Here you can see the NI Budget requests for 2013-2014.</p>
             ]]>
         </Instructions>
-        <ReportItem id="pni_budget_head" type="StaticReportItem">
+        <ReportItem id="cni_budget_head" type="StaticReportItem">
             <![CDATA[
             <script type="text/javascript">
                 $(document).ready(function(){ 
@@ -49,19 +49,19 @@
             </script>
             ]]>
         </ReportItem>
-        <ReportItemSet id="pni_materials" type="MaterialsReportItemSet" subType="PNI">
-            <ReportItem id="pni_budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="EvalBudgetReportItem" person="true" />
+        <ReportItemSet id="cni_materials" type="MaterialsReportItemSet" subType="CNI">
+            <ReportItem id="cni_budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="EvalBudgetReportItem" person="true" />
         </ReportItemSet>
     </ReportSection>
 
-    <!-- PNI Reviews -->
-    <!--ReportSection id="pni_reviews" name="PNI Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="false" private="false">
+    <!-- CNI Reviews -->
+    <!--ReportSection id="cni_reviews" name="CNI Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
                <p>Instructions needed</p>
             ]]>
         </Instructions>
-        <ReportItem id="pni_review_head" type="StaticReportItem">
+        <ReportItem id="cni_review_head" type="StaticReportItem">
             <![CDATA[
             <script type="text/javascript">
                 $(document).ready(function(){ 
@@ -70,8 +70,8 @@
             </script>
             ]]>
         </ReportItem>
-        <ReportItemSet id="pni_materials" type="MaterialsReportItemSet" subType="PNI">
-            <ReportItemSet id="pni_materials" type="NIReviewReportItemSet">
+        <ReportItemSet id="cni_materials" type="MaterialsReportItemSet" subType="CNI">
+            <ReportItemSet id="cni_materials" type="NIReviewReportItemSet">
                 <ReportItem id="RI1" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_EXCELLENCE" blobSubItem="0">
                 <![CDATA[
                 <h3>1. Excellence of the Research Program</h3>
@@ -173,14 +173,14 @@
         </ReportItemSet>
     </ReportSection-->
 
-     <!-- PNI Overviews -->
-    <!--ReportSection id="pni_overviews" name="PNI Overviews" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+     <!-- CNI Overviews -->
+    <!--ReportSection id="cni_overviews" name="CNI Overviews" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
                <p>Instructions needed</p>
             ]]>
         </Instructions>
-        <ReportItem id="pni_overview" type="EvalOverviewReportItem">
+        <ReportItem id="cni_overview" type="EvalOverviewReportItem">
             <![CDATA[
             {$item}
             ]]>

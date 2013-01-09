@@ -3,11 +3,14 @@
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
             <SectionPermission id="eval_pni_report" permissions="rw" />
+            <SectionPermission id="eval_cni_report" permissions="rw" />
             <SectionPermission id="eval_project_report" permissions="rw" />
         </Role>
     </Permissions>
     <!-- PNI -->
     <ReportSection id="eval_pni_report" reportType="EvalPNIReport" blobSection="SEC_NONE" type="SubReportSection" renderpdf="false" private="true" />
+    <!-- CNI -->
+    <ReportSection id="eval_cni_report" reportType="EvalCNIReport" blobSection="SEC_NONE" type="SubReportSection" renderpdf="false" private="true" />
     <!-- PROJECT -->
     <ReportSection id="eval_project_report" reportType="EvalProjectReport" blobSection="SEC_NONE" type="SubReportSection" renderpdf="false" private="true" />
 </Report>
