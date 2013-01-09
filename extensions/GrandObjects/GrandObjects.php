@@ -23,6 +23,7 @@ $apiRequest->addAction('Hidden','role/:id', new RoleAPI());
 // Project
 $apiRequest->addAction('Hidden','project', new ProjectAPI());
 $apiRequest->addAction('Hidden','project/:id', new ProjectAPI());
+
 $apiRequest->addAction('Hidden','project/:id/products', new ProjectProductAPI());
 $apiRequest->addAction('Hidden','project/:id/products/:productId', new ProjectProductAPI());
 // Product
