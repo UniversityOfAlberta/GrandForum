@@ -32,7 +32,7 @@
             <table align="left">
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="ProjectMaterialsReportItemSet">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="Project">
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true">
                 <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td>]]>
             </ReportItem>
@@ -78,7 +78,7 @@
             </script>
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="ProjectMaterialsReportItemSet">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="Project">
             <ReportItem id="project_budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="EvalBudgetReportItem" project="true"/>
         </ReportItemSet>
     </ReportSection>

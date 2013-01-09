@@ -7,10 +7,7 @@
         </Role>
     </Permissions>
     <!-- PNI -->
-    <ReportSection id="eval_pni_report" reportType="EvalPNIReport" blobSection="SEC_NONE" type="SubReportSection" renderpdf="false" private="true">
-    </ReportSection>
-    <!-- PNI -->
-    <ReportSection id="eval_project_report" reportType="EvalProjectReport" blobSection="SEC_NONE" type="SubReportSection" renderpdf="false" private="true">
-    </ReportSection>
-
+    <ReportSection id="eval_pni_report" reportType="EvalPNIReport" blobSection="SEC_NONE" type="SubReportSection" renderpdf="false" private="true" />
+    <!-- PROJECT -->
+    <ReportSection id="eval_project_report" reportType="EvalProjectReport" blobSection="SEC_NONE" type="SubReportSection" renderpdf="false" private="true" />
 </Report>

@@ -19,7 +19,7 @@
         <ReportItem id="pni_materials_head" type="StaticReportItem">
             <![CDATA[<table>]]>
         </ReportItem>
-        <ReportItemSet id="pni_materials" type="PNIMaterialsReportItemSet">
+        <ReportItemSet id="pni_materials" type="MaterialsReportItemSet" subType="PNI">
             <ReportItem id="pni_pdf" type="PDFReportItem" reportType="NIReport" buttonName="NI Report PDF">
                 <![CDATA[<tr><td><span style="font-size:16px;">{$user_reversed_name}</span></td><td>{$item}</td>]]>
             </ReportItem>
@@ -49,7 +49,7 @@
             </script>
             ]]>
         </ReportItem>
-        <ReportItemSet id="pni_materials" type="PNIMaterialsReportItemSet">
+        <ReportItemSet id="pni_materials" type="MaterialsReportItemSet" subType="PNI">
             <ReportItem id="pni_budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="EvalBudgetReportItem" person="true" />
         </ReportItemSet>
     </ReportSection>
@@ -70,7 +70,7 @@
             </script>
             ]]>
         </ReportItem>
-        <ReportItemSet id="pni_materials" type="PNIMaterialsReportItemSet">
+        <ReportItemSet id="pni_materials" type="MaterialsReportItemSet" subType="PNI">
             <ReportItemSet id="pni_materials" type="NIReviewReportItemSet">
                 <ReportItem id="RI1" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_EXCELLENCE" blobSubItem="0">
                 <![CDATA[
