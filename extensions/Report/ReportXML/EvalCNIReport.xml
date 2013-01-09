@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="PNI Evaluation" reportType="RP_EVAL_RESEARCHER" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
+<Report name="CNI Evaluation" reportType="RP_EVAL_RESEARCHER" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
-            <SectionPermission id="pni_materials" permissions="rw" />
-            <SectionPermission id="pni_budget" permissions="rw" />
-            <SectionPermission id="pni_reviews" permissions="rw" />
-            <SectionPermission id="pni_overviews" permissions="rw" />
+            <SectionPermission id="cni_materials" permissions="rw" />
+            <SectionPermission id="cni_budget" permissions="rw" />
+            <SectionPermission id="cni_reviews" permissions="rw" />
+            <SectionPermission id="cni_overviews" permissions="rw" />
         </Role>
     </Permissions>
 
-    <!-- PNI Materials -->
-    <ReportSection id="pni_materials" name="PNI Materials" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
+    <!-- CNI Materials -->
+    <ReportSection id="cni_materials" name="CNI Materials" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
         <Instructions>
             <![CDATA[
                <p>You can download the NI Report PDFs and the Project Leader Comments PDFs for your reference.</p>
             ]]>
         </Instructions>
-        <ReportItem id="pni_materials_head" type="StaticReportItem">
+        <ReportItem id="cni_materials_head" type="StaticReportItem">
             <![CDATA[<table>]]>
         </ReportItem>
-        <ReportItemSet id="pni_materials" type="MaterialsReportItemSet" subType="PNI">
-            <ReportItem id="pni_pdf" type="PDFReportItem" reportType="NIReport" buttonName="NI Report PDF">
+        <ReportItemSet id="cni_materials" type="MaterialsReportItemSet" subType="CNI">
+            <ReportItem id="cni_pdf" type="PDFReportItem" reportType="NIReport" buttonName="NI Report PDF">
                 <![CDATA[<tr><td><span style="font-size:16px;">{$user_reversed_name}</span></td><td>{$item}</td>]]>
             </ReportItem>
-            <ReportItem id="pni_pdf" type="PDFReportItem" reportType="ProjectNIComments" buttonName="PL Comments PDF">
+            <ReportItem id="cni_pdf" type="PDFReportItem" reportType="ProjectNIComments" buttonName="PL Comments PDF">
                 <![CDATA[<td>{$item}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="pni_materials_tail" type="StaticReportItem">
+        <ReportItem id="cni_materials_tail" type="StaticReportItem">
             <![CDATA[</table>]]>
         </ReportItem>
         
     </ReportSection>
 
-    <!-- PNI Budget -->
-    <ReportSection id="pni_budget" name="PNI Budgets" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+    <!-- CNI Budget -->
+    <ReportSection id="cni_budget" name="CNI Budgets" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
                <p>Here you can see the NI Budget requests for 2013-2014.</p>
             ]]>
         </Instructions>
-        <ReportItem id="pni_budget_head" type="StaticReportItem">
+        <ReportItem id="cni_budget_head" type="StaticReportItem">
             <![CDATA[
             <script type="text/javascript">
                 $(document).ready(function(){ 
@@ -49,19 +49,19 @@
             </script>
             ]]>
         </ReportItem>
-        <ReportItemSet id="pni_materials" type="MaterialsReportItemSet" subType="PNI">
-            <ReportItem id="pni_budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="EvalBudgetReportItem" person="true" />
+        <ReportItemSet id="cni_materials" type="MaterialsReportItemSet" subType="CNI">
+            <ReportItem id="cni_budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="EvalBudgetReportItem" person="true" />
         </ReportItemSet>
     </ReportSection>
 
-    <!-- PNI Reviews -->
-    <ReportSection id="reviews" name="PNI Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="false" private="false">
+    <!-- CNI Reviews -->
+    <!--ReportSection id="cni_reviews" name="CNI Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
                <p>Instructions needed</p>
             ]]>
         </Instructions>
-        <ReportItem id="pni_review_head" type="StaticReportItem">
+        <ReportItem id="cni_review_head" type="StaticReportItem">
             <![CDATA[
             <script type="text/javascript">
                 $(document).ready(function(){ 
@@ -70,8 +70,8 @@
             </script>
             ]]>
         </ReportItem>
-        <ReportItemSet id="pni_materials" type="MaterialsReportItemSet" subType="PNI">
-            <ReportItemSet id="pni_materials" type="NIReviewReportItemSet">
+        <ReportItemSet id="cni_materials" type="MaterialsReportItemSet" subType="CNI">
+            <ReportItemSet id="cni_materials" type="NIReviewReportItemSet">
                 <ReportItem id="RI1" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_EXCELLENCE" blobSubItem="0">
                 <![CDATA[
                 <h3>1. Excellence of the Research Program</h3>
@@ -79,7 +79,7 @@
                 ]]>
                 </ReportItem>
                 <ReportItem id="RI1_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_EXCELLENCE_COM" blobSubItem="0" 
-                    options="1.1 Researcher has published numerous articles.|1.2 Researcher has created numerous artifacts.|1.3 Researcher has published articles in high impact journals.|1.4 Researcher has moderate record of publications.|1.5 Researcher has limited productivity in low impact journals or conference publications.">
+                    options="Researcher has published numerous articles.|Researcher has created numerous artifacts.|Researcher has published articles in high impact journals.|Researcher has moderate record of publications.|Researcher has limited productivity in low impact journals or conference publications.">
                 <![CDATA[
                 {$item}
                 ]]>
@@ -92,7 +92,7 @@
                 ]]>
                 </ReportItem>
                 <ReportItem id="RI2_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_HQPDEVELOPMENT_COM" blobSubItem="0" 
-                    options="2.1 HQP play a significant role in the research.|2.2 Researcher supervises a large number of HQP.|2.3 Researcher supervises a moderate number of HQP.|2.4 Researcher supervises a small number of HQP.|2.5 Researcher reports no HQP supervision/activity.">
+                    options="HQP play a significant role in the research.|Researcher supervises a large number of HQP.|Researcher supervises a moderate number of HQP.|Researcher supervises a small number of HQP.|Researcher reports no HQP supervision/activity.">
                 <![CDATA[
                 {$item}
                 ]]>
@@ -104,7 +104,7 @@
                 <div style="padding-left:20px;">{$item}</div>
                 ]]>
                 </ReportItem>
-                <ReportItem id="RI3_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_NETWORKING_COM" blobSubItem="0" options="3.1 High level of partner funding.|3.2 High level of engagement with receptors.|3.3 Moderate level of partner funding.|3.4 Moderate level of engagement with receptors.|3.5 Low level of partner funding.|3.6 Low level of engagement with receptors.">
+                <ReportItem id="RI3_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_NETWORKING_COM" blobSubItem="0" options="High level of partner funding.|High level of engagement with receptors.|Moderate level of partner funding.|Moderate level of engagement with receptors.|Low level of partner funding.|Low level of engagement with receptors.">
                 <![CDATA[
                 {$item}
                 ]]>
@@ -117,7 +117,7 @@
                 ]]>
                 </ReportItem>
                 <ReportItem id="RI4_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_KNOWLEDGE_COM" blobSubItem="0" 
-                    options="4.1 Considerable efforts to commercialize or otherwise disseminate research outcomes to receptors.|4.2 Moderate efforts to commercialize or otherwise disseminate research outcomes to receptors.|4.3 Minimal efforts to commercialize or otherwise disseminate research outcomes to receptors.">
+                    options="Considerable efforts to commercialize or otherwise disseminate research outcomes to receptors.|Moderate efforts to commercialize or otherwise disseminate research outcomes to receptors.|Minimal efforts to commercialize or otherwise disseminate research outcomes to receptors.">
                 <![CDATA[
                 {$item}
                 ]]>
@@ -130,7 +130,7 @@
                 ]]>
                 </ReportItem>
                 <ReportItem id="RI5_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_MANAGEMENT_COM" blobSubItem="0" 
-                    options="5.1 Project Leadership role|5.2 Theme Leadership role|5.3 Board of Directors role|5.4 Committee role|5.5 Involved in organization of GRAND events">
+                    options="Project Leadership role|Theme Leadership role|Board of Directors role|Committee role|Involved in organization of GRAND events">
                 <![CDATA[
                 {$item}
                 ]]>
@@ -143,7 +143,7 @@
                 ]]>
                 </ReportItem>
                 <ReportItem id="RI6_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_REPORTQUALITY_COM" blobSubItem="0"
-                    options="6.1 Reporting complete and clear|6.2 Reporting complete but not always clear|6.3 Reporting clear but incomplete|6.4 Reporting incomplete and unclear">
+                    options="Reporting complete and clear|Reporting complete but not always clear|Reporting clear but incomplete|Reporting incomplete and unclear">
                 <![CDATA[
                 {$item}
                 ]]>
@@ -171,20 +171,20 @@
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
-    </ReportSection>
+    </ReportSection-->
 
-     <!-- PNI Overviews -->
-    <ReportSection id="overviews" name="PNI Overview" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+     <!-- CNI Overviews -->
+    <!--ReportSection id="cni_overviews" name="CNI Overviews" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
                <p>Instructions needed</p>
             ]]>
         </Instructions>
-        <ReportItem id="pni_overview" type="EvalOverviewReportItem">
+        <ReportItem id="cni_overview" type="EvalOverviewReportItem">
             <![CDATA[
             {$item}
             ]]>
         </ReportItem>
         
-    </ReportSection>
+    </ReportSection-->
 </Report>

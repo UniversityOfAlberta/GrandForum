@@ -2222,8 +2222,28 @@ class Person{
             if($row['type'] == "Project"){
                 $subs[] = Project::newFromId($row['sub_id']);
             }
-            else if($row['type'] == "Researcher"){
+            else if($row['type'] == "Researcher" || $row['type'] == "PNI" || $row['type'] == "CNI"){
                 $subs[] = Person::newFromId($row['sub_id']);
+            }
+        }
+        return $subs;
+	}
+	
+	function getEvaluates($type){
+	    $type = mysql_real_escape_string($type);
+	    $eTable = getTableName("eval");
+	    $sql = "SELECT *
+	            FROM $eTable
+	            WHERE eval_id = '{$this->id}'
+	            AND type = '$type'";
+	    $data = DBFunctions::execSQL($sql);
+	    $subs = array();
+        foreach($data as $row){
+            if($row['type'] != "Project"){
+                $subs[] = Person::newFromId($row['sub_id']);
+            }
+            else{
+                $subs[] = Project::newFromId($row['sub_id']);
             }
         }
         return $subs;
