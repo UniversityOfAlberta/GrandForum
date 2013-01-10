@@ -15,8 +15,8 @@ function runReportErrors($par) {
 
 class ReportErrors extends SpecialPage {
 
-    static $types = array('ni' => 'NI PDF Diff',
-                          'project' => 'Project PDF Diff');
+    static $types = array('ni' => 'NI PDF Diff');//,
+                          //'project' => 'Project PDF Diff');
 
 	function __construct() {
 		wfLoadExtensionMessages('ReportErrors');
