@@ -243,6 +243,8 @@ class ReportErrors extends SpecialPage {
                                     $('#diff' + id).parent().append('<div id=\'quickLinks\' style=\'position:absolute;top:40px;bottom:10px;left:0;\'></div>');
                                     $.each($('tr', $('#diff' + id)), function(index, val){
                                         var percent = ((index+1)/nLines)*100;
+                                        $('ins' ,$(val)).width('100%');
+                                        $('del' ,$(val)).width('100%');
                                         if($('ins' ,$(val)).length >= 1){
                                             $('#quickLinks', $('#diff' + id).parent()).append('<a id=\'line' + (index+1) + 'Link\' style=\'background:#AAFFAA;width:5px;height:5px;position:absolute;left:0;top:' + percent + '%;cursor:pointer;border:1px solid #008800;\'></a>');
                                         }
