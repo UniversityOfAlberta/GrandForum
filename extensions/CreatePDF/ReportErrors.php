@@ -228,36 +228,40 @@ class ReportErrors extends SpecialPage {
                                 var diff = data.diff;
                                 $('#status' + id + ' > span').html('<b style=\"color:#008800;\">' + status + '</b>');
                                 if(diff != ''){
-                                    $('#diff' + id).html(diff);
-                                    $('#diff' + id).dialog({
+                                    var diffDiv = $('#diff' + id);
+                                    $(diffDiv).html(diff);
+                                    $(diffDiv).dialog({
                                                             autoOpen: false,
                                                             height: $(window).height()/1.25,
                                                             width: '75%'
                                                            });
                                     $('#viewDiff' + id).html('<button id=\"view' + id + '\">View Diff</button>');
                                     $('#view' + id).click(function(){
-                                        $('#diff' + id).dialog('open');
+                                        var quickLinks = $('#quickLinks', $(diffDiv).parent());
+                                        $(quickLinks).empty();
+                                        var trs = $('tr', $(diffDiv));
+                                        nLines = $(trs).length;
+                                        $.each($(trs), function(index, val){
+                                            var percent = ((index+1)/nLines)*100;
+                                            var ins = $('ins' ,$(val));
+                                            var del = $('del' ,$(val));
+                                            
+                                            $(ins).width('100%');
+                                            $(del).width('100%');
+                                            if($(ins).length >= 1){
+                                                $(quickLinks).append('<a id=\'line' + (index+1) + 'Link\' style=\'background:#AAFFAA;width:5px;height:5px;position:absolute;left:0;top:' + percent + '%;cursor:pointer;border:1px solid #008800;\'></a>');
+                                            }
+                                            else if($(del).length >= 1){
+                                                $(quickLinks).append('<a id=\'line' + (index+1) + 'Link\' style=\'background:#FFAAAA;width:5px;height:5px;position:absolute;left:6px;top:' + percent + '%;cursor:pointer;border:1px solid #FF0000;\'></a>');
+                                            }
+                                            $('#line' + (index+1) + 'Link', $(quickLinks)).click(function(){
+                                                $(diffDiv).scrollTo('#line' + (index+1));
+                                            });
+                                        });
+                                        $(diffDiv).dialog('open');
                                         return false;
                                     });
-                                    nLines = $('tr', $('#diff' + id)).length;
-                                    $('#diff' + id).parent().append('<div id=\'quickLinks\' style=\'position:absolute;top:40px;bottom:10px;left:0;\'></div>');
-                                    $.each($('tr', $('#diff' + id)), function(index, val){
-                                        var percent = ((index+1)/nLines)*100;
-                                        $('ins' ,$(val)).width('100%');
-                                        $('del' ,$(val)).width('100%');
-                                        if($('ins' ,$(val)).length >= 1){
-                                            $('#quickLinks', $('#diff' + id).parent()).append('<a id=\'line' + (index+1) + 'Link\' style=\'background:#AAFFAA;width:5px;height:5px;position:absolute;left:0;top:' + percent + '%;cursor:pointer;border:1px solid #008800;\'></a>');
-                                        }
-                                        else if($('del' ,$(val)).length >= 1){
-                                            $('#quickLinks', $('#diff' + id).parent()).append('<a id=\'line' + (index+1) + 'Link\' style=\'background:#FFAAAA;width:5px;height:5px;position:absolute;left:6px;top:' + percent + '%;cursor:pointer;border:1px solid #FF0000;\'></a>');
-                                        }
-                                        $('#line' + (index+1) + 'Link', $('#quickLinks', $('#diff' + id).parent())).click(function(){
-                                            $('#diff' + id).scrollTo('#line' + (index+1));
-                                            console.log((index+1));
-                                        });
-                                    });
-                                    
-                                    
+                                    $(diffDiv).parent().append('<div id=\'quickLinks\' style=\'position:absolute;top:40px;bottom:10px;left:0;\'></div>');
                                 }
                             }
                             else{

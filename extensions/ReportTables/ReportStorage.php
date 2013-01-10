@@ -56,7 +56,7 @@ class ReportStorage {
 
 		$sql = "INSERT INTO mw_pdf_report (user_id, generation_user_id, year, type, special, auto, token, timestamp, len_pdf, hash_data, hash_pdf, data, html, pdf) VALUES ({$this->_uid}, {$impersonateId}, {$year}, {$type}, {$special}, {$auto}, '{$tok}', FROM_UNIXTIME({$tst}), '{$len}', '{$hdata}', '{$hpdf}', '" .
 			mysql_real_escape_string($sdata) . "', '" .
-			mysql_real_escape_string($html) . "', '" .
+			mysql_real_escape_string(utf8_decode($html)) . "', '" .
 			mysql_real_escape_string($pdf) . "');";
 
 		DBFunctions::execSQL($sql, true);
