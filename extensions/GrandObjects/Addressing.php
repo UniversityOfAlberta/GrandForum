@@ -95,6 +95,8 @@ define('EVL_NETWORKING_COM',	13);
 define('EVL_KNOWLEDGE_COM',		14);
 define('EVL_MANAGEMENT_COM',	15);
 define('EVL_REPORTQUALITY_COM',	16);
+define('EVL_SEENOTHERREVIEWS',	17); //flag indicating that evaluator has seen other reviews
+define('EVL_OTHERCOMMENTSAFTER',18); //Other comments after seeing other reviews
 
 // Second-level identifiers for Supplemental Report.
 define('SUP_HQPS',			1);

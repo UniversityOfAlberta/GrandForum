@@ -427,6 +427,14 @@ class ReportXMLParser {
                     $item->setMilestoneId($value['milestone_id']);
                     $item->setProductId($value['product_id']);
                     $item->setPersonId($value['person_id']);
+                    foreach($value['misc'] as $key=>$val){
+                        $item->setAttribute("{$key}", "{$val}");
+                    }
+                    if(!is_null($value['item_id'])){
+                        //echo $value['item_id']. "<br>";
+                        //var_dump( $value['misdfsdfsc']); echo "<br>";
+                        $item->setId($item->id."_".$value['item_id']);
+                    }
                 }
                 $itemset->iteration++;
             }
