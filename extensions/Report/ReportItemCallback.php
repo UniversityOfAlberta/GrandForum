@@ -55,6 +55,7 @@ class ReportItemCallback {
 			"user_projects" => "getUserProjects",
 			"user_requested_budget" => "getUserRequestedBudget",
 			"user_allocated_budget" => "getUserAllocatedBudget",
+			"user_project_comment" => "getUserProjectComment",
 			// Products
 			"product_id" => "getProductId",
 			"product_title" => "getProductTitle",
@@ -530,6 +531,20 @@ class ReportItemCallback {
             $budget->xls[0][1]->value = $person->getReversedName();
 	    }
 	    return $budget->render();
+	}
+	
+	function getUserProjectComment(){
+	    $person = Person::newFromId($this->reportItem->personId);
+	    $project = Project::newFromId($this->reportItem->projectId);
+	    
+	    $addr = ReportBlob::create_address(RP_LEADER, LDR_NICOMMENTS, LDR_NICOMMENTS_COMMENTS, 0);
+	    $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $project->getId());
+	    $blob->load($addr);
+	    $data = $blob->getData();
+	    if(isset($data[$person->id])){
+	        return $data[$person->id];
+	    }
+	    return "";
 	}
 	
 	function getProductId(){

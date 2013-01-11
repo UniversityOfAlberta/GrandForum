@@ -44,9 +44,17 @@ class cavendishTemplate extends QuickTemplate {
 	 * @access private
 	 */
 	function execute() {
-		global $wgRequest, $wgServer, $wgScriptPath, $wgLogo, $wgTitle, $wgUser, $wgMessage;
+		global $wgRequest, $wgServer, $wgScriptPath, $wgLogo, $wgTitle, $wgUser, $wgMessage, $wgImpersonating, $wgTitle;
 		$this->skin = $skin = $this->data['skin'];
 		$action = $wgRequest->getText( 'action' );
+
+        if(FROZEN){
+            $wgMessage->addInfo("The Forum is currently not available for edits during the RMC review-and-deliberation period.");
+        }
+
+        if($wgUser->isLoggedIn() && $wgTitle != null && $wgTitle->getNsText() == "Special" && $wgTitle->getText() == "Report"){
+            $wgMessage->addInfo("The 2012 Report pages are now closed for edits.");
+        }
 
 		// Suppress warnings to prevent notices about missing indexes in $this->data
 		wfSuppressWarnings();
@@ -85,6 +93,7 @@ class cavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.multiLimit.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery-ui.triggeredAutocomplete.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.filterByText.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.scrollTo-min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/js/jquery.dataTables.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/raphael.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/spinner.js"></script>
@@ -175,6 +184,40 @@ class cavendishTemplate extends QuickTemplate {
 	        var sideToggled = 'out';
 	        
 		    $(document).ready(function(){
+		        $('div#bodyContent').ajaxComplete(function(e, xhr, settings) {
+		            if(settings.url.indexOf("action=getUserMode") == -1){
+		                $.get("<?php echo $wgServer.$wgScriptPath; ?>/index.php?action=getUserMode&user=" + wgUserName, function(response){
+		                    if(response.mode == 'loggedOut'){
+		                        if($('#wgMessages .info').text() != response.message){
+		                            clearInfo();
+		                        }
+		                        addInfo(response.message);
+		                    }
+		                    else if(response.mode == 'frozen'){
+		                        if($('#wgMessages .info').text() != response.message){
+		                            clearInfo();
+		                        }
+		                        addInfo(response.message);
+		                    }
+		                    else if(response.mode == 'impersonating'){
+		                        if($('#wgMessages .info').text() != response.message){
+		                            clearInfo();
+		                        }
+		                        addInfo(response.message);
+		                    }
+		                    else if(response.mode == 'differentUser'){
+		                        if($('#wgMessages .warning').text() != response.message){
+		                            clearWarning();
+		                        }
+		                        addWarning(response.message);
+		                    }
+		                    else{
+		                        clearInfo();
+		                        clearWarning();
+		                    }
+		                });
+		            }
+                });
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();
                 });
@@ -225,11 +268,15 @@ class cavendishTemplate extends QuickTemplate {
 		$autoOpen = "false";
 		$loggedin_user_id = $wgUser->getId();
 		$loggedin_user = Person::newFromId($loggedin_user_id);
-		if($wgUser->isLoggedIn() && ($loggedin_user->isPNI() || $loggedin_user->isCNI())){
+		
+		if($wgUser->isLoggedIn() && ($loggedin_user->isPNI() || $loggedin_user->isCNI()) && !$wgImpersonating ){
 			$sql = "SELECT * FROM survey_results WHERE user_id = $loggedin_user_id";
 		    $data = DBFunctions::execSQL($sql);
 		  
-		    if(count($data) == 0 || (count($data) > 0 && isset($data[0]['submitted']) && $data[0]['submitted'] == 0) ){
+		    if(count($data) == 0 || (count($data) > 0 && 
+		    		isset($data[0]['consent']) && $data[0]['consent'] == 1 &&
+		    		isset($data[0]['submitted']) && $data[0]['submitted'] == 0) ){
+
 		    	if(! isset($_COOKIE['survey_reminder'])){
 					setcookie("survey_reminder", 1, time()+75600);
 					$autoOpen = "true";
@@ -417,9 +464,9 @@ class cavendishTemplate extends QuickTemplate {
 					    ReportArchive::createTab();
 					}
 					    Report::createTab();
-					if($p->isUnassignedEvaluator()){
-						ReviewerConflicts::createTab();
-					}
+					//if($p->isUnassignedEvaluator()){
+					//	ReviewerConflicts::createTab();
+					//}
 					if(!$user->isRoleAtLeast(MANAGER)){
 					    MyMailingLists::createTab();
 					}

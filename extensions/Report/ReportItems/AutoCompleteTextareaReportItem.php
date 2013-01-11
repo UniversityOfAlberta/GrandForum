@@ -127,10 +127,18 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 	function renderForPDF(){
 	    global $wgOut;
 	    $limit = $this->getLimit();
+	    $nChars = $this->getActualNChars();
 	    $anchor = ($this->getAttr("anchor", "false") == "true");
 	    
 	    $html = "";
 	    if($limit > 0){
+	        $class = "";
+	        if($nChars > $limit){
+                $class = "inlineError";
+            }
+            else if($nChars == 0){
+                $class = "inlineWarning";
+            }
 	        $recommended = $this->getAttr('recommended', false);
 	        if($recommended){
 	            $type = "recommended";
@@ -138,12 +146,35 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 	        else{
 	            $type = "maximum";
 	        }
-	        $html .= "<span style='color:#888888;'><small>(<i>currently {$this->getNChars()} chars out of a {$type} {$limit}.</i>)</small></span>";
+	        $html .= "<span class='$class'><small>(<i>currently {$nChars} chars out of a {$type} {$limit}.</i>)</small></span><br />";
+	        $blobValue = str_replace("\r", "", $this->getReplacedBlobValue());
+            if(!$recommended){
+                $blobValue = $this->getReplacedBlobValue();
+                $replacedLength = $this->getActualNChars();
+                $lengthDiff = strlen($blobValue) - $replacedLength;
+                $blobValue1 = substr($blobValue, 0, $limit + $lengthDiff);
+                $blobValue2 = substr($blobValue, $limit + $lengthDiff);
+                $limit -= (strlen(utf8_decode($blobValue1)) - $lengthDiff);
+                if($blobValue2 != ""){
+                    if(isset($_GET['preview'])){
+                        $blobValue = "{$blobValue1}<s style='color:red;'>{$blobValue2}</s>";
+                    }
+                    else{
+                        $blobValue = "$blobValue1...";
+                    }
+                }
+                else{
+                    $blobValue = $blobValue1;
+                }
+            }
+            $html .= nl2br($this->processCData($blobValue));
 	    }
-	    $value = nl2br($this->getReplacedBlobValue());
-		$html .= "<p>$value</p>";
-	    $item = $this->processCData($value);
-		$wgOut->addHTML($item);
+	    else{
+	        $value = nl2br($this->getReplacedBlobValue());
+	        $value = $this->processCData($value);
+		    $html .= "<p>$value</p>";
+	    }
+		$wgOut->addHTML($html);
 	}
 	
 	function getReplacedBlobValue(){

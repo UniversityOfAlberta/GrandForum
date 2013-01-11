@@ -1,9 +1,31 @@
 var currentSectionHref = "";
+var animationTime = 250;
+var animationEasingOut = 'easeInQuad';
+var animationEasingIn = 'easeOutExpo';
+var oldTab;
+
+function revertReportAnimation(){
+    if($("#reportMain").length > 0){
+        var paddingHeight = parseInt($("#reportMain > div > div").css('padding-top')) + parseInt($("#reportMain > div > div").css('padding-bottom'));
+        $("#reportMain > div > div").animate({
+                                    'marginTop' : 0 + 'px',
+                                    'height' : $("#reportMain").height() + paddingHeight + 'px',
+                                    'padding-top' : 10 + 'px',
+                                    'padding-bottom' : 10 + 'px'
+                                 }, animationTime, animationEasingOut, function(){
+                                    $("#reportMain > div > div").css('overflow-y', 'visible');
+                                    $("#reportMain > div > div").css('height', '');
+                                    initResizeEvent();
+                                 });
+        $("#reportInstructions").animate({'opacity' : 1}, animationTime);
+        $(".selectedReportTab").children("img").remove();
+        $(".selectedReportTab").removeClass("selectedReportTab");
+        $(oldTab).addClass("selectedReportTab");
+    }
+}
 
 $(document).ready(function(){
-    var animationTime = 250;
-    var animationEasingOut = 'easeInQuad';
-    var animationEasingIn = 'easeOutExpo';
+    
     setUpFormSubmit();
     var timeout = null;
     var ajaxSection = null;
@@ -30,14 +52,19 @@ $(document).ready(function(){
             if(timeout != null){
                 clearTimeout(timeout);
             }
-            findAutosaves(updateProgress);
-            saveAll(animate);
+            if(dbWritable){
+                findAutosaves(updateProgress, revertReportAnimation);
+                saveAll(animate, revertReportAnimation);
+            }
+            else{
+                animate();
+            }
             var paddingHeight = parseInt($("#reportMain > div > div").css('padding-top')) + parseInt($("#reportMain > div > div").css('padding-bottom'));
             var oldHeight = $("#reportMain > div").height();
             if(selectedIndex != clickedIndex){
                 $("#reportMain > div").stop();
             }
-            var oldTab = $(".selectedReportTab");
+            oldTab = $(".selectedReportTab");
             $(".selectedReportTab").removeClass("selectedReportTab");
             $(this).addClass("selectedReportTab");
             $(this).children("img").remove();
@@ -70,16 +97,7 @@ $(document).ready(function(){
                 if(responseStr != undefined && responseStr.length > 0){
                     // There could be an error with the save ajax request
                     showConflictError(responseStr);
-                    $("#reportMain > div > div").animate({
-                                                'marginTop' : 0 + 'px',
-                                                'height' : $("#reportMain").height() + paddingHeight + 'px',
-                                                'padding-top' : 10 + 'px',
-                                                'padding-bottom' : 10 + 'px'
-                                             }, animationTime, animationEasingOut);
-                    $("#reportInstructions").animate({'opacity' : 1}, animationTime);
-                    $(".selectedReportTab").children("img").remove();
-                    $(".selectedReportTab").removeClass("selectedReportTab");
-                    $(oldTab).addClass("selectedReportTab");
+                    revertReportAnimation();
                     return;
                 }
                 ajaxSection = $.get(href + '&showSection', function(response){

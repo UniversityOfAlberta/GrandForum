@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @package PDFGenerator
+ */
+
 define('SUBM', 1);
 define('NOTSUBM', 0);
 define('LEADER', 1);
@@ -20,6 +24,7 @@ define('RPTP_HQP', 9); // Exit is not longer used, but they should be considered
 define('RPTP_NI_COMMENTS', 10);
 define('RPTP_HQP_COMMENTS', 11);
 define('RPTP_LEADER_MILESTONES', 12);
+define('RPTP_NI_PROJECT_COMMENTS', 13);
 
 define('RPTP_NI_ZIP', 100);
 define('RPTP_PROJ_ZIP', 101); 

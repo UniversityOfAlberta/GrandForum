@@ -45,7 +45,7 @@ class EditableReportSection extends AbstractReportSection {
             $action .= "&project=".urlencode($this->getParent()->project->getName());
         }
         $autosave = " class='noautosave'";
-        if($this->autosave && $this->checkPermission('w')){
+        if($this->autosave && $this->checkPermission('w') && DBFunctions::DBWritable()){
             $autosave = " class='autosave'";
         }
         $projectName = "";
@@ -72,14 +72,17 @@ class EditableReportSection extends AbstractReportSection {
                 $item->render();
             }
         }
-
+        $disabled = "";
+        if(!DBFunctions::DBWritable()){
+            $disabled = "disabled='disabled'";
+        }
         $wgOut->addHTML("</div>
                              <hr />
                              <div id='reportFooter'>
-                                <input type='submit' value='Save' name='submit' />&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
+                                <input type='submit' value='Save' name='submit' $disabled />&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
                              </div>
                          </form></div>\n");
-        if(!$this->checkPermission('w')){
+        if(!$this->checkPermission('w') || !DBFunctions::DBWritable()){
             $wgOut->addHTML("<script type='text/javascript'>
                 $('#reportMain textarea').prop('disabled', 'disabled');
                 $('#reportMain input').prop('disabled', 'disabled');

@@ -137,7 +137,12 @@ class Notification{
 	        $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php?action=viewNotifications'>View New Notifications</a><br /><br />");
 	    }
 	    else{
-	        $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php?action=viewNotifications&history=true'>View History</a><br /><br />");
+	        $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php?action=viewNotifications&history=true'>View History</a><br />");
+	        if($me->isRole(MANAGER)){
+	            $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:EditMember?action=view&history=true'>View Edit Member History</a><br />");
+	            $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view&history=true'>View Add Member History</a><br />");
+	        }
+	        $wgOut->addHTML("<br />");
 	    }
 		if(count($notifications) > 0){
 		    $wgOut->addHTML("<table class='wikitable sortable' cellpadding='5' cellspacing='1' style='background:#CCCCCC;'>

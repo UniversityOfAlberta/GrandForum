@@ -93,7 +93,7 @@ class TemplateEditor {
 	* @param array &$content_actions The array of content actions.
 	* @return boolean true (to continue hook execution).
 	*/
-  static function addTETabs(&$content_actions ) {
+  static function addTETabs($skin, &$content_actions ) {
     global $wgRequest, $wgTitle, $wgArticle;
 
     if (!$wgArticle)
@@ -104,7 +104,7 @@ class TemplateEditor {
       $actionCmd = 'getPagesForTemplate';
       $check = $wgRequest->getVal('action') == 'getPagesForTemplate';
       $listAction =  array(
-			   'class' => ($check) ? 'selected' : false,
+			   'class' => 'action',
 			   'text' => $tabName,
 			   'href' => $wgTitle->getLocalURL( 'action=' . $actionCmd)
 			   );
@@ -119,7 +119,7 @@ class TemplateEditor {
       $actionCmd = 'createFromTemplate';
       $check = $wgRequest->getVal('action') == $actionCmd;
       $createAction =  array(
-                           'class' => ($check) ? 'selected' : false,
+                           'class' => 'action',
                            'text' => $tabName,
                            'href' => $wgTitle->getLocalURL( 'action=' . $actionCmd)
                            );
@@ -130,19 +130,19 @@ class TemplateEditor {
       if ($index === false)
 	$content_actions[$tabName] = $createAction;
       else
-	array_splice($content_actions, $index+1, 0, array($tabName => $createAction));
+	self::array_put_to_position($content_actions, $createAction, $index+1, $tabName);
 
       return true;
     }
 
     if (!TemplateFunctions::doesPageContainEditableTemplate($wgTitle))
       return true;
-    $tabName = 'Edit';
+    $tabName = 'Edit Template';
     $actionCmd = 'edit&editType=template';
     //$action = $wgRequest->getText( 'action' );
     $check = self::isTECall();
     $teAction = array(
-		      'class' => ($check) ? 'selected' : false,
+		      'class' => 'action',
 		      'text' => $tabName,
 		      'href' => $wgTitle->getLocalURL( 'action=' . $actionCmd)
 		      );
@@ -153,13 +153,34 @@ class TemplateEditor {
       return true;
     
     if ($check)
-      $content_actions['edit']['class'] = false;
+      //$content_actions['edit']['class'] = false;
       unset( $content_actions['edit'] ); // only this to remove an action
-
-    array_splice($content_actions, $index+1, 0, array('editTemplate' => $teAction));
-    
+    self::array_put_to_position($content_actions, $teAction, $index+1, 'editTemplate');
     return true;
   }
+  
+  function array_put_to_position(&$array, $object, $position, $name = null)
+{
+        $count = 0;
+        $return = array();
+        foreach ($array as $k => $v) 
+        {   
+                // insert new object
+                if ($count == $position)
+                {   
+                        if (!$name) $name = $count;
+                        $return[$name] = $object;
+                        $inserted = true;
+                }   
+                // insert old object
+                $return[$k] = $v; 
+                $count++;
+        }   
+        if (!$name) $name = $count;
+        if (!$inserted) $return[$name];
+        $array = $return;
+        return $array;
+}
 
   /** 
 	* Attach information to requests sent from the template editor that they should as well be treated as template editor requests. 

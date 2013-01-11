@@ -101,7 +101,7 @@ EOF;
                             return true;
                         }else{
                             alert("You must agree to proceed with the survey!");
-                            return false;
+                            return true;
                         }
                     });
                     addEventTracking();

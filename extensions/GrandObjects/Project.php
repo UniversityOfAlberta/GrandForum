@@ -61,15 +61,16 @@ class Project extends BackboneModel {
 	    if(isset(self::$cache[$name])){
 	        return self::$cache[$name];
 	    }
+	    $nameSQL = mysql_real_escape_string($name);
 		$sql = "SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.type, s.status
 				FROM grand_project p, grand_project_evolution e, grand_project_status s
-				WHERE p.name = '$name'
+				WHERE p.name = '$nameSQL'
 				AND e.new_id = p.id
 				AND s.evolution_id = e.id
 				ORDER BY e.id DESC LIMIT 1";
 				
 		$data = DBFunctions::execSQL($sql);
-		if (DBFunctions::getNRows() > 0){
+		if (count($data) > 0){
 		    $sql = "SELECT *
 	                FROM `grand_project_evolution`
 	                WHERE `project_id` = '{$data[0]['id']}'
@@ -144,6 +145,36 @@ class Project extends BackboneModel {
 		        if(!isset($projectNames[$project->name]) && !$project->isDeleted()){
 		            $projectNames[$project->name] = true;
 			        $projects[] = $project;
+			    }
+			}
+		}
+		return $projects;
+	}
+	
+	static function getAllProjectsDuring($startDate=false, $endDate=false){
+	    if($startDate == false){
+	        $startDate = REPORTING_CYCLE_START;
+	    }
+	    if($endDate == false){
+	        $endDate = REPORTING_CYCLE_END;
+	    }
+	    $sql = "SELECT *
+				FROM grand_project p
+ 				ORDER BY p.name";
+		$data = DBFunctions::execSQL($sql);
+		$projects = array();
+		$projectNames = array();
+		foreach($data as $row){
+		    $project = Project::newFromId($row['id']);
+		    if($project != null && $project->getName() != ""){
+		        if(!isset($projectNames[$project->name])){
+		            if(($project->deleted &&
+		                strcmp($project->effectiveDate, $endDate) <= 0 &&
+		                strcmp($project->effectiveDate, $startDate) >= 0) ||
+		               !$project->deleted){
+		                $projectNames[$project->name] = true;
+			            $projects[] = $project;
+			        }
 			    }
 			}
 		}
@@ -354,6 +385,7 @@ EOF;
 	                FROM `grand_project_evolution` e
 	                WHERE e.new_id = '{$this->id}'
 	                AND (e.id = '{$this->evolutionId}' OR e.action = 'MERGE')
+	                AND '{$this->evolutionId}' > e.last_id
 	                ORDER BY e.id DESC";
 	        $data = DBFunctions::execSQL($sql);
 	        $this->preds = array();
@@ -742,6 +774,25 @@ EOF;
         return "";
 	}
 	
+	/**
+	 * Returns an array of Articles that belong to this Project
+	 * @returns array Returns an array of Articles that belong to this Project
+	 */
+	function getWikiPages(){
+	    $sql = "SELECT page_id
+	            FROM mw_page
+	            WHERE page_namespace = '{$this->getId()}'";
+	    $data = DBFunctions::execSQL($sql);
+	    $articles = array();
+	    foreach($data as $row){
+	        $article = Article::newFromId($row['page_id']);
+	        if($article != null && strstr($article->getTitle()->getText(), "MAIL ") === false){
+	            $articles[] = $article;
+	        }
+	    }
+	    return $articles;
+	}
+	
 	// Returns an array of papers relating to this project
 	function getPapers($category="all", $startRange = false, $endRange = false){
         return Paper::getAllPapersDuring($this->name, $category, "grand", $startRange, $endRange);
@@ -1100,9 +1151,9 @@ EOF;
 	    foreach($this->getAllPreds() as $pred){
 	        $projectNames[] = $pred->getName();
 	    }
-	    foreach($this->getAllPeopleDuring(null, ($year)."-00-00 00:00:00", ($year + 1)."-00-00 00:00:00") as $member){
-            if($member->isRole(PNI, ($year)."-00-00 00:00:00", ($year + 1)."-00-00 00:00:00") || 
-               $member->isRole(CNI, ($year)."-00-00 00:00:00", ($year + 1)."-00-00 00:00:00")){
+	    foreach($this->getAllPeopleDuring(null, ($year+1)."-00-00 00:00:00", ($year + 2)."-00-00 00:00:00") as $member){
+            if($member->isRole(PNI, ($year+1)."-00-00 00:00:00", ($year + 2)."-00-00 00:00:00") || 
+               $member->isRole(CNI, ($year+1)."-00-00 00:00:00", ($year + 2)."-00-00 00:00:00")){
                 $budget = $member->getAllocatedBudget($year);
                 if($budget != null){
                     $budget = $budget->copy();

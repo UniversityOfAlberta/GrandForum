@@ -3,7 +3,6 @@
 $publicationPage = new PublicationPage();
 
 $wgHooks['ArticleViewHeader'][] = array($publicationPage, 'processPage');
-$wgHooks['SkinTemplateContentActions'][] = array($publicationPage, 'removeTabs');
 
 
 $publicationTypes = array("Proceedings Paper" => "an article written for submission to a workshop, symposium, or conference",
@@ -166,6 +165,7 @@ class PublicationPage {
             
             if(($name == "Activity" || $name == "Press" || $name == "Award" || $name == "Publication" || $name == "Artifact" || $name == "Presentation") && 
                (($paper->getTitle() != null && $paper->getCategory() == $name) || $create)){
+                TabUtils::clearActions();
                 $category = $name;
                 $authorTitle = self::getAuthorTitle($category);
                 if($post){
@@ -1492,36 +1492,6 @@ class PublicationPage {
         }
         $wgOut->addHTML("</tr>");
     }
-    
-    function removeTabs(&$content_actions){
-        global $wgArticle, $wgRoles;
-        if($wgArticle != null){
-            $name = $wgArticle->getTitle()->getNsText();
-            $title = $wgArticle->getTitle()->getText();
-            if($name == ""){
-                $split = explode(":", $title);
-                if(count($split) > 1){
-                    $title = $split[1];
-                }
-                else{
-                    $title = "";
-                }
-                $name = $split[0];
-            }
-            if($name == "Publication" || $name == "Artifact" || $name == "Activity" || $name == "Press" || $name == "Presentation"){
-                unset($content_actions['protect']);
-                unset($content_actions['watch']);
-                unset($content_actions['unwatch']);
-                unset($content_actions['create']);
-                unset($content_actions['history']);
-                unset($content_actions['delete']);
-                unset($content_actions['talk']);
-                unset($content_actions['move']);
-                unset($content_actions['edit']);
-                return false;
-            }
-        }
-        return true;
-    }
+
 }
 ?>

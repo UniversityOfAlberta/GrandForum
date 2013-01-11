@@ -85,6 +85,9 @@ abstract class AbstractReport extends SpecialPage {
             case RPTP_HQP_COMMENTS:
                 $type = "HQPReportComments";
                 break;
+            case RPTP_NI_PROJECT_COMMENTS:
+                $type = "ProjectNIComments";
+                break;
         }
         
         $proj = null;
@@ -200,12 +203,18 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     function execute(){
-        global $wgOut, $wgServer, $wgScriptPath, $wgUser;
+        global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating;
         if($this->name != ""){
+            if((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions'])){
+                if(!$wgUser->isLoggedIn() || ($wgImpersonating && !$this->checkPermissions()) || !DBFunctions::DBWritable() || (isset($_POST['user']) && $_POST['user'] != $wgUser->getName())){
+                    header('HTTP/1.1 403 Authentication Required');
+                    exit;
+                }
+            }
             if(!$this->checkPermissions()){
                 $wgOut->setPageTitle("Permission error");
                 $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>
-                                <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
+                                 <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
                 return;
             }
             if(isset($_POST['submit']) && $_POST['submit'] == "Save"){
@@ -303,7 +312,7 @@ abstract class AbstractReport extends SpecialPage {
         }
     }
     
-    function getPDF(){
+    function getPDF($submittedByOwner=false){
     	$sto = new ReportStorage($this->person);
     	if($this->project != null){
     	    if($this->pdfAllProjects){
@@ -325,8 +334,13 @@ abstract class AbstractReport extends SpecialPage {
     	    $tst = $sto->metadata('timestamp');
     	    if($year == $this->year && 
     	       strcmp($tst, $largestDate) > 0){
-    	        $largestDate = $tst;
-    	        $return = array($c);
+    	        if(($submittedByOwner &&
+    	           $sto->metadata('generation_user_id') == $this->person->getId() &&
+    	           $sto->metadata('submission_user_id') == $this->person->getId()) || 
+    	           !$submittedByOwner){
+        	        $largestDate = $tst;
+        	        $return = array($c);
+        	    }
     	    }
     	}
         return $return;
@@ -469,7 +483,9 @@ abstract class AbstractReport extends SpecialPage {
             }
         }
         $me = Person::newFromId($wgUser->getId());
-        $result = $me->isRoleAtLeast(MANAGER);
+        $rResult = $me->isRoleAtLeast(MANAGER);
+        $pResult = false;
+        $nProjectTags = 0;
         foreach($this->permissions as $type => $perms){
             foreach($perms as $perm){
                 switch($type){
@@ -479,34 +495,43 @@ abstract class AbstractReport extends SpecialPage {
                             if(count($project_objs) > 0){
                                 foreach($project_objs as $project){
                                     if($project->getId() == $this->project->getId()){
-                                        $result = true;
+                                        $rResult = true;
                                     }
                                 }
                             }
                         }
                         else if($this->project != null && ($perm['perm'] == PM)){
                             if($me->isProjectManager()){
-                                $result = true;
+                                $rResult = true;
                             }
                         }
                         else{
-                            $result = ($result || $me->isRoleDuring($perm['perm'], $perm['start'], $perm['end']));
+                            $rResult = ($rResult || $me->isRoleDuring($perm['perm'], $perm['start'], $perm['end']));
                         }
                         break;
                     case "Project":
+                        $nProjectTags++;
                         if($this->project != null){
-                            $result = (($perm['perm']['deleted'] && 
-                                       $this->project->isDeleted() && 
-                                       substr($this->project->getEffectiveDate(), 0, 4) >= substr($perm['start'], 0, 4) && 
-                                       substr($this->project->getEffectiveDate(), 0, 4) <= substr($perm['end'], 0, 4)) || 
-                                      (!$perm['perm']['deleted'] && 
-                                       !$this->project->isDeleted()));
+                            if(isset($perm['perm']['deleted'])){
+                                $pResult = ($pResult || (($perm['perm']['deleted'] && 
+                                           $this->project->isDeleted() && 
+                                           substr($this->project->getEffectiveDate(), 0, 4) >= substr($perm['start'], 0, 4) && 
+                                           substr($this->project->getEffectiveDate(), 0, 4) <= substr($perm['end'], 0, 4)) || 
+                                          (!$perm['perm']['deleted'] && 
+                                           !$this->project->isDeleted())));
+                            }
+                            else if(isset($perm['perm']['project'])){
+                                $pResult = ($pResult || $this->project->getName() == $perm['project']);
+                            }
                         }
                         break;
                 }
             }
         }
-        return $result;
+        if($nProjectTags == 0){
+            $pResult = true;
+        }
+        return ($pResult && $rResult);
     }
     
     function getSectionPermissions($section){
@@ -529,6 +554,9 @@ abstract class AbstractReport extends SpecialPage {
         if($me->isProjectManager()){
             $roles[] = PM;
         }
+        if($me->isEvaluator()){
+            $roles[] = EVALUATOR;
+        }
         
         $permissions = array();
         foreach($roles as $role){
@@ -538,11 +566,19 @@ abstract class AbstractReport extends SpecialPage {
                 }
             }
         }
+        if($this->person->getId() == 0 &&
+           $this->project != null){
+            if(isset($this->sectionPermissions[$this->project->getName()][$section->id])){
+                foreach($this->sectionPermissions[$this->project->getName()][$section->id] as $key => $perm){
+                    $permissions[$key] = $perm;
+                }
+            }
+        }
         return $permissions;
     }
     
     // Generates the PDF for the report, and saves it to the Database
-    function generatePDF($person=null){
+    function generatePDF($person=null, $submit=false){
         global $wgOut, $wgUser;
         session_write_close();
         $me = $person;
@@ -561,11 +597,14 @@ abstract class AbstractReport extends SpecialPage {
                     $data = "";
                     $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, false);
                     $sto = new ReportStorage($this->person);
-                    $sto->store_report($data, $pdf, 0, 0, $report->pdfType, $this->year);
+                    $sto->store_report($data, $pdf['html'], $pdf['pdf'], 0, 0, $report->pdfType, $this->year);
                     if($project != null){
                         $ind = new ReportIndex($this->person);
                         $rid = $sto->metadata('report_id');
                         $ind->insert_report($rid, $report->project);
+                    }
+                    if($submit){
+                        $report->submitReport($person);
                     }
                 }
             }
@@ -581,7 +620,7 @@ abstract class AbstractReport extends SpecialPage {
                 exit;
             }
             $sto = new ReportStorage($this->person);
-            $sto->store_report($data, $pdf, 0, 0, $report->pdfType, $this->year);
+            $sto->store_report($data, $pdf['html'],$pdf['pdf'], 0, 0, $report->pdfType, $this->year);
             if($report->project != null){
                 $ind = new ReportIndex($this->person);
                 $rid = $sto->metadata('report_id');
@@ -592,7 +631,9 @@ abstract class AbstractReport extends SpecialPage {
             $len = $sto->metadata('pdf_len');
             $json[$pdfFile] = array('tok'=>$tok, 'time'=>$tst, 'len'=>$len, 'name'=>"{$report->name}");
         }
-        
+        if($submit){
+            $this->submitReport($person);
+        }
         header('Content-Type: application/json');
         header('Content-Length: '.strlen(json_encode($json)));
         echo json_encode($json);
@@ -602,9 +643,14 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     // Marks the report as submitted
-    function submitReport(){
+    function submitReport($person=null){
         global $wgUser;
-        $me = Person::newFromId($wgUser->getId());
+        if($person == null){
+            $me = Person::newFromId($wgUser->getId());
+        }
+        else{
+            $me = $person;
+        }
         $sto = new ReportStorage($me);
         $check = $this->getPDF();
         if(count($check) > 0){
@@ -632,7 +678,14 @@ abstract class AbstractReport extends SpecialPage {
             $wgOut->addHTML("<div id='outerReport'>This report is currently disabled until futher notice.</div>");
             return;
         }
+        $writable = "true";
+        if(!DBFunctions::DBWritable()){
+            $writable = "false";
+        }
         $wgOut->addStyle("../extensions/Report/style/report.css");
+        $wgOut->addScript("<script type='text/javascript'>
+            var dbWritable = {$writable};
+        </script>");
         $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Report/scripts/report.js'></script>");
         $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Report/scripts/instructions.js'></script>");
         $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Report/scripts/progress.js'></script>");

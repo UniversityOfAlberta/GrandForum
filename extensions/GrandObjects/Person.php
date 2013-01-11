@@ -394,7 +394,26 @@ class Person extends BackboneModel {
 		}
 		return $ret;
 	}
-	
+
+	static function getAllProjectManagers() {
+		
+		$ret = array();
+		$sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
+				WHERE pl.user_id NOT IN (4, 150)
+				AND pl.manager = '1'
+				AND u.user_id = pl.user_id
+				AND u.deleted != '1'
+				AND (pl.end_date = '0000-00-00 00:00:00'
+                     OR pl.end_date > CURRENT_TIMESTAMP)";
+		$data = DBFunctions::execSQL($sql);
+		
+		foreach ($data as &$row){
+			$ret[$row['user_id']] = Person::newFromId($row['user_id']);
+		}
+
+		return $ret;
+	}
+
 	// Constructor
 	// Takes in a resultset containing the 'user id' and 'user name'
 	function Person($data){
@@ -1099,7 +1118,7 @@ class Person extends BackboneModel {
             }
             else if($history !== true){
                 $sql .= "AND start_date <= '{$history}'
-                         AND (end_date >= '{$history}' OR (end_date = '0000-00-00 00:00:00' AND))\n";
+                         AND (end_date >= '{$history}' OR (end_date = '0000-00-00 00:00:00'))\n";
             }
             $sql .= "ORDER BY project_id";
 			$data = DBFunctions::execSQL($sql);
@@ -1107,10 +1126,12 @@ class Person extends BackboneModel {
 			foreach($data as $row){
 			    $project = Project::newFromId($row['project_id']);
 			    if($project != null && $project->getName() != ""){
-			        if(!isset($projectNames[$project->getName()]) && !$project->isDeleted()){
-			            // Make sure that the project is not being added twice
-			            $projectNames[$project->getName()] = true;
-				        $this->projects[] = $project;
+			        if(!isset($projectNames[$project->getName()])){
+			            if(!$project->isDeleted() || ($project->isDeleted() && $history)){
+			                // Make sure that the project is not being added twice
+			                $projectNames[$project->getName()] = true;
+				            $this->projects[] = $project;
+				        }
 				    }
 				}
 			}
@@ -1128,11 +1149,15 @@ class Person extends BackboneModel {
 	    $projects = $this->getProjects(true);
 	    if(count($projects) > 0){
 	        foreach($projects as $project){
-	            $members = $project->getAllPeopleDuring(null, $start, $end, true);
-	            foreach($members as $member){
-	                if($member->getId() == $this->id){
-	                    $projectsDuring[] = $project;
-	                    break;
+	            if(!$project->isDeleted() || ($project->isDeleted() && 
+	                                          strcmp($project->effectiveDate, $end) < 0 && 
+	                                          strcmp($project->effectiveDate, $start) > 0)){
+	                $members = $project->getAllPeopleDuring(null, $start, $end, true);
+	                foreach($members as $member){
+	                    if($member->getId() == $this->id){
+	                        $projectsDuring[] = $project;
+	                        break;
+	                    }
 	                }
 	            }
 	        }
@@ -1351,7 +1376,10 @@ class Person extends BackboneModel {
                 $roles[] = $r->getRole();
             }
         }
-        if(count($role_objs) == 0 && count($project_objs) == 0){
+        if($role == EVALUATOR && $this->isEvaluator()){
+            $roles[] = EVALUATOR;
+        }
+        if(count($roles) == 0){
             return false;
         }
         return (array_search($role, $roles) !== false);
@@ -2319,7 +2347,43 @@ class Person extends BackboneModel {
             if($row['type'] == "Project"){
                 $subs[] = Project::newFromId($row['sub_id']);
             }
-            else if($row['type'] == "Researcher"){
+            else if($row['type'] == "Researcher" || $row['type'] == "PNI" || $row['type'] == "CNI"){
+                $subs[] = Person::newFromId($row['sub_id']);
+            }
+        }
+        return $subs;
+	}
+	
+	function getEvaluates($type){
+	    $type = mysql_real_escape_string($type);
+	    $eTable = getTableName("eval");
+	    $sql = "SELECT *
+	            FROM $eTable
+	            WHERE eval_id = '{$this->id}'
+	            AND type = '$type'";
+	    $data = DBFunctions::execSQL($sql);
+	    $subs = array();
+        foreach($data as $row){
+            if($row['type'] != "Project"){
+                $subs[] = Person::newFromId($row['sub_id']);
+            }
+            else{
+                $subs[] = Project::newFromId($row['sub_id']);
+            }
+        }
+        return $subs;
+	}
+
+	function getEvaluatePNIs(){
+	    $eTable = getTableName("eval");
+	    $sql = "SELECT *
+	            FROM $eTable
+	            WHERE eval_id = '{$this->id}'
+	            AND type = 'PNI'";
+	    $data = DBFunctions::execSQL($sql);
+	    $subs = array();
+        foreach($data as $row){
+            if($row['type'] == "PNI"){
                 $subs[] = Person::newFromId($row['sub_id']);
             }
         }
@@ -2343,13 +2407,30 @@ class Person extends BackboneModel {
         return $subs;
 	}
 	
+	function getEvaluateProjects(){
+	    $eTable = getTableName("eval");
+	    $sql = "SELECT *
+	            FROM $eTable
+	            WHERE eval_id = '{$this->id}'
+	            AND type = 'Project'";
+	    $data = DBFunctions::execSQL($sql);
+	    $subs = array();
+        foreach($data as $row){
+            if($row['type'] == "Project"){
+                $subs[] = Project::newFromId($row['sub_id']);
+            }
+        }
+        return $subs;
+	}
+
 	// Returns a list of the evaluators who are evaluating this Person
-	function getEvaluators(){
+	// Provide type 
+	function getEvaluators($type='Researcher'){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE sub_id = '{$this->id}'
-	            AND type = 'Researcher'";
+	            AND type = '{$type}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){

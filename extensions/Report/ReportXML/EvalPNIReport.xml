@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="PNI Evaluation" reportType="RP_EVAL_RESEARCHER" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
+            <SectionPermission id="pni_materials" permissions="rw" />
+            <SectionPermission id="pni_budget" permissions="rw" />
+            <SectionPermission id="pni_reviews" permissions="rw" />
+            <SectionPermission id="pni_overviews" permissions="rw" />
+        </Role>
+    </Permissions>
+
+    <!-- PNI Materials -->
+    <ReportSection id="pni_materials" name="PNI Materials" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
+        <Instructions>
+            <![CDATA[
+               <p>You can download the NI Report PDFs and the Project Leader Comments PDFs for your reference.</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="pni_materials_head" type="StaticReportItem">
+            <![CDATA[<table>]]>
+        </ReportItem>
+        <ReportItemSet id="pni_materials" type="MaterialsReportItemSet" subType="PNI">
+            <ReportItem id="pni_pdf" type="PDFReportItem" reportType="NIReport" buttonName="NI Report PDF">
+                <![CDATA[<tr><td><span style="font-size:16px;">{$user_reversed_name}</span></td><td>{$item}</td>]]>
+            </ReportItem>
+            <ReportItem id="pni_pdf" type="PDFReportItem" reportType="ProjectNIComments" buttonName="PL Comments PDF">
+                <![CDATA[<td>{$item}</td></tr>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="pni_materials_tail" type="StaticReportItem">
+            <![CDATA[</table>]]>
+        </ReportItem>
+        
+    </ReportSection>
+
+    <!-- PNI Budget -->
+    <ReportSection id="pni_budget" name="PNI Budgets" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+        <Instructions>
+            <![CDATA[
+               <p>Here you can see the NI Budget requests for 2013-2014.</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="pni_budget_head" type="StaticReportItem">
+            <![CDATA[
+            <script type="text/javascript">
+                $(document).ready(function(){ 
+                    $('.pni_budget_accordions').accordion({active: false, collapsible: true, icons: false }); 
+                })
+            </script>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="pni_materials" type="MaterialsReportItemSet" subType="PNI">
+            <ReportItem id="pni_budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="EvalBudgetReportItem" person="true" />
+        </ReportItemSet>
+    </ReportSection>
+
+    <!-- PNI Reviews -->
+    <!--ReportSection id="pni_reviews" name="PNI Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="false" private="false">
+        <Instructions>
+            <![CDATA[
+               <p>Instructions needed</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="pni_review_head" type="StaticReportItem">
+            <![CDATA[
+            <script type="text/javascript">
+                $(document).ready(function(){ 
+                    $('.ni_review_item_wrapper').accordion({active: false, collapsible: true, icons: false, header: "h2" }); 
+                })
+            </script>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="pni_materials" type="MaterialsReportItemSet" subType="PNI">
+            <ReportItemSet id="pni_materials" type="NIReviewReportItemSet">
+                <ReportItem id="RI1" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_EXCELLENCE" blobSubItem="0">
+                <![CDATA[
+                <h3>1. Excellence of the Research Program</h3>
+                <div style="padding-left:20px;">{$item}</div>
+                ]]>
+                </ReportItem>
+                <ReportItem id="RI1_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_EXCELLENCE_COM" blobSubItem="0" 
+                    options="Researcher has published numerous articles.|Researcher has created numerous artifacts.|Researcher has published articles in high impact journals.|Researcher has moderate record of publications.|Researcher has limited productivity in low impact journals or conference publications.">
+                <![CDATA[
+                {$item}
+                ]]>
+                </ReportItem>
+
+                <ReportItem id="RI2" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_HQPDEVELOPMENT" blobSubItem="0">
+                <![CDATA[
+                <h3>2. Development of HQP</h3>
+                <div style="padding-left:20px;">{$item}</div>
+                ]]>
+                </ReportItem>
+                <ReportItem id="RI2_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_HQPDEVELOPMENT_COM" blobSubItem="0" 
+                    options="HQP play a significant role in the research.|Researcher supervises a large number of HQP.|Researcher supervises a moderate number of HQP.|Researcher supervises a small number of HQP.|Researcher reports no HQP supervision/activity.">
+                <![CDATA[
+                {$item}
+                ]]>
+                </ReportItem>
+
+                <ReportItem id="RI3" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_NETWORKING" blobSubItem="0">
+                <![CDATA[
+                <h3>3. Networking and Partnerships</h3>
+                <div style="padding-left:20px;">{$item}</div>
+                ]]>
+                </ReportItem>
+                <ReportItem id="RI3_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_NETWORKING_COM" blobSubItem="0" options="High level of partner funding.|High level of engagement with receptors.|Moderate level of partner funding.|Moderate level of engagement with receptors.|Low level of partner funding.|Low level of engagement with receptors.">
+                <![CDATA[
+                {$item}
+                ]]>
+                </ReportItem>
+
+                <ReportItem id="RI4" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_KNOWLEDGE" blobSubItem="0">
+                <![CDATA[
+                <h3>4. Knowledge and Technology Exchange and Exploitation</h3>
+                <div style="padding-left:20px;">{$item}</div>
+                ]]>
+                </ReportItem>
+                <ReportItem id="RI4_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_KNOWLEDGE_COM" blobSubItem="0" 
+                    options="Considerable efforts to commercialize or otherwise disseminate research outcomes to receptors.|Moderate efforts to commercialize or otherwise disseminate research outcomes to receptors.|Minimal efforts to commercialize or otherwise disseminate research outcomes to receptors.">
+                <![CDATA[
+                {$item}
+                ]]>
+                </ReportItem>
+
+                <ReportItem id="RI5" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_MANAGEMENT" blobSubItem="0">
+                <![CDATA[
+                <h3>5. Management of the Network</h3>
+                <div style="padding-left:20px;">{$item}</div>
+                ]]>
+                </ReportItem>
+                <ReportItem id="RI5_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_MANAGEMENT_COM" blobSubItem="0" 
+                    options="Project Leadership role|Theme Leadership role|Board of Directors role|Committee role|Involved in organization of GRAND events">
+                <![CDATA[
+                {$item}
+                ]]>
+                </ReportItem>
+
+                <ReportItem id="RI6" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_REPORTQUALITY" blobSubItem="0">
+                <![CDATA[
+                <h3>6. Rating for Quality of Report</h3>
+                <div style="padding-left:20px;">{$item}</div>
+                ]]>
+                </ReportItem>
+                <ReportItem id="RI6_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_REPORTQUALITY_COM" blobSubItem="0"
+                    options="Reporting complete and clear|Reporting complete but not always clear|Reporting clear but incomplete|Reporting incomplete and unclear">
+                <![CDATA[
+                {$item}
+                ]]>
+                </ReportItem>
+
+                <ReportItem id="RI7" type="EvalReviewTextareaReportItem" rows="6" width="100%" limit="600" blobType="BLOB_TEXT" blobItem="EVL_OTHERCOMMENTS" blobSubItem="0">
+                <![CDATA[
+                <h3>7. Evaluator Comments</h3>
+                <div style="padding-left:16px;">{$item}</div>
+                ]]>
+                </ReportItem>
+
+                <ReportItem id="RI8" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_OVERALLSCORE" blobSubItem="0">
+                <![CDATA[
+                <h3>8. Overall Score</h3>
+                <div style="padding-left:20px;">{$item}</div>
+                ]]>
+                </ReportItem>
+                
+                <ReportItem id="RI9" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_CONFIDENCE" blobSubItem="0">
+                <![CDATA[
+                <h3>9. Confidence Level of Evaluator </h3>
+                <div style="padding-left:20px;">{$item}</div>
+                ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection-->
+
+     <!-- PNI Overviews -->
+    <!--ReportSection id="pni_overviews" name="PNI Overviews" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+        <Instructions>
+            <![CDATA[
+               <p>Instructions needed</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="pni_overview" type="EvalOverviewReportItem">
+            <![CDATA[
+            {$item}
+            ]]>
+        </ReportItem>
+        
+    </ReportSection-->
+</Report>

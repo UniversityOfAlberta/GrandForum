@@ -306,6 +306,8 @@ class PersonContactTab extends AbstractEditableTab {
         $this->html .= "               <option$selected>Dean of Research</option>\n";
         if($university['position'] == "Associate Dean of Research"){$selected = " selected";} else{$selected = "";}
         $this->html .= "               <option$selected>Associate Dean of Research</option>\n";
+        if($university['position'] == "Associate Dean Student Affairs"){$selected = " selected";} else{$selected = "";}
+        $this->html .= "               <option$selected>Associate Dean Student Affairs</option>\n";
         if($university['position'] == "Masters Student"){$selected = " selected";} else{$selected = "";}
         $this->html .= "               <option$selected>Masters Student</option>\n";
         if($university['position'] == "PhD Student"){$selected = " selected";} else{$selected = "";}

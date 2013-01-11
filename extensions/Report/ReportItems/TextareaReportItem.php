@@ -17,12 +17,23 @@ class TextareaReportItem extends AbstractReportItem {
 		$wgOut->addHTML($item);
 	}
 	
+	function calculateHeight($limit){
+	    if($limit > 0){
+            $height = max(125, (pow($limit, 0.78)))."px";
+        }
+        else{
+            $height = "200px";
+        }
+        return $height;
+	}
+	
 	function getHTML(){
 	    $value = $this->getBlobValue();
         $rows = $this->getAttr('rows', 5);
         $width = $this->getAttr('width', '100%');
-        $height = $this->getAttr('height', '200px');
+        $height = $this->getAttr('height', '');
         $limit = $this->getLimit();
+        $height = $this->calculateHeight($limit);
         $item = "";
         if($limit > 0){
             $recommended = $this->getAttr('recommended', false);
@@ -94,12 +105,13 @@ EOF;
 	    $blobValue = str_replace("\r", "", $this->getBlobValue());
 	    $recommended = $this->getAttr('recommended', false);
 	    $length = strlen(utf8_decode($blobValue));
+	    $lengthDiff = strlen($blobValue) - $length;
 	    $class = "inlineMessage";
 	    if($limit > 0){
 	        if(!$recommended){
 	            $type = "maximum of";
-	            $blobValue1 = substr($blobValue, 0, $limit);
-	            $blobValue2 = substr($blobValue, $limit);
+	            $blobValue1 = substr($blobValue, 0, $limit + $lengthDiff);
+	            $blobValue2 = substr($blobValue, $limit + $lengthDiff);
 	            if($blobValue2 != ""){
 	                if(isset($_GET['preview'])){
 	                    $blobValue = "{$blobValue1}<s style='color:red;'>{$blobValue2}</s>";

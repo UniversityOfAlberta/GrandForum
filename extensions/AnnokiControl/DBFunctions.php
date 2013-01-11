@@ -71,6 +71,13 @@ class DBFunctions {
     static function getQueryCount(){
 	    return self::$queryCount;
 	}
+	
+	static function DBWritable(){
+	    global $wgImpersonating;
+	    $me = Person::newFromWGUser();
+	    $supervisesImpersonee = checkSupervisesImpersonee();
+	    return (!($wgImpersonating && !$supervisesImpersonee) && (!FROZEN || $me->isRoleAtLeast(MANAGER)));
+	}
     
     // Executes an sql statement.  By default a query is assumed, and processes the resultset into an array.
     // If $update is set to true, then an update is performed instead.
@@ -91,8 +98,7 @@ class DBFunctions {
                 $wgOut->addHTML($printedSql);
             }
 		    if($update != false){
-		        $supervisesImpersonee = checkSupervisesImpersonee();
-		        if($wgImpersonating && !$supervisesImpersonee){
+		        if(!DBFunctions::DBWritable()){
 		            return true;
 		        }
 			    $status = DBFunctions::$dbw->query($sql);
@@ -118,7 +124,7 @@ class DBFunctions {
 		        $wgMessage->addError("<pre class='inlineError' style='font-weight:bold;background:none;border:none;padding:0;overflow:hidden;margin:0;'>".$e->getMessage()."</pre>");
 		    }
 		    else{
-		        $wgMessage->addError("A Database error #{$e->errno} has occured, please contact <a href='mailto:support@grand-nce.ca'>support@grand-nce.ca</a>.");
+		        $wgMessage->addError("A Database error #{$e->errno} has occurred, please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>.");
 		    }
 		    if($rollback){
 		        DBFunctions::rollback();

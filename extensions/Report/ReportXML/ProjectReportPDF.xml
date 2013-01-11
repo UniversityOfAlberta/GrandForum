@@ -133,7 +133,7 @@
             <![CDATA[<h2>Budget Justification</h2> {$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="prod_details" name="Productivity Details" type="EditableReportSection" pagebreak="true" number="5" renderpdf="true">
+    <ReportSection id="prod_details" name="Productivity Details" type="EditableReportSection" pagebreak="false" number="5" renderpdf="true">
         <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true">
             <![CDATA[<div id='appendix'>{$item}</div>]]>
         </ReportItem>
@@ -157,19 +157,19 @@
                             <tr><td colspan='2'>
                 ]]>
             </ReportItem>
-            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_oldtitle}" newText="{$milestone_title}">
+            <ReportItem id="milestone_diff1" type="DiffReportItem" oldText="{$milestone_oldtitle}" newText="{$milestone_title}">
                 <![CDATA[
-                    <p><b>Title:</b> {$item}</p>
+                    <p><b>Title:</b> {$milestone_title}</p>
                 ]]>
             </ReportItem>
-            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_olddescription}" newText="{$milestone_description}">
+            <ReportItem id="milestone_diff2" type="DiffReportItem" oldText="{$milestone_olddescription}" newText="{$milestone_description}">
                 <![CDATA[
-                    <p><b>Description:</b> {$item}</p>
+                    <p><b>Description:</b> {$milestone_description}</p>
                 ]]>
             </ReportItem>
-            <ReportItem id="milestone_diff" type="DiffReportItem" oldText="{$milestone_oldassessment}" newText="{$milestone_assessment}">
+            <ReportItem id="milestone_diff3" type="DiffReportItem" oldText="{$milestone_oldassessment}" newText="{$milestone_assessment}">
                 <![CDATA[
-                    <p><b>Assessment:</b> {$item}</p>
+                    <p><b>Assessment:</b> {$milestone_assessment}</p>
                 ]]>
             </ReportItem>
             <ReportItem id="milestone_data" type="StaticReportItem">

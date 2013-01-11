@@ -41,6 +41,9 @@ class ProjectPeopleRolesCell extends Cell{
                     $role->getRole() == CNI){
                     $values[] = $role->getRole();
                 }
+                if($role->getRole() == AR || $role->getRole() == "Associated Researcher"){
+                    $values[] = 'AR';
+                }
             }
             foreach($person->getLeadershipRoles() as $role){
                 $values[] = $role->getRole();

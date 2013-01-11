@@ -2,7 +2,6 @@
 $contributionPage = new ContributionPage();
 
 $wgHooks['ArticleViewHeader'][] = array($contributionPage, 'processPage');
-$wgHooks['SkinTemplateContentActions'][] = array($contributionPage, 'removeTabs');
 
 class ContributionPage {
 
@@ -40,6 +39,7 @@ class ContributionPage {
                 $post = (isset($_POST['submit']) && ($_POST['submit'] == "Save $name" || $_POST['submit'] == "Create $name"));
                 $post = ( $post && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
                 if(($contribution->getId() != null) || $create){
+                    TabUtils::clearActions();
                     if($post){
                         if(!$create){
                             $_POST['id'] = $contribution->getId();
@@ -409,13 +409,13 @@ class ContributionPage {
                                     if($type == "inki" || $type == "caki"){
                                         $wgOut->addHTML("<tr><td align='right'><b>Sub-Type:</b></td><td>{$hrSubType}</td></tr>");
                                     }
-                                    if($contribution->getType() == "inki"){
+                                    if($type == "inki"){
                                         $wgOut->addHTML("<tr><td align='right'><b>In-Kind:</b></td><td>{$kind}</td></tr>");
                                     }
-                                    else if($contribution->getType() == "cash"){
+                                    else if($type == "cash"){
                                         $wgOut->addHTML("<tr><td align='right'><b>Cash:</b></td><td>{$cash}</td></tr>");
                                     }
-                                    else if($contribution->getType() == "caki"){
+                                    else if($type == "caki"){
                                         $wgOut->addHTML("<tr><td align='right'><b>In-Kind:</b></td><td>{$kind}</td></tr>");
                                         $wgOut->addHTML("<tr><td align='right'><b>Cash:</b></td><td>{$cash}</td></tr>");
                                     }
@@ -559,38 +559,6 @@ class ContributionPage {
                 $wgOut->addHTML("You must be at least a CNI to view this page");
                 $wgOut->output();
                 $wgOut->disable();
-            }
-        }
-        return true;
-    }
-    
-    function removeTabs(&$content_actions){
-        global $wgArticle, $wgRoles;
-        if($wgArticle != null){
-            $name = $wgArticle->getTitle()->getNsText();
-            $title = $wgArticle->getTitle()->getText();
-            if($name == ""){
-                $split = explode(":", $title);
-                if(count($split) > 1){
-                    $title = $split[1];
-                }
-                else{
-                    $title = "";
-                }
-                $name = $split[0];
-            }
-            
-            if($name == "Contribution"){
-                unset($content_actions['protect']);
-                unset($content_actions['watch']);
-                unset($content_actions['unwatch']);
-                unset($content_actions['create']);
-                unset($content_actions['history']);
-                unset($content_actions['delete']);
-                unset($content_actions['talk']);
-                unset($content_actions['move']);
-                unset($content_actions['edit']);
-                return false;
             }
         }
         return true;

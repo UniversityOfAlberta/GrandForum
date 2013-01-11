@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="NI Milestone Comments" reportType="RP_RESEARCHER" pdfType="RPTP_NI_COMMENTS" pdfFiles="NIReportComments" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END">PNI</Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END">CNI</Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PNI"></Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="CNI"></Role>
     </Permissions>
     <ReportSection name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
@@ -22,7 +22,7 @@
             <ReportItem id="project_name" type="StaticReportItem">
                 <![CDATA[<h2>{$project_name}</h2>]]>
             </ReportItem>
-            <ReportItem id="milestone_summary" width="100%" height="250px" blobType="BLOB_TEXT" blobItem="RES_MIL_SUMMARY" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1000">
+            <ReportItem id="milestone_summary" width="100%" height="250px" blobType="BLOB_TEXT" blobItem="RES_MIL_SUMMARY" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1800">
                 <![CDATA[
                     {$item}
                 ]]>

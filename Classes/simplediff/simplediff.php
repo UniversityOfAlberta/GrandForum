@@ -24,33 +24,35 @@ function diff($old, $new){
 		foreach($nkeys as $nindex){
 			$matrix[$oindex][$nindex] = isset($matrix[$oindex - 1][$nindex - 1]) ?
 				$matrix[$oindex - 1][$nindex - 1] + 1 : 1;
-			if($matrix[$oindex][$nindex] > $maxlen){
+			if($matrix[$oindex][$nindex] > @$maxlen){
 				$maxlen = $matrix[$oindex][$nindex];
 				$omax = $oindex + 1 - $maxlen;
 				$nmax = $nindex + 1 - $maxlen;
 			}
 		}	
 	}
-	if($maxlen == 0) return array(array('d'=>$old, 'i'=>$new));
+	if(@$maxlen == 0) return array(array('d'=>$old, 'i'=>$new));
 	return array_merge(
 		diff(array_slice($old, 0, $omax), array_slice($new, 0, $nmax)),
-		array_slice($new, $nmax, $maxlen),
-		diff(array_slice($old, $omax + $maxlen), array_slice($new, $nmax + $maxlen)));
+		array_slice($new, $nmax, @$maxlen),
+		diff(array_slice($old, $omax + @$maxlen), array_slice($new, $nmax + @$maxlen)));
 }
 
-function htmlDiff($old, $new){
-	$diff = diff(explode(' ', $old), explode(' ', $new));
+function htmlDiff($old, $new, $delimiter=' '){
+	$diff = diff(explode($delimiter, $old), explode($delimiter, $new));
+	$ret = "";
 	foreach($diff as $k){
 		if(is_array($k))
-			$ret .= (!empty($k['d'])?"<del>".implode(' ',$k['d'])."</del> ":'').
-				(!empty($k['i'])?"<ins>".implode(' ',$k['i'])."</ins> ":'');
-		else $ret .= $k . ' ';
+			$ret .= (!empty($k['d'])?"<del>".implode($delimiter,$k['d'])."</del> ":'').
+				(!empty($k['i'])?"<ins>".implode($delimiter,$k['i'])."</ins> ":'');
+		else $ret .= $k . $delimiter;
 	}
 	return str_replace("<ins></ins>", "", str_replace("<del></del>", "", $ret));
 }
 
 function htmlDiffNL($old, $new){
     $diff = diff(explode(' ', $old), explode(' ', $new));
+    $ret = "";
     foreach($diff as $k){
 	    if(is_array($k))
 		    $ret .= (!empty($k['d'])?str_replace("\n", "</del><br><del>", "<del>".implode(' ',$k['d'])."</del> "):'').

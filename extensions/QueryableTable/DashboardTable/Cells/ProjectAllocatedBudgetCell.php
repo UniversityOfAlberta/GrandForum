@@ -28,7 +28,7 @@
                     $budget = $project->getAllocatedBudget($start-1);
                     $value = 0;
                     if($budget != null){
-                        $value = $budget->copy()->select(V_PERS_NOT_NULL, array($person->getName()))->rasterize()->where(CUBE_COL_TOTAL)->toString();
+                        $value = $budget->copy()->select(V_PERS_NOT_NULL, array($person->getReversedName()))->rasterize()->where(CUBE_COL_TOTAL)->toString();
                         if($value == ""){
                             $value = 0;
                         }
