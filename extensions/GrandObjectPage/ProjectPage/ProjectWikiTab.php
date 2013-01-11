@@ -26,7 +26,7 @@ class ProjectWikiTab extends AbstractTab {
                 clearWarning();
                 var title = $('#newPageTitle').val().trim();
                 if(title == ''){
-                    addWarning('The title must not be empty');
+                    addError('The title must not be empty');
                 }
                 else if(title.indexOf('%') !== -1 ||
                         title.indexOf(':') !== -1 ||
@@ -38,7 +38,7 @@ class ProjectWikiTab extends AbstractTab {
                         title.indexOf('}') !== -1 ||
                         title.indexOf('<') !== -1 ||
                         title.indexOf('>') !== -1){
-                    addWarning('The title must not contain the following characters: <b>%</b>, <b>:</b>, <b>|</b>, <b>|</b>, <b>.</b>, <b>&lt;</b>, <b>&gt;</b>, <b>[</b>, <b>]</b>, <b>{</b>, <b>}</b>');
+                    addError('The title must not contain the following characters: <b>%</b>, <b>:</b>, <b>|</b>, <b>|</b>, <b>.</b>, <b>&lt;</b>, <b>&gt;</b>, <b>[</b>, <b>]</b>, <b>{</b>, <b>}</b>');
                 }
                 else{ 
                     document.location = '$wgServer$wgScriptPath/index.php/{$project->getName()}:' + title + '?action=edit';
@@ -46,8 +46,9 @@ class ProjectWikiTab extends AbstractTab {
                 return false;
             }
         </script>
-        <h2>Create New Page</h2>
-        <div>
+        <a class='button' id='newWikiPage'>New Wiki Page</a>
+        <div id='newWikiPageDiv' style='display:none;'>
+            <h2>Create New Wiki Page</h2>
             <form action='' onSubmit='clickButton'>
             <table>
                 <tr>
@@ -58,10 +59,14 @@ class ProjectWikiTab extends AbstractTab {
         </div>
         <script type='text/javascript'>
             $('#createPageButton').click(clickButton);
+            $('#newWikiPage').click(function(){
+                $(this).css('display', 'none');
+                $('#newWikiPageDiv').show('fast');
+            });
         </script>";
         
         $pages = $this->project->getWikiPages();
-        $this->html .= "<h2>Search</h2><table id='projectWikiPages' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'><thead><tr bgcolor='#F2F2F2'><th>Page Title</th><th>Last Edited</th><th>Last Edited By</th></tr></thead>\n";
+        $this->html .= "<h2>Search Wiki Pages</h2><table id='projectWikiPages' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'><thead><tr bgcolor='#F2F2F2'><th>Page Title</th><th>Last Edited</th><th>Last Edited By</th></tr></thead>\n";
         $this->html .= "<tbody>\n";
         foreach($pages as $page){
             if($page->getTitle()->getText() != "Main"){
@@ -76,7 +81,7 @@ class ProjectWikiTab extends AbstractTab {
 			    $minute = substr($date, 10, 2);
 			    $second = substr($date, 12, 2);
 			    $editor = Person::newFromId($revision->getRawUser());
-                $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:{$page->getTitle()->getText()}'>{$page->getTitle()->getText()}</a></td>\n";
+                $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:{$page->getTitle()->getText()}'>{$page->getTitle()->getText()}</a><span style='display:none;'>{$revision->getRawText()}</span></td>\n";
                 $this->html .= "<td>{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}</td>\n";
                 $this->html .= "<td><a href='{$editor->getUrl()}'>{$editor->getReversedName()}</a></td>\n";
                 $this->html .= "</tr>\n";
