@@ -110,6 +110,7 @@ EOF;
             
             
             $sub_table = "";
+            $incomplete = false;
             foreach($evals as $ev){
                 $sub_row = "";
             	$ev_id = $ev->getId();
@@ -131,6 +132,9 @@ EOF;
             	}
                 else{
                     $sub_row .= "Original: N/A</br>";
+                    if($wgUser->getId() == $ev_id){ //Only set it for myself
+                        $incomplete = true;
+                    }
                 }
                 if(!empty($q8_2)){
                     $sub_row .= "Revised: <a href='#' onclick='openDialog(\"{$ev_id}\", \"{$sub_id}\", 2); return false;'>View</a><div id='dialog2-{$ev_id}-{$sub_id}' class='comment_dialog' title='Revised Comment on {$sub_name_straight}'>{$q8_2}</div>";
@@ -171,6 +175,9 @@ EOF;
                     }else{
             			$response = "N/A";
                         $sub_row .= "<td>{$response}</td>";
+                        if($wgUser->getId() == $ev_id){
+                            $incomplete = true;
+                        }
             		}
 
             		
@@ -205,7 +212,16 @@ EOF;
                 </thead>
 EOF;
 
-            if(empty($sub_table)){
+            if($incomplete){
+                $sub_table_html .=<<<EOF
+                <tbody>
+                <tr class='purple_row'><td colspan='10'>Please complete your review of {$sub_name_straight} before you can see the feedback from other evaluators.</td></tr>
+                </tbody>
+                </table>
+                </div>
+EOF;
+            }
+            else if(empty($sub_table)){
                 $sub_table_html .=<<<EOF
                 <tbody>
                 <tr class='purple_row'><td colspan='10'>There are no other reviewers assigned to review {$sub_name_straight}</td></tr>
@@ -250,15 +266,19 @@ EOF;
         $evaluator_id = $this->personId;
         $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, $this->projectId);
         $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_SEENOTHERREVIEWS, 0);
+        
+        /*
         $blob->load($blob_address);
         $data = $blob->getData();
         if(!empty($data)){
             return;
         }
+        */
 
         $data = "Yes";
         $blob->store($data, $blob_address);
         
+        /*
         $person = Person::newFromId($this->personId);
         $subs = $person->getEvaluatePNIs();
         foreach($subs as $sub){
@@ -272,6 +292,7 @@ EOF;
                 $blob->store($orig_data, $blob_address_to);
             }
         }
+        */
     }
 }
 ?>
