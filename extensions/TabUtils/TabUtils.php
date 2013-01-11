@@ -55,6 +55,7 @@ class TabUtils {
         unset($content_actions['talk']);
         unset($content_actions['move']);
         unset($content_actions['edit']);
+        unset($content_actions['addsection']);
         return true;
     }
     

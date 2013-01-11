@@ -13,7 +13,7 @@ class ProjectPage {
         
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
-            $name = $article->getTitle()->getNsText();
+            $name = str_replace("_Talk", "", $article->getTitle()->getNsText());
             $title = $article->getTitle()->getText();
             $project = Project::newFromName($name);
             
@@ -47,9 +47,15 @@ class ProjectPage {
                 if($wgTitle->getText() == "Mail Index"){
                     TabUtils::clearActions();
                 }
+                else if($project != null && !$me->isMemberOf($project) && !$me->isRoleAtLeast(MANAGER)){
+                    TabUtils::clearActions();
+                    $wgOut->clearHTML();
+                    $wgOut->permissionRequired('');
+                    $wgOut->output();
+                    exit;
+                }
                 return true;
             }
-            
             $isLead = false;
             if($project != null){
                 if($me->isRoleAtLeast(MANAGER)){
@@ -90,6 +96,7 @@ class ProjectPage {
                 $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
                 $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
                 $tabbedPage->addTab(new ProjectVisualisationsTab($project, $visibility));
+                $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
                 $tabbedPage->showPage();
                 
                 $wgOut->output();
@@ -115,14 +122,10 @@ class ProjectPage {
                 }
                 $name = $split[0];
             }
-            if($title != "Main"){
-                return true;
-            }
             $me = Person::newFromId($wgUser->getId());
-            if($me->isMemberOf(Project::newFromName($name))){
-                $content_actions = array();
+            if($me->isMemberOf(Project::newFromName(str_replace("_Talk", "", $name)))){
                 foreach($me->getProjects() as $proj){
-                    if($name != $proj->getName()){
+                    if(str_replace("_Talk", "", $name) != $proj->getName()){
                         $class = false;
                     }
                     else{
