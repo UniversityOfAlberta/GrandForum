@@ -21,8 +21,18 @@ class EvalOverviewReportItem extends AbstractReportItem {
 	
 	function getTableHTML(){
         global $wgUser;
+        $type = $this->getAttr('subType', 'PNI');
 	    $person = Person::newFromId($this->personId);
-	    $subs = $person->getEvaluatePNIs();
+        if($type == "PNI"){
+	       $subs = $person->getEvaluatePNIs();
+        }
+        else if($type == "CNI"){
+           $subs = $person->getEvaluateCNIs();
+        }
+        else if($type == "Project"){
+            $subs = $person->getEvaluateProjects();
+        }
+
 	    $radio_questions = array(EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY, EVL_OVERALLSCORE, EVL_CONFIDENCE);
         $stock_comments = array(EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_MANAGEMENT_COM, EVL_REPORTQUALITY_COM);
 	    $text_question = EVL_OTHERCOMMENTS;
@@ -104,10 +114,15 @@ EOF;
 
         foreach($subs as $sub){
             $sub_id = $sub->getId();
-            $sub_name = $sub->getReversedName();
-            $sub_name_straight = $sub->getFirstName(). " " .$sub->getLastName();
-            $evals = $sub->getEvaluators('PNI');
-            
+            if($type == "PNI" || $type == "CNI"){
+                $sub_name = $sub->getReversedName();
+                $sub_name_straight = $sub->getFirstName(). " " .$sub->getLastName();
+                $evals = $sub->getEvaluators($type);
+            }
+            else if($type == "Project"){
+                $sub_name = $sub_name_straight = $sub->getName();
+                $evals = $sub->getEvaluators();
+            }
             
             $sub_table = "";
             $incomplete = false;
@@ -115,6 +130,8 @@ EOF;
                 $sub_row = "";
             	$ev_id = $ev->getId();
             	$ev_name = $ev->getReversedName();
+                $ev_name_straight = $ev->getFirstName(). " " .$ev->getLastName();
+
             	$sub_row .= "<tr id='row-{$sub_id}'>";
                 if($wgUser->getId() != $ev_id){
             	   $sub_row .= "<td align='left'>{$ev_name}</td>";
@@ -128,19 +145,19 @@ EOF;
                 //$q8 = htmlentities($q8, ENT_QUOTES);
                 $sub_row .= "<td align='left'>";
                 if(!empty($q8)){
-                    $sub_row .= "Original: <a href='#' onclick='openDialog(\"{$ev_id}\", \"{$sub_id}\", 1); return false;'>View</a><div id='dialog1-{$ev_id}-{$sub_id}' class='comment_dialog' title='Original Comment on {$sub_name_straight}'>{$q8}</div><br />";
+                    $sub_row .= "<a href='#' onclick='openDialog(\"{$ev_id}\", \"{$sub_id}\", 1); return false;'>Original</a><div id='dialog1-{$ev_id}-{$sub_id}' class='comment_dialog' title='Original Comment by {$ev_name_straight} on {$sub_name_straight}'>{$q8}</div><br />";
             	}
                 else{
-                    $sub_row .= "Original: N/A</br>";
+                    $sub_row .= "Original</br>";
                     if($wgUser->getId() == $ev_id){ //Only set it for myself
                         $incomplete = true;
                     }
                 }
                 if(!empty($q8_2)){
-                    $sub_row .= "Revised: <a href='#' onclick='openDialog(\"{$ev_id}\", \"{$sub_id}\", 2); return false;'>View</a><div id='dialog2-{$ev_id}-{$sub_id}' class='comment_dialog' title='Revised Comment on {$sub_name_straight}'>{$q8_2}</div>";
+                    $sub_row .= "<a href='#' onclick='openDialog(\"{$ev_id}\", \"{$sub_id}\", 2); return false;'>Revised</a><div id='dialog2-{$ev_id}-{$sub_id}' class='comment_dialog' title='Revised Comment by {$ev_name_straight} on {$sub_name_straight}'>{$q8_2}</div>";
                 }
                 else{
-                    $sub_row .= "Revised: N/A";
+                    $sub_row .= "Revised";
                 }
 
                 $sub_row .= "</td>";

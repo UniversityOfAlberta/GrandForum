@@ -4,13 +4,27 @@ class EvalReviewTextareaReportItem extends TextareaReportItem {
 
 	// Redefined: Sets the Blob Sub-Item of this AbstractReportItem
     function setBlobSubItem($item){
-        $this->blobSubItem = $this->personId;
+        $type = $this->getAttr('subType', 'NI');
+        if($type == "NI"){
+            $this->blobSubItem = $this->personId;
+        }
+        else if ($type == "Project"){
+            $this->blobSubItem = $this->projectId;
+        }
         $this->getSeenOverview();
         //echo $this->blobItem;
     }
 
     function getSeenOverview(){
     	global $wgUser, $wgImpersonating;
+        $type = $this->getAttr('subType', 'NI');
+        if($type == "NI"){
+            $blobSubItem = $this->personId;
+        }
+        else if ($type == "Project"){
+            $blobSubItem = $this->projectId;
+        }
+
         if(!$wgImpersonating){
             $evaluator_id = $wgUser->getId();
            	
@@ -20,7 +34,7 @@ class EvalReviewTextareaReportItem extends TextareaReportItem {
             $complete = true;
             foreach ($radio_questions as $blobItem){
                 $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, $this->projectId);
-                $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, $blobItem, $this->personId);
+                $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, $blobItem, $blobSubItem);
                 $blob->load($blob_address);
                 if(!$blob_data = $blob->getData()){
                     $complete = false;
@@ -40,11 +54,11 @@ class EvalReviewTextareaReportItem extends TextareaReportItem {
         		$this->blobItem = EVL_OTHERCOMMENTSAFTER;
 
                 //copy over the data if the 'AFTER' blob does not yet exist
-                $blob_address_from = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_OTHERCOMMENTS, $this->personId);
+                $blob_address_from = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_OTHERCOMMENTS, $blobSubItem);
                 $blob->load($blob_address_from);
                 $orig_data = $blob->getData();
 
-                $blob_address_to = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_OTHERCOMMENTSAFTER, $this->personId);
+                $blob_address_to = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_OTHERCOMMENTSAFTER, $blobSubItem);
 
                 if(!$blob->load($blob_address_to) && $orig_data){    
                     $blob->store($orig_data, $blob_address_to);

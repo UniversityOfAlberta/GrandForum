@@ -25,21 +25,28 @@ class NIReviewReportItemSet extends ReportItemSet {
 
     function render(){
         global $wgOut;
-        $person = Person::newFromId($this->personId);
-        $person_name = $person->getReversedName();
+        $type = $this->getAttr('subType', 'NI');
 
+        if($type == "NI"){
+            $person = Person::newFromId($this->personId);
+            $header = $person->getReversedName();
+            $id = $this->personId;
+        }else if($type == "Project"){
+            $project = Project::newFromId($this->projectId);
+            $header = $project->getName();
+            $id = $this->projectId;
+        }
         $html =<<<EOF
             <div class="ni_review_item_wrapper">
-            <h2>{$person_name}</h2>
+            <h2>{$header}</h2>
             <div>
 EOF;
 
         
         $wgOut->addHTML($html);
         foreach($this->items as $item){
-            $item->setAttribute("blobSubItem",$this->personId);
+            $item->setAttribute("blobSubItem", $id);
             $item->render();
-            //exit;
         }
         $wgOut->addHTML("</div></div>");
     }

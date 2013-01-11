@@ -4,8 +4,8 @@
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
             <SectionPermission id="project_materials" permissions="rw" />
             <SectionPermission id="project_budget" permissions="rw" />
-            <!--SectionPermission id="project_reviews" permissions="rw" />
-            <SectionPermission id="project_overviews" permissions="rw" /-->
+            <SectionPermission id="project_reviews" permissions="rw" />
+            <SectionPermission id="project_overview" permissions="rw" />
         </Role>
     </Permissions>
 
@@ -83,14 +83,14 @@
         </ReportItemSet>
     </ReportSection>
 
-    <!-- PNI Reviews -->
-    <!--ReportSection id="project_reviews" name="PNI Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="false" private="false">
+    <!-- Project Reviews -->
+    <ReportSection id="project_reviews" name="Project Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
                <p>Instructions needed</p>
             ]]>
         </Instructions>
-        <ReportItem id="pni_review_head" type="StaticReportItem">
+        <ReportItem id="project_review_head" type="StaticReportItem">
             <![CDATA[
             <script type="text/javascript">
                 $(document).ready(function(){ 
@@ -99,100 +99,149 @@
             </script>
             ]]>
         </ReportItem>
-        <ReportItemSet id="pni_materials" type="PNIMaterialsReportItemSet">
-            <ReportItemSet id="pni_materials" type="NIReviewReportItemSet">
-                <ReportItem id="RI1" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_EXCELLENCE" blobSubItem="0">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="Project">
+            <ReportItemSet id="project_materials" type="NIReviewReportItemSet" subType="Project">
+                <ReportItem id="RI1" type="EvalReviewRadioReportItem" subType="Project" options="Exceptional|Strong|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_EXCELLENCE" blobSubItem="0">
                 <![CDATA[
                 <h3>1. Excellence of the Research Program</h3>
-                <div style="padding-left:20px;">{$item}</div>
+                <table width="100%" cellspacing="10" cellpadding="5">
+                <tr>
+                <td width="23%">{$item}</td>
+                <td>
                 ]]>
                 </ReportItem>
-                <ReportItem id="RI1_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_EXCELLENCE_COM" blobSubItem="0" 
-                    options="Researcher has published numerous articles.|Researcher has created numerous artifacts.|Researcher has published articles in high impact journals.|Researcher has moderate record of publications.|Researcher has limited productivity in low impact journals or conference publications.">
-                <![CDATA[
-                {$item}
-                ]]>
-                </ReportItem>
+                <ReportItemSet id="options_set1" type="OptionsReportItemSet" options="1 Project has numerous articles.|2 Project has numerous artifacts.|3 Project has articles in high impact journals.|4 Project has moderate record of publications.|5 Project has limited productivity in low impact journals or conference publications.">
+                    <ReportItem id="RI1_2" type="EvalReviewCheckboxReportItem" blobType="BLOB_ARRAY" blobItem="EVL_EXCELLENCE_COM" blobSubItem="0"  subType="Project">
+                    <![CDATA[
+                    {$item}
+                    ]]>
+                    </ReportItem>
+                </ReportItemSet>
 
-                <ReportItem id="RI2" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_HQPDEVELOPMENT" blobSubItem="0">
+                <ReportItem id="RI2" type="EvalReviewRadioReportItem" options="Exceptional|Strong|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_HQPDEVELOPMENT" blobSubItem="0"  subType="Project">
                 <![CDATA[
+                </td>
+                </tr>
+                </table>
+                
                 <h3>2. Development of HQP</h3>
-                <div style="padding-left:20px;">{$item}</div>
+                <table width="100%" cellspacing="10" cellpadding="5">
+                <tr>
+                <td width="23%">{$item}</td>
+                <td>
                 ]]>
                 </ReportItem>
-                <ReportItem id="RI2_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_HQPDEVELOPMENT_COM" blobSubItem="0" 
-                    options="HQP play a significant role in the research.|Researcher supervises a large number of HQP.|Researcher supervises a moderate number of HQP.|Researcher supervises a small number of HQP.|Researcher reports no HQP supervision/activity.">
-                <![CDATA[
-                {$item}
-                ]]>
-                </ReportItem>
+                <ReportItemSet id="options_set2" type="OptionsReportItemSet" options="1 HQP play a significant role in the research.|2 Project has a large number of HQP.|3 Project has a moderate number of HQP.|4 Project has a small number of HQP.|5 Project reports no HQP supervision/activity.">
+                    <ReportItem id="RI2_2" type="EvalReviewCheckboxReportItem" blobType="BLOB_ARRAY" blobItem="EVL_HQPDEVELOPMENT_COM" blobSubItem="0"  subType="Project">
+                    <![CDATA[
+                    {$item}
+                    ]]>
+                    </ReportItem>
+                </ReportItemSet>
 
-                <ReportItem id="RI3" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_NETWORKING" blobSubItem="0">
+                <ReportItem id="RI3" type="EvalReviewRadioReportItem" options="Exceptional|Strong|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_NETWORKING" blobSubItem="0"  subType="Project">
                 <![CDATA[
+                </td>
+                </tr>
+                </table>
+
                 <h3>3. Networking and Partnerships</h3>
-                <div style="padding-left:20px;">{$item}</div>
+                <table width="100%" cellspacing="10" cellpadding="5">
+                <tr>
+                <td width="23%">{$item}</td>
+                <td>
                 ]]>
                 </ReportItem>
-                <ReportItem id="RI3_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_NETWORKING_COM" blobSubItem="0" options="High level of partner funding.|High level of engagement with receptors.|Moderate level of partner funding.|Moderate level of engagement with receptors.|Low level of partner funding.|Low level of engagement with receptors.">
-                <![CDATA[
-                {$item}
-                ]]>
-                </ReportItem>
+                <ReportItemSet id="options_set3" type="OptionsReportItemSet" options="1 High level of partner funding.|2 High level of engagement with receptors.|3 Moderate level of partner funding.|4 Moderate level of engagement with receptors.|5 Low level of partner funding.|6 Low level of engagement with receptors.">
+                    <ReportItem id="RI3_2" type="EvalReviewCheckboxReportItem" blobType="BLOB_ARRAY" blobItem="EVL_NETWORKING_COM" blobSubItem="0"  subType="Project">
+                    <![CDATA[
+                    {$item}
+                    ]]>
+                    </ReportItem>
+                </ReportItemSet>
 
-                <ReportItem id="RI4" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_KNOWLEDGE" blobSubItem="0">
+                <ReportItem id="RI4" type="EvalReviewRadioReportItem" options="Exceptional|Strong|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_KNOWLEDGE" blobSubItem="0"  subType="Project">
                 <![CDATA[
+                </td>
+                </tr>
+                </table>
+
                 <h3>4. Knowledge and Technology Exchange and Exploitation</h3>
-                <div style="padding-left:20px;">{$item}</div>
+                <table width="100%" cellspacing="10" cellpadding="5">
+                <tr>
+                <td width="23%">{$item}</td>
+                <td>
                 ]]>
                 </ReportItem>
-                <ReportItem id="RI4_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_KNOWLEDGE_COM" blobSubItem="0" 
-                    options="Considerable efforts to commercialize or otherwise disseminate research outcomes to receptors.|Moderate efforts to commercialize or otherwise disseminate research outcomes to receptors.|Minimal efforts to commercialize or otherwise disseminate research outcomes to receptors.">
-                <![CDATA[
-                {$item}
-                ]]>
-                </ReportItem>
+                <ReportItemSet id="options_set4" type="OptionsReportItemSet" options="1 Considerable efforts to commercialize or otherwise disseminate research outcomes to receptors.|2 Moderate efforts to commercialize or otherwise disseminate research outcomes to receptors.|3 Minimal efforts to commercialize or otherwise disseminate research outcomes to receptors.">
+                    <ReportItem id="RI4_2" type="EvalReviewCheckboxReportItem" blobType="BLOB_ARRAY" blobItem="EVL_KNOWLEDGE_COM" blobSubItem="0"  subType="Project">
+                    <![CDATA[
+                    {$item}
+                    ]]>
+                    </ReportItem>
+                </ReportItemSet>
 
-                <ReportItem id="RI5" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_MANAGEMENT" blobSubItem="0">
+                <ReportItem id="RI5" type="EvalReviewRadioReportItem" options="Exceptional|Strong|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_MANAGEMENT" blobSubItem="0"  subType="Project">
                 <![CDATA[
-                <h3>5. Management of the Network</h3>
-                <div style="padding-left:20px;">{$item}</div>
-                ]]>
-                </ReportItem>
-                <ReportItem id="RI5_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_MANAGEMENT_COM" blobSubItem="0" 
-                    options="Project Leadership role|Theme Leadership role|Board of Directors role|Committee role|Involved in organization of GRAND events">
-                <![CDATA[
-                {$item}
-                ]]>
-                </ReportItem>
+                </td>
+                </tr>
+                </table>
 
-                <ReportItem id="RI6" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_REPORTQUALITY" blobSubItem="0">
+                <h3>5. Other Project Outcomes</h3>
+                <table width="100%" cellspacing="10" cellpadding="5">
+                <tr>
+                <td width="23%">{$item}</td>
+                <td>
+                ]]>
+                </ReportItem>
+                <ReportItemSet id="options_set5" type="OptionsReportItemSet" options="1 Project Leadership role|2 Theme Leadership role|3 Board of Directors role|4 Committee role|5 Involved in organization of GRAND events">
+                    <ReportItem id="RI5_2" type="EvalReviewCheckboxReportItem" blobType="BLOB_ARRAY" blobItem="EVL_MANAGEMENT_COM" blobSubItem="0"  subType="Project">
+                    <![CDATA[
+                    {$item}
+                    ]]>
+                    </ReportItem>
+                </ReportItemSet>
+
+                <ReportItem id="RI6" type="EvalReviewRadioReportItem" options="Exceptional|Strong|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_REPORTQUALITY" blobSubItem="0"  subType="Project">
                 <![CDATA[
+                </td>
+                </tr>
+                </table>
+
                 <h3>6. Rating for Quality of Report</h3>
-                <div style="padding-left:20px;">{$item}</div>
+                <table width="100%" cellspacing="10" cellpadding="5">
+                <tr>
+                <td width="23%">{$item}</td>
+                <td>
                 ]]>
                 </ReportItem>
-                <ReportItem id="RI6_2" type="EvalReviewSelectReportItem" blobType="BLOB_TEXT" blobItem="EVL_REPORTQUALITY_COM" blobSubItem="0"
-                    options="Reporting complete and clear|Reporting complete but not always clear|Reporting clear but incomplete|Reporting incomplete and unclear">
-                <![CDATA[
-                {$item}
-                ]]>
-                </ReportItem>
+                <ReportItemSet id="options_set6" type="OptionsReportItemSet" options="1 Reporting complete and clear|2 Reporting complete but not always clear|3 Reporting clear but incomplete|4 Reporting incomplete and unclear">
+                    <ReportItem id="RI6_2" type="EvalReviewCheckboxReportItem" blobType="BLOB_ARRAY" blobItem="EVL_REPORTQUALITY_COM" blobSubItem="0"  subType="Project">
+                    <![CDATA[
+                    {$item}
+                    ]]>
+                    </ReportItem>
+                </ReportItemSet>
 
-                <ReportItem id="RI7" type="EvalReviewTextareaReportItem" rows="6" width="100%" limit="600" blobType="BLOB_TEXT" blobItem="EVL_OTHERCOMMENTS" blobSubItem="0">
+                <ReportItem id="RI7" type="EvalReviewTextareaReportItem" rows="6" width="100%" limit="-1" blobType="BLOB_TEXT" blobItem="EVL_OTHERCOMMENTS" blobSubItem="0"  subType="Project">
                 <![CDATA[
+                </td>
+                </tr>
+                </table>
+
                 <h3>7. Evaluator Comments</h3>
                 <div style="padding-left:16px;">{$item}</div>
                 ]]>
                 </ReportItem>
 
-                <ReportItem id="RI8" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_OVERALLSCORE" blobSubItem="0">
+                <ReportItem id="RI8" type="EvalReviewRadioReportItem" options="Top|Upper Middle|Lower Middle|Bottom" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_OVERALLSCORE" blobSubItem="0"  subType="Project">
                 <![CDATA[
                 <h3>8. Overall Score</h3>
                 <div style="padding-left:20px;">{$item}</div>
                 ]]>
                 </ReportItem>
                 
-                <ReportItem id="RI9" type="EvalReviewRadioReportItem" options="Exceptional|Good|Satisfactory|Unsatisfactory" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_CONFIDENCE" blobSubItem="0">
+                <ReportItem id="RI9" type="EvalReviewRadioReportItem" options="Very High|High|Moderate|Low" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_CONFIDENCE" blobSubItem="0"  subType="Project">
                 <![CDATA[
                 <h3>9. Confidence Level of Evaluator </h3>
                 <div style="padding-left:20px;">{$item}</div>
@@ -200,20 +249,19 @@
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
-    </ReportSection-->
-    
-     <!-- PNI Overviews -->
-    <!--ReportSection id="project_overviews" name="PNI Overviews" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+    </ReportSection>
+
+     <!-- Project Overviews -->
+    <ReportSection id="project_overview" name="Project Overview" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
                <p>Instructions needed</p>
             ]]>
         </Instructions>
-        <ReportItem id="pni_overview" type="EvalOverviewReportItem">
+        <ReportItem id="project_overview" type="EvalOverviewReportItem" subType="Project">
             <![CDATA[
             {$item}
             ]]>
         </ReportItem>
-        
-    </ReportSection-->
+    </ReportSection>
 </Report>

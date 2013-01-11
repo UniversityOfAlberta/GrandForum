@@ -71,7 +71,7 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="pni_materials" type="MaterialsReportItemSet" subType="PNI">
-            <ReportItemSet id="pni_materials" type="NIReviewReportItemSet">
+            <ReportItemSet id="pni_materials" type="NIReviewReportItemSet" subType="NI">
                 <ReportItem id="RI1" type="EvalReviewRadioReportItem" options="Exceptional|Strong|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_EXCELLENCE" blobSubItem="0">
                 <![CDATA[
                 <h3>1. Excellence of the Research Program</h3>
@@ -229,7 +229,7 @@
                <p>Instructions needed</p>
             ]]>
         </Instructions>
-        <ReportItem id="pni_overview" type="EvalOverviewReportItem">
+        <ReportItem id="pni_overview" type="EvalOverviewReportItem" subType="PNI">
             <![CDATA[
             {$item}
             ]]>
