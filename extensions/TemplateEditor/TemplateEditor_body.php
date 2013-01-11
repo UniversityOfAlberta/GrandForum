@@ -104,7 +104,7 @@ class TemplateEditor {
       $actionCmd = 'getPagesForTemplate';
       $check = $wgRequest->getVal('action') == 'getPagesForTemplate';
       $listAction =  array(
-			   'class' => ($check) ? 'selected' : false,
+			   'class' => 'action',
 			   'text' => $tabName,
 			   'href' => $wgTitle->getLocalURL( 'action=' . $actionCmd)
 			   );
@@ -119,7 +119,7 @@ class TemplateEditor {
       $actionCmd = 'createFromTemplate';
       $check = $wgRequest->getVal('action') == $actionCmd;
       $createAction =  array(
-                           'class' => ($check) ? 'selected' : false,
+                           'class' => 'action',
                            'text' => $tabName,
                            'href' => $wgTitle->getLocalURL( 'action=' . $actionCmd)
                            );
@@ -137,12 +137,12 @@ class TemplateEditor {
 
     if (!TemplateFunctions::doesPageContainEditableTemplate($wgTitle))
       return true;
-    $tabName = 'Edit';
+    $tabName = 'Edit Template';
     $actionCmd = 'edit&editType=template';
     //$action = $wgRequest->getText( 'action' );
     $check = self::isTECall();
     $teAction = array(
-		      'class' => ($check) ? 'selected' : false,
+		      'class' => 'action',
 		      'text' => $tabName,
 		      'href' => $wgTitle->getLocalURL( 'action=' . $actionCmd)
 		      );
@@ -153,7 +153,7 @@ class TemplateEditor {
       return true;
     
     if ($check)
-      $content_actions['edit']['class'] = false;
+      //$content_actions['edit']['class'] = false;
       unset( $content_actions['edit'] ); // only this to remove an action
 
     array_splice($content_actions, $index+1, 0, array('editTemplate' => $teAction));
