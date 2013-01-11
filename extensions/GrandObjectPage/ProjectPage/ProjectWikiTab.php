@@ -21,32 +21,43 @@ class ProjectWikiTab extends AbstractTab {
             return $this->html;
         }
         
-        $this->html .= "<h2>Create New Page</h2>
-        <div>
-            <table>
-                <tr>
-                    <td><b>Title:</b></td><td><input id='newPageTitle' type='text' name='title' size='40' /></td><td><a class='button' id='createPageButton'>Create Page</a></td>
-                </tr>
-            </table>
-        </div>
-        <script type='text/javascript'>
-            $('#createPageButton').click(function(){
+        $this->html .= "<script type='text/javascript'>
+            function clickButton(){
                 clearWarning();
                 var title = $('#newPageTitle').val().trim();
                 if(title == ''){
                     addWarning('The title must not be empty');
                 }
                 else if(title.indexOf('%') !== -1 ||
+                        title.indexOf(':') !== -1 ||
+                        title.indexOf('|') !== -1 ||
+                        title.indexOf('.') !== -1 ||
                         title.indexOf('[') !== -1 ||
                         title.indexOf(']') !== -1 ||
                         title.indexOf('{') !== -1 ||
-                        title.indexOf('}') !== -1){
-                    addWarning('The title must not contain the following characters: <b>%</b>, <b>[</b>, <b>]</b>, <b>{</b>, <b>}</b>');
+                        title.indexOf('}') !== -1 ||
+                        title.indexOf('<') !== -1 ||
+                        title.indexOf('>') !== -1){
+                    addWarning('The title must not contain the following characters: <b>%</b>, <b>:</b>, <b>|</b>, <b>|</b>, <b>.</b>, <b>&lt;</b>, <b>&gt;</b>, <b>[</b>, <b>]</b>, <b>{</b>, <b>}</b>');
                 }
                 else{ 
                     document.location = '$wgServer$wgScriptPath/index.php/{$project->getName()}:' + title + '?action=edit';
                 }
-            });
+                return false;
+            }
+        </script>
+        <h2>Create New Page</h2>
+        <div>
+            <form action='' onSubmit='clickButton'>
+            <table>
+                <tr>
+                    <td><b>Title:</b></td><td><input id='newPageTitle' type='text' name='title' size='40' /></td><td><input type='submit' id='createPageButton' value='Create Page' /></td>
+                </tr>
+            </table>
+            </form>
+        </div>
+        <script type='text/javascript'>
+            $('#createPageButton').click(clickButton);
         </script>";
         
         $pages = $this->project->getWikiPages();
