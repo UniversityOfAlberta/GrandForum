@@ -81,7 +81,7 @@ class ProjectWikiTab extends AbstractTab {
 			    $minute = substr($date, 10, 2);
 			    $second = substr($date, 12, 2);
 			    $editor = Person::newFromId($revision->getRawUser());
-                $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:{$page->getTitle()->getText()}'>{$page->getTitle()->getText()}</a><span style='display:none;'>{$revision->getRawText()}</span></td>\n";
+                $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:{$page->getTitle()->getText()}'>{$page->getTitle()->getText()}</a></td>\n";
                 $this->html .= "<td>{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}</td>\n";
                 $this->html .= "<td><a href='{$editor->getUrl()}'>{$editor->getReversedName()}</a></td>\n";
                 $this->html .= "</tr>\n";
