@@ -28,7 +28,7 @@ class EvalOverviewReportItem extends AbstractReportItem {
 	    $text_question = EVL_OTHERCOMMENTS;
         $text_question2= EVL_OTHERCOMMENTSAFTER;
 	    //$rating_map = array("Exceptional"=>'E', "Strong"=>'S', "Satisfactory"=>'S', "Unsatisfactory"=>'U');
-        $html =<<<EOF
+        $jscript =<<<EOF
             <style type='text/css'>
                 div.details_sub{
                     margin-top: 20px;
@@ -60,10 +60,11 @@ class EvalOverviewReportItem extends AbstractReportItem {
                         classes: 'qtipStyle'
                     }
                 });
+                $('.comment_dialog').dialog( "destroy" );
                 $('.comment_dialog').dialog({ autoOpen: false, width: 400, height: 200 });
                 
-                function openDialog(sub_id, num){
-                    $('#dialog'+num+'-'+sub_id).dialog("open");
+                function openDialog(ev_id, sub_id, num){
+                    $('#dialog'+num+'-'+ev_id+'-'+sub_id).dialog("open");
                 }
 
                 function expandSubDetails(sub_id){
@@ -78,7 +79,8 @@ class EvalOverviewReportItem extends AbstractReportItem {
                 }
             </script>
 EOF;
-        $html .=<<<EOF
+
+        $html =<<<EOF
         <div class="overview_table_heading"></div>
         <table id="overview_table" class="dashboard" style="width:100%;background:#ffffff;border-style:solid; text-align:center;" cellspacing="1" cellpadding="3" frame="box" rules="all">
 EOF;
@@ -87,15 +89,15 @@ EOF;
         $html .=<<<EOF
         	<tr>
         	<th width="20%" align="left">NI Name</th>
-            <th>Q8</th>
+            <th width="15%">Q7 (Comments)</th>
         	<th>Q1</th>
         	<th>Q2</th>
         	<th>Q3</th>
         	<th>Q4</th>
         	<th>Q5</th>
         	<th>Q6</th>
+        	<th>Q8</th>
         	<th>Q9</th>
-        	<th>Q10</th>
         	</tr>
 EOF;
         $sub_details = "";
@@ -118,22 +120,23 @@ EOF;
                 }else{
                     $sub_row .= "<td align='left'><a href='#details_sub-{$sub_id}' onclick='expandSubDetails(\"{$sub_id}\"); return false;' >{$sub_name}</a></td>";
                 }
-                $q8 = $this->blobValue($ev_id, $text_question, $sub_id);
-                $q8_2 = $this->blobValue($ev_id, $text_question2, $sub_id);
-                
+                $q8 = $this->blobValue(BLOB_TEXT, $ev_id, $text_question, $sub_id);
+                //echo $q8;
+                $q8_2 = $this->blobValue(BLOB_TEXT, $ev_id, $text_question2, $sub_id);
+               
                 //$q8 = htmlentities($q8, ENT_QUOTES);
                 $sub_row .= "<td align='left'>";
                 if(!empty($q8)){
-                    $sub_row .= "<a href='#' onclick='openDialog(\"{$sub_id}\", 1); return false;'>See Original Comment</a><div id='dialog1-{$sub_id}' class='comment_dialog' title='Original Comment on {$sub_name_straight}'>{$q8}</div><br />";
+                    $sub_row .= "Original: <a href='#' onclick='openDialog(\"{$ev_id}\", \"{$sub_id}\", 1); return false;'>View</a><div id='dialog1-{$ev_id}-{$sub_id}' class='comment_dialog' title='Original Comment on {$sub_name_straight}'>{$q8}</div><br />";
             	}
                 else{
-                    $sub_row .= "No Original Comment</br>";
+                    $sub_row .= "Original: N/A</br>";
                 }
                 if(!empty($q8_2)){
-                    $sub_row .= "<a href='#' onclick='openDialog(\"{$sub_id}\", 2); return false;'>See Changed Comment</a><div id='dialog2-{$sub_id}' class='comment_dialog' title='Changed Comment on {$sub_name_straight}'>{$q8_2}</div>";
+                    $sub_row .= "Revised: <a href='#' onclick='openDialog(\"{$ev_id}\", \"{$sub_id}\", 2); return false;'>View</a><div id='dialog2-{$ev_id}-{$sub_id}' class='comment_dialog' title='Revised Comment on {$sub_name_straight}'>{$q8_2}</div>";
                 }
                 else{
-                    $sub_row .= "No Changed Comment";
+                    $sub_row .= "Revised: N/A";
                 }
 
                 $sub_row .= "</td>";
@@ -144,19 +147,20 @@ EOF;
                     $comm_short = array();
 
                     if($i < 6){
-                        $comm = $this->blobValue($ev_id, $stock_comments[$i], $sub_id);
-                        
+                        $comm = $this->blobValue(BLOB_ARRAY, $ev_id, $stock_comments[$i], $sub_id);
+                        //var_dump($comm);
+
                         if(!empty($comm)){
                             
                             foreach($comm as $key=>$c){
-                                if(strlen($c)>3){
-                                    $comm_short[] = substr($c, 0, 3);
+                                if(strlen($c)>1){
+                                    $comm_short[] = substr($c, 0, 1);
                                 }
                             }
                         }
                     }
                     $comm_short = implode(", ", $comm_short);
-                    $response_orig = $response = $this->blobValue($ev_id, $blobItem, $sub_id);
+                    $response_orig = $response = $this->blobValue(BLOB_TEXT, $ev_id, $blobItem, $sub_id);
             		if($response_orig){
             			$response = substr($response, 0, 1);
                         if(!empty($comm)){
@@ -188,15 +192,15 @@ EOF;
                 <thead>
                     <tr>
                     <th width="20%" align='left'>Evaluator Name</th>
-                    <th>Q8</th>
+                    <th width="15%">Q7 (Comments)</th>
                     <th>Q1</th>
                     <th>Q2</th>
                     <th>Q3</th>
                     <th>Q4</th>
                     <th>Q5</th>
                     <th>Q6</th>
+                    <th>Q8</th>
                     <th>Q9</th>
-                    <th>Q10</th>
                     </tr>
                 </thead>
 EOF;
@@ -224,13 +228,13 @@ EOF;
 
         $html .= "</table>";
         $html .= $sub_details;
-
+        $html .= $jscript;
 
         return $html;
 	}
 
-	function blobValue($evaluator_id, $blobItem, $blobSubItem){
-		$blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, $this->projectId);
+	function blobValue($blob_type, $evaluator_id, $blobItem, $blobSubItem){
+		$blob = new ReportBlob($blob_type, $this->getReport()->year, $evaluator_id, $this->projectId);
 	    $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, $blobItem, $blobSubItem);
 		$blob->load($blob_address);
 	    $blob_data = $blob->getData();
