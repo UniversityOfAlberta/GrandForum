@@ -13,13 +13,14 @@ ProductListView = Backbone.View.extend({
     },
     
     renderProducts: function(){
-        this.productTag = this.$el.find('#productRows');
+        this.productTag = this.$('#productRows');
         _.each(this.model.models, function(product){
             this.appendNewProduct(product);
         }, this);
     },
     
     render: function(){
+        var start = new Date().getTime();
         this.$el.empty();
         this.$el.css('display', 'none');
         this.$el.html(this.template(this.model.toJSON()));
@@ -28,6 +29,8 @@ ProductListView = Backbone.View.extend({
 	                                           'aaSorting': [ [0,'desc'], [1,'asc'], [4, 'asc'] ],
 	                                           'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
         this.$el.css('display', 'block');
+        var end = new Date().getTime();
+        console.log(end-start);
         return this.el;
     }
 
@@ -52,7 +55,7 @@ ProductRowView = Backbone.View.extend({
                                  target: '_blank'});
             views.push(new PersonLinkView({model: link}).render());
         });
-        csv = new CSVView({el: this.$el.find('#productAuthors'), model: views}).render();
+        csv = new CSVView({el: this.$('#productAuthors'), model: views}).render();
     },
     
     renderProjects: function(){
@@ -64,14 +67,14 @@ ProductRowView = Backbone.View.extend({
                                  target: '_blank'});
             views.push(new ProjectLinkView({model: link}).render());
         });
-        csv = new CSVView({el: this.$el.find('#productProjects'), model: views}).render();
+        csv = new CSVView({el: this.$('#productProjects'), model: views}).render();
     },
     
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
         this.renderProjects();
-        return this.el;
+        return this.$el;
     }
     
 });

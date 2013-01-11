@@ -519,6 +519,7 @@ abstract class RESTAPI extends API {
             $json = $this->doPOST();
         }
         header('Content-Type: application/json');
+        ob_start("ob_gzhandler");
         echo $json;
         exit;
     }
