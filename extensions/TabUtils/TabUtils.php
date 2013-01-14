@@ -21,8 +21,14 @@ class TabUtils {
         }
         $wgOut->addHTML("<script type='text/javascript'>
             $(document).ready(function(){
-                $('li.product').wrapAll('<ul class=\'products\'>')
+                $('li.product').wrapAll('<ul class=\'products\'>');
                 $('ul.products').wrapAll('<li class=\'invisible\'>');
+                
+                var productsSelected = false;
+                if($('li.product').filter('.selected').length >= 1){
+                    productsSelected = true;
+                }
+                
                 $('li.action').wrapAll('<ul class=\'actions\' />');
                 $('div#submenu ul.products').dropdown({title: 'Products',
                                                       width: '125px' 
@@ -32,6 +38,11 @@ class TabUtils {
                                                       width: '125px' 
                                                      });
                 $('div#submenu ul.actions').css('padding-right', 0);
+                
+                if(productsSelected){
+                    $('ul.products > li').addClass('selected');
+                    $('ul.products').imgDown();
+                }
             });
         </script>");
         $content_actions = $new_actions;
@@ -257,7 +268,7 @@ class TabUtils {
             }
         }
         else if($wgUser->isLoggedIn() && ($wgTitle->getText() == "Products")){
-            $new_actions["Publications"]['class'] = 'products selected';
+            $new_actions["Publications"]['class'] = 'product selected';
         }
         else if(($wgTitle->getText() == "Multimedia Stories" && $wgTitle->getNSText() == "GRAND") ||
                  $wgTitle->getNSText() == "Multimedia_Story" || $wgTitle->getNSText() == "Form"){

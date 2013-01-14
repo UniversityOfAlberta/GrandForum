@@ -2,12 +2,42 @@
 
   $.fn.dropdown = function(options) {
     
+    $.fn.imgToggle = function(){
+        var selected = '';
+        if($('li.actions', $(this)).hasClass('selected')){
+            selected = '_selected';
+        }
+        if($("img.dropdown", $(this)).attr('src') == '../skins/down' + selected + '.png'){
+            this.imgUp();
+        } 
+        else{
+            this.imgDown();
+        }
+    }
+    
+    $.fn.imgUp = function(){
+        var selected = '';
+        if($('li.actions', $(this)).hasClass('selected')){
+            selected = '_selected';
+        }
+        $("img.dropdown", $(this)).attr('src', '../skins/up' + selected + '.png');
+    }
+    
+    $.fn.imgDown = function(){
+        var selected = '';
+        if($('li.actions', $(this)).hasClass('selected')){
+            selected = '_selected';
+        }
+        $("img.dropdown", $(this)).attr('src', '../skins/down' + selected + '.png');
+    }
+    
     $(this).addClass('dropdown');
     
     var title = (typeof options.title != 'undefined') ? options.title : 'DropDown';
     var width = (typeof options.width != 'undefined') ? options.width : '150px';
     
     var lis = $('li', $(this));
+    $(lis).removeClass('selected');
     $(lis).addClass('action');
     $(lis).css('display', 'block');
     
@@ -17,28 +47,11 @@
     
     $(divActions).css('right', '1px');
     $(lis).appendTo($(divActions));
-    $(this).append("<li class='actions'><a>" + title + "<img class='dropdown' style='margin-left:5px;' src='../skins/down.png' /></a></li>");
-    
+    $(this).append("<li class='actions'><a>" + title + "<img class='dropdown' style='margin-left:5px;' /></a></li>");
+    $(this).imgDown();
     $(divActions).append("<img class='dropdowntop' src='../skins/dropdowntop.png' />");
     var dropdownTop = $('.dropdowntop', $(this));
     var that = this;
-    
-    $.fn.imgToggle = function(){
-        if($("img.dropdown", $(this)).attr('src') == '../skins/down.png'){
-            this.imgUp();
-        } 
-        else{
-            this.imgDown();
-        }
-    }
-    
-    $.fn.imgUp = function(){
-        $("img.dropdown", $(this)).attr('src', '../skins/up.png');
-    }
-    
-    $.fn.imgDown = function(){
-        $("img.dropdown", $(this)).attr('src', '../skins/down.png');
-    }
     
     $('li.actions', $(this)).click(function(e){
         $("div.actions").not(divActions).fadeOut(250); // Remove all other dropdowns
