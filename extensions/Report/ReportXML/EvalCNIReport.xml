@@ -81,7 +81,7 @@
                 <td>
                 ]]>
                 </ReportItem>
-                <ReportItemSet id="options_set1" type="OptionsReportItemSet" options="1 Researcher has published numerous articles.|2 Researcher has created numerous artifacts.|3 Researcher has published articles in high impact journals.|4 Researcher has moderate record of publications.|5 Researcher has limited productivity in low impact journals or conference publications.">
+                <ReportItemSet id="options_set1" type="OptionsReportItemSet" options="1 Numerous articles.|2 Numerous artifacts.|3 Articles in high impact journals.|4 Moderate record of publications.|5 Limited productivity in low impact journals or conference publications.">
                     <ReportItem id="RI1_2" type="EvalReviewCheckboxReportItem" blobType="BLOB_ARRAY" blobItem="EVL_EXCELLENCE_COM" blobSubItem="0">
                     <![CDATA[
                     {$item}
@@ -102,7 +102,7 @@
                 <td>
                 ]]>
                 </ReportItem>
-                <ReportItemSet id="options_set2" type="OptionsReportItemSet" options="1 HQP play a significant role in the research.|2 Researcher supervises a large number of HQP.|3 Researcher supervises a moderate number of HQP.|4 Researcher supervises a small number of HQP.|5 Researcher reports no HQP supervision/activity.">
+                <ReportItemSet id="options_set2" type="OptionsReportItemSet" options="1 Significant HQP role in the research.|2 Large number of HQP.|3 Moderate number of HQP.|4 Small number of HQP.|5 No HQP supervision/activity.">
                     <ReportItem id="RI2_2" type="EvalReviewCheckboxReportItem" blobType="BLOB_ARRAY" blobItem="EVL_HQPDEVELOPMENT_COM" blobSubItem="0">
                     <![CDATA[
                     {$item}
@@ -144,7 +144,7 @@
                 <td>
                 ]]>
                 </ReportItem>
-                <ReportItemSet id="options_set4" type="OptionsReportItemSet" options="1 Considerable efforts to commercialize or otherwise disseminate research outcomes to receptors.|2 Moderate efforts to commercialize or otherwise disseminate research outcomes to receptors.|3 Minimal efforts to commercialize or otherwise disseminate research outcomes to receptors.">
+                <ReportItemSet id="options_set4" type="OptionsReportItemSet" options="1 Considerable efforts to commercialize.|2 Considerable efforts to disseminate research to receptors.|3 Moderate efforts to commercialize.|4 Moderate efforts to disseminate research to receptors.|5 Minimal efforts to commercialize.|6 Minimal efforts to disseminate research to receptors.">
                     <ReportItem id="RI4_2" type="EvalReviewCheckboxReportItem" blobType="BLOB_ARRAY" blobItem="EVL_KNOWLEDGE_COM" blobSubItem="0">
                     <![CDATA[
                     {$item}
@@ -165,7 +165,7 @@
                 <td>
                 ]]>
                 </ReportItem>
-                <ReportItemSet id="options_set5" type="OptionsReportItemSet" options="1 Project Leadership role|2 Theme Leadership role|3 Board of Directors role|4 Committee role|5 Involved in organization of GRAND events">
+                <ReportItemSet id="options_set5" type="OptionsReportItemSet" options="1 Project Leadership role.|2 Theme Leadership role.|3 Board of Directors role.|4 Committee role.|5 Involved in organization of GRAND.|6 Other involvement with support.|7 Involvement with other projects.">
                     <ReportItem id="RI5_2" type="EvalReviewCheckboxReportItem" blobType="BLOB_ARRAY" blobItem="EVL_MANAGEMENT_COM" blobSubItem="0">
                     <![CDATA[
                     {$item}

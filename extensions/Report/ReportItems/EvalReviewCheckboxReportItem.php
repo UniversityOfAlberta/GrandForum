@@ -4,12 +4,13 @@ class EvalReviewCheckboxReportItem extends AbstractReportItem {
 
 	// Redefined: Sets the Blob Sub-Item of this AbstractReportItem
     function setBlobSubItem($item){
-        $type = $this->getAttr('subType', 'NI');
+        
+        $type = $this->getParent()->getParent()->getAttr('subType', 'NI');
     	if($type == "NI"){
         	$this->blobSubItem = $this->personId;
     	}
     	else if ($type == "Project"){
-    		$this->blobSubItem = $this->projectId;
+    		$this->blobSubItem = $this->getParent()->getParent()->projectId;
     	}
     }
 

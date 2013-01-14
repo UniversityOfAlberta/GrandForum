@@ -129,6 +129,7 @@ EOF;
             foreach($evals as $ev){
                 $sub_row = "";
             	$ev_id = $ev->getId();
+                //echo $ev_id."<>";
             	$ev_name = $ev->getReversedName();
                 $ev_name_straight = $ev->getFirstName(). " " .$ev->getLastName();
 
@@ -138,8 +139,9 @@ EOF;
                 }else{
                     $sub_row .= "<td align='left'><a href='#details_sub-{$sub_id}' onclick='expandSubDetails(\"{$sub_id}\"); return false;' >{$sub_name}</a></td>";
                 }
+
                 $q8 = $this->blobValue(BLOB_TEXT, $ev_id, $text_question, $sub_id);
-                //echo $q8;
+                //var_dump($q8);
                 $q8_2 = $this->blobValue(BLOB_TEXT, $ev_id, $text_question2, $sub_id);
                
                 //$q8 = htmlentities($q8, ENT_QUOTES);
@@ -267,10 +269,17 @@ EOF;
 	}
 
 	function blobValue($blob_type, $evaluator_id, $blobItem, $blobSubItem){
-		$blob = new ReportBlob($blob_type, $this->getReport()->year, $evaluator_id, $this->projectId);
+        $project_id = 0;
+        if($this->getReport()->reportType == RP_EVAL_PROJECT){
+            $project_id = $blobSubItem;
+        }
+ 		$blob = new ReportBlob($blob_type, $this->getReport()->year, $evaluator_id, $project_id);
 	    $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, $blobItem, $blobSubItem);
 		$blob->load($blob_address);
 	    $blob_data = $blob->getData();
+        //$addr = "BlobType=".$blob_type."; Year=". $this->getReport()->year ."; PersonID=". $evaluator_id."; ProjectID=". $this->projectId."<br />";
+        //$addr .= "ReportType=".$this->getReport()->reportType."; Section=". SEC_NONE ."; BlobItem=". $blobItem ."; SubItem=". $blobSubItem ."<br /><br>";
+        //echo $addr;
 	    return $blob_data;
 	}
 
@@ -280,8 +289,9 @@ EOF;
             return;
         }
         
+
         $evaluator_id = $this->personId;
-        $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, $this->projectId);
+        $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, 0);
         $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_SEENOTHERREVIEWS, 0);
         
         /*

@@ -3,19 +3,6 @@
 class NIReviewReportItemSet extends ReportItemSet {
 
     function getData(){
-        /*$data = array();
-        $person = Person::newFromId($this->personId);
-        
-        $subs = $person->getEvaluatePNIs();
-        
-        if(is_array($subs)){
-            foreach($subs as $sub){
-                $tuple = self::createTuple();
-                $tuple['person_id'] = $sub->getId();
-                $data[] = $tuple;
-            }
-        }
-        return $data;*/
     
         $data = array();
         $tuple = self::createTuple();
@@ -35,6 +22,7 @@ class NIReviewReportItemSet extends ReportItemSet {
             $project = Project::newFromId($this->projectId);
             $header = $project->getName();
             $id = $this->projectId;
+
         }
         $html =<<<EOF
             <div class="ni_review_item_wrapper">
@@ -42,10 +30,11 @@ class NIReviewReportItemSet extends ReportItemSet {
             <div>
 EOF;
 
-        
         $wgOut->addHTML($html);
         foreach($this->items as $item){
+            //$item->setBlobSubItem($id);
             $item->setAttribute("blobSubItem", $id);
+            //echo $item->getAttr("blobSubItem") . "<br>";
             $item->render();
         }
         $wgOut->addHTML("</div></div>");
