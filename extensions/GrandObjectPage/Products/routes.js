@@ -26,7 +26,13 @@ pageRouter.on('route:showGrandProducts', function(category){
     products = new Products();
     products.category = category;
     products.grand = 'grand';
-    if(category != 'Press'){
+    if(category == 'Press'){
+        categoryTitle = category;
+    }
+    else if(category == 'Activity'){
+        categoryTitle = 'Activities';
+    }
+    else{
         categoryTitle = category + 's';
     }
     main.set('title', 'GRAND ' + categoryTitle);
@@ -38,7 +44,14 @@ pageRouter.on('route:showNonGrandProducts', function(category){
     products = new Products();
     products.category = category;
     products.grand = 'nonGrand';
-    if(category != 'Press'){
+    
+    if(category == 'Press'){
+        categoryTitle = category;
+    }
+    else if(category == 'Activity'){
+        categoryTitle = 'Activities';
+    }
+    else{
         categoryTitle = category + 's';
     }
     main.set('title', 'Non-GRAND ' + categoryTitle);

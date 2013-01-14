@@ -1,12 +1,12 @@
 <?php
 
-$wgHooks['SkinTemplateTabs'][1000] = 'TabUtils::actionTabs';
+$wgHooks['SkinTemplateContentActions'][1000] = 'TabUtils::actionTabs';
 
 class TabUtils {
 
     static $customActions = array();
 
-    static function actionTabs($skin, &$content_actions){
+    static function actionTabs(&$content_actions){
         global $wgTitle, $wgServer, $wgScriptPath, $wgOut;
         $new_actions = array();
         foreach($content_actions as $key => $action){
@@ -19,23 +19,21 @@ class TabUtils {
         foreach(self::$customActions as $key => $action){
             $new_actions[$key] = $action;
         }
-        if(count($new_actions) > 0){
-            $wgOut->addHTML("<script type='text/javascript'>
-                $(document).ready(function(){
-                    $('li.product').wrapAll('<ul class=\'products\'>')
-                    $('ul.products').wrapAll('<li class=\'invisible\'>');
-                    $('li.action').wrapAll('<ul class=\'actions\' />');
-                    $('div#submenu ul.products').dropdown({title: 'Products',
-                                                          width: '125px' 
-                                                          });
-                                                         
-                    $('div#submenu ul.actions').dropdown({title: 'Actions',
-                                                          width: '125px' 
-                                                         });
-                    $('div#submenu ul.actions').css('padding-right', 0);
-                });
-            </script>");
-        }
+        $wgOut->addHTML("<script type='text/javascript'>
+            $(document).ready(function(){
+                $('li.product').wrapAll('<ul class=\'products\'>')
+                $('ul.products').wrapAll('<li class=\'invisible\'>');
+                $('li.action').wrapAll('<ul class=\'actions\' />');
+                $('div#submenu ul.products').dropdown({title: 'Products',
+                                                      width: '125px' 
+                                                      });
+                                                     
+                $('div#submenu ul.actions').dropdown({title: 'Actions',
+                                                      width: '125px' 
+                                                     });
+                $('div#submenu ul.actions').css('padding-right', 0);
+            });
+        </script>");
         $content_actions = $new_actions;
         return true;
     }
@@ -191,13 +189,22 @@ class TabUtils {
         if($wgUser->isLoggedIn()){
             $new_actions["Publications"] = array('class' => 'product',
                                        'text' => "Publications",
-                                       'href' => "$wgServer$wgScriptPath/index.php/GRAND:Publications");
-            $new_actions["Presentations"] = array('class' => 'product',
-                                       'text' => "Presentations",
-                                       'href' => "$wgServer$wgScriptPath/index.php/GRAND:Presentations");
+                                       'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Publication");
             $new_actions["Artifacts"] = array('class' => 'product',
                                        'text' => "Artifacts",
-                                       'href' => "$wgServer$wgScriptPath/index.php/GRAND:Artifacts");
+                                       'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Artifact");
+            $new_actions["Presentations"] = array('class' => 'product',
+                                       'text' => "Presentations",
+                                       'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Presentation");
+            $new_actions["Activities"] = array('class' => 'product',
+                                              'text' => "Activities",
+                                              'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Activity");
+            $new_actions["Press"] = array('class' => 'product',
+                                          'text' => "Press",
+                                          'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Press");
+            $new_actions["Award"] = array('class' => 'product',
+                                          'text' => "Award",
+                                          'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Award");
         }
         $new_actions["Materials"] = array('class' => false,
                                        'text' => "Multimedia",
@@ -249,17 +256,8 @@ class TabUtils {
                 }
             }
         }
-        else if($wgUser->isLoggedIn() && ($wgTitle->getText() == "Publications" || ($wgTitle->getNSText() == "Publication"))){
-            $new_actions["Publications"]['class'] = 'selected';
-        }
-        else if($wgUser->isLoggedIn() && ($wgTitle->getText() == "Presentations" || ($wgTitle->getNSText() == "Presentation"))){
-            $new_actions["Presentations"]['class'] = 'selected';
-        }
-        else if($wgUser->isLoggedIn() && ($wgTitle->getText() == "Artifacts" || ($wgTitle->getNSText() == "Artifact") ||
-                                          $wgTitle->getNSText() == "Activity" ||
-                                          $wgTitle->getNSText() == "Press" ||
-                                          $wgTitle->getNSText() == "Award")){
-            $new_actions["Artifacts"]['class'] = 'selected';
+        else if($wgUser->isLoggedIn() && ($wgTitle->getText() == "Products")){
+            $new_actions["Publications"]['class'] = 'products selected';
         }
         else if(($wgTitle->getText() == "Multimedia Stories" && $wgTitle->getNSText() == "GRAND") ||
                  $wgTitle->getNSText() == "Multimedia_Story" || $wgTitle->getNSText() == "Form"){

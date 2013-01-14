@@ -30,7 +30,6 @@ ProductListView = Backbone.View.extend({
 	                                           'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
         this.$el.css('display', 'block');
         var end = new Date().getTime();
-        console.log(end-start);
         return this.el;
     }
 
