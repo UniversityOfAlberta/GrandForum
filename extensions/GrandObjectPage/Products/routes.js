@@ -22,11 +22,8 @@ function pluralizeCategory(category){
     if(category == 'Press'){
         category = category;
     }
-    else if(category == 'Activity'){
-        category = 'Activities';
-    }
     else{
-        category = category + 's';
+        category = category.pluralize();
     }
     return category;
 }
