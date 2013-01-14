@@ -21,12 +21,25 @@
     var dropdownTop = $('.dropdowntop', $(this));
     var that = this;
     $('li.actions', $(this)).click(function(e){
-        $("div.actions").fadeOut(250); // Remove all other dropdowns
+        $("div.actions").not(divActions).fadeOut(250); // Remove all other dropdowns
         e.stopPropagation();
+        
+        var tabWidth = $(this).width() + parseInt($(this).css('padding-left')) + parseInt($(this).css('padding-right'));
+        var divWidth = $(divActions).width();
+        var documentWidth = $(document).width();
+        
+        $(divActions).css('right', -tabWidth + 1);
         $(dropdownTop).css('position', 'absolute');
         $(dropdownTop).css('top', -5);
-        $(dropdownTop).css('right', Math.ceil(($(this).width() + parseInt($(this).css('padding-left')) + parseInt($(this).css('padding-right')) - 7)/2));
+        $(dropdownTop).css('right', Math.ceil((tabWidth - 7)/2) + tabWidth);
         $(divActions).fadeToggle(250);
+        console.log($(divActions).offset().left + divWidth);
+        if($(divActions).offset().left + divWidth + 5 >= $(window).width()){
+            var shiftAmount = ($(window).width() - ($(divActions).offset().left + divWidth + 10));
+            $(divActions).css('right', -tabWidth + 1 - shiftAmount);
+            $(dropdownTop).css('right', Math.ceil((tabWidth - 7)/2) + tabWidth + shiftAmount);
+        }
+        
     });
     $(document).click(function(){
         $(divActions).fadeOut(250);
