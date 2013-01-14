@@ -118,6 +118,17 @@ img.ui-datepicker-trigger{
     border-width: 1px 1px 0 1px;
 }
 
+#submenu li.invisible {
+    padding: 0;
+    margin: 0;
+    background: transparent !important;
+    border: 0;
+}
+
+#submenu li.invisible ul {
+    padding: 0;
+}
+
 #submenu ul li:hover {
     background: #A385AD; /* for non-css3 browsers */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#A385AD', endColorstr='#96789f'); /* for IE */
@@ -170,7 +181,6 @@ img.ui-datepicker-trigger{
 #submenu div.actions ul {
     margin:0;
     padding:0;
-    min-width:150px;
 }
 
 #submenu li.action {

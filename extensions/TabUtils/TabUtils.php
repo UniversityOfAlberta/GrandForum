@@ -22,22 +22,17 @@ class TabUtils {
         if(count($new_actions) > 0){
             $wgOut->addHTML("<script type='text/javascript'>
                 $(document).ready(function(){
-                    if($('li.action').length > 0){
-                        $('li.action').css('display', 'block');
-                        $('li.action').wrapAll('<div class=\'actions\' />').wrapAll('<ul>');
-                        $('div#submenu > ul').append('<li class=\'actions\'><a>Actions</a></li>');
-                        $('div#submenu div.actions').append('<img class=\'dropdowntop\' src=\'$wgScriptPath/skins/dropdowntop.png\' />');
-                        $('div#submenu li.actions').click(function(e){
-                            e.stopPropagation();
-                            $('.dropdowntop').css('position', 'absolute');
-                            $('.dropdowntop').css('top', -5);
-                            $('.dropdowntop').css('right', 39);
-                            $('div#submenu div.actions').fadeToggle(250);
-                        });
-                        $(document).click(function(){
-                            $('div#submenu div.actions').fadeOut(250);
-                        });
-                    }
+                    $('li.product').wrapAll('<ul class=\'products\'>')
+                    $('ul.products').wrapAll('<li class=\'invisible\'>');
+                    $('li.action').wrapAll('<ul class=\'actions\' />');
+                    $('div#submenu ul.products').dropdown({title: 'Products',
+                                                          width: '125px' 
+                                                          });
+                                                         
+                    $('div#submenu ul.actions').dropdown({title: 'Actions',
+                                                          width: '125px' 
+                                                         });
+                    $('div#submenu ul.actions').css('padding-right', 0);
                 });
             </script>");
         }
@@ -194,13 +189,13 @@ class TabUtils {
                                    'text' => RMC,
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_RMC");
         if($wgUser->isLoggedIn()){
-            $new_actions["Publications"] = array('class' => false,
+            $new_actions["Publications"] = array('class' => 'product',
                                        'text' => "Publications",
                                        'href' => "$wgServer$wgScriptPath/index.php/GRAND:Publications");
-            $new_actions["Presentations"] = array('class' => false,
+            $new_actions["Presentations"] = array('class' => 'product',
                                        'text' => "Presentations",
                                        'href' => "$wgServer$wgScriptPath/index.php/GRAND:Presentations");
-            $new_actions["Artifacts"] = array('class' => false,
+            $new_actions["Artifacts"] = array('class' => 'product',
                                        'text' => "Artifacts",
                                        'href' => "$wgServer$wgScriptPath/index.php/GRAND:Artifacts");
         }
