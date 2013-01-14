@@ -3,11 +3,7 @@
   $.fn.dropdown = function(options) {
     
     $.fn.imgToggle = function(){
-        var selected = '';
-        if($('li.actions', $(this)).hasClass('selected')){
-            selected = '_selected';
-        }
-        if($("img.dropdown", $(this)).attr('src') == '../skins/down' + selected + '.png'){
+        if($("span.dropdown", $(this)).hasClass('down')){
             this.imgUp();
         } 
         else{
@@ -16,19 +12,15 @@
     }
     
     $.fn.imgUp = function(){
-        var selected = '';
-        if($('li.actions', $(this)).hasClass('selected')){
-            selected = '_selected';
-        }
-        $("img.dropdown", $(this)).attr('src', '../skins/up' + selected + '.png');
+        $("span.dropdown", $(this)).removeClass('down');
+        $("span.dropdown", $(this)).addClass('up');
+        $("span.dropdown", $(this)).html("&#x25B2;");
     }
     
     $.fn.imgDown = function(){
-        var selected = '';
-        if($('li.actions', $(this)).hasClass('selected')){
-            selected = '_selected';
-        }
-        $("img.dropdown", $(this)).attr('src', '../skins/down' + selected + '.png');
+        $("span.dropdown", $(this)).removeClass('up');
+        $("span.dropdown", $(this)).addClass('down');
+        $("span.dropdown", $(this)).html("&#x25BC;");
     }
     
     $(this).addClass('dropdown');
@@ -47,7 +39,7 @@
     
     $(divActions).css('right', '1px');
     $(lis).appendTo($(divActions));
-    $(this).append("<li class='actions'><a>" + title + "<img class='dropdown' style='margin-left:5px;' /></a></li>");
+    $(this).append("<li class='actions'><a>" + title + "<span class='dropdown down' style='margin-left:5px;'>&#x25BC;</span></a></li>");
     $(this).imgDown();
     $(divActions).append("<img class='dropdowntop' src='../skins/dropdowntop.png' />");
     var dropdownTop = $('.dropdowntop', $(this));
