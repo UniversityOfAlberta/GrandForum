@@ -163,6 +163,7 @@ class TemplateEditor {
 {
         $count = 0;
         $return = array();
+        $inserted = false;
         foreach ($array as $k => $v) 
         {   
                 // insert new object
@@ -177,7 +178,7 @@ class TemplateEditor {
                 $count++;
         }   
         if (!$name) $name = $count;
-        if (!$inserted) $return[$name];
+        if (!$inserted) @$return[$name];
         $array = $return;
         return $array;
 }
