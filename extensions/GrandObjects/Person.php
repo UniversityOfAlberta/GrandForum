@@ -2308,7 +2308,7 @@ class Person extends BackboneModel {
 	}
 
 	function isUnassignedEvaluator(){
-		$current_evals = array(17,563,152,25,90,27,28,564,32,565,566,36,38,41,48,55,60,61,150,717,1263);
+		$current_evals = array(17,563,152,25,90,27,28,564,32,565,566,36,38,41,48,55,60,61,150,717,1263,1316,1317);
 		if(in_array($this->id, $current_evals)){
 			return true;
 		}
