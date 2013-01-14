@@ -2,6 +2,8 @@
 
   $.fn.dropdown = function(options) {
     
+    $(this).addClass('dropdown');
+    
     var title = (typeof options.title != 'undefined') ? options.title : 'DropDown';
     var width = (typeof options.width != 'undefined') ? options.width : '150px';
     
@@ -15,34 +17,56 @@
     
     $(divActions).css('right', '1px');
     $(lis).appendTo($(divActions));
-    $(this).append("<li class='actions'><a>" + title + "</a></li>");
+    $(this).append("<li class='actions'><a>" + title + "<img class='dropdown' style='margin-left:5px;' src='../skins/down.png' /></a></li>");
     
     $(divActions).append("<img class='dropdowntop' src='../skins/dropdowntop.png' />");
     var dropdownTop = $('.dropdowntop', $(this));
     var that = this;
+    
+    $.fn.imgToggle = function(){
+        if($("img.dropdown", $(this)).attr('src') == '../skins/down.png'){
+            this.imgUp();
+        } 
+        else{
+            this.imgDown();
+        }
+    }
+    
+    $.fn.imgUp = function(){
+        $("img.dropdown", $(this)).attr('src', '../skins/up.png');
+    }
+    
+    $.fn.imgDown = function(){
+        $("img.dropdown", $(this)).attr('src', '../skins/down.png');
+    }
+    
     $('li.actions', $(this)).click(function(e){
         $("div.actions").not(divActions).fadeOut(250); // Remove all other dropdowns
-        e.stopPropagation();
+        $("ul.dropdown").not(that).imgDown();
         
-        var tabWidth = $(this).width() + parseInt($(this).css('padding-left')) + parseInt($(this).css('padding-right'));
+        var tabWidth = $(this).width() + 
+                       parseInt($(this).css('padding-left')) + 
+                       parseInt($(this).css('padding-right')) +
+                       parseInt($(this).css('border-width'))*2;
         var divWidth = $(divActions).width();
         var documentWidth = $(document).width();
         
-        $(divActions).css('right', -tabWidth + 1);
         $(dropdownTop).css('position', 'absolute');
         $(dropdownTop).css('top', -5);
-        $(dropdownTop).css('right', Math.ceil((tabWidth - 7)/2) + tabWidth);
         $(divActions).fadeToggle(250);
-        console.log($(divActions).offset().left + divWidth);
+        $(that).imgToggle();
+        $(divActions).css('right', tabWidth - $(divActions).width());
+        $(dropdownTop).css('right', Math.ceil((tabWidth - 7)/2) - (tabWidth - $(divActions).width()));
         if($(divActions).offset().left + divWidth + 5 >= $(window).width()){
             var shiftAmount = ($(window).width() - ($(divActions).offset().left + divWidth + 10));
-            $(divActions).css('right', -tabWidth + 1 - shiftAmount);
-            $(dropdownTop).css('right', Math.ceil((tabWidth - 7)/2) + tabWidth + shiftAmount);
+            $(divActions).css('right', (tabWidth - $(divActions).width()) - shiftAmount);
+            $(dropdownTop).css('right', Math.ceil((tabWidth - 7)/2) - (tabWidth - $(divActions).width()) + shiftAmount);
         }
-        
+        e.stopPropagation();
     });
     $(document).click(function(){
         $(divActions).fadeOut(250);
+        $(that).imgDown();
     });
   };
 })( jQuery );
