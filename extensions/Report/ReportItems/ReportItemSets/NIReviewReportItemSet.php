@@ -26,7 +26,7 @@ class NIReviewReportItemSet extends ReportItemSet {
         }
         $html =<<<EOF
             <div class="ni_review_item_wrapper">
-            <h2>{$header}</h2>
+            <h2>{$header}<span style="font-size:60%; float:right;"><a href="">(Click to Show/Hide)</a></span></h2>
             <div>
 EOF;
 

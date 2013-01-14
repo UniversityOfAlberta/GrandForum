@@ -11,7 +11,7 @@ class EvalReviewTextareaReportItem extends TextareaReportItem {
         else if ($type == "Project"){
             $this->blobSubItem = $this->getParent()->projectId;
         }
-        $this->getSeenOverview();
+        //$this->getSeenOverview();
         //echo $this->blobItem;
     }
 

@@ -72,7 +72,7 @@
         </ReportItem>
         <ReportItemSet id="pni_materials" type="MaterialsReportItemSet" subType="PNI">
             <ReportItemSet id="pni_materials" type="NIReviewReportItemSet" subType="NI">
-                <ReportItem id="RI1" type="EvalReviewRadioReportItem" options="Exceptional|Strong|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_EXCELLENCE" blobSubItem="0">
+                <ReportItem id="RI1" type="EvalReviewRadioReportItem" options="Exceptional|Very Good|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_EXCELLENCE" blobSubItem="0">
                 <![CDATA[
                 <h3>1. Excellence of the Research Program</h3>
                 <table width="100%" cellspacing="10" cellpadding="5">
@@ -89,7 +89,7 @@
                     </ReportItem>
                 </ReportItemSet>
 
-                <ReportItem id="RI2" type="EvalReviewRadioReportItem" options="Exceptional|Strong|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_HQPDEVELOPMENT" blobSubItem="0">
+                <ReportItem id="RI2" type="EvalReviewRadioReportItem" options="Exceptional|Very Good|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_HQPDEVELOPMENT" blobSubItem="0">
                 <![CDATA[
                 </td>
                 </tr>
@@ -110,7 +110,7 @@
                     </ReportItem>
                 </ReportItemSet>
 
-                <ReportItem id="RI3" type="EvalReviewRadioReportItem" options="Exceptional|Strong|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_NETWORKING" blobSubItem="0">
+                <ReportItem id="RI3" type="EvalReviewRadioReportItem" options="Exceptional|Very Good|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_NETWORKING" blobSubItem="0">
                 <![CDATA[
                 </td>
                 </tr>
@@ -131,7 +131,7 @@
                     </ReportItem>
                 </ReportItemSet>
 
-                <ReportItem id="RI4" type="EvalReviewRadioReportItem" options="Exceptional|Strong|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_KNOWLEDGE" blobSubItem="0">
+                <ReportItem id="RI4" type="EvalReviewRadioReportItem" options="Exceptional|Very Good|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_KNOWLEDGE" blobSubItem="0">
                 <![CDATA[
                 </td>
                 </tr>
@@ -152,7 +152,7 @@
                     </ReportItem>
                 </ReportItemSet>
 
-                <ReportItem id="RI5" type="EvalReviewRadioReportItem" options="Exceptional|Strong|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_MANAGEMENT" blobSubItem="0">
+                <ReportItem id="RI5" type="EvalReviewRadioReportItem" options="Exceptional|Very Good|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_MANAGEMENT" blobSubItem="0">
                 <![CDATA[
                 </td>
                 </tr>
@@ -173,7 +173,7 @@
                     </ReportItem>
                 </ReportItemSet>
 
-                <ReportItem id="RI6" type="EvalReviewRadioReportItem" options="Exceptional|Strong|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_REPORTQUALITY" blobSubItem="0">
+                <ReportItem id="RI6" type="EvalReviewRadioReportItem" options="Exceptional|Very Good|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_REPORTQUALITY" blobSubItem="0">
                 <![CDATA[
                 </td>
                 </tr>
@@ -194,21 +194,22 @@
                     </ReportItem>
                 </ReportItemSet>
 
-                <ReportItem id="RI7" type="EvalReviewTextareaReportItem" rows="6" width="100%" limit="-1" blobType="BLOB_TEXT" blobItem="EVL_OTHERCOMMENTS" blobSubItem="0">
+                <ReportItem id="RI7" type="EvalReviewRadioReportItem" options="Top|Upper Middle|Lower Middle|Bottom" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_OVERALLSCORE" blobSubItem="0">
                 <![CDATA[
                 </td>
                 </tr>
                 </table>
 
-                <h3>7. Evaluator Comments</h3>
-                <div style="padding-left:16px;">{$item}</div>
+                <h3>7. Overall Score</h3>
+                <div style="padding-left:20px;">{$item}</div>
                 ]]>
                 </ReportItem>
 
-                <ReportItem id="RI8" type="EvalReviewRadioReportItem" options="Top|Upper Middle|Lower Middle|Bottom" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_OVERALLSCORE" blobSubItem="0">
+                <ReportItem id="RI8" type="EvalReviewTextareaReportItem" rows="6" width="100%" limit="-1" blobType="BLOB_TEXT" blobItem="EVL_OTHERCOMMENTS" blobSubItem="0">
                 <![CDATA[
-                <h3>8. Overall Score</h3>
-                <div style="padding-left:20px;">{$item}</div>
+
+                <h3>8. Evaluator Comments</h3>
+                <div style="padding-left:16px;">{$item}</div>
                 ]]>
                 </ReportItem>
                 
