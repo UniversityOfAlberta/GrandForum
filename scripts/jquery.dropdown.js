@@ -52,7 +52,8 @@
         var tabWidth = $(this).width() + 
                        parseInt($(this).css('padding-left')) + 
                        parseInt($(this).css('padding-right')) +
-                       parseInt($(this).css('border-width'))*2;
+                       parseInt($(this).css('borderLeftWidth')) + 
+                       parseInt($(this).css('borderRightWidth'));
         var divWidth = $(divActions).width();
         var documentWidth = $(document).width();
         
