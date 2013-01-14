@@ -747,6 +747,25 @@ EOF;
         return "";
 	}
 	
+	/**
+	 * Returns an array of Articles that belong to this Project
+	 * @returns array Returns an array of Articles that belong to this Project
+	 */
+	function getWikiPages(){
+	    $sql = "SELECT page_id
+	            FROM mw_page
+	            WHERE page_namespace = '{$this->getId()}'";
+	    $data = DBFunctions::execSQL($sql);
+	    $articles = array();
+	    foreach($data as $row){
+	        $article = Article::newFromId($row['page_id']);
+	        if($article != null && strstr($article->getTitle()->getText(), "MAIL ") === false){
+	            $articles[] = $article;
+	        }
+	    }
+	    return $articles;
+	}
+	
 	// Returns an array of papers relating to this project
 	function getPapers($category="all", $startRange = false, $endRange = false){
         return Paper::getAllPapersDuring($this->name, $category, "grand", $startRange, $endRange);

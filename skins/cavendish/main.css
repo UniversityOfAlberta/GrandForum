@@ -144,11 +144,71 @@ img.ui-datepicker-trigger{
     background: -o-linear-gradient(top, #EADDED, #FFFFFF);
 }
 
+#submenu li.actions {
+    float:right;
+    cursor:pointer;
+}
+
+#submenu div.actions {
+    position:absolute;
+    right:2px;
+    display:none;
+    margin-top:30px;
+    background: #FFFFFF;
+    border: 1px solid #AAA;
+    padding: 5px 0 5px 0;
+    
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    
+    -moz-box-shadow: 3px 3px 4px #CCC;
+    -webkit-box-shadow: 3px 3px 4px #CCC;
+    box-shadow: 3px 3px 4px #CCC;
+}
+
+#submenu div.actions ul {
+    margin:0;
+    padding:0;
+    min-width:150px;
+}
+
+#submenu li.action {
+    background: #FFFFFF;
+    border-width:0;
+    width:100%;
+    margin:0;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    float:none;
+    padding:0;
+    display:none;
+}
+
+#submenu li.action a {
+    color: #555 !important;
+    font-size:12px;
+    line-height:27px !important;
+    margin:0;
+    padding:0 5px 0 5px;
+}
+
+#submenu li.action:hover {
+    background: #96789F;
+    
+}
+
+#submenu li.action:hover a {
+    color: #FFFFFF !important;
+}
+
 div#submenu {
     height: 25px;
     position: absolute;
     left: 275px;
     margin-top:-25px;
+    right:25px;
 }
 
 div#header {

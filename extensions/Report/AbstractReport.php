@@ -312,7 +312,7 @@ abstract class AbstractReport extends SpecialPage {
         }
     }
     
-    function getPDF(){
+    function getPDF($submittedByOwner=false){
     	$sto = new ReportStorage($this->person);
     	if($this->project != null){
     	    if($this->pdfAllProjects){
@@ -334,8 +334,13 @@ abstract class AbstractReport extends SpecialPage {
     	    $tst = $sto->metadata('timestamp');
     	    if($year == $this->year && 
     	       strcmp($tst, $largestDate) > 0){
-    	        $largestDate = $tst;
-    	        $return = array($c);
+    	        if(($submittedByOwner &&
+    	           $sto->metadata('generation_user_id') == $this->person->getId() &&
+    	           $sto->metadata('submission_user_id') == $this->person->getId()) || 
+    	           !$submittedByOwner){
+        	        $largestDate = $tst;
+        	        $return = array($c);
+        	    }
     	    }
     	}
         return $return;
@@ -592,7 +597,7 @@ abstract class AbstractReport extends SpecialPage {
                     $data = "";
                     $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, false);
                     $sto = new ReportStorage($this->person);
-                    $sto->store_report($data, $pdf, 0, 0, $report->pdfType, $this->year);
+                    $sto->store_report($data, $pdf['html'], $pdf['pdf'], 0, 0, $report->pdfType, $this->year);
                     if($project != null){
                         $ind = new ReportIndex($this->person);
                         $rid = $sto->metadata('report_id');
@@ -615,7 +620,7 @@ abstract class AbstractReport extends SpecialPage {
                 exit;
             }
             $sto = new ReportStorage($this->person);
-            $sto->store_report($data, $pdf, 0, 0, $report->pdfType, $this->year);
+            $sto->store_report($data, $pdf['html'],$pdf['pdf'], 0, 0, $report->pdfType, $this->year);
             if($report->project != null){
                 $ind = new ReportIndex($this->person);
                 $rid = $sto->metadata('report_id');

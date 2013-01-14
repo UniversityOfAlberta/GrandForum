@@ -2,36 +2,68 @@
 <Report name="Project Evaluation" reportType="RP_EVAL_PROJECT" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
-            <SectionPermission id="materials" permissions="rw" />
-            <SectionPermission id="budget" permissions="rw" />
-            <!--SectionPermission id="reviews" permissions="rw" />
-            <SectionPermission id="overviews" permissions="rw" /-->
+            <SectionPermission id="project_materials" permissions="rw" />
+            <SectionPermission id="project_budget" permissions="rw" />
+            <!--SectionPermission id="project_reviews" permissions="rw" />
+            <SectionPermission id="project_overviews" permissions="rw" /-->
         </Role>
     </Permissions>
 
     <!-- Project Materials -->
-    <ReportSection id="materials" name="Project Materials" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
+    <ReportSection id="project_materials" name="Project Materials" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
         <Instructions>
             <![CDATA[
                <p>You can download the Project Report PDFs for your reference.</p>
             ]]>
         </Instructions>
-        <ReportItem id="project_materials_head" type="StaticReportItem">
-            <![CDATA[<table>]]>
+        <ReportItem id="project_budget_head" type="StaticReportItem">
+            <![CDATA[
+            <script type="text/javascript">
+                $(document).ready(function(){ 
+                    $('.project_materials_accordion').accordion({heightStyle: "content", collapsible: true, icons: false, header: "h2" }); 
+                })
+            </script>
+            ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="ProjectMaterialsReportItemSet">
+        <ReportItem id="project_materials_head" type="StaticReportItem">
+            <![CDATA[
+           
+            <div style="float: left; padding: 1em 2.2em;">
+            <table align="left">
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="Project">
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true">
-                <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
+                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_tail" type="StaticReportItem">
-            <![CDATA[</table>]]>
+            <![CDATA[
+            </table>
+            </div>
+            <div class="project_materials_accordion" style="float: left;">
+            <h2>All Project Materials</h2>
+            <div>
+            <table align="left">
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="project_materials" type="AllProjectsReportItemSet">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true">
+                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="project_materials_tail" type="StaticReportItem">
+            <![CDATA[
+            </table>
+            </div>
+            </div>
+            ]]>
         </ReportItem>
         
     </ReportSection>
 
     <!-- Project Budget -->
-    <ReportSection id="budget" name="Project Budgets" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+    <ReportSection id="project_budget" name="Project Budgets" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
                <p>Here you can see the Project Budget requests for 2013-2014.</p>
@@ -46,13 +78,13 @@
             </script>
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="ProjectMaterialsReportItemSet">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="Project">
             <ReportItem id="project_budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="EvalBudgetReportItem" project="true"/>
         </ReportItemSet>
     </ReportSection>
 
     <!-- PNI Reviews -->
-    <!--ReportSection id="reviews" name="PNI Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="false" private="false">
+    <!--ReportSection id="project_reviews" name="PNI Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
                <p>Instructions needed</p>
@@ -171,7 +203,7 @@
     </ReportSection-->
     
      <!-- PNI Overviews -->
-    <!--ReportSection id="overviews" name="PNI Overviews" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+    <!--ReportSection id="project_overviews" name="PNI Overviews" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
                <p>Instructions needed</p>

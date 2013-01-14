@@ -16,6 +16,7 @@ class MaterialPage {
             $edit = ((isset($_GET['edit']) || $create) && $me->isRoleAtLeast(HQP));
             $post = ((isset($_POST['submit']) && ($_POST['submit'] == "Save Material" || $_POST['submit'] == "Create Material")) && $me->isRoleAtLeast(HQP));
             if($me->isRoleAtLeast(HQP) && (($material->getId() != null) || $create)){
+                TabUtils::clearActions();
                 if($post){
                     // Handle POST request
                     if(!$create){
@@ -52,6 +53,7 @@ class MaterialPage {
             
             if(!$create && !$edit && ($material == null || $material->getTitle() == "")){
                 // Material does not exist
+                TabUtils::clearActions();
                 $wgOut->clearHTML();
                 $wgOut->setPageTitle("Material Does Not Exist");
                 $wgOut->addHTML("There is no Material with the id '{$wgTitle->getText()}'");

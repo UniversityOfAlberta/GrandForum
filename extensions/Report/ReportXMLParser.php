@@ -399,7 +399,17 @@ class ReportXMLParser {
         if(isset($data['person_id'])){
             $itemset->setPersonId($data['person_id']);
         }
-        
+        foreach($attributes as $key => $value){
+            if($key != "type" &&
+               $key != "blobType" &&
+               $key != "blobItem" &&
+               $key != "blobSubItem" &&
+               $key != "id" &&
+               $key != "value" &&
+               $key != "binary"){
+                $itemset->setAttribute("{$key}", "{$value}");
+            }
+        }
         $newData = $itemset->getData();
         if(count($newData) > 0){
             foreach($newData as $value){
@@ -421,17 +431,7 @@ class ReportXMLParser {
                 $itemset->iteration++;
             }
         }
-        foreach($attributes as $key => $value){
-            if($key != "type" &&
-               $key != "blobType" &&
-               $key != "blobItem" &&
-               $key != "blobSubItem" &&
-               $key != "id" &&
-               $key != "value" &&
-               $key != "binary"){
-                $itemset->setAttribute("{$key}", "{$value}");
-            }
-        }
+        
         $itemset->setValue("{$node}");
         return $itemset;
     }

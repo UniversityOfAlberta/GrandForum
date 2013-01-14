@@ -1,5 +1,7 @@
 <?php
 
+require_once("ReportErrors.php");
+
 $wgHooks['SkinTemplateContentActions'][] = 'CreatePDF::showTabs';
 
 $dir = dirname(__FILE__) . '/';
@@ -86,7 +88,7 @@ class CreatePDF extends SpecialPage {
 	            $data = "";
 	            $zip = file_get_contents("/tmp/NIReports.zip");
 	            $sto = new ReportStorage($me);
-                $sto->store_report($data, $zip, 0, 0, RPTP_NI_ZIP);
+                $sto->store_report($data, "", $zip, 0, 0, RPTP_NI_ZIP);
 		        $tok = $sto->metadata('token');
                 $tst = $sto->metadata('timestamp');
                 $len = $sto->metadata('pdf_len');
@@ -125,7 +127,7 @@ class CreatePDF extends SpecialPage {
 	            $data = "";
 	            $zip = file_get_contents("/tmp/HQPReports.zip");
 	            $sto = new ReportStorage($me);
-                $sto->store_report($data, $zip, 0, 0, RPTP_NI_ZIP);
+                $sto->store_report($data, "", $zip, 0, 0, RPTP_NI_ZIP);
 		        $tok = $sto->metadata('token');
                 $tst = $sto->metadata('timestamp');
                 $len = $sto->metadata('pdf_len');
@@ -165,7 +167,7 @@ class CreatePDF extends SpecialPage {
 	            $data = "";
 	            $zip = file_get_contents("/tmp/ProjectReports.zip");
 	            $sto = new ReportStorage($me);
-                $sto->store_report($data, $zip, 0, 0, RPTP_PROJ_ZIP);
+                $sto->store_report($data, "", $zip, 0, 0, RPTP_PROJ_ZIP);
 		        $tok = $sto->metadata('token');
                 $tst = $sto->metadata('timestamp');
                 $len = $sto->metadata('pdf_len');
@@ -326,7 +328,7 @@ class CreatePDF extends SpecialPage {
                                     $('#download' + id).css('display', 'block');
                                 }
                                 else{
-                                    $('#status' + Id + ' > span').html('<b style=\"color:#FF0000;\">ERROR</b>');
+                                    $('#status' + id + ' > span').html('<b style=\"color:#FF0000;\">ERROR</b>');
                                 }
                                 break;
 		                    }

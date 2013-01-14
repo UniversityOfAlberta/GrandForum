@@ -73,6 +73,7 @@ class IndexTable{
 			    default:
 				    return true;
 			}
+			TabUtils::clearActions();
 			$wgOut->addHTML($this->text);
 			$wgOut->output();
 			$wgOut->disable();

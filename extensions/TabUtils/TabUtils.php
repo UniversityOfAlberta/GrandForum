@@ -1,23 +1,85 @@
 <?php
 
-$wgHooks['SkinTemplateTabs'][1000] = 'TabUtils::removeTabs';
+$wgHooks['SkinTemplateTabs'][1000] = 'TabUtils::actionTabs';
 
 class TabUtils {
 
-    static function removeTabs($skin, &$content_actions){
-        global $wgTitle;
+    static $customActions = array();
+
+    static function actionTabs($skin, &$content_actions){
+        global $wgTitle, $wgServer, $wgScriptPath, $wgOut;
         $new_actions = array();
-        foreach($content_actions as $action){
-            if($action['class'] == 'selected'){
-                $action['text'] = $wgTitle->getText();
-                if(isset($_GET['action'])){
-                    $action['class'] = false;
-                }
-                $new_actions[] = $action;
+        foreach($content_actions as $key => $action){
+            if(strstr($action['class'], 'selected') !== false){
+                continue;
             }
+            $action['class'] = 'action';
+            $new_actions[$key] = $action;
+        }
+        foreach(self::$customActions as $key => $action){
+            $new_actions[$key] = $action;
+        }
+        if(count($new_actions) > 0){
+            $wgOut->addHTML("<script type='text/javascript'>
+                $(document).ready(function(){
+                    if($('li.action').length > 0){
+                        $('li.action').css('display', 'block');
+                        $('li.action').wrapAll('<div class=\'actions\' />').wrapAll('<ul>');
+                        $('div#submenu > ul').append('<li class=\'actions\'><a>Actions</a></li>');
+                        $('div#submenu div.actions').append('<img class=\'dropdowntop\' src=\'$wgScriptPath/skins/dropdowntop.png\' />');
+                        $('div#submenu li.actions').click(function(e){
+                            e.stopPropagation();
+                            $('.dropdowntop').css('position', 'absolute');
+                            $('.dropdowntop').css('top', -5);
+                            $('.dropdowntop').css('right', 39);
+                            $('div#submenu div.actions').fadeToggle(250);
+                        });
+                        $(document).click(function(){
+                            $('div#submenu div.actions').fadeOut(250);
+                        });
+                    }
+                });
+            </script>");
         }
         $content_actions = $new_actions;
         return true;
+    }
+    
+    static function clearTabs($skin, &$content_actions){
+        unset($content_actions['protect']);
+        unset($content_actions['watch']);
+        unset($content_actions['unwatch']);
+        unset($content_actions['create']);
+        unset($content_actions['history']);
+        unset($content_actions['delete']);
+        unset($content_actions['talk']);
+        unset($content_actions['move']);
+        unset($content_actions['edit']);
+        unset($content_actions['addsection']);
+        unset($content_actions['editTemplate']);
+        unset($content_actions['Create from template']);
+        unset($content_actions['instance list']);
+        return true;
+    }
+    
+    /**
+     * Adds an action to the sub-menu
+     * @param string $text The visible text of the action
+     * @param string $href The url of the action
+     */
+    static function addAction($text, $href){
+        self::$customActions[str_replace(" ", "", $text)] = 
+                                array('text' => $text,
+                                      'href' => $href,
+                                      'class' => 'action');
+    }
+    
+    /**
+     * Clears most of the built in wiki actions of the sub-menu
+     */
+    static function clearActions(){
+        global $wgHooks;
+        $wgHooks['SkinTemplateTabs'][] = 'TabUtils::clearTabs';
     }
     
     static function grandTabs(&$content_actions){

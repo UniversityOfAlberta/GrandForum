@@ -5,7 +5,6 @@ autoload_register('GrandObjectPage/PersonPage');
 
 $personPage = new PersonPage();
 $wgHooks['ArticleViewHeader'][] = array($personPage, 'processPage');
-$wgHooks['SkinTemplateContentActions'][] = array($personPage, 'removeTabs');
 $wgHooks['SkinTemplateTabs'][] = array($personPage, 'addTabs');
 
 class PersonPage {
@@ -38,6 +37,7 @@ class PersonPage {
                                                            $role == PM || $role == 'PM') && 
                $person->getName() != null && 
                $person != null && $person->isRole($role)){
+                TabUtils::clearActions();
                 $supervisors = $person->getSupervisors();
                 
                 $isMe = ($person->getId() == $me->getId() ||
@@ -97,6 +97,7 @@ class PersonPage {
             else if($person != null && 
                     $person->getName() != null && 
                     !$person->isRole($role)){
+                TabUtils::clearActions();
                 // User Exists, but it is probably the wrong Namespace
                 $wgOut->clearHTML();
                 $wgOut->setPageTitle("User Does Not Exist");
@@ -109,13 +110,17 @@ class PersonPage {
                 $wgOut->output();
                 $wgOut->disable();
             }
-            else if(array_search($role, $wgRoles) !== false && stripos($wgTitle->getText(), "Mail") !== 0){
+            else if(array_search($role, $wgRoles) !== false && $wgTitle->getText() != "Mail Index"){
                 // User does not exist
+                TabUtils::clearActions();
                 $wgOut->clearHTML();
                 $wgOut->setPageTitle("User Does Not Exist");
                 $wgOut->addHTML("There is no user '$role:$name'");
                 $wgOut->output();
                 $wgOut->disable();
+            }
+            else if($wgTitle->getText() == "Mail Index"){
+                TabUtils::clearActions();
             }
         }
         return true;
@@ -154,40 +159,6 @@ class PersonPage {
             }
         }
         $wgOut->setPageTitle($person->getReversedName()." (".implode(", ", $roleNames).")");
-    }
-
-    function removeTabs(&$content_actions){
-        global $wgArticle, $wgRoles;
-        if($wgArticle != null){
-            $role = $wgArticle->getTitle()->getNsText();
-            $name = $wgArticle->getTitle()->getText();
-            if($role == ""){
-                $split = explode(":", $name);
-                if(count($split) > 1){
-                    $name = $split[1];
-                }
-                else{
-                    $name = "";
-                }
-                $role = $split[0];
-            }
-            $person = Person::newFromName($name);
-            if((array_search($role, $wgRoles) !== false || $role == INACTIVE) && 
-               $person->getName() != null && 
-               $person != null && $person->isRole($role)){
-                unset($content_actions['protect']);
-                unset($content_actions['watch']);
-                unset($content_actions['unwatch']);
-                unset($content_actions['create']);
-                unset($content_actions['history']);
-                unset($content_actions['delete']);
-                unset($content_actions['talk']);
-                unset($content_actions['move']);
-                unset($content_actions['edit']);
-                return false;
-            }
-        }
-        return true;
     }
     
     function addTabs($skin, &$content_actions){
