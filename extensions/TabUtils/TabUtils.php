@@ -38,6 +38,7 @@ class TabUtils {
                                                       width: '125px' 
                                                      });
                 $('div#submenu ul.actions').css('padding-right', 0);
+                $('div#submenu ul.actions li.actions').css('float', 'right');
                 
                 if(productsSelected){
                     $('ul.products > li').addClass('selected');
