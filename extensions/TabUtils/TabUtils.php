@@ -214,9 +214,9 @@ class TabUtils {
             $new_actions["Press"] = array('class' => 'product',
                                           'text' => "Press",
                                           'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Press");
-            $new_actions["Award"] = array('class' => 'product',
-                                          'text' => "Award",
-                                          'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Award");
+            $new_actions["Awards"] = array('class' => 'product',
+                                           'text' => "Awards",
+                                           'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Award");
         }
         $new_actions["Materials"] = array('class' => false,
                                        'text' => "Multimedia",

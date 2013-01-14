@@ -18,6 +18,19 @@ PageRouter = Backbone.Router.extend({
     }
 });
 
+function pluralizeCategory(category){
+    if(category == 'Press'){
+        category = category;
+    }
+    else if(category == 'Activity'){
+        category = 'Activities';
+    }
+    else{
+        category = category + 's';
+    }
+    return category;
+}
+
 // Initiate the router
 var pageRouter = new PageRouter;
 
@@ -26,16 +39,9 @@ pageRouter.on('route:showGrandProducts', function(category){
     products = new Products();
     products.category = category;
     products.grand = 'grand';
-    if(category == 'Press'){
-        categoryTitle = category;
-    }
-    else if(category == 'Activity'){
-        categoryTitle = 'Activities';
-    }
-    else{
-        categoryTitle = category + 's';
-    }
-    main.set('title', 'GRAND ' + categoryTitle);
+    
+    category = pluralizeCategory(category);
+    main.set('title', 'GRAND ' + category);
     productListView = new ProductListView({el: $("#currentView"), model: products});
 });
 
@@ -45,16 +51,8 @@ pageRouter.on('route:showNonGrandProducts', function(category){
     products.category = category;
     products.grand = 'nonGrand';
     
-    if(category == 'Press'){
-        categoryTitle = category;
-    }
-    else if(category == 'Activity'){
-        categoryTitle = 'Activities';
-    }
-    else{
-        categoryTitle = category + 's';
-    }
-    main.set('title', 'Non-GRAND ' + categoryTitle);
+    category = pluralizeCategory(category);
+    main.set('title', 'Non-GRAND ' + category);
     productListView = new ProductListView({el: $("#currentView"), model: products});
 });
 
