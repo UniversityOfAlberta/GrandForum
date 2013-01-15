@@ -6,7 +6,6 @@ class Products extends BackbonePage {
     
     function getTemplates(){
         return array('product_list', 
-                     'product_row', 
                      'product',
                      'product_data_row');
     }

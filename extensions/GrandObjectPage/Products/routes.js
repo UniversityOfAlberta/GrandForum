@@ -1,13 +1,23 @@
 PageRouter = Backbone.Router.extend({
+    
+    currentView: null,
         
     initialize: function(){
         this.bind('all', function(event){
-            clearAllMessages();
             $("#currentView").html("<div id='currentViewSpinner'></div>");
             spin = spinner("currentViewSpinner", 40, 75, 12, 10, '#888');
         });
     },
     
+    closeCurrentView: function(){
+        if(this.currentView != null){
+            clearAllMessages();
+            this.currentView.unbind();
+            this.currentView.remove();
+            $("div#backbone_main").append("<div id='currentView' />");
+        }
+    },
+
     routes: {
         ":category": "showGrandProducts",
         ":category/grand": "showGrandProducts",
@@ -39,7 +49,8 @@ pageRouter.on('route:showGrandProducts', function(category){
     
     category = pluralizeCategory(category);
     main.set('title', 'GRAND ' + category);
-    productListView = new ProductListView({el: $("#currentView"), model: products});
+    this.closeCurrentView();
+    this.currentView = new ProductListView({el: $("#currentView"), model: products});
 });
 
 pageRouter.on('route:showNonGrandProducts', function(category){
@@ -50,7 +61,8 @@ pageRouter.on('route:showNonGrandProducts', function(category){
     
     category = pluralizeCategory(category);
     main.set('title', 'Non-GRAND ' + category);
-    productListView = new ProductListView({el: $("#currentView"), model: products});
+    this.closeCurrentView();
+    this.currentView = new ProductListView({el: $("#currentView"), model: products});
 });
 
 pageRouter.on('route:newProduct', function(category){
@@ -61,7 +73,8 @@ pageRouter.on('route:newProduct', function(category){
 pageRouter.on('route:showProduct', function (category, id) {
     // Get A single product
     product = new Product({'id': id});
-    productView = new ProductView({el: $("#currentView"), model: product});
+    this.closeCurrentView();
+    this.currentView = new ProductView({el: $("#currentView"), model: product});
 });
 
 pageRouter.on('route:editProduct', function (category, id) {

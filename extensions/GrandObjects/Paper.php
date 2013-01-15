@@ -491,7 +491,7 @@ class Paper extends BackboneModel{
 	
 	// Return the deleted flag for this Paper
 	function isDeleted(){
-		return $this->deleted;
+		return ($this->deleted === "1");
 	}
 
 	// Returns whether or not this Paper has been reported in the given year, with the reported type (must be either 'RMC' or 'NCE')

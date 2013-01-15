@@ -187,6 +187,7 @@ class cavendishTemplate extends QuickTemplate {
 	        var sideToggled = 'out';
 	        
 		    $(document).ready(function(){
+		        /*
 		        $('div#bodyContent').ajaxComplete(function(e, xhr, settings) {
 		            if(settings.url.indexOf("action=getUserMode") == -1){
 		                $.get("<?php echo $wgServer.$wgScriptPath; ?>/index.php?action=getUserMode&user=" + wgUserName, function(response){
@@ -221,6 +222,7 @@ class cavendishTemplate extends QuickTemplate {
 		                });
 		            }
                 });
+                */
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();
                 });

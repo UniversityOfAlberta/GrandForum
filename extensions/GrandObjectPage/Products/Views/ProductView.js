@@ -16,10 +16,11 @@ ProductView = Backbone.View.extend({
     },
     
     deleteProduct: function(){
-        if(this.model.get('deleted') != 1){
+        console.log(this.model.toJSON());
+        if(this.model.get('deleted') != true){
             this.model.destroy({
                 success: function(model, response) {
-                    if(response.deleted == '1'){
+                    if(response.deleted == true){
                         model.set(response);
                         clearSuccess();
                         clearError();
@@ -89,7 +90,7 @@ ProductView = Backbone.View.extend({
         this.renderAuthors();
         this.renderData();
         this.renderProjects();
-        if(this.model.get('deleted') == '1'){
+        if(this.model.get('deleted') == true){
             this.$el.find("#deleteProduct").prop('disabled', true);
             this.$el.find("#editProduct").prop('disabled', true);
             clearInfo();

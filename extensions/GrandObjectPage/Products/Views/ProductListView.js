@@ -8,41 +8,56 @@ ProductListView = Backbone.View.extend({
         this.template = _.template($('#product_list_template').html());
     },
     
-    appendNewProduct: function(product){
-        this.productTag.append(new ProductRowView({model:product}).render());
-    },
-    
-    renderProducts: function(){
-        this.productTag = this.$('#productRows');
-        _.each(this.model.models, function(product){
-            this.appendNewProduct(product);
+    processData: function(){
+        // This method is purposely not using Backbone views for performance reasons
+        var data = Array();
+        _.each(this.model.toJSON(), function(model, index){
+            var authors = Array();
+            var projects = Array();
+            _.each(model.authors, function(author, aId){
+                if(author.url != ''){
+                    authors.push("<a href='" + author.url + "' target='_blank'>" + author.name + "</a>");
+                }
+                else{
+                    authors.push(author.name);
+                }
+            });
+            _.each(model.projects, function(project, aId){
+                if(project.url != ''){
+                    projects.push("<a href='" + project.url + "' target='_blank'>" + project.name + "</a>");
+                }
+                else{
+                    projects.push(project.name);
+                }
+            });
+            data.push(new Array("<span style='white-space: nowrap;'>" + model.date + "</span>", 
+                                "<span style='white-space: nowrap;'>" + model.type + "</span>",
+                                "<a href='" + model.url + "'>" + model.title + "</a>", authors.join(', '), projects.join(', ')));
         }, this);
+        return data;
     },
     
     render: function(){
-        var start = new Date().getTime();
         this.$el.empty();
         this.$el.css('display', 'none');
-        this.$el.html(this.template(this.model.toJSON()));
-        this.renderProducts();
+        this.$el.html(this.template());
+        var data = this.processData();
         this.$el.find('#listTable').dataTable({'iDisplayLength': 100,
 	                                           'aaSorting': [ [0,'desc'], [1,'asc'], [4, 'asc'] ],
+	                                           'aaData' : data,
 	                                           'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
         this.$el.css('display', 'block');
-        var end = new Date().getTime();
-        return this.el;
+        return this.$el;
     }
 
 });
-
-productRowTemplate = _.template($('#product_row_template').html());
 
 ProductRowView = Backbone.View.extend({
     
     tagName: 'tr',
     
     initialize: function(){
-        this.template = productRowTemplate;
+        this.template = _.template($('#product_row_template').html());;
     },
     
     renderAuthors: function(){
