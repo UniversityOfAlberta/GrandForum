@@ -55,6 +55,10 @@ class TabUtils {
         unset($content_actions['talk']);
         unset($content_actions['move']);
         unset($content_actions['edit']);
+        unset($content_actions['addsection']);
+        unset($content_actions['editTemplate']);
+        unset($content_actions['Create from template']);
+        unset($content_actions['instance list']);
         return true;
     }
     
