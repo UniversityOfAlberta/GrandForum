@@ -40,18 +40,29 @@ ProductListView = Backbone.View.extend({
     render: function(){
         this.$el.empty();
         this.$el.css('display', 'none');
-        this.$el.html(this.template());
+        var templateData = {'url' : '', 'title' : ''};
+        if(Backbone.history.fragment.indexOf('nonGrand') == -1){
+            templateData.url = '../index.php/Special:Products#/' + Backbone.history.fragment + '/nonGrand';
+            templateData.name = 'Non-' + main.get('title');
+        }
+        else{
+            templateData.url = '../index.php/Special:Products#/' + Backbone.history.fragment.replace('/nonGrand', '');
+            templateData.name = main.get('title').replace('Non-', '');
+        }
+        this.$el.html(this.template(templateData));
+        var showButton = this.$("#showButton").detach();
         var data = this.processData();
         this.$el.find('#listTable').dataTable({'iDisplayLength': 100,
 	                                           'aaSorting': [ [0,'desc'], [1,'asc'], [4, 'asc'] ],
 	                                           'aaData' : data,
 	                                           'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+	    this.$("#listTable_length").append(showButton);
         this.$el.css('display', 'block');
         return this.$el;
     }
 
 });
-
+/*
 ProductRowView = Backbone.View.extend({
     
     tagName: 'tr',
@@ -92,3 +103,4 @@ ProductRowView = Backbone.View.extend({
     }
     
 });
+*/

@@ -541,6 +541,10 @@ class Person extends BackboneModel {
 	    return ($person != null && $person->getName() != "");
 	}
 	
+	function getCacheId(){
+	    global $wgSitename;
+	}
+	
 	// Returns the Mediawiki User object for this Person
 	function getUser(){
 	    return User::newFromId($this->id);

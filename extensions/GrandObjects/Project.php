@@ -294,6 +294,10 @@ class Project extends BackboneModel {
 	
 	}
 	
+	function getCacheId(){
+	
+	}
+	
     static function getHQPDistributionDuring($startRange = false, $endRange = false){
          //If no range end are provided, assume it's for the current year.
         if( $startRange === false || $endRange === false ){

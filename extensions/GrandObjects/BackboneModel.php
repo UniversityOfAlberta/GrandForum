@@ -52,6 +52,12 @@ abstract class BackboneModel {
      * @return boolean Returns whether or not this BackboneModel exists or not
      */
     abstract function exists();
+    
+    /**
+     * Returns the id of this BackboneModel's cache
+     * @return string Returns the id of this BackboneModel's cache
+     */
+    abstract function getCacheId();
 }
 
 ?>

@@ -62,6 +62,10 @@ class Role extends BackboneModel {
 	
 	}
 	
+	function getCacheId(){
+	
+	}
+	
 	// Returns whether this Role is still active or not
 	function isStillActive(){
 	    return($this->startDate > $this->endDate);

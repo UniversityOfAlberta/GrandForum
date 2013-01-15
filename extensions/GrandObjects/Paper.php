@@ -679,7 +679,6 @@ class Paper extends BackboneModel{
 	}
 	
 	function delete(){
-	    global $wgSitename;
 	    $me = Person::newFromWGUser();
 	    if($me->isLoggedIn()){
 	        $status = DBFunctions::update('grand_products',
@@ -687,7 +686,7 @@ class Paper extends BackboneModel{
 	                                array('id' => $this->getId()));
 	        if($status){
 	            if(function_exists('apc_delete')){
-	                apc_delete($wgSitename.'project'.$this->getTitle());
+	                apc_delete($this->getCacheId());
 	            }
                 foreach($this->getAuthors() as $author){
                     if($author instanceof Person && $me->getId() != $author->getId()){
@@ -703,9 +702,8 @@ class Paper extends BackboneModel{
 	}
 
 	function toArray(){
-	    global $wgSitename;
-	    if(function_exists('apc_exists') && apc_exists($wgSitename.'project'.$this->getTitle())){
-	        $json = apc_fetch($wgSitename.'project'.$this->getTitle());
+	    if(function_exists('apc_exists') && apc_exists($this->getCacheId())){
+	        $json = apc_fetch($this->getCacheId());
 	        $authors = $json['authors'];
 	        $change = false;
 	        foreach($authors as $key => $author){
@@ -729,7 +727,7 @@ class Paper extends BackboneModel{
 	        }
 	        $json['authors'] = $authors;
 	        if($change && function_exists('apc_store')){
-	            apc_store($wgSitename.'project'.$this->getTitle(), $json, 60*60);
+	            apc_store($this->getCacheId(), $json, 60*60);
 	        }
 	        return $json;
 	    }
@@ -762,7 +760,7 @@ class Paper extends BackboneModel{
 	                      'deleted' => $this->isDeleted());
 	        
 	        if(function_exists('apc_store')){
-	            apc_store($wgSitename.'project'.$this->getTitle(), $json, 60*60);
+	            apc_store($this->getCacheId(), $json, 60*60);
 	        }
 	        return $json;
 	    }
@@ -770,6 +768,11 @@ class Paper extends BackboneModel{
 	
 	function exists(){
 
+	}
+	
+	function getCacheId(){
+	    global $wgSitename;
+	    return $wgSitename.'product'.$this->getTitle();
 	}
 }
 ?>
