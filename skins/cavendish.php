@@ -109,6 +109,50 @@ class cavendishTemplate extends QuickTemplate {
         <script type='text/javascript'>
             Backbone.emulateHTTP = true;
             Backbone.emulateJSON = true;
+            
+            Backbone.View.prototype.beforeRender = function(){};
+            Backbone.View.prototype.afterRender = function(){
+                $.each(this.$el.find('input[type=datepicker]'), function(index, val){
+                    $(val).datepicker({
+                        'dateFormat': $(val).attr('format'),
+                        'changeMonth': true,
+                        'changeYear': true,
+                        'showOn': "both",
+                        'buttonImage': "<?php echo $wgServer.$wgScriptPath; ?>/skins/calendar.gif",
+                        'buttonImageOnly': true
+                    });
+                });
+            };
+            
+            Backbone.View = (function(View) {
+              // Define the new constructor
+              Backbone.View = function(attributes, options) {
+                // Your constructor logic here
+                // ...
+                _.bindAll(this, 'beforeRender', 'render', 'afterRender'); 
+                var _this = this;
+                this.render = _.wrap(this.render, function(render) {
+                  _this.beforeRender();
+                  var ret = render();
+                  _this.afterRender(); 
+                  return ret;
+                }); 
+                // Call the default constructor if you wish
+                View.apply(this, arguments);
+                // Add some callbacks
+                
+              };
+              // Clone static properties
+              _.extend(Backbone.View, View);
+              // Clone prototype
+              Backbone.View.prototype = (function(Prototype) {
+                Prototype.prototype = View.prototype;
+                return new Prototype;
+              })(function() {});
+              // Update constructor in prototype
+              Backbone.View.prototype.constructor = Backbone.View;
+              return Backbone.View;
+            })(Backbone.View);
         </script>
 		<script type="<?php $this->text('jsmimetype') ?>" src="<?php $this->text('stylepath' ) ?>/common/wikibits.js?<?php echo $GLOBALS['wgStyleVersion'] ?>"><!-- wikibits js --></script>
 		<!-- Head Scripts -->

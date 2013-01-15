@@ -80,6 +80,8 @@ pageRouter.on('route:showProduct', function (category, id) {
 pageRouter.on('route:editProduct', function (category, id) {
     // Get A single product
     product = new Product({'id': id});
+    this.closeCurrentView();
+    this.currentView = new ProductEditView({el: $("#currentView"), model: product});
 });
 
 // Start Backbone history a necessary step for bookmarkable URL's
