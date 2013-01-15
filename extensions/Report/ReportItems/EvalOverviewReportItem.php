@@ -99,15 +99,15 @@ EOF;
         $html .=<<<EOF
         	<tr>
         	<th width="20%" align="left">NI Name</th>
-            <th width="10%">Q1 (Comments)</th>
-        	<th width="10%">Q2</th>
-        	<th width="10%">Q3</th>
+            <th width="10%">Q7 (Comments)</th>
+        	<th width="10%">Q8</th>
+        	<th width="10%">Q9</th>
         	<th style="border-left: 5px double #8C529D;">Q1</th>
+        	<th>Q2</th>
+        	<th>Q3</th>
         	<th>Q4</th>
         	<th>Q5</th>
         	<th>Q6</th>
-        	<th>Q7</th>
-        	<th>Q8</th>
         	</tr>
 EOF;
         $sub_details = "";

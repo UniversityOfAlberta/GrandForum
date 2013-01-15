@@ -13,7 +13,7 @@
     <ReportSection id="project_materials" name="Project Materials" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
         <Instructions>
             <![CDATA[
-               <p>You can download the Project Report PDFs for your reference.</p>
+               <p>You can download the Project Report PDFs for review.  In addition, all project reports are available for reference.</p>
             ]]>
         </Instructions>
         <ReportItem id="project_budget_head" type="StaticReportItem">
@@ -96,7 +96,7 @@
     <ReportSection id="project_reviews" name="Project Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
-               <p>Instructions needed</p>
+               <p>Under each of the listed Projects you will find the review form for that Project. For points 1-4, the NCE Evaluation Criteria, more details regarding what is to be considered under each criterion can be found <a href="https://forum.grand-nce.ca/index.php/Help:NCE_Criteria" target="_blank">here</a>. For the Overall Score, please note that it is expected that the majority of Projects will likely come under the middle tiers. For Evaluator Comments, please provide a brief justification for your overall score, including elaborations on strengths and weaknesses in the areas addressed under points 1-5.</p>
             ]]>
         </Instructions>
         <ReportItem id="project_review_head" type="StaticReportItem">
@@ -118,29 +118,9 @@
         </ReportItem>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="Project">
             <ReportItemSet id="project_materials" type="NIReviewReportItemSet" subType="Project">
-                <ReportItem id="RI8" type="EvalReviewTextareaReportItem" rows="6" width="100%" limit="-1" blobType="BLOB_TEXT" blobItem="EVL_OTHERCOMMENTS" blobSubItem="0"  subType="Project">
-                <![CDATA[
-                <h3>1. Evaluator Comments</h3>
-                <div style="padding-left:16px;">{$item}</div>
-                ]]>
-                </ReportItem>
-
-                <ReportItem id="RI7" type="EvalReviewRadioReportItem" options="Top|Upper Middle|Lower Middle|Bottom" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_OVERALLSCORE" blobSubItem="0"  subType="Project">
-                <![CDATA[
-                <h3>2. Overall Score</h3>
-                <div style="padding-left:20px;">{$item}</div>
-                ]]>
-                </ReportItem>
-                
-                <ReportItem id="RI9" type="EvalReviewRadioReportItem" options="Very High|High|Moderate|Low" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_CONFIDENCE" blobSubItem="0"  subType="Project">
-                <![CDATA[
-                <h3>3. Confidence Level of Evaluator </h3>
-                <div style="padding-left:20px;">{$item}</div>
-                ]]>
-                </ReportItem>
                 <ReportItem id="RI1" type="EvalReviewRadioReportItem" subType="Project" options="Exceptional|Very Good|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_EXCELLENCE" blobSubItem="0">
                 <![CDATA[
-                <h3>4. Excellence of the Research Program</h3>
+                <h3>1. Excellence of the Research Program</h3>
                 <table width="100%" cellspacing="10" cellpadding="5">
                 <tr>
                 <td width="23%">{$item}</td>
@@ -168,7 +148,7 @@
                 </tr>
                 </table>
                 
-                <h3>5. Development of HQP</h3>
+                <h3>2. Development of HQP</h3>
                 <table width="100%" cellspacing="10" cellpadding="5">
                 <tr>
                 <td width="23%">{$item}</td>
@@ -189,7 +169,7 @@
                 </tr>
                 </table>
 
-                <h3>6. Networking and Partnerships</h3>
+                <h3>3. Networking and Partnerships</h3>
                 <table width="100%" cellspacing="10" cellpadding="5">
                 <tr>
                 <td width="23%">{$item}</td>
@@ -210,7 +190,7 @@
                 </tr>
                 </table>
 
-                <h3>7. Knowledge and Technology Exchange and Exploitation</h3>
+                <h3>4. Knowledge and Technology Exchange and Exploitation</h3>
                 <table width="100%" cellspacing="10" cellpadding="5">
                 <tr>
                 <td width="23%">{$item}</td>
@@ -225,6 +205,7 @@
                     </ReportItem>
                 </ReportItemSet>
 
+                <!--
                 <ReportItem id="RI5" type="EvalReviewRadioReportItem" options="Exceptional|Very Good|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_MANAGEMENT" blobSubItem="0"  subType="Project">
                 <![CDATA[
                 </td>
@@ -245,6 +226,7 @@
                     ]]>
                     </ReportItem>
                 </ReportItemSet>
+                -->
 
                 <ReportItem id="RI6" type="EvalReviewRadioReportItem" options="Exceptional|Very Good|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_TEXT" blobItem="EVL_REPORTQUALITY" blobSubItem="0"  subType="Project">
                 <![CDATA[
@@ -252,7 +234,7 @@
                 </tr>
                 </table>
 
-                <h3>9. Rating for Quality of Report</h3>
+                <h3>5. Rating for Quality of Report</h3>
                 <table width="100%" cellspacing="10" cellpadding="5">
                 <tr>
                 <td width="23%">{$item}</td>
@@ -267,11 +249,31 @@
                     </ReportItem>
                 </ReportItemSet>
 
-                <ReportItem type="StaticReportItem">
+                <ReportItem id="RI8" type="EvalReviewTextareaReportItem" rows="6" width="100%" limit="-1" blobType="BLOB_TEXT" blobItem="EVL_OTHERCOMMENTS" blobSubItem="0"  subType="Project">
                 <![CDATA[
                 </td>
                 </tr>
                 </table>
+                <h3>6. Evaluator Comments</h3>
+                <div style="padding-left:16px;">{$item}</div>
+                ]]>
+                </ReportItem>
+
+                <ReportItem id="RI7" type="EvalReviewRadioReportItem" options="Top|Upper Middle|Lower Middle|Bottom" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_OVERALLSCORE" blobSubItem="0"  subType="Project">
+                <![CDATA[
+                <h3>7. Overall Score</h3>
+                <div style="padding-left:20px;">{$item}</div>
+                ]]>
+                </ReportItem>
+                
+                <ReportItem id="RI9" type="EvalReviewRadioReportItem" options="Very High|High|Moderate|Low" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_CONFIDENCE" blobSubItem="0"  subType="Project">
+                <![CDATA[
+                <h3>8. Confidence Level of Evaluator </h3>
+                <div style="padding-left:20px;">{$item}</div>
+                ]]>
+                </ReportItem>
+                <ReportItem type="StaticReportItem">
+                <![CDATA[
                 <div style="margin-top: 20px; padding-top:10px; border-top:1px solid #CCCCCC;">
                 
                 <input type="submit" value="Save" name="submit">
@@ -286,7 +288,7 @@
     <ReportSection id="project_overview" name="Project Overview" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
-               <p>Instructions needed</p>
+               <p>Coming soon</p>
             ]]>
         </Instructions>
         <ReportItem id="project_overview" type="EvalOverviewReportItem" subType="Project">
