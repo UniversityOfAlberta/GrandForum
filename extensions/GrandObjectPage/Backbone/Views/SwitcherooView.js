@@ -7,22 +7,26 @@ SwitcherooView = Backbone.View.extend({
         this.template = _.template($('#switcheroo_template').html());
     },
     
-    separator: ', ',
-    
     render: function(){
         this.$el.empty();
+        
+        this.$el.html(this.template(this.model.toJSON()));
+        this.$el.css('display', 'none');
         
         var left = this.model.get('left');
         var right = this.model.get('right');
         
-        
-        _.each(this.model, function(model, index){
-            if(index > 0){
-                this.$el.append(this.separator);
+        for(lId in left){
+            this.$('.left').append("<span>" + left[lId] + "</span>");
+        }
+        for(rId in right){
+            if(left.indexOf(right[rId]) == -1){
+                this.$('.right').append("<span>" + right[rId] + "</span>");
             }
-            this.$el.append(model);
-        }, this);
-        return this.el;
+        }
+        createSwitcheroos();
+        this.$el.slideDown(250);
+        return this.$el;
     }
 
 });

@@ -21,14 +21,17 @@ ProductEditView = Backbone.View.extend({
     
     renderAuthors: function(){
         var views = Array();
-        _.each(this.model.get('authors'), function(author, index){
-            var link = new Link({id: author.id,
-                                 text: author.name,
-                                 url: author.url,
-                                 target: '_blank'});
-            views.push(new PersonLinkView({model: link}).render());
-        });
-        csv = new CSVView({el: this.$el.find('#productAuthors'), model: views}).render();
+        var allPeople = new People();
+        allPeople.fetch();
+        spin = spinner("productAuthors", 10, 20, 10, 3, '#888');
+        allPeople.bind('reset', function(){
+            var left = _.pluck(this.model.get('authors'), 'name');
+            var right = allPeople.pluck('realname');
+            
+            var switcheroo = new Switcheroo({name: 'author', 'left': left, 'right': right});
+            var switcherooView = new SwitcherooView({el: this.$("#productAuthors"), model: switcheroo});
+            switcherooView.render();
+        }, this);
     },
     
     renderData: function(){
