@@ -909,6 +909,50 @@ input::-moz-focus-inner{
     background-image: url('../black_gradient_darker.png') !important;
 }
 
+ul.ui-autocomplete {
+    background: #FFFFFF !important;
+    border: 1px solid #AAA !important;
+    padding: 5px 0 5px 0 !important;
+    
+    -moz-border-radius: 5px !important;
+    -webkit-border-radius: 5px !important;
+    border-radius: 5px !important;
+    
+    -moz-box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
+    -webkit-box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
+    box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
+}
+
+li.ui-menu-item {
+    background: #FFF;
+    -moz-border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+
+li.ui-menu-item > a {
+    font-weight: bold;
+    font-size: 12px;
+    color: #555;
+    border: none;
+    line-height:27px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin:0 !important;
+}
+
+li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem {
+    font-weight: bold;
+    font-size: 12px;
+    color: #FFF;
+    border: none;
+    background: #96789F;
+    line-height:27px !important;
+    -moz-border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+
 h1.custom-title{
     padding: 0.8em 0.8em 0 0.8em;
     border: none;

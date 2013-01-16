@@ -16,7 +16,7 @@ CSVView = Backbone.View.extend({
             }
             this.$el.append(model);
         }, this);
-        return this.el;
+        return this.$el;
     }
 
 });

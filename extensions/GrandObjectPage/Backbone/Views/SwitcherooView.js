@@ -9,9 +9,8 @@ SwitcherooView = Backbone.View.extend({
     
     render: function(){
         this.$el.empty();
-        
-        this.$el.html(this.template(this.model.toJSON()));
         this.$el.css('display', 'none');
+        this.$el.html(this.template(this.model.toJSON()));
         
         var left = this.model.get('left');
         var right = this.model.get('right');

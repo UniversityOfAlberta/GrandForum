@@ -20,7 +20,6 @@ ProductEditView = Backbone.View.extend({
     },
     
     renderAuthors: function(){
-        var views = Array();
         var allPeople = new People();
         allPeople.fetch();
         spin = spinner("productAuthors", 10, 20, 10, 3, '#888');
@@ -47,15 +46,15 @@ ProductEditView = Backbone.View.extend({
     },
     
     renderProjects: function(){
-        var views = Array();
-        _.each(this.model.get('projects'), function(project, index){
-            var link = new Link({id: project.id,
-                                 text: project.name,
-                                 url: project.url,
-                                 target: '_blank'});
-            views.push(new ProjectLinkView({model: link}).render());
-        });
-        csv = new CSVView({el: this.$el.find('#productProjects'), model: views}).render();
+        var allProjects = new Projects();
+        allProjects.fetch();
+        allProjects.bind('reset', function(){
+            this.$("#productProjects").val(_.pluck(this.model.get('projects'), 'name').join(', '));
+            
+            var tagit = new TagIt({options: {availableTags: allProjects.pluck('name') }});
+            var tagitView = new TagItView({el: this.$("#productProjects"), model: tagit});
+            tagitView.render();
+        }, this);
     },
     
     render: function(){
