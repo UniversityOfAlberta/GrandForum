@@ -5,7 +5,8 @@ BackbonePage::register('Products', 'Products', 'grand-tools', dirname(__FILE__))
 class Products extends BackbonePage {
     
     function getTemplates(){
-        return array('product_list', 
+        return array('Backbone/*',
+                     'product_list', 
                      'product',
                      'product_data_row',
                      'product_edit',
@@ -13,17 +14,14 @@ class Products extends BackbonePage {
     }
     
     function getViews(){
-        return array('ProductListView', 
+        return array('Backbone/*',
+                     'ProductListView', 
                      'ProductView',
-                     'ProductEditView',
-                     'CSVView',
-                     'PersonLinkView',
-                     'ProjectLinkView',
-                     'ProductLinkView');
+                     'ProductEditView');
     }
     
     function getModels(){
-        return array();
+        return array('Backbone/*');
     }
 
 }

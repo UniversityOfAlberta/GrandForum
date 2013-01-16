@@ -4,7 +4,6 @@ ProductEditView = Backbone.View.extend({
         this.model.fetch();
         this.model.bind('change', this.render, this);
         this.template = _.template($('#product_edit_template').html());
-        
     },
     
     events: {

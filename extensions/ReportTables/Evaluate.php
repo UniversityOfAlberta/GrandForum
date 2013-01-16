@@ -10,10 +10,10 @@ $wgSpecialPages['Evaluate'] = 'Evaluate'; # Let MediaWiki know about the special
 $wgExtensionMessagesFiles['Evaluate'] = $dir . 'Evaluate.i18n.php';
 $wgSpecialPageGroups['Evaluate'] = 'reporting-tools';
 
-class Evaluate extends AbstractReportOld {
+class Evaluate {
 
 	function Evaluate(){
-	    parent::AbstractReportOld("Evaluate", RMC);
+	    //parent::AbstractReportOld("Evaluate", RMC);
 	}
 	
 	function initReport(){

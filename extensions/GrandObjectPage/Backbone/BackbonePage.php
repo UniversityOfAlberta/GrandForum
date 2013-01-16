@@ -1,6 +1,8 @@
 <?php
 $wgHooks['LoadAllMessages'][] = 'BackbonePage::onLoadAllMessages';
 
+BackbonePage::$dirs['backbone'] = dirname(__FILE__);
+
 /**
  * @package GrandObjectPage
  */
@@ -121,7 +123,50 @@ abstract class BackbonePage extends SpecialPage {
         $templates[] = 'main';
         foreach($templates as $template){
             $fileName = self::$dirs[strtolower(get_class($this))]."/Templates/{$template}.html";
-            if(file_exists($fileName)){
+            if(strstr($template, "/") !== false){
+                foreach(self::$dirs as $key => $dir){
+                    $explodedTemplate = explode("/", $template);
+                    $class = $explodedTemplate[0];
+                    if(strtolower($class) == $key){
+                        if(strstr($template, "/*") !== false){
+                            $templateDir = $dir."/Templates";
+                            if(is_dir($templateDir)){
+                                $files = @scandir($templateDir);
+                                foreach($files as $file){
+                                    if(strstr($file, ".html") !== false){
+                                        $exploded = explode("extensions/", $dir);
+                                        if($key != "backbone" || $file != "main.html"){
+                                            $fileName = $dir."/Templates/".$file;
+                                            $tpl = file_get_contents($fileName);
+                                            $name = str_replace(".html", "", $file);
+                                            $wgOut->addHTML("<script type='text/template' id='{$name}_template'>\n$tpl</script>\n");
+                                        }
+                                    }
+                                }
+                            }
+                            else{
+                                $wgMessage->addWarning("The folder <b>{$templateDir}</b> does not exist");
+                            }
+                        }
+                        else{
+                            $dir = self::$dirs[strtolower($explodedTemplate[0])];
+                            $exploded = explode("extensions/", $dir);
+                            $file = $explodedTemplate[count($explodedTemplate)-1];
+                            $fileName = $dir."/Templates/".$file.".html";
+                            if(file_exists($fileName)){
+                                $tpl = file_get_contents($fileName);
+                                $name = $file;
+                                $wgOut->addHTML("<script type='text/template' id='{$name}_template'>\n$tpl</script>\n");
+                            }
+                            else{
+                                $wgMessage->addWarning("BackbonePage <b>$class</b> is missing <i>$file.html</i>");
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            else if(file_exists($fileName)){
                 $tpl = file_get_contents($fileName);
                 $exploded = explode("/", $template);
                 $name = $exploded[count($exploded)-1];
@@ -154,8 +199,46 @@ abstract class BackbonePage extends SpecialPage {
         $views[] = 'MainView';
         $exploded = explode("extensions/", self::$dirs[strtolower(get_class($this))]);
         foreach($views as $view){
+            $exploded = explode("extensions/", self::$dirs[strtolower(get_class($this))]);
             $fileName = self::$dirs[strtolower(get_class($this))].'/Views/'.$view.'.js';
-            if(file_exists($fileName)){
+            if(strstr($view, "/") !== false){
+                foreach(self::$dirs as $key => $dir){
+                    $explodedView = explode("/", $view);
+                    $class = $explodedView[0];
+                    if(strtolower($class) == $key){
+                        if(strstr($view, "/*") !== false){
+                            $viewDir = $dir."/Views";
+                            if(is_dir($viewDir)){
+                                $files = @scandir($viewDir);
+                                foreach($files as $file){
+                                    if(strstr($file, ".js") !== false){
+                                        $exploded = explode("extensions/", $dir);
+                                        if($key != "backbone" || $file != "MainView.js"){
+                                            $wgOut->addHTML("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Views/$file'></script>");
+                                        }
+                                    }
+                                }
+                            }
+                            else{
+                                $wgMessage->addWarning("The folder <b>{$viewDir}</b> does not exist");
+                            }
+                        }
+                        else{
+                            $dir = self::$dirs[strtolower($explodedView[0])];
+                            $exploded = explode("extensions/", $dir);
+                            $file = $explodedView[count($explodedView)-1];
+                            if(file_exists($dir."/Views/".$file.".js")){
+                                $wgOut->addHTML("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Views/{$file}.js'></script>");
+                            }
+                            else{
+                                $wgMessage->addWarning("BackbonePage <b>$class</b> is missing <i>$file.js</i>");
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            else if(file_exists($fileName)){
                 $wgOut->addHTML("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Views/{$view}.js'></script>");
             }
             else if(file_exists(dirname(__FILE__)."/Views/{$view}.js")){
@@ -181,10 +264,47 @@ abstract class BackbonePage extends SpecialPage {
         global $wgOut, $wgServer, $wgScriptPath, $wgMessage;
         $models = $this->getModels();
         $models[] = 'Main';
-        $exploded = explode("extensions/", self::$dirs[strtolower(get_class($this))]);
         foreach($models as $model){
+            $exploded = explode("extensions/", self::$dirs[strtolower(get_class($this))]);
             $fileName = self::$dirs[strtolower(get_class($this))].'/Models/'.$model.'.js';
-            if(file_exists($fileName)){
+            if(strstr($model, "/") !== false){
+                foreach(self::$dirs as $key => $dir){
+                    $explodedModel = explode("/", $model);
+                    $class = $explodedModel[0];
+                    if(strtolower($class) == $key){
+                        if(strstr($model, "/*") !== false){
+                            $modelDir = $dir."/Models";
+                            if(is_dir($modelDir)){
+                                $files = @scandir($modelDir);
+                                foreach($files as $file){
+                                    if(strstr($file, ".js") !== false){
+                                        $exploded = explode("extensions/", $dir);
+                                        if($key != "backbone" || $file != "Main.js"){
+                                            $wgOut->addHTML("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Models/$file'></script>");
+                                        }
+                                    }
+                                }
+                            }
+                            else{
+                                $wgMessage->addWarning("The folder <b>{$modelDir}</b> does not exist");
+                            }
+                        }
+                        else{
+                            $dir = self::$dirs[strtolower($explodedModel[0])];
+                            $exploded = explode("extensions/", $dir);
+                            $file = $explodedModel[count($explodedModel)-1];
+                            if(file_exists($dir."/Models/".$file.".js")){
+                                $wgOut->addHTML("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Models/{$file}.js'></script>");
+                            }
+                            else{
+                                $wgMessage->addWarning("BackbonePage <b>$class</b> is missing <i>$file.js</i>");
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            else if(file_exists($fileName)){
                 $wgOut->addHTML("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/{$exploded[1]}/Models/{$model}.js'></script>");
             }
             else if(file_exists(dirname(__FILE__)."/Models/{$model}.js")){
