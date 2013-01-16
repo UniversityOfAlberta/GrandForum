@@ -214,24 +214,24 @@
                     </ReportItem>
                 </ReportItemSet>
 
-                <ReportItem id="RI8" type="EvalReviewTextareaReportItem" rows="6" width="100%" limit="-1" blobType="BLOB_TEXT" blobItem="EVL_OTHERCOMMENTS" blobSubItem="0">
-                <![CDATA[
-                </td>
-                </tr>
-                </table>
-
-                <h3>7. Evaluator Comments</h3>
-                <div style="padding-left:16px;">{$item}</div>
-                ]]>
-                </ReportItem>
-
                 <ReportItem id="RI7" type="EvalReviewRadioReportItem" options="Top|Upper Middle|Lower Middle|Bottom" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_OVERALLSCORE" blobSubItem="0">
                 <![CDATA[
-                <h3>8. Overall Score</h3>
+                 </td>
+                </tr>
+                </table>
+                
+                <h3>7. Overall Score</h3>
                 <div style="padding-left:20px;">{$item}</div>
                 ]]>
                 </ReportItem>
                 
+                <ReportItem id="RI8" type="EvalReviewTextareaReportItem" rows="6" width="100%" limit="-1" blobType="BLOB_TEXT" blobItem="EVL_OTHERCOMMENTS" blobSubItem="0">
+                <![CDATA[
+                <h3>8. Evaluator Comments</h3>
+                <div style="padding-left:16px;">{$item}</div>
+                ]]>
+                </ReportItem>
+
                 <ReportItem id="RI9" type="EvalReviewRadioReportItem" options="Very High|High|Moderate|Low" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EVL_CONFIDENCE" blobSubItem="0">
                 <![CDATA[
                 <h3>9. Confidence Level of Evaluator </h3>

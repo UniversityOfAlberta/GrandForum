@@ -99,8 +99,8 @@ EOF;
         $html .=<<<EOF
         	<tr>
         	<th width="20%" align="left">NI Name</th>
-            <th width="10%">Q7 (Comments)</th>
-        	<th width="10%">Q8</th>
+            <th width="10%">Q8 (Comments)</th>
+        	<th width="10%">Q7</th>
         	<th width="10%">Q9</th>
         	<th style="border-left: 5px double #8C529D;">Q1</th>
         	<th>Q2</th>
