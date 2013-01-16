@@ -254,7 +254,7 @@
     <ReportSection id="cni_overview" name="CNI Overview" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
-               <p>Coming soon</p>
+               <p>This table allows for an easy comparison of the scores you have given in your reviews. Additionally, once reviews have been submitted, this is also where you will have an opportunity to compare your reviews with those of other evaluators who have reviewed the same NI or Project.</p>
             ]]>
         </Instructions>
         <ReportItem id="cni_overview" type="EvalOverviewReportItem" subType="CNI">
