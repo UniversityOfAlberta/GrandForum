@@ -12,6 +12,7 @@ TagItView = Backbone.View.extend({
     
     renderSuggestions: function(){
         var that = this;
+        this.$(".suggestionsDiv").css('display', 'none');
         this.$(".tagit-suggestions").empty();
         if(this.model.get('suggestions').length > 0){
             var suggestions = Array();
@@ -25,6 +26,9 @@ TagItView = Backbone.View.extend({
             this.$(".tagit-suggestions li").click(function(event, ui){
                 that.$("input.tagit").tagit("createTag", $(this).attr('name'));
             });
+        }
+        if(this.$(".tagit-suggestions li").length > 0){
+            this.$(".suggestionsDiv").css('display', 'block');
         }
     },
     
