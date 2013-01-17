@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Products>
+	<!-- Activities -->
+	<Activities>
+		<Activity type="Event Organization" status="Not Invited">
+			<data>
+				<field>conference</field>
+				<field>location</field>
+				<field>organizing_body</field>
+				<field>url</field>
+			</data>
+		</Activity>
+		
+		<Activity type="Panel" status="Not Invited">
+			<data>
+				<field>conference</field>
+				<field>location</field>
+				<field>organizing_body</field>
+				<field>url</field>
+			</data>
+		</Activity>
+
+		<!--
+		There are a number of these in DB, but not supported in UI anymore
+		<Activity type="Panel" status="Not Invited">
+			<Data>
+			</Data>
+		</Activity>
+
+		<Activity type="Tutorial" status="Not Invited">
+			<Data>
+			</Data>
+		</Activity>
+		-->
+	</Activities>
+	
+	<!-- Artifacts -->
+	<Artifacts>
+		<Artifact typе="Aesthetic Object" status="Peer Reviewed|Not Peer Reviewed">
+			<data></data>
+		</Artifact>
+
+		<Artifact typе="Device/Machine" status="Peer Reviewed|Not Peer Reviewed">
+			<data></data>
+		</Artifact>
+
+		<Artifact typе="Misc" status="Peer Reviewed|Not Peer Reviewed">
+			<data></data>
+		</Artifact>
+
+		<Artifact typе="Open Software" status="Peer Reviewed|Not Peer Reviewed">
+			<data>
+				<field>url</field>
+			</data>
+		</Artifact>
+
+		<Artifact typе="Patent" status="Peer Reviewed|Not Peer Reviewed">
+			<data>
+				<field>number</field>
+			</data>
+		</Artifact>
+
+		<Artifact typе="Repository" status="Peer Reviewed|Not Peer Reviewed">
+			<data>
+				<field>url</field>
+			</data>
+		</Artifact>
+	</Artifacts>	
+
+	<!-- Awards -->
+	
+	<Awards>
+		<Award typе="Award" status="">
+			<data>
+				<field>url</field>
+			</data>
+		</Award>
+	</Awards>
+	
+
+	<!-- Presentations -->
+	<Presentations>
+		<Presentation typе="2MM" status="Invited|Not Invited">
+			<data>
+				<field>event_title</field>
+				<field>event_location</field>
+				<field>organizing_body</field>
+				<field>url</field>
+			</data>
+		</Presentation>
+
+		<Presentation typе="Departmental Lecture" status="Invited|Not Invited">
+			<data>
+				<field>event_title</field>
+				<field>host_institution</field>
+				<field>host_department</field>
+				<field>url</field>
+			</data>
+		</Presentation>
+
+		<Presentation typе="Departmental Seminar" status="Invited|Not Invited">
+			<data>
+				<field>event_title</field>
+				<field>host_institution</field>
+				<field>host_department</field>
+				<field>url</field>
+			</data>
+		</Presentation>
+
+		<Presentation typе="Distinguished Lecture" status="Invited|Not Invited">
+			<data>
+				<field>event_title</field>
+				<field>host_institution</field>
+				<field>host_department</field>
+				<field>url</field>
+			</data>
+		</Presentation>
+
+		<Presentation typе="Group Seminar" status="Invited|Not Invited">
+			<data>
+				<field>event_title</field>
+				<field>host_institution</field>
+				<field>host_department</field>
+				<field>host_research_group</field>
+				<field>url</field>
+			</data>
+		</Presentation>
+
+		<Presentation typе="Keynote" status="Invited|Not Invited">
+			<data>
+				<field>event_title</field>
+				<field>event_location</field>
+				<field>organizing_body</field>
+				<field>url</field>
+			</data>
+		</Presentation>
+
+		<Presentation typе="Misc" status="Invited|Not Invited">
+			<data>
+				<field>misc</field> <!-- Not implemented yet: currently this is not part of data and is just edded to type "Misc:[misc]" -->
+				<field>event_title</field>
+				<field>event_location</field>
+				<field>organizing_body</field>
+				<field>url</field>
+			</data>
+		</Presentation>
+
+		<Presentation typе="Panel" status="Invited|Not Invited">
+			<data>
+				<field>event_title</field>
+				<field>event_location</field>
+				<field>organizing_body</field>
+				<field>url</field>
+			</data>
+		</Presentation>
+
+		<Presentation typе="Paper Session" status="Invited|Not Invited">
+			<data>
+				<field>event_title</field>
+				<field>event_location</field>
+				<field>organizing_body</field>
+				<field>url</field>
+			</data>
+		</Presentation>
+
+		<Presentation typе="RNotes" status="Invited|Not Invited">
+			<data>
+				<field>event_title</field>
+				<field>event_location</field>
+				<field>organizing_body</field>
+				<field>url</field>
+			</data>
+		</Presentation>
+
+		<Presentation typе="Tutorial" status="Invited|Not Invited">
+			<data>
+				<field>event_title</field>
+				<field>event_location</field>
+				<field>organizing_body</field>
+				<field>url</field>
+			</data>
+		</Presentation>
+
+		<Presentation typе="WIP" status="Invited|Not Invited">
+			<data>
+				<field>event_title</field>
+				<field>event_location</field>
+				<field>organizing_body</field>
+				<field>url</field>
+			</data>
+		</Presentation>
+	</Presentations>
+	
+	<!-- Press -->
+	<Presses>
+		<Press typе="International News" status="">
+			<data>
+				<field>url</field>
+			</data>
+		</Press>
+		<Press typе="Misc" status="">
+			<data>
+				<field>misc</field> <!-- Not implemented yet: currently this is not part of data and is just edded to type "Misc:[misc]" -->
+				<field>url</field>
+			</data>
+		</Press>
+		<Press typе="National News" status="">
+			<data>
+				<field>url</field>
+			</data>
+		</Press>
+		<Press typе="Provincial News" status="">
+			<data>
+				<field>url</field>
+			</data>
+		</Press>
+		<Press typе="University Press" status="">
+			<data>
+				<field>url</field>
+			</data>
+		</Press>
+	</Presses>
+	
+	<!-- Publications -->
+	<Publications>
+		<Publication typе="Bachelors Thesis" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>university</field>
+				<field>department</field>
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<!-- Not certain we're going to have this type -->
+		<Publication typе="BibTex Article" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>published_in</field>
+				<field>pages</field>
+				<field>volume</field>
+				<field>number</field>
+				<field>publisher</field>
+				<field>address</field>
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<!-- Not certain we're going to have this type -->
+		<Publication typе="BibTex Book" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>book_title</field>
+				<field>editors</field>
+				<field>pages</field>
+				<field>volume</field>
+				<field>number</field>
+				<field>publisher</field>
+				<field>address</field>
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<Publication typе="Book" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>publisher</field>
+				<!--field>address</field--> <!-- In some entried in DB, but not in UI -->
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<Publication typе="Book Chapter" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>book_title</field>
+				<field>editors</field>
+				<field>pages</field>
+				<field>publisher</field>
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<Publication typе="Book Review" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>book_title</field>
+				<field>published_in</field>
+				<field>volume</field>
+				<field>number</field>
+				<field>pages</field>
+				<field>publisher</field>
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<Publication typе="Collections Paper" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>book_title</field>
+				<field>editors</field>
+				<field>pages</field>
+				<field>publisher</field>
+				<field>address</field>
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<Publication typе="Edited Book" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>publisher</field>
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<Publication typе="Journal Abstract" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>published_in</field>
+				<field>volume</field>
+				<field>number</field>
+				<field>pages</field>
+				<field>publisher</field>
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<Publication typе="Journal Paper" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>published_in</field>
+				<field>volume</field>
+				<field>number</field>
+				<field>pages</field>
+				<field>publisher</field>
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<Publication typе="Magazine/Newspaper Article" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>published_in</field>
+				<field>volume</field>
+				<field>number</field>
+				<field>pages</field>
+				<field>publisher</field>
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<Publication typе="Manual" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>volume</field>
+				<field>edition</field>
+				<field>series</field>
+				<field>pages</field>
+				<field>publisher</field>
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<Publication typе="Masters Thesis" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>university</field>
+				<field>department</field>
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<Publication typе="Misc" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>misc</field> <!-- Not implemented yet: currently this is not part of data and is just edded to type "Misc:[misc]" -->
+				<field>venue</field>
+				<field>how_published</field>
+				<field>note</field>
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<!-- Not certain about this one - there are a lot of these in the DB, but not in the UI. Data fields vary -->
+		<Publication typе="Paper" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+			</data>
+		</Publication>
+
+		<Publication typе="PHD Thesis" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>university</field>
+				<field>department</field>
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<Publication typе="Poster" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>event_title</field>
+				<field>event_location</field>
+				<field>pages</field>
+				<field>publisher</field>
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<Publication typе="Proceedings Paper" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>event_title</field>
+				<field>event_location</field>
+				<field>pages</field>
+				<field>publisher</field>
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<Publication typе="Review Article" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>published_in</field>
+				<field>volume</field>
+				<field>number</field>
+				<field>pages</field>
+				<field>publisher</field>
+				<field>isbn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<Publication typе="Tech Report" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>university</field>
+				<field>department</field>
+				<field>isbn</field>
+				<field>issn</field>
+				<field>doi</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+
+		<Publication typе="White Paper" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<data>
+				<field>published_in</field>
+				<field>pages</field>
+				<field>editor</field>
+				<field>publisher</field>
+				<field>url</field>
+				<field>peer_reviewed</field>
+			</data>
+		</Publication>
+	</Publications>
+
+</Products>
