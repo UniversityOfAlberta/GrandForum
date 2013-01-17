@@ -5,7 +5,10 @@ TagIt = Backbone.Model.extend({
     },
     
     defaults: {
-        options: Array()
+        name: 'tagit',
+        values: Array(),
+        suggestions: Array(),
+        options: Array(),
     } 
     
 });

@@ -97,13 +97,11 @@ PersonProject = RelationModel.extend({
     
     getOwner: function(){
         person = new Person({id: this.get('personId')});
-        person.fetch();
         return person;
     },
     
     getTarget: function(){
         project = new Project({id: this.get('projectId')});
-        project.fetch();
         return project;
     },
     
@@ -140,13 +138,11 @@ PersonRole = RelationModel.extend({
     
     getOwner: function(){
         person = new Person({id: this.get('personId')});
-        person.fetch();
         return person;
     },
     
     getTarget: function(){
         var role = new Role({id: parseInt(this.get('roleId'))});
-        role.fetch();
         return role;
     },
     
@@ -185,13 +181,11 @@ PersonProduct = RelationModel.extend({
     
     getOwner: function(){
         person = new Person({id: this.get('personId')});
-        person.fetch();
         return person;
     },
     
     getTarget: function(){
         var product = new Product({id: this.get('productId')});
-        product.fetch();
         return product;
     },
     

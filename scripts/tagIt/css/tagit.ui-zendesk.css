@@ -20,7 +20,8 @@ ul.tagit li.tagit-choice {
     font-weight: normal;
 }
 ul.tagit li.tagit-choice .tagit-label:not(a) {
-    color: #555;
+    color: #795F80;
+    font-weight: bold;
 }
 ul.tagit li.tagit-choice a.tagit-close {
     text-decoration: none;
@@ -37,6 +38,7 @@ ul.tagit li.tagit-choice .tagit-close .text-icon {
     font-size: 16px;
     line-height: 16px;
     color: #777;
+    font-weight:bold;
 }
 ul.tagit li.tagit-choice:hover, ul.tagit li.tagit-choice.remove {
     background-color: #EADDED;

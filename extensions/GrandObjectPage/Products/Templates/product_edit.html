@@ -10,7 +10,10 @@
     <tr><td align='right'><b>Date:</b></td><td><input type='datepicker' format='yy-mm-dd' name='date' value="<%= date %>" /></td></tr>
 </table>
 <h2>Related Projects</h2>
-<input type='tagit' id='productProjects' />
+<div id='productSpinner'></div>
+<div id='productProjects' style='width:650px;'>
+    
+</div>
 <% if(parseInt(me.get('id')) > 0) { %>
     <br />
     <button id='saveProduct'>Save <%= category %></button><button id='cancel'>Cancel</button>

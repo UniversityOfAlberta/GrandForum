@@ -22,7 +22,7 @@ ProductEditView = Backbone.View.extend({
     renderAuthors: function(){
         var allPeople = new People();
         allPeople.fetch();
-        spin = spinner("productAuthors", 10, 20, 10, 3, '#888');
+        var spin = spinner("productAuthors", 10, 20, 10, 3, '#888');
         allPeople.bind('reset', function(){
             var left = _.pluck(this.model.get('authors'), 'name');
             var right = allPeople.pluck('realname');
@@ -47,14 +47,24 @@ ProductEditView = Backbone.View.extend({
     
     renderProjects: function(){
         var allProjects = new Projects();
-        allProjects.fetch();
-        allProjects.bind('reset', function(){
-            this.$("#productProjects").val(_.pluck(this.model.get('projects'), 'name').join(', '));
-            
-            var tagit = new TagIt({options: {availableTags: allProjects.pluck('name') }});
-            var tagitView = new TagItView({el: this.$("#productProjects"), model: tagit});
-            tagitView.render();
-        }, this);
+        var that = this;
+        var myProjects;
+        
+        var spin = spinner("productSpinner", 10, 20, 10, 3, '#888');
+        $.when(allProjects.fetch(), 
+               myProjects = me.getProjects()).then(function(){
+            current = myProjects.getCurrent();
+            myProjects.ready().then(function(){
+                that.$("#productSpinner").empty();
+                var tagit = new TagIt({name: 'projects',
+                                       suggestions: current.pluck('name'),
+                                       values: _.pluck(that.model.get('projects'), 'name'),
+                                       options: {availableTags: allProjects.pluck('name')}
+                                      });
+                var tagitView = new TagItView({el: that.$("#productProjects"), model: tagit});
+                tagitView.render();
+            });
+        });    
     },
     
     render: function(){

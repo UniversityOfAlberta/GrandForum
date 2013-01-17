@@ -10,6 +10,8 @@ function between(object, start, end){
 
 RangeCollection = Backbone.Collection.extend({
 
+    xhrs: Array(),
+
     /**
      * Returns a new Collection
      * (Should be overriden)
@@ -38,6 +40,10 @@ RangeCollection = Backbone.Collection.extend({
         return this.getDuring(date, '5000');  
     },
     
+    ready: function(){
+        return $.when.apply(null, this.xhrs);
+    },
+    
     /**
      * Returns a collection of Models which fall between startDate and endDate
      */
@@ -45,9 +51,11 @@ RangeCollection = Backbone.Collection.extend({
         modelsDuring = this.newModel();
         _.each(this.models, function(model){
             if(between(model, startDate, endDate)){
-                modelsDuring.add(model.getTarget());
+                var target = model.getTarget();
+                this.xhrs.push(target.fetch());
+                modelsDuring.add(target);
             }
-        });        
+        }, this);
         return modelsDuring;
     }
 

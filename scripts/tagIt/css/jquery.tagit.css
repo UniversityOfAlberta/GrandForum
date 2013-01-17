@@ -69,3 +69,26 @@ ul.tagit input[type="text"] {
 li.tagit-new > input {
     border: none !important;
 }
+
+ul.tagit-suggestions {
+    display: inline;
+    margin: 0 0.5em;
+}
+
+li.tagit-suggestion {
+    padding: .2em .5em .2em .5em;
+    margin: 2px 5px 2px 0;
+    list-style: none;
+    background: #eee;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: bold;
+    color: #777;
+}
+
+li.tagit-suggestion:hover {
+    background: #e3e3e3;
+    border: 1px solid #bbb;
+    color: #555;
+}
