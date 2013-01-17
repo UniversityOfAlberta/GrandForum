@@ -56,9 +56,11 @@ ProductEditView = Backbone.View.extend({
             current = myProjects.getCurrent();
             myProjects.ready().then(function(){
                 that.$("#productSpinner").empty();
+                console.log(allProjects.pluck('name'));
                 var tagit = new TagIt({name: 'projects',
                                        suggestions: current.pluck('name'),
                                        values: _.pluck(that.model.get('projects'), 'name'),
+                                       capitalize: true,
                                        options: {availableTags: allProjects.pluck('name')}
                                       });
                 var tagitView = new TagItView({el: that.$("#productProjects"), model: tagit});
