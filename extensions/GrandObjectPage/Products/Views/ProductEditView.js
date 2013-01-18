@@ -12,7 +12,21 @@ ProductEditView = Backbone.View.extend({
     },
     
     saveProduct: function(){
-        document.location = this.model.get('url');
+        /*var formData = this.$("form").serializeArray();
+        for(i in formData){
+            var field = formData[i];
+            console.log(field);
+            if(field.name.indexOf('.') == -1){
+                this.model.set(field.name, field.value);
+            }
+            else{
+                var index = field.name.indexOf('.');
+                var data = this.model.get(field.name.substr(0, index), field.value);
+                data[field.name.substr(index + 1)] = field.value;
+            }
+        }
+        console.log(this.model.toJSON());
+        */
     },
     
     cancel: function(){
@@ -33,18 +47,6 @@ ProductEditView = Backbone.View.extend({
         }, this);
     },
     
-    renderData: function(){
-        var dataTag = this.$el.find('#productData');
-        _.each(this.model.get('data'), function(value, label){
-            if(value.trim() != ''){
-                var label = label.replace('_', ' ').toTitleCase();
-                var data = {'label': label,
-                            'value': value};
-                dataTag.append(new ProductEditDataRowView({model:data}).render());
-            }
-        });
-    },
-    
     renderProjects: function(){
         var allProjects = new Projects();
         var that = this;
@@ -56,7 +58,6 @@ ProductEditView = Backbone.View.extend({
             current = myProjects.getCurrent();
             myProjects.ready().then(function(){
                 that.$("#productSpinner").empty();
-                console.log(allProjects.pluck('name'));
                 var tagit = new TagIt({name: 'projects',
                                        suggestions: current.pluck('name'),
                                        values: _.pluck(that.model.get('projects'), 'name'),
@@ -75,8 +76,7 @@ ProductEditView = Backbone.View.extend({
         var data = this.model.toJSON();
         _.extend(data, dateTimeHelpers);
         this.$el.html(this.template(data));
-        this.renderAuthors();
-        this.renderData();
+        //this.renderAuthors();
         this.renderProjects();
         if(this.model.get('deleted') == true){
             this.$el.find("#deleteProduct").prop('disabled', true);
@@ -84,22 +84,8 @@ ProductEditView = Backbone.View.extend({
             clearInfo();
             addInfo('This ' + this.model.get('category') + ' has been deleted, and will not show up anywhere else on the forum');
         }
-        return this.el;
+
+        return this.$el;
     }
 
-});
-
-ProductEditDataRowView = Backbone.View.extend({
-    
-    tagName: "tr",
-    
-    initialize: function(){
-        this.template = _.template($('#product_edit_data_row_template').html());
-    }, 
-    
-    render: function(){
-        this.$el.html(this.template(this.model));
-        return this.el;
-    }
-    
 });

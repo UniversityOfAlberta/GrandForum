@@ -17,11 +17,12 @@ ul.tagit li.tagit-choice {
     background: none;
     background-color: #F3EBF5;
 
-    font-weight: normal;
+    font-weight: bold;
 }
+
 ul.tagit li.tagit-choice .tagit-label:not(a) {
     color: #795F80;
-    font-weight: bold;
+    font-weight: bold !important;
 }
 ul.tagit li.tagit-choice a.tagit-close {
     text-decoration: none;
@@ -38,7 +39,7 @@ ul.tagit li.tagit-choice .tagit-close .text-icon {
     font-size: 16px;
     line-height: 16px;
     color: #777;
-    font-weight:bold;
+    font-weight:bold !important;
 }
 ul.tagit li.tagit-choice:hover, ul.tagit li.tagit-choice.remove {
     background-color: #EADDED;
@@ -49,10 +50,10 @@ ul.tagit li.tagit-choice a.tagit-close .text-icon:hover {
     color: #222;
 }
 ul.tagit input[type="text"] {
-    color: #333333;
+    color: #555;
     background: none;
 }
 .ui-widget {
-    font-size: 1.1em;
+
 }
 

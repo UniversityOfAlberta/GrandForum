@@ -8,9 +8,7 @@ class Products extends BackbonePage {
         return array('Backbone/*',
                      'product_list', 
                      'product',
-                     'product_data_row',
-                     'product_edit',
-                     'product_edit_data_row');
+                     'product_edit');
     }
     
     function getViews(){

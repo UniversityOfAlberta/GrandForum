@@ -68,6 +68,8 @@ ul.tagit input[type="text"] {
 
 li.tagit-new > input {
     border: none !important;
+    color: #555;
+    font-weight: bold;
 }
 
 ul.tagit-suggestions {
@@ -83,7 +85,7 @@ li.tagit-suggestion {
     border: 1px solid #ccc;
     cursor: pointer;
     display: inline-block;
-    font-weight: bold;
+    font-weight: bold !important;
     color: #777;
 }
 

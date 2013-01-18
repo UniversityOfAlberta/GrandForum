@@ -57,18 +57,6 @@ ProductView = Backbone.View.extend({
         csv = new CSVView({el: this.$el.find('#productAuthors'), model: views}).render();
     },
     
-    renderData: function(){
-        var dataTag = this.$el.find('#productData');
-        _.each(this.model.get('data'), function(value, label){
-            if(value.trim() != ''){
-                var label = label.replace('_', ' ').toTitleCase();
-                var data = {'label': label,
-                            'value': value};
-                dataTag.append(new ProductDataRowView({model:data}).render());
-            }
-        });
-    },
-    
     renderProjects: function(){
         var views = Array();
         _.each(this.model.get('projects'), function(project, index){
@@ -88,7 +76,6 @@ ProductView = Backbone.View.extend({
         _.extend(data, dateTimeHelpers);
         this.$el.html(this.template(data));
         this.renderAuthors();
-        this.renderData();
         this.renderProjects();
         if(this.model.get('deleted') == true){
             this.$el.find("#deleteProduct").prop('disabled', true);
@@ -99,19 +86,4 @@ ProductView = Backbone.View.extend({
         return this.el;
     }
 
-});
-
-ProductDataRowView = Backbone.View.extend({
-    
-    tagName: "tr",
-    
-    initialize: function(){
-        this.template = _.template($('#product_data_row_template').html());
-    }, 
-    
-    render: function(){
-        this.$el.html(this.template(this.model));
-        return this.el;
-    }
-    
 });
