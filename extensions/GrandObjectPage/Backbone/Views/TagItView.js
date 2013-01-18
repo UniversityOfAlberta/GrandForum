@@ -12,7 +12,14 @@ TagItView = Backbone.View.extend({
         if(this.model.get('options').caseSensitive == undefined){this.model.get('options').caseSensitive = false; };
         if(this.model.get('options').allowSpaces == undefined){this.model.get('options').allowSpaces = true; };
         if(this.model.get('options').removeConfirmation == undefined){this.model.get('options').removeConfirmation = true; };
-        if(this.model.get('options').singleField == undefined){this.model.get('options').singleField = false; };
+        if(this.model.get('options').singleField == undefined){this.model.get('options').singleField = true; };
+    },
+    
+    tagit: function(option, args){
+        if(option != undefined){
+            return this.$("ul.tagit").tagit(option, args);
+        }
+        return this.$("ul.tagit");
     },
     
     addTag: function(event, ui){
@@ -29,26 +36,26 @@ TagItView = Backbone.View.extend({
         }
         this.$(".error").css('display', 'none');
         if(this.model.get('capitalize')){
-            //this.$("ul.tagit").tagit("tagInput").val(this.$("ul.tagit").tagit("tagInput").val().toUpperCase());
+            this.$("ul.tagit").tagit("tagInput").val(this.$("ul.tagit").tagit("tagInput").val().toUpperCase());
         }
         return true;
     },
     
     renderSuggestions: function(){
-        this.$("input[name=tags]").attr('name', this.model.get('name') + '[]');
+        this.$("input[name=tags]").attr('name', this.model.get('name'));
         var that = this;
         this.$(".suggestionsDiv").css('display', 'none');
         this.$(".tagit-suggestions").empty();
         if(this.model.get('suggestions').length > 0){
             var suggestions = Array();
             var currentTags = this.$("ul.tagit").tagit("assignedTags");
-            if(this.model.get('capitalize')){
+            if(_.isArray(currentTags) && this.model.get('capitalize')){
                 for(i in currentTags){
                     currentTags[i] = currentTags[i].toUpperCase();
                 }
             }
             _.each(this.model.get('suggestions'), function(suggestion){
-                if(currentTags.indexOf(suggestion) == -1){
+                if(_.isArray(currentTags) && currentTags.indexOf(suggestion) == -1){
                     this.$(".tagit-suggestions").append("<li class='tagit-suggestion ui-corner-all'>" + suggestion + " +</li>");
                     this.$(".tagit-suggestions li").last().attr('name', suggestion);
                 }

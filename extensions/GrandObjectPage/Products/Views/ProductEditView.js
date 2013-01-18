@@ -51,21 +51,20 @@ ProductEditView = Backbone.View.extend({
         var allProjects = new Projects();
         var that = this;
         var myProjects;
-        
         var spin = spinner("productSpinner", 10, 20, 10, 3, '#888');
         $.when(allProjects.fetch(), 
                myProjects = me.getProjects()).then(function(){
             current = myProjects.getCurrent();
             myProjects.ready().then(function(){
                 that.$("#productSpinner").empty();
-                var tagit = new TagIt({name: 'projects',
+                var html = HTML.TagIt(that, 'projects.name', 
+                                      {
                                        suggestions: current.pluck('name'),
                                        values: _.pluck(that.model.get('projects'), 'name'),
                                        capitalize: true,
                                        options: {availableTags: allProjects.pluck('name')}
                                       });
-                var tagitView = new TagItView({el: that.$("#productProjects"), model: tagit});
-                tagitView.render();
+                that.$("#productProjects").html(html);
             });
         });    
     },
@@ -76,7 +75,7 @@ ProductEditView = Backbone.View.extend({
         var data = this.model.toJSON();
         _.extend(data, dateTimeHelpers);
         this.$el.html(this.template(data));
-        //this.renderAuthors();
+        this.renderAuthors();
         this.renderProjects();
         if(this.model.get('deleted') == true){
             this.$el.find("#deleteProduct").prop('disabled', true);

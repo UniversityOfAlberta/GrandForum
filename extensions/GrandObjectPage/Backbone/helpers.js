@@ -49,6 +49,7 @@ HTML.TextBox = function(view, attr, options){
             var index = attr.indexOf('.');
             var data = view.model.get(attr.substr(0, index));
             data[attr.substr(index+1)] = $(e.target).val();
+            view.model.set(attr.substr(0, index), _.clone(data));
         }
         else{
             view.model.set(attr, $(e.target).val());
@@ -86,14 +87,34 @@ HTML.DatePicker = function(view, attr, options){
 }
 
 HTML.TagIt = function(view, attr, options){
-    var el = HTML.Element("<input type='text' />", options);
+    var input = HTML.Element("<input type='text' />");
+    options.name = HTML.Name(attr);
+    var tagit = new TagIt(options);
+    var tagitView = new TagItView({model: tagit});
+    var el = tagitView.render();
+    
+    var index = attr.indexOf('.');
+    var subName = attr.substr(index+1);
+    var items = view.model.get(attr.substr(0, index));
+    for(id in items){
+        tagitView.tagit("createTag", items[id][subName]);
+    }
     $(el).attr('name', HTML.Name(attr));
     $(el).attr('value', HTML.Value(view, attr));
     var events = view.events;
     view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
-        view.model.set(attr, $(e.target).val());
+        var current = tagitView.tagit("assignedTags");
+        var newItems = Array();
+        var index = attr.indexOf('.');
+        var subName = attr.substr(index+1);
+        for(cId in current){
+            var c = current[cId];
+            var tuple = new Array();
+            tuple[subName] = c;
+            newItems.push(tuple);
+        }
+        view.model.set(attr.substr(0, index), newItems);
     };
     view.delegateEvents(events);
-    $(el).wrap('div');
-    return $(el).parent().html();
+    return el;
 }
