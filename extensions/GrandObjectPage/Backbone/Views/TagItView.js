@@ -70,10 +70,8 @@ TagItView = Backbone.View.extend({
     },
     
     render: function(){
-        this.$el.empty();
         var that = this;
         this.$el.html(this.template(this.model.toJSON()));
-        this.$el.css('display', 'none');
         this.$("ul.tagit").val(this.model.get('values').join(', '));
         this.$("ul.tagit").tagit(this.model.get('options'));
         if(this.model.get('capitalize')){
@@ -81,7 +79,6 @@ TagItView = Backbone.View.extend({
             this.$("li.tagit-new input").css('text-transform', 'uppercase');
         }
         this.renderSuggestions();
-        this.$el.slideDown(250);
         return this.$el;
     }
 

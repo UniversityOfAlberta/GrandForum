@@ -1,5 +1,7 @@
 ProductEditView = Backbone.View.extend({
 
+
+
     initialize: function(){
         this.model.fetch();
         this.model.bind('change', this.render, this);
@@ -12,61 +14,65 @@ ProductEditView = Backbone.View.extend({
     },
     
     saveProduct: function(){
-        /*var formData = this.$("form").serializeArray();
-        for(i in formData){
-            var field = formData[i];
-            console.log(field);
-            if(field.name.indexOf('.') == -1){
-                this.model.set(field.name, field.value);
-            }
-            else{
-                var index = field.name.indexOf('.');
-                var data = this.model.get(field.name.substr(0, index), field.value);
-                data[field.name.substr(index + 1)] = field.value;
-            }
-        }
-        console.log(this.model.toJSON());
-        */
+        
     },
     
     cancel: function(){
         document.location = this.model.get('url');
     },
     
+    renderAuthorsWidget: function(){
+        var left = _.pluck(this.model.get('authors'), 'name');
+        var right = this.allPeople.pluck('realname');
+        
+        var switcheroo = new Switcheroo({name: 'author', 'left': left, 'right': right});
+        var switcherooView = new SwitcherooView({el: this.$("#productAuthors"), model: switcheroo});
+        switcherooView.render();
+    },
+    
     renderAuthors: function(){
-        var allPeople = new People();
-        allPeople.fetch();
-        var spin = spinner("productAuthors", 10, 20, 10, 3, '#888');
-        allPeople.bind('reset', function(){
-            var left = _.pluck(this.model.get('authors'), 'name');
-            var right = allPeople.pluck('realname');
-            
-            var switcheroo = new Switcheroo({name: 'author', 'left': left, 'right': right});
-            var switcherooView = new SwitcherooView({el: this.$("#productAuthors"), model: switcheroo});
-            switcherooView.render();
-        }, this);
+        if(this.allPeople != null){
+            this.renderAuthorsWidget();
+        }
+        else{
+            this.allPeople = new People();
+            this.allPeople.fetch();
+            var spin = spinner("productAuthors", 10, 20, 10, 3, '#888');
+            this.allPeople.bind('reset', function(){
+                this.renderAuthorsWidget();
+            }, this);
+        }
+    },
+    
+    renderProjectsWidget: function(){
+        this.$("#productSpinner").empty();
+        var html = HTML.TagIt(this, 'projects.name', 
+                              {
+                               suggestions: this.current.pluck('name'),
+                               values: _.pluck(this.model.get('projects'), 'name'),
+                               capitalize: true,
+                               options: {availableTags: this.allProjects.pluck('name')}
+                              });
+        this.$("#productProjects").html(html);
     },
     
     renderProjects: function(){
-        var allProjects = new Projects();
-        var that = this;
-        var myProjects;
-        var spin = spinner("productSpinner", 10, 20, 10, 3, '#888');
-        $.when(allProjects.fetch(), 
-               myProjects = me.getProjects()).then(function(){
-            current = myProjects.getCurrent();
-            myProjects.ready().then(function(){
-                that.$("#productSpinner").empty();
-                var html = HTML.TagIt(that, 'projects.name', 
-                                      {
-                                       suggestions: current.pluck('name'),
-                                       values: _.pluck(that.model.get('projects'), 'name'),
-                                       capitalize: true,
-                                       options: {availableTags: allProjects.pluck('name')}
-                                      });
-                that.$("#productProjects").html(html);
+        if(this.allProjects != null){
+            this.renderProjectsWidget();
+        }
+        else{
+            this.allProjects = new Projects();
+            var that = this;
+            var myProjects;
+            var spin = spinner("productSpinner", 10, 20, 10, 3, '#888');
+            $.when(that.allProjects.fetch(), 
+                   that.myProjects = me.getProjects()).then(function(){
+                that.current = that.myProjects.getCurrent();
+                that.myProjects.ready().then(function(){
+                    that.renderProjectsWidget();
+                });
             });
-        });    
+        }
     },
     
     render: function(){

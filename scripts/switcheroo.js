@@ -118,7 +118,9 @@ function switcheroo(name, id, customAllowed){
         if(this.customAllowed){
             customMessage = "If the " + this.name + " is not in the list, you can add a custom " + this.name + " by entering in text in the Search Bar, and selecting the first name in the list.  ";
         }
-        $("#" + this.id).html("<table style='display:none'><tr><td colspan='3' style='display:none;width:100px;' id='" + this.id + "helpCell'>To add " + this.name.pluralize() + ", select one or more from the right selection box, and click the '&lt;&lt;' button.  You can filter the results by entering text in the Search bar.  " + customMessage + "To re-order the " + this.name + "s in the left selection box, select one or more " + this.name.pluralize() + " and click either the '&uarr;' or the '&darr;' buttons.  To remove " + this.name.pluralize() + ", select one or more from the left selection box, and click the '&gt;&gt;' button.</td></tr><tr><td align=\'center\'><b>Current " + this.name.pluralize() + "</b></td><td></td><td><div width='100%' align='right'><a style='cursor:pointer;' id='" + this.id + "help'>Show Help</a></div><b>Search/Add " + this.name.pluralize() + ":</b><br /><input onKeyPress=\'return disableEnterKey(event)\' id=\'search" + this.id + "s\' style=\'width:100%;\' type=\'text\' /></td></tr>" +
+        var message = "To add " + this.name.pluralize() + ", select one or more from the right selection box, and click the '&lt;&lt;' button.  You can filter the results by entering text in the Search bar.  " + customMessage + "To re-order the " + this.name + "s in the left selection box, select one or more " + this.name.pluralize() + " and click either the '&uarr;' or the '&darr;' buttons.  To remove " + this.name.pluralize() + ", select one or more from the left selection box, and click the '&gt;&gt;' button.";
+        
+        $("#" + this.id).html("<table style='display:none'><tr><td colspan='3' style='display:none;width:100px;'></td></tr><tr><td align=\'center\'><b>Current " + this.name.pluralize() + "</b></td><td></td><td><div style='float:right;'><b id='" + this.id + "helpCell'>?</b></div><b>Search/Add " + this.name.pluralize() + ":</b><br /><input onKeyPress=\'return disableEnterKey(event)\' id=\'search" + this.id + "s\' style=\'width:100%;\' type=\'text\' /></td></tr>" +
                 "<tr><td><div id=\'hidden" + this.id + "s\' style=\'display:none\'></div>" +
                     "<select id=\'left" + this.id + "s\' size=\'10\' style=\'width:250px;\' multiple>" +
                     "</select><center><input type=\'button\' value=\'&uarr;\' id=\'moveUp" + this.id + "s\' />&nbsp;<input type=\'button\' value=\'&darr;\' id=\'moveDown" + this.id + "s\' /></center></td>" +
@@ -131,6 +133,7 @@ function switcheroo(name, id, customAllowed){
             "<select id=\'right" + this.id + "s\' size=\'10\' style=\'width:250px;\' multiple>" +
                 "<option id=\'no" + this.id + "\' disabled>Search did not match any " + this.name + "</option>\n" +
             "</select></td></tr></table>");
+        $("#" + this.id + 'helpCell').qtip({content: message});
         var leftBuffer = "";
         for(index in this.leftArray){
             try{
@@ -165,12 +168,10 @@ function switcheroo(name, id, customAllowed){
         if(no.length > 0){
             this.oldOptions["no"] = no;
         }
-        
-        
     };
     
     this.init();
-    this.filterResults();
+    //this.filterResults();
     
     $("#search" + this.id + "s").attr("autocomplete", "off");
     

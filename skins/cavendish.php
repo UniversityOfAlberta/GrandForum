@@ -125,6 +125,17 @@ class cavendishTemplate extends QuickTemplate {
                         'buttonImageOnly': true
                     });
                 });
+                this.$el.find('.tooltip').qtip({
+		            position: {
+		                adjust: {
+			                x: -(this.$el.find('.tooltip').width()/25),
+			                y: -(this.$el.find('.tooltip').height()/2)
+		                }
+		            },
+		            show: {
+		                delay: 500
+		            }
+		        });
             };
             
             Backbone.View = (function(View) {
