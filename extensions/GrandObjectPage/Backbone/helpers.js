@@ -20,7 +20,6 @@ HTML.Element = function(html, options){
 }
 
 HTML.Name = function(attr){
-    return '';
     if(attr.indexOf('.') != -1){
         return attr.replace('.', '_');
     }
