@@ -7,6 +7,10 @@ SwitcherooView = Backbone.View.extend({
         this.template = _.template($('#switcheroo_template').html());
     },
     
+    switcheroo: function(){
+        return $("#" + this.model.get('name'));
+    },
+    
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         var left = this.model.get('left');

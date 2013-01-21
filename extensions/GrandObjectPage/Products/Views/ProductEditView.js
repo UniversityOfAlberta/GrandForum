@@ -25,9 +25,12 @@ ProductEditView = Backbone.View.extend({
         var left = _.pluck(this.model.get('authors'), 'name');
         var right = this.allPeople.pluck('realname');
         
-        var switcheroo = new Switcheroo({name: 'author', 'left': left, 'right': right});
-        var switcherooView = new SwitcherooView({el: this.$("#productAuthors"), model: switcheroo});
-        switcherooView.render();
+        var html = HTML.Switcheroo(this, 'authors.name', {name: 'author',
+                                                          'left': left,
+                                                          'right': right
+                                                          });
+        this.$("#productAuthors").html(html);
+        createSwitcheroos();
     },
     
     renderAuthors: function(){

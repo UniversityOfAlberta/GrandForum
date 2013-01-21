@@ -1,13 +1,17 @@
-function switcheroo(name, id, customAllowed){
-    this.name = name;
-    this.id = id;
-    this.customAllowed = customAllowed;
+(function( $ ){
+  $.fn.switcheroo = function(options) {
+    this.name = options.name;
+    this.id = options.id;
+    this.customAllowed = options.customAllowed;
     this.values = new Array();
     this.oldOptions = new Array();
     this.leftArray = new Array();
     this.rightArray = new Array();
-    
     var obj = this;
+    
+    $.fn.getValue = function(){
+        return obj.leftArray;
+    }
     
     this.cleanId = function(str){
         str = str.replace(/ /g, '')
@@ -27,8 +31,8 @@ function switcheroo(name, id, customAllowed){
     }
     
     this.filterResults = function(){
-        var value = $("#search" + this.id + "s").attr("value");
-        $.each($("#right" + this.id + "s").children().not("#no" + this.id), function(index, val){
+        var value = $("#search" + this.id.pluralize()).attr("value");
+        $.each($("#right" + this.id.pluralize()).children().not("#no" + this.id), function(index, val){
             var valSelect = val.id;
             if(!$(val).hasClass("custom")){
                 obj.oldOptions[valSelect] = $("#" + valSelect).detach();
@@ -67,7 +71,7 @@ function switcheroo(name, id, customAllowed){
                     customName.setAttribute("class", "custom");
                     customName.setAttribute("style", "font-style: italic;");
                     $(customName).attr("selected", "true");
-                    $(customName).appendTo($("#right" + this.id + "s"));
+                    $(customName).appendTo($("#right" + this.id.pluralize()));
                 }
             }
         }
@@ -84,10 +88,10 @@ function switcheroo(name, id, customAllowed){
                 n++;
             }
         }
-        $("#right" + this.id + "s").append(buffer.join(''));
+        $("#right" + this.id.pluralize()).append(buffer.join(''));
         if(n == 0){
             if(typeof this.oldOptions["no"] != "undefined"){
-                this.oldOptions["no"].appendTo($("#right" + this.id + "s"));
+                this.oldOptions["no"].appendTo($("#right" + this.id.pluralize()));
             }
         }
         else{
@@ -100,9 +104,16 @@ function switcheroo(name, id, customAllowed){
     
     this.placeInHidden = function(){
         var obj = this;
-        $.each($("#left" + this.id + "s").children(), function(index, val){
-            $("#hidden" + obj.id + "s").append("<input class=\'auth\' type=\'hidden\' name=\'" + obj.id + "[]\' value=\'" + val.innerHTML + "\' />");
+
+        $("#hidden" + this.id.pluralize()).empty();
+        var values = Array();
+        this.leftArray = Array();
+        $.each($("#left" + this.id.pluralize()).children(), function(index, val){
+            values.push('"' + val.innerHTML + '"');
+            $("#hidden" + obj.id.pluralize()).append("<input class=\'auth\' type=\'hidden\' name=\'" + obj.id + "[]\' value=\'" + val.innerHTML + "\' />");
+            obj.leftArray.push(val.innerHTML);
         });
+        $("input[name=" + this.id + "]").attr('value', values.join(', ')).change();
     }
     
     this.init = function(){
@@ -118,19 +129,19 @@ function switcheroo(name, id, customAllowed){
         if(this.customAllowed){
             customMessage = "If the " + this.name + " is not in the list, you can add a custom " + this.name + " by entering in text in the Search Bar, and selecting the first name in the list.  ";
         }
-        var message = "To add " + this.name.pluralize() + ", select one or more from the right selection box, and click the '&lt;&lt;' button.  You can filter the results by entering text in the Search bar.  " + customMessage + "To re-order the " + this.name + "s in the left selection box, select one or more " + this.name.pluralize() + " and click either the '&uarr;' or the '&darr;' buttons.  To remove " + this.name.pluralize() + ", select one or more from the left selection box, and click the '&gt;&gt;' button.";
+        var message = "To add " + this.name.pluralize() + ", select one or more from the right selection box, and click the '&lt;&lt;' button.  You can filter the results by entering text in the Search bar.  " + customMessage + "To re-order the " + this.name.pluralize() + " in the left selection box, select one or more " + this.name.pluralize() + " and click either the '&uarr;' or the '&darr;' buttons.  To remove " + this.name.pluralize() + ", select one or more from the left selection box, and click the '&gt;&gt;' button.";
         
-        $("#" + this.id).html("<table style='display:none'><tr><td colspan='3' style='display:none;width:100px;'></td></tr><tr><td align=\'center\'><b>Current " + this.name.pluralize() + "</b></td><td></td><td><div style='float:right;'><b id='" + this.id + "helpCell'>?</b></div><b>Search/Add " + this.name.pluralize() + ":</b><br /><input onKeyPress=\'return disableEnterKey(event)\' id=\'search" + this.id + "s\' style=\'width:100%;\' type=\'text\' /></td></tr>" +
-                "<tr><td><div id=\'hidden" + this.id + "s\' style=\'display:none\'></div>" +
-                    "<select id=\'left" + this.id + "s\' size=\'10\' style=\'width:250px;\' multiple>" +
-                    "</select><center><input type=\'button\' value=\'&uarr;\' id=\'moveUp" + this.id + "s\' />&nbsp;<input type=\'button\' value=\'&darr;\' id=\'moveDown" + this.id + "s\' /></center></td>" +
+        $("#" + this.id).html("<input type='hidden' value='' name='" + this.id + "' /><table style='display:none'><tr><td colspan='3' style='display:none;width:100px;'></td></tr><tr><td align=\'center\'><b>Current " + this.name.pluralize() + "</b></td><td></td><td><div style='float:right;'><b id='" + this.id + "helpCell'>?</b></div><b>Search/Add " + this.name.pluralize() + ":</b><br /><input onKeyPress=\'return disableEnterKey(event)\' id=\'search" + this.id.pluralize() + "\' style=\'width:100%;\' type=\'text\' /></td></tr>" +
+                "<tr><td><div id=\'hidden" + this.id.pluralize() + "\' style=\'display:none\'></div>" +
+                    "<select id=\'left" + this.id.pluralize() + "\' size=\'10\' style=\'width:250px;\' multiple>" +
+                    "</select><center><input type=\'button\' value=\'&uarr;\' id=\'moveUp" + this.id.pluralize() + "\' />&nbsp;<input type=\'button\' value=\'&darr;\' id=\'moveDown" + this.id.pluralize() + "\' /></center></td>" +
             "<td>" +
-                "<input type=\'button\' value=\'<<\' id=\'moveLeft" + this.id + "s\' /><br />" +
+                "<input type=\'button\' value=\'<<\' id=\'moveLeft" + this.id.pluralize() + "\' /><br />" +
                 "<br />" +
-                "<input type=\'button\' value=\'>>\' id=\'moveRight" + this.id + "s\' />" +
+                "<input type=\'button\' value=\'>>\' id=\'moveRight" + this.id.pluralize() + "\' />" +
             "</td>" +
             "<td valign='top'>" +
-            "<select id=\'right" + this.id + "s\' size=\'10\' style=\'width:250px;\' multiple>" +
+            "<select id=\'right" + this.id.pluralize() + "\' size=\'10\' style=\'width:250px;\' multiple>" +
                 "<option id=\'no" + this.id + "\' disabled>Search did not match any " + this.name + "</option>\n" +
             "</select></td></tr></table>");
         $("#" + this.id + 'helpCell').qtip({content: message});
@@ -159,8 +170,8 @@ function switcheroo(name, id, customAllowed){
             }
         }
         
-        $("#left" + this.id + "s").html(leftBuffer);
-        $("#right" + this.id + "s").html(rightBuffer);
+        $("#left" + this.id.pluralize()).html(leftBuffer);
+        $("#right" + this.id.pluralize()).html(rightBuffer);
         
         $("#" + this.id).children("table").css("display", "block");
         
@@ -171,15 +182,16 @@ function switcheroo(name, id, customAllowed){
     };
     
     this.init();
+    this.placeInHidden();
     //this.filterResults();
     
-    $("#search" + this.id + "s").attr("autocomplete", "off");
+    $("#search" + this.id.pluralize()).attr("autocomplete", "off");
     
     $("form").submit(function(){
         obj.placeInHidden();
     });
     
-    $("#search" + this.id + "s").keyup(function(event) {
+    $("#search" + this.id.pluralize()).keyup(function(event) {
         if(event.keyCode != 40 && event.keyCode != 38){
             obj.filterResults();
         }
@@ -195,24 +207,26 @@ function switcheroo(name, id, customAllowed){
         }
     });
     
-    $("#moveLeft" + this.id + "s").click(function(){
-        $.each($("#right" + obj.id + "s").children().filter(":selected"), function(index, value){
-            $("#left" + obj.id + "s").append($(value).detach());
+    $("#moveLeft" + this.id.pluralize()).click(function(){
+        $.each($("#right" + obj.id.pluralize()).children().filter(":selected"), function(index, value){
+            $("#left" + obj.id.pluralize()).append($(value).detach());
             obj.values.splice(obj.values.indexOf(value.value.replace(/ /g, ".")), 1);
         });
+        obj.placeInHidden();
     });
     
-    $("#moveRight" + this.id + "s").click(function(){
-        $.each($("#left" + obj.id + "s").children().filter(":selected"), function(index, value){
-            $("#right" + obj.id + "s").append($(value).detach());
+    $("#moveRight" + this.id.pluralize()).click(function(){
+        $.each($("#left" + obj.id.pluralize()).children().filter(":selected"), function(index, value){
+            $("#right" + obj.id.pluralize()).append($(value).detach());
             obj.values.push(value.value.replace(/ /g, "."));
         });
         obj.values.sort();
         obj.filterResults();
+        obj.placeInHidden();
     });
     
-    $("#moveUp" + this.id + "s").click(function(){
-        $.each($("#left" + obj.id + "s").children().filter(":selected"), function(index, value){
+    $("#moveUp" + this.id.pluralize()).click(function(){
+        $.each($("#left" + obj.id.pluralize()).children().filter(":selected"), function(index, value){
             var prev = $(value).prev();
             if(prev.length > 0){
                 var object = $(value).detach();
@@ -220,10 +234,11 @@ function switcheroo(name, id, customAllowed){
                 //obj.values.push(value.value.replace(/ /g, "."));
             }
         });
+        obj.placeInHidden();
     });
     
-    $("#moveDown" + this.id + "s").click(function(){
-        $($("#left" + obj.id + "s").children().filter(":selected").get().reverse()).each(function(index, value){
+    $("#moveDown" + this.id.pluralize()).click(function(){
+        $($("#left" + obj.id.pluralize()).children().filter(":selected").get().reverse()).each(function(index, value){
             var next = $(value).next();
             if(next.length > 0){
                 var object = $(value).detach();
@@ -231,12 +246,13 @@ function switcheroo(name, id, customAllowed){
                 //obj.values.push(value.value.replace(/ /g, "."));
             }
         });
+        obj.placeInHidden();
     });
     
     // Events
-    $("#search" + this.id + "s").keypress(function(event) {
+    $("#search" + this.id.pluralize()).keypress(function(event) {
         if(event.keyCode == 40){        //DOWN
-            $.each($("#right" + obj.id + "s").children(":selected").not("#no" + obj.id + "s"), function(index, value){
+            $.each($("#right" + obj.id.pluralize()).children(":selected").not("#no" + obj.id.pluralize()), function(index, value){
                 if($(value).next().length > 0){
                     $(value).attr("selected", false);
                     $(value).next().attr("selected", true);
@@ -244,7 +260,7 @@ function switcheroo(name, id, customAllowed){
             });
         }
         else if(event.keyCode == 38){   //UP
-            $.each($("#right" + obj.id + "s").children(":selected").not("#no" + obj.id + "s"), function(index, value){
+            $.each($("#right" + obj.id.pluralize()).children(":selected").not("#no" + obj.id.pluralize()), function(index, value){
                 if($(value).prev().length > 0){
                     $(value).attr("selected", false);
                     $(value).prev().attr("selected", true);
@@ -253,6 +269,7 @@ function switcheroo(name, id, customAllowed){
         }
     });
 }
+})( jQuery );
 
 function disableEnterKey(e){
     var key;
@@ -275,7 +292,10 @@ function createSwitcheroos(){
     var switcheroos = Array();
     $.each($(".switcheroo"), function(index, value){
         if(!$(value).hasClass('created')){
-            var s = new switcheroo($(value).attr("name"), $(value).attr("id"), !$(value).hasClass('noCustom'));
+            var s = $(this).switcheroo({name: $(value).attr("name"), 
+                                        id: $(value).attr("id"), 
+                                        noCustom: !$(value).hasClass('noCustom')
+                                       });
             $(value).addClass('created');
             switcheroos.push(s);
             $(value).css("display", "block");

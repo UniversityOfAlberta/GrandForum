@@ -87,7 +87,6 @@ HTML.DatePicker = function(view, attr, options){
 }
 
 HTML.TagIt = function(view, attr, options){
-    var input = HTML.Element("<input type='text' />");
     options.name = HTML.Name(attr);
     var tagit = new TagIt(options);
     var tagitView = new TagItView({model: tagit});
@@ -105,6 +104,32 @@ HTML.TagIt = function(view, attr, options){
     view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         var current = tagitView.tagit("assignedTags");
         var newItems = Array();
+        for(cId in current){
+            var c = current[cId];
+            var tuple = new Array();
+            tuple[subName] = c;
+            newItems.push(tuple);
+        }
+        var field = attr.substr(0, index);
+        eval("view.model.set({" + field + ": newItems}, {silent:true});");
+    };
+    view.delegateEvents(events);
+    return el;
+}
+
+HTML.Switcheroo = function(view, attr, options){
+    var switcheroo = new Switcheroo(options);
+    var switcherooView = new SwitcherooView({model: switcheroo});
+    var el = switcherooView.render();
+    
+    var index = attr.indexOf('.');
+    var subName = attr.substr(index+1);
+
+    $(el).attr('name', HTML.Name(attr));
+    var events = view.events;
+    view.events['change input[name=author]'] = function(e){
+        var current = switcherooView.switcheroo().getValue();
+        var newItems = Array();
         var index = attr.indexOf('.');
         var subName = attr.substr(index+1);
         for(cId in current){
@@ -113,7 +138,8 @@ HTML.TagIt = function(view, attr, options){
             tuple[subName] = c;
             newItems.push(tuple);
         }
-        view.model.set(attr.substr(0, index), newItems);
+        var field = attr.substr(0, index);
+        eval("view.model.set({" + field + ": newItems}, {silent:true});");
     };
     view.delegateEvents(events);
     return el;
