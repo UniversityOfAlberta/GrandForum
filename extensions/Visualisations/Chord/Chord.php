@@ -4,11 +4,8 @@ class Chord extends Visualisation {
     
     static $a = 0;
     var $url = "";
-    var $year = "2011";
-    var $width = "70";
-    var $interval = "50";
-    var $popupWidth = 300;
-    var $popupHeight = 175;
+    var $width = "500";
+    var $height = "500";
     
     function Chord($url){
         $this->url = $url;
@@ -32,7 +29,7 @@ class Chord extends Visualisation {
 
     function show(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $string = "<div style='height:600px;width:500px;float:left;' class='chordChart' id='vis{$this->index}'>
+        $string = "<div style='height:".($this->height*1.1)."px;width:".($this->width*1.1)."px;float:left;' class='chordChart' id='vis{$this->index}'>
                    </div>
                    <div style='margin-top:100px;margin-left:25px;' id='visOptions{$this->index}'></div>";
         $string .= <<<EOF
@@ -40,7 +37,6 @@ class Chord extends Visualisation {
     var params = Array();
   function onLoad{$this->index}(){
     var spin = spinner("vis{$this->index}", 40, 75, 12, 10, '#888');
-    console.log(params.join(''));
     $.get('{$this->url}' + params.join(''), function(data){
         spin();
         var chord = d3.layout.chord()
@@ -48,8 +44,8 @@ class Chord extends Visualisation {
             .sortSubgroups(d3.descending)
             .matrix(data.matrix);
 
-        var width = 500,
-            height = 500,
+        var width = {$this->width},
+            height = {$this->height},
             innerRadius = Math.min(width, height) * .25,
             outerRadius = innerRadius * 1.1;
 
@@ -80,7 +76,7 @@ class Chord extends Visualisation {
               .attr("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
               .attr("transform", function(d) {
                 return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
-                    + "translate(" + (innerRadius + 26) + ")"
+                    + "translate(" + (innerRadius + 20) + ")"
                     + (d.angle > Math.PI ? "rotate(180)" : "");
               })
               .text(function(d) { return data.labels[d.index]; });
