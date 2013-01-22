@@ -536,6 +536,7 @@ abstract class AbstractReport extends SpecialPage {
         if($nProjectTags == 0){
             $pResult = true;
         }
+
         return ($pResult && $rResult);
     }
     
@@ -561,6 +562,9 @@ abstract class AbstractReport extends SpecialPage {
         }
         if($me->isEvaluator()){
             $roles[] = EVALUATOR;
+        }
+        if($me->isRole(EXTERNAL)){
+            $roles[] = EXTERNAL;
         }
         
         $permissions = array();

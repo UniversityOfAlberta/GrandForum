@@ -277,6 +277,10 @@ $egAnnokiExtensions['ReviewerConflicts']     = array( 'name' => 'Reviewer Confli
 					      'path' => "$IP/extensions/ReviewerConflicts/ReviewerConflicts.php",
 					      'enabled' => true,
 					      );
+$egAnnokiExtensions['ReportPDFs']     = array( 'name' => 'ReportPDFs',
+					      'path' => "$IP/extensions/Report/SpecialPages/ReportPDFs.php",
+					      'enabled' => true,
+					      );
 
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){

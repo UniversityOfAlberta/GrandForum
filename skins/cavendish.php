@@ -447,6 +447,11 @@ class cavendishTemplate extends QuickTemplate {
 					//if($p->isUnassignedEvaluator()){
 					//	ReviewerConflicts::createTab();
 					//}
+
+					if($user->isRole(EXTERNAL) || $user->isRole(STAFF)){
+					    ReportPDFs::createTab();
+					}
+
 					if(!$user->isRoleAtLeast(MANAGER)){
 					    MyMailingLists::createTab();
 					}

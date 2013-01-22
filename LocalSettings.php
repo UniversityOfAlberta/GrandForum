@@ -174,6 +174,7 @@ define("FROZEN", false);
 // Names of User Roles
 define("INACTIVE", "Inactive"); // This is an implied role.
 define("HQP", "HQP");
+define("EXTERNAL", "External");
 define("CNI", "CNI");
 define("PNI", "PNI");
 define("AR", "Associated Researcher");
@@ -193,6 +194,7 @@ define("MANAGER", "Manager");
 
 $wgRoleValues = array(INACTIVE => 0,
                       HQP => 1,
+                      EXTERNAL => 2,
                       CNI => 5,
                       PNI => 6,
                       AR => 7,
@@ -212,7 +214,7 @@ $wgRoleValues = array(INACTIVE => 0,
                       STAFF => 16,
                       MANAGER => 17);
                      
-$wgRoles = array(HQP, CNI, PNI, AR, RMC, BOD, CHAMP, GOV, STAFF, MANAGER);
+$wgRoles = array(HQP, EXTERNAL, CNI, PNI, AR, RMC, BOD, CHAMP, GOV, STAFF, MANAGER);
 
 // Defining Custom Namespace Constants
 define("NS_GRAND_PROJ", 122);
