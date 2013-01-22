@@ -36,7 +36,7 @@ class ProjectVisualisationsTab extends AbstractTab {
 	            <ul>
 	                <li><a href='#timeline'>Timeline</a></li>
 		            <li><a href='#chart'>Productivity Chart</a></li>
-		            <li><a href='#chord'>Chord</a></li>
+		            <li><a href='#chord'>Relations</a></li>
 		            <li><a href='#network'>Network</a></li>
 	            </ul>
 	        <div id='timeline'>";
@@ -521,8 +521,21 @@ class ProjectVisualisationsTab extends AbstractTab {
             $project = Project::newFromId($_GET['project']);
             $people = $project->getAllPeople();
             foreach($people as $key => $person){
-                if(!$person->isRoleAtLeast(CNI)){
+                if(!$person->isRole(CNI) && !$person->isRole(PNI) && !$person->isRole(AR)){
                     unset($people[$key]);
+                    continue;
+                }
+                if(isset($_GET['noPNI']) && $person->isRole(PNI)){
+                    unset($people[$key]);
+                    continue;
+                }
+                if(isset($_GET['noCNI']) && $person->isRole(CNI)){
+                    unset($people[$key]);
+                    continue;
+                }
+                if(isset($_GET['noAR']) && $person->isRole(AR)){
+                    unset($people[$key]);
+                    continue;
                 }
             }
             $papers = $project->getPapers();
@@ -541,7 +554,7 @@ class ProjectVisualisationsTab extends AbstractTab {
                 foreach($papers as $paper){
                     foreach($people as $k1 => $person){
                         foreach($people as $k2 => $p){
-                            if($p->isAuthorOf($paper) && $person->isAuthorOf($paper)){
+                            if($p->isAuthorOf($paper) && $person->isAuthorOf($paper) && $p->getId() != $person->getId()){
                                 @$matrix[$k1][$k2] += 1;
                             }
                             else{
@@ -590,7 +603,10 @@ class ProjectVisualisationsTab extends AbstractTab {
             }
             
             $array['options'] = array(array('name' => 'Show Co-Authorship', 'param' => 'noCoAuthorship'),
-                                      array('name' => 'Show Relationships', 'param' => 'noRelations'));
+                                      array('name' => 'Show Relationships', 'param' => 'noRelations'),
+                                      array('name' => 'Show PNIs', 'param' => 'noPNI'),
+                                      array('name' => 'Show CNIs', 'param' => 'noCNI'),
+                                      array('name' => 'Show ARs', 'param' => 'noAR'));
             $array['matrix'] = $matrix;
             $array['labels'] = $labels;
             $array['colors'] = array("#43890e", "#4e75ed", "#e78159", "#c1321a", "#4f9cd5", "#d29c48", "#626b6e", "#342594", "#48eeb3", "#21731d", "#bd5ebd", "#a45086", "#15260a", "#43132b", "#b97214");
