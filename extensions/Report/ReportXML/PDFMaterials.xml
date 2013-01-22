@@ -6,7 +6,7 @@
             <SectionPermission id="cni_materials" permissions="rw" />
             <SectionPermission id="project_materials" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="2013-04-01" role="PNI"> <!-- The end date is not specific -->
+        <Role start="REPORTING_CYCLE_START" end="2013-04-01" role="STAFF"> <!-- The end date is not specific -->
             <SectionPermission id="pni_materials" permissions="rw" />
             <SectionPermission id="cni_materials" permissions="rw" />
             <SectionPermission id="project_materials" permissions="rw" />
@@ -76,7 +76,7 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materialss" type="AllProjectsReportItemSet">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" buttonName="Project Report PDF">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true" buttonName="Project Report PDF">
                 <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>

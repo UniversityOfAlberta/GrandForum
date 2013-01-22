@@ -566,6 +566,9 @@ abstract class AbstractReport extends SpecialPage {
         if($me->isRole(EXTERNAL)){
             $roles[] = EXTERNAL;
         }
+        if($me->isRole(STAFF)){
+            $roles[] = STAFF;
+        }
         
         $permissions = array();
         foreach($roles as $role){
