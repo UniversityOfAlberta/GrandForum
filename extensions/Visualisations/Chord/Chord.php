@@ -32,12 +32,16 @@ class Chord extends Visualisation {
 
     function show(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $string = "<div style='height:600px;' class='chordChart' id='vis{$this->index}'></div>";
+        $string = "<div style='height:600px;width:500px;float:left;' class='chordChart' id='vis{$this->index}'>
+                   </div>
+                   <div style='margin-top:100px;margin-left:25px;' id='visOptions{$this->index}'></div>";
         $string .= <<<EOF
 <script type='text/javascript'>
+    var params = Array();
   function onLoad{$this->index}(){
     var spin = spinner("vis{$this->index}", 40, 75, 12, 10, '#888');
-    $.get('{$this->url}', function(data){
+    console.log(params.join(''));
+    $.get('{$this->url}' + params.join(''), function(data){
         spin();
         var chord = d3.layout.chord()
             .padding(.05)
@@ -121,6 +125,27 @@ class Chord extends Visualisation {
               label: i % 1 ? null : v / 1
             };
           });
+        }
+        
+        if($("#visOptions{$this->index}").html().trim() == ''){
+            $("#visOptions{$this->index}").append("<h3>Options</h3><table>");
+            for(oId in data.options){
+                var option = data.options[oId];
+                $("#visOptions{$this->index}").append("<tr><td><input type='checkbox' name='" + option.param + "' checked /></td><td valign='top'><b>" + option.name + "</b></td></tr>");
+                $("#visOptions{$this->index} input[name=" + option.param + "]").change(function(){
+                    if(!$(this).is(':checked')){
+                        params.push('&' + $(this).attr('name'));
+                    }
+                    else{
+                        var index = params.indexOf('&' + $(this).attr('name'));
+                        params[index] = null;
+                        delete params[index];
+                    }
+                    $("#vis{$this->index}").empty();
+                    onLoad{$this->index}();
+                });
+            }
+            $("#visOptions{$this->index}").append("</table>");
         }
 
         // Returns an event handler for fading a given chord group.

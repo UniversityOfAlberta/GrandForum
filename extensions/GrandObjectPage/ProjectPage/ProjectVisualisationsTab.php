@@ -299,7 +299,7 @@ class ProjectVisualisationsTab extends AbstractTab {
             foreach($project->getPapers('all', '0000-00-00 00:00:00', '2100-00-00 00:00:00') as $paper){
                 $start = str_replace("-", "/", $paper->getDate());
                 $content = "&lt;a href='{$paper->getUrl()}' target='_blank'&gt;Wiki Page&lt;/a&gt;";
-                echo "<event start='$start' title='".str_replace("'", "&#39;", str_replace("&amp;#39;", "&#39;", str_replace("&", "&amp;", $paper->getTitle())))."' link='' icon='$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/yellow-circle.png' color='#BCB326'>$content</event>\n";
+                echo "<event start='$start' end='$start' title='".str_replace("'", "&#39;", str_replace("&amp;#39;", "&#39;", str_replace("&", "&amp;", $paper->getTitle())))."' link='' icon='$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/yellow-circle.png' color='#BCB326'>$content</event>\n";
             }
             echo "</data>";
             exit;
@@ -530,17 +530,46 @@ class ProjectVisualisationsTab extends AbstractTab {
             $labels = array();
             $matrix = array();
             $colors = array();
+            // Initialize
+            foreach($people as $k1 => $person){
+                foreach($people as $k2 => $p){
+                    $matrix[$k1][$k2] = 0;
+                }
+            }
             
-            foreach($papers as $paper){
-                foreach($people as $k1 => $person){
-                    foreach($people as $k2 => $p){
-                        if($p->isAuthorOf($paper) && $person->isAuthorOf($paper)){
-                            @$matrix[$k1][$k2] += 1;
-                        }
-                        else{
-                            @$matrix[$k1][$k2] += 0;
+            if(!isset($_GET['noCoAuthorship'])){
+                foreach($papers as $paper){
+                    foreach($people as $k1 => $person){
+                        foreach($people as $k2 => $p){
+                            if($p->isAuthorOf($paper) && $person->isAuthorOf($paper)){
+                                @$matrix[$k1][$k2] += 1;
+                            }
+                            else{
+                                @$matrix[$k1][$k2] += 0;
+                            }
                         }
                     }
+                }
+            }
+            
+            if(!isset($_GET['noRelations'])){
+                foreach($people as $k1 => $person){
+                    foreach($people as $k2 => $p){
+                        $relations = $person->getRelations(WORKS_WITH);
+                        if(count($relations) > 0){
+                            foreach($relations as $relation){
+                                if($relation instanceof Relationship && $relation->getUser2()->getId() == $p->getId()){
+                                    @$matrix[$k1][$k2] += 5;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            foreach($people as $k1 => $person){
+                if(array_sum($matrix[$k1]) == 0){
+                    $matrix[$k1][$k1] = 1;
                 }
             }
             
@@ -554,21 +583,14 @@ class ProjectVisualisationsTab extends AbstractTab {
             }
             $matrix = $newMatrix;
             
-            $currentColor = array(15, 0, 0);
             foreach($people as $person){
                 if($person->isRoleAtLeast(CNI)){
                     $labels[] = $person->getReversedName();
-                    $currentColor[0] -= 1;
-                    $currentColor[1] += 2;
-                    $currentColor[2] += 2;
-                    $colors[] = "#".dechex($currentColor[0]).dechex($currentColor[1]).dechex($currentColor[2]);
-                    
-                    if($currentColor[0] <= 0){$currentColor[0] = 15;}
-                    if($currentColor[1] >= 15){$currentColor[1] = 0;}
-                    if($currentColor[2] >= 15){$currentColor[2] = 0;}
                 }
             }
             
+            $array['options'] = array(array('name' => 'Show Co-Authorship', 'param' => 'noCoAuthorship'),
+                                      array('name' => 'Show Relationships', 'param' => 'noRelations'));
             $array['matrix'] = $matrix;
             $array['labels'] = $labels;
             $array['colors'] = array("#43890e", "#4e75ed", "#e78159", "#c1321a", "#4f9cd5", "#d29c48", "#626b6e", "#342594", "#48eeb3", "#21731d", "#bd5ebd", "#a45086", "#15260a", "#43132b", "#b97214");

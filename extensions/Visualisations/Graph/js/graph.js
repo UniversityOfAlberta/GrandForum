@@ -346,12 +346,7 @@ function Graph(){
      * weight: the weight of the parent connection
      */
     this.addNewNode = function(id, parent, weight){
-        var d = new Date();
-        var start = d.getTime();
         this.addNode(id, parent, weight, data.nodes[id]);
-        var d = new Date();
-        var end = d.getTime();
-        console.log(end-start);
     }
 
     /*
