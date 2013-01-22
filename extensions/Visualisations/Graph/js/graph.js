@@ -50,6 +50,7 @@ function Graph(){
     var oldObj = null;                                //Stores the old object to verify there's only 1 object
     var oldBody = null;                               //Maximizing/Minimizing
     var frame = 0;                                    //Used for the repelNodesInit function
+    var graphEl = '';
 
     this.init = function() {
         hoveredNode = null;
@@ -57,7 +58,7 @@ function Graph(){
             graphWidth = document.getElementById("graph").clientWidth;
             graphHeight = document.getElementById("graph").clientHeight;
         }
-        
+        this.graphEl = $("#graph");
         var fadeTime = 500;
         
         //Fades in all objects which use the redraw class
@@ -286,6 +287,7 @@ function Graph(){
             thisGraph.setUpLegend();
             thisGraph.setUpOptions();
             $("#graphFull").text("Minimize");
+            this.graphEl = $("#graph");
         }
         else{
             windows = $("div.window"); //Windows which should be removed
@@ -314,6 +316,7 @@ function Graph(){
             thisGraph.setUpLegend();
             thisGraph.setUpOptions();
             $("#graphFull").text("Full Screen");
+            this.graphEl = $("#graph");
         }
         thisGraph.recomputeNodePositions();
         frame = 0;
@@ -343,7 +346,12 @@ function Graph(){
      * weight: the weight of the parent connection
      */
     this.addNewNode = function(id, parent, weight){
+        var d = new Date();
+        var start = d.getTime();
         this.addNode(id, parent, weight, data.nodes[id]);
+        var d = new Date();
+        var end = d.getTime();
+        console.log(end-start);
     }
 
     /*
@@ -368,7 +376,7 @@ function Graph(){
             if(typeof data.legend[node.type] != 'undefined'){
                 name = data.legend[node.type].name;
             }
-            $("#graph").append(
+            $(this.graphEl).append(
             "<div name='" + name + "' class='window' id='n" + node.id + "_l1'>" + 
                 "<span>" + node.name + "</span>" +
             "</div>");
@@ -395,11 +403,12 @@ function Graph(){
             else{
                 $(val).fadeOut(0);
             }
-            var left = Math.floor(rand1*(graphWidth - val.clientWidth*2 - parseInt($(".graph_info").css('padding-left')) - 
-                                          parseInt($(".graph_info").css('padding-right')) -
-                                          parseInt($(".graph_info").css('margin-left')) -
-                                          parseInt($(".graph_info").css('borderLeftWidth')) - 
-                                          parseInt($(".graph_info").css('borderRightWidth'))) + 
+            var graphInfo = $(".graph_info");
+            var left = Math.floor(rand1*(graphWidth - val.clientWidth*2 - parseInt($(graphInfo).css('padding-left')) - 
+                                          parseInt($(graphInfo).css('padding-right')) -
+                                          parseInt($(graphInfo).css('margin-left')) -
+                                          parseInt($(graphInfo).css('borderLeftWidth')) - 
+                                          parseInt($(graphInfo).css('borderRightWidth'))) + 
                                         val.clientWidth);
                 var top = Math.floor(rand2*(graphHeight - val.clientHeight*2) + 
                                      val.clientHeight);
@@ -673,20 +682,21 @@ function Graph(){
         if(graph == null){
             return;
         }
-        $("#graph").width($("#graph").parent().width() - 
-                          $(".graph_info").width() - 
-                          parseInt($(".graph_info").css('padding-left')) - 
-                          parseInt($(".graph_info").css('padding-right')) -
-                          parseInt($(".graph_info").css('margin-left')) -
-                          parseInt($(".graph_info").css('borderLeftWidth')) - 
-                          parseInt($(".graph_info").css('borderRightWidth'))
+        var graphInfo = $(".graph_info");
+        $(this.graphEl).width($(this.graphEl).parent().width() - 
+                          $(graphInfo).width() - 
+                          parseInt($(graphInfo).css('padding-left')) - 
+                          parseInt($(graphInfo).css('padding-right')) -
+                          parseInt($(graphInfo).css('margin-left')) -
+                          parseInt($(graphInfo).css('borderLeftWidth')) - 
+                          parseInt($(graphInfo).css('borderRightWidth'))
                          );
-        $("#graph").css('margin-left', parseInt($(".graph_info").width()) + 
-                                        parseInt($(".graph_info").css('padding-left')) +
-                                        parseInt($(".graph_info").css('padding-right')) +
-                                        parseInt($(".graph_info").css('margin-left')) +
-                                        parseInt($(".graph_info").css('borderLeftWidth')) + 
-                                        parseInt($(".graph_info").css('borderRightWidth')));
+        $(this.graphEl).css('margin-left', parseInt($(graphInfo).width()) + 
+                                        parseInt($(graphInfo).css('padding-left')) +
+                                        parseInt($(graphInfo).css('padding-right')) +
+                                        parseInt($(graphInfo).css('margin-left')) +
+                                        parseInt($(graphInfo).css('borderLeftWidth')) + 
+                                        parseInt($(graphInfo).css('borderRightWidth')));
         
         graphWidth = document.getElementById("graph").clientWidth;
         graphHeight = document.getElementById("graph").clientHeight;
@@ -705,11 +715,12 @@ function Graph(){
             }
         }
         
+        var canvases = $("#canvases");
         // Move the cavases div around so that the edges are painted at the correct position
-        document.getElementById("canvases").style.top = -$("#canvases").parent().offset().top + "px";
-        document.getElementById("canvases").style.right = -$("#canvases").parent().offset().right + "px";
-        document.getElementById("canvases").style.bottom = -$("#canvases").parent().offset().bottom + "px";
-        document.getElementById("canvases").style.left = -$("#canvases").parent().offset().left + "px";
+        document.getElementById("canvases").style.top = -$(canvases).parent().offset().top + "px";
+        document.getElementById("canvases").style.right = -$(canvases).parent().offset().right + "px";
+        document.getElementById("canvases").style.bottom = -$(canvases).parent().offset().bottom + "px";
+        document.getElementById("canvases").style.left = -$(canvases).parent().offset().left + "px";
         jsPlumb.repaintEverything();
     }
 

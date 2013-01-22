@@ -4,6 +4,7 @@ $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectTimelineData'
 $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectMilestoneTimelineData';
 $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectDoughnutData';
 $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectGraphData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectChordData';
 
 class ProjectVisualisationsTab extends AbstractTab {
 
@@ -35,6 +36,7 @@ class ProjectVisualisationsTab extends AbstractTab {
 	            <ul>
 	                <li><a href='#timeline'>Timeline</a></li>
 		            <li><a href='#chart'>Productivity Chart</a></li>
+		            <li><a href='#chord'>Chord</a></li>
 		            <li><a href='#network'>Network</a></li>
 	            </ul>
 	        <div id='timeline'>";
@@ -42,6 +44,9 @@ class ProjectVisualisationsTab extends AbstractTab {
 	        $this->html .= "</div>";
 	        $this->html .= "<div id='chart'>";
 		        $this->showDoughnut($this->project, $this->visibility);
+		    $this->html .= "</div>
+		                    <div id='chord'>";
+		        $this->showChord($this->project, $this->visibility);
 	        $this->html .= "</div>
 	        <div id='network'>";
 		        $this->showGraph($this->project, $this->visibility);
@@ -105,6 +110,28 @@ class ProjectVisualisationsTab extends AbstractTab {
                                     });
                               </script>");
             $this->html .= $doughnut->show();
+        }
+    }
+    
+    function showChord($project, $visibility){
+        global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
+        if($wgUser->isLoggedIn()){
+            $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectChordData&project={$project->getId()}";
+            $chord = new Chord($dataUrl);
+            $wgOut->addScript("<script type='text/javascript'>
+                                    $(document).ready(function(){
+                                        var nTimesLoadedChord = 0;
+                                        $('#projectVis').bind('tabsselect', function(event, ui) {
+                                            if(ui.panel.id == 'chord'){
+                                                if(nTimesLoadedChord == 0){
+                                                    onLoad{$chord->index}();
+                                                    nTimesLoadedChord++;
+                                                }
+                                            }
+                                        });
+                                    });
+                              </script>");
+            $this->html .= $chord->show();
         }
     }
     
@@ -399,25 +426,26 @@ class ProjectVisualisationsTab extends AbstractTab {
                 else if($person->isPNI()){
                     $data['nodes']['p'.$person->getId()]['type'] = PNI;
                 }
-                $description = "<img src='{$person->getPhoto()}' /><br />";
+                $description = array();
+                $description[] = "<img src='{$person->getPhoto()}' /><br />";
                 
-                $description .= "<b>Roles:</b> ";
+                $description[] = "<b>Roles:</b> ";
                 $roles = array();
                 foreach($person->getRoles() as $role){
                     $roles[] = $role->getRole();
                 }
-                $description .= implode(", ", $roles);
+                $description[] = implode(", ", $roles);
                 
                 $projs = array();
-                $description .= "<br /><br /><b>Projects:</b> ";
+                $description[] = "<br /><br /><b>Projects:</b> ";
                 foreach($person->getProjects() as $proj){
                     $projs[] = "<a href='{$proj->getUrl()}' target='_blank'>{$proj->getName()}</a>";
                 }
-                $description .= implode(", ", $projs);
+                $description[] = implode(", ", $projs);
                 
-                $description .= "<br /><br /><a href='{$person->getUrl()}' target='_blank'>User Page</a>";
+                $description[] = "<br /><br /><a href='{$person->getUrl()}' target='_blank'>User Page</a>";
                 
-                $data['nodes']['p'.$person->getId()]['description'] = $description;
+                $data['nodes']['p'.$person->getId()]['description'] = implode('', $description);
 
                 if(count($relations) > 0){
                     foreach($relations as $relationTypes){
@@ -443,28 +471,28 @@ class ProjectVisualisationsTab extends AbstractTab {
                 $data['nodes']['pr'.$project->getId()]['name'] = str_replace(" ", "&nbsp", $project->getName());
                 $data['nodes']['pr'.$project->getId()]['type'] = "Project";
                 
-                $description = "";
+                $description = array();
                 
-                $description .= "<b>Leaders: </b>";
+                $description[] = "<b>Leaders: </b>";
                 $leads = array();
                 foreach($project->getLeaders() as $member){
                     $leads[] = "<a href='{$member->getUrl()}' target='_blank'>{$member->getNameForForms()}</a>";
                 }
-                $description .= implode(", ", $leads);
-                $description .= "<br /><br /><b>Co-Leaders: </b>";
+                $description[] = implode(", ", $leads);
+                $description[] = "<br /><br /><b>Co-Leaders: </b>";
                 $leads = array();
                 foreach($project->getCoLeaders() as $member){
                     $leads[] = "<a href='{$member->getUrl()}' target='_blank'>{$member->getNameForForms()}</a>";
                 }
-                $description .= implode(", ", $leads);
-                $description .= "<br /><br /><b>Members: </b>";
+                $description[] = implode(", ", $leads);
+                $description[] = "<br /><br /><b>Members: </b>";
                 $membs = array();
                 foreach($members as $member){
                     $membs[] = "<a href='{$member->getUrl()}' target='_blank'>{$member->getNameForForms()}</a>";
                 }
-                $description .= implode(", ", $membs);
-                $description .= "<br /><br /><a href='{$project->getUrl()}' target='_blank'>Project Page</a>";
-                $data['nodes']['pr'.$project->getId()]['description'] = $description;
+                $description[] = implode(", ", $membs);
+                $description[] = "<br /><br /><a href='{$project->getUrl()}' target='_blank'>Project Page</a>";
+                $data['nodes']['pr'.$project->getId()]['description'] = implode('', $description);
                 foreach($members as $member){
                     if($member->isRole(INACTIVE)){
                         continue;
@@ -481,6 +509,71 @@ class ProjectVisualisationsTab extends AbstractTab {
             header("Content-Type: application/json");
            
             echo json_encode($data);
+            exit;
+        }
+        return true;
+	}
+	
+	static function getProjectChordData($action, $article){
+	    global $wgServer, $wgScriptPath;
+	    if($action == "getProjectChordData"){
+	        $array = array();
+            $project = Project::newFromId($_GET['project']);
+            $people = $project->getAllPeople();
+            foreach($people as $key => $person){
+                if(!$person->isRoleAtLeast(CNI)){
+                    unset($people[$key]);
+                }
+            }
+            $papers = $project->getPapers();
+            
+            $labels = array();
+            $matrix = array();
+            $colors = array();
+            
+            foreach($papers as $paper){
+                foreach($people as $k1 => $person){
+                    foreach($people as $k2 => $p){
+                        if($p->isAuthorOf($paper) && $person->isAuthorOf($paper)){
+                            @$matrix[$k1][$k2] += 1;
+                        }
+                        else{
+                            @$matrix[$k1][$k2] += 0;
+                        }
+                    }
+                }
+            }
+            
+            $newMatrix = array();
+            foreach($matrix as $row){
+                $newRow = array();
+                foreach($row as $col){
+                    $newRow[] = $col;
+                }
+                $newMatrix[] = $newRow;
+            }
+            $matrix = $newMatrix;
+            
+            $currentColor = array(15, 0, 0);
+            foreach($people as $person){
+                if($person->isRoleAtLeast(CNI)){
+                    $labels[] = $person->getReversedName();
+                    $currentColor[0] -= 1;
+                    $currentColor[1] += 2;
+                    $currentColor[2] += 2;
+                    $colors[] = "#".dechex($currentColor[0]).dechex($currentColor[1]).dechex($currentColor[2]);
+                    
+                    if($currentColor[0] <= 0){$currentColor[0] = 15;}
+                    if($currentColor[1] >= 15){$currentColor[1] = 0;}
+                    if($currentColor[2] >= 15){$currentColor[2] = 0;}
+                }
+            }
+            
+            $array['matrix'] = $matrix;
+            $array['labels'] = $labels;
+            $array['colors'] = array("#43890e", "#4e75ed", "#e78159", "#c1321a", "#4f9cd5", "#d29c48", "#626b6e", "#342594", "#48eeb3", "#21731d", "#bd5ebd", "#a45086", "#15260a", "#43132b", "#b97214");
+            header("Content-Type: application/json");
+            echo json_encode($array);
             exit;
         }
         return true;
