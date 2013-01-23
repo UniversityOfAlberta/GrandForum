@@ -98,13 +98,13 @@ class Chord extends Visualisation {
                         });
                         $("#visLegend{$this->index} table tr td > div").not("." + classColor).stop();
                         $("#visLegend{$this->index} table tr td > div").not("." + classColor).animate({opacity: 0.5}, 'fast');
-                        svg.select("path." + color).data(chord.groups).on("mouseover")(undefined, ids);
+                        svg.select("path._" + classColor).data(chord.groups).on("mouseover")(undefined, ids);
                     });
                     $("#visLegend{$this->index} table tr td > div > div." + color).parent().mouseout(function(){
                         var classColor = $(this).children(0).attr('class');
                         $("#visLegend{$this->index} table tr td div").not("." + classColor).stop();
                         $("#visLegend{$this->index} table tr td div").not("." + classColor).animate({opacity: 1}, 'fast');
-                        svg.select("path." + color).data(chord.groups).on("mouseout")();
+                        svg.select("path._" + classColor).data(chord.groups).on("mouseout")();
                     });
                 }
                 lastLabel = label;
@@ -138,7 +138,7 @@ class Chord extends Visualisation {
           .enter().append("path")
             .style("fill", function(d) { return fill(d.index); })
             .style("stroke", function(d) { return fill(d.index); })
-            .attr("class", function(d) { return "outer " + fill(d.index).replace('#', ''); })
+            .attr("class", function(d) { return "outer _" + fill(d.index).replace('#', ''); })
             .attr("d", d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius))
             .on("mouseover", fade(.1))
             .on("mouseout", fade(1));

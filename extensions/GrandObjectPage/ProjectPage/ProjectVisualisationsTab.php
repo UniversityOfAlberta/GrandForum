@@ -537,16 +537,50 @@ class ProjectVisualisationsTab extends AbstractTab {
                     unset($people[$key]);
                     continue;
                 }
+                else if(!isset($_GET['sortBy']) || (isset($_GET['sortBy']) && $_GET['sortBy'] == 'name')){
+                    $sortedPeople[$person->getReversedName()][] = $person;
+                }
+                else if($_GET['sortBy'] == 'uni'){
+                    $university = $person->getUniversity();
+                    if($university['university'] != ''){
+                        $sortedPeople[$university['university']][] = $person;
+                    }
+                    else{
+                        $sortedPeople['Unknown'][] = $person;
+                    }
+                }
+                else if($_GET['sortBy'] == 'role'){
+                    if($person->isRole(PNI)){
+                        $sortedPeople[PNI][] = $person;
+                    }
+                    else if($person->isRole(CNI)){
+                        $sortedPeople[CNI][] = $person;
+                    }
+                    else if($person->isRole(AR)){
+                        $sortedPeople[AR][] = $person;
+                    }
+                }
+                
             }
             
+            $colorHashs = array();
+            $people = array();
+            ksort($sortedPeople);
+            foreach($sortedPeople as $key => $sort){
+                foreach($sort as $person){
+                    $people[] = $person;
+                    $colorHashs[] = $key;
+                }
+            }
             
             $labels = array();
             $matrix = array();
             $colors = array();
+            
             // Initialize
             foreach($people as $k1 => $person){
                 foreach($people as $k2 => $p){
-                    $matrix[$k1][$k2] = 0;
+                    $matrix[$person->getId()][$p->getId()] = 0;
                 }
             }
             
@@ -556,10 +590,7 @@ class ProjectVisualisationsTab extends AbstractTab {
                     foreach($people as $k1 => $person){
                         foreach($people as $k2 => $p){
                             if($p->isAuthorOf($paper) && $person->isAuthorOf($paper) && $p->getId() != $person->getId()){
-                                @$matrix[$k1][$k2] += 1;
-                            }
-                            else{
-                                @$matrix[$k1][$k2] += 0;
+                                @$matrix[$person->getId()][$p->getId()] += 1;
                             }
                         }
                     }
@@ -573,7 +604,7 @@ class ProjectVisualisationsTab extends AbstractTab {
                         if(count($relations) > 0){
                             foreach($relations as $relation){
                                 if($relation instanceof Relationship && $relation->getUser2()->getId() == $p->getId()){
-                                    @$matrix[$k1][$k2] += 5;
+                                    @$matrix[$person->getId()][$p->getId()] += 5;
                                 }
                             }
                         }
@@ -582,8 +613,14 @@ class ProjectVisualisationsTab extends AbstractTab {
             }
             
             foreach($people as $k1 => $person){
-                if(array_sum($matrix[$k1]) == 0){
-                    $matrix[$k1][$k1] = 1;
+                if(array_sum($matrix[$person->getId()]) == 0){
+                    $matrix[$person->getId()][$person->getId()] = 1;
+                    foreach($people as $k2 => $p){
+                        if($p->getId() != $person->getId() && $matrix[$p->getId()][$person->getId()] > 0){
+                            $matrix[$person->getId()][$person->getId()] = 0;
+                            break;
+                        }
+                    }
                 }
             }
             
@@ -606,9 +643,15 @@ class ProjectVisualisationsTab extends AbstractTab {
                                       array('name' => 'Show PNIs', 'param' => 'noPNI', 'checked' => 'checked'),
                                       array('name' => 'Show CNIs', 'param' => 'noCNI', 'checked' => 'checked'),
                                       array('name' => 'Show ARs', 'param' => 'noAR', 'checked' => 'checked'));
+                                      
+            $array['sortOptions'] = array(array('name' => 'Last Name', 'value' => 'name', 'checked' => 'checked'),
+                                          array('name' => 'University', 'value' => 'uni', 'checked' => ''),
+                                          array('name' => 'Primary Role', 'value' => 'role', 'checked' => '')
+                                          );
+                                      
             $array['matrix'] = $matrix;
             $array['labels'] = $labels;
-            $array['colorHashs'] = $labels;
+            $array['colorHashs'] = $colorHashs;
 
             header("Content-Type: application/json");
             echo json_encode($array);
