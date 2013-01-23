@@ -97,14 +97,21 @@ class Chord extends Visualisation {
                             }
                         });
                         $("#visLegend{$this->index} table tr td > div").not("." + classColor).stop();
-                        $("#visLegend{$this->index} table tr td > div").not("." + classColor).animate({opacity: 0.5}, 'fast');
+                        $("#visLegend{$this->index} table tr td > div").not("." + classColor).animate({opacity: 0.5}, 250);
                         svg.select("path._" + classColor).data(chord.groups).on("mouseover")(undefined, ids);
                     });
                     $("#visLegend{$this->index} table tr td > div > div." + color).parent().mouseout(function(){
+                        var ids = Array();
+                        var classColor = $(this).children(0).attr('class');
+                        $.each($("path.outer"), function(index, val){
+                            if($(val).attr('class').indexOf(classColor) != -1){
+                                ids.push(index);
+                            }
+                        });
                         var classColor = $(this).children(0).attr('class');
                         $("#visLegend{$this->index} table tr td div").not("." + classColor).stop();
-                        $("#visLegend{$this->index} table tr td div").not("." + classColor).animate({opacity: 1}, 'fast');
-                        svg.select("path._" + classColor).data(chord.groups).on("mouseout")();
+                        $("#visLegend{$this->index} table tr td div").not("." + classColor).animate({opacity: 1}, 250);
+                        svg.select("path._" + classColor).data(chord.groups).on("mouseout")(undefined, ids);
                     });
                 }
                 lastLabel = label;
