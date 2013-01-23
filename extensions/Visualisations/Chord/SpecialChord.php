@@ -182,17 +182,19 @@ class SpecialChord extends SpecialPage {
                 }
             }
             
+            $found = false;
             foreach($people as $k1 => $person){
-                if(array_sum($matrix[$person->getId()]) == 0){
-                    $matrix[$person->getId()][$person->getId()] = 1;
-                    foreach($people as $k2 => $p){
-                        if($p->getId() != $person->getId() && $matrix[$p->getId()][$person->getId()] > 0){
-                            $matrix[$person->getId()][$person->getId()] = 0;
-                            break;
-                        }
-                    }
+                if(array_sum($matrix[$person->getId()]) != 0){
+                    $found = true;
+                    break;
                 }
             }
+            if(!$found){
+                foreach($people as $k1 => $person){
+                    $matrix[$person->getId()][$person->getId()] = 1;
+                }
+            }
+            
             
             $newMatrix = array();
             foreach($matrix as $row){

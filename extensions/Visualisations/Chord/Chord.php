@@ -118,7 +118,7 @@ class Chord extends Visualisation {
             }
         }
         
-        var padding = Math.max(0.01, 1/data.labels.length);
+        var padding = Math.max(0.01, Math.min(0.05, 1/data.labels.length));
         
         chord = d3.layout.chord()
             .padding(padding)
