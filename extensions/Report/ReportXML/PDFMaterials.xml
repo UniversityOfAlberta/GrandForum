@@ -27,11 +27,11 @@
         </ReportItem>
         <ReportItemSet id="pni_materialss" type="AllMaterialsReportItemSet" subType="PNI">
             <ReportItem id="pni_pdf" type="PDFReportItem" reportType="NIReport" buttonName="NI Report PDF">
-                <![CDATA[<tr><td><span style="font-size:16px;">{$user_reversed_name}</span></td><td>{$item}</td>]]>
+                <![CDATA[<tr><td><span style="font-size:16px;">{$user_reversed_name}</span></td><td>{$item}</td></tr>]]>
             </ReportItem>
-            <ReportItem id="pni_pdf" type="PDFReportItem" reportType="ProjectNIComments" buttonName="PL Comments PDF">
+            <!-- <ReportItem id="pni_pdf" type="PDFReportItem" reportType="ProjectNIComments" buttonName="PL Comments PDF">
                 <![CDATA[<td>{$item}</td></tr>]]>
-            </ReportItem>
+            </ReportItem> -->
         </ReportItemSet>
         <ReportItem id="pni_materials_tail" type="StaticReportItem">
             <![CDATA[</table>]]>
@@ -52,11 +52,11 @@
         </ReportItem>
         <ReportItemSet id="cni_materialss" type="AllMaterialsReportItemSet" subType="CNI">
             <ReportItem id="cni_pdf" type="PDFReportItem" reportType="" buttonName="NI Report PDF">
-                <![CDATA[<tr><td><span style="font-size:16px;">{$user_reversed_name}</span></td><td>{$item}</td>]]>
+                <![CDATA[<tr><td><span style="font-size:16px;">{$user_reversed_name}</span></td><td>{$item}</td></tr>]]>
             </ReportItem>
-            <ReportItem id="cni_pdf" type="PDFReportItem" reportType="ProjectNIComments" buttonName="PL Comments PDF">
+            <!-- <ReportItem id="cni_pdf" type="PDFReportItem" reportType="ProjectNIComments" buttonName="PL Comments PDF">
                 <![CDATA[<td>{$item}</td></tr>]]>
-            </ReportItem>
+            </ReportItem> -->
         </ReportItemSet>
         <ReportItem id="cni_materials_tail" type="StaticReportItem">
             <![CDATA[</table>]]>
