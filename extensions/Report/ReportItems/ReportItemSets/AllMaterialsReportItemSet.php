@@ -8,7 +8,15 @@ class AllMaterialsReportItemSet extends ReportItemSet {
         
         $type = $this->getAttr('subType', 'PNI');
         if($type == 'PNI' || $type == 'CNI'){
-            $subs = Person::getAllPeople($type);
+            //$subs = Person::getAllPeople($type);
+            $subs = Person::getAllEvaluates($type);
+            $sorted = array();
+            foreach ($subs as $s){
+                $rev_name = $s->getReversedName();
+                $sorted["{$rev_name}"] = $s;
+            }
+            ksort($sorted);
+            $subs = $sorted;
         }
         else if($type == 'Project'){
             $subs = Project::getAllProjects();

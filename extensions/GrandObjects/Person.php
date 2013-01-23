@@ -2229,6 +2229,27 @@ class Person{
         return $subs;
 	}
 	
+	static function getAllEvaluates($type){
+	    $type = mysql_real_escape_string($type);
+	    $eTable = getTableName("eval");
+	    
+	    $sql = "SELECT DISTINCT sub_id 
+	            FROM $eTable
+	            WHERE type = '$type'";
+	    $data = DBFunctions::execSQL($sql);
+	    $subs = array();
+        foreach($data as $row){
+            if($type != "Project"){
+                $subs[] = Person::newFromId($row['sub_id']);
+            }
+            else{
+                $subs[] = Project::newFromId($row['sub_id']);
+            }
+        }
+        return $subs;
+	}
+
+
 	function getEvaluates($type){
 	    $type = mysql_real_escape_string($type);
 	    $eTable = getTableName("eval");
