@@ -585,12 +585,14 @@ class ProjectVisualisationsTab extends AbstractTab {
             }
             
             if(!isset($_GET['noCoAuthorship'])){
-                $papers = $project->getPapers();
-                foreach($papers as $paper){
-                    foreach($people as $k1 => $person){
-                        foreach($people as $k2 => $p){
-                            if($p->isAuthorOf($paper) && $person->isAuthorOf($paper) && $p->getId() != $person->getId()){
-                                @$matrix[$person->getId()][$p->getId()] += 1;
+                foreach($people as $k1 => $person){
+                    $papers = $person->getPapers();
+                    foreach($papers as $paper){
+                        if($paper->belongsToProject($project)){
+                            foreach($paper->getAuthors() as $p){
+                                if(isset($matrix[$p->getId()]) && $person->getId() != $p->getId()){
+                                    $matrix[$person->getId()][$p->getId()] += 1;
+                                }
                             }
                         }
                     }
@@ -604,7 +606,7 @@ class ProjectVisualisationsTab extends AbstractTab {
                         if(count($relations) > 0){
                             foreach($relations as $relation){
                                 if($relation instanceof Relationship && $relation->getUser2()->getId() == $p->getId()){
-                                    @$matrix[$person->getId()][$p->getId()] += 5;
+                                    $matrix[$person->getId()][$p->getId()] += 5;
                                 }
                             }
                         }

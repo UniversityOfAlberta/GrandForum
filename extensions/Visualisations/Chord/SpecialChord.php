@@ -174,7 +174,7 @@ class SpecialChord extends SpecialPage {
                         if(count($relations) > 0){
                             foreach($relations as $relation){
                                 if($relation instanceof Relationship && $relation->getUser2()->getId() == $p->getId()){
-                                    @$matrix[$person->getId()][$p->getId()] += 5;
+                                    $matrix[$person->getId()][$p->getId()] += 5;
                                 }
                             }
                         }
