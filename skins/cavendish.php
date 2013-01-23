@@ -448,7 +448,7 @@ class cavendishTemplate extends QuickTemplate {
 					//	ReviewerConflicts::createTab();
 					//}
 
-					if($user->isRole(EXTERNAL) || $user->isRole(STAFF)){
+					if($user->isRole(EXTERNAL) || $user->isRole(STAFF) || $user->isRole(MANAGER)){
 					    ReportPDFs::createTab();
 					}
 

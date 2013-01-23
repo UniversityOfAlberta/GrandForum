@@ -11,6 +11,11 @@
             <SectionPermission id="cni_materials" permissions="rw" />
             <SectionPermission id="project_materials" permissions="rw" />
         </Role>
+        <Role start="REPORTING_CYCLE_START" end="2013-04-01" role="MANAGER"> <!-- The end date is not specific -->
+            <SectionPermission id="pni_materials" permissions="rw" />
+            <SectionPermission id="cni_materials" permissions="rw" />
+            <SectionPermission id="project_materials" permissions="rw" />
+        </Role>
     </Permissions>
 
     <!-- PNI Materials -->
