@@ -538,7 +538,7 @@ class ProjectVisualisationsTab extends AbstractTab {
                     continue;
                 }
             }
-            $papers = $project->getPapers();
+            
             
             $labels = array();
             $matrix = array();
@@ -551,6 +551,7 @@ class ProjectVisualisationsTab extends AbstractTab {
             }
             
             if(!isset($_GET['noCoAuthorship'])){
+                $papers = $project->getPapers();
                 foreach($papers as $paper){
                     foreach($people as $k1 => $person){
                         foreach($people as $k2 => $p){
@@ -597,19 +598,18 @@ class ProjectVisualisationsTab extends AbstractTab {
             $matrix = $newMatrix;
             
             foreach($people as $person){
-                if($person->isRoleAtLeast(CNI)){
-                    $labels[] = $person->getReversedName();
-                }
+                $labels[] = $person->getReversedName();
             }
             
-            $array['options'] = array(array('name' => 'Show Co-Authorship', 'param' => 'noCoAuthorship'),
-                                      array('name' => 'Show Relationships', 'param' => 'noRelations'),
-                                      array('name' => 'Show PNIs', 'param' => 'noPNI'),
-                                      array('name' => 'Show CNIs', 'param' => 'noCNI'),
-                                      array('name' => 'Show ARs', 'param' => 'noAR'));
+            $array['filterOptions'] = array(array('name' => 'Show Co-Authorship', 'param' => 'noCoAuthorship', 'checked' => 'checked'),
+                                      array('name' => 'Show Relationships', 'param' => 'noRelations', 'checked' => 'checked'),
+                                      array('name' => 'Show PNIs', 'param' => 'noPNI', 'checked' => 'checked'),
+                                      array('name' => 'Show CNIs', 'param' => 'noCNI', 'checked' => 'checked'),
+                                      array('name' => 'Show ARs', 'param' => 'noAR', 'checked' => 'checked'));
             $array['matrix'] = $matrix;
             $array['labels'] = $labels;
-            $array['colors'] = array("#43890e", "#4e75ed", "#e78159", "#c1321a", "#4f9cd5", "#d29c48", "#626b6e", "#342594", "#48eeb3", "#21731d", "#bd5ebd", "#a45086", "#15260a", "#43132b", "#b97214");
+            $array['colorHashs'] = $labels;
+
             header("Content-Type: application/json");
             echo json_encode($array);
             exit;

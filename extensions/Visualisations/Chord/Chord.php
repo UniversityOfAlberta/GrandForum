@@ -1,5 +1,7 @@
 <?php
 
+require_once("SpecialChord.php");
+
 class Chord extends Visualisation {
     
     static $a = 0;
@@ -13,7 +15,7 @@ class Chord extends Visualisation {
     }
     
     static function init(){
-        global $wgOut, $wgServer, $wgScriptPath;
+        global $wgOut, $wgServer, $wgScriptPath, $visualisations;
         $wgOut->addScript('<style rel="stylesheet" type="text/css">
         .chordChart {
             font: 10px sans-serif;
@@ -22,25 +24,92 @@ class Chord extends Visualisation {
         .chord path {
   fill-opacity: .67;
   stroke: #000;
-  stroke-width: .5px;
+  stroke-width: 0.2px;
 }</style>');
         $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Chord/js/d3.min.js" type="text/javascript" charset="utf-8"></script>');
+        if(strstr($wgOut->getScript(), 'raphael') === false){
+            $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Doughnut/doughnut/raphael.js" type="text/javascript" charset="utf-8"></script>');
+            $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Doughnut/doughnut/spinner.js" type="text/javascript" charset="utf-8"></script>');
+        }
     }
 
     function show(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $string = "<div style='height:".($this->height*1.1)."px;width:".($this->width*1.1)."px;float:left;' class='chordChart' id='vis{$this->index}'>
+        $string = "<div style='height:".($this->height)."px;width:".($this->width)."px;float:left;' class='chordChart' id='vis{$this->index}'>
                    </div>
-                   <div style='margin-top:100px;margin-left:25px;' id='visOptions{$this->index}'></div>";
+                   <div style='margin-top:100px;margin-left:25px;' id='visOptions{$this->index}'></div>
+                   <div style='margin-top:25px;margin-left:25px;' id='visSort{$this->index}'></div>
+                   <div style='margin-top:25px;margin-left:25px;' id='visLegend{$this->index}'></div>";
         $string .= <<<EOF
 <script type='text/javascript'>
     var params = Array();
+    function hashCode(str) { // java String#hashCode
+        var hash = 0;
+        if(str == null){
+            return 0;
+        }
+        for (var i = 0; i < str.length; i++) {
+           hash = str.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        return hash;
+    }
+
+    function intToRGB(i){
+        return ("00" + ((i>>16)&0xFF).toString(16)).slice(-2) + 
+               ("00" + ((i>>8)&0xFF).toString(16)).slice(-2) + 
+               ("00" + (i&0xFF).toString(16)).slice(-2);
+    }
+  
+  var lastChordRequest = null;
+  
   function onLoad{$this->index}(){
     var spin = spinner("vis{$this->index}", 40, 75, 12, 10, '#888');
-    $.get('{$this->url}' + params.join(''), function(data){
+    lastChordRequest = $.get('{$this->url}' + params.join(''), function(data){
+        var svg;
+        var chord;
         spin();
-        var chord = d3.layout.chord()
-            .padding(.05)
+        $("#vis{$this->index}").empty();
+        $("#visLegend{$this->index}").empty();
+        
+        var colors = Array();
+        var showLegend = true;
+        for(lId in data.colorHashs){
+            var label = data.colorHashs[lId];
+            if(label == data.labels[lId]){
+                showLegend = false;
+            }
+            colors.push("#" + intToRGB(hashCode(label)));
+        }
+        if(showLegend){
+            $("#visLegend{$this->index}").append("<h3>Legend</h3><table><tr><td>");
+            var lastLabel = '';
+            for(lId in data.colorHashs){
+                var label = data.colorHashs[lId];
+                var color = intToRGB(hashCode(label));
+                if(lastLabel != label){
+                    $("#visLegend{$this->index} table tr td").append("<div style='font-size:10px;line-height:10px;'><div class='" + color + "' style='display:inline-block;width:15px;height:10px;background:#" + color + ";border:1px solid #888;'></div>" + label + "</div>");
+                    $("#visLegend{$this->index} table tr td ." + color).mouseover(function(){
+                        var ids = Array();
+                        var classColor = $(this).attr('class');
+                        $.each($("path.outer"), function(index, val){
+                            if($(val).attr('class').indexOf(classColor) != -1){
+                                ids.push(index);
+                            }
+                        });
+                        svg.select("path." + color).data(chord.groups).on("mouseover")(undefined, ids);
+                    });
+                    $("#visLegend{$this->index} table tr td ." + color).mouseout(function(){
+                        svg.select("path." + color).data(chord.groups).on("mouseout")();
+                    });
+                }
+                lastLabel = label;
+            }
+        }
+        
+        var padding = Math.max(0.01, 1/data.labels.length);
+        
+        chord = d3.layout.chord()
+            .padding(padding)
             .sortSubgroups(d3.descending)
             .matrix(data.matrix);
 
@@ -50,20 +119,21 @@ class Chord extends Visualisation {
             outerRadius = innerRadius * 1.1;
 
         var fill = d3.scale.ordinal()
-            .domain(d3.range(data.colors.length))
-            .range(data.colors);
+            .domain(d3.range(colors.length))
+            .range(colors);
 
-        var svg = d3.select("#vis{$this->index}").append("svg")
+        svg = d3.select("#vis{$this->index}").append("svg")
             .attr("width", width)
             .attr("height", height)
           .append("g")
             .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
+        
         svg.append("g").selectAll("path")
             .data(chord.groups)
           .enter().append("path")
             .style("fill", function(d) { return fill(d.index); })
             .style("stroke", function(d) { return fill(d.index); })
+            .attr("class", function(d) { return "outer " + fill(d.index).replace('#', ''); })
             .attr("d", d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius))
             .on("mouseover", fade(.1))
             .on("mouseout", fade(1));
@@ -76,7 +146,7 @@ class Chord extends Visualisation {
               .attr("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
               .attr("transform", function(d) {
                 return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
-                    + "translate(" + (innerRadius + 20) + ")"
+                    + "translate(" + (innerRadius + 22) + ")"
                     + (d.angle > Math.PI ? "rotate(180)" : "");
               })
               .text(function(d) { return data.labels[d.index]; });
@@ -123,34 +193,70 @@ class Chord extends Visualisation {
           });
         }
         
-        if($("#visOptions{$this->index}").html().trim() == ''){
-            $("#visOptions{$this->index}").append("<h3>Options</h3><table>");
-            for(oId in data.options){
-                var option = data.options[oId];
-                $("#visOptions{$this->index}").append("<tr><td><input type='checkbox' name='" + option.param + "' checked /></td><td valign='top'><b>" + option.name + "</b></td></tr>");
-                $("#visOptions{$this->index} input[name=" + option.param + "]").change(function(){
-                    if(!$(this).is(':checked')){
-                        params.push('&' + $(this).attr('name'));
+        if($("#visOptions{$this->index}").html().trim() == '' && typeof data.filterOptions != 'undefined'){
+            $("#visOptions{$this->index}").append("<h3>Filter Options</h3><table>");
+            for(oId in data.filterOptions){
+                var option = data.filterOptions[oId];
+                $("#visOptions{$this->index} table").append("<tr><td><input type='checkbox' value='" + option.param + "' " + option.checked + " /></td><td valign='top'><b>" + option.name + "</b></td></tr>");
+                if(option.inverted){
+                    $("#visOptions{$this->index} input[value=" + option.param + "]").addClass('inverted');
+                }
+            }
+            $("#visOptions{$this->index} input").change(function(){
+                if((!$(this).hasClass('inverted') && !$(this).is(':checked')) || ($(this).hasClass('inverted') && $(this).is(':checked'))) {
+                    params.push('&' + $(this).attr('value'));
+                }
+                else{
+                    var index = params.indexOf('&' + $(this).attr('value'));
+                    params[index] = null;
+                    delete params[index];
+                }
+                $("#vis{$this->index}").empty();
+                $("#visLegend{$this->index}").empty();
+                lastChordRequest.abort();
+                onLoad{$this->index}();
+            });
+        }
+        
+        if($("#visSort{$this->index}").html().trim() == '' && typeof data.sortOptions != 'undefined'){
+            $("#visSort{$this->index}").append("<h3>Sorting Options</h3><table>");
+            for(oId in data.sortOptions){
+                var option = data.sortOptions[oId];
+                $("#visSort{$this->index} table").append("<tr><td><input type='radio' value='" + option.value + "' name='visSort{$this->index}' " + option.checked + " /></td><td valign='top'><b>" + option.name + "</b></td></tr>");
+            }
+            $("#visSort{$this->index} input").change(function(){
+                $.each($("#visSort{$this->index} input"), function(i, val){
+                    if($(val).is(':checked')){
+                        params.push('&sortBy=' + $(val).attr('value'));
                     }
                     else{
-                        var index = params.indexOf('&' + $(this).attr('name'));
+                        var index = params.indexOf('&sortBy=' + $(val).attr('value'));
                         params[index] = null;
                         delete params[index];
                     }
-                    $("#vis{$this->index}").empty();
-                    onLoad{$this->index}();
                 });
-            }
-            $("#visOptions{$this->index}").append("</table>");
+                $("#vis{$this->index}").empty();
+                $("#visLegend{$this->index}").empty();
+                lastChordRequest.abort();
+                onLoad{$this->index}();
+            });
         }
 
         // Returns an event handler for fading a given chord group.
         function fade(opacity) {
           return function(g, i) {
-            svg.selectAll(".chord path")
-                .filter(function(d) { return d.source.index != i && d.target.index != i; })
-              .transition()
-                .style("opacity", opacity);
+            if(i instanceof Array){
+                svg.selectAll(".chord path")
+                    .filter(function(d) { return i.indexOf(d.source.index) == -1 && i.indexOf(d.target.index) == -1; })
+                  .transition()
+                    .style("opacity", opacity);
+            }
+            else{
+                svg.selectAll(".chord path")
+                    .filter(function(d) { return d.source.index != i && d.target.index != i; })
+                  .transition()
+                    .style("opacity", opacity);
+            }
           };
         }
        });
