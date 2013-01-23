@@ -87,18 +87,23 @@ class Chord extends Visualisation {
                 var label = data.colorHashs[lId];
                 var color = intToRGB(hashCode(label));
                 if(lastLabel != label){
-                    $("#visLegend{$this->index} table tr td").append("<div style='font-size:10px;line-height:10px;'><div class='" + color + "' style='display:inline-block;width:15px;height:10px;background:#" + color + ";border:1px solid #888;'></div>" + label + "</div>");
-                    $("#visLegend{$this->index} table tr td ." + color).mouseover(function(){
+                    $("#visLegend{$this->index} table tr td").append("<div class='" + color + "' style='font-size:10px;line-height:10px;'><div class='" + color + "' style='display:inline-block;width:15px;height:10px;background:#" + color + ";border:1px solid #888;'></div>" + label + "</div>");
+                    $("#visLegend{$this->index} table tr td > div > div." + color).parent().mouseover(function(){
                         var ids = Array();
-                        var classColor = $(this).attr('class');
+                        var classColor = $(this).children(0).attr('class');
                         $.each($("path.outer"), function(index, val){
                             if($(val).attr('class').indexOf(classColor) != -1){
                                 ids.push(index);
                             }
                         });
+                        $("#visLegend{$this->index} table tr td > div").not("." + classColor).stop();
+                        $("#visLegend{$this->index} table tr td > div").not("." + classColor).animate({opacity: 0.5}, 'fast');
                         svg.select("path." + color).data(chord.groups).on("mouseover")(undefined, ids);
                     });
-                    $("#visLegend{$this->index} table tr td ." + color).mouseout(function(){
+                    $("#visLegend{$this->index} table tr td > div > div." + color).parent().mouseout(function(){
+                        var classColor = $(this).children(0).attr('class');
+                        $("#visLegend{$this->index} table tr td div").not("." + classColor).stop();
+                        $("#visLegend{$this->index} table tr td div").not("." + classColor).animate({opacity: 1}, 'fast');
                         svg.select("path." + color).data(chord.groups).on("mouseout")();
                     });
                 }
@@ -146,7 +151,7 @@ class Chord extends Visualisation {
               .attr("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
               .attr("transform", function(d) {
                 return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
-                    + "translate(" + (innerRadius + 22) + ")"
+                    + "translate(" + (innerRadius + 25) + ")"
                     + (d.angle > Math.PI ? "rotate(180)" : "");
               })
               .text(function(d) { return data.labels[d.index]; });

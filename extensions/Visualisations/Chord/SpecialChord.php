@@ -86,7 +86,7 @@ class SpecialChord extends SpecialPage {
                             $sortedPeople[$projects[0]->getName()][] = $person;
                         }
                         else{
-                            $sortedPeople['None'][] = $person;
+                            $sortedPeople['No Project'][] = $person;
                         }
                     }
                 }
@@ -147,6 +147,12 @@ class SpecialChord extends SpecialPage {
             foreach($people as $k1 => $person){
                 if(array_sum($matrix[$person->getId()]) == 0){
                     $matrix[$person->getId()][$person->getId()] = 1;
+                    foreach($people as $k2 => $p){
+                        if($p->getId() != $person->getId() && $matrix[$p->getId()][$person->getId()] > 0){
+                            $matrix[$person->getId()][$person->getId()] = 0;
+                            break;
+                        }
+                    }
                 }
             }
             
