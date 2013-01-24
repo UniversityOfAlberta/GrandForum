@@ -13,7 +13,7 @@ class SpecialChord extends SpecialPage {
 
 	function __construct() {
 		wfLoadExtensionMessages('SpecialChord');
-		SpecialPage::SpecialPage("SpecialChord", HQP.'+', true, 'runSpecialChord');
+		SpecialPage::SpecialPage("SpecialChord", MANAGER.'+', true, 'runSpecialChord');
 	}
 	
 	function run(){
@@ -27,7 +27,8 @@ class SpecialChord extends SpecialPage {
 	
 	static function getSpecialChordData($action, $article){
 	    global $wgServer, $wgScriptPath;
-	    if($action == "getSpecialChordData"){
+	    $me = Person::newFromWgUser();
+	    if($action == "getSpecialChordData" && $me->isRoleAtLeast(MANAGER)){
 	        $array = array();
             $people = Person::getAllPeople();
             $sortedPeople = array();

@@ -14,7 +14,7 @@ class SpecialHighChart extends SpecialPage {
 
 	function __construct() {
 		wfLoadExtensionMessages('SpecialHighChart');
-		SpecialPage::SpecialPage("SpecialHighChart", HQP.'+', true, 'runSpecialHighChart');
+		SpecialPage::SpecialPage("SpecialHighChart", MANAGER.'+', true, 'runSpecialHighChart');
 	}
 	
 	function run(){
@@ -43,8 +43,9 @@ class SpecialHighChart extends SpecialPage {
 	}
 	
 	static function getSpecialProjectParetoData($action, $article){
-	    global $wgServer, $wgScriptPath, $me;
-	    if($action == "getSpecialProjectParetoData" || $action == "getSpecialProjectAvgParetoData"){
+	    global $wgServer, $wgScriptPath;
+	    $me = Person::newFromWgUser();
+	    if(($action == "getSpecialProjectParetoData" || $action == "getSpecialProjectAvgParetoData") && $me->isRoleAtLeast(MANAGER)){
 	        $projects = Project::getAllProjectsDuring((REPORTING_YEAR-1).REPORTING_CYCLE_START_MONTH, (REPORTING_YEAR-1).REPORTING_CYCLE_END_MONTH);
 	        $pNames = array();
 	        $pBudget = array();
@@ -215,7 +216,8 @@ class SpecialHighChart extends SpecialPage {
 	
 	static function getSpecialUniversityParetoData($action, $article){
 	    global $wgServer, $wgScriptPath;
-	    if($action == "getSpecialUniversityParetoData" || $action == "getSpecialUniversityAvgParetoData"){
+	    $me = Person::newFromWgUser();
+	    if(($action == "getSpecialUniversityParetoData" || $action == "getSpecialUniversityAvgParetoData") && $me->isRoleAtLeast(MANAGER)){
 	        $people = Person::getAllPeople();
 	        $pNames = array();
 	        $pBudget = array();

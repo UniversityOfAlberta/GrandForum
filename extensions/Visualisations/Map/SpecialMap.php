@@ -13,7 +13,7 @@ class SpecialMap extends SpecialPage {
 
 	function __construct() {
 		wfLoadExtensionMessages('SpecialMap');
-		SpecialPage::SpecialPage("SpecialMap", HQP.'+', true, 'runSpecialMap');
+		SpecialPage::SpecialPage("SpecialMap", MANAGER.'+', true, 'runSpecialMap');
 	}
 	
 	function run(){
@@ -28,7 +28,8 @@ class SpecialMap extends SpecialPage {
 	
 	static function getSpecialMapData($action, $article){
 	    global $wgServer, $wgScriptPath;
-	    if($action == "getSpecialMapData"){
+	    $me = Person::newFromWgUser();
+	    if($action == "getSpecialMapData" && $me->isRoleAtLeast(MANAGER)){
 	        $uniProvMap = array('Carlton University' => 'CA-ON',
 	                            'Concordia University' => 'CA-QC',
 	                            'Dalhousie University' => 'CA-NS',
