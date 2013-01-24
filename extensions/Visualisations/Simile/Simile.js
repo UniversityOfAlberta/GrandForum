@@ -4096,7 +4096,7 @@ startPixel2=endPixel2;
 endPixel2=temp;
 }
 if(div==null){
-console.log(evt);
+
 }
 attachClickEvent(div);
 
