@@ -1611,6 +1611,61 @@ class Person extends BackboneModel {
 		return $people;
     }
 
+    function getSupervisedOnProjects($history=false){
+        if($history !== false && $this->id != null){
+			$this->roles = array();
+			if($history === true){
+			    $sql = "SELECT *
+                        FROM grand_relations
+                        WHERE user2 = '{$this->id}'
+                        AND type = 'Supervises'";
+            }
+            else{
+                $sql = "SELECT *
+                        FROM grand_relations
+                        WHERE user2 = '{$this->id}'
+                        AND type = 'Supervises'
+                        AND start_date <= '{$history}'
+                        AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
+            }
+			$data = DBFunctions::execSQL($sql);
+			$projects = array();
+			$project_ids = array();
+			foreach($data as $row){
+				if(!empty($row['projects'])){
+					$p_ids = unserialize($row['projects']);
+					foreach($p_ids as $p_id){
+						if(!in_array($p_id, $project_ids)){
+							$projects[] = Project::newFromId($p_id);
+							$project_ids[] = $p_id;
+						}
+					}
+				}
+			}
+			return $projects;
+		}
+	    $sql = "SELECT *
+                FROM grand_relations
+                WHERE user2 = '{$this->id}'
+                AND type = 'Supervises'
+                AND start_date > end_date";
+        $data = DBFunctions::execSQL($sql);
+		$projects = array();
+		$project_ids = array();
+		foreach($data as $row){
+			if(!empty($row['projects'])){
+				$p_ids = unserialize($row['projects']);
+				foreach($p_ids as $p_id){
+					if(!in_array($p_id, $project_ids)){
+						$projects[] = Project::newFromId($p_id);
+						$project_ids[] = $p_id;
+					}
+				}
+			}
+		}
+		return $projects;
+    }
+
     function isSupervisor($history=false){
     	if($history !== false && $this->id != null){
 			$this->roles = array();
