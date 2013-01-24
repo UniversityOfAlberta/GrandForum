@@ -93,6 +93,14 @@ class SpecialHighChart extends SpecialPage {
 	                $rBudget[$project->getName()] = round($rTotal/max(1, $nRUploaded));
 	            }
 	        }
+	        
+	        $names = array();
+	        $i=1;
+	        foreach($pBudget as $pName => $p){
+	            $names[$pName] = "Project $i";
+	            $i++;
+	        }
+	        
 	        asort($pBudget, SORT_NUMERIC);
 	        $pBudget = array_reverse($pBudget, true);
 	        $sumSeries1 = array();
@@ -107,7 +115,7 @@ class SpecialHighChart extends SpecialPage {
 	            $pSeries2[] = $rBudget[$pName];
 	            $sumSeries1[] = $currentSum1;
 	            $sumSeries2[] = $currentSum2;
-	            $pNames[] = "Project $i";
+	            $pNames[] = $names[$pName];
 	            $i++;
 	        }
 	    
@@ -280,6 +288,14 @@ class SpecialHighChart extends SpecialPage {
 	                @$rBudget[$uni] = round($rBudget[$uni]/max(1, $rUniCounts[$uni]));
 	            }
 	        }
+	        
+	        $names = array();
+	        $i=1;
+	        foreach($pBudget as $uni => $p){
+	            $names[$uni] = "University $i";
+	            $i++;
+	        }
+	        
 	        asort($pBudget, SORT_NUMERIC);
 	        $pBudget = array_reverse($pBudget, true);
 	        $sumSeries1 = array();
@@ -288,7 +304,6 @@ class SpecialHighChart extends SpecialPage {
             $pSeries2 = array();
             $currentSum1 = 0;
             $currentSum2 = 0;
-            $i = 1;
 	        foreach($pBudget as $pName => $total){
 	            $currentSum1 += $total;
 	            $pSeries1[] = $total;
@@ -298,8 +313,7 @@ class SpecialHighChart extends SpecialPage {
 	            $pSeries2[] = $rBudget[$pName];
 	            $sumSeries2[] = $currentSum2;
 	            if($pName != 'Unknown'){
-	                $pNames[] = "University $i";
-	                $i++;
+	                $pNames[] = "{$names[$pName]}";
 	            }
 	            else{
 	                $pNames[] = 'Unknown';
