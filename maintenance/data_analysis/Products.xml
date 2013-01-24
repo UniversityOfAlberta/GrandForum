@@ -11,6 +11,7 @@
 			</data>
 		</Activity>
 		
+		<!-- No longer supported in UI
 		<Activity type="Panel" status="Not Invited">
 			<data>
 				<field>conference</field>
@@ -18,13 +19,6 @@
 				<field>organizing_body</field>
 				<field>url</field>
 			</data>
-		</Activity>
-
-		<!--
-		There are a number of these in DB, but not supported in UI anymore
-		<Activity type="Panel" status="Not Invited">
-			<Data>
-			</Data>
 		</Activity>
 
 		<Activity type="Tutorial" status="Not Invited">
@@ -195,27 +189,37 @@
 	<Presses>
 		<Press type="International News" status="">
 			<data>
+				<field>published_in</field>
+				<field>address</field>
 				<field>url</field>
 			</data>
 		</Press>
 		<Press type="Misc" status="">
 			<data>
 				<field>misc</field> <!-- Not implemented yet: currently this is not part of data and is just edded to type "Misc:[misc]" -->
+				<field>published_in</field>
+				<field>address</field>
 				<field>url</field>
 			</data>
 		</Press>
 		<Press type="National News" status="">
 			<data>
+				<field>published_in</field>
+				<field>address</field>
 				<field>url</field>
 			</data>
 		</Press>
 		<Press type="Provincial News" status="">
 			<data>
+				<field>published_in</field>
+				<field>address</field>
 				<field>url</field>
 			</data>
 		</Press>
 		<Press type="University Press" status="">
 			<data>
+				<field>published_in</field>
+				<field>address</field>
 				<field>url</field>
 			</data>
 		</Press>
@@ -273,7 +277,7 @@
 		<Publication type="Book" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
 				<field>publisher</field>
-				<!--field>address</field--> <!-- In some entried in DB, but not in UI -->
+				<field>address</field> <!-- In some entried in DB, but not in UI -->
 				<field>isbn</field>
 				<field>issn</field>
 				<field>doi</field>
@@ -288,6 +292,7 @@
 				<field>editors</field>
 				<field>pages</field>
 				<field>publisher</field>
+				<field>address</field>
 				<field>isbn</field>
 				<field>issn</field>
 				<field>doi</field>
@@ -304,6 +309,7 @@
 				<field>number</field>
 				<field>pages</field>
 				<field>publisher</field>
+				<field>address</field>
 				<field>isbn</field>
 				<field>issn</field>
 				<field>doi</field>
@@ -330,6 +336,7 @@
 		<Publication type="Edited Book" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
 				<field>publisher</field>
+				<field>address</field>
 				<field>isbn</field>
 				<field>issn</field>
 				<field>doi</field>
@@ -345,9 +352,11 @@
 				<field>number</field>
 				<field>pages</field>
 				<field>publisher</field>
+				<field>address</field>
 				<field>isbn</field>
 				<field>issn</field>
 				<field>doi</field>
+				<field>url</field>
 				<field>peer_reviewed</field>
 			</data>
 		</Publication>
@@ -359,6 +368,7 @@
 				<field>number</field>
 				<field>pages</field>
 				<field>publisher</field>
+				<field>address</field>
 				<field>isbn</field>
 				<field>issn</field>
 				<field>doi</field>
@@ -374,6 +384,7 @@
 				<field>number</field>
 				<field>pages</field>
 				<field>publisher</field>
+				<field>address</field>
 				<field>isbn</field>
 				<field>issn</field>
 				<field>doi</field>
@@ -389,6 +400,7 @@
 				<field>series</field>
 				<field>pages</field>
 				<field>publisher</field>
+				<field>address</field>
 				<field>isbn</field>
 				<field>issn</field>
 				<field>doi</field>
@@ -447,6 +459,7 @@
 				<field>event_location</field>
 				<field>pages</field>
 				<field>publisher</field>
+				<field>address</field>
 				<field>isbn</field>
 				<field>issn</field>
 				<field>doi</field>
@@ -461,6 +474,7 @@
 				<field>event_location</field>
 				<field>pages</field>
 				<field>publisher</field>
+				<field>address</field>
 				<field>isbn</field>
 				<field>issn</field>
 				<field>doi</field>
@@ -476,6 +490,7 @@
 				<field>number</field>
 				<field>pages</field>
 				<field>publisher</field>
+				<field>address</field>
 				<field>isbn</field>
 				<field>doi</field>
 				<field>url</field>
@@ -501,6 +516,7 @@
 				<field>pages</field>
 				<field>editor</field>
 				<field>publisher</field>
+				<field>address</field>
 				<field>url</field>
 				<field>peer_reviewed</field>
 			</data>

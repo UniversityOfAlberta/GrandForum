@@ -9,8 +9,8 @@ if(count($args) > 0){
     }
 }
 
-//MiscPresentations();
-//JournalPaperPublications();
+MiscPresentations();
+JournalPaperPublications();
 PHDThesisPublications();
 PosterPublications();
 ProceedingsPaperPublications();
@@ -137,12 +137,12 @@ function JournalPaperPublications(){
             }
         
 
-            if( isset($data['address']) && !isset($data['url']) ) {
+            /*if( isset($data['address']) && !isset($data['url']) ) {
                 $url = $data['address'];
                 unset($data['address']);
                 $data['url'] = $url;
                 $data_changed = true;
-            }
+            }*/
 
             if($data_changed){
                 $new_data = serialize($data);
@@ -237,12 +237,12 @@ function PosterPublications(){
             }
         
 
-            if( isset($data['address']) && !isset($data['event_location']) ) {
+            /*if( isset($data['address']) && !isset($data['event_location']) ) {
                 $loc = $data['address'];
                 unset($data['address']);
                 $data['event_location'] = $loc;
                 $data_changed = true;
-            }
+            }*/
 
             if( isset($data['DOI']) && !isset($data['doi']) ) {
                 $doi = $data['DOI'];
@@ -294,12 +294,12 @@ function ProceedingsPaperPublications(){
             }
         
 
-            if( isset($data['address']) && !isset($data['event_location']) ) {
+            /*if( isset($data['address']) && !isset($data['event_location']) ) {
                 $loc = $data['address'];
                 unset($data['address']);
                 $data['event_location'] = $loc;
                 $data_changed = true;
-            }
+            }*/
 
 
             if($data_changed){
