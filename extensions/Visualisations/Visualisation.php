@@ -24,6 +24,10 @@ $visualisations = array('Timeline' => array("name" => "Timeline",
                         'HighCharts' => array("name" => "HighCharts",
                               "path" => "HighCharts/HighChart.php",
                               "enabled" => true,
+                              "initialized" => false),
+                        'Map' => array("name" => "Map",
+                              "path" => "Map/Map.php",
+                              "enabled" => true,
                               "initialized" => false)
                        );
       

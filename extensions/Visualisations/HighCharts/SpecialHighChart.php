@@ -24,7 +24,17 @@ class SpecialHighChart extends SpecialPage {
 	    $chart->width = "100%";
 	    $string = $chart->show();
 	    
+	    $chart = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialProjectAvgParetoData");
+	    $chart->height = "800px";
+	    $chart->width = "100%";
+	    $string .= $chart->show();
+	    
 	    $chart = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialUniversityParetoData");
+	    $chart->height = "800px";
+	    $chart->width = "100%";
+	    $string .= $chart->show();
+	    
+	    $chart = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialUniversityAvgParetoData");
 	    $chart->height = "800px";
 	    $chart->width = "100%";
 	    $string .= $chart->show();
@@ -33,16 +43,20 @@ class SpecialHighChart extends SpecialPage {
 	}
 	
 	static function getSpecialProjectParetoData($action, $article){
-	    global $wgServer, $wgScriptPath;
-	    if($action == "getSpecialProjectParetoData"){
+	    global $wgServer, $wgScriptPath, $me;
+	    if($action == "getSpecialProjectParetoData" || $action == "getSpecialProjectAvgParetoData"){
 	        $projects = Project::getAllProjectsDuring((REPORTING_YEAR-1).REPORTING_CYCLE_START_MONTH, (REPORTING_YEAR-1).REPORTING_CYCLE_END_MONTH);
 	        $pNames = array();
 	        $pBudget = array();
 	        $rBudget = array();
+	        
 	        foreach($projects as $project){
+	            $nAUploaded = 0;
+	            $nRUploaded = 0;
 	            $abudget = $project->getAllocatedBudget(REPORTING_YEAR-1);
 	            $rbudget = $project->getRequestedBudget(REPORTING_YEAR-1);
 	            if($abudget != null){
+	                $nAUploaded = $abudget->copy()->select(V_PERS_NOT_NULL)->nCols();
 	                $totalBudget = $abudget->copy()->rasterize()->select(CUBE_TOTAL)->where(CUBE_TOTAL);
 	                if($totalBudget->nRows() > 0 && $totalBudget->nCols() > 0){
 	                    $value = $totalBudget->toString();
@@ -57,6 +71,7 @@ class SpecialHighChart extends SpecialPage {
 	                $aTotal = 0;
 	            }
 	            if($rbudget != null){
+	                $nRUploaded = $rbudget->copy()->select(V_PERS_NOT_NULL)->nCols();
 	                $totalBudget = $rbudget->copy()->rasterize()->select(CUBE_TOTAL)->where(CUBE_TOTAL);
 	                if($totalBudget->nRows() > 0 && $totalBudget->nCols() > 0){
 	                    $value = $totalBudget->toString();
@@ -72,6 +87,10 @@ class SpecialHighChart extends SpecialPage {
 	            }
 	            $pBudget[$project->getName()] = $aTotal;
 	            $rBudget[$project->getName()] = $rTotal;
+	            if($action == "getSpecialProjectAvgParetoData"){
+	                $pBudget[$project->getName()] = round($aTotal/max(1, $nAUploaded));
+	                $rBudget[$project->getName()] = round($rTotal/max(1, $nRUploaded));
+	            }
 	        }
 	        asort($pBudget, SORT_NUMERIC);
 	        $pBudget = array_reverse($pBudget, true);
@@ -93,7 +112,12 @@ class SpecialHighChart extends SpecialPage {
 	    
 	        $array = array();
 	        $array['chart'] = null;
-	        $array['title'] = array('text' => "Chart of ".(REPORTING_YEAR-1)." Funds for GRAND Projects");
+	        if($action == "getSpecialProjectParetoData"){
+	            $array['title'] = array('text' => "Chart of ".(REPORTING_YEAR-1)." Funds for GRAND Projects");
+	        }
+	        else{
+	            $array['title'] = array('text' => "Chart of ".(REPORTING_YEAR-1)." Funds per Person for GRAND Projects");
+	        }
 	        $array['xAxis'] = array('categories' => $pNames,
 	                                'labels' => array('rotation' => -45,
 	                                                  'align' => "right",
@@ -104,50 +128,83 @@ class SpecialHighChart extends SpecialPage {
 	                                                                   'fontFamily' => "Verdana, sans-serif")
 	                                                  )
 	                               );
-	        $array['yAxis'] = array(array(
-	                                      'title' => array('text' => "Allocated Funds ($)")
-	                                     ),
-	                                array('min' => 0,
-	                                      'opposite' => true,
-	                                      'title' => array('text' => "Cumulative Allocated Funds ($)")
-	                                     )
-	                               );
+	        if($action == "getSpecialProjectParetoData"){
+	            $array['yAxis'] = array(array('title' => array('text' => "Allocated Funds ($)")),
+	                                    array('min' => 0,
+	                                          'opposite' => true,
+	                                          'title' => array('text' => "Cumulative Allocated Funds ($)")
+	                                         )
+	                                   );
+	        }
+	        else{
+	            $array['yAxis'] = array(array('title' => array('text' => "Allocated Funds ($)")),
+	                                   );
+	        }
 	        $array['legend'] = array('enabled' => true);
-	        $array['series'] = array(array('name' => "Allocated Funds",
-	                                       'data' => $pSeries1,
-	                                       'dataLabels' => array('enabled' => true,
-	                                                             'rotation' => -45,
-	                                                             'color' => "#000000",
-	                                                             'align' => "center",
-	                                                             'x' => 0,
-	                                                             'y' => -10,
-	                                                             'style' => array('fontSize' => "10px",
-	                                                                              'fontFamily' => "Verdana, sans-serif")
-	                                                            )
-	                                      ),
-	                                 array('type' => "line",
-	                                       'name' => "Total Allocated Funds",
-	                                       'yAxis' => 1,
-	                                       'data' => $sumSeries1
-	                                      ),
-	                                 array('name' => "Requested Funds",
-	                                       'data' => $pSeries2,
-	                                       'dataLabels' => array('enabled' => true,
-	                                                             'rotation' => -45,
-	                                                             'color' => "#000000",
-	                                                             'align' => "center",
-	                                                             'x' => 0,
-	                                                             'y' => -10,
-	                                                             'style' => array('fontSize' => "10px",
-	                                                                              'fontFamily' => "Verdana, sans-serif")
-	                                                            )
-	                                      ),
-	                                 array('type' => "line",
-	                                       'name' => "Total Requested Funds",
-	                                       'yAxis' => 1,
-	                                       'data' => $sumSeries2
-	                                      )
-	                                );
+	        if($action == "getSpecialProjectParetoData"){
+	            $array['series'] = array(array('name' => "Allocated Funds",
+	                                           'data' => $pSeries1,
+	                                           'dataLabels' => array('enabled' => true,
+	                                                                 'rotation' => -45,
+	                                                                 'color' => "#000000",
+	                                                                 'align' => "center",
+	                                                                 'x' => 0,
+	                                                                 'y' => -10,
+	                                                                 'style' => array('fontSize' => "10px",
+	                                                                                  'fontFamily' => "Verdana, sans-serif")
+	                                                                )
+	                                          ),
+	                                     array('type' => "line",
+	                                           'name' => "Total Allocated Funds",
+	                                           'yAxis' => 1,
+	                                           'data' => $sumSeries1
+	                                          ),
+	                                     array('name' => "Requested Funds",
+	                                           'data' => $pSeries2,
+	                                           'dataLabels' => array('enabled' => true,
+	                                                                 'rotation' => -45,
+	                                                                 'color' => "#000000",
+	                                                                 'align' => "center",
+	                                                                 'x' => 0,
+	                                                                 'y' => -10,
+	                                                                 'style' => array('fontSize' => "10px",
+	                                                                                  'fontFamily' => "Verdana, sans-serif")
+	                                                                )
+	                                          ),
+	                                     array('type' => "line",
+	                                           'name' => "Total Requested Funds",
+	                                           'yAxis' => 1,
+	                                           'data' => $sumSeries2
+	                                          )
+	                                    );
+	        }
+	        else{
+	            $array['series'] = array(array('name' => "Allocated Funds per Person",
+	                                           'data' => $pSeries1,
+	                                           'dataLabels' => array('enabled' => true,
+	                                                                 'rotation' => -45,
+	                                                                 'color' => "#000000",
+	                                                                 'align' => "center",
+	                                                                 'x' => 0,
+	                                                                 'y' => -10,
+	                                                                 'style' => array('fontSize' => "10px",
+	                                                                                  'fontFamily' => "Verdana, sans-serif")
+	                                                                )
+	                                          ),
+	                                     array('name' => "Requested Funds per Person",
+	                                           'data' => $pSeries2,
+	                                           'dataLabels' => array('enabled' => true,
+	                                                                 'rotation' => -45,
+	                                                                 'color' => "#000000",
+	                                                                 'align' => "center",
+	                                                                 'x' => 0,
+	                                                                 'y' => -10,
+	                                                                 'style' => array('fontSize' => "10px",
+	                                                                                  'fontFamily' => "Verdana, sans-serif")
+	                                                                )
+	                                          )
+	                                    );
+	        }
 
             header("Content-Type: application/json");
             echo json_encode($array);
@@ -158,11 +215,14 @@ class SpecialHighChart extends SpecialPage {
 	
 	static function getSpecialUniversityParetoData($action, $article){
 	    global $wgServer, $wgScriptPath;
-	    if($action == "getSpecialUniversityParetoData"){
+	    if($action == "getSpecialUniversityParetoData" || $action == "getSpecialUniversityAvgParetoData"){
 	        $people = Person::getAllPeople();
 	        $pNames = array();
 	        $pBudget = array();
 	        $rBudget = array();
+	        
+	        $pUniCounts = array();
+	        $rUniCounts = array();
 	        foreach($people as $person){
 	            if(!$person->isRoleDuring(PNI, (REPORTING_YEAR-1).REPORTING_CYCLE_START_MONTH, (REPORTING_YEAR-1).REPORTING_CYCLE_END_MONTH) && 
 	               !$person->isRoleDuring(CNI, (REPORTING_YEAR-1).REPORTING_CYCLE_START_MONTH, (REPORTING_YEAR-1).REPORTING_CYCLE_END_MONTH)){
@@ -205,6 +265,18 @@ class SpecialHighChart extends SpecialPage {
                 }
                 @$pBudget[$uni] += $aTotal;
                 @$rBudget[$uni] += $rTotal;
+                if($abudget != null){
+                    @$pUniCounts[$uni]++;
+                }
+                if($rbudget != null){
+                    @$rUniCounts[$uni]++;
+                }
+	        }
+	        if($action == "getSpecialUniversityAvgParetoData"){
+	            foreach($pBudget as $uni => $amount){
+	                @$pBudget[$uni] = round($amount/max(1, $pUniCounts[$uni]));
+	                @$rBudget[$uni] = round($rBudget[$uni]/max(1, $rUniCounts[$uni]));
+	            }
 	        }
 	        asort($pBudget, SORT_NUMERIC);
 	        $pBudget = array_reverse($pBudget, true);
@@ -234,7 +306,12 @@ class SpecialHighChart extends SpecialPage {
 	    
 	        $array = array();
 	        $array['chart'] = null;
-	        $array['title'] = array('text' => "Chart of ".(REPORTING_YEAR-1)." Funds for GRAND Universities");
+	        if($action == "getSpecialUniversityParetoData"){
+	            $array['title'] = array('text' => "Chart of ".(REPORTING_YEAR-1)." Funds for GRAND Universities");
+	        }
+	        else{
+	            $array['title'] = array('text' => "Chart of ".(REPORTING_YEAR-1)." Funds per Person for GRAND Universities");
+	        }
 	        $array['xAxis'] = array('categories' => $pNames,
 	                                'labels' => array('rotation' => -45,
 	                                                  'align' => "right",
@@ -245,50 +322,83 @@ class SpecialHighChart extends SpecialPage {
 	                                                                   'fontFamily' => "Verdana, sans-serif")
 	                                                  )
 	                               );
-	        $array['yAxis'] = array(array(
-	                                      'title' => array('text' => "Allocated Funds ($)")
-	                                     ),
-	                                array('min' => 0,
-	                                      'opposite' => true,
-	                                      'title' => array('text' => "Cumulative Allocated Funds ($)")
-	                                     )
-	                               );
+	        if($action == "getSpecialUniversityParetoData"){
+	            $array['yAxis'] = array(array('title' => array('text' => "Allocated Funds ($)")),
+	                                    array('min' => 0,
+	                                          'opposite' => true,
+	                                          'title' => array('text' => "Cumulative Allocated Funds ($)")
+	                                         )
+	                                   );
+	        }
+	        else{
+	            $array['yAxis'] = array(array('title' => array('text' => "Allocated Funds ($)"))
+	                                   );
+	        }
 	        $array['legend'] = array('enabled' => true);
-	        $array['series'] = array(array('name' => "Allocated Funds",
-	                                       'data' => $pSeries1,
-	                                       'dataLabels' => array('enabled' => true,
-	                                                             'rotation' => -45,
-	                                                             'color' => "#000000",
-	                                                             'align' => "center",
-	                                                             'x' => 0,
-	                                                             'y' => -10,
-	                                                             'style' => array('fontSize' => "10px",
-	                                                                              'fontFamily' => "Verdana, sans-serif")
-	                                                            )
-	                                      ),
-	                                 array('type' => "line",
-	                                       'name' => "Total Allocated Funds",
-	                                       'yAxis' => 1,
-	                                       'data' => $sumSeries1
-	                                      ),
-	                                 array('name' => "Requested Funds",
-	                                       'data' => $pSeries2,
-	                                       'dataLabels' => array('enabled' => true,
-	                                                             'rotation' => -45,
-	                                                             'color' => "#000000",
-	                                                             'align' => "center",
-	                                                             'x' => 0,
-	                                                             'y' => -10,
-	                                                             'style' => array('fontSize' => "10px",
-	                                                                              'fontFamily' => "Verdana, sans-serif")
-	                                                            )
-	                                      ),
-	                                 array('type' => "line",
-	                                       'name' => "Total Requested Funds",
-	                                       'yAxis' => 1,
-	                                       'data' => $sumSeries2
-	                                      )
-	                                );
+	        if($action == "getSpecialUniversityParetoData"){
+	            $array['series'] = array(array('name' => "Allocated Funds",
+	                                           'data' => $pSeries1,
+	                                           'dataLabels' => array('enabled' => true,
+	                                                                 'rotation' => -45,
+	                                                                 'color' => "#000000",
+	                                                                 'align' => "center",
+	                                                                 'x' => 0,
+	                                                                 'y' => -10,
+	                                                                 'style' => array('fontSize' => "10px",
+	                                                                                  'fontFamily' => "Verdana, sans-serif")
+	                                                                )
+	                                          ),
+	                                     array('type' => "line",
+	                                           'name' => "Total Allocated Funds",
+	                                           'yAxis' => 1,
+	                                           'data' => $sumSeries1
+	                                          ),
+	                                     array('name' => "Requested Funds",
+	                                           'data' => $pSeries2,
+	                                           'dataLabels' => array('enabled' => true,
+	                                                                 'rotation' => -45,
+	                                                                 'color' => "#000000",
+	                                                                 'align' => "center",
+	                                                                 'x' => 0,
+	                                                                 'y' => -10,
+	                                                                 'style' => array('fontSize' => "10px",
+	                                                                                  'fontFamily' => "Verdana, sans-serif")
+	                                                                )
+	                                          ),
+	                                     array('type' => "line",
+	                                           'name' => "Total Requested Funds",
+	                                           'yAxis' => 1,
+	                                           'data' => $sumSeries2
+	                                          )
+	                                    );
+	        }
+	        else{
+	            $array['series'] = array(array('name' => "Allocated Funds per Person",
+	                                           'data' => $pSeries1,
+	                                           'dataLabels' => array('enabled' => true,
+	                                                                 'rotation' => -45,
+	                                                                 'color' => "#000000",
+	                                                                 'align' => "center",
+	                                                                 'x' => 0,
+	                                                                 'y' => -10,
+	                                                                 'style' => array('fontSize' => "10px",
+	                                                                                  'fontFamily' => "Verdana, sans-serif")
+	                                                                )
+	                                          ),
+	                                     array('name' => "Requested Funds per Person",
+	                                           'data' => $pSeries2,
+	                                           'dataLabels' => array('enabled' => true,
+	                                                                 'rotation' => -45,
+	                                                                 'color' => "#000000",
+	                                                                 'align' => "center",
+	                                                                 'x' => 0,
+	                                                                 'y' => -10,
+	                                                                 'style' => array('fontSize' => "10px",
+	                                                                                  'fontFamily' => "Verdana, sans-serif")
+	                                                                )
+	                                          )
+	                                    );
+	        }
 
             header("Content-Type: application/json");
             echo json_encode($array);

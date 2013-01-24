@@ -29,7 +29,7 @@ class HighChart extends Visualisation {
     
     function showVis{$this->index}(){
         $.get('{$this->url}', function(data){
-            $("vis{$this->index}").empty();
+            $("#vis{$this->index}").empty();
             data.chart = {
                 "renderTo": "vis{$this->index}",
                 "type": "column",
