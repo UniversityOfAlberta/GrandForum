@@ -122,10 +122,10 @@ class SpecialHighChart extends SpecialPage {
 	        $array = array();
 	        $array['chart'] = null;
 	        if($action == "getSpecialProjectParetoData"){
-	            $array['title'] = array('text' => "Chart of ".(REPORTING_YEAR-1)." Funds for GRAND Projects");
+	            $array['title'] = array('text' => "Chart of ".(REPORTING_YEAR)." Funds for GRAND Projects");
 	        }
 	        else{
-	            $array['title'] = array('text' => "Chart of ".(REPORTING_YEAR-1)." Funds per Person for GRAND Projects");
+	            $array['title'] = array('text' => "Chart of ".(REPORTING_YEAR)." Funds per Person for GRAND Projects");
 	        }
 	        $array['xAxis'] = array('categories' => $pNames,
 	                                'labels' => array('rotation' => -45,
@@ -323,10 +323,10 @@ class SpecialHighChart extends SpecialPage {
 	        $array = array();
 	        $array['chart'] = null;
 	        if($action == "getSpecialUniversityParetoData"){
-	            $array['title'] = array('text' => "Chart of ".(REPORTING_YEAR-1)." Funds for GRAND Universities");
+	            $array['title'] = array('text' => "Chart of ".(REPORTING_YEAR)." Funds for GRAND Universities");
 	        }
 	        else{
-	            $array['title'] = array('text' => "Chart of ".(REPORTING_YEAR-1)." Funds per Person for GRAND Universities");
+	            $array['title'] = array('text' => "Chart of ".(REPORTING_YEAR)." Funds per Person for GRAND Universities");
 	        }
 	        $array['xAxis'] = array('categories' => $pNames,
 	                                'labels' => array('rotation' => -45,
