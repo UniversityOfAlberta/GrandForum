@@ -155,11 +155,6 @@ class SpecialHighChart extends SpecialPage {
 	                                                                                  'fontFamily' => "Verdana, sans-serif")
 	                                                                )
 	                                          ),
-	                                     array('type' => "line",
-	                                           'name' => "Total Allocated Funds",
-	                                           'yAxis' => 1,
-	                                           'data' => $sumSeries1
-	                                          ),
 	                                     array('name' => "Requested Funds",
 	                                           'data' => $pSeries2,
 	                                           'dataLabels' => array('enabled' => true,
@@ -171,6 +166,11 @@ class SpecialHighChart extends SpecialPage {
 	                                                                 'style' => array('fontSize' => "10px",
 	                                                                                  'fontFamily' => "Verdana, sans-serif")
 	                                                                )
+	                                          ),
+	                                     array('type' => "line",
+	                                           'name' => "Total Allocated Funds",
+	                                           'yAxis' => 1,
+	                                           'data' => $sumSeries1
 	                                          ),
 	                                     array('type' => "line",
 	                                           'name' => "Total Requested Funds",
@@ -247,7 +247,7 @@ class SpecialHighChart extends SpecialPage {
                     $aTotal = 0;
                 }
                 if($rbudget != null){
-                    $totalBudget = $abudget->copy()->rasterize()->where(COL_TOTAL)->select(ROW_TOTAL);
+                    $totalBudget = $rbudget->copy()->rasterize()->where(COL_TOTAL)->select(ROW_TOTAL);
                     if($totalBudget->nRows() > 0 && $totalBudget->nCols() > 0){
                         $value = $totalBudget->toString();
                         $value = (int)str_replace(',', '', str_replace('$', '', $value));
@@ -350,11 +350,6 @@ class SpecialHighChart extends SpecialPage {
 	                                                                                  'fontFamily' => "Verdana, sans-serif")
 	                                                                )
 	                                          ),
-	                                     array('type' => "line",
-	                                           'name' => "Total Allocated Funds",
-	                                           'yAxis' => 1,
-	                                           'data' => $sumSeries1
-	                                          ),
 	                                     array('name' => "Requested Funds",
 	                                           'data' => $pSeries2,
 	                                           'dataLabels' => array('enabled' => true,
@@ -366,6 +361,11 @@ class SpecialHighChart extends SpecialPage {
 	                                                                 'style' => array('fontSize' => "10px",
 	                                                                                  'fontFamily' => "Verdana, sans-serif")
 	                                                                )
+	                                          ),
+	                                     array('type' => "line",
+	                                           'name' => "Total Allocated Funds",
+	                                           'yAxis' => 1,
+	                                           'data' => $sumSeries1
 	                                          ),
 	                                     array('type' => "line",
 	                                           'name' => "Total Requested Funds",
