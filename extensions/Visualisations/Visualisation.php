@@ -20,6 +20,10 @@ $visualisations = array('Timeline' => array("name" => "Timeline",
                         'Graph' => array("name" => "Graph",
                               "path" => "Graph/Graph.php",
                               "enabled" => true,
+                              "initialized" => false),
+                        'HighCharts' => array("name" => "HighCharts",
+                              "path" => "HighCharts/HighChart.php",
+                              "enabled" => true,
                               "initialized" => false)
                        );
       
