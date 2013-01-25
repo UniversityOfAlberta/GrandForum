@@ -145,6 +145,7 @@ define('RES_RESACT_NETMAN',   		6);
 define('RES_RESACT_BENEF',   		7);
 define('RES_RESACT_OTHER',   		8);
 define('RES_RESACT_NEXTPLANS',      9);
+define('RES_RESACT_FILE',           10);
 
 define('HQP_DEM_LEVEL',			1);
 define('HQP_DEM_GENDER',		2);
