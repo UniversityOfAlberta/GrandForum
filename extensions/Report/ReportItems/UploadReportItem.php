@@ -147,7 +147,7 @@ class UploadReportItem extends AbstractReportItem {
 	
 	function save(){
 	    if(isset($_FILES['file']) && $_FILES['file']['tmp_name'] != ""){
-	        if($this->getAttr('fileSize', 10)*1024*1024 <= $_FILES['file']['size']){
+	        if($this->getAttr('fileSize', 10)*1024*1024 >= $_FILES['file']['size']){
 	            $name = $_FILES['file']['name'];
 	            $type = $_FILES['file']['type'];
 	            $size = $_FILES['file']['size'];
@@ -159,11 +159,19 @@ class UploadReportItem extends AbstractReportItem {
 	                          'hash' => $hash,
 	                          'file' => $contents);
 	            $this->setBlobValue(serialize($data));
+	            echo "<div class='success'>The file was uploaded successfully.</div>";
+	            unset($_POST['upload']);
+	            $this->fileUploadForm();
+	            exit;
 	        }
 	        else{
-	            echo "The uploaded file is larger than the allowed size.";
+	            echo "<div class='error'>The uploaded file is larger than the allowed size.</div>";
+	            unset($_POST['upload']);
+	            $this->fileUploadForm();
+	            exit;
 	        }
 	    }
+	    exit;
 	    return array();
 	}
 	
