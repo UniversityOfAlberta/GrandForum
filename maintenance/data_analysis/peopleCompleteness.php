@@ -70,13 +70,20 @@ foreach($all_people as $person){
 		$gender = $person->getGender();
 		$nationality = $person->getNationality();
 		$email = $person->getEmail();
+		$email = ($email == "support@forum.grand-nce.ca")? "" : $email;
 		$profile_pub = $person->getProfile();
 		$profile_pri = $person->getProfile(true);
 
-		$university = $person->getUni();
-		$department = $person->getDepartment();
-		$position = $person->getPosition();
+		$uni = $person->getUniversity();
+		$university = $uni['university'];
+		$department = $uni['department'];
+		$position = $uni['position'];
+		//$university = $person->getUni();
+		//$department = $person->getDepartment();
+		//$position = $person->getPosition();
 		
+
+
 		$projects = $person->getProjects();
 	
 
