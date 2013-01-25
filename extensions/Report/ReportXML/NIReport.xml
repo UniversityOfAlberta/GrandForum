@@ -339,7 +339,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
     <!-- IIId. File Upload -->
         <ReportItemSet id='IIId_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="File Upload" private="true">
             <ReportItem id="IIId" blobType="BLOB_RAW" blobItem="RES_RESACT_FILE" type="UploadReportItem" fileSize="10">
-                <![CDATA[You can upload any file to present to the Evaluators to see.  If you want to upload multiple files, then upload a zip file<br />{$item}]]>
+                <![CDATA[You can upload any file to present to the Evaluators to see.  If you want to upload multiple files, then upload a zip file.<br />{$item}]]>
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
