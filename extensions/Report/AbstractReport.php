@@ -156,6 +156,9 @@ abstract class AbstractReport extends SpecialPage {
                 setcookie('showSuccess', 'true', time()-(60*60), '/');
                 $wgMessage->addSuccess("Report Loaded Successfully.");
             }
+            if(isset($_GET['saveBackup']) || isset($_GET['saveBackup'])){
+                ini_set("memory_limit","1024M");
+            }
             if(isset($_POST['loadBackup']) && !$this->readOnly){
                 $status = $parser->loadBackup();
                 if($status){

@@ -337,9 +337,12 @@ Describe your involvement with receptor organizations, industry partners and Pro
             </ReportItem>
         </ReportItemSet>
     <!-- IIId. File Upload -->
-        <ReportItemSet id='IIId_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="File Upload" private="true">
-            <ReportItem id="IIId" blobType="BLOB_RAW" blobItem="RES_RESACT_FILE" type="UploadReportItem" fileSize="10">
-                <![CDATA[You can upload any file to present to the Evaluators to see.  If you want to upload multiple files, then upload a zip file.<br />{$item}]]>
+        <ReportItem id='IIIcd_space' type="StaticReportItem">
+            <![CDATA[<br />]]>
+        </ReportItem>
+        <ReportItemSet id='IIId_head' type="ToggleHeaderReportItemSet" level="4" title="File Attachment" private="true">
+            <ReportItem id="IIId" blobType="BLOB_RAW" blobItem="RES_RESACT_FILE" type="UploadReportItem" fileSize="5">
+                <![CDATA[You can attach any file to present to the Evaluators to review.  If you want to attach multiple files, then put them in a zip file and attach the zip file.<br />{$item}]]>
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
