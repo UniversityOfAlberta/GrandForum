@@ -31,6 +31,9 @@
                 <![CDATA[<tr><td><span style="font-size:16px;">{$user_reversed_name}</span></td><td>{$item}</td>]]>
             </ReportItem>
             <ReportItem id="cni_pdf" type="PDFReportItem" reportType="ProjectNIComments" buttonName="PL Comments PDF">
+                <![CDATA[<td>{$item}</td>]]>
+            </ReportItem>
+            <ReportItem id="cni_misc" reportType="NIReport" sectionId='report' reportItemSetId='IIId_head' reportItemId='IIId' type="DownloadReportItem" buttonName="Misc Attachment">
                 <![CDATA[<td>{$item}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
