@@ -151,7 +151,7 @@ $wgRawHtml = true;
 $wgEnableUploads       = true;
 $wgMaxUploadSize = 1024*1024*20;
 ini_set('upload_max_filesize', $wgMaxUploadSize);
-$wgFileExtensions = array( 'png', 'jpg', 'jpeg', 'gif', 'tif', 'svg', 'pdf', 'ppt', 'pptx', 'tgz', 'zip', 'rar', 'flv', 'mov', 'avi', 'mpeg', 'ogv', 'mp4', 'mkv', 'm4v', 'mp3', 'flac', 'ogg', 'wmv', 'wav');
+$wgFileExtensions = array( 'png', 'jpg', 'jpeg', 'gif', 'tif', 'tiff', 'svg', 'psd', 'pdf', 'ppt', 'pptx', 'tgz', 'zip', 'rar', 'flv', 'mov', 'avi', 'mpeg', 'ogv', 'mp4', 'mkv', 'm4v', 'mp3', 'flac', 'ogg', 'wmv', 'wav');
 $wgVerifyMimeType = true;
 $wgAllowCopyUploads = true;
 $wgAllowTitlesInSVG = true;

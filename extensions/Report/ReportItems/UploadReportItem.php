@@ -146,23 +146,47 @@ class UploadReportItem extends AbstractReportItem {
 	}
 	
 	function save(){
+	    global $wgFileExtensions;
 	    if(isset($_FILES['file']) && $_FILES['file']['tmp_name'] != ""){
+	        $name = $_FILES['file']['name'];
+	        $size = $_FILES['file']['size'];
+	        list($partname, $ext) = UploadForm::splitExtensions($name);
+            if(count($ext)){
+                $finalExt = $ext[count($ext) - 1];
+            }
+            else{
+                $finalExt = '';
+            }
 	        if($this->getAttr('fileSize', 1)*1024*1024 >= $_FILES['file']['size']){
-	            $name = $_FILES['file']['name'];
-	            $type = $_FILES['file']['type'];
-	            $size = $_FILES['file']['size'];
-	            $contents = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
-	            $hash = md5($contents);
-	            $data = array('name' => $name,
-	                          'type' => $type,
-	                          'size' => $size,
-	                          'hash' => $hash,
-	                          'file' => $contents);
-	            $this->setBlobValue(json_encode($data));
-	            echo "<div class='success'>The file was uploaded successfully.</div>";
-	            unset($_POST['upload']);
-	            $this->fileUploadForm();
-	            exit;
+                $magic = MimeMagic::singleton();
+		        $mime = $magic->guessMimeType($_FILES['file']['tmp_name'], false);
+                if(UploadForm::checkFileExtension($finalExt, $wgFileExtensions) &&
+	               UploadForm::verifyExtension($mime, $finalExt)){
+	                $contents = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
+	                $hash = md5($contents);
+	                $data = array('name' => $name,
+	                              'type' => $mime,
+	                              'size' => $size,
+	                              'hash' => $hash,
+	                              'file' => $contents);
+	                $this->setBlobValue(json_encode($data));
+	                echo "<div class='success'>The file was uploaded successfully.</div>";
+	                unset($_POST['upload']);
+	                $this->fileUploadForm();
+	                exit;
+	            }
+	            else if(!UploadForm::checkFileExtension($finalExt, $wgFileExtensions)){
+	                echo "<div class='error'>Uploads of the type <i>.{$finalExt}</i> are not allowed.</div>";
+	                unset($_POST['upload']);
+	                $this->fileUploadForm();
+	                exit;
+	            }
+	            else if(!UploadForm::verifyExtension($mime, $finalExt)){
+	                echo "<div class='error'>The uploaded file extension does not match its type, or it is corrupt.</div>";
+	                unset($_POST['upload']);
+	                $this->fileUploadForm();
+	                exit;
+	            }
 	        }
 	        else{
 	            echo "<div class='error'>The uploaded file is larger than the allowed size of ".($this->getAttr('fileSize', 1))."MB.</div>";

@@ -338,7 +338,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
         </ReportItemSet>
     <!-- IIId. File Upload -->
         <ReportItem id='IIIcd_space' type="StaticReportItem">
-            <![CDATA[<br />]]>
+            <![CDATA[<h2>Other</h2>]]>
         </ReportItem>
         <ReportItemSet id='IIId_head' type="ToggleHeaderReportItemSet" level="4" title="File Attachment" private="true">
             <ReportItem id="IIId" blobType="BLOB_RAW" blobItem="RES_RESACT_FILE" type="UploadReportItem" fileSize="5">
