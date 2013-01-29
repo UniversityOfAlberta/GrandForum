@@ -218,7 +218,6 @@ class ReportBlob {
 			// Don't transform the data.
 			$this->_data = $data;
 			break;
-
 		case BLOB_ARRAY:
 		case BLOB_CSV:
 		case BLOB_OPTIONANDTEXT:

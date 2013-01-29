@@ -45,7 +45,7 @@ class EvalBudgetReportItem extends AbstractReportItem {
             $budget = "<p>No Budget Found</p>";
             $budget_lbl  = "<span style='color:red;'>No Budget Found</span>";
         }
-        $wgOut->addHTML("<div class='pni_budget_accordions'><h2>{$read_name}: {$budget_lbl}</h2>");
+        $wgOut->addHTML("<div class='pni_budget_accordions'><h2>{$read_name}: {$budget_lbl}<span style='font-size:60%; float:right;''><a href=''>(Click to Show/Hide)</a></span></h2>");
 		
 		$wgOut->addHTML("<div id='{$name}_budgetDiv'>");
         

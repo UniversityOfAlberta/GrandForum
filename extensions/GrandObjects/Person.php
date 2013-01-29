@@ -2183,7 +2183,7 @@ class Person{
 	}
 
 	function isUnassignedEvaluator(){
-		$current_evals = array(17,563,152,25,90,27,28,564,32,565,566,36,38,41,48,55,60,61,150,717,1263);
+		$current_evals = array(17,563,152,25,90,27,28,564,32,565,566,36,38,41,48,55,60,61,150,717,1263,1316,1317);
 		if(in_array($this->id, $current_evals)){
 			return true;
 		}
@@ -2229,6 +2229,27 @@ class Person{
         return $subs;
 	}
 	
+	static function getAllEvaluates($type){
+	    $type = mysql_real_escape_string($type);
+	    $eTable = getTableName("eval");
+	    
+	    $sql = "SELECT DISTINCT sub_id 
+	            FROM $eTable
+	            WHERE type = '$type'";
+	    $data = DBFunctions::execSQL($sql);
+	    $subs = array();
+        foreach($data as $row){
+            if($type != "Project"){
+                $subs[] = Person::newFromId($row['sub_id']);
+            }
+            else{
+                $subs[] = Project::newFromId($row['sub_id']);
+            }
+        }
+        return $subs;
+	}
+
+
 	function getEvaluates($type){
 	    $type = mysql_real_escape_string($type);
 	    $eTable = getTableName("eval");

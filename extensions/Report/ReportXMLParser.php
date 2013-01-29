@@ -20,16 +20,18 @@ class ReportXMLParser {
     function saveBackup($download=true){
         $dom = dom_import_simplexml($this->parser)->ownerDocument;
         $dom->formatOutput = false;
-        $md5 = md5(trim($dom->saveXML()));
+        $trimmedXML = trim($dom->saveXML());
+        $md5 = md5($trimmedXML);
         $date = new DateTime();
         $time = $date->format('Y-m-d H-i-s');
         $serialized = serialize(array('md5' => $md5, 
                                       'time' => $time,
                                       'type' => $this->report->xmlName,
-                                      'xml' => trim($dom->saveXML())));
+                                      'xml' => $trimmedXML));
         $key = $this->getKey();
         $iv = $this->getIV();
         $encrypted = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $serialized, MCRYPT_MODE_ECB, $iv);
+        //$encrypted = $serialized;
         $encrypted = gzcompress($encrypted, 9);
         $sql = "INSERT INTO `grand_report_backup`
                 (`report`,`time`,`person_id`,`backup`)
@@ -54,9 +56,11 @@ class ReportXMLParser {
         if(isset($_FILES['backup'])){
             $file = $_FILES['backup'];
             $str = @gzuncompress(file_get_contents($file['tmp_name']));
+            //$str = file_get_contents($file['tmp_name']);
             $key = $this->getKey();
             $iv = $this->getIV();
             $decrypted = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, $str, MCRYPT_MODE_ECB, $iv);
+            //$decrypted = $str;
             $unserialized = @unserialize($decrypted);
             if($unserialized === false || 
                !isset($unserialized['md5']) || 
@@ -427,6 +431,12 @@ class ReportXMLParser {
                     $item->setMilestoneId($value['milestone_id']);
                     $item->setProductId($value['product_id']);
                     $item->setPersonId($value['person_id']);
+                    foreach($value['misc'] as $key=>$val){
+                        $item->setAttribute("{$key}", "{$val}");
+                    }
+                    if(!is_null($value['item_id'])){
+                        $item->setId($item->id."_".$value['item_id']);
+                    }
                 }
                 $itemset->iteration++;
             }
@@ -501,7 +511,6 @@ class ReportXMLParser {
                     $item->setAttribute("{$key}", "{$value}");
                 }
             }
-            
             $item->setValue("{$node}");
             if(!isset($attributes->value) && !($section instanceof ReportItemSet)){
                 if(isset($_GET['saveBackup'])){
@@ -522,10 +531,19 @@ class ReportXMLParser {
             }
         }
         return $item;
-    }   
+    }
+}
+
+function is_base64($s){
+    return (bool) preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $s);
 }
 
 function encode_binary_data($str){
+    $result = base64_encode($str);
+    if($result !== false && base64_decode($result) === $str){
+        return $result;
+    }
+    /* DON'T NEED THIS ANYMORE, BUT WILL KEEP IT FOR REFERENCE FOR A WHILE
     $string = array();
     $value = utf8_encode($str);
     for($i = 0; $i < strlen($value); $i++){
@@ -533,14 +551,19 @@ function encode_binary_data($str){
         $string[] = $ord;
     }
     return implode(" ", $string);
+    */
 }
 
 function decode_binary_data($str){
+    if(is_base64($str)){
+        return base64_decode($str);
+    }
     $exploded = explode(" ", $str);
     foreach($exploded as $ord){
         $chr = chr($ord);
         $string[] = $chr;
     }
-    return implode("", $string);
+    $str = implode("", $string);
+    return $str;
 }
 ?>

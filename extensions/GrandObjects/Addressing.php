@@ -95,6 +95,8 @@ define('EVL_NETWORKING_COM',	13);
 define('EVL_KNOWLEDGE_COM',		14);
 define('EVL_MANAGEMENT_COM',	15);
 define('EVL_REPORTQUALITY_COM',	16);
+define('EVL_SEENOTHERREVIEWS',	17); //flag indicating that evaluator has seen other reviews
+define('EVL_OTHERCOMMENTSAFTER',18); //Other comments after seeing other reviews
 
 // Second-level identifiers for Supplemental Report.
 define('SUP_HQPS',			1);
@@ -143,6 +145,7 @@ define('RES_RESACT_NETMAN',   		6);
 define('RES_RESACT_BENEF',   		7);
 define('RES_RESACT_OTHER',   		8);
 define('RES_RESACT_NEXTPLANS',      9);
+define('RES_RESACT_FILE',           10);
 
 define('HQP_DEM_LEVEL',			1);
 define('HQP_DEM_GENDER',		2);

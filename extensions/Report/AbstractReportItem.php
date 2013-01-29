@@ -226,6 +226,7 @@ abstract class AbstractReportItem {
                 $blob_data = str_replace("", "", $blob_data);
                 $blob_data = str_replace("", "", $blob_data);
             case BLOB_EXCEL:
+            case BLOB_RAW:
                 $value = $blob_data;
                 break;
             case BLOB_ARRAY:
@@ -281,9 +282,16 @@ abstract class AbstractReportItem {
                 $blob->store($blob_data, $blob_address);
                 break;
             case BLOB_EXCEL:
-                $blob->store(utf8_decode($value), $blob_address);
+                if(mb_check_encoding($value, 'UTF-8')){
+                    $value = utf8_decode($value);
+                }
+                $blob->store($value, $blob_address);
 	            $blob->load($blob_address);
 	            $this->addWorksWithRelation($blob->getData(), false);
+	            break;
+	        case BLOB_RAW:
+	            $blob->store(utf8_decode($value), $blob_address);
+	            $blob->load($blob_address);
 	            break;
         }
 	    
