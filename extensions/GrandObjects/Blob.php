@@ -295,15 +295,16 @@ class ReportBlob {
 			                                "user_id = {$this->_owner_id} AND " .
 			                                "year = {$this->_year} AND " .
 			                                "proj_id = {$this->_proj_id} AND {$where};");
-			    $blob_id = $res[0]['blob_id'];
-			    $oldData = "";
-	            $impersonateId = $wgRealUser->getId();
-	            $sql = "INSERT INTO `grand_report_blobs_impersonated` (`blob_id`, `user_id`, `previous_value`, `current_value`)
-	                    VALUES ('$blob_id', '{$impersonateId}', '$oldData', '{$this->_data_transformed}')";
-	            DBFunctions::execSQL($sql, true);
+			    if(count($res) > 0){
+			        $blob_id = $res[0]['blob_id'];
+			        $oldData = "";
+	                $impersonateId = $wgRealUser->getId();
+	                $sql = "INSERT INTO `grand_report_blobs_impersonated` (`blob_id`, `user_id`, `previous_value`, `current_value`)
+	                        VALUES ('$blob_id', '{$impersonateId}', '$oldData', '{$this->_data_transformed}')";
+	                DBFunctions::execSQL($sql, true);
+	            }
 	        }
 		}
-
 		return true;
 	}
 

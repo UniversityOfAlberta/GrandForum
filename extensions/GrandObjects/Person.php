@@ -1067,8 +1067,39 @@ class Person{
 	    }
 	}
 	
+	function getRelationsDuring($type='all', $startRange, $endRange){
+	    $type = mysql_real_escape_string($type);
+	    $startRange = mysql_real_escape_string($startRange);
+	    $endRange = mysql_real_escape_string($endRange);
+	    $sql = "SELECT *
+                FROM grand_relations
+                WHERE user1 = '{$this->id}'\n";
+        if($type == "public"){
+            $sql .= "AND type != '".WORKS_WITH."'\n"; 
+        }
+        else if($type == "all"){
+            // do nothing
+        }
+        else{
+            $sql .= "AND type = '$type'\n";
+        }
+        $sql .= "AND ( 
+                ( (end_date != '0000-00-00 00:00:00') AND
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                OR
+                ( (end_date = '0000-00-00 00:00:00') AND
+                ((start_date <= '$endRange')))
+                )";
+        $data = DBFunctions::execSQL($sql);
+        $relations = array();
+        foreach($data as $row){
+			$relations[] = Relationship::newFromId($row['id']);
+		}
+        return $relations;
+	}
+	
 	// Returns an array of relations for this Person of the given type
-	// If history is set to true, then all the Projects regardless of date are included
+	// If history is set to true, then all the relations regardless of date are included
 	function getRelations($type='all', $history=false){
 	    if($type == "all"){
 	        $sql = "SELECT id, type
