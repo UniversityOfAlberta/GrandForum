@@ -40,7 +40,7 @@ class Report extends AbstractReport{
 		        $page = "Report?report=ProjectReport&project={$project->getName()}";
 		    }
 		}
-		else if($person->isEvaluator() && $wgTitle->getText() == "Evaluator"){
+		else if($person->isEvaluator()){
             $page = "Report?report=EvalReport";
 		}
 		
@@ -87,7 +87,7 @@ class Report extends AbstractReport{
             }
             
             // Project Leader Report
-            $leadership = $person->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+            $leadership = $person->leadership();
             if(count($leadership) > 0){
                 foreach($leadership as $project){
                     if($project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
