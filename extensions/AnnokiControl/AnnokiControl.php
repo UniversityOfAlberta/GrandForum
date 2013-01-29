@@ -273,12 +273,19 @@ $egAnnokiExtensions['ProjectEvolution']     = array( 'name' => 'Project Evolutio
 					      'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php",
 					      'enabled' => true,
 					      );
+					      
 $egAnnokiExtensions['ReviewerConflicts']     = array( 'name' => 'Reviewer Conflicts',
 					      'path' => "$IP/extensions/ReviewerConflicts/ReviewerConflicts.php",
 					      'enabled' => true,
 					      );
+					      
 $egAnnokiExtensions['ReportPDFs']     = array( 'name' => 'ReportPDFs',
 					      'path' => "$IP/extensions/Report/SpecialPages/ReportPDFs.php",
+					      'enabled' => true,
+					      );
+					      
+$egAnnokiExtensions['Solr']     = array( 'name' => 'Solr',
+					      'path' => "$IP/extensions/Solr/Solr.php",
 					      'enabled' => true,
 					      );
 
