@@ -244,7 +244,15 @@ class Chord extends Visualisation {
                     step: 1,
                     range: "max",
                     slide: function( event, ui ) {
+                        for(pId in params){
+                            var param = params[pId];
+                            if(param.indexOf('&date=') !== -1){
+                                params[pId] = null;
+                                delete params[pId];
+                            }
+                        }
                         params.push('&date=' + ui.value);
+                        
                         lastChordRequest.abort();
                         onLoad{$this->index}();
                     }

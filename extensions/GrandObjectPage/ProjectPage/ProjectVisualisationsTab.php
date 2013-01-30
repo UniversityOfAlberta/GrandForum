@@ -570,7 +570,6 @@ class ProjectVisualisationsTab extends AbstractTab {
                         $sortedPeople[AR][] = $person;
                     }
                 }
-                
             }
             
             $colorHashs = array();
@@ -608,7 +607,6 @@ class ProjectVisualisationsTab extends AbstractTab {
                     }
                 }
             }
-            
             if(!isset($_GET['noRelations'])){
                 foreach($people as $k1 => $person){
                     foreach($people as $k2 => $p){
