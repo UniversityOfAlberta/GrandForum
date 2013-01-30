@@ -880,6 +880,27 @@ input::-moz-focus-inner{
     padding: 0 .5em 0 1em !important;
 }
 
+.ui-slider {
+    background: #aaa;
+}
+
+.tick {
+    border: 1px solid transparent; /*follows slide handle style for sizing purposes*/
+    position: absolute;
+    width: 1.2em;
+    margin-left: -.6em;
+    text-align:center;
+    left: 0;
+    font-size: smaller;
+}
+
+.steps {
+    border: 1px solid transparent; /*follows #slider2 style for sizing purposes */
+    width: 200px;
+    position: relative;
+    height: 30px;
+}
+
 .toggleHeader, .ui-accordion-header {
     background-color: #F3EBF5 !important;
     background-image: url('../black_gradient.png') !important;

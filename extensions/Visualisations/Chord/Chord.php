@@ -37,7 +37,8 @@ class Chord extends Visualisation {
         global $wgOut, $wgServer, $wgScriptPath;
         $string = "<div style='height:".($this->height)."px;width:".($this->width)."px;float:left;' class='chordChart' id='vis{$this->index}'>
                    </div>
-                   <div style='margin-top:100px;margin-left:25px;' id='visOptions{$this->index}'></div>
+                   <div style='position:absolute;' id='visSpinner{$this->index}'></div>
+                   <div style='margin-top:25px;margin-left:25px;' id='visOptions{$this->index}'></div>
                    <div style='margin-top:25px;margin-left:25px;' id='visSort{$this->index}'></div>
                    <div style='margin-top:25px;margin-left:25px;' id='visLegend{$this->index}'></div>";
         $string .= <<<EOF
@@ -63,11 +64,13 @@ class Chord extends Visualisation {
   var lastChordRequest = null;
   
   function onLoad{$this->index}(){
-    var spin = spinner("vis{$this->index}", 40, 75, 12, 10, '#888');
+    $("#visSpinner{$this->index}").empty();
+    var spin = spinner("visSpinner{$this->index}", 10, 20, 12, 3, '#888');
     lastChordRequest = $.get('{$this->url}' + params.join(''), function(data){
         var svg;
         var chord;
         spin();
+        $("#visSpinner{$this->index}").empty();
         $("#vis{$this->index}").empty();
         $("#visLegend{$this->index}").empty();
         
@@ -81,13 +84,17 @@ class Chord extends Visualisation {
             colors.push("#" + intToRGB(hashCode(label)));
         }
         if(showLegend){
-            $("#visLegend{$this->index}").append("<h3>Legend</h3><table><tr><td>");
+            $("#visLegend{$this->index}").append("<h3>Legend</h3><table><tr><td valign='top'>").css('white-space','nowrap');
             var lastLabel = '';
+            var i = 0;
             for(lId in data.colorHashs){
                 var label = data.colorHashs[lId];
                 var color = intToRGB(hashCode(label));
                 if(lastLabel != label){
-                    $("#visLegend{$this->index} table tr td").append("<div class='" + color + "' style='font-size:10px;line-height:10px;'><div class='" + color + "' style='display:inline-block;width:15px;height:10px;background:#" + color + ";border:1px solid #888;'></div>" + label + "</div>");
+                    if(i % 20 == 0){
+                        $("#visLegend{$this->index} table tr").append("<td valign='top'>").css('white-space','nowrap');
+                    }
+                    $("#visLegend{$this->index} table tr td").last().append("<div class='" + color + "' style='font-size:10px;line-height:10px;'><div class='" + color + "' style='display:inline-block;width:15px;height:10px;background:#" + color + ";border:1px solid #888;'></div>" + label + "</div>");
                     $("#visLegend{$this->index} table tr td > div > div." + color).parent().mouseover(function(){
                         var ids = Array();
                         var classColor = $(this).children(0).attr('class');
@@ -113,6 +120,7 @@ class Chord extends Visualisation {
                         $("#visLegend{$this->index} table tr td div").not("." + classColor).animate({opacity: 1}, 250);
                         svg.select("path._" + classColor).data(chord.groups).on("mouseout")(undefined, ids);
                     });
+                    i++;
                 }
                 lastLabel = label;
             }
@@ -138,7 +146,7 @@ class Chord extends Visualisation {
             .attr("width", width)
             .attr("height", height)
           .append("g")
-            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+            .attr("transform", "translate(" + ((width / 2)) + "," + ((height / 2)) + ")");
         
         svg.append("g").selectAll("path")
             .data(chord.groups)
@@ -223,11 +231,33 @@ class Chord extends Visualisation {
                     params[index] = null;
                     delete params[index];
                 }
-                $("#vis{$this->index}").empty();
-                $("#visLegend{$this->index}").empty();
                 lastChordRequest.abort();
                 onLoad{$this->index}();
             });
+            
+            if(data.dateOptions != undefined){
+                $("#visOptions{$this->index}").append("<tr><td><b>Date Range:</b><br /><div style='margin-top:5px;margin-left:1px;width:200px;' id='visDateSlider{$this->index}'></div><div id='visDateSliderLabels{$this->index}' class='steps'></td></tr>");
+                var dateOptions = data.dateOptions;
+                $("#visDateSlider{$this->index}").slider({
+                    min: dateOptions[0].date,
+                    max: dateOptions[dateOptions.length-1].date,
+                    step: 1,
+                    range: "max",
+                    slide: function( event, ui ) {
+                        params.push('&date=' + ui.value);
+                        lastChordRequest.abort();
+                        onLoad{$this->index}();
+                    }
+                });
+                for(dId in dateOptions){
+                    var dOption = dateOptions[dId];
+                    if(dOption.checked == 'checked'){
+                        $("#visDateSlider{$this->index}").slider("option", "value", dOption.date);
+                    }
+                    var perc = Math.floor((dId/Math.max(1, (dateOptions.length-1)))*100);
+                    $("#visDateSliderLabels{$this->index}").append("<span style='left: " + perc + "%;' class='tick'>|<br />" + dOption.date + "</span>");
+                }
+            }
         }
         
         if($("#visSort{$this->index}").html().trim() == '' && typeof data.sortOptions != 'undefined'){
@@ -247,8 +277,6 @@ class Chord extends Visualisation {
                         delete params[index];
                     }
                 });
-                $("#vis{$this->index}").empty();
-                $("#visLegend{$this->index}").empty();
                 lastChordRequest.abort();
                 onLoad{$this->index}();
             });

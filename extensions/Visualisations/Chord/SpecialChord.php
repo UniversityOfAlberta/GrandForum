@@ -19,8 +19,8 @@ class SpecialChord extends SpecialPage {
 	function run(){
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    $chord = new Chord("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialChordData");
-	    $chord->height = 800;
-	    $chord->width = 800;
+	    $chord->height = 700;
+	    $chord->width = 700;
 	    $string = $chord->show();
 	    $wgOut->addHTML($string);
 	}
@@ -28,31 +28,32 @@ class SpecialChord extends SpecialPage {
 	static function getSpecialChordData($action, $article){
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
+	    $year = (isset($_GET['date'])) ? $_GET['date'] : REPORTING_YEAR;
 	    if($action == "getSpecialChordData" && $me->isRoleAtLeast(MANAGER)){
 	        $array = array();
-            $people = Person::getAllPeople();
+            $people = Person::getAllPeopleDuring(null, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
             $sortedPeople = array();
             
             foreach($people as $key => $person){
-                if(!$person->isRole(CNI) && !$person->isRole(PNI) && !$person->isRole(AR)){
+                if(!$person->isRoleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) && !$person->isRoleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) && !$person->isRoleDuring(AR, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
                     unset($people[$key]);
                     continue;
                 }
-                if(isset($_GET['noPNI']) && $person->isRole(PNI)){
+                if(isset($_GET['noPNI']) && $person->isRoleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
                     unset($people[$key]);
                     continue;
                 }
-                if(!isset($_GET['showCNI']) && $person->isRole(CNI)){
+                if(!isset($_GET['showCNI']) && $person->isRoleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
                     unset($people[$key]);
                     continue;
                 }
-                if(!isset($_GET['showAR']) && $person->isRole(AR)){
+                if(!isset($_GET['showAR']) && $person->isRoleDuring(AR, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
                     unset($people[$key]);
                     continue;
                 }
                 
                 if(!isset($_GET['sortBy']) || (isset($_GET['sortBy']) && $_GET['sortBy'] == 'uni')){
-                    $university = $person->getUniversity();
+                    $university = $person->getUniversityDuring($year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
                     if($university['university'] != ''){
                         $sortedPeople[$university['university']][] = $person;
                     }
@@ -60,8 +61,21 @@ class SpecialChord extends SpecialPage {
                         $sortedPeople['Unknown'][] = $person;
                     }
                 }
+                else if($_GET['sortBy'] == 'dept'){
+                    $university = $person->getUniversityDuring($year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
+                    if($university['department'] != ''){
+                        $sortedPeople[$university['department']][] = $person;
+                    }
+                    else{
+                        $sortedPeople['Unknown'][] = $person;
+                    }
+                }
+                else if($_GET['sortBy'] == 'fund'){
+                    $agency = $person->getPrimaryFundingAgency();
+                    $sortedPeople[$agency][] = $person;
+                }
                 else if($_GET['sortBy'] == 'proj_req'){
-                    $budget = $person->getRequestedBudget(REPORTING_YEAR);
+                    $budget = $person->getRequestedBudget($year);
                     if($budget != null){
                         $projBudget = $budget->copy()->rasterize()->select(V_PROJ)->where(V_PROJ);
                         $rowBudget = $budget->copy()->rasterize()->select(V_PROJ)->where(COL_TOTAL);
@@ -83,7 +97,7 @@ class SpecialChord extends SpecialPage {
                     }
                 }
                 else if($_GET['sortBy'] == 'proj_alloc'){
-                    $budget = $person->getAllocatedBudget(REPORTING_YEAR-1);
+                    $budget = $person->getAllocatedBudget($year-1);
                     if($budget != null){
                         $projBudget = $budget->copy()->rasterize()->select(V_PROJ)->where(V_PROJ);
                         $rowBudget = $budget->copy()->rasterize()->select(V_PROJ)->where(COL_TOTAL);
@@ -105,9 +119,9 @@ class SpecialChord extends SpecialPage {
                     }
                 }
                 else if($_GET['sortBy'] == 'proj_both'){
-                    $budget = $person->getRequestedBudget(REPORTING_YEAR);
+                    $budget = $person->getRequestedBudget($year);
                     if($budget == null){
-                        $budget = $person->getAllocatedBudget(REPORTING_YEAR-1);
+                        $budget = $person->getAllocatedBudget($year-1);
                     }
                     if($budget != null){
                         $projBudget = $budget->copy()->rasterize()->select(V_PROJ)->where(V_PROJ);
@@ -157,7 +171,7 @@ class SpecialChord extends SpecialPage {
             
             if(!isset($_GET['noCoAuthorship'])){
                 foreach($people as $k1 => $person){
-                    $papers = $person->getPapers();
+                    $papers = $person->getPapersAuthored("all", $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH, false);
                     foreach($papers as $paper){
                         foreach($paper->getAuthors() as $p){
                             if(isset($matrix[$p->getId()]) && $person->getId() != $p->getId()){
@@ -171,7 +185,7 @@ class SpecialChord extends SpecialPage {
             if(!isset($_GET['noRelations'])){
                 foreach($people as $k1 => $person){
                     foreach($people as $k2 => $p){
-                        $relations = $person->getRelations(WORKS_WITH);
+                        $relations = $person->getRelationsDuring(WORKS_WITH, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
                         if(count($relations) > 0){
                             foreach($relations as $relation){
                                 if($relation instanceof Relationship && $relation->getUser2()->getId() == $p->getId()){
@@ -196,7 +210,6 @@ class SpecialChord extends SpecialPage {
                 }
             }
             
-            
             $newMatrix = array();
             foreach($matrix as $row){
                 $newRow = array();
@@ -211,13 +224,27 @@ class SpecialChord extends SpecialPage {
                 $labels[] = $person->getReversedName();
             }
             
+            $dates = array();
+            for($i=2010; $i <= REPORTING_YEAR; $i++){
+                if($i == REPORTING_YEAR){
+                    $dates[] = array('date' => $i, 'checked' => 'checked');
+                }
+                else{
+                    $dates[] = array('date' => $i, 'checked' => '');
+                }
+            }
+            
             $array['filterOptions'] = array(array('name' => 'Show Co-Authorship', 'param' => 'noCoAuthorship', 'checked' => 'checked'),
                                             array('name' => 'Show Relationships', 'param' => 'noRelations', 'checked' => 'checked'),
                                             array('name' => 'Show PNIs', 'param' => 'noPNI', 'checked' => 'checked'),
                                             array('name' => 'Show CNIs', 'param' => 'showCNI', 'checked' => '', 'inverted' => true),
                                             array('name' => 'Show ARs', 'param' => 'showAR', 'checked' => '', 'inverted' => true));
+
+            $array['dateOptions'] = $dates;
                                       
             $array['sortOptions'] = array(array('name' => 'University', 'value' => 'uni', 'checked' => 'checked'),
+                                          array('name' => 'Department', 'value' => 'dept', 'checked' => ''),
+                                          array('name' => 'Primary Funding Agency', 'value' => 'fund', 'checked' => ''),
                                           array('name' => 'Primary Project (Requested Budget)', 'value' => 'proj_req', 'checked' => ''),
                                           array('name' => 'Primary Project (Allocated Budget)', 'value' => 'proj_alloc', 'checked' => ''),
                                           array('name' => 'Primary Project (RequestedBudget OR Allocated Budget)', 'value' => 'proj_both', 'checked' => ''),
