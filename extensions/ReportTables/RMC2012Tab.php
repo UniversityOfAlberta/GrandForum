@@ -1,5 +1,10 @@
 <?php
 
+include 'Evaluate_Form.php';
+//include 'EvaluationTable.php';
+include 'ReportIndex.php';
+include 'ReviewerIndex.php';
+
 class RMC2012Tab extends AbstractTab {
 
     function RMC2012Tab(){
@@ -278,10 +283,10 @@ EOF;
                     continue;
                 }
                 
-                $download1 = Evaluate::getPNIPDF($person);
+                $download1 = EvaluationTable::getPNIPDF($person);
                 $download2 = "";
                 foreach($person->leadership() as $project){
-                    $download2 .= Evaluate::getProjectLeaderPDF($project)."<br />";
+                    $download2 .= EvaluationTable::getProjectLeaderPDF($project)."<br />";
                 }
                 if($download2 == ""){
                     $download2 = "No&nbsp;PDF";
@@ -385,7 +390,7 @@ EOF;
                     $ls = array();
                 }
                 $none = true;
-                $download2 = Evaluate::getProjectLeaderPDF($project)."<br />";
+                $download2 = EvaluationTable::getProjectLeaderPDF($project)."<br />";
                 $tierSum1 = ($W1*$pTiers["1_1"] + $W2*$pTiers["1_2"] + $W3*$pTiers["1_3"])/$pTiers["nRatings"];
                 $tierSum2 = ($W1*$pTiers["2_1"] + $W2*$pTiers["2_2"] + $W3*$pTiers["2_3"])/max(1, $pTiers["nQ6"]);
                 if($tierSum2 < 10){

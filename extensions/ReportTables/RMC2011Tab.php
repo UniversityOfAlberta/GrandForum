@@ -524,7 +524,8 @@ EOF;
         if($type == PNI || $type == CNI){
             $fullBudget[] = new Budget(array(array(HEAD, HEAD, HEAD, HEAD)), array(array($type, "Number of Projects", "Total Request", "Project Requests")));
             foreach(Person::getAllPeople($type) as $person){
-                $budget = $person->getSupplementalBudget(2010);
+                //$budget = $person->getSupplementalBudget(2010);
+                $budget = $person->getAllocatedBudget(2010);
                 if($budget != null){
                     $projects = $budget->copy()->where(HEAD1, array("Project Name:"))->select(V_PROJ);
                     $projectTotals = $budget->copy()->rasterize()->where(HEAD1, array("TOTALS for April 1, 2011, to March 31, 2012"));
@@ -557,7 +558,8 @@ EOF;
             $fullBudget = array();
             $fullBudget[] = new Budget(array(array(HEAD, HEAD, HEAD, HEAD)), array(array($type, "Number of Researchers", "Total Request", "Researcher Requests")));
             foreach(Project::getAllProjects() as $project){
-                $budget = $project->getSupplBudget(2010);
+                //$budget = $project->getSupplBudget(2010);
+                $budget = $project->getAllocatedBudget(2010);
                 if($budget != null){
                     $people = $budget->copy()->where(HEAD1, array("Name of network investigator submitting request:"))->select(V_PERS_NOT_NULL);
                 
