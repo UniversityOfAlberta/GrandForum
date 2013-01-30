@@ -244,7 +244,6 @@ class Chord extends Visualisation {
                     step: 1,
                     range: "max",
                     slide: function( event, ui ) {
-                        console.log(ui);
                         params.push('&date=' + ui.value);
                         lastChordRequest.abort();
                         onLoad{$this->index}();

@@ -70,6 +70,10 @@ class SpecialChord extends SpecialPage {
                         $sortedPeople['Unknown'][] = $person;
                     }
                 }
+                else if($_GET['sortBy'] == 'fund'){
+                    $agency = $person->getPrimaryFundingAgency();
+                    $sortedPeople[$agency][] = $person;
+                }
                 else if($_GET['sortBy'] == 'proj_req'){
                     $budget = $person->getRequestedBudget($year);
                     if($budget != null){
@@ -240,6 +244,7 @@ class SpecialChord extends SpecialPage {
                                       
             $array['sortOptions'] = array(array('name' => 'University', 'value' => 'uni', 'checked' => 'checked'),
                                           array('name' => 'Department', 'value' => 'dept', 'checked' => ''),
+                                          array('name' => 'Primary Funding Agency', 'value' => 'fund', 'checked' => ''),
                                           array('name' => 'Primary Project (Requested Budget)', 'value' => 'proj_req', 'checked' => ''),
                                           array('name' => 'Primary Project (Allocated Budget)', 'value' => 'proj_alloc', 'checked' => ''),
                                           array('name' => 'Primary Project (RequestedBudget OR Allocated Budget)', 'value' => 'proj_both', 'checked' => ''),

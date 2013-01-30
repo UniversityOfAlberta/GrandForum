@@ -742,6 +742,24 @@ class Person{
 	}
 	
 	/**
+	 * Returns this Person's primary funding agency from their response in the Survey
+	 * @return string This Person's primary funding agency from their response in the Survey
+	 */
+	function getPrimaryFundingAgency(){
+	    $sql = "SELECT `discipline`
+	            FROM `survey_results`
+	            WHERE `user_id` = '{$this->id}'";
+	    $data = DBFunctions::execSQL($sql);
+	    if(DBFunctions::getNRows() > 0){
+	        $discipline = json_decode($data[0]['discipline']);
+	        if(isset($discipline->d_level1a)){
+	            return $discipline->d_level1a;
+	        }
+	    }
+	    return "Unknown";
+	}
+	
+	/**
 	 * Returns the current University that this Person is at
 	 * @return array The current University this Person is at
 	 */ 
