@@ -115,120 +115,120 @@ EOF;
 
     function showEvalTableFor($type){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript, $reporteeId, $getPerson;
-        $people = Person::getAllPeople();
+        //$people = Person::getAllPeople();
         //$people = array_merge($people, Person::getAllStaff());
         $peopleTiers = array();
         $projectTiers = array();
-        $pg = "{$wgServer}{$wgScriptPath}/index.php/Special:Evaluate";
+
+        $people = Person::getAllEvaluators();
         foreach($people as $person){
-            if($person->isEvaluator()){
-                $reporteeId = $person->getId();
-                if($type == CNI){
-                    $subs = $person->getEvaluateCNIs();
-                }
-                else{
-                    $subs = $person->getEvaluateSubs();
-                }
-                foreach($subs as $sub){
-                    $id = "";
-                    if($sub instanceof Person && ($type == PNI && $sub->isRole(PNI)) ){
-                        $id = "person";
-                        $ctype = "p";
-                        $rtype = RP_EVAL_RESEARCHER;
-                        $array = isset($peopleTiers[$sub->getName()]) ? $peopleTiers[$sub->getName()] : array();
-                    }
-                    else if($sub instanceof Person && ($type == CNI && $sub->isRole(CNI)) ){
-                        $id = "person";
-                        $ctype = "p";
-                        $rtype = RP_EVAL_CNI;
-                        $array = isset($peopleTiers[$sub->getName()]) ? $peopleTiers[$sub->getName()] : array();
-                    }
-                    else if($sub instanceof Project && $type == "Project"){
-                        $id = "project";
-                        $ctype = "r";
-                        $rtype = RP_EVAL_PROJECT;
-                        $array = isset($projectTiers[$sub->getName()]) ? $projectTiers[$sub->getName()] : array();
-                    }
-                    if($id == ""){
-                        continue;
-                    }
-                    $array["1_1"] = isset($array["1_1"]) ? $array["1_1"] : 0;
-                    $array["1_2"] = isset($array["1_2"]) ? $array["1_2"] : 0;
-                    $array["1_3"] = isset($array["1_3"]) ? $array["1_3"] : 0;
-                    $array["2_1"] = isset($array["2_1"]) ? $array["2_1"] : 0;
-                    $array["2_2"] = isset($array["2_2"]) ? $array["2_2"] : 0;
-                    $array["2_3"] = isset($array["2_3"]) ? $array["2_3"] : 0;
-                    $array["2_4"] = isset($array["2_4"]) ? $array["2_4"] : 0;
-                    $array["3_1"] = isset($array["3_1"]) ? $array["3_1"] : 0;
-                    $array["3_2"] = isset($array["3_2"]) ? $array["3_2"] : 0;
-                    $array["3_3"] = isset($array["3_3"]) ? $array["3_3"] : 0;
-                    $array["3_4"] = isset($array["3_4"]) ? $array["3_4"] : 0;
-                    $array["q1Rat"] = isset($array["q1Rat"]) ? $array["q1Rat"] : "";
-                    $array["q2Rat"] = isset($array["q2Rat"]) ? $array["q2Rat"] : "";
-                    $array["q3Rat"] = isset($array["q3Rat"]) ? $array["q3Rat"] : "";
-                    $array["q4Rat"] = isset($array["q4Rat"]) ? $array["q4Rat"] : "";
-                    $array["q5Rat"] = isset($array["q5Rat"]) ? $array["q5Rat"] : "";
-                    $array["q6Rat"] = isset($array["q6Rat"]) ? $array["q6Rat"] : "";
-                    $array["q7Rat"] = isset($array["q7Rat"]) ? $array["q7Rat"] : "";
-                    $array["q8Rat"] = isset($array["q8Rat"]) ? $array["q8Rat"] : "";
-                    $array["q9Rat"] = isset($array["q9Rat"]) ? $array["q9Rat"] : "";
-                    $array["q1Fed"] = isset($array["q1Fed"]) ? $array["q1Fed"] : "";
-                    $array["q2Fed"] = isset($array["q2Fed"]) ? $array["q2Fed"] : "";
-                    $array["q3Fed"] = isset($array["q3Fed"]) ? $array["q3Fed"] : "";
-                    $array["q4Fed"] = isset($array["q4Fed"]) ? $array["q4Fed"] : "";
-                    $array["q5Fed"] = isset($array["q5Fed"]) ? $array["q5Fed"] : "";
-                    $array["q6Fed"] = isset($array["q6Fed"]) ? $array["q6Fed"] : "";
-                    $array["q7Fed"] = isset($array["q7Fed"]) ? $array["q7Fed"] : "";
-                    $array["q8Fed"] = isset($array["q8Fed"]) ? $array["q8Fed"] : "";
-                    $array["q9Fed"] = isset($array["q9Fed"]) ? $array["q9Fed"] : "";
-                    $array["nQ1"] = isset($array["nQ1"]) ? $array["nQ1"] : 0;
-                    $array["nQ2"] = isset($array["nQ2"]) ? $array["nQ2"] : 0;
-                    $array["nQ3"] = isset($array["nQ3"]) ? $array["nQ3"] : 0;
-                    $array["nQ4"] = isset($array["nQ4"]) ? $array["nQ4"] : 0;
-                    $array["nQ5"] = isset($array["nQ5"]) ? $array["nQ5"] : 0;
-                    $array["nQ6"] = isset($array["nQ6"]) ? $array["nQ6"] : 0;
-                    $array["nQ7"] = isset($array["nQ7"]) ? $array["nQ7"] : 0;
-                    $array["nQ8"] = isset($array["nQ8"]) ? $array["nQ8"] : 0;
-                    $array["nQ9"] = isset($array["nQ9"]) ? $array["nQ9"] : 0;
-                    $array["nRatings"] = isset($array["nRatings"]) ? $array["nRatings"] : 0;
-
-                    $post = Evaluate_Form::getData('', $rtype, EVL_EXCELLENCE, $sub, 2011);
-                    $array = self::generateRow(1, $array, $post, $person);
-                    
-                    $post = Evaluate_Form::getData('', $rtype, EVL_HQPDEVELOPMENT, $sub, 2011);
-                    $array = self::generateRow(2, $array, $post, $person);
-
-                    $post = Evaluate_Form::getData('', $rtype, EVL_NETWORKING, $sub, 2011);
-                    $array = self::generateRow(3, $array, $post, $person);
-
-                    $post = Evaluate_Form::getData('', $rtype, EVL_KNOWLEDGE, $sub, 2011);
-                    $array = self::generateRow(4, $array, $post, $person);
-
-                    $post = Evaluate_Form::getData('', $rtype, EVL_MANAGEMENT, $sub, 2011);
-                    $array = self::generateRow(5, $array, $post, $person);
-
-                    $post = Evaluate_Form::getData('', $rtype, EVL_OVERALLSCORE, $sub, 2011);
-                    $array = self::generateRow(6, $array, $post, $person);
-
-                    $post = Evaluate_Form::getData('', $rtype, EVL_OTHERCOMMENTS, $sub, 2011);
-                    $array = self::generateRow(7, $array, $post, $person);
-                    
-                    $post = Evaluate_Form::getData('', $rtype, EVL_REPORTQUALITY, $sub, 2011);
-                    $array = self::generateRow(8, $array, $post, $person);
-                    
-                    $post = Evaluate_Form::getData('', $rtype, EVL_CONFIDENCE, $sub, 2011);
-                    $array = self::generateRow(9, $array, $post, $person);
-                    
-                    @$array["nRatings"] += 1;
-                    if($sub instanceof Person && (($type == PNI && $sub->isRole(PNI)) || ($type == CNI && $sub->isRole(CNI)))){
-                        $peopleTiers[$sub->getName()] = $array;
-                    }
-                    else if($sub instanceof Project && $type == "Project"){
-                        $projectTiers[$sub->getName()] = $array;
-                    }
-                }
+            $reporteeId = $person->getId();
+            if($type == CNI){
+                $subs = $person->getEvaluateCNIs();
             }
+            else{
+                $subs = $person->getEvaluateSubs();
+            }
+            foreach($subs as $sub){
+                $id = "";
+                if($sub instanceof Person && ($type == PNI && $sub->isRole(PNI)) ){
+                    $id = "person";
+                    $ctype = "p";
+                    $rtype = RP_EVAL_RESEARCHER;
+                    $array = isset($peopleTiers[$sub->getName()]) ? $peopleTiers[$sub->getName()] : array();
+                }
+                else if($sub instanceof Person && ($type == CNI && $sub->isRole(CNI)) ){
+                    $id = "person";
+                    $ctype = "p";
+                    $rtype = RP_EVAL_CNI;
+                    $array = isset($peopleTiers[$sub->getName()]) ? $peopleTiers[$sub->getName()] : array();
+                }
+                else if($sub instanceof Project && $type == "Project"){
+                    $id = "project";
+                    $ctype = "r";
+                    $rtype = RP_EVAL_PROJECT;
+                    $array = isset($projectTiers[$sub->getName()]) ? $projectTiers[$sub->getName()] : array();
+                }
+                if($id == ""){
+                    continue;
+                }
+                $array["1_1"] = isset($array["1_1"]) ? $array["1_1"] : 0;
+                $array["1_2"] = isset($array["1_2"]) ? $array["1_2"] : 0;
+                $array["1_3"] = isset($array["1_3"]) ? $array["1_3"] : 0;
+                $array["2_1"] = isset($array["2_1"]) ? $array["2_1"] : 0;
+                $array["2_2"] = isset($array["2_2"]) ? $array["2_2"] : 0;
+                $array["2_3"] = isset($array["2_3"]) ? $array["2_3"] : 0;
+                $array["2_4"] = isset($array["2_4"]) ? $array["2_4"] : 0;
+                $array["3_1"] = isset($array["3_1"]) ? $array["3_1"] : 0;
+                $array["3_2"] = isset($array["3_2"]) ? $array["3_2"] : 0;
+                $array["3_3"] = isset($array["3_3"]) ? $array["3_3"] : 0;
+                $array["3_4"] = isset($array["3_4"]) ? $array["3_4"] : 0;
+                $array["q1Rat"] = isset($array["q1Rat"]) ? $array["q1Rat"] : "";
+                $array["q2Rat"] = isset($array["q2Rat"]) ? $array["q2Rat"] : "";
+                $array["q3Rat"] = isset($array["q3Rat"]) ? $array["q3Rat"] : "";
+                $array["q4Rat"] = isset($array["q4Rat"]) ? $array["q4Rat"] : "";
+                $array["q5Rat"] = isset($array["q5Rat"]) ? $array["q5Rat"] : "";
+                $array["q6Rat"] = isset($array["q6Rat"]) ? $array["q6Rat"] : "";
+                $array["q7Rat"] = isset($array["q7Rat"]) ? $array["q7Rat"] : "";
+                $array["q8Rat"] = isset($array["q8Rat"]) ? $array["q8Rat"] : "";
+                $array["q9Rat"] = isset($array["q9Rat"]) ? $array["q9Rat"] : "";
+                $array["q1Fed"] = isset($array["q1Fed"]) ? $array["q1Fed"] : "";
+                $array["q2Fed"] = isset($array["q2Fed"]) ? $array["q2Fed"] : "";
+                $array["q3Fed"] = isset($array["q3Fed"]) ? $array["q3Fed"] : "";
+                $array["q4Fed"] = isset($array["q4Fed"]) ? $array["q4Fed"] : "";
+                $array["q5Fed"] = isset($array["q5Fed"]) ? $array["q5Fed"] : "";
+                $array["q6Fed"] = isset($array["q6Fed"]) ? $array["q6Fed"] : "";
+                $array["q7Fed"] = isset($array["q7Fed"]) ? $array["q7Fed"] : "";
+                $array["q8Fed"] = isset($array["q8Fed"]) ? $array["q8Fed"] : "";
+                $array["q9Fed"] = isset($array["q9Fed"]) ? $array["q9Fed"] : "";
+                $array["nQ1"] = isset($array["nQ1"]) ? $array["nQ1"] : 0;
+                $array["nQ2"] = isset($array["nQ2"]) ? $array["nQ2"] : 0;
+                $array["nQ3"] = isset($array["nQ3"]) ? $array["nQ3"] : 0;
+                $array["nQ4"] = isset($array["nQ4"]) ? $array["nQ4"] : 0;
+                $array["nQ5"] = isset($array["nQ5"]) ? $array["nQ5"] : 0;
+                $array["nQ6"] = isset($array["nQ6"]) ? $array["nQ6"] : 0;
+                $array["nQ7"] = isset($array["nQ7"]) ? $array["nQ7"] : 0;
+                $array["nQ8"] = isset($array["nQ8"]) ? $array["nQ8"] : 0;
+                $array["nQ9"] = isset($array["nQ9"]) ? $array["nQ9"] : 0;
+                $array["nRatings"] = isset($array["nRatings"]) ? $array["nRatings"] : 0;
+
+                $post = Evaluate_Form::getData('', $rtype, EVL_EXCELLENCE, $sub, 2012);
+                $array = self::generateRow(1, $array, $post, $person);
+                
+                $post = Evaluate_Form::getData('', $rtype, EVL_HQPDEVELOPMENT, $sub, 2012);
+                $array = self::generateRow(2, $array, $post, $person);
+
+                $post = Evaluate_Form::getData('', $rtype, EVL_NETWORKING, $sub, 2012);
+                $array = self::generateRow(3, $array, $post, $person);
+
+                $post = Evaluate_Form::getData('', $rtype, EVL_KNOWLEDGE, $sub, 2012);
+                $array = self::generateRow(4, $array, $post, $person);
+
+                $post = Evaluate_Form::getData('', $rtype, EVL_MANAGEMENT, $sub, 2012);
+                $array = self::generateRow(5, $array, $post, $person);
+
+                $post = Evaluate_Form::getData('', $rtype, EVL_OVERALLSCORE, $sub, 2012);
+                $array = self::generateRow(6, $array, $post, $person);
+
+                $post = Evaluate_Form::getData('', $rtype, EVL_OTHERCOMMENTS, $sub, 2012);
+                $array = self::generateRow(7, $array, $post, $person);
+                
+                $post = Evaluate_Form::getData('', $rtype, EVL_REPORTQUALITY, $sub, 2012);
+                $array = self::generateRow(8, $array, $post, $person);
+                
+                $post = Evaluate_Form::getData('', $rtype, EVL_CONFIDENCE, $sub, 2012);
+                $array = self::generateRow(9, $array, $post, $person);
+                
+                @$array["nRatings"] += 1;
+                if($sub instanceof Person && (($type == PNI && $sub->isRole(PNI)) || ($type == CNI && $sub->isRole(CNI)))){
+                    $peopleTiers[$sub->getName()] = $array;
+                }
+                else if($sub instanceof Project && $type == "Project"){
+                    $projectTiers[$sub->getName()] = $array;
+                }
+            } 
         }
+
         if($type == "Project"){
             $this->html .= "<h3>$type Summary of Questions 1-8</h3>";
         }
