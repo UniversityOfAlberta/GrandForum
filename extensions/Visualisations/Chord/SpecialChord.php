@@ -53,7 +53,7 @@ class SpecialChord extends SpecialPage {
                 }
                 
                 if(!isset($_GET['sortBy']) || (isset($_GET['sortBy']) && $_GET['sortBy'] == 'uni')){
-                    $university = $person->getUniversity();
+                    $university = $person->getUniversityDuring($year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
                     if($university['university'] != ''){
                         $sortedPeople[$university['university']][] = $person;
                     }
@@ -62,7 +62,7 @@ class SpecialChord extends SpecialPage {
                     }
                 }
                 else if($_GET['sortBy'] == 'dept'){
-                    $university = $person->getUniversity();
+                    $university = $person->getUniversityDuring($year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
                     if($university['department'] != ''){
                         $sortedPeople[$university['department']][] = $person;
                     }

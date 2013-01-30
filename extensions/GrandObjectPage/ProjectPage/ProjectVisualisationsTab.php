@@ -542,9 +542,18 @@ class ProjectVisualisationsTab extends AbstractTab {
                     $sortedPeople[$person->getReversedName()][] = $person;
                 }
                 else if($_GET['sortBy'] == 'uni'){
-                    $university = $person->getUniversity();
+                    $university = $person->getUniversityDuring($year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
                     if($university['university'] != ''){
                         $sortedPeople[$university['university']][] = $person;
+                    }
+                    else{
+                        $sortedPeople['Unknown'][] = $person;
+                    }
+                }
+                else if($_GET['sortBy'] == 'dept'){
+                    $university = $person->getUniversityDuring($year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
+                    if($university['department'] != ''){
+                        $sortedPeople[$university['department']][] = $person;
                     }
                     else{
                         $sortedPeople['Unknown'][] = $person;
@@ -662,6 +671,7 @@ class ProjectVisualisationsTab extends AbstractTab {
                                       
             $array['sortOptions'] = array(array('name' => 'Last Name', 'value' => 'name', 'checked' => 'checked'),
                                           array('name' => 'University', 'value' => 'uni', 'checked' => ''),
+                                          array('name' => 'Department', 'value' => 'dept', 'checked' => ''),
                                           array('name' => 'Primary Role', 'value' => 'role', 'checked' => '')
                                           );
                                       

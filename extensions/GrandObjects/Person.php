@@ -741,7 +741,10 @@ class Person{
         }
 	}
 	
-	// Returns the University information of the Person
+	/**
+	 * Returns the current University that this Person is at
+	 * @return array The current University this Person is at
+	 */ 
 	function getUniversity(){
         $uTable = getTableName("universities");
         $uuTable = getTableName("user_university");
@@ -749,6 +752,42 @@ class Person{
 	            FROM $uuTable uu, $uTable u
 	            WHERE uu.user_id = '{$this->id}'
 	            AND u.university_id = uu.university_id
+				ORDER BY uu.id DESC";
+	    $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            return array("university" => str_replace("&", "&amp;", $data[0]['university_name']),
+	                     "department" => str_replace("&", "&amp;", $data[0]['department']),
+	                     "position"   => str_replace("&", "&amp;", $data[0]['position']));
+        }
+        else{
+            return null;
+        }
+	}
+	
+	/**
+	 * Returns the last University that this Person was at between the given range
+	 * @param string $startRange The start date to look at (default start of the current reporting year)
+	 * @param string $endRange The end date to look at (default end of the current reporting year)
+	 * @return array The last University that this Person was at between the given range
+	 */ 
+	function getUniversityDuring($startRange=false, $endRange=false){
+	    if( $startRange === false || $endRange === false ){
+	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
+	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+	    }
+        $uTable = getTableName("universities");
+        $uuTable = getTableName("user_university");
+        $sql = "SELECT * 
+	            FROM $uuTable uu, $uTable u
+	            WHERE uu.user_id = '{$this->id}'
+	            AND u.university_id = uu.university_id
+	            AND ( 
+                ( (end_date != '0000-00-00 00:00:00') AND
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                OR
+                ( (end_date = '0000-00-00 00:00:00') AND
+                ((start_date <= '$endRange')))
+                )
 				ORDER BY uu.id DESC";
 	    $data = DBFunctions::execSQL($sql);
         if(DBFunctions::getNRows() > 0){
