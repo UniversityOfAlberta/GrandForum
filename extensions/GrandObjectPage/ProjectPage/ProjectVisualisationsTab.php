@@ -5,6 +5,7 @@ $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectMilestoneTime
 $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectDoughnutData';
 $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectGraphData';
 $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectChordData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectWordleData';
 
 class ProjectVisualisationsTab extends AbstractTab {
 
@@ -37,6 +38,7 @@ class ProjectVisualisationsTab extends AbstractTab {
 	                <li><a href='#timeline'>Timeline</a></li>
 		            <li><a href='#chart'>Productivity Chart</a></li>
 		            <li><a href='#chord'>Relations</a></li>
+		            <li><a href='#wordle'>Tag Cloud</a></li>
 		            <li><a href='#network'>Network</a></li>
 	            </ul>
 	        <div id='timeline'>";
@@ -48,7 +50,10 @@ class ProjectVisualisationsTab extends AbstractTab {
 		                    <div id='chord'>";
 		        $this->showChord($this->project, $this->visibility);
 	        $this->html .= "</div>
-	        <div id='network'>";
+	                        <div id='wordle'>";
+		        $this->showWordle($this->project, $this->visibility);
+	        $this->html .= "</div>
+	                        <div id='network'>";
 		        $this->showGraph($this->project, $this->visibility);
 	        $this->html.= "</div>
     </div>
@@ -132,6 +137,30 @@ class ProjectVisualisationsTab extends AbstractTab {
                                     });
                               </script>");
             $this->html .= $chord->show();
+        }
+    }
+    
+    function showWordle($project, $visibility){
+        global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
+        if($wgUser->isLoggedIn()){
+            $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectWordleData&project={$project->getId()}";
+            $wordle = new Wordle($dataUrl);
+            $wordle->width = 640;
+            $world->height = 480;
+            $wgOut->addScript("<script type='text/javascript'>
+                                    $(document).ready(function(){
+                                        var nTimesLoadedWordle = 0;
+                                        $('#projectVis').bind('tabsselect', function(event, ui) {
+                                            if(ui.panel.id == 'wordle'){
+                                                if(nTimesLoadedWordle == 0){
+                                                    onLoad{$wordle->index}();
+                                                    nTimesLoadedWordle++;
+                                                }
+                                            }
+                                        });
+                                    });
+                              </script>");
+            $this->html .= $wordle->show();
         }
     }
     
@@ -693,5 +722,22 @@ class ProjectVisualisationsTab extends AbstractTab {
         }
         return true;
 	}
+	
+	static function getProjectWordleData($action, $article){
+	    global $wgServer, $wgScriptPath;
+	    if($action == "getProjectWordleData"){
+	        
+	        $project = Project::newFromId($_GET['project']);
+	        $description = $project->getDescription();
+	        
+	        $data = Wordle::createDataFromText($description);
+
+            header("Content-Type: application/json");
+            echo json_encode($data);
+            exit;
+        }
+        return true;
+	}
+	
 }
 ?>
