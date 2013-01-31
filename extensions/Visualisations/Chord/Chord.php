@@ -26,7 +26,6 @@ class Chord extends Visualisation {
   stroke: #000;
   stroke-width: 0.2px;
 }</style>');
-        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Chord/js/d3.min.js" type="text/javascript" charset="utf-8"></script>');
         if(strstr($wgOut->getScript(), 'raphael') === false){
             $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Doughnut/doughnut/raphael.js" type="text/javascript" charset="utf-8"></script>');
             $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Doughnut/doughnut/spinner.js" type="text/javascript" charset="utf-8"></script>');
@@ -244,7 +243,15 @@ class Chord extends Visualisation {
                     step: 1,
                     range: "max",
                     slide: function( event, ui ) {
+                        for(pId in params){
+                            var param = params[pId];
+                            if(param.indexOf('&date=') !== -1){
+                                params[pId] = null;
+                                delete params[pId];
+                            }
+                        }
                         params.push('&date=' + ui.value);
+                        
                         lastChordRequest.abort();
                         onLoad{$this->index}();
                     }

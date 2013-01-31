@@ -28,6 +28,10 @@ $visualisations = array('Timeline' => array("name" => "Timeline",
                         'Map' => array("name" => "Map",
                               "path" => "Map/Map.php",
                               "enabled" => true,
+                              "initialized" => false),
+                        'Wordle' => array("name" => "Wordle",
+                              "path" => "Wordle/Wordle.php",
+                              "enabled" => true,
                               "initialized" => false)
                        );
       
