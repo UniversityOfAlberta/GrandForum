@@ -13,6 +13,7 @@ class DownloadReportItem extends StaticReportItem {
         $report_item_id = $this->getAttr("reportItemId", "");
 
         $person = Person::newFromId($this->personId);
+        
         $report = new DummyReport($reportType, $person);
         
         $report_item_set = null;
@@ -27,21 +28,23 @@ class DownloadReportItem extends StaticReportItem {
         }
 
         if($report_item){
+            
             $data = json_decode($report_item->getBlobValue());
-            if(isset($_GET['downloadFile'])){
-                if($data != null){
+            if(isset($_GET['downloadFile']) && isset($_GET['hash'])){
+                $hash = $_GET['hash'];
+                if($data != null && $data->hash == $hash){
                     header("Content-disposition: attachment; filename='".addslashes($data->name)."'");
                     echo base64_decode($data->file);
                     exit;
                 }
-                exit;
             }
             
             $report_name = $this->getReport()->xmlName;
             $section_name = $this->getSection()->name;
             $section_name = urlencode($section_name);
         	if($data){
-        		$item = "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:Report?report={$report_name}&section={$section_name}&downloadFile'>{$buttonName}</a>";
+                $hash = $data->hash;
+        		$item = "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:Report?report={$report_name}&section={$section_name}&downloadFile&hash={$hash}'>{$buttonName}</a>";
         		$item = $this->processCData($item);
         	    $wgOut->addHTML($item);
         	}

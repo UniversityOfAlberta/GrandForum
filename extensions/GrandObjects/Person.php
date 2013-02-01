@@ -741,7 +741,28 @@ class Person{
         }
 	}
 	
-	// Returns the University information of the Person
+	/**
+	 * Returns this Person's primary funding agency from their response in the Survey
+	 * @return string This Person's primary funding agency from their response in the Survey
+	 */
+	function getPrimaryFundingAgency(){
+	    $sql = "SELECT `discipline`
+	            FROM `survey_results`
+	            WHERE `user_id` = '{$this->id}'";
+	    $data = DBFunctions::execSQL($sql);
+	    if(DBFunctions::getNRows() > 0){
+	        $discipline = json_decode($data[0]['discipline']);
+	        if(isset($discipline->d_level1a)){
+	            return $discipline->d_level1a;
+	        }
+	    }
+	    return "Unknown";
+	}
+	
+	/**
+	 * Returns the current University that this Person is at
+	 * @return array The current University this Person is at
+	 */ 
 	function getUniversity(){
         $uTable = getTableName("universities");
         $uuTable = getTableName("user_university");
@@ -749,6 +770,42 @@ class Person{
 	            FROM $uuTable uu, $uTable u
 	            WHERE uu.user_id = '{$this->id}'
 	            AND u.university_id = uu.university_id
+				ORDER BY uu.id DESC";
+	    $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            return array("university" => str_replace("&", "&amp;", $data[0]['university_name']),
+	                     "department" => str_replace("&", "&amp;", $data[0]['department']),
+	                     "position"   => str_replace("&", "&amp;", $data[0]['position']));
+        }
+        else{
+            return null;
+        }
+	}
+	
+	/**
+	 * Returns the last University that this Person was at between the given range
+	 * @param string $startRange The start date to look at (default start of the current reporting year)
+	 * @param string $endRange The end date to look at (default end of the current reporting year)
+	 * @return array The last University that this Person was at between the given range
+	 */ 
+	function getUniversityDuring($startRange=false, $endRange=false){
+	    if( $startRange === false || $endRange === false ){
+	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
+	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+	    }
+        $uTable = getTableName("universities");
+        $uuTable = getTableName("user_university");
+        $sql = "SELECT * 
+	            FROM $uuTable uu, $uTable u
+	            WHERE uu.user_id = '{$this->id}'
+	            AND u.university_id = uu.university_id
+	            AND ( 
+                ( (end_date != '0000-00-00 00:00:00') AND
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                OR
+                ( (end_date = '0000-00-00 00:00:00') AND
+                ((start_date <= '$endRange')))
+                )
 				ORDER BY uu.id DESC";
 	    $data = DBFunctions::execSQL($sql);
         if(DBFunctions::getNRows() > 0){
@@ -1067,8 +1124,39 @@ class Person{
 	    }
 	}
 	
+	function getRelationsDuring($type='all', $startRange, $endRange){
+	    $type = mysql_real_escape_string($type);
+	    $startRange = mysql_real_escape_string($startRange);
+	    $endRange = mysql_real_escape_string($endRange);
+	    $sql = "SELECT *
+                FROM grand_relations
+                WHERE user1 = '{$this->id}'\n";
+        if($type == "public"){
+            $sql .= "AND type != '".WORKS_WITH."'\n"; 
+        }
+        else if($type == "all"){
+            // do nothing
+        }
+        else{
+            $sql .= "AND type = '$type'\n";
+        }
+        $sql .= "AND ( 
+                ( (end_date != '0000-00-00 00:00:00') AND
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                OR
+                ( (end_date = '0000-00-00 00:00:00') AND
+                ((start_date <= '$endRange')))
+                )";
+        $data = DBFunctions::execSQL($sql);
+        $relations = array();
+        foreach($data as $row){
+			$relations[] = Relationship::newFromId($row['id']);
+		}
+        return $relations;
+	}
+	
 	// Returns an array of relations for this Person of the given type
-	// If history is set to true, then all the Projects regardless of date are included
+	// If history is set to true, then all the relations regardless of date are included
 	function getRelations($type='all', $history=false){
 	    if($type == "all"){
 	        $sql = "SELECT id, type

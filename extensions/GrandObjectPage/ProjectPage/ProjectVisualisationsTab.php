@@ -5,6 +5,7 @@ $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectMilestoneTime
 $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectDoughnutData';
 $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectGraphData';
 $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectChordData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectWordleData';
 
 class ProjectVisualisationsTab extends AbstractTab {
 
@@ -37,6 +38,7 @@ class ProjectVisualisationsTab extends AbstractTab {
 	                <li><a href='#timeline'>Timeline</a></li>
 		            <li><a href='#chart'>Productivity Chart</a></li>
 		            <li><a href='#chord'>Relations</a></li>
+		            <li><a href='#wordle'>Tag Cloud</a></li>
 		            <li><a href='#network'>Network</a></li>
 	            </ul>
 	        <div id='timeline'>";
@@ -48,7 +50,10 @@ class ProjectVisualisationsTab extends AbstractTab {
 		                    <div id='chord'>";
 		        $this->showChord($this->project, $this->visibility);
 	        $this->html .= "</div>
-	        <div id='network'>";
+	                        <div id='wordle'>";
+		        $this->showWordle($this->project, $this->visibility);
+	        $this->html .= "</div>
+	                        <div id='network'>";
 		        $this->showGraph($this->project, $this->visibility);
 	        $this->html.= "</div>
     </div>
@@ -132,6 +137,30 @@ class ProjectVisualisationsTab extends AbstractTab {
                                     });
                               </script>");
             $this->html .= $chord->show();
+        }
+    }
+    
+    function showWordle($project, $visibility){
+        global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
+        if($wgUser->isLoggedIn()){
+            $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectWordleData&project={$project->getId()}";
+            $wordle = new Wordle($dataUrl);
+            $wordle->width = 640;
+            $world->height = 480;
+            $wgOut->addScript("<script type='text/javascript'>
+                                    $(document).ready(function(){
+                                        var nTimesLoadedWordle = 0;
+                                        $('#projectVis').bind('tabsselect', function(event, ui) {
+                                            if(ui.panel.id == 'wordle'){
+                                                if(nTimesLoadedWordle == 0){
+                                                    onLoad{$wordle->index}();
+                                                    nTimesLoadedWordle++;
+                                                }
+                                            }
+                                        });
+                                    });
+                              </script>");
+            $this->html .= $wordle->show();
         }
     }
     
@@ -517,23 +546,24 @@ class ProjectVisualisationsTab extends AbstractTab {
 	static function getProjectChordData($action, $article){
 	    global $wgServer, $wgScriptPath;
 	    if($action == "getProjectChordData"){
+	        $year = (isset($_GET['date'])) ? $_GET['date'] : REPORTING_YEAR;
 	        $array = array();
             $project = Project::newFromId($_GET['project']);
-            $people = $project->getAllPeople();
+            $people = $project->getAllPeople(null, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
             foreach($people as $key => $person){
-                if(!$person->isRole(CNI) && !$person->isRole(PNI) && !$person->isRole(AR)){
+                if(!$person->isRoleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) && !$person->isRoleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) && !$person->isRoleDuring(AR, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
                     unset($people[$key]);
                     continue;
                 }
-                if(isset($_GET['noPNI']) && $person->isRole(PNI)){
+                if(isset($_GET['noPNI']) && $person->isRoleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
                     unset($people[$key]);
                     continue;
                 }
-                if(isset($_GET['noCNI']) && $person->isRole(CNI)){
+                if(isset($_GET['noCNI']) && $person->isRoleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
                     unset($people[$key]);
                     continue;
                 }
-                if(isset($_GET['noAR']) && $person->isRole(AR)){
+                if(isset($_GET['noAR']) && $person->isRoleDuring(AR, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
                     unset($people[$key]);
                     continue;
                 }
@@ -541,7 +571,7 @@ class ProjectVisualisationsTab extends AbstractTab {
                     $sortedPeople[$person->getReversedName()][] = $person;
                 }
                 else if($_GET['sortBy'] == 'uni'){
-                    $university = $person->getUniversity();
+                    $university = $person->getUniversityDuring($year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
                     if($university['university'] != ''){
                         $sortedPeople[$university['university']][] = $person;
                     }
@@ -549,18 +579,35 @@ class ProjectVisualisationsTab extends AbstractTab {
                         $sortedPeople['Unknown'][] = $person;
                     }
                 }
+                else if($_GET['sortBy'] == 'dept'){
+                    $university = $person->getUniversityDuring($year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
+                    if($university['department'] != ''){
+                        $sortedPeople[$university['department']][] = $person;
+                    }
+                    else{
+                        $sortedPeople['Unknown'][] = $person;
+                    }
+                }
+                else if($_GET['sortBy'] == 'position'){
+                    $university = $person->getUniversityDuring($year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
+                    if($university['position'] != ''){
+                        $sortedPeople[$university['position']][] = $person;
+                    }
+                    else{
+                        $sortedPeople['Unknown'][] = $person;
+                    }
+                }
                 else if($_GET['sortBy'] == 'role'){
-                    if($person->isRole(PNI)){
+                    if($person->isRoleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
                         $sortedPeople[PNI][] = $person;
                     }
-                    else if($person->isRole(CNI)){
+                    else if($person->isRoleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
                         $sortedPeople[CNI][] = $person;
                     }
-                    else if($person->isRole(AR)){
+                    else if($person->isRoleDuring(AR, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
                         $sortedPeople[AR][] = $person;
                     }
                 }
-                
             }
             
             $colorHashs = array();
@@ -586,7 +633,7 @@ class ProjectVisualisationsTab extends AbstractTab {
             
             if(!isset($_GET['noCoAuthorship'])){
                 foreach($people as $k1 => $person){
-                    $papers = $person->getPapers();
+                    $papers = $person->getPapersAuthored('all', $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
                     foreach($papers as $paper){
                         if($paper->belongsToProject($project)){
                             foreach($paper->getAuthors() as $p){
@@ -598,11 +645,10 @@ class ProjectVisualisationsTab extends AbstractTab {
                     }
                 }
             }
-            
             if(!isset($_GET['noRelations'])){
                 foreach($people as $k1 => $person){
                     foreach($people as $k2 => $p){
-                        $relations = $person->getRelations(WORKS_WITH);
+                        $relations = $person->getRelationsDuring(WORKS_WITH, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
                         if(count($relations) > 0){
                             foreach($relations as $relation){
                                 if($relation instanceof Relationship && $relation->getUser2()->getId() == $p->getId()){
@@ -641,14 +687,28 @@ class ProjectVisualisationsTab extends AbstractTab {
                 $labels[] = $person->getReversedName();
             }
             
+            $dates = array();
+            for($i=2010; $i <= REPORTING_YEAR; $i++){
+                if($i == REPORTING_YEAR){
+                    $dates[] = array('date' => $i, 'checked' => 'checked');
+                }
+                else{
+                    $dates[] = array('date' => $i, 'checked' => '');
+                }
+            }
+            
             $array['filterOptions'] = array(array('name' => 'Show Co-Authorship', 'param' => 'noCoAuthorship', 'checked' => 'checked'),
                                       array('name' => 'Show Relationships', 'param' => 'noRelations', 'checked' => 'checked'),
                                       array('name' => 'Show PNIs', 'param' => 'noPNI', 'checked' => 'checked'),
                                       array('name' => 'Show CNIs', 'param' => 'noCNI', 'checked' => 'checked'),
                                       array('name' => 'Show ARs', 'param' => 'noAR', 'checked' => 'checked'));
                                       
+            $array['dateOptions'] = $dates;
+                                      
             $array['sortOptions'] = array(array('name' => 'Last Name', 'value' => 'name', 'checked' => 'checked'),
                                           array('name' => 'University', 'value' => 'uni', 'checked' => ''),
+                                          array('name' => 'Title', 'value' => 'position', 'checked' => ''),
+                                          array('name' => 'Department', 'value' => 'dept', 'checked' => ''),
                                           array('name' => 'Primary Role', 'value' => 'role', 'checked' => '')
                                           );
                                       
@@ -662,5 +722,22 @@ class ProjectVisualisationsTab extends AbstractTab {
         }
         return true;
 	}
+	
+	static function getProjectWordleData($action, $article){
+	    global $wgServer, $wgScriptPath;
+	    if($action == "getProjectWordleData"){
+	        
+	        $project = Project::newFromId($_GET['project']);
+	        $description = $project->getDescription();
+	        
+	        $data = Wordle::createDataFromText($description);
+
+            header("Content-Type: application/json");
+            echo json_encode($data);
+            exit;
+        }
+        return true;
+	}
+	
 }
 ?>
