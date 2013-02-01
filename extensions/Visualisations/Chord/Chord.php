@@ -17,14 +17,7 @@ class Chord extends Visualisation {
     static function init(){
         global $wgOut, $wgServer, $wgScriptPath, $visualisations;
         $wgOut->addScript('<style rel="stylesheet" type="text/css">
-        .chordChart {
-            font: 10px sans-serif;
-        }
-        
-        .chord path {
-  fill-opacity: .67;
-  stroke: #000;
-  stroke-width: 0.2px;
+
 }</style>');
         if(strstr($wgOut->getScript(), 'raphael') === false){
             $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Doughnut/doughnut/raphael.js" type="text/javascript" charset="utf-8"></script>');
@@ -161,6 +154,8 @@ class Chord extends Visualisation {
             .data(chord.groups)
           .enter().append("svg:text")
               .each(function(d) { d.angle = (d.startAngle + d.endAngle) / 2; })
+              .style("font-family", "sans-serif")
+              .style("font-size", "10px")
               .attr("dy", ".35em")
               .attr("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
               .attr("transform", function(d) {
@@ -197,6 +192,9 @@ class Chord extends Visualisation {
           .selectAll("path")
             .data(chord.chords)
           .enter().append("path")
+            .style("fill-opacity", 0.67)
+            .style("stroke-width", '0.2px')
+            .style("stroke", "#000")
             .attr("d", d3.svg.chord().radius(innerRadius))
             .style("fill", function(d) { return fill(d.target.index); })
             .style("opacity", 1);
