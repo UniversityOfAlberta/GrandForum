@@ -33,10 +33,9 @@
                 });
                 $.when.apply(null, deferreds).done(function(){
                     that.html2canvas(function(){
-                        for(cId in converted){
-                            var c = converted[cId];
+                        converted.forEach(function(c, cId){
                             $("#img" + cId).replaceWith(c);
-                        }
+                        });
                     });
                 });
             }
@@ -47,8 +46,6 @@
         
         this.html2canvas = function(callback){
             html2canvas(that, {
-                allowTaint: true,
-                taintTest: false,
                 onrendered: function(canvas) {
                     $(canvas).insertAfter(that);
                     if(callback != undefined){

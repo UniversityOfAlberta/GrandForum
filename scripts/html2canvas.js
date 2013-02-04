@@ -387,71 +387,6 @@ _html2canvas.Util.Children = function( elem ) {
   return children;
 };
 
-_html2canvas.Util.Font = (function () {
-
-  var fontData = {};
-
-  return function(font, fontSize, doc) {
-    if (fontData[font + "-" + fontSize] !== undefined) {
-      return fontData[font + "-" + fontSize];
-    }
-
-    var container = doc.createElement('div'),
-    img = doc.createElement('img'),
-    span = doc.createElement('span'),
-    sampleText = 'Hidden Text',
-    baseline,
-    middle,
-    metricsObj;
-
-    container.style.visibility = "hidden";
-    container.style.fontFamily = font;
-    container.style.fontSize = fontSize;
-    container.style.margin = 0;
-    container.style.padding = 0;
-
-    doc.body.appendChild(container);
-
-    // http://probablyprogramming.com/2009/03/15/the-tiniest-gif-ever (handtinywhite.gif)
-    img.src = "data:image/gif;base64,R0lGODlhAQABAIABAP///wAAACwAAAAAAQABAAACAkQBADs=";
-    img.width = 1;
-    img.height = 1;
-
-    img.style.margin = 0;
-    img.style.padding = 0;
-    img.style.verticalAlign = "baseline";
-
-    span.style.fontFamily = font;
-    span.style.fontSize = fontSize;
-    span.style.margin = 0;
-    span.style.padding = 0;
-
-    span.appendChild(doc.createTextNode(sampleText));
-    container.appendChild(span);
-    container.appendChild(img);
-    baseline = (img.offsetTop - span.offsetTop) + 1;
-
-    container.removeChild(span);
-    container.appendChild(doc.createTextNode(sampleText));
-
-    container.style.lineHeight = "normal";
-    img.style.verticalAlign = "super";
-
-    middle = (img.offsetTop-container.offsetTop) + 1;
-    metricsObj = {
-      baseline: baseline,
-      lineWidth: 1,
-      middle: middle
-    };
-
-    fontData[font + "-" + fontSize] = metricsObj;
-
-    doc.body.removeChild(container);
-
-    return metricsObj;
-  };
-})();
-
 (function(){
 
   _html2canvas.Generate = {};
@@ -891,6 +826,733 @@ _html2canvas.Util.Font = (function () {
   };
 
 })();
+_html2canvas.Util.Support = function (options, doc) {
+
+  function supportSVGRendering() {
+    var img = new Image(),
+    canvas = doc.createElement("canvas"),
+    ctx = (canvas.getContext === undefined) ? false : canvas.getContext("2d");
+    if (ctx === false) {
+      return false;
+    }
+    canvas.width = canvas.height = 10;
+    img.src = [
+    "data:image/svg+xml,",
+    "<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'>",
+    "<foreignObject width='10' height='10'>",
+    "<div xmlns='http://www.w3.org/1999/xhtml' style='width:10;height:10;'>",
+    "sup",
+    "</div>",
+    "</foreignObject>",
+    "</svg>"
+    ].join("");
+    try {
+      ctx.drawImage(img, 0, 0);
+      canvas.toDataURL();
+    } catch(e) {
+      return false;
+    }
+    h2clog('html2canvas: Parse: SVG powered rendering available');
+    return true;
+  }
+
+  // Test whether we can use ranges to measure bounding boxes
+  // Opera doesn't provide valid bounds.height/bottom even though it supports the method.
+
+  function supportRangeBounds() {
+    var r, testElement, rangeBounds, rangeHeight, support = false;
+
+    if (doc.createRange) {
+      r = doc.createRange();
+      if (r.getBoundingClientRect) {
+        testElement = doc.createElement('boundtest');
+        testElement.style.height = "123px";
+        testElement.style.display = "block";
+        doc.body.appendChild(testElement);
+
+        r.selectNode(testElement);
+        rangeBounds = r.getBoundingClientRect();
+        rangeHeight = rangeBounds.height;
+
+        if (rangeHeight === 123) {
+          support = true;
+        }
+        doc.body.removeChild(testElement);
+      }
+    }
+
+    return support;
+  }
+
+  return {
+    rangeBounds: supportRangeBounds(),
+    svgRendering: options.svgRendering && supportSVGRendering()
+  };
+};
+window.html2canvas = function(elements, opts) {
+  elements = (elements.length) ? elements : [elements];
+  var queue,
+  canvas,
+  options = {
+    // general
+    logging: false,
+    elements: elements,
+    background: "#fff",
+
+    // preload options
+    proxy: null,
+    timeout: 0,    // no timeout
+    useCORS: false, // try to load images as CORS (where available), before falling back to proxy
+    allowTaint: false, // whether to allow images to taint the canvas, won't need proxy if set to true
+
+    // parse options
+    svgRendering: false, // use svg powered rendering where available (FF11+)
+    ignoreElements: "IFRAME|OBJECT|PARAM",
+    useOverflow: true,
+    letterRendering: false,
+    chinese: false,
+
+    // render options
+
+    width: null,
+    height: null,
+    taintTest: true, // do a taint test with all images before applying to canvas
+    renderer: "Canvas"
+  };
+
+  options = _html2canvas.Util.Extend(opts, options);
+
+  _html2canvas.logging = options.logging;
+  options.complete = function( images ) {
+
+    if (typeof options.onpreloaded === "function") {
+      if ( options.onpreloaded( images ) === false ) {
+        return;
+      }
+    }
+    queue = _html2canvas.Parse( images, options );
+
+    if (typeof options.onparsed === "function") {
+      if ( options.onparsed( queue ) === false ) {
+        return;
+      }
+    }
+
+    canvas = _html2canvas.Renderer( queue, options );
+
+    if (typeof options.onrendered === "function") {
+      options.onrendered( canvas );
+    }
+
+
+  };
+
+  // for pages without images, we still want this to be async, i.e. return methods before executing
+  window.setTimeout( function(){
+    _html2canvas.Preload( options );
+  }, 0 );
+
+  return {
+    render: function( queue, opts ) {
+      return _html2canvas.Renderer( queue, _html2canvas.Util.Extend(opts, options) );
+    },
+    parse: function( images, opts ) {
+      return _html2canvas.Parse( images, _html2canvas.Util.Extend(opts, options) );
+    },
+    preload: function( opts ) {
+      return _html2canvas.Preload( _html2canvas.Util.Extend(opts, options) );
+    },
+    log: h2clog
+  };
+};
+
+window.html2canvas.log = h2clog; // for renderers
+window.html2canvas.Renderer = {
+  Canvas: undefined // We are assuming this will be used
+};
+function h2cRenderContext(width, height) {
+  var storage = [];
+  return {
+    storage: storage,
+    width: width,
+    height: height,
+    clip: function() {
+      storage.push({
+        type: "function",
+        name: "clip",
+        'arguments': arguments
+      });
+    },
+    translate: function() {
+      storage.push({
+        type: "function",
+        name: "translate",
+        'arguments': arguments
+      });
+    },
+    fill: function() {
+      storage.push({
+        type: "function",
+        name: "fill",
+        'arguments': arguments
+      });
+    },
+    save: function() {
+      storage.push({
+        type: "function",
+        name: "save",
+        'arguments': arguments
+      });
+    },
+    restore: function() {
+      storage.push({
+        type: "function",
+        name: "restore",
+        'arguments': arguments
+      });
+    },
+    fillRect: function () {
+      storage.push({
+        type: "function",
+        name: "fillRect",
+        'arguments': arguments
+      });
+    },
+    arc: function () {
+      storage.push({
+        type: "function",
+        name: "arc",
+        'arguments': arguments
+      });
+    },
+    createPattern: function() {
+      storage.push({
+        type: "function",
+        name: "createPattern",
+        'arguments': arguments
+      });
+    },
+    drawShape: function() {
+
+      var shape = [];
+
+      storage.push({
+        type: "function",
+        name: "drawShape",
+        'arguments': shape
+      });
+
+      return {
+        moveTo: function() {
+          shape.push({
+            name: "moveTo",
+            'arguments': arguments
+          });
+        },
+        lineTo: function() {
+          shape.push({
+            name: "lineTo",
+            'arguments': arguments
+          });
+        },
+        arcTo: function() {
+          shape.push({
+            name: "arcTo",
+            'arguments': arguments
+          });
+        },
+        bezierCurveTo: function() {
+          shape.push({
+            name: "bezierCurveTo",
+            'arguments': arguments
+          });
+        },
+        quadraticCurveTo: function() {
+          shape.push({
+            name: "quadraticCurveTo",
+            'arguments': arguments
+          });
+        }
+      };
+
+    },
+    drawImage: function () {
+      storage.push({
+        type: "function",
+        name: "drawImage",
+        'arguments': arguments
+      });
+    },
+    fillText: function () {
+      storage.push({
+        type: "function",
+        name: "fillText",
+        'arguments': arguments
+      });
+    },
+    setVariable: function (variable, value) {
+      storage.push({
+        type: "variable",
+        name: variable,
+        'arguments': value
+      });
+    }
+  };
+}
+_html2canvas.Util.Font = (function () {
+
+  var fontData = {};
+
+  return function(font, fontSize, doc) {
+    if (fontData[font + "-" + fontSize] !== undefined) {
+      return fontData[font + "-" + fontSize];
+    }
+
+    var container = doc.createElement('div'),
+    img = doc.createElement('img'),
+    span = doc.createElement('span'),
+    sampleText = 'Hidden Text',
+    baseline,
+    middle,
+    metricsObj;
+
+    container.style.visibility = "hidden";
+    container.style.fontFamily = font;
+    container.style.fontSize = fontSize;
+    container.style.margin = 0;
+    container.style.padding = 0;
+
+    doc.body.appendChild(container);
+
+    // http://probablyprogramming.com/2009/03/15/the-tiniest-gif-ever (handtinywhite.gif)
+    img.src = "data:image/gif;base64,R0lGODlhAQABAIABAP///wAAACwAAAAAAQABAAACAkQBADs=";
+    img.width = 1;
+    img.height = 1;
+
+    img.style.margin = 0;
+    img.style.padding = 0;
+    img.style.verticalAlign = "baseline";
+
+    span.style.fontFamily = font;
+    span.style.fontSize = fontSize;
+    span.style.margin = 0;
+    span.style.padding = 0;
+
+    span.appendChild(doc.createTextNode(sampleText));
+    container.appendChild(span);
+    container.appendChild(img);
+    baseline = (img.offsetTop - span.offsetTop) + 1;
+
+    container.removeChild(span);
+    container.appendChild(doc.createTextNode(sampleText));
+
+    container.style.lineHeight = "normal";
+    img.style.verticalAlign = "super";
+
+    middle = (img.offsetTop-container.offsetTop) + 1;
+    metricsObj = {
+      baseline: baseline,
+      lineWidth: 1,
+      middle: middle
+    };
+
+    fontData[font + "-" + fontSize] = metricsObj;
+
+    doc.body.removeChild(container);
+
+    return metricsObj;
+  };
+})();
+
+_html2canvas.Renderer = function(parseQueue, options){
+
+  function createRenderQueue(parseQueue) {
+    var queue = [];
+
+    var sortZ = function(zStack){
+      var subStacks = [],
+      stackValues = [];
+
+      zStack.children.forEach(function(stackChild) {
+        if (stackChild.children && stackChild.children.length > 0){
+          subStacks.push(stackChild);
+          stackValues.push(stackChild.zindex);
+        } else {
+          queue.push(stackChild);
+        }
+      });
+
+      stackValues.sort(function(a, b) {
+        return a - b;
+      });
+
+      stackValues.forEach(function(zValue) {
+        var index;
+
+        subStacks.some(function(stack, i){
+          index = i;
+          return (stack.zindex === zValue);
+        });
+        sortZ(subStacks.splice(index, 1)[0]);
+
+      });
+    };
+
+    sortZ(parseQueue.zIndex);
+
+    return queue;
+  }
+
+  function getRenderer(rendererName) {
+    var renderer;
+
+    if (typeof options.renderer === "string" && _html2canvas.Renderer[rendererName] !== undefined) {
+      renderer = _html2canvas.Renderer[rendererName](options);
+    } else if (typeof rendererName === "function") {
+      renderer = rendererName(options);
+    } else {
+      throw new Error("Unknown renderer");
+    }
+
+    if ( typeof renderer !== "function" ) {
+      throw new Error("Invalid renderer defined");
+    }
+    return renderer;
+  }
+
+  return getRenderer(options.renderer)(parseQueue, options, document, createRenderQueue(parseQueue), _html2canvas);
+};
+
+_html2canvas.Preload = function( options ) {
+
+  var images = {
+    numLoaded: 0,   // also failed are counted here
+    numFailed: 0,
+    numTotal: 0,
+    cleanupDone: false
+  },
+  pageOrigin,
+  methods,
+  i,
+  count = 0,
+  element = options.elements[0] || document.body,
+  doc = element.ownerDocument,
+  domImages = doc.images, // TODO probably should limit it to images present in the element only
+  imgLen = domImages.length,
+  link = doc.createElement("a"),
+  supportCORS = (function( img ){
+    return (img.crossOrigin !== undefined);
+  })(new Image()),
+  timeoutTimer;
+
+  link.href = window.location.href;
+  pageOrigin  = link.protocol + link.host;
+
+  function isSameOrigin(url){
+    link.href = url;
+    link.href = link.href; // YES, BELIEVE IT OR NOT, that is required for IE9 - http://jsfiddle.net/niklasvh/2e48b/
+    var origin = link.protocol + link.host;
+    return (origin === pageOrigin);
+  }
+
+  function start(){
+    h2clog("html2canvas: start: images: " + images.numLoaded + " / " + images.numTotal + " (failed: " + images.numFailed + ")");
+    if (!images.firstRun && images.numLoaded >= images.numTotal){
+      h2clog("Finished loading images: # " + images.numTotal + " (failed: " + images.numFailed + ")");
+
+      if (typeof options.complete === "function"){
+        options.complete(images);
+      }
+
+    }
+  }
+
+  // TODO modify proxy to serve images with CORS enabled, where available
+  function proxyGetImage(url, img, imageObj){
+    var callback_name,
+    scriptUrl = options.proxy,
+    script;
+
+    link.href = url;
+    url = link.href; // work around for pages with base href="" set - WARNING: this may change the url
+
+    callback_name = 'html2canvas_' + (count++);
+    imageObj.callbackname = callback_name;
+
+    if (scriptUrl.indexOf("?") > -1) {
+      scriptUrl += "&";
+    } else {
+      scriptUrl += "?";
+    }
+    scriptUrl += 'url=' + encodeURIComponent(url) + '&callback=' + callback_name;
+    script = doc.createElement("script");
+
+    window[callback_name] = function(a){
+      if (a.substring(0,6) === "error:"){
+        imageObj.succeeded = false;
+        images.numLoaded++;
+        images.numFailed++;
+        start();
+      } else {
+        setImageLoadHandlers(img, imageObj);
+        img.src = a;
+      }
+      window[callback_name] = undefined; // to work with IE<9  // NOTE: that the undefined callback property-name still exists on the window object (for IE<9)
+      try {
+        delete window[callback_name];  // for all browser that support this
+      } catch(ex) {}
+      script.parentNode.removeChild(script);
+      script = null;
+      delete imageObj.script;
+      delete imageObj.callbackname;
+    };
+
+    script.setAttribute("type", "text/javascript");
+    script.setAttribute("src", scriptUrl);
+    imageObj.script = script;
+    window.document.body.appendChild(script);
+
+  }
+
+  function loadPseudoElement(element, type) {
+    var style = window.getComputedStyle(element, type),
+    content = style.content;
+    if (content.substr(0, 3) === 'url') {
+      methods.loadImage(_html2canvas.Util.parseBackgroundImage(content)[0].args[0]);
+    }
+    loadBackgroundImages(style.backgroundImage, element);
+  }
+
+  function loadPseudoElementImages(element) {
+    loadPseudoElement(element, ":before");
+    loadPseudoElement(element, ":after");
+  }
+
+  function loadGradientImage(backgroundImage, bounds) {
+    var img = _html2canvas.Generate.Gradient(backgroundImage, bounds);
+
+    if (img !== undefined){
+      images[backgroundImage] = {
+        img: img,
+        succeeded: true
+      };
+      images.numTotal++;
+      images.numLoaded++;
+      start();
+    }
+  }
+
+  function invalidBackgrounds(background_image) {
+    return (background_image && background_image.method && background_image.args && background_image.args.length > 0 );
+  }
+
+  function loadBackgroundImages(background_image, el) {
+    var bounds;
+
+    _html2canvas.Util.parseBackgroundImage(background_image).filter(invalidBackgrounds).forEach(function(background_image) {
+      if (background_image.method === 'url') {
+        methods.loadImage(background_image.args[0]);
+      } else if(background_image.method.match(/\-?gradient$/)) {
+        if(bounds === undefined) {
+          bounds = _html2canvas.Util.Bounds(el);
+        }
+        loadGradientImage(background_image.value, bounds);
+      }
+    });
+  }
+
+  function getImages (el) {
+    var elNodeType = false;
+
+    // Firefox fails with permission denied on pages with iframes
+    try {
+      _html2canvas.Util.Children(el).forEach(function(img) {
+        getImages(img);
+      });
+    }
+    catch( e ) {}
+
+    try {
+      elNodeType = el.nodeType;
+    } catch (ex) {
+      elNodeType = false;
+      h2clog("html2canvas: failed to access some element's nodeType - Exception: " + ex.message);
+    }
+
+    if (elNodeType === 1 || elNodeType === undefined) {
+      loadPseudoElementImages(el);
+      try {
+        loadBackgroundImages(_html2canvas.Util.getCSS(el, 'backgroundImage'), el);
+      } catch(e) {
+        h2clog("html2canvas: failed to get background-image - Exception: " + e.message);
+      }
+      loadBackgroundImages(el);
+    }
+  }
+
+  function setImageLoadHandlers(img, imageObj) {
+    img.onload = function() {
+      if ( imageObj.timer !== undefined ) {
+        // CORS succeeded
+        window.clearTimeout( imageObj.timer );
+      }
+
+      images.numLoaded++;
+      imageObj.succeeded = true;
+      img.onerror = img.onload = null;
+      start();
+    };
+    img.onerror = function() {
+      if (img.crossOrigin === "anonymous") {
+        // CORS failed
+        window.clearTimeout( imageObj.timer );
+
+        // let's try with proxy instead
+        if ( options.proxy ) {
+          var src = img.src;
+          img = new Image();
+          imageObj.img = img;
+          img.src = src;
+
+          proxyGetImage( img.src, img, imageObj );
+          return;
+        }
+      }
+
+      images.numLoaded++;
+      images.numFailed++;
+      imageObj.succeeded = false;
+      img.onerror = img.onload = null;
+      start();
+    };
+  }
+
+  methods = {
+    loadImage: function( src ) {
+      var img, imageObj;
+      if ( src && images[src] === undefined ) {
+        img = new Image();
+        if ( src.match(/data:image\/.*;base64,/i) ) {
+          img.src = src.replace(/url\(['"]{0,}|['"]{0,}\)$/ig, '');
+          imageObj = images[src] = {
+            img: img
+          };
+          images.numTotal++;
+          setImageLoadHandlers(img, imageObj);
+        } else if ( isSameOrigin( src ) || options.allowTaint ===  true ) {
+          imageObj = images[src] = {
+            img: img
+          };
+          images.numTotal++;
+          setImageLoadHandlers(img, imageObj);
+          img.src = src;
+        } else if ( supportCORS && !options.allowTaint && options.useCORS ) {
+          // attempt to load with CORS
+
+          img.crossOrigin = "anonymous";
+          imageObj = images[src] = {
+            img: img
+          };
+          images.numTotal++;
+          setImageLoadHandlers(img, imageObj);
+          img.src = src;
+
+          // work around for https://bugs.webkit.org/show_bug.cgi?id=80028
+          img.customComplete = function () {
+            if (!this.img.complete) {
+              this.timer = window.setTimeout(this.img.customComplete, 100);
+            } else {
+              this.img.onerror();
+            }
+          }.bind(imageObj);
+          img.customComplete();
+
+        } else if ( options.proxy ) {
+          imageObj = images[src] = {
+            img: img
+          };
+          images.numTotal++;
+          proxyGetImage( src, img, imageObj );
+        }
+      }
+
+    },
+    cleanupDOM: function(cause) {
+      var img, src;
+      if (!images.cleanupDone) {
+        if (cause && typeof cause === "string") {
+          h2clog("html2canvas: Cleanup because: " + cause);
+        } else {
+          h2clog("html2canvas: Cleanup after timeout: " + options.timeout + " ms.");
+        }
+
+        for (src in images) {
+          if (images.hasOwnProperty(src)) {
+            img = images[src];
+            if (typeof img === "object" && img.callbackname && img.succeeded === undefined) {
+              // cancel proxy image request
+              window[img.callbackname] = undefined; // to work with IE<9  // NOTE: that the undefined callback property-name still exists on the window object (for IE<9)
+              try {
+                delete window[img.callbackname];  // for all browser that support this
+              } catch(ex) {}
+              if (img.script && img.script.parentNode) {
+                img.script.setAttribute("src", "about:blank");  // try to cancel running request
+                img.script.parentNode.removeChild(img.script);
+              }
+              images.numLoaded++;
+              images.numFailed++;
+              h2clog("html2canvas: Cleaned up failed img: '" + src + "' Steps: " + images.numLoaded + " / " + images.numTotal);
+            }
+          }
+        }
+
+        // cancel any pending requests
+        if(window.stop !== undefined) {
+          window.stop();
+        } else if(document.execCommand !== undefined) {
+          document.execCommand("Stop", false);
+        }
+        if (document.close !== undefined) {
+          document.close();
+        }
+        images.cleanupDone = true;
+        if (!(cause && typeof cause === "string")) {
+          start();
+        }
+      }
+    },
+
+    renderingDone: function() {
+      if (timeoutTimer) {
+        window.clearTimeout(timeoutTimer);
+      }
+    }
+  };
+
+  if (options.timeout > 0) {
+    timeoutTimer = window.setTimeout(methods.cleanupDOM, options.timeout);
+  }
+
+  h2clog('html2canvas: Preload starts: finding background-images');
+  images.firstRun = true;
+
+  getImages(element);
+
+  h2clog('html2canvas: Preload: Finding images');
+  // load <img> images
+  for (i = 0; i < imgLen; i+=1){
+    methods.loadImage( domImages[i].getAttribute( "src" ) );
+  }
+
+  images.firstRun = false;
+  h2clog('html2canvas: Preload: Done.');
+  if ( images.numTotal === images.numLoaded ) {
+    start();
+  }
+
+  return methods;
+
+};
 _html2canvas.Parse = function (images, options) {
   window.scroll(0,0);
 
@@ -1630,8 +2292,22 @@ _html2canvas.Parse = function (images, options) {
 
     valueWrap.style.top = bounds.top + "px";
     valueWrap.style.left = bounds.left + "px";
-
+    
     textValue = (el.nodeName === "SELECT") ? (el.options[el.selectedIndex] || 0).text : el.value;
+    
+    if (el.type == 'checkbox' || el.type == 'radio'){
+      valueWrap.style.fontSize = '10px';
+      valueWrap.style.lineHeight = '10px';
+      renderRect(stack.ctx, bounds.left-2, bounds.top-1, 13, 13, "#888888");
+      renderRect(stack.ctx, bounds.left-1, bounds.top, 11, 11, "#dddddd");
+      if(el.type == 'checkbox'){
+        textValue = (el.checked) ? "✔" : "";
+      }
+      else if (el.type == 'radio'){
+        textValue = (el.checked) ? "●" : "";
+      }
+    }
+    
     if(!textValue) {
       textValue = el.placeholder;
     }
@@ -1905,7 +2581,7 @@ _html2canvas.Parse = function (images, options) {
       case "INPUT":
         // TODO add all relevant type's, i.e. HTML5 new stuff
         // todo add support for placeholder attribute for browsers which support it
-        if (/^(text|url|email|submit|button|reset)$/.test(element.type) && (element.value || element.placeholder).length > 0){
+        if (/^(text|url|email|submit|button|reset|checkbox|radio)$/.test(element.type) && (element.value || element.placeholder).length > 0){
           renderFormValue(element, bounds, stack);
         }
         break;
@@ -2041,661 +2717,7 @@ function h2czContext(zindex) {
     children: []
   };
 }
-_html2canvas.Preload = function( options ) {
 
-  var images = {
-    numLoaded: 0,   // also failed are counted here
-    numFailed: 0,
-    numTotal: 0,
-    cleanupDone: false
-  },
-  pageOrigin,
-  methods,
-  i,
-  count = 0,
-  element = options.elements[0] || document.body,
-  doc = element.ownerDocument,
-  domImages = doc.images, // TODO probably should limit it to images present in the element only
-  imgLen = domImages.length,
-  link = doc.createElement("a"),
-  supportCORS = (function( img ){
-    return (img.crossOrigin !== undefined);
-  })(new Image()),
-  timeoutTimer;
-
-  link.href = window.location.href;
-  pageOrigin  = link.protocol + link.host;
-
-  function isSameOrigin(url){
-    link.href = url;
-    link.href = link.href; // YES, BELIEVE IT OR NOT, that is required for IE9 - http://jsfiddle.net/niklasvh/2e48b/
-    var origin = link.protocol + link.host;
-    return (origin === pageOrigin);
-  }
-
-  function start(){
-    h2clog("html2canvas: start: images: " + images.numLoaded + " / " + images.numTotal + " (failed: " + images.numFailed + ")");
-    if (!images.firstRun && images.numLoaded >= images.numTotal){
-      h2clog("Finished loading images: # " + images.numTotal + " (failed: " + images.numFailed + ")");
-
-      if (typeof options.complete === "function"){
-        options.complete(images);
-      }
-
-    }
-  }
-
-  // TODO modify proxy to serve images with CORS enabled, where available
-  function proxyGetImage(url, img, imageObj){
-    var callback_name,
-    scriptUrl = options.proxy,
-    script;
-
-    link.href = url;
-    url = link.href; // work around for pages with base href="" set - WARNING: this may change the url
-
-    callback_name = 'html2canvas_' + (count++);
-    imageObj.callbackname = callback_name;
-
-    if (scriptUrl.indexOf("?") > -1) {
-      scriptUrl += "&";
-    } else {
-      scriptUrl += "?";
-    }
-    scriptUrl += 'url=' + encodeURIComponent(url) + '&callback=' + callback_name;
-    script = doc.createElement("script");
-
-    window[callback_name] = function(a){
-      if (a.substring(0,6) === "error:"){
-        imageObj.succeeded = false;
-        images.numLoaded++;
-        images.numFailed++;
-        start();
-      } else {
-        setImageLoadHandlers(img, imageObj);
-        img.src = a;
-      }
-      window[callback_name] = undefined; // to work with IE<9  // NOTE: that the undefined callback property-name still exists on the window object (for IE<9)
-      try {
-        delete window[callback_name];  // for all browser that support this
-      } catch(ex) {}
-      script.parentNode.removeChild(script);
-      script = null;
-      delete imageObj.script;
-      delete imageObj.callbackname;
-    };
-
-    script.setAttribute("type", "text/javascript");
-    script.setAttribute("src", scriptUrl);
-    imageObj.script = script;
-    window.document.body.appendChild(script);
-
-  }
-
-  function loadPseudoElement(element, type) {
-    var style = window.getComputedStyle(element, type),
-    content = style.content;
-    if (content.substr(0, 3) === 'url') {
-      methods.loadImage(_html2canvas.Util.parseBackgroundImage(content)[0].args[0]);
-    }
-    loadBackgroundImages(style.backgroundImage, element);
-  }
-
-  function loadPseudoElementImages(element) {
-    loadPseudoElement(element, ":before");
-    loadPseudoElement(element, ":after");
-  }
-
-  function loadGradientImage(backgroundImage, bounds) {
-    var img = _html2canvas.Generate.Gradient(backgroundImage, bounds);
-
-    if (img !== undefined){
-      images[backgroundImage] = {
-        img: img,
-        succeeded: true
-      };
-      images.numTotal++;
-      images.numLoaded++;
-      start();
-    }
-  }
-
-  function invalidBackgrounds(background_image) {
-    return (background_image && background_image.method && background_image.args && background_image.args.length > 0 );
-  }
-
-  function loadBackgroundImages(background_image, el) {
-    var bounds;
-
-    _html2canvas.Util.parseBackgroundImage(background_image).filter(invalidBackgrounds).forEach(function(background_image) {
-      if (background_image.method === 'url') {
-        methods.loadImage(background_image.args[0]);
-      } else if(background_image.method.match(/\-?gradient$/)) {
-        if(bounds === undefined) {
-          bounds = _html2canvas.Util.Bounds(el);
-        }
-        loadGradientImage(background_image.value, bounds);
-      }
-    });
-  }
-
-  function getImages (el) {
-    var elNodeType = false;
-
-    // Firefox fails with permission denied on pages with iframes
-    try {
-      _html2canvas.Util.Children(el).forEach(function(img) {
-        getImages(img);
-      });
-    }
-    catch( e ) {}
-
-    try {
-      elNodeType = el.nodeType;
-    } catch (ex) {
-      elNodeType = false;
-      h2clog("html2canvas: failed to access some element's nodeType - Exception: " + ex.message);
-    }
-
-    if (elNodeType === 1 || elNodeType === undefined) {
-      loadPseudoElementImages(el);
-      try {
-        loadBackgroundImages(_html2canvas.Util.getCSS(el, 'backgroundImage'), el);
-      } catch(e) {
-        h2clog("html2canvas: failed to get background-image - Exception: " + e.message);
-      }
-      loadBackgroundImages(el);
-    }
-  }
-
-  function setImageLoadHandlers(img, imageObj) {
-    img.onload = function() {
-      if ( imageObj.timer !== undefined ) {
-        // CORS succeeded
-        window.clearTimeout( imageObj.timer );
-      }
-
-      images.numLoaded++;
-      imageObj.succeeded = true;
-      img.onerror = img.onload = null;
-      start();
-    };
-    img.onerror = function() {
-      if (img.crossOrigin === "anonymous") {
-        // CORS failed
-        window.clearTimeout( imageObj.timer );
-
-        // let's try with proxy instead
-        if ( options.proxy ) {
-          var src = img.src;
-          img = new Image();
-          imageObj.img = img;
-          img.src = src;
-
-          proxyGetImage( img.src, img, imageObj );
-          return;
-        }
-      }
-
-      images.numLoaded++;
-      images.numFailed++;
-      imageObj.succeeded = false;
-      img.onerror = img.onload = null;
-      start();
-    };
-  }
-
-  methods = {
-    loadImage: function( src ) {
-      var img, imageObj;
-      if ( src && images[src] === undefined ) {
-        img = new Image();
-        if ( src.match(/data:image\/.*;base64,/i) ) {
-          img.src = src.replace(/url\(['"]{0,}|['"]{0,}\)$/ig, '');
-          imageObj = images[src] = {
-            img: img
-          };
-          images.numTotal++;
-          setImageLoadHandlers(img, imageObj);
-        } else if ( isSameOrigin( src ) || options.allowTaint ===  true ) {
-          imageObj = images[src] = {
-            img: img
-          };
-          images.numTotal++;
-          setImageLoadHandlers(img, imageObj);
-          img.src = src;
-        } else if ( supportCORS && !options.allowTaint && options.useCORS ) {
-          // attempt to load with CORS
-
-          img.crossOrigin = "anonymous";
-          imageObj = images[src] = {
-            img: img
-          };
-          images.numTotal++;
-          setImageLoadHandlers(img, imageObj);
-          img.src = src;
-
-          // work around for https://bugs.webkit.org/show_bug.cgi?id=80028
-          img.customComplete = function () {
-            if (!this.img.complete) {
-              this.timer = window.setTimeout(this.img.customComplete, 100);
-            } else {
-              this.img.onerror();
-            }
-          }.bind(imageObj);
-          img.customComplete();
-
-        } else if ( options.proxy ) {
-          imageObj = images[src] = {
-            img: img
-          };
-          images.numTotal++;
-          proxyGetImage( src, img, imageObj );
-        }
-      }
-
-    },
-    cleanupDOM: function(cause) {
-      var img, src;
-      if (!images.cleanupDone) {
-        if (cause && typeof cause === "string") {
-          h2clog("html2canvas: Cleanup because: " + cause);
-        } else {
-          h2clog("html2canvas: Cleanup after timeout: " + options.timeout + " ms.");
-        }
-
-        for (src in images) {
-          if (images.hasOwnProperty(src)) {
-            img = images[src];
-            if (typeof img === "object" && img.callbackname && img.succeeded === undefined) {
-              // cancel proxy image request
-              window[img.callbackname] = undefined; // to work with IE<9  // NOTE: that the undefined callback property-name still exists on the window object (for IE<9)
-              try {
-                delete window[img.callbackname];  // for all browser that support this
-              } catch(ex) {}
-              if (img.script && img.script.parentNode) {
-                img.script.setAttribute("src", "about:blank");  // try to cancel running request
-                img.script.parentNode.removeChild(img.script);
-              }
-              images.numLoaded++;
-              images.numFailed++;
-              h2clog("html2canvas: Cleaned up failed img: '" + src + "' Steps: " + images.numLoaded + " / " + images.numTotal);
-            }
-          }
-        }
-
-        // cancel any pending requests
-        if(window.stop !== undefined) {
-          window.stop();
-        } else if(document.execCommand !== undefined) {
-          document.execCommand("Stop", false);
-        }
-        if (document.close !== undefined) {
-          document.close();
-        }
-        images.cleanupDone = true;
-        if (!(cause && typeof cause === "string")) {
-          start();
-        }
-      }
-    },
-
-    renderingDone: function() {
-      if (timeoutTimer) {
-        window.clearTimeout(timeoutTimer);
-      }
-    }
-  };
-
-  if (options.timeout > 0) {
-    timeoutTimer = window.setTimeout(methods.cleanupDOM, options.timeout);
-  }
-
-  h2clog('html2canvas: Preload starts: finding background-images');
-  images.firstRun = true;
-
-  getImages(element);
-
-  h2clog('html2canvas: Preload: Finding images');
-  // load <img> images
-  for (i = 0; i < imgLen; i+=1){
-    methods.loadImage( domImages[i].getAttribute( "src" ) );
-  }
-
-  images.firstRun = false;
-  h2clog('html2canvas: Preload: Done.');
-  if ( images.numTotal === images.numLoaded ) {
-    start();
-  }
-
-  return methods;
-
-};
-function h2cRenderContext(width, height) {
-  var storage = [];
-  return {
-    storage: storage,
-    width: width,
-    height: height,
-    clip: function() {
-      storage.push({
-        type: "function",
-        name: "clip",
-        'arguments': arguments
-      });
-    },
-    translate: function() {
-      storage.push({
-        type: "function",
-        name: "translate",
-        'arguments': arguments
-      });
-    },
-    fill: function() {
-      storage.push({
-        type: "function",
-        name: "fill",
-        'arguments': arguments
-      });
-    },
-    save: function() {
-      storage.push({
-        type: "function",
-        name: "save",
-        'arguments': arguments
-      });
-    },
-    restore: function() {
-      storage.push({
-        type: "function",
-        name: "restore",
-        'arguments': arguments
-      });
-    },
-    fillRect: function () {
-      storage.push({
-        type: "function",
-        name: "fillRect",
-        'arguments': arguments
-      });
-    },
-    createPattern: function() {
-      storage.push({
-        type: "function",
-        name: "createPattern",
-        'arguments': arguments
-      });
-    },
-    drawShape: function() {
-
-      var shape = [];
-
-      storage.push({
-        type: "function",
-        name: "drawShape",
-        'arguments': shape
-      });
-
-      return {
-        moveTo: function() {
-          shape.push({
-            name: "moveTo",
-            'arguments': arguments
-          });
-        },
-        lineTo: function() {
-          shape.push({
-            name: "lineTo",
-            'arguments': arguments
-          });
-        },
-        arcTo: function() {
-          shape.push({
-            name: "arcTo",
-            'arguments': arguments
-          });
-        },
-        bezierCurveTo: function() {
-          shape.push({
-            name: "bezierCurveTo",
-            'arguments': arguments
-          });
-        },
-        quadraticCurveTo: function() {
-          shape.push({
-            name: "quadraticCurveTo",
-            'arguments': arguments
-          });
-        }
-      };
-
-    },
-    drawImage: function () {
-      storage.push({
-        type: "function",
-        name: "drawImage",
-        'arguments': arguments
-      });
-    },
-    fillText: function () {
-      storage.push({
-        type: "function",
-        name: "fillText",
-        'arguments': arguments
-      });
-    },
-    setVariable: function (variable, value) {
-      storage.push({
-        type: "variable",
-        name: variable,
-        'arguments': value
-      });
-    }
-  };
-}
-_html2canvas.Renderer = function(parseQueue, options){
-
-  function createRenderQueue(parseQueue) {
-    var queue = [];
-
-    var sortZ = function(zStack){
-      var subStacks = [],
-      stackValues = [];
-
-      zStack.children.forEach(function(stackChild) {
-        if (stackChild.children && stackChild.children.length > 0){
-          subStacks.push(stackChild);
-          stackValues.push(stackChild.zindex);
-        } else {
-          queue.push(stackChild);
-        }
-      });
-
-      stackValues.sort(function(a, b) {
-        return a - b;
-      });
-
-      stackValues.forEach(function(zValue) {
-        var index;
-
-        subStacks.some(function(stack, i){
-          index = i;
-          return (stack.zindex === zValue);
-        });
-        sortZ(subStacks.splice(index, 1)[0]);
-
-      });
-    };
-
-    sortZ(parseQueue.zIndex);
-
-    return queue;
-  }
-
-  function getRenderer(rendererName) {
-    var renderer;
-
-    if (typeof options.renderer === "string" && _html2canvas.Renderer[rendererName] !== undefined) {
-      renderer = _html2canvas.Renderer[rendererName](options);
-    } else if (typeof rendererName === "function") {
-      renderer = rendererName(options);
-    } else {
-      throw new Error("Unknown renderer");
-    }
-
-    if ( typeof renderer !== "function" ) {
-      throw new Error("Invalid renderer defined");
-    }
-    return renderer;
-  }
-
-  return getRenderer(options.renderer)(parseQueue, options, document, createRenderQueue(parseQueue), _html2canvas);
-};
-
-_html2canvas.Util.Support = function (options, doc) {
-
-  function supportSVGRendering() {
-    var img = new Image(),
-    canvas = doc.createElement("canvas"),
-    ctx = (canvas.getContext === undefined) ? false : canvas.getContext("2d");
-    if (ctx === false) {
-      return false;
-    }
-    canvas.width = canvas.height = 10;
-    img.src = [
-    "data:image/svg+xml,",
-    "<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'>",
-    "<foreignObject width='10' height='10'>",
-    "<div xmlns='http://www.w3.org/1999/xhtml' style='width:10;height:10;'>",
-    "sup",
-    "</div>",
-    "</foreignObject>",
-    "</svg>"
-    ].join("");
-    try {
-      ctx.drawImage(img, 0, 0);
-      canvas.toDataURL();
-    } catch(e) {
-      return false;
-    }
-    h2clog('html2canvas: Parse: SVG powered rendering available');
-    return true;
-  }
-
-  // Test whether we can use ranges to measure bounding boxes
-  // Opera doesn't provide valid bounds.height/bottom even though it supports the method.
-
-  function supportRangeBounds() {
-    var r, testElement, rangeBounds, rangeHeight, support = false;
-
-    if (doc.createRange) {
-      r = doc.createRange();
-      if (r.getBoundingClientRect) {
-        testElement = doc.createElement('boundtest');
-        testElement.style.height = "123px";
-        testElement.style.display = "block";
-        doc.body.appendChild(testElement);
-
-        r.selectNode(testElement);
-        rangeBounds = r.getBoundingClientRect();
-        rangeHeight = rangeBounds.height;
-
-        if (rangeHeight === 123) {
-          support = true;
-        }
-        doc.body.removeChild(testElement);
-      }
-    }
-
-    return support;
-  }
-
-  return {
-    rangeBounds: supportRangeBounds(),
-    svgRendering: options.svgRendering && supportSVGRendering()
-  };
-};
-window.html2canvas = function(elements, opts) {
-  elements = (elements.length) ? elements : [elements];
-  var queue,
-  canvas,
-  options = {
-    // general
-    logging: false,
-    elements: elements,
-    background: "#fff",
-
-    // preload options
-    proxy: null,
-    timeout: 0,    // no timeout
-    useCORS: false, // try to load images as CORS (where available), before falling back to proxy
-    allowTaint: false, // whether to allow images to taint the canvas, won't need proxy if set to true
-
-    // parse options
-    svgRendering: false, // use svg powered rendering where available (FF11+)
-    ignoreElements: "IFRAME|OBJECT|PARAM",
-    useOverflow: true,
-    letterRendering: false,
-    chinese: false,
-
-    // render options
-
-    width: null,
-    height: null,
-    taintTest: true, // do a taint test with all images before applying to canvas
-    renderer: "Canvas"
-  };
-
-  options = _html2canvas.Util.Extend(opts, options);
-
-  _html2canvas.logging = options.logging;
-  options.complete = function( images ) {
-
-    if (typeof options.onpreloaded === "function") {
-      if ( options.onpreloaded( images ) === false ) {
-        return;
-      }
-    }
-    queue = _html2canvas.Parse( images, options );
-
-    if (typeof options.onparsed === "function") {
-      if ( options.onparsed( queue ) === false ) {
-        return;
-      }
-    }
-
-    canvas = _html2canvas.Renderer( queue, options );
-
-    if (typeof options.onrendered === "function") {
-      options.onrendered( canvas );
-    }
-
-
-  };
-
-  // for pages without images, we still want this to be async, i.e. return methods before executing
-  window.setTimeout( function(){
-    _html2canvas.Preload( options );
-  }, 0 );
-
-  return {
-    render: function( queue, opts ) {
-      return _html2canvas.Renderer( queue, _html2canvas.Util.Extend(opts, options) );
-    },
-    parse: function( images, opts ) {
-      return _html2canvas.Parse( images, _html2canvas.Util.Extend(opts, options) );
-    },
-    preload: function( opts ) {
-      return _html2canvas.Preload( _html2canvas.Util.Extend(opts, options) );
-    },
-    log: h2clog
-  };
-};
-
-window.html2canvas.log = h2clog; // for renderers
-window.html2canvas.Renderer = {
-  Canvas: undefined // We are assuming this will be used
-};
 _html2canvas.Renderer.Canvas = function(options) {
 
   options = options || {};

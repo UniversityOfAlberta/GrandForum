@@ -34,7 +34,6 @@ class ProjectVisualisationsTab extends AbstractTab {
                             $('#projectVis').tabs('option', 'selected', 0);
                         }
                     });
-                    
                 });
             </script>");
             $this->html .= 
