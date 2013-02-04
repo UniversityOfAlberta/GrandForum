@@ -51,10 +51,11 @@ class MailList{
 				
 			    $data = DBFunctions::execSQL($sql);	
 			    if(DBFunctions::getNRows() > 0){
-				    $wgOut->addHTML("<br /><table class='wikitable sortable' bgcolor='#aaaaaa' cellspacing='1' cellpadding='2'>
-						    <tr>
-							    <th style='white-space:nowrap;' bgcolor='#F2F2F2'>First Message</th><th style='white-space:nowrap;' bgcolor='#F2F2F2'>Last Message</th><th style='white-space:nowrap;' bgcolor='#F2F2F2'>Messages</th><th style='white-space:nowrap;' bgcolor='#F2F2F2'>Subject</th><th style='white-space:nowrap;' bgcolor='#F2F2F2'>People</th>
-						    </tr>");
+				    $wgOut->addHTML("<br /><table id='mailingListMessages' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+						    <thead><tr bgcolor='#F2F2F2'>
+							    <th style='white-space:nowrap;'>First Message</th><th style='white-space:nowrap;'>Last Message</th><th style='white-space:nowrap;'>Subject</th><th style='white-space:nowrap;'>People</th>
+						    </tr></thead>
+						    <tbody>");
 				    $userTable = getTableName("user");
 				    $pageTable = getTableName("page");
 				    $revTable = getTableName("revision");
@@ -67,14 +68,13 @@ class MailList{
 					    $data2 = DBFunctions::execSQL($sql);
 					    $users = "";
 					    
+					    $people = array();
 					    foreach($data2 as $row2){
 					        $person = Person::newFromName($row2['user_name']);
-						    $users .= ", {$person->getNameForForms()}";
+						    $people[] = "{$person->getNameForForms()}";
 					    }
-					    if(count($users) > 0){
-						    $users[0] = "";
-					    }
-					    $sql = "SELECT MAX(r.rev_id) as maxRev, MIN(r.rev_id) as minRev, COUNT(*) as messages, p.page_title
+					    $users = implode(", ", array_unique($people));
+					    $sql = "SELECT MAX(r.rev_id) as maxRev, MIN(r.rev_id) as minRev, p.page_title
 						    FROM $pageTable p, $revTable r
 						    WHERE p.page_id = r.rev_page
 						    AND LOWER(CONVERT(p.page_title USING latin1)) LIKE REPLACE('MAIL_".addslashes($row['subject'])."%', ' ', '_')
@@ -85,11 +85,17 @@ class MailList{
 						    $first_oldid = $row2['minRev'];
 						    $last_oldid = $row2['maxRev'];
 						    $wgOut->addHTML("<tr>
-								    <td bgcolor='#FFFFFF' style='white-space:nowrap;'>{$row['first_date']}</td><td style='white-space:nowrap;' bgcolor='#FFFFFF'>{$row['last_date']}</td><td bgcolor='#FFFFFF' align='right'> {$row2['messages']} </td><td bgcolor='#FFFFFF'> <a href='$wgScriptPath/index.php/{$project_name}:".str_replace("'", "%27", $page_title)."'>{$row['subject']}</a></td><td bgcolor='#FFFFFF'> $users </td>
+								    <td style='white-space:nowrap;'>{$row['first_date']}</td><td style='white-space:nowrap;'>{$row['last_date']}</td><td> <a href='$wgScriptPath/index.php/{$project_name}:".urlencode($page_title)."'>{$row['subject']}</a></td><td> $users </td>
 							    </tr>");
+							break;
 					    }
 				    }
-				    $wgOut->addHTML("</table>");
+				    $wgOut->addHTML("</tbody></table>");
+				    $wgOut->addHTML("<script type='text/javascript'>
+				        $('#mailingListMessages').dataTable({'iDisplayLength': 100,
+	                                        'aaSorting': [ [0,'desc'], [1,'desc']],
+	                                        'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+				    </script>");
 			    }
 			    else {
 				    $wgOut->addHTML("There have been no messages sent");
