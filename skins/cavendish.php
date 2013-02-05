@@ -453,9 +453,7 @@ class cavendishTemplate extends QuickTemplate {
 					    ReportPDFs::createTab();
 					}
 
-					if(!$user->isRoleAtLeast(MANAGER)){
-					    MyMailingLists::createTab();
-					}
+					MyMailingLists::createTab();
 					Notification::createTab();
 				}
 			?>

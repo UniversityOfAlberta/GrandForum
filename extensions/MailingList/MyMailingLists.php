@@ -22,16 +22,21 @@ class MyMailingLists extends SpecialPage{
 	    if($person->isProjectLeader() || $person->isProjectCoLeader()){
 	        $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:MailingListRequest'>Subscribe/Unsubscribe Users</a><br />");
 	    }
-	    $projects = $person->getProjects();
+	    if($person->isRoleAtLeast(MANAGER)){
+	        $projects = Project::getAllProjects();
+	    }
+	    else{
+	        $projects = $person->getProjects();
+	    }
 	    $count = 0;
         $wgOut->addHTML("<ul>\n");
-        if($person->isRole(HQP)){
+        if($person->isRole(HQP) || $person->isRoleAtLeast(MANAGER)){
 	        $wgOut->addHTML("<li><a href='$wgServer$wgScriptPath/index.php/HQP:Mail_Index'>HQP Archives</a></li>");
 	    }
 	    if($person->isRole(CNI)){
 	        $wgOut->addHTML("<li><a href='$wgServer$wgScriptPath/index.php/CNI:Mail_Index'>Researcher Archives</a></li>");
 	    }
-	    if($person->isRole(PNI)){
+	    if($person->isRole(PNI) || $person->isRoleAtLeast(MANAGER)){
 	        $wgOut->addHTML("<li><a href='$wgServer$wgScriptPath/index.php/PNI:Mail_Index'>Researcher Archives</a></li>");
 	    }
 	    foreach($projects as $project){
