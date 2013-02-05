@@ -760,6 +760,45 @@ class Person{
 	}
 	
 	/**
+	 * Returns this Person's primary discipline from the Survey
+	 * @return string This Person's primary discipline from the Survey
+	 */
+	function getSurveyDiscipline(){
+	    $sql = "SELECT `discipline`
+	            FROM `survey_results`
+	            WHERE `user_id` = '{$this->id}'";
+	    $data = DBFunctions::execSQL($sql);
+	    if(DBFunctions::getNRows() > 0){
+	        $discipline = json_decode($data[0]['discipline']);
+	        if(isset($discipline->d_level2)){
+	            return $discipline->d_level2;
+	        }
+	    }
+	    return "Unknown";
+	}
+	
+	/**
+	 * Returns this Person's first degree connections from their response in the Survey
+	 * @return array This Person's first degree connections from their response in the Survey
+	 */
+	function getSurveyFirstDegreeConnections(){
+	    $sql = "SELECT `grand_connections`
+	            FROM `survey_results`
+	            WHERE `user_id` = '{$this->id}'";
+	    $data = DBFunctions::execSQL($sql);
+	    if(DBFunctions::getNRows() > 0){
+	        $connections = json_decode($data[0]['grand_connections']);
+	        if(count($connections) > 0){
+                return $connections;
+            }
+            else{
+                return array();
+            }
+	    }
+	    return array();
+	}
+	
+	/**
 	 * Returns the current University that this Person is at
 	 * @return array The current University this Person is at
 	 */ 
