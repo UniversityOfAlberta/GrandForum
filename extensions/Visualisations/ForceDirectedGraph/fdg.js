@@ -2,7 +2,10 @@ function createFDG(width, height, id, url){
 
     var radius = 7;
 
-    var color = d3.scale.category20();
+    var color = function(c){
+        var colors = ["#1f77b4", "#aec7e8", "#e377c2", "#d62728", "#ff7f0e", "#98df8a", "#7f7f7f", "#c7c7c7"];
+        return colors[c % colors.length];
+    };
 
     var svg = d3.select("#" + id).append("svg")
         .attr("width", width)
@@ -12,8 +15,8 @@ function createFDG(width, height, id, url){
         // Set up Legend
         $("#" + id).append("<div class='legend' style='position:absolute;display:inline;'><h3>Legend</h3></div>");
         graph.groups.forEach(function(g, i){
-            console.log(color(i));
-            $("#" + id + " .legend").append("<span style='display:inline-block;width:" + 10 + "px;height:" + 10 + "px;background:" + color(i) + ";'></span> " + g + "<br />");
+            var c = color(i);
+            $("#" + id + " .legend").append("<span style='display:inline-block;width:" + 10 + "px;height:" + 10 + "px;background:" + c + ";'></span> " + g + "<br />");
         });
     
         isLabeled = false;
@@ -49,15 +52,15 @@ function createFDG(width, height, id, url){
 			});
 		};
 		var force = d3.layout.force()
-            .charge(-3000)
-            .linkDistance(Math.sqrt(width*height)/Math.sqrt(graph.nodes.length)*2)
+            .charge(function(){
+                return -(Math.pow(graph.links.length, 0.5)/graph.nodes.length)*3000;
+            })
+            .linkDistance(30)
             .gravity(0.5)
             .size([width, height])
             .nodes(graph.nodes)
             .links(graph.links)
-            .linkStrength(function(x) {
-			    return x.value;
-		    })
+            .linkStrength(0.5)
             .start();
         if(isLabeled) {
             var force2 = d3.layout.force()
@@ -76,7 +79,10 @@ function createFDG(width, height, id, url){
             .append("svg:line")
             .attr("class", "link")
             .style("stroke", function(d){
-                if(d.source.index == 0 || d.target.index == 0) return "#888"; else return "#CCC"; 
+                return color(d.target.group);
+            })
+            .style("stroke-width", function(d){
+                return d.value*2;
             });
         
         var node = svg.selectAll("g.node")
@@ -88,7 +94,7 @@ function createFDG(width, height, id, url){
 		node.append("svg:circle")
 		    .attr("r", function(d){ if(d.index == 0) return radius*2; else return radius; })
 		    .style("fill", function(d){
-		        return color(d.group); 
+		        return color(d.group);
 		    })
 		    .style("stroke", "#FFF")
 		    .style("stroke-width", 3);
@@ -100,7 +106,10 @@ function createFDG(width, height, id, url){
             anchorNode.append("svg:circle").attr("r", 0).style("fill", "#FFF");
             anchorNode.append("svg:text").text(function(d, i) {
                 return i % 2 == 0 ? "" : d.node.name;
-            }).style("fill", "#555").style("font-family", "Arial").style("font-size", 12);
+            })
+            .style("fill", "#333")
+            .style("font-family", "Arial")
+            .style("font-size", 12)
         }
         var updateLink = function() {
             this.attr("x1", function(d) {
@@ -119,8 +128,6 @@ function createFDG(width, height, id, url){
                 return "translate(" + Math.min(width-radius, Math.max(radius, d.x)) + "," + Math.min(height-radius, Math.max(radius, d.y)) + ")";
             });
         }
-        
-        
 
         force.on("tick", function() {
             

@@ -6,7 +6,7 @@ class ForceDirectedGraph extends Visualisation {
     
     static $a = 0;
     var $url = "";
-    var $height = 700;
+    var $height = 800;
     var $width = 1000;
     
     function ForceDirectedGraph($url){
