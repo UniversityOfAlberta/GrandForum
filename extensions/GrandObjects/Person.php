@@ -2193,12 +2193,13 @@ class Person{
 	}
 	
 	// Returns true if the person is an evaluator
-	function isEvaluator(){
+	function isEvaluator($year = REPORTING_YEAR){
 	    if($this->isEvaluator === null){
 	        $eTable = getTableName("eval");
 	        $sql = "SELECT *
 	                FROM $eTable
-	                WHERE eval_id = '{$this->id}'";
+	                WHERE eval_id = '{$this->id}'
+	                AND year = '{$year}'";
 	        $data = DBFunctions::execSQL($sql);
 	        if(count($data) > 0){
 	            $this->isEvaluator = true;
@@ -2211,11 +2212,12 @@ class Person{
 	}
 	
 	// Returns the list of Evaluation Submissions for this person
-	function getEvaluateSubs(){
+	function getEvaluateSubs($year = REPORTING_YEAR){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
-	            WHERE eval_id = '{$this->id}'";
+	            WHERE eval_id = '{$this->id}'
+	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2229,13 +2231,14 @@ class Person{
         return $subs;
 	}
 	
-	static function getAllEvaluates($type){
+	static function getAllEvaluates($type, $year = REPORTING_YEAR){
 	    $type = mysql_real_escape_string($type);
 	    $eTable = getTableName("eval");
 	    
 	    $sql = "SELECT DISTINCT sub_id 
 	            FROM $eTable
-	            WHERE type = '$type'";
+	            WHERE type = '$type'
+	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2250,13 +2253,14 @@ class Person{
 	}
 
 
-	function getEvaluates($type){
+	function getEvaluates($type, $year = REPORTING_YEAR){
 	    $type = mysql_real_escape_string($type);
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE eval_id = '{$this->id}'
-	            AND type = '$type'";
+	            AND type = '$type'
+	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2270,12 +2274,13 @@ class Person{
         return $subs;
 	}
 
-	function getEvaluatePNIs(){
+	function getEvaluatePNIs($year = REPORTING_YEAR){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE eval_id = '{$this->id}'
-	            AND type = 'PNI'";
+	            AND type = 'PNI'
+	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2287,12 +2292,13 @@ class Person{
 	}
     
     // Returns the list of Evaluation Submissions for this person
-	function getEvaluateCNIs(){
+	function getEvaluateCNIs($year = REPORTING_YEAR){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE eval_id = '{$this->id}'
-                AND type = 'CNI'";
+                AND type = 'CNI'
+                AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2303,12 +2309,13 @@ class Person{
         return $subs;
 	}
 	
-	function getEvaluateProjects(){
+	function getEvaluateProjects($year = REPORTING_YEAR){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE eval_id = '{$this->id}'
-	            AND type = 'Project'";
+	            AND type = 'Project'
+	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2321,12 +2328,13 @@ class Person{
 
 	// Returns a list of the evaluators who are evaluating this Person
 	// Provide type 
-	function getEvaluators($type='Researcher'){
+	function getEvaluators($type='Researcher', $year = REPORTING_YEAR){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE sub_id = '{$this->id}'
-	            AND type = '{$type}'";
+	            AND type = '{$type}'
+	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
