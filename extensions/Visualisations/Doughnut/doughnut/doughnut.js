@@ -263,7 +263,7 @@ function create(holder, data){
             r.doughnut(holder.attr('id') + 'doughnut', dimension/2 + 10, dimension/2 + 10, data, "#000", raphael);
             
             labels = r.set();
-            txt = {font: '12px Helvetica, Arial', fill: "#fff"};
+            txt = {font: '12px Helvetica, Arial, sans-serif', fill: "#fff"};
             labels.push(r.text(60, 12, "").attr(txt));
             labels.push(r.text(60, 24, "0").attr(txt));
             labels.hide();
