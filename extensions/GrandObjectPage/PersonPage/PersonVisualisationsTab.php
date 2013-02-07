@@ -18,6 +18,7 @@ class PersonVisualisationsTab extends AbstractTab {
 
     function generateBody(){
         global $wgUser, $wgOut;
+        $me = Person::newFromWgUser();
         $this->html = "";
         if($wgUser->isLoggedIn()){
             $wgOut->addScript("<script type='text/javascript'>
@@ -34,9 +35,11 @@ class PersonVisualisationsTab extends AbstractTab {
             "<div id='personVis'>
 	            <ul>
 		            <li><a href='#timeline'>Timeline</a></li>
-		            <li><a href='#chart'>Productivity Chart</a></li>
-		            <li><a href='#survey'>Survey Graph</a></li>
-		            <li><a href='#network'>Network</a></li>
+		            <li><a href='#chart'>Productivity Chart</a></li>";
+            if($wgUser->isLoggedIn() && ($this->person->getId() == $me->getId() || $me->isMemberOf(Project::newFromName("NAVEL")) || $me->isRoleAtLeast(MANAGER))){
+                $this->html .= "<li><a href='#survey'>Survey Graph</a></li>";
+            }
+		    $this->html .= "<li><a href='#network'>Network</a></li>
 	            </ul>
 	        <div id='timeline'>";
 		        $this->showTimeline($this->person, $this->visibility);
