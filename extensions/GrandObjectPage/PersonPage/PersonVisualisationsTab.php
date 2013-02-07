@@ -3,6 +3,7 @@
 $wgHooks['UnknownAction'][] = 'PersonVisualisationsTab::getTimelineData';
 $wgHooks['UnknownAction'][] = 'PersonVisualisationsTab::getDoughnutData';
 $wgHooks['UnknownAction'][] = 'PersonVisualisationsTab::getGraphData';
+$wgHooks['UnknownAction'][] = 'PersonVisualisationsTab::getSurveyData';
 
 class PersonVisualisationsTab extends AbstractTab {
 
@@ -34,6 +35,7 @@ class PersonVisualisationsTab extends AbstractTab {
 	            <ul>
 		            <li><a href='#timeline'>Timeline</a></li>
 		            <li><a href='#chart'>Productivity Chart</a></li>
+		            <li><a href='#survey'>Survey Graph</a></li>
 		            <li><a href='#network'>Network</a></li>
 	            </ul>
 	        <div id='timeline'>";
@@ -41,6 +43,9 @@ class PersonVisualisationsTab extends AbstractTab {
 	        $this->html .= "</div>
 	        <div id='chart'>";
 		        $this->showDoughnut($this->person, $this->visibility);
+	        $this->html .= "</div>
+	        <div id='survey'>";
+		        $this->showSurvey($this->person, $this->visibility);
 	        $this->html .= "</div>
 	        <div id='network'>";
 		        $this->showGraph($this->person, $this->visibility);
@@ -104,6 +109,47 @@ class PersonVisualisationsTab extends AbstractTab {
                                     });
                               </script>");
             $this->html .= $doughnut->show();
+        }
+    }
+    
+    function showSurvey($person, $visibility){
+        global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
+        $me = Person::newFromWgUser();
+        if($wgUser->isLoggedIn() && ($person->getId() == $me->getId() || $me->isMemberOf(Project::newFromName("NAVEL")) || $me->isRoleAtLeast(MANAGER))){
+            $dataUrl1 = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getSurveyData&person={$person->getId()}&degree=1";
+            $dataUrl2 = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getSurveyData&person={$person->getId()}&degree=2";
+            $fdg1 = new ForceDirectedGraph($dataUrl1);
+            $fdg1->width = 800;
+            $fdg1->height = 700;
+            $this->html .= "<button id='switchSurvey' onClick='return false;'>View 2nd Degree Graph</button>";
+            $wgOut->addScript("<script type='text/javascript'>
+                                    $(document).ready(function(){
+                                        var nTimesLoadedFDG = 0;
+                                        $('#personVis').bind('tabsselect', function(event, ui) {
+                                            if(ui.panel.id == 'survey'){
+                                                if(nTimesLoadedFDG == 0){
+                                                    nTimesLoadedFDG++;
+                                                    createFDG({$fdg1->width}, {$fdg1->height}, 'vis{$fdg1->index}', '{$fdg1->url}');
+                                                    var showing2nd = false;
+                                                    $('#switchSurvey').click(function(){
+                                                        $('#vis{$fdg1->index}').empty();
+                                                        stopFDG();
+                                                        if(!showing2nd){
+                                                            createFDG({$fdg1->width}, {$fdg1->height}, 'vis{$fdg1->index}', '{$dataUrl2}');
+                                                            $('#switchSurvey').html('View 1st Degree Graph');
+                                                        }
+                                                        else{
+                                                            createFDG({$fdg1->width}, {$fdg1->height}, 'vis{$fdg1->index}', '{$dataUrl1}');
+                                                            $('#switchSurvey').html('View 2nd Degree Graph');
+                                                        }
+                                                        showing2nd = !showing2nd;
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    });
+                              </script>");
+            $this->html .= $fdg1->show();
         }
     }
     
@@ -271,6 +317,113 @@ class PersonVisualisationsTab extends AbstractTab {
             
             header("Content-Type: application/json");
             echo json_encode(array($array));
+            exit;
+        }
+        return true;
+	}
+	
+	static function getRootDiscipline($disc){
+	    $discs = explode("|", $disc);
+	    $dics = $discs[0];
+	    $disciplines = AboutTab::getDisciplineList();
+	    foreach($disciplines as $name => $discipline){
+	        foreach($discipline as $d){
+	            if($d == $disc){
+	                return $name;
+	            }
+	        }
+	    }
+	    return "Other";
+	}
+	
+	static function getSurveyData($action, $article){
+	    global $wgServer, $wgScriptPath;
+	    if($action == "getSurveyData"){
+	        $degree = (isset($_GET['degree'])) ? $_GET['degree'] : 2;
+	    
+	        $person = Person::newFromId($_GET['person']);
+	        $names = array();
+	        $nodes = array();
+	        $links = array();
+	        $groups = array();
+	        $disciplines = AboutTab::getDisciplineList();
+	        $i = 0;
+	        foreach($disciplines as $name => $discipline){
+	            $groups[$name] = $i;
+	            $i++;
+	        }
+	        $groups["Other"] = $i;
+	        $nodes[] = array("name" => $person->getReversedName(),
+	                         "group" => $groups[self::getRootDiscipline($person->getSurveyDiscipline())]);
+	        
+	        $names[$person->getReversedName()] = $person;
+	        foreach($person->getSurveyFirstDegreeConnections() as $key => $connection){
+	            foreach($connection as $name => $data){
+	                $pers = Person::newFromName($name);
+	                
+	                $value = 0;
+	                $nFields = 5;
+	                foreach($data as $k => $field){
+	                    if(is_numeric($field) && $field != 0 && $k != "hotlist"){
+	                        $value++;
+	                    }
+	                }
+	                
+	                if($value > 0){
+	                    $nodes[] = array("name" => $pers->getReversedName(),
+	                                     "group" => $groups[self::getRootDiscipline($pers->getSurveyDiscipline())]);
+	                    $names[$pers->getReversedName()] = $pers;
+	                    $links[] = array("source" => 0,
+	                                     "target" => $key+1,
+	                                     "value" => $value/$nFields);
+	                }
+	            }
+	        }
+	        
+	        //if($degree > 1){
+	            foreach($nodes as $key1 => $node){
+	                if($node['name'] != $person->getName()){
+	                    $pers = $names[$node['name']];
+	                    foreach($pers->getSurveyFirstDegreeConnections() as $connection){
+	                        foreach($connection as $name => $data){
+	                            $p = Person::newFromName($name);
+	                            $value = 0;
+                                $nFields = 6;
+                                foreach($data as $field){
+                                    if(is_numeric($field) && $field != 0){
+                                        $value++;
+                                    }
+                                }
+                                if(!isset($names[$p->getReversedName().$key1]) && $degree == 2){
+                                    $nodes[] = array("name" => $p->getReversedName(),
+                                                     "group" => $groups[self::getRootDiscipline($p->getSurveyDiscipline())]);
+                                    $names[$p->getReversedName().$key1] = $p;
+                                    $key = array_search($p->getReversedName().$key1, array_keys($names));
+                                }
+                                else{
+                                    $key = array_search($p->getReversedName(), array_keys($names));
+                                }
+                                
+                                if($key !== false && $key != 0){
+                                    $links[] = array("source" => $key1,
+                                                     "target" => $key,
+                                                     "value" => $value/$nFields);
+                                }
+	                        }
+	                    }
+	                }
+	            }
+	        //}
+	        //if($degree > 1){
+	            foreach($nodes as &$node){
+	                $node['name'] = '';
+	            }
+	        //}
+	        $array = array('groups' => array_flip($groups),
+	                       'nodes' => $nodes,
+	                       'links' => $links);
+            header("Content-Type: application/json");
+            echo json_encode($array); 
             exit;
         }
         return true;

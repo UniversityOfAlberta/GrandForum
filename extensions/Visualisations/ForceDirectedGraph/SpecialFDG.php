@@ -117,11 +117,11 @@ class SpecialFDG extends SpecialPage {
 	                }
 	            }
 	        }
-	        
-	        foreach($nodes as &$node){
-	            $node['name'] = '';
+	        if($degree > 1){
+	            foreach($nodes as &$node){
+	                $node['name'] = '';
+	            }
 	        }
-	        
 	        $array = array('groups' => array_flip($groups),
 	                       'nodes' => $nodes,
 	                       'links' => $links);

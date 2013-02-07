@@ -1,6 +1,18 @@
+var force = undefined;
+var force2 = undefined;
+
+function stopFDG(){
+    if(force != undefined){
+        force.stop();
+    }
+    if(force2 != undefined){
+        force2.stop();
+    }
+}
+
 function createFDG(width, height, id, url){
 
-    var radius = 7;
+    var radius = 6;
 
     var color = function(c){
         var colors = ["#1f77b4", "#aec7e8", "#e377c2", "#d62728", "#ff7f0e", "#98df8a", "#7f7f7f", "#c7c7c7"];
@@ -11,7 +23,10 @@ function createFDG(width, height, id, url){
         .attr("width", width)
         .attr("height", height);
 
-    d3.json(url, function(error, graph) {
+    
+
+    $.get(url, function(graph){
+        stopFDG();
         // Set up Legend
         $("#" + id).append("<div class='legend' style='position:absolute;display:inline;'><h3>Legend</h3></div>");
         graph.groups.forEach(function(g, i){
@@ -45,25 +60,25 @@ function createFDG(width, height, id, url){
         });
         
         for(var i = 0; i < graph.nodes.length; i++) {
-			labelAnchorLinks.push({
-				source : i * 2,
-				target : i * 2 + 1,
-				weight : 1
-			});
-		};
-		var force = d3.layout.force()
+		    labelAnchorLinks.push({
+			    source : i * 2,
+			    target : i * 2 + 1,
+			    weight : 1
+		    });
+	    };
+	    force = d3.layout.force()
             .charge(function(){
-                return -(Math.pow(graph.links.length, 0.5)/graph.nodes.length)*3000;
+                return -(Math.sqrt(graph.links.length)/graph.nodes.length)*Math.min(width, height)*2;
             })
-            .linkDistance(30)
-            .gravity(0.5)
+            .linkDistance(Math.max(radius*3, (graph.links.length/graph.nodes.length)*10))
+            .gravity(0.25)
             .size([width, height])
             .nodes(graph.nodes)
             .links(graph.links)
             .linkStrength(0.5)
             .start();
         if(isLabeled) {
-            var force2 = d3.layout.force()
+            force2 = d3.layout.force()
                 .charge(-100)
                 .linkDistance(0)
                 .linkStrength(8)
@@ -73,6 +88,7 @@ function createFDG(width, height, id, url){
                 .links(labelAnchorLinks)
                 .start();
         }
+        
         var link = svg.selectAll("line.link")
             .data(graph.links.reverse())
             .enter()
@@ -91,18 +107,18 @@ function createFDG(width, height, id, url){
             .append("svg:g")
             .attr("class", "node");
         
-		node.append("svg:circle")
-		    .attr("r", function(d){ if(d.index == 0) return radius*2; else return radius; })
-		    .style("fill", function(d){
-		        return color(d.group);
-		    })
-		    .style("stroke", "#FFF")
-		    .style("stroke-width", 3);
-		    
-		node.call(force.drag);
+	    node.append("svg:circle")
+	        .attr("r", function(d){ if(d.index == 0) return radius*2; else return radius; })
+	        .style("fill", function(d){
+	            return color(d.group);
+	        })
+	        .style("stroke", "#FFF")
+	        .style("stroke-width", 2);
+	        
+	    node.call(force.drag);
         if(isLabeled){
-            var anchorLink = svg.selectAll(".anchorLink").data(labelAnchorLinks);        
-            var anchorNode = svg.selectAll(".anchorNode").data(force2.nodes()).enter().append("svg:g").attr("class", "anchorNode");
+            anchorLink = svg.selectAll(".anchorLink").data(labelAnchorLinks);        
+            anchorNode = svg.selectAll(".anchorNode").data(force2.nodes()).enter().append("svg:g").attr("class", "anchorNode");
             anchorNode.append("svg:circle").attr("r", 0).style("fill", "#FFF");
             anchorNode.append("svg:text").text(function(d, i) {
                 return i % 2 == 0 ? "" : d.node.name;
@@ -130,12 +146,12 @@ function createFDG(width, height, id, url){
         }
 
         force.on("tick", function() {
-            
-            if(isLabeled){
+            if(isLabeled && force2 != undefined){
                 force2.start();
             }
             node.call(updateNode);
-            if(isLabeled){
+            if(isLabeled && force2 != undefined){
+                
                 anchorNode.each(function(d, i) {
                     if(i % 2 == 0) {
                         d.x = d.node.x;
@@ -155,11 +171,11 @@ function createFDG(width, height, id, url){
                     }
                 });
             }
-            if(isLabeled){
+            if(isLabeled && force2 != undefined){
                 anchorNode.call(updateNode);
             }
             link.call(updateLink);
-            if(isLabeled){
+            if(isLabeled && force2 != undefined){
                 anchorLink.call(updateLink);
             }
         });
