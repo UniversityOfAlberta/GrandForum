@@ -76,6 +76,7 @@ function createFDG(width, height, id, url){
             .nodes(graph.nodes)
             .links(graph.links)
             .linkStrength(0.5)
+            .theta(0.99999)
             .start();
         if(isLabeled) {
             force2 = d3.layout.force()
@@ -100,14 +101,11 @@ function createFDG(width, height, id, url){
             .style("stroke-width", function(d){
                 return d.value*2;
             });
-        
-        var node = svg.selectAll("g.node")
+
+        var node = svg.selectAll("circle")
             .data(force.nodes())
             .enter()
-            .append("svg:g")
-            .attr("class", "node");
-        
-	    node.append("svg:circle")
+	        .append("svg:circle")
 	        .attr("r", function(d){ if(d.index == 0) return radius*2; else return radius; })
 	        .style("fill", function(d){
 	            return color(d.group);
@@ -144,14 +142,13 @@ function createFDG(width, height, id, url){
                 return "translate(" + Math.min(width-radius, Math.max(radius, d.x)) + "," + Math.min(height-radius, Math.max(radius, d.y)) + ")";
             });
         }
-
+        
         force.on("tick", function() {
             if(isLabeled && force2 != undefined){
                 force2.start();
             }
             node.call(updateNode);
             if(isLabeled && force2 != undefined){
-                
                 anchorNode.each(function(d, i) {
                     if(i % 2 == 0) {
                         d.x = d.node.x;
