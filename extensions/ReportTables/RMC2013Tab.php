@@ -19,11 +19,14 @@ class RMC2013Tab extends AbstractTab {
             $this->html .= "<a id='Q_Summary'></a>";
             $this->html .= "<h2>Summary of 1-9</h2>";
             $this->html .= "<a id='".PNI."_Summary'></a>";
-            $this->showEvalTableFor(PNI);
+            //$this->showEvalTableFor(PNI);
+            $this->showEvalNIOverview(PNI);
             $this->html .= "<a id='".CNI."_Summary'></a>";
-            $this->showEvalTableFor(CNI);
+            //$this->showEvalTableFor(CNI);
+            $this->showEvalNIOverview(CNI);
             $this->html .= "<a id='Project_Summary'></a>";
-            $this->showEvalTableFor("Project");
+            //$this->showEvalTableFor("Project");
+            $this->showEvalProjectOverview();
             break;
 
         case 'budget':
@@ -79,6 +82,34 @@ class RMC2013Tab extends AbstractTab {
     function showContentsTable(){
         global $wgServer, $wgScriptPath;
         $this->html .=<<<EOF
+            <style type='text/css'>
+                .qtipStyle{
+                    font-size: 14px;
+                    line-height: 120%;
+                    padding: 5px;
+                }
+            </style>
+            <script type='text/javascript'>
+            $(document).ready(function(){
+                $('span.q_tip').qtip({
+                    position: {
+                        corner: {
+                            target: 'topRight',
+                            tooltip: 'bottomLeft'
+                        }
+                    }, 
+                    style: {
+                        classes: 'qtipStyle'
+                    }
+                });
+                $('.comment_dialog').dialog( "destroy" );
+                $('.comment_dialog').dialog({ autoOpen: false, width: 600, height: 400 });
+            });  
+
+            function openDialog(ev_id, sub_id, num){
+                $('#dialog'+num+'-'+ev_id+'-'+sub_id).dialog("open");
+            }
+            </script>
             <table class='toc' summary='Contents'>
             <tr><td>
             <div id='toctitle'><h2>Contents</h2></div>
@@ -113,144 +144,18 @@ EOF;
 
     }
 
-    function showEvalTableFor($type){
+
+    function showEvalNIOverview($type){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript, $reporteeId, $getPerson;
-        //$people = Person::getAllPeople();
-        //$people = array_merge($people, Person::getAllStaff());
-        $peopleTiers = array();
-        $projectTiers = array();
-
-        $people = Person::getAllEvaluators();
-        foreach($people as $person){
-            $reporteeId = $person->getId();
-            if($type == CNI){
-                $subs = $person->getEvaluateCNIs();
-            }
-            else{
-                $subs = $person->getEvaluateSubs();
-            }
-            foreach($subs as $sub){
-                $id = "";
-                if($sub instanceof Person && ($type == PNI && $sub->isRole(PNI)) ){
-                    $id = "person";
-                    $ctype = "p";
-                    $rtype = RP_EVAL_RESEARCHER;
-                    $array = isset($peopleTiers[$sub->getName()]) ? $peopleTiers[$sub->getName()] : array();
-                }
-                else if($sub instanceof Person && ($type == CNI && $sub->isRole(CNI)) ){
-                    $id = "person";
-                    $ctype = "p";
-                    $rtype = RP_EVAL_CNI;
-                    $array = isset($peopleTiers[$sub->getName()]) ? $peopleTiers[$sub->getName()] : array();
-                }
-                else if($sub instanceof Project && $type == "Project"){
-                    $id = "project";
-                    $ctype = "r";
-                    $rtype = RP_EVAL_PROJECT;
-                    $array = isset($projectTiers[$sub->getName()]) ? $projectTiers[$sub->getName()] : array();
-                }
-                if($id == ""){
-                    continue;
-                }
-                $array["1_1"] = isset($array["1_1"]) ? $array["1_1"] : 0;
-                $array["1_2"] = isset($array["1_2"]) ? $array["1_2"] : 0;
-                $array["1_3"] = isset($array["1_3"]) ? $array["1_3"] : 0;
-                $array["2_1"] = isset($array["2_1"]) ? $array["2_1"] : 0;
-                $array["2_2"] = isset($array["2_2"]) ? $array["2_2"] : 0;
-                $array["2_3"] = isset($array["2_3"]) ? $array["2_3"] : 0;
-                $array["2_4"] = isset($array["2_4"]) ? $array["2_4"] : 0;
-                $array["3_1"] = isset($array["3_1"]) ? $array["3_1"] : 0;
-                $array["3_2"] = isset($array["3_2"]) ? $array["3_2"] : 0;
-                $array["3_3"] = isset($array["3_3"]) ? $array["3_3"] : 0;
-                $array["3_4"] = isset($array["3_4"]) ? $array["3_4"] : 0;
-                $array["q1Rat"] = isset($array["q1Rat"]) ? $array["q1Rat"] : "";
-                $array["q2Rat"] = isset($array["q2Rat"]) ? $array["q2Rat"] : "";
-                $array["q3Rat"] = isset($array["q3Rat"]) ? $array["q3Rat"] : "";
-                $array["q4Rat"] = isset($array["q4Rat"]) ? $array["q4Rat"] : "";
-                $array["q5Rat"] = isset($array["q5Rat"]) ? $array["q5Rat"] : "";
-                $array["q6Rat"] = isset($array["q6Rat"]) ? $array["q6Rat"] : "";
-                $array["q7Rat"] = isset($array["q7Rat"]) ? $array["q7Rat"] : "";
-                $array["q8Rat"] = isset($array["q8Rat"]) ? $array["q8Rat"] : "";
-                $array["q9Rat"] = isset($array["q9Rat"]) ? $array["q9Rat"] : "";
-                $array["q1Fed"] = isset($array["q1Fed"]) ? $array["q1Fed"] : "";
-                $array["q2Fed"] = isset($array["q2Fed"]) ? $array["q2Fed"] : "";
-                $array["q3Fed"] = isset($array["q3Fed"]) ? $array["q3Fed"] : "";
-                $array["q4Fed"] = isset($array["q4Fed"]) ? $array["q4Fed"] : "";
-                $array["q5Fed"] = isset($array["q5Fed"]) ? $array["q5Fed"] : "";
-                $array["q6Fed"] = isset($array["q6Fed"]) ? $array["q6Fed"] : "";
-                $array["q7Fed"] = isset($array["q7Fed"]) ? $array["q7Fed"] : "";
-                $array["q8Fed"] = isset($array["q8Fed"]) ? $array["q8Fed"] : "";
-                $array["q9Fed"] = isset($array["q9Fed"]) ? $array["q9Fed"] : "";
-                $array["nQ1"] = isset($array["nQ1"]) ? $array["nQ1"] : 0;
-                $array["nQ2"] = isset($array["nQ2"]) ? $array["nQ2"] : 0;
-                $array["nQ3"] = isset($array["nQ3"]) ? $array["nQ3"] : 0;
-                $array["nQ4"] = isset($array["nQ4"]) ? $array["nQ4"] : 0;
-                $array["nQ5"] = isset($array["nQ5"]) ? $array["nQ5"] : 0;
-                $array["nQ6"] = isset($array["nQ6"]) ? $array["nQ6"] : 0;
-                $array["nQ7"] = isset($array["nQ7"]) ? $array["nQ7"] : 0;
-                $array["nQ8"] = isset($array["nQ8"]) ? $array["nQ8"] : 0;
-                $array["nQ9"] = isset($array["nQ9"]) ? $array["nQ9"] : 0;
-                $array["nRatings"] = isset($array["nRatings"]) ? $array["nRatings"] : 0;
-
-                $post = Evaluate_Form::getData('', $rtype, EVL_EXCELLENCE, $sub, 2012);
-                $array = self::generateRow(1, $array, $post, $person);
-                
-                $post = Evaluate_Form::getData('', $rtype, EVL_HQPDEVELOPMENT, $sub, 2012);
-                $array = self::generateRow(2, $array, $post, $person);
-
-                $post = Evaluate_Form::getData('', $rtype, EVL_NETWORKING, $sub, 2012);
-                $array = self::generateRow(3, $array, $post, $person);
-
-                $post = Evaluate_Form::getData('', $rtype, EVL_KNOWLEDGE, $sub, 2012);
-                $array = self::generateRow(4, $array, $post, $person);
-
-                $post = Evaluate_Form::getData('', $rtype, EVL_MANAGEMENT, $sub, 2012);
-                $array = self::generateRow(5, $array, $post, $person);
-
-                $post = Evaluate_Form::getData('', $rtype, EVL_OVERALLSCORE, $sub, 2012);
-                $array = self::generateRow(6, $array, $post, $person);
-
-                $post = Evaluate_Form::getData('', $rtype, EVL_OTHERCOMMENTS, $sub, 2012);
-                $array = self::generateRow(7, $array, $post, $person);
-                
-                $post = Evaluate_Form::getData('', $rtype, EVL_REPORTQUALITY, $sub, 2012);
-                $array = self::generateRow(8, $array, $post, $person);
-                
-                $post = Evaluate_Form::getData('', $rtype, EVL_CONFIDENCE, $sub, 2012);
-                $array = self::generateRow(9, $array, $post, $person);
-                
-                @$array["nRatings"] += 1;
-                if($sub instanceof Person && (($type == PNI && $sub->isRole(PNI)) || ($type == CNI && $sub->isRole(CNI)))){
-                    $peopleTiers[$sub->getName()] = $array;
-                }
-                else if($sub instanceof Project && $type == "Project"){
-                    $projectTiers[$sub->getName()] = $array;
-                }
-            } 
+        if($type == CNI){
+            $rtype = RP_EVAL_CNI;
+        }
+        else if($type == PNI){
+            $rtype = RP_EVAL_RESEARCHER;
         }
 
-        if($type == "Project"){
-            $this->html .= "<h3>$type Summary of Questions 1-8</h3>";
-        }
-        else{
-            $this->html .= "<h3>$type Summary of Questions 1-9</h3>";
-        }
-        $W1 = isset($_POST['w1']) ? min(99, $_POST['w1']) : 3;
-        $W2 = isset($_POST['w2']) ? min(99, $_POST['w2']) : 1;
-        $W3 = isset($_POST['w3']) ? min(99, $_POST['w3']) : 0;
-        if($getPerson == null){
-            $this->html .= "<form method='post' action='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?summary=question'>
-                                <b>Tier 1 Weight:</b> <input type='text' name='w1' value='$W1' size='3' /><br />
-                                <b>Tier 2 Weight:</b> <input type='text' name='w2' value='$W2' size='3' /><br />
-                                <b>Tier 3 Weight:</b> <input type='text' name='w3' value='$W3' size='3' /><br />
-                                <input type='submit' value='Reload' /><br /><br />
-                             </form>";
-        }
-        $this->html .= "<table class='wikitable sortable' cellspacing='1' cellpadding='2' style='background: #000000;' width='100%'>"; 
-        $rppg = "$wgServer$wgScriptPath/index.php/Special:Report";
-        $person = Person::newFromName(key($peopleTiers));
-        $repi = new ReportIndex($person);
-        
+        $weights = array('Top'=>4, 'Upper Middle'=>3, 'Lower Middle'=>2, 'Bottom'=>1);
+
         // Check for a download.
         $action = ArrayUtils::get_string($_GET, 'getpdf');
         if ($action !== "") {
@@ -259,233 +164,355 @@ EOF;
             $wgOut->disable();
             return $sto->trigger_download($action, "{$action}.pdf", false);
         }
-        $subNames = array();
-        if($getPerson !== null){
-            foreach($getPerson->getEvaluateSubs() as $sub){
-                $subNames[] = $sub->getName();
-            }
-        }
-        if(!empty($peopleTiers)){
-            $this->html .= "<tr>
-                                <th style='background: #EEEEEE;'>$type</th><th style='background: #EEEEEE;'>Weighted&nbsp;Average (Q6)</th><th style='background: #EEEEEE; min-width:400px;' width='45%'>Comments on NCE Criteria</th><th style='background: #EEEEEE; min-width:400px;' width='45%'>Other Comments</th>
-                            </tr>";
-            $wgOut->addScript($foldscript);
-            while ($personTiers = current($peopleTiers)) {
-                $rppg = "$wgServer$wgScriptPath/index.php/Special:Report";
-                $person = Person::newFromName(key($peopleTiers));
-                if($getPerson != null && array_search($person->getName(), $subNames) === false){
-                    next($peopleTiers);
-                    continue;
-                }
-                
-                $download1 = Evaluate::getPNIPDF($person);
-                $download2 = "";
-                foreach($person->leadership() as $project){
-                    $download2 .= Evaluate::getProjectLeaderPDF($project)."<br />";
-                }
-                if($download2 == ""){
-                    $download2 = "No&nbsp;PDF";
-                }
-                $tierSum1 = ($W1*$personTiers["1_1"] + $W2*$personTiers["1_2"] + $W3*$personTiers["1_3"])/$personTiers["nRatings"];
-                $tierSum2 = ($W1*$personTiers["2_1"] + $W2*$personTiers["2_2"] + $W3*$personTiers["2_3"])/max(1, $personTiers["nQ6"]);
-                if($tierSum2 < 10){
-                    $tierSum2 = "0".number_format(round($tierSum2, 2), 2);
-                }
-                else{
-                    $tierSum2 = number_format(round($tierSum2, 2), 2);
-                }
-                $this->html .= "<tr>
-                                    <td style='background: #FFFFFF;' valign='top' align='center'><b><u>".key($peopleTiers)."</u></b><br />
-                                        <table>
-                                            <tr>
-                                                <td align='right' valign='top'><b>Researcher&nbsp;PDF:</b></td>
-                                                <td algin='left' valign='top'>$download1</td>
-                                            </tr>
-                                            <tr>
-                                                <td align='right' valign='top'><b>Project&nbsp;Leader&nbsp;PDF:</b></td>
-                                                <td algin='left' valign='top'>$download2</td>
-                                            </tr>
-                                        </table>    
-                                    </td>
-                                    <td style='background: #FFFFFF;' valign='top' align='center'>$tierSum2 ({$personTiers["nQ6"]})</td>
-                                    <td style='background: #FFFFFF;' valign='top'>";
-                $this->html .= "<a href=\"javascript:ShowOrHide('2".key($peopleTiers)."','')\">Show/Hide Comments for Committee</a>
-                                    <div id='2".key($peopleTiers)."' style='display:none'>
-                                        <center><h3>Comments for Q1</h3></center>
-                                        <table>".$personTiers["q1Rat"]."</table>
-                                        <center><h3>Comments for Q2</h3></center>
-                                        <table>".$personTiers["q2Rat"]."</table>
-                                        <center><h3>Comments for Q3</h3></center>
-                                        <table>".$personTiers["q3Rat"]."</table>
-                                        <center><h3>Comments for Q4</h3></center>
-                                        <table>".$personTiers["q4Rat"]."</table>
-                                        <center><h3>Comments for Q5</h3></center>
-                                        <table>".$personTiers["q5Rat"]."</table>
-                                    </div>
-                                    <hr />
-                                    <a href=\"javascript:ShowOrHide('22".key($peopleTiers)."','')\">Show/Hide Feedback for Investigator</a>
-                                    <div id='22".key($peopleTiers)."' style='display:none;background:#EEEEEE;'>
-                                        <center><h3>Feedback for Q1</h3></center>
-                                        <table>".$personTiers["q1Fed"]."</table>
-                                        <center><h3>Feedback for Q2</h3></center>
-                                        <table>".$personTiers["q2Fed"]."</table>
-                                        <center><h3>Feedback for Q3</h3></center>
-                                        <table>".$personTiers["q3Fed"]."</table>
-                                        <center><h3>Feedback for Q4</h3></center>
-                                        <table>".$personTiers["q4Fed"]."</table>
-                                        <center><h3>Feedback for Q5</h3></center>
-                                        <table>".$personTiers["q5Fed"]."</table>
-                                    </div>
-                                </td>
-                                <td style='background: #FFFFFF;' valign='top'>";
-                $this->html .= "<a href=\"javascript:ShowOrHide('1".key($peopleTiers)."','')\">Show/Hide Comments for Committee</a>
-                                    <div id='1".key($peopleTiers)."' style='display:none'>
-                                        <center><h3>Comments for Q6</h3></center>
-                                        <table>".$personTiers["q6Rat"]."</table>
-                                        <center><h3>Comments for Q7</h3></center>
-                                        <table>".$personTiers["q7Rat"]."</table>
-                                        <center><h3>Comments for Q8</h3></center>
-                                        <table>".$personTiers["q8Rat"]."</table>
-                                        <center><h3>Comments for Q9</h3></center>
-                                        <table>".$personTiers["q9Rat"]."</table>
-                                    </div>
-                                    <hr />
-                                    <a href=\"javascript:ShowOrHide('11".key($peopleTiers)."','')\">Show/Hide Feedback for Investigator</a>
-                                    <div id='11".key($peopleTiers)."' style='display:none;background:#EEEEEE;'>
-                                        <center><h3>Feedback for Q6</h3></center>
-                                        <table>".$personTiers["q6Fed"]."</table>
-                                        <center><h3>Feedback for Q7</h3></center>
-                                        <table>".$personTiers["q7Fed"]."</table>
-                                        <center><h3>Feedback for Q8</h3></center>
-                                        <table>".$personTiers["q8Fed"]."</table>
-                                    </div>
-                                </td>
-                             </tr>";
-                next($peopleTiers);
-            }
-        }
-        else if(!empty($projectTiers)){
-           $this->html .= "<tr>
-                                <th style='background: #EEEEEE;'>$type</th><th style='background: #EEEEEE;'>Weighted&nbsp;Average (Q5)</th><th style='background: #EEEEEE; min-width:400px;' width='45%'>Comments on NCE Criteria</th><th style='background: #EEEEEE; min-width:400px;' width='45%'>Other Comments</th>
-                            </tr>";
-                            
-            while ($pTiers = current($projectTiers)) {
-                $rppg = "$wgServer$wgScriptPath/index.php/Special:Report";
-                $project = Project::newFromName(key($projectTiers));
-                if($getPerson != null && array_search($project->getName(), $subNames) === false){
-                    next($projectTiers);
-                    continue;
-                }
-                $leader = $project->getLeader();
-                if($leader != null){
-                    $repi = new ReviewerIndex($leader, Person::newFromId($wgUser->getId()));
-                    $ls = $repi->list_reports($project);
-                }
-                else{
-                    $ls = array();
-                }
-                $none = true;
-                $download2 = Evaluate::getProjectLeaderPDF($project)."<br />";
-                $tierSum1 = ($W1*$pTiers["1_1"] + $W2*$pTiers["1_2"] + $W3*$pTiers["1_3"])/$pTiers["nRatings"];
-                $tierSum2 = ($W1*$pTiers["2_1"] + $W2*$pTiers["2_2"] + $W3*$pTiers["2_3"])/max(1, $pTiers["nQ6"]);
-                if($tierSum2 < 10){
-                    $tierSum2 = "0".number_format(round($tierSum2, 2), 2);
-                }
-                else{
-                    $tierSum2 = number_format(round($tierSum2, 2), 2);
-                }
-                $this->html .= "<tr>
-                                    <td style='background: #FFFFFF;' valign='top' align='center'><b><u>".key($projectTiers)."</u></b><br />
-                                        <table>
-                                            <tr>
-                                                <td align='right' valign='top'><b>Project&nbsp;Leader&nbsp;PDF:</b></td>
-                                                <td algin='left' valign='top'>$download2</td>
-                                            </tr>
-                                        </table>    
-                                    </td>
-                                    <td style='background: #FFFFFF;' valign='top' align='center'>$tierSum2({$pTiers["nQ6"]})</td>
-                                    <td style='background: #FFFFFF;' valign='top'>";
-                $this->html .= "<a href=\"javascript:ShowOrHide('2".key($projectTiers)."','')\">Show/Hide Comments for Committee</a>
-                                    <div id='2".key($projectTiers)."' style='display:none'>
-                                        <center><h3>Comments for Q1</h3></center>
-                                        <table>".$pTiers["q1Rat"]."</table>
-                                        <center><h3>Comments for Q2</h3></center>
-                                        <table>".$pTiers["q2Rat"]."</table>
-                                        <center><h3>Comments for Q3</h3></center>
-                                        <table>".$pTiers["q3Rat"]."</table>
-                                        <center><h3>Comments for Q4</h3></center>
-                                        <table>".$pTiers["q4Rat"]."</table>
-                                    </div>
-                                    <hr />
-                                    <a href=\"javascript:ShowOrHide('22".key($projectTiers)."','')\">Show/Hide Feedback for Project Leader</a>
-                                    <div id='22".key($projectTiers)."' style='display:none;background:#EEEEEE;'>
-                                        <center><h3>Feedback for Q1</h3></center>
-                                        <table>".$pTiers["q1Fed"]."</table>
-                                        <center><h3>Feedback for Q2</h3></center>
-                                        <table>".$pTiers["q2Fed"]."</table>
-                                        <center><h3>Feedback for Q3</h3></center>
-                                        <table>".$pTiers["q3Fed"]."</table>
-                                        <center><h3>Feedback for Q4</h3></center>
-                                        <table>".$pTiers["q4Fed"]."</table>
-                                    </div>
-                                </td>
-                                <td style='background: #FFFFFF;' valign='top'>";
-                $this->html .= "<a href=\"javascript:ShowOrHide('1".key($projectTiers)."','')\">Show/Hide Comments for Committee</a>
-                                    <div id='1".key($projectTiers)."' style='display:none'>
-                                        <center><h3>Rationale for Q5</h3></center>
-                                        <table>".$pTiers["q6Rat"]."</table>
-                                        <center><h3>Rationale for Q6</h3></center>
-                                        <table>".$pTiers["q7Rat"]."</table>
-                                        <center><h3>Rationale for Q7</h3></center>
-                                        <table>".$pTiers["q8Rat"]."</table>
-                                        <center><h3>Rationale for Q8</h3></center>
-                                        <table>".$pTiers["q9Rat"]."</table>
-                                    </div>
-                                    <hr />
-                                    <a href=\"javascript:ShowOrHide('11".key($projectTiers)."','')\">Show/Hide Feedback for Project Leader</a>
-                                    <div id='11".key($projectTiers)."' style='display:none;background:#EEEEEE;'>
-                                        <center><h3>Feedback for Q5</h3></center>
-                                        <table>".$pTiers["q6Fed"]."</table>
-                                        <center><h3>Feedback for Q6</h3></center>
-                                        <table>".$pTiers["q7Fed"]."</table>
-                                        <center><h3>Feedback for Q7</h3></center>
-                                        <table>".$pTiers["q8Fed"]."</table>
-                                    </div>
-                                </td>
-                             </tr>";
-                next($projectTiers);
-            }
-            
-        }
-        $this->html .= "</table><br />";
-    }
 
-    // Generates the rows for the table.  Returns the array of values ($array)
-    static function generateRow($questionNumber, $array, $post, $person){
-        global $getPerson;
-        $array["q{$questionNumber}Rat"] .= "<tr>
-                                 <td valign='top'><b>{$person->getName()}&nbsp;(Tier&nbsp;".self::getValueOf($post['rating'])."):</b> {$post["comment"]}</td>
-                             </tr>";
-        $array["q{$questionNumber}Fed"] .= "<tr>
-                                 <td valign='top'>";
-        $array["q{$questionNumber}Fed"] .= "<b>{$person->getName()}&nbsp;(Tier&nbsp;".self::getValueOf($post['rating'])."):</b>";
-        $array["q{$questionNumber}Fed"] .= "{$post["feedback"]}</td>
-                             </tr>";
-        $catNumber = 1;
-        if($questionNumber >= 6){
-            if($questionNumber >= 7){
-                $catNumber = 3;
+        $wgOut->addScript($foldscript);
+        $this->html .=<<<EOF
+        <h3>$type Summary of Questions 1-9</h3>
+        <table class='wikitable' cellspacing='1' cellpadding='4' style='border-style:solid;' width='100%' frame="box" rules="all">
+        <tr>
+            <th style='background: #EEEEEE;' width="15%">$type</th>
+            <th style='background: #EEEEEE;' width="7%">Average (Q6)</th>
+            <th style='background: #EEEEEE;' width="15%">Evaluator</th>
+            <th style='background: #EEEEEE;' width="7%">Comment (Q8)</th>
+            <th style='background: #EEEEEE;' width="7%">Q7</th>
+            <th style='background: #EEEEEE;' width="7%">Q9</th>
+            <th style='background: #EEEEEE;' width="7%">Q1</th>
+            <th style='background: #EEEEEE;' width="7%">Q2</th>
+            <th style='background: #EEEEEE;' width="7%">Q3</th>
+            <th style='background: #EEEEEE;' width="7%">Q4</th>
+            <th style='background: #EEEEEE;' width="7%">Q5</th>
+            <th style='background: #EEEEEE;' width="7%">Q6</th>
+        </tr>
+EOF;
+
+
+        $text_question = EVL_OTHERCOMMENTS;
+        $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY);
+        $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_MANAGEMENT_COM, EVL_REPORTQUALITY_COM);
+
+        $nis = Person::getAllEvaluates($type, 2012);
+        $sorted_nis = array();
+        foreach ($nis as $n){
+            $sorted_nis[$n->getId()] = $n->getReversedName();
+        }
+        asort($sorted_nis);
+
+        foreach($sorted_nis as $ni_id => $ni_name){
+            $ni = Person::newFromId($ni_id);
+            //$ni_id = $ni->getId();
+            //$ni_name = $ni->getReversedName();
+            $evaluators = $ni->getEvaluators($type, 2012);
+
+            $rowspan = count($evaluators);
+            if($rowspan == 0){
+                continue;
+            }
+            $rowspan = $rowspan*2 + 1;
+
+            $download1 = "Researcher PDF";
+            $report = new DummyReport("NIReport", $ni, null);
+            $tok = false;
+            $check = $report->getPDF();
+            if (count($check) > 0) {
+                $tok = $check[0]['token'];
+                $download1 = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Researcher PDF</a>";
+            }
+
+            $download2 = "PL Comments PDF";
+            $report = new DummyReport("ProjectNIComments", $ni, null);
+            $tok = false;
+            $check = $report->getPDF();
+            if (count($check) > 0) {
+                $tok = $check[0]['token'];
+                $download2 = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>PL Comments PDF</a>";
+            }
+
+            $this->html .=<<<EOF
+            <tr>
+            <td rowspan="{$rowspan}">
+            <b>{$ni_name}</b><br />
+            {$download1}<br />
+            {$download2}
+            </td>
+EOF;
+
+
+            $average_score = 0;
+            $sub_rows = "";
+            $div_count = 0;
+            $ev_count = 0;
+            foreach($evaluators as $evaluator) {
+                $eval_id = $evaluator->getId();
+                $eval_name = $evaluator->getReversedName();
+                
+                
+                $sub_rows .= "<tr><td rowspan='2'>{$eval_name}</td>";
+               
+
+                foreach(array('original', 'revised') as $ind => $rev){
+                    $sub_rows .= "";
+                    if($ind > 0){
+                        $sub_rows .= "<tr>";
+                    }
+                    
+                    $q8 = RMC2013Tab::getData(BLOB_TEXT, $rtype, $text_question, $ni, $eval_id, 2012);
+                    $q8 = $q8[$rev];
+                    $q8 = nl2br($q8);
+                    $comm_label = ucfirst($rev);
+                    if(!empty($q8)){
+                        $cell =<<<EOF
+                            <a href='#' onclick='openDialog("{$eval_id}", "{$ni_id}", {$ind}); return false;'>{$comm_label}</a>
+                            <div id='dialog{$ind}-{$eval_id}-{$ni_id}' class='comment_dialog' title='{$comm_label} Comment by {$eval_name} on {$ni_name}'>
+                            {$q8}
+                            </div>
+EOF;
+                    }else{
+                        $cell = "{$comm_label}";
+                    }
+                    $sub_rows .= "<td align='center'>{$cell}</td>";
+
+                    $i=0;
+                    foreach($radio_questions as $q){
+                        $comm = "";
+                        $comm_short = array();
+                        
+                        if($i>1){
+                            $comm = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2012);
+                            $comm = $comm[$rev];
+                            if(!empty($comm)){
+                                foreach($comm as $key=>$c){
+                                    if(strlen($c)>1){
+                                        $comm_short[] = substr($c, 0, 1);
+                                    }
+                                }
+                            }
+                        }
+                        $comm_short = implode(", ", $comm_short);
+
+                        $response = RMC2013Tab::getData(BLOB_TEXT, $rtype,  $q, $ni, $eval_id, 2012);
+                        $response_orig = $response = $response[$rev];
+                        
+                        if($response_orig){
+                            $response = substr($response, 0, 1);
+                            if(!empty($comm)){
+                                $response .= "; ".$comm_short;
+                                $comm = implode("<br />", $comm);
+                            } 
+                            $cell = "<td><span class='q_tip' title='{$response_orig}<br />{$comm}'><a>{$response}</a></span></td>";
+                        }else{
+                            $response = "";
+                            $cell = "<td>{$response}</td>";
+                        }
+
+                        if($q == EVL_OVERALLSCORE && $response_orig && isset($weights[$response_orig])){
+                            $average_score += $weights[$response_orig];
+                            $div_count++;
+                        }
+
+                        $sub_rows .= $cell;
+
+                        $i++;
+                    }
+
+                    $sub_rows .= "</tr>";
+                }
+
+                $ev_count++;
+            }
+            if($div_count > 0){
+                $average_score = round($average_score/$div_count, 1);
             }
             else{
-                $catNumber = 2;
+                $average_score = "N/A";
             }
+
+            $this->html .=<<<EOF
+                <td rowspan='{$rowspan}' style='background: #FFFFFF;' align='center'>{$average_score}</td>
+                </tr>
+                {$sub_rows}
+               
+EOF;
+            
         }
-        if(self::getValueOf($post['rating']) > 0){
-            $array["{$catNumber}_".self::getValueOf($post['rating'])] += 1;
-            $array["nQ{$questionNumber}"] += 1;
-        }
-        return $array;
+        
+        $this->html .= "</table><br />";
+        
     }
+
+    function showEvalProjectOverview(){
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript, $reporteeId, $getPerson;
+        $type = 'Project';
+        $rtype = RP_EVAL_PROJECT;
+
+        $weights = array('Top'=>4, 'Upper Middle'=>3, 'Lower Middle'=>2, 'Bottom'=>1);
+
+        $wgOut->addScript($foldscript);
+        $this->html .=<<<EOF
+        <h3>$type Summary of Questions 1-9</h3>
+        <table class='wikitable' cellspacing='1' cellpadding='2' style='border-style:solid;' width='100%' frame="box" rules="all">
+        <tr>
+            <th style='background: #EEEEEE;' width="15%">$type</th>
+            <th style='background: #EEEEEE;' width="5%">Weighted Average (Q6)</th>
+            <th style='background: #EEEEEE;' width="15%">Evaluator</th>
+            <th style='background: #EEEEEE;' width="10%">Q8 (Comments)</th>
+            <th style='background: #EEEEEE;' width="7%">Q7</th>
+            <th style='background: #EEEEEE;' width="7%">Q9</th>
+            <th style='background: #EEEEEE;' width="7%">Q1</th>
+            <th style='background: #EEEEEE;' width="7%">Q2</th>
+            <th style='background: #EEEEEE;' width="7%">Q3</th>
+            <th style='background: #EEEEEE;' width="7%">Q4</th>
+            <th style='background: #EEEEEE;' width="7%">Q5</th>
+        </tr>
+EOF;
+
+
+        $text_question = EVL_OTHERCOMMENTS;
+        $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_REPORTQUALITY);
+        $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_REPORTQUALITY_COM);
+
+        $projects = Person::getAllEvaluates($type, 2012);
+        $sorted_projects = array();
+        foreach ($projects as $p){
+            $sorted_projects[$p->getId()] = $p->getName();
+        }
+        asort($sorted_projects);
+
+        foreach($sorted_projects as $ni_id => $ni_name){
+            $ni = Project::newFromId($ni_id);
+            //$ni_id = $ni->getId();
+            //$ni_name = $ni->getReversedName();
+            $evaluators = $ni->getEvaluators(2012);
+
+            $rowspan = count($evaluators);
+            if($rowspan == 0){
+                continue;
+            }
+            $rowspan++;
+
+            $download = "";
+            $report = new DummyReport("ProjectReport", $ni, $ni);
+            $tok = false;
+            $check = $report->getPDF();
+            if (count($check) > 0) {
+                $tok = $check[0]['token'];
+                $download = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>[Download]</a>";
+            }
+
+            $this->html .=<<<EOF
+            <tr>
+            <td rowspan="{$rowspan}">
+            <b>{$ni_name}</b>
+            <table>
+                <tr>
+                    <td align='right' valign='top'><b>Project PDF:</b></td>
+                    <td algin='left' valign='top'>$download</td>
+                </tr>
+            </table>    
+            </td>
+EOF;
+
+            $average_score = 0;
+            $sub_rows = "";
+            $div_count = 0;
+            foreach($evaluators as $evaluator) {
+                $eval_id = $evaluator->getId();
+                $eval_name = $evaluator->getReversedName();
+                
+                $sub_rows .= "<tr><td>{$eval_name}</td>";
+                $cell = "";
+                $q8 = RMC2013Tab::getData(BLOB_TEXT, $rtype, $text_question, $ni, $eval_id, 2012, $ni_id);
+                $q8 = nl2br($q8);
+                if(!empty($q8)){
+                    $cell =<<<EOF
+                        <a href='#' onclick='openDialog("{$eval_id}", "{$ni_id}", 1); return false;'>See Comment</a>
+                        <div id='dialog1-{$eval_id}-{$ni_id}' class='comment_dialog' title='Original Comment by {$eval_name} on {$ni_name}'>
+                        {$q8}
+                        </div>
+EOF;
+                }
+                $sub_rows .= "<td>{$cell}</td>";
+
+                $i=0;
+                foreach($radio_questions as $q){
+                    $comm = "";
+                    $comm_short = array();
+                    
+                    if($i>1){
+                        $comm = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2012, $ni_id);
+                        if(!empty($comm)){
+                            foreach($comm as $key=>$c){
+                                if(strlen($c)>1){
+                                    $comm_short[] = substr($c, 0, 1);
+                                }
+                            }
+                        }
+                    }
+                    $comm_short = implode(", ", $comm_short);
+
+                    $response_orig = $response = RMC2013Tab::getData(BLOB_TEXT, $rtype,  $q, $ni, $eval_id, 2012, $ni_id);
+
+                    if($response_orig){
+                        $response = substr($response, 0, 1);
+                        if(!empty($comm)){
+                            $response .= "; ".$comm_short;
+                            $comm = implode("<br />", $comm);
+                        } 
+                        $cell = "<td><span class='q_tip' title='{$response_orig}<br />{$comm}'><a>{$response}</a></span></td>";
+                    }else{
+                        $response = "";
+                        $cell = "<td>{$response}</td>";
+                    }
+
+                    if($q == EVL_OVERALLSCORE && $response_orig && isset($weights[$response_orig])){
+                        $average_score += $weights[$response_orig];
+                        $div_count++;
+                    }
+
+                    $sub_rows.= $cell;
+
+                    $i++;
+                }
+
+
+                $sub_rows .= "</tr>";
+            }
+
+            if($div_count > 0){
+                $average_score = round($average_score/$div_count, 1);
+            }
+            else{
+                $average_score = "N/A";
+            }
+
+            $this->html .=<<<EOF
+                <td rowspan='{$rowspan}' style='background: #FFFFFF;' align='center'>{$average_score}</td>
+                </tr>
+                {$sub_rows}
+                <tr><td colspan="12" style="display:table-column;"></td></tr>
+EOF;
+            
+        }
+        
+        $this->html .= "</table><br />";
+        
+    }
+
+    static function getData($blob_type, $rptype, $question, $sub, $eval_id=0, $evalYear=EVAL_YEAR, $proj_id=0){
+
+        $addr = ReportBlob::create_address($rptype, SEC_NONE, $question, $sub->getId());
+        $blb = new ReportBlob($blob_type, $evalYear, $eval_id, $proj_id);
+        // echo "rptype=$rptype, section=$question, subid=".$sub->getId() .", blob_type=$blob_type, year=$evalYear, eval=$eval_id <br>";
+        
+        $data = "";
+       
+        $result = $blb->load($addr);
+        
+        $data = $blb->getData();
+        
+        return $data;
+    }
+
+    
 
     function showBudgetTableFor($type){
         global $wgOut, $wgScriptPath, $wgServer, $pl_language_years;

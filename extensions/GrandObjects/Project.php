@@ -799,12 +799,13 @@ EOF;
 	}
 	
 	// Returns a list of the evaluators who are evaluating this Project
-	function getEvaluators(){
+	function getEvaluators($year = REPORTING_YEAR){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE sub_id = '{$this->id}'
-				AND type = 'Project'";
+				AND type = 'Project'
+				AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){

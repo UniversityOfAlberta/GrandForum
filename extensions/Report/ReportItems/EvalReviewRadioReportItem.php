@@ -1,6 +1,7 @@
 <?php
 
 class EvalReviewRadioReportItem extends RadioReportItem {
+    var $seenOverview = 0;
 
 	// Redefined: Sets the Blob Sub-Item of this AbstractReportItem
     function setBlobSubItem($i){
@@ -12,7 +13,86 @@ class EvalReviewRadioReportItem extends RadioReportItem {
     	else if($type == "Project"){
     		$this->blobSubItem = $this->getParent()->projectId;
     	}
+        $this->getSeenOverview();
+    }
+
+
+    // Overloading from AbstractReportItem Sets the Blob value for this item
+    function setBlobValue($value){
+        $report = $this->getReport();
+        $section = $this->getSection();
+        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->getReport()->person->getId(), $this->projectId);
+        $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
+        $blob->load($blob_address);
+        $blob_data = $blob->getData();
+        //$this->blobType == BLOB_ARRAY
         
+        $value = str_replace("\00", "", $value); // Fixes problem with the xml backup putting in random null escape sequences
+        if($this->seenOverview){
+            $blob_data['revised'] = $value;
+        }
+        else{
+            $blob_data['original'] = $value;
+        }
+
+        $blob->store($blob_data, $blob_address);
+        
+    }
+    function getBlobValue(){
+        $report = $this->getReport();
+        $section = $this->getSection();
+        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->getReport()->person->getId(), $this->projectId);
+        $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
+        $blob->load($blob_address);
+        $blob_data = $blob->getData();
+        if($this->seenOverview){
+            $value = $blob_data['revised'];
+        }
+        else{
+            $value = $blob_data['original'];
+        }
+       
+        return $value;
+    }    
+
+    function getSeenOverview(){
+        global $wgUser, $wgImpersonating;
+        $type = $this->getParent()->getAttr('subType', 'NI');
+        $project_id = 0;
+        if($type == "NI"){
+            $blobSubItem = $this->personId;
+        }
+        else if ($type == "Project"){
+            $blobSubItem = $project_id = $this->getParent()->projectId;
+        }
+
+        if(!$wgImpersonating){
+            $evaluator_id = $wgUser->getId();
+
+            $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, 0);
+            $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_SEENOTHERREVIEWS, 0);
+            $blob->load($blob_address);
+            $seeonotherreviews = $blob->getData();
+
+            //If the reviewer has seen the overview, use the second address.
+
+            if($seeonotherreviews){
+                $this->seenOverview = 1;
+
+                $blob = new ReportBlob(BLOB_ARRAY, $this->getReport()->year, $evaluator_id, $project_id);
+                $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, $this->blobItem, $blobSubItem);
+                $blob->load($blob_address);
+                $data = $blob->getData();
+                //var_dump($data);
+                $orig_data = (isset($data['original']))? $data['original'] : "";
+                //copy over the data if the 'AFTER' blob does not yet exist
+                              
+                if(isset($data['original']) && empty($data['revised'])){
+                    $data['revised'] = $orig_data;
+                    $blob->store($data, $blob_address);
+                }    
+            }
+        }
     }
     
 }
