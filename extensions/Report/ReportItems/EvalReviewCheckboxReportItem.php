@@ -133,13 +133,13 @@ EOF;
 
 	function getSeenOverview(){
         global $wgUser, $wgImpersonating;
-        $type = $this->getParent()->getAttr('subType', 'NI');
+        $type = $this->getParent()->getParent()->getAttr('subType', 'NI');
         $project_id = 0;
         if($type == "NI"){
             $blobSubItem = $this->personId;
         }
         else if ($type == "Project"){
-            $blobSubItem = $project_id = $this->getParent()->projectId;
+            $blobSubItem = $project_id = $this->getParent()->getParent()->projectId;
         }
 
         if(!$wgImpersonating){
@@ -154,7 +154,7 @@ EOF;
 
             if($seeonotherreviews){
                 $this->seenOverview = 1;
-
+                //echo "PROJECTID=".$project_id ."<br>";
                 $blob = new ReportBlob(BLOB_ARRAY, $this->getReport()->year, $evaluator_id, $project_id);
                 $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, $this->blobItem, $blobSubItem);
                 $blob->load($blob_address);

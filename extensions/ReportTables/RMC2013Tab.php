@@ -168,12 +168,12 @@ EOF;
         $wgOut->addScript($foldscript);
         $this->html .=<<<EOF
         <h3>$type Summary of Questions 1-9</h3>
-        <table class='wikitable' cellspacing='1' cellpadding='2' style='border-style:solid;' width='100%' frame="box" rules="all">
+        <table class='wikitable' cellspacing='1' cellpadding='4' style='border-style:solid;' width='100%' frame="box" rules="all">
         <tr>
-            <th style='background: #EEEEEE;' width="20%">$type</th>
-            <th style='background: #EEEEEE;' width="5%">Weighted Average (Q6)</th>
+            <th style='background: #EEEEEE;' width="15%">$type</th>
+            <th style='background: #EEEEEE;' width="7%">Average (Q6)</th>
             <th style='background: #EEEEEE;' width="15%">Evaluator</th>
-            <th style='background: #EEEEEE;' width="10%">Q8 (Comments)</th>
+            <th style='background: #EEEEEE;' width="7%">Comment (Q8)</th>
             <th style='background: #EEEEEE;' width="7%">Q7</th>
             <th style='background: #EEEEEE;' width="7%">Q9</th>
             <th style='background: #EEEEEE;' width="7%">Q1</th>
@@ -207,40 +207,32 @@ EOF;
             if($rowspan == 0){
                 continue;
             }
-            $rowspan++;
+            $rowspan = $rowspan*2 + 1;
 
-            $download1 = "";
+            $download1 = "Researcher PDF";
             $report = new DummyReport("NIReport", $ni, null);
             $tok = false;
             $check = $report->getPDF();
             if (count($check) > 0) {
                 $tok = $check[0]['token'];
-                $download1 = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>[Download]</a>";
+                $download1 = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Researcher PDF</a>";
             }
 
-            $download2 = "";
+            $download2 = "PL Comments PDF";
             $report = new DummyReport("ProjectNIComments", $ni, null);
             $tok = false;
             $check = $report->getPDF();
             if (count($check) > 0) {
                 $tok = $check[0]['token'];
-                $download2 = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>[Download]</a>";
+                $download2 = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>PL Comments PDF</a>";
             }
 
             $this->html .=<<<EOF
             <tr>
             <td rowspan="{$rowspan}">
-            <b>{$ni_name}</b>
-            <table>
-                <tr>
-                    <td align='right' valign='top'><b>Researcher PDF:</b></td>
-                    <td algin='left' valign='top'>{$download1}</td>
-                </tr>
-                <tr>
-                    <td align='right' valign='top'><b>PL Comments PDF:</b></td>
-                    <td algin='left' valign='top'>{$download2}</td>
-                </tr>
-            </table>   
+            <b>{$ni_name}</b><br />
+            {$download1}<br />
+            {$download2}
             </td>
 EOF;
 
@@ -248,67 +240,84 @@ EOF;
             $average_score = 0;
             $sub_rows = "";
             $div_count = 0;
+            $ev_count = 0;
             foreach($evaluators as $evaluator) {
                 $eval_id = $evaluator->getId();
                 $eval_name = $evaluator->getReversedName();
+                
+                
+                $sub_rows .= "<tr><td rowspan='2'>{$eval_name}</td>";
                
-                $sub_rows .= "<tr><td>{$eval_name}</td>";
-                $cell = "";
-                $q8 = RMC2013Tab::getData(BLOB_TEXT, $rtype, $text_question, $ni, $eval_id, 2012);
-                $q8 = nl2br($q8);
-                if(!empty($q8)){
-                    $cell =<<<EOF
-                        <a href='#' onclick='openDialog("{$eval_id}", "{$ni_id}", 1); return false;'>See Comment</a>
-                        <div id='dialog1-{$eval_id}-{$ni_id}' class='comment_dialog' title='Original Comment by {$eval_name} on {$ni_name}'>
-                        {$q8}
-                        </div>
-EOF;
-                }
-                $sub_rows .= "<td>{$cell}</td>";
 
-                $i=0;
-                foreach($radio_questions as $q){
-                    $comm = "";
-                    $comm_short = array();
+                foreach(array('original', 'revised') as $ind => $rev){
+                    $sub_rows .= "";
+                    if($ind > 0){
+                        $sub_rows .= "<tr>";
+                    }
                     
-                    if($i>1){
-                        $comm = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2012);
-                        if(!empty($comm)){
-                            foreach($comm as $key=>$c){
-                                if(strlen($c)>1){
-                                    $comm_short[] = substr($c, 0, 1);
+                    $q8 = RMC2013Tab::getData(BLOB_TEXT, $rtype, $text_question, $ni, $eval_id, 2012);
+                    $q8 = $q8[$rev];
+                    $q8 = nl2br($q8);
+                    $comm_label = ucfirst($rev);
+                    if(!empty($q8)){
+                        $cell =<<<EOF
+                            <a href='#' onclick='openDialog("{$eval_id}", "{$ni_id}", {$ind}); return false;'>{$comm_label}</a>
+                            <div id='dialog{$ind}-{$eval_id}-{$ni_id}' class='comment_dialog' title='{$comm_label} Comment by {$eval_name} on {$ni_name}'>
+                            {$q8}
+                            </div>
+EOF;
+                    }else{
+                        $cell = "{$comm_label}";
+                    }
+                    $sub_rows .= "<td align='center'>{$cell}</td>";
+
+                    $i=0;
+                    foreach($radio_questions as $q){
+                        $comm = "";
+                        $comm_short = array();
+                        
+                        if($i>1){
+                            $comm = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2012);
+                            $comm = $comm[$rev];
+                            if(!empty($comm)){
+                                foreach($comm as $key=>$c){
+                                    if(strlen($c)>1){
+                                        $comm_short[] = substr($c, 0, 1);
+                                    }
                                 }
                             }
                         }
+                        $comm_short = implode(", ", $comm_short);
+
+                        $response = RMC2013Tab::getData(BLOB_TEXT, $rtype,  $q, $ni, $eval_id, 2012);
+                        $response_orig = $response = $response[$rev];
+                        
+                        if($response_orig){
+                            $response = substr($response, 0, 1);
+                            if(!empty($comm)){
+                                $response .= "; ".$comm_short;
+                                $comm = implode("<br />", $comm);
+                            } 
+                            $cell = "<td><span class='q_tip' title='{$response_orig}<br />{$comm}'><a>{$response}</a></span></td>";
+                        }else{
+                            $response = "";
+                            $cell = "<td>{$response}</td>";
+                        }
+
+                        if($q == EVL_OVERALLSCORE && $response_orig && isset($weights[$response_orig])){
+                            $average_score += $weights[$response_orig];
+                            $div_count++;
+                        }
+
+                        $sub_rows .= $cell;
+
+                        $i++;
                     }
-                    $comm_short = implode(", ", $comm_short);
 
-                    $response_orig = $response = RMC2013Tab::getData(BLOB_TEXT, $rtype,  $q, $ni, $eval_id, 2012);
-                    
-                    if($response_orig){
-                        $response = substr($response, 0, 1);
-                        if(!empty($comm)){
-                            $response .= "; ".$comm_short;
-                            $comm = implode("<br />", $comm);
-                        } 
-                        $cell = "<td><span class='q_tip' title='{$response_orig}<br />{$comm}'><a>{$response}</a></span></td>";
-                    }else{
-                        $response = "";
-                        $cell = "<td>{$response}</td>";
-                    }
-
-                    if($q == EVL_OVERALLSCORE && $response_orig && isset($weights[$response_orig])){
-                        $average_score += $weights[$response_orig];
-                        $div_count++;
-                    }
-
-                    $sub_rows .= $cell;
-
-                    $i++;
+                    $sub_rows .= "</tr>";
                 }
 
-                $sub_rows .= "</tr>";
-               
+                $ev_count++;
             }
             if($div_count > 0){
                 $average_score = round($average_score/$div_count, 1);
@@ -321,7 +330,7 @@ EOF;
                 <td rowspan='{$rowspan}' style='background: #FFFFFF;' align='center'>{$average_score}</td>
                 </tr>
                 {$sub_rows}
-                <tr><td colspan="12" style="display:table-column;"></td></tr>
+               
 EOF;
             
         }
