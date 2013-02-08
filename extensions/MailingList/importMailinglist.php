@@ -60,9 +60,8 @@ function parseMailArchive($filename, $proj_id) {
 	$messages = array();
 	$parentMapping = array();
 	list($addresses, $names, $dates, $subjects, $refids, $mids, $bodies) = array($matches[1], $matches[2], $matches[3], $matches[4], $matches[6],  $matches[7], $matches[8]);
-		
 	for ($i = 0; $i < count($mids); $i++) {
-		
+	    $subjects[$i] = mb_decode_mimeheader($subjects[$i]);
 		if (isset($existing[$mids[$i]])) {
 			continue;
 		}
