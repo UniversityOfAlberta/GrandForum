@@ -19,6 +19,8 @@ function createFDG(width, height, id, url){
         var colors = ["#1f77b4", "#aec7e8", "#e377c2", "#d62728", "#ff7f0e", "#98df8a", "#7f7f7f", "#c7c7c7"];
         return colors[c % colors.length];
     };
+    
+    var edgeColor = d3.scale.category10();
 
     var svg = d3.select("#" + id).append("svg")
         .attr("width", width)
@@ -36,7 +38,7 @@ function createFDG(width, height, id, url){
         $("#" + id).append("<div class='edgelegend' style='position:absolute;display:inline;'><h3>Edges</h3></div>");
         $("#" + id + " .edgelegend").css('margin-top', $("#" + id + " .legend").height());
         graph.edgeGroups.forEach(function(g, i){
-            var c = color(i);
+            var c = edgeColor(i);
             $("#" + id + " .edgelegend").append("<span style='display:inline-block;width:" + 10 + "px;height:" + 10 + "px;background:" + c + ";'></span> " + g + "<br />");
         });
     
@@ -105,7 +107,7 @@ function createFDG(width, height, id, url){
             .append("svg:line")
             .attr("class", "link")
             .style("stroke", function(d){
-                return color(d.group);
+                return edgeColor(d.group);
             })
             .style("stroke-width", function(d){
                 return d.value*2;
