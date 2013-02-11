@@ -361,6 +361,7 @@ class PersonVisualisationsTab extends AbstractTab {
 	                         "group" => $groups[self::getRootDiscipline($person->getSurveyDiscipline())]);
 	        
 	        $names[$person->getReversedName()] = $person;
+	        $doneLinks = array();
 	        foreach($person->getSurveyFirstDegreeConnections() as $key => $connection){
 	            foreach($connection as $name => $data){
 	                $pers = Person::newFromName($name);
@@ -388,12 +389,14 @@ class PersonVisualisationsTab extends AbstractTab {
 	                
 	                if($value > 0 && $edgeGroup != 1000 && $value > 0.01){
 	                    $nodes[] = array("name" => $pers->getReversedName(),
-	                                     "group" => $groups[self::getRootDiscipline($pers->getSurveyDiscipline())]);
+	                                     "group" => $groups[self::getRootDiscipline($pers->getSurveyDiscipline())],
+	                                     "id" => md5($pers->getReversedName()));
 	                    $names[$pers->getReversedName()] = $pers;
 	                    $links[] = array("source" => 0,
 	                                     "target" => $key+1,
 	                                     "group" => $edgeGroup,
 	                                     "value" => $value/$nFields);
+	                    $doneLinks[0][$key] = true;
 	                }
 	            }
 	        }
@@ -427,7 +430,8 @@ class PersonVisualisationsTab extends AbstractTab {
 	                            }
                                 if(!isset($names[$p->getReversedName().$key1]) && $degree == 2 && $value > 0.01){
                                     $nodes[] = array("name" => $p->getReversedName(),
-                                                     "group" => $groups[self::getRootDiscipline($p->getSurveyDiscipline())]);
+                                                     "group" => $groups[self::getRootDiscipline($p->getSurveyDiscipline())],
+                                                     "id" => md5($p->getReversedName()));
                                     $names[$p->getReversedName().$key1] = $p;
                                     $key = array_search($p->getReversedName().$key1, array_keys($names));
                                 }
@@ -435,11 +439,12 @@ class PersonVisualisationsTab extends AbstractTab {
                                     $key = array_search($p->getReversedName(), array_keys($names));
                                 }
                                 
-                                if($key !== false && $key != 0 && $edgeGroup != 1000 && $value > 0.01){
+                                if($key !== false && $key != 0 && $edgeGroup != 1000 && $value > 0.01 && !isset($doneLinks[$key][$key1]) && !isset($doneLinks[$key1][$key])){
                                     $links[] = array("source" => $key1,
                                                      "target" => $key,
                                                      "group" => $edgeGroup,
                                                      "value" => $value/$nFields);
+                                    $doneLinks[$key1][$key] = true;
                                 }
 	                        }
 	                    }
@@ -454,7 +459,7 @@ class PersonVisualisationsTab extends AbstractTab {
 	        $array = array('groups' => array_flip($groups),
 	                       'edgeGroups' => $edgeGroups,
 	                       'nodes' => $nodes,
-	                       'links' => $links);
+	                       'links' => $links,);
             header("Content-Type: application/json");
             echo json_encode($array); 
             exit;

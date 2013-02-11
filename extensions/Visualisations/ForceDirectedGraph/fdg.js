@@ -29,17 +29,42 @@ function createFDG(width, height, id, url){
     $.get(url, function(graph){
         stopFDG(id);
         // Set up Legend
+        
+        var groupSummary = Array();
+        var edgeSummary = Array();
         $("#" + id).append("<div class='legend' style='position:absolute;display:inline;'><h3>Nodes</h3></div>");
         graph.groups.forEach(function(g, i){
+            groupSummary[i] = 0;
+        });
+        graph.edgeGroups.forEach(function(g, i){
+            edgeSummary[i] = 0;
+        });
+        
+        var usedIds = Array();
+        
+        graph.nodes.forEach(function(n, i){
+            if(i != 0){
+                if(usedIds.indexOf(n.id) == -1){
+                    usedIds.push(n.id);
+                    groupSummary[n.group]++;
+                }
+            }
+        });
+        
+        graph.links.forEach(function(n, i){
+            edgeSummary[n.group]++;
+        });
+        
+        graph.groups.forEach(function(g, i){
             var c = color(i);
-            $("#" + id + " .legend").append("<span style='display:inline-block;width:" + 10 + "px;height:" + 10 + "px;background:" + c + ";'></span> " + g + "<br />");
+            $("#" + id + " .legend").append("<span style='display:inline-block;width:" + 10 + "px;height:" + 10 + "px;background:" + c + ";'></span> " + g + "<b> (" + groupSummary[i] + ")</b>" + "<br />");
         });
         
         $("#" + id).append("<div class='edgelegend' style='position:absolute;display:inline;'><h3>Edges</h3></div>");
         $("#" + id + " .edgelegend").css('margin-top', $("#" + id + " .legend").height());
         graph.edgeGroups.forEach(function(g, i){
             var c = edgeColor(i);
-            $("#" + id + " .edgelegend").append("<span style='display:inline-block;width:" + 10 + "px;height:" + 10 + "px;background:" + c + ";'></span> " + g + "<br />");
+            $("#" + id + " .edgelegend").append("<span style='display:inline-block;width:" + 10 + "px;height:" + 10 + "px;background:" + c + ";'></span> " + g + "<b> (" + edgeSummary[i] + ")</b>" + "<br />");
         });
     
         isLabeled = false;
