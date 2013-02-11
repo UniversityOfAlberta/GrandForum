@@ -742,6 +742,18 @@ class Person{
 	}
 	
 	/**
+	 * Returns whether this Person has worked on their survey
+	 * @return boolean whether this Person has worked on their survey
+	 */
+	function hasDoneSurvey(){
+	    $sql = "SELECT *
+	            FROM `survey_results`
+	            WHERE `user_id` = '{$this->id}'";
+	    $data = DBFunctions::execSQL($sql);
+	    return (DBFunctions::getNRows() > 0);
+	}
+	
+	/**
 	 * Returns this Person's primary funding agency from their response in the Survey
 	 * @return string This Person's primary funding agency from their response in the Survey
 	 */

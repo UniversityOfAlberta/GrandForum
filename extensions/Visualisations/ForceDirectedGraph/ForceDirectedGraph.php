@@ -1,6 +1,6 @@
 <?php
 
-//require_once("SpecialFDG.php");
+require_once("SpecialFDG.php");
 
 class ForceDirectedGraph extends Visualisation {
     

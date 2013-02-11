@@ -1,7 +1,8 @@
-var force = undefined;
-var force2 = undefined;
+var fdgForces = Array();
 
-function stopFDG(){
+function stopFDG(id){
+    var force = fdgForces[id];
+    var force2 = fdgForces[id + "2"];
     if(force != undefined){
         force.stop();
     }
@@ -23,15 +24,20 @@ function createFDG(width, height, id, url){
         .attr("width", width)
         .attr("height", height);
 
-    
-
     $.get(url, function(graph){
-        stopFDG();
+        stopFDG(id);
         // Set up Legend
-        $("#" + id).append("<div class='legend' style='position:absolute;display:inline;'><h3>Legend</h3></div>");
+        $("#" + id).append("<div class='legend' style='position:absolute;display:inline;'><h3>Nodes</h3></div>");
         graph.groups.forEach(function(g, i){
             var c = color(i);
             $("#" + id + " .legend").append("<span style='display:inline-block;width:" + 10 + "px;height:" + 10 + "px;background:" + c + ";'></span> " + g + "<br />");
+        });
+        
+        $("#" + id).append("<div class='edgelegend' style='position:absolute;display:inline;'><h3>Edges</h3></div>");
+        $("#" + id + " .edgelegend").css('margin-top', $("#" + id + " .legend").height());
+        graph.edgeGroups.forEach(function(g, i){
+            var c = color(i);
+            $("#" + id + " .edgelegend").append("<span style='display:inline-block;width:" + 10 + "px;height:" + 10 + "px;background:" + c + ";'></span> " + g + "<br />");
         });
     
         isLabeled = false;
@@ -66,7 +72,8 @@ function createFDG(width, height, id, url){
 			    weight : 1
 		    });
 	    };
-	    force = d3.layout.force()
+	    
+	    var force = d3.layout.force()
             .charge(function(){
                 return -(Math.sqrt(graph.links.length)/graph.nodes.length)*Math.min(width, height)*2;
             })
@@ -78,8 +85,9 @@ function createFDG(width, height, id, url){
             .linkStrength(0.5)
             .theta(0.99999)
             .start();
+        fdgForces[id] = force;
         if(isLabeled) {
-            force2 = d3.layout.force()
+            var force2 = d3.layout.force()
                 .charge(-100)
                 .linkDistance(0)
                 .linkStrength(8)
@@ -88,6 +96,7 @@ function createFDG(width, height, id, url){
                 .nodes(labelAnchors)
                 .links(labelAnchorLinks)
                 .start();
+            fdgForces[id + "2"] = force2;
         }
         
         var link = svg.selectAll("line.link")
@@ -96,7 +105,7 @@ function createFDG(width, height, id, url){
             .append("svg:line")
             .attr("class", "link")
             .style("stroke", function(d){
-                return color(d.target.group);
+                return color(d.group);
             })
             .style("stroke-width", function(d){
                 return d.value*2;
