@@ -13,7 +13,7 @@ class EvalReviewRadioReportItem extends RadioReportItem {
     	else if($type == "Project"){
     		$this->blobSubItem = $this->getParent()->projectId;
     	}
-        $this->getSeenOverview();
+        //$this->getSeenOverview();
     }
 
 

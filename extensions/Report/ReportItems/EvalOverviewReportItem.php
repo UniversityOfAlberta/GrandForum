@@ -8,7 +8,12 @@ class EvalOverviewReportItem extends AbstractReportItem {
         $item = "$details";
         $item = $this->processCData($item);
 		$wgOut->addHTML($item);
-        $this->setSeenOverview();
+        if(isset($_GET['seenReport']) && !empty($_GET['seenReport'])){
+            $sub_id = $_GET['seenReport'];
+            $this->setSeenOverview($sub_id);
+        }
+        
+
 	}
 	
 	function renderForPDF(){
@@ -20,17 +25,21 @@ class EvalOverviewReportItem extends AbstractReportItem {
 	}
 	
 	function getTableHTML(){
-        global $wgUser;
+        global $wgUser, $wgServer, $wgScriptPath;
         $type = $this->getAttr('subType', 'PNI');
 	    $person = Person::newFromId($this->personId);
+        $section_url = "";
         if($type == "PNI"){
-	       $subs = $person->getEvaluatePNIs();
+	        $subs = $person->getEvaluatePNIs();
+            $section_url = "PNI+Overview";
         }
         else if($type == "CNI"){
-           $subs = $person->getEvaluateCNIs();
+            $subs = $person->getEvaluateCNIs();
+            $section_url = "CNI+Overview";
         }
         else if($type == "Project"){
             $subs = $person->getEvaluateProjects();
+            $section_url = "Project+Overview";
         }
 
 	    $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY);
@@ -82,9 +91,10 @@ class EvalOverviewReportItem extends AbstractReportItem {
                     
                     $('.details_sub').hide();
                     $('#details_sub-'+sub_id).show();
-                    //$('html, body').animate({
-                    //    scrollTop: $('#details_sub-'+sub_id).offset().top
-                    //}, 400);
+                    $.ajax({
+                        type: "GET",
+                        url: "{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EvalReport&section={$section_url}&seenReport="+sub_id,
+                    });
                 }
             </script>
 EOF;
@@ -332,9 +342,10 @@ EOF;
 	    return $blob_data;
 	}
 
-    function setSeenOverview(){
+
+    function setSeenOverview($reportSubItem = null){
         global $wgUser, $wgImpersonating;
-        if($wgImpersonating){
+        if($wgImpersonating || is_null($reportSubItem)){
             return;
         }
         
@@ -354,6 +365,7 @@ EOF;
         else if($type == "Project"){
             $subs = $person->getEvaluateProjects();
             $questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_REPORTQUALITY, EVL_OTHERCOMMENTS);
+            $project_id = $reportSubItem;
         }
 
          //Determine if own review was completed.
@@ -373,37 +385,48 @@ EOF;
         }
 
         if($complete){
-            $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, 0);
-            $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_SEENOTHERREVIEWS, 0);
-            $data = "Yes";
-            $blob->store($data, $blob_address);
-        }
-        /*
-        $blob->load($blob_address);
-        $data = $blob->getData();
-        if(!empty($data)){
-            return;
-        }
-        */
 
-        //$data = "Yes";
-        //$blob->store($data, $blob_address);
-        
-        /*
-        $person = Person::newFromId($this->personId);
-        $subs = $person->getEvaluatePNIs();
-        foreach($subs as $sub){
-            $sub_id = $sub->getId();
-            $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, $this->projectId);
-            $blob_address_from = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_OTHERCOMMENTS, $sub_id);
-            $blob->load($blob_address_from);
+            //Check if seenother flag is already set
+            $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, $project_id);
+            $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_SEENOTHERREVIEWS, $reportSubItem);
+            $blob->load($blob_address);
+            $seeonotherreviews = $blob->getData();
+            if(!$seeonotherreviews){
 
-            if($orig_data = $blob->getData()){    
-                $blob_address_to = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_OTHERCOMMENTSAFTER, $sub_id);
-                $blob->store($orig_data, $blob_address_to);
+                foreach ($subs as $sub){
+                    $sub_id = $sub->getId();
+                    foreach($questions as $q){
+                        $this->setRevised(BLOB_ARRAY, $evaluator_id, $q, $sub_id);
+                    }
+                    
+                }
+
+                $data = "Yes";
+                $blob->store($data, $blob_address);
             }
-        }
-        */
+            
+            
+        }   
     }
+
+    function setRevised($blob_type, $evaluator_id, $blobItem, $blobSubItem){
+        $project_id = 0;
+        if($this->getReport()->reportType == RP_EVAL_PROJECT){
+            $project_id = $blobSubItem;
+        }
+        $blob = new ReportBlob($blob_type, $this->getReport()->year, $evaluator_id, $project_id);
+        $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, $blobItem, $blobSubItem);
+
+        $blob->load($blob_address);
+        $blob_data = $blob->getData();
+        $orig_data = (isset($blob_data['original']))? $blob_data['original'] : "";
+      
+        //copy over the data if the 'AFTER' blob does not yet exist              
+        if(isset($blob_data['original']) && empty($blob_data['revised'])){
+            $blob_data['revised'] = $orig_data;
+            $blob->store($blob_data, $blob_address);
+        }    
+    }
+
 }
 ?>
