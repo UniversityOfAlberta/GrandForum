@@ -350,6 +350,7 @@ class PersonVisualisationsTab extends AbstractTab {
 	        $links = array();
 	        $groups = array();
 	        $disciplines = AboutTab::getDisciplineList();
+	        $edgeGroups = array('Works With', 'Gave/Received Advice', 'Friend', 'Acquaintance');
 	        $i = 0;
 	        foreach($disciplines as $name => $discipline){
 	            $groups[$name] = $i;
@@ -364,20 +365,34 @@ class PersonVisualisationsTab extends AbstractTab {
 	            foreach($connection as $name => $data){
 	                $pers = Person::newFromName($name);
 	                
-	                $value = 0;
+	                $value = 0.01;
 	                $nFields = 5;
+	                $edgeGroup = -1;
 	                foreach($data as $k => $field){
 	                    if(is_numeric($field) && $field != 0 && $k != "hotlist"){
 	                        $value++;
 	                    }
+	                    else if($k == "work_with" && $edgeGroup <= array_search("Works With", $edgeGroups)){
+	                        $edgeGroup = array_search("Works With", $edgeGroups);
+	                    }
+	                    else if(($k == "gave_advice" || $k == "received_advice") && $edgeGroup <= array_search("Gave/Received Advice", $edgeGroups)){
+	                        $edgeGroup = array_search("Gave/Received Advice", $edgeGroups);
+	                    }
+	                    else if($k == "friend" && $edgeGroup <= array_search("Friend", $edgeGroups)){
+	                        $edgeGroup = array_search("Works With", $edgeGroups);
+	                    }
+	                    else if($k == "acquaintance" && $edgeGroup <= array_search("Acquaintance", $edgeGroups)){
+	                        $edgeGroup = array_search("Works With", $edgeGroups);
+	                    }
 	                }
 	                
-	                if($value > 0){
+	                if($value > 0 && $edgeGroup != -1){
 	                    $nodes[] = array("name" => $pers->getReversedName(),
 	                                     "group" => $groups[self::getRootDiscipline($pers->getSurveyDiscipline())]);
 	                    $names[$pers->getReversedName()] = $pers;
 	                    $links[] = array("source" => 0,
 	                                     "target" => $key+1,
+	                                     "group" => $edgeGroup,
 	                                     "value" => $value/$nFields);
 	                }
 	            }
@@ -392,11 +407,24 @@ class PersonVisualisationsTab extends AbstractTab {
 	                            $p = Person::newFromName($name);
 	                            $value = 0;
                                 $nFields = 6;
-                                foreach($data as $field){
-                                    if(is_numeric($field) && $field != 0){
-                                        $value++;
-                                    }
-                                }
+                                $edgeGroup = -1;
+	                            foreach($data as $k => $field){
+	                                if(is_numeric($field) && $field != 0 && $k != "hotlist"){
+	                                    $value++;
+	                                }
+	                                else if($k == "work_with" && $edgeGroup <= array_search("Works With", $edgeGroups)){
+	                                    $edgeGroup = array_search("Works With", $edgeGroups);
+	                                }
+	                                else if(($k == "gave_advice" || $k == "received_advice") && $edgeGroup <= array_search("Gave/Received Advice", $edgeGroups)){
+	                                    $edgeGroup = array_search("Gave/Received Advice", $edgeGroups);
+	                                }
+	                                else if($k == "friend" && $edgeGroup <= array_search("Friend", $edgeGroups)){
+	                                    $edgeGroup = array_search("Works With", $edgeGroups);
+	                                }
+	                                else if($k == "acquaintance" && $edgeGroup <= array_search("Acquaintance", $edgeGroups)){
+	                                    $edgeGroup = array_search("Works With", $edgeGroups);
+	                                }
+	                            }
                                 if(!isset($names[$p->getReversedName().$key1]) && $degree == 2){
                                     $nodes[] = array("name" => $p->getReversedName(),
                                                      "group" => $groups[self::getRootDiscipline($p->getSurveyDiscipline())]);
@@ -407,9 +435,10 @@ class PersonVisualisationsTab extends AbstractTab {
                                     $key = array_search($p->getReversedName(), array_keys($names));
                                 }
                                 
-                                if($key !== false && $key != 0){
+                                if($key !== false && $key != 0 && $edgeGroup != -1){
                                     $links[] = array("source" => $key1,
                                                      "target" => $key,
+                                                     "group" => $edgeGroup,
                                                      "value" => $value/$nFields);
                                 }
 	                        }
@@ -423,6 +452,7 @@ class PersonVisualisationsTab extends AbstractTab {
 	            }
 	        //}
 	        $array = array('groups' => array_flip($groups),
+	                       'edgeGroups' => $edgeGroups,
 	                       'nodes' => $nodes,
 	                       'links' => $links);
             header("Content-Type: application/json");

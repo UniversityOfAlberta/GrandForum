@@ -13,18 +13,27 @@ class SpecialFDG extends SpecialPage {
 
 	function __construct() {
 		wfLoadExtensionMessages('SpecialFDG');
-		SpecialPage::SpecialPage("SpecialFDG", CNI.'+', true, 'runSpecialFDG');
+		SpecialPage::SpecialPage("SpecialFDG", MANAGER.'+', true, 'runSpecialFDG');
 	}
 	
 	function run(){
 	    global $wgOut, $wgServer, $wgScriptPath;
-	    $person = Person::newFromId($_GET['person']);
-	    $wgOut->addHTML("<h2>{$person->getReversedName()}</h2>");
-	    $person = @$_GET['person'];
-	    $degree = isset($_GET['degree']) ? $_GET['degree'] : 1;
-	    $graph = new ForceDirectedGraph("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialFDGData&person={$person}&degree={$degree}");
-	    $string = $graph->show();
-	    $wgOut->addHTML($string);
+	    $people = Person::getAllPeople();
+	    
+	    $nPeople = 0;
+	    foreach($people as $person){
+	        if($person->hasDoneSurvey()){
+	            $string = "";
+	            $nPeople++;
+	            $wgOut->addHTML("<h2>{$person->getReversedName()}</h2>");
+	            $p = $person->getId();
+	            $graph1 = new ForceDirectedGraph("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialFDGData&person={$p}&degree=1");
+	            $graph2 = new ForceDirectedGraph("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialFDGData&person={$p}&degree=2");
+	            $string .= $graph1->show();
+	            $string .= $graph2->show();
+	            $wgOut->addHTML($string);
+	        }
+	    }
 	}
 	
 	static function getRootDiscipline($disc){
@@ -66,7 +75,7 @@ class SpecialFDG extends SpecialPage {
 	            foreach($connection as $name => $data){
 	                $pers = Person::newFromName($name);
 	                
-	                $value = 0;
+	                $value = 0.01;
 	                $nFields = 5;
 	                foreach($data as $k => $field){
 	                    if(is_numeric($field) && $field != 0 && $k != "hotlist"){
@@ -85,43 +94,45 @@ class SpecialFDG extends SpecialPage {
 	            }
 	        }
 	        
-	        foreach($nodes as $key1 => $node){
-	            if($node['name'] != $person->getName()){
-	                $pers = $names[$node['name']];
-	                foreach($pers->getSurveyFirstDegreeConnections() as $connection){
-	                    foreach($connection as $name => $data){
-	                        $p = Person::newFromName($name);
-	                        $value = 0;
-                            $nFields = 6;
-                            foreach($data as $field){
-                                if(is_numeric($field) && $field != 0){
-                                    $value++;
+	        //if($degree > 1){
+	            foreach($nodes as $key1 => $node){
+	                if($node['name'] != $person->getName()){
+	                    $pers = $names[$node['name']];
+	                    foreach($pers->getSurveyFirstDegreeConnections() as $connection){
+	                        foreach($connection as $name => $data){
+	                            $p = Person::newFromName($name);
+	                            $value = 0;
+                                $nFields = 6;
+                                foreach($data as $field){
+                                    if(is_numeric($field) && $field != 0){
+                                        $value++;
+                                    }
                                 }
-                            }
-                            if(!isset($names[$p->getReversedName().$key1]) && $degree == 2){
-                                $nodes[] = array("name" => $p->getReversedName(),
-                                                 "group" => $groups[self::getRootDiscipline($p->getSurveyDiscipline())]);
-                                $names[$p->getReversedName().$key1] = $p;
-                                $key = array_search($p->getReversedName().$key1, array_keys($names));
-                            }
-                            else{
-                                $key = array_search($p->getReversedName(), array_keys($names));
-                            }
-                            
-                            if($key !== false && $key != 0){
-                                $links[] = array("source" => $key1,
-                                                 "target" => $key,
-                                                 "value" => $value/$nFields);
-                            }
+                                if(!isset($names[$p->getReversedName().$key1]) && $degree == 2){
+                                    $nodes[] = array("name" => $p->getReversedName(),
+                                                     "group" => $groups[self::getRootDiscipline($p->getSurveyDiscipline())]);
+                                    $names[$p->getReversedName().$key1] = $p;
+                                    $key = array_search($p->getReversedName().$key1, array_keys($names));
+                                }
+                                else{
+                                    $key = array_search($p->getReversedName(), array_keys($names));
+                                }
+                                
+                                if($key !== false && $key != 0){
+                                    $links[] = array("source" => $key1,
+                                                     "target" => $key,
+                                                     "value" => $value/$nFields);
+                                }
+	                        }
 	                    }
 	                }
 	            }
-	        }
-	        if($degree > 1){
+	        //}
+	        //if($degree > 1){
 	            foreach($nodes as &$node){
 	                $node['name'] = '';
 	            }
-	        }
+	        //}
 	        $array = array('groups' => array_flip($groups),
 	                       'nodes' => $nodes,
 	                       'links' => $links);
