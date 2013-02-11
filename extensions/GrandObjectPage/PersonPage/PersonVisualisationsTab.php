@@ -367,26 +367,26 @@ class PersonVisualisationsTab extends AbstractTab {
 	                
 	                $value = 0.01;
 	                $nFields = 5;
-	                $edgeGroup = -1;
+	                $edgeGroup = 1000;
 	                foreach($data as $k => $field){
 	                    if(is_numeric($field) && $field != 0 && $k != "hotlist"){
-	                        $value++;
-	                    }
-	                    else if($k == "work_with" && $edgeGroup <= array_search("Works With", $edgeGroups)){
-	                        $edgeGroup = array_search("Works With", $edgeGroups);
-	                    }
-	                    else if(($k == "gave_advice" || $k == "received_advice") && $edgeGroup <= array_search("Gave/Received Advice", $edgeGroups)){
-	                        $edgeGroup = array_search("Gave/Received Advice", $edgeGroups);
-	                    }
-	                    else if($k == "friend" && $edgeGroup <= array_search("Friend", $edgeGroups)){
-	                        $edgeGroup = array_search("Works With", $edgeGroups);
-	                    }
-	                    else if($k == "acquaintance" && $edgeGroup <= array_search("Acquaintance", $edgeGroups)){
-	                        $edgeGroup = array_search("Works With", $edgeGroups);
-	                    }
+                            $value++;
+                            if($k == "work_with" && $edgeGroup >= array_search("Works With", $edgeGroups)){
+                                $edgeGroup = array_search("Works With", $edgeGroups);
+                            }
+                            else if(($k == "gave_advice" || $k == "received_advice") && $edgeGroup >= array_search("Gave/Received Advice", $edgeGroups)){
+                                $edgeGroup = array_search("Gave/Received Advice", $edgeGroups);
+                            }
+                            else if($k == "friend" && $edgeGroup >= array_search("Friend", $edgeGroups)){
+                                $edgeGroup = array_search("Works With", $edgeGroups);
+                            }
+                            else if($k == "acquaintance" && $edgeGroup >= array_search("Acquaintance", $edgeGroups)){
+                                $edgeGroup = array_search("Works With", $edgeGroups);
+                            }
+                        }
 	                }
 	                
-	                if($value > 0 && $edgeGroup != -1){
+	                if($value > 0 && $edgeGroup != 1000 && $value > 0.01){
 	                    $nodes[] = array("name" => $pers->getReversedName(),
 	                                     "group" => $groups[self::getRootDiscipline($pers->getSurveyDiscipline())]);
 	                    $names[$pers->getReversedName()] = $pers;
@@ -407,25 +407,25 @@ class PersonVisualisationsTab extends AbstractTab {
 	                            $p = Person::newFromName($name);
 	                            $value = 0;
                                 $nFields = 6;
-                                $edgeGroup = -1;
+                                $edgeGroup = 1000;
 	                            foreach($data as $k => $field){
 	                                if(is_numeric($field) && $field != 0 && $k != "hotlist"){
 	                                    $value++;
-	                                }
-	                                else if($k == "work_with" && $edgeGroup <= array_search("Works With", $edgeGroups)){
-	                                    $edgeGroup = array_search("Works With", $edgeGroups);
-	                                }
-	                                else if(($k == "gave_advice" || $k == "received_advice") && $edgeGroup <= array_search("Gave/Received Advice", $edgeGroups)){
-	                                    $edgeGroup = array_search("Gave/Received Advice", $edgeGroups);
-	                                }
-	                                else if($k == "friend" && $edgeGroup <= array_search("Friend", $edgeGroups)){
-	                                    $edgeGroup = array_search("Works With", $edgeGroups);
-	                                }
-	                                else if($k == "acquaintance" && $edgeGroup <= array_search("Acquaintance", $edgeGroups)){
-	                                    $edgeGroup = array_search("Works With", $edgeGroups);
+	                                    if($k == "work_with" && $edgeGroup >= array_search("Works With", $edgeGroups)){
+	                                        $edgeGroup = array_search("Works With", $edgeGroups);
+	                                    }
+	                                    else if(($k == "gave_advice" || $k == "received_advice") && $edgeGroup >= array_search("Gave/Received Advice", $edgeGroups)){
+	                                        $edgeGroup = array_search("Gave/Received Advice", $edgeGroups);
+	                                    }
+	                                    else if($k == "friend" && $edgeGroup >= array_search("Friend", $edgeGroups)){
+	                                        $edgeGroup = array_search("Works With", $edgeGroups);
+	                                    }
+	                                    else if($k == "acquaintance" && $edgeGroup >= array_search("Acquaintance", $edgeGroups)){
+	                                        $edgeGroup = array_search("Works With", $edgeGroups);
+	                                    }
 	                                }
 	                            }
-                                if(!isset($names[$p->getReversedName().$key1]) && $degree == 2){
+                                if(!isset($names[$p->getReversedName().$key1]) && $degree == 2 && $value > 0.01){
                                     $nodes[] = array("name" => $p->getReversedName(),
                                                      "group" => $groups[self::getRootDiscipline($p->getSurveyDiscipline())]);
                                     $names[$p->getReversedName().$key1] = $p;
@@ -435,7 +435,7 @@ class PersonVisualisationsTab extends AbstractTab {
                                     $key = array_search($p->getReversedName(), array_keys($names));
                                 }
                                 
-                                if($key !== false && $key != 0 && $edgeGroup != -1){
+                                if($key !== false && $key != 0 && $edgeGroup != 1000 && $value > 0.01){
                                     $links[] = array("source" => $key1,
                                                      "target" => $key,
                                                      "group" => $edgeGroup,
