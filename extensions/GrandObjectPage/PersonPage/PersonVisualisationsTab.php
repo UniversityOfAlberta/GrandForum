@@ -17,13 +17,17 @@ class PersonVisualisationsTab extends AbstractTab {
     }
 
     function generateBody(){
-        global $wgUser, $wgOut;
+        global $wgUser, $wgOut, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         $this->html = "";
         if($wgUser->isLoggedIn()){
             $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){
                     $('#personVis').tabs({selected: 0});
+                    /*$('#personVis').record({
+                                             convertSVG: true,
+                                             convertURL: '{$wgServer}{$wgScriptPath}/convertSvg.php'
+                                           });*/
                     $('#person').bind('tabsselect', function(event, ui) {
                         if(ui.panel.id == 'visualize'){
                             $('#personVis').tabs('option', 'selected', 0);
@@ -36,7 +40,7 @@ class PersonVisualisationsTab extends AbstractTab {
 	            <ul>
 		            <li><a href='#timeline'>Timeline</a></li>
 		            <li><a href='#chart'>Productivity Chart</a></li>";
-            if($wgUser->isLoggedIn() && ($this->person->getId() == $me->getId() || $me->isMemberOf(Project::newFromName("NAVEL")) || $me->isRoleAtLeast(MANAGER))){
+            if(($wgUser->isLoggedIn() && $this->person->getId() == $me->getId()) || $me->isRoleAtLeast(MANAGER)){
                 $this->html .= "<li><a href='#survey'>Survey Graph</a></li>";
             }
 		    $this->html .= "<li><a href='#network'>Network</a></li>
@@ -58,7 +62,7 @@ class PersonVisualisationsTab extends AbstractTab {
         
         var selectedTab = $('#personVis .ui-tabs-selected');
         if(selectedTab.length > 0){
-            // If the tabs were created previously but removed from the dome, 
+            // If the tabs were created previously but removed from the dom, 
             // make sure to reselect the same tab as before
             var i = 0;
             $.each($('#personVis li.ui-state-default'), function(index, val){
