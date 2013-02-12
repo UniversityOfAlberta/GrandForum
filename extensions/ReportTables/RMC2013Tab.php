@@ -28,9 +28,14 @@ class RMC2013Tab extends AbstractTab {
             'themes'=>"\$tab12 = 'selectedReportTab';",    
         );
         $summary = ArrayUtils::get_string($_GET, 'summary');
+        $url_year = ArrayUtils::get_string($_GET, 'year');
         if(!$summary){ 
             $summary = 'question1'; 
         }
+        if(!$url_year){
+            $url_year = "2013";
+        }
+        
         eval($tabs[$summary]);
 
         $this->html .=<<<EOF
@@ -135,7 +140,7 @@ EOF;
 
         //$this->showContentsTable();
 
-        if(ArrayUtils::get_string($_GET, 'year') == "2013"){
+        if($url_year == "2013"){
         switch ($summary) {
         case 'question1':
             $this->html .= "<a id='Q_Summary'></a>";
@@ -425,8 +430,8 @@ EOF;
                 foreach(array('original', 'revised') as $ind => $rev){
                     $sub_rows .= "<tr>";
                     
-                    $q8 = RMC2013Tab::getData(BLOB_TEXT, $rtype, $text_question, $ni, $eval_id, 2012);
-                    $q8 = $q8[$rev]; 
+                    $q8 = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $text_question, $ni, $eval_id, 2012);
+                    $q8 = @$q8[$rev]; 
                     $q8 = nl2br($q8); 
                     $comm_label = ucfirst($rev);
                     if(!empty($q8)){
@@ -450,7 +455,7 @@ EOF;
                         
                         if($i>1){
                             $comm = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2012);
-                            $comm = $comm[$rev]; 
+                            $comm = @$comm[$rev]; 
                             if(!empty($comm)){
                                 foreach($comm as $key=>$c){
                                     if(strlen($c)>1){
@@ -461,8 +466,8 @@ EOF;
                         }
                         $comm_short = implode(", ", $comm_short);
 
-                        $response = RMC2013Tab::getData(BLOB_TEXT, $rtype,  $q, $ni, $eval_id, 2012);
-                        $response_orig = $response = $response[$rev];
+                        $response = RMC2013Tab::getData(BLOB_ARRAY, $rtype,  $q, $ni, $eval_id, 2012);
+                        $response_orig = $response = @$response[$rev];
                         
                         if($response_orig){
                             $response = substr($response, 0, 1);
@@ -637,7 +642,7 @@ EOF;
                         $sub_rows .= "<tr>";
                     }
                     
-                    $q8 = RMC2013Tab::getData(BLOB_TEXT, $rtype, $text_question, $ni, $eval_id, 2012);
+                    $q8 = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $text_question, $ni, $eval_id, 2012);
                     $q8 = $q8[$rev];
                     $q8 = nl2br($q8);
                     $comm_label = ucfirst($rev);
@@ -671,7 +676,7 @@ EOF;
                         }
                         $comm_short = implode(", ", $comm_short);
 
-                        $response = RMC2013Tab::getData(BLOB_TEXT, $rtype,  $q, $ni, $eval_id, 2012);
+                        $response = RMC2013Tab::getData(BLOB_ARRAY, $rtype,  $q, $ni, $eval_id, 2012);
                         $response_orig = $response = $response[$rev];
                         
                         if($response_orig){
@@ -820,8 +825,8 @@ EOF;
                 foreach(array('original', 'revised') as $ind => $rev){
                     $sub_rows .= "<tr>";
                     
-                    $q8 = RMC2013Tab::getData(BLOB_TEXT, $rtype, $text_question, $ni, $eval_id, 2012, $ni_id);
-                    $q8 = $q8[$rev]; 
+                    $q8 = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $text_question, $ni, $eval_id, 2012, $ni_id);
+                    $q8 = @$q8[$rev]; 
                     $q8 = nl2br($q8);
                     $comm_label = ucfirst($rev);
                     if(!empty($q8)){
@@ -855,8 +860,8 @@ EOF;
                         }
                         $comm_short = implode(", ", $comm_short);
 
-                        $response = RMC2013Tab::getData(BLOB_TEXT, $rtype,  $q, $ni, $eval_id, 2012, $ni_id);
-                        $response_orig = $response = $response[$rev]; 
+                        $response = RMC2013Tab::getData(BLOB_ARRAY, $rtype,  $q, $ni, $eval_id, 2012, $ni_id);
+                        $response_orig = $response = @$response[$rev]; 
                         
                         if($response_orig){
                             $response = substr($response, 0, 1);
