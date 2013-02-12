@@ -9,8 +9,8 @@ class EvalOverviewReportItem extends AbstractReportItem {
         $item = $this->processCData($item);
 		$wgOut->addHTML($item);
         if(isset($_GET['seenReport']) && !empty($_GET['seenReport'])){
-            $sub_id = $_GET['seenReport'];
-            $this->setSeenOverview($sub_id);
+            //$sub_id = $_GET['seenReport'];
+            //$this->setSeenOverview($sub_id);
         }
         
 
