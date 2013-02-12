@@ -35,8 +35,9 @@ class RMC2013Tab extends AbstractTab {
         if(!$url_year){
             $url_year = "2013";
         }
-        
-        eval($tabs[$summary]);
+        if($url_year == "2013"){
+            eval($tabs[$summary]);
+        }
 
         $this->html .=<<<EOF
         <style type="text/css">
