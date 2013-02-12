@@ -8,7 +8,12 @@ class EvalOverviewReportItem extends AbstractReportItem {
         $item = "$details";
         $item = $this->processCData($item);
 		$wgOut->addHTML($item);
-        //$this->setSeenOverview();
+        if(isset($_GET['seenReport']) && !empty($_GET['seenReport'])){
+            //$sub_id = $_GET['seenReport'];
+            //$this->setSeenOverview($sub_id);
+        }
+        
+
 	}
 	
 	function renderForPDF(){
@@ -20,24 +25,27 @@ class EvalOverviewReportItem extends AbstractReportItem {
 	}
 	
 	function getTableHTML(){
-        global $wgUser;
+        global $wgUser, $wgServer, $wgScriptPath;
         $type = $this->getAttr('subType', 'PNI');
 	    $person = Person::newFromId($this->personId);
+        $section_url = "";
         if($type == "PNI"){
-	       $subs = $person->getEvaluatePNIs();
+	        $subs = $person->getEvaluatePNIs();
+            $section_url = "PNI+Overview";
         }
         else if($type == "CNI"){
-           $subs = $person->getEvaluateCNIs();
+            $subs = $person->getEvaluateCNIs();
+            $section_url = "CNI+Overview";
         }
         else if($type == "Project"){
             $subs = $person->getEvaluateProjects();
+            $section_url = "Project+Overview";
         }
 
 	    $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY);
         $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_MANAGEMENT_COM, EVL_REPORTQUALITY_COM);
 	    $text_question = EVL_OTHERCOMMENTS;
-        $text_question2= EVL_OTHERCOMMENTSAFTER;
-	    //$rating_map = array("Exceptional"=>'E', "Strong"=>'S', "Satisfactory"=>'S', "Unsatisfactory"=>'U');
+        
         $jscript =<<<EOF
             <style type='text/css'>
                 div.details_sub{
@@ -61,10 +69,17 @@ class EvalOverviewReportItem extends AbstractReportItem {
             <script type='text/javascript'>
                 $('span.q8_tip').qtip({
                     position: {
-                        corner: {
-                            target: 'center',
-                            tooltip: 'center'
-                        }
+                        my: 'bottom left',
+                        at: 'top right',
+                    }, 
+                    style: {
+                        classes: 'qtipStyle'
+                    }
+                });
+                $('#overview_table th').qtip({
+                    position: {
+                        my: 'bottom center',
+                        at: 'top center',
                     }, 
                     style: {
                         classes: 'qtipStyle'
@@ -83,9 +98,10 @@ class EvalOverviewReportItem extends AbstractReportItem {
                     
                     $('.details_sub').hide();
                     $('#details_sub-'+sub_id).show();
-                    //$('html, body').animate({
-                    //    scrollTop: $('#details_sub-'+sub_id).offset().top
-                    //}, 400);
+                    $.ajax({
+                        type: "GET",
+                        url: "{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EvalReport&section={$section_url}&seenReport="+sub_id,
+                    });
                 }
             </script>
 EOF;
@@ -95,19 +111,30 @@ EOF;
         <table id="overview_table" class="dashboard" style="width:100%;background:#ffffff;border-style:solid; text-align:center;" cellspacing="1" cellpadding="3" frame="box" rules="all">
 EOF;
        
+        $tooltips = array(
+            EVL_OVERALLSCORE => "Overall Score", 
+            EVL_CONFIDENCE => "Confidence Level of Evaluator", 
+            EVL_EXCELLENCE => "Excellence of the Research Program", 
+            EVL_HQPDEVELOPMENT => "Development of HQP", 
+            EVL_NETWORKING => "Networking and Partnerships", 
+            EVL_KNOWLEDGE => "Knowledge and Technology Exchange and Exploitation", 
+            EVL_MANAGEMENT => "Management of the Network", 
+            EVL_REPORTQUALITY => "Rating for Quality of Report",
+            EVL_OTHERCOMMENTS => "Evaluator Comments"
+        );
 
         $html .=<<<EOF
         	<tr>
         	<th width="20%" align="left">NI Name</th>
-            <th width="10%">Q8 (Comments)</th>
-        	<th width="10%">Q7</th>
-        	<th width="10%">Q9</th>
-        	<th style="border-left: 5px double #8C529D;">Q1</th>
-        	<th>Q2</th>
-        	<th>Q3</th>
-        	<th>Q4</th>
-        	<th>Q5</th>
-        	<th>Q6</th>
+            <th width="10%" title="Evaluator Comments">Q8 (Comments)</th>
+        	<th width="10%" title="Overall Score">Q7</th>
+        	<th width="10%" title="Confidence Level of Evaluator">Q9</th>
+        	<th style="border-left: 5px double #8C529D;" title="Excellence of the Research Program">Q1</th>
+        	<th title="Development of HQP">Q2</th>
+        	<th title="Networking and Partnerships">Q3</th>
+        	<th title="Knowledge and Technology Exchange and Exploitation">Q4</th>
+        	<th title="Management of the Network">Q5</th>
+        	<th title="Rating for Quality of Report">Q6</th>
         	</tr>
 EOF;
         $sub_details = "";
@@ -129,68 +156,96 @@ EOF;
             foreach($evals as $ev){
                 $sub_row = "";
             	$ev_id = $ev->getId();
-                //echo $ev_id."<>";
+                
             	$ev_name = $ev->getReversedName();
                 $ev_name_straight = $ev->getFirstName(). " " .$ev->getLastName();
 
             	$sub_row .= "<tr id='row-{$sub_id}'>";
                 if($wgUser->getId() != $ev_id){
-            	   $sub_row .= "<td align='left'>{$ev_name}</td>";
+            	   $sub_row .= "<td rowspan='3' align='left' style='background-color: #F3EBF5;'>{$ev_name}</td></tr>";
                 }else{
-                    //$sub_row .= "<td align='left'><a href='#details_sub-{$sub_id}' onclick='expandSubDetails(\"{$sub_id}\"); return false;' >{$sub_name}</a></td>";
-                    $sub_row .= "<td align='left'>{$sub_name}</td>";
+                    //$sub_row .= "<td rowspan='3' align='left'><a href='#details_sub-{$sub_id}' onclick='expandSubDetails(\"{$sub_id}\"); return false;' >{$sub_name}</a></td></tr>";
+                    $sub_row .= "<td rowspan='3' align='left'>{$sub_name}</td></tr>";
                 }
 
+                //Actual Answers
+                //foreach(array(0,20) as $add){
                 $q8 = $this->blobValue(BLOB_TEXT, $ev_id, $text_question, $sub_id);
-                //var_dump($q8);
-                //$q8_2 = $this->blobValue(BLOB_TEXT, $ev_id, $text_question2, $sub_id);
-               
-                //$q8 = htmlentities($q8, ENT_QUOTES);
-                $sub_row .= "<td>";
-                if(!empty($q8)){
-                    $sub_row .= "<a href='#' onclick='openDialog(\"{$ev_id}\", \"{$sub_id}\", 1); return false;'>Original</a><div id='dialog1-{$ev_id}-{$sub_id}' class='comment_dialog' title='Original Comment by {$ev_name_straight} on {$sub_name_straight}'>{$q8}</div><br />";
-            	}
+                
+                $sub_row .= "<tr><td>";
+                $sub_row2 = "<tr><td>";
+                if(!empty($q8) && is_array($q8)){
+                    $q8_O = (isset($q8['original']))? $q8['original'] : "";
+                    $q8_R = (isset($q8['revised']))? $q8['revised'] : "";
+
+                    if(!empty($q8_O)){
+                        $q8_O = nl2br($q8_O);
+                        $sub_row .= "<a href='#' onclick='openDialog(\"{$ev_id}\", \"{$sub_id}\", 1); return false;'>Original</a><div id='dialog1-{$ev_id}-{$sub_id}' class='comment_dialog' title='Original Comment by {$ev_name_straight} on {$sub_name_straight}'>{$q8_O}</div><br />";
+                    }
+                    else{
+                        $sub_row .= "Original";
+                    }
+
+                    if(!empty($q8_R)){
+                        $q8_R = nl2br($q8_R);
+                        $sub_row2 .= "<a href='#' onclick='openDialog(\"{$ev_id}\", \"{$sub_id}\", 2); return false;'>Revised</a><div id='dialog2-{$ev_id}-{$sub_id}' class='comment_dialog' title='Revised Comment by {$ev_name_straight} on {$sub_name_straight}'>{$q8_R}</div><br />";
+            	    }
+                    else{
+                        $sub_row2 .= "Revised";
+                    }
+                }
                 else{
                     $sub_row .= "Original";
+                    $sub_row2 .= "Revised";
                     if($wgUser->getId() == $ev_id){ //Only set it for myself
                         $incomplete = true;
                     }
                 }
-                /*if(!empty($q8_2)){
-                    $sub_row .= "<br /><a href='#' onclick='openDialog(\"{$ev_id}\", \"{$sub_id}\", 2); return false;'>Revised</a><div id='dialog2-{$ev_id}-{$sub_id}' class='comment_dialog' title='Revised Comment by {$ev_name_straight} on {$sub_name_straight}'>{$q8_2}</div>";
-                }
-                else{
-                    $sub_row .= "Revised";
-                }*/
 
                 $sub_row .= "</td>";
+                $sub_row2 .= "</td>";
                 
                 $i = 0;   
                 foreach ($radio_questions as $blobItem){
                     $comm = "";
                     $comm_short = array();
 
+                    $comm2 = "";
+                    $comm_short2 = array();
+
                     if($i>1){
                         $comm = $this->blobValue(BLOB_ARRAY, $ev_id, $stock_comments[$i], $sub_id);
-                        //var_dump($comm);
+                        $comm2 = (isset($comm['revised']))? $comm['revised'] : "";
+                        $comm = (isset($comm['original']))? $comm['original'] : "";
 
                         if(!empty($comm)){
-                            
                             foreach($comm as $key=>$c){
                                 if(strlen($c)>1){
                                     $comm_short[] = substr($c, 0, 1);
                                 }
                             }
                         }
+                        if(!empty($comm2)){
+                            foreach($comm2 as $key=>$c){
+                                if(strlen($c)>1){
+                                    $comm_short2[] = substr($c, 0, 1);
+                                }
+                            }
+                        }
                     }
                     $comm_short = implode(", ", $comm_short);
-                    $response_orig = $response = $this->blobValue(BLOB_TEXT, $ev_id, $blobItem, $sub_id);
+                    $comm_short2 = implode(", ", $comm_short2);
+
+                    $response = $this->blobValue(BLOB_ARRAY, $ev_id, $blobItem, $sub_id);
+                    $response_orig = (isset($response['original']))? $response['original'] : "";
+                    $response_rev = $response2 = (isset($response['revised']))? $response['revised'] : "";
+                    $response = $response_orig;
             		
                     $double_border = '';
                     if($i==2){
                         $double_border = ' style="border-left: 5px double #8C529D;"';
                     }
-                    //$sub_row .= "<td>";
+                    
                     if($response_orig){
             			$response = substr($response, 0, 1);
                         if(!empty($comm)){
@@ -206,15 +261,31 @@ EOF;
                         }
             		}
 
+                    if($response_rev){
+                        $response2 = substr($response2, 0, 1);
+                        if(!empty($comm2)){
+                            $response2 .= "; ".$comm_short2;
+                            $comm2 = implode("<br />", $comm2);
+                        } 
+                        $sub_row2 .= "<td{$double_border}><span class='q8_tip' title='{$response_rev}<br />{$comm2}'><a>{$response2}</a></span></td>";
+                    }else{
+                        $response2 = "";
+                        $sub_row2 .= "<td{$double_border}>{$response2}</td>";
+                    }
+
             		
                     $i++;
             	
                 }
             	$sub_row .= "</tr>";
+                $sub_row2 .= "</tr>";
+
                 if($wgUser->getId() == $ev_id){
                     $html .= $sub_row;
+                    $html .= $sub_row2;
                 }else{
-                    //$sub_table .= $sub_row;
+                    $sub_table .= $sub_row;
+                    $sub_table .= $sub_row2;
                 }
         	}
 
@@ -225,15 +296,15 @@ EOF;
                 <thead>
                     <tr>
                     <th width="20%" align='left'>Evaluator Name</th>
-                    <th width="15%">Q7 (Comments)</th>
-                    <th>Q1</th>
+                    <th width="10%">Q8 (Comments)</th>
+                    <th width="10%">Q7</th>
+                    <th width="10%">Q9</th>
+                    <th style="border-left: 5px double #8C529D;">Q1</th>
                     <th>Q2</th>
                     <th>Q3</th>
                     <th>Q4</th>
                     <th>Q5</th>
                     <th>Q6</th>
-                    <th>Q8</th>
-                    <th>Q9</th>
                     </tr>
                 </thead>
 EOF;
@@ -265,7 +336,7 @@ EOF;
                 </div>
 EOF;
             }
-            //$sub_details .= $sub_table_html;
+            $sub_details .= $sub_table_html;
         }
 
         $html .= "</table>";
@@ -290,43 +361,91 @@ EOF;
 	    return $blob_data;
 	}
 
-    function setSeenOverview(){
+
+    function setSeenOverview($reportSubItem = null){
         global $wgUser, $wgImpersonating;
-        if($wgImpersonating){
+        if($wgImpersonating || is_null($reportSubItem)){
             return;
         }
         
-
         $evaluator_id = $this->personId;
-        $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, 0);
-        $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_SEENOTHERREVIEWS, 0);
-        
-        /*
-        $blob->load($blob_address);
-        $data = $blob->getData();
-        if(!empty($data)){
-            return;
+        $type = $this->getAttr('subType', 'PNI');
+        $person = Person::newFromId($evaluator_id);
+
+        $questions = array();
+        if($type == "PNI"){
+            $subs = $person->getEvaluatePNIs();
+            $questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY, EVL_OTHERCOMMENTS);
         }
-        */
+        else if($type == "CNI"){
+            $subs = $person->getEvaluateCNIs();
+            $questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY, EVL_OTHERCOMMENTS);
+        }
+        else if($type == "Project"){
+            $subs = $person->getEvaluateProjects();
+            $questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_REPORTQUALITY, EVL_OTHERCOMMENTS);
+            $project_id = $reportSubItem;
+        }
 
-        $data = "Yes";
-        $blob->store($data, $blob_address);
-        
-        /*
-        $person = Person::newFromId($this->personId);
-        $subs = $person->getEvaluatePNIs();
-        foreach($subs as $sub){
+         //Determine if own review was completed.
+        $complete = true;
+        foreach ($subs as $sub){
             $sub_id = $sub->getId();
-            $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, $this->projectId);
-            $blob_address_from = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_OTHERCOMMENTS, $sub_id);
-            $blob->load($blob_address_from);
-
-            if($orig_data = $blob->getData()){    
-                $blob_address_to = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_OTHERCOMMENTSAFTER, $sub_id);
-                $blob->store($orig_data, $blob_address_to);
+            foreach($questions as $q){
+                $val = $this->blobValue(BLOB_ARRAY, $evaluator_id, $q, $sub_id);
+                if(empty($val['original'])){
+                    $complete = false;
+                    break;
+                }
+            }
+            if(!$complete){
+                break;
             }
         }
-        */
+
+        if($complete){
+
+            //Check if seenother flag is already set
+            $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, $project_id);
+            $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_SEENOTHERREVIEWS, $reportSubItem);
+            $blob->load($blob_address);
+            $seeonotherreviews = $blob->getData();
+            if(!$seeonotherreviews){
+
+                foreach ($subs as $sub){
+                    $sub_id = $sub->getId();
+                    foreach($questions as $q){
+                        $this->setRevised(BLOB_ARRAY, $evaluator_id, $q, $sub_id);
+                    }
+                    
+                }
+
+                $data = "Yes";
+                $blob->store($data, $blob_address);
+            }
+            
+            
+        }   
     }
+
+    function setRevised($blob_type, $evaluator_id, $blobItem, $blobSubItem){
+        $project_id = 0;
+        if($this->getReport()->reportType == RP_EVAL_PROJECT){
+            $project_id = $blobSubItem;
+        }
+        $blob = new ReportBlob($blob_type, $this->getReport()->year, $evaluator_id, $project_id);
+        $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, $blobItem, $blobSubItem);
+
+        $blob->load($blob_address);
+        $blob_data = $blob->getData();
+        $orig_data = (isset($blob_data['original']))? $blob_data['original'] : "";
+      
+        //copy over the data if the 'AFTER' blob does not yet exist              
+        if(isset($blob_data['original']) && empty($blob_data['revised'])){
+            $blob_data['revised'] = $orig_data;
+            $blob->store($blob_data, $blob_address);
+        }    
+    }
+
 }
 ?>

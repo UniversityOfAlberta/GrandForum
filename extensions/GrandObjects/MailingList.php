@@ -6,8 +6,13 @@ $listAdmins = array("dwt@ualberta.ca",
 
 class MailingList {
 
-    // Subscribes the given Person to the given Project
-    // Returns true on success, and false on failure
+    /**
+     * Subscribes the given Person to the given Project
+     * @param Project $project The Project to subscribe to
+     * @param Person $person The Person to subscribe
+     * @param string $out The output string for the command output
+     * @return int Returns 1 on success, and 0 on failure
+     */ 
     static function subscribe($project, $person, &$out=""){
         global $wgImpersonating;
         if($wgImpersonating){
@@ -38,8 +43,13 @@ class MailingList {
 		}
     }
 
-    // Unsubscribes the given Person from the given Project
-    // Returns true on success, and false on failure
+    /**
+     * Unsubscribes the given Person from the given Project
+     * @param Project $project The Project to unsubscribe from
+     * @param Person $person The Person to unsubscribe
+     * @param string $out The output string for the command output
+     * @return int Returns 1 on success, and 0 on failure
+     */
     static function unsubscribe($project, $person, &$out=""){
         global $wgImpersonating;
         if($wgImpersonating){
@@ -70,8 +80,12 @@ class MailingList {
 		}
     }
     
-    // Returns true if the Person is subscribed to the given mailing list,
-    // And false if not
+    /**
+     * Returns whether the Person is subscribed to the given mailing list or not
+     * @param Project $project The Project to check 
+     * @param Person $person The Person to check
+     * @return boolean Returns true if the Person is subscribed to the given mailing list and false if not
+     */
     static function isSubscribed($project, $person){
         $listname = strtolower($project->getName());
         $name = $person->getName();
@@ -126,6 +140,42 @@ $listname-unsubscribe:  |/usr/lib/mailman/mail/mailman unsubscribe $listname";
         $sql = "DELETE FROM `wikidev_projects`
                 WHERE `mailListName` = '$listname'";
         DBFunctions::execSQL($sql, true);
+    }
+    
+    /**
+     * Returns all the location based lists
+     * Location lists are considered to be between 1000 and 1999 inclusive
+     * @return array Returns all the location based lists
+     */
+    static function getLocationBasedLists(){
+        $sql = "SELECT mailListName
+                FROM wikidev_projects m
+                WHERE m.projectid >= 1000
+                AND m.projectid <= 1999";
+        $data = DBFunctions::execSQL($sql);
+        $lists = array();
+        foreach($data as $row){
+            $lists[] = $row['mailListName'];
+        }
+        return $lists;
+    }
+    
+    // TODO: Put this in the database somewhere since this is a really ugly function
+    static function getListByUniversity($university){
+        $hash = array('University of British Columbia' => 'grand-vancouver',
+                      'Simon Fraser University' => 'grand-vancouver',
+                      'Emily Carr University of Art and Design', 'grand-vancouver',
+                      'University of Alberta' => 'grand-alberta',
+                      'University of Calgary' => 'grand-calgary',
+                      'University of Ottawa' => 'grand-ottawa',
+                      'Carleton University' => 'grand-ottawa',
+                      'University of Victoria' => 'grand-victoria',
+                      'University of Toronto' => 'grand-toronto',
+                      'Ryerson University' => 'grand-toronto',
+                      'York University' => 'grand-toronto',
+                      'Ontario College of Art & Design' => 'grand-toronto',
+                      'University of Ontario Institute of Technology' => 'grand-toronto');
+        return @$hash[$university];             
     }
 }
 

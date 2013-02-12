@@ -4,7 +4,7 @@ require_once('commandLine.inc');
 
 $csv = '"Names"';    
    
-$allPeople = Person::getAllPeople(PNI);
+$allPeople = Person::getAllPeople(CNI);
 $allProjects = Project::getAllProjects();
 
 foreach ($allProjects as $project) {

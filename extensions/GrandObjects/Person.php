@@ -742,6 +742,18 @@ class Person{
 	}
 	
 	/**
+	 * Returns whether this Person has worked on their survey
+	 * @return boolean whether this Person has worked on their survey
+	 */
+	function hasDoneSurvey(){
+	    $sql = "SELECT *
+	            FROM `survey_results`
+	            WHERE `user_id` = '{$this->id}'";
+	    $data = DBFunctions::execSQL($sql);
+	    return (DBFunctions::getNRows() > 0);
+	}
+	
+	/**
 	 * Returns this Person's primary funding agency from their response in the Survey
 	 * @return string This Person's primary funding agency from their response in the Survey
 	 */
@@ -757,6 +769,45 @@ class Person{
 	        }
 	    }
 	    return "Unknown";
+	}
+	
+	/**
+	 * Returns this Person's primary discipline from the Survey
+	 * @return string This Person's primary discipline from the Survey
+	 */
+	function getSurveyDiscipline(){
+	    $sql = "SELECT `discipline`
+	            FROM `survey_results`
+	            WHERE `user_id` = '{$this->id}'";
+	    $data = DBFunctions::execSQL($sql);
+	    if(DBFunctions::getNRows() > 0){
+	        $discipline = json_decode($data[0]['discipline']);
+	        if(isset($discipline->d_level2)){
+	            return $discipline->d_level2;
+	        }
+	    }
+	    return "Unknown";
+	}
+	
+	/**
+	 * Returns this Person's first degree connections from their response in the Survey
+	 * @return array This Person's first degree connections from their response in the Survey
+	 */
+	function getSurveyFirstDegreeConnections(){
+	    $sql = "SELECT `grand_connections`
+	            FROM `survey_results`
+	            WHERE `user_id` = '{$this->id}'";
+	    $data = DBFunctions::execSQL($sql);
+	    if(DBFunctions::getNRows() > 0){
+	        $connections = json_decode($data[0]['grand_connections']);
+	        if(count($connections) > 0){
+                return $connections;
+            }
+            else{
+                return array();
+            }
+	    }
+	    return array();
 	}
 	
 	/**
@@ -2281,12 +2332,13 @@ class Person{
 	}
 	
 	// Returns true if the person is an evaluator
-	function isEvaluator(){
+	function isEvaluator($year = REPORTING_YEAR){
 	    if($this->isEvaluator === null){
 	        $eTable = getTableName("eval");
 	        $sql = "SELECT *
 	                FROM $eTable
-	                WHERE eval_id = '{$this->id}'";
+	                WHERE eval_id = '{$this->id}'
+	                AND year = '{$year}'";
 	        $data = DBFunctions::execSQL($sql);
 	        if(count($data) > 0){
 	            $this->isEvaluator = true;
@@ -2299,11 +2351,12 @@ class Person{
 	}
 	
 	// Returns the list of Evaluation Submissions for this person
-	function getEvaluateSubs(){
+	function getEvaluateSubs($year = REPORTING_YEAR){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
-	            WHERE eval_id = '{$this->id}'";
+	            WHERE eval_id = '{$this->id}'
+	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2317,13 +2370,14 @@ class Person{
         return $subs;
 	}
 	
-	static function getAllEvaluates($type){
+	static function getAllEvaluates($type, $year = REPORTING_YEAR){
 	    $type = mysql_real_escape_string($type);
 	    $eTable = getTableName("eval");
 	    
 	    $sql = "SELECT DISTINCT sub_id 
 	            FROM $eTable
-	            WHERE type = '$type'";
+	            WHERE type = '$type'
+	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2338,13 +2392,14 @@ class Person{
 	}
 
 
-	function getEvaluates($type){
+	function getEvaluates($type, $year = REPORTING_YEAR){
 	    $type = mysql_real_escape_string($type);
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE eval_id = '{$this->id}'
-	            AND type = '$type'";
+	            AND type = '$type'
+	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2358,12 +2413,13 @@ class Person{
         return $subs;
 	}
 
-	function getEvaluatePNIs(){
+	function getEvaluatePNIs($year = REPORTING_YEAR){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE eval_id = '{$this->id}'
-	            AND type = 'PNI'";
+	            AND type = 'PNI'
+	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2375,12 +2431,13 @@ class Person{
 	}
     
     // Returns the list of Evaluation Submissions for this person
-	function getEvaluateCNIs(){
+	function getEvaluateCNIs($year = REPORTING_YEAR){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE eval_id = '{$this->id}'
-                AND type = 'CNI'";
+                AND type = 'CNI'
+                AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2391,12 +2448,13 @@ class Person{
         return $subs;
 	}
 	
-	function getEvaluateProjects(){
+	function getEvaluateProjects($year = REPORTING_YEAR){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE eval_id = '{$this->id}'
-	            AND type = 'Project'";
+	            AND type = 'Project'
+	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2409,12 +2467,13 @@ class Person{
 
 	// Returns a list of the evaluators who are evaluating this Person
 	// Provide type 
-	function getEvaluators($type='Researcher'){
+	function getEvaluators($type='Researcher', $year = REPORTING_YEAR){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE sub_id = '{$this->id}'
-	            AND type = '{$type}'";
+	            AND type = '{$type}'
+	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){

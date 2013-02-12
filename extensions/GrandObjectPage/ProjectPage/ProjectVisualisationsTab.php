@@ -19,14 +19,18 @@ class ProjectVisualisationsTab extends AbstractTab {
     }
 
     function generateBody(){
-        global $wgUser, $wgOut;
+        global $wgUser, $wgOut, $wgServer, $wgScriptPath;
         $this->html = "";
         if($wgUser->isLoggedIn()){
             $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){
                     $('#projectVis').tabs({selected: 0});
+                    /*$('#projectVis').record({
+                                                 convertSVG: true,
+                                                 convertURL: '{$wgServer}{$wgScriptPath}/convertSvg.php'
+                                                });*/
                     $('#project').bind('tabsselect', function(event, ui) {
-                        if(ui.panel.id == 'visualize'){
+                        if(ui.panel.id == 'visualizations'){
                             $('#projectVis').tabs('option', 'selected', 0);
                         }
                     });

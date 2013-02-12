@@ -22,20 +22,39 @@ class MyMailingLists extends SpecialPage{
 	    if($person->isProjectLeader() || $person->isProjectCoLeader()){
 	        $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:MailingListRequest'>Subscribe/Unsubscribe Users</a><br />");
 	    }
-	    $projects = $person->getProjects();
+	    $universities = array();
+	    if($person->isRoleAtLeast(MANAGER)){
+	        $projects = Project::getAllProjects();
+	        $unis = Person::getAllUniversities();
+	        foreach($unis as $uni){
+	            $universities[] = MailingList::getListByUniversity($uni);
+	        }
+	    }
+	    else{
+	        $university = $person->getUniversity();
+	        $universities[] = MailingList::getListByUniversity($university['university']);
+	        $projects = $person->getProjects();
+	    }
+	    $universities = array_unique($universities);
 	    $count = 0;
         $wgOut->addHTML("<ul>\n");
-        if($person->isRole(HQP)){
+        if($person->isRole(HQP) || $person->isRoleAtLeast(STAFF)){
 	        $wgOut->addHTML("<li><a href='$wgServer$wgScriptPath/index.php/HQP:Mail_Index'>HQP Archives</a></li>");
 	    }
 	    if($person->isRole(CNI)){
 	        $wgOut->addHTML("<li><a href='$wgServer$wgScriptPath/index.php/CNI:Mail_Index'>Researcher Archives</a></li>");
 	    }
-	    if($person->isRole(PNI)){
+	    if($person->isRole(PNI) || $person->isRoleAtLeast(STAFF)){
 	        $wgOut->addHTML("<li><a href='$wgServer$wgScriptPath/index.php/PNI:Mail_Index'>Researcher Archives</a></li>");
 	    }
 	    foreach($projects as $project){
 	        $wgOut->addHTML("<li><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:Mail_Index'>{$project->getName()} Archives</a></li>");
+	    }
+	    foreach($universities as $uni){
+	        if($uni != ""){
+	            $list = str_replace("- ", "-", ucwords(str_replace("-", "- ", str_replace("grand", "GRAND", $uni))));
+	            $wgOut->addHTML("<li><a href='$wgServer$wgScriptPath/index.php/Mail:$list'>".str_replace("-", " ", $list)." Archives</a></li>");
+	        }
 	    }
 	    $wgOut->addHTML("</ul>");
 	}

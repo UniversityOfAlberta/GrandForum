@@ -32,6 +32,10 @@ $visualisations = array('Timeline' => array("name" => "Timeline",
                         'Wordle' => array("name" => "Wordle",
                               "path" => "Wordle/Wordle.php",
                               "enabled" => true,
+                              "initialized" => false),
+                        'ForceDirectedGraph' => array("name" => "FDG",
+                              "path" => "ForceDirectedGraph/ForceDirectedGraph.php",
+                              "enabled" => true,
                               "initialized" => false)
                        );
       
