@@ -164,7 +164,8 @@ EOF;
                 if($wgUser->getId() != $ev_id){
             	   $sub_row .= "<td rowspan='3' align='left' style='background-color: #F3EBF5;'>{$ev_name}</td></tr>";
                 }else{
-                    $sub_row .= "<td rowspan='3' align='left'><a href='#details_sub-{$sub_id}' onclick='expandSubDetails(\"{$sub_id}\"); return false;' >{$sub_name}</a></td></tr>";
+                    //$sub_row .= "<td rowspan='3' align='left'><a href='#details_sub-{$sub_id}' onclick='expandSubDetails(\"{$sub_id}\"); return false;' >{$sub_name}</a></td></tr>";
+                    $sub_row .= "<td rowspan='3' align='left'>{$sub_name}</td></tr>";
                 }
 
                 //Actual Answers
