@@ -426,7 +426,7 @@ EOF;
                     $sub_rows .= "<tr>";
                     
                     $q8 = RMC2013Tab::getData(BLOB_TEXT, $rtype, $text_question, $ni, $eval_id, 2012);
-                    //$q8 = $q8[$rev]; <<<UNCOMMENT
+                    $q8 = $q8[$rev]; 
                     $q8 = nl2br($q8); 
                     $comm_label = ucfirst($rev);
                     if(!empty($q8)){
@@ -440,10 +440,6 @@ EOF;
                         $cell = "{$comm_label}";
                     }
 
-                    //>>>DELETE
-                    if($rev == 'revised'){ 
-                        $cell = "Revised";
-                    }//<<<DELETE
                     
                     $sub_rows .= "<td width='20%'>{$cell}</td>";
 
@@ -454,7 +450,7 @@ EOF;
                         
                         if($i>1){
                             $comm = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2012);
-                            //$comm = $comm[$rev]; <<<UNCOMMENT
+                            $comm = $comm[$rev]; 
                             if(!empty($comm)){
                                 foreach($comm as $key=>$c){
                                     if(strlen($c)>1){
@@ -466,7 +462,7 @@ EOF;
                         $comm_short = implode(", ", $comm_short);
 
                         $response = RMC2013Tab::getData(BLOB_TEXT, $rtype,  $q, $ni, $eval_id, 2012);
-                        $response_orig = $response; //= $response[$rev]; <<<UNCOMMENT
+                        $response_orig = $response = $response[$rev];
                         
                         if($response_orig){
                             $response = substr($response, 0, 1);
@@ -480,10 +476,6 @@ EOF;
                             $cell = "<td width='10%'>{$response}</td>";
                         }
 
-                        //>>>DELETE
-                        if($rev == 'revised'){ 
-                            $cell = "<td width='10%'></td>";
-                        }//<<<DELETE
 
                         if($q == EVL_OVERALLSCORE && $response_orig && isset($weights[$response_orig])){
                             $additional_score = $weights[$response_orig];
@@ -829,7 +821,7 @@ EOF;
                     $sub_rows .= "<tr>";
                     
                     $q8 = RMC2013Tab::getData(BLOB_TEXT, $rtype, $text_question, $ni, $eval_id, 2012, $ni_id);
-                    //$q8 = $q8[$rev]; <<<UNCOMMENT
+                    $q8 = $q8[$rev]; 
                     $q8 = nl2br($q8);
                     $comm_label = ucfirst($rev);
                     if(!empty($q8)){
@@ -843,11 +835,6 @@ EOF;
                         $cell = "{$comm_label}";
                     }
 
-                    //>>>DELETE
-                    if($rev == 'revised'){ 
-                        $cell = "Revised";
-                    }//<<<DELETE
-
                     $sub_rows .= "<td width='20%'>{$cell}</td>";
 
                     $i=0;
@@ -857,7 +844,7 @@ EOF;
                         
                         if($i>1){
                             $comm = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2012, $ni_id);
-                            //$comm = @$comm[$rev]; <<<UNCOMMENT
+                            $comm = @$comm[$rev]; 
                             if(!empty($comm)){
                                 foreach($comm as $key=>$c){
                                     if(strlen($c)>1){
@@ -869,7 +856,7 @@ EOF;
                         $comm_short = implode(", ", $comm_short);
 
                         $response = RMC2013Tab::getData(BLOB_TEXT, $rtype,  $q, $ni, $eval_id, 2012, $ni_id);
-                        $response_orig = $response; //= $response[$rev]; <<<UNCOMMENT
+                        $response_orig = $response = $response[$rev]; 
                         
                         if($response_orig){
                             $response = substr($response, 0, 1);
@@ -882,11 +869,6 @@ EOF;
                             $response = "";
                             $cell = "<td width='10%'>{$response}</td>";
                         }
-
-                         //>>>DELETE
-                        if($rev == 'revised'){ 
-                            $cell = "<td width='10%'></td>";
-                        }//<<<DELETE
                         
                         if($q == EVL_OVERALLSCORE && $response_orig && isset($weights[$response_orig])){
 							$additional_score = $weights[$response_orig];
