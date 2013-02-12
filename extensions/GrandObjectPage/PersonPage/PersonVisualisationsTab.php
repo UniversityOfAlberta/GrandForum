@@ -17,13 +17,17 @@ class PersonVisualisationsTab extends AbstractTab {
     }
 
     function generateBody(){
-        global $wgUser, $wgOut;
+        global $wgUser, $wgOut, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         $this->html = "";
         if($wgUser->isLoggedIn()){
             $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){
                     $('#personVis').tabs({selected: 0});
+                    /*$('#personVis').record({
+                                             convertSVG: true,
+                                             convertURL: '{$wgServer}{$wgScriptPath}/convertSvg.php'
+                                           });*/
                     $('#person').bind('tabsselect', function(event, ui) {
                         if(ui.panel.id == 'visualize'){
                             $('#personVis').tabs('option', 'selected', 0);
@@ -36,7 +40,7 @@ class PersonVisualisationsTab extends AbstractTab {
 	            <ul>
 		            <li><a href='#timeline'>Timeline</a></li>
 		            <li><a href='#chart'>Productivity Chart</a></li>";
-            if($wgUser->isLoggedIn() && ($this->person->getId() == $me->getId() || $me->isMemberOf(Project::newFromName("NAVEL")) || $me->isRoleAtLeast(MANAGER))){
+            if(($wgUser->isLoggedIn() && $this->person->getId() == $me->getId()) || $me->isRoleAtLeast(MANAGER)){
                 $this->html .= "<li><a href='#survey'>Survey Graph</a></li>";
             }
 		    $this->html .= "<li><a href='#network'>Network</a></li>
@@ -58,7 +62,7 @@ class PersonVisualisationsTab extends AbstractTab {
         
         var selectedTab = $('#personVis .ui-tabs-selected');
         if(selectedTab.length > 0){
-            // If the tabs were created previously but removed from the dome, 
+            // If the tabs were created previously but removed from the dom, 
             // make sure to reselect the same tab as before
             var i = 0;
             $.each($('#personVis li.ui-state-default'), function(index, val){
@@ -350,6 +354,7 @@ class PersonVisualisationsTab extends AbstractTab {
 	        $links = array();
 	        $groups = array();
 	        $disciplines = AboutTab::getDisciplineList();
+	        $edgeGroups = array('Works With', 'Gave/Received Advice', 'Friend', 'Acquaintance');
 	        $i = 0;
 	        foreach($disciplines as $name => $discipline){
 	            $groups[$name] = $i;
@@ -360,25 +365,42 @@ class PersonVisualisationsTab extends AbstractTab {
 	                         "group" => $groups[self::getRootDiscipline($person->getSurveyDiscipline())]);
 	        
 	        $names[$person->getReversedName()] = $person;
+	        $doneLinks = array();
 	        foreach($person->getSurveyFirstDegreeConnections() as $key => $connection){
 	            foreach($connection as $name => $data){
 	                $pers = Person::newFromName($name);
 	                
-	                $value = 0;
+	                $value = 0.01;
 	                $nFields = 5;
+	                $edgeGroup = 1000;
 	                foreach($data as $k => $field){
 	                    if(is_numeric($field) && $field != 0 && $k != "hotlist"){
-	                        $value++;
-	                    }
+                            $value++;
+                            if($k == "work_with" && $edgeGroup >= array_search("Works With", $edgeGroups)){
+                                $edgeGroup = array_search("Works With", $edgeGroups);
+                            }
+                            else if(($k == "gave_advice" || $k == "received_advice") && $edgeGroup >= array_search("Gave/Received Advice", $edgeGroups)){
+                                $edgeGroup = array_search("Gave/Received Advice", $edgeGroups);
+                            }
+                            else if($k == "friend" && $edgeGroup >= array_search("Friend", $edgeGroups)){
+                                $edgeGroup = array_search("Works With", $edgeGroups);
+                            }
+                            else if($k == "acquaintance" && $edgeGroup >= array_search("Acquaintance", $edgeGroups)){
+                                $edgeGroup = array_search("Works With", $edgeGroups);
+                            }
+                        }
 	                }
 	                
-	                if($value > 0){
+	                if($value > 0 && $edgeGroup != 1000 && $value > 0.01){
 	                    $nodes[] = array("name" => $pers->getReversedName(),
-	                                     "group" => $groups[self::getRootDiscipline($pers->getSurveyDiscipline())]);
+	                                     "group" => $groups[self::getRootDiscipline($pers->getSurveyDiscipline())],
+	                                     "id" => md5($pers->getReversedName()));
 	                    $names[$pers->getReversedName()] = $pers;
 	                    $links[] = array("source" => 0,
 	                                     "target" => $key+1,
+	                                     "group" => $edgeGroup,
 	                                     "value" => $value/$nFields);
+	                    $doneLinks[0][$key] = true;
 	                }
 	            }
 	        }
@@ -392,14 +414,28 @@ class PersonVisualisationsTab extends AbstractTab {
 	                            $p = Person::newFromName($name);
 	                            $value = 0;
                                 $nFields = 6;
-                                foreach($data as $field){
-                                    if(is_numeric($field) && $field != 0){
-                                        $value++;
-                                    }
-                                }
-                                if(!isset($names[$p->getReversedName().$key1]) && $degree == 2){
+                                $edgeGroup = 1000;
+	                            foreach($data as $k => $field){
+	                                if(is_numeric($field) && $field != 0 && $k != "hotlist"){
+	                                    $value++;
+	                                    if($k == "work_with" && $edgeGroup >= array_search("Works With", $edgeGroups)){
+	                                        $edgeGroup = array_search("Works With", $edgeGroups);
+	                                    }
+	                                    else if(($k == "gave_advice" || $k == "received_advice") && $edgeGroup >= array_search("Gave/Received Advice", $edgeGroups)){
+	                                        $edgeGroup = array_search("Gave/Received Advice", $edgeGroups);
+	                                    }
+	                                    else if($k == "friend" && $edgeGroup >= array_search("Friend", $edgeGroups)){
+	                                        $edgeGroup = array_search("Works With", $edgeGroups);
+	                                    }
+	                                    else if($k == "acquaintance" && $edgeGroup >= array_search("Acquaintance", $edgeGroups)){
+	                                        $edgeGroup = array_search("Works With", $edgeGroups);
+	                                    }
+	                                }
+	                            }
+                                if(!isset($names[$p->getReversedName().$key1]) && $degree == 2 && $value > 0.01){
                                     $nodes[] = array("name" => $p->getReversedName(),
-                                                     "group" => $groups[self::getRootDiscipline($p->getSurveyDiscipline())]);
+                                                     "group" => $groups[self::getRootDiscipline($p->getSurveyDiscipline())],
+                                                     "id" => md5($p->getReversedName()));
                                     $names[$p->getReversedName().$key1] = $p;
                                     $key = array_search($p->getReversedName().$key1, array_keys($names));
                                 }
@@ -407,10 +443,12 @@ class PersonVisualisationsTab extends AbstractTab {
                                     $key = array_search($p->getReversedName(), array_keys($names));
                                 }
                                 
-                                if($key !== false && $key != 0){
+                                if($key !== false && $key != 0 && $edgeGroup != 1000 && $value > 0.01 && !isset($doneLinks[$key][$key1]) && !isset($doneLinks[$key1][$key])){
                                     $links[] = array("source" => $key1,
                                                      "target" => $key,
+                                                     "group" => $edgeGroup,
                                                      "value" => $value/$nFields);
+                                    $doneLinks[$key1][$key] = true;
                                 }
 	                        }
 	                    }
@@ -423,8 +461,9 @@ class PersonVisualisationsTab extends AbstractTab {
 	            }
 	        //}
 	        $array = array('groups' => array_flip($groups),
+	                       'edgeGroups' => $edgeGroups,
 	                       'nodes' => $nodes,
-	                       'links' => $links);
+	                       'links' => $links,);
             header("Content-Type: application/json");
             echo json_encode($array); 
             exit;

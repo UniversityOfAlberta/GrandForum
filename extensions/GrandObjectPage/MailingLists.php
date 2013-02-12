@@ -19,6 +19,10 @@ class MailingLists extends SpecialPage{
 
 	function run($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
+		$location = array();
+		foreach(MailingList::getLocationBasedLists() as $list){
+		    $location[] = "<a href='mailto:$list@forum.grand-nce.ca'>$list@forum.grand-nce.ca</a>";
+		}
 		$wgOut->addHTML('The following are mailing lists for GRAND.  Each project has a project list where each project member is subscribed from.  Special mailing lists are also included on this page, like separate role based lists, support email, and university lists.<br />
 		                <h2>Project Lists</h2>
 		                <a href="mailto:aesthvis@forum.grand-nce.ca">aesthvis@forum.grand-nce.ca</a><br />
@@ -56,16 +60,12 @@ class MailingLists extends SpecialPage{
                         <a href="mailto:sketch@forum.grand-nce.ca">sketch@forum.grand-nce.ca</a><br />
                         <a href="mailto:virtpres@forum.grand-nce.ca">virtpres@forum.grand-nce.ca</a><br />
                         <h2>Role Lists</h2>
-                        <a href="mailto:grand@forum.grand-nce.ca">grand@forum.grand-nce.ca</a><br />
                         <a href="mailto:grand-forum-hqps@forum.grand-nce.ca">grand-forum-hqps@forum.grand-nce.ca</a><br />
-                        <a href="mailto:grand-forum-project-leaders@forum.grand-nce.ca">grand-forum-project-leaders@forum.grand-nce.ca</a><br />
                         <a href="mailto:grand-forum-researchers@forum.grand-nce.ca">grand-forum-researchers@forum.grand-nce.ca</a><br />
+                        <a href="mailto:grand-forum-project-leaders@forum.grand-nce.ca">grand-forum-project-leaders@forum.grand-nce.ca</a><br />
                         <a href="mailto:grand-support@forum.grand-nce.ca">grand-support@forum.grand-nce.ca</a><br />
-                        <h2>University Lists</h2>
-			<a href="mailto:grand-ottawa@forum.grand-nce.ca">grand-ottawa@forum.grand-nce.ca</a><br />
-                        <a href="mailto:grand-alberta@forum.grand-nce.ca">grand-alberta@forum.grand-nce.ca</a><br />
-                        <a href="mailto:grand-calgary@forum.grand-nce.ca">grand-calgary@forum.grand-nce.ca</a><br />
-                        <a href="mailto:grand-vancouver@forum.grand-nce.ca">grand-vancouver@forum.grand-nce.ca</a>');
+                        <h2>Location Based Lists</h2>');
+        $wgOut->addHTML(implode("<br />\n", $location));
 	}
 }
 

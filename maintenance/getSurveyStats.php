@@ -5,7 +5,7 @@
     $sql = "SELECT sr.* FROM survey_results sr";
     $data = execSQLStatement($sql);
     
-    echo "First Name,Last Name,Email,Role,Submitted\n";
+    echo "Last Name,First Name,Email,Role,Consent,Submitted\n";
 
     foreach($data as $row){
     	$user_id = $row['user_id'];
@@ -29,9 +29,10 @@
 	    $f_name = $name['first'];
 	    $l_name = $name['last'];
 	    $email = $person->getEmail();
+	    $consent = ($row['consent'] == 1)? "Yes" : "No";
 	    $submitted = ($row['submitted'] == 1)? "Yes" : "No";
 
-	    echo "$l_name,$f_name,$email,$role,$submitted\n";
+	    echo "$l_name,$f_name,$email,$role,$consent,$submitted\n";
 
 	}
     

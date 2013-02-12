@@ -12,7 +12,7 @@ class EvalReviewTextareaReportItem extends TextareaReportItem {
         else if ($type == "Project"){
             $this->blobSubItem = $this->getParent()->projectId;
         }
-        $this->getSeenOverview();
+        //$this->getSeenOverview();
     }
 
     function getHTML(){
@@ -65,10 +65,10 @@ EOF;
         $blob->load($blob_address);
         $blob_data = $blob->getData();
         if($this->seenOverview){
-            $value = $blob_data['revised'];
+            $value = (isset($blob_data['revised']))? $blob_data['revised'] : "";
         }
         else{
-            $value = $blob_data['original'];
+            $value = (isset($blob_data['original']))? $blob_data['original'] : "";
         }
        
         return $value;

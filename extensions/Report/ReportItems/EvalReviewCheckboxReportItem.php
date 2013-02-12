@@ -13,7 +13,7 @@ class EvalReviewCheckboxReportItem extends AbstractReportItem {
     	else if ($type == "Project"){
     		$this->blobSubItem = $this->getParent()->getParent()->projectId;
     	}
-    	$this->getSeenOverview();
+    	//$this->getSeenOverview();
     }
 
 	function render(){

@@ -23,15 +23,30 @@ class MailList{
 	function createMailListTable($action, $article){
 		global $wgOut, $wgTitle, $wgScriptPath, $wgServer, $wgUser;
 		if($wgUser->isLoggedIn()){
-		    if($wgTitle->getText() == "Mail Index"){
-		        $me = Person::newFromId($wgUser->getId());
-			    $project_name = $wgTitle->getNsText();
+		    if($wgTitle->getText() == "Mail Index" || $wgTitle->getNsText() == "Mail" && strpos($wgTitle->getText(), "MAIL") !== 0){
+		        if($wgTitle->getNsText() == "Mail"){
+		            $project_name = strtolower($wgTitle->getText());
+		        }
+		        else{
+		            $project_name = $wgTitle->getNsText();
+		        }
+		        $project_name = mysql_real_escape_string($project_name);
+		        $me = Person::newFromWgUser();
+			    
 			    $project = Project::newFromName($project_name);
 			    $sql = "SELECT * 
 				    FROM wikidev_projects p
-				    WHERE p.projectname = '$project_name'";
+				    WHERE p.projectname = '$project_name'
+				    OR p.mailListName = '$project_name'";
 			    $data = DBFunctions::execSQL($sql);
-			    if(DBFunctions::getNRows() > 0 && (($project != null && $project->getName() != "" && $me->isMemberOf($project)) || ($me->isRole($project_name) || $me->isRoleAtLeast(STAFF)))){
+			    $university = $me->getUniversity();
+			    if(DBFunctions::getNRows() > 0 &&
+			       (($project != null && $project->getName() != "" && 
+			         $me->isMemberOf($project)) || 
+			        ($me->isRole($project_name) || 
+			         $me->isRoleAtLeast(STAFF)) || 
+			        (array_search($project_name, MailingList::getLocationBasedLists()) !== false && 
+			         MailingList::getListByUniversity($university['university']) == $project_name))){
 				    $wgOut->addHTML("<b>Mail List Address:</b> <a href='mailto:{$data[0]['mailListName']}@forum.grand-nce.ca'>{$data[0]['mailListName']}@forum.grand-nce.ca</a>");
 			    }
 			    else{
@@ -45,7 +60,8 @@ class MailList{
 			    $sql = "SELECT m.subject as subject, MIN(date) as first_date, MAX(date) as last_date
 				    FROM wikidev_projects p, wikidev_messages m
 				    WHERE m.project_id = p.projectid
-				    AND p.projectname = '$project_name'
+				    AND (p.projectname = '$project_name'
+				         OR p.mailListName = '$project_name')
 				    GROUP BY m.subject
 				    ORDER BY first_date DESC";
 				
@@ -84,8 +100,12 @@ class MailList{
 						    $page_title = $row2['page_title'];
 						    $first_oldid = $row2['minRev'];
 						    $last_oldid = $row2['maxRev'];
+						    $namespace = $project_name;
+						    if($wgTitle->getNsText() == "Mail"){
+						        $namespace = $wgTitle->getNsText();
+						    }
 						    $wgOut->addHTML("<tr>
-								    <td style='white-space:nowrap;'>{$row['first_date']}</td><td style='white-space:nowrap;'>{$row['last_date']}</td><td> <a href='$wgScriptPath/index.php/{$project_name}:".urlencode($page_title)."'>{$row['subject']}</a></td><td> $users </td>
+								    <td style='white-space:nowrap;'>{$row['first_date']}</td><td style='white-space:nowrap;'>{$row['last_date']}</td><td> <a href='$wgScriptPath/index.php/{$namespace}:".urlencode($page_title)."'>{$row['subject']}</a></td><td> $users </td>
 							    </tr>");
 							break;
 					    }
@@ -106,14 +126,14 @@ class MailList{
 			    return false;
 		    }
 		    else if(strpos($wgTitle->getText(), "MAIL") === 0){
-		        $me = Person::newFromId($wgUser->getId());
+		        $me = Person::newFromWgUser();
 			    $project_name = $wgTitle->getNsText();
 			    $project = Project::newFromName($project_name);
 			    $sql = "SELECT * 
 				    FROM wikidev_projects p
 				    WHERE p.projectname = '$project_name'";
 			    $data = DBFunctions::execSQL($sql);
-			    if(!(DBFunctions::getNRows() > 0 && (($project != null && $project->getName() != "" && $me->isMemberOf($project)) || ($me->isRole($project_name) || $me->isRoleAtLeast(STAFF))))){
+			    if(!(DBFunctions::getNRows() > 0 && $project_name == "Mail" || (($project != null && $project->getName() != "" && $me->isMemberOf($project)) || ($me->isRole($project_name) || $me->isRoleAtLeast(STAFF))))){
 			        $wgOut->setPageTitle("Permission error");
 			        $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>
                                      <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main Page'>Main Page</a>.</p>");
