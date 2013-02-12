@@ -1,6 +1,7 @@
 <?php
 
 class EvalReviewCheckboxReportItem extends AbstractReportItem {
+	var $seenOverview = 0;
 
 	// Redefined: Sets the Blob Sub-Item of this AbstractReportItem
     function setBlobSubItem($item){
@@ -12,6 +13,7 @@ class EvalReviewCheckboxReportItem extends AbstractReportItem {
     	else if ($type == "Project"){
     		$this->blobSubItem = $this->getParent()->getParent()->projectId;
     	}
+    	//$this->getSeenOverview();
     }
 
 	function render(){
@@ -20,8 +22,7 @@ class EvalReviewCheckboxReportItem extends AbstractReportItem {
         $value = $this->getBlobValue();
 		
         $options = $this->parseOptions();
-        //print_r($options);
-
+        
         $output = "";
       	$i = 1;
 		foreach($options as $option){
@@ -34,7 +35,6 @@ class EvalReviewCheckboxReportItem extends AbstractReportItem {
 		    $output .= "<input type='checkbox' name='{$this->getPostId()}' value='{$option}' {$checked} /> {$option}<br />";
 			$i++;
 		}
-       // $output .= "</select>";
         
         $output .=<<<EOF
         <script type="text/javascript">
@@ -55,6 +55,70 @@ EOF;
         $output = $this->processCData("<div>{$output}</div>");
 		$wgOut->addHTML($output);
 	}
+
+	// Overloading from AbstractReportItem Sets the Blob value for this item
+    function setBlobValue($value){
+        $report = $this->getReport();
+        $section = $this->getSection();
+        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->getReport()->person->getId(), $this->projectId);
+        $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
+        $blob->load($blob_address);
+        $blob_data = $blob->getData();
+        //$this->blobType == BLOB_ARRAY
+
+        $parent = $this->getParent();
+        $accessStr = "";
+        if($this->id != ""){
+            $accessStr = "['{$this->id}']";
+        }
+        while($parent instanceof ReportItemSet){
+            if($parent->blobIndex != ""){
+                $accessStr = "['{$this->{$parent->blobIndex}}']".$accessStr;
+            }
+            $parent = $parent->getParent();
+        }
+        $value = str_replace("\00", "", $value); // Fixes problem with the xml backup putting in random null escape sequences
+        if($this->seenOverview){
+            //$blob_data['revised'] = $value;
+            eval("\$blob_data['revised']$accessStr = \$value;");
+        }
+        else{
+            //$blob_data['original'] = $value;
+            eval("\$blob_data['original']$accessStr = \$value;");
+        }
+
+        $blob->store($blob_data, $blob_address);
+        
+    }
+    function getBlobValue(){
+        $report = $this->getReport();
+        $section = $this->getSection();
+        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->getReport()->person->getId(), $this->projectId);
+        $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
+        $blob->load($blob_address);
+        $blob_data = $blob->getData();
+        if($this->seenOverview){
+            $value = (isset($blob_data['revised']))? $blob_data['revised'] : "";
+        }
+        else{
+            $value = (isset($blob_data['original']))? $blob_data['original'] : "";
+        }
+
+        $parent = $this->getParent();
+        $accessStr = "";
+        if($this->id != ""){
+            $accessStr = "['{$this->id}']";
+        }
+        while($parent instanceof ReportItemSet){
+            if($parent->blobIndex != ""){
+                $accessStr = "['{$this->{$parent->blobIndex}}']".$accessStr;
+            }
+            $parent = $parent->getParent();
+        }
+        eval("\$value = @\$value$accessStr;");
+       
+        return $value;
+    }    
 	
 	function parseOptions(){
 	    $options = @explode("|", $this->attributes['options']);
@@ -67,36 +131,46 @@ EOF;
 		$wgOut->addHTML($item);
 	}
 
-	// function save(){
-	// 	if(!isset($_POST[$this->getPostId()])){
-	// 		$_POST[$this->getPostId()] = "";
-	// 		$_POST['oldData'][$this->getPostId()] = $this->getBlobValue();
-	// 	}
- //        if(isset($_POST[$this->getPostId()])){
- //            if(!isset($_POST[$this->getPostId().'_ignoreConflict']) ||
- //               $_POST[$this->getPostId().'_ignoreConflict'] != "true"){
- //                if(isset($_POST['oldData'][$this->getPostId()]) &&
- //                   trim($_POST['oldData'][$this->getPostId()]) == trim($_POST[$this->getPostId()])){
- //                   // Don't save, but also don't display an error
- //                   return array();
- //                }
- //                else if(isset($_POST['oldData'][$this->getPostId()]) && 
- //                   trim($_POST['oldData'][$this->getPostId()]) != trim($this->getBlobValue()) &&
- //                   trim($_POST[$this->getPostId()]) != trim($this->getBlobValue())){
- //                    if(trim($_POST['oldData'][$this->getPostId()]) != trim($_POST[$this->getPostId()])){
- //                        // Conflict in blob values
- //                        return array(array('postId' => $this->getPostId(), 
- //                                           'value' => trim($this->getBlobValue()),
- //                                           'postValue' => trim($_POST[$this->getPostId()]),
- //                                           'oldValue' => trim($_POST['oldData'][$this->getPostId()]),
- //                                           'diff' => @htmlDiffNL(str_replace("\n", "\n ", $this->getBlobValue()), str_replace("\n", "\n ", $_POST[$this->getPostId()]))));
- //                    }
- //                }
- //            }
- //            $this->setBlobValue($_POST[$this->getPostId()]);
- //        }
- //        return array();
- //    }
+	function getSeenOverview(){
+        global $wgUser, $wgImpersonating;
+        $type = $this->getParent()->getParent()->getAttr('subType', 'NI');
+        $project_id = 0;
+        if($type == "NI"){
+            $blobSubItem = $this->personId;
+        }
+        else if ($type == "Project"){
+            $blobSubItem = $project_id = $this->getParent()->getParent()->projectId;
+        }
+
+        if(!$wgImpersonating){
+            $evaluator_id = $wgUser->getId();
+
+            $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, 0);
+            $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_SEENOTHERREVIEWS, 0);
+            $blob->load($blob_address);
+            $seeonotherreviews = $blob->getData();
+
+            //If the reviewer has seen the overview, use the second address.
+
+            if($seeonotherreviews){
+                $this->seenOverview = 1;
+                //echo "PROJECTID=".$project_id ."<br>";
+                $blob = new ReportBlob(BLOB_ARRAY, $this->getReport()->year, $evaluator_id, $project_id);
+                $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, $this->blobItem, $blobSubItem);
+                $blob->load($blob_address);
+                $data = $blob->getData();
+                //var_dump($data);
+                $orig_data = (isset($data['original']))? $data['original'] : "";
+                //copy over the data if the 'AFTER' blob does not yet exist
+                              
+                if(isset($data['original']) && empty($data['revised'])){
+                    $data['revised'] = $orig_data;
+                    $blob->store($data, $blob_address);
+                }    
+            }
+        }
+    }
+	
 }
 
 ?>

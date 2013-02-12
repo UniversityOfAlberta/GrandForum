@@ -138,6 +138,6 @@ class EvaluationTable extends SpecialPage {
             $tok = false;
             return "N/A";
         }
-        return "<a href='$wgServer$wgScriptPath/index.php/Special:Evaluate?getpdf={$tok}'>[Download&nbspPDF]</a>";
+        return "<a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?getpdf={$tok}'>[Download&nbspPDF]</a>";
 	}
 } 
