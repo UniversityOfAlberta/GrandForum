@@ -69,10 +69,17 @@ class EvalOverviewReportItem extends AbstractReportItem {
             <script type='text/javascript'>
                 $('span.q8_tip').qtip({
                     position: {
-                        corner: {
-                            target: 'center',
-                            tooltip: 'center'
-                        }
+                        my: 'bottom left',
+                        at: 'top right',
+                    }, 
+                    style: {
+                        classes: 'qtipStyle'
+                    }
+                });
+                $('#overview_table th').qtip({
+                    position: {
+                        my: 'bottom center',
+                        at: 'top center',
                     }, 
                     style: {
                         classes: 'qtipStyle'
@@ -104,19 +111,30 @@ EOF;
         <table id="overview_table" class="dashboard" style="width:100%;background:#ffffff;border-style:solid; text-align:center;" cellspacing="1" cellpadding="3" frame="box" rules="all">
 EOF;
        
+        $tooltips = array(
+            EVL_OVERALLSCORE => "Overall Score", 
+            EVL_CONFIDENCE => "Confidence Level of Evaluator", 
+            EVL_EXCELLENCE => "Excellence of the Research Program", 
+            EVL_HQPDEVELOPMENT => "Development of HQP", 
+            EVL_NETWORKING => "Networking and Partnerships", 
+            EVL_KNOWLEDGE => "Knowledge and Technology Exchange and Exploitation", 
+            EVL_MANAGEMENT => "Management of the Network", 
+            EVL_REPORTQUALITY => "Rating for Quality of Report",
+            EVL_OTHERCOMMENTS => "Evaluator Comments"
+        );
 
         $html .=<<<EOF
         	<tr>
         	<th width="20%" align="left">NI Name</th>
-            <th width="10%">Q8 (Comments)</th>
-        	<th width="10%">Q7</th>
-        	<th width="10%">Q9</th>
-        	<th style="border-left: 5px double #8C529D;">Q1</th>
-        	<th>Q2</th>
-        	<th>Q3</th>
-        	<th>Q4</th>
-        	<th>Q5</th>
-        	<th>Q6</th>
+            <th width="10%" title="Evaluator Comments">Q8 (Comments)</th>
+        	<th width="10%" title="Overall Score">Q7</th>
+        	<th width="10%" title="Confidence Level of Evaluator">Q9</th>
+        	<th style="border-left: 5px double #8C529D;" title="Excellence of the Research Program">Q1</th>
+        	<th title="Development of HQP">Q2</th>
+        	<th title="Networking and Partnerships">Q3</th>
+        	<th title="Knowledge and Technology Exchange and Exploitation">Q4</th>
+        	<th title="Management of the Network">Q5</th>
+        	<th title="Rating for Quality of Report">Q6</th>
         	</tr>
 EOF;
         $sub_details = "";
@@ -144,7 +162,7 @@ EOF;
 
             	$sub_row .= "<tr id='row-{$sub_id}'>";
                 if($wgUser->getId() != $ev_id){
-            	   $sub_row .= "<td rowspan='3' align='left'>{$ev_name}</td></tr>";
+            	   $sub_row .= "<td rowspan='3' align='left' style='background-color: #F3EBF5;'>{$ev_name}</td></tr>";
                 }else{
                     $sub_row .= "<td rowspan='3' align='left'><a href='#details_sub-{$sub_id}' onclick='expandSubDetails(\"{$sub_id}\"); return false;' >{$sub_name}</a></td></tr>";
                 }

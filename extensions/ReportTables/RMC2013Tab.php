@@ -91,7 +91,13 @@ class RMC2013Tab extends AbstractTab {
                 "bPaginate": false,
                 "bLengthChange": false,
                 "bFilter": true,
-                "bSort": false
+                "aaSorting": [[0,'asc']],
+                "aoColumns": [
+                    null,
+                    null,
+                    { "bSortable": false }
+                ]
+                //"bSort": false
             });
             //$('.dataTables_filter input').css('width', 250);
         });  
@@ -252,7 +258,8 @@ EOF;
                     "bPaginate": false,
                     "bLengthChange": false,
                     "bFilter": true,
-                    "bSort": false
+                    "aaSorting": [[1,'desc']]
+                    //"bSort": false
                 });
                 //$('.dataTables_filter input').css('width', 250);
             });  
@@ -419,8 +426,8 @@ EOF;
                     $sub_rows .= "<tr>";
                     
                     $q8 = RMC2013Tab::getData(BLOB_TEXT, $rtype, $text_question, $ni, $eval_id, 2012);
-                    $q8 = $q8[$rev];
-                    $q8 = nl2br($q8);
+                    //$q8 = $q8[$rev]; <<<UNCOMMENT
+                    $q8 = nl2br($q8); 
                     $comm_label = ucfirst($rev);
                     if(!empty($q8)){
                         $cell =<<<EOF
@@ -432,6 +439,12 @@ EOF;
                     }else{
                         $cell = "{$comm_label}";
                     }
+
+                    //>>>DELETE
+                    if($rev == 'revised'){ 
+                        $cell = "Revised";
+                    }//<<<DELETE
+                    
                     $sub_rows .= "<td width='20%'>{$cell}</td>";
 
                     $i=0;
@@ -441,7 +454,7 @@ EOF;
                         
                         if($i>1){
                             $comm = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2012);
-                            $comm = $comm[$rev];
+                            //$comm = $comm[$rev]; <<<UNCOMMENT
                             if(!empty($comm)){
                                 foreach($comm as $key=>$c){
                                     if(strlen($c)>1){
@@ -453,7 +466,7 @@ EOF;
                         $comm_short = implode(", ", $comm_short);
 
                         $response = RMC2013Tab::getData(BLOB_TEXT, $rtype,  $q, $ni, $eval_id, 2012);
-                        $response_orig = $response = $response[$rev];
+                        $response_orig = $response; //= $response[$rev]; <<<UNCOMMENT
                         
                         if($response_orig){
                             $response = substr($response, 0, 1);
@@ -466,6 +479,11 @@ EOF;
                             $response = "";
                             $cell = "<td width='10%'>{$response}</td>";
                         }
+
+                        //>>>DELETE
+                        if($rev == 'revised'){ 
+                            $cell = "<td width='10%'></td>";
+                        }//<<<DELETE
 
                         if($q == EVL_OVERALLSCORE && $response_orig && isset($weights[$response_orig])){
                             $additional_score = $weights[$response_orig];
@@ -484,7 +502,7 @@ EOF;
                     $average_score += $aves[$additional_score]*$additional_score;
                     $div_count++;
                 }
-                
+
                 $sub_rows .= "</table>";
                 $sub_rows .= "</td></tr>";
                 $ev_count++;
@@ -810,8 +828,8 @@ EOF;
                 foreach(array('original', 'revised') as $ind => $rev){
                     $sub_rows .= "<tr>";
                     
-                    $q8 = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $text_question, $ni, $eval_id, 2012, $ni_id);
-                    $q8 = $q8[$rev];
+                    $q8 = RMC2013Tab::getData(BLOB_TEXT, $rtype, $text_question, $ni, $eval_id, 2012, $ni_id);
+                    //$q8 = $q8[$rev]; <<<UNCOMMENT
                     $q8 = nl2br($q8);
                     $comm_label = ucfirst($rev);
                     if(!empty($q8)){
@@ -824,6 +842,12 @@ EOF;
                     }else{
                         $cell = "{$comm_label}";
                     }
+
+                    //>>>DELETE
+                    if($rev == 'revised'){ 
+                        $cell = "Revised";
+                    }//<<<DELETE
+
                     $sub_rows .= "<td width='20%'>{$cell}</td>";
 
                     $i=0;
@@ -833,7 +857,7 @@ EOF;
                         
                         if($i>1){
                             $comm = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2012, $ni_id);
-                            $comm = @$comm[$rev];
+                            //$comm = @$comm[$rev]; <<<UNCOMMENT
                             if(!empty($comm)){
                                 foreach($comm as $key=>$c){
                                     if(strlen($c)>1){
@@ -844,8 +868,8 @@ EOF;
                         }
                         $comm_short = implode(", ", $comm_short);
 
-                        $response = RMC2013Tab::getData(BLOB_ARRAY, $rtype,  $q, $ni, $eval_id, 2012, $ni_id);
-                        $response_orig = $response = $response[$rev];
+                        $response = RMC2013Tab::getData(BLOB_TEXT, $rtype,  $q, $ni, $eval_id, 2012, $ni_id);
+                        $response_orig = $response; //= $response[$rev]; <<<UNCOMMENT
                         
                         if($response_orig){
                             $response = substr($response, 0, 1);
@@ -859,6 +883,11 @@ EOF;
                             $cell = "<td width='10%'>{$response}</td>";
                         }
 
+                         //>>>DELETE
+                        if($rev == 'revised'){ 
+                            $cell = "<td width='10%'></td>";
+                        }//<<<DELETE
+                        
                         if($q == EVL_OVERALLSCORE && $response_orig && isset($weights[$response_orig])){
 							$additional_score = $weights[$response_orig];
                             //$average_score += $weights[$response_orig];
