@@ -29,6 +29,11 @@ class EvalOverviewReportItem extends AbstractReportItem {
         $type = $this->getAttr('subType', 'PNI');
 	    $person = Person::newFromId($this->personId);
         $section_url = "";
+
+        $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY);
+        $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_MANAGEMENT_COM, EVL_REPORTQUALITY_COM);
+        $text_question = EVL_OTHERCOMMENTS;
+
         if($type == "PNI"){
 	        $subs = $person->getEvaluatePNIs();
             $section_url = "PNI+Overview";
@@ -40,11 +45,10 @@ class EvalOverviewReportItem extends AbstractReportItem {
         else if($type == "Project"){
             $subs = $person->getEvaluateProjects();
             $section_url = "Project+Overview";
+            $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_REPORTQUALITY);
+            $stock_comments =array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_REPORTQUALITY_COM);
         }
 
-	    $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY);
-        $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_MANAGEMENT_COM, EVL_REPORTQUALITY_COM);
-	    $text_question = EVL_OTHERCOMMENTS;
         
         $jscript =<<<EOF
             <style type='text/css'>
@@ -111,32 +115,38 @@ EOF;
         <table id="overview_table" class="dashboard" style="width:100%;background:#ffffff;border-style:solid; text-align:center;" cellspacing="1" cellpadding="3" frame="box" rules="all">
 EOF;
        
-        $tooltips = array(
-            EVL_OVERALLSCORE => "Overall Score", 
-            EVL_CONFIDENCE => "Confidence Level of Evaluator", 
-            EVL_EXCELLENCE => "Excellence of the Research Program", 
-            EVL_HQPDEVELOPMENT => "Development of HQP", 
-            EVL_NETWORKING => "Networking and Partnerships", 
-            EVL_KNOWLEDGE => "Knowledge and Technology Exchange and Exploitation", 
-            EVL_MANAGEMENT => "Management of the Network", 
-            EVL_REPORTQUALITY => "Rating for Quality of Report",
-            EVL_OTHERCOMMENTS => "Evaluator Comments"
-        );
 
-        $html .=<<<EOF
+        if($type == "Project"){
+            $html .=<<<EOF
         	<tr>
         	<th width="20%" align="left">NI Name</th>
-            <th width="10%" title="Evaluator Comments">Q8 (Comments)</th>
-        	<th width="10%" title="Overall Score">Q7</th>
-        	<th width="10%" title="Confidence Level of Evaluator">Q9</th>
+            <th width="10%" title="Evaluator Comments">Q7 (Comments)</th>
+        	<th width="10%" title="Overall Score">Q6</th>
+        	<th width="10%" title="Confidence Level of Evaluator">Q8</th>
         	<th style="border-left: 5px double #8C529D;" title="Excellence of the Research Program">Q1</th>
         	<th title="Development of HQP">Q2</th>
         	<th title="Networking and Partnerships">Q3</th>
         	<th title="Knowledge and Technology Exchange and Exploitation">Q4</th>
-        	<th title="Management of the Network">Q5</th>
-        	<th title="Rating for Quality of Report">Q6</th>
+        	<th title="Rating for Quality of Report">Q5</th>
         	</tr>
 EOF;
+        }
+        else{
+            $html .=<<<EOF
+            <tr>
+            <th width="20%" align="left">NI Name</th>
+            <th width="10%" title="Evaluator Comments">Q8 (Comments)</th>
+            <th width="10%" title="Overall Score">Q7</th>
+            <th width="10%" title="Confidence Level of Evaluator">Q9</th>
+            <th style="border-left: 5px double #8C529D;" title="Excellence of the Research Program">Q1</th>
+            <th title="Development of HQP">Q2</th>
+            <th title="Networking and Partnerships">Q3</th>
+            <th title="Knowledge and Technology Exchange and Exploitation">Q4</th>
+            <th title="Management of the Network">Q5</th>
+            <th title="Rating for Quality of Report">Q6</th>
+            </tr>
+EOF;
+        }
         $sub_details = "";
 
         foreach($subs as $sub){
@@ -289,7 +299,28 @@ EOF;
                 }
         	}
 
-            $sub_table_html =<<<EOF
+            if($type == "Project"){
+                $sub_table_html =<<<EOF
+                <div id='details_sub-{$sub_id}' class='details_sub'>
+                <div class='overview_table_heading'></div>
+                <table class="dashboard" style="width:100%;background:#ffffff;border-style:solid;text-align:center;" cellspacing="1" cellpadding="3" frame="box" rules="all">
+                <thead>
+                    <tr>
+                    <th width="20%" align='left'>Evaluator Name</th>
+                    <th width="10%">Q7 (Comments)</th>
+                    <th width="10%">Q6</th>
+                    <th width="10%">Q8</th>
+                    <th style="border-left: 5px double #8C529D;">Q1</th>
+                    <th>Q2</th>
+                    <th>Q3</th>
+                    <th>Q4</th>
+                    <th>Q5</th>
+                    </tr>
+                </thead>
+EOF;
+            }
+            else{
+                $sub_table_html =<<<EOF
                 <div id='details_sub-{$sub_id}' class='details_sub'>
                 <div class='overview_table_heading'></div>
                 <table class="dashboard" style="width:100%;background:#ffffff;border-style:solid;text-align:center;" cellspacing="1" cellpadding="3" frame="box" rules="all">
@@ -308,6 +339,7 @@ EOF;
                     </tr>
                 </thead>
 EOF;
+            }
 
             if($incomplete){
                 $sub_table_html .=<<<EOF
