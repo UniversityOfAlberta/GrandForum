@@ -284,6 +284,11 @@ $egAnnokiExtensions['ReportPDFs']     = array( 'name' => 'ReportPDFs',
 					      'enabled' => true,
 					      );
 					      
+$egAnnokiExtensions['ScreenCapture']     = array( 'name' => 'ScreenCapture',
+					      'path' => "$IP/extensions/ScreenCapture/ScreenCapture.php",
+					      'enabled' => true,
+					      );
+					      
 $egAnnokiExtensions['Solr']     = array( 'name' => 'Solr',
 					      'path' => "$IP/extensions/Solr/Solr.php",
 					      'enabled' => true,
