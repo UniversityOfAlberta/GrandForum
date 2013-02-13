@@ -170,7 +170,7 @@ EOF;
 
                 //Actual Answers
                 //foreach(array(0,20) as $add){
-                $q8 = $this->blobValue(BLOB_TEXT, $ev_id, $text_question, $sub_id);
+                $q8 = $this->blobValue(BLOB_ARRAY, $ev_id, $text_question, $sub_id);
                 
                 $sub_row .= "<tr><td>";
                 $sub_row2 = "<tr><td>";
@@ -389,8 +389,8 @@ EOF;
 
          //Determine if own review was completed.
         $complete = true;
-        foreach ($subs as $sub){
-            $sub_id = $sub->getId();
+        //foreach ($subs as $sub){
+            $sub_id = $reportSubItem; //$sub->getId();
             foreach($questions as $q){
                 $val = $this->blobValue(BLOB_ARRAY, $evaluator_id, $q, $sub_id);
                 if(empty($val['original'])){
@@ -401,7 +401,7 @@ EOF;
             if(!$complete){
                 break;
             }
-        }
+        //}
 
         if($complete){
 
@@ -412,13 +412,12 @@ EOF;
             $seeonotherreviews = $blob->getData();
             if(!$seeonotherreviews){
 
-                foreach ($subs as $sub){
-                    $sub_id = $sub->getId();
+                //foreach ($subs as $sub){
+                    $sub_id = $reportSubItem; //$sub->getId();
                     foreach($questions as $q){
                         $this->setRevised(BLOB_ARRAY, $evaluator_id, $q, $sub_id);
-                    }
-                    
-                }
+                    }    
+                //}
 
                 $data = "Yes";
                 $blob->store($data, $blob_address);
