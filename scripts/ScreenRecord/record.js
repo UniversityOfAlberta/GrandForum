@@ -14,6 +14,7 @@
         var target = '';
         
         var recordButton;
+        var pickButton;
         var screenshotButton;
         var timeLeft;
         
@@ -41,7 +42,8 @@
         this.init = function(){
             var recordDiv = $("<div class='record'>");
             recordDiv.css('padding', '2px');
-            recordButton = $('<button onClick="return false;" style="padding:3px 10px !important;font-size:10px !important;">Record <span class="record" style="font-size:12px;">●</span></button>');
+            recordButton = $('<button onClick="return false;" style="padding:3px 10px !important;font-size:10px !important;"><span class="recordText">Record</span> <span class="record" style="font-size:12px;">●</span></button>');
+            pickButton = $('<button onClick="return false;" style="padding:3px 10px !important;font-size:10px !important;">Select Element</button>');
             screenshotButton = $('<button style="padding:3px 10px !important;font-size:10px !important;" onClick="return false;">Capture (Alt+c)</button>');
             timeLeft = $('<span class="timeLeft" style="margin-left:20px;font-size:10px;"></span>');
             
@@ -52,12 +54,12 @@
             });
             recordButton.click(function(e){
                 if(interval == null){
-                    $("span.record", $(that).parent()).css('color', '#FF0000');
                     that.start();
                     e.stopPropagation();
                 }
                 else{
-                    $(screenshotButton).hide();
+                    screenshotButton.hide();
+                    pickButton.hide();
                     that.stop();
                     if(onFinishedRecord != undefined){
                         onFinishedRecord(story.slice(0));
@@ -65,13 +67,18 @@
                     story = Array();
                 }
             });
-            $(screenshotButton).click(function(){
+            pickButton.click(function(e){
+                that.start();
+            });
+            screenshotButton.click(function(){
                 that.takeScreenshot();
             });
             
+            pickButton.hide();
             screenshotButton.hide();
             
             recordButton.appendTo(recordDiv);
+            pickButton.appendTo(recordDiv);
             screenshotButton.appendTo(recordDiv);
             timeLeft.appendTo(recordDiv);
             
@@ -140,13 +147,24 @@
                 $(timeLeft).empty();
             }
         }
+        
+        this.pickElement = function(){
+            var outline = DomOutline({onClick: function(dom){
+                    target = dom;
+                }
+            });
+            outline.start();
+        }
     
         this.start = function(){
             var outline = DomOutline({onClick: function(dom){
-                    $(screenshotButton).show();
-                    $(screenshotButton).css('display', 'inline-block');
+                    screenshotButton.show();
+                    screenshotButton.css('display', 'inline-block');
+                    pickButton.show();
+                    pickButton.css('display', 'inline-block');
                     target = dom;
                     that.stop();
+                    $("span.recordText", $(that).parent()).html('Stop');
                     if(delay > 0){
                         interval = setInterval(that.takeScreenshot, delay);
                     }
@@ -169,6 +187,7 @@
             clearInterval(recordInterval);
             recordInterval = null;
             $("span.record", $(that).parent()).css('color', '');
+            $("span.recordText", $(that).parent()).html('Record');
         }
         
         this.html2canvas = function(callback){
@@ -177,7 +196,9 @@
                     var data = {
                                 'url' : document.location.toString(),
                                 'img' : canvas.toDataURL().replace('data:image/png;base64,', ''),
-                                'date': new Date().toJSON()
+                                'date': new Date().toJSON(),
+                                'descriptions': Array(),
+                                'transition': ''
                                };
                     story.push(data);
                     $(that).append(canvas);
