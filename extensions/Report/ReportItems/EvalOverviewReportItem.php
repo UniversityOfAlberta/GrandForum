@@ -36,14 +36,17 @@ class EvalOverviewReportItem extends AbstractReportItem {
 
         if($type == "PNI"){
 	        $subs = $person->getEvaluatePNIs();
+            $report_url = "EvalPNIReport";
             $section_url = "PNI+Overview";
         }
         else if($type == "CNI"){
             $subs = $person->getEvaluateCNIs();
+            $report_url = "EvalCNIReport";
             $section_url = "CNI+Overview";
         }
         else if($type == "Project"){
             $subs = $person->getEvaluateProjects();
+            $report_url = "EvalProjectReport";
             $section_url = "Project+Overview";
             $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_REPORTQUALITY);
             $stock_comments =array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_REPORTQUALITY_COM);
@@ -104,7 +107,7 @@ class EvalOverviewReportItem extends AbstractReportItem {
                     $('#details_sub-'+sub_id).show();
                     $.ajax({
                         type: "GET",
-                        url: "{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EvalReport&section={$section_url}&seenReport="+sub_id,
+                        url: "{$wgServer}{$wgScriptPath}/index.php/Special:Report?report={$report_url}&section={$section_url}&seenReport="+sub_id,
                     });
                 }
             </script>
@@ -428,7 +431,7 @@ EOF;
                 $val = $this->blobValue(BLOB_ARRAY, $evaluator_id, $q, $sub_id);
                 if(empty($val['original'])){
                     $complete = false;
-                    echo "QUESTION $q  INCOMPLETE<br>";
+                    //echo "QUESTION $q  INCOMPLETE<br>";
                     break;
                 }
             }
