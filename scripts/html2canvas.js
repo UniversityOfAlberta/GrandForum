@@ -2583,7 +2583,7 @@ _html2canvas.Parse = function (images, options) {
       case "INPUT":
         // TODO add all relevant type's, i.e. HTML5 new stuff
         // todo add support for placeholder attribute for browsers which support it
-        if (/^(text|url|email|submit|button|reset|checkbox|radio)$/.test(element.type) && (element.value || element.placeholder).length > 0){
+        if (/^(text|url|email|submit|button|reset|checkbox|radio)$/.test(element.type) && (element.value || element.placeholder || "").length > 0){
           renderFormValue(element, bounds, stack);
         }
         break;
@@ -2848,8 +2848,9 @@ _html2canvas.Renderer.Canvas = function(options) {
         newCanvas.width = bounds.width;
         newCanvas.height = bounds.height;
         ctx = newCanvas.getContext("2d");
-
-        ctx.drawImage(canvas, bounds.left, bounds.top, bounds.width, bounds.height, 0, 0, bounds.width, bounds.height);
+        if(bounds.width > 0 && bounds.height > 0){
+            ctx.drawImage(canvas, bounds.left, bounds.top, bounds.width, bounds.height, 0, 0, bounds.width, bounds.height);
+        }
         canvas = null;
         return newCanvas;
       }
