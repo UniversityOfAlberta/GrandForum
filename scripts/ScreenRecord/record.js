@@ -195,6 +195,7 @@
                 onrendered: function(canvas) {
                     var data = {
                                 'url' : document.location.toString(),
+                                'el' : target.outerHTML,
                                 'img' : canvas.toDataURL().replace('data:image/png;base64,', ''),
                                 'date': new Date().toJSON(),
                                 'descriptions': Array(),
