@@ -12,6 +12,7 @@
         var onFinishedRecord = undefined;
         var story = Array();
         var target = '';
+        var oldWindowOnBeforeUnload = null;
         
         var recordButton;
         var pickButton;
@@ -65,6 +66,8 @@
                         onFinishedRecord(story.slice(0));
                     }
                     story = Array();
+                    window.onbeforeunload = oldWindowOnBeforeUnload;
+                    oldWindowOnBeforeUnload = null;
                 }
             });
             pickButton.click(function(e){
@@ -173,6 +176,10 @@
                     }
                     recordInterval = setInterval(that.recordBlink, 1000);
                     that.takeScreenshot();
+                    if(oldWindowOnBeforeUnload == null){
+                        oldWindowOnBeforeUnload = window.onbeforeunload;
+                        window.onbeforeunload = function(){ return "You are currently recording a screen capture session."};
+                    }
                 }
             });
             outline.start();
