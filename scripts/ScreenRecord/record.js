@@ -12,7 +12,7 @@
         var onFinishedRecord = undefined;
         var story = Array();
         var target = '';
-        var oldWindowOnBeforeUnload = null;
+        var oldWindowOnBeforeUnload = undefined;
         
         var recordButton;
         var pickButton;
@@ -67,7 +67,7 @@
                     }
                     story = Array();
                     window.onbeforeunload = oldWindowOnBeforeUnload;
-                    oldWindowOnBeforeUnload = null;
+                    oldWindowOnBeforeUnload = undefined;
                 }
             });
             pickButton.click(function(e){
@@ -150,14 +150,6 @@
                 $(timeLeft).empty();
             }
         }
-        
-        this.pickElement = function(){
-            var outline = DomOutline({onClick: function(dom){
-                    target = dom;
-                }
-            });
-            outline.start();
-        }
     
         this.start = function(){
             var outline = DomOutline({onClick: function(dom){
@@ -176,7 +168,7 @@
                     }
                     recordInterval = setInterval(that.recordBlink, 1000);
                     that.takeScreenshot();
-                    if(oldWindowOnBeforeUnload == null){
+                    if(typeof oldWindowOnBeforeUnload == 'undefined'){
                         oldWindowOnBeforeUnload = window.onbeforeunload;
                         window.onbeforeunload = function(){ return "You are currently recording a screen capture session.  Leaving this page will cause the session to be lost.  To save the session, press the 'Stop' button."};
                     }
