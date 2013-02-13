@@ -130,6 +130,10 @@ EOF;
 	    $item = $this->processCData($this->getBlobValue());
 		$wgOut->addHTML($item);
 	}
+    // Returns the number of completed values (usually 1, or 0)
+    function getNComplete(){
+        return 1;
+    }
 
 	function getSeenOverview(){
         global $wgUser, $wgImpersonating;
