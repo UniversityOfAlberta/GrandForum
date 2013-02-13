@@ -12,7 +12,7 @@ class EvalReviewTextareaReportItem extends TextareaReportItem {
         else if ($type == "Project"){
             $this->blobSubItem = $this->getParent()->projectId;
         }
-        //$this->getSeenOverview();
+        $this->getSeenOverview();
     }
 
     function getHTML(){
@@ -87,56 +87,15 @@ EOF;
 
         if(!$wgImpersonating){
             $evaluator_id = $wgUser->getId();
-           	
-            /*
-            //Check if the reviewer has completed his review
-            $radio_questions = array(EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY, EVL_OVERALLSCORE, EVL_CONFIDENCE);
 
-            $project_id = 0;
-            if($this->getReport()->reportType == RP_EVAL_PROJECT){
-                $project_id = $blobSubItem;
-            }
-
-            $complete = true;
-            foreach ($radio_questions as $blobItem){
-                $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, $project_id);
-                $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, $blobItem, $blobSubItem);
-                $blob->load($blob_address);
-                if(!$blob_data = $blob->getData()){
-                    $complete = false;
-                    break;
-                }
-            }
-            */
-
-            $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, 0);
-            $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_SEENOTHERREVIEWS, 0);
+            $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, $project_id);
+            $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_SEENOTHERREVIEWS, $blobSubItem);
             $blob->load($blob_address);
             $seeonotherreviews = $blob->getData();
 
            	//If the reviewer has seen the overview, use the second address.
-
             if($seeonotherreviews){
                 $this->seenOverview = 1;
-
-        		//$this->blobItem = EVL_OTHERCOMMENTS;
-                $blob = new ReportBlob(BLOB_ARRAY, $this->getReport()->year, $evaluator_id, $project_id);
-                $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_OTHERCOMMENTS, $blobSubItem);
-                $blob->load($blob_address);
-                $data = $blob->getData();
-                //var_dump($data);
-                $orig_data = (isset($data['original']))? $data['original'] : "";
-                //copy over the data if the 'AFTER' blob does not yet exist
-                              
-                if(isset($data['original']) && empty($data['revised'])){
-                    $data['revised'] = $orig_data;
-                    $blob->store($data, $blob_address);
-                }    
-
-                //$blob_address_to = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_OTHERCOMMENTSAFTER, $blobSubItem);
-                //if(!$blob->load($blob_address_to) && $orig_data){    
-                //    $blob->store($orig_data, $blob_address_to);
-                //}
         	}
         }
     }

@@ -13,7 +13,7 @@ class EvalReviewRadioReportItem extends RadioReportItem {
     	else if($type == "Project"){
     		$this->blobSubItem = $this->getParent()->projectId;
     	}
-        //$this->getSeenOverview();
+        $this->getSeenOverview();
     }
 
 
@@ -69,28 +69,14 @@ class EvalReviewRadioReportItem extends RadioReportItem {
         if(!$wgImpersonating){
             $evaluator_id = $wgUser->getId();
 
-            $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, 0);
-            $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_SEENOTHERREVIEWS, 0);
+            $blob = new ReportBlob(BLOB_TEXT, $this->getReport()->year, $evaluator_id, $project_id);
+            $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, EVL_SEENOTHERREVIEWS, $blobSubItem);
             $blob->load($blob_address);
             $seeonotherreviews = $blob->getData();
 
             //If the reviewer has seen the overview, use the second address.
-
             if($seeonotherreviews){
                 $this->seenOverview = 1;
-
-                $blob = new ReportBlob(BLOB_ARRAY, $this->getReport()->year, $evaluator_id, $project_id);
-                $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, $this->blobItem, $blobSubItem);
-                $blob->load($blob_address);
-                $data = $blob->getData();
-                //var_dump($data);
-                $orig_data = (isset($data['original']))? $data['original'] : "";
-                //copy over the data if the 'AFTER' blob does not yet exist
-                              
-                if(isset($data['original']) && empty($data['revised'])){
-                    $data['revised'] = $orig_data;
-                    $blob->store($data, $blob_address);
-                }    
             }
         }
     }
