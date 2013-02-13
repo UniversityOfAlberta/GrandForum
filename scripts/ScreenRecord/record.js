@@ -178,7 +178,7 @@
                     that.takeScreenshot();
                     if(oldWindowOnBeforeUnload == null){
                         oldWindowOnBeforeUnload = window.onbeforeunload;
-                        window.onbeforeunload = function(){ return "You are currently recording a screen capture session."};
+                        window.onbeforeunload = function(){ return "You are currently recording a screen capture session.  Leaving this page will cause the session to be lost.  To save the session, press the 'Stop' button."};
                     }
                 }
             });
