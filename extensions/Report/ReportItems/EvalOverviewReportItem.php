@@ -428,6 +428,7 @@ EOF;
                 $val = $this->blobValue(BLOB_ARRAY, $evaluator_id, $q, $sub_id);
                 if(empty($val['original'])){
                     $complete = false;
+                    echo "QUESTION $q  INCOMPLETE<br>";
                     break;
                 }
             }
