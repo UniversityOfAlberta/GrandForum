@@ -1300,6 +1300,22 @@ class Person{
 	    return $this->multimedia;
 	}
 	
+	/**
+	 * Returns an array of objects representing this user's recordings
+	 * @return array An array of objects representing this user's recordings
+	 */
+	function getRecordings(){
+	    $sql = "SELECT *
+	            FROM `grand_recordings`
+	            WHERE person = '{$this->id}'";
+	    $data = DBFunctions::execSQL($sql);
+	    $array = array();
+	    foreach($data as $row){
+	        $array[] = json_decode($row['story']);
+	    }
+	    return $array;
+	}
+	
 	// Returns an array of Acknowledgements uploaded by this Person
     function getAcknowledgements(){
         if($this->acknowledgements == null){

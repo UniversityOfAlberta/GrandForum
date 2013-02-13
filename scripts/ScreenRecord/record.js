@@ -200,16 +200,18 @@
         this.html2canvas = function(callback){
             html2canvas(target, {
                 onrendered: function(canvas) {
-                    var data = {
-                                'url' : document.location.toString(),
-                                'el' : target.outerHTML,
-                                'img' : canvas.toDataURL().replace('data:image/png;base64,', ''),
-                                'date': new Date().toJSON(),
-                                'descriptions': Array(),
-                                'transition': ''
-                               };
-                    story.push(data);
-                    $(that).append(canvas);
+                    var img = canvas.toDataURL().replace('data:image/png;base64,', '');
+                    if(img != ''){
+                        var data = {
+                                    'url' : document.location.toString(),
+                                    'el' : target.outerHTML,
+                                    'img' : canvas.toDataURL().replace('data:image/png;base64,', ''),
+                                    'date': new Date().toJSON(),
+                                    'descriptions': Array(),
+                                    'transition': ''
+                                   };
+                        story.push(data);
+                    }
                     if(callback != undefined){
                         callback(canvas);
                     }
