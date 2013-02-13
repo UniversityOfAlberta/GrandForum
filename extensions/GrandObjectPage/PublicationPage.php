@@ -482,6 +482,7 @@ class PublicationPage {
                                         addAttr("ISBN");
                                         addAttr("ISSN");
                                         addAttr("DOI");
+                                        addAttr("URL");
                                         break;
                                     case "Proceedings Paper":
                                         addAttrDefn('.$this->get_defn("Event Title").');
