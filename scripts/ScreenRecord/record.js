@@ -4,6 +4,7 @@
         var that = this;
         var convertURL = '';
         var delay = 10*1000;
+        var maxSize = 5*1000*1000;
         var convertSVG = false;
         var interval = null;
         var recordInterval = null;
@@ -18,6 +19,7 @@
         var pickButton;
         var screenshotButton;
         var timeLeft;
+        var sizeLeft;
         
         if(options.convertSVG == true && options.convertURL != undefined){
             convertURL = options.convertURL;
@@ -25,6 +27,9 @@
         }
         if(options.delay != undefined){
             delay = options.delay;
+        }
+        if(options.maxSize != undefined){
+            maxSize = options.maxSize;
         }
         if(options.onCapture != undefined){
             onCapture = options.onCapture;
@@ -46,7 +51,8 @@
             recordButton = $('<button onClick="return false;" style="padding:3px 10px !important;font-size:10px !important;"><span class="recordText">Record</span> <span class="record" style="font-size:12px;">●</span></button>');
             pickButton = $('<button onClick="return false;" style="padding:3px 10px !important;font-size:10px !important;">Select Element</button>');
             screenshotButton = $('<button style="padding:3px 10px !important;font-size:10px !important;" onClick="return false;">Capture (Alt+c)</button>');
-            timeLeft = $('<span class="timeLeft" style="margin-left:20px;font-size:10px;"></span>');
+            sizeLeft = $('<span style="margin-left:20px;font-size:10px;"></span><br />');
+            timeLeft = $('<span style="margin-left:20px;font-size:10px;"></span>');
             
             $(window).keydown(function(e){
                 if(e.altKey && e.keyCode == 67){ // Alt + c
@@ -83,6 +89,7 @@
             recordButton.appendTo(recordDiv);
             pickButton.appendTo(recordDiv);
             screenshotButton.appendTo(recordDiv);
+            sizeLeft.appendTo(recordDiv);
             timeLeft.appendTo(recordDiv);
             
             recordDiv.appendTo($(el));
@@ -94,7 +101,7 @@
                     clearInterval(interval);
                 }
                 clearInterval(recordInterval);
-                $(timeLeft).html('Capturing...');
+                timeLeft.html('Capturing...');
                 if(convertSVG && $($("svg:visible"), that).length > 0){
                     var converted = Array();
                     var deferreds = Array();
@@ -144,10 +151,10 @@
             }
             if(delay > 0){
                 timeTillNext--;
-                $(timeLeft).html('Next Screenshot in ' + timeTillNext + ' s');
+                timeLeft.html('Next Screenshot in ' + timeTillNext + ' s');
             }
             else{
-                $(timeLeft).empty();
+                timeLeft.empty();
             }
         }
     
@@ -178,7 +185,8 @@
         }
         
         this.stop = function(){
-            $(timeLeft).empty();
+            timeLeft.empty();
+            sizeLeft.empty();
             if(delay > 0){
                 clearInterval(interval);
             }
@@ -196,13 +204,23 @@
                     if(img != ''){
                         var data = {
                                     'url' : document.location.toString(),
-                                    'el' : target.outerHTML,
                                     'img' : canvas.toDataURL().replace('data:image/png;base64,', ''),
                                     'date': new Date().toJSON(),
                                     'descriptions': Array(),
                                     'transition': ''
                                    };
-                        story.push(data);
+                        var size = JSON.stringify(story).length;
+                        sizeAfter = size + JSON.stringify(data).length;
+                        
+                        if(sizeAfter <= maxSize){
+                            story.push(data);
+                            sizeLeft.html((sizeAfter/1000/1000).toFixed(2) + '/' + Math.round(maxSize/1000/1000) + 'MB');
+                            sizeLeft.css('color', '');
+                        }
+                        else{
+                            sizeLeft.html((size/1000/1000).toFixed(2) + '/' + Math.round(maxSize/1000/1000) + 'MB<br />The last screenshot exceeded the size limit.  Please stop recording to start a new session.');
+                            sizeLeft.css('color', '#FF0000');
+                        }
                     }
                     if(callback != undefined){
                         callback(canvas);

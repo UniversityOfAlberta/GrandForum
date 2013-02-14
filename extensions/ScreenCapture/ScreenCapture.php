@@ -17,6 +17,7 @@ class ScreenCapture {
                         convertSVG: true,
                         delay: 0,
                         el: '#nav',
+                        maxSize: 5*1000*1000,
                         onFinishedRecord: function(story){
                             $.post('{$wgServer}{$wgScriptPath}/index.php?action=api.addRecordStory', {\"story\": story}, function(response){
                                 
