@@ -62,7 +62,6 @@ EOF
 	    <script type='text/javascript'>
 	    
 	    // Firefox fix (doesn't respect position:relative/absolute for divs in table cells
-	    $("#graph").parent().height($("#graph").parent().parent().height());
 	    
 	    // chrome fix.
         document.onselectstart = function () { return false; };
@@ -110,7 +109,7 @@ EOF
 		var connector2 = {				
 			connector:"Straight",
 			   	anchor: "Continuous",
-			   	endpoint:"Blank",
+			   	endpointStyle:{ radius:3, fillStyle:"#8C529D" },
 			   	paintStyle:{ 
 					lineWidth:2,
 					strokeStyle:"#8C529D",
@@ -161,6 +160,9 @@ EOF
                                         maxWidth:'85%',
                                         maxHeight:'85%'
                                        });
+        console.log((Math.ceil($("#graph .window").length/4))*200);       
+        $("#graph").parent().height(Math.max((Math.ceil($("#graph .window").length/4))*200 + 100, $("#graph").parent().parent().height()));
+        
         </script>
 EOF
 );
