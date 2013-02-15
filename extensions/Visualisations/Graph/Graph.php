@@ -14,8 +14,8 @@ class Graph extends Visualisation {
     
     static function init(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Graph/js/excanvas.min.js" type="text/javascript" charset="utf-8"></script>');
-        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Graph/js/jsPlumb.min.js" type="text/javascript" charset="utf-8"></script>');
+        //$wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Graph/js/excanvas.min.js" type="text/javascript" charset="utf-8"></script>');
+        //$wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Graph/js/jsPlumb.min.js" type="text/javascript" charset="utf-8"></script>');
         $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Graph/js/absPos.js" type="text/javascript" charset="utf-8"></script>');
         $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Graph/js/graph.min.js" type="text/javascript" charset="utf-8"></script>');
         $wgOut->addStyle($wgServer.$wgScriptPath.'/extensions/Visualisations/Graph/css/main.css');

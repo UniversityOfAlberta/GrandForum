@@ -67,6 +67,8 @@
                 else{
                     screenshotButton.hide();
                     pickButton.hide();
+                    sizeLeft.hide();
+                    timeLeft.hide();
                     that.stop();
                     if(onFinishedRecord != undefined){
                         onFinishedRecord(story.slice(0));
@@ -85,6 +87,8 @@
             
             pickButton.hide();
             screenshotButton.hide();
+            sizeLeft.hide();
+            timeLeft.hide();
             
             recordButton.appendTo(recordDiv);
             pickButton.appendTo(recordDiv);
@@ -160,6 +164,8 @@
     
         this.start = function(){
             var outline = DomOutline({onClick: function(dom){
+                    sizeLeft.show();
+                    timeLeft.show();
                     screenshotButton.show();
                     screenshotButton.css('display', 'inline-block');
                     pickButton.show();
