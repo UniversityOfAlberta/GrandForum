@@ -236,7 +236,7 @@ class cavendishTemplate extends QuickTemplate {
 		                                     'left' : '-229px',
 		                                     'margin-right' : marginRight
                                             }, 200, 'swing', function(){
-                                                
+                                                jsPlumb.repaintEverything();
                                             });
                         sideToggled = 'in';
                     }
@@ -245,7 +245,7 @@ class cavendishTemplate extends QuickTemplate {
                                              'left' : '0px',
                                              'margin-right' : '0px'
                                             }, 200, 'swing', function(){
-                                                
+                                                jsPlumb.repaintEverything();
                                             });
                         sideToggled = 'out';
                     }
