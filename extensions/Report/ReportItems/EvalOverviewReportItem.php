@@ -190,6 +190,7 @@ EOF;
                 if(!empty($q8) && is_array($q8)){
                     $q8_O = (isset($q8['original']))? $q8['original'] : "";
                     $q8_R = (isset($q8['revised']))? $q8['revised'] : "";
+                    $diff = strcmp($q8_O, $q8_R);
 
                     if(!empty($q8_O)){
                         $q8_O = nl2br($q8_O);
@@ -199,7 +200,7 @@ EOF;
                         $sub_row .= "Original";
                     }
 
-                    if(!empty($q8_R)){
+                    if(!empty($q8_R) && $diff != 0){
                         $q8_R = nl2br($q8_R);
                         $sub_row2 .= "<a href='#' onclick='openDialog(\"{$ev_id}\", \"{$sub_id}\", 2); return false;'>Revised</a><div id='dialog2-{$ev_id}-{$sub_id}' class='comment_dialog' title='Revised Comment by {$ev_name_straight} on {$sub_name_straight}'>{$q8_R}</div><br />";
             	    }
@@ -228,9 +229,10 @@ EOF;
 
                     if($i>1){
                         $comm = $this->blobValue(BLOB_ARRAY, $ev_id, $stock_comments[$i], $sub_id);
-                        $comm2 = (isset($comm['revised']))? $comm['revised'] : "";
-                        $comm = (isset($comm['original']))? $comm['original'] : "";
-
+                        $comm2 = (isset($comm['revised']))? $comm['revised'] : array();
+                        $comm = (isset($comm['original']))? $comm['original'] : array();
+                        //$diff = array_diff($comm, $comm2);
+                        
                         if(!empty($comm)){
                             foreach($comm as $key=>$c){
                                 if(strlen($c)>1){
@@ -252,6 +254,13 @@ EOF;
                     $response = $this->blobValue(BLOB_ARRAY, $ev_id, $blobItem, $sub_id);
                     $response_orig = (isset($response['original']))? $response['original'] : "";
                     $response_rev = $response2 = (isset($response['revised']))? $response['revised'] : "";
+                    $diff = strcmp($response_orig, $response_rev);
+                    $diff2 = array();
+                    if($i>1){
+                        $diff2 = array_merge(array_diff(array_filter($comm), array_filter($comm2)), 
+                                             array_diff(array_filter($comm2), array_filter($comm)));
+                    }
+                    
                     $response = $response_orig;
             		
                     $double_border = '';
@@ -274,7 +283,7 @@ EOF;
                         }
             		}
 
-                    if($response_rev){
+                    if($response_rev && ($diff != 0 || !empty($diff2))){
                         $response2 = substr($response2, 0, 1);
                         if(!empty($comm2)){
                             $response2 .= "; ".$comm_short2;
