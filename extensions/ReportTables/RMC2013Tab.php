@@ -271,6 +271,7 @@ EOF;
             });  
 
             function openDialog(ev_id, sub_id, num){
+                alert('#dialog'+num+'-'+ev_id+'-'+sub_id);
                 $('#dialog'+num+'-'+ev_id+'-'+sub_id).dialog("open");
             }
             </script>
@@ -350,15 +351,6 @@ EOF;
             <span class='tableHeader borderLeft' style="width: 7.8%;">Q5</span>
             <span class='tableHeader borderLeft' style="width: 7.7%;">Q6</span>
             </th>
-            <!--<th style='background: #EEEEEE;' width="7%">Comment (Q8)</th>
-            <th style='background: #EEEEEE;' width="7%">Q7</th>
-            <th style='background: #EEEEEE;' width="7%">Q9</th>
-            <th style='background: #EEEEEE;' width="7%">Q1</th>
-            <th style='background: #EEEEEE;' width="7%">Q2</th>
-            <th style='background: #EEEEEE;' width="7%">Q3</th>
-            <th style='background: #EEEEEE;' width="7%">Q4</th>
-            <th style='background: #EEEEEE;' width="7%">Q5</th>
-            <th style='background: #EEEEEE;' width="7%">Q6</th>-->
         </tr>
         </thead>
         <tbody>
@@ -428,35 +420,58 @@ EOF;
                 $sub_rows .= "<table width='100%' rules='all'>";
 
                 $additional_score = 0;
-                foreach(array('original', 'revised') as $ind => $rev){
-                    $sub_rows .= "<tr>";
-                    
+                //foreach(array('original', 'revised') as $ind => $rev){
+                    $sub_row1 = "<tr>";
+                    $sub_row2 = "<tr>";
+
                     $q8 = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $text_question, $ni, $eval_id, 2012);
-                    $q8 = @$q8[$rev]; 
-                    $q8 = nl2br($q8); 
-                    $comm_label = ucfirst($rev);
-                    if(!empty($q8)){
-                        $cell =<<<EOF
-                            <a href='#' onclick='openDialog("{$eval_id}", "{$ni_id}", {$ind}); return false;'>{$comm_label}</a>
-                            <div id='dialog{$ind}-{$eval_id}-{$ni_id}' class='comment_dialog' title='{$comm_label} Comment by {$eval_name} on {$ni_name}'>
-                            {$q8}
+                    $q8_O = (isset($q8['original']))? $q8['original'] : "";
+                    $q8_R = (isset($q8['revised']))? $q8['revised'] : "";
+                    $diff = strcmp($q8_O, $q8_R);
+
+                    //$q8 = @$q8[$rev]; 
+                    //$q8 = nl2br($q8); 
+                    //$comm_label = ucfirst($rev); 
+                    if(!empty($q8_O)){
+                        $q8_O = nl2br($q8_O);
+                        $cell1 =<<<EOF
+                            <a href='#' onclick='openDialog("{$eval_id}", "{$ni_id}", "1"); return false;'>Original</a>
+                            <div id='dialog1-{$eval_id}-{$ni_id}' class='comment_dialog' title='Original Comment by {$eval_name} on {$ni_name}'>
+                            {$q8_O}
                             </div>
 EOF;
                     }else{
-                        $cell = "{$comm_label}";
+                        $cell1 = "Original";
                     }
-
+                    if(!empty($q8_R) && $diff != 0){
+                        $q8_R = nl2br($q8_R);
+                        $cell2 =<<<EOF
+                            <a href='#' onclick='openDialog("{$eval_id}", "{$ni_id}", "2"); return false;'>Revised</a>
+                            <div id='dialog2-{$eval_id}-{$ni_id}' class='comment_dialog' title='Revised Comment by {$eval_name} on {$ni_name}'>
+                            {$q8_R}
+                            </div>
+EOF;
+                    }
+                    else{
+                        $cell2 = "Revised";
+                    }
                     
-                    $sub_rows .= "<td width='20%'>{$cell}</td>";
+                    $sub_row1 .= "<td width='20%'>{$cell1}</td>";
+                    $sub_row2 .= "<td width='20%'>{$cell2}</td>";
 
                     $i=0;
                     foreach($radio_questions as $q){
                         $comm = "";
                         $comm_short = array();
+
+                        $comm2 = "";
+                        $comm_short2 = array();
                         
                         if($i>1){
                             $comm = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2012);
-                            $comm = @$comm[$rev]; 
+                            //$comm = @$comm[$rev]; 
+                            $comm2 = (isset($comm['revised']))? $comm['revised'] : array();
+                            $comm = (isset($comm['original']))? $comm['original'] : array();
                             if(!empty($comm)){
                                 foreach($comm as $key=>$c){
                                     if(strlen($c)>1){
@@ -464,43 +479,79 @@ EOF;
                                     }
                                 }
                             }
+                            if(!empty($comm2)){
+                                foreach($comm2 as $key=>$c){
+                                    if(strlen($c)>1){
+                                        $comm_short2[] = substr($c, 0, 1);
+                                    }
+                                }
+                            }
                         }
                         $comm_short = implode(", ", $comm_short);
+                        $comm_short2 = implode(", ", $comm_short2);
 
                         $response = RMC2013Tab::getData(BLOB_ARRAY, $rtype,  $q, $ni, $eval_id, 2012);
-                        $response_orig = $response = @$response[$rev];
+                        //$response_orig = $response = @$response[$rev];
+                        $response_orig = (isset($response['original']))? $response['original'] : "";
+                        $response_rev = $response2 = (isset($response['revised']))? $response['revised'] : "";
+                        $diff = strcmp($response_orig, $response_rev);
+                        $diff2 = array();
+                        if($i>1){
+                            $diff2 = array_merge(array_diff(array_filter($comm), array_filter($comm2)), 
+                                                 array_diff(array_filter($comm2), array_filter($comm)));
+                        }
                         
+                        $response = $response_orig;
+
                         if($response_orig){
                             $response = substr($response, 0, 1);
                             if(!empty($comm)){
                                 $response .= "; ".$comm_short;
                                 $comm = implode("<br />", $comm);
                             } 
-                            $cell = "<td width='10%'><span class='q_tip' title='{$response_orig}<br />{$comm}'><a href='#'>{$response}</a></span></td>";
+                            $cell1 = "<td width='10%'><span class='q_tip' title='{$response_orig}<br />{$comm}'><a href='#'>{$response}</a></span></td>";
                         }else{
                             $response = "";
-                            $cell = "<td width='10%'>{$response}</td>";
+                            $cell1 = "<td width='10%'>{$response}</td>";
+                        }
+
+                        if($response_rev && ($diff != 0 || !empty($diff2))){
+                            $response2 = substr($response2, 0, 1);
+                            if(!empty($comm2)){
+                                $response2 .= "; ".$comm_short2;
+                                $comm2 = implode("<br />", $comm2);
+                            } 
+                            $cell2 = "<td width='10%'><span class='q_tip' title='{$response_rev}<br />{$comm2}'><a href='#'>{$response2}</a></span></td>";
+                        }else{
+                            $response2 = "";
+                            $cell2 = "<td width='10%'>{$response2}</td>";
                         }
 
 
-                        if($q == EVL_OVERALLSCORE && $response_orig && isset($weights[$response_orig])){
+                        if($q == EVL_OVERALLSCORE && $response_rev && isset($weights[$response_rev])){
+                            $additional_score = $weights[$response_rev];
+                        }
+                        else if($q == EVL_OVERALLSCORE && $response_orig && isset($weights[$response_orig])){
                             $additional_score = $weights[$response_orig];
-                            //$average_score += $weights[$response_orig];
-                            //$div_count++;
                         }
 
-                        $sub_rows .= $cell;
+                        $sub_row1 .= $cell1;
+                        $sub_row2 .= $cell2;
 
                         $i++;
                     }
 
-                    $sub_rows .= "</tr>";
-                }
+                    $sub_row1 .= "</tr>";
+                    $sub_row2 .= "</tr>";
+                //}
+
                 if($additional_score){
                     $average_score += $aves[$additional_score]*$additional_score;
                     $div_count++;
                 }
 
+                $sub_rows .= $sub_row1;
+                $sub_rows .= $sub_row2;
                 $sub_rows .= "</table>";
                 $sub_rows .= "</td></tr>";
                 $ev_count++;
@@ -823,34 +874,58 @@ EOF;
                 $sub_rows .= "<table width='100%' rules='all'>";
 				
 				$additional_score = 0;
-                foreach(array('original', 'revised') as $ind => $rev){
-                    $sub_rows .= "<tr>";
+                //foreach(array('original', 'revised') as $ind => $rev){
+                    $sub_row1 = "<tr>";
+                    $sub_row2 = "<tr>";
                     
                     $q8 = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $text_question, $ni, $eval_id, 2012, $ni_id);
-                    $q8 = @$q8[$rev]; 
-                    $q8 = nl2br($q8);
-                    $comm_label = ucfirst($rev);
+                    //$q8 = @$q8[$rev]; 
+                    $q8_O = (isset($q8['original']))? $q8['original'] : "";
+                    $q8_R = (isset($q8['revised']))? $q8['revised'] : "";
+                    $diff = strcmp($q8_O, $q8_R);
+
+                    //$q8 = nl2br($q8);
+                    //$comm_label = ucfirst($rev);
                     if(!empty($q8)){
-                        $cell =<<<EOF
-                            <a href='#' onclick='openDialog("{$eval_id}", "{$ni_id}", {$ind}); return false;'>{$comm_label}</a>
-                            <div id='dialog{$ind}-{$eval_id}-{$ni_id}' class='comment_dialog' title='{$comm_label} Comment by {$eval_name} on {$ni_name}'>
-                            {$q8}
+                        $cell1 =<<<EOF
+                            <a href='#' onclick='openDialog("{$eval_id}", "{$ni_id}", 1); return false;'>Original</a>
+                            <div id='dialog1-{$eval_id}-{$ni_id}' class='comment_dialog' title='Original Comment by {$eval_name} on {$ni_name}'>
+                            {$q8_O}
                             </div>
 EOF;
                     }else{
-                        $cell = "{$comm_label}";
+                        $cell1 = "Original";
+                    }
+                    if(!empty($q8_R) && $diff != 0){
+                        $q8_R = nl2br($q8_R);
+                        $cell2 =<<<EOF
+                            <a href='#' onclick='openDialog("{$eval_id}", "{$ni_id}", "2"); return false;'>Revised</a>
+                            <div id='dialog2-{$eval_id}-{$ni_id}' class='comment_dialog' title='Revised Comment by {$eval_name} on {$ni_name}'>
+                            {$q8_R}
+                            </div>
+EOF;
+                    }
+                    else{
+                        $cell2 = "Revised";
                     }
 
-                    $sub_rows .= "<td width='20%'>{$cell}</td>";
+                    $sub_row1 .= "<td width='20%'>{$cell1}</td>";
+                    $sub_row2 .= "<td width='20%'>{$cell2}</td>";
 
                     $i=0;
                     foreach($radio_questions as $q){
                         $comm = "";
                         $comm_short = array();
                         
+                        $comm2 = "";
+                        $comm_short2 = array();
+
                         if($i>1){
                             $comm = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2012, $ni_id);
-                            $comm = @$comm[$rev]; 
+                            //$comm = @$comm[$rev]; 
+                            $comm2 = (isset($comm['revised']))? $comm['revised'] : array();
+                            $comm = (isset($comm['original']))? $comm['original'] : array();
+                            
                             if(!empty($comm)){
                                 foreach($comm as $key=>$c){
                                     if(strlen($c)>1){
@@ -858,42 +933,78 @@ EOF;
                                     }
                                 }
                             }
+                            if(!empty($comm2)){
+                                foreach($comm2 as $key=>$c){
+                                    if(strlen($c)>1){
+                                        $comm_short2[] = substr($c, 0, 1);
+                                    }
+                                }
+                            }
                         }
                         $comm_short = implode(", ", $comm_short);
+                        $comm_short2 = implode(", ", $comm_short2);
 
                         $response = RMC2013Tab::getData(BLOB_ARRAY, $rtype,  $q, $ni, $eval_id, 2012, $ni_id);
-                        $response_orig = $response = @$response[$rev]; 
+                        //$response_orig = $response = @$response[$rev]; 
+                        $response_orig = (isset($response['original']))? $response['original'] : "";
+                        $response_rev = $response2 = (isset($response['revised']))? $response['revised'] : "";
+                        $diff = strcmp($response_orig, $response_rev);
+                        $diff2 = array();
+                        if($i>1){
+                            $diff2 = array_merge(array_diff(array_filter($comm), array_filter($comm2)), 
+                                                 array_diff(array_filter($comm2), array_filter($comm)));
+                        }
                         
+                        $response = $response_orig;
+
+
                         if($response_orig){
                             $response = substr($response, 0, 1);
                             if(!empty($comm)){
                                 $response .= "; ".$comm_short;
                                 $comm = implode("<br />", $comm);
                             } 
-                            $cell = "<td width='10%'><span class='q_tip' title='{$response_orig}<br />{$comm}'><a href='#'>{$response}</a></span></td>";
+                            $cell1 = "<td width='10%'><span class='q_tip' title='{$response_orig}<br />{$comm}'><a href='#'>{$response}</a></span></td>";
                         }else{
                             $response = "";
-                            $cell = "<td width='10%'>{$response}</td>";
+                            $cell1 = "<td width='10%'>{$response}</td>";
+                        }
+                        if($response_rev && ($diff != 0 || !empty($diff2))){
+                            $response2 = substr($response2, 0, 1);
+                            if(!empty($comm2)){
+                                $response2 .= "; ".$comm_short2;
+                                $comm2 = implode("<br />", $comm2);
+                            } 
+                            $cell2 = "<td width='10%'><span class='q_tip' title='{$response_rev}<br />{$comm2}'><a href='#'>{$response2}</a></span></td>";
+                        }else{
+                            $response2 = "";
+                            $cell2 = "<td width='10%'>{$response2}</td>";
                         }
                         
-                        if($q == EVL_OVERALLSCORE && $response_orig && isset($weights[$response_orig])){
+                        if($q == EVL_OVERALLSCORE && $response_rev && isset($weights[$response_rev])){
+                            $additional_score = $weights[$response_rev];
+                        }
+                        else if($q == EVL_OVERALLSCORE && $response_orig && isset($weights[$response_orig])){
 							$additional_score = $weights[$response_orig];
-                            //$average_score += $weights[$response_orig];
-                            //$div_count++;
                         }
 
-                        $sub_rows .= $cell;
+                        $sub_row1 .= $cell1;
+                        $sub_row2 .= $cell2;
 
                         $i++;
                     }
 
-                    $sub_rows .= "</tr>";
-                }
+                    $sub_row1 .= "</tr>";
+                    $sub_row2 .= "</tr>";
+                //}
+
 				if($additional_score){
 					$average_score += $aves[$additional_score]*$additional_score;
 				    $div_count++;
 				}
-								
+				
+                $sub_rows .= $sub_row1;
+                $sub_rows .= $sub_row2;				
                 $sub_rows .= "</table>";
                 $sub_rows .= "</td></tr>";
                 $ev_count++;
