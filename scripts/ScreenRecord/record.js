@@ -15,6 +15,7 @@
         var story = Array();
         var target = '';
         var oldWindowOnBeforeUnload = undefined;
+        var currentSize = 0;
         
         var recordButton;
         var pickButton;
@@ -167,6 +168,17 @@
             }
         }
         
+        this.showSize = function(over){
+            if(parseFloat(currentSize) <= maxSize && over == false){
+                sizeLeft.html(currentSize + '/' + Math.round(maxSize/1000/1000) + 'MB');
+                sizeLeft.css('color', '');
+            }
+            else{
+                sizeLeft.html(currentSize + '/' + Math.round(maxSize/1000/1000) + 'MB<br />The last screenshot exceeded the size limit.  Please stop recording to start a new session.');
+                sizeLeft.css('color', '#FF0000');
+            }
+        }
+        
         this.afterStart = function(dom){
             sizeLeft.show();
             timeLeft.show();
@@ -185,8 +197,8 @@
             else{
                 interval = 0;
             }
+            that.showSize(false);
             recordInterval = setInterval(that.recordBlink, 1000);
-            that.takeScreenshot();
             if(typeof oldWindowOnBeforeUnload == 'undefined'){
                 oldWindowOnBeforeUnload = window.onbeforeunload;
                 window.onbeforeunload = function(){ return "You are currently recording a screen capture session.  Leaving this page will cause the session to be lost.  To save the session, press the 'Stop' button."};
@@ -194,6 +206,7 @@
         }
     
         this.start = function(){
+            that.currentSize = 0;
             if(selectable){
                 var outline = DomOutline({onClick: that.afterStart});
                 outline.start();
@@ -233,13 +246,14 @@
                         
                         if(sizeAfter <= maxSize){
                             story.push(data);
-                            sizeLeft.html((sizeAfter/1000/1000).toFixed(2) + '/' + Math.round(maxSize/1000/1000) + 'MB');
-                            sizeLeft.css('color', '');
+                            currentSize = (sizeAfter/1000/1000).toFixed(2);
+                            that.showSize(false);
                         }
                         else{
-                            sizeLeft.html((size/1000/1000).toFixed(2) + '/' + Math.round(maxSize/1000/1000) + 'MB<br />The last screenshot exceeded the size limit.  Please stop recording to start a new session.');
-                            sizeLeft.css('color', '#FF0000');
+                            currentSize = (size/1000/1000).toFixed(2);
+                            that.showSize(true);
                         }
+                        
                     }
                     if(callback != undefined){
                         callback(canvas);
