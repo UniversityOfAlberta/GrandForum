@@ -289,6 +289,11 @@ $egAnnokiExtensions['Solr']     = array( 'name' => 'Solr',
 					      'enabled' => true,
 					      );
 
+$egAnnokiExtensions['TravelForm']     = array( 'name' => 'TravelForm',
+					      'path' => "$IP/extensions/TravelForm/TravelForm.php",
+					      'enabled' => true,
+					      );
+
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
     if ($extension['enabled'] && is_readable($extension['path'])){
