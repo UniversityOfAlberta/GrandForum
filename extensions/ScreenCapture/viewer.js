@@ -22,7 +22,7 @@ var connector = {
 	endpointStyle:{ fillStyle:"#8C529D" },			   
    	overlays : [ ["Label", {
    	                cssClass:"graphLabel",
-   					label : "HELLO WORLD", 
+   					label : "<input type='text' class='stealth' value='' style='position:absolute;' />", 
    					location:0.5,
    					id:"label",
    					events:{
@@ -190,6 +190,25 @@ $.each($("#graph .window"), function(index, val){
 		        }, connector);
     }
 });
+
+setInterval(function(){
+    $.each($("#graph .graphLabel > input"), function(){
+        var val = $(this).val();
+        var oldVal = $(this).attr('data');
+        if(val != oldVal){
+            $(this).attr('data', val);
+            var beforeWidth = $(this).width();
+            var tmpSpan = $("<span style='white-space:nowrap;'>" + val + "</span>");
+            $(this).parent().append(tmpSpan);
+            var width = tmpSpan.width();
+            tmpSpan.remove();
+            $(this).parent().width(width + 4);
+            $(this).width(width + 15);
+            var afterWidth = $(this).width();
+            $(this).parent().css('margin-left', parseInt($(this).parent().css('margin-left')) - parseInt((afterWidth-beforeWidth)/2));
+        }
+    });
+}, 33);
 
 $('#graph .window').bind("contextmenu",function(e){
     var that = this;

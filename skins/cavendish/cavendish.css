@@ -571,6 +571,19 @@ input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabl
     text-decoration: none;
 }
 
+input.stealth, input.stealth:focus {
+    border: none !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    background:transparent;
+    margin:0;
+    padding:0;
+    font-size:1em;
+    width:18px;
+    min-width:18px;
+}
+
 input#searchInput {
     border: 1px solid #333 !important;
 	background: #FFFFFF !important;

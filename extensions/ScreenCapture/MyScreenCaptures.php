@@ -56,6 +56,8 @@ EOF
 	                padding:5px;
 	                z-index:4000;
 	                background: rgba(255,255,255,0.85);
+	                height: 13px;
+	                margin-left:-2px;
 	            }
 	        </style>");
 	        $wgOut->addHTML("<div id='window$i' style='background:#ffffff;width:100px;height:50px;border:1px solid #aaa;padding:3px;position:absolute;left:{$x}%;top:{$y}px;z-index:5000;-webkit-border-radius:5px;-moz-border-radius: 5px;border-radius:5px;cursor:pointer;' class='window'>

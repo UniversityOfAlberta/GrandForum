@@ -253,7 +253,6 @@
                             currentSize = (size/1000/1000).toFixed(2);
                             that.showSize(true);
                         }
-                        
                     }
                     if(callback != undefined){
                         callback(canvas);
