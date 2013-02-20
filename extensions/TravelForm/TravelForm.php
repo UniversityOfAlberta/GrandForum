@@ -39,8 +39,15 @@ class TravelForm extends SpecialPage {
 		}
 		$preferred_seat = "";
 		$gender = "";
-		extract($_POST);
-
+		$post_vars = array('first_name', 'last_name', 'email', 'phone_number', 'dob', 'leaving_from', 'going_to', 'departure_date', 'departure_time', 'return_date', 'return_time', 'preferred_carrier', 'frequent_flyer', 'hotel_checkin', 'hotel_checkout', 'roommate_preference', 'comments');
+		//extract($_POST);
+		foreach($post_vars as $var){
+			$$var = filter_var($_POST[$var], FILTER_SANITIZE_STRING);
+			//echo "$var = ".$$var ."<br>";
+		}
+		$gender = (isset($_POST['gender']))? $_POST['gender'] : "";
+		$preferred_seat = (isset($_POST['preferred_seat']))? $_POST['preferred_seat'] : "";
+		
 		if($data_id){
 			$query =<<<EOF
 			UPDATE grand_travel_forms
