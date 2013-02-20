@@ -3,6 +3,7 @@
 require_once("MyScreenCaptures.php");
 
 $wgHooks['BeforePageDisplay'][] = 'ScreenCapture::addRecordScript';
+$wgHooks['UnknownAction'][] = 'ScreenCapture::getRecordedStory';
 $wgHooks['UnknownAction'][] = 'ScreenCapture::getRecordedImage';
 
 
@@ -36,6 +37,30 @@ class ScreenCapture {
         return true;
     }
     
+    function getRecordedStory($action){
+        if($action == 'getRecordedStory'){
+            $me = Person::newFromWgUser();
+            if(isset($_GET['id'])){
+                $id = mysql_real_escape_string($_GET['id']);
+                $sql = "SELECT *
+                        FROM `grand_recordings`
+                        WHERE `id` = '{$id}'";
+                $data = DBFunctions::execSQL($sql);
+                if(count($data) > 0){
+                    $row = $data[0];
+                    $personId = $row['person'];
+                    if($me->getId() == $personId || $me->isRoleAtLeast(MANAGER)){
+                        header('Content-Type: application/json');
+                        echo $row['story'];
+                        exit;
+                    }
+                }
+            }
+            return false;
+        }
+        return true;
+    }
+    
     function getRecordedImage($action){
         if($action == 'getRecordedImage'){
             $me = Person::newFromWgUser();
@@ -50,7 +75,12 @@ class ScreenCapture {
                     $personId = $row['person'];
                     if($me->getId() == $personId || $me->isRoleAtLeast(MANAGER)){
                         $imgData = $row['image'];
+                        header("Cache-Control: private, max-age=10800, pre-check=10800");
+                        header("Pragma: private");
+                        header("Expires: " . date(DATE_RFC822,strtotime(" 2 day")));
+                        header('Content-Length: '.strlen(base64_decode($imgData)));
                         header('Content-Type: image/png');
+                        header('Content-transfer-encoding: binary'); 
                         echo base64_decode($imgData);
                         exit;
                     }
