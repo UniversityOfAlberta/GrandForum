@@ -58,32 +58,36 @@ class TravelForm extends SpecialPage {
 
             $comments = (isset($row['comments']))? $row['comments'] : "N/A";
             
-            $email =<<<EOF
-            	New GRAND Forum Travel Form Submission!\n\n
-            	Travel Information:\n\n
+            $email_body =<<<EOF
+New GRAND Forum Travel Form Submission!\n
+Travel Information:\n
 
-            	First name: {$first_name}\n
-				Last name: {$last_name}\n
-				Email: {$email}\n
-				Phone Number: {$phone_number}\n
-				Gender: {$gender}\n
-				Date of Birth: {$dob}\n
-				Leaving from (airport): {$leaving_from}\n
-				Going to (airport): {$going_to}\n
-				Departure Date: {$departure_date}\n
-				Departure Time: {$departure_time}\n
-				Return Date: {$return_date}\n
-				Return Time: {$return_time}\n
-				Preferred Seat: {$preferred_seat}\n
-				Preferred Carrier: {$preferred_carrier}\n
-				Frequent Flyer Number: {$frequent_flyer}\n
-				Hotel Check-in Date: {$hotel_checkin}\n
-				Hotel Check-out Date: {$hotel_checkout}\n
-				Roommate Preference: {$roommate_preference}\n
-				Comments: {$comments}\n
+First name: {$first_name}\n
+Last name: {$last_name}\n
+Email: {$email}\n
+Phone Number: {$phone_number}\n
+Gender: {$gender}\n
+Date of Birth: {$dob}\n
+Leaving from (airport): {$leaving_from}\n
+Going to (airport): {$going_to}\n
+Departure Date: {$departure_date}\n
+Departure Time: {$departure_time}\n
+Return Date: {$return_date}\n
+Return Time: {$return_time}\n
+Preferred Seat: {$preferred_seat}\n
+Preferred Carrier: {$preferred_carrier}\n
+Frequent Flyer Number: {$frequent_flyer}\n
+Hotel Check-in Date: {$hotel_checkin}\n
+Hotel Check-out Date: {$hotel_checkout}\n
+Roommate Preference: {$roommate_preference}\n
+Comments:\n 
+{$comments}\n
 
+Regards,
+GRAND Forum
+support@forum.grand-nce.ca
 EOF;
-			$to = "dgolovan@gmail.com";
+			$to = "fauve_mackenzie@gnwc.ca"; //"dgolovan@gmail.com";
 			$cc = $email;
 			$subject = "Travel Form Submission: $first_name $last_name";
 			$headers   = array();
@@ -95,7 +99,7 @@ EOF;
 			$headers[] = "Subject: {$subject}";
 			$headers[] = "X-Mailer: PHP/".phpversion();
 
-			mail($to, $subject, $email, implode("\r\n", $headers));
+			mail($to, $subject, $email_body, implode("\r\n", $headers));
 
 		}
 	}
