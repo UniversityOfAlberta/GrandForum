@@ -1,7 +1,6 @@
 (function( $ ){
 
     $.fn.graph = function(data) {
-
         var model = data;
         var self = this;
 
@@ -41,7 +40,7 @@
         this.initGraph = function(){
             $(self).append("<div id='nodeMenu' class='graphMenu' style='display:none;position:absolute;z-index:6000'><ul><li><a href='#' name='addDesc'>Add Description</a></li></ul></div><div id='descMenu' class='graphMenu' style='display:none;position:absolute;z-index:6000'><ul><li><a href='#' name='editDesc'>Edit</a></li><li><a href='#' name='deleteDesc'>Delete</a></li></ul></div>");
             
-            model.forEach(function(val, i){
+            model.screens.forEach(function(val, i){
                 var x = (8 + 25*(i%4));
                 var y = (200*Math.ceil((i+1)/4) - 100);
                 if(Math.ceil((i+1)/4) % 2 == 0){
@@ -62,6 +61,91 @@
             });
 
             jsPlumb.draggable(jsPlumb.getSelector(".window"), {containment:"parent"});
+            
+            $.each($($(".window"), $(self)), function(index, val){
+                if(index > 0){
+                    var con = jsPlumb.connect({
+	                        source:"window" + (index-1),
+	                        target:"window" + index,
+	                        }, connector);
+                }
+                if(model.screens[index].transition != ''){
+                    $($('.graphLabel > input'), $(self)).last().attr('value', model.screens[index].transition).attr('data', undefined);
+                };
+            });
+
+            setInterval(function(){
+                $.each($($(".graphLabel > input"), $(self)), function(index, value){
+                    var val = $(this).val();
+                    var oldVal = $(this).attr('data');
+                    if(val != oldVal){
+                        model.screens[index+1].transition = val; // Update Model
+                        var beforeWidth = $(this).width();
+                        var tmpSpan = $("<span style='white-space:nowrap;'>" + val + "</span>");
+                        $(this).parent().append(tmpSpan);
+                        var width = tmpSpan.width();
+                        tmpSpan.remove();
+                        $(this).parent().width(width + 1);
+                        $(this).width(width + 15);
+                        var afterWidth = $(this).width();
+                        $(this).parent().css('margin-left', parseInt($(this).parent().css('margin-left')) - parseInt((afterWidth-beforeWidth)/2));
+                        if(oldVal != undefined){
+                            self.save();
+                        }
+                    }
+                    $(this).attr('data', val);
+                });
+            }, 33);
+
+            $.each($($('.window'), $(self)), function(index, value){
+                $(value).bind("contextmenu",function(e){
+                    var that = this;
+                    $("#nodeMenu").fadeIn(100);
+                    $("#nodeMenu > ul").menu();
+                    $("#nodeMenu > ul a[name=addDesc]").click(function(){
+                        self.addDesc(that, model.screens[index].descriptions);
+                    });
+                    $("#nodeMenu").css('left', $(this).position().left + $(this).width()).css('top', $(this).position().top);
+                    e.stopPropagation();
+                    return false;
+                });
+            });
+
+            $(window).bind("contextmenu", function(e){
+                $(".graphMenu a").unbind("click");
+                $(".graphMenu").fadeOut(100);
+            });
+
+            $(window).click(function(e){
+                if(e.button == 0){
+                    $(".graphMenu a").unbind("click");
+                    $(".graphMenu").fadeOut(100);
+                }
+            });
+
+            $($(".window a"), $(self)).colorbox({photo:true,
+                                            maxWidth:'85%',
+                                            maxHeight:'85%'
+                                           });
+            $(self).parent().height(Math.max((Math.ceil($($(".window"), $(self)).length/4))*200 + 100, $(self).parent().parent().height()));
+            
+            $.each($($(".window"), $(self)), function(index, val){
+                model.screens[index].descriptions.forEach(function(desc, i){
+                    self.addDesc($(val), model.screens[index].descriptions, i);
+                });
+                
+            });
+            
+            $(document).ready(function(){
+                jsPlumb.repaintEverything();
+            });
+            $(window).resize(function(){
+                jsPlumb.repaintEverything();
+            });
+        }
+        
+        this.save = function(){
+            $.post('../index.php?action=setRecordedStory', {'story': JSON.stringify(model)}, function(){});
         }
 
         this.deleteDesc = function(desc){
@@ -73,14 +157,30 @@
             });
             
             desc.fadeOut(function(){
-                desc.remove();
+                
             });
         }
 
-        function addDesc(parent){
-            var description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In magna ligula, pretium nec pharetra id, accumsan varius enim. Praesent mollis, dui eu convallis faucibus, sapien est vehicula dui, vitae iaculis augue nisi eget elit. Sed ultrices mauris euismod neque luctus condimentum. In hendrerit eros at justo fringilla in interdum dui convallis. Praesent eget libero ac sem ornare hendrerit a quis tellus. Donec placerat, sem at suscipit iaculis, purus quam fringilla augue, nec porta eros risus ac sapien. Praesent sagittis, tellus eu semper dapibus, velit mauris elementum ipsum, at semper quam metus a purus. Suspendisse id elit vel quam consequat tempor id id lacus.\\n\\nQuisque ac turpis lacus. Phasellus nibh quam, vestibulum sit amet feugiat ac, aliquam nec dolor. Sed lectus arcu, venenatis in eleifend id, ornare non leo. Nunc pharetra, ante quis fringilla fringilla, quam ante consectetur nisi, a sodales lorem metus vel mauris. Nunc pellentesque sapien vulputate nibh scelerisque ultrices aliquet leo volutpat. Quisque molestie vulputate magna, et volutpat sapien accumsan ac. Donec rutrum hendrerit tellus, sit amet consectetur quam viverra id. Curabitur egestas massa at nibh dictum et lacinia nisl aliquam. Nullam cursus nunc vitae metus suscipit et volutpat neque lacinia. Integer lacinia molestie interdum. Integer et diam justo. In vitae rhoncus enim. In porttitor gravida sapien sollicitudin condimentum. Cras elit nisl, lobortis nec varius nec, pellentesque consectetur massa. Vestibulum commodo porttitor mauris quis tristique. Donec varius nunc sed lectus consequat tempus.\\n\\nProin justo urna, lobortis non tincidunt commodo, aliquet quis nunc. In et purus nisi, et varius nisi. Pellentesque ultrices diam nec tellus tempus sagittis. Ut mattis lorem vel mauris commodo faucibus. Nunc sed sapien et urna sodales ullamcorper. Nulla ullamcorper sagittis metus, ac elementum ante mattis at. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Proin eu arcu ante, pharetra vulputate arcu. Ut molestie rutrum malesuada.\\n\\nSuspendisse potenti. Aenean ultricies lacus a nulla adipiscing ac pellentesque magna tempus. Mauris cursus, dolor in interdum tempor, dolor ipsum adipiscing orci, id gravida justo felis quis risus. Aliquam hendrerit libero et velit feugiat in gravida orci pharetra. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Curabitur bibendum mollis justo, vel eleifend lorem placerat at. Duis eu libero eget urna venenatis ullamcorper. Maecenas vel quam et leo porttitor aliquet. Curabitur non nunc eget elit ultricies lacinia id facilisis urna. Suspendisse ac quam a lorem cursus imperdiet vel sit amet sem. Duis luctus posuere neque et faucibus. Nunc suscipit, arcu interdum molestie feugiat, magna dolor blandit est, quis semper arcu est a enim. Duis lobortis purus eget nibh ultrices ullamcorper. Ut sit amet porta mauris. Pellentesque imperdiet nulla non est tempus vulputate.";
-            var desc = $("<div class='window' style='white-space:nowrap;background:rgba(255,255,255,0.8);border:1px solid #aaa;padding:3px;position:absolute;z-index:5000;-webkit-border-radius:5px;-moz-border-radius: 5px;border-radius:5px;cursor:pointer;opacity:0.0001'>" + description.substring(0,10) + "</div>");
-            desc.colorbox({width:'500px',height:'300px',html:description.replace(/\\n/g, '<br />')});
+        this.addDesc = function(parent, descriptions, i){
+            var description;
+            if(i == undefined){
+                description = "";
+                i = -1;
+                descriptions.forEach(function(value, index){
+                    i = index;
+                });
+                i++;
+                descriptions[i] = description;
+                self.save();
+            }
+            else{
+                description = descriptions[i];
+            }
+            if(description == undefined){
+                return;
+            }
+            var desc = $("<div class='window' style='min-height:15px;min-width:15px;white-space:nowrap;background:rgba(255,255,255,0.8);border:1px solid #aaa;padding:3px;position:absolute;z-index:5000;-webkit-border-radius:5px;-moz-border-radius: 5px;border-radius:5px;cursor:pointer;opacity:0.0001'>" + description.substring(0,10) + "</div>");
+            //desc.colorbox({width:'500px',height:'300px',html:description.replace(/\\n/g, '<br />')});
             
             $(self).append(desc);
             self.positionNode(parent, desc);
@@ -97,30 +197,44 @@
             $(con.canvas).fadeIn();
             $(con.endpoints[0].canvas).fadeIn();
             $(con.endpoints[1].canvas).fadeIn();
+            
+            function showEdit(){
+                var editContent = $("<textarea id='nodeDescription' style='height:190px;width:100%;margin:0;'>" + description + "</textarea><button id='saveDesc'>Save</button><button id='cancelDesc'>Cancel</button>");
+                $.colorbox({open:true,
+                            width:'500px',
+                            height:'300px',
+                            html:editContent,
+                            onComplete:function(){$("textarea#nodeDescription").focus()}
+                           });
+                $("#saveDesc").click(function(){
+                    description = $("#colorbox textarea").val();
+                    descriptions[i] = description;
+                    desc.html(description.substring(0,10));
+                    $.colorbox.close();
+                    jsPlumb.repaintEverything();
+                    self.save();
+                });
+                $("#cancelDesc").click(function(){
+                    $.colorbox.close();
+                });
+            }
+            
             $(desc).bind("contextmenu",function(e){
                 var that = this;
                 $("#descMenu").fadeIn(100);
                 $("#descMenu > ul").menu();
                 $("#descMenu > ul a[name=deleteDesc]").click(function(){
                     self.deleteDesc(desc);
+                    descriptions.splice(i, 1);
+                    self.save();
                 });
-                $("#descMenu > ul a[name=editDesc]").click(function(){
-                    var content = $("<textarea style='height:190px;width:100%;margin:0;'>" + description + "</textarea><button id='saveDesc'>Save</button><button id='cancelDesc'>Cancel</button>");
-                    $.colorbox({open:true,width:'500px',height:'300px',html:content});
-                    $("#saveDesc").click(function(){
-                        description = $("#colorbox textarea").val();
-                        desc.html(description.substring(0,10));
-                        desc.colorbox({width:'500px',height:'300px',html:description.replace(/\\n/g, '<br />')});
-                        $.colorbox.close();
-                    });
-                    $("#cancelDesc").click(function(){
-                        $.colorbox.close();
-                    });
-                });
+                
+                $("#descMenu > ul a[name=editDesc]").click(showEdit);
                 $("#descMenu").css('left', $(this).position().left + $(this).width()).css('top', $(this).position().top);
                 e.stopPropagation();
                 return false;
             });
+            $(desc).click(showEdit);
             jsPlumb.repaintEverything();
         }
 
@@ -195,69 +309,5 @@
         }
         
         this.initGraph();
-
-        $.each($($(".window"), $(self)), function(index, val){
-            if(index > 0){
-                var con = jsPlumb.connect({
-	                    source:"window" + (index-1),
-	                    target:"window" + index,
-	                    }, connector);
-            }
-        });
-
-        setInterval(function(){
-            $.each($($(".graphLabel > input"), $(self)), function(){
-                var val = $(this).val();
-                var oldVal = $(this).attr('data');
-                if(val != oldVal){
-                    $(this).attr('data', val);
-                    var beforeWidth = $(this).width();
-                    var tmpSpan = $("<span style='white-space:nowrap;'>" + val + "</span>");
-                    $(this).parent().append(tmpSpan);
-                    var width = tmpSpan.width();
-                    tmpSpan.remove();
-                    $(this).parent().width(width + 1);
-                    $(this).width(width + 15);
-                    var afterWidth = $(this).width();
-                    $(this).parent().css('margin-left', parseInt($(this).parent().css('margin-left')) - parseInt((afterWidth-beforeWidth)/2));
-                }
-            });
-        }, 33);
-
-        $($('.window'), $(self)).bind("contextmenu",function(e){
-            var that = this;
-            $("#nodeMenu").fadeIn(100);
-            $("#nodeMenu > ul").menu();
-            $("#nodeMenu > ul a[name=addDesc]").click(function(){
-                addDesc(that);
-            });
-            $("#nodeMenu").css('left', $(this).position().left + $(this).width()).css('top', $(this).position().top);
-            e.stopPropagation();
-            return false;
-        });
-
-        $(window).bind("contextmenu", function(e){
-            $(".graphMenu a").unbind("click");
-            $(".graphMenu").fadeOut(100);
-        });
-
-        $(window).click(function(e){
-            if(e.button == 0){
-                $(".graphMenu a").unbind("click");
-                $(".graphMenu").fadeOut(100);
-            }
-        });
-
-        $($(".window a"), $(self)).colorbox({photo:true,
-                                        maxWidth:'85%',
-                                        maxHeight:'85%'
-                                       });    
-        $(self).parent().height(Math.max((Math.ceil($($(".window"), $(self)).length/4))*200 + 100, $(self).parent().parent().height()));
-        $(document).ready(function(){
-            jsPlumb.repaintEverything();
-        });
-        $(window).resize(function(){
-            jsPlumb.repaintEverything();
-        });
     }
 })( jQuery );

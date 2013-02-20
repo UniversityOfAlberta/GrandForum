@@ -14,6 +14,12 @@ class RecordStoryAPI extends API{
 	    $me = Person::newFromWgUser();
 	    $story = json_decode($_POST['story']);
 	    foreach($story as $screenshot){
+	        if(!isset($screenshot->transition)){
+	            $screenshot->transition = '';
+	        }
+	        if(!isset($screenshot->descriptions)){
+	            $screenshot->descriptions = array();
+	        }
 	        $img = mysql_real_escape_string($screenshot->img);
 	        $md5 = md5(json_encode($screenshot));
 	        $screenshot->img = $md5;

@@ -4,6 +4,7 @@ require_once("MyScreenCaptures.php");
 
 $wgHooks['BeforePageDisplay'][] = 'ScreenCapture::addRecordScript';
 $wgHooks['UnknownAction'][] = 'ScreenCapture::getRecordedStory';
+$wgHooks['UnknownAction'][] = 'ScreenCapture::setRecordedStory';
 $wgHooks['UnknownAction'][] = 'ScreenCapture::getRecordedImage';
 
 
@@ -51,7 +52,41 @@ class ScreenCapture {
                     $personId = $row['person'];
                     if($me->getId() == $personId || $me->isRoleAtLeast(MANAGER)){
                         header('Content-Type: application/json');
-                        echo $row['story'];
+                        $screens = json_decode($row['story']);
+                        $story = (object)'a';
+                        $story->id = $row['id'];
+                        $story->person = $row['person'];
+                        $story->screens = $screens;
+                        echo json_encode($story);
+                        exit;
+                    }
+                }
+            }
+            return false;
+        }
+        return true;
+    }
+    
+    function setRecordedStory($action){
+        if($action == 'setRecordedStory'){
+            $me = Person::newFromWgUser();
+            if(isset($_POST['story'])){
+                $story = json_decode($_POST['story']);
+                $id = $story->id;
+                $sql = "SELECT *
+                        FROM `grand_recordings`
+                        WHERE `id` = '{$id}'";
+                $data = DBFunctions::execSQL($sql);
+                if(count($data) > 0){
+                    $row = $data[0];
+                    $personId = $row['person'];
+                    if(($me->getId() == $personId || $me->isRoleAtLeast(MANAGER)) && $personId == $story->person){
+                        // Ok, it is safe to update
+                        $storyData = mysql_real_escape_string(json_encode($story->screens));
+                        $sql = "UPDATE `grand_recordings`
+                                SET `story` = '$storyData'
+                                WHERE `id` = '{$story->id}'";
+                        DBFunctions::execSQL($sql, true);
                         exit;
                     }
                 }
@@ -89,7 +124,7 @@ class ScreenCapture {
             return false;
         }
         return true;
-    }   
+    }
     
 }
 

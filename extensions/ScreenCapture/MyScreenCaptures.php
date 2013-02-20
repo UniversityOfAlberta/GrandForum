@@ -20,6 +20,9 @@ class MyScreenCaptures extends SpecialPage {
 	    global $wgUser, $wgOut, $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
 	    $recordings = $me->getRecordings();
+	    if(count($recordings) == 0){
+	        return;
+	    }
 	    $recording = $recordings[count($recordings)-1];
 	    
 	    $wgOut->addHTML("<script type='text/javascript'>
