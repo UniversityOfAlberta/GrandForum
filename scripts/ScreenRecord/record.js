@@ -235,7 +235,7 @@
                     var img = canvas.toDataURL().replace('data:image/png;base64,', '');
                     if(img != ''){
                         var data = {
-                                    'url' : document.location.toString(),
+                                    'url' : document.location.toString() + document.location.hash,
                                     'img' : canvas.toDataURL().replace('data:image/png;base64,', ''),
                                     'date': new Date().toJSON(),
                                     'descriptions': Array(),

@@ -54,7 +54,7 @@
             document.onselectstart = function () { return false; };
 
             jsPlumb.DefaultDragOptions = { cursor: 'pointer', zIndex:2000};
-            jsPlumb.setRenderMode(jsPlumb.CANVAS);
+            jsPlumb.setRenderMode(jsPlumb.SVG);
             jsPlumb.bind("click", function(connection){
                 var sourceId = connection.sourceId;
                 var targetId = connection.targetId;
@@ -225,7 +225,7 @@
                 $("#descMenu > ul").menu();
                 $("#descMenu > ul a[name=deleteDesc]").click(function(){
                     self.deleteDesc(desc);
-                    descriptions.splice(i, 1);
+                    delete descriptions[i];
                     self.save();
                 });
                 

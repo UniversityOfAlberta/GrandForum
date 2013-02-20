@@ -52,6 +52,8 @@ class ScreenCapture {
                     $personId = $row['person'];
                     if($me->getId() == $personId || $me->isRoleAtLeast(MANAGER)){
                         header('Content-Type: application/json');
+                        header("Cache-Control: no-cache");
+                        header("Pragma: no-cache");
                         $screens = json_decode($row['story']);
                         $story = (object)'a';
                         $story->id = $row['id'];
@@ -70,6 +72,7 @@ class ScreenCapture {
     function setRecordedStory($action){
         if($action == 'setRecordedStory'){
             $me = Person::newFromWgUser();
+            print_r($_POST);
             if(isset($_POST['story'])){
                 $story = json_decode($_POST['story']);
                 $id = $story->id;
@@ -82,6 +85,15 @@ class ScreenCapture {
                     $personId = $row['person'];
                     if(($me->getId() == $personId || $me->isRoleAtLeast(MANAGER)) && $personId == $story->person){
                         // Ok, it is safe to update
+                        foreach($story->screens as &$screen){
+                            $cleanedDesc = array();
+                            foreach($screen->descriptions as $desc){
+                                if($desc != null){
+                                    $cleanedDesc[] = $desc;
+                                }
+                            }
+                            $screen->descriptions = $cleanedDesc;
+                        }
                         $storyData = mysql_real_escape_string(json_encode($story->screens));
                         $sql = "UPDATE `grand_recordings`
                                 SET `story` = '$storyData'
