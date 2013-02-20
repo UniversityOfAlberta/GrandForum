@@ -29,6 +29,9 @@ abstract class PersonPublicationCell extends PublicationCell {
                 foreach($papers as $paper){
                     if($paper->belongsToProject($project)){
                         $type = str_replace("Misc: ", "", $paper->getType());
+                        if($type == ""){
+                            $type = " ";
+                        }
                         if($paper->getCategory() == "Publication"){
                             $status = $paper->getStatus();
                             if($status == "Published"){
