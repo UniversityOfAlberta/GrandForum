@@ -24,6 +24,81 @@ class TravelForm extends SpecialPage {
 	    TravelForm::travelForm();
 	    //$wgOut->addHTML();
 	}
+
+	static function sendEmail(){
+		global $wgUser;
+
+		$my_id = $wgUser->getId();
+		$curr_year = date("Y");
+		$select = "SELECT * FROM grand_travel_forms WHERE user_id={$my_id} AND year={$curr_year}";
+		$data = DBFunctions::execSQL($select);
+
+		if(count($data) > 0 && isset($data[0]['id'])){
+			$row = $data[0];
+			$first_name = (isset($row['first_name']))? $row['first_name'] : "N/A";
+            $last_name = (isset($row['last_name']))? $row['last_name'] : "N/A";
+            $email = (isset($row['email']))? $row['email'] : "N/A";
+            $phone_number = (isset($row['phone_number']))? $row['phone_number'] : "N/A";
+            $gender = (isset($row['gender']))? $row['gender'] : "N/A";
+            $dob = (isset($row['dob']))? $row['dob'] : "N/A";
+            $leaving_from = (isset($row['leaving_from']))? $row['leaving_from'] : "N/A";
+            $going_to = (isset($row['going_to']))? $row['going_to'] : "N/A";
+            $departure_date = (isset($row['departure_date']))? $row['departure_date'] : "N/A";
+            $departure_time = (isset($row['departure_time']))? $row['departure_time'] : "N/A";
+            $return_date = (isset($row['return_date']))? $row['return_date'] : "N/A";
+            $return_time = (isset($row['return_time']))? $row['return_time'] : "N/A";
+
+            $preferred_seat = (isset($row['preferred_seat']))? $row['preferred_seat'] : "N/A";
+            $preferred_carrier = (isset($row['preferred_carrier']))? $row['preferred_carrier'] : "N/A";
+            $frequent_flyer = (isset($row['frequent_flyer']))? $row['frequent_flyer'] : "N/A";
+
+            $hotel_checkin = (isset($row['hotel_checkin']))? $row['hotel_checkin'] : "N/A";
+            $hotel_checkout = (isset($row['hotel_checkout']))? $row['hotel_checkout'] : "N/A";
+            $roommate_preference = (isset($row['roommate_preference']))? $row['roommate_preference'] : "N/A";
+
+            $comments = (isset($row['comments']))? $row['comments'] : "N/A";
+            
+            $email =<<<EOF
+            	New GRAND Forum Travel Form Submission!\n\n
+            	Travel Information:\n\n
+
+            	First name: {$first_name}\n
+				Last name: {$last_name}\n
+				Email: {$email}\n
+				Phone Number: {$phone_number}\n
+				Gender: {$gender}\n
+				Date of Birth: {$dob}\n
+				Leaving from (airport): {$leaving_from}\n
+				Going to (airport): {$going_to}\n
+				Departure Date: {$departure_date}\n
+				Departure Time: {$departure_time}\n
+				Return Date: {$return_date}\n
+				Return Time: {$return_time}\n
+				Preferred Seat: {$preferred_seat}\n
+				Preferred Carrier: {$preferred_carrier}\n
+				Frequent Flyer Number: {$frequent_flyer}\n
+				Hotel Check-in Date: {$hotel_checkin}\n
+				Hotel Check-out Date: {$hotel_checkout}\n
+				Roommate Preference: {$roommate_preference}\n
+				Comments: {$comments}\n
+
+EOF;
+			$to = "dgolovan@gmail.com";
+			$cc = $email;
+			$subject = "Travel Form Submission: $first_name $last_name";
+			$headers   = array();
+			$headers[] = "MIME-Version: 1.0";
+			$headers[] = "Content-type: text/plain; charset=iso-8859-1";
+			$headers[] = "From: GRAND Forum <support@forum.grand-nce.ca>";
+			$headers[] = "Cc: {$cc}";
+			$headers[] = "Reply-To: GRAND Forum <support@forum.grand-nce.ca>";
+			$headers[] = "Subject: {$subject}";
+			$headers[] = "X-Mailer: PHP/".phpversion();
+
+			mail($to, $subject, $email, implode("\r\n", $headers));
+
+		}
+	}
 	
 	static function handleSubmit(){
 		global $wgUser;
@@ -81,6 +156,7 @@ EOF;
 EOF;
 			$result = DBFunctions::execSQL($query, true);
 		}
+		TravelForm::sendEmail();
 	}
 
 
