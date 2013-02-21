@@ -19,7 +19,8 @@ class ScreenCapture {
         $me = Person::newFromWgUser();
         if($wgUser->isLoggedIn() && $me->isRoleAtLeast(HQP) && !$wgImpersonating){
             $out->addScript("<script type='text/javascript'>
-                $(document).ready(function(){    
+                $(document).ready(function(){
+                    $('#nav .pBody').last().append('<li><a href=\"{$wgServer}{$wgScriptPath}/index.php/Special:MyScreenCaptures\">My Screen Captures</a></li>');
                     $('#bodyContent').record({
                         convertSVG: true,
                         delay: 0,
