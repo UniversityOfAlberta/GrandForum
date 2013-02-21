@@ -5,6 +5,8 @@ $wgSpecialPages['TravelForm'] = 'TravelForm';
 $wgExtensionMessagesFiles['TravelForm'] = $dir . 'TravelForm.i18n.php';
 $wgSpecialPageGroups['TravelForm'] = 'grand-tools';
 
+require_once($dir . '../../Classes/PHPExcel/IOFactory.php');
+
 function runTravelForm($par) {
 	TravelForm::run($par);
 }
@@ -58,54 +60,134 @@ class TravelForm extends SpecialPage {
 
             $comments = (isset($row['comments']))? $row['comments'] : "N/A";
             
+            $fields = array(
+            	"First name"=> $first_name,
+				"Last name"=> $last_name,
+				"Email"=> $email,
+				"Phone Number"=> $phone_number,
+				"Gender"=> $gender,
+				"Date of Birth"=> $dob,
+				"Leaving from (airport)"=> $leaving_from,
+				"Going to (airport)"=> $going_to,
+				"Departure Date"=> $departure_date,
+				"Departure Time"=> $departure_time,
+				"Return Date"=> $return_date,
+				"Return Time"=> $return_time,
+				"Preferred Seat"=> $preferred_seat,
+				"Preferred Carrier"=> $preferred_carrier,
+				"Frequent Flyer Number"=> $frequent_flyer,
+				"Hotel Check-in Date"=> $hotel_checkin,
+				"Hotel Check-out Date"=> $hotel_checkout,
+				"Roommate Preference"=> $roommate_preference,
+				"Comments"=> $comments
+            );
+            //EXCEL
+            $phpExcel = new PHPExcel();
+			$styleArray = array(
+				'font' => array(
+					'bold' => true,
+				)
+			);
+			 
+			//Get the active sheet and assign to a variable
+			$foo = $phpExcel->getActiveSheet();
+			 
+			//add column headers, set the title and make the text bold
+			$foo->setCellValue("A1", "Field")
+				->setCellValue("B1", "Value")
+				->setTitle("Travel Information")
+				->getStyle("A1:B1")->applyFromArray($styleArray);
+			$row_count = 2;
+			foreach($fields as $label=>$value){
+				$foo->setCellValue("A{$row_count}", $label)->setCellValue("B{$row_count}", $value);
+				$row_count++;
+			}	
+			
+
+			$foo->getColumnDimension("A")->setWidth(40);
+			$foo->getColumnDimension("B")->setWidth(40);		
+			$phpExcel->setActiveSheetIndex(0);
+
+			//header("Content-Type: application/vnd.ms-excel");
+			//header("Content-Disposition: attachment; filename=\"{$last_name}_{$first_name}.xls\"");
+			//header("Cache-Control: max-age=0");
+			
+			ob_start();
+			$objWriter = PHPExcel_IOFactory::createWriter($phpExcel, "Excel5");
+			$objWriter->save("php://output");
+			
+			$excel_content = ob_get_contents();
+			ob_end_clean();
+
+
+            //EMAIL
             $email_body =<<<EOF
 New GRAND Forum Travel Form Submission!\n
 Travel Information:\n
-
-First name: {$first_name}\n
-Last name: {$last_name}\n
-Email: {$email}\n
-Phone Number: {$phone_number}\n
-Gender: {$gender}\n
-Date of Birth: {$dob}\n
-Leaving from (airport): {$leaving_from}\n
-Going to (airport): {$going_to}\n
-Departure Date: {$departure_date}\n
-Departure Time: {$departure_time}\n
-Return Date: {$return_date}\n
-Return Time: {$return_time}\n
-Preferred Seat: {$preferred_seat}\n
-Preferred Carrier: {$preferred_carrier}\n
-Frequent Flyer Number: {$frequent_flyer}\n
-Hotel Check-in Date: {$hotel_checkin}\n
-Hotel Check-out Date: {$hotel_checkout}\n
-Roommate Preference: {$roommate_preference}\n
-Comments:\n 
-{$comments}\n
-
+EOF;
+			foreach($fields as $label=>$value){
+				if($label == "Comments"){
+					$email_body .= "{$label}:\n{$value}\n";
+				}
+				else{
+					$email_body .= "{$label}: {$value}\n";
+				}
+			}
+			$email_body .=<<<EOF
 Regards,
 GRAND Forum
 support@forum.grand-nce.ca
 EOF;
-			$to = "fauve_mackenzie@gnwc.ca"; //"dgolovan@gmail.com";
+
+			$to = "dgolovan@gmail.com"; //"fauve_mackenzie@gnwc.ca"; 
 			$cc = $email;
 			$subject = "Travel Form Submission: $first_name $last_name";
-			$headers   = array();
-			$headers[] = "MIME-Version: 1.0";
-			$headers[] = "Content-type: text/plain; charset=iso-8859-1";
-			$headers[] = "From: GRAND Forum <support@forum.grand-nce.ca>";
-			$headers[] = "Cc: {$cc}";
-			$headers[] = "Reply-To: GRAND Forum <support@forum.grand-nce.ca>";
-			$headers[] = "Subject: {$subject}";
-			$headers[] = "X-Mailer: PHP/".phpversion();
+			$from = "GRAND Forum <support@forum.grand-nce.ca>";
+			// $headers   = array();
+			// $headers[] = "MIME-Version: 1.0";
+			// $headers[] = "Content-type: text/plain; charset=iso-8859-1";
+			// $headers[] = "From: GRAND Forum <support@forum.grand-nce.ca>";
+			// $headers[] = "Cc: {$cc}";
+			// $headers[] = "Reply-To: GRAND Forum <support@forum.grand-nce.ca>";
+			// $headers[] = "Subject: {$subject}";
+			// $headers[] = "X-Mailer: PHP/".phpversion();
 
-			mail($to, $subject, $email_body, implode("\r\n", $headers));
-
+			// mail($to, $subject, $email_body, implode("\r\n", $headers));
+			$filename = "{$last_name}_{$first_name}.xls";
+			TravelForm::mail_attachment($excel_content, $filename, $to, $cc, $from, $subject, $email_body);
 		}
+	}
+
+	static function mail_attachment($content, $filename, $to, $cc, $from, $subject, $message) {
+	    
+	    $content = chunk_split(base64_encode($content));
+	    $uid = md5(uniqid(time()));
+	    //$name = basename($file);
+	    $header = "From: ".$from."\r\n";
+	    $header .= "Cc: ".$cc."\r\n";
+	    $header .= "Reply-To: ".$from."\r\n";
+	    $header .= "MIME-Version: 1.0\r\n";
+	    $header .= "Content-Type: multipart/mixed; boundary=\"".$uid."\"\r\n\r\n";
+	    $header .= "This is a multi-part message in MIME format.\r\n";
+	    $header .= "--".$uid."\r\n";
+	    $header .= "Content-type:text/plain; charset=iso-8859-1\r\n";
+	    $header .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+	    $header .= $message."\r\n\r\n";
+	    $header .= "--".$uid."\r\n";
+	    $header .= "Content-Type: application/octet-stream; name=\"".$filename."\"\r\n"; // use different content types here
+	    $header .= "Content-Transfer-Encoding: base64\r\n";
+	    $header .= "Content-Disposition: attachment; filename=\"".$filename."\"\r\n\r\n";
+	    $header .= $content."\r\n\r\n";
+	    $header .= "--".$uid."--";
+	    if (mail($to, $subject, "", $header)) {
+	        echo "mail send ... OK"; // or use booleans here
+	    } else {
+	        echo "mail send ... ERROR!";
+	    }
 	}
 	
 	static function handleSubmit(){
-		global $wgUser;
+		global $wgUser, $wgMessage;
 
 		$my_id = $wgUser->getId();
 		$curr_year = date("Y");
@@ -161,6 +243,7 @@ EOF;
 			$result = DBFunctions::execSQL($query, true);
 		}
 		TravelForm::sendEmail();
+		$wgMessage->addSuccess("Thank you! Your Travel Form has been successfully submitted! ");
 	}
 
 
@@ -227,7 +310,28 @@ EOF;
         }
 
 		$html =<<<EOF
+			<script language="javascript" type="text/javascript" src="$wgServer$wgScriptPath/scripts/jquery.validate.min.js"></script>
 			<script type="text/javascript">
+			jQuery.validator.addMethod("greaterThan", 
+				function(value, element, params) {
+
+				    if (!/Invalid|NaN/.test(new Date(value))) {
+				        return new Date(value) > new Date($(params).val());
+				    }
+
+				    return isNaN(value) && isNaN($(params).val()) 
+				        || (Number(value) > Number($(params).val())); 
+				},'Must be greater than Departure Date.');
+			jQuery.validator.addMethod("greaterThan2", 
+				function(value, element, params) {
+
+				    if (!/Invalid|NaN/.test(new Date(value))) {
+				        return new Date(value) > new Date($(params).val());
+				    }
+
+				    return isNaN(value) && isNaN($(params).val()) 
+				        || (Number(value) > Number($(params).val())); 
+				},'Must be greater than Check-in Date.');
 			$(function() {
     			$( "#departure_date, #return_date, #hotel_checkout, #hotel_checkin" ).datepicker();
   				$( "#dob").datepicker({
@@ -235,6 +339,13 @@ EOF;
       				changeYear: true,
       				yearRange: "1920:2000"
       			});
+				
+				$("#travelForm").validate({
+				    rules: {
+				        return_date: { greaterThan: "#departure_date" },
+				        hotel_checkout: { greaterThan2: "#hotel_checkin" }
+				    }
+				});
   			});
 			</script>
 			<style type="text/css">
@@ -249,17 +360,37 @@ EOF;
 			td textarea {
 				height: 150px;
 			}
+			label.error { 
+				float: none; 
+				color: red;  
+				vertical-align: top; 
+				display: block;
+				background: none;
+				padding: 0 0 0 5px;
+				margin: 2px;
+				width: 240px;
+			}
+			input.error {
+				background: none;
+				background-color: #FFF !important;
+				padding: 3px 3px;
+				margin: 2px;
+			}
+			span.requ {
+				font-weight:bold;
+				color: red;
+			}
 			</style>
 			<h3>Travel Information</h3>
-			<form action='$wgServer$wgScriptPath/index.php/Special:TravelForm' method='post'>
+			<form id="travelForm" action='$wgServer$wgScriptPath/index.php/Special:TravelForm' method='post'>
 			
 			<table width='100%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
 			<tr>
-			<td class='label'>First Name</td><td><input type='text' name='first_name' value='{$first_name}' /></td>
+			<td class='label'><span class="requ">*</span>First Name</td><td><input type='text' class="required" name='first_name' value='{$first_name}' /></td>
 			<td class='label'>Phone Number</td><td><input type='text' name='phone_number' value='{$phone_number}' /></td>
 			</tr>
 			<tr>
-			<td class='label'>Last Name</td><td><input type='text' name='last_name' value='{$last_name}'/></td>
+			<td class='label'><span class="requ">*</span>Last Name</td><td><input type='text' class="required" name='last_name' value='{$last_name}'/></td>
 			<td class='label'>Gender</td>
 			<td>
 			<span style="white-space: nowrap;">Male <input type='radio' name='gender' value='M' {$male_checked} />&nbsp;&nbsp;Female <input type='radio' name='gender' value='F' {$female_checked} />
@@ -267,17 +398,17 @@ EOF;
 			</td>
 			</tr>
 			<tr>
-			<td class='label'>Email Address</td><td><input type='text' name='email' value='{$email}' /></td>
+			<td class='label'><span class="requ">*</span>Email Address</td><td><input type='text' class="required email" name='email' value='{$email}' /></td>
 			<td class='label'>Date of Birth</td><td><input type='text' id='dob' name='dob' value='{$dob}' /></td>
 			</tr>
 			</table>
 			<br />
 			<table width='50%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
-			<tr><td class='label'>Leaving from (airport)</td><td><input type='text' name="leaving_from" value='{$leaving_from}' /></td></tr>
-			<tr><td class='label'>Going to (airport)</td><td><input type='text' name="going_to" value='{$going_to}' /></td></tr>
-			<tr><td class='label'>Departure Date</td><td><input type='text' id="departure_date" name="departure_date" value='{$departure_date}' /></td></tr>
+			<tr><td class='label'><span class="requ">*</span>Leaving from (airport)</td><td><input type='text' class="required" name="leaving_from" value='{$leaving_from}' /></td></tr>
+			<tr><td class='label'><span class="requ">*</span>Going to (airport)</td><td><input type='text' class="required" name="going_to" value='{$going_to}' /></td></tr>
+			<tr><td class='label'><span class="requ">*</span>Departure Date</td><td><input type='text' id="departure_date" class="required" name="departure_date" value='{$departure_date}' /></td></tr>
 			<tr><td class='label'>Departure Time</td><td><input type='text' name="departure_time" value='{$departure_time}' /></td></tr>
-			<tr><td class='label'>Return Date</td><td><input type='text' id="return_date" name="return_date" value='{$return_date}' /></td></tr>
+			<tr><td class='label'><span class="requ">*</span>Return Date</td><td><input type='text' id="return_date" class="required" name="return_date" value='{$return_date}' /></td></tr>
 			<tr><td class='label'>Return Time</td><td><input type='text' name="return_time" value='{$return_time}' /></td></tr>
 			</table>
 			<br />
@@ -299,8 +430,8 @@ EOF;
 			</table>
 			<br />
 			<table width='50%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
-			<tr><td class='label'>Hotel Check-in Date</td><td><input type='text' id="hotel_checkin" name="hotel_checkin" value='{$hotel_checkin}' /></td></tr>
-			<tr><td class='label'>Hotel Check-out Date</td><td><input type='text' id="hotel_checkout" name="hotel_checkout" value='{$hotel_checkout}' /></td></tr>
+			<tr><td class='label'><span class="requ">*</span>Hotel Check-in Date</td><td><input type='text' class="required" id="hotel_checkin" name="hotel_checkin" value='{$hotel_checkin}' /></td></tr>
+			<tr><td class='label'><span class="requ">*</span>Hotel Check-out Date</td><td><input type='text' class="required" id="hotel_checkout" name="hotel_checkout" value='{$hotel_checkout}' /></td></tr>
 			<tr><td class='label'>Roommate Preference</td><td><input type='text' name="roommate_preference" value='{$roommate_preference}' /></td></tr>
 			</table>
 			<br />
