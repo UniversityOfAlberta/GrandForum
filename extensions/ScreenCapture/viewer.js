@@ -16,7 +16,8 @@
             endpointStyle:{ fillStyle:"#8C529D" },			   
            	overlays : [ ["Label", {
            	                cssClass:"graphLabel",
-           					label : "<input type='text' class='stealth' value='' style='position:absolute;' />", 
+           					//label : "<input type='text' class='stealth' value='' style='position:absolute;' />", 
+           					label: '',
            					location:0.5,
            					id:"label"
            				  } ],
@@ -73,33 +74,40 @@
 	                        target:"window" + index,
 	                        }, connector);
                 }
+                var el = $($('.graphLabel'), $(self)).last();
+                el.css('cursor', 'pointer');
+                el.css('margin-left', '0');
+                var transition = '';
                 if(model.events[index].transition != ''){
-                    $($('.graphLabel > input'), $(self)).last().attr('value', model.events[index].transition).attr('data', undefined);
-                };
-            });
-
-            setInterval(function(){
-                $.each($($(".graphLabel > input"), $(self)), function(index, value){
-                    var val = $(this).val();
-                    var oldVal = $(this).attr('data');
-                    if(val != oldVal){
-                        model.events[index+1].transition = val; // Update Model
-                        var beforeWidth = $(this).width();
-                        var tmpSpan = $("<span style='white-space:nowrap;'>" + val + "</span>");
-                        $(this).parent().append(tmpSpan);
-                        var width = tmpSpan.width();
-                        tmpSpan.remove();
-                        $(this).parent().width(width + 1);
-                        $(this).width(width + 15);
-                        var afterWidth = $(this).width();
-                        $(this).parent().css('margin-left', parseInt($(this).parent().css('margin-left')) - parseInt((afterWidth-beforeWidth)/2));
-                        if(oldVal != undefined){
-                            self.save();
-                        }
+                    if(model.events[index].transition != undefined){
+                        transition = model.events[index].transition;
                     }
-                    $(this).attr('data', val);
+                    var beforeWidth = $(el).width();
+                    el.html(transition.substring(0,16));
+                    var afterWidth = $(el).width();
+                    $(el).css('margin-left', parseInt($(el).css('margin-left')) - parseInt((afterWidth-beforeWidth)/2));
+                }
+                el.click(function(){
+                    var editContent = $("<textarea id='nodeDescription' style='height:190px;width:100%;margin:0;'>" + transition + "</textarea><button id='saveTrans'>Save</button><button id='cancelTrans'>Cancel</button>");
+                    $.colorbox({open:true,
+                                 html:editContent
+                                 });
+                    $("#saveTrans").click(function(){
+                        transition = $("#colorbox textarea").val();
+                        model.events[index].transition = transition;
+                        var beforeWidth = $(el).width();
+                        el.html(transition.substring(0,16));
+                        var afterWidth = $(el).width();
+                        $.colorbox.close();
+                        jsPlumb.repaintEverything();
+                        $(el).css('margin-left', parseInt($(el).css('margin-left')) - parseInt((afterWidth-beforeWidth)/2));
+                        self.save();
+                    });
+                    $("#cancelTrans").click(function(){
+                        $.colorbox.close();
+                    });
                 });
-            }, 33);
+            });
 
             $.each($($('.window'), $(self)), function(index, value){
                 $(value).bind("contextmenu",function(e){
