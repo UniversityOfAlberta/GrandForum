@@ -3,7 +3,7 @@
     $.fn.graph = function(data) {
         var model = data;
         var self = this;
-console.log(data);
+
         var connector = {				
             connector:"Straight",
            	anchor: "AutoDefault",

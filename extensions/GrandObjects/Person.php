@@ -1311,17 +1311,17 @@ class Person{
 	    $data = DBFunctions::execSQL($sql);
 	    $array = array();
 	    foreach($data as $row){
-	        $screens = json_decode($row['story']);
+	        $events = json_decode($row['story']);
 	        $story = (object)'a';
 	        $story->id = $row['id'];
 	        $story->person = $row['person'];
 	        $story->created = $row['created'];
-	        $story->screens = $screens;
-	        if(count($screens) > 0){
-	            foreach($screens as $screen){
-	                $date = @$screen->date;
+	        $story->events = $events;
+	        if(count($events) > 0){
+	            foreach($events as $event){
+	                $date = @$event->date;
                     $time = strtotime($date);
-	                $screen->date = date('D, F n, Y e - h:i:s', $time);
+	                $event->date = date('D, F n, Y e - h:i:s', $time);
 	            }
 	        }
 	        $array[] = $story;

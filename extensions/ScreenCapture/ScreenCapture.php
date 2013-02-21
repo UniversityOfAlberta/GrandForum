@@ -27,7 +27,20 @@ class ScreenCapture {
                         maxSize: 5*1000*1000,
                         onFinishedRecord: function(story){
                             $.post('{$wgServer}{$wgScriptPath}/index.php?action=api.addRecordStory', {\"story\": story}, function(response){
-                                
+                                clearSuccess();
+                                clearError();
+                                if(response.errors.length == 0){
+                                    // No Errors
+                                    response.messages.forEach(function(val, index){
+                                        addSuccess(val);
+                                    });
+                                }
+                                else{
+                                    // User
+                                    response.errors.forEach(function(val, index){
+                                        addError(val);
+                                    });
+                                }
                             });
                         },
                         convertURL: '{$wgServer}{$wgScriptPath}/convertSvg.php'

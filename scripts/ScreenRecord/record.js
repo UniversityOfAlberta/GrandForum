@@ -1,6 +1,12 @@
 (function( $ ){
 
     $.fn.record = function(options) {
+        var browserVersion = parseFloat($.browser.fullVersion);
+        if(($.browser.msie && browserVersion < 9) ||
+           ($.browser.mozilla && browserVersion < 3.5) ||
+           ($.browser.opera && browserVersion < 12)){
+            return;
+        }
         var that = this;
         var convertURL = '';
         var delay = 10*1000;
