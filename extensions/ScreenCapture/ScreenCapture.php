@@ -10,10 +10,6 @@ $wgHooks['UnknownAction'][] = 'ScreenCapture::getRecordedImage';
 
 class ScreenCapture {
     
-    function ScreenCapture(){
-    
-    }
-    
     function addRecordScript($out){
         global $wgServer, $wgScriptPath, $wgUser, $wgImpersonating;
         $me = Person::newFromWgUser();

@@ -49,7 +49,7 @@
                         x = 100-x-9;
                     }
                     
-                    $(self).append("<div id='window" + id + "' name='" + i + "' style='background:#ffffff;width:100px;height:50px;border:1px solid #aaa;padding:3px;position:absolute;left:" + x + "%;top:" + y + "px;z-index:5000;-webkit-border-radius:5px;-moz-border-radius: 5px;border-radius:5px;cursor:pointer;' class='window'><a href='../index.php?action=getRecordedImage&id=" + val.img + "' style='height:100%;display:block;' title='" + val.url + "<br />" + val.date + "' rel='story'><img src='../index.php?action=getRecordedImage&id=" + val.img + "' style='position:absolute;top:0;bottom:0;margin:auto;max-width:100px;max-height:50px;' /></a></div>");
+                    $(self).append("<div id='window" + id + "' name='" + i + "' style='background:#ffffff;width:100px;height:50px;border:1px solid #aaa;padding:3px;position:absolute;left:" + x + "%;top:" + y + "px;z-index:5000;-webkit-border-radius:5px;-moz-border-radius: 5px;border-radius:5px;cursor:pointer;' class='window'><a href='../index.php?action=getRecordedImage&id=" + val.img + "' style='height:100%;display:block;' rel='story'><img src='../index.php?action=getRecordedImage&id=" + val.img + "' style='position:absolute;top:0;bottom:0;margin:auto;max-width:100px;max-height:50px;' /></a></div>");
                     id++;
                 }
             });
@@ -127,10 +127,34 @@
                 }
             });
 
-            $($(".window a"), $(self)).colorbox({photo:true,
-                                            maxWidth:'85%',
-                                            maxHeight:'85%'
-                                           });
+            $($(".window a"), $(self)).colorbox({
+                 photo:true,
+                 maxWidth:'85%',
+                 maxHeight:'85%',
+                 scrolling:false,
+                 onComplete:function(){
+                    var descs = "";
+                    model.events[$(this).parent().attr('name')].descriptions.forEach(function(desc, i){
+                         descs += "<p>" + desc + "</p><hr />";
+                    });
+                    var content = "<div class='sideOverlay' style='position:absolute;top:0;right:0;bottom:28px;width:225px;font-size:10px;padding:3px;background:#222;color:#fff;opacity:0.1;overflow-y:auto;user-select: text;-webkit-user-select: text;-khtml-user-select: text;-moz-user-select: text;-ms-user-select: text;'><div style='font-weight:bold;font-size:1.5em;'>Descriptions</div><hr />" + descs + "</div>";
+                    $("#cboxLoadedContent").append(content);
+                    $(".sideOverlay").css('right', '-175px');
+                    $(".sideOverlay").mouseover(function(e){
+                        $(this).stop();
+                        $(this).animate({'opacity':0.85,
+                                         'right':0
+                                        }, 250);
+                    });
+                    $(".sideOverlay").mouseout(function(e){
+                        $(this).stop();
+                        $(this).animate({'opacity':0.1,
+                                         'right':'-175px'
+                                        }, 250);
+                    });
+                 }
+            });
+                
             $(self).parent().height(Math.max((Math.ceil($($(".window"), $(self)).length/4))*200 + 100, $(self).parent().parent().height()));
             
             $.each($($(".window"), $(self)), function(index, val){
