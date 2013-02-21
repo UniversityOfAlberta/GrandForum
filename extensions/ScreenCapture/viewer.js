@@ -88,10 +88,13 @@
                     $(el).css('margin-left', parseInt($(el).css('margin-left')) - parseInt((afterWidth-beforeWidth)/2));
                 }
                 el.click(function(){
-                    var editContent = $("<textarea id='nodeDescription' style='height:190px;width:100%;margin:0;'>" + transition + "</textarea><button id='saveTrans'>Save</button><button id='cancelTrans'>Cancel</button>");
+                    var editContent = $("<textarea id='nodeTransition' style='height:190px;width:100%;margin:0;'>" + transition + "</textarea><button id='saveTrans'>Save</button><button id='cancelTrans'>Cancel</button>");
                     $.colorbox({open:true,
-                                 html:editContent
-                                 });
+                                width:'500px',
+                                height:'300px',
+                                html:editContent,
+                                onComplete:function(){$("textarea#nodeTransition").focus()}
+                               });
                     $("#saveTrans").click(function(){
                         transition = $("#colorbox textarea").val();
                         model.events[index].transition = transition;
