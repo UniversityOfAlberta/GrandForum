@@ -27,7 +27,7 @@ class TravelForm extends SpecialPage {
 	    //$wgOut->addHTML();
 	}
 
-	static function sendEmail(){
+	static function sendEmail($resubmission){
 		global $wgUser;
 
 		$my_id = $wgUser->getId();
@@ -103,26 +103,24 @@ class TravelForm extends SpecialPage {
 				$row_count++;
 			}	
 			
-
 			$foo->getColumnDimension("A")->setWidth(40);
 			$foo->getColumnDimension("B")->setWidth(40);		
 			$phpExcel->setActiveSheetIndex(0);
 
-			//header("Content-Type: application/vnd.ms-excel");
-			//header("Content-Disposition: attachment; filename=\"{$last_name}_{$first_name}.xls\"");
-			//header("Cache-Control: max-age=0");
-			
 			ob_start();
 			$objWriter = PHPExcel_IOFactory::createWriter($phpExcel, "Excel5");
 			$objWriter->save("php://output");
-			
 			$excel_content = ob_get_contents();
 			ob_end_clean();
 
-
             //EMAIL
+			$title = "Submission";
+            if($resubmission){
+            	$title = "Re-Submission";
+            }
+            
             $email_body =<<<EOF
-New GRAND Forum Travel Form Submission!\n
+New GRAND Forum Travel Form {$title}!\n
 Travel Information:\n
 EOF;
 			foreach($fields as $label=>$value){
@@ -141,19 +139,12 @@ EOF;
 
 			$to = "dgolovan@gmail.com"; //"fauve_mackenzie@gnwc.ca"; 
 			$cc = $email;
-			$subject = "Travel Form Submission: $first_name $last_name";
+			$subject = "Travel Form {$title}: $first_name $last_name";
 			$from = "GRAND Forum <support@forum.grand-nce.ca>";
-			// $headers   = array();
-			// $headers[] = "MIME-Version: 1.0";
-			// $headers[] = "Content-type: text/plain; charset=iso-8859-1";
-			// $headers[] = "From: GRAND Forum <support@forum.grand-nce.ca>";
-			// $headers[] = "Cc: {$cc}";
-			// $headers[] = "Reply-To: GRAND Forum <support@forum.grand-nce.ca>";
-			// $headers[] = "Subject: {$subject}";
-			// $headers[] = "X-Mailer: PHP/".phpversion();
-
-			// mail($to, $subject, $email_body, implode("\r\n", $headers));
 			$filename = "{$last_name}_{$first_name}.xls";
+			if($resubmission){
+				$filename = "Resubmission-{$last_name}_{$first_name}.xls";
+			}
 			TravelForm::mail_attachment($excel_content, $filename, $to, $cc, $from, $subject, $email_body);
 		}
 	}
@@ -162,7 +153,7 @@ EOF;
 	    
 	    $content = chunk_split(base64_encode($content));
 	    $uid = md5(uniqid(time()));
-	    //$name = basename($file);
+	   
 	    $header = "From: ".$from."\r\n";
 	    $header .= "Cc: ".$cc."\r\n";
 	    $header .= "Reply-To: ".$from."\r\n";
@@ -242,7 +233,7 @@ EOF;
 EOF;
 			$result = DBFunctions::execSQL($query, true);
 		}
-		TravelForm::sendEmail();
+		TravelForm::sendEmail($data_id);
 		$wgMessage->addSuccess("Thank you! Your Travel Form has been successfully submitted! ");
 	}
 
