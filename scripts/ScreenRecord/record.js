@@ -63,12 +63,15 @@
             recordDiv.css('padding', '2px');
             recordButton = $('<button onClick="return false;" style="padding:3px 10px !important;font-size:10px !important;"><span class="recordText">Record</span> <span class="record" style="font-size:12px;">●</span></button>');
             pickButton = $('<button onClick="return false;" style="padding:3px 10px !important;font-size:10px !important;">Select Element</button>');
-            screenshotButton = $('<button style="padding:3px 10px !important;font-size:10px !important;" onClick="return false;">Capture (Alt+c)</button>');
+            screenshotButton = $('<button style="padding:3px 10px !important;font-size:10px !important;" onClick="return false;">Capture (Shift+c)</button>');
             sizeLeft = $('<span style="margin-left:20px;font-size:10px;"></span><br />');
             timeLeft = $('<span style="margin-left:20px;font-size:10px;"></span>');
             
             $(window).keydown(function(e){
-                if(e.altKey && e.keyCode == 67){ // Alt + c
+                if(e.shiftKey && e.keyCode == 67 && e.target.nodeName.toLowerCase() != 'input' && 
+                                                    e.target.nodeName.toLowerCase() != 'textarea' &&
+                                                    e.target.nodeName.toLowerCase() != 'select' &&
+                                                    e.target.nodeName.toLowerCase() != 'option'){ // Alt + c
                     that.takeScreenshot();
                 }
             });
