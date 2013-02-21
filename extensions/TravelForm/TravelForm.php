@@ -34,6 +34,7 @@ class TravelForm extends SpecialPage {
 		$curr_year = date("Y");
 		$select = "SELECT * FROM grand_travel_forms WHERE user_id={$my_id} AND year={$curr_year}";
 		$data = DBFunctions::execSQL($select);
+		$success = false;
 
 		if(count($data) > 0 && isset($data[0]['id'])){
 			$row = $data[0];
@@ -118,7 +119,7 @@ class TravelForm extends SpecialPage {
             if($resubmission){
             	$title = "Re-Submission";
             }
-            
+
             $email_body =<<<EOF
 New GRAND Forum Travel Form {$title}!\n
 Travel Information:\n
@@ -145,8 +146,10 @@ EOF;
 			if($resubmission){
 				$filename = "Resubmission-{$last_name}_{$first_name}.xls";
 			}
-			TravelForm::mail_attachment($excel_content, $filename, $to, $cc, $from, $subject, $email_body);
+
+			$success = TravelForm::mail_attachment($excel_content, $filename, $to, $cc, $from, $subject, $email_body);
 		}
+		return $success;
 	}
 
 	static function mail_attachment($content, $filename, $to, $cc, $from, $subject, $message) {
@@ -171,9 +174,9 @@ EOF;
 	    $header .= $content."\r\n\r\n";
 	    $header .= "--".$uid."--";
 	    if (mail($to, $subject, "", $header)) {
-	        echo "mail send ... OK"; // or use booleans here
+	        return true;
 	    } else {
-	        echo "mail send ... ERROR!";
+	        return false;
 	    }
 	}
 	
@@ -233,8 +236,13 @@ EOF;
 EOF;
 			$result = DBFunctions::execSQL($query, true);
 		}
-		TravelForm::sendEmail($data_id);
-		$wgMessage->addSuccess("Thank you! Your Travel Form has been successfully submitted! ");
+		$success = TravelForm::sendEmail($data_id);
+		if($success){
+			$wgMessage->addSuccess("Thank you! Your Travel Form has been successfully submitted! ");
+		}
+		else{
+			$wgMessage->addError("There was a problem with submitting the form. If the problem persists, please contact support@forum.grand-nce.ca.");
+		}
 	}
 
 
