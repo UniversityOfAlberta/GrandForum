@@ -148,7 +148,7 @@
                     model.events[$(this).parent().attr('name')].descriptions.forEach(function(desc, i){
                          descs += "<p>" + desc + "</p><hr />";
                     });
-                    var content = "<div class='sideOverlay' style='position:absolute;top:0;right:0;bottom:28px;width:225px;font-size:10px;padding:3px;background:#222;color:#fff;opacity:0.1;overflow-y:auto;user-select: text;-webkit-user-select: text;-khtml-user-select: text;-moz-user-select: text;-ms-user-select: text;'><div style='font-weight:bold;font-size:1.5em;'>Descriptions</div><hr />" + descs + "</div>";
+                    var content = "<div class='sideOverlay' style='position:absolute;top:0;right:0;bottom:28px;width:225px;font-size:10px;padding:3px;background:#222;color:#fff;opacity:0.1;overflow-y:auto;'><div style='font-weight:bold;font-size:1.5em;'>Descriptions</div><hr />" + descs + "</div>";
                     $("#cboxLoadedContent").append(content);
                     $(".sideOverlay").css('right', '-175px');
                     $(".sideOverlay").mouseover(function(e){
