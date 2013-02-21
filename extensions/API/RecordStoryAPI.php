@@ -14,19 +14,21 @@ class RecordStoryAPI extends API{
 	    $me = Person::newFromWgUser();
 	    $story = json_decode($_POST['story']);
 	    foreach($story as $screenshot){
-	        if(!isset($screenshot->transition)){
-	            $screenshot->transition = '';
+	        if($screenshot->event == 'screen'){
+	            if(!isset($screenshot->transition)){
+	                $screenshot->transition = '';
+	            }
+	            if(!isset($screenshot->descriptions)){
+	                $screenshot->descriptions = array();
+	            }
+	            $img = mysql_real_escape_string($screenshot->img);
+	            $md5 = md5(json_encode($screenshot));
+	            $screenshot->img = $md5;
+	            $sql = "INSERT INTO `grand_recorded_images`
+	                    (`id`,`image`,`person`) VALUES
+	                    ('$md5','$img','{$me->getId()}')";
+	            DBFunctions::execSQL($sql, true);
 	        }
-	        if(!isset($screenshot->descriptions)){
-	            $screenshot->descriptions = array();
-	        }
-	        $img = mysql_real_escape_string($screenshot->img);
-	        $md5 = md5(json_encode($screenshot));
-	        $screenshot->img = $md5;
-	        $sql = "INSERT INTO `grand_recorded_images`
-	                (`id`,`image`,`person`) VALUES
-	                ('$md5','$img','{$me->getId()}')";
-	        DBFunctions::execSQL($sql, true);
 	    }
 	    $story = mysql_real_escape_string(json_encode($story));
 	    $sql = "INSERT INTO `grand_recordings`

@@ -54,11 +54,11 @@ class ScreenCapture {
                         header('Content-Type: application/json');
                         header("Cache-Control: no-cache");
                         header("Pragma: no-cache");
-                        $screens = json_decode($row['story']);
+                        $events = json_decode($row['story']);
                         $story = (object)'a';
                         $story->id = $row['id'];
                         $story->person = $row['person'];
-                        $story->screens = $screens;
+                        $story->events = $events;
                         echo json_encode($story);
                         exit;
                     }
@@ -85,16 +85,18 @@ class ScreenCapture {
                     $personId = $row['person'];
                     if(($me->getId() == $personId || $me->isRoleAtLeast(MANAGER)) && $personId == $story->person){
                         // Ok, it is safe to update
-                        foreach($story->screens as &$screen){
-                            $cleanedDesc = array();
-                            foreach($screen->descriptions as $desc){
-                                if($desc != null){
-                                    $cleanedDesc[] = $desc;
+                        foreach($story->events as &$screen){
+                            if($screen->event == 'screen'){
+                                $cleanedDesc = array();
+                                foreach($screen->descriptions as $desc){
+                                    if($desc != null){
+                                        $cleanedDesc[] = $desc;
+                                    }
                                 }
+                                $screen->descriptions = $cleanedDesc;
                             }
-                            $screen->descriptions = $cleanedDesc;
                         }
-                        $storyData = mysql_real_escape_string(json_encode($story->screens));
+                        $storyData = mysql_real_escape_string(json_encode($story->events));
                         $sql = "UPDATE `grand_recordings`
                                 SET `story` = '$storyData'
                                 WHERE `id` = '{$story->id}'";

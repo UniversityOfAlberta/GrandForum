@@ -3,7 +3,7 @@
     $.fn.graph = function(data) {
         var model = data;
         var self = this;
-
+console.log(data);
         var connector = {				
             connector:"Straight",
            	anchor: "AutoDefault",
@@ -40,14 +40,18 @@
         this.initGraph = function(){
             $(self).append("<div id='nodeMenu' class='graphMenu' style='display:none;position:absolute;z-index:6000'><ul><li><a href='#' name='addDesc'>Add Description</a></li></ul></div><div id='descMenu' class='graphMenu' style='display:none;position:absolute;z-index:6000'><ul><li><a href='#' name='editDesc'>Edit</a></li><li><a href='#' name='deleteDesc'>Delete</a></li></ul></div>");
             
-            model.screens.forEach(function(val, i){
-                var x = (8 + 25*(i%4));
-                var y = (200*Math.ceil((i+1)/4) - 100);
-                if(Math.ceil((i+1)/4) % 2 == 0){
-                    x = 100-x-9;
+            var id = 0;
+            model.events.forEach(function(val, i){
+                if(val.event == 'screen'){
+                    var x = (8 + 25*(id%4));
+                    var y = (200*Math.ceil((id+1)/4) - 100);
+                    if(Math.ceil((id+1)/4) % 2 == 0){
+                        x = 100-x-9;
+                    }
+                    
+                    $(self).append("<div id='window" + id + "' name='" + i + "' style='background:#ffffff;width:100px;height:50px;border:1px solid #aaa;padding:3px;position:absolute;left:" + x + "%;top:" + y + "px;z-index:5000;-webkit-border-radius:5px;-moz-border-radius: 5px;border-radius:5px;cursor:pointer;' class='window'><a href='../index.php?action=getRecordedImage&id=" + val.img + "' style='height:100%;display:block;' title='" + val.url + "<br />" + val.date + "' rel='story'><img src='../index.php?action=getRecordedImage&id=" + val.img + "' style='position:absolute;top:0;bottom:0;margin:auto;max-width:100px;max-height:50px;' /></a></div>");
+                    id++;
                 }
-                
-                $(self).append("<div id='window" + i + "' style='background:#ffffff;width:100px;height:50px;border:1px solid #aaa;padding:3px;position:absolute;left:" + x + "%;top:" + y + "px;z-index:5000;-webkit-border-radius:5px;-moz-border-radius: 5px;border-radius:5px;cursor:pointer;' class='window'><a href='../index.php?action=getRecordedImage&id=" + val.img + "' style='height:100%;display:block;' title='" + val.url + "<br />" + val.date + "' rel='story'><img src='../index.php?action=getRecordedImage&id=" + val.img + "' style='position:absolute;top:0;bottom:0;margin:auto;max-width:100px;max-height:50px;' /></a></div>");
             });
             
             // chrome fix.
@@ -69,8 +73,8 @@
 	                        target:"window" + index,
 	                        }, connector);
                 }
-                if(model.screens[index].transition != ''){
-                    $($('.graphLabel > input'), $(self)).last().attr('value', model.screens[index].transition).attr('data', undefined);
+                if(model.events[index].transition != ''){
+                    $($('.graphLabel > input'), $(self)).last().attr('value', model.events[index].transition).attr('data', undefined);
                 };
             });
 
@@ -79,7 +83,7 @@
                     var val = $(this).val();
                     var oldVal = $(this).attr('data');
                     if(val != oldVal){
-                        model.screens[index+1].transition = val; // Update Model
+                        model.events[index+1].transition = val; // Update Model
                         var beforeWidth = $(this).width();
                         var tmpSpan = $("<span style='white-space:nowrap;'>" + val + "</span>");
                         $(this).parent().append(tmpSpan);
@@ -103,7 +107,7 @@
                     $("#nodeMenu").fadeIn(100);
                     $("#nodeMenu > ul").menu();
                     $("#nodeMenu > ul a[name=addDesc]").click(function(){
-                        self.addDesc(that, model.screens[index].descriptions);
+                        self.addDesc(that, model.events[$(that).attr('name')].descriptions);
                     });
                     $("#nodeMenu").css('left', $(this).position().left + $(this).width()).css('top', $(this).position().top);
                     e.stopPropagation();
@@ -130,10 +134,9 @@
             $(self).parent().height(Math.max((Math.ceil($($(".window"), $(self)).length/4))*200 + 100, $(self).parent().parent().height()));
             
             $.each($($(".window"), $(self)), function(index, val){
-                model.screens[index].descriptions.forEach(function(desc, i){
-                    self.addDesc($(val), model.screens[index].descriptions, i);
+                model.events[$(val).attr('name')].descriptions.forEach(function(desc, i){
+                    self.addDesc($(val), model.events[$(val).attr('name')].descriptions, i);
                 });
-                
             });
             
             $(document).ready(function(){
@@ -180,7 +183,6 @@
                 return;
             }
             var desc = $("<div class='window' style='min-height:15px;min-width:15px;white-space:nowrap;background:rgba(255,255,255,0.8);border:1px solid #aaa;padding:3px;position:absolute;z-index:5000;-webkit-border-radius:5px;-moz-border-radius: 5px;border-radius:5px;cursor:pointer;opacity:0.0001'>" + description.substring(0,10) + "</div>");
-            //desc.colorbox({width:'500px',height:'300px',html:description.replace(/\\n/g, '<br />')});
             
             $(self).append(desc);
             self.positionNode(parent, desc);

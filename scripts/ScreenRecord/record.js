@@ -203,6 +203,36 @@
                 oldWindowOnBeforeUnload = window.onbeforeunload;
                 window.onbeforeunload = function(){ return "You are currently recording a screen capture session.  Leaving this page will cause the session to be lost.  To save the session, press the 'Stop' button."};
             }
+            var mX = 0;
+            var mY = 0;
+            $(target).mousemove(function(e){
+                mX = e.pageX - $(target).position().left;
+                mY = e.pageY - $(target).position().top;
+            });
+            $(target).click(function(e){
+                var data = {event: 'click',
+                            x: e.pageX - $(target).position().left,
+                            y: e.pageY - $(target).position().top,
+                            date: new Date().toJSON()
+                           };
+            });
+            setInterval(function(){
+                var data = {event: 'mousemove',
+                            x: mX,
+                            y: mY,
+                            date: new Date().toJSON()
+                           };
+                var size = JSON.stringify(story).length;
+                var sizeAfter = size + JSON.stringify(data).length;
+                if(sizeAfter <= maxSize){
+                    story.push(data);
+                    currentSize = (sizeAfter/1000/1000).toFixed(2);
+                }
+                else{
+                    currentSize = (size/1000/1000).toFixed(2);
+                    that.showSize(true);
+                }
+            }, 100);
         }
     
         this.start = function(){
@@ -235,6 +265,7 @@
                     var img = canvas.toDataURL().replace('data:image/png;base64,', '');
                     if(img != ''){
                         var data = {
+                                    'event' : 'screen',
                                     'url' : document.location.toString() + document.location.hash,
                                     'img' : canvas.toDataURL().replace('data:image/png;base64,', ''),
                                     'date': new Date().toJSON(),
@@ -242,7 +273,7 @@
                                     'transition': ''
                                    };
                         var size = JSON.stringify(story).length;
-                        sizeAfter = size + JSON.stringify(data).length;
+                        var sizeAfter = size + JSON.stringify(data).length;
                         
                         if(sizeAfter <= maxSize){
                             story.push(data);
