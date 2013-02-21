@@ -14,6 +14,7 @@
         var convertSVG = false;
         var interval = null;
         var recordInterval = null;
+        var mouseInterval = null;
         var el;
         var selectable = false;
         var onCapture = undefined;
@@ -222,7 +223,7 @@
                             date: new Date().toJSON()
                            };
             });
-            setInterval(function(){
+            mouseInterval = setInterval(function(){
                 var data = {event: 'mousemove',
                             x: mX,
                             y: mY,
@@ -242,7 +243,8 @@
         }
     
         this.start = function(){
-            that.currentSize = 0;
+            currentSize = 0;
+            story = Array();
             if(selectable){
                 var outline = DomOutline({onClick: that.afterStart});
                 outline.start();
@@ -260,7 +262,11 @@
             }
             interval = null;
             clearInterval(recordInterval);
+            clearInterval(mouseInterval);
             recordInterval = null;
+            mouseInterval = null;
+            $(target).unbind('click');
+            $(target).unbind('mousemove');
             $("span.record", $(that).parent()).css('color', '');
             $("span.recordText", $(that).parent()).html('Record');
         }
