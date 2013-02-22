@@ -239,8 +239,8 @@
                         var href1 = $("div[name=" + $(this).attr('name1') + "] a").attr('href');
                         var href2 = $("div[name=" + $(this).attr('name2') + "] a").attr('href');
                         $("#cboxLoadedContent").empty();
-                        var img1 = $("<img class='screenThumb' style='border-width:3px;border-style: solid;border-color: rgba(0,0,0,0.1);' src='" + href1 + "' />");
-                        var img2 = $("<img class='screenThumb' style='border-width:3px;border-style: solid;border-color: rgba(0,0,0,0.1);' src='" + href2 + "' />");
+                        var img1 = $("<img class='screenThumb' style='border-width:3px;border-style: solid;border-color: #E6E6E6;' src='" + href1 + "' />");
+                        var img2 = $("<img class='screenThumb' style='border-width:3px;border-style: solid;border-color: #E6E6E6;' src='" + href2 + "' />");
                         var transition = model.events[$(this).attr('name2')].transition;
                         img1.width('100%')
                             .css('cursor', 'pointer')
@@ -266,14 +266,22 @@
                         
                         $(".screenThumb").mouseover(function(e){
                             $(this).parent().stop();
+                            $(this).stop();
                             console.log(getMaxWidth($(this)));
                             var desiredWidth = Math.min(getMaxWidth($(this)), $("#cboxLoadedContent table").width()*0.4);
-                            $(this).parent().animate({'width':(desiredWidth) + 'px'}, 250);
+                            $(this).css('border-color',"#888888");
+                            if(desiredWidth > $(this).width()){
+                                $(this).parent().animate({'width':(desiredWidth) + 'px'}, 250);
+                            }
                         });
                         $(".screenThumb").mouseout(function(e){
                             $(this).parent().stop();
+                            $(this).stop();
                             var desiredWidth = Math.min(getMaxWidth($(this)), $("#cboxLoadedContent table").width()*0.2);
-                            $(this).parent().animate({'width':desiredWidth + 'px'}, 250);
+                            $(this).css('border-color',"#E6E6E6");
+                            if(desiredWidth < $(this).width()){
+                                $(this).parent().animate({'width':(desiredWidth) + 'px'}, 250);
+                            }
                         });
                     }
                     else{
@@ -287,7 +295,7 @@
                         $(".sideOverlay").mouseover(function(e){
                             $(this).stop();
                             $(this).animate({'opacity':0.85,
-                                             'right':0
+                                             'right':0,
                                             }, 250);
                         });
                         $(".sideOverlay").mouseout(function(e){
