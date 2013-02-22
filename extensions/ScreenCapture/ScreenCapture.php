@@ -124,7 +124,7 @@ class ScreenCapture {
         if($action == 'getRecordedImage'){
             $me = Person::newFromWgUser();
             if(isset($_GET['id'])){
-                $id = mysql_real_escape_string($_GET['id']);
+                $id = mysql_real_escape_string(str_replace(".png", "", $_GET['id']));
                 $sql = "SELECT *
                         FROM `grand_recorded_images`
                         WHERE `id` = '{$id}'";
@@ -134,12 +134,16 @@ class ScreenCapture {
                     $personId = $row['person'];
                     if($me->getId() == $personId || $me->isRoleAtLeast(MANAGER)){
                         $imgData = $row['image'];
-                        header("Cache-Control: private, max-age=10800, pre-check=10800");
-                        header("Pragma: private");
-                        header("Expires: " . date(DATE_RFC822,strtotime(" 2 day")));
-                        header('Content-Length: '.strlen(base64_decode($imgData)));
+                        if(substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')){
+                            ob_start("ob_gzhandler");
+                        }
+                        else{
+                            ob_start();
+                        }
+                        header('Pragma: public');
+                        header('Cache-Control: max-age=86400');
+                        header('Expires: '. gmdate('D, d M Y H:i:s \G\M\T', time() + 86400));
                         header('Content-Type: image/png');
-                        header('Content-transfer-encoding: binary'); 
                         echo base64_decode($imgData);
                         exit;
                     }
