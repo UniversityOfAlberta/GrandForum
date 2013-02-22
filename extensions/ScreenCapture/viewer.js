@@ -145,14 +145,14 @@
             function next(){
                 var img = $(".cboxPhoto");
                 if(img.length > 0){
-                    var desiredWidth = $("#cboxLoadedContent").width()*0.2;
+                    var desiredWidth = Math.min(getMaxWidth(img), $("#cboxLoadedContent").width()*0.2);
                     var desiredHeight = img.height()*0.2;
                     img.removeAttr('height')
-                                   .css('position', 'absolute')
-                                   .css('left', ($("#cboxLoadedContent").width()/2 - img.width()/2) + 'px')
-                                   .css('border-style', 'solid')
-                                   .css('border-width', '0')
-                                   .css('border-color', 'rgba(0,0,0,0.1)');
+                       .css('position', 'absolute')
+                       .css('left', ($("#cboxLoadedContent").width()/2 - img.width()/2) + 'px')
+                       .css('border-style', 'solid')
+                       .css('border-width', '0')
+                       .css('border-color', 'rgba(0,0,0,0.1)');
                     img.animate({width:desiredWidth + 'px',
                                  top: (($("#cboxLoadedContent").height()/2) - 5 - desiredHeight/2) + 'px',
                                  left: 0,
@@ -162,8 +162,9 @@
                 else{
                     var that = $("#rightImg img");
                     $(that).parent().stop();
-                    var desiredWidth = $("#cboxLoadedContent table").width()*1;
+                    var desiredWidth = Math.min(getMaxWidth(that), $("#cboxLoadedContent table").width()*1);
                     var img = $(that).clone();
+                    
                     var currentWidth = $(that).width();
                     img.css('position','absolute')
                        .css('right',0)
@@ -171,21 +172,26 @@
                        .css('top', $(that).parent().height()/2 - $(that).height()/2)
                        .width(currentWidth + 'px');
                     $(that).parent().append(img);
-                    img.animate({'width':desiredWidth + 'px', top:0, 'border-width':0}, 400, $.colorbox.next);
+                    img.animate({'width':desiredWidth + 'px', 
+                                 top:0, 
+                                 'border-width':0, 
+                                 'right':($("#cboxLoadedContent").width()/2 - desiredWidth/2) + 'px'
+                                }, 400, $.colorbox.next);
+                    $(that).remove();
                 }
             }
             
             function prev(){
                 var img = $(".cboxPhoto");
                 if(img.length > 0){
-                    var desiredWidth = $("#cboxLoadedContent").width()*0.2;
+                    var desiredWidth = Math.min(getMaxWidth(img), $("#cboxLoadedContent").width()*0.2);
                     var desiredHeight = img.height()*0.2;
                     img.removeAttr('height')
-                                   .css('position', 'absolute')
-                                   .css('right', ($("#cboxLoadedContent").width()/2 - img.width()/2) + 'px')
-                                   .css('border-style', 'solid')
-                                   .css('border-width', '0')
-                                   .css('border-color', 'rgba(0,0,0,0.1)');
+                       .css('position', 'absolute')
+                       .css('right', ($("#cboxLoadedContent").width()/2 - img.width()/2) + 'px')
+                       .css('border-style', 'solid')
+                       .css('border-width', '0')
+                       .css('border-color', 'rgba(0,0,0,0.1)');
                     img.animate({width:desiredWidth + 'px',
                                  top: (($("#cboxLoadedContent").height()/2) - 5 - desiredHeight/2) + 'px',
                                  right: 0,
@@ -195,7 +201,7 @@
                 else{
                     var that = $("#leftImg img");
                     $(that).parent().stop();
-                    var desiredWidth = $("#cboxLoadedContent table").width()*1;
+                    var desiredWidth = Math.min(getMaxWidth(that), $("#cboxLoadedContent table").width()*1);
                     var img = $(that).clone();
                     var currentWidth = $(that).width();
                     img.css('position','absolute')
@@ -205,7 +211,11 @@
                        .width(currentWidth + 'px');
                     $(that).parent().append(img);
                     
-                    img.animate({'width':desiredWidth + 'px', top:0, 'border-width':0}, 400, $.colorbox.prev);
+                    img.animate({'width':desiredWidth + 'px', 
+                                 top:0, 
+                                 'border-width':0,
+                                 'left':($("#cboxLoadedContent").width()/2 - desiredWidth/2) + 'px'}, 400, $.colorbox.prev);
+                    $(that).remove();
                 }
             }
             
