@@ -138,7 +138,7 @@ GRAND Forum
 support@forum.grand-nce.ca
 EOF;
 
-			$to = "dgolovan@gmail.com"; //"fauve_mackenzie@gnwc.ca"; 
+			$to = "fauve_mackenzie@gnwc.ca"; 
 			$cc = $email;
 			$subject = "Travel Form {$title}: $first_name $last_name";
 			$from = "GRAND Forum <support@forum.grand-nce.ca>";
@@ -315,7 +315,7 @@ EOF;
 				function(value, element, params) {
 
 				    if (!/Invalid|NaN/.test(new Date(value))) {
-				        return new Date(value) > new Date($(params).val());
+				        return new Date(value) >= new Date($(params).val());
 				    }
 
 				    return isNaN(value) && isNaN($(params).val()) 
@@ -329,8 +329,9 @@ EOF;
 				    }
 
 				    return isNaN(value) && isNaN($(params).val()) 
-				        || (Number(value) > Number($(params).val())); 
+				        || (Number(value) >= Number($(params).val())); 
 				},'Must be greater than Check-in Date.');
+			
 			$(function() {
     			$( "#departure_date, #return_date, #hotel_checkout, #hotel_checkin" ).datepicker();
   				$( "#dob").datepicker({
@@ -342,7 +343,8 @@ EOF;
 				$("#travelForm").validate({
 				    rules: {
 				        return_date: { greaterThan: "#departure_date" },
-				        hotel_checkout: { greaterThan2: "#hotel_checkin" }
+				        hotel_checkout: { greaterThan2: "#hotel_checkin" },
+				        hotel_checkin: { greaterThan: "#departure_date" },
 				    }
 				});
   			});
