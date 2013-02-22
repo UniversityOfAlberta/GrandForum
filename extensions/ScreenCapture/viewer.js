@@ -209,6 +209,12 @@
                 }
             }
             
+            function getMaxWidth(img){
+                var imgWidth = $(img).width();
+                var imgHeight = $(img).height();
+                return ((imgWidth*$("#cboxLoadedContent").height())/imgHeight) - 6;
+            }
+            
             $($("a[rel=story]"), $(self)).colorbox({
                  photo:true,
                  transition:'none',
@@ -250,15 +256,23 @@
                         
                         $("#cboxLoadedContent #leftImg").append(img1);
                         $("#cboxLoadedContent #rightImg").append(img2);
+
+                        if(img1.width() > getMaxWidth(img1)){
+                            $("#cboxLoadedContent #leftImg").width(getMaxWidth(img1));
+                        }
+                        if(img2.width() > getMaxWidth(img2)){
+                            $("#cboxLoadedContent #rightImg").width(getMaxWidth(img2));
+                        }
                         
                         $(".screenThumb").mouseover(function(e){
                             $(this).parent().stop();
-                            var desiredWidth = $("#cboxLoadedContent table").width()*0.4;
-                            $(this).parent().animate({'width':desiredWidth + 'px'}, 250);
+                            console.log(getMaxWidth($(this)));
+                            var desiredWidth = Math.min(getMaxWidth($(this)), $("#cboxLoadedContent table").width()*0.4);
+                            $(this).parent().animate({'width':(desiredWidth) + 'px'}, 250);
                         });
                         $(".screenThumb").mouseout(function(e){
                             $(this).parent().stop();
-                            var desiredWidth = $("#cboxLoadedContent table").width()*0.2;
+                            var desiredWidth = Math.min(getMaxWidth($(this)), $("#cboxLoadedContent table").width()*0.2);
                             $(this).parent().animate({'width':desiredWidth + 'px'}, 250);
                         });
                     }
