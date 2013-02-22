@@ -23,9 +23,11 @@ $query = "SELECT ".implode(", ", $bits)." FROM ".$table." WHERE ".$id[0]."=".$id
 //print $query;
 
 // Connect to DB
-mysql_connect("127.0.0.1", "mhuggett", "ifeelGRAND") or die(mysql_error()); 
+//mysql_connect("127.0.0.1", "mhuggett", "ifeelGRAND") or die(mysql_error()); 
+//mysql_select_db("grand_giga_test") or die(mysql_error()); 
 
-mysql_select_db("grand_giga_test") or die(mysql_error()); 
+mysql_connect("127.0.0.1", "root", "g0l0vnD5") or die(mysql_error()); 
+mysql_select_db("grand_giga") or die(mysql_error()); 
 
 
 $data = mysql_query($query) 

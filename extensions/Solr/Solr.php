@@ -72,19 +72,34 @@ class Solr extends SpecialPage {
 	    global $wgUser, $wgOut, $wgServer, $wgScriptPath, 
              $sqlTables, $resultFields, $sqlPrimaryKeys;
 
-      $wgOut->addScript('
+      $sqlTables = json_encode($sqlTables);
+      $sqlPrimaryKeys = json_encode($sqlPrimaryKeys);
+      $resultFields = json_encode($resultFields);
+
+      $script =<<<EOF
         <script type="text/javascript">
 
           // Write PHP arrays
-          var sqlTables = '.json_encode($sqlTables).';
-          var sqlPrimaryKeys = '.json_encode($sqlPrimaryKeys).';
-          var resultFields = '.json_encode($resultFields).';
+          var sqlTables = '{$sqlTables}';
+          var sqlPrimaryKeys = '{$sqlPrimaryKeys}';
+          var resultFields = '{$resultFields}';
 
-          br = "<br/>\n";
+          br = "<br/>\\n";
 
           $(document).ready(function(){
-//alert("ready");
+
 						$("#query").focus();
+            $('#resultsTable').dataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": false,
+                /*"aaSorting": [[0,'asc']],
+                "aoColumns": [
+                    null,
+                    null,
+                    { "bSortable": false }
+                ]*/
+            });
           });
 
 					$("#searchForm").submit(function() {
@@ -97,7 +112,7 @@ class Solr extends SpecialPage {
 							e.preventDefault();
               query = $("#query").val();
 
-              url_solr = "'.$wgServer.$wgScriptPath.'/extensions/Solr/curl.php" 
+              url_solr = "{$wgServer}{$wgScriptPath}/extensions/Solr/curl.php" 
                   + "?query=(" + query + ")"
 
 							$.getJSON(url_solr,
@@ -121,16 +136,16 @@ class Solr extends SpecialPage {
 
 
           function addResultHeader(label, value){
-            $("#results").append(br + "\n<b>" + label + "</b> " + value + br);
+            $("#resultsTable tbody").append("<tr><td>" + label + "</td></td>" + value + "</td></tr>");
           }
 
  
           function addResultRow(label, value){
-            $("#results").append(
+            $("#resultsTable tbody").append(
                    "<tr class=solr_row>" 
                    + "<td class=solr_row_label>" + label + "</td>" 
                    + "<td class=solr_row_value>" + value + "</td>"
-                   + "</tr> \n");
+                   + "</tr> \\n");
           }
 
 
@@ -138,10 +153,10 @@ class Solr extends SpecialPage {
             output = [];
             idx = 0;
             while (idx < blob.length){ 
-              start = blob.indexOf("\"", idx) + 1;
+              start = blob.indexOf('"', idx) + 1;
               if (start == 0)
                 break;
-              end  = blob.indexOf("\"", start + 1);
+              end  = blob.indexOf('"', start + 1);
               bit = blob.substring(start, end);
               output.push(bit.replace(/\./g," "));
               idx = end + 1;
@@ -157,10 +172,10 @@ class Solr extends SpecialPage {
             idx = 0;
             isLabel = true;
             while (idx < blob.length){ 
-              start = blob.indexOf("\"", idx) + 1;
+              start = blob.indexOf('"', idx) + 1;
               if (start == 0)
                 break;
-              end  = blob.indexOf("\"", start);
+              end  = blob.indexOf('"', start);
               bit = blob.substring(start, end);
 //alert(blob.length+"  "+ start +" "+ end +"  "+ bit);
               if (isLabel){
@@ -179,7 +194,7 @@ class Solr extends SpecialPage {
             for (i = 0; i < labels.length; i++){
               output.push(addResultRow(labels[i], values[i]));
             } 
-            return output.join("\n");
+            return output.join("\\n");
           }
 
 
@@ -242,7 +257,7 @@ class Solr extends SpecialPage {
 											var table_id_label = bits[2].trim(); 
 											var id = "&id=" + table_id_label + "," + output;
 											var table_target_field = "&fields=" + bits[3].trim();
-											var url_sql = "'.$wgServer.$wgScriptPath.'/extensions/Solr/sql.php"
+											var url_sql = "{$wgServer}{$wgScriptPath}/extensions/Solr/sql.php"
 																		+ "?table=" + table + id + table_target_field;
 
 											$.ajax({
@@ -266,7 +281,7 @@ class Solr extends SpecialPage {
 
 					function walkJsonTree(key, val) {
 						if (val instanceof Object) {
-// $("#results").append("<b>" + key + "</b>" + br);
+              //$("#results").append("<b>" + key + "</b>" + br);
 							$.each(val, function(key, val) {
 									walkJsonTree(key, val)
 							});
@@ -281,7 +296,7 @@ class Solr extends SpecialPage {
                 // PRIMARY SQL QUERY
 							  var table = sqlTables[type];
 							  var params = getSqlParams(type, val);
-                var url_sql = "'.$wgServer.$wgScriptPath.'/extensions/Solr/sql.php"
+                var url_sql = "{$wgServer}{$wgScriptPath}/extensions/Solr/sql.php"
                               + "?table=" + table + params;
 
 							  $.ajax({
@@ -293,17 +308,18 @@ class Solr extends SpecialPage {
                 }); 
 
 							} else {
-// $("#results").append(key + "  " + val + br);
+                //$("#results").append(key + "  " + val + br);
 							  if (key == "numFound"){
-									$("#results").append(key + "  " + val + br );
+									//$("#resultsTable tbody").append("<tr><td>" + key + "</td><td>" + val + "</td></tr>");
 								} 
 							}
 						}
 					}
 
         </script>
+EOF;
 
-        ');
+      $wgOut->addScript($script);
 
 	    $wgOut->addHTML('
 
@@ -315,11 +331,15 @@ class Solr extends SpecialPage {
 			');
 
 	    $wgOut->addHTML('
-        <div id=results style=" padding: 10px;
-             border-top: 1px solid black;
-             border-right: 1px solid black;
-             border-bottom: 1px solid black;
-             border-left: 1px solid black;">
+        <div id="results">
+             <table class="indexTable dataTable" cellspacing="1" cellpadding="3" frame="box" rules="all" id="resultsTable">
+             <thead>
+             <tr><td width="20%">Content Type</td><td>Excerpt</td></tr>
+             </thead>
+             <tbody>
+             <tr><td></td><td>Empty</td></tr>
+             </tbody>
+             </table>
         </div>
 			');
 
