@@ -124,7 +124,7 @@ class ScreenCapture {
         if($action == 'getRecordedImage'){
             $me = Person::newFromWgUser();
             if(isset($_GET['id'])){
-                $id = mysql_real_escape_string(str_replace(".png", "", $_GET['id']));
+                $id = mysql_real_escape_string($_GET['id']);
                 $sql = "SELECT *
                         FROM `grand_recorded_images`
                         WHERE `id` = '{$id}'";

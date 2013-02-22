@@ -50,7 +50,7 @@
                         x = 100-x-9;
                     }
                     
-                    $(self).append("<div id='window" + id + "' name='" + i + "' style='background:#ffffff;width:100px;height:50px;border:1px solid #aaa;padding:3px;position:absolute;left:" + x + "%;top:" + y + "px;z-index:5000;-webkit-border-radius:5px;-moz-border-radius: 5px;border-radius:5px;cursor:pointer;' class='window'><a href='../index.php?action=getRecordedImage&id=" + val.img + ".png' style='height:100%;display:block;' rel='story'><img src='../index.php?action=getRecordedImage&id=" + val.img + "' style='position:absolute;top:0;bottom:0;margin:auto;max-width:100px;max-height:50px;' /></a></div>");
+                    $(self).append("<div id='window" + id + "' name='" + i + "' style='background:#ffffff;width:100px;height:50px;border:1px solid #aaa;padding:3px;position:absolute;left:" + x + "%;top:" + y + "px;z-index:5000;-webkit-border-radius:5px;-moz-border-radius: 5px;border-radius:5px;cursor:pointer;' class='window'><a href='../index.php?action=getRecordedImage&id=" + val.img + "' style='height:100%;display:block;' rel='story'><img src='../index.php?action=getRecordedImage&id=" + val.img + "' style='position:absolute;top:0;bottom:0;margin:auto;max-width:100px;max-height:50px;' /></a></div>");
                     id++;
                 }
             });
@@ -73,20 +73,23 @@
 	                        source:"window" + (index-1),
 	                        target:"window" + index,
 	                        }, connector);
+	                $("<a rel='story' name1='" + $("#window" + (index-1)).attr('name') + "' name2='" + $("#window" + (index)).attr('name') + "' href='" + $("#window" + (index) + " a").attr('href') + "'></a>").insertBefore($(this));
                 }
                 var el = $($('.graphLabel'), $(self)).last();
                 el.css('cursor', 'pointer');
                 el.css('margin-left', '0');
                 var transition = '';
-                if(model.events[index].transition != ''){
-                    if(model.events[index].transition != undefined){
-                        transition = model.events[index].transition;
+                if(model.events[$("#window" + index).attr('name')].transition != ''){
+                    if(model.events[$("#window" + index).attr('name')].transition != undefined){
+                        transition = model.events[$("#window" + index).attr('name')].transition;
                     }
                     var beforeWidth = $(el).width();
                     el.html(transition.substring(0,16));
                     var afterWidth = $(el).width();
                     $(el).css('margin-left', parseInt($(el).css('margin-left')) - parseInt((afterWidth-beforeWidth)/2));
                 }
+                
+                // Transition Colorbox
                 el.click(function(){
                     var editContent = $("<textarea id='nodeTransition' style='height:190px;width:100%;margin:0;'>" + transition + "</textarea><button id='saveTrans'>Save</button><button id='cancelTrans'>Cancel</button>");
                     $.colorbox({open:true,
@@ -97,7 +100,7 @@
                                });
                     $("#saveTrans").click(function(){
                         transition = $("#colorbox textarea").val();
-                        model.events[index].transition = transition;
+                        model.events[$("#window" + index).attr('name')].transition = transition;
                         var beforeWidth = $(el).width();
                         el.html(transition.substring(0,16));
                         var afterWidth = $(el).width();
@@ -138,30 +141,149 @@
                 }
             });
 
-            $($(".window a"), $(self)).colorbox({
+            // Screenshot Colorbox
+            function next(){
+                var img = $(".cboxPhoto");
+                if(img.length > 0){
+                    var desiredWidth = $("#cboxLoadedContent").width()*0.2;
+                    var desiredHeight = img.height()*0.2;
+                    img.removeAttr('height')
+                                   .css('position', 'absolute')
+                                   .css('left', ($("#cboxLoadedContent").width()/2 - img.width()/2) + 'px')
+                                   .css('border-style', 'solid')
+                                   .css('border-width', '0')
+                                   .css('border-color', 'rgba(0,0,0,0.1)');
+                    img.animate({width:desiredWidth + 'px',
+                                 top: (($("#cboxLoadedContent").height()/2) - 5 - desiredHeight/2) + 'px',
+                                 left: 0,
+                                 'border-width': '3px'
+                                }, 400, $.colorbox.next);
+                }
+                else{
+                    var that = $("#rightImg img");
+                    $(that).parent().stop();
+                    var desiredWidth = $("#cboxLoadedContent table").width()*1;
+                    var img = $(that).clone();
+                    var currentWidth = $(that).width();
+                    img.css('position','absolute')
+                       .css('right',0)
+                       .css('z-index', '1000')
+                       .css('top', $(that).parent().height()/2 - $(that).height()/2)
+                       .width(currentWidth + 'px');
+                    $(that).parent().append(img);
+                    img.animate({'width':desiredWidth + 'px', top:0, 'border-width':0}, 400, $.colorbox.next);
+                }
+            }
+            
+            function prev(){
+                var img = $(".cboxPhoto");
+                if(img.length > 0){
+                    var desiredWidth = $("#cboxLoadedContent").width()*0.2;
+                    var desiredHeight = img.height()*0.2;
+                    img.removeAttr('height')
+                                   .css('position', 'absolute')
+                                   .css('right', ($("#cboxLoadedContent").width()/2 - img.width()/2) + 'px')
+                                   .css('border-style', 'solid')
+                                   .css('border-width', '0')
+                                   .css('border-color', 'rgba(0,0,0,0.1)');
+                    img.animate({width:desiredWidth + 'px',
+                                 top: (($("#cboxLoadedContent").height()/2) - 5 - desiredHeight/2) + 'px',
+                                 right: 0,
+                                 'border-width': '3px'
+                                }, 400, $.colorbox.prev);
+                }
+                else{
+                    var that = $("#leftImg img");
+                    $(that).parent().stop();
+                    var desiredWidth = $("#cboxLoadedContent table").width()*1;
+                    var img = $(that).clone();
+                    var currentWidth = $(that).width();
+                    img.css('position','absolute')
+                       .css('left',0)
+                       .css('z-index', '1000')
+                       .css('top', $(that).parent().height()/2 - $(that).height()/2)
+                       .width(currentWidth + 'px');
+                    $(that).parent().append(img);
+                    
+                    img.animate({'width':desiredWidth + 'px', top:0, 'border-width':0}, 400, $.colorbox.prev);
+                }
+            }
+            
+            $($("a[rel=story]"), $(self)).colorbox({
                  photo:true,
+                 transition:'none',
+                 speed:'0',
                  maxWidth:'85%',
                  maxHeight:'85%',
                  scrolling:false,
+                 resize:false,
+                 onOpen:function(){
+                    $("#cboxPrevious").unbind('click');
+                    $("#cboxNext").unbind('click');
+                    $("#cboxPrevious").click(prev);
+                    $("#cboxNext").click(next);
+                 },
                  onComplete:function(){
-                    var descs = "";
-                    model.events[$(this).parent().attr('name')].descriptions.forEach(function(desc, i){
-                         descs += "<p>" + desc + "</p><hr />";
-                    });
-                    var content = "<div class='sideOverlay' style='position:absolute;top:0;right:-175px;bottom:28px;width:225px;font-size:10px;padding:3px;background:#222;color:#fff;opacity:0.1;overflow-y:auto;'><div style='font-weight:bold;font-size:1.5em;'>Descriptions</div><hr />" + descs + "</div>";
-                    $("#cboxLoadedContent").append(content);
-                    $(".sideOverlay").mouseover(function(e){
-                        $(this).stop();
-                        $(this).animate({'opacity':0.85,
-                                         'right':0
-                                        }, 250);
-                    });
-                    $(".sideOverlay").mouseout(function(e){
-                        $(this).stop();
-                        $(this).animate({'opacity':0.1,
-                                         'right':'-175px'
-                                        }, 250);
-                    });
+                    $(".cboxPhoto")[0].onclick = undefined;
+                    $(".cboxPhoto").click(next);
+                    $.colorbox.resize({width:'85%', height:'85%'});
+                    
+                    if($(this).attr('name1') != undefined && $(this).attr('name2') != undefined){
+                        // Transition
+                        var href1 = $("div[name=" + $(this).attr('name1') + "] a").attr('href');
+                        var href2 = $("div[name=" + $(this).attr('name2') + "] a").attr('href');
+                        $("#cboxLoadedContent").empty();
+                        var img1 = $("<img class='screenThumb' style='border-width:3px;border-style: solid;border-color: rgba(0,0,0,0.1);' src='" + href1 + "' />");
+                        var img2 = $("<img class='screenThumb' style='border-width:3px;border-style: solid;border-color: rgba(0,0,0,0.1);' src='" + href2 + "' />");
+                        var transition = model.events[$(this).attr('name2')].transition;
+                        img1.width('100%')
+                            .css('cursor', 'pointer')
+                            .css('z-index', 100)
+                            .css('position', 'relative')
+                            .click(prev);
+                        img2.width('100%')
+                            .css('cursor', 'pointer')
+                            .css('z-index', 100)
+                            .css('position', 'relative')
+                            .click(next);
+                        $("#cboxLoadedContent").html("<table cellspacing='0' cellpadding='0' height='100%' width='100%' style='border-collapse:separate;'><tr><td id='leftImg' valign='middle' align='left' width='20%' style='padding-right:6px;'></td><td valign='middle' align='center'><div style='position:relative;z-index:100;color:#888888;padding:30px;'>" + transition + "<div style='position:absolute;height:30px;margin-top:-15px;top:50%;left:0;background:#000000;opacity:0.1;right:30px;'><img src='../extensions/ScreenCapture/arrow.png' style='position:absolute;right:-30px;margin-top:-15px;'></div></div></td><td id='rightImg' valign='middle' align='right' width='20%' style='padding-right:6px;'></td></tr></table>");
+                        
+                        $("#cboxLoadedContent #leftImg").append(img1);
+                        $("#cboxLoadedContent #rightImg").append(img2);
+                        
+                        $(".screenThumb").mouseover(function(e){
+                            $(this).parent().stop();
+                            var desiredWidth = $("#cboxLoadedContent table").width()*0.4;
+                            $(this).parent().animate({'width':desiredWidth + 'px'}, 250);
+                        });
+                        $(".screenThumb").mouseout(function(e){
+                            $(this).parent().stop();
+                            var desiredWidth = $("#cboxLoadedContent table").width()*0.2;
+                            $(this).parent().animate({'width':desiredWidth + 'px'}, 250);
+                        });
+                    }
+                    else{
+                        // Screenshot
+                        var descs = "";
+                        model.events[$(this).parent().attr('name')].descriptions.forEach(function(desc, i){
+                             descs += "<p>" + desc + "</p><hr />";
+                        });
+                        var content = "<div class='sideOverlay' style='position:absolute;top:0;right:-175px;bottom:28px;width:225px;font-size:10px;padding:3px;background:#222;color:#fff;opacity:0.1;overflow-y:auto;'><div style='font-weight:bold;font-size:1.5em;'>Descriptions</div><hr />" + descs + "</div>";
+                        $("#cboxLoadedContent").append(content);
+                        $(".sideOverlay").mouseover(function(e){
+                            $(this).stop();
+                            $(this).animate({'opacity':0.85,
+                                             'right':0
+                                            }, 250);
+                        });
+                        $(".sideOverlay").mouseout(function(e){
+                            $(this).stop();
+                            $(this).animate({'opacity':0.1,
+                                             'right':'-175px'
+                                            }, 250);
+                        });
+                    }
+                    
                  }
             });
                 
@@ -234,6 +356,7 @@
             $(con.endpoints[0].canvas).fadeIn();
             $(con.endpoints[1].canvas).fadeIn();
             
+            // Description Colorbox
             function showEdit(){
                 var editContent = $("<textarea id='nodeDescription' style='height:190px;width:100%;margin:0;'>" + description + "</textarea><button id='saveDesc'>Save</button><button id='cancelDesc'>Cancel</button>");
                 $.colorbox({open:true,
