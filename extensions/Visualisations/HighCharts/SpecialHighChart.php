@@ -115,7 +115,7 @@ class SpecialHighChart extends SpecialPage {
 	            $pSeries2[] = $rBudget[$pName];
 	            $sumSeries1[] = $currentSum1;
 	            $sumSeries2[] = $currentSum2;
-	            $pNames[] = $names[$pName];
+	            $pNames[] = str_replace("&amp;", "&", "$pName");
 	            $i++;
 	        }
 	    
@@ -312,12 +312,7 @@ class SpecialHighChart extends SpecialPage {
 	            $currentSum2 += $rBudget[$pName];
 	            $pSeries2[] = $rBudget[$pName];
 	            $sumSeries2[] = $currentSum2;
-	            if($pName != 'Unknown'){
-	                $pNames[] = "{$names[$pName]}";
-	            }
-	            else{
-	                $pNames[] = 'Unknown';
-	            }
+	            $pNames[] = str_replace("universite", "uni", str_replace("University", "Uni", str_replace("&amp;", "&", "$pName")));
 	        }
 	    
 	        $array = array();

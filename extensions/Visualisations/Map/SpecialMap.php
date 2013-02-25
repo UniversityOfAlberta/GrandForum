@@ -93,7 +93,7 @@ class SpecialMap extends SpecialPage {
 	        foreach($pBudget as $uni => $total){
 	            if(isset($uniProvMap[$uni])){
 	                @$array['values'][$uniProvMap[$uni]] += $total;
-	                @$array['text'][$uniProvMap[$uni]] .= "<b>University {$i}:</b> $".number_format($total)."<br />";
+	                @$array['text'][$uniProvMap[$uni]] .= "<b>$uni:</b> $".number_format($total)."<br />";
 	                $i++;
 	            }
 	        }

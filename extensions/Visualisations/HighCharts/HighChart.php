@@ -36,7 +36,7 @@ class HighChart extends Visualisation {
                 "margin": [
                     50,
                     60,
-                    150,
+                    200,
                     60
                 ]
             };
