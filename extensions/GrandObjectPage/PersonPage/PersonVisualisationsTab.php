@@ -24,10 +24,6 @@ class PersonVisualisationsTab extends AbstractTab {
             $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){
                     $('#personVis').tabs({selected: 0});
-                    /*$('#personVis').record({
-                                             convertSVG: true,
-                                             convertURL: '{$wgServer}{$wgScriptPath}/convertSvg.php'
-                                           });*/
                     $('#person').bind('tabsselect', function(event, ui) {
                         if(ui.panel.id == 'visualize'){
                             $('#personVis').tabs('option', 'selected', 0);
