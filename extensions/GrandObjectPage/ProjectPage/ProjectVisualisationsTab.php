@@ -25,10 +25,6 @@ class ProjectVisualisationsTab extends AbstractTab {
             $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){
                     $('#projectVis').tabs({selected: 0});
-                    /*$('#projectVis').record({
-                                                 convertSVG: true,
-                                                 convertURL: '{$wgServer}{$wgScriptPath}/convertSvg.php'
-                                                });*/
                     $('#project').bind('tabsselect', function(event, ui) {
                         if(ui.panel.id == 'visualizations'){
                             $('#projectVis').tabs('option', 'selected', 0);

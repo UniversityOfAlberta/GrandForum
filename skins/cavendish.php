@@ -83,8 +83,10 @@ class cavendishTemplate extends QuickTemplate {
 		<![endif]-->
 		
 		<?php print Skin::makeGlobalVariablesScript( $this->data ); ?>
+		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/excanvas.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery-ui.min.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.browser.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.cookie.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.resizeY.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.limit-1.2.source.js"></script>
@@ -93,6 +95,9 @@ class cavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.filterByText.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.scrollTo-min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.reallyvisible.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.dom-outline.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.jsPlumb-min.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/colorbox/jquery.colorbox-min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/js/jquery.dataTables.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/filter.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/autosave.js"></script>
@@ -101,6 +106,7 @@ class cavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/d3.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/html2canvas.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/ScreenRecord/record.js"></script>
+        
 		<script type="<?php $this->text('jsmimetype') ?>" src="<?php $this->text('stylepath' ) ?>/common/wikibits.js?<?php echo $GLOBALS['wgStyleVersion'] ?>"><!-- wikibits js --></script>
 		<!-- Head Scripts -->
 		<?php $this->html('headscripts') ?>
@@ -127,7 +133,6 @@ class cavendishTemplate extends QuickTemplate {
 		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/extensions.css"; /*]]>*/</style>
 		<style <?php if(empty($this->data['printable']) ) { ?>media="print"<?php } ?> type="text/css">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/print.css"; /*]]>*/</style>
 		
-		
 		<!--[if IE 8]>
 		    <link type="text/css" href="<?php $this->text('stylepath') ?>/cavendish/ie8.css" rel="Stylesheet" />
 		<![endif]-->
@@ -135,8 +140,10 @@ class cavendishTemplate extends QuickTemplate {
 		    <link type="text/css" href="<?php $this->text('stylepath') ?>/cavendish/oldie.css" rel="Stylesheet" />
 		<![endif]-->
 		<link rel="stylesheet" type="text/css" media="print" href="<?php $this->text('stylepath') ?>/common/commonPrint.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/colorbox/colorbox.css" />
 		<script type="text/javascript" src="<?php $this->text('stylepath' ) ?>/common/wikibits.js"></script>
 		<script type='text/javascript'>
+            		
 		    function setMinWidth(){
 	            $("body").css('min-width', '0');
 	            minWidth = parseInt($("#header ul").css('left')) +
@@ -231,7 +238,7 @@ class cavendishTemplate extends QuickTemplate {
 		                                     'left' : '-229px',
 		                                     'margin-right' : marginRight
                                             }, 200, 'swing', function(){
-                                                
+                                                jsPlumb.repaintEverything();
                                             });
                         sideToggled = 'in';
                     }
@@ -240,7 +247,7 @@ class cavendishTemplate extends QuickTemplate {
                                              'left' : '0px',
                                              'margin-right' : '0px'
                                             }, 200, 'swing', function(){
-                                                
+                                                jsPlumb.repaintEverything();
                                             });
                         sideToggled = 'out';
                     }
@@ -489,6 +496,7 @@ class cavendishTemplate extends QuickTemplate {
 			<input type='submit' name="fulltext" class="searchButton" id="mw-searchButton" value="<?php $this->msg('searchbutton') ?>"<?php echo $this->skin->tooltipAndAccesskey( 'search-fulltext' ); ?> />
 	       </div>
 		</form>
+		
 	</div>
     <div id='submenu'>
         <ul>
@@ -525,6 +533,7 @@ class cavendishTemplate extends QuickTemplate {
 	    ?>
 			
 		    </ul>
+		    
 		</div><!-- end of SIDE div -->
 		<div id="spacer" class='displayTableCell'>
 		</div>
@@ -544,6 +553,7 @@ class cavendishTemplate extends QuickTemplate {
 		</div><!-- end of MAINCONTENT div -->	
 	</div>
 	</div><!-- end of MBODY div -->
+	<div id="recordDiv"></div>
 	<div id="footer"><table><tr><td align="left" width="1%" nowrap="nowrap">
 		    <?php if($this->data['copyrightico']) { ?><div id="f-copyrightico"><?php $this->html('copyrightico') ?></div><?php } ?></td><td align="center">
     <?php	// Generate additional footer links

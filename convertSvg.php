@@ -1,7 +1,8 @@
 <?php
-
     if(isset($_POST['svg'])){
         $svg = $_POST['svg'];
+        
+        $svg = str_replace('xmlns="http://www.w3.org/2000/svg"', '', $svg);
         
         $hash = md5($svg);
         file_put_contents("/tmp/$hash.svg", $svg);

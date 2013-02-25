@@ -13,5 +13,4 @@ foreach($hqps as $hqp){
         echo $hqp->getEmail()."\n";   
    }
 }
-
 ?>
