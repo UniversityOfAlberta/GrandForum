@@ -55,6 +55,14 @@ class MyScreenCaptures extends SpecialPage {
                         height: 13px;
                         margin-left:-2px;
                     }
+                    
+                    .graphLabel:hover {
+                        border-color:#666666 !important;
+                    }
+                    
+                    .window:hover {
+                        border-color:#666666 !important;
+                    }
                 </style>");
 	            
 	            $wgOut->addHTML("</div></div>");

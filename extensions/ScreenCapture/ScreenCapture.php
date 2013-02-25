@@ -144,7 +144,24 @@ class ScreenCapture {
                         header('Cache-Control: max-age=86400');
                         header('Expires: '. gmdate('D, d M Y H:i:s \G\M\T', time() + 86400));
                         header('Content-Type: image/png');
-                        echo base64_decode($imgData);
+                        if(isset($_GET['thumbnail'])){
+                            $pngSrc = imagecreatefromstring(base64_decode($imgData));
+                            $src_width = imagesx($pngSrc);
+                            $src_height = imagesy($pngSrc);
+                            $dst_width = 100;
+                            $dst_height = $dst_width*$src_height/$src_width;
+                            if($dst_height > 50){
+                                $dst_height = 50;
+                                $dst_width = $dst_height*$src_width/$src_height;
+                            }
+
+                            $pngDst = imagecreatetruecolor($dst_width, $dst_height);
+                            imagecopyresampled($pngDst, $pngSrc, 0, 0, 0, 0, $dst_width, $dst_height, $src_width, $src_height);
+                            imagepng($pngDst);
+                        }
+                        else{
+                            echo base64_decode($imgData);
+                        }
                         exit;
                     }
                 }

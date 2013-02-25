@@ -50,7 +50,7 @@
                         x = 100-x-9;
                     }
                     
-                    $(self).append("<div id='window" + id + "' name='" + i + "' style='background:#ffffff;width:100px;height:50px;border:1px solid #aaa;padding:3px;position:absolute;left:" + x + "%;top:" + y + "px;z-index:5000;-webkit-border-radius:5px;-moz-border-radius: 5px;border-radius:5px;cursor:pointer;' class='window'><a href='../index.php?action=getRecordedImage&id=" + val.img + "' style='height:100%;display:block;' rel='story'><img src='../index.php?action=getRecordedImage&id=" + val.img + "' style='position:absolute;top:0;bottom:0;margin:auto;max-width:100px;max-height:50px;' /></a></div>");
+                    $(self).append("<div id='window" + id + "' name='" + i + "' style='background:#ffffff;width:100px;height:50px;border:1px solid #aaa;padding:3px;position:absolute;left:" + x + "%;top:" + y + "px;z-index:5000;-webkit-border-radius:5px;-moz-border-radius: 5px;border-radius:5px;cursor:pointer;' class='window'><a href='../index.php?action=getRecordedImage&id=" + val.img + "' style='height:100%;display:block;' rel='story'><img src='../index.php?action=getRecordedImage&id=" + val.img + "&thumbnail' style='position:absolute;top:0;bottom:0;margin:auto;max-width:100px;max-height:50px;' /></a></div>");
                     id++;
                 }
             });
@@ -147,8 +147,7 @@
                 if(img.length > 0){
                     var desiredWidth = Math.min(getMaxWidth(img), $("#cboxLoadedContent").width()*0.2);
                     var desiredHeight = (desiredWidth*img.height())/img.width();
-                    
-                    console.log(desiredHeight);
+
                     img.removeAttr('height')
                        .css('position', 'absolute')
                        .css('left', ($("#cboxLoadedContent").width()/2 - img.width()/2) + 'px')
@@ -175,7 +174,7 @@
                        .width(currentWidth + 'px');
                     $(that).parent().append(img);
                     img.animate({'width':desiredWidth + 'px', 
-                                 top:0, 
+                                 top:0,
                                  'border-width':0, 
                                  'right':($("#cboxLoadedContent").width()/2 - desiredWidth/2) + 'px'
                                 }, 400, $.colorbox.next);
