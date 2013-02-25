@@ -28,19 +28,5 @@ class AdminVisualizations extends SpecialPage{
         $tabbedPage->addTab(new AdminMapTab());
         $tabbedPage->showPage();
     }
-    
-    function addTabs($skin, &$content_actions){
-        global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
-        $me = Person::newFromId($wgUser->getId());
-        if($me->isRole($wgTitle->getNSText()) && $me->getName() == $wgTitle->getText()){
-            $content_actions = array();
-            $content_actions[] = array('text' => $me->getNameForForms(),
-                                       'class' => 'selected',
-                                       'href' => "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}"
-                                    
-            );
-        }
-        return true;
-    }
 }
 ?>

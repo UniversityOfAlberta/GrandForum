@@ -107,6 +107,7 @@ class TabUtils {
         //Admin related eval pages
         if($wgTitle->getText() == "EvaluationTable" ||
            $wgTitle->getText() == "AcknowledgementsTable" ||
+           $wgTitle->getText() == "AdminVisualizations" ||
            $wgTitle->getText() == "Impersonate" ||
            $wgTitle->getText() == "Duplicates" ||
            $wgTitle->getText() == "EmptyEmailList" ||
@@ -136,6 +137,9 @@ class TabUtils {
                 $content_actions['ack'] = array('class' => false,
                                                 'text' => "Acknowledgements",
                                                 'href' => "$wgServer$wgScriptPath/index.php/Special:AcknowledgementsTable");
+                $content_actions['adminvis'] = array('class' => false,
+                                                'text' => "Visualizations",
+                                                'href' => "$wgServer$wgScriptPath/index.php/Special:AdminVisualizations");
                 $content_actions['dupes'] = array('class' => false,
                                                 'text' => "Duplicates",
                                                 'href' => "$wgServer$wgScriptPath/index.php/Special:Duplicates");
@@ -156,6 +160,9 @@ class TabUtils {
                                                 'href' => "$wgServer$wgScriptPath/index.php/Special:ProjectEvolution");
                 if($wgTitle->getText() == "AcknowledgementsTable"){
                     $content_actions['ack']['class'] = 'selected';
+                }
+                if($wgTitle->getText() == "AdminVisualizations"){
+                    $content_actions['adminvis']['class'] = 'selected';
                 }
                 else if($wgTitle->getText() == "Duplicates"){
                     $content_actions['dupes']['class'] = 'selected';
