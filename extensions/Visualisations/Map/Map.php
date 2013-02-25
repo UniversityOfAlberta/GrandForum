@@ -1,7 +1,5 @@
 <?php
 
-require_once("SpecialMap.php");
-
 class Map extends Visualisation {
     
     static $a = 0;
