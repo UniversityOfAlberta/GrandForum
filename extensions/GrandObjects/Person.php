@@ -1374,6 +1374,23 @@ class Person{
 	function isHQP() {
 		return $this->isRole(HQP);
 	}
+	
+	/**
+	 * Returns whether or not this person is a Student
+	 * @return boolean Returns whether or not his person is a Student
+	 */
+	function isStudent(){
+	    if($this->isHQP()){
+	        $uni = $this->getUniversity();
+	        if(strtolower($uni['position']) == 'undergraduate' ||
+	           strtolower($uni['position']) == 'masters student' ||
+	           strtolower($uni['position']) == 'phd student' ||
+	           strtolower($uni['position']) == 'postdoc'){
+	            return true;
+	        }
+	    }
+	    return false;
+	}
 
     // Returns whether this Person is of type $role or not.
     function isRole($role){

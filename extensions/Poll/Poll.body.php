@@ -173,7 +173,7 @@ class PollView {
 		$submitted = (isset($_POST['submit']) && isset($_POST['submit']) && $this->allQuestionsAnswered());
 		$wgOut->setPageTitle($this->pollCollection->name);
 		if($this->pollCollection->hasUserVoted($wgUser->getId())){
-			$wgOut->addHTML("Thankyou for your submission");
+			$wgOut->addHTML("Thank you for your submission");
 		}
 		else if($submitted){
 			$option = Option::newFromId($_POST["choice{$poll->id}"]);
@@ -193,7 +193,7 @@ class PollView {
 				<br />
 				<table class='wikitable' cellpadding='5' cellspacing='1' style='background:#CCCCCC;'>
 					<tr style='background:#EEEEEE;'>
-						<th>Aggregate</th> <th>Value</th>
+						<th>Stat</th> <th>Value</th>
 					</tr>
 					<tr style='background:#FFFFFF;'>
 						<td><b>Total Votes:</b></td><td>$totalVotes</td>
@@ -204,7 +204,7 @@ class PollView {
 					<tr style='background:#FFFFFF;'>
 						<td><b>Users who have not voted:</b></td><td>".($potentialVoters - $totalVotes));
 		if(!$this->pollCollection->isPollExpired()){
-			$wgOut->addHTML("<a href='index.php?action=viewPoll&id={$this->pollCollection->id}&email=true'>[Email]</a>");
+			//$wgOut->addHTML("<a href='index.php?action=viewPoll&id={$this->pollCollection->id}&email=true'>[Email]</a>");
 		}
 		$wgOut->addHTML("		</td>
 					</tr>
