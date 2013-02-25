@@ -6,7 +6,7 @@ $wgHooks['UnknownAction'][] = 'AdminHighChartTab::getSpecialUniversityParetoData
 class AdminHighChartTab extends AbstractTab {
 	
 	function AdminHighChartTab(){
-        parent::AbstractTab("Money");
+        parent::AbstractTab("Funding");
     }
 
     function generateBody(){
@@ -33,20 +33,37 @@ class AdminHighChartTab extends AbstractTab {
 	    $this->html .= $chart4->show();
 	    $this->html .= "<script type='text/javascript'>
             $('#adminVis').bind('tabsselect', function(event, ui) {
-                if(ui.panel.id == 'money'){
+                if(ui.panel.id == 'funding'){
                     $('div#vis{$chart1->index}').empty();
                     $('div#vis{$chart2->index}').empty();
                     $('div#vis{$chart3->index}').empty();
                     $('div#vis{$chart4->index}').empty();
                     setTimeout(function(){
-                        data{$chart1->index}.chart.width = $('#vis{$chart1->index}').width()-1;
-                        data{$chart2->index}.chart.width = $('#vis{$chart2->index}').width()-1;
-                        data{$chart3->index}.chart.width = $('#vis{$chart3->index}').width()-1;
-                        data{$chart4->index}.chart.width = $('#vis{$chart4->index}').width()-1;
-                        chart{$chart1->index} = new Highcharts.Chart(data{$chart1->index});
-                        chart{$chart2->index} = new Highcharts.Chart(data{$chart2->index});
-                        chart{$chart3->index} = new Highcharts.Chart(data{$chart3->index});
-                        chart{$chart4->index} = new Highcharts.Chart(data{$chart4->index});
+                        if(data{$chart1->index} != undefined){
+                            data{$chart1->index}.chart.width = $('#vis{$chart1->index}').width()-1;
+                        }
+                        if(data{$chart2->index} != undefined){
+                            data{$chart2->index}.chart.width = $('#vis{$chart2->index}').width()-1;
+                        }
+                        if(data{$chart3->index} != undefined){
+                            data{$chart3->index}.chart.width = $('#vis{$chart3->index}').width()-1;
+                        }
+                        if(data{$chart4->index} != undefined){
+                            data{$chart4->index}.chart.width = $('#vis{$chart4->index}').width()-1;
+                        }
+                        
+                        if(chart{$chart1->index} != undefined){
+                            chart{$chart1->index} = new Highcharts.Chart(data{$chart1->index});
+                        }
+                        if(chart{$chart2->index} != undefined){
+                            chart{$chart2->index} = new Highcharts.Chart(data{$chart2->index});
+                        }
+                        if(chart{$chart3->index} != undefined){
+                            chart{$chart3->index} = new Highcharts.Chart(data{$chart3->index});
+                        }
+                        if(chart{$chart4->index} != undefined){
+                            chart{$chart4->index} = new Highcharts.Chart(data{$chart4->index});
+                        }
                     }, 10);
                 }
             });
