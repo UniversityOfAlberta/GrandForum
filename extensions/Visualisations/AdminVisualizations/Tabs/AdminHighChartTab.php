@@ -1,51 +1,63 @@
 <?php
-$dir = dirname(__FILE__) . '/';
-$wgSpecialPages['SpecialHighChart'] = 'SpecialHighChart';
-$wgExtensionMessagesFiles['SpecialHighChart'] = $dir . 'SpecialHighChart.i18n.php';
 
-$wgHooks['UnknownAction'][] = 'SpecialHighChart::getSpecialProjectParetoData';
-$wgHooks['UnknownAction'][] = 'SpecialHighChart::getSpecialUniversityParetoData';
+$wgHooks['UnknownAction'][] = 'AdminHighChartTab::getSpecialProjectParetoData';
+$wgHooks['UnknownAction'][] = 'AdminHighChartTab::getSpecialUniversityParetoData';
 
-function runSpecialHighChart($par) {
-	SpecialHighChart::run($par);
-}
-
-class SpecialHighChart extends SpecialPage {
-
-	function __construct() {
-		wfLoadExtensionMessages('SpecialHighChart');
-		SpecialPage::SpecialPage("SpecialHighChart", MANAGER.'+', true, 'runSpecialHighChart');
-	}
+class AdminHighChartTab extends AbstractTab {
 	
-	function run(){
-	    global $wgOut, $wgServer, $wgScriptPath;
-	    $chart = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialProjectParetoData");
-	    $chart->height = "800px";
-	    $chart->width = "100%";
-	    $string = $chart->show();
+	function AdminHighChartTab(){
+        parent::AbstractTab("Money");
+    }
+
+    function generateBody(){
+	    global $wgServer, $wgScriptPath;
+	    $chart1 = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialProjectParetoData");
+	    $chart1->height = "800px";
+	    $chart1->width = "100%";
+	    $this->html .= $chart1->show();
 	    
-	    $chart = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialProjectAvgParetoData");
-	    $chart->height = "800px";
-	    $chart->width = "100%";
-	    $string .= $chart->show();
 	    
-	    $chart = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialUniversityParetoData");
-	    $chart->height = "800px";
-	    $chart->width = "100%";
-	    $string .= $chart->show();
+	    $chart2 = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialProjectAvgParetoData");
+	    $chart2->height = "800px";
+	    $chart2->width = "100%";
+	    $this->html .= $chart2->show();
 	    
-	    $chart = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialUniversityAvgParetoData");
-	    $chart->height = "800px";
-	    $chart->width = "100%";
-	    $string .= $chart->show();
+	    $chart3 = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialUniversityParetoData");
+	    $chart3->height = "800px";
+	    $chart3->width = "100%";
+	    $this->html .= $chart3->show();
 	    
-	    $wgOut->addHTML($string);
+	    $chart4 = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialUniversityAvgParetoData");
+	    $chart4->height = "800px";
+	    $chart4->width = "100%";
+	    $this->html .= $chart4->show();
+	    $this->html .= "<script type='text/javascript'>
+            $('#adminVis').bind('tabsselect', function(event, ui) {
+                if(ui.panel.id == 'money'){
+                    $('div#vis{$chart1->index}').empty();
+                    $('div#vis{$chart2->index}').empty();
+                    $('div#vis{$chart3->index}').empty();
+                    $('div#vis{$chart4->index}').empty();
+                    setTimeout(function(){
+                        data{$chart1->index}.chart.width = $('#vis{$chart1->index}').width()-1;
+                        data{$chart2->index}.chart.width = $('#vis{$chart2->index}').width()-1;
+                        data{$chart3->index}.chart.width = $('#vis{$chart3->index}').width()-1;
+                        data{$chart4->index}.chart.width = $('#vis{$chart4->index}').width()-1;
+                        chart{$chart1->index} = new Highcharts.Chart(data{$chart1->index});
+                        chart{$chart2->index} = new Highcharts.Chart(data{$chart2->index});
+                        chart{$chart3->index} = new Highcharts.Chart(data{$chart3->index});
+                        chart{$chart4->index} = new Highcharts.Chart(data{$chart4->index});
+                    }, 10);
+                }
+            });
+	    </script>";
 	}
 	
 	static function getSpecialProjectParetoData($action, $article){
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
 	    if(($action == "getSpecialProjectParetoData" || $action == "getSpecialProjectAvgParetoData") && $me->isRoleAtLeast(MANAGER)){
+	        session_write_close();
 	        $projects = Project::getAllProjectsDuring((REPORTING_YEAR-1).REPORTING_CYCLE_START_MONTH, (REPORTING_YEAR-1).REPORTING_CYCLE_END_MONTH);
 	        $pNames = array();
 	        $pBudget = array();
@@ -226,6 +238,7 @@ class SpecialHighChart extends SpecialPage {
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
 	    if(($action == "getSpecialUniversityParetoData" || $action == "getSpecialUniversityAvgParetoData") && $me->isRoleAtLeast(MANAGER)){
+	        session_write_close();
 	        $people = Person::getAllPeople();
 	        $pNames = array();
 	        $pBudget = array();
@@ -417,5 +430,6 @@ class SpecialHighChart extends SpecialPage {
         }
         return true;
 	}
+	
 }
 ?>

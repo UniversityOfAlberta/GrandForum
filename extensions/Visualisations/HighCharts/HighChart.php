@@ -1,7 +1,5 @@
 <?php
 
-require_once("SpecialHighChart.php");
-
 class HighChart extends Visualisation {
     
     static $a = 0;
@@ -26,7 +24,8 @@ class HighChart extends Visualisation {
                    </div>";
         $string .= <<<EOF
 <script type='text/javascript'>
-    
+    var chart{$this->index};
+    var data{$this->index};
     function showVis{$this->index}(){
         $.get('{$this->url}', function(data){
             $("#vis{$this->index}").empty();
@@ -40,7 +39,8 @@ class HighChart extends Visualisation {
                     60
                 ]
             };
-            var chart = new Highcharts.Chart(data);
+            data{$this->index} = data;
+            chart{$this->index} = new Highcharts.Chart(data{$this->index});
         });
     }
     showVis{$this->index}();
