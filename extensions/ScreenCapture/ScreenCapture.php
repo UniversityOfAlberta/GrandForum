@@ -13,10 +13,19 @@ class ScreenCapture {
     function addRecordScript($out){
         global $wgServer, $wgScriptPath, $wgUser, $wgImpersonating;
         $me = Person::newFromWgUser();
-        if($wgUser->isLoggedIn() && $me->isRoleAtLeast(HQP) && !$wgImpersonating){
+        if($wgUser->isLoggedIn() && 
+           //$me->isRoleAtLeast(HQP) && TODO:When this feature is good to go, uncomment this
+           ($me->isRoleAtLeast(MANAGER) || $me->getName() == "Eleni.Stroulia") &&
+           !$wgImpersonating){
             $out->addScript("<script type='text/javascript'>
                 $(document).ready(function(){
-                    $('#nav .pBody').last().append('<li><a href=\"{$wgServer}{$wgScriptPath}/index.php/Special:MyScreenCaptures\">My Screen Captures</a></li>');
+                    var browserVersion = parseFloat($.browser.fullVersion);
+                    if(($.browser.msie && browserVersion >= 9) ||
+                       ($.browser.mozilla && browserVersion >= 3.5) ||
+                       ($.browser.opera && browserVersion >= 12) ||
+                       ($.browser.webkit)){
+                        $('#nav .pBody').last().append('<li><a href=\"{$wgServer}{$wgScriptPath}/index.php/Special:MyScreenCaptures\">My Screen Captures</a></li>');
+                    }    
                     $('#bodyContent').record({
                         convertSVG: true,
                         delay: 0,
