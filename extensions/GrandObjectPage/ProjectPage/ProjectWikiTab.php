@@ -32,13 +32,14 @@ class ProjectWikiTab extends AbstractTab {
                         title.indexOf(':') !== -1 ||
                         title.indexOf('|') !== -1 ||
                         title.indexOf('.') !== -1 ||
+                        title.indexOf('?') !== -1 ||
                         title.indexOf('[') !== -1 ||
                         title.indexOf(']') !== -1 ||
                         title.indexOf('{') !== -1 ||
                         title.indexOf('}') !== -1 ||
                         title.indexOf('<') !== -1 ||
                         title.indexOf('>') !== -1){
-                    addError('The title must not contain the following characters: <b>%</b>, <b>:</b>, <b>|</b>, <b>|</b>, <b>.</b>, <b>&lt;</b>, <b>&gt;</b>, <b>[</b>, <b>]</b>, <b>{</b>, <b>}</b>');
+                    addError('The title must not contain the following characters: <b>%</b>, <b>:</b>, <b>|</b>, <b>.</b>, <b>?</b>, <b>&lt;</b>, <b>&gt;</b>, <b>[</b>, <b>]</b>, <b>{</b>, <b>}</b>');
                 }
                 else{ 
                     document.location = '$wgServer$wgScriptPath/index.php/{$project->getName()}:' + title + '?action=edit';
@@ -81,7 +82,7 @@ class ProjectWikiTab extends AbstractTab {
 			    $minute = substr($date, 10, 2);
 			    $second = substr($date, 12, 2);
 			    $editor = Person::newFromId($revision->getRawUser());
-                $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:{$page->getTitle()->getText()}'>{$page->getTitle()->getText()}</a></td>\n";
+                $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:".str_replace("'", "%27", "{$page->getTitle()->getText()}")."'>{$page->getTitle()->getText()}</a></td>\n";
                 $this->html .= "<td>{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}</td>\n";
                 $this->html .= "<td><a href='{$editor->getUrl()}'>{$editor->getReversedName()}</a></td>\n";
                 $this->html .= "</tr>\n";
