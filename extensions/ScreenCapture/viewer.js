@@ -146,7 +146,9 @@
                 var img = $(".cboxPhoto");
                 if(img.length > 0){
                     var desiredWidth = Math.min(getMaxWidth(img), $("#cboxLoadedContent").width()*0.2);
-                    var desiredHeight = img.height()*0.2;
+                    var desiredHeight = (desiredWidth*img.height())/img.width();
+                    
+                    console.log(desiredHeight);
                     img.removeAttr('height')
                        .css('position', 'absolute')
                        .css('left', ($("#cboxLoadedContent").width()/2 - img.width()/2) + 'px')
@@ -185,7 +187,8 @@
                 var img = $(".cboxPhoto");
                 if(img.length > 0){
                     var desiredWidth = Math.min(getMaxWidth(img), $("#cboxLoadedContent").width()*0.2);
-                    var desiredHeight = img.height()*0.2;
+                    var desiredHeight = (desiredWidth*img.height())/img.width();
+                    
                     img.removeAttr('height')
                        .css('position', 'absolute')
                        .css('right', ($("#cboxLoadedContent").width()/2 - img.width()/2) + 'px')
@@ -277,7 +280,6 @@
                         $(".screenThumb").mouseover(function(e){
                             $(this).parent().stop();
                             $(this).stop();
-                            console.log(getMaxWidth($(this)));
                             var desiredWidth = Math.min(getMaxWidth($(this)), $("#cboxLoadedContent table").width()*0.4);
                             $(this).css('border-color',"#888888");
                             if(desiredWidth > $(this).width()){
