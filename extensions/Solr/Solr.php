@@ -80,9 +80,9 @@ class Solr extends SpecialPage {
         <script type="text/javascript">
 
           // Write PHP arrays
-          var sqlTables = '{$sqlTables}';
-          var sqlPrimaryKeys = '{$sqlPrimaryKeys}';
-          var resultFields = '{$resultFields}';
+          var sqlTables = {$sqlTables};
+          var sqlPrimaryKeys = {$sqlPrimaryKeys};
+          var resultFields = {$resultFields};
 
           br = "<br/>\\n";
 
@@ -210,7 +210,8 @@ class Solr extends SpecialPage {
           }
 
 
-          function printResults(key, val, type) {
+          function printResults_orig(key, val, type) {
+            //console.log("Key: "+key+"; VAL: "+val+"; Type: "+type);
 	          fields = resultFields[type];
 	          output = ""; 
 
@@ -278,6 +279,73 @@ class Solr extends SpecialPage {
 	          }); 
           } // printResults
 
+          function printResults(key, val, type) {
+            fields = resultFields[type];
+            output = ""; 
+
+            $.each(fields, function(field){
+              isFound = false;
+
+              // Blob: last 5 chars are ".blob"
+              if (field.length > 5 && field.substring(0, field.length - 5) == key){
+                
+                if (key == "authors"){ 
+                  output = getAllInQuotes(val);
+                  isFound = true; 
+                }
+
+                if (key == "data"){
+                  output = getBlobWithLabels(val, type);
+                  if (output.length)
+                    isFound = true; 
+                }
+
+              } else if (key == field){
+                output = val;
+                isFound = true;
+              } 
+
+              if (isFound){
+                if (output == null || output == "")
+                  output = "n/a";
+                var label = fields[field];
+
+                if(!label.length && key == "data") // blob (see defs at top)
+                  $("#results").append(output); 
+
+                else {
+                  // SECONDARY SQL QUERY
+                  if (label.indexOf("|") > 0){
+                    var bits = label.split("|");
+                    label = bits[0].trim(); 
+                    if (output < 1){ // "output" is the foreign key
+                      output = "id " + output + ": no such record";
+
+                    } else {
+                      var table = bits[1].trim();
+                      var table_id_label = bits[2].trim(); 
+                      var id = "&id=" + table_id_label + "," + output;
+                      var table_target_field = "&fields=" + bits[3].trim();
+                      var url_sql = "{$wgServer}{$wgScriptPath}/extensions/Solr/sql.php"
+                                    + "?table=" + table + id + table_target_field;
+
+                      $.ajax({
+                        url: url_sql, 
+                        success: function(data){ 
+                          $.each($.parseJSON(data), function(key, val){ 
+                            output = val; 
+                          });
+                        }, 
+                        async: false 
+                      }); 
+                    }
+                  }
+
+                  $("#results").append(addResultRow(label, output));
+                } 
+              }
+            }); 
+          }
 
 					function walkJsonTree(key, val) {
 						if (val instanceof Object) {
@@ -296,9 +364,12 @@ class Solr extends SpecialPage {
                 // PRIMARY SQL QUERY
 							  var table = sqlTables[type];
 							  var params = getSqlParams(type, val);
-                var url_sql = "{$wgServer}{$wgScriptPath}/extensions/Solr/sql.php"
-                              + "?table=" + table + params;
+                //var url_sql = "{$wgServer}{$wgScriptPath}/extensions/Solr/sql.php"
+                //              + "?table=" + table + params;
 
+                var url_sql = "{$wgServer}{$wgScriptPath}/extensions/Solr/data_json.php"
+                              + "?type=" + type + params;
+                
 							  $.ajax({
                   url: url_sql, 
                   success: function(data){ 
