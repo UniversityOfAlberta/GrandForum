@@ -1,7 +1,7 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'AdminHighChartTab::getSpecialProjectParetoData';
-$wgHooks['UnknownAction'][] = 'AdminHighChartTab::getSpecialUniversityParetoData';
+$wgHooks['UnknownAction'][] = 'AdminHighChartTab::getAdminProjectParetoData';
+$wgHooks['UnknownAction'][] = 'AdminHighChartTab::getAdminUniversityParetoData';
 
 class AdminHighChartTab extends AbstractTab {
 	
@@ -11,23 +11,22 @@ class AdminHighChartTab extends AbstractTab {
 
     function generateBody(){
 	    global $wgServer, $wgScriptPath;
-	    $chart1 = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialProjectParetoData");
+	    $chart1 = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getAdminProjectParetoData");
 	    $chart1->height = "800px";
 	    $chart1->width = "100%";
 	    $this->html .= $chart1->show();
-	    
-	    
-	    $chart2 = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialProjectAvgParetoData");
+
+	    $chart2 = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getAdminProjectAvgParetoData");
 	    $chart2->height = "800px";
 	    $chart2->width = "100%";
 	    $this->html .= $chart2->show();
 	    
-	    $chart3 = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialUniversityParetoData");
+	    $chart3 = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getAdminUniversityParetoData");
 	    $chart3->height = "800px";
 	    $chart3->width = "100%";
 	    $this->html .= $chart3->show();
 	    
-	    $chart4 = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialUniversityAvgParetoData");
+	    $chart4 = new HighChart("{$wgServer}{$wgScriptPath}/index.php?action=getAdminUniversityAvgParetoData");
 	    $chart4->height = "800px";
 	    $chart4->width = "100%";
 	    $this->html .= $chart4->show();
@@ -70,10 +69,10 @@ class AdminHighChartTab extends AbstractTab {
 	    </script>";
 	}
 	
-	static function getSpecialProjectParetoData($action, $article){
+	static function getAdminProjectParetoData($action, $article){
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
-	    if(($action == "getSpecialProjectParetoData" || $action == "getSpecialProjectAvgParetoData") && $me->isRoleAtLeast(MANAGER)){
+	    if(($action == "getAdminProjectParetoData" || $action == "getAdminProjectAvgParetoData") && $me->isRoleAtLeast(MANAGER)){
 	        session_write_close();
 	        $projects = Project::getAllProjectsDuring((REPORTING_YEAR-1).REPORTING_CYCLE_START_MONTH, (REPORTING_YEAR-1).REPORTING_CYCLE_END_MONTH);
 	        $pNames = array();
@@ -117,7 +116,7 @@ class AdminHighChartTab extends AbstractTab {
 	            }
 	            $pBudget[$project->getName()] = $aTotal;
 	            $rBudget[$project->getName()] = $rTotal;
-	            if($action == "getSpecialProjectAvgParetoData"){
+	            if($action == "getAdminProjectAvgParetoData"){
 	                $pBudget[$project->getName()] = round($aTotal/max(1, $nAUploaded));
 	                $rBudget[$project->getName()] = round($rTotal/max(1, $nRUploaded));
 	            }
@@ -150,7 +149,7 @@ class AdminHighChartTab extends AbstractTab {
 	    
 	        $array = array();
 	        $array['chart'] = null;
-	        if($action == "getSpecialProjectParetoData"){
+	        if($action == "getAdminProjectParetoData"){
 	            $array['title'] = array('text' => "Chart of ".(REPORTING_YEAR)." Funds for GRAND Projects");
 	        }
 	        else{
@@ -166,7 +165,7 @@ class AdminHighChartTab extends AbstractTab {
 	                                                                   'fontFamily' => "Verdana, sans-serif")
 	                                                  )
 	                               );
-	        if($action == "getSpecialProjectParetoData"){
+	        if($action == "getAdminProjectParetoData"){
 	            $array['yAxis'] = array(array('title' => array('text' => "Allocated Funds ($)")),
 	                                    array('min' => 0,
 	                                          'opposite' => true,
@@ -179,7 +178,7 @@ class AdminHighChartTab extends AbstractTab {
 	                                   );
 	        }
 	        $array['legend'] = array('enabled' => true);
-	        if($action == "getSpecialProjectParetoData"){
+	        if($action == "getAdminProjectParetoData"){
 	            $array['series'] = array(array('name' => "Allocated Funds",
 	                                           'data' => $pSeries1,
 	                                           'dataLabels' => array('enabled' => true,
@@ -251,10 +250,10 @@ class AdminHighChartTab extends AbstractTab {
         return true;
 	}
 	
-	static function getSpecialUniversityParetoData($action, $article){
+	static function getAdminUniversityParetoData($action, $article){
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
-	    if(($action == "getSpecialUniversityParetoData" || $action == "getSpecialUniversityAvgParetoData") && $me->isRoleAtLeast(MANAGER)){
+	    if(($action == "getAdminUniversityParetoData" || $action == "getAdminUniversityAvgParetoData") && $me->isRoleAtLeast(MANAGER)){
 	        session_write_close();
 	        $people = Person::getAllPeople();
 	        $pNames = array();
@@ -312,7 +311,7 @@ class AdminHighChartTab extends AbstractTab {
                     @$rUniCounts[$uni]++;
                 }
 	        }
-	        if($action == "getSpecialUniversityAvgParetoData"){
+	        if($action == "getAdminUniversityAvgParetoData"){
 	            foreach($pBudget as $uni => $amount){
 	                @$pBudget[$uni] = round($amount/max(1, $pUniCounts[$uni]));
 	                @$rBudget[$uni] = round($rBudget[$uni]/max(1, $rUniCounts[$uni]));
@@ -347,7 +346,7 @@ class AdminHighChartTab extends AbstractTab {
 	    
 	        $array = array();
 	        $array['chart'] = null;
-	        if($action == "getSpecialUniversityParetoData"){
+	        if($action == "getAdminUniversityParetoData"){
 	            $array['title'] = array('text' => "Chart of ".(REPORTING_YEAR)." Funds for GRAND Universities");
 	        }
 	        else{
@@ -363,7 +362,7 @@ class AdminHighChartTab extends AbstractTab {
 	                                                                   'fontFamily' => "Verdana, sans-serif")
 	                                                  )
 	                               );
-	        if($action == "getSpecialUniversityParetoData"){
+	        if($action == "getAdminUniversityParetoData"){
 	            $array['yAxis'] = array(array('title' => array('text' => "Allocated Funds ($)")),
 	                                    array('min' => 0,
 	                                          'opposite' => true,
@@ -376,7 +375,7 @@ class AdminHighChartTab extends AbstractTab {
 	                                   );
 	        }
 	        $array['legend'] = array('enabled' => true);
-	        if($action == "getSpecialUniversityParetoData"){
+	        if($action == "getAdminUniversityParetoData"){
 	            $array['series'] = array(array('name' => "Allocated Funds",
 	                                           'data' => $pSeries1,
 	                                           'dataLabels' => array('enabled' => true,
