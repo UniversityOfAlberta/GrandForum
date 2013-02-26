@@ -67,10 +67,26 @@ class Solr extends SpecialPage {
 		wfLoadExtensionMessages('Solr');
 		SpecialPage::SpecialPage('Solr', MANAGER.'+', true, 'runSolr');
 	}
-	
+
 	function run(){
 	    global $wgUser, $wgOut, $wgServer, $wgScriptPath, 
              $sqlTables, $resultFields, $sqlPrimaryKeys;
+
+      if(isset($_GET['type'])){
+        $type = $_GET['type'];
+        $ids = explode(",",$_GET['id']); // 0:field_name  1:key
+        if($type == "product"){
+          Solr::getProducts($ids);
+        }
+        else if($type == "project"){
+          Solr::getProjects($ids);
+        }
+        else{
+          header('Content-Type: text/json');
+          print json_encode(array());
+          exit;
+        }
+      }
 
       $sqlTables = json_encode($sqlTables);
       $sqlPrimaryKeys = json_encode($sqlPrimaryKeys);
@@ -84,22 +100,15 @@ class Solr extends SpecialPage {
           var sqlPrimaryKeys = {$sqlPrimaryKeys};
           var resultFields = {$resultFields};
 
-          br = "<br/>\\n";
-
+          
           $(document).ready(function(){
 
 						$("#query").focus();
-            $('#resultsTable').dataTable({
-                "bPaginate": false,
-                "bLengthChange": false,
-                "bFilter": false,
-                /*"aaSorting": [[0,'asc']],
-                "aoColumns": [
-                    null,
-                    null,
-                    { "bSortable": false }
-                ]*/
-            });
+            // productsDT = $('#resultsTable').dataTable({
+            //     "bPaginate": false,
+            //     "bLengthChange": false,
+            //     "bFilter": false,
+            // });
           });
 
 					$("#searchForm").submit(function() {
@@ -111,13 +120,10 @@ class Solr extends SpecialPage {
             if (e.which == 13){
 							e.preventDefault();
               query = $("#query").val();
-
-              url_solr = "{$wgServer}{$wgScriptPath}/extensions/Solr/curl.php" 
-                  + "?query=(" + query + ")"
+              url_solr = "{$wgServer}{$wgScriptPath}/extensions/Solr/curl.php?query=(" + query + ")"
 
 							$.getJSON(url_solr,
 								function(data) {
-									$("#results").text("");
 									$.each(data, function(key, val) { walkJsonTree(key, val) });
 							});
 
@@ -126,7 +132,7 @@ class Solr extends SpecialPage {
             }
           });
 
-
+          
 					$("#b_search").live("click", function() {
 						var press = jQuery.Event("keypress");
 						press.which = 13;
@@ -134,258 +140,102 @@ class Solr extends SpecialPage {
             return false;
 					});
 
+          var datatable_refs = new Array();
+          datatable_refs['product'] = null;
+          datatable_refs['project'] = null;
+          datatable_refs['milestone'] = null;
 
-          function addResultHeader(label, value){
-            $("#resultsTable tbody").append("<tr><td>" + label + "</td></td>" + value + "</td></tr>");
-          }
+          function populateTable(data, type){
+            table = "";
+            count = 0;
+            $.each(data, function(row_i, row){
+              table += "<tr>";
+              $.each(row, function(col_i, col){
+                table += "<td>"+col+"</td>";
+              })
+              table += "</tr>";
+              count++;
+            });
 
- 
-          function addResultRow(label, value){
-            $("#resultsTable tbody").append(
-                   "<tr class=solr_row>" 
-                   + "<td class=solr_row_label>" + label + "</td>" 
-                   + "<td class=solr_row_value>" + value + "</td>"
-                   + "</tr> \\n");
-          }
-
-
-          function getAllInQuotes(blob){
-            output = [];
-            idx = 0;
-            while (idx < blob.length){ 
-              start = blob.indexOf('"', idx) + 1;
-              if (start == 0)
-                break;
-              end  = blob.indexOf('"', start + 1);
-              bit = blob.substring(start, end);
-              output.push(bit.replace(/\./g," "));
-              idx = end + 1;
-            } 
-            return output.join(", ");
-          }
-
-
-          function getBlobWithLabels(blob, type){
-            // Odd strings are keys, evens are vals
-            labels = [];
-            values = [];
-            idx = 0;
-            isLabel = true;
-            while (idx < blob.length){ 
-              start = blob.indexOf('"', idx) + 1;
-              if (start == 0)
-                break;
-              end  = blob.indexOf('"', start);
-              bit = blob.substring(start, end);
-//alert(blob.length+"  "+ start +" "+ end +"  "+ bit);
-              if (isLabel){
-                // Blob field label: To title case, remove underscores
-                bit = (bit.charAt(0).toUpperCase() + bit.substring(1)).replace("_"," ");
-								labels.push(bit);
-								isLabel = false;
-
-              } else {
-								values.push(bit);
-								isLabel = true;
+            if(count > 0){
+              $("#"+type+"_results").show();
+              if(datatable_refs[type] !== null){
+                datatable_refs[type].fnDestroy();
               }
-              idx = end + 1;
-            } 
-            output = [];
-            for (i = 0; i < labels.length; i++){
-              output.push(addResultRow(labels[i], values[i]));
-            } 
-            return output.join("\\n");
+              $("#"+type+"_results #"+type+"sTable tbody").html(table);
+              datatable_refs[type] = $("#"+type+"_results #"+type+"sTable").dataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": false
+              });
+            }
+            else{
+              $("#"+type+"_results").hide();
+            }
+            
           }
 
 
-					function getSqlParams(type, id){
-            prefix = "&id=" + sqlPrimaryKeys[type]+","+id + "&fields=";
-					  bits = []; 
-             
-            fields = resultFields[type];
-						for (var key in fields){
-						  bits.push(key);
-						}
-						return prefix + bits.join(",");
-          }
-
-
-          function printResults_orig(key, val, type) {
-            //console.log("Key: "+key+"; VAL: "+val+"; Type: "+type);
-	          fields = resultFields[type];
-	          output = ""; 
-
-	          $.each(fields, function(field){
-	            isFound = false;
-
-	            // Blob: last 5 chars are ".blob"
-	            if (field.length > 5 && field.substring(0, field.length - 5) == key){
-	              
-	              if (key == "authors"){ 
-                  output = getAllInQuotes(val);
-                  isFound = true; 
-                }
-
-                if (key == "data"){
-                  output = getBlobWithLabels(val, type);
-                  if (output.length)
-										isFound = true; 
-                }
-
-	            } else if (key == field){
-                output = val;
-                isFound = true;
-              } 
-
-							if (isFound){
-								if (output == null || output == "")
-									output = "n/a";
-								var label = fields[field];
-
-								if(!label.length && key == "data") // blob (see defs at top)
-									$("#results").append(output); 
-
-								else {
-									// SECONDARY SQL QUERY
-									if (label.indexOf("|") > 0){
-										var bits = label.split("|");
-										label = bits[0].trim(); 
-                    if (output < 1){ // "output" is the foreign key
-                      output = "id " + output + ": no such record";
-
-                    } else {
-											var table = bits[1].trim();
-											var table_id_label = bits[2].trim(); 
-											var id = "&id=" + table_id_label + "," + output;
-											var table_target_field = "&fields=" + bits[3].trim();
-											var url_sql = "{$wgServer}{$wgScriptPath}/extensions/Solr/sql.php"
-																		+ "?table=" + table + id + table_target_field;
-
-											$.ajax({
-												url: url_sql, 
-												success: function(data){ 
-													$.each($.parseJSON(data), function(key, val){ 
-														output = val; 
-													});
-												}, 
-												async: false 
-											}); 
-									  }
-									}
-
-									$("#results").append(addResultRow(label, output));
-								} 
-              }
-	          }); 
-          } // printResults
-
-          function printResults(key, val, type) {
-            fields = resultFields[type];
-            output = ""; 
-
-            $.each(fields, function(field){
-              isFound = false;
-
-              // Blob: last 5 chars are ".blob"
-              if (field.length > 5 && field.substring(0, field.length - 5) == key){
+          function fetchProducts(ids){
+            if(ids.length == 0){
+              return;
+            }
+            ids = ids.join(',');
+            var url_sql = "{$wgServer}{$wgScriptPath}/index.php/Special:Solr?type=product&id=" + ids;
                 
-                if (key == "authors"){ 
-                  output = getAllInQuotes(val);
-                  isFound = true; 
-                }
-
-                if (key == "data"){
-                  output = getBlobWithLabels(val, type);
-                  if (output.length)
-                    isFound = true; 
-                }
-
-              } else if (key == field){
-                output = val;
-                isFound = true;
-              } 
-
-              if (isFound){
-                if (output == null || output == "")
-                  output = "n/a";
-                var label = fields[field];
-
-                if(!label.length && key == "data") // blob (see defs at top)
-                  $("#results").append(output); 
-
-                else {
-                  // SECONDARY SQL QUERY
-                  if (label.indexOf("|") > 0){
-                    var bits = label.split("|");
-                    label = bits[0].trim(); 
-                    if (output < 1){ // "output" is the foreign key
-                      output = "id " + output + ": no such record";
-
-                    } else {
-                      var table = bits[1].trim();
-                      var table_id_label = bits[2].trim(); 
-                      var id = "&id=" + table_id_label + "," + output;
-                      var table_target_field = "&fields=" + bits[3].trim();
-                      var url_sql = "{$wgServer}{$wgScriptPath}/extensions/Solr/sql.php"
-                                    + "?table=" + table + id + table_target_field;
-
-                      $.ajax({
-                        url: url_sql, 
-                        success: function(data){ 
-                          $.each($.parseJSON(data), function(key, val){ 
-                            output = val; 
-                          });
-                        }, 
-                        async: false 
-                      }); 
-                    }
-                  }
-
-                  $("#results").append(addResultRow(label, output));
-                } 
-              }
+            $.ajax({
+              url: url_sql, 
+              success: function(data){ 
+                populateTable(data, "product");
+              }, 
+              async: false 
+            }); 
+          }
+          function fetchProjects(ids){
+            if(ids.length == 0){
+              return;
+            }
+            ids = ids.join(',');
+            var url_sql = "{$wgServer}{$wgScriptPath}/index.php/Special:Solr?type=project&id=" + ids;
+                
+            $.ajax({
+              url: url_sql, 
+              success: function(data){ 
+                populateTable(data, "project");
+              }, 
+              async: false 
             }); 
           }
 
-					function walkJsonTree(key, val) {
-						if (val instanceof Object) {
-              //$("#results").append("<b>" + key + "</b>" + br);
-							$.each(val, function(key, val) {
-									walkJsonTree(key, val)
-							});
+          function walkJsonTree(key, val) {
+            if(key == 'response' && val.numFound > 0){
+              docs = val.docs;
+              products = new Array();
+              projects = new Array();
+              milestones = new Array();
+              $.each(docs, function(ind, pair){
+                $.each(pair, function(type_id, id){
+                  if(type_id == 'product_id'){
+                    products.push(id);
+                  }
+                  else if(type_id == 'project_id'){
+                    projects.push(id);
+                  }
+                  else if(type_id == 'milestone_id'){
+                    milestones.push(id);
+                  }
+                  //console.log('TYPE='+type_id +"; ID="+id);
+                });
+              });
+              
+              fetchProducts(products);
+              //fetchProjects(projects);
+              //fetchMilestones(milestones);
+            }
 
-						} else {
-							if (key.match(/_id$/)){
-							  // Get result type
-							  type = key.split("_")[0];
+          }
 
-	              addResultHeader(type, val);
-
-                // PRIMARY SQL QUERY
-							  var table = sqlTables[type];
-							  var params = getSqlParams(type, val);
-                //var url_sql = "{$wgServer}{$wgScriptPath}/extensions/Solr/sql.php"
-                //              + "?table=" + table + params;
-
-                var url_sql = "{$wgServer}{$wgScriptPath}/extensions/Solr/data_json.php"
-                              + "?type=" + type + params;
-                
-							  $.ajax({
-                  url: url_sql, 
-                  success: function(data){ 
-                    $.each($.parseJSON(data), function(key, val){ printResults(key, val, type) });
-                  }, 
-                  async: false 
-                }); 
-
-							} else {
-                //$("#results").append(key + "  " + val + br);
-							  if (key == "numFound"){
-									//$("#resultsTable tbody").append("<tr><td>" + key + "</td><td>" + val + "</td></tr>");
-								} 
-							}
-						}
-					}
+					
 
         </script>
 EOF;
@@ -393,7 +243,6 @@ EOF;
       $wgOut->addScript($script);
 
 	    $wgOut->addHTML('
-
         <form id=searchForm>
           <input type="text" size=70 id="query" />
           <input type=button value=Search name="b_search" id="b_search" />
@@ -403,18 +252,163 @@ EOF;
 
 	    $wgOut->addHTML('
         <div id="results">
-             <table class="indexTable dataTable" cellspacing="1" cellpadding="3" frame="box" rules="all" id="resultsTable">
-             <thead>
-             <tr><td width="20%">Content Type</td><td>Excerpt</td></tr>
-             </thead>
-             <tbody>
-             <tr><td></td><td>Empty</td></tr>
-             </tbody>
-             </table>
+
+            <div id="product_results" style="display:none;">
+            <h3>Products</h3>
+            <table class="indexTable dataTable" cellspacing="1" cellpadding="3" frame="box" rules="all" id="productsTable">
+            <thead>
+            <tr>
+            <th width="20%">Date</th>
+            <th>Category/Type</th>
+            <th>Title</th>
+            <th>Authors</th>
+            <th>Projects</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr><td>Empty</td><td>Empty</td><td>Empty</td><td>Empty</td><td>Empty</td></tr>
+            </tbody>
+            </table>
+            </div>
+
+            <div id="project_results" style="display:none;">
+            <h3>Projects</h3>
+            <table class="indexTable dataTable" cellspacing="1" cellpadding="3" frame="box" rules="all" id="projectsTable">
+            <thead>
+            <tr>
+            <th>Category/Type</th>
+            <th>Title</th>
+            <th>Authors</th>
+            </tr>
+            </thead>
+            <tbody>
+            
+            </tbody>
+            </table>
+            </div>
         </div>
 			');
 
-  } // run()
+  }
+
+  static function getProducts($ids){
+    global $wgServer, $wgScriptPath;
+
+    $products = array();
+    foreach($ids as $id){
+      $product = Paper::newFromId($id);
+      
+      $date = $product->getDate();
+      $cat = $product->getCategory();
+      $type = $product->getType();
+      $cat_type = $cat ." / ". $type;
+      $title = "<a href='{$wgServer}{$wgScriptPath}/index.php/{$cat}:{$id}'>". $product->getTitle() ."</a>";
+      //$status = $product->getStatus();
+     
+      $auths = $product->getAuthors();
+      $authors = array();
+      foreach($auths as $auth){
+        $authors[] = "<a href='". $auth->getUrl() ."'>". $auth->getNameForForms() ."</a>";
+      }
+      $authors = implode(', ', $authors);
+
+      $projs = $product->getProjects();
+      $projects = array();
+      foreach($projs as $proj){
+        $projects[] = $proj->getName();
+      }
+      $projects = implode(', ', $projects);
+      //$data = $product->getData();
+
+      $products[] = array('date'=>$date, 'cat_type'=>$cat_type, 'title'=>$title, 'authors'=>$authors, 'projects'=>$projects);
+    }
+    header('Content-Type: text/json');
+    echo json_encode($products);
+    exit;
+  }
+
+  static function getProjects($ids){
+    global $wgServer, $wgScriptPath, $wgUser;
+    $me = Person::newFromId($wgUser->getId());
+
+    $projects = array();
+    foreach($ids as $id){
+      $project = Project::newFromId($id);
+      
+      $name = $project->getName();
+      $type = $project->getType();
+      $status = $project->getStatus();
+      $type = $type .'/'.$status;
+      $description = $project->getDescription();
+      //$themes = $project->getThemes();
+     
+      $title = "<a href='{$wgServer}{$wgScriptPath}/index.php/{$name}:Main'>". $name ."</a>";
+      //$status = $product->getStatus();
+     
+      // $auths = $product->getAuthors();
+      // $authors = array();
+      // foreach($auths as $auth){
+      //   $authors[] = "<a href='". $auth->getUrl() ."'>". $auth->getNameForForms() ."</a>";
+      // }
+      // $authors = implode(', ', $authors);
+
+      // $projs = $product->getProjects();
+      // $projects = array();
+      // foreach($projs as $proj){
+      //   $projects[] = $proj->getName();
+      // }
+      // $projects = implode(', ', $projects);
+      //$data = $product->getData();
+
+      $projects[] = array('title'=>$title, 'type'=>$type, 'description'=>$authors);
+    }
+    header('Content-Type: text/json');
+    echo json_encode($projects);
+    exit;
+  }
+
+  static function getMilestones($ids){
+    global $wgServer, $wgScriptPath, $wgUser;
+    $me = Person::newFromId($wgUser->getId());
+
+    $milestoned = array();
+    foreach($ids as $id){
+      $milestone = Milestone::newFromId($id);
+        
+      $project = $milestone->getProject();
+      $project_name = $project->getName();
+      $project_name = "<a href='{$wgServer}{$wgScriptPath}/index.php/{$project_name}:Main'>". $project_name ."</a>";
+
+      $title = $milestone->getTitle();
+      
+      $date = $product->getDate();
+      $cat = $product->getCategory();
+      $type = $product->getType();
+      $cat_type = $cat ." / ". $type;
+      $title = "<a href='{$wgServer}{$wgScriptPath}/index.php/{$cat}:{$id}'>". $product->getTitle() ."</a>";
+      //$status = $product->getStatus();
+     
+      $auths = $product->getAuthors();
+      $authors = array();
+      foreach($auths as $auth){
+        $authors[] = "<a href='". $auth->getUrl() ."'>". $auth->getNameForForms() ."</a>";
+      }
+      $authors = implode(', ', $authors);
+
+      $projs = $product->getProjects();
+      $projects = array();
+      foreach($projs as $proj){
+        $projects[] = $proj->getName();
+      }
+      $projects = implode(', ', $projects);
+      //$data = $product->getData();
+
+      $products[] = array('project_name'=>$project_name, 'cat_type'=>$cat_type, 'title'=>$title, 'authors'=>$authors, 'projects'=>$projects);
+    }
+    header('Content-Type: text/json');
+    echo json_encode($products);
+    exit;
+  }
 
 }
 
