@@ -13,7 +13,7 @@ class AdminMapTab extends AbstractTab {
 	    $map = new Map("{$wgServer}{$wgScriptPath}/index.php?action=getAdminMapData");
 	    $map->height = "700px";
 	    $map->width = "90%";
-	    $this->html .= "2012 Allocated Funding";
+	    $this->html .= (REPORTING_YEAR)." Allocated Funding";
 	    $this->html .= $map->show();
 	    $this->html .= "<script type='text/javascript'>
             $('#adminVis').bind('tabsselect', function(event, ui) {

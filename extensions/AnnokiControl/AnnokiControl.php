@@ -293,6 +293,11 @@ $egAnnokiExtensions['Solr']     = array( 'name' => 'Solr',
 					      'path' => "$IP/extensions/Solr/Solr.php",
 					      'enabled' => true,
 					      );
+					      
+$egAnnokiExtensions['AcademiaMap']     = array( 'name' => 'AcademiaMap',
+					      'path' => "$IP/extensions/AcademiaMap/AcademiaMap.php",
+					      'enabled' => true,
+					      );
 
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
