@@ -310,27 +310,36 @@ class ProjectVisualisationsTab extends AbstractTab {
     static function getProjectTimelineData($action, $article){
         if($action == "getProjectTimelineData" && isset($_GET['project'])){
             global $wgServer, $wgScriptPath;
-            header("Content-Type: application/xml");
+            header("Content-Type: application/json");
             $project = Project::newFromId($_GET['project']);
-            $today = date("Y/m/d");
+            $today = date("Y-m-d");
             
-            echo "<data>\n";
+            $array = array();
             foreach($project->getAllPeopleDuring(null, '0000-00-00 00:00:00', '2100-00-00 00:00:00') as $person){
-                $start = str_replace("-", "/", substr($project->getJoinDate($person), 0, 10));
-                $end = str_replace("-", "/", substr($project->getEndDate($person), 0, 10));
-                if($end == "0000/00/00"){
+                $start = substr($project->getJoinDate($person), 0, 10);
+                $end = substr($project->getEndDate($person), 0, 10);
+                if($end == "0000-00-00"){
                     $end = $today;
                 }
-                $content = "&lt;a href='{$person->getUrl()}' target='_blank'&gt;{$person->getNameForForms()}&lt;/a&gt;";
-                echo "<event start='$start' end='$end' isDuration='true' title='{$person->getNameForForms()}' color='#4272B2'>$content</event>\n";
+                $content = "<a href='{$person->getUrl()}' target='_blank'>{$person->getNameForForms()}</a>";
+                $array[] = array('title' => $person->getNameForForms(),
+                                 'color' => '#4272B2',
+                                 'start' => $start,
+                                 'end' => $end,
+                                 'durationEvent' => true,
+                                 'description' => $content);
             }
 
             foreach($project->getPapers('all', '0000-00-00 00:00:00', '2100-00-00 00:00:00') as $paper){
-                $start = str_replace("-", "/", $paper->getDate());
-                $content = "&lt;a href='{$paper->getUrl()}' target='_blank'&gt;Wiki Page&lt;/a&gt;";
-                echo "<event start='$start' end='$start' title='".str_replace("'", "&#39;", str_replace("&amp;#39;", "&#39;", str_replace("&", "&amp;", $paper->getTitle())))."' link='' icon='$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/yellow-circle.png' color='#BCB326'>$content</event>\n";
+                $start = $paper->getDate();
+                $content = "<a href='{$paper->getUrl()}' target='_blank'>Wiki Page</a>";
+                $array[] = array('title' => $paper->getTitle(),
+                                 'color' => '#BCB326',
+                                 'icon' => "$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/yellow-circle.png",
+                                 'start' => $start,
+                                 'description' => $content);
             }
-            echo "</data>";
+            echo json_encode($array);
             exit;
         }
         return true;

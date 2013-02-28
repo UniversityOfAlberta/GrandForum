@@ -4,6 +4,7 @@ require_once("Tabs/AdminChordTab.php");
 require_once("Tabs/AdminProjectFundingTab.php");
 require_once("Tabs/AdminUniversityFundingTab.php");
 require_once("Tabs/AdminMapTab.php");
+require_once("Tabs/AdminCustomTab.php");
 
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['AdminVisualizations'] = 'AdminVisualizations'; # Let MediaWiki know about the special page.
@@ -28,6 +29,7 @@ class AdminVisualizations extends SpecialPage{
         $tabbedPage->addTab(new AdminProjectFundingTab());
         $tabbedPage->addTab(new AdminUniversityFundingTab());
         $tabbedPage->addTab(new AdminMapTab());
+        $tabbedPage->addTab(new AdminCustomTab());
         $tabbedPage->showPage();
     }
 }

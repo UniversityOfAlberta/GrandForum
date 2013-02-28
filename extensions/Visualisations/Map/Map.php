@@ -27,7 +27,7 @@ class Map extends Visualisation {
 <script type='text/javascript'>
     
     function showVis{$this->index}(){
-    
+        $("#vis{$this->index}").html('Loading...');
         $.get('{$this->url}', function(data){
             $("#vis{$this->index}").empty();
             $("#vis{$this->index}").vectorMap({

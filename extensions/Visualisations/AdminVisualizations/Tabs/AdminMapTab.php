@@ -18,7 +18,7 @@ class AdminMapTab extends AbstractTab {
 	    $this->html .= "<script type='text/javascript'>
             $('#adminVis').bind('tabsselect', function(event, ui) {
                 if(ui.panel.id == 'funding-map'){
-                    $('#vis{$map->index}').empty();
+                    $('#vis{$map->index}').html('Loading...');
 	                showVis{$map->index}();
 	            }
 	        });

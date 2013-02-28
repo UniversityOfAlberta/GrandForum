@@ -6,7 +6,7 @@ class Simile extends Visualisation {
     
     static $a = 0;
     var $url = "";
-    var $year = "2011";
+    var $year = REPORTING_YEAR;
     var $width = "70";
     var $interval = "50";
     var $popupWidth = 300;
@@ -60,8 +60,11 @@ class Simile extends Visualisation {
               bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
               
               tl = Timeline.create(document.getElementById('vis{$this->index}'), bandInfos);
-              Timeline.loadXML('{$this->url}', function(xml, url){
-		            eventSource.loadXML(xml, url);
+              Timeline.loadJSON('{$this->url}', function(json, url){
+		            eventSource.loadJSON({
+			            'events' : json,
+			            'dateTimeFormat' : 'iso8601'
+		            }, url);
 	          });
             }
 

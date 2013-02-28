@@ -29,9 +29,9 @@ class AdminProjectFundingTab extends AbstractTab {
 	    $this->html .= "<script type='text/javascript'>
             $('#adminVis').bind('tabsselect', function(event, ui) {
                 if(ui.panel.id == 'project-funding'){
-                    $('div#vis{$chart1->index}').empty();
-                    $('div#vis{$chart2->index}').empty();
-                    $('div#vis{$chart3->index}').empty();
+                    $('div#vis{$chart1->index}').html('Loading...');
+                    $('div#vis{$chart2->index}').html('Loading...');
+                    $('div#vis{$chart3->index}').html('Loading...');
                     setTimeout(function(){
                         if(data{$chart1->index} != undefined){
                             data{$chart1->index}.chart.width = $('#vis{$chart1->index}').width()-1;

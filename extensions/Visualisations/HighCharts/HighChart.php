@@ -27,6 +27,7 @@ class HighChart extends Visualisation {
     var chart{$this->index};
     var data{$this->index};
     function showVis{$this->index}(){
+        $("#vis{$this->index}").html('Loading...');
         $.get('{$this->url}', function(data){
             $("#vis{$this->index}").empty();
             data.chart = {
