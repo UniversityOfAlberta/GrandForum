@@ -250,7 +250,7 @@ class PersonVisualisationsTab extends AbstractTab {
             foreach($person->getPapers('all') as $paper){
                 $start = $paper->getDate();
                 $content = "<a href='{$paper->getUrl()}' target='_blank'>Wiki Page</a>";
-                $array[] = array('title' => $paper->getTitle(),
+                $array[] = array('title' => str_replace("&#39;", "'", $paper->getTitle()),
                                  'color' => '#BCB326',
                                  'icon' => "$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/yellow-circle.png",
                                  'start' => $start,

@@ -25,7 +25,8 @@ class Simile extends Visualisation {
 
     function show(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $string = "<script type='text/javascript'>
+        $string = "<div style='height:600px;' class='simile' id='vis{$this->index}'></div>";
+        $string .= "<script type='text/javascript'>
             var tl;
             function onLoad{$this->index}() {
 	            var eventSource = new Timeline.DefaultEventSource();
@@ -86,7 +87,7 @@ class Simile extends Visualisation {
                 }
             });
         </script>";
-        $string .= "<div style='height:600px;' class='simile' id='vis{$this->index}'></div>";
+        
         return $string;
     }
 }
