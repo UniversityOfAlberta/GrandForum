@@ -29,6 +29,7 @@ class AdminMapTab extends AbstractTab {
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
 	    if($action == "getAdminMapData" && $me->isRoleAtLeast(MANAGER)){
+	        session_write_close();
 	        $uniProvMap = array('Carlton University' => 'CA-ON',
 	                            'Concordia University' => 'CA-QC',
 	                            'Dalhousie University' => 'CA-NS',

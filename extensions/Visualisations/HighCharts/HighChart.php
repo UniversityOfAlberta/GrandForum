@@ -31,13 +31,7 @@ class HighChart extends Visualisation {
             $("#vis{$this->index}").empty();
             data.chart = {
                 "renderTo": "vis{$this->index}",
-                "type": "column",
-                "margin": [
-                    50,
-                    60,
-                    200,
-                    60
-                ]
+                "type": "column"
             };
             data{$this->index} = data;
             chart{$this->index} = new Highcharts.Chart(data{$this->index});
