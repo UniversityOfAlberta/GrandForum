@@ -2,7 +2,7 @@
 
     var convertURL = '';
     var delay = 10*1000;
-    var maxSize = 5*1000*1000;
+    var chunkSize = 1*1000*1000;
     var convertSVG = false;
     var interval = null;
     var recordInterval = null;
@@ -11,16 +11,17 @@
     var selectable = false;
     var onCapture = undefined;
     var onFinishedRecord = undefined;
+    var onChunkComplete = undefined;
+    var onStartRecord = undefined;
+    var onCancelRecord = undefined;
     var story = Array();
     var target = '';
-    var oldWindowOnBeforeUnload = undefined;
-    var currentSize = 0;
     
     var recordButton;
+    var cancelButton;
     var pickButton;
     var screenshotButton;
     var timeLeft;
-    var sizeLeft;
     
     var timeTillNext = parseInt(delay/1000);
 
@@ -33,9 +34,9 @@
             var recordDiv = $("<div class='record'>");
             recordDiv.css('padding', '2px');
             recordButton = $('<button onClick="return false;" style="padding:3px 10px !important;font-size:10px !important;"><span class="recordText">Record</span> <span class="record" style="font-size:12px;">●</span></button>');
+            cancelButton = $('<button onClick="return false;" style="padding:3px 10px !important;font-size:10px !important;">Cancel</button>');
             pickButton = $('<button onClick="return false;" style="padding:3px 10px !important;font-size:10px !important;">Select Element</button>');
             screenshotButton = $('<button style="padding:3px 10px !important;font-size:10px !important;" onClick="return false;">Capture (Shift+c)</button>');
-            sizeLeft = $('<span style="margin-left:20px;font-size:10px;"></span><br />');
             timeLeft = $('<span style="margin-left:20px;font-size:10px;"></span>');
             
             $(window).keydown(function(e){
@@ -54,15 +55,14 @@
                 else{
                     screenshotButton.hide();
                     pickButton.hide();
-                    sizeLeft.hide();
                     timeLeft.hide();
+                    cancelButton.hide();
                     methods['stop'].apply(that);
                     if(onFinishedRecord != undefined){
-                        onFinishedRecord(story.slice(0));
+                        onFinishedRecord(story);
                     }
+                    localStorage.removeItem('recordedStory');
                     story = Array();
-                    window.onbeforeunload = oldWindowOnBeforeUnload;
-                    oldWindowOnBeforeUnload = undefined;
                 }
             });
             pickButton.click(function(e){
@@ -71,16 +71,28 @@
             screenshotButton.click(function(){
                 methods['takeScreenshot'].apply(that);
             });
+            cancelButton.click(function(){
+                screenshotButton.hide();
+                pickButton.hide();
+                timeLeft.hide();
+                cancelButton.hide();
+                methods['stop'].apply(that);
+                if(onCancelRecord != undefined){
+                    onCancelRecord(story);
+                }
+                localStorage.removeItem('recordedStory');
+                story = Array();
+            });
             
             pickButton.hide();
             screenshotButton.hide();
-            sizeLeft.hide();
             timeLeft.hide();
+            cancelButton.hide();
             
             recordButton.appendTo(recordDiv);
             pickButton.appendTo(recordDiv);
+            cancelButton.appendTo(recordDiv);
             screenshotButton.appendTo(recordDiv);
-            sizeLeft.appendTo(recordDiv);
             timeLeft.appendTo(recordDiv);
             
             recordDiv.appendTo($(el));
@@ -108,22 +120,22 @@
                         }));
                     });
                     $.when.apply(null, deferreds).done(function(){
-                        methods['html2canvas'].apply(this, function(canvas){
+                        methods['html2canvas'].apply(that, Array(function(canvas){
                             converted.forEach(function(c, cId){
                                 $("#img" + cId).replaceWith(c);
                             });
                             if(onCapture != undefined){
                                 onCapture(canvas);
                             }
-                        });
+                        }));
                     });
                 }
                 else{
-                    methods['html2canvas'].apply(this, function(canvas){
+                    methods['html2canvas'].apply(that, Array(function(canvas){
                         if(onCapture != undefined){
                             onCapture(canvas);
                         }
-                    });
+                    }));
                 }
                 if(delay > 0){
                     interval = setInterval(function(){methods['takeScreenshot'].apply(that);}, delay);
@@ -155,27 +167,13 @@
             }
         },
         /**
-         * Shows the current size of the recording
-         */
-        showSize : function(over){
-            var that = this;
-            if(parseFloat(currentSize) <= maxSize && over == false){
-                sizeLeft.html(currentSize + '/' + Math.round(maxSize/1000/1000) + 'MB');
-                sizeLeft.css('color', '');
-            }
-            else{
-                sizeLeft.html(currentSize + '/' + Math.round(maxSize/1000/1000) + 'MB<br />The last screenshot exceeded the size limit.  Please stop recording to start a new session.');
-                sizeLeft.css('color', '#FF0000');
-            }
-        },
-        /**
          * Runs after the dom is selected, sets up some of the intervals and listeners
          */
         afterStart : function(dom){
             var that = this;
-            sizeLeft.show();
             timeLeft.show();
             screenshotButton.show();
+            cancelButton.show();
             screenshotButton.css('display', 'inline-block');
             if(selectable){
                 pickButton.show();
@@ -190,12 +188,8 @@
             else{
                 interval = 0;
             }
-            methods['showSize'].apply(that, Array(false));
             recordInterval = setInterval(function(){methods['recordBlink'].apply(that);}, 1000);
-            if(typeof oldWindowOnBeforeUnload == 'undefined'){
-                oldWindowOnBeforeUnload = window.onbeforeunload;
-                window.onbeforeunload = function(){ return "You are currently recording a screen capture session.  Leaving this page will cause the session to be lost.  To save the session, press the 'Stop' button."};
-            }
+
             var mX = 0;
             var mY = 0;
             $(target).mousemove(function(e){
@@ -208,23 +202,23 @@
                             y: e.pageY - $(target).position().top,
                             date: new Date().toJSON()
                            };
+                story.push(data);
+                methods['store'].apply(that);
             });
+            
+            var i = 0;
             mouseInterval = setInterval(function(){
                 var data = {event: 'mousemove',
                             x: mX,
                             y: mY,
                             date: new Date().toJSON()
                            };
-                var size = JSON.stringify(story).length;
-                var sizeAfter = size + JSON.stringify(data).length;
-                if(sizeAfter <= maxSize){
-                    story.push(data);
-                    currentSize = (sizeAfter/1000/1000).toFixed(2);
+                story.push(data);
+                if(i % 10 == 0){ // Only store every second.
+                    methods['store'].apply(that);
+                    i=0;
                 }
-                else{
-                    currentSize = (size/1000/1000).toFixed(2);
-                    methods['showSize'].apply(that, Array(true));
-                }
+                i++;
             }, 100);
         },
         /**
@@ -232,14 +226,21 @@
          */
         start : function(){
             var that = this;
-            currentSize = 0;
-            story = Array();
+            if(localStorage.getItem('recordedStory') != null){
+                story = JSON.parse(localStorage.getItem('recordedStory'));
+            }
+            else{
+                story = Array();
+            }
             if(selectable){
                 var outline = DomOutline({onClick: function(){methods['afterStart'].apply(that);}});
                 outline.start();
             }
             else{
-                methods['afterStart'].apply(this, Array($(that)));
+                methods['afterStart'].apply(that, Array($(that)));
+            }
+            if(onStartRecord != undefined){
+                onStartRecord();
             }
         },
         /**
@@ -248,7 +249,6 @@
         stop : function(){
             var that = this;
             timeLeft.empty();
-            sizeLeft.empty();
             if(delay > 0){
                 clearInterval(interval);
             }
@@ -279,24 +279,28 @@
                                     'descriptions': Array(),
                                     'transition': ''
                                    };
-                        var size = JSON.stringify(story).length;
-                        var sizeAfter = size + JSON.stringify(data).length;
-                        
-                        if(sizeAfter <= maxSize){
-                            story.push(data);
-                            currentSize = (sizeAfter/1000/1000).toFixed(2);
-                            methods['showSize'].apply(that, Array(false));
-                        }
-                        else{
-                            currentSize = (size/1000/1000).toFixed(2);
-                            methods['showSize'].apply(that, Array(false));
-                        }
+                        story.push(data);
+                        methods['store'].apply(that);
                     }
                     if(callback != undefined){
                         callback(canvas);
                     }
                 }
             });
+        },
+        /**
+         * Updates the localStorage, or uploads to the server is the size exceeds the chunkSize
+         */
+        store : function(){
+            var storyString = JSON.stringify(story);
+            localStorage.setItem('recordedStory', storyString);
+            if(storyString.length > chunkSize){
+                if(onChunkComplete != undefined){
+                    onChunkComplete(story.slice(0));
+                    story = Array();
+                    localStorage.removeItem('recordedStory');
+                }
+            }
         }
     };
 
@@ -315,14 +319,23 @@
         if(options.delay != undefined){
             delay = options.delay;
         }
-        if(options.maxSize != undefined){
-            maxSize = options.maxSize;
+        if(options.chunkSize != undefined){
+            chunkSize = options.chunkSize;
         }
         if(options.onCapture != undefined){
             onCapture = options.onCapture;
         }
         if(options.onFinishedRecord != undefined){
             onFinishedRecord = options.onFinishedRecord;
+        }
+        if(options.onChunkComplete != undefined){
+            onChunkComplete = options.onChunkComplete;
+        }
+        if(options.onStartRecord != undefined){
+            onStartRecord = options.onStartRecord;
+        }
+        if(options.onCancelRecord != undefined){
+            onCancelRecord = options.onCancelRecord;
         }
         if(options.selectable != undefined){
             selectable = options.selectable;
@@ -334,7 +347,18 @@
             el = $(this).parent();
         }
         
-        methods['init'].apply(this);
+        if(options == 'start'){
+            methods[options].apply(this);
+        }
+        else if(options == 'stop'){
+            methods[options].apply(this);
+        }
+        else if(options == 'takeScreenshot'){
+            methods[options].apply(this);
+        }
+        else{
+            methods['init'].apply(this);
+        }
         
     };
 })( jQuery );

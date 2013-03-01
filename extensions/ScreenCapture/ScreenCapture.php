@@ -30,27 +30,53 @@ class ScreenCapture {
                         convertSVG: true,
                         delay: 0,
                         el: '#nav',
-                        maxSize: 5*1000*1000,
-                        onFinishedRecord: function(story){
-                            $.post('{$wgServer}{$wgScriptPath}/index.php?action=api.addRecordStory', {\"story\": story}, function(response){
+                        chunkSize: 0.5*1000*1000,
+                        onStartRecord: function(){
+                            if($.cookie('storyToken') == undefined){
+                                var storyToken = $.md5(new Date() + Math.random());
+                                $.cookie('storyToken', storyToken, {expires: 1});
+                            }
+                        },
+                        onChunkComplete: function(story){
+                            $.post('{$wgServer}{$wgScriptPath}/index.php?action=api.addRecordStory', {'story': story, 'storyToken': $.cookie('storyToken')}, function(response){
                                 clearSuccess();
                                 clearError();
-                                if(response.errors.length == 0){
-                                    // No Errors
-                                    response.messages.forEach(function(val, index){
-                                        addSuccess(val);
-                                    });
-                                }
-                                else{
-                                    // User
+                                if(response.errors.length > 0){
                                     response.errors.forEach(function(val, index){
                                         addError(val);
                                     });
                                 }
                             });
                         },
+                        onFinishedRecord: function(story){
+                            $.post('{$wgServer}{$wgScriptPath}/index.php?action=api.addRecordStory', {'story': story, 'storyToken': $.cookie('storyToken')}, function(response){
+                                clearSuccess();
+                                clearError();
+                                if(response.errors.length == 0){
+                                    response.messages.forEach(function(val, index){
+                                        addSuccess(val);
+                                    });
+                                }
+                                else{
+                                    response.errors.forEach(function(val, index){
+                                        addError(val);
+                                    });
+                                }
+                            });
+                            $.removeCookie('storyToken');
+                        },
+                        onCancelRecord: function(story){
+                            $.post('{$wgServer}{$wgScriptPath}/index.php?action=api.addRecordStory', {'story': story, 'storyToken': $.cookie('storyToken'), 'delete':true}, function(response){
+                                clearSuccess();
+                                clearError();
+                            });
+                            $.removeCookie('storyToken');
+                        },
                         convertURL: '{$wgServer}{$wgScriptPath}/convertSvg.php'
                     });
+                    if($.cookie('storyToken') != undefined){
+                        $('#bodyContent').record('start');
+                    }
                 });
             </script>");
         }

@@ -14,6 +14,8 @@ class RecordStoryAPI extends API{
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
 	    $story = json_decode($_POST['story']);
+	    $storyToken = mysql_real_escape_string($_POST['storyToken']);
+	    $delete = isset($_POST['delete']);
 	    DBFunctions::begin();
 	    $stat = true;
 	    foreach($story as $screenshot){
@@ -27,17 +29,70 @@ class RecordStoryAPI extends API{
 	            $img = mysql_real_escape_string($screenshot->img);
 	            $md5 = md5(json_encode($screenshot));
 	            $screenshot->img = $md5;
-	            $sql = "INSERT INTO `grand_recorded_images`
-	                    (`id`,`image`,`person`) VALUES
-	                    ('$md5','$img','{$me->getId()}')";
-	            $stat = ($stat && DBFunctions::execSQL($sql, true));
+	            if(!$delete){
+	                $sql = "INSERT INTO `grand_recorded_images`
+	                        (`id`,`image`,`person`) VALUES
+	                        ('$md5','$img','{$me->getId()}')";
+	                $stat = ($stat && DBFunctions::execSQL($sql, true));
+	            }
 	        }
 	    }
-	    $story = mysql_real_escape_string(json_encode($story));
-	    $sql = "INSERT INTO `grand_recordings`
-	            (`person`, `story`) VALUES
-	            ('{$me->getId()}','{$story}')";
-	    $stat = ($stat && DBFunctions::execSQL($sql, true));
+	    
+	    $sql = "SELECT * 
+	            FROM `grand_recordings`
+	            WHERE `storyToken` = '$storyToken'
+	            LIMIT 1";
+	    $data = DBFunctions::execSQL($sql);
+        
+	    if(count($data) > 0){
+	        $row = $data[0];
+	        $oldStory = json_decode($row['story']);
+	        if($delete){
+	            foreach($oldStory as $screenshot){
+	                if($screenshot->event == 'screen'){
+	                    $sql = "DELETE 
+	                            FROM `grand_recorded_images`
+	                            WHERE `id` = '{$screenshot->img}'";
+	                    $stat = ($stat && DBFunctions::execSQL($sql, true));
+	                }
+	            }
+	            $sql = "DELETE 
+                        FROM `grand_recordings`
+                        WHERE `storyToken` = '{$storyToken}'";
+	            $stat = ($stat && DBFunctions::execSQL($sql, true));
+	            if(!$stat){
+	                $this->addError("There was an error deleting the Recording");
+	                DBFunctions::rollback();
+	            }
+	            else{
+	                DBFunctions::commit();
+	                $this->addMessage("The story was successfully deleted");
+	            }
+	            return $stat;
+	        }
+	        else{
+	            foreach($story as $screenshot){
+	                $oldStory[] = $screenshot;
+	            }
+	        }
+	        $newStory = mysql_real_escape_string(json_encode($oldStory));
+	        $sql = "UPDATE `grand_recordings`
+	                SET `story` = '$newStory'
+	                WHERE `storyToken` = '$storyToken'
+	                LIMIT 1";
+	        $stat = ($stat && DBFunctions::execSQL($sql, true));
+	    }
+	    else{
+	        if($delete){
+                $this->addMessage("The story was successfully deleted");
+                return true;
+            }
+	        $story = mysql_real_escape_string(json_encode($story));
+	        $sql = "INSERT INTO `grand_recordings`
+	                (`storyToken`, `person`, `story`) VALUES
+	                ('{$storyToken}', '{$me->getId()}','{$story}')";
+	        $stat = ($stat && DBFunctions::execSQL($sql, true));
+	    }
 	    if(!$stat){
 	        $this->addError("There was an error adding the Recording");
 	        DBFunctions::rollback();
