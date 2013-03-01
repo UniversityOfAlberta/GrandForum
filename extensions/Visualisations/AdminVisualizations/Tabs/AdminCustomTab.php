@@ -15,7 +15,8 @@ class AdminCustomTab extends AbstractTab {
 	        $.post('$wgServer$wgScriptPath/index.php?action=showVisualization', {data: [{name: 'Eleni Stroulia',
 	                                                                                     visualizations:[{name: 'Timeline', url:'getTimelineData&person=3'},
 	                                                                                                     {name: 'Productivity', url:'getDoughnutData&person=3'},
-	                                                                                                     {name: 'Survey Graph', url:'getSurveyData&person=3&degree=1'}
+	                                                                                                     {name: 'Survey Graph', url:'getSurveyData&person=3&degree=1'},
+	                                                                                                     {name: 'Tag Cloud', url:'getProjectGraphData&project=172'}
 	                                                                                                    ]
 	                                                                                    }
 	                                                                                   ]
@@ -54,6 +55,14 @@ class AdminCustomTab extends AbstractTab {
 	                    $vis = new ForceDirectedGraph($visUrl);
 	                    echo "<script src='$wgServer$wgScriptPath/extensions/Visualisations/ForceDirectedGraph/fdg.js' type='text/javascript' charset='utf-8'></script>";
 	                    echo $vis->show();
+	                }
+	                else if($visName == 'Tag Cloud'){
+	                    $vis = new Wordle($visUrl);
+                        $vis->width = 640;
+                        $vis->height = 480;
+                        echo "<script src='$wgServer$wgScriptPath/extensions/Visualisations/Wordle/js/d3.layout.cloud.js' type='text/javascript' charset='utf-8'></script>";
+                        echo $vis->show();
+                        echo "<script type='text/javascript'>onLoad{$vis->index}();</script>";
 	                }
 	            }
 	        }

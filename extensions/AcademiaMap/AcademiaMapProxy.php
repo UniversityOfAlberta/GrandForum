@@ -68,6 +68,8 @@ class AcademiaMapProxy {
                     'AcademiaMapProxy::prepend_proxy',
                     $contents
                 );
+                $contents = str_replace("window.location='.'", "window.location.reload()", $contents);
+                
                 $contents = str_replace("background-image:url('images/", "background-image:url('".$wgServer.$wgScriptPath."/index.php?action=academiaMapProxy&url=".urlencode("http://academiamap.com/images/"), $contents);
                 
                 $contents = str_replace("</head>", "<script type='text/javascript'>

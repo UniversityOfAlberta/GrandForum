@@ -29,7 +29,7 @@ class AdminVisualizations extends SpecialPage{
         $tabbedPage->addTab(new AdminProjectFundingTab());
         $tabbedPage->addTab(new AdminUniversityFundingTab());
         $tabbedPage->addTab(new AdminMapTab());
-        $tabbedPage->addTab(new AdminCustomTab());
+        //$tabbedPage->addTab(new AdminCustomTab());
         $tabbedPage->showPage();
     }
 }

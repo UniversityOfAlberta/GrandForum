@@ -146,7 +146,7 @@ class ProjectVisualisationsTab extends AbstractTab {
             $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectWordleData&project={$project->getId()}";
             $wordle = new Wordle($dataUrl);
             $wordle->width = 640;
-            $world->height = 480;
+            $wordle->height = 480;
             $wgOut->addScript("<script type='text/javascript'>
                                     $(document).ready(function(){
                                         var nTimesLoadedWordle = 0;
