@@ -175,13 +175,14 @@
             screenshotButton.show();
             cancelButton.show();
             screenshotButton.css('display', 'inline-block');
+            cancelButton.css('display', 'inline-block');
             if(selectable){
                 pickButton.show();
                 pickButton.css('display', 'inline-block');
             }
             target = dom;
             methods['stop'].apply(that);
-            $("span.recordText", $(that).parent()).html('Stop');
+            $("span.recordText", $(that).parent()).html('Save');
             if(delay > 0){
                 interval = setInterval(function(){methods['takeScreenshot'].apply(that);}, delay);
             }
