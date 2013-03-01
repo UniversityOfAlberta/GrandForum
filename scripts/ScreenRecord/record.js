@@ -1,64 +1,35 @@
 (function( $ ){
 
-    $.fn.record = function(options) {
-        var browserVersion = parseFloat($.browser.fullVersion);
-        if(($.browser.msie && browserVersion < 9) ||
-           ($.browser.mozilla && browserVersion < 3.5) ||
-           ($.browser.opera && browserVersion < 12)){
-            return;
-        }
-        var that = this;
-        var convertURL = '';
-        var delay = 10*1000;
-        var maxSize = 5*1000*1000;
-        var convertSVG = false;
-        var interval = null;
-        var recordInterval = null;
-        var mouseInterval = null;
-        var el;
-        var selectable = false;
-        var onCapture = undefined;
-        var onFinishedRecord = undefined;
-        var story = Array();
-        var target = '';
-        var oldWindowOnBeforeUnload = undefined;
-        var currentSize = 0;
-        
-        var recordButton;
-        var pickButton;
-        var screenshotButton;
-        var timeLeft;
-        var sizeLeft;
-        
-        if(options.convertSVG == true && options.convertURL != undefined){
-            convertURL = options.convertURL;
-            convertSVG = true;
-        }
-        if(options.delay != undefined){
-            delay = options.delay;
-        }
-        if(options.maxSize != undefined){
-            maxSize = options.maxSize;
-        }
-        if(options.onCapture != undefined){
-            onCapture = options.onCapture;
-        }
-        if(options.onFinishedRecord != undefined){
-            onFinishedRecord = options.onFinishedRecord;
-        }
-        if(options.selectable != undefined){
-            selectable = options.selectable;
-        }
-        if(options.el != undefined){
-            el = $(options.el);
-        }
-        else{
-            el = $(this).parent();
-        }
-        
-        var timeTillNext = parseInt(delay/1000);
+    var convertURL = '';
+    var delay = 10*1000;
+    var maxSize = 5*1000*1000;
+    var convertSVG = false;
+    var interval = null;
+    var recordInterval = null;
+    var mouseInterval = null;
+    var el;
+    var selectable = false;
+    var onCapture = undefined;
+    var onFinishedRecord = undefined;
+    var story = Array();
+    var target = '';
+    var oldWindowOnBeforeUnload = undefined;
+    var currentSize = 0;
     
-        this.init = function(){
+    var recordButton;
+    var pickButton;
+    var screenshotButton;
+    var timeLeft;
+    var sizeLeft;
+    
+    var timeTillNext = parseInt(delay/1000);
+
+    var methods = {
+        /**
+         * Initializes the recording, to make all the buttons etc.
+         */
+        init : function() {
+            var that = this;
             var recordDiv = $("<div class='record'>");
             recordDiv.css('padding', '2px');
             recordButton = $('<button onClick="return false;" style="padding:3px 10px !important;font-size:10px !important;"><span class="recordText">Record</span> <span class="record" style="font-size:12px;">●</span></button>');
@@ -72,12 +43,12 @@
                                                     e.target.nodeName.toLowerCase() != 'textarea' &&
                                                     e.target.nodeName.toLowerCase() != 'select' &&
                                                     e.target.nodeName.toLowerCase() != 'option'){ // Alt + c
-                    that.takeScreenshot();
+                    methods['takeScreenshot'].apply(that);
                 }
             });
             recordButton.click(function(e){
                 if(interval == null){
-                    that.start();
+                    methods['start'].apply(that);
                     e.stopPropagation();
                 }
                 else{
@@ -85,7 +56,7 @@
                     pickButton.hide();
                     sizeLeft.hide();
                     timeLeft.hide();
-                    that.stop();
+                    methods['stop'].apply(that);
                     if(onFinishedRecord != undefined){
                         onFinishedRecord(story.slice(0));
                     }
@@ -95,10 +66,10 @@
                 }
             });
             pickButton.click(function(e){
-                that.start();
+                methods['start'].apply(that);
             });
             screenshotButton.click(function(){
-                that.takeScreenshot();
+                methods['takeScreenshot'].apply(that);
             });
             
             pickButton.hide();
@@ -113,9 +84,12 @@
             timeLeft.appendTo(recordDiv);
             
             recordDiv.appendTo($(el));
-        }
-        
-        this.takeScreenshot = function(){
+        },
+        /**
+         * Takes a screenshot of the selected element
+         */
+        takeScreenshot : function(){
+            var that = this;
             if(interval != null){
                 if(delay > 0){
                     clearInterval(interval);
@@ -134,7 +108,7 @@
                         }));
                     });
                     $.when.apply(null, deferreds).done(function(){
-                        that.html2canvas(function(canvas){
+                        methods['html2canvas'].apply(this, function(canvas){
                             converted.forEach(function(c, cId){
                                 $("#img" + cId).replaceWith(c);
                             });
@@ -145,24 +119,27 @@
                     });
                 }
                 else{
-                    that.html2canvas(function(canvas){
+                    methods['html2canvas'].apply(this, function(canvas){
                         if(onCapture != undefined){
                             onCapture(canvas);
                         }
                     });
                 }
                 if(delay > 0){
-                    interval = setInterval(that.takeScreenshot, delay);
+                    interval = setInterval(function(){methods['takeScreenshot'].apply(that);}, delay);
                     timeTillNext = parseInt(delay/1000);
                 }
                 else{
                     interval = 0;
                 }
-                recordInterval = setInterval(that.recordBlink, 1000);
+                recordInterval = setInterval(function(){methods['recordBlink'].apply(that);}, 1000);
             }
-        }
-        
-        this.recordBlink = function(){
+        },
+        /**
+         * Changes the 'record' button so that the circle blinks.
+         */
+        recordBlink : function(){
+            var that = this;
             if($("span.record", $(that).parent()).css('color') == "rgb(255, 0, 0)"){
                 $("span.record", $(that).parent()).css('color', '');
             }
@@ -176,9 +153,12 @@
             else{
                 timeLeft.empty();
             }
-        }
-        
-        this.showSize = function(over){
+        },
+        /**
+         * Shows the current size of the recording
+         */
+        showSize : function(over){
+            var that = this;
             if(parseFloat(currentSize) <= maxSize && over == false){
                 sizeLeft.html(currentSize + '/' + Math.round(maxSize/1000/1000) + 'MB');
                 sizeLeft.css('color', '');
@@ -187,9 +167,12 @@
                 sizeLeft.html(currentSize + '/' + Math.round(maxSize/1000/1000) + 'MB<br />The last screenshot exceeded the size limit.  Please stop recording to start a new session.');
                 sizeLeft.css('color', '#FF0000');
             }
-        }
-        
-        this.afterStart = function(dom){
+        },
+        /**
+         * Runs after the dom is selected, sets up some of the intervals and listeners
+         */
+        afterStart : function(dom){
+            var that = this;
             sizeLeft.show();
             timeLeft.show();
             screenshotButton.show();
@@ -199,16 +182,16 @@
                 pickButton.css('display', 'inline-block');
             }
             target = dom;
-            that.stop();
+            methods['stop'].apply(that);
             $("span.recordText", $(that).parent()).html('Stop');
             if(delay > 0){
-                interval = setInterval(that.takeScreenshot, delay);
+                interval = setInterval(function(){methods['takeScreenshot'].apply(that);}, delay);
             }
             else{
                 interval = 0;
             }
-            that.showSize(false);
-            recordInterval = setInterval(that.recordBlink, 1000);
+            methods['showSize'].apply(that, Array(false));
+            recordInterval = setInterval(function(){methods['recordBlink'].apply(that);}, 1000);
             if(typeof oldWindowOnBeforeUnload == 'undefined'){
                 oldWindowOnBeforeUnload = window.onbeforeunload;
                 window.onbeforeunload = function(){ return "You are currently recording a screen capture session.  Leaving this page will cause the session to be lost.  To save the session, press the 'Stop' button."};
@@ -240,24 +223,30 @@
                 }
                 else{
                     currentSize = (size/1000/1000).toFixed(2);
-                    that.showSize(true);
+                    methods['showSize'].apply(that, Array(true));
                 }
             }, 100);
-        }
-    
-        this.start = function(){
+        },
+        /**
+         * If applicable, starts the dom selection process, then calls the afterStart method
+         */
+        start : function(){
+            var that = this;
             currentSize = 0;
             story = Array();
             if(selectable){
-                var outline = DomOutline({onClick: that.afterStart});
+                var outline = DomOutline({onClick: function(){methods['afterStart'].apply(that);}});
                 outline.start();
             }
             else{
-                that.afterStart($(that));
+                methods['afterStart'].apply(this, Array($(that)));
             }
-        }
-        
-        this.stop = function(){
+        },
+        /**
+         * Stops the recording
+         */
+        stop : function(){
+            var that = this;
             timeLeft.empty();
             sizeLeft.empty();
             if(delay > 0){
@@ -272,9 +261,12 @@
             $(target).unbind('mousemove');
             $("span.record", $(that).parent()).css('color', '');
             $("span.recordText", $(that).parent()).html('Record');
-        }
-        
-        this.html2canvas = function(callback){
+        },
+        /**
+         * Calls the html2canvas library.  Converts any svg if there are any
+         */
+        html2canvas : function(callback){
+            var that = this;
             html2canvas(target, {
                 onrendered: function(canvas) {
                     var img = canvas.toDataURL().replace('data:image/png;base64,', '');
@@ -293,11 +285,11 @@
                         if(sizeAfter <= maxSize){
                             story.push(data);
                             currentSize = (sizeAfter/1000/1000).toFixed(2);
-                            that.showSize(false);
+                            methods['showSize'].apply(that, Array(false));
                         }
                         else{
                             currentSize = (size/1000/1000).toFixed(2);
-                            that.showSize(true);
+                            methods['showSize'].apply(that, Array(false));
                         }
                     }
                     if(callback != undefined){
@@ -306,13 +298,43 @@
                 }
             });
         }
-        
-        if(options == 'start'){
-            this.start();
-        }
-        else{
-            this.init();
-        }
     };
 
+    $.fn.record = function(options) {
+        var browserVersion = parseFloat($.browser.fullVersion);
+        if(($.browser.msie && browserVersion < 9) ||
+           ($.browser.mozilla && browserVersion < 3.5) ||
+           ($.browser.opera && browserVersion < 12)){
+            return;
+        }
+        
+        if(options.convertSVG == true && options.convertURL != undefined){
+            convertURL = options.convertURL;
+            convertSVG = true;
+        }
+        if(options.delay != undefined){
+            delay = options.delay;
+        }
+        if(options.maxSize != undefined){
+            maxSize = options.maxSize;
+        }
+        if(options.onCapture != undefined){
+            onCapture = options.onCapture;
+        }
+        if(options.onFinishedRecord != undefined){
+            onFinishedRecord = options.onFinishedRecord;
+        }
+        if(options.selectable != undefined){
+            selectable = options.selectable;
+        }
+        if(options.el != undefined){
+            el = $(options.el);
+        }
+        else{
+            el = $(this).parent();
+        }
+        
+        methods['init'].apply(this);
+        
+    };
 })( jQuery );
