@@ -195,50 +195,68 @@ class PersonVisualisationsTab extends AbstractTab {
     static function getTimelineData($action, $article){
         if($action == "getTimelineData" && isset($_GET['person'])){
             global $wgServer, $wgScriptPath;
-            header("Content-Type: application/xml");
+            header("Content-Type: application/json");
             $person = Person::newFromId($_GET['person']);
-            $today = date("Y/m/d");
+            $today = date("Y-m-d");
             
-            echo "<data>\n";
+            $array = array();
             foreach($person->getRoles(true) as $role){
-                $start = str_replace("-", "/", substr($role->getStartDate(), 0, 10));
-                $end = str_replace("-", "/", substr($role->getEndDate(), 0, 10));
-                if($end == "0000/00/00"){
+                $start = substr($role->getStartDate(), 0, 10);
+                $end = substr($role->getEndDate(), 0, 10);
+                if($end == "0000-00-00"){
                     $end = $today;
                 }
-                echo "<event start='$start' end='$end' isDuration='true' title='{$role->getRole()}' color='#4E9B05'></event>\n";
+                $array[] = array('title' => $role->getRole(),
+                                 'color' => '#4E9B05',
+                                 'start' => $start,
+                                 'end' => $end,
+                                 'durationEvent' => true);
             }
        
             foreach($person->getProjects(true) as $project){
-                $start = str_replace("-", "/", substr($project->getJoinDate($person), 0, 10));
-                $end = str_replace("-", "/", substr($project->getEndDate($person), 0, 10));
-                if($end == "0000/00/00"){
+                $start = substr($project->getJoinDate($person), 0, 10);
+                $end = substr($project->getEndDate($person), 0, 10);
+                if($end == "0000-00-00"){
                     $end = $today;
                 }
-                $content = "&lt;a href='{$project->getUrl()}' target='_blank'&gt;Wiki Page&lt;/a&gt;";
-                echo "<event start='$start' end='$end' isDuration='true' title='{$project->getName()}' color='#E41B05'>$content</event>\n";
+                $content = "<a href='{$project->getUrl()}' target='_blank'>Wiki Page</a>";
+                $array[] = array('title' => $project->getName(),
+                                 'color' => '#E41B05',
+                                 'start' => $start,
+                                 'end' => $end,
+                                 'durationEvent' => true,
+                                 'description' => $content);
             }
            
             if(count($person->getRelations('all', true)) > 0){
                 foreach($person->getRelations('all', true) as $type){
                     foreach($type as $relation){
-                        $start = str_replace("-", "/", substr($relation->getStartDate(), 0, 10));
-                        $end = str_replace("-", "/", substr($relation->getEndDate(), 0, 10));
-                        if($end == "0000/00/00"){
+                        $start = substr($relation->getStartDate(), 0, 10);
+                        $end = substr($relation->getEndDate(), 0, 10);
+                        if($end == "0000-00-00"){
                             $end = $today;
                         }
-                        $content = "&lt;a href='{$relation->getUser1()->getUrl()}' target='_blank'&gt;{$relation->getUser1()->getNameForForms()}&lt;/a&gt; {$relation->getType()} &lt;a href='{$relation->getUser2()->getUrl()}' target='_blank'&gt;{$relation->getUser2()->getNameForForms()}&lt;/a&gt;";
-                        echo "<event start='$start' end='$end' isDuration='true' title='{$relation->getUser2()->getNameForForms()}' color='#4272B2'>$content</event>\n";
+                        $content = "<a href='{$relation->getUser1()->getUrl()}' target='_blank'>{$relation->getUser1()->getNameForForms()}</a> {$relation->getType()} <a href='{$relation->getUser2()->getUrl()}' target='_blank'>{$relation->getUser2()->getNameForForms()}</a>";
+                        $array[] = array('title' => $relation->getUser2()->getNameForForms(),
+                                         'color' => '#4272B2',
+                                         'start' => $start,
+                                         'end' => $end,
+                                         'durationEvent' => true,
+                                         'description' => $content);
                     }
                 }
             }
             
             foreach($person->getPapers('all') as $paper){
-                $start = str_replace("-", "/", $paper->getDate());
-                $content = "&lt;a href='{$paper->getUrl()}' target='_blank'&gt;Wiki Page&lt;/a&gt;";
-                echo "<event start='$start' title='".str_replace("'", "&#39;", str_replace("&amp;#39;", "&#39;", str_replace("&", "&amp;", $paper->getTitle())))."' link='' icon='$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/yellow-circle.png' color='#BCB326'>$content</event>\n";
+                $start = $paper->getDate();
+                $content = "<a href='{$paper->getUrl()}' target='_blank'>Wiki Page</a>";
+                $array[] = array('title' => str_replace("&#39;", "'", $paper->getTitle()),
+                                 'color' => '#BCB326',
+                                 'icon' => "$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/yellow-circle.png",
+                                 'start' => $start,
+                                 'description' => $content);
             }
-            echo "</data>";
+            echo json_encode($array);
             exit;
         }
         return true;
@@ -459,7 +477,7 @@ class PersonVisualisationsTab extends AbstractTab {
 	        $array = array('groups' => array_flip($groups),
 	                       'edgeGroups' => $edgeGroups,
 	                       'nodes' => $nodes,
-	                       'links' => $links,);
+	                       'links' => $links);
             header("Content-Type: application/json");
             echo json_encode($array); 
             exit;

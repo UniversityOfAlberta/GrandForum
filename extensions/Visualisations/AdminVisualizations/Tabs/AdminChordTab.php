@@ -1,35 +1,27 @@
 <?php
-$dir = dirname(__FILE__) . '/';
-$wgSpecialPages['SpecialChord'] = 'SpecialChord';
-$wgExtensionMessagesFiles['SpecialChord'] = $dir . 'SpecialChord.i18n.php';
 
-$wgHooks['UnknownAction'][] = 'SpecialChord::getSpecialChordData';
+$wgHooks['UnknownAction'][] = 'AdminChordTab::getAdminChordData';
 
-function runSpecialChord($par) {
-	SpecialChord::run($par);
-}
-
-class SpecialChord extends SpecialPage {
-
-	function __construct() {
-		wfLoadExtensionMessages('SpecialChord');
-		SpecialPage::SpecialPage("SpecialChord", MANAGER.'+', true, 'runSpecialChord');
-	}
+class AdminChordTab extends AbstractTab {
 	
-	function run(){
-	    global $wgOut, $wgServer, $wgScriptPath;
-	    $chord = new Chord("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialChordData");
+	function AdminChordTab(){
+        parent::AbstractTab("Chord");
+    }
+
+    function generateBody(){
+	    global $wgServer, $wgScriptPath;
+	    $chord = new Chord("{$wgServer}{$wgScriptPath}/index.php?action=getAdminChordData");
 	    $chord->height = 700;
 	    $chord->width = 700;
-	    $string = $chord->show();
-	    $wgOut->addHTML($string);
+	    $this->html = $chord->show();
 	}
 	
-	static function getSpecialChordData($action, $article){
+	static function getAdminChordData($action, $article){
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
 	    $year = (isset($_GET['date'])) ? $_GET['date'] : REPORTING_YEAR;
-	    if($action == "getSpecialChordData" && $me->isRoleAtLeast(MANAGER)){
+	    if($action == "getAdminChordData" && $me->isRoleAtLeast(MANAGER)){
+	        session_write_close();
 	        $array = array();
             $people = Person::getAllPeopleDuring(null, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
             $sortedPeople = array();

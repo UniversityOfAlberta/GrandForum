@@ -1,7 +1,5 @@
 <?php
 
-require_once("SpecialHighChart.php");
-
 class HighChart extends Visualisation {
     
     static $a = 0;
@@ -26,21 +24,18 @@ class HighChart extends Visualisation {
                    </div>";
         $string .= <<<EOF
 <script type='text/javascript'>
-    
+    var chart{$this->index};
+    var data{$this->index};
     function showVis{$this->index}(){
+        $("#vis{$this->index}").html('Loading...');
         $.get('{$this->url}', function(data){
             $("#vis{$this->index}").empty();
             data.chart = {
                 "renderTo": "vis{$this->index}",
-                "type": "column",
-                "margin": [
-                    50,
-                    60,
-                    150,
-                    60
-                ]
+                "type": "column"
             };
-            var chart = new Highcharts.Chart(data);
+            data{$this->index} = data;
+            chart{$this->index} = new Highcharts.Chart(data{$this->index});
         });
     }
     showVis{$this->index}();

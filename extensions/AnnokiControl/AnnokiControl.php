@@ -293,6 +293,11 @@ $egAnnokiExtensions['Solr']     = array( 'name' => 'Solr',
 					      'path' => "$IP/extensions/Solr/Solr.php",
 					      'enabled' => true,
 					      );
+					      
+$egAnnokiExtensions['AcademiaMap']     = array( 'name' => 'AcademiaMap',
+					      'path' => "$IP/extensions/AcademiaMap/AcademiaMap.php",
+					      'enabled' => true,
+					      );
 
 $egAnnokiExtensions['TravelForm']     = array( 'name' => 'TravelForm',
 					      'path' => "$IP/extensions/TravelForm/TravelForm.php",
