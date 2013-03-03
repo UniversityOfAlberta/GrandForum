@@ -4,7 +4,7 @@ $query = $_GET['query'];
 
 $url = "http://grand.cs.ualberta.ca:8980"
      . "/solr/select?"
-     . "indent=on&version=2.2&fq=&start=0&rows=10&fl=*&wt=json&q="
+     . "indent=on&version=2.2&fq=&start=0&rows=50&fl=*&wt=json&q="
      . urlencode($query)
 ;
 
