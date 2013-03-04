@@ -38,6 +38,21 @@ class Milestone {
         return $milestone;
     }
     
+    // Creates a Milestone from the given milestone_id and id
+    function newFromIndex($id=2147483647){
+        //if(isset(self::$cache[$milestone_id."id".$id])){
+        //    return self::$cache[$milestone_id."id".$id];
+        //}
+        $sql = "SELECT *
+                FROM grand_milestones
+                WHERE id = '$id'";
+        $data = DBFunctions::execSQL($sql);
+        $milestone = new Milestone($data);
+        //self::$cache[$milestone_id."id".$id] = &$milestone;
+        //self::$cache[$milestone_id."id".$milestone->getId()] = &$milestone;
+        return $milestone;
+    }
+
     function newFromTitle($milestone_title, $id=2147483647){
         $milestone_title = str_replace("'", "#39;", $milestone_title);
         if(isset(self::$cache[$milestone_title."id".$id])){
