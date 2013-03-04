@@ -39,7 +39,7 @@ class ProjectVisualisationsTab extends AbstractTab {
 		            <li><a href='#chart'>Productivity Chart</a></li>
 		            <li><a href='#chord'>Relations</a></li>
 		            <li><a href='#wordle'>Tag Cloud</a></li>
-		            <li><a href='#network'>Network</a></li>
+		            <!--<li><a href='#network'>Network</a></li>-->
 	            </ul>
 	        <div id='timeline'>";
 		        $this->showTimeline($this->project, $this->visibility);
@@ -52,9 +52,9 @@ class ProjectVisualisationsTab extends AbstractTab {
 	        $this->html .= "</div>
 	                        <div id='wordle'>";
 		        $this->showWordle($this->project, $this->visibility);
-	        $this->html .= "</div>
+	        /*$this->html .= "</div>
 	                        <div id='network'>";
-		        $this->showGraph($this->project, $this->visibility);
+		        $this->showGraph($this->project, $this->visibility);*/
 	        $this->html.= "</div>
     </div>
     <script type='text/javascript'>

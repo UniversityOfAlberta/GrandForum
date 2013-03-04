@@ -39,7 +39,7 @@ class PersonVisualisationsTab extends AbstractTab {
             if(($wgUser->isLoggedIn() && $this->person->getId() == $me->getId()) || $me->isRoleAtLeast(MANAGER)){
                 $this->html .= "<li><a href='#survey'>Survey Graph</a></li>";
             }
-		    $this->html .= "<li><a href='#network'>Network</a></li>
+		    $this->html .= "<!--<li><a href='#network'>Network</a></li>-->
 	            </ul>
 	        <div id='timeline'>";
 		        $this->showTimeline($this->person, $this->visibility);
@@ -49,9 +49,9 @@ class PersonVisualisationsTab extends AbstractTab {
 	        $this->html .= "</div>
 	        <div id='survey'>";
 		        $this->showSurvey($this->person, $this->visibility);
-	        $this->html .= "</div>
+	        /*$this->html .= "</div>
 	        <div id='network'>";
-		        $this->showGraph($this->person, $this->visibility);
+		        $this->showGraph($this->person, $this->visibility);*/
 	        $this->html.= "</div>
     </div>
     <script type='text/javascript'>
