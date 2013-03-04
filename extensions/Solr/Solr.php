@@ -65,7 +65,7 @@ class Solr extends SpecialPage {
 
 	function __construct() {
 		wfLoadExtensionMessages('Solr');
-		SpecialPage::SpecialPage('Solr', MANAGER.'+', true, 'runSolr');
+		SpecialPage::SpecialPage('Solr', HQP.'+', true, 'runSolr');
 	}
 
 	function run(){
@@ -362,8 +362,11 @@ EOF;
       else{
         break;
       }
+
       $project = Project::newFromId($project_id);
-      
+      if(!$me->isMemberOf($project) ||  !$me->isRole(STAFF)){
+        continue;
+      }
       $name = $project->getName();
       $type = $project->getType();
       $status = $project->getStatus();
@@ -403,6 +406,11 @@ EOF;
       $milestone = Milestone::newFromIndex($id);
       $real_m_id = $milestone->getMilestoneId();
       $project = $milestone->getProject();
+
+      if(!$me->isMemberOf($project) || !$me->isRole(STAFF)){
+        continue;
+      }
+      
       $project_name = $project->getName();
       $project_name = "<a href='{$wgServer}{$wgScriptPath}/index.php/{$project_name}:Main'>". $project_name ."</a>";
 
