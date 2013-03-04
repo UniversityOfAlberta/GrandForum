@@ -328,7 +328,7 @@ class Person{
 	        $rowA[0] = $row;
 	        $person = Person::newFromId($rowA[0]['user_id']);
 	        //$projects = $person->getProjects();
-	        if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter)) && (!$person->isRole(STAFF) && !$person->isRole(MANAGER))){
+	        if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter))){
 	            $people[] = $person;
 	        }
 	    }
@@ -350,7 +350,7 @@ class Person{
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
             //$projects = $person->getProjects();
-            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleDuring($filter, $startRange, $endRange)) && (!$person->isRoleDuring(STAFF, $startRange, $endRange) && !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
+            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleDuring($filter, $startRange, $endRange))){
                 $people[] = $person;
             }
         }
