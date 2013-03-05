@@ -668,7 +668,7 @@ EOF;
                     //$q8 = nl2br($q8); 
                     //$comm_label = ucfirst($rev); 
                     if(!empty($q8_O)){
-                        $q8_O = nl2br($q8_O);
+                        $q8_O = addslashes($q8_O);
                         $cell1 =<<<EOF
 "{$q8_O}"
 EOF;
@@ -676,7 +676,7 @@ EOF;
                         $cell1 = '"Original:N/A"';
                     }
                     if(!empty($q8_R) && $diff != 0){
-                        $q8_R = nl2br($q8_R);
+                        $q8_R = addslashes($q8_R);
                         $cell2 =<<<EOF
 "{$q8_R}"
 EOF;
