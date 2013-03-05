@@ -735,10 +735,12 @@ EOF;
                             $response = substr($response, 0, 1);
                             if(!empty($comm)){
                                 $response .= "; ".$comm_short;
-                                $comm = implode("<br />", $comm);
+                                $comm = "\n". implode("\n", $comm);
+                            }else{
+                                $comm = "";
                             } 
                             //$cell1 = "<td width='10%'><span class='q_tip' title='{$response_orig}<br />{$comm}'><a href='#'>{$response}</a></span></td>";
-                            $cell1 = "`{$response}`,";
+                            $cell1 = "`{$response_orig}{$comm}`,";
                         }else{
                             //$response = "";
                             $cell1 = "``,";
@@ -748,10 +750,13 @@ EOF;
                             $response2 = substr($response2, 0, 1);
                             if(!empty($comm2)){
                                 $response2 .= "; ".$comm_short2;
-                                $comm2 = implode("<br />", $comm2);
+                                $comm2 = "\n". implode("\n", $comm2);
+                            }else{
+                                $comm2 = "";
                             } 
+
                             //$cell2 = "<td width='10%'><span class='q_tip' title='{$response_rev}<br />{$comm2}'><a href='#'>{$response2}</a></span></td>";
-                            $cell2 = "`{$response2}`,";
+                            $cell2 = "`{$response_rev}{$comm2}`,";
                         }else{
                             //$response2 = "";
                             $cell2 = "``,";
