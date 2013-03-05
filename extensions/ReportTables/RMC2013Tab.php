@@ -609,7 +609,7 @@ EOF;
 
         
         $csv =<<<EOF
-"$type","Ave. (Q7)","Evaluator","Q8","Q7","Q9","Q1","Q2","Q3","Q4","Q5","Q6"\n
+`$type`,`Ave. (Q7)`,`Evaluator`,`Q8`,`Q7`,`Q9`,`Q1`,`Q2`,`Q3`,`Q4`,`Q5`,`Q6`\n
 EOF;
 
 
@@ -651,8 +651,8 @@ EOF;
                 $eval_id = $evaluator->getId();
                 $eval_name = $evaluator->getReversedName();
                 
-                $sub_rows1[$ev_count] = "\"{$eval_name}\",";
-                $sub_rows2[$ev_count] = "\"{$eval_name}\",";
+                $sub_rows1[$ev_count] = "`{$eval_name}`,";
+                $sub_rows2[$ev_count] = "`{$eval_name}`,";
 
                 $additional_score = 0;
                 //foreach(array('original', 'revised') as $ind => $rev){
@@ -668,21 +668,21 @@ EOF;
                     //$q8 = nl2br($q8); 
                     //$comm_label = ucfirst($rev); 
                     if(!empty($q8_O)){
-                        $q8_O = addslashes($q8_O);
+                        //$q8_O = addslashes($q8_O);
                         $cell1 =<<<EOF
-"{$q8_O}"
+`{$q8_O}`
 EOF;
                     }else{
-                        $cell1 = '"Original:N/A"';
+                        $cell1 = "`Original:N/A`";
                     }
                     if(!empty($q8_R) && $diff != 0){
-                        $q8_R = addslashes($q8_R);
+                        //$q8_R = addslashes($q8_R);
                         $cell2 =<<<EOF
-"{$q8_R}"
+`{$q8_R}`
 EOF;
                     }
                     else{
-                        $cell2 = '"Revised:N/A"';
+                        $cell2 = "`Revised:N/A`";
                     }
                     
                     $sub_row1 .= "{$cell1},";
@@ -738,10 +738,10 @@ EOF;
                                 $comm = implode("<br />", $comm);
                             } 
                             //$cell1 = "<td width='10%'><span class='q_tip' title='{$response_orig}<br />{$comm}'><a href='#'>{$response}</a></span></td>";
-                            $cell1 = "\"{$response}\",";
+                            $cell1 = "`{$response}`,";
                         }else{
                             //$response = "";
-                            $cell1 = "\"\",";
+                            $cell1 = "``,";
                         }
 
                         if($response_rev && ($diff != 0 || !empty($diff2))){
@@ -751,10 +751,10 @@ EOF;
                                 $comm2 = implode("<br />", $comm2);
                             } 
                             //$cell2 = "<td width='10%'><span class='q_tip' title='{$response_rev}<br />{$comm2}'><a href='#'>{$response2}</a></span></td>";
-                            $cell2 = "\"{$response2}\",";
+                            $cell2 = "`{$response2}`,";
                         }else{
                             //$response2 = "";
-                            $cell2 = "\"\",";
+                            $cell2 = "``,";
                         }
 
 
@@ -800,8 +800,8 @@ EOF;
                 $sr2 = trim($sub_rows2[$i], ',');
                 
                 $csv .=<<<EOF
-"{$ni_name}","{$average_score}",{$sr1}
-"{$ni_name}","{$average_score}",{$sr2}\n
+`{$ni_name}`,`{$average_score}`,{$sr1}
+`{$ni_name}`,`{$average_score}`,{$sr2}\n
 EOF;
             }
             
