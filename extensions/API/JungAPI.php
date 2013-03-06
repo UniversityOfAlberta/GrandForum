@@ -85,7 +85,7 @@ class JungAPI extends API{
 	        foreach($products as $product){
 	            $authors = $product->getAuthors();
 	            foreach($authors as $auth){
-	                if(isset($nodes[$auth->getId()]) && $person->getId() != $auth->getId()){
+	                if(isset($ids[$auth->getId()]) && $person->getId() != $auth->getId()){
 	                    $edges[] = array('a' => $person->getName(), 'b' => $auth->getName());
 	                }
 	            }
@@ -95,6 +95,9 @@ class JungAPI extends API{
 	}
 	
 	function getCoSuperviseEdges($nodes){
+	    if($_GET['nodeType'] == 'hqp'){
+	        return array();
+	    }
 	    $edges = array();
 	    $ids = array();
 	    foreach($nodes as $node){
@@ -105,7 +108,7 @@ class JungAPI extends API{
 	        foreach($hqps as $hqp){
 	            $sups = $hqp->getSupervisorsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
 	            foreach($sups as $sup){
-	                if(isset($nodes[$sup->getId()]) && $person->getId() != $sup->getId()){
+	                if(isset($ids[$sup->getId()]) && $person->getId() != $sup->getId()){
 	                    $edges[] = array('a' => $person->getName(), 'b' => $sup->getName());
 	                }
 	            }
