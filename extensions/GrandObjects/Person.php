@@ -1666,6 +1666,36 @@ class Person{
 		}
 		return $people;
     }
+    
+    function getSupervisorsDuring($startRange = false, $endRange = false){
+        if( $startRange === false || $endRange === false ){
+            $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
+            $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+        }
+        $sql = "SELECT *
+                FROM grand_relations
+                WHERE user2 = '{$this->id}'
+                AND type = 'Supervises'
+                AND ( 
+                ( (end_date != '0000-00-00 00:00:00') AND
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                OR
+                ( (end_date = '0000-00-00 00:00:00') AND
+                ((start_date <= '$endRange')))
+                )";
+    
+        $data = DBFunctions::execSQL($sql);
+        $sups = array();
+        $sups_uniq_ids = array();
+        foreach($data as $row){
+            $sup = Person::newFromId($row['user1']);
+            if( !in_array($sup->getId(), $sups_uniq_ids) && $sup->getName() != ""){
+                $sups_uniq_ids[] = $sup->getId();
+                $sups[] = $sup;
+            }
+        }
+        return $sups;
+    }
 
     function isSupervisor($history=false){
     	if($history !== false && $this->id != null){

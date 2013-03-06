@@ -216,6 +216,7 @@ class APIRequest{
 		$actions['Projects']['getProjectInfo'] = new ProjectAPI();
 		
 		$actions['Hidden']['getWFInfo'] = new WFAPI();
+		$actions['Hidden']['getJung'] = new JungAPI();
 		$actions['Hidden']['addRecordStory'] = new RecordStoryAPI();
 		$actions['Hidden']['getProjectMilestoneHistory'] = new ProjectMilestoneHistoryAPI();
 		
