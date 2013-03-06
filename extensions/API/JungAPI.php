@@ -34,6 +34,7 @@ class JungAPI extends API{
         
         $nodes = array();
         $edges = array();
+        $metas = array();
         switch($nodeType){
             case 'all':
                 $nodes = Person::getAllPeopleDuring('all', $this->startDate, $this->endDate);
@@ -65,13 +66,33 @@ class JungAPI extends API{
                 break;
         }
         
+        $metas = $this->getMetas($nodes);
+        
         $json['nodes'] = array();
         foreach($nodes as $node){
             $json['nodes'][] = $node->getName();
         }
         $json['edges'] = $edges;
+        $json['metas'] = $metas;
         echo json_encode($json);
         exit;
+	}
+	
+	function getMetas($nodes){
+	    $metas = array();
+	    foreach($nodes as $person){
+	        $tuple = array();
+	        $projects = $person->getProjectsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+	        $projectsAlready = array();
+	        foreach($projects as $p){
+	            if(!isset($projectsAlready[$p->getId()])){
+	                $projectsAlready[$p->getId()] = true;
+	            }
+	        }
+	        $tuple['#Projects'] = (string)count($projectsAlready);
+	        $metas[] = $tuple;
+	    }
+	    return $metas;
 	}
 	
 	function getCoProduceEdges($nodes){
