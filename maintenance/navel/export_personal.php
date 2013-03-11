@@ -50,7 +50,9 @@ function exportPersonalData(){
 	->setCellValue("X1", "GRAND_Net_Collaborate")
 	->setCellValue("Y1", "GRAND_Net_Comments");
 
-	$allprojs = Project::getAllProjects();
+	$allprojs = Project::getAllProjectsDuring();
+	$eovw = Project::newFromHistoricName('EOVW');
+	$allprojs[] = $eovw;
 	$existing_projs = array();
 	foreach($allprojs as $proj){
 		$proj_name = $proj->getName();
