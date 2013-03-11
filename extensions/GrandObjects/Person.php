@@ -869,6 +869,48 @@ class Person{
         }
 	}
 	
+	/**
+	 * Returns the discipline of this Person
+	 * @return string The name of the discipline that this Person belongs to
+	 */
+	function getDiscipline(){
+	    $university = $this->getUniversity();
+	    $dept = mysql_real_escape_string($university['department']);
+	    $sql = "SELECT d.discipline
+	            FROM `grand_disciplines_map` m, `grand_disciplines` d
+	            WHERE m.department = '{$dept}'
+	            AND m.discipline = d.id";
+	    $data = DBFunctions::execSQL($sql);
+	    if(count($data) > 0){
+	        return $data[0]['discipline'];
+	    }
+	    return "Other";
+	}
+	
+	/**
+	 * Returns the discipline of this Person during the given start and end dates
+	 * @param string $startRange The start date to look at (default start of the current reporting year)
+	 * @param string $endRange The end date to look at (default end of the current reporting year)
+	 * @return string The name of the discipline that this Person belongs to during the specified dates
+	 */
+	function getDisciplineDuring($startRange=false, $endRange=false){
+	    if( $startRange === false || $endRange === false ){
+	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
+	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+	    }
+	    $university = $this->getUniversityDuring($startRange, $endRange);
+	    $dept = mysql_real_escape_string(strtolower($university['department']));
+	    $sql = "SELECT d.discipline
+	            FROM `grand_disciplines_map` m, `grand_disciplines` d
+	            WHERE LOWER(m.department) = '{$dept}'
+	            AND m.discipline = d.id";
+	    $data = DBFunctions::execSQL($sql);
+	    if(count($data) > 0){
+	        return $data[0]['discipline'];
+	    }
+	    return "Other";
+	}
+	
 	// Returns an array of Strings, representing each user group name
 	function getGroups(){
 		if($this->groups == null){
@@ -1133,8 +1175,8 @@ class Person{
 	    if(count($projects) > 0){
 	        foreach($projects as $project){
 	            if(!$project->isDeleted() || ($project->isDeleted() && 
-	                                          strcmp($project->effectiveDate, $end) < 0 && 
-	                                          strcmp($project->effectiveDate, $start) > 0)){
+	                                          !(strcmp($project->effectiveDate, $end) < 0 && 
+	                                            strcmp($project->effectiveDate, $start) > 0))){
 	                $members = $project->getAllPeopleDuring(null, $start, $end, true);
 	                foreach($members as $member){
 	                    if($member->getId() == $this->id){
