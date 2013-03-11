@@ -4,6 +4,7 @@ class Person{
 
     static $cache = array();
     static $rolesCache = array();
+    static $universityCache = array();
     static $coLeaderCache = array();
     static $leaderCache = array();
     static $aliasCache = array();
@@ -19,6 +20,7 @@ class Person{
 	var $twitter;
 	var $realname;
 	var $projects;
+	var $university;
 	var $isProjectLeader;
 	var $isProjectCoLeader;
 	var $groups;
@@ -282,6 +284,27 @@ class Person{
 	    }
 	}
 	
+	static function generateUniversityCache(){
+        if(count(self::$universityCache) == 0){
+            $sql = "SELECT * 
+                    FROM mw_user_university uu, mw_universities u
+                    WHERE u.university_id = uu.university_id
+                    GROUP BY uu.user_id
+                    HAVING uu.id = MAX(uu.id)";
+            $data = DBFunctions::execSQL($sql);
+            if(DBFunctions::getNRows() > 0){
+                foreach($data as $row){
+                    if(!isset(self::$universityCache[$row['user_id']])){
+                        self::$universityCache[$row['user_id']] = 
+                            array("university" => str_replace("&", "&amp;", $row['university_name']),
+                                  "department" => str_replace("&", "&amp;", $row['department']),
+                                  "position"   => str_replace("&", "&amp;", $row['position']));
+                    }
+                }
+            }
+        }
+    }
+	
 	// Returns an array of all Univeristy names
 	static function getAllUniversities(){
 	    //TODO: This should eventually be extracted to a new Class
@@ -407,6 +430,7 @@ class Person{
 			$this->gender = $data[0]['user_gender'];
 			$this->nationality = $data[0]['user_nationality'];
 			$this->twitter = $data[0]['user_twitter'];
+			$this->university = false;
 			$this->hqps = null;
 			$this->historyHqps = null;
 		}
@@ -815,23 +839,28 @@ class Person{
 	 * @return array The current University this Person is at
 	 */ 
 	function getUniversity(){
-        $uTable = getTableName("universities");
-        $uuTable = getTableName("user_university");
-        $sql = "SELECT * 
-	            FROM $uuTable uu, $uTable u
-	            WHERE uu.user_id = '{$this->id}'
-	            AND u.university_id = uu.university_id
-				ORDER BY uu.id DESC";
-	    $data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
-            return array("university" => str_replace("&", "&amp;", $data[0]['university_name']),
-	                     "department" => str_replace("&", "&amp;", $data[0]['department']),
-	                     "position"   => str_replace("&", "&amp;", $data[0]['position']));
+        self::generateUniversityCache();
+        if($this->university !== false){
+            return $this->university;
         }
-        else{
-            return null;
-        }
-	}
+        $this->university = @self::$universityCache[$this->id];
+        return $this->university;
+    }
+
+    function getUni(){
+        $university = $this->getUniversity();
+        return (isset($university['university'])) ? $university['university'] : "";
+    }
+
+    function getDepartment(){
+        $university = $this->getUniversity();
+        return (isset($university['department'])) ? $university['department'] : "";
+    }
+
+    function getPosition(){
+        $university = $this->getUniversity();
+        return (isset($university['position'])) ? $university['position'] : "";
+    }
 	
 	/**
 	 * Returns the last University that this Person was at between the given range
