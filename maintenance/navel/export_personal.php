@@ -139,6 +139,11 @@ function exportPersonalData(){
 	    $l_name = $row['last_name'];
 	    $name = $f_name."_".$l_name;
 
+	    $submitted = ($row['submitted'] == 1)? "Yes" : "No";
+	    if ($submitted == "No"){
+	    	continue;
+	    }
+
 	    $discipline = ($row['discipline'])? $row['discipline'] : "";
         $disciplines = json_decode($discipline, true);
        
