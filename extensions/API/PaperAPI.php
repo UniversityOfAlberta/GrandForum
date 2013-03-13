@@ -162,7 +162,7 @@ abstract class PaperAPI extends API{
                 }
 	        }
 	    }
-	    
+	    $paperAfter->syncAuthors();
 	    $string = "";
 	    if($result == 1 && $paper != null && $paper->getTitle() != null){
 	        $string = "{$type} '{$_POST['title']}' was modified successfully\n";

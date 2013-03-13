@@ -97,9 +97,24 @@ class JungAPI extends API{
 	
 	function getMetas($nodes, $edges){
 	    $metas = array();
+	    $personUniversities = array();
+	    $personDisciplines = array();
+	    
+	    $connectedDisciplines = array();
+	    foreach($edges as $edge){
+	        if(!isset($personDisciplines[$edge['b']])){
+                $b = Person::newFromName($edge['b']);
+                $disc = $b->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+                $personDisciplines[$edge['b']] = $disc;
+            }
+            else{
+                $disc = $personDisciplines[$edge['b']];
+            }
+	        $connectedDisciplines[$edge['a']][$disc] = $disc;
+        }
+	    
 	    foreach($nodes as $person){
 	        $tuple = array();
-	        
 	        $projects = $person->getProjectsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
 	        $projectsAlready = array();
 	        foreach($projects as $p){
@@ -107,12 +122,13 @@ class JungAPI extends API{
 	                $projectsAlready[$p->getId()] = true;
 	            }
 	        }
-	        $products = $person->getPapersAuthored('all', "2010".REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH, true);
+	        $products = $person->getPapersAuthored('all', "2010".REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH, false);
 	        $projectsByProduct = array();
 	        $nProductsWith1University = array();
 	        $nProductsWith2Universities = array();
 	        $nProductsWith3Universities = array();
 	        $nProductsWith4OrMoreUniversities = array();
+	        
 	        foreach($products as $product){
 	            $pProjects = $product->getProjects();
 	            $universities = array();
@@ -120,7 +136,13 @@ class JungAPI extends API{
 	                $projectsByProduct[$proj->getName()] = true;
 	            }
 	            foreach($product->getAuthors() as $author){
-	                $uni = $author->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+	                if(!isset($personUniversities[$author->getName()])){
+	                    $uni = $author->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+	                    $personUniversities[$author->getName()] = $uni;
+	                }
+	                else{
+	                    $uni = $personUniversities[$author->getName()];
+	                }
 	                $universities[$uni['university']] = true;
 	            }
 	            if(count($universities) == 1){
@@ -170,26 +192,30 @@ class JungAPI extends API{
 	            $tuple['totalAllocationUpToNow'] = (string)$totalAllocated;
 	        }
 	        
-	        $connectedDisciplines = array();
-	        foreach($edges as $edge){
-	            if($edge['a'] == $person->getName()){
-	                $b = Person::newFromName($edge['b']);
-	                $disc = $b->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
-	                $connectedDisciplines[$disc] = true;
-	            }
-	            else if($edge['b'] == $person->getName()){
-	                $a = Person::newFromName($edge['a']);
-	                $disc = $a->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
-	                $connectedDisciplines[$disc] = true;
-	            }
-	        }
+	        if(!isset($personDisciplines[$person->getName()])){
+                $disc = $person->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+                $personDisciplines[$person->getName()] = $disc;
+            }
+            else{
+                $disc = $personDisciplines[$person->getName()];
+            }
+            
+            if(!isset($personUniversities[$person->getName()])){
+                $uni = $person->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+                $personUniversities[$person->getName()] = $uni;
+            }
 	        
 	        $tuple['nProductsUpToNow'] = (string)count($products);
-	        $tuple['discipline'] = $person->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
-	        $tuple['nConnectedDisciplines'] = count($connectedDisciplines);
+	        $tuple['nConnectedDisciplines'] = (string)@count($connectedDisciplines[$person->getName()]);
+	        
+	        $tuple['Discipline'] = $disc;
+	        $tuple['University'] = (string)$personUniversities[$person->getName()]['university'];
+	        $tuple['Title'] = (string)$personUniversities[$person->getName()]['position'];
 	        
 	        $metas[] = $tuple;
+
 	    }
+	    	        
 	    return $metas;
 	}
 	

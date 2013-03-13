@@ -410,6 +410,47 @@ class Paper{
         return $this->authors;
 	}
 	
+	/**
+	 * Synchronizes the `grand_products` table and the `grand_product_authors` table for this Paper
+	 * @param boolean $massSync Whether or not to run this for a massSynchronization, or just for this Paper
+	 * @return array If $massSync=true, returns the sql statements required to update the DB
+	 */
+	function syncAuthors($massSync=false){
+	    $deleteSQL = "DELETE FROM `grand_product_authors`
+	            WHERE `product_id` = '{$this->id}'";
+	    $order = 0;
+        $insertSQL = "INSERT INTO `grand_product_authors`
+                      (`author`, `product_id`, `order`) VALUES\n";
+	    $authors = $this->getAuthors();
+	    $inserts = array();
+	    $alreadyDone = array();
+	    foreach($authors as $key => $author){
+	        if(isset($alreadyDone[$author->getName()])){
+	            continue;
+	        }
+	        $alreadyDone[$author->getName()] = true;
+	        if($author->getId() != ""){
+	            $inserts[] = "('{$author->getId()}','{$this->getId()}','{$order}')";
+	        }
+	        else{
+	            $name = mysql_real_escape_string($author->getName());
+	            $inserts[] = "('{$name}','{$this->getId()}','{$order}')";
+	        }
+	        $order++;
+	    }
+	    if(!$massSync){
+	        DBFunctions::begin();
+	        DBFunctions::execSQL($deleteSQL, true, true);
+	        if(count($authors) > 0){
+	            DBFunctions::execSQL($insertSQL.implode(",\n", $inserts), true, true);
+	        }
+	        DBFunctions::commit();
+	    }
+	    else{
+	        return array($deleteSQL, $inserts);
+	    }
+	}
+	
 	// Returns whether or not this paper belongs to the specified project
 	function belongsToProject($project){
 	    if($project == null){

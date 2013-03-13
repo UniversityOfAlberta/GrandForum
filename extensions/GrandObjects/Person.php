@@ -8,8 +8,10 @@ class Person{
     static $coLeaderCache = array();
     static $leaderCache = array();
     static $aliasCache = array();
+    static $authorshipCache = array();
     static $namesCache = array();
     static $idsCache = array();
+    static $disciplineMap = array();
 
 	var $id;
 	var $name;
@@ -33,6 +35,7 @@ class Person{
 	var $contributions;
 	var $multimedia;
 	var $acknowledgements;
+	var $aliases = false;
 	var $budgets = array();
 	var $leadershipCache = array();
 	var $hqpCache = array();
@@ -301,6 +304,29 @@ class Person{
                                   "position"   => str_replace("&", "&amp;", $row['position']));
                     }
                 }
+            }
+        }
+    }
+    
+    static function generateDisciplineMap(){
+        if(count(self::$disciplineMap) == 0){
+            $sql = "SELECT m.department, d.discipline
+                    FROM `grand_disciplines_map` m, `grand_disciplines` d
+                    WHERE m.discipline = d.id";
+            $data = DBFunctions::execSQL($sql);
+            foreach($data as $row){
+                self::$disciplineMap[strtolower($row['department'])] = $row['discipline'];
+            }
+        }
+    }
+    
+    static function generateAuthorshipCache(){
+        if(count(self::$authorshipCache) == 0){
+            $sql = "SELECT *
+                    FROM `grand_product_authors`";
+            $data = DBFunctions::execSQL($sql);
+            foreach($data as $row){
+                self::$authorshipCache[$row['author']][] = $row['product_id'];
             }
         }
     }
@@ -903,15 +929,10 @@ class Person{
 	 * @return string The name of the discipline that this Person belongs to
 	 */
 	function getDiscipline(){
-	    $university = $this->getUniversity();
-	    $dept = mysql_real_escape_string($university['department']);
-	    $sql = "SELECT d.discipline
-	            FROM `grand_disciplines_map` m, `grand_disciplines` d
-	            WHERE m.department = '{$dept}'
-	            AND m.discipline = d.id";
-	    $data = DBFunctions::execSQL($sql);
-	    if(count($data) > 0){
-	        return $data[0]['discipline'];
+	    self::generateDisciplineMap();
+	    $dept = strtolower($this->getDepartment());
+	    if(isset(self::$disciplineMap[$dept])){
+	        return self::$disciplineMap[$dept];
 	    }
 	    return "Other";
 	}
@@ -923,19 +944,15 @@ class Person{
 	 * @return string The name of the discipline that this Person belongs to during the specified dates
 	 */
 	function getDisciplineDuring($startRange=false, $endRange=false){
+	    self::generateDisciplineMap();
 	    if( $startRange === false || $endRange === false ){
 	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
 	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
 	    }
 	    $university = $this->getUniversityDuring($startRange, $endRange);
-	    $dept = mysql_real_escape_string(strtolower($university['department']));
-	    $sql = "SELECT d.discipline
-	            FROM `grand_disciplines_map` m, `grand_disciplines` d
-	            WHERE LOWER(m.department) = '{$dept}'
-	            AND m.discipline = d.id";
-	    $data = DBFunctions::execSQL($sql);
-	    if(count($data) > 0){
-	        return $data[0]['discipline'];
+	    $dept = strtolower($university['department']);
+	    if(isset(self::$disciplineMap[$dept])){
+	        return self::$disciplineMap[$dept];
 	    }
 	    return "Other";
 	}
@@ -1136,8 +1153,6 @@ class Person{
 	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
 	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
 	    }
-	    
-	    $this->roles = array();
 	    
 	    $sql = "SELECT *
                 FROM grand_roles
@@ -1497,10 +1512,12 @@ class Person{
     function isRoleDuring($role, $startRange = false, $endRange = false){
         $roles = array();
         $role_objs = $this->getRolesDuring($startRange, $endRange);
-        $project_objs = $this->leadershipDuring($startRange, $endRange);
-        if(count($project_objs) > 0){
-            $roles[] = "PL";
-            $roles[] = "COPL";
+        if($role == PL || $role == COPL || $role == "PL" || $role == "COPL"){
+            $project_objs = $this->leadershipDuring($startRange, $endRange);
+            if(count($project_objs) > 0){
+                $roles[] = "PL";
+                $roles[] = "COPL";
+            }
         }
         if(count($role_objs) > 0){
             foreach($role_objs as $r){
@@ -1519,21 +1536,21 @@ class Person{
     // Returns whether or not the Person has a role of at least the given role
     function isRoleAtLeast($role){
         global $wgRoleValues;
-        if($this->isProjectLeader()){
-            if($wgRoleValues[PL] >= $wgRoleValues[$role]){
-                return true;
-            }
-        }
-        if($this->isProjectCoLeader()){
-            if($wgRoleValues[COPL] >= $wgRoleValues[$role]){
-                return true;
-            }
-        }
         if($this->getRoles() != null){
             foreach($this->getRoles() as $r){
                 if($r->getRole() != "" && $wgRoleValues[$r->getRole()] >= $wgRoleValues[$role]){
                     return true;
                 }
+            }
+        }
+        if($wgRoleValues[PL] >= $wgRoleValues[$role]){
+            if($this->isProjectLeader()){
+                return true;
+            }
+        }
+        if($wgRoleValues[COPL] >= $wgRoleValues[$role]){
+            if($this->isProjectCoLeader()){
+                return true;
             }
         }
         return false;
@@ -1542,21 +1559,22 @@ class Person{
     // Returns whether or not the Person has a role of at most the given role
     function isRoleAtMost($role){
         global $wgRoleValues;
-        if($this->isProjectLeader()){
-            if($wgRoleValues[PL] <= $wgRoleValues[$role]){
-                return true;
-            }
-        }
-        if($this->isProjectCoLeader()){
-            if($wgRoleValues[COPL] <= $wgRoleValues[$role]){
-                return true;
-            }
-        }
         foreach($this->getRoles() as $r){
             if($r->getRole() != "" && $wgRoleValues[$r->getRole()] <= $wgRoleValues[$role]){
                 return true;
             }
         }
+        if($wgRoleValues[PL] <= $wgRoleValues[$role]){
+            if($this->isProjectLeader()){
+                return true;
+            }
+        }
+        if($wgRoleValues[COPL] <= $wgRoleValues[$role]){
+            if($this->isProjectCoLeader()){
+                return true;
+            }
+        }
+        
         return false;
     }
 	
@@ -1827,49 +1845,78 @@ class Person{
 	
 	// Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
 	function getPapers($category="all", $history=false, $grand='grand'){
-	    $papers = Paper::getAllPapers("all", $category, $grand);
-	    $papersArray = array();
-	    $hqps = array();
-	    if(!$this->isRole(HQP)){
-	        foreach($this->getHQP($history) as $hqp){
-                $hqps[] = $hqp->getName();
-            }
-        }
-	    foreach($papers as $paper){
-	        if(!$paper->deleted){
-                foreach($paper->getAuthors() as $author){
-                    if($author->getName() == $this->name || array_search($author->getName(), $hqps) !== false){
-                        $papersArray[] = $paper;
-                        break;
-                    }
+	    self::generateAuthorshipCache();
+        $processed = array();
+        $papersArray = array();
+        $papers = array();
+        foreach($this->getHQP($history) as $hqp){
+            $ps = $hqp->getPapers();
+            foreach($ps as $p){
+                if(!isset($processed[$p->getId()])){
+                    $processed[$p->getId()] = true;
+                    $papersArray[] = $p;
                 }
             }
+        }
+	    
+	    if(isset(self::$authorshipCache[$this->id])){
+	        foreach(self::$authorshipCache[$this->id] as $id){
+	            if(!isset($processed[$id])){
+	                $papers[] = $id;
+	            }
+	        }
+	    }
+	    
+	    foreach($papers as $pId){
+	        $paper = Paper::newFromId($pId);
+	        if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
+	           count($paper->getProjects()) > 0){
+	            $papersArray[] = $paper;
+	        }
 	    }
 	    return $papersArray;
 	}
 	
 	// Returns an array of Paper(s) authored/co-authored by this Person
     function getPapersAuthored($category="all", $startRange = false, $endRange = false, $includeHQP=false){
-        $papers = Paper::getAllPapersDuring("all", $category, "grand", $startRange, $endRange);
+        if( $startRange === false || $endRange === false ){
+	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
+	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+	    }
+        self::generateAuthorshipCache();
+        $processed = array();
         $papersArray = array();
-        
-        $hqps = array();
-	    if($includeHQP){
+        $papers = array();
+        if($includeHQP){
 	        foreach($this->getHQPDuring($startRange, $endRange) as $hqp){
-                $hqps[] = $hqp->getName();
+	            $ps = $hqp->getPapersAuthored($category, $startRange, $endRange, false);
+	            foreach($ps as $p){
+	                if(!isset($processed[$p->getId()])){
+	                    $processed[$p->getId()] = true;
+	                    $papersArray[] = $p;
+	                }
+	            }
             }
         }
-        foreach($papers as $paper){
-            if(!$paper->deleted){
-                foreach($paper->getAuthors() as $author){
-                    if($author->getName() == $this->name || array_search($author->getName(), $hqps) !== false){
-                        $papersArray[] = $paper;
-                        break;
-                    }
-                }
-            }
-        }
-        return $papersArray;
+	    
+	    if(isset(self::$authorshipCache[$this->id])){
+	        foreach(self::$authorshipCache[$this->id] as $id){
+	            if(!isset($processed[$id])){
+	                $papers[] = $id;
+	            }
+	        }
+	    }
+	    
+	    foreach($papers as $pId){
+	        $paper = Paper::newFromId($pId);
+	        $date = $paper->getDate();
+	        if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
+	           count($paper->getProjects()) > 0 &&
+	           (strcmp($date, $startRange) >= 0 && strcmp($date, $endRange) <= 0 )){
+	            $papersArray[] = $paper;
+	        }
+	    }
+	    return $papersArray;
     }
 	
 	// Returns a list of GRAND posters created by this user, or this user's HQP
