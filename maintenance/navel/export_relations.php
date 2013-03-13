@@ -11,6 +11,45 @@ if(count($args) > 0){
 }
 
 exportRelations();
+//getNIs();
+//getSurveyNIs();
+
+function getNIs(){
+	$cnis = Person::getAllPeopleDuring('CNI', "2012-01-01 00:00:0", "2013-03-10 23:59:59");
+	$pnis = Person::getAllPeopleDuring('PNI', "2012-01-01 00:00:0", "2013-03-10 23:59:59");
+	$nis = array_merge($cnis, $pnis);
+	$ni_names = array();
+	foreach($nis as $ni){
+		if(!in_array($ni->getName(), $ni_names)){
+			$ni_names[] = $ni->getName();
+		}
+	}
+	
+	print_r($ni_names);
+	echo "\n". count($ni_names) ."\n";
+}
+
+function getSurveyNIs(){
+	$sql = "SELECT sr.* FROM survey_results sr";
+    $data = execSQLStatement($sql);
+    $count = 0;
+    foreach($data as $row){
+        $user_id = $row['user_id'];
+        $person = Person::newFromId($user_id);
+
+        if(!($person->isRoleDuring('CNI', "2012-01-01 00:00:0", "2013-03-10 23:59:59") || $person->isRoleDuring('PNI', "2012-01-01 00:00:0", "2013-03-10 23:59:59")) ){
+        	continue;
+        }
+        
+        $submitted = ($row['submitted'] == 1)? "Yes" : "No";
+	    if ($submitted == "No"){
+	    	continue;
+	    }
+	    
+        $count++;
+    }
+    echo $count ."\n";
+}
 
 function exportRelations(){
 	$sql = "SELECT sr.* FROM survey_results sr";
@@ -70,7 +109,11 @@ function exportRelations(){
 		    if(!$person->isCNI() && !$person->isPNI()){
 		    	continue;
 		    }
-		    
+
+		    $submitted = ($row['submitted'] == 1)? "Yes" : "No";
+		    if ($submitted == "No"){
+		    	continue;
+		    }
 
 		    $f_name = $row['first_name'];
 		    $l_name = $row['last_name'];
