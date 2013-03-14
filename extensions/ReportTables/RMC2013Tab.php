@@ -25,7 +25,7 @@ class RMC2013Tab extends AbstractTab {
             'researcher'=>"\$tab9 = 'selectedReportTab';",
             'contributions'=>"\$tab10 = 'selectedReportTab';",
             'distribution'=>"\$tab11 = 'selectedReportTab';", 
-            'themes'=>"\$tab12 = 'selectedReportTab';",    
+            'themes'=>"\$tab12 = 'selectedReportTab';",
         );
         $summary = ArrayUtils::get_string($_GET, 'summary');
         $url_year = ArrayUtils::get_string($_GET, 'year');
@@ -56,7 +56,7 @@ class RMC2013Tab extends AbstractTab {
                 margin-left: 10px !important;
             }
             div#outerReport{
-                min-height: 460px;
+                min-height: 550px;
             }
             div#aboveTabs {
                 width: 215px !important;
@@ -131,6 +131,8 @@ class RMC2013Tab extends AbstractTab {
             <a class="reportTab tooltip $tab10" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=contributions#Uni_Contributions'>3.3 Contributions by University</a>
             <a class="reportTab tooltip $tab11" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=distribution#Distribution'>3.4 HQP Distribution</a>
             <a class="reportTab tooltip $tab12" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=themes#Themes'>3.5 Project Themes</a>
+
+            <a class="reportTab tooltip marginTop" href='$wgServer$wgScriptPath/index.php/Special:ReviewResults'>PNI Review Results</a>
         </div>
         </div>
 
@@ -232,6 +234,11 @@ EOF;
             $this->html .= "<h3>Project Themes</h3><a id='Themes'></a>";
             self::showThemes();
             break;
+        
+        // case 'reviewresults_pni':
+        //     $this->html .= "<a id='ReviewResults'></a>";
+        //     self::reviewResults('PNI');
+        //     break;
         }
         }
 
