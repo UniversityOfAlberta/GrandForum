@@ -1816,7 +1816,7 @@ class Person{
     }
     
     // Returns True, if this Person is related to another given Person, through a given relationship
-    // ReturnsFalse, if no such relationship found
+    // Returns False, if no such relationship found
     // Returns Null, if there is a problem with the given Person
     //TODO: Perhaps will need to implement history argument
     function relatedTo($person, $relationship){
@@ -1841,9 +1841,14 @@ class Person{
             return null;
         }
     }
-    
 	
-	// Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
+	/**
+	 * Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
+	 * @param string $category The category of Paper to get
+	 * @param boolean $history Whether or not to include past publications (ie. written by past HQP)
+	 * @param string $grand Whether to include 'grand' 'nonGrand' or 'both' Papers
+	 * @return array Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
+	 */ 
 	function getPapers($category="all", $history=false, $grand='grand'){
 	    self::generateAuthorshipCache();
         $processed = array();
@@ -1877,7 +1882,14 @@ class Person{
 	    return $papersArray;
 	}
 	
-	// Returns an array of Paper(s) authored/co-authored by this Person
+	/**
+	 * Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
+	 * @param string $category The category of Paper to get
+	 * @param string $startRange The starting date (start of the current reporting year if not specified)
+	 * @param string $endRange The end date (end of the current reporting year if not specified)
+	 * @param boolean $includeHQP Whether or not to include HQP in the result
+	 * @return array Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
+	 */
     function getPapersAuthored($category="all", $startRange = false, $endRange = false, $includeHQP=false){
         if( $startRange === false || $endRange === false ){
 	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
