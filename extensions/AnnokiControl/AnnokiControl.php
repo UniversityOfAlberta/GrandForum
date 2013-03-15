@@ -304,6 +304,11 @@ $egAnnokiExtensions['TravelForm']     = array( 'name' => 'TravelForm',
 					      'enabled' => true,
 					      );
 
+$egAnnokiExtensions['ReviewResults']     = array( 'name' => 'ReviewResults',
+					      'path' => "$IP/extensions/ReviewResults/ReviewResults.php",
+					      'enabled' => true,
+					      );
+
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
     if ($extension['enabled'] && is_readable($extension['path'])){
