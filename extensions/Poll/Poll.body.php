@@ -236,7 +236,7 @@ class PollView {
 			else{
 				$percentOfTotal = 0;
 			}
-			$wgOut->addHTML("<tr style='background:#FFFFFF;'><td>{$option->name}</td><td><table style='border: 1px solid #000000; background: #4c5b7b;' width='$percentOfTotal%'><tr><td></td></tr></table></td><td>$nVotes</td><td>$percentOfTotal%</td></tr>");
+			$wgOut->addHTML("<tr style='background:#FFFFFF;'><td>{$option->name}</td><td><table style='border: 1px solid #000000; background: #4c5b7b;' width='$percentOfTotal%'><tr><td></td></tr></table></td><td>$nVotes</td><td>".number_format($percentOfTotal, 2)."%</td></tr>");
 		}
 		$wgOut->addHTML("</table><br />");
 	}
