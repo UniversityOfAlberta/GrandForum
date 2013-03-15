@@ -913,7 +913,6 @@ class Person{
                 )
 				ORDER BY uu.id DESC";
 	    $data = DBFunctions::execSQL($sql);
-	    print_r($data);
         if(DBFunctions::getNRows() > 0){
             return array("university" => str_replace("&", "&amp;", $data[0]['university_name']),
 	                     "department" => str_replace("&", "&amp;", $data[0]['department']),
