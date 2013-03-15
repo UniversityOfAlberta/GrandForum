@@ -292,8 +292,7 @@ class Person{
             $sql = "SELECT * 
                     FROM mw_user_university uu, mw_universities u
                     WHERE u.university_id = uu.university_id
-                    GROUP BY uu.user_id
-                    HAVING uu.id = MAX(uu.id)";
+                    ORDER BY uu.id DESC";
             $data = DBFunctions::execSQL($sql);
             if(DBFunctions::getNRows() > 0){
                 foreach($data as $row){
@@ -914,6 +913,7 @@ class Person{
                 )
 				ORDER BY uu.id DESC";
 	    $data = DBFunctions::execSQL($sql);
+	    print_r($data);
         if(DBFunctions::getNRows() > 0){
             return array("university" => str_replace("&", "&amp;", $data[0]['university_name']),
 	                     "department" => str_replace("&", "&amp;", $data[0]['department']),
