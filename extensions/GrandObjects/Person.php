@@ -933,9 +933,6 @@ class Person{
 	    if(isset(self::$disciplineMap[$dept])){
 	        return self::$disciplineMap[$dept];
 	    }
-	    else if($dept == ""){
-	        return "";
-	    }
 	    return "Other";
 	}
 	
@@ -955,9 +952,6 @@ class Person{
 	    $dept = strtolower($university['department']);
 	    if(isset(self::$disciplineMap[$dept])){
 	        return self::$disciplineMap[$dept];
-	    }
-	    else if($dept == ""){
-	        return "";
 	    }
 	    return "Other";
 	}
