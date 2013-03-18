@@ -22,6 +22,10 @@ class ReviewResults extends SpecialPage {
 	    global $wgUser, $wgOut, $wgServer, $wgScriptPath;
 	    if(isset($_POST['submit'])){
 	    	ReviewResults::handleSubmit();
+	    }else if(!empty($_GET['generatePDF'])){
+	    	$ni_id = $_GET['generatePDF'];
+	    	ReviewResults::generateFeedback($ni_id);
+	    	exit;
 	    }
 	    ReviewResults::reviewResults('PNI');
 	    //$wgOut->addHTML();
@@ -51,10 +55,10 @@ class ReviewResults extends SpecialPage {
 
 				$query =<<<EOF
 				INSERT INTO grand_review_results (user_id, type, year, allocated_amount, overall_score)
-				VALUES ({$ni_id}, '{$type}', {$year}, {$allocated_amount}, {$overall_score})
+				VALUES ({$ni_id}, '{$type}', {$year}, {$allocated_amount}, '{$overall_score}')
 				ON DUPLICATE KEY UPDATE
 				allocated_amount = {$allocated_amount},
-				overall_score = {$overall_score}
+				overall_score = '{$overall_score}'
 EOF;
 				$result = DBFunctions::execSQL($query, true);
 				
@@ -73,8 +77,168 @@ EOF;
 		}
 	}
 
+	static function getData($blob_type, $rptype, $question, $sub, $eval_id=0, $evalYear=EVAL_YEAR, $proj_id=0){
+
+        $addr = ReportBlob::create_address($rptype, SEC_NONE, $question, $sub->getId());
+        $blb = new ReportBlob($blob_type, $evalYear, $eval_id, $proj_id);
+        
+        $data = "";
+       
+        $result = $blb->load($addr);
+        
+        $data = $blb->getData();
+        
+        return $data;
+    }
+
+	static function generateFeedback($ni_id){
+		global $wgOut;
+
+		$wgOut->clearHTML();
+
+		$ni = Person::newFromId($ni_id);
+		$curr_year = REPORTING_YEAR;
+		$rtype = RP_EVAL_RESEARCHER;
+
+		$query = "SELECT * FROM grand_review_results WHERE year={$curr_year} AND user_id={$ni_id}";
+		$data = DBFunctions::execSQL($query);
+		
+		$allocated_amount = $overall_score = "";
+		if(count($data) > 0){
+            $row = $data[0];
+            $allocated_amount = $row['allocated_amount'];
+            $overall_score = $row['overall_score']; 
+        }
+
+        $name = $ni->getNameForForms();
+       	$university = $ni->getUni();
+
+        $html =<<<EOF
+        <div>
+        <h2>GRAND 2013 Network Investigator Review</h2>
+        <strong>Name:</strong> {$name}</br>
+        <strong>University:</strong> {$university}</br>
+        <strong>2013-14 Allocation:</strong> {$allocated_amount}
+        </div>
+        <div>
+        <h3>Description of Overall Process and Results:</h3>
+        <p>boilerplate text. may be slightly different for PNIs and CNIs, but will be the same for all members of each group</p>
+        </div>
+
+        <h3>Scores and Feedback:</h3>
+EOF;
+
+        $sections = array(
+        	"Excellence of Research" => array(EVL_EXCELLENCE, EVL_EXCELLENCE_COM),
+        	"Development of HQP" => array(EVL_HQPDEVELOPMENT, EVL_HQPDEVELOPMENT_COM),
+        	"Networking & Partnerships" => array(EVL_NETWORKING, EVL_NETWORKING_COM),
+        	"Knowledge & Technology Exchange & Exploitation" => array(EVL_KNOWLEDGE, EVL_KNOWLEDGE_COM),
+        	"Management" => array(EVL_MANAGEMENT, EVL_MANAGEMENT_COM),
+        	"Quality of Report" => array(EVL_REPORTQUALITY, EVL_REPORTQUALITY_COM),
+        	//"Overall Score" => array(EVL_OVERALLSCORE),
+        	//"General Comments" => array(EVL_OTHERCOMMENTS)
+        );
+
+        $evaluators = $ni->getEvaluators('PNI', 2012);
+        //now loop through all questions and evaluators and get the data
+        foreach ($sections as $sec_name => $sec_addr){
+        	$html .=<<<EOF
+        	<h3>{$sec_name}</h3>
+        	<table cellpadding="5">
+EOF;
+			foreach($evaluators as $eval){
+        		$ev_name = $eval->getNameForForms();
+        		$ev_id = $eval->getId();
+        		
+        		$score = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[0], $ni, $ev_id, $curr_year);
+        		if(isset($score['revised'])){
+        			$score = $score['revised'];
+        		}else{
+        			$score = $score['original'];
+        		}
+
+        		
+        		$comments = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[1], $ni, $ev_id, $curr_year);
+        		if(isset($comments['revised'])){
+        			$comments = $comments['revised'];
+        		}else{
+        			$comments = $comments['original'];
+        		}
+        		$coms = array();
+        		foreach($comments as $com){
+        			$coms[] = substr($com, 2);
+        		}
+        		$comments = implode("<br />", $coms);
+        		$html .=<<<EOF
+    	    	<tr>
+    	    	<td><strong>{$ev_name}</strong></td>
+    	    	<td><i>Score:</i></td>
+    	    	<td><i>Comments:</i></td>
+        		</tr>
+        		<tr>
+    	    	<td>&nbsp;</td>
+    	    	<td>{$score}</td>
+    	    	<td>{$comments}</td>
+        		</tr>
+EOF;
+				
+        	}
+
+      		$html .=<<<EOF
+        	</table>
+EOF;
+        }
+    	
+    	//Overall Score
+    	$html .=<<<EOF
+        	<h3>Overall Score: {$overall_score}</h3>
+EOF;
+
+		//General Comments
+		$html .=<<<EOF
+        	<h3>General Comments</h3>
+        	<table cellpadding="5">
+EOF;
+		foreach($evaluators as $eval){
+    		$ev_name = $eval->getNameForForms();
+    		$ev_id = $eval->getId();
+
+    		$comment = self::getData(BLOB_ARRAY, $rtype,  EVL_OTHERCOMMENTS, $ni, $ev_id, $curr_year);
+    		if(isset($comment['revised'])){
+    			$comment = $comment['revised'];
+    		}else{
+    			$comment = $comment['original'];
+    		}
+
+        	$html .=<<<EOF
+    	    	<tr>
+    	    	<td><strong>{$ev_name}</strong></td>
+    	    	<td><i>Comments:</i></td>
+    	    	<td>{$comment}</td>
+        		</tr>
+EOF;
+        }
 
 
+        //echo $html;
+
+        $pdf = "";
+        try {
+            $pdf = PDFGenerator::generate("Report" , $html, "", null, false);
+            $filename = $ni->getName();
+            //var_dump($pdf);
+            file_put_contents("/local/data/www-root/grand_forum/data/review-feedback/{$filename}.pdf", $pdf['pdf']);
+        }
+        catch(DOMPDF_Internal_Exception $e){
+            echo "ERROR!!!";
+            echo $e->getMessage();
+            // TODO: Display a nice message to the user if the generation failed
+        }
+        //PDFGenerator::stream($pdfStr);
+        //$pdf = $pdf->output();
+
+
+	}
 
 	static function reviewResults($type){
 		global $wgOut, $wgScriptPath, $wgServer, $wgUser;
@@ -167,7 +331,7 @@ EOF;
 				<tr>
 				<td>{$ni_name}</td>
 				<td><input type="text" name="ni[{$ni_id}][allocated_amount]" value="{$allocated_amount}" class="number" /></td>
-				<td><input type="text" name="ni[{$ni_id}][overall_score]" value="{$overall_score}" class="number" /></td>
+				<td><input type="text" name="ni[{$ni_id}][overall_score]" value="{$overall_score}" /></td>
 				</tr>
 EOF;
 
