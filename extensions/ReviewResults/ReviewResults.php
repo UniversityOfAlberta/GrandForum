@@ -94,7 +94,7 @@ EOF;
 
     static function generateAllFeedback(){
     	$type = "PNI";
-    	$nis = Person::getEvaluates('PNI'); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+    	$nis = Person::getAllEvaluates('PNI'); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
 
     	foreach ($nis as $ni) {
     		$ni_id = $ni->getId();
