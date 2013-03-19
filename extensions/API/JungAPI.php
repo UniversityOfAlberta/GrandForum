@@ -2,6 +2,7 @@
 
 class JungAPI extends API{
 
+    var $personDisciplines = array();
     var $year = 2012;
     var $startDate = REPORTING_END;
     var $endDate = REPORTING_END;
@@ -25,6 +26,7 @@ class JungAPI extends API{
 	}
 	
 	function outputJSON(){
+	    ini_set("memory_limit", "512M");
         $json = array();
         $nodeType = $_GET['nodeType'];
         $edgeType = $_GET['edgeType'];
@@ -35,6 +37,7 @@ class JungAPI extends API{
         $nodes = array();
         $edges = array();
         $metas = array();
+        $projects = array();
         switch($nodeType){
             case 'all':
                 $pnis = Person::getAllPeopleDuring(PNI, $this->startDate, $this->endDate);
@@ -84,6 +87,7 @@ class JungAPI extends API{
         }
         
         $metas = $this->getMetas($nodes, $edges);
+        $projects = $this->getProjects();
         
         $json['nodes'] = array();
         foreach($nodes as $node){
@@ -91,16 +95,86 @@ class JungAPI extends API{
         }
         $json['edges'] = $edges;
         $json['metas'] = $metas;
+        $json['projects'] = $projects;
         echo json_encode($json);
         exit;
+	}
+	
+	function getProjects(){
+	    $projData = array();
+	    $projects = Project::getAllProjectsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+	    
+	    foreach($projects as $project){
+	        $people = $project->getAllPeopleDuring(null, $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+	        $products = $project->getPapers('all', "2010".REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+	        
+	        $sumDisc = array();
+	        foreach($products as $product){
+	            $isCurrentYear = (strstr($product->getDate(), $this->year) !== false);
+	            if($isCurrentYear){
+	                $pDiscs = array();
+	                $authors = $product->getAuthors();
+	                foreach($authors as $author){
+	                    if(!isset($this->personDisciplines[$author->getName()])){
+                            $pDisc = $author->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+                            $this->personDisciplines[$author->getName()] = $pDisc;
+                        }
+                        else{
+                            $pDisc = $this->personDisciplines[$author->getName()];
+                        }
+                        $pDiscs[$pDisc] = true;
+	                }
+	                if(count($pDiscs) != 0){
+	                    $sumDisc[] = count($pDiscs);
+	                }
+	            }
+	        }
+	        
+            $discs = array();
+	        foreach($people as $person){
+	            if(!isset($this->personDisciplines[$person->getName()])){
+                    $disc = $person->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+                    $this->personDisciplines[$person->getName()] = $disc;
+                }
+                else{
+                    $disc = $this->personDisciplines[$person->getName()];
+                }
+                $discs[$disc] = true;
+	        }
+	    
+	        $budgets = array();
+            $totalAllocated = 0;
+            for($i=2010;$i<=$this->year;$i++){
+                $allocated = $project->getAllocatedBudget($i-1);
+                if($allocated != null){
+                    $value = $allocated->copy()->rasterize()->where(CUBE_TOTAL)->select(CUBE_TOTAL)->toString();
+                    $totalAllocated += (int)str_replace(',', '', str_replace('$', '', $value));
+                }
+            }
+            
+            $tuple = array();
+            
+            $tuple['name'] = $project->getName();
+            $tuple['nProductsUpToNow'] = (string)count($products);
+            $tuple['nDisciplines'] = (string)count($discs);
+            $tuple['totalAllocationUpToNow'] = (string)$totalAllocated;
+            
+            if(count($sumDisc) > 0){
+	            $tuple['avgProductDisciplines'] = number_format((array_sum($sumDisc)/count($sumDisc)), 2, '.', '');
+	        }
+	        else{
+	            $tuple['avgProductDisciplines'] = "";
+	        }
+	        $projData[] = $tuple;
+	    }
+	    return $projData;
 	}
 	
 	function getMetas($nodes, $edges){
 	    $metas = array();
 	    $personUniversities = array();
-	    $personDisciplines = array();
-	    
 	    $connectedDisciplines = array();
+	    
 	    foreach($edges as $edge){
 	        if(!isset($personDisciplines[$edge['b']])){
                 $b = Person::newFromName($edge['b']);
@@ -129,12 +203,15 @@ class JungAPI extends API{
 	        $nProductsWith3Universities = array();
 	        $nProductsWith4OrMoreUniversities = array();
 	        
+	        $sumDisc = array();
 	        foreach($products as $product){
 	            $pProjects = $product->getProjects();
 	            $universities = array();
 	            foreach($pProjects as $proj){
 	                $projectsByProduct[$proj->getName()] = true;
 	            }
+	            $discs = array();
+	            $isCurrentYear = (strstr($product->getDate(), $this->year) !== false);
 	            foreach($product->getAuthors() as $author){
 	                if(!isset($personUniversities[$author->getName()])){
 	                    $uni = $author->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
@@ -144,6 +221,19 @@ class JungAPI extends API{
 	                    $uni = $personUniversities[$author->getName()];
 	                }
 	                $universities[$uni['university']] = true;
+	                if($isCurrentYear){
+	                    if(!isset($this->personDisciplines[$author->getName()])){
+                            $disc = $author->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+                            $this->personDisciplines[$author->getName()] = $disc;
+                        }
+                        else{
+                            $disc = $this->personDisciplines[$author->getName()];
+                        }
+                        $discs[$disc] = true;
+                    }
+	            }
+	            if($isCurrentYear){
+	                $sumDisc[] = count($discs);
 	            }
 	            if(count($universities) == 1){
 	                $nProductsWith1University[$product->getId()] = true;
@@ -161,6 +251,12 @@ class JungAPI extends API{
             
 	        $tuple['nProjects'] = (string)count($projectsAlready);
 	        $tuple['nProjectsByProduct'] = (string)count($projectsByProduct);
+	        if(count($sumDisc) > 0){
+	            $tuple['avgProductDisciplines'] = number_format((array_sum($sumDisc)/count($sumDisc)), 2, '.', '');
+	        }
+	        else{
+	            $tuple['avgProductDisciplines'] = "";
+	        }
 	        $tuple['nProductsWith1University'] = (string)count($nProductsWith1University);
 	        $tuple['nProductsWith2Universities'] = (string)count($nProductsWith2Universities);
 	        $tuple['nProductsWith3Universities'] = (string)count($nProductsWith3Universities);
@@ -192,12 +288,12 @@ class JungAPI extends API{
 	            $tuple['totalAllocationUpToNow'] = (string)$totalAllocated;
 	        }
 	        
-	        if(!isset($personDisciplines[$person->getName()])){
+	        if(!isset($this->personDisciplines[$person->getName()])){
                 $disc = $person->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
-                $personDisciplines[$person->getName()] = $disc;
+                $this->personDisciplines[$person->getName()] = $disc;
             }
             else{
-                $disc = $personDisciplines[$person->getName()];
+                $disc = $this->personDisciplines[$person->getName()];
             }
             
             if(!isset($personUniversities[$person->getName()])){
