@@ -247,10 +247,10 @@ EOF;
 
         $pdf = "";
         try {
-            $pdf = PDFGenerator::generate("Report" , $html, "", null, true);
+            $pdf = PDFGenerator::generate("Report" , $html, "", null, false);
             $filename = $ni->getName();
             //var_dump($pdf);
-           // file_put_contents("/local/data/www-root/grand_forum/data/review-feedback/{$filename}.pdf", $pdf['pdf']);
+            file_put_contents("/local/data/www-root/grand_forum/data/review-feedback/{$filename}.pdf", $pdf['pdf']);
         }
         catch(DOMPDF_Internal_Exception $e){
             echo "ERROR!!!";
