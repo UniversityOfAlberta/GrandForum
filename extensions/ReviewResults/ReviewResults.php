@@ -24,8 +24,8 @@ class ReviewResults extends SpecialPage {
 	    	ReviewResults::handleSubmit();
 	    }else if(!empty($_GET['generatePDF'])){
 	    	$ni_id = $_GET['generatePDF'];
-	    	ReviewResults::generateAllFeedback();
-	    	//ReviewResults::generateFeedback($ni_id);
+	    	//ReviewResults::generateAllFeedback();
+	    	ReviewResults::generateFeedback($ni_id);
 	    	exit;
 	    }
 	    ReviewResults::reviewResults('PNI');
@@ -180,10 +180,15 @@ EOF;
 
         		
         		$comments = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[1], $ni, $ev_id, $curr_year);
-        		if(isset($comments['revised'])){
-        			$comments = $comments['revised'];
-        		}else{
-        			$comments = $comments['original'];
+        		if(is_array($comments)){
+	        		if(isset($comments['revised'])){
+	        			$comments = $comments['revised'];
+	        		}else{
+	        			$comments = $comments['original'];
+	        		}
+        		}
+        		else{
+        			$comments = array();
         		}
         		$coms = array();
         		foreach($comments as $com){
@@ -192,13 +197,13 @@ EOF;
         		$comments = implode("<br />", $coms);
         		$html .=<<<EOF
     	    	<tr>
-    	    	<td width="22%"><strong>Reviewer {$ev_count}</strong></td>
-    	    	<td width="26%"><i>Score:</i></td>
+    	    	<td width="22%" style="padding-right:15px;"><strong>Reviewer {$ev_count}</strong></td>
+    	    	<td width="26%" style="padding-right:20px;"><i>Score:</i></td>
     	    	<td><i>Comments:</i></td>
         		</tr>
         		<tr>
-    	    	<td width="22%">&nbsp;</td>
-    	    	<td width="26%">{$score}</td>
+    	    	<td width="22%" style="padding-right:15px;">&nbsp;</td>
+    	    	<td width="26%" style="padding-right:20px;">{$score}</td>
     	    	<td>{$comments}</td>
         		</tr>
 EOF;
