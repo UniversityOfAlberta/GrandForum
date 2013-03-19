@@ -24,8 +24,8 @@ class ReviewResults extends SpecialPage {
 	    	ReviewResults::handleSubmit();
 	    }else if(!empty($_GET['generatePDF'])){
 	    	$ni_id = $_GET['generatePDF'];
-	    	//ReviewResults::generateAllFeedback();
-	    	ReviewResults::generateFeedback($ni_id);
+	    	ReviewResults::generateAllFeedback();
+	    	//ReviewResults::generateFeedback($ni_id);
 	    	exit;
 	    }
 	    ReviewResults::reviewResults('PNI');
@@ -94,7 +94,7 @@ EOF;
 
     static function generateAllFeedback(){
     	$type = "PNI";
-    	$nis = Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+    	$nis = Person::getEvaluatePNIs(); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
 
     	foreach ($nis as $ni) {
     		$ni_id = $ni->getId();
