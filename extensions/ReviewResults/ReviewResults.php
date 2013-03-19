@@ -24,7 +24,8 @@ class ReviewResults extends SpecialPage {
 	    	ReviewResults::handleSubmit();
 	    }else if(!empty($_GET['generatePDF'])){
 	    	$ni_id = $_GET['generatePDF'];
-	    	ReviewResults::generateFeedback($ni_id);
+	    	ReviewResults::generateAllFeedback();
+	    	//ReviewResults::generateFeedback($ni_id);
 	    	exit;
 	    }
 	    ReviewResults::reviewResults('PNI');
@@ -91,6 +92,18 @@ EOF;
         return $data;
     }
 
+    static function generateAllFeedback(){
+    	$type = "PNI";
+    	$nis = Person::getAllEvaluates('PNI'); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+
+    	foreach ($nis as $ni) {
+    		$ni_id = $ni->getId();
+
+    		ReviewResults::generateFeedback($ni_id);
+    		echo $ni->getNameForForms() ."<br />";
+    	}
+    }
+
 	static function generateFeedback($ni_id){
 		global $wgOut;
 
@@ -113,11 +126,18 @@ EOF;
         $name = $ni->getNameForForms();
        	$university = $ni->getUni();
 
+       	setlocale(LC_MONETARY, 'en_CA');
+		$allocated_amount = money_format('%i', $allocated_amount);
         $html =<<<EOF
+        <style type="text/css">
+        td {
+			vertical-align: top;
+		}
+        </style>
         <div>
         <h2>GRAND 2013 Network Investigator Review</h2>
-        <strong>Name:</strong> {$name}</br>
-        <strong>University:</strong> {$university}</br>
+        <strong>Name:</strong> {$name}<br />
+        <strong>University:</strong> {$university}<br />
         <strong>2013-14 Allocation:</strong> {$allocated_amount}
         </div>
         <div>
@@ -144,8 +164,9 @@ EOF;
         foreach ($sections as $sec_name => $sec_addr){
         	$html .=<<<EOF
         	<h3>{$sec_name}</h3>
-        	<table cellpadding="5">
+        	<table cellpadding="4">
 EOF;
+			$ev_count = 1;
 			foreach($evaluators as $eval){
         		$ev_name = $eval->getNameForForms();
         		$ev_id = $eval->getId();
@@ -159,10 +180,15 @@ EOF;
 
         		
         		$comments = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[1], $ni, $ev_id, $curr_year);
-        		if(isset($comments['revised'])){
-        			$comments = $comments['revised'];
-        		}else{
-        			$comments = $comments['original'];
+        		if(is_array($comments)){
+	        		if(isset($comments['revised'])){
+	        			$comments = $comments['revised'];
+	        		}else{
+	        			$comments = $comments['original'];
+	        		}
+        		}
+        		else{
+        			$comments = array();
         		}
         		$coms = array();
         		foreach($comments as $com){
@@ -171,17 +197,17 @@ EOF;
         		$comments = implode("<br />", $coms);
         		$html .=<<<EOF
     	    	<tr>
-    	    	<td><strong>{$ev_name}</strong></td>
-    	    	<td><i>Score:</i></td>
+    	    	<td width="22%" style="padding-right:25px;"><strong>Reviewer {$ev_count}</strong></td>
+    	    	<td width="26%" style="padding-right:30px;"><i>Score:</i></td>
     	    	<td><i>Comments:</i></td>
         		</tr>
         		<tr>
-    	    	<td>&nbsp;</td>
-    	    	<td>{$score}</td>
+    	    	<td width="22%" style="padding-right:25px;">&nbsp;</td>
+    	    	<td width="26%" style="padding-right:30px;">{$score}</td>
     	    	<td>{$comments}</td>
         		</tr>
 EOF;
-				
+				$ev_count++;
         	}
 
       		$html .=<<<EOF
@@ -197,8 +223,9 @@ EOF;
 		//General Comments
 		$html .=<<<EOF
         	<h3>General Comments</h3>
-        	<table cellpadding="5">
+        	<table cellpadding="4">
 EOF;
+		$ev_count = 1;
 		foreach($evaluators as $eval){
     		$ev_name = $eval->getNameForForms();
     		$ev_id = $eval->getId();
@@ -212,11 +239,12 @@ EOF;
 
         	$html .=<<<EOF
     	    	<tr>
-    	    	<td><strong>{$ev_name}</strong></td>
-    	    	<td><i>Comments:</i></td>
+    	    	<td width="22%" style="padding-right:25px;"><strong>Reviewer {$ev_count}</strong></td>
+    	    	<td width="22%" style="padding-right:30px;"><i>Comments:</i></td>
     	    	<td>{$comment}</td>
         		</tr>
 EOF;
+			$ev_count++;
         }
 
 
