@@ -197,13 +197,13 @@ EOF;
         		$comments = implode("<br />", $coms);
         		$html .=<<<EOF
     	    	<tr>
-    	    	<td width="22%" style="padding-right:15px;"><strong>Reviewer {$ev_count}</strong></td>
-    	    	<td width="26%" style="padding-right:20px;"><i>Score:</i></td>
+    	    	<td width="22%" style="padding-right:20px;"><strong>Reviewer {$ev_count}</strong></td>
+    	    	<td width="26%" style="padding-right:25px;"><i>Score:</i></td>
     	    	<td><i>Comments:</i></td>
         		</tr>
         		<tr>
-    	    	<td width="22%" style="padding-right:15px;">&nbsp;</td>
-    	    	<td width="26%" style="padding-right:20px;">{$score}</td>
+    	    	<td width="22%" style="padding-right:20px;">&nbsp;</td>
+    	    	<td width="26%" style="padding-right:25px;">{$score}</td>
     	    	<td>{$comments}</td>
         		</tr>
 EOF;
@@ -239,8 +239,8 @@ EOF;
 
         	$html .=<<<EOF
     	    	<tr>
-    	    	<td width="22%"><strong>Reviewer {$ev_count}</strong></td>
-    	    	<td width="22%"><i>Comments:</i></td>
+    	    	<td width="22%" style="padding-right:20px;"><strong>Reviewer {$ev_count}</strong></td>
+    	    	<td width="22%" style="padding-right:25px;"><i>Comments:</i></td>
     	    	<td>{$comment}</td>
         		</tr>
 EOF;
