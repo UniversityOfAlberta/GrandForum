@@ -30,6 +30,7 @@ class ReviewResults extends SpecialPage {
 	    }
 	    else if(isset($_GET['generatePDF'])){
 	    	ReviewResults::generateAllFeedback($type);
+		    //ReviewResults::generateFeedback(30,$type);
 		    exit;
 	    }
 
@@ -184,12 +185,14 @@ EOF;
         	<table cellpadding="4">
 EOF;
 			$ev_count = 1;
+
 			foreach($evaluators as $eval){
         		$ev_name = $eval->getNameForForms();
         		$ev_id = $eval->getId();
         		
         		$score = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[0], $ni, $ev_id, $curr_year);
-        		if(isset($score['revised'])){
+        		
+        		if(isset($score['revised']) && !empty($score['revised'])){
         			$score = $score['revised'];
         		}else{
         			$score = $score['original'];
@@ -198,7 +201,7 @@ EOF;
         		
         		$comments = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[1], $ni, $ev_id, $curr_year);
         		if(is_array($comments)){
-	        		if(isset($comments['revised'])){
+	        		if(isset($comments['revised']) && !empty($comments['revised'])){
 	        			$comments = $comments['revised'];
 	        		}else{
 	        			$comments = $comments['original'];
@@ -248,12 +251,12 @@ EOF;
     		$ev_id = $eval->getId();
 
     		$comment = self::getData(BLOB_ARRAY, $rtype,  EVL_OTHERCOMMENTS, $ni, $ev_id, $curr_year);
-    		if(isset($comment['revised'])){
+    		if(isset($comment['revised']) && !empty($comment['revised'])){
     			$comment = $comment['revised'];
     		}else{
     			$comment = $comment['original'];
     		}
-
+    		$comment = nl2br($comment);
         	$html .=<<<EOF
     	    	<tr>
     	    	<td width="22%" style="padding-right:25px;"><strong>Reviewer {$ev_count}</strong></td>
