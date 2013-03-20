@@ -111,19 +111,24 @@ EOF;
     	foreach ($nis as $ni) {
     		$ni_id = $ni->getId();
 
-    		ReviewResults::generateFeedback($ni_id);
+    		ReviewResults::generateFeedback($ni_id, $type);
     		echo $ni->getNameForForms() ."<br />";
     	}
     }
 
-	static function generateFeedback($ni_id){
+	static function generateFeedback($ni_id, $type="PNI"){
 		global $wgOut;
 
 		$wgOut->clearHTML();
 
 		$ni = Person::newFromId($ni_id);
 		$curr_year = REPORTING_YEAR;
-		$rtype = RP_EVAL_RESEARCHER;
+		if($type == "PNI"){
+			$rtype = RP_EVAL_RESEARCHER;
+		}
+		else if($type == "CNI"){
+			$rtype = RP_EVAL_CNI;
+		}
 
 		$query = "SELECT * FROM grand_review_results WHERE year={$curr_year} AND user_id={$ni_id}";
 		$data = DBFunctions::execSQL($query);
@@ -171,7 +176,7 @@ EOF;
         	//"General Comments" => array(EVL_OTHERCOMMENTS)
         );
 
-        $evaluators = $ni->getEvaluators('PNI', 2012);
+        $evaluators = $ni->getEvaluators($type, 2012);
         //now loop through all questions and evaluators and get the data
         foreach ($sections as $sec_name => $sec_addr){
         	$html .=<<<EOF
