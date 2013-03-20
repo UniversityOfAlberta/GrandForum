@@ -20,16 +20,20 @@ class ReviewResults extends SpecialPage {
 	
 	function run(){
 	    global $wgUser, $wgOut, $wgServer, $wgScriptPath;
+	    $type = "PNI";
+	    if(!empty($_GET['type']) && $_GET['type'] == 'CNI'){
+	    	$type = "CNI";
+	    }
+
 	    if(isset($_POST['submit'])){
 	    	ReviewResults::handleSubmit();
-	    }else if(!empty($_GET['generatePDF'])){
-	    	$ni_id = $_GET['generatePDF'];
-	    	ReviewResults::generateAllFeedback();
-	    	//ReviewResults::generateFeedback($ni_id);
-	    	exit;
 	    }
-	    ReviewResults::reviewResults('PNI');
-	    //$wgOut->addHTML();
+	    else if(isset($_GET['generatePDF'])){
+	    	ReviewResults::generateAllFeedback($type);
+		    exit;
+	    }
+
+	    ReviewResults::reviewResults($type);
 	}
 
 	
@@ -48,11 +52,17 @@ class ReviewResults extends SpecialPage {
 		if(!empty($type) && !empty($year) && !empty($nis)){
 			
 			foreach($nis as $ni_id => $ni_data){
-				$allocated_amount = (!empty($ni_data['allocated_amount']))? $ni_data['allocated_amount'] : 0;
-				$overall_score = (!empty($ni_data['overall_score']))? $ni_data['overall_score'] : 0;
-				if(empty($ni_data['allocated_amount']) && empty($ni_data['overall_score'])){
-					continue;
+				$allocated_amount = (isset($ni_data['allocated_amount']))? $ni_data['allocated_amount'] : 0;
+				if(isset($ni_data['allocated_amount']) && !empty($ni_data['allocated_amount'])){
+					$allocated_amount = $ni_data['allocated_amount'];
 				}
+				else{
+					$allocated_amount = 0;
+				}
+				$overall_score = (isset($ni_data['overall_score']))? $ni_data['overall_score'] : "";
+				//if(empty($ni_data['allocated_amount']) && empty($ni_data['overall_score'])){
+				//	continue;
+				//}
 
 				$query =<<<EOF
 				INSERT INTO grand_review_results (user_id, type, year, allocated_amount, overall_score)
@@ -71,10 +81,10 @@ EOF;
 		}
 		
 		if($result){
-			$wgMessage->addSuccess("Review Results updated successfully!");
+			$wgMessage->addSuccess("{$type} Review Results updated successfully!");
 		}
 		else{
-			$wgMessage->addError("There was a problem with saving Review Results. Please contact support if the problem persists.");
+			$wgMessage->addError("There was a problem with saving {$type} Review Results. Please contact support if the problem persists.");
 		}
 	}
 
@@ -92,9 +102,11 @@ EOF;
         return $data;
     }
 
-    static function generateAllFeedback(){
-    	$type = "PNI";
-    	$nis = Person::getAllEvaluates('PNI'); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+    static function generateAllFeedback($type){
+    	if($type != "CNI"){
+    		$type = "PNI";
+    	}
+    	$nis = Person::getAllEvaluates($type); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
 
     	foreach ($nis as $ni) {
     		$ni_id = $ni->getId();
@@ -279,7 +291,14 @@ EOF;
 		}
 
 		$curr_year = REPORTING_YEAR;
-		$nis = Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+		$nis = Person::getAllEvaluates($type); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+
+		$nis_sorted = array();
+		foreach ($nis as $ni){
+			$ni_rev_name = $ni->getReversedName();
+			$nis_sorted[$ni_rev_name] = $ni;
+		}
+		ksort($nis_sorted);
 
 		$query = "SELECT * FROM grand_review_results WHERE year={$curr_year} AND type='{$type}'";
 		$data = DBFunctions::execSQL($query);
@@ -333,7 +352,7 @@ EOF;
 			}
 			</style>
 			<h3>RMC Review Results ({$type})</h3>
-			<form id="resultsForm" action='$wgServer$wgScriptPath/index.php/Special:ReviewResults' method='post'>
+			<form id="resultsForm" action='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type={$type}' method='post'>
 			
 			<table width='70%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
 			<tr>
@@ -342,16 +361,16 @@ EOF;
 			<th width="30%">Overall Score</th>
 			</tr>
 EOF;
-			foreach ($nis as $ni) {
+			foreach ($nis_sorted as $ni_name => $ni) {
 				$ni_id = $ni->getId();
-				$ni_name = $ni->getNameForForms();
+				//$ni_name = $ni->getNameForForms();
 				$allocated_amount = "";
 				$overall_score = "";
 				if(isset($fetched[$ni_id])){
-					if(!empty($fetched[$ni_id]['allocated_amount'])){
+					if(isset($fetched[$ni_id]['allocated_amount'])){
 						$allocated_amount = $fetched[$ni_id]['allocated_amount'];
 					}
-					if(!empty($fetched[$ni_id]['overall_score'])){
+					if(isset($fetched[$ni_id]['overall_score'])){
 						$overall_score = $fetched[$ni_id]['overall_score'];
 					}
 				}
