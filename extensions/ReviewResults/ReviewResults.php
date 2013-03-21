@@ -168,7 +168,7 @@ EOF;
         </div>
 
         <h3>Scores and Feedback:</h3>
-        <p style="font-size:110%;">Overall Score: {$overall_score}</p>
+        <p style="font-size:105%; font-weight:bold; padding: 10px 0;">Overall Score: {$overall_score}</p>
 EOF;
 
         $sections = array(
@@ -187,7 +187,7 @@ EOF;
         foreach ($sections as $sec_name => $sec_addr){
         	$html .=<<<EOF
         	<h3>{$sec_name}</h3>
-        	<table cellpadding="4" style="page-break-inside: avoid;" width="100%">
+        	<table cellpadding="4" style="page-break-inside: avoid;" width="100%" align="left;">
 EOF;
 			$ev_count = 1;
 
@@ -248,7 +248,7 @@ EOF;
 		//General Comments
 		$html .=<<<EOF
         	<h3>General Comments</h3>
-        	<table cellpadding="4" width="100%">
+        	<table cellpadding="4" width="100%" align="left;">
 EOF;
 		$ev_count = 1;
 		foreach($evaluators as $eval){
