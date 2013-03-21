@@ -168,7 +168,7 @@ EOF;
         </div>
 
         <h3>Scores and Feedback:</h3>
-        <h4 style="font-size:110%;">Overall Score: {$overall_score}</h4>
+        <p style="font-size:110%;">Overall Score: {$overall_score}</p>
 EOF;
 
         $sections = array(
@@ -222,13 +222,13 @@ EOF;
         		$comments = implode("<br />", $coms);
         		$html .=<<<EOF
     	    	<tr>
-    	    	<td width="22%" style="padding-right:30px;"><strong>Reviewer {$ev_count}</strong></td>
-    	    	<td width="23%" style="padding-right:35px;"><i>Score:</i></td>
+    	    	<td width="22%" style="padding-right:10px;"><strong>Reviewer {$ev_count}</strong></td>
+    	    	<td width="23%" style="padding-right:15px;"><i>Score:</i></td>
     	    	<td><i>Comments:</i></td>
         		</tr>
         		<tr>
-    	    	<td style="padding-right:30px;">&nbsp;</td>
-    	    	<td style="padding-right:35px;">{$score}</td>
+    	    	<td width="22%" style="padding-right:10px;">&nbsp;</td>
+    	    	<td width="23%" style="padding-right:15px;">{$score}</td>
     	    	<td>{$comments}</td>
         		</tr>
 EOF;
@@ -248,7 +248,7 @@ EOF;
 		//General Comments
 		$html .=<<<EOF
         	<h3>General Comments</h3>
-        	<table cellpadding="4">
+        	<table cellpadding="4" width="100%">
 EOF;
 		$ev_count = 1;
 		foreach($evaluators as $eval){
@@ -264,8 +264,8 @@ EOF;
     		$comment = nl2br($comment);
         	$html .=<<<EOF
     	    	<tr>
-    	    	<td width="22%" style="padding-right:30px;"><strong>Reviewer {$ev_count}</strong></td>
-    	    	<td width="23%" style="padding-right:35px;"><i>Comments:</i></td>
+    	    	<td width="22%" style="padding-right:10px;"><strong>Reviewer {$ev_count}</strong></td>
+    	    	<td width="23%" style="padding-right:15px;"><i>Comments:</i></td>
     	    	<td>{$comment}</td>
         		</tr>
 EOF;
