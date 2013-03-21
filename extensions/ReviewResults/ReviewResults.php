@@ -248,7 +248,7 @@ EOF;
 
 		//General Comments
 		$html .=<<<EOF
-			<div>
+			<div style="page-break-inside: avoid;">
         	<h3>General Comments</h3>
         	<table cellpadding="4" width="100%" align="left;">
 EOF;
