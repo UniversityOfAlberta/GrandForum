@@ -249,7 +249,7 @@ EOF;
 		//General Comments
 		$html .=<<<EOF
         	<h3 style="page-break-after: avoid;">General Comments</h3>
-        	<table cellpadding="4" width="100%" align="left;">
+        	<table cellpadding="4" width="100%" align="left;" style="page-break-before: avoid;">
 EOF;
 		$ev_count = 1;
 		foreach($evaluators as $eval){
