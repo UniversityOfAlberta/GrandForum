@@ -29,8 +29,9 @@ class ReviewResults extends SpecialPage {
 	    	ReviewResults::handleSubmit();
 	    }
 	    else if(isset($_GET['generatePDF'])){
-	    	ReviewResults::generateAllFeedback($type);
-		    //ReviewResults::generateFeedback(30,$type);
+	    	//ReviewResults::generateAllFeedback($type);
+	    	$ni_id = $_GET['generatePDF'];
+		    ReviewResults::generateFeedback($ni_id, $type);
 		    exit;
 	    }
 
@@ -124,11 +125,14 @@ EOF;
 
 		$ni = Person::newFromId($ni_id);
 		$curr_year = REPORTING_YEAR;
+		$boilerplate = "";
 		if($type == "PNI"){
 			$rtype = RP_EVAL_RESEARCHER;
+			$boilerplate = "There were 62 PNIs evaluated in this review cycle. Funding allocations for 2013-14 were made in four tiers:  Top Tier: $50,000 (17 PNIs); Upper Middle Tier: $40,000 (26 PNIs); Lower Middle Tier: $30,000 (12 PNIs); and Bottom Tier: $25,000 (3 PNIs plus an additional 4 PNIs who requested $25K or less). Note that while the total amount of research funding allocated to PNIs is the same for 2013-14 as it was for 2012-13, the funding levels for the upper tiers are slightly lower, largely as a result of more PNIs achieving higher scores from reviewers. As more researchers gravitated toward the upper tiers, a fixed budget required the funding amounts corresponding to those tiers to be reduced accordingly.";
 		}
 		else if($type == "CNI"){
 			$rtype = RP_EVAL_CNI;
+			$boilerplate = "GENERIC CNI BOILERPLATE TEXT.";
 		}
 
 		$query = "SELECT * FROM grand_review_results WHERE year={$curr_year} AND user_id={$ni_id}";
@@ -160,10 +164,11 @@ EOF;
         </div>
         <div>
         <h3>Description of Overall Process and Results:</h3>
-        <p>boilerplate text. may be slightly different for PNIs and CNIs, but will be the same for all members of each group</p>
+        <p>{$boilerplate}</p>
         </div>
 
         <h3>Scores and Feedback:</h3>
+        <h4 style="font-size:110%;">Overall Score: {$overall_score}</h4>
 EOF;
 
         $sections = array(
@@ -182,7 +187,7 @@ EOF;
         foreach ($sections as $sec_name => $sec_addr){
         	$html .=<<<EOF
         	<h3>{$sec_name}</h3>
-        	<table cellpadding="4">
+        	<table cellpadding="4" style="page-break-inside: avoid;" width="100%">
 EOF;
 			$ev_count = 1;
 
@@ -217,13 +222,13 @@ EOF;
         		$comments = implode("<br />", $coms);
         		$html .=<<<EOF
     	    	<tr>
-    	    	<td width="22%" style="padding-right:25px;"><strong>Reviewer {$ev_count}</strong></td>
-    	    	<td width="26%" style="padding-right:30px;"><i>Score:</i></td>
+    	    	<td width="22%" style="padding-right:30px;"><strong>Reviewer {$ev_count}</strong></td>
+    	    	<td width="23%" style="padding-right:35px;"><i>Score:</i></td>
     	    	<td><i>Comments:</i></td>
         		</tr>
         		<tr>
-    	    	<td width="22%" style="padding-right:25px;">&nbsp;</td>
-    	    	<td width="26%" style="padding-right:30px;">{$score}</td>
+    	    	<td style="padding-right:30px;">&nbsp;</td>
+    	    	<td style="padding-right:35px;">{$score}</td>
     	    	<td>{$comments}</td>
         		</tr>
 EOF;
@@ -237,7 +242,7 @@ EOF;
     	
     	//Overall Score
     	$html .=<<<EOF
-        	<h3>Overall Score: {$overall_score}</h3>
+        	
 EOF;
 
 		//General Comments
@@ -259,14 +264,15 @@ EOF;
     		$comment = nl2br($comment);
         	$html .=<<<EOF
     	    	<tr>
-    	    	<td width="22%" style="padding-right:25px;"><strong>Reviewer {$ev_count}</strong></td>
-    	    	<td width="22%" style="padding-right:30px;"><i>Comments:</i></td>
+    	    	<td width="22%" style="padding-right:30px;"><strong>Reviewer {$ev_count}</strong></td>
+    	    	<td width="23%" style="padding-right:35px;"><i>Comments:</i></td>
     	    	<td>{$comment}</td>
         		</tr>
 EOF;
 			$ev_count++;
         }
 
+        $html .="</table>";
 
         //echo $html;
 
