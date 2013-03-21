@@ -187,7 +187,7 @@ EOF;
         foreach ($sections as $sec_name => $sec_addr){
         	$html .=<<<EOF
         	<h3>{$sec_name}</h3>
-        	<table cellpadding="4" style="page-break-inside: avoid;" width="100%" align="left;">
+        	<table cellpadding="4" style="page-break-inside: avoid; margin-bottom:15px;" width="100%" align="left;">
 EOF;
 			$ev_count = 1;
 
@@ -248,6 +248,7 @@ EOF;
 
 		//General Comments
 		$html .=<<<EOF
+			<div>
         	<h3>General Comments</h3>
         	<table cellpadding="4" width="100%" align="left;">
 EOF;
@@ -273,7 +274,7 @@ EOF;
 			$ev_count++;
         }
 
-        $html .="</table>";
+        $html .="</table></div>";
 
         //echo $html;
 
