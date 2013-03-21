@@ -168,7 +168,7 @@ EOF;
         </div>
 
         <h3>Scores and Feedback:</h3>
-        <p style="font-size:105%; font-weight:bold; padding: 10px 0;">Overall Score: {$overall_score}</p>
+        <p style="font-size:105%; font-weight:bold; margin: 15px 0 10px 0;">Overall Score: {$overall_score}</p>
 EOF;
 
         $sections = array(
@@ -222,13 +222,13 @@ EOF;
         		$comments = implode("<br />", $coms);
         		$html .=<<<EOF
     	    	<tr>
-    	    	<td width="22%" style="padding-right:10px;"><strong>Reviewer {$ev_count}</strong></td>
-    	    	<td width="23%" style="padding-right:15px;"><i>Score:</i></td>
+    	    	<td width="11%"><strong>Reviewer {$ev_count}</strong></td>
+    	    	<td width="13%"><i>Score:</i></td>
     	    	<td><i>Comments:</i></td>
         		</tr>
         		<tr>
-    	    	<td width="22%" style="padding-right:10px;">&nbsp;</td>
-    	    	<td width="23%" style="padding-right:15px;">{$score}</td>
+    	    	<td width="11%">&nbsp;</td>
+    	    	<td width="13%">{$score}</td>
     	    	<td>{$comments}</td>
         		</tr>
 EOF;
@@ -237,6 +237,7 @@ EOF;
 
       		$html .=<<<EOF
         	</table>
+        	<br />
 EOF;
         }
     	
@@ -264,8 +265,8 @@ EOF;
     		$comment = nl2br($comment);
         	$html .=<<<EOF
     	    	<tr>
-    	    	<td width="22%" style="padding-right:10px;"><strong>Reviewer {$ev_count}</strong></td>
-    	    	<td width="23%" style="padding-right:15px;"><i>Comments:</i></td>
+    	    	<td width="11%"><strong>Reviewer {$ev_count}</strong></td>
+    	    	<td width="13%"><i>Comments:</i></td>
     	    	<td>{$comment}</td>
         		</tr>
 EOF;
