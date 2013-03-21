@@ -248,8 +248,7 @@ EOF;
 
 		//General Comments
 		$html .=<<<EOF
-			<div style="page-break-inside: avoid;">
-        	<h3>General Comments</h3>
+        	<h3 style="page-break-after: avoid;">General Comments</h3>
         	<table cellpadding="4" width="100%" align="left;">
 EOF;
 		$ev_count = 1;
@@ -274,7 +273,7 @@ EOF;
 			$ev_count++;
         }
 
-        $html .="</table></div>";
+        $html .="</table>";
 
         //echo $html;
 
