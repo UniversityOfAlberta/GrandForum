@@ -69,7 +69,6 @@ class ReviewResults extends SpecialPage {
 		$query =<<<EOF
 		SELECT * FROM grand_review_results
 		WHERE year={$curr_year} AND type = '{$type}' AND email_sent = 0
-		LIMIT 5
 EOF;
 	
 		$sent_success = array();
@@ -118,7 +117,7 @@ EOF;
 		global $wgUser, $wgMessage;
 		$ni = Person::newFromId($ni_id);
 		$ni_name = $ni->getName();
-		$ni_email = "dgolovan@ualberta.ca";// $ni->getEmail();
+		$ni_email = $ni->getEmail();
 		$ni_name_good = $ni->getNameForForms();
 
 		$to = $ni_email; 
@@ -545,6 +544,7 @@ EOF;
 				$allocated_amount = "";
 				$overall_score = "";
 				$email_sent = "Email Not Sent";
+				$email_sent_bg = "background-color: red;";
 				if(isset($fetched[$ni_id])){
 					if(isset($fetched[$ni_id]['allocated_amount'])){
 						$allocated_amount = $fetched[$ni_id]['allocated_amount'];
@@ -554,6 +554,7 @@ EOF;
 					}
 					if(isset($fetched[$ni_id]['email_sent']) &&  $fetched[$ni_id]['email_sent'] == 1){
 						$email_sent = "Email Sent";
+						$email_sent_bg = "background-color: green;";
 					}
 				}
 				if(file_exists("/local/data/www-root/grand_forum/data/review-feedback/{$filename}.March2013.pdf")){
@@ -567,7 +568,7 @@ EOF;
 				<td><input type="text" name="ni[{$ni_id}][allocated_amount]" value="{$allocated_amount}" class="number" /></td>
 				<td><input type="text" name="ni[{$ni_id}][overall_score]" value="{$overall_score}" /></td>
 				<td align="center">{$file_link}</td>
-				<td align="center">{$email_sent}</td>
+				<td align="center"><span style="padding:5px; {$email_sent_bg}">{$email_sent}</span></td>
 				</tr>
 EOF;
 
