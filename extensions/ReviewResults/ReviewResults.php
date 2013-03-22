@@ -34,6 +34,19 @@ class ReviewResults extends SpecialPage {
 		    //ReviewResults::generateFeedback($ni_id, $type);
 		    exit;
 	    }
+	    else if(isset($_GET['getPDF'])){
+	    	$filename = $_GET['getPDF'] .".March2013.pdf";
+	    	$file = '/local/data/www-root/grand_forum/data/review-feedback/{$filename}';
+	    	if(file_exists($file)){
+		    	header('Content-type: application/pdf');
+				header('Content-Disposition: inline; filename="' . $filename . '"');
+				header('Content-Transfer-Encoding: binary');
+				header('Content-Length: ' . filesize($file));
+				header('Accept-Ranges: bytes');
+
+				@readfile($file);
+			}
+	    }
 
 	    ReviewResults::reviewResults($type);
 	}
@@ -282,6 +295,7 @@ EOF;
         try {
             $pdf = PDFGenerator::generate("Report" , $html, "", null, false);
             $filename = $ni->getName();
+            $filename .= ".March2013";
             //var_dump($pdf);
             file_put_contents("/local/data/www-root/grand_forum/data/review-feedback/{$filename}.pdf", $pdf['pdf']);
         }
@@ -370,15 +384,19 @@ EOF;
 			<h3>RMC Review Results ({$type})</h3>
 			<form id="resultsForm" action='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type={$type}' method='post'>
 			
-			<table width='70%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
+			<table width='90%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
 			<tr>
 			<th>NI Name</th>
 			<th width="30%">Allocated Amount</th>
 			<th width="30%">Overall Score</th>
+			<th width="15%">Feedback PDF</th>
+			<th width="15%">Email</th>
 			</tr>
 EOF;
 			foreach ($nis_sorted as $ni_name => $ni) {
 				$ni_id = $ni->getId();
+				$filename = $ni->getName();
+
 				//$ni_name = $ni->getNameForForms();
 				$allocated_amount = "";
 				$overall_score = "";
@@ -390,11 +408,18 @@ EOF;
 						$overall_score = $fetched[$ni_id]['overall_score'];
 					}
 				}
+				if(file_exists("/local/data/www-root/grand_forum/data/review-feedback/{$filename}.March2013.pdf")){
+					$file_link = "<a href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?getPDF={$filename}' target='_blank'>Download</a>"; 
+				}else{
+					$file_link = "No PDF found";
+				}
 				$html .=<<<EOF
 				<tr>
 				<td>{$ni_name}</td>
 				<td><input type="text" name="ni[{$ni_id}][allocated_amount]" value="{$allocated_amount}" class="number" /></td>
 				<td><input type="text" name="ni[{$ni_id}][overall_score]" value="{$overall_score}" /></td>
+				<td align="center">{$file_link}</td>
+				<td>Not Sent</td>
 				</tr>
 EOF;
 
