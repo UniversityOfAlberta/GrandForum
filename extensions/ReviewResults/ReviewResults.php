@@ -29,9 +29,9 @@ class ReviewResults extends SpecialPage {
 	    	ReviewResults::handleSubmit();
 	    }
 	    else if(isset($_GET['generatePDF'])){
-	    	//ReviewResults::generateAllFeedback($type);
-	    	$ni_id = $_GET['generatePDF'];
-		    ReviewResults::generateFeedback($ni_id, $type);
+	    	ReviewResults::generateAllFeedback($type);
+	    	//$ni_id = $_GET['generatePDF'];
+		    //ReviewResults::generateFeedback($ni_id, $type);
 		    exit;
 	    }
 
