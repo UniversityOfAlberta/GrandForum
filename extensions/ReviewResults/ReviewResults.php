@@ -26,7 +26,13 @@ class ReviewResults extends SpecialPage {
 	    }
 
 	    if(isset($_POST['submit'])){
-	    	ReviewResults::handleSubmit();
+	    	$submit_val = $_POST['submit'];
+	    	if($submit_val == "Send out Emails"){
+	    		ReviewResults::emailAllPDFs($type);
+	    	}
+	    	else{
+		    	ReviewResults::handleSubmit();
+			}
 	    }
 	    else if(isset($_GET['generatePDF'])){
 	    	ReviewResults::generateAllFeedback($type);
@@ -49,10 +55,63 @@ class ReviewResults extends SpecialPage {
 	    }
 	    else if(isset($_GET['emailPDF'])){
 	    	$ni_id = $_GET['emailPDF'];
-	    	 ReviewResults::emailPDF($ni_id, $type);
+	    	ReviewResults::emailPDF($ni_id, $type);
 	    }
+	    
 
 	    ReviewResults::reviewResults($type);
+	}
+
+	static function emailAllPDFs($type){
+		global $wgUser, $wgMessage;
+		$curr_year = REPORTING_YEAR;
+
+		$query =<<<EOF
+		SELECT * FROM grand_review_results
+		WHERE year={$curr_year} AND type = '{$type}' AND email_sent = 0
+		LIMIT 5
+EOF;
+	
+		$sent_success = array();
+		$sent_fail = array();
+		$file_fail = array();
+
+		$data = DBFunctions::execSQL($query);
+	    foreach($data as $row){
+	    	$ni_id = $row['user_id'];
+	    	$ni = Person::newFromId($ni_id);
+	    	$ni_name = $ni->getNameForForms();
+
+	    	$error = ReviewResults::emailPDF($ni_id, $type);
+	    	if($error == 0){
+	    		$sent_success[] = $ni_name;
+	    	}
+	    	else if($error == 1){
+	    		$sent_fail[] = $ni_name;
+	    	}
+	    	else if($error == 2){
+	    		$file_fail[] = $ni_name;
+	    	}
+
+	    }
+	    if(!empty($sent_success)){
+	    	$message = "Email was sent successfully to the following:<br />";
+	    	$message .= implode("<br />", $sent_success);
+	    	$wgMessage->addSuccess($message);
+	    }
+
+	    if(!empty($sent_fail)){
+	    	$message = "There was a problem sending emails to the following:<br />";
+	    	$message .= implode("<br />", $sent_fail);
+	    	$wgMessage->addError($message);
+	    }
+
+	    if(!empty($file_fail)){
+	    	$message = "There was a problem retrieving PDFs for the following:<br />";
+	    	$message .= implode("<br />", $file_fail);
+	    	$wgMessage->addError($message);
+	    }
+
 	}
 
 	static function emailPDF($ni_id, $type){
@@ -63,22 +122,24 @@ class ReviewResults extends SpecialPage {
 		$ni_name_good = $ni->getNameForForms();
 
 		$to = $ni_email; 
-		$subject = "RMC Feedback";
+		$subject = "GRAND PNI Allocations 2013-14";
 		
 		$email_body =<<<EOF
 Dear {$ni_name_good},
 
-Please find attached a PDF with the feedback from the RMC meeting.
+Please find attached a PDF with your GRAND PNI Research Funding Allocation for 2013-14, along with reviewer feedback from the Research Management Committee.
 
-Best,
+Best Regards,
 Adrian Sheppard
 EOF;
 		
 		$from = "Adrian Sheppard <adrian_sheppard@gnwc.ca>";
 		$filename = "{$ni_name}.March2013.pdf";
 		$file = "/local/data/www-root/grand_forum/data/review-feedback/{$filename}";
-		$file_content = file_get_contents($file);
+		$file_content = @file_get_contents($file);
 		
+		$error_code = 0; //If all is good return 0;
+
 		if($file_content !== false){
 			$success = ReviewResults::mail_attachment($file_content, $filename, $to, $from, $subject, $email_body);
 			if($success){
@@ -91,17 +152,20 @@ EOF;
 EOF;
 				$result = DBFunctions::execSQL($query, true);
 
-				$wgMessage->addSuccess("Email has been sent successfully!");
+				//$wgMessage->addSuccess("Email has been sent successfully!");
+			
 			}
 			else{
-				$wgMessage->addError("There was a problem with sending the email.");
+				$error_code = 1; 
+				//$wgMessage->addError("There was a problem with sending the email.");
 			}
 		}
 		else{
-			$wgMessage->addError("There was a problem with reading the PDF file.");
+			$error_code = 2;
+			//$wgMessage->addError("There was a problem with reading the PDF file.");
 		}
 
-
+		return $error_code;
 	}
 	
 	static function mail_attachment($content, $filename, $to, $from, $subject, $message) {
@@ -416,7 +480,7 @@ EOF;
 		$fetched = array();
 		foreach($data as $row){
             $id = $row['user_id'];
-            $fetched[$id] = array('allocated_amount'=>$row['allocated_amount'], 'overall_score'=>$row['overall_score']);    
+            $fetched[$id] = array('allocated_amount'=>$row['allocated_amount'], 'overall_score'=>$row['overall_score'], 'email_sent'=>$row['email_sent']);    
         }
 
        
@@ -480,12 +544,16 @@ EOF;
 				//$ni_name = $ni->getNameForForms();
 				$allocated_amount = "";
 				$overall_score = "";
+				$email_sent = "Email Not Sent";
 				if(isset($fetched[$ni_id])){
 					if(isset($fetched[$ni_id]['allocated_amount'])){
 						$allocated_amount = $fetched[$ni_id]['allocated_amount'];
 					}
 					if(isset($fetched[$ni_id]['overall_score'])){
 						$overall_score = $fetched[$ni_id]['overall_score'];
+					}
+					if(isset($fetched[$ni_id]['email_sent']) &&  $fetched[$ni_id]['email_sent'] == 1){
+						$email_sent = "Email Sent";
 					}
 				}
 				if(file_exists("/local/data/www-root/grand_forum/data/review-feedback/{$filename}.March2013.pdf")){
@@ -499,7 +567,7 @@ EOF;
 				<td><input type="text" name="ni[{$ni_id}][allocated_amount]" value="{$allocated_amount}" class="number" /></td>
 				<td><input type="text" name="ni[{$ni_id}][overall_score]" value="{$overall_score}" /></td>
 				<td align="center">{$file_link}</td>
-				<td>Not Sent</td>
+				<td align="center">{$email_sent}</td>
 				</tr>
 EOF;
 
@@ -511,6 +579,7 @@ EOF;
 			<input type='hidden' name='ni_type' value='{$type}' />
 			<input type='hidden' name='year' value='{$curr_year}' />
 			<input type='submit' name='submit' value='Submit' />
+			<input type='submit' name='submit' value='Send out Emails' />
 			</form>
 EOF;
 
