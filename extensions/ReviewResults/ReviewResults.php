@@ -36,7 +36,7 @@ class ReviewResults extends SpecialPage {
 	    }
 	    else if(isset($_GET['getPDF'])){
 	    	$filename = $_GET['getPDF'] .".March2013.pdf";
-	    	$file = '/local/data/www-root/grand_forum/data/review-feedback/{$filename}';
+	    	$file = "/local/data/www-root/grand_forum/data/review-feedback/{$filename}";
 	    	if(file_exists($file)){
 		    	header('Content-type: application/pdf');
 				header('Content-Disposition: inline; filename="' . $filename . '"');
