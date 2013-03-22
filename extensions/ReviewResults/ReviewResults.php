@@ -47,11 +47,91 @@ class ReviewResults extends SpecialPage {
 				@readfile($file);
 			}
 	    }
+	    else if(isset($_GET['emailPDF'])){
+	    	$ni_id = $_GET['emailPDF'];
+	    	 ReviewResults::emailPDF($ni_id, $type);
+	    }
 
 	    ReviewResults::reviewResults($type);
 	}
 
+	static function emailPDF($ni_id, $type){
+		global $wgUser, $wgMessage;
+		$ni = Person::newFromId($ni_id);
+		$ni_name = $ni->getName();
+		$ni_email = "dgolovan@ualberta.ca";// $ni->getEmail();
+		$ni_name_good = $ni->getNameForForms();
+
+		$to = $ni_email; 
+		$subject = "RMC Feedback";
+		
+		$email_body =<<<EOF
+Dear {$ni_name_good},
+
+Please find attached a PDF with the feedback from the RMC meeting.
+
+Best,
+Adrian Sheppard
+EOF;
+		
+		$from = "Adrian Sheppard <adrian_sheppard@gnwc.ca>";
+		$filename = "{$ni_name}.March2013.pdf";
+		$file = "/local/data/www-root/grand_forum/data/review-feedback/{$filename}";
+		$file_content = file_get_contents($file);
+		
+		if($file_content !== false){
+			$success = ReviewResults::mail_attachment($file_content, $filename, $to, $from, $subject, $email_body);
+			if($success){
+				//Update the NI record that the email was sent out.
+				$curr_year = REPORTING_YEAR;
+				$query =<<<EOF
+				UPDATE grand_review_results
+				SET email_sent = 1
+				WHERE user_id = {$ni_id} AND type = '{$type}' AND year = {$curr_year}
+EOF;
+				$result = DBFunctions::execSQL($query, true);
+
+				$wgMessage->addSuccess("Email has been sent successfully!");
+			}
+			else{
+				$wgMessage->addError("There was a problem with sending the email.");
+			}
+		}
+		else{
+			$wgMessage->addError("There was a problem with reading the PDF file.");
+		}
+
+
+	}
 	
+	static function mail_attachment($content, $filename, $to, $from, $subject, $message) {
+
+	    $content = chunk_split(base64_encode($content));
+	    $uid = md5(uniqid(time()));
+	   
+	    $header = "From: ".$from."\r\n";
+	    //$header .= "Cc: ".$cc."\r\n";
+	    $header .= "Reply-To: ".$from."\r\n";
+	    $header .= "MIME-Version: 1.0\r\n";
+	    $header .= "Content-Type: multipart/mixed; boundary=\"".$uid."\"\r\n\r\n";
+	    $header .= "This is a multi-part message in MIME format.\r\n";
+	    $header .= "--".$uid."\r\n";
+	    $header .= "Content-type:text/plain; charset=iso-8859-1\r\n";
+	    $header .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+	    $header .= $message."\r\n\r\n";
+	    $header .= "--".$uid."\r\n";
+	    $header .= "Content-Type: application/octet-stream; name=\"".$filename."\"\r\n"; // use different content types here
+	    $header .= "Content-Transfer-Encoding: base64\r\n";
+	    $header .= "Content-Disposition: attachment; filename=\"".$filename."\"\r\n\r\n";
+	    $header .= $content."\r\n\r\n";
+	    $header .= "--".$uid."--";
+	    if (mail($to, $subject, "", $header)) {
+	        return true;
+	    } else {
+	        return false;
+	    }
+	}
+
 	static function handleSubmit(){
 		global $wgUser, $wgMessage;
 
