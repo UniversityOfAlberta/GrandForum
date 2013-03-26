@@ -558,7 +558,7 @@ EOF;
 					}
 				}
 				if(file_exists("/local/data/www-root/grand_forum/data/review-feedback/{$type}/{$filename}.March2013.pdf")){
-					$file_link = "<a href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?getPDF={$filename}' target='_blank'>Download</a>"; 
+					$file_link = "<a href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type={$type}&getPDF={$filename}' target='_blank'>Download</a>"; 
 				}else{
 					$file_link = "No PDF found";
 				}
