@@ -42,7 +42,7 @@ class ReviewResults extends SpecialPage {
 	    }
 	    else if(isset($_GET['getPDF'])){
 	    	$filename = $_GET['getPDF'] .".March2013.pdf";
-	    	$file = "/local/data/www-root/grand_forum/data/review-feedback/{$filename}";
+	    	$file = "/local/data/www-root/grand_forum/data/review-feedback/{$type}/{$filename}";
 	    	if(file_exists($file)){
 		    	header('Content-type: application/pdf');
 				header('Content-Disposition: inline; filename="' . $filename . '"');
@@ -134,7 +134,7 @@ EOF;
 		
 		$from = "Adrian Sheppard <adrian_sheppard@gnwc.ca>";
 		$filename = "{$ni_name}.March2013.pdf";
-		$file = "/local/data/www-root/grand_forum/data/review-feedback/{$filename}";
+		$file = "/local/data/www-root/grand_forum/data/review-feedback/{$type}/{$filename}";
 		$file_content = @file_get_contents($file);
 		
 		$error_code = 0; //If all is good return 0;
@@ -288,7 +288,7 @@ EOF;
 		}
 		else if($type == "CNI"){
 			$rtype = RP_EVAL_CNI;
-			$boilerplate = "GENERIC CNI BOILERPLATE TEXT.";
+			$boilerplate = "There were 80 CNIs evaluated in this review cycle. Some CNIs had two reviewers and others had only one reviewer; this was determined based on whether the amount of funding received in 2012-13 met a certain threshold amount. Funding allocations are based on the scores from the review, in conjunction with the funding request and the amount awarded for 2012-13. There was a limit placed on the incremental increase a CNI could be awarded over the previous year. The largest amount of funding awarded to any CNI for 2013-14 was $25,000 (9 CNIs). The total amount of research funding allocated to CNIs for 2013-14 is the same as it was for 2012-13.";
 		}
 
 		$query = "SELECT * FROM grand_review_results WHERE year={$curr_year} AND user_id={$ni_id}";
@@ -440,7 +440,7 @@ EOF;
             $filename = $ni->getName();
             $filename .= ".March2013";
             //var_dump($pdf);
-            file_put_contents("/local/data/www-root/grand_forum/data/review-feedback/{$filename}.pdf", $pdf['pdf']);
+            file_put_contents("/local/data/www-root/grand_forum/data/review-feedback/{$type}/{$filename}.pdf", $pdf['pdf']);
         }
         catch(DOMPDF_Internal_Exception $e){
             echo "ERROR!!!";
@@ -557,7 +557,7 @@ EOF;
 						$email_sent_bg = "background-color: green;";
 					}
 				}
-				if(file_exists("/local/data/www-root/grand_forum/data/review-feedback/{$filename}.March2013.pdf")){
+				if(file_exists("/local/data/www-root/grand_forum/data/review-feedback/{$type}/{$filename}.March2013.pdf")){
 					$file_link = "<a href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?getPDF={$filename}' target='_blank'>Download</a>"; 
 				}else{
 					$file_link = "No PDF found";
