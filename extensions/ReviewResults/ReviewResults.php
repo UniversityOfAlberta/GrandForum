@@ -126,7 +126,7 @@ EOF;
 		$email_body =<<<EOF
 Dear {$ni_name_good},
 
-Please find attached a PDF with your GRAND PNI Research Funding Allocation for 2013-14, along with reviewer feedback from the Research Management Committee.
+Please find attached a PDF with your GRAND {$type} Research Funding Allocation for 2013-14, along with reviewer feedback from the Research Management Committee.
 
 Best Regards,
 Adrian Sheppard
