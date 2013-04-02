@@ -289,6 +289,10 @@ EOF;
 
             $comments = (isset($row['comments']))? $row['comments'] : $comments;
         }
+        else{
+        	$wgOut->addHTML("<p>Unfortunately you are not allowed to access the Travel Form.</p>");
+        	return;
+        }
 
         $male_checked = $female_checked = $aisle_checked = $middle_checked = $window_checked = "";
         if($gender == 'M'){
@@ -342,9 +346,9 @@ EOF;
 				
 				$("#travelForm").validate({
 				    rules: {
-				        return_date: { greaterThan: "#departure_date" },
+				        //return_date: { greaterThan: "#departure_date" },
 				        hotel_checkout: { greaterThan2: "#hotel_checkin" },
-				        hotel_checkin: { greaterThan: "#departure_date" },
+				        //hotel_checkin: { greaterThan: "#departure_date" },
 				    }
 				});
   			});
@@ -388,28 +392,28 @@ EOF;
 			<table width='100%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
 			<tr>
 			<td class='label'><span class="requ">*</span>First Name</td><td><input type='text' class="required" name='first_name' value='{$first_name}' /></td>
-			<td class='label'>Phone Number</td><td><input type='text' name='phone_number' value='{$phone_number}' /></td>
+			<td class='label'><span class="requ">*</span>Phone Number</td><td><input type='text' class="required" name='phone_number' value='{$phone_number}' /></td>
 			</tr>
 			<tr>
 			<td class='label'><span class="requ">*</span>Last Name</td><td><input type='text' class="required" name='last_name' value='{$last_name}'/></td>
-			<td class='label'>Gender</td>
+			<td class='label'><span class="requ">*</span>Gender</td>
 			<td>
-			<span style="white-space: nowrap;">Male <input type='radio' name='gender' value='M' {$male_checked} />&nbsp;&nbsp;Female <input type='radio' name='gender' value='F' {$female_checked} />
+			<span style="white-space: nowrap;">Male <input type='radio' class="required" name='gender' value='M' {$male_checked} />&nbsp;&nbsp;Female <input type='radio' class="required" name='gender' value='F' {$female_checked} />
 			</span>
 			</td>
 			</tr>
 			<tr>
 			<td class='label'><span class="requ">*</span>Email Address</td><td><input type='text' class="required email" name='email' value='{$email}' /></td>
-			<td class='label'>Date of Birth</td><td><input type='text' id='dob' name='dob' value='{$dob}' /></td>
+			<td class='label'><span class="requ">*</span>Date of Birth</td><td><input type='text' class="required" id='dob' name='dob' value='{$dob}' /></td>
 			</tr>
 			</table>
 			<br />
 			<table width='50%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
-			<tr><td class='label'><span class="requ">*</span>Leaving from (airport)</td><td><input type='text' class="required" name="leaving_from" value='{$leaving_from}' /></td></tr>
-			<tr><td class='label'><span class="requ">*</span>Going to (airport)</td><td><input type='text' class="required" name="going_to" value='{$going_to}' /></td></tr>
-			<tr><td class='label'><span class="requ">*</span>Departure Date</td><td><input type='text' id="departure_date" class="required" name="departure_date" value='{$departure_date}' /></td></tr>
+			<tr><td class='label'>Leaving from (airport)</td><td><input type='text' name="leaving_from" value='{$leaving_from}' /></td></tr>
+			<tr><td class='label'>Going to (airport)</td><td><input type='text' name="going_to" value='{$going_to}' /></td></tr>
+			<tr><td class='label'>Departure Date</td><td><input type='text' id="departure_date" name="departure_date" value='{$departure_date}' /></td></tr>
 			<tr><td class='label'>Departure Time</td><td><input type='text' name="departure_time" value='{$departure_time}' /></td></tr>
-			<tr><td class='label'><span class="requ">*</span>Return Date</td><td><input type='text' id="return_date" class="required" name="return_date" value='{$return_date}' /></td></tr>
+			<tr><td class='label'>Return Date</td><td><input type='text' id="return_date" name="return_date" value='{$return_date}' /></td></tr>
 			<tr><td class='label'>Return Time</td><td><input type='text' name="return_time" value='{$return_time}' /></td></tr>
 			</table>
 			<br />
