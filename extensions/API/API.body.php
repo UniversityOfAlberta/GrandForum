@@ -195,6 +195,7 @@ class APIRequest{
 		$actions['User Accounts']['deleteUserRole'] = new DeleteRoleAPI();
 		$actions['User Accounts']['deleteProjectLeader'] = new DeleteProjectLeaderAPI();
 		$actions['User Accounts']['deleteThemeLeader'] = new DeleteThemeLeaderAPI();
+		$actions['User Accounts']['updateUserEthics'] = new UserEthicsAPI();
 		//GET
 		$actions['User Accounts']['getResearcherInfo'] = new ResearcherAPI();
 		$actions['User Accounts']['getResearcherCompleteInfo'] = new ResearcherCompleteAPI();

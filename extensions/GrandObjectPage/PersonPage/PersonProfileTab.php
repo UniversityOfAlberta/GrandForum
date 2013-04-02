@@ -13,11 +13,13 @@ class PersonProfileTab extends AbstractEditableTab {
 
     function generateBody(){
         $this->showProfile($this->person, $this->visibility);
+        $this->showEthics($this->person, $this->visibility);
         return $this->html;
     }
     
     function generateEditBody(){
         $this->showEditProfile($this->person, $this->visibility);
+        $this->showEditEthics($this->person, $this->visibility);
     }
     
     function canEdit(){
@@ -34,6 +36,7 @@ class PersonProfileTab extends AbstractEditableTab {
         $_POST['type'] = "private";
         $_POST['profile'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['private_profile'])));
         APIRequest::doAction('UserProfile', true);
+        APIRequest::doAction('UserEthics', true);
     }
     
     /*
@@ -46,15 +49,74 @@ class PersonProfileTab extends AbstractEditableTab {
     
     function showEditProfile($person, $visibility){
         $this->html .= "<table>
-                                <tr>
-                                    <td align='right' valign='top'><b>GRAND Website:</b></td>
-                                    <td><textarea style='width:600px; height:150px;' name='public_profile'>{$person->getProfile(false)}</textarea></td>
-                                </tr>
-                                <tr>
-                                    <td align='right' valign='top'><b>GRAND Forum:</b></td>
-                                    <td><textarea style='width:600px; height:150px;' name='private_profile'>{$person->getProfile(true)}</textarea></td>
-                                </tr>
-                            </table>";
+                            <tr>
+                                <td align='right' valign='top'><b>GRAND Website:</b></td>
+                                <td><textarea style='width:600px; height:150px;' name='public_profile'>{$person->getProfile(false)}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td align='right' valign='top'><b>GRAND Forum:</b></td>
+                                <td><textarea style='width:600px; height:150px;' name='private_profile'>{$person->getProfile(true)}</textarea></td>
+                            </tr>
+                        </table>";
+    }
+
+    /*
+     * Displays the profile for this user
+     */
+    function showEthics($person, $visibility){
+        global $wgUser;
+        
+        $ethics = $person->getEthics();
+        $completed_tutorial = ($ethics['completed_tutorial'])? "Yes" : "No";
+        $date = ($ethics['date'] == '0000-00-00')? "" : $ethics['date'];
+        $ethics_str = "Have not completed the TCPS2 tutorial.";
+        if($completed_tutorial == "Yes"){
+            $ethics_str = "Have completed the TCPS2 tutorial on {$date}.";
+        }
+        $this->html .=<<<EOF
+            <h3>Ethics: {$ethics_str}</h3>
+EOF;
+
+    }
+    
+    function showEditEthics($person, $visibility){
+
+        $ethics = $person->getEthics();
+
+        if($ethics['completed_tutorial']){
+            $completed_tutorial_y = "checked='checked'";
+            $completed_tutorial_n = "";
+        }
+        else{
+            $completed_tutorial_n = "checked='checked'";
+            $completed_tutorial_y = "";
+        }
+
+        $date = ($ethics['date'] == '0000-00-00')? "" : $ethics['date'];
+
+        $this->html .=<<<EOF
+        <script>
+        $(function() {
+            $( "#datepicker" ).datepicker( { dateFormat: "yy-mm-dd" } );
+        });
+        </script>
+        <br /><br />
+        <table border='0' cellpadding='5' cellspacing='0'>
+        <tr><th align='left' style='padding-right:15px;'>I have completed the TCPS2 tutorial: </th>
+            <td>
+                Yes <input type='radio' value='1' name='completed_tutorial' {$completed_tutorial_y} />&nbsp;&nbsp;
+                No <input type='radio' value='0' name='completed_tutorial' {$completed_tutorial_n} />
+            </td>
+        </tr>
+        <tr>
+            <th align='left'>Date: </th>
+            <td width='10%'>
+                <input id='datepicker' name='date' type='text' value='{$date}' />
+            </td>
+        </tr>
+        </table>
+EOF;
+
     }
     
 }
