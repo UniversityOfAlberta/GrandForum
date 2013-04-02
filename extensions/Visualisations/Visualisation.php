@@ -1,5 +1,7 @@
 <?php
 
+require_once("AdminVisualizations/AdminVisualizations.php");
+
 // All visualisations go into this array.
 $visualisations = array('Timeline' => array("name" => "Timeline",
                               "path" => "Timeline/Timeline.php",

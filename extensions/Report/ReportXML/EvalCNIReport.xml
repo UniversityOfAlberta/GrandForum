@@ -245,8 +245,13 @@
                 <![CDATA[
                 <div style="margin-top: 20px; padding-top:10px; border-top:1px solid #CCCCCC;">
                 
-                <input type="submit" value="Save" name="submit">
-                    <span class="autosaveSpan"><div class="undefinedauto" style="color: rgb(34, 34, 34); text-shadow: rgb(255, 255, 255) 1px 1px 0px; padding: 5px; background-color: rgb(234, 221, 237); border: 1px solid rgb(170, 170, 170); display: none; opacity: 100; background-position: initial initial; background-repeat: initial initial;"><b>Saved</b></div></span>
+                <input type="submit" value="Save" name="submit" />
+                <span class="autosaveSpan">
+                    <div class="undefinedauto" style="color: rgb(34, 34, 34); text-shadow: rgb(255, 255, 255) 1px 1px 0px; padding: 5px; background-color: rgb(234, 221, 237); border: 1px solid rgb(170, 170, 170); display: none; opacity: 100; background-position: initial initial; background-repeat: initial initial;">
+                        <b>Saved</b>
+                    </div>
+                </span>
+                </div>
                 ]]>
                 </ReportItem>
             </ReportItemSet>

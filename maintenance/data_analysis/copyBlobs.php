@@ -10,8 +10,8 @@ if(count($args) > 0){
 }
 
 
-copyNIBlobs(PNI);
-copyNIBlobs(CNI);
+#copyNIBlobs(PNI);
+#copyNIBlobs(CNI);
 copyProjectBlobs();
 
 
@@ -67,11 +67,13 @@ function copyProjectBlobs(){
 
 	foreach($projs as $proj){
 		$proj_id = $proj->getId();
+		echo $proj->getName() ."\n";
 
-		$evaluators = $proj->getEvaluators($type, 2012);
+		$evaluators = $proj->getEvaluators(2012);
 
 		foreach ($evaluators as $ev) {
 			$evaluator_id = $ev->getId();
+			echo "===". $ev->getName() ."\n";
 			copyBlob($reportType, BLOB_TEXT, 2012, $evaluator_id, $text_question, $proj_id);
 
 			foreach($radio_questions as $q){

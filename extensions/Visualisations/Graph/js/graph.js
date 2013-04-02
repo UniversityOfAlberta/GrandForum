@@ -70,12 +70,14 @@ function Graph(){
         //Hyperlinks will cause a fadeOut on redraw objects
         //(Unless they have a noredraw class)
         $("a:not(a.noredraw)").click(function(event){
-            if(obj != null){
-                event.preventDefault();
-                linkLocation = this.href;
-                obj.fadeOut(fadeTime, redirectPage);
+            if($(this).attr('href') != undefined && $(this).attr('href').indexOf('#') == -1){
+                if(obj != null){
+                    event.preventDefault();
+                    linkLocation = this.href;
+                    obj.fadeOut(fadeTime, redirectPage);
+                }
+                redirectPage();
             }
-            redirectPage();
         });
         
         function redirectPage() {

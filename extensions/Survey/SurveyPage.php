@@ -91,7 +91,8 @@ class SurveyPage {
 
         $isSubmitted = self::isSubmitted();
         if($isSubmitted){
-            $wgMessage->addInfo("Your Survey has already been submitted and cannot be modified.");
+            //$wgMessage->addInfo("Your Survey has already been submitted and cannot be modified.");
+            $wgMessage->addInfo("The Survey has been closed.");
             //$wgOut->addHTML("<p style='font-size:16px; font-weight:bold; text-align:center; padding: 50px 0;'>Thank you for participating in NAVEL Survey. Your survey results have been successfully submitted!</p>");
             
             //return;
@@ -289,6 +290,7 @@ EOF;
         global $wgUser;
         $my_id = $wgUser->getId();
 
+        /*
         $sql = "SELECT submitted FROM survey_results WHERE user_id='{$my_id}'";
         $data = DBFunctions::execSQL($sql);
 
@@ -298,6 +300,8 @@ EOF;
         else{
             return false;
         }
+        */
+        return true;
         
     }
 

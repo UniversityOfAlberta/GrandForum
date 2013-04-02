@@ -9,8 +9,9 @@ function outputArticleText( &$out, &$sk ) {
 	    echo $out->getHTML();
 	    exit;
 	    $out->disable();
+	    return false;
 	}
-	return false;
+	return true;
 }
 
 ?>

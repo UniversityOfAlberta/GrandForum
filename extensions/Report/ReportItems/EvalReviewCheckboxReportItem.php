@@ -130,9 +130,13 @@ EOF;
 	    $item = $this->processCData($this->getBlobValue());
 		$wgOut->addHTML($item);
 	}
-    // Returns the number of completed values (usually 1, or 0)
+    
+    // Checkboxes are optional so they don't count
     function getNComplete(){
-        return 1;
+        return 0;
+    }
+    function getNFields(){
+        return 0;
     }
 
 	function getSeenOverview(){

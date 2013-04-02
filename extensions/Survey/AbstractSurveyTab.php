@@ -36,7 +36,7 @@ abstract class AbstractSurveyTab {
     static function isSubmitted(){
         global $wgUser;
         $my_id = $wgUser->getId();
-
+        /*
         $sql = "SELECT submitted FROM survey_results WHERE user_id='{$my_id}'";
         $data = DBFunctions::execSQL($sql);
 
@@ -46,7 +46,8 @@ abstract class AbstractSurveyTab {
         else{
             return false;
         }
-        
+        */
+        return true;
     }
 }
 

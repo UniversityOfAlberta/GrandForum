@@ -1,35 +1,35 @@
 <?php
-$dir = dirname(__FILE__) . '/';
-$wgSpecialPages['SpecialMap'] = 'SpecialMap';
-$wgExtensionMessagesFiles['SpecialMap'] = $dir . 'SpecialMap.i18n.php';
 
-$wgHooks['UnknownAction'][] = 'SpecialMap::getSpecialMapData';
+$wgHooks['UnknownAction'][] = 'AdminMapTab::getAdminMapData';
 
-function runSpecialMap($par) {
-	SpecialMap::run($par);
-}
-
-class SpecialMap extends SpecialPage {
-
-	function __construct() {
-		wfLoadExtensionMessages('SpecialMap');
-		SpecialPage::SpecialPage("SpecialMap", MANAGER.'+', true, 'runSpecialMap');
-	}
+class AdminMapTab extends AbstractTab {
 	
-	function run(){
-	    global $wgOut, $wgServer, $wgScriptPath;
-	    $map = new Map("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialMapData");
+	function AdminMapTab(){
+        parent::AbstractTab("Funding Map");
+    }
+
+    function generateBody(){
+	    global $wgServer, $wgScriptPath;
+	    $map = new Map("{$wgServer}{$wgScriptPath}/index.php?action=getAdminMapData");
 	    $map->height = "700px";
 	    $map->width = "90%";
-	    $string = $map->show();
-	    
-	    $wgOut->addHTML($string);
+	    $this->html .= (REPORTING_YEAR)." Allocated Funding";
+	    $this->html .= $map->show();
+	    $this->html .= "<script type='text/javascript'>
+            $('#adminVis').bind('tabsselect', function(event, ui) {
+                if(ui.panel.id == 'funding-map'){
+                    $('#vis{$map->index}').html('Loading...');
+	                showVis{$map->index}();
+	            }
+	        });
+	    </script>";
 	}
 	
-	static function getSpecialMapData($action, $article){
+	static function getAdminMapData($action, $article){
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
-	    if($action == "getSpecialMapData" && $me->isRoleAtLeast(MANAGER)){
+	    if($action == "getAdminMapData" && $me->isRoleAtLeast(MANAGER)){
+	        session_write_close();
 	        $uniProvMap = array('Carlton University' => 'CA-ON',
 	                            'Concordia University' => 'CA-QC',
 	                            'Dalhousie University' => 'CA-NS',
@@ -93,7 +93,7 @@ class SpecialMap extends SpecialPage {
 	        foreach($pBudget as $uni => $total){
 	            if(isset($uniProvMap[$uni])){
 	                @$array['values'][$uniProvMap[$uni]] += $total;
-	                @$array['text'][$uniProvMap[$uni]] .= "<b>University {$i}:</b> $".number_format($total)."<br />";
+	                @$array['text'][$uniProvMap[$uni]] .= "<b>$uni:</b> $".number_format($total)."<br />";
 	                $i++;
 	            }
 	        }

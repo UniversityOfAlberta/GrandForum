@@ -284,8 +284,28 @@ $egAnnokiExtensions['ReportPDFs']     = array( 'name' => 'ReportPDFs',
 					      'enabled' => true,
 					      );
 					      
+$egAnnokiExtensions['ScreenCapture']     = array( 'name' => 'ScreenCapture',
+					      'path' => "$IP/extensions/ScreenCapture/ScreenCapture.php",
+					      'enabled' => true,
+					      );
+					      
 $egAnnokiExtensions['Solr']     = array( 'name' => 'Solr',
 					      'path' => "$IP/extensions/Solr/Solr.php",
+					      'enabled' => true,
+					      );
+					      
+$egAnnokiExtensions['AcademiaMap']     = array( 'name' => 'AcademiaMap',
+					      'path' => "$IP/extensions/AcademiaMap/AcademiaMap.php",
+					      'enabled' => true,
+					      );
+
+$egAnnokiExtensions['TravelForm']     = array( 'name' => 'TravelForm',
+					      'path' => "$IP/extensions/TravelForm/TravelForm.php",
+					      'enabled' => true,
+					      );
+
+$egAnnokiExtensions['ReviewResults']     = array( 'name' => 'ReviewResults',
+					      'path' => "$IP/extensions/ReviewResults/ReviewResults.php",
 					      'enabled' => true,
 					      );
 
