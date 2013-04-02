@@ -47,7 +47,7 @@ class PersonBudgetTab extends AbstractEditableTab {
 	    $this->html .= "<h2>Download Budget Template</h2>
 	                    This budget is for the allocated, or accepted budget for ".REPORTING_YEAR."-".(REPORTING_YEAR+1).".
                         <ul>
-                            <li><a href='$wgServer$wgScriptPath/data/GRAND Researcher Budget Allocated (2012-13).xls'>".REPORTING_YEAR."-".(REPORTING_YEAR+1)." Budget Template</a></li>
+                            <li><a href='$wgServer$wgScriptPath/data/GRAND Researcher Budget Allocated (2013-14).xls'>".REPORTING_YEAR."-".(REPORTING_YEAR+1)." Budget Template</a></li>
                         </ul>";
 	
         $this->html .= "<h2>Budget Upload</h2>
