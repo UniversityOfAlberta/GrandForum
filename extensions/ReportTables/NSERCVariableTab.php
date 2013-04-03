@@ -1,20 +1,25 @@
 <?php
 
-define("NCE_2013_START", '2012'.REPORTING_NCE_START_MONTH.' 00:00:00');
-define("NCE_2013_END", '2013'.REPORTING_NCE_END_MONTH. ' 23:59:59');
+class NSERCVariableTab extends AbstractTab {
 
-class NSERC2013Tab extends AbstractTab {
+    var $from = "";
+    var $to = "";
+    var $label = "";
 
-
-
-    function NSERC2013Tab(){
+    function NSERCVariableTab($label, $from, $to){
         global $wgOut;
-        parent::AbstractTab("2013");
+        
+        $this->label = $label;
+        $this->from = $from;
+        $this->to = $to;
+
+        parent::AbstractTab($label);
         $wgOut->setPageTitle("Evaluation Tables: NCE");
     }
     
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath, $wgOut;
+        $label = $this->label;
 
         $foldscript = "
 <script type='text/javascript'>
@@ -59,7 +64,7 @@ function showDiv(div_id, details_div_id){
         
         $this->showContentsTable();
 
-        if(ArrayUtils::get_string($_GET, 'year') == "2013"){
+        if(ArrayUtils::get_string($_GET, 'year') == $label){
         switch (ArrayUtils::get_string($_GET, 'summary')) {
         /*
         case 'table2':
@@ -92,21 +97,23 @@ function showDiv(div_id, details_div_id){
 
     function showContentsTable(){
         global $wgServer, $wgScriptPath;
+        $label = $this->label;
+
         $this->html .=<<<EOF
             <table class='toc' summary='Contents'>
             <tr><td>
             <div id='toctitle'><h2>Contents</h2></div>
             <ul>
-            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year=2013&summary=grand#Grand'><span class='tocnumber'>4</span> <span class='toctext'>GRAND tables</span></a>
+            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Grand'><span class='tocnumber'>4</span> <span class='toctext'>GRAND tables</span></a>
                 <ul>
                 <!--li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?summary=table2#Table2'><span class='tocnumber'>4.1</span> <span class='toctext'>Table 2: Direct Contributions From Non-NCE Sources</span></a></li>
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?summary=table3#Table3'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 3: Number of network Research Personnel paid with NCE funds or other funds, by sectors</span></a></li-->
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year=2013&summary=grand#Table4'><span class='tocnumber'>4.1</span> <span class='toctext'>Table 4: Number of Graduate Students Working on Network Research</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year=2013&summary=grand#Table4.2'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 4.2: HQP Breakdown by University</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year=2013&summary=grand#Table4.3'><span class='tocnumber'>4.3</span> <span class='toctext'>Table 4.3: NI Breakdown by University</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year=2013&summary=grand#Table5'><span class='tocnumber'>4.4</span> <span class='toctext'>Table 5: Post Network employment of graduate students</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year=2013&summary=grand#Table6'><span class='tocnumber'>4.5</span> <span class='toctext'>Table 6: Dissemination of Network Research Results and Collaborations</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year=2013&summary=grand#Table7'><span class='tocnumber'>4.6</span> <span class='toctext'>Table 7: Publications list</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Table4'><span class='tocnumber'>4.1</span> <span class='toctext'>Table 4: Number of Graduate Students Working on Network Research</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Table4.2'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 4.2: HQP Breakdown by University</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Table4.3'><span class='tocnumber'>4.3</span> <span class='toctext'>Table 4.3: NI Breakdown by University</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Table5'><span class='tocnumber'>4.4</span> <span class='toctext'>Table 5: Post Network employment of graduate students</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Table6'><span class='tocnumber'>4.5</span> <span class='toctext'>Table 6: Dissemination of Network Research Results and Collaborations</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Table7'><span class='tocnumber'>4.6</span> <span class='toctext'>Table 7: Publications list</span></a></li>
                 </ul>
             </li>
             </ul>
@@ -126,7 +133,7 @@ EOF;
         $unknown = array();
 
         $unique = array();
-        $movedons = Person::getAllMovedOnDuring(NCE_2013_START, NCE_2013_END);
+        $movedons = Person::getAllMovedOnDuring($this->from, $this->to);
         foreach($movedons as $m){
             if(in_array($m->getName(), $unique)) {
                 continue;
@@ -146,7 +153,7 @@ EOF;
         }    
 
         //additional people may still be on the forum, we find them through their theses
-        $papers = Paper::getAllPapersDuring("all", "Publication", "grand", NCE_2013_START, NCE_2013_END);
+        $papers = Paper::getAllPapersDuring("all", "Publication", "grand", $this->from, $this->to);
         foreach($papers as $paper){
             $type = $paper->getType();
             if($type == "PhD Thesis" || $type == "Masters Thesis"){
@@ -188,7 +195,7 @@ EOF;
 
     function getHQPStats(){
 
-        $hqps = Person::getAllPeopleDuring(HQP, NCE_2013_START, NCE_2013_END);
+        $hqps = Person::getAllPeopleDuring(HQP, $this->from, $this->to);
 
         //Setup the table structure
         $positions = array( "Undergraduate"=>"Ugrad",
@@ -223,7 +230,7 @@ EOF;
             }*/
         }
 
-        $papers = Paper::getAllPapersDuring("all", "Publication", "grand", NCE_2013_START, NCE_2013_END); 
+        $papers = Paper::getAllPapersDuring("all", "Publication", "grand", $this->from, $this->to); 
         foreach($papers as $paper){
             $type = $paper->getType();
             if($type == "PhD Thesis"){
@@ -484,7 +491,7 @@ EOF;
 
     function getHQPUniStats(){
 
-        $hqps = Person::getAllPeopleDuring(HQP, NCE_2013_START, NCE_2013_END);
+        $hqps = Person::getAllPeopleDuring(HQP, $this->from, $this->to);
 
         //Setup the table structure
         $universities = array();
@@ -612,8 +619,8 @@ EOF;
 
     function getNIUniStats(){
 
-        $cnis = Person::getAllPeopleDuring(CNI, NCE_2013_START, NCE_2013_END);
-        $pnis = Person::getAllPeopleDuring(PNI, NCE_2013_START, NCE_2013_END);
+        $cnis = Person::getAllPeopleDuring(CNI, $this->from, $this->to);
+        $pnis = Person::getAllPeopleDuring(PNI, $this->from, $this->to);
 
         $nis = array();
         $unique_ids = array();
@@ -970,7 +977,7 @@ EOF;
                 $('#' + id).toggle();
             }
         </script>");
-        $people = Person::getAllPeopleDuring(HQP, NCE_2013_START, NCE_2013_END);
+        $people = Person::getAllPeopleDuring(HQP, $this->from, $this->to);
         $chunk = "
 <a id='Table3'></a><h3>Table 3: Number of network Research Personnel paid with NCE funds or other funds, by sectors</h3>
 <table class='wikitable sortable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
@@ -1020,7 +1027,7 @@ EOF;
 
     function showDisseminations(){
         global $wgOut;
-        $publications = Paper::getAllPapersDuring('all', 'Publication', "grand", NCE_2013_START, NCE_2013_END);
+        $publications = Paper::getAllPapersDuring('all', 'Publication', "grand", $this->from, $this->to);
 
         $dissem = array("a1_r1"=>array(), "a1_r2"=>array(), "a2_r1"=>array(), "a2_r2"=>array(), "b_r1"=>array(), "b_r2"=>array());
 
@@ -1180,7 +1187,7 @@ EOF;
 
     function showArtDisseminations(){
         global $wgOut;
-        $publications = Paper::getAllPapersDuring('all', 'Artifact', "grand", NCE_2013_START, NCE_2013_END);
+        $publications = Paper::getAllPapersDuring('all', 'Artifact', "grand", $this->from, $this->to);
 
         $types = Paper::getCategoryTypes("Artifact");
 
@@ -1270,7 +1277,7 @@ EOF;
 
     function showActDisseminations(){
         global $wgOut;
-        $publications = Paper::getAllPapersDuring('all', 'Activity', "grand", NCE_2013_START, NCE_2013_END);
+        $publications = Paper::getAllPapersDuring('all', 'Activity', "grand", $this->from, $this->to);
         //echo (sizeof($publications ));
         $types = Paper::getCategoryTypes("Activity");
 
@@ -1472,7 +1479,7 @@ EOF;
 
     function showPublicationList(){
         global $wgOut;
-        $publications = Paper::getAllPapersDuring('all', 'Publication', "grand", NCE_2013_START, NCE_2013_END);
+        $publications = Paper::getAllPapersDuring('all', 'Publication', "grand", $this->from, $this->to);
         $pub_count = array("a1"=>array(), "a2"=>array(), "b"=>array(), "c"=>array());
 
         foreach($publications as $pub){
