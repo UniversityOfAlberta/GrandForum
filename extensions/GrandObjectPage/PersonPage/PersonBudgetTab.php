@@ -1,5 +1,5 @@
 <?php
-
+define("REPORTING_YEAR_NEW", 2013);
 class PersonBudgetTab extends AbstractEditableTab {
 
     var $person;
@@ -13,7 +13,7 @@ class PersonBudgetTab extends AbstractEditableTab {
     
     function handleEdit(){
         global $wgUser, $wgServer, $wgScriptPath;
-        $year= REPORTING_YEAR-1;
+        $year= REPORTING_YEAR_NEW-1;
 	    $uid = $this->person->getId();
 		$blob_type=BLOB_EXCEL;
 		$rptype = RP_RESEARCHER;
@@ -45,19 +45,19 @@ class PersonBudgetTab extends AbstractEditableTab {
 		$me = Person::newFromId($wgUser->getId());
 	    $this->html .= "<div>";
 	    $this->html .= "<h2>Download Budget Template</h2>
-	                    This budget is for the allocated, or accepted budget for ".REPORTING_YEAR."-".(REPORTING_YEAR+1).".
+	                    This budget is for the allocated, or accepted budget for ".REPORTING_YEAR_NEW."-".(REPORTING_YEAR_NEW+1).".
                         <ul>
-                            <li><a href='$wgServer$wgScriptPath/data/GRAND Researcher Budget Allocated (2013-14).xls'>".REPORTING_YEAR."-".(REPORTING_YEAR+1)." Budget Template</a></li>
+                            <li><a href='$wgServer$wgScriptPath/data/GRAND Researcher Budget Allocated (2013-14).xls'>".REPORTING_YEAR_NEW."-".(REPORTING_YEAR_NEW+1)." Budget Template</a></li>
                         </ul>";
 	
         $this->html .= "<h2>Budget Upload</h2>
               <input type='file' name='budget' />";
 	
 	    $this->html .= "</div>";            
-	    $budget = $this->person->getAllocatedBudget(REPORTING_YEAR-1);
+	    $budget = $this->person->getAllocatedBudget(REPORTING_YEAR_NEW-1);
 	
 	    // Show a preview of the budget
-	    $this->html .= "<h2>".REPORTING_YEAR." Budget Preview</h2>";
+	    $this->html .= "<h2>".REPORTING_YEAR_NEW." Budget Preview</h2>";
 	    if($budget !== null){
 	        $this->html .= $budget->copy()->filterCols(V_PROJ, array(""))->render();
 	    }
@@ -80,7 +80,7 @@ class PersonBudgetTab extends AbstractEditableTab {
                 });
             </script>");
             $this->html .= "<div id='budgetAccordion'>";
-            for($i=REPORTING_YEAR; $i >= 2011; $i--){
+            for($i=REPORTING_YEAR_NEW; $i >= 2011; $i--){
                 $this->html .= "<h3><a href='#'>".$i."</a></h3><div>";
                 $budget = $person->getAllocatedBudget($i-1);
                 if($budget != null){
