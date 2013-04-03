@@ -68,7 +68,7 @@ function getMyPapers($cat){
 	$html  = "<div id='my_papers'>";
 	$html .= "<table id='mypubtable' class='wikitable sortable' width='100%' cellspacing='1' cellpadding='2' rules='all' frame='box'><tr><th>Date</th><th>Project</th><th>Product</th></tr>";
 
-	$myPapers = $me->getPapersAuthored($cat);
+	$myPapers = $me->getPapersAuthored($cat, "2013-01-01", "2013-12-31");
 	   	
    	foreach($myPapers as $paper){
    		$id = $paper->getId();
