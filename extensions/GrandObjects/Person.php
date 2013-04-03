@@ -940,15 +940,19 @@ class Person{
 	 * Returns the discipline of this Person during the given start and end dates
 	 * @param string $startRange The start date to look at (default start of the current reporting year)
 	 * @param string $endRange The end date to look at (default end of the current reporting year)
+	 * @param boolean $checkLater Whether or not to check the current Discipline if the range specified does not return any results
 	 * @return string The name of the discipline that this Person belongs to during the specified dates
 	 */
-	function getDisciplineDuring($startRange=false, $endRange=false){
+	function getDisciplineDuring($startRange=false, $endRange=false, $checkLater=false){
 	    self::generateDisciplineMap();
 	    if( $startRange === false || $endRange === false ){
 	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
 	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
 	    }
 	    $university = $this->getUniversityDuring($startRange, $endRange);
+	    if($checkLater && $university['department'] == "" || $university['university'] == ""){
+	        $university = $this->getUniversity();
+	    }
 	    $dept = strtolower($university['department']);
 	    if(isset(self::$disciplineMap[$dept])){
 	        return self::$disciplineMap[$dept];
