@@ -187,7 +187,7 @@ class AddActivityPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Activity"));
 		
 		$wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3>My Activities</h3>");
+	    $wgOut->addHTML("<h3>My 2013 Activities</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Activity");
 	   	$wgOut->addHTML($myPapers_html);
@@ -223,7 +223,7 @@ class AddArtifactPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Artifact"));
 		
 	    $wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3>My Artifacts</h3>");
+	    $wgOut->addHTML("<h3>My 2013 Artifacts</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Artifact");
 	   	$wgOut->addHTML($myPapers_html);
@@ -260,7 +260,7 @@ class AddPublicationPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Publication"));
 
 	    $wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3>My Publications</h3>");
+	    $wgOut->addHTML("<h3>My 2013 Publications</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Publication");
 	   	$wgOut->addHTML($myPapers_html);
@@ -297,7 +297,7 @@ class AddPressPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Press"));
 
 	    $wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3>My Press</h3>");
+	    $wgOut->addHTML("<h3>My 2013 Press</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Press");
 	   	$wgOut->addHTML($myPapers_html);
@@ -334,7 +334,7 @@ class AddAwardPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Award"));
 
 	    $wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3>My Awards</h3>");
+	    $wgOut->addHTML("<h3>My 2013 Awards</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Award");
 	   	$wgOut->addHTML($myPapers_html);
@@ -372,7 +372,7 @@ class AddPresentationPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Presentation"));
 
 	    $wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3>My Presentations</h3>");
+	    $wgOut->addHTML("<h3>My 2013 Presentations</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Presentation");
 	   	$wgOut->addHTML($myPapers_html);
