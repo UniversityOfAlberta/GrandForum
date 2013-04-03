@@ -132,7 +132,8 @@ class RMC2013Tab extends AbstractTab {
             <a class="reportTab tooltip $tab11" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=distribution#Distribution'>3.4 HQP Distribution</a>
             <a class="reportTab tooltip $tab12" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=themes#Themes'>3.5 Project Themes</a>
 
-            <a class="reportTab tooltip marginTop" href='$wgServer$wgScriptPath/index.php/Special:ReviewResults'>PNI Review Results</a>
+            <a class="reportTab tooltip marginTop" href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type=PNI'>PNI Review Results</a>
+            <a class="reportTab tooltip" href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type=CNI'>CNI Review Results</a>
         </div>
         </div>
 
