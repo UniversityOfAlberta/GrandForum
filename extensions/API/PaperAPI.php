@@ -139,6 +139,7 @@ abstract class PaperAPI extends API{
                     Notification::addNotification($me, $author, "{$this->category} Author Removed", "You have been removed as an author to the ".strtolower($this->category)." entitled <i>{$paper->getTitle()}</i>", "{$paper->getUrl()}");
                 }
 	        }
+	        $paperAfter->syncAuthors();
 	    }
 	    else{
 	        $sql = "INSERT INTO grand_products (`description`,`category`,`projects`,`type`,`title`,`date`,`venue`,`status`,`authors`,`data`)
@@ -161,8 +162,9 @@ abstract class PaperAPI extends API{
                     Notification::addNotification($me, $person, "{$this->category} Created", "A new ".strtolower($this->category).", entitled <i>{$paper->getTitle()}</i>, has been created with yourself listed as one of the authors", "{$paper->getUrl()}");
                 }
 	        }
+	        $paper->syncAuthors();
 	    }
-	    $paperAfter->syncAuthors();
+	    
 	    $string = "";
 	    if($result == 1 && $paper != null && $paper->getTitle() != null){
 	        $string = "{$type} '{$_POST['title']}' was modified successfully\n";
