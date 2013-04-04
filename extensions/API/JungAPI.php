@@ -338,6 +338,7 @@ class JungAPI extends API{
                 }
             }
 	        
+	        
 	        $tuple['contributionsThisYear'] = (string)$contTotal;
 	        $tuple['nProductsUpToNow'] = (string)count($products);
 	        $tuple['nConnectedDisciplines'] = (string)@count($connectedDisciplines[$person->getName()]);
@@ -345,6 +346,7 @@ class JungAPI extends API{
 	        $tuple['Discipline'] = $disc;
 	        $tuple['University'] = (string)$this->personUniversities[$person->getName()]['university'];
 	        $tuple['Title'] = (string)$this->personUniversities[$person->getName()]['position'];
+	        $tuple['Gender'] = (string)$person->getGender();
 	        
 	        $metas[$person->getName()] = $tuple;
 	    }
