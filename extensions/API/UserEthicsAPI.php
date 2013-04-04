@@ -3,8 +3,8 @@
 class UserEthicsAPI extends API{
 
     function UserEthicsAPI(){
-        $this->addPOST("completed_tutorial", true, "Whether they have completed the ethics tutorial: 0 or 1");
-        $this->addPOST("date", true, "Date of when the tutorial was taken.");
+        $this->addPOST("completed_tutorial", true, "Whether they have completed the ethics tutorial: 0 or 1", "0");
+        $this->addPOST("date", true, "Date of when the tutorial was taken.", "2012-03-14");
     }
 
     function processParams($params){
