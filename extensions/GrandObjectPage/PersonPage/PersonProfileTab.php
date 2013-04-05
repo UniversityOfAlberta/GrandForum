@@ -36,7 +36,9 @@ class PersonProfileTab extends AbstractEditableTab {
         $_POST['type'] = "private";
         $_POST['profile'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['private_profile'])));
         APIRequest::doAction('UserProfile', true);
-        APIRequest::doAction('UserEthics', true);
+        if($this->person->isHQP()){
+            APIRequest::doAction('UserEthics', true);
+        }
     }
     
     /*
@@ -73,9 +75,11 @@ class PersonProfileTab extends AbstractEditableTab {
         if($completed_tutorial == "Yes"){
             $ethics_str = "Have completed the TCPS2 tutorial on {$date}.";
         }
-        $this->html .=<<<EOF
+        if($person->isHQP()){
+            $this->html .=<<<EOF
             <h3>Ethics: {$ethics_str}</h3>
 EOF;
+        }
 
     }
     
@@ -93,30 +97,30 @@ EOF;
         }
 
         $date = ($ethics['date'] == '0000-00-00')? "" : $ethics['date'];
-
-        $this->html .=<<<EOF
-        <script>
-        $(function() {
-            $( "#datepicker" ).datepicker( { dateFormat: "yy-mm-dd" } );
-        });
-        </script>
-        <br /><br />
-        <table border='0' cellpadding='5' cellspacing='0'>
-        <tr><th align='left' style='padding-right:15px;'>I have completed the TCPS2 tutorial: </th>
-            <td>
-                Yes <input type='radio' value='1' name='completed_tutorial' {$completed_tutorial_y} />&nbsp;&nbsp;
-                No <input type='radio' value='0' name='completed_tutorial' {$completed_tutorial_n} />
-            </td>
-        </tr>
-        <tr>
-            <th align='left'>Date: </th>
-            <td width='10%'>
-                <input id='datepicker' name='date' type='text' value='{$date}' />
-            </td>
-        </tr>
-        </table>
+        if($person->isHQP()){
+            $this->html .=<<<EOF
+            <script>
+            $(function() {
+                $( "#datepicker" ).datepicker( { dateFormat: "yy-mm-dd" } );
+            });
+            </script>
+            <br /><br />
+            <table border='0' cellpadding='5' cellspacing='0'>
+            <tr><th align='left' style='padding-right:15px;'>I have completed the TCPS2 tutorial: </th>
+                <td>
+                    Yes <input type='radio' value='1' name='completed_tutorial' {$completed_tutorial_y} />&nbsp;&nbsp;
+                    No <input type='radio' value='0' name='completed_tutorial' {$completed_tutorial_n} />
+                </td>
+            </tr>
+            <tr>
+                <th align='left'>Date: </th>
+                <td width='10%'>
+                    <input id='datepicker' name='date' type='text' value='{$date}' />
+                </td>
+            </tr>
+            </table>
 EOF;
-
+        }
     }
     
 }
