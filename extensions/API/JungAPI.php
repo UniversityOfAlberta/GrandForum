@@ -9,14 +9,10 @@ class JungAPI extends API{
     var $endDate = REPORTING_END;
 
     function JungAPI(){
-        $this->addGET("nodeType", true, "", "all");
-        $this->addGET("edgeType", true, "", "all");
         $this->addGET("year", true, "", "2012");
 	}
 
     function processParams($params){
-        $_GET['nodeType'] = mysql_real_escape_string($_GET['nodeType']);
-        $_GET['edgeType'] = mysql_real_escape_string($_GET['edgeType']);
         $_GET['year'] = mysql_real_escape_string($_GET['year']);
     }
 
@@ -29,8 +25,7 @@ class JungAPI extends API{
 	function outputJSON(){
 	    ini_set("memory_limit", "512M");
         $json = array();
-        $nodeType = $_GET['nodeType'];
-        $edgeType = $_GET['edgeType'];
+
         $this->year = $_GET['year'];
         $this->startDate = $_GET['year'].REPORTING_CYCLE_END_MONTH;
         $this->endDate = $_GET['year'].REPORTING_CYCLE_END_MONTH;
@@ -39,66 +34,34 @@ class JungAPI extends API{
         $edges = array();
         $metas = array();
         $projects = array();
-        switch($nodeType){
-            case 'all':
-                $pnis = Person::getAllPeopleDuring(PNI, $this->startDate, $this->endDate);
-                $cnis = Person::getAllPeopleDuring(CNI, $this->startDate, $this->endDate);
-                $hqps = Person::getAllPeopleDuring(HQP, $this->startDate, $this->endDate);
-                $tmpNodes = array_merge($pnis, $cnis, $hqps);
-                $nodes = $pnis;
-                foreach($tmpNodes as $p){
-                    $found = false;
-                    foreach($nodes as $node){
-                        if($node->getId() == $p->getId()) $found = true;
-                    }
-                    if(!$found) $nodes[] = $p;
-                }
-                break;
-            case 'pni':
-                $nodes = Person::getAllPeopleDuring(PNI, $this->startDate, $this->endDate);
-                break;
-            case 'cni':
-                $nodes = Person::getAllPeopleDuring(CNI, $this->startDate, $this->endDate);
-                break;
-            case 'hqp':
-                $nodes = Person::getAllPeopleDuring(HQP, $this->startDate, $this->endDate);
-                break;
+
+        $pnis = Person::getAllPeopleDuring(PNI, $this->startDate, $this->endDate);
+        $cnis = Person::getAllPeopleDuring(CNI, $this->startDate, $this->endDate);
+        $hqps = Person::getAllPeopleDuring(HQP, $this->startDate, $this->endDate);
+        $tmpNodes = array_merge($pnis, $cnis, $hqps);
+        $nodes = $pnis;
+        foreach($tmpNodes as $p){
+            $found = false;
+            foreach($nodes as $node){
+                if($node->getId() == $p->getId()) $found = true;
+            }
+            if(!$found) $nodes[] = $p;
         }
+
         foreach($nodes as $key => $node){
             $projects = $node->getProjectsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
             if(count($projects) == 0){
                 unset($nodes[$key]);
             }
         }
-        switch($edgeType){
-            case 'all':
-                $edges = array_merge($this->getWorksWithEdges($nodes),
-                                     $this->getCoProduceEdges($nodes),
-                                     $this->getCoSuperviseEdges($nodes),
-                                     $this->getProjectEdges($nodes),
-                                     $this->getUniversityEdges($nodes),
-                                     $this->getDepartmentEdges($nodes),
-                                     $this->getContributionEdges($nodes));
-                break;
-            case 'coproduce':
-                $edges = $this->getCoProduceEdges($nodes);
-                break;
-            case 'cosup':
-                $edges = $this->getCoSuperviseEdges($nodes);
-                break;
-            case 'workswith':
-                $edges = $this->getWorksWithEdges($nodes);
-                break;
-            case 'projects':
-                $edges = $this->getWorksWithEdges($nodes);
-                break;
-            case 'universities':
-                $edges = $this->getUniversityEdges($nodes);
-                break;
-            case 'departments':
-                $edges = $this->getDepartmentEdges($nodes);
-                break;
-        }
+        
+        $edges = array_merge($this->getWorksWithEdges($nodes),
+                             $this->getCoProduceEdges($nodes),
+                             $this->getCoSuperviseEdges($nodes),
+                             $this->getProjectEdges($nodes),
+                             $this->getUniversityEdges($nodes),
+                             $this->getDepartmentEdges($nodes),
+                             $this->getContributionEdges($nodes));
         
         $metas = $this->getMetas($nodes, $edges);
         $projects = $this->getProjects();
@@ -347,6 +310,7 @@ class JungAPI extends API{
 	        $tuple['University'] = (string)$this->personUniversities[$person->getName()]['university'];
 	        $tuple['Title'] = (string)$this->personUniversities[$person->getName()]['position'];
 	        $tuple['Gender'] = (string)$person->getGender();
+	        $tuple['Nationality'] = (string)$person->getNationality();
 	        
 	        $metas[$person->getName()] = $tuple;
 	    }
@@ -377,9 +341,6 @@ class JungAPI extends API{
 	}
 	
 	function getCoSuperviseEdges($nodes){
-	    if($_GET['nodeType'] == 'hqp'){
-	        return array();
-	    }
 	    $edges = array();
 	    $ids = array();
 	    foreach($nodes as $node){
