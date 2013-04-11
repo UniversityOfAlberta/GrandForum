@@ -253,7 +253,7 @@ class JungAPI extends API{
 	            $tuple['avgProductDisciplines'] = "";
 	        }
 	        if(count($products) > 0){
-	            $tuple['avgAuthorsPerProduct'] = (string)($sumCoAuthors/count($products));
+	            $tuple['avgAuthorsPerProduct'] = number_format($sumCoAuthors/count($products), 2, '.', '');
 	        }
 	        else{
 	            $tuple['avgAuthorsPerProduct'] = "";
