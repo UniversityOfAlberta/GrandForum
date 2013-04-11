@@ -71,13 +71,13 @@ class PersonProfileTab extends AbstractEditableTab {
         $ethics = $person->getEthics();
         $completed_tutorial = ($ethics['completed_tutorial'])? "Yes" : "No";
         $date = ($ethics['date'] == '0000-00-00')? "" : $ethics['date'];
-        $ethics_str = "Have not completed the TCPS2 tutorial.";
+        $ethics_str = "<h3>Ethics: Have not completed the TCPS2 tutorial.</h3>";
         if($completed_tutorial == "Yes"){
-            $ethics_str = "Have completed the TCPS2 tutorial on {$date}.";
+            $ethics_str = "<h3>Have completed the TCPS2 tutorial on {$date}. <img style='vertical-align:bottom;' width='100px' src='/skins/cavendish/ethical_button.jpg' /></h3>";
         }
         if($person->isHQP()){
             $this->html .=<<<EOF
-            <h3>Ethics: {$ethics_str}</h3>
+            {$ethics_str}
 EOF;
         }
 
@@ -106,14 +106,15 @@ EOF;
             </script>
             <br /><br />
             <table border='0' cellpadding='5' cellspacing='0'>
-            <tr><th align='left' style='padding-right:15px;'>I have completed the TCPS2 tutorial: </th>
-                <td>
+            <tr><th align='right' style='padding-right:15px;'>I have completed the TCPS2 tutorial:<br />
+                <a target='_blank' href="http://grand-nce.ca/resource/tcps2-core">http://grand-nce.ca/resource/tcps2-core</a></th>
+                <td valign='top'>
                     Yes <input type='radio' value='1' name='completed_tutorial' {$completed_tutorial_y} />&nbsp;&nbsp;
                     No <input type='radio' value='0' name='completed_tutorial' {$completed_tutorial_n} />
                 </td>
             </tr>
             <tr>
-                <th align='left'>Date: </th>
+                <th align='right' style='padding-right:15px;'>Date: </th>
                 <td width='10%'>
                     <input id='datepicker' name='date' type='text' value='{$date}' />
                 </td>
