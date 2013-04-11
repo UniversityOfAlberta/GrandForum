@@ -278,6 +278,10 @@ $egAnnokiExtensions['ReviewerConflicts']     = array( 'name' => 'Reviewer Confli
 					      'enabled' => true,
 					      );
 
+$egAnnokiExtensions['NewSearch']     = array( 'name' => 'NewSearch',
+					      'path' => "$IP/extensions/GrandObjectPage/NewSearch/NewSearch.php",
+					      'enabled' => true,
+					      );
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
     if ($extension['enabled'] && is_readable($extension['path'])){
