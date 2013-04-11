@@ -34,6 +34,8 @@ $apiRequest->addAction('Hidden','product/:id/authors', new PersonProductAPI());
 $apiRequest->addAction('Hidden','product/:id/authors/:personId', new PersonProductAPI());
 $apiRequest->addAction('Hidden','product/:id/projects', new ProjectProductAPI());
 $apiRequest->addAction('Hidden','product/:id/projects/:personId', new ProjectProductAPI());
+//NewSearch
+$apiRequest->addAction('Hidden','newsearch', new NewSearchAPI());
 
 function createModels($out, $skin){
     global $wgServer, $wgScriptPath;
