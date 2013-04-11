@@ -196,6 +196,7 @@ class JungAPI extends API{
 	        $nProductsWith4OrMoreUniversities = array();
 	        
 	        $sumDisc = array();
+	        $sumCoAuthors = 0;
 	        foreach($products as $product){
 	            $pProjects = $product->getProjects();
 	            $universities = array();
@@ -204,7 +205,8 @@ class JungAPI extends API{
 	            }
 	            $discs = array();
 	            $isCurrentYear = (strstr($product->getDate(), $this->year) !== false);
-	            foreach($product->getAuthors() as $author){
+	            $authors = $product->getAuthors();
+	            foreach($authors as $author){
 	                if(!isset($this->personUniversities[$author->getName()])){
 	                    $uni = $author->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH, true);
 	                    $this->personUniversities[$author->getName()] = $uni;
@@ -239,6 +241,7 @@ class JungAPI extends API{
 	            if(count($universities) >= 4){
 	                $nProductsWith4OrMoreUniversities[$product->getId()] = true;
 	            }
+	            $sumCoAuthors += count($authors);
 	        }
             
 	        $tuple['nProjects'] = (string)count($projectsAlready);
@@ -248,6 +251,12 @@ class JungAPI extends API{
 	        }
 	        else{
 	            $tuple['avgProductDisciplines'] = "";
+	        }
+	        if(count($products) > 0){
+	            $tuple['avgAuthorsPerProduct'] = (string)($sumCoAuthors/count($products));
+	        }
+	        else{
+	            $tuple['avgAuthorsPerProduct'] = "";
 	        }
 	        $tuple['nProductsWith1University'] = (string)count($nProductsWith1University);
 	        $tuple['nProductsWith2Universities'] = (string)count($nProductsWith2Universities);
