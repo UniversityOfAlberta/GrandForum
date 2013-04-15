@@ -83,7 +83,12 @@ abstract class PaperAPI extends API{
 	        }
 	    }
 
-	    $paper = Paper::newFromTitle($title, $this->category);
+        if(isset($_GET['create']) && !isset($_GET['edit'])){
+	        $paper = null;
+	    }
+	    else{
+	        $paper = Paper::newFromTitle($title, $this->category);
+	    }
 	    if(strstr($this->type, "Misc") !== false && isset($_POST['misc_type'])){
             $type = "Misc: ".str_replace("'", "&#39", $_POST['misc_type']);
         }
@@ -108,7 +113,7 @@ abstract class PaperAPI extends API{
 	        $result = DBFunctions::execSQL($sql, true);
 	         
 	        Paper::$cache = array();
-	        $paperAfter = Paper::newFromTitle($title, $this->category);
+	        $paperAfter = Paper::newFromId($product_id);
 	        // Notification for new authors
 	        foreach($paperAfter->getAuthors() as $author){
                 $found = false;
@@ -146,7 +151,7 @@ abstract class PaperAPI extends API{
 	                VALUES ('$description','{$this->category}','".serialize($projects)."','{$type}','$title','$date','$venue','$status','".serialize($authors)."','".serialize($data)."')";
 	        $result = DBFunctions::execSQL($sql, true);
 	        Paper::$cache = array();
-	        $paper = Paper::newFromTitle($title, $this->category);
+	        $paper = Paper::newFromTitle($title, $this->category, $type, $status);
 	        foreach($authors as $author){
 	            $person = Person::newFromNameLike($author);
                 if($person == null || $person->getName() == null){

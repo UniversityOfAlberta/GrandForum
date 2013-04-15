@@ -120,6 +120,7 @@ class APIRequest{
 		$actions['Publications']['updateManualRef'] = new ManualAPI(true);
 		$actions['Publications']['updateMiscRef'] = new MiscAPI(true);
 		//GET
+		$actions['Publications']['getPublicationInfoByTitle'] = new PublicationByTitleAPI();
 		$actions['Publications']['getPublicationInfo'] = new PublicationAPI();
 		
 		//POST

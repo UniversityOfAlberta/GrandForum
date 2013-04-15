@@ -36,21 +36,29 @@ class Paper{
 	}
 	
 	// Returns a new Paper from the given id
-	static function newFromTitle($title, $category = "%"){
+	static function newFromTitle($title, $category = "%", $type = "%", $status = "%"){
 	    $title = str_replace("&#58;", ":", $title);
 	    $title = str_replace("'", "&#39;", $title);
-	    if(isset(self::$cache[$title])){
-	        return self::$cache[$title];
+	    $category = mysql_real_escape_string($category);
+	    $type = mysql_real_escape_string($type);
+	    $status = mysql_real_escape_string($status);
+	    if(isset(self::$cache[$title.$category.$type.$status])){
+	        return self::$cache[$title.$category.$type.$status];
 	    }
+	    
 		$sql = "SELECT *
 			    FROM grand_products
-			    WHERE (title = '$title' OR
-			           title = '".str_replace(" ", "_", $title)."')
-				AND category LIKE '$category'";
+			    WHERE (`title` = '$title' OR
+			           `title` = '".str_replace(" ", "_", $title)."')
+				AND `category` LIKE '$category'
+				AND `type` LIKE '$type'
+				AND `status` LIKE '$status'
+				ORDER BY `id` desc";
 		$data = DBFunctions::execSQL($sql);
 		$paper = new Paper($data);
         self::$cache[$paper->id] = &$paper;
-        self::$cache[$paper->title] = &$paper;
+        self::$cache[$paper->getTitle().$category.$type.$status] = &$paper;
+        self::$cache[$paper->getTitle().$paper->getCategory().$paper->getType().$paper->getStatus()] = &$paper;
 		return $paper;
 	}
 	
@@ -138,7 +146,7 @@ class Paper{
                     else{
                         $paper = new Paper($rowA);
                         self::$cache[$paper->id] = $paper;
-                        self::$cache[$paper->title] = $paper;
+                        //self::$cache[$paper->title] = $paper;
                         $papers[$paper->getId()] = $paper;
                     }
                 }
