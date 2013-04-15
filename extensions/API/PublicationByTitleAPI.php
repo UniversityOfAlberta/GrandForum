@@ -16,7 +16,8 @@ class PublicationByTitleAPI extends API{
 	function doAction(){
 	    header("Content-type: text/json");
 	    $matchedPapers = array();
-        $papers = Paper::getAllPapers('all', 'all', 'both');
+	    $cat = (isset($_GET['category'])) ? $_GET['category'] : "all";
+        $papers = Paper::getAllPapers('all', $cat, 'both');
         $altTitle = str_replace("'", "&#39;", $_GET['title']);
         foreach($papers as $paper){
             if((isset($_GET['title']) && ($paper->getTitle() == $_GET['title'] || $paper->getTitle() == $altTitle)) &&
