@@ -42,7 +42,6 @@ SearchView = Backbone.View.extend({
         var roles = {"BOD":90,"Manager":80,"Champion":70,"RMC":70,"PNI":60,"CNI":50,"Associated Researcher":40,"HQP":40,"Staff":30};
         var ranks = {"VP Research":90,"Associate Dean of Research":85,"Associate Dean of Student Affairs":85,"Director":80,"Canada Research Chair":80,"Professor":70,"Associate Professor":60,"Assistant Professor":50,"PostDoc":40,"PhD Student":30,"Industry Associate":25,"Masters Student":20,"Technician":15,"Undergraduate":10,"Other":0,"Unknown":0,"":0};
 
-
         // ROLE
         this.do_modifiers(facets, roles, 'sel_role', 'user_role');
 
@@ -75,6 +74,47 @@ SearchView = Backbone.View.extend({
         return product_count; 
     },
 
+    load_user_cards: function(key, val){
+        if (key == 'start' || key == 'rows'){ // header info
+        $('#cards').append(br + key + '  ' + val + br);
+        }
+
+        if (key == 'numFound'){ // header info
+        $('#cards').append(br + key + '  ' + val + br);
+        num_found = parseInt(val);
+        }
+
+        if (key == 'user_id'){ // Get user data
+            $('#cards').append(br + key + '  ' + val + br);
+
+            // Card.php does all user-related DB queries
+            $('#cards').append(user_id + br);
+            /*$.ajax({
+              url: 'card.php',
+              data: { user_id: val },
+              success: function(data){ 
+                $('#cards').append(data + br);
+
+                // LOAD JSON INTO USER INDEX-CARD HTML TABLES HERE, e.g.:
+            //        $.each($.parseJSON(data), function(key, val){ 
+            //          ...
+            //        });
+              }, 
+              async: false 
+            });*/
+        }
+
+        if (val instanceof Object) {
+        $("#results").append(br + key +  br);
+        $.each(val, function(key, val) {
+            this.load_user_cards(key, val);
+        });
+
+        } else {
+        $("#results").append(key +" "+ val + br);
+        }
+    },
+
     do_solr_query: function(){
         query = '"' + encodeURIComponent($("#query").val() + '"');
         start = 0;
@@ -94,10 +134,13 @@ SearchView = Backbone.View.extend({
             $("#results").text("");
             $("#cards").text("");
             $.each(data, function(key, val){
-              //this.load_user_cards(key, val);
+              //console.log(data);
+              load_user_cards(key, val);
              });
         });
     },
+
+    
 
     /*processData: function(){
         // This method is purposely not using Backbone views for performance reasons
