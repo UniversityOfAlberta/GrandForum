@@ -42,6 +42,18 @@ class AcademiaMapProxy {
                 $contents = preg_replace("/getJSON\(([^,]*)\,/", "getJSON('".$wgServer.$wgScriptPath."/index.php?action=academiaMapProxy&url=' + escape('http://academiamap.com/' + $1),", $contents);
                 $contents = str_replace("ajax-loader.gif", $wgServer.$wgScriptPath."/index.php?action=academiaMapProxy&url=".urlencode("http://academiamap.com/ajax-loader.gif"), $contents);
                 $contents = str_replace("default.jpg", $wgServer.$wgScriptPath."/index.php?action=academiaMapProxy&url=".urlencode("http://academiamap.com/default.jpg"), $contents);
+                $contents = str_replace("categories.php", $wgServer.$wgScriptPath."/index.php?action=academiaMapProxy&url=".urlencode("http://academiamap.com/categories.php"), $contents);
+                $contents = str_replace('filename = "content.php?call=getAllTweets&startTime=" + DatetoString(start) + "&endTime=" + DatetoString(end) + "&seedUserList=";', 
+                                        'filename = "'.$wgServer.$wgScriptPath.'/index.php?action=academiaMapProxy&url=" + escape("http://academiamap.com/content.php?call=getAllTweets&startTime=" + DatetoString(start) + "&endTime=" + DatetoString(end) + "&seedUserList=");', $contents);
+                if(strstr($_GET['url'], 'functions.js')){
+                    $contents .= <<<EOF
+        $(document).ready(function(){
+            $('body').ajaxComplete(function(e, xhr, settings) {
+                $("a").attr("target", "_blank");
+            });
+        });            
+EOF;
+                }
                 header('Content-Type: text/javascript');
             }
             else if(strstr($_GET['url'], '.png') !== false){
@@ -54,6 +66,9 @@ class AcademiaMapProxy {
                 header('Content-Type: image/gif');
             }
             else if(strstr($_GET['url'], 'content.php') !== false){
+                header('Content-Type: application/json');
+            }
+            else if(strstr($_GET['url'], 'categories.php') !== false){
                 header('Content-Type: application/json');
             }
             else{
