@@ -309,8 +309,8 @@ $egAnnokiExtensions['ReviewResults']     = array( 'name' => 'ReviewResults',
 					      'enabled' => true,
 					      );
 
-$egAnnokiExtensions['NewSearch']     = array( 'name' => 'NewSearch',
-					      'path' => "$IP/extensions/GrandObjectPage/NewSearch/NewSearch.php",
+$egAnnokiExtensions['AdvancedSearch']     = array( 'name' => 'AdvancedSearch',
+					      'path' => "$IP/extensions/GrandObjectPage/AdvancedSearch/AdvancedSearch.php",
 					      'enabled' => true,
 					      );
 /** Install all enumerated Annoki-based extensions **/

@@ -1,8 +1,8 @@
 <?php
 
-BackbonePage::register('NewSearch', 'NewSearch', 'grand-tools', dirname(__FILE__));
+BackbonePage::register('AdvancedSearch', 'AdvancedSearch', 'grand-tools', dirname(__FILE__));
 
-class NewSearch extends BackbonePage {
+class AdvancedSearch extends BackbonePage {
     
     function getTemplates(){
         return array('search');
@@ -13,7 +13,7 @@ class NewSearch extends BackbonePage {
     }
     
     function getModels(){
-        return array('NewSearch');
+        return array('AdvancedSearch','Backbone/*');
     }
 
 }

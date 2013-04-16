@@ -11,7 +11,7 @@ SearchView = Backbone.View.extend({
     
     events: {
         "click #search_btn": "doSearch",
-        "click #cancel": "cancel"
+        //"click #cancel": "cancel"
     },
 
     doSearch: function(){
@@ -133,10 +133,21 @@ SearchView = Backbone.View.extend({
         $.getJSON(url_solr, function(data){
             $("#results").text("");
             $("#cards").text("");
-            $.each(data, function(key, val){
-              //console.log(data);
-              load_user_cards(key, val);
-             });
+            //console.log(data['response']['docs']);
+            $.each(data['response']['docs'], function(key, val){
+                //console.log(val['user_id']);
+                person = new Person({id: val['user_id']});
+                person.fetch({
+                    success: function (person) {
+                        console.log(person.toJSON());
+                    }
+                });
+                // console.log("KEY:");
+                // console.log(key);
+                // console.log("VAL:");
+                // console.log(val);
+                //load_user_cards(key, val);
+            });
         });
     },
 
