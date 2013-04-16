@@ -156,6 +156,9 @@ abstract class AbstractReport extends SpecialPage {
                 setcookie('showSuccess', 'true', time()-(60*60), '/');
                 $wgMessage->addSuccess("Report Loaded Successfully.");
             }
+            if(isset($_GET['saveBackup']) || isset($_GET['saveBackup'])){
+                ini_set("memory_limit","1024M");
+            }
             if(isset($_POST['loadBackup']) && !$this->readOnly){
                 $status = $parser->loadBackup();
                 if($status){
@@ -203,10 +206,15 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     function execute(){
-        global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating;
+        global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating, $wgRealUser;
         if($this->name != ""){
             if((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions'])){
-                if(!$wgUser->isLoggedIn() || ($wgImpersonating && !$this->checkPermissions()) || !DBFunctions::DBWritable() || (isset($_POST['user']) && $_POST['user'] != $wgUser->getName())){
+                $managerImpersonating = false;
+                if($wgImpersonating){
+                    $realPerson = Person::newFromUser($wgRealUser);
+                    $managerImpersonating = $realPerson->isRoleAtLeast(MANAGER);
+                }
+                if(!$managerImpersonating && (!$wgUser->isLoggedIn() || ($wgImpersonating && !$this->checkPermissions()) || !DBFunctions::DBWritable() || (isset($_POST['user']) && $_POST['user'] != $wgUser->getName()))){
                     header('HTTP/1.1 403 Authentication Required');
                     exit;
                 }
@@ -531,6 +539,7 @@ abstract class AbstractReport extends SpecialPage {
         if($nProjectTags == 0){
             $pResult = true;
         }
+
         return ($pResult && $rResult);
     }
     
@@ -556,6 +565,12 @@ abstract class AbstractReport extends SpecialPage {
         }
         if($me->isEvaluator()){
             $roles[] = EVALUATOR;
+        }
+        if($me->isRole(EXTERNAL)){
+            $roles[] = EXTERNAL;
+        }
+        if($me->isRole(STAFF)){
+            $roles[] = STAFF;
         }
         
         $permissions = array();

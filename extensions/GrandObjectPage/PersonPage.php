@@ -75,8 +75,9 @@ class PersonPage {
                 $this->showTitle($person, $visibility);
 
                 $tabbedPage = new TabbedPage("person");
-                $tabbedPage->addTab(new PersonContactTab($person, $visibility));
+                
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
+                $tabbedPage->addTab(new PersonContactTab($person, $visibility));
                 $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
                 $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
@@ -110,7 +111,7 @@ class PersonPage {
                 $wgOut->output();
                 $wgOut->disable();
             }
-            else if(array_search($role, $wgRoles) !== false && $wgTitle->getText() != "Mail Index"){
+            else if(array_search($role, $wgRoles) !== false && $wgTitle->getText() != "Mail Index" && strstr($wgTitle->getText(), "MAIL ") === false){
                 // User does not exist
                 TabUtils::clearActions();
                 $wgOut->clearHTML();

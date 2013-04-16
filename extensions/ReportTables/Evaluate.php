@@ -5,13 +5,14 @@
 
 //define("EVAL_YEAR", REPORTING_YEAR);
 
-$dir = dirname(__FILE__) . '/';
-$wgSpecialPages['Evaluate'] = 'Evaluate'; # Let MediaWiki know about the special page.
-$wgExtensionMessagesFiles['Evaluate'] = $dir . 'Evaluate.i18n.php';
-$wgSpecialPageGroups['Evaluate'] = 'reporting-tools';
 
-class Evaluate {
+// $dir = dirname(__FILE__) . '/';
+// $wgSpecialPages['Evaluate'] = 'Evaluate'; # Let MediaWiki know about the special page.
+// $wgExtensionMessagesFiles['Evaluate'] = $dir . 'Evaluate.i18n.php';
+// $wgSpecialPageGroups['Evaluate'] = 'reporting-tools';
 
+class Evaluate{
+	/*
 	function Evaluate(){
 	    //parent::AbstractReportOld("Evaluate", RMC);
 	}
@@ -170,6 +171,7 @@ class Evaluate {
 		
 	    call_user_func( $reportList[OldReport::getCurrentElement()][2]);
 	}
+	*/
 	
 	static function projPDF(){
 	    global $wgOut, $wgUser, $reporteeId, $wgServer, $wgScriptPath, $wgTitle;

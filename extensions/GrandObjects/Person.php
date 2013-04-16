@@ -8,8 +8,10 @@ class Person extends BackboneModel {
     static $coLeaderCache = array();
     static $leaderCache = array();
     static $aliasCache = array();
+    static $authorshipCache = array();
     static $namesCache = array();
     static $idsCache = array();
+    static $disciplineMap = array();
 
 	var $name;
 	var $email;
@@ -21,11 +23,11 @@ class Person extends BackboneModel {
 	var $privateProfile;
 	var $realname;
 	var $projects;
+	var $university;
 	var $isProjectLeader;
 	var $isProjectCoLeader;
 	var $groups;
 	var $roles;
-	var $university;
 	var $isEvaluator = null;
 	var $isProjectManager = null;
 	var $relations;
@@ -34,6 +36,7 @@ class Person extends BackboneModel {
 	var $contributions;
 	var $multimedia;
 	var $acknowledgements;
+	var $aliases = false;
 	var $budgets = array();
 	var $leadershipCache = array();
 	var $hqpCache = array();
@@ -253,27 +256,6 @@ class Person extends BackboneModel {
 	    }
 	}
 	
-	static function generateUniversityCache(){
-	    if(count(self::$universityCache) == 0){
-            $sql = "SELECT * 
-                    FROM mw_user_university uu, mw_universities u
-                    WHERE u.university_id = uu.university_id
-                    GROUP BY uu.user_id
-                    HAVING uu.id = MAX(uu.id)";
-            $data = DBFunctions::execSQL($sql);
-            if(DBFunctions::getNRows() > 0){
-                foreach($data as $row){
-                    if(!isset(self::$universityCache[$row['user_id']])){
-                        self::$universityCache[$row['user_id']] = 
-                            array("university" => str_replace("&", "&amp;", $row['university_name']),
-                                  "department" => str_replace("&", "&amp;", $row['department']),
-                                  "position"   => str_replace("&", "&amp;", $row['position']));
-                    }
-                }
-            }
-        }
-	}
-	
 	// Caches the resultset of the co leaders
 	static function generateCoLeaderCache(){
 	    if(count(self::$coLeaderCache) == 0){
@@ -305,6 +287,49 @@ class Person extends BackboneModel {
 	        }
 	    }
 	}
+	
+	static function generateUniversityCache(){
+        if(count(self::$universityCache) == 0){
+            $sql = "SELECT * 
+                    FROM mw_user_university uu, mw_universities u
+                    WHERE u.university_id = uu.university_id
+                    ORDER BY uu.id DESC";
+            $data = DBFunctions::execSQL($sql);
+            if(DBFunctions::getNRows() > 0){
+                foreach($data as $row){
+                    if(!isset(self::$universityCache[$row['user_id']])){
+                        self::$universityCache[$row['user_id']] = 
+                            array("university" => str_replace("&", "&amp;", $row['university_name']),
+                                  "department" => str_replace("&", "&amp;", $row['department']),
+                                  "position"   => str_replace("&", "&amp;", $row['position']));
+                    }
+                }
+            }
+        }
+    }
+    
+    static function generateDisciplineMap(){
+        if(count(self::$disciplineMap) == 0){
+            $sql = "SELECT m.department, d.discipline
+                    FROM `grand_disciplines_map` m, `grand_disciplines` d
+                    WHERE m.discipline = d.id";
+            $data = DBFunctions::execSQL($sql);
+            foreach($data as $row){
+                self::$disciplineMap[strtolower($row['department'])] = $row['discipline'];
+            }
+        }
+    }
+    
+    static function generateAuthorshipCache(){
+        if(count(self::$authorshipCache) == 0){
+            $sql = "SELECT *
+                    FROM `grand_product_authors`";
+            $data = DBFunctions::execSQL($sql);
+            foreach($data as $row){
+                self::$authorshipCache[$row['author']][] = $row['product_id'];
+            }
+        }
+    }
 	
 	// Returns an array of all Univeristy names
 	static function getAllUniversities(){
@@ -348,7 +373,7 @@ class Person extends BackboneModel {
 	        $rowA[0] = $row;
 	        $person = Person::newFromId($rowA[0]['user_id']);
 	        //$projects = $person->getProjects();
-	        if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter)) && (!$person->isRole(STAFF) && !$person->isRole(MANAGER))){
+	        if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter))){
 	            $people[] = $person;
 	        }
 	    }
@@ -368,7 +393,7 @@ class Person extends BackboneModel {
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
             //$projects = $person->getProjects();
-            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleDuring($filter, $startRange, $endRange)) && (!$person->isRoleDuring(STAFF, $startRange, $endRange) && !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
+            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleDuring($filter, $startRange, $endRange))){
                 $people[] = $person;
             }
         }
@@ -865,29 +890,174 @@ class Person extends BackboneModel {
         }
 	}
 	
-	// Returns the University information of the Person
-	function getUniversity(){
-	    self::generateUniversityCache();
-	    if($this->university !== false){
-	        return $this->university;
+	/**
+	 * Returns whether this Person has worked on their survey
+	 * @return boolean whether this Person has worked on their survey
+	 */
+	function hasDoneSurvey(){
+	    $sql = "SELECT *
+	            FROM `survey_results`
+	            WHERE `user_id` = '{$this->id}'";
+	    $data = DBFunctions::execSQL($sql);
+	    return (DBFunctions::getNRows() > 0);
+	}
+	
+	/**
+	 * Returns this Person's primary funding agency from their response in the Survey
+	 * @return string This Person's primary funding agency from their response in the Survey
+	 */
+	function getPrimaryFundingAgency(){
+	    $sql = "SELECT `discipline`
+	            FROM `survey_results`
+	            WHERE `user_id` = '{$this->id}'";
+	    $data = DBFunctions::execSQL($sql);
+	    if(DBFunctions::getNRows() > 0){
+	        $discipline = json_decode($data[0]['discipline']);
+	        if(isset($discipline->d_level1a)){
+	            return $discipline->d_level1a;
+	        }
 	    }
-	    $this->university = @self::$universityCache[$this->id];
-	    return $this->university;
+	    return "Unknown";
 	}
 	
-	function getUni(){
-	    $university = $this->getUniversity();
-	    return (isset($university['university'])) ? $university['university'] : "";
+	/**
+	 * Returns this Person's primary discipline from the Survey
+	 * @return string This Person's primary discipline from the Survey
+	 */
+	function getSurveyDiscipline(){
+	    $sql = "SELECT `discipline`
+	            FROM `survey_results`
+	            WHERE `user_id` = '{$this->id}'";
+	    $data = DBFunctions::execSQL($sql);
+	    if(DBFunctions::getNRows() > 0){
+	        $discipline = json_decode($data[0]['discipline']);
+	        if(isset($discipline->d_level2)){
+	            return $discipline->d_level2;
+	        }
+	    }
+	    return "Unknown";
 	}
 	
-	function getDepartment(){
-	    $university = $this->getUniversity();
-	    return (isset($university['department'])) ? $university['department'] : "";
+	/**
+	 * Returns this Person's first degree connections from their response in the Survey
+	 * @return array This Person's first degree connections from their response in the Survey
+	 */
+	function getSurveyFirstDegreeConnections(){
+	    $sql = "SELECT `grand_connections`
+	            FROM `survey_results`
+	            WHERE `user_id` = '{$this->id}'";
+	    $data = DBFunctions::execSQL($sql);
+	    if(DBFunctions::getNRows() > 0){
+	        $connections = json_decode($data[0]['grand_connections']);
+	        if(count($connections) > 0){
+                return $connections;
+            }
+            else{
+                return array();
+            }
+	    }
+	    return array();
 	}
 	
-	function getPosition(){
-	    $university = $this->getUniversity();
-	    return (isset($university['position'])) ? $university['position'] : "";
+	/**
+	 * Returns the current University that this Person is at
+	 * @return array The current University this Person is at
+	 */ 
+	function getUniversity(){
+        self::generateUniversityCache();
+        if($this->university !== false){
+            return $this->university;
+        }
+        $this->university = @self::$universityCache[$this->id];
+        return $this->university;
+    }
+
+    function getUni(){
+        $university = $this->getUniversity();
+        return (isset($university['university'])) ? $university['university'] : "";
+    }
+
+    function getDepartment(){
+        $university = $this->getUniversity();
+        return (isset($university['department'])) ? $university['department'] : "";
+    }
+
+    function getPosition(){
+        $university = $this->getUniversity();
+        return (isset($university['position'])) ? $university['position'] : "";
+    }
+	
+	/**
+	 * Returns the last University that this Person was at between the given range
+	 * @param string $startRange The start date to look at (default start of the current reporting year)
+	 * @param string $endRange The end date to look at (default end of the current reporting year)
+	 * @return array The last University that this Person was at between the given range
+	 */ 
+	function getUniversityDuring($startRange=false, $endRange=false){
+	    if( $startRange === false || $endRange === false ){
+	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
+	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+	    }
+        $uTable = getTableName("universities");
+        $uuTable = getTableName("user_university");
+        $sql = "SELECT * 
+	            FROM $uuTable uu, $uTable u
+	            WHERE uu.user_id = '{$this->id}'
+	            AND u.university_id = uu.university_id
+	            AND ( 
+                ( (end_date != '0000-00-00 00:00:00') AND
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                OR
+                ( (end_date = '0000-00-00 00:00:00') AND
+                ((start_date <= '$endRange')))
+                )
+				ORDER BY uu.id DESC";
+	    $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            return array("university" => str_replace("&", "&amp;", $data[0]['university_name']),
+	                     "department" => str_replace("&", "&amp;", $data[0]['department']),
+	                     "position"   => str_replace("&", "&amp;", $data[0]['position']));
+        }
+        else{
+            return null;
+        }
+	}
+	
+	/**
+	 * Returns the discipline of this Person
+	 * @return string The name of the discipline that this Person belongs to
+	 */
+	function getDiscipline(){
+	    self::generateDisciplineMap();
+	    $dept = strtolower($this->getDepartment());
+	    if(isset(self::$disciplineMap[$dept])){
+	        return self::$disciplineMap[$dept];
+	    }
+	    return "Other";
+	}
+	
+	/**
+	 * Returns the discipline of this Person during the given start and end dates
+	 * @param string $startRange The start date to look at (default start of the current reporting year)
+	 * @param string $endRange The end date to look at (default end of the current reporting year)
+	 * @param boolean $checkLater Whether or not to check the current Discipline if the range specified does not return any results
+	 * @return string The name of the discipline that this Person belongs to during the specified dates
+	 */
+	function getDisciplineDuring($startRange=false, $endRange=false, $checkLater=false){
+	    self::generateDisciplineMap();
+	    if( $startRange === false || $endRange === false ){
+	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
+	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+	    }
+	    $university = $this->getUniversityDuring($startRange, $endRange);
+	    if($checkLater && $university['department'] == "" || $university['university'] == ""){
+	        $university = $this->getUniversity();
+	    }
+	    $dept = strtolower($university['department']);
+	    if(isset(self::$disciplineMap[$dept])){
+	        return self::$disciplineMap[$dept];
+	    }
+	    return "Other";
 	}
 	
 	// Returns an array of Strings, representing each user group name
@@ -1087,8 +1257,6 @@ class Person extends BackboneModel {
 	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
 	    }
 	    
-	    $this->roles = array();
-	    
 	    $sql = "SELECT *
                 FROM grand_roles
                 WHERE user = '{$this->id}'
@@ -1154,8 +1322,8 @@ class Person extends BackboneModel {
 	    if(count($projects) > 0){
 	        foreach($projects as $project){
 	            if(!$project->isDeleted() || ($project->isDeleted() && 
-	                                          strcmp($project->effectiveDate, $end) < 0 && 
-	                                          strcmp($project->effectiveDate, $start) > 0)){
+	                                          !(strcmp($project->effectiveDate, $end) < 0 && 
+	                                            strcmp($project->effectiveDate, $start) > 0))){
 	                $members = $project->getAllPeopleDuring(null, $start, $end, true);
 	                foreach($members as $member){
 	                    if($member->getId() == $this->id){
@@ -1196,8 +1364,39 @@ class Person extends BackboneModel {
 	    }
 	}
 	
+	function getRelationsDuring($type='all', $startRange, $endRange){
+	    $type = mysql_real_escape_string($type);
+	    $startRange = mysql_real_escape_string($startRange);
+	    $endRange = mysql_real_escape_string($endRange);
+	    $sql = "SELECT *
+                FROM grand_relations
+                WHERE user1 = '{$this->id}'\n";
+        if($type == "public"){
+            $sql .= "AND type != '".WORKS_WITH."'\n"; 
+        }
+        else if($type == "all"){
+            // do nothing
+        }
+        else{
+            $sql .= "AND type = '$type'\n";
+        }
+        $sql .= "AND ( 
+                ( (end_date != '0000-00-00 00:00:00') AND
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                OR
+                ( (end_date = '0000-00-00 00:00:00') AND
+                ((start_date <= '$endRange')))
+                )";
+        $data = DBFunctions::execSQL($sql);
+        $relations = array();
+        foreach($data as $row){
+			$relations[] = Relationship::newFromId($row['id']);
+		}
+        return $relations;
+	}
+	
 	// Returns an array of relations for this Person of the given type
-	// If history is set to true, then all the Projects regardless of date are included
+	// If history is set to true, then all the relations regardless of date are included
 	function getRelations($type='all', $history=false){
 	    if($type == "all"){
 	        $sql = "SELECT id, type
@@ -1290,6 +1489,35 @@ class Person extends BackboneModel {
 	    return $this->multimedia;
 	}
 	
+	/**
+	 * Returns an array of objects representing this user's recordings
+	 * @return array An array of objects representing this user's recordings
+	 */
+	function getRecordings(){
+	    $sql = "SELECT *
+	            FROM `grand_recordings`
+	            WHERE person = '{$this->id}'";
+	    $data = DBFunctions::execSQL($sql);
+	    $array = array();
+	    foreach($data as $row){
+	        $events = json_decode($row['story']);
+	        $story = (object)'a';
+	        $story->id = $row['id'];
+	        $story->person = $row['person'];
+	        $story->created = $row['created'];
+	        $story->events = $events;
+	        if(count($events) > 0){
+	            foreach($events as $event){
+	                $date = @$event->date;
+                    $time = strtotime($date);
+	                $event->date = date('D, F n, Y e - h:i:s', $time);
+	            }
+	        }
+	        $array[] = $story;
+	    }
+	    return $array;
+	}
+	
 	// Returns an array of Acknowledgements uploaded by this Person
     function getAcknowledgements(){
         if($this->acknowledgements == null){
@@ -1335,6 +1563,23 @@ class Person extends BackboneModel {
 	function isHQP() {
 		return $this->isRole(HQP);
 	}
+	
+	/**
+	 * Returns whether or not this person is a Student
+	 * @return boolean Returns whether or not his person is a Student
+	 */
+	function isStudent(){
+	    if($this->isHQP()){
+	        $uni = $this->getUniversity();
+	        if(strtolower($uni['position']) == 'undergraduate' ||
+	           strtolower($uni['position']) == 'masters student' ||
+	           strtolower($uni['position']) == 'phd student' ||
+	           strtolower($uni['position']) == 'postdoc'){
+	            return true;
+	        }
+	    }
+	    return false;
+	}
 
     // Returns whether this Person is of type $role or not.
     function isRole($role){
@@ -1370,10 +1615,12 @@ class Person extends BackboneModel {
     function isRoleDuring($role, $startRange = false, $endRange = false){
         $roles = array();
         $role_objs = $this->getRolesDuring($startRange, $endRange);
-        $project_objs = $this->leadershipDuring($startRange, $endRange);
-        if(count($project_objs) > 0){
-            $roles[] = "PL";
-            $roles[] = "COPL";
+        if($role == PL || $role == COPL || $role == "PL" || $role == "COPL"){
+            $project_objs = $this->leadershipDuring($startRange, $endRange);
+            if(count($project_objs) > 0){
+                $roles[] = "PL";
+                $roles[] = "COPL";
+            }
         }
         if(count($role_objs) > 0){
             foreach($role_objs as $r){
@@ -1392,21 +1639,21 @@ class Person extends BackboneModel {
     // Returns whether or not the Person has a role of at least the given role
     function isRoleAtLeast($role){
         global $wgRoleValues;
-        if($this->isProjectLeader()){
-            if($wgRoleValues[PL] >= $wgRoleValues[$role]){
-                return true;
-            }
-        }
-        if($this->isProjectCoLeader()){
-            if($wgRoleValues[COPL] >= $wgRoleValues[$role]){
-                return true;
-            }
-        }
         if($this->getRoles() != null){
             foreach($this->getRoles() as $r){
                 if($r->getRole() != "" && $wgRoleValues[$r->getRole()] >= $wgRoleValues[$role]){
                     return true;
                 }
+            }
+        }
+        if($wgRoleValues[PL] >= $wgRoleValues[$role]){
+            if($this->isProjectLeader()){
+                return true;
+            }
+        }
+        if($wgRoleValues[COPL] >= $wgRoleValues[$role]){
+            if($this->isProjectCoLeader()){
+                return true;
             }
         }
         return false;
@@ -1415,21 +1662,22 @@ class Person extends BackboneModel {
     // Returns whether or not the Person has a role of at most the given role
     function isRoleAtMost($role){
         global $wgRoleValues;
-        if($this->isProjectLeader()){
-            if($wgRoleValues[PL] <= $wgRoleValues[$role]){
-                return true;
-            }
-        }
-        if($this->isProjectCoLeader()){
-            if($wgRoleValues[COPL] <= $wgRoleValues[$role]){
-                return true;
-            }
-        }
         foreach($this->getRoles() as $r){
             if($r->getRole() != "" && $wgRoleValues[$r->getRole()] <= $wgRoleValues[$role]){
                 return true;
             }
         }
+        if($wgRoleValues[PL] <= $wgRoleValues[$role]){
+            if($this->isProjectLeader()){
+                return true;
+            }
+        }
+        if($wgRoleValues[COPL] <= $wgRoleValues[$role]){
+            if($this->isProjectCoLeader()){
+                return true;
+            }
+        }
+        
         return false;
     }
 	
@@ -1610,6 +1858,36 @@ class Person extends BackboneModel {
 		}
 		return $people;
     }
+    
+    function getSupervisorsDuring($startRange = false, $endRange = false){
+        if( $startRange === false || $endRange === false ){
+            $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
+            $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+        }
+        $sql = "SELECT *
+                FROM grand_relations
+                WHERE user2 = '{$this->id}'
+                AND type = 'Supervises'
+                AND ( 
+                ( (end_date != '0000-00-00 00:00:00') AND
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                OR
+                ( (end_date = '0000-00-00 00:00:00') AND
+                ((start_date <= '$endRange')))
+                )";
+    
+        $data = DBFunctions::execSQL($sql);
+        $sups = array();
+        $sups_uniq_ids = array();
+        foreach($data as $row){
+            $sup = Person::newFromId($row['user1']);
+            if( !in_array($sup->getId(), $sups_uniq_ids) && $sup->getName() != ""){
+                $sups_uniq_ids[] = $sup->getId();
+                $sups[] = $sup;
+            }
+        }
+        return $sups;
+    }
 
     function getSupervisedOnProjects($history=false){
         if($history !== false && $this->id != null){
@@ -1696,7 +1974,7 @@ class Person extends BackboneModel {
     }
     
     // Returns True, if this Person is related to another given Person, through a given relationship
-    // ReturnsFalse, if no such relationship found
+    // Returns False, if no such relationship found
     // Returns Null, if there is a problem with the given Person
     //TODO: Perhaps will need to implement history argument
     function relatedTo($person, $relationship){
@@ -1721,53 +1999,94 @@ class Person extends BackboneModel {
             return null;
         }
     }
-    
 	
-	// Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
+	/**
+	 * Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
+	 * @param string $category The category of Paper to get
+	 * @param boolean $history Whether or not to include past publications (ie. written by past HQP)
+	 * @param string $grand Whether to include 'grand' 'nonGrand' or 'both' Papers
+	 * @return array Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
+	 */ 
 	function getPapers($category="all", $history=false, $grand='grand'){
-	    $papers = Paper::getAllPapers("all", $category, $grand);
-	    $papersArray = array();
-	    $hqps = array();
-	    if(!$this->isRole(HQP)){
-	        foreach($this->getHQP($history) as $hqp){
-                $hqps[] = $hqp->getName();
-            }
-        }
-	    foreach($papers as $paper){
-	        if(!$paper->deleted){
-                foreach($paper->getAuthors() as $author){
-                    if($author->getName() == $this->name || array_search($author->getName(), $hqps) !== false){
-                        $papersArray[] = $paper;
-                        break;
-                    }
+	    self::generateAuthorshipCache();
+        $processed = array();
+        $papersArray = array();
+        $papers = array();
+        foreach($this->getHQP($history) as $hqp){
+            $ps = $hqp->getPapers();
+            foreach($ps as $p){
+                if(!isset($processed[$p->getId()])){
+                    $processed[$p->getId()] = true;
+                    $papersArray[] = $p;
                 }
             }
+        }
+	    
+	    if(isset(self::$authorshipCache[$this->id])){
+	        foreach(self::$authorshipCache[$this->id] as $id){
+	            if(!isset($processed[$id])){
+	                $papers[] = $id;
+	            }
+	        }
+	    }
+	    
+	    foreach($papers as $pId){
+	        $paper = Paper::newFromId($pId);
+	        if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
+	           count($paper->getProjects()) > 0){
+	            $papersArray[] = $paper;
+	        }
 	    }
 	    return $papersArray;
 	}
 	
-	// Returns an array of Paper(s) authored/co-authored by this Person
+	/**
+	 * Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
+	 * @param string $category The category of Paper to get
+	 * @param string $startRange The starting date (start of the current reporting year if not specified)
+	 * @param string $endRange The end date (end of the current reporting year if not specified)
+	 * @param boolean $includeHQP Whether or not to include HQP in the result
+	 * @return array Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
+	 */
     function getPapersAuthored($category="all", $startRange = false, $endRange = false, $includeHQP=false){
-        $papers = Paper::getAllPapersDuring("all", $category, "grand", $startRange, $endRange);
+        if( $startRange === false || $endRange === false ){
+	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
+	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+	    }
+        self::generateAuthorshipCache();
+        $processed = array();
         $papersArray = array();
-        
-        $hqps = array();
-	    if($includeHQP){
+        $papers = array();
+        if($includeHQP){
 	        foreach($this->getHQPDuring($startRange, $endRange) as $hqp){
-                $hqps[] = $hqp->getName();
+	            $ps = $hqp->getPapersAuthored($category, $startRange, $endRange, false);
+	            foreach($ps as $p){
+	                if(!isset($processed[$p->getId()])){
+	                    $processed[$p->getId()] = true;
+	                    $papersArray[] = $p;
+	                }
+	            }
             }
         }
-        foreach($papers as $paper){
-            if(!$paper->deleted){
-                foreach($paper->getAuthors() as $author){
-                    if($author->getName() == $this->name || array_search($author->getName(), $hqps) !== false){
-                        $papersArray[] = $paper;
-                        break;
-                    }
-                }
-            }
-        }
-        return $papersArray;
+	    
+	    if(isset(self::$authorshipCache[$this->id])){
+	        foreach(self::$authorshipCache[$this->id] as $id){
+	            if(!isset($processed[$id])){
+	                $papers[] = $id;
+	            }
+	        }
+	    }
+	    
+	    foreach($papers as $pId){
+	        $paper = Paper::newFromId($pId);
+	        $date = $paper->getDate();
+	        if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
+	           count($paper->getProjects()) > 0 &&
+	           (strcmp($date, $startRange) >= 0 && strcmp($date, $endRange) <= 0 )){
+	            $papersArray[] = $paper;
+	        }
+	    }
+	    return $papersArray;
     }
 	
 	// Returns a list of GRAND posters created by this user, or this user's HQP
@@ -2377,12 +2696,13 @@ class Person extends BackboneModel {
 	}
 	
 	// Returns true if the person is an evaluator
-	function isEvaluator(){
+	function isEvaluator($year = REPORTING_YEAR){
 	    if($this->isEvaluator === null){
 	        $eTable = getTableName("eval");
 	        $sql = "SELECT *
 	                FROM $eTable
-	                WHERE eval_id = '{$this->id}'";
+	                WHERE eval_id = '{$this->id}'
+	                AND year = '{$year}'";
 	        $data = DBFunctions::execSQL($sql);
 	        if(count($data) > 0){
 	            $this->isEvaluator = true;
@@ -2395,11 +2715,12 @@ class Person extends BackboneModel {
 	}
 	
 	// Returns the list of Evaluation Submissions for this person
-	function getEvaluateSubs(){
+	function getEvaluateSubs($year = REPORTING_YEAR){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
-	            WHERE eval_id = '{$this->id}'";
+	            WHERE eval_id = '{$this->id}'
+	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2413,13 +2734,36 @@ class Person extends BackboneModel {
         return $subs;
 	}
 	
-	function getEvaluates($type){
+	static function getAllEvaluates($type, $year = REPORTING_YEAR){
+	    $type = mysql_real_escape_string($type);
+	    $eTable = getTableName("eval");
+	    
+	    $sql = "SELECT DISTINCT sub_id 
+	            FROM $eTable
+	            WHERE type = '$type'
+	            AND year = '{$year}'";
+	    $data = DBFunctions::execSQL($sql);
+	    $subs = array();
+        foreach($data as $row){
+            if($type != "Project"){
+                $subs[] = Person::newFromId($row['sub_id']);
+            }
+            else{
+                $subs[] = Project::newFromId($row['sub_id']);
+            }
+        }
+        return $subs;
+	}
+
+
+	function getEvaluates($type, $year = REPORTING_YEAR){
 	    $type = mysql_real_escape_string($type);
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE eval_id = '{$this->id}'
-	            AND type = '$type'";
+	            AND type = '$type'
+	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2433,12 +2777,13 @@ class Person extends BackboneModel {
         return $subs;
 	}
 
-	function getEvaluatePNIs(){
+	function getEvaluatePNIs($year = REPORTING_YEAR){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE eval_id = '{$this->id}'
-	            AND type = 'PNI'";
+	            AND type = 'PNI'
+	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2450,12 +2795,13 @@ class Person extends BackboneModel {
 	}
     
     // Returns the list of Evaluation Submissions for this person
-	function getEvaluateCNIs(){
+	function getEvaluateCNIs($year = REPORTING_YEAR){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE eval_id = '{$this->id}'
-                AND type = 'CNI'";
+                AND type = 'CNI'
+                AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2466,12 +2812,13 @@ class Person extends BackboneModel {
         return $subs;
 	}
 	
-	function getEvaluateProjects(){
+	function getEvaluateProjects($year = REPORTING_YEAR){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE eval_id = '{$this->id}'
-	            AND type = 'Project'";
+	            AND type = 'Project'
+	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2484,12 +2831,13 @@ class Person extends BackboneModel {
 
 	// Returns a list of the evaluators who are evaluating this Person
 	// Provide type 
-	function getEvaluators($type='Researcher'){
+	function getEvaluators($type='Researcher', $year = REPORTING_YEAR){
 	    $eTable = getTableName("eval");
 	    $sql = "SELECT *
 	            FROM $eTable
 	            WHERE sub_id = '{$this->id}'
-	            AND type = '{$type}'";
+	            AND type = '{$type}'
+	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
@@ -2531,6 +2879,20 @@ class Person extends BackboneModel {
 		}
 		
 		return false;
+	}
+
+	function getEthics(){
+
+		$query = "SELECT * FROM grand_ethics WHERE user_id='{$this->id}'";
+		$data = DBFunctions::execSQL($query);
+	    
+	    $ethics = array();
+
+        $ethics['completed_tutorial'] = (isset($data[0]['completed_tutorial']))? $data[0]['completed_tutorial'] : 0;
+        $ethics['date'] = (isset($data[0]['date']))? $data[0]['date'] : '0000-00-00';
+
+        return $ethics; 
+        
 	}
     
     function isAuthorOf($paper){

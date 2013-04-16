@@ -147,7 +147,7 @@ EOF;
             $grand_activity_blob = new ReportBlob($blob_type, $year, $uid, 0);
             $grand_activity_blob->load($rep_addr);
             $grand_activity_arr = $grand_activity_blob->getData();
-            $grand_percent = $grand_activity_arr['grand_percent'];
+            $grand_percent = (isset($grand_activity_arr['grand_percent']))? $grand_activity_arr['grand_percent'] : '';
             $grand_percent = preg_replace('/%/', '', $grand_percent);
             $grand_percent = (is_numeric($grand_percent))? $grand_percent : 0;
 

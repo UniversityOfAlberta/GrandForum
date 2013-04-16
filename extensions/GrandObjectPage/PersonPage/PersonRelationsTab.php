@@ -63,7 +63,7 @@ class PersonRelationsTab extends AbstractTab {
                         $this->html .= "<td style='padding-right:25px;' valign='top'>";
                         $this->html .= "<h3>Supervises</h3>";
                         $this->html .= "<table class='wikitable sortable' width='60%' cellspacing='1' cellpadding='5' rules='all' frame='box'>
-                                    <tr><th>Start Date</th><th>End Date</th><th>Position</th><th>Projects</th><th>Last Name</th><th>First Name</th></tr>";
+                                    <tr><th>Start Date</th><th>End Date</th><th>Position</th><th>Projects</th><th>Last Name</th><th>First Name</th><th>Ethical</th></tr>";
                         $relations = $person->getRelations("Supervises", true);
                         foreach($relations as $r){
                             $hqp =  $r->getUser2();
@@ -78,10 +78,19 @@ class PersonRelationsTab extends AbstractTab {
                                 $proj_names[] = $p->getName();
                             }
                             $proj_names = implode(', ', $proj_names);
+                            $ethics = $hqp->getEthics();
+                            if($end_date == 'Current'){
+                                $ethics = ($ethics['completed_tutorial'])? "Yes" : "No";
+                            }
+                            else{
+                                $ethics = "N/A";
+                            }
                             $this->html .= 
                             "<tr><td>$start_date</td><td>$end_date</td><td>$position</td><td>$proj_names</td>
                             <td><a href='{$hqp->getUrl()}'>{$hqp->getLastName()}</a></td>
-                            <td><a href='{$hqp->getUrl()}'>{$hqp->getFirstName()}</a></td></tr>";
+                            <td><a href='{$hqp->getUrl()}'>{$hqp->getFirstName()}</a></td>
+                            <td align='center'>{$ethics}</td>
+                            </tr>";
                         }
                         $this->html .= "</table>";
                         $this->html .= "</td>";

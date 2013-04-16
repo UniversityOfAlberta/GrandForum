@@ -427,7 +427,7 @@ select {
 	outline: none;
 }
 
-input[type=button], input[type=submit], .button, .button:visited, button, .ui-button, .button:link{
+input[type=button], input[type=submit], .button, .button:visited, .ui-button, .button:link , button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose) {
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #E8E8E8) ) !important;
     background:-moz-linear-gradient( center top, #f8f8f8 5%, #E8E8E8 100% ) !important;
     background: -o-linear-gradient(top, #f8f8f8, #E8E8E8) !important;
@@ -458,7 +458,7 @@ input[type=button], input[type=submit], .button, .button:visited, button, .ui-bu
     user-select: none;
 }
 
-button {
+button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose) {
     font-family: Arial, Verdana, sans-serif !important;
     font-size:13px !important;
     white-space:nowrap;
@@ -470,7 +470,7 @@ button {
     user-select: none;
 }
 
-input[type=button]:hover, input[type=submit]:hover, .button:hover, button:hover, .ui-button:hover{
+input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:hover, button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):hover {
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #E8E8E8) );
     background:-moz-linear-gradient( center top, #f8f8f8 5%, #E8E8E8 100% );
     background: -o-linear-gradient(top, #f8f8f8, #E8E8E8);
@@ -493,7 +493,7 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, button:hover,
 	white-space:nowrap;
 }
 
-input[type=button]:active, input[type=submit]:active, .button:active, button:active, .ui-button:active{
+input[type=button]:active, input[type=submit]:active, .button:active, .ui-button:active, button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):active {
     position:relative;
     top:1px;
     text-decoration:none;
@@ -569,6 +569,19 @@ input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabl
     -ms-user-select: none;
     user-select: none;
     text-decoration: none;
+}
+
+input.stealth, input.stealth:focus {
+    border: none !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    background:transparent;
+    margin:0;
+    padding:0;
+    font-size:1em;
+    width:18px;
+    min-width:18px;
 }
 
 input#searchInput {
@@ -878,6 +891,27 @@ input::-moz-focus-inner{
     color: #000000 !important;
     text-shadow: #FFFFFF 1px 1px 0;
     padding: 0 .5em 0 1em !important;
+}
+
+.ui-slider {
+    background: #aaa;
+}
+
+.tick {
+    border: 1px solid transparent; /*follows slide handle style for sizing purposes*/
+    position: absolute;
+    width: 1.2em;
+    margin-left: -.6em;
+    text-align:center;
+    left: 0;
+    font-size: smaller;
+}
+
+.steps {
+    border: 1px solid transparent; /*follows #slider2 style for sizing purposes */
+    width: 200px;
+    position: relative;
+    height: 30px;
 }
 
 .toggleHeader, .ui-accordion-header {

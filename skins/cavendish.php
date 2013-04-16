@@ -83,11 +83,15 @@ class cavendishTemplate extends QuickTemplate {
 		<meta http-equiv="imagetoolbar" content="no" />
 		<![endif]-->
 		<?php print Skin::makeGlobalVariablesScript( $this->data ); ?>
+		
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/date.js"></script>
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/inflection.js"></script>
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/to-title-case.js"></script>
+		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/excanvas.min.js"></script>
+
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery-ui.min.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.browser.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.cookie.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.resizeY.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.limit-1.2.source.js"></script>
@@ -95,7 +99,13 @@ class cavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery-ui.triggeredAutocomplete.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.filterByText.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.scrollTo-min.js"></script>
+
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jqueryDropdown/jquery.dropdown.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.reallyvisible.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.dom-outline.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.jsPlumb-min.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/colorbox/jquery.colorbox-min.js"></script>
+        
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/js/jquery.dataTables.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/tagIt/js/tag-it.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/switcheroo.js"></script>
@@ -105,9 +115,16 @@ class cavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/autosave.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/countries.en.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.qtip.min.js"></script>
+
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/d3.min.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/html2canvas.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.md5.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/ScreenRecord/record.js"></script>
+    
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/underscore-min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/extensions/Messages/messages.js"></script>
+        
         <script type='text/javascript'>
         
             Backbone.emulateHTTP = true;
@@ -201,12 +218,12 @@ class cavendishTemplate extends QuickTemplate {
 		    <link type="text/css" href="<?php $this->text('stylepath') ?>/cavendish/oldie.css" rel="Stylesheet" />
 		<![endif]-->
 		<link rel="stylesheet" type="text/css" media="print" href="<?php $this->text('stylepath') ?>/common/commonPrint.css" />
-		
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/switcheroo/switcheroo.css" rel="Stylesheet" />
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/tagIt/css/jquery.tagit.css" rel="Stylesheet" />
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/tagIt/css/tagit.ui-zendesk.css" rel="Stylesheet" />
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jqueryDropdown/jquery.dropdown.css" rel="Stylesheet" />
 		<script type="text/javascript" src="<?php $this->text('stylepath' ) ?>/common/wikibits.js"></script>
+		<link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/colorbox/colorbox.css" />
 		<script type='text/javascript'>
 		
 		    me = new Person(
@@ -215,7 +232,7 @@ class cavendishTemplate extends QuickTemplate {
 		        echo $me->toJSON();
 		    ?>
 		    );
-		
+
 		    function setMinWidth(){
 	            $("body").css('min-width', '0');
 	            minWidth = parseInt($("#header ul").css('left')) +
@@ -313,7 +330,7 @@ class cavendishTemplate extends QuickTemplate {
 		                                     'left' : '-229px',
 		                                     'margin-right' : marginRight
                                             }, 200, 'swing', function(){
-                                                
+                                                jsPlumb.repaintEverything();
                                             });
                         sideToggled = 'in';
                     }
@@ -322,66 +339,18 @@ class cavendishTemplate extends QuickTemplate {
                                              'left' : '0px',
                                              'margin-right' : '0px'
                                             }, 200, 'swing', function(){
-                                                
+                                                jsPlumb.repaintEverything();
                                             });
                         sideToggled = 'out';
                     }
 		        });
 		    });
 		</script>
-<!-- TEMPORARY SURVEY REMINDER POPUP STARTS HERE -->	
-		<?php
-		$autoOpen = "false";
-		$loggedin_user_id = $wgUser->getId();
-		$loggedin_user = Person::newFromId($loggedin_user_id);
-		
-		if($wgUser->isLoggedIn() && ($loggedin_user->isPNI() || $loggedin_user->isCNI()) && !$wgImpersonating ){
-			$sql = "SELECT * FROM survey_results WHERE user_id = $loggedin_user_id";
-		    $data = DBFunctions::execSQL($sql);
-		  
-		    if(count($data) == 0 || (count($data) > 0 && 
-		    		isset($data[0]['consent']) && $data[0]['consent'] == 1 &&
-		    		isset($data[0]['submitted']) && $data[0]['submitted'] == 0) ){
-
-		    	if(! isset($_COOKIE['survey_reminder'])){
-					setcookie("survey_reminder", 1, time()+75600);
-					$autoOpen = "true";
-				}
-				
-				$message = "<p>Please remember to complete the NAVEL survey. We are extending the deadline as members requested!</p>
-							<p><a href='/index.php/Special:Survey'>Click here</a> to visit the Survey now.</p>";
-		    }
-		    else if( count($data) > 0 && isset($data[0]['submitted']) && $data[0]['submitted'] == 1 ){
-		    	if(!isset($_COOKIE['survey_thanks'])){
-					setcookie("survey_thanks", 1, time()+31536000);
-					$autoOpen = "true";
-				}
-				
-				$message = "Thank you for completing the NAVEL survey. We truly appreciate your help!";
-		    }
-		}
-		?>
-		<script type="text/javascript">
-		$(document).ready(function() {
-			$( "#survey_reminder_dialog" ).dialog({
-			title: "NAVEL Survey",
-			autoOpen: <?php echo $autoOpen; ?>,
-			height: 250,
-			width: 450,
-			modal: true
-			});
-		});
-		</script>
-<!-- TEMPORARY SURVEY REMINDER POPUP ENDS HERE -->
 	</head>
 <body <?php if($this->data['body_ondblclick']) { ?> ondblclick="<?php $this->text('body_ondblclick') ?>"<?php } ?>
 <?php if($this->data['body_onload']) { ?> onload="<?php $this->text('body_onload') ?>"<?php } ?>
  class="mediawiki <?php $this->text('dir') ?> <?php $this->text('pageclass') ?> <?php $this->text('skinnameclass') ?>">
 
-<div id="survey_reminder_dialog" style="display:none;">
-	<br /><br />
-	<?php echo $message; ?>
-</div>
 <div id="internal"></div>
 <div id="container">
 
@@ -439,21 +408,6 @@ class cavendishTemplate extends QuickTemplate {
 			</li>
 			<?php } ?>
 
-			<?php 
-			$user = Person::newFromId($wgUser->getId());
-			if($user->isPNI() ||  $user->isCNI()){
-			?>
-			<li id='grand-tab' class="top-nav-element 
-			    <?php if($wgTitle->getText() == "Survey"){
-			        echo "selected";
-			    } ?>" >
-				<span class="top-nav-left">&nbsp;</span>
-				<a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Special:Survey">NAVEL Survey</a>	
-				<span class="top-nav-right">&nbsp;</span>
-			</li>
-			<?php
-			}
-			?>
 			<?php global $wgImpersonating;
 			    foreach($this->data['personal_urls'] as $key => $item) {
 			    //echo $key;
@@ -533,9 +487,12 @@ class cavendishTemplate extends QuickTemplate {
 					//if($p->isUnassignedEvaluator()){
 					//	ReviewerConflicts::createTab();
 					//}
-					if(!$user->isRoleAtLeast(MANAGER)){
-					    MyMailingLists::createTab();
+
+					if($user->isRole(EXTERNAL) || $user->isRole(STAFF) || $user->isRole(MANAGER)){
+					    ReportPDFs::createTab();
 					}
+
+					MyMailingLists::createTab();
 					Notification::createTab();
 				}
 			?>
@@ -568,6 +525,7 @@ class cavendishTemplate extends QuickTemplate {
 			<input type='submit' name="fulltext" class="searchButton" id="mw-searchButton" value="<?php $this->msg('searchbutton') ?>"<?php echo $this->skin->tooltipAndAccesskey( 'search-fulltext' ); ?> />
 	       </div>
 		</form>
+		
 	</div>
     <div id='submenu'>
         <ul>
@@ -604,6 +562,7 @@ class cavendishTemplate extends QuickTemplate {
 	    ?>
 			
 		    </ul>
+		    
 		</div><!-- end of SIDE div -->
 		<div id="spacer" class='displayTableCell'>
 		</div>
@@ -623,6 +582,7 @@ class cavendishTemplate extends QuickTemplate {
 		</div><!-- end of MAINCONTENT div -->	
 	</div>
 	</div><!-- end of MBODY div -->
+	<div id="recordDiv"></div>
 	<div id="footer"><table><tr><td align="left" width="1%" nowrap="nowrap">
 		    <?php if($this->data['copyrightico']) { ?><div id="f-copyrightico"><?php $this->html('copyrightico') ?></div><?php } ?></td><td align="center">
     <?php	// Generate additional footer links
@@ -700,6 +660,8 @@ class cavendishTemplate extends QuickTemplate {
 			echo "<li id='messageBoard'><a href='{$wgScriptPath}/index.php/GRAND:Instructions'>Instructions</a></li>";
 			echo "<li id='messageBoard'><a href='{$wgScriptPath}/index.php/Special:Postings'>Message Board</a></li>";
 			echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php?action=getNews'>Recent News</a></li>";
+			echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php/Special:Solr'>Full Text Search</a></li>";
+			echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php/Special:AcademiaMap'>Academia Map</a></li>";
 			echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php/Special:SpecialPages'>Other Tools</a></li>";
 		}
 		else {

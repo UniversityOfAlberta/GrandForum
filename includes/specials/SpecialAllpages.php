@@ -316,7 +316,7 @@ class SpecialAllpages extends IncludableSpecialPage {
 					
 					$sql = "SELECT r.rev_timestamp, p.page_id
 						FROM mw_page p, mw_revision r
-						WHERE p.page_title = '".mysql_real_escape_string($s->page_title)."'
+						WHERE p.page_title = '{$s->page_title}'
 						AND p.page_namespace = '{$s->page_namespace}'
 						AND p.page_latest = r.rev_id";
 					$data = $dbr->query($sql);

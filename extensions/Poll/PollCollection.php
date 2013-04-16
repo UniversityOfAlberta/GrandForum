@@ -29,7 +29,6 @@ class PollCollection {
 			$pTable = getTableName("an_poll");
 			$gTable = getTableName("an_poll_groups");
 			
-			
 			$sql = "SELECT g.group_name
 				FROM $gTable g
 				WHERE g.collection_id = '$id'";
@@ -51,7 +50,7 @@ class PollCollection {
 	        $pTable = getTableName("an_poll");
 	        $sql = "SELECT p.poll_id
 			    FROM $pTable p
-			    WHERE p.collection_id = '$id'";
+			    WHERE p.collection_id = '{$this->id}'";
 		    $rows1 = DBFunctions::execSQL($sql);
 		    foreach($rows1 as $row1){
 			    $polls[] = Poll::newFromId($row1['poll_id']);
@@ -76,11 +75,15 @@ class PollCollection {
 	
 	function canUserViewPoll($user){
 		if($user->isLoggedIn()){
+		    $person = Person::newFromUser($user);
 			$groups = $user->getGroups();
 			foreach($this->groups as $group){
 				if($group == "all"){
 					return true;
 				}
+				if($group == "Student" && ($person->isStudent() || $person->isRoleAtLeast(STAFF))){
+		            return true;
+		        }
 				if(array_search($group, $groups) !== false){
 					return true;
 				}
@@ -127,27 +130,29 @@ class PollCollection {
 	}
 	
 	function getTotalPotentialVoters(){
-		$ugTable = getTableName("user_groups");
-		if(array_search('all', $this->groups) !== false){
-			$sql = "SELECT DISTINCT ug.ug_user
-				FROM $ugTable ug";
-		}
-		else {
-			$sql = "SELECT DISTINCT ug.ug_user
-				FROM $ugTable ug
-				WHERE ug.ug_group IN ('".implode("','", $this->groups)."')";
-		}
-		$rows = DBFunctions::execSQL($sql);
-		return count($rows);
+		$users = $this->getPotentialVoters();
+		return count($users);
 	}
 	
 	function getPotentialVoters(){
 		$ugTable = getTableName("user_groups");
 		$uTable = getTableName("user");
+		$users = array();
 		if(array_search('all', $this->groups) !== false){
 			$sql = "SELECT DISTINCT u.user_id, u.user_name, u.user_email
 				FROM $ugTable ug, $uTable u
 				WHERE u.user_id = ug.ug_user";
+		}
+		else if(array_search('Student', $this->groups) !== false){
+		    $hqps = Person::getAllPeople(HQP);
+		    foreach($hqps as $hqp){
+		        if($hqp->isStudent()){
+		            $users[] = array('user_id' => $hqp->getId(),
+		                             'user_name' => $hqp->getName(),
+		                             'user_email' => $hqp->getEmail());
+		        }
+		    }
+		    return $users;
 		}
 		else {
 			$sql = "SELECT DISTINCT u.user_id, u.user_name, u.user_email

@@ -32,7 +32,10 @@ abstract class ProjectPublicationCell extends PublicationCell {
                 $values = array();
                 foreach($papers as $paper){
                     if($person->isAuthorOf($paper) ){
-                        $type = $paper->getType();
+                        $type = str_replace("Misc: ", "", $paper->getType());
+                        if($type == ""){
+                            $type = " ";
+                        }
                         if($paper->getCategory() == "Publication"){
                             $status = $paper->getStatus();
                             if($status == "Published"){

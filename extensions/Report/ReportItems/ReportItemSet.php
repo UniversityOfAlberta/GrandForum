@@ -19,7 +19,9 @@ abstract class ReportItemSet extends AbstractReportItem{
         $tuple = array('milestone_id' => $this->milestoneId,
                        'project_id' => $this->projectId,
                        'person_id' => $this->personId,
-                       'product_id' => $this->productId);
+                       'product_id' => $this->productId,
+                       'misc' => array(),
+                       'item_id' => null);
         return $tuple;
     }
     

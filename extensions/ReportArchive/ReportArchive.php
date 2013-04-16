@@ -321,7 +321,7 @@ function showIndividualReport($person, $year){
 function showProjectReports($person, $year){
     global $wgTitle, $wgServer, $wgScriptPath, $wgOut;
 
-    $projs = $person->leadershipDuring(($year).REPORTING_PRODUCTION_MONTH, ($year+1).REPORTING_PRODUCTION_MONTH);
+    $projs = $person->leadershipDuring(($year).REPORTING_START_MONTH, ($year).REPORTING_END_MONTH);
     
     foreach($projs as $proj){
         foreach($proj->getAllPreds() as $pred){
@@ -383,7 +383,7 @@ function showProjectComments($person, $year){
     global $wgTitle, $wgServer, $wgScriptPath, $wgOut;
     $pg = "$wgServer$wgScriptPath/index.php/Special:ProjectData";
 
-    $projs = $person->leadershipDuring(($year).REPORTING_PRODUCTION_MONTH, ($year+1).REPORTING_PRODUCTION_MONTH);
+    $projs = $person->leadershipDuring(($year).REPORTING_START_MONTH, ($year).REPORTING_END_MONTH);
     foreach($projs as $proj){
         foreach($proj->getAllPreds() as $pred){
             $projs[] = $pred;
@@ -418,7 +418,7 @@ function showPLReport($person, $year){
     $type = "Project-Leader";
     $pg = "$wgServer$wgScriptPath/index.php/Special:ProjectData";
 
-    $projs = $person->leadershipDuring(($year).REPORTING_PRODUCTION_MONTH, ($year+1).REPORTING_PRODUCTION_MONTH);
+    $projs = $person->leadershipDuring(($year).REPORTING_START_MONTH, ($year).REPORTING_END_MONTH);
     foreach($projs as $proj){
         foreach($proj->getAllPreds() as $pred){
             $projs[] = $pred;
