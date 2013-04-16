@@ -9,6 +9,7 @@ class PosterAPI extends PaperAPI{
 	    $this->addPOST("event_title",false,"The title of the event where this publication was published","SIGMOD");
 	    $this->addPOST("event_location",false,"The location of the event where this publication was published","Vancouver");
 	    $this->addPOST("status",false,"The status of the publication.  Can be either Submitted,Under Revision,Published,Rejected","Submitted");
+	    $this->addPOST("publisher",false,"The organization publishing the proceedings","ACM");
 	    $this->addPOST("pages",false,"The page numbers where this publication was located.","183-194");
 	    $this->addPOST("isbn",false,"The ISBN of the publication","90-70002-34-5");
 	    $this->addPOST("issn",false,"The ISSN of the publication","90-70002-34-5");

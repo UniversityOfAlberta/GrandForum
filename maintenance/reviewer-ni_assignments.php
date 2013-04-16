@@ -1,9 +1,9 @@
 <?php
 require_once('commandLine.inc');
-$NI_type = 'PNI';
+$NI_type = 'CNI';
     
 $row = 1;
-if (($handle = fopen("/local/data/www-root/grand_forum/data/Evaluator-Project_Conflicts.csv", "r")) !== FALSE) {
+if (($handle = fopen("/local/data/www-root/grand_forum/data/Evaluator-Project_Conflicts-v3.csv", "r")) !== FALSE) {
 //if (($handle = fopen("/Library/WebServer/Documents/grand_forum/data/Evaluator-Project_Conflicts.csv", "r")) !== FALSE) {
     
     $eval_proj = array();
@@ -32,7 +32,7 @@ if (($handle = fopen("/local/data/www-root/grand_forum/data/Evaluator-Project_Co
     //Let's do it
     $current_evals = array(17,563,152,25,90,27,28,564,32,565,566,36,38,41,48,55,60,61,1263);
 
-    $allPeople = Person::getAllPeople(PNI); //array_merge(Person::getAllPeople(CNI), Person::getAllPeople(PNI));
+    $allPeople = Person::getAllPeople(CNI); //array_merge(Person::getAllPeople(CNI), Person::getAllPeople(PNI));
 
     $csv = '"Names"';
 
@@ -210,7 +210,7 @@ if (($handle = fopen("/local/data/www-root/grand_forum/data/Evaluator-Project_Co
     //END foreach
     }
 
-    $myFile = "Evaluator-{$NI_type}_Conflicts.csv";
+    $myFile = "Evaluator-{$NI_type}_Conflicts-v3.csv";
     $fh = fopen('/local/data/www-root/grand_forum/data/'.$myFile, 'w');
     //$fh = fopen('/Library/WebServer/Documents/grand_forum/data/'.$myFile, 'w');
     fwrite($fh, $csv);

@@ -336,6 +336,15 @@ Describe your involvement with receptor organizations, industry partners and Pro
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
+    <!-- IIId. File Upload -->
+        <ReportItem id='IIIcd_space' type="StaticReportItem">
+            <![CDATA[<h2>Other</h2>]]>
+        </ReportItem>
+        <ReportItemSet id='IIId_head' type="ToggleHeaderReportItemSet" level="4" title="File Attachment" private="true">
+            <ReportItem id="IIId" blobType="BLOB_RAW" blobItem="RES_RESACT_FILE" type="UploadReportItem" fileSize="5">
+                <![CDATA[You can attach any file to present to the Evaluators to review.  If you want to attach multiple files, then put them in a zip file and attach the zip file.<br />{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="budget" name="Budget Request" blobSection="RES_BUDGET" tooltip="Budget request and justification" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true">
         <Instructions>

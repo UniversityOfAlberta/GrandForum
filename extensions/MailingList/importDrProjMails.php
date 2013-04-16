@@ -64,12 +64,18 @@ function buildPages() {
 			}
 			
 			$text = "";
+			$lastBody = "";
 			foreach($emails as $email){
 				$author = $email['author'];
 				$address = $email['address'];
 				$date = $email['date'];
 				$body = fixQuotes($email['body']);
-				$text .= "\n== From: $author <$address> ($date) ==\n<pre>$body</pre>\n";
+				$body = removeNextPart($body);
+				if($lastBody == $body){
+				    continue;
+				}
+				$lastBody = $body;
+				$text .= "\n== From: $author <$address> ($date) ==\n$body\n";
 				
 				$userName = $email['user_name'];
 				if ($userName === null) {
@@ -153,6 +159,16 @@ function recreateThreads($emailAddr) {
 	}
 	
 	importMWPages($pages, $dbw);	
+}
+
+function removeNextPart($body){
+    $exploded = explode("-------------- next part --------------", $body);
+    $lines = explode("\n", $exploded[0]);
+    $body = "";
+    foreach($lines as $line){
+        $body .= trim($line)."\n";
+    }
+    return $body;
 }
 
 function fixQuotes($body) {

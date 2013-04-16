@@ -1,6 +1,5 @@
 <?php
 
-
 autoload_register('ReportTables');
 
 $dir = dirname(__FILE__) . '/';
@@ -69,6 +68,7 @@ class EvaluationTable extends SpecialPage {
 	}
 	
 	static function show(){
+		require_once('NSERCVariableTab.php');
 		require_once('RMC2013Tab.php');
         require_once('NSERC2013Tab.php');
 	    require_once('RMC2012Tab.php');
@@ -81,54 +81,35 @@ class EvaluationTable extends SpecialPage {
         require_once('Themes.php');
         require_once('EvaluatorIndex.php');
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript;
-
-	   /* $sql =<<<EOF
-SELECT r.user, u.user_name, u.user_email, uu.position, r.end_date 
-FROM grand_roles r 
-INNER JOIN mw_user u ON ( u.user_id = r.user )
-LEFT JOIN grand_movedOn mo ON ( r.user = mo.user_id ) 
-LEFT join mw_user_university uu ON (uu.user_id = r.user)
-WHERE r.role="HQP" AND YEAR(r.end_date)="2011" AND mo.user_id IS NULL
-EOF;
-
-		echo "user,user_name,user_email,position,supervisor_name,supervisor_email,end_date<br />";
-		$data = DBFunctions::execSQL($sql);
-		foreach($data as $row){
-			$pid = $row['user'];
-
-			$pers = Person::newFromId($pid);
-			if(!$pers->isActive()){
-
-				$sql2 =<<<EOF
-SELECT u.user_name AS supervisor_name, u.user_email AS supervisor_email 
-FROM grand_relations r 
-INNER JOIN mw_user u ON ( u.user_id = r.user1 )
-WHERE r.type='Supervises' 
-AND r.user2={$pid} 
-ORDER BY r.id DESC LIMIT 1
-EOF;
-				$data2 = DBFunctions::execSQL($sql2);
-				if(isset($data2[0])){
-					$row2=$data2[0];
-
-					echo "{$row['user']},{$row['user_name']},{$row['user_email']},{$row['position']},{$row2['supervisor_name']},{$row2['supervisor_email']},{$row['end_date']}<br />";
-				
-				}
-			}
-
-		}
-
-	    */
+	 
+	    $init_tabs = array('Jan-Mar2012'=>0, 'Apr-Dec2012'=>1, 'Jan-Mar2013'=>2, '2012'=>3, '2011'=>4);
+	    $init_tab = 0;
+	    if(isset($_GET['year'])){
+	    	$init_tab = $init_tabs[$_GET['year']];
+	    }
 		if(isset($_GET['section']) && $_GET['section'] == 'NSERC'){
 		    $tabbedPage = new TabbedPage("tabs_nserc");
 		    //if(isset($_GET['year']) && $_GET['year'] == '2011'){
-		    	$tabbedPage->addTab(new NSERC2013Tab());
+		    	$int_start = '2012'.REPORTING_CYCLE_START_MONTH.' 00:00:00';
+				$int_end =  '2012'.REPORTING_NCE_END_MONTH. ' 23:59:59';
+				$tabbedPage->addTab(new NSERCVariableTab("Jan-Mar2012", $int_start, $int_end));
+				
+				$int_start = '2012'.REPORTING_NCE_START_MONTH.' 00:00:00';
+				$int_end =  '2012'.REPORTING_CYCLE_END_MONTH. ' 23:59:59';
+				$tabbedPage->addTab(new NSERCVariableTab("Apr-Dec2012", $int_start, $int_end));
+				
+				$int_start = '2013'.REPORTING_CYCLE_START_MONTH.' 00:00:00';
+				$int_end =  '2013'.REPORTING_NCE_END_MONTH. ' 23:59:59';
+				$tabbedPage->addTab(new NSERCVariableTab("Jan-Mar2013", $int_start, $int_end));
+		    	//$tabbedPage->addTab(new NSERC2013Tab());
 		    	$tabbedPage->addTab(new NSERC2012Tab());
 		    	$tabbedPage->addTab(new NSERC2011Tab());
+
 			//}else{
 				
 			//}
-	        $tabbedPage->showPage();
+
+	        $tabbedPage->showPage($init_tab);
     	}
     	else{
     		$tabbedPage = new TabbedPage("tabs_rmc");
@@ -139,8 +120,37 @@ EOF;
 			//}else{
 				
 			//}
-	        $tabbedPage->showPage();
+	        $tabbedPage->showPage($init_tab);
     	}
     	
+	}
+
+	static function getProjectLeaderPDF($project){
+	    global $wgOut, $wgServer, $wgScriptPath, $wgTitle;
+	    $data = ReportStorage::list_project_reports($project->getId());
+	    if($data != null && count($data) > 0){
+	        return "<a href='$wgServer$wgScriptPath/index.php/Special:Evaluate?getpdf={$data[0]['token']}'>[Download&nbsp;PDF]</a>";
+	    }
+	    else{
+	        return "N/A";
+	    }
+	}
+	
+	static function getPNIPDF($person){
+	    global $wgOut, $wgServer, $wgScriptPath, $wgTitle;
+	    $sto = new ReportStorage($person);
+        $check = array_merge($sto->list_reports_past($person->getId(), EVAL_YEAR, SUBM, 1, 0 , RPTP_EVALUATOR_NI), 
+                             $sto->list_reports_past($person->getId(), EVAL_YEAR, NOTSUBM, 1, 0, RPTP_EVALUATOR_NI)); // Merge submitted and unsubmitted reports
+        if (count($check) > 0) {
+            $sto->select_report($check[0]['token']);
+            $tst = $sto->metadata('timestamp');
+            $tok = false;
+            $tok = $sto->metadata('token');
+        }
+        else{
+            $tok = false;
+            return "N/A";
+        }
+        return "<a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?getpdf={$tok}'>[Download&nbspPDF]</a>";
 	}
 } 

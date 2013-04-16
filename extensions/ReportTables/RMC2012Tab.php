@@ -1,5 +1,10 @@
 <?php
 
+include 'Evaluate_Form.php';
+//include 'EvaluationTable.php';
+include 'ReportIndex.php';
+include 'ReviewerIndex.php';
+
 class RMC2012Tab extends AbstractTab {
 
     function RMC2012Tab(){
@@ -121,15 +126,16 @@ EOF;
         $projectTiers = array();
         $pg = "{$wgServer}{$wgScriptPath}/index.php/Special:Evaluate";
         foreach($people as $person){
-            if($person->isEvaluator()){
+            if($person->isEvaluator(2012)){
                 $reporteeId = $person->getId();
                 if($type == CNI){
-                    $subs = $person->getEvaluateCNIs();
+                    $subs = $person->getEvaluateCNIs(2012);
                 }
                 else{
-                    $subs = $person->getEvaluateSubs();
+                    $subs = $person->getEvaluateSubs(2012);
                 }
                 foreach($subs as $sub){
+
                     $id = "";
                     if($sub instanceof Person && ($type == PNI && $sub->isRole(PNI)) ){
                         $id = "person";
@@ -192,31 +198,31 @@ EOF;
                     $array["nQ9"] = isset($array["nQ9"]) ? $array["nQ9"] : 0;
                     $array["nRatings"] = isset($array["nRatings"]) ? $array["nRatings"] : 0;
 
-                    $post = Evaluate_Form::getData('', $rtype, EVL_EXCELLENCE, $sub, 2011);
+                    $post = Evaluate_Form::getData('', $rtype, EVL_EXCELLENCE, $sub, $reporteeId, 2011);
                     $array = self::generateRow(1, $array, $post, $person);
                     
-                    $post = Evaluate_Form::getData('', $rtype, EVL_HQPDEVELOPMENT, $sub, 2011);
+                    $post = Evaluate_Form::getData('', $rtype, EVL_HQPDEVELOPMENT, $sub, $reporteeId, 2011);
                     $array = self::generateRow(2, $array, $post, $person);
 
-                    $post = Evaluate_Form::getData('', $rtype, EVL_NETWORKING, $sub, 2011);
+                    $post = Evaluate_Form::getData('', $rtype, EVL_NETWORKING, $sub, $reporteeId, 2011);
                     $array = self::generateRow(3, $array, $post, $person);
 
-                    $post = Evaluate_Form::getData('', $rtype, EVL_KNOWLEDGE, $sub, 2011);
+                    $post = Evaluate_Form::getData('', $rtype, EVL_KNOWLEDGE, $sub, $reporteeId, 2011);
                     $array = self::generateRow(4, $array, $post, $person);
 
-                    $post = Evaluate_Form::getData('', $rtype, EVL_MANAGEMENT, $sub, 2011);
+                    $post = Evaluate_Form::getData('', $rtype, EVL_MANAGEMENT, $sub, $reporteeId, 2011);
                     $array = self::generateRow(5, $array, $post, $person);
 
-                    $post = Evaluate_Form::getData('', $rtype, EVL_OVERALLSCORE, $sub, 2011);
+                    $post = Evaluate_Form::getData('', $rtype, EVL_OVERALLSCORE, $sub, $reporteeId, 2011);
                     $array = self::generateRow(6, $array, $post, $person);
 
-                    $post = Evaluate_Form::getData('', $rtype, EVL_OTHERCOMMENTS, $sub, 2011);
+                    $post = Evaluate_Form::getData('', $rtype, EVL_OTHERCOMMENTS, $sub, $reporteeId, 2011);
                     $array = self::generateRow(7, $array, $post, $person);
                     
-                    $post = Evaluate_Form::getData('', $rtype, EVL_REPORTQUALITY, $sub, 2011);
+                    $post = Evaluate_Form::getData('', $rtype, EVL_REPORTQUALITY, $sub, $reporteeId, 2011);
                     $array = self::generateRow(8, $array, $post, $person);
                     
-                    $post = Evaluate_Form::getData('', $rtype, EVL_CONFIDENCE, $sub, 2011);
+                    $post = Evaluate_Form::getData('', $rtype, EVL_CONFIDENCE, $sub, $reporteeId, 2011);
                     $array = self::generateRow(9, $array, $post, $person);
                     
                     @$array["nRatings"] += 1;
@@ -278,10 +284,10 @@ EOF;
                     continue;
                 }
                 
-                $download1 = Evaluate::getPNIPDF($person);
+                $download1 = EvaluationTable::getPNIPDF($person);
                 $download2 = "";
                 foreach($person->leadership() as $project){
-                    $download2 .= Evaluate::getProjectLeaderPDF($project)."<br />";
+                    $download2 .= EvaluationTable::getProjectLeaderPDF($project)."<br />";
                 }
                 if($download2 == ""){
                     $download2 = "No&nbsp;PDF";
@@ -385,7 +391,7 @@ EOF;
                     $ls = array();
                 }
                 $none = true;
-                $download2 = Evaluate::getProjectLeaderPDF($project)."<br />";
+                $download2 = EvaluationTable::getProjectLeaderPDF($project)."<br />";
                 $tierSum1 = ($W1*$pTiers["1_1"] + $W2*$pTiers["1_2"] + $W3*$pTiers["1_3"])/$pTiers["nRatings"];
                 $tierSum2 = ($W1*$pTiers["2_1"] + $W2*$pTiers["2_2"] + $W3*$pTiers["2_3"])/max(1, $pTiers["nQ6"]);
                 if($tierSum2 < 10){

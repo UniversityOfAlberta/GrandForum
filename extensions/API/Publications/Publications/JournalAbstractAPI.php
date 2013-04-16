@@ -15,6 +15,8 @@ class JournalAbstractAPI extends PaperAPI{
 	    $this->addPOST("isbn",false,"The ISBN of the publication","90-70002-34-5");
 	    $this->addPOST("issn",false,"The ISSN of the publication","90-70002-34-5");
 	    $this->addPOST("doi",false,"The doi of the publication","10.1000/182");
+      $this->addPOST("url",false,"Link to a copy of the publication","http://mySite.org/myPaper.pdf");
+      $this->addPOST("peer_reviewed",false,"Whether or not the publication is peer reviewed","Yes");
 	}
 }
 

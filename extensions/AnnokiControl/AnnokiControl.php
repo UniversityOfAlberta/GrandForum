@@ -273,8 +273,39 @@ $egAnnokiExtensions['ProjectEvolution']     = array( 'name' => 'Project Evolutio
 					      'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php",
 					      'enabled' => true,
 					      );
+					      
 $egAnnokiExtensions['ReviewerConflicts']     = array( 'name' => 'Reviewer Conflicts',
 					      'path' => "$IP/extensions/ReviewerConflicts/ReviewerConflicts.php",
+					      'enabled' => true,
+					      );
+					      
+$egAnnokiExtensions['ReportPDFs']     = array( 'name' => 'ReportPDFs',
+					      'path' => "$IP/extensions/Report/SpecialPages/ReportPDFs.php",
+					      'enabled' => true,
+					      );
+					      
+$egAnnokiExtensions['ScreenCapture']     = array( 'name' => 'ScreenCapture',
+					      'path' => "$IP/extensions/ScreenCapture/ScreenCapture.php",
+					      'enabled' => true,
+					      );
+					      
+$egAnnokiExtensions['Solr']     = array( 'name' => 'Solr',
+					      'path' => "$IP/extensions/Solr/Solr.php",
+					      'enabled' => true,
+					      );
+					      
+$egAnnokiExtensions['AcademiaMap']     = array( 'name' => 'AcademiaMap',
+					      'path' => "$IP/extensions/AcademiaMap/AcademiaMap.php",
+					      'enabled' => true,
+					      );
+
+$egAnnokiExtensions['TravelForm']     = array( 'name' => 'TravelForm',
+					      'path' => "$IP/extensions/TravelForm/TravelForm.php",
+					      'enabled' => true,
+					      );
+
+$egAnnokiExtensions['ReviewResults']     = array( 'name' => 'ReviewResults',
+					      'path' => "$IP/extensions/ReviewResults/ReviewResults.php",
 					      'enabled' => true,
 					      );
 

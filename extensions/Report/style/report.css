@@ -132,8 +132,8 @@
     display: table-cell;
     overflow: hidden;
     vertical-align:top;
-    min-height:600px;
-    height:600px;
+    min-height:650px;
+    height:650px;
 }
 
 #reportMain > div {
@@ -143,12 +143,12 @@
     height:100%;
     position:relative;
     margin-left:1px;
-    min-height:600px;
-    height:600px;
+    min-height:650px;
+    height:650px;
 }
 
 #reportMain > div > div {
-    min-width:600px;
+    min-width:650px;
     position:absolute;
     padding:10px;
     left:0;
@@ -209,7 +209,7 @@
 #reportBody {
     margin:10px;
     display:block;
-    min-height:500px;
+    min-height:550px;
 }
 
 #reportFooter {
@@ -223,7 +223,7 @@
 #reportInstructions {
     font-size: 11px;
     display:table-cell;
-    max-height: 500px;
+    max-height: 550px;
     position:static;
     vertical-align:top;
     min-width: 230px;
@@ -233,7 +233,7 @@
 #reportInstructions > div {
     overflow: auto;
     position:absolute;
-    max-height:500px;
+    max-height:550px;
     min-width: 210px;
 }
 

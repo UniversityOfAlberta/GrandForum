@@ -173,7 +173,7 @@ class CreatePoll extends SpecialPage{
 	
 	function generateFormHTML($wgOut){
 		global $wgUser, $wgServer, $wgScriptPath, $FORM_TEXT;
-		
+		$me = Person::newFromWgUser();
 		$wgOut->addScript("<script type='text/javascript'>
 					var opID = new Array();
 					var qID = 2;
@@ -322,6 +322,9 @@ class CreatePoll extends SpecialPage{
 							</td>
 							<td>");
 		$groups = $wgUser->getGroups();
+		if($me->isStudent() || $me->isRoleAtLeast(STAFF)){
+		    $groups[] = "Student";
+		}
 		$nPerCol = ceil(count($groups)/3);
 		$remainder = count($groups) % 3;
 		$col1 = array();
