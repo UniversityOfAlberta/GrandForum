@@ -83,6 +83,28 @@ class PersonProfileTab extends AbstractEditableTab {
             {$ethics_str}
 EOF;
         }
+        else if($person->isCNI() || $person->isPNI()){
+            $relations = $person->getRelations("Supervises");
+            $total_hqp = 0;
+            $ethical_hqp = 0;
+            foreach($relations as $r){
+                $hqp =  $r->getUser2();
+                $ethics = $hqp->getEthics();
+                if($ethics['completed_tutorial']){
+                    $ethical_hqp++;
+                }
+                $total_hqp++;
+            }
+            $perc = $ethical_hqp/$total_hqp;
+            $perc = floor($perc / 0.25)*0.25;
+            $perc = $perc*100;
+            $this->html .=<<<EOF
+            <table><tr>
+            <td><img style='vertical-align:bottom;' width='100px' src='/grand_forum/skins/cavendish/ethical_btns/ethical_{$perc}_btn.jpg' /></td>
+            <td><h3>{$ethical_hqp} of my {$total_hqp} students have completed the TCPS2 Tutorial.</h3></td>
+            <tr></table>
+EOF;
+        }
 
     }
     
