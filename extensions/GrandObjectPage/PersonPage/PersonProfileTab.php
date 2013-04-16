@@ -100,7 +100,7 @@ EOF;
             $perc = $perc*100;
             $this->html .=<<<EOF
             <table><tr>
-            <td><img style='vertical-align:bottom;' width='100px' src='/grand_forum/skins/cavendish/ethical_btns/ethical_{$perc}_btn.jpg' /></td>
+            <td><img style='vertical-align:bottom;' width='100px' src='/skins/cavendish/ethical_btns/ethical_{$perc}_btn.jpg' /></td>
             <td><h3>{$ethical_hqp} of my {$total_hqp} students have completed the TCPS2 Tutorial.</h3></td>
             <tr></table>
 EOF;
