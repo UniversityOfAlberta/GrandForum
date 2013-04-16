@@ -321,6 +321,7 @@ foreach($egAnnokiExtensions as $key => $extension){
         require_once($extension['path']);
         $mem_after = memory_get_usage();
         $end = microtime(true);
+        
         $egAnnokiExtensions[$key]['size'] = number_format(($mem_after - $mem_before)/1024/1024, 2);
         $egAnnokiExtensions[$key]['time'] = number_format(($end - $start)*1000, 2);
     }

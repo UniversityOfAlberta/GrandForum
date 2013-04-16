@@ -4,7 +4,7 @@ ProductListView = Backbone.View.extend({
 
     initialize: function(){
         this.model.fetch();
-        this.model.bind('reset', this.render, this);
+        this.model.bind('sync', this.render, this);
         this.template = _.template($('#product_list_template').html());
     },
     

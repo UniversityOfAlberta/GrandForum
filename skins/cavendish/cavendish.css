@@ -123,7 +123,6 @@ body {
     box-shadow:         0 0 3px 1px #ccc;
     border: 1px solid #AAAAAA;
     width:100%;
-    
 }
 
 .deepLevel #bodyContent {
@@ -988,7 +987,7 @@ li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-it
     border-radius: 0 !important;
 }
 
-.ui-state-focus {
+/*.ui-state-focus {
     font-weight: bold !important;
     font-size: 12px !important;
     color: #FFF !important;
@@ -999,7 +998,7 @@ li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-it
     -moz-border-radius: 0 !important;
     -webkit-border-radius: 0 !important;
     border-radius: 0 !important;
-}
+}*/
 
 h1.custom-title{
     padding: 0.8em 0.8em 0 0.8em;
