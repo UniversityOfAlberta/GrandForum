@@ -1,0 +1,388 @@
+{
+    "types": [
+        "Person",
+        "Project"
+    ],
+    "nodes": [
+        "Person",
+        "Project",
+        "Department",
+        "Discipline"
+    ],
+    "edges": [
+        {
+            "type": "Works With",
+            "source": "Person",
+            "target": "Person",
+            "desc": "Using the Works With relation, it forms an edge between two people since it is an explicit relation."
+        },
+        {
+            "type": "Co-Supervises",
+            "source": "Person",
+            "target": "Person",
+            "desc": "Two supervisors supervising the same HQP will form an edge between each other."
+        },
+        {
+            "type": "Co-Produces",
+            "source": "Person",
+            "target": "Person",
+            "desc": "People co-authoring the same product will form edges between each other."
+        },
+        {
+            "type": "Co-Funded",
+            "source": "Person",
+            "target": "Person",
+            "desc": "People co-contributing by contributions (both listed under the same contribution) will for edges between each other."
+        },
+        {
+            "type": "Department",
+            "source": "Person",
+            "target": "Department",
+            "desc": "This will relate people if they are from the same department, however it will be a weaker relation since they will be an extra node away."
+        },
+        {
+            "type": "University",
+            "source": "Person",
+            "target": "University",
+            "desc": "This will relate people if they are from the same university, however it will be a weaker relation since they will be an extra node away."
+        },
+        {
+            "type": "Project",
+            "source": "Person",
+            "target": "Project",
+            "desc": "This will relate people if they are from the same project, however it will be a weaker relation since they will be an extra node awayThese are usefull for determining the best centrality measure for each of the 'meta' fields in the data."
+        }
+    ],
+    "meta": {
+        "Person": {
+            "groups": [
+                {
+                    "id": "Discipline",
+                    "name": "Discipline",
+                    "desc": "The discipline of the Person"
+                },
+                {
+                    "id": "Nationality",
+                    "name": "Nationality",
+                    "desc": "The nationality of the Person"
+                },
+                {
+                    "id": "Title",
+                    "name": "Title",
+                    "desc": "The title of the Person"
+                },
+                {
+                    "id": "Gender",
+                    "name": "Gender",
+                    "desc": "The gender of the Person"
+                }
+            ],
+            "variables": [
+                {
+                    "id": "avgProductDisciplines",
+                    "name": "Average Product Disciplines",
+                    "desc": "The average number of disciplines per project"
+                },
+                {
+                    "id": "nProductsWith1University",
+                    "name": "# Products With 1 University",
+                    "desc": "The number of products the person has with 1 university"
+                },
+                {
+                    "id": "nProductsWith2Universities",
+                    "name": "# Products With 2 Universities",
+                    "desc": "The number of products the person has with 2 universities"
+                },
+                {
+                    "id": "nProductsWith3Universities",
+                    "name": "# Products With 3 Universities",
+                    "desc": "The number of products the person has with 3 universities"
+                },
+                {
+                    "id": "nProductsWith4OrMoreUniversities",
+                    "name": "# Products With 4 or More Universities",
+                    "desc": "The number of products the person has with 4 or more universities"
+                },
+                {
+                    "id": "nCurrentHQP",
+                    "name": "# Current HQP",
+                    "desc": "The number of current HQP the Person has (NI only)"
+                },
+                {
+                    "id": "nTotalHQP",
+                    "name": "# Total HQP",
+                    "desc": "The number of HQP the person has had over time"
+                },
+                {
+                    "id": "nProductsUpToNow",
+                    "name": "# Products Up To Now",
+                    "desc": "The number of products the Person has up to now"
+                },
+                {
+                    "id": "nConnectedDisciplines",
+                    "name": "# Connected Disciplines",
+                    "desc": "The number of disciplines that the person is connected to"
+                },
+                {
+                    "id": "nCurrentWorksWith",
+                    "name": "# Current Works With",
+                    "desc": "The number of people the person works with"
+                },
+                {
+                    "id": "nProjects",
+                    "name": "# Projects",
+                    "desc": "The number of projects the person is on"
+                },
+                {
+                    "id": "nProjectsByProduct",
+                    "name": "# Projects By Product",
+                    "desc": "The number of Projects the person is on as determined by products"
+                },
+                {
+                    "id": "avgAuthorsPerProduct",
+                    "name": "Average Authors Per Product",
+                    "desc": "The average number of authors per product"
+                },
+                {
+                    "id": "contributionsThisYear",
+                    "name": "Contributions This Year",
+                    "desc": "How many contributions the person has aquired this year"
+                },
+                {
+                    "id": "totalAllocationUpToNow",
+                    "name": "Total Allocation Up To Now",
+                    "desc": "The amount of money allocated to the person up to now"
+                }
+            ]
+        },
+        "Project": {
+            "groups": [
+                
+            ],
+            "variables": [
+                {
+                    "id": "avgProductDisciplines",
+                    "name": "Average Product Disciplines",
+                    "desc": "Average number of disciplines the project has"
+                },
+                {
+                    "id": "nProductsUpToNow",
+                    "name": "# Products Up To Now",
+                    "desc": "Number of products the project has up to now"
+                },
+                {
+                    "id": "nDisciplines",
+                    "name": "# Disciplines",
+                    "desc": "The number of disciplines the Project has"
+                },
+                {
+                    "id": "contributionsThisYear",
+                    "name": "Contributions This Year",
+                    "desc": "How many contributions the project has aquired this year"
+                },
+                {
+                    "id": "totalAllocationUpToNow",
+                    "name": "Total Allocation Up To Now",
+                    "desc": "The amount of money allocated to the project up to now"
+                }
+            ]
+        }
+    },
+    "transformable": {
+        "Person": [
+            "totalAllocationUpToNow",
+            "contributionsThisYear",
+            "nProductsUpToNow",
+            "nCurrentHQP",
+            "nCurrentWorksWith",
+            "nProductsUpToNow",
+            "nProjectsByProduct",
+            "nTotalHQP",
+            "avgProductDisciplines",
+            "avgAuthorsPerProduct",
+            "Between",
+            "Closeness",
+            "PageRank"
+        ],
+        "Project": [
+            "nProductsUpToNow",
+            "Between",
+            "Closeness",
+            "PageRank"
+        ]
+    },
+    "transformations": {
+        "Person": [
+            
+        ],
+        "Project": [
+            
+        ]
+    },
+    "tests": {
+        "Person": [
+            {
+                "y": "nProjectsByProduct",
+                "x": "nProjects",
+                "type": "boxplot"
+            },
+            {
+                "y": "PageRank",
+                "x": "nConnectedDisciplines",
+                "type": "boxplot"
+            },
+            {
+                "y": "nProductsUpToNow",
+                "x": "nConnectedDisciplines",
+                "type": "boxplot"
+            },
+            {
+                "y": "avgProductDisciplines",
+                "x": "nConnectedDisciplines",
+                "type": "boxplot"
+            },
+            {
+                "y": "totalAllocationUpToNow",
+                "x": "nConnectedDisciplines",
+                "type": "boxplot"
+            },
+            {
+                "y": "PageRank",
+                "x": "avgAuthorsPerProduct",
+                "type": "scatterplot"
+            },
+            {
+                "y": "PageRank",
+                "x": "Gender",
+                "type": "anova"
+            },
+            {
+                "y": "Closeness",
+                "x": "Gender",
+                "type": "anova"
+            },
+            {
+                "y": "Between",
+                "x": "Gender",
+                "type": "anova"
+            },
+            {
+                "y": "PageRank",
+                "x": "Discipline",
+                "type": "anova"
+            },
+            {
+                "y": "Closeness",
+                "x": "Discipline",
+                "type": "anova"
+            },
+            {
+                "y": "Between",
+                "x": "Discipline",
+                "type": "anova"
+            },
+            {
+                "y": "avgAuthorsPerProduct",
+                "x": "Discipline",
+                "type": "anova"
+            },
+            {
+                "y": "PageRank",
+                "x": "University",
+                "type": "anova"
+            },
+            {
+                "y": "Closeness",
+                "x": "University",
+                "type": "anova"
+            },
+            {
+                "y": "Between",
+                "x": "University",
+                "type": "anova"
+            },
+            {
+                "y": "avgAuthorsPerProduct",
+                "x": "University",
+                "type": "anova"
+            },
+            {
+                "y": "PageRank",
+                "x": "Nationality",
+                "type": "anova"
+            },
+            {
+                "y": "Closeness",
+                "x": "Nationality",
+                "type": "anova"
+            },
+            {
+                "y": "Between",
+                "x": "Nationality",
+                "type": "anova"
+            },
+            {
+                "y": "Between",
+                "x": "Time",
+                "type": "boxplot"
+            },
+            {
+                "y": "Closeness",
+                "x": "Time",
+                "type": "boxplot"
+            },
+            {
+                "y": "PageRank",
+                "x": "Time",
+                "type": "boxplot"
+            },
+            {
+                "y": "nConnectedDisciplines",
+                "x": "Time",
+                "type": "boxplot"
+            },
+            {
+                "y": "nProjectsByProduct",
+                "x": "Time",
+                "type": "boxplot"
+            }
+        ],
+        "Project": [
+            {
+                "y": "nProductsUpToNow",
+                "x": "nDisciplines",
+                "type": "boxplot"
+            },
+            {
+                "y": "avgProductDisciplines",
+                "x": "nDisciplines",
+                "type": "boxplot"
+            },
+            {
+                "y": "totalAllocationUpToNow",
+                "x": "nDisciplines",
+                "type": "boxplot"
+            },
+            {
+                "y": "Between",
+                "x": "Time",
+                "type": "boxplot"
+            },
+            {
+                "y": "Closeness",
+                "x": "Time",
+                "type": "boxplot"
+            },
+            {
+                "y": "PageRank",
+                "x": "Time",
+                "type": "boxplot"
+            },
+            {
+                "y": "nDisciplines",
+                "x": "Time",
+                "type": "boxplot"
+            }
+        ]
+    }
+}
