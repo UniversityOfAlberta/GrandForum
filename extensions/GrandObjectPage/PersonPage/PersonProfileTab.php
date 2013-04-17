@@ -78,6 +78,12 @@ class PersonProfileTab extends AbstractEditableTab {
             <td>&nbsp;<h3>I have completed the TCPS2 tutorial on {$date}.</h3></td>
             <tr></table>";
         }
+        else{
+            $ethics_str = "<table><tr>
+            <td><img style='vertical-align:bottom;' width='100px' src='/skins/cavendish/ethical_button_not.jpg' /></td>
+            <td>&nbsp;<h3>I have not completed the TCPS2 tutorial.</h3></td>
+            <tr></table>";
+        }
         if($person->isHQP()){
             $this->html .=<<<EOF
             {$ethics_str}
