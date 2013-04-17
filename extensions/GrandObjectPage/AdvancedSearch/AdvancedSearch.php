@@ -5,7 +5,7 @@ BackbonePage::register('AdvancedSearch', 'AdvancedSearch', 'grand-tools', dirnam
 class AdvancedSearch extends BackbonePage {
     
     function getTemplates(){
-        return array('search');
+        return array('search','person_card');
     }
     
     function getViews(){

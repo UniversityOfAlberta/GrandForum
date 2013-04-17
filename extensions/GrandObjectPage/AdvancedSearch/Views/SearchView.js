@@ -1,11 +1,12 @@
 SearchView = Backbone.View.extend({
 
-    productTag: null,
+    //productTag: null,
 
     initialize: function(){
         //this.model.fetch();
         //this.model.bind('reset', this.render, this);
         this.template = _.template($('#search_template').html());
+        //this.person_card = _.template($('#person_card_template').html());
         this.render();
     },
     
@@ -15,6 +16,7 @@ SearchView = Backbone.View.extend({
     },
 
     doSearch: function(){
+        console.log("called!");
         this.do_solr_query();
     },
 
@@ -139,6 +141,20 @@ SearchView = Backbone.View.extend({
                 person = new Person({id: val['user_id']});
                 person.fetch({
                     success: function (person) {
+                        pj = person.toJSON();
+                        person_card = _.template($('#person_card_template').html());
+                        this.$('#people_list').append(
+                            person_card({
+                              name: pj.reversedName,
+                              email: pj.email,
+                              profile_photo: "http://local.net/grand_forum/Photos/Empty.jpg",
+                              profile_url: pj.url,
+                              university: pj.university,
+                              department: pj.department,
+                              position: pj.position,
+                              public_profile: pj.publicProfile,
+                            })
+                        );
                         console.log(person.toJSON());
                     }
                 });

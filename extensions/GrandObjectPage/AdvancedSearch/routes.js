@@ -1,11 +1,11 @@
 PageRouter = Backbone.Router.extend({
     
     initialize: function(){
-        this.bind('all', function(event){
-           // $("#currentView").html("<div id='currentViewSpinner'></div>");
-           // spin = spinner("currentViewSpinner", 40, 75, 12, 10, '#888');
-        this.currentView = new SearchView({el: $("#currentView")/*, model: product*/});
-        });
+        //this.bind('all', function(event){
+            //$("#currentView").html("<div id='currentViewSpinner'></div>");
+            //spin = spinner("currentViewSpinner", 40, 75, 12, 10, '#888');
+            //this.currentView = new SearchView({el: $("#currentView")/*, model: product*/});
+        //});
 
     },
     
@@ -31,7 +31,7 @@ pageRouter.on('route:defaultRoute', function (actions) {
     //product = new Product({'id': id});
     
     //this.closeCurrentView();
-    //this.currentView = new SearchView({el: $("#currentView")/*, model: product*/});
+    this.currentView = new SearchView({el: $("#currentView")/*, model: product*/});
 });
 
 // Start Backbone history a necessary step for bookmarkable URL's
