@@ -275,7 +275,13 @@ class TabUtils {
                 }
             }
         }
-        else if($wgUser->isLoggedIn() && ($wgTitle->getText() == "Products")){
+        else if($wgUser->isLoggedIn() && ($wgTitle->getText() == "Products" || 
+                                          $wgTitle->getNsText() == "Publication" ||
+                                          $wgTitle->getNsText() == "Artifact" ||
+                                          $wgTitle->getNsText() == "Presentation" ||
+                                          $wgTitle->getNsText() == "Activity" ||
+                                          $wgTitle->getNsText() == "Press" ||
+                                          $wgTitle->getNsText() == "Award")){
             $new_actions["Publications"]['class'] = 'product selected';
         }
         else if(($wgTitle->getText() == "Multimedia Stories" && $wgTitle->getNSText() == "GRAND") ||

@@ -380,7 +380,8 @@ class Paper extends BackboneModel{
 	// Returns the url of this Paper's page
 	function getUrl(){
 	    global $wgServer, $wgScriptPath;
-	    return "{$wgServer}{$wgScriptPath}/index.php/Special:Products#/{$this->getCategory()}/{$this->getId()}";
+	    return "{$wgServer}{$wgScriptPath}/index.php/{$this->getCategory()}:{$this->getId()}";
+	    //return "{$wgServer}{$wgScriptPath}/index.php/Special:Products#/{$this->getCategory()}/{$this->getId()}";
 	}
 	
 	// Returns an array of authors who wrote this Paper
