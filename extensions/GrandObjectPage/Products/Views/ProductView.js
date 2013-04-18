@@ -58,7 +58,7 @@ ProductView = Backbone.View.extend({
                 views.push(new PersonLinkView({model: link}).render());
             }
             else{
-                person = new Person({id: author.id});
+                var person = new Person({id: author.id});
                 views.push(new SmallPersonCardView({model: person}).render());
                 //that.$el.find("#productAuthors").append(new SmallPersonCardView({model: person}).render());
             }

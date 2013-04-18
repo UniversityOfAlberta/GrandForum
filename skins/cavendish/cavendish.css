@@ -1210,6 +1210,7 @@ input.other_option:focus {
     cursor: pointer;
     overflow: hidden;
     text-decoration: none !important;
+    white-space: nowrap;
 }
 
 .small_card:hover {
