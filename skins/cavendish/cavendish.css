@@ -505,6 +505,47 @@ input[type=button]:active, input[type=submit]:active, .button:active, .ui-button
     white-space:nowrap;
 }
 
+#globalSearchInput {
+    font-size: 12px !important;
+    padding: 6px;
+    margin: 0;
+    width: 250px;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -moz-border-radius: 5px 0 0 5px;
+	-webkit-border-radius: 5px 0 0 5px;
+	border-radius: 5px 0 0 5px;
+	border: none;
+	height:14px;
+}
+
+#globalSearchInput:focus {
+    border: none !important;
+}
+
+#globalSearchButton {
+    background: #fff url('../search.png') no-repeat !important;
+    margin: 0;
+    border: none !important;
+    font-size: 12px;
+    padding: 6px;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -moz-border-radius: 0 5px 5px 0;
+	-webkit-border-radius: 0 5px 5px 0;
+	border-radius: 0 5px 5px 0;
+	width: 30px;
+	height: 26px;
+	vertical-align:top;
+}
+
+#globalSearchButton:active {
+    border:none !important;
+    margin-top:-1px !important;
+}
+
 textarea {
     width: 99%;
     height: 400px;
@@ -581,11 +622,6 @@ input.stealth, input.stealth:focus {
     font-size:1em;
     width:18px;
     min-width:18px;
-}
-
-input#searchInput {
-    border: 1px solid #333 !important;
-	background: #FFFFFF !important;
 }
 
 button::-moz-focus-inner{
