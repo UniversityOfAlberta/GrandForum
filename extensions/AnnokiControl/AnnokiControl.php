@@ -234,8 +234,8 @@ $egAnnokiExtensions['ReportArchive']     = array( 'name' => 'Report Archive',
 					      'enabled' => true,
 					      );
 					      
-$egAnnokiExtensions['Search']     = array( 'name' => 'Search',
-					      'path' => "$IP/extensions/Search/Search.php",
+$egAnnokiExtensions['GlobalSearch']     = array( 'name' => 'Global Search',
+					      'path' => "$IP/extensions/GlobalSearch/GlobalSearch.php",
 					      'enabled' => true,
 					      );
 					      

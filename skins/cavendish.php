@@ -517,13 +517,15 @@ class cavendishTemplate extends QuickTemplate {
 					}
 				?>
 			</div>
-			<div>
+			<div id="globalSearch" style="position:relative;top:6px;">
+			<!--
 			<input type="hidden" name="title" value="<?php $this->text('searchtitle') ?>"/>
 			<input id="searchInput" name="search" type="text"<?php echo $this->skin->tooltipAndAccesskey('search');
 					if( isset( $this->data['search'] ) ) {
 						?> value="<?php $this->text('search') ?>"<?php } ?> />
 			<input type='submit' name="go" class="searchButton" id="searchGoButton"	value="<?php $this->msg('searcharticle') ?>"<?php echo $this->skin->tooltipAndAccesskey( 'search-go' ); ?> />&nbsp;
 			<input type='submit' name="fulltext" class="searchButton" id="mw-searchButton" value="<?php $this->msg('searchbutton') ?>"<?php echo $this->skin->tooltipAndAccesskey( 'search-fulltext' ); ?> />
+			-->
 	       </div>
 		</form>
 		
@@ -632,7 +634,7 @@ class cavendishTemplate extends QuickTemplate {
 		    echo "<span>People</span>
 			<ul class='pBody' style='background:#F3EBF5'>";
 		    $me = Person::newFromId($wgUser->getId());
-		    echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:UserSearch'>Find Member</a></li>";
+		    //echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:UserSearch'>Find Member</a></li>";
 		    if($me->isRoleAtLeast(CNI)){
 		        echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:AddMember'>Add Member</a></li>";
 		        echo "<li id='userEditRequest'><a href='{$wgScriptPath}/index.php/Special:EditMember'>Edit Member</a></li>";
