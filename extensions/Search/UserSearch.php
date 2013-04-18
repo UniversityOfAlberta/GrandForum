@@ -37,6 +37,9 @@ class UserSearch extends SpecialPage{
 	    var oldOptions = Array();
 
         function filterResults(value){
+            if(value == undefined){
+                value = "";
+            }
             $.each($("#names").children().not("#no"), function(index, value){
                 var valSelect = value.id;
                 oldOptions[valSelect] = $("#" + valSelect).detach();

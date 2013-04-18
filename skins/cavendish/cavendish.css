@@ -1200,3 +1200,34 @@ input.other_option:focus {
 .smaller {
     font-size: 94%;
 }
+
+/* Backbone Cards */
+.small_card {
+    width: 200px;
+    padding: 3px;
+    background: #ffffff;
+    color: #555;
+    cursor: pointer;
+    overflow: hidden;
+    text-decoration: none !important;
+}
+
+.small_card:hover {
+    background: #96789F;
+    color: #ffffff;
+}
+
+.card_photo {
+    display:inline-block;
+    vertical-align:top;
+}
+
+.card_description {
+    display:inline-block;
+    vertical-align:top;
+    text-decoration: none !important;
+}
+
+.card_description * {
+    text-decoration: none !important;
+}

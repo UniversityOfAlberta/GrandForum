@@ -47,14 +47,25 @@ ProductView = Backbone.View.extend({
     
     renderAuthors: function(){
         var views = Array();
+        var that = this;
         _.each(this.model.get('authors'), function(author, index){
-            var link = new Link({id: author.id,
-                                 text: author.name,
-                                 url: author.url,
-                                 target: '_blank'});
-            views.push(new PersonLinkView({model: link}).render());
+            if(author.id == ""){
+                var link = new Link({id: author.id,
+                                     text: author.name,
+                                     url: author.url,
+                                     target: '_blank'});
+                //that.$el.find("#productAuthors").append(new PersonLinkView({model: link}).render());
+                views.push(new PersonLinkView({model: link}).render());
+            }
+            else{
+                person = new Person({id: author.id});
+                views.push(new SmallPersonCardView({model: person}).render());
+                //that.$el.find("#productAuthors").append(new SmallPersonCardView({model: person}).render());
+            }
         });
-        csv = new CSVView({el: this.$el.find('#productAuthors'), model: views}).render();
+        csv = new CSVView({el: this.$el.find('#productAuthors'), model: views});
+        csv.separator = ' ';
+        csv.render();
     },
     
     renderProjects: function(){
