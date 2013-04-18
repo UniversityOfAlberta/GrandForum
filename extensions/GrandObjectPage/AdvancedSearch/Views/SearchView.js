@@ -1,6 +1,7 @@
 SearchView = Backbone.View.extend({
 
     //productTag: null,
+    template: null,
 
     initialize: function(){
         //this.model.fetch();
@@ -133,8 +134,8 @@ SearchView = Backbone.View.extend({
           + this.compile_facets() + this.limit_product_count();
 
         $.getJSON(url_solr, function(data){
-            $("#results").text("");
-            $("#cards").text("");
+           // $("#results").text("");
+            //$("#cards").text("");
             //console.log(data['response']['docs']);
             $.each(data['response']['docs'], function(key, val){
                 //console.log(val['user_id']);
@@ -142,17 +143,30 @@ SearchView = Backbone.View.extend({
                 person.fetch({
                     success: function (person) {
                         pj = person.toJSON();
-                        person_card = _.template($('#person_card_template').html());
+                        person_card = _.template($('#person_card_mid_template').html());
+                        roles = person.roles.getCurrent();
+                        roleNames = Array();
+                        if(roles.models.length > 0){
+                            _.each(roles.models, function(role, index){
+                                roleNames.push(role.get('name'));
+                            });
+                        }
+                        if(pj.photo == ""){
+                            profile_photo = "http://local.net/grand_forum/Photos/Empty.jpg";
+                        }else{
+                            profile_photo = pj.photo;
+                        }
                         this.$('#people_list').append(
                             person_card({
                               name: pj.reversedName,
                               email: pj.email,
-                              profile_photo: "http://local.net/grand_forum/Photos/Empty.jpg",
+                              profile_photo: profile_photo,
                               profile_url: pj.url,
                               university: pj.university,
                               department: pj.department,
                               position: pj.position,
-                              public_profile: pj.publicProfile,
+                              public_profile: pj.publicProfile.substring(0, 250),
+                              roles: roleNames.join(', ')
                             })
                         );
                         console.log(person.toJSON());
