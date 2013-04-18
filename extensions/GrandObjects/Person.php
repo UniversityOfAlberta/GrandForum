@@ -467,7 +467,8 @@ class Person extends BackboneModel {
 	    }
 	    $json = array('id' => $this->getId(),
 	                  'name' => $this->getName(),
-	                  'realname' => $this->getRealName(),
+	                  'realName' => $this->getRealName(),
+	                  'fullName' => $this->getNameForForms(),
 	                  'reversedName' => $this->getReversedName(),
 	                  'email' => $this->getEmail(),
 	                  'gender' => $this->getGender(),
@@ -705,7 +706,7 @@ class Person extends BackboneModel {
 	            $this->photo = "$wgServer$wgScriptPath/Photos/".str_ireplace(".", "_", $this->name).".jpg?".microtime(true);
 	        }
 	        else {
-	            $this->photo = "";
+	            $this->photo = "$wgServer$wgScriptPath/skins/face.png";
 	        }
 	    }
 	    return $this->photo;

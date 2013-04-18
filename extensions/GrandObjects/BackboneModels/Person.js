@@ -60,6 +60,7 @@ Person = Backbone.Model.extend({
         id: null,
         name: '',
         realName: '',
+        fullName: '',
         reversedName: '',
         email: '',
         nationality: '',
@@ -70,7 +71,8 @@ Person = Backbone.Model.extend({
         position: '',
         department: '',
         publicProfile: '',
-        privateProfile: ''
+        privateProfile: '',
+        url: ''
     }
 });
 
