@@ -475,6 +475,7 @@ class Person extends BackboneModel {
 	                  'nationality' => $this->getNationality(),
 	                  'twitter' => $this->getTwitter(),
 	                  'photo' => $this->getPhoto(),
+	                  'cachedPhoto' => $this->getPhoto(true),
 	                  'university' => $this->getUni(),
 	                  'department' => $this->getDepartment(),
 	                  'position' => $this->getPosition(),
@@ -699,11 +700,14 @@ class Person extends BackboneModel {
 	}
 	
 	// Returns the path to a photo of this Person if it exists
-	function getPhoto(){
+	function getPhoto($cached=false){
 	    global $wgServer, $wgScriptPath;
-	    if($this->photo == null){
-	        if(file_exists("Photos/".str_ireplace(".", "_", $this->name).".jpg")){
-	            $this->photo = "$wgServer$wgScriptPath/Photos/".str_ireplace(".", "_", $this->name).".jpg?".microtime(true);
+	    if($this->photo == null || $cached){
+	        if($this->photo != null || file_exists("Photos/".str_ireplace(".", "_", $this->name).".jpg")){
+	            $this->photo = "$wgServer$wgScriptPath/Photos/".str_ireplace(".", "_", $this->name).".jpg";
+	            if(!$cached){
+	                return $this->photo."?".microtime(true);
+	            }
 	        }
 	        else {
 	            $this->photo = "$wgServer$wgScriptPath/skins/face.png";

@@ -66,6 +66,7 @@ Person = Backbone.Model.extend({
         nationality: '',
         gender: '',
         photo: '',
+        cachedPhoto: '',
         twitter: '',
         university: '',
         position: '',

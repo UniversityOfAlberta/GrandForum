@@ -358,177 +358,167 @@ class cavendishTemplate extends QuickTemplate {
 	<div id="p-personal">
 		
 	</div>
+    <div style="position:relative;">
+	    <div id="header">
+		    <a
+	        href="<?php echo htmlspecialchars($this->data['nav_urls']['mainpage']['href'])?>"
+	        title="<?php $this->msg('mainpage') ?>"><img style='margin-top:5px;' height='80px' src="<?php echo $wgServer.$wgScriptPath.'/skins/GrandForum-banner.gif'; ?>" alt='Logo' /></a>
+	        <?php
+	        
+	        if($wgScriptPath != ""){
+	            echo "<font style='font-size:36px;color:#FFFFFF;position:relative;bottom:-14px;left:-200px;'>DEVELOPMENT VERSION</font>";
+	        }
+	        
+	        ?>
+	        <!--span style='font-size:18px;color:red;position:relative;bottom:-14px;left:-250px;'>Important: site will be down for maintenance from 8-9AM (MST), Wed, Nov 16.</span-->
+		    <a name="top" id="contentTop"></a>
+    <ul class="top-nav">
+          <?php 
+				      global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage;
+		      ?>
+		        <li class="top-nav-element tab-right"
+		        <?php if($wgTitle->getNSText() == "Help"){
+		            echo "selected";
+		        } ?>>
+				    <span class="top-nav-left">&nbsp;</span>
+				    <a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Help:Contents">Help/FAQ</a>	
+				    <span class="top-nav-right">&nbsp;</span>
+			    </li>
+			    <li id='grand-tab' class="top-nav-element tab-left
+		        <?php if($wgTitle->getNSText() != "Help"){
+		            echo "selected";
+		        } ?>" style='margin-right:25px;margin-left:215px;'>
+				    <span class="top-nav-left">&nbsp;</span>
+				    <a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Main_Page">GRAND</a>	
+				    <span class="top-nav-right">&nbsp;</span>
+			    </li>
+			    <?php
+				    $user = Person::newFromName($wgUser->getName());
+			     	if($user->isRoleAtLeast(Manager) ){ ?>
+			    <li id='grand-tab' class="top-nav-element tab-left
+			        <?php if($wgTitle->getText() == "EvaluationTable" ||
+                             $wgTitle->getText() == "AcknowledgementsTable" ||
+                             $wgTitle->getText() == "Duplicates" ||
+                             $wgTitle->getText() == "EmptyEmailList" ||
+                             $wgTitle->getText() == "InactiveUsers"){
+			            echo "selected";
+			        } ?>" >
+				    <span class="top-nav-left">&nbsp;</span>
+				    <a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Special:EvaluationTable?section=RMC">Manager</a>	
+				    <span class="top-nav-right">&nbsp;</span>
+			    </li>
+			    <?php } ?>
 
-	<div id="header">
-		<a
-	    href="<?php echo htmlspecialchars($this->data['nav_urls']['mainpage']['href'])?>"
-	    title="<?php $this->msg('mainpage') ?>"><img style='margin-top:5px;' height='80px' src="<?php echo $wgServer.$wgScriptPath.'/skins/GrandForum-banner.gif'; ?>" alt='Logo' /></a>
-	    <?php
-	    
-	    if($wgScriptPath != ""){
-	        echo "<font style='font-size:36px;color:#FFFFFF;position:relative;bottom:-14px;left:-200px;'>DEVELOPMENT VERSION</font>";
-	    }
-	    
-	    ?>
-	    <!--span style='font-size:18px;color:red;position:relative;bottom:-14px;left:-250px;'>Important: site will be down for maintenance from 8-9AM (MST), Wed, Nov 16.</span-->
-		<a name="top" id="contentTop"></a>
-<ul class="top-nav">
-      <?php 
-				  global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage;
-		  ?>
-		    <li class="top-nav-element tab-right"
-		    <?php if($wgTitle->getNSText() == "Help"){
-		        echo "selected";
-		    } ?>>
-				<span class="top-nav-left">&nbsp;</span>
-				<a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Help:Contents">Help/FAQ</a>	
-				<span class="top-nav-right">&nbsp;</span>
-			</li>
-			<li id='grand-tab' class="top-nav-element tab-left
-		    <?php if($wgTitle->getNSText() != "Help"){
-		        echo "selected";
-		    } ?>" style='margin-right:25px;margin-left:215px;'>
-				<span class="top-nav-left">&nbsp;</span>
-				<a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Main_Page">GRAND</a>	
-				<span class="top-nav-right">&nbsp;</span>
-			</li>
-			<?php
-				$user = Person::newFromName($wgUser->getName());
-			 	if($user->isRoleAtLeast(Manager) ){ ?>
-			<li id='grand-tab' class="top-nav-element tab-left
-			    <?php if($wgTitle->getText() == "EvaluationTable" ||
-                         $wgTitle->getText() == "AcknowledgementsTable" ||
-                         $wgTitle->getText() == "Duplicates" ||
-                         $wgTitle->getText() == "EmptyEmailList" ||
-                         $wgTitle->getText() == "InactiveUsers"){
-			        echo "selected";
-			    } ?>" >
-				<span class="top-nav-left">&nbsp;</span>
-				<a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Special:EvaluationTable?section=RMC">Manager</a>	
-				<span class="top-nav-right">&nbsp;</span>
-			</li>
-			<?php } ?>
-
-			<?php global $wgImpersonating;
-			    foreach($this->data['personal_urls'] as $key => $item) {
-			    //echo $key;
-			    $selected = "";
-			    $tabLeft = "";
-			    if($key == "userpage"){
-			        $user = Person::newFromName($wgUser->getName());
-			        if(count($user->getRoles()) > 0){
-			            if($wgTitle->getText() == $user->getName() && $user->isRole($wgTitle->getNSText())){
-			                $selected = "selected";
+			    <?php global $wgImpersonating;
+			        foreach($this->data['personal_urls'] as $key => $item) {
+			        //echo $key;
+			        $selected = "";
+			        $tabLeft = "";
+			        if($key == "userpage"){
+			            $user = Person::newFromName($wgUser->getName());
+			            if(count($user->getRoles()) > 0){
+			                if($wgTitle->getText() == $user->getName() && $user->isRole($wgTitle->getNSText())){
+			                    $selected = "selected";
+			                }
+			                $item['href'] = "{$user->getUrl()}";
+			                $item['text'] = "My Profile";
 			            }
-			            $item['href'] = "{$user->getUrl()}";
-			            $item['text'] = "My Profile";
 			        }
-			    }
-			    else if($key == "mytalk" || $key == "mycontris" || $key == "watchlist" || $key == "anonuserpage" || $key == "anontalk" || $key == "preferences"){
-			        continue;
-			    }
-			    else if($key == "logout"){
-			        if(!$wgImpersonating){
-			            $getStr = "";
-		                foreach($_GET as $key => $get){
-		                    if($key == "title" || $key == "returnto"){
-		                        continue;
-		                    }
-		                    if(strlen($getStr) == 0){
-		                        $getStr .= "?$key=$get";
-		                    }
-		                    else{
-		                        $getStr .= "&$key=$get";
-		                    }
-		                }
-			            $item['text'] = "Logout";
-			            $item['href'].= urlencode($getStr);
-			            $tabLeft = "tab-right";
-			            
-			        }
-			        else {
+			        else if($key == "mytalk" || $key == "mycontris" || $key == "watchlist" || $key == "anonuserpage" || $key == "anontalk" || $key == "preferences"){
 			            continue;
 			        }
-			    }
-			    else if($key == "anonlogin"){
-			        continue;
-			    }
-			?>
-			
-			<li class="top-nav-element <?php echo $selected.' '.$tabLeft; ?>">
-				<span class="top-nav-left">&nbsp;</span>
-				<a id="lnk-<?php echo $key; ?>" class="top-nav-mid" href="<?php
-					echo htmlspecialchars($item['href']) ?>"<?php
-					if(!empty($item['class'])) { ?> class="<?php
-						   echo htmlspecialchars($item['class']) ?>"<?php } ?>><?php
-						   echo $item['text'] ?></a>
-				<span class="top-nav-right">&nbsp;</span>
-				<?php
-				} ?>
-			</li>
-			<?php 
-				// Report Tab
-				global $notifications, $notificationFunctions, $wgUser, $wgScriptPath;
-				if($wgUser->isLoggedIn()){
-				    $p = Person::newFromId($wgUser->getId());
-				    // Notification Tab
-                    if(count($notifications) == 0){
-                        foreach($notificationFunctions as $function){
-                            call_user_func($function);
-                        }
-                    }	
-					
-                    if(count($p->getProjects()) > 0 && !$user->isRoleAtLeast(MANAGER)){
-			            Project::createTab();
+			        else if($key == "logout"){
+			            if(!$wgImpersonating){
+			                $getStr = "";
+		                    foreach($_GET as $key => $get){
+		                        if($key == "title" || $key == "returnto"){
+		                            continue;
+		                        }
+		                        if(strlen($getStr) == 0){
+		                            $getStr .= "?$key=$get";
+		                        }
+		                        else{
+		                            $getStr .= "&$key=$get";
+		                        }
+		                    }
+			                $item['text'] = "Logout";
+			                $item['href'].= urlencode($getStr);
+			                $tabLeft = "tab-right";
+			                
+			            }
+			            else {
+			                continue;
+			            }
 			        }
-					if(!$user->isRoleAtLeast(MANAGER)){
-					    ReportArchive::createTab();
-					}
-					    Report::createTab();
-					//if($p->isUnassignedEvaluator()){
-					//	ReviewerConflicts::createTab();
-					//}
+			        else if($key == "anonlogin"){
+			            continue;
+			        }
+			    ?>
+			
+			    <li class="top-nav-element <?php echo $selected.' '.$tabLeft; ?>">
+				    <span class="top-nav-left">&nbsp;</span>
+				    <a id="lnk-<?php echo $key; ?>" class="top-nav-mid" href="<?php
+					    echo htmlspecialchars($item['href']) ?>"<?php
+					    if(!empty($item['class'])) { ?> class="<?php
+						       echo htmlspecialchars($item['class']) ?>"<?php } ?>><?php
+						       echo $item['text'] ?></a>
+				    <span class="top-nav-right">&nbsp;</span>
+				    <?php
+				    } ?>
+			    </li>
+			    <?php 
+				    // Report Tab
+				    global $notifications, $notificationFunctions, $wgUser, $wgScriptPath;
+				    if($wgUser->isLoggedIn()){
+				        $p = Person::newFromId($wgUser->getId());
+				        // Notification Tab
+                        if(count($notifications) == 0){
+                            foreach($notificationFunctions as $function){
+                                call_user_func($function);
+                            }
+                        }	
+					
+                        if(count($p->getProjects()) > 0 && !$user->isRoleAtLeast(MANAGER)){
+			                Project::createTab();
+			            }
+					    if(!$user->isRoleAtLeast(MANAGER)){
+					        ReportArchive::createTab();
+					    }
+					        Report::createTab();
+					    //if($p->isUnassignedEvaluator()){
+					    //	ReviewerConflicts::createTab();
+					    //}
 
-					if($user->isRole(EXTERNAL) || $user->isRole(STAFF) || $user->isRole(MANAGER)){
-					    ReportPDFs::createTab();
-					}
+					    if($user->isRole(EXTERNAL) || $user->isRole(STAFF) || $user->isRole(MANAGER)){
+					        ReportPDFs::createTab();
+					    }
 
-					MyMailingLists::createTab();
-					Notification::createTab();
-				}
-			?>
+					    MyMailingLists::createTab();
+					    Notification::createTab();
+				    }
+			    ?>
 
-		</ul>
-		
-		<form name="searchform" action="<?php $this->text('wgScript') ?>" id="searchform">
-			<div id="loggedin">
-				<?php 
-					if($wgUser->isLoggedIn()){ 
-						$p = Person::newFromId($wgUser->getId());
-						$name = $p->getNameForForms();
-						$href = "#";
-						if(count($p->getRoles()) > 0){
-				            $href = "{$p->getUrl()}";
+		    </ul>
+		    <form>
+		        <div id="loggedin">
+			        <?php 
+				        if($wgUser->isLoggedIn()){ 
+					        $p = Person::newFromId($wgUser->getId());
+					        $name = $p->getNameForForms();
+					        $href = "#";
+					        if(count($p->getRoles()) > 0){
+			                    $href = "{$p->getUrl()}";
+			                }
+					        echo "Logged in as: <a style='color:#FFFFFF;font-weight:bold;' href='$href'>$name</a>";
 				        }
-						echo "Logged in as: <a style='color:#FFFFFF;font-weight:bold;' href='$href'>$name</a>";
-					}
-					else{
-						echo "Not logged in";
-					}
-				?>
-			</div>
-			<div id="globalSearch" style="position:relative;top:6px;">
-			<!--
-			<input type="hidden" name="title" value="<?php $this->text('searchtitle') ?>"/>
-			<input id="searchInput" name="search" type="text"<?php echo $this->skin->tooltipAndAccesskey('search');
-					if( isset( $this->data['search'] ) ) {
-						?> value="<?php $this->text('search') ?>"<?php } ?> />
-			<input type='submit' name="go" class="searchButton" id="searchGoButton"	value="<?php $this->msg('searcharticle') ?>"<?php echo $this->skin->tooltipAndAccesskey( 'search-go' ); ?> />&nbsp;
-			<input type='submit' name="fulltext" class="searchButton" id="mw-searchButton" value="<?php $this->msg('searchbutton') ?>"<?php echo $this->skin->tooltipAndAccesskey( 'search-fulltext' ); ?> />
-			-->
-	       </div>
-		</form>
-		
+				        else{
+					        echo "Not logged in";
+				        }
+			        ?>
+		        </div>
+		    </form>
+	    </div>
+	    <div id="globalSearch" style="position:absolute;top:48px;right:15px;text-align:right;"></div>
 	</div>
     <div id='submenu'>
         <ul>

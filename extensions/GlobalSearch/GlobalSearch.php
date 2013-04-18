@@ -20,7 +20,8 @@ class GlobalSearch extends BackbonePage {
     
     function getTemplates(){
         return array('Backbone/small_person_card',
-                     'global_search');
+                     'global_search',
+                     'global_search_results');
     }
     
     function getViews(){
