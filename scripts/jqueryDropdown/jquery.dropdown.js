@@ -45,8 +45,40 @@
     var dropdownTop = $('.dropdowntop', $(this));
     var that = this;
     
+    var unHoverTimeout = null;
+    $('li.actions', $(this)).mouseenter(function(e){
+        if(unHoverTimeout != null){
+            clearTimeout(unHoverTimeout);
+            unHoverTimeout = null;
+        }
+        else{
+            $('li.actions', $(that)).click();
+        }
+    });
+    
+    $('li.actions', $(this)).mouseleave(function(e){
+        if(unHoverTimeout != null){
+            clearTimeout(unHoverTimeout);
+            unHoverTimeout = null;
+        }
+        else if(divActions.is(":visible")){
+            unHoverTimeout = setTimeout(function(){$('li.actions', $(that)).click();}, 300);
+        }
+    });
+    
+    divActions.hover(function(e){
+        if(unHoverTimeout != null){
+            clearTimeout(unHoverTimeout);
+            unHoverTimeout = null;
+        }
+        else if(divActions.is(":visible")){
+            unHoverTimeout = setTimeout(function(){$('li.actions', $(that)).click();}, 300);
+        }
+    });
+    
     $('li.actions', $(this)).click(function(e){
-        $("div.actions").not(divActions).fadeOut(250); // Remove all other dropdowns
+        unHoverTimeout=null;
+        $("div.actions").not(divActions).fadeOut(200); // Remove all other dropdowns
         $("ul.dropdown").not(that).imgDown();
         
         var tabWidth = $(this).width() + 
@@ -59,7 +91,13 @@
         
         $(dropdownTop).css('position', 'absolute');
         $(dropdownTop).css('top', -5);
-        $(divActions).fadeToggle(250);
+        if(divActions.is(":visible")){
+            $(divActions).fadeOut(200);
+        }
+        else{
+            divActions.css('opacity', 1);    
+            $(divActions).fadeIn(200);
+        }
         $(that).imgToggle();
         $(divActions).css('right', tabWidth - $(divActions).width());
         $(dropdownTop).css('right', Math.ceil((tabWidth - 7)/2) - (tabWidth - $(divActions).width()));
@@ -71,7 +109,7 @@
         e.stopPropagation();
     });
     $(document).click(function(){
-        $(divActions).fadeOut(250);
+        $(divActions).delay(100).fadeOut(200);
         $(that).imgDown();
     });
   };
