@@ -1273,7 +1273,7 @@ input.other_option:focus {
 #globalSearchResults {
     border: 1px solid #AAA;
     background: #FFFFFF;
-    width: 398px;
+    width: 402px;
     z-index: 1000;
     position:relative;
     color: #555;
@@ -1289,7 +1289,7 @@ input.other_option:focus {
     border-right: 1px solid #AAA;
     text-align: right;
     width: 100px;
-    padding: 3px;
+    padding: 5px;
     font-weight: bold;
     vertical-align: top;
     text-align: right;

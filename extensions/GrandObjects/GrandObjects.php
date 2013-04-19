@@ -35,6 +35,7 @@ $apiRequest->addAction('Hidden','product/:id/authors/:personId', new PersonProdu
 $apiRequest->addAction('Hidden','product/:id/projects', new ProjectProductAPI());
 $apiRequest->addAction('Hidden','product/:id/projects/:personId', new ProjectProductAPI());
 //NewSearch
+$apiRequest->addAction('Hidden','globalSearch/:group/:search', new GlobalSearchAPI());
 $apiRequest->addAction('Hidden','newsearch', new NewSearchAPI());
 
 function createModels($out, $skin){

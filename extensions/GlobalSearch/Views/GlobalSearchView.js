@@ -2,6 +2,13 @@ GlobalSearchView = Backbone.View.extend({
 
     initialize: function(){
         this.template = _.template($("#global_search_template").html());
+        Backbone.Subviews.add( this );
+    },
+    
+    subviewCreators : {
+        "globalSearchResults" : function() {
+            return new GlobalSearchResultsView();
+        }
     },
     
     events: {
@@ -10,20 +17,12 @@ GlobalSearchView = Backbone.View.extend({
     
     search: function(e){
         var value = this.$el.find("#globalSearchInput").val();
-        this.$el.find("#globalSearchResults").css('display', 'block');
-        this.searchResults.render();
+        this.subviews.globalSearchResults.search(value);
     },
 
     render: function(){
         this.$el.html(this.template());
         var that = this;
-        $(document).click(function(e){
-            if(that.$el.find("#globalSearchResults").has($(e.target)).length == 0){
-                that.$el.find("#globalSearchResults").css('display', 'none');
-            }
-        });
-        this.$el.find("#globalSearchResults").css('display', 'none');
-        this.searchResults = new GlobalSearchResultsView({el: "#globalSearchResults"});
         return this.$el;
     }
 
@@ -35,16 +34,37 @@ GlobalSearchResultsView = Backbone.View.extend({
         this.template = _.template($("#global_search_results_template").html());
     },
     
-    renderPeopleResults: function(){
-        this.$el.find(".globalSearchResultsRows").empty();
-        this.$el.find(".globalSearchResultsRows").append(new SmallPersonCardView({model: new Person({id: 3})}).render());
-        this.$el.find(".globalSearchResultsRows").append(new SmallPersonCardView({model: new Person({id: 11})}).render());
-        this.$el.find(".globalSearchResultsRows").append(new SmallPersonCardView({model: new Person({id: 159})}).render());
+    renderPeopleResults: function(value){
+        var that = this;
+        var g = new GlobalSearch({group: 'people', search: value});
+        $.when(g.fetch()).then(function(){
+            that.$el.find(".globalSearchResultsRows").empty();
+            for(i in g.get('results')){
+                if(i >= 5) break;
+                that.$el.find(".globalSearchResultsRows").append(new SmallPersonCardView({model: new Person({id: g.get('results')[i]})}).render());
+            }
+        });
+    },
+    
+    search: function(value){
+        if(value.length > 0){
+            this.$el.css('display', 'block');
+            this.renderPeopleResults(value);
+        }
+        else{
+            this.$el.css('display', 'none');
+        }
     },
     
     render: function(){
         this.$el.html(this.template());
-        this.renderPeopleResults();
+        this.$el.css('display', 'none');
+        var that = this;
+        $(document).click(function(e){
+            if($("#globalSearchResults").has($(e.target)).length == 0){
+                that.$el.css('display', 'none');
+            }
+        });
         return this.$el;
     }
     

@@ -8,6 +8,12 @@ dateTimeHelpers = {
     }
 }
 
+_.addTemplateHelpers( {
+    subview : function( subviewName ) {
+        return "<div data-subview='" + subviewName + "'></div>"
+    }
+} );
+
 function HTML(){}
 
 HTML.Element = function(html, options){

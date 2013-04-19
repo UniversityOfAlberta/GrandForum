@@ -703,7 +703,7 @@ class Person extends BackboneModel {
 	function getPhoto($cached=false){
 	    global $wgServer, $wgScriptPath;
 	    if($this->photo == null || $cached){
-	        if($this->photo != null || file_exists("Photos/".str_ireplace(".", "_", $this->name).".jpg")){
+	        if(file_exists("Photos/".str_ireplace(".", "_", $this->name).".jpg")){
 	            $this->photo = "$wgServer$wgScriptPath/Photos/".str_ireplace(".", "_", $this->name).".jpg";
 	            if(!$cached){
 	                return $this->photo."?".microtime(true);

@@ -10,6 +10,7 @@ function initGlobalSearch($out, $skin){
     $globalSearch = new GlobalSearch();
     $globalSearch->loadTemplates();
     $globalSearch->loadModels();
+    $globalSearch->loadHelpers();
     $globalSearch->loadViews();
     $globalSearch->loadMain();
     return true;
@@ -30,7 +31,7 @@ class GlobalSearch extends BackbonePage {
     }
     
     function getModels(){
-        return array();
+        return array('GlobalSearch');
     } 
     
 }
