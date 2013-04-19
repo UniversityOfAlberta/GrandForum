@@ -9,6 +9,7 @@ class GlobalSearchAPI extends RESTAPI {
         $array = array('search' => $search,
                        'group' => $group);
         $ids = array();
+        $search = $search."*";
         switch($group){
             case 'people':
                 $results = json_decode(file_get_contents("http://grand.cs.ualberta.ca:8981/solr/select?&wt=json&debug=results&fl=score,*&defType=dismax&bf=user_exp^20.0&q=".urlencode($search)."&start=0"));
@@ -18,7 +19,8 @@ class GlobalSearchAPI extends RESTAPI {
                 }
                 break;
             case 'wikipage':
-                $results = json_decode(file_get_contents("{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrsearch=".urlencode($search)."&format=json"));
+                
+                $results = json_decode(file_get_contents("{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrwhat=title&gsrsearch=".$search."&format=json"));
                 if(isset($results->query)){
                     foreach($results->query->pages as $page){
                         $ids[] = $page->pageid;

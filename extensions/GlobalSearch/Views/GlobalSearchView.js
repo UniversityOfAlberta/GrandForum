@@ -100,7 +100,7 @@ WikiResultsView = Backbone.View.extend({
         this.$el.html(this.template({group: "Wiki Pages"}));
         this.$el.find(".globalSearchResultsRows").empty();
         for(i in this.model.get('results')){
-            if(i >= 3) break;
+            if(i >= 5) break;
             this.$el.find(".globalSearchResultsRows").append(new SmallWikiCardView({model: new WikiPage({id: this.model.get('results')[i]})}).render());
         }
     }
