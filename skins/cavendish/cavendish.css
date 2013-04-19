@@ -1272,6 +1272,7 @@ input.other_option:focus {
 
 #globalSearchResults {
     border: 1px solid #AAA;
+    border-bottom: 0;
     background: #FFFFFF;
     width: 402px;
     z-index: 1000;

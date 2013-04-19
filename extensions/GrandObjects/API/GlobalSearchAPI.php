@@ -3,6 +3,7 @@
 class GlobalSearchAPI extends RESTAPI {
     
     function doGET(){
+        global $wgServer, $wgScriptPath;
         $search = $this->getParam('search');
         $group = $this->getParam('group');
         $array = array('search' => $search,
@@ -14,6 +15,14 @@ class GlobalSearchAPI extends RESTAPI {
                 $docs = $results->response->docs;
                 foreach($docs as $doc){
                     $ids[] = $doc->user_id;
+                }
+                break;
+            case 'wikipage':
+                $results = json_decode(file_get_contents("{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrsearch=".urlencode($search)."&format=json"));
+                if(isset($results->query)){
+                    foreach($results->query->pages as $page){
+                        $ids[] = $page->pageid;
+                    }
                 }
                 break;
         }

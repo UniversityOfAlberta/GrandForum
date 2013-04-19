@@ -34,6 +34,9 @@ $apiRequest->addAction('Hidden','product/:id/authors', new PersonProductAPI());
 $apiRequest->addAction('Hidden','product/:id/authors/:personId', new PersonProductAPI());
 $apiRequest->addAction('Hidden','product/:id/projects', new ProjectProductAPI());
 $apiRequest->addAction('Hidden','product/:id/projects/:personId', new ProjectProductAPI());
+// Wiki
+$apiRequest->addAction('Hidden','wikipage/:id', new WikiPageAPI());
+$apiRequest->addAction('Hidden','wikipage/:namespace/:title', new WikiPageAPI());
 //NewSearch
 $apiRequest->addAction('Hidden','globalSearch/:group/:search', new GlobalSearchAPI());
 $apiRequest->addAction('Hidden','newsearch', new NewSearchAPI());
@@ -48,6 +51,7 @@ function createModels($out, $skin){
     $out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Role.js'></script>\n");
 	$out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Project.js'></script>\n");
     $out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Product.js'></script>\n");
+    $out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/WikiPage.js'></script>\n");
     
     return true;
 }

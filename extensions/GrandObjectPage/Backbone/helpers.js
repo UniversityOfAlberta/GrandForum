@@ -8,11 +8,22 @@ dateTimeHelpers = {
     }
 }
 
-_.addTemplateHelpers( {
-    subview : function( subviewName ) {
-        return "<div data-subview='" + subviewName + "'></div>"
+function abbr(str, nChars){
+    var abbr = $("<span></span>");
+    if(str.length > nChars){
+        $(abbr).html(str.substr(0, nChars) + '...');
+        $(abbr).attr('title', str);
     }
-} );
+    else{
+        $(abbr).html(str);
+    }
+    $(abbr).wrap('div');
+    return $(abbr).parent().html();
+}
+
+function subview(subviewName){
+    return "<div data-subview='" + subviewName + "'></div>";
+}
 
 function HTML(){}
 
