@@ -70,38 +70,42 @@ GlobalSearchResultsView = Backbone.View.extend({
     
 });
 
-PersonResultsView = Backbone.View.extend({
+ResultsView = Backbone.View.extend({
     initialize: function(){
-        this.model.bind('sync', this.render, this);
+        this.model.bind('sync', this.renderResults, this);
         this.template = _.template($("#global_search_group_template").html());
+        this.render();
     },
     
-    value: '',
+    value: ''
+});
+
+PersonResultsView = ResultsView.extend({
     
-    render: function(){
-        this.$el.html(this.template({group: "People"}));
+    renderResults: function(){
         this.$el.find(".globalSearchResultsRows").empty();
         for(i in this.model.get('results')){
             if(i >= 5) break;
             this.$el.find(".globalSearchResultsRows").append(new SmallPersonCardView({model: new Person({id: this.model.get('results')[i]})}).render());
         }
+    },
+    
+    render: function(){
+        this.$el.html(this.template({group: "People"}));
     }
 });
 
-WikiResultsView = Backbone.View.extend({
-    initialize: function(){
-        this.model.bind('sync', this.render, this);
-        this.template = _.template($("#global_search_group_template").html());
-    },
-    
-    value: '',
-    
-    render: function(){
-        this.$el.html(this.template({group: "Wiki Pages"}));
+WikiResultsView = ResultsView.extend({
+
+    renderResults: function(){
         this.$el.find(".globalSearchResultsRows").empty();
         for(i in this.model.get('results')){
             if(i >= 5) break;
             this.$el.find(".globalSearchResultsRows").append(new SmallWikiCardView({model: new WikiPage({id: this.model.get('results')[i]})}).render());
         }
+    },
+    
+    render: function(){
+        this.$el.html(this.template({group: "Wiki Pages"}));
     }
 });
