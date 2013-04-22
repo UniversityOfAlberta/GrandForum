@@ -744,6 +744,7 @@ class PublicationPage {
                 }
                 if($edit){
                     $allPeople = Person::getAllPeople('all');
+                    $list = array();
                     foreach($allPeople as $person){
                         if(array_search($person->getNameForForms(), $authorNames) === false){
                             $list[] = $person->getNameForForms();

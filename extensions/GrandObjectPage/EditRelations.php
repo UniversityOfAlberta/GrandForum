@@ -81,7 +81,7 @@ class EditRelations extends SpecialPage{
 	                }
 	            }
 	            foreach($currentHQPNames as $name){
-	                if(array_search($name, $names) === false){
+	                if(array_search(str_replace(".", " ", $name), $names) === false){
 	                    $_POST['name2'] = $name; 
 	                    APIRequest::doAction('DeleteRelation', true);
 	                }
@@ -125,7 +125,7 @@ class EditRelations extends SpecialPage{
 	                }
 	            }
 	            foreach($currentWorksWithNames as $name){
-	                if(array_search($name, $names) === false){
+	                if(array_search(str_replace(".", " ", $name), $names) === false){
 	                    $_POST['name2'] = $name; 
 	                    APIRequest::doAction('DeleteRelation', true);
 	                }

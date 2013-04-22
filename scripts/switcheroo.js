@@ -31,7 +31,7 @@
     }
     
     this.filterResults = function(){
-        var value = $("#search" + this.id.pluralize()).attr("value");
+        var value = $("#search" + this.id.pluralize()).val();
         $.each($("#right" + this.id.pluralize()).children().not("#no" + this.id), function(index, val){
             var valSelect = val.id;
             if(!$(val).hasClass("custom")){
@@ -113,7 +113,7 @@
             $("#hidden" + obj.id.pluralize()).append("<input class=\'auth\' type=\'hidden\' name=\'" + obj.id + "[]\' value=\'" + val.innerHTML + "\' />");
             obj.leftArray.push(val.innerHTML);
         });
-        $("input[name=" + this.id + "]").attr('value', values.join(', ')).change();
+        $("input[name=" + this.id + "]").val(values.join(', ')).change();
     }
     
     this.init = function(){

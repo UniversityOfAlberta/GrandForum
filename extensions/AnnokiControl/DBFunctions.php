@@ -49,6 +49,14 @@ function LIKE($value){
     return "### LIKE {$value}";
 }
 
+function WHERE_OR($value){
+    return "### OR ".$value;
+}
+
+function WHERE_AND($value){
+    return "### AND ".$value;
+}
+
 /**
  * @package AnnokiControl
  */
@@ -201,7 +209,21 @@ class DBFunctions {
         }
         $sql = "SELECT ".implode(", ", $colSQL)." FROM ".implode(", ", $fromSQL)." ";
         if(count($whereSQL) > 0){
-            $sql .= "WHERE ".implode(" AND\n", $whereSQL);
+            $sql .= "WHERE ";
+            foreach($whereSQL as $key => $where){
+                if($key > 0){
+                    if(strstr($where, "### OR ") !== false){
+                        $where = str_replace("`### OR ", " OR `", $where);
+                    }
+                    else if(strstr($where, "### AND ") !== false){
+                        $where = str_replace("`### AND ", " AND `", $where);
+                    }
+                    else{
+                        $where = " AND $where";
+                    }
+                }
+                $sql .= $where."\n";
+            }
         }
         if(count($orderSQL) > 0){
             $sql .= "ORDER BY ".implode(", ", $orderSQL);

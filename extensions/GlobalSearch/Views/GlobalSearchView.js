@@ -61,7 +61,7 @@ GlobalSearchResultsView = Backbone.View.extend({
         this.$el.css('display', 'none');
         var that = this;
         $(document).click(function(e){
-            if($("#globalSearchResults").has($(e.target)).length == 0){
+            if($("#globalSearchResults").has($(e.target)).length == 0 && $(e.target).attr('id') != "globalSearchInput"){
                 that.$el.css('display', 'none');
             }
         });
@@ -72,18 +72,30 @@ GlobalSearchResultsView = Backbone.View.extend({
 
 ResultsView = Backbone.View.extend({
     initialize: function(){
-        this.model.bind('sync', this.renderResults, this);
+        this.model.bind('sync', this.renderResultsPre, this);
         this.template = _.template($("#global_search_group_template").html());
+        this.value = '';
         this.render();
     },
     
-    value: ''
+    renderResultsPre: function(){
+        if(this.model.get('results').length == 0){
+            this.$el.empty();
+        }
+        else{
+            if(this.$el.html() == ""){
+                this.render();
+            }
+            this.renderResults();
+        }
+    }
 });
 
 PersonResultsView = ResultsView.extend({
     
     renderResults: function(){
         this.$el.find(".globalSearchResultsRows").empty();
+        var html = '';
         for(i in this.model.get('results')){
             if(i >= 5) break;
             this.$el.find(".globalSearchResultsRows").append(new SmallPersonCardView({model: new Person({id: this.model.get('results')[i]})}).render());

@@ -103,6 +103,10 @@ class Person extends BackboneModel {
 	// Returns a new Person from the given name
 	static function newFromNameLike($name){
 	    global $wgSitename;
+	    $tmpPerson = Person::newFromName(str_replace(" ", ".", $name));
+	    if($tmpPerson->getName() != ""){
+	        return $tmpPerson;
+	    }
 	    $name = str_replace(".", ".*", $name);
         $name = str_replace(" ", ".*", $name);
 	    if(isset(Person::$cache[$name])){
