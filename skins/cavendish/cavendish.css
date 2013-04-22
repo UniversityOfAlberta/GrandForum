@@ -1201,7 +1201,7 @@ input.other_option:focus {
     width: 285px;
     padding: 3px;
     background: #ffffff;
-    color: #555;
+    color: #555 !important;
     cursor: pointer;
     overflow: hidden;
     text-decoration: none !important;
@@ -1210,7 +1210,7 @@ input.other_option:focus {
 
 .small_card:hover {
     background: #96789F;
-    color: #ffffff;
+    color: #ffffff !important;
 }
 
 .card_photo {

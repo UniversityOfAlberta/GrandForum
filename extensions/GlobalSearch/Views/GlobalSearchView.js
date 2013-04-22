@@ -34,6 +34,10 @@ GlobalSearchResultsView = Backbone.View.extend({
         Backbone.Subviews.add( this );
     },
     
+    events: {
+        "resultsLoaded": "allResultsDone"
+    },
+    
     subviewCreators : {
         "personResults" : function() {
             return new PersonResultsView({model: new GlobalSearch({group: 'people', search: ''})});
@@ -43,13 +47,34 @@ GlobalSearchResultsView = Backbone.View.extend({
         }
     },
     
+    allResultsDone: function(){
+        var noResults = true;
+        for(sId in this.subviews){
+            var subview = this.subviews[sId];
+            if(subview.model.get('results').length > 0){
+                noResults = false;
+                break;
+            }
+        }
+        if(noResults){
+            this.$("#globalSearchResults").css('border-top-width', '0');
+        }
+        else{
+            this.$("#globalSearchResults").css('border-top-width', '1px');
+        }
+    },
+    
     search: function(value){
         if(value.length > 0){
             this.$el.css('display', 'block');
             this.subviews.personResults.model.set('search', value);
-            this.subviews.personResults.model.fetch();
             this.subviews.wikiResults.model.set('search', value);
-            this.subviews.wikiResults.model.fetch();
+            var that = this;
+            $.when(this.subviews.wikiResults.model.fetch(),
+                   this.subviews.personResults.model.fetch())
+                .then(function(){
+                    that.$el.trigger('resultsLoaded');
+                });
         }
         else{
             this.$el.css('display', 'none');
