@@ -75,6 +75,7 @@ ResultsView = Backbone.View.extend({
         this.model.bind('sync', this.renderResultsPre, this);
         this.template = _.template($("#global_search_group_template").html());
         this.value = '';
+        this.cardsCache = Array();
         this.render();
     },
     
@@ -98,7 +99,16 @@ PersonResultsView = ResultsView.extend({
         var html = '';
         for(i in this.model.get('results')){
             if(i >= 5) break;
-            this.$el.find(".globalSearchResultsRows").append(new SmallPersonCardView({model: new Person({id: this.model.get('results')[i]})}).render());
+            var card = null;
+            if(this.cardsCache[this.model.get('results')[i]] != undefined){
+                card = this.cardsCache[this.model.get('results')[i]];
+            }
+            else{
+                card = new SmallPersonCardView({model: new Person({id: this.model.get('results')[i]})});
+                this.cardsCache[card.model.get('id')] = card;
+                card.render();
+            }
+            this.$el.find(".globalSearchResultsRows").append(card.$el);
         }
     },
     
@@ -113,7 +123,16 @@ WikiResultsView = ResultsView.extend({
         this.$el.find(".globalSearchResultsRows").empty();
         for(i in this.model.get('results')){
             if(i >= 5) break;
-            this.$el.find(".globalSearchResultsRows").append(new SmallWikiCardView({model: new WikiPage({id: this.model.get('results')[i]})}).render());
+            var card = null;
+            if(this.cardsCache[this.model.get('results')[i]] != undefined){
+                card = this.cardsCache[this.model.get('results')[i]];
+            }
+            else{
+                card = new SmallWikiCardView({model: new WikiPage({id: this.model.get('results')[i]})});
+                this.cardsCache[card.model.get('id')] = card;
+                card.render();
+            }
+            this.$el.find(".globalSearchResultsRows").append(card.$el);
         }
     },
     
