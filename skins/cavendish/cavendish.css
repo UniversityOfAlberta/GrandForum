@@ -1208,8 +1208,8 @@ input.other_option:focus {
     white-space: nowrap;
 }
 
-.small_card:hover {
-    background: #96789F;
+.small_card:hover, .small_card_hover {
+    background: #96789F !important;
     color: #ffffff !important;
 }
 

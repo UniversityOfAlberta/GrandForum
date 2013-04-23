@@ -12,6 +12,7 @@ GlobalSearch = Backbone.Model.extend({
         id: '',
         search : '',
         group: '',
+        selected: '',
         results: []
     }
 
