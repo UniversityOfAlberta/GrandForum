@@ -50,18 +50,23 @@ class EthicsTable extends SpecialPage {
     
     static function ethicsTable(){
     	global $wgOut;
-    	$wgOut->addHTML("<table class='indexTable' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
-                        <thead>
-                            <tr bgcolor='#F2F2F2'>
-                                <th>University</th>
-                                <th>Ethics Meter(percentage)</th>
-                                <th>Ethics Meter(numeric)</th>
-                            </tr>
-                        </thead>
-                        <tbody>\n");
+
+    	$table =<<<EOF
+    	<table class='indexTable' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+        <thead>
+            <tr bgcolor='#F2F2F2'>
+                <th>University</th>
+                <th>Ethics Meter(percentage)</th>
+                <th>Ethics Meter(numeric)</th>
+            </tr>
+        </thead>
+        <tbody>
+EOF;
+
 
     	$hqps = Person::getAllPeople('HQP');
     	$universities = array();
+    	$total = array("ethical"=>0, "nonethical"=>0);
 
     	foreach($hqps as $hqp){
     		$uni = $hqp->getUni();
@@ -69,17 +74,25 @@ class EthicsTable extends SpecialPage {
 
     		if(!array_key_exists($uni, $universities)){
                 $universities[$uni] = array("ethical"=>0, "nonethical"=>0);
-            }
-            else{
-            	$ethics = $hqp->getEthics();
-            	if($ethics['completed_tutorial']){
-            		$universities[$uni]['ethical']++;
-            	}
-            	else{
-            		$universities[$uni]['nonethical']++;
-            	}
-            }
+            }    	
+		       	
+		    $ethics = $hqp->getEthics();
+        	if($ethics['completed_tutorial'] == 1){
+        		$universities[$uni]['ethical']++;
+        		$total['ethical']++;
+        	}
+        	else{
+        		$universities[$uni]['nonethical']++;
+        		$total['nonethical']++;
+        	}
     	}
+    	
+    	$all_hqp_num = count($hqps);
+    	$perc = round(($total['ethical'] / $all_hqp_num )*100, 1);
+
+    	$wgOut->addHTML("<p style='font-size: 120%; padding: 15px 0 20px 0;'><b>A total of {$total['ethical']} out of {$all_hqp_num} ({$perc}%) have completed the TCPS2 turorial across all universities.</b></p>");
+
+    	$wgOut->addHTML($table);
 
     	foreach($universities as $uni => $stats){
     		$ethical_num = $stats['ethical'];
@@ -101,6 +114,7 @@ EOF;
 
 			$wgOut->addHTML($row);
     	}
+
     	$wgOut->addHTML("</tbody></table>");
     }
 
