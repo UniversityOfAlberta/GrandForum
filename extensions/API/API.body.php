@@ -217,6 +217,9 @@ class APIRequest{
 		//GET
 		$actions['Projects']['getProjectInfo'] = new ProjectAPI();
 		
+		//GET
+		$actions['University']['getEthicsStats'] = new UniversityEthicsAPI();
+
 		$actions['Hidden']['getWFInfo'] = new WFAPI();
 		$actions['Hidden']['getJung'] = new JungAPI();
 		$actions['Hidden']['addRecordStory'] = new RecordStoryAPI();
