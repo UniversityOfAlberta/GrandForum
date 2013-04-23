@@ -90,7 +90,7 @@ EOF;
     	$all_hqp_num = count($hqps);
     	$perc = round(($total['ethical'] / $all_hqp_num )*100, 1);
 
-    	$wgOut->addHTML("<p style='font-size: 120%; padding: 15px 0 20px 0;'><b>A total of {$total['ethical']} out of {$all_hqp_num} ({$perc}%) have completed the TCPS2 turorial across all universities.</b></p>");
+    	$wgOut->addHTML("<p style='font-size: 120%; padding: 15px 0 20px 0;'><b>A total of {$total['ethical']} out of {$all_hqp_num} ({$perc}%) have completed the TCPS2 tutorial across all universities.</b></p>");
 
     	$wgOut->addHTML($table);
 
@@ -108,7 +108,7 @@ EOF;
     			<tr>
     			<td>{$uni}</td>
     			<td>{$percentage}</td>
-    			<td>{$ethical_num} out of {$total_num} have completed the TCPS2 turorial</td>
+    			<td>{$ethical_num} out of {$total_num} have completed the TCPS2 tutorial</td>
     			</tr>
 EOF;
 
