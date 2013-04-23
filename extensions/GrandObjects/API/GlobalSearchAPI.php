@@ -14,12 +14,26 @@ class GlobalSearchAPI extends RESTAPI {
         $search = "*".str_replace(" ", "*", $search)."*";
         switch($group){
             case 'people':
-                $search = mysql_real_escape_string(str_replace("*", "%", str_replace(".", "%", $search)));
-                $data = DBFunctions::execSQL("SELECT `user_id`, `user_name`
-                                              FROM `mw_user`
-                                              WHERE (UPPER(CONVERT(`user_name` USING latin1)) LIKE UPPER('$search')
-                                                 OR UPPER(CONVERT(`user_real_name` USING latin1)) LIKE UPPER('$search'))
-                                                 AND `deleted` != '1'");
+                $searchNames = array_filter(explode("*", str_replace(".", "*", $search)));
+                $data = array();
+                $people = Person::getAllPeople();
+                foreach($people as $person){
+                    $realName = $person->getNameForForms();
+                    $names = array_merge(explode(".", str_replace(" ", "", strtolower($realName))), 
+                                         explode(" ", str_replace(".", "", strtolower($realName))));
+                    $found = true;
+                    foreach($searchNames as $name){
+                        $grepped = preg_grep("/^$name.*/", $names);
+                        if(count($grepped) == 0){
+                            $found = false;
+                            break;
+                        }
+                    }
+                    if($found){
+                        $data[] = array('user_id' => $person->getId(),
+                                        'user_name' => $person->getName());
+                    }
+                }
                 $results = array();
                 $myRelations = $me->getRelations();
                 $sups = $me->getSupervisors();
@@ -38,17 +52,21 @@ class GlobalSearchAPI extends RESTAPI {
                     $percent = 10;
                     similar_text(str_replace(".", " ", $row['user_name']), $origSearch, $percent);
                     $percent = max(10, $percent);
-                    
                     foreach($person->getProjects() as $project){
                         if($me->isMemberOf($project)){
                             $percent += 15;
                         }
                     }
                     if(count($myRelations) > 0){
+                        $relFound = false;
                         foreach($myRelations as $type){
-                            foreach($type as $relation){
-                                if($relation->getUser2()->getId() == $person->getId()){
-                                    $percent += 50;
+                            if(!$relFound){
+                                foreach($type as $relation){
+                                    if($relation->getUser2()->getId() == $person->getId()){
+                                        $percent += 50;
+                                        $relFound = true;
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -57,6 +75,7 @@ class GlobalSearchAPI extends RESTAPI {
                         foreach($sups as $sup){
                             if($sup->getId() == $person->getId()){
                                 $percent += 50;
+                                break;
                             }
                         }
                     }

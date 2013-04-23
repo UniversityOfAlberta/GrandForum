@@ -18,10 +18,12 @@ SmallPersonCardView = Backbone.View.extend({
                 }, that);
                 that.$el.find("#roles").html("(" + roles.join(', ') + ")");
             }
+            that.$el.css('display', 'block');
         });
     },
 
     render: function(){
+        this.$el.css('display', 'none');
         this.$el.html(this.template(this.model.toJSON()));
         return this.$el;
     }

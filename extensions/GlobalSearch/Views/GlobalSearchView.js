@@ -72,9 +72,9 @@ GlobalSearchResultsView = Backbone.View.extend({
             var that = this;
             $.when(this.subviews.wikiResults.model.fetch(),
                    this.subviews.personResults.model.fetch())
-                .then(function(){
-                    that.$el.trigger('resultsLoaded');
-                });
+            .then(function(){
+                that.$el.trigger('resultsLoaded');
+            });
         }
         else{
             this.$el.css('display', 'none');
