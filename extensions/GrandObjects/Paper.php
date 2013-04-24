@@ -822,7 +822,7 @@ class Paper extends BackboneModel{
 	
 	function getCacheId(){
 	    global $wgSitename;
-	    return $wgSitename.'product'.$this->getTitle();
+	    return $wgSitename.'product'.$this->getId();
 	}
 }
 ?>

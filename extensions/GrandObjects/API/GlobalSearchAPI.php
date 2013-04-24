@@ -49,9 +49,7 @@ class GlobalSearchAPI extends RESTAPI {
                         }
                     }
                     if($continue) continue;
-                    $percent = 10;
                     similar_text(strtolower(str_replace(".", " ", $row['user_name'])), strtolower($origSearch), $percent);
-                    $percent = max(10, $percent);
                     foreach($person->getProjects() as $project){
                         if($me->isMemberOf($project)){
                             $percent += 15;
@@ -86,11 +84,6 @@ class GlobalSearchAPI extends RESTAPI {
 	            foreach($results as $key => $row){
 	                $ids[] = intval($key);
 	            }
-                /*$results = json_decode(file_get_contents("http://grand.cs.ualberta.ca:8981/solr/select?&wt=json&debug=results&fl=score,*&defType=dismax&bf=user_exp^20.0&q=".urlencode($search)."&start=0"));
-                $docs = $results->response->docs;
-                foreach($docs as $doc){
-                    $ids[] = $doc->user_id;
-                }*/
                 break;
             case 'projects':
                 $searchNames = array_filter(explode("*", str_replace(".", "*", strtolower($search))));
@@ -117,13 +110,57 @@ class GlobalSearchAPI extends RESTAPI {
                 $results = array();
                 foreach($data as $row){
                     $project = Person::newFromId($row['project_id']);
-                    $percent = 10;
                     similar_text(strtolower($row['project_name']), strtolower($origSearch), $percent);
-                    $percent = max(10, $percent);
                     if($me->isMemberOf($project)){
                         $percent += 50;
                     }
                     $results[$row['project_id']] = $percent;
+                }
+                asort($results);
+                $results = array_reverse($results, true);
+	            foreach($results as $key => $row){
+	                $ids[] = intval($key);
+	            }
+                break;
+            case 'products':
+                $searchNames = array_filter(explode("*", str_replace(".", "*", strtolower($search))));
+                $data = array();
+                $products = Product::getAllPapers('all', 'all', 'both');
+                foreach($products as $product){
+                    $pTitle = strtolower($product->getTitle());
+                    $pCategory = strtolower($product->getCategory());
+                    $pType = strtolower($product->getCategory());
+                    $names = array_merge(explode(" ", $pTitle),
+                                         explode(" ", $pCategory),
+                                         explode(" ", $pType));
+                    $found = true;
+                    foreach($searchNames as $name){
+                        $grepped = preg_grep("/^$name.*/", $names);
+                        if(count($grepped) == 0){
+                            $found = false;
+                            break;
+                        }
+                    }
+                    if($found){
+                        $data[] = array('product_id' => $product->getId(),
+                                        'product_title' => $product->getTitle());
+                    }
+                }
+                $results = array();
+                $myProducts = new Collection($me->getPapers('all', false, 'both'));
+                $productIds = array_flip($myProducts->pluck('id'));
+                foreach($data as $row){
+                    $product = Product::newFromId($row['product_id']);
+                    similar_text(strtolower($row['product_title']), strtolower($origSearch), $percent);
+                    if(isset($productIds[$product->getId()])){
+                        $percent += 50;
+                    }
+                    foreach($product->getProjects() as $project){
+                        if($me->isMemberOf($project)){
+                            $percent += 15;
+                        }
+                    }
+                    $results[$row['product_id']] = $percent;
                 }
                 asort($results);
                 $results = array_reverse($results, true);

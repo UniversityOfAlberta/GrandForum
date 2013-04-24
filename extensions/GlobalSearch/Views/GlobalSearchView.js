@@ -89,6 +89,9 @@ GlobalSearchResultsView = Backbone.View.extend({
         "projectResults" : function(){
             return new ProjectResultsView({model: new GlobalSearch({group: 'projects', search: ''})});
         },
+        "productResults" : function(){
+            return new ProductResultsView({model: new GlobalSearch({group: 'products', search: ''})});
+        },
         "wikiResults" : function(){
             return new WikiResultsView({model: new GlobalSearch({group: 'wikipage', search: ''})});
         }
@@ -148,15 +151,15 @@ GlobalSearchResultsView = Backbone.View.extend({
             $("#globalSearchThrobber > img").css('display', 'block');
             this.searchIndex = -1;
             this.$el.css('display', 'block');
-            this.subviews.personResults.model.set('search', value);
-            this.subviews.projectResults.model.set('search', value);
-            this.subviews.wikiResults.model.set('search', value);
+            var fetchPromises = Array();
+            for(sId in this.subviews){
+                var subview = this.subviews[sId];
+                subview.model.set('search', value);
+                fetchPromises.push(subview.model.fetch());
+            }
             this.shift();
             var that = this;
-            $.when(this.subviews.personResults.model.fetch(),
-                   this.subviews.projectResults.model.fetch(),
-                   this.subviews.wikiResults.model.fetch())
-            .then(function(){
+            $.when.apply($, fetchPromises).then(function(){
                 that.$el.trigger('resultsLoaded');
             });
         }
@@ -189,6 +192,16 @@ ResultsView = Backbone.View.extend({
         this.render();
     },
     
+    createCardView: function(model){
+        console.error("Must implement 'createCardView'");
+        return undefined;
+    },
+    
+    createModel: function(){
+        console.error("Must implement 'createModel'");
+        return undefined;
+    },
+    
     click: function(){
         for(i in this.getResults()){
             if(i == this.model.get('selected')){
@@ -213,10 +226,7 @@ ResultsView = Backbone.View.extend({
             }
             this.renderResults();
         }
-    }
-});
-
-PersonResultsView = ResultsView.extend({
+    },
     
     renderResults: function(){
         this.$el.find(".globalSearchResultsRows").empty();
@@ -227,7 +237,7 @@ PersonResultsView = ResultsView.extend({
                 card = this.cardsCache[this.model.get('results')[i]];
             }
             else{
-                card = new SmallPersonCardView({model: new Person({id: this.model.get('results')[i]})});
+                card = this.createCardView(this.createModel());
                 this.cardsCache[card.model.get('id')] = card;
                 card.render();
             }
@@ -239,6 +249,16 @@ PersonResultsView = ResultsView.extend({
             }
             this.$el.find(".globalSearchResultsRows").append(card.$el);
         }
+    }
+});
+
+PersonResultsView = ResultsView.extend({
+    createCardView: function(model){
+        return new SmallPersonCardView({model: model});
+    },
+    
+    createModel: function(){
+        return new Person({id: this.model.get('results')[i]});
     },
     
     render: function(){
@@ -247,30 +267,14 @@ PersonResultsView = ResultsView.extend({
 });
 
 ProjectResultsView = ResultsView.extend({
-    
     maxResults: 3,
     
-    renderResults: function(){
-        this.$el.find(".globalSearchResultsRows").empty();
-        var html = '';
-        for(i in this.getResults()){
-            var card = null;
-            if(this.cardsCache[this.model.get('results')[i]] != undefined){
-                card = this.cardsCache[this.model.get('results')[i]];
-            }
-            else{
-                card = new SmallProjectCardView({model: new Project({id: this.model.get('results')[i]})});
-                this.cardsCache[card.model.get('id')] = card;
-                card.render();
-            }
-            if(i == this.model.get('selected')){
-                card.$el.find(".small_card").addClass('small_card_hover');
-            }
-            else{
-                card.$el.find(".small_card").removeClass('small_card_hover');
-            }
-            this.$el.find(".globalSearchResultsRows").append(card.$el);
-        }
+    createCardView: function(model){
+        return new SmallProjectCardView({model: model});
+    },
+    
+    createModel: function(){
+        return new Project({id: this.model.get('results')[i]});
     },
     
     render: function(){
@@ -278,28 +282,29 @@ ProjectResultsView = ResultsView.extend({
     }
 });
 
-WikiResultsView = ResultsView.extend({
+ProductResultsView = ResultsView.extend({
+    maxResults: 5,
+    
+    createCardView: function(model){
+        return new SmallProductCardView({model: model});
+    },
+    
+    createModel: function(){
+        return new Product({id: this.model.get('results')[i]});
+    },
+    
+    render: function(){
+        this.$el.html(this.template({group: "Products"}));
+    }
+});
 
-    renderResults: function(){
-        this.$el.find(".globalSearchResultsRows").empty();
-        for(i in this.getResults()){
-            var card = null;
-            if(this.cardsCache[this.model.get('results')[i]] != undefined){
-                card = this.cardsCache[this.model.get('results')[i]];
-            }
-            else{
-                card = new SmallWikiCardView({model: new WikiPage({id: this.model.get('results')[i]})});
-                this.cardsCache[card.model.get('id')] = card;
-                card.render();
-            }
-            if(i == this.model.get('selected')){
-                card.$el.find(".small_card").addClass('small_card_hover');
-            }
-            else{
-                card.$el.find(".small_card").removeClass('small_card_hover');
-            }
-            this.$el.find(".globalSearchResultsRows").append(card.$el);
-        }
+WikiResultsView = ResultsView.extend({
+    createCardView: function(model){
+        return new SmallWikiCardView({model: model});
+    },
+    
+    createModel: function(){
+        return new WikiPage({id: this.model.get('results')[i]});
     },
     
     render: function(){
