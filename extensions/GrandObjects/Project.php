@@ -274,6 +274,7 @@ class Project extends BackboneModel {
 	                   'description' => $this->getDescription(),
 	                   'status' => $this->getStatus(),
 	                   'type' => $this->getType(),
+	                   'url' => $this->getUrl(),
 	                   'deleted' => $this->isDeleted());
 	    return $array;
 	}

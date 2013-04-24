@@ -29,6 +29,7 @@ Project = Backbone.Model.extend({
         description: '',
         status: '',
         type: '',
+        url: '',
         deleted: ''
     },
 });

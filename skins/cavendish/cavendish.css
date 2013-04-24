@@ -1215,7 +1215,12 @@ input.other_option:focus {
 
 .card_photo {
     display:inline-block;
-    vertical-align:top;
+    vertical-align:middle;
+    text-align: center;
+}
+
+.small_card .card_photo {
+    width: 25px;
 }
 
 .card_description {

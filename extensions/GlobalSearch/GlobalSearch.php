@@ -21,6 +21,7 @@ class GlobalSearch extends BackbonePage {
     
     function getTemplates(){
         return array('Backbone/small_person_card',
+                     'Backbone/small_project_card',
                      'Backbone/small_wiki_card',
                      'global_search',
                      'global_search_results',
@@ -29,6 +30,7 @@ class GlobalSearch extends BackbonePage {
     
     function getViews(){
         return array('Backbone/SmallPersonCardView',
+                     'Backbone/SmallProjectCardView',
                      'Backbone/SmallWikiCardView',
                      'GlobalSearchView');
     }

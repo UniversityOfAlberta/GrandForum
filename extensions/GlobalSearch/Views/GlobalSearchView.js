@@ -17,6 +17,7 @@ GlobalSearchView = Backbone.View.extend({
     
     events: {
         "keyup #globalSearchInput": "search",
+        "keypress #globalSearchInput": "shift",
         "keydown #globalSearchInput": "stopCaretMovement",
         "submit form#globalSearchForm": "submitForm"
     },
@@ -43,6 +44,9 @@ GlobalSearchView = Backbone.View.extend({
     
     search: function(e){
         switch(e.keyCode){
+            case 37:
+            case 39:
+                break;
             case 40: // DOWN
                 this.subviews.globalSearchResults.shiftDown();
                 break;
@@ -81,6 +85,9 @@ GlobalSearchResultsView = Backbone.View.extend({
     subviewCreators : {
         "personResults" : function(){
             return new PersonResultsView({model: new GlobalSearch({group: 'people', search: ''})});
+        },
+        "projectResults" : function(){
+            return new ProjectResultsView({model: new GlobalSearch({group: 'projects', search: ''})});
         },
         "wikiResults" : function(){
             return new WikiResultsView({model: new GlobalSearch({group: 'wikipage', search: ''})});
@@ -142,11 +149,13 @@ GlobalSearchResultsView = Backbone.View.extend({
             this.searchIndex = -1;
             this.$el.css('display', 'block');
             this.subviews.personResults.model.set('search', value);
+            this.subviews.projectResults.model.set('search', value);
             this.subviews.wikiResults.model.set('search', value);
             this.shift();
             var that = this;
-            $.when(this.subviews.wikiResults.model.fetch(),
-                   this.subviews.personResults.model.fetch())
+            $.when(this.subviews.personResults.model.fetch(),
+                   this.subviews.projectResults.model.fetch(),
+                   this.subviews.wikiResults.model.fetch())
             .then(function(){
                 that.$el.trigger('resultsLoaded');
             });
@@ -209,8 +218,6 @@ ResultsView = Backbone.View.extend({
 
 PersonResultsView = ResultsView.extend({
     
-    maxResults: 5,
-    
     renderResults: function(){
         this.$el.find(".globalSearchResultsRows").empty();
         var html = '';
@@ -239,9 +246,39 @@ PersonResultsView = ResultsView.extend({
     }
 });
 
-WikiResultsView = ResultsView.extend({
+ProjectResultsView = ResultsView.extend({
+    
+    maxResults: 3,
+    
+    renderResults: function(){
+        this.$el.find(".globalSearchResultsRows").empty();
+        var html = '';
+        for(i in this.getResults()){
+            var card = null;
+            if(this.cardsCache[this.model.get('results')[i]] != undefined){
+                card = this.cardsCache[this.model.get('results')[i]];
+            }
+            else{
+                card = new SmallProjectCardView({model: new Project({id: this.model.get('results')[i]})});
+                this.cardsCache[card.model.get('id')] = card;
+                card.render();
+            }
+            if(i == this.model.get('selected')){
+                card.$el.find(".small_card").addClass('small_card_hover');
+            }
+            else{
+                card.$el.find(".small_card").removeClass('small_card_hover');
+            }
+            this.$el.find(".globalSearchResultsRows").append(card.$el);
+        }
+    },
+    
+    render: function(){
+        this.$el.html(this.template({group: "Projects"}));
+    }
+});
 
-    maxResults: 5,
+WikiResultsView = ResultsView.extend({
 
     renderResults: function(){
         this.$el.find(".globalSearchResultsRows").empty();
