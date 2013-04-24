@@ -3,7 +3,11 @@ SmallProductCardView = Backbone.View.extend({
     initialize: function(){
         this.model.bind('change', this.render, this);
         this.template = _.template($("#small_product_card_template").html());
-        this.model.fetch();
+        this.$el.css('display', 'none');
+        var that = this;
+        this.model.fetch({success: function(){
+            that.$el.css('display', 'block');
+        }});
     },
 
     render: function(){

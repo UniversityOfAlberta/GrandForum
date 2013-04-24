@@ -5,6 +5,7 @@ SmallPersonCardView = Backbone.View.extend({
         this.model.getRoles().bind('sync', this.renderRoles, this);
         this.template = _.template($("#small_person_card_template").html());
         this.model.fetch();
+        this.$el.css('display', 'none');
     },
     
     renderRoles: function(){
@@ -22,8 +23,7 @@ SmallPersonCardView = Backbone.View.extend({
         });
     },
 
-    render: function(){
-        this.$el.css('display', 'none');
+    render: function(options){
         this.$el.html(this.template(this.model.toJSON()));
         return this.$el;
     }
