@@ -1198,7 +1198,7 @@ input.other_option:focus {
 
 /* Backbone Cards */
 .small_card {
-    width: 285px;
+    width: 311px;
     padding: 3px;
     background: #ffffff;
     color: #555 !important;
@@ -1274,7 +1274,7 @@ input.other_option:focus {
     border: 1px solid #AAA;
     border-bottom: 0;
     background: #FFFFFF;
-    width: 402px;
+    width: 428px;
     z-index: 1000;
     position:relative;
     color: #555;
@@ -1300,4 +1300,5 @@ input.other_option:focus {
     text-align: left;
     vertical-align: top;
     padding:0;
+    width: 311px;
 }
