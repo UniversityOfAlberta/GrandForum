@@ -50,8 +50,8 @@ function LIKE($value){
 }
 
 function IN($values){
-    foreach($values as &$value){
-        $value = mysql_real_escape_string($value);
+    foreach($values as $key => $value){
+        $values[$key] = mysql_real_escape_string($value);
     }
     return "### IN ('".implode("','", $values)."')";
 }
