@@ -10,10 +10,12 @@ class TabUtils {
         global $wgTitle, $wgServer, $wgScriptPath, $wgOut;
         $new_actions = array();
         foreach($content_actions as $key => $action){
-            if(strstr($action['class'], 'selected') !== false){
+            if(strstr($action['class'], 'selected') !== false && !is_numeric($key)){
                 continue;
             }
-            $action['class'] = 'action';
+            if(!is_numeric($key)){
+                $action['class'] = 'action';
+            }
             $new_actions[$key] = $action;
         }
         foreach(self::$customActions as $key => $action){
