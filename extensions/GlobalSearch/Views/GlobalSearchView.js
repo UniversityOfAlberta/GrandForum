@@ -41,6 +41,11 @@ GlobalSearchView = Backbone.View.extend({
         }
         switch(e.keyCode){
             case 40: // DOWN
+                if(this.subviews.globalSearchResults.$el.css('display') == 'none' &&
+                   this.$el.find("#globalSearchInput").val() != ''){
+                    this.subviews.globalSearchResults.searchIndex = -1;
+                    this.subviews.globalSearchResults.$el.css('display', 'block');
+                }
                 this.subviews.globalSearchResults.shiftDown();
                 break;
             case 38: // UP
