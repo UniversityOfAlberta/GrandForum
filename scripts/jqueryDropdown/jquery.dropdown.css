@@ -32,6 +32,7 @@ div.actions ul {
 }
 
 li.action {
+    filter: none !important;
     background: #FFFFFF !important;
     border-width:0 !important;
     width:100% !important;
