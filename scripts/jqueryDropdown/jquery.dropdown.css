@@ -5,6 +5,7 @@ li.actions {
 
 li.actions > a {
     text-decoration:none;
+    height: 25px;
 }
 
 div.actions {
