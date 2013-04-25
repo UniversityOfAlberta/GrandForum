@@ -108,9 +108,5 @@
         }
         e.stopPropagation();
     });
-    $(document).click(function(){
-        $(divActions).delay(100).fadeOut(200);
-        $(that).imgDown();
-    });
   };
 })( jQuery );
