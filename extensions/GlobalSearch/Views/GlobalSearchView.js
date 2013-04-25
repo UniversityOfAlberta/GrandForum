@@ -17,8 +17,8 @@ GlobalSearchView = Backbone.View.extend({
     
     events: {
         "keyup #globalSearchInput": "search",
-        "keypress #globalSearchInput": "shift",
         "keydown #globalSearchInput": "stopCaretMovement",
+        "keydown #globalSearchInput": "shift",
         "submit form#globalSearchForm": "submitForm"
     },
     
@@ -42,19 +42,23 @@ GlobalSearchView = Backbone.View.extend({
         }
     },
     
-    search: function(e){
+    shift: function(e){
         switch(e.keyCode){
-            case 37:
-            case 39:
-                break;
             case 40: // DOWN
                 this.subviews.globalSearchResults.shiftDown();
                 break;
             case 38: // UP
                 this.subviews.globalSearchResults.shiftUp();
                 break;
-            case 13: // ENTER
-                this.subviews.globalSearchResults.click();
+        };
+    },
+    
+    search: function(e){
+        switch(e.keyCode){
+            case 37:
+            case 38:
+            case 39:
+            case 40:
                 break;
             default:
                 var value = this.$el.find("#globalSearchInput").val();
@@ -75,6 +79,7 @@ GlobalSearchResultsView = Backbone.View.extend({
     initialize: function(){
         this.template = _.template($("#global_search_results_template").html());
         this.searchIndex = -1;
+        this.fetchPromises
         Backbone.Subviews.add(this);
     },
     
@@ -148,18 +153,21 @@ GlobalSearchResultsView = Backbone.View.extend({
     
     search: function(value){
         if(value.length > 0){
+            for(fId in this.fetchPromises){
+                this.fetchPromises[fId].abort();
+            }
+            this.fetchPromises = Array();
             $("#globalSearchThrobber > .throbber").css('display', 'block');
             this.searchIndex = -1;
             this.$el.css('display', 'block');
-            var fetchPromises = Array();
             for(sId in this.subviews){
                 var subview = this.subviews[sId];
                 subview.model.set('search', value);
-                fetchPromises.push(subview.model.fetch());
+                this.fetchPromises.push(subview.model.fetch());
             }
             this.shift();
             var that = this;
-            $.when.apply($, fetchPromises).then(function(){
+            $.when.apply($, this.fetchPromises).then(function(){
                 that.$el.trigger('resultsLoaded');
             });
         }

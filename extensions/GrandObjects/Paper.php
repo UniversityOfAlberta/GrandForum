@@ -146,7 +146,6 @@ class Paper extends BackboneModel{
                     else{
                         $paper = new Paper($rowA);
                         self::$cache[$paper->id] = $paper;
-                        //self::$cache[$paper->title] = $paper;
                         $papers[$paper->getId()] = $paper;
                     }
                 }
@@ -229,7 +228,6 @@ class Paper extends BackboneModel{
                     $grand == 'both'){
                     $paper = new Paper($rowA);
                     $papers[$paper->getId()] = $paper;
-                    
                 }
             }
 	        self::$dataCache[$proj.$category.$grand.$startRange.$endRange.$str] = $papers;

@@ -12,7 +12,7 @@ Person = Backbone.Model.extend({
         
         this.products = new PersonProducts();
         this.products.url = this.urlRoot + '/' + this.get('id') + '/products';
-        
+        /*
         this.bind("sync", function(model, response, options){
             clearAllMessages();
             // if(options.changes.id == true){
@@ -23,7 +23,7 @@ Person = Backbone.Model.extend({
             //     // Update
             //     addSuccess("<i>" + this.get('name') + "</i> was updated successfully");
             // }
-        });
+        });*/
         
         this.bind("error", function(e, response, options){
             clearAllMessages();
