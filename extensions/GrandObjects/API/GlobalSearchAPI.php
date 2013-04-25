@@ -12,9 +12,9 @@ class GlobalSearchAPI extends RESTAPI {
         $ids = array();
         $origSearch = $search;
         $search = "*".str_replace(" ", "*", $search)."*";
+        $searchNames = array_filter(explode("*", str_replace(".", "*", strtolower($search))));
         switch($group){
             case 'people':
-                $searchNames = array_filter(explode("*", str_replace(".", "*", strtolower($search))));
                 $data = array();
                 $people = Person::getAllPeople();
                 foreach($people as $person){
@@ -86,7 +86,6 @@ class GlobalSearchAPI extends RESTAPI {
 	            }
                 break;
             case 'projects':
-                $searchNames = array_filter(explode("*", str_replace(".", "*", strtolower($search))));
                 $data = array();
                 $projects = Project::getAllProjects();
                 foreach($projects as $project){
@@ -123,13 +122,14 @@ class GlobalSearchAPI extends RESTAPI {
 	            }
                 break;
             case 'products':
-                $searchNames = array_filter(explode("*", str_replace(".", "*", strtolower($search))));
                 $data = array();
-                $products = Product::getAllPapers('all', 'all', 'both');
+                $products = DBFunctions::select(array('grand_products'),
+                                                array('title', 'category', 'type', 'id'),
+                                                array('deleted' => '0'));
                 foreach($products as $product){
-                    $pTitle = strtolower($product->getTitle());
-                    $pCategory = strtolower($product->getCategory());
-                    $pType = strtolower($product->getCategory());
+                    $pTitle = strtolower($product['title']);
+                    $pCategory = strtolower($product['category']);
+                    $pType = strtolower($product['type']);
                     $names = array_merge(explode(" ", $pTitle),
                                          explode(" ", $pCategory),
                                          explode(" ", $pType));
@@ -142,17 +142,19 @@ class GlobalSearchAPI extends RESTAPI {
                         }
                     }
                     if($found){
-                        $data[] = array('product_id' => $product->getId(),
-                                        'product_title' => $product->getTitle());
+                        $data[] = array('product_id' => $product['id'],
+                                        'product_title' => $product['title']);
                     }
                 }
+                $dataCollection = new Collection($data);
                 $results = array();
                 $myProducts = new Collection($me->getPapers('all', false, 'both'));
-                $productIds = array_flip($myProducts->pluck('id'));
-                foreach($data as $row){
-                    $product = Product::newFromId($row['product_id']);
-                    similar_text(strtolower($row['product_title']), strtolower($origSearch), $percent);
-                    if(isset($productIds[$product->getId()])){
+                $productIds = $myProducts->pluck('id');
+                $flippedProductIds = array_flip($myProducts->pluck('id'));
+                $products = Product::getByIds($dataCollection->pluck('product_id'));
+                foreach($products as $product){
+                    similar_text(strtolower($product->getTitle()), strtolower($origSearch), $percent);
+                    if(isset($flippedProductIds[$product->getId()])){
                         $percent += 50;
                     }
                     foreach($product->getProjects() as $project){
@@ -160,7 +162,7 @@ class GlobalSearchAPI extends RESTAPI {
                             $percent += 15;
                         }
                     }
-                    $results[$row['product_id']] = $percent;
+                    $results[$product->getId()] = $percent;
                 }
                 asort($results);
                 $results = array_reverse($results, true);

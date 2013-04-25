@@ -49,6 +49,13 @@ function LIKE($value){
     return "### LIKE {$value}";
 }
 
+function IN($values){
+    foreach($values as &$value){
+        $value = mysql_real_escape_string($value);
+    }
+    return "### IN ('".implode("','", $values)."')";
+}
+
 function WHERE_OR($value){
     return "### OR ".$value;
 }

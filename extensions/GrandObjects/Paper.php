@@ -90,6 +90,29 @@ class Paper extends BackboneModel{
 		return $subtypes;
 	}
 	
+	/**
+	 * Returns all the Products with the given ids
+	 * @param array $ids The array of ids
+	 * @return array The array of Products
+	 */
+	static function getByIds($ids){
+	    $data = DBFunctions::select(array('grand_products'),
+	                                array('*'),
+	                                array('id' => IN($ids)));
+	    $papers = array();
+	    foreach($data as $row){
+	        if(isset(self::$cache[$row['id']])){
+                $papers[] = self::$cache[$row['id']];
+            }
+            else{
+                $paper = new Paper(array($row));
+                self::$cache[$paper->getId()] = $paper;
+                $papers[$paper->getId()] = $paper;
+            }
+	    }
+	    return $papers;
+	}
+	
 	// Returns all of the papers in the database
 	// from the given project
 	// $project: specifies which project the returned papers should be associated with

@@ -11,7 +11,7 @@ class Collection {
     /**
      * @param array $objects The array of objects to populate this Collection
      */
-    function Collection($objects){
+    function Collection(&$objects){
         $this->objects = $objects;
     }
 
@@ -23,7 +23,12 @@ class Collection {
     function pluck($attribute){
         $array = array();
         foreach($this->objects as $object){
-            eval('$array[] = $object->'.$attribute.';');
+            if(is_array($object)){
+                $array[] = $object[$attribute];
+            }
+            else{
+                eval('$array[] = $object->'.$attribute.';');
+            }
         }
         return $array;
     }
