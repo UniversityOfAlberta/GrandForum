@@ -75,7 +75,7 @@ GlobalSearchResultsView = Backbone.View.extend({
     initialize: function(){
         this.template = _.template($("#global_search_results_template").html());
         this.searchIndex = -1;
-        this.fetchPromises
+        this.fetchPromises = Array();
         Backbone.Subviews.add(this);
     },
     
