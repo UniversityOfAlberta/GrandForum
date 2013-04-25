@@ -226,10 +226,10 @@ class TabUtils {
             $new_actions["Awards"] = array('class' => 'product',
                                            'text' => "Awards",
                                            'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Award");
+            $new_actions["Multimedia"] = array('class' => 'product',
+                                           'text' => "Multimedia",
+                                           'href' => "$wgServer$wgScriptPath/index.php/GRAND:Multimedia_Stories");
         }
-        $new_actions["Materials"] = array('class' => false,
-                                       'text' => "Multimedia",
-                                       'href' => "$wgServer$wgScriptPath/index.php/GRAND:Multimedia_Stories");
         $new_actions['themes'] = array('class' => false,
                                    'text' => "Themes",
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:Themes");
@@ -283,12 +283,9 @@ class TabUtils {
                                           $wgTitle->getNsText() == "Presentation" ||
                                           $wgTitle->getNsText() == "Activity" ||
                                           $wgTitle->getNsText() == "Press" ||
-                                          $wgTitle->getNsText() == "Award")){
+                                          $wgTitle->getNsText() == "Award" ||
+                                          $wgTitle->getNsText() == "Multimedia")){
             $new_actions["Publications"]['class'] = 'product selected';
-        }
-        else if(($wgTitle->getText() == "Multimedia Stories" && $wgTitle->getNSText() == "GRAND") ||
-                 $wgTitle->getNSText() == "Multimedia_Story" || $wgTitle->getNSText() == "Form"){
-            $new_actions['Materials']['class'] = 'selected';
         }
         else if($wgTitle->getText() == "Theme1 - New Media Challenges and Opportunities" ||
                 $wgTitle->getText() == "Theme2 - Games and Interactive Simulation" ||
