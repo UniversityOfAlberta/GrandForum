@@ -1210,6 +1210,7 @@ input.other_option:focus {
 }
 
 /* Backbone Cards */
+
 .small_card {
     width: 311px;
     padding: 3px;
@@ -1244,6 +1245,10 @@ input.other_option:focus {
 
 .card_description * {
     text-decoration: none !important;
+}
+
+.card_description:active, .card_description:active * {
+    color: #FFFFFF;
 }
 
 /* Global Search */
