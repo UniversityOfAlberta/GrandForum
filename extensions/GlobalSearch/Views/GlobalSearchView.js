@@ -112,7 +112,7 @@ GlobalSearchResultsView = Backbone.View.extend({
         else{
             this.$("#globalSearchResults").css('border-top-width', '1px');
         }
-        $("#globalSearchThrobber > img").css('display', 'none');
+        $("#globalSearchThrobber > .throbber").css('display', 'none');
     },
     
     click: function(){
@@ -148,7 +148,7 @@ GlobalSearchResultsView = Backbone.View.extend({
     
     search: function(value){
         if(value.length > 0){
-            $("#globalSearchThrobber > img").css('display', 'block');
+            $("#globalSearchThrobber > .throbber").css('display', 'block');
             this.searchIndex = -1;
             this.$el.css('display', 'block');
             var fetchPromises = Array();

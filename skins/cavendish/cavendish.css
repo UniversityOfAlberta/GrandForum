@@ -1307,3 +1307,27 @@ input.other_option:focus {
     padding:0;
     width: 311px;
 }
+
+.projectIcon, .productIcon, .wikiIcon {
+    width: 15px;
+    height:15px;
+    display: inline-block;
+}
+
+.projectIcon {
+    background: url('../project.gif');
+}
+
+.productIcon {
+    background: url('../product.gif');
+}
+
+.wikiIcon {
+    background: url('../wiki.gif');
+}
+
+.throbber {
+    width: 20px;
+    height:20px;
+    background: url('../Throbber.gif');
+}
