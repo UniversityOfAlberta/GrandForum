@@ -17,21 +17,8 @@ GlobalSearchView = Backbone.View.extend({
     
     events: {
         "keyup #globalSearchInput": "search",
-        "keydown #globalSearchInput": "stopCaretMovement",
         "keydown #globalSearchInput": "shift",
         "submit form#globalSearchForm": "submitForm"
-    },
-    
-    stopCaretMovement: function(e){
-        // Prevent the caret position from changing when pressing the up/down arrows
-        if (e.keyCode == 38 || e.keyCode == 40){
-            var pos = this.$("#globalSearchInput").selectionStart;
-            this.$("#globalSearchInput").value = (e.keyCode == 38?1:-1)+parseInt(this.value,10);        
-            this.$("#globalSearchInput").selectionStart = pos; this.$("#globalSearchInput").selectionEnd = pos;
-
-            ignoreKey = true; setTimeout(function(){ignoreKey=false},1);
-            e.preventDefault();
-        }
     },
     
     submitForm: function(e){
@@ -43,6 +30,15 @@ GlobalSearchView = Backbone.View.extend({
     },
     
     shift: function(e){
+        // Prevent the caret position from changing when pressing the up/down arrows
+        if (e.keyCode == 38 || e.keyCode == 40){
+            var pos = this.$("#globalSearchInput").selectionStart;
+            this.$("#globalSearchInput").value = (e.keyCode == 38?1:-1)+parseInt(this.value,10);        
+            this.$("#globalSearchInput").selectionStart = pos; this.$("#globalSearchInput").selectionEnd = pos;
+
+            ignoreKey = true; setTimeout(function(){ignoreKey=false},1);
+            e.preventDefault();
+        }
         switch(e.keyCode){
             case 40: // DOWN
                 this.subviews.globalSearchResults.shiftDown();
@@ -291,7 +287,7 @@ ProjectResultsView = ResultsView.extend({
 });
 
 ProductResultsView = ResultsView.extend({
-    maxResults: 5,
+    maxResults: 4,
     
     createCardView: function(model){
         return new SmallProductCardView({model: model});
@@ -307,6 +303,8 @@ ProductResultsView = ResultsView.extend({
 });
 
 WikiResultsView = ResultsView.extend({
+    maxResults: 4,
+
     createCardView: function(model){
         return new SmallWikiCardView({model: model});
     },
