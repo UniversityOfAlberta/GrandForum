@@ -19,7 +19,6 @@ class GlobalSearchAPI extends RESTAPI {
                 $people = DBFunctions::select(array('mw_user'),
                                                 array('user_name', 'user_real_name', 'user_id'),
                                                 array('deleted' => '0'));
-                //$people = Person::getAllPeople();
                 foreach($people as $pRow){
                     $person = new Person(array());
                     $person->name = $pRow['user_name'];

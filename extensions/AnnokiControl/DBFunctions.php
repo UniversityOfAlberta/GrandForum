@@ -1,51 +1,53 @@
 <?php
 
-function NEQ($value){
+function COL($value){
+    return "COL### $value";
+}
+
+function queryNumeric($value){
     if(!is_numeric($value)){
-        $value = "'".mysql_real_escape_string($value)."'";
+        if(strstr($value, "COL### ") !== false){
+            $value = str_replace("COL### ", "", $value);
+        }
+        else{
+            $value = "'".mysql_real_escape_string($value)."'";
+        }
     }
+    return $value;
+}
+
+function NEQ($value){
+    $value = queryNumeric($value);
     return "### != {$value}";
 }
 
 function EQ($value){
-    if(!is_numeric($value)){
-        $value = "'".mysql_real_escape_string($value)."'";
-    }
+    $value = queryNumeric($value);
     return "### = {$value}";
 }
 
 function GT($value){
-    if(!is_numeric($value)){
-        $value = "'".mysql_real_escape_string($value)."'";
-    }
+    $value = queryNumeric($value);
     return "### > {$value}";
 }
 
 function LT($value){
-    if(!is_numeric($value)){
-        $value = "'".mysql_real_escape_string($value)."'";
-    }
+    $value = queryNumeric($value);
     return "### < {$value}";
 }
 
 function GTEQ($value){
-    if(!is_numeric($value)){
-        $value = "'".mysql_real_escape_string($value)."'";
-    }
+    $value = queryNumeric($value);
     return "### >= {$value}";
 }
 
 function LTEQ($value){
-    if(!is_numeric($value)){
-        $value = "'".mysql_real_escape_string($value)."'";
-    }
+    $value = queryNumeric($value);
     return "### <= {$value}";
 }
 
 function LIKE($value){
-    if(!is_numeric($value)){
-        $value = "'".mysql_real_escape_string($value)."'";
-    }
+    $value = queryNumeric($value);
     return "### LIKE {$value}";
 }
 
@@ -198,11 +200,11 @@ class DBFunctions {
             $key = mysql_real_escape_string($key);
             if(strstr($value, "### ") !== false){
                 $value = str_replace("### ", "", $value);
-                $whereSQL[] = "`{$key}` {$value} ";
+                $whereSQL[] = "{$key} {$value} ";
             }
             else{
                 $value = mysql_real_escape_string($value);
-                $whereSQL[] = "`{$key}` = '{$value}' ";
+                $whereSQL[] = "{$key} = '{$value}' ";
             }
         }
         foreach($order as $key => $value){
@@ -220,10 +222,10 @@ class DBFunctions {
             foreach($whereSQL as $key => $where){
                 if($key > 0){
                     if(strstr($where, "### OR ") !== false){
-                        $where = str_replace("`### OR ", " OR `", $where);
+                        $where = str_replace("### OR ", " OR ", $where);
                     }
                     else if(strstr($where, "### AND ") !== false){
-                        $where = str_replace("`### AND ", " AND `", $where);
+                        $where = str_replace("### AND ", " AND ", $where);
                     }
                     else{
                         $where = " AND $where";
@@ -250,13 +252,13 @@ class DBFunctions {
 	 */
 	static function insert($table, $values=array(), $rollback=false){
 	    $table = mysql_real_escape_string($table);
-	    $sql = "INSERT INTO `{$table}` (";
+	    $sql = "INSERT INTO {$table} (";
 	    $cols = array();
 	    $vals = array();
         foreach($values as $key => $value){
             $key = mysql_real_escape_string($key);
             $value = mysql_real_escape_string($value);
-            $cols[] = "`{$key}`";
+            $cols[] = "{$key}";
             $values[] = "'{$value}'";
         }
         $sql .= implode(",", $cols).") VALUES(".implode(",", $vals).")";
@@ -274,12 +276,12 @@ class DBFunctions {
 	 */
     static function update($table, $values=array(), $where=array(), $rollback=false){
         $table = mysql_real_escape_string($table);
-        $sql = "UPDATE `{$table}`\nSET ";
+        $sql = "UPDATE {$table}\nSET ";
         $sets = array();
         foreach($values as $key => $value){
             $key = mysql_real_escape_string($key);
             $value = mysql_real_escape_string($value);
-            $sets[] = "`{$key}` = '{$value}' ";
+            $sets[] = "{$key} = '{$value}' ";
         }
         $sql .= implode(",\n", $sets);
         $sql .= "WHERE ";
@@ -288,11 +290,11 @@ class DBFunctions {
             $key = mysql_real_escape_string($key);
             if(strstr($value, "### ") !== false){
                 $value = str_replace("### ", "", $value);
-                $wheres[] = "`{$key}` {$value} ";
+                $wheres[] = "{$key} {$value} ";
             }
             else{
                 $value = mysql_real_escape_string($value);
-                $wheres[] = "`{$key}` = '{$value}' ";
+                $wheres[] = "{$key} = '{$value}' ";
             }
         }
         $sql .= implode("\n", $wheres);

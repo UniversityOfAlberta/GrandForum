@@ -86,7 +86,6 @@ class APIRequest{
 					}
 					if($api != null){
 					    $api->processRequest($params);
-					    
 				    }
 				    else {
 					    echo "There is no such API action\n";
