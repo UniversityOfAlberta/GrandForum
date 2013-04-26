@@ -97,7 +97,7 @@ EOF;
                 $hqp =  $r->getUser2();
                 $ethics = $hqp->getEthics();
                 if($ethics['completed_tutorial']){
-                    //$ethical_hqp++;
+                    $ethical_hqp++;
                 }
                 $total_hqp++;
             }
