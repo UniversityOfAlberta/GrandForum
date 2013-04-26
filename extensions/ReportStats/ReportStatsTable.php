@@ -120,9 +120,9 @@ class ReportStatsTable extends SpecialPage {
     
     static function overallTable($overall){
     	global $wgOut;
-    	$wgOut->addHTML("<table class='indexTable' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+    	$wgOut->addHTML("<table class='indexTable' frame='box' rules='all'>
 	                        <thead>
-	                            <tr bgcolor='#F2F2F2'>
+	                            <tr>
 	                                <th>Type</th>
 	                                <th>All</th>
 	                                <th>Started Report</th>
@@ -147,9 +147,9 @@ class ReportStatsTable extends SpecialPage {
         global $wgOut, $wgServer, $wgScriptPath;
         $overall = array('total'=>0, 'report'=>0, 'budget'=>'N/A', 'pdf'=>0, 'submitted'=>0);
 
-        $wgOut->addHTML("<table class='indexTable' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+        $wgOut->addHTML("<table class='indexTable' frame='box' rules='all'>
 	                        <thead>
-	                            <tr bgcolor='#F2F2F2'>
+	                            <tr>
 	                                <th>Name</th>
 	                                <th>Type</th>
 	                                <th>University</th>

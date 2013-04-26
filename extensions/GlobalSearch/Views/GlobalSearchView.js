@@ -51,6 +51,9 @@ GlobalSearchView = Backbone.View.extend({
             case 38: // UP
                 this.subviews.globalSearchResults.shiftUp();
                 break;
+            case 13: // ENTER
+                this.subviews.globalSearchResults.click();
+                break;
         };
     },
     
@@ -60,6 +63,7 @@ GlobalSearchView = Backbone.View.extend({
             case 38:
             case 39:
             case 40:
+            case 13:
                 break;
             default:
                 var value = this.$el.find("#globalSearchInput").val();

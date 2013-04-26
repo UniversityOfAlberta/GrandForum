@@ -87,6 +87,7 @@ function appendCSS(text) {
 }
 
 // special stylesheet links
+/*
 if (typeof stylepath != 'undefined' && typeof skin != 'undefined') {
 	if (is_opera_preseven) {
 		importStylesheetURI(stylepath+'/'+skin+'/Opera6Fixes.css');
@@ -100,6 +101,7 @@ if (typeof stylepath != 'undefined' && typeof skin != 'undefined') {
 		importStylesheetURI(stylepath+'/'+skin+'/FF2Fixes.css');
 	}
 }
+*/
 
 if (wgBreakFrames) {
 	// Un-trap us from framesets

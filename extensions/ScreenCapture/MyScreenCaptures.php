@@ -109,8 +109,8 @@ EOF
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
 	    $recordings = $me->getRecordings();
-	    $wgOut->addHTML("<table class='indexTable' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
-<thead><tr bgcolor='#F2F2F2'><th>Date</th><th>Graph Editor</th><th># Screenshots</th></tr></thead><tbody>");
+	    $wgOut->addHTML("<table class='indexTable' frame='box' rules='all'>
+<thead><tr><th>Date</th><th>Graph Editor</th><th># Screenshots</th></tr></thead><tbody>");
 	    foreach($recordings as $recording){
 	        $nScreens = 0;
 	        foreach($recording->events as $evt){

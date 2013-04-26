@@ -47,7 +47,12 @@ class MailList{
 			         $me->isRoleAtLeast(STAFF)) || 
 			        (array_search($project_name, MailingList::getLocationBasedLists()) !== false && 
 			         MailingList::getListByUniversity($university['university']) == $project_name))){
-				    $wgOut->addHTML("<b>Mail List Address:</b> <a href='mailto:{$data[0]['mailListName']}@forum.grand-nce.ca'>{$data[0]['mailListName']}@forum.grand-nce.ca</a>");
+			        if(count($data) > 0){
+				        $wgOut->addHTML("<b>Mail List Address:</b> <a href='mailto:{$data[0]['mailListName']}@forum.grand-nce.ca'>{$data[0]['mailListName']}@forum.grand-nce.ca</a>");
+				    }
+				    else{
+				        $wgOut->addHTML("This Mailing list has not been set up yet");
+				    }
 			    }
 			    else{
 			        $wgOut->setPageTitle("Permission error");
@@ -67,8 +72,8 @@ class MailList{
 				
 			    $data = DBFunctions::execSQL($sql);	
 			    if(DBFunctions::getNRows() > 0){
-				    $wgOut->addHTML("<br /><table id='mailingListMessages' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
-						    <thead><tr bgcolor='#F2F2F2'>
+				    $wgOut->addHTML("<br /><table id='mailingListMessages' frame='box' rules='all'>
+						    <thead><tr>
 							    <th style='white-space:nowrap;'>First Message</th><th style='white-space:nowrap;'>Last Message</th><th style='white-space:nowrap;'>Subject</th><th style='white-space:nowrap;'>People</th>
 						    </tr></thead>
 						    <tbody>");
