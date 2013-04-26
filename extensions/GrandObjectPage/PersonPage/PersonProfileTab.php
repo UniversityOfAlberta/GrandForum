@@ -74,13 +74,13 @@ class PersonProfileTab extends AbstractEditableTab {
         $ethics_str = "<h3>Ethics: Have not completed the TCPS2 tutorial.</h3>";
         if($completed_tutorial == "Yes"){
             $ethics_str = "<table><tr>
-            <td><img style='vertical-align:bottom;' width='100px' src='/skins/cavendish/ethical_button.jpg' /></td>
+            <td><img style='vertical-align:bottom;' width='100px' src='/skins/cavendish/ethical_btns/ethical_button.jpg' /></td>
             <td>&nbsp;<h3>I have completed the TCPS2 tutorial on {$date}.</h3></td>
             <tr></table>";
         }
         else{
             $ethics_str = "<table><tr>
-            <td><img style='vertical-align:bottom;' width='100px' src='/skins/cavendish/ethical_button_not.jpg' /></td>
+            <td><img style='vertical-align:bottom;' width='100px' src='/skins/cavendish/ethical_btns/ethical_button_not.jpg' /></td>
             <td>&nbsp;<h3>I have not completed the TCPS2 tutorial.</h3></td>
             <tr></table>";
         }
@@ -97,17 +97,47 @@ EOF;
                 $hqp =  $r->getUser2();
                 $ethics = $hqp->getEthics();
                 if($ethics['completed_tutorial']){
-                    $ethical_hqp++;
+                    //$ethical_hqp++;
                 }
                 $total_hqp++;
             }
             $perc = $ethical_hqp/$total_hqp;
-            $perc = floor($perc / 0.25)*0.25;
-            $perc = $perc*100;
+            //$perc = floor($perc / 0.25)*0.25;
+
+            $perc = round($perc*100,1);
+            if($ethical_hqp == 0){
+                $perc = "";
+                $button = "ethical_button_not.jpg";
+            }
+            else{
+                $perc .= "%";
+                $button = "ethical_button_ni.jpg";
+            }
+
             $this->html .=<<<EOF
+            <style>
+            span.supervisor_lbl{
+                color: #8C529D;
+                position: absolute;
+                bottom: 0px;
+                left: 7px;
+                display: block;
+                font-size: 15px;
+                font-weight: bold;
+            }
+            span.percent_lbl{
+                color: #8C529D;
+                position: absolute;
+                top: 3px;
+                right: 25px;
+                display: block;
+                font-size: 12px;
+                font-weight: bold;
+            }
+            </style>
             <table><tr>
-            <td><img style='vertical-align:bottom;' width='100px' src='/skins/cavendish/ethical_btns/ethical_{$perc}_btn.jpg' /></td>
-            <td><h3>{$ethical_hqp} of my {$total_hqp} students have completed the TCPS2 Tutorial.</h3></td>
+            <td style='position:relative; padding:18px 0;'><img style='vertical-align:bottom;' width='100px' src='/grand_forum/skins/cavendish/ethical_btns/{$button}' /><span class='supervisor_lbl'>Supervisor</span><span class='percent_lbl'>{$perc}</span></td>
+            <td style='padding-left:15px;'><h3>{$ethical_hqp} of my {$total_hqp} students have completed the TCPS2 Tutorial.</h3></td>
             <tr></table>
 EOF;
         }
