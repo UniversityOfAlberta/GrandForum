@@ -347,6 +347,29 @@ class Person extends BackboneModel {
 	    return $universities;
 	}
 	
+	/**
+	 * Returns all the People with the given ids
+	 * @param array $ids The array of ids
+	 * @return array The array of People
+	 */
+	static function getByIds($ids){
+	    $data = DBFunctions::select(array('mw_user'),
+	                                array('*'),
+	                                array('user_id' => IN($ids)));
+	    $people = array();
+	    foreach($data as $row){
+	        if(isset(self::$cache[$row['user_id']])){
+                $people[] = self::$cache[$row['user_id']];
+            }
+            else{
+                $person = new Person(array($row));
+                self::$cache[$person->getId()] = $person;
+                $people[$person->getId()] = $person;
+            }
+	    }
+	    return $people;
+	}
+	
 	static function getAllStaff(){
 	    $data = DBFunctions::select(array('mw_user'),
 	                                array('user_id', 'user_name'),
@@ -1113,10 +1136,10 @@ class Person extends BackboneModel {
 	    if($history !== false && $this->id != null){
 			$this->roles = array();
 			if($history === true){
-			    $sql = "SELECT *
-                        FROM grand_roles
-                        WHERE user = '{$this->id}'
-                        ORDER BY end_date DESC";
+			    $data = DBFunctions::select(array('grand_roles'),
+			                                array('*'),
+			                                array('user' => $this->id),
+			                                array('end_date' => 'DESC'));
             }
             else{
                 $sql = "SELECT *
@@ -1124,11 +1147,11 @@ class Person extends BackboneModel {
                         WHERE user = '{$this->id}'
                         AND start_date <= '{$history}'
                         AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
+                DBFunctions::execSQL($sql);
             }
-			$data = DBFunctions::execSQL($sql);
 			$roles = array();
 			foreach($data as $row){
-				$roles[] = new Role(array(0 => $row));
+				$roles[] = new Role(array($row));
 			}
 			return $roles;
 		}

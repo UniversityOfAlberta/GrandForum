@@ -16,10 +16,9 @@ class Role extends BackboneModel {
 	    if(isset(self::$cache[$id])){
 	        return self::$cache[$id];
 	    }
-		$sql = "SELECT *
-			FROM grand_roles
-			WHERE id = '$id'";
-		$data = DBFunctions::execSQL($sql);
+	    $data = DBFunctions::select(array('grand_roles'),
+	                                array('*'),
+	                                array('id' => $id));
 		$role = new Role($data);
         self::$cache[$role->id] = &$role;
 		return $role;

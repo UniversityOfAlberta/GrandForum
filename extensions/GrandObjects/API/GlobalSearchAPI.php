@@ -16,8 +16,14 @@ class GlobalSearchAPI extends RESTAPI {
         switch($group){
             case 'people':
                 $data = array();
-                $people = Person::getAllPeople();
-                foreach($people as $person){
+                $people = DBFunctions::select(array('mw_user'),
+                                                array('user_name', 'user_real_name', 'user_id'),
+                                                array('deleted' => '0'));
+                //$people = Person::getAllPeople();
+                foreach($people as $pRow){
+                    $person = new Person(array());
+                    $person->name = $pRow['user_name'];
+                    $person->realname = $pRow['user_real_name'];
                     $realName = $person->getNameForForms();
                     $names = array_merge(explode(".", str_replace(" ", "", strtolower($realName))), 
                                          explode(" ", str_replace(".", "", strtolower($realName))));
@@ -30,18 +36,19 @@ class GlobalSearchAPI extends RESTAPI {
                         }
                     }
                     if($found){
-                        $data[] = array('user_id' => $person->getId(),
+                        $data[] = array('user_id' => $pRow['user_id'],
                                         'user_name' => $person->getName());
                     }
                 }
                 $results = array();
                 $myRelations = $me->getRelations();
                 $sups = $me->getSupervisors();
-                foreach($data as $row){
-                    $person = Person::newFromId($row['user_id']);
+                $dataCollection = new Collection($data);
+                $people = Person::getByIds($dataCollection->pluck('user_id'));
+                foreach($people as $person){
                     $continue = false;
                     foreach($person->getRoles() as $role){
-                        if($role->getRole() == MANAGER){
+                        if($role->getRole() == MANAGER && !$me->isRole(MANAGER)){
                             $continue = true;
                         }
                         if(!$me->isLoggedIn() && $role->getRole() == HQP){
@@ -49,7 +56,7 @@ class GlobalSearchAPI extends RESTAPI {
                         }
                     }
                     if($continue) continue;
-                    similar_text(strtolower(str_replace(".", " ", $row['user_name'])), strtolower($origSearch), $percent);
+                    similar_text(strtolower(str_replace(".", " ", $person->getName())), strtolower($origSearch), $percent);
                     foreach($person->getProjects() as $project){
                         if($me->isMemberOf($project)){
                             $percent += 15;
@@ -77,7 +84,7 @@ class GlobalSearchAPI extends RESTAPI {
                             }
                         }
                     }
-                    $results[$row['user_id']] = $percent;
+                    $results[$person->getId()] = $percent;
                 }
                 asort($results);
                 $results = array_reverse($results, true);
