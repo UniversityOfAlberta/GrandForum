@@ -159,7 +159,12 @@ GlobalSearchResultsView = Backbone.View.extend({
     search: function(value){
         if(value.length > 0){
             for(fId in this.fetchPromises){
-                this.fetchPromises[fId].abort();
+                try{
+                    this.fetchPromises[fId].abort();
+                }
+                catch(e){
+                
+                }
             }
             this.fetchPromises = Array();
             $("#globalSearchThrobber > .throbber").css('display', 'block');
@@ -210,7 +215,7 @@ ResultsView = Backbone.View.extend({
         return undefined;
     },
     
-    createModel: function(){
+    createModel: function(obj){
         console.error("Must implement 'createModel'");
         return undefined;
     },
@@ -244,23 +249,26 @@ ResultsView = Backbone.View.extend({
     renderResults: function(){
         this.$el.find(".globalSearchResultsRows").empty();
         var html = '';
+        var results = this.getResults();
         for(i in this.getResults()){
             var card = null;
-            if(this.cardsCache[this.model.get('results')[i]] != undefined){
-                card = this.cardsCache[this.model.get('results')[i]];
+            if(!_.isFunction(this.model.get('results')[i])){ // This check is needed for IE8 for some reason
+                if(this.cardsCache[this.model.get('results')[i]] != undefined){
+                    card = this.cardsCache[this.model.get('results')[i]];
+                }
+                else{
+                    card = this.createCardView(this.createModel(this.model.get('results')[i]));
+                    this.cardsCache[card.model.get('id')] = card;
+                    card.render();
+                }
+                if(i == this.model.get('selected')){
+                    card.$el.find(".small_card").addClass('small_card_hover');
+                }
+                else{
+                    card.$el.find(".small_card").removeClass('small_card_hover');
+                }
+                this.$el.find(".globalSearchResultsRows").append(card.$el);
             }
-            else{
-                card = this.createCardView(this.createModel());
-                this.cardsCache[card.model.get('id')] = card;
-                card.render();
-            }
-            if(i == this.model.get('selected')){
-                card.$el.find(".small_card").addClass('small_card_hover');
-            }
-            else{
-                card.$el.find(".small_card").removeClass('small_card_hover');
-            }
-            this.$el.find(".globalSearchResultsRows").append(card.$el);
         }
     }
 });
@@ -270,8 +278,8 @@ PersonResultsView = ResultsView.extend({
         return new SmallPersonCardView({model: model});
     },
     
-    createModel: function(){
-        return new Person({id: this.model.get('results')[i]});
+    createModel: function(obj){
+        return new Person({id: obj});
     },
     
     render: function(){
@@ -286,8 +294,8 @@ ProjectResultsView = ResultsView.extend({
         return new SmallProjectCardView({model: model});
     },
     
-    createModel: function(){
-        return new Project({id: this.model.get('results')[i]});
+    createModel: function(obj){
+        return new Project({id: obj});
     },
     
     render: function(){
@@ -302,8 +310,8 @@ ProductResultsView = ResultsView.extend({
         return new SmallProductCardView({model: model});
     },
     
-    createModel: function(){
-        return new Product({id: this.model.get('results')[i]});
+    createModel: function(obj){
+        return new Product({id: obj});
     },
     
     render: function(){
@@ -318,8 +326,8 @@ WikiResultsView = ResultsView.extend({
         return new SmallWikiCardView({model: model});
     },
     
-    createModel: function(){
-        return new WikiPage({id: this.model.get('results')[i]});
+    createModel: function(obj){
+        return new WikiPage({id: obj});
     },
     
     render: function(){
