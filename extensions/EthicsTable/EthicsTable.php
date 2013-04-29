@@ -107,8 +107,8 @@ EOF;
     		$row =<<<EOF
     			<tr>
     			<td>{$uni}</td>
-    			<td>{$percentage}</td>
-    			<td>{$ethical_num} out of {$total_num} have completed the TCPS2 tutorial</td>
+    			<td align='right'>{$percentage}</td>
+    			<td>{$ethical_num} out of {$total_num}</td>
     			</tr>
 EOF;
 
