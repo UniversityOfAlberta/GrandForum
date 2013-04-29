@@ -3,7 +3,7 @@
 class GlobalSearchAPI extends RESTAPI {
     
     function doGET(){
-        global $wgServer, $wgScriptPath;
+        global $wgServer, $wgScriptPath, $wgUser;
         $me = Person::newFromWgUser();
         $search = $this->getParam('search');
         $group = $this->getParam('group');
@@ -181,6 +181,15 @@ class GlobalSearchAPI extends RESTAPI {
                 if(isset($results->query)){
                     foreach($results->query->pages as $page){
                         $ids[] = $page->pageid;
+                    }
+                }
+                break;
+            case 'specialpage':
+                global $wgSpecialPages;
+                foreach($wgSpecialPages as $specialPage){
+                    $special = new $specialPage();
+                    if($special->userCanExecute($wgUser)){
+                        $ids[] = '';
                     }
                 }
                 break;

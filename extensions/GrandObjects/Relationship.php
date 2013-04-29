@@ -70,13 +70,16 @@ class Relationship{
 	// Returns an array of Project objects for this Relationship
 	function getProjects(){
 	    if($this->projectsWaiting){
-	        if($this->projects != ""){
-	            $projects = unserialize($this->projects);
+	        $projects = $this->projects;
+	        $this->projects = array();
+	        if($projects != ""){
+	            $projects = unserialize($projects);
 			    foreach($projects as $project){
 			        $proj = Project::newFromId($project);
 	                $this->projects[] = $proj;
 			    }
 			}
+			$this->projectsWaiting = false;
 	    }
 	    return $this->projects;
 	}
