@@ -101,10 +101,12 @@ EOF;
                 }
                 $total_hqp++;
             }
-            $perc = $ethical_hqp/$total_hqp;
+            $perc = 0;
+            if($total_hqp >0 ){
+                $perc = $ethical_hqp/$total_hqp;
             //$perc = floor($perc / 0.25)*0.25;
-
-            $perc = round($perc*100,1);
+            }
+            $perc = round($perc*100);
             if($ethical_hqp == 0){
                 $perc = "";
                 $button = "ethical_button_not.jpg";
