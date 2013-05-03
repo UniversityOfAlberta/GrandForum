@@ -78,8 +78,6 @@
     
     $('li.actions', $(this)).click(function(e){
         unHoverTimeout=null;
-        $("div.actions").not(divActions).fadeOut(200); // Remove all other dropdowns
-        $("ul.dropdown").not(that).imgDown();
         
         var tabWidth = $(this).width() + 
                        parseInt($(this).css('padding-left')) + 

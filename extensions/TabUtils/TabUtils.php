@@ -23,7 +23,9 @@ class TabUtils {
         }
         $wgOut->addHTML("<script type='text/javascript'>
             $(document).ready(function(){
+                $('li.people').wrapAll('<ul class=\'people\'>');
                 $('li.product').wrapAll('<ul class=\'products\'>');
+                $('ul.people').wrapAll('<li class=\'invisible\'>');
                 $('ul.products').wrapAll('<li class=\'invisible\'>');
                 
                 var productsSelected = false;
@@ -31,11 +33,18 @@ class TabUtils {
                     productsSelected = true;
                 }
                 
+                var peopleSelected = false;
+                if($('li.people').filter('.selected').length >= 1){
+                    peopleSelected = true;
+                }
+                
                 $('li.action').wrapAll('<ul class=\'actions\' />');
                 $('div#submenu ul.products').dropdown({title: 'Products',
                                                       width: '125px' 
                                                       });
-                                                     
+                $('div#submenu ul.people').dropdown({title: 'People',
+                                                      width: '125px' 
+                                                      });                             
                 $('div#submenu ul.actions').dropdown({title: 'Actions',
                                                       width: '125px' 
                                                      });
@@ -45,6 +54,10 @@ class TabUtils {
                 if(productsSelected){
                     $('ul.products > li').addClass('selected');
                     $('ul.products').imgDown();
+                }
+                if(peopleSelected){
+                    $('ul.people > li').addClass('selected');
+                    $('ul.people').imgDown();
                 }
             });
         </script>");
