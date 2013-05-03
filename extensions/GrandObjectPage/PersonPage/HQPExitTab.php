@@ -118,7 +118,7 @@ class HQPExitTab extends AbstractEditableTab {
                 var universities = [\"".implode("\",\n\"", $universities)."\"];
                 
                 function updateStep2(){
-                    var reason = $('input[name=reason]:checked').attr('value');
+                    var reason = $('input[name=reason]:checked').val();
                     if(reason == 'graduated'){
                         var options = '<option value=\"No Thesis\">No Thesis</option>';
                         for(index in theses){

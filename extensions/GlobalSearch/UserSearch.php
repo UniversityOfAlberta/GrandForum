@@ -2,9 +2,9 @@
 
 $dir = dirname(__FILE__) . '/';
 
-$wgSpecialPages['UserSearch'] = 'UserSearch'; # Let MediaWiki know about the special page.
+/*$wgSpecialPages['UserSearch'] = 'UserSearch'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['UserSearch'] = $dir . 'UserSearch.i18n.php';
-$wgSpecialPageGroups['UserSearch'] = 'grand-tools';
+$wgSpecialPageGroups['UserSearch'] = 'grand-tools';*/
 
 function runUserSearch($par){
     UserSearch::run($par);
@@ -139,7 +139,7 @@ class UserSearch extends SpecialPage{
             sort = type;
             allPeople = newAllPeople;
             allPeople.sort();
-            filterResults($("#search").attr("value"));
+            filterResults($("#search").val());
         }
         
         $(document).ready(function(){
@@ -147,7 +147,7 @@ class UserSearch extends SpecialPage{
             if(no.length > 0){
                 oldOptions["no"] = no;
             }
-            filterResults($("#search").attr("value"));
+            filterResults($("#search").val());
             
             $("#search").keypress(function(event) {
                 if(event.keyCode == 40){        //DOWN

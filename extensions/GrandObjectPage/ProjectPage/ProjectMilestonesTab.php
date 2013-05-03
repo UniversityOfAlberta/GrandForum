@@ -521,7 +521,7 @@ EOF;
             }
             
             function removeMilestone(id){
-                var identifier = $('#' + id + 'identifier').attr('value');
+                var identifier = $('#' + id + 'identifier').val();
                 $('#mI' + id).detach();
                 $('#newMilestones').append('<input type="hidden" name="m_delete[]" value="' + identifier + '" />');
                 saveAll();

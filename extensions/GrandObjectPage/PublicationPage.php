@@ -687,16 +687,16 @@ class PublicationPage {
                         });
                         $('form[name=product]').submit(function(){
                             if(!validated){
-                                var title = $('form[name=product] input[name=title]').attr('value');
+                                var title = $('form[name=product] input[name=title]').val();
                                 if($('form[name=product] [name=new_title]').length > 0){
-                                    title = $('form[name=product] input[name=new_title]').attr('value');
+                                    title = $('form[name=product] input[name=new_title]').val();
                                 }
                                 var category = '{$category}';
-                                var type = $('form[name=product] [name=type]').attr('value');
+                                var type = $('form[name=product] [name=type]').val();
                                 if(type == 'Misc'){
-                                    type = 'Misc: ' + $('form[name=product] [name=misc_type]').attr('value');
+                                    type = 'Misc: ' + $('form[name=product] [name=misc_type]').val();
                                 }
-                                var status = $('form[name=product] [name=status]').attr('value');
+                                var status = $('form[name=product] [name=status]').val();
                                 $.get('{$wgServer}{$wgScriptPath}/index.php?action=api.getPublicationInfoByTitle&title=' + escape(title) + 
                                       '&category=' + escape(category) + 
                                       '&type=' + type + 
