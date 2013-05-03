@@ -8,7 +8,6 @@ import edu.uci.ics.jung.graph.Graph;
 public class DisconnectedDistance implements Distance<Node> {
 	
 	private DijkstraDistance<Node, Edge> distance;
-	private Double maxDistance;
 	private Graph<Node, Edge> graph;
 	
 	/**
@@ -18,20 +17,6 @@ public class DisconnectedDistance implements Distance<Node> {
 	public DisconnectedDistance(Graph<Node, Edge> graph){
 		this.graph = graph;
 		this.distance = new DijkstraDistance<Node, Edge>(this.graph);
-		//this.maxDistance = this.determineMaxDistance();
-	}
-	
-	private Double determineMaxDistance(){
-		Double d = 0d;
-		for(Node source : this.graph.getVertices()){
-			for(Node target : this.graph.getVertices()){
-				Double dist = (Double) this.distance.getDistance(source, target);
-				if(dist != null){
-					d = Math.max(d, dist);
-				}
-			}
-		}
-		return d;
 	}
 
 	public Number getDistance(Node source, Node target) {
