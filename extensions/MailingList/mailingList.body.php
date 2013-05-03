@@ -47,7 +47,7 @@ class MailList{
             }
             $project = Project::newFromName($project_name);
             if($user->isLoggedIn()){
-	            if($text == "Mail Index" || $nsText == "Mail" || strpos($text, "MAIL") !== 0){
+	            if($text == "Mail Index" || $nsText == "Mail" || strpos($text, "MAIL") === 0){
 	                $university = $me->getUniversity();
 	                if(!((($project != null && $project->getName() != "" && 
 			             $me->isMemberOf($project)) || 
@@ -57,9 +57,6 @@ class MailList{
 			             MailingList::getListByUniversity($university['university']) == $project_name)))){
                         $result = false;
                     }
-                }
-                else if(!($project_name == "Mail" || (($project != null && $project->getName() != "" && $me->isMemberOf($project)) || ($me->isRole($project_name) || $me->isRoleAtLeast(STAFF))))){
-                    $result = false;
                 }
             }
             else if(strpos($text, "MAIL") === 0 || strpos($text, "Mail Index") === 0){
