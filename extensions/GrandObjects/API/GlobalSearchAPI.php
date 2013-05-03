@@ -178,10 +178,19 @@ class GlobalSearchAPI extends RESTAPI {
                 break;
             case 'wikipage':
                 $results = json_decode(file_get_contents("{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrwhat=title&gsrsearch=".$search."&format=json"));
+                $blacklistedNamespaces = array('Publication',
+                                               'Artifact',
+                                               'Presentation',
+                                               'Activity',
+                                               'Press',
+                                               'Award',
+                                               'PNI',
+                                               'HQP',
+                                               'CNI');
                 if(isset($results->query)){
                     foreach($results->query->pages as $page){
                         $article = Article::newFromId($page->pageid);
-                        if($article->getTitle()->userCanRead()){
+                        if($article->getTitle()->userCanRead() && array_search($article->getTitle()->getNSText(), $blacklistedNamespaces) === false){
                             $ids[] = $page->pageid;
                         }
                     }

@@ -25,15 +25,29 @@ class MailList{
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    if($action == "read"){
 	        $me = Person::newFromUser($user);
-	        if($title->getNsText() == "Mail"){
-                $project_name = strtolower($title->getText());
+	        $nsText = "";
+	        $text = "";
+	        if($title->getNSText() != ""){
+	            $nsText = $title->getNSText();
+	            $text = $title->getText();
+	        }
+	        else if(strstr($title->getText(), ":") !== false){
+	            $nsText = explode(":", $title->getText());
+	            $text = $nsText[1];
+	            $nsText = $nsText[0];
+	        }
+	        else{
+	            $text = $title->getText();
+	        }
+	        if($nsText == "Mail"){
+                $project_name = strtolower($text);
             }
             else{
-                $project_name = $title->getNsText();
+                $project_name = $nsText;
             }
             $project = Project::newFromName($project_name);
             if($user->isLoggedIn()){
-	            if($title->getText() == "Mail Index" || $title->getNsText() == "Mail" && strpos($title->getText(), "MAIL") !== 0){
+	            if($text == "Mail Index" || $nsText == "Mail" || strpos($text, "MAIL") !== 0){
 	                $university = $me->getUniversity();
 	                if(!((($project != null && $project->getName() != "" && 
 			             $me->isMemberOf($project)) || 
@@ -48,7 +62,7 @@ class MailList{
                     $result = false;
                 }
             }
-            else if(strpos($title->getText(), "MAIL") === 0 || strpos($title->getText(), "Mail Index") === 0){
+            else if(strpos($text, "MAIL") === 0 || strpos($text, "Mail Index") === 0){
                 $result = false;
             }
         }
@@ -78,7 +92,6 @@ class MailList{
 			    WHERE p.projectname = '$project_name'
 			    OR p.mailListName = '$project_name'";
 		    $data = DBFunctions::execSQL($sql);
-		    $university = $me->getUniversity();
 	        if(count($data) > 0){
 		        $wgOut->addHTML("<b>Mail List Address:</b> <a href='mailto:{$data[0]['mailListName']}@forum.grand-nce.ca'>{$data[0]['mailListName']}@forum.grand-nce.ca</a>");
 		    }
