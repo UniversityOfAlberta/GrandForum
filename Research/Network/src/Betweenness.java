@@ -1,62 +1,76 @@
+import java.util.HashMap;
+
 import edu.uci.ics.jung.algorithms.scoring.BetweennessCentrality;
 
 import edu.uci.ics.jung.graph.SparseMultigraph;
 
 public class Betweenness extends Centrality {
 
-	private static double max = Double.MIN_VALUE;
-	private static double max2 = Double.MIN_VALUE;
-	private static double min = Double.MAX_VALUE;
-	private static double min2 = Double.MAX_VALUE;
+	private static HashMap<String, Double> max = new HashMap<String, Double>();
+	private static HashMap<String, Double> max2 = new HashMap<String, Double>();
+	private static HashMap<String, Double> min = new HashMap<String, Double>();
+	private static HashMap<String, Double> min2 = new HashMap<String, Double>();
+	private static boolean firstTime = true;
 	
 	private BetweennessCentrality<Node, Edge> between;
 	
 	public Betweenness(SparseMultigraph<Node, Edge> graph){
 		super(graph);
-		EdgeWeightTransformer transformer = new EdgeWeightTransformer(this.graph);
-		this.between = new BetweennessCentrality<Node, Edge>(this.graph, transformer);
 	}
 	
 	public void run(){
-		double max = Double.MIN_VALUE;
-		double min = Double.MAX_VALUE;
-		double max2 = Double.MIN_VALUE;
-		double min2 = Double.MAX_VALUE;
+		EdgeWeightTransformer transformer = new EdgeWeightTransformer(this.graph);
+		this.between = new BetweennessCentrality<Node, Edge>(this.graph, transformer);
+		HashMap<String, Double> max = new HashMap<String, Double>();
+		HashMap<String, Double> min = new HashMap<String, Double>();
+		HashMap<String, Double> max2 = new HashMap<String, Double>();
+		HashMap<String, Double> min2 = new HashMap<String, Double>();
 		// Calculating Betweens
 		for(Node v : this.graph.getVertices()){
 			double score = this.between.getVertexScore(v);
 			this.results.put(v.toString(), score);
-			max = Math.max(max, score);
-			min = Math.min(min, score);
+			if(!max.containsKey(v.getType())){
+				max.put(v.getType(), score);
+				min.put(v.getType(), score);
+			}
+			else{
+				max.put(v.getType(), Math.max(max.get(v.getType()), score));
+				min.put(v.getType(), Math.min(min.get(v.getType()), score));
+			}
+			if(Betweenness.firstTime || !Centrality.NORMALIZE){
+				Betweenness.max.put(v.getType(), max.get(v.getType()));
+				Betweenness.min.put(v.getType(), min.get(v.getType()));
+			}
 		}
-		//if(Betweenness.min == Double.MAX_VALUE){
-			Betweenness.min = min;
-			Betweenness.max = max;
-		//}
 		
-		max2 = Double.MIN_VALUE;
-		min2 = Double.MAX_VALUE;
 		for(Node v : this.graph.getVertices()){
 			// Normalize
 			double score = this.results.get(v.toString());
-			score = (score - Betweenness.min)/(Betweenness.max - Betweenness.min);
+			score = (score - Betweenness.min.get(v.getType()))/(Betweenness.max.get(v.getType()) - Betweenness.min.get(v.getType()));
 			score = Math.max(0.001, score);
 			score = Math.log(score);
-			max2 = Math.max(max2, score);
-			min2 = Math.min(min2, score);
+			if(!max2.containsKey(v.getType())){
+				max2.put(v.getType(), score);
+				min2.put(v.getType(), score);
+			}
+			else{
+				max2.put(v.getType(), Math.max(max2.get(v.getType()), score));
+				min2.put(v.getType(), Math.min(min2.get(v.getType()), score));
+			}
+			if(Betweenness.firstTime || !Centrality.NORMALIZE){
+				Betweenness.max2.put(v.getType(), max2.get(v.getType()));
+				Betweenness.min2.put(v.getType(), min2.get(v.getType()));
+			}
 			this.results.put(v.toString(), score);
 		}
-		//if(Betweenness.min2 == Double.MAX_VALUE){
-			Betweenness.min2 = min2;
-			Betweenness.max2 = max2;
-		//}
 			
 		for(Node v : this.graph.getVertices()){
 			// Normalize
 			double score = this.results.get(v.toString());
-			score = (score - Betweenness.min2)/(Betweenness.max2 - Betweenness.min2);
+			score = (score - Betweenness.min2.get(v.getType()))/(Betweenness.max2.get(v.getType()) - Betweenness.min2.get(v.getType()));
 			this.results.put(v.toString(), score);
 		}
+		Betweenness.firstTime = false;
 	}
 	
 }

@@ -1,6 +1,5 @@
 import java.util.Vector;
 
-
 public class Node {
 
 	private String name;
@@ -9,6 +8,11 @@ public class Node {
 	private Vector<Edge> sourceEdges;
 	private Vector<Edge> targetEdges;
 	
+	/**
+	 * Constructs a new Node
+	 * @param name The name of the Node
+	 * @param type The type of Node
+	 */
 	public Node(String name, String type){
 		this.name = name;
 		this.type = type;
@@ -17,6 +21,10 @@ public class Node {
 		this.targetEdges = new Vector<Edge>();
 	}
 	
+	/**
+	 * Adds an edge to this Node
+	 * @param e The Edge to add
+	 */
 	public void addEdge(Edge e){
 		this.edges.add(e);
 		if(e.getSource() == this){
@@ -27,22 +35,50 @@ public class Node {
 		}
 	}
 	
+	/**
+	 * Returns the name of this Node
+	 * @return the name of this Node
+	 */
+	public String getName(){
+		return this.name;
+	}
+	
+	/**
+	 * Returns the type of this Node
+	 * @return the type of this Node
+	 */
 	public String getType(){
 		return this.type;
 	}
 	
+	/**
+	 * Returns the edges connected to this Node
+	 * @return the edges connected to this Node
+	 */
 	public Vector<Edge> getEdges(){
 		return this.edges;
 	}
 	
+	/**
+	 * Returns the edges where this Node is the source
+	 * @return the edges where this Node is the source
+	 */
 	public Vector<Edge> getSourceEdges(){
 		return this.sourceEdges;
 	}
 	
+	/**
+	 * Returns the edges where this Node is the target
+	 * @return the edges where this Node is the target
+	 */
 	public Vector<Edge> getTargetEdges(){
 		return this.targetEdges;
 	}
 	
+	/**
+	 * Returns the degree of this Node (number of 1st degree edges)
+	 * @return the degree of this Node (number of 1st degree edges)
+	 */
 	public int degree(){
 		return this.edges.size();
 	}
