@@ -247,17 +247,6 @@ function checkSupervisesImpersonee(){
     return false;
 }
 
-function permissionError($ns, $title){
-    global $wgOut, $wgServer, $wgScriptPath, $wgTitle;
-    $wgTitle = Title::newFromText("$ns:$title");
-    $wgOut->setPageTitle("Permission error");
-    $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>
-                     <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
-    $wgOut->output();
-    $wgOut->disable();
-    exit;
-}
-
 function changeGroups($user, &$aRights){
     global $wgRoles;
     foreach($aRights as $key => $right){

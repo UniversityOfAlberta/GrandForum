@@ -177,7 +177,7 @@ class EditRelations extends SpecialPage{
 	            $list[] = $hqp->getNameForForms();
 	        }
 	    }
-        $wgOut->addHTML("<div class='switcheroo' name='HQP' id='hqps'>
+        $wgOut->addHTML("<div class='switcheroo noCustom' name='HQP' id='hqps'>
                             <div class='left'><span>".implode("</span>\n<span>", $names)."</span></div>
                             <div class='right'><span>".implode("</span>\n<span>", $list)."</span></div>
                         </div>");
@@ -197,7 +197,7 @@ class EditRelations extends SpecialPage{
 	            $list[] = $person->getNameForForms();
 	        }
 	    }
-        $wgOut->addHTML("<div class='switcheroo' name='CoWorker' id='coworkers'>
+        $wgOut->addHTML("<div class='switcheroo noCustom' name='CoWorker' id='coworkers'>
                             <div class='left'><span>".implode("</span>\n<span>", $names)."</span></div>
                             <div class='right'><span>".implode("</span>\n<span>", $list)."</span></div>
                         </div>");

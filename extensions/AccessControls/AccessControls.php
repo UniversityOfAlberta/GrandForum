@@ -84,12 +84,14 @@ $wgExtensionCredits['specialpage'][] = array(
 				       'description' => 'Limits access to pages based on membership in namespaces.'
 				       );
 				       
-function permissionError(){
-    global $wgOut, $wgServer, $wgScriptPath;
+function permissionError($ns, $title){
+    global $wgOut, $wgServer, $wgScriptPath, $wgTitle;
+    $wgTitle = Title::newFromText("$ns:$title");
     $wgOut->setPageTitle("Permission error");
     $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>
-                     <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main Page'>Main Page</a>.</p>");
+                     <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
     $wgOut->output();
     $wgOut->disable();
+    exit;
 }
 ?>
