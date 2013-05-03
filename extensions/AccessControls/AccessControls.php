@@ -83,4 +83,13 @@ $wgExtensionCredits['specialpage'][] = array(
 				       //'url' => 'http://www.mediawiki.org/wiki/User:JDoe', 
 				       'description' => 'Limits access to pages based on membership in namespaces.'
 				       );
+				       
+function permissionError(){
+    global $wgOut, $wgServer, $wgScriptPath;
+    $wgOut->setPageTitle("Permission error");
+    $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>
+                     <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main Page'>Main Page</a>.</p>");
+    $wgOut->output();
+    $wgOut->disable();
+}
 ?>

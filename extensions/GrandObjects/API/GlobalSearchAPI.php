@@ -180,7 +180,10 @@ class GlobalSearchAPI extends RESTAPI {
                 $results = json_decode(file_get_contents("{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrwhat=title&gsrsearch=".$search."&format=json"));
                 if(isset($results->query)){
                     foreach($results->query->pages as $page){
-                        $ids[] = $page->pageid;
+                        $article = Article::newFromId($page->pageid);
+                        if($article->getTitle()->userCanRead()){
+                            $ids[] = $page->pageid;
+                        }
                     }
                 }
                 break;
