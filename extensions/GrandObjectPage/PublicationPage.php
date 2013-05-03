@@ -188,7 +188,6 @@ class PublicationPage {
                 if($edit){
                     $misc_types = Paper::getAllMiscTypes($category);
                     
-                    $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/scripts/switcheroo.js'></script>");
                     $wgOut->addScript('<script type="text/javascript">
                     var oldAttr = Array();
                     

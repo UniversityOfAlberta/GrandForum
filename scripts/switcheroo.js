@@ -2,7 +2,7 @@
   $.fn.switcheroo = function(options) {
     this.name = options.name;
     this.id = options.id;
-    this.customAllowed = options.customAllowed;
+    this.customAllowed = options.noCustom;
     this.values = new Array();
     this.oldOptions = new Array();
     this.leftArray = new Array();
