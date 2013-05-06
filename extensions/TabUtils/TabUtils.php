@@ -206,16 +206,16 @@ class TabUtils {
         $new_actions['projects'] = array('class' => false,
                                    'text' => "Projects",
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:Projects");
-        $new_actions[HQP] = array('class' => false,
+        $new_actions[HQP] = array('class' => 'people',
                                    'text' => HQP,
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_HQP");
-        $new_actions[CNI] = array('class' => false,
+        $new_actions[CNI] = array('class' => 'people',
                                    'text' => CNI.'s',
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_CNI");
-        $new_actions[PNI] = array('class' => false,
+        $new_actions[PNI] = array('class' => 'people',
                                    'text' => PNI.'s',
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_PNI");
-        $new_actions[RMC] = array('class' => false,
+        $new_actions[RMC] = array('class' => 'people',
                                    'text' => RMC,
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_RMC");
         if($wgUser->isLoggedIn()){
@@ -251,16 +251,16 @@ class TabUtils {
             $new_actions['projects']['class'] = 'selected';
         }
         else if($wgTitle->getText() == "ALL HQP" || ($wgTitle->getNSText() == HQP && !($me->isRole(HQP) && $wgTitle->getText() == $me->getName()))){
-            $new_actions[HQP]['class'] = 'selected';
+            $new_actions[HQP]['class'] = 'people selected';
         }
         else if($wgTitle->getText() == "ALL CNI" || ($wgTitle->getNSText() == CNI && !($me->isRole(CNI) && $wgTitle->getText() == $me->getName()))){
-            $new_actions[CNI]['class'] = 'selected';
+            $new_actions[CNI]['class'] = 'people selected';
         }
         else if($wgTitle->getText() == "ALL PNI" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))){
-            $new_actions[PNI]['class'] = 'selected';
+            $new_actions[PNI]['class'] = 'people selected';
         }
         else if($wgTitle->getText() == "ALL RMC" || ($wgTitle->getNSText() == RMC && !($me->isRole(RMC) && $wgTitle->getText() == $me->getName()))){
-            $new_actions[RMC]['class'] = 'selected';
+            $new_actions[RMC]['class'] = 'people selected';
         }
         else if($wgTitle->getNSText() == INACTIVE && !($me->isRole(INACTIVE) && $wgTitle->getText() == $me->getName())){
             $person = Person::newFromName($wgTitle->getText());

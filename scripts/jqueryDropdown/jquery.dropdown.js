@@ -62,7 +62,7 @@
             unHoverTimeout = null;
         }
         else if(divActions.is(":visible")){
-            unHoverTimeout = setTimeout(function(){$('li.actions', $(that)).click();}, 300);
+            unHoverTimeout = setTimeout(function(){$('li.actions', $(that)).click();}, 200);
         }
     });
     
@@ -72,7 +72,7 @@
             unHoverTimeout = null;
         }
         else if(divActions.is(":visible")){
-            unHoverTimeout = setTimeout(function(){$('li.actions', $(that)).click();}, 300);
+            unHoverTimeout = setTimeout(function(){$('li.actions', $(that)).click();}, 200);
         }
     });
     
@@ -95,6 +95,8 @@
         else{
             divActions.css('opacity', 1);    
             $(divActions).fadeIn(200);
+            $('div.actions').parent().css('z-index', 999);
+            divActions.parent().css('z-index', 1000);
         }
         //$(that).imgToggle();
         $(divActions).css('right', tabWidth - $(divActions).width());
