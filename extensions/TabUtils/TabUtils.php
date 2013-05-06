@@ -42,7 +42,7 @@ class TabUtils {
                                                   width: '125px' 
                                                   });
             $('div#submenu ul.people').dropdown({title: 'People',
-                                                  width: '125px' 
+                                                  width: '75px' 
                                                   });                             
             $('div#submenu ul.actions').dropdown({title: 'Actions',
                                                   width: '125px' 
@@ -210,10 +210,10 @@ class TabUtils {
                                    'text' => HQP,
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_HQP");
         $new_actions[CNI] = array('class' => 'people',
-                                   'text' => CNI.'s',
+                                   'text' => CNI,
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_CNI");
         $new_actions[PNI] = array('class' => 'people',
-                                   'text' => PNI.'s',
+                                   'text' => PNI,
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_PNI");
         $new_actions[RMC] = array('class' => 'people',
                                    'text' => RMC,
