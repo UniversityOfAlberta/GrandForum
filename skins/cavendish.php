@@ -400,7 +400,11 @@ class cavendishTemplate extends QuickTemplate {
                              $wgTitle->getText() == "AcknowledgementsTable" ||
                              $wgTitle->getText() == "Duplicates" ||
                              $wgTitle->getText() == "EmptyEmailList" ||
-                             $wgTitle->getText() == "InactiveUsers"){
+                             $wgTitle->getText() == "InactiveUsers" ||
+                             $wgTitle->getText() == "ReportStatsTable"||
+                             $wgTitle->getText() == "Impersonate"||
+                             $wgTitle->getText() == "ProjectEvolution"||
+                             $wgTitle->getText() == "AdminVisualizations"){
 			            echo "selected";
 			        } ?>" >
 				    <span class="top-nav-left">&nbsp;</span>
