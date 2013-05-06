@@ -89,7 +89,12 @@ class Report extends AbstractReport{
             // Project Leader Report
             $leadership = $person->leadership();
             if(count($leadership) > 0){
+                $projectDone = array();
                 foreach($leadership as $project){
+                    if(isset($projectDone[$project->getName()])){
+                        continue;
+                    }
+                    $projectDone[$project->getName()] = true;
                     if($project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
 		                $type = "ProjectFinalReport";
 		            }

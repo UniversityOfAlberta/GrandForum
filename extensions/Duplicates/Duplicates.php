@@ -51,28 +51,31 @@ class Duplicates extends SpecialPage{
 
 	function Duplicates() {
 		wfLoadExtensionMessages('Duplicates');
-		SpecialPage::SpecialPage("Duplicates", STAFF.'+', true, 'runDuplicates');
+		SpecialPage::SpecialPage("Duplicates", '', true, 'runDuplicates');
+	}
+	
+	function userCanExecute($user){
+	    $me = Person::newFromUser($user);
+	    if($me->getName() == "Adrian.Sheppard" || $me->getName() == "Admin"){
+	        return true;
+	    }
+	    else{
+	        return false;
+	    }
 	}
 
 	function run($par){
-	    global $wgServer, $wgScriptPath, $wgOut, $wgUser;
-	    $me = Person::newFromId($wgUser->getId());
-        if($me->getName() == "Adrian.Sheppard" || $me->getName() == "Admin"){
-            $handlers = AbstractDuplicatesHandler::$handlers;
-            $tabbedPage = new TabbedPage("duplicates");
-            $tabbedPage->addTab(new DuplicatesTab("Publications", $handlers['publication']));
-            $tabbedPage->addTab(new DuplicatesTab("Artifacts", $handlers['artifact']));
-            $tabbedPage->addTab(new DuplicatesTab("Activities", $handlers['activity']));
-            $tabbedPage->addTab(new DuplicatesTab("Press", $handlers['press']));
-            $tabbedPage->addTab(new DuplicatesTab("Awards", $handlers['award']));
-            $tabbedPage->addTab(new DuplicatesTab("Presentations", $handlers['presentation']));
-            $tabbedPage->addTab(new DuplicatesTab("People", $handlers['people']));
-            $tabbedPage->showPage();
-        }
-        else {
-            $wgOut->setPageTitle("Permission error");
-            $wgOut->addHTML("You are not allowed to execute the action you have requested.");
-        }
+	    global $wgServer, $wgScriptPath, $wgOut;
+        $handlers = AbstractDuplicatesHandler::$handlers;
+        $tabbedPage = new TabbedPage("duplicates");
+        $tabbedPage->addTab(new DuplicatesTab("Publications", $handlers['publication']));
+        $tabbedPage->addTab(new DuplicatesTab("Artifacts", $handlers['artifact']));
+        $tabbedPage->addTab(new DuplicatesTab("Activities", $handlers['activity']));
+        $tabbedPage->addTab(new DuplicatesTab("Press", $handlers['press']));
+        $tabbedPage->addTab(new DuplicatesTab("Awards", $handlers['award']));
+        $tabbedPage->addTab(new DuplicatesTab("Presentations", $handlers['presentation']));
+        $tabbedPage->addTab(new DuplicatesTab("People", $handlers['people']));
+        $tabbedPage->showPage();
 	}
 }
 

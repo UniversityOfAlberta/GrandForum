@@ -160,7 +160,7 @@ function impersonate(){
         }
         
         if(!$pageAllowed && !((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions']) || (isset($_GET['action']) && $_GET['action'] == 'getUserMode'))){
-            permissionError($ns, $title);
+            permissionError();
             return true;
         }
     }

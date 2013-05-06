@@ -96,7 +96,7 @@
             divActions.css('opacity', 1);    
             $(divActions).fadeIn(200);
         }
-        $(that).imgToggle();
+        //$(that).imgToggle();
         $(divActions).css('right', tabWidth - $(divActions).width());
         $(dropdownTop).css('right', Math.ceil((tabWidth - 7)/2) - (tabWidth - $(divActions).width()));
         if($(divActions).offset().left + divWidth + 5 >= $(window).width()){

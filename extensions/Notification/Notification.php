@@ -113,9 +113,7 @@ class Notification{
 		global $wgUser, $wgOut, $notifications, $notificationFunctions, $wgServer, $wgScriptPath;
 		$me = Person::newFromId($wgUser->getId());
 		if($me == null || $me->getName() == ""){
-		    $wgOut->setPageTitle("Permission error");
-		    $wgOut->addHTML("You are not allowed to execute the action you have requested.");
-		    return;
+		    permissionError();
 		}
 		$wgOut->setPageTitle("My Notifications");
 		$history = false;

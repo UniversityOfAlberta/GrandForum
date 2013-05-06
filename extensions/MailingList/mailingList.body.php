@@ -8,7 +8,7 @@ global $wgArticle;
 $mailList = new MailList();
 $wgHooks['ArticleViewHeader'][] = array($mailList, 'createMailList');
 $wgHooks['ArticleViewHeader'][] = array($mailList, 'createMailListTable');
-$wgHooks['userCan'][] = array($mailList, 'userCan');
+$wgHooks['userCan'][] = array($mailList, 'userCanExecute');
 
 class MailList{
 
@@ -21,7 +21,7 @@ class MailList{
 		return true;
 	}
 	
-	function userCan(&$title, &$user, $action, &$result){
+	function userCanExecute(&$title, &$user, $action, &$result){
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    if($action == "read"){
 	        $me = Person::newFromUser($user);
