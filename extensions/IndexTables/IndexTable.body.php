@@ -1,20 +1,49 @@
 <?php
 
-//require_once("$IP/extensions/PageRank/PageRank.php");
 require_once("InactiveUsers.php");
 
 $indexTable = new IndexTable();
 
 $wgHooks['ArticlePageDataBefore'][] = array($indexTable, 'generateTable');
+$wgHooks['userCan'][] = array($indexTable, 'userCanExecute');
 
 class IndexTable{
 
 	var $text = "";
+	
+	function userCanExecute(&$title, &$user, $action, &$result){
+	    global $wgOut, $wgServer, $wgScriptPath;
+	    if($title->getNSText() == "GRAND"){
+	        $me = Person::newFromUser($user);
+	        $text = $title->getText();
+	        switch ($title->getText()) {
+	            case 'ALL '.HQP:
+	            case 'Publications':
+				case 'Presentations':
+				case 'Artifacts':
+				case 'Multimedia Stories':
+				    $result = $me->isLoggedIn();
+	                break;
+				case 'Forms':
+				    $result = $me->isRoleAtLeast(MANAGER);
+				    break;
+	        }
+	    }
+	    return true;
+	}
 
 	function generateTable($article, $fields){
 		global $wgTitle, $wgOut, $wgUser;
 		$me = Person::newFromId($wgUser->getId());
 		if($wgTitle != null && $wgTitle->getNsText() == "GRAND" && !$wgOut->isDisabled()){
+		    $result = true;
+		    $this->userCanExecute($wgTitle, $wgUser, "read", $result);
+		    if(!$result){
+	            $wgOut->loginToUse();
+		        $wgOut->output();
+		        $wgOut->disable();
+			    return;
+	        }
 		    $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){
                     $('.indexTable').css('display', 'table');
@@ -153,12 +182,6 @@ EOF;
 	private function generatePersonTable($table){
 		global $wgServer, $wgScriptPath, $wgUser, $wgOut;
 		$me = Person::newFromId($wgUser->getId());
-		if ($table == HQP && ! $wgUser->isLoggedIn()){
-		    $wgOut->loginToUse();
-		    $wgOut->output();
-		    $wgOut->disable();
-			return;
-	    }
 		$data = Person::getAllPeople($table);
 		$idHeader = "";
         if($me->isRoleAtLeast(MANAGER)){
@@ -251,12 +274,6 @@ EOF;
 	
 	private function generatePublicationsTable($type){
 	    global $wgScriptPath, $wgServer, $wgUser, $wgOut;
-	    if(!$wgUser->isLoggedIn()){
-	        $wgOut->loginToUse();
-		    $wgOut->output();
-		    $wgOut->disable();
-			return;
-	    }
 	    $nonGrand = (isset($_GET['nonGrand']) && strtolower($_GET['nonGrand']) == "true");
 	    $papers = array();
 	    if($nonGrand){

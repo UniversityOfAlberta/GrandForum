@@ -206,9 +206,11 @@ class TabUtils {
         $new_actions['projects'] = array('class' => false,
                                    'text' => "Projects",
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:Projects");
-        $new_actions[HQP] = array('class' => 'people',
-                                   'text' => HQP,
-                                   'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_HQP");
+        if($me->isLoggedIn()){
+            $new_actions[HQP] = array('class' => 'people',
+                                       'text' => HQP,
+                                       'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_HQP");
+        }
         $new_actions[CNI] = array('class' => 'people',
                                    'text' => CNI,
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_CNI");

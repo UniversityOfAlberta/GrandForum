@@ -60,11 +60,18 @@ abstract class BackbonePage extends SpecialPage {
     }
     
     function BackbonePage(){
-        SpecialPage::SpecialPage(get_class($this), INACTIVE.'+', true);
+        SpecialPage::SpecialPage(get_class($this), '', true);
+    }
+    
+    function userCanExecute($user){
+        return true;
     }
     
     function execute($par){
-        global $wgOut, $wgServer, $wgScriptPath;
+        global $wgOut, $wgServer, $wgScriptPath, $wgUser;
+        if(!$this->userCanExecute($wgUser)){
+            permissionError();
+        }
         $class = get_class($this);
         $wgOut->addScript("<style>
                                 #bodyContent > h1 { display:none !important; }

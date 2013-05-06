@@ -3,6 +3,7 @@
 $publicationPage = new PublicationPage();
 
 $wgHooks['ArticleViewHeader'][] = array($publicationPage, 'processPage');
+$wgHooks['userCan'][] = array($publicationPage, 'userCanExecute');
 
 
 $publicationTypes = array("Proceedings Paper" => "an article written for submission to a workshop, symposium, or conference",
@@ -111,10 +112,22 @@ $optionDefs = array("Address" => "the city, country of the publisher",
 class PublicationPage {
 
     var $paper;
+    
+    function userCanExecute(&$title, &$user, $action, &$result){
+        $name = $title->getNSText();
+        if(($name == "Activity" || $name == "Press" || $name == "Award" || $name == "Publication" || $name == "Artifact" || $name == "Presentation")){
+            $result = $user->isLoggedIn();
+        }
+        return true;
+    }
 
     function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $types, $bibtexTypes, $wgMessage;
-        
+        $result = true;
+        $this->userCanExecute($article->getTitle(), $wgUser, "read", $result);
+        if(!$result){
+            permissionError();
+        }
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
             $name = $article->getTitle()->getNsText();
