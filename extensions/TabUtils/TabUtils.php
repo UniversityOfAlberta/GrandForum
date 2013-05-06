@@ -22,44 +22,42 @@ class TabUtils {
             $new_actions[$key] = $action;
         }
         $wgOut->addHTML("<script type='text/javascript'>
-            $(document).ready(function(){
-                $('li.people').wrapAll('<ul class=\'people\'>');
-                $('li.product').wrapAll('<ul class=\'products\'>');
-                $('ul.people').wrapAll('<li class=\'invisible\'>');
-                $('ul.products').wrapAll('<li class=\'invisible\'>');
-                
-                var productsSelected = false;
-                if($('li.product').filter('.selected').length >= 1){
-                    productsSelected = true;
-                }
-                
-                var peopleSelected = false;
-                if($('li.people').filter('.selected').length >= 1){
-                    peopleSelected = true;
-                }
-                
-                $('li.action').wrapAll('<ul class=\'actions\' />');
-                $('div#submenu ul.products').dropdown({title: 'Products',
-                                                      width: '125px' 
-                                                      });
-                $('div#submenu ul.people').dropdown({title: 'People',
-                                                      width: '125px' 
-                                                      });                             
-                $('div#submenu ul.actions').dropdown({title: 'Actions',
-                                                      width: '125px' 
-                                                     });
-                $('div#submenu ul.actions').css('padding-right', 0);
-                $('div#submenu ul.actions li.actions').css('float', 'right');
-                
-                if(productsSelected){
-                    $('ul.products > li').addClass('selected');
-                    $('ul.products').imgDown();
-                }
-                if(peopleSelected){
-                    $('ul.people > li').addClass('selected');
-                    $('ul.people').imgDown();
-                }
-            });
+            $('li.people').wrapAll('<ul class=\'people\'>');
+            $('li.product').wrapAll('<ul class=\'products\'>');
+            $('ul.people').wrapAll('<li class=\'invisible\'>');
+            $('ul.products').wrapAll('<li class=\'invisible\'>');
+            
+            var productsSelected = false;
+            if($('li.product').filter('.selected').length >= 1){
+                productsSelected = true;
+            }
+            
+            var peopleSelected = false;
+            if($('li.people').filter('.selected').length >= 1){
+                peopleSelected = true;
+            }
+            
+            $('li.action').wrapAll('<ul class=\'actions\' />');
+            $('div#submenu ul.products').dropdown({title: 'Products',
+                                                  width: '125px' 
+                                                  });
+            $('div#submenu ul.people').dropdown({title: 'People',
+                                                  width: '125px' 
+                                                  });                             
+            $('div#submenu ul.actions').dropdown({title: 'Actions',
+                                                  width: '125px' 
+                                                 });
+            $('div#submenu ul.actions').css('padding-right', 0);
+            $('div#submenu ul.actions li.actions').css('float', 'right');
+            
+            if(productsSelected){
+                $('ul.products > li').addClass('selected');
+                $('ul.products').imgDown();
+            }
+            if(peopleSelected){
+                $('ul.people > li').addClass('selected');
+                $('ul.people').imgDown();
+            }
         </script>");
         $content_actions = $new_actions;
         return true;
