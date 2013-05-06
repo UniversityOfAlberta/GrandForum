@@ -102,7 +102,6 @@
                 $(dropdownTop).css('right', Math.ceil((tabWidth - 7)/2) - (tabWidth - $(divActions).width()));
                 if($(divActions).offset().left + divWidth + 5 >= $(window).width()){
                     var shiftAmount = ($(window).width() - ($(divActions).offset().left + divWidth + 10));
-                    console.log('right', (tabWidth - $(divActions).width()) - shiftAmount);
                     $(divActions).css('right', (tabWidth - $(divActions).width()) - shiftAmount);
                     $(dropdownTop).css('right', Math.ceil((tabWidth - 7)/2) - (tabWidth - $(divActions).width()) + shiftAmount);
                 }
