@@ -1,3 +1,7 @@
+li.hidden {
+    display:none;
+}
+
 li.actions {
     cursor:pointer;
     list-style: none;

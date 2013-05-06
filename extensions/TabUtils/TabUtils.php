@@ -207,39 +207,39 @@ class TabUtils {
                                    'text' => "Projects",
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:Projects");
         if($me->isLoggedIn()){
-            $new_actions[HQP] = array('class' => 'people',
+            $new_actions[HQP] = array('class' => 'people hidden',
                                        'text' => HQP,
                                        'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_HQP");
         }
-        $new_actions[CNI] = array('class' => 'people',
+        $new_actions[CNI] = array('class' => 'people hidden',
                                    'text' => CNI,
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_CNI");
-        $new_actions[PNI] = array('class' => 'people',
+        $new_actions[PNI] = array('class' => 'people hidden',
                                    'text' => PNI,
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_PNI");
-        $new_actions[RMC] = array('class' => 'people',
+        $new_actions[RMC] = array('class' => 'people hidden',
                                    'text' => RMC,
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_RMC");
         if($wgUser->isLoggedIn()){
-            $new_actions["Publications"] = array('class' => 'product',
+            $new_actions["Publications"] = array('class' => 'product hidden',
                                        'text' => "Publications",
                                        'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Publication");
-            $new_actions["Artifacts"] = array('class' => 'product',
+            $new_actions["Artifacts"] = array('class' => 'product hidden',
                                        'text' => "Artifacts",
                                        'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Artifact");
-            $new_actions["Presentations"] = array('class' => 'product',
+            $new_actions["Presentations"] = array('class' => 'product hidden',
                                        'text' => "Presentations",
                                        'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Presentation");
-            $new_actions["Activities"] = array('class' => 'product',
+            $new_actions["Activities"] = array('class' => 'product hidden',
                                               'text' => "Activities",
                                               'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Activity");
-            $new_actions["Press"] = array('class' => 'product',
+            $new_actions["Press"] = array('class' => 'product hidden',
                                           'text' => "Press",
                                           'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Press");
-            $new_actions["Awards"] = array('class' => 'product',
+            $new_actions["Awards"] = array('class' => 'product hidden',
                                            'text' => "Awards",
                                            'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Award");
-            $new_actions["Multimedia"] = array('class' => 'product',
+            $new_actions["Multimedia"] = array('class' => 'product hidden',
                                            'text' => "Multimedia",
                                            'href' => "$wgServer$wgScriptPath/index.php/GRAND:Multimedia_Stories");
         }
@@ -253,16 +253,16 @@ class TabUtils {
             $new_actions['projects']['class'] = 'selected';
         }
         else if($wgTitle->getText() == "ALL HQP" || ($wgTitle->getNSText() == HQP && !($me->isRole(HQP) && $wgTitle->getText() == $me->getName()))){
-            $new_actions[HQP]['class'] = 'people selected';
+            $new_actions[HQP]['class'] = 'people selected hidden';
         }
         else if($wgTitle->getText() == "ALL CNI" || ($wgTitle->getNSText() == CNI && !($me->isRole(CNI) && $wgTitle->getText() == $me->getName()))){
-            $new_actions[CNI]['class'] = 'people selected';
+            $new_actions[CNI]['class'] = 'people selected hidden';
         }
         else if($wgTitle->getText() == "ALL PNI" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))){
-            $new_actions[PNI]['class'] = 'people selected';
+            $new_actions[PNI]['class'] = 'people selected hidden';
         }
         else if($wgTitle->getText() == "ALL RMC" || ($wgTitle->getNSText() == RMC && !($me->isRole(RMC) && $wgTitle->getText() == $me->getName()))){
-            $new_actions[RMC]['class'] = 'people selected';
+            $new_actions[RMC]['class'] = 'people selected hidden';
         }
         else if($wgTitle->getNSText() == INACTIVE && !($me->isRole(INACTIVE) && $wgTitle->getText() == $me->getName())){
             $person = Person::newFromName($wgTitle->getText());
@@ -277,16 +277,16 @@ class TabUtils {
                     }
                 }
                 if($lastRole == RMC){
-                    $new_actions[RMC]['class'] = 'selected';
+                    $new_actions[RMC]['class'] = 'people selected hidden';
                 }
                 else if($lastRole == PNI){
-                    $new_actions[PNI]['class'] = 'selected';
+                    $new_actions[PNI]['class'] = 'people selected hidden';
                 }
                 else if($lastRole == CNI){
-                    $new_actions[RMC]['class'] = 'selected';
+                    $new_actions[RMC]['class'] = 'people selected hidden';
                 }
                 else if($lastRole == HQP){
-                    $new_actions[HQP]['class'] = 'selected';
+                    $new_actions[HQP]['class'] = 'people selected hidden';
                 }
             }
         }
@@ -298,7 +298,7 @@ class TabUtils {
                                           $wgTitle->getNsText() == "Press" ||
                                           $wgTitle->getNsText() == "Award" ||
                                           $wgTitle->getNsText() == "Multimedia")){
-            $new_actions["Publications"]['class'] = 'product selected';
+            $new_actions["Publications"]['class'] = 'product selected hidden';
         }
         else if($wgTitle->getText() == "Theme1 - New Media Challenges and Opportunities" ||
                 $wgTitle->getText() == "Theme2 - Games and Interactive Simulation" ||
