@@ -70,7 +70,7 @@ class MailList{
 		global $wgOut, $wgTitle, $wgScriptPath, $wgServer, $wgUser;
 		$result = true;
 	    if($wgTitle->getText() == "Mail Index" || $wgTitle->getNsText() == "Mail" && strpos($wgTitle->getText(), "MAIL") !== 0){
-	        $this->userCan($wgTitle, $wgUser, "read", $result);
+	        $this->userCanExecute($wgTitle, $wgUser, "read", $result);
 		    if(!$result){
                 permissionError();
             }

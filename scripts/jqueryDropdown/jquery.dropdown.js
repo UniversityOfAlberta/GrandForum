@@ -1,7 +1,6 @@
 (function( $ ){
 
   $.fn.dropdown = function(options) {
-    
     $.fn.imgToggle = function(){
         if($("span.dropdown", $(this)).hasClass('down')){
             this.imgUp();
@@ -62,7 +61,7 @@
             unHoverTimeout = null;
         }
         else if(divActions.is(":visible")){
-            unHoverTimeout = setTimeout(function(){$('li.actions', $(that)).click();}, 200);
+            unHoverTimeout = setTimeout(function(){$('li.actions', $(that)).click();}, 100);
         }
     });
     
@@ -72,7 +71,7 @@
             unHoverTimeout = null;
         }
         else if(divActions.is(":visible")){
-            unHoverTimeout = setTimeout(function(){$('li.actions', $(that)).click();}, 200);
+            unHoverTimeout = setTimeout(function(){$('li.actions', $(that)).click();}, 100);
         }
     });
     
