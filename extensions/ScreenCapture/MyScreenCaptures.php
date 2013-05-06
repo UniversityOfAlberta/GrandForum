@@ -68,7 +68,7 @@ class MyScreenCaptures extends SpecialPage {
                         line-height:12px;
                         border:1px solid #aaa; 
                         padding:5px;
-                        z-index:4000;
+                        z-index:9;
                         background: rgba(255,255,255,0.85);
                         height: 13px;
                         margin-left:-2px;
@@ -83,7 +83,7 @@ class MyScreenCaptures extends SpecialPage {
                     }
                     
                     .ui-dialog {
-                        z-index: 5000 !important;
+                        z-index: 11 !important;
                     }
                 </style>");
 	            
