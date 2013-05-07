@@ -340,15 +340,16 @@ EOF;
 					$position = $s->getPosition();
 					$errors = array();
 					$ishqp = $s->isHQP();
-					
+					$related = $person->relatedTo($s, 'Supervises');
+
 					//Check for Ethics tutorial completion
 					$ethics = $s->getEthics();
-					if($ethics['completed_tutorial'] == 0 && $ishqp){
+					if($ethics['completed_tutorial'] == 0 && $ishqp && $related){
 						$errors[] = "Not Completed TCPS2";
 					}
 
 					//Acknowledgements
-					if($ishqp){
+					if($ishqp && $related){
 						$acks = $s->getAcknowledgements();
 						if(count($acks) > 0){
 							$ack_found = false;
