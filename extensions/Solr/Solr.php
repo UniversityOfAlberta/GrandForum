@@ -167,8 +167,7 @@ class Solr extends SpecialPage {
               }
               $("#"+type+"_results #"+type+"sTable tbody").html(table);
               datatable_refs[type] = $("#"+type+"_results #"+type+"sTable").dataTable({
-                "bPaginate": false,
-                "bLengthChange": false,
+                'aLengthMenu': [[-1], ['All']],
                 "bFilter": false
               });
             }
@@ -250,7 +249,7 @@ EOF;
 
             <div id="product_results" class="results" style="display:none;">
             <h3>Products</h3>
-            <table class="indexTable dataTable" cellspacing="1" cellpadding="3" frame="box" rules="all" id="productsTable">
+            <table class="indexTable dataTable" frame="box" rules="all" id="productsTable">
             <thead>
             <tr>
             <th width="20%">Date</th>
@@ -266,7 +265,7 @@ EOF;
 
             <div id="project_results" class="results" style="display:none;">
             <h3>Projects</h3>
-            <table class="indexTable dataTable" cellspacing="1" cellpadding="3" frame="box" rules="all" id="projectsTable">
+            <table class="indexTable dataTable" frame="box" rules="all" id="projectsTable">
             <thead>
             <tr>
             <th>Category/Type</th>
@@ -280,7 +279,7 @@ EOF;
 
             <div id="milestone_results" class="results" style="display:none;">
             <h3>Project Milestones</h3>
-            <table class="indexTable dataTable" cellspacing="1" cellpadding="3" frame="box" rules="all" id="milestonesTable">
+            <table class="indexTable dataTable" frame="box" rules="all" id="milestonesTable">
             <thead>
             <tr>
             <th>Project</th>
@@ -295,7 +294,7 @@ EOF;
 
             <div id="posting_results" class="results" style="display:none;">
             <h3>Postings</h3>
-            <table class="indexTable dataTable" cellspacing="1" cellpadding="3" frame="box" rules="all" id="postingsTable">
+            <table class="indexTable dataTable" frame="box" rules="all" id="postingsTable">
             <thead>
             <tr>
             <th>Title</th>

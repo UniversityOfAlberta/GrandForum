@@ -50,6 +50,7 @@ img.ui-datepicker-trigger{
     
     background: #999; /* for non-css3 browsers */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#96789f', endColorstr='#8b6e93'); /* for IE */
+    background: -ms-linear-gradient(top, #96789f 0%, #8b6e93 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#96789f), to(#8b6e93)); /* for webkit browsers */
     background: -moz-linear-gradient(top, #96789f, #8b6e93); /* for firefox 3.6+ */ 
     background: -o-linear-gradient(top, #96789f, #8b6e93);
@@ -58,24 +59,27 @@ img.ui-datepicker-trigger{
 #header ul li:hover {
     background: #A385AD; /* for non-css3 browsers */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#A385AD', endColorstr='#96789f'); /* for IE */
+    background: -ms-linear-gradient(top, #A385AD 0%, #96789f 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#A385AD), to(#96789f)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #A385AD,  #96789f); /* for firefox 3.6+ */ 
+    background: -moz-linear-gradient(top,  #A385AD, #96789f); /* for firefox 3.6+ */ 
     background: -o-linear-gradient(top, #A385AD, #96789f);
 }
 
 #header li.selected {
     background: #FFFFFF; /* for non-css3 browsers */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#EEEEEE', endColorstr='#FFFFFF'); /* for IE */
+    background: -ms-linear-gradient(top, #EEEEEE 0%, #FFFFFF 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#FFFFFF)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #EEEEEE,  #FFFFFF); /* for firefox 3.6+ */ 
+    background: -moz-linear-gradient(top,  #EEEEEE, #FFFFFF); /* for firefox 3.6+ */ 
     background: -o-linear-gradient(top, #EEEEEE, #FFFFFF);
 }
 
 #header ul li:hover.selected{
     background: #EEEEEE; /* for non-css3 browsers */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#DDDDDD', endColorstr='#FFFFFF'); /* for IE */
+    background: -ms-linear-gradient(top, #DDDDDD 0%, #FFFFFF 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#DDDDDD), to(#FFFFFF)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #DDDDDD,  #FFFFFF); /* for firefox 3.6+ */
+    background: -moz-linear-gradient(top,  #DDDDDD, #FFFFFF); /* for firefox 3.6+ */
     background: -o-linear-gradient(top, #DDDDDD, #FFFFFF);
 }
 
@@ -111,26 +115,41 @@ img.ui-datepicker-trigger{
     
     background: #999; /* for non-css3 browsers */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#96789f', endColorstr='#8b6e93'); /* for IE */
+    background: -ms-linear-gradient(top, #96789f 0%, #8b6e93 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#96789f), to(#8b6e93)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #96789f,  #8b6e93); /* for firefox 3.6+ */
+    background: -moz-linear-gradient(top, #96789f, #8b6e93); /* for firefox 3.6+ */
     background: -o-linear-gradient(top, #96789f, #8b6e93);
+    
     border: solid #96789f;
     border-width: 1px 1px 0 1px;
+}
+
+#submenu li.invisible {
+    padding: 0;
+    margin: 0;
+    background: transparent !important;
+    border: 0;
+}
+
+#submenu li.invisible ul {
+    padding: 0;
 }
 
 #submenu ul li:hover {
     background: #A385AD; /* for non-css3 browsers */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#A385AD', endColorstr='#96789f'); /* for IE */
+    background: -ms-linear-gradient(top, #A385AD 0%, #96789f 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#A385AD), to(#96789f)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #A385AD,  #96789f); /* for firefox 3.6+ */ 
+    background: -moz-linear-gradient(top, #A385AD, #96789f); /* for firefox 3.6+ */ 
     background: -o-linear-gradient(top, #A385AD, #96789f);
 }
 
 #submenu li.selected {
     background: #FFFFFF; /* for non-css3 browsers */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F3EBF5', endColorstr='#FFFFFF'); /* for IE */
+    background: -ms-linear-gradient(top, #F3EBF5 0%, #FFFFFF 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#F3EBF5), to(#FFFFFF)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #F3EBF5,  #FFFFFF); /* for firefox 3.6+ */
+    background: -moz-linear-gradient(top, #F3EBF5, #FFFFFF); /* for firefox 3.6+ */
     background: -o-linear-gradient(top, #F3EBF5, #FFFFFF);
     border: solid #aaa;
     border-width: 1px 1px 0 1px;
@@ -139,68 +158,10 @@ img.ui-datepicker-trigger{
 #submenu ul li:hover.selected{
     background: #EEEEEE; /* for non-css3 browsers */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#EADDED', endColorstr='#FFFFFF'); /* for IE */
+    background: -ms-linear-gradient(top, #EADDED 0%, #FFFFFF 100%);
     background: -webkit-gradient(linear, left top, left bottom, from(#EADDED), to(#FFFFFF)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #EADDED,  #FFFFFF); /* for firefox 3.6+ */ 
+    background: -moz-linear-gradient(top, #EADDED, #FFFFFF); /* for firefox 3.6+ */ 
     background: -o-linear-gradient(top, #EADDED, #FFFFFF);
-}
-
-#submenu li.actions {
-    float:right;
-    cursor:pointer;
-}
-
-#submenu div.actions {
-    position:absolute;
-    right:2px;
-    display:none;
-    margin-top:30px;
-    background: #FFFFFF;
-    border: 1px solid #AAA;
-    padding: 5px 0 5px 0;
-    
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    
-    -moz-box-shadow: 3px 3px 4px #CCC;
-    -webkit-box-shadow: 3px 3px 4px #CCC;
-    box-shadow: 3px 3px 4px #CCC;
-}
-
-#submenu div.actions ul {
-    margin:0;
-    padding:0;
-    min-width:150px;
-}
-
-#submenu li.action {
-    background: #FFFFFF;
-    border-width:0;
-    width:100%;
-    margin:0;
-    -moz-border-radius: 0;
-    -webkit-border-radius: 0;
-    border-radius: 0;
-    float:none;
-    padding:0;
-    display:none;
-}
-
-#submenu li.action a {
-    color: #555 !important;
-    font-size:12px;
-    line-height:27px !important;
-    margin:0;
-    padding:0 5px 0 5px;
-}
-
-#submenu li.action:hover {
-    background: #96789F;
-    
-}
-
-#submenu li.action:hover a {
-    color: #FFFFFF !important;
 }
 
 div#submenu {

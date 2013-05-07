@@ -9,6 +9,7 @@ class Relationship{
 	var $user2;
     var $type;
     var $projects;
+    var $projectsWaiting;
     var $startDate;
     var $endDate;
     var $comment;
@@ -18,10 +19,9 @@ class Relationship{
 	    if(isset(self::$cache[$id])){
 	        return self::$cache[$id];
 	    }
-		$sql = "SELECT *
-			FROM grand_relations
-			WHERE id = '$id'";
-		$data = DBFunctions::execSQL($sql);
+	    $data = DBFunctions::select(array('grand_relations'),
+	                                array('*'),
+	                                array('id' => $id));
 		$Relationship = new Relationship($data);
         self::$cache[$Relationship->id] = &$Relationship;
 		return $Relationship;
@@ -34,13 +34,8 @@ class Relationship{
 			$this->user1 = $data[0]['user1'];
 			$this->user2 = $data[0]['user2'];
 			$this->type = $data[0]['type'];
-			$this->projects = array();
-			if($data[0]['projects'] != ""){
-			    foreach(unserialize($data[0]['projects']) as $project){
-			        $proj = Project::newFromId($project);
-	                $this->projects[] = $proj;
-			    }
-			}
+			$this->projects = $data[0]['projects'];
+			$this->projectsWaiting = true;
 			$this->startDate = $data[0]['start_date'];
 			$this->endDate = $data[0]['end_date'];
 			$this->comment = $data[0]['comment'];
@@ -74,6 +69,18 @@ class Relationship{
 	
 	// Returns an array of Project objects for this Relationship
 	function getProjects(){
+	    if($this->projectsWaiting){
+	        $projects = $this->projects;
+	        $this->projects = array();
+	        if($projects != ""){
+	            $projects = unserialize($projects);
+			    foreach($projects as $project){
+			        $proj = Project::newFromId($project);
+	                $this->projects[] = $proj;
+			    }
+			}
+			$this->projectsWaiting = false;
+	    }
 	    return $this->projects;
 	}
 	

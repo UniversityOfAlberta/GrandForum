@@ -2,6 +2,7 @@
     autoload_register('GrandObjectPage');
     autoload_register('GrandObjectPage/TabbedPage');
     
+    require_once("Backbone/BackbonePage.php");
     require_once("PersonPage.php");
     require_once("ProjectPage.php");
     require_once("PublicationPage.php");
@@ -15,6 +16,7 @@
     //require_once("MyProjects.php");
     require_once("EditRelations.php");
     require_once("MailingLists.php");
+    require_once("Products/Products.php");
     
     $wgHooks['AlternateEdit'][] = 'noEdit';
     $wgHooks['UnknownAction'][] = 'noCreate';

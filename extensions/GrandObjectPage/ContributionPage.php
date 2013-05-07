@@ -79,8 +79,12 @@ class ContributionPage {
                                     if($subtype[$key] == "othe" && isset($_POST["other_type$key"]) && $_POST["other_type$key"] != ""){
                                         $subtype[$key] = str_replace("'", "&#39;", $_POST["other_type$key"]);
                                     }
-                                    $cash[$key] = (isset($_POST["cash"][$key])) ? $_POST["cash"][$key] : 0;
-                                    $kind[$key] = (isset($_POST["inKind"][$key])) ? $_POST["inKind"][$key] : 0;
+                                    if($type[$key] == "cash" || $type[$key] == "caki" || $type[$key] == "none"){
+                                        $cash[$key] = (isset($_POST["cash"][$key])) ? $_POST["cash"][$key] : 0;
+                                    }
+                                    if($type[$key] == "inki" || $type[$key] == "caki"){
+                                        $kind[$key] = (isset($_POST["inKind"][$key])) ? $_POST["inKind"][$key] : 0;
+                                    }
                                 }
                             }
                         }
@@ -117,7 +121,7 @@ class ContributionPage {
                                 function validatePartners(id){
                                     var value = $('.partners', $('#' + id));
                                     var warning = $('.warning', $(value).parent().parent().parent());
-                                    if($(value).attr('value') == ''){
+                                    if($(value).val() == ''){
                                         $(warning).html('This partner is missing a name.  If you continue, this partner will be discarded.');
                                         $(warning).css('display', 'block');
                                     }
@@ -127,7 +131,7 @@ class ContributionPage {
                                 }
                         
                                 function stripAlphaChars(id){
-                                    var str = $('#' + id).attr('value');
+                                    var str = $('#' + id).val();
                                     var out = new String(str); 
                                     out = out.replace(/[^0-9]/g, '');
                                     $('#' + id).attr('value', out);
@@ -139,8 +143,8 @@ class ContributionPage {
                                 function updateTotal(){
                                     var sum = 0;
                                     $.each($('.money'), function(index, val){
-                                        if(typeof $(val).attr('value') != 'undefined' && $(val).attr('value') != ''){
-                                            sum += parseInt($(val).attr('value'));
+                                        if($(val).is(':visible') && typeof $(val).val() != 'undefined' && $(val).val() != ''){
+                                            sum += parseInt($(val).val());
                                         }
                                     });
                                     $('#contributionTotal').html(sum);
@@ -163,7 +167,7 @@ class ContributionPage {
                                 
                                 function changeFields(el){
                                     var id = $(el).attr('id');
-                                    var value = $('#' + id).attr('value');
+                                    var value = $('#' + id).val();
                                     if(value == 'cash'){
                                         $('#inkind' + id).parent().parent().css('display','none');
                                         $('#cash' + id).parent().parent().css('display','table-row');
@@ -189,6 +193,7 @@ class ContributionPage {
                                         removeSubType(el);
                                     }
                                     validatePartners($(el).parent().parent().parent().parent().attr('id'));
+                                    updateTotal();
                                 }
                                 
                                 function appendSubType(id, el){
@@ -531,7 +536,7 @@ class ContributionPage {
                             $wgOut->addHTML("<input type='submit' name='submit' value='Save Contribution' />");
                             $wgOut->addHTML("</form>");
                         }
-                        else if( (!FROZEN || $me->isRoleAtLeast(STAFF)) ){
+                        else if( (!FROZEN || $me->isRoleAtLeast(STAFF))){
                             $wgOut->addHTML("<input type='button' name='edit' value='Edit Contribution' onClick='document.location=\"{$contribution->getUrl()}?edit\";' />");
                         }
                     }

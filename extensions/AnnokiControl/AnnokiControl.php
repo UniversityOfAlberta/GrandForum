@@ -40,6 +40,11 @@ $egAnnokiExtensions['AccessControl'] = array( 'name' => 'Annoki Access Controls'
 					      'enabled' => true,
 					      );
 					      
+$egAnnokiExtensions['Cache']     = array( 'name' => 'Cache',
+					      'path' => "$IP/extensions/Cache/Cache.php",
+					      'enabled' => true,
+					      );
+					      
 $egAnnokiExtensions['Messages']     = array( 'name' => 'Messages',
 					      'path' => "$IP/extensions/Messages/Message.php",
 					      'enabled' => true,
@@ -47,6 +52,11 @@ $egAnnokiExtensions['Messages']     = array( 'name' => 'Messages',
 					      
 $egAnnokiExtensions['TabUtils']     = array( 'name' => 'TabUtils',
 					      'path' => "$IP/extensions/TabUtils/TabUtils.php",
+					      'enabled' => true,
+					      );
+					      
+$egAnnokiExtensions['API']     = array( 'name' => 'API',
+					      'path' => "$IP/extensions/API/API.body.php",
 					      'enabled' => true,
 					      );
 					      
@@ -69,11 +79,6 @@ $egAnnokiExtensions['GrandObjectPage']     = array( 'name' => 'GrandObjectPage',
 					      'path' => "$IP/extensions/GrandObjectPage/GrandObjectPage.php",
 					      'enabled' => true,
 					      );
-					      
-$egAnnokiExtensions['Cache']     = array( 'name' => 'Cache',
-					      'path' => "$IP/extensions/Cache/Cache.php",
-					      'enabled' => true,
-					      );
 
 $egAnnokiExtensions['Cal']           = array( 'name' => 'Calendar',
 					      'path' => "$IP/extensions/Calendar/calendar_extension.php",
@@ -92,11 +97,6 @@ $egAnnokiExtensions['TempEd']        = array( 'name' => 'Template Editor',
 
 $egAnnokiExtensions['TextReplace']   = array( 'name' => 'Text Replace',
 					      'path' => "$IP/extensions/TextReplace/TextReplace.php",
-					      'enabled' => true,
-					      );
-
-$egAnnokiExtensions['ProjectPie']     = array( 'name' => 'ProjectPie',
-					      'path' => "$IP/extensions/ProjectPie/projectPie.body.php",
 					      'enabled' => false,
 					      );
 					      
@@ -155,11 +155,6 @@ $egAnnokiExtensions['EditMember']     = array( 'name' => 'EditMember',
 					      'enabled' => true,
 					      );
 					      
-$egAnnokiExtensions['API']     = array( 'name' => 'API',
-					      'path' => "$IP/extensions/API/API.body.php",
-					      'enabled' => true,
-					      );
-					      
 $egAnnokiExtensions['ImportBibTex']     = array( 'name' => 'Import BibTex',
 					      'path' => "$IP/extensions/ImportBibTex/ImportBibTex.body.php",
 					      'enabled' => true,
@@ -180,10 +175,10 @@ $egAnnokiExtensions['Report']     = array( 'name' => 'Report',
 					      'enabled' => true,
 					      );
 					      					      
-$egAnnokiExtensions['ReportTables']     = array( 'name' => 'ReportTables',
-					      'path' => "$IP/extensions/ReportTables/Report.php",
-					      'enabled' => true,
-					      );
+// $egAnnokiExtensions['ReportTables']     = array( 'name' => 'ReportTables',
+// 					      'path' => "$IP/extensions/ReportTables/Report.php",
+// 					      'enabled' => true,
+// 					      );
 $egAnnokiExtensions['ReportStats']     = array( 'name' => 'ReportStats',
 					      'path' => "$IP/extensions/ReportStats/ReportStats.php",
 					      'enabled' => true,
@@ -234,8 +229,8 @@ $egAnnokiExtensions['ReportArchive']     = array( 'name' => 'Report Archive',
 					      'enabled' => true,
 					      );
 					      
-$egAnnokiExtensions['Search']     = array( 'name' => 'Search',
-					      'path' => "$IP/extensions/Search/Search.php",
+$egAnnokiExtensions['GlobalSearch']     = array( 'name' => 'Global Search',
+					      'path' => "$IP/extensions/GlobalSearch/GlobalSearch.php",
 					      'enabled' => true,
 					      );
 					      
@@ -317,6 +312,10 @@ $egAnnokiExtensions['SanityChecks']     = array( 'name' => 'SanityChecks',
 					      'enabled' => true,
 					      );
 
+$egAnnokiExtensions['AdvancedSearch']     = array( 'name' => 'AdvancedSearch',
+					      'path' => "$IP/extensions/GrandObjectPage/AdvancedSearch/AdvancedSearch.php",
+					      'enabled' => true,
+					      );
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
     if ($extension['enabled'] && is_readable($extension['path'])){
@@ -325,6 +324,7 @@ foreach($egAnnokiExtensions as $key => $extension){
         require_once($extension['path']);
         $mem_after = memory_get_usage();
         $end = microtime(true);
+        
         $egAnnokiExtensions[$key]['size'] = number_format(($mem_after - $mem_before)/1024/1024, 2);
         $egAnnokiExtensions[$key]['time'] = number_format(($end - $start)*1000, 2);
     }

@@ -272,6 +272,7 @@
     background:-moz-linear-gradient(left, #f8f8f8 5%, #E8E8E8 100% );
     background: -o-linear-gradient(left, #f8f8f8, #E8E8E8);
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8', endColorstr='#E8E8E8', GradientType=1);
+    background: -ms-linear-gradient(top, #f8f8f8 0%, #E8E8E8 100%);
     background-color:#f8f8f8;
     color:#8C529D !important;
     text-decoration:none;
@@ -308,6 +309,7 @@ a.reportTab {
     background:-moz-linear-gradient( center top, #f8f8f8 5%, #E8E8E8 100% );
     background: -o-linear-gradient(top, #f8f8f8, #E8E8E8);
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8', endColorstr='#E8E8E8');
+    background: -ms-linear-gradient(top, #f8f8f8 0%, #E8E8E8 100%);
     background-color:#f8f8f8;
     -moz-top-left-border-radius:3px;
     -moz-bottom-left-border-radius:3px;

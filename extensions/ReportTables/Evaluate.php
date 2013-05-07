@@ -5,6 +5,7 @@
 
 //define("EVAL_YEAR", REPORTING_YEAR);
 
+
 // $dir = dirname(__FILE__) . '/';
 // $wgSpecialPages['Evaluate'] = 'Evaluate'; # Let MediaWiki know about the special page.
 // $wgExtensionMessagesFiles['Evaluate'] = $dir . 'Evaluate.i18n.php';
@@ -13,7 +14,7 @@
 class Evaluate{
 	/*
 	function Evaluate(){
-	    parent::AbstractReportOld("Evaluate", RMC);
+	    //parent::AbstractReportOld("Evaluate", RMC);
 	}
 	
 	function initReport(){

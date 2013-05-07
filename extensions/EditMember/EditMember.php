@@ -49,13 +49,13 @@ class EditMember extends SpecialPage{
 		                    
 		                    function addComment(box, cannotchange){
 		                        if(cannotchange){
-		                            if(!$(box).attr('checked') && $(box).hasClass('already')){
+		                            if(!$(box).is(':checked') && $(box).hasClass('already')){
                                         $(box).attr('checked', 'checked');
                                         alert('You cannot change the role of an HQP that is supervised by someone else.');
                                     }
 		                        }
-		                        else{    
-                                    if(!$(box).attr('checked') && $(box).hasClass('already')){
+		                        else{ 
+                                    if(!$(box).is(':checked') && $(box).hasClass('already')){
                                         $(box).next().show();
                                     }
                                     else{
@@ -625,7 +625,7 @@ class EditMember extends SpecialPage{
             sort = type;
             allPeople = newAllPeople;
             allPeople.sort();
-            filterResults($("#search").attr("value"));
+            filterResults($("#search").val());
         }
         
         $(document).ready(function(){
@@ -633,7 +633,7 @@ class EditMember extends SpecialPage{
             if(no.length > 0){
                 oldOptions["no"] = no;
             }
-            filterResults($("#search").attr("value"));
+            filterResults($("#search").val());
             
             $("#search").keypress(function(event) {
                 if(event.keyCode == 40){        //DOWN
@@ -884,7 +884,7 @@ class EditMember extends SpecialPage{
 		        var universities = [\"".implode("\",\n\"", $universities)."\"];
 		        
 		        function updateStep2(){
-                    var reason = $('input[name=reason]:checked').attr('value');
+                    var reason = $('input[name=reason]:checked').val();
                     if(reason == 'graduated'){
                         var options = '<option value=\"No Thesis\">No Thesis</option>';
                         for(index in theses){

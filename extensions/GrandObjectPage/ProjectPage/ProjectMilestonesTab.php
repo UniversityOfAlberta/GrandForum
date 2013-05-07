@@ -468,7 +468,7 @@ EOF;
             }
             
             function showComment(id){
-                var checked = $('#' + id).attr('checked');
+                var checked = $('#' + id).is(':checked');
                 if(checked){
                     id = id.replace(/_abandoned/g, '_comment').replace(/_closed/g, '_comment');
                     $('#' + id).css('display', 'table-row');
@@ -521,7 +521,7 @@ EOF;
             }
             
             function removeMilestone(id){
-                var identifier = $('#' + id + 'identifier').attr('value');
+                var identifier = $('#' + id + 'identifier').val();
                 $('#mI' + id).detach();
                 $('#newMilestones').append('<input type="hidden" name="m_delete[]" value="' + identifier + '" />');
                 saveAll();

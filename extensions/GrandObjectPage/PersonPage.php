@@ -6,11 +6,25 @@ autoload_register('GrandObjectPage/PersonPage');
 $personPage = new PersonPage();
 $wgHooks['ArticleViewHeader'][] = array($personPage, 'processPage');
 $wgHooks['SkinTemplateTabs'][] = array($personPage, 'addTabs');
+$wgHooks['userCan'][] = array($personPage, 'userCanExecute');
 
 class PersonPage {
 
+    function userCanExecute(&$title, &$user, $action, &$result){
+        $name = $title->getNSText();
+        if($name == "HQP"){
+            $result = $user->isLoggedIn();
+        }
+        return true;
+    }
+
     function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues;
+        $result = true;
+        $this->userCanExecute($wgTitle, $wgUser, "read", $result);
+        if(!$result){
+            permissionError();
+        }
         $me = Person::newFromId($wgUser->getId());
         $nsText = str_replace("_", " ", $article->getTitle()->getNsText());
         if(!isset($wgRoleValues[$nsText])){

@@ -1,20 +1,49 @@
 <?php
 
-//require_once("$IP/extensions/PageRank/PageRank.php");
 require_once("InactiveUsers.php");
 
 $indexTable = new IndexTable();
 
 $wgHooks['ArticlePageDataBefore'][] = array($indexTable, 'generateTable');
+$wgHooks['userCan'][] = array($indexTable, 'userCanExecute');
 
 class IndexTable{
 
 	var $text = "";
+	
+	function userCanExecute(&$title, &$user, $action, &$result){
+	    global $wgOut, $wgServer, $wgScriptPath;
+	    if($title->getNSText() == "GRAND"){
+	        $me = Person::newFromUser($user);
+	        $text = $title->getText();
+	        switch ($title->getText()) {
+	            case 'ALL '.HQP:
+	            case 'Publications':
+				case 'Presentations':
+				case 'Artifacts':
+				case 'Multimedia Stories':
+				    $result = $me->isLoggedIn();
+	                break;
+				case 'Forms':
+				    $result = $me->isRoleAtLeast(MANAGER);
+				    break;
+	        }
+	    }
+	    return true;
+	}
 
 	function generateTable($article, $fields){
 		global $wgTitle, $wgOut, $wgUser;
 		$me = Person::newFromId($wgUser->getId());
 		if($wgTitle != null && $wgTitle->getNsText() == "GRAND" && !$wgOut->isDisabled()){
+		    $result = true;
+		    $this->userCanExecute($wgTitle, $wgUser, "read", $result);
+		    if(!$result){
+	            $wgOut->loginToUse();
+		        $wgOut->output();
+		        $wgOut->disable();
+			    return;
+	        }
 		    $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){
                     $('.indexTable').css('display', 'table');
@@ -94,9 +123,9 @@ class IndexTable{
             $idHeader = "<th>Project Id</th>";
         }
 		$this->text .= "
-<table class='indexTable' style='background:#ffffff;display:none;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead>
-<tr bgcolor='#F2F2F2'><th>Acronym</th><th>Name</th>$idHeader</tr></thead><tbody>
+<tr><th>Acronym</th><th>Name</th>$idHeader</tr></thead><tbody>
 ";
 
 		$data = Project::getAllProjects();
@@ -110,7 +139,7 @@ class IndexTable{
             }
             $this->text .= "</tr>\n";
 		}
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'bPaginate': false});</script>";
+		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
 
 		return true;
 	}
@@ -123,8 +152,8 @@ class IndexTable{
 	private function generateThemesTable(){
 		global $wgScriptPath, $wgServer;
 		$this->text .=
-"<table class='indexTable' style='background:#ffffff;display:none;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
-<thead><tr bgcolor='#F2F2F2'><th>Themes</th><th>Name</th></tr></thead><tbody>
+"<table class='indexTable' style='display:none;' frame='box' rules='all'>
+<thead><tr><th>Themes</th><th>Name</th></tr></thead><tbody>
 ";
 		$data = Project::getDefaultThemeNames();
 		foreach($data as $key => $name){
@@ -138,7 +167,7 @@ class IndexTable{
 </td></tr>
 EOF;
 		}
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'bPaginate': false});</script>";
+		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
 
 		return true;
 	}
@@ -153,20 +182,14 @@ EOF;
 	private function generatePersonTable($table){
 		global $wgServer, $wgScriptPath, $wgUser, $wgOut;
 		$me = Person::newFromId($wgUser->getId());
-		if ($table == HQP && ! $wgUser->isLoggedIn()){
-		    $wgOut->loginToUse();
-		    $wgOut->output();
-		    $wgOut->disable();
-			return;
-	    }
 		$data = Person::getAllPeople($table);
 		$idHeader = "";
         if($me->isRoleAtLeast(MANAGER)){
             $idHeader = "<th>User Id</th>";
         }
         $this->text .= "Below are all the current $table in GRAND.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
-		$this->text .= "<table class='indexTable' style='background:#ffffff;display:none;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
-<thead><tr bgcolor='#F2F2F2'><th>Name</th><th>Projects</th><th>University</th>$idHeader</tr></thead><tbody>
+		$this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
+<thead><tr><th>Name</th><th>Projects</th><th>University</th>$idHeader</tr></thead><tbody>
 ";
 		foreach($data as $person){
 		    $projects = $person->getProjects();
@@ -201,7 +224,7 @@ EOF;
 			}
 			$this->text .= "</tr>";
 		}
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'bPaginate': false});</script>";
+		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
 
 		return true;
 	}
@@ -211,8 +234,8 @@ EOF;
 		$data = Person::getAllPeople(RMC);
 
         $this->text .= "Below are all the current ".RMC." in GRAND.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
-		$this->text .= "<table class='indexTable' style='background:#ffffff;display:none;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
-<thead><tr bgcolor='#F2F2F2'><th>Name</th><th>Roles</th></tr></thead><tbody>
+		$this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
+<thead><tr><th>Name</th><th>Roles</th></tr></thead><tbody>
 ";
 		foreach($data as $person){
 		    $projects = $person->getProjects();
@@ -244,19 +267,13 @@ EOF;
 			}
 			$this->text .= "</tr>";
 		}
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'bPaginate': false});</script>";
+		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
 
 		return true;
 	}
 	
 	private function generatePublicationsTable($type){
 	    global $wgScriptPath, $wgServer, $wgUser, $wgOut;
-	    if(!$wgUser->isLoggedIn()){
-	        $wgOut->loginToUse();
-		    $wgOut->output();
-		    $wgOut->disable();
-			return;
-	    }
 	    $nonGrand = (isset($_GET['nonGrand']) && strtolower($_GET['nonGrand']) == "true");
 	    $papers = array();
 	    if($nonGrand){
@@ -283,8 +300,8 @@ EOF;
 	    else{
 	        $this->text .= "<a href='$wgServer$wgScriptPath/index.php/GRAND:{$type}s'><b>[View GRAND {$type}s]</b></a><br />Below are all the {$type}s which are not associated with GRAND.  To search for a $type, use the search box below.<br /><br />";
 	    }
-		$this->text .= "<table class='indexTable' style='background:#ffffff;display:none;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
-<thead><tr bgcolor='#F2F2F2'><th>Date</th><th>Category/Type</th><th style='min-width:300px;'>Title</th><th>Authors</th><th>Projects</th></tr></thead><tbody>";
+		$this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
+<thead><tr><th>Date</th><th>Category/Type</th><th style='min-width:300px;'>Title</th><th>Authors</th><th>Projects</th></tr></thead><tbody>";
 	    foreach($papers as $paper){
 	        $auths = array();
 	        foreach($paper->getAuthors() as $author){
@@ -331,8 +348,8 @@ EOF;
 	
 	function generateMaterialsTable(){
 	    global $wgServer, $wgScriptPath;
-	    $this->text = "<table class='indexTable' style='background:#ffffff;display:none;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
-<thead><tr bgcolor='#F2F2F2'><th>Date</th><th style='min-width:300px;'>Title</th><th>Type</th><th>People</th><th>Projects</th></tr></thead><tbody>";
+	    $this->text = "<table class='indexTable' style='display:none;' frame='box' rules='all'>
+<thead><tr><th>Date</th><th style='min-width:300px;'>Title</th><th>Type</th><th>People</th><th>Projects</th></tr></thead><tbody>";
         $materials = Material::getAllMaterials();
         foreach($materials as $material){
             $this->text .= "<tr><td>{$material->getDate()}</td><td><a href='{$material->getUrl()}'>{$material->getTitle()}</a></td><td>{$material->getHumanReadableType()}</td>";
@@ -365,8 +382,8 @@ EOF;
 	
 	function generateFormsTable(){
 	    global $wgServer, $wgScriptPath;
-	    $this->text = "<table class='indexTable' style='background:#ffffff;display:none;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
-<thead><tr bgcolor='#F2F2F2'><th>Date</th><th style='min-width:300px;'>Title</th><th>Person</th><th>University</th><th>Project</th></tr></thead><tbody>";
+	    $this->text = "<table class='indexTable' style='display:none;' frame='box' rules='all'>
+<thead><tr><th>Date</th><th style='min-width:300px;'>Title</th><th>Person</th><th>University</th><th>Project</th></tr></thead><tbody>";
         $forms = Form::getAllForms();
         foreach($forms as $form){
             $personName = "";

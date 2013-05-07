@@ -1,6 +1,6 @@
 <?php
 
-class Role{
+class Role extends BackboneModel {
 
     static $cache = array();
 
@@ -16,10 +16,9 @@ class Role{
 	    if(isset(self::$cache[$id])){
 	        return self::$cache[$id];
 	    }
-		$sql = "SELECT *
-			FROM grand_roles
-			WHERE id = '$id'";
-		$data = DBFunctions::execSQL($sql);
+	    $data = DBFunctions::select(array('grand_roles'),
+	                                array('*'),
+	                                array('id' => $id));
 		$role = new Role($data);
         self::$cache[$role->id] = &$role;
 		return $role;
@@ -35,6 +34,35 @@ class Role{
 			$this->endDate = $data[0]['end_date'];
 			$this->comment = $data[0]['comment'];
 		}
+	}
+	
+	function toArray(){
+	    $json = array('id' => $this->getId(),
+	                  'name' => $this->getRole(),
+	                  'comment' => $this->getComment(),
+	                  'startDate' => $this->getStartDate(),
+	                  'endDate' => $this->getEndDate());
+	    return $json;
+	}
+	
+	function create(){
+	
+	}
+	
+	function update(){
+	
+	}
+	
+	function delete(){
+	
+	}
+	
+	function exists(){
+	
+	}
+	
+	function getCacheId(){
+	
 	}
 	
 	// Returns whether this Role is still active or not

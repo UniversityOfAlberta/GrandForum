@@ -113,9 +113,7 @@ class Notification{
 		global $wgUser, $wgOut, $notifications, $notificationFunctions, $wgServer, $wgScriptPath;
 		$me = Person::newFromId($wgUser->getId());
 		if($me == null || $me->getName() == ""){
-		    $wgOut->setPageTitle("Permission error");
-		    $wgOut->addHTML("You are not allowed to execute the action you have requested.");
-		    return;
+		    permissionError();
 		}
 		$wgOut->setPageTitle("My Notifications");
 		$history = false;
@@ -144,33 +142,33 @@ class Notification{
 	        }
 	        $wgOut->addHTML("<br />");
 	    }
-		if(count($notifications) > 0){
-		    $wgOut->addHTML("<table class='wikitable sortable' cellpadding='5' cellspacing='1' style='background:#CCCCCC;'>
-						<tr style='background:#EEEEEE;'>
-						    <th>Name</th> <th>Created By</th> <th>Description</th> <th>Timestamp</th>
-					    </tr>\n");
-		    foreach($notifications as $notification){
-			    $wgOut->addHTML("<tr style='background:#FFFFFF;'>");
-			    if($notification->url != ""){
-				    $wgOut->addHTML("<td><a href='{$notification->url}'>{$notification->name}</a></td> <td>");
-				}
-				else{
-				    $wgOut->addHTML("<td>{$notification->name}</td> <td>");
-				}
-			    if($notification->creator != null && $notification->creator != ""){
-			        $wgOut->addHTML("<a href='{$notification->creator->getUrl()}'>{$notification->creator->getReversedName()}</a>");
-			    }
-			    else{
-			        $wgOut->addHTML("GRAND Forum");
-			    }
-			    $wgOut->addHTML("</td> <td>{$notification->description}</td> <td>{$notification->time}</td>
-					    </tr>");
-		    }
-			$wgOut->addHTML("</table>");
-			if(!$history){
-			    $wgOut->addHTML("<br /><form action='' method='post'><input type='submit' name='markAllNotificationsAsRead' value='Mark All As Read' /></form>");
-		    }
-		}
+        $wgOut->addHTML("<table class='dataTable' frame='box' rules='all'>
+			        <thead><tr>
+			            <th>Name</th> <th>Created By</th> <th>Description</th> <th>Timestamp</th>
+		            </tr></thead><tbody>");
+        foreach($notifications as $notification){
+            $wgOut->addHTML("<tr>");
+            if($notification->url != ""){
+	            $wgOut->addHTML("<td><a href='{$notification->url}'>{$notification->name}</a></td> <td>");
+	        }
+	        else{
+	            $wgOut->addHTML("<td>{$notification->name}</td> <td>");
+	        }
+            if($notification->creator != null && $notification->creator != ""){
+                $wgOut->addHTML("<a href='{$notification->creator->getUrl()}'>{$notification->creator->getReversedName()}</a>");
+            }
+            else{
+                $wgOut->addHTML("GRAND Forum");
+            }
+            $wgOut->addHTML("</td> <td>{$notification->description}</td> <td>{$notification->time}</td>
+		            </tr>");
+        }
+        $wgOut->addHTML("</tbody></table><script type='text/javascript'>$('.dataTable').dataTable({'iDisplayLength': 100, 
+                                                                                                   'aaSorting': [ [3,'desc']]
+                                                                                                  });</script>");
+        if(!$history){
+            $wgOut->addHTML("<br /><form action='' method='post'><input type='submit' name='markAllNotificationsAsRead' value='Mark All As Read' /></form>");
+        }
 	}
 	
 	static function createTab(){

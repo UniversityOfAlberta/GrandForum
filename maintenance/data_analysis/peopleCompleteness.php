@@ -73,7 +73,7 @@ foreach($all_people as $person){
 		$email = ($email == "support@forum.grand-nce.ca")? "" : $email;
 		$profile_pub = $person->getProfile();
 		$profile_pri = $person->getProfile(true);
-		
+
 		$uni = $person->getUniversity();
 		$university = $uni['university'];
 		$department = $uni['department'];
@@ -82,9 +82,7 @@ foreach($all_people as $person){
 		//$university = $person->getUni();
 		//$department = $person->getDepartment();
 		//$position = $person->getPosition();
-		
-		$projects = $person->getProjects();
-	
+		$projects = $person->getProjects();	
 
 		if($person->isPNI()){
 			$pni_data['active']['total']++;
@@ -264,4 +262,8 @@ function execSQLStatement($sql, $update=false){
 	}
 	return $rows;
 }
+<<<<<<< HEAD
 ?>
+=======
+?>
+>>>>>>> master

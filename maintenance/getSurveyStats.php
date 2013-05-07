@@ -24,6 +24,9 @@
 	    else if($person->isPNI()){
 	    	$role="PNI";
 	    }
+	    //else{
+	//	continue;
+	  //  }
 
 	    $name = $person->splitName();
 	    $f_name = $name['first'];
