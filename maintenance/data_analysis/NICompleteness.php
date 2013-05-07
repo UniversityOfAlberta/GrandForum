@@ -13,11 +13,29 @@ $ni_errors = array();
 foreach($all_people as $person){
 	//echo $person->getName() . "\n";
 	$name = $person->getName();
-
-	//Product completeness
+	$name_normal = $person->getNameForForms();
+	
 	if($person->isActive() && !in_array($person->getId(), $unique)){
 		$unique[] = $person->getId();
 		
+		//Allocated Budget Upload
+		//$person->getAllocatedBudget(2012);
+		$year = 2012;
+		$uid = $person->getId();
+        $blob_type=BLOB_EXCEL;
+        $rptype = RP_RESEARCHER;
+    	$section = RES_ALLOC_BUDGET;
+    	$item = 0;
+    	$subitem = 0;
+        $rep_addr = ReportBlob::create_address($rptype,$section,$item,$subitem);
+        $budget_blob = new ReportBlob($blob_type, ($year-1), $uid, 0);
+        $budget_blob->load($rep_addr);
+        $data = $budget_blob->getData();
+        if(is_null($data)){
+        	$ni_errors["{$name}"]['budget_errors'] = array("Failed to upload revised budget.");
+        }
+
+		//Product completeness
 		$papers = $person->getPapersAuthored("all", "2012-01-01 00:00:00", "2013-05-01 00:00:00", false);
 		$person_paper_errors = array();
 
@@ -63,6 +81,27 @@ foreach($all_people as $person){
 				$errors[] = "Student has not indicated whether they have completed TCPS2 tutorial.";
 			}
 
+			//Acknowledgements
+			if($ishqp){
+				$acks = $s->getAcknowledgements();
+				if(count($acks) > 0){
+					$ack_found = false;
+					foreach ($acks as $a){
+						$supervisor = $a->getSupervisor();
+						if($supervisor == $name_normal){
+							$ack_found = true;
+							break;
+						}
+					}
+					if(!$ack_found){
+						$errors[] = "There is no Acknowledgements found for this student.";
+					}
+				}
+				else{
+					$errors[] = "There is no Acknowledgements found for this student.";
+				}
+			}
+
 			//Only care about Masters and PhDs for thesis errors
 			if(!($position == "Masters Student" || $position == "PhD Student")){
 				continue;
@@ -100,6 +139,13 @@ foreach($all_people as $person){
 foreach($ni_errors as $name => $errors){
 	if(!empty($errors['student_errors']) || !empty($errors['paper_errors']) ){
 		echo "{$name}:\n";
+
+		if(!empty($errors['budget_errors'])){
+			echo " BUDGET ERRORS:\n";
+			foreach ($errors['budget_errors'] as $name => $es){
+				echo "    -{$es}\n";
+			}
+		}
 
 		if(!empty($errors['paper_errors'])){
 			echo " PAPER ERRORS:\n";

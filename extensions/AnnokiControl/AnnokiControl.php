@@ -307,6 +307,10 @@ $egAnnokiExtensions['EthicsTable']     = array( 'name' => 'EthicsTable',
 					      'path' => "$IP/extensions/EthicsTable/EthicsTable.php",
 					      'enabled' => true,
 					      );
+$egAnnokiExtensions['SanityChecks']     = array( 'name' => 'SanityChecks',
+					      'path' => "$IP/extensions/SanityChecks/SanityChecks.php",
+					      'enabled' => true,
+					      );
 
 $egAnnokiExtensions['AdvancedSearch']     = array( 'name' => 'AdvancedSearch',
 					      'path' => "$IP/extensions/GrandObjectPage/AdvancedSearch/AdvancedSearch.php",
