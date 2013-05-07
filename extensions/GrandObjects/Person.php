@@ -1147,11 +1147,13 @@ class Person extends BackboneModel {
                         WHERE user = '{$this->id}'
                         AND start_date <= '{$history}'
                         AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
-                DBFunctions::execSQL($sql);
+                $data = DBFunctions::execSQL($sql);
             }
 			$roles = array();
-			foreach($data as $row){
-				$roles[] = new Role(array($row));
+			if(count($data) > 0){
+			    foreach($data as $row){
+				    $roles[] = new Role(array($row));
+			    }
 			}
 			return $roles;
 		}
