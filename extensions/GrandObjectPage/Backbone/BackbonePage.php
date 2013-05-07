@@ -60,7 +60,7 @@ abstract class BackbonePage extends SpecialPage {
     }
     
     function BackbonePage(){
-        SpecialPage::SpecialPage(get_class($this), '', true);
+        SpecialPage::SpecialPage(get_class($this), '', false);
     }
     
     function userCanExecute($user){
