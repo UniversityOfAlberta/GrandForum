@@ -22,6 +22,6 @@ function filterResults(value){
 }
 
 $(document).ready(function(){
-    filterResults($("#search").attr("value"));
+    filterResults($("#search").val());
     $("#search").attr("autocomplete", "off");
 });

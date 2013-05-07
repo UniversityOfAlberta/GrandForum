@@ -43,9 +43,9 @@ class AllocatedBudgets extends SpecialPage {
             exit;
         }
 	    $people = Person::getAllPeopleDuring('all', "{$year}-00-00", ($year+1)."-00-00");
-	    $wgOut->addHTML("<table class='indexTable' style='background:#ffffff;display:none;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+	    $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='none'>
                             <thead>
-                                <tr bgcolor='#F2F2F2'>
+                                <tr>
                                     <th>Name</th><th>Allocated Budget</th><th>Total</th>
                                 </tr>
                             </thead>
@@ -96,7 +96,7 @@ class AllocatedBudgets extends SpecialPage {
 	                             </tr>");
 	        }
 	    }
-	    $wgOut->addHTML("</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'bPaginate': false});</script>");
+	    $wgOut->addHTML("</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>");
     }
     
     static function getData($year, $person){

@@ -81,7 +81,7 @@ class EditRelations extends SpecialPage{
 	                }
 	            }
 	            foreach($currentHQPNames as $name){
-	                if(array_search($name, $names) === false){
+	                if(array_search(str_replace(".", " ", $name), $names) === false){
 	                    $_POST['name2'] = $name; 
 	                    APIRequest::doAction('DeleteRelation', true);
 	                }
@@ -125,7 +125,7 @@ class EditRelations extends SpecialPage{
 	                }
 	            }
 	            foreach($currentWorksWithNames as $name){
-	                if(array_search($name, $names) === false){
+	                if(array_search(str_replace(".", " ", $name), $names) === false){
 	                    $_POST['name2'] = $name; 
 	                    APIRequest::doAction('DeleteRelation', true);
 	                }
@@ -177,7 +177,7 @@ class EditRelations extends SpecialPage{
 	            $list[] = $hqp->getNameForForms();
 	        }
 	    }
-        $wgOut->addHTML("<div class='switcheroo' name='HQP' id='hqps'>
+        $wgOut->addHTML("<div class='switcheroo noCustom' name='HQP' id='hqps'>
                             <div class='left'><span>".implode("</span>\n<span>", $names)."</span></div>
                             <div class='right'><span>".implode("</span>\n<span>", $list)."</span></div>
                         </div>");
@@ -197,7 +197,7 @@ class EditRelations extends SpecialPage{
 	            $list[] = $person->getNameForForms();
 	        }
 	    }
-        $wgOut->addHTML("<div class='switcheroo' name='CoWorker' id='coworkers'>
+        $wgOut->addHTML("<div class='switcheroo noCustom' name='CoWorker' id='coworkers'>
                             <div class='left'><span>".implode("</span>\n<span>", $names)."</span></div>
                             <div class='right'><span>".implode("</span>\n<span>", $list)."</span></div>
                         </div>");

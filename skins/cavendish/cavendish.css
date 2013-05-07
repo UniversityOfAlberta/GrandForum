@@ -123,7 +123,6 @@ body {
     box-shadow:         0 0 3px 1px #ccc;
     border: 1px solid #AAAAAA;
     width:100%;
-    
 }
 
 .deepLevel #bodyContent {
@@ -135,6 +134,11 @@ body {
 }
 
 /* Random HTML Styles */
+input::-ms-clear {
+    width : 0;
+    height: 0;
+}
+
 hr {
 	background-color: #000;
 	color: #000;
@@ -432,6 +436,7 @@ input[type=button], input[type=submit], .button, .button:visited, .ui-button, .b
     background:-moz-linear-gradient( center top, #f8f8f8 5%, #E8E8E8 100% ) !important;
     background: -o-linear-gradient(top, #f8f8f8, #E8E8E8) !important;
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8', endColorstr='#E8E8E8');
+    background: -ms-linear-gradient(top, #f8f8f8 0%, #E8E8E8 100%);
     background-color:#f8f8f8 !important;
     -moz-border-radius:3px;
     -webkit-border-radius:3px;
@@ -475,6 +480,7 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:ho
     background:-moz-linear-gradient( center top, #f8f8f8 5%, #E8E8E8 100% );
     background: -o-linear-gradient(top, #f8f8f8, #E8E8E8);
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8', endColorstr='#E8E8E8');
+    background: -ms-linear-gradient(top, #f8f8f8 0%, #E8E8E8 100%);
     background-color:#E8E8E8;
     font-family: Arial, Verdana, sans-serif;
     font-size:13px;
@@ -582,11 +588,6 @@ input.stealth, input.stealth:focus {
     font-size:1em;
     width:18px;
     min-width:18px;
-}
-
-input#searchInput {
-    border: 1px solid #333 !important;
-	background: #FFFFFF !important;
 }
 
 button::-moz-focus-inner{
@@ -796,6 +797,7 @@ input::-moz-focus-inner{
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
 	background: #96789f; /* for non-css3 browsers */
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#96789f', endColorstr='#8b6e93'); /* for IE */
+	background: -ms-linear-gradient(top, #96789f 0%, #8b6e93 100%);
 	background: -webkit-gradient(linear, left top, left bottom, from(#96789f), to(#8b6e93)); /* for webkit browsers */
 	background: -moz-linear-gradient(top,  #96789f,  #8b6e93); /* for firefox 3.6+ */
 	background: -o-linear-gradient(top, #96789f, #8b6e93);
@@ -815,8 +817,9 @@ input::-moz-focus-inner{
 .ui-datepicker-header {
     background: #999; /* for non-css3 browsers */
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#96789f', endColorstr='#8b6e93'); /* for IE */
+	background: -ms-linear-gradient(top, #96789f 0%, #8b6e93 100%);
 	background: -webkit-gradient(linear, left top, left bottom, from(#96789f), to(#8b6e93)); /* for webkit browsers */
-	background: -moz-linear-gradient(top,  #96789f,  #8b6e93); /* for firefox 3.6+ */
+	background: -moz-linear-gradient(top, #96789f, #8b6e93); /* for firefox 3.6+ */
 	background: -o-linear-gradient(top, #96789f, #8b6e93);
 }
 
@@ -835,8 +838,9 @@ input::-moz-focus-inner{
 .ui-tabs .ui-tabs-nav li:hover{
 	background: #A385AD; /* for non-css3 browsers */
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#A385AD', endColorstr='#96789f'); /* for IE */
+	background: -ms-linear-gradient(top, #A385AD 0%, #96789f 100%);
 	background: -webkit-gradient(linear, left top, left bottom, from(#A385AD), to(#96789f)); /* for webkit browsers */
-	background: -moz-linear-gradient(top,  #A385AD,  #96789f); /* for firefox 3.6+ */
+	background: -moz-linear-gradient(top, #A385AD, #96789f); /* for firefox 3.6+ */
 	background: -o-linear-gradient(top, #A385AD, #96789f); 
 }
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected {
@@ -844,8 +848,9 @@ input::-moz-focus-inner{
 	padding-bottom: 1px;
 	background: #FFFFFF; /* for non-css3 browsers */
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F3EBF5', endColorstr='#FFFFFF'); /* for IE */
+	background: -ms-linear-gradient(top, #F3EBF5 0%, #FFFFFF 100%);
 	background: -webkit-gradient(linear, left top, left bottom, from(#F3EBF5), to(#FFFFFF)); /* for webkit browsers */
-	background: -moz-linear-gradient(top,  #F3EBF5,  #FFFFFF); /* for firefox 3.6+ */
+	background: -moz-linear-gradient(top, #F3EBF5, #FFFFFF); /* for firefox 3.6+ */
 	background: -o-linear-gradient(top, #F3EBF5, #FFFFFF); 
 	border-color: #CCCCCC;
 }
@@ -882,6 +887,7 @@ div#person .ui-tabs-panel {
     height: 22px;
     background: #eee;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ddd', endColorstr='#eee'); /* for IE */
+	background: -ms-linear-gradient(top, #ddd 0%, #eee 100%);
 	background: -webkit-gradient(linear, left top, left bottom, from(#ddd), to(#eee)); /* for webkit browsers */
 	background: -moz-linear-gradient(top,  #ddd,  #eee); /* for firefox 3.6+ */ 
 	background: -o-linear-gradient(top, #ddd, #eee); 
@@ -946,6 +952,64 @@ div#person .ui-tabs-panel {
 .toggleHeader:hover, .ui-accordion-header:hover {
     background-image: url('../black_gradient_darker.png') !important;
 }
+
+ul.ui-autocomplete {
+    background: #FFFFFF !important;
+    border: 1px solid #AAA !important;
+    padding: 5px 0 5px 0 !important;
+    
+    -moz-border-radius: 5px !important;
+    -webkit-border-radius: 5px !important;
+    border-radius: 5px !important;
+    
+    -moz-box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
+    -webkit-box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
+    box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
+}
+
+li.ui-menu-item {
+    background: #FFF;
+    -moz-border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+
+li.ui-menu-item > a {
+    font-weight: bold !important;
+    font-size: 12px !important;
+    color: #555 !important;
+    border: none !important;
+    line-height:27px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin:0 !important;
+}
+
+li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-item > a.ui-state-focus {
+    font-weight: bold !important;
+    font-size: 12px !important;
+    color: #FFF !important;
+    border: none !important;
+    background: #96789F !important;
+    background-image: none !important;
+    line-height:27px !important;
+    -moz-border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+
+/*.ui-state-focus {
+    font-weight: bold !important;
+    font-size: 12px !important;
+    color: #FFF !important;
+    border: none !important;
+    background: #96789F !important;
+    background-image: none !important;
+    line-height:27px !important;
+    -moz-border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    border-radius: 0 !important;
+}*/
 
 h1.custom-title{
     padding: 0.8em 0.8em 0 0.8em;
@@ -1098,8 +1162,9 @@ a.error_box_close {
 				color: #FFFFFF;
 				background: #CCCCCC; /* for non-css3 browsers */
 				filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#96789f', endColorstr='#8b6e93'); /* for IE */
+				background: -ms-linear-gradient(top, #96789f 0%, #8b6e93 100%);
 				background: -webkit-gradient(linear, left top, left bottom, from(#96789f), to(#8b6e93)); /* for webkit browsers */
-				background: -moz-linear-gradient(top,  #96789f,  #8b6e93); /* for firefox 3.6+ */
+				background: -moz-linear-gradient(top, #96789f, #8b6e93); /* for firefox 3.6+ */
 }
 
 /* jQuery tablesort plugin CSS */
@@ -1146,4 +1211,146 @@ input.other_option:focus {
 
 .smaller {
     font-size: 94%;
+}
+
+/* Backbone Cards */
+
+.small_card {
+    width: 311px;
+    padding: 3px;
+    background: #ffffff;
+    color: #555 !important;
+    cursor: pointer;
+    overflow: hidden;
+    text-decoration: none !important;
+    white-space: nowrap;
+}
+
+.small_card:hover, .small_card_hover {
+    background: #96789F !important;
+    color: #ffffff !important;
+}
+
+.card_photo {
+    display:inline-block;
+    vertical-align:middle;
+    text-align: center;
+}
+
+.small_card .card_photo {
+    width: 25px;
+}
+
+.card_description {
+    display:inline-block;
+    vertical-align:top;
+    text-decoration: none !important;
+}
+
+.card_description * {
+    text-decoration: none !important;
+}
+
+.card_description:active, .card_description:active * {
+    color: #FFFFFF;
+}
+
+/* Global Search */
+#globalSearchInput {
+    font-size: 12px !important;
+    padding: 6px;
+    margin: 0;
+    width: 250px;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -moz-border-radius: 5px 0 0 5px;
+	-webkit-border-radius: 5px 0 0 5px;
+	border-radius: 5px 0 0 5px;
+	border: none;
+	height:14px;
+}
+
+#globalSearchInput:focus {
+    border: none !important;
+}
+
+#globalSearchButton {
+    filter: none;
+    background: #fff url('../search.png') no-repeat !important;
+    margin: 0;
+    border: none !important;
+    font-size: 12px;
+    padding: 6px;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -moz-border-radius: 0 5px 5px 0;
+	-webkit-border-radius: 0 5px 5px 0;
+	border-radius: 0 5px 5px 0;
+	width: 30px;
+	height: 26px;
+	vertical-align:top;
+}
+
+#globalSearchButton:active {
+    border:none !important;
+    margin-top:-1px !important;
+}
+
+#globalSearchResults {
+    border: 1px solid #AAA;
+    border-bottom: 0;
+    background: #FFFFFF;
+    width: 428px;
+    z-index: 1000;
+    position:relative;
+    color: #555;
+    font-size: 10px;
+    
+    -moz-box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
+    -webkit-box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
+    box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
+}
+
+.globalSearchResultsGroup {
+    background: #DDD;
+    border-right: 1px solid #AAA;
+    text-align: right;
+    width: 100px;
+    padding: 5px;
+    font-weight: bold;
+    vertical-align: top;
+    text-align: right;
+}
+
+.globalSearchResultsRows {
+    text-align: left;
+    vertical-align: top;
+    padding:0;
+    width: 311px;
+}
+
+.projectIcon, .productIcon, .wikiIcon {
+    width: 15px;
+    height:15px;
+    display: inline-block;
+}
+
+.projectIcon {
+    background: url('../project.gif');
+}
+
+.productIcon {
+    background: url('../product.gif');
+}
+
+.wikiIcon {
+    background: url('../wiki.gif');
+}
+
+.throbber {
+    width: 20px;
+    height:20px;
+    background: url('../Throbber.gif');
 }

@@ -68,7 +68,7 @@ class MyScreenCaptures extends SpecialPage {
                         line-height:12px;
                         border:1px solid #aaa; 
                         padding:5px;
-                        z-index:4000;
+                        z-index:9;
                         background: rgba(255,255,255,0.85);
                         height: 13px;
                         margin-left:-2px;
@@ -83,7 +83,7 @@ class MyScreenCaptures extends SpecialPage {
                     }
                     
                     .ui-dialog {
-                        z-index: 5000 !important;
+                        z-index: 11 !important;
                     }
                 </style>");
 	            
@@ -109,8 +109,8 @@ EOF
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
 	    $recordings = $me->getRecordings();
-	    $wgOut->addHTML("<table class='indexTable' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
-<thead><tr bgcolor='#F2F2F2'><th>Date</th><th>Graph Editor</th><th># Screenshots</th></tr></thead><tbody>");
+	    $wgOut->addHTML("<table class='indexTable' frame='box' rules='all'>
+<thead><tr><th>Date</th><th>Graph Editor</th><th># Screenshots</th></tr></thead><tbody>");
 	    foreach($recordings as $recording){
 	        $nScreens = 0;
 	        foreach($recording->events as $evt){

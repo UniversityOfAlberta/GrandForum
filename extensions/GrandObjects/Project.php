@@ -1,6 +1,6 @@
 <?php
 
-class Project{
+class Project extends BackboneModel {
 
     static $cache = array();
 
@@ -61,22 +61,29 @@ class Project{
 	    if(isset(self::$cache[$name])){
 	        return self::$cache[$name];
 	    }
-	    $nameSQL = mysql_real_escape_string($name);
-		$sql = "SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.type, s.status
-				FROM grand_project p, grand_project_evolution e, grand_project_status s
-				WHERE p.name = '$nameSQL'
-				AND e.new_id = p.id
-				AND s.evolution_id = e.id
-				ORDER BY e.id DESC LIMIT 1";
-				
-		$data = DBFunctions::execSQL($sql);
+	    $data = DBFunctions::select(array('grand_project' => 'p',
+	                                      'grand_project_evolution' => 'e',
+	                                      'grand_project_status' => 's'),
+	                                array('p.id',
+	                                      'p.name',
+	                                      'e.action',
+	                                      'e.effective_date',
+	                                      'e.id' => 'evolutionId',
+	                                      's.type',
+	                                      's.status'),
+	                                array('p.name' => $name,
+	                                      'e.new_id' => EQ(COL('p.id')),
+	                                      's.evolution_id' => EQ(COL('e.id'))),
+	                                array('e.id' => 'DESC'),
+	                                array(1));
 		if (count($data) > 0){
-		    $sql = "SELECT *
-	                FROM `grand_project_evolution`
-	                WHERE `project_id` = '{$data[0]['id']}'
-	                AND `new_id` != '{$data[0]['id']}'
-	                ORDER BY `date` DESC LIMIT 1";
-	        $data1 = DBFunctions::execSQL($sql);
+		    $data1 = DBFunctions::select(array('grand_project_evolution'),
+		                                 array('new_id',
+		                                       'project_id'),
+		                                 array('project_id' => $data[0]['id'],
+		                                       'new_id' => $data[0]['id']),
+		                                 array('date' => 'DESC'),
+		                                 array(1));
 	        if(count($data1) > 0){
 	            $project = Project::newFromId($data1[0]['new_id']);
 	            self::$cache[$data1[0]['project_id']] = &$project;
@@ -133,10 +140,10 @@ class Project{
 	
 	// Gets all of the Projects from the database
 	static function getAllProjects(){
-		$sql = "SELECT *
-				FROM grand_project p
- 				ORDER BY p.name";
-		$data = DBFunctions::execSQL($sql);
+	    $data = DBFunctions::select(array('grand_project'),
+	                                array('id'),
+	                                array(),
+	                                array('name' => 'ASC'));
 		$projects = array();
 		$projectNames = array();
 		foreach($data as $row){
@@ -158,10 +165,10 @@ class Project{
 	    if($endDate == false){
 	        $endDate = REPORTING_CYCLE_END;
 	    }
-	    $sql = "SELECT *
-				FROM grand_project p
- 				ORDER BY p.name";
-		$data = DBFunctions::execSQL($sql);
+	    $data = DBFunctions::select(array('grand_project'),
+	                                array('id'),
+	                                array(),
+	                                array('name' => 'ASC'));
 		$projects = array();
 		$projectNames = array();
 		foreach($data as $row){
@@ -265,6 +272,38 @@ class Project{
 			$this->fullName = false;
 			$this->themes = null;
 		}
+	}
+	
+	function toArray(){
+	    $array = array('id' => $this->getId(),
+	                   'name' => $this->getName(),
+	                   'fullname' => $this->getFullName(),
+	                   'description' => $this->getDescription(),
+	                   'status' => $this->getStatus(),
+	                   'type' => $this->getType(),
+	                   'url' => $this->getUrl(),
+	                   'deleted' => $this->isDeleted());
+	    return $array;
+	}
+	
+	function create(){
+	
+	}
+	
+	function update(){
+	
+	}
+	
+	function delete(){
+	
+	}
+	
+	function exists(){
+	
+	}
+	
+	function getCacheId(){
+	
 	}
 	
     static function getHQPDistributionDuring($startRange = false, $endRange = false){

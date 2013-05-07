@@ -3,6 +3,7 @@
 $publicationPage = new PublicationPage();
 
 $wgHooks['ArticleViewHeader'][] = array($publicationPage, 'processPage');
+$wgHooks['userCan'][] = array($publicationPage, 'userCanExecute');
 
 
 $publicationTypes = array("Proceedings Paper" => "an article written for submission to a workshop, symposium, or conference",
@@ -111,10 +112,22 @@ $optionDefs = array("Address" => "the city, country of the publisher",
 class PublicationPage {
 
     var $paper;
+    
+    function userCanExecute(&$title, &$user, $action, &$result){
+        $name = $title->getNSText();
+        if(($name == "Activity" || $name == "Press" || $name == "Award" || $name == "Publication" || $name == "Artifact" || $name == "Presentation")){
+            $result = $user->isLoggedIn();
+        }
+        return true;
+    }
 
     function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $types, $bibtexTypes, $wgMessage;
-        
+        $result = true;
+        $this->userCanExecute($article->getTitle(), $wgUser, "read", $result);
+        if(!$result){
+            permissionError();
+        }
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
             $name = $article->getTitle()->getNsText();
@@ -188,7 +201,6 @@ class PublicationPage {
                 if($edit){
                     $misc_types = Paper::getAllMiscTypes($category);
                     
-                    $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/scripts/switcheroo.js'></script>");
                     $wgOut->addScript('<script type="text/javascript">
                     var oldAttr = Array();
                     
@@ -688,16 +700,16 @@ class PublicationPage {
                         });
                         $('form[name=product]').submit(function(){
                             if(!validated){
-                                var title = $('form[name=product] input[name=title]').attr('value');
+                                var title = $('form[name=product] input[name=title]').val();
                                 if($('form[name=product] [name=new_title]').length > 0){
-                                    title = $('form[name=product] input[name=new_title]').attr('value');
+                                    title = $('form[name=product] input[name=new_title]').val();
                                 }
                                 var category = '{$category}';
-                                var type = $('form[name=product] [name=type]').attr('value');
+                                var type = $('form[name=product] [name=type]').val();
                                 if(type == 'Misc'){
-                                    type = 'Misc: ' + $('form[name=product] [name=misc_type]').attr('value');
+                                    type = 'Misc: ' + $('form[name=product] [name=misc_type]').val();
                                 }
-                                var status = $('form[name=product] [name=status]').attr('value');
+                                var status = $('form[name=product] [name=status]').val();
                                 $.get('{$wgServer}{$wgScriptPath}/index.php?action=api.getPublicationInfoByTitle&title=' + escape(title) + 
                                       '&category=' + escape(category) + 
                                       '&type=' + type + 
@@ -744,6 +756,7 @@ class PublicationPage {
                 }
                 if($edit){
                     $allPeople = Person::getAllPeople('all');
+                    $list = array();
                     foreach($allPeople as $person){
                         if(array_search($person->getNameForForms(), $authorNames) === false){
                             $list[] = $person->getNameForForms();

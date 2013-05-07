@@ -30,9 +30,9 @@ class PersonAcknowledgementTab extends AbstractTab {
 	                                                                'aLengthMenu': [[-1], ['All']]});
                                     });
                                 </script>";
-	        $this->html .= "<table class='indexTable' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+	        $this->html .= "<table class='indexTable' frame='box' rules='all'>
 	                            <thead>
-	                                <tr bgcolor='#F2F2F2'>
+	                                <tr>
 	                                    <th>Name</th>
 	                                    <th>University</th>
 	                                    <th>Date</th>

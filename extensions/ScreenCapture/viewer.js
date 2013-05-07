@@ -39,7 +39,7 @@
         };
         
         this.initGraph = function(){
-            $(self).append("<div id='nodeMenu' class='graphMenu' style='display:none;position:absolute;z-index:6000'><ul><li><a href='#' name='addDesc'>Add Description</a></li></ul></div><div id='descMenu' class='graphMenu' style='display:none;position:absolute;z-index:6000'><ul><li><a href='#' name='editDesc'>Edit</a></li><li><a href='#' name='deleteDesc'>Delete</a></li></ul></div>");
+            $(self).append("<div id='nodeMenu' class='graphMenu' style='display:none;position:absolute;z-index:11'><ul><li><a href='#' name='addDesc'>Add Description</a></li></ul></div><div id='descMenu' class='graphMenu' style='display:none;position:absolute;z-index:11'><ul><li><a href='#' name='editDesc'>Edit</a></li><li><a href='#' name='deleteDesc'>Delete</a></li></ul></div>");
             
             var id = 0;
             model.events.forEach(function(val, i){
@@ -50,7 +50,7 @@
                         x = 100-x-9;
                     }
                     
-                    $(self).append("<div id='window" + id + "' name='" + i + "' style='background:#ffffff;width:100px;height:50px;border:1px solid #aaa;padding:3px;position:absolute;left:" + x + "%;top:" + y + "px;z-index:5000;-webkit-border-radius:5px;-moz-border-radius: 5px;border-radius:5px;cursor:pointer;' class='window'><a href='../index.php?action=getRecordedImage&id=" + val.img + "' style='height:100%;display:block;' rel='story'><img src='../index.php?action=getRecordedImage&id=" + val.img + "&thumbnail' style='position:absolute;top:0;bottom:0;margin:auto;max-width:100px;max-height:50px;' /></a></div>");
+                    $(self).append("<div id='window" + id + "' name='" + i + "' style='background:#ffffff;width:100px;height:50px;border:1px solid #aaa;padding:3px;position:absolute;left:" + x + "%;top:" + y + "px;z-index:10;-webkit-border-radius:5px;-moz-border-radius: 5px;border-radius:5px;cursor:pointer;' class='window'><a href='../index.php?action=getRecordedImage&id=" + val.img + "' style='height:100%;display:block;' rel='story'><img src='../index.php?action=getRecordedImage&id=" + val.img + "&thumbnail' style='position:absolute;top:0;bottom:0;margin:auto;max-width:100px;max-height:50px;' /></a></div>");
                     id++;
                 }
             });
@@ -58,7 +58,7 @@
             // chrome fix.
             document.onselectstart = function () { return false; };
 
-            jsPlumb.DefaultDragOptions = { cursor: 'pointer', zIndex:2000};
+            jsPlumb.DefaultDragOptions = { cursor: 'pointer', zIndex:9};
             jsPlumb.setRenderMode(jsPlumb.SVG);
             jsPlumb.bind("click", function(connection){
                 var sourceId = connection.sourceId;
@@ -169,7 +169,7 @@
                     var currentWidth = $(that).width();
                     img.css('position','absolute')
                        .css('right',0)
-                       .css('z-index', '1000')
+                       .css('z-index', '9')
                        .css('top', $(that).parent().height()/2 - $(that).height()/2)
                        .width(currentWidth + 'px');
                     $(that).parent().append(img);
@@ -208,7 +208,7 @@
                     var currentWidth = $(that).width();
                     img.css('position','absolute')
                        .css('left',0)
-                       .css('z-index', '1000')
+                       .css('z-index', '9')
                        .css('top', $(that).parent().height()/2 - $(that).height()/2)
                        .width(currentWidth + 'px');
                     $(that).parent().append(img);
@@ -256,15 +256,15 @@
                         var transition = model.events[$(this).attr('name2')].transition;
                         img1.width('100%')
                             .css('cursor', 'pointer')
-                            .css('z-index', 100)
+                            .css('z-index', 8)
                             .css('position', 'relative')
                             .click(prev);
                         img2.width('100%')
                             .css('cursor', 'pointer')
-                            .css('z-index', 100)
+                            .css('z-index', 8)
                             .css('position', 'relative')
                             .click(next);
-                        $("#cboxLoadedContent").html("<table cellspacing='0' cellpadding='0' height='100%' width='100%' style='border-collapse:separate;'><tr><td id='leftImg' valign='middle' align='left' width='20%' style='padding-right:6px;'></td><td valign='middle' align='center'><div style='position:relative;z-index:100;color:#888888;padding:30px;'>" + transition + "<div style='position:absolute;height:30px;margin-top:-15px;top:50%;left:0;background:#000000;opacity:0.1;right:30px;'><img src='../extensions/ScreenCapture/arrow.png' style='position:absolute;right:-30px;margin-top:-15px;'></div></div></td><td id='rightImg' valign='middle' align='right' width='20%' style='padding-right:6px;'></td></tr></table>");
+                        $("#cboxLoadedContent").html("<table cellspacing='0' cellpadding='0' height='100%' width='100%' style='border-collapse:separate;'><tr><td id='leftImg' valign='middle' align='left' width='20%' style='padding-right:6px;'></td><td valign='middle' align='center'><div style='position:relative;z-index:8;color:#888888;padding:30px;'>" + transition + "<div style='position:absolute;height:30px;margin-top:-15px;top:50%;left:0;background:#000000;opacity:0.1;right:30px;'><img src='../extensions/ScreenCapture/arrow.png' style='position:absolute;right:-30px;margin-top:-15px;'></div></div></td><td id='rightImg' valign='middle' align='right' width='20%' style='padding-right:6px;'></td></tr></table>");
                         
                         $("#cboxLoadedContent #leftImg").append(img1);
                         $("#cboxLoadedContent #rightImg").append(img2);
@@ -371,7 +371,7 @@
             if(description == undefined){
                 return;
             }
-            var desc = $("<div class='window' style='min-height:15px;min-width:15px;white-space:nowrap;background:rgba(255,255,255,0.8);border:1px solid #aaa;padding:3px;position:absolute;z-index:5000;-webkit-border-radius:5px;-moz-border-radius: 5px;border-radius:5px;cursor:pointer;opacity:0.0001'>" + description.substring(0,10) + "</div>");
+            var desc = $("<div class='window' style='min-height:15px;min-width:15px;white-space:nowrap;background:rgba(255,255,255,0.8);border:1px solid #aaa;padding:3px;position:absolute;z-index:10;-webkit-border-radius:5px;-moz-border-radius: 5px;border-radius:5px;cursor:pointer;opacity:0.0001'>" + description.substring(0,10) + "</div>");
             
             $(self).append(desc);
             self.positionNode(parent, desc);

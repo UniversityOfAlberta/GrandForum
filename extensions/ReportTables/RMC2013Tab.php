@@ -94,8 +94,7 @@ class RMC2013Tab extends AbstractTab {
             $('.comment_dialog').dialog({ autoOpen: false, width: 600, height: 400 });
 
             $('.indexTable').dataTable({
-                "bPaginate": false,
-                "bLengthChange": false,
+                'aLengthMenu': [[-1], ['All']],
                 "bFilter": true,
                 "aaSorting": [[0,'asc']],
                 "aoColumns": [
@@ -275,8 +274,7 @@ EOF;
                 $('.comment_dialog').dialog({ autoOpen: false, width: 600, height: 400 });
 
                 $('.indexTable').dataTable({
-                    "bPaginate": false,
-                    "bLengthChange": false,
+                    'aLengthMenu': [[-1], ['All']],
                     "bFilter": true,
                     "aaSorting": [[1,'desc']]
                     //"bSort": false
@@ -348,12 +346,12 @@ EOF;
         
         $this->html .=<<<EOF
         <h3>$type Summary of Questions 1-9</h3>
-        <table class='indexTable' cellspacing='1' cellpadding='3' style='border-style:solid;' width='100%' frame="box" rules="all">
+        <table class='indexTable' frame="box" rules="all">
         <thead>
         <tr>
-            <th style='background: #EEEEEE;' width="20%">$type</th>
-            <th style='background: #EEEEEE; padding:0px;' width="5%">Ave. (Q7)</th>
-            <th style='background: #EEEEEE; padding:0px;' >
+            <th width="20%">$type</th>
+            <th style='padding:0px;' width="5%">Ave. (Q7)</th>
+            <th style='padding:0px;' >
             <span class='tableHeader' style="width: 19.978%;">Evaluator</span>
             <span class='tableHeader borderLeft' style="width: 15.9%;">Q8</span>
             <span class='tableHeader borderLeft' style="width: 7.9%;">Q7</span>

@@ -219,10 +219,10 @@ class Chord extends Visualisation {
             }
             $("#visOptions{$this->index} input").change(function(){
                 if((!$(this).hasClass('inverted') && !$(this).is(':checked')) || ($(this).hasClass('inverted') && $(this).is(':checked'))) {
-                    params.push('&' + $(this).attr('value'));
+                    params.push('&' + $(this).val());
                 }
                 else{
-                    var index = params.indexOf('&' + $(this).attr('value'));
+                    var index = params.indexOf('&' + $(this).val());
                     params[index] = null;
                     delete params[index];
                 }
@@ -272,10 +272,10 @@ class Chord extends Visualisation {
             $("#visSort{$this->index} input").change(function(){
                 $.each($("#visSort{$this->index} input"), function(i, val){
                     if($(val).is(':checked')){
-                        params.push('&sortBy=' + $(val).attr('value'));
+                        params.push('&sortBy=' + $(val).val());
                     }
                     else{
-                        var index = params.indexOf('&sortBy=' + $(val).attr('value'));
+                        var index = params.indexOf('&sortBy=' + $(val).val());
                         params[index] = null;
                         delete params[index];
                     }

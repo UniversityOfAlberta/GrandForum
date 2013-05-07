@@ -19,7 +19,7 @@ class ProjectPage {
             
             $wgOut->addScript("<script type='text/javascript'>
                 function stripAlphaChars(id){
-                    var str = $('#' + id).attr('value');
+                    var str = $('#' + id).val();
                     var out = new String(str); 
                     out = out.replace(/[^0-9]/g, ''); 
                     if(out > 100){

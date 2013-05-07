@@ -67,6 +67,7 @@ class cavendishTemplate extends QuickTemplate {
 		<title><?php $this->text('pagetitle') ?></title>
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/smoothness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/jquery.qtip.min.css" rel="Stylesheet" />
+		
 		<?php $this->html('csslinks') ?>
 		
 		
@@ -81,9 +82,14 @@ class cavendishTemplate extends QuickTemplate {
 		<script type="<?php $this->text('jsmimetype') ?>" src="<?php $this->text('stylepath') ?>/common/IEFixes.js?<?php echo $GLOBALS['wgStyleVersion'] ?>"></script>
 		<meta http-equiv="imagetoolbar" content="no" />
 		<![endif]-->
-		
 		<?php print Skin::makeGlobalVariablesScript( $this->data ); ?>
+		
+		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/date.js"></script>
+		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/inflection.js"></script>
+		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/to-title-case.js"></script>
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/excanvas.min.js"></script>
+		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/countries.en.js"></script>
+
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery-ui.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.browser.js"></script>
@@ -94,20 +100,92 @@ class cavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery-ui.triggeredAutocomplete.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.filterByText.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.scrollTo-min.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.md5.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jqueryDropdown/jquery.dropdown.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.reallyvisible.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.dom-outline.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.jsPlumb-min.js"></script>
-        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/colorbox/jquery.colorbox-min.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/colorbox/jquery.colorbox-min.js"></script>   
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/js/jquery.dataTables.min.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.qtip.min.js"></script>
+        
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/tagIt/js/tag-it.min.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/switcheroo.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/raphael.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/spinner.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/filter.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/autosave.js"></script>
-        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/countries.en.js"></script>
-        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.qtip.min.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/extensions/Messages/messages.js"></script>
+        
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/d3.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/html2canvas.js"></script>
-        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.md5.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/ScreenRecord/record.js"></script>
+    
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/underscore-min.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-min.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-subviews.js"></script>
+        <!--script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-relational-min.js"></script>-->
         
+        <script type='text/javascript'>
+        
+            Backbone.emulateHTTP = true;
+            Backbone.emulateJSON = true;
+            
+            Backbone.View.prototype.beforeRender = function(){};
+            Backbone.View.prototype.afterRender = function(){
+                $.each(this.$el.find('input[type=datepicker]'), function(index, val){
+                    $(val).datepicker({
+                        'dateFormat': $(val).attr('format'),
+                        'changeMonth': true,
+                        'changeYear': true,
+                        'showOn': "both",
+                        'buttonImage': "<?php echo $wgServer.$wgScriptPath; ?>/skins/calendar.gif",
+                        'buttonImageOnly': true
+                    });
+                });
+                this.$el.find('.tooltip').qtip({
+		            position: {
+		                adjust: {
+			                x: -(this.$el.find('.tooltip').width()/25),
+			                y: -(this.$el.find('.tooltip').height()/2)
+		                }
+		            },
+		            show: {
+		                delay: 500
+		            }
+		        });
+            };
+            
+            Backbone.View = (function(View) {
+              // Define the new constructor
+              Backbone.View = function(attributes, options) {
+                // Your constructor logic here
+                // ...
+                _.bindAll(this, 'beforeRender', 'render', 'afterRender'); 
+                var _this = this;
+                this.render = _.wrap(this.render, function(render) {
+                  _this.beforeRender();
+                  var ret = render();
+                  _this.afterRender(); 
+                  return ret;
+                }); 
+                // Call the default constructor if you wish
+                View.apply(this, arguments);
+                // Add some callbacks
+                
+              };
+              // Clone static properties
+              _.extend(Backbone.View, View);
+              // Clone prototype
+              Backbone.View.prototype = (function(Prototype) {
+                Prototype.prototype = View.prototype;
+                return new Prototype;
+              })(function() {});
+              // Update constructor in prototype
+              Backbone.View.prototype.constructor = Backbone.View;
+              return Backbone.View;
+            })(Backbone.View);
+        </script>
 		<script type="<?php $this->text('jsmimetype') ?>" src="<?php $this->text('stylepath' ) ?>/common/wikibits.js?<?php echo $GLOBALS['wgStyleVersion'] ?>"><!-- wikibits js --></script>
 		<!-- Head Scripts -->
 		<?php $this->html('headscripts') ?>
@@ -129,7 +207,7 @@ class cavendishTemplate extends QuickTemplate {
 				<script type="<?php $this->text('jsmimetype') ?>"><?php $this->html('userjsprev') ?></script>
 		<?php	}
 				if($this->data['trackbackhtml']) print $this->data['trackbackhtml']; ?>
-	    <link type="text/css" href="<?php $this->text('stylepath') ?>/switcheroo/switcheroo.css" rel="Stylesheet" />
+	    
 		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/main.css"; /*]]>*/</style>
 		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/extensions.css"; /*]]>*/</style>
 		<style <?php if(empty($this->data['printable']) ) { ?>media="print"<?php } ?> type="text/css">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/print.css"; /*]]>*/</style>
@@ -141,10 +219,21 @@ class cavendishTemplate extends QuickTemplate {
 		    <link type="text/css" href="<?php $this->text('stylepath') ?>/cavendish/oldie.css" rel="Stylesheet" />
 		<![endif]-->
 		<link rel="stylesheet" type="text/css" media="print" href="<?php $this->text('stylepath') ?>/common/commonPrint.css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/colorbox/colorbox.css" />
+		<link type="text/css" href="<?php $this->text('stylepath') ?>/switcheroo/switcheroo.css" rel="Stylesheet" />
+		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/tagIt/css/jquery.tagit.css" rel="Stylesheet" />
+		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/tagIt/css/tagit.ui-zendesk.css" rel="Stylesheet" />
+		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jqueryDropdown/jquery.dropdown.css" rel="Stylesheet" />
 		<script type="text/javascript" src="<?php $this->text('stylepath' ) ?>/common/wikibits.js"></script>
+		<link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/colorbox/colorbox.css" />
 		<script type='text/javascript'>
-            		
+		
+		    me = new Person(
+		    <?php
+		        $me = Person::newFromWGUser();
+		        echo $me->toJSON();
+		    ?>
+		    );
+
 		    function setMinWidth(){
 	            $("body").css('min-width', '0');
 	            minWidth = parseInt($("#header ul").css('left')) +
@@ -175,7 +264,9 @@ class cavendishTemplate extends QuickTemplate {
 	        }
 	        
 	        var sideToggled = 'out';
+	        
 		    $(document).ready(function(){
+		        /*
 		        $('div#bodyContent').ajaxComplete(function(e, xhr, settings) {
 		            if(settings.url.indexOf("action=getUserMode") == -1){
 		                $.get("<?php echo $wgServer.$wgScriptPath; ?>/index.php?action=getUserMode&user=" + wgUserName, function(response){
@@ -210,6 +301,7 @@ class cavendishTemplate extends QuickTemplate {
 		                });
 		            }
                 });
+                */
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();
                 });
@@ -266,175 +358,171 @@ class cavendishTemplate extends QuickTemplate {
 	<div id="p-personal">
 		
 	</div>
+    <div style="position:relative;">
+	    <div id="header">
+		    <a
+	        href="<?php echo htmlspecialchars($this->data['nav_urls']['mainpage']['href'])?>"
+	        title="<?php $this->msg('mainpage') ?>"><img style='margin-top:5px;' height='80px' src="<?php echo $wgServer.$wgScriptPath.'/skins/GrandForum-banner.gif'; ?>" alt='Logo' /></a>
+	        <?php
+	        
+	        if($wgScriptPath != ""){
+	            echo "<font style='font-size:36px;color:#FFFFFF;position:relative;bottom:-14px;left:-200px;'>DEVELOPMENT VERSION</font>";
+	        }
+	        
+	        ?>
+	        <!--span style='font-size:18px;color:red;position:relative;bottom:-14px;left:-250px;'>Important: site will be down for maintenance from 8-9AM (MST), Wed, Nov 16.</span-->
+		    <a name="top" id="contentTop"></a>
+    <ul class="top-nav">
+          <?php 
+				      global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage;
+		      ?>
+		        <li class="top-nav-element tab-right"
+		        <?php if($wgTitle->getNSText() == "Help"){
+		            echo "selected";
+		        } ?>>
+				    <span class="top-nav-left">&nbsp;</span>
+				    <a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Help:Contents">Help/FAQ</a>	
+				    <span class="top-nav-right">&nbsp;</span>
+			    </li>
+			    <li id='grand-tab' class="top-nav-element tab-left
+		        <?php if($wgTitle->getNSText() != "Help"){
+		            echo "selected";
+		        } ?>" style='margin-right:25px;margin-left:215px;'>
+				    <span class="top-nav-left">&nbsp;</span>
+				    <a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Main_Page">GRAND</a>	
+				    <span class="top-nav-right">&nbsp;</span>
+			    </li>
+			    <?php
+				    $user = Person::newFromName($wgUser->getName());
+			     	if($user->isRoleAtLeast(Manager) ){ ?>
+			    <li id='grand-tab' class="top-nav-element tab-left
+			        <?php if($wgTitle->getText() == "EvaluationTable" ||
+                             $wgTitle->getText() == "AcknowledgementsTable" ||
+                             $wgTitle->getText() == "Duplicates" ||
+                             $wgTitle->getText() == "EmptyEmailList" ||
+                             $wgTitle->getText() == "InactiveUsers" ||
+                             $wgTitle->getText() == "ReportStatsTable"||
+                             $wgTitle->getText() == "Impersonate"||
+                             $wgTitle->getText() == "ProjectEvolution"||
+                             $wgTitle->getText() == "AdminVisualizations"){
+			            echo "selected";
+			        } ?>" >
+				    <span class="top-nav-left">&nbsp;</span>
+				    <a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Special:EvaluationTable?section=RMC">Manager</a>	
+				    <span class="top-nav-right">&nbsp;</span>
+			    </li>
+			    <?php } ?>
 
-	<div id="header">
-		<a
-	    href="<?php echo htmlspecialchars($this->data['nav_urls']['mainpage']['href'])?>"
-	    title="<?php $this->msg('mainpage') ?>"><img style='margin-top:5px;' height='80px' src="<?php echo $wgServer.$wgScriptPath.'/skins/GrandForum-banner.gif'; ?>" alt='Logo' /></a>
-	    <?php
-	    
-	    if($wgScriptPath != ""){
-	        echo "<font style='font-size:36px;color:#FFFFFF;position:relative;bottom:-14px;left:-200px;'>DEVELOPMENT VERSION</font>";
-	    }
-	    
-	    ?>
-	    <!--span style='font-size:18px;color:red;position:relative;bottom:-14px;left:-250px;'>Important: site will be down for maintenance from 8-9AM (MST), Wed, Nov 16.</span-->
-		<a name="top" id="contentTop"></a>
-<ul class="top-nav">
-      <?php 
-				  global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage;
-		  ?>
-		    <li class="top-nav-element tab-right"
-		    <?php if($wgTitle->getNSText() == "Help"){
-		        echo "selected";
-		    } ?>>
-				<span class="top-nav-left">&nbsp;</span>
-				<a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Help:Contents">Help/FAQ</a>	
-				<span class="top-nav-right">&nbsp;</span>
-			</li>
-			<li id='grand-tab' class="top-nav-element tab-left
-		    <?php if($wgTitle->getNSText() != "Help"){
-		        echo "selected";
-		    } ?>" style='margin-right:25px;margin-left:215px;'>
-				<span class="top-nav-left">&nbsp;</span>
-				<a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Main_Page">GRAND</a>	
-				<span class="top-nav-right">&nbsp;</span>
-			</li>
-			<?php
-				$user = Person::newFromName($wgUser->getName());
-			 	if($user->isRoleAtLeast(Manager) ){ ?>
-			<li id='grand-tab' class="top-nav-element tab-left
-			    <?php if($wgTitle->getText() == "EvaluationTable" ||
-                         $wgTitle->getText() == "AcknowledgementsTable" ||
-                         $wgTitle->getText() == "Duplicates" ||
-                         $wgTitle->getText() == "EmptyEmailList" ||
-                         $wgTitle->getText() == "InactiveUsers"){
-			        echo "selected";
-			    } ?>" >
-				<span class="top-nav-left">&nbsp;</span>
-				<a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Special:EvaluationTable?section=RMC">Manager</a>	
-				<span class="top-nav-right">&nbsp;</span>
-			</li>
-			<?php } ?>
-
-			<?php global $wgImpersonating;
-			    foreach($this->data['personal_urls'] as $key => $item) {
-			    //echo $key;
-			    $selected = "";
-			    $tabLeft = "";
-			    if($key == "userpage"){
-			        $user = Person::newFromName($wgUser->getName());
-			        if(count($user->getRoles()) > 0){
-			            if($wgTitle->getText() == $user->getName() && $user->isRole($wgTitle->getNSText())){
-			                $selected = "selected";
+			    <?php global $wgImpersonating;
+			        foreach($this->data['personal_urls'] as $key => $item) {
+			        //echo $key;
+			        $selected = "";
+			        $tabLeft = "";
+			        if($key == "userpage"){
+			            $user = Person::newFromName($wgUser->getName());
+			            if(count($user->getRoles()) > 0){
+			                if($wgTitle->getText() == $user->getName() && $user->isRole($wgTitle->getNSText())){
+			                    $selected = "selected";
+			                }
+			                $item['href'] = "{$user->getUrl()}";
+			                $item['text'] = "My Profile";
 			            }
-			            $item['href'] = "{$user->getUrl()}";
-			            $item['text'] = "My Profile";
 			        }
-			    }
-			    else if($key == "mytalk" || $key == "mycontris" || $key == "watchlist" || $key == "anonuserpage" || $key == "anontalk" || $key == "preferences"){
-			        continue;
-			    }
-			    else if($key == "logout"){
-			        if(!$wgImpersonating){
-			            $getStr = "";
-		                foreach($_GET as $key => $get){
-		                    if($key == "title" || $key == "returnto"){
-		                        continue;
-		                    }
-		                    if(strlen($getStr) == 0){
-		                        $getStr .= "?$key=$get";
-		                    }
-		                    else{
-		                        $getStr .= "&$key=$get";
-		                    }
-		                }
-			            $item['text'] = "Logout";
-			            $item['href'].= urlencode($getStr);
-			            $tabLeft = "tab-right";
-			            
-			        }
-			        else {
+			        else if($key == "mytalk" || $key == "mycontris" || $key == "watchlist" || $key == "anonuserpage" || $key == "anontalk" || $key == "preferences"){
 			            continue;
 			        }
-			    }
-			    else if($key == "anonlogin"){
-			        continue;
-			    }
-			?>
-			
-			<li class="top-nav-element <?php echo $selected.' '.$tabLeft; ?>">
-				<span class="top-nav-left">&nbsp;</span>
-				<a id="lnk-<?php echo $key; ?>" class="top-nav-mid" href="<?php
-					echo htmlspecialchars($item['href']) ?>"<?php
-					if(!empty($item['class'])) { ?> class="<?php
-						   echo htmlspecialchars($item['class']) ?>"<?php } ?>><?php
-						   echo $item['text'] ?></a>
-				<span class="top-nav-right">&nbsp;</span>
-				<?php
-				} ?>
-			</li>
-			<?php 
-				// Report Tab
-				global $notifications, $notificationFunctions, $wgUser, $wgScriptPath;
-				if($wgUser->isLoggedIn()){
-				    $p = Person::newFromId($wgUser->getId());
-				    // Notification Tab
-                    if(count($notifications) == 0){
-                        foreach($notificationFunctions as $function){
-                            call_user_func($function);
-                        }
-                    }	
-					
-                    if(count($p->getProjects()) > 0 && !$user->isRoleAtLeast(MANAGER)){
-			            Project::createTab();
+			        else if($key == "logout"){
+			            if(!$wgImpersonating){
+			                $getStr = "";
+		                    foreach($_GET as $key => $get){
+		                        if($key == "title" || $key == "returnto"){
+		                            continue;
+		                        }
+		                        if(strlen($getStr) == 0){
+		                            $getStr .= "?$key=$get";
+		                        }
+		                        else{
+		                            $getStr .= "&$key=$get";
+		                        }
+		                    }
+			                $item['text'] = "Logout";
+			                $item['href'].= urlencode($getStr);
+			                $tabLeft = "tab-right";
+			                
+			            }
+			            else {
+			                continue;
+			            }
 			        }
-					if(!$user->isRoleAtLeast(MANAGER)){
-					    ReportArchive::createTab();
-					}
-					    Report::createTab();
-					//if($p->isUnassignedEvaluator()){
-					//	ReviewerConflicts::createTab();
-					//}
+			        else if($key == "anonlogin"){
+			            continue;
+			        }
+			    ?>
+			
+			    <li class="top-nav-element <?php echo $selected.' '.$tabLeft; ?>">
+				    <span class="top-nav-left">&nbsp;</span>
+				    <a id="lnk-<?php echo $key; ?>" class="top-nav-mid" href="<?php
+					    echo htmlspecialchars($item['href']) ?>"<?php
+					    if(!empty($item['class'])) { ?> class="<?php
+						       echo htmlspecialchars($item['class']) ?>"<?php } ?>><?php
+						       echo $item['text'] ?></a>
+				    <span class="top-nav-right">&nbsp;</span>
+				    <?php
+				    } ?>
+			    </li>
+			    <?php 
+				    // Report Tab
+				    global $notifications, $notificationFunctions, $wgUser, $wgScriptPath;
+				    if($wgUser->isLoggedIn()){
+				        $p = Person::newFromId($wgUser->getId());
+				        // Notification Tab
+                        if(count($notifications) == 0){
+                            foreach($notificationFunctions as $function){
+                                call_user_func($function);
+                            }
+                        }	
+					
+                        if(count($p->getProjects()) > 0 && !$user->isRoleAtLeast(MANAGER)){
+			                Project::createTab();
+			            }
+					    if(!$user->isRoleAtLeast(MANAGER)){
+					        ReportArchive::createTab();
+					    }
+					        Report::createTab();
+					    //if($p->isUnassignedEvaluator()){
+					    //	ReviewerConflicts::createTab();
+					    //}
 
-					if($user->isRole(EXTERNAL) || $user->isRole(STAFF) || $user->isRole(MANAGER)){
-					    ReportPDFs::createTab();
-					}
+					    if($user->isRole(EXTERNAL) || $user->isRole(STAFF) || $user->isRole(MANAGER)){
+					        ReportPDFs::createTab();
+					    }
 
-					MyMailingLists::createTab();
-					Notification::createTab();
-				}
-			?>
+					    MyMailingLists::createTab();
+					    Notification::createTab();
+				    }
+			    ?>
 
-		</ul>
-		
-		<form name="searchform" action="<?php $this->text('wgScript') ?>" id="searchform">
-			<div id="loggedin">
-				<?php 
-					if($wgUser->isLoggedIn()){ 
-						$p = Person::newFromId($wgUser->getId());
-						$name = $p->getNameForForms();
-						$href = "#";
-						if(count($p->getRoles()) > 0){
-				            $href = "{$p->getUrl()}";
+		    </ul>
+		    <form>
+		        <div id="loggedin">
+			        <?php 
+				        if($wgUser->isLoggedIn()){ 
+					        $p = Person::newFromId($wgUser->getId());
+					        $name = $p->getNameForForms();
+					        $href = "#";
+					        if(count($p->getRoles()) > 0){
+			                    $href = "{$p->getUrl()}";
+			                }
+					        echo "Logged in as: <a style='color:#FFFFFF;font-weight:bold;' href='$href'>$name</a>";
 				        }
-						echo "Logged in as: <a style='color:#FFFFFF;font-weight:bold;' href='$href'>$name</a>";
-					}
-					else{
-						echo "Not logged in";
-					}
-				?>
-			</div>
-			<div>
-			<input type="hidden" name="title" value="<?php $this->text('searchtitle') ?>"/>
-			<input id="searchInput" name="search" type="text"<?php echo $this->skin->tooltipAndAccesskey('search');
-					if( isset( $this->data['search'] ) ) {
-						?> value="<?php $this->text('search') ?>"<?php } ?> />
-			<input type='submit' name="go" class="searchButton" id="searchGoButton"	value="<?php $this->msg('searcharticle') ?>"<?php echo $this->skin->tooltipAndAccesskey( 'search-go' ); ?> />&nbsp;
-			<input type='submit' name="fulltext" class="searchButton" id="mw-searchButton" value="<?php $this->msg('searchbutton') ?>"<?php echo $this->skin->tooltipAndAccesskey( 'search-fulltext' ); ?> />
-	       </div>
-		</form>
-		
+				        else{
+					        echo "Not logged in";
+				        }
+			        ?>
+		        </div>
+		    </form>
+	    </div>
+	    <div id="globalSearch" style="position:absolute;top:48px;right:15px;text-align:right;"></div>
 	</div>
     <div id='submenu'>
         <ul>
@@ -514,10 +602,9 @@ class cavendishTemplate extends QuickTemplate {
     <?php 			}
 			    }
 		    }
-	    echo "					<li id='f-disclaimer'><a href='index.php?action=api.index'>API</a></li>
-						    <li id='f-disclaimer'><a href='mailto:support@forum.grand-nce.ca'>Support</a></li>\n";
+	    echo "<li id='f-disclaimer'><a href='mailto:support@forum.grand-nce.ca'>Support</a></li>\n";
     ?>
-    </ul></td><td align="right" width="1%" nowrap="nowrap"><?php if($this->data['poweredbyico']) { ?><div id="f-poweredbyico"><?php $this->html('poweredbyico') ?></div><?php } ?></td></tr></table><img style='display:none;' src='../skins/Throbber.gif' />
+    </ul></td><td align="right" width="1%" nowrap="nowrap"><?php if($this->data['poweredbyico']) { ?><div id="f-poweredbyico"><?php $this->html('poweredbyico') ?></div><?php } ?></td></tr></table><img style='display:none;' src='<?php echo "$wgServer$wgScriptPath"; ?>/skins/Throbber.gif' />
 	    </div><!-- end of the FOOTER div -->
 	<div class="visualClear"></div>
 	
@@ -541,7 +628,7 @@ class cavendishTemplate extends QuickTemplate {
 		    echo "<span>People</span>
 			<ul class='pBody' style='background:#F3EBF5'>";
 		    $me = Person::newFromId($wgUser->getId());
-		    echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:UserSearch'>Find Member</a></li>";
+		    //echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:UserSearch'>Find Member</a></li>";
 		    if($me->isRoleAtLeast(CNI)){
 		        echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:AddMember'>Add Member</a></li>";
 		        echo "<li id='userEditRequest'><a href='{$wgScriptPath}/index.php/Special:EditMember'>Edit Member</a></li>";

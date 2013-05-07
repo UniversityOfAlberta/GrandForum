@@ -160,7 +160,7 @@ function impersonate(){
         }
         
         if(!$pageAllowed && !((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions']) || (isset($_GET['action']) && $_GET['action'] == 'getUserMode'))){
-            permissionError($ns, $title);
+            permissionError();
             return true;
         }
     }
@@ -245,17 +245,6 @@ function checkSupervisesImpersonee(){
         }
     }
     return false;
-}
-
-function permissionError($ns, $title){
-    global $wgOut, $wgServer, $wgScriptPath, $wgTitle;
-    $wgTitle = Title::newFromText("$ns:$title");
-    $wgOut->setPageTitle("Permission error");
-    $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>
-                     <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
-    $wgOut->output();
-    $wgOut->disable();
-    exit;
 }
 
 function changeGroups($user, &$aRights){

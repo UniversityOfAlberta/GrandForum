@@ -584,7 +584,7 @@ EOF;
         if(no.length > 0){
             oldOptions["no"] = no;
         }
-        filterResults($("#search").attr("value"));
+        filterResults($("#search").val());
         
         $("#search").keypress(function(event) {
             if(event.keyCode == 40){        //DOWN
