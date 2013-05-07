@@ -43,15 +43,11 @@ function handleDuplicates($action, $request){
     return true;
 }
 
-function runDuplicates($par){
-    Duplicates::run($par);
-}
-
 class Duplicates extends SpecialPage{
 
 	function Duplicates() {
 		wfLoadExtensionMessages('Duplicates');
-		SpecialPage::SpecialPage("Duplicates", '', true, 'runDuplicates');
+		SpecialPage::SpecialPage("Duplicates", STAFF.'+', true, 'Duplicates::run');
 	}
 	
 	function userCanExecute($user){

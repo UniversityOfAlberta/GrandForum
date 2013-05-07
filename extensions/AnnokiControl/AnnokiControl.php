@@ -97,11 +97,6 @@ $egAnnokiExtensions['TempEd']        = array( 'name' => 'Template Editor',
 
 $egAnnokiExtensions['TextReplace']   = array( 'name' => 'Text Replace',
 					      'path' => "$IP/extensions/TextReplace/TextReplace.php",
-					      'enabled' => true,
-					      );
-
-$egAnnokiExtensions['ProjectPie']     = array( 'name' => 'ProjectPie',
-					      'path' => "$IP/extensions/ProjectPie/projectPie.body.php",
 					      'enabled' => false,
 					      );
 					      
