@@ -6,6 +6,8 @@ $listAdmins = array("dwt@ualberta.ca",
 
 class MailingList {
 
+    static $membershipCache = array();
+
     /**
      * Subscribes the given Person to the given Project
      * @param Project $project The Project to subscribe to
@@ -81,23 +83,28 @@ class MailingList {
     }
     
     /**
-     * Returns whether the Person is subscribed to the given mailing list or not
+     * Returns whether the Person is subscribed to the given mailing list or not 
+     * (This is potentially slow if ran on all lists since it needs to do a system call)
      * @param Project $project The Project to check 
      * @param Person $person The Person to check
      * @return boolean Returns true if the Person is subscribed to the given mailing list and false if not
      */
     static function isSubscribed($project, $person){
         $listname = strtolower($project->getName());
-        $name = $person->getName();
-        $sql = "SELECT COUNT(*) as count
-                  FROM wikidev_projects p, wikidev_projectroles r
-                  WHERE p.projectname = '$listname'
-                  AND p.projectid = r.projectid
-                  AND r.userid = '$name'";
-        $rows = DBFunctions::execSQL($sql);
-		if($rows[0]['count'] > 0){
-		    return true;
-		}
+        $email = $person->getEmail();
+        if(!isset(self::$membershipCache[$listname])){
+            $command = "/usr/lib/mailman/bin/list_members $listname";
+            exec($command, $output);
+            self::$membershipCache[$listname] = $output;
+        }
+        $emails = self::$membershipCache[$listname];
+        if(count($emails) > 0){
+            foreach($emails as $addr){
+                if($addr == $email){
+                    return true;
+                }
+            }
+        }
 		return false;
     }
 
