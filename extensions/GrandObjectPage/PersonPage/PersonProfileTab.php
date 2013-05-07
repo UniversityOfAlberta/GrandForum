@@ -39,6 +39,10 @@ class PersonProfileTab extends AbstractEditableTab {
         if($this->person->isHQP()){
             APIRequest::doAction('UserEthics', true);
         }
+        Person::$cache = array();
+        Person::$namesCache = array();
+        Person::$idsCache = array();
+        $this->person = Person::newFromId($this->person->getId());
     }
     
     /*
