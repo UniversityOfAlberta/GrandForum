@@ -625,16 +625,16 @@ class cavendishTemplate extends QuickTemplate {
 <?php
 	global $wgScriptPath, $wgUser, $wgRequest;
 		if($wgUser->isLoggedIn()){
-		    echo "<span>People</span>
-			<ul class='pBody' style='background:#F3EBF5'>";
 		    $me = Person::newFromId($wgUser->getId());
-		    //echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:UserSearch'>Find Member</a></li>";
 		    if($me->isRoleAtLeast(CNI)){
+		        echo "<span>People</span>
+			    <ul class='pBody' style='background:#F3EBF5'>";
+		        //echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:UserSearch'>Find Member</a></li>";
 		        echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:AddMember'>Add Member</a></li>";
 		        echo "<li id='userEditRequest'><a href='{$wgScriptPath}/index.php/Special:EditMember'>Edit Member</a></li>";
 		        echo "<li id='userEditRelation'><a href='{$wgScriptPath}/index.php/Special:EditRelations'>Edit Relations</a></li>";
+		        echo "</ul>";
 		    }
-		    echo "</ul>";
 		    echo "<span>Products</span>
 				<ul class='pBody' style='background:#F3EBF5'>";
 		    echo "<li id='addPublication'><a href='{$wgScriptPath}/index.php/Special:AddPublicationPage'>Add/Edit Publication</a></li>";
