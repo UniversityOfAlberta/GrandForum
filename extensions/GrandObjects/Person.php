@@ -1485,6 +1485,40 @@ class Person extends BackboneModel {
 	    return $this->relations[$type];
 	}
 	
+	// Returns an array of relations for this Person of the given type
+	// If history is set to true, then all the relations regardless of date are included
+	function getStudents($type='all', $history=false){
+	    $supervision = array();
+
+        $sql = "SELECT r.id, r.type, r.user2
+                FROM grand_relations r, mw_user u1, mw_user u2
+                WHERE r.user1 = '{$this->id}'
+                AND u1.user_id = r.user1
+                AND u2.user_id = r.user2
+                AND u1.deleted != '1'
+                AND u2.deleted != '1'
+                AND r.type = 'Supervises'";
+        if(!$history){
+            $sql .= "AND start_date > end_date";
+        }
+        $data = DBFunctions::execSQL($sql);
+
+        $students = array();
+		foreach($data as $row){
+			// if($type == "all"){
+		    // }
+		    // else if($type == "Masters"){
+		    // }
+		    // else if($type == "PhD"){
+		    // }
+
+			$students[] = Person::newFromId($row['user2']);
+		}
+		
+		return $students;
+	 
+	}
+
 	// Returns the contributions this person has made
 	function getContributions(){
 	    if($this->contributions == null){

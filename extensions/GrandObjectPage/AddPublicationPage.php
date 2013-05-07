@@ -66,9 +66,9 @@ function getMyPapers($cat){
     $me = Person::newFromId($wgUser->getId());
 
 	$html  = "<div id='my_papers'>";
-	$html .= "<table id='mypubtable' class='wikitable sortable' width='100%' cellspacing='1' cellpadding='2' rules='all' frame='box'><tr><th>Date</th><th>Project</th><th>Product</th></tr>";
+	$html .= "<table id='mypubtable' class='wikitable sortable' width='100%' cellspacing='1' cellpadding='5' rules='all' frame='box'><tr><th align='center' style='white-space:nowrap;'>Publication Date</th><th>Project</th><th>Product</th></tr>";
 
-	$myPapers = $me->getPapersAuthored($cat, "2013-01-01", "2013-12-31");
+	$myPapers = $me->getPapersAuthored($cat, "2012-01-01", "2013-12-31");
 	   	
    	foreach($myPapers as $paper){
    		$id = $paper->getId();
@@ -79,12 +79,15 @@ function getMyPapers($cat){
    			$project_names[] = $p->getName();
    		}
    		$category = $paper->getCategory();
+   		$citation = $paper->getProperCitation();
+
    		$title = $paper->getTitle();
-   		$html .= "<tr><td style='white-space:nowrap;'>";
+   		$html .= "<tr><td style='white-space:nowrap;' align='center'>";
    		$html .= $date;
    		$html .= "</td><td>";
    		$html .= implode(", ", $project_names);
-   		$html .= "</td><td><a href='$wgServer$wgScriptPath/index.php/{$category}:{$id}?edit'>{$title}</a></td></tr>";
+   		//$html .= "</td><td><a href='$wgServer$wgScriptPath/index.php/{$category}:{$id}?edit'>{$title}</a></td></tr>";
+   		$html .= "</td><td>{$citation}</td></tr>";
    		
    	}
    	if(count($myPapers) == 0){

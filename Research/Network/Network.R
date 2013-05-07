@@ -170,7 +170,7 @@ correlate <- function(dataset){
     return(correlation)
 }
 
-renderCorChart <- function(field, prefix){
+renderCorChart <- function(field, prefix, outputHTML=FALSE){
     filename <- paste("output/charts/cor/", prefix, "/", field,".png", sep='')
     setDev(filename)
     .mar <- par(mar=c(5.1,4.1,6.5,2.1))
@@ -180,9 +180,21 @@ renderCorChart <- function(field, prefix){
     legend(as.integer(args[1])-0.08, 1.20, legend=c(paste("Between.",field, sep=''),paste("Closeness.",field, sep=''), paste("PageRank.", field, sep='')), col=c(1,2,3), lty=1, pch=c("1","2","3"))
     par(mar=.mar)
     par(xpd=.xpd)
+    if(outputHTML){
+        HTML.title(paste("Correlation of", field, " with Centralities over Time", sep=' '), HR=3)
+        HTMLInsertGraph(paste("../", filename, sep=''), WidthHTML=WIDTH, HeightHTML=HEIGHT, Align="left")
+    }
+}
 
-    HTML.title(paste("Correlation of", field, " with Centralities over Time", sep=' '), HR=3)
-    HTMLInsertGraph(paste("../", filename, sep=''), WidthHTML=WIDTH, HeightHTML=HEIGHT, Align="left")
+ttestStrength <- function(t){
+    pvalue <- t$p.value
+    if(pvalue > 0.05){
+        strength <- "not a significant difference"
+    }
+    else{
+        strength <- "a significant difference"
+    }
+    return(strength)
 }
 
 corStrength <- function(c){
@@ -228,6 +240,7 @@ anova <- function(field, field2){
     c <- list()
     d <- data.frame(field, field2)
     a <- aov(field2 ~ field, data=d)
+    
     c$summary <- summary(a)
     pairs <- glht(a, linfct = mcp(field = "Tukey"))
     conf <- confint.default(pairs)
@@ -267,10 +280,48 @@ anova <- function(field, field2){
     return(c)
 }
 
+runTTest <- function(field1, field2, f1, f2, year, prefix){
+    d <- data.frame(field1, field2)
+    d <- na.omit(d)
+    filename <- paste("output/", year, "/charts/tests/", prefix, "/", f2, "_", f1, ".png", sep='')
+    setDev(filename)
+    t <- t.test(d$field1, d$field2, alternative='two.sided')
+    if(!is.null(t$conf.int)){
+        lower <- round(t$conf.int[1], digits=3)
+        upper <- round(t$conf.int[2], digits=3)
+    }
+    else{
+        lower <- "NA"
+        upper <- "NA"
+    }
+    labels <- c(f2, f1)
+    statement <- ttestStrength(t)
+    par(mar=c(12,4.1,6.5,2.1))
+    p <- boxplot(d$field2, d$field1, axes = FALSE, axisnames = FALSE)
+    staxlab(side=1,seq(1, length(labels), by=1),labels,nlines=1,top.line=0.5,line.spacing=0.8, srt = 45, cex=0.8)
+    axis(1, labels = FALSE)
+    axis(2)
+    box("plot")
+    HTML.title(paste(year, "T-Test", f2, "==", f1, sep=' '), HR=3)
+    HTMLInsertGraph(paste("../", filename, sep=''), WidthHTML=WIDTH, HeightHTML=HEIGHT, Align="left")
+    HTML("Note: Empty rows were eliminated, so the means will not be the same for every t-test")
+    HTML(paste(paste("&nbsp;&nbsp;<b>T-Test:</b>"),
+               paste("&nbsp;&nbsp;&nbsp;&nbsp;<b>Alternative Hypothesis:</b> true difference in means is not equal to 0"),
+               paste("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>t</b> =", round(t$statistic, digits=3), ", <b>df</b> =", round(t$parameter, digits=3), ", <b>p-value</b> ≈", round(t$p.value, digits=3), sep=' '),
+               paste("&nbsp;&nbsp;&nbsp;&nbsp;<b>95 percent confidence interval:</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", lower, upper, sep=' '), 
+               paste("&nbsp;&nbsp;&nbsp;&nbsp;<b>Sample Means:</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>", f2, "</b>: ", round(t$estimate[2], digits=3), "<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>", f1, "</b>: ", round(t$estimate[1], digits=3), sep=''),
+               paste("&nbsp;&nbsp;&nbsp;&nbsp;There is ", statement, "between", f1, "and", f2, sep=' '),
+               sep='<br />'
+              )
+        )
+}
+
 runCorTest <- function(field1, field2, f1, f2, year, prefix, chartType){
+
     filename <- paste("output/", year, "/charts/tests/", prefix, "/", f2, "_", f1, ".png", sep='')
     setDev(filename)
     outNames <- c()
+    
     if(is.null(chartType) || chartType == "scatterplot"){
         scatterplot(field1, field2, reg.line=lm, smooth=TRUE, spread=TRUE, boxplots=FALSE, span=1, xlab=f1, ylab=f2)
     }
@@ -297,7 +348,6 @@ runCorTest <- function(field1, field2, f1, f2, year, prefix, chartType){
         axis(2)
         box("plot")
         outliers <- p$out
-        
         group <- p$group
         groups <- sort(unique(field1))
         lastGr <- -1
@@ -383,10 +433,10 @@ runCorTest <- function(field1, field2, f1, f2, year, prefix, chartType){
         HTMLInsertGraph(paste("../", filename, sep=''), WidthHTML=WIDTH, HeightHTML=HEIGHT, Align="left")
         HTML(paste(paste("&nbsp;&nbsp;<b>Pearson Correlation Test:</b>"),
                    paste("&nbsp;&nbsp;&nbsp;&nbsp;<b>Alternative Hypothesis:</b> true correlation is not equal to 0"),
-                   paste("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>t</b> =", round(c$statistic, digits=3), ", <b>df</b> =", round(c$parameter, digits=3), ", <b>p-value</b> =", format(signif(c$p.value, digits=3), scientific=TRUE), sep=' '),
+                   paste("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>t</b> =", round(c$statistic, digits=3), ", <b>df</b> =", round(c$parameter, digits=3), ", <b>p-value</b> ≈", round(c$p.value, digits=3), sep=' '),
                    paste("&nbsp;&nbsp;&nbsp;&nbsp;<b>95 percent correlation confidence interval:</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", lower, upper, sep=' '), 
                    paste("&nbsp;&nbsp;&nbsp;&nbsp;<b>Correlation:</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", round(c$estimate, digits=3), sep=' '),
-                   paste("&nbsp;&nbsp;&nbsp;&nbsp;There is", statement, "between", f1, "and", f2, sep=' '),
+                   paste("&nbsp;&nbsp;&nbsp;&nbsp;There is", statement, "between", f2, "and", f1, sep=' '),
                    sep='<br />'
                   )
             )
@@ -592,7 +642,7 @@ f<-for(type in config$types){
     dir.create(file.path(paste("output/charts/cor/", type, sep='')), showWarnings = FALSE)
     dir.create(file.path("output/charts/tests"), showWarnings = FALSE)
     dir.create(file.path(paste("output/charts/tests/", type, sep='')), showWarnings = FALSE)
-    HTML.title("Correlation of Centralities over Time", HR=2)
+    #HTML.title("Correlation of Centralities over Time", HR=2)
     for(f in fields){
         renderCorChart(f, type)
     }
@@ -611,7 +661,12 @@ f<-for(type in config$types){
                             y <- c(y, year)
                         }
                     }
-                    runCorTest(y, d, test$x, f1, ".", type, test$type)
+                    if(test$type == "ttest"){
+                        runTTest(y, d, test$x, f1, ".", type)
+                    }
+                    else{
+                        runCorTest(y, d, test$x, f1, ".", type, test$type)
+                    }
                     HTMLhr()
                 }
             }
@@ -633,10 +688,15 @@ f<-for(type in config$types){
         HTML.title(paste(type, year, "Tests", sep=' '), HR=2)
         for(test in config$tests[[type]]){
             for(f1 in c(fields, groupFields)){
-                if(regexpr(paste("^(.*\\.)?", test$x, "$", sep=''), f1) > -1){
+                if(regexpr(paste("^((SQRT|SQR|LOG|LN|INV|IDENTITY)\\.)?", test$x, "$", sep=''), f1) > -1){
                     for(f2 in c(fields, groupFields)){
-                        if(regexpr(paste("^(.*\\.)?", test$y, "$", sep=''), f2) > -1){
-                            runCorTest(unlist(d[f1]), unlist(d[f2]), f1, f2, year, type, test$type)
+                        if(regexpr(paste("^((SQRT|SQR|LOG|LN|INV|IDENTITY)\\.)?", test$y, "$", sep=''), f2) > -1){
+                            if(test$type == "ttest"){
+                                runTTest(unlist(d[f1]), unlist(d[f2]), f1, f2, year, type)
+                            }
+                            else{
+                                runCorTest(unlist(d[f1]), unlist(d[f2]), f1, f2, year, type, test$type)
+                            }
                             HTMLhr()
                             break
                         }

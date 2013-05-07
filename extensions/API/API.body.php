@@ -111,10 +111,6 @@ class APIRequest{
 	}
 	
 	function createActions(){
-	    global $apiPaths;
-		// All API actions should be put into this array
-		$actions = array();
-		
 		//POST
 		$this->addAction('Publications', 'addBibtexArticleRef', new BibtexArticleAPI());
 		$this->addAction('Publications', 'addBibtexBookRef', new BibtexBookAPI());
@@ -257,12 +253,14 @@ class APIRequest{
 		//GET
 		$this->addAction('Projects', 'getProjectInfo', new ProjectInfoAPI());
 		
+		//GET
+		$this->addAction('University', 'getEthicsStats', new UniversityEthicsAPI());
+		
+		// HIDDENS
 		$this->addAction('Hidden', 'getWFInfo', new WFAPI());
 		$this->addAction('Hidden', 'getJung', new JungAPI());
 		$this->addAction('Hidden', 'addRecordStory', new RecordStoryAPI());
 		$this->addAction('Hidden', 'getProjectMilestoneHistory', new ProjectMilestoneHistoryAPI());
-		
-		return $actions;
 	}
 }
 

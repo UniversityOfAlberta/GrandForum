@@ -1,40 +1,60 @@
-import edu.uci.ics.jung.algorithms.scoring.ClosenessCentrality;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import edu.uci.ics.jung.graph.SparseMultigraph;
 
 public class Closeness extends Centrality {
 
-	private static double max = Double.MIN_VALUE;
-	private static double min = Double.MAX_VALUE;
-	
-	private ClosenessCentrality<Node, Edge> closeness;
+	private static HashMap<String, Double> max = new HashMap<String, Double>();
+	private static HashMap<String, Double> min = new HashMap<String, Double>();
+	private static boolean firstTime = true;
 	
 	public Closeness(SparseMultigraph<Node, Edge> graph){
 		super(graph);
-		this.closeness = new ClosenessCentrality<Node, Edge>(this.graph, new DisconnectedDistance(this.graph));
 	}
 	
 	public void run(){
-		double max = Double.MIN_VALUE;
-		double min = Double.MAX_VALUE;
+		DisconnectedDistance distance = new DisconnectedDistance(this.graph);
+		HashMap<String, Double> max = new HashMap<String, Double>();
+		HashMap<String, Double> min = new HashMap<String, Double>();
 		
-		// Calculating Closeness
-		for(Node v : this.graph.getVertices()){
-			double score = Math.pow(this.closeness.getVertexScore(v), Math.E);
-			this.results.put(v.toString(), score);
-			max = Math.max(max, score);
-			min = Math.min(min, score);
+		// Calculating Closeness 
+		// (http://toreopsahl.com/2010/03/20/closeness-centrality-in-networks-with-disconnected-components/)
+		HashMap<Node, Double> scores = new HashMap<Node, Double>();
+		for(Node s : this.graph.getVertices()){
+			double sum = 0;
+			LinkedHashMap<Node, Number> dMap = (LinkedHashMap<Node, Number>) distance.getDistanceMap(s);
+			for(Node t : this.graph.getVertices()){
+				if(s != t){
+					sum += Math.pow((1/dMap.get(t).doubleValue()), Math.E);
+				}
+			}
+			scores.put(s, sum);
 		}
-		//if(Closeness.min == Double.MAX_VALUE){
-			Closeness.min = min;
-			Closeness.max = max;
-		//}
+		
+		for(Node v : this.graph.getVertices()){
+			double score = Math.log(1+scores.get(v));
+			this.results.put(v.toString(), score);
+			if(!max.containsKey(v.getType())){
+				max.put(v.getType(), score);
+				min.put(v.getType(), 0.0);
+			}
+			else{
+				max.put(v.getType(), Math.max(max.get(v.getType()), score));
+			}
+			if(Closeness.firstTime || !Centrality.NORMALIZE){
+				Closeness.max.put(v.getType(), max.get(v.getType()));
+				Closeness.min.put(v.getType(), min.get(v.getType()));
+			}
+		}
+		
 		for(Node v : this.graph.getVertices()){
 			// Normalize
 			double score = this.results.get(v.toString());
-			score = (score - Closeness.min)/(Closeness.max - Closeness.min);
+			score = (score - Closeness.min.get(v.getType()))/(Closeness.max.get(v.getType()) - Closeness.min.get(v.getType()));
 			this.results.put(v.toString(), score);
 		}
+		Closeness.firstTime = false;
 	}
 	
 }

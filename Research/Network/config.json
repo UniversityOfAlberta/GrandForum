@@ -62,6 +62,11 @@
                     "desc": "The discipline of the Person"
                 },
                 {
+                    "id": "University",
+                    "name": "University",
+                    "desc": "The universion of the Person"
+                },
+                {
                     "id": "Nationality",
                     "name": "Nationality",
                     "desc": "The nationality of the Person"
@@ -199,10 +204,7 @@
             "nProjectsByProduct",
             "nTotalHQP",
             "avgProductDisciplines",
-            "avgAuthorsPerProduct",
-            "Between",
-            "Closeness",
-            "PageRank"
+            "avgAuthorsPerProduct"
         ],
         "Project": [
             "nProductsUpToNow",
@@ -250,6 +252,16 @@
                 "y": "PageRank",
                 "x": "avgAuthorsPerProduct",
                 "type": "scatterplot"
+            },
+            {
+                "y": "Between",
+                "x": "Between.Discipline",
+                "type": "ttest"
+            },
+            {
+                "y": "Between",
+                "x": "Between.University",
+                "type": "ttest"
             },
             {
                 "y": "PageRank",

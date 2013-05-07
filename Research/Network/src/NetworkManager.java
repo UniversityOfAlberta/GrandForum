@@ -1,4 +1,5 @@
 import java.io.BufferedWriter;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -6,24 +7,35 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Vector;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class NetworkManager {
 	
 	private String name;
 	private Network network;
 	
+	/**
+	 * Constructs a new NetworkManger (used to output the csv file)
+	 * @param name The name of the network
+	 * @param network The referenced Network
+	 */
 	public NetworkManager(String name, Network network){
 		this.network = network;
 		this.name = name;
 	}
 	
+	/**
+	 * Returns the referenced Network
+	 * @return the referenced Network
+	 */
 	public Network getNetwork(){
 		return this.network;
 	}
 	
-	public void calc(){
-		this.network.calc();
-	}
-	
+	/**
+	 * Outputs a csv file in the output/data directory
+	 */
 	public void printCSV(){
 		HashMap<String, Vector<Double>> finalResults = new HashMap<String, Vector<Double>>();
 		Vector<HashMap<String, Double>> results = this.network.getResults();
@@ -67,6 +79,15 @@ public class NetworkManager {
 				b.append(",Between");
 				b.append(",Closeness");
 				b.append(",PageRank");
+				Config config = new Config();
+				for(String t : config.getTypes()){
+					Vector<JSONObject> groups = config.getGroups(t);
+					for(int i = 0; i < groups.size(); i++){
+						b.append(",Between." + groups.get(i).getString("id"));
+						b.append(",Closeness." + groups.get(i).getString("id"));
+						b.append(",PageRank." + groups.get(i).getString("id"));
+					}
+				}
 				
 				b.append("\n");
 				HashMap<String, Node> nodes = this.network.getNodes(type);
@@ -98,6 +119,8 @@ public class NetworkManager {
 				out.close();
 			} catch (IOException e) {
 				System.err.println("There was a problem writing the file");
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
 		}
 	}

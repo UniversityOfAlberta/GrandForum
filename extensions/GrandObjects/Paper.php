@@ -670,6 +670,35 @@ class Paper extends BackboneModel{
 		return trim($citation);
 	}
 
+	/**
+	*
+	* Checks appropriate type of paper for requred venue, pages and publisher fields. If paper falls under category that
+	* requires these fields, it checks them for completeness, otherwise returns them as complete.
+	*/
+	function getCompleteness(){
+		$noVenue = $noPublisher = $noPages = false;
+		$completeness = array("venue"=>true, 'pages'=>true, 'publisher'=>true);
+
+		$data = $this->getData();
+        $vn = $this->getVenue();
+        if($this->getType() == "Proceedings Paper" && $vn == ""){
+            $completeness['venue'] = false;
+        }
+        
+        if(in_array($this->getType(), array('Book', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
+            $pg = ArrayUtils::get_string($data, 'pages');
+            if (!(strlen($pg) > 0)){
+                $completeness['pages'] = false;
+            }
+            $pb = ArrayUtils::get_string($data, 'publisher', '(no publisher)');
+            if($pb == '(no publisher)'){
+                $completeness['publisher'] = false;
+            }
+        }
+
+        return $completeness;
+	}
+
 	static function friendly_type($type) {
 		switch ($type) {
 		case 'Book':

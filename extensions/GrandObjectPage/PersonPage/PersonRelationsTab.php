@@ -80,7 +80,7 @@ class PersonRelationsTab extends AbstractTab {
                             $proj_names = implode(', ', $proj_names);
                             $ethics = $hqp->getEthics();
                             if($end_date == 'Current'){
-                                $ethics = ($ethics['completed_tutorial'])? "Yes" : "No";
+                                $ethics = ($ethics['completed_tutorial'])? "<img style='vertical-align:bottom;' width='40px' src='/skins/cavendish/ethical_btns/ethical_button.jpg' />" : "<img style='vertical-align:bottom;' width='40px' src='/skins/cavendish/ethical_btns/ethical_button_not.jpg' />";
                             }
                             else{
                                 $ethics = "N/A";

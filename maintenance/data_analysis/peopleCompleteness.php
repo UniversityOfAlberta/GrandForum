@@ -78,14 +78,11 @@ foreach($all_people as $person){
 		$university = $uni['university'];
 		$department = $uni['department'];
 		$position = $uni['position'];
+
 		//$university = $person->getUni();
 		//$department = $person->getDepartment();
 		//$position = $person->getPosition();
-		
-
-
-		$projects = $person->getProjects();
-	
+		$projects = $person->getProjects();	
 
 		if($person->isPNI()){
 			$pni_data['active']['total']++;
@@ -265,4 +262,8 @@ function execSQLStatement($sql, $update=false){
 	}
 	return $rows;
 }
+<<<<<<< HEAD
 ?>
+=======
+?>
+>>>>>>> master

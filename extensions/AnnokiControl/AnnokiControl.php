@@ -303,6 +303,10 @@ $egAnnokiExtensions['ReviewResults']     = array( 'name' => 'ReviewResults',
 					      'path' => "$IP/extensions/ReviewResults/ReviewResults.php",
 					      'enabled' => true,
 					      );
+$egAnnokiExtensions['EthicsTable']     = array( 'name' => 'EthicsTable',
+					      'path' => "$IP/extensions/EthicsTable/EthicsTable.php",
+					      'enabled' => true,
+					      );
 
 $egAnnokiExtensions['AdvancedSearch']     = array( 'name' => 'AdvancedSearch',
 					      'path' => "$IP/extensions/GrandObjectPage/AdvancedSearch/AdvancedSearch.php",

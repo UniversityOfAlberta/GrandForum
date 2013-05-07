@@ -858,6 +858,10 @@ input::-moz-focus-inner{
 	color: #8C529D;
 }
 
+div#person .ui-tabs-panel {
+	overflow: auto;
+}
+
 .ui-menu {
     border: 1px solid #888888;
 }

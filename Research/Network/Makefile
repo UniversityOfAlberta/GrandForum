@@ -10,6 +10,9 @@ tar: Network.jar cleandata
 	tar -czf Network.tar.gz $(FILES)
 zip: Network.jar cleandata
 	zip -q -r Network.zip $(FILES)
+javadocs:
+	rm -fr docs/Java/*
+	javadoc src/*.java -d docs/Java/ -windowtitle "Network Documentation" 2> /dev/null
 clean: cleandata
 	rm -fr bin/* *.jar Network.tar.gz Network.zip libs/R/*
 cleandata:
