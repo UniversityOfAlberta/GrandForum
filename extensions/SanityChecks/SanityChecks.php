@@ -50,9 +50,9 @@ class SanityChecks extends SpecialPage {
         global $wgOut, $wgServer, $wgScriptPath;
         
         $html =<<<EOF
-        	<table class='indexTable' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+        	<table class='indexTable' frame='box' rules='all'>
             <thead>
-                <tr bgcolor='#F2F2F2'>
+                <tr>
                     <th width="12%">NI Name</th>
                     <th width="14%">Budget Errors</th>
                     <th width="37%">Paper Errors</th>
