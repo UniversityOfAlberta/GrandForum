@@ -16,23 +16,28 @@ class SanityChecks extends SpecialPage {
 
 	function __construct() {
 		wfLoadExtensionMessages('SanityChecks');
-		SpecialPage::SpecialPage("SanityChecks", PNI.'+', true, 'runSanityChecks');
+		SpecialPage::SpecialPage("SanityChecks", CNI.'+', true, 'runSanityChecks');
 	}
 	
 	static function run(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 	    
+	    $me = Person::newFromId($wgUser->getId());
+
 	    
-	    $wgOut->setPageTitle("NI Data Quality");
-	    $wgOut->addHTML("<div id='ackTabs'>
-	                        <ul>
-		                        <li><a href='#ni'>NIs</a></li>
-	                        </ul>
-	                        <div id='ni'>");
-	    SanityChecks::niTable();           
-	    $wgOut->addHTML("</div></div>");
-	   
-	    $wgOut->addScript("<script type='text/javascript'>
+	    if($me->isRoleAtLeast(STAFF)){
+			$wgOut->setPageTitle("NI Data Quality");
+		    $wgOut->addHTML("<div id='ackTabs'>
+		                        <ul>
+			                        <li><a href='#ni'>NIs</a></li>
+		                        </ul>
+		                        <div id='ni'>");
+
+		    SanityChecks::niTable();           
+		    
+		    $wgOut->addHTML("</div></div>");
+		   
+		    $wgOut->addScript("<script type='text/javascript'>
                                 $(document).ready(function(){
 	                                $('.indexTable').dataTable({'iDisplayLength': 100,
 	                                                            'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
@@ -43,9 +48,123 @@ class SanityChecks extends SpecialPage {
                                     $('input[name=date]').datepicker('option', 'dateFormat', 'dd-mm-yy');
                                 });
                             </script>");
+		}
+		else if($me->isRoleAtLeast(CNI)){
+			$wgOut->setPageTitle("Data Quality Issues");
+			SanityChecks::personalizedTable();
+    	}
     }    
     
+    // static function errorsTable(){
+    // 	global $wgUser;
+
+    // 	$me = Person::newFromId($wgUser->getId());
     
+    // 	if($me->isRoleAtLeast(STAFF)){
+    // 		SanityChecks::niTable();
+    // 	}
+    // 	else if($me->isRoleAtLeast(CNI)){
+    // 		SanityChecks::personalizedTable();
+    // 	}
+
+    // }
+
+    static function personalizedTable(){
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+
+        $html =<<<EOF
+        	<p><br /></p>
+        	<table style='background:#ffffff;' width='100%' cellspacing='1' cellpadding='7' frame='box' rules='all'>
+            <thead>
+                <tr bgcolor='#F2F2F2'>
+                    <th width="15%">Budget Errors</th>
+                    <th width="55%">Paper Errors</th>
+                   	<th width="30%">Student Errors</th> 
+                </tr>
+            </thead>
+            <tbody>
+EOF;
+	    $all_errors = SanityChecks::getErrors($wgUser->getId());
+
+	    if(empty($all_errors)){
+	    	$html .=<<<EOF
+	    	<tr><td colspan='3'>No Errors Found</td></tr>
+EOF;
+	    }
+	    else{
+	    	foreach($all_errors as $name => $errors){
+	    		$ni = Person::newFromName($name);
+	    		$niname_normal = $ni->getNameForForms();
+	    		$niname_link = $ni->getUrl();
+	    		//$html .= "<tr><td><a href='{$niname_link}'>{$niname_normal}</a></td>";
+
+	    		$html .= "<tr><td>";
+				if(!empty($errors['budget_errors'])){
+					foreach ($errors['budget_errors'] as $name => $es){
+						$html .= "<strong>{$es}</strong>";
+					}
+				}
+				else{
+					$html .= "<strong>No Errors</strong>";
+				}
+				$html .= "</td>";
+
+				$html .= "<td>";
+				if(!empty($errors['paper_errors'])){
+					$html .= "<strong>Papers with incomplete records:</strong><ul>";
+					foreach ($errors['paper_errors'] as $id => $es){
+						$paper = Paper::newFromId($id);
+						$name = $paper->getTitle();
+						$paper_link = $paper->getUrl();
+						$html .= "<li><a href='{$paper_link}'>{$name}</a></li>";
+						//$html .= "{$name}:<ul>";
+						//foreach ($es as $e){
+						//	$html .= "<li>{$e}</li>";
+						//}
+						//$html .= "</ul>";
+					}
+					$html .= "</ul>";
+				}
+				else{
+					$html .= "<strong>No Errors</strong>";
+				}
+				$html .= "</td>";
+
+				$html .= "<td>";
+
+				if(!empty($errors['student_errors'])){
+					$error_students = array();
+					foreach ($errors['student_errors'] as $name => $es){
+						$student = Person::newFromName($name);
+						$name_normal = $student->getNameForForms();
+						$name_link = "<a href='".$student->getUrl()."'>{$name_normal}</a>";
+						$html .= "{$name_link}:<ul>";
+						foreach ($es as $e){
+							//$error_students["{$e}"][] = $name_link;
+							$html .= "<li>{$e}</li>";
+						}
+						$html .= "</ul>";
+					}
+					// $html .= "<ul>";
+					// foreach($error_students as $e=>$s){
+					// 	$html .= "<li><b>{$e}:</b> ". implode(', ', $s) ."</li>";
+					// }
+					// $html .= "</ul>";
+				}
+				else{
+					$html .= "<strong>No Errors</strong>";
+				}
+
+				$html .= "</td>";
+				
+	    	}
+	    }
+		
+		$html .= "</tbody></table>";
+
+	    $wgOut->addHTML($html);
+    }
+
     static function niTable(){
         global $wgOut, $wgServer, $wgScriptPath;
         
@@ -65,7 +184,7 @@ EOF;
 
 	    if(empty($all_errors)){
 	    	$html .=<<<EOF
-	    	<tr><td colspan='3'>No Errors Found</td></tr>
+	    	<tr><td colspan='4'>No Errors Found</td></tr>
 EOF;
 	    }
 	    else{
@@ -143,11 +262,17 @@ EOF;
     }
     
 
-    static function getErrors(){
-    	$cnis = Person::getAllPeople('CNI');
-		$pnis = Person::getAllPeople('PNI');
+    static function getErrors($ni_id = null){
+    	
+    	if(is_null($ni_id)){
+    		$cnis = Person::getAllPeople('CNI');
+			$pnis = Person::getAllPeople('PNI');
+			$all_people = array_merge($cnis, $pnis);
+		}else{
+			$ni = Person::newFromId($ni_id);
+			$all_people = array($ni);
+		}
 
-		$all_people = array_merge($cnis, $pnis);
 		$unique = array();
 		$ni_errors = array();
 

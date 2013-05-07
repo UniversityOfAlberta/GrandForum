@@ -62,10 +62,10 @@ foreach($all_people as $person){
 			}
 
 		}
-	
+		
 		$ni_errors["{$name}"]['paper_errors'] = $person_paper_errors;
-	
-
+		
+		
 		//Students moved on vs thesis
 		$student_errors = array();
 		$students = $person->getStudents('all', true);
