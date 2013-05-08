@@ -370,28 +370,26 @@ EOF;
 					}
 
 					//Only care about Masters and PhDs for thesis errors
-					if(!($position == "Masters Student" || $position == "PhD Student")){
-						continue;
-					}
-
-
-					//Check for thesis and no exit data
-					$thesis = $s->getThesis();
-					if(!is_null($thesis)){
-						$moved = $s->getMovedOn();
-						if(empty($moved['studies']) && empty($moved['city']) && empty($moved['works']) && empty($moved['employer']) && empty($moved['country'])){
-							$errors[] = "Thesis but no exit data";
+					if(($position == "Masters Student" || $position == "PhD Student")){
+						
+						//Check for thesis and no exit data
+						$thesis = $s->getThesis();
+						if(!is_null($thesis)){
+							$moved = $s->getMovedOn();
+							if(empty($moved['studies']) && empty($moved['city']) && empty($moved['works']) && empty($moved['employer']) && empty($moved['country'])){
+								$errors[] = "Thesis but no exit data";
+							}
 						}
+						// else if(is_null($thesis) && !$ishqp){
+						// 	$moved = $s->getMovedOn();
+						// 	if(empty($moved['studies']) && empty($moved['city']) && empty($moved['works']) && empty($moved['employer']) && empty($moved['country'])){
+						// 		$errors[] = "Past student is no longer an HQP, however has no thesis records, and is not marked as moved on.";
+						// 	}
+						// 	else{
+						// 		$errors[] = "Past student is marked as moved on, however has no thesis record.";
+						// 	}
+						// }
 					}
-					// else if(is_null($thesis) && !$ishqp){
-					// 	$moved = $s->getMovedOn();
-					// 	if(empty($moved['studies']) && empty($moved['city']) && empty($moved['works']) && empty($moved['employer']) && empty($moved['country'])){
-					// 		$errors[] = "Past student is no longer an HQP, however has no thesis records, and is not marked as moved on.";
-					// 	}
-					// 	else{
-					// 		$errors[] = "Past student is marked as moved on, however has no thesis record.";
-					// 	}
-					// }
 
 					if(!empty($errors)){
 						$student_errors["{$student_name}"] = $errors;
