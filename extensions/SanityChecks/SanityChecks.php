@@ -370,7 +370,7 @@ EOF;
 					}
 
 					//Only care about Masters and PhDs for thesis errors
-					if(($position == "Masters Student" || $position == "PhD Student")){
+					if(($position == "Masters Student" || $position == "PhD Student") && $ishqp && $related){
 						
 						//Check for thesis and no exit data
 						$thesis = $s->getThesis();
