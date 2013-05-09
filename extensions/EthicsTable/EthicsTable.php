@@ -22,11 +22,32 @@ class EthicsTable extends SpecialPage {
 	static function run(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 	   
+	    if(isset($_GET['getTable'])){
+            $table_type = $_GET['getTable'];
+            $excel = "";
+            if($table_type == "HQP"){
+                $excel = EthicsTable::hqpTable();
+            }else if($table_type == "NI"){
+                $excel = EthicsTable::niTable();
+            }
+            $wgOut->disable();
+            ob_clean();
+
+            header("Pragma: public");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
+            header("Content-Type: application/force-download");
+            header("Content-Type: application/octet-stream");
+            header("Content-Type: application/download");;
+            header("Content-Disposition: attachment;filename={$table_type}_Table.xls"); 
+            header("Content-Transfer-Encoding: binary ");
+            echo $excel;
+            exit;
+        }
 	    
+	    //$projects = Project::getAllProjectsDuring();
 	    
-	    $projects = Project::getAllProjectsDuring();
-	    
-	    $people = Person::getAllPeople();
+	    //$people = Person::getAllPeople();
 	   
 	    
 	    $wgOut->setPageTitle("TCPS2 Tutorial Completion");
@@ -45,6 +66,8 @@ class EthicsTable extends SpecialPage {
                                     $('input[name=date]').datepicker('option', 'dateFormat', 'dd-mm-yy');
                                 });
                             </script>");
+
+        $wgOut->addHTML("<p><a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:EthicsTable?getTable=NI'>[Download NI Table]</a>  <a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:EthicsTable?getTable=HQP'>[Download HQP Table]</a></p>");
 
     }
     
@@ -116,6 +139,124 @@ EOF;
     	}
 
     	$wgOut->addHTML("</tbody></table>");
+    }
+
+    static function niTable(){
+        global $wgOut;
+
+        //EXCEL
+        $phpExcel = new PHPExcel();
+        $styleArray = array(
+            'font' => array(
+                'bold' => true,
+            )
+        );
+        //Get the active sheet and assign to a variable
+        $foo = $phpExcel->getActiveSheet();
+         
+        //add column headers, set the title and make the text bold
+        $foo->setCellValue("A1", "HQP Name")
+            ->setCellValue("B1", "TCPS2 Ratio")
+            ->setTitle("Ethical HQP")
+            ->getStyle("A1:B1")->applyFromArray($styleArray);
+        
+        $row_count = 2;
+        
+        $cnis = Person::getAllPeople(CNI);
+        $pnis = Person::getAllPeople(PNI);
+        $all_nis = array_merge($cnis, $pnis);
+
+        $sorted_nis = array();
+        foreach($all_nis as $ni){
+            $name = $ni->getReversedName();
+            $sorted_nis[$name] = $ni->getId();
+        }  
+        ksort($sorted_nis);
+
+        foreach($sorted_nis as $name => $id){
+            $ni = Person::newFromId($id);
+            $students = $ni->getStudents();
+            $total_students = count($students);
+            $ethical_students = 0;
+            foreach ($students as $s){
+                $ethics = $s->getEthics();
+                if($ethics['completed_tutorial'] == 1){
+                    $ethical_students++;
+                }
+                
+            }
+
+            if($ethical_students > 0){
+                $foo->setCellValue("A{$row_count}", $name)->setCellValue("B{$row_count}", "{$ethical_students} / {$total_students}");
+                $row_count++;
+            }
+        }   
+
+        $foo->getColumnDimension("A")->setWidth(40);
+        $foo->getColumnDimension("B")->setWidth(40);        
+        $phpExcel->setActiveSheetIndex(0);
+
+        ob_start();
+        $objWriter = PHPExcel_IOFactory::createWriter($phpExcel, "Excel5");
+        $objWriter->save("php://output");
+        $excel_content = ob_get_contents();
+        ob_end_clean();
+
+        return $excel_content;
+    }
+
+    static function hqpTable(){
+        global $wgOut;
+
+        //EXCEL
+        $phpExcel = new PHPExcel();
+        $styleArray = array(
+            'font' => array(
+                'bold' => true,
+            )
+        );
+        //Get the active sheet and assign to a variable
+        $foo = $phpExcel->getActiveSheet();
+         
+        //add column headers, set the title and make the text bold
+        $foo->setCellValue("A1", "NI Name")
+            ->setCellValue("B1", "TCPS2")
+            ->setTitle("Ethical HQP")
+            ->getStyle("A1:B1")->applyFromArray($styleArray);
+        
+        $row_count = 2;
+        
+        $hqps = Person::getAllPeople('HQP');
+
+        $sorted_hqp = array();
+        foreach($hqps as $hqp){
+            $name = $hqp->getReversedName();
+            $sorted_hqp[$name] = $hqp->getId();
+        }  
+        ksort($sorted_hqp);
+
+        foreach($sorted_hqp as $name => $id){
+            $hqp = Person::newFromId($id);
+            //$name = $hqp->getReversedName();
+            $ethics = $hqp->getEthics();
+
+            if($ethics['completed_tutorial'] == 1){
+                $foo->setCellValue("A{$row_count}", $name)->setCellValue("B{$row_count}", "Completed");
+                $row_count++;
+            }
+        }   
+
+        $foo->getColumnDimension("A")->setWidth(40);
+        $foo->getColumnDimension("B")->setWidth(40);        
+        $phpExcel->setActiveSheetIndex(0);
+
+        ob_start();
+        $objWriter = PHPExcel_IOFactory::createWriter($phpExcel, "Excel5");
+        $objWriter->save("php://output");
+        $excel_content = ob_get_contents();
+        ob_end_clean();
+
+        return $excel_content;
     }
 
     
