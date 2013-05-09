@@ -341,7 +341,8 @@ class JungAPI extends API{
 	                if(isset($ids[$auth->getId()]) && $person->getId() != $auth->getId()){
 	                    $edges[] = array('a' => $person->getName(), 
 	                                     'b' => $auth->getName(),
-	                                     'type' => "Person");
+	                                     'type' => "Person",
+	                                     'edgeType' => 'CoProduces');
 	                }
 	            }
 	        }
@@ -363,7 +364,8 @@ class JungAPI extends API{
 	                if(isset($ids[$sup->getId()]) && $person->getId() != $sup->getId()){
 	                    $edges[] = array('a' => $person->getName(), 
 	                                     'b' => $sup->getName(),
-	                                     'type' => "Person");
+	                                     'type' => "Person",
+	                                     'edgeType' => "CoSupervises");
 	                }
 	            }
 	        }
@@ -386,7 +388,8 @@ class JungAPI extends API{
 	               $person->getId() != $relation->getUser2()->getId()){
 	                $edges[] = array('a' => $relation->getUser1()->getName(), 
 	                                 'b' => $relation->getUser2()->getName(),
-	                                 'type' => "Person");
+	                                 'type' => "Person",
+	                                 'edgeType' => "WorksWith");
 	                $alreadyDone[$relation->getUser2()->getId()] = true;
 	            }
 	        }
@@ -401,7 +404,8 @@ class JungAPI extends API{
 	        foreach($projects as $project){
 	            $edges[] = array('a' => $node->getName(), 
 	                             'b' => $project->getName(),
-	                             'type' => "Project");
+	                             'type' => "Project",
+	                             'edgeType' => "MemberOf");
 	        }
 	    }
 	    return $edges;
@@ -417,7 +421,8 @@ class JungAPI extends API{
 	        if($uni['university'] != ""){
                 $edges[] = array('a' => $node->getName(), 
                                  'b' => $uni['university'],
-                                 'type' => "University");
+                                 'type' => "University",
+                                 'edgeType' => "WorksAt");
             }
 	    }
 	    return $edges;
@@ -440,7 +445,8 @@ class JungAPI extends API{
 	                       $person->getId() != $node->getId()){
 	                        $edges[] = array('a' => $node->getName(),
 	                                         'b' => $person->getName(),
-	                                         'type' => "Contribution");
+	                                         'type' => "Person",
+	                                         'edgeType' => "CoFunded");
 	                    }
 	                }
 	            }
@@ -459,7 +465,8 @@ class JungAPI extends API{
 	        if($uni['department'] != ""){
                 $edges[] = array('a' => $node->getName(), 
                                  'b' => $uni['department'],
-                                 'type' => "Department");
+                                 'type' => "Department",
+                                 'edgeType' => "WorksIn");
             }
 	    }
 	    return $edges;
