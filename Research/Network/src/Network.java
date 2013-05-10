@@ -237,7 +237,6 @@ public class Network {
 				Node n = new Node(node.getString("name"), node.getString("type"));
 				
 				this.metas.put(node.getString("name"), new HashMap<String,String>());
-				this.graph.addVertex(n);
 				this.nodes.put(node.getString("name"), n);
 				if(!this.nodeTypes.contains(node.getString("type"))){
 					this.nodeTypes.add(node.getString("type"));
@@ -255,33 +254,46 @@ public class Network {
 			for(int i = 0; i < edges.length(); i++){
 				// Adding Edges
 				JSONObject edge = (JSONObject)edges.get(i);
-				String metaA = "", 
-						metaB = "";
-				if(!this.group.equals("all") && this.metas.containsKey(edge.get("a"))){
-					metaA = this.metas.get(edge.get("a")).get(this.group);
-				}
-				if(!this.group.equals("all") && this.metas.containsKey(edge.get("b"))){
-					metaB = this.metas.get(edge.get("b")).get(this.group);
-				}
 				Node a = this.nodes.get(edge.get("a"));
 				Node b = this.nodes.get(edge.get("b"));
-				if(this.group.equals("all") && b == null){
-					b = new Node((String)edge.get("b"), "");
-					this.nodes.put((String)edge.get("b"), b);
-				}
-				else if((!this.group.equals("all")) && (!metaA.equals(metaB) || (a != null && b != null && !a.getType().equals(b.getType())))){
+				if(this.group.startsWith("Edge.")){
+					if(!this.group.equals("Edge." + edge.get("edgeType"))){
+						continue;
+					}
 					if(b == null){
 						b = new Node((String)edge.get("b"), "");
 						this.nodes.put((String)edge.get("b"), b);
-						this.graph.addVertex(b);
 					}
-					if(!metaA.equals(b.getName())){
-						continue;
+				}
+				else{
+					String metaA = "", 
+						   metaB = "";
+					if(!this.group.equals("all") && this.metas.containsKey(edge.get("a"))){
+						metaA = this.metas.get(edge.get("a")).get(this.group);
+					}
+					if(!this.group.equals("all") && this.metas.containsKey(edge.get("b"))){
+						metaB = this.metas.get(edge.get("b")).get(this.group);
+					}
+					if(this.group.equals("all") && b == null){
+						b = new Node((String)edge.get("b"), "");
+						this.nodes.put((String)edge.get("b"), b);
+					}
+					else if((!this.group.equals("all")) && (!metaA.equals(metaB) || (a != null && b != null && !a.getType().equals(b.getType())))){
+						if(b == null){
+							b = new Node((String)edge.get("b"), "");
+							this.nodes.put((String)edge.get("b"), b);
+							this.graph.addVertex(b);
+						}
+						if(!metaA.equals(b.getName())){
+							continue;
+						}
 					}
 				}
 				if(a != null && b != null){
-					Edge e = new Edge(a, b);
-					this.graph.addEdge(e, a, b, EdgeType.UNDIRECTED);
+					Edge e = Edge.create(a, b);
+					if(!this.graph.containsEdge(e)){
+						this.graph.addEdge(e, a, b, EdgeType.UNDIRECTED);
+					}
 				}
 			}
 			if(this.group.equals("all")){
@@ -290,9 +302,25 @@ public class Network {
 			else{
 				System.out.println("    For Group = " + this.group + ":");
 			}
-			System.out.println("      #Nodes: " + this.graph.getVertexCount());
-			System.out.println("      #Edges: " + this.graph.getEdgeCount());
-			System.out.println("      Avg Node Degree: " + Math.round((double)this.graph.getEdgeCount()/(double)this.graph.getVertexCount()));
+			int nEdges = 0;
+			for(Edge e : this.graph.getEdges()){
+				nEdges += e.getCount();
+			}
+			@SuppressWarnings("unchecked")
+			HashMap<String, Node> clonedNodes = (HashMap<String, Node>) this.nodes.clone();
+			for(String key : clonedNodes.keySet()){
+				Node n = this.nodes.get(key);
+				/*if(n.degree() == 0){
+					this.nodes.remove(n);
+					this.metas.remove(n);
+				}
+				else{*/
+					this.graph.addVertex(n);
+				//}
+			}
+			System.out.println("      #Nodes: " + this.nodes.size());
+			System.out.println("      #Edges: " + nEdges);
+			System.out.println("      Avg Node Degree: " + Math.round((double)nEdges/(double)this.nodes.size()));
 		} catch (URISyntaxException e) {
 			System.err.println("There was a syntax error with the url");
 		} catch (JSONException e) {
@@ -302,7 +330,7 @@ public class Network {
 			System.err.println("There was a problem loading the url");
 			System.exit(-2);
 		} catch (IOException e){
-			System.err.println("There was a problem loading the url");
+			System.err.println("There was a problem loading the cache.  Is this year cached?");
 			System.exit(-2);
 		}
 	}
@@ -323,6 +351,13 @@ public class Network {
 					allNet.results.add(gNet.getResults().get(1));
 					allNet.results.add(gNet.getResults().get(2));
 				}
+			}
+			for(String type : config.getEdgeTypes()){
+					Network gNet = new Network(Network.DOMAIN, year, "Edge." + type, year);
+					gNet.calc();
+					allNet.results.add(gNet.getResults().get(0));
+					allNet.results.add(gNet.getResults().get(1));
+					allNet.results.add(gNet.getResults().get(2));
 			}
 		} catch (JSONException e){
 			

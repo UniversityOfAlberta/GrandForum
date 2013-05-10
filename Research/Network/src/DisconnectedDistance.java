@@ -16,7 +16,7 @@ public class DisconnectedDistance implements Distance<Node> {
 	 */
 	public DisconnectedDistance(Graph<Node, Edge> graph){
 		this.graph = graph;
-		this.distance = new DijkstraDistance<Node, Edge>(this.graph);
+		this.distance = new DijkstraDistance<Node, Edge>(this.graph, new EdgeWeightTransformer(this.graph, true));
 	}
 
 	public Number getDistance(Node source, Node target) {

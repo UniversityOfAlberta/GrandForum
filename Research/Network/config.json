@@ -11,43 +11,50 @@
     ],
     "edges": [
         {
-            "type": "Works With",
+            "id": "WorksWith",
+            "name": "Works With",
             "source": "Person",
             "target": "Person",
             "desc": "Using the Works With relation, it forms an edge between two people since it is an explicit relation."
         },
         {
-            "type": "Co-Supervises",
+            "id": "CoSupervises",
+            "name": "Co-Supervises",
             "source": "Person",
             "target": "Person",
             "desc": "Two supervisors supervising the same HQP will form an edge between each other."
         },
         {
-            "type": "Co-Produces",
+            "id": "CoProduces",
+            "name": "Co-Produces",
             "source": "Person",
             "target": "Person",
             "desc": "People co-authoring the same product will form edges between each other."
         },
         {
-            "type": "Co-Funded",
+            "id": "CoFunded",
+            "name": "Co-Funded",
             "source": "Person",
             "target": "Person",
             "desc": "People co-contributing by contributions (both listed under the same contribution) will for edges between each other."
         },
         {
-            "type": "Department",
+            "id": "WorksIn",
+            "name": "Department",
             "source": "Person",
             "target": "Department",
             "desc": "This will relate people if they are from the same department, however it will be a weaker relation since they will be an extra node away."
         },
         {
-            "type": "University",
+            "id": "WorksAt",
+            "name": "University",
             "source": "Person",
             "target": "University",
             "desc": "This will relate people if they are from the same university, however it will be a weaker relation since they will be an extra node away."
         },
         {
-            "type": "Project",
+            "id": "MemberOf",
+            "name": "Project",
             "source": "Person",
             "target": "Project",
             "desc": "This will relate people if they are from the same project, however it will be a weaker relation since they will be an extra node awayThese are usefull for determining the best centrality measure for each of the 'meta' fields in the data."
@@ -264,6 +271,11 @@
                 "type": "ttest"
             },
             {
+                "y": "Between",
+                "x": "Between.Edge.CoProduces",
+                "type": "ttest"
+            },
+            {
                 "y": "PageRank",
                 "x": "Gender",
                 "type": "anova"
@@ -324,11 +336,6 @@
                 "type": "anova"
             },
             {
-                "y": "Closeness",
-                "x": "Nationality",
-                "type": "anova"
-            },
-            {
                 "y": "Between",
                 "x": "Nationality",
                 "type": "anova"
@@ -345,6 +352,21 @@
             },
             {
                 "y": "PageRank",
+                "x": "Time",
+                "type": "boxplot"
+            },
+            {
+                "y": "Between.Discipline",
+                "x": "Time",
+                "type": "boxplot"
+            },
+            {
+                "y": "Between.Edge.MemberOf",
+                "x": "Time",
+                "type": "boxplot"
+            },
+            {
+                "y": "PageRank.Edge.CoFunded",
                 "x": "Time",
                 "type": "boxplot"
             },
