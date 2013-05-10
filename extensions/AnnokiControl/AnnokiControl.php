@@ -313,7 +313,7 @@ $egAnnokiExtensions['SanityChecks']     = array( 'name' => 'SanityChecks',
 					      );
 
 $egAnnokiExtensions['AdvancedSearch']     = array( 'name' => 'AdvancedSearch',
-					      'path' => "$IP/extensions/GrandObjectPage/AdvancedSearch/AdvancedSearch.php",
+					      'path' => "$IP/extensions/AdvancedSearch/AdvancedSearch.php",
 					      'enabled' => true,
 					      );
 /** Install all enumerated Annoki-based extensions **/
