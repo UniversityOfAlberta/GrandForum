@@ -124,7 +124,7 @@ summarizeNodes <- function(){
 summarizeEdges <- function(){
     edges <- c("<ul>")
     for(edge in config$edges){
-        edges <- append(edges, paste("<li>", edge$type, " (" , edge$source, " -> ", edge$target, ")", sep=''))
+        edges <- append(edges, paste("<li>", edge$name, " (" , edge$source, " -> ", edge$target, ")", sep=''))
         edges <- append(edges, "<ul>")
         edges <- append(edges, paste("<li>", edge$desc, "</li>", sep=''))
         edges <- append(edges, "</ul>")
@@ -446,23 +446,33 @@ runCorTest <- function(field1, field2, f1, f2, year, prefix, chartType){
     }
 }
 
-renderHist <- function(field, f, year, prefix){
+renderHist <- function(field, f, year, prefix, outputHTML=FALSE){
+    if(length(na.omit(unlist(field))) == 0){
+        return()
+    }
     filename <- paste("output/", year, "/charts/kern/", prefix, "/", f, ".png", sep='')
     setDev(filename)
     dens <- density(na.omit(unlist(field)))
     par(mar=c(5.1,4.1,6.5,2.1))
     title <- paste("Kernel Density plot of", year, prefix, f, sep=' ')
-    HTML.title(title, HR=3)
+    if(outputHTML){
+        HTML.title(title, HR=3)
+    }
     plot(dens, main=title)
     polygon(dens, col="darkgray", border="black")
-    HTMLInsertGraph(paste("../", filename, sep=''), WidthHTML=WIDTH, HeightHTML=HEIGHT, Align="left")
-    
+    if(outputHTML){
+        HTMLInsertGraph(paste("../", filename, sep=''), WidthHTML=WIDTH, HeightHTML=HEIGHT, Align="left")
+    }
     filename <- paste("output/", year, "/charts/hist/", prefix, "/", f, ".png", sep='')
     setDev(filename)
     title <- paste("Histogram of", year, prefix, f, sep=' ')
-    HTML.title(title, HR=3)
+    if(outputHTML){
+        HTML.title(title, HR=3)
+    }
     hist(na.omit(unlist(field)), breaks="Sturges", col="darkgray", xlab="f", main=title)
-    HTMLInsertGraph(paste("../", filename, sep=''), WidthHTML=WIDTH, HeightHTML=HEIGHT, Align="left")
+    if(outputHTML){
+        HTMLInsertGraph(paste("../", filename, sep=''), WidthHTML=WIDTH, HeightHTML=HEIGHT, Align="left")
+    }
 }
 
 populateField <- function(field, f){
@@ -644,7 +654,7 @@ f<-for(type in config$types){
     dir.create(file.path(paste("output/charts/tests/", type, sep='')), showWarnings = FALSE)
     #HTML.title("Correlation of Centralities over Time", HR=2)
     for(f in fields){
-        renderCorChart(f, type)
+        renderCorChart(f, type, FALSE)
     }
     
     HTML.title(paste(type, "Tests", sep=' '), HR=2)
@@ -706,12 +716,11 @@ f<-for(type in config$types){
             }
         }
 
-        HTML.title(paste(type, year, "Distributions", sep=' '), HR=2)
+        #HTML.title(paste(type, year, "Distributions", sep=' '), HR=2)
         for(field in fields){
-            renderHist(d[field], field, year, type)
+            renderHist(d[field], field, year, type, FALSE)
         }
     }
 }
 d <- dev.off()
-html <- HTMLEndFile()
 html <- HTMLStop()

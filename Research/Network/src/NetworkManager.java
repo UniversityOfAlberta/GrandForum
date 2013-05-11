@@ -88,6 +88,11 @@ public class NetworkManager {
 						b.append(",PageRank." + groups.get(i).getString("id"));
 					}
 				}
+				for(String t : config.getEdgeTypes()){
+					b.append(",Between.Edge." + t);
+					b.append(",Closeness.Edge." + t);
+					b.append(",PageRank.Edge." + t);
+				}
 				
 				b.append("\n");
 				HashMap<String, Node> nodes = this.network.getNodes(type);

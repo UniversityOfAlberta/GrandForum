@@ -21,8 +21,26 @@ public class Config {
 	}
 	
 	/**
-	 * Returns a Vector of the different types used in the Graph
-	 * @return a Vector of the different types used in the Graph
+	 * Returns a Vector of the different Edge types used in the Graph
+	 * @return a Vector of the different Edge types used in the Graph
+	 */
+	public Vector<String> getEdgeTypes(){
+		Vector<String> returnTypes = new Vector<String>();
+		try {
+			JSONArray types = this.config.getJSONArray("edges");
+			for(int i = 0; i < types.length(); i++){
+				returnTypes.add(types.getJSONObject(i).getString("id"));
+			}
+		}
+		catch (JSONException e) {
+			
+		}
+		return returnTypes;
+	}
+	
+	/**
+	 * Returns a Vector of the different Node types used in the Graph
+	 * @return a Vector of the different Node types used in the Graph
 	 */
 	public Vector<String> getTypes(){
 		Vector<String> returnTypes = new Vector<String>();

@@ -9,7 +9,8 @@
     ],
     "edges": [
         {
-            "type": "Edge1",
+            "id": "PersonToProject",
+            "name": "Edge1",
             "source": "Node1",
             "target": "Node2",
             "desc": "Edge Description"

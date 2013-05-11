@@ -26,10 +26,10 @@ public class Closeness extends Centrality {
 			LinkedHashMap<Node, Number> dMap = (LinkedHashMap<Node, Number>) distance.getDistanceMap(s);
 			for(Node t : this.graph.getVertices()){
 				if(s != t){
-					sum += Math.pow((1/dMap.get(t).doubleValue()), Math.E);
+					sum += (1/dMap.get(t).doubleValue());
 				}
 			}
-			scores.put(s, sum);
+			scores.put(s, sum/(this.graph.getVertexCount()-1));
 		}
 		
 		for(Node v : this.graph.getVertices()){

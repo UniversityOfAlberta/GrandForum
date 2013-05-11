@@ -79,8 +79,12 @@ public class Node {
 	 * Returns the degree of this Node (number of 1st degree edges)
 	 * @return the degree of this Node (number of 1st degree edges)
 	 */
-	public int degree(){
-		return this.edges.size();
+	public double degree(){
+		double degree = 0;
+		for(Edge e : this.edges){
+			degree += e.getCount();
+		}
+		return degree;
 	}
 	
 	public String toString(){
