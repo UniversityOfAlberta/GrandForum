@@ -657,7 +657,7 @@ class cavendishTemplate extends QuickTemplate {
 			echo "<li id='messageBoard'><a href='{$wgScriptPath}/index.php/GRAND:Instructions'>Instructions</a></li>";
 			echo "<li id='messageBoard'><a href='{$wgScriptPath}/index.php/Special:Postings'>Message Board</a></li>";
 			echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php?action=getNews'>Recent News</a></li>";
-			echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php/Special:Solr'>Full Text Search</a></li>";
+			//echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php/Special:Solr'>Full Text Search</a></li>";
 			echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php/Special:AcademiaMap'>Academia Map</a></li>";
 			echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php/Special:SpecialPages'>Other Tools</a></li>";
 		}
