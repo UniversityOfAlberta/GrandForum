@@ -30,9 +30,9 @@ class PersonAcknowledgementTab extends AbstractTab {
 	                                                                'aLengthMenu': [[-1], ['All']]});
                                     });
                                 </script>";
-	        $this->html .= "<table class='indexTable' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+	        $this->html .= "<table class='indexTable' frame='box' rules='all'>
 	                            <thead>
-	                                <tr bgcolor='#F2F2F2'>
+	                                <tr>
 	                                    <th>Name</th>
 	                                    <th>University</th>
 	                                    <th>Date</th>
@@ -76,7 +76,7 @@ class PersonAcknowledgementTab extends AbstractTab {
             }
             $this->html .= "</tbody></table><br />
                             <h2>Instructions</h2>
-                            <p>If you do not see a PDF for yourself or your HQP in the above table, then you have not submitted an acknowledgement to the Network Manager.  To submit an acknowledgement, email a completed PDF to <a href='mailto:adrian_sheppard@gnwc.ca'>Adrian Sheppard</a>.  Once the acknowledgement is accepted, it should appear in the above table.</p>";
+                            <p>If you do not see a PDF for yourself or your HQP in the above table, then you have not submitted an acknowledgement to the Network Manager.  First you should read the <a href='$wgServer$wgScriptPath/data/GRAND NCE Network Agreement (Section 3 highlighted).pdf'><b>GRAND Network Agreement</b></a> and then fill out the <a href='$wgServer$wgScriptPath/data/GRAND Network Agreement Appendix A.doc'><b>Acknowledgement Form</b></a>.  If you are a from the University of Alberta, then you should fill out the <a href='$wgServer$wgScriptPath/data/GRAND U Alberta Researcher Acknowledgement.doc'><b>University of Alberta Acknowledgement Form</b></a> instead.  To submit an acknowledgement form, email a completed PDF to <a href='mailto:adrian_sheppard@gnwc.ca'>Adrian Sheppard</a>.  Once the acknowledgement is accepted, it should appear in the above table.</p>";
         }
     }
 }

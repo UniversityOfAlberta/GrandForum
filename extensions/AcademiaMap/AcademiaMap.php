@@ -25,7 +25,7 @@ class AcademiaMap extends SpecialPage {
 	            $('#academiaMapFrame').height(height + 75);
 	        }
 	    </script>
-	    <iframe id='academiaMapFrame' frameborder='0' scrolling='no' style='border-width:0;min-width:1000px;min-height:500px;' src='$wgServer$wgScriptPath/index.php?action=academiaMapProxy&url=http://academiamap.com/compsci'></iframe>");
+	    <iframe id='academiaMapFrame' frameborder='0' scrolling='no' style='border-width:0;min-width:1000px;min-height:500px;' src='$wgServer$wgScriptPath/index.php?action=academiaMapProxy&url=http://academiamap.com/?de=cs&as=grand_nce'></iframe>");
 	}
 	
 }

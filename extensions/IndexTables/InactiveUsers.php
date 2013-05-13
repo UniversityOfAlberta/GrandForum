@@ -46,10 +46,10 @@ class InactiveUsers extends SpecialPage {
 			$text .= "
 <tr name='search' id='".str_replace(".", "_", $person->getName())."' class='".implode(", ", $projs)."' bgcolor='#FFFFFF'>
 <td align='left'>
-<a href='{$wgServer}{$wgScriptPath}/index.php/Inactive:{$person->getName()}'>{$names[1]}</a>
+<a href='{$wgServer}{$wgScriptPath}/index.php/Inactive:{$person->getName()}'>{$person->getLastName()}</a>
 </td>
 <td align='left'>
-<a href='{$wgServer}{$wgScriptPath}/index.php/Inactive:{$person->getName()}'>{$names[0]}</a>
+<a href='{$wgServer}{$wgScriptPath}/index.php/Inactive:{$person->getName()}'>{$person->getFirstName()}</a>
 </td>
 <td align='left'>
     {$role}

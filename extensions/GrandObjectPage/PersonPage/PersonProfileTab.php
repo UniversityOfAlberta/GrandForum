@@ -36,7 +36,13 @@ class PersonProfileTab extends AbstractEditableTab {
         $_POST['type'] = "private";
         $_POST['profile'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['private_profile'])));
         APIRequest::doAction('UserProfile', true);
-        APIRequest::doAction('UserEthics', true);
+        if($this->person->isHQP()){
+            APIRequest::doAction('UserEthics', true);
+        }
+        Person::$cache = array();
+        Person::$namesCache = array();
+        Person::$idsCache = array();
+        $this->person = Person::newFromId($this->person->getId());
     }
     
     /*
@@ -69,13 +75,78 @@ class PersonProfileTab extends AbstractEditableTab {
         $ethics = $person->getEthics();
         $completed_tutorial = ($ethics['completed_tutorial'])? "Yes" : "No";
         $date = ($ethics['date'] == '0000-00-00')? "" : $ethics['date'];
-        $ethics_str = "Have not completed the TCPS2 tutorial.";
+        $ethics_str = "<h3>Ethics: Have not completed the TCPS2 tutorial.</h3>";
         if($completed_tutorial == "Yes"){
-            $ethics_str = "Have completed the TCPS2 tutorial on {$date}.";
+            $ethics_str = "<table><tr>
+            <td><img style='vertical-align:bottom;' width='100px' src='/skins/cavendish/ethical_btns/ethical_button.jpg' /></td>
+            <td>&nbsp;<h3>I have completed the TCPS2 tutorial on {$date}.</h3></td>
+            <tr></table>";
         }
-        $this->html .=<<<EOF
-            <h3>Ethics: {$ethics_str}</h3>
+        else{
+            $ethics_str = "<table><tr>
+            <td><img style='vertical-align:bottom;' width='100px' src='/skins/cavendish/ethical_btns/ethical_button_not.jpg' /></td>
+            <td>&nbsp;<h3>I have not completed the TCPS2 tutorial.</h3></td>
+            <tr></table>";
+        }
+        if($person->isHQP()){
+            $this->html .=<<<EOF
+            {$ethics_str}
 EOF;
+        }
+        else if($person->isCNI() || $person->isPNI()){
+            $relations = $person->getRelations("Supervises");
+            $total_hqp = 0;
+            $ethical_hqp = 0;
+            foreach($relations as $r){
+                $hqp =  $r->getUser2();
+                $ethics = $hqp->getEthics();
+                if($ethics['completed_tutorial']){
+                    $ethical_hqp++;
+                }
+                $total_hqp++;
+            }
+            $perc = 0;
+            if($total_hqp >0 ){
+                $perc = $ethical_hqp/$total_hqp;
+            //$perc = floor($perc / 0.25)*0.25;
+            }
+            $perc = round($perc*100);
+            if($ethical_hqp == 0){
+                $perc = "";
+                $button = "ethical_button_not.jpg";
+            }
+            else{
+                $perc .= "%";
+                $button = "ethical_button_ni.jpg";
+            }
+
+            $this->html .=<<<EOF
+            <style>
+            span.supervisor_lbl{
+                color: #8C529D;
+                position: absolute;
+                bottom: 0px;
+                left: 7px;
+                display: block;
+                font-size: 15px;
+                font-weight: bold;
+            }
+            span.percent_lbl{
+                color: #8C529D;
+                position: absolute;
+                top: 3px;
+                right: 25px;
+                display: block;
+                font-size: 12px;
+                font-weight: bold;
+            }
+            </style>
+            <table><tr>
+            <td style='position:relative; padding:18px 0;'><img style='vertical-align:bottom;' width='100px' src='/skins/cavendish/ethical_btns/{$button}' /><span class='supervisor_lbl'>Supervisor</span><span class='percent_lbl'>{$perc}</span></td>
+            <td style='padding-left:15px;'><h3>{$ethical_hqp} of my {$total_hqp} students have completed the TCPS2 Tutorial.</h3></td>
+            <tr></table>
+EOF;
+        }
 
     }
     
@@ -93,30 +164,41 @@ EOF;
         }
 
         $date = ($ethics['date'] == '0000-00-00')? "" : $ethics['date'];
-
-        $this->html .=<<<EOF
-        <script>
-        $(function() {
-            $( "#datepicker" ).datepicker( { dateFormat: "yy-mm-dd" } );
-        });
-        </script>
-        <br /><br />
-        <table border='0' cellpadding='5' cellspacing='0'>
-        <tr><th align='left' style='padding-right:15px;'>I have completed the TCPS2 tutorial: </th>
+        if($person->isHQP()){
+            $this->html .=<<<EOF
+            <script>
+            $(function() {
+                $( "#datepicker" ).datepicker( { dateFormat: "yy-mm-dd" } );
+            });
+            </script>
+            <br /><br />
+            <table border='0' cellpadding='5' cellspacing='0' width='70%'>
+            <tr>
             <td>
-                Yes <input type='radio' value='1' name='completed_tutorial' {$completed_tutorial_y} />&nbsp;&nbsp;
-                No <input type='radio' value='0' name='completed_tutorial' {$completed_tutorial_n} />
+            <i>
+            <p>All GRAND HQP are required to complete the TCPS2 tutorial <b>Course on Research Ethics (CORE)</b>.  This interactive online tutorial can be completed in approximately two hours and provides an essential orientation to the Tri Council Policy Statement.</p>
+            <p>Please note, the current version of the ethics module was released February 2011. If you completed a previous version (i.e. the one that HQP were asked to complete when GRAND started), you are still required to complete the most recent version.</p>
+            </i>
             </td>
-        </tr>
-        <tr>
-            <th align='left'>Date: </th>
-            <td width='10%'>
-                <input id='datepicker' name='date' type='text' value='{$date}' />
-            </td>
-        </tr>
-        </table>
+            </tr>
+            </table>
+            <table border='0' cellpadding='5' cellspacing='0'>
+            <tr><th align='right' style='padding-right:15px;'>I have completed the TCPS2 tutorial:<br />
+                <a target='_blank' href="http://grand-nce.ca/resource/tcps2-core">http://grand-nce.ca/resource/tcps2-core</a></th>
+                <td valign='top'>
+                    Yes <input type='radio' value='1' name='completed_tutorial' {$completed_tutorial_y} />&nbsp;&nbsp;
+                    No <input type='radio' value='0' name='completed_tutorial' {$completed_tutorial_n} />
+                </td>
+            </tr>
+            <tr>
+                <th align='right' style='padding-right:15px;'>Date: </th>
+                <td width='10%'>
+                    <input id='datepicker' name='date' type='text' value='{$date}' />
+                </td>
+            </tr>
+            </table>
 EOF;
-
+        }
     }
     
 }

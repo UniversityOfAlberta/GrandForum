@@ -3,6 +3,7 @@
 $publicationPage = new PublicationPage();
 
 $wgHooks['ArticleViewHeader'][] = array($publicationPage, 'processPage');
+$wgHooks['userCan'][] = array($publicationPage, 'userCanExecute');
 
 
 $publicationTypes = array("Proceedings Paper" => "an article written for submission to a workshop, symposium, or conference",
@@ -111,10 +112,22 @@ $optionDefs = array("Address" => "the city, country of the publisher",
 class PublicationPage {
 
     var $paper;
+    
+    function userCanExecute(&$title, &$user, $action, &$result){
+        $name = $title->getNSText();
+        if(($name == "Activity" || $name == "Press" || $name == "Award" || $name == "Publication" || $name == "Artifact" || $name == "Presentation")){
+            $result = $user->isLoggedIn();
+        }
+        return true;
+    }
 
     function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $types, $bibtexTypes, $wgMessage;
-        
+        $result = true;
+        $this->userCanExecute($article->getTitle(), $wgUser, "read", $result);
+        if(!$result){
+            permissionError();
+        }
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
             $name = $article->getTitle()->getNsText();
@@ -145,10 +158,10 @@ class PublicationPage {
                 $product_id = $paper->getId();
             }
             
-            if($paper->getTitle() != null && isset($_GET['create'])){
+            /*if($paper->getTitle() != null && isset($_GET['create'])){
                 unset($_GET['create']);
                 $_GET['edit'] = "true";
-            }
+            }*/
             $this->paper = $paper;
             if($this->paper->deleted){
                 $wgMessage->addInfo("This publication has been deleted, and will not show up anywhere else on the forum.");
@@ -188,7 +201,6 @@ class PublicationPage {
                 if($edit){
                     $misc_types = Paper::getAllMiscTypes($category);
                     
-                    $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/scripts/switcheroo.js'></script>");
                     $wgOut->addScript('<script type="text/javascript">
                     var oldAttr = Array();
                     
@@ -664,13 +676,72 @@ class PublicationPage {
                 
                 if($edit){
                     if($create){
-                        $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/{$category}:".str_replace("?", "%3F", str_replace("'", "&#39;", $title))."?create' method='post'>
+                        $wgOut->addHTML("<form name='product' action='$wgServer$wgScriptPath/index.php/{$category}:".str_replace("?", "%3F", str_replace("'", "&#39;", $title))."?create' method='post'>
                                         <input type='hidden' name='title' value='".str_replace("'", "&#39;", $title)."' /><input type='hidden' name='product_id' value='$product_id' />");
                     }
                     else{
-                        $wgOut->addHTML("<form action='{$paper->getURL()}?edit' method='post'>
+                        $wgOut->addHTML("<form name='product' action='{$paper->getURL()}?edit' method='post'>
                                             <input type='hidden' name='title' value='{$paper->getTitle()}' /><input type='hidden' name='product_id' value='$product_id' /><div style='font-weight:bold; font-size:14px;padding: 10px 0;'>Change Title: <input type='text' value='{$paper->getTitle()}' name='new_title' size='80' /></div>");
                     }
+                    $wgOut->addHTML("<div id='dialog_duplicate' title='Possible Duplicate' style='display:none;'>
+                                      <p>This $category looks like a duplicate of:<br /></p>
+                                      <ul></ul>
+                                      <button id='duplicate_create'>Save Anyways</button> <button id='duplicate_cancel'>Cancel</button>
+                                    </div>");
+                    $wgOut->addHTML("<script type='text/javascript'>
+                        var validated = false;
+                        $('#duplicate_create').click(function(){
+                            validated = true;
+                            $('#dialog_duplicate').dialog('close');
+                            $('form[name=product] input[type=submit]').click();
+                        });
+                        $('#duplicate_cancel').click(function(){
+                            $('#dialog_duplicate').dialog('close');
+                        });
+                        $('form[name=product]').submit(function(){
+                            if(!validated){
+                                var title = $('form[name=product] input[name=title]').val();
+                                if($('form[name=product] [name=new_title]').length > 0){
+                                    title = $('form[name=product] input[name=new_title]').val();
+                                }
+                                var category = '{$category}';
+                                var type = $('form[name=product] [name=type]').val();
+                                if(type == 'Misc'){
+                                    type = 'Misc: ' + $('form[name=product] [name=misc_type]').val();
+                                }
+                                var status = $('form[name=product] [name=status]').val();
+                                $.get('{$wgServer}{$wgScriptPath}/index.php?action=api.getPublicationInfoByTitle&title=' + escape(title) + 
+                                      '&category=' + escape(category) + 
+                                      '&type=' + type + 
+                                      '&status=' + status, 
+                                      function(response){
+                                    var matched = Array();
+                                    for(pId in response.data.matched){
+                                        var paper = response.data.matched[pId];
+                                        if(paper.id != '{$paper->getId()}'){
+                                            matched.push(paper);
+                                        }
+                                    }
+                                    if(matched.length > 0){
+                                        $('#dialog_duplicate ul').empty();
+                                        for(pId in matched){
+                                            var paper = matched[pId];
+                                            $('#dialog_duplicate ul').append('<li><a href=\"' + paper.url + '\" target=\"_blank\">$category #' + paper.id + '</a></li>');
+                                        }
+                                        $('#dialog_duplicate').dialog({
+                                          resizable: false,
+                                          modal: true
+                                        });
+                                    }
+                                    else{
+                                        validated = true;
+                                        $('form[name=product] input[type=submit]').click();
+                                    }
+                                });
+                                return false;
+                            }
+                        });
+                    </script>");
                 }
                 $wgOut->addWikiText("== {$authorTitle}s ==
                                      __NOEDITSECTION__\n");
@@ -685,6 +756,7 @@ class PublicationPage {
                 }
                 if($edit){
                     $allPeople = Person::getAllPeople('all');
+                    $list = array();
                     foreach($allPeople as $person){
                         if(array_search($person->getNameForForms(), $authorNames) === false){
                             $list[] = $person->getNameForForms();
@@ -740,7 +812,6 @@ class PublicationPage {
 										if($create){
 												$type = "Misc";
 										}
-
                     if($edit){
 												// BIBTEX: check here, add warnings as necessary
 												if (strpos($type, "BibTex") === 0){
@@ -1448,12 +1519,10 @@ class PublicationPage {
         return $html;
     }
 
-
     function get_defn($key){
         global $optionDefs;
         return "\"".$key."\", \"".$optionDefs[$key]."\"";
     }
-
     
     function addAttrRow($attr, $value){
         global $wgOut, $wgUser, $optionDefs;

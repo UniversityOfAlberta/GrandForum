@@ -1,22 +1,25 @@
 <?php
 
-global $formValidations, $validations;
-$formValidations = array('NOTHING' => 'NothingValidation',
-                         'NULL'    => 'NullValidation',
-                         'NUMERIC' => 'NumericValidation',
-                         'PERCENT' => 'PercentValidation',
-                         'PROJECT' => 'ProjectValidation',
-                         'PERSON'  => 'PersonValidation',
-                         'EMAIL'   => 'EmailValidation');
-
-$i = 0;
-foreach($formValidations as $key => $validation){
-    define('VALIDATE_'.$key, pow(2, ($i)*2));
-    define('VALIDATE_NOT_'.$key, pow(2, ($i)*2 + 1));
-    $validations[pow(2, ($i)*2)] = $validation;
-    $validations[pow(2, ($i)*2 + 1)] = $validation;
-    $i++;
+function initValidations(){
+    global $formValidations, $validations;
+    $formValidations = array('NOTHING' => 'NothingValidation',
+                             'NULL'    => 'NullValidation',
+                             'NUMERIC' => 'NumericValidation',
+                             'PERCENT' => 'PercentValidation',
+                             'PROJECT' => 'ProjectValidation',
+                             'PERSON'  => 'PersonValidation',
+                             'EMAIL'   => 'EmailValidation');
+    $i = 0;
+    foreach($formValidations as $key => $validation){
+        define('VALIDATE_'.$key, pow(2, ($i)*2));
+        define('VALIDATE_NOT_'.$key, pow(2, ($i)*2 + 1));
+        $validations[pow(2, ($i)*2)] = $validation;
+        $validations[pow(2, ($i)*2 + 1)] = $validation;
+        $i++;
+    }
 }
+
+initValidations();
 
 /*
  * This class is to help make creating forms easier to make,

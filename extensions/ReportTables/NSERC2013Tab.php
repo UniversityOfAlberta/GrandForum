@@ -1,6 +1,11 @@
 <?php
 
+define("NCE_2013_START", '2012'.REPORTING_NCE_START_MONTH.' 00:00:00');
+define("NCE_2013_END", '2013'.REPORTING_NCE_END_MONTH. ' 23:59:59');
+
 class NSERC2013Tab extends AbstractTab {
+
+
 
     function NSERC2013Tab(){
         global $wgOut;
@@ -35,7 +40,7 @@ function DoDiv(id) {
     }
     else { item.visibility = 'show'; }
 }
-function showdiv(div_id, details_div_id){   
+function showDiv(div_id, details_div_id){   
     details_div_id = '#' + details_div_id;
     $(details_div_id).html( $(div_id).html() );
     $(details_div_id).show();
@@ -121,7 +126,7 @@ EOF;
         $unknown = array();
 
         $unique = array();
-        $movedons = Person::getAllMovedOnDuring("2012-01-01 00:00:00", "2013-01-01 00:00:00");
+        $movedons = Person::getAllMovedOnDuring(NCE_2013_START, NCE_2013_END);
         foreach($movedons as $m){
             if(in_array($m->getName(), $unique)) {
                 continue;
@@ -141,7 +146,7 @@ EOF;
         }    
 
         //additional people may still be on the forum, we find them through their theses
-        $papers = Paper::getAllPapersDuring("all", "Publication", "grand", "2012-01-01 00:00:00", "2013-01-01 00:00:00"); //Current Reporting year
+        $papers = Paper::getAllPapersDuring("all", "Publication", "grand", NCE_2013_START, NCE_2013_END);
         foreach($papers as $paper){
             $type = $paper->getType();
             if($type == "PhD Thesis" || $type == "Masters Thesis"){
@@ -183,7 +188,7 @@ EOF;
 
     function getHQPStats(){
 
-        $hqps = Person::getAllPeopleDuring(HQP,"2012-01-01 00:00:00", "2013-01-01 00:00:00");
+        $hqps = Person::getAllPeopleDuring(HQP, NCE_2013_START, NCE_2013_END);
 
         //Setup the table structure
         $positions = array( "Undergraduate"=>"Ugrad",
@@ -218,7 +223,7 @@ EOF;
             }*/
         }
 
-        $papers = Paper::getAllPapersDuring("all", "Publication", "grand", "2012-01-01 00:00:00", "2013-01-01 00:00:00"); 
+        $papers = Paper::getAllPapersDuring("all", "Publication", "grand", NCE_2013_START, NCE_2013_END); 
         foreach($papers as $paper){
             $type = $paper->getType();
             if($type == "PhD Thesis"){
@@ -281,7 +286,7 @@ EOF;
                     if($num_students > 0){
                         $inner_tbl .=<<<EOF
                             <td>
-                            <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                            <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                             $num_students
                             </a>
                             <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -304,7 +309,7 @@ EOF;
                     if($num_theses > 0){
                         $inner_tbl .=<<<EOF
                             <td>
-                            <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                            <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                             $num_theses
                             </a>
                             <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -333,7 +338,7 @@ EOF;
                 if($num_total_nat > 0){
                     $inner_tbl .=<<<EOF
                         <td>
-                        <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                        <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                         $num_total_nat
                         </a>
                         <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -355,7 +360,7 @@ EOF;
                 if($num_total_nat_thes > 0){
                     $inner_tbl .=<<<EOF
                         <td>
-                        <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                        <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                         $num_total_nat_thes
                         </a>
                         <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -383,7 +388,7 @@ EOF;
             if($num_total_gen > 0){
                 $inner_tbl .=<<<EOF
                     <td>
-                    <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                     $num_total_gen
                     </a>
                     <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -405,7 +410,7 @@ EOF;
             if($num_total_gen_thes > 0){
                 $inner_tbl .=<<<EOF
                     <td>
-                    <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                     $num_total_gen_thes
                     </a>
                     <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -434,7 +439,7 @@ EOF;
         $total_details = Dashboard::hqpDetails($total[0]);
         if($num_total > 0){
             $html .=<<<EOF
-                <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                 $num_total
                 </a>
                 <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -454,7 +459,7 @@ EOF;
         $total_thes_details = Dashboard::paperDetails($total[1]);
         if($num_total_thes > 0){
             $html .=<<<EOF
-;                Total Theses: <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+;                Total Theses: <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                 $num_total_thes
                 </a>
                 <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -479,7 +484,7 @@ EOF;
 
     function getHQPUniStats(){
 
-        $hqps = Person::getAllPeopleDuring(HQP,"2012-01-01 00:00:00", "2013-01-01 00:00:00");
+        $hqps = Person::getAllPeopleDuring(HQP, NCE_2013_START, NCE_2013_END);
 
         //Setup the table structure
         $universities = array();
@@ -552,7 +557,7 @@ EOF;
                 if($num_students > 0){
                     $html .=<<<EOF
                         <td>
-                        <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                        <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                         $num_students
                         </a>
                         <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -578,7 +583,7 @@ EOF;
             if($num_students > 0){
                 $html .=<<<EOF
                     <td>
-                    <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                     $num_students
                     </a>
                     <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -607,8 +612,8 @@ EOF;
 
     function getNIUniStats(){
 
-        $cnis = Person::getAllPeopleDuring(CNI,"2012-01-01 00:00:00", "2013-01-01 00:00:00");
-        $pnis = Person::getAllPeopleDuring(PNI,"2012-01-01 00:00:00", "2013-01-01 00:00:00");
+        $cnis = Person::getAllPeopleDuring(CNI, NCE_2013_START, NCE_2013_END);
+        $pnis = Person::getAllPeopleDuring(PNI, NCE_2013_START, NCE_2013_END);
 
         $nis = array();
         $unique_ids = array();
@@ -650,7 +655,7 @@ EOF;
             $grand_activity_blob = new ReportBlob($blob_type, $year, $uid, 0);
             $grand_activity_blob->load($rep_addr);
             $grand_activity_arr = $grand_activity_blob->getData();
-            $grand_percent = $grand_activity_arr['grand_percent'];
+            $grand_percent = @$grand_activity_arr['grand_percent'];
             $grand_percent = preg_replace('/%/', '', $grand_percent);
             $grand_percent = (is_numeric($grand_percent))? $grand_percent / 100 : 0;
 
@@ -704,7 +709,7 @@ EOF;
             if($num_students > 0){
                 $html .=<<<EOF
                     <td>
-                    <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                     $num_students
                     </a>
                     <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -848,7 +853,7 @@ EOF;
                     if($num_students > 0){
                         $html .=<<<EOF
                             <td>
-                            <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                            <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                             $num_students
                             </a>
                             <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -880,7 +885,7 @@ EOF;
             $student_details = Dashboard::hqpDetails($pos_total);
             if($num_students > 0){
                 $html .=<<<EOF
-                    <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                     $num_students
                     </a>
                     <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -911,7 +916,7 @@ EOF;
                 if($num_students > 0){
                     $html .=<<<EOF
                         <td>
-                        <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                        <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                         $num_students
                         </a>
                         <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -936,7 +941,7 @@ EOF;
         if($num_students > 0){
             $html .=<<<EOF
                 <td>
-                <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                 $num_students
                 </a>
                 <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -965,7 +970,7 @@ EOF;
                 $('#' + id).toggle();
             }
         </script>");
-        $people = Person::getAllPeopleDuring(HQP,"2012-01-01 00:00:00", "2013-01-01 00:00:00");
+        $people = Person::getAllPeopleDuring(HQP, NCE_2013_START, NCE_2013_END);
         $chunk = "
 <a id='Table3'></a><h3>Table 3: Number of network Research Personnel paid with NCE funds or other funds, by sectors</h3>
 <table class='wikitable sortable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
@@ -1015,7 +1020,7 @@ EOF;
 
     function showDisseminations(){
         global $wgOut;
-        $publications = Paper::getAllPapersDuring('all', 'Publication', "grand", "2012-01-01 00:00:00", "2013-01-01 00:00:00");
+        $publications = Paper::getAllPapersDuring('all', 'Publication', "grand", NCE_2013_START, NCE_2013_END);
 
         $dissem = array("a1_r1"=>array(), "a1_r2"=>array(), "a2_r1"=>array(), "a2_r2"=>array(), "b_r1"=>array(), "b_r2"=>array());
 
@@ -1175,7 +1180,7 @@ EOF;
 
     function showArtDisseminations(){
         global $wgOut;
-        $publications = Paper::getAllPapersDuring('all', 'Artifact', "grand", "2012-01-01 00:00:00", "2013-01-01 00:00:00");
+        $publications = Paper::getAllPapersDuring('all', 'Artifact', "grand", NCE_2013_START, NCE_2013_END);
 
         $types = Paper::getCategoryTypes("Artifact");
 
@@ -1265,7 +1270,7 @@ EOF;
 
     function showActDisseminations(){
         global $wgOut;
-        $publications = Paper::getAllPapersDuring('all', 'Activity', "grand", "2012-01-01 00:00:00", "2013-01-01 00:00:00");
+        $publications = Paper::getAllPapersDuring('all', 'Activity', "grand", NCE_2013_START, NCE_2013_END);
         //echo (sizeof($publications ));
         $types = Paper::getCategoryTypes("Activity");
 
@@ -1467,7 +1472,7 @@ EOF;
 
     function showPublicationList(){
         global $wgOut;
-        $publications = Paper::getAllPapersDuring('all', 'Publication', "grand", "2012-01-01 00:00:00", "2013-01-01 00:00:00");
+        $publications = Paper::getAllPapersDuring('all', 'Publication', "grand", NCE_2013_START, NCE_2013_END);
         $pub_count = array("a1"=>array(), "a2"=>array(), "b"=>array(), "c"=>array());
 
         foreach($publications as $pub){
@@ -1567,7 +1572,7 @@ EOF;
         $div_id = "div_a1";
         if($a1 > 0){
             $a1 =<<<EOF
-                <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                 $a1
                 </a>
                 <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -1627,7 +1632,7 @@ EOF;
         $div_id = "div_a2";
         if($a2 > 0){
             $a2 =<<<EOF
-                <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                 $a2
                 </a>
                 <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -1655,7 +1660,7 @@ EOF;
         $div_id = "div_a12";
         if($a12 > 0){
             $a12 =<<<EOF
-                <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                 $a12
                 </a>
                 <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -1716,7 +1721,7 @@ EOF;
         $div_id = "div_b";
         if($b > 0){
             $b =<<<EOF
-                <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                 $b
                 </a>
                 <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -1777,7 +1782,7 @@ EOF;
         $div_id = "div_c";
         if($c > 0){
             $c =<<<EOF
-                <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                 $c
                 </a>
                 <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -1805,7 +1810,7 @@ EOF;
         $div_id = "div_total_pub";
         if($total > 0){
             $total =<<<EOF
-                <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                 $total
                 </a>
                 <div style="display: none;" id="$div_id" class="cell_details_div">

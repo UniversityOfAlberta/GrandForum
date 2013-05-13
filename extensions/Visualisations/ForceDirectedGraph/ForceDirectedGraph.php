@@ -1,7 +1,5 @@
 <?php
 
-require_once("SpecialFDG.php");
-
 class ForceDirectedGraph extends Visualisation {
     
     static $a = 0;

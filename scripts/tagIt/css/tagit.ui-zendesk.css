@@ -1,0 +1,59 @@
+
+/* Optional scoped theme for tag-it which mimics the zendesk widget. */
+
+
+ul.tagit {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #C6C6C6;
+    background: inherit;
+}
+ul.tagit li.tagit-choice {
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border: 1px solid #A284AC;
+
+    background: none;
+    background-color: #F3EBF5;
+
+    font-weight: bold;
+}
+
+ul.tagit li.tagit-choice .tagit-label:not(a) {
+    color: #795F80;
+    font-weight: bold !important;
+}
+ul.tagit li.tagit-choice a.tagit-close {
+    text-decoration: none;
+}
+ul.tagit li.tagit-choice .tagit-close {
+    right: .4em;
+}
+ul.tagit li.tagit-choice .ui-icon {
+    display: none;
+}
+ul.tagit li.tagit-choice .tagit-close .text-icon {
+    display: inline;
+    font-family: arial, sans-serif;
+    font-size: 16px;
+    line-height: 16px;
+    color: #777;
+    font-weight:bold !important;
+}
+ul.tagit li.tagit-choice:hover, ul.tagit li.tagit-choice.remove {
+    background-color: #EADDED;
+    border-color: #987AA1;
+}
+ul.tagit li.tagit-choice a.tagLabel:hover,
+ul.tagit li.tagit-choice a.tagit-close .text-icon:hover {
+    color: #222;
+}
+ul.tagit input[type="text"] {
+    color: #555;
+    background: none;
+}
+.ui-widget {
+
+}
+

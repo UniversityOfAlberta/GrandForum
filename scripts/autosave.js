@@ -24,7 +24,7 @@ function Autosave(value){
     this.save = function(fn, failFn){
         var button = $('input[type=submit]', this.value);
         $(button).prop('disabled', true);
-        var dataStr = $(this.value).serialize() + "&" + encodeURIComponent($(button).attr("name")) + "=" + encodeURIComponent($(button).attr("value"));
+        var dataStr = $(this.value).serialize() + "&" + encodeURIComponent($(button).attr("name")) + "=" + encodeURIComponent($(button).val());
         var url = $(this.value).attr("action");
         this.auto.stop();
         this.auto.css("opacity", 100);

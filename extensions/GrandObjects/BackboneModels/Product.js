@@ -1,0 +1,158 @@
+/**
+ * Product Model
+ */
+Product = Backbone.Model.extend({
+    initialize: function(){
+        this.authors = new ProductAuthors();
+        this.authors.url = this.urlRoot + '/' + this.get('id') + '/authors';
+        
+        this.projects = new ProductAuthors();
+        this.projects.url = this.urlRoot + '/' + this.get('id') + '/projects';
+    },
+
+    getAuthors: function(){
+        this.authors.fetch();
+        return this.authors;
+    },
+    
+    getProjects: function(){
+        this.projects.fetch();
+        return this.projects;
+    },
+    
+    getLink: function(){
+        return new Link({id: this.get('id'),
+                         text: this.get('title'),
+                         url: this.get('url'),
+                         target: ''});
+                               
+    },
+
+    urlRoot: 'index.php?action=api.product',
+    
+    defaults: {
+        id : null,
+        title: "",
+        category: "",
+        type: "",
+        description: "",
+        date: "",
+        url: "",
+        status: "",
+        data: new Array(),
+        authors: new Array(),
+        projects: new Array(),
+        lastModified: "",
+        deleted: ""
+    },
+});
+
+/**
+ * Products Collection
+ */
+Products = Backbone.Collection.extend({
+    
+    model: Product,
+    
+    project: 'all',
+    
+    category: 'all',
+    
+    grand: 'both',
+    
+    url: function(){
+        var url = 'index.php?action=api.product/' + this.project + '/' + this.category + '/' + this.grand;
+        return url;
+    }
+});
+
+/**
+ * ProductAuthor RelationModel
+ */
+ProductAuthor = RelationModel.extend({
+    initialize: function(){
+    
+    },
+
+    urlRoot: function(){
+        return 'index.php?action=api.product/' + this.get('productId') + '/authors'
+    },
+    
+    idAttribute: 'personId',
+    
+    getOwner: function(){
+        product = new Product({id: this.get('productId')});
+        person.fetch();
+        return person;
+    },
+    
+    getTarget: function(){
+        person = new Person({id: this.get('personId')});
+        person.fetch();
+        return person;
+    },
+    
+    defaults: {
+        productId: null,
+        personId: null,
+        startDate: "",
+        endDate: "",
+    }
+});
+
+/**
+ * ProductAuthors RangeCollection
+ */
+ProductAuthors = RangeCollection.extend({
+    model: ProductAuthor,
+    
+    newModel: function(){
+        return new People();
+    },
+});
+
+/**
+ * ProductProject RelationModel
+ */
+ProductProject = RelationModel.extend({
+    initialize: function(){
+    
+    },
+
+    urlRoot: function(){
+        return 'index.php?action=api.product/' + this.get('productId') + '/projects'
+    },
+    
+    idAttribute: 'projectId',
+    
+    getOwner: function(){
+        product = new Product({id: this.get('productId')});
+        person.fetch();
+        return person;
+    },
+    
+    getTarget: function(){
+        person = new Project({id: this.get('projectId')});
+        person.fetch();
+        return person;
+    },
+    
+    defaults: {
+        productId: null,
+        projectId: null,
+        startDate: "",
+        endDate: "",
+    }
+});
+
+/**
+ * ProductProjects RangeCollection
+ */
+ProductProjects = RangeCollection.extend({
+
+    model: ProductProject,
+    
+    newModel: function(){
+        return new Projects();
+    },
+});

@@ -74,12 +74,12 @@ function generateFormScript($category){
                                     }
 		                            
 		                            function changeLocation(){
-		                                var page = escape($('#title').attr('value').replace(/\‘/g, '\'').replace(/\’/g, '\''));
+		                                var page = escape($('#title').val().replace(/\‘/g, '\'').replace(/\’/g, '\''));
 		                                document.location = '$wgServer$wgScriptPath/index.php/Form:' + page + '?create';
 		                            }
 		                            
 		                            $(document).ready(function(){
-		                                search($('#title').attr('value'));
+		                                search($('#title').val());
 		                                $('#title').attr('autocomplete', 'off');
 		                            });
 		                       </script>";

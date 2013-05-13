@@ -1,46 +1,64 @@
 <?php
 
-$wgHooks['SkinTemplateTabs'][1000] = 'TabUtils::actionTabs';
+$wgHooks['SkinTemplateContentActions'][1000] = 'TabUtils::actionTabs';
 
 class TabUtils {
 
     static $customActions = array();
 
-    static function actionTabs($skin, &$content_actions){
+    static function actionTabs(&$content_actions){
         global $wgTitle, $wgServer, $wgScriptPath, $wgOut;
         $new_actions = array();
         foreach($content_actions as $key => $action){
-            if(strstr($action['class'], 'selected') !== false){
+            if(strstr($action['class'], 'selected') !== false && !is_numeric($key)){
                 continue;
             }
-            $action['class'] = 'action';
+            if(!is_numeric($key)){
+                $action['class'] = 'action';
+            }
             $new_actions[$key] = $action;
         }
         foreach(self::$customActions as $key => $action){
             $new_actions[$key] = $action;
         }
-        if(count($new_actions) > 0){
-            $wgOut->addHTML("<script type='text/javascript'>
-                $(document).ready(function(){
-                    if($('li.action').length > 0){
-                        $('li.action').css('display', 'block');
-                        $('li.action').wrapAll('<div class=\'actions\' />').wrapAll('<ul>');
-                        $('div#submenu > ul').append('<li class=\'actions\'><a>Actions</a></li>');
-                        $('div#submenu div.actions').append('<img class=\'dropdowntop\' src=\'$wgScriptPath/skins/dropdowntop.png\' />');
-                        $('div#submenu li.actions').click(function(e){
-                            e.stopPropagation();
-                            $('.dropdowntop').css('position', 'absolute');
-                            $('.dropdowntop').css('top', -5);
-                            $('.dropdowntop').css('right', 39);
-                            $('div#submenu div.actions').fadeToggle(250);
-                        });
-                        $(document).click(function(){
-                            $('div#submenu div.actions').fadeOut(250);
-                        });
-                    }
-                });
-            </script>");
-        }
+        $wgOut->addHTML("<script type='text/javascript'>
+            $('li.people').wrapAll('<ul class=\'people\'>');
+            $('li.product').wrapAll('<ul class=\'products\'>');
+            $('ul.people').wrapAll('<li class=\'invisible\'>');
+            $('ul.products').wrapAll('<li class=\'invisible\'>');
+            
+            var productsSelected = false;
+            if($('li.product').filter('.selected').length >= 1){
+                productsSelected = true;
+            }
+            
+            var peopleSelected = false;
+            if($('li.people').filter('.selected').length >= 1){
+                peopleSelected = true;
+            }
+            
+            $('li.action').wrapAll('<ul class=\'actions\' />');
+            $('div#submenu ul.products').dropdown({title: 'Products',
+                                                  width: '125px' 
+                                                  });
+            $('div#submenu ul.people').dropdown({title: 'People',
+                                                  width: '75px' 
+                                                  });                             
+            $('div#submenu ul.actions').dropdown({title: 'Actions',
+                                                  width: '125px' 
+                                                 });
+            $('div#submenu ul.actions').css('padding-right', 0);
+            $('div#submenu ul.actions li.actions').css('float', 'right');
+            
+            if(productsSelected){
+                $('ul.products > li').addClass('selected');
+                $('ul.products').imgDown();
+            }
+            if(peopleSelected){
+                $('ul.people > li').addClass('selected');
+                $('ul.people').imgDown();
+            }
+        </script>");
         $content_actions = $new_actions;
         return true;
     }
@@ -188,32 +206,43 @@ class TabUtils {
         $new_actions['projects'] = array('class' => false,
                                    'text' => "Projects",
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:Projects");
-        $new_actions[HQP] = array('class' => false,
-                                   'text' => HQP,
-                                   'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_HQP");
-        $new_actions[CNI] = array('class' => false,
-                                   'text' => CNI.'s',
+        if($me->isLoggedIn()){
+            $new_actions[HQP] = array('class' => 'people hidden',
+                                       'text' => HQP,
+                                       'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_HQP");
+        }
+        $new_actions[CNI] = array('class' => 'people hidden',
+                                   'text' => CNI,
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_CNI");
-        $new_actions[PNI] = array('class' => false,
-                                   'text' => PNI.'s',
+        $new_actions[PNI] = array('class' => 'people hidden',
+                                   'text' => PNI,
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_PNI");
-        $new_actions[RMC] = array('class' => false,
+        $new_actions[RMC] = array('class' => 'people hidden',
                                    'text' => RMC,
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_RMC");
         if($wgUser->isLoggedIn()){
-            $new_actions["Publications"] = array('class' => false,
+            $new_actions["Publications"] = array('class' => 'product hidden',
                                        'text' => "Publications",
-                                       'href' => "$wgServer$wgScriptPath/index.php/GRAND:Publications");
-            $new_actions["Presentations"] = array('class' => false,
-                                       'text' => "Presentations",
-                                       'href' => "$wgServer$wgScriptPath/index.php/GRAND:Presentations");
-            $new_actions["Artifacts"] = array('class' => false,
+                                       'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Publication");
+            $new_actions["Artifacts"] = array('class' => 'product hidden',
                                        'text' => "Artifacts",
-                                       'href' => "$wgServer$wgScriptPath/index.php/GRAND:Artifacts");
+                                       'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Artifact");
+            $new_actions["Presentations"] = array('class' => 'product hidden',
+                                       'text' => "Presentations",
+                                       'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Presentation");
+            $new_actions["Activities"] = array('class' => 'product hidden',
+                                              'text' => "Activities",
+                                              'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Activity");
+            $new_actions["Press"] = array('class' => 'product hidden',
+                                          'text' => "Press",
+                                          'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Press");
+            $new_actions["Awards"] = array('class' => 'product hidden',
+                                           'text' => "Awards",
+                                           'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Award");
+            $new_actions["Multimedia"] = array('class' => 'product hidden',
+                                           'text' => "Multimedia",
+                                           'href' => "$wgServer$wgScriptPath/index.php/GRAND:Multimedia_Stories");
         }
-        $new_actions["Materials"] = array('class' => false,
-                                       'text' => "Multimedia",
-                                       'href' => "$wgServer$wgScriptPath/index.php/GRAND:Multimedia_Stories");
         $new_actions['themes'] = array('class' => false,
                                    'text' => "Themes",
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:Themes");
@@ -224,16 +253,16 @@ class TabUtils {
             $new_actions['projects']['class'] = 'selected';
         }
         else if($wgTitle->getText() == "ALL HQP" || ($wgTitle->getNSText() == HQP && !($me->isRole(HQP) && $wgTitle->getText() == $me->getName()))){
-            $new_actions[HQP]['class'] = 'selected';
+            $new_actions[HQP]['class'] = 'people selected hidden';
         }
         else if($wgTitle->getText() == "ALL CNI" || ($wgTitle->getNSText() == CNI && !($me->isRole(CNI) && $wgTitle->getText() == $me->getName()))){
-            $new_actions[CNI]['class'] = 'selected';
+            $new_actions[CNI]['class'] = 'people selected hidden';
         }
         else if($wgTitle->getText() == "ALL PNI" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))){
-            $new_actions[PNI]['class'] = 'selected';
+            $new_actions[PNI]['class'] = 'people selected hidden';
         }
         else if($wgTitle->getText() == "ALL RMC" || ($wgTitle->getNSText() == RMC && !($me->isRole(RMC) && $wgTitle->getText() == $me->getName()))){
-            $new_actions[RMC]['class'] = 'selected';
+            $new_actions[RMC]['class'] = 'people selected hidden';
         }
         else if($wgTitle->getNSText() == INACTIVE && !($me->isRole(INACTIVE) && $wgTitle->getText() == $me->getName())){
             $person = Person::newFromName($wgTitle->getText());
@@ -248,34 +277,28 @@ class TabUtils {
                     }
                 }
                 if($lastRole == RMC){
-                    $new_actions[RMC]['class'] = 'selected';
+                    $new_actions[RMC]['class'] = 'people selected hidden';
                 }
                 else if($lastRole == PNI){
-                    $new_actions[PNI]['class'] = 'selected';
+                    $new_actions[PNI]['class'] = 'people selected hidden';
                 }
                 else if($lastRole == CNI){
-                    $new_actions[RMC]['class'] = 'selected';
+                    $new_actions[RMC]['class'] = 'people selected hidden';
                 }
                 else if($lastRole == HQP){
-                    $new_actions[HQP]['class'] = 'selected';
+                    $new_actions[HQP]['class'] = 'people selected hidden';
                 }
             }
         }
-        else if($wgUser->isLoggedIn() && ($wgTitle->getText() == "Publications" || ($wgTitle->getNSText() == "Publication"))){
-            $new_actions["Publications"]['class'] = 'selected';
-        }
-        else if($wgUser->isLoggedIn() && ($wgTitle->getText() == "Presentations" || ($wgTitle->getNSText() == "Presentation"))){
-            $new_actions["Presentations"]['class'] = 'selected';
-        }
-        else if($wgUser->isLoggedIn() && ($wgTitle->getText() == "Artifacts" || ($wgTitle->getNSText() == "Artifact") ||
-                                          $wgTitle->getNSText() == "Activity" ||
-                                          $wgTitle->getNSText() == "Press" ||
-                                          $wgTitle->getNSText() == "Award")){
-            $new_actions["Artifacts"]['class'] = 'selected';
-        }
-        else if(($wgTitle->getText() == "Multimedia Stories" && $wgTitle->getNSText() == "GRAND") ||
-                 $wgTitle->getNSText() == "Multimedia_Story" || $wgTitle->getNSText() == "Form"){
-            $new_actions['Materials']['class'] = 'selected';
+        else if($wgUser->isLoggedIn() && ($wgTitle->getText() == "Products" || 
+                                          $wgTitle->getNsText() == "Publication" ||
+                                          $wgTitle->getNsText() == "Artifact" ||
+                                          $wgTitle->getNsText() == "Presentation" ||
+                                          $wgTitle->getNsText() == "Activity" ||
+                                          $wgTitle->getNsText() == "Press" ||
+                                          $wgTitle->getNsText() == "Award" ||
+                                          $wgTitle->getNsText() == "Multimedia")){
+            $new_actions["Publications"]['class'] = 'product selected hidden';
         }
         else if($wgTitle->getText() == "Theme1 - New Media Challenges and Opportunities" ||
                 $wgTitle->getText() == "Theme2 - Games and Interactive Simulation" ||

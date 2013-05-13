@@ -23,7 +23,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		            }
 		            
 		            $('#submitCheck').change(function(){
-		                if($('#submitCheck').attr('checked') == 'checked'){
+		                if($('#submitCheck').is(':checked')){
 		                    $('#submitButton').removeAttr('disabled');
 		                }
 		                else{

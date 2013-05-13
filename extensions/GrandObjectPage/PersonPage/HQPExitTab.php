@@ -17,7 +17,7 @@ class HQPExitTab extends AbstractEditableTab {
     }
     
     function handleEdit(){
-        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath;
+        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgMessage;
         $me = Person::newFromId($wgUser->getId());
         if(isset($_POST['where']) || 
            isset($_POST['studies']) || 
@@ -31,12 +31,17 @@ class HQPExitTab extends AbstractEditableTab {
             $_POST['city'] = @str_replace("'", "&#39;", $_POST['city']);
             $_POST['country'] = @str_replace("'", "&#39;", $_POST['country']);
             APIRequest::doAction('AddHQPMovedOn', true);
-            $wgOut->addHTML("{$_POST['user']}'s movedOn added<br />\n");
+            $wgMessage->addSuccess("{$_POST['user']}'s movedOn added");
         }
         if(isset($_POST['thesis'])){
             $_POST['user'] = $this->person->getName();
             APIRequest::doAction('AddHQPThesis', true);
-            $wgOut->addHTML("{$_POST['user']}'s thesis added</br />\n");
+            $wgMessage->addSuccess("{$_POST['user']}'s thesis added");
+        }
+        else{
+            $_POST['user'] = $this->person->getName();
+            $_POST['thesis'] = "No Thesis";
+            APIRequest::doAction('AddHQPThesis', true);
         }
         if($this->visibility['isSupervisor']){
             Notification::addNotification($me, $this->person, "Profile Change", "Your profile has been edited by {$me->getName()}.", "{$this->person->getUrl()}");
@@ -49,7 +54,7 @@ class HQPExitTab extends AbstractEditableTab {
     }
     
     function generateEditBody(){
-        $this->generateInactiveHQPHTML($this->person, ($this->canEdit() && isset($_GET['edit'])));
+        $this->generateInactiveHQPHTML($this->person, ($this->canEdit() && isset($_POST['edit'])));
         return $this->html;
     }
     
@@ -113,7 +118,7 @@ class HQPExitTab extends AbstractEditableTab {
                 var universities = [\"".implode("\",\n\"", $universities)."\"];
                 
                 function updateStep2(){
-                    var reason = $('input[name=reason]:checked').attr('value');
+                    var reason = $('input[name=reason]:checked').val();
                     if(reason == 'graduated'){
                         var options = '<option value=\"No Thesis\">No Thesis</option>';
                         for(index in theses){

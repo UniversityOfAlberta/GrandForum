@@ -1,6 +1,6 @@
 <?php
 
-class Person{
+class Person extends BackboneModel {
 
     static $cache = array();
     static $rolesCache = array();
@@ -13,13 +13,14 @@ class Person{
     static $idsCache = array();
     static $disciplineMap = array();
 
-	var $id;
 	var $name;
 	var $email;
 	var $nationality;
 	var $gender;
 	var $photo;
 	var $twitter;
+	var $publicProfile;
+	var $privateProfile;
 	var $realname;
 	var $projects;
 	var $university;
@@ -77,10 +78,9 @@ class Person{
 	// Returns a new Person from the given email (null if not found)
 	// In the event of a collision, the first user is returned
 	static function newFromEmail($email){
-	    $sql = "SELECT user_id
-	            FROM mw_user
-	            WHERE user_email = '$email'";
-	    $data = DBFunctions::execSQL($sql);
+	    $data = DBFunctions::select(array('mw_user'),
+	                                array('user_id'),
+	                                array('user_email' => $email));
 	    if(count($data) > 0){
 	        return Person::newFromId($data[0]['user_id']);
 	    }
@@ -103,6 +103,10 @@ class Person{
 	// Returns a new Person from the given name
 	static function newFromNameLike($name){
 	    global $wgSitename;
+	    $tmpPerson = Person::newFromName(str_replace(" ", ".", $name));
+	    if($tmpPerson->getName() != ""){
+	        return $tmpPerson;
+	    }
 	    $name = str_replace(".", ".*", $name);
         $name = str_replace(" ", ".*", $name);
 	    if(isset(Person::$cache[$name])){
@@ -122,6 +126,7 @@ class Person{
 		foreach($possibleNames as $possible){
 		    if(isset(self::$namesCache[$possible])){
 		        $data[] = self::$namesCache[$possible];
+		        break;
 		    }
 		}
 		$person = new Person($data);
@@ -192,7 +197,7 @@ class Person{
 	    if(count(self::$aliasCache) == 0){
 			$uaTable = getTableName("user_aliases");
 			$uTable = getTableName("user");
-			$sql = "SELECT ua.alias, u.user_id, u.user_name, u.user_real_name, u.user_email, u.user_twitter, user_nationality, user_gender
+			$sql = "SELECT ua.alias, u.user_id, u.user_name, u.user_real_name, u.user_email, u.user_twitter, user_public_profile, user_private_profile, user_nationality, user_gender
 				FROM {$uaTable} as ua, {$uTable} as u 
 				WHERE ua.user_id = u.user_id
 				AND u.deleted != '1'";
@@ -207,7 +212,7 @@ class Person{
 	static function generateNamesCache(){
 	    if(count(self::$namesCache) == 0){
 		    $uTable = getTableName("user");
-		    $sql = "SELECT `user_id`,`user_name`,`user_real_name`,`user_email`,`user_twitter`,`user_nationality`,`user_gender`
+		    $sql = "SELECT `user_id`,`user_name`,`user_real_name`,`user_email`,`user_twitter`,`user_public_profile`,`user_private_profile`,`user_nationality`,`user_gender`
 			    FROM $uTable u
 			    WHERE `deleted` != '1'";
 		    $data = DBFunctions::execSQL($sql);
@@ -342,12 +347,34 @@ class Person{
 	    return $universities;
 	}
 	
+	/**
+	 * Returns all the People with the given ids
+	 * @param array $ids The array of ids
+	 * @return array The array of People
+	 */
+	static function getByIds($ids){
+	    $data = DBFunctions::select(array('mw_user'),
+	                                array('*'),
+	                                array('user_id' => IN($ids)));
+	    $people = array();
+	    foreach($data as $row){
+	        if(isset(self::$cache[$row['user_id']])){
+                $people[] = self::$cache[$row['user_id']];
+            }
+            else{
+                $person = new Person(array($row));
+                self::$cache[$person->getId()] = $person;
+                $people[$person->getId()] = $person;
+            }
+	    }
+	    return $people;
+	}
+	
 	static function getAllStaff(){
-	    $uTable = getTableName("user");
-	    $sql = "SELECT *
-	            FROM $uTable
-	            ORDER BY user_name ASC";
-	    $data = DBFunctions::execSQL($sql);
+	    $data = DBFunctions::select(array('mw_user'),
+	                                array('user_id', 'user_name'),
+	                                array('deleted' => NEQ(1)),
+	                                array('user_name' => 'ASC'));
 	    $people = array();
 	    foreach($data as $row){
 	        $rowA = array();
@@ -363,13 +390,10 @@ class Person{
 	// Returns an array of People of the type $filter, and have at least one project
 	// If $filter='all' then, even people with no projects are included.
 	static function getAllPeople($filter=null){
-	    $uTable = getTableName("user");
-	    $sql = "SELECT *
-	            FROM $uTable
-	            WHERE `deleted` != '1'
-	            ORDER BY user_name ASC
-	            ";
-	    $data = DBFunctions::execSQL($sql);
+	    $data = DBFunctions::select(array('mw_user'),
+	                                array('user_id', 'user_name'),
+	                                array('deleted' => NEQ(1)),
+	                                array('user_name' => 'ASC'));
 	    $people = array();
 	    foreach($data as $row){
 	        $rowA = array();
@@ -386,12 +410,10 @@ class Person{
     // Returns an array of People of the type $filter, and have at least one project
     // If $filter='all' then, even people with no projects are included.
     static function getAllPeopleDuring($filter=null, $startRange = false, $endRange = false){
-        $uTable = getTableName("user");
-        $sql = "SELECT *
-                FROM $uTable
-                WHERE `deleted` != '1'
-                ORDER BY user_name ASC";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('mw_user'),
+	                                array('user_id', 'user_name'),
+	                                array('deleted' => NEQ(1)),
+	                                array('user_name' => 'ASC'));
         $people = array();
         foreach($data as $row){
             $rowA = array();
@@ -454,11 +476,127 @@ class Person{
 			$this->email = $data[0]['user_email'];
 			$this->gender = $data[0]['user_gender'];
 			$this->nationality = $data[0]['user_nationality'];
-			$this->twitter = $data[0]['user_twitter'];
 			$this->university = false;
+			$this->twitter = $data[0]['user_twitter'];
+			$this->publicProfile = $data[0]['user_public_profile'];
+			$this->privateProfile = $data[0]['user_private_profile'];
 			$this->hqps = null;
 			$this->historyHqps = null;
 		}
+	}
+	
+	function toArray(){
+	    global $wgUser;
+	    $privateProfile = "";
+	    $publicProfile = $this->getProfile(false);
+	    if($wgUser->isLoggedIn()){
+	        $privateProfile = $this->getProfile(true);
+	    }
+	    $json = array('id' => $this->getId(),
+	                  'name' => $this->getName(),
+	                  'realName' => $this->getRealName(),
+	                  'fullName' => $this->getNameForForms(),
+	                  'reversedName' => $this->getReversedName(),
+	                  'email' => $this->getEmail(),
+	                  'gender' => $this->getGender(),
+	                  'nationality' => $this->getNationality(),
+	                  'twitter' => $this->getTwitter(),
+	                  'photo' => $this->getPhoto(),
+	                  'cachedPhoto' => $this->getPhoto(true),
+	                  'university' => $this->getUni(),
+	                  'department' => $this->getDepartment(),
+	                  'position' => $this->getPosition(),
+	                  'publicProfile' => $publicProfile,
+	                  'privateProfile' => $publicProfile,
+	                  'url' => $this->getURL());
+	    return $json;
+	}
+	
+	function create(){
+	    global $wgRequest;
+	    $me = Person::newFromWGUser();
+	    if($me->isRoleAtLeast(STAFF)){
+	        $wgRequest->setVal('wpCreateaccountMail', true);
+	        $wgRequest->setSessionData('wsCreateaccountToken', 'true');
+	        $wgRequest->setVal('wpCreateaccountToken', 'true');
+	        $wgRequest->setVal('wpName', $this->name);
+	        $wgRequest->setVal('wpEmail', $this->email);
+	        $_POST['wpCreateaccountMail'] = 'true';
+	        $_POST['wpCreateaccountToken'] = 'true';
+	        $_POST['wpName'] = $this->name;
+	        $_POST['wpEmail'] = $this->email;
+	        $_POST['wpRealName'] = $this->realname;
+	        $_POST['wpUserType'] = array();
+	        $_POST['wpNS'] = array();
+	        $_POST['wpSendMail'] = true;
+	        $specialUserLogin = new LoginForm($wgRequest, 'signup');
+	        $specialUserLogin->execute();
+	        $status = DBFunctions::update('mw_user', 
+		                            array('user_twitter' => $this->getTwitter(),
+		                                  'user_gender' => $this->getGender(),
+		                                  'user_nationality' => $this->getNationality(),
+		                                  'user_public_profile' => $this->getProfile(false),
+		                                  'user_private_profile' => $this->getProfile(true)),
+		                            array('user_name' => EQ($this->getName())));
+		    DBFunctions::commit();
+	        Person::$cache = array();
+		    Person::$namesCache = array();
+		    Person::$aliasCache = array();
+		    Person::$idsCache = array();
+		    $person = Person::newFromName($_POST['wpName']);
+	        if($person->exists()){
+	            return $status;
+	        }
+	    }
+	    return false;
+	}
+	
+	function update(){
+	    $me = Person::newFromWGUser();
+	    foreach($this->getSupervisors() as $supervisor){
+            if($supervisor->getId() == $me->getId()){
+                $isSupervisor = true;
+                break;
+            }
+        }
+	    if($me->getId() == $this->getId() ||
+	       $me->isRoleAtLeast(MANAGER) ||
+	       $isSupervisor){
+	        $status = DBFunctions::update('mw_user', 
+		                            array('user_name' => $this->getName(),
+		                                  'user_real_name' => $this->getRealName(),
+		                                  'user_twitter' => $this->getTwitter(),
+		                                  'user_gender' => $this->getGender(),
+		                                  'user_nationality' => $this->getNationality(),
+		                                  'user_public_profile' => $this->getProfile(false),
+		                                  'user_private_profile' => $this->getProfile(true)),
+		                            array('user_id' => EQ($this->getId())));
+		    Person::$cache = array();
+		    Person::$namesCache = array();
+		    Person::$aliasCache = array();
+		    Person::$idsCache = array();
+		    return $status;
+        }
+        return false;
+	}
+	
+	function delete(){
+	    $me = Person::newFromWGUser();
+	    if($me->isRoleAtLeast(MANAGER)){
+	        return DBFunctions::update('mw_user',
+	                             array('deleted' => 1),
+	                             array('user_id' => EQ($this->getId())));
+	    }
+	    return false;
+	}
+	
+	function exists(){
+	    $person = Person::newFromName($this->getName());
+	    return ($person != null && $person->getName() != "");
+	}
+	
+	function getCacheId(){
+	    global $wgSitename;
 	}
 	
 	// Returns the Mediawiki User object for this Person
@@ -548,11 +686,6 @@ class Person{
 	    return isMemberOf($proj);
 	}
 	
-	// Returns the Id of this Person
-	function getId(){
-		return $this->id;
-	}
-	
 	// Returns the name of this Person
 	function getName(){
 		return $this->name;
@@ -587,18 +720,24 @@ class Person{
 	// Returns the url of this Person's profile page
 	function getUrl(){
 	    global $wgServer, $wgScriptPath;
-	    return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}";
+	    if($this->id > 0){
+	        return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}";
+	    }
+	    return "";
 	}
 	
 	// Returns the path to a photo of this Person if it exists
-	function getPhoto(){
+	function getPhoto($cached=false){
 	    global $wgServer, $wgScriptPath;
-	    if($this->photo == null){
+	    if($this->photo == null || $cached){
 	        if(file_exists("Photos/".str_ireplace(".", "_", $this->name).".jpg")){
-	            $this->photo = "$wgServer$wgScriptPath/Photos/".str_ireplace(".", "_", $this->name).".jpg?".microtime(true);
+	            $this->photo = "$wgServer$wgScriptPath/Photos/".str_ireplace(".", "_", $this->name).".jpg";
+	            if(!$cached){
+	                return $this->photo."?".microtime(true);
+	            }
 	        }
 	        else {
-	            $this->photo = "";
+	            $this->photo = "$wgServer$wgScriptPath/skins/face.png";
 	        }
 	    }
 	    return $this->photo;
@@ -668,19 +807,12 @@ class Person{
 	// Returns the user's profile.
 	// If $private is true, then it grabs the private version, otherwise it gets the public
 	function getProfile($private=false){
-	    $uTable = getTableName("user");
-	    $profile = "user_public_profile";
 	    if($private){
-	        $profile = "user_private_profile";
+	        return $this->privateProfile;
 	    }
-	    $sql = "SELECT $profile as profile
-		        FROM $uTable u
-		        WHERE user_name = '{$this->name}'";
-	    $data = DBFunctions::execSQL($sql);
-		if(DBFunctions::getNRows() > 0){
-		    return $data[0]['profile'];
-		}
-		else return "";
+	    else{
+	        return $this->publicProfile;
+	    }
 	}
 	
 	// Returns the moved on row for when HQPs are inactivated
@@ -940,15 +1072,19 @@ class Person{
 	 * Returns the discipline of this Person during the given start and end dates
 	 * @param string $startRange The start date to look at (default start of the current reporting year)
 	 * @param string $endRange The end date to look at (default end of the current reporting year)
+	 * @param boolean $checkLater Whether or not to check the current Discipline if the range specified does not return any results
 	 * @return string The name of the discipline that this Person belongs to during the specified dates
 	 */
-	function getDisciplineDuring($startRange=false, $endRange=false){
+	function getDisciplineDuring($startRange=false, $endRange=false, $checkLater=false){
 	    self::generateDisciplineMap();
 	    if( $startRange === false || $endRange === false ){
 	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
 	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
 	    }
 	    $university = $this->getUniversityDuring($startRange, $endRange);
+	    if($checkLater && $university['department'] == "" || $university['university'] == ""){
+	        $university = $this->getUniversity();
+	    }
 	    $dept = strtolower($university['department']);
 	    if(isset(self::$disciplineMap[$dept])){
 	        return self::$disciplineMap[$dept];
@@ -1000,10 +1136,10 @@ class Person{
 	    if($history !== false && $this->id != null){
 			$this->roles = array();
 			if($history === true){
-			    $sql = "SELECT *
-                        FROM grand_roles
-                        WHERE user = '{$this->id}'
-                        ORDER BY end_date DESC";
+			    $data = DBFunctions::select(array('grand_roles'),
+			                                array('*'),
+			                                array('user' => $this->id),
+			                                array('end_date' => 'DESC'));
             }
             else{
                 $sql = "SELECT *
@@ -1011,11 +1147,13 @@ class Person{
                         WHERE user = '{$this->id}'
                         AND start_date <= '{$history}'
                         AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
+                $data = DBFunctions::execSQL($sql);
             }
-			$data = DBFunctions::execSQL($sql);
 			$roles = array();
-			foreach($data as $row){
-				$roles[] = new Role(array(0 => $row));
+			if(count($data) > 0){
+			    foreach($data as $row){
+				    $roles[] = new Role(array($row));
+			    }
 			}
 			return $roles;
 		}
@@ -1177,9 +1315,8 @@ class Person{
 		if($this->projects == null && $this->id != null){
 			$this->projects = array();
 			$sql = "SELECT u.project_id
-                    FROM grand_user_projects u, grand_project p
-                    WHERE user = '{$this->id}'
-                         AND p.id = u.project_id\n";
+                    FROM grand_user_projects u
+                    WHERE user = '{$this->id}' \n";
             if($history === false){
                 $sql .= "AND (end_date = '0000-00-00 00:00:00'
                          OR end_date > CURRENT_TIMESTAMP)\n";
@@ -1350,6 +1487,40 @@ class Person{
 	    return $this->relations[$type];
 	}
 	
+	// Returns an array of relations for this Person of the given type
+	// If history is set to true, then all the relations regardless of date are included
+	function getStudents($type='all', $history=false){
+	    $supervision = array();
+
+        $sql = "SELECT r.id, r.type, r.user2
+                FROM grand_relations r, mw_user u1, mw_user u2
+                WHERE r.user1 = '{$this->id}'
+                AND u1.user_id = r.user1
+                AND u2.user_id = r.user2
+                AND u1.deleted != '1'
+                AND u2.deleted != '1'
+                AND r.type = 'Supervises'";
+        if(!$history){
+            $sql .= "AND start_date > end_date";
+        }
+        $data = DBFunctions::execSQL($sql);
+
+        $students = array();
+		foreach($data as $row){
+			// if($type == "all"){
+		    // }
+		    // else if($type == "Masters"){
+		    // }
+		    // else if($type == "PhD"){
+		    // }
+
+			$students[] = Person::newFromId($row['user2']);
+		}
+		
+		return $students;
+	 
+	}
+
 	// Returns the contributions this person has made
 	function getContributions(){
 	    if($this->contributions == null){
@@ -1783,6 +1954,61 @@ class Person{
             }
         }
         return $sups;
+    }
+
+    function getSupervisedOnProjects($history=false){
+        if($history !== false && $this->id != null){
+			$this->roles = array();
+			if($history === true){
+			    $sql = "SELECT *
+                        FROM grand_relations
+                        WHERE user2 = '{$this->id}'
+                        AND type = 'Supervises'";
+            }
+            else{
+                $sql = "SELECT *
+                        FROM grand_relations
+                        WHERE user2 = '{$this->id}'
+                        AND type = 'Supervises'
+                        AND start_date <= '{$history}'
+                        AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
+            }
+			$data = DBFunctions::execSQL($sql);
+			$projects = array();
+			$project_ids = array();
+			foreach($data as $row){
+				if(!empty($row['projects'])){
+					$p_ids = unserialize($row['projects']);
+					foreach($p_ids as $p_id){
+						if(!in_array($p_id, $project_ids)){
+							$projects[] = Project::newFromId($p_id);
+							$project_ids[] = $p_id;
+						}
+					}
+				}
+			}
+			return $projects;
+		}
+	    $sql = "SELECT *
+                FROM grand_relations
+                WHERE user2 = '{$this->id}'
+                AND type = 'Supervises'
+                AND start_date > end_date";
+        $data = DBFunctions::execSQL($sql);
+		$projects = array();
+		$project_ids = array();
+		foreach($data as $row){
+			if(!empty($row['projects'])){
+				$p_ids = unserialize($row['projects']);
+				foreach($p_ids as $p_id){
+					if(!in_array($p_id, $project_ids)){
+						$projects[] = Project::newFromId($p_id);
+						$project_ids[] = $p_id;
+					}
+				}
+			}
+		}
+		return $projects;
     }
 
     function isSupervisor($history=false){
