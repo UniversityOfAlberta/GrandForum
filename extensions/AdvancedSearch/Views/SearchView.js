@@ -17,7 +17,6 @@ SearchView = Backbone.View.extend({
     },
 
     doSearch: function(){
-        console.log("called!");
         this.do_solr_query();
     },
 
@@ -130,11 +129,16 @@ SearchView = Backbone.View.extend({
           + "&q=" + user_query 
           + this.compile_facets() + product_limit;
 
+        
         $.getJSON(url_solr, function(data){
-            $('#people_list').empty();
-            //console.log(data['response']['docs']);
-            var row_count = 0; 
-            $.each(data['response']['docs'], function(key, val){
+            var row_count = 0;     
+            $("#people_list").empty();
+            if(data['response']['docs'].length == 0){
+                $("#people_list").html("<li class='pscard odd'><p>&nbsp;No Results Found</p></li>");
+            }
+            else{
+
+                $.each(data['response']['docs'], function(key, val){
                 //console.log(val['user_id']);
                 person = new Person({id: val['user_id']});
                 person.fetch({
@@ -149,7 +153,7 @@ SearchView = Backbone.View.extend({
                             });
                         }
                         if(pj.photo == ""){
-                            profile_photo = "http://local.net/grand_forum/Photos/Empty.jpg";
+                            profile_photo = "/Photos/Empty.jpg";
                         }else{
                             profile_photo = pj.photo;
                         }
@@ -174,17 +178,13 @@ SearchView = Backbone.View.extend({
                               roles: roleNames.join(', ')
                             })
                         );
-
-                        //console.log(person.toJSON());
                     }
                 });
-                // console.log("KEY:");
-                // console.log(key);
-                // console.log("VAL:");
-                // console.log(val);
-                //load_user_cards(key, val);
-            });
+                });
+            }
+       
         });
+        
     },
 
     /*processData: function(){

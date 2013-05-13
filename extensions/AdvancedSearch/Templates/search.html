@@ -1,5 +1,9 @@
 <!-- Temporary place for CSS will need to move out to its own file -->
 <style type="text/css">
+div#search_controls {
+  margin: 25px 0;
+}
+
 ul#people_list {
   margin-left: 4px;
 }
@@ -44,6 +48,10 @@ span.pscard-profile_hdr{
   font-size: 110%;
   font-weight: bold;
 }
+span.cell-hdr {
+  font-weight: bold;
+  vertical-align: middle;
+}
 div.floatnone {
   clear: both;
 }
@@ -71,23 +79,40 @@ div#slider-range{
 <a href="#" id="a_next">Next</a> -->
 
 <!-- Facet controls -->
+<div id="search_controls">
 <table>
   <tr>
-    <th style="padding-bottom:17px;">Search: </th>
-    <td colspan="5" style="padding-bottom:17px;"><input style="width: 500px;" type="text" id="t_query" name="query" placeholder="Enter search query" /></td>
+    <td colspan="2" style="padding-bottom:17px;">
+      <input style="width: 500px;" type="text" id="t_query" name="query" placeholder="Enter search query" />
+      <button id="search_btn">Search</button>
+    </td>
   </tr>
+
   <tr>
-    <th>Role: </th>
     <td>
-      <select id=sel_role_modify class=sel style="width:100%">
+      <span class="cell-hdr">Projects: </span>
+      <select id="sel_proj" class="sel">
+              <option value="any">- any -</option>
+            <option value="AESTHVIS">AESTHVIS</option><option value="AFEVAL">AFEVAL</option><option value="ALLASasfadss">ALLASasfadss</option><option value="AMBAID">AMBAID</option><option value="BELIEVE">BELIEVE</option><option value="CAPSIM">CAPSIM</option><option value="CPRM">CPRM</option><option value="DIGIKIDZ">DIGIKIDZ</option><option value="DIGILAB">DIGILAB</option><option value="DIGLT">DIGLT</option><option value="DINS">DINS</option><option value="ENCAD">ENCAD</option><option value="EOVW">EOVW</option><option value="FRAGG">FRAGG</option><option value="GAMFIT">GAMFIT</option><option value="GRNCTY">GRNCTY</option><option value="HCTSL">HCTSL</option><option value="HDVID">HDVID</option><option value="HITHERE">HITHERE</option><option value="HLTHSIM">HLTHSIM</option><option value="HSCEG">HSCEG</option><option value="INCLUDE">INCLUDE</option><option value="loi-ATAS3D">loi-ATAS3D</option><option value="loi-EBOOK">loi-EBOOK</option><option value="loi-S3DFILM">loi-S3DFILM</option><option value="loi-SENSEVR">loi-SENSEVR</option><option value="MCSIG">MCSIG</option><option value="MEOW">MEOW</option><option value="MOTION">MOTION</option><option value="MOVITA">MOVITA</option><option value="NAVEL">NAVEL</option><option value="NEUROGAM">NEUROGAM</option><option value="NEWPROJ">NEWPROJ</option><option value="NEWS">NEWS</option><option value="NGAIA">NGAIA</option><option value="PERUI">PERUI</option><option value="PLATFORM">PLATFORM</option><option value="PLAYPR">PLAYPR</option><option value="PRIVNM">PRIVNM</option><option value="PROMO">PROMO</option><option value="SHRDSP">SHRDSP</option><option value="SIMUL">SIMUL</option><option value="SKETCH">SKETCH</option><option value="VIRTPRES">VIRTPRES</option><option value="VSS">VSS</option></select>
+    </td>
+    
+    <td>
+      <span class="cell-hdr">Products:</span>
+      <div id="slider-range"></div>
+      <label id="amount" style="color:#f6931f; font-weight:bold; margin-left: 15px;"></label>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <span class="cell-hdr">Role: </span>
+      <select id="sel_role_modify" class="sel">
         <option value="is">is</option>
         <option value="gt_eq">&gt;=</option>
         <option value="lt_eq">&lt;=</option>
       </select>
-    </td>
-
-    <td>
-      <select id="sel_role" class="sel" style="width:100%">
+    
+      <select id="sel_role" class="sel">
         <option value="any">- any -</option>
         <option value="BOD">BOD</option>
         <option value="Manager">Manager</option>
@@ -101,16 +126,14 @@ div#slider-range{
       </select>
     </td>
   
-    <th style="padding-left: 30px;">Rank: </th>
     <td>
-      <select id="sel_rank_modify" class="sel" style="width:100%">
+      <span class="cell-hdr">Rank: </span>
+      <select id="sel_rank_modify" class="sel">
         <option value="is">is</option>
         <option value="gt_eq">&gt;=</option>
         <option value="lt_eq">&lt;=</option>
       </select>
-    </td>
-
-    <td>
+    
       <select id="sel_rank" class="sel">
         <option value="any">- any -</option>
         <option value="VP Research">VP Research</option>
@@ -132,29 +155,10 @@ div#slider-range{
       </select>
     </td>
   </tr>
-
-  <tr>
-    <th>Projects: </th>
-    <td>
-      <select id="sel_proj" class="sel">
-              <option value="any">- any -</option>
-            <option value="AESTHVIS">AESTHVIS</option><option value="AFEVAL">AFEVAL</option><option value="ALLASasfadss">ALLASasfadss</option><option value="AMBAID">AMBAID</option><option value="BELIEVE">BELIEVE</option><option value="CAPSIM">CAPSIM</option><option value="CPRM">CPRM</option><option value="DIGIKIDZ">DIGIKIDZ</option><option value="DIGILAB">DIGILAB</option><option value="DIGLT">DIGLT</option><option value="DINS">DINS</option><option value="ENCAD">ENCAD</option><option value="EOVW">EOVW</option><option value="FRAGG">FRAGG</option><option value="GAMFIT">GAMFIT</option><option value="GRNCTY">GRNCTY</option><option value="HCTSL">HCTSL</option><option value="HDVID">HDVID</option><option value="HITHERE">HITHERE</option><option value="HLTHSIM">HLTHSIM</option><option value="HSCEG">HSCEG</option><option value="INCLUDE">INCLUDE</option><option value="loi-ATAS3D">loi-ATAS3D</option><option value="loi-EBOOK">loi-EBOOK</option><option value="loi-S3DFILM">loi-S3DFILM</option><option value="loi-SENSEVR">loi-SENSEVR</option><option value="MCSIG">MCSIG</option><option value="MEOW">MEOW</option><option value="MOTION">MOTION</option><option value="MOVITA">MOVITA</option><option value="NAVEL">NAVEL</option><option value="NEUROGAM">NEUROGAM</option><option value="NEWPROJ">NEWPROJ</option><option value="NEWS">NEWS</option><option value="NGAIA">NGAIA</option><option value="PERUI">PERUI</option><option value="PLATFORM">PLATFORM</option><option value="PLAYPR">PLAYPR</option><option value="PRIVNM">PRIVNM</option><option value="PROMO">PROMO</option><option value="SHRDSP">SHRDSP</option><option value="SIMUL">SIMUL</option><option value="SKETCH">SKETCH</option><option value="VIRTPRES">VIRTPRES</option><option value="VSS">VSS</option></select>
-    </td>
-    
-    <th style="padding-left:30px;" colspan="3"><span>Products:</span>
-      <div id="slider-range"></div>
-    </th>
-    <td>
-      <label id="amount" style="color:#f6931f; font-weight:bold;"></label>
-      <!-- <input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;" /> -->
-    </td>
-  </tr>
-
 </table>
+</div>
 <!-- END Facet controls -->
-<p>
-<button id="search_btn">Search</button>
-</p>
+
 <div>
 <ul id="people_list"></ul>
 </div>
