@@ -650,7 +650,8 @@ class cavendishTemplate extends QuickTemplate {
 			echo "</ul>";
 			echo "<span style='padding-top: 2px; padding-bottom: 2px;'></span>
 				<ul class='pBody' style='background:#F3EBF5'>";
-			echo "<li id='addMultimedia'><a href='{$wgScriptPath}/index.php/Special:MyDuplicateProducts'>Manage Duplicate Products</a></li>";
+			echo "<li id='addMultimedia'><a href='{$wgScriptPath}/index.php/Special:MyDuplicateProducts'>Duplicate Management</a></li>";
+			echo "<li id='sanityChecks'><a href='{$wgScriptPath}/index.php/Special:SanityChecks'>Data Quality Issues</a></li>";
 			echo "</ul>";
 		    echo "<span>Other</span>
 				<ul class='pBody' style='background:#F3EBF5'>";
