@@ -103,6 +103,7 @@ class PersonPage {
                 }
                 $tabbedPage->addTab(new PersonAcknowledgementTab($person, $visibility));
                 $tabbedPage->addTab(new PersonVisualisationsTab($person, $visibility));
+                $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 $tabbedPage->showPage();
 
                 $this->showTitle($person, $visibility);

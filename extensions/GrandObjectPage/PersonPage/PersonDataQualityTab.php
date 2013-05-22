@@ -1,0 +1,314 @@
+<?php
+
+class PersonDataQualityTab extends AbstractTab {
+
+    var $person;
+    var $visibility;
+
+    function PersonDataQualityTab($person, $visibility){
+        parent::AbstractTab("Data Quality Checks");
+        $this->person = $person;
+        $this->visibility = $visibility;
+    }
+    
+    
+    function generateBody(){
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+        $me = Person::newFromId($wgUser->getId());
+        $my_id = $me->getId();
+
+        if($this->visibility['isMe'] || $me->isRoleAtLeast(MANAGER)){
+            $wgOut->addScript(
+                "<script type='text/javascript'>
+                $(document).ready(function(){
+                    $('#dataQualityAccordion').accordion({autoHeight: false, collapsible: true});
+                });
+                </script>"
+            );
+
+            $errors = PersonDataQualityTab::getErrors($my_id);
+
+            $profile_checks = $this->getProfileChecks($errors);
+            $hqp_checks = $this->getHqpChecks($errors);
+            $product_checks = $this->getProductChecks($errors);
+
+            $this->html .=<<<EOF
+            <div id='dataQualityAccordion'>
+                <h3><a href='#'>NI Profile</a></h3>
+                <div>
+                {$profile_checks}
+                </div>
+                <h3><a href='#'>HQP</a></h3>
+                <div>
+                {$hqp_checks}
+                </div>
+                <h3><a href='#'>Products</a></h3>
+                <div>
+                {$product_checks}
+                </div>
+                <h3><a href='#'>Duplicates</a></h3>
+                <div>
+                <a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:MyDuplicateProducts'>Click here to manage your duplicate products</a>
+                </div>
+            </div>
+EOF;
+        }
+        
+
+        return $this->html;
+    }
+    
+    
+    
+    /*
+     * Displays the profile checks for this user
+     */
+    function getProfileChecks($errors){
+        global $wgOut, $wgUser;
+        $me = Person::newFromId($wgUser->getId());
+        $html = "<h3>Profile Errors:</h3>";
+        if(!empty($errors['profile_errors'])){
+            $html .= "<ul>";
+            foreach ($errors['profile_errors'] as $es){
+                $html .= "<li><strong>{$es}</strong></li>";
+            }
+            $html .= "</ul>";
+        }
+        else{
+            $html .= "<strong>No Errors</strong>";
+        }
+        
+        return $html;
+
+    }
+
+    /*
+     * Displays the profile checks for this user
+     */
+    function getHqpChecks($errors){
+        global $wgOut, $wgUser;
+        $me = Person::newFromId($wgUser->getId());
+        
+        $html = "<h3>Student Errors:</h3>";
+        if(!empty($errors['student_errors'])){
+            $error_students = array();
+            foreach ($errors['student_errors'] as $name => $es){
+                $student = Person::newFromName($name);
+                $name_normal = $student->getNameForForms();
+                $name_link = "<a href='".$student->getUrl()."'>{$name_normal}</a>";
+                $html .= "{$name_link}:<ul>";
+                foreach ($es as $e){
+                    //$error_students["{$e}"][] = $name_link;
+                    $html .= "<li>{$e}</li>";
+                }
+                $html .= "</ul>";
+            }
+            // $html .= "<ul>";
+            // foreach($error_students as $e=>$s){
+            //  $html .= "<li><b>{$e}:</b> ". implode(', ', $s) ."</li>";
+            // }
+            // $html .= "</ul>";
+        }
+        else{
+            $html .= "<strong>No Errors</strong>";
+        }
+        return $html;
+
+    }
+
+    /*
+     * Displays the profile checks for this user
+     */
+    function getProductChecks($errors){
+        global $wgOut, $wgUser;
+        $me = Person::newFromId($wgUser->getId());
+        
+        $html = "<h3>Product Errors:</h3>";
+        if(!empty($errors['paper_errors'])){
+            $html .= "<strong>Papers with incomplete records:</strong><ul>";
+            foreach ($errors['paper_errors'] as $id => $es){
+                $paper = Paper::newFromId($id);
+                $name = $paper->getTitle();
+                $paper_link = $paper->getUrl();
+                $html .= "<li><a href='{$paper_link}'>{$name}</a></li>";
+                //$html .= "{$name}:<ul>";
+                //foreach ($es as $e){
+                //  $html .= "<li>{$e}</li>";
+                //}
+                //$html .= "</ul>";
+            }
+            $html .= "</ul>";
+        }
+        else{
+            $html .= "<strong>No Errors</strong>";
+        }
+        return $html;
+
+    }
+
+
+    static function getErrors($ni_id = null){
+        
+        if(!is_null($ni_id)){
+            $person = Person::newFromId($ni_id);
+        }
+        else{
+            return array();
+        }
+
+        $ni_errors = array();
+
+        $name = $person->getName();
+        $name_normal = $person->getNameForForms();
+        
+        if($person->isActive() ){
+            
+            //Allocated Budget Upload
+            //$person->getAllocatedBudget(2012);
+            $year = 2012;
+            $uid = $person->getId();
+            $blob_type=BLOB_EXCEL;
+            $rptype = RP_RESEARCHER;
+            $section = RES_ALLOC_BUDGET;
+            $item = 0;
+            $subitem = 0;
+            $rep_addr = ReportBlob::create_address($rptype,$section,$item,$subitem);
+            $budget_blob = new ReportBlob($blob_type, ($year-1), $uid, 0);
+            $budget_blob->load($rep_addr);
+            $data = $budget_blob->getData();
+            $ni_errors['profile_errors'] = array();
+            if(is_null($data)){
+                $ni_errors['profile_errors'][] = "No revised budget";
+            }
+
+            $gender = $person->getGender();
+            $nationality = $person->getNationality();
+            $email = $person->getEmail();
+            $email = ($email == "support@forum.grand-nce.ca")? "" : $email;
+            $profile_pub = $person->getProfile();
+            $profile_pri = $person->getProfile(true);
+            $ni_uni = $person->getUniversity();
+            $ni_university = $ni_uni['university'];
+            $ni_department = $ni_uni['department'];
+            $ni_position = $ni_uni['position'];
+
+            if(empty($gender)){ $ni_errors['profile_errors'][] = "Missing gender information"; }
+            if(empty($email)){ $ni_errors['profile_errors'][] = "Missing contact email"; }
+            if(empty($nationality)){ $ni_errors['profile_errors'][] = "Missing nationality"; }
+            if(empty($ni_university)){ $ni_errors['profile_errors'][] = "Missing university"; }
+            if(empty($ni_department)){ $ni_errors['profile_errors'][] = "Missing department"; }
+            if(empty($ni_position)){ $ni_errors['profile_errors'][] = "Missing title"; }
+            if(empty($ni_position)){ $ni_errors['profile_pub'][] = "Missing public profile"; }
+            if(empty($ni_position)){ $ni_errors['profile_pri'][] = "Missing private profile"; }
+
+
+            //Product completeness
+            $papers = $person->getPapersAuthored("all", "2012-01-01 00:00:00", "2013-05-01 00:00:00", false);
+            $person_paper_errors = array();
+
+            foreach($papers as $paper){
+                $paper_id = $paper->getId();
+                $paper_title = $paper->getTitle();
+
+                $errors = array();
+                $completeness = $paper->getCompleteness();
+                if(!$completeness['venue']){
+                    $errors[] = "Does not have a venue.";
+                }
+
+                if(!$completeness['pages']){
+                    $errors[] = "Does not have page information.";
+                }
+
+                if(!$completeness['publisher']){
+                    $errors[] = "Does not have a publisher.";
+                }
+
+                if(!empty($errors)){
+                    $person_paper_errors["{$paper_id}"] = $errors;
+                }
+
+            }
+        
+            $ni_errors['paper_errors'] = $person_paper_errors;
+        
+
+            //Students moved on vs thesis
+            $student_errors = array();
+            $students = $person->getStudents('all', true);
+            foreach($students as $s){
+                $student_name = $s->getName();
+                $position = $s->getPosition();
+                $university = $s->getUni();
+                $department = $s->getDepartment();
+                $errors = array();
+                $ishqp = $s->isHQP();
+                $related = $person->relatedTo($s, 'Supervises');
+
+                //Check for Ethics tutorial completion
+                $ethics = $s->getEthics();
+                if($ethics['completed_tutorial'] == 0 && $ishqp && $related){
+                    $errors[] = "Not Completed TCPS2";
+                }
+
+                //Acknowledgements
+                if($ishqp && $related){
+                    $acks = $s->getAcknowledgements();
+                    if(count($acks) > 0){
+                        $ack_found = false;
+                        foreach ($acks as $a){
+                            $supervisor = $a->getSupervisor();
+                            if($supervisor == $name_normal){
+                                $ack_found = true;
+                                break;
+                            }
+                        }
+                        if(!$ack_found){
+                            $errors[] = "No Acknowledgement";
+                        }
+                    }
+                    else{
+                        $errors[] = "No Acknowledgement";
+                    }
+                }
+
+                if($ishqp && $related && ($university == "" || $department == "" || $position == "")){
+                    $errors[] = "Missing University/Department/Position";
+                }
+
+                //Only care about Masters and PhDs for thesis errors
+                if(($position == "Masters Student" || $position == "PhD Student") && $ishqp && $related){
+                    
+                    //Check for thesis and no exit data
+                    $thesis = $s->getThesis();
+                    if(!is_null($thesis)){
+                        $moved = $s->getMovedOn();
+                        if(empty($moved['studies']) && empty($moved['city']) && empty($moved['works']) && empty($moved['employer']) && empty($moved['country'])){
+                            $errors[] = "Thesis but no exit data";
+                        }
+                    }
+                    // else if(is_null($thesis) && !$ishqp){
+                    //  $moved = $s->getMovedOn();
+                    //  if(empty($moved['studies']) && empty($moved['city']) && empty($moved['works']) && empty($moved['employer']) && empty($moved['country'])){
+                    //      $errors[] = "Past student is no longer an HQP, however has no thesis records, and is not marked as moved on.";
+                    //  }
+                    //  else{
+                    //      $errors[] = "Past student is marked as moved on, however has no thesis record.";
+                    //  }
+                    // }
+                }
+
+                if(!empty($errors)){
+                    $student_errors["{$student_name}"] = $errors;
+                }
+            }
+
+            $ni_errors['student_errors'] = $student_errors;
+
+        }
+        
+        return $ni_errors;
+    }
+    
+}
+?>
