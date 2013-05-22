@@ -142,11 +142,13 @@ EOF;
         <table id='contributionsTable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
         <thead>
         <tr>
-            <th width="35%">Name</th>
-            <th width="23%">Related Members</th>
-            <th width="22%">Related Projects</th>
-            <th width="10%">Total</th>
+            <th width="32%">Name</th>
+            <th width="20%">Related Members</th>
+            <th width="20%">Related Projects</th>
             <th width="10%">Updated</th>
+            <th width="6%" align='right'>Cash</th>
+            <th width="6%" align='right'>In-Kind</th>
+            <th width="6%" align='right'>Total</th>
         </tr>
         </thead>
         <tbody>
@@ -155,7 +157,11 @@ EOF;
 
         foreach ($contributions as $contr) {
             $name = $contr->getName();
+            $url = $contr->getUrl();
+            $name = "<a href='{$url}'>{$name}</a>";
             $total = $contr->getTotal();
+            $cash = $contr->getCash();
+            $kind = $contr->getKind();
             $people = $contr->getPeople();
             $projects = $contr->getProjects();
 
@@ -181,13 +187,18 @@ EOF;
             $project_names = implode(', ', $project_names);
             if(!empty($total) && (!empty($people_names) || !empty($project_names))){
                 $total = number_format($total, 2);
+                $cash = number_format($cash, 2);
+                $kind = number_format($kind, 2);
                 $html .=<<<EOF
                     <tr>
                         <td>{$name}</td>
                         <td>{$people_names}</td>
                         <td>{$project_names}</td>
-                        <td>\${$total}</td>
+                        
                         <td>{$date}</td>
+                        <td align='right'>\${$cash}</td>
+                        <td align='right'>\${$kind}</td>
+                        <td align='right'>\${$total}</td>
                     </tr>
 EOF;
             }
