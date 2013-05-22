@@ -178,6 +178,7 @@ define("EXTERNAL", "External");
 define("CNI", "CNI");
 define("PNI", "PNI");
 define("AR", "Associated Researcher");
+define("LOI", "LOI Member");
 define("COPL", "Project Co-Leader"); // This is a special role.
 define("PL", "Project Leader"); // This is a special role.
 define("PM", "Project Manager"); // This is a special role.
@@ -198,6 +199,7 @@ $wgRoleValues = array(INACTIVE => 0,
                       CNI => 5,
                       PNI => 6,
                       AR => 7,
+                      LOI => 7,
                       COPL => 8,
                       'COPL' => 8,
                       PL => 9,
@@ -214,7 +216,7 @@ $wgRoleValues = array(INACTIVE => 0,
                       STAFF => 16,
                       MANAGER => 17);
                      
-$wgRoles = array(HQP, EXTERNAL, CNI, PNI, AR, RMC, BOD, CHAMP, GOV, STAFF, MANAGER);
+$wgRoles = array(HQP, EXTERNAL, CNI, PNI, AR, LOI, RMC, BOD, CHAMP, GOV, STAFF, MANAGER);
 
 // Defining Custom Namespace Constants
 define("NS_GRAND_PROJ", 122);

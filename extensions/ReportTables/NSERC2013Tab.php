@@ -75,6 +75,8 @@ function showDiv(div_id, details_div_id){
         */
         case 'grand':
             $wgOut->addScript($foldscript);
+            $this->html .= "<a id='Contributions'></a><h2>Contributions</h2>";
+            self::showContributionsTable();
             $this->html .= "<a id='Grand'></a><h2>GRAND tables</h2>";
             self::showGrandTables();
             self::showDisseminations();
@@ -99,8 +101,8 @@ function showDiv(div_id, details_div_id){
             <ul>
             <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year=2013&summary=grand#Grand'><span class='tocnumber'>4</span> <span class='toctext'>GRAND tables</span></a>
                 <ul>
-                <!--li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?summary=table2#Table2'><span class='tocnumber'>4.1</span> <span class='toctext'>Table 2: Direct Contributions From Non-NCE Sources</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?summary=table3#Table3'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 3: Number of network Research Personnel paid with NCE funds or other funds, by sectors</span></a></li-->
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?summary=table2#Table2'><span class='tocnumber'>4.1</span> <span class='toctext'>Table 2: Contributions</span></a></li>
+                <!--<li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?summary=table3#Table3'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 3: Number of network Research Personnel paid with NCE funds or other funds, by sectors</span></a></li-->
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year=2013&summary=grand#Table4'><span class='tocnumber'>4.1</span> <span class='toctext'>Table 4: Number of Graduate Students Working on Network Research</span></a></li>
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year=2013&summary=grand#Table4.2'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 4.2: HQP Breakdown by University</span></a></li>
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year=2013&summary=grand#Table4.3'><span class='tocnumber'>4.3</span> <span class='toctext'>Table 4.3: NI Breakdown by University</span></a></li>
@@ -114,6 +116,17 @@ function showDiv(div_id, details_div_id){
          </table>
 EOF;
 
+    }
+
+    function showContributionsTable() {
+        $html =<<<EOF
+         <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
+         <tr><td></td></tr>
+         </table>
+EOF;
+     
+    
+        $this->html .= $html;   
     }
 
     function showGrandTables() {

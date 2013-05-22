@@ -50,6 +50,7 @@ function showDiv(div_id, details_div_id){
     $(details_div_id).html( $(div_id).html() );
     $(details_div_id).show();
 }
+
 </script>
 <style media='screen,projection' type='text/css'>
 #details_div, .details_div{
@@ -80,6 +81,8 @@ function showDiv(div_id, details_div_id){
         */
         case 'grand':
             $wgOut->addScript($foldscript);
+            $this->html .= "<a id='Contributions'></a><h2>Contributions</h2>";
+            self::showContributionsTable();
             $this->html .= "<a id='Grand'></a><h2>GRAND tables</h2>";
             self::showGrandTables();
             self::showDisseminations();
@@ -106,8 +109,8 @@ function showDiv(div_id, details_div_id){
             <ul>
             <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Grand'><span class='tocnumber'>4</span> <span class='toctext'>GRAND tables</span></a>
                 <ul>
-                <!--li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?summary=table2#Table2'><span class='tocnumber'>4.1</span> <span class='toctext'>Table 2: Direct Contributions From Non-NCE Sources</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?summary=table3#Table3'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 3: Number of network Research Personnel paid with NCE funds or other funds, by sectors</span></a></li-->
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Table4.0'><span class='tocnumber'>4.0</span> <span class='toctext'>Table 2: Contributions</span></a></li>
+                <!--<li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?summary=table3#Table3'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 3: Number of network Research Personnel paid with NCE funds or other funds, by sectors</span></a></li-->
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Table4'><span class='tocnumber'>4.1</span> <span class='toctext'>Table 4: Number of Graduate Students Working on Network Research</span></a></li>
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Table4.2'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 4.2: HQP Breakdown by University</span></a></li>
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Table4.3'><span class='tocnumber'>4.3</span> <span class='toctext'>Table 4.3: NI Breakdown by University</span></a></li>
@@ -121,6 +124,78 @@ function showDiv(div_id, details_div_id){
          </table>
 EOF;
 
+    }
+
+    function showContributionsTable() {
+        $html =<<<EOF
+        <script type="text/javascript">
+        $(document).ready(function(){
+            $('#contributionsTable').dataTable({
+                //'aLengthMenu': [[-1], ['All']],
+                'iDisplayLength': 100,
+                'bFilter': true,
+                'aaSorting': [[0,'asc']],
+            });
+        });
+        </script>
+        <a id='Table4.0'></a>
+        <table id='contributionsTable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
+        <thead>
+        <tr>
+            <th width="35%">Name</th>
+            <th width="23%">Related Members</th>
+            <th width="22%">Related Projects</th>
+            <th width="10%">Total</th>
+            <th width="10%">Updated</th>
+        </tr>
+        </thead>
+        <tbody>
+EOF;
+        $contributions = Contribution::getContributionsDuring(null, 2012);
+
+        foreach ($contributions as $contr) {
+            $name = $contr->getName();
+            $total = $contr->getTotal();
+            $people = $contr->getPeople();
+            $projects = $contr->getProjects();
+
+            $people_names = array();
+            foreach($people as $p){
+                if($p instanceof Person){
+                    $p_url = $p->getUrl();
+                    $p_name = $p->getNameForForms();
+
+                    $people_names[] = "<a href='{$p_url}'>{$p_name}</a>";
+                }
+            }
+            $people_names = implode(', ', $people_names);
+
+            $project_names = array();
+            foreach ($projects as $p) {
+                $p_url = $p->getUrl();
+                $p_name = $p->getName();
+
+                $project_names[] = "<a href='{$p_url}'>{$p_name}</a>";
+            }
+            $date = substr($contr->getDate(), 0, 10);
+            $project_names = implode(', ', $project_names);
+            if(!empty($total) && (!empty($people_names) || !empty($project_names))){
+                $total = number_format($total, 2);
+                $html .=<<<EOF
+                    <tr>
+                        <td>{$name}</td>
+                        <td>{$people_names}</td>
+                        <td>{$project_names}</td>
+                        <td>\${$total}</td>
+                        <td>{$date}</td>
+                    </tr>
+EOF;
+            }
+        }
+
+
+        $html .= "</tbody></table>";
+        $this->html .= $html;   
     }
 
     function showGrandTables() {

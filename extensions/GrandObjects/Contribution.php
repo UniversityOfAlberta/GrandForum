@@ -130,7 +130,11 @@ class Contribution {
 
         $sql = "SELECT DISTINCT id
                 FROM grand_contributions
-                WHERE type = '{$type}' AND year={$year}";
+                WHERE year={$year}";
+
+        if(!is_null($type) && $type != ""){
+            $sql .= " AND type = '{$type}'";
+        }
 
         $data = DBFunctions::execSQL($sql);
         $contributions = array();
