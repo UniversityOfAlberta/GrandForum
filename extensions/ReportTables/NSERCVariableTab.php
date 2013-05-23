@@ -136,6 +136,7 @@ EOF;
                 'bFilter': true,
                 'aaSorting': [[0,'asc']],
             });
+            $('span.contribution_descr').qtip({ style: { name: 'cream', tip: true } });
         });
         </script>
         <a id='Table4.0'></a>
@@ -200,9 +201,11 @@ EOF;
                 $total = number_format($total, 2);
                 $cash = number_format($cash, 2);
                 $kind = number_format($kind, 2);
+                $descr = $contr->getDescription();
+
                 $html .=<<<EOF
                     <tr>
-                        <td>{$name}</td>
+                        <td><span class="contribution_descr" title="{$descr}">{$name}</span></td>
                         <td>{$partner_names}</td>
                         <td>{$people_names}</td>
                         <td>{$project_names}</td>
