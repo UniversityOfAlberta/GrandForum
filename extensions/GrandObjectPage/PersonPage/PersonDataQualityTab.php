@@ -22,8 +22,32 @@ class PersonDataQualityTab extends AbstractTab {
                 "<script type='text/javascript'>
                 $(document).ready(function(){
                     $('#dataQualityAccordion').accordion({autoHeight: false, collapsible: true});
+                    $('#duplicateProductsAccordion').accordion({autoHeight: false, collapsible: true, header: 'h4'});
+                    $('#hqpErrorsAccordion').accordion({autoHeight: false, collapsible: true, header: 'h4'});
+                    $('#productErrorsAccordion').accordion({autoHeight: false, collapsible: true, header: 'h4'});
+                   
+                    $('.ui-accordion .ui-accordion-header a.accordion_hdr_lnk').click(function() {
+                      window.location = $(this).attr('href');
+                      return false;
+                   });
                 });
+
+
                 </script>"
+            );
+            $wgOut->addHTML(
+                "<style type='text/css'>
+                    .ui-accordion .ui-accordion-header a{
+                        display: inline !important;
+                    }
+                    .ui-accordion .ui-accordion-header a.accordion_hdr_lnk{
+                        color: blue !important;
+                        padding-left: 0 !important;
+                    }
+                    .ui-accordion .ui-accordion-header a.accordion_hdr_lnk:hover{
+                        text-decoration: underline;
+                    }
+                </style>"
             );
 
             $errors = PersonDataQualityTab::getErrors($my_id);
@@ -31,24 +55,25 @@ class PersonDataQualityTab extends AbstractTab {
             $profile_checks = $this->getProfileChecks($errors);
             $hqp_checks = $this->getHqpChecks($errors);
             $product_checks = $this->getProductChecks($errors);
+            $duplicates = $this->getMyProductDuplicates();
 
             $this->html .=<<<EOF
             <div id='dataQualityAccordion'>
-                <h3><a href='#'>NI Profile</a></h3>
+                <h3><a href='#'>Profile Errors</a></h3>
                 <div>
                 {$profile_checks}
                 </div>
-                <h3><a href='#'>HQP</a></h3>
+                <h3><a href='#'>HQP Errors</a></h3>
                 <div>
                 {$hqp_checks}
                 </div>
-                <h3><a href='#'>Products</a></h3>
+                <h3><a href='#'>Product Errors</a></h3>
                 <div>
                 {$product_checks}
                 </div>
-                <h3><a href='#'>Duplicates</a></h3>
+                <h3><a href='#'>Product Duplicates</a></h3>
                 <div>
-                <a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:MyDuplicateProducts'>Click here to manage your duplicate products</a>
+                {$duplicates}
                 </div>
             </div>
 EOF;
@@ -66,7 +91,7 @@ EOF;
     function getProfileChecks($errors){
         global $wgOut, $wgUser;
         $me = Person::newFromId($wgUser->getId());
-        $html = "<h3>Profile Errors:</h3>";
+        $html = "";// "<h3>Profile Errors:</h3>";
         if(!empty($errors['profile_errors'])){
             $html .= "<ul>";
             foreach ($errors['profile_errors'] as $es){
@@ -89,20 +114,24 @@ EOF;
         global $wgOut, $wgUser;
         $me = Person::newFromId($wgUser->getId());
         
-        $html = "<h3>Student Errors:</h3>";
+        $html = "";//"";//"<h3>Student Errors:</h3>";
         if(!empty($errors['student_errors'])){
             $error_students = array();
+            $html = "<div id='hqpErrorsAccordion'>";
             foreach ($errors['student_errors'] as $name => $es){
                 $student = Person::newFromName($name);
                 $name_normal = $student->getNameForForms();
-                $name_link = "<a href='".$student->getUrl()."'>{$name_normal}</a>";
-                $html .= "{$name_link}:<ul>";
+            
+                $view_link = "<a class='accordion_hdr_lnk' href='".$student->getUrl()."'>[View]</a>";
+                $html .= "<h4><a href='#'>{$name_normal}</a> {$view_link}</h4>";
+                $html .= "<div><ul>";
                 foreach ($es as $e){
                     //$error_students["{$e}"][] = $name_link;
                     $html .= "<li>{$e}</li>";
                 }
-                $html .= "</ul>";
+                $html .= "</ul></div>";
             }
+            $html .= "</div>";
             // $html .= "<ul>";
             // foreach($error_students as $e=>$s){
             //  $html .= "<li><b>{$e}:</b> ". implode(', ', $s) ."</li>";
@@ -123,21 +152,26 @@ EOF;
         global $wgOut, $wgUser;
         $me = Person::newFromId($wgUser->getId());
         
-        $html = "<h3>Product Errors:</h3>";
+        $html = "";//"<h3>Product Errors:</h3>";
         if(!empty($errors['paper_errors'])){
-            $html .= "<strong>Papers with incomplete records:</strong><ul>";
+            $html = "<div id='productErrorsAccordion'>";
+            //$html .= "<strong>Products with incomplete information:</strong><ul>";
             foreach ($errors['paper_errors'] as $id => $es){
                 $paper = Paper::newFromId($id);
                 $name = $paper->getTitle();
                 $paper_link = $paper->getUrl();
-                $html .= "<li><a href='{$paper_link}'>{$name}</a></li>";
+
+                $view_link = "<a class='accordion_hdr_lnk' href='{$paper_link}'>[View]</a>";
+                $html .= "<h4><a href='#'>{$name}</a> {$view_link}</h4>";
+                $html .= "<div><ul>";
+                //$html .= "<li><a href='{$paper_link}'>{$name}</a></li>";
                 //$html .= "{$name}:<ul>";
-                //foreach ($es as $e){
-                //  $html .= "<li>{$e}</li>";
-                //}
-                //$html .= "</ul>";
+                foreach ($es as $e){
+                  $html .= "<li>{$e}</li>";
+                }
+                $html .= "</ul></div>";
             }
-            $html .= "</ul>";
+            $html .= "</div>";
         }
         else{
             $html .= "<strong>No Errors</strong>";
@@ -146,6 +180,62 @@ EOF;
 
     }
 
+    function getMyProductDuplicates(){
+        $handlers = AbstractDuplicatesHandler::$handlers;
+        $dup_pub = new DuplicatesTab("Publications", $handlers['myPublication']);
+        $dup_pub->generateBody();
+        $publications = $dup_pub->html;
+
+        $dup_art = new DuplicatesTab("Artifacts", $handlers['myArtifact']);
+        $dup_art->generateBody();
+        $artifacts = $dup_art->html;
+
+        $dup_act = new DuplicatesTab("Activities", $handlers['myActivity']);
+        $dup_act->generateBody();
+        $activities = $dup_act->html;
+
+        $dup_press = new DuplicatesTab("Press", $handlers['myPress']);
+        $dup_press->generateBody();
+        $press = $dup_press->html;
+    
+        $dup_awd = new DuplicatesTab("Awards", $handlers['myAward']);
+        $dup_awd->generateBody();
+        $awards = $dup_awd->html;
+
+        $dup_present = new DuplicatesTab("Presentations", $handlers['myPresentation']);
+        $dup_present->generateBody();
+        $presentations = $dup_present->html;
+
+        $html =<<<EOF
+            <div id='duplicateProductsAccordion'>
+                <h4><a href='#'>Publications</a></h4>
+                <div>
+                {$publications}<br />
+                </div>
+                <h4><a href='#'>Artifacts</a></h4>
+                <div>
+                {$artifacts}<br />
+                </div>
+                <h4><a href='#'>Activities</a></h4>
+                <div>
+                {$activities}<br />
+                </div>
+                <h4><a href='#'>Press</a></h4>
+                <div>
+                {$press}<br />
+                </div>
+                <h4><a href='#'>Awards</a></h4>
+                <div>
+                {$awards}<br />
+                </div>
+                <h4><a href='#'>Presentations</a></h4>
+                <div>
+                {$presentations}<br />
+                </div>
+            </div>
+EOF;
+        return $html;
+    }
 
     static function getErrors($ni_id = null){
         
