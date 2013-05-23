@@ -338,6 +338,8 @@ EOF;
 				foreach($students as $s){
 					$student_name = $s->getName();
 					$position = $s->getPosition();
+					$university = $s->getUni();
+					$department = $s->getDepartment();
 					$errors = array();
 					$ishqp = $s->isHQP();
 					$related = $person->relatedTo($s, 'Supervises');
@@ -367,6 +369,10 @@ EOF;
 						else{
 							$errors[] = "No Acknowledgement";
 						}
+					}
+
+					if($ishqp && $related && ($university == "" || $department == "" || $position == "")){
+						$errors[] = "Missing University/Department/Position";
 					}
 
 					//Only care about Masters and PhDs for thesis errors
