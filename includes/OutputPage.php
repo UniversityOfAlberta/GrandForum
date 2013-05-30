@@ -1244,18 +1244,18 @@ class OutputPage {
 			$text = wfMsgNoTrans( 'permissionserrorstext-withaction', count($errors), $action_desc ) . "\n\n";
 		}
 
-		if (count( $errors ) > 1) {
+		if (count( $errors ) == 1) {
 			$text .= '<ul class="permissions-errors">' . "\n";
 
 			foreach( $errors as $error )
 			{
 				$text .= '<li>';
-				$text .= call_user_func_array( 'wfMsgNoTrans', $error );
+				$text .= call_user_func_array( 'wfMsgNoTrans', array($error) );
 				$text .= "</li>\n";
 			}
 			$text .= '</ul>';
 		} else {
-			$text .= '<div class="permissions-errors">' . call_user_func_array( 'wfMsgNoTrans', reset( $errors ) ) . '</div>';
+			$text .= '<div class="permissions-errors">' . call_user_func_array( 'wfMsgNoTrans', array(reset( $errors )) ) . '</div>';
 		}
 
 		return $text;
