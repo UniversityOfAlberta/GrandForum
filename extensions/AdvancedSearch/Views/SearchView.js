@@ -67,7 +67,7 @@ SearchView = Backbone.View.extend({
     },
 
     get_max_products: function(){
-        $.post('/grand_forum/index.php?action=api.virtu', 
+        $.post('/index.php?action=api.virtu', 
         {'max_products':1},
         function(data) {
             if(data.max_products){
