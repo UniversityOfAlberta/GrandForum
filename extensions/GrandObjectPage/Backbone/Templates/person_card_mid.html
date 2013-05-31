@@ -1,10 +1,10 @@
-<li class="pscard <%- odd %>">
+<!-- <li class="pscard  odd "> -->
 	<div class="pscard-photo">
 		<a href="<%- profile_url %>"><image src="<%- profile_photo %>" height="100px" /></a>
 	</div>
 	<div class="pscard-info">
 	  	<div class="pscard-info-left">
-	  	<h3 class="pscard-name"><%- name %> (<%- roles %>)</h3>
+	  	<h3 class="pscard-name"><%- name %> <span id="proles"></span></h3>
 	  	<ul class="nobul">
 	  		<li><b>Email:</b> <%- email %></li>
 	  		<li><b>University:</b> <%- university %></li>
@@ -13,11 +13,13 @@
 	  	</ul>
 	  	</div>
 	  	<div class="pscard-info-right">
+	  	<% if (public_profile) { %>
 	  	<span class="pscard-profile_hdr">Public Profile</span>
 	  	<div class="pscard-profile">
 	  		<p><%- public_profile %></p>
 	 	</div>
+	 	<% } %>
 	 	</div>
   	</div>
   	<div class="floatnone"></div>
-</li>
+<!-- </li> -->

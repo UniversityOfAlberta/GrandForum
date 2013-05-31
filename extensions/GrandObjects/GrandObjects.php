@@ -39,7 +39,7 @@ $apiRequest->addAction('Hidden','wikipage/:id', new WikiPageAPI());
 $apiRequest->addAction('Hidden','wikipage/:namespace/:title', new WikiPageAPI());
 //NewSearch
 $apiRequest->addAction('Hidden','globalSearch/:group/:search', new GlobalSearchAPI());
-$apiRequest->addAction('Hidden','newsearch', new NewSearchAPI());
+$apiRequest->addAction('Hidden','virtu', new VirtuAPI());
 
 function createModels($out, $skin){
     global $wgServer, $wgScriptPath;

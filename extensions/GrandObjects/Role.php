@@ -65,6 +65,30 @@ class Role extends BackboneModel {
 	
 	}
 	
+	// Returns all distinct roles
+	static function getDistinctRoles(){
+		// $sql = "SELECT DISTINCT role FROM grand_roles";
+        
+  //       $data = DBFunctions::execSQL($sql);
+  //       $roles = array();
+  //       foreach($data as $row){
+  //           $roles[] = $row['role'];
+  //       }
+        $roles = array(
+        		'BOD' => 90,
+               	'Manager' => 80,
+               	'Champion' => 70,
+               	'RMC' => 70,
+               	'PNI' => 60,
+               	'CNI' => 50,
+               	'Associated Researcher' => 40,
+               	'HQP' => 40,
+               	'Staff' => 30
+		);
+
+	    return $roles;
+	}
+
 	// Returns whether this Role is still active or not
 	function isStillActive(){
 	    return($this->startDate > $this->endDate);
