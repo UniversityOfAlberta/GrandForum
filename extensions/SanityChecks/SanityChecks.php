@@ -192,7 +192,16 @@ EOF;
 	    		$ni = Person::newFromName($name);
 	    		$niname_normal = $ni->getNameForForms();
 	    		$niname_link = $ni->getUrl();
-	    		$html .= "<tr><td><a href='{$niname_link}'>{$niname_normal}</a></td>";
+	    		$ni_role = ($ni->isCNI())? "role:CNI" : (($ni->isPNI())? "role:PNI" : "role:Other"); 
+	    		$projects = $ni->getProjects();
+	    		$project_names = array();
+	    		foreach ($projects as $p) {
+	    			$project_names[] = "project:".$p->getName();
+	    		}
+	    		$project_names = implode(', ', $project_names);
+	    		$uni = $ni->getUni();
+	    		$uni = "university:".$uni;
+	    		$html .= "<tr><td><span style='display:none;'>{$ni_role} {$project_names} {$uni}</span><a href='{$niname_link}'>{$niname_normal}</a></td>";
 
 	    		$html .= "<td>";
 				if(!empty($errors['budget_errors'])){

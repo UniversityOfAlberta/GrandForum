@@ -82,7 +82,7 @@ class EvaluationTable extends SpecialPage {
         require_once('EvaluatorIndex.php');
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript;
 	 
-	    $init_tabs = array('Jan-Mar2012'=>0, 'Apr-Dec2012'=>1, 'Jan-Mar2013'=>2, '2012'=>3, '2011'=>4);
+	    $init_tabs = array('Jan-Dec2012'=>0, 'Apr2012-Mar2013'=>1, 'Jan-Mar2012'=>2, 'Apr-Dec2012'=>3, 'Jan-Mar2013'=>4, '2012'=>5, '2011'=>6);
 	    $init_tab = 0;
 	    if(isset($_GET['year'])){
 	    	$init_tab = $init_tabs[$_GET['year']];
@@ -90,6 +90,15 @@ class EvaluationTable extends SpecialPage {
 		if(isset($_GET['section']) && $_GET['section'] == 'NSERC'){
 		    $tabbedPage = new TabbedPage("tabs_nserc");
 		    //if(isset($_GET['year']) && $_GET['year'] == '2011'){
+		    	$int_start = '2012'.REPORTING_CYCLE_START_MONTH.' 00:00:00';
+				$int_end =  '2012'.REPORTING_CYCLE_END_MONTH. ' 23:59:59';
+				$tabbedPage->addTab(new NSERCVariableTab("Jan-Dec2012", $int_start, $int_end));
+
+				$int_start = '2012'.REPORTING_NCE_START_MONTH.' 00:00:00';
+				$int_end =  '2013'.REPORTING_NCE_END_MONTH. ' 23:59:59';
+				$tabbedPage->addTab(new NSERCVariableTab("Apr2012-Mar2013", $int_start, $int_end));
+
+
 		    	$int_start = '2012'.REPORTING_CYCLE_START_MONTH.' 00:00:00';
 				$int_end =  '2012'.REPORTING_NCE_END_MONTH. ' 23:59:59';
 				$tabbedPage->addTab(new NSERCVariableTab("Jan-Mar2012", $int_start, $int_end));
