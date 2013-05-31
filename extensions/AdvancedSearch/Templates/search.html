@@ -1,7 +1,7 @@
 <!-- Temporary place for CSS will need to move out to its own file -->
 <style type="text/css">
 div#search_controls {
-  margin: 25px 0;
+  margin: 25px 0 15px 0;
 }
 
 ul#people_list {
@@ -45,6 +45,7 @@ div.pscard-info-right{
   width: 70%;
 }
 span.pscard-profile_hdr{
+  display: block;
   font-size: 110%;
   font-weight: bold;
 }
@@ -67,19 +68,31 @@ div#slider-range{
   width: 170px;
   margin-left: 10px;
 }
+div#facet_controls{
+  margin: -3px 2px 0px 2px;
+  padding-top: 10px;
+  border: 1px #AAAAAA solid;
+  display: none;
+}
+div#pagination-container{
+  margin: 20px 2px 2px 2px;
+}
+.ui-button-text-icon-primary .ui-button-text, .ui-button-text-icons .ui-button-text{
+  padding: 0 0 0 1em;
+  line-height: 120%;
+}
 </style>
 
 
-<!-- Search controls -->
-<!-- Search:
-<input type="text" id="query" name="query" placeholder="Enter search query" /> -->
-
-<!-- <a href="#" id="a_prev">Prev</a>
-&nbsp;&nbsp;
-<a href="#" id="a_next">Next</a> -->
-
 <!-- Facet controls -->
 <div id="search_controls">
+  <input style="width: 500px;" type="text" id="t_query" name="query" placeholder="Enter search query" />
+  <button id="search_btn">Search</button>
+</div>
+
+<button id="advanced_toggle">Advanced Options</button>
+<div id="facet_controls">
+<!--
 <table>
   <tr>
     <td colspan="2" style="padding-bottom:17px;">
@@ -92,8 +105,8 @@ div#slider-range{
     <td>
       <span class="cell-hdr">Projects: </span>
       <select id="sel_proj" class="sel">
-              <option value="any">- any -</option>
-            <option value="AESTHVIS">AESTHVIS</option><option value="AFEVAL">AFEVAL</option><option value="ALLASasfadss">ALLASasfadss</option><option value="AMBAID">AMBAID</option><option value="BELIEVE">BELIEVE</option><option value="CAPSIM">CAPSIM</option><option value="CPRM">CPRM</option><option value="DIGIKIDZ">DIGIKIDZ</option><option value="DIGILAB">DIGILAB</option><option value="DIGLT">DIGLT</option><option value="DINS">DINS</option><option value="ENCAD">ENCAD</option><option value="EOVW">EOVW</option><option value="FRAGG">FRAGG</option><option value="GAMFIT">GAMFIT</option><option value="GRNCTY">GRNCTY</option><option value="HCTSL">HCTSL</option><option value="HDVID">HDVID</option><option value="HITHERE">HITHERE</option><option value="HLTHSIM">HLTHSIM</option><option value="HSCEG">HSCEG</option><option value="INCLUDE">INCLUDE</option><option value="loi-ATAS3D">loi-ATAS3D</option><option value="loi-EBOOK">loi-EBOOK</option><option value="loi-S3DFILM">loi-S3DFILM</option><option value="loi-SENSEVR">loi-SENSEVR</option><option value="MCSIG">MCSIG</option><option value="MEOW">MEOW</option><option value="MOTION">MOTION</option><option value="MOVITA">MOVITA</option><option value="NAVEL">NAVEL</option><option value="NEUROGAM">NEUROGAM</option><option value="NEWPROJ">NEWPROJ</option><option value="NEWS">NEWS</option><option value="NGAIA">NGAIA</option><option value="PERUI">PERUI</option><option value="PLATFORM">PLATFORM</option><option value="PLAYPR">PLAYPR</option><option value="PRIVNM">PRIVNM</option><option value="PROMO">PROMO</option><option value="SHRDSP">SHRDSP</option><option value="SIMUL">SIMUL</option><option value="SKETCH">SKETCH</option><option value="VIRTPRES">VIRTPRES</option><option value="VSS">VSS</option></select>
+        <option value="any">- any -</option>
+      </select>
     </td>
     
     <td>
@@ -114,15 +127,6 @@ div#slider-range{
     
       <select id="sel_role" class="sel">
         <option value="any">- any -</option>
-        <option value="BOD">BOD</option>
-        <option value="Manager">Manager</option>
-        <option value="Champion">Champion</option>
-        <option value="RMC">RMC</option>
-        <option value="PNI">PNI</option>
-        <option value="CNI">CNI</option>
-        <option value="Associated Researcher">Associated Researcher</option>
-        <option value="HQP">HQP</option>
-        <option value="Staff">Staff</option>
       </select>
     </td>
   
@@ -136,29 +140,58 @@ div#slider-range{
     
       <select id="sel_rank" class="sel">
         <option value="any">- any -</option>
-        <option value="VP Research">VP Research</option>
-        <option value="Associate Dean of Research">Associate Dean of Research</option>
-        <option value="Associate Dean of Student Affairs">Associate Dean of Student Affairs</option>
-        <option value="Director">Director</option>
-        <option value="Canada Research Chair">Canada Research Chair</option>
-        <option value="Professor">Professor</option>
-        <option value="Associate Professor">Associate Professor</option>
-        <option value="Assistant Professor">Assistant Professor</option>
-        <option value="PostDoc">PostDoc</option>
-        <option value="PhD Student">PhD Student</option>
-        <option value="Industry Associate">Industry Associate</option>
-        <option value="Masters Student">Masters Student</option>
-        <option value="Technician">Technician</option>
-        <option value="Undergraduate">Undergraduate</option>
-        <option value="Other">Other</option>
-        <option value="Unknown">Unknown</option>
       </select>
+    </td>
+  </tr>
+</table>-->
+
+<table>
+  <tr>
+    <td><span class="cell-hdr">Projects: </span></td>
+    <td>
+      <select id="sel_proj" class="sel">
+        <option value="any">- any -</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td><span class="cell-hdr">Role: </span></td>
+    <td>
+      <select id="sel_role_modify" class="sel">
+        <option value="is">is</option>
+        <option value="gt_eq">&gt;=</option>
+        <option value="lt_eq">&lt;=</option>
+      </select>
+    
+      <select id="sel_role" class="sel">
+        <option value="any">- any -</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td><span class="cell-hdr">Rank: </span></td>
+    <td>
+      <select id="sel_rank_modify" class="sel">
+        <option value="is">is</option>
+        <option value="gt_eq">&gt;=</option>
+        <option value="lt_eq">&lt;=</option>
+      </select>
+    
+      <select id="sel_rank" class="sel">
+        <option value="any">- any -</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td><span class="cell-hdr">Products:</span></td>
+    <td>
+      <div id="slider-range"></div>
+      <label id="amount" style="color:#f6931f; font-weight:bold; margin-left: 15px;"></label>
     </td>
   </tr>
 </table>
 </div>
 <!-- END Facet controls -->
+<div id="pagination-container"></div>
 
-<div>
-<ul id="people_list"></ul>
-</div>
+<div id="search_results"><!-- Search Results go here... --></div>

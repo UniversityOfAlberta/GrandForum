@@ -1,6 +1,6 @@
 <?php
 
-BackbonePage::register('AdvancedSearch', 'AdvancedSearch', 'grand-tools', dirname(__FILE__));
+BackbonePage::register('AdvancedSearch', 'Expert Search', 'grand-tools', dirname(__FILE__));
 
 class AdvancedSearch extends BackbonePage {
     
@@ -9,7 +9,7 @@ class AdvancedSearch extends BackbonePage {
     }
     
     function getViews(){
-        return array('SearchView');
+        return array('SearchView', 'SearchResultsView', 'PersonCardView');
     }
     
     function getModels(){

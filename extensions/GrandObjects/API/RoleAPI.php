@@ -7,6 +7,10 @@ class RoleAPI extends RESTAPI {
             $role = Role::newFromId($this->getParam('id'));
             return $role->toJSON();
         }
+        else{
+            $roles = Role::getDistinctRoles();
+            return json_encode($roles);
+        }
     }
     
     function doPOST(){

@@ -4,7 +4,7 @@ require_once("InactiveUsers.php");
 
 $indexTable = new IndexTable();
 
-$wgHooks['ArticlePageDataBefore'][] = array($indexTable, 'generateTable');
+$wgHooks['OutputPageParserOutput'][] = array($indexTable, 'generateTable');
 $wgHooks['userCan'][] = array($indexTable, 'userCanExecute');
 
 class IndexTable{
@@ -32,9 +32,10 @@ class IndexTable{
 	    return true;
 	}
 
-	function generateTable($article, $fields){
+	function generateTable($out, $parseroutput){
 		global $wgTitle, $wgOut, $wgUser;
 		$me = Person::newFromId($wgUser->getId());
+		
 		if($wgTitle != null && $wgTitle->getNsText() == "GRAND" && !$wgOut->isDisabled()){
 		    $result = true;
 		    $this->userCanExecute($wgTitle, $wgUser, "read", $result);
@@ -42,7 +43,7 @@ class IndexTable{
 	            $wgOut->loginToUse();
 		        $wgOut->output();
 		        $wgOut->disable();
-			    return;
+			    return true;
 	        }
 		    $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){

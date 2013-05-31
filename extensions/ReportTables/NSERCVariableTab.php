@@ -136,15 +136,17 @@ EOF;
                 'bFilter': true,
                 'aaSorting': [[0,'asc']],
             });
+            $('span.contribution_descr').qtip({ style: { name: 'cream', tip: true } });
         });
         </script>
         <a id='Table4.0'></a>
         <table id='contributionsTable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
         <thead>
         <tr>
-            <th width="32%">Name</th>
-            <th width="20%">Related Members</th>
-            <th width="20%">Related Projects</th>
+            <th width="27%">Name</th>
+            <th width="15%">Partners</th>
+            <th width="15%">Related Members</th>
+            <th width="15%">Related Projects</th>
             <th width="10%">Updated</th>
             <th width="6%" align='right'>Cash</th>
             <th width="6%" align='right'>In-Kind</th>
@@ -164,6 +166,16 @@ EOF;
             $kind = $contr->getKind();
             $people = $contr->getPeople();
             $projects = $contr->getProjects();
+            $partners = $contr->getPartners();
+
+            $partners_array = array();
+            foreach($partners as $p){
+                $org = $p->getOrganization();
+                if(!empty($org)){
+                    $partners_array[] = $org;
+                }
+            }
+            $partner_names = implode(', ', $partners_array);
 
             $people_names = array();
             foreach($people as $p){
@@ -189,9 +201,12 @@ EOF;
                 $total = number_format($total, 2);
                 $cash = number_format($cash, 2);
                 $kind = number_format($kind, 2);
+                $descr = $contr->getDescription();
+
                 $html .=<<<EOF
                     <tr>
-                        <td>{$name}</td>
+                        <td><span class="contribution_descr" title="{$descr}">{$name}</span></td>
+                        <td>{$partner_names}</td>
                         <td>{$people_names}</td>
                         <td>{$project_names}</td>
                         
