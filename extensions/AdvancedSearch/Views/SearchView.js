@@ -67,15 +67,13 @@ SearchView = Backbone.View.extend({
     },
 
     get_max_products: function(){
-        $.post('http://grand.cs.ualberta.ca/~dgolovan/grand_forum/index.php?action=api.virtu', 
-        {'max_products':1},
-        function(data) {
-            if(data.max_products){
-                this.max_products = data.max_products;
-                resetSlider(data.max_products);
-            }  
-        },
-        'json');
+        var virtu = new Virtu();
+        var that = this;
+        virtu.fetch().done(function(){
+            that.max_products = virtu.get("max_products");
+            resetSlider(that.max_products);
+        });
+
     },
 
     doSearch: function(){
