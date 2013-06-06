@@ -2913,39 +2913,27 @@ class Person extends BackboneModel {
         return $subs;
 	}
 
-	/// Returns the allocation for this person on project #proj for year #year,
-	/// or false on error.
-	function getAllocation($proj, $year = 0) {
-		$pid = false;
-		if (is_object($proj)) {
-			$pid = $proj->getId();
-		}
-		else {
-			if (! is_numeric($proj)) {
-				// Resolve project name into ID.
-				$p = Project::newFromName($proj);
-				$pid = $p->getId();
-			}
-			else
-				$pid = $proj;
+	/// Returns the allocation for this person  for year #year,
+	/// or empty array if allocation not found in grand_review_results.
+	function getAllocation($year = REPORTING_YEAR) {
+		
+		$allocation = array('allocated_amount' => null, 'overall_score'=>null, 'email_sent'=>null);
+
+		if (!is_numeric($year)) {
+			return $allocation;
 		}
 
-		// Test for invalid project.
-		if ($pid === false) {
-			return false;
-		}
+		$query = "SELECT * FROM grand_review_results WHERE user_id = '{$this->id}' AND year='{$year}'";
+		
+		$res = DBFunctions::execSQL($query);
 
-		$yrstr = "";
-		if ($year > 0) {
-			$yrstr = "AND year = {$year}";
-		}
-
-		$res = DBFunctions::execSQL("SELECT allocated FROM mw_allocations WHERE user_id = {$this->id} AND project_id = {$pid} {$yrstr};");
 		if (count($res) > 0) {
-			return $res[0][0];
+			$allocation['allocated_amount'] = $res[0]['allocated_amount'];
+			$allocation['overall_score'] = $res[0]['overall_score'];
+			$allocation['email_sent'] = $res[0]['email_sent'];
 		}
 		
-		return false;
+		return $allocation;
 	}
 
 	function getEthics(){

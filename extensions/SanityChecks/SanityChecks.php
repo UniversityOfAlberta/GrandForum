@@ -191,6 +191,7 @@ EOF;
 	    	foreach($all_errors as $name => $errors){
 	    		$ni = Person::newFromName($name);
 	    		$niname_normal = $ni->getNameForForms();
+	    		$niname_reversed = $ni->getReversedName();
 	    		$niname_link = $ni->getUrl();
 	    		$ni_role = ($ni->isCNI())? "role:CNI" : (($ni->isPNI())? "role:PNI" : "role:Other"); 
 	    		$projects = $ni->getProjects();
@@ -201,7 +202,7 @@ EOF;
 	    		$project_names = implode(', ', $project_names);
 	    		$uni = $ni->getUni();
 	    		$uni = "university:".$uni;
-	    		$html .= "<tr><td><span style='display:none;'>{$ni_role} {$project_names} {$uni}</span><a href='{$niname_link}'>{$niname_normal}</a></td>";
+	    		$html .= "<tr><td><span style='display:none;'>{$niname_reversed} {$ni_role} {$project_names} {$uni}</span><a href='{$niname_link}'>{$niname_reversed}</a></td>";
 
 	    		$html .= "<td>";
 				if(!empty($errors['budget_errors'])){
@@ -292,23 +293,30 @@ EOF;
 			
 			if($person->isActive() && !in_array($person->getId(), $unique)){
 				$unique[] = $person->getId();
-				
-				//Allocated Budget Upload
-				//$person->getAllocatedBudget(2012);
 				$year = 2012;
-				$uid = $person->getId();
-		        $blob_type=BLOB_EXCEL;
-		        $rptype = RP_RESEARCHER;
-		    	$section = RES_ALLOC_BUDGET;
-		    	$item = 0;
-		    	$subitem = 0;
-		        $rep_addr = ReportBlob::create_address($rptype,$section,$item,$subitem);
-		        $budget_blob = new ReportBlob($blob_type, ($year-1), $uid, 0);
-		        $budget_blob->load($rep_addr);
-		        $data = $budget_blob->getData();
-		        if(is_null($data)){
-		        	$ni_errors["{$name}"]['budget_errors'] = array("No revised budget");
-		        }
+
+				$allocation = $person->getAllocation($year);
+
+				if(!is_null($allocation['allocated_amount']) && $allocation['allocated_amount'] > 0){
+				
+					//Allocated Budget Upload
+					$uid = $person->getId();
+			        $blob_type=BLOB_EXCEL;
+			        $rptype = RP_RESEARCHER;
+			    	$section = RES_ALLOC_BUDGET;
+			    	$item = 0;
+			    	$subitem = 0;
+			        $rep_addr = ReportBlob::create_address($rptype,$section,$item,$subitem);
+			        $budget_blob = new ReportBlob($blob_type, ($year-1), $uid, 0);
+			        $budget_blob->load($rep_addr);
+			        $data = $budget_blob->getData();
+			        if(is_null($data)){
+			        	$ni_errors["{$name}"]['budget_errors'] = array("No revised budget");
+			        }
+		    	}
+		    	else{
+		    		$ni_errors["{$name}"]['budget_errors'] = array("No allocation");
+		    	}
 
 				//Product completeness
 				$papers = $person->getPapersAuthored("all", "2012-01-01 00:00:00", "2013-05-01 00:00:00", false);
