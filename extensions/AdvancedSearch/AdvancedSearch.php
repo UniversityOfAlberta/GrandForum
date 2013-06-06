@@ -13,7 +13,7 @@ class AdvancedSearch extends BackbonePage {
     }
     
     function getModels(){
-        return array('AdvancedSearch','Backbone/*');
+        return array('SearchResults','Backbone/*');
     }
 
 }
