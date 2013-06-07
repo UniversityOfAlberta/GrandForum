@@ -22,7 +22,7 @@ PageRouter = Backbone.Router.extend({
 
     routes: {
         "page/:page_num": "getPage",
-        "*actions": "defaultRoute"
+        "": "defaultRoute"
     }
 });
 
@@ -38,6 +38,7 @@ pageRouter.on('route:getPage', function (page_num) {
 });
 
 pageRouter.on('route:defaultRoute', function (actions) {
+    //console.log("defaultRoute");
     this.currentView.options.page_num = 1;
     // /this.currentView = new SearchView({el: $("#currentView"), page_num: 0});
 });

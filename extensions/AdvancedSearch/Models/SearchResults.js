@@ -15,7 +15,7 @@ SearchResults = Backbone.Collection.extend({
 
 	model: SearchResult,
 	
-	urlRoot: 'https://grand.cs.ualberta.ca:8990/solr/select',
+	urlRoot: 'https://forum.grand-nce.ca:8990/solr/select',
 	
     numFound: 0,
 	

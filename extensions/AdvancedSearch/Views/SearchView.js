@@ -77,21 +77,21 @@ SearchView = Backbone.View.extend({
     },
 
     doSearch: function(){
-        
+        //console.log("doSearch");
         var searchResults = new SearchResults();
         searchResults.options.page_num = this.options.page_num;
         
         //$("#search_results").html("<div id='currentViewSpinner'></div>");
         //spin = spinner("currentViewSpinner", 40, 75, 12, 10, '#888');
 
-        _this = this;
+        that = this;
         searchResults.on(
             'reset',
             function(){
                 numFound = searchResults.numFound;
-                current_page = Number(_this.options.page_num);
+                current_page = Number(that.options.page_num);
                 console.log("NUM_FOUND="+numFound+"; CURRENT_PAGE="+current_page);
-                _this.setup_pagination(numFound, current_page);
+                that.setup_pagination(numFound, current_page);
             }
         );
         
