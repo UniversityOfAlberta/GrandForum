@@ -3,6 +3,9 @@
 BackbonePage::register('AdvancedSearch', 'Expert Search', 'grand-tools', dirname(__FILE__));
 
 class AdvancedSearch extends BackbonePage {
+    function userCanExecute($user){
+        return $user->isLoggedIn();
+    }
     
     function getTemplates(){
         return array('search','Backbone/*');

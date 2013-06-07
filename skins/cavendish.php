@@ -652,7 +652,7 @@ class cavendishTemplate extends QuickTemplate {
 			echo "<span style='padding-top: 2px; padding-bottom: 2px;'></span>
 				<ul class='pBody' style='background:#F3EBF5'>";
 			echo "<li id='addMultimedia'><a href='{$wgScriptPath}/index.php/Special:MyDuplicateProducts'>Duplicate Management</a></li>";
-			echo "<li id='sanityChecks'><a href='{$wgScriptPath}/index.php/Special:SanityChecks'>Data Quality Issues</a></li>";
+			//echo "<li id='sanityChecks'><a href='{$wgScriptPath}/index.php/Special:SanityChecks'>Data Quality Issues</a></li>";
 			echo "</ul>";
 		    echo "<span>Other</span>
 				<ul class='pBody' style='background:#F3EBF5'>";
@@ -662,6 +662,7 @@ class cavendishTemplate extends QuickTemplate {
 			//echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php/Special:Solr'>Full Text Search</a></li>";
 			echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php/Special:AcademiaMap'>Academia Map</a></li>";
 			echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php/Special:SpecialPages'>Other Tools</a></li>";
+			echo "<li id='sanityChecks'><a href='{$wgScriptPath}/index.php/Special:AdvancedSearch'>Search for Experts</a></li>";
 		}
 		else {
 		    global $wgSiteName, $wgTitle;
