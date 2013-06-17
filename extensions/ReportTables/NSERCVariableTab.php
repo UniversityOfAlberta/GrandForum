@@ -155,12 +155,19 @@ EOF;
         </thead>
         <tbody>
 EOF;
+        
+        $dialog_js =<<<EOF
+            <script type="text/javascript">
+            $(document).ready(function(){
+EOF;
+
         $contributions = Contribution::getContributionsDuring(null, 2012);
 
         foreach ($contributions as $contr) {
-            $name = $contr->getName();
+            $con_id = $contr->getId();
+            $name_plain = $contr->getName();
             $url = $contr->getUrl();
-            $name = "<a href='{$url}'>{$name}</a>";
+            $name = "<a href='{$url}'>{$name_plain}</a>";
             $total = $contr->getTotal();
             $cash = $contr->getCash();
             $kind = $contr->getKind();
@@ -169,12 +176,49 @@ EOF;
             $partners = $contr->getPartners();
 
             $partners_array = array();
+            $details = "";
             foreach($partners as $p){
                 $org = $p->getOrganization();
                 if(!empty($org)){
                     $partners_array[] = $org;
                 }
+                
+                $tmp_type = $contr->getTypeFor($p);
+                $hrType = $contr->getHumanReadableTypeFor($p);
+                $hrSubType = $contr->getHumanReadableSubTypeFor($p);
+
+                if(!$contr->getUnknownFor($p)){
+                    $tmp_cash = "\$".number_format($contr->getCashFor($p), 2);
+                    $tmp_kind = "\$".number_format($contr->getKindFor($p), 2);
+                    $details .= "<h4>{$org}</h4><table>";
+                    $details .="<tr><td align='right'><b>Type:</b></td><td>{$hrType}</td></tr>";
+
+                    if($tmp_type == "inki" || $tmp_type == "caki"){
+                        $details .="<tr><td align='right'><b>Sub-Type:</b></td><td>{$hrSubType}</td></tr>";
+                    }
+                    if($tmp_type == "inki"){
+                        $details .="<tr><td align='right'><b>In-Kind:</b></td><td>{$tmp_kind}</td></tr>";
+                    }
+                    else if($tmp_type == "cash"){
+                        $details .="<tr><td align='right'><b>Cash:</b></td><td>{$tmp_cash}</td></tr>";
+                    }
+                    else if($tmp_type == "caki"){
+                        $details .="<tr><td align='right'><b>In-Kind:</b></td><td>{$tmp_kind}</td></tr>";
+                        $details .="<tr><td align='right'><b>Cash:</b></td><td>{$tmp_cash}</td></tr>";
+                    }
+                    else{
+                        $details .="<tr><td align='right'><b>Estimated Value:</b></td><td>{$tmp_cash}</td></tr>";
+                    }
+                    $details .= "</table>";
+                    
+                }
+
             }
+            if(empty($details)){
+                $details .= "<h4>Other</h4>";
+            }
+            $tmp_total = number_format($total, 2);
+            $details .= "<h4>Total: \$<span id='contributionTotal'>{$tmp_total}</span></h4>";
             $partner_names = implode(', ', $partners_array);
 
             $people_names = array();
@@ -211,17 +255,26 @@ EOF;
                         <td>{$project_names}</td>
                         
                         <td>{$date}</td>
-                        <td align='right'>\${$cash}</td>
-                        <td align='right'>\${$kind}</td>
-                        <td align='right'>\${$total}</td>
+                        <td align='right'><a href='#' onclick='$( "#contr_details-{$con_id}" ).dialog( "open" ); return false;'>\${$cash}</a></td>
+                        <td align='right'><a href='#' onclick='$( "#contr_details-{$con_id}" ).dialog( "open" ); return false;'>\${$kind}</a></td>
+                        <td align='right'><a href='#' onclick='$( "#contr_details-{$con_id}" ).dialog( "open" ); return false;'>\${$total}</a>
+                        <div id="contr_details-{$con_id}" title="{$name_plain}">
+                        {$details}
+                        </div>
+                        </td>
                     </tr>
 EOF;
+                $dialog_js .= "$( '#contr_details-{$con_id}' ).dialog({autoOpen: false});";
             }
         }
 
 
         $html .= "</tbody></table>";
-        $this->html .= $html;   
+        $dialog_js .=<<<EOF
+            });
+            </script>
+EOF;
+        $this->html .= $html .  $dialog_js ;   
     }
 
     function showGrandTables() {

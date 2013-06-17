@@ -256,8 +256,22 @@ class Contribution {
                     }
                     $id = md5(serialize($p));
                     $this->type[$id] = $row['type'];
-                    $this->cash[$id] = $row['cash'];
-                    $this->kind[$id] = $row['kind'];
+                    
+                    if($row['type'] == 'caki'){
+                        $this->cash[$id] = $row['cash'];
+                        $this->kind[$id] = $row['kind'];
+                    }
+                    else if($row['type'] == 'cash'){
+                        $this->cash[$id] = $row['cash'];
+                        $this->kind[$id] = 0;
+                    }
+                    else if($row['type'] == 'inki'){
+                        $this->cash[$id] = 0;
+                        $this->kind[$id] = $row['kind'];
+                    }else{
+                        $this->cash[$id] = 0;
+                        $this->kind[$id] = 0;
+                    }
                     $this->subtype[$id] = $row['subtype'];
                     $this->unknown[$id] = $row['unknown'];
                 }

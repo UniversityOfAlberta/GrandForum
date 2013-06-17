@@ -262,8 +262,5 @@ function execSQLStatement($sql, $update=false){
 	}
 	return $rows;
 }
-<<<<<<< HEAD
+
 ?>
-=======
-?>
->>>>>>> master
