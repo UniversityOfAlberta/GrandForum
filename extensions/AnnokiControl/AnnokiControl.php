@@ -316,6 +316,13 @@ $egAnnokiExtensions['AdvancedSearch']     = array( 'name' => 'AdvancedSearch',
 					      'path' => "$IP/extensions/AdvancedSearch/AdvancedSearch.php",
 					      'enabled' => true,
 					      );
+
+$egAnnokiExtensions['LoiProposals']     = array( 'name' => 'LoiProposals',
+					      'path' => "$IP/extensions/LoiProposals/LoiProposals.php",
+					      'enabled' => true,
+					      );
+
+
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
     if ($extension['enabled'] && is_readable($extension['path'])){
