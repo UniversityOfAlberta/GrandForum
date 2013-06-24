@@ -20,14 +20,19 @@ if (($handle = fopen($filename, "r")) !== FALSE) {
             $type = $data[2];
 
             $related_loi = "N/A";
-            if(!empty($data[3]) && $data[3]!="N/A"){
-                $related_loi = $data[3];
+            
+            if($type == "Subproject"){
+                if(!empty($data[3]) && $data[3]!="N/A"){
+                    $related_loi = str_replace("\n", ', ', $data[3]);
+                }
             }
-            else if(!empty($data[4]) && $data[4]!="N/A"){
-                $related_loi = $data[3];
+            else{
+                if(!empty($data[4]) && $data[4]!="N/A"){
+                    $related_loi = str_replace("\n", ', ', $data[4]);
+                }
             }
 
-            $description = mysql_real_escape_string(nl2br($data[5]));
+            $description = mysql_real_escape_string(str_replace("\n", '', $data[5]));
             $lead = mysql_real_escape_string(nl2br($data[6]));
             $colead = mysql_real_escape_string(nl2br($data[7]));
             $champion = mysql_real_escape_string(nl2br($data[8]));
