@@ -393,7 +393,7 @@ EOF;
             $rowspan = $rowspan*2;
 
             $download1 = "Researcher PDF";
-            $report = new DummyReport("NIReport", $ni, null);
+            $report = new DummyReport("NIReport", $ni, null, 2012);
             $tok = false;
             $check = $report->getPDF();
             if (count($check) > 0) {
@@ -402,7 +402,7 @@ EOF;
             }
 
             $download2 = "PL Comments PDF";
-            $report = new DummyReport("ProjectNIComments", $ni, null);
+            $report = new DummyReport("ProjectNIComments", $ni, null, 2012);
             $tok = false;
             $check = $report->getPDF();
             if (count($check) > 0) {
