@@ -1092,7 +1092,7 @@ EOF;
             $rowspan = $rowspan*2;
 
             $download = "Project PDF";
-            $report = new DummyReport("ProjectReport", $ni, $ni);
+            $report = new DummyReport("ProjectReport", $ni, $ni, 2012);
             $tok = false;
             $check = $report->getPDF();
             if (count($check) > 0) {

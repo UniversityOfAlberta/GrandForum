@@ -341,7 +341,7 @@ class ReportStorage {
 		return $res;
 	}
 	
-	static function list_project_reports($proj_id, $lim = 1, $special = 0, $type = RPTP_LEADER) {
+	static function list_project_reports($proj_id, $lim = 1, $special = 0, $type = RPTP_LEADER, $year=REPORTING_YEAR) {
         $project = Project::newFromId($proj_id);
 		if (!$proj_id || $project == null || $project->getName() == null){
 			return array();
@@ -353,7 +353,7 @@ class ReportStorage {
 		        AND i.project_id = {$proj_id}
 		        AND r.type = {$type} 
 		        AND r.special = {$special} 
-		        AND DATE(r.timestamp) > DATE('2011-10-01') 
+		        AND r.year = {$year} 
 		        ORDER BY timestamp DESC LIMIT {$lim}";
 		        
         $res = DBFunctions::execSQL($sql);

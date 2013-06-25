@@ -327,7 +327,7 @@ abstract class AbstractReport extends SpecialPage {
     	        $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 10000, 0, $this->pdfType);
     	    }
     	    else{
-    	        $check = $sto->list_project_reports($this->project->getId(), 10000, 0, $this->pdfType);
+    	        $check = $sto->list_project_reports($this->project->getId(), 10000, 0, $this->pdfType, $this->year);
     	    }
     	}
     	else{
