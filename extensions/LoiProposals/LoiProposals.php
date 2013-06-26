@@ -165,7 +165,7 @@ EOF;
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 
 		$html =<<<EOF
-	    <table class='loiindexTable' style='background:#ffffff; width: 100%; table-layout: auto;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+	    <table class='loiindexTable' style='background:#ffffff; width: 100%; table-layout: auto; text-align: left;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
             <thead>
                 <tr bgcolor='#F2F2F2'>
                     <th>Name</th>
@@ -190,9 +190,53 @@ EOF;
 			$type = $row['type'];
 			$related_loi = $row['related_loi'];
 			$description = $row['description'];
-			$lead 	= $row['lead'];
-			$colead = $row['colead'];
-			$champion = $row['champion'];
+			
+			//Lead name
+			$lead_arr = explode("<br />", $row['lead'], 2);
+			$lead_person = Person::newFromNameLike($lead_arr[0]);
+			if($lead_person->getId()){
+				$lead = "<a href='".$lead_person->getUrl()."'>".$lead_person->getNameForForms() ."</a>";
+			}
+			else{
+				$lead = $lead_arr[0];
+			}
+			if(isset($lead_arr[1])){
+				$lead .= "<br />".$lead_arr[1];
+			}
+
+
+			//Co-lead name
+			$colead_arr = explode("<br />", $row['colead'], 2);
+			//echo $name . ": ". $row['colead']."<br>";
+			$colead_person = Person::newFromNameLike($colead_arr[0]);
+
+			if($colead_person->getId()){
+				$colead = "<a href='".$colead_person->getUrl()."'>".$colead_person->getNameForForms() ."</a>";
+			}
+			else{
+				$colead = $colead_arr[0];
+			}
+			if(isset($colead_arr[1])){
+				$colead .= "<br />".$colead_arr[1];
+			}
+
+			//Champion name
+			//$champion = $row['champion'];
+			$champion_arr = explode("<br />", $row['champion'], 2);
+			//echo $name . ": ". $row['colead']."<br>";
+			$champion_person = Person::newFromNameLike($champion_arr[0]);
+
+			if($champion_person->getId()){
+				$champion = "<a href='".$champion_person->getUrl()."'>".$champion_person->getNameForForms() ."</a>";
+			}
+			else{
+				$champion = $champion_arr[0];
+			}
+			if(isset($champion_arr[1])){
+				$champion .= "<br />".$champion_arr[1];
+			}
+
+
 			$primary_challenge = $row['primary_challenge'];
 			$secondary_challenge = $row['secondary_challenge'];
 			$loi_pdf = $row['loi_pdf'];
@@ -232,7 +276,6 @@ EOF;
 				{$secondary_challenge}
 				</p>
 				</td>
-				<!--<td>{$secondary_challenge}</td>-->
 				<td>
 				<b>LOI: {$loi_pdf}</b><br /><br />
 				<b>Supplemental: {$supplemental_pdf}</b>
@@ -254,7 +297,7 @@ EOF;
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 
 		$html =<<<EOF
-	    <table class='loiindexTable' style='background:#ffffff; width: 100%; table-layout: auto;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+	    <table class='loiindexTable' style='background:#ffffff; width: 100%; table-layout: auto; text-align: left;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
             <thead>
                 <tr bgcolor='#F2F2F2'>
                     <th>Name</th>
@@ -277,9 +320,53 @@ EOF;
 			$type = $row['type'];
 			$related_loi = $row['related_loi'];
 			$description = $row['description'];
-			$lead 	= $row['lead'];
-			$colead = $row['colead'];
-			$champion = $row['champion'];
+		
+			//Lead name
+			$lead_arr = explode("<br />", $row['lead'], 2);
+			$lead_person = Person::newFromNameLike($lead_arr[0]);
+			if($lead_person->getId()){
+				$lead = "<a href='".$lead_person->getUrl()."'>".$lead_person->getNameForForms() ."</a>";
+			}
+			else{
+				$lead = $lead_arr[0];
+			}
+			if(isset($lead_arr[1])){
+				$lead .= "<br />".$lead_arr[1];
+			}
+
+
+			//Co-lead name
+			$colead_arr = explode("<br />", $row['colead'], 2);
+			//echo $name . ": ". $row['colead']."<br>";
+			$colead_person = Person::newFromNameLike($colead_arr[0]);
+
+			if($colead_person->getId()){
+				$colead = "<a href='".$colead_person->getUrl()."'>".$colead_person->getNameForForms() ."</a>";
+			}
+			else{
+				$colead = $colead_arr[0];
+			}
+			if(isset($colead_arr[1])){
+				$colead .= "<br />".$colead_arr[1];
+			}
+
+			//Champion name
+			//$champion = $row['champion'];
+			$champion_arr = explode("<br />", $row['champion'], 2);
+			//echo $name . ": ". $row['colead']."<br>";
+			$champion_person = Person::newFromNameLike($champion_arr[0]);
+
+			if($champion_person->getId()){
+				$champion = "<a href='".$champion_person->getUrl()."'>".$champion_person->getNameForForms() ."</a>";
+			}
+			else{
+				$champion = $champion_arr[0];
+			}
+			if(isset($champion_arr[1])){
+				$champion .= "<br />".$champion_arr[1];
+			}
+
+			
 			$primary_challenge = $row['primary_challenge'];
 			$secondary_challenge = $row['secondary_challenge'];
 			/*
@@ -339,7 +426,7 @@ EOF;
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 
 		$html =<<<EOF
-	    <table class='cvindexTable' style='background:#ffffff; table-layout: auto;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+	    <table class='cvindexTable' style='background:#ffffff; table-layout: auto; text-align: left;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
             <thead>
                 <tr bgcolor='#F2F2F2'>
                     <th>Researcher Name</th>
