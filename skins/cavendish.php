@@ -662,7 +662,7 @@ class cavendishTemplate extends QuickTemplate {
 			//echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php/Special:Solr'>Full Text Search</a></li>";
 			echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php/Special:AcademiaMap'>Academia Map</a></li>";
 			echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php/Special:SpecialPages'>Other Tools</a></li>";
-			if($me->isRoleAtLeast(CNI)){
+			if($me->isRoleAtLeast(HQP)){
 				echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php/Special:LoiProposals'>LOI Proposals</a></li>";
 			}
 			echo "<li id='sanityChecks'><a href='{$wgScriptPath}/index.php/Special:AdvancedSearch'>Search for Experts</a></li>";
