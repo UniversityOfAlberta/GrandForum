@@ -15,7 +15,7 @@ class LoiProposals extends SpecialPage {
 
 	function __construct() {
 		wfLoadExtensionMessages('LoiProposals');
-		SpecialPage::SpecialPage("LoiProposals", INACTIVE.'+', true, 'runLoiProposals');
+		SpecialPage::SpecialPage("LoiProposals", HQP.'+', true, 'runLoiProposals');
 	}
 	
 	static function run(){
@@ -115,7 +115,7 @@ class LoiProposals extends SpecialPage {
             <li><a href='#cv'>CV</a></li>
             <li><a href='#conflicts'>Conflicts/Preferences</a></li>";
         }
-		else if($me->isLoggedIn()){
+		else if($me->isRoleAtLeast(HQP)){
 			$html .="
             <li><a href='#lois_public'>LOI Proposals</a></li>";
 		}
@@ -136,7 +136,7 @@ class LoiProposals extends SpecialPage {
 			$html .= "</div>";
 
 		}
-		else if($me->isLoggedIn()){
+		else if($me->isRoleAtLeast(HQP)){
 			$html .= "<div id='lois_public' style='width: 100%; position:relative; overflow: scroll;'>";
 			$html .= LoiProposals::loiPublicTable();
 			$html .= "</div>";
