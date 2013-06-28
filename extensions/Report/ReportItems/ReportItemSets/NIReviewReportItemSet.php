@@ -23,7 +23,13 @@ class NIReviewReportItemSet extends ReportItemSet {
             $header = $project->getName();
             $id = $this->projectId;
 
+        }else if($type == "LOI"){
+            $loi = LOI::newFromId($this->projectId);
+            $header = $loi->getName();
+            $id = $this->projectId;
+
         }
+
         $html =<<<EOF
             <div class="ni_review_item_wrapper">
             <h2>{$header}<span style="font-size:60%; float:right;"><a href="">(Click to Show/Hide)</a></span></h2>

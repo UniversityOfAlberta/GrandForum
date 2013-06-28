@@ -19,12 +19,13 @@
  * work properly (e.g.: evaluator report being split into researcher evaluation
  * and project evaluation).
  */
-define('RP_RESEARCHER',			1);
+define('RP_RESEARCHER',		1);
 define('RP_HQP',			2);
 define('RP_LEADER',			3);
-define('RP_EVAL_RESEARCHER',		4);
-define('RP_EVAL_PROJECT',		5);
-define('RP_SUPPLEMENTAL',		6);
+define('RP_EVAL_RESEARCHER',4);
+define('RP_EVAL_PROJECT',	5);
+define('RP_EVAL_LOI',		9);
+define('RP_SUPPLEMENTAL',	6);
 define('RP_EVAL_PDF',		7);
 define('RP_EVAL_CNI',		8);
 //define('RP_EVAL_RESEARCHER_REV',		9); //Revised answers
@@ -99,6 +100,23 @@ define('EVL_MANAGEMENT_COM',	15);
 define('EVL_REPORTQUALITY_COM',	16);
 define('EVL_SEENOTHERREVIEWS',	17); //flag indicating that evaluator has seen other reviews
 define('EVL_OTHERCOMMENTSAFTER',18); //Other comments after seeing other reviews
+
+//Evaluator LOI
+define('EVL_LOI1',		1);
+define('EVL_LOI2',		2);
+define('EVL_LOI3',		3);
+define('EVL_LOI4',		4);
+define('EVL_LOI5',		5);
+define('EVL_LOI6',		6);
+define('EVL_LOI7',		7);
+define('EVL_LOI8',		8);
+define('EVL_LOI9',		9);
+define('EVL_LOI10',		10);
+define('EVL_LOI11',		11);
+define('EVL_LOI12',		12);
+define('EVL_LOI13',		13);
+define('EVL_LOI14',		14);
+define('EVL_LOI15',		15);
 
 // Second-level identifiers for Supplemental Report.
 define('SUP_HQPS',			1);
@@ -227,6 +245,10 @@ define('SUP_CONT_DETAILS',		3);
 
 define('SUP_OTH_DETAILS',		1);
 
+
+//Third level Eval LOI => Only 2 types for each question: Y/N radio(YN) AND Comment (C)
+define('EVL_LOI_YN',	1);
+define('EVL_LOI_C',		2);
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used

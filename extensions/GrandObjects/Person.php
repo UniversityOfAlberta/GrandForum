@@ -2833,12 +2833,16 @@ class Person extends BackboneModel {
 	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
+
         foreach($data as $row){
-            if($row['type'] != "Project"){
+            if($row['type'] == "Project"){
+                $subs[] = Project::newFromId($row['sub_id']);
+            }
+            else if($row['type'] == "CNI" || $row['type'] == "PNI"){
                 $subs[] = Person::newFromId($row['sub_id']);
             }
-            else{
-                $subs[] = Project::newFromId($row['sub_id']);
+            else if($row['type'] == "LOI"){
+            	$subs[] = $row['sub_id'];
             }
         }
         return $subs;

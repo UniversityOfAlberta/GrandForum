@@ -43,6 +43,9 @@ class Report extends AbstractReport{
 		else if($person->isEvaluator()){
             $page = "Report?report=EvalReport";
 		}
+        else if($person->isRoleAtLeast(RMC)){
+            $page = "Report?report=EvalLOIReport";
+        }
 		
 		$selected = "";
 		if($wgTitle->getText() == "Report"){
@@ -114,7 +117,6 @@ class Report extends AbstractReport{
             }
             
             // Evaluator Report
-            
             if($person->isEvaluator()){
                     @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalReport") ? "selected" : false;
                     
@@ -122,6 +124,17 @@ class Report extends AbstractReport{
                              'class' => $class,
                              'text'  => "Evaluator",
                              'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalReport",
+                            );
+            }
+
+            //LOI Evaluation
+            if($person->isRoleAtLeast(RMC)){
+                    @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalLOIReport") ? "selected" : false;
+                    
+                    $content_actions[] = array (
+                             'class' => $class,
+                             'text'  => "LOI",
+                             'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalLOIReport",
                             );
             }
             
