@@ -109,7 +109,7 @@ class LoiProposals extends SpecialPage {
 	    <div id='ackTabs'>
         <ul>";
 
-        if($me->isRole(RMC) || $me->isRole(MANAGER)){
+        if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
 			$html .="
             <li><a href='#lois'>LOI Proposals</a></li>
             <li><a href='#cv'>CV</a></li>
@@ -122,7 +122,7 @@ class LoiProposals extends SpecialPage {
         
         $html .="</ul>";
         
-        if($me->isRole(RMC) || $me->isRole(MANAGER)){
+        if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
 			$html .= "<div id='lois' style='width: 100%; position:relative; overflow: scroll;'>";
 			$html .= LoiProposals::loiTable();
 			$html .= "</div>";
