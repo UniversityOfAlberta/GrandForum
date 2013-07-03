@@ -2842,7 +2842,7 @@ class Person extends BackboneModel {
                 $subs[] = Person::newFromId($row['sub_id']);
             }
             else if($row['type'] == "LOI"){
-            	$subs[] = $row['sub_id'];
+            	$subs[] = LOI::newFromId($row['sub_id']);
             }
         }
         return $subs;

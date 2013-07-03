@@ -154,6 +154,10 @@ class LoiProposals extends SpecialPage {
                 	"bAutoWidth": false,
                 	"iDisplayLength": 100
     			});
+				$('.conflIndexTable').dataTable({
+                	"bAutoWidth": false,
+                	"iDisplayLength": 100
+    			});
                 $('#ackTabs').tabs();
             });
         </script>
@@ -426,7 +430,12 @@ EOF;
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 
 		$html =<<<EOF
-	    <table class='cvindexTable' style='background:#ffffff; table-layout: auto; text-align: left;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+		<style type="text/css">
+		#conflicts .dataTables_wrapper {
+			width: 500px;
+		}
+		</style>
+	    <table class='conflIndexTable' style='background:#ffffff; table-layout: auto; text-align: left;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
             <thead>
                 <tr bgcolor='#F2F2F2'>
                     <th>Researcher Name</th>
@@ -474,9 +483,9 @@ EOF;
 	    <table class='cvindexTable' style='background:#ffffff; width: 100%; table-layout: auto;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
             <thead>
                 <tr bgcolor='#F2F2F2'>
-                    <th>LOI Name</th>
-                    <th>Conflict</th>
-                    <th>Preference</th>
+                    <th width="40%">LOI Name</th>
+                    <th width="30%">Conflict</th>
+                    <th width="30%">Preference</th>
                 </tr>
             </thead>
             <tbody>

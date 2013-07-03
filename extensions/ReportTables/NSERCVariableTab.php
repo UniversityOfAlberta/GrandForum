@@ -387,11 +387,14 @@ EOF;
         $papers = Paper::getAllPapersDuring("all", "Publication", "grand", $this->from, $this->to); 
         foreach($papers as $paper){
             $type = $paper->getType();
-            if($type == "PhD Thesis"){
+            if($type == "PhD Thesis" || $type == "PHD Thesis"){
                 $pos = "PhD";
             }   
             else if( $type == "Masters Thesis"){
                 $pos = "Masters";
+            }
+            else if( $type == "Bachelors Thesis" || $type == "Misc: Honours thesis"){
+                $pos = "Ugrad";
             }
             else{
                 continue;
@@ -1661,7 +1664,7 @@ EOF;
                     break;
 
                 case 'Masters Thesis':
-                case 'PhD Thesis':
+                case 'PHD Thesis':
                 case 'Tech Report':
                     if($status != "Published"){
                         continue 2;

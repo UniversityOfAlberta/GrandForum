@@ -18,49 +18,29 @@ class LOIMaterialsReportItem extends StaticReportItem {
         $description = $loi->getDescription();
         $type = $loi->getType();
         $related_loi = $loi->getRelatedLOI();
-        $lead = $loi->getLead();
-        $colead = $loi->getCoLead();
-        $champ = $loi->getChampion();
-        $primary_challenge = $loi->getPrimaryChallenge();
-        $secondary_challenge = $loi->getSecondaryChallenge();
+        $lead = str_replace('<br />', ', ', $loi->getLead());
+        $colead = str_replace('<br />', ', ', $loi->getCoLead());
+        $champ = str_replace('<br />', ', ', $loi->getChampion());
+        $primary_challenge = str_replace('<br />', ', ', $loi->getPrimaryChallenge());
+        $secondary_challenge = str_replace('<br />', ', ', $loi->getSecondaryChallenge());
         $loi_pdf = $loi->getLoiPdf();
         $supplemental_pdf = $loi->getSupplementalPdf();
         
         $item =<<<EOF
             <div>
             <h3>{$full_name}</h3>
-            <p>{$description}</p>
-            <table width="100%" cellspacing='1' cellpadding='3' frame='box' rules='all'>
-            <tr>
-            <th>Type</th>
-            <th>Related LOI</th>
-            <th>Lead</th>
-            <th>Co-Lead</th>
-            <th>Champion</th>
-            <th>Challenges</th>
-            <th>LOI Files</th>
-            </tr>
-            <tr>
-            <td>{$type}</td>
-            <td>{$related_loi}</td>
-            <td>{$lead}</td>
-            <td>{$colead}</td>
-            <td>{$champ}</td>
-            <td>
-            <p>
-            <b>Primary:</b><br />
-            {$primary_challenge}
-            </p>
-            <p>
-            <b>Secondary:</b><br />
-            {$secondary_challenge}
-            </p>
-            </td>
-            <td>
-            <b>LOI: {$loi_pdf}</b><br /><br />
-            <b>Supplemental: {$supplemental_pdf}</b>
-            </td>
-            </tr>  
+            <table style="text-align: left;">
+            <tr><th>Type:</th><td>{$type}</td></tr>
+            <tr><th>Related LOI:</th><td>{$related_loi}</td></tr>
+            <tr><th>Primary Challenge:</th><td>{$primary_challenge}</td></tr>
+            <tr><th>Secondary Challenge:</th><td>{$secondary_challenge}</td></tr>
+            <tr><th>Lead:</th><td>{$lead}</td></tr>
+            <tr><th>Co-Lead:</th><td>{$colead}</td></tr>
+            <tr><th>Champion:</th><td>{$champ}</td></tr>
+            <tr><th>LOI PDF:</th><td>{$loi_pdf}</td></tr>
+            <tr><th>Supplemental PDF:</th><td>{$supplemental_pdf}</td></tr>
+            <tr><th>Description:</th><td></td></tr>
+            <tr><td colspan="2">{$description}</td></tr>
             </table>
             </div>
 EOF;

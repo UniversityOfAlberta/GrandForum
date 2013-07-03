@@ -143,6 +143,27 @@ EOF;
 	    $item = $this->processCData($html);
 		$wgOut->addHTML($item);
 	}
+
+	function getNComplete(){
+        $opt = $this->getAttr('optional', '0');
+
+        if($opt == '1'){
+            return 0;
+        }
+        else{
+            return parent::getNComplete();
+        }
+    }
+    function getNFields(){
+        $opt = $this->getAttr('optional', '0');
+
+        if($opt == '1'){
+            return 0;
+        }
+        else{
+            return parent::getNFields();
+        }
+    }
 }
 
 ?>

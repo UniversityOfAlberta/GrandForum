@@ -55,6 +55,42 @@ class LOI extends BackboneModel {
 		}
 	}
 
+	static function getAllLOIs($year=REPORTING_YEAR){
+		$sql = "SELECT * FROM grand_loi WHERE year={$year}";
+		$results = DBFunctions::execSQL($sql);
+		$lois = array();
+		$data = array();
+		foreach ($results as $res) {
+			$data[0] = $res;
+			$lois[] = new LOI($data);
+		}
+		
+		return $lois;
+	}
+
+	static function getNonConflictingLOIs($evaluator_id, $year=REPORTING_YEAR){
+		$sql = "SELECT l.*, lc.conflict 
+				FROM grand_loi l
+				LEFT JOIN grand_loi_conflicts lc ON(l.id=lc.loi_id AND lc.reviewer_id={$evaluator_id})
+				WHERE l.year={$year}";
+
+		$results = DBFunctions::execSQL($sql);
+
+		$lois = array();
+		$data = array();
+		foreach ($results as $res) {
+			if(isset($res['conflict']) && $res['conflict'] == "1" ){
+				continue;
+			}
+			else{
+				$data[0] = $res;
+				$lois[] = new LOI($data);
+			}
+		}
+		
+		return $lois;
+	}
+
 	// Returns the id of this LOI
 	function getId(){
 		return $this->id;
