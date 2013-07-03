@@ -6,6 +6,16 @@
             <SectionPermission id="loi_reviews" permissions="rw" />
             <SectionPermission id="loi_reviews_opt" permissions="rw" />
         </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_END" role="RMC">
+            <SectionPermission id="loi_materials" permissions="rw" />
+            <SectionPermission id="loi_reviews" permissions="rw" />
+            <SectionPermission id="loi_reviews_opt" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_END" role="BOD">
+            <SectionPermission id="loi_materials" permissions="rw" />
+            <SectionPermission id="loi_reviews" permissions="rw" />
+            <SectionPermission id="loi_reviews_opt" permissions="rw" />
+        </Role>
     </Permissions>
 
     <!-- LOI Materials -->
