@@ -70,6 +70,10 @@
                 .ui-accordion .ui-accordion-content-active {
                     height: 100% !important;
                 }
+                #optional_lois_0_0_4_head {
+                    border: none;
+                    padding: 3px 0 !important;
+                }
             </style>
             <script type="text/javascript">
                 $(document).ready(function(){ 
@@ -277,6 +281,26 @@
 
             </ReportItemSet>
         </ReportItemSet>
+        <ReportItemSet id='optional_lois' type="ToggleHeaderReportItemSet" changeColor="false" level="2" title="Choose additional LOIs to Review">
+            <ReportItem id="opt_loi_tbl_head" type="StaticReportItem">
+                <![CDATA[
+                <div style="padding: 10px;"><table>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="opt_lois" type="LOIsReportItemSet" subType="POTENTIAL_LOI">
+                <ReportItem id="opt_lois2" type="LOIOptAssignmentReportItem">
+                    <![CDATA[
+                    {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="opt_loi_tbl_foot" type="StaticReportItem">
+                <![CDATA[
+                </table></div>
+                ]]>
+            </ReportItem> 
+        </ReportItemSet>
+
     </ReportSection>
 
     <!-- LOI Reviews (Optional) -->

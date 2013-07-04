@@ -11,10 +11,13 @@ class LOIsReportItemSet extends ReportItemSet {
         if($type == "LOI"){
             $subs = $person->getEvaluates($type);
         }
+        else if($type == "OPT_LOI"){
+            $subs = $person->getEvaluates('OPT_LOI');
+        }
         else if($type == "ALL_LOI"){
             $subs = LOI::getAllLOIs();
         }
-        else if($type == "OPT_LOI"){
+        else if($type == "POTENTIAL_LOI"){
             $assigned = $person->getEvaluates('LOI');
             $assigned_ids = array();
             foreach($assigned as $a){
@@ -28,12 +31,9 @@ class LOIsReportItemSet extends ReportItemSet {
                     $subs[] = $loi; 
                     $count++;
                 }
-
-                if($count > 10){
-                    break;
-                }
             }
         }
+        
 
         if(is_array($subs)){
             foreach($subs as $sub){

@@ -33,6 +33,20 @@ class LOI extends BackboneModel {
 			return null;
 	}
 
+	// Returns a new LOI from the given name
+	static function newFromName($name){
+
+		$sql = "SELECT * FROM grand_loi WHERE name='{$name}'";
+		$data = DBFunctions::execSQL($sql);
+		if (DBFunctions::getNRows() > 0){
+			$loi = new LOI($data);
+            
+		    return $loi;
+		}
+		else
+			return null;
+	}
+
 	// Constructor
 	// Takes in a resultset containing the 'project id' and 'project name'
 	function LOI($data){
