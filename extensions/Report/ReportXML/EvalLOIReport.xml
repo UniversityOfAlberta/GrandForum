@@ -90,7 +90,7 @@
                     ]]>
                 </ReportItem>
                 <!-- Question 1 -->
-                <ReportItemSet id='loi1' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="￼Was this submitted as a full project?">
+                <ReportItemSet id='loi1' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Was this submitted as a full project?">
                     <ReportItem id="loi1_yn" type="RadioReportItem" options="Yes|No|Not Specified" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI1" blobSubItem="EVL_LOI_YN">
                         <![CDATA[
                         <p>This should agree with what was checked on the LOI template.</p>
@@ -340,7 +340,7 @@
                     ]]>
                 </ReportItem>
                 <!-- Question 1 -->
-                <ReportItemSet id='opt_loi1' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="￼Was this submitted as a full project?">
+                <ReportItemSet id='opt_loi1' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Was this submitted as a full project?">
                     <ReportItem id="opt_loi1_yn" type="RadioReportItem" options="Yes|No|Not Specified" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI1" blobSubItem="EVL_LOI_YN">
                         <![CDATA[
                         <p>This should agree with what was checked on the LOI template.</p>
