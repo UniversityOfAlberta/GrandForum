@@ -48,7 +48,12 @@ class TextareaReportItem extends AbstractReportItem {
             <p id='limit_{$this->getPostId()}'><span class="pdf_hide inlineMessage">(currently <span id="{$this->getPostId()}_chars_left">0</span> characters out of a {$type} {$limit})</span></p>
             <script type='text/javascript'>
                 function changeColor{$this->getPostId()}(element, strlen){
-                    if(strlen > $limit){
+                	var type = "{$type}";
+                    if(strlen > $limit && type=="recommended"){
+                        $('#limit_{$this->getPostId()} > span').addClass('inlineWarning');
+                        $('#limit_{$this->getPostId()} > span').removeClass('inlineError');
+                    }
+                    else if(strlen > $limit){
                         $('#limit_{$this->getPostId()} > span').addClass('inlineError');
                         $('#limit_{$this->getPostId()} > span').removeClass('warningError');
                     }
