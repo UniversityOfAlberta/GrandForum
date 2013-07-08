@@ -9,7 +9,7 @@ class LOIHeaderReportItem extends StaticReportItem {
         $loi = LOI::newFromId($this->projectId);
         $loi_name = $loi->getName();
 
-	    $wgOut->addHTML("<h2>{$loi_name}</h2>");
+	    $wgOut->addHTML("<br /><h2>{$loi_name}</h2>");
 	}
 	
 	function renderForPDF(){
