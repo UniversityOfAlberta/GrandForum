@@ -289,6 +289,16 @@
 
             </ReportItemSet>
         </ReportItemSet>
+        <ReportItem id="opt_loi_tbl_head" type="StaticReportItem">
+                <![CDATA[
+                <div style="margin-top: 20px;"></div>
+                <style>
+                    #optional_lois_0_0_4_headDiv{
+                        background-color: #F3ECCF !important;
+                    }
+                </style>
+                ]]>
+            </ReportItem>
         <ReportItemSet id='optional_lois' type="ToggleHeaderReportItemSet" changeColor="false" level="2" title="Choose additional LOIs to Review">
             <ReportItem id="opt_loi_tbl_head" type="StaticReportItem">
                 <![CDATA[
