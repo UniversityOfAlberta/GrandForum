@@ -48,7 +48,8 @@ class ToggleHeaderReportItemSet extends ReportItemSet {
         $wgOut->addHTML("<h$level>{$title}</h$level>
                         <div id='{$this->id}_{$this->projectId}_{$this->milestoneId}_{$this->personId}'>");
         foreach($this->items as $item){
-            $item->render();
+            // $item->render();
+            $item->renderForPDF(); //Originally was render(). Changed by Denis when working on EvalLOIReportPDF
         }
         $wgOut->addHTML("</div>");
     }

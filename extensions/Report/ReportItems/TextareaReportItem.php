@@ -142,7 +142,7 @@ EOF;
 	        if($length == 1){
 	            $plural = "";
 	        }
-	        $html .= "<span class='$class'><small>(<i>currently {$length} character{$plural} out of a {$type} {$limit}</i>)</small></span>";
+	        //$html .= "<span class='$class'><small>(<i>currently {$length} character{$plural} out of a {$type} {$limit}</i>)</small></span>";
 	    }
 	    $html .= nl2br("<p>{$blobValue}</p>");
 	    $item = $this->processCData($html);

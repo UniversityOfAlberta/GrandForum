@@ -36,7 +36,12 @@ class RadioReportItem extends AbstractReportItem {
 	
 	function renderForPDF(){
 	    global $wgOut;
-	    $item = $this->processCData($this->getBlobValue());
+	    $val = $this->getBlobValue();
+	    if(empty($val)){
+	    	$val = "N/A";
+	    }
+
+	    $item = $this->processCData("<p><i>{$val}</i></p>");
 		$wgOut->addHTML($item);
 	}
 }
