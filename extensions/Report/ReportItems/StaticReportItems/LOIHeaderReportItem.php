@@ -20,7 +20,7 @@ class LOIHeaderReportItem extends StaticReportItem {
 
         $html =<<<EOF
         	<h2>{$loi_name}</h2>
-        	<table style="border: 1px solid #CCCCCC;">
+        	<table style="border: 1px solid #CCCCCC; padding: 5px;">
         	<tr><th align="left">Full Name</th><td>{$full_name}</td></tr>
             <tr><th align="left">Type:</th><td>{$type}</td></tr>
             <tr><th align="left">Lead:</th><td>{$lead}</td></tr>
