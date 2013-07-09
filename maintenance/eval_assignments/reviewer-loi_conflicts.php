@@ -6,11 +6,11 @@ require_once('../commandLine.inc');
     $current_evals = Person::getAllPeople(RMC); 
     $lois = LOI::getAllLOIs();
 
-    $csv = '"Evaluator"';
+    $csv = 'Evaluator';
     
     foreach ($lois as $l){
         $loi_name = $l->getName();
-        $csv .= ',"'.$loi_name.'"';
+        $csv .= ','.$loi_name;
     }
     $csv .="\n";
 
@@ -18,7 +18,7 @@ require_once('../commandLine.inc');
         $eval_id = $eval->getId();
         $eval_name = $eval->getName(); 
         
-        $csv .= '"'.$eval_name.'"';
+        $csv .= $eval_name;
 
         foreach ($lois as $loi) {
             $loi_id = $loi->getId();
@@ -34,7 +34,7 @@ require_once('../commandLine.inc');
                     $conflict = "5000";
                 }
             }
-            $csv .= ',"'.$conflict.'"';
+            $csv .= ','.$conflict;
         }
         $csv .= "\n";
     }
