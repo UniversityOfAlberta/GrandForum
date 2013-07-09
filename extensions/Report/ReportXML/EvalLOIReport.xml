@@ -6,18 +6,21 @@
             <SectionPermission id="loi_reviews" permissions="rw" />
             <SectionPermission id="loi_reviews_opt" permissions="rw" />
             <SectionPermission id="loi_review" permissions="rw" />
+            <SectionPermission id="loi_submit" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_END" role="RMC">
             <SectionPermission id="loi_materials" permissions="rw" />
             <SectionPermission id="loi_reviews" permissions="rw" />
             <SectionPermission id="loi_reviews_opt" permissions="rw" />
             <SectionPermission id="loi_review" permissions="rw" />
+            <SectionPermission id="loi_submit" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_END" role="BOD">
             <SectionPermission id="loi_materials" permissions="rw" />
             <SectionPermission id="loi_reviews" permissions="rw" />
             <SectionPermission id="loi_reviews_opt" permissions="rw" />
             <SectionPermission id="loi_review" permissions="rw" />
+            <SectionPermission id="loi_submit" permissions="rw" />
         </Role>
     </Permissions>
 
@@ -563,7 +566,7 @@
         </ReportItem>
     </ReportSection>
 
-    <ReportSection id="submit" tooltip="PDF generation and download" name="Generate and Download" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <ReportSection id="loi_submit" tooltip="PDF generation and download" name="Generate and Download" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
             ]]>
