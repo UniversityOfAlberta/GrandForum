@@ -17,21 +17,8 @@
             <![CDATA[
                 <div class='logo_div'>
                     <div class='logo'></div>
-                    <div class='report_name' style='text-align:right;'><b>LOI Review Report</b><br /><small><b>Generated:</b> {$timestamp}</small></div>
+                    <div class='report_name' style='text-align:right;'><b>LOI Review Report</b><br /><small><b>Generated:</b> {$timestamp}</small></div></div>
             ]]>
-        </ReportItem>
-        <!-- <ReportItem id="my_progress_head" type="StaticReportItem" private="true">
-            <![CDATA[<div class='report_info'><table class='report_info'><tr><td width='100%'></td><td><small><table class='progress_table' cellpadding="1" frame="box" rules="all">]]>
-        </ReportItem>
-        <ReportItem id="ni_progress_head" type="ProgressReportItem" reportType="EvalLOIReport" private="true">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        
-        <ReportItem id="report_info_foot" type="StaticReportItem">
-            <![CDATA[</table></small></td></tr></table></div></div>]]>
-        </ReportItem> -->
-        <ReportItem id="report_info_foot" type="StaticReportItem">
-            <![CDATA[</div>]]>
         </ReportItem>
     </ReportSection>
 
@@ -39,7 +26,10 @@
     <ReportSection id="loi_reviews" name="Required Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="true" autosave="true">
         
         <ReportItemSet id="lois" type="LOIsReportItemSet" subType="LOI">
-            <ReportItemSet id="lois2" type="NIReviewReportItemSet" subType="LOI">
+            <ReportItemSet id="lois2" type="NIReviewReportItemSet" subType="LOI" pagebreak="true">
+                <ReportItem id="" type="PageBreakReportItem">
+                    <![CDATA[{$item}]]>
+                </ReportItem>
                 <ReportItem id="loi_name_hdr" type="LOIHeaderReportItem">
                     <![CDATA[
                     {$item}
@@ -231,10 +221,23 @@
     </ReportSection>
 
     <!-- LOI Reviews (Optional) -->
+    <ReportSection name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <ReportItem id="report_info_head" type="StaticReportItem">
+            <![CDATA[
+                <div class='logo_div'>
+                    <div class='logo'></div>
+                    <div class='report_name' style='text-align:right;'><b>LOI Review Report</b><br /><small><b>Generated:</b> {$timestamp}</small></div></div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
     <ReportSection id="loi_reviews_opt" name="Optional Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="true" private="false">
-        
+
         <ReportItemSet id="opt_lois" type="LOIsReportItemSet" subType="OPT_LOI">
-            <ReportItemSet id="opt_lois2" type="NIReviewReportItemSet" subType="LOI">
+            <ReportItemSet id="opt_lois2" type="NIReviewReportItemSet" subType="LOI" pagebreak="true">
+                <ReportItem id="" type="PageBreakReportItem">
+                    <![CDATA[{$item}]]>
+                </ReportItem>
                 <ReportItem id="loi_name_hdr" type="LOIHeaderReportItem">
                     <![CDATA[
                     {$item}
