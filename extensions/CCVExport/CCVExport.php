@@ -97,7 +97,7 @@ class CCVExport extends SpecialPage {
         //  $type = $product->getType();
             //if($type == "Review Article" || $type == "Book Review"){
                 //$ccv_pub = $ccv->section->section[0]->addChild("section");
-                $res = mapItem($map->Publications->Publication, $product, $ccv->section->section[0]);
+                $res = CCVExport::mapItem($map->Publications->Publication, $product, $ccv->section->section[0]);
 
                 // if($res == 0){
                 //     echo "NOT EXPORTED========". $product->getType() ."  ||||  ". $product->getId() ."\n";
