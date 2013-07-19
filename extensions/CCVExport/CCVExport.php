@@ -68,8 +68,8 @@ class CCVExport extends SpecialPage {
     static function exportXML(){
         global $wgOut, $wgUser;
 
-        $map_file = getcwd()."/Products.xml";
-        $ccv_tmpl = getcwd()."/ccv_template.xml";
+        $map_file = getcwd()."/extensions/CCVExport/Products.xml";
+        $ccv_tmpl = getcwd()."/extensions/CCVExport/ccv_template.xml";
         $map = simplexml_load_file($map_file);
 
         $ccv = simplexml_load_file($ccv_tmpl);
