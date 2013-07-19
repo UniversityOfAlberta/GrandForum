@@ -321,6 +321,10 @@ $egAnnokiExtensions['LoiProposals']     = array( 'name' => 'LoiProposals',
 					      'path' => "$IP/extensions/LoiProposals/LoiProposals.php",
 					      'enabled' => true,
 					      );
+$egAnnokiExtensions['CCVExport']     = array( 'name' => 'CCVExport',
+					      'path' => "$IP/extensions/CCVExport/CCVExport.php",
+					      'enabled' => true,
+					      );
 
 
 /** Install all enumerated Annoki-based extensions **/
