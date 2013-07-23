@@ -126,7 +126,7 @@ class LoiProposals extends SpecialPage {
 	                }
                 }
             }
-            
+
             if($error == 0){
             	$wgMessage->addSuccess("Your comments have been saved successfully!");
             }else{
@@ -699,7 +699,7 @@ EOF;
 
 						$comment = LoiProposals::getData(BLOB_TEXT,RP_EVAL_LOI, $q, EVL_LOI_C, $eval_id, 2013, $loi_id);
 
-						if(empty($yes_no) && !empty($comment)){
+						if(empty($yn) && !empty($comment)){
 							$yn = "T";
 						}
 						$cell = "";
