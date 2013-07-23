@@ -102,6 +102,37 @@ class LoiProposals extends SpecialPage {
 
             }
         }
+        else if(isset($_POST['Submit']) && $_POST['Submit'] == "Submit LOI Comments"){
+        	$error = 0;
+        	foreach($_POST['loi_ids'] as $loi_id){
+                $loi = LOI::newFromId($loi_id);
+                $man_comments_orig = $loi->getManagerComments();
+
+                if(isset($_POST['manager_comments-'.$loi_id])){
+                    $man_comments_new = $_POST['manager_comments-'.$loi_id];
+                	
+                	if($man_comments_new == $man_comments_orig){
+                		continue;
+                	}
+
+                	$man_comments_new = mysql_real_escape_string($man_comments_new);
+                	$sql = "UPDATE grand_loi
+                        	SET manager_comments='{$man_comments_new}'
+                        	WHERE id={$loi_id}";
+
+	                $res = DBFunctions::execSQL($sql, true);
+	                if($res != 1){
+	                	$error = 1;
+	                }
+                }
+            }
+            
+            if($error == 0){
+            	$wgMessage->addSuccess("Your comments have been saved successfully!");
+            }else{
+            	$wgMessage->addWarning("There was a problems saving your comments.");
+            }
+        }
 
 	    $wgOut->setPageTitle("LOI Proposals");
 	    $wgOut->addHTML("");
@@ -118,6 +149,11 @@ class LoiProposals extends SpecialPage {
 		else if($me->isRoleAtLeast(HQP)){
 			$html .="
             <li><a href='#lois_public'>LOI Proposals</a></li>";
+		}
+
+		if($me->isRole(MANAGER)){
+			$html .="
+            <li><a href='#reportsTbl'>Report Stats</a></li>";
 		}
         
         $html .="</ul>";
@@ -141,11 +177,41 @@ class LoiProposals extends SpecialPage {
 			$html .= LoiProposals::loiPublicTable();
 			$html .= "</div>";
 		}
+
+		if($me->isRole(MANAGER)){
+			$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: scroll;'>";
+			$html .= LoiProposals::loiReportsTable();
+			$html .= "</div>";
+		}
 		//$html .= "</div";
 
 		$html .=<<<EOF
+		<style type='text/css'>
+			.qtipStyle{
+                font-size: 14px;
+                line-height: 120%;
+                padding: 5px;
+            }
+		</style>
 		<script type='text/javascript'>
+			function openDialog(ev_id, sub_id, num){
+	            $('#dialog'+num+'-'+ev_id+'-'+sub_id).dialog("open");
+	        }
             $(document).ready(function(){
+            	$('span.q_tip').qtip({
+	                position: {
+	                    corner: {
+	                        target: 'topRight',
+	                        tooltip: 'bottomLeft'
+	                    }
+	                }, 
+	                style: {
+	                    classes: 'qtipStyle'
+	                }
+           	 	});
+            	$('.comment_dialog').dialog( "destroy" );
+            	$('.comment_dialog').dialog({ autoOpen: false, width: 600, height: 400 });
+
                 $('.loiindexTable').dataTable({
                 	"bAutoWidth": false,
                 	"iDisplayLength": 25
@@ -157,6 +223,10 @@ class LoiProposals extends SpecialPage {
 				$('.conflIndexTable').dataTable({
                 	"bAutoWidth": false,
                 	"iDisplayLength": 100
+    			});
+				$('.loiReportsTable').dataTable({
+                	"bAutoWidth": false,
+                	"iDisplayLength": 25
     			});
                 $('#ackTabs').tabs();
             });
@@ -534,9 +604,172 @@ EOF;
 
 	}
 
+	static function loiReportsTable(){
+		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
+
+		$html =<<<EOF
+		<form id='submitForm' action='$wgServer$wgScriptPath/index.php/Special:LoiProposals' method='post'>
+	    <table class='loiReportsTable' style='background:#ffffff; width: 100%; table-layout: auto; text-align: left;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+            <thead>
+                <tr bgcolor='#F2F2F2'>
+                    <th width="10%">LOI</th>
+                    <td style='padding:0px;'>
+                    <table width='100%' rules='all'>
+                    <tr>
+		            <td width="15%"><b>Evaluator</b></td>
+		            <td width=5%"><span class="q_tip" title="Was this submitted as a full project?">Q1</span></td>
+		            <td width=5%"><span class="q_tip" title="Should this be considered as a full project?">Q2</span></td>
+		            <td width=5%"><span class="q_tip" title="Is the proposed title appropriate?">Q3</span></td>
+		            <td width=5%"><span class="q_tip" title="Does the summary description accurately describe the research?">Q4</span></td>
+		            <td width=5%"><span class="q_tip" title="Are the proposed leader(s) and champion appropriate?">Q5</span></td>
+		            <td width=5%"><span class="q_tip" title="Part A: Are the proposed receptors and partners appropriate?">Q6</span></td>
+		            <td width=5%"><span class="q_tip" title="Part B: Are there missing linkages to other projects or LOIs?">Q7</span></td>
+		            <td width=5%"><span class="q_tip" title="Part C: Is the proposed research team appropriate?">Q8</span></td>
+		            <td width=5%"><span class="q_tip" title="Part D-­F: Is the proposed research appropriate for GRAND?">Q9</span></td>
+		            <td width=5%"><span class="q_tip" title="Part G: Is the proposed KTEE activity appropriate?">Q10</span></td>
+		            <td width=5%"><span class="q_tip" title="Part H: Is the proposed networking with other projects appropriate?">Q11</span></td>
+		            <td width=5%"><span class="q_tip" title="Part I: Is the proposed engagement with partners appropriate?">Q12</span></td>
+		            <td width=5%"><span class="q_tip" title="Part J (1): Is the proposed primary impact area appropriate?">Q13</span></td>
+		            <td width=5%"><span class="q_tip" title="Part J (2): Are the proposed secondary impact areas appropriate?">Q14</span></td>
+		            <td width=5%"><span class="q_tip" title="Comments only to the RMC: Do you think this LOI should be accepted?">Q15</span></td>
+		            <td width=5%"><span>PDF</span></td>
+		            </tr>
+		            </table>
+		            </td>
+                </tr>
+            </thead>
+            <tbody>
+EOF;
+
+		$questions = array();
+		
+		$question_text = array(
+			"Was this submitted as a full project?",
+			"Should this be considered as a full project?",
+			"Is the proposed title appropriate?",
+			"Does the summary description accurately describe the research?",
+			"Are the proposed leader(s) and champion appropriate?",
+			"Part A: Are the proposed receptors and partners appropriate?",
+			"Part B: Are there missing linkages to other projects or LOIs?",
+			"Part C: Is the proposed research team appropriate?",
+			"Part D-­F: Is the proposed research appropriate for GRAND?",
+			"Part G: Is the proposed KTEE activity appropriate?",
+			"Part H: Is the proposed networking with other projects appropriate?",
+			"Part I: Is the proposed engagement with partners appropriate?",
+			"Part J (1): Is the proposed primary impact area appropriate?",
+			"Part J (2): Are the proposed secondary impact areas appropriate?",
+			"Comments only to the RMC: Do you think this LOI should be accepted?"
+		);
+
+		$evals = Person::getAllPeople(RMC); 
+		$lois = LOI::getAllLOIs();
+
+		foreach($lois as $loi){
+			$loi_id = $loi->getId();
+			$loi_name = $loi->getName();
+			$evals = $loi->getEvaluators();
+			$evals_count = count($evals);
+
+			if($evals_count > 0){
+				$html .=<<<EOF
+				<tr>
+					<td>{$loi_name}</td>
+					<td style="padding:0px;">
+					<table width='100%' rules='all'>
+EOF;
+				$first = true;		
+				foreach($evals as $eval){
+					
+					$eval_id = $eval->getId();
+					$eval_name = $eval->getNameForForms();
+					$html .= "<tr><td width='15%'>{$eval_name}</td>";
+
+					for ($q=1; $q<=15; $q++){
+						$yes_no = LoiProposals::getData(BLOB_ARRAY, RP_EVAL_LOI, $q, EVL_LOI_YN, $eval_id, 2013, $loi_id);
+						if(isset($yes_no["opt_loi{$q}_yn"]) && $yes_no["opt_loi{$q}_yn"] == "Not Specified"){
+							$yn = "NS";
+						}
+						else if(!isset($yes_no["opt_loi{$q}_yn"])){
+							$yn = "";
+						}
+						else{
+							$yn = substr($yes_no["opt_loi{$q}_yn"], 0,1);
+						}
+						$yes_no = (isset($yes_no["opt_loi{$q}_yn"]))? $yes_no["opt_loi{$q}_yn"] : "";
+
+						$comment = LoiProposals::getData(BLOB_TEXT,RP_EVAL_LOI, $q, EVL_LOI_C, $eval_id, 2013, $loi_id);
+
+						if(empty($yes_no) && !empty($comment)){
+							$yn = "T";
+						}
+						$cell = "";
+						$q_text = $question_text[$q-1];
+						if(!empty($yes_no) || !empty($comment)){
+							$cell =<<<EOF
+							<a href='#' onclick='openDialog("{$eval_id}", "{$loi_id}", {$q}); return false;'>{$yn}</a>
+	                        <div id='dialog{$q}-{$eval_id}-{$loi_id}' class='comment_dialog' title='{$eval_name} on {$loi_name}: {$q_text}'>
+	                        <h4>{$yes_no}</h4>
+	                        <h5>Text Comment:</h5>
+	                        {$comment}
+	                        </div>
+EOF;
+						}
+
+
+
+						$html .= "<td width='5%'>{$cell}</td>";
+					
+					}
+
+					$report = new DummyReport("EvalLOIReportPDF", $eval, $loi);
+					
+        			$check = $report->getPDF();
+        			$pdf = "";
+        			if (count($check) > 0) {
+		        		$tok = $check[0]['token']; 	
+		        		$tst = $check[0]['timestamp'];
+		        		$sub = $check[0]['submitted'];
+		        		$pdf = "<a id='' target='downloadIframe' class='' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf=$tok'>PDF</a>";
+		        	}
+					
+					$html .= "<td width='5%'>{$pdf}</td>";
+
+					$html .= "</tr>";
+				}
+
+				//Manager Comments
+				$man_comments = $loi->getManagerComments();
+				$html .=<<<EOF
+					<tr>
+					<td><b>Comments:</b></td>
+					<td colspan="16">
+					<input type="hidden" name="loi_ids[]" value="{$loi_id}" />
+					<textarea name="manager_comments-{$loi_id}" style="height:40px;">{$man_comments}</textarea>
+					</td>
+					</tr>
+EOF;
+
+				$html .= "</table></td></tr>";
+			}
+			
+		}
+
+		$html .=<<<EOF
+		</tbody>
+		</table>
+		<br />
+    	<input type="submit" name="Submit" value="Submit LOI Comments" />
+		</form>
+
+EOF;
+		
+
+		return $html;
+
+	}
+
 	// static function createTab(){
 	// 	global $notifications, $wgServer, $wgScriptPath;
-		
 		
 	// 	$selected = "";
 		
@@ -547,6 +780,19 @@ EOF;
 		
 	// }
 
+	static function getData($blob_type, $rptype, $question, $subitem, $eval_id=0, $evalYear=EVAL_YEAR, $proj_id=0){
+
+        $addr = ReportBlob::create_address($rptype, SEC_NONE, $question, $subitem);
+        $blb = new ReportBlob($blob_type, $evalYear, $eval_id, $proj_id);
+        
+        $data = "";
+       
+        $result = $blb->load($addr);
+        
+        $data = $blb->getData();
+        
+        return $data;
+    }
 }
 
 ?>

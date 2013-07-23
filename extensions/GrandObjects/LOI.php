@@ -17,6 +17,7 @@ class LOI extends BackboneModel {
 	var $secondary_challenge;
 	var $loi_pdf;
 	var $supplemental_pdf;
+	var $manager_comments;
 	
 
 	// Returns a new Project from the given id
@@ -65,6 +66,7 @@ class LOI extends BackboneModel {
 			$this->secondary_challenge = $data[0]['secondary_challenge'];
 			$this->loi_pdf = $data[0]['loi_pdf'];
 			$this->supplemental_pdf = $data[0]['supplemental_pdf'];
+			$this->manager_comments = $data[0]['manager_comments'];
 			
 		}
 	}
@@ -215,6 +217,33 @@ class LOI extends BackboneModel {
 			$supplemental_pdf = "N/A";
 		}
 		return $supplemental_pdf;
+	}
+
+	function getManagerComments(){
+		return $this->manager_comments;
+	}
+
+	function getEvaluators($type=null, $year = REPORTING_YEAR){
+	    $eTable = getTableName("eval");
+	    $sql = "SELECT *
+	            FROM $eTable
+	            WHERE sub_id = '{$this->id}'
+	            AND year = '{$year}'";
+
+	    if(!is_null($type)){
+	    	$type = mysql_real_escape_string($type);
+	    	$sql .= " AND type = '{$type}'";
+	    }
+
+	    $data = DBFunctions::execSQL($sql);
+	    $evals = array();
+
+        foreach($data as $row){
+            if($row['type'] == "LOI" || $row['type'] == "OPT_LOI"){
+            	$evals[] = Person::newFromId($row['eval_id']);
+            }
+        }
+        return $evals;
 	}
 
 	function toArray(){
