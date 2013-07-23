@@ -151,7 +151,7 @@ class LoiProposals extends SpecialPage {
             <li><a href='#lois_public'>LOI Proposals</a></li>";
 		}
 
-		if($me->isRole(MANAGER)){
+		if($me->isRole(MANAGER) || $me->isRole(STAFF)){
 			$html .="
             <li><a href='#reportsTbl'>Report Stats</a></li>";
 		}
@@ -178,7 +178,7 @@ class LoiProposals extends SpecialPage {
 			$html .= "</div>";
 		}
 
-		if($me->isRole(MANAGER)){
+		if($me->isRole(MANAGER) || $me->isRole(STAFF)){
 			$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: scroll;'>";
 			$html .= LoiProposals::loiReportsTable();
 			$html .= "</div>";
