@@ -685,7 +685,7 @@ EOF;
 					$html .= "<tr><td width='15%'>{$eval_name}</td>";
 
 					for ($q=1; $q<=15; $q++){
-						$yes_no = LoiProposals::getData(BLOB_ARRAY, RP_EVAL_LOI, $q, EVL_LOI_YN, $eval_id, 2013, $loi_id);
+						$yes_no = LoiProposals::getData(BLOB_ARRAY, RP_EVAL_LOI, $q, EVL_LOI_YN, $eval_id, REPORTING_YEAR, $loi_id);
 						if(isset($yes_no["opt_loi{$q}_yn"]) && $yes_no["opt_loi{$q}_yn"] == "Not Specified"){
 							$yn = "NS";
 						}
@@ -695,11 +695,13 @@ EOF;
 						else{
 							$yn = substr($yes_no["opt_loi{$q}_yn"], 0,1);
 						}
+
 						$yes_no = (isset($yes_no["opt_loi{$q}_yn"]))? $yes_no["opt_loi{$q}_yn"] : "";
 
-						$comment = LoiProposals::getData(BLOB_TEXT,RP_EVAL_LOI, $q, EVL_LOI_C, $eval_id, 2013, $loi_id);
+						$comment = LoiProposals::getData(BLOB_TEXT,RP_EVAL_LOI, $q, EVL_LOI_C, $eval_id, REPORTING_YEAR, $loi_id);
 
 						if(empty($yn) && !empty($comment)){
+							var_dump(LoiProposals::getData(BLOB_ARRAY, RP_EVAL_LOI, $q, EVL_LOI_YN, $eval_id, REPORTING_YEAR, $loi_id));
 							$yn = "T";
 						}
 						$cell = "";
