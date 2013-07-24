@@ -144,17 +144,14 @@ class LoiProposals extends SpecialPage {
 			$html .="
             <li><a href='#lois'>LOI Proposals</a></li>
             <li><a href='#cv'>CV</a></li>
-            <li><a href='#conflicts'>Conflicts/Preferences</a></li>";
+            <li><a href='#conflicts'>Conflicts/Preferences</a></li>
+            <li><a href='#reportsTbl'>Report Stats</a></li>";
         }
 		else if($me->isRoleAtLeast(HQP)){
 			$html .="
             <li><a href='#lois_public'>LOI Proposals</a></li>";
 		}
 
-		if($me->isRole(MANAGER) || $me->isRole(STAFF)){
-			$html .="
-            <li><a href='#reportsTbl'>Report Stats</a></li>";
-		}
         
         $html .="</ul>";
         
@@ -171,6 +168,10 @@ class LoiProposals extends SpecialPage {
 			$html .= LoiProposals::conflictsTable();
 			$html .= "</div>";
 
+			$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: scroll;'>";
+			$html .= LoiProposals::loiReportsTable();
+			$html .= "</div>";
+
 		}
 		else if($me->isRoleAtLeast(HQP)){
 			$html .= "<div id='lois_public' style='width: 100%; position:relative; overflow: scroll;'>";
@@ -178,11 +179,6 @@ class LoiProposals extends SpecialPage {
 			$html .= "</div>";
 		}
 
-		if($me->isRole(MANAGER) || $me->isRole(STAFF)){
-			$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: scroll;'>";
-			$html .= LoiProposals::loiReportsTable();
-			$html .= "</div>";
-		}
 		//$html .= "</div";
 
 		$html .=<<<EOF
@@ -632,7 +628,7 @@ EOF;
 		            <td width=5%"><span class="q_tip" title="Part J (1): Is the proposed primary impact area appropriate?">Q13</span></td>
 		            <td width=5%"><span class="q_tip" title="Part J (2): Are the proposed secondary impact areas appropriate?">Q14</span></td>
 		            <td width=5%"><span class="q_tip" title="Comments only to the RMC: Do you think this LOI should be accepted?">Q15</span></td>
-		            <td width=5%"><span>PDF</span></td>
+		            <!--<td width=5%"><span>PDF</span></td>-->
 		            </tr>
 		            </table>
 		            </td>
@@ -643,6 +639,7 @@ EOF;
 
 		$questions = array();
 		
+
 		$question_text = array(
 			"Was this submitted as a full project?",
 			"Should this be considered as a full project?",
@@ -663,6 +660,10 @@ EOF;
 
 		$evals = Person::getAllPeople(RMC); 
 		$lois = LOI::getAllLOIs();
+
+		$me = Person::newFromId($wgUser->getId());
+		$editable = $me->isRole(MANAGER);
+		$disabled = (!$editable)? 'disabled="disabled"' : '';
 
 		foreach($lois as $loi){
 			$loi_id = $loi->getId();
@@ -725,6 +726,7 @@ EOF;
 					
 					}
 
+					/*
 					$report = new DummyReport("EvalLOIReportPDF", $eval, $loi);
 					
         			$check = $report->getPDF();
@@ -737,7 +739,8 @@ EOF;
 		        	}
 					
 					$html .= "<td width='5%'>{$pdf}</td>";
-
+					*/
+					
 					$html .= "</tr>";
 				}
 
@@ -748,7 +751,7 @@ EOF;
 					<td><b>Comments:</b></td>
 					<td colspan="16">
 					<input type="hidden" name="loi_ids[]" value="{$loi_id}" />
-					<textarea name="manager_comments-{$loi_id}" style="height:40px;">{$man_comments}</textarea>
+					<textarea {$disabled} name="manager_comments-{$loi_id}" style="height:40px;">{$man_comments}</textarea>
 					</td>
 					</tr>
 EOF;
@@ -762,10 +765,13 @@ EOF;
 		</tbody>
 		</table>
 		<br />
-    	<input type="submit" name="Submit" value="Submit LOI Comments" />
-		</form>
-
 EOF;
+
+		if($editable){
+    		$html .= '<input type="submit" name="Submit" value="Submit LOI Comments" />';
+    	}
+
+    	$html .= "</form>";
 		
 
 		return $html;

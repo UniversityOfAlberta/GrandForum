@@ -140,7 +140,13 @@ abstract class AbstractReport extends SpecialPage {
             $projectName = $_GET['project'];
         }
         if($projectName != null){
-            $this->project = Project::newFromName($projectName);
+
+            if(preg_match('/LOIEvalReportPDF/', $xmlFileName)){
+                $this->project = LOI::newFromName($projectName);
+            }else{
+
+                $this->project = Project::newFromName($projectName);
+            }
         }
         if(isset($_GET['generatePDF'])){
             $this->generatePDF = true;

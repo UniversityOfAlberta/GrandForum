@@ -33,16 +33,21 @@ class LOIsReportItemSet extends ReportItemSet {
                 }
             }
         }
+        else if($type == "LOI_EVALS"){
+            $loi = LOI::newFromId($this->projectId);
+            $subs = $loi->getEvaluators();
+        }
         
 
         if(is_array($subs)){
             foreach($subs as $sub){
                 $id = $sub->getId();
                 $tuple = self::createTuple();
-                $tuple['project_id'] = $id;
-                // $sql = "SELECT * FROM grand_loi WHERE id={$id}";
-                // $res = DBFunctions::execSQL($sql);
-                //$data[] = $res[0];
+                if($type == "LOI_EVALS"){
+                    $tuple['person_id'] = $id;
+                }else{
+                    $tuple['project_id'] = $id;
+                }
                 $data[] = $tuple;
             }
         }

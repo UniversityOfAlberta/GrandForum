@@ -18,7 +18,8 @@ class CreatePDF extends SpecialPage {
     static $types = array('ni' => 'NI',
                           'ni_comments' => 'Project NI Comments',
                           'hqp' => 'HQP',
-                          'project' => 'Project');
+                          'project' => 'Project',
+                          'loi' => 'LOI');
 
 	function __construct() {
 		wfLoadExtensionMessages('CreatePDF');
@@ -31,13 +32,23 @@ class CreatePDF extends SpecialPage {
 	    $type = (isset($_GET['type'])) ? $_GET['type'] : 'ni';
 	    if(isset($_GET['generatePDF'])){
 	        $person = @Person::newFromId($_GET['person']);
-	        $project = @Project::newFromId($_GET['project']);
-	        if($project != null && $project->deleted){
-	            $_GET['report'] = "ProjectFinalReport";
+	        
+	        if($_GET['report'] == "LOIEvalReportPDF"){
+	        	$project = @LOI::newFromId($_GET['project']);
 	        }
+	        else{
+	        	$project = @Project::newFromId($_GET['project']);
+	        	if($project != null && $project->deleted){
+	            	$_GET['report'] = "ProjectFinalReport";
+	        	}
+	        }
+
 	        $report = new DummyReport($_GET['report'], $person, $project);
 	        $submitted = $report->isSubmitted();
-	        if($project != null){
+	        if($project != null && $_GET['report'] == "LOIEvalReportPDF"){
+	        	$report->generatePDF(null, false);
+	        }
+	        else if($project != null){
 	            $leader = $project->getLeader();
 	            $report->person = $leader;
 	            $report->generatePDF(null, $submitted);
@@ -179,6 +190,7 @@ class CreatePDF extends SpecialPage {
 	        }
 	        exit;
 	    }
+
 	    $url = "";
 	    $names = array();
 	    $ids = array();
@@ -220,6 +232,16 @@ class CreatePDF extends SpecialPage {
 	        }
 	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectReport&person=3&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
+	    else if($type == 'loi'){
+	        foreach(LOI::getAllLOIs() as $loi){
+	            if(array_search($loi->getId(), $ids) === false){
+	                $names[] = $loi->getName();
+	                $ids[] = $loi->getId();
+	            }
+	        }
+	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=LOIEvalReportPDF&person=4&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
+	    }
+
 	    $wgOut->addHTML("<iframe name='downloadIframe' id='downloadIframe' style='display:none;'></iframe>");
 	    CreatePDF::showScript($names, $ids, $url);
 	    if($type == 'ni'){
@@ -233,6 +255,9 @@ class CreatePDF extends SpecialPage {
 	    }
 	    else if($type == 'project'){
 	        CreatePDF::showProjectTable($names, $ids);
+	    }
+	    else if($type == 'loi'){
+	        CreatePDF::showLOITable($names, $ids);
 	    }
 	}
 	
@@ -433,6 +458,26 @@ class CreatePDF extends SpecialPage {
 	            $report = new DummyReport("ProjectReportPDF", $leader, $project);
 	            CreatePDF::tableRow($report, $project->getId(), $project->getName(), $project->getName());
 	        }
+	    }
+	    CreatePDF::tableFoot();
+	}
+
+	static function showLOITable($names, $ids){
+	    global $wgOut, $wgServer, $wgScriptPath;
+	    $wgOut->setPageTitle("LOI Report PDFs");
+	    CreatePDF::tableHead();
+	    $alreadyDone = array();
+	    foreach($names as $pName){
+	        if(isset($alreadyDone[$pName])){
+	            continue;
+	        }
+	        $alreadyDone[$pName] = true;
+	        $loi = LOI::newFromName($pName);
+	        //echo $loi->getId(). "<br>"; 
+	        $admin = Person::newFromId(4); //Just because I need to pass a person object
+	        $report = new DummyReport("LOIEvalReportPDF", $admin, $loi);
+	        CreatePDF::tableRow($report, $loi->getId(), $loi->getName(), $loi->getName());
+	        
 	    }
 	    CreatePDF::tableFoot();
 	}
