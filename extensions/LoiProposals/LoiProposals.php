@@ -679,10 +679,20 @@ EOF;
 			$evals = $loi->getEvaluators();
 			$evals_count = count($evals);
 
+
+			$admin = Person::newFromId(4); //Owner of this report
+	        $report = new DummyReport("LOIEvalReportPDF", $admin, $loi);
+	        $check = $report->getPDF();
+	        $pdf_link = "";
+	        if(count($check) > 0){
+	            $tok = $check[0]['token'];
+	            $pdf_link = "<br /><a target='downloadIframe' class='' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf=$tok'>Download PDF</a>";
+	        }
+
 			if($evals_count > 0){
 				$html .=<<<EOF
 				<tr>
-					<td>{$loi_name}</td>
+					<td>{$loi_name}{$pdf_link}</td>
 					<td style="padding:0px;">
 					<table width='100%' rules='all'>
 EOF;
