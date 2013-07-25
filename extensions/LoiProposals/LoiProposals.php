@@ -145,13 +145,16 @@ class LoiProposals extends SpecialPage {
             <li><a href='#lois'>LOI Proposals</a></li>
             <li><a href='#cv'>CV</a></li>
             <li><a href='#conflicts'>Conflicts/Preferences</a></li>
-            <li><a href='#reportsTbl'>Report Stats</a></li>";
+            <!--li><a href='#reportsTbl'>Report Stats</a></li-->";
         }
 		else if($me->isRoleAtLeast(HQP)){
 			$html .="
             <li><a href='#lois_public'>LOI Proposals</a></li>";
 		}
 
+		if($me->isRole(MANAGER) || $me->isRole(STAFF)){
+			$html .="<li><a href='#reportsTbl'>Report Stats</a></li>";
+		}
         
         $html .="</ul>";
         
@@ -168,9 +171,9 @@ class LoiProposals extends SpecialPage {
 			$html .= LoiProposals::conflictsTable();
 			$html .= "</div>";
 
-			$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: scroll;'>";
-			$html .= LoiProposals::loiReportsTable();
-			$html .= "</div>";
+			//$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: scroll;'>";
+			//$html .= LoiProposals::loiReportsTable();
+			//$html .= "</div>";
 
 		}
 		else if($me->isRoleAtLeast(HQP)){
@@ -179,7 +182,12 @@ class LoiProposals extends SpecialPage {
 			$html .= "</div>";
 		}
 
-		//$html .= "</div";
+		if($me->isRole(MANAGER) || $me->isRole(STAFF)){
+			$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: scroll;'>";
+			$html .= LoiProposals::loiReportsTable();
+			$html .= "</div>";
+		}
+
 
 		$html .=<<<EOF
 		<style type='text/css'>
@@ -746,12 +754,19 @@ EOF;
 
 				//Manager Comments
 				$man_comments = $loi->getManagerComments();
+				if($editable){
+					$textarea = "<textarea {$disabled} name='manager_comments-{$loi_id}' style='height:40px;'>{$man_comments}</textarea>";
+				}
+				else{
+					$textarea = "<p><i>{$man_comments}</i></p>";
+				}
+
 				$html .=<<<EOF
 					<tr>
 					<td><b>Comments:</b></td>
 					<td colspan="16">
 					<input type="hidden" name="loi_ids[]" value="{$loi_id}" />
-					<textarea {$disabled} name="manager_comments-{$loi_id}" style="height:40px;">{$man_comments}</textarea>
+					{$textarea}
 					</td>
 					</tr>
 EOF;

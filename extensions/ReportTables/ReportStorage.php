@@ -342,10 +342,14 @@ class ReportStorage {
 	}
 	
 	static function list_project_reports($proj_id, $lim = 1, $special = 0, $type = RPTP_LEADER, $year=REPORTING_YEAR) {
+        /*
+		This is commented out because we now want to support LOI reports which are not projects, even though report->project is used for them 
+
         $project = Project::newFromId($proj_id);
 		if (!$proj_id || $project == null || $project->getName() == null){
 			return array();
         }
+        */
             
 		$sql = "SELECT r.user_id, r.report_id, r.submitted, r.auto, r.token, r.timestamp, r.year
 		        FROM mw_pdf_report r, mw_pdf_index i 

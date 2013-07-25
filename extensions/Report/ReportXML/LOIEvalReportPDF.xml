@@ -28,7 +28,7 @@
             <![CDATA[{$item}]]>
         </ReportItem>
         <ReportItemSet id="lois" type="LOIsReportItemSet" subType="LOI_EVALS">
-            <ReportItemSet id="lois2" type="NIReviewReportItemSet" subType="NI" pagebreak="true">
+            <ReportItemSet id="lois2" type="NIReviewReportItemSet" subType="NI" pagebreak="false">
                 <ReportItem id="" type="PageBreakReportItem">
                     <![CDATA[{$item}]]>
                 </ReportItem>

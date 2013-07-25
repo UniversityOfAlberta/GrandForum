@@ -476,6 +476,7 @@ class CreatePDF extends SpecialPage {
 	        //echo $loi->getId(). "<br>"; 
 	        $admin = Person::newFromId(4); //Just because I need to pass a person object
 	        $report = new DummyReport("LOIEvalReportPDF", $admin, $loi);
+	        //echo $report->person->getId(). "<br>";
 	        CreatePDF::tableRow($report, $loi->getId(), $loi->getName(), $loi->getName());
 	        
 	    }

@@ -334,7 +334,7 @@ abstract class AbstractReport extends SpecialPage {
     	    }
     	    else{
     	        $check = $sto->list_project_reports($this->project->getId(), 10000, 0, $this->pdfType, $this->year);
-    	    }
+            }
     	}
     	else{
     	    $check = array_merge($sto->list_reports($this->person->getId(), SUBM, 10000, 0, $this->pdfType), $sto->list_reports($this->person->getId(), NOTSUBM, 10000, 0, $this->pdfType));
