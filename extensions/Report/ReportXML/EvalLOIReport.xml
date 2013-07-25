@@ -379,196 +379,196 @@
                     ]]>
                 </ReportItem>
                 <!-- Question 1 -->
-                <ReportItemSet id='opt_loi1' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Was this submitted as a full project?">
-                    <ReportItem id="opt_loi1_yn" type="RadioReportItem" options="Yes|No|Not Specified" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI1" blobSubItem="EVL_LOI_YN">
+                <ReportItemSet id='loi1' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Was this submitted as a full project?">
+                    <ReportItem id="loi1_yn" type="RadioReportItem" options="Yes|No|Not Specified" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI1" blobSubItem="EVL_LOI_YN">
                         <![CDATA[
                         <p>This should agree with what was checked on the LOI template.</p>
                         {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="opt_loi1_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI1" blobSubItem="EVL_LOI_C">
+                    <ReportItem id="loi1_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI1" blobSubItem="EVL_LOI_C">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                 </ReportItemSet>
 
                 <!-- Question 2 -->
-                <ReportItemSet id='opt_loi2' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Should this be considered as a full project?">
-                    <ReportItem id="opt_loi2_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI2" blobSubItem="EVL_LOI_YN">
+                <ReportItemSet id='loi2' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Should this be considered as a full project?">
+                    <ReportItem id="loi2_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI2" blobSubItem="EVL_LOI_YN">
                         <![CDATA[
                         <p>Regardless of what was checked on LOI template, indicating whether you think this should only be considered as a full project (check "Yes") or you think this is at most a subproject (check "No"). If your response differs from what was checked on the LOI template, provide an explanation.</p>
                         {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="opt_loi2_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI2" blobSubItem="EVL_LOI_C">
+                    <ReportItem id="loi2_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI2" blobSubItem="EVL_LOI_C">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                 </ReportItemSet>
 
                 <!-- Question 3 -->
-                <ReportItemSet id='opt_loi3' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Is the proposed title appropriate?">
-                    <ReportItem id="opt_loi3_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI3" blobSubItem="EVL_LOI_YN">
+                <ReportItemSet id='loi3' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Is the proposed title appropriate?">
+                    <ReportItem id="loi3_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI3" blobSubItem="EVL_LOI_YN">
                         <![CDATA[
                         <p>Suggest a better title if you think the one provided is not adequate.</p>
                         {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="opt_loi3_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI3" blobSubItem="EVL_LOI_C">
+                    <ReportItem id="loi3_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI3" blobSubItem="EVL_LOI_C">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                 </ReportItemSet>
 
                 <!-- Question 4 -->
-                <ReportItemSet id='opt_loi4' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Does the summary description accurately describe the research?">
+                <ReportItemSet id='loi4' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Does the summary description accurately describe the research?">
                     <ReportItem id="loi4_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI4" blobSubItem="EVL_LOI_YN">
                         <![CDATA[
                         <p>Suggest a better summary description if you think the one provided is not adequate or indicate why you think the description is not appropriate. A good description should be understandable by anyone in the field of digital media.</p>
                         {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="opt_loi4_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI4" blobSubItem="EVL_LOI_C">
+                    <ReportItem id="loi4_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI4" blobSubItem="EVL_LOI_C">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                 </ReportItemSet>
 
                 <!-- Question 5 -->
-                <ReportItemSet id='opt_loi5' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Are the proposed leader(s) and champion appropriate?">
+                <ReportItemSet id='loi5' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Are the proposed leader(s) and champion appropriate?">
                     <ReportItem id="loi5_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI5" blobSubItem="EVL_LOI_YN">
                         <![CDATA[
                         <p>If you checked "No" provide an explanation and (if you wish) a recommendation for how this could be remedied. Comment on whether the project leader (and co-­leader) and the project champion have the skills and experience to lead the research.</p>
                         {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="opt_loi5_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI5" blobSubItem="EVL_LOI_C">
+                    <ReportItem id="loi5_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI5" blobSubItem="EVL_LOI_C">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                 </ReportItemSet>
 
                 <!-- Question 6 -->
-                <ReportItemSet id='opt_loi6' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part A: Are the proposed receptors and partners appropriate?">
-                    <ReportItem id="opt_loi6_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI6" blobSubItem="EVL_LOI_YN">
+                <ReportItemSet id='loi6' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part A: Are the proposed receptors and partners appropriate?">
+                    <ReportItem id="loi6_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI6" blobSubItem="EVL_LOI_YN">
                         <![CDATA[
                         <p>If you checked "No" provide an explanation and (if you wish) a recommendation for how this could be remedied. If there are missing partners or if the proposed partners are not the right ones, suggest alternatives.</p>
                         {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="opt_loi6_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI6" blobSubItem="EVL_LOI_C">
+                    <ReportItem id="loi6_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI6" blobSubItem="EVL_LOI_C">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                 </ReportItemSet>
                 
                 <!-- Question 7 -->
-                <ReportItemSet id='opt_loi7' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part B: Are there missing linkages to other projects or LOIs?">
-                    <ReportItem id="opt_loi7_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI7" blobSubItem="EVL_LOI_YN">
+                <ReportItemSet id='loi7' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part B: Are there missing linkages to other projects or LOIs?">
+                    <ReportItem id="loi7_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI7" blobSubItem="EVL_LOI_YN">
                         <![CDATA[
                         <p>If you checked "No" provide an explanation and (if you wish) a recommendation for how this could be remedied. If you know of significant overlap between this and one or more other LOIs, indicate which LOIs overlap.</p>
                         {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="opt_loi7_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI7" blobSubItem="EVL_LOI_C">
+                    <ReportItem id="loi7_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI7" blobSubItem="EVL_LOI_C">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                 </ReportItemSet>
 
                 <!-- Question 8 -->
-                <ReportItemSet id='opt_loi8' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part C: Is the proposed research team appropriate?">
-                    <ReportItem id="opt_loi8_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI8" blobSubItem="EVL_LOI_YN">
+                <ReportItemSet id='loi8' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part C: Is the proposed research team appropriate?">
+                    <ReportItem id="loi8_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI8" blobSubItem="EVL_LOI_YN">
                         <![CDATA[
                         <p>If you checked "No" provide an explanation and (if you wish) a recommendation for how this could be remedied. Comment on whether the team has the required expertise to conduct the research and what additional expertise might be required.</p>
                         {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="opt_loi8_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI8" blobSubItem="EVL_LOI_C">
+                    <ReportItem id="loi8_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI8" blobSubItem="EVL_LOI_C">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                 </ReportItemSet>
 
                 <!-- Question 9 -->
-                <ReportItemSet id='opt_loi9' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part D-­F: Is the proposed research appropriate for GRAND?">
+                <ReportItemSet id='loi9' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part D-­F: Is the proposed research appropriate for GRAND?">
                     <ReportItem id="loi9_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI9" blobSubItem="EVL_LOI_YN">
                         <![CDATA[
                         <p>Provide your assessment of the importance of the problem that is being addressed by the proposal, the appropriateness of the proposed solution(s) and the approach(es) that are proposed. If there are subprojects described, comment on how well they integrate into a coherent project and whether there are missing subprojects that will be necessary for success.</p>
                         {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="opt_loi9_c" rows="12" width="100%" limit="1800" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI9" blobSubItem="EVL_LOI_C">
+                    <ReportItem id="loi9_c" rows="12" width="100%" limit="1800" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI9" blobSubItem="EVL_LOI_C">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                 </ReportItemSet>
 
                 <!-- Question 10 -->
-                <ReportItemSet id='opt_loi10' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part G: Is the proposed KTEE activity appropriate?">
-                    <ReportItem id="opt_loi10_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI10" blobSubItem="EVL_LOI_YN">
+                <ReportItemSet id='loi10' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part G: Is the proposed KTEE activity appropriate?">
+                    <ReportItem id="loi10_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI10" blobSubItem="EVL_LOI_YN">
                         <![CDATA[
                         <p>If you checked "No" provide an explanation and (if you wish) a recommendation for how this could be remedied. Comment on the effectiveness of the proposed KTEE activity and the likelihood of it being successful.</p>
                         {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="opt_loi10_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI10" blobSubItem="EVL_LOI_C">
+                    <ReportItem id="loi10_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI10" blobSubItem="EVL_LOI_C">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                 </ReportItemSet>
 
                 <!-- Question 11 -->
-                <ReportItemSet id='opt_loi11' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part H: Is the proposed networking with other projects appropriate?">
-                    <ReportItem id="opt_loi11_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI11" blobSubItem="EVL_LOI_YN">
+                <ReportItemSet id='loi11' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part H: Is the proposed networking with other projects appropriate?">
+                    <ReportItem id="loi11_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI11" blobSubItem="EVL_LOI_YN">
                         <![CDATA[
                         <p>If you checked "No" provide an explanation and (if you wish) a recommendation for how this could be remedied. Comment on how well the proposed research will fit into the network and the likelihood that other projects will benefit.</p>
                         {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="opt_loi11_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI11" blobSubItem="EVL_LOI_C">
+                    <ReportItem id="loi11_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI11" blobSubItem="EVL_LOI_C">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                 </ReportItemSet>
 
                 <!-- Question 12 -->
-                <ReportItemSet id='opt_loi12' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part I: Is the proposed engagement with partners appropriate?">
-                    <ReportItem id="opt_loi12_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI12" blobSubItem="EVL_LOI_YN">
+                <ReportItemSet id='loi12' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part I: Is the proposed engagement with partners appropriate?">
+                    <ReportItem id="loi12_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI12" blobSubItem="EVL_LOI_YN">
                         <![CDATA[
                         <p>If you checked "No" provide an explanation and (if you wish) a recommendation for how this could be remedied. Comment on the effectiveness of the proposed interactions with partners and the likelihood of it being successful.</p>
                         {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="opt_loi12_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI12" blobSubItem="EVL_LOI_C">
+                    <ReportItem id="loi12_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI12" blobSubItem="EVL_LOI_C">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                 </ReportItemSet>
 
                 <!-- Question 13 -->
-                <ReportItemSet id='opt_loi13' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part J (1): Is the proposed primary impact area appropriate?">
-                    <ReportItem id="opt_loi13_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI13" blobSubItem="EVL_LOI_YN">
+                <ReportItemSet id='loi13' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part J (1): Is the proposed primary impact area appropriate?">
+                    <ReportItem id="loi13_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI13" blobSubItem="EVL_LOI_YN">
                         <![CDATA[
                         <p>If you checked "No" indicate the one GRAND Challenge that is most likely to be the primary impact target for the proposed research.</p>
                         {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="opt_loi13_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI13" blobSubItem="EVL_LOI_C">
+                    <ReportItem id="loi13_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI13" blobSubItem="EVL_LOI_C">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                 </ReportItemSet>
 
                 <!-- Question 14 -->
-                <ReportItemSet id='opt_loi14' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part J (2): Are the proposed secondary impact areas appropriate?">
-                    <ReportItem id="opt_loi14_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI14" blobSubItem="EVL_LOI_YN">
+                <ReportItemSet id='loi14' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Part J (2): Are the proposed secondary impact areas appropriate?">
+                    <ReportItem id="loi14_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI14" blobSubItem="EVL_LOI_YN">
                         <![CDATA[
                         <p>If you checked "No" indicate all of the GRAND Challenge that are likely to be the secondary impact targets for the proposed research.</p>
                         {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="opt_loi14_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI14" blobSubItem="EVL_LOI_C">
+                    <ReportItem id="loi14_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI14" blobSubItem="EVL_LOI_C">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                 </ReportItemSet>
 
                 <!-- Question 15 -->
-                <ReportItemSet id='opt_loi15' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Comments only to the RMC: Do you think this LOI should be accepted?">
-                    <ReportItem id="opt_loi15_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI15" blobSubItem="EVL_LOI_YN">
+                <ReportItemSet id='loi15' type="ToggleHeaderReportItemSet" changeColor="false" level="3" title="Comments only to the RMC: Do you think this LOI should be accepted?">
+                    <ReportItem id="loi15_yn" type="RadioReportItem" options="Yes|No" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_LOI15" blobSubItem="EVL_LOI_YN">
                         <![CDATA[
                         <p>Provide any comments, suggestions, or explanatory material that you want the RMC to consider. This information will not be available to the applicants.</p>
                         {$item}
                         ]]>
                     </ReportItem>
-                    <ReportItem id="opt_loi15_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI15" blobSubItem="EVL_LOI_C">
+                    <ReportItem id="loi15_c" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" type="TextareaReportItem" blobItem="EVL_LOI15" blobSubItem="EVL_LOI_C">
                         <![CDATA[{$item}]]>
                     </ReportItem>
                 </ReportItemSet>
