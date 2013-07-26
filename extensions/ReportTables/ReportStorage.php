@@ -275,6 +275,17 @@ class ReportStorage {
 		exit;
 	}
 
+	function get_report_project_id(){
+		$report_id = $this->_cache['report_id'];
+		$sql = "SELECT project_id FROM mw_pdf_index WHERE report_id={$report_id}";
+		$res = DBFunctions::execSQL($sql);
+		$project_id = 0;
+		if (count($res) > 0) {
+			$project_id = $res[0]['project_id'];
+		}
+
+		return $project_id;
+	}
 
 	/// Returns an array of report entries for users #uarr with as many as #lim
 	/// entries per user.  By default, submitted reports are considered, which
@@ -402,4 +413,5 @@ class ReportStorage {
 
 		return DBFunctions::execSQL($sql);
 	}
+
 }

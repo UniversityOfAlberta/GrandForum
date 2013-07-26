@@ -57,7 +57,7 @@ class ReportArchive extends SpecialPage {
 			    $type = $sto->metadata('type');
 			    $pdf_owner = Person::newFromId($user_id);
 			    $pdf_owner_name = $pdf_owner->getName();
-			    if ($pdf === false || $len == 0) {
+			    if ($pdf == false || $len == 0) {
 				    $wgOut->addHTML("<h4>Warning</h4><p>Could not retrieve PDF for report ID<tt>{$tok}</tt>.  Please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>, and include the report ID in your request.</p>");
 			    }
 			    else {
@@ -75,9 +75,20 @@ class ReportArchive extends SpecialPage {
 				        else if($type == RPTP_NI_ZIP){
 				            $name = "NIReports_{$tst}.zip";
 				        }
+                        else if($type == RPTP_LOI_REVIEW){
+                            $name = "{$report->person->getReversedName()} LOI Evaluation Report.pdf";
+                        }
+                        else if($type == RPTP_LOI_EVAL_REVIEW){
+                            $report = AbstractReport::newFromToken($tok);
+                            $loi_id = $sto->get_report_project_id();
+                            $loi = LOI::newFromId($loi_id);
+                            $loi_name = $loi->getName();
+                            
+                            $name = "{$loi_name} Evaluation Report.pdf";
+                        }
 				        else{
 				            $report = AbstractReport::newFromToken($tok);
-				            
+                            
 				            if($report->project != null){
 				                if($report->person->getId() == 0){
 				                    $name = "{$report->name}.{$ext}";
