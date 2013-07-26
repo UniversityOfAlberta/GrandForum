@@ -76,6 +76,7 @@ class ReportArchive extends SpecialPage {
 				            $name = "NIReports_{$tst}.zip";
 				        }
                         else if($type == RPTP_LOI_REVIEW){
+                            $report = AbstractReport::newFromToken($tok);
                             $name = "{$report->person->getReversedName()} LOI Evaluation Report.pdf";
                         }
                         else if($type == RPTP_LOI_EVAL_REVIEW){
