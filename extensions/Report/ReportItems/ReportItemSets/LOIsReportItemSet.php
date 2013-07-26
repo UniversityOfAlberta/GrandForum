@@ -35,7 +35,31 @@ class LOIsReportItemSet extends ReportItemSet {
         }
         else if($type == "LOI_EVALS"){
             $loi = LOI::newFromId($this->projectId);
-            $subs = $loi->getEvaluators();
+            $evals = $loi->getEvaluators();
+            $subs = array();
+
+            foreach($evals as $e){
+                $empty = true;
+
+                for($q=1; $q<=15; $q++){
+                    $answer = $this->getAnswer(BLOB_TEXT, $e->getId(), $loi->getId(), $q, EVL_LOI_C);
+                    if(!empty($answer)){
+                        $empty = false;
+                        break;
+                    }
+
+                    $answer = $this->getAnswer(BLOB_ARRAY, $e->getId(), $loi->getId(), $q, EVL_LOI_YN);
+                    if(!empty($answer)){
+                        $empty = false;
+                        break;
+                    }
+                }
+                
+                if(!$empty){
+                    $subs[] = $e;
+                }
+            }
+
         }
         
 
@@ -53,6 +77,33 @@ class LOIsReportItemSet extends ReportItemSet {
         }
         return $data;
     }
+
+    function getAnswer($blobType, $personId, $projectId, $question, $subItem){
+        $report = $this->getReport();
+        //$section = $this->getSection();
+
+        $blob = new ReportBlob($blobType, $report->year, $personId, $projectId);
+        $blob_address = ReportBlob::create_address(RP_EVAL_LOI, SEC_NONE, $question, $subItem);
+        $blob->load($blob_address);
+        $blob_data = $blob->getData();
+        $blb = "";
+        if($blobType == BLOB_TEXT){
+            $blb = str_replace("\00", "", $blob_data);
+            $blb = str_replace("", "", $blob_data);
+            $blb = str_replace("", "", $blob_data);
+            $blb = str_replace("", "", $blob_data);
+        }
+        else if($blobType == BLOB_ARRAY){
+            if(is_array($blob_data) && !empty($blob_data)){
+                $blb = reset($blob_data);
+            }
+            else{
+                $blb = "";
+            }
+        }
+
+        return $blb;
+    }   
 
     function getNComplete(){
         $type = $this->getAttr('subType', 'LOI');

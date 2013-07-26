@@ -718,7 +718,7 @@ EOF;
 							$yn = "NS";
 						}
 						else if(!empty($yes_no)){
-							$yn = substr($yes_no["opt_loi{$q}_yn"], 0,1);
+							$yn = substr($yes_no, 0,1);
 						}
 						
 
