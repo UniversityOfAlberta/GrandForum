@@ -10,9 +10,22 @@ class LOIsReportItemSet extends ReportItemSet {
         $subs = array();
         if($type == "LOI"){
             $subs = $person->getEvaluates($type);
+            $tosort = array();
+            foreach ($subs as $s){
+                $tosort[$s->getName()] = $s;
+            }
+            ksort($tosort);
+            $subs = array_values($tosort);
         }
         else if($type == "OPT_LOI"){
             $subs = $person->getEvaluates('OPT_LOI');
+            $tosort = array();
+            foreach ($subs as $s){
+                $tosort[$s->getName()] = $s;
+            }
+            ksort($tosort);
+            $subs = array_values($tosort);
+            //print_r($subs);
         }
         else if($type == "ALL_LOI"){
             $subs = LOI::getAllLOIs();
@@ -32,6 +45,14 @@ class LOIsReportItemSet extends ReportItemSet {
                     $count++;
                 }
             }
+
+            //Sort
+            $tosort = array();
+            foreach ($subs as $s){
+                $tosort[$s->getName()] = $s;
+            }
+            ksort($tosort);
+            $subs = array_values($tosort);
         }
         else if($type == "LOI_EVALS"){
             $loi = LOI::newFromId($this->projectId);

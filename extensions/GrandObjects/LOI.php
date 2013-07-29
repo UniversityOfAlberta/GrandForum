@@ -72,7 +72,7 @@ class LOI extends BackboneModel {
 	}
 
 	static function getAllLOIs($year=REPORTING_YEAR){
-		$sql = "SELECT * FROM grand_loi WHERE year={$year}";
+		$sql = "SELECT * FROM grand_loi WHERE year={$year} ORDER BY name";
 		$results = DBFunctions::execSQL($sql);
 		$lois = array();
 		$data = array();
@@ -88,7 +88,8 @@ class LOI extends BackboneModel {
 		$sql = "SELECT l.*, lc.conflict 
 				FROM grand_loi l
 				LEFT JOIN grand_loi_conflicts lc ON(l.id=lc.loi_id AND lc.reviewer_id={$evaluator_id})
-				WHERE l.year={$year}";
+				WHERE l.year={$year} 
+				ORDER BY l.name";
 
 		$results = DBFunctions::execSQL($sql);
 
