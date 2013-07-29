@@ -52,9 +52,9 @@ class cavendishTemplate extends QuickTemplate {
             $wgMessage->addInfo("The Forum is currently not available for edits during the RMC review-and-deliberation period.");
         }
 
-        if($wgUser->isLoggedIn() && $wgTitle != null && $wgTitle->getNsText() == "Special" && $wgTitle->getText() == "Report"){
-            $wgMessage->addInfo("The 2012 Report pages are now closed for edits.");
-        }
+        // if($wgUser->isLoggedIn() && $wgTitle != null && $wgTitle->getNsText() == "Special" && $wgTitle->getText() == "Report"){
+        //     $wgMessage->addInfo("The 2012 Report pages are now closed for edits.");
+        // }
 
 		// Suppress warnings to prevent notices about missing indexes in $this->data
 		wfSuppressWarnings();
