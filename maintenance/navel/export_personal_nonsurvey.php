@@ -25,8 +25,16 @@ function exportPersonalData(){
     $cnis = Person::getAllPeopleDuring('CNI', "2012-01-01 00:00:0", "2013-03-10 23:59:59");
 	$pnis = Person::getAllPeopleDuring('PNI', "2012-01-01 00:00:0", "2013-03-10 23:59:59");
 	$nis = array_merge($cnis, $pnis);
-	$ni_names = array();
+
+	$sorted_nis = array();
 	foreach($nis as $ni){
+		$sorted_nis[$ni->getLastName()] = $ni;
+	}
+	ksort($sorted_nis);
+	$sorted_nis = array_values($sorted_nis);
+
+	$ni_names = array();
+	foreach($sorted_nis as $ni){
 		if(!in_array($ni->getName(), $ni_names) && !in_array($ni->getId(), $survey_nis)){
 			$ni_names[$ni->getId()] = $ni->getName();
 		}
@@ -37,7 +45,7 @@ function exportPersonalData(){
 			echo $ni->getName() ." --- Already in NI Array\n";
 		}
 	}
-	sort($ni_names);
+	//sort($ni_names);
 
     //EXCEL
     $phpExcel = new PHPExcel();

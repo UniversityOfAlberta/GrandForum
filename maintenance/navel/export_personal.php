@@ -107,8 +107,18 @@ function exportPersonalData(){
 	$foo->setTitle("Personal Information");
 	//->getStyle("A1:B1:C1:D1:E1:F1:G1:H1:J1:K1")->applyFromArray($styleArray);
 
+	//Sort
+	$sorted_data = array(); 
+	foreach($data as $row){
+    	$user_id = $row['user_id'];
+		$person = Person::newFromId($user_id);
+		$sorted_data[$person->getLastName()] = $row;
+    }
+    ksort($sorted_data);
+    $sorted_data = array_values($sorted_data);
+
 	$row_count = 2;
-    foreach($data as $row){
+    foreach($sorted_data as $row){
     	$user_id = $row['user_id'];
 
 	    $person = Person::newFromId($user_id);
