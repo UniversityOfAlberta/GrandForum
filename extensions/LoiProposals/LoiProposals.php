@@ -145,16 +145,16 @@ class LoiProposals extends SpecialPage {
             <li><a href='#lois'>LOI Proposals</a></li>
             <li><a href='#cv'>CV</a></li>
             <li><a href='#conflicts'>Conflicts/Preferences</a></li>
-            <!--li><a href='#reportsTbl'>Report Stats</a></li-->";
+            <li><a href='#reportsTbl'>Report Stats</a></li>";
         }
 		else if($me->isRoleAtLeast(HQP)){
 			$html .="
             <li><a href='#lois_public'>LOI Proposals</a></li>";
 		}
 
-		if($me->isRole(MANAGER) || $me->isRole(STAFF)){
-			$html .="<li><a href='#reportsTbl'>Report Stats</a></li>";
-		}
+		// if($me->isRole(MANAGER) || $me->isRole(STAFF)){
+		// 	$html .="<li><a href='#reportsTbl'>Report Stats</a></li>";
+		// }
         
         $html .="</ul>";
         
@@ -171,9 +171,9 @@ class LoiProposals extends SpecialPage {
 			$html .= LoiProposals::conflictsTable();
 			$html .= "</div>";
 
-			//$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: scroll;'>";
-			//$html .= LoiProposals::loiReportsTable();
-			//$html .= "</div>";
+			$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: scroll;'>";
+			$html .= LoiProposals::loiReportsTable();
+			$html .= "</div>";
 
 		}
 		else if($me->isRoleAtLeast(HQP)){
@@ -182,11 +182,11 @@ class LoiProposals extends SpecialPage {
 			$html .= "</div>";
 		}
 
-		if($me->isRole(MANAGER) || $me->isRole(STAFF)){
-			$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: scroll;'>";
-			$html .= LoiProposals::loiReportsTable();
-			$html .= "</div>";
-		}
+		// if($me->isRole(MANAGER) || $me->isRole(STAFF)){
+		// 	$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: scroll;'>";
+		// 	$html .= LoiProposals::loiReportsTable();
+		// 	$html .= "</div>";
+		// }
 
 
 		$html .=<<<EOF
