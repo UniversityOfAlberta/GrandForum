@@ -108,6 +108,22 @@ class LOI extends BackboneModel {
 		return $lois;
 	}
 
+	static function getAssignedLOIs($year=REPORTING_YEAR){
+		$sql = "SELECT DISTINCT l.* 
+				FROM grand_loi l
+				INNER JOIN mw_eval e ON(l.id=e.sub_id AND e.type IN('LOI', 'OPT_LOI') AND e.year={$year} AND l.year={$year}) 
+				ORDER BY l.name";
+		$results = DBFunctions::execSQL($sql);
+		$lois = array();
+		$data = array();
+		foreach ($results as $res) {
+			$data[0] = $res;
+			$lois[] = new LOI($data);
+		}
+		
+		return $lois;
+	}
+
 	// Returns the id of this LOI
 	function getId(){
 		return $this->id;
@@ -151,6 +167,24 @@ class LOI extends BackboneModel {
 		return $lead;
 	}
 
+	function getLeadEmail(){
+		//Lead name
+		$lead = array();
+		$lead_arr = explode("<br />", $this->lead, 2);
+		$lead_person = Person::newFromNameLike($lead_arr[0]);
+		if($lead_person->getId()){
+			$lead['name'] = $lead_person->getNameForForms();
+			$lead['email'] = $lead_person->getEmail();
+		}
+		else{
+			$lead['name'] = $lead_arr[0];
+			$lead['email'] = "";
+		}
+		
+
+		return $lead;
+	}
+
 	function getCoLead(){
 		$colead = "";
 		$colead_arr = explode("<br />", $this->colead, 2);
@@ -167,6 +201,24 @@ class LOI extends BackboneModel {
 		}
 
 		return $colead;
+	}
+
+	function getCoLeadEmail(){
+		//Lead name
+		$lead = array();
+		$lead_arr = explode("<br />", $this->colead, 2);
+		$lead_person = Person::newFromNameLike($lead_arr[0]);
+		if($lead_person->getId()){
+			$lead['name'] = $lead_person->getNameForForms();
+			$lead['email'] = $lead_person->getEmail();
+		}
+		else{
+			$lead['name'] = $lead_arr[0];
+			$lead['email'] = "";
+		}
+		
+
+		return $lead;
 	}
 
 	function getChampion(){

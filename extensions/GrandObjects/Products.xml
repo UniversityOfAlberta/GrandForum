@@ -224,6 +224,13 @@
 	<!-- Publications -->
 	<Publications>
 		<Publication typе="Bachelors Thesis" status="Submitted|To Appear|Under Revision|Published|Rejected">
+			<statuses>
+				<status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
+				<status lov_id="00000000000000000000000100001702" lov_name="Accepted">To Appear</status>
+				<status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Under Revision</status>
+				<status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
+				<status lov_id="00000000000000000000000100001703" lov_name="In Press">Rejected</status>
+			</statuses>
 			<data>
 				<field>university</field>
 				<field>department</field>

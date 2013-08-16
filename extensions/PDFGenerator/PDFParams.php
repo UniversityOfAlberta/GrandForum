@@ -27,6 +27,7 @@ define('RPTP_LEADER_MILESTONES', 12);
 define('RPTP_NI_PROJECT_COMMENTS', 13);
 define('RPTP_LOI_REVIEW', 14);
 define('RPTP_LOI_EVAL_REVIEW', 15);
+define('RPTP_LOI_EVAL_FEEDBACK', 16);
 
 define('RPTP_NI_ZIP', 100);
 define('RPTP_PROJ_ZIP', 101); 
