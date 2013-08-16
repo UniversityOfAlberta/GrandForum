@@ -167,10 +167,7 @@ EOF;
 
 		$lois = LOI::getAssignedLOIs($curr_year);
 
-		$query =<<<EOF
-		SELECT * FROM grand_review_results
-		WHERE year={$curr_year} AND type = 'LOI' AND user_id=%d
-EOF;
+		$query = "SELECT * FROM grand_review_results WHERE year={$curr_year} AND type = 'LOI' AND user_id=%d";
 	
 		$sent_success = array();
 		$sent_fail = array();
@@ -197,7 +194,7 @@ EOF;
 	    	else if($error == 2){
 	    		$file_fail[] = $loi_name;
 	    	}
-
+	    	break;
 	    }
 
 	    if(!empty($sent_success)){
@@ -246,11 +243,11 @@ EOF;
 		$report = new DummyReport("LOIFeedbackReportPDF", Person::newFromId(4), $loi);
 		$check = $report->getPDF();
 
-		$file_content = isset($check['pdf'])? $check['pdf'] : "";
+		$file_content = isset($check[0]['pdf'])? $check[0]['pdf'] : "";
 
 		$error_code = 0; //If all is good return 0;
 
-		if($file_content !== false){
+		if($file_content){
 			$success = ReviewResults::mail_attachment($file_content, $filename, $to, $from, $subject, $email_body);
 			if($success){
 				//Update the NI record that the email was sent out.
