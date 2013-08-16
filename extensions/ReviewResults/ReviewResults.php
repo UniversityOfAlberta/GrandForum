@@ -167,7 +167,7 @@ EOF;
 
 		$lois = LOI::getAssignedLOIs($curr_year);
 
-		$query = "SELECT * FROM grand_review_results WHERE year={$curr_year} AND type = 'LOI' AND user_id=%d";
+		$query = "SELECT * FROM grand_review_results WHERE year={$curr_year} AND type = 'LOI' AND user_id= %d";
 	
 		$sent_success = array();
 		$sent_fail = array();
@@ -177,7 +177,7 @@ EOF;
 	    foreach($lois as $loi){
 	    	$loi_id = $loi->getId();
 	    	$sql = sprintf($query, $loi_id);
-	    	$data = DBFunctions::execSQL($query);
+	    	$data = DBFunctions::execSQL($sql);
 	    	if(count($data)>0 && $data[0]['email_sent'] == 1){
 	    		continue;
 	    	}
@@ -242,7 +242,7 @@ EOF;
 		//$file_content = @file_get_contents($file);
 		$report = new DummyReport("LOIFeedbackReportPDF", Person::newFromId(4), $loi);
 		$check = $report->getPDF();
-
+		var_dump($check); 
 		$file_content = isset($check[0]['pdf'])? $check[0]['pdf'] : "";
 
 		$error_code = 0; //If all is good return 0;
