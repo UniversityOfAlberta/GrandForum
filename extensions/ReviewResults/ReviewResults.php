@@ -240,10 +240,17 @@ EOF;
 		$filename = "{$loi_name}.August2013.pdf";
 		//$file = "/local/data/www-root/grand_forum/data/review-feedback/{$type}/{$filename}";
 		//$file_content = @file_get_contents($file);
-		$report = new DummyReport("LOIFeedbackReportPDF", Person::newFromId(4), $loi);
+		$admin = Person::newFromId(4);
+		$report = new DummyReport("LOIFeedbackReportPDF", $admin, $loi);
 		$check = $report->getPDF();
-		var_dump($check); 
-		$file_content = isset($check[0]['pdf'])? $check[0]['pdf'] : "";
+		
+		if(count($check)>0){
+			$sto = new ReportStorage($admin);
+			$file_content = $sto->fetch_pdf($check[0]['token']);
+		}
+		else{
+			$file_content = "";
+		}
 
 		$error_code = 0; //If all is good return 0;
 
