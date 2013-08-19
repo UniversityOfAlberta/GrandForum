@@ -893,7 +893,7 @@ EOF;
 			<input type='hidden' name='ni_type' value='{$type}' />
 			<input type='hidden' name='year' value='{$curr_year}' />
 			
-			<input type='submit' name='submit' value='Send out Emails' />
+			<!--<input type='submit' name='submit' value='Send out Emails' />-->
 			</form>
 EOF;
 
