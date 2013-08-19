@@ -9,7 +9,7 @@ class NINameHeaderReportItem extends StaticReportItem {
         $ni = Person::newFromId($this->personId);
         $ni_name = $ni->getNameForForms();
         $anonymous =  $this->getAttr('anonymous', false);
-        $count = $this->parent->count;
+        $count = $this->parent->parent->iteration;
         if($anonymous){
         	$html =<<<EOF
         	<h2>Review {$count}</h2>
