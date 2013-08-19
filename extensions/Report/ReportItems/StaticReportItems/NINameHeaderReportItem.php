@@ -8,10 +8,17 @@ class NINameHeaderReportItem extends StaticReportItem {
         $ni = null;
         $ni = Person::newFromId($this->personId);
         $ni_name = $ni->getNameForForms();
+        $anonymous =  $this->getAttr('anonymous', false);
 
-        $html =<<<EOF
+        if($anonymous){
+        	$html =<<<EOF
+        	<h2>Anonymoys Review</h2>
+EOF;
+        }else{
+        	$html =<<<EOF
         	<h2>{$ni_name}</h2>
 EOF;
+		}
 
 	    $wgOut->addHTML($html);
 	}

@@ -10,6 +10,7 @@ class LOIManagerCommentsReportItem extends StaticReportItem {
         $manager_comments = $loi->getManagerComments();
 
         $html =<<<EOF
+            <h2>General Comments</h2>
         	<p>{$manager_comments}</p>
 EOF;
 

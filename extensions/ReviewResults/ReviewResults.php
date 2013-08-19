@@ -434,7 +434,7 @@ EOF;
     			$admin = Person::newFromId(4);
     			$report = new DummyReport("LOIFeedbackReportPDF", $admin, $loi);
     			$report->generatePDF(null, false);
-    			break;
+    			//break;
 
     		}
     	}
