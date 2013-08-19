@@ -8,12 +8,13 @@ class LOIManagerCommentsReportItem extends StaticReportItem {
         $loi = null;
         $loi = LOI::newFromId($this->projectId);
         $manager_comments = $loi->getManagerComments();
-
-        $html =<<<EOF
+        $html = "";
+        if(!empty($manager_comments)){
+        	$html =<<<EOF
             <h2>General Comments</h2>
         	<p>{$manager_comments}</p>
 EOF;
-
+		}
 	    $wgOut->addHTML($html);
 	}
 	
