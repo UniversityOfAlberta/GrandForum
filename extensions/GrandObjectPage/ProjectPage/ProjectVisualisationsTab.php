@@ -321,6 +321,9 @@ class ProjectVisualisationsTab extends AbstractTab {
                 if($end == "0000-00-00"){
                     $end = $today;
                 }
+                if(strcmp($start, $end) > 0){
+                    $start = $end;
+                }
                 $content = "<a href='{$person->getUrl()}' target='_blank'>{$person->getNameForForms()}</a>";
                 $array[] = array('title' => $person->getNameForForms(),
                                  'color' => '#4272B2',
