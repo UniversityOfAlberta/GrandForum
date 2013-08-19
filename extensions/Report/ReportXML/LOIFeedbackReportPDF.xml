@@ -13,7 +13,7 @@
         </Role>
     </Permissions>
 
-    <ReportSection name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+    <ReportSection name="Header" type="HeaderReportSection" pagebreak="true" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
                 <div class='logo_div'>
@@ -203,7 +203,7 @@
     </ReportSection>
 
     <!-- LOI Reviews -->
-    <ReportSection id="loi_reviews" name="Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="true" autosave="true">
+    <ReportSection id="loi_reviews" name="Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="true" pagebreak="false">
         <!--
         <ReportItem id="loi_name_hdr" type="LOIHeaderReportItem">
             <![CDATA[{$item}]]>

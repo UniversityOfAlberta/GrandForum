@@ -660,7 +660,7 @@ abstract class AbstractReport extends SpecialPage {
         echo json_encode($json);
         ob_flush();
         flush();
-        exit;
+        //exit;
     }
     
     // Marks the report as submitted
