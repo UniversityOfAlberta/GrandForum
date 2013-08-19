@@ -35,7 +35,7 @@ class Simile extends Visualisation {
                 theme.event.bubble.height = {$this->popupHeight}; 
                 var bandInfos = [
                 Timeline.createBandInfo({
-                    timeZone:       -5,
+                    timeZone:       0,
                     eventSource:    eventSource,
                     date:           'Jul 01 {$this->year} 00:00:00 GMT',
                     width:          '{$this->width}%', 
@@ -47,7 +47,7 @@ class Simile extends Visualisation {
 		            showEventText:  false,
                     trackHeight:    0.5,
                     trackGap:       0.2,
-                    timeZone:       -5,
+                    timeZone:       0,
                     eventSource:    eventSource,
                     date:           'Jul 01 {$this->year} 00:00:00 GMT',
                     width:          '".($this->width*0.4)."%', 

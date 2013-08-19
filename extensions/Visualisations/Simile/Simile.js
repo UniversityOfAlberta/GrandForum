@@ -3656,7 +3656,7 @@ Timeline.GregorianDateLabeller.prototype.labelPrecise=function(date){
 return Timeline.DateTime.removeTimeZoneOffset(
 date,
 this._timeZone
-).toUTCString();
+).toLocaleDateString();
 };
 
 Timeline.GregorianDateLabeller.prototype.defaultLabelInterval=function(date,intervalUnit){
