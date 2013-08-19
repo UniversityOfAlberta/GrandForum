@@ -75,7 +75,9 @@ EOF;
         $projectLine = "";
         foreach($project as $pName){
             $p = Project::newFromName($pName);
-            $projectLine .= "[{$wgServer}{$wgScriptPath}/index.php/{$p->getName()}:Main {$p->getFullName()}]<br />";
+            if($p != null){
+                $projectLine .= "[{$wgServer}{$wgScriptPath}/index.php/{$p->getName()}:Main {$p->getFullName()}]<br />";
+            }
         }
         
         addScenario($paper, 

@@ -1,4 +1,6 @@
 # behat.yml
+framework:
+    trusted_proxies: ~
 default:
     context:
         parameters:

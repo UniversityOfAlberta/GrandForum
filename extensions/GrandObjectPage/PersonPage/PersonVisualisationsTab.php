@@ -206,6 +206,9 @@ class PersonVisualisationsTab extends AbstractTab {
                 if($end == "0000-00-00"){
                     $end = $today;
                 }
+                if(strcmp($start, $end) > 0){
+                    $start = $end;
+                }
                 $array[] = array('title' => $role->getRole(),
                                  'color' => '#4E9B05',
                                  'start' => $start,
@@ -218,6 +221,9 @@ class PersonVisualisationsTab extends AbstractTab {
                 $end = substr($project->getEndDate($person), 0, 10);
                 if($end == "0000-00-00"){
                     $end = $today;
+                }
+                if(strcmp($start, $end) > 0){
+                    $start = $end;
                 }
                 $content = "<a href='{$project->getUrl()}' target='_blank'>Wiki Page</a>";
                 $array[] = array('title' => $project->getName(),
@@ -235,6 +241,9 @@ class PersonVisualisationsTab extends AbstractTab {
                         $end = substr($relation->getEndDate(), 0, 10);
                         if($end == "0000-00-00"){
                             $end = $today;
+                        }
+                        if(strcmp($start, $end) > 0){
+                            $start = $end;
                         }
                         $content = "<a href='{$relation->getUser1()->getUrl()}' target='_blank'>{$relation->getUser1()->getNameForForms()}</a> {$relation->getType()} <a href='{$relation->getUser2()->getUrl()}' target='_blank'>{$relation->getUser2()->getNameForForms()}</a>";
                         $array[] = array('title' => $relation->getUser2()->getNameForForms(),
