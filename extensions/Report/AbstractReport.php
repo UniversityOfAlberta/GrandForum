@@ -658,9 +658,9 @@ abstract class AbstractReport extends SpecialPage {
         header('Content-Type: application/json');
         header('Content-Length: '.strlen(json_encode($json)));
         echo json_encode($json);
-        //ob_flush();
-        //flush();
-        //exit;
+        ob_flush();
+        flush();
+        exit;
     }
     
     // Marks the report as submitted
