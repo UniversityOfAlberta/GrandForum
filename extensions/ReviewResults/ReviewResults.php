@@ -846,10 +846,20 @@ EOF;
 				$loi_name = $loi->getName();
 				$filename = $loi->getName();
 				$lead = $loi->getLeadEmail();
-				$lead_email = "<a href='mailto:".$lead['email']."'>".$lead['name']."</a>";
-				$colead = $loi->getCoLeadEmail();	
-				$colead_email = "<a href='mailto:".$colead['email']."'>".$colead['name']."</a>";
+				if(!empty($lead['email'])){
+					$lead_email = "<a href='mailto:".$lead['email']."'>".$lead['name']."</a>";
+				}
+				else{
+					$lead_email = $lead['name'];
+				}
 
+				$colead = $loi->getCoLeadEmail();	
+				if(!empty($colead['email'])){
+					$colead_email = "<a href='mailto:".$colead['email']."'>".$colead['name']."</a>";
+				}
+				else{
+					$colead_email = $colead['name'];
+				}
 				$email_sent = "Email Not Sent";
 				$email_sent_bg = "background-color: red;";
 				if(isset($fetched[$loi_id])){
