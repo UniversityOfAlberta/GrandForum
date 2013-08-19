@@ -21,23 +21,186 @@
                     <div class='report_name' style='text-align:right;'><b>GRAND Phase 2 LOI Feedback</b><br /><small><b>Generated:</b> {$timestamp}</small></div></div>
             ]]>
         </ReportItem>
+        <ReportItem id="loi_name_hdr" type="LOIHeaderReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+
+    
+<ReportSection name="GRAND NCE - Phase 2 Research Projects - LOI Responses" type="ReportSection" pagebreak="true" renderpdf="true">
+        <ReportItem id="phase2_project_list" type="StaticReportItem">
+            <![CDATA[
+            <p>
+            At the close of LOI Submissions in June, GRAND had received fifty-five separate LOIs, of which thirty-five were submitted as "full project" LOIs. All of these fifty-five LOI Submissions have now been reviewed by GRAND's Research Management Committee, and the next stage in the process will be focused on shaping the best of this proposed research into a portfolio of research projects that spans the seven GRAND Challenges. The target is for GRAND to have 20- 25 research projects as we movie into Phase 2.
+            </p>
+            <p>
+            There are a number of possible approaches to moving from 55 LOI Submissions to 20-25 projects. There are not sufficient funds available for GRAND to fund all the research proposed in these 55 LOI Submissions, so clearly some difficult selections will have to be made. Rather than have all such selections made by the Research Management Committee, the LOI Response round will encourage project teams to make some of the difficult selections regarding the proposed research that should move forward, and how that research should best be structured within projects.
+            </p>
+            <p>
+            At this stage, no LOI Submission has been "accepted" as a new project, and none has been rejected as having no place in the Phase 2 research program. Each LOI Submission is receiving feedback, and each of those teams is invited to be involved in the development of an LOI Response. However, there will be a limited number of LOI Responses accepted, and each LOI Response must describe a full project.
+            </p>
+            <p>
+            Below is an initial approximation or draft outline of the Phase 2 research project portfolio. The purpose of this initial approximation is to provide some guidance to the project teams of the LOI Submissions regarding how they might fit into the final set of 20-25 projects that will form GRAND's Phase 2 research project portfolio. The LOI Responses will be new submissions, each under a primary challenge. There are 22 separate project slots in the draft outline, and it is expected that there will be no more than 25 submissions of LOI Responses to fill these slots. These new submissions should incorporate the feedback received from the initial LOI Submissions, as well as reflect to some extent the suggested groupings that are included in the draft outline.
+            </p>
+            <p>
+            Each LOI Submission is included below. In these lists/groupings, parentheses are used to indicate those LOI Submissions that were submitted as subprojects. Groups from the collections of LOI Submissions are encouraged to construct LOI Responses that include the best representations of the proposed research from that group, and to make an initial attempt to structure it as a coherent project. Where an LOI Submission is not being asked to merge, this may not be a reflection on the quality of the LOI Submission but only that it is the only LOI Submission that covers a research area that is considered significant for GRAND. These will still be expected to submit an LOI Response that fully addresses the problems and concerns raised in the feedback in order to be considered for project status under Phase 2.
+            </p>
+            <p>
+            For each of the challenge areas, there are two RMC representatives who will serve as points of contact for LOI Responses under that challenge area, should any issues arise.
+            </p>
+            <p>
+            The current outline for the Phase 2 research project portfolio, based on the 55 LOI Submissions, is as follows:
+            </p>
+
+            <p>
+            <u>BIG DATA (RMC Contacts: Sean Gouglas; Vic DiCiccio)</u>
+            Expected Number of Projects: 3<br />
+            Suggested LOI Submission combinations to form the LOI Responses
+            <ol>
+            <li>AVID; LPD; (COMMCAR)</li>
+            <li>BIG; SENSEMAKING; (ICARE)</li>
+            <li>HUMAN</li>
+            </ol>
+            </p>
+
+            <p>
+            <u>WORK (RMC Contacts: Abby Goodrum; Bart Simon)</u>
+            Expected Number of Projects: 3<br />
+            Suggested LOI Submission combinations to form the LOI Responses
+            <ol>
+            <li>CRI; DIGIPUB; (ENOW); (SNETS)</li>
+            <li>MAKE; SHARE; SYNTHO;</li>
+            <li>ENGAGE; INDIEGAME; (WATERLOO)</li>
+            </ol>
+            </p>
+
+            <p>
+            <u>SUSTAINABILITY (RMC Contacts: Rob Woodbury; Kellogg Booth)</u>
+            Expected Number of Projects: 2<br />
+            Suggested that the following pool LOI Submissions recombine into two LOI Responses<br />
+            BUSY; NMSPS; PRIDES; (MIDEASS)
+            </p>
+
+            <p>
+            <u>ENTERTAINMENT (RMC Contacts: Pierre Poulin; Eugene Fiume)</u>
+            Expected Number of Projects: 4<br />
+            Suggested that the following pool LOI Submissions recombine into four LOI Responses<br />
+            BELIEVE2; COLT; CREATE; DATUM; MOVITA2; (MEASURE); (SYNTHHGEN)
+            </p>
+
+            <p>
+            <u>HEALTHCARE (RMC Contacts: Diane Gromala; Beverly Harrison)</u>
+            Expected Number of Projects: 3<br />
+            Suggested LOI Submission combinations to form the LOI Responses
+            <ol>
+            <li>ARSURG; HLTHSIM2; SYNTHH</li>
+            <li>INCLUDE2; (SOCIABLE)</li>
+            <li>CPRM2; G4HLTH; (TAMP)</li>
+            </ol>
+            </p>
+
+            <p>
+            <u>CITIZENSHIP (RMC Contacts: Sam Trosow; Catherine Middleton)</u>
+            Expected Number of Projects: 2*<br />
+            Suggested LOI Submission combinations to form the LOI Responses
+            <ol>
+            <li>NEWS2; PRIVLIT; (TRUST)</li>
+            <li>USENET; (NIND); (SMARTMAIN); (DIGIHOUSE)</li>
+            <li>*. (INFPO) [This * is a placeholder for a future project focused on "Informing Digital Media Policy"]</li>
+            </ol>
+            </p>
+
+            <p>
+            <u>LEARNING (RMC Contacts: Jen Jenson; Carl Gutwin)</u>
+            Expected Number of Projects: 3<br />
+            Suggested that the following pool LOI Submissions recombine into three LOI Responses<br />
+            COGS; COORDN8; EXPERT; KIDZ; RILDIM
+            </p>
+
+            <p>
+            <u>OTHER (RMC Contact: Vic DiCiccio)</u>
+            Expected Number of Projects: 1<br />
+            Suggested that the following pool of LOI Submissions recombine into one LOI Response<br />
+            (CUSTOM); (MOBIS); (PROGRES)
+            </p>
+
+            <p>
+            <u>LOOKING FOR A HOME</u>
+            The onus is on each of these LOI Submissions to find an appropriate LOI Response that will be a reasonable fit for the proposed research and that will accept it as a subproject.<br />
+            (GLOBALCHILD); (LISTEN); (VICTOR)
+            </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
+    <ReportSection name="GRAND NCE – LOI Responses for Phase 2 Projects - 2013" type="ReportSection" pagebreak="true" renderpdf="true">
+        <ReportItem id="loi_responses_guide" type="StaticReportItem">
+            <![CDATA[
+            <p>
+                The first round of the review process for the LOIs for Phase 2 Projects has now been completed and specific feedback is being to send out to each of the fifty-­‐five separate project and subproject submissions.
+            </p>
+            <p>
+                Based on the LOI submissions, an initial draft of the overall project portfolio has been prepared. This draft project portfolio includes twenty-two projects, most of which are compilations of LOI project and subproject submissions. Inclusion on this list is not an indicator that a project has been "accepted", but rather it indicates that there is expected to be space in the Phase 2 project portfolio for a project like the one indicated, provided the concerns and outstanding issues identified in the feedback are adequately addressed.
+            </p>
+            <p>
+                These twenty-two project groups are invited to submit an LOI Response to address the concerns and identified issues for each of its constituent parts. The LOI Response form is essentially the same format as the earlier LOI Submission template. The key differences for the Response round of the process are as follows.
+            </p>
+            <ol>
+            <li>
+                The Research Management Committee is seeking a total of only twenty-two Responses. There is an expectation that the separate LOI Submission projects that have been grouped together in a single LOI Response project will work together to submit a single LOI Response. These LOI Responses are to be submitted via email to applications@grand-nce.ca no later than Friday, September 13, 2013.
+            </li>
+            <li>
+                The Project Title and Description should be revised as necessary to reflect the full scope of the (new) Project.
+            </li>
+            <li>
+                The proposed Project Leader and Co-Leader should be identified. Please note that the Project Leader and Co-Leader must be from different universities. If a CV was submitted with the earlier LOI submission, this should be indicated; in such cases it is not necessary to submit the CV again. If no CV was submitted with the earlier LOI submission for one of the identified individuals, please submit the CV along with the Response. Please note that the proposed Project Leader and Co-Leader will be reviewed by the RMC for suitability, and alternatives may be suggested.
+            </li>
+            <li>
+                The proposed Project Champion should be a named individual and should have been contacted. Please note that a Project Champion will generally represent a receptor organization for the research outcomes.
+            </li>
+            <li>
+                Regarding Part A, please list the most representative set of up to six Receptors and Partners from the constituent parts of the Project. For each Receptor, include the name of the primary contact for purposes of the research proposed in the LOI.
+            </li>
+            <li>
+                Regarding Part B, please identify the constituent parts of the Project, based solely on the separate LOI Submissions that are included under the Project (i.e., list the acronyms of the LOI submissions that are collectively providing the Response and, if necessary, indicate the portions of the LOIs that are being put forward in the Response).
+            </li>
+            <li>
+                Regarding Part C, please list the most representative set of up to nine researchers or project champions from the constituent parts of the Project. This is not intended to indicate an overall limit, but merely gain an indication of the best representative sample of the group. Make sure that the distinction between Researcher and Champion is observed. A non-Canadian academic researcher who will be engaged in the project is a Researcher (unfunded), not a Champion. A champion is from an organization that is expected to contribute cash or in-kind resources to GRAND for the project.
+            </li>
+            <li>
+                Regarding Part D, the summary of the problem to be solved should be revised as necessary to reflect the full scope of the (new) Project.
+            </li>
+            <li>
+                Regarding Part E, the summary of the proposed solution and approach should address the revised Part D.
+            </li>
+            <li>
+                Regarding Part F, please include descriptions of the most representative set of up to six Subprojects from the constituent parts of the Project. This is not intended to indicate an overall limit, but merely gain an indication of the best representative sample of the group. If appropriate, brief descriptions of additional subprojects can be in provided in Part E.
+            </li>
+            <li>
+                Regarding Part G, the summary of the knowledge and technology exchange and exploitation activities should reflect the full scope of the (new) Project.
+            </li>
+            <li>
+                Regarding Part H, the summary on networking with other projects within GRAND should focus on the LOI Response Projects (not current projects).
+            </li>
+            <li>
+                Regarding Part I, the summary of partner engagement should reflect the full range of partners of the (new) Project.
+            </li>
+            <li>
+                Regarding Part J, the impact on the GRAND Challenges should identify whether the Project is expected to have Major Impact, Minor Impact or Negligible Impact on each Challenge area. Where the impact is expected to Major or Minor, a brief description of the anticipated impact is requested.
+            </li>
+            </ol>
+            ]]>
+        </ReportItem>
     </ReportSection>
 
     <!-- LOI Reviews -->
-    <ReportSection id="loi_reviews" name="LOI Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="true" autosave="true">
-        <ReportItem id="generic_text" type="StaticReportItem">
-            <![CDATA[
-               <h3>General Comments for all LOI submissions and Instructions for Steps Forward</h3> 
-               <p>Nam gravida malesuada neque sit amet vehicula. Aliquam ac erat vel ipsum feugiat dictum. Nam quam mi, pulvinar nec eros ut, iaculis condimentum sem. Phasellus aliquam erat non rutrum interdum. Cras tincidunt euismod diam eu dignissim. Proin euismod eleifend purus, sit amet facilisis dui blandit et. Cras nec leo sit amet est mattis volutpat fermentum vel lacus. In nec ipsum orci. Fusce auctor ipsum ac rhoncus pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean gravida fringilla metus vel porttitor. Nunc diam dui, facilisis vel viverra a, luctus interdum enim. Nam fermentum placerat velit, tempus adipiscing turpis pellentesque eget. Nullam dolor elit, pulvinar a bibendum sit amet, aliquam at turpis. Integer placerat libero tortor, ac auctor mauris sollicitudin vitae.</p>
-            ]]>
-        </ReportItem>
-        <ReportItem id="admin_text" type="StaticReportItem">
-            <![CDATA[
-               <h3>General Comments on CRI (the general text from the manager's table)</h3> 
-               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc egestas tincidunt ullamcorper. Vestibulum sed justo iaculis, consequat leo in, porta libero. Sed eget libero blandit, molestie sem at, placerat elit. Aenean eleifend dapibus enim egestas auctor. Nulla urna massa, dapibus a massa sed, sagittis tempus quam. Integer nec velit vel nisi facilisis elementum ut ut lorem. Integer rhoncus ante sapien, eu pellentesque lorem lobortis eu. Fusce nec vulputate dui. Curabitur non justo magna. Morbi commodo, orci a auctor viverra, mi dolor consequat eros, sed laoreet tortor magna in turpis. Phasellus porta porta justo vel lacinia.</p>
-            ]]>
-        </ReportItem>
+    <ReportSection id="loi_reviews" name="Reviews" tooltip="" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="true" autosave="true">
+        <!--
         <ReportItem id="loi_name_hdr" type="LOIHeaderReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        -->
+        <ReportItem id="loi_manager_comments" type="LOIManagerCommentsReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
         <ReportItemSet id="lois" type="LOIsReportItemSet" subType="LOI_EVALS">
