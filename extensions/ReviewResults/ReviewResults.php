@@ -182,6 +182,8 @@ EOF;
 	    		continue;
 	    	}
 
+	    	if($loi_id == 2 || $loi_id == 30){
+	    		
 	    	$loi_name = $loi->getName();
 
 	    	$error = ReviewResults::emailLOIPDF($loi_id);
@@ -194,7 +196,7 @@ EOF;
 	    	else if($error == 2){
 	    		$file_fail[] = $loi_name;
 	    	}
-	    	break;
+	    	}
 	    }
 
 	    if(!empty($sent_success)){
@@ -224,20 +226,52 @@ EOF;
 		//$loi_email = $ni->getEmail();
 		///$ni_name_good = $ni->getNameForForms();
 
-		$to = "dgolovan@gmail.com";//$ni_email; 
-		$subject = "GRAND LOI Evaluations 2013-14";
+		$lead = $loi->getLeadEmail();
+		if(!empty($lead['email'])){
+			$lead_email = $lead['email'];
+		}
+		else{
+			$lead_email = "adrian_sheppard@gnwc.ca";
+		}
+		
+
+		$colead = $loi->getCoLeadEmail();	
+		if(!empty($colead['email'])){
+			$colead_email = $colead['email'];
+		}
+		else{
+			$colead_email = "";
+		}
+		
+
+		// $to = $lead_email;
+		// if(!empty($colead_email)){
+		// 	$to .= ", ".$colead_email;
+		// }
+
+		$to = "dgolovan@gmail.com, adrian_sheppard@gnwc.ca";  
+		$subject = "GRAND NCE - {$loi_name} Feedback and Next Steps";
 		
 		$email_body =<<<EOF
-Dear {$loi_name},
+This message is going out to the LOI Submission project leaders and co-leaders. Attached you will find the specific feedback from the reviews of your project or subproject LOI Submission, as well as some instructions and guidance regarding the next steps in the process.
 
-Please find attached a PDF with your GRAND LOI Research Funding Allocation for 2013-14, along with reviewer feedback from the Research Management Committee.
+Included in the attached is an initial draft of GRAND's portfolio of research projects for Phase 2. The purpose of this initial draft portfolio is to provide guidance on how each of the LOI Submissions (full projects and subprojects) might fit into the anticipated 20-25 projects that will form GRAND's Phase 2 research project portfolio.
 
-Best Regards,
+The next phase of the process will be the LOI Responses, which will be focused on filling these anticipated 20-25 project slots in the Phase 2 portfolio. More information about this next phase is included in the attached, along with your individual project feedback.  The LOI Responses template is available at http://grand-nce.ca/renewal/template-and-instructions-for-loi-responses.
+
+If you have any questions or concerns, or if you require any additional information at this time, please let me know. Thanks.
+
+Regards,
 Adrian Sheppard
+Director, Operations
+GRAND NCE
+Centre for Digital Media
+685 Great Northern Way
+Vancouver BC V5T 0C6
 EOF;
 		
 		$from = "Adrian Sheppard <adrian_sheppard@gnwc.ca>";
-		$filename = "{$loi_name}.August2013.pdf";
+		$filename = "{$loi_name}_Feedback-August2013.pdf";
 		//$file = "/local/data/www-root/grand_forum/data/review-feedback/{$type}/{$filename}";
 		//$file_content = @file_get_contents($file);
 		$admin = Person::newFromId(4);
@@ -903,7 +937,7 @@ EOF;
 			<input type='hidden' name='ni_type' value='{$type}' />
 			<input type='hidden' name='year' value='{$curr_year}' />
 			
-			<!--<input type='submit' name='submit' value='Send out Emails' />-->
+			<input type='submit' name='submit' value='Send out Emails' />
 			</form>
 EOF;
 
