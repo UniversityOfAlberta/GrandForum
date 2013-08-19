@@ -213,6 +213,7 @@ class PersonVisualisationsTab extends AbstractTab {
                                  'color' => '#4E9B05',
                                  'start' => $start,
                                  'end' => $end,
+                                 'description' => "",
                                  'durationEvent' => true);
             }
        
