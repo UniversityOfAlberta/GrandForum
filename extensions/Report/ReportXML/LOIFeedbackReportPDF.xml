@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- THIS REPORT IS SENT TO LOI LEADER AND COLEADER -->
-<Report name="LOI Feedback" reportType="RP_EVAL_LOI_FEED" pdfType="RPTP_LOI_EVAL_FEEDBACK" pdfFiles="LOIFeedbackReportPDF" pdfAllProjects="false" ajax="true" disabled="false">
+<Report name="LOI Feedback" reportType="RP_EVAL_LOI" pdfType="RPTP_LOI_EVAL_FEEDBACK" pdfFiles="LOIFeedbackReportPDF" pdfAllProjects="false" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_END" role="Manager">
             
