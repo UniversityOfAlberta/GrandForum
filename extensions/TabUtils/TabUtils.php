@@ -249,6 +249,12 @@ class TabUtils {
         $new_actions['conferences'] = array('class' => false,
                                    'text' => "Conferences",
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_Conferences");
+
+        if($wgUser->isLoggedIn()){
+          $new_actions['loi_proposals'] = array('class' => false,
+                                   'text' => "Phase LOIs",
+                                   'href' => "$wgServer$wgScriptPath/index.php/Special:LoiProposals");
+        }
         if((Project::newFromName($wgTitle->getNSText()) != null || $wgTitle->getText() == "Projects") && !$me->isMemberOf(Project::newFromName($wgTitle->getNSText()))){
             $new_actions['projects']['class'] = 'selected';
         }
@@ -263,6 +269,9 @@ class TabUtils {
         }
         else if($wgTitle->getText() == "ALL RMC" || ($wgTitle->getNSText() == RMC && !($me->isRole(RMC) && $wgTitle->getText() == $me->getName()))){
             $new_actions[RMC]['class'] = 'people selected hidden';
+        }
+        else if($wgTitle->getText() == "LoiProposals"){
+            $new_actions['loi_proposals']['class'] = 'selected';
         }
         else if($wgTitle->getNSText() == INACTIVE && !($me->isRole(INACTIVE) && $wgTitle->getText() == $me->getName())){
             $person = Person::newFromName($wgTitle->getText());
@@ -311,6 +320,7 @@ class TabUtils {
         else if($wgTitle->getNSText() == "Conference" || $wgTitle->getText() == "ALL Conferences"){
             $new_actions['conferences']['class'] = 'selected';
         }
+        
         else if($wgTitle->getNSText() == "" || 
                 $wgTitle->getNSText() == "Help" || 
                 $wgTitle->getText() == "UserLogin" ||

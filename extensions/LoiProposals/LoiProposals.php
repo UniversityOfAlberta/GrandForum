@@ -143,13 +143,15 @@ class LoiProposals extends SpecialPage {
         if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
 			$html .="
             <li><a href='#lois'>LOI Proposals</a></li>
+            <li><a href='#lois_res'>LOI Responses</a></li>
             <li><a href='#cv'>CV</a></li>
             <li><a href='#conflicts'>Conflicts/Preferences</a></li>
             <li><a href='#reportsTbl'>Report Stats</a></li>";
         }
 		else if($me->isRoleAtLeast(HQP)){
 			$html .="
-            <li><a href='#lois_public'>LOI Proposals</a></li>";
+            <li><a href='#lois_public'>LOI Proposals</a></li>
+            <li><a href='#lois_res'>LOI Responses</a></li>";
 		}
 
 		// if($me->isRole(MANAGER) || $me->isRole(STAFF)){
@@ -161,6 +163,10 @@ class LoiProposals extends SpecialPage {
         if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
 			$html .= "<div id='lois' style='width: 100%; position:relative; overflow: scroll;'>";
 			$html .= LoiProposals::loiTable();
+			$html .= "</div>";
+
+			$html .= "<div id='lois_res' style='width: 100%; position:relative; overflow: scroll;'>";
+			$html .= LoiProposals::loiResTable();
 			$html .= "</div>";
 
 			$html .= "<div id='cv' style='width: 100%; overflow: scroll;'>";
@@ -179,6 +185,10 @@ class LoiProposals extends SpecialPage {
 		else if($me->isRoleAtLeast(HQP)){
 			$html .= "<div id='lois_public' style='width: 100%; position:relative; overflow: scroll;'>";
 			$html .= LoiProposals::loiPublicTable();
+			$html .= "</div>";
+
+			$html .= "<div id='lois_res' style='width: 100%; position:relative; overflow: scroll;'>";
+			$html .= LoiProposals::loiResTable();
 			$html .= "</div>";
 		}
 
@@ -369,6 +379,121 @@ EOF;
 
 		return $html;
 
+	}
+
+	static function loiResTable(){
+		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
+
+		$html =<<<EOF
+		<h2>GRAND NCE – Phase 2 Research Projects – LOI Responses</h2>
+		<p>
+        At the close of LOI Submissions in June, GRAND had received fifty-five separate LOIs, of which thirty-five were submitted as "full project" LOIs. All of these fifty-five LOI Submissions have now been reviewed by GRAND's Research Management Committee, and the next stage in the process will be focused on shaping the best of this proposed research into a portfolio of research projects that spans the seven GRAND Challenges. The target is for GRAND to have 20- 25 research projects as we movie into Phase 2.
+        </p>
+        
+        <p>
+        There are a number of possible approaches to moving from 55 LOI Submissions to 20-25 projects. There are not sufficient funds available for GRAND to fund all the research proposed in these 55 LOI Submissions, so clearly some difficult selections will have to be made. Rather than have all such selections made by the Research Management Committee, the LOI Response round will encourage project teams to make some of the difficult selections regarding the proposed research that should move forward, and how that research should best be structured within projects.
+        </p>
+        
+        <p>
+        At this stage, no LOI Submission has been "accepted" as a new project, and none has been rejected as having no place in the Phase 2 research program. Each LOI Submission is receiving feedback, and each of those teams is invited to be involved in the development of an LOI Response. However, there will be a limited number of LOI Responses accepted, and each LOI Response must describe a full project.
+        </p>
+        
+        <p>
+        Below is an initial approximation or draft outline of the Phase 2 research project portfolio. The purpose of this initial approximation is to provide some guidance to the project teams of the LOI Submissions regarding how they might fit into the final set of 20-25 projects that will form GRAND's Phase 2 research project portfolio. The LOI Responses will be new submissions, each under a primary challenge. There are 22 separate project slots in the draft outline, and it is expected that there will be no more than 25 submissions of LOI Responses to fill these slots. These new submissions should incorporate the feedback received from the initial LOI Submissions, as well as reflect to some extent the suggested groupings that are included in the draft outline.
+        </p>
+        
+        <p>
+        Each LOI Submission is included below. In these lists/groupings, parentheses are used to indicate those LOI Submissions that were submitted as subprojects. Groups from the collections of LOI Submissions are encouraged to construct LOI Responses that include the best representations of the proposed research from that group, and to make an initial attempt to structure it as a coherent project. Where an LOI Submission is not being asked to merge, this may not be a reflection on the quality of the LOI Submission but only that it is the only LOI Submission that covers a research area that is considered significant for GRAND. These will still be expected to submit an LOI Response that fully addresses the problems and concerns raised in the feedback in order to be considered for project status under Phase 2.
+        </p>
+        
+        <p>
+        For each of the challenge areas, there are two RMC representatives who will serve as points of contact for LOI Responses under that challenge area, should any issues arise.
+        </p>
+        
+        <p>
+        The current outline for the Phase 2 research project portfolio, based on the 55 LOI Submissions, is as follows:
+        </p>
+        
+        <p>
+        <u>BIG DATA (RMC Contacts: Sean Gouglas; Vic DiCiccio)</u>
+        Expected Number of Projects: 3<br />
+        Suggested LOI Submission combinations to form the LOI Responses
+        <ol>
+        <li>AVID; LPD; (COMMCAR)</li>
+        <li>BIG; SENSEMAKING; (ICARE)</li>
+        <li>HUMAN</li>
+        </ol>
+        </p>
+        <br />
+        <p>
+        <u>WORK (RMC Contacts: Abby Goodrum; Bart Simon)</u>
+        Expected Number of Projects: 3<br />
+        Suggested LOI Submission combinations to form the LOI Responses
+        <ol>
+        <li>CRI; DIGIPUB; (ENOW); (SNETS)</li>
+        <li>MAKE; SHARE; SYNTHO;</li>
+        <li>ENGAGE; INDIEGAME; (WATERLOO)</li>
+        </ol>
+        </p>
+        <br />
+        <p>
+        <u>SUSTAINABILITY (RMC Contacts: Rob Woodbury; Kellogg Booth)</u>
+        Expected Number of Projects: 2<br />
+        Suggested that the following pool LOI Submissions recombine into two LOI Responses<br />
+        BUSY; NMSPS; PRIDES; (MIDEASS)
+        </p>
+        <br />
+        <p>
+        <u>ENTERTAINMENT (RMC Contacts: Pierre Poulin; Eugene Fiume)</u>
+        Expected Number of Projects: 4<br />
+        Suggested that the following pool LOI Submissions recombine into four LOI Responses<br />
+        BELIEVE2; COLT; CREATE; DATUM; MOVITA2; (MEASURE); (SYNTHHGEN)
+        </p>
+        <br />
+        <p>
+        <u>HEALTHCARE (RMC Contacts: Diane Gromala; Beverly Harrison)</u>
+        Expected Number of Projects: 3<br />
+        Suggested LOI Submission combinations to form the LOI Responses
+        <ol>
+        <li>ARSURG; HLTHSIM2; SYNTHH</li>
+        <li>INCLUDE2; (SOCIABLE)</li>
+        <li>CPRM2; G4HLTH; (TAMP)</li>
+        </ol>
+        </p>
+        <br />
+        <p>
+        <u>CITIZENSHIP (RMC Contacts: Sam Trosow; Catherine Middleton)</u>
+        Expected Number of Projects: 2*<br />
+        Suggested LOI Submission combinations to form the LOI Responses
+        <ol>
+        <li>NEWS2; PRIVLIT; (TRUST)</li>
+        <li>USENET; (NIND); (SMARTMAIN); (DIGIHOUSE)</li>
+        <li>*. (INFPO) [This * is a placeholder for a future project focused on "Informing Digital Media Policy"]</li>
+        </ol>
+        </p>
+        <br />
+        <p>
+        <u>LEARNING (RMC Contacts: Jen Jenson; Carl Gutwin)</u>
+        Expected Number of Projects: 3<br />
+        Suggested that the following pool LOI Submissions recombine into three LOI Responses<br />
+        COGS; COORDN8; EXPERT; KIDZ; RILDIM
+        </p>
+        <br />
+        <p>
+        <u>OTHER (RMC Contact: Vic DiCiccio)</u>
+        Expected Number of Projects: 1<br />
+        Suggested that the following pool of LOI Submissions recombine into one LOI Response<br />
+        (CUSTOM); (MOBIS); (PROGRES)
+        </p>
+        <br />
+        <p>
+        <u>LOOKING FOR A HOME</u>
+        The onus is on each of these LOI Submissions to find an appropriate LOI Response that will be a reasonable fit for the proposed research and that will accept it as a subproject.<br />
+        (GLOBALCHILD); (LISTEN); (VICTOR)
+        </p>
+EOF;
+		
+		return $html;
 	}
 
 	static function loiPublicTable(){
