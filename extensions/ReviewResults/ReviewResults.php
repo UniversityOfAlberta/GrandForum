@@ -182,7 +182,7 @@ EOF;
 	    		continue;
 	    	}
 
-	    	if($loi_id == 2 || $loi_id == 30){
+	    	//if($loi_id == 2 || $loi_id == 30){
 	    		
 	    	$loi_name = $loi->getName();
 
@@ -196,7 +196,7 @@ EOF;
 	    	else if($error == 2){
 	    		$file_fail[] = $loi_name;
 	    	}
-	    	}
+	    	//}
 	    }
 
 	    if(!empty($sent_success)){
@@ -244,12 +244,12 @@ EOF;
 		}
 		
 
-		// $to = $lead_email;
-		// if(!empty($colead_email)){
-		// 	$to .= ", ".$colead_email;
-		// }
+		$to = $lead_email;
+		if(!empty($colead_email)){
+			$to .= ", ".$colead_email;
+		}
 
-		$to = "dgolovan@gmail.com, adrian_sheppard@gnwc.ca";  
+		//$to = "dgolovan@gmail.com, adrian_sheppard@gnwc.ca";  
 		$subject = "GRAND NCE - {$loi_name} Feedback and Next Steps";
 		
 		$email_body =<<<EOF
