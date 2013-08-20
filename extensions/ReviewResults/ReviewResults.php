@@ -34,6 +34,78 @@ class ReviewResults extends SpecialPage {
 	    else{
 		    ReviewResults::ni_routine();
 		}
+
+		$html =<<<EOF
+		<script type='text/javascript'>
+		$(document).ready(function(){    	
+            $('#ackTabs').tabs();
+        });
+		</script>
+		<script language="javascript" type="text/javascript" src="$wgServer$wgScriptPath/scripts/jquery.validate.min.js"></script>
+			<script type="text/javascript">		
+			$(function() {
+				$("#resultsForm").validate();
+  			});
+			</script>
+			<style type="text/css">
+			td.label {
+				width: 200px;
+				background-color: #F3EBF5;
+				vertical-align: middle;
+			}
+			td input[type=text]{
+				width: 240px;
+			}
+			td textarea {
+				height: 150px;
+			}
+			label.error { 
+				float: none; 
+				color: red;  
+				vertical-align: top; 
+				display: block;
+				background: none;
+				padding: 0 0 0 5px;
+				margin: 2px;
+				width: 240px;
+			}
+			input.error {
+				background: none;
+				background-color: #FFF !important;
+				padding: 3px 3px;
+				margin: 2px;
+			}
+			span.requ {
+				font-weight:bold;
+				color: red;
+			}
+			</style>
+			<div id='ackTabs'>
+        	<ul>
+            <li><a href='#pni'>PNI</a></li>
+            <li><a href='#cni'>CNI</a></li>
+            <li><a href='#loi'>LOI</a></li>
+        	</ul>
+EOF;
+		
+		$html .= "<div id='pni' style='width: 100%; overflow: scroll;'>";
+		$html .= ReviewResults::reviewResults('PNI');
+		$html .= "</div>";
+
+		$html .= "<div id='cni' style='width: 100%; overflow: scroll;'>";
+		$html .= ReviewResults::reviewResults('CNI');
+		$html .= "</div>";
+
+		$html .= "<div id='loi' style='width: 100%; overflow: scroll;'>";
+		$html .= ReviewResults::reviewLOIResults();
+		$html .= "</div>";
+
+		$html .=<<<EOF
+		</div>
+
+EOF;
+		
+		$wgOut->addHTML($html);
 	}
 
 	static function ni_routine(){
@@ -71,7 +143,7 @@ class ReviewResults extends SpecialPage {
 	    }
 	    
 
-	    ReviewResults::reviewResults($type);
+	   // ReviewResults::reviewResults($type);
 	}
 
 	static function loi_routine(){
@@ -88,26 +160,9 @@ class ReviewResults extends SpecialPage {
 	    	ReviewResults::generateAllFeedback('LOI');
 		    exit;
 	    }
-	  //   else if(isset($_GET['getPDF'])){
-	  //   	$filename = $_GET['getPDF'] .".March2013.pdf";
-	  //   	$file = "/local/data/www-root/grand_forum/data/review-feedback/{$type}/{$filename}";
-	  //   	if(file_exists($file)){
-		 //    	header('Content-type: application/pdf');
-			// 	header('Content-Disposition: inline; filename="' . $filename . '"');
-			// 	header('Content-Transfer-Encoding: binary');
-			// 	header('Content-Length: ' . filesize($file));
-			// 	header('Accept-Ranges: bytes');
+	  
 
-			// 	@readfile($file);
-			// }
-	  //   }
-	    //else if(isset($_GET['emailPDF'])){
-	    //	$ni_id = $_GET['emailPDF'];
-	    //	ReviewResults::emailPDF($ni_id, $type);
-	    //}
-	    
-
-	    ReviewResults::reviewLOIResults();
+	   // ReviewResults::reviewLOIResults();
 	}
 
 	static function emailAllPDFs($type){
@@ -696,47 +751,8 @@ EOF;
        
 
 		$html =<<<EOF
-			<script language="javascript" type="text/javascript" src="$wgServer$wgScriptPath/scripts/jquery.validate.min.js"></script>
-			<script type="text/javascript">		
-			$(function() {
-				$("#resultsForm").validate();
-  			});
-			</script>
-			<style type="text/css">
-			td.label {
-				width: 200px;
-				background-color: #F3EBF5;
-				vertical-align: middle;
-			}
-			td input[type=text]{
-				width: 240px;
-			}
-			td textarea {
-				height: 150px;
-			}
-			label.error { 
-				float: none; 
-				color: red;  
-				vertical-align: top; 
-				display: block;
-				background: none;
-				padding: 0 0 0 5px;
-				margin: 2px;
-				width: 240px;
-			}
-			input.error {
-				background: none;
-				background-color: #FFF !important;
-				padding: 3px 3px;
-				margin: 2px;
-			}
-			span.requ {
-				font-weight:bold;
-				color: red;
-			}
-			</style>
 			<h3>RMC Review Results ({$type})</h3>
-			<form id="resultsForm" action='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type={$type}' method='post'>
+			<form id="resultsForm" action='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type={$type}#{$type}' method='post'>
 			
 			<table width='90%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
 			<tr>
@@ -795,7 +811,7 @@ EOF;
 			</form>
 EOF;
 
-		$wgOut->addHTML($html);
+		return $html;
 	}
 
 	static function reviewLOIResults(){
@@ -824,47 +840,9 @@ EOF;
        
 
 		$html =<<<EOF
-			<script language="javascript" type="text/javascript" src="$wgServer$wgScriptPath/scripts/jquery.validate.min.js"></script>
-			<script type="text/javascript">		
-			$(function() {
-				$("#resultsForm").validate();
-  			});
-			</script>
-			<style type="text/css">
-			td.label {
-				width: 200px;
-				background-color: #F3EBF5;
-				vertical-align: middle;
-			}
-			td input[type=text]{
-				width: 240px;
-			}
-			td textarea {
-				height: 150px;
-			}
-			label.error { 
-				float: none; 
-				color: red;  
-				vertical-align: top; 
-				display: block;
-				background: none;
-				padding: 0 0 0 5px;
-				margin: 2px;
-				width: 240px;
-			}
-			input.error {
-				background: none;
-				background-color: #FFF !important;
-				padding: 3px 3px;
-				margin: 2px;
-			}
-			span.requ {
-				font-weight:bold;
-				color: red;
-			}
-			</style>
+			
 			<h3>RMC Review Results ({$type})</h3>
-			<form id="resultsForm" action='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type={$type}' method='post'>
+			<form id="resultsForm" action='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type={$type}#loi' method='post'>
 			
 			<table width='90%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
 			<tr>
@@ -914,11 +892,7 @@ EOF;
 		        else{
 		        	$downloadButton = "No PDF found";
 		        }
-				// if(file_exists("/local/data/www-root/grand_forum/data/review-feedback/{$type}/{$filename}.March2013.pdf")){
-				// 	$file_link = "<a href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type={$type}&getPDF={$filename}' target='_blank'>Download</a>"; 
-				// }else{
-				// 	$file_link = "No PDF found";
-				// }
+				
 				$html .=<<<EOF
 				<tr>
 				<td>{$loi_name}</td>
@@ -941,7 +915,7 @@ EOF;
 			</form>
 EOF;
 
-		$wgOut->addHTML($html);
+		return $html;
 	}
 }
 
