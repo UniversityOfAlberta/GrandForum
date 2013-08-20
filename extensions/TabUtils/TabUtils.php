@@ -252,7 +252,7 @@ class TabUtils {
 
         if($wgUser->isLoggedIn()){
           $new_actions['loi_proposals'] = array('class' => false,
-                                   'text' => "Phase LOIs",
+                                   'text' => "Phase2 LOIs",
                                    'href' => "$wgServer$wgScriptPath/index.php/Special:LoiProposals");
         }
         if((Project::newFromName($wgTitle->getNSText()) != null || $wgTitle->getText() == "Projects") && !$me->isMemberOf(Project::newFromName($wgTitle->getNSText()))){
