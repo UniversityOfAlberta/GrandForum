@@ -13,7 +13,8 @@ class PDFReportItem extends StaticReportItem {
             $project = Project::newFromId($this->projectId);
         }
         $person = Person::newFromId($this->personId);
-        $report = new DummyReport($reportType, $person, $project);
+        $year = (REPORTING_YEAR == date('Y'))? REPORTING_YEAR-1 : REPORTING_YEAR;
+        $report = new DummyReport($reportType, $person, $project, $year);
         $tok = false;
         $tst = '';
         $len = 0;
