@@ -9,7 +9,8 @@ class AllMaterialsReportItemSet extends ReportItemSet {
         $type = $this->getAttr('subType', 'PNI');
         if($type == 'PNI' || $type == 'CNI'){
             //$subs = Person::getAllPeople($type);
-            $subs = Person::getAllEvaluates($type);
+            $year = (REPORTING_YEAR == date('Y'))? REPORTING_YEAR-1 : REPORTING_YEAR;
+            $subs = Person::getAllEvaluates($type, $year);
             $sorted = array();
             foreach ($subs as $s){
                 $rev_name = $s->getReversedName();
