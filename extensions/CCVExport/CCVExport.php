@@ -69,8 +69,10 @@ class CCVExport extends SpecialPage {
         global $wgOut, $wgUser;
 
         $map_file = getcwd()."/extensions/CCVExport/Products.xml";
+        $hqp_file = getcwd()."/extensions/CCVExport/HQP.xml";
         $ccv_tmpl = getcwd()."/extensions/CCVExport/ccv_template.xml";
         $map = simplexml_load_file($map_file);
+        $hqp_map = simplexml_load_file($hqp_file);
 
         $ccv = simplexml_load_file($ccv_tmpl);
 
@@ -97,7 +99,7 @@ class CCVExport extends SpecialPage {
         //  $type = $product->getType();
             //if($type == "Review Article" || $type == "Book Review"){
                 //$ccv_pub = $ccv->section->section[0]->addChild("section");
-                $res = CCVExport::mapItem($map->Publications->Publication, $product, $ccv->section->section[0]);
+                $res = CCVExport::mapItem($map->Publications->Publication, $product, $ccv->section->section[1]);
 
                 // if($res == 0){
                 //     echo "NOT EXPORTED========". $product->getType() ."  ||||  ". $product->getId() ."\n";
@@ -111,7 +113,198 @@ class CCVExport extends SpecialPage {
         }
 
 
+        $rels = $person->getRelations('Supervises', true);
+        foreach($rels as $rel){
+
+            $res = CCVExport::mapHQP($hqp_map->HQP->data, $rel, $ccv->section->section[0]);
+
+        }
+
         return $ccv->asXML();
+    }
+
+    static function mapHQP($section, $rel, $ccv){
+        global $wgUser;
+        $person = Person::newFromId($wgUser->getId());
+
+        $hqp = $rel->getUser2();
+
+        $success = 0;
+       
+        $ccv_item = $ccv->addChild("section");
+        $ccv_item->addAttribute('id', $section['lov_id']);
+        $ccv_item->addAttribute('label', $section['lov_name']);
+       
+        foreach($section->field as $item){
+               
+            $item_id = $item['lov_id'];
+            $item_name = $item['lov_name'];
+
+            //echo $item_name ."<br>";
+
+            // $ccv_item = $new_section->addChild("section");
+            // $ccv_item->addAttribute('id', $item_id);
+            // $ccv_item->addAttribute('label', $item_name);
+           
+            if($item_name == "Supervision Role"){
+                $field = $ccv_item->addChild("field");
+                $field->addAttribute('id', $item_id);
+                $field->addAttribute('label', $item_name);
+                $lov = $field->addChild('lov');
+                $lov->addAttribute('id', '00000000000000000000000100002900');
+                $field->lov = "Principal Supervisor";
+            }
+            else if($item_name == "Supervision Start Date"){
+                $field = $ccv_item->addChild("field");
+                $field->addAttribute('id', $item_id);
+                $field->addAttribute('label', $item_name);
+                $val = $field->addChild('value');
+                $val->addAttribute('type', "YearMonth");
+                $val->addAttribute('format', "yyyy/MM");
+                $start_date = preg_split('/\-/', $rel->getStartDate());
+                $field->value = $start_date[0].'/'.$start_date[1];
+            }
+            else if($item_name == "Supervision End Date"){
+                $field = $ccv_item->addChild("field");
+                $field->addAttribute('id', $item_id);
+                $field->addAttribute('label', $item_name);
+                $val = $field->addChild('value');
+                $val->addAttribute('type', "YearMonth");
+                $val->addAttribute('format', "yyyy/MM");
+                $end_date = preg_split('/\-/', $rel->getEndDate());
+                $field->value = $end_date[0].'/'.$end_date[1];
+            }
+            else if($item_name == "Supervision End Date"){
+                $field = $ccv_item->addChild("field");
+                $field->addAttribute('id', $item_id);
+                $field->addAttribute('label', $item_name);
+                $val = $field->addChild('value');
+                $val->addAttribute('type', "YearMonth");
+                $val->addAttribute('format', "yyyy/MM");
+                $end_date = preg_split('/\-/', $rel->getEndDate());
+                $field->value = $end_date[0].'/'.$end_date[1];
+            }
+            else if($item_name == "Student Name"){
+                $field = $ccv_item->addChild("field");
+                $field->addAttribute('id', $item_id);
+                $field->addAttribute('label', $item_name);
+                $val = $field->addChild('value');
+                $val->addAttribute('type', "String");
+                
+                $hqp_name = $hqp->getNameForForms();
+                $field->value = $hqp_name;
+            }
+            else if($item_name == "Student Institution"){
+                $field = $ccv_item->addChild("field");
+                $field->addAttribute('id', $item_id);
+                $field->addAttribute('label', $item_name);
+                $val = $field->addChild('value');
+                $val->addAttribute('type', "String");
+                
+                $hqp_uni = $hqp->getUni();
+                $field->value = $hqp_uni;
+            }
+            else if($item_name == "Student Canadian Residency Status"){
+                
+                $status_map = array('Canadian'=>array("00000000000000000000000000000034","Canadian Citizen"),
+                                    'Landed Immigrant'=>array("00000000000000000000000000000035","Permanent Resident"),
+                                    'Foreign'=>array("00000000000000000000000000000040","Study Permit"),
+                                    'Visa Holder'=>array("00000000000000000000000000000040","Study Permit"));
+
+                $field = $ccv_item->addChild("field");
+                $field->addAttribute('id', $item_id);
+                $field->addAttribute('label', $item_name);
+                $val = $field->addChild('lov');
+               
+                
+                $hqp_status = $hqp->getNationality();
+                if(!empty($hqp_status) && isset($status_map[$hqp_status])){
+                    $lov_id = $status_map[$hqp_status][0];
+                    $val->addAttribute('id', $lov_id);
+                    $field->lov = $status_map[$hqp_status][1];
+                }
+            }
+            else if($item_name == "Study / Postdoctoral Level"){
+                
+                $degree_map = array('Masters Student'=>array("00000000000000000000000000000072","Master's Thesis"),
+                                    'PhD Student'=>array("00000000000000000000000000000073","Doctorate"),
+                                    'Undergraduate'=>array("00000000000000000000000000000071","Bachelor's"),
+                                    'PostDoc'=>array("00000000000000000000000000000074","Post-doctorate"));
+
+                $field = $ccv_item->addChild("field");
+                $field->addAttribute('id', $item_id);
+                $field->addAttribute('label', $item_name);
+                $val = $field->addChild('lov');
+               
+                
+                $hqp_pos = $hqp->getPosition();
+                if(!empty($hqp_pos) && isset($degree_map[$hqp_pos])){
+                    $lov_id = $degree_map[$hqp_pos][0];
+                    $val->addAttribute('id', $lov_id);
+                    $field->lov = $degree_map[$hqp_pos][1];
+                }
+            }
+            else if($item_name == "Student Degree Status"){
+                
+              
+            }
+            else if($item_name == "Student Degree Start Date"){
+                
+                
+            }
+            else if($item_name == "Student Degree Received Date"){
+                
+                
+            }
+            else if($item_name == "Student Degree Expected Date"){
+                
+                
+            }
+            else if($item_name == "Thesis/Project Title"){
+                $field = $ccv_item->addChild("field");
+                $field->addAttribute('id', $item_id);
+                $field->addAttribute('label', $item_name);
+                $val = $field->addChild('value');
+                $val->addAttribute('type', "String");
+                
+                $hqp_thesis = $hqp->getThesis();
+                if(!is_null($hqp_thesis)){
+                    $field->value = $hqp_thesis->getTitle(); 
+                }  
+            }
+            else if($item_name == "Project Description"){
+                $field = $ccv_item->addChild("field");
+                $field->addAttribute('id', $item_id);
+                $field->addAttribute('label', $item_name);
+                $val = $field->addChild('value');
+                $val->addAttribute('type', "Bilingual");
+                $bilin = $field->addChild("bilingual");
+                $bilin->addChild("english");
+                
+                $hqp_proj = $hqp->getThesis();
+                if(!is_null($hqp_proj)){
+                    $bilin->english = $hqp_proj->getTitle(); 
+                }  
+            }
+            else if($item_name == "Present Position"){
+                $field = $ccv_item->addChild("field");
+                $field->addAttribute('id', $item_id);
+                $field->addAttribute('label', $item_name);
+                $val = $field->addChild('value');
+                $val->addAttribute('type', "String");
+                
+                $hqp_pos = $hqp->getPosition();
+                if(!empty($hqp_pos)){
+                    $field->value = $hqp_pos;
+                }
+            }
+
+            $success = 1;
+            
+        }
+
+        return $success;
+        
     }
 
 
@@ -152,21 +345,7 @@ class CCVExport extends SpecialPage {
                 $val->addAttribute('type', "String");
                 $status_field->value = $title;
 
-                //ADD Status = Publishing Status
-                $status = $product->getStatus();
-                if($item->statuses){
-                    foreach($item->statuses->status as $s){
-                        if($s == $status && isset($s['lov_id']) && isset($s['lov_name'])){
-                            $status_field = $ccv_item->addChild("field");
-                            $status_field->addAttribute('id', $item->statuses['ccv_id']);
-                            $status_field->addAttribute('label', $item->statuses['ccv_name']);
-                            
-                            $lov = $status_field->addChild('lov');
-                            $lov->addAttribute('id', $s['lov_id']);
-                            $status_field->lov = $s['lov_name'];
-                        }
-                    }
-                }
+                
 
                 //Add Fields
                 $product_data = $product->getData();
@@ -225,6 +404,7 @@ class CCVExport extends SpecialPage {
         return $success;
         
     }
+
 }
 
 ?>
