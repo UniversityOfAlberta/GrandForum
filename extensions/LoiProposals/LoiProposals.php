@@ -142,16 +142,18 @@ class LoiProposals extends SpecialPage {
 
         if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
 			$html .="
-            <li><a href='#lois'>LOI Proposals</a></li>
-            <li><a href='#lois_res'>LOI Responses</a></li>
+            <li><a href='#lois'>Proposals</a></li>
+            <li><a href='#lois_res'>Responses</a></li>
+            <li><a href='#faq'>FAQ</a></li>
             <li><a href='#cv'>CV</a></li>
             <li><a href='#conflicts'>Conflicts/Preferences</a></li>
             <li><a href='#reportsTbl'>Report Stats</a></li>";
         }
 		else if($me->isRoleAtLeast(HQP)){
 			$html .="
-            <li><a href='#lois_public'>LOI Proposals</a></li>
-            <li><a href='#lois_res'>LOI Responses</a></li>";
+            <li><a href='#lois_public'>Proposals</a></li>
+            <li><a href='#lois_res'>Responses</a></li>
+            <li><a href='#faq'>FAQ</a></li>";
 		}
 
 		// if($me->isRole(MANAGER) || $me->isRole(STAFF)){
@@ -167,6 +169,10 @@ class LoiProposals extends SpecialPage {
 
 			$html .= "<div id='lois_res' style='width: 100%; position:relative; overflow: scroll;'>";
 			$html .= LoiProposals::loiResTable();
+			$html .= "</div>";
+			
+			$html .= "<div id='faq' style='width: 100%; position:relative; overflow: scroll;'>";
+			$html .= LoiProposals::loiFAQ();
 			$html .= "</div>";
 
 			$html .= "<div id='cv' style='width: 100%; overflow: scroll;'>";
@@ -189,6 +195,10 @@ class LoiProposals extends SpecialPage {
 
 			$html .= "<div id='lois_res' style='width: 100%; position:relative; overflow: scroll;'>";
 			$html .= LoiProposals::loiResTable();
+			$html .= "</div>";
+
+			$html .= "<div id='faq' style='width: 100%; position:relative; overflow: scroll;'>";
+			$html .= LoiProposals::loiFAQ();
 			$html .= "</div>";
 		}
 
@@ -495,6 +505,83 @@ EOF;
 		
 		return $html;
 	}
+
+	static function loiFAQ(){
+		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
+
+		$html =<<<EOF
+		<h2>GRAND Renewal Process FAQ</h2>
+		<p>
+		Just remember, as you go through the LOI process for Phase2 of the GRAND NCE, that as Dr. Benjamin Spock told parents in the opening sentence of his The Common Sense Book of Baby and Child Care, "You know more than you think you do." Usually common sense will guide you to the right answer. But when that doesn't work, here are some additional pointers that may be of use.
+		</p>
+		<p>
+		Q: <i>Why are we being asked to consider merging or rearranging our research proposals (LOIs) into larger projects?</i>
+		<br />
+		A: During Phase 1 of GRAND we found that having over thirty projects created too much administrative overhead for researchers and for the network, so we are moving to a smaller number of larger projects, but we are also introducing formal subprojects. The expectation is that subprojects will be small enough to provide a sharp focus on specific research problems and the larger projects will provide sufficient scope to include a coherent set of activities that do not spill across project boundaries as much as they did in Phase 1.
+		</p>
+
+		<p>
+		Q: <i>Not everything that we are proposing in our LOI falls under a single GRAND Challenge. Does our project have to be grouped into one of the seven themes that align with the Challenges?</i>
+		<br />
+		A: Yes. In Phase 1, GRAND's five themes provided a framework for establishing a strong research base but did not provide an effective way to mobilize the network to focus on receptor needs (in other words, themes looked at GRAND in terms of capacity to solve problems, not in terms of problems being solving). In Phase 2, GRAND will move to receptor-driven projects, so the theme structure is being changed to recognize this using the seven GRAND Challenges. Each subproject usually makes a significant contribution to only one challenge. Projects are organized into themes based on aggregate contributions of its subprojects even though many projects are likely to have a subproject whose primary contribution is to the challenge for another theme. This continues the experience in Phase 1, where network investigators were asked to identify and report on linkages between projects. In Phase 2, this should be easier to do because this will happen at the subproject level.
+		</p>
+
+		<p>
+		Q: <i>Does the new project structure mean less funding for our research?</i>
+		<br />
+		A: No. The current planning is for an annual budget of $4.2M that will be allocated to network investigators across approximately 21 projects during Phase 2 of GRAND. For comparison, the budget for Phase 1 was $3.8M annually. Adjusting for inflation, this is approximately constant funding for network investigators involved in project-based research. At the project level, these numbers would lead to average annual funding of $200K per project, but there will be some variance in this, perhaps in the range of $100K to $300K of NCE funds. The total NCE funds will of course have to sum to $4.2M over all projects. There is no limit on the amount of cash that projects can spend if it comes from partners.
+		</p>
+
+		<p>
+		Q: <i>Are we only supposed to have one project champion per project?</i>
+		<br />
+		A: No. You should be looking for multiple project champions. This has not changed from Phase 1. We asked for only one champion on the first page of the LOIs because if an LOI did not have at least one champion, it was game over. But every subproject eventually needs to have a champion and some will have more than one, so every project will definitely have multiple champions. The champion could be the same for multiple subprojects (or not). Part A has lots of room to list partner organizations, each of which will eventually need to have a person who is a project champion if the organization is to fully qualify as a receptor partner. If you know the name of a person who is or is likely to become a project champion, include that as well as the name of the organization in Part A. (To save space, don't bother listing that person again as a champion in Part B because you probably want to reserve that space for the principal researchers on your project).
+		</p>
+
+		<p>
+		Q: <i>What is the role of a project champion?</i>
+		<br />
+		A: The LOI template explains some of the expectations of a project champion: "a researcher or practitioner who works in the receptor community and who has an involvement in the planning and execution of a research project. The project champion's organization does not have to be a project partner, but the organization does have to permit the project champion's involvement. Involvement in a project by a champion can be as a research collaborator, a potential user of the results of the research, a mentor or advisor to the researchers, or someone who will assess and critique the project from the perspective of the receptor community. If a project is approved, one or more project champions will be expected to provide annual assessments of the project to the RMC [Research Management Committee]."
+		</p>
+		<p>
+		The new template for LOI Responses has a much shorter version of this: "There must be at least one Project Champion personally involved in planning and carrying out the project who is affiliated with a current or potential GRAND Partner drawn from the receptor community." This is correct, but doesn’t have as much detail as did the version in the LOI template.
+		</p>
+		<p>
+		The role of a project champion was described fairly succinctly in the 2011 GRAND Researcher Guide (<a href="http://grand-nce.ca/research/researcher-guide">http://grand-nce.ca/research/researcher-guide</a>):
+		</p>
+		<blockquote style="font-style:normal;">
+		<b>PROJECT CHAMPION:</b> Individuals that represent a PARTNER organization within a PROJECT. PROJECT CHAMPION roles may take many forms, but they must demonstrate sustained involvement in the project and real benefits flowing from project to the PARTNER and vice-versa. PROJECT CHAMPIONS are expected to serve as a liaison between RESEARCHERS on a project and the RECEPTOR COMMUNITY and perform reporting duties for GRAND.
+		</blockquote>
+
+		<p>
+		Q: <i>I work closely with an international researcher with whom I collaborate a lot and we regularly publish together. Was I right to list this person as a project champion?</i>
+		<br />
+		A: No. There is a difference between a project champion and a research collaborator. A project champion will exploit the results of the research in some way beyond being a collaborator in the research or being someone who just builds on the research with more research. Exploitation might be commercialization, but it could also be using the results to set public policy, or incorporating knowledge gained into practice in a professional or educational setting, etc. International research collaborators can be listed as researchers, but not as champions, unless they are likely to provide cash contributions to the project.
+		</p>
+
+		<p>
+		Q: <i>Are we supposed to get commitments of cash and in-kind from partners even though we do not yet know whether our LOI will be accepted?</i>
+		<br />
+		A: No. You are not expected to have solid commitments from partners at this stage. You should, however, be having discussions about this because in Phase 2 the expectations for partner engagement are increasing over what they were in Phase 1, and this includes higher expectations for how much cash funding each project will receive from partners over the five years. So it is more important this time around that there be projects in GRAND that meet the needs of partners in the receptor community. The goal is to finalize the list of projects by October 1, and also name the project leaders and co-leaders. At that point it will be appropriate to start in-depth discussions with partners about cash and in-kind contributions. These commitments will need to be documented in the renewal application that GRAND submits to the NCE Program on June 11, 2014.
+		</p>
+
+		<p>
+		Q: <i>How do we know which subprojects to include in our projects if we haven't yet confirmed who are partners are?</i>
+		<br />
+		A: Good question! There is indeed a chicken-and-egg issue here. We are trying to encourage a hybrid approach whereby projects are organized in collaboration with receptor partners but we also realize that potential partners may want to know what the researchers will be doing before they commit their time to helping refine the project. The list of accepted LOIs (projects) will be announced by October 1. There will still be opportunities to refine the subprojects through the end of December, ideally by matching them up with receptor partners. That is when the subproject structure for each project will need to be fully described as part of the annual reporting process that will also determine the funding allocations for new projects that will commence on April 1.
+		</p>
+
+		<p>
+		Q: <i>How do we respond to requests in the feedback we got on our LOI for more detail when we have limited space and we are trying to describe multiple subprojects that resulted from merging two or more LOIs into a single project LOI? To be specific, our LOI was told "Overall, all the subprojects require more details and greater specificity. Describe Who will do What and How it will be done. Describe the anticipated specific research outcomes and how they will be assessed/measured. Describe who will care enough about each subproject and how those partners will contribute to the success of the subproject and what they will gain specifically."</i>
+		<br />
+		A: Wow, this is a lot to explain in not very much space. Fortunately, you do not have to explain all of the subprojects, just those that are representative of the direction the project is taking. In the limited space you have for the six subprojects you can make best use of the space by (for example) listing the last names of the researchers, and the names of partner organizations right after the title of the subproject (or in the opening line of text) in parentheses to minimize space. You could also put this in Part A by indicating for each partner the subprojects they are involved in. For timelines, we did not mean a day-by-day timeline, but more something like "2 years" vs. "six months" if the subprojects have limited extent. What we need is an idea of the scope of the subprojects and how they fit into the larger project. You can also integrate some of this into Part E or the other parts (where relevant), so long as it gets covered some place. Especially if some of the receptors are going to benefit from multiple subprojects, put this in Part E or in Part I or even Part G. Similarly, if you wish to describe more than six subprojects, put that in Part E or you could even double up in Part F with two per section.
+		</p>
+		<b><i>August 28, 2013</i></b>
+EOF;
+		
+		return $html;
+	}
+
 
 	static function loiPublicTable(){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
