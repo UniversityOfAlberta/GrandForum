@@ -577,6 +577,15 @@ EOF;
 		A: Wow, this is a lot to explain in not very much space. Fortunately, you do not have to explain all of the subprojects, just those that are representative of the direction the project is taking. In the limited space you have for the six subprojects you can make best use of the space by (for example) listing the last names of the researchers, and the names of partner organizations right after the title of the subproject (or in the opening line of text) in parentheses to minimize space. You could also put this in Part A by indicating for each partner the subprojects they are involved in. For timelines, we did not mean a day-by-day timeline, but more something like "2 years" vs. "six months" if the subprojects have limited extent. What we need is an idea of the scope of the subprojects and how they fit into the larger project. You can also integrate some of this into Part E or the other parts (where relevant), so long as it gets covered some place. Especially if some of the receptors are going to benefit from multiple subprojects, put this in Part E or in Part I or even Part G. Similarly, if you wish to describe more than six subprojects, put that in Part E or you could even double up in Part F with two per section.
 		</p>
 		<b><i>August 28, 2013</i></b>
+
+		<p>
+		Q: <i>If Phase 2 projects are expected to have significant cash contributions from partners, doesn't that disadvantage projects that are entirely SSHRC-oriented and favor projects that are entirely NSERC-oriented?</i>
+		<br />
+		A: Yes. But we should not have projects that are entirely SSHRC-oriented or entirely NSERC-oriented. In Phase 1 we expected many of or projects to include both NSERC and SSHRC components. In Phase 2, this is even more the case, for two reasons. The first reason is that the larger project size means there is more opportunity to have both NSERC-oriented subprojects and SSHRC-oriented subprojects that look at different aspects of the same problems. The second reason is that during Phase 1 we saw a lot of relationships develop within the network that demonstrate the value of integrating NSERC and SSHRC research activities, so we should be building on that experience and constructing Phase 2 projects so they are more highly multidisciplinary.
+ 			<br />
+			One of the assessment criteria for projects is the degree to which they gain value from being in GRAND. There are only a few ways to demonstrate this: having a mix of NSERC and SSHRC researchers in a project, having a mix of universities involved in a project, and having interactions with new receptor partners that came through GRAND (having funding from GRAND is not one of the ways to demonstrate value from being in GRAND!).
+		</p>
+		<b><i>September 3, 2013</i></b>
 EOF;
 		
 		return $html;
