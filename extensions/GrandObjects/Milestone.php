@@ -174,11 +174,11 @@ class Milestone {
             $sql = "SELECT * 
                     FROM `grand_milestones_people`, `mw_user` u
                     WHERE milestone_id = '{$this->id}'
-                    AND u.user_id = person_id
+                    AND u.user_id = user_id
                     AND u.deleted != '1'";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                $this->people[] = Person::newFromId($row['person_id']);
+                $this->people[] = Person::newFromId($row['user_id']);
             }
             $this->peopleWaiting = false;
         }

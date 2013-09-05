@@ -75,7 +75,7 @@ class AddRoleAPI extends API{
             }
             $sql = "SELECT `id`
 	                FROM grand_notifications
-	                WHERE user = '{$creator->getId()}'
+	                WHERE user_id = '{$creator->getId()}'
 	                AND message LIKE '%{$person->getName()}%'
 	                AND url = ''
 	                AND creator = ''

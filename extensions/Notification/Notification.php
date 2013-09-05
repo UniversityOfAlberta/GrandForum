@@ -58,7 +58,7 @@ class Notification{
 	    if($creator != null){
 	        $id = $creator->getId();
 	    }
-	    $sql = "INSERT INTO `grand_notifications` (`creator`,`user`,`name`,`message`,`url`,`time`,`active`)
+	    $sql = "INSERT INTO `grand_notifications` (`creator`,`user_id`,`name`,`message`,`url`,`time`,`active`)
                 VALUES('{$id}','{$user->getId()}','$name','{$message}','{$url}',CURRENT_TIMESTAMP,'1')";
         if($mail){
             $headers = "Content-type: text/html\r\n"; 
@@ -82,7 +82,7 @@ class Notification{
         $me = Person::newFromId($wgUser->getId());
         $sql = "SELECT *
                 FROM `grand_notifications`
-                WHERE `user` = '{$me->getId()}'\n";
+                WHERE `user_id` = '{$me->getId()}'\n";
         if(!$history){
             $sql .= "AND `active` = '1'\n";
         }

@@ -846,7 +846,7 @@ class Person extends BackboneModel {
 
 	    $sql = "SELECT `user_id`
 	            FROM `grand_movedOn`
-	            WHERE date BETWEEN '$startRange' AND '$endRange'";
+	            WHERE date_created BETWEEN '$startRange' AND '$endRange'";
 
 	    $data = DBFunctions::execSQL($sql);
 	    $people = array();

@@ -82,7 +82,7 @@ class CreateUserAPI extends API{
 			        Notification::addNotification("", $creator, "User Created", "A new user has been added to the forum: {$person->getReversedName()}", "{$person->getUrl()}");
 			        $sql = "SELECT `id`
 			                FROM grand_notifications
-			                WHERE user = '{$creator->getId()}'
+			                WHERE user_id = '{$creator->getId()}'
 			                AND message LIKE '%{$person->getName()}%'
 			                AND url = ''
 			                AND creator = ''
