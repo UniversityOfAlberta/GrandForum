@@ -335,7 +335,7 @@ class Paper extends BackboneModel{
 	            $this->projects[] = $proj;
             }
 			$this->data = unserialize($data[0]['data']);
-			$this->lastModified = $data[0]['last_modified'];
+			$this->lastModified = $data[0]['date_changed'];
 		}
 	}
 	
