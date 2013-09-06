@@ -3,13 +3,13 @@ include_once('../commandLine.inc');
 
 //change the schema
 $sql = "ALTER TABLE `grand_products` CHANGE COLUMN `last_modified` `date_changed` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP";
-#$data = execSQLStatement($sql, true);
+$data = execSQLStatement($sql, true);
 
-#$sql = "ALTER TABLE `grand_products` ADD COLUMN `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP";
-#$data = execSQLStatement($sql, true);
+$sql = "ALTER TABLE `grand_products` ADD COLUMN `date_created` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00'";
+$data = execSQLStatement($sql, true);
 
-#$sql = "UPDATE `grand_products` SET `date_created`=`date_changed`";
-#$data = execSQLStatement($sql, true);
+$sql = "UPDATE `grand_products` SET `date_created`=`date_changed`";
+$data = execSQLStatement($sql, true);
 
 echo "ALL DONE!\n";
 
