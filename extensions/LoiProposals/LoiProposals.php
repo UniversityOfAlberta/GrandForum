@@ -66,6 +66,28 @@ class LoiProposals extends SpecialPage {
 			}	
 		}
 
+		if(isset($_GET['ajaxtab']) && $_GET['ajaxtab']=="4"){
+			$wgOut->disable();
+            ob_clean();
+			$html = LoiProposals::cvTable();
+			echo $html;
+			exit;
+		}
+		else if(isset($_GET['ajaxtab']) && $_GET['ajaxtab']=="5"){
+			$wgOut->disable();
+            ob_clean();
+			$html = LoiProposals::conflictsTable();
+			echo $html;
+			exit;
+		}
+		else if(isset($_GET['ajaxtab']) && $_GET['ajaxtab']=="6"){
+			$wgOut->disable();
+            ob_clean();
+			$html = LoiProposals::loiReportsTable();
+			echo $html;
+			exit;
+		}
+
 		if(isset($_POST['Submit']) && $_POST['Submit'] == "Submit LOI Preferences"){
             if(isset($_POST['reviewer_id'])){
             	$reviewer_id = $_POST['reviewer_id'];
@@ -145,9 +167,9 @@ class LoiProposals extends SpecialPage {
             <li><a href='#lois'>Proposals</a></li>
             <li><a href='#lois_res'>Responses</a></li>
             <li><a href='#faq'>FAQ</a></li>
-            <li><a href='#cv'>CV</a></li>
-            <li><a href='#conflicts'>Conflicts/Preferences</a></li>
-            <li><a href='#reportsTbl'>Report Stats</a></li>";
+            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=4'>CV</a></li>
+            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=5'>Conflicts/Preferences</a></li>
+            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=6'>Report Stats</a></li>";
         }
 		else if($me->isRoleAtLeast(HQP)){
 			$html .="
@@ -160,7 +182,12 @@ class LoiProposals extends SpecialPage {
 		// 	$html .="<li><a href='#reportsTbl'>Report Stats</a></li>";
 		// }
         
-        $html .="</ul>";
+        $html .=<<<EOF
+        	</ul>
+        	<div id='spinner' style='display:none; padding:25px;'>
+        	<img src='{$wgServer}{$wgScriptPath}/skins/Throbber.gif' /> Please wait while the content is being loaded...
+        	</div>
+EOF;
         
         if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
 			$html .= "<div id='lois' style='width: 100%; position:relative; overflow: scroll;'>";
@@ -176,15 +203,15 @@ class LoiProposals extends SpecialPage {
 			$html .= "</div>";
 
 			$html .= "<div id='cv' style='width: 100%; overflow: scroll;'>";
-			$html .= LoiProposals::cvTable();
+			//$html .= LoiProposals::cvTable();
 			$html .= "</div>";
 
 			$html .= "<div id='conflicts' style='width: 100%; overflow: scroll;'>";
-			$html .= LoiProposals::conflictsTable();
+			//$html .= LoiProposals::conflictsTable();
 			$html .= "</div>";
 
 			$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: scroll;'>";
-			$html .= LoiProposals::loiReportsTable();
+			//$html .= LoiProposals::loiReportsTable();
 			$html .= "</div>";
 
 		}
@@ -252,7 +279,30 @@ class LoiProposals extends SpecialPage {
                 	"bAutoWidth": false,
                 	"iDisplayLength": 25
     			});
-                $('#ackTabs').tabs();
+                $('#ackTabs').tabs({
+      //           	beforeLoad: function( event, ui ) {
+				  //       ui.jqXHR.error(function() {
+				  //         ui.panel.html("Couldn't load this tab. We'll try to fix this as soon as possible.");
+				  //       });
+						// ui.jqXHR.beforeSend(function() {
+				  //         ui.panel.html("");
+				  //       });
+						// ui.jqXHR.complete(function() {
+				  //         ui.panel.html("");
+				  //       });
+				  //   },
+				    ajaxOptions: {
+			            error: function(xhr, status, index, anchor) {
+			                $(anchor.hash).html();
+			            },
+			            beforeSend: function() {
+			                $('#spinner').show();
+			            },
+			            complete: function() {
+			                $("#spinner").hide();
+			            }
+			        }
+                });
             });
         </script>
 EOF;
@@ -763,6 +813,27 @@ EOF;
 		$html .=<<<EOF
 			</tbody>
 			</table>
+			<script type="text/javascript">
+			$(document).ready(function(){
+				$('.conflIndexTable').dataTable({
+	            	"bAutoWidth": false,
+	            	"iDisplayLength": 25
+				});
+				$('span.q_tip').qtip({
+	                position: {
+	                    corner: {
+	                        target: 'topRight',
+	                        tooltip: 'bottomLeft'
+	                    }
+	                }, 
+	                style: {
+	                    classes: 'qtipStyle'
+	                }
+	       	 	});
+				$('.comment_dialog').dialog( "destroy" );
+	            $('.comment_dialog').dialog({ autoOpen: false, width: 600, height: 400 });
+			});
+			</script>
 EOF;
 
 		return $html;
@@ -823,6 +894,27 @@ EOF;
 			<input type="hidden" name="reviewer_id" value="{$my_id}" />
         	<input type="submit" name="Submit" value="Submit LOI Preferences" />
 			</form>
+			<script type="text/javascript">
+			$(document).ready(function(){
+				$('.cvindexTable').dataTable({
+	            	"bAutoWidth": false,
+	            	"iDisplayLength": 25
+				});
+				$('span.q_tip').qtip({
+	                position: {
+	                    corner: {
+	                        target: 'topRight',
+	                        tooltip: 'bottomLeft'
+	                    }
+	                }, 
+	                style: {
+	                    classes: 'qtipStyle'
+	                }
+	       	 	});
+				$('.comment_dialog').dialog( "destroy" );
+	            $('.comment_dialog').dialog({ autoOpen: false, width: 600, height: 400 });
+			});
+			</script>
 EOF;
 
 		return $html;
@@ -1010,6 +1102,27 @@ EOF;
 		$html .=<<<EOF
 		</tbody>
 		</table>
+		<script type="text/javascript">
+		$(document).ready(function(){
+			$('.loiReportsTable').dataTable({
+            	"bAutoWidth": false,
+            	"iDisplayLength": 25
+			});
+			$('span.q_tip').qtip({
+                position: {
+                    corner: {
+                        target: 'topRight',
+                        tooltip: 'bottomLeft'
+                    }
+                }, 
+                style: {
+                    classes: 'qtipStyle'
+                }
+       	 	});
+			$('.comment_dialog').dialog( "destroy" );
+            $('.comment_dialog').dialog({ autoOpen: false, width: 600, height: 400 });
+		});
+		</script>
 		<br />
 EOF;
 
