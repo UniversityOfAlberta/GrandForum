@@ -190,27 +190,27 @@ class LoiProposals extends SpecialPage {
 EOF;
         
         if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
-			$html .= "<div id='lois' style='width: 100%; position:relative; overflow: scroll;'>";
+			$html .= "<div id='lois' style='position:relative; overflow: auto;'>";
 			$html .= LoiProposals::loiTable();
 			$html .= "</div>";
 
-			$html .= "<div id='lois_res' style='width: 100%; position:relative; overflow: scroll;'>";
+			$html .= "<div id='lois_res' style='position:relative; overflow: auto;'>";
 			$html .= LoiProposals::loiResTable();
 			$html .= "</div>";
 			
-			$html .= "<div id='faq' style='width: 100%; position:relative; overflow: scroll;'>";
+			$html .= "<div id='faq' style='position:relative; overflow: auto;'>";
 			$html .= LoiProposals::loiFAQ();
 			$html .= "</div>";
 
-			$html .= "<div id='cv' style='width: 100%; overflow: scroll;'>";
+			$html .= "<div id='cv' style='width: 100%; overflow: auto;'>";
 			//$html .= LoiProposals::cvTable();
 			$html .= "</div>";
 
-			$html .= "<div id='conflicts' style='width: 100%; overflow: scroll;'>";
+			$html .= "<div id='conflicts' style='width: 100%; overflow: auto;'>";
 			//$html .= LoiProposals::conflictsTable();
 			$html .= "</div>";
 
-			$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: scroll;'>";
+			$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: auto;'>";
 			//$html .= LoiProposals::loiReportsTable();
 			$html .= "</div>";
 
@@ -246,6 +246,7 @@ EOF;
 		</style>
 		<script type='text/javascript'>
 			function openDialog(ev_id, sub_id, num){
+
 	            $('#dialog'+num+'-'+ev_id+'-'+sub_id).dialog("open");
 	        }
             $(document).ready(function(){
@@ -1043,8 +1044,8 @@ EOF;
 						$q_text = $question_text[$q-1];
 						if(!empty($yes_no) || !empty($comment)){
 							$cell =<<<EOF
-							<a href='#' onclick='openDialog("{$eval_id}", "{$loi_id}", {$q}); return false;'>{$yn}</a>
-	                        <div id='dialog{$q}-{$eval_id}-{$loi_id}' class='comment_dialog' title='{$eval_name} on {$loi_name}: {$q_text}'>
+							<a href='#' onclick='openDialog2("{$eval_id}", "{$loi_id}", {$q}); return false;'>{$yn}</a>
+	                        <div style="display:none;" id='dialog{$q}-{$eval_id}-{$loi_id}' class='comment_dialog' title='{$eval_name} on {$loi_name}: {$q_text}'>
 	                        <h4>{$yes_no}</h4>
 	                        <h5>Text Comment:</h5>
 	                        {$comment}
@@ -1102,7 +1103,27 @@ EOF;
 		$html .=<<<EOF
 		</tbody>
 		</table>
+		<br />
+EOF;
+
+		if($editable){
+    		$html .= '<input type="submit" name="Submit" value="Submit LOI Comments" />';
+    	}
+
+    	$html .= "</form>";
+		
+		$html .=<<<EOF
 		<script type="text/javascript">
+		function openDialog2(ev_id, sub_id, num){
+			$('#dialog'+num+'-'+ev_id+'-'+sub_id).dialog( "destroy" );
+            $('#dialog'+num+'-'+ev_id+'-'+sub_id).dialog({ autoOpen: false, width: 600, height: 400 });
+	        $('#dialog'+num+'-'+ev_id+'-'+sub_id).dialog("open");
+	    }
+		function setDialogs(){
+			$('.comment_dialog').dialog( "destroy" );
+            $('.comment_dialog').dialog({ autoOpen: false, width: 600, height: 400 });
+		}
+
 		$(document).ready(function(){
 			$('.loiReportsTable').dataTable({
             	"bAutoWidth": false,
@@ -1119,19 +1140,10 @@ EOF;
                     classes: 'qtipStyle'
                 }
        	 	});
-			$('.comment_dialog').dialog( "destroy" );
-            $('.comment_dialog').dialog({ autoOpen: false, width: 600, height: 400 });
+			 //setDialogs();
 		});
 		</script>
-		<br />
 EOF;
-
-		if($editable){
-    		$html .= '<input type="submit" name="Submit" value="Submit LOI Comments" />';
-    	}
-
-    	$html .= "</form>";
-		
 
 		return $html;
 
