@@ -23,9 +23,14 @@ class LoiProposals extends SpecialPage {
 		
 	    $me = Person::newFromId($wgUser->getId());
 
+	    $revision = 1;
+	    if(isset($_GET['revision']) && intval($_GET['revision'])!=0){
+	    	$revision = $_GET['revision'];
+	    }
+
 		if (isset($_GET['getpdf'])) {
 			$filename = $_GET['getpdf'];
-			$filepath = "/local/data/www-root/grand_forum/data/loi_proposals/loi/{$filename}";
+			$filepath = "/local/data/www-root/grand_forum/data/loi_proposals/loi/{$revision}/{$filename}";
 			//echo $filepath;
 			if (file_exists($filepath)) {
 				$wgOut->disable();
@@ -69,21 +74,21 @@ class LoiProposals extends SpecialPage {
 		if(isset($_GET['ajaxtab']) && $_GET['ajaxtab']=="4"){
 			$wgOut->disable();
             ob_clean();
-			$html = LoiProposals::cvTable();
+			$html = LoiProposals::cvTable($revision);
 			echo $html;
 			exit;
 		}
 		else if(isset($_GET['ajaxtab']) && $_GET['ajaxtab']=="5"){
 			$wgOut->disable();
             ob_clean();
-			$html = LoiProposals::conflictsTable();
+			$html = LoiProposals::conflictsTable($revision);
 			echo $html;
 			exit;
 		}
 		else if(isset($_GET['ajaxtab']) && $_GET['ajaxtab']=="6"){
 			$wgOut->disable();
             ob_clean();
-			$html = LoiProposals::loiReportsTable();
+			$html = LoiProposals::loiReportsTable($revision);
 			echo $html;
 			exit;
 		}
@@ -162,25 +167,34 @@ class LoiProposals extends SpecialPage {
 	    <div id='ackTabs'>
         <ul>";
 
-        if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
-			$html .="
-            <li><a href='#lois'>Proposals</a></li>
-            <li><a href='#lois_res'>Responses</a></li>
-            <li><a href='#faq'>FAQ</a></li>
-            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=4'>CV</a></li>
-            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=5'>Conflicts/Preferences</a></li>
-            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=6'>Report Stats</a></li>";
-        }
-		else if($me->isRoleAtLeast(HQP)){
-			$html .="
-            <li><a href='#lois_public'>Proposals</a></li>
-            <li><a href='#lois_res'>Responses</a></li>
-            <li><a href='#faq'>FAQ</a></li>";
+        if($revision == 2){
+	        if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
+				$html .="
+	            <li><a href='#lois'>Proposals</a></li>";
+	        }
+			else if($me->isRoleAtLeast(HQP)){
+				$html .="
+	            <li><a href='#lois_public'>Proposals</a></li>";
+			}
 		}
-
-		// if($me->isRole(MANAGER) || $me->isRole(STAFF)){
-		// 	$html .="<li><a href='#reportsTbl'>Report Stats</a></li>";
-		// }
+		else{
+			if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
+				$html .="
+	            <li><a href='#lois'>Proposals</a></li>
+	            <li><a href='#lois_res'>Responses</a></li>
+	            <li><a href='#faq'>FAQ</a></li>
+	            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=4'>CV</a></li>
+	            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=5'>Conflicts/Preferences</a></li>
+	            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=6'>Report Stats</a></li>";
+	        }
+			else if($me->isRoleAtLeast(HQP)){
+				$html .="
+	            <li><a href='#lois_public'>Proposals</a></li>
+	            <li><a href='#lois_res'>Responses</a></li>
+	            <li><a href='#faq'>FAQ</a></li>";
+			}
+		}
+		
         
         $html .=<<<EOF
         	</ul>
@@ -188,52 +202,63 @@ class LoiProposals extends SpecialPage {
         	<img src='{$wgServer}{$wgScriptPath}/skins/Throbber.gif' /> Please wait while the content is being loaded...
         	</div>
 EOF;
+		
+		if($revision == 2){
         
-        if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
-			$html .= "<div id='lois' style='position:relative; overflow: auto;'>";
-			$html .= LoiProposals::loiTable();
-			$html .= "</div>";
+	        if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
+				$html .= "<div id='lois' style='position:relative; overflow: auto;'>";
+				$html .= LoiProposals::loiTable($revision);
+				$html .= "</div>";
 
-			$html .= "<div id='lois_res' style='position:relative; overflow: auto;'>";
-			$html .= LoiProposals::loiResTable();
-			$html .= "</div>";
-			
-			$html .= "<div id='faq' style='position:relative; overflow: auto;'>";
-			$html .= LoiProposals::loiFAQ();
-			$html .= "</div>";
+			}
+			else if($me->isRoleAtLeast(HQP)){
+				$html .= "<div id='lois_public' style='width: 100%; position:relative; overflow: scroll;'>";
+				$html .= LoiProposals::loiPublicTable($revision);
+				$html .= "</div>";
 
-			$html .= "<div id='cv' style='width: 100%; overflow: auto;'>";
-			//$html .= LoiProposals::cvTable();
-			$html .= "</div>";
-
-			$html .= "<div id='conflicts' style='width: 100%; overflow: auto;'>";
-			//$html .= LoiProposals::conflictsTable();
-			$html .= "</div>";
-
-			$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: auto;'>";
-			//$html .= LoiProposals::loiReportsTable();
-			$html .= "</div>";
-
+			}
 		}
-		else if($me->isRoleAtLeast(HQP)){
-			$html .= "<div id='lois_public' style='width: 100%; position:relative; overflow: scroll;'>";
-			$html .= LoiProposals::loiPublicTable();
-			$html .= "</div>";
+		else{
+			if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
+				$html .= "<div id='lois' style='position:relative; overflow: auto;'>";
+				$html .= LoiProposals::loiTable($revision);
+				$html .= "</div>";
 
-			$html .= "<div id='lois_res' style='width: 100%; position:relative; overflow: scroll;'>";
-			$html .= LoiProposals::loiResTable();
-			$html .= "</div>";
+				$html .= "<div id='lois_res' style='position:relative; overflow: auto;'>";
+				$html .= LoiProposals::loiResTable();
+				$html .= "</div>";
+				
+				$html .= "<div id='faq' style='position:relative; overflow: auto;'>";
+				$html .= LoiProposals::loiFAQ();
+				$html .= "</div>";
 
-			$html .= "<div id='faq' style='width: 100%; position:relative; overflow: scroll;'>";
-			$html .= LoiProposals::loiFAQ();
-			$html .= "</div>";
+				$html .= "<div id='cv' style='width: 100%; overflow: auto;'>";
+				//$html .= LoiProposals::cvTable();
+				$html .= "</div>";
+
+				$html .= "<div id='conflicts' style='width: 100%; overflow: auto;'>";
+				//$html .= LoiProposals::conflictsTable();
+				$html .= "</div>";
+
+				$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: auto;'>";
+				//$html .= LoiProposals::loiReportsTable();
+				$html .= "</div>";
+
+			}
+			else if($me->isRoleAtLeast(HQP)){
+				$html .= "<div id='lois_public' style='width: 100%; position:relative; overflow: scroll;'>";
+				$html .= LoiProposals::loiPublicTable($revision);
+				$html .= "</div>";
+
+				$html .= "<div id='lois_res' style='width: 100%; position:relative; overflow: scroll;'>";
+				$html .= LoiProposals::loiResTable();
+				$html .= "</div>";
+
+				$html .= "<div id='faq' style='width: 100%; position:relative; overflow: scroll;'>";
+				$html .= LoiProposals::loiFAQ();
+				$html .= "</div>";
+			}
 		}
-
-		// if($me->isRole(MANAGER) || $me->isRole(STAFF)){
-		// 	$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: scroll;'>";
-		// 	$html .= LoiProposals::loiReportsTable();
-		// 	$html .= "</div>";
-		// }
 
 
 		$html .=<<<EOF
@@ -310,7 +335,7 @@ EOF;
 		$wgOut->addHTML($html);
 	}
 
-	static function loiTable(){
+	static function loiTable($revision=1){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 
 		$html =<<<EOF
@@ -331,7 +356,7 @@ EOF;
             <tbody>
 EOF;
 
-		$query = "SELECT * FROM grand_loi WHERE year=2013";
+		$query = "SELECT * FROM grand_loi WHERE year=2013 AND revision={$revision}";
 		$data = DBFunctions::execSQL($query);
 		foreach($data as $row){
 			$name 	= $row['name'];
@@ -391,13 +416,13 @@ EOF;
 			$loi_pdf = $row['loi_pdf'];
 			$supplemental_pdf = $row['supplemental_pdf'];
 			if(!empty($loi_pdf)){
-				$loi_pdf = "<a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?getpdf={$loi_pdf}'>{$loi_pdf}</a>";
+				$loi_pdf = "<a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?revision={$revision}&getpdf={$loi_pdf}'>{$loi_pdf}</a>";
 			}else{
 				$loi_pdf = "N/A";
 			}
 
 			if(!empty($supplemental_pdf)){
-				$supplemental_pdf = "<a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?getpdf={$supplemental_pdf}'>{$supplemental_pdf}</a>";
+				$supplemental_pdf = "<a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?revision={$revision}&getpdf={$supplemental_pdf}'>{$supplemental_pdf}</a>";
 			}else{
 				$supplemental_pdf = "N/A";
 			}
@@ -643,7 +668,7 @@ EOF;
 	}
 
 
-	static function loiPublicTable(){
+	static function loiPublicTable($revision){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 
 		$html =<<<EOF
@@ -662,7 +687,7 @@ EOF;
             <tbody>
 EOF;
 
-		$query = "SELECT * FROM grand_loi WHERE year=2013";
+		$query = "SELECT * FROM grand_loi WHERE year=2013 AND revision={$revision}";
 		$data = DBFunctions::execSQL($query);
 		foreach($data as $row){
 			$name 	= $row['name'];
@@ -772,7 +797,7 @@ EOF;
 
 	}
 
-	static function cvTable(){
+	static function cvTable($revision=1){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 
 		$html =<<<EOF
@@ -841,7 +866,7 @@ EOF;
 
 	}
 
-	static function conflictsTable(){
+	static function conflictsTable($revision=1){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 		$my_id = $wgUser->getId();
 
@@ -861,7 +886,7 @@ EOF;
 		$query = "SELECT l.id, l.name, l.full_name, lc.*
 				  FROM grand_loi l 
 				  LEFT JOIN grand_loi_conflicts lc ON(l.id = lc.loi_id AND lc.reviewer_id={$my_id}) 
-				  WHERE l.year=2013";
+				  WHERE l.year=2013 AND l.revision={$revision}";
 		
 		$data = DBFunctions::execSQL($query);
 		foreach($data as $row){
@@ -922,7 +947,7 @@ EOF;
 
 	}
 
-	static function loiReportsTable(){
+	static function loiReportsTable($revision=1){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 
 		$html =<<<EOF
@@ -981,7 +1006,7 @@ EOF;
 		);
 
 		$evals = Person::getAllPeople(RMC); 
-		$lois = LOI::getAllLOIs();
+		$lois = LOI::getAllLOIs(REPORTING_YEAR, $revision);
 
 		$me = Person::newFromId($wgUser->getId());
 		$editable = $me->isRole(MANAGER);

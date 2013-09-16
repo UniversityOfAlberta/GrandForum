@@ -254,6 +254,9 @@ class TabUtils {
           $new_actions['loi_proposals'] = array('class' => false,
                                    'text' => "Phase2 LOIs",
                                    'href' => "$wgServer$wgScriptPath/index.php/Special:LoiProposals");
+          $new_actions['loi_proposals2'] = array('class' => false,
+                                   'text' => "Revised Phase2 LOIs",
+                                   'href' => "$wgServer$wgScriptPath/index.php/Special:LoiProposals?revision=2");
         }
         if((Project::newFromName($wgTitle->getNSText()) != null || $wgTitle->getText() == "Projects") && !$me->isMemberOf(Project::newFromName($wgTitle->getNSText()))){
             $new_actions['projects']['class'] = 'selected';
@@ -269,6 +272,9 @@ class TabUtils {
         }
         else if($wgTitle->getText() == "ALL RMC" || ($wgTitle->getNSText() == RMC && !($me->isRole(RMC) && $wgTitle->getText() == $me->getName()))){
             $new_actions[RMC]['class'] = 'people selected hidden';
+        }
+        else if($wgTitle->getText() == "LoiProposals" && isset($_GET['revision']) && $_GET['revision']==2){
+            $new_actions['loi_proposals2']['class'] = 'selected';
         }
         else if($wgTitle->getText() == "LoiProposals"){
             $new_actions['loi_proposals']['class'] = 'selected';

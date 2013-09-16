@@ -71,8 +71,8 @@ class LOI extends BackboneModel {
 		}
 	}
 
-	static function getAllLOIs($year=REPORTING_YEAR){
-		$sql = "SELECT * FROM grand_loi WHERE year={$year} ORDER BY name";
+	static function getAllLOIs($year=REPORTING_YEAR, $revision=1){
+		$sql = "SELECT * FROM grand_loi WHERE year={$year} AND revision={$revision} ORDER BY name";
 		$results = DBFunctions::execSQL($sql);
 		$lois = array();
 		$data = array();
