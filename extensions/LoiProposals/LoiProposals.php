@@ -365,33 +365,69 @@ EOF;
 			$related_loi = $row['related_loi'];
 			$description = $row['description'];
 			
-			//Lead name
-			$lead_arr = explode("<br />", $row['lead'], 2);
-			$lead_person = Person::newFromNameLike($lead_arr[0]);
-			if($lead_person->getId()){
-				$lead = "<a href='".$lead_person->getUrl()."'>".$lead_person->getNameForForms() ."</a>";
+			if($revision == 1){
+				//Lead name
+				$lead_arr = explode("<br />", $row['lead'], 2);
+				$lead_person = Person::newFromNameLike($lead_arr[0]);
+				if($lead_person->getId()){
+					$lead = "<a href='".$lead_person->getUrl()."'>".$lead_person->getNameForForms() ."</a>";
+				}
+				else{
+					$lead = $lead_arr[0];
+				}
+				if(isset($lead_arr[1])){
+					$lead .= "<br />".$lead_arr[1];
+				}
 			}
 			else{
-				$lead = $lead_arr[0];
+				//Lead name
+				//$lead_arr = explode("<br />", $row['lead'], 2);
+				$lead_person = Person::newFromNameLike($row['lead']);
+				if($lead_person->getId()){
+					$lead = "<a href='".$lead_person->getUrl()."'>".$lead_person->getNameForForms() ."</a>";
+					if($lead_person->getUni()){
+						$lead .= "<br />".$lead_person->getUni();
+					}
+				}
+				else{
+					$lead = $row['lead'];
+				}
+				
 			}
-			if(isset($lead_arr[1])){
-				$lead .= "<br />".$lead_arr[1];
-			}
 
+			if($revision == 1){
+				//Co-lead name
+				$colead_arr = explode("<br />", $row['colead'], 2);
+				//echo $name . ": ". $row['colead']."<br>";
+				$colead_person = Person::newFromNameLike($colead_arr[0]);
 
-			//Co-lead name
-			$colead_arr = explode("<br />", $row['colead'], 2);
-			//echo $name . ": ". $row['colead']."<br>";
-			$colead_person = Person::newFromNameLike($colead_arr[0]);
-
-			if($colead_person->getId()){
-				$colead = "<a href='".$colead_person->getUrl()."'>".$colead_person->getNameForForms() ."</a>";
+				if($colead_person->getId()){
+					$colead = "<a href='".$colead_person->getUrl()."'>".$colead_person->getNameForForms() ."</a>";
+				}
+				else{
+					$colead = $colead_arr[0];
+				}
+				if(isset($colead_arr[1])){
+					$colead .= "<br />".$colead_arr[1];
+				}
 			}
 			else{
-				$colead = $colead_arr[0];
-			}
-			if(isset($colead_arr[1])){
-				$colead .= "<br />".$colead_arr[1];
+				$colead_arr = explode("<br />", $row['colead'], 2);
+				$colead = "";
+				foreach($colead_arr as $p){
+					$colead_person = Person::newFromNameLike($p);
+
+					if($colead_person->getId()){
+						$colead .= "<a href='".$colead_person->getUrl()."'>".$colead_person->getNameForForms() ."</a>";
+						if($colead_person->getUni()){
+							$colead .= "<br />".$colead_person->getUni();
+						}
+					}
+					else{
+						$colead .= $p;
+					}
+					$colead .= "<br /><br />";	
+				}
 			}
 
 			//Champion name
@@ -427,12 +463,17 @@ EOF;
 				$supplemental_pdf = "N/A";
 			}
 
+			if($revision == 2){
+				$rel_lbl = "Initial LOI Submission(s)";
+			}else{
+				$rel_lbl = "Related LOI(s)";
+			}
 			$html .=<<<EOF
 				<tr>
 				<td width="13%">
 				<b>{$name}:</b><br /><br />
 				{$full_name}<br />
-				<b>Related LOI: </b>{$related_loi}
+				<b>{$rel_lbl}: </b>{$related_loi}
 				</td>
 				
 				<td>{$type}</td>
@@ -445,14 +486,30 @@ EOF;
 				<b>Primary:</b><br />
 				{$primary_challenge}
 				</p>
+EOF;
+
+			if($revision != 2){
+				$html .=<<<EOF
 				<p>
 				<b>Secondary:</b><br />
 				{$secondary_challenge}
 				</p>
+EOF;
+			}
+
+			$html .=<<<EOF
 				</td>
 				<td>
-				<b>LOI: {$loi_pdf}</b><br /><br />
+				<b>LOI: {$loi_pdf}</b>
+EOF;
+			if($revision != 2){
+				$html .=<<<EOF
+				<br /><br />
 				<b>Supplemental: {$supplemental_pdf}</b>
+EOF;
+			}
+
+			$html .=<<<EOF
 				</td>
 				</tr>
 EOF;
@@ -668,7 +725,7 @@ EOF;
 	}
 
 
-	static function loiPublicTable($revision){
+	static function loiPublicTable($revision=1){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 
 		$html =<<<EOF
@@ -760,12 +817,18 @@ EOF;
 			}
 			*/
 
+			if($revision == 2){
+				$rel_lbl = "Initial LOI Submission(s)";
+			}else{
+				$rel_lbl = "Related LOI(s)";
+			}
+
 			$html .=<<<EOF
 				<tr>
 				<td width="13%">
 				<b>{$name}:</b><br /><br />
 				{$full_name}<br />
-				<b>Related LOI: </b>{$related_loi}
+				<b>{$rel_lbl}: </b>{$related_loi}
 				</td>
 				
 				<td>{$type}</td>
@@ -778,12 +841,19 @@ EOF;
 				<b>Primary:</b><br />
 				{$primary_challenge}
 				</p>
+EOF;
+
+			if($revision != 2){
+				$html .=<<<EOF
 				<p>
 				<b>Secondary:</b><br />
 				{$secondary_challenge}
 				</p>
+EOF;
+			}
+
+			$html .=<<<EOF
 				</td>
-				
 				</tr>
 EOF;
 		}
