@@ -4,10 +4,10 @@
         <Role start="REPORTING_CYCLE_START" end="REPORTING_END" role="Manager">
             
         </Role>
-        <!--<Role start="REPORTING_CYCLE_START" end="REPORTING_END" role="RMC">
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_END" role="RMC">
             
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_END" role="BOD">
+        <!--<Role start="REPORTING_CYCLE_START" end="REPORTING_END" role="BOD">
             
         </Role>-->
     </Permissions>
