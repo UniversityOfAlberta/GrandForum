@@ -2841,7 +2841,7 @@ class Person extends BackboneModel {
             else if($row['type'] == "CNI" || $row['type'] == "PNI"){
                 $subs[] = Person::newFromId($row['sub_id']);
             }
-            else if($row['type'] == "LOI" || $row['type'] == "OPT_LOI"){
+            else if($row['type'] == "LOI" || $row['type'] == "OPT_LOI" || $row['type'] == "LOI_REV2"){
             	$subs[] = LOI::newFromId($row['sub_id']);
             }
         }

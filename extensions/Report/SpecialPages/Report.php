@@ -130,11 +130,17 @@ class Report extends AbstractReport{
             //LOI Evaluation
             if($person->isRoleAtLeast(RMC)){
                     @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalLOIReport") ? "selected" : false;
-                    
                     $content_actions[] = array (
                              'class' => $class,
                              'text'  => "LOI",
                              'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalLOIReport",
+                            );
+                    
+                    @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalRevLOIReport") ? "selected" : false;
+                    $content_actions[] = array (
+                             'class' => $class,
+                             'text'  => "Revised LOI",
+                             'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalRevLOIReport",
                             );
             }
             

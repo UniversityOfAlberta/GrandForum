@@ -10,7 +10,7 @@ class LOIOptAssignmentReportItem extends AbstractReportItem {
         $loi_name = $loi->getName();
             
         $reviewer_id = $this->personId;
-        $assign_type = 'OPT_LOI';
+        $assign_type = $this->getAttr("assign_type", 'OPT_LOI');
         $year = REPORTING_YEAR;
 
         $sql = "SELECT * FROM mw_eval WHERE eval_id=%d AND sub_id=%d AND type='%s' AND year=%d";
@@ -21,10 +21,6 @@ class LOIOptAssignmentReportItem extends AbstractReportItem {
         if(count($result)>0){
             $checked = 'checked="checked"';
         }      
-
-//         $output =<<<EOF
-//             <div><strong>{$loi_name}: </strong> <input type="checkbox" value="{$loi_id}" name="opt_loi[]" {$checked} /></div>
-// EOF;
 
 $output =<<<EOF
             <tr>
@@ -40,12 +36,13 @@ EOF;
     function save(){
         $loi_id = $this->projectId;
         $reviewer_id = $this->personId;
-        $assign_type = 'OPT_LOI';
+        $assign_type = $this->getAttr("assign_type", 'OPT_LOI');
         $year = REPORTING_YEAR;
 
         $select_q = sprintf("SELECT * FROM mw_eval WHERE eval_id=%d AND sub_id=%d AND type='%s' AND year=%d", 
                             $reviewer_id, $loi_id, $assign_type, $year);
         $sel_res = DBFunctions::execSQL($select_q);
+        //echo $select_q;
 
         if(count($sel_res)>0){
             if(isset($_POST['opt_loi']) && is_array($_POST['opt_loi']) && !in_array($this->projectId, $_POST['opt_loi'])){

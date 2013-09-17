@@ -28,6 +28,7 @@ define('RPTP_NI_PROJECT_COMMENTS', 13);
 define('RPTP_LOI_REVIEW', 14);
 define('RPTP_LOI_EVAL_REVIEW', 15);
 define('RPTP_LOI_EVAL_FEEDBACK', 16);
+define('RPTP_LOI_REV_REVIEW', 17);
 
 define('RPTP_NI_ZIP', 100);
 define('RPTP_PROJ_ZIP', 101); 

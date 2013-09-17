@@ -27,8 +27,22 @@ class LOIsReportItemSet extends ReportItemSet {
             $subs = array_values($tosort);
             //print_r($subs);
         }
+        else if($type == "LOI_REV2"){
+            $subs = $person->getEvaluates('LOI_REV2');
+            $tosort = array();
+            foreach ($subs as $s){
+                $tosort[$s->getName()] = $s;
+            }
+            ksort($tosort);
+            $subs = array_values($tosort);
+            //print_r($subs);
+        }
         else if($type == "ALL_LOI"){
             $subs = LOI::getAllLOIs();
+        }
+        else if($type == "ALL_LOI2"){
+            //Revision 2
+            $subs = LOI::getAllLOIs(REPORTING_YEAR, 2);
         }
         else if($type == "POTENTIAL_LOI"){
             $assigned = $person->getEvaluates('LOI');

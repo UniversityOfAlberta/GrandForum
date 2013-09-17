@@ -6,6 +6,7 @@ class LOI extends BackboneModel {
 	var $id;
 	var $name;
 	var $year;
+	var $revision;
 	var $full_name;
 	var $type;
 	var $related_loi;
@@ -55,6 +56,7 @@ class LOI extends BackboneModel {
 			$this->id = $data[0]['id'];
 			$this->name = $data[0]['name'];
 			$this->year = $data[0]['year'];
+			$this->revision = $data[0]['revision'];
 			$this->full_name = $data[0]['full_name'];
 			$this->type = $data[0]['type'];
 			$this->related_loi = $data[0]['related_loi'];
@@ -251,8 +253,9 @@ class LOI extends BackboneModel {
 		global $wgServer, $wgScriptPath;
 
 		$loi_pdf = "";
+		$rev = $this->revision;
 		if(!empty($this->loi_pdf)){
-			$loi_pdf = "<a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?getpdf={$this->loi_pdf}'>{$this->loi_pdf}</a>";
+			$loi_pdf = "<a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?revision={$rev}&getpdf={$this->loi_pdf}'>{$this->loi_pdf}</a>";
 		}else{
 			$loi_pdf = "N/A";
 		}
@@ -264,8 +267,9 @@ class LOI extends BackboneModel {
 		global $wgServer, $wgScriptPath;
 
 		$supplemental_pdf = "";
+		$rev = $this->revision;
 		if(!empty($this->supplemental_pdf)){
-			$supplemental_pdf = "<a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?getpdf={$this->supplemental_pdf}'>{$this->supplemental_pdf}</a>";
+			$supplemental_pdf = "<a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?revision={$rev}&getpdf={$this->supplemental_pdf}'>{$this->supplemental_pdf}</a>";
 		}else{
 			$supplemental_pdf = "N/A";
 		}
