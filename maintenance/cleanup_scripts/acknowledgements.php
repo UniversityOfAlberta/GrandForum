@@ -3,7 +3,7 @@ include_once('../commandLine.inc');
 
 //change the schema
 $sql = "SELECT * FROM grand_acknowledgements";
-$data = execSQLStatement($sql);
+$data = DBFunctions::execSQL($sql);
 
 foreach($data as $row){
     $id = $row['id'];
@@ -44,33 +44,9 @@ foreach($data as $row){
                    WHERE id={$id}";
     
     //echo $update_sql . "\n";
-
-    $res = execSQLStatement($update_sql, true);
-
-
-
+    $res = DBFunctions::execSQL($update_sql, true);
 }
 
+echo "ALL DONE!\n"; 
 
-echo "ALL DONE!\n";
-
-//---------------HELPERS
-function execSQLStatement($sql, $update=false){
-    if($update == false){
-        $dbr = wfGetDB(DB_SLAVE);
-    }
-    else {
-        $dbr = wfGetDB(DB_MASTER);
-        return $dbr->query($sql);
-    }
-    $result = $dbr->query($sql);
-    $rows = null;
-    if($update == false){
-        $rows = array();
-        while ($row = $dbr->fetchRow($result)) {
-            $rows[] = $row;
-        }
-    }
-    return $rows;
-}    
 ?>

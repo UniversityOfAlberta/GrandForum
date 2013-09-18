@@ -172,9 +172,9 @@ class Milestone {
     function getPeople(){
         if($this->peopleWaiting){
             $sql = "SELECT * 
-                    FROM `grand_milestones_people`, `mw_user` u
+                    FROM `grand_milestones_people` p, `mw_user` u
                     WHERE milestone_id = '{$this->id}'
-                    AND u.user_id = user_id
+                    AND u.user_id = p.user_id
                     AND u.deleted != '1'";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
