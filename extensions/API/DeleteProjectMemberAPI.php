@@ -46,11 +46,11 @@ class DeleteProjectMemberAPI extends API{
             }
             $creator = self::getCreator($me);
             
-            $sql = "UPDATE grand_user_projects
+            $sql = "UPDATE grand_project_members
 	            SET `comment` = '$comment',
 	                `end_date` = $effectiveDate
 	            WHERE `project_id` = '{$project->getId()}'
-	            AND user = '{$person->getId()}'
+	            AND user_id = '{$person->getId()}'
 	            ORDER BY `start_date` DESC LIMIT 1";
             DBFunctions::execSQL($sql, true);
             
@@ -60,11 +60,11 @@ class DeleteProjectMemberAPI extends API{
             DBFunctions::execSQL($sql, true);
             
             foreach($project->getAllPreds() as $pred){
-                $sql = "UPDATE grand_user_projects
+                $sql = "UPDATE grand_project_members
 	                    SET `comment` = '$comment',
 	                        `end_date` = $effectiveDate
 	                    WHERE `project_id` = '{$pred->getId()}'
-	                    AND user = '{$person->getId()}'
+	                    AND user_id = '{$person->getId()}'
 	                    ORDER BY `start_date` DESC LIMIT 1";
 	            DBFunctions::execSQL($sql, true);
                 $sql = "DELETE FROM mw_user_groups

@@ -19,9 +19,9 @@
             
             $formatted_date = "$year-$month-$day $hour:$minute:$second";
             
-            $sql = "UPDATE `grand_user_projects`
+            $sql = "UPDATE `grand_project_members`
                     SET `start_date` = '$formatted_date'
-                    WHERE `user` = '{$person->getId()}'
+                    WHERE `user_id` = '{$person->getId()}'
                     AND `start_date` LIKE '2011-07-29%'
                     ORDER BY id ASC";
             DBFunctions::execSQL($sql, true);

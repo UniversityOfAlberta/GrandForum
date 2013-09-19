@@ -69,7 +69,7 @@ class UserCreate {
 					
 				    $sql = "INSERT INTO mw_user_groups (`ug_user`, `ug_group`) VALUES ('$id', '$val')";
 				    DBFunctions::execSQL($sql, true);
-                    $sql = "INSERT INTO grand_user_projects (`user`, `project_id`, `start_date`) VALUES ('$id', '{$project->getId()}', CURRENT_TIMESTAMP)";
+                    $sql = "INSERT INTO grand_project_members (`user_id`, `project_id`, `start_date`) VALUES ('$id', '{$project->getId()}', CURRENT_TIMESTAMP)";
 		            DBFunctions::execSQL($sql, true);
 		        }
 			}
