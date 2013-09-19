@@ -39,8 +39,7 @@ class Option {
 	function addVote($user_id){
 	    DBFunctions::insert('grand_poll_votes',
 	                        array('user_id' => $user_id, 
-	                              'option_id' => $this->id,
-	                              'frozen' => 'true'));
+	                              'option_id' => $this->id));
 		$rows = DBFunctions::select(array('grand_poll_votes'),
 		                            array('vote_id'),
 		                            array('option_id' => EQ($this->id),

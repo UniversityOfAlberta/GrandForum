@@ -21,7 +21,7 @@ $sql = "SELECT * FROM `grand_poll_collection`";
 $data = DBFunctions::execSQL($sql);
 foreach($data as $row){
     $self = "0";
-    if($row['self_vote'] == 'true'){
+    if($row['self_vote'] == 'true' || $row['self_vote'] == '1'){
         $self = "1";
     }
     $sql = "UPDATE `grand_poll_collection`
@@ -31,6 +31,9 @@ foreach($data as $row){
 }
 
 $sql = "ALTER TABLE  `grand_poll_collection` CHANGE  `self_vote`  `self_vote` BOOLEAN NOT NULL";
+DBFunctions::execSQL($sql, true);
+
+$sql= "ALTER TABLE `grand_poll_votes` DROP `frozen`";
 DBFunctions::execSQL($sql, true);
 
 echo "ALL DONE!\n";
