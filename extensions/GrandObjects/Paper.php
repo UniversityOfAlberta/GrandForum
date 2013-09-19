@@ -142,35 +142,30 @@ class Paper extends BackboneModel{
 	        if($project instanceof Project){
                 $project = $project->getName();
             }
-	        $sql = "SELECT *
-			        FROM `grand_products`
-			        WHERE `deleted` = '0' ";
+	        $sql = "SELECT DISTINCT p.`id`
+			        FROM `grand_products` p";
             if($project != "all"){
-	            $sql .= "\nAND projects LIKE '%$project%'";
+                $p = Project::newFromName($project);
+	            $sql .= ", `grand_product_projects` pp
+	                     WHERE pp.`project_id` = '{$p->getId()}'
+	                     AND pp.`product_id` = p.`id`";
             }
+            else {
+                $sql .= "\nWHERE 1";
+            }
+            $sql .= "\nAND p.`deleted` = '0'";
             if($category != "all"){
-                //if($project != "all"){
-                //    $sql .= "\nAND ";
-                //}
-                $sql .= "AND category = '$category'";
+                $sql .= "\nAND p.`category` = '$category'";
             }
-            $sql .= "\nORDER BY `type`, `title`";
+            $sql .= "\nORDER BY p.`type`, p.`title`";
 	        $data = DBFunctions::execSQL($sql);
 	        foreach($data as $row){
-	            $rowA = array();
-	            $rowA[0] = $row;
-	            $unserialized = unserialize($row['projects']);
-                if(($grand == 'grand' && count($unserialized) > 0) ||
-                   ($grand == 'nonGrand' && count($unserialized) == 0) ||
+	            $product = Product::newFromId($row['id']);
+	            $projects = $product->getProjects();
+	            if(($grand == 'grand' && count($projects) > 0) ||
+                   ($grand == 'nonGrand' && count($projects) == 0) ||
                     $grand == 'both'){
-                    if(isset(self::$cache[$row['id']])){
-                        $papers[] = self::$cache[$row['id']];
-                    }
-                    else{
-                        $paper = new Paper($rowA);
-                        self::$cache[$paper->id] = $paper;
-                        $papers[$paper->getId()] = $paper;
-                    }
+                    $papers[$row['id']] = $product;
                 }
 	        }
 	        self::$dataCache[$project.$category.$grand] = $papers;
@@ -218,68 +213,42 @@ class Paper extends BackboneModel{
             }
 	        $data = array();
 	        
-            $sql = "SELECT *
-		            FROM grand_products
-		            WHERE deleted = '0' AND ";
-            if($project != "all" || $category != "all"){
-                //$sql .= "WHERE ";
-            }
+            $sql = "SELECT DISTINCT p.`id`
+			        FROM `grand_products` p";
             if($project != "all"){
-                $sql .= "projects LIKE '%$project%' AND ";
+                $p = Project::newFromName($project);
+	            $sql .= ", `grand_product_projects` pp
+	                     WHERE pp.`project_id` = '{$p->getId()}'
+	                     AND pp.`product_id` = p.`id`";
             }
+            else {
+                $sql .= "\nWHERE 1";
+            }
+            $sql .= "\nAND p.`deleted` = '0'";
             if($category != "all"){
-                //if($project != "all"){
-                //    $sql .= "\nAND ";
-                //}
-                $sql .= "category = '$category' AND ";
+                $sql .= "\nAND p.`category` = '$category'";
             }
             if($strict){
-                $sql .= "\n date BETWEEN '$startRange' AND '$endRange'";
+                $sql .= "\n p.`date` BETWEEN '$startRange' AND '$endRange'";
             }
             else{
-                $sql .= "\n(date BETWEEN '$startRange' AND '$endRange' OR (date >= '$startRange' AND category = 'Publication' AND status != 'Published' AND status != 'Submitted' ))";
+                $sql .= "\n(p.`date` BETWEEN '$startRange' AND '$endRange' OR (p.`date` >= '$startRange' AND p.`category` = 'Publication' AND p.`status` != 'Published' AND p.`status` != 'Submitted' ))";
             }
-            $sql .= "\nORDER BY `type`, `title`";
+            $sql .= "\nORDER BY p.`type`, p.`title`";
             
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                $rowA = array();
-                $rowA[0] = $row;
-                $unserialized = unserialize($row['projects']);
-                if(($grand == 'grand' && count($unserialized) > 0) ||
-                   ($grand == 'nonGrand' && count($unserialized) == 0) ||
+                $product = Product::newFromId($row['id']);
+	            $projects = $product->getProjects();
+	            if(($grand == 'grand' && count($projects) > 0) ||
+                   ($grand == 'nonGrand' && count($projects) == 0) ||
                     $grand == 'both'){
-                    $paper = new Paper($rowA);
-                    $papers[$paper->getId()] = $paper;
+                    $papers[$row['id']] = $product;
                 }
             }
 	        self::$dataCache[$proj.$category.$grand.$startRange.$endRange.$str] = $papers;
 	        return $papers;
 	    }
-	}
-
-	// Returns all Papers in the DB.
-	// This is pretty slow, and should not be used often.
-	static function getAllPapersForThesis($person){
-	    $similarNames = $person->getSimilarNames();
-	    $sql = "SELECT *
-			    FROM grand_products
-			    WHERE deleted = '0' ";
-		if(count($similarNames) > 0){
-		    $names = array();
-            foreach($similarNames as $name){
-                $names[] = "authors LIKE '%$name%'";
-            }
-            $sql .= " AND (".implode("OR\n", $names).')';
-        }
-	    $data = DBFunctions::execSQL($sql);
-	    $papers = array();
-	    foreach($data as $row){
-	        $rowA = array();
-	        $rowA[0] = $row;
-	        $papers[] = new Paper($rowA);
-	    }
-	    return $papers;
 	}
 	
 	// Searches for the given phrase in the table of publications
@@ -287,7 +256,7 @@ class Paper extends BackboneModel{
 	static function search($phrase, $category='all'){
 	    session_write_close();
 	    $splitPhrase = explode(" ", $phrase);
-	    $sql = "SELECT id, title, date, projects FROM grand_products
+	    $sql = "SELECT id, title, date FROM grand_products
 	            WHERE title LIKE '%'
 	            AND deleted != '1'\n";
 	    foreach($splitPhrase as $word){
@@ -299,10 +268,11 @@ class Paper extends BackboneModel{
 	    $data = DBFunctions::execSQL($sql);
 	    $papers = array();
 	    foreach($data as $row){
-	    	$projects = array();
-	    	foreach(unserialize($row['projects']) as $p){
-	    		$projects[] = $p;
-	    	}
+	        $projects = array();
+	        $product = Product::newFromId($row['id']);
+	        foreach($product->getProjects() as $project){
+	            $projects[] = $project->getName();
+	        }
 	    	$projects = implode(', ', $projects);
 	        $papers[] = array("id"=>$row['id'], "title"=>$row['title'], "date"=>$row['date'], "projects"=>$projects);
 	    }
@@ -325,14 +295,12 @@ class Paper extends BackboneModel{
 			$this->projects = array();
 			$this->authors = $data[0]['authors'];
 			$this->authorsWaiting = true;
-			foreach(unserialize($data[0]['projects']) as $project){
-			    if(is_numeric($project)){
-			        $proj = Project::newFromId($project);
-			    }
-                else{
-                    $proj = Project::newFromName($project);
-                }
-	            $this->projects[] = $proj;
+			$sql = "SELECT pp.`project_id`
+			        FROM `grand_product_projects` pp
+			        WHERE pp.`product_id` = '{$this->id}'";
+			$d = DBFunctions::execSQL($sql);
+			foreach($d as $row){
+	            $this->projects[] = Project::newFromId($row['project_id']);
             }
 			$this->data = unserialize($data[0]['data']);
 			$this->lastModified = $data[0]['date_changed'];

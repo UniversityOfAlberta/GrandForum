@@ -873,18 +873,14 @@ class Person extends BackboneModel {
 	    
 	    //Not in theses table, try to find a publication
 	    if(is_null($paper)){
-	    	$name = str_replace('.', ' ', $this->getName());
-	    	$name = mysql_real_escape_string($name);
-	    	$sql = "SELECT * FROM grand_products
-	    	 		WHERE authors LIKE '%$name%'
-        			AND category = 'Publication' 
-        			AND type IN('Masters Thesis','PhD Thesis') 
-        			LIMIT 1";
-    		$data = DBFunctions::execSQL($sql);
-    		if(isset($data[0])){
-    			$paper = Paper::newFromId($data[0]['id']);
-    		}
-        	
+	        $papers = $this->getPapers();
+	        foreach($papers as $p){
+	            if($p->getType() == 'Masters Thesis' ||
+	               $p->getType() == 'PhD Thesis'){
+	                 $paper = $p;
+	                 break; 
+	            }
+	        }
 	    }
 	    return $paper;
 	}

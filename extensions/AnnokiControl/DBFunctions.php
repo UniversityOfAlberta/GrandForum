@@ -259,10 +259,52 @@ class DBFunctions {
             $key = mysql_real_escape_string($key);
             $value = mysql_real_escape_string($value);
             $cols[] = "{$key}";
-            $values[] = "'{$value}'";
+            $vals[] = "'{$value}'";
         }
         $sql .= implode(",", $cols).") VALUES(".implode(",", $vals).")";
         return DBFunctions::execSQL($sql, true, $rollback);
+	}
+	
+	/**
+	 * Performs a sanitized DB Deletion
+	 * @param string $table The name of the table to delete
+	 * @param array $where The hash of the column/values for the deletion
+	 * @return boolean Returns whether the insertion was successful or not
+	 * TODO: This is not yet fully tested
+	 */
+	static function delete($table, $where=array(), $rollback=false){
+	    $whereSQL = array();
+	    $table = mysql_real_escape_string($table);
+	    foreach($where as $key => $value){
+            $key = mysql_real_escape_string($key);
+            if(strstr($value, "### ") !== false){
+                $value = str_replace("### ", "", $value);
+                $whereSQL[] = "{$key} {$value} ";
+            }
+            else{
+                $value = mysql_real_escape_string($value);
+                $whereSQL[] = "{$key} = '{$value}' ";
+            }
+        }
+        $sql = "DELETE FROM $table ";
+        if(count($whereSQL) > 0){
+            $sql .= "WHERE ";
+            foreach($whereSQL as $key => $where){
+                if($key > 0){
+                    if(strstr($where, "### OR ") !== false){
+                        $where = str_replace("### OR ", " OR ", $where);
+                    }
+                    else if(strstr($where, "### AND ") !== false){
+                        $where = str_replace("### AND ", " AND ", $where);
+                    }
+                    else{
+                        $where = " AND $where";
+                    }
+                }
+                $sql .= $where."\n";
+            }
+        }
+        return DBFunctions::execSQL($sql, true);
 	}
 	
 	/**

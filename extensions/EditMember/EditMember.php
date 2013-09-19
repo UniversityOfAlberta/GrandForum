@@ -863,7 +863,7 @@ class EditMember extends SpecialPage{
 		if($person->isHQP()){
 		    $wgOut->addScript("<script type='text/javascript'>
 		        var theses = Array();\n");
-		    $theses = Paper::getAllPapersForThesis($person);
+		    $theses = $person->getPapers();
 		    foreach($theses as $thesis){
 		        $title = $thesis->getTitle();
 		        if(strlen($thesis->getTitle()) > 50){
