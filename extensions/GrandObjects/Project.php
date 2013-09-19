@@ -316,10 +316,10 @@ class Project extends BackboneModel {
         $sql = <<<EOF
         SELECT s.num_projects, COUNT(s.user) as user_count
         FROM 
-        (SELECT p.user, COUNT(p.project_id) as num_projects
-        FROM grand_user_projects p
-        INNER JOIN mw_user u ON (p.user=u.user_id) 
-        INNER JOIN grand_roles r ON (p.user=r.user)
+        (SELECT p.user_id, COUNT(p.project_id) as num_projects
+        FROM grand_project_members p
+        INNER JOIN mw_user u ON (p.user_id=u.user_id) 
+        INNER JOIN grand_roles r ON (p.user_id=r.user)
         WHERE r.role = 'HQP'
         AND ( 
                 ( (r.end_date != '0000-00-00 00:00:00') AND
@@ -329,7 +329,7 @@ class Project extends BackboneModel {
                 ((r.start_date <= '$endRange')))
                 )              
         AND u.deleted != '1'
-        GROUP BY p.user) AS s
+        GROUP BY p.user_id) AS s
         GROUP BY s.num_projects
 EOF;
         $data = DBFunctions::execSQL($sql);
@@ -492,13 +492,13 @@ EOF;
             }
         }
         if($this->peopleCache == null){
-	        $sql = "SELECT user, user_name, SUBSTR(user_name, LOCATE('.', user_name) + 1) as last_name
-                    FROM grand_user_projects, mw_user
-                    WHERE (end_date > CURRENT_TIMESTAMP OR end_date = '0000-00-00 00:00:00')
-                    AND user = user_id
-                    AND project_id = '{$this->id}'
-                    AND `deleted` != '1'
-                    ORDER BY last_name ASC";
+	        $sql = "SELECT m.user_id, u.user_name, SUBSTR(u.user_name, LOCATE('.', u.user_name) + 1) as last_name
+                    FROM grand_project_members m, mw_user u
+                    WHERE (m.end_date > CURRENT_TIMESTAMP OR m.end_date = '0000-00-00 00:00:00')
+                    AND m.user_id = u.user_id
+                    AND m.project_id = '{$this->id}'
+                    AND `u.deleted` != '1'
+                    ORDER BY u.last_name ASC";
 	        $this->peopleCache = DBFunctions::execSQL($sql);
 	    }
 	    foreach($this->peopleCache as $row){
@@ -526,19 +526,19 @@ EOF;
 	            $people[$person->getId()] = $person;
 	        }
 	    }
-	    $sql = "SELECT user, user_name, SUBSTR(user_name, LOCATE('.', user_name) + 1) as last_name
-                FROM grand_user_projects, mw_user
-                WHERE user = user_id
-                AND project_id = '{$this->id}'
+	    $sql = "SELECT p.user_id, u.user_name, SUBSTR(u.user_name, LOCATE('.', u.user_name) + 1) as last_name
+                FROM grand_project_members p, mw_user u
+                WHERE p.user_id = u.user_id
+                AND p.project_id = '{$this->id}'
                 AND ( 
-                ( (end_date != '0000-00-00 00:00:00') AND
-                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                ( (p.end_date != '0000-00-00 00:00:00') AND
+                (( p.start_date BETWEEN '$startRange' AND '$endRange' ) || ( p.end_date BETWEEN '$startRange' AND '$endRange' ) || (p.start_date <= '$startRange' AND p.end_date >= '$endRange') ))
                 OR
-                ( (end_date = '0000-00-00 00:00:00') AND
-                ((start_date <= '$endRange')))
+                ( (p.end_date = '0000-00-00 00:00:00') AND
+                ((p.start_date <= '$endRange')))
                 )
-                AND `deleted` != '1'
-                ORDER BY last_name ASC";
+                AND `p.deleted` != '1'
+                ORDER BY u.last_name ASC";
 	    $data = DBFunctions::execSQL($sql);
 	    foreach($data as $row){
 	        $id = $row['user'];
@@ -863,12 +863,12 @@ EOF;
                     $this->comments[$uId] = $comment;
                 }
             }
-	        $sql = "SELECT user, comment 
-	                FROM grand_user_projects
+	        $sql = "SELECT user_id, comment 
+	                FROM grand_project_members
 	                WHERE project_id = '{$this->id}'";
 	        $data = DBFunctions::execSQL($sql);
 	        foreach($data as $row){
-	            $this->comments[$row['user']] = $row['comment'];
+	            $this->comments[$row['user_id']] = $row['comment'];
 	        }
 	    }
 	    return $this->comments;
@@ -884,12 +884,12 @@ EOF;
                     $this->startDates[$uId] = $date;
                 }
             }
-	        $sql = "SELECT user, start_date 
-	                FROM grand_user_projects
+	        $sql = "SELECT user_id, start_date 
+	                FROM grand_project_members
 	                WHERE project_id = '{$this->id}'";
 	        $data = DBFunctions::execSQL($sql);
 	        foreach($data as $row){
-	            $this->startDates[$row['user']] = $row['start_date'];
+	            $this->startDates[$row['user_id']] = $row['start_date'];
 	        }
 	    }
 	    return $this->startDates;
@@ -921,12 +921,12 @@ EOF;
                     $this->endDates[$uId] = $date;
                 }
             }
-	        $sql = "SELECT user, end_date 
-	                FROM grand_user_projects 
+	        $sql = "SELECT user_id, end_date 
+	                FROM grand_project_members 
 	                WHERE project_id = '{$this->id}'";
 	        $data = DBFunctions::execSQL($sql);
 	        foreach($data as $row){
-	            $this->endDates[$row['user']] = $row['end_date'];
+	            $this->endDates[$row['user_id']] = $row['end_date'];
 	        }
 	    }
 	    return $this->endDates;

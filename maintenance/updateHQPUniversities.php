@@ -99,9 +99,9 @@
                     $day = date("d", $time);
                     $month = date("m", $time);
                     $year = date("Y", $time);
-                    $sql = "UPDATE grand_user_projects
+                    $sql = "UPDATE grand_project_members
                             SET start_date = '$year-$month-$day 00:00:00'
-                            WHERE user = '{$person->getId()}'
+                            WHERE user_id = '{$person->getId()}'
                             AND project_id = '{$project->getId()}'";
                     execSQLStatement($sql, true);
                 }

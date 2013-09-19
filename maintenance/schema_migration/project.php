@@ -1,4 +1,4 @@
-<?php/*
+<?php
 include_once('../commandLine.inc');
 
 //change the schema
@@ -28,7 +28,7 @@ if(!$result){ exit;}
 //$result = execSQLStatement($sql);    
 //echo "[".$result."] ". $sql."\n\n";
 //if(!$result){ exit;}
-     */
+     
 
 //Drop fullName from grand_project
 /*$sql = "UPDATE grand_project DROP fullName";

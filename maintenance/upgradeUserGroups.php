@@ -70,7 +70,7 @@
                 case "GRNCTY":
                 case "NEUROGAM":
                     $project = Project::newFromName($row['ug_group']);
-                    $sql = "INSERT INTO grand_user_projects (`user`, `project_id`, `start_date`)
+                    $sql = "INSERT INTO grand_project_members (`user_id`, `project_id`, `start_date`)
                             VALUES ('{$person->getID()}','{$project->getId()}', CURRENT_TIMESTAMP)";
                     if(execSQLStatement($sql, true)){
                         echo "{$person->getName()} added to {$row['ug_group']}\n";
