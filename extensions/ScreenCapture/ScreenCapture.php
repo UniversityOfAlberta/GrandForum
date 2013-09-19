@@ -87,14 +87,12 @@ class ScreenCapture {
         if($action == 'getRecordedStory'){
             $me = Person::newFromWgUser();
             if(isset($_GET['id'])){
-                $id = mysql_real_escape_string($_GET['id']);
-                $sql = "SELECT *
-                        FROM `grand_recordings`
-                        WHERE `id` = '{$id}'";
-                $data = DBFunctions::execSQL($sql);
+                $data = DBFunctions::select(array('grand_recordings'),
+                                            array('*'),
+                                            array('id' => EQ($_GET['id'])));
                 if(count($data) > 0){
                     $row = $data[0];
-                    $personId = $row['person'];
+                    $personId = $row['user_id'];
                     if($me->getId() == $personId || $me->isRoleAtLeast(MANAGER)){
                         header('Content-Type: application/json');
                         header("Cache-Control: no-cache");
@@ -102,7 +100,7 @@ class ScreenCapture {
                         $events = json_decode($row['story']);
                         $story = (object)'a';
                         $story->id = $row['id'];
-                        $story->person = $row['person'];
+                        $story->person = $row['user_id'];
                         $story->events = $events;
                         echo json_encode($story);
                         exit;
@@ -117,17 +115,15 @@ class ScreenCapture {
     function setRecordedStory($action){
         if($action == 'setRecordedStory'){
             $me = Person::newFromWgUser();
-            print_r($_POST);
             if(isset($_POST['story'])){
                 $story = json_decode($_POST['story']);
                 $id = $story->id;
-                $sql = "SELECT *
-                        FROM `grand_recordings`
-                        WHERE `id` = '{$id}'";
-                $data = DBFunctions::execSQL($sql);
+                $data = DBFunctions::select(array('grand_recordings'),
+                                            array('*'),
+                                            array('id' => EQ($id)));
                 if(count($data) > 0){
                     $row = $data[0];
-                    $personId = $row['person'];
+                    $personId = $row['user_id'];
                     if(($me->getId() == $personId || $me->isRoleAtLeast(MANAGER)) && $personId == $story->person){
                         // Ok, it is safe to update
                         foreach($story->events as &$screen){
@@ -141,11 +137,10 @@ class ScreenCapture {
                                 $screen->descriptions = $cleanedDesc;
                             }
                         }
-                        $storyData = mysql_real_escape_string(json_encode($story->events));
-                        $sql = "UPDATE `grand_recordings`
-                                SET `story` = '$storyData'
-                                WHERE `id` = '{$story->id}'";
-                        DBFunctions::execSQL($sql, true);
+                        $storyData = json_encode($story->events);
+                        DBFunctions::update('grand_recordings',
+                                            array('story' => $storyData),
+                                            array('id' => EQ($story->id)));
                         exit;
                     }
                 }
@@ -159,14 +154,12 @@ class ScreenCapture {
         if($action == 'getRecordedImage'){
             $me = Person::newFromWgUser();
             if(isset($_GET['id'])){
-                $id = mysql_real_escape_string($_GET['id']);
-                $sql = "SELECT *
-                        FROM `grand_recorded_images`
-                        WHERE `id` = '{$id}'";
-                $data = DBFunctions::execSQL($sql);
+                $data = DBFunctions::select(array('grand_recorded_images'),
+                                            array('*'),
+                                            array('id' => EQ($_GET['id'])));
                 if(count($data) > 0){
                     $row = $data[0];
-                    $personId = $row['person'];
+                    $personId = $row['user_id'];
                     if($me->getId() == $personId || $me->isRoleAtLeast(MANAGER)){
                         $imgData = $row['image'];
                         if(substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')){

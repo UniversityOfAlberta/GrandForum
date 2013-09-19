@@ -1557,16 +1557,15 @@ class Person extends BackboneModel {
 	 * @return array An array of objects representing this user's recordings
 	 */
 	function getRecordings(){
-	    $sql = "SELECT *
-	            FROM `grand_recordings`
-	            WHERE person = '{$this->id}'";
-	    $data = DBFunctions::execSQL($sql);
+	    $data = DBFunctions::select(array('grand_recordings'),
+	                                array('*'),
+	                                array('user_id' => EQ($this->id)));
 	    $array = array();
 	    foreach($data as $row){
 	        $events = json_decode($row['story']);
 	        $story = (object)'a';
 	        $story->id = $row['id'];
-	        $story->person = $row['person'];
+	        $story->person = $row['user_id'];
 	        $story->created = $row['created'];
 	        $story->events = $events;
 	        if(count($events) > 0){

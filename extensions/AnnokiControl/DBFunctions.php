@@ -313,11 +313,13 @@ class DBFunctions {
 	 * @param array $values The hash of column/values to update
 	 * @param array $where The hash for column/values for the where clause
 	 * @param boolean $rollback Whether or not to perform a rollback if the update fails
+	 * @param array $limit How to limit results (array of 1 or 2 values)
 	 * @return boolean Returns whether or not the update was successfull
 	 * TODO: This is not yet fully tested
 	 */
-    static function update($table, $values=array(), $where=array(), $rollback=false){
+    static function update($table, $values=array(), $where=array(), $limit=array(), $rollback=false){
         $table = mysql_real_escape_string($table);
+        $limitSQL = array();
         $sql = "UPDATE {$table}\nSET ";
         $sets = array();
         foreach($values as $key => $value){
@@ -339,7 +341,14 @@ class DBFunctions {
                 $wheres[] = "{$key} = '{$value}' ";
             }
         }
+        foreach($limit as $key => $value){
+            $value = mysql_real_escape_string($value);
+            $limitSQL[] = "{$value} ";
+        }
         $sql .= implode("\n", $wheres);
+        if(count($limitSQL) > 0){
+            $sql .= "\nLIMIT ".implode(", ", $limitSQL);
+        }
         return DBFunctions::execSQL($sql, true, $rollback);
     }
 	
