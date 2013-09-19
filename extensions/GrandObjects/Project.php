@@ -498,11 +498,11 @@ EOF;
                     AND m.user_id = u.user_id
                     AND m.project_id = '{$this->id}'
                     AND `u.deleted` != '1'
-                    ORDER BY u.last_name ASC";
+                    ORDER BY last_name ASC";
 	        $this->peopleCache = DBFunctions::execSQL($sql);
 	    }
 	    foreach($this->peopleCache as $row){
-	        $id = $row['user'];
+	        $id = $row['user_id'];
 	        $person = Person::newFromId($id);
 	        if(($filter == null || $person->isRole($filter)) && !$person->isRole(MANAGER)){
 	            $people[$person->getId()] = $person;
@@ -537,11 +537,11 @@ EOF;
                 ( (p.end_date = '0000-00-00 00:00:00') AND
                 ((p.start_date <= '$endRange')))
                 )
-                AND `p.deleted` != '1'
-                ORDER BY u.last_name ASC";
+                AND u.`deleted` != '1'
+                ORDER BY last_name ASC";
 	    $data = DBFunctions::execSQL($sql);
 	    foreach($data as $row){
-	        $id = $row['user'];
+	        $id = $row['user_id'];
 	        $person = Person::newFromId($id);
 	        if(($filter == null || $person->isRoleDuring($filter, $startRange, $endRange)) && ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
 	            $people[$person->getId()] = $person;
