@@ -6,11 +6,9 @@ class Vote {
 	var $frozen;
 	
 	static function newFromId($id){
-		$vTable = getTableName("an_poll_votes");
-		$sql = "SELECT * 
-                FROM $vTable v
-                WHERE v.vote_id = '$id'";
-		$rows = DBFunctions::execSQL($sql);
+		$rows = DBFunctions::select(array('grand_poll_votes'),
+		                            array('*'),
+		                            array('vote_id' => EQ($id)));
 		if(count($rows) > 0){
 			$row = $rows[0];
 			$user = User::newFromId($row['user_id']);
