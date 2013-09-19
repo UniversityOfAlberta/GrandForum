@@ -229,10 +229,10 @@ class Paper extends BackboneModel{
                 $sql .= "\nAND p.`category` = '$category'";
             }
             if($strict){
-                $sql .= "\n p.`date` BETWEEN '$startRange' AND '$endRange'";
+                $sql .= "\nAND p.`date` BETWEEN '$startRange' AND '$endRange'";
             }
             else{
-                $sql .= "\n(p.`date` BETWEEN '$startRange' AND '$endRange' OR (p.`date` >= '$startRange' AND p.`category` = 'Publication' AND p.`status` != 'Published' AND p.`status` != 'Submitted' ))";
+                $sql .= "\nAND (p.`date` BETWEEN '$startRange' AND '$endRange' OR (p.`date` >= '$startRange' AND p.`category` = 'Publication' AND p.`status` != 'Published' AND p.`status` != 'Submitted' ))";
             }
             $sql .= "\nORDER BY p.`type`, p.`title`";
             
