@@ -18,6 +18,7 @@ class Paper extends BackboneModel{
 	var $data;
 	var $lastModified;
 	var $authorsWaiting;
+	var $projectsWaiting;
 	var $deleted;
 	
 	// Returns a new Paper from the given id
@@ -25,7 +26,10 @@ class Paper extends BackboneModel{
 	    if(isset(self::$cache[$id])){
 	        return self::$cache[$id];
 	    }
-		$sql = "SELECT *
+		$sql = "SELECT *, (SELECT COUNT( * ) 
+                           FROM `grand_product_projects` 
+                           WHERE `product_id` = `id`
+                          ) AS nProjects
 			    FROM grand_products
 			    WHERE id = '$id'";
 		$data = DBFunctions::execSQL($sql);
@@ -46,7 +50,10 @@ class Paper extends BackboneModel{
 	        return self::$cache[$title.$category.$type.$status];
 	    }
 	    
-		$sql = "SELECT *
+		$sql = "SELECT *, (SELECT COUNT( * ) 
+                           FROM `grand_product_projects` 
+                           WHERE `product_id` = `id`
+                          ) AS nProjects
 			    FROM grand_products
 			    WHERE (`title` = '$title' OR
 			           `title` = '".str_replace(" ", "_", $title)."')
@@ -142,7 +149,10 @@ class Paper extends BackboneModel{
 	        if($project instanceof Project){
                 $project = $project->getName();
             }
-	        $sql = "SELECT DISTINCT p.`id`
+	        $sql = "SELECT *, (SELECT COUNT( * ) 
+                               FROM `grand_product_projects` 
+                               WHERE `product_id` = p.`id`
+                              ) AS nProjects
 			        FROM `grand_products` p";
             if($project != "all"){
                 $p = Project::newFromName($project);
@@ -160,12 +170,17 @@ class Paper extends BackboneModel{
             $sql .= "\nORDER BY p.`type`, p.`title`";
 	        $data = DBFunctions::execSQL($sql);
 	        foreach($data as $row){
-	            $product = Product::newFromId($row['id']);
-	            $projects = $product->getProjects();
-	            if(($grand == 'grand' && count($projects) > 0) ||
-                   ($grand == 'nonGrand' && count($projects) == 0) ||
+	            if(($grand == 'grand' && $row['nProjects'] > 0) ||
+                   ($grand == 'nonGrand' && $row['nProjects'] == 0) ||
                     $grand == 'both'){
-                    $papers[$row['id']] = $product;
+                    if(isset(self::$cache[$row['id']])){
+                        $papers[] = self::$cache[$row['id']];
+                    }
+                    else{
+                        $paper = new Paper(array($row));
+                        self::$cache[$paper->id] = $paper;
+                        $papers[$paper->getId()] = $paper;
+                    }
                 }
 	        }
 	        self::$dataCache[$project.$category.$grand] = $papers;
@@ -213,7 +228,10 @@ class Paper extends BackboneModel{
             }
 	        $data = array();
 	        
-            $sql = "SELECT DISTINCT p.`id`
+	        $sql = "SELECT *, (SELECT COUNT( * ) 
+                               FROM `grand_product_projects` 
+                               WHERE `product_id` = p.`id`
+                              ) AS nProjects
 			        FROM `grand_products` p";
             if($project != "all"){
                 $p = Project::newFromName($project);
@@ -238,14 +256,19 @@ class Paper extends BackboneModel{
             
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                $product = Product::newFromId($row['id']);
-	            $projects = $product->getProjects();
-	            if(($grand == 'grand' && count($projects) > 0) ||
-                   ($grand == 'nonGrand' && count($projects) == 0) ||
+	            if(($grand == 'grand' && $row['nProjects'] > 0) ||
+                   ($grand == 'nonGrand' && $row['nProjects'] == 0) ||
                     $grand == 'both'){
-                    $papers[$row['id']] = $product;
+                    if(isset(self::$cache[$row['id']])){
+                        $papers[] = self::$cache[$row['id']];
+                    }
+                    else{
+                        $paper = new Paper(array($row));
+                        self::$cache[$paper->id] = $paper;
+                        $papers[$paper->getId()] = $paper;
+                    }
                 }
-            }
+	        }
 	        self::$dataCache[$proj.$category.$grand.$startRange.$endRange.$str] = $papers;
 	        return $papers;
 	    }
@@ -293,15 +316,13 @@ class Paper extends BackboneModel{
 			$this->status = $data[0]['status'];
 			$this->deleted = $data[0]['deleted'];
 			$this->projects = array();
+			$this->projectsWaiting = true;
+			if(isset($data[0]['nProjects']) && $data[0]['nProjects'] == 0){
+			    // This Product has no projects so no need to query for them later
+			    $this->projectsWaiting = false;
+			}
 			$this->authors = $data[0]['authors'];
 			$this->authorsWaiting = true;
-			$sql = "SELECT pp.`project_id`
-			        FROM `grand_product_projects` pp
-			        WHERE pp.`product_id` = '{$this->id}'";
-			$d = DBFunctions::execSQL($sql);
-			foreach($d as $row){
-	            $this->projects[] = Project::newFromId($row['project_id']);
-            }
 			$this->data = unserialize($data[0]['data']);
 			$this->lastModified = $data[0]['date_changed'];
 		}
@@ -470,7 +491,7 @@ class Paper extends BackboneModel{
 	    if($project == null){
 	        return false;
 	    }
-	    foreach($this->projects as $p){
+	    foreach($this->getProjects() as $p){
 	        if($p != null && $p->getId() == $project->getId()){
 	            return true;
 	        }
@@ -480,12 +501,14 @@ class Paper extends BackboneModel{
 	
 	// Returns an array of Projects which this Paper is related to
 	function getProjects(){
-	    if($this->projects != null){
-	        foreach($this->projects as $key => $project){
-	            if($project == null){
-	                unset($this->projects[$key]);
-	            }
-	        }
+	    if($this->projectsWaiting){
+	        $data = DBFunctions::select(array("grand_product_projects"), 
+	                                   array("project_id"), 
+	                                   array("product_id" => EQ($this->id)));
+			foreach($data as $row){
+	            $this->projects[] = Project::newFromId($row['project_id']);
+            }
+            $this->projectsWaiting = false;
 	    }
 	    return $this->projects;
 	}
@@ -812,7 +835,6 @@ class Paper extends BackboneModel{
 	                                'name' => $project->getName(),
 	                                'url' => $project->getUrl());
 	        }
-	        
             $json = array('id' => $this->getId(),
 	                      'title' => $this->getTitle(),
 	                      'description' => $this->getDescription(),
