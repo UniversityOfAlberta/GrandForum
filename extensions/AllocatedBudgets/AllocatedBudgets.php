@@ -60,7 +60,6 @@ class AllocatedBudgets extends SpecialPage {
 	            }
 	        }
 	        if($found){
-	            //$data = AllocatedBudgets::getData($year, $person);
 	            $budget = $person->getAllocatedBudget($year-1);
 	            if($budget != null && $budget->size() > 0){
 	                $download = "<a href='$wgServer$wgScriptPath/index.php/Special:AllocatedBudgets?year={$year}&person={$person->getName()}&download'>Download Budget</a>";
