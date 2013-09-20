@@ -1076,84 +1076,8 @@ EOF;
 	    }
 	    return $milestones;
 	}
-	
-	function getBudget($year){
-	    $projectBudget = null;
-	    if(isset($this->budgets['b'.$year])){
-	        return unserialize($this->budgets['b'.$year]);
-	    }
-	    $projectBudget = array();
-	    $nameBudget = array();
-	    $projectNames = array($this->name);
-	    foreach($this->getAllPreds() as $pred){
-	        $projectNames[] = $pred->getName();
-	    }
-	    foreach($this->getAllPeopleDuring(null, ($year)."-00-00 00:00:00", ($year + 1)."-00-00 00:00:00") as $member){
-            if($member->isRoleDuring(PNI, ($year)."-00-00 00:00:00", ($year + 1)."-00-00 00:00:00") || 
-               $member->isRoleDuring(CNI, ($year)."-00-00 00:00:00", ($year + 1)."-00-00 00:00:00")){
-                $budget = $member->getBudget($year);
-                if($budget != null){
-                    if(count($projectBudget) == 0){
-                        $nameBudget[] = new Budget(array(array(HEAD1),
-                                                         array(BLANK)),
-                                                   array(array("Name of network investigator submitting request:"),
-                                                         array("")));
-                        $projectBudget[] = new Budget(array(array(HEAD1),
-                                                           array(HEAD1),
-                                                           array(HEAD2),
-                                                           array(HEAD2),
-                                                           array(HEAD2),
-                                                           array(HEAD2),
-                                                           array(HEAD1),
-                                                           array(HEAD2),
-                                                           array(HEAD2),
-                                                           array(HEAD2),
-                                                           array(HEAD1),
-                                                           array(HEAD1),
-                                                           array(HEAD1),
-                                                           array(HEAD2),
-                                                           array(HEAD2),
-                                                           array(HEAD2)),
-                                                     array(array("Budget Categories for April 1, 2011, to March 31, 2012"),
-                                                           array("1) Salaries and stipends"),
-                                                           array("a) Graduate students"),
-                                                           array("b) Postdoctoral fellows"),
-                                                           array("c) Technical and professional assistants"),
-                                                           array("d) Undergraduate students"),
-                                                           array("2) Equipment"),
-                                                           array("a) Purchase or rental"),
-                                                           array("b) Maintenance costs"),
-                                                           array("c) Operating costs"),
-                                                           array("3) Materials and supplies"),
-                                                           array("4) Computing costs"),
-                                                           array("5) Travel expenses"),
-                                                           array("a) Field trips"),
-                                                           array("b) Conferences"),
-                                                           array("c) GRAND annual conference")));
-                    }
-                    $nBudget = $budget->copy()->limit(0, 1)->select(V_PERS)->union(new Budget());
-                    $pBudget = $budget->copy()->select(V_PROJ, $projectNames)->limit(6, 16);
-                    if($pBudget->nRows()*$pBudget->nCols() > 0){
-                        $nameBudget[] = $nBudget;
-                        $projectBudget[] = $pBudget;
-                    }
-                }
-            }
-        }
-        $nameBudget = Budget::join_tables($nameBudget)->join(Budget::union_tables(array(new Budget(), new Budget())));
-        $projectBudget = Budget::join_tables($projectBudget);
-        if($projectBudget != null){
-            $this->budgets['b'.$year] = $nameBudget->union($projectBudget->cube());
-            $this->budgets['b'.$year] = serialize($this->budgets['b'.$year]);
-            return unserialize($this->budgets['b'.$year]);
-        }
-        else{
-            return null;
-        }
-    }
     
     function getAllocatedBudget($year){
-        // TODO: This is a blatent duplication of the above method.  Once SessionData is removed, this method can also be removed
 	    $projectBudget = null;
 	    if(isset($this->budgets['s'.$year])){
 	        return unserialize($this->budgets['s'.$year]);

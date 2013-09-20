@@ -2570,122 +2570,26 @@ class Person extends BackboneModel {
 	    return $themes;
 	}
 	
-	function getBudget($year){
-	    global $wgServer,$wgScriptPath;
-	    $index = 'b'.$year;
-	    if(isset($this->budgets[$index])){
-	        return unserialize($this->budgets[$index]);
-	    }
-	    $pg = "Special:Report";
-	    if($year != 2010){
-	        $sd = new SessionData($this->id, $pg, SD_BUDGET_EXCEL);
-	    }
-	    else{
-	        $sd = new SessionData($this->id, $pg, SD_BUDGET_CSV);
-	    }
-	    $data = $sd->fetch(false);
-	    $lastChanged = $sd->last_update();
-	    $fileName = CACHE_FOLDER."personBudget{$this->id}_$index";
-	    if(file_exists($fileName)){
-		    $contents = unserialize(implode("", gzfile($fileName)));
-		    if(strcmp($contents[0], $lastChanged) == 0){
-		        $this->budgets[$index] = serialize($contents[1]);
-		        return unserialize($this->budgets[$index]);
-		    }
-		}
-	    if (! empty($data)) {
-	        if($year != 2010){
-		        $this->budgets[$index] = new Budget("XLS", REPORT_STRUCTURE, $data);
-		    }
-		    else {
-		        $data = $sd->fetch(false);
-		        $this->budgets[$index] = new Budget("CSV", REPORT_STRUCTURE, $data);
-		    }
-            if($this->budgets[$index]->nRows()*$this->budgets[$index]->nCols() > 1 && 
-               isset($this->budgets[$index]->xls[0][2]) && 
-               $this->budgets[$index]->xls[0][1]->getValue() == ""){
-                $this->budgets[$index]->xls[0][1]->setValue($this->name);
-            }
-            if(is_writable(CACHE_FOLDER)){
-                $contents = array($lastChanged, $this->budgets[$index]);
-                $zp = gzopen($fileName, "w9");
-			    gzwrite($zp, serialize($contents));
-			    gzclose($zp);
-            }
-            $this->budgets[$index] = serialize($this->budgets[$index]);
-		    return unserialize($this->budgets[$index]);
-	    }
-	    else{
-	        return null;
-	    }
-	}
-	
+	/**
+	 * Returns the allocated Budget for this Person for the given year
+	 * @param int $year The reporting year that the budget was requested
+	 * @return Budget The allocated Budget for this Person for the given year
+	 */
 	function getAllocatedBudget($year){
 	    global $wgServer,$wgScriptPath;
 	    $index = 's'.$year;
 	    if(isset($this->budgets[$index])){
 	        return unserialize($this->budgets[$index]);
 	    }
-	    $pg = "Special:SupplementalReport";
-	    if($year != 2010){
-	        return $this->getRequestedBudget($year, RES_ALLOC_BUDGET);
-	    }
-	    else{
-	        $sd = new SessionData($this->id, $pg, SD_SUPPL_BUDGET);
-	    }
-	    $data = $sd->fetch(false);
-	    $lastChanged = $sd->last_update();
-	    $fileName = CACHE_FOLDER."personBudget{$this->id}_$index";
-	    if(file_exists($fileName)){
-		    $contents = unserialize(implode("", gzfile($fileName)));
-		    if(strcmp($contents[0], $lastChanged) == 0){
-		        $this->budgets[$index] = serialize($contents[1]);
-		        return unserialize($this->budgets[$index]);
-		    }
-		}
-	    if (! empty($data)) {
-	        if($year != 2010){
-	            if($this->isRoleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
-		            $this->budgets[$index] = new Budget("XLS", REPORT2_STRUCTURE, $data);
-		        }
-		        else{
-		            $this->budgets[$index] = new Budget("XLS", SUPPLEMENTAL_STRUCTURE, $data);
-		        }
-		    }
-		    else {
-		        $data = $sd->fetch(false);
-		        $this->budgets[$index] = new Budget("XLS", SUPPLEMENTAL_STRUCTURE, $data);
-		    }
-            if($this->budgets[$index]->nRows()*$this->budgets[$index]->nCols() > 1){
-                $names = $this->splitName();
-                $this->budgets[$index]->xls[0][1]->setValue($names['last'].', '.$names['first']);
-            }
-            if(is_writable(CACHE_FOLDER)){
-                $contents = array($lastChanged, $this->budgets[$index]);
-                $zp = gzopen($fileName, "w9");
-			    gzwrite($zp, serialize($contents));
-			    gzclose($zp);
-            }
-		    $this->budgets[$index] = serialize($this->budgets[$index]);
-            return unserialize($this->budgets[$index]);
-	    }
-	    else{
-	        $fileName2 = "data/supplemental_budget_2011.xls";
-	        $data = file_get_contents($fileName2);
-	        $this->budgets[$index] = new Budget("XLS", SUPPLEMENTAL_STRUCTURE, $data);
-	        $names = $this->splitName();
-            $this->budgets[$index]->xls[0][1]->setValue($names['last'].', '.$names['first']);
-            if(is_writable(CACHE_FOLDER)){
-                $contents = array($lastChanged, $this->budgets[$index]);
-                $zp = gzopen($fileName, "w9");
-			    gzwrite($zp, serialize($contents));
-			    gzclose($zp);
-            }
-            $this->budgets[$index] = serialize($this->budgets[$index]);
-            return unserialize($this->budgets[$index]);
-	    }
+	    return $this->getRequestedBudget($year, RES_ALLOC_BUDGET);
 	}
 	
+	/**
+	 * Returns the requested Budget for this Person for the given year
+	 * @param int $year The reporting year that the budget was requested
+	 * @param int $type Can be either RES_BUDGET or RES_ALLOC_BUDGET
+	 * @return Budget The requested Budget for this Person for the given year
+	 */
 	function getRequestedBudget($year, $type=RES_BUDGET){
 	    global $wgServer,$wgScriptPath, $reporteeId;
 	    if($type == RES_BUDGET){
@@ -2720,6 +2624,9 @@ class Person extends BackboneModel {
 	    if (! empty($data)) {
 	        if($year != 2010 && $type == RES_BUDGET){
 		        $this->budgets[$index] = new Budget("XLS", REPORT2_STRUCTURE, $data);
+		    }
+		    else if($year == 2010 && $type == RES_BUDGET){
+		        $this->budgets[$index] = new Budget("CSV", REPORT_STRUCTURE, $data);
 		    }
 		    else {
 		        if($type == RES_ALLOC_BUDGET && $this->isRoleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
