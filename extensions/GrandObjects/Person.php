@@ -264,11 +264,11 @@ class Person extends BackboneModel {
 	static function generateCoLeaderCache(){
 	    if(count(self::$coLeaderCache) == 0){
 	        $sql = "SELECT *
-	                FROM grand_project_leaders, grand_project p
-	                WHERE co_lead = 'True'
-	                AND p.id = project_id
-	                AND (end_date = '0000-00-00 00:00:00'
-                         OR end_date > CURRENT_TIMESTAMP)";
+	                FROM grand_project_leaders l, grand_project p
+	                WHERE l.type = 'co-leader'
+	                AND p.id = l.project_id
+	                AND (l.end_date = '0000-00-00 00:00:00'
+                         OR l.end_date > CURRENT_TIMESTAMP)";
 	        $data = DBFunctions::execSQL($sql);
 	        foreach($data as $row){
 	            self::$coLeaderCache[$row['user_id']][] = $row;
@@ -280,11 +280,11 @@ class Person extends BackboneModel {
 	static function generateLeaderCache(){
 	    if(count(self::$leaderCache) == 0){
 	        $sql = "SELECT *
-	                FROM grand_project_leaders, grand_project p
-	                WHERE co_lead = 'False'
-	                AND p.id = project_id
-	                AND (end_date = '0000-00-00 00:00:00'
-                         OR end_date > CURRENT_TIMESTAMP)";
+	                FROM grand_project_leaders l, grand_project p
+	                WHERE l.type = 'leader'
+	                AND p.id = l.project_id
+	                AND (l.end_date = '0000-00-00 00:00:00'
+                         OR l.end_date > CURRENT_TIMESTAMP)";
 	        $data = DBFunctions::execSQL($sql);
 	        foreach($data as $row){
 	            self::$leaderCache[$row['user_id']][] = $row;
@@ -452,7 +452,7 @@ class Person extends BackboneModel {
 		$ret = array();
 		$sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
 				WHERE pl.user_id NOT IN (4, 150)
-				AND pl.manager = '1'
+				AND pl.type='manager'
 				AND u.user_id = pl.user_id
 				AND u.deleted != '1'
 				AND (pl.end_date = '0000-00-00 00:00:00'
@@ -2318,17 +2318,16 @@ class Person extends BackboneModel {
 	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
 	    }
 	    $sql = "SELECT p.id
-                FROM grand_project_leaders, grand_project p
-                WHERE manager = '0'
-                AND co_lead <> 'True'
-                AND p.id = project_id
-                AND user_id = '{$this->id}' 
+                FROM grand_project_leaders l, grand_project p
+                WHERE l.type = 'leader'
+                AND p.id = l.project_id
+                AND l.user_id = '{$this->id}' 
                 AND ( 
-                ( (end_date != '0000-00-00 00:00:00') AND
-                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                ( (l.end_date != '0000-00-00 00:00:00') AND
+                (( l.start_date BETWEEN '$startRange' AND '$endRange' ) || ( l.end_date BETWEEN '$startRange' AND '$endRange' ) || (l.start_date <= '$startRange' AND l.end_date >= '$endRange') ))
                 OR
-                ( (end_date = '0000-00-00 00:00:00') AND
-                ((start_date <= '$endRange')))
+                ( (l.end_date = '0000-00-00 00:00:00') AND
+                ((l.start_date <= '$endRange')))
                 )";
         $data = DBFunctions::execSQL($sql);
         if(count($data) > 0){
@@ -2343,12 +2342,12 @@ class Person extends BackboneModel {
 	function isProjectManager(){
 	    if($this->isProjectManager === null){
 	        $sql = "SELECT p.id
-                    FROM grand_project_leaders, grand_project p
-                    WHERE manager = '1'
-                    AND p.id = project_id
-                    AND user_id = '{$this->id}' 
-                    AND (end_date = '0000-00-00 00:00:00'
-                         OR end_date > CURRENT_TIMESTAMP)";
+                    FROM grand_project_leaders l, grand_project p
+                    WHERE l.type = 'manager'
+                    AND p.id = l.project_id
+                    AND l.user_id = '{$this->id}' 
+                    AND (l.end_date = '0000-00-00 00:00:00'
+                         OR l.end_date > CURRENT_TIMESTAMP)";
             $data = DBFunctions::execSQL($sql);
             if(count($data) > 0){
                 $this->isProjectManager = false;
@@ -2374,16 +2373,16 @@ class Person extends BackboneModel {
 	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
 	    }
 	    $sql = "SELECT p.id
-                FROM grand_project_leaders, grand_project p
-                WHERE manager = '1'
-                AND p.id = project_id
-                AND user_id = '{$this->id}' 
+                FROM grand_project_leaders l, grand_project p
+                WHERE l.type = 'manager'
+                AND p.id = l.project_id
+                AND l.user_id = '{$this->id}' 
                 AND ( 
-                ( (end_date != '0000-00-00 00:00:00') AND
-                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                ( (l.end_date != '0000-00-00 00:00:00') AND
+                (( l.start_date BETWEEN '$startRange' AND '$endRange' ) || ( l.end_date BETWEEN '$startRange' AND '$endRange' ) || (l.start_date <= '$startRange' AND l.end_date >= '$endRange') ))
                 OR
-                ( (end_date = '0000-00-00 00:00:00') AND
-                ((start_date <= '$endRange')))
+                ( (l.end_date = '0000-00-00 00:00:00') AND
+                ((l.start_date <= '$endRange')))
                 )";
         $data = DBFunctions::execSQL($sql);
         if(count($data) > 0){
@@ -2409,7 +2408,7 @@ class Person extends BackboneModel {
 		                             WHERE l.project_id = p.id
 									 AND l.user_id = '{$this->id}'
 		                             AND p.name = '{$p->getName()}' 
-		                             AND l.manager = '1'
+		                             AND l.type = 'manager'
 		                             AND (l.end_date = '0000-00-00 00:00:00'
                                           OR l.end_date > CURRENT_TIMESTAMP)");
 	   
@@ -2446,17 +2445,16 @@ class Person extends BackboneModel {
 	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
 	    }
 	    $sql = "SELECT p.id
-                FROM grand_project_leaders, grand_project p
-                WHERE manager = '0'
-                AND co_lead = 'True'
-                AND p.id = project_id
-                AND user_id = '{$this->id}' 
+                FROM grand_project_leaders l, grand_project p
+                WHERE l.type = 'co-leader'
+                AND p.id = l.project_id
+                AND l.user_id = '{$this->id}' 
                 AND ( 
-                ( (end_date != '0000-00-00 00:00:00') AND
-                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                ( (l.end_date != '0000-00-00 00:00:00') AND
+                (( l.start_date BETWEEN '$startRange' AND '$endRange' ) || ( l.end_date BETWEEN '$startRange' AND '$endRange' ) || (l.start_date <= '$startRange' AND l.end_date >= '$endRange') ))
                 OR
-                ( (end_date = '0000-00-00 00:00:00') AND
-                ((start_date <= '$endRange')))
+                ( (l.end_date = '0000-00-00 00:00:00') AND
+                ((l.start_date <= '$endRange')))
                 )";
         $data = DBFunctions::execSQL($sql);
         if(count($data) > 0){
@@ -2471,8 +2469,7 @@ class Person extends BackboneModel {
 	    $sql = "SELECT l.*
 	            FROM grand_project_leaders l
 	            WHERE l.user_id = '{$this->id}'
-	            AND l.co_lead <> 'True'
-	            AND l.manager = '0'\n";
+	            AND l.type = 'leader'\n";
 	    if(!$history){
 	        $sql .= "AND (l.end_date = '0000-00-00 00:00:00'
                           OR l.end_date > CURRENT_TIMESTAMP)";
@@ -2489,11 +2486,11 @@ class Person extends BackboneModel {
 	    $sql = "SELECT *
 	            FROM grand_project_leaders l
 	            WHERE l.user_id = '{$this->id}'
-	            AND l.co_lead = 'True'
-	            AND l.manager = '0'\n";
+	            AND l.type = 'co-lead'\n";
+	  
 	    if(!$history){
-	        $sql .= "AND (end_date = '0000-00-00 00:00:00'
-                          OR end_date > CURRENT_TIMESTAMP)";
+	        $sql .= "AND (l.end_date = '0000-00-00 00:00:00'
+                          OR l.end_date > CURRENT_TIMESTAMP)";
 	    }
 	    $data = DBFunctions::execSQL($sql);
 	    $projects = array();
@@ -2507,10 +2504,11 @@ class Person extends BackboneModel {
 	    $sql = "SELECT *
 	            FROM grand_project_leaders l
 	            WHERE l.user_id = '{$this->id}'
-	            AND l.manager = '0'\n";
+	            AND l.type IN ('leader','co-leader')\n";
+	    
 	    if(!$history){
-	        $sql .= "AND (end_date = '0000-00-00 00:00:00'
-                          OR end_date > CURRENT_TIMESTAMP)";
+	        $sql .= "AND (l.end_date = '0000-00-00 00:00:00'
+                          OR l.end_date > CURRENT_TIMESTAMP)";
 	    }
 	    $data = DBFunctions::execSQL($sql);
 	    $projects = array();
@@ -2524,7 +2522,8 @@ class Person extends BackboneModel {
 	    $sql = "SELECT l.*
 	            FROM grand_project_leaders l
 	            WHERE l.user_id = '{$this->id}'
-	            AND l.manager = '1'\n";
+	            AND l.type = 'manager'\n";
+	            
 	    if(!$history){
 	        $sql .= "AND (l.end_date = '0000-00-00 00:00:00'
                           OR l.end_date > CURRENT_TIMESTAMP)";
