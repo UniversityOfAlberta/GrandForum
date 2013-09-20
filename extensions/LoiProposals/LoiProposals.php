@@ -66,6 +66,7 @@ class LoiProposals extends SpecialPage {
 			}	
 		}
 
+		$cur_year = date('Y');
 		if(isset($_POST['Submit']) && $_POST['Submit'] == "Submit LOI Preferences"){
             if(isset($_POST['reviewer_id'])){
             	$reviewer_id = $_POST['reviewer_id'];
@@ -85,9 +86,9 @@ class LoiProposals extends SpecialPage {
                         $preference = 0;
                     }
 
-                    $sql = "INSERT INTO grand_loi_conflicts(reviewer_id, loi_id, conflict, preference) 
-                            VALUES('{$reviewer_id}', '{$loi_id}', '$conflict', '$preference' ) 
-                            ON DUPLICATE KEY UPDATE conflict='{$conflict}', preference='{$preference}'";
+                    $sql = "INSERT INTO grand_eval_conflicts(eval_id, sub_id, type, year, user_conflict, preference) 
+                            VALUES('{$reviewer_id}', '{$loi_id}', 'LOI', '{$cur_year}', '$conflict', '$preference' ) 
+                            ON DUPLICATE KEY UPDATE user_conflict='{$conflict}', preference='{$preference}'";
 
                     $res = DBFunctions::execSQL($sql, true);
                     if($res != 1){
@@ -776,17 +777,18 @@ EOF;
             </thead>
             <tbody>
 EOF;
-
+		
+		$cur_year = '2013'; //date('Y');
 		$query = "SELECT l.id, l.name, l.full_name, lc.*
 				  FROM grand_loi l 
-				  LEFT JOIN grand_loi_conflicts lc ON(l.id = lc.loi_id AND lc.reviewer_id={$my_id}) 
-				  WHERE l.year=2013";
+				  LEFT JOIN grand_eval_conflicts lc ON(l.id = lc.sub_id AND lc.eval_id={$my_id} AND lc.type='LOI' AND lc.year={$cur_year}) 
+				  WHERE l.year={$cur_year}";
 		
 		$data = DBFunctions::execSQL($query);
 		foreach($data as $row){
 			$name 	= $row['name'];
 			$loi_id = $row['id'];
-			$conflict = (empty($row['conflict']))? 0 : $row['conflict'];
+			$conflict = (empty($row['user_conflict']))? 0 : $row['user_conflict'];
 			$conflict_chk = ($conflict)? 'checked="checked"' : '';
 
 			$preference = (empty($row['preference']))? 0 : $row['preference'];

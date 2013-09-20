@@ -4,8 +4,9 @@ require_once('commandLine.inc');
 
     
 $current_evals = array(17,563,152,25,90,27,28,564,32,565,566,36,38,41,48,55,60,61,1263);
-        
-$sql = "SELECT DISTINCT reviewer_id FROM grand_project_conflicts";
+
+$cur_year = date('Y');
+$sql = "SELECT DISTINCT eval_id FROM grand_eval_conflicts WHERE type='PROJECT' AND year={$cur_year}";
 $data = execSQLStatement($sql);
 $total_conflict_submissions = count($data);
 $total_evaluators = count($current_evals);
@@ -62,7 +63,7 @@ foreach($allProjects as $project){
         $elname = implode(' ', array_slice($eval_name_prop, 1));
 
          //Get saved conflicts data if any
-        $sql = "SELECT * FROM grand_project_conflicts WHERE reviewer_id = '{$eval_id}' AND project_id = '{$project_id}'";
+        $sql = "SELECT * FROM grand_eval_conflicts WHERE eval_id = '{$eval_id}' AND sub_id = '{$project_id}' AND type='PROJECT' AND year={$cur_year}";
         $data = execSQLStatement($sql);
         
         //$data = array();

@@ -87,7 +87,7 @@ class LOI extends BackboneModel {
 	static function getNonConflictingLOIs($evaluator_id, $year=REPORTING_YEAR){
 		$sql = "SELECT l.*, lc.conflict 
 				FROM grand_loi l
-				LEFT JOIN grand_loi_conflicts lc ON(l.id=lc.loi_id AND lc.reviewer_id={$evaluator_id})
+				LEFT JOIN grand_eval_conflicts lc ON(l.id=lc.sub_id AND lc.eval_id={$evaluator_id} AND lc.type='LOI' AND lc.year={$year})
 				WHERE l.year={$year} 
 				ORDER BY l.name";
 
