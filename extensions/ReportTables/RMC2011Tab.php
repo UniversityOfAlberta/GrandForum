@@ -594,13 +594,13 @@ EOF;
             $pniTotals = array();
             $cniTotals = array();
             foreach(Person::getAllPeople(PNI) as $person){
-                $budget = $person->getBudget(2010);
+                $budget = $person->getRequestedBudget(2010);
                 if($budget != null){
                     $pniTotals[] = $budget->copy()->limit(8, 14)->rasterize()->select(ROW_TOTAL);
                 }
             }
             foreach(Person::getAllPeople(CNI) as $person){
-                $budget = $person->getBudget(2010);
+                $budget = $person->getRequestedBudget(2010);
                 if($budget != null){
                     $cniTotals[] = $budget->copy()->limit(8, 14)->rasterize()->select(ROW_TOTAL);
                 }
