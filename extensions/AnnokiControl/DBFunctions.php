@@ -138,9 +138,14 @@ class DBFunctions {
 		catch (DBQueryError $e){
 		    $me = Person::newFromUser($wgUser);
 		    if($me->isRoleAtLeast(MANAGER)){
-		        $trace = debug_backtrace();
-		        $file = $trace[0]['file'];
-		        $line = $trace[0]['line'];
+		        $traces = debug_backtrace();
+		        foreach($traces as $trace){ 
+		            $file = $trace['file'];
+		            $line = $trace['line'];
+		            if(strstr($file, "DBFunctions.php") === false){
+		                break;
+		            }
+		        }
 		        $wgMessage->addError("<pre class='inlineError' style='font-weight:bold;background:none;border:none;padding:0;overflow:hidden;margin:0;'>".$e->getMessage()."in <i>{$file}</i> on line <i>{$line}</i></pre>");
 		    }
 		    else{
@@ -260,9 +265,15 @@ class DBFunctions {
 	    $vals = array();
         foreach($values as $key => $value){
             $key = mysql_real_escape_string($key);
-            $value = mysql_real_escape_string($value);
             $cols[] = "{$key}";
-            $vals[] = "'{$value}'";
+            if(strstr($value, "### ") !== false){
+                $value = str_replace("=", "", str_replace("### ", "", $value));
+                $vals[] = "{$value}";
+            }
+            else{
+                $value = mysql_real_escape_string($value);
+                $vals[] = "'{$value}'";
+            }
         }
         $sql .= implode(",", $cols).") VALUES(".implode(",", $vals).")";
         return DBFunctions::execSQL($sql, true, $rollback);
@@ -327,8 +338,14 @@ class DBFunctions {
         $sets = array();
         foreach($values as $key => $value){
             $key = mysql_real_escape_string($key);
-            $value = mysql_real_escape_string($value);
-            $sets[] = "{$key} = '{$value}' ";
+            if(strstr($value, "### ") !== false){
+                $value = str_replace("### ", "", $value);
+                $sets[] = "{$key} {$value} ";
+            }
+            else{
+                $value = mysql_real_escape_string($value);
+                $sets[] = "{$key} = '{$value}' ";
+            }
         }
         $sql .= implode(",\n", $sets);
         $sql .= "WHERE ";

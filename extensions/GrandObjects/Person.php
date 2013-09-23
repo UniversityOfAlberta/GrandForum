@@ -1745,25 +1745,23 @@ class Person extends BackboneModel {
 	
 	// Returns an array of Person(s) who requested this User, or an empty array if there was no such Person
 	function getCreators(){
-	    $requestTable = getTableName("user_create_request");
-	    $sql = "SELECT DISTINCT requesting_user 
-	            FROM $requestTable
-	            WHERE wpName = '{$this->name}'";
-	    $data = DBFunctions::execSQL($sql);
+	    $data = DBFunctions::select(array('grand_user_request'),
+	                                array('DISTINCT requesting_user'),
+	                                array('wpName' => EQ($this->name)));
 	    $creators = array();
 		foreach($data as $row){
-			$creators[] = Person::newFromName($row['requesting_user']);
+		    if($row['requesting_user'] != 0){
+			    $creators[] = Person::newFromId($row['requesting_user']);
+			}
 		}
 		return $creators;
 	}
 	
 	function getRequestedMembers(){
-	    $requestTable = getTableName("user_create_request");
-	    $sql = "SELECT DISTINCT wpName
-	            FROM $requestTable
-	            WHERE requesting_user = '{$this->name}'
-	            AND created = 'true'";
-	    $data = DBFunctions::execSQL($sql);
+	    $data = DBFunctions::select(array('grand_user_request'),
+	                                array('DISTINCT wpName'),
+	                                array('requesting_user' => $this->id,
+	                                      'created' => EQ(1)));
 	    $members = array();
 		foreach($data as $row){
 			$members[] = Person::newFromName($row['wpName']);
