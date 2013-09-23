@@ -41,22 +41,26 @@ class AddHQPMovedOnAPI extends API{
 		}
 		if($me->isRole(STAFF) || $me->isRole(MANAGER) || count($me->leadership()) > 0 || $isSupervisor || $me->getId() == $person->getId()){
             // Actually Add the Project Member
-            $sql = "SELECT * FROM `grand_movedOn`
-                    WHERE `user_id` = '{$person->getId()}'";
-            DBFunctions::execSQL($sql);
-            if(DBFunctions::getNRows() > 0){
-                DBFunctions::execSQL("UPDATE `grand_movedOn`
-                                      SET `where` = '{$_POST['where']}',
-                                          `studies` = '{$_POST['studies']}',
-                                          `employer` = '{$_POST['employer']}',
-                                          `city` = '{$_POST['city']}',
-                                          `country` = '{$_POST['country']}'
-                                      WHERE `user_id` = '{$person->getId()}'", true);
+            $data = DBFunctions::select(array('grand_movedOn'),
+                                        array('*'),
+                                        array('user_id' => EQ($person->getId())));
+            if(count($data) > 0){
+                DBFunctions::update('grand_movedOn',
+                                    array('`where`' => $_POST['where'],
+                                          'studies' => $_POST['studies'],
+                                          'employer' => $_POST['employer'],
+                                          'city' => $_POST['city'],
+                                          'country' => $_POST['country']),
+                                    array('user_id' => EQ($person->getId())));
             }
             else{
-                DBFunctions::execSQL("INSERT INTO grand_movedOn
-                                  (`user_id`,`where`,`studies`,`employer`,`city`,`country`)
-                                  VALUES ('{$person->getId()}','{$_POST['where']}','{$_POST['studies']}','{$_POST['employer']}','{$_POST['city']}','{$_POST['country']}')", true);
+                DBFunctions::insert('grand_movedOn',
+                                    array('user_id' => $person->getId(),
+                                          '`where`' => $_POST['where'],
+                                          'studies' => $_POST['studies'],
+                                          'employer' => $_POST['employer'],
+                                          'city' => $_POST['city'],
+                                          'country' => $_POST['country']));
             }
             if(!$noEcho){
                 echo "{$person->getName()} movedOn added\n";
