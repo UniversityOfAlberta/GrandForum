@@ -437,12 +437,12 @@ class Person extends BackboneModel {
 			$filterout = implode(',', $filterout);
 		}
 		if (strlen($filterout) > 0)
-			$filterout = "WHERE eval_id NOT IN ({$filterout})";
+			$filterout = "WHERE user_id NOT IN ({$filterout})";
 
 		$ret = array();
-		$data = DBFunctions::execSQL("SELECT DISTINCT eval_id FROM mw_eval {$filterout};");
+		$data = DBFunctions::execSQL("SELECT DISTINCT user_id FROM grand_eval {$filterout};");
 		foreach ($data as &$q){
-			$ret[$q['eval_id']] = Person::newFromId($q['eval_id']);
+			$ret[$q['user_id']] = Person::newFromId($q['user_id']);
 		}
 		return $ret;
 	}
@@ -2664,10 +2664,10 @@ class Person extends BackboneModel {
 	// Returns true if the person is an evaluator
 	function isEvaluator($year = REPORTING_YEAR){
 	    if($this->isEvaluator === null){
-	        $eTable = getTableName("eval");
+	      
 	        $sql = "SELECT *
-	                FROM $eTable
-	                WHERE eval_id = '{$this->id}'
+	                FROM grand_eval
+	                WHERE user_id = '{$this->id}'
 	                AND year = '{$year}'";
 	        $data = DBFunctions::execSQL($sql);
 	        if(count($data) > 0){
@@ -2682,10 +2682,10 @@ class Person extends BackboneModel {
 	
 	// Returns the list of Evaluation Submissions for this person
 	function getEvaluateSubs($year = REPORTING_YEAR){
-	    $eTable = getTableName("eval");
+	    
 	    $sql = "SELECT *
-	            FROM $eTable
-	            WHERE eval_id = '{$this->id}'
+	            FROM grand_eval
+	            WHERE user_id = '{$this->id}'
 	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
@@ -2702,10 +2702,9 @@ class Person extends BackboneModel {
 	
 	static function getAllEvaluates($type, $year = REPORTING_YEAR){
 	    $type = mysql_real_escape_string($type);
-	    $eTable = getTableName("eval");
 	    
 	    $sql = "SELECT DISTINCT sub_id 
-	            FROM $eTable
+	            FROM grand_eval
 	            WHERE type = '$type'
 	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
@@ -2724,10 +2723,10 @@ class Person extends BackboneModel {
 
 	function getEvaluates($type, $year = REPORTING_YEAR){
 	    $type = mysql_real_escape_string($type);
-	    $eTable = getTableName("eval");
+	    
 	    $sql = "SELECT *
-	            FROM $eTable
-	            WHERE eval_id = '{$this->id}'
+	            FROM grand_eval
+	            WHERE user_id = '{$this->id}'
 	            AND type = '$type'
 	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
@@ -2748,10 +2747,10 @@ class Person extends BackboneModel {
 	}
 
 	function getEvaluatePNIs($year = REPORTING_YEAR){
-	    $eTable = getTableName("eval");
+	   
 	    $sql = "SELECT *
-	            FROM $eTable
-	            WHERE eval_id = '{$this->id}'
+	            FROM grand_eval
+	            WHERE user_id = '{$this->id}'
 	            AND type = 'PNI'
 	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
@@ -2766,10 +2765,10 @@ class Person extends BackboneModel {
     
     // Returns the list of Evaluation Submissions for this person
 	function getEvaluateCNIs($year = REPORTING_YEAR){
-	    $eTable = getTableName("eval");
+	    
 	    $sql = "SELECT *
-	            FROM $eTable
-	            WHERE eval_id = '{$this->id}'
+	            FROM grand_eval
+	            WHERE user_id = '{$this->id}'
                 AND type = 'CNI'
                 AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
@@ -2783,10 +2782,10 @@ class Person extends BackboneModel {
 	}
 	
 	function getEvaluateProjects($year = REPORTING_YEAR){
-	    $eTable = getTableName("eval");
+	    
 	    $sql = "SELECT *
-	            FROM $eTable
-	            WHERE eval_id = '{$this->id}'
+	            FROM grand_eval
+	            WHERE user_id = '{$this->id}'
 	            AND type = 'Project'
 	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
@@ -2802,16 +2801,16 @@ class Person extends BackboneModel {
 	// Returns a list of the evaluators who are evaluating this Person
 	// Provide type 
 	function getEvaluators($type='Researcher', $year = REPORTING_YEAR){
-	    $eTable = getTableName("eval");
+	    
 	    $sql = "SELECT *
-	            FROM $eTable
+	            FROM grand_eval
 	            WHERE sub_id = '{$this->id}'
 	            AND type = '{$type}'
 	            AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
-            $subs[] = Person::newFromId($row['eval_id']);
+            $subs[] = Person::newFromId($row['user_id']);
         }
         return $subs;
 	}

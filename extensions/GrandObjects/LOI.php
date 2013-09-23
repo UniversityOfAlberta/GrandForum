@@ -111,7 +111,7 @@ class LOI extends BackboneModel {
 	static function getAssignedLOIs($year=REPORTING_YEAR){
 		$sql = "SELECT DISTINCT l.* 
 				FROM grand_loi l
-				INNER JOIN mw_eval e ON(l.id=e.sub_id AND e.type IN('LOI', 'OPT_LOI') AND e.year={$year} AND l.year={$year}) 
+				INNER JOIN grand_eval e ON(l.id=e.sub_id AND e.type IN('LOI', 'OPT_LOI') AND e.year={$year} AND l.year={$year}) 
 				ORDER BY l.name";
 		$results = DBFunctions::execSQL($sql);
 		$lois = array();
@@ -277,9 +277,9 @@ class LOI extends BackboneModel {
 	}
 
 	function getEvaluators($type=null, $year = REPORTING_YEAR){
-	    $eTable = getTableName("eval");
+	    
 	    $sql = "SELECT *
-	            FROM $eTable
+	            FROM grand_eval
 	            WHERE sub_id = '{$this->id}'
 	            AND year = '{$year}'";
 
@@ -293,7 +293,7 @@ class LOI extends BackboneModel {
 
         foreach($data as $row){
             if($row['type'] == "LOI" || $row['type'] == "OPT_LOI"){
-            	$evals[] = Person::newFromId($row['eval_id']);
+            	$evals[] = Person::newFromId($row['user_id']);
             }
         }
         return $evals;

@@ -559,7 +559,7 @@ EOF;
 	
 	static function bulkGeneratePDFs(){
 		 
-		$sql = "select eval_id, sub_id, type FROM mw_eval WHERE eval_id NOT IN (4,150) ORDER BY eval_id";
+		$sql = "select eval_id, sub_id, type FROM grand_eval WHERE eval_id NOT IN (4,150) ORDER BY eval_id";
 		$data = DBFunctions::execSQL($sql);
 	    //$subs = array();
         foreach($data as $row){
