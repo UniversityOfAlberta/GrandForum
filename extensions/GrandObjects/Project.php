@@ -839,16 +839,16 @@ EOF;
 	
 	// Returns a list of the evaluators who are evaluating this Project
 	function getEvaluators($year = REPORTING_YEAR){
-	    $eTable = getTableName("eval");
+	    
 	    $sql = "SELECT *
-	            FROM $eTable
+	            FROM grand_eval
 	            WHERE sub_id = '{$this->id}'
 				AND type = 'Project'
 				AND year = '{$year}'";
 	    $data = DBFunctions::execSQL($sql);
 	    $subs = array();
         foreach($data as $row){
-            $subs[] = Person::newFromId($row['eval_id']);
+            $subs[] = Person::newFromId($row['user_id']);
         }
         return $subs;
 	}
