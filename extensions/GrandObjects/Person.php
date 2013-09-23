@@ -857,12 +857,15 @@ class Person extends BackboneModel {
 	    return $people;
 	}
 	
-	// Returns the reported thesis for when HQPs are inactivated
-	function getThesis(){
-	    $sql = "SELECT *
-	            FROM `grand_theses`
-	            WHERE `user_id` = '{$this->getId()}'";
-	    $data = DBFunctions::execSQL($sql);
+    /**
+     * Returns the reported thesis for when HQPs are inactivated
+     * @param boolean $guess Whether or not to take a guess at what the thesis is
+     * @return Product The Product object representing the thesis
+     */
+	function getThesis($guess = true){
+	    $data = DBFunctions::select(array('grand_theses'),
+	                                array('publication_id'),
+	                                array('user_id' => EQ($this->getId())));
 	    $paper = null;
 	    if(DBFunctions::getNRows() > 0){
 	        $paper = Paper::newFromId($data[0]['publication_id']);
@@ -870,9 +873,8 @@ class Person extends BackboneModel {
 	            $paper = null;
 	        }
 	    }
-	    
 	    //Not in theses table, try to find a publication
-	    if(is_null($paper)){
+	    if($guess && is_null($paper)){
 	        $papers = $this->getPapers();
 	        foreach($papers as $p){
 	            if($p->getType() == 'Masters Thesis' ||
@@ -2921,22 +2923,6 @@ class Person extends BackboneModel {
             return true;
         }
         return false;
-    }
-    
-    // Returns whether or not this person is waiting to be inactivated or not
-    function isPendingInactivation(){
-        $sql = "SELECT *
-	            FROM `grand_role_request`
-	            WHERE `created` = 'pending'
-	            AND `user` = '{$this->getName()}'
-	            ORDER BY `id` DESC LIMIT 1";
-	    $data = DBFunctions::execSQL($sql);
-	    if(count($data) > 0){
-	        return true;
-	    }
-	    else{
-	        return false;
-	    }
     }
 
 	/// Returns a new array of user IDs based on #arr, but sorted by the

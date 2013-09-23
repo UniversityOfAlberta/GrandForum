@@ -97,7 +97,7 @@ class HQPExitTab extends AbstractEditableTab {
                 $universities[] = $uni;
             }
             $movedOn = $person->getMovedOn();
-            $thesis = $person->getThesis();
+            $thesis = $person->getThesis(false);
             $tId = ($thesis != null) ? $thesis->getId() : 0;
             
             $roleHistory = $person->getRoles(true);

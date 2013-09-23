@@ -130,12 +130,11 @@ class DeleteProjectMemberAPI extends API{
 	// If the creator cannot be determined, then 'me' is returned
 	function getCreator($me){
 	    if(isset($_POST['id'])){
-	        $sql = "SELECT `requesting_user`
-	                FROM `grand_role_request`
-	                WHERE `id` = '{$_POST['id']}'";
-	        $data = DBFunctions::execSQL($sql);
+	        $data = DBFunctions::select(array('grand_role_request'),
+	                                    array('requesting_user'),
+	                                    array('id' => EQ($_POST['id'])));
 	        if(count($data) > 0){
-	            return Person::newFromName($data[0]['requesting_user']);
+	            return Person::newFromId($data[0]['requesting_user']);
 	        }
 	    }   
 	    return $me;

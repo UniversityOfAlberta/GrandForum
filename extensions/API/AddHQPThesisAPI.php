@@ -32,18 +32,22 @@ class AddHQPThesisAPI extends API{
 		}
 		if($me->isRole(STAFF) || $me->isRole(MANAGER) || count($me->leadership()) > 0 || $isSupervisor || $me->getId() == $person->getId()){
             // Actually Add the Project Member
-            $sql = "SELECT * FROM `grand_theses`
-                    WHERE `user_id` = '{$person->getId()}'";
-            DBFunctions::execSQL($sql);
-            if(DBFunctions::getNRows() > 0){
-                DBFunctions::execSQL("UPDATE `grand_theses`
-                                      SET `publication_id` = '{$_POST['thesis']}'
-                                      WHERE `user_id` = '{$person->getId()}'", true);
+            $data = DBFunctions::select(array('grand_theses'),
+                                        array('*'),
+                                        array('user_id' => EQ($person->getId())));
+            if(count($data) > 0){
+                if($_POST['thesis'] == "No Thesis"){
+                    DBFunctions::delete('grand_theses',
+                                        array('user_id' => EQ($person->getId())));
+                }
+                DBFunctions::update('grand_theses',
+                                    array('publication_id' => $_POST['thesis']),
+                                    array('user_id' => EQ($person->getId())));
             }
-            else{
-                DBFunctions::execSQL("INSERT INTO grand_theses
-                                  (`user_id`,`publication_id`)
-                                  VALUES ('{$person->getId()}','{$_POST['thesis']}')", true);
+            else if($_POST['thesis'] != "No Thesis"){
+                DBFunctions::insert('grand_theses',
+                                    array('user_id' => $person->getId(),
+                                          'publication_id' => $_POST['thesis']));
             }
             if(!$noEcho){
                 echo "{$person->getName()} thesis added\n";

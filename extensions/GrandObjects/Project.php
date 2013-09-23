@@ -497,7 +497,7 @@ EOF;
                     WHERE (m.end_date > CURRENT_TIMESTAMP OR m.end_date = '0000-00-00 00:00:00')
                     AND m.user_id = u.user_id
                     AND m.project_id = '{$this->id}'
-                    AND `u.deleted` != '1'
+                    AND u.`deleted` != '1'
                     ORDER BY last_name ASC";
 	        $this->peopleCache = DBFunctions::execSQL($sql);
 	    }
