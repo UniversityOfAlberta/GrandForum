@@ -12,8 +12,11 @@ class PersonProfileTab extends AbstractEditableTab {
     }
 
     function generateBody(){
+        global $wgUser;
         $this->showProfile($this->person, $this->visibility);
-        $this->showEthics($this->person, $this->visibility);
+        if($wgUser->isLoggedIn()){
+            $this->showEthics($this->person, $this->visibility);
+        }
         return $this->html;
     }
     
