@@ -237,21 +237,21 @@ class Person extends BackboneModel {
             $data = DBFunctions::execSQL($sql);
             if(count($data) > 0){
                 foreach($data as $row){
-                    if(!isset(self::$rolesCache[$row['user']])){
-                        self::$rolesCache[$row['user']] = array();
+                    if(!isset(self::$rolesCache[$row['user_id']])){
+                        self::$rolesCache[$row['user_id']] = array();
                     }
-                    self::$rolesCache[$row['user']][] = $row;
+                    self::$rolesCache[$row['user_id']][] = $row;
                 }
             }
             else{
                 $this->id = $data[0]['id'];
-			    $this->user = $data[0]['user'];
+			    $this->user = $data[0]['user_id'];
 			    $this->role = $data[0]['role'];
 			    $this->startDate = $data[0]['start_date'];
 			    $this->endDate = $data[0]['end_date'];
 			    $this->comment = $data[0]['comment'];
                 self::$rolesCache[$this->id][] = array(0 => array('id' => '-1',
-                                                                  'user' => $this->id,
+                                                                  'user_id' => $this->id,
                                                                   'role' => INACTIVE,
                                                                   'start_date' => '0000-00-00 00:00:00',
                                                                   'end_date' => '0000-00-00 00:00:00',
@@ -1136,13 +1136,13 @@ class Person extends BackboneModel {
 			if($history === true){
 			    $data = DBFunctions::select(array('grand_roles'),
 			                                array('*'),
-			                                array('user' => $this->id),
+			                                array('user_id' => $this->id),
 			                                array('end_date' => 'DESC'));
             }
             else{
                 $sql = "SELECT *
                         FROM grand_roles
-                        WHERE user = '{$this->id}'
+                        WHERE user_id = '{$this->id}'
                         AND start_date <= '{$history}'
                         AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
                 $data = DBFunctions::execSQL($sql);
@@ -1164,7 +1164,7 @@ class Person extends BackboneModel {
 		    }
 		    else{
 		        $this->roles[] = new Role(array(0 => array('id' => -1,
-		                                                   'user' => $this->id,
+		                                                   'user_id' => $this->id,
 		                                                   'role' => INACTIVE,
 		                                                   'start_date' => '0000-00-00 00:00:00',
 		                                                   'end_date' => '0000-00-00 00:00:00',
@@ -1180,7 +1180,7 @@ class Person extends BackboneModel {
 	    $pm = $this->isProjectManager();
 	    if($this->isProjectLeader() && !$pm){
 		    $roles[] = new Role(array(0 => array('id' => -1,
-		                                               'user' => $this->id,
+		                                               'user_id' => $this->id,
 		                                               'role' => "PL",
 		                                               'start_date' => '0000-00-00 00:00:00',
 		                                               'end_date' => '0000-00-00 00:00:00',
@@ -1188,7 +1188,7 @@ class Person extends BackboneModel {
 		}
 		if($this->isProjectCoLeader() && !$pm){
 		    $roles[] = new Role(array(0 => array('id' => -1,
-		                                               'user' => $this->id,
+		                                               'user_id' => $this->id,
 		                                               'role' => "COPL",
 		                                               'start_date' => '0000-00-00 00:00:00',
 		                                               'end_date' => '0000-00-00 00:00:00',
@@ -1196,7 +1196,7 @@ class Person extends BackboneModel {
 		}
 		if($pm){
 		    $roles[] = new Role(array(0 => array('id' => -1,
-		                                               'user' => $this->id,
+		                                               'user_id' => $this->id,
 		                                               'role' => "PM",
 		                                               'start_date' => '0000-00-00 00:00:00',
 		                                               'end_date' => '0000-00-00 00:00:00',
@@ -1210,7 +1210,7 @@ class Person extends BackboneModel {
 	    $pm = $this->isProjectManagerDuring($startDate, $endDate);
 	    if($this->isProjectLeaderDuring($startDate, $endDate) && !$pm){
 		    $roles[] = new Role(array(0 => array('id' => -1,
-		                                               'user' => $this->id,
+		                                               'user_id' => $this->id,
 		                                               'role' => "PL",
 		                                               'start_date' => '0000-00-00 00:00:00',
 		                                               'end_date' => '0000-00-00 00:00:00',
@@ -1218,7 +1218,7 @@ class Person extends BackboneModel {
 		}
 		if($this->isProjectCoLeaderDuring($startDate, $endDate) && !$pm){
 		    $roles[] = new Role(array(0 => array('id' => -1,
-		                                               'user' => $this->id,
+		                                               'user_id' => $this->id,
 		                                               'role' => "COPL",
 		                                               'start_date' => '0000-00-00 00:00:00',
 		                                               'end_date' => '0000-00-00 00:00:00',
@@ -1226,7 +1226,7 @@ class Person extends BackboneModel {
 		}
 		if($pm){
 		    $roles[] = new Role(array(0 => array('id' => -1,
-		                                               'user' => $this->id,
+		                                               'user_id' => $this->id,
 		                                               'role' => "PM",
 		                                               'start_date' => '0000-00-00 00:00:00',
 		                                               'end_date' => '0000-00-00 00:00:00',
@@ -1291,7 +1291,7 @@ class Person extends BackboneModel {
 	    
 	    $sql = "SELECT *
                 FROM grand_roles
-                WHERE user = '{$this->id}'
+                WHERE user_id = '{$this->id}'
                 AND ( 
                 ( (end_date != '0000-00-00 00:00:00') AND
                 (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))

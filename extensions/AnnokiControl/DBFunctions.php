@@ -348,7 +348,6 @@ class DBFunctions {
             }
         }
         $sql .= implode(",\n", $sets);
-        $sql .= "WHERE ";
         $wheres = array();
         foreach($where as $key => $value){
             $key = mysql_real_escape_string($key);
@@ -361,11 +360,27 @@ class DBFunctions {
                 $wheres[] = "{$key} = '{$value}' ";
             }
         }
+        if(count($wheres) > 0){
+            $sql .= "WHERE ";
+            foreach($wheres as $key => $where){
+                if($key > 0){
+                    if(strstr($where, "### OR ") !== false){
+                        $where = str_replace("### OR ", " OR ", $where);
+                    }
+                    else if(strstr($where, "### AND ") !== false){
+                        $where = str_replace("### AND ", " AND ", $where);
+                    }
+                    else{
+                        $where = " AND $where";
+                    }
+                }
+                $sql .= $where."\n";
+            }
+        }
         foreach($limit as $key => $value){
             $value = mysql_real_escape_string($value);
             $limitSQL[] = "{$value} ";
         }
-        $sql .= implode("\n", $wheres);
         if(count($limitSQL) > 0){
             $sql .= "\nLIMIT ".implode(", ", $limitSQL);
         }

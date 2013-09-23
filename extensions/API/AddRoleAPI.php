@@ -35,10 +35,10 @@ class AddRoleAPI extends API{
 		        exec($command);
 		    }
             // Add entry into grand_roles
-            $sql = "INSERT INTO grand_roles (`user`,`role`,`start_date`)
-	                VALUES ('{$person->getId()}','$role', CURRENT_TIMESTAMP)";
-            DBFunctions::execSQL($sql, true);
-            
+            DBFunctions::insert('grand_roles',
+                                array('user_id' => $person->getId(),
+                                      'role' => $role,
+                                      'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
             // Add entry for user_groups
             $user = User::newFromId($person->getId());
             $groups = $user->getGroups();
@@ -51,9 +51,9 @@ class AddRoleAPI extends API{
                 }
             }
             if(!$skip){
-                $sql = "INSERT INTO mw_user_groups (`ug_user`,`ug_group`)
-	                    VALUES ('{$person->getId()}','$role')";
-                DBFunctions::execSQL($sql, true);
+                DBFunctions::insert('mw_user_groups',
+                                    array('ug_user' => $person->getId(),
+                                          'ug_group' => $role));
             }
             if(!$noEcho){
                 echo "{$person->getReversedName()} added to $role\n";
@@ -73,14 +73,13 @@ class AddRoleAPI extends API{
                     }
                 }
             }
-            $sql = "SELECT `id`
-	                FROM grand_notifications
-	                WHERE user_id = '{$creator->getId()}'
-	                AND message LIKE '%{$person->getName()}%'
-	                AND url = ''
-	                AND creator = ''
-	                AND active = '1'";
-	        $data = DBFunctions::execSQL($sql);
+            $data = DBFunctions::select(array('grand_notifications'),
+                                        array('id'),
+                                        array('user_id' => EQ($creator->getId()),
+                                              'message' => LIKE("%{$person->getName()}%"),
+                                              'url' => EQ(''),
+                                              'creator' => EQ(''),
+                                              'active' => EQ('1')));
 	        if(count($data) > 0){
 	            // Remove the Notification that the user was sent after the request
 	            Notification::deactivateNotification($data[0]['id']);

@@ -52,21 +52,19 @@ class DeleteRoleAPI extends API{
 	                SET `comment` = '$comment',
 	                    `end_date` = $effectiveDate
 	                WHERE `role` = '$role'
-	                AND user = '{$person->getId()}'
+	                AND user_id = '{$person->getId()}'
 	                ORDER BY `start_date` DESC LIMIT 1";
             DBFunctions::execSQL($sql, true);
             
-            $sql = "DELETE FROM mw_user_groups
-                    WHERE ug_user = '{$person->getId()}'
-                    AND ug_group = '$role'";
-            DBFunctions::execSQL($sql, true);
+            DBFunctions::delete('mw_user_groups',
+                                array('ug_user' => EQ($person->getId()),
+                                      'ug_group' => EQ($role)));
             if($role == HQP){
-                $sql = "UPDATE grand_relations
-                        SET end_date = CURRENT_TIMESTAMP
-                        WHERE user2 = '{$person->getId()}'
-                        AND type = 'Supervises'
-                        AND start_date > end_date";
-                DBFunctions::execSQL($sql, true);
+                DBFunctions::update('grand_relations',
+                                    array('end_date' => EQ(COL('CURRENT_TIMESTAMP'))),
+                                    array('user2' => EQ($person->getId()),
+                                          'type' => EQ('Supervises'),
+                                          'start_date' => GT(COL('end_date'))));
             }
             if(!$noEcho){
                 echo "{$person->getReversedName()} deleted from $role\n";
@@ -89,14 +87,13 @@ class DeleteRoleAPI extends API{
                         }
                     }
                 }
-                $sql = "SELECT `id`
-		                FROM grand_notifications
-		                WHERE user_id = '{$creator->getId()}'
-		                AND message LIKE '%{$person->getName()}%'
-		                AND url = ''
-		                AND creator = ''
-		                AND active = '1'";
-		        $data = DBFunctions::execSQL($sql);
+                $data = DBFunctions::select(array('grand_notifications'),
+                                            array('id'),
+                                            array('user_id' => EQ($creator->getId()),
+                                                  'message' => LIKE("%{$person->getName()}%"),
+                                                  'url' => EQ(''),
+                                                  'creator' => EQ(''),
+                                                  'active' => EQ('1')));
 		        if(count($data) > 0){
 		            // Remove the Notification that the user was sent after the request
 		            Notification::deactivateNotification($data[0]['id']);
