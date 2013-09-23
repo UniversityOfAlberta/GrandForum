@@ -45,8 +45,16 @@ class AddProjectLeaderAPI extends API{
                 }
             }
             // Add entry into grand_projects
-            $sql = "INSERT INTO grand_project_leaders (`user_id`,`project_id`,`co_lead`,`manager`,`start_date`)
-					VALUES ('{$person->getId()}','{$project->getId()}','{$_POST['co_lead']}','{$_POST['manager']}', CURRENT_TIMESTAMP)";
+            $lead_type = "leader";
+            if($_POST['co_lead'] == "True"){
+                $lead_type = "co-leader";
+            }
+            else if($_POST['manager'] == 1){
+                $lead_type = "manager";
+            }
+
+            $sql = "INSERT INTO grand_project_leaders (`user_id`,`project_id`,`type`,`start_date`)
+					VALUES ('{$person->getId()}','{$project->getId()}','{$lead_type}', CURRENT_TIMESTAMP)";
             DBFunctions::execSQL($sql, true);
 
             if(!$noEcho){
@@ -56,19 +64,13 @@ class AddProjectLeaderAPI extends API{
             $sql = "SELECT CURRENT_TIMESTAMP";
             $data = DBFunctions::execSQL($sql);
             $effectiveDate = "'{$data[0]['CURRENT_TIMESTAMP']}'";
-            $type = "leader";
-            if($_POST['co_lead'] == "True"){
-                $type = 'co-leader';
-            }
-            if($_POST['manager'] == "True"){
-                $type = 'manager';
-            }
-            Notification::addNotification($me, $person, "Project Leader Added", "Effective $effectiveDate you are a project {$type} of'{$project->getName()}'", "{$person->getUrl()}");
+           
+            Notification::addNotification($me, $person, "Project Leader Added", "Effective $effectiveDate you are a project {$lead_type} of'{$project->getName()}'", "{$person->getUrl()}");
             $leaders = $project->getLeaders();
             if(count($leaders) > 0){
                 foreach($leaders as $leader){
                     if($leader->getName() != $person->getName()){
-                        Notification::addNotification($me, $leader, "Project Leader Added", "Effective $effectiveDate {$person->getReversedName()} is a {$type} of '{$project->getName()}'", "{$person->getUrl()}");
+                        Notification::addNotification($me, $leader, "Project Leader Added", "Effective $effectiveDate {$person->getReversedName()} is a {$lead_type} of '{$project->getName()}'", "{$person->getUrl()}");
                     }
                 }
             }
