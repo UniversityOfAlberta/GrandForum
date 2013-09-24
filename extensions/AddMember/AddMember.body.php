@@ -46,7 +46,7 @@ class UserCreate {
 				                        array('ug_user' => $id,
 				                              'ug_group' => $role));
 				    DBFunctions::insert('grand_roles',
-				                        array('user' => $id,
+				                        array('user_id' => $id,
 				                              'role' => $role,
 				                              'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
 		            if($role == PNI || $role == CNI){

@@ -77,9 +77,14 @@ class CreateUserAPI extends API{
 			    Person::$idsCache = array();
 			    $person = Person::newFromName($_POST['wpName']);
 			    if($person != null && $person->getName() != null){
-			        DBFunctions::insert('mw_user_university',
+			        $defaultUni = Person::getDefaultUniversity();
+			        $unis = array_flip(Person::getAllUniversities());
+			        $defaultPos = Person::getDefaultPosition();
+			        $poss = array_flip(Person::getAllPositions());
+			        DBFunctions::insert('grand_user_university',
 			                            array('user_id' => $person->getId(),
-			                                  'university_id' => '0'));
+			                                  'university_id' => $unis[$defaultUni],
+			                                  'position_id' => $poss[$defaultPos]));
 			        Notification::addNotification("", $creator, "User Created", "A new user has been added to the forum: {$person->getReversedName()}", "{$person->getUrl()}");
 			        $data = DBFunctions::select(array('grand_notifications'),
 			                                    array('id'),

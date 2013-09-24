@@ -278,13 +278,8 @@ class PersonContactTab extends AbstractEditableTab {
                                  ";
             }
         }
-        $sql = "SELECT * 
-                FROM mw_universities";
-        $rows = DBFunctions::execSQL($sql);
-        $universities = array();
-        foreach($rows as $row) {
-            $universities[] = $row;
-        }
+        $universities = Person::getAllUniversities();
+        $positions = Person::getAllPositions();
         $this->html .= "<table>
                             <tr>
                                 <td align='right'><b>Email:</b></td>
@@ -295,49 +290,26 @@ class PersonContactTab extends AbstractEditableTab {
                             <tr>
                                 <td align='right'><b>Title:</b></td>
                                 <td><select name='title'>
-                                        <option>Other</option>";
-        if($university['position'] == "Professor"){$selected = " selected";} else{$selected = "";}
-        $this->html .= "               <option$selected>Professor</option>\n";
-        if($university['position'] == "Assistant Professor"){$selected = " selected";} else{$selected = "";}
-        $this->html .= "               <option$selected>Assistant Professor</option>\n";
-        if($university['position'] == "Associate Professor"){$selected = " selected";} else{$selected = "";}
-        $this->html .= "               <option$selected>Associate Professor</option>\n";
-        if($university['position'] == "Dean of Research"){$selected = " selected";} else{$selected = "";}
-        $this->html .= "               <option$selected>Dean of Research</option>\n";
-        if($university['position'] == "Associate Dean of Research"){$selected = " selected";} else{$selected = "";}
-        $this->html .= "               <option$selected>Associate Dean of Research</option>\n";
-        if($university['position'] == "Associate Dean Student Affairs"){$selected = " selected";} else{$selected = "";}
-        $this->html .= "               <option$selected>Associate Dean Student Affairs</option>\n";
-        if($university['position'] == "Masters Student"){$selected = " selected";} else{$selected = "";}
-        $this->html .= "               <option$selected>Masters Student</option>\n";
-        if($university['position'] == "PhD Student"){$selected = " selected";} else{$selected = "";}
-        $this->html .= "               <option$selected>PhD Student</option>\n";
-        if($university['position'] == "PostDoc"){$selected = " selected";} else{$selected = "";}
-        $this->html .= "               <option$selected>PostDoc</option>\n";
-        if($university['position'] == "Undergraduate"){$selected = " selected";} else{$selected = "";}
-        $this->html .= "               <option$selected>Undergraduate</option>\n";
-        if($university['position'] == "Director"){$selected = " selected";} else{$selected = "";}
-        $this->html .= "               <option$selected>Director</option>\n";
-        if($university['position'] == "Canada Research Chair"){$selected = " selected";} else{$selected = "";}
-        $this->html .= "               <option$selected>Canada Research Chair</option>\n";
-        if($university['position'] == "Technician"){$selected = " selected";} else{$selected = "";}
-        $this->html .= "               <option$selected>Technician</option>\n";
-        if($university['position'] == "VP Research"){$selected = " selected";} else{$selected = "";}
-        $this->html .= "               <option$selected>VP Research</option>\n";
+                                    ";
+        foreach($positions as $pos){
+            $selected = "";
+            if($pos == $university['position']){
+                $selected = " selected";
+            }
+            $this->html .= "<option$selected>{$pos}</option>";
+        }
         $this->html .= "           </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td align='right'><b>University:</b></td>
-                                <td><select name='university'>
-                                    <option>---</option>
-                                    ";
+                                <td><select name='university'>";
         foreach($universities as $uni){
             $selected = "";
-            if($uni['university_name'] == $university['university']){
+            if($uni == $university['university']){
                 $selected = " selected";
             }
-            $this->html .= "<option$selected>{$uni['university_name']}</option>";
+            $this->html .= "<option$selected>{$uni}</option>";
         }
         $this->html .= "           </select>
                                 </td>

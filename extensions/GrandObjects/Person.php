@@ -294,19 +294,19 @@ class Person extends BackboneModel {
     
     static function generateUniversityCache(){
         if(count(self::$universityCache) == 0){
-            $sql = "SELECT * 
-                    FROM mw_user_university uu, mw_universities u
-                    WHERE u.university_id = uu.university_id
-                    ORDER BY uu.id DESC";
-            $data = DBFunctions::execSQL($sql);
-            if(DBFunctions::getNRows() > 0){
-                foreach($data as $row){
-                    if(!isset(self::$universityCache[$row['user_id']])){
-                        self::$universityCache[$row['user_id']] = 
-                            array("university" => str_replace("&", "&amp;", $row['university_name']),
-                                  "department" => str_replace("&", "&amp;", $row['department']),
-                                  "position"   => str_replace("&", "&amp;", $row['position']));
-                    }
+            $data = DBFunctions::select(array('grand_user_university' => 'uu',
+                                              'grand_universities' => 'u',
+                                              'grand_positions' => 'p'),
+                                        array('*'),
+                                        array('u.university_id' => EQ(COL('uu.university_id')),
+                                              'uu.position_id' => EQ(COL('p.position_id'))),
+                                        array('uu.id' => 'DESC'));
+            foreach($data as $row){
+                if(!isset(self::$universityCache[$row['user_id']])){
+                    self::$universityCache[$row['user_id']] = 
+                        array("university" => str_replace("&", "&amp;", $row['university_name']),
+                              "department" => str_replace("&", "&amp;", $row['department']),
+                              "position"   => str_replace("&", "&amp;", $row['position']));
                 }
             }
         }
@@ -335,16 +335,66 @@ class Person extends BackboneModel {
         }
     }
     
-    // Returns an array of all Univeristy names
+    /**
+     * Returns an array of all University names
+     * @return array An array of all University names
+     */
     static function getAllUniversities(){
         //TODO: This should eventually be extracted to a new Class
-        $sql = "SELECT * FROM `mw_universities`";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('grand_universities'),
+                                    array('*'),
+                                    array(),
+                                    array('`order`' => 'ASC'));
         $universities = array();
         foreach($data as $row){
-            $universities[] = $row['university_name'];
+            $universities[$row['university_id']] = $row['university_name'];
         }
         return $universities;
+    }
+    
+    /**
+     * Returns an array of all Position names
+     * @return array An array of all Position names
+     */
+    static function getAllPositions(){
+        //TODO: This should eventually be extracted to a new Class
+        $data = DBFunctions::select(array('grand_positions'),
+                                    array('*'),
+                                    array(),
+                                    array('`order`' => 'ASC'));
+        $positions = array();
+        foreach($data as $row){
+            $positions[$row['position_id']] = $row['position'];
+        }
+        return $positions;
+    }
+    
+    /**
+     * Returns the default University name
+     * @return string The default University name
+     */
+    static function getDefaultUniversity(){
+        $data = DBFunctions::select(array('grand_universities'),
+                                    array('*'),
+                                    array('`default`' => EQ(1)));
+        if(count($data) > 0){
+            return $data[0]['university_name'];
+        }
+        return "";
+    }
+    
+    /**
+     * Returns the default Position name
+     * @return string The default Position name
+     */
+    static function getDefaultPosition(){
+        $data = DBFunctions::select(array('grand_positions'),
+                                    array('*'),
+                                    array('`default`' => EQ(1)));
+        if(count($data) > 0){
+            return $data[0]['position'];
+        }
+        return "";
     }
     
     /**
@@ -1028,12 +1078,11 @@ class Person extends BackboneModel {
             $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
             $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
         }
-        $uTable = getTableName("universities");
-        $uuTable = getTableName("user_university");
         $sql = "SELECT * 
-                FROM $uuTable uu, $uTable u
+                FROM grand_user_university uu, grand_universities u, grand_positions p
                 WHERE uu.user_id = '{$this->id}'
                 AND u.university_id = uu.university_id
+                AND uu.position_id = p.position_id
                 AND ( 
                 ( (end_date != '0000-00-00 00:00:00') AND
                 (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
