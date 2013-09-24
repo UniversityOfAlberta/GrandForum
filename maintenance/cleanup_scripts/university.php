@@ -23,12 +23,12 @@ $sql = "INSERT INTO `grand_universities` (`university_name`,`order`,`default`)
         VALUES ('Unknown', 0, 1)";
 DBFunctions::execSQL($sql, true);
 
-$sql = "UPDATE `grand_user_university`
-        SET `university_id` = (SELECT university_id FROM `grand_universities` WHERE `university_name` = 'Unknown')
-        WHERE `university_id` = 0";
+$sql = "RENAME TABLE `mw_user_university` TO `grand_user_university` ;";
 DBFunctions::execSQL($sql, true);
 
-$sql = "RENAME TABLE `mw_user_university` TO `grand_user_university` ;";
+$sql = "UPDATE `grand_user_university`
+        SET `university_id` = (SELECT university_id FROM `grand_universities` WHERE `university_name` = 'Unknown' LIMIT 1)
+        WHERE `university_id` = 0";
 DBFunctions::execSQL($sql, true);
 
 $sql = "ALTER TABLE `grand_user_university` DROP `comment`";

@@ -48,27 +48,38 @@ class UserUniversityAPI extends API{
         $person = Person::newFromName($_POST['user_name']);
         
         $data = DBFunctions::select(array('grand_user_university'),
-                                    array('id'),
+                                    array('id',
+                                          'university_id', 
+                                          'department',
+                                          'position_id'),
                                     array('user_id' => EQ($person->getId())),
                                     array('id' => 'DESC'),
                                     array(1));
-        $count = count($data);
-        if($count > 0){
+        if(count($data) > 0){
             //Update Previous
             $row = $data[0];
             $last_id = $row['id'];
-            DBFunctions::update('grand_user_university',
-                                array('end_date' => EQ(COL('CURRENT_TIMESTAMP'))),
-                                array('id' => EQ($last_id)));
-            //Insert New
-            DBFunctions::insert('grand_user_university',
-                                array('user_id' => $person->getId(),
-                                      'university_id' => $_POST['university'],
-                                      'department' => $_POST['department'],
-                                      'position_id' => $_POST['title'],
-                                      'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
-            if(!$noEcho){
-                echo "Account University Updated\n";
+            if($row['university_id'] == $_POST['university'] &&
+               $row['department'] == $_POST['department'] &&
+               $row['position_id'] == $_POST['title']){
+               if(!$noEcho){
+                    echo "No Change in University Information\n";
+                }
+            }
+            else{
+                DBFunctions::update('grand_user_university',
+                                    array('end_date' => EQ(COL('CURRENT_TIMESTAMP'))),
+                                    array('id' => EQ($last_id)));
+                //Insert New
+                DBFunctions::insert('grand_user_university',
+                                    array('user_id' => $person->getId(),
+                                          'university_id' => $_POST['university'],
+                                          'department' => $_POST['department'],
+                                          'position_id' => $_POST['title'],
+                                          'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
+                if(!$noEcho){
+                    echo "Account University Updated\n";
+                }
             }
         }
         else{
