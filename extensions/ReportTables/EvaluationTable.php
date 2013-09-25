@@ -84,7 +84,13 @@ class EvaluationTable extends SpecialPage {
 	    $init_tab = 0;
 	    
 		if(isset($_GET['section']) && $_GET['section'] == 'NSERC'){
-			$init_tabs = array('Jan-Dec2012'=>0, 'Apr2012-Mar2013'=>1, 'Jan-Mar2012'=>2, 'Apr-Dec2012'=>3, 'Jan-Mar2013'=>4, '2012'=>5, '2011'=>6);
+			$init_tabs = array('Jan-Dec2012' => 0, 
+			                   'Apr2012-Mar2013' => 1, 
+			                   'Jan-Mar2012' => 2, 
+			                   'Apr-Dec2012' => 3, 
+			                   'Jan-Mar2013' => 4, 
+			                   '2012' => 5, 
+			                   '2011' => 6);
 
 			if(isset($_GET['year'])){
 		    	$init_tab = $init_tabs[$_GET['year']];
@@ -113,11 +119,13 @@ class EvaluationTable extends SpecialPage {
 	    	//$tabbedPage->addTab(new NSERC2013Tab());
 	    	$tabbedPage->addTab(new NSERC2012Tab());
 	    	$tabbedPage->addTab(new NSERC2011Tab());
-
+	    	
 	        $tabbedPage->showPage($init_tab);
     	}
     	else{
-    		$init_tabs = array('2013'=>0, '2012'=>1, '2011'=>2);
+    		$init_tabs = array('2013' => 0, 
+    		                   '2012' => 1, 
+    		                   '2011' => 2);
 
     		if(isset($_GET['year'])){
 		    	$init_tab = $init_tabs[$_GET['year']];
