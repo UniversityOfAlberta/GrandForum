@@ -58,6 +58,13 @@ function IN($values){
     return "### IN ('".implode("','", $values)."')";
 }
 
+function NOT_IN($values){
+    foreach($values as $key => $value){
+        $values[$key] = mysql_real_escape_string($value);
+    }
+    return "### NOT IN ('".implode("','", $values)."')";
+}
+
 function WHERE_OR($value){
     return "### OR ".$value;
 }

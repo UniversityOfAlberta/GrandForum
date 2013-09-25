@@ -3,7 +3,6 @@
 include 'Evaluate_Form.php';
 //include 'EvaluationTable.php';
 include 'ReportIndex.php';
-include 'ReviewerIndex.php';
 
 class RMC2012Tab extends AbstractTab {
 
@@ -241,16 +240,13 @@ EOF;
         else{
             $this->html .= "<h3>$type Summary of Questions 1-9</h3>";
         }
-        $W1 = isset($_POST['w1']) ? min(99, $_POST['w1']) : 3;
-        $W2 = isset($_POST['w2']) ? min(99, $_POST['w2']) : 1;
-        $W3 = isset($_POST['w3']) ? min(99, $_POST['w3']) : 0;
+        $W1 = 3;
+        $W2 = 1;
+        $W3 = 0;
         if($getPerson == null){
-            $this->html .= "<form method='post' action='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?summary=question'>
-                                <b>Tier 1 Weight:</b> <input type='text' name='w1' value='$W1' size='3' /><br />
-                                <b>Tier 2 Weight:</b> <input type='text' name='w2' value='$W2' size='3' /><br />
-                                <b>Tier 3 Weight:</b> <input type='text' name='w3' value='$W3' size='3' /><br />
-                                <input type='submit' value='Reload' /><br /><br />
-                             </form>";
+            $this->html .= "<b>Tier 1 Weight:</b> $W1<br />
+                            <b>Tier 2 Weight:</b> $W2<br />
+                            <b>Tier 3 Weight:</b> $W3<br />";
         }
         $this->html .= "<table class='wikitable sortable' cellspacing='1' cellpadding='2' style='background: #000000;' width='100%'>"; 
         $rppg = "$wgServer$wgScriptPath/index.php/Special:Report";
@@ -283,11 +279,20 @@ EOF;
                     next($peopleTiers);
                     continue;
                 }
+                $report = new DummyReport(RP_EVAL_PDF, $person, null, 2011);
+                $pdf = $report->getPDF();
+                $download1 = "No&nbsp;PDF";
+                if(isset($pdf[0]['token'])){
+                    $download1 = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>[Download&nbsp;PDF]</a>";
+                }
                 
-                $download1 = EvaluationTable::getPNIPDF($person, 2011);
                 $download2 = "";
                 foreach($person->leadership() as $project){
-                    $download2 .= EvaluationTable::getProjectLeaderPDF($project, 2011)."<br />";
+                    $report = new DummyReport(RP_LEADER, $person, $project, 2011);
+                    $pdf = $report->getPDF();
+                    if(isset($pdf[0]['token'])){
+                        $download2 .= "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>[Download&nbsp;PDF]</a><br />";
+                    }
                 }
                 if($download2 == ""){
                     $download2 = "No&nbsp;PDF";
@@ -383,15 +388,12 @@ EOF;
                     continue;
                 }
                 $leader = $project->getLeader();
-                if($leader != null){
-                    $repi = new ReviewerIndex($leader, Person::newFromId($wgUser->getId()));
-                    $ls = $repi->list_reports($project);
+                $report = new DummyReport(RP_LEADER, $leader, $project, 2011);
+                $pdf = $report->getPDF();
+                $download2 = "No&nbsp;PDF";
+                if(isset($pdf[0]['token'])){
+                    $download2 = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>[Download&nbsp;PDF]</a>";
                 }
-                else{
-                    $ls = array();
-                }
-                $none = true;
-                $download2 = EvaluationTable::getProjectLeaderPDF($project, 2011)."<br />";
                 $tierSum1 = ($W1*$pTiers["1_1"] + $W2*$pTiers["1_2"] + $W3*$pTiers["1_3"])/$pTiers["nRatings"];
                 $tierSum2 = ($W1*$pTiers["2_1"] + $W2*$pTiers["2_2"] + $W3*$pTiers["2_3"])/max(1, $pTiers["nQ6"]);
                 if($tierSum2 < 10){
