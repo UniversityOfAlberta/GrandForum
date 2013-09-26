@@ -338,7 +338,8 @@ abstract class AbstractReport extends SpecialPage {
             }
     	}
     	else{
-    	    $check = array_merge($sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType), $sto->list_reports($this->person->getId(), NOTSUBM, 10000, 0, $this->pdfType));
+    	    $check = array_merge($sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType), 
+    	                         $sto->list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType));
     	}
     	$largestDate = "0000-00-00 00:00:00";
     	$return = array();

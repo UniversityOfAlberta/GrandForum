@@ -298,15 +298,20 @@ class ReportStorage {
 
         if (strlen($uarr) === 0)
             return array();
-
+        if($lim == 0){
+            $lim = "";
+        }
+        else{
+            $lim = "LIMIT {$lim}";
+        }
         $sql = "SELECT user_id, report_id, submitted, auto, token, timestamp, year
                 FROM grand_pdf_report 
                 WHERE user_id IN ({$uarr}) 
                 AND submitted = {$subm} 
                 AND type = {$type} 
-                AND special = {$special} 
                 AND report_id NOT IN (SELECT `report_id` FROM grand_pdf_index)
-                ORDER BY timestamp DESC LIMIT {$lim};";
+                ORDER BY timestamp DESC
+                {$lim};";
         return DBFunctions::execSQL($sql);
     }
     
@@ -317,16 +322,21 @@ class ReportStorage {
 
         if (strlen($uarr) === 0)
             return array();
-
+        if($lim == 0){
+            $lim = "";
+        }
+        else{
+            $lim = "LIMIT {$lim}";
+        }
         $sql = "SELECT user_id, report_id, submitted, auto, token, timestamp, year
                 FROM grand_pdf_report 
                 WHERE user_id IN ({$uarr}) 
                 AND submitted = {$subm} 
                 AND type = {$type} 
-                AND special = {$special} 
                 AND year = {$year} 
                 AND report_id NOT IN (SELECT `report_id` FROM grand_pdf_index)
-                ORDER BY timestamp DESC LIMIT {$lim};";
+                ORDER BY timestamp DESC
+                {$lim};";
        
         return DBFunctions::execSQL($sql);
     }
@@ -390,7 +400,6 @@ class ReportStorage {
                                      WHERE p1.user_id = p2.user_id 
                                      AND p2.submitted = {$subm} 
                                      AND p2.type = {$type} 
-                                     AND p2.special = {$special} 
                                      AND p2.timestamp < '2011-08-01') 
                 ORDER BY p1.user_id;";
         return DBFunctions::execSQL($sql);
