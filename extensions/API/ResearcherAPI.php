@@ -53,18 +53,6 @@ class ResearcherAPI extends API{
 	    $cache = new ResearcherFullCache($this);
 		echo $cache->getCache();
 		exit;
-		/*
-	    $finish = microtime(true);
-	
-	    $mem = memory_get_peak_usage(true);
-	    $bytes = array(1 => 'B', 2 => 'KiB', 3 => 'MiB', 4 => 'GiB');
-	    $ind = 1;
-	    while ($mem > 1024 && $ind < count($bytes)) {
-		    $mem = $mem / 1024;
-		    $ind++;
-	    }
-	    echo $mem."M | ".DBFunctions::getQueryCount()."queries | ".($finish - $start)."s";
-	    */
 	}
 	
 	function outputXML($people){
@@ -128,7 +116,7 @@ class ResearcherAPI extends API{
                    "id" => $person->getId(),
                       "firstname" => $name['first'],
                       "lastname" => $name['last'],
-                      "univerisity" => $uni['university'],
+                      "university" => $uni['university'],
                       "department"  => $uni['department'],
                       "position"    => $uni['position'],
                       "projects" => $projects,
