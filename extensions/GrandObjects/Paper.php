@@ -440,6 +440,7 @@ class Paper extends BackboneModel{
 	                $pdata[0]['user_gender'] = "";
 	                $pdata[0]['user_twitter'] = "";
 	                $pdata[0]['user_nationality'] = "";
+	                $pdata[0]['user_registration'] = "";
 	                $pdata[0]['user_public_profile'] = "";
 	                $pdata[0]['user_private_profile'] = "";
 	                $person = new Person($pdata);

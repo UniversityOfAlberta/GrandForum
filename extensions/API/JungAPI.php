@@ -330,6 +330,7 @@ class JungAPI extends API{
             $tuple['Title'] = (string)$this->personUniversities[$person->getName()]['position'];
             $tuple['Gender'] = (string)$person->getGender();
             $tuple['Nationality'] = (string)$person->getNationality();
+            $tuple['nDaysInGRAND'] = ceil((strtotime("December 31 {$this->year}") - strtotime($person->getRegistration()))/86400);
             
             // Extra
             $tuple['Projects'] = array();
@@ -379,10 +380,10 @@ class JungAPI extends API{
             $tuple['WorksWithDiffDisc'][] = "!".$tuple['Discipline'];
             $tuple['ProducesDiffDisc'][] = "!".$tuple['Discipline'];
             
-            $tuple['MSAnPubs'] = "";
-            $tuple['MSAnCits'] = "";
-            $tuple['MSAnPubsDelta'] = "";
-            $tuple['MSAnCitsDelta'] = "";
+            $tuple['GSnPubs'] = "";
+            $tuple['GSnCits'] = "";
+            $tuple['GSnPubsDelta'] = "";
+            $tuple['GSnCitsDelta'] = "";
             
             if(isset($msaAuthors[$person->getId()])){
                 $nPubs = array();
@@ -394,11 +395,11 @@ class JungAPI extends API{
                     $nCits[$year] = $cit;
                 }
                 if(isset($nPubs[$this->year]) && isset($nCits[$this->year])){
-                    $tuple['MSAnPubs'] = (string)$nPubs[$this->year];
-                    $tuple['MSAnCits'] = (string)$nCits[$this->year];
-
-                    $tuple['MSAnPubsDelta'] = (string)(($nPubs[$this->year] - $nPubs[$this->year-1])/max(1, $nPubs[$this->year-1]));
-                    $tuple['MSAnCitsDelta'] = (string)(($nCits[$this->year] - $nCits[$this->year-1])/max(1, $nCits[$this->year-1]));
+                    $tuple['GSnPubs'] = (string)$nPubs[$this->year];
+                    $tuple['GSnCits'] = (string)$nCits[$this->year];
+                    
+                    $tuple['GSnPubsDelta'] = @(string)(($nPubs[$this->year] - $nPubs[$this->year-1])/max(1, $nPubs[$this->year-1]));
+                    $tuple['GSnCitsDelta'] = @(string)(($nCits[$this->year] - $nCits[$this->year-1])/max(1, $nCits[$this->year-1]));
                 }
             }
             $metas[$person->getName()] = $tuple;

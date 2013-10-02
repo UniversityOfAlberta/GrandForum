@@ -19,6 +19,7 @@ class Person extends BackboneModel {
 	var $gender;
 	var $photo;
 	var $twitter;
+	var $registration;
 	var $publicProfile;
 	var $privateProfile;
 	var $realname;
@@ -197,7 +198,7 @@ class Person extends BackboneModel {
 	    if(count(self::$aliasCache) == 0){
 			$uaTable = getTableName("user_aliases");
 			$uTable = getTableName("user");
-			$sql = "SELECT ua.alias, u.user_id, u.user_name, u.user_real_name, u.user_email, u.user_twitter, user_public_profile, user_private_profile, user_nationality, user_gender
+			$sql = "SELECT ua.alias, u.user_id, u.user_name, u.user_real_name, u.user_email, u.user_twitter, user_public_profile, user_private_profile, user_nationality, user_gender, user_registration
 				FROM {$uaTable} as ua, {$uTable} as u 
 				WHERE ua.user_id = u.user_id
 				AND u.deleted != '1'";
@@ -212,7 +213,7 @@ class Person extends BackboneModel {
 	static function generateNamesCache(){
 	    if(count(self::$namesCache) == 0){
 		    $uTable = getTableName("user");
-		    $sql = "SELECT `user_id`,`user_name`,`user_real_name`,`user_email`,`user_twitter`,`user_public_profile`,`user_private_profile`,`user_nationality`,`user_gender`
+		    $sql = "SELECT `user_id`,`user_name`,`user_real_name`,`user_email`,`user_twitter`,`user_public_profile`,`user_private_profile`,`user_nationality`,`user_gender`,`user_registration`
 			    FROM $uTable u
 			    WHERE `deleted` != '1'";
 		    $data = DBFunctions::execSQL($sql);
@@ -478,6 +479,7 @@ class Person extends BackboneModel {
 			$this->nationality = $data[0]['user_nationality'];
 			$this->university = false;
 			$this->twitter = $data[0]['user_twitter'];
+			$this->registration = $data[0]['user_registration'];
 			$this->publicProfile = $data[0]['user_public_profile'];
 			$this->privateProfile = $data[0]['user_private_profile'];
 			$this->hqps = null;
@@ -501,6 +503,7 @@ class Person extends BackboneModel {
 	                  'gender' => $this->getGender(),
 	                  'nationality' => $this->getNationality(),
 	                  'twitter' => $this->getTwitter(),
+	                  'registration' => $this->getRegistration(),
 	                  'photo' => $this->getPhoto(),
 	                  'cachedPhoto' => $this->getPhoto(true),
 	                  'university' => $this->getUni(),
@@ -646,6 +649,14 @@ class Person extends BackboneModel {
 	        $possibleNames[] = $row['alias'];
 	    }
 	    return $possibleNames;
+	}
+	
+	/**
+	 * Returns when the user was registered
+	 * @return string The timestamp when the user was registered
+	 */
+	function getRegistration(){
+        return $this->registration;
 	}
 	
 	// Returns whether this Person is a member of the given Project or not
