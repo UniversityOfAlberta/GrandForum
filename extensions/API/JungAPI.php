@@ -330,7 +330,7 @@ class JungAPI extends API{
             $tuple['Title'] = (string)$this->personUniversities[$person->getName()]['position'];
             $tuple['Gender'] = (string)$person->getGender();
             $tuple['Nationality'] = (string)$person->getNationality();
-            $tuple['nDaysInGRAND'] = (string)(ceil((strtotime("December 31 {$this->year}") - strtotime($person->getRegistration()))/86400));
+            $tuple['yearRegistered'] = (string)substr($person->getRegistration(), 0, 4);
             
             // Extra
             $tuple['Projects'] = array();
