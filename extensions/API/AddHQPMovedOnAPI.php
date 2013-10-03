@@ -50,7 +50,8 @@ class AddHQPMovedOnAPI extends API{
                                           'studies' => $_POST['studies'],
                                           'employer' => $_POST['employer'],
                                           'city' => $_POST['city'],
-                                          'country' => $_POST['country']),
+                                          'country' => $_POST['country'],
+                                          'date_changed' => EQ(COL('CURRENT_TIMESTAMP'))),
                                     array('user_id' => EQ($person->getId())));
             }
             else{
@@ -60,7 +61,8 @@ class AddHQPMovedOnAPI extends API{
                                           'studies' => $_POST['studies'],
                                           'employer' => $_POST['employer'],
                                           'city' => $_POST['city'],
-                                          'country' => $_POST['country']));
+                                          'country' => $_POST['country'],
+                                          'date_changed' => EQ(COL('CURRENT_TIMESTAMP'))));
             }
             if(!$noEcho){
                 echo "{$person->getName()} movedOn added\n";

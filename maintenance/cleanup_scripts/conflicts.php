@@ -30,6 +30,15 @@ $sql = "INSERT INTO `grand_eval_conflicts`(`eval_id`, `sub_id`, `type`, `year`, 
 		SELECT `reviewer_id`, `loi_id`, 'LOI', 2013, `conflict`, `preference` FROM  `grand_loi_conflicts`";
 DBFunctions::execSQL($sql, true);
 
+$sql = "DROP TABLE `grand_loi_conflicts`";
+DBFunctions::execSQL($sql, true);
+
+$sql = "DROP TABLE `grand_project_conflicts`";
+DBFunctions::execSQL($sql, true);
+
+$sql = "DROP TABLE `grand_reviewer_conflicts`";
+DBFunctions::execSQL($sql, true);
+
 echo "ALL DONE!\n";
 
 ?>

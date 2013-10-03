@@ -7,14 +7,14 @@ DBFunctions::execSQL($sql, true);
 $sql = "RENAME TABLE `mw_pdf_report` TO `grand_pdf_report` ;";
 DBFunctions::execSQL($sql, true);
 
-$sql = "ALTER TABLE  `grand_pdf_index` DROP INDEX  `user_id` ,
-ADD INDEX  `user_id` (  `user_id` ,  `sub_id` ,  `type` )";
-DBFunctions::execSQL($sql, true);
-
 $sql = "ALTER TABLE  `grand_pdf_index` ADD  `type` ENUM('PROJECT','PERSON') NOT NULL DEFAULT 'PROJECT' AFTER  `project_id`";
 DBFunctions::execSQL($sql, true);
 
 $sql = "ALTER TABLE `grand_pdf_index` CHANGE COLUMN `project_id` `sub_id` INT(11) NOT NULL";
+DBFunctions::execSQL($sql, true);
+
+$sql = "ALTER TABLE  `grand_pdf_index` DROP INDEX  `user_id` ,
+ADD INDEX  `user_id` (  `user_id` ,  `sub_id` ,  `type` )";
 DBFunctions::execSQL($sql, true);
 
 $sql = "SELECT * FROM `mw_evalpdf_index`";
@@ -33,9 +33,14 @@ foreach($data as $row){
     else if($type == 2){
         $type = 'PROJECT';
     }
-    $sql = "INSERT INTO `grand_pdf_index` (`report_id`,`user_id`,`sub_id`,`type`,`nr_download`,`last_download`,`created`) VALUES
-            ($report_id, $user_id, $subject_id, '$type', $nr_download, '$last_download', '$created')";
-    DBFunctions::execSQL($sql, true);
+    $sql = "SELECT * FROM `grand_pdf_index`
+            WHERE `report_id` = $report_id";
+    $data = DBFunctions::execSQL($sql);
+    if(count($data) == 0){
+        $sql = "INSERT INTO `grand_pdf_index` (`report_id`,`user_id`,`sub_id`,`type`,`nr_download`,`last_download`,`created`) VALUES
+                ($report_id, $user_id, $subject_id, '$type', $nr_download, '$last_download', '$created')";
+        DBFunctions::execSQL($sql, true);
+    }
 }
 
 $sql = "SELECT * FROM `mw_review_index`";
@@ -48,9 +53,14 @@ foreach($data as $row){
     $nr_download = $row['nr_download'];
     $last_download = $row['last_download'];
     $created = $row['created'];
-    $sql = "INSERT INTO `grand_pdf_index` (`report_id`,`user_id`,`sub_id`,`type`,`nr_download`,`last_download`,`created`) VALUES
-            ($report_id, $user_id, $subject_id, '$type', $nr_download, '$last_download', '$created')";
-    DBFunctions::execSQL($sql, true);
+    $sql = "SELECT * FROM `grand_pdf_index`
+            WHERE `report_id` = $report_id";
+    $data = DBFunctions::execSQL($sql);
+    if(count($data) == 0){
+        $sql = "INSERT INTO `grand_pdf_index` (`report_id`,`user_id`,`sub_id`,`type`,`nr_download`,`last_download`,`created`) VALUES
+                ($report_id, $user_id, $subject_id, '$type', $nr_download, '$last_download', '$created')";
+        DBFunctions::execSQL($sql, true);
+    }
 }
 
 $sql = "DROP TABLE `mw_evalpdf_index`";

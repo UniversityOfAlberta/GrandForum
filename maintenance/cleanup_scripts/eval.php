@@ -14,9 +14,17 @@ foreach($data as $row){
     if($row['type'] == 1){
         $type = 'Researcher';
     }
-    $sql = "INSERT INTO `grand_eval` (`user_id`, `sub_id`, `type`, `year`) VALUES
-            ({$row['user_id']}, {$row['subject_id']}, '$type', '2010')";
-    DBFunctions::execSQL($sql, true);
+    $sql = "SELECT * FROM `grand_eval`
+            WHERE `user_id` = {$row['user_id']}
+            AND `sub_id` = {$row['subject_id']}
+            AND `type` = '$type'
+            AND `year` = '2010'";
+    $data = DBFunctions::execSQL($sql);
+    if(count($data) == 0){
+        $sql = "INSERT INTO `grand_eval` (`user_id`, `sub_id`, `type`, `year`) VALUES
+                ({$row['user_id']}, {$row['subject_id']}, '$type', '2010')";
+        DBFunctions::execSQL($sql, true);
+    }
 }
 
 ?>

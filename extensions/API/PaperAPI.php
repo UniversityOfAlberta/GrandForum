@@ -154,9 +154,17 @@ abstract class PaperAPI extends API{
 	        $paperAfter->syncAuthors();
 	    }
 	    else{
-	        $sql = "INSERT INTO grand_products (`description`,`category`,`type`,`title`,`date`,`venue`,`status`,`authors`,`data`)
-	                VALUES ('$description','{$this->category}','{$type}','$title','$date','$venue','$status','".serialize($authors)."','".serialize($data)."')";
-	        $result = DBFunctions::execSQL($sql, true);
+	        $result = DBFunctions::insert('grand_products',
+	                                      array('description' => $description,
+	                                      'category' => $this->category,
+	                                      'type' => $type,
+	                                      'title' => $title,
+	                                      'date' => $date,
+	                                      'venue' => $venue,
+	                                      'status' => $status,
+	                                      'authors' => serialize($authors),
+	                                      'data' => serialize($data),
+	                                      'date_created' => EQ(COL('CURRENT_TIMESTAMP'))));
 	        Paper::$cache = array();
 	        $paper = Paper::newFromTitle($title, $this->category, $type, $status);
 	        foreach($projects as $project){

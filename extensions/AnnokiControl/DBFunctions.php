@@ -143,20 +143,25 @@ class DBFunctions {
 		    return $rows;
 		}
 		catch (DBQueryError $e){
-		    $me = Person::newFromUser($wgUser);
-		    if($me->isRoleAtLeast(MANAGER)){
-		        $traces = debug_backtrace();
-		        foreach($traces as $trace){ 
-		            $file = $trace['file'];
-		            $line = $trace['line'];
-		            if(strstr($file, "DBFunctions.php") === false){
-		                break;
-		            }
-		        }
-		        $wgMessage->addError("<pre class='inlineError' style='font-weight:bold;background:none;border:none;padding:0;overflow:hidden;margin:0;'>".$e->getMessage()."in <i>{$file}</i> on line <i>{$line}</i></pre>");
+		    if(php_sapi_name() === 'cli'){
+		        echo $e->getMessage();
 		    }
 		    else{
-		        $wgMessage->addError("A Database error #{$e->errno} has occurred, please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>.");
+		        $me = Person::newFromUser($wgUser);
+		        if($me->isRoleAtLeast(MANAGER)){
+		            $traces = debug_backtrace();
+		            foreach($traces as $trace){ 
+		                $file = $trace['file'];
+		                $line = $trace['line'];
+		                if(strstr($file, "DBFunctions.php") === false){
+		                    break;
+		                }
+		            }
+		            $wgMessage->addError("<pre class='inlineError' style='font-weight:bold;background:none;border:none;padding:0;overflow:hidden;margin:0;'>".$e->getMessage()."in <i>{$file}</i> on line <i>{$line}</i></pre>");
+		        }
+		        else{
+		            $wgMessage->addError("A Database error #{$e->errno} has occurred, please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>.");
+		        }
 		    }
 		    if($rollback){
 		        DBFunctions::rollback();
