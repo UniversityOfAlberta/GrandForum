@@ -388,11 +388,13 @@ EOF;
                     continue;
                 }
                 $leader = $project->getLeader();
-                $report = new DummyReport(RP_LEADER, $leader, $project, 2011);
-                $pdf = $report->getPDF();
                 $download2 = "No&nbsp;PDF";
-                if(isset($pdf[0]['token'])){
-                    $download2 = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>[Download&nbsp;PDF]</a>";
+                if($leader != null){
+                    $report = new DummyReport(RP_LEADER, $leader, $project, 2011);
+                    $pdf = $report->getPDF();
+                    if(isset($pdf[0]['token'])){
+                        $download2 = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>[Download&nbsp;PDF]</a>";
+                    }
                 }
                 $tierSum1 = ($W1*$pTiers["1_1"] + $W2*$pTiers["1_2"] + $W3*$pTiers["1_3"])/$pTiers["nRatings"];
                 $tierSum2 = ($W1*$pTiers["2_1"] + $W2*$pTiers["2_2"] + $W3*$pTiers["2_3"])/max(1, $pTiers["nQ6"]);
@@ -505,7 +507,7 @@ EOF;
                 $budget = $person->getRequestedBudget(2011);
                 if($budget != null){
                     $projects = $budget->copy()->where(HEAD1, array("Project Name:"))->select(V_PROJ);
-                    $projectTotals = $budget->copy()->rasterize()->where(HEAD1, array("TOTALS for April 1, 2011, to March 31, 2012"));
+                    $projectTotals = $budget->copy()->rasterize()->where(HEAD1, array("TOTALS for April 1, 2012, to March 31, 2013"));
                     $budgetProjects = array();
                     
                     $budgetProjects[] = $budget->copy()->where(V_PERS_NOT_NULL)->limit(0, 1)->select(V_PERS_NOT_NULL);
@@ -565,7 +567,7 @@ EOF;
             $this->html .= $fullBudget->render(true);
         }
         else if($type == "Full"){
-            $fullBudget = new Budget(array(array(HEAD, HEAD, HEAD)), array(array("Categories for April 1, 2011, to March 31, 2012", PNI."s", CNI."s")));
+            $fullBudget = new Budget(array(array(HEAD, HEAD, HEAD)), array(array("Categories for April 1, 2012, to March 31, 2013", PNI."s", CNI."s")));
             
             $pniTotals = array();
             $cniTotals = array();
