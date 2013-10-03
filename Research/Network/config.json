@@ -64,6 +64,60 @@
         "Person": {
             "groups": [
                 {
+                    "id": "Projects",
+                    "name": "Projects",
+                    "desc": "Array of Projects for the Person",
+                    "weight": "1"
+                },
+                {
+                    "id": "WorksWith",
+                    "name": "Works With",
+                    "desc": "Array of Works With relations Person",
+                    "weight": "1"
+                },
+                {
+                    "id": "Produces",
+                    "name": "Produces",
+                    "desc": "Array of Products produced",
+                    "weight": "1"
+                },
+                {
+                    "id": "ProjectsDiffUni",
+                    "name": "Projects/Different University",
+                    "desc": "Array of Projects for the Person",
+                    "weight": "1"
+                },
+                {
+                    "id": "WorksWithDiffUni",
+                    "name": "Works With/Different University",
+                    "desc": "Array of Works With relations Person",
+                    "weight": "1"
+                },
+                {
+                    "id": "ProducesDiffUni",
+                    "name": "Produces/Different University",
+                    "desc": "Array of Products produced",
+                    "weight": "1"
+                },
+                {
+                    "id": "ProjectsDiffDisc",
+                    "name": "Projects/Different Discipline",
+                    "desc": "Array of Projects for the Person",
+                    "weight": "1"
+                },
+                {
+                    "id": "WorksWithDiffDisc",
+                    "name": "Works With/Different Discipline",
+                    "desc": "Array of Works With relations Person",
+                    "weight": "1"
+                },
+                {
+                    "id": "ProducesDiffDisc",
+                    "name": "Produces/Different Discipline",
+                    "desc": "Array of Products produced",
+                    "weight": "1"
+                },
+                {
                     "id": "Discipline",
                     "name": "Discipline",
                     "desc": "The discipline of the Person"
@@ -71,7 +125,7 @@
                 {
                     "id": "University",
                     "name": "University",
-                    "desc": "The universion of the Person"
+                    "desc": "The university of the Person"
                 },
                 {
                     "id": "Nationality",
@@ -164,6 +218,31 @@
                     "id": "totalAllocationUpToNow",
                     "name": "Total Allocation Up To Now",
                     "desc": "The amount of money allocated to the person up to now"
+                },
+                {
+                    "id": "yearRegistered",
+                    "name": "Year Registered",
+                    "desc": "The year that the user registered"
+                },
+                {
+                    "id": "GSnPubs",
+                    "name": "Google Scholar # Publications",
+                    "desc": "The number of publications found in Google Scholar for this year"
+                },
+                {
+                    "id": "GSnCits",
+                    "name": "Google Scholar # Citations",
+                    "desc": "The number of citations found in Google Scholar for this year"
+                },
+                {
+                    "id": "GSnPubsDelta",
+                    "name": "Google Scholar # Publications Delta",
+                    "desc": "The number of publications found in Google Scholar for this year compared to last year"
+                },
+                {
+                    "id": "GSnCitsDelta",
+                    "name": "Google Scholar # Citations Delta",
+                    "desc": "The number of citations found in Google Scholar for this year compared to last year"
                 }
             ]
         },
@@ -211,7 +290,11 @@
             "nProjectsByProduct",
             "nTotalHQP",
             "avgProductDisciplines",
-            "avgAuthorsPerProduct"
+            "avgAuthorsPerProduct",
+            "GSnPubs",
+            "GSnCits",
+            "GSnPubsDelta",
+            "GSnCitsDelta"
         ],
         "Project": [
             "nProductsUpToNow",
@@ -222,7 +305,96 @@
     },
     "transformations": {
         "Person": [
-            
+            {
+                "x": "Between.Projects",
+                "y": "Between.ProjectsDiffUni",
+                "t": "MINUS"
+            },
+            {
+                "x": "Between.Projects",
+                "y": "Between.ProjectsDiffDisc",
+                "t": "MINUS"
+            },
+            {
+                "x": "Between.WorksWith",
+                "y": "Between.WorksWithDiffUni",
+                "t": "MINUS"
+            },
+            {
+                "x": "Between.WorksWith",
+                "y": "Between.WorksWithDiffDisc",
+                "t": "MINUS"
+            },
+            {
+                "x": "Between.Produces",
+                "y": "Between.ProducesDiffUni",
+                "t": "MINUS"
+            },
+            {
+                "x": "Between.Produces",
+                "y": "Between.ProducesDiffDisc",
+                "t": "MINUS"
+            },
+            {
+                "x": "Closeness.Projects",
+                "y": "Closeness.ProjectsDiffUni",
+                "t": "MINUS"
+            },
+            {
+                "x": "Closeness.Projects",
+                "y": "Closeness.ProjectsDiffDisc",
+                "t": "MINUS"
+            },
+            {
+                "x": "Closeness.WorksWith",
+                "y": "Closeness.WorksWithDiffUni",
+                "t": "MINUS"
+            },
+            {
+                "x": "Closeness.WorksWith",
+                "y": "Closeness.WorksWithDiffDisc",
+                "t": "MINUS"
+            },
+            {
+                "x": "Closeness.Produces",
+                "y": "Closeness.ProducesDiffUni",
+                "t": "MINUS"
+            },
+            {
+                "x": "Closeness.Produces",
+                "y": "Closeness.ProducesDiffDisc",
+                "t": "MINUS"
+            },
+            {
+                "x": "PageRank.Projects",
+                "y": "PageRank.ProjectsDiffUni",
+                "t": "MINUS"
+            },
+            {
+                "x": "PageRank.Projects",
+                "y": "PageRank.ProjectsDiffDisc",
+                "t": "MINUS"
+            },
+            {
+                "x": "PageRank.WorksWith",
+                "y": "PageRank.WorksWithDiffUni",
+                "t": "MINUS"
+            },
+            {
+                "x": "PageRank.WorksWith",
+                "y": "PageRank.WorksWithDiffDisc",
+                "t": "MINUS"
+            },
+            {
+                "x": "PageRank.Produces",
+                "y": "PageRank.ProducesDiffUni",
+                "t": "MINUS"
+            },
+            {
+                "x": "PageRank.Produces",
+                "y": "PageRank.ProducesDiffDisc",
+                "t": "MINUS"
+            }
         ],
         "Project": [
             
@@ -230,6 +402,126 @@
     },
     "tests": {
         "Person": [
+            {
+                "y": "Between.Projects.MINUS.Between.ProjectsDiffUni",
+                "x": "GSnPubsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "Between.Projects.MINUS.Between.ProjectsDiffUni",
+                "x": "GSnCitsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "Between.Projects.MINUS.Between.ProjectsDiffDisc",
+                "x": "GSnPubsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "Between.Projects.MINUS.Between.ProjectsDiffDisc",
+                "x": "GSnCitsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "Between.WorksWith.MINUS.Between.WorksWithDiffUni",
+                "x": "GSnPubsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "Between.WorksWith.MINUS.Between.WorksWithDiffUni",
+                "x": "GSnCitsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "Between.WorksWith.MINUS.Between.WorksWithDiffDisc",
+                "x": "GSnPubsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "Between.WorksWith.MINUS.Between.WorksWithDiffDisc",
+                "x": "GSnCitsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "Between.Produces.MINUS.Between.ProducesDiffUni",
+                "x": "GSnPubsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "Between.Produces.MINUS.Between.ProducesDiffUni",
+                "x": "GSnCitsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "Between.Produces.MINUS.Between.ProducesDiffDisc",
+                "x": "GSnPubsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "Between.Produces.MINUS.Between.ProducesDiffDisc",
+                "x": "GSnCitsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "GSnPubsDelta",
+                "x": "yearRegistered",
+                "type": "boxplot"
+            },
+            {
+                "y": "GSnCitsDelta",
+                "x": "yearRegistered",
+                "type": "boxplot"
+            },
+            {
+                "y": "totalAllocationUpToNow",
+                "x": "GSnPubsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "totalAllocationUpToNow",
+                "x": "GSnCitsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "nCurrentHQP",
+                "x": "GSnPubsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "nCurrentHQP",
+                "x": "GSnCitsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "nTotalHQP",
+                "x": "GSnPubsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "nTotalHQP",
+                "x": "GSnCitsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "GSnPubsDelta",
+                "x": "Gender",
+                "type": "anova"
+            },
+            {
+                "y": "GSnCitsDelta",
+                "x": "Gender",
+                "type": "anova"
+            },
+            {
+                "y": "GSnPubsDelta",
+                "x": "Title",
+                "type": "anova"
+            },
+            {
+                "y": "GSnCitsDelta",
+                "x": "Title",
+                "type": "anova"
+            },
             {
                 "y": "nProjectsByProduct",
                 "x": "nProjects",

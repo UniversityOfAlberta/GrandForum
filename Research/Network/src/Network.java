@@ -35,9 +35,10 @@ public class Network {
 	private String url;
 	private String id;
 	private String group;
+	private Double groupWeight;
 	private String year;
 	private Vector<String> nodeTypes;
-	private HashMap<String, HashMap<String, String>> metas;
+	private HashMap<String, HashMap<String, Object>> metas;
 	private SparseMultigraph<Node, Edge> graph;
 	private HashMap<String, Node> nodes;
 	private Vector<HashMap<String, Double>> results;
@@ -48,17 +49,19 @@ public class Network {
 	 * @param url The url of the api to connect
 	 * @param year The year of the data to use
 	 * @param group The group that this Network should filter for
+	 * @param groupWeight The weight of the group
 	 * @param id A unique id for the cached api data
 	 */
-	public Network(String url, String year, String group, String id){
+	public Network(String url, String year, String group, Double groupWeight, String id){
 		this.url = url;
 		this.year = year;
 		this.group = group;
+		this.groupWeight = groupWeight;
 		this.id = id;
 		
 		this.nodeTypes = new Vector<String>();
 		this.nodes = new HashMap<String, Node>();
-		this.metas = new HashMap<String, HashMap<String,String>>();
+		this.metas = new HashMap<String, HashMap<String,Object>>();
 		this.results = new Vector<HashMap<String, Double>>();
 		this.ranks = new Vector<Vector<String>>();
 	}
@@ -117,7 +120,7 @@ public class Network {
 		return ranks;
 	}
 	
-	public HashMap<String,HashMap<String,String>> getMetas(){
+	public HashMap<String,HashMap<String,Object>> getMetas(){
 		return this.metas;
 	}
 	
@@ -236,7 +239,7 @@ public class Network {
 				JSONObject meta = node.getJSONObject("meta");
 				Node n = new Node(node.getString("name"), node.getString("type"));
 				
-				this.metas.put(node.getString("name"), new HashMap<String,String>());
+				this.metas.put(node.getString("name"), new HashMap<String,Object>());
 				this.nodes.put(node.getString("name"), n);
 				if(!this.nodeTypes.contains(node.getString("type"))){
 					this.nodeTypes.add(node.getString("type"));
@@ -246,7 +249,8 @@ public class Network {
 				for(int j = 0; j < meta.length(); j++){
 					String key = meta.names().get(j).toString();
 					if(!key.equals("name")){
-						this.metas.get(node.getString("name")).put(key, meta.getString(key));
+						Object obj = meta.get(key);
+						this.metas.get(node.getString("name")).put(key, obj);
 					}
 				}
 			}
@@ -254,8 +258,14 @@ public class Network {
 			for(int i = 0; i < edges.length(); i++){
 				// Adding Edges
 				JSONObject edge = (JSONObject)edges.get(i);
+				EdgeType direction = EdgeType.UNDIRECTED;
+				if(edge.has("direction") && edge.get("direction").equals("Directed")){
+					direction = EdgeType.DIRECTED;
+				}
 				Node a = this.nodes.get(edge.get("a"));
 				Node b = this.nodes.get(edge.get("b"));
+				JSONArray mA = null, 
+						  mB = null;
 				if(this.group.startsWith("Edge.")){
 					if(!this.group.equals("Edge." + edge.get("edgeType"))){
 						continue;
@@ -269,16 +279,32 @@ public class Network {
 					String metaA = "", 
 						   metaB = "";
 					if(!this.group.equals("all") && this.metas.containsKey(edge.get("a"))){
-						metaA = this.metas.get(edge.get("a")).get(this.group);
+						Object obj = this.metas.get(edge.get("a")).get(this.group);
+						if(obj instanceof String){
+							metaA = (String)obj;
+						}
+						else if(obj instanceof JSONArray){
+							mA = (JSONArray)obj;
+						}
 					}
 					if(!this.group.equals("all") && this.metas.containsKey(edge.get("b"))){
-						metaB = this.metas.get(edge.get("b")).get(this.group);
+						Object obj = this.metas.get(edge.get("b")).get(this.group);
+						if(obj instanceof String){
+							metaB = (String)obj;
+						}
+						else if(obj instanceof JSONArray){
+							mB = (JSONArray)obj;
+						}
 					}
-					if(this.group.equals("all") && b == null){
+					if((this.group.equals("all")) && b == null){
 						b = new Node((String)edge.get("b"), "");
 						this.nodes.put((String)edge.get("b"), b);
 					}
-					else if((!this.group.equals("all")) && (!metaA.equals(metaB) || (a != null && b != null && !a.getType().equals(b.getType())))){
+					else if((mA != null && mB != null) && b == null){
+						b = new Node((String)edge.get("b"), "");
+						this.nodes.put((String)edge.get("b"), b);
+					}
+					else if((mA == null && mB == null) && (!this.group.equals("all")) && (!metaA.equals(metaB) || (a != null && b != null && !a.getType().equals(b.getType())))){
 						if(b == null){
 							b = new Node((String)edge.get("b"), "");
 							this.nodes.put((String)edge.get("b"), b);
@@ -288,11 +314,60 @@ public class Network {
 							continue;
 						}
 					}
+					else if(b == null){
+						b = new Node((String)edge.get("b"), "");
+						this.nodes.put((String)edge.get("b"), b);
+					}
 				}
 				if(a != null && b != null){
-					Edge e = Edge.create(a, b);
-					if(!this.graph.containsEdge(e)){
-						this.graph.addEdge(e, a, b, EdgeType.UNDIRECTED);
+					Edge e = null;
+					int nSame = 1;
+					if(mA != null && mB != null){
+						//nSame = 0;
+						for(int iA = 0; iA < mA.length(); iA++){
+							String aVal = mA.getString(iA);
+							boolean aNot = false;
+							boolean found = false;
+							if(aVal.startsWith("!")){
+								aNot = true;
+								aVal = aVal.replaceFirst("!", "");
+							}
+							for(int iB = 0; iB < mB.length(); iB++){
+								String bVal = mB.getString(iB);
+								if(aVal.equals(bVal) && !aNot){
+									nSame++;
+									found = true;
+									break;
+								}
+								else if(aVal.equals(bVal) && aNot){
+									found = true;
+									break;
+								}
+							}
+							if(found && aNot || (aNot && aVal.equals(edge.get("b")))){
+								nSame=0;
+							}
+						}
+					}
+					if(mA != null){
+						for(int iA = 0; iA < mA.length(); iA++){
+							String aVal = mA.getString(iA);
+							if(aVal.startsWith("!")){
+								aVal = aVal.replaceFirst("!", "");
+								if(aVal.equals(edge.get("b"))){
+									nSame = 0;
+								}
+							}
+						}
+					}
+					int nEdges = (int)Math.round(this.groupWeight*nSame);
+					if(nEdges > 0){
+						for(int j = 0; j < nEdges; j++){
+							e = Edge.create(a, b, direction);
+						}
+						if(!this.graph.containsEdge(e)){
+							this.graph.addEdge(e, a, b, e.getDirection());
+						}
 					}
 				}
 			}
@@ -310,13 +385,7 @@ public class Network {
 			HashMap<String, Node> clonedNodes = (HashMap<String, Node>) this.nodes.clone();
 			for(String key : clonedNodes.keySet()){
 				Node n = this.nodes.get(key);
-				/*if(n.degree() == 0){
-					this.nodes.remove(n);
-					this.metas.remove(n);
-				}
-				else{*/
-					this.graph.addVertex(n);
-				//}
+				this.graph.addVertex(n);
 			}
 			System.out.println("      #Nodes: " + this.nodes.size());
 			System.out.println("      #Edges: " + nEdges);
@@ -336,7 +405,7 @@ public class Network {
 	}
 	
 	public static void computeNetworks(String year){
-		Network allNet = new Network(Network.DOMAIN, year, "all", year);
+		Network allNet = new Network(Network.DOMAIN, year, "all", 1.0, year);
 		NetworkManager manager = new NetworkManager(year, allNet);
 		allNet.calc();
 		try {
@@ -345,7 +414,11 @@ public class Network {
 				Vector<JSONObject> groups = config.getGroups(type);
 				for(int i = 0; i < groups.size(); i++){
 					String group = groups.get(i).getString("id");
-					Network gNet = new Network(Network.DOMAIN, year, group, year);
+					Double groupWeight = 1.0;
+					if(groups.get(i).has("weight")){
+						groupWeight = groups.get(i).getDouble("weight");
+					}
+					Network gNet = new Network(Network.DOMAIN, year, group, groupWeight, year);
 					gNet.calc();
 					allNet.results.add(gNet.getResults().get(0));
 					allNet.results.add(gNet.getResults().get(1));
@@ -353,7 +426,7 @@ public class Network {
 				}
 			}
 			for(String type : config.getEdgeTypes()){
-					Network gNet = new Network(Network.DOMAIN, year, "Edge." + type, year);
+					Network gNet = new Network(Network.DOMAIN, year, "Edge." + type, 1.0, year);
 					gNet.calc();
 					allNet.results.add(gNet.getResults().get(0));
 					allNet.results.add(gNet.getResults().get(1));
