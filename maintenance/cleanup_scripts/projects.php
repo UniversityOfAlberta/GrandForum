@@ -6,6 +6,12 @@ $sql = "ALTER TABLE `grand_project` ADD COLUMN `parent_id` INT(11) NOT NULL DEFA
 DBFunctions::execSQL($sql, true);
 
 
+//grand_project_descriptions
+$sql = "ALTER TABLE `grand_project_descriptions` ADD COLUMN `problem` TEXT";
+DBFunctions::execSQL($sql, true);
+$sql = "ALTER TABLE `grand_project_descriptions` ADD COLUMN `solution` TEXT";
+DBFunctions::execSQL($sql, true);
+
 // //grand_project_members
 $sql = "RENAME TABLE grand_user_projects TO grand_project_members";
 DBFunctions::execSQL($sql, true);
@@ -60,6 +66,14 @@ $sql = "ALTER TABLE `grand_project_leaders` DROP COLUMN `co_lead`";
 DBFunctions::execSQL($sql, true);
 
 $sql = "ALTER TABLE `grand_project_leaders` DROP COLUMN `manager`";
+DBFunctions::execSQL($sql, true);
+
+//grand_project_champions
+$sql = "CREATE TABLE IF NOT EXISTS `grand_project_champions` (
+  `project_id` int(11) unsigned NOT NULL,
+  `champion` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`project_id`,`champion`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 DBFunctions::execSQL($sql, true);
 
 echo "ALL DONE!\n";
