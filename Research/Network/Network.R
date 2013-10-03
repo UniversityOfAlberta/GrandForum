@@ -529,10 +529,26 @@ f<-for(type in config$types){
         return(FALSE)
     }
     
-    explicitTransformation <- function(field){
+    derivedTransformation <- function(field, data){
         for(transformations in config$transformations[type]){
             for(transformation in transformations){
-                if(transformation$x == field){
+                if(transformation$x == field && !is.null(transformation$y)){
+                    if(transformation$t == "MINUS"){
+                        f <- paste(field, ".MINUS.", transformation$y, sep='')
+                        fields <<- append(fields, f)
+                        for(y in Years){
+                            Datasets[[y]][f] <<- unlist((Datasets[[y]][field]) - Datasets[[y]][transformation$y])
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    explicitTransformation <- function(field, data){
+        for(transformations in config$transformations[type]){
+            for(transformation in transformations){
+                if(transformation$x == field && is.null(transformation$y)){
                     return(transformation$t)
                 }
             }
@@ -553,7 +569,7 @@ f<-for(type in config$types){
                 dataset <- Datasets[[y]]
                 if(all.is.numeric(dataset[field]) &&
                    !all.is.identical(unlist(dataset[field]))){
-                    t1 <- unlist(sqrt(dataset[field]))
+                    t1 <- unlist(sqrt(dataset[field]+1))
                     t2 <- unlist(log(dataset[field]+1))
                     t3 <- unlist(log(dataset[field]+1)/log(10))
                     t4 <- unlist(dataset[field]^2)
@@ -578,9 +594,27 @@ f<-for(type in config$types){
                     }
                 }
             }
-            
+            if(is.na(s0)){
+                s0 <- 0
+            }
+            if(is.na(s1)){
+                s1 <- 0
+            }
+            if(is.na(s2)){
+                s2 <- 0
+            }
+            if(is.na(s3)){
+                s3 <- 0
+            }
+            if(is.na(s4)){
+                s4 <- 0
+            }
+            if(is.na(s5)){
+                s5 <- 0
+            }
             if(all.is.numeric(d[field]) &&
                !all.is.identical(unlist(d[field]))){
+                derivedTransformation(field, d)
                 eT <- explicitTransformation(field)
                 m <- -1
                 if(eT == ""){

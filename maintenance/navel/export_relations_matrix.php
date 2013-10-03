@@ -55,6 +55,30 @@ function exportRelations(){
 	$sql = "SELECT sr.* FROM survey_results sr";
     $data = execSQLStatement($sql);
 
+    //Sort
+	$sorted_data = array(); 
+	$survey_names = array();
+	foreach($data as $row){
+    	$user_id = $row['user_id'];
+		$person = Person::newFromId($user_id);
+	    if(!$person->isRoleDuring('CNI', "2012-01-01 00:00:0", "2013-03-10 23:59:59") && !$person->isRoleDuring('PNI', "2012-01-01 00:00:0", "2013-03-10 23:59:59")){
+	    	//echo "NOT CNI/PNI: ".$person->getName() ."\n";
+		continue;
+	    }
+	    $submitted = ($row['submitted'] == 1)? "Yes" : "No";
+	    if ($submitted == "No"){
+		//echo "NOT SUBMITTED: ".$person->getName() ."\n";
+	    	continue;
+	    }
+	    
+		$sorted_data[$person->getReversedName()] = $row;
+		$survey_names[$person->getReversedName()] = $person->getName();
+    }
+    ksort($sorted_data);
+    ksort($survey_names);
+    $sorted_data = array_values($sorted_data);
+    $survey_names = array_values($survey_names);
+
     //EXCEL
     $phpExcel = new PHPExcel();
 	$styleArray = array('font' => array('bold' => true));
@@ -62,13 +86,22 @@ function exportRelations(){
 	$cnis = Person::getAllPeopleDuring('CNI', "2012-01-01 00:00:0", "2013-03-10 23:59:59");
 	$pnis = Person::getAllPeopleDuring('PNI', "2012-01-01 00:00:0", "2013-03-10 23:59:59");
 	$nis = array_merge($cnis, $pnis);
-	$ni_names = array();
+
+	//Sort
+	$sorted_nis = array();
 	foreach($nis as $ni){
+		$sorted_nis[$ni->getLastName()] = $ni;
+	}
+	ksort($sorted_nis);
+	$sorted_nis = array_values($sorted_nis);
+
+	$ni_names = array();
+	foreach($sorted_nis as $ni){
 		if(!in_array($ni->getName(), $ni_names)){
 			$ni_names[] = $ni->getName();
 		}
 	}
-	sort($ni_names);
+	//sort($ni_names);
 
 	$com_weights = array(
 	    "moredaily"=>7, 
@@ -81,12 +114,12 @@ function exportRelations(){
 	);
 
 	$sheets = array(
-	 	/*"People you know"=>"connected", 
+	 	"People you know"=>"connected", 
 	 	"Worked with"=>"work_with", 
 	 	"Gave advice"=>"gave_advice", 
 	 	"Received advice"=>"received_advice", 
 	 	"Aquaintance"=>"acquaintance", 
-	 	"Friend"=>"friend",*/ 
+	 	"Friend"=>"friend",
 	 	"In Person communication"=>"inperson", 
 	 	"Email communication"=>"email",
 	 	"Phone communication"=>"phone",
@@ -112,18 +145,18 @@ function exportRelations(){
 		
 		
 		$col_count = 1;
-	    foreach($data as $row){
+	    foreach($sorted_data as $row){
 	    	$user_id = $row['user_id'];
 		    $person = Person::newFromId($user_id);
 
-		    if(!$person->isCNI() && !$person->isPNI()){
-		    	continue;
-		    }
+		    //if(!$person->isRoleDuring(CNI, "2012-01-01 00:00:0", "2013-03-10 23:59:59") && !$person->isRoleDuring(PNI, "2012-01-01 00:00:0", "2013-03-10 23:59:59")){
+		    //	continue;
+		    //}
 
-		    $submitted = ($row['submitted'] == 1)? "Yes" : "No";
-		    if ($submitted == "No"){
-		    	continue;
-		    }
+		  //  $submitted = ($row['submitted'] == 1)? "Yes" : "No";
+		  //  if ($submitted == "No"){
+		  //  	continue;
+		  //  }
 
 		    $f_name = $row['first_name'];
 		    $l_name = $row['last_name'];
@@ -141,8 +174,11 @@ function exportRelations(){
 	      	}
 	      	$row_count = 2;
 
-	      	foreach($ni_names as $con_name){	
-
+	      	foreach($survey_names as $con_name){	
+	      		//if(!in_array($con_name, $survey_names)){
+	      		//	continue;
+	      		//}
+			
 	            $cname = explode('.', $con_name); 
 	            $cnamef = $cname[0];
 	            $cnamel = implode(' ', array_slice($cname, 1));
@@ -154,6 +190,21 @@ function exportRelations(){
 	      			$connected = 1;
 	      			$con_data = $connections_flat[$con_name];
 	      		}
+
+	      		$work_with = (isset($con_data['work_with']))? $con_data['work_with'] : 0;
+	            $gave_advice = (isset($con_data['gave_advice']))? $con_data['gave_advice'] : 0;
+	            $received_advice = (isset($con_data['received_advice']))? $con_data['received_advice'] : 0;
+	            $acquaintance = (isset($con_data['acquaintance']))? $con_data['acquaintance'] : 0;
+	            $friend = (isset($con_data['friend']))? $con_data['friend'] : 0;
+
+	            $com_weights = array(
+		                        "moredaily"=>7, 
+		                        "daily"=>6, 
+		                        "weekly"=>5, 
+		                        "monthly"=>4, 
+		                        "moreyearly"=>3, 
+		                        "yearly"=>2, 
+		                        "lessyearly"=>1);
 
 	            $com = (isset($con_data['communications']))? $con_data['communications'] : array();
 

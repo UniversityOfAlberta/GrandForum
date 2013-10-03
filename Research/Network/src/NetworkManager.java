@@ -7,6 +7,7 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Vector;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -73,6 +74,7 @@ public class NetworkManager {
 				StringBuilder b = new StringBuilder();
 				b.append("Name");
 				for(String key : this.network.getMetaLabels(type)){
+					
 					b.append("," + key);
 				}
 				
@@ -100,13 +102,18 @@ public class NetworkManager {
 				for(String key : finalResults.keySet()){
 					if(this.network.getMetas().containsKey(key) && nodes.containsKey(key)){
 						b.append("\"" + key + "\"");
-						HashMap<String,String> meta = this.network.getMetas().get(key);
+						HashMap<String,Object> meta = this.network.getMetas().get(key);
 						for(String field : this.network.getMetaLabels(type)){
-							if(meta.get(field) == null || meta.get(field).compareTo("") == 0){
-								b.append(",");
+							if(meta.get(field) instanceof String){
+								if(meta.get(field) == null || ((String)meta.get(field)).compareTo("") == 0){
+									b.append(",");
+								}
+								else{
+									b.append("," + '"' + meta.get(field) + '"');
+								}
 							}
-							else{
-								b.append("," + '"' + meta.get(field) + '"');
+							else if(meta.get(field) instanceof JSONArray){
+								b.append(",\"---\"");
 							}
 						}
 						for(int i = 0; i < finalResults.get(key).size(); i++){

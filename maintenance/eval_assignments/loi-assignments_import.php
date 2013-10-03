@@ -4,8 +4,8 @@ require_once('../commandLine.inc');
     
 $assignments = array();
 
-//if (($handle = fopen("/local/data/www-root/grand_forum/data/Evaluator-Project_Conflicts-v3.csv", "r")) !== FALSE) {
-if (($handle = fopen("/Library/WebServer/Documents/grand_forum/maintenance/eval_assignments/LOI_Assignments.csv","r")) !== FALSE) {
+if (($handle = fopen("/local/data/www-root/grand_forum/maintenance/eval_assignments/LOI_Assignments.csv", "r")) !== FALSE) {
+//if (($handle = fopen("/Library/WebServer/Documents/grand_forum/maintenance/eval_assignments/LOI_Assignments.csv","r")) !== FALSE) {
     
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
     	$evaluator = $data[0];

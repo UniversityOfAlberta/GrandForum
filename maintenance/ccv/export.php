@@ -8,7 +8,7 @@ $map = simplexml_load_file($map_file);
 $ccv = simplexml_load_file($ccv_tmpl);
 
 
-$user_id = 21;
+$user_id = 3;
 $person = Person::newFromId($user_id);
 
 $all_products = $person->getPapers("Publication");
