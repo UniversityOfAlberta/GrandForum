@@ -20,8 +20,12 @@ class EvolveProjectTab extends ProjectTab {
         
         $create = CreateProjectTab::createForm('evolve');
         $create->getElementById("evolve_acronym")->validations = VALIDATE_NOT_NULL;
-        $create->getElementById("evolve_themes_set")->remove();
+        //$create->getElementById("evolve_themes_set")->remove();
+        $create->getElementById("evolve_subproject_row")->remove();
+        $create->getElementById("evolve_subprojectdd_row")->remove();
+        $create->getElementById("evolve_challenges_set")->remove();
         $create->getElementById("evolve_description_row")->remove();
+
         $create->getElementById("evolve_form_table")->insertBefore($projRow, 'evolve_acronym_row');
 
         $form->append($create);

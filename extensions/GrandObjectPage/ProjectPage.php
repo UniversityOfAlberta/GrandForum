@@ -68,6 +68,12 @@ class ProjectPage {
             
             $isMember = $me->isMemberOf($project);
             
+            //Adding support for GET['edit']
+            if(isset($_GET['edit'])){
+                $_POST['edit'] = true;
+                $_POST['submit'] = "Edit Main";
+            }
+
             $isLead = ( $isLead && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
             $isMember = ($isMember && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
             $edit = (isset($_POST['edit']) && $isLead);
@@ -92,9 +98,14 @@ class ProjectPage {
                 
                 $tabbedPage = new TabbedPage("project");
                 $tabbedPage->addTab(new ProjectMainTab($project, $visibility));
-                $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
+                if(!$project->isSubProject()){
+                    $tabbedPage->addTab(new ProjectSubprojectsTab($project, $visibility));
+                }
+                //$tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
                 $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
-                $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
+                if(!$project->isSubProject()){
+                    $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
+                }
                 $tabbedPage->addTab(new ProjectVisualisationsTab($project, $visibility));
                 $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
                 $tabbedPage->showPage();

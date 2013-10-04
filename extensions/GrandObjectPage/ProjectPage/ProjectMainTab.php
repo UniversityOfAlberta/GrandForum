@@ -22,11 +22,18 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         $this->html .= "<b>Type:</b> {$this->project->getType()}<br />
                         <b>Status:</b> {$this->project->getStatus()}<br />";
-        $this->showThemes();
+        //$this->showThemes();
+        $this->showChallenge();
+        $this->showChampions();
         if(!$this->visibility['edit']){
             $this->showPeople();
         }
         $this->showDescription();
+
+        if(!$project->isSubProject()){
+            $this->showProblem();
+            $this->showSolution();
+        }
         
         return $this->html;
     }
@@ -34,16 +41,36 @@ class ProjectMainTab extends AbstractEditableTab {
     function handleEdit(){
         $_POST['project'] = $this->project->getName();
         $_POST['description'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['description'])));
-        $_POST['themes'] = $_POST['t1'].",".$_POST['t2'].",".$_POST['t3'].",".$_POST['t4'].",".$_POST['t5'];
-        if(stripslashes($_POST['description']) != $this->project->getDescription() ||
-           stripslashes($_POST['t1']) != $this->project->getTheme(1) ||
-           stripslashes($_POST['t2']) != $this->project->getTheme(2) ||
-           stripslashes($_POST['t3']) != $this->project->getTheme(3) ||
-           stripslashes($_POST['t4']) != $this->project->getTheme(4) ||
-           stripslashes($_POST['t5']) != $this->project->getTheme(5)){
+        $_POST['problem'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['problem'])));
+        $_POST['solution'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['solution'])));
+        //$_POST['themes'] = $_POST['t1'].",".$_POST['t2'].",".$_POST['t3'].",".$_POST['t4'].",".$_POST['t5'];
+        // if(stripslashes($_POST['description']) != $this->project->getDescription() ||
+        //    stripslashes($_POST['t1']) != $this->project->getTheme(1) ||
+        //    stripslashes($_POST['t2']) != $this->project->getTheme(2) ||
+        //    stripslashes($_POST['t3']) != $this->project->getTheme(3) ||
+        //    stripslashes($_POST['t4']) != $this->project->getTheme(4) ||
+        //    stripslashes($_POST['t5']) != $this->project->getTheme(5)){
+        if( stripslashes($_POST['description']) != $this->project->getDescription() ||
+            stripslashes($_POST['problem']) != $this->project->getProblem() ||
+            stripslashes($_POST['solution']) != $this->project->getSolution() ){
+
             APIRequest::doAction('ProjectDescription', true);
             Project::$cache = array();
             $this->project = Project::newFromId($this->project->getId());
+        }
+
+        if(isset($_POST['challenge_id'])){
+            APIRequest::doAction('ProjectChallenge', true);
+        }
+
+        $champ = $this->project->getChampion();
+        if(
+            (isset($_POST['champion_name']) && $champ['name'] != $_POST['champion_name']) ||
+            (isset($_POST['champion_email']) && $champ['email'] != $_POST['champion_email']) ||
+            (isset($_POST['champion_org']) && $champ['org'] != $_POST['champion_org']) ||
+            (isset($_POST['champion_title']) && $champ['title'] != $_POST['champion_title'])
+        ){
+            APIRequest::doAction('ProjectChampions', true);
         }
     }
     
@@ -90,7 +117,70 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         $this->html .= "</tr></table>";
     }
+
+    function showChallenge(){
+        global $wgServer, $wgScriptPath;
+        $edit = $this->visibility['edit'];
+        
+        $this->html .= "<h2><span class='mw-headline'>Primary Challenge</span></h2>";
+        $challenge = $this->project->getChallenge();
+        
+        $challenges = DBFunctions::execSQL("SELECT id, name FROM grand_challenges");
+        $chlg_opts = "<option value='0'>Not Specified</option>";
+        foreach ($challenges as $chlg){
+            $cid = $chlg['id'];
+            $cname = $chlg['name'];
+            $selected = ($cname == $challenge)? "selected='selected'" : "";
+            $chlg_opts .= "<option value='{$cid}' {$selected}>{$cname}</option>";
+        }
+        if($edit){
+            $this->html .=<<<EOF
+            <select name="challenge_id">{$chlg_opts}</select>
+EOF;
+        }
+        else{
+            $this->html .= "<h4>{$challenge}</h4>";
+        }
+
+       
+    }
     
+    function showChampions(){
+        global $wgUser, $wgServer, $wgScriptPath;
+        
+        $edit = $this->visibility['edit'];
+        $project = $this->project;
+
+        $champion = $project->getChampion();
+        $this->html .= "<h2><span class='mw-headline'>Project Champion</span></h2>";
+
+        if(!$edit){
+            if(empty($champion['name'])){
+                $this->html .= "<strong>N/A</strong>";
+            }
+            else{
+                $this->html .=<<<EOF
+                <table cellspacing="0" cellpadding="2">
+                <tr><td><strong>Name:</strong></td><td>{$champion['name']}</td></tr>
+                <tr><td><strong>Email:</strong></td><td>{$champion['email']}</td></tr>
+                <tr><td><strong>Organization:</strong></td><td>{$champion['org']}</td></tr>
+                <tr><td><strong>Title:</strong></td><td>{$champion['title']}</td></tr>
+                </table>
+EOF;
+            }
+        }
+        else{
+            $this->html .=<<<EOF
+                <table cellspacing="0" cellpadding="2">
+                <tr><td><strong>Name:</strong></td><td><input type="text" name="champion_name" value="{$champion['name']}" /></td></tr>
+                <tr><td><strong>Email:</strong></td><td><input type="text" name="champion_email" value="{$champion['email']}" /></td></tr>
+                <tr><td><strong>Organization:</strong></td><td><input type="text" name="champion_org" value="{$champion['org']}" /></td></tr>
+                <tr><td><strong>Title:</strong></td><td><input type="text" name="champion_title" value="{$champion['title']}" /></td></tr>
+                </table>
+EOF;
+        }
+    }
+
     function showPeople(){
         global $wgUser, $wgServer, $wgScriptPath;
         
@@ -224,6 +314,40 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         else{
             $this->html .= "<textarea name='description' style='height:500px;'>{$project->getDescription()}</textarea>";
+        }
+    }
+
+    function showProblem(){
+        global $wgServer, $wgScriptPath;
+        
+        $edit = $this->visibility['edit'];
+        $project = $this->project;
+        
+        if($edit || !$edit && $project->getProblem() != ""){
+            $this->html .= "<h2><span class='mw-headline'>Problem Summary</span></h2>";
+        }
+        if(!$edit){
+            $this->html .= "<p>" . $this->sandboxParse($project->getProblem()) . "</p>";
+        }
+        else{
+            $this->html .= "<textarea name='problem' style='height:500px;'>{$project->getProblem()}</textarea>";
+        }
+    }
+
+    function showSolution(){
+        global $wgServer, $wgScriptPath;
+        
+        $edit = $this->visibility['edit'];
+        $project = $this->project;
+        
+        if($edit || !$edit && $project->getSolution() != ""){
+            $this->html .= "<h2><span class='mw-headline'>Proposed Solution Summary</span></h2>";
+        }
+        if(!$edit){
+            $this->html .= "<p>" . $this->sandboxParse($project->getSolution()) . "</p>";
+        }
+        else{
+            $this->html .= "<textarea name='solution' style='height:500px;'>{$project->getSolution()}</textarea>";
         }
     }
 

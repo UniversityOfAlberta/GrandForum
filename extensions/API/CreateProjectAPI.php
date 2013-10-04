@@ -9,11 +9,13 @@ class CreateProjectAPI extends API{
 	    $this->addPOST("type",true,"The type of this project","Research");
 	    $this->addPOST("effective_date", true, "The date that this action should take place", "2012-10-15");
 	    $this->addPOST("description",false,"The description for this project","MEOW is great");
-	    $this->addPOST("theme1",false,"The percent value for theme 1","20");
-	    $this->addPOST("theme2",false,"The percent value for theme 2","20");
-	    $this->addPOST("theme3",false,"The percent value for theme 3","20");
-	    $this->addPOST("theme4",false,"The percent value for theme 4","20");
-	    $this->addPOST("theme5",false,"The percent value for theme 5","20");
+	    // $this->addPOST("theme1",false,"The percent value for theme 1","20");
+	    // $this->addPOST("theme2",false,"The percent value for theme 2","20");
+	    // $this->addPOST("theme3",false,"The percent value for theme 3","20");
+	    // $this->addPOST("theme4",false,"The percent value for theme 4","20");
+	    // $this->addPOST("theme5",false,"The percent value for theme 5","20");
+	    $this->addPOST("challenge",false,"Primary Challenge","0");
+	    $this->addPOST("parent_id",false,"Parent Project ID","0");
     }
 
     function processParams($params){
@@ -23,11 +25,12 @@ class CreateProjectAPI extends API{
         $_POST['type'] = @mysql_real_escape_string($_POST['type']);
         $_POST['effective_date'] = @mysql_real_escape_string($_POST['effective_date']);
         $_POST['description'] = @mysql_real_escape_string($_POST['description']);
-        $_POST['theme1'] = @mysql_real_escape_string($_POST['theme1']);
-        $_POST['theme2'] = @mysql_real_escape_string($_POST['theme2']);
-        $_POST['theme3'] = @mysql_real_escape_string($_POST['theme3']);
-        $_POST['theme4'] = @mysql_real_escape_string($_POST['theme4']);
-        $_POST['theme5'] = @mysql_real_escape_string($_POST['theme5']);
+        
+        // $_POST['theme1'] = @mysql_real_escape_string($_POST['theme1']);
+        // $_POST['theme2'] = @mysql_real_escape_string($_POST['theme2']);
+        // $_POST['theme3'] = @mysql_real_escape_string($_POST['theme3']);
+        // $_POST['theme4'] = @mysql_real_escape_string($_POST['theme4']);
+        // $_POST['theme5'] = @mysql_real_escape_string($_POST['theme5']);
     }
 
 	function doAction($noEcho=false){
@@ -51,11 +54,14 @@ class CreateProjectAPI extends API{
 	        $row = $data[0];
 	        $nsId = ($row['nsId'] % 2 == 1) ? $row['nsId'] + 1 : $row['nsId'] + 2;
 	    }
-	    $theme1 = (isset($_POST['theme1'])) ? $_POST['theme1'] : 0;
-	    $theme2 = (isset($_POST['theme2'])) ? $_POST['theme2'] : 0;
-	    $theme3 = (isset($_POST['theme3'])) ? $_POST['theme3'] : 0;
-	    $theme4 = (isset($_POST['theme4'])) ? $_POST['theme4'] : 0;
-	    $theme5 = (isset($_POST['theme5'])) ? $_POST['theme5'] : 0;
+	    // $theme1 = (isset($_POST['theme1'])) ? $_POST['theme1'] : 0;
+	    // $theme2 = (isset($_POST['theme2'])) ? $_POST['theme2'] : 0;
+	    // $theme3 = (isset($_POST['theme3'])) ? $_POST['theme3'] : 0;
+	    // $theme4 = (isset($_POST['theme4'])) ? $_POST['theme4'] : 0;
+	    // $theme5 = (isset($_POST['theme5'])) ? $_POST['theme5'] : 0;
+	    $challenge = (isset($_POST['challenge'])) ? $_POST['challenge'] : 0;
+	    $parent_id = (isset($_POST['parent_id'])) ? $_POST['parent_id'] : 0;
+	    
 	    $status = (isset($_POST['status'])) ? $_POST['status'] : 'Proposed';
 	    $type = (isset($_POST['type'])) ? $_POST['type'] : 'Research';
 	    $effective_date = (isset($_POST['effective_date'])) ? $_POST['effective_date'] : 'CURRENT_TIMESTAMP';
@@ -75,8 +81,8 @@ class CreateProjectAPI extends API{
 	        $stat = DBFunctions::execSQL($sql, true, true);
 	    }
 	    if($stat){
-	        $sql = "INSERT INTO `grand_project` (`id`,`name`)
-	                VALUES ('{$nsId}','{$_POST['acronym']}')";
+	        $sql = "INSERT INTO `grand_project` (`id`,`parent_id`,`name`)
+	                VALUES ('{$nsId}','{$parent_id}','{$_POST['acronym']}')";
 	        $stat = DBFunctions::execSQL($sql, true, true);
 	    }
 	    if($stat){
@@ -90,10 +96,22 @@ class CreateProjectAPI extends API{
 	        $sql = DBFunctions::execSQL($sql, true, true);
 	    }
 	    if($stat){
+	    	$sql = "SELECT MAX(id) as max_id FROM `grand_project_challenges` WHERE project_id = '{$nsId}'";
+	    	$last_challenge_data = DBFunctions::execSQL($sql);
+	    	if(count($last_challenge_data) > 0 && isset($last_challenge_data[0]['max_id'])){
+	    		$last_challenge_id = $last_challenge_data[0]['max_id'];
+	    		$sql = "UPDATE `grand_project_challenges` SET end_date=CURRENT_TIMESTAMP WHERE id='{$last_challenge_id}'";
+	    		DBFunctions::execSQL($sql, true);
+	    	}
+	        $sql = "INSERT INTO `grand_project_challenges` (`project_id`,`challenge_id`,`start_date`)
+	                VALUES ('{$nsId}','{$challenge}', CURRENT_TIMESTAMP)";
+	        $sql = DBFunctions::execSQL($sql, true, true);
+	    }
+	    if($stat){
 	        Project::$cache = array();
 	        $project = Project::newFromId($nsId);
 	        $_POST['project'] = $_POST['acronym'];
-	        $_POST['themes'] = "{$theme1},{$theme2},{$theme3},{$theme4},{$theme5}";
+	        //$_POST['themes'] = "{$theme1},{$theme2},{$theme3},{$theme4},{$theme5}";
 	        APIRequest::doAction('ProjectDescription', true);
 	        //MailingList::createMailingList($project);
 	    }

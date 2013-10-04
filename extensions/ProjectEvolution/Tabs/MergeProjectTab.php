@@ -20,7 +20,10 @@ class MergeProjectTab extends ProjectTab {
         
         $create = CreateProjectTab::createForm('merge');
         $create->getElementById("merge_acronym")->validations = VALIDATE_NOT_NULL;
-        $create->getElementById("merge_themes_set")->remove();
+        //$create->getElementById("merge_themes_set")->remove();
+        $create->getElementById("merge_challenges_set")->remove();
+        $create->getElementById("merge_subproject_row")->remove();
+        $create->getElementById("merge_subprojectdd_row")->remove();
         $create->getElementById("merge_description_row")->remove();
         $create->getElementById("merge_form_table")->insertBefore($projRow, 'merge_acronym_row');
         

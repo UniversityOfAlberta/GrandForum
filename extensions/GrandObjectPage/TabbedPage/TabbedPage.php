@@ -36,6 +36,7 @@ class TabbedPage {
         $active_tab = $init_tab;
         $activeTabIndex = "";
         $i = 0;
+
         foreach($this->tabs as $tab){
             if($tab instanceof AbstractEditableTab && $tab->canEdit()){
                 if(isset($_POST['submit']) && 
