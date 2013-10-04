@@ -70,10 +70,17 @@ DBFunctions::execSQL($sql, true);
 
 //grand_project_champions
 $sql = "CREATE TABLE IF NOT EXISTS `grand_project_champions` (
-  `project_id` int(11) unsigned NOT NULL,
-  `champion` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`project_id`,`champion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+          `project_id` int(11) unsigned NOT NULL,
+          `user_id` int(11) DEFAULT NULL,
+          `champion_name` varchar(255) DEFAULT '',
+          `champion_email` varchar(255) DEFAULT NULL,
+          `champion_org` varchar(255) DEFAULT '',
+          `champion_title` varchar(255) DEFAULT NULL,
+          `start_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+          `end_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+          PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 DBFunctions::execSQL($sql, true);
 
 echo "ALL DONE!\n";
