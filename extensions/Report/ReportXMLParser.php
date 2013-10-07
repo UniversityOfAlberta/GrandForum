@@ -277,6 +277,9 @@ class ReportXMLParser {
                 if(isset($attributes->tooltip)){
                     $section->setTooltip(str_replace("'", "&#39;", "{$attributes->tooltip}"));
                 }
+                if(isset($attributes->disabled)){
+                    $section->setDisabled($attributes->tooltip);
+                }
                 if(isset($attributes->blobSection)){
                     if(!defined($attributes->blobSection)){
                         $this->errors[] = "Blob Section '{$attributes->blobSection}' does not exist for ReportSection, using SEC_NONE";

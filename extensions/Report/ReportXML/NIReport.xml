@@ -308,7 +308,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
             </ReportItemSet>
         </ReportItemSet>
     <!-- IIe. Management of the Network -->
-        <ReportItemSet id='IIe_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="E. Management of the Network: My role in or contribution to Network operations and governance" private="true">
+        <ReportItemSet id='IIe_head' type="ToggleHeaderReportItemSet" changeColor="false" disabled="true" level="4" title="E. Management of the Network: My role in or contribution to Network operations and governance" private="true">
             <ReportItem id="IIe" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETMAN" type="AutoCompleteTextareaReportItem" set="AllPeopleReportItemSet" index="user_id" label="user_name" name="Members" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
                 <![CDATA[{$item}]]>
             </ReportItem>
@@ -346,7 +346,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="budget" name="Budget Request" blobSection="RES_BUDGET" tooltip="Budget request and justification" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true">
+    <ReportSection id="budget" name="Budget Request" blobSection="RES_BUDGET" tooltip="Budget request and justification" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true" disabled="true">
         <Instructions>
             <![CDATA[
                 <p>Below find a budget template, which you should download, complete with your funding request for 2013-14 and upload. As with the past year, the amounts you will be allocating to different projects should be listed in different columns. Please note:<br />
@@ -477,7 +477,7 @@ Note that there are two distinct differences between the online document that yo
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="submit" name="Submit" tooltip="PDF generation and submission to the RMC" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
+    <ReportSection id="submit" name="Submit" tooltip="PDF generation and submission to the RMC" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true" disabled="true">
         <Instructions>
             <![CDATA[
                     <p>To submit your report, follow the following three steps.</p>

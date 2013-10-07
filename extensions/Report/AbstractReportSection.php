@@ -17,6 +17,7 @@ abstract class AbstractReportSection {
     var $pageBreak;
     var $number;
     var $tooltip;
+    var $disabled;
     var $reportCallback;
     var $projectId;
     var $personId;
@@ -30,6 +31,7 @@ abstract class AbstractReportSection {
         $this->sec = SEC_NONE;
         $this->items = array();
         $this->attributes = array();
+        $this->disabled = false;
         $this->selected = false;
         $this->renderPDF = true;
         $this->previewOnly = false;
@@ -207,6 +209,11 @@ abstract class AbstractReportSection {
     function setTooltip($tooltip){
         $this->tooltip = $tooltip;
     }
+
+    // Sets the disabled 
+    function setDisabled($disabled){
+        $this->disabled = $disabled;
+    }
     
     // Sets the Blob Section of this AbstractReportSection
     function setBlobSection($sec){
@@ -301,7 +308,11 @@ abstract class AbstractReportSection {
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
         }
-        $wgOut->addHTML("<a title='{$this->tooltip}' class='reportTab$selected tooltip' id='".str_replace(" ", "", $this->name)."' href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getParent()->xmlName}{$project}&section=".urlencode($this->name)."{$year}'>{$this->name}</a>\n");
+        $disabled = "";
+        if($this->disabled){
+            $disabled = "disabled_lnk";
+        }
+        $wgOut->addHTML("<a title='{$this->tooltip}' class='reportTab$selected tooltip {$disabled}' id='".str_replace(" ", "", $this->name)."' href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getParent()->xmlName}{$project}&section=".urlencode($this->name)."{$year}'>{$this->name}</a>\n");
     }
     
     function render(){
