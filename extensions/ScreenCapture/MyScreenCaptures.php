@@ -113,9 +113,11 @@ EOF
 <thead><tr><th>Date</th><th>Graph Editor</th><th># Screenshots</th></tr></thead><tbody>");
 	    foreach($recordings as $recording){
 	        $nScreens = 0;
-	        foreach($recording->events as $evt){
-	            if($evt->event == 'screen'){
-	                $nScreens++;
+	        if(count($recording->events) > 0){
+	            foreach($recording->events as $evt){
+	                if($evt->event == 'screen'){
+	                    $nScreens++;
+	                }
 	            }
 	        }
 	        $wgOut->addHTML("<tr bgcolor='#F2F2F2'><td>".$recording->created."</td><td><a href='$wgServer$wgScriptPath/index.php/Special:MyScreenCaptures?id={$recording->id}'>Graph Editor</a></td><td align='right'>{$nScreens}</td></tr>");

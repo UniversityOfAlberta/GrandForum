@@ -60,16 +60,13 @@ class AllocatedBudgets extends SpecialPage {
 	            }
 	        }
 	        if($found){
-	            $data = AllocatedBudgets::getData($year, $person);
-	            if($data != null){
+	            $budget = $person->getAllocatedBudget($year-1);
+	            if($budget != null && $budget->size() > 0){
 	                $download = "<a href='$wgServer$wgScriptPath/index.php/Special:AllocatedBudgets?year={$year}&person={$person->getName()}&download'>Download Budget</a>";
-	                //$budget = new Budget("XLS", SUPPLEMENTAL_STRUCTURE, $data);
-	                $budget = $person->getAllocatedBudget($year-1);
 	                $budget = $budget->copy()->filterCols(V_PROJ, array(""));
 	                
 	                $projectTotals = $budget->copy()->rasterize()->where(HEAD1, array("TOTALS.*"));
 	                $total = $projectTotals->copy()->select(ROW_TOTAL)->sum();
-	                
 	                if($budget->isError()){
 	                    $msg = "";
 	                    foreach($budget->xls as $rowN => $row){
@@ -82,7 +79,13 @@ class AllocatedBudgets extends SpecialPage {
 	                    $errors = "<span style='float:left;font-weight:bold;color:#FF0000;' title='$msg' class='tooltip'>ERRORS</span> $".number_format(str_replace("$", "", $total->toString()));
 	                }
 	                else{
-	                    $errors = "$".@number_format(str_replace("$", "", $total->toString()));
+	                    if($total->toString() == "$"){
+	                        $errors = "Not Uploaded";
+	                        $download = "";
+	                    }
+	                    else{
+	                        $errors = "$".@number_format(str_replace("$", "", $total->toString()));
+	                    }
 	                }
 	            }
 	            else{
@@ -100,23 +103,16 @@ class AllocatedBudgets extends SpecialPage {
     }
     
     static function getData($year, $person){
-        if(($year-1) != 2010){
-            $uid = $person->getId();
-	        $blob_type=BLOB_EXCEL;
-	        $rptype = RP_RESEARCHER;
-        	$section = RES_ALLOC_BUDGET;
-        	$item = 0;
-        	$subitem = 0;
-	        $rep_addr = ReportBlob::create_address($rptype,$section,$item,$subitem);
-	        $budget_blob = new ReportBlob($blob_type, ($year-1), $uid, 0);
-	        $budget_blob->load($rep_addr);
-	        $data = $budget_blob->getData();
-        }
-        else{
-            $pg = "Special:SupplementalReport";
-            $sd = new SessionData($person->getId(), $pg, SD_SUPPL_BUDGET);
-            $data = $sd->fetch(false);
-        }
+        $uid = $person->getId();
+        $blob_type=BLOB_EXCEL;
+        $rptype = RP_RESEARCHER;
+    	$section = RES_ALLOC_BUDGET;
+    	$item = 0;
+    	$subitem = 0;
+        $rep_addr = ReportBlob::create_address($rptype,$section,$item,$subitem);
+        $budget_blob = new ReportBlob($blob_type, ($year-1), $uid, 0);
+        $budget_blob->load($rep_addr);
+        $data = $budget_blob->getData();
         return $data;
     }
     

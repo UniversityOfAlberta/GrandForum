@@ -88,20 +88,19 @@ class Acknowledgement {
     
     // Returns the Supervisor this Acknowledgement is for
     function getSupervisor(){
-        return $this->supervisor;
+        $super = Person::newFromNameLike($this->supervisor);
+        if($super->getName() != ""){
+            return $super->getReversedName();
+        }
+        else{
+            return $this->supervisor;
+        }
     }
     
     // Returns the Date this Acknowledgement is for
     function getDate(){
-        if(preg_match("/[a-zA-Z]/", $this->date) == 1){
-            $date = DateTime::createFromFormat('d-M-y', $this->date);
-        }
-        else{
-            $date = DateTime::createFromFormat('d-m-y', $this->date);
-            if($date == false){
-                $date = DateTime::createFromFormat('d-m-Y', $this->date);
-            }
-        }
+        
+        $date = DateTime::createFromFormat('Y-m-d', $this->date);        
         
         if($date != false){
             return $date->format('Y-m-d');

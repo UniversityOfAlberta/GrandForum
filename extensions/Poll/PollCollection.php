@@ -12,11 +12,9 @@ class PollCollection {
 	var $selfVote;
 	
 	static function newFromId($id){
-		$cTable = getTableName("an_poll_collection");
-		$sql = "SELECT * 
-			FROM $cTable c
-			WHERE c.collection_id = '$id'";
-		$rows = DBFunctions::execSQL($sql);
+		$rows = DBFunctions::select(array('grand_poll_collection'),
+		                            array('*'),
+		                            array('collection_id' => EQ($id)));
 		if(count($rows) > 0){
 			$row = $rows[0];
 			$name = $row['collection_name'];
@@ -26,13 +24,9 @@ class PollCollection {
 			$author = User::newFromId($row['author_id']);
 			$polls = array();
 			$groups = array();
-			$pTable = getTableName("an_poll");
-			$gTable = getTableName("an_poll_groups");
-			
-			$sql = "SELECT g.group_name
-				FROM $gTable g
-				WHERE g.collection_id = '$id'";
-			$rows1 = DBFunctions::execSQL($sql);
+			$rows1 = DBFunctions::select(array('grand_poll_groups'),
+			                             array('group_name'),
+			                             array('collection_id' => EQ($id)));
 			foreach($rows1 as $row1){
 				$groups[] = $row1['group_name'];
 			}
@@ -47,13 +41,11 @@ class PollCollection {
 	
 	function getPolls(){
 	    if($this->polls == null){
-	        $pTable = getTableName("an_poll");
-	        $sql = "SELECT p.poll_id
-			    FROM $pTable p
-			    WHERE p.collection_id = '{$this->id}'";
-		    $rows1 = DBFunctions::execSQL($sql);
-		    foreach($rows1 as $row1){
-			    $polls[] = Poll::newFromId($row1['poll_id']);
+	        $rows = DBFunctions::select(array('grand_poll'),
+	                                    array('poll_id'),
+	                                    array('collection_id' => EQ($this->id)));
+		    foreach($rows as $row){
+			    $polls[] = Poll::newFromId($row['poll_id']);
 		    }
 		    $this->polls = $polls;
 		}
@@ -93,7 +85,7 @@ class PollCollection {
 	}
 	
 	function hasUserVoted($userId){
-		if($userId == $this->author->getId() && $this->selfVote == 'false'){
+		if($userId == $this->author->getId() && $this->selfVote == 0){
 			return true;
 		}
 		foreach($this->getPolls() as $poll){
@@ -135,13 +127,18 @@ class PollCollection {
 	}
 	
 	function getPotentialVoters(){
-		$ugTable = getTableName("user_groups");
-		$uTable = getTableName("user");
+		$ugTable = "mw_user_groups";
+		$uTable = "mw_user";
 		$users = array();
+        $rows = array();
 		if(array_search('all', $this->groups) !== false){
-			$sql = "SELECT DISTINCT u.user_id, u.user_name, u.user_email
-				FROM $ugTable ug, $uTable u
-				WHERE u.user_id = ug.ug_user";
+	        $rows = DBFunctions::select(array('mw_user_groups' => 'ug',
+	                                          'mw_user' => 'u'),
+	                                    array('DISTINCT u.user_id',
+	                                          'u.user_id',
+	                                          'u.user_name',
+	                                          'u.user_email'),
+	                                    array('u.user_id' => EQ(COL('ug.ug_user'))));
 		}
 		else if(array_search('Student', $this->groups) !== false){
 		    $hqps = Person::getAllPeople(HQP);
@@ -155,12 +152,15 @@ class PollCollection {
 		    return $users;
 		}
 		else {
-			$sql = "SELECT DISTINCT u.user_id, u.user_name, u.user_email
-				FROM $ugTable ug, $uTable u
-				WHERE u.user_id = ug.ug_user
-				AND ug.ug_group IN ('".implode("','", $this->groups)."')";
+		    $rows = DBFunctions::select(array('mw_user_groups' => 'ug',
+		                                      'mw_user' => 'u'),
+		                                array('DISTINCT u.user_id',
+		                                      'u.user_id',
+		                                      'u.user_name',
+		                                      'u.user_email'),
+		                                array('u.user_id' => EQ(COL('ug.ug_user')),
+		                                      'ug.ug_group' => IN($this->groups)));
 		}
-		$rows = DBFunctions::execSQL($sql);
 		foreach($rows as $row){
 			$users[] = $row;
 		}

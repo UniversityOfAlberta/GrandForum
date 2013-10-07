@@ -91,6 +91,7 @@ class ReviewerConflicts extends SpecialPage {
             exit;
         }
 
+        $cur_year = date('Y');
 	    if(isset($_POST['Submit']) && ($_POST['Submit'] == "Confirm CNI Conflicts" || $_POST['Submit'] == "Confirm PNI Conflicts")){
             if(isset($_POST['reviewee_id'])){
                 foreach($_POST['reviewee_id'] as $reviewee_id){
@@ -107,9 +108,9 @@ class ReviewerConflicts extends SpecialPage {
                     else{
                         $user_conflict = 0;
                     }
-
-                    $sql = "INSERT INTO grand_reviewer_conflicts(reviewer_id, reviewee_id, conflict, user_conflict) 
-                            VALUES('{$reviewer_id}', '{$reviewee_id}', '$conflict', '$user_conflict' ) 
+                    
+                    $sql = "INSERT INTO grand_eval_conflicts(eval_id, sub_id, type, year, conflict, user_conflict) 
+                            VALUES('{$reviewer_id}', '{$reviewee_id}', 'NI', '{$cur_year}', '$conflict', '$user_conflict' ) 
                             ON DUPLICATE KEY UPDATE conflict='{$conflict}', user_conflict='{$user_conflict}'";
 
                     $data = DBFunctions::execSQL($sql, true);
@@ -135,8 +136,8 @@ class ReviewerConflicts extends SpecialPage {
                         $user_conflict = 0;
                     }
 
-                    $sql = "INSERT INTO grand_project_conflicts(reviewer_id, project_id, conflict, user_conflict) 
-                            VALUES('{$reviewer_id}', '{$project_id}', '$conflict', '$user_conflict' ) 
+                    $sql = "INSERT INTO grand_eval_conflicts(eval_id, sub_id, type, year, conflict, user_conflict) 
+                            VALUES('{$reviewer_id}', '{$project_id}', 'NI', '{$cur_year}', '$conflict', '$user_conflict' ) 
                             ON DUPLICATE KEY UPDATE conflict='{$conflict}', user_conflict='{$user_conflict}'";
 
                     $data = DBFunctions::execSQL($sql, true);
@@ -318,7 +319,8 @@ EOF;
 
         $current_evals = array(17,563,152,25,90,27,28,564,32,565,566,36,38,41,48,55,60,61,1263);
 
-        $sql = "SELECT DISTINCT reviewer_id FROM grand_reviewer_conflicts";
+        $cur_year = date('Y');
+        $sql = "SELECT DISTINCT eval_id FROM grand_eval_conflicts WHERE type='NI' AND year={$cur_year}";
         $data = DBFunctions::execSQL($sql);
         $total_conflict_submissions = count($data);
         $total_evaluators = count($current_evals);
@@ -365,12 +367,12 @@ EOF;
         <tbody>
 EOF;
 
-        $sql = "SELECT * FROM grand_reviewer_conflicts";
+        $sql = "SELECT * FROM grand_eval_conflicts WHERE type='NI' AND year={$cur_year}";
         $data = DBFunctions::execSQL($sql);
         $conflicts = array();
         foreach($data as $row){
-            $eval_id = $row['reviewer_id'];
-            $rev_id = $row['reviewee_id'];
+            $eval_id = $row['eval_id'];
+            $rev_id = $row['sub_id'];
             $conflict = $row['conflict'];
             $user_conflict = $row['user_conflict'];
 
@@ -661,13 +663,14 @@ EOF;
 
 
         //Get saved conflicts data if any
+        $cur_year = date('Y');
         $reviewer_id = $me->getId();
-        $sql = "SELECT * FROM grand_reviewer_conflicts WHERE reviewer_id = '{$reviewer_id}'";
+        $sql = "SELECT * FROM grand_eval_conflicts WHERE eval_id = '{$reviewer_id}' AND type='NI' AND year={$cur_year}";
         $data = DBFunctions::execSQL($sql);    
 
         $conflicts = array();
         foreach($data as $row){
-            $conflicts["'".$row['reviewee_id']."'"] = $row['user_conflict'];
+            $conflicts["'".$row['sub_id']."'"] = $row['user_conflict'];
         }
 
         //print_r($conflicts);
@@ -851,13 +854,14 @@ EOF;
 EOF;
 
         //Get saved conflicts data if any
+        $cur_year = date('Y');
         $reviewer_id = $me->getId();
-        $sql = "SELECT * FROM grand_project_conflicts WHERE reviewer_id = '{$reviewer_id}'";
+        $sql = "SELECT * FROM grand_eval_conflicts WHERE eval_id = '{$reviewer_id}' AND type='PROJECT' AND year={$cur_year}";
         $data = DBFunctions::execSQL($sql);    
 
         $conflicts = array();
         foreach($data as $row){
-            $conflicts["'".$row['project_id']."'"] = $row['user_conflict'];
+            $conflicts["'".$row['sub_id']."'"] = $row['user_conflict'];
         }
 
         $allProjects = Project::getAllProjects();
@@ -917,8 +921,9 @@ EOF;
         $csv = "";
         //$me = Person::newFromId($wgUser->getId());
         
+        $cur_year = date('Y');
         $current_evals = array(17,563,152,25,90,27,28,564,32,565,566,36,38,41,48,55,60,61,1263);
-        $sql = "SELECT DISTINCT reviewer_id FROM grand_project_conflicts";
+        $sql = "SELECT DISTINCT eval_id FROM grand_eval_conflicts WHERE type='PROJECT' AND year={$cur_year}";
         $data = DBFunctions::execSQL($sql);
         $total_conflict_submissions = count($data);
         $total_evaluators = count($current_evals);
@@ -978,7 +983,8 @@ EOF;
                 $elname = implode(' ', array_slice($eval_name_prop, 1));
 
                  //Get saved conflicts data if any
-                $sql = "SELECT * FROM grand_project_conflicts WHERE reviewer_id = '{$eval_id}' AND project_id = '{$project_id}'";
+                $cur_year = date('Y');
+                $sql = "SELECT * FROM grand_eval_conflicts WHERE eval_id = '{$eval_id}' AND sub_id = '{$project_id}' AND type='PROJECT' AND year={$cur_year}";
                 $data = DBFunctions::execSQL($sql);
                 $bgcolor = "#FFFFFF";    
                 if(count($data) > 0){
@@ -1045,8 +1051,8 @@ EOF;
         global $wgOut;
 
         $current_evals = array(17,563,152,25,90,27,28,564,32,565,566,36,38,41,48,55,60,61,1263);
-        
-        $sql = "SELECT DISTINCT reviewer_id FROM grand_project_conflicts";
+        $cur_year = date('Y');
+        $sql = "SELECT DISTINCT eval_id FROM grand_eval_conflicts WHERE type='PROJECT' AND year={$cur_year}";
         $data = DBFunctions::execSQL($sql);
         $total_conflict_submissions = count($data);
         $total_evaluators = count($current_evals);
@@ -1103,7 +1109,7 @@ EOF;
                 $elname = implode(' ', array_slice($eval_name_prop, 1));
 
                  //Get saved conflicts data if any
-                $sql = "SELECT * FROM grand_project_conflicts WHERE reviewer_id = '{$eval_id}' AND project_id = '{$project_id}'";
+                $sql = "SELECT * FROM grand_eval_conflicts WHERE eval_id = '{$eval_id}' AND sub_id = '{$project_id}' AND type='PROJECT' AND year={$cur_year}";
                 $data = DBFunctions::execSQL($sql);
                 
                 //$data = array();

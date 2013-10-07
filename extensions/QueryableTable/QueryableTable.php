@@ -227,6 +227,14 @@ abstract class QueryableTable {
         return count($this->structure);
     }
     
+    /**
+     * Returns the number of cells in the QueryableTable
+     * @return int The number of cells in the QueryableTabe
+     */
+    function size(){
+        return $this->nCols()*$this->nRows();
+    }
+    
     // Updates the dynamic cells
     protected function updateDynamic(){
         foreach($this->xls as $rowN => $row){
@@ -498,10 +506,11 @@ abstract class QueryableTable {
 					    }
 					}
 				}
-				
-				foreach($this->errors as $rowN => $rowErrors){
-				    foreach($rowErrors as $colN => $error){
-				        $ret .= "$error<br />\n";
+				if(count($this->errors) > 0){
+				    foreach($this->errors as $rowN => $rowErrors){
+				        foreach($rowErrors as $colN => $error){
+				            $ret .= "$error<br />\n";
+				        }
 				    }
 				}
 				$ret .= "</div>\n";

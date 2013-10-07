@@ -80,7 +80,7 @@ class HQPExitTab extends AbstractEditableTab {
         if($person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
             $wgOut->addScript("<script type='text/javascript'>
                 var theses = Array();\n");
-            $theses = Paper::getAllPapersForThesis($person);
+            $theses = $person->getPapers();
             foreach($theses as $thesis){
                 $title = $thesis->getTitle();
                 if(strlen($thesis->getTitle()) > 50){
@@ -97,7 +97,7 @@ class HQPExitTab extends AbstractEditableTab {
                 $universities[] = $uni;
             }
             $movedOn = $person->getMovedOn();
-            $thesis = $person->getThesis();
+            $thesis = $person->getThesis(false);
             $tId = ($thesis != null) ? $thesis->getId() : 0;
             
             $roleHistory = $person->getRoles(true);

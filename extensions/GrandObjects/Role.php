@@ -28,7 +28,7 @@ class Role extends BackboneModel {
 	function Role($data){
 		if(count($data) > 0){
 			$this->id = $data[0]['id'];
-			$this->user = $data[0]['user'];
+			$this->user = $data[0]['user_id'];
 			$this->role = $data[0]['role'];
 			$this->startDate = $data[0]['start_date'];
 			$this->endDate = $data[0]['end_date'];

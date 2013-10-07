@@ -103,13 +103,15 @@ class ReportXMLParser {
     function showErrors(){
         global $wgOut;
         if(!$this->report->generatePDF){
-            $wgOut->addHTML("<script type='text/javascript'>
-                                if (typeof console != 'undefined' && console != null) {\n");
-            foreach($this->errors as $error){
-                $wgOut->addHTML("   console.warn('".addslashes($error)."');\n");
+            if(count($this->errors) > 0){
+                $wgOut->addHTML("<script type='text/javascript'>
+                                    if (typeof console != 'undefined' && console != null) {\n");
+                foreach($this->errors as $error){
+                    $wgOut->addHTML("   console.warn('".addslashes($error)."');\n");
+                }
+                $wgOut->addHTML("   }
+                                </script>\n");
             }
-            $wgOut->addHTML("   }
-                            </script>\n");
         }
     }
     

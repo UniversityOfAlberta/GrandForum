@@ -97,7 +97,7 @@ class Material {
             $this->id = $data[0]['id'];
             $this->title = $data[0]['title'];
             $this->type = $data[0]['type'];
-            $this->timestamp = $data[0]['timestamp'];
+            $this->timestamp = $data[0]['change_date'];
             $this->date = $data[0]['date'];
             $this->media = $data[0]['media'];
             $this->mediaLocal = $data[0]['mediaLocal'];

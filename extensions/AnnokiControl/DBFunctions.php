@@ -58,6 +58,13 @@ function IN($values){
     return "### IN ('".implode("','", $values)."')";
 }
 
+function NOT_IN($values){
+    foreach($values as $key => $value){
+        $values[$key] = mysql_real_escape_string($value);
+    }
+    return "### NOT IN ('".implode("','", $values)."')";
+}
+
 function WHERE_OR($value){
     return "### OR ".$value;
 }
@@ -136,12 +143,25 @@ class DBFunctions {
 		    return $rows;
 		}
 		catch (DBQueryError $e){
-		    $me = Person::newFromUser($wgUser);
-		    if($me->isRoleAtLeast(MANAGER)){
-		        $wgMessage->addError("<pre class='inlineError' style='font-weight:bold;background:none;border:none;padding:0;overflow:hidden;margin:0;'>".$e->getMessage()."</pre>");
+		    if(php_sapi_name() === 'cli'){
+		        echo $e->getMessage();
 		    }
 		    else{
-		        $wgMessage->addError("A Database error #{$e->errno} has occurred, please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>.");
+		        $me = Person::newFromUser($wgUser);
+		        if($me->isRoleAtLeast(MANAGER)){
+		            $traces = debug_backtrace();
+		            foreach($traces as $trace){ 
+		                $file = $trace['file'];
+		                $line = $trace['line'];
+		                if(strstr($file, "DBFunctions.php") === false){
+		                    break;
+		                }
+		            }
+		            $wgMessage->addError("<pre class='inlineError' style='font-weight:bold;background:none;border:none;padding:0;overflow:hidden;margin:0;'>".$e->getMessage()."in <i>{$file}</i> on line <i>{$line}</i></pre>");
+		        }
+		        else{
+		            $wgMessage->addError("A Database error #{$e->errno} has occurred, please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>.");
+		        }
 		    }
 		    if($rollback){
 		        DBFunctions::rollback();
@@ -257,12 +277,60 @@ class DBFunctions {
 	    $vals = array();
         foreach($values as $key => $value){
             $key = mysql_real_escape_string($key);
-            $value = mysql_real_escape_string($value);
             $cols[] = "{$key}";
-            $values[] = "'{$value}'";
+            if(strstr($value, "### ") !== false){
+                $value = str_replace("=", "", str_replace("### ", "", $value));
+                $vals[] = "{$value}";
+            }
+            else{
+                $value = mysql_real_escape_string($value);
+                $vals[] = "'{$value}'";
+            }
         }
         $sql .= implode(",", $cols).") VALUES(".implode(",", $vals).")";
         return DBFunctions::execSQL($sql, true, $rollback);
+	}
+	
+	/**
+	 * Performs a sanitized DB Deletion
+	 * @param string $table The name of the table to delete
+	 * @param array $where The hash of the column/values for the deletion
+	 * @return boolean Returns whether the insertion was successful or not
+	 * TODO: This is not yet fully tested
+	 */
+	static function delete($table, $where=array(), $rollback=false){
+	    $whereSQL = array();
+	    $table = mysql_real_escape_string($table);
+	    foreach($where as $key => $value){
+            $key = mysql_real_escape_string($key);
+            if(strstr($value, "### ") !== false){
+                $value = str_replace("### ", "", $value);
+                $whereSQL[] = "{$key} {$value} ";
+            }
+            else{
+                $value = mysql_real_escape_string($value);
+                $whereSQL[] = "{$key} = '{$value}' ";
+            }
+        }
+        $sql = "DELETE FROM $table ";
+        if(count($whereSQL) > 0){
+            $sql .= "WHERE ";
+            foreach($whereSQL as $key => $where){
+                if($key > 0){
+                    if(strstr($where, "### OR ") !== false){
+                        $where = str_replace("### OR ", " OR ", $where);
+                    }
+                    else if(strstr($where, "### AND ") !== false){
+                        $where = str_replace("### AND ", " AND ", $where);
+                    }
+                    else{
+                        $where = " AND $where";
+                    }
+                }
+                $sql .= $where."\n";
+            }
+        }
+        return DBFunctions::execSQL($sql, true);
 	}
 	
 	/**
@@ -271,20 +339,27 @@ class DBFunctions {
 	 * @param array $values The hash of column/values to update
 	 * @param array $where The hash for column/values for the where clause
 	 * @param boolean $rollback Whether or not to perform a rollback if the update fails
+	 * @param array $limit How to limit results (array of 1 or 2 values)
 	 * @return boolean Returns whether or not the update was successfull
 	 * TODO: This is not yet fully tested
 	 */
-    static function update($table, $values=array(), $where=array(), $rollback=false){
+    static function update($table, $values=array(), $where=array(), $limit=array(), $rollback=false){
         $table = mysql_real_escape_string($table);
+        $limitSQL = array();
         $sql = "UPDATE {$table}\nSET ";
         $sets = array();
         foreach($values as $key => $value){
             $key = mysql_real_escape_string($key);
-            $value = mysql_real_escape_string($value);
-            $sets[] = "{$key} = '{$value}' ";
+            if(strstr($value, "### ") !== false){
+                $value = str_replace("### ", "", $value);
+                $sets[] = "{$key} {$value} ";
+            }
+            else{
+                $value = mysql_real_escape_string($value);
+                $sets[] = "{$key} = '{$value}' ";
+            }
         }
         $sql .= implode(",\n", $sets);
-        $sql .= "WHERE ";
         $wheres = array();
         foreach($where as $key => $value){
             $key = mysql_real_escape_string($key);
@@ -297,7 +372,30 @@ class DBFunctions {
                 $wheres[] = "{$key} = '{$value}' ";
             }
         }
-        $sql .= implode("\n", $wheres);
+        if(count($wheres) > 0){
+            $sql .= "WHERE ";
+            foreach($wheres as $key => $where){
+                if($key > 0){
+                    if(strstr($where, "### OR ") !== false){
+                        $where = str_replace("### OR ", " OR ", $where);
+                    }
+                    else if(strstr($where, "### AND ") !== false){
+                        $where = str_replace("### AND ", " AND ", $where);
+                    }
+                    else{
+                        $where = " AND $where";
+                    }
+                }
+                $sql .= $where."\n";
+            }
+        }
+        foreach($limit as $key => $value){
+            $value = mysql_real_escape_string($value);
+            $limitSQL[] = "{$value} ";
+        }
+        if(count($limitSQL) > 0){
+            $sql .= "\nLIMIT ".implode(", ", $limitSQL);
+        }
         return DBFunctions::execSQL($sql, true, $rollback);
     }
 	

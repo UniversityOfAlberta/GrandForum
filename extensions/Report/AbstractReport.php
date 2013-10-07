@@ -63,14 +63,17 @@ abstract class AbstractReport extends SpecialPage {
                 $type = "ProjectReport";
                 break;
             case RPTP_REVIEWER:
+                $type = "ReviewReport";
                 break;
             case RPTP_SUPPORTING:
                 break;
             case RPTP_EVALUATOR:
+                $type = "EvaluatorResearcherReport";
                 break;
             case RPTP_EVALUATOR_PROJ:
                 break;
             case RPTP_EVALUATOR_NI:
+                $type = "EvalNIPDFReport";
                 break;
             case RPTP_LEADER_COMMENTS:
                 $type = "ProjectReportComments";
@@ -91,11 +94,10 @@ abstract class AbstractReport extends SpecialPage {
         }
         
         $proj = null;
-        
         $rp_index = new ReportIndex($pers);
         $projects = $rp_index->list_projects();
         foreach($projects as $project){
-            $reports = $rp_index->list_reports($project, 100000, 0);
+            $reports = $rp_index->list_reports($project, 0, 0);
             foreach($reports as $report){
                 if($report['token'] == $tok){
                     $proj = Project::newFromId($project);
@@ -140,11 +142,9 @@ abstract class AbstractReport extends SpecialPage {
             $projectName = $_GET['project'];
         }
         if($projectName != null){
-
             if(preg_match('/LOI/', $xmlFileName)){
                 $this->project = LOI::newFromName($projectName);
             }else{
-
                 $this->project = Project::newFromName($projectName);
             }
         }
@@ -187,19 +187,20 @@ abstract class AbstractReport extends SpecialPage {
             }
             if($this->currentSection == null){
                 $i = 0;
-                $permissions = $this->getSectionPermissions($this->sections[$i]);
-                while(isset($this->sections[$i]) && 
-                      (
-                        (($this->sections[$i] instanceof HeaderReportSection) || !isset($permissions['r'])) ||
-                        ($this->topProjectOnly && $this->sections[$i]->private))
-                      ){
-                    $i++;
-                    if(isset($this->sections[$i])){
-                        $permissions = $this->getSectionPermissions($this->sections[$i]);
+                if(isset($this->sections[$i])){
+                    $permissions = $this->getSectionPermissions($this->sections[$i]);
+                    while(isset($this->sections[$i]) && 
+                          (
+                            (($this->sections[$i] instanceof HeaderReportSection) || !isset($permissions['r'])) ||
+                            ($this->topProjectOnly && $this->sections[$i]->private))
+                          ){
+                        $i++;
+                        if(isset($this->sections[$i])){
+                            $permissions = $this->getSectionPermissions($this->sections[$i]);
+                        }
                     }
+                    $this->currentSection = @$this->sections[$i];
                 }
-                
-                $this->currentSection = @$this->sections[$i];
             }
             $this->currentSection->selected = true;
             wfLoadExtensionMessages("Report");
@@ -330,14 +331,15 @@ abstract class AbstractReport extends SpecialPage {
     	$sto = new ReportStorage($this->person);
     	if($this->project != null){
     	    if($this->pdfAllProjects){
-    	        $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 10000, 0, $this->pdfType);
+    	        $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType);
     	    }
     	    else{
-    	        $check = $sto->list_project_reports($this->project->getId(), 10000, 0, $this->pdfType, $this->year);
+    	        $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
             }
     	}
     	else{
-    	    $check = array_merge($sto->list_reports($this->person->getId(), SUBM, 10000, 0, $this->pdfType), $sto->list_reports($this->person->getId(), NOTSUBM, 10000, 0, $this->pdfType));
+    	    $check = array_merge($sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType), 
+    	                         $sto->list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType));
     	}
     	$largestDate = "0000-00-00 00:00:00";
     	$return = array();

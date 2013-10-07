@@ -8,16 +8,13 @@ $wgSpecialPageGroups['FeatureRequestViewer'] = 'other-tools';
 function printVote( &$out, &$sk ) {
 	global $wgOut, $wgArticle, $wgScriptPath, $wgUser;
 	
-	$votesTable = getTableName("an_votes");
-	
 	if($wgArticle != null && count($wgArticle->getUsedTemplates()) > 0){
 		$templates = $wgArticle->getUsedTemplates();
 		if($templates[0]->getText() == "FeatureRequest"){
-			$sql = "SELECT COUNT(*) as count
-				FROM $votesTable
-				WHERE votes_p_id = '{$wgArticle->getID()}'
-				AND votes_u_id = '{$wgUser->getId()}'";
-			$data = DBFunctions::execSQL($sql);
+		    $data = DBFunctions::select(array('grand_feature_votes'),
+		                                array('COUNT(*)' => 'count'),
+		                                array('votes_p_id' => EQ($wgArticle->getID()),
+		                                      'votes_u_id' => EQ($wgUser->getId())));
 			if($data[0]['count'] > 0){
 				printApproves();
 			}
@@ -31,8 +28,11 @@ function printVote( &$out, &$sk ) {
 					else if($_POST['vote'] == "Disapprove"){
 						$votesDisapprove = 1;
 					}
-					$sql = "INSERT INTO $votesTable (`votes_p_id`,`votes_u_id`,`votes_approve`,`votes_disapprove`) VALUES ('{$wgArticle->getID()}','{$wgUser->getId()}','$votesApprove','$votesDisapprove')";
-					DBFunctions::execSQL($sql, true);
+					DBFunctions::insert('grand_feature_votes',
+					                    array('votes_p_id' => $wgArticle->getID(),
+					                          'votes_u_id' => $wgUser->getId(),
+					                          'votes_approve' => $votesApprove,
+					                          'votes_disapprove' => $votesDisapprove));
 					printApproves();
 				}
 				else{
@@ -47,12 +47,10 @@ function printVote( &$out, &$sk ) {
 function printApproves(){
 	global $wgOut, $wgArticle;
 	
-	$votesTable = getTableName("an_votes");
-	
-	$sql = "SELECT SUM(votes_approve) as approve, SUM(votes_disapprove) as disapprove
-		FROM $votesTable
-		WHERE votes_p_id = '{$wgArticle->getID()}'";
-	$data = DBFunctions::execSQL($sql);
+	$data = DBFunctions::select(array('grand_feature_votes'),
+	                            array('SUM(votes_approve)' => 'approve',
+	                                  'SUM(votes_disapprove)' => 'disapprove'),
+	                            array('votes_p_id' => EQ($wgArticle->getID())));
 	$approve = $data[0]['approve'];
 	$disapprove = $data[0]['disapprove'];
 	if($approve == null){
@@ -101,7 +99,6 @@ class FeatureRequestViewer extends SpecialPage{
 		$tempTable = getTableName("templatelinks");
 		$pageTable = getTableName("page");
 		$revTable = getTableName("revision");
-		$votesTable = getTableName("an_votes");
 	
 		$sql = "SELECT DISTINCT nsName, page_title, page_id
 			FROM $ugTable g, $nsTable ns, $tempTable tl, $pageTable p
@@ -121,12 +118,13 @@ class FeatureRequestViewer extends SpecialPage{
 			foreach($data as $row){
 				$wgOut->addHTML("<tr bgcolor='#FFFFFF'>
 							<td>{$row['nsName']}</td><td align='left'><a href='../index.php/{$row['nsName']}:{$row['page_title']}'>".str_replace("_", " ", $row['page_title'])."</td>");
-				$sql = "SELECT u.user_name, r.rev_timestamp
-					FROM $revTable r, $userTable u
-					WHERE r.rev_page = '{$row['page_id']}'
-					AND u.user_id = r.rev_user
-					ORDER BY r.rev_id ASC";
-				$data2 = DBFunctions::execSQL($sql);
+				$data2 = DBFunctions::select(array('mw_revision' => 'r',
+				                                   'mw_user' => 'u'),
+				                             array('u.user_name',
+				                                   'r.rev_timestamp'),
+				                             array('r.rev_page' => EQ($row['page_id']),
+				                                   'u.user_id' => EQ(COL('r.rev_user'))),
+				                             array('r.rev_id' => 'ASC'));
 				$last = count($data2)-1;
 				$userName = $data2[0]['user_name'];
 				$firstTS = FeatureRequestViewer::date($data2[0]['rev_timestamp'], true);
@@ -146,10 +144,10 @@ class FeatureRequestViewer extends SpecialPage{
 				$minuteLast = substr($lastTS, 10, 2);
 				$secondLast = substr($lastTS, 12, 2);
 		
-				$sql = "SELECT SUM(votes_approve) as approve, SUM(votes_disapprove) as disapprove
-					FROM $votesTable
-					WHERE votes_p_id = '{$row['page_id']}'";
-				$data2 = DBFunctions::execSQL($sql);
+		        $data2 = DBFunctions::select(array('grand_feature_votes'),
+		                                     array('SUM(votes_approve)' => 'approve',
+		                                           'SUM(votes_disapprove)' => 'disapprove'),
+		                                     array('votes_p_id' => EQ($row['page_id'])));
 				$approve = $data2[0]['approve'];
 				$disapprove = $data2[0]['disapprove'];
 				if($approve == null){

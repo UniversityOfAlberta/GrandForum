@@ -55,13 +55,20 @@ class DeleteProjectLeaderAPI extends API{
                 $data = DBFunctions::execSQL($sql);
                 $effectiveDate = "'{$data[0]['CURRENT_TIMESTAMP']}'";
             }
+            
+            $lead_type = "leader";
+            if($_POST['co_lead'] == "True"){
+                $lead_type = "co-leader";
+            }else if($_POST['manager'] == 1){
+                $lead_type = "manager";
+            }
+
             $sql = "UPDATE grand_project_leaders
 	                SET `comment` = '$comment',
 	                    `end_date` = $effectiveDate
 	                WHERE `project_id` = '{$project->getId()}'
 	                AND `user_id` = '{$person->getId()}'
-	                AND `co_lead` = '{$_POST['co_lead']}'
-	                AND `manager` = '{$_POST['manager']}'
+	                AND `type` = '{$lead_type}'
 	                ORDER BY `start_date` DESC LIMIT 1";
             DBFunctions::execSQL($sql, true);
             
@@ -71,8 +78,7 @@ class DeleteProjectLeaderAPI extends API{
 	                        `end_date` = $effectiveDate
 	                    WHERE `project_id` = '{$pred->getId()}'
 	                    AND `user_id` = '{$person->getId()}'
-	                    AND `co_lead` = '{$_POST['co_lead']}'
-	                    AND `manager` = '{$_POST['manager']}'
+	                    AND `type` = '{$lead_type}'
 	                    ORDER BY `start_date` DESC LIMIT 1";
                 DBFunctions::execSQL($sql, true);
             }
@@ -80,19 +86,13 @@ class DeleteProjectLeaderAPI extends API{
             $sql = "SELECT CURRENT_TIMESTAMP";
             $data = DBFunctions::execSQL($sql);
             $effectiveDate = "'{$data[0]['CURRENT_TIMESTAMP']}'";
-            $type = "leader";
-            if($_POST['co_lead'] == "True"){
-                $type = 'co-leader';
-            }
-            if($_POST['manager'] == "True"){
-                $type = 'manager';
-            }
-            Notification::addNotification($me, $person, "Project Leader Removed", "Effective $effectiveDate you are no longer a project {$type} of '{$project->getName()}'", "{$person->getUrl()}");
+           
+            Notification::addNotification($me, $person, "Project Leader Removed", "Effective $effectiveDate you are no longer a project {$lead_type} of '{$project->getName()}'", "{$person->getUrl()}");
             $leaders = $project->getLeaders();
             if(count($leaders) > 0){
                 foreach($leaders as $leader){
                     if($leader->getName() != $person->getName()){
-                        Notification::addNotification($me, $leader, "Project Leader Removed", "Effective $effectiveDate {$person->getReversedName()} is no longer a {$type} of '{$project->getName()}'", "{$person->getUrl()}");
+                        Notification::addNotification($me, $leader, "Project Leader Removed", "Effective $effectiveDate {$person->getReversedName()} is no longer a {$lead_type} of '{$project->getName()}'", "{$person->getUrl()}");
                     }
                 }
             }
