@@ -308,7 +308,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
             </ReportItemSet>
         </ReportItemSet>
     <!-- IIe. Management of the Network -->
-        <ReportItemSet id='IIe_head' type="ToggleHeaderReportItemSet" changeColor="false" disabled="true" level="4" title="E. Management of the Network: My role in or contribution to Network operations and governance" private="true">
+        <ReportItemSet id='IIe_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="E. Management of the Network: My role in or contribution to Network operations and governance" private="true">
             <ReportItem id="IIe" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETMAN" type="AutoCompleteTextareaReportItem" set="AllPeopleReportItemSet" index="user_id" label="user_name" name="Members" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
                 <![CDATA[{$item}]]>
             </ReportItem>
@@ -318,7 +318,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
             <![CDATA[<h2>III. Reflections: Other Aspects of my involvement in GRAND</h2>]]>
         </ReportItem>
     <!-- IIIa. Plans for Next Year -->
-        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Proposed Activity: My Plans for {$next_year} in GRAND" private="true">
+        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="false" disabled="true" level="4" title="Proposed Activity: My Plans for {$next_year} in GRAND" private="true">
             <ReportItem id="IIIa" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="RES_RESACT_NEXTPLANS" type="TextareaReportItem">
                 <![CDATA[{$item}]]>
             </ReportItem>
