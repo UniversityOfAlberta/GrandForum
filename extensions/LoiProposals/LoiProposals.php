@@ -168,7 +168,7 @@ class LoiProposals extends SpecialPage {
         <ul>";
 
         if($revision == 2){
-	        if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
+	        if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF) || $me->isRole(ISAC)){
 				$html .="
 	            <li><a href='#lois'>Proposals</a></li>";
 	        }
@@ -205,7 +205,7 @@ EOF;
 		
 		if($revision == 2){
         
-	        if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
+	        if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF) || $me->isRole(ISAC)){
 				$html .= "<div id='lois' style='position:relative; overflow: auto;'>";
 				$html .= LoiProposals::loiTable($revision);
 				$html .= "</div>";
