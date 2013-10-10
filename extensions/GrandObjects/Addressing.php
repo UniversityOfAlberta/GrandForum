@@ -29,6 +29,7 @@ define('RP_SUPPLEMENTAL',	6);
 define('RP_EVAL_PDF',		7);
 define('RP_EVAL_CNI',		8);
 define('RP_EVAL_LOI_FEED',	10);
+define('RP_REVIEW', 11);
 //define('RP_EVAL_RESEARCHER_REV',		9); //Revised answers
 //define('RP_EVAL_CNI_REV',		10); //Revised answers
 //define('RP_EVAL_PROJECT_REV', 11); //Revised answers

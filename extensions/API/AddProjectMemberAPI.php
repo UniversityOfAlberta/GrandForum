@@ -33,7 +33,7 @@ class AddProjectMemberAPI extends API{
             }
             MailingList::subscribe($project, $person);
             // Add entry into grand_projects
-            $sql = "INSERT INTO grand_user_projects (`user`,`project_id`,`start_date`)
+            $sql = "INSERT INTO grand_project_members (`user_id`,`project_id`,`start_date`)
 					VALUES ('{$person->getId()}','{$project->getId()}', CURRENT_TIMESTAMP)";
             DBFunctions::execSQL($sql, true);
             
@@ -83,7 +83,7 @@ class AddProjectMemberAPI extends API{
             }
             $sql = "SELECT `id`
 	                FROM grand_notifications
-	                WHERE user = '{$creator->getId()}'
+	                WHERE user_id = '{$creator->getId()}'
 	                AND message LIKE '%{$person->getName()}%'
 	                AND url = ''
 	                AND creator = ''
@@ -105,12 +105,11 @@ class AddProjectMemberAPI extends API{
 	// If the creator cannot be determined, then 'me' is returned
 	function getCreator($me){
 	    if(isset($_POST['id'])){
-	        $sql = "SELECT `requesting_user`
-	                FROM `grand_role_request`
-	                WHERE `id` = '{$_POST['id']}'";
-	        $data = DBFunctions::execSQL($sql);
+	        $data = DBFunctions::select(array('grand_role_request'),
+	                                    array('requesting_user'),
+	                                    array('id' => EQ($_POST['id'])));
 	        if(count($data) > 0){
-	            return Person::newFromName($data[0]['requesting_user']);
+	            return Person::newFromId($data[0]['requesting_user']);
 	        }
 	    }   
 	    return $me;

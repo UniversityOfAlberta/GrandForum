@@ -14,14 +14,20 @@ class DummyReport extends AbstractReport{
                 case RP_LEADER:
                     $reportType = "ProjectReport";
                     break;
+                case RP_REVIEW:
+                    $reportType = "ReviewReport";
+                    break;
                 case RP_EVAL_RESEARCHER:
+                    $reportType = "EvalResearcherReportOld";
                     break;
                 case RP_EVAL_PROJECT:
+                    $reportType = "EvalProjectReportOld";
                     break;
                 case RP_SUPPLEMENTAL:
                     $reportType = "NIReport";
                     break;
                 case RP_EVAL_PDF:
+                    $reportType = "EvalNIPDFReport";
                     break;
                 case RP_EVAL_CNI:
                     break;

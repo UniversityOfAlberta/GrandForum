@@ -237,7 +237,7 @@ class ProjectMilestoneAPI extends API{
                 if(!$skip){
                     // Person is being added to this Milestone
                     $sql = "INSERT INTO `grand_milestones_people`
-                            (`milestone_id`,`person_id`) VALUES
+                            (`milestone_id`,`user_id`) VALUES
                             ('{$milestone->getId()}','{$person->getId()}')";
                     DBFunctions::execSQL($sql, true);
                     Notification::addNotification($me, $person, "Milestone Involvement Added", "You have been added as being involved with the Milestone entitled <i>{$milestone->getTitle()}</i>", "{$milestone->getProject()->getUrl()}");
@@ -245,7 +245,7 @@ class ProjectMilestoneAPI extends API{
                 else{
                     // Person Remains part of this Milestone
                     $sql = "INSERT INTO `grand_milestones_people`
-                            (`milestone_id`,`person_id`) VALUES
+                            (`milestone_id`,`user_id`) VALUES
                             ('{$milestone->getId()}','{$person->getId()}')";
                     DBFunctions::execSQL($sql, true);
                     Notification::addNotification($me, $person, "Milestone Changed", "Your Milestone entitled <i>{$milestone->getTitle()}</i> has been modified", "{$milestone->getProject()->getUrl()}");

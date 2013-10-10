@@ -26,70 +26,78 @@ class UserUniversityAPI extends API{
         }
     }
 
-	function doAction($noEcho=false){
-        if(isset($_POST['university'])){
-            $sql = "SELECT * 
-                    FROM mw_universities";
-            $rows = DBFunctions::execSQL($sql);
-		    foreach($rows as $row){
-			    $rows[] = $row;
-			    if($row['university_name'] == $_POST['university']){
-			        $found = true;
-			        $_POST['university'] = $row['university_id'];
-			    }
-		    }
-            if(!$noEcho){
-                if(!$found){
-                    echo "This University does not exist in the system.  Your choices are:\n\n";
-                    foreach($rows as $row){
-                        echo "-{$row['university_name']}\n";
-                    }
-                    echo "If your university is not listed, then please contact support@forum.grand-nce.ca\n";
-                }
-		    }
-		}
-		else{
-		    $_POST['university'] = "";
-		}
+    function doAction($noEcho=false){
+        if(!isset($_POST['university'])){
+            $_POST['university'] = Person::getDefaultUniversity();
+        }
+        if(!isset($_POST['title'])){
+            $_POST['title'] = Person::getDefaultPosition();
+        }
+        $universities = Person::getAllUniversities();
+        foreach($universities as $id => $uni){
+            if($uni == $_POST['university']){
+                $_POST['university'] = $id;
+            }
+        }
+        $positions = Person::getAllPositions();
+        foreach($positions as $id => $pos){
+            if($pos == $_POST['title']){
+                $_POST['title'] = $id;
+            }
+        }
         $person = Person::newFromName($_POST['user_name']);
         
-        $sql = "SELECT id 
-                FROM mw_user_university
-                WHERE user_id = '{$person->getId()}'
-				ORDER BY id DESC LIMIT 1";
-        $data = DBFunctions::execSQL($sql);
-        $count = count($data);
-	    if($count > 0){
-	        //Update Previous
-	        $row = $data[0];
-			$last_id = $row['id'];
-			
-			$sql = "UPDATE mw_user_university
-					SET end_date = CURRENT_TIMESTAMP
-					WHERE id = '{$last_id}'";
-            DBFunctions::execSQL($sql, true);
-			
-			//Insert New
-	        $sql = "INSERT INTO mw_user_university (user_id, university_id, department, position, start_date)
-					VALUES('{$person->getId()}','{$_POST['university']}','{$_POST['department']}','{$_POST['title']}', CURRENT_TIMESTAMP)";
-            DBFunctions::execSQL($sql, true);
-            if(!$noEcho){
-                echo "Account University Updated\n";
+        $data = DBFunctions::select(array('grand_user_university'),
+                                    array('id',
+                                          'university_id', 
+                                          'department',
+                                          'position_id'),
+                                    array('user_id' => EQ($person->getId())),
+                                    array('id' => 'DESC'),
+                                    array(1));
+        if(count($data) > 0){
+            //Update Previous
+            $row = $data[0];
+            $last_id = $row['id'];
+            if($row['university_id'] == $_POST['university'] &&
+               $row['department'] == $_POST['department'] &&
+               $row['position_id'] == $_POST['title']){
+               if(!$noEcho){
+                    echo "No Change in University Information\n";
+                }
             }
-	    }
-	    else{
-	        //Insert New
-	        $sql = "INSERT INTO mw_user_university (user_id, university_id, department, position, start_date)
-					VALUES('{$person->getId()}','{$_POST['university']}','{$_POST['department']}','{$_POST['title']}', CURRENT_TIMESTAMP)";
-            DBFunctions::execSQL($sql, true);
+            else{
+                DBFunctions::update('grand_user_university',
+                                    array('end_date' => EQ(COL('CURRENT_TIMESTAMP'))),
+                                    array('id' => EQ($last_id)));
+                //Insert New
+                DBFunctions::insert('grand_user_university',
+                                    array('user_id' => $person->getId(),
+                                          'university_id' => $_POST['university'],
+                                          'department' => $_POST['department'],
+                                          'position_id' => $_POST['title'],
+                                          'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
+                if(!$noEcho){
+                    echo "Account University Updated\n";
+                }
+            }
+        }
+        else{
+            //Insert New
+            DBFunctions::insert('grand_user_university',
+                                array('user_id' => $person->getId(),
+                                      'university_id' => $_POST['university'],
+                                      'department' => $_POST['department'],
+                                      'position_id' => $_POST['title'],
+                                      'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
             if(!$noEcho){
                 echo "Account University Added\n";
             }
-	    }
-	}
-	
-	function isLoginRequired(){
-		return true;
-	}
+        }
+    }
+    
+    function isLoginRequired(){
+        return true;
+    }
 }
 ?>

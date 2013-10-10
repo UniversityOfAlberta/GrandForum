@@ -14,10 +14,8 @@ class PollView {
 	
 	static function createNotification(){
 		global $wgUser, $notifications, $wgServer, $wgScriptPath;
-		$cTable = getTableName("an_poll_collection");
-		$sql = "SELECT collection_id
-			FROM $cTable";
-		$rows = DBFunctions::execSQL($sql);
+		$rows = DBFunctions::select(array('grand_poll_collection'),
+		                            array('collection_id'));
 		foreach($rows as $row){
 			$collection = PollCollection::newFromId($row['collection_id']);
 			$canUserViewPoll = $collection->canUserViewPoll($wgUser);

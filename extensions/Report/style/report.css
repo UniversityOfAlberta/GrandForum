@@ -366,3 +366,14 @@ span.tabPercent {
 	font-style:italic;
 	font-size: 12px;
 }
+
+a.disabled_lnk, div.disabled_bg{
+    pointer-events:none !important; 
+    cursor:none; 
+    color:#999 !important; 
+    background: lightgray !important;
+}
+
+div.disabled_bg h4{
+    color: #999 !important;
+}

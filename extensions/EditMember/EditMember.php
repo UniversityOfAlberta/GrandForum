@@ -71,12 +71,11 @@ class EditMember extends SpecialPage{
 			}
 			else if(isset($_POST['submit']) && $_POST['submit'] == "Ignore"){
 			    // Admin Ignored
-				$sql = "UPDATE grand_role_request 
-				        SET `last_modified` = SUBDATE(CURRENT_TIMESTAMP, INTERVAL 5 SECOND),
-			                `staff` = '{$user->getName()}',
-					        `ignore` = 'true'
-					    WHERE `id` = '{$_POST['id']}'";
-				DBFunctions::execSQL($sql, true);
+			    DBFunctions::update('grand_role_request',
+			                        array('last_modified' => EQ(COL('SUBDATE(CURRENT_TIMESTAMP, INTERVAL 5 SECOND)')),
+			                              'staff' => $user->getId(),
+			                              '`ignore`' => 1),
+			                        array('id' => EQ($_POST['id'])));
 			}
 			EditMember::generateViewHTML($wgOut);
 		}
@@ -135,9 +134,15 @@ class EditMember extends SpecialPage{
 		    $message = "";
 		    // Project Request
 		    if(EditMember::roleDiff($person, $p_nss, 'PROJECT') != ""){
-		        $sql = "INSERT INTO grand_role_request (`effective_date`,`requesting_user`, `role`, `comment`, `user`, `type`, `created`, `ignore`)
-		                VALUES ('".EditMember::parse($p_effectiveDates)."','".EditMember::parse($wgUser->getName())."', '".EditMember::parse($p_nss)."', '".EditMember::parse($p_comments)."', '".EditMember::parse($person->getName())."', 'PROJECT', 'false', 'false')";
-		        DBFunctions::execSQL($sql, true);
+		        DBFunctions::insert('grand_role_request',
+		                            array('effective_date' => EditMember::parse($p_effectiveDates),
+		                                  'requesting_user' => EditMember::parse($wgUser->getId()),
+		                                  'role' => EditMember::parse($p_nss),
+		                                  'comment' => EditMember::parse($p_comments),
+		                                  'user' => EditMember::parse($person->getId()),
+		                                  'type' => 'PROJECT',
+		                                  'created' => 0,
+		                                  '`ignore`' => 0));
 			    Notification::addNotification("", $me, "Project Change Pending", "{$person->getNameForForms()}'s projects have been requested to be changed.  Once an admin sees this request they will review and accept it", "");
 			    $message .= EditMember::roleDiff($person, $p_nss, 'PROJECT');
 			}
@@ -169,9 +174,16 @@ class EditMember extends SpecialPage{
 		            EditMember::processHQPMovedOn();
 		        }
 		        if($processOthers && EditMember::roleDiff($person, $r_nss, 'ROLE') != "" && EditMember::roleDiff($person, $r_nss, 'ROLE') != "-".INACTIVE."<br />\n"){
-		            $sql = "INSERT INTO grand_role_request (`effective_date`,`requesting_user`, `role`, `comment`,`other`,`user`, `type`, `created`, `ignore`)
-		                    VALUES ('".EditMember::parse($r_effectiveDates)."','".EditMember::parse($wgUser->getName())."', '".EditMember::parse($r_nss)."', '".EditMember::parse($r_comments)."','".serialize($other)."','".EditMember::parse($person->getName())."', 'ROLE', 'false', 'false')";
-		            DBFunctions::execSQL($sql, true);
+		            DBFunctions::insert('grand_role_request',
+		                                array('effective_date' => EditMember::parse($r_effectiveDates),
+		                                      'requesting_user' => EditMember::parse($wgUser->getId()),
+		                                      'role' => EditMember::parse($r_nss),
+		                                      'comment' => EditMember::parse($r_comments),
+		                                      'other' => serialize($other),
+		                                      'user' => EditMember::parse($person->getId()),
+		                                      'type' => 'ROLE',
+		                                      'created' => 0,
+		                                      '`ignore`' => 0));
 			        Notification::addNotification("", $me, "Role Change Pending", "{$person->getNameForForms()}'s roles have been requested to be changed.  Once an admin sees this request they will review and accept it", "");
 			    }
 			}
@@ -179,7 +191,7 @@ class EditMember extends SpecialPage{
 			    $message .= EditMember::roleDiff($person, $r_nss, 'ROLE');
 			}
 			if($message != ""){
-			    $wgMessage->addSuccess("The user '{$person->getReversedName()}' has been requested to have the following role changes:<br /><p style='margin-left:15px;'>".$message."</p>Once an admin sees this request they will review and accept it");
+			    $wgMessage->addSuccess("The user <b>{$person->getNameForForms()}</b> has been requested to have the following role changes:<br /><p style='margin-left:15px;'>".$message."</p>Once an admin sees this request they will review and accept it");
 			}
 			$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:EditMember'>Click Here</a> to continue Editing Members.");
 			if($user->isRoleAtLeast(STAFF)){
@@ -217,7 +229,7 @@ class EditMember extends SpecialPage{
 			                $_POST['comment'] = @str_replace("'", "", $_POST["pl_comment"][$project->getName()]);
 			                $_POST['effective_date'] = $_POST["pl_datepicker"][$project->getName()];
 			                APIRequest::doAction('DeleteProjectLeader', true);
-			                $wgMessage->addSuccess("{$person->getReversedName()} is no longer a project leader of {$project->getName()}");
+			                $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a project leader of {$project->getName()}");
 			            }
 			            $currentPL[$project->getName()] = $project->getName();
 			        }
@@ -233,7 +245,7 @@ class EditMember extends SpecialPage{
 			                $_POST['comment'] = @str_replace("'", "", $_POST["copl_comment"][$project->getName()]);
 			                $_POST['effective_date'] = $_POST["copl_datepicker"][$project->getName()];
 			                APIRequest::doAction('DeleteProjectLeader', true);
-			                $wgMessage->addSuccess("{$person->getReversedName()} is no longer a co-project leader of {$project->getName()}");
+			                $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a co-project leader of {$project->getName()}");
 			            }
 			            $currentCoPL[$project->getName()] = $project->getName();
 			        }
@@ -248,7 +260,7 @@ class EditMember extends SpecialPage{
 			            $_POST['role'] = $project;
 			            $_POST['user'] = $person->getName();
 			            APIRequest::doAction('AddProjectLeader', true);
-			            $wgMessage->addSuccess("{$person->getReversedName()} is now a project leader of {$project}");
+			            $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a project leader of {$project}");
 			        }
 			    }
 			    foreach($copl as $project){
@@ -259,7 +271,7 @@ class EditMember extends SpecialPage{
 			            $_POST['role'] = $project;
 			            $_POST['user'] = $person->getName();
 			            APIRequest::doAction('AddProjectLeader', true);
-			            $wgMessage->addSuccess("{$person->getReversedName()} is now a co-project leader of {$project}");
+			            $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a co-project leader of {$project}");
 			        }
 			    }
 			    
@@ -275,7 +287,7 @@ class EditMember extends SpecialPage{
 		                $_POST['comment'] = @str_replace("'", "", $_POST["pm_comment"][$project->getName()]);
 		                $_POST['effective_date'] = $_POST["pm_datepicker"][$project->getName()];
 		                APIRequest::doAction('DeleteProjectLeader', true);
-		                $wgMessage->addSuccess("{$person->getReversedName()} is no longer a project manager of {$project->getName()}");
+		                $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a project manager of {$project->getName()}");
 		            }
 		            $currentPM[$project->getName()] = $project->getName();
 			    }
@@ -289,7 +301,7 @@ class EditMember extends SpecialPage{
 			            $_POST['role'] = $project;
 			            $_POST['user'] = $person->getName();
 			            APIRequest::doAction('AddProjectLeader', true);
-			            $wgMessage->addSuccess("{$person->getReversedName()} is now a project manager of {$project}");
+			            $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a project manager of {$project}");
 			        }
 			    }
 			    
@@ -319,7 +331,7 @@ class EditMember extends SpecialPage{
 			            $_POST['comment'] = @str_replace("'", "", $_POST["tl_comment"][$theme]);
 			            $_POST['effective_date'] = $_POST["tl_datepicker"][$theme];
 			            APIRequest::doAction('DeleteThemeLeader', true);
-			            $wgMessage->addSuccess("{$person->getReversedName()} is no longer a theme leader of theme {$theme} - ".Project::getThemeName($theme));
+			            $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a theme leader of theme {$theme} - ".Project::getThemeName($theme));
 			        }
 			        $currentTL[$theme] = $theme;
 			    }
@@ -332,7 +344,7 @@ class EditMember extends SpecialPage{
 			            $_POST['comment'] = @str_replace("'", "", $_POST["cotl_comment"][$theme]);
 			            $_POST['effective_date'] = $_POST["cotl_datepicker"][$theme];
 			            APIRequest::doAction('DeleteThemeLeader', true);
-			            $wgMessage->addSuccess("{$person->getReversedName()} is no longer a co-theme leader of theme {$theme} - ".Project::getThemeName($theme));
+			            $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a co-theme leader of theme {$theme} - ".Project::getThemeName($theme));
 			        }
 			        $currentCoTL[$theme] = $theme;
 			    }
@@ -345,7 +357,7 @@ class EditMember extends SpecialPage{
 			            $_POST['theme'] = $theme;
 			            $_POST['name'] = $person->getName();
 			            APIRequest::doAction('AddThemeLeader', true);
-			            $wgMessage->addSuccess("{$person->getReversedName()} is now a theme leader of theme {$theme} - ".Project::getThemeName($theme));
+			            $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a theme leader of theme {$theme} - ".Project::getThemeName($theme));
 			        }
 			    }
 			    foreach($cotl as $theme){
@@ -355,7 +367,7 @@ class EditMember extends SpecialPage{
 			            $_POST['theme'] = $theme;
 			            $_POST['name'] = $person->getName();
 			            APIRequest::doAction('AddThemeLeader', true);
-			            $wgMessage->addSuccess("{$person->getReversedName()} is now a co-theme leader of theme {$theme} - ".Project::getThemeName($theme));
+			            $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a co-theme leader of theme {$theme} - ".Project::getThemeName($theme));
 			        }
 			    }
 			}
@@ -382,9 +394,17 @@ class EditMember extends SpecialPage{
 	private function processHQPInactivation($person, &$r_nss, &$r_comments, &$r_effectiveDates, &$other){
 	    global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgMessage;
 	    $me = Person::newFromId($wgUser->getId());
-        $sql = "INSERT INTO grand_role_request (`effective_date`,`staff`,`requesting_user`, `role`, `comment`,`other`,`user`, `type`, `created`, `ignore`)
-                VALUES ('".EditMember::parse($r_effectiveDates)."','GRAND Forum','".EditMember::parse($wgUser->getName())."', '".EditMember::parse($r_nss)."', '".EditMember::parse($r_comments)."','".serialize($other)."','".EditMember::parse($person->getName())."', 'ROLE', 'true', 'false')";
-        DBFunctions::execSQL($sql, true);
+	    DBFunctions::insert('grand_role_request',
+	                        array('effective_date' => EditMember::parse($r_effectiveDates),
+	                              'staff' => 0,
+	                              'requesting_user' => EditMember::parse($wgUser->getId()),
+	                              'role' => EditMember::parse($r_nss),
+	                              'comment' => EditMember::parse($r_comments),
+	                              'other' => serialize($other), 
+	                              'user' => EditMember::parse($person->getId()),
+	                              'type' => 'ROLE',
+	                              'created' => 1,
+	                              '`ignore`' => 0));
         $comment = "";
         $exploded = explode("HQP::", $r_comments);
         if(isset($exploded[1])){
@@ -426,8 +446,8 @@ class EditMember extends SpecialPage{
         $_POST['role'] = implode(", ", $nss);
 	    $_POST['comment'] = HQP.'::'.$comment;
 	    $_POST['effectiveDates'] = HQP.'::'.$date;
-	    $_POST['user'] = $person->getName();
-	    $_POST['requesting_user'] = $me->getName();
+	    $_POST['user'] = $person->getId();
+	    $_POST['requesting_user'] = $me->getId();
 	    $_POST['type'] = 'ROLE';
 	    $_POST['id'] = '-1';
 	    
@@ -436,7 +456,7 @@ class EditMember extends SpecialPage{
         $wgUser = User::newFromId($me->getId()); // Reset to current user
 	    
 	    Person::$cache = array();
-        $person = Person::newFromName($_POST['user']);
+        $person = Person::newFromId($_POST['user']);
         $year = substr($date, 0, 4);
 	    if($year == REPORTING_YEAR){
 	        Notification::addNotification($me, $person, "HQP Report", "{$me->getNameForForms()} has inactivated your account.  You will still have access to your HQP report until the end of the year.  You should fill in this report as soon as possible.", "$wgServer$wgScriptPath/index.php/Special:Report?report=HQPReport", true);
@@ -447,9 +467,10 @@ class EditMember extends SpecialPage{
 	// Changes/Inserts the data in the moved on/thesis tables if needed
 	private function processHQPMovedOn(){
 	    global $wgMessage;
+	    $person = Person::newFromId($_POST['user']);
 	    if(isset($_POST['thesis'])){
             APIRequest::doAction('AddHQPThesis', true);
-            $wgMessage->addInfo("{$_POST['user']}'s thesis added.");
+            $wgMessage->addInfo("<b>{$person->getNameForForms()}</b>'s thesis added.");
         }
         if(isset($_POST['where']) || 
                 isset($_POST['studies']) || 
@@ -462,7 +483,7 @@ class EditMember extends SpecialPage{
             $_POST['city'] = @str_replace("'", "&#39;", $_POST['city']);
             $_POST['country'] = @str_replace("'", "&#39;", $_POST['country']);
             APIRequest::doAction('AddHQPMovedOn', true);
-            $wgMessage->addInfo("{$_POST['user']}'s moved on information added.");
+            $wgMessage->addInfo("<b>{$person->getNameForForms()}</b>'s moved on information added.");
         }
 	}
 	
@@ -720,19 +741,18 @@ class EditMember extends SpecialPage{
 					    </tr></thead><tbody>\n");
 	    }
         if($history){
-            $sql = "SELECT *
-			    FROM grand_role_request
-			    WHERE `created` = 'true'
-			    OR `ignore` = 'true'
-			    ORDER BY last_modified DESC";
+            $rows = DBFunctions::select(array('grand_role_request'),
+                                        array('*'),
+                                        array('created' => EQ(1),
+                                              WHERE_OR('`ignore`') => EQ(1)),
+                                        array('last_modified' => 'DESC'));
         }
         else{
-		    $sql = "SELECT *
-			    FROM grand_role_request
-			    WHERE `created` = 'false'
-			    AND `ignore` = 'false'";
+            $rows = DBFunctions::select(array('grand_role_request'),
+                                        array('*'),
+                                        array('created' => EQ(0),
+                                              '`ignore`' => EQ(0)));
 	    }
-		$rows = DBFunctions::execSQL($sql);
 		foreach($rows as $row){
 		    $otherData = unserialize($row['other']);
 		    if(isset($otherData['thesisTitle'])){
@@ -744,7 +764,9 @@ class EditMember extends SpecialPage{
 		    else{
 		        $other = "";
 		    }
-		    $req_user = Person::newFromName($row['requesting_user']);
+		    $req_user = Person::newFromId($row['requesting_user']);
+		    $staff = Person::newFromId($row['staff']);
+		    $person = Person::newFromId($row['user']);
 		    $projects = array();
 		    $roles = array();
 		    if($req_user->getName() != null){
@@ -756,17 +778,17 @@ class EditMember extends SpecialPage{
 		        }
 		    }
 		    if($history){
-		        $diff = EditMember::roleDiff(Person::newFromName($row['user']), $row['role'], $row['type'], $row['last_modified']);
+		        $diff = EditMember::roleDiff(Person::newFromId($row['user']), $row['role'], $row['type'], $row['last_modified']);
 		    }
 		    else{
-		        $diff = EditMember::roleDiff(Person::newFromName($row['user']), $row['role'], $row['type']);
+		        $diff = EditMember::roleDiff(Person::newFromId($row['user']), $row['role'], $row['type']);
 		    }
 			$wgOut->addHTML("<tr bgcolor='#FFFFFF'>
 						<td align='left'><a target='_blank' href='{$req_user->getUrl()}'>{$req_user->getName()}</a><br />
 						<b>Roles:</b> ".implode(",", $roles)."<br />
-						<b>Projects:</b> ".implode(",", $projects)."</td> <td align='left'>{$row['user']}</td> <td>{$row['last_modified']}</td> <td>".str_replace(" ::", "<br />", $row['effective_date'])."</td>");
+						<b>Projects:</b> ".implode(",", $projects)."</td> <td align='left'><a target='_blank' href='{$person->getUrl()}'>{$person->getName()}</a></td> <td>{$row['last_modified']}</td> <td>".str_replace(" ::", "<br />", $row['effective_date'])."</td>");
 			if($history){
-			    $wgOut->addHTML("<td>{$row['staff']}</td>");
+			    $wgOut->addHTML("<td>{$staff->getName()}</td>");
 			} 
 			$wgOut->addHTML("<td align='left'>".$diff."</td> <td align='left'>".str_replace(" ::", "<br />", $row['comment'])."</td> <td align='left'>".$other."</td> <td align='left'>{$row['type']}</td>
 						<form action='$wgServer$wgScriptPath/index.php/Special:EditMember?action=view&sub' method='post'>
@@ -863,7 +885,7 @@ class EditMember extends SpecialPage{
 		if($person->isHQP()){
 		    $wgOut->addScript("<script type='text/javascript'>
 		        var theses = Array();\n");
-		    $theses = Paper::getAllPapersForThesis($person);
+		    $theses = $person->getPapers();
 		    foreach($theses as $thesis){
 		        $title = $thesis->getTitle();
 		        if(strlen($thesis->getTitle()) > 50){
@@ -1184,7 +1206,7 @@ class EditMember extends SpecialPage{
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
 		$user = Person::newFromId($wgUser->getId());
 		// Admin Accepted
-	    $person = Person::newFromName($_POST['user']);
+	    $person = Person::newFromId($_POST['user']);
 	    //Process Project Changes
 	    if($_POST['type'] == "PROJECT"){
             $unsubscribed = array();
@@ -1206,7 +1228,7 @@ class EditMember extends SpecialPage{
                 else{
                     $_POST['role'] = $role;
                     APIRequest::doAction('AddProjectMember', true);
-                    $wgMessage->addSuccess("{$_POST['user']} added to $role");
+                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> added to $role");
                 }
             }
             foreach($unsubscribed as $key => $unsub){
@@ -1225,7 +1247,7 @@ class EditMember extends SpecialPage{
                 $_POST['effective_date'] = $effectiveDate;
                 $_POST['role'] = $key;
                 APIRequest::doAction('DeleteProjectMember', true);
-                $wgMessage->addSuccess("{$_POST['user']} removed from $key");
+                $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> removed from $key");
             }
         }
         // Process Role Changes
@@ -1251,7 +1273,7 @@ class EditMember extends SpecialPage{
                 else{
                     $_POST['role'] = $role;
                     APIRequest::doAction('AddRole', true);
-                    $wgMessage->addSuccess("{$_POST['user']} added to $role");
+                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> added to $role");
                 }
             }
             foreach($unsubscribed as $key => $unsub){
@@ -1270,15 +1292,14 @@ class EditMember extends SpecialPage{
                 $_POST['effective_date'] = $effectiveDate;
                 $_POST['role'] = $key;
                 APIRequest::doAction('DeleteRole', true);
-                $wgMessage->addSuccess("{$_POST['user']} removed from $key");
+                $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> removed from $key");
             }
         }
-	    $sql = "UPDATE grand_role_request 
-	            SET `last_modified` = SUBDATE(CURRENT_TIMESTAMP, INTERVAL 5 SECOND),
-	                `staff` = '{$user->getName()}',
-		            `created` = 'true'
-		        WHERE `id` = '{$_POST['id']}'";
-	    DBFunctions::execSQL($sql, true);
+        DBFunctions::update('grand_role_request',
+                            array('last_modified' => EQ(COL('SUBDATE(CURRENT_TIMESTAMP, INTERVAL 5 SECOND)')),
+                                  'staff' => $user->getId(),
+                                  'created' => 1),
+                            array('id' => $_POST['id']));
 	}
 	
 	function parse($text){

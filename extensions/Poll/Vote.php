@@ -3,20 +3,16 @@
 class Vote {
 
 	var $user;
-	var $frozen;
 	
 	static function newFromId($id){
-		$vTable = getTableName("an_poll_votes");
-		$sql = "SELECT * 
-                FROM $vTable v
-                WHERE v.vote_id = '$id'";
-		$rows = DBFunctions::execSQL($sql);
+		$rows = DBFunctions::select(array('grand_poll_votes'),
+		                            array('*'),
+		                            array('vote_id' => EQ($id)));
 		if(count($rows) > 0){
 			$row = $rows[0];
 			$user = User::newFromId($row['user_id']);
-			$frozen = $row['frozen'];
 			
-			$vote = new Vote($id, $user, $frozen);
+			$vote = new Vote($id, $user);
 			return $vote;
 		}
 		else {
@@ -24,10 +20,9 @@ class Vote {
 		}
 	}
 	
-	function Vote($id, $user, $frozen){
+	function Vote($id, $user){
 		$this->id = $id;
 		$this->user = $user;
-		$this->frozen = $frozen;
 	}
 }
 

@@ -487,7 +487,7 @@ function showPLReport($person, $year){
             }
             if($tok != false){
                 $sql = "SELECT `data`,`timestamp`
-	                    FROM `mw_pdf_report`
+	                    FROM `grand_pdf_report`
 	                    WHERE `token` = '{$tok}'";
                 $dt = DBFunctions::execSQL($sql);
                 $data = unserialize($dt[0]['data']);

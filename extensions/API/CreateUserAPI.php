@@ -77,17 +77,22 @@ class CreateUserAPI extends API{
 			    Person::$idsCache = array();
 			    $person = Person::newFromName($_POST['wpName']);
 			    if($person != null && $person->getName() != null){
-			        $sql = "INSERT INTO mw_user_university (`user_id`,`university_id`) VALUES ('{$person->getId()}','0')";
-			        DBFunctions::execSQL($sql, true);
+			        $defaultUni = Person::getDefaultUniversity();
+			        $unis = array_flip(Person::getAllUniversities());
+			        $defaultPos = Person::getDefaultPosition();
+			        $poss = array_flip(Person::getAllPositions());
+			        DBFunctions::insert('grand_user_university',
+			                            array('user_id' => $person->getId(),
+			                                  'university_id' => $unis[$defaultUni],
+			                                  'position_id' => $poss[$defaultPos]));
 			        Notification::addNotification("", $creator, "User Created", "A new user has been added to the forum: {$person->getReversedName()}", "{$person->getUrl()}");
-			        $sql = "SELECT `id`
-			                FROM grand_notifications
-			                WHERE user = '{$creator->getId()}'
-			                AND message LIKE '%{$person->getName()}%'
-			                AND url = ''
-			                AND creator = ''
-			                AND active = '1'";
-			        $data = DBFunctions::execSQL($sql);
+			        $data = DBFunctions::select(array('grand_notifications'),
+			                                    array('id'),
+			                                    array('user_id' => EQ($creator->getId()),
+			                                          'message' => LIKE("%{$person->getName()}%"),
+			                                          'url' => EQ(''),
+			                                          'creator' => EQ(''),
+			                                          'active' => EQ(1)));
 			        if(count($data) > 0){
 			            // Remove the Notification that the user was sent after the request
 			            Notification::deactivateNotification($data[0]['id']);
@@ -129,12 +134,11 @@ class CreateUserAPI extends API{
 	// If the creator cannot be determined, then 'me' is returned
 	function getCreator($me){
 	    if(isset($_POST['id'])){
-	        $sql = "SELECT `requesting_user`
-	                FROM `mw_user_create_request`
-	                WHERE `id` = '{$_POST['id']}'";
-	        $data = DBFunctions::execSQL($sql);
+	        $data = DBFunctions::select(array('grand_user_request'),
+	                                    array('requesting_user'),
+	                                    array('id' => EQ($_POST['id'])));
 	        if(count($data) > 0){
-	            return Person::newFromName($data[0]['requesting_user']);
+	            return Person::newFromId($data[0]['requesting_user']);
 	        }
 	    }   
 	    return $me;

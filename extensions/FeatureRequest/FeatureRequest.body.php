@@ -46,13 +46,9 @@ class FeatureRequest extends SpecialPage{
 |Date = $date
 |Comments = 
 }}";
-		
-			$pageTable = getTableName("page");
-		
-			$sql = "SELECT * 
-				FROM $pageTable
-				WHERE page_title = '".str_replace(" ", "_", $title)."'";
-			$rows = DBFunctions::execSQL($sql, true);
+			$rows = DBFunctions::select(array('mw_page'),
+			                            array('*'),
+			                            array('page_title' => EQ(str_replace(" ", "_", $title))));
 			if(count($rows) > 0){
 				$wgOut->addHTML("<font color='#FF0000'><b>This title already exists, please choose another one.</b></font><br />");
 				FeatureRequest::generateFormHTML($wgOut);

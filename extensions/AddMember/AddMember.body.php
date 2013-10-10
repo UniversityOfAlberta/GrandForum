@@ -15,11 +15,10 @@ class UserCreate {
 		if($wgUser->isLoggedIn()){
 		    $me = Person::newFromId($wgUser->getId());
 		    if($me->isRoleAtLeast(STAFF)){
-			    $sql = "SELECT requesting_user, wpName
-				        FROM mw_user_create_request
-				        WHERE `created` = 'false'
-				        AND `ignore` = 'false'";
-			    $data = DBFunctions::execSQL($sql);
+		        $data = DBFunctions::select(array('grand_user_request'),
+		                                    array('requesting_user', 'wpName'),
+		                                    array('created' => EQ(0),
+		                                          '`ignore`' => EQ(0)));
 			    if(count($data) > 0){
 				    $notifications[] = new Notification("User Creation Request", "There is at least one user creation request pending.", "$wgServer$wgScriptPath/index.php/Special:AddMember?action=view");
 			    }
@@ -43,10 +42,13 @@ class UserCreate {
 			            continue;
 			        }
 				    //Add Role to DB
-				    $sql = "INSERT INTO mw_user_groups (`ug_user`, `ug_group`) VALUES ('$id', '$role')";
-		            DBFunctions::execSQL($sql, true);
-                    $sql = "INSERT INTO grand_roles (`user`, `role`, `start_date`) VALUES ('$id', '$role', CURRENT_TIMESTAMP)";
-		            DBFunctions::execSQL($sql, true);
+				    DBFunctions::insert('mw_user_groups',
+				                        array('ug_user' => $id,
+				                              'ug_group' => $role));
+				    DBFunctions::insert('grand_roles',
+				                        array('user_id' => $id,
+				                              'role' => $role,
+				                              'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
 		            if($role == PNI || $role == CNI){
 		                $person = Person::newFromId($wgUser->getId());
 		                $command = "echo \"{$person->getEmail()}\" | /usr/lib/mailman/bin/add_members --admin-notify=n --welcome-msg=n -r - grand-forum-researchers";
@@ -66,11 +68,13 @@ class UserCreate {
 			while (list ($key,$val) = @each ($box)) {
 			    if($val != null && $val != ""){
 					$project = Project::newFromName($val);
-					
-				    $sql = "INSERT INTO mw_user_groups (`ug_user`, `ug_group`) VALUES ('$id', '$val')";
-				    DBFunctions::execSQL($sql, true);
-                    $sql = "INSERT INTO grand_user_projects (`user`, `project_id`, `start_date`) VALUES ('$id', '{$project->getId()}', CURRENT_TIMESTAMP)";
-		            DBFunctions::execSQL($sql, true);
+					DBFunctions::insert('mw_user_groups',
+					                    array('ug_user' => $id,
+					                          'ug_group' => $val));
+					DBFunctions::insert('grand_project_members',
+					                    array('user_id' => $id,
+					                          'project_id' => $project->getId(),
+					                          'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
 		        }
 			}
 		}
@@ -85,15 +89,14 @@ class UserCreate {
 				$listname = str_replace("Project_", "", $group);
 				$command =  "echo \"$email\" | /usr/lib/mailman/bin/add_members --welcome-msg=n -r - $listname";
 				exec($command);
-				$sql = "SELECT projectid
-					FROM wikidev_projects
-					WHERE projectname = '$listname'";
-				$rows = DBFunctions::execSQL($sql);
+				$rows = DBFunctions::select(array('wikidev_projects'),
+				                            array('projectid'),
+				                            array('projectname' => EQ($listname)));
 				@$row = $rows[0];
 				if($row['projectid'] != null){
-					$sql = "INSERT INTO wikidev_projectroles (projectid, userid) VALUES ('{$row['projectid']}','{$user->getName()}')";
-					DBFunctions::execSQL($sql, true);
-					//$wgOut->addHTML("User subscribed to ".strtolower($listname)."@forum.grand-nce.ca<br />");
+				    DBFunctions::insert('wikidev_projectroles',
+				                        array('projectid' => $row['projectid'],
+				                              'userid' => $user->getName()));
 				}
 			}
 		}
