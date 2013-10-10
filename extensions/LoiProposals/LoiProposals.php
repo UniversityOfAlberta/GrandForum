@@ -194,23 +194,6 @@ class LoiProposals extends SpecialPage {
 	            <li><a href='#faq'>FAQ</a></li>";
 			}
 		}
-		else{
-			if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
-				$html .="
-	            <li><a href='#lois'>Proposals</a></li>
-	            <li><a href='#lois_res'>Responses</a></li>
-	            <li><a href='#faq'>FAQ</a></li>
-	            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=4'>CV</a></li>
-	            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=5'>Conflicts/Preferences</a></li>
-	            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=6'>Report Stats</a></li>";
-	        }
-			else if($me->isRoleAtLeast(HQP)){
-				$html .="
-	            <li><a href='#lois_public'>Proposals</a></li>
-	            <li><a href='#lois_res'>Responses</a></li>
-	            <li><a href='#faq'>FAQ</a></li>";
-			}
-		}
 		
         
         $html .=<<<EOF
@@ -225,28 +208,6 @@ EOF;
 	        if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF) || $me->isRole(ISAC)){
 				$html .= "<div id='lois' style='position:relative; overflow: auto;'>";
 				$html .= LoiProposals::loiTable($revision);
-				$html .= "</div>";
-
-			}
-			else if($me->isRoleAtLeast(HQP)){
-				$html .= "<div id='lois_public' style='width: 100%; position:relative; overflow: scroll;'>";
-				$html .= LoiProposals::loiPublicTable($revision);
-				$html .= "</div>";
-
-			}
-		}
-		else{
-			if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
-				$html .= "<div id='lois' style='position:relative; overflow: auto;'>";
-				$html .= LoiProposals::loiTable($revision);
-				$html .= "</div>";
-
-				$html .= "<div id='lois_res' style='position:relative; overflow: auto;'>";
-				$html .= LoiProposals::loiResTable();
-				$html .= "</div>";
-				
-				$html .= "<div id='faq' style='position:relative; overflow: auto;'>";
-				$html .= LoiProposals::loiFAQ();
 				$html .= "</div>";
 
 			}
