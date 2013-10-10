@@ -23,9 +23,14 @@ class LoiProposals extends SpecialPage {
 		
 	    $me = Person::newFromId($wgUser->getId());
 
+	    $revision = 1;
+	    if(isset($_GET['revision']) && intval($_GET['revision'])!=0){
+	    	$revision = $_GET['revision'];
+	    }
+
 		if (isset($_GET['getpdf'])) {
 			$filename = $_GET['getpdf'];
-			$filepath = "/local/data/www-root/grand_forum/data/loi_proposals/loi/{$filename}";
+			$filepath = "/local/data/www-root/grand_forum/data/loi_proposals/loi/{$revision}/{$filename}";
 			//echo $filepath;
 			if (file_exists($filepath)) {
 				$wgOut->disable();
@@ -66,7 +71,28 @@ class LoiProposals extends SpecialPage {
 			}	
 		}
 
-		$cur_year = date('Y');
+		if(isset($_GET['ajaxtab']) && $_GET['ajaxtab']=="4"){
+			$wgOut->disable();
+            ob_clean();
+			$html = LoiProposals::cvTable($revision);
+			echo $html;
+			exit;
+		}
+		else if(isset($_GET['ajaxtab']) && $_GET['ajaxtab']=="5"){
+			$wgOut->disable();
+            ob_clean();
+			$html = LoiProposals::conflictsTable($revision);
+			echo $html;
+			exit;
+		}
+		else if(isset($_GET['ajaxtab']) && $_GET['ajaxtab']=="6"){
+			$wgOut->disable();
+            ob_clean();
+			$html = LoiProposals::loiReportsTable($revision);
+			echo $html;
+			exit;
+		}
+
 		if(isset($_POST['Submit']) && $_POST['Submit'] == "Submit LOI Preferences"){
             if(isset($_POST['reviewer_id'])){
             	$reviewer_id = $_POST['reviewer_id'];
@@ -86,9 +112,9 @@ class LoiProposals extends SpecialPage {
                         $preference = 0;
                     }
 
-                    $sql = "INSERT INTO grand_eval_conflicts(eval_id, sub_id, type, year, user_conflict, preference) 
-                            VALUES('{$reviewer_id}', '{$loi_id}', 'LOI', '{$cur_year}', '$conflict', '$preference' ) 
-                            ON DUPLICATE KEY UPDATE user_conflict='{$conflict}', preference='{$preference}'";
+                    $sql = "INSERT INTO grand_loi_conflicts(reviewer_id, loi_id, conflict, preference) 
+                            VALUES('{$reviewer_id}', '{$loi_id}', '$conflict', '$preference' ) 
+                            ON DUPLICATE KEY UPDATE conflict='{$conflict}', preference='{$preference}'";
 
                     $res = DBFunctions::execSQL($sql, true);
                     if($res != 1){
@@ -141,73 +167,98 @@ class LoiProposals extends SpecialPage {
 	    <div id='ackTabs'>
         <ul>";
 
-        if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
-			$html .="
-            <li><a href='#lois'>Proposals</a></li>
-            <li><a href='#lois_res'>Responses</a></li>
-            <li><a href='#faq'>FAQ</a></li>
-            <li><a href='#cv'>CV</a></li>
-            <li><a href='#conflicts'>Conflicts/Preferences</a></li>
-            <li><a href='#reportsTbl'>Report Stats</a></li>";
-        }
-		else if($me->isRoleAtLeast(HQP)){
-			$html .="
-            <li><a href='#lois_public'>Proposals</a></li>
-            <li><a href='#lois_res'>Responses</a></li>
-            <li><a href='#faq'>FAQ</a></li>";
+        if($revision == 2){
+	        if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF) || $me->isRole(ISAC)){
+				$html .="
+	            <li><a href='#lois'>Proposals</a></li>";
+	        }
+			else if($me->isRoleAtLeast(HQP)){
+				$html .="
+	            <li><a href='#lois_public'>Proposals</a></li>";
+			}
 		}
-
-		// if($me->isRole(MANAGER) || $me->isRole(STAFF)){
-		// 	$html .="<li><a href='#reportsTbl'>Report Stats</a></li>";
-		// }
+		else{
+			if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
+				$html .="
+	            <li><a href='#lois'>Proposals</a></li>
+	            <li><a href='#lois_res'>Responses</a></li>
+	            <li><a href='#faq'>FAQ</a></li>
+	            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=4'>CV</a></li>
+	            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=5'>Conflicts/Preferences</a></li>
+	            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=6'>Report Stats</a></li>";
+	        }
+			else if($me->isRoleAtLeast(HQP)){
+				$html .="
+	            <li><a href='#lois_public'>Proposals</a></li>
+	            <li><a href='#lois_res'>Responses</a></li>
+	            <li><a href='#faq'>FAQ</a></li>";
+			}
+		}
+		
         
-        $html .="</ul>";
+        $html .=<<<EOF
+        	</ul>
+        	<div id='spinner' style='display:none; padding:25px;'>
+        	<img src='{$wgServer}{$wgScriptPath}/skins/Throbber.gif' /> Please wait while the content is being loaded...
+        	</div>
+EOF;
+		
+		if($revision == 2){
         
-        if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
-			$html .= "<div id='lois' style='width: 100%; position:relative; overflow: scroll;'>";
-			$html .= LoiProposals::loiTable();
-			$html .= "</div>";
+	        if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF) || $me->isRole(ISAC)){
+				$html .= "<div id='lois' style='position:relative; overflow: auto;'>";
+				$html .= LoiProposals::loiTable($revision);
+				$html .= "</div>";
 
-			$html .= "<div id='lois_res' style='width: 100%; position:relative; overflow: scroll;'>";
-			$html .= LoiProposals::loiResTable();
-			$html .= "</div>";
-			
-			$html .= "<div id='faq' style='width: 100%; position:relative; overflow: scroll;'>";
-			$html .= LoiProposals::loiFAQ();
-			$html .= "</div>";
+			}
+			else if($me->isRoleAtLeast(HQP)){
+				$html .= "<div id='lois_public' style='width: 100%; position:relative; overflow: scroll;'>";
+				$html .= LoiProposals::loiPublicTable($revision);
+				$html .= "</div>";
 
-			$html .= "<div id='cv' style='width: 100%; overflow: scroll;'>";
-			$html .= LoiProposals::cvTable();
-			$html .= "</div>";
-
-			$html .= "<div id='conflicts' style='width: 100%; overflow: scroll;'>";
-			$html .= LoiProposals::conflictsTable();
-			$html .= "</div>";
-
-			$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: scroll;'>";
-			$html .= LoiProposals::loiReportsTable();
-			$html .= "</div>";
-
+			}
 		}
-		else if($me->isRoleAtLeast(HQP)){
-			$html .= "<div id='lois_public' style='width: 100%; position:relative; overflow: scroll;'>";
-			$html .= LoiProposals::loiPublicTable();
-			$html .= "</div>";
+		else{
+			if($me->isRole(RMC) || $me->isRole(MANAGER) || $me->isRole(STAFF)){
+				$html .= "<div id='lois' style='position:relative; overflow: auto;'>";
+				$html .= LoiProposals::loiTable($revision);
+				$html .= "</div>";
 
-			$html .= "<div id='lois_res' style='width: 100%; position:relative; overflow: scroll;'>";
-			$html .= LoiProposals::loiResTable();
-			$html .= "</div>";
+				$html .= "<div id='lois_res' style='position:relative; overflow: auto;'>";
+				$html .= LoiProposals::loiResTable();
+				$html .= "</div>";
+				
+				$html .= "<div id='faq' style='position:relative; overflow: auto;'>";
+				$html .= LoiProposals::loiFAQ();
+				$html .= "</div>";
 
-			$html .= "<div id='faq' style='width: 100%; position:relative; overflow: scroll;'>";
-			$html .= LoiProposals::loiFAQ();
-			$html .= "</div>";
+				$html .= "<div id='cv' style='width: 100%; overflow: auto;'>";
+				//$html .= LoiProposals::cvTable();
+				$html .= "</div>";
+
+				$html .= "<div id='conflicts' style='width: 100%; overflow: auto;'>";
+				//$html .= LoiProposals::conflictsTable();
+				$html .= "</div>";
+
+				$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: auto;'>";
+				//$html .= LoiProposals::loiReportsTable();
+				$html .= "</div>";
+
+			}
+			else if($me->isRoleAtLeast(HQP)){
+				$html .= "<div id='lois_public' style='width: 100%; position:relative; overflow: scroll;'>";
+				$html .= LoiProposals::loiPublicTable($revision);
+				$html .= "</div>";
+
+				$html .= "<div id='lois_res' style='width: 100%; position:relative; overflow: scroll;'>";
+				$html .= LoiProposals::loiResTable();
+				$html .= "</div>";
+
+				$html .= "<div id='faq' style='width: 100%; position:relative; overflow: scroll;'>";
+				$html .= LoiProposals::loiFAQ();
+				$html .= "</div>";
+			}
 		}
-
-		// if($me->isRole(MANAGER) || $me->isRole(STAFF)){
-		// 	$html .= "<div id='reportsTbl' style='width: 100%; position:relative; overflow: scroll;'>";
-		// 	$html .= LoiProposals::loiReportsTable();
-		// 	$html .= "</div>";
-		// }
 
 
 		$html .=<<<EOF
@@ -220,6 +271,7 @@ class LoiProposals extends SpecialPage {
 		</style>
 		<script type='text/javascript'>
 			function openDialog(ev_id, sub_id, num){
+
 	            $('#dialog'+num+'-'+ev_id+'-'+sub_id).dialog("open");
 	        }
             $(document).ready(function(){
@@ -253,14 +305,37 @@ class LoiProposals extends SpecialPage {
                 	"bAutoWidth": false,
                 	"iDisplayLength": 25
     			});
-                $('#ackTabs').tabs();
+                $('#ackTabs').tabs({
+      //           	beforeLoad: function( event, ui ) {
+				  //       ui.jqXHR.error(function() {
+				  //         ui.panel.html("Couldn't load this tab. We'll try to fix this as soon as possible.");
+				  //       });
+						// ui.jqXHR.beforeSend(function() {
+				  //         ui.panel.html("");
+				  //       });
+						// ui.jqXHR.complete(function() {
+				  //         ui.panel.html("");
+				  //       });
+				  //   },
+				    ajaxOptions: {
+			            error: function(xhr, status, index, anchor) {
+			                $(anchor.hash).html();
+			            },
+			            beforeSend: function() {
+			                $('#spinner').show();
+			            },
+			            complete: function() {
+			                $("#spinner").hide();
+			            }
+			        }
+                });
             });
         </script>
 EOF;
 		$wgOut->addHTML($html);
 	}
 
-	static function loiTable(){
+	static function loiTable($revision=1){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 
 		$html =<<<EOF
@@ -281,7 +356,7 @@ EOF;
             <tbody>
 EOF;
 
-		$query = "SELECT * FROM grand_loi WHERE year=2013";
+		$query = "SELECT * FROM grand_loi WHERE year=2013 AND revision={$revision}";
 		$data = DBFunctions::execSQL($query);
 		foreach($data as $row){
 			$name 	= $row['name'];
@@ -290,33 +365,69 @@ EOF;
 			$related_loi = $row['related_loi'];
 			$description = $row['description'];
 			
-			//Lead name
-			$lead_arr = explode("<br />", $row['lead'], 2);
-			$lead_person = Person::newFromNameLike($lead_arr[0]);
-			if($lead_person->getId()){
-				$lead = "<a href='".$lead_person->getUrl()."'>".$lead_person->getNameForForms() ."</a>";
+			if($revision == 1){
+				//Lead name
+				$lead_arr = explode("<br />", $row['lead'], 2);
+				$lead_person = Person::newFromNameLike($lead_arr[0]);
+				if($lead_person->getId()){
+					$lead = "<a href='".$lead_person->getUrl()."'>".$lead_person->getNameForForms() ."</a>";
+				}
+				else{
+					$lead = $lead_arr[0];
+				}
+				if(isset($lead_arr[1])){
+					$lead .= "<br />".$lead_arr[1];
+				}
 			}
 			else{
-				$lead = $lead_arr[0];
+				//Lead name
+				//$lead_arr = explode("<br />", $row['lead'], 2);
+				$lead_person = Person::newFromNameLike($row['lead']);
+				if($lead_person->getId()){
+					$lead = "<a href='".$lead_person->getUrl()."'>".$lead_person->getNameForForms() ."</a>";
+					if($lead_person->getUni()){
+						$lead .= "<br />".$lead_person->getUni();
+					}
+				}
+				else{
+					$lead = $row['lead'];
+				}
+				
 			}
-			if(isset($lead_arr[1])){
-				$lead .= "<br />".$lead_arr[1];
-			}
 
+			if($revision == 1){
+				//Co-lead name
+				$colead_arr = explode("<br />", $row['colead'], 2);
+				//echo $name . ": ". $row['colead']."<br>";
+				$colead_person = Person::newFromNameLike($colead_arr[0]);
 
-			//Co-lead name
-			$colead_arr = explode("<br />", $row['colead'], 2);
-			//echo $name . ": ". $row['colead']."<br>";
-			$colead_person = Person::newFromNameLike($colead_arr[0]);
-
-			if($colead_person->getId()){
-				$colead = "<a href='".$colead_person->getUrl()."'>".$colead_person->getNameForForms() ."</a>";
+				if($colead_person->getId()){
+					$colead = "<a href='".$colead_person->getUrl()."'>".$colead_person->getNameForForms() ."</a>";
+				}
+				else{
+					$colead = $colead_arr[0];
+				}
+				if(isset($colead_arr[1])){
+					$colead .= "<br />".$colead_arr[1];
+				}
 			}
 			else{
-				$colead = $colead_arr[0];
-			}
-			if(isset($colead_arr[1])){
-				$colead .= "<br />".$colead_arr[1];
+				$colead_arr = explode("<br />", $row['colead'], 2);
+				$colead = "";
+				foreach($colead_arr as $p){
+					$colead_person = Person::newFromNameLike($p);
+
+					if($colead_person->getId()){
+						$colead .= "<a href='".$colead_person->getUrl()."'>".$colead_person->getNameForForms() ."</a>";
+						if($colead_person->getUni()){
+							$colead .= "<br />".$colead_person->getUni();
+						}
+					}
+					else{
+						$colead .= $p;
+					}
+					$colead .= "<br /><br />";	
+				}
 			}
 
 			//Champion name
@@ -341,23 +452,28 @@ EOF;
 			$loi_pdf = $row['loi_pdf'];
 			$supplemental_pdf = $row['supplemental_pdf'];
 			if(!empty($loi_pdf)){
-				$loi_pdf = "<a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?getpdf={$loi_pdf}'>{$loi_pdf}</a>";
+				$loi_pdf = "<a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?revision={$revision}&getpdf={$loi_pdf}'>{$loi_pdf}</a>";
 			}else{
 				$loi_pdf = "N/A";
 			}
 
 			if(!empty($supplemental_pdf)){
-				$supplemental_pdf = "<a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?getpdf={$supplemental_pdf}'>{$supplemental_pdf}</a>";
+				$supplemental_pdf = "<a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?revision={$revision}&getpdf={$supplemental_pdf}'>{$supplemental_pdf}</a>";
 			}else{
 				$supplemental_pdf = "N/A";
 			}
 
+			if($revision == 2){
+				$rel_lbl = "Initial LOI Submission(s)";
+			}else{
+				$rel_lbl = "Related LOI(s)";
+			}
 			$html .=<<<EOF
 				<tr>
 				<td width="13%">
 				<b>{$name}:</b><br /><br />
 				{$full_name}<br />
-				<b>Related LOI: </b>{$related_loi}
+				<b>{$rel_lbl}: </b>{$related_loi}
 				</td>
 				
 				<td>{$type}</td>
@@ -370,14 +486,30 @@ EOF;
 				<b>Primary:</b><br />
 				{$primary_challenge}
 				</p>
+EOF;
+
+			if($revision != 2){
+				$html .=<<<EOF
 				<p>
 				<b>Secondary:</b><br />
 				{$secondary_challenge}
 				</p>
+EOF;
+			}
+
+			$html .=<<<EOF
 				</td>
 				<td>
-				<b>LOI: {$loi_pdf}</b><br /><br />
+				<b>LOI: {$loi_pdf}</b>
+EOF;
+			if($revision != 2){
+				$html .=<<<EOF
+				<br /><br />
 				<b>Supplemental: {$supplemental_pdf}</b>
+EOF;
+			}
+
+			$html .=<<<EOF
 				</td>
 				</tr>
 EOF;
@@ -578,13 +710,22 @@ EOF;
 		A: Wow, this is a lot to explain in not very much space. Fortunately, you do not have to explain all of the subprojects, just those that are representative of the direction the project is taking. In the limited space you have for the six subprojects you can make best use of the space by (for example) listing the last names of the researchers, and the names of partner organizations right after the title of the subproject (or in the opening line of text) in parentheses to minimize space. You could also put this in Part A by indicating for each partner the subprojects they are involved in. For timelines, we did not mean a day-by-day timeline, but more something like "2 years" vs. "six months" if the subprojects have limited extent. What we need is an idea of the scope of the subprojects and how they fit into the larger project. You can also integrate some of this into Part E or the other parts (where relevant), so long as it gets covered some place. Especially if some of the receptors are going to benefit from multiple subprojects, put this in Part E or in Part I or even Part G. Similarly, if you wish to describe more than six subprojects, put that in Part E or you could even double up in Part F with two per section.
 		</p>
 		<b><i>August 28, 2013</i></b>
+
+		<p>
+		Q: <i>If Phase 2 projects are expected to have significant cash contributions from partners, doesn't that disadvantage projects that are entirely SSHRC-oriented and favor projects that are entirely NSERC-oriented?</i>
+		<br />
+		A: Yes. But we should not have projects that are entirely SSHRC-oriented or entirely NSERC-oriented. In Phase 1 we expected many of or projects to include both NSERC and SSHRC components. In Phase 2, this is even more the case, for two reasons. The first reason is that the larger project size means there is more opportunity to have both NSERC-oriented subprojects and SSHRC-oriented subprojects that look at different aspects of the same problems. The second reason is that during Phase 1 we saw a lot of relationships develop within the network that demonstrate the value of integrating NSERC and SSHRC research activities, so we should be building on that experience and constructing Phase 2 projects so they are more highly multidisciplinary.
+ 			<br />
+			One of the assessment criteria for projects is the degree to which they gain value from being in GRAND. There are only a few ways to demonstrate this: having a mix of NSERC and SSHRC researchers in a project, having a mix of universities involved in a project, and having interactions with new receptor partners that came through GRAND (having funding from GRAND is not one of the ways to demonstrate value from being in GRAND!).
+		</p>
+		<b><i>September 3, 2013</i></b>
 EOF;
 		
 		return $html;
 	}
 
 
-	static function loiPublicTable(){
+	static function loiPublicTable($revision=1){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 
 		$html =<<<EOF
@@ -603,7 +744,7 @@ EOF;
             <tbody>
 EOF;
 
-		$query = "SELECT * FROM grand_loi WHERE year=2013";
+		$query = "SELECT * FROM grand_loi WHERE year=2013 AND revision={$revision}";
 		$data = DBFunctions::execSQL($query);
 		foreach($data as $row){
 			$name 	= $row['name'];
@@ -611,34 +752,70 @@ EOF;
 			$type = $row['type'];
 			$related_loi = $row['related_loi'];
 			$description = $row['description'];
-		
-			//Lead name
-			$lead_arr = explode("<br />", $row['lead'], 2);
-			$lead_person = Person::newFromNameLike($lead_arr[0]);
-			if($lead_person->getId()){
-				$lead = "<a href='".$lead_person->getUrl()."'>".$lead_person->getNameForForms() ."</a>";
+
+			if($revision == 1){
+				//Lead name
+				$lead_arr = explode("<br />", $row['lead'], 2);
+				$lead_person = Person::newFromNameLike($lead_arr[0]);
+				if($lead_person->getId()){
+					$lead = "<a href='".$lead_person->getUrl()."'>".$lead_person->getNameForForms() ."</a>";
+				}
+				else{
+					$lead = $lead_arr[0];
+				}
+				if(isset($lead_arr[1])){
+					$lead .= "<br />".$lead_arr[1];
+				}
 			}
 			else{
-				$lead = $lead_arr[0];
+				//Lead name
+				//$lead_arr = explode("<br />", $row['lead'], 2);
+				$lead_person = Person::newFromNameLike($row['lead']);
+				if($lead_person->getId()){
+					$lead = "<a href='".$lead_person->getUrl()."'>".$lead_person->getNameForForms() ."</a>";
+					if($lead_person->getUni()){
+						$lead .= "<br />".$lead_person->getUni();
+					}
+				}
+				else{
+					$lead = $row['lead'];
+				}
+				
 			}
-			if(isset($lead_arr[1])){
-				$lead .= "<br />".$lead_arr[1];
-			}
 
+			if($revision == 1){
+				//Co-lead name
+				$colead_arr = explode("<br />", $row['colead'], 2);
+				//echo $name . ": ". $row['colead']."<br>";
+				$colead_person = Person::newFromNameLike($colead_arr[0]);
 
-			//Co-lead name
-			$colead_arr = explode("<br />", $row['colead'], 2);
-			//echo $name . ": ". $row['colead']."<br>";
-			$colead_person = Person::newFromNameLike($colead_arr[0]);
-
-			if($colead_person->getId()){
-				$colead = "<a href='".$colead_person->getUrl()."'>".$colead_person->getNameForForms() ."</a>";
+				if($colead_person->getId()){
+					$colead = "<a href='".$colead_person->getUrl()."'>".$colead_person->getNameForForms() ."</a>";
+				}
+				else{
+					$colead = $colead_arr[0];
+				}
+				if(isset($colead_arr[1])){
+					$colead .= "<br />".$colead_arr[1];
+				}
 			}
 			else{
-				$colead = $colead_arr[0];
-			}
-			if(isset($colead_arr[1])){
-				$colead .= "<br />".$colead_arr[1];
+				$colead_arr = explode("<br />", $row['colead'], 2);
+				$colead = "";
+				foreach($colead_arr as $p){
+					$colead_person = Person::newFromNameLike($p);
+
+					if($colead_person->getId()){
+						$colead .= "<a href='".$colead_person->getUrl()."'>".$colead_person->getNameForForms() ."</a>";
+						if($colead_person->getUni()){
+							$colead .= "<br />".$colead_person->getUni();
+						}
+					}
+					else{
+						$colead .= $p;
+					}
+					$colead .= "<br /><br />";	
+				}
 			}
 
 			//Champion name
@@ -676,12 +853,18 @@ EOF;
 			}
 			*/
 
+			if($revision == 2){
+				$rel_lbl = "Initial LOI Submission(s)";
+			}else{
+				$rel_lbl = "Related LOI(s)";
+			}
+
 			$html .=<<<EOF
 				<tr>
 				<td width="13%">
 				<b>{$name}:</b><br /><br />
 				{$full_name}<br />
-				<b>Related LOI: </b>{$related_loi}
+				<b>{$rel_lbl}: </b>{$related_loi}
 				</td>
 				
 				<td>{$type}</td>
@@ -694,12 +877,19 @@ EOF;
 				<b>Primary:</b><br />
 				{$primary_challenge}
 				</p>
+EOF;
+
+			if($revision != 2){
+				$html .=<<<EOF
 				<p>
 				<b>Secondary:</b><br />
 				{$secondary_challenge}
 				</p>
+EOF;
+			}
+
+			$html .=<<<EOF
 				</td>
-				
 				</tr>
 EOF;
 		}
@@ -713,7 +903,7 @@ EOF;
 
 	}
 
-	static function cvTable(){
+	static function cvTable($revision=1){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 
 		$html =<<<EOF
@@ -755,13 +945,34 @@ EOF;
 		$html .=<<<EOF
 			</tbody>
 			</table>
+			<script type="text/javascript">
+			$(document).ready(function(){
+				$('.conflIndexTable').dataTable({
+	            	"bAutoWidth": false,
+	            	"iDisplayLength": 25
+				});
+				$('span.q_tip').qtip({
+	                position: {
+	                    corner: {
+	                        target: 'topRight',
+	                        tooltip: 'bottomLeft'
+	                    }
+	                }, 
+	                style: {
+	                    classes: 'qtipStyle'
+	                }
+	       	 	});
+				$('.comment_dialog').dialog( "destroy" );
+	            $('.comment_dialog').dialog({ autoOpen: false, width: 600, height: 400 });
+			});
+			</script>
 EOF;
 
 		return $html;
 
 	}
 
-	static function conflictsTable(){
+	static function conflictsTable($revision=1){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 		$my_id = $wgUser->getId();
 
@@ -777,18 +988,17 @@ EOF;
             </thead>
             <tbody>
 EOF;
-		
-		$cur_year = '2013'; //date('Y');
+
 		$query = "SELECT l.id, l.name, l.full_name, lc.*
 				  FROM grand_loi l 
-				  LEFT JOIN grand_eval_conflicts lc ON(l.id = lc.sub_id AND lc.eval_id={$my_id} AND lc.type='LOI' AND lc.year={$cur_year}) 
-				  WHERE l.year={$cur_year}";
+				  LEFT JOIN grand_loi_conflicts lc ON(l.id = lc.loi_id AND lc.reviewer_id={$my_id}) 
+				  WHERE l.year=2013 AND l.revision={$revision}";
 		
 		$data = DBFunctions::execSQL($query);
 		foreach($data as $row){
 			$name 	= $row['name'];
 			$loi_id = $row['id'];
-			$conflict = (empty($row['user_conflict']))? 0 : $row['user_conflict'];
+			$conflict = (empty($row['conflict']))? 0 : $row['conflict'];
 			$conflict_chk = ($conflict)? 'checked="checked"' : '';
 
 			$preference = (empty($row['preference']))? 0 : $row['preference'];
@@ -816,13 +1026,34 @@ EOF;
 			<input type="hidden" name="reviewer_id" value="{$my_id}" />
         	<input type="submit" name="Submit" value="Submit LOI Preferences" />
 			</form>
+			<script type="text/javascript">
+			$(document).ready(function(){
+				$('.cvindexTable').dataTable({
+	            	"bAutoWidth": false,
+	            	"iDisplayLength": 25
+				});
+				$('span.q_tip').qtip({
+	                position: {
+	                    corner: {
+	                        target: 'topRight',
+	                        tooltip: 'bottomLeft'
+	                    }
+	                }, 
+	                style: {
+	                    classes: 'qtipStyle'
+	                }
+	       	 	});
+				$('.comment_dialog').dialog( "destroy" );
+	            $('.comment_dialog').dialog({ autoOpen: false, width: 600, height: 400 });
+			});
+			</script>
 EOF;
 
 		return $html;
 
 	}
 
-	static function loiReportsTable(){
+	static function loiReportsTable($revision=1){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 
 		$html =<<<EOF
@@ -881,7 +1112,7 @@ EOF;
 		);
 
 		$evals = Person::getAllPeople(RMC); 
-		$lois = LOI::getAllLOIs();
+		$lois = LOI::getAllLOIs(REPORTING_YEAR, $revision);
 
 		$me = Person::newFromId($wgUser->getId());
 		$editable = $me->isRole(MANAGER);
@@ -944,8 +1175,8 @@ EOF;
 						$q_text = $question_text[$q-1];
 						if(!empty($yes_no) || !empty($comment)){
 							$cell =<<<EOF
-							<a href='#' onclick='openDialog("{$eval_id}", "{$loi_id}", {$q}); return false;'>{$yn}</a>
-	                        <div id='dialog{$q}-{$eval_id}-{$loi_id}' class='comment_dialog' title='{$eval_name} on {$loi_name}: {$q_text}'>
+							<a href='#' onclick='openDialog2("{$eval_id}", "{$loi_id}", {$q}); return false;'>{$yn}</a>
+	                        <div style="display:none;" id='dialog{$q}-{$eval_id}-{$loi_id}' class='comment_dialog' title='{$eval_name} on {$loi_name}: {$q_text}'>
 	                        <h4>{$yes_no}</h4>
 	                        <h5>Text Comment:</h5>
 	                        {$comment}
@@ -1012,6 +1243,38 @@ EOF;
 
     	$html .= "</form>";
 		
+		$html .=<<<EOF
+		<script type="text/javascript">
+		function openDialog2(ev_id, sub_id, num){
+			$('#dialog'+num+'-'+ev_id+'-'+sub_id).dialog( "destroy" );
+            $('#dialog'+num+'-'+ev_id+'-'+sub_id).dialog({ autoOpen: false, width: 600, height: 400 });
+	        $('#dialog'+num+'-'+ev_id+'-'+sub_id).dialog("open");
+	    }
+		function setDialogs(){
+			$('.comment_dialog').dialog( "destroy" );
+            $('.comment_dialog').dialog({ autoOpen: false, width: 600, height: 400 });
+		}
+
+		$(document).ready(function(){
+			$('.loiReportsTable').dataTable({
+            	"bAutoWidth": false,
+            	"iDisplayLength": 25
+			});
+			$('span.q_tip').qtip({
+                position: {
+                    corner: {
+                        target: 'topRight',
+                        tooltip: 'bottomLeft'
+                    }
+                }, 
+                style: {
+                    classes: 'qtipStyle'
+                }
+       	 	});
+			 //setDialogs();
+		});
+		</script>
+EOF;
 
 		return $html;
 
