@@ -28,7 +28,7 @@ class Person extends BackboneModel {
     var $isProjectCoLeader;
     var $groups;
     var $roles;
-    var $isEvaluator = null;
+    var $isEvaluator = array();
     var $isProjectManager = null;
     var $relations;
     var $hqps;
@@ -40,6 +40,8 @@ class Person extends BackboneModel {
     var $budgets = array();
     var $leadershipCache = array();
     var $hqpCache = array();
+    var $projectCache = array();
+    var $evaluateCache = array();
     
     // Returns a new Person from the given id
     static function newFromId($id){
@@ -1397,6 +1399,9 @@ class Person extends BackboneModel {
     // Returns an array of Projects that this Person is a part of
     // TODO: This might be slow.
     function getProjectsDuring($start=REPORTING_CYCLE_START, $end=REPORTING_CYCLE_END){
+        if(isset($this->projectCache[$start.$end])){
+            return $this->projectCache[$start.$end];
+        }
         $projectsDuring = array();
         $projects = $this->getProjects(true);
         if(count($projects) > 0){
@@ -1414,6 +1419,7 @@ class Person extends BackboneModel {
                 }
             }
         }
+        $this->projectCache[$start.$end] = $projectsDuring;
         return $projectsDuring;
     }
     
@@ -2714,21 +2720,20 @@ class Person extends BackboneModel {
     
     // Returns true if the person is an evaluator
     function isEvaluator($year = REPORTING_YEAR){
-        if($this->isEvaluator === null){
-          
+        if(!isset($this->isEvaluator[$year])){
             $sql = "SELECT *
                     FROM grand_eval
                     WHERE user_id = '{$this->id}'
                     AND year = '{$year}'";
             $data = DBFunctions::execSQL($sql);
             if(count($data) > 0){
-                $this->isEvaluator = true;
-            }
-            else {
-                $this->isEvaluator = false;
-            }
-        }
-        return $this->isEvaluator;
+	            $this->isEvaluator[$year] = true;
+	        }
+	        else {
+	            $this->isEvaluator[$year] = false;
+	        }
+	    }
+	    return $this->isEvaluator[$year];
     }
     
     // Returns the list of Evaluation Submissions for this person
@@ -2748,6 +2753,7 @@ class Person extends BackboneModel {
                 $subs[] = Person::newFromId($row['sub_id']);
             }
         }
+        $this->evaluateCache[$year] = $subs;
         return $subs;
     }
     

@@ -17,8 +17,8 @@ class GlobalSearchAPI extends RESTAPI {
             case 'people':
                 $data = array();
                 $people = DBFunctions::select(array('mw_user'),
-                                                array('user_name', 'user_real_name', 'user_id'),
-                                                array('deleted' => '0'));
+                                              array('user_name', 'user_real_name', 'user_id'),
+                                              array('deleted' => '0'));
                 foreach($people as $pRow){
                     $person = new Person(array());
                     $person->name = $pRow['user_name'];
@@ -93,7 +93,7 @@ class GlobalSearchAPI extends RESTAPI {
                 break;
             case 'projects':
                 $data = array();
-                $projects = Project::getAllProjects();
+                $projects = Project::getAllProjectsDuring('0000','9999');
                 foreach($projects as $project){
                     $pName = strtolower($project->getName());
                     $pFullName = strtolower($project->getFullName());
@@ -204,6 +204,130 @@ class GlobalSearchAPI extends RESTAPI {
                         $ids[] = '';
                     }
                 }
+                break;
+            case 'pdf':
+                if(!$me->isRoleAtLeast(STAFF)){
+                    break;
+                }
+                $words = array_filter(explode("*", $search));
+                $leftOvers = array();
+                $year = "";
+                $projects = array();
+                $people = array();
+                foreach($words as $word){
+                    if(is_numeric($word)){
+                        // Must be a year
+                        $year = $word;
+                    }
+                    else{
+                        $this->params['search'] = $word;
+                        $this->params['group'] = "people";
+                        $json = json_decode($this->doGET());
+                        $people = array_merge($people, $json->results);
+                        
+                        $this->params['search'] = $word;
+                        $this->params['group'] = "projects";
+                        $json = json_decode($this->doGET());
+                        $projects = array_merge($projects, $json->results);
+                    }
+                }
+                $pdfs = PDF::getAllPDFs();
+                $lastestRows = array();
+                foreach($pdfs as $pdf){
+                    if(!(count($people) == 0 || count($projects) == 0) &&
+                       !(count($people) > 0 && in_array($pdf->getPerson()->getId(), $people)) &&
+                       !(count($projects) > 0 && in_array($pdf->getProjectId(), $projects))){
+                        continue;
+                    }
+                    if($year != "" && $pdf->getYear() != $year){
+                        continue;
+                    }
+                    $userId = $pdf->getPerson()->getId();
+                    $pdfYear = $pdf->getYear();
+                    $type = $pdf->getType();
+                    $projectId = $pdf->getProjectId();
+                    
+                    // Filter out old rows
+                    if($type == RPTP_LEADER ||
+                       $type == RPTP_LEADER_COMMENTS){
+                       $userId = "";
+                    }
+                    $id = "{$userId}_{$pdfYear}_{$type}_{$projectId}";
+                    $tok = $pdf->getId();
+                    if(!isset($latestRows[$id])){
+                        $latestRows[$id] = $pdf;
+                    }
+                    else{
+                        $cmpStr1 = $latestRows[$id]->getTimestamp()."_".$latestRows[$id]->getReportId();
+                        $cmpStr2 = $pdf->getTimestamp()."_".$pdf->getReportId();
+                        if($cmpStr1 <= $cmpStr2){
+                            $latestRows[$id] = $pdf;
+                        }
+                    }
+                }
+                $results = array();
+                foreach($latestRows as $pdf){
+                    if(!$pdf->canUserRead()){
+                        continue;
+                    }
+                    $project = $pdf->getProject();
+                    $keywords = "";
+                    $skip = false;
+                    $extraKeywords = $year." ".$pdf->getPerson()->getReversedName();
+                    if($project != null){
+                        $extraKeywords .= " ".$project->getName();
+                    }
+                    switch($pdf->getType()){
+                        case RPTP_NORMAL:
+                            $keywords = "ni pni cni individual report pdf";
+                            break;
+                        case RPTP_HQP:
+                            $keywords = "hqp individual report pdf";
+                            break;
+                        case RPTP_NI_COMMENTS:
+                            $keywords = "ni pni cni individual report milestone comments pdf";
+                            break;
+                        case RPTP_HQP_COMMENTS:
+                            $keywords = "hqp individual report milestone comments pdf";
+                            break;
+                        case RPTP_LEADER:
+                            $keywords = "project leader report pdf";
+                            break;
+                        case RPTP_LEADER_COMMENTS:
+                            $keywords = "project leader report comments pdf";
+                            break;
+                        case RPTP_LOI_REVIEW:
+                            $keywords = "loi project review report pdf";
+                            break;
+                        case RPTP_LOI_EVAL_REVIEW:
+                            $keywords = "loi project evaluator review report pdf";
+                            break;
+                        case RPTP_LOI_EVAL_FEEDBACK:
+                            $keywords = "loi project evaluator feedback report pdf";
+                            break;
+                        case RPTP_LOI_REV_REVIEW:
+                            $keywords = "loi project reviewer review report pdf";
+                            break;
+                    }
+                    if(!$skip){
+                        $results[$pdf->getId()] = 0;
+                        foreach($words as $word){
+                            $text = strtolower($extraKeywords." ".$keywords);
+                            if(strstr($text, $word) !== false){
+                                $results[$pdf->getId()] += (1.0/max(1, count(explode(" ", $text))));
+                            }
+                            else{
+                                unset($results[$pdf->getId()]);
+                                break;
+                            }
+                        }
+                    }
+                }
+                asort($results);
+                $results = array_reverse($results, true);
+	            foreach($results as $key => $row){
+	                $ids[] = $key;
+	            }
                 break;
         }
         $array['results'] = $ids;

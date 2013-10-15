@@ -104,6 +104,9 @@ GlobalSearchResultsView = Backbone.View.extend({
         },
         "wikiResults" : function(){
             return new WikiResultsView({model: new GlobalSearch({group: 'wikipage', search: ''})});
+        },
+        "pdfResults" : function(){
+            return new PDFResultsView({model: new GlobalSearch({group: 'pdf', search: ''})});
         }
     },
     
@@ -320,7 +323,7 @@ ProductResultsView = ResultsView.extend({
 });
 
 WikiResultsView = ResultsView.extend({
-    maxResults: 4,
+    maxResults: 3,
 
     createCardView: function(model){
         return new SmallWikiCardView({model: model});
@@ -332,5 +335,21 @@ WikiResultsView = ResultsView.extend({
     
     render: function(){
         this.$el.html(this.template({group: "Wiki Pages"}));
+    }
+});
+
+PDFResultsView = ResultsView.extend({
+    maxResults: 4,
+
+    createCardView: function(model){
+        return new SmallPDFCardView({model: model});
+    },
+    
+    createModel: function(obj){
+        return new PDF({id: obj});
+    },
+    
+    render: function(){
+        this.$el.html(this.template({group: "Reports"}));
     }
 });
