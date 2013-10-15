@@ -24,6 +24,7 @@ class GlobalSearch extends BackbonePage {
                      'Backbone/small_project_card',
                      'Backbone/small_product_card',
                      'Backbone/small_wiki_card',
+                     'Backbone/small_pdf_card',
                      'global_search',
                      'global_search_results',
                      'global_search_group');
@@ -34,6 +35,7 @@ class GlobalSearch extends BackbonePage {
                      'Backbone/SmallProjectCardView',
                      'Backbone/SmallProductCardView',
                      'Backbone/SmallWikiCardView',
+                     'Backbone/SmallPDFCardView',
                      'GlobalSearchView');
     }
     

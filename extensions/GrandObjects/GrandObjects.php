@@ -37,6 +37,8 @@ $apiRequest->addAction('Hidden','product/:id/projects/:personId', new ProjectPro
 // Wiki
 $apiRequest->addAction('Hidden','wikipage/:id', new WikiPageAPI());
 $apiRequest->addAction('Hidden','wikipage/:namespace/:title', new WikiPageAPI());
+// PDF
+$apiRequest->addAction('Hidden','pdf/:id', new PDFAPI());
 //NewSearch
 $apiRequest->addAction('Hidden','globalSearch/:group/:search', new GlobalSearchAPI());
 $apiRequest->addAction('Hidden','virtu', new VirtuAPI());
@@ -53,6 +55,7 @@ function createModels($out, $skin){
     $out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Product.js'></script>\n");
     $out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Virtu.js'></script>\n");
     $out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/WikiPage.js'></script>\n");
+    $out->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/PDF.js'></script>\n");
     
     return true;
 }

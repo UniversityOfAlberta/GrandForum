@@ -1331,7 +1331,7 @@ input.other_option:focus {
     width: 311px;
 }
 
-.projectIcon, .productIcon, .wikiIcon {
+.projectIcon, .productIcon, .wikiIcon, .pdfIcon {
     width: 15px;
     height:15px;
     display: inline-block;
@@ -1347,6 +1347,10 @@ input.other_option:focus {
 
 .wikiIcon {
     background: url('../wiki.gif');
+}
+
+.pdfIcon {
+    background: url('../pdf.gif');
 }
 
 .throbber {
