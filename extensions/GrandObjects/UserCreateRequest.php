@@ -16,21 +16,20 @@ class UserCreateRequest {
     
     static function getAllRequests($history=false){
         if($history){
-		    $sql = "SELECT id
-			        FROM `mw_user_create_request`
-			        WHERE `created` = 'true'
-			        OR `ignore` = 'true'
-			        ORDER BY last_modified DESC";
+            $data = DBFunctions::select(array('grand_user_request'),
+                                        array('id'),
+                                        array('created' => EQ(1),
+                                              WHERE_OR('`ignore`') => EQ(1)),
+                                        array('last_modified' => 'DESC'));
 		}
 		else{
-		    $sql = "SELECT id
-			        FROM `mw_user_create_request`
-			        WHERE `created` = 'false'
-			        AND `ignore` = 'false'";
+		    $data = DBFunctions::select(array('grand_user_request'),
+		                                array('id'),
+		                                array('created' => EQ(0),
+		                                      '`ignore`' => EQ(0)));
         }
-        $data = DBFunctions::execSQL($sql);
         $requests = array();
-        if(DBFunctions::getNRows() > 0){
+        if(count($data) > 0){
             foreach($data as $row){
                 $requests[] = UserCreateRequest::newFromId($row['id']);
             }
@@ -39,25 +38,24 @@ class UserCreateRequest {
     }
     
     static function newFromId($id){
-        $sql = "SELECT *
-		        FROM `mw_user_create_request`
-		        WHERE `id` = '{$id}'";
-		$data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('grand_user_request'),
+                                    array('*'),
+                                    array('id' => EQ($id)));
 		return new UserCreateRequest($data);
     }
     
     function UserCreateRequest($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
-            $this->requestingUser = Person::newFromName($data[0]['requesting_user']);
-            $this->acceptedBy = Person::newFromName($data[0]['staff']);
+            $this->requestingUser = Person::newFromId($data[0]['requesting_user']);
+            $this->acceptedBy = Person::newFromId($data[0]['staff']);
             $this->name = $data[0]['wpName'];
             $this->realName = $data[0]['wpRealName'];
             $this->email = $data[0]['wpEmail'];
             $this->roles = $data[0]['wpUserType'];
             $this->projects = $data[0]['wpNS'];
-            $this->created = ($data[0]['created'] == "true");
-            $this->ignored = ($data[0]['ignore'] == "true");
+            $this->created = $data[0]['created'];
+            $this->ignored = $data[0]['ignore'];
             $this->lastModified = ($data[0]['last_modified']);
         }
     }
@@ -116,23 +114,21 @@ class UserCreateRequest {
     function ignoreRequest(){
         global $wgUser;
         $user = Person::newFromUser($wgUser);
-        $sql = "UPDATE `mw_user_create_request`
-		        SET `last_modified` = SUBDATE(CURRENT_TIMESTAMP, INTERVAL 5 SECOND),
-                    `staff` = '{$user->getName()}',
-		            `ignore` = 'true'
-		        WHERE `id` = '{$this->id}'";
-		DBFunctions::execSQL($sql, true);
+        DBFunctions::update('grand_user_request',
+                            array('last_modified' => EQ(COL('SUBDATE(CURRENT_TIMESTAMP, INTERVAL 5 SECOND)')),
+                                  'staff' => $user->getId(),
+                                  '`ignore`' => 1),
+                            array('id' => $this->id));
     }
     
     function acceptRequest(){
         global $wgUser;
         $user = Person::newFromUser($wgUser);
-        $sql = "UPDATE `mw_user_create_request`
-		        SET `last_modified` = SUBDATE(CURRENT_TIMESTAMP, INTERVAL 5 SECOND),
-                    `staff` = '{$user->getName()}',
-		            `created` = 'true'
-		        WHERE `id` = '{$this->id}'";
-	    DBFunctions::execSQL($sql, true);
+        DBFunctions::update('grand_user_request',
+                            array('last_modified' => EQ(COL('SUBDATE(CURRENT_TIMESTAMP, INTERVAL 5 SECOND)')),
+                                  'staff' => $user->getId(),
+                                  'created' => 1),
+                            array('id' => $this->id));
     }
     
 }

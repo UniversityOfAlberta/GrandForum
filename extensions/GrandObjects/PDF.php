@@ -21,7 +21,7 @@ class PDF extends BackboneModel {
      * @return PDF The PDF that matches the report_id
      */
     static function newFromId($id){
-        $data = DBFunctions::select(array('mw_pdf_report'),
+        $data = DBFunctions::select(array('grand_pdf_report'),
                                     array('report_id',
                                           'user_id',
                                           'generation_user_id',
@@ -41,7 +41,7 @@ class PDF extends BackboneModel {
      * @return PDF The PDF that matches the token
      */
     static function newFromToken($tok){
-        $data = DBFunctions::select(array('mw_pdf_report'),
+        $data = DBFunctions::select(array('grand_pdf_report'),
                                     array('report_id',
                                           'user_id',
                                           'generation_user_id',
@@ -56,7 +56,7 @@ class PDF extends BackboneModel {
     }
     
     static function getAllPDFs(){
-        $data = DBFunctions::select(array('mw_pdf_report'),
+        $data = DBFunctions::select(array('grand_pdf_report'),
                                     array('report_id',
                                           'user_id',
                                           'generation_user_id',
@@ -75,10 +75,10 @@ class PDF extends BackboneModel {
     
     static function generateProjectsCache(){
         if(count(PDF::$projectsCache) == 0){
-            $data = DBFunctions::select(array('mw_pdf_index'),
-                                        array('report_id', 'project_id'));
+            $data = DBFunctions::select(array('grand_pdf_index'),
+                                        array('report_id', 'sub_id'));
             foreach($data as $row){
-                PDF::$projectsCache[$row['report_id']] = $row['project_id'];
+                PDF::$projectsCache[$row['report_id']] = $row['sub_id'];
             }
         }
     }

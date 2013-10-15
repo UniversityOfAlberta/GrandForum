@@ -20,10 +20,8 @@ class MyPolls extends SpecialPage{
 
 	function run($par){
 		global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgTitle;
-		$cTable = getTableName("an_poll_collection");
-		$sql = "SELECT collection_id
-                FROM $cTable";
-		$rows = DBFunctions::execSQL($sql);
+		$rows = DBFunctions::select(array('grand_poll_collection'),
+		                            array('collection_id'));
 		$collections = array();
 		foreach($rows as $row){
 			$collection = PollCollection::newFromId($row['collection_id']);

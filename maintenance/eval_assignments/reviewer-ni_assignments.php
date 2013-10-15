@@ -50,14 +50,14 @@ if (($handle = fopen("/local/data/www-root/grand_forum/data/Evaluator-Project_Co
     }
     $csv .= "\n";
 
-
+    $cur_year = date('Y');
     //Get conflicts from the DB
-    $sql = "SELECT * FROM grand_reviewer_conflicts";
+    $sql = "SELECT * FROM grand_eval_conflicts WHERE type='NI' AND year={$cur_year}";
     $data = execSQLStatement($sql);
     $conflicts = array();
     foreach($data as $row){
-        $eval_id = $row['reviewer_id'];
-        $rev_id = $row['reviewee_id'];
+        $eval_id = $row['eval_id'];
+        $rev_id = $row['sub_id'];
         $conflict = $row['conflict'];
         $user_conflict = $row['user_conflict'];
 

@@ -206,6 +206,9 @@ class GlobalSearchAPI extends RESTAPI {
                 }
                 break;
             case 'pdf':
+                if(!$me->isRoleAtLeast(STAFF)){
+                    break;
+                }
                 $words = array_filter(explode("*", $search));
                 $leftOvers = array();
                 $year = "";

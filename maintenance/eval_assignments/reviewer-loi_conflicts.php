@@ -14,6 +14,7 @@ require_once('../commandLine.inc');
     }
     $csv .="\n";
 
+    $cur_year = date('Y');
     foreach($current_evals as $eval){
         $eval_id = $eval->getId();
         $eval_name = $eval->getName(); 
@@ -23,11 +24,11 @@ require_once('../commandLine.inc');
         foreach ($lois as $loi) {
             $loi_id = $loi->getId();
 
-            $sql = "SELECT * FROM grand_loi_conflicts WHERE reviewer_id = {$eval_id} AND loi_id = {$loi_id}";
+            $sql = "SELECT * FROM grand_eval_conflicts WHERE eval_id = {$eval_id} AND sub_id = {$loi_id} AND type='LOI' AND year={$cur_year}";
             $data = execSQLStatement($sql);
             $conflict = "0";
             if(isset($data[0])){
-                if(isset($data[0]['conflict']) && $data[0]['conflict'] == 1){
+                if(isset($data[0]['user_conflict']) && $data[0]['user_conflict'] == 1){
                     $conflict = "-10000";
                 }
                 else if(isset($data[0]['preference']) && $data[0]['preference'] == 1){

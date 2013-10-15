@@ -84,7 +84,7 @@ class ProjectProductAPI extends RESTAPI {
             else if($this->getParam(0) == "product"){
                 $product = Paper::newFromId($this->getParam('id'));
                 $project = Project::newFromId($this->getParam('projectId'));
-            }
+            }            
             $projects = $product->getProjects();
             $serializedProjects = array();
             $found = false;
@@ -96,11 +96,11 @@ class ProjectProductAPI extends RESTAPI {
             }
             if(!$found){
                 $serializedProjects[] = $project->getId();
-                DBFunctions::update('grand_products',
-                                    array('projects' => serialize($serializedProjects)),
-                                    array('id' => $product->getId()));
-                Paper::$cache = array();
-                Paper::$dataCache = array();
+                DBFunctions::insert('grand_product_projects',
+                                    array('product_id' => $product->getId()),
+                                    array('project_id' => $project->getId()));
+                Product::$cache = array();
+                Product::$dataCache = array();
             }
         }
         else{
@@ -131,9 +131,9 @@ class ProjectProductAPI extends RESTAPI {
                     $serializedProjects[] = $p->getId();
                 }
             }
-            DBFunctions::update('grand_products',
-                                array('projects' => serialize($serializedProjects)),
-                                array('id' => $product->getId()));
+            DBFunctions::delete('grand_product_projects',
+                                array('product_id' => $product->getId()),
+                                array('project_id' => $project->getId()));
             return;
         }
         else{

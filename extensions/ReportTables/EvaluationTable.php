@@ -79,13 +79,18 @@ class EvaluationTable extends SpecialPage {
         require_once('Productivity.php');
         require_once('ResearcherProductivity.php');
         require_once('Themes.php');
-        require_once('EvaluatorIndex.php');
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript;
 	 
 	    $init_tab = 0;
 	    
 		if(isset($_GET['section']) && $_GET['section'] == 'NSERC'){
-			$init_tabs = array('Jan-Dec2012'=>0, 'Apr2012-Mar2013'=>1, 'Jan-Mar2012'=>2, 'Apr-Dec2012'=>3, 'Jan-Mar2013'=>4, '2012'=>5, '2011'=>6);
+			$init_tabs = array('Jan-Dec2012' => 0, 
+			                   'Apr2012-Mar2013' => 1, 
+			                   'Jan-Mar2012' => 2, 
+			                   'Apr-Dec2012' => 3, 
+			                   'Jan-Mar2013' => 4, 
+			                   '2012' => 5, 
+			                   '2011' => 6);
 
 			if(isset($_GET['year'])){
 		    	$init_tab = $init_tabs[$_GET['year']];
@@ -99,7 +104,6 @@ class EvaluationTable extends SpecialPage {
 			$int_start = '2012'.REPORTING_NCE_START_MONTH.' 00:00:00';
 			$int_end =  '2013'.REPORTING_NCE_END_MONTH. ' 23:59:59';
 			$tabbedPage->addTab(new NSERCVariableTab("Apr2012-Mar2013", $int_start, $int_end));
-
 
 	    	$int_start = '2012'.REPORTING_CYCLE_START_MONTH.' 00:00:00';
 			$int_end =  '2012'.REPORTING_NCE_END_MONTH. ' 23:59:59';
@@ -115,11 +119,13 @@ class EvaluationTable extends SpecialPage {
 	    	//$tabbedPage->addTab(new NSERC2013Tab());
 	    	$tabbedPage->addTab(new NSERC2012Tab());
 	    	$tabbedPage->addTab(new NSERC2011Tab());
-
+	    	
 	        $tabbedPage->showPage($init_tab);
     	}
     	else{
-    		$init_tabs = array('2013'=>0, '2012'=>1, '2011'=>2);
+    		$init_tabs = array('2013' => 0, 
+    		                   '2012' => 1, 
+    		                   '2011' => 2);
 
     		if(isset($_GET['year'])){
 		    	$init_tab = $init_tabs[$_GET['year']];
@@ -133,36 +139,6 @@ class EvaluationTable extends SpecialPage {
 		
 	        $tabbedPage->showPage($init_tab);
     	}
-    	
-	}
-
-	static function getProjectLeaderPDF($project, $year=REPORTING_YEAR){
-	    global $wgOut, $wgServer, $wgScriptPath, $wgTitle;
-	    $data = ReportStorage::list_project_reports($project->getId(), 1, 0, RPTP_LEADER, $year);
-	    if($data != null && count($data) > 0){
-	        return "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$data[0]['token']}'>[Download&nbsp;PDF]</a>";
-	    }
-	    else{
-	        return "N/A";
-	    }
-	}
-	
-	static function getPNIPDF($person, $year=REPORTING_YEAR){
-	    global $wgOut, $wgServer, $wgScriptPath, $wgTitle;
-	    $sto = new ReportStorage($person);
-        $check = array_merge($sto->list_reports_past($person->getId(), $year, SUBM, 1, 0 , RPTP_EVALUATOR_NI), 
-                             $sto->list_reports_past($person->getId(), $year, NOTSUBM, 1, 0, RPTP_EVALUATOR_NI)); // Merge submitted and unsubmitted reports
-        if (count($check) > 0) {
-            $sto->select_report($check[0]['token']);
-            $tst = $sto->metadata('timestamp');
-            $tok = false;
-            $tok = $sto->metadata('token');
-        }
-        else{
-            $tok = false;
-            return "N/A";
-        }
-        return "<a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?getpdf={$tok}'>[Download&nbspPDF]</a>";
 	}
 }
 

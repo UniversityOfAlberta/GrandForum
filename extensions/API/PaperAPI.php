@@ -101,7 +101,6 @@ abstract class PaperAPI extends API{
 	        $sql = "UPDATE grand_products
 					SET
 	                description = '".$description."',
-	                projects = '".serialize($projects)."',
 					title = '{$new_title}',
 	                type = '{$type}',
 	                date = '$date',
@@ -111,7 +110,15 @@ abstract class PaperAPI extends API{
 	                data = '".serialize($data)."'
 	                WHERE id = '$product_id'";
 	        $result = DBFunctions::execSQL($sql, true);
-	         
+	        foreach($paper->getProjects() as $project){
+	            DBFunctions::delete("grand_product_projects", array('product_id' => $product_id,
+	                                                                'project_id' => $project->getId()));
+	        }
+	        foreach($projects as $project){
+	            $p = Project::newFromName($project);
+	            DBFunctions::insert("grand_product_projects", array('product_id' => $product_id,
+	                                                                'project_id' => $p->getId()));
+	        }
 	        Paper::$cache = array();
 	        $paperAfter = Paper::newFromId($product_id);
 	        // Notification for new authors
@@ -147,9 +154,24 @@ abstract class PaperAPI extends API{
 	        $paperAfter->syncAuthors();
 	    }
 	    else{
-	        $sql = "INSERT INTO grand_products (`description`,`category`,`projects`,`type`,`title`,`date`,`venue`,`status`,`authors`,`data`)
-	                VALUES ('$description','{$this->category}','".serialize($projects)."','{$type}','$title','$date','$venue','$status','".serialize($authors)."','".serialize($data)."')";
-	        $result = DBFunctions::execSQL($sql, true);
+	        $result = DBFunctions::insert('grand_products',
+	                                      array('description' => $description,
+	                                      'category' => $this->category,
+	                                      'type' => $type,
+	                                      'title' => $title,
+	                                      'date' => $date,
+	                                      'venue' => $venue,
+	                                      'status' => $status,
+	                                      'authors' => serialize($authors),
+	                                      'data' => serialize($data),
+	                                      'date_created' => EQ(COL('CURRENT_TIMESTAMP'))));
+	        Paper::$cache = array();
+	        $paper = Paper::newFromTitle($title, $this->category, $type, $status);
+	        foreach($projects as $project){
+	            $p = Project::newFromName($project);
+	            DBFunctions::insert("grand_product_projects", array('product_id' => $paper->getId(),
+	                                                                'project_id' => $p->getId()));
+	        }
 	        Paper::$cache = array();
 	        $paper = Paper::newFromTitle($title, $this->category, $type, $status);
 	        foreach($authors as $author){

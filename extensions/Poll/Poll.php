@@ -7,20 +7,16 @@ class Poll {
 	var $options;
 	
 	static function newFromId($id){
-		$pTable = getTableName("an_poll");
-		$sql = "SELECT * 
-                FROM $pTable p
-                WHERE p.poll_id = '$id'";
-		$rows = DBFunctions::execSQL($sql);
+		$rows = DBFunctions::select(array('grand_poll'),
+		                            array('*'),
+		                            array('poll_id' => EQ($id)));
 		if(count($rows) > 0){
 			$row = $rows[0];
 			$name = $row['poll_name'];
 			$options = array();
-			$oTable = getTableName("an_poll_options");
-			$sql = "SELECT o.option_id
-                    FROM $oTable o
-                    WHERE o.poll_id = '$id'";
-		    $rows1 = DBFunctions::execSQL($sql);
+		    $rows1 = DBFunctions::select(array('grand_poll_options'),
+		                                 array('option_id'),
+		                                 array('poll_id' => EQ($id)));
 			foreach($rows1 as $row1){
 				$options[] = Option::newFromId($row1['option_id']);
 			}

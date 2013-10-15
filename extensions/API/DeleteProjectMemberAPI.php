@@ -46,11 +46,11 @@ class DeleteProjectMemberAPI extends API{
             }
             $creator = self::getCreator($me);
             
-            $sql = "UPDATE grand_user_projects
+            $sql = "UPDATE grand_project_members
 	            SET `comment` = '$comment',
 	                `end_date` = $effectiveDate
 	            WHERE `project_id` = '{$project->getId()}'
-	            AND user = '{$person->getId()}'
+	            AND user_id = '{$person->getId()}'
 	            ORDER BY `start_date` DESC LIMIT 1";
             DBFunctions::execSQL($sql, true);
             
@@ -60,11 +60,11 @@ class DeleteProjectMemberAPI extends API{
             DBFunctions::execSQL($sql, true);
             
             foreach($project->getAllPreds() as $pred){
-                $sql = "UPDATE grand_user_projects
+                $sql = "UPDATE grand_project_members
 	                    SET `comment` = '$comment',
 	                        `end_date` = $effectiveDate
 	                    WHERE `project_id` = '{$pred->getId()}'
-	                    AND user = '{$person->getId()}'
+	                    AND user_id = '{$person->getId()}'
 	                    ORDER BY `start_date` DESC LIMIT 1";
 	            DBFunctions::execSQL($sql, true);
                 $sql = "DELETE FROM mw_user_groups
@@ -108,7 +108,7 @@ class DeleteProjectMemberAPI extends API{
             }
             $sql = "SELECT `id`
 	                FROM grand_notifications
-	                WHERE user = '{$creator->getId()}'
+	                WHERE user_id = '{$creator->getId()}'
 	                AND message LIKE '%{$person->getName()}%'
 	                AND url = ''
 	                AND creator = ''
@@ -130,12 +130,11 @@ class DeleteProjectMemberAPI extends API{
 	// If the creator cannot be determined, then 'me' is returned
 	function getCreator($me){
 	    if(isset($_POST['id'])){
-	        $sql = "SELECT `requesting_user`
-	                FROM `grand_role_request`
-	                WHERE `id` = '{$_POST['id']}'";
-	        $data = DBFunctions::execSQL($sql);
+	        $data = DBFunctions::select(array('grand_role_request'),
+	                                    array('requesting_user'),
+	                                    array('id' => EQ($_POST['id'])));
 	        if(count($data) > 0){
-	            return Person::newFromName($data[0]['requesting_user']);
+	            return Person::newFromId($data[0]['requesting_user']);
 	        }
 	    }   
 	    return $me;

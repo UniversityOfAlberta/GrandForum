@@ -87,7 +87,7 @@ class Contribution {
             $this->unknown = array();
             $this->description = $data[0]['description'];
             $this->year = $data[0]['year'];
-            $this->date = $data[0]['date'];
+            $this->date = $data[0]['change_date'];
         }
     }
     

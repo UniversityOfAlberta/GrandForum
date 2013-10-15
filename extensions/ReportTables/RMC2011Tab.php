@@ -208,23 +208,18 @@ EOF;
             }
         }
         $this->html .= "<h3>$type Summary of Questions 1-7</h3>";
-        $W1 = isset($_POST['w1']) ? $_POST['w1'] : 3;
-        $W2 = isset($_POST['w2']) ? $_POST['w2'] : 1;
-        $W3 = isset($_POST['w3']) ? $_POST['w3'] : 0;
-        $this->html .= "<form method='post' action='$wgServer$wgScriptPath/index.php/Special:EvaluationTable'>
-                            Tier 1 Weight: <input type='text' name='w1' value='$W1' size='3' /><br />
-                            Tier 2 Weight: <input type='text' name='w2' value='$W2' size='3' /><br />
-                            Tier 3 Weight: <input type='text' name='w3' value='$W3' size='3' /><br />
-                            <input type='submit' value='Reload' /><br /><br />
-                         </form>
-                         <table class='wikitable sortable' cellspacing='1' cellpadding='2' style='background: #000000;' width='100%'>
+        $W1 = 3;
+        $W2 = 1;
+        $W3 = 0;
+        $this->html .= "<b>Tier 1 Weight:</b> $W1<br />
+                        <b>Tier 2 Weight:</b> $W2<br />
+                        <b>Tier 3 Weight:</b> $W3<br />
+                        <table class='wikitable sortable' cellspacing='1' cellpadding='2' style='background: #000000;' width='100%'>
                             <tr>
                                 <th style='background: #EEEEEE;'>$type</th><th style='background: #EEEEEE;'>Weighted&nbsp;Average (Q6)</th><th style='background: #EEEEEE; min-width:400px;' width='45%'>Rationale (Q1 - Q5)</th><th style='background: #EEEEEE; min-width:400px;' width='45%'>Rationale (Q6 + Q7)</th>
                             </tr>";
                             
         $rppg = "Special:Report";
-        $person = Person::newFromName(key($peopleTiers));
-        $repi = new ReportIndex($person);
         
         // Check for a download.
         $action = ArrayUtils::get_string($_GET, 'getpdf');
@@ -292,20 +287,21 @@ EOF;
                 $tok = ArrayUtils::get_string($sarr, 'token', ArrayUtils::get_string($narr, 'token'));
                 $download1 = "No&nbsp;PDF";
                 if (! empty($tok)) {
-                    $download1 = "<a href='{$pg}?getpdf={$tok}'>Download&nbsp;PDF</a>";
+                    $download1 = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download&nbsp;PDF</a>";
                 }
             
                 $tok = ArrayUtils::get_string($suarr, 'token');
                 $download2 = "No&nbsp;PDF";
                 if (! empty($tok)) {
-                    $download2 = "<a href='{$pg}?getpdf={$tok}'>Download&nbsp;PDF</a>";
+                    $download2 = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download&nbsp;PDF</a>";
                 }
                 $download3 = "";
-                foreach($person->getEvaluators() as $evaluator){
-                    $evind = new EvaluatorIndex($evaluator);
-                    $ls = $evind->list_reports($person);
-                    foreach ($ls as &$row) {
-                        $download3 .= "<a href='{$pg}?getpdf={$row['token']}'>Download&nbsp;PDF</a><br />";
+                foreach($person->getEvaluators('Researcher', 2010) as $evaluator){
+                    $report = new DummyReport(RP_EVAL_RESEARCHER, $evaluator, null, 2010);
+                    $report->project = $person;
+                    $pdf = $report->getPDF();
+                    if(isset($pdf[0]['token'])){
+                        $download3 .= "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>Download&nbsp;PDF</a><br />";
                     }
                 }
                 if($download3 == ""){
@@ -366,22 +362,13 @@ EOF;
                 $project = Project::newFromName(key($projectTiers));
                 
                 $leader = $project->getLeader();
+                $download1 = "No&nbsp;PDF";
                 if($leader != null){
-                    $repi = new ReviewerIndex($leader, Person::newFromId($wgUser->getId()));
-                    $ls = $repi->list_reports($project);
-                }
-                else{
-                    $ls = array();
-                }
-                $none = true;
-                $download1 = "";
-                foreach ($ls as &$row) {
-                    $none = false;
-                    $download1 = "<a href='{$pg}?getpdf={$row['token']}'>Download&nbsp;PDF</a></td>";
-                    break;
-                }
-                if($none){
-                    $download1 .= "No&nbsp;PDF";
+                    $report = new DummyReport(RP_REVIEW, $leader, $project, 2010);
+                    $pdf = $report->getPDF();
+                    if(isset($pdf[0]['token'])){
+                        $download1 = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>Download&nbsp;PDF</a><br />";
+                    }
                 }
             
                 $pdf = self::getPLProjectPDF($project);
@@ -392,15 +379,15 @@ EOF;
                     $download2 = "No&nbsp;PDF";
                 }
                 else{
-                    $download2 = "<a href='{$pg}?getpdf={$pdf['tok']}'>Download&nbsp;PDF</a>";
+                    $download2 = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf['tok']}'>Download&nbsp;PDF</a>";
                 }
 
                 $download3 = "";
-                foreach($project->getEvaluators() as $evaluator){
-                    $evind = new EvaluatorIndex($evaluator);
-                    $ls = $evind->list_reports($project);
-                    foreach ($ls as &$row) {
-                        $download3 .= "<a href='{$pg}?getpdf={$row['token']}'>Download&nbsp;PDF</a><br />";
+                foreach($project->getEvaluators(2010) as $evaluator){
+                    $report = new DummyReport(RP_EVAL_PROJECT, $evaluator, $project, 2010);
+                    $pdf = $report->getPDF();
+                    if(isset($pdf[0]['token'])){
+                        $download3 .= "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>Download&nbsp;PDF</a><br />";
                     }
                 }
                 if($download3 == ""){
@@ -594,13 +581,13 @@ EOF;
             $pniTotals = array();
             $cniTotals = array();
             foreach(Person::getAllPeople(PNI) as $person){
-                $budget = $person->getBudget(2010);
+                $budget = $person->getRequestedBudget(2010);
                 if($budget != null){
                     $pniTotals[] = $budget->copy()->limit(8, 14)->rasterize()->select(ROW_TOTAL);
                 }
             }
             foreach(Person::getAllPeople(CNI) as $person){
-                $budget = $person->getBudget(2010);
+                $budget = $person->getRequestedBudget(2010);
                 if($budget != null){
                     $cniTotals[] = $budget->copy()->limit(8, 14)->rasterize()->select(ROW_TOTAL);
                 }

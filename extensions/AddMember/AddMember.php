@@ -112,7 +112,6 @@ class AddMember extends SpecialPage{
 		}
 	
 	    $requests = UserCreateRequest::getAllRequests($history);
-
 		foreach($requests as $request){
 		    $req_user = $request->getRequestingUser();
 		    $projects = array();
@@ -130,9 +129,17 @@ class AddMember extends SpecialPage{
 			$wgOut->addHTML("<tr>
 						<td align='left'><a target='_blank' href='{$req_user->getUrl()}'>{$req_user->getName()}</a><br />
 						<b>Roles:</b> ".implode(",", $roles)."<br />
-						<b>Projects:</b> ".implode(",", $projects)."</td> <td align='left'>{$request->getName()}</td> <td>{$request->getLastModified()}</td>");
+						<b>Projects:</b> ".implode(",", $projects)."</td>");
+		    if($history && $request->isCreated()){
+		        $user = Person::newFromName($request->getName());
+		        $wgOut->addHTML("<td align='left'><a target='_blank' href='{$user->getUrl()}'>{$request->getName()}</a></td>");
+		    }
+		    else{
+		        $wgOut->addHTML("<td align='left'>{$request->getName()}</td>");
+		    } 
+		    $wgOut->addHTML("<td>{$request->getLastModified()}</td>");
 			if($history){
-			    $wgOut->addHTML("<td>{$request->getAcceptedBy()->getName()}</td>");
+			    $wgOut->addHTML("<td><a target='_blank' href='{$request->getAcceptedBy()->getUrl()}'>{$request->getAcceptedBy()->getName()}</a></td>");
 			}
 			$wgOut->addHTML("<td align='left'> {$request->getEmail()}</td> <td>{$request->getRoles()}</td> <td align='left'>{$request->getProjects()}</td> 
 						<form action='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view' method='post'>

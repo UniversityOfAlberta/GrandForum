@@ -45,7 +45,7 @@ class CreatePoll extends SpecialPage{
 	function run($par){
 		global $wgOut, $wgUser, $wgScriptPath, $wgServer, $wgTitle, $wgArticle, $wgMessage;
 		if(isset($_POST['submit'])){
-			$name = addslashes($_POST['name']);
+			$name = $_POST['name'];
 			$noName = false;
 			if($name == ""){
 				$noName = true;
@@ -76,29 +76,26 @@ class CreatePoll extends SpecialPage{
 			}
 		
 			if(!$someQuestionsBlank && !$noGroupsSelected && !$noName && $validTime){
-				$cTable = getTableName("an_poll_collection");
-				$pTable = getTableName("an_poll");
-				$oTable = getTableName("an_poll_options");
-				$gTable = getTableName("an_poll_groups");
-				$sql = "INSERT INTO $cTable (`author_id`, `collection_name`,`self_vote`,`timestamp`, `time_limit`)
-					VALUES ('{$wgUser->getId()}', '$name', '{$_POST['self']}', '".time()."', '{$_POST['time']}')";
-				DBFunctions::execSQL($sql, true);
-		
-				$sql = "SELECT collection_id 
-					FROM $cTable
-					WHERE collection_name = '$name'
-					AND author_id = '{$wgUser->getId()}'
-					ORDER BY collection_id DESC";
-		
-				$rows = DBFunctions::execSQL($sql);
+				DBFunctions::insert('grand_poll_collection',
+				                    array('author_id' => $wgUser->getId(),
+				                          'collection_name' => $name,
+				                          'self_vote' => $_POST['self'],
+				                          'timestamp' => time(),
+				                          'time_limit' => $_POST['time']));
+				                          
+		        $rows = DBFunctions::select(array('grand_poll_collection'),
+		                                    array('collection_id'),
+		                                    array('collection_name' => EQ($name),
+		                                          'author_id' => EQ($wgUser->getId())),
+		                                    array('collection_id' => 'DESC'));
 				@$row = $rows[0];
 				$poll_id = null;
 				if($row != null){
 					$collection_id = $row['collection_id'];
 					foreach($groups as $group){
-					    $sql = "INSERT INTO $gTable (`group_name`, `collection_id`)
-					    VALUES ('$group', '$collection_id')";
-					    DBFunctions::execSQL($sql, true);
+					    DBFunctions::insert('grand_poll_groups',
+					                        array('group_name' => $group,
+					                              'collection_id' => $collection_id));
 				    }
 
 				    $j = 1;
@@ -106,7 +103,7 @@ class CreatePoll extends SpecialPage{
 					    $i = 0;
 					    $options = array();
 			
-					    $question = addslashes($_POST["question_$j"]);
+					    $question = $_POST["question_$j"];
 			
 					    while(isset($_POST["op{$i}_$j"])){
 						    if($_POST["op{$i}_$j"] != null){
@@ -114,18 +111,15 @@ class CreatePoll extends SpecialPage{
 						    }
 						    $i++;
 					    }
-			
-					    $sql = "INSERT INTO $pTable (`collection_id`, `poll_name`)
-                                VALUES ('$collection_id', '$question')";
-					    DBFunctions::execSQL($sql, true);
-			
-					    $sql = "SELECT poll_id 
-                                FROM $pTable
-                                WHERE poll_name = '$question'
-                                AND collection_id = '$collection_id'
-                                ORDER BY poll_id DESC";
-			
-					    $rows = DBFunctions::execSQL($sql);
+			            DBFunctions::insert('grand_poll',
+			                                array('collection_id' => $collection_id,
+			                                      'poll_name' => $question));
+
+			            $rows = DBFunctions::select(array('grand_poll'),
+			                                        array('poll_id'),
+			                                        array('poll_name' => $question,
+			                                              'collection_id' => $collection_id),
+			                                        array('poll_id' => 'DESC'));
 					    @$row = $rows[0];
 					    $poll_id = null;
 					    if($row != null){
@@ -133,17 +127,15 @@ class CreatePoll extends SpecialPage{
 					    }
 					    if($poll_id != null){
 						    foreach($options as $option){
-							    $sql = "INSERT INTO $oTable (`option_name`, `poll_id`)
-                                        VALUES ('".addslashes($option)."', '$poll_id')";
-							    DBFunctions::execSQL($sql, true);
+						        DBFunctions::insert('grand_poll_options',
+						                            array('option_name' => $option,
+						                                  'poll_id' => $poll_id));
 						    }
 					    }
 					    $j++;
 				    }
-				    $wgMessage->addSuccess("Poll Created Successfully");
-				    $_GET['id'] = $collection_id;
-				    $poll = new PollView();
-				    $poll->viewPoll("viewPoll", $wgArticle);
+				    header("Location: $wgServer$wgScriptPath/index.php?action=viewPoll&id=$collection_id");
+				    exit;
 				}
 				else{
 				    $wgMessage->addError("There was an unknown problem creating the Poll.");
@@ -303,8 +295,8 @@ class CreatePoll extends SpecialPage{
 								<b>Allow myself to vote:</b>
 							</td>
 							<td>
-								<input type='radio' name='self' value='true' checked /> Yes<br />
-								<input type='radio' name='self' value='false' /> No<br />
+								<input type='radio' name='self' value='1' checked /> Yes<br />
+								<input type='radio' name='self' value='0' /> No<br />
 								<div class='prefsectiontip'>
 									<p>If 'Yes' is selected, you will be able to vote in the poll just like anyone else.  If 'No' is selected, you will only be able to see the results of the poll.</p>
 								</div>

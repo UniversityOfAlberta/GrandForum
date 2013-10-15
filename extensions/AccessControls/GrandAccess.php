@@ -32,9 +32,6 @@ class GrandAccess {
 	        $aRights[$i++] = "Researcher";
 	        $aRights[$i++] = "Researcher+";
 	    }
-	    if($me->isHQP() && $me->isPendingInactivation()){
-	        $aRights[$i++] = "HQPPendingInactivation";
-	    }
 	    foreach(array_keys($wgRoleValues) as $role){
 	        if($me->isRoleAtLeast($role)){
 	            $aRights[$i++] = $role.'+';

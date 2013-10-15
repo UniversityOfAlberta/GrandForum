@@ -50,21 +50,34 @@ class AcknowledgementsTable extends SpecialPage {
                $_FILES['pdf']['size'] > 0 &&
                $_FILES['pdf']['type'] == 'application/pdf'){
                 $person = Person::newFromNameLike($_POST['name']);
-                $name = @addslashes($_POST['name']);
+            	if($person == null || $person->getName() == ""){
+                    $id = -1;
+                	$name = @addslashes($_POST['name']);
+                }
+                else{
+                    $id = $person->getId();
+                	$name = $person->getName();
+                }
+                
                 $university = @addslashes($_POST['university']);
-                $date = @addslashes($_POST['date']);
-                $supervisor = @addslashes($_POST['supervisor']);
+                $php_date = date_create_from_format('d-m-Y', $_POST['date']);
+                if($php_date){
+			        $date =  $php_date->format('Y-m-d');
+			    }else{
+			    	$date = @addslashes($_POST['date']);
+			    }
+                $super = Person::newFromNameLike($_POST['supervisor']);
+                if($super == null || $super->getName() == ""){
+					$supervisor = @addslashes($_POST['supervisor']);
+                }else{
+                	$supervisor = $super->getName();
+                }
+
                 $filename = $_FILES['pdf']['tmp_name'];
                 $pdf = file_get_contents($_FILES['pdf']['tmp_name']);
                 $md5 = md5($pdf);
                 $pdf = mysql_real_escape_string($pdf);
                 
-                if($person == null || $person->getName() == ""){
-                    $id = -1;
-                }
-                else{
-                    $id = $person->getId();
-                }
                 $sql = "INSERT INTO `grand_acknowledgements`
                        (`user_id`, `user_name`, `university` , `date` ,`supervisor`,  `md5`,  `pdf`)
                 VALUES ('$id'    , '$name'    , '$university', '$date','$supervisor', '$md5', '$pdf')";

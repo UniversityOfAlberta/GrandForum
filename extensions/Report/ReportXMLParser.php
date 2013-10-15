@@ -103,13 +103,15 @@ class ReportXMLParser {
     function showErrors(){
         global $wgOut;
         if(!$this->report->generatePDF){
-            $wgOut->addHTML("<script type='text/javascript'>
-                                if (typeof console != 'undefined' && console != null) {\n");
-            foreach($this->errors as $error){
-                $wgOut->addHTML("   console.warn('".addslashes($error)."');\n");
+            if(count($this->errors) > 0){
+                $wgOut->addHTML("<script type='text/javascript'>
+                                    if (typeof console != 'undefined' && console != null) {\n");
+                foreach($this->errors as $error){
+                    $wgOut->addHTML("   console.warn('".addslashes($error)."');\n");
+                }
+                $wgOut->addHTML("   }
+                                </script>\n");
             }
-            $wgOut->addHTML("   }
-                            </script>\n");
         }
     }
     
@@ -276,6 +278,9 @@ class ReportXMLParser {
                 }
                 if(isset($attributes->tooltip)){
                     $section->setTooltip(str_replace("'", "&#39;", "{$attributes->tooltip}"));
+                }
+                if(isset($attributes->disabled)){
+                    $section->setDisabled($attributes->tooltip);
                 }
                 if(isset($attributes->blobSection)){
                     if(!defined($attributes->blobSection)){

@@ -88,18 +88,22 @@ class RequestUserAPI extends API{
 		}
 		// Finished manditory checks
 		// Add a request for a user to be created
-		$requesting_user = isset($_POST['user_name']) ? $_POST['user_name'] : "";
+		$requesting_user = $me->getId();
 		$wpName = isset($_POST['wpName']) ? $_POST['wpName'] : "";
 		$wpEmail = isset($_POST['wpEmail']) ? $_POST['wpEmail'] : "";
 		$wpRealName = isset($_POST['wpRealName']) ? $_POST['wpRealName'] : "";
 		$wpUserType = isset($_POST['wpUserType']) ? $_POST['wpUserType'] : "";
 		$wpNS = isset($_POST['wpNS']) ? $_POST['wpNS'] : "";
+		DBFunctions::insert('grand_user_request',
+		                    array('requesting_user' => $requesting_user,
+		                          'wpName' => $wpName,
+		                          'wpEmail' => $wpEmail,
+		                          'wpRealName' => $wpRealName,
+		                          'wpUserType' => $wpUserType,
+		                          'wpNS' => $wpNS,
+		                          'created' => 0));
 		
-		$sql = "INSERT INTO mw_user_create_request (`requesting_user`, `wpName`, `wpEmail`, `wpRealName`, `wpUserType`, `wpNS`, `created`)
-			VALUES ('$requesting_user', '$wpName', '$wpEmail', '$wpRealName', '$wpUserType', '$wpNS', 'false')";
-		DBFunctions::execSQL($sql, true);
-		
-		$me = Person::newFromName($requesting_user);
+		$me = Person::newFromId($requesting_user);
 		Notification::addNotification("", $me, "User Creation Pending", "User '{$wpName}' has been requested.  Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you", "");
 		if($doEcho){
 		    echo "User Creation Request Submitted.  Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you.\n";
