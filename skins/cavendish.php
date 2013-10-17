@@ -371,7 +371,7 @@ class cavendishTemplate extends QuickTemplate {
 	        }
 	        
 	        ?>
-	        <!--span style='font-size:18px;color:red;position:relative;bottom:-14px;left:-250px;'>Important: site will be down for maintenance from 8-9AM (MST), Wed, Nov 16.</span-->
+	        <!--span style='font-size:16px;color:red;position:relative;bottom:-14px;left:-250px;'>Important: site will be down for maintenance from 9-10AM (MST), Tue, Oct. 8.</span-->
 		    <a name="top" id="contentTop"></a>
     <ul class="top-nav">
           <?php 
