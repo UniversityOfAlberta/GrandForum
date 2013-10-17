@@ -178,11 +178,13 @@ class APIRequest{
 		$this->addAction('Activities', 'addPanelRef', new PanelAPI());
 		$this->addAction('Activities', 'addTutorialRef', new TutorialAPI());
 		$this->addAction('Activities', 'addEventOrganizationRef', new EventOrganizationAPI());
+		$this->addAction('Activities', 'addSpinOffRef', new SpinOffAPI());
 		//$this->addAction('Activities', 'updateInvitedPresntaqtionRef', new InvitedPresentationAPI(true));
 		//$this->addAction('Activities', 'updatePresentationRef', new PresentationAPI(true));
 		$this->addAction('Activities', 'updatePanelRef', new PanelAPI(true));
 		$this->addAction('Activities', 'updateTutorialRef', new TutorialAPI(true));
 		$this->addAction('Activities', 'updateEventOrganizationRef', new EventOrganizationAPI(true));
+		$this->addAction('Activities', 'updateSpinOffRef', new SpinOffAPI(true));
 		
 		//POST
 		$this->addAction('Press', 'addUniveristyPressRef', new UniversityPressAPI());

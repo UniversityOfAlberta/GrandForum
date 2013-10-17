@@ -31,6 +31,7 @@ $publicationTypes = array("Proceedings Paper" => "an article written for submiss
 $activityTypes = array(/*"Panel" => "panel",
                        "Tutorial" => "tutorial",*/
                        "Event Organization" => "event",
+                       "Spin-Off" => "spin-off",
                        "Misc" => "misc"); 
 
                        
@@ -239,6 +240,8 @@ class PublicationPage {
                                         addAttr("Location");
                                         addAttr("Organizing Body");
                                         addAttr("URL");
+                                        break;
+                                    case "Spin-Off":
                                         break;
                                     default:
                                     case "Misc":
@@ -1279,6 +1282,9 @@ class PublicationPage {
                     default:
                     case "Event Organization":
                         $api = new EventOrganizationAPI(true);
+                        break;
+                    case "Spin-Off":
+                        $api = new SpinOffAPI(true);
                         break;
                     case "Misc":
                         $api = new MiscActivityAPI(true);
