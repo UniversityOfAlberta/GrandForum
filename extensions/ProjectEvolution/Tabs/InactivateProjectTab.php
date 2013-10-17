@@ -9,7 +9,7 @@ class InactivateProjectTab extends ProjectTab {
     static function createForm(){
         $projectNames = array();
         $projectNames[] = "NO PROJECT";
-        foreach(Project::getAllProjects() as $project){
+        foreach(Project::getAllProjects(true) as $project){
             $projectNames[] = $project->getName();
         }
         $form = new FormContainer("delete_project_container");

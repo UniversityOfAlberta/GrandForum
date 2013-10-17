@@ -142,10 +142,16 @@ class Project extends BackboneModel {
     }
     
     // Gets all of the Projects from the database
-    static function getAllProjects(){
+    static function getAllProjects($subProjects=false){
+        if($subProjects == false){
+            $subProjects = EQ(0);
+        }
+        else{
+            $subProjects = LIKE("%");
+        }
         $data = DBFunctions::select(array('grand_project'),
                                     array('id'),
-                                    array('parent_id'=>'0'),
+                                    array('parent_id' => $subProjects),
                                     array('name' => 'ASC'));
         $projects = array();
         $projectNames = array();
@@ -161,16 +167,22 @@ class Project extends BackboneModel {
         return $projects;
     }
     
-    static function getAllProjectsDuring($startDate=false, $endDate=false){
+    static function getAllProjectsDuring($startDate=false, $endDate=false, $subProjects=false){
         if($startDate == false){
             $startDate = REPORTING_CYCLE_START;
         }
         if($endDate == false){
             $endDate = REPORTING_CYCLE_END;
         }
+        if($subProjects == false){
+            $subProjects = EQ(0);
+        }
+        else{
+            $subProjects = LIKE("%");
+        }
         $data = DBFunctions::select(array('grand_project'),
                                     array('id'),
-                                    array('parent_id'=>'0'),
+                                    array('parent_id' => $subProjects),
                                     array('name' => 'ASC'));
         $projects = array();
         $projectNames = array();

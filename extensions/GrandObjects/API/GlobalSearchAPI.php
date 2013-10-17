@@ -93,7 +93,7 @@ class GlobalSearchAPI extends RESTAPI {
                 break;
             case 'projects':
                 $data = array();
-                $projects = Project::getAllProjectsDuring('0000','9999');
+                $projects = Project::getAllProjectsDuring('0000','9999', true);
                 foreach($projects as $project){
                     $pName = strtolower($project->getName());
                     $pFullName = strtolower($project->getFullName());
