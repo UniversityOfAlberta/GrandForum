@@ -264,13 +264,19 @@ class cavendishTemplate extends QuickTemplate {
 	            }
 	        }
 	        
-	        var sideToggled = 'out';
+	        var sideToggled = $.cookie('sideToggled');
+	        if(sideToggled == undefined){
+	            sideToggled = 'out';
+	        }
 	        
 		    $(document).ready(function(){
-		        /*
-		        $('div#bodyContent').ajaxComplete(function(e, xhr, settings) {
+		        var ajax = null;
+		        $(document).ajaxComplete(function(e, xhr, settings) {
 		            if(settings.url.indexOf("action=getUserMode") == -1){
-		                $.get("<?php echo $wgServer.$wgScriptPath; ?>/index.php?action=getUserMode&user=" + wgUserName, function(response){
+		                if(ajax != null){
+		                    ajax.abort();
+		                }
+		                ajax = $.get("<?php echo $wgServer.$wgScriptPath; ?>/index.php?action=getUserMode&user=" + wgUserName, function(response){
 		                    if(response.mode == 'loggedOut'){
 		                        if($('#wgMessages .info').text() != response.message){
 		                            clearInfo();
@@ -302,7 +308,7 @@ class cavendishTemplate extends QuickTemplate {
 		                });
 		            }
                 });
-                */
+                
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();
                 });
@@ -321,9 +327,10 @@ class cavendishTemplate extends QuickTemplate {
 		                delay: 500
 		            }
 		        });
-		        $("#sideToggle").click(function(){
+		        
+		        $("#sideToggle").click(function(e, force){
 		            $("#sideToggle").stop();
-		            if(sideToggled == 'out'){
+		            if((sideToggled == 'out' && force == null) || force == 'in'){
 		                var marginRight = '0';
 		                if ($.browser.msie && $.browser.version <= 7){
 		                    marginRight = '-229px';
@@ -335,6 +342,7 @@ class cavendishTemplate extends QuickTemplate {
                                                 jsPlumb.repaintEverything();
                                             });
                         sideToggled = 'in';
+                        $.cookie('sideToggled', 'in', {expires: 30});
                     }
                     else{
                         $('#mBody').animate({'margin-left' : '0px',
@@ -344,6 +352,7 @@ class cavendishTemplate extends QuickTemplate {
                                                 jsPlumb.repaintEverything();
                                             });
                         sideToggled = 'out';
+                        $.cookie('sideToggled', 'out', {expires: 30});
                     }
 		        });
 		    });
@@ -538,7 +547,7 @@ class cavendishTemplate extends QuickTemplate {
 		</ul>
     </div>
     <a id="sideToggle">Toggle Menu</a>
-	<div id="mBody" class='displayTable'>
+	<div id="mBody" class='displayTable <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
 	    <div class='displayTableRow'>
             
 		<div id="side" class='displayTableCell'>

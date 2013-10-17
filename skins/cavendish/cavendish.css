@@ -1346,3 +1346,9 @@ input.other_option:focus {
     height:20px;
     background: url('../Throbber.gif');
 }
+
+.menu-in {
+    margin-left : -229px;
+    left : -229px;
+    margin-right : 0;
+}

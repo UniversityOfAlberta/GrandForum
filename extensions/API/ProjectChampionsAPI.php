@@ -26,7 +26,6 @@ class ProjectChampionsAPI extends API{
         
     }
 
-
 	function doAction($noEcho=false){
 		$project = Project::newFromName($_POST['project']);
 		if(!$noEcho){
