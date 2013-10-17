@@ -678,6 +678,7 @@ class cavendishTemplate extends QuickTemplate {
 		}
 		else {
 		    global $wgSiteName, $wgTitle;
+		    setcookie('sideToggled', 'out', time()-3600);
 		    $loginFailed = (isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword']));
 		    if($loginFailed){
 		        $person = Person::newFromName($_POST['wpName']);
