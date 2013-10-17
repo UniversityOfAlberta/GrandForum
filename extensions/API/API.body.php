@@ -246,6 +246,8 @@ class APIRequest{
 		$this->addAction('Projects', 'addProjectMember', new AddProjectMemberAPI());
 		$this->addAction('Projects', 'addProjectMilestone', new ProjectMilestoneAPI());
 		$this->addAction('Projects', 'updateProjectDescription', new ProjectDescriptionAPI());
+		$this->addAction('Projects', 'updateProjectChampions', new ProjectChampionsAPI());
+		$this->addAction('Projects', 'updateProjectChallenge', new ProjectChallengeAPI());
 		$this->addAction('Projects', 'updateProjectMilestone', new ProjectMilestoneAPI(true));
 		$this->addAction('Projects', 'evolveProject', new EvolveProjectAPI());
 		$this->addAction('Projects', 'deleteProjectMember', new DeleteProjectMemberAPI());

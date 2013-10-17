@@ -145,7 +145,7 @@ class Project extends BackboneModel {
     static function getAllProjects(){
         $data = DBFunctions::select(array('grand_project'),
                                     array('id'),
-                                    array(),
+                                    array('parent_id'=>'0'),
                                     array('name' => 'ASC'));
         $projects = array();
         $projectNames = array();
@@ -170,7 +170,7 @@ class Project extends BackboneModel {
         }
         $data = DBFunctions::select(array('grand_project'),
                                     array('id'),
-                                    array(),
+                                    array('parent_id'=>'0'),
                                     array('name' => 'ASC'));
         $projects = array();
         $projectNames = array();
@@ -617,6 +617,27 @@ EOF;
         return $this->multimedia;
     }
     
+    // Get Champion
+    function getChampion(){
+        $champ = array('name'=>"", 'email'=>"", 'org'=>"", 'title'=>"");
+
+        $sql = "SELECT * 
+                FROM grand_project_champions
+                WHERE project_id = '{$this->id}'
+                ORDER BY id DESC LIMIT 1";
+
+        $data = DBFunctions::execSQL($sql);
+        
+        if(count($data) > 0){
+            $champ['name'] = $data[0]['champion_name'];
+            $champ['email'] = $data[0]['champion_email'];
+            $champ['org'] = $data[0]['champion_org'];
+            $champ['title'] = $data[0]['champion_title'];
+        }
+        
+        return $champ;
+    }
+
     // Returns the leader of this Project
     function getLeader(){
         $sql = "SELECT pl.*
@@ -786,6 +807,23 @@ EOF;
             array($this->getTheme(1), $this->getTheme(2), $this->getTheme(3), $this->getTheme(4), $this->getTheme(5));
         return $ret;
     }
+
+    //get the project challenge
+    function getChallenge(){
+        $sql =<<<EOF
+            SELECT c.name
+            FROM grand_project_challenges pc, grand_challenges c 
+            WHERE c.id = pc.challenge_id
+            AND pc.project_id = '{$this->id}'
+            ORDER BY pc.id DESC LIMIT 1
+EOF;
+        $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            return $data[0]['name'];
+        }
+
+        return "Not Specified";
+    } 
     
     // Returns the description of the Project
     function getDescription($history=false){
@@ -805,6 +843,50 @@ EOF;
         $data = DBFunctions::execSQL($sql);
         if(DBFunctions::getNRows() > 0){
             return $data[0]['description'];
+        }
+        return "";
+    }
+
+    // Returns the problem summary of the Project
+    function getProblem($history=false){
+        $sql = "(SELECT problem 
+                FROM grand_project_descriptions d
+                WHERE d.project_id = '{$this->id}'\n";
+        if(!$history){
+            $sql .= "AND evolution_id = '{$this->evolutionId}' 
+                     ORDER BY id DESC LIMIT 1)
+                    UNION
+                    (SELECT problem
+                     FROM `grand_project_descriptions` d
+                     WHERE d.project_id = '{$this->id}'";
+        }
+        $sql .= "ORDER BY id DESC LIMIT 1)";
+        
+        $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            return $data[0]['problem'];
+        }
+        return "";
+    }
+
+    // Returns the solution summary of the Project
+    function getSolution($history=false){
+        $sql = "(SELECT solution 
+                FROM grand_project_descriptions d
+                WHERE d.project_id = '{$this->id}'\n";
+        if(!$history){
+            $sql .= "AND evolution_id = '{$this->evolutionId}' 
+                     ORDER BY id DESC LIMIT 1)
+                    UNION
+                    (SELECT solution
+                     FROM `grand_project_descriptions` d
+                     WHERE d.project_id = '{$this->id}'";
+        }
+        $sql .= "ORDER BY id DESC LIMIT 1)";
+        
+        $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            return $data[0]['solution'];
         }
         return "";
     }
@@ -1054,6 +1136,43 @@ EOF;
             $milestones[] = $milestone;
         }
         return $milestones;
+    }
+
+    //Determine whether this is a Sub-Project
+    function isSubProject(){
+        $sql =<<<EOF
+            SELECT parent_id
+            FROM grand_project
+            WHERE id = '{$this->id}'
+EOF;
+        $data = DBFunctions::execSQL($sql);
+        if(isset($data[0]['parent_id']) && $data[0]['parent_id'] != 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    // Get the subprojects, if any
+    function getSubprojects(){
+        $subprojects = array();
+
+        $sql =<<<EOF
+            SELECT p.*
+            FROM grand_project p
+            WHERE p.parent_id = '{$this->id}'
+            ORDER BY p.name
+EOF;
+        
+        $data = DBFunctions::execSQL($sql);
+        foreach($data as $row){
+            
+            $subproject = Project::newFromId($row['id']);
+            $subprojects[] = $subproject;
+        }
+
+        return $subprojects;
     }
     
     // Returns an array of milestones where all the milestones which were active at any time during the given year

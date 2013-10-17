@@ -21,7 +21,10 @@ class InactivateProjectTab extends ProjectTab {
         $create = CreateProjectTab::createForm('delete');
         
         $create->getElementById("delete_acronym_row")->remove();
-        $create->getElementById("delete_themes_set")->remove();
+        //$create->getElementById("delete_themes_set")->remove();
+        $create->getElementById("delete_subproject_row")->remove();
+        $create->getElementById("delete_subprojectdd_row")->remove();
+        $create->getElementById("delete_challenges_set")->remove();
         $create->getElementById("delete_description_row")->remove();
         $create->getElementById("delete_full_name_row")->remove();
         $create->getElementById("delete_status_row")->remove();

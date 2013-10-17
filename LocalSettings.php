@@ -171,6 +171,8 @@ define("DEBUG", false);
 //Define the switch to prevent any editing by Users to indicate the end of reporting period.
 define("FROZEN", false);
 
+define("PROJECT_PHASE", 2);
+
 // Names of User Roles
 define("INACTIVE", "Inactive"); // This is an implied role.
 define("HQP", "HQP");

@@ -1022,6 +1022,73 @@ class EditMember extends SpecialPage{
 		}
 		$i = 0;
 		$hidden_checkboxes = "";
+		$wgOut->addHTML("<dl>");
+		foreach($pArray as $project){
+		    if($user->isRoleAtLeast(STAFF)){
+		        $skip = false;
+		    }
+		    else{
+		        $skip = true;
+		        foreach($myProjects as $myProject){
+		            if($myProject != null && $project == $myProject->getName()){
+		                $skip = false;
+		                break;
+		            }
+		        }
+		    }
+		    if(!$skip){
+		        //if($i % 3 == 0){
+		        //    $wgOut->addHTML("</tr><tr>\n");
+	            //}
+	            if($person->isMemberOf(Project::newFromName($project))){
+	                $wgOut->addHTML("<dt><input type='checkbox' name='p_wpNS[]' value='$project' checked='checked' class='already' onChange='addComment(this, false);' /> $project<div style='display:none; padding-left:30px;'><fieldset><legend>Reasoning</legend><p>Date Effective:<input type='text' class='datepicker' id='datepicker{$project}' name='p_datepicker[$project]' /></p>Additional Comments:<br /><textarea name='p_comment[$project]' cols='15' rows='4' ></textarea></fielset></div></dt>\n");
+	            }
+	            else {
+	                $wgOut->addHTML("<dt><input type='checkbox' name='p_wpNS[]' value='$project' /> $project</dt>\n");
+	            }
+	            $i++;
+
+	            $proj = Project::newFromName($project);
+	            $subprojects = $proj->getSubProjects();
+	            $wgOut->addHTML("<dl style='padding-left:30px;'>");
+	            foreach ($subprojects as $subp) {
+	            	$subp_name = $subp->getName();
+	            	if($person->isMemberOf($subp)){
+		                $wgOut->addHTML("<input type='checkbox' name='p_wpNS[]' value='$subp_name' checked='checked' class='already' onChange='addComment(this, false);' /> $subp_name<div style='display:none; padding-left:30px;'><fieldset><legend>Reasoning</legend><p>Date Effective:<input type='text' class='datepicker' id='datepicker{$subp_name}' name='p_datepicker[$subp_name]' /></p>Additional Comments:<br /><textarea name='p_comment[$subp_name]' cols='15' rows='4' ></textarea></fielset></div>&nbsp;&nbsp;&nbsp;");
+		            }
+		            else {
+		                $wgOut->addHTML("<input type='checkbox' name='p_wpNS[]' value='$subp_name' /> $subp_name &nbsp;&nbsp;&nbsp;");
+		            }
+	            }
+	            $wgOut->addHTML("</dl>");
+	        }
+	        else{
+	            if($person->isMemberOf(Project::newFromName($project))){
+	                $hidden_checkboxes.="<input type='hidden' name='p_wpNS[]' value='$project' checked='checked' />";
+	            }
+	        }
+		}
+		$wgOut->addHTML("</dl>");
+		$wgOut->addHTML($hidden_checkboxes);
+	}
+	
+	function generateProjectFormHTML22($wgOut){
+		global $wgUser, $wgServer, $wgScriptPath;
+		$user = Person::newFromId($wgUser->getId());
+		$myProjects = $user->getProjects();
+		if(!isset($_GET['name'])){
+		    return;
+		}
+		$person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
+		$projects = Project::getAllProjects();
+		$projects = Project::orderProjects($projects);
+		
+		$pArray = array();
+		foreach($projects as $project){
+		    $pArray[] = $project->getName();
+		}
+		$i = 0;
+		$hidden_checkboxes = "";
 		$wgOut->addHTML("<table border='0' cellspacing='2'>");
 		foreach($pArray as $project){
 		    if($user->isRoleAtLeast(STAFF)){
@@ -1057,7 +1124,7 @@ class EditMember extends SpecialPage{
 		$wgOut->addHTML("</tr></table>");
 		$wgOut->addHTML($hidden_checkboxes);
 	}
-	
+
 	function generatePLFormHTML($wgOut){
 		global $wgUser, $wgServer, $wgScriptPath;
 		$user = Person::newFromId($wgUser->getId());
