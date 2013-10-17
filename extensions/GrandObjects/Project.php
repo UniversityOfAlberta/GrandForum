@@ -31,15 +31,16 @@ class Project extends BackboneModel {
         if(isset(self::$cache[$id])){
             return self::$cache[$id];
         }
-        $sql = "(SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.status, s.type
+        $sql = "(SELECT p.id, p.name, p.phase, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type
                  FROM grand_project p, grand_project_evolution e, grand_project_status s
                  WHERE e.`project_id` = '{$id}'
                  AND e.`new_id` != '{$id}'
                  AND e.new_id = p.id
                  AND s.evolution_id = e.id
+                 AND e.clear != 1
                  ORDER BY `date` DESC LIMIT 1)
                 UNION 
-                (SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.status, s.type
+                (SELECT p.id, p.name, p.phase, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type
                  FROM grand_project p, grand_project_evolution e, grand_project_status s
                  WHERE p.id = '$id'
                  AND e.new_id = p.id
@@ -66,9 +67,11 @@ class Project extends BackboneModel {
                                           'grand_project_status' => 's'),
                                     array('p.id',
                                           'p.name',
+                                          'p.phase',
                                           'e.action',
                                           'e.effective_date',
                                           'e.id' => 'evolutionId',
+                                          'e.clear',
                                           's.type',
                                           's.status'),
                                     array('p.name' => $name,
@@ -104,7 +107,7 @@ class Project extends BackboneModel {
         if(isset(self::$cache[$id.'_'.$evolutionId])){
             return self::$cache[$id.'_'.$evolutionId];
         }
-        $sql = "SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.type, s.status
+        $sql = "SELECT p.id, p.name, p.phase, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status
                 FROM grand_project p, grand_project_evolution e, grand_project_status s
                 WHERE p.id = '$id'
                 AND e.new_id = p.id
@@ -124,7 +127,7 @@ class Project extends BackboneModel {
         if(isset(self::$cache['h_'.$name])){
             return self::$cache['h_'.$name];
         }
-        $sql = "SELECT p.id, p.name, e.action, e.effective_date, e.id as evolutionId, s.type, s.status
+        $sql = "SELECT p.id, p.name, p.phase, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status
                 FROM grand_project p, grand_project_evolution e, grand_project_status s
                 WHERE p.name = '$name'
                 AND e.new_id = p.id
@@ -254,8 +257,10 @@ class Project extends BackboneModel {
             $this->evolutionId = $data[0]['evolutionId'];
             $this->status = $data[0]['status'];
             $this->type = $data[0]['type'];
+            $this->phase = $data[0]['phase'];
             $this->succ = false;
             $this->preds = false;
+            $this->clear = ($data[0]['clear'] == 1);
             
             if(isset($data[0]['action']) && $data[0]['action'] == 'DELETE'){
                 $this->deleted = true;
@@ -281,6 +286,7 @@ class Project extends BackboneModel {
                        'description' => $this->getDescription(),
                        'status' => $this->getStatus(),
                        'type' => $this->getType(),
+                       'phase' => $this->getPhase(),
                        'url' => $this->getUrl(),
                        'deleted' => $this->isDeleted());
         return $array;
@@ -390,6 +396,11 @@ EOF;
         return $this->type;
     }
     
+    // Returns the phase of this Project
+    function getPhase(){
+        return $this->phase;
+    }
+    
     // Returns the Predecessors of this Project
     function getPreds(){
         if($this->preds === false){
@@ -485,10 +496,12 @@ EOF;
     // If $filter is included, only users of that type will be selected
     function getAllPeople($filter = null){
         $people = array();
-        $preds = $this->getPreds();
-        foreach($preds as $pred){
-            foreach($pred->getAllPeople($filter) as $person){
-                $people[$person->getId()] = $person;
+        if(!$this->clear){
+            $preds = $this->getPreds();
+            foreach($preds as $pred){
+                foreach($pred->getAllPeople($filter) as $person){
+                    $people[$person->getId()] = $person;
+                }
             }
         }
         if($this->peopleCache == null){
@@ -520,10 +533,12 @@ EOF;
             $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
         }
         $people = array();
-        $preds = $this->getPreds();
-        foreach($preds as $pred){
-            foreach($pred->getAllPeopleDuring($filter, $startRange, $endRange, $includeManager) as $person){
-                $people[$person->getId()] = $person;
+        if(!$this->clear){
+            $preds = $this->getPreds();
+            foreach($preds as $pred){
+                foreach($pred->getAllPeopleDuring($filter, $startRange, $endRange, $includeManager) as $person){
+                    $people[$person->getId()] = $person;
+                }
             }
         }
         $sql = "SELECT p.user_id, u.user_name, SUBSTR(u.user_name, LOCATE('.', u.user_name) + 1) as last_name
@@ -554,10 +569,12 @@ EOF;
     function getContributions(){
         if($this->contributions == null){
             $this->contributions = array();
-            $preds = $this->getPreds();
-            foreach($preds as $pred){
-                foreach($pred->getContributions() as $contribution){
-                    $this->contributions[$contribution->getId()] = $contribution;
+            if(!$this->clear){
+                $preds = $this->getPreds();
+                foreach($preds as $pred){
+                    foreach($pred->getContributions() as $contribution){
+                        $this->contributions[$contribution->getId()] = $contribution;
+                    }
                 }
             }
             $sql = "SELECT id
@@ -580,10 +597,12 @@ EOF;
     function getMultimedia(){
         if($this->multimedia == null){
             $this->multimedia = array();
-            $preds = $this->getPreds();
-            foreach($preds as $pred){
-                foreach($pred->getMultimedia() as $multimedia){
-                    $this->multimedia[$multimedia->getId()] = $multimedia;
+            if(!$this->clear){
+                $preds = $this->getPreds();
+                foreach($preds as $pred){
+                    foreach($pred->getMultimedia() as $multimedia){
+                        $this->multimedia[$multimedia->getId()] = $multimedia;
+                    }
                 }
             }
             $sql = "SELECT m.id
@@ -649,14 +668,16 @@ EOF;
             return $this->leaderCache['coleaders'.$onlyIdStr];
         }
         $ret = array();
-        $preds = $this->getPreds();
-        foreach($preds as $pred){
-            foreach($pred->getCoLeaders($onlyid) as $leader){
-                if($onlyid){
-                    $ret[$leader] = $leader;
-                }
-                else{
-                    $ret[$leader->getId()] = $leader;
+        if(!$this->clear){
+            $preds = $this->getPreds();
+            foreach($preds as $pred){
+                foreach($pred->getCoLeaders($onlyid) as $leader){
+                    if($onlyid){
+                        $ret[$leader] = $leader;
+                    }
+                    else{
+                        $ret[$leader->getId()] = $leader;
+                    }
                 }
             }
         }
@@ -690,14 +711,16 @@ EOF;
             return $this->leaderCache['leaders'.$onlyIdStr];
         }
         $ret = array();
-        $preds = $this->getPreds();
-        foreach($preds as $pred){
-            foreach($pred->getLeaders($onlyid) as $leader){
-                if($onlyid){
-                    $ret[$leader] = $leader;
-                }
-                else{
-                    $ret[$leader->getId()] = $leader;
+        if(!$this->clear){
+            $preds = $this->getPreds();
+            foreach($preds as $pred){
+                foreach($pred->getLeaders($onlyid) as $leader){
+                    if($onlyid){
+                        $ret[$leader] = $leader;
+                    }
+                    else{
+                        $ret[$leader->getId()] = $leader;
+                    }
                 }
             }
         }
@@ -857,10 +880,12 @@ EOF;
     function getComments(){
         if($this->comments == null){
             $this->comments = array();
-            $preds = $this->getPreds();
-            foreach($preds as $pred){
-                foreach($pred->getComments() as $uId => $comment){
-                    $this->comments[$uId] = $comment;
+            if(!$this->clear){
+                $preds = $this->getPreds();
+                foreach($preds as $pred){
+                    foreach($pred->getComments() as $uId => $comment){
+                        $this->comments[$uId] = $comment;
+                    }
                 }
             }
             $sql = "SELECT user_id, comment 
@@ -878,10 +903,12 @@ EOF;
     function getStartDates(){
         if($this->startDates == null){
             $this->startDates = array();
-            $preds = $this->getPreds();
-            foreach($preds as $pred){
-                foreach($pred->getStartDates() as $uId => $date){
-                    $this->startDates[$uId] = $date;
+            if(!$this->clear){
+                $preds = $this->getPreds();
+                foreach($preds as $pred){
+                    foreach($pred->getStartDates() as $uId => $date){
+                        $this->startDates[$uId] = $date;
+                    }
                 }
             }
             $sql = "SELECT user_id, start_date 
@@ -915,10 +942,12 @@ EOF;
     function getEndDates(){
         if($this->endDates == null){
             $this->endDates = array();
-            $preds = $this->getPreds();
-            foreach($preds as $pred){
-                foreach($pred->getEndDates() as $uId => $date){
-                    $this->endDates[$uId] = $date;
+            if(!$this->clear){
+                $preds = $this->getPreds();
+                foreach($preds as $pred){
+                    foreach($pred->getEndDates() as $uId => $date){
+                        $this->endDates[$uId] = $date;
+                    }
                 }
             }
             $sql = "SELECT user_id, end_date 
@@ -956,14 +985,16 @@ EOF;
         }
         $milestones = array();
         $milestonesIds = array();
-        $preds = $this->getPreds();
-        foreach($preds as $pred){
-            foreach($pred->getMilestones($history) as $milestone){
-                if(isset($milestoneIds[$milestone->getMilestoneId()])){
-                    continue;
+        if(!$this->clear){
+            $preds = $this->getPreds();
+            foreach($preds as $pred){
+                foreach($pred->getMilestones($history) as $milestone){
+                    if(isset($milestoneIds[$milestone->getMilestoneId()])){
+                        continue;
+                    }
+                    $milestoneIds[$milestone->getMilestoneId()] = true;
+                    $milestones[] = $milestone;
                 }
-                $milestoneIds[$milestone->getMilestoneId()] = true;
-                $milestones[] = $milestone;
             }
         }
         $sql = "SELECT DISTINCT milestone_id
@@ -995,14 +1026,16 @@ EOF;
     function getPastMilestones(){
         $milestoneIds = array();
         $milestones = array();
-        $preds = $this->getPreds();
-        foreach($preds as $pred){
-            foreach($pred->getPastMilestones() as $milestone){
-                if(isset($milestoneIds[$milestone->getMilestoneId()])){
-                    continue;
+        if(!$this->clear){
+            $preds = $this->getPreds();
+            foreach($preds as $pred){
+                foreach($pred->getPastMilestones() as $milestone){
+                    if(isset($milestoneIds[$milestone->getMilestoneId()])){
+                        continue;
+                    }
+                    $milestoneIds[$milestone->getMilestoneId()] = true;
+                    $milestones[] = $milestone;
                 }
-                $milestoneIds[$milestone->getMilestoneId()] = true;
-                $milestones[] = $milestone;
             }
         }
         $sql = "SELECT DISTINCT milestone_id
@@ -1033,14 +1066,16 @@ EOF;
         
         $milestones = array();
         $milestoneIds = array();
-        $preds = $this->getPreds();
-        foreach($preds as $pred){
-            foreach($pred->getMilestonesDuring($year) as $milestone){
-                if(isset($milestoneIds[$milestone->getMilestoneId()])){
-                    continue;
+        if(!$this->clear){
+            $preds = $this->getPreds();
+            foreach($preds as $pred){
+                foreach($pred->getMilestonesDuring($year) as $milestone){
+                    if(isset($milestoneIds[$milestone->getMilestoneId()])){
+                        continue;
+                    }
+                    $milestoneIds[$milestone->getMilestoneId()] = $milestone->getMilestoneId();
+                    $milestones[] = $milestone;
                 }
-                $milestoneIds[$milestone->getMilestoneId()] = $milestone->getMilestoneId();
-                $milestones[] = $milestone;
             }
         }
         $sql = "SELECT MAX(id) as max_id, milestone_id
@@ -1085,8 +1120,10 @@ EOF;
         $projectBudget = array();
         $nameBudget = array();
         $projectNames = array($this->name);
-        foreach($this->getAllPreds() as $pred){
-            $projectNames[] = $pred->getName();
+        if(!$this->clear){
+            foreach($this->getAllPreds() as $pred){
+                $projectNames[] = $pred->getName();
+            }
         }
         foreach($this->getAllPeopleDuring(null, ($year+1)."-00-00 00:00:00", ($year + 2)."-00-00 00:00:00") as $member){
             if($member->isRole(PNI, ($year+1)."-00-00 00:00:00", ($year + 2)."-00-00 00:00:00") || 
@@ -1164,8 +1201,10 @@ EOF;
         $projectBudget = array();
         $nameBudget = array();
         $projectNames = array($this->name);
-        foreach($this->getAllPreds() as $pred){
-            $projectNames[] = $pred->getName();
+        if(!$this->clear){
+            foreach($this->getAllPreds() as $pred){
+                $projectNames[] = $pred->getName();
+            }
         }
 
         $alreadySeen = array();

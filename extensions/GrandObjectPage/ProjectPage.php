@@ -15,7 +15,7 @@ class ProjectPage {
         if(!$wgOut->isDisabled()){
             $name = str_replace("_Talk", "", $article->getTitle()->getNsText());
             $title = $article->getTitle()->getText();
-            $project = Project::newFromName($name);
+            $project = Project::newFromHistoricName($name);
             
             $wgOut->addScript("<script type='text/javascript'>
                 function stripAlphaChars(id){
@@ -123,7 +123,7 @@ class ProjectPage {
                 $name = $split[0];
             }
             $me = Person::newFromId($wgUser->getId());
-            if($me->isMemberOf(Project::newFromName(str_replace("_Talk", "", $name)))){
+            if($me->isMemberOf(Project::newFromHistoricName(str_replace("_Talk", "", $name)))){
                 foreach($me->getProjects() as $proj){
                     if(str_replace("_Talk", "", $name) != $proj->getName()){
                         $class = false;

@@ -7,7 +7,7 @@ class ProjectValidation extends UIValidation {
     }
     
     function validateFn($value){
-        $project = Project::newFromName($value);
+        $project = Project::newFromHistoricName($value);
         return ($project != null && $project->getName() != "");
     }
     

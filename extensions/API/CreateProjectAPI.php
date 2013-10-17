@@ -7,6 +7,7 @@ class CreateProjectAPI extends API{
 	    $this->addPOST("fullName",true,"The full name of the project","Media Enabled Organizational Workflow");
 	    $this->addPOST("status",true,"The status of this project","Proposed");
 	    $this->addPOST("type",true,"The type of this project","Research");
+	    $this->addPOST("phase", true, "The phase of this project", "1");
 	    $this->addPOST("effective_date", true, "The date that this action should take place", "2012-10-15");
 	    $this->addPOST("description",false,"The description for this project","MEOW is great");
 	    $this->addPOST("theme1",false,"The percent value for theme 1","20");
@@ -17,17 +18,18 @@ class CreateProjectAPI extends API{
     }
 
     function processParams($params){
-        $_POST['acronym'] = @mysql_real_escape_string($_POST['acronym']);
-        $_POST['fullName'] = @mysql_real_escape_string($_POST['fullName']);
-        $_POST['status'] = @mysql_real_escape_string($_POST['status']);
-        $_POST['type'] = @mysql_real_escape_string($_POST['type']);
-        $_POST['effective_date'] = @mysql_real_escape_string($_POST['effective_date']);
-        $_POST['description'] = @mysql_real_escape_string($_POST['description']);
-        $_POST['theme1'] = @mysql_real_escape_string($_POST['theme1']);
-        $_POST['theme2'] = @mysql_real_escape_string($_POST['theme2']);
-        $_POST['theme3'] = @mysql_real_escape_string($_POST['theme3']);
-        $_POST['theme4'] = @mysql_real_escape_string($_POST['theme4']);
-        $_POST['theme5'] = @mysql_real_escape_string($_POST['theme5']);
+        $_POST['acronym'] = @$_POST['acronym'];
+        $_POST['fullName'] = @$_POST['fullName'];
+        $_POST['status'] = @$_POST['status'];
+        $_POST['type'] = @$_POST['type'];
+        $_POST['phase'] = @$_POST['phase'];
+        $_POST['effective_date'] = @$_POST['effective_date'];
+        $_POST['description'] = @$_POST['description'];
+        $_POST['theme1'] = @$_POST['theme1'];
+        $_POST['theme2'] = @$_POST['theme2'];
+        $_POST['theme3'] = @$_POST['theme3'];
+        $_POST['theme4'] = @$_POST['theme4'];
+        $_POST['theme5'] = @$_POST['theme5'];
     }
 
 	function doAction($noEcho=false){
@@ -44,8 +46,8 @@ class CreateProjectAPI extends API{
 		    }
 		    return;
 		}
-		$sql = "SELECT MAX(nsId) as nsId FROM `mw_an_extranamespaces`";
-	    $data = DBFunctions::execSQL($sql);
+		$data = DBFunctions::select(array('mw_an_extranamespaces'),
+		                            array('MAX(nsId)' => 'nsId'));
 	    $nsId = 0;
 	    if(DBFunctions::getNRows() > 0){
 	        $row = $data[0];
@@ -58,36 +60,49 @@ class CreateProjectAPI extends API{
 	    $theme5 = (isset($_POST['theme5'])) ? $_POST['theme5'] : 0;
 	    $status = (isset($_POST['status'])) ? $_POST['status'] : 'Proposed';
 	    $type = (isset($_POST['type'])) ? $_POST['type'] : 'Research';
-	    $effective_date = (isset($_POST['effective_date'])) ? $_POST['effective_date'] : 'CURRENT_TIMESTAMP';
+	    $phase = (isset($_POST['phase'])) ? $_POST['phase'] : '1';
+	    $effective_date = (isset($_POST['effective_date'])) ? $_POST['effective_date'] : COL('CURRENT_TIMESTAMP');
 	    // It is important not to get the database into an unstable state, so start a transaction
 	    DBFunctions::begin();
-	    $sql = "SELECT nsId
-	            FROM `mw_an_extranamespaces`
-	            WHERE nsName = '{$_POST['acronym']}'";
-	    $data = DBFunctions::execSQL($sql);
+	    $data = DBFunctions::select(array('mw_an_extranamespaces'),
+	                               array('nsId'),
+	                               array('nsName' => EQ($_POST['acronym'])));
 	    $stat = true;
 	    if(count($data) > 0){
 	        $nsId = $data[0]['nsId'];
 	    }
 	    else{
-	        $sql = "INSERT INTO `mw_an_extranamespaces` (`nsId`,`nsName`,`public`)
-	                VALUES ('{$nsId}','{$_POST['acronym']}','1')";
-	        $stat = DBFunctions::execSQL($sql, true, true);
+	        $stat = DBFunctions::insert('mw_an_extranamespaces',
+	                                    array('nsId' => $nsId,
+	                                          'nsName' => $_POST['acronym'],
+	                                          'public' => '1'),
+	                                    true);
 	    }
 	    if($stat){
-	        $sql = "INSERT INTO `grand_project` (`id`,`name`)
-	                VALUES ('{$nsId}','{$_POST['acronym']}')";
-	        $stat = DBFunctions::execSQL($sql, true, true);
+	        $stat = DBFunctions::insert('grand_project',
+	                                    array('id' => $nsId,
+	                                          'name' => $_POST['acronym'],
+	                                          'phase' => $phase),
+	                                    true);
 	    }
 	    if($stat){
-	        $sql = "INSERT INTO `grand_project_evolution` (`last_id`,`project_id`,`new_id`,`action`,`effective_date`)
-	                VALUES ('-1','-1','{$nsId}','CREATE','{$effective_date}')";
-	        $stat = DBFunctions::execSQL($sql, true, true);
+	        $stat = DBFunctions::insert('grand_project_evolution',
+	                                    array('last_id' => '-1',
+	                                          'project_id' => '-1',
+	                                          'new_id' => $nsId,
+	                                          'action' => 'CREATE',
+	                                          'effective_date' => $effective_date),
+	                                    true);
 	    }
 	    if($stat){
-	        $sql = "INSERT INTO `grand_project_status` (`evolution_id`,`project_id`,`status`,`type`)
-	                VALUES ((SELECT MAX(id) FROM grand_project_evolution),'{$nsId}','{$status}','{$type}')";
-	        $sql = DBFunctions::execSQL($sql, true, true);
+	        $data = DBFunctions::select(array('grand_project_evolution'),
+	                                    array('MAX(id)' => 'id'));
+	        $stat = DBFunctions::insert('grand_project_status',
+	                                    array('evolution_id' => $data[0]['id'],
+	                                          'project_id' => $nsId,
+	                                          'status' => $status,
+	                                          'type' => $type),
+	                                    true);
 	    }
 	    if($stat){
 	        Project::$cache = array();

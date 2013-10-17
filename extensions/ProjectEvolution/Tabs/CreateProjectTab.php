@@ -30,6 +30,10 @@ class CreateProjectTab extends ProjectTab {
         $typeRow->append(new Label("{$pre}_type_label", "Type", "The type of this project", VALIDATE_NOT_NULL));
         $typeRow->append(new VerticalRadioBox("{$pre}_type", "Type", "Research", array("Research", "Administrative", "Strategic"), VALIDATE_NOT_NULL));
         
+        $phaseRow = new FormTableRow("{$pre}_phase_row");
+        $phaseRow->append(new Label("{$pre}_phase_label", "Phase", "What project phase the new project belongs to", VALIDATE_NOT_NULL));
+        $phaseRow->append(new SelectBox("{$pre}_phase", "Phase", "Research", array("2", "1"), VALIDATE_NOT_NULL));
+        
         $effectiveRow = new FormTableRow("{$pre}_effective_row");
         $effectiveRow->append(new Label("{$pre}_effective_label", "Effective Date", "When this action is to take place", VALIDATE_NOT_NULL));
         $effectiveRow->append(new CalendarField("{$pre}_effective", "Effective Date", "", VALIDATE_NOT_NULL));
@@ -72,6 +76,7 @@ class CreateProjectTab extends ProjectTab {
         $table->append($fullNameRow);
         $table->append($statusRow);
         $table->append($typeRow);
+        $table->append($phaseRow);
         $table->append($effectiveRow);
         $table->append($descRow);
         
@@ -99,6 +104,7 @@ class CreateProjectTab extends ProjectTab {
             $form->getElementById("new_full_name")->setPOST("fullName");
             $form->getElementById("new_status")->setPOST("status");
             $form->getElementById("new_type")->setPOST("type");
+            $form->getElementById("new_phase")->setPOST("phase");
             $form->getElementById("new_effective")->setPOST("effective_date");
             $form->getElementById("new_description")->setPOST("description");
             $form->getElementById("new_theme1")->setPOST("theme1");

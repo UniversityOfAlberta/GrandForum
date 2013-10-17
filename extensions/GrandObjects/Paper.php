@@ -139,10 +139,12 @@ class Paper extends BackboneModel{
 	            else{
                     $p = Project::newFromHistoricName($project);
                 }
-	            $preds = $p->getPreds();
-	            foreach($preds as $pred){
-	                foreach(Paper::getAllPapers($pred->getName(), $category, $grand) as $paper){
-	                    $papers[$paper->getId()] = $paper;
+                if(!$p->clear){
+	                $preds = $p->getPreds();
+	                foreach($preds as $pred){
+	                    foreach(Paper::getAllPapers($pred->getName(), $category, $grand) as $paper){
+	                        $papers[$paper->getId()] = $paper;
+	                    }
 	                }
 	            }
 	        }
@@ -216,10 +218,12 @@ class Paper extends BackboneModel{
 	            else{
                     $p = Project::newFromHistoricName($project);
                 }
-                $preds = $p->getPreds();
-                foreach($preds as $pred){
-                    foreach(Paper::getAllPapersDuring($pred, $category, $grand, $startRange, $endRange) as $paper){
-                        $papers[$paper->getId()] = $paper;
+                if(!$p->clear){
+                    $preds = $p->getPreds();
+                    foreach($preds as $pred){
+                        foreach(Paper::getAllPapersDuring($pred, $category, $grand, $startRange, $endRange) as $paper){
+                            $papers[$paper->getId()] = $paper;
+                        }
                     }
                 }
             }

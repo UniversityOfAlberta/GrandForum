@@ -23,7 +23,7 @@ class ProjectEvolution extends SpecialPage {
         $tabbedPage = new TabbedPage("project");
         $tabbedPage->addTab(new CreateProjectTab());
         $tabbedPage->addTab(new EvolveProjectTab());
-        $tabbedPage->addTab(new MergeProjectTab());
+        //$tabbedPage->addTab(new MergeProjectTab());
         $tabbedPage->addTab(new InactivateProjectTab());
         $tabbedPage->showPage();
         

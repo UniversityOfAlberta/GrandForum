@@ -128,15 +128,21 @@ $listname-request:      |/usr/lib/mailman/mail/mailman request $listname
 $listname-subscribe:    |/usr/lib/mailman/mail/mailman subscribe $listname
 $listname-unsubscribe:  |/usr/lib/mailman/mail/mailman unsubscribe $listname";
         
+        while(file_exists("/tmp/aliases")){
+            // Try again in 1 second
+            sleep(1);
+        }
         $contents = file_get_contents("/etc/aliases");
         $contents .= $alias;
-        file_put_contents("/etc/aliases", $contents);
+        exec("/usr/sbin/updatealiases");
+        //file_put_contents("/tmp/aliases", $contents);
         exec("/usr/bin/newaliases", $output);
-        
         exec("/usr/lib/mailman/bin/config_list");
+        unlink("/tmp/aliases");
         
         $sql = "INSERT INTO `wikidev_projects` (`projectname`,`mailListName`)
                 VALUES ('{$project->getName()}','$listname')";
+        
         DBFunctions::execSQL($sql, true);
     }
     

@@ -2343,9 +2343,11 @@ class Person extends BackboneModel {
         if(DBFunctions::getNRows() > 0){
             return true;
         }
-        foreach($p->getPreds() as $pred){
-            if($this->leadershipOf($pred)){
-                return true;
+        if(!$p->clear){
+            foreach($p->getPreds() as $pred){
+                if($this->leadershipOf($pred)){
+                    return true;
+                }
             }
         }
         return false;
@@ -2470,9 +2472,11 @@ class Person extends BackboneModel {
         if(DBFunctions::getNRows() > 0){
             return true;
         }
-        foreach($p->getPreds() as $pred){
-            if($this->managementOf($pred)){
-                return true;
+        if(!$p->clear){
+            foreach($p->getPreds() as $pred){
+                if($this->managementOf($pred)){
+                    return true;
+                }
             }
         }
         return false;

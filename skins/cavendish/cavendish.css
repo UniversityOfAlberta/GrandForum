@@ -378,9 +378,6 @@ address {
 
 input {
     border: 1px solid #888;
-	box-shadow: inset 0 0 3px #888;
-    -moz-box-shadow: inset 0 0 3px #888;
-    -webkit-box-shadow: inset 0 0 3px #888;
 	background: #ffffff;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
@@ -394,9 +391,6 @@ input {
 
 input.dark {
     border: 1px solid #888;
-	box-shadow: inset 0 0 3px #888;
-    -moz-box-shadow: inset 0 0 3px #888;
-    -webkit-box-shadow: inset 0 0 3px #888;
 	background: #ffffff;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
@@ -416,9 +410,6 @@ input:focus {
 
 select {
 	border: 1px solid #888 !important;
-	box-shadow: inset 0 0 3px #888;
-    -moz-box-shadow: inset 0 0 3px #888;
-    -webkit-box-shadow: inset 0 0 3px #888;
 	background: #ffffff;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
@@ -516,9 +507,6 @@ textarea {
     width: 99%;
     height: 400px;
     border: 1px solid #888 !important;
-	box-shadow: inset 0 0 5px #888;
-    -moz-box-shadow: inset 0 0 5px #888;
-    -webkit-box-shadow: inset 0 0 5px #888;
 	background: #ffffff;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
