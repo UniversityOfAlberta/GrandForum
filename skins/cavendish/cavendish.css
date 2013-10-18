@@ -1310,13 +1310,35 @@ input.other_option:focus {
     font-weight: bold;
     vertical-align: top;
     text-align: right;
+    position: relative;
 }
 
 .globalSearchResultsRows {
+    width: 100%;
     text-align: left;
     vertical-align: top;
     padding:0;
-    width: 311px;
+    overflow:hidden;
+}
+
+.globalSearchResultsMoreRows {
+    width: 100%;
+    text-align: left;
+    vertical-align: top;
+    padding:0;
+    overflow:hidden;
+    display: none;
+}
+
+.showMore {
+    text-align: center;
+    width: 100%;
+    padding: 1px;
+    display: none;
+}
+
+.showMore > #showMoreResults {
+    cursor: pointer;
 }
 
 .projectIcon, .productIcon, .wikiIcon, .pdfIcon {

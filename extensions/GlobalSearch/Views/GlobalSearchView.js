@@ -94,19 +94,19 @@ GlobalSearchResultsView = Backbone.View.extend({
     
     subviewCreators : {
         "personResults" : function(){
-            return new PersonResultsView({model: new GlobalSearch({group: 'people', search: ''})});
+            return new PersonResultsView({parent: this, model: new GlobalSearch({group: 'people', search: ''})});
         },
         "projectResults" : function(){
-            return new ProjectResultsView({model: new GlobalSearch({group: 'projects', search: ''})});
+            return new ProjectResultsView({parent: this, model: new GlobalSearch({group: 'projects', search: ''})});
         },
         "productResults" : function(){
-            return new ProductResultsView({model: new GlobalSearch({group: 'products', search: ''})});
+            return new ProductResultsView({parent: this, model: new GlobalSearch({group: 'products', search: ''})});
         },
         "wikiResults" : function(){
-            return new WikiResultsView({model: new GlobalSearch({group: 'wikipage', search: ''})});
+            return new WikiResultsView({parent: this, model: new GlobalSearch({group: 'wikipage', search: ''})});
         },
         "pdfResults" : function(){
-            return new PDFResultsView({model: new GlobalSearch({group: 'pdf', search: ''})});
+            return new PDFResultsView({parent: this, model: new GlobalSearch({group: 'pdf', search: ''})});
         }
     },
     
@@ -140,7 +140,12 @@ GlobalSearchResultsView = Backbone.View.extend({
         for(sId in this.subviews){
             var subview = this.subviews[sId];
             subview.model.set('selected', this.searchIndex - i);
-            i += subview.getResults().length;
+            if(subview.$(".globalSearchResultsMoreRows").hasClass("showing")){
+                i += subview.getResults().length;
+            }
+            else{
+                i += Math.min(subview.getResults().length, subview.maxResults);
+            }
         }
     },
     
@@ -148,7 +153,12 @@ GlobalSearchResultsView = Backbone.View.extend({
         var i = 0;
         for(sId in this.subviews){
             var subview = this.subviews[sId];
-            i += subview.getResults().length;
+            if(subview.$(".globalSearchResultsMoreRows").hasClass("showing")){
+                i += subview.getResults().length;
+            }
+            else{
+                i += Math.min(subview.getResults().length, subview.maxResults);
+            }
         }
         this.searchIndex = Math.min(i-1, this.searchIndex + 1);
         this.shift();
@@ -204,7 +214,11 @@ GlobalSearchResultsView = Backbone.View.extend({
 });
 
 ResultsView = Backbone.View.extend({
-    initialize: function(){
+    
+    parent: null,
+
+    initialize: function(options){
+        this.parent = options.parent;
         this.model.bind('sync', this.renderResultsPre, this);
         this.model.bind('change:selected', this.renderResults, this);
         this.template = _.template($("#global_search_group_template").html());
@@ -232,9 +246,11 @@ ResultsView = Backbone.View.extend({
     },
     
     getResults: function(){
-        return this.model.get('results').slice(0, this.maxResults);
+        var results = this.model.get('results');
+        return results.slice(0, Math.min(results.length, this.absoluteMaxResults));
     },
     
+    absoluteMaxResults: 10,
     maxResults: 5, // Should be overridden if necessary
     
     renderResultsPre: function(){
@@ -249,11 +265,50 @@ ResultsView = Backbone.View.extend({
         }
     },
     
+    toggleMoreResults: function(){
+        this.$(".globalSearchResultsMoreRows").toggleClass('showing');
+        var results = this.getResults();
+        var extra = results.length - this.maxResults;
+        if(this.$(".globalSearchResultsMoreRows").hasClass("showing")){
+            this.$("#showMoreResults").text("Show fewer results");
+            this.$(".globalSearchResultsMoreRows").show();
+        }
+        else{
+            this.$("#showMoreResults").text("Show " + this.$("#showMoreResults").attr('value') + " more results");
+            this.$(".globalSearchResultsMoreRows").slideUp();
+        }
+        for(i in results){
+            var card = null;
+            if(!_.isFunction(this.model.get('results')[i])){ // This check is needed for IE8 for some reason
+                if(this.cardsCache[this.model.get('results')[i]] != undefined && i >= this.maxResults){
+                    card = this.cardsCache[this.model.get('results')[i]];
+                    if(this.$(".globalSearchResultsMoreRows").hasClass("showing")){
+                        card.$el.hide();
+                        card.$el.slideDown();
+                    }
+                    else{
+                        card.$el.slideUp();
+                    }
+                }
+            }
+        }
+        $("#globalSearchInput").focus();
+        this.parent.searchIndex = -1;
+        this.parent.shift();
+    },
+    
+    events: {
+        "click #showMoreResults": "toggleMoreResults"
+    },
+    
     renderResults: function(){
-        this.$el.find(".globalSearchResultsRows").empty();
+        this.$(".globalSearchResultsRows").empty();
+        this.$(".showMore").hide();
+        this.$(".globalSearchResultsMoreRows").empty();
         var html = '';
         var results = this.getResults();
-        for(i in this.getResults()){
+        var extra = results.length - this.maxResults;
+        for(i in results){
             var card = null;
             if(!_.isFunction(this.model.get('results')[i])){ // This check is needed for IE8 for some reason
                 if(this.cardsCache[this.model.get('results')[i]] != undefined){
@@ -263,6 +318,7 @@ ResultsView = Backbone.View.extend({
                     card = this.createCardView(this.createModel(this.model.get('results')[i]));
                     this.cardsCache[card.model.get('id')] = card;
                     card.render();
+                    card.$el.hide();
                 }
                 if(i == this.model.get('selected')){
                     card.$el.find(".small_card").addClass('small_card_hover');
@@ -270,8 +326,27 @@ ResultsView = Backbone.View.extend({
                 else{
                     card.$el.find(".small_card").removeClass('small_card_hover');
                 }
-                this.$el.find(".globalSearchResultsRows").append(card.$el);
+                if(i < this.maxResults){
+                    this.$el.find(".globalSearchResultsRows").append(card.$el);
+                    card.$el.slideDown();
+                }
+                else{
+                    this.$el.find(".globalSearchResultsMoreRows").append(card.$el);
+                }
             }
+        }
+        this.$("#showMoreResults").attr('value', extra);
+        if(extra > 0){
+            if(this.$(".globalSearchResultsMoreRows").hasClass("showing")){
+                this.$("#showMoreResults").text("Show fewer results");
+            }
+            else{
+                this.$("#showMoreResults").text("Show " + this.$("#showMoreResults").attr('value') + " more results");
+            }
+            this.$(".showMore").show();
+        }
+        else {
+            this.$(".showMore").hide();
         }
     }
 });

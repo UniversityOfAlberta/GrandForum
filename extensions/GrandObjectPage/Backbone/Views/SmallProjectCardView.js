@@ -6,7 +6,9 @@ SmallProjectCardView = Backbone.View.extend({
         this.$el.css('display', 'none');
         var that = this;
         this.model.fetch({success: function(){
-            that.$el.css('display', 'block');
+            if(!that.$el.is(":animated")){
+                that.$el.css('display', 'block');
+            }
         }});
     },
 

@@ -129,6 +129,8 @@ class cavendishTemplate extends QuickTemplate {
         <script type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.simplePagination.js"></script>
         <script type='text/javascript'>
         
+            $.ajaxSetup({ cache: false });
+        
             Backbone.emulateHTTP = true;
             Backbone.emulateJSON = true;
             
@@ -270,6 +272,7 @@ class cavendishTemplate extends QuickTemplate {
 	        }
 	        
 		    $(document).ready(function(){
+		        /*
 		        var ajax = null;
 		        $(document).ajaxComplete(function(e, xhr, settings) {
 		            if(settings.url.indexOf("action=getUserMode") == -1){
@@ -307,7 +310,7 @@ class cavendishTemplate extends QuickTemplate {
 		                    }
 		                });
 		            }
-                });
+                });*/
                 
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();
@@ -458,7 +461,6 @@ class cavendishTemplate extends QuickTemplate {
 			                $item['text'] = "Logout";
 			                $item['href'].= urlencode($getStr);
 			                $tabLeft = "tab-right";
-			                
 			            }
 			            else {
 			                continue;

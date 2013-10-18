@@ -19,7 +19,9 @@ SmallPersonCardView = Backbone.View.extend({
                 }, that);
                 that.$el.find("#roles").html("(" + roles.join(', ') + ")");
             }
-            that.$el.css('display', 'block');
+            if(!that.$el.is(":animated")){
+                that.$el.css('display', 'block');
+            }
         });
     },
 
