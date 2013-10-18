@@ -1179,7 +1179,6 @@ EOF;
         
         $data = DBFunctions::execSQL($sql);
         foreach($data as $row){
-            
             $subproject = Project::newFromId($row['id']);
             $subprojects[] = $subproject;
         }

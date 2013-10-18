@@ -1053,11 +1053,13 @@ class EditMember extends SpecialPage{
 	            $wgOut->addHTML("<dl style='padding-left:30px;'>");
 	            foreach ($subprojects as $subp) {
 	            	$subp_name = $subp->getName();
-	            	if($person->isMemberOf($subp)){
-		                $wgOut->addHTML("<input type='checkbox' name='p_wpNS[]' value='$subp_name' checked='checked' class='already' onChange='addComment(this, false);' /> $subp_name<div style='display:none; padding-left:30px;'><fieldset><legend>Reasoning</legend><p>Date Effective:<input type='text' class='datepicker' id='datepicker{$subp_name}' name='p_datepicker[$subp_name]' /></p>Additional Comments:<br /><textarea name='p_comment[$subp_name]' cols='15' rows='4' ></textarea></fielset></div>&nbsp;&nbsp;&nbsp;");
-		            }
-		            else {
-		                $wgOut->addHTML("<input type='checkbox' name='p_wpNS[]' value='$subp_name' /> $subp_name &nbsp;&nbsp;&nbsp;");
+	            	if(!$subp->isDeleted()){
+	                	if($person->isMemberOf($subp)){
+		                    $wgOut->addHTML("<input type='checkbox' name='p_wpNS[]' value='$subp_name' checked='checked' class='already' onChange='addComment(this, false);' /> $subp_name<div style='display:none; padding-left:30px;'><fieldset><legend>Reasoning</legend><p>Date Effective:<input type='text' class='datepicker' id='datepicker{$subp_name}' name='p_datepicker[$subp_name]' /></p>Additional Comments:<br /><textarea name='p_comment[$subp_name]' cols='15' rows='4' ></textarea></fielset></div>&nbsp;&nbsp;&nbsp;");
+		                }
+		                else {
+		                    $wgOut->addHTML("<input type='checkbox' name='p_wpNS[]' value='$subp_name' /> $subp_name &nbsp;&nbsp;&nbsp;");
+		                }
 		            }
 	            }
 	            $wgOut->addHTML("</dl>");
