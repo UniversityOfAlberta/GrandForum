@@ -60,6 +60,7 @@ class ReportStorage {
             mysql_real_escape_string($pdf) . "');";
 
         DBFunctions::execSQL($sql, true);
+        DBFunctions::commit();
         // Update metadata.
         return $this->load_metadata($tok);
     }
@@ -90,7 +91,7 @@ class ReportStorage {
         $this->_cache['len_pdf'] = $res[0]['len_pdf'];
         $this->_cache['generation_user_id'] = $res[0]['generation_user_id'];
         $this->_cache['submission_user_id'] = $res[0]['submission_user_id'];
-
+        
         return $res[0]['pdf'];
     }
     
