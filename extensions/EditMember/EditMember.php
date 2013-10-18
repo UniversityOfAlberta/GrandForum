@@ -54,12 +54,12 @@ class EditMember extends SpecialPage{
                                         alert('You cannot change the role of an HQP that is supervised by someone else.');
                                     }
 		                        }
-		                        else{ 
+		                        else{
                                     if(!$(box).is(':checked') && $(box).hasClass('already')){
-                                        $(box).next().show();
+                                        $(box).next().slideDown('fast');
                                     }
                                     else{
-                                        $(box).next().hide();
+                                        $(box).next().slideUp('fast');
                                     }
                                 }
                             }  
@@ -1020,10 +1020,11 @@ class EditMember extends SpecialPage{
 		foreach($projects as $project){
 		    $pArray[] = $project->getName();
 		}
-		$i = 0;
 		$hidden_checkboxes = "";
-		$wgOut->addHTML("<dl>");
+		$projs = array();
+		$myProjs = array();
 		foreach($pArray as $project){
+		    $proj = Project::newFromName($project);
 		    if($user->isRoleAtLeast(STAFF)){
 		        $skip = false;
 		    }
@@ -1037,40 +1038,34 @@ class EditMember extends SpecialPage{
 		        }
 		    }
 		    if(!$skip){
-		        //if($i % 3 == 0){
-		        //    $wgOut->addHTML("</tr><tr>\n");
-	            //}
-	            if($person->isMemberOf(Project::newFromName($project))){
-	                $wgOut->addHTML("<dt><input type='checkbox' name='p_wpNS[]' value='$project' checked='checked' class='already' onChange='addComment(this, false);' /> $project<div style='display:none; padding-left:30px;'><fieldset><legend>Reasoning</legend><p>Date Effective:<input type='text' class='datepicker' id='datepicker{$project}' name='p_datepicker[$project]' /></p>Additional Comments:<br /><textarea name='p_comment[$project]' cols='15' rows='4' ></textarea></fielset></div></dt>\n");
+		        $projs[] = $proj;
+	            
+	            if($person->isMemberOf($proj)){
+	                $myProjs[] = $proj->getName();
+                }
+	            
+	            foreach($proj->getSubProjects() as $subProj){
+	                if($person->isMemberOf($subProj)){
+	                    $myProjs[] = $subProj->getName();
+	                }
 	            }
-	            else {
-	                $wgOut->addHTML("<dt><input type='checkbox' name='p_wpNS[]' value='$project' /> $project</dt>\n");
-	            }
-	            $i++;
-
-	            $proj = Project::newFromName($project);
-	            $subprojects = $proj->getSubProjects();
-	            $wgOut->addHTML("<dl style='padding-left:30px;'>");
-	            foreach ($subprojects as $subp) {
-	            	$subp_name = $subp->getName();
-	            	if(!$subp->isDeleted()){
-	                	if($person->isMemberOf($subp)){
-		                    $wgOut->addHTML("<input type='checkbox' name='p_wpNS[]' value='$subp_name' checked='checked' class='already' onChange='addComment(this, false);' /> $subp_name<div style='display:none; padding-left:30px;'><fieldset><legend>Reasoning</legend><p>Date Effective:<input type='text' class='datepicker' id='datepicker{$subp_name}' name='p_datepicker[$subp_name]' /></p>Additional Comments:<br /><textarea name='p_comment[$subp_name]' cols='15' rows='4' ></textarea></fielset></div>&nbsp;&nbsp;&nbsp;");
-		                }
-		                else {
-		                    $wgOut->addHTML("<input type='checkbox' name='p_wpNS[]' value='$subp_name' /> $subp_name &nbsp;&nbsp;&nbsp;");
-		                }
-		            }
-	            }
-	            $wgOut->addHTML("</dl>");
 	        }
 	        else{
-	            if($person->isMemberOf(Project::newFromName($project))){
-	                $hidden_checkboxes.="<input type='hidden' name='p_wpNS[]' value='$project' checked='checked' />";
+	            if($person->isMemberOf($proj)){
+	                $hidden_checkboxes .= "<input type='hidden' name='p_wpNS[]' value='{$proj->getName()}' checked='checked' />";
+	                foreach($proj->getSubProjects() as $subProj){
+	                    $hidden_checkboxes .= "<input type='hidden' name='p_wpNS[]' value='{$subProj->getName()}' checked='checked' />";
+	                }
 	            }
 	        }
 		}
-		$wgOut->addHTML("</dl>");
+		$projList = new ProjectList("p_wpNS", "Projects", $myProjs, $projs);
+		$wgOut->addHTML($projList->render());
+		$wgOut->addHTML("<script type='text/javascript'>
+		    $('input.already').change(function(){
+		        addComment(this, false);
+		    });
+		</script>");
 		$wgOut->addHTML($hidden_checkboxes);
 	}
 	
