@@ -98,10 +98,12 @@ class ProjectPage {
                 
                 $tabbedPage = new TabbedPage("project");
                 $tabbedPage->addTab(new ProjectMainTab($project, $visibility));
-                if(!$project->isSubProject()){
+                if(!$project->isSubProject() && $project->getPhase() > 1){
                     $tabbedPage->addTab(new ProjectSubprojectsTab($project, $visibility));
                 }
-                //$tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
+                if($project->getPhase() == 1){
+                    $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
+                }
                 $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
                 if(!$project->isSubProject()){
                     $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
