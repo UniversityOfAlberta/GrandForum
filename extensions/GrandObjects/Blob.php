@@ -265,7 +265,6 @@ class ReportBlob {
 			"year = {$this->_year} AND " .
 			"proj_id = {$this->_proj_id} AND {$where};");
 	    $impersonateId = $this->_owner_id;
-	    
 		if (count($res) > 0) {
 			// Update query.
 			$this->_blob_id = $res[0][0];
@@ -305,6 +304,7 @@ class ReportBlob {
 	            }
 	        }
 		}
+		DBFunctions::commit();
 		return true;
 	}
 
