@@ -19,23 +19,23 @@ class MailingList {
         if($wgImpersonating){
             return 1;
         }
-        $listname = strtolower($project->getName());
+        $listname = MailingList::listName($project);
         $email = $person->getEmail();
 		$command =  "echo \"$email\" | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - $listname";
 		exec($command, $output);
 		$out = $output;
 		if(count($output) > 0 && strstr($output[0], "Subscribed:") !== false){
-		    $sql = "SELECT projectid
-			    FROM wikidev_projects
-			    WHERE projectname = '$listname'";
+		    $rows = DBFunctions::select(array('wikidev_projects'),
+		                                array('projectid'),
+		                                array('projectname' => EQ($listname)));
 			$row = array();
-            $rows = DBFunctions::execSQL($sql);
             if(count($rows) > 0){
                 $row = $rows[0];
             }
 		    if(isset($row['projectid']) && $row['projectid'] != null){
-			    $sql = "INSERT INTO wikidev_projectroles (projectid, userid) VALUES ('{$row['projectid']}','{$person->getName()}')";
-			    DBFunctions::execSQL($sql, true);
+		        DBFunctions::insert('wikidev_projectroles',
+		                            array('projectid' => $row['projectid'],
+		                                  'userid' => $person->getName()));
 		    }
 		    return 1;
 		}
@@ -56,23 +56,23 @@ class MailingList {
         if($wgImpersonating){
             return 1;
         }
-        $listname = strtolower($project->getName());
+        $listname = MailingList::listName($project);
         $email = $person->getEmail();
 		$command =  "/usr/lib/mailman/bin/remove_members -n -N $listname $email";
 		exec($command, $output);
 		$out = $output;
 		if(count($output) == 0 || (count($output) > 0 && $output[0] == "")){
-		    $sql = "SELECT projectid
-			    FROM wikidev_projects
-			    WHERE projectname = '$listname'";
+		    $rows = DBFunctions::select(array('wikidev_projects'),
+		                                array('projectid'),
+		                                array('projectname' => EQ($listname)));
             $row = array();
-            $rows = DBFunctions::execSQL($sql);
             if(count($rows) > 0){
                 $row = $rows[0];
             }
 		    if(isset($row['projectid']) && $row['projectid'] != null){
-			    $sql = "DELETE FROM wikidev_projectroles WHERE userid = '{$person->getName()}' AND projectid = '{$row['projectid']}'";
-			    DBFunctions::execSQL($sql, true);
+		        DBFunctions::delete('wikidev_projectroles',
+		                            array('userid' => EQ($person->getName()),
+		                                  'projectid' => EQ($row['projectid'])));
 		    }
 		    return 1;
 		}
@@ -89,7 +89,7 @@ class MailingList {
      * @return boolean Returns true if the Person is subscribed to the given mailing list and false if not
      */
     static function isSubscribed($project, $person){
-        $listname = strtolower($project->getName());
+        $listname = MailingList::listName($project);
         $email = $person->getEmail();
         if(!isset(self::$membershipCache[$listname])){
             $command = "/usr/lib/mailman/bin/list_members $listname";
@@ -105,6 +105,21 @@ class MailingList {
             }
         }
 		return false;
+    }
+    
+    /**
+     * Returns a list name for the given string or Project
+     * @param mixed $project The string or Project
+     * @return string The list name
+     */
+    static function listName($project){
+        if($project instanceof Project){
+            $listname = strtolower($project->getName());
+        }
+        else{
+            $listname = $project;
+        }
+        return $listname;
     }
 
     // Creates a new mailman mailing list
@@ -164,11 +179,10 @@ $listname-unsubscribe:  |/usr/lib/mailman/mail/mailman unsubscribe $listname";
      * @return array Returns all the location based lists
      */
     static function getLocationBasedLists(){
-        $sql = "SELECT mailListName
-                FROM wikidev_projects m
-                WHERE m.projectid >= 1000
-                AND m.projectid <= 1999";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('wikidev_projects'),
+                                    array('mailListName'),
+                                    array('projectid' => GTEQ(1000),
+                                          'projectid' => LTEQ(1999)));
         $lists = array();
         foreach($data as $row){
             $lists[] = $row['mailListName'];
@@ -178,20 +192,27 @@ $listname-unsubscribe:  |/usr/lib/mailman/mail/mailman unsubscribe $listname";
     
     // TODO: Put this in the database somewhere since this is a really ugly function
     static function getListByUniversity($university){
-        $hash = array('University of British Columbia' => 'grand-vancouver',
-                      'Simon Fraser University' => 'grand-vancouver',
-                      'Emily Carr University of Art and Design', 'grand-vancouver',
-                      'University of Alberta' => 'grand-alberta',
-                      'University of Calgary' => 'grand-calgary',
-                      'University of Ottawa' => 'grand-ottawa',
-                      'Carleton University' => 'grand-ottawa',
-                      'University of Victoria' => 'grand-victoria',
-                      'University of Toronto' => 'grand-toronto',
-                      'Ryerson University' => 'grand-toronto',
-                      'York University' => 'grand-toronto',
-                      'Ontario College of Art & Design' => 'grand-toronto',
-                      'University of Ontario Institute of Technology' => 'grand-toronto');
-        return @$hash[$university];             
+        $hash = array('University of British Columbia' => array('grand-vancouver'),
+                      'Simon Fraser University' => array('grand-vancouver'),
+                      'Emily Carr University of Art and Design', array('grand-vancouver'),
+                      'University of Alberta' => array('grand-alberta'),
+                      'University of Calgary' => array('grand-calgary'),
+                      'University of Ottawa' => array('grand-ottawa', 'grand-ontario'),
+                      'Carleton University' => array('grand-ottawa', 'grand-ontario'),
+                      'University of Victoria' => array('grand-victoria'),
+                      'University of Toronto' => array('grand-toronto', 'grand-ontario'),
+                      'Ryerson University' => array('grand-toronto', 'grand-ontario'),
+                      'York University' => array('grand-toronto', 'grand-ontario'),
+                      'Ontario College of Art & Design' => array('grand-toronto', 'grand-ontario'),
+                      'University of Ontario Institute of Technology' => array('grand-toronto', 'grand-ontario'),
+                      'Queen`s University' => array('grand-ontario'),
+                      'University of Waterloo' => array('grand-ontario'),
+                      'University of Western Ontario' => array('grand-ontario'),
+                      'Wilfrid Laurier University' => array('grand-ontario'));
+        if(isset($hash[$university])){
+            return $hash[$university];
+        }
+        return array();           
     }
 }
 

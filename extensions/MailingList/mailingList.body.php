@@ -53,8 +53,9 @@ class MailList{
 			             $me->isMemberOf($project)) || 
 			            ($me->isRole($project_name) || 
 			             $me->isRoleAtLeast(STAFF)) || 
-			            (array_search($project_name, MailingList::getLocationBasedLists()) !== false && 
-			             MailingList::getListByUniversity($university['university']) == $project_name)))){
+			            (in_array($project_name, MailingList::getLocationBasedLists()) && 
+			             in_array($project_name, MailingList::getListByUniversity($university['university'])))))){
+			            var_dump(in_array($project_name, MailingList::getLocationBasedLists()));
                         $result = false;
                     }
                 }

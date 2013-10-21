@@ -67,9 +67,13 @@ class UserUniversityAPI extends API{
                 }
             }
             else{
+                $uni = $person->getUni();
                 DBFunctions::update('grand_user_university',
                                     array('end_date' => EQ(COL('CURRENT_TIMESTAMP'))),
                                     array('id' => EQ($last_id)));
+                foreach(MailingList::getListByUniversity($uni) as $list){
+                    MailingList::unsubscribe($list, $person);
+                }
                 //Insert New
                 DBFunctions::insert('grand_user_university',
                                     array('user_id' => $person->getId(),
@@ -77,6 +81,9 @@ class UserUniversityAPI extends API{
                                           'department' => $_POST['department'],
                                           'position_id' => $_POST['title'],
                                           'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
+                foreach(MailingList::getListByUniversity($_POST['university']) as $list){
+                    MailingList::subscribe($list, $person);
+                }
                 if(!$noEcho){
                     echo "Account University Updated\n";
                 }
@@ -90,6 +97,9 @@ class UserUniversityAPI extends API{
                                       'department' => $_POST['department'],
                                       'position_id' => $_POST['title'],
                                       'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
+            foreach(MailingList::getListByUniversity($_POST['university']) as $list){
+                MailingList::subscribe($list, $person);
+            }
             if(!$noEcho){
                 echo "Account University Added\n";
             }

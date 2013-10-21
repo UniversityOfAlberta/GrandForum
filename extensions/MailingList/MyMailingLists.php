@@ -27,12 +27,12 @@ class MyMailingLists extends SpecialPage{
 	        $projects = Project::getAllProjects();
 	        $unis = Person::getAllUniversities();
 	        foreach($unis as $uni){
-	            $universities[] = MailingList::getListByUniversity($uni);
+	            $universities = array_merge($universities, MailingList::getListByUniversity($uni));
 	        }
 	    }
 	    else{
 	        $university = $person->getUniversity();
-	        $universities[] = MailingList::getListByUniversity($university['university']);
+	        $universities = array_merge($universities, MailingList::getListByUniversity($university['university']));
 	        $projects = $person->getProjects();
 	    }
 	    $universities = array_unique($universities);
