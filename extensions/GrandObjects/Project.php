@@ -441,6 +441,23 @@ EOF;
         return false;
     }
     
+    // Returns when this project was initially created
+    function getCreated(){
+        $created = null;
+        if(!$this->clear){
+            $preds = $this->getPreds();
+            if(count($preds) == 0){
+                return $this->getEffectiveDate();
+            }
+            else{
+                foreach($preds as $pred){
+                    $created = $pred->getCreated();
+                }
+            }
+        }
+        return $created;
+    }
+    
     // Returns when the evolution state took place
     function getEffectiveDate(){
         return $this->effectiveDate;
