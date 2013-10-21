@@ -1075,6 +1075,7 @@ class EditMember extends SpecialPage{
         $wgOut->addHTML("<h2>Project Leader</h2>");
         
         $projList = new ProjectList("pl", "Projects", $myLeadProjects, $projects);
+        $projList->attr('expand', true);
         $wgOut->addHTML($projList->render());
         $wgOut->addHTML("<script type='text/javascript'>
             $('input.pl.already').change(function(){
@@ -1085,6 +1086,7 @@ class EditMember extends SpecialPage{
         $wgOut->addHTML("<h2>Project Co-Leader</h2>");
         
         $projList = new ProjectList("copl", "Projects", $myCoLeadProjects, $projects);
+        $projList->attr('expand', true);
         $wgOut->addHTML($projList->render());
         $wgOut->addHTML("<script type='text/javascript'>
             $('input.copl.already').change(function(){
@@ -1108,6 +1110,7 @@ class EditMember extends SpecialPage{
         $wgOut->addHTML("<h2>Project Manager</h2>");
         
         $projList = new ProjectList("pm", "Projects", $myLeadProjects, $projects);
+        $projList->attr('expand', true);
         $wgOut->addHTML($projList->render());
         $wgOut->addHTML("<script type='text/javascript'>
             $('input.pm.already').change(function(){

@@ -4,6 +4,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
     
     function ProjectList($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
         parent::MultiColumnVerticalCheckBox($id, $name, $value, $options, $validations);
+        $this->attr('expand', false);
     }
     
     function render(){
@@ -60,7 +61,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                     if($subchecked != ""){
                         $already = "already";
                     }
-                    $html .= "<input class='{$already}' {$this->renderAttr()} type='checkbox' name='{$this->id}[]' value='{$subProj->getName()}' $subchecked/>{$subProj->getName()}<div style='display:none; padding-left:30px;'>
+                    $html .= "<input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' name='{$this->id}[]' value='{$subProj->getName()}' $subchecked/>{$subProj->getName()}<div style='display:none; padding-left:30px;'>
                             <fieldset><legend>Reasoning</legend>
                                 <p>Date Effective:<input type='text' class='datepicker' id='{$this->id}_datepicker{$subProj->getName()}' name='{$partialId}_datepicker[{$subProj->getName()}]' /></p>
                                 Additional Comments:<br />
@@ -79,16 +80,23 @@ class ProjectList extends MultiColumnVerticalCheckBox {
         if($i != 0){
             $html .= "</div>";
         }
-        $html .= "<script type='text/javascript'>
-            $('input.{$this->id}').change(function(){
-                if($('.subprojects input', $(this).parent()).length > 0){
-                    if($('.subprojects', $(this).parent()).css('display') == 'block'){
-                        $('.subprojects input', $(this).parent()).prop('checked', false);
+        if(!$this->attr('expand')){
+            $html .= "<script type='text/javascript'>
+                $('input.{$this->id}').change(function(){
+                    if($('.subprojects input', $(this).parent()).length > 0){
+                        if($('.subprojects', $(this).parent()).css('display') == 'block'){
+                            $('.subprojects input', $(this).parent()).prop('checked', false);
+                        }
+                        $('.subprojects', $(this).parent()).slideToggle('fast');
                     }
-                    $('.subprojects', $(this).parent()).slideToggle('fast');
-                }
-            });
-        </script>";
+                });
+            </script>";
+        }
+        else{
+            $html .= "<script type='text/javascript'>
+                $('.subprojects', $('input.{$this->id}').parent()).show();
+            </script>";
+        }
         return $html;
     }
     
