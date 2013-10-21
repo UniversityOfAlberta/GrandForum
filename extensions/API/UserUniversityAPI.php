@@ -104,6 +104,8 @@ class UserUniversityAPI extends API{
                 echo "Account University Added\n";
             }
         }
+        $person->university = false;
+        Person::$universityCache = array();
     }
     
     function isLoginRequired(){
