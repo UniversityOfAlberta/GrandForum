@@ -7,6 +7,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
     }
     
     function render(){
+        $partialId = str_replace("_wpNS", "", $this->id);
         $html = "";
         $projects = $this->options;
 
@@ -38,9 +39,9 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                         <input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' name='{$this->id}[]' value='{$proj->getName()}' $checked/>{$proj->getName()}
                         <div style='display:none; padding-left:30px;'>
                             <fieldset><legend>Reasoning</legend>
-                                <p>Date Effective:<input type='text' class='datepicker' id='datepicker{$proj->getName()}' name='p_datepicker[{$proj->getName()}]' /></p>
+                                <p>Date Effective:<input type='text' class='datepicker' id='{$this->id}_datepicker{$proj->getName()}' name='{$partialId}_datepicker[{$proj->getName()}]' /></p>
                                 Additional Comments:<br />
-                                <textarea name='p_comment[{$proj->getName()}]' cols='15' rows='4' style='height:auto;' ></textarea>
+                                <textarea name='{$partialId}_comment[{$proj->getName()}]' cols='15' rows='4' style='height:auto;' ></textarea>
                             </fielset>
                         </div>
                         <div class='subprojects' style='margin-left:15px;display:$display;'>";
@@ -61,9 +62,9 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                     }
                     $html .= "<input class='{$already}' {$this->renderAttr()} type='checkbox' name='{$this->id}[]' value='{$subProj->getName()}' $subchecked/>{$subProj->getName()}<div style='display:none; padding-left:30px;'>
                             <fieldset><legend>Reasoning</legend>
-                                <p>Date Effective:<input type='text' class='datepicker' id='datepicker{$subProj->getName()}' name='p_datepicker[{$subProj->getName()}]' /></p>
+                                <p>Date Effective:<input type='text' class='datepicker' id='{$this->id}_datepicker{$subProj->getName()}' name='{$partialId}_datepicker[{$subProj->getName()}]' /></p>
                                 Additional Comments:<br />
-                                <textarea name='p_comment[{$subProj->getName()}]' cols='15' rows='4' style='height:auto;' ></textarea>
+                                <textarea name='{$partialId}_comment[{$subProj->getName()}]' cols='15' rows='4' style='height:auto;' ></textarea>
                             </fielset>
                         </div><br />";
                 }
