@@ -150,20 +150,20 @@ class Project extends BackboneModel {
             $subProjects = LIKE("%");
         }
         $data = DBFunctions::select(array('grand_project'),
-                                    array('id'),
+                                    array('id', 'name'),
                                     array('parent_id' => $subProjects),
                                     array('name' => 'ASC'));
         $projects = array();
-        $projectNames = array();
         foreach($data as $row){
             $project = Project::newFromId($row['id']);
             if($project != null && $project->getName() != ""){
-                if(!isset($projectNames[$project->name]) && !$project->isDeleted()){
-                    $projectNames[$project->name] = true;
-                    $projects[] = $project;
+                if(!isset($projects[$project->name]) && !$project->isDeleted()){
+                    $projects[$project->getName()] = $project;
                 }
             }
         }
+        ksort($projects);
+        $projects = array_values($projects);
         return $projects;
     }
     
@@ -185,78 +185,21 @@ class Project extends BackboneModel {
                                     array('parent_id' => $subProjects),
                                     array('name' => 'ASC'));
         $projects = array();
-        $projectNames = array();
         foreach($data as $row){
             $project = Project::newFromId($row['id']);
             if($project != null && $project->getName() != ""){
-                if(!isset($projectNames[$project->name])){
+                if(!isset($projects[$project->name])){
                     if(($project->deleted &&
                         strcmp($project->effectiveDate, $endDate) <= 0 &&
                         strcmp($project->effectiveDate, $startDate) >= 0) ||
                        !$project->deleted){
-                        $projectNames[$project->name] = true;
-                        $projects[] = $project;
+                        $projects[$project->getName()] = $project;
                     }
                 }
             }
         }
-        return $projects;
-    }
-    
-    // Orders the projects alphabetically so that they are sorted vertically in columns rather than rows.
-    // Returns an array in a format which is useful for outputing a 3 column html table.
-    static function orderProjects($projects){
-        $nPerCol = ceil(count($projects)/3);
-        $remainder = count($projects) % 3;
-        $col1 = array();
-        $col2 = array();
-        $col3 = array();
-        if($remainder == 0){
-            $j = $nPerCol;
-            $k = $nPerCol*2;
-            $jEnd = $nPerCol*2;
-            $kEnd = $nPerCol*3;
-        }
-        else if($remainder == 1){
-            $j = $nPerCol;
-            $k = $nPerCol*2 - 1;
-            $jEnd = $nPerCol*2 - 1;
-            $kEnd = $nPerCol*3 - 2;
-        }
-        else if($remainder == 2){
-            $j = $nPerCol;
-            $k = $nPerCol*2;
-            $jEnd = $nPerCol*2;
-            $kEnd = $nPerCol*3 - 1;
-        }
-        for($i = 0; $i < $nPerCol; $i++){
-            if(isset($projects[$i])){
-                $col1[] = $projects[$i];
-            }
-            if(isset($projects[$j]) && $j < $jEnd){
-                $col2[] = $projects[$j];
-            }
-            if(isset($projects[$k]) && $k < $kEnd){
-                $col3[] = $projects[$k];
-            }
-            $j++;
-            $k++;
-        }
-        
-        $projects = array();
-        $i = 0;
-        foreach($col1 as $row){
-            if(isset($col1[$i])){
-                $projects[] = $col1[$i];
-            }
-            if(isset($col2[$i])){
-                $projects[] = $col2[$i];
-            }
-            if(isset($col3[$i])){
-                $projects[] = $col3[$i];
-            }
-            $i++;
-        }
+        ksort($projects);
+        $projects = array_values($projects);
         return $projects;
     }
     

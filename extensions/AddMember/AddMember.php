@@ -213,12 +213,9 @@ class AddMember extends SpecialPage{
 		$rolesRow->append($rolesLabel)->append($rolesField);
 		
 		$projects = Project::getAllProjects();
-		$projectOptions = array();
-		foreach($projects as $project){
-		    $projectOptions[] = $project->getName();
-		}
+        
 		$projectsLabel = new Label("project_label", "Associated Projects", "The projects the user is a member of", VALIDATE_NOTHING);
-		$projectsField = new MultiColumnVerticalCheckBox("project_field", "Associated Projects", array(), $projectOptions, VALIDATE_NOTHING);
+		$projectsField = new ProjectList("project_field", "Associated Projects", array(), $projects, VALIDATE_NOTHING);
 		$projectsRow = new FormTableRow("project_row");
 		$projectsRow->append($projectsLabel)->append($projectsField);
 		

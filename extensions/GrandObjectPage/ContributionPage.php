@@ -488,28 +488,12 @@ class ContributionPage {
                                 }
                             }
                         }
-                        $projs = Project::orderProjects(Project::getAllProjects());
-	                    $pArray = array();
-	                    foreach($projs as $project){
-	                        $pArray[] = $project->getName();
-	                    }
-	                    $wgOut->addHTML("<table border='0' cellspacing='2'><tr>");
-	                    $i = 0;
-	                    foreach($pArray as $project){
-                            if($i % 3 == 0){
-	                            $wgOut->addHTML("</tr><tr>\n");
-                            }
-                            if(array_search($project, $pProjects) !== false){
-                                $wgOut->addHTML("<td style='min-width:150px;' valign='top'><input type='checkbox' name='projects[]' value='$project' checked='checked' /> $project<br /></td>\n");
-                            }
-                            else {
-                                $wgOut->addHTML("<td style='min-width:150px;' valign='top'><input type='checkbox' name='projects[]' value='$project' /> $project</td>\n");
-                            }
-                            $i++;
-                        }
-                        $wgOut->addHTML("</table>");
-                        if(count($projects) > 0){
-                            foreach($projects as $project){
+                        $projs = Project::getAllProjects();
+                        
+                        $projList = new ProjectList("projects", "Projects", $pProjects, $projs);
+                        $wgOut->addHTML($projList->render());
+                        if(count($projs) > 0){
+                            foreach($projs as $project){
 	                            // Add any deleted projects so that they remain as part of this project
 	                            if($project->deleted){
 	                                $wgOut->addHTML("<input style='display:none;' type='checkbox' name='projects[]' value='{$project->getName()}' checked='checked' />");

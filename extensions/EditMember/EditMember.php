@@ -1010,7 +1010,6 @@ class EditMember extends SpecialPage{
         }
         $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
         $projects = Project::getAllProjects();
-        $projects = Project::orderProjects($projects);
 
         $hidden_checkboxes = "";
         $projs = array();
@@ -1067,7 +1066,6 @@ class EditMember extends SpecialPage{
         }
         $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
         $projects = Project::getAllProjects();
-        $projects = Project::orderProjects($projects);
         
         $leadProjects = new Collection($person->getLeadProjects());
         $coLeadProjects = new Collection($person->getCoLeadProjects());
@@ -1103,7 +1101,6 @@ class EditMember extends SpecialPage{
         }
         $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
         $projects = Project::getAllProjects();
-        $projects = Project::orderProjects($projects);
         
         $leadProjects = new Collection($person->getManagerProjects());
         $myLeadProjects = $leadProjects->pluck('name');
