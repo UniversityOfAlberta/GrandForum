@@ -55,7 +55,6 @@ class MailList{
 			             $me->isRoleAtLeast(STAFF)) || 
 			            (in_array($project_name, MailingList::getLocationBasedLists()) && 
 			             in_array($project_name, MailingList::getListByUniversity($university['university'])))))){
-			            var_dump(in_array($project_name, MailingList::getLocationBasedLists()));
                         $result = false;
                     }
                 }
