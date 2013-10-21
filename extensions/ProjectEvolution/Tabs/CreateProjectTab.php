@@ -23,8 +23,6 @@ class CreateProjectTab extends ProjectTab {
         $fullNameRow->append($fullNameLabel)->append($fullNameField->attr('size', 40));
         
         $subprojectRow = new FormTableRow("{$pre}_subproject_row");
-        //$subprojectRow->append(new Label("{$pre}_subproject_label", "Sub-Project", "Is this a Sub-Project?", VALIDATE_NOT_NULL));
-        //$subprojectRow->append(new HorizontalRadioBox("{$pre}_subproject", "Sub-Project", "No", array("No", "Yes"), VALIDATE_NOT_NULL));
 
         //Sub-project radio button + parent project drop-down
         $projectOptions = "<option value='0'>Choose Parent</option>\n";
@@ -59,7 +57,6 @@ EOF;
         
         </script>
 EOF;
-        //$subprojectRow->append(new Label("{$pre}_subproject_label", "Sub-Project", "Is this a Sub-Project?", VALIDATE_NOT_NULL));
         $subprojectDDRow->append(new CustomElement("{$pre}_subproject_label", "", "", "", VALIDATE_NOTHING));
         $subprojectDDRow->append(new CustomElement("{$pre}_parent_id", "", "", $subp_dd, VALIDATE_NOT_NULL));
         
@@ -83,6 +80,14 @@ EOF;
         $descRow->append(new Label("{$pre}_description_label", "Description", "The description of the project", VALIDATE_NOTHING));
         $descRow->append(new TextareaField("{$pre}_description", "Description", "", VALIDATE_NOTHING));
         
+        $probRow = new FormTableRow("{$pre}_problem_row");
+        $probRow->append(new Label("{$pre}_problem_label", "Problem Summary", "The problem summary of the project", VALIDATE_NOTHING));
+        $probRow->append(new TextareaField("{$pre}_problem", "Problem Summary", "", VALIDATE_NOTHING));
+        
+        $solRow = new FormTableRow("{$pre}_solution_row");
+        $solRow->append(new Label("{$pre}_solution_label", "Proposed Solution Summary", "The proposed solution summary of the project", VALIDATE_NOTHING));
+        $solRow->append(new TextareaField("{$pre}_solution", "Proposed Solution Summary", "", VALIDATE_NOTHING));
+        
         //Challenges
         $challengeFieldSet = new FieldSet("{$pre}_challenges_set", "Primary Challenge");
        
@@ -96,39 +101,6 @@ EOF;
         $challengeRadioBox = new VerticalRadioBox2("{$pre}_challenge", "", "", $challenges, VALIDATE_NOTHING);
         $challengeFieldSet->append($challengeRadioBox);
 
-        //Themes
-        /*
-        $themeFieldSet = new FieldSet("{$pre}_themes_set", "Themes");
-        $themeTable = new FormTable("{$pre}_themes_table");
-
-        $theme1Row = new FormTableRow("{$pre}_theme1_row");
-        $theme1Row->append(new Label("{$pre}_theme1_label", "AnImage", "", VALIDATE_NOTHING));
-        $theme1Row->append(new PercentField("{$pre}_theme1", "AnImage", "", VALIDATE_NOTHING));
-        
-        $theme2Row = new FormTableRow("{$pre}_theme2_row");
-        $theme2Row->append(new Label("{$pre}_theme2_label", "GamSim", "", VALIDATE_NOTHING));
-        $theme2Row->append(new PercentField("{$pre}_theme2", "GamSim", "", VALIDATE_NOTHING));
-        
-        $theme3Row = new FormTableRow("{$pre}_theme3_row");
-        $theme3Row->append(new Label("{$pre}_theme3_label", "nMEDIA", "", VALIDATE_NOTHING));
-        $theme3Row->append(new PercentField("{$pre}_theme3", "nMEDIA", "", VALIDATE_NOTHING));
-        
-        $theme4Row = new FormTableRow("{$pre}_theme4_row");
-        $theme4Row->append(new Label("{$pre}_theme4_label", "SocLeg", "", VALIDATE_NOTHING));
-        $theme4Row->append(new PercentField("{$pre}_theme4", "SocLeg", "", VALIDATE_NOTHING));
-        
-        $theme5Row = new FormTableRow("{$pre}_theme5_row");
-        $theme5Row->append(new Label("{$pre}_theme5_label", "TechMeth", "", VALIDATE_NOTHING));
-        $theme5Row->append(new PercentField("{$pre}_theme5", "TechMeth", "", VALIDATE_NOTHING));
-        
-        $themeTable->append($theme1Row);
-        $themeTable->append($theme2Row);
-        $themeTable->append($theme3Row);
-        $themeTable->append($theme4Row);
-        $themeTable->append($theme5Row);
-        $themeFieldSet->append($themeTable);
-        */
-
         $table->append($acronymRow);
         $table->append($fullNameRow);
         $table->append($subprojectRow);
@@ -138,9 +110,10 @@ EOF;
         $table->append($phaseRow);
         $table->append($effectiveRow);
         $table->append($descRow);
+        $table->append($probRow);
+        $table->append($solRow);
         
         $form->append($table);
-        //$form->append($themeFieldSet);
         $form->append($challengeFieldSet);
 
         return $form;
@@ -169,15 +142,9 @@ EOF;
             $form->getElementById("new_description")->setPOST("description");
             $form->getElementById("new_challenge")->setPOST("challenge");
             $form->getElementById("new_parent_id")->setPOST("parent_id");
-            
-            $_POST['problem'] = "";
-            $_POST['solution'] = "";
+            $form->getElementById("new_problem")->setPOST("problem");
+            $form->getElementById("new_solution")->setPOST("solution");
 
-            // $form->getElementById("new_theme1")->setPOST("theme1");
-            // $form->getElementById("new_theme2")->setPOST("theme2");
-            // $form->getElementById("new_theme3")->setPOST("theme3");
-            // $form->getElementById("new_theme4")->setPOST("theme4");
-            // $form->getElementById("new_theme5")->setPOST("theme5");
             if(!APIRequest::doAction('CreateProject', true)){
                 return "There was an error Creating the Project";
             }
