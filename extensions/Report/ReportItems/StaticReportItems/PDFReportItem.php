@@ -7,7 +7,7 @@ class PDFReportItem extends StaticReportItem {
         $reportType = $this->getAttr("reportType", 'HQPReport');
         $useProject = $this->getAttr("project", false);
         $buttonName = $this->getAttr("buttonName", "Report PDF");
-        $year = $this->getAttr("year", REPORTING_YEAR);
+        $year = $this->getAttr("year", $this->getReport()->year);
         $width = $this->getAttr("width", 'auto');
         $project = null;
         if($useProject){
