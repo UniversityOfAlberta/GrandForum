@@ -36,7 +36,8 @@ class Report extends AbstractReport{
 		    if($project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
 		        $page = "Report?report=ProjectFinalReport&project={$project->getName()}";
 		    }
-		    else if(!$project->isDeleted()){
+		    else if(!$project->isDeleted() && 
+		            strcmp($project->getCreated(), REPORTING_CYCLE_END) <= 0){
 		        $page = "Report?report=ProjectReport&project={$project->getName()}";
 		    }
 		}
@@ -101,7 +102,8 @@ class Report extends AbstractReport{
                     if($project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
 		                $type = "ProjectFinalReport";
 		            }
-		            else if(!$project->isDeleted()){
+		            else if(!$project->isDeleted() && 
+		                    strcmp($project->getCreated(), REPORTING_CYCLE_END) <= 0){
 		                $type = "ProjectReport";
 		            }
 		            else{
