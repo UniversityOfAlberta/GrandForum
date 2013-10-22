@@ -7,13 +7,13 @@ class PDFReportItem extends StaticReportItem {
         $reportType = $this->getAttr("reportType", 'HQPReport');
         $useProject = $this->getAttr("project", false);
         $buttonName = $this->getAttr("buttonName", "Report PDF");
+        $year = $this->getAttr("year", REPORTING_YEAR);
         $width = $this->getAttr("width", 'auto');
         $project = null;
         if($useProject){
             $project = Project::newFromId($this->projectId);
         }
         $person = Person::newFromId($this->personId);
-        $year = (REPORTING_YEAR == date('Y'))? REPORTING_YEAR-1 : REPORTING_YEAR;
         $report = new DummyReport($reportType, $person, $project, $year);
         $tok = false;
         $tst = '';
