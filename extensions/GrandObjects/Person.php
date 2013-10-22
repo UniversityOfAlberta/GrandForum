@@ -662,6 +662,11 @@ class Person extends BackboneModel {
         return $user->isLoggedIn();
     }
     
+    // Returns when the user registered
+    function getRegistration(){
+        return $this->getUser()->getRegistration();
+    }
+    
     // Returns an array of names similar to this Person's name
     function getSimilarNames(){
         $sql = "SELECT authors
