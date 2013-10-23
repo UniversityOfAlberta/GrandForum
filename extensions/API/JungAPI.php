@@ -274,11 +274,17 @@ class JungAPI extends API{
             $tuple['nProductsWith3Universities'] = (string)count($nProductsWith3Universities);
             $tuple['nProductsWith4OrMoreUniversities'] = (string)count($nProductsWith4OrMoreUniversities);
 
+            
+
             if($person->isRoleDuring(HQP, $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH) &&
                !$person->isRoleDuring(PNI, $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH) &&
                !$person->isRoleDuring(CNI, $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH)){
+                $sups = $person->getSupervisorsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+                $totalSups = $person->getSupervisors(true);
                 $tuple['nCurrentHQP'] = "";
                 $tuple['nTotalHQP'] = "";
+                $tuple['nCurrentSupervisors'] = (string)count($sups);
+                $tuple['nTotalSupervisors'] = (string)count($totalSups);
                 $tuple['nCurrentWorksWith'] = "";
                 $tuple['totalAllocationUpToNow'] = "";
             }
@@ -297,6 +303,8 @@ class JungAPI extends API{
                 }
                 $tuple['nCurrentHQP'] = (string)count($hqps);
                 $tuple['nTotalHQP'] = (string)count($totalHqps);
+                $tuple['nCurrentSupervisors'] = "";
+                $tuple['nTotalSupervisors'] = "";
                 $tuple['nCurrentWorksWith'] = (string)count($worksWith);
                 $tuple['totalAllocationUpToNow'] = (string)$totalAllocated;
             }
@@ -366,6 +374,12 @@ class JungAPI extends API{
                 $tuple['ProducesDiffUni'][] = $value;
                 $tuple['ProducesDiffDisc'][] = $value;
             }
+            $tuple['DiffUni'][] = $tuple['University'];
+            $tuple['DiffUni'][] = "!".$tuple['University'];
+            
+            $tuple['DiffDisc'][] = $tuple['Discipline'];
+            $tuple['DiffDisc'][] = "!".$tuple['Discipline'];
+            
             $tuple['ProjectsDiffUni'][] = $tuple['University'];
             $tuple['WorksWithDiffUni'][] = $tuple['University'];
             $tuple['ProducesDiffUni'][] = $tuple['University'];
