@@ -82,6 +82,18 @@
                     "weight": "1"
                 },
                 {
+                    "id": "DiffUni",
+                    "name": "Different University",
+                    "desc": "Array of Universities",
+                    "weight": "1"
+                },
+                {
+                    "id": "DiffDisc",
+                    "name": "Different Discipline",
+                    "desc": "Array of Disciplines",
+                    "weight": "1"
+                },
+                {
                     "id": "ProjectsDiffUni",
                     "name": "Projects/Different University",
                     "desc": "Array of Projects for the Person",
@@ -178,6 +190,16 @@
                     "id": "nTotalHQP",
                     "name": "# Total HQP",
                     "desc": "The number of HQP the person has had over time"
+                },
+                {
+                    "id": "nCurrentSupervisors",
+                    "name": "# Current Supervisors",
+                    "desc": "The number of current Supervisors this Person has (HQP only)"
+                },
+                {
+                    "id": "nTotalSupervisors",
+                    "name": "# Total Supervisors",
+                    "desc": "The number of Supervisors this Person has had over time"
                 },
                 {
                     "id": "nProductsUpToNow",
