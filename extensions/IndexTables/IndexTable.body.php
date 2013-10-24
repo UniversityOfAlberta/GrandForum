@@ -7,7 +7,7 @@ $indexTable = new IndexTable();
 $wgHooks['OutputPageParserOutput'][] = array($indexTable, 'generateTable');
 $wgHooks['userCan'][] = array($indexTable, 'userCanExecute');
 
-class IndexTable{
+class IndexTable {
 
 	var $text = "";
 	
@@ -18,7 +18,6 @@ class IndexTable{
 	        $text = $title->getText();
 	        switch ($title->getText()) {
 	            case 'ALL '.HQP:
-	            case 'Publications':
 				case 'Presentations':
 				case 'Artifacts':
 				case 'Multimedia Stories':
@@ -112,7 +111,7 @@ class IndexTable{
 	}
 	
 	/*
-	 * Generates the Table for the themes
+	 * Generates the Table for the projects
 	 * Consists of the following columns
 	 * Acronym | Name 
 	 */
@@ -123,24 +122,33 @@ class IndexTable{
         if($me->isRoleAtLeast(MANAGER)){
             $idHeader = "<th>Project Id</th>";
         }
-		$this->text .= "
-<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead>
-<tr><th>Acronym</th><th>Name</th>$idHeader</tr></thead><tbody>
-";
-
-		$data = Project::getAllProjects();
-		foreach($data as $proj){
-			$this->text .= "
-<tr>
-<td align='left'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
-<td align='left'>{$proj->getFullName()}</td>";
-            if($me->isRoleAtLeast(MANAGER)){
-                $this->text .= "<td>{$proj->getId()}</td>\n";
-            }
-            $this->text .= "</tr>\n";
+        
+        $this->text .= "<div id='tabs'><ul>";
+        for($phase = PROJECT_PHASE; $phase > 0; $phase--){
+            $this->text .= "<li><a href='#tabs-{$phase}'>Phase {$phase}</a></li>";
+        }
+        $this->text .= "</ul>";
+        $data = Project::getAllProjects();
+        for($phase = PROJECT_PHASE; $phase > 0; $phase--){
+		    $this->text .= "
+                <div id='tabs-{$phase}'><table class='indexTable' style='display:none;' frame='box' rules='all'>
+                <thead>
+                <tr><th>Acronym</th><th>Name</th>$idHeader</tr></thead><tbody>";
+		    foreach($data as $proj){
+		        if($proj->getPhase() == $phase){
+			        $this->text .= "
+                        <tr>
+                        <td align='left'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
+                        <td align='left'>{$proj->getFullName()}</td>";
+                    if($me->isRoleAtLeast(MANAGER)){
+                        $this->text .= "<td>{$proj->getId()}</td>\n";
+                    }
+                    $this->text .= "</tr>\n";
+                }
+		    }
+		    $this->text .= "</tbody></table></div>";
 		}
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
+		$this->text .= "</div><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});$('#tabs').tabs();</script>";
 
 		return true;
 	}
@@ -272,81 +280,7 @@ EOF;
 
 		return true;
 	}
-	
-	private function generatePublicationsTable($type){
-	    global $wgScriptPath, $wgServer, $wgUser, $wgOut;
-	    $nonGrand = (isset($_GET['nonGrand']) && strtolower($_GET['nonGrand']) == "true");
-	    $papers = array();
-	    if($nonGrand){
-	        $param = 'nonGrand';
-	    }
-	    else{
-	        $param = 'grand';
-	    }
-	    if($type == "Publication"){
-	        $papers = Paper::getAllPapers('all', 'Publication', $param);
-	    }
-	    else if($type == "Presentation"){
-	        $papers = Paper::getAllPapers('all', 'Presentation', $param);
-	    }
-	    else if($type == "Artifact"){
-	        $papers = array_merge(Paper::getAllPapers('all',"Artifact", $param), 
-	                              Paper::getAllPapers('all',"Press", $param),
-	                              Paper::getAllPapers('all',"Activity", $param),
-	                              Paper::getAllPapers('all',"Award", $param));
-	    }
-	    if(!$nonGrand){
-	        $this->text .= "<a href='$wgServer$wgScriptPath/index.php/GRAND:{$type}s?nonGrand=true'><b>[View Non-GRAND {$type}s]</b></a><br />Below are all the {$type}s in GRAND.  To search for a $type, use the search box below.<br /><br />";
-	    }
-	    else{
-	        $this->text .= "<a href='$wgServer$wgScriptPath/index.php/GRAND:{$type}s'><b>[View GRAND {$type}s]</b></a><br />Below are all the {$type}s which are not associated with GRAND.  To search for a $type, use the search box below.<br /><br />";
-	    }
-		$this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>Date</th><th>Category/Type</th><th style='min-width:300px;'>Title</th><th>Authors</th><th>Projects</th></tr></thead><tbody>";
-	    foreach($papers as $paper){
-	        $auths = array();
-	        foreach($paper->getAuthors() as $author){
-	            $auths[] = $author->getName();
-	        }
-	        $projects = $paper->getProjects();
-            $projs = array();
-            foreach($projects as $project){
-                $projs[] = $project->getName();
-            }
-            $date = $paper->getDate();
-            $title = $paper->getTitle();
-            $this->text .= "
-                    <tr>
-                    <td style='white-space:nowrap;'>{$date}</td>
-                    <td style='white-space:nowrap;'>{$paper->getCategory()} / {$paper->getType()}</td>
-                    <td align='left'>
-                        <a href='{$paper->getUrl()}'>{$title}</a>
-                    </td>
-                    <td align='left'>";
-            $authorLinks = array();
-            foreach($paper->getAuthors() as $author){
-                if($author->getType() != ""){
-                    $authorLinks[] = "<a href='{$author->getUrl()}'>{$author->getNameForForms()}</a>";
-                }
-                else{
-                    $authorLinks[] = "{$author->getName()}";
-                }
-            }
-            $this->text .= implode(", ", $authorLinks)."</td>";
-            $this->text .= "<td>". implode(", ", $projs)."</td>";
-            $this->text .= "</tr>";
-	    }
-	    $this->text .= "</tbody></table>";
-	    $this->text .= "<script type='text/javascript'>
-	        $(document).ready(function(){
-	            $('.indexTable').dataTable({'iDisplayLength': 100,
-	                                        'aaSorting': [ [0,'desc'], [1,'asc'], [4, 'asc'] ],
-	                                        'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
-	        });
-	    </script>";
-	    return true;
-	}
-	
+
 	function generateMaterialsTable(){
 	    global $wgServer, $wgScriptPath;
 	    $this->text = "<table class='indexTable' style='display:none;' frame='box' rules='all'>
