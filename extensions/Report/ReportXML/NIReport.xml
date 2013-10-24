@@ -318,10 +318,14 @@ Describe your involvement with receptor organizations, industry partners and Pro
             <![CDATA[<h2>III. Reflections: Other Aspects of my involvement in GRAND</h2>]]>
         </ReportItem>
     <!-- IIIa. Plans for Next Year -->
-        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="false" disabled="true" level="4" title="Proposed Activity: My Plans for {$next_year} in GRAND" private="true">
-            <ReportItem id="IIIa" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="RES_RESACT_NEXTPLANS" type="TextareaReportItem">
-                <![CDATA[{$item}]]>
-            </ReportItem>
+        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Proposed Activity: My Plans for {$next_year} in GRAND" private="true">
+            <ReportItemSet id="ProjectLimit_IId" type="LimitReportItemSet" limit="3600">
+                <ReportItemSet id="projects" type="PersonFutureProjectReportItemSet">
+                    <ReportItem id="IIIa" width="100%" blobType="BLOB_TEXT" blobItem="RES_RESACT_NEXTPLANS" type="TextareaReportItem">
+                        <![CDATA[<i>{$project_name}</i><br />{$item}<br />]]>
+                    </ReportItem>
+                </ReportItemSet>
+            </ReportItemSet>
         </ReportItemSet>
     <!-- IIIb. Benefits from being involved in the Network -->
         <ReportItemSet id='IIIb_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Benefits of Networking: The value to my research program of my participation in GRAND" private="true">
@@ -329,7 +333,6 @@ Describe your involvement with receptor organizations, industry partners and Pro
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
-    
     <!-- IIIc. Additional Comments -->
         <ReportItemSet id='IIIc_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Additional Comments" private="true">
             <ReportItem id="IIIc" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="RES_RESACT_OTHER" type="TextareaReportItem">
@@ -346,7 +349,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="budget" name="Budget Request" blobSection="RES_BUDGET" tooltip="Budget request and justification" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true" disabled="true">
+    <ReportSection id="budget" name="Budget Request" blobSection="RES_BUDGET" tooltip="Budget request and justification" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true">
         <Instructions>
             <![CDATA[
                 <p>Below find a budget template, which you should download, complete with your funding request for 2013-14 and upload. As with the past year, the amounts you will be allocating to different projects should be listed in different columns. Please note:<br />
@@ -477,7 +480,7 @@ Note that there are two distinct differences between the online document that yo
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="submit" name="Submit" tooltip="PDF generation and submission to the RMC" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true" disabled="true">
+    <ReportSection id="submit" name="Submit" tooltip="PDF generation and submission to the RMC" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
         <Instructions>
             <![CDATA[
                     <p>To submit your report, follow the following three steps.</p>
