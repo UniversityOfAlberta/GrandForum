@@ -33,6 +33,8 @@ class EvolveProjectTab extends ProjectTab {
         $create->getElementById("evolve_subprojectdd_row")->remove();
         $create->getElementById("evolve_challenges_set")->remove();
         $create->getElementById("evolve_description_row")->remove();
+        $create->getElementById("evolve_problem_row")->remove();
+        $create->getElementById("evolve_solution_row")->remove();
 
         $create->getElementById("evolve_form_table")->insertBefore($projRow, 'evolve_acronym_row');
         $create->getElementById("evolve_form_table")->insertBefore($newProjRow, 'evolve_acronym_row');

@@ -26,9 +26,12 @@ class ProjectEvolution extends SpecialPage {
         //$tabbedPage->addTab(new MergeProjectTab());
         $tabbedPage->addTab(new InactivateProjectTab());
         $tabbedPage->showPage();
-        
+        $wgOut->addHTML("<script type='text/javascript'>
+            $('h1.custom-title').hide();
+        </script>");
         $wgOut->output();
         $wgOut->disable();
+        
         return true;
     }
 }

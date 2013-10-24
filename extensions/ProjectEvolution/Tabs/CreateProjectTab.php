@@ -45,16 +45,20 @@ EOF;
         {$projectOptions}
         </select>
         <script type='text/javascript'>
+            var options = Array();
+        
             $(document).ready(function(){
+                oldOptions = $("#new_subproject_parent_dd option");
                 updateParents();
                 $("[name=new_phase]").change(updateParents);
             });
             
             function updateParents(){
-                $("#new_subproject_parent_dd option").show();
+                $("#new_subproject_parent_dd").empty();
                 var phase = $("[name=new_phase]").val();
-                $("#new_subproject_parent_dd option").not("[phase=" + phase + "]").hide();
+                $("#new_subproject_parent_dd").append(oldOptions);
                 $('#new_subproject_parent_dd').val(0);
+                $("#new_subproject_parent_dd option").not("[value=0]").not("[phase=" + phase + "]").remove();
             }
         
             function subReaction(){
