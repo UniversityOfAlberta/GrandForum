@@ -200,6 +200,9 @@ class BudgetReportItem extends AbstractReportItem {
                     if($project->deleted && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
                         $errors[] = "'{$project->getName()}' is not continuing next year";
                     }
+                    else if($project->getPhase() != 2){
+                        $errors[] = "'{$project->getName()}' is not a phase 2 project";
+                    }
                 }
             }
         }
@@ -220,6 +223,9 @@ class BudgetReportItem extends AbstractReportItem {
                 if($project != null && $project->getName() != null){
                     if($project->deleted && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
                         $errors[] = "'{$project->getName()}' is not continuing next year";
+                    }
+                    else if($project->getPhase() != 2){
+                        $errors[] = "'{$project->getName()}' is not a phase 2 project";
                     }
                     // Now look for the people
                     $people = $budget->copy()->select(V_PROJ, array($project->getName()))->where(V_PERS)->xls;
