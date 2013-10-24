@@ -2553,7 +2553,7 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_project_leaders l
                 WHERE l.user_id = '{$this->id}'
-                AND l.type = 'co-lead'\n";
+                AND l.type = 'co-leader'\n";
       
         if(!$history){
             $sql .= "AND (l.end_date = '0000-00-00 00:00:00'
