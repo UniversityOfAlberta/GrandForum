@@ -15,7 +15,7 @@ class ProjectEvolution extends SpecialPage {
     
     function ProjectEvolution(){
         wfLoadExtensionMessages('ProjectEvolution');
-		SpecialPage::SpecialPage("ProjectEvolution", MANAGER.'+', true, 'runProjectEvolution');
+		SpecialPage::SpecialPage("ProjectEvolution", STAFF.'+', true, 'runProjectEvolution');
     }    
     
     function run(){
