@@ -2541,8 +2541,11 @@ class Person extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         $projects = array();
         foreach($data as $row){
-            $projects[] = Project::newFromId($row['project_id']);
+            $project = Project::newFromId($row['project_id']);
+            $projects[$project->getName()] = $project;
         }
+        ksort($projects);
+        $projects = array_values($projects);
         return $projects;
     }
     
@@ -2559,8 +2562,11 @@ class Person extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         $projects = array();
         foreach($data as $row){
-            $projects[] = Project::newFromId($row['project_id']);
+            $project = Project::newFromId($row['project_id']);
+            $projects[$project->getName()] = $project;
         }
+        ksort($projects);
+        $projects = array_values($projects);
         return $projects;
     }
     
@@ -2577,8 +2583,11 @@ class Person extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         $projects = array();
         foreach($data as $row){
-            $projects[] = Project::newFromId($row['project_id']);
+            $project = Project::newFromId($row['project_id']);
+            $projects[$project->getName()] = $project;
         }
+        ksort($projects);
+        $projects = array_values($projects);
         return $projects;
     }
     
@@ -2595,8 +2604,11 @@ class Person extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         $projects = array();
         foreach($data as $row){
-            $projects[] = Project::newFromId($row['project_id']);
+            $project = Project::newFromId($row['project_id']);
+            $projects[$project->getName()] = $project;
         }
+        ksort($projects);
+        $projects = array_values($projects);
         return $projects;
     }
     
