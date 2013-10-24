@@ -29,7 +29,7 @@ class CreateProjectTab extends ProjectTab {
         foreach(Project::getAllProjects() as $project){
             $project_id = $project->getId();
             $project_name = $project->getName();
-            $projectOptions .= "<option value='{$project_id}'>{$project_name}</option>\n";
+            $projectOptions .= "<option phase='{$project->getPhase()}' value='{$project_id}'>{$project_name}</option>\n";
         }
         $subp =<<<EOF
         <input type='radio' onclick='subReaction();' id='{$pre}_subproject_n'  name='{$pre}_subproject' value='No' checked='checked' />No
@@ -45,16 +45,28 @@ EOF;
         {$projectOptions}
         </select>
         <script type='text/javascript'>
-        function subReaction(){
-            if($('#new_subproject_y').is(':checked')) { 
-                 $('#new_subproject_parent_dd').show();
-            }
-            else{
+            $(document).ready(function(){
+                updateParents();
+                $("[name=new_phase]").change(updateParents);
+            });
+            
+            function updateParents(){
+                $("#new_subproject_parent_dd option").show();
+                var phase = $("[name=new_phase]").val();
+                $("#new_subproject_parent_dd option").not("[phase=" + phase + "]").hide();
                 $('#new_subproject_parent_dd').val(0);
-                $('#new_subproject_parent_dd').hide();
             }
-        }
         
+            function subReaction(){
+                updateParents();
+                if($('#new_subproject_y').is(':checked')) { 
+                     $('#new_subproject_parent_dd').show();
+                }
+                else{
+                    $('#new_subproject_parent_dd').val(0);
+                    $('#new_subproject_parent_dd').hide();
+                }
+            }
         </script>
 EOF;
         $subprojectDDRow->append(new CustomElement("{$pre}_subproject_label", "", "", "", VALIDATE_NOTHING));
