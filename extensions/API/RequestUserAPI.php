@@ -29,7 +29,7 @@ class RequestUserAPI extends API{
 		    }
 		}
 		$name = $_POST['wpName'];
-		if(!preg_match("/^[a-zA-Z\-]+\.[a-zA-Z\-]+$/", $name)){
+		if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $name)){
 		    if($doEcho){
 		        echo "This User Name is not in the format 'FirstName.LastName'.\n";
 		        exit;
