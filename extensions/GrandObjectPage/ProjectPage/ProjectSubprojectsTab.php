@@ -40,7 +40,7 @@ class ProjectSubprojectsTab extends AbstractTab {
 
         $me = Person::newFromId($wgUser->getId());
         
-        $subprojects = $project->getSubprojects();
+        $subprojects = $project->getSubProjects();
        
         $this->html .=<<<EOF
             <h2>Current Sub-Projects</h2>

@@ -322,8 +322,13 @@ Describe your involvement with receptor organizations, industry partners and Pro
             <ReportItemSet id="ProjectLimit_IId" type="LimitReportItemSet" limit="3600">
                 <ReportItemSet id="projects" type="PersonFutureProjectReportItemSet">
                     <ReportItem id="IIIa" width="100%" blobType="BLOB_TEXT" blobItem="RES_RESACT_NEXTPLANS" type="TextareaReportItem">
-                        <![CDATA[<i>{$project_name}</i><br />{$item}<br />]]>
+                        <![CDATA[<i>{$project_name}</i><br />{$item}<br /><br />]]>
                     </ReportItem>
+                    <ReportItemSet id="subprojects" type="PersonFutureProjectReportItemSet">
+                        <ReportItem id="IIIa" width="100%" blobType="BLOB_TEXT" blobItem="RES_RESACT_NEXTPLANS" type="TextareaReportItem">
+                            <![CDATA[<div style="margin-left:50px;"><i>{$project_name}:</i><br />{$item}<br /><br /></div>]]>
+                        </ReportItem>
+                    </ReportItemSet>
                 </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>

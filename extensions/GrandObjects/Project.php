@@ -458,6 +458,15 @@ EOF;
         return $created;
     }
     
+    function getDeleted(){
+        if($this->isDeleted()){
+            return $this->getEffectiveDate();
+        }
+        else{
+            return "0000-00-00 00:00:00";
+        }
+    }
+    
     // Returns when the evolution state took place
     function getEffectiveDate(){
         return $this->effectiveDate;
@@ -1127,22 +1136,40 @@ EOF;
     }
 
     // Get the subprojects, if any
-    function getSubprojects(){
+    function getSubProjects(){
         $subprojects = array();
 
-        $sql =<<<EOF
-            SELECT p.*
-            FROM grand_project p
-            WHERE p.parent_id = '{$this->id}'
-            ORDER BY p.name
-EOF;
-        
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('grand_project'),
+                                    array('*'),
+                                    array('parent_id' => EQ($this->id)),
+                                    array('name' => 'ASC'));
         foreach($data as $row){
             $subproject = Project::newFromId($row['id']);
-            $subprojects[] = $subproject;
+            if(!$subproject->isDeleted()){
+                $subprojects[] = $subproject;
+            }
         }
+        return $subprojects;
+    }
+    
+    // Get the subprojects, if any
+    function getSubProjectsDuring($startDate=REPORTING_CYCLE_START, $endDate=REPORTING_CYCLE_END){
+        $subprojects = array();
 
+        $data = DBFunctions::select(array('grand_project'),
+                                    array('*'),
+                                    array('parent_id' => EQ($this->id)),
+                                    array('name' => 'ASC'));
+        foreach($data as $row){
+            $subproject = Project::newFromId($row['id']);
+            if((($this->deleted &&
+                 strcmp($this->effectiveDate, $endDate) <= 0 &&
+                 strcmp($this->effectiveDate, $startDate) >= 0) ||
+                !$this->deleted) && 
+               $this->getCreated() <= $endDate){
+                $subprojects[] = $subproject;
+            }
+        }
         return $subprojects;
     }
     
