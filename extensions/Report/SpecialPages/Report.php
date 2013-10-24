@@ -33,12 +33,13 @@ class Report extends AbstractReport{
 		else if(count($person->leadership()) > 0){
 		    $projects = $person->leadership();
 		    $project = $projects[0];
-		    if($project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
-		        $page = "Report?report=ProjectFinalReport&project={$project->getName()}";
-		    }
-		    else if(!$project->isDeleted() && 
-		            strcmp($project->getCreated(), REPORTING_CYCLE_END) <= 0){
-		        $page = "Report?report=ProjectReport&project={$project->getName()}";
+		    if(!$project->isSubProject()){
+		        if($project->getPhase() < PROJECT_PHASE || $project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
+		            $page = "Report?report=ProjectFinalReport&project={$project->getName()}";
+		        }
+		        else if(!$project->isDeleted()){
+		            $page = "Report?report=ProjectReport&project={$project->getName()}";
+		        }
 		    }
 		}
 		else if($person->isEvaluator()){
@@ -95,26 +96,27 @@ class Report extends AbstractReport{
             if(count($leadership) > 0){
                 $projectDone = array();
                 foreach($leadership as $project){
-                    if(isset($projectDone[$project->getName()])){
-                        continue;
+                    if(!$project->isSubProject()){
+                        if(isset($projectDone[$project->getName()])){
+                            continue;
+                        }
+                        $projectDone[$project->getName()] = true;
+                        if($project->getPhase() < PROJECT_PHASE || ($project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR)){
+		                    $type = "ProjectFinalReport";
+		                }
+		                else if(!$project->isDeleted()){
+		                    $type = "ProjectReport";
+		                }
+		                else{
+		                    continue;
+		                }
+                        @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "$type" && $_GET['project'] == $project->getName()) ? "selected" : false;
+                        $content_actions[] = array (
+                                 'class' => $class,
+                                 'text'  => "{$project->getName()}",
+                                 'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=$type&project={$project->getName()}",
+                                );
                     }
-                    $projectDone[$project->getName()] = true;
-                    if($project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
-		                $type = "ProjectFinalReport";
-		            }
-		            else if(!$project->isDeleted() && 
-		                    strcmp($project->getCreated(), REPORTING_CYCLE_END) <= 0){
-		                $type = "ProjectReport";
-		            }
-		            else{
-		                continue;
-		            }
-                    @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "$type" && $_GET['project'] == $project->getName()) ? "selected" : false;
-                    $content_actions[] = array (
-                             'class' => $class,
-                             'text'  => "{$project->getName()}",
-                             'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=$type&project={$project->getName()}",
-                            );
                 }
             }
             

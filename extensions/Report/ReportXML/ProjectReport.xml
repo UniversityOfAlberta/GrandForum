@@ -1,43 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Project Report" reportType="RP_LEADER" pdfType="RPTP_LEADER" pdfFiles="ProjectReportPDF,ProjectReportComments,ProjectReportMilestones" personId="0" ajax="true" disabled="false">
     <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
+            <SectionPermission id="status" permissions="rw" />
+            <SectionPermission id="dashboard" permissions="rw" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="subprojects" permissions="rw" />
+            <SectionPermission id="comments" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="COPL">
+            <SectionPermission id="status" permissions="rw" />
+            <SectionPermission id="dashboard" permissions="rw" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="subprojects" permissions="rw" />
+            <SectionPermission id="comments" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PM">
+            <SectionPermission id="status" permissions="rw" />
+            <SectionPermission id="dashboard" permissions="rw" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="subprojects" permissions="rw" />
+            <SectionPermission id="comments" permissions="r" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="" />
+        </Role>
         <!--
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
-            <SectionPermission id="status" permissions="rw" />
-            <SectionPermission id="dashboard" permissions="rw" />
-            <SectionPermission id="report" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="comments" permissions="rw" />
-            <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="COPL">
-            <SectionPermission id="status" permissions="rw" />
-            <SectionPermission id="dashboard" permissions="rw" />
-            <SectionPermission id="report" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="comments" permissions="rw" />
-            <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PM">
-            <SectionPermission id="status" permissions="rw" />
-            <SectionPermission id="dashboard" permissions="rw" />
-            <SectionPermission id="report" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="comments" permissions="r" />
-            <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="" />
-        </Role>
-        -->
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="status" permissions="r" />
             <SectionPermission id="dashboard" permissions="r" />
             <SectionPermission id="report" permissions="r" />
-            <SectionPermission id="milestones" permissions="r" />
+            <SectionPermission id="subprojects" permissions="r" />
             <SectionPermission id="comments" permissions="r" />
             <SectionPermission id="budget" permissions="r" />
             <SectionPermission id="review" permissions="r" />
@@ -47,7 +46,7 @@
             <SectionPermission id="status" permissions="r" />
             <SectionPermission id="dashboard" permissions="r" />
             <SectionPermission id="report" permissions="r" />
-            <SectionPermission id="milestones" permissions="r" />
+            <SectionPermission id="subprojects" permissions="r" />
             <SectionPermission id="comments" permissions="r" />
             <SectionPermission id="budget" permissions="r" />
             <SectionPermission id="review" permissions="r" />
@@ -57,12 +56,12 @@
             <SectionPermission id="status" permissions="r" />
             <SectionPermission id="dashboard" permissions="r" />
             <SectionPermission id="report" permissions="r" />
-            <SectionPermission id="milestones" permissions="r" />
+            <SectionPermission id="subprojects" permissions="r" />
             <SectionPermission id="comments" permissions="r" />
             <SectionPermission id="budget" permissions="r" />
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="" />
-        </Role>
+        </Role>-->
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
     <ReportSection id="status" tooltip="Evaluation of the project report against the reporting rules" name="Report Completion Status" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
@@ -234,84 +233,13 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="milestones" tooltip="Discussion of progress against projects' milestones" name="Project Milestones" blobSection="LDR_MILESTONE" type="EditableReportSection" renderpdf="true" reportCharLimits="false">
+    <ReportSection id="subprojects" tooltip="Discussion of progress against Sub-Projects" name="Sub-Projects" blobSection="LDR_MILESTONE" type="EditableReportSection" renderpdf="true" reportCharLimits="false">
         <Instructions>
             <![CDATA[
-                <p>In the "Milestone Report" an overview of the project progress against the milestones that were "active" during the past year is reported. You can reference Milestones by writing "@Milestone ID" in the text box or you can start typing "@Milestone Title" and select the milestone from the drop-down box appearing below the overview textbox.</p>
+                
             ]]>
         </Instructions>
-        <ReportItem id="milestone_desc" width="100%" blobType="BLOB_TEXT" blobItem="LDR_MILE_REPORT" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones" showNotReferenced="true" anchor="true" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1800">
-            <![CDATA[
-                <h3>Milestone Report</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="ni_summary" type="PopupReportItem" title="See NI Comments" text="{$milestone_ni_summaries}">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="edit" type="StaticReportItem">
-            <![CDATA[<h3>Milestones</h3><p>You can edit the project milestones at <a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/{$project_name}:Main'><b>{$project_name}</b></a></p>]]>
-        </ReportItem>
-        <ReportItem id="table_head" type="StaticReportItem">
-            <![CDATA[
-                <table style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'>
-                    <tr>
-                        <th>Milestone</th><th>Description</th>
-                    </tr>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="milestones" type="MilestoneReportItemSet">
-            <ReportItem id="milestone_data" type="StaticReportItem">
-                <![CDATA[
-                    <tr>
-                        <td style='white-space:nowrap;' valign='top'>
-                            <table>
-                                <tr><td><b>Id:</b></td><td align='left'>{$milestone_id}</td></tr>
-                                <tr><td><b>Status:</b></td><td align='left'>{$milestone_status}</td></tr>
-                                <tr><td style='white-space:nowrap;'><b>Changes:</b></td><td align='left'>{$milestone_changes}</td></tr>
-                            </table>
-                ]]>
-            </ReportItem>
-            <ReportItem id="milestone_full_description" type="PopupReportItem" title="See Description" text="{$milestone_description}">
-                <![CDATA[<br />{$item}<br />]]>
-            </ReportItem>
-            <ReportItem id="milestone_history" type="PopupReportItem" title="See History" url="{$wgServer}{$wgScriptPath}/index.php?action=api.getProjectMilestoneHistory/{$milestone_id}/{$last_year}-12-01" text="Loading...">
-                <![CDATA[{$item}<br />]]>
-            </ReportItem>
-            <ReportItem id="milestone_ni_comments" type="PopupReportItem" title="See NI Comments" text="{$milestone_ni_comments}">
-                <![CDATA[{$item}]]>
-            </ReportItem>
-            <ReportItem id="milestone_data" type="StaticReportItem">
-                <![CDATA[
-                    </td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="milestone_diff" type="StaticReportItem" oldText="{$milestone_oldtitle}" newText="{$milestone_title}">
-                <![CDATA[
-                    <td valign='top' style='border-bottom:0;'><p><b>Title:</b> {$milestone_title}</p>
-                ]]>
-            </ReportItem>
-            <ReportItem id="milestone_diff2" type="StaticReportItem" oldText="{$milestone_olddescription}" newText="{$milestone_description}">
-                <![CDATA[
-                    <p><b>Description:</b> {$milestone_description}</p>
-                ]]>
-            </ReportItem>
-            <ReportItem id="milestone_diff3" type="StaticReportItem" oldText="{$milestone_oldassessment}" newText="{$milestone_assessment}">
-                <![CDATA[
-                    <p><b>Assessment:</b> {$milestone_assessment}</p>
-                ]]>
-            </ReportItem>
-            <ReportItem id="milestone_data" type="StaticReportItem">
-                <![CDATA[
-                    </td></tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="table_foot" type="StaticReportItem">
-            <![CDATA[
-                </table>
-            ]]>
-        </ReportItem>
+        
     </ReportSection>
     <ReportSection id="comments" tooltip="Comments on NI contributions to the project" name="Comments" blobSection="LDR_NICOMMENTS" type="EditableReportSection" autosave="true" renderpdf="false" reportCharLimits="false">
         <Instructions>

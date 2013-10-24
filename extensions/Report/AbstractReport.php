@@ -506,8 +506,7 @@ abstract class AbstractReport extends SpecialPage {
             foreach($perms as $perm){
                 switch($type){
                     case "Role":
-                        if($this->project != null &&
-                           strcmp($this->project->getCreated(), REPORTING_CYCLE_END) <= 0 && ($perm['perm'] == PL || $perm['perm'] == COPL) && 
+                        if($this->project != null && ($perm['perm'] == PL || $perm['perm'] == COPL) && 
                            !$me->isProjectManager()){
                             $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
                             if(count($project_objs) > 0){

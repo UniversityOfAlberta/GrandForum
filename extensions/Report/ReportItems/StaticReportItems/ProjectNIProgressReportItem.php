@@ -46,7 +46,6 @@ class ProjectNIProgressReportItem extends StaticReportItem {
         $nRequested = 0;
 		foreach($people as $p){
 		    $pers = Person::newFromId($p['person_id']);
-		    
             $allocBudget = $allocatedBudget->copy()->select(V_PERS_NOT_NULL, array($pers->getReversedName()));
             if(($allocBudget->nRows() * $allocBudget->nCols()) > 0){
                 $nAllocated++;
@@ -57,11 +56,11 @@ class ProjectNIProgressReportItem extends StaticReportItem {
             }
         }
         $error = "";
-        if($project->isDeleted() && $nRequested > 0){
+        if($project->isDeleted() || $project->getPhase() < PROJECT_PHASE && $nRequested > 0){
             $error = "class='inlineError'";
         }
         $details .= "<tr><td style='white-space:nowrap;' valign='top' rowspan='3'><b>NI Progress</b></td><td>{$nSubmitted} of the {$nPeople} NIs have submitted their reports\n</td></tr>";
-        $details .= "<tr><td>{$nAllocated} of the {$nPeople} NIs have uploaded a revised budget for 2012 allocated funds\n</td></tr>";
+        $details .= "<tr><td>{$nAllocated} of the {$nPeople} NIs have uploaded a revised budget for ".$this->getReport()->year." allocated funds\n</td></tr>";
         $details .= "<tr><td><span $error>{$nRequested} of the {$nPeople} NIs have uploaded a budget request</span>\n</td></tr>";
         return $details;
 	}
