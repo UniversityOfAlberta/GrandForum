@@ -9,7 +9,7 @@ class SelectBox extends UIElement {
         $this->options = $options;
     }
     
-    function render(){
+    function renderSelect(){
         $html = "<select {$this->renderAttr()} name='{$this->id}'>";
         foreach($this->options as $option){
             $selected = "";
@@ -18,7 +18,12 @@ class SelectBox extends UIElement {
             }
             $html .= "<option $selected>{$option}</option>";
         }
-        return $html."</select>";
+        $html .= "</select>";
+        return $html;
+    }
+    
+    function render(){
+        return $this->renderSelect();
     }
     
 }

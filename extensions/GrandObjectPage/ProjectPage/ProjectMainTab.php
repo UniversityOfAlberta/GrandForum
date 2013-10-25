@@ -151,7 +151,7 @@ EOF;
         $edit = $this->visibility['edit'];
         $project = $this->project;
 
-        $champion = $project->getChampion();
+        $champions = $project->getChampions();
         $this->html .= "<h2><span class='mw-headline'>Project Champion</span></h2>";
 
         if(!$edit){
@@ -159,25 +159,28 @@ EOF;
                 $this->html .= "<strong>N/A</strong>";
             }
             else{
-                $this->html .=<<<EOF
-                <table cellspacing="0" cellpadding="2">
-                <tr><td><strong>Name:</strong></td><td>{$champion['name']}</td></tr>
-                <tr><td><strong>Email:</strong></td><td>{$champion['email']}</td></tr>
-                <tr><td><strong>Organization:</strong></td><td>{$champion['org']}</td></tr>
-                <tr><td><strong>Title:</strong></td><td>{$champion['title']}</td></tr>
-                </table>
+                foreach($champions as $champion){
+                    $this->html .= <<<EOF
+                    <table cellspacing="0" cellpadding="2">
+                        <tr><td><strong>Name:</strong></td><td>{$champion['user']->getNameForForms()}</td></tr>
+                        <tr><td><strong>Email:</strong></td><td>{$champion['user']->getEmail()}</td></tr>
+                        <tr><td><strong>Organization:</strong></td><td>{$champion['org']}</td></tr>
+                        <tr><td><strong>Title:</strong></td><td>{$champion['title']}</td></tr>
+                    </table>
 EOF;
+                }
             }
         }
         else{
-            $this->html .=<<<EOF
-                <table cellspacing="0" cellpadding="2">
-                <tr><td><strong>Name:</strong></td><td><input type="text" name="champion_name" value="{$champion['name']}" /></td></tr>
-                <tr><td><strong>Email:</strong></td><td><input type="text" name="champion_email" value="{$champion['email']}" /></td></tr>
-                <tr><td><strong>Organization:</strong></td><td><input type="text" name="champion_org" value="{$champion['org']}" /></td></tr>
-                <tr><td><strong>Title:</strong></td><td><input type="text" name="champion_title" value="{$champion['title']}" /></td></tr>
-                </table>
+            foreach($champions as $champion){
+                $this->html .= <<<EOF
+                    <table cellspacing="0" cellpadding="2">
+                        <tr><td><strong>Name:</strong></td><td><input type="text" name="champion_id" value="{$champion['name']}" /></td></tr>
+                        <tr><td><strong>Organization:</strong></td><td><input type="text" name="champion_org" value="{$champion['org']}" /></td></tr>
+                        <tr><td><strong>Title:</strong></td><td><input type="text" name="champion_title" value="{$champion['title']}" /></td></tr>
+                    </table>
 EOF;
+            }
         }
     }
 

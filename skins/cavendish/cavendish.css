@@ -385,8 +385,46 @@ input {
 	display:inline-block;
 	font-family: Verdana, Arial, sans-serif;
 	font-size: 10pt;
+	line-height: 15px;
 	padding:3px 3px;
 	margin:2px;
+}
+
+.custom-combobox-input {
+    background: #FFFFFF !important;
+    -moz-border-radius-topright: 0;
+	-webkit-border-top-right-radius: 0;
+	border-top-right-radius: 0;
+	-moz-border-radius-bottomright: 0;
+	-webkit-border-bottom-right-radius: 0;
+	border-bottom-right-radius: 0;
+	border: 1px solid #888 !important;
+	margin-right: 0 !important;
+	max-height: 15px !important;
+}
+
+.custom-combobox {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-combobox-toggle, .custom-combobox-toggle:active, .custom-combobox-toggle:hover, .custom-combobox-toggle.ui-state-hover {
+    margin-left: -1px !important;
+    top: 0 !important;
+    -moz-border-radius-topleft: 0 !important;
+	-webkit-border-top-left-radius: 0 !important;
+	border-top-left-radius: 0 !important;
+	-moz-border-radius-bottomright: 0 !important;
+	-webkit-border-bottom-left-radius: 0 !important;
+	border-bottom-left-radius: 0 !important;
+	
+	padding-top: 3px !important;
+    padding-bottom: 3px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    
+    line-height: 15px !important;
+    vertical-align: top;
 }
 
 input.dark {
@@ -437,7 +475,7 @@ input[type=button], input[type=submit], .button, .button:visited, .ui-button, .b
     color:#606060 !important;
     font-family: Arial, Verdana, sans-serif !important;
     font-size:13px;
-    line-height:1em;
+    line-height:15px;
     padding:5px 20px;
     text-decoration:none;
     font-weight: bold !important;
@@ -475,7 +513,7 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:ho
     background-color:#E8E8E8;
     font-family: Arial, Verdana, sans-serif;
     font-size:13px;
-    line-height:1em;
+    line-height:15px;
     color:#8C529D !important;
     display:inline-block;
     border-color:#888888;
@@ -490,7 +528,7 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:ho
 	white-space:nowrap;
 }
 
-input[type=button]:active, input[type=submit]:active, .button:active, .ui-button:active, button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):active {
+input[type=button]:active, input[type=submit]:active, .button:active, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):active {
     position:relative;
     top:1px;
     text-decoration:none;

@@ -254,6 +254,7 @@ class APIRequest{
 		$this->addAction('Projects', 'evolveProject', new EvolveProjectAPI());
 		$this->addAction('Projects', 'deleteProjectMember', new DeleteProjectMemberAPI());
 		$this->addAction('Projects', 'deleteProject', new DeleteProjectAPI());
+		$this->addAction('Projects', 'deleteProjectChampions', new DeleteProjectChampionsAPI());
 		//GET
 		$this->addAction('Projects', 'getProjectInfo', new ProjectInfoAPI());
 		

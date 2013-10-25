@@ -16,7 +16,7 @@ class InactivateProjectTab extends ProjectTab {
         
         $projRow = new FormTableRow("delete_project_row");
         $projRow->append(new Label("delete_project_label", "Project", "Which project to evolve", VALIDATE_NOT_NULL));
-        $projRow->append(new SelectBox("delete_project", "Project", "NO PROJECT", $projectNames, VALIDATE_NOT_NULL + VALIDATE_PROJECT));
+        $projRow->append(new ComboBox("delete_project", "Project", "NO PROJECT", $projectNames, VALIDATE_NOT_NULL + VALIDATE_PROJECT));
         
         $create = CreateProjectTab::createForm('delete');
         

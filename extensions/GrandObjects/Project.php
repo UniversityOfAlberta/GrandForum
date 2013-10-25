@@ -589,25 +589,24 @@ EOF;
         return $this->multimedia;
     }
     
-    // Get Champion
-    function getChampion(){
-        $champ = array('name'=>"", 'email'=>"", 'org'=>"", 'title'=>"");
-
-        $sql = "SELECT * 
-                FROM grand_project_champions
-                WHERE project_id = '{$this->id}'
-                ORDER BY id DESC LIMIT 1";
-
-        $data = DBFunctions::execSQL($sql);
-        
-        if(count($data) > 0){
-            $champ['name'] = $data[0]['champion_name'];
-            $champ['email'] = $data[0]['champion_email'];
-            $champ['org'] = $data[0]['champion_org'];
-            $champ['title'] = $data[0]['champion_title'];
+    // Get Champions
+    function getChampions(){
+        $champs = array();
+        $data = DBFunctions::select(array('grand_project_champions'),
+                                    array('*'),
+                                    array('project_id' => EQ($this->id),
+                                          'start_date' => LTEQ(COL('CURRENT_TIMESTAMP')),
+                                          'end_date' => GTEQ(COL('CURRENT_TIMESTAMP')),
+                                          WHERE_OR('end_date') => EQ('0000-00-00 00:00:00')),
+                                    array('id' => 'DESC'));
+        foreach($data as $row){
+            $champs[] = array('user' => Person::newFromId($row['user_id']),
+                              'org' => $row['champion_org'],
+                              'title' => $row['champion_title'],
+                              'start_date' => $row['start_date'],
+                              'end_date' => $row['end_date']);
         }
-        
-        return $champ;
+        return $champs;
     }
 
     // Returns the leader of this Project
