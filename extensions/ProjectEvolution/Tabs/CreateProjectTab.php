@@ -25,7 +25,7 @@ class CreateProjectTab extends ProjectTab {
         $subprojectRow = new FormTableRow("{$pre}_subproject_row");
 
         //Sub-project radio button + parent project drop-down
-        $projectOptions = "<option value='0'>Choose Parent</option>\n";
+        $projectOptions = "<option value='0'> </option>\n";
         foreach(Project::getAllProjects() as $project){
             $project_id = $project->getId();
             $project_name = $project->getName();
@@ -51,6 +51,7 @@ EOF;
                 oldOptions = $("#new_subproject_parent_dd option");
                 updateParents();
                 $("[name=new_phase]").change(updateParents);
+                $(".custom-combobox", $("#new_subproject_parent_dd").parent()).hide();
             });
             
             function updateParents(){
@@ -59,16 +60,18 @@ EOF;
                 $("#new_subproject_parent_dd").append(oldOptions);
                 $('#new_subproject_parent_dd').val(0);
                 $("#new_subproject_parent_dd option").not("[value=0]").not("[phase=" + phase + "]").remove();
+                $("#new_subproject_parent_dd").combobox();
+                $("#new_subproject_parent_dd").hide();
             }
         
             function subReaction(){
                 updateParents();
                 if($('#new_subproject_y').is(':checked')) { 
-                     $('#new_subproject_parent_dd').show();
+                     $(".custom-combobox", $("#new_subproject_parent_dd").parent()).show();
                 }
                 else{
                     $('#new_subproject_parent_dd').val(0);
-                    $('#new_subproject_parent_dd').hide();
+                    $(".custom-combobox", $("#new_subproject_parent_dd").parent()).hide();
                 }
             }
         </script>

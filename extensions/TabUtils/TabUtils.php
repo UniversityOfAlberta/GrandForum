@@ -197,6 +197,9 @@ class TabUtils {
                 else if($wgTitle->getText() == "Impersonate"){
                     $content_actions['impersonate']['class'] = 'selected';
                 }
+                else if($wgTitle->getText() == "ProjectEvolution"){
+                    $content_actions['projectevolution']['class'] = 'selected';
+                }
             }
             return;
         }

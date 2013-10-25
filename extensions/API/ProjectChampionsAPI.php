@@ -36,25 +36,13 @@ class ProjectChampionsAPI extends API{
         
         if(isset($_POST['champion_id']) && !empty($_POST['champion_id'])){
             DBFunctions::begin();
-            $data = DBFunctions::select(array('grand_project_champions'),
-                                        array('id'),
-                                        array('project_id' => EQ($project->getId()),
-                                              'user_id' => EQ($_POST['champion_id'])),
-                                        array('id' => 'DESC'),
-                                        array(1));
-            $last_champ_id = (isset($data[0]['id']))? $data[0]['id'] : null;
-            if(isset($data[0]['id'])){
-                $endDate = EQ(COL('CURRENT_TIMESTAMP'));
-                if(isset($_POST['effective_date'])){
-                    $endDate = $_POST['effective_date'];
-                }
-                DBFunctions::update('grand_project_champions',
-                                    array('end_date' => $endDate),
-                                    array('id' => $last_champ_id,
-                                          'project_id' => $project->getId(),
-                                          'user_id' => $_POST['champion_id']),
-                                    true);
-            }
+            DBFunctions::insert('grand_project_champions',
+                                array('project_id' => $project->getId(),
+                                      'champion_id' => $_POST['champion_id'],
+                                      'champion_org' => $_POST['champion_org'],
+                                      'champion_title' => $_POST['champion_title'],
+                                      'start_date' => EQ(COL('CURRENT_TIMESTAMP'))),
+                                true);
             DBFunctions::commit();
             if(!$noEcho){
                 echo "Project champion updated\n";
