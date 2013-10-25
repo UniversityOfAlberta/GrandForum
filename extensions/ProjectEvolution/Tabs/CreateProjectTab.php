@@ -92,6 +92,25 @@ EOF;
         $effectiveRow->append(new Label("{$pre}_effective_label", "Effective Date", "When this action is to take place", VALIDATE_NOT_NULL));
         $effectiveRow->append(new CalendarField("{$pre}_effective", "Effective Date", "", VALIDATE_NOT_NULL));
         
+        $names = array("");
+        $people = array_merge(Person::getAllPeople(PNI), Person::getAllPeople(CNI));
+        foreach($people as $person){
+            $names[$person->getName()] = $person->getNameForForms();
+        }
+        asort($names);
+        
+        $plRow = new FormTableRow("{$pre}_pl_row");
+        $plRow->append(new Label("{$pre}_pl_label", "Project Leader", "The leader of this Project", VALIDATE_NOTHING));
+        $plRow->append(new ComboBox("{$pre}_pl", "Project Leader", "", $names, VALIDATE_NOTHING));
+        
+        $coplRow = new FormTableRow("{$pre}_copl_row");
+        $coplRow->append(new Label("{$pre}_copl_label", "Co-Project Leader", "The co-leader of this Project", VALIDATE_NOTHING));
+        $coplRow->append(new ComboBox("{$pre}_copl", "Co-Project Leader", "", $names, VALIDATE_NOTHING));
+        
+        $effectiveRow = new FormTableRow("{$pre}_effective_row");
+        $effectiveRow->append(new Label("{$pre}_effective_label", "Effective Date", "When this action is to take place", VALIDATE_NOT_NULL));
+        $effectiveRow->append(new CalendarField("{$pre}_effective", "Effective Date", "", VALIDATE_NOT_NULL));
+        
         $descRow = new FormTableRow("{$pre}_description_row");
         $descRow->append(new Label("{$pre}_description_label", "Description", "The description of the project", VALIDATE_NOTHING));
         $descRow->append(new TextareaField("{$pre}_description", "Description", "", VALIDATE_NOTHING));
@@ -125,6 +144,8 @@ EOF;
         $table->append($typeRow);
         $table->append($phaseRow);
         $table->append($effectiveRow);
+        $table->append($plRow);
+        $table->append($coplRow);
         $table->append($descRow);
         $table->append($probRow);
         $table->append($solRow);
@@ -147,6 +168,7 @@ EOF;
         global $wgMessages;
         $form = self::createForm('new');
         $status = $form->validate();
+        $status = true;
         if($status){
             // Call the API
             $form->getElementById("new_acronym")->setPOST("acronym");
@@ -155,6 +177,8 @@ EOF;
             $form->getElementById("new_type")->setPOST("type");
             $form->getElementById("new_phase")->setPOST("phase");
             $form->getElementById("new_effective")->setPOST("effective_date");
+            $form->getElementById("new_pl")->setPOST("pl");
+            $form->getElementById("new_copl")->setPOST("copl");
             $form->getElementById("new_description")->setPOST("description");
             $form->getElementById("new_challenge")->setPOST("challenge");
             $form->getElementById("new_parent_id")->setPOST("parent_id");
@@ -165,6 +189,18 @@ EOF;
                 return "There was an error Creating the Project";
             }
             else{
+                if($_POST['pl'] != ""){
+                    $_POST['co_lead'] = "False";
+                    $_POST['role'] = $_POST['acronym'];
+                    $_POST['user'] = $_POST['pl'];
+                    APIRequest::doAction('AddProjectLeader', true);
+                }
+                if($_POST['copl'] != ""){
+                    $_POST['co_lead'] = "True";
+                    $_POST['role'] = $_POST['acronym'];
+                    $_POST['user'] = $_POST['copl'];
+                    APIRequest::doAction('AddProjectLeader', true);
+                }
                 $form->reset();
             }
         }

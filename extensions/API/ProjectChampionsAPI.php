@@ -39,7 +39,7 @@ class ProjectChampionsAPI extends API{
             $data = DBFunctions::select(array('grand_project_champions'),
                                         array('id'),
                                         array('project_id' => EQ($project->getId()),
-                                              'user_id' => EQ($_POST['champion_id']))
+                                              'user_id' => EQ($_POST['champion_id'])),
                                         array('id' => 'DESC'),
                                         array(1));
             $last_champ_id = (isset($data[0]['id']))? $data[0]['id'] : null;

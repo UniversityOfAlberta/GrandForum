@@ -1,6 +1,6 @@
 <?php
 
-class ProjectChampionsAPI extends API{
+class DeleteProjectChampionsAPI extends API{
 
     function ProjectChampionsAPI(){
         $this->addPOST("project",true,"The name of the project","MEOW");

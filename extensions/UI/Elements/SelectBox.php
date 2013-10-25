@@ -11,12 +11,16 @@ class SelectBox extends UIElement {
     
     function renderSelect(){
         $html = "<select {$this->renderAttr()} name='{$this->id}'>";
-        foreach($this->options as $option){
+        foreach($this->options as $key => $option){
             $selected = "";
             if($this->value == $option){
                 $selected = " selected";
             }
-            $html .= "<option $selected>{$option}</option>";
+            $value = $option;
+            if(is_string($key)){
+                $value = $key;
+            }
+            $html .= "<option value='".str_replace("'", "&#39;", $value)."' $selected>{$option}</option>";
         }
         $html .= "</select>";
         return $html;
