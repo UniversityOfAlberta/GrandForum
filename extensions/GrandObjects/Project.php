@@ -592,13 +592,18 @@ EOF;
     // Get Champions
     function getChampions(){
         $champs = array();
-        $data = DBFunctions::select(array('grand_project_champions'),
-                                    array('*'),
-                                    array('project_id' => EQ($this->id),
-                                          'start_date' => LTEQ(COL('CURRENT_TIMESTAMP')),
-                                          'end_date' => GTEQ(COL('CURRENT_TIMESTAMP')),
-                                          WHERE_OR('end_date') => EQ('0000-00-00 00:00:00')),
-                                    array('id' => 'DESC'));
+        $sql = "SELECT *
+                FROM grand_project_champions
+                WHERE project_id = {$this->id}
+                AND (
+                    start_date <= CURRENT_TIMESTAMP AND (
+                        end_date >= CURRENT_TIMESTAMP OR
+                        end_date = '0000-00-00 00:00:00'
+                    )
+                )
+                ORDER BY id DESC";
+        $data = DBFunctions::execSQL($sql);
+        
         foreach($data as $row){
             $champs[] = array('user' => Person::newFromId($row['user_id']),
                               'org' => $row['champion_org'],

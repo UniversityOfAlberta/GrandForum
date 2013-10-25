@@ -70,7 +70,7 @@ class ProjectMainTab extends AbstractEditableTab {
             (isset($_POST['champion_org']) && $champ['org'] != $_POST['champion_org']) ||
             (isset($_POST['champion_title']) && $champ['title'] != $_POST['champion_title'])
         ){
-            APIRequest::doAction('ProjectChampions', true);
+            //APIRequest::doAction('ProjectChampions', true);
         }
     }
     
@@ -152,17 +152,17 @@ EOF;
         $project = $this->project;
 
         $champions = $project->getChampions();
-        $this->html .= "<h2><span class='mw-headline'>Project Champion</span></h2>";
+        $this->html .= "<h2><span class='mw-headline'>Project Champions</span></h2>";
 
         if(!$edit){
-            if(empty($champion['name'])){
+            if(count($champions) == 0){
                 $this->html .= "<strong>N/A</strong>";
             }
             else{
                 foreach($champions as $champion){
                     $this->html .= <<<EOF
-                    <table cellspacing="0" cellpadding="2">
-                        <tr><td><strong>Name:</strong></td><td>{$champion['user']->getNameForForms()}</td></tr>
+                    <h3>{$champion['user']->getNameForForms()}</h3>
+                    <table cellspacing="0" cellpadding="2" style='margin-left:15px;'>
                         <tr><td><strong>Email:</strong></td><td>{$champion['user']->getEmail()}</td></tr>
                         <tr><td><strong>Organization:</strong></td><td>{$champion['org']}</td></tr>
                         <tr><td><strong>Title:</strong></td><td>{$champion['title']}</td></tr>
@@ -172,15 +172,17 @@ EOF;
             }
         }
         else{
+            /*
             foreach($champions as $champion){
                 $this->html .= <<<EOF
-                    <table cellspacing="0" cellpadding="2">
+                    <table cellspacing="0" cellpadding="2" style='margin-left:15px;'>
                         <tr><td><strong>Name:</strong></td><td><input type="text" name="champion_id" value="{$champion['name']}" /></td></tr>
                         <tr><td><strong>Organization:</strong></td><td><input type="text" name="champion_org" value="{$champion['org']}" /></td></tr>
                         <tr><td><strong>Title:</strong></td><td><input type="text" name="champion_title" value="{$champion['title']}" /></td></tr>
                     </table>
 EOF;
             }
+            */
         }
     }
 

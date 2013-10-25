@@ -9,9 +9,9 @@ class ComboBox extends SelectBox {
     }
     
     function render(){
-        $html = $this->renderSelect();
+        $html = "<span>".$this->renderSelect()."</span>";
         $html .= "<script type='text/javascript'>
-            $('select[name={$this->id}]').combobox();
+            $('select[name=\"{$this->id}\"]').combobox();
         </script>";
         return $html;
     }

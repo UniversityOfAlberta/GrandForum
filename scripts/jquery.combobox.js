@@ -1,10 +1,18 @@
 (function( $ ) {
     $.widget( "custom.combobox", {
       _create: function() {
+        var next = this.element.next();
+        if(next.hasClass('custom-combobox')){
+            console.log(next);
+            next.remove();
+        }
         this.wrapper = $( "<span>" )
           .addClass( "custom-combobox" )
           .insertAfter( this.element );
  
+
+ 
+        this.element.addClass('combobox');
         this.element.hide();
         this._createAutocomplete();
         this._createShowAllButton();
@@ -13,12 +21,13 @@
       _createAutocomplete: function() {
         var selected = this.element.children( ":selected" ),
           value = selected.val() ? selected.text() : "";
- 
+        var width = $(this.element).width() + 10;
         this.input = $( "<input>" )
           .appendTo( this.wrapper )
           .val( value )
           .attr( "title", "" )
-          .addClass( "custom-combobox-input" )
+          .width(width)
+          .addClass( "custom-combobox-input " +this.uni)
           .autocomplete({
             delay: 0,
             minLength: 0,

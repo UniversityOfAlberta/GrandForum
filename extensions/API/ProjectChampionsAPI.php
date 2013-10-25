@@ -34,11 +34,11 @@ class ProjectChampionsAPI extends API{
             }
         }
         
-        if(isset($_POST['champion_id']) && !empty($_POST['champion_id'])){
+        if(isset($_POST['champion_id']) && !empty($_POST['champion_id']) && $_POST['champion_id'] != 0){
             DBFunctions::begin();
             DBFunctions::insert('grand_project_champions',
                                 array('project_id' => $project->getId(),
-                                      'champion_id' => $_POST['champion_id'],
+                                      'user_id' => $_POST['champion_id'],
                                       'champion_org' => $_POST['champion_org'],
                                       'champion_title' => $_POST['champion_title'],
                                       'start_date' => EQ(COL('CURRENT_TIMESTAMP'))),

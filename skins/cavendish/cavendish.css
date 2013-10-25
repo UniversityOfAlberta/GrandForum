@@ -392,6 +392,7 @@ input {
 
 .custom-combobox-input {
     background: #FFFFFF !important;
+    font-weight: bold;
     -moz-border-radius-topright: 0;
 	-webkit-border-top-right-radius: 0;
 	border-top-right-radius: 0;
@@ -1009,6 +1010,7 @@ li.ui-menu-item > a {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
     margin:0 !important;
+    white-space:nowrap;
 }
 
 li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-item > a.ui-state-focus {
