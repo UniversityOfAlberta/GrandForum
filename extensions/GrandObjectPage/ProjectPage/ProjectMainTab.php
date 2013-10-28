@@ -158,7 +158,7 @@ EOF;
             else{
                 foreach($champions as $champion){
                     $this->html .= <<<EOF
-                    <h3>{$champion['user']->getNameForForms()}</h3>
+                    <h3><a href='{$champion['user']->getUrl()}'>{$champion['user']->getNameForForms()}</a></h3>
                     <table cellspacing="0" cellpadding="2" style='margin-left:15px;'>
                         <tr><td><strong>Email:</strong></td><td>{$champion['user']->getEmail()}</td></tr>
                         <tr><td><strong>Title:</strong></td><td>{$champion['title']}</td></tr>
