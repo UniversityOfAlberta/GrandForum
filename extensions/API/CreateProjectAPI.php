@@ -37,7 +37,7 @@ class CreateProjectAPI extends API{
 	function doAction($noEcho=false){
 	    global $wgUser;
 	    $me = Person::newFromUser($wgUser);
-	    if(!$me->isRoleAtLeast(MANAGER)){
+	    if(!$me->isRoleAtLeast(STAFF)){
 	        return;
 	    }
 		$project = Project::newFromName($_POST['acronym']);
@@ -55,11 +55,6 @@ class CreateProjectAPI extends API{
 	        $row = $data[0];
 	        $nsId = ($row['nsId'] % 2 == 1) ? $row['nsId'] + 1 : $row['nsId'] + 2;
 	    }
-	    // $theme1 = (isset($_POST['theme1'])) ? $_POST['theme1'] : 0;
-	    // $theme2 = (isset($_POST['theme2'])) ? $_POST['theme2'] : 0;
-	    // $theme3 = (isset($_POST['theme3'])) ? $_POST['theme3'] : 0;
-	    // $theme4 = (isset($_POST['theme4'])) ? $_POST['theme4'] : 0;
-	    // $theme5 = (isset($_POST['theme5'])) ? $_POST['theme5'] : 0;
 	    $challenge = (isset($_POST['challenge'])) ? $_POST['challenge'] : 0;
 	    $parent_id = (isset($_POST['parent_id'])) ? $_POST['parent_id'] : 0;
 	    
@@ -131,7 +126,6 @@ class CreateProjectAPI extends API{
 	        Project::$cache = array();
 	        $project = Project::newFromId($nsId);
 	        $_POST['project'] = $_POST['acronym'];
-	        //$_POST['themes'] = "{$theme1},{$theme2},{$theme3},{$theme4},{$theme5}";
 	        APIRequest::doAction('ProjectDescription', true);
 	        //MailingList::createMailingList($project);
 	    }
