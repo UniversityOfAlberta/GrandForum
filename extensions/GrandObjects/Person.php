@@ -2264,7 +2264,7 @@ class Person extends BackboneModel {
             if(isset($this->leadershipCache['current'])){
                 return $this->leadershipCache['current'];
             }
-            $res = DBFunctions::execSQL("SELECT p.name AS project_name 
+            $res = DBFunctions::execSQL("SELECT project_id
                                          FROM grand_project_leaders l, grand_project p
                                          WHERE l.project_id = p.id
                                          AND l.user_id = '{$this->id}'
@@ -2275,13 +2275,13 @@ class Person extends BackboneModel {
             if(isset($this->leadershipCache['history'])){
                 return $this->leadershipCache['history'];
             }
-            $res = DBFunctions::execSQL("SELECT p.name AS project_name 
+            $res = DBFunctions::execSQL("SELECT project_id
                                          FROM grand_project_leaders l, grand_project p
                                          WHERE l.project_id = p.id
                                          AND l.user_id = '{$this->id}'");
         }
         foreach ($res as &$row) {
-            $project = Project::newFromName($row['project_name']);
+            $project = Project::newFromId($row['project_id']);
             if($project != null && $project->getName() != "" && !$project->isDeleted()){
                 $ret[] = $project;
             }

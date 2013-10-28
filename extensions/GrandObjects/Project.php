@@ -94,8 +94,8 @@ class Project extends BackboneModel {
                 return $project;
             }
             $project = new Project($data);
-            self::$cache[$project->id] = &$project;
-            self::$cache[$project->name] = &$project;
+            //self::$cache[$project->id] = &$project;
+            //self::$cache[$project->name] = &$project;
             return $project;
         }
         else
