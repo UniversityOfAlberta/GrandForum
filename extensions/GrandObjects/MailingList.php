@@ -99,7 +99,7 @@ class MailingList {
         $emails = self::$membershipCache[$listname];
         if(count($emails) > 0){
             foreach($emails as $addr){
-                if($addr == $email){
+                if(strtolower($addr) == strtolower($email)){
                     return true;
                 }
             }
