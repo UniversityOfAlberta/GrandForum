@@ -216,7 +216,7 @@
             <![CDATA[<h2>III. Reflections: {$project_name} and GRAND</h2>]]>
         </ReportItem>
     <!-- IIIa. Plans for Next Year -->
-        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Planned activities for {$project_name} in GRAND">
+        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Planned activities for {$project_name} in GRAND" disabled="true">
             <ReportItem id="IIIa" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="TextareaReportItem">
                 <![CDATA[{$item}]]>
             </ReportItem>
@@ -327,7 +327,7 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="budget" tooltip="Budget-request roll-up and justification" name="Project Budget Request" blobSection="LDR_BUDGET" type="EditableReportSection" autosave="true" renderpdf="true">
+    <ReportSection id="budget" tooltip="Budget-request roll-up and justification" name="Project Budget Request" blobSection="LDR_BUDGET" type="EditableReportSection" autosave="true" renderpdf="true" disabled="true">
         <Instructions>
             <![CDATA[
                 <p>This section includes a roll-up of the Budget Request for this project from each of the listed project NIs. Under "Budget Justification", there is a text field to allow for a brief comment on the overall budget request for this project.</p>
