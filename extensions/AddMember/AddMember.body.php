@@ -51,12 +51,12 @@ class UserCreate {
 				                              'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
 		            if($role == PNI || $role == CNI){
 		                $person = Person::newFromId($wgUser->getId());
-		                $command = "echo \"{$person->getEmail()}\" | /usr/lib/mailman/bin/add_members --admin-notify=n --welcome-msg=n -r - grand-forum-researchers";
+		                $command = "echo \"{$wgUser->mEmail}\" | /usr/lib/mailman/bin/add_members --admin-notify=n --welcome-msg=n -r - grand-forum-researchers";
 		                exec($command);
 		            }
 		            else if($role == HQP){
 		                $person = Person::newFromId($wgUser->getId());
-		                $command = "echo \"{$person->getEmail()}\" | /usr/lib/mailman/bin/add_members --admin-notify=n --welcome-msg=n -r - grand-forum-hqps";
+		                $command = "echo \"{$wgUser->mEmail}\" | /usr/lib/mailman/bin/add_members --admin-notify=n --welcome-msg=n -r - grand-forum-hqps";
 		                exec($command);
 		            }
 			    }
@@ -83,7 +83,7 @@ class UserCreate {
 		
 		// Add User MailingList
 		$user = User::newFromId($wgUser->getId());
-		$email = $user->getEmail();
+		$email = $wgUser->mEmail;
 		if($email != null){
 			foreach($user->getGroups() as $group){
 				$listname = str_replace("Project_", "", $group);
