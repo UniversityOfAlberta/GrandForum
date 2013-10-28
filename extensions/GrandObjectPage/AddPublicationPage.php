@@ -153,7 +153,7 @@ function generateScript($category){
                 }
                 
                 function changeLocation(){
-                    var page = escape($('#title').val().replace(/\‘/g, '\'').replace(/\’/g, '\''));
+                    var page = escape($('#title').val().replace(/\‘/g, '\'').replace(/\’/g, '\'').replace(/\“/g, '\"').replace(/\”/g, '\"'));
                     document.location = '$wgServer$wgScriptPath/index.php/{$category}:' + page + '?create';
                 }
                 
