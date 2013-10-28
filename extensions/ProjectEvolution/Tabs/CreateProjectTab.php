@@ -93,7 +93,7 @@ EOF;
         
         $effectiveRow = new FormTableRow("{$pre}_effective_row");
         $effectiveRow->append(new Label("{$pre}_effective_label", "Effective Date", "When this action is to take place", VALIDATE_NOT_NULL));
-        $effectiveRow->append(new CalendarField("{$pre}_effective", "Effective Date", "", VALIDATE_NOT_NULL));
+        $effectiveRow->append(new CalendarField("{$pre}_effective", "Effective Date", (REPORTING_YEAR+1)."-04-01", VALIDATE_NOT_NULL));
         
         $names = array("");
         $people = array_merge(Person::getAllPeople(PNI), Person::getAllPeople(CNI));
@@ -143,10 +143,6 @@ EOF;
         $champFieldSet->append($champTable);
         $champPlusMinus->append($champFieldSet);
         $champRow->append($champPlusMinus);
-        
-        $effectiveRow = new FormTableRow("{$pre}_effective_row");
-        $effectiveRow->append(new Label("{$pre}_effective_label", "Effective Date", "When this action is to take place", VALIDATE_NOT_NULL));
-        $effectiveRow->append(new CalendarField("{$pre}_effective", "Effective Date", "", VALIDATE_NOT_NULL));
         
         $descRow = new FormTableRow("{$pre}_description_row");
         $descRow->append(new Label("{$pre}_description_label", "Description", "The description of the project", VALIDATE_NOTHING));
