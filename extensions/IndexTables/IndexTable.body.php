@@ -123,13 +123,21 @@ class IndexTable {
             $idHeader = "<th>Project Id</th>";
         }
         
+        if($me->isRoleAtLeast(STAFF)){
+            $startPhase = PROJECT_PHASE;
+        }
+        else{
+            $startPhase = 1;
+        }
+        
         $this->text .= "<div id='tabs'><ul>";
-        for($phase = PROJECT_PHASE; $phase > 0; $phase--){
+        for($phase = $startPhase; $phase > 0; $phase--){
             $this->text .= "<li><a href='#tabs-{$phase}'>Phase {$phase}</a></li>";
         }
         $this->text .= "</ul>";
         $data = Project::getAllProjects();
-        for($phase = PROJECT_PHASE; $phase > 0; $phase--){
+        
+        for($phase = $startPhase; $phase > 0; $phase--){
 		    $this->text .= "
                 <div id='tabs-{$phase}'><table class='indexTable' style='display:none;' frame='box' rules='all'>
                 <thead>
