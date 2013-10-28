@@ -172,7 +172,8 @@ EOF;
             $i = 0;
             foreach($champions as $champion){
                 $this->html .= <<<EOF
-                    <div id='champ_div_{$champion['user']->getId()}><fieldset style='display: inline; min-width: 500px;'>
+                    <div id='champ_div_{$champion['user']->getId()}'>
+                        <fieldset style='display: inline; min-width: 500px;'>
                             <legend>{$champion['user']->getNameForForms()}</legend>
                             <input type='hidden' name='champ_name[]' value='{$champion['user']->getName()}' />
                             <table cellspacing="0" cellpadding="2" style='margin-left:15px;'>
