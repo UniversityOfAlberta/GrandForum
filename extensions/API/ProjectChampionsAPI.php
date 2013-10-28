@@ -36,13 +36,32 @@ class ProjectChampionsAPI extends API{
         
         if(isset($_POST['champion_id']) && !empty($_POST['champion_id']) && $_POST['champion_id'] != 0){
             DBFunctions::begin();
-            DBFunctions::insert('grand_project_champions',
-                                array('project_id' => $project->getId(),
-                                      'user_id' => $_POST['champion_id'],
-                                      'champion_org' => $_POST['champion_org'],
-                                      'champion_title' => $_POST['champion_title'],
-                                      'start_date' => EQ(COL('CURRENT_TIMESTAMP'))),
-                                true);
+            $data = DBFunctions::select(array('grand_project_champions'),
+                                        array('id'),
+                                        array('project_id' => EQ($project->getId()),
+                                              'user_id' => EQ($_POST['champion_id']),
+                                              'end_date' => EQ('0000-00-00 00:00:00')),
+                                        array('id' => 'DESC'),
+                                        array(1));
+            if(count($data) > 0){
+                // Update
+                DBFunctions::update('grand_project_champions',
+                                    array('champion_org' => $_POST['champion_org'],
+                                          'champion_title' => $_POST['champion_title']),
+                                    array('id' => $data[0]['id']),
+                                    array(),
+                                    true);
+            }
+            else{
+                // Insert
+                DBFunctions::insert('grand_project_champions',
+                                    array('project_id' => $project->getId(),
+                                          'user_id' => $_POST['champion_id'],
+                                          'champion_org' => $_POST['champion_org'],
+                                          'champion_title' => $_POST['champion_title'],
+                                          'start_date' => EQ(COL('CURRENT_TIMESTAMP'))),
+                                    true);
+            }
             DBFunctions::commit();
             if(!$noEcho){
                 echo "Project champion updated\n";

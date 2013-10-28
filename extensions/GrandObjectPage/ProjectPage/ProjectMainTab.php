@@ -43,13 +43,6 @@ class ProjectMainTab extends AbstractEditableTab {
         $_POST['description'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['description'])));
         $_POST['problem'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['problem'])));
         $_POST['solution'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['solution'])));
-        //$_POST['themes'] = $_POST['t1'].",".$_POST['t2'].",".$_POST['t3'].",".$_POST['t4'].",".$_POST['t5'];
-        // if(stripslashes($_POST['description']) != $this->project->getDescription() ||
-        //    stripslashes($_POST['t1']) != $this->project->getTheme(1) ||
-        //    stripslashes($_POST['t2']) != $this->project->getTheme(2) ||
-        //    stripslashes($_POST['t3']) != $this->project->getTheme(3) ||
-        //    stripslashes($_POST['t4']) != $this->project->getTheme(4) ||
-        //    stripslashes($_POST['t5']) != $this->project->getTheme(5)){
         if( stripslashes($_POST['description']) != $this->project->getDescription() ||
             stripslashes($_POST['problem']) != $this->project->getProblem() ||
             stripslashes($_POST['solution']) != $this->project->getSolution() ){
@@ -63,14 +56,18 @@ class ProjectMainTab extends AbstractEditableTab {
             APIRequest::doAction('ProjectChallenge', true);
         }
 
-        $champ = $this->project->getChampion();
-        if(
-            (isset($_POST['champion_name']) && $champ['name'] != $_POST['champion_name']) ||
-            (isset($_POST['champion_email']) && $champ['email'] != $_POST['champion_email']) ||
-            (isset($_POST['champion_org']) && $champ['org'] != $_POST['champion_org']) ||
-            (isset($_POST['champion_title']) && $champ['title'] != $_POST['champion_title'])
-        ){
-            //APIRequest::doAction('ProjectChampions', true);
+        foreach($_POST['champ_name'] as $key => $name){
+            $_POST['project'] = $this->project->getName();
+            $champ = Person::newFromName($name);
+            $_POST['champion_id'] = $champ->getId();
+            $_POST['champion_title'] = $_POST['champ_title'][$key];
+            $_POST['champion_org'] = $_POST['champ_org'][$key];
+            if(isset($_POST['champ_del'][$key]) && $_POST['champ_del'][$key] == "true"){
+                APIRequest::doAction('DeleteProjectChampions', true);
+            }
+            else{
+                APIRequest::doAction('ProjectChampions', true);
+            }
         }
     }
     
@@ -164,25 +161,78 @@ EOF;
                     <h3>{$champion['user']->getNameForForms()}</h3>
                     <table cellspacing="0" cellpadding="2" style='margin-left:15px;'>
                         <tr><td><strong>Email:</strong></td><td>{$champion['user']->getEmail()}</td></tr>
-                        <tr><td><strong>Organization:</strong></td><td>{$champion['org']}</td></tr>
                         <tr><td><strong>Title:</strong></td><td>{$champion['title']}</td></tr>
+                        <tr><td><strong>Organization:</strong></td><td>{$champion['org']}</td></tr>
                     </table>
 EOF;
                 }
             }
         }
         else{
-            /*
+            $i = 0;
             foreach($champions as $champion){
                 $this->html .= <<<EOF
-                    <table cellspacing="0" cellpadding="2" style='margin-left:15px;'>
-                        <tr><td><strong>Name:</strong></td><td><input type="text" name="champion_id" value="{$champion['name']}" /></td></tr>
-                        <tr><td><strong>Organization:</strong></td><td><input type="text" name="champion_org" value="{$champion['org']}" /></td></tr>
-                        <tr><td><strong>Title:</strong></td><td><input type="text" name="champion_title" value="{$champion['title']}" /></td></tr>
-                    </table>
+                    <div id='champ_div_{$champion['user']->getId()}><fieldset style='display: inline; min-width: 500px;'>
+                            <legend>{$champion['user']->getNameForForms()}</legend>
+                            <input type='hidden' name='champ_name[]' value='{$champion['user']->getName()}' />
+                            <table cellspacing="0" cellpadding="2" style='margin-left:15px;'>
+                                <tr>
+                                    <td align='right' valign='top'><b>Title:</b></td>
+                                    <td valign='top'><input type="text" name="champ_title[]" value="{$champion['title']}" /></td>
+                                </tr>
+                                <tr>
+                                    <td align='right' valign='top'><b>Organization:</b></td>
+                                    <td valign='top'><input type="text" name="champ_org[]" value="{$champion['org']}" /></td>
+                                </tr>
+                                <tr>
+                                    <td align='right' valign='top'><b>Delete?</b></td>
+                                    <td valign='top'><input type="checkbox" name="champ_del[$i]" value="true" /></td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                    </div>
 EOF;
+                $i++;
             }
-            */
+            
+            $names = array("");
+            $people = Person::getAllPeople(CHAMP);
+            foreach($people as $person){
+                $skip = false;
+                foreach($champions as $champ){
+                    if($champ['user']->getId() == $person->getId()){
+                        $skip = true;
+                        break;
+                    }
+                }
+                if(!$skip){
+                    $names[$person->getName()] = $person->getNameForForms();
+                }
+            }
+            asort($names);
+            
+            $champPlusMinus = new PlusMinus("champ_plusminus");
+            $champFieldSet = new FieldSet("champ_fieldset", "New Champion");
+            $champTable = new FormTable("champ_table");
+            
+            $champTableNameRow = new FormTableRow("champ_name_row");
+            $champTableNameRow->append(new Label("champ_name_label", "Name", "The name of the project champion", VALIDATE_NOTHING));
+            $champTableNameRow->append(new ComboBox("champ_name[]", "Name", "", $names, VALIDATE_NOTHING));
+            
+            $champTableTitleRow = new FormTableRow("champ_title_row");
+            $champTableTitleRow->append(new Label("champ_title_label", "Title", "The title of the project champion", VALIDATE_NOTHING));
+            $champTableTitleRow->append(new TextField("champ_title[]", "Title", "", VALIDATE_NOTHING));
+            
+            $champTableOrgRow = new FormTableRow("champ_org_row");
+            $champTableOrgRow->append(new Label("champ_org_label", "Organization", "The organization of the project champion", VALIDATE_NOTHING));
+            $champTableOrgRow->append(new TextField("champ_org[]", "Organization", "", VALIDATE_NOTHING));
+            
+            $champTable->append($champTableNameRow);
+            $champTable->append($champTableTitleRow);
+            $champTable->append($champTableOrgRow);
+            $champFieldSet->append($champTable);
+            $champPlusMinus->append($champFieldSet);
+            $this->html .= $champPlusMinus->render();
         }
     }
 

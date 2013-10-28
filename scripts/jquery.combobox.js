@@ -3,7 +3,6 @@
       _create: function() {
         var next = this.element.next();
         if(next.hasClass('custom-combobox')){
-            console.log(next);
             next.remove();
         }
         this.wrapper = $( "<span>" )

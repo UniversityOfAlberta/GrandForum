@@ -49,9 +49,8 @@ class DeleteProjectChampionsAPI extends API{
                 }
                 DBFunctions::update('grand_project_champions',
                                     array('end_date' => $endDate),
-                                    array('id' => $last_champ_id,
-                                          'project_id' => $project->getId(),
-                                          'user_id' => $_POST['champion_id']),
+                                    array('id' => $last_champ_id),
+                                    array(),
                                     true);
             }
             DBFunctions::commit();

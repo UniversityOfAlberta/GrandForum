@@ -597,7 +597,7 @@ EOF;
                 WHERE project_id = {$this->id}
                 AND (
                     start_date <= CURRENT_TIMESTAMP AND (
-                        end_date >= CURRENT_TIMESTAMP OR
+                        end_date > CURRENT_TIMESTAMP OR
                         end_date = '0000-00-00 00:00:00'
                     )
                 )
