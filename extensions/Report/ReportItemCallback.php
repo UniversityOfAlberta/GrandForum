@@ -9,6 +9,7 @@ class ReportItemCallback {
 		    "this_year" => "getThisYear",
             "next_year" => "getNextYear",
 		    // Projects
+		    "project_id" => "getProjectId",
 			"project_name" => "getProjectName",
 			"project_full_name" => "getProjectFullName",
 			// Milestones
@@ -81,6 +82,14 @@ class ReportItemCallback {
     
     function getNextYear(){
         return REPORTING_YEAR+1;
+    }
+    
+    function getProjectId(){
+    	$project_id = 0;
+    	if($this->reportItem->projectId != 0 ){
+    		$project_id = $this->reportItem->projectId;
+    	}
+    	return $project_id;
     }
     
     function getProjectName(){
