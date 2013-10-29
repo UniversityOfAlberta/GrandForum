@@ -67,6 +67,9 @@ abstract class AbstractReportSection {
         }
         $limit = 0;
         foreach($this->items as $item){
+            if($item->deleted){
+                continue;
+            }
             if($item instanceof ReportItemSet){
                 if($item->getLimit() > 0){
                     $limit += $item->getLimit();
@@ -87,6 +90,9 @@ abstract class AbstractReportSection {
         }
         $nChars = 0;
         foreach($this->items as $item){
+            if($item->deleted){
+                continue;
+            }
             if($item instanceof ReportItemSet){
                 if($item->getLimit() > 0){
                     $nChars += $item->getNChars();
@@ -107,6 +113,9 @@ abstract class AbstractReportSection {
         }
         $nChars = 0;
         foreach($this->items as $item){
+            if($item->deleted){
+                continue;
+            }
             if($item instanceof ReportItemSet){
                 if($item->getLimit() > 0){
                     $nChars += $item->getActualNChars();
@@ -134,6 +143,9 @@ abstract class AbstractReportSection {
         }
         $nFields = 0;
         foreach($this->items as $item){
+            if($item->deleted){
+                continue;
+            }
             if($item instanceof ReportItemSet){
                 if($item->getLimit() > 0){
                     $nFields += $item->getExceedingFields();
@@ -156,6 +168,9 @@ abstract class AbstractReportSection {
         }
         $nFields = 0;
         foreach($this->items as $item){
+            if($item->deleted){
+                continue;
+            }
             if($item instanceof ReportItemSet){
                 if($item->getLimit() > 0){
                     $nFields += $item->getEmptyFields();
@@ -260,7 +275,17 @@ abstract class AbstractReportSection {
     function deleteReportItem($item){
         foreach($this->items as $key => $it){
             if($item->id == $it->id){
-                unset($this->items[$key]);
+                $this->items[$key]->setDeleted(true);
+                //unset($this->items[$key]);
+                return;
+            }
+        }
+    }
+    
+    function undeleteReportItem($item){
+        foreach($this->items as $key => $it){
+            if($item->id == $it->id){
+                $this->items[$key]->setDeleted(false);
                 return;
             }
         }
@@ -346,7 +371,9 @@ abstract class AbstractReportSection {
         //Render all the ReportItems's in the section    
         foreach ($this->items as $item){
             if(!$this->getParent()->topProjectOnly || ($this->getParent()->topProjectOnly && !$item->private)){
-                $item->render();
+                if(!$item->deleted){
+                    $item->render();
+                }
             }
         }
 
@@ -379,7 +406,9 @@ abstract class AbstractReportSection {
         //Render all the ReportItems's in the section    
         foreach ($this->items as $item){
             if(!$this->getParent()->topProjectOnly || ($this->getParent()->topProjectOnly && !$item->private)){
-                $item->renderForPDF();
+                if(!$item->deleted){
+                    $item->renderForPDF();
+                }
             }
         }
     }

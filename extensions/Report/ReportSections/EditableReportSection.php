@@ -69,7 +69,9 @@ class EditableReportSection extends AbstractReportSection {
         //Render all the ReportItems's in the section    
         foreach ($this->items as $item){
             if(!$this->getParent()->topProjectOnly || ($this->getParent()->topProjectOnly && !$item->private)){
-                $item->render();
+                if(!$item->deleted){
+                    $item->render();
+                }
             }
         }
         $disabled = "";
@@ -110,7 +112,9 @@ class EditableReportSection extends AbstractReportSection {
         }
         $nComplete = 0;
         foreach($this->items as $item){
-            $nComplete += $item->getNComplete();
+            if(!$item->deleted){
+                $nComplete += $item->getNComplete();
+            }
         }
         return $nComplete;
     }
@@ -121,7 +125,9 @@ class EditableReportSection extends AbstractReportSection {
         }
         $nFields = 0;
         foreach($this->items as $item){
-            $nFields += $item->getNfields();
+            if(!$item->deleted){
+                $nFields += $item->getNfields();
+            }
         }
         return $nFields;
     }
@@ -132,6 +138,9 @@ class EditableReportSection extends AbstractReportSection {
         }
         $nTextareas = 0;
         foreach($this->items as $item){
+            if($item->deleted){
+                continue;
+            }
             if($item instanceof ReportItemSet){
                 $nTextareas += $item->getNTextareas();
             }

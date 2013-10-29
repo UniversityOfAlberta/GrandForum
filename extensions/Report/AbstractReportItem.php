@@ -32,6 +32,7 @@ abstract class AbstractReportItem {
     var $milestoneId;
     var $productId;
     var $private;
+    var $deleted;
     var $blobItem;
     var $blobSubItem;
     var $value;
@@ -52,6 +53,7 @@ abstract class AbstractReportItem {
         $this->milestoneId = 0;
         $this->productId = 0;
         $this->private = false;
+        $this->deleted = false;
         $this->reportCallback = new ReportItemCallback($this);
     }
     
@@ -116,6 +118,14 @@ abstract class AbstractReportItem {
     // Sets whether or not this item should be treated as private or not
     function setPrivate($private){
         $this->private = $private;
+    }
+    
+    /**
+     * Sets whether or not this AbstractReportItem should be treated as deleted or not
+     * @param $deleted boolean Whether or not this AbstractReportItem should be treated as deleted or not
+     */
+    function setDeleted($deleted){
+        $this->deleted = $deleted;
     }
 
     // Sets the Blob Item of this AbstractReportItem

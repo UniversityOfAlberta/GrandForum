@@ -16,7 +16,9 @@ class HeaderReportSection extends AbstractReportSection {
         //Render all the ReportItems's in the section    
         foreach ($this->items as $item){
             if(!$this->getParent()->topProjectOnly || ($this->getParent()->topProjectOnly && !$item->private)){
-                $item->renderForPDF();
+                if(!$item->deleted){
+                    $item->renderForPDF();
+                }
             }
         }
     }

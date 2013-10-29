@@ -22,6 +22,10 @@ class PLProgressReportItem extends StaticReportItem {
 	    $person = Person::newFromId($this->personId);
         $project = Project::newFromId($this->projectId);
         
+        if($project->getPhase() > 1){
+            return "";
+        }
+        
         $nItems = 0;
         $total = 0;
         foreach($this->getReport()->sections as $section){

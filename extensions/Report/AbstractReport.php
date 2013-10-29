@@ -414,7 +414,7 @@ abstract class AbstractReport extends SpecialPage {
             $this->sections[] = $section;
         }
         else{
-            array_splice($this->sections, $position, 0, $section);
+            array_splice($this->sections, $position, 0, array($section));
         }
     }
     

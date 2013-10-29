@@ -17,7 +17,25 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="report" name="Project Report">
-        <ReportItemSet id='IIIa_head' title="Project Retrospective"/>
+        <ReportItemSet id="II_wrapper" delete="false" />
+        <ReportItem id="III_head">
+            <![CDATA[<h2>III. Reflections: {$project_name} and GRAND</h2>]]>
+        </ReportItem>
+        <ReportItemSet id="IIIa_head" title="Project Retrospective"/>
+    </ReportSection>
+    <ReportSection id="comments" position="4" tooltip="Comments on NI contributions to the project" name="Comments" blobSection="LDR_NICOMMENTS" type="EditableReportSection" autosave="true" renderpdf="false" reportCharLimits="false">
+        <Instructions>
+            <![CDATA[
+                <p>In this section, the project co-PLs provide comments on the contributions of individual NIs who are involved in the project. Clicking on the name of the researcher will open a text box. These comments are not reviewed by the RMC as part of the Project Report, however the comments here will be included as part of the Individual Network-Investigator Reports as part of the evaluation of individual researchers.</p>
+            ]]>
+        </Instructions>
+        <ReportItemSet id="members_noleaders" type="ProjectPeopleNoLeadersReportItemSet" blobIndex="personId">
+            <ReportItemSet id='comment_head' type="ToggleHeaderReportItemSet" changeColor="true" level="3" title="{$user_reversed_name} ({$user_roles})">
+                <ReportItem id="" rows="12" width="100%" limit="600" type="TextareaReportItem" blobType="BLOB_ARRAY" blobItem="LDR_NICOMMENTS_COMMENTS">
+                    <![CDATA[{$item}]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="subprojects" tooltip="Discussion of progress against projects' milestones" name="Project Milestones">
         <Instructions>

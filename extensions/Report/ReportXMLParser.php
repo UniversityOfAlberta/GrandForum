@@ -390,6 +390,9 @@ class ReportXMLParser {
         if(isset($attributes->delete) && strtolower("{$attributes->delete}") == "true"){
             $section->deleteReportItem($itemset);
         }
+        if(isset($attributes->delete) && strtolower("{$attributes->delete}") == "false"){
+            $section->undeleteReportItem($itemset);
+        }
         if(isset($attributes->blobIndex)){
             $itemset->setBlobIndex("{$attributes->blobIndex}");
         }
@@ -479,6 +482,9 @@ class ReportXMLParser {
                 $this->errors[] = "ReportItem does not contain an id";
             }
             if(isset($attributes->delete) && strtolower("{$attributes->delete}") == "true"){
+                $section->deleteReportItem($item);
+            }
+            if(isset($attributes->delete) && strtolower("{$attributes->delete}") == "false"){
                 $section->deleteReportItem($item);
             }
             if(isset($attributes->private)){

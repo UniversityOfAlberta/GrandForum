@@ -75,7 +75,7 @@ class ProgressReportItem extends StaticReportItem {
             if($nTextareas == 1){
                 $plural = "";
             }  
-            $errorChars .= "<tr><td><span class='inlineWarning'>{$nEmpty} of the {$nTextareas}</span> field{$plural} contains no text\n</td></tr>";
+            $errorChars .= "<tr><td><span class='inlineWarning'>{$nEmpty} of the {$nTextareas}</span> field{$plural} contain no text\n</td></tr>";
         }
         $plural = "s";
         if(count($sections) == 1){

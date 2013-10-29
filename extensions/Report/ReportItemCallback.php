@@ -12,6 +12,10 @@ class ReportItemCallback {
 		    "project_id" => "getProjectId",
 			"project_name" => "getProjectName",
 			"project_full_name" => "getProjectFullName",
+			"project_status" => "getProjectStatus",
+			"project_description" => "getProjectDescription",
+			"project_problem" => "getProjectProblem",
+			"project_solution" => "getProjectSolution",
 			// Milestones
 			"milestone_id" => "getMilestoneId",
 			"milestone_title" => "getMilestoneTitle",
@@ -109,6 +113,42 @@ class ReportItemCallback {
     		$project_name = $project->getFullName();
     	}
     	return $project_name;
+    }
+    
+    function getProjectStatus(){
+        $project_stat = "";
+    	if($this->reportItem->projectId != 0 ){
+    		$project = Project::newFromId($this->reportItem->projectId);
+    		$project_stat = $project->getStatus();
+    	}
+    	return $project_stat;
+    }
+    
+    function getProjectDescription(){
+        $project_desc = "";
+    	if($this->reportItem->projectId != 0 ){
+    		$project = Project::newFromId($this->reportItem->projectId);
+    		$project_desc = $project->getDescription();
+    	}
+    	return $project_desc;
+    }
+    
+    function getProjectProblem(){
+        $project_prob = "";
+    	if($this->reportItem->projectId != 0 ){
+    		$project = Project::newFromId($this->reportItem->projectId);
+    		$project_prob = $project->getProblem();
+    	}
+    	return $project_prob;
+    }
+    
+    function getProjectSolution(){
+        $project_sol = "";
+    	if($this->reportItem->projectId != 0 ){
+    		$project = Project::newFromId($this->reportItem->projectId);
+    		$project_sol = $project->getSolution();
+    	}
+    	return $project_sol;
     }
     
     function getMilestoneId(){

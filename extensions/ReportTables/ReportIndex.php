@@ -20,6 +20,7 @@ class ReportIndex {
         }
         DBFunctions::execSQL("INSERT INTO grand_pdf_index (report_id, user_id, sub_id, type, created) VALUES 
                               ({$rid}, {$this->_uid}, {$subj->getId()}, '$type', CURRENT_TIMESTAMP());", true);
+        DBFunctions::commit();
         return true;
     }
 
