@@ -1,16 +1,15 @@
 <?php
 
-class ProjectChampionsAPI extends API{
+class DeleteProjectChampionsAPI extends API{
 
-    function ProjectChampionsAPI(){
+    function DeleteProjectChampionsAPI(){
         $this->addPOST("project",true,"The name of the project","MEOW");
         $this->addPOST("champion_id",true,"The id of the champion","1");
-        $this->addPOST("champion_org",true,"Organization of the champion","JDoe Inc.");
-        $this->addPOST("champion_title",true,"Title of the champion","Chief Technology Officer");
+        $this->addPOST("effective_date",true,"The date that the champion leaves the project","2010-10-10");
     }
 
     function processParams($params){
-
+        
     }
 
     function doAction($noEcho=false){
@@ -34,37 +33,29 @@ class ProjectChampionsAPI extends API{
             }
         }
         
-        if(isset($_POST['champion_id']) && !empty($_POST['champion_id']) && $_POST['champion_id'] != 0){
+        if(isset($_POST['champion_id']) && !empty($_POST['champion_id'])){
             DBFunctions::begin();
             $data = DBFunctions::select(array('grand_project_champions'),
                                         array('id'),
                                         array('project_id' => EQ($project->getId()),
-                                              'user_id' => EQ($_POST['champion_id']),
-                                              'end_date' => EQ('0000-00-00 00:00:00')),
+                                              'user_id' => EQ($_POST['champion_id'])),
                                         array('id' => 'DESC'),
                                         array(1));
-            if(count($data) > 0){
-                // Update
+            $last_champ_id = (isset($data[0]['id']))? $data[0]['id'] : null;
+            if(isset($data[0]['id'])){
+                $endDate = EQ(COL('CURRENT_TIMESTAMP'));
+                if(isset($_POST['effective_date'])){
+                    $endDate = $_POST['effective_date'];
+                }
                 DBFunctions::update('grand_project_champions',
-                                    array('champion_org' => $_POST['champion_org'],
-                                          'champion_title' => $_POST['champion_title']),
-                                    array('id' => $data[0]['id']),
+                                    array('end_date' => $endDate),
+                                    array('id' => $last_champ_id),
                                     array(),
-                                    true);
-            }
-            else{
-                // Insert
-                DBFunctions::insert('grand_project_champions',
-                                    array('project_id' => $project->getId(),
-                                          'user_id' => $_POST['champion_id'],
-                                          'champion_org' => $_POST['champion_org'],
-                                          'champion_title' => $_POST['champion_title'],
-                                          'start_date' => EQ(COL('CURRENT_TIMESTAMP'))),
                                     true);
             }
             DBFunctions::commit();
             if(!$noEcho){
-                echo "Project champion updated\n";
+                echo "Project champion deleted\n";
             }
         }
     }

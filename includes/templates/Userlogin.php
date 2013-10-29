@@ -217,33 +217,7 @@ class UsercreateTemplate extends QuickTemplate {
 		</tr>
 		<tr>
 			<td class="mw-label"><label for='wpNs'>Associated Projects:</label></td>
-			<td class="mw-input">
-		
-		<?php
-			$sql = "SELECT nsName
-				FROM mw_an_extranamespaces
-				WHERE themes <> ''
-				ORDER BY nsName";
-			$dbr = wfGetDB(DB_SLAVE);
-			$result = $dbr->query($sql);
-			$rows = array();
-			while ($row = $dbr->fetchRow($result)) {
-				$rows[] = $row;
-			}
-			echo "<table border='0' cellspacing='2' width='500'>
-				<tr>";
-			$i = 0;
-			foreach($rows as $row){
-				if($i % 3 == 0){
-					echo "</tr><tr>";
-				}
-				echo "<td><input type='checkbox' name='wpNS[]' value='{$row['nsName']}' /> {$row['nsName']}</td>";
-				$i++;
-			}	
-			echo "</table>";
-		
-		?>
-			</td>
+			<td class="mw-input"></td>
 		</tr>
 		<?php if( $this->data['canremember'] ) { ?>
 		<tr>

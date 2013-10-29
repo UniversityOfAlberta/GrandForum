@@ -15,24 +15,29 @@ class EvolveProjectTab extends ProjectTab {
         $form = new FormContainer("evolve_project_container");
         
         $projRow = new FormTableRow("evolve_project_row");
-        $projRow->append(new Label("evolve_project_label", "Old Project", "Which project to evolve", VALIDATE_NOT_NULL));
-        $projRow->append(new SelectBox("evolve_project", "Old Project", "NO PROJECT", $projectNames, VALIDATE_NOT_NULL + VALIDATE_PROJECT));
+        $projRow->append(new Label("evolve_project_label", "From", "Which project to evolve", VALIDATE_NOT_NULL));
+        $projRow->append(new ComboBox("evolve_project", "From", "NO PROJECT", $projectNames, VALIDATE_NOT_NULL + VALIDATE_PROJECT));
         
         $newProjRow = new FormTableRow("evolve_project_new_row");
-        $newProjRow->append(new Label("evolve_project_new_label", "New Project", "The project to evolve to", VALIDATE_NOT_NULL));
-        $newProjRow->append(new SelectBox("evolve_acronym", "Old Project", "NO PROJECT", $projectNames, VALIDATE_NOT_NULL + VALIDATE_PROJECT));
+        $newProjRow->append(new Label("evolve_project_new_label", "To", "The project to evolve to", VALIDATE_NOT_NULL));
+        $newProjRow->append(new ComboBox("evolve_acronym", "To", "NO PROJECT", $projectNames, VALIDATE_NOT_NULL + VALIDATE_PROJECT));
         
         $clearData = new FormTableRow("evolve_clear_row");
         $clearData->append(new Label("evolve_clear_label", "Clear Data?", "Whether or not to use fresh data for the new project, or to carry over the past data", VALIDATE_NOT_NULL));
         $clearData->append(new VerticalRadioBox("evolve_clear", "Clear Data?", "Yes", array("Yes", "No"), VALIDATE_NOT_NULL));
         
         $create = CreateProjectTab::createForm('evolve');
-        $create->getElementById("evolve_acronym")->validations = VALIDATE_NOT_NULL;
+        //$create->getElementById("evolve_acronym")->validations = VALIDATE_NOT_NULL;
         //$create->getElementById("evolve_themes_set")->remove();
         $create->getElementById("evolve_subproject_row")->remove();
         $create->getElementById("evolve_subprojectdd_row")->remove();
         $create->getElementById("evolve_challenges_set")->remove();
+        $create->getElementById("evolve_pl_row")->remove();
+        $create->getElementById("evolve_copl_row")->remove();
+        $create->getElementById("evolve_champ_row")->remove();
         $create->getElementById("evolve_description_row")->remove();
+        $create->getElementById("evolve_problem_row")->remove();
+        $create->getElementById("evolve_solution_row")->remove();
 
         $create->getElementById("evolve_form_table")->insertBefore($projRow, 'evolve_acronym_row');
         $create->getElementById("evolve_form_table")->insertBefore($newProjRow, 'evolve_acronym_row');

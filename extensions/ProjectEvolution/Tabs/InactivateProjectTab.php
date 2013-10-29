@@ -16,21 +16,25 @@ class InactivateProjectTab extends ProjectTab {
         
         $projRow = new FormTableRow("delete_project_row");
         $projRow->append(new Label("delete_project_label", "Project", "Which project to evolve", VALIDATE_NOT_NULL));
-        $projRow->append(new SelectBox("delete_project", "Project", "NO PROJECT", $projectNames, VALIDATE_NOT_NULL + VALIDATE_PROJECT));
+        $projRow->append(new ComboBox("delete_project", "Project", "NO PROJECT", $projectNames, VALIDATE_NOT_NULL + VALIDATE_PROJECT));
         
         $create = CreateProjectTab::createForm('delete');
         
         $create->getElementById("delete_acronym_row")->remove();
-        //$create->getElementById("delete_themes_set")->remove();
         $create->getElementById("delete_subproject_row")->remove();
         $create->getElementById("delete_subprojectdd_row")->remove();
         $create->getElementById("delete_challenges_set")->remove();
+        $create->getElementById("delete_pl_row")->remove();
+        $create->getElementById("delete_copl_row")->remove();
+        $create->getElementById("delete_champ_row")->remove();
         $create->getElementById("delete_description_row")->remove();
         $create->getElementById("delete_full_name_row")->remove();
         $create->getElementById("delete_status_row")->remove();
         $create->getElementById("delete_type_row")->remove();
         $create->getElementById("delete_phase_row")->remove();
         $create->getElementById("delete_form_table")->prepend($projRow, 'delete_acronym_row');
+        $create->getElementById("delete_problem_row")->remove();
+        $create->getElementById("delete_solution_row")->remove();
 
         $form->append($create);
         

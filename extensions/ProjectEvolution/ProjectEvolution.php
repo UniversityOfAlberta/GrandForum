@@ -15,7 +15,7 @@ class ProjectEvolution extends SpecialPage {
     
     function ProjectEvolution(){
         wfLoadExtensionMessages('ProjectEvolution');
-		SpecialPage::SpecialPage("ProjectEvolution", MANAGER.'+', true, 'runProjectEvolution');
+		SpecialPage::SpecialPage("ProjectEvolution", STAFF.'+', true, 'runProjectEvolution');
     }    
     
     function run(){
@@ -23,10 +23,11 @@ class ProjectEvolution extends SpecialPage {
         $tabbedPage = new TabbedPage("project");
         $tabbedPage->addTab(new CreateProjectTab());
         $tabbedPage->addTab(new EvolveProjectTab());
-        //$tabbedPage->addTab(new MergeProjectTab());
         $tabbedPage->addTab(new InactivateProjectTab());
         $tabbedPage->showPage();
-        
+        $wgOut->addHTML("<script type='text/javascript'>
+            $('h1.custom-title').hide();
+        </script>");
         $wgOut->output();
         $wgOut->disable();
         return true;

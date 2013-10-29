@@ -219,7 +219,7 @@ class EditMember extends SpecialPage{
                 $currentCoPL = array();
                 // Removing Project Leaders
                 foreach($person->getLeadProjects() as $project){
-                    if(!$person->isProjectManager()){
+                    if(!$person->managementOf($project)){
                         if(!isset($pl[$project->getName()])){
                             // Remove Project Leadership
                             $_POST['co_lead'] = 'False';
@@ -235,7 +235,7 @@ class EditMember extends SpecialPage{
                     }
                 }
                 foreach($person->getCoLeadProjects() as $project){
-                    if(!$person->isProjectManager()){
+                    if(!$person->managementOf($project)){
                         if(!isset($copl[$project->getName()])){
                             // Remove Project Co-Leadership
                             $_POST['co_lead'] = 'True';

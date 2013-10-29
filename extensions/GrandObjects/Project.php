@@ -94,8 +94,8 @@ class Project extends BackboneModel {
                 return $project;
             }
             $project = new Project($data);
-            self::$cache[$project->id] = &$project;
-            self::$cache[$project->name] = &$project;
+            //self::$cache[$project->id] = &$project;
+            //self::$cache[$project->name] = &$project;
             return $project;
         }
         else
@@ -598,25 +598,29 @@ EOF;
         return $this->multimedia;
     }
     
-    // Get Champion
-    function getChampion(){
-        $champ = array('name'=>"", 'email'=>"", 'org'=>"", 'title'=>"");
-
-        $sql = "SELECT * 
+    // Get Champions
+    function getChampions(){
+        $champs = array();
+        $sql = "SELECT *
                 FROM grand_project_champions
-                WHERE project_id = '{$this->id}'
-                ORDER BY id DESC LIMIT 1";
-
+                WHERE project_id = {$this->id}
+                AND (
+                    start_date <= CURRENT_TIMESTAMP AND (
+                        end_date > CURRENT_TIMESTAMP OR
+                        end_date = '0000-00-00 00:00:00'
+                    )
+                )
+                ORDER BY id DESC";
         $data = DBFunctions::execSQL($sql);
         
-        if(count($data) > 0){
-            $champ['name'] = $data[0]['champion_name'];
-            $champ['email'] = $data[0]['champion_email'];
-            $champ['org'] = $data[0]['champion_org'];
-            $champ['title'] = $data[0]['champion_title'];
+        foreach($data as $row){
+            $champs[] = array('user' => Person::newFromId($row['user_id']),
+                              'org' => $row['champion_org'],
+                              'title' => $row['champion_title'],
+                              'start_date' => $row['start_date'],
+                              'end_date' => $row['end_date']);
         }
-        
-        return $champ;
+        return $champs;
     }
 
     // Returns the leader of this Project

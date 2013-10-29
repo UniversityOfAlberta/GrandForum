@@ -2264,7 +2264,7 @@ class Person extends BackboneModel {
             if(isset($this->leadershipCache['current'])){
                 return $this->leadershipCache['current'];
             }
-            $res = DBFunctions::execSQL("SELECT p.name AS project_name 
+            $res = DBFunctions::execSQL("SELECT project_id
                                          FROM grand_project_leaders l, grand_project p
                                          WHERE l.project_id = p.id
                                          AND l.user_id = '{$this->id}'
@@ -2275,13 +2275,13 @@ class Person extends BackboneModel {
             if(isset($this->leadershipCache['history'])){
                 return $this->leadershipCache['history'];
             }
-            $res = DBFunctions::execSQL("SELECT p.name AS project_name 
+            $res = DBFunctions::execSQL("SELECT project_id
                                          FROM grand_project_leaders l, grand_project p
                                          WHERE l.project_id = p.id
                                          AND l.user_id = '{$this->id}'");
         }
         foreach ($res as &$row) {
-            $project = Project::newFromName($row['project_name']);
+            $project = Project::newFromId($row['project_id']);
             if($project != null && $project->getName() != "" && !$project->isDeleted()){
                 $ret[] = $project;
             }
@@ -2541,8 +2541,11 @@ class Person extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         $projects = array();
         foreach($data as $row){
-            $projects[] = Project::newFromId($row['project_id']);
+            $project = Project::newFromId($row['project_id']);
+            $projects[$project->getName()] = $project;
         }
+        ksort($projects);
+        $projects = array_values($projects);
         return $projects;
     }
     
@@ -2550,7 +2553,7 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_project_leaders l
                 WHERE l.user_id = '{$this->id}'
-                AND l.type = 'co-lead'\n";
+                AND l.type = 'co-leader'\n";
       
         if(!$history){
             $sql .= "AND (l.end_date = '0000-00-00 00:00:00'
@@ -2559,8 +2562,11 @@ class Person extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         $projects = array();
         foreach($data as $row){
-            $projects[] = Project::newFromId($row['project_id']);
+            $project = Project::newFromId($row['project_id']);
+            $projects[$project->getName()] = $project;
         }
+        ksort($projects);
+        $projects = array_values($projects);
         return $projects;
     }
     
@@ -2577,8 +2583,11 @@ class Person extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         $projects = array();
         foreach($data as $row){
-            $projects[] = Project::newFromId($row['project_id']);
+            $project = Project::newFromId($row['project_id']);
+            $projects[$project->getName()] = $project;
         }
+        ksort($projects);
+        $projects = array_values($projects);
         return $projects;
     }
     
@@ -2595,8 +2604,11 @@ class Person extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         $projects = array();
         foreach($data as $row){
-            $projects[] = Project::newFromId($row['project_id']);
+            $project = Project::newFromId($row['project_id']);
+            $projects[$project->getName()] = $project;
         }
+        ksort($projects);
+        $projects = array_values($projects);
         return $projects;
     }
     

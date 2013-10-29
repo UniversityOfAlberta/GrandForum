@@ -29,7 +29,7 @@ class CreateProjectTab extends ProjectTab {
         foreach(Project::getAllProjects() as $project){
             $project_id = $project->getId();
             $project_name = $project->getName();
-            $projectOptions .= "<option value='{$project_id}'>{$project_name}</option>\n";
+            $projectOptions .= "<option phase='{$project->getPhase()}' value='{$project_id}'>{$project_name}</option>\n";
         }
         $subp =<<<EOF
         <input type='radio' onclick='subReaction();' id='{$pre}_subproject_n'  name='{$pre}_subproject' value='No' checked='checked' />No
@@ -45,16 +45,35 @@ EOF;
         {$projectOptions}
         </select>
         <script type='text/javascript'>
-        function subReaction(){
-            if($('#new_subproject_y').is(':checked')) { 
-                 $('#new_subproject_parent_dd').show();
-            }
-            else{
-                $('#new_subproject_parent_dd').val(0);
-                $('#new_subproject_parent_dd').hide();
-            }
-        }
+            var options = Array();
         
+            $(document).ready(function(){
+                oldOptions = $("#new_subproject_parent_dd option");
+                updateParents();
+                $("[name=new_phase]").change(updateParents);
+                $(".custom-combobox", $("#new_subproject_parent_dd").parent()).hide();
+            });
+            
+            function updateParents(){
+                $("#new_subproject_parent_dd").empty();
+                var phase = $("[name=new_phase]").val();
+                $("#new_subproject_parent_dd").append(oldOptions);
+                $('#new_subproject_parent_dd').val(0);
+                $("#new_subproject_parent_dd option").not("[value=0]").not("[phase=" + phase + "]").remove();
+                $("#new_subproject_parent_dd").combobox();
+                $(".custom-combobox input", $("#new_subproject_parent_dd").parent()).val("Choose Parent");
+            }
+        
+            function subReaction(){
+                updateParents();
+                if($('#new_subproject_y').is(':checked')) { 
+                     $(".custom-combobox", $("#new_subproject_parent_dd").parent()).show();
+                }
+                else{
+                    $('#new_subproject_parent_dd').val(0);
+                    $(".custom-combobox", $("#new_subproject_parent_dd").parent()).hide();
+                }
+            }
         </script>
 EOF;
         $subprojectDDRow->append(new CustomElement("{$pre}_subproject_label", "", "", "", VALIDATE_NOTHING));
@@ -62,7 +81,7 @@ EOF;
         
         $statusRow = new FormTableRow("{$pre}_status_row");
         $statusRow->append(new Label("{$pre}_status_label", "Status", "The status of this project", VALIDATE_NOT_NULL));
-        $statusRow->append(new VerticalRadioBox("{$pre}_status", "Status", "Proposed", array("Proposed", "Active"), VALIDATE_NOT_NULL));
+        $statusRow->append(new VerticalRadioBox("{$pre}_status", "Status", "Active", array("Proposed", "Active"), VALIDATE_NOT_NULL));
         
         $typeRow = new FormTableRow("{$pre}_type_row");
         $typeRow->append(new Label("{$pre}_type_label", "Type", "The type of this project", VALIDATE_NOT_NULL));
@@ -74,7 +93,56 @@ EOF;
         
         $effectiveRow = new FormTableRow("{$pre}_effective_row");
         $effectiveRow->append(new Label("{$pre}_effective_label", "Effective Date", "When this action is to take place", VALIDATE_NOT_NULL));
-        $effectiveRow->append(new CalendarField("{$pre}_effective", "Effective Date", "", VALIDATE_NOT_NULL));
+        $effectiveRow->append(new CalendarField("{$pre}_effective", "Effective Date", (REPORTING_YEAR+1)."-04-01", VALIDATE_NOT_NULL));
+        
+        $names = array("");
+        $people = array_merge(Person::getAllPeople(PNI), Person::getAllPeople(CNI));
+        foreach($people as $person){
+            $names[$person->getName()] = $person->getNameForForms();
+        }
+        asort($names);
+        
+        $plRow = new FormTableRow("{$pre}_pl_row");
+        $plRow->append(new Label("{$pre}_pl_label", "Project Leader", "The leader of this Project", VALIDATE_NOTHING));
+        $plRow->append(new ComboBox("{$pre}_pl", "Project Leader", "", $names, VALIDATE_NOTHING));
+        
+        $coplRow = new FormTableRow("{$pre}_copl_row");
+        $coplRow->append(new Label("{$pre}_copl_label", "Co-Project Leader", "The co-leader of this Project", VALIDATE_NOTHING));
+        $coplRow->append(new ComboBox("{$pre}_copl", "Co-Project Leader", "", $names, VALIDATE_NOTHING));
+        
+        $names = array("");
+        $people = Person::getAllPeople(CHAMP);
+        foreach($people as $person){
+            $names[$person->getName()] = $person->getNameForForms();
+        }
+        asort($names);
+        
+        // Champion
+        $champRow = new FormTableRow("{$pre}_champ_row");
+        $champRow->append(new Label("{$pre}_champ_label", "Project Champion", "The champions of this project", VALIDATE_NOTHING));
+        
+        $champPlusMinus = new PlusMinus("{$pre}_champ_plusminus");
+        $champFieldSet = new FieldSet("{$pre}_champ_fieldset", "New Champion");
+        $champTable = new FormTable("{$pre}_champ_table");
+        
+        $champTableNameRow = new FormTableRow("{$pre}_champ_name_row");
+        $champTableNameRow->append(new Label("{$pre}_champ_name_label", "Name", "The name of the project champion", VALIDATE_NOTHING));
+        $champTableNameRow->append(new ComboBox("{$pre}_champ_name[]", "Name", "", $names, VALIDATE_NOTHING));
+        
+        $champTableTitleRow = new FormTableRow("{$pre}_champ_title_row");
+        $champTableTitleRow->append(new Label("{$pre}_champ_title_label", "Title", "The title of the project champion", VALIDATE_NOTHING));
+        $champTableTitleRow->append(new TextField("{$pre}_champ_title[]", "Title", "", VALIDATE_NOTHING));
+        
+        $champTableOrgRow = new FormTableRow("{$pre}_champ_org_row");
+        $champTableOrgRow->append(new Label("{$pre}_champ_org_label", "Organization", "The organization of the project champion", VALIDATE_NOTHING));
+        $champTableOrgRow->append(new TextField("{$pre}_champ_org[]", "Organization", "", VALIDATE_NOTHING));
+        
+        $champTable->append($champTableNameRow);
+        $champTable->append($champTableTitleRow);
+        $champTable->append($champTableOrgRow);
+        $champFieldSet->append($champTable);
+        $champPlusMinus->append($champFieldSet);
+        $champRow->append($champPlusMinus);
         
         $descRow = new FormTableRow("{$pre}_description_row");
         $descRow->append(new Label("{$pre}_description_label", "Description", "The description of the project", VALIDATE_NOTHING));
@@ -109,6 +177,9 @@ EOF;
         $table->append($typeRow);
         $table->append($phaseRow);
         $table->append($effectiveRow);
+        $table->append($plRow);
+        $table->append($coplRow);
+        $table->append($champRow);
         $table->append($descRow);
         $table->append($probRow);
         $table->append($solRow);
@@ -139,6 +210,9 @@ EOF;
             $form->getElementById("new_type")->setPOST("type");
             $form->getElementById("new_phase")->setPOST("phase");
             $form->getElementById("new_effective")->setPOST("effective_date");
+            $form->getElementById("new_pl")->setPOST("pl");
+            $form->getElementById("new_copl")->setPOST("copl");
+            $form->getElementById("new_champ_org[]")->setPOST("champ_org");
             $form->getElementById("new_description")->setPOST("description");
             $form->getElementById("new_challenge")->setPOST("challenge");
             $form->getElementById("new_parent_id")->setPOST("parent_id");
@@ -149,6 +223,26 @@ EOF;
                 return "There was an error Creating the Project";
             }
             else{
+                if($_POST['pl'] != ""){
+                    $_POST['co_lead'] = "False";
+                    $_POST['role'] = $_POST['acronym'];
+                    $_POST['user'] = $_POST['pl'];
+                    APIRequest::doAction('AddProjectLeader', true);
+                }
+                if($_POST['copl'] != ""){
+                    $_POST['co_lead'] = "True";
+                    $_POST['role'] = $_POST['acronym'];
+                    $_POST['user'] = $_POST['copl'];
+                    APIRequest::doAction('AddProjectLeader', true);
+                }
+                foreach($_POST['new_champ_name'] as $key => $name){
+                    $_POST['project'] = $_POST['acronym'];
+                    $champ = Person::newFromName($name);
+                    $_POST['champion_id'] = $champ->getId();
+                    $_POST['champion_title'] = $_POST['new_champ_title'][$key];
+                    $_POST['champion_org'] = $_POST['new_champ_org'][$key];
+                    APIRequest::doAction('ProjectChampions', true);
+                }
                 $form->reset();
             }
         }
