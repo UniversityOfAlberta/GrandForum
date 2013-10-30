@@ -1,7 +1,4 @@
 <?php
-global $listAdmins;
-$listAdmins = array("dwt@ualberta.ca",
-                    "adrian_sheppard@gnwc.ca");
 
 class MailingList {
 
@@ -125,10 +122,10 @@ class MailingList {
     // Creates a new mailman mailing list
     static function createMailingList($project){
         /*
-        global $listAdmins;
+        global $wgListAdmins, $wgListAdminPassword;
         $output = "";
         $listname = strtolower($project->getName());
-        $command = "/usr/lib/mailman/bin/newlist --quiet $listname ".implode('\n', $listAdmins)." BigLasagna";
+        $command = "/usr/lib/mailman/bin/newlist --quiet $listname ".implode('\n', $listAdmins)." $wgListAdminPassword";
         @exec($command, $output);
         $alias = "
         
