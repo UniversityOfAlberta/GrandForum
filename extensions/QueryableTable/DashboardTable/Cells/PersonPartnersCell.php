@@ -3,7 +3,7 @@
 class PersonPartnersCell extends DashboardCell {
     
     function PersonPartnersCell($cellType, $params, $cellValue, $rowN, $colN, $table){
-        $this->label = "Partners/Champions";
+        $this->label = "Sponsors";
         $start = "0000";
         $end = "2100";
         if(count($params) == 1){
@@ -40,7 +40,7 @@ class PersonPartnersCell extends DashboardCell {
                 }
                 $champions = $person->getChampionsDuring($start.REPORTING_CYCLE_START_MONTH, $end.REPORTING_CYCLE_END_MONTH);
                 foreach($champions as $champ){
-                    if($champ->isMemberOfDuring($project, $start, $end)){
+                    if($champ->isMemberOfDuring($project, $start, $end) || $champ->isChampionOfDuring($project, $start, $end)){
                         $values['Champion'][] = array('type' => 'Champion', 'id' => $champ->getId());
                     }
                 }

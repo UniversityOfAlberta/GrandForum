@@ -51,6 +51,31 @@ function LIKE($value){
     return "### LIKE {$value}";
 }
 
+function DURING($values){
+    $i = 0;
+    $start = "";
+    $startKey = "";
+    $end = "";
+    $endKey = "";
+    foreach($values as $key => $value){
+        if($i == 0){
+            $start = mysql_real_escape_string($value);
+            $startKey = $key;
+        }
+        else {
+            $end = mysql_real_escape_string($value);
+            $endKey = $key;
+        }
+    }
+    return "( 
+        (($endKey != '0000-00-00 00:00:00') AND
+        (( $startKey BETWEEN '$start' AND '$end' ) || ( $endKey BETWEEN '$start' AND '$end' ) || ($startKey <= '$start' AND $endKey >= '$end') ))
+        OR
+        (($endKey = '0000-00-00 00:00:00') AND
+        (( $startKey <= '$end')))
+    )";
+}
+
 function IN($values){
     foreach($values as $key => $value){
         $values[$key] = mysql_real_escape_string($value);

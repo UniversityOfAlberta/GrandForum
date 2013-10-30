@@ -719,17 +719,23 @@ class Person extends BackboneModel {
     }
     
     // Returns whether this Person is a member of the given Project during the given dates
-    function isMemberOfDuring($project, $start=false, $end=false){
-        if( $start === false || $end === false ){
-            $start = date(REPORTING_CYCLE_START);
-            $end = date(REPORTING_CYCLE_END);
-        }
+    function isMemberOfDuring($project, $start=REPORTING_CYCLE_START, $end=REPORTING_CYCLE_END){
         $projects = $this->getProjectsDuring($start, $end);
         if(count($projects) > 0 && $project != null){
             foreach($projects as $project1){
                 if($project1 != null && $project->getName() == $project1->getName()){
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+    
+    function isChampionOfDuring($project, $start=REPORTING_CYCLE_START, $end=REPORTING_CYCLE_END){
+        $champs = $project->getChampionsDuring($start, $end);
+        foreach($champs as $champ){
+            if($champ['user']->getId() == $this->getId()){
+                return true;
             }
         }
         return false;

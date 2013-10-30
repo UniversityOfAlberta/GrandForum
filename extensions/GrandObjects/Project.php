@@ -612,7 +612,24 @@ EOF;
                 )
                 ORDER BY id DESC";
         $data = DBFunctions::execSQL($sql);
-        
+        foreach($data as $row){
+            $champs[] = array('user' => Person::newFromId($row['user_id']),
+                              'org' => $row['champion_org'],
+                              'title' => $row['champion_title'],
+                              'start_date' => $row['start_date'],
+                              'end_date' => $row['end_date']);
+        }
+        return $champs;
+    }
+    
+    function getChampionsDuring($start=REPORTING_CYCLE_START, $end=REPORTING_CYCLE_END){
+        $champs = array();
+        $data = DBFunctions::select(array('grand_project_champions'),
+                                    array('*'),
+                                    array('project_id' => EQ($this->id),
+                                          DURING(array('start_date' => $start,
+                                                       'end_date' => $end))),
+                                    array('id' => 'DESC'));
         foreach($data as $row){
             $champs[] = array('user' => Person::newFromId($row['user_id']),
                               'org' => $row['champion_org'],
