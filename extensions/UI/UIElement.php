@@ -2,13 +2,15 @@
 
 function initValidations(){
     global $formValidations, $validations;
-    $formValidations = array('NOTHING' => 'NothingValidation',
-                             'NULL'    => 'NullValidation',
-                             'NUMERIC' => 'NumericValidation',
-                             'PERCENT' => 'PercentValidation',
-                             'PROJECT' => 'ProjectValidation',
-                             'PERSON'  => 'PersonValidation',
-                             'EMAIL'   => 'EmailValidation');
+    $formValidations = array('NOTHING'  => 'NothingValidation',
+                             'NULL'     => 'NullValidation',
+                             'NUMERIC'  => 'NumericValidation',
+                             'PERCENT'  => 'PercentValidation',
+                             'PROJECT'  => 'ProjectValidation',
+                             'PERSON'   => 'PersonValidation',
+                             'CHAMPION' => 'ChampionValidation',
+                             'NI'       => 'NIValidation',
+                             'EMAIL'    => 'EmailValidation');
     $i = 0;
     foreach($formValidations as $key => $validation){
         define('VALIDATE_'.$key, pow(2, ($i)*2));
@@ -53,8 +55,8 @@ abstract class UIElement {
         $this->name = $name;
         $this->attr = array();
         $this->default = $this->clearValue($value);
-        if(isset($_POST[$this->id])){
-            $this->value = $this->clearValue($_POST[$this->id]);
+        if(isset($_POST[str_replace("[]", "", $this->id)])){
+            $this->value = $this->clearValue($_POST[str_replace("[]", "", $this->id)]);
         }
         else{
             $this->value = $this->clearValue($value);
@@ -213,7 +215,6 @@ abstract class UIElement {
         foreach($validations as $key => $val){
             if($this->isValidationSet($key)){
                 $neg = (log($key, 2) % 2 == 1);
-                
                 $type = $val;
                 $validation = new $type($neg);
                 $result = $validation->validate($value);

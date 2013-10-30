@@ -103,12 +103,12 @@ EOF;
         asort($names);
         
         $plRow = new FormTableRow("{$pre}_pl_row");
-        $plRow->append(new Label("{$pre}_pl_label", "Project Leader", "The leader of this Project", VALIDATE_NOTHING));
-        $plRow->append(new ComboBox("{$pre}_pl", "Project Leader", "", $names, VALIDATE_NOTHING));
+        $plRow->append(new Label("{$pre}_pl_label", "Project Leader", "The leader of this Project.  The person should be a valid person on this project.", VALIDATE_NOTHING));
+        $plRow->append(new ComboBox("{$pre}_pl", "Project Leader", "", $names, VALIDATE_NI));
         
         $coplRow = new FormTableRow("{$pre}_copl_row");
-        $coplRow->append(new Label("{$pre}_copl_label", "Co-Project Leader", "The co-leader of this Project", VALIDATE_NOTHING));
-        $coplRow->append(new ComboBox("{$pre}_copl", "Co-Project Leader", "", $names, VALIDATE_NOTHING));
+        $coplRow->append(new Label("{$pre}_copl_label", "Co-Project Leader", "The co-leader of this Project.  The person should be a valid person on this project.", VALIDATE_NOTHING));
+        $coplRow->append(new ComboBox("{$pre}_copl", "Co-Project Leader", "", $names, VALIDATE_NI));
         
         $names = array("");
         $people = Person::getAllPeople(CHAMP);
@@ -119,7 +119,7 @@ EOF;
         
         // Champion
         $champRow = new FormTableRow("{$pre}_champ_row");
-        $champRow->append(new Label("{$pre}_champ_label", "Project Champion", "The champions of this project", VALIDATE_NOTHING));
+        $champRow->append(new Label("{$pre}_champ_label", "Project Champion", "The champions of this project.  Each champion must be an already existing member in the Champion role.  If the user is not created yet, then request a new member and you will be notified on the forum when the user gets created.", VALIDATE_NOTHING));
         
         $champPlusMinus = new PlusMinus("{$pre}_champ_plusminus");
         $champFieldSet = new FieldSet("{$pre}_champ_fieldset", "New Champion");
@@ -127,7 +127,7 @@ EOF;
         
         $champTableNameRow = new FormTableRow("{$pre}_champ_name_row");
         $champTableNameRow->append(new Label("{$pre}_champ_name_label", "Name", "The name of the project champion", VALIDATE_NOTHING));
-        $champTableNameRow->append(new ComboBox("{$pre}_champ_name[]", "Name", "", $names, VALIDATE_NOTHING));
+        $champTableNameRow->append(new ComboBox("{$pre}_champ_name[]", "Name", "", $names, VALIDATE_CHAMPION));
         
         $champTableTitleRow = new FormTableRow("{$pre}_champ_title_row");
         $champTableTitleRow->append(new Label("{$pre}_champ_title_label", "Title", "The title of the project champion", VALIDATE_NOTHING));

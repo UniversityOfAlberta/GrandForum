@@ -15,17 +15,16 @@ class ProjectMainTab extends AbstractEditableTab {
         global $wgUser, $wgServer, $wgScriptPath;
         $project = $this->project;
         $me = Person::newFromId($wgUser->getId());
-        $edit = $this->visibility['edit'];
+        $edit = isset($_POST['edit']);
         
         if($wgUser->isLoggedIn() && $me->isMemberOf($project)){
             $this->html .="<h3><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:Mail_Index'>{$project->getName()} Mailing List</a></h3>";
         }
         $this->html .= "<b>Type:</b> {$this->project->getType()}<br />
                         <b>Status:</b> {$this->project->getStatus()}<br />";
-        //$this->showThemes();
         $this->showChallenge();
         $this->showChampions();
-        if(!$this->visibility['edit']){
+        if(!isset($_POST['edit'])){
             $this->showPeople();
         }
         $this->showDescription();
@@ -55,7 +54,7 @@ class ProjectMainTab extends AbstractEditableTab {
         if(isset($_POST['challenge_id'])){
             APIRequest::doAction('ProjectChallenge', true);
         }
-
+        
         foreach($_POST['champ_name'] as $key => $name){
             $_POST['project'] = $this->project->getName();
             $champ = Person::newFromName($name);
@@ -68,6 +67,21 @@ class ProjectMainTab extends AbstractEditableTab {
             else{
                 APIRequest::doAction('ProjectChampions', true);
             }
+        }
+        
+        $form = $this->champForm();
+        if($form->validate()){
+            foreach($_POST['new_champ_name'] as $key => $name){
+                $_POST['project'] = $this->project->getName();
+                $champ = Person::newFromName($name);
+                $_POST['champion_id'] = $champ->getId();
+                $_POST['champion_title'] = $_POST['new_champ_title'][$key];
+                $_POST['champion_org'] = $_POST['new_champ_org'][$key];
+                APIRequest::doAction('ProjectChampions', true);
+            }
+        }
+        else{
+            return "The champions were not added";
         }
     }
     
@@ -117,7 +131,7 @@ class ProjectMainTab extends AbstractEditableTab {
 
     function showChallenge(){
         global $wgServer, $wgScriptPath;
-        $edit = $this->visibility['edit'];
+        $edit = isset($_POST['edit']);
         
         $this->html .= "<h2><span class='mw-headline'>Primary Challenge</span></h2>";
         $challenge = $this->project->getChallenge();
@@ -137,15 +151,58 @@ EOF;
         }
         else{
             $this->html .= "<h4>{$challenge}</h4>";
+        }   
+    }
+    
+    function champForm(){
+        $project = $this->project;
+        $champions = $project->getChampions();
+    
+        $names = array("");
+        $people = Person::getAllPeople(CHAMP);
+        foreach($people as $person){
+            $skip = false;
+            foreach($champions as $champ){
+                if($champ['user']->getId() == $person->getId()){
+                    $skip = true;
+                    break;
+                }
+            }
+            if(!$skip){
+                $names[$person->getName()] = $person->getNameForForms();
+            }
         }
-
-       
+        asort($names);
+    
+        $champPlusMinus = new PlusMinus("champ_plusminus");
+        $champFieldSet = new FieldSet("champ_fieldset", "New Champion");
+        $champTable = new FormTable("champ_table");
+        
+        $champTableNameRow = new FormTableRow("champ_name_row");
+        $champTableNameRow->append(new Label("champ_name_label", "Name", "The name of the project champion", VALIDATE_NOTHING));
+        $champTableNameRow->append(new ComboBox("new_champ_name[]", "Name", "", $names, VALIDATE_CHAMPION));
+        
+        $champTableTitleRow = new FormTableRow("champ_title_row");
+        $champTableTitleRow->append(new Label("champ_title_label", "Title", "The title of the project champion", VALIDATE_NOTHING));
+        $champTableTitleRow->append(new TextField("new_champ_title[]", "Title", "", VALIDATE_NOTHING));
+        
+        $champTableOrgRow = new FormTableRow("champ_org_row");
+        $champTableOrgRow->append(new Label("champ_org_label", "Organization", "The organization of the project champion", VALIDATE_NOTHING));
+        $champTableOrgRow->append(new TextField("new_champ_org[]", "Organization", "", VALIDATE_NOTHING));
+        
+        $champTable->append($champTableNameRow);
+        $champTable->append($champTableTitleRow);
+        $champTable->append($champTableOrgRow);
+        $champFieldSet->append($champTable);
+        $champPlusMinus->append($champFieldSet);
+        
+        return $champPlusMinus;
     }
     
     function showChampions(){
         global $wgUser, $wgServer, $wgScriptPath;
         
-        $edit = $this->visibility['edit'];
+        $edit = isset($_POST['edit']);
         $project = $this->project;
 
         $champions = $project->getChampions();
@@ -196,51 +253,15 @@ EOF;
                 $i++;
             }
             
-            $names = array("");
-            $people = Person::getAllPeople(CHAMP);
-            foreach($people as $person){
-                $skip = false;
-                foreach($champions as $champ){
-                    if($champ['user']->getId() == $person->getId()){
-                        $skip = true;
-                        break;
-                    }
-                }
-                if(!$skip){
-                    $names[$person->getName()] = $person->getNameForForms();
-                }
-            }
-            asort($names);
-            
-            $champPlusMinus = new PlusMinus("champ_plusminus");
-            $champFieldSet = new FieldSet("champ_fieldset", "New Champion");
-            $champTable = new FormTable("champ_table");
-            
-            $champTableNameRow = new FormTableRow("champ_name_row");
-            $champTableNameRow->append(new Label("champ_name_label", "Name", "The name of the project champion", VALIDATE_NOTHING));
-            $champTableNameRow->append(new ComboBox("champ_name[]", "Name", "", $names, VALIDATE_NOTHING));
-            
-            $champTableTitleRow = new FormTableRow("champ_title_row");
-            $champTableTitleRow->append(new Label("champ_title_label", "Title", "The title of the project champion", VALIDATE_NOTHING));
-            $champTableTitleRow->append(new TextField("champ_title[]", "Title", "", VALIDATE_NOTHING));
-            
-            $champTableOrgRow = new FormTableRow("champ_org_row");
-            $champTableOrgRow->append(new Label("champ_org_label", "Organization", "The organization of the project champion", VALIDATE_NOTHING));
-            $champTableOrgRow->append(new TextField("champ_org[]", "Organization", "", VALIDATE_NOTHING));
-            
-            $champTable->append($champTableNameRow);
-            $champTable->append($champTableTitleRow);
-            $champTable->append($champTableOrgRow);
-            $champFieldSet->append($champTable);
-            $champPlusMinus->append($champFieldSet);
-            $this->html .= $champPlusMinus->render();
+            $form = $this->champForm();
+            $this->html .= $form->render();
         }
     }
 
     function showPeople(){
         global $wgUser, $wgServer, $wgScriptPath;
         
-        $edit = $this->visibility['edit'];
+        $edit = isset($_POST['edit']);
         $project = $this->project;
         
         $leaders = $project->getLeaders(true); //only get id's
@@ -359,7 +380,7 @@ EOF;
     function showDescription(){
         global $wgServer, $wgScriptPath;
         
-        $edit = $this->visibility['edit'];
+        $edit = isset($_POST['edit']);
         $project = $this->project;
         
         if($edit || !$edit && $project->getDescription() != ""){
@@ -376,7 +397,7 @@ EOF;
     function showProblem(){
         global $wgServer, $wgScriptPath;
         
-        $edit = $this->visibility['edit'];
+        $edit = isset($_POST['edit']);
         $project = $this->project;
         
         if($edit || !$edit && $project->getProblem() != ""){
@@ -393,7 +414,7 @@ EOF;
     function showSolution(){
         global $wgServer, $wgScriptPath;
         
-        $edit = $this->visibility['edit'];
+        $edit = isset($_POST['edit']);
         $project = $this->project;
         
         if($edit || !$edit && $project->getSolution() != ""){

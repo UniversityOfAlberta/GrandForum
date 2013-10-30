@@ -8,6 +8,9 @@ class TextField extends UIElement {
     }
     
     function render(){
+        if(strstr($this->id, "[]") !== false){
+            $this->value = $this->default;
+        }
         return "<input type='text' {$this->renderAttr()} name='{$this->id}' value='{$this->value}' />";
     }
     

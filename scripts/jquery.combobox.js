@@ -8,9 +8,6 @@
         this.wrapper = $( "<span>" )
           .addClass( "custom-combobox" )
           .insertAfter( this.element );
- 
-
- 
         this.element.addClass('combobox');
         this.element.hide();
         this._createAutocomplete();
@@ -35,21 +32,61 @@
           .click(function(){
             $(this).select();
           });
+        this.invis = $("<input>")
+            .appendTo(this.wrapper)
+            .val(value)
+            .hide()
+            .attr('name', this.element.attr('name'));
  
-        $(this.input).on('autocompleteselect', function( event, ui ) {
+        var invis = this.invis;
+        var element = this.element;
+ 
+        $(this.input).on('autocompleteselect', function(event, ui){
             ui.item.option.selected = true;
             $(this).trigger( "select", event, {
               item: ui.item.option
             });
+            $(invis).val(ui.item.option.value);
         });
-        //$(this.input).on('autocompletechange', "_removeIfInvalid");
+        
+        $(this.input).on('keyup', function(event, ui){
+            var found = false;
+            _.each($(element).children("option"), function(o){
+                console.log(o.value);
+                if(o.innerHTML == $(event.target).val()){
+                    found = o.value;
+                }
+            });
+            if(!found){
+                $(invis).val($(event.target).val());
+            }
+            else{
+                $(invis).val(found);
+            }
+        });
+        
+        $(this.input).on('change', function(event, ui){
+            var found = false;
+            _.each($(element).children("option"), function(o){
+                console.log(o.value);
+                if(o.innerHTML == $(event.target).val()){
+                    found = o.value;
+                }
+            });
+            if(!found){
+                $(invis).val($(event.target).val());
+            }
+            else{
+                $(invis).val(found);
+            }
+        });
       },
  
       _createShowAllButton: function() {
         var input = this.input,
           wasOpen = false;
  
-        $( "<a>" )
+        $("<a>")
           .attr( "tabIndex", -1 )
           .attr( "title", "Show All Items" )
           .appendTo( this.wrapper )
@@ -83,37 +120,6 @@
               option: this
             };
         }) );
-      },
- 
-      _removeIfInvalid: function( event, ui ) {
- 
-        // Selected an item, nothing to do
-        if ( ui.item ) {
-          return;
-        }
- 
-        // Search for a match (case-insensitive)
-        var value = this.input.val(),
-          valueLowerCase = value.toLowerCase(),
-          valid = false;
-        this.element.children( "option" ).each(function() {
-          if ( $( this ).text().toLowerCase() === valueLowerCase ) {
-            this.selected = valid = true;
-            return false;
-          }
-        });
- 
-        // Found a match, nothing to do
-        if ( valid ) {
-          return;
-        }
- 
-        // Remove invalid value
-        this.input
-          .val( "" )
-          .attr( "title", value + " didn't match any item" );
-        this.element.val( "" );
-        this.input.data( "ui-autocomplete" ).term = "";
       },
  
       _destroy: function() {

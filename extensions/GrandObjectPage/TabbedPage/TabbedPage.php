@@ -63,7 +63,7 @@ class TabbedPage {
         
         $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/{$wgTitle->getNsText()}:{$wgTitle->getText()}' method='post' enctype='multipart/form-data'>");
         $wgOut->addHTML("<div id='{$this->id}'>");
-        $wgOut->addHTML("   <ul>");
+        $wgOut->addHTML("<ul>");
         foreach($this->tabs as $tab){
             if($tab instanceof AbstractEditableTab){
                 if($tab->canEdit() && isset($_POST['edit'])){
@@ -83,10 +83,10 @@ class TabbedPage {
                 $tab->generateBody();
             }
             if($tab->html != ""){
-                $wgOut->addHTML("   <li><a href='#{$tab->id}'>{$tab->name}</a></li>");
+                $wgOut->addHTML("<li><a href='#{$tab->id}'>{$tab->name}</a></li>");
             }
         }
-        $wgOut->addHTML("   </ul><h1 class='custom-title'>{$wgOut->getPageTitle()}</h1>");
+        $wgOut->addHTML("</ul><h1 class='custom-title'>{$wgOut->getPageTitle()}</h1>");
         $i = 0;
         foreach($this->tabs as $tab){
             if($tab->html != ""){
