@@ -81,8 +81,8 @@ class ProjectSubprojectsTab extends AbstractTab {
 
             $description = nl2br($subproject->getDescription());
             $this->html .= "<div class='subprojects_accordion'>";
-            $this->html .= "<h3>{$title}</h3>";
-            $this->html .= "<div style='height: auto !important;'>";
+            $this->html .= "<h3><a href='#'>{$title}</a></h3>";
+            $this->html .= "<div>";
             $this->html .= "<b>Type:</b> {$type}<br />
                             <b>Status:</b> {$status}<br />";
                             
@@ -104,15 +104,11 @@ EOF;
         $this->html .=<<<EOF
         <script type="text/javascript">
         $(document).ready(function() {
-            $( ".subprojects_accordion" ).accordion({active: false, collapsible: true, icons: false});
+            $(".subprojects_accordion").accordion({active: true,
+                                                   autoHeight: false,
+                                                   collapsible: true});
         });    
         </script>
-        <style type="text/css">
-            .ui-accordion-content {
-                height: auto !important;
-                padding: 1em !important;
-            }
-        </style>
 EOF;
   
     }
