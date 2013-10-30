@@ -17,20 +17,49 @@ class ProjectSubprojectsTab extends AbstractTab {
             $project = $this->project;
             $me = Person::newFromId($wgUser->getId());
             if($me->isMemberOf($project) || $me->isRoleAtLeast(MANAGER)){
-                $edit = $this->visibility['edit'];
-                $dataUrl = "$wgServer$wgScriptPath/index.php?action=getProjectMilestoneTimelineData&project={$project->getId()}";
-                $timeline = new Simile($dataUrl);
-                $timeline->interval = "50";
-                $timeline->popupWidth = "500";
-                $timeline->popupHeight = "300";
-               
-               
+                if($this->visibility['isLead']){
+                    if(isset($_POST['create_subproject'])){
+                        CreateProjectTab::handleEdit();
+                    }
+                    $create = CreateProjectTab::createForm("new");
+                    
+                    $names = array("");
+                    $people = array_merge($project->getAllPeople());
+                    foreach($people as $person){
+                        if($person->isRoleAtLeast(CNI)){
+                            $names[$person->getName()] = $person->getNameForForms();
+                        }
+                    }
+                    asort($names);
+                    
+                    $create->getElementById("new_pl")->options = $names;
+                    $create->getElementById("new_copl")->options = $names;
+                    
+                    $create->getElementById("new_subproject_row")->remove();
+                    $create->getElementById("new_subprojectdd_row")->remove();
+                    $create->getElementById("new_status_row")->hide();
+                    $create->getElementById("new_type_row")->hide();
+                    $create->getElementById("new_phase_row")->hide();
+                    $create->getElementById("new_problem_row")->hide();
+                    $create->getElementById("new_solution_row")->hide();
+                    $create->getElementById("new_challenges_set")->hide();
+                    $this->html .= "<input type='hidden' name='new_subproject' value='Yes' />";
+                    $this->html .= "<input type='hidden' name='new_parent_id' value='{$project->getId()}' />";
+                    $this->html .= "<button id='new_subproject_button'>New Sub-Project</button><div id='new_subproject'>".$create->render()."<input type='submit' name='create_subproject' value='Create Sub-Project' /></div>";
+                    
+                    $this->html .= "<script type='text/javascript'>
+                        $('#new_subproject').hide();
+                        $('#new_subproject_button').click(function(){
+                            $(this).remove();
+                            $('#new_subproject').slideDown();
+                        }); 
+                    </script>";
+                }
                 $this->showSubprojects();
                 return $this->html;
             }
         }
     }
-
     
     function showSubprojects(){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut;
@@ -42,9 +71,7 @@ class ProjectSubprojectsTab extends AbstractTab {
         
         $subprojects = $project->getSubProjects();
        
-        $this->html .=<<<EOF
-            <h2>Current Sub-Projects</h2>
-EOF;
+        $this->html .= "<h2>Current Sub-Projects</h2>";
                 
         foreach($subprojects as $subproject){
             $key = $subproject->getId();
@@ -67,14 +94,13 @@ EOF;
             
             if($can_edit){
                 $this->html .=<<<EOF
-                <a  class="button" href="{$wgServer}{$wgScriptPath}/index.php/{$title}:Main?edit" target="_blank">Edit</a>
+                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/{$title}:Main?edit" target="_blank">Edit</a>
 EOF;
             }
             $this->html .= "</div></div>";
   
-        }// subprojects loop
+        }
         
-          
         $this->html .=<<<EOF
         <script type="text/javascript">
         $(document).ready(function() {
@@ -88,8 +114,7 @@ EOF;
             }
         </style>
 EOF;
-        //$wgOut->addScript($custom_js);
-                    
+  
     }
 
 
@@ -214,59 +239,6 @@ EOF;
         }
         $html .= "</tr></table>";
         
-        return $html;
-    }
-    
-    function date_picker($key, $date, $startyear=NULL, $endyear=NULL){
-        if($key == "new"){
-            $keyArray = "[]";
-        }
-        else{
-            $keyArray = "";
-        }
-        $newDate = explode("-", $date);
-        $year = @$newDate[0];
-        $month = @$newDate[1];
-        if($startyear==NULL){
-            $startyear = date("Y")-100;
-        }
-        if($endyear==NULL){
-            $endyear=date("Y")+50;
-        }
-
-        $months=array('','January','February','March','April','May',
-        'June','July','August', 'September','October','November','December');
-
-        // Month dropdown
-        $html="<select name=\"m_{$key}_month$keyArray\">";
-
-        for($i=1;$i<=12;$i++){
-            $selected = "";
-            if($month == $i){
-                $selected = "selected='selected'";
-            }
-            if($i < 10){
-                $id = "0".$i;
-            }
-            else{
-                $id = $i;
-            }
-            $html.="<option $selected value='$id'>$months[$i]</option>";
-        }
-        $html.="</select> ";
-
-        // Year dropdown
-        $html.="<select name=\"m_{$key}_year$keyArray\">";
-
-        for($i=$endyear;$i>=$startyear;$i--){ 
-            $selected = "";
-            if($year == $i){
-                $selected = "selected='selected'";
-            }     
-            $html.="<option $selected value='$i'>$i</option>";
-        }
-        $html.="</select> ";
-
         return $html;
     }
 

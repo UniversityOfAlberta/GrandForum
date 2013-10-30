@@ -104,6 +104,11 @@ abstract class UIElement {
         }
     }
     
+    // Include the html in the dom, but make it invisible
+    function hide(){
+        $this->attr('style', 'display:none;');
+    }
+    
     // Sets the value of an attribute
     // If $value is null, the value of the attr is instead returned
     function attr($attr, $value=null){
