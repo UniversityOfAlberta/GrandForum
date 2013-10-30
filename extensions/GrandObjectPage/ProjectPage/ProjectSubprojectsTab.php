@@ -12,14 +12,20 @@ class ProjectSubprojectsTab extends AbstractTab {
     }
     
     function generateBody(){
-        global $wgUser, $wgOut, $wgServer, $wgScriptPath;
+        global $wgUser, $wgOut, $wgMessage, $wgServer, $wgScriptPath;
         if($wgUser->isLoggedIn()){
             $project = $this->project;
             $me = Person::newFromId($wgUser->getId());
             if($me->isMemberOf($project) || $me->isRoleAtLeast(MANAGER)){
                 if($this->visibility['isLead']){
                     if(isset($_POST['create_subproject'])){
-                        CreateProjectTab::handleEdit();
+                        $error = CreateProjectTab::handleEdit();
+                        if($error != ""){
+                            $wgMessage->addError($error);
+                        }
+                        else{
+                            $wgMessage->addSuccess("The Sub-Project was created successfully");
+                        }
                     }
                     $create = CreateProjectTab::createForm("new");
                     
