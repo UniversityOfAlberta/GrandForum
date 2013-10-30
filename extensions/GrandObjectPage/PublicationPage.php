@@ -366,7 +366,7 @@ class PublicationPage {
                                         addAttrDefn('.$this->get_defn("Host Research Group").');
                                         addAttr("URL");
                                         break;
-                                    case "2mm":
+                                    case "2MM":
                                         addAttrDefn('.$this->get_defn("Event Title").');
                                         addAttrDefn('.$this->get_defn("Event Location").');
                                         addAttrDefn('.$this->get_defn("Organizing Body").');
@@ -1293,7 +1293,7 @@ class PublicationPage {
                     case "Keynote":
                         $api = new KeynoteAPI(true);
                         break;
-                    case "2MM":
+                    case "Distinguished Lecture":
                         $api = new DistinguishedLectureAPI(true);
                         break;
                     case "Departmental Lecture":
