@@ -38,7 +38,7 @@
             <![CDATA[</table></div></div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="dashboard" name="Project Dashboard" blobSection="SEC_NONE" type="HeaderReportSection" renderpdf="true" pagebreak="false">
+    <ReportSection id="dashboard" name="Project Dashboard" blobSection="SEC_NONE" type="HeaderReportSection" renderpdf="true" pagebreak="true">
         <ReportItem id="project_dashboard_time_bookmark" type="BookmarkReportItem" text="Time and Budget Dashboard">
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
@@ -51,6 +51,27 @@
         <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="true" details="false">
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
+        <ReportItem id="project_dashboard_champ_head" type="StaticReportItem">
+            <![CDATA[<h2>Champions</h2>]]>
+        </ReportItem>
+        <ReportItemSet id="project_dashboard_champ" type="ProjectChampionsReportItemSet">
+            <ReportItem id="project_champ" type="StaticReportItem">
+                <![CDATA[
+                    <div><h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a></h3>
+                        <table>
+                            <tr>
+                                <td><b>Organization:</b></td>
+                                <td>{$champ_org}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Title:</b></td>
+                                <td>{$champ_title}</td>
+                            </tr>
+                        </table> 
+                    </div>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="report1" name="Executive Summary: Overview of {$project_name} Activity" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="1" renderpdf="true">
     <!-- Ia. Overview of Activity -->

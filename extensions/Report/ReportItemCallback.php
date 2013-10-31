@@ -61,6 +61,9 @@ class ReportItemCallback {
 			"user_requested_budget" => "getUserRequestedBudget",
 			"user_allocated_budget" => "getUserAllocatedBudget",
 			"user_project_comment" => "getUserProjectComment",
+			// Champions
+			"champ_org" => "getChampOrg",
+			"champ_title" => "getChampTitle",
 			// Products
 			"product_id" => "getProductId",
 			"product_title" => "getProductTitle",
@@ -592,6 +595,32 @@ class ReportItemCallback {
 	    $data = $blob->getData();
 	    if(isset($data[$person->id])){
 	        return $data[$person->id];
+	    }
+	    return "";
+	}
+	
+	function getChampOrg(){
+	    $person = Person::newFromId($this->reportItem->personId);
+	    $project = Project::newFromId($this->reportItem->projectId);
+	    
+	    $champs = $project->getChampionsDuring();
+	    foreach($champs as $champ){
+	        if($champ['user']->getId() == $person->getId()){
+	            return $champ['org'];
+	        }
+	    }
+	    return "";
+	}
+	
+	function getChampTitle(){
+	    $person = Person::newFromId($this->reportItem->personId);
+	    $project = Project::newFromId($this->reportItem->projectId);
+	    
+	    $champs = $project->getChampionsDuring();
+	    foreach($champs as $champ){
+	        if($champ['user']->getId() == $person->getId()){
+	            return $champ['title'];
+	        }
 	    }
 	    return "";
 	}

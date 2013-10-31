@@ -145,6 +145,27 @@
         <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE">
             <![CDATA[<h3>Productivity:</h3><div>{$item}</div>]]>
         </ReportItem>
+        <ReportItem id="project_dashboard_champ_head" type="StaticReportItem">
+            <![CDATA[<h3>Champions:</h3>]]>
+        </ReportItem>
+        <ReportItemSet id="project_dashboard_champ" type="ProjectChampionsReportItemSet">
+            <ReportItem id="project_champ" type="StaticReportItem">
+                <![CDATA[
+                    <div><h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a></h3>
+                        <table>
+                            <tr>
+                                <td><b>Organization:</b></td>
+                                <td>{$champ_org}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Title:</b></td>
+                                <td>{$champ_title}</td>
+                            </tr>
+                        </table> 
+                    </div>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="report" tooltip="Open-ended report narratives" name="Project Report" blobSection="LDR_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" number="1,2">
         <Instructions>
