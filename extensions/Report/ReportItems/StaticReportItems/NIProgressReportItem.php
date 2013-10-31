@@ -107,11 +107,17 @@ class NIProgressReportItem extends StaticReportItem {
         }
         
         $details = "";
-        $rowspan = count($projects) + 1;
+        $milestoneProjects = array();
+        foreach($projects as $project){
+            if($project->getCreated() < REPORTING_NCE_START){
+                $milestoneProjects[] = $project;
+            }
+        }
+        $rowspan = count($milestoneProjects) + 1;
         if($rowspan > 1){
             $details .= "<tr><td valign='top' rowspan='1'><b>Milestones</b></td><td style='padding:0;'>";
             $details .= "<table cellpadding='1' frame='void' rules='all' width='100%'><tr><td><b>Projects</b></td><td><b>Working On</b></td><td><b>Comments On</b></td><td><b>NOT Involved</b></td><td><b>No Indication</b>\n</td></tr>";
-            foreach($projects as $proj){
+            foreach($milestoneProjects as $proj){
                 $results = $data[$proj->getName()];
                 $notMentionedErrorStart = "";
                 $notMentionedErrorEnd = "";
