@@ -402,6 +402,7 @@ input {
 	border: 1px solid #888 !important;
 	margin-right: 0 !important;
 	max-height: 15px !important;
+	min-width: 100px;
 }
 
 .custom-combobox {
