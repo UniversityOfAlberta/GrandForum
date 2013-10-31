@@ -18,8 +18,6 @@ class IndexTable {
 	        $text = $title->getText();
 	        switch ($title->getText()) {
 	            case 'ALL '.HQP:
-				case 'Presentations':
-				case 'Artifacts':
 				case 'Multimedia Stories':
 				    $result = $me->isLoggedIn();
 	                break;
@@ -69,18 +67,6 @@ class IndexTable {
 			        $wgOut->setPageTitle("Research Management Committee");
 				    $this->generateRMCTable();
 				    break;
-				case 'Publications':
-				    $wgOut->setPageTitle("Publications");
-				    $this->generatePublicationsTable("Publication");
-				    break;
-				case 'Presentations':
-				    $wgOut->setPageTitle("Presentations");
-				    $this->generatePublicationsTable("Presentation");
-				    break;
-				case 'Artifacts':
-				    $wgOut->setPageTitle("Artifacts");
-				    $this->generatePublicationsTable("Artifact");
-				    break;
 				case 'Multimedia Stories':
 				    $wgOut->setPageTitle("Multimedia Stories");
 				    $this->generateMaterialsTable();
@@ -122,13 +108,8 @@ class IndexTable {
         if($me->isRoleAtLeast(MANAGER)){
             $idHeader = "<th>Project Id</th>";
         }
-        
-        if($me->isRoleAtLeast(STAFF)){
-            $startPhase = PROJECT_PHASE;
-        }
-        else{
-            $startPhase = 1;
-        }
+
+        $startPhase = PROJECT_PHASE;
         
         $this->text .= "<div id='tabs'><ul>";
         for($phase = $startPhase; $phase > 0; $phase--){
