@@ -31,7 +31,15 @@ class Project extends BackboneModel {
         if(isset(self::$cache[$id])){
             return self::$cache[$id];
         }
-        $sql = "(SELECT p.id, p.name, p.phase, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type
+        $sql = "(SELECT p.id, p.name, p.phase, e2.action, e2.effective_date, e2.id as evolutionId, e2.clear, s.status, s.type
+                 FROM grand_project p, grand_project_evolution e, grand_project_evolution e2, grand_project_status s
+                 WHERE e.`project_id` = '{$id}'
+                 AND e2.project_id = e.new_id
+                 AND e2.project_id = p.id
+                 AND s.evolution_id = e2.id
+                 ORDER BY e2.`date` DESC LIMIT 1)
+                UNION
+                (SELECT p.id, p.name, p.phase, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type
                  FROM grand_project p, grand_project_evolution e, grand_project_status s
                  WHERE e.`project_id` = '{$id}'
                  AND e.`new_id` != '{$id}'
@@ -46,6 +54,7 @@ class Project extends BackboneModel {
                  AND e.new_id = p.id
                  AND s.evolution_id = e.id
                  ORDER BY e.id DESC LIMIT 1)";
+        
         $data = DBFunctions::execSQL($sql);
         if (DBFunctions::getNRows() > 0){
             $project = new Project($data);

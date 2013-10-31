@@ -1418,8 +1418,7 @@ class Person extends BackboneModel {
         if(count($projects) > 0){
             foreach($projects as $project){
                 if((!$project->isDeleted()) || 
-                   ($project->isDeleted() && !(strcmp($project->effectiveDate, $end) < 0 && 
-                                               strcmp($project->effectiveDate, $start) > 0))){
+                   ($project->isDeleted() && !($project->effectiveDate < $start))){
                     $members = $project->getAllPeopleDuring(null, $start, $end, true);
                     foreach($members as $member){
                         if($member->getId() == $this->id){
@@ -2326,7 +2325,11 @@ class Person extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         $projects = array();
         foreach($data as $row){
-            $projects[] = Project::newFromId($row['project_id']);
+            $project = Project::newFromId($row['project_id']);
+            if((!$project->isDeleted()) || 
+               ($project->isDeleted() && !($project->effectiveDate < $startRange))){
+                $projects[] = $project;
+            }
         }
         $this->leadershipCache[$startRange.$endRange] = $projects;
         return $projects;
