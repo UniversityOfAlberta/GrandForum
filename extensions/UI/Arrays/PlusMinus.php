@@ -16,8 +16,8 @@ class PlusMinus extends UIElementArray {
         $html = $hiddenHTML;
         $html .= "<div id='{$this->id}'>
             <div class='plusminus_contents'></div>
-            <button id='{$this->id}add' style='width: 30px;padding-left: 10px;padding-right: 10px;'>+</button>&nbsp;
-            <button id='{$this->id}minus' style='width: 30px;padding-left: 10px;padding-right: 10px;'>-</button>
+            <button type='button' id='{$this->id}add' style='width: 30px;padding-left: 10px;padding-right: 10px;'>+</button>&nbsp;
+            <button type='button' id='{$this->id}minus' style='width: 30px;padding-left: 10px;padding-right: 10px;'>-</button>
         </div>";
         $html .= "<script type='text/javascript'>
             var contents = $('.{$this->id}_contents_template').detach();
