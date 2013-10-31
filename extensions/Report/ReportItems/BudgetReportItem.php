@@ -200,8 +200,8 @@ class BudgetReportItem extends AbstractReportItem {
                     if($project->deleted && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
                         $errors[] = "'{$project->getName()}' is not continuing next year";
                     }
-                    if($project->getPhase() != 2){
-                        $errors[] = "'{$project->getName()}' is not a phase 2 project";
+                    if($project->getPhase() != PROJECT_PHASE){
+                        $errors[] = "'{$project->getName()}' is not a phase ".PROJECT_PHASE." project";
                     }
                     if($project->isSubProject()){
                         $errors[] = "'{$project->getName()}' is not a primary project";
@@ -227,8 +227,8 @@ class BudgetReportItem extends AbstractReportItem {
                     if($project->deleted && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
                         $errors[] = "'{$project->getName()}' is not continuing next year";
                     }
-                    if($project->getPhase() != 2){
-                        $errors[] = "'{$project->getName()}' is not a phase 2 project";
+                    if($project->getPhase() != PROJECT_PHASE){
+                        $errors[] = "'{$project->getName()}' is not a phase ".PROJECT_PHASE." project";
                     }
                     if($project->isSubProject()){
                         $errors[] = "'{$project->getName()}' is not a primary project";
