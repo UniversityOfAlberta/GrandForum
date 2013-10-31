@@ -1,8 +1,8 @@
 <?php
 
 class TwoMMAPI extends PaperAPI{
-	function PaperSessionAPI($update=false){
-	    parent::TwoMMAPI($update, "2MM", "Presentation");
+	function TwoMMAPI($update=false){
+	    parent::PaperAPI($update, "2MM", "Presentation");
 	    $this->addPOST("description",false,"The description of the presentation","My Description");
 	    $this->addPOST("date",false,"The date of the presentation","2011-06-12");
 	    $this->addPOST("status",false,"Whether or not the presentation was invited.  Can be either Invited or Not Invited","Not Invited");
