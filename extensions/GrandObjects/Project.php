@@ -455,6 +455,9 @@ EOF;
                 }
             }
         }
+        else{
+            $created = $this->getEffectiveDate();
+        }
         return $created;
     }
     

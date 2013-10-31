@@ -13,9 +13,11 @@ class PersonProjectReportItemSet extends ReportItemSet {
         }
         if(is_array($projects)){
             foreach($projects as $proj){
-                $tuple = self::createTuple();
-                $tuple['project_id'] = $proj->getId();
-                $data[] = $tuple;
+                if($proj->getCreated() < REPORTING_NCE_START){
+                    $tuple = self::createTuple();
+                    $tuple['project_id'] = $proj->getId();
+                    $data[] = $tuple;
+                }
             }
         }
         return $data;
