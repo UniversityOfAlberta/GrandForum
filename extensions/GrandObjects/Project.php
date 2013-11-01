@@ -1338,10 +1338,10 @@ EOF;
         }
     }
     
-    function getRequestedBudget($year){
+    function getRequestedBudget($year, $role='all'){
         $projectBudget = null;
-        if(isset($this->budgets['r'.$year])){
-            return unserialize($this->budgets['r'.$year]);
+        if(isset($this->budgets['r'.$role.$year])){
+            return unserialize($this->budgets['r'.$role.$year]);
         }
         $year_fr = $year+1;
         $year_to = $year+2;
@@ -1417,9 +1417,9 @@ EOF;
         $nameBudget = Budget::join_tables($nameBudget)->join(Budget::union_tables(array(new Budget(), new Budget())));
         $projectBudget = Budget::join_tables($projectBudget);
         if($projectBudget != null){
-            $this->budgets['r'.$year] = $nameBudget->union($projectBudget->cube());
-            $this->budgets['r'.$year] = serialize($this->budgets['r'.$year]);
-            return unserialize($this->budgets['r'.$year]);
+            $this->budgets['r'.$role.$year] = $nameBudget->union($projectBudget->cube());
+            $this->budgets['r'.$role.$year] = serialize($this->budgets['r'.$role.$year]);
+            return unserialize($this->budgets['r'.$role.$year]);
         }
         else{
             return null;

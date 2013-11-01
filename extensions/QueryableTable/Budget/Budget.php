@@ -271,6 +271,13 @@ class Budget extends QueryableTable{
         return $cubedBudget;
     }
     
+    function uncube(){
+        $copy = $this->copy();
+        $copy->filter(CUBE_COL_TOTAL);
+        $copy->filterCols(CUBE_ROW_TOTAL);
+        return $copy;
+    }
+    
     function renderForPDF($sortable=false){
         $dom = new SmartDOMDocument();
         $dom->loadHTML($this->render());
