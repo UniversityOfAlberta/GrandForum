@@ -58,6 +58,10 @@ class TabbedPage {
                     $active_tab = $i;
                 }
             }
+            if(isset($_GET['tab']) && $_GET['tab'] == $tab->id){
+                $activeTabIndex = $tab->id;
+                $active_tab = $i;
+            }
             $i++;
         }
         

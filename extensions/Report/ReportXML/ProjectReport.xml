@@ -256,56 +256,32 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="subprojects" tooltip="Discussion of progress against Sub-Projects" name="Sub-Projects" blobSection="LDR_MILESTONE" type="EditableReportSection" renderpdf="true" reportCharLimits="false">
+    <ReportSection id="subprojects" tooltip="Discussion of progress against Sub-Projects" name="Sub-Projects" blobSection="LDR_MILESTONE" type="ReportSection" renderpdf="true" reportCharLimits="false">
         <Instructions>
             <![CDATA[
                 
             ]]>
         </Instructions>
-        <ReportItem id="table_head" type="StaticReportItem">
-            <![CDATA[
-                <table style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'>
-                    <tr>
-                        <th>Sub-Project</th><th>Full Name</th><th>Description</th>
-                    </tr>
-            ]]>
-        </ReportItem>
         <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet" blobIndex="projectId">
-            <ReportItem id="subproject_data" type="StaticReportItem">
+            <ReportItem id="subprojects_data" type="StaticReportItem">
                 <![CDATA[
-                    <tr>
-                        <td style='white-space:nowrap;' valign='top'>
-                            <table>
-                                <tr><td><b>Id:</b></td><td align='left'>{$project_id}</td></tr>
-                                <tr><td><b>Name:</b></td><td align='left'>{$project_name}</td></tr>
-                                <tr><td><b>Status:</b></td><td align='left'>{$project_status}</td></tr>
-                            </table>
-                ]]>
-            </ReportItem>
-            <ReportItem id="subproject_data" type="StaticReportItem">
-                <![CDATA[
-                    </td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="subproject_desc" type="StaticReportItem">
-                <![CDATA[
-                    <td style='white-space:nowrap;' valign='top'>{$project_full_name}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="subproject_desc" type="StaticReportItem">
-                <![CDATA[
-                    <td valign='top'>{$project_description}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="milestone_data" type="StaticReportItem">
-                <![CDATA[
-                    </td></tr>
+                    <div>
+                        <h2><a target='_blank' href='{$project_url}'>{$project_name}</a></h2>
+                        <table>
+                            <tr><td width='50'><b>Id:</b></td><td align='left'>{$project_id}</td></tr>
+                            <tr><td width='50'><b>Full Name:</b></td><td align='left'>{$project_full_name}</td></tr>
+                            <tr><td width='50'><b>Status:</b></td><td align='left'>{$project_status}</td></tr>
+                            <tr><td width='50'><b>Leader(s)</b>:</td><td align='left'>{$project_leaders}</td></tr>
+                            <tr><td width='50' style='white-space:nowrap;'><b>Co-Leader(s)</b>:</td><td align='left'>{$project_coleaders}</td></tr>
+                            <tr><td width='50' valign='top'><b>Description:</b></td><td align='left'>{$project_description}</td></tr>
+                        </table>
+                    </div>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="table_foot" type="StaticReportItem">
             <![CDATA[
-                </table>
+                <br /><hr /><br /><a target='_blank' href='{$project_url}?tab=sub-projects' class='button'>Go Edit Sub-Projects</a>
             ]]>
         </ReportItem>
     </ReportSection>

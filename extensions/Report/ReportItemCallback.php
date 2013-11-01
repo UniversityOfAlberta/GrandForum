@@ -3,75 +3,78 @@
 class ReportItemCallback {
     
     static $callbacks = 
-		array(
-		    // Dates
-		    "last_year" => "getLastYear",
-		    "this_year" => "getThisYear",
+        array(
+            // Dates
+            "last_year" => "getLastYear",
+            "this_year" => "getThisYear",
             "next_year" => "getNextYear",
-		    // Projects
-		    "project_id" => "getProjectId",
-			"project_name" => "getProjectName",
-			"project_full_name" => "getProjectFullName",
-			"project_status" => "getProjectStatus",
-			"project_description" => "getProjectDescription",
-			"project_problem" => "getProjectProblem",
-			"project_solution" => "getProjectSolution",
-			// Milestones
-			"milestone_id" => "getMilestoneId",
-			"milestone_title" => "getMilestoneTitle",
-			"milestone_oldtitle" => "getMilestoneOldTitle",
-			"milestone_start_date" => "getMilestoneStartDate",
-			"milestone_end_date" => "getMilestoneEndDate",
-			"milestone_status" => "getMilestoneStatus",
-			"milestone_changes" => "getMilestoneChanges",
-			"milestone_description" => "getMilestoneDescription",
-			"milestone_olddescription" => "getMilestoneOldDescription",
-			"milestone_assessment" => "getMilestoneAssessment",
-			"milestone_oldassessment" => "getMilestoneOldAssessment",
-			"milestone_last_edited_by" => "getMilestoneLastEditedBy",
-			"milestone_hqp_comments" => "getMilestoneHQPComments",
-			"milestone_ni_comments" => "getMilestoneNIComments",
-			"milestone_ni_summaries" => "getMilestoneNISummaries",
-			// Reports
-			"timestamp" => "getTimestamp",
-			"post_id" => "getPostId",
-			"report_name" => "getReportName",
-			"report_xmlname" => "getReportXMLName",
-			"section_name" => "getSectionName",
-			"report_excellence_ni_comments" => "getReportExcellenceNIComments",
-			"report_hqpdev_ni_comments" => "getReportHQPDevNIComments",
-			"report_networking_ni_comments" => "getReportNetworkingNIComments",
-			"report_ktee_ni_comments" => "getReportKTEENIComments",
-			
-			"report_excellence_hqp_comments" => "getReportExcellenceHQPComments",
-			"report_networking_hqp_comments" => "getReportNetworkingHQPComments",
-			"report_ktee_hqp_comments" => "getReportKTEEHQPComments",
-			// People
-			"user_name" => "getUserName",
-			"user_url" => "getUserUrl",
-			"user_reversed_name" => "getUserReversedName",
-			"user_id" => "getUserId",
-			"user_roles" => "getUserRoles",
-			"user_full_roles" => "getUserFullRoles",
-			"user_level" => "getUserLevel",
-			"user_dept" => "getUserDept",
-			"user_uni" => "getUserUni",
-			"user_supervisors" => "getUserSupervisors",
-			"user_projects" => "getUserProjects",
-			"user_requested_budget" => "getUserRequestedBudget",
-			"user_allocated_budget" => "getUserAllocatedBudget",
-			"user_project_comment" => "getUserProjectComment",
-			// Champions
-			"champ_org" => "getChampOrg",
-			"champ_title" => "getChampTitle",
-			// Products
-			"product_id" => "getProductId",
-			"product_title" => "getProductTitle",
-			"product_url" => "getProductUrl",
-			// Other
-			"wgServer" => "getWgServer",
-			"wgScriptPath" => "getWgScriptPath",
-		);
+            // Projects
+            "project_id" => "getProjectId",
+            "project_name" => "getProjectName",
+            "project_full_name" => "getProjectFullName",
+            "project_url" => "getProjectUrl",
+            "project_status" => "getProjectStatus",
+            "project_description" => "getProjectDescription",
+            "project_leaders" => "getProjectLeaders",
+            "project_coleaders" => "getProjectCoLeaders",
+            "project_problem" => "getProjectProblem",
+            "project_solution" => "getProjectSolution",
+            // Milestones
+            "milestone_id" => "getMilestoneId",
+            "milestone_title" => "getMilestoneTitle",
+            "milestone_oldtitle" => "getMilestoneOldTitle",
+            "milestone_start_date" => "getMilestoneStartDate",
+            "milestone_end_date" => "getMilestoneEndDate",
+            "milestone_status" => "getMilestoneStatus",
+            "milestone_changes" => "getMilestoneChanges",
+            "milestone_description" => "getMilestoneDescription",
+            "milestone_olddescription" => "getMilestoneOldDescription",
+            "milestone_assessment" => "getMilestoneAssessment",
+            "milestone_oldassessment" => "getMilestoneOldAssessment",
+            "milestone_last_edited_by" => "getMilestoneLastEditedBy",
+            "milestone_hqp_comments" => "getMilestoneHQPComments",
+            "milestone_ni_comments" => "getMilestoneNIComments",
+            "milestone_ni_summaries" => "getMilestoneNISummaries",
+            // Reports
+            "timestamp" => "getTimestamp",
+            "post_id" => "getPostId",
+            "report_name" => "getReportName",
+            "report_xmlname" => "getReportXMLName",
+            "section_name" => "getSectionName",
+            "report_excellence_ni_comments" => "getReportExcellenceNIComments",
+            "report_hqpdev_ni_comments" => "getReportHQPDevNIComments",
+            "report_networking_ni_comments" => "getReportNetworkingNIComments",
+            "report_ktee_ni_comments" => "getReportKTEENIComments",
+            
+            "report_excellence_hqp_comments" => "getReportExcellenceHQPComments",
+            "report_networking_hqp_comments" => "getReportNetworkingHQPComments",
+            "report_ktee_hqp_comments" => "getReportKTEEHQPComments",
+            // People
+            "user_name" => "getUserName",
+            "user_url" => "getUserUrl",
+            "user_reversed_name" => "getUserReversedName",
+            "user_id" => "getUserId",
+            "user_roles" => "getUserRoles",
+            "user_full_roles" => "getUserFullRoles",
+            "user_level" => "getUserLevel",
+            "user_dept" => "getUserDept",
+            "user_uni" => "getUserUni",
+            "user_supervisors" => "getUserSupervisors",
+            "user_projects" => "getUserProjects",
+            "user_requested_budget" => "getUserRequestedBudget",
+            "user_allocated_budget" => "getUserAllocatedBudget",
+            "user_project_comment" => "getUserProjectComment",
+            // Champions
+            "champ_org" => "getChampOrg",
+            "champ_title" => "getChampTitle",
+            // Products
+            "product_id" => "getProductId",
+            "product_title" => "getProductTitle",
+            "product_url" => "getProductUrl",
+            // Other
+            "wgServer" => "getWgServer",
+            "wgScriptPath" => "getWgScriptPath",
+        );
     
     var $reportItem;
     
@@ -92,66 +95,105 @@ class ReportItemCallback {
     }
     
     function getProjectId(){
-    	$project_id = 0;
-    	if($this->reportItem->projectId != 0 ){
-    		$project_id = $this->reportItem->projectId;
-    	}
-    	return $project_id;
+        $project_id = 0;
+        if($this->reportItem->projectId != 0 ){
+            $project_id = $this->reportItem->projectId;
+        }
+        return $project_id;
     }
     
     function getProjectName(){
-    	$project_name = "";
-    	if($this->reportItem->projectId != 0 ){
-    		$project = Project::newFromId($this->reportItem->projectId);
-    		$deleted = ($project->isDeleted()) ? " (Ended)" : "";
-    		$project_name = $project->getName().$deleted;
-    	}
-    	return $project_name;
+        $project_name = "";
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $deleted = ($project->isDeleted()) ? " (Ended)" : "";
+            $project_name = $project->getName().$deleted;
+        }
+        return $project_name;
     }
     
     function getProjectFullName(){
-    	$project_name = "";
-    	if($this->reportItem->projectId != 0 ){
-    		$project = Project::newFromId($this->reportItem->projectId);
-    		$project_name = $project->getFullName();
-    	}
-    	return $project_name;
+        $project_name = "";
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $project_name = $project->getFullName();
+        }
+        return $project_name;
+    }
+    
+    function getProjectUrl(){
+        $project_url = "";
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $project_url = $project->getUrl();
+        }
+        return $project_url;
     }
     
     function getProjectStatus(){
         $project_stat = "";
-    	if($this->reportItem->projectId != 0 ){
-    		$project = Project::newFromId($this->reportItem->projectId);
-    		$project_stat = $project->getStatus();
-    	}
-    	return $project_stat;
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $project_stat = $project->getStatus();
+        }
+        return $project_stat;
     }
     
     function getProjectDescription(){
         $project_desc = "";
-    	if($this->reportItem->projectId != 0 ){
-    		$project = Project::newFromId($this->reportItem->projectId);
-    		$project_desc = $project->getDescription();
-    	}
-    	return $project_desc;
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $project_desc = $project->getDescription();
+        }
+        return $project_desc;
+    }
+    
+    function getProjectLeaders(){
+        $leads = array();
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $leaders = $project->getLeaders();
+            foreach($leaders as $lead){
+                $leads[] = "<a target='_blank' href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
+            }
+        }
+        if(count($leads) == 0){
+            $leads[] = "N/A";
+        }
+        return implode(", ", $leads);
+    }
+    
+    function getProjectCoLeaders(){
+        $coleads = array();
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $coleaders = $project->getCoLeaders();
+            foreach($coleaders as $colead){
+                $coleads[] = "<a target='_blank' href='{$colead->getUrl()}'>{$colead->getNameForForms()}</a>";
+            }
+        }
+        if(count($coleads) == 0){
+            $coleads[] = "N/A";
+        }
+        return implode(", ", $coleads);
     }
     
     function getProjectProblem(){
         $project_prob = "";
-    	if($this->reportItem->projectId != 0 ){
-    		$project = Project::newFromId($this->reportItem->projectId);
-    		$project_prob = $project->getProblem();
-    	}
-    	return $project_prob;
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $project_prob = $project->getProblem();
+        }
+        return $project_prob;
     }
     
     function getProjectSolution(){
         $project_sol = "";
-    	if($this->reportItem->projectId != 0 ){
-    		$project = Project::newFromId($this->reportItem->projectId);
-    		$project_sol = $project->getSolution();
-    	}
-    	return $project_sol;
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $project_sol = $project->getSolution();
+        }
+        return $project_sol;
     }
     
     function getMilestoneId(){
@@ -161,137 +203,137 @@ class ReportItemCallback {
     function getMilestoneTitle(){
         $milestone_title = "";
         if($this->reportItem->milestoneId != 0 ){
-    		$milestone = Milestone::newFromId($this->reportItem->milestoneId);
-    		$milestone_title = $milestone->getTitle();
-    	}
-    	return $milestone_title;
+            $milestone = Milestone::newFromId($this->reportItem->milestoneId);
+            $milestone_title = $milestone->getTitle();
+        }
+        return $milestone_title;
     }
     
     function getMilestoneOldTitle(){
-	    $milestone_title = "";
-    	if($this->reportItem->milestoneId != 0 ){
-    		$milestone = Milestone::newFromId($this->reportItem->milestoneId)->getRevisionByDate((REPORTING_YEAR-1)."-12-00");
-    		if($milestone != null){
-    		    $milestone_title = $milestone->getTitle();
-    		}
-    	}
-		return $milestone_title;
-	}
+        $milestone_title = "";
+        if($this->reportItem->milestoneId != 0 ){
+            $milestone = Milestone::newFromId($this->reportItem->milestoneId)->getRevisionByDate((REPORTING_YEAR-1)."-12-00");
+            if($milestone != null){
+                $milestone_title = $milestone->getTitle();
+            }
+        }
+        return $milestone_title;
+    }
     
     function getMilestoneStartDate(){
         $milestone_start = "";
         if($this->reportItem->milestoneId != 0 ){
-    		$milestone = Milestone::newFromId($this->reportItem->milestoneId);
-    		$milestone_start = new DateTime($milestone->getVeryStartDate());
-    		$milestone_start = date_format($milestone_start, 'F, Y');
-    	}
-    	return $milestone_start;
+            $milestone = Milestone::newFromId($this->reportItem->milestoneId);
+            $milestone_start = new DateTime($milestone->getVeryStartDate());
+            $milestone_start = date_format($milestone_start, 'F, Y');
+        }
+        return $milestone_start;
     }
     
     function getMilestoneEndDate(){
         $milestone_end = "";
         if($this->reportItem->milestoneId != 0 ){
-    		$milestone = Milestone::newFromId($this->reportItem->milestoneId);
-    		$milestone_end = new DateTime($milestone->getProjectedEndDate());
-    		$milestone_end = date_format($milestone_end, 'F, Y');
-    	}
-    	return $milestone_end;
+            $milestone = Milestone::newFromId($this->reportItem->milestoneId);
+            $milestone_end = new DateTime($milestone->getProjectedEndDate());
+            $milestone_end = date_format($milestone_end, 'F, Y');
+        }
+        return $milestone_end;
     }
     
     function getMilestoneStatus(){
         $milestone_title = "";
         if($this->reportItem->milestoneId != 0 ){
-    		$milestone = Milestone::newFromId($this->reportItem->milestoneId);
-    		$milestone_title = $milestone->getStatus();
-    	}
-    	return $milestone_title;
+            $milestone = Milestone::newFromId($this->reportItem->milestoneId);
+            $milestone_title = $milestone->getStatus();
+        }
+        return $milestone_title;
     }
     
     function getMilestoneDescription(){
-		$milestone_description = "";
-    	if($this->reportItem->milestoneId != 0 ){
-    		$milestone = Milestone::newFromId($this->reportItem->milestoneId);
-    		$milestone_description = nl2br($milestone->getDescription());
-    	}
-		return $milestone_description;
-	}
-	
-	function getMilestoneOldDescription(){
-	    $milestone_description = "";
-    	if($this->reportItem->milestoneId != 0 ){
-    		$milestone = Milestone::newFromId($this->reportItem->milestoneId)->getRevisionByDate((REPORTING_YEAR-1)."-12-00");
-    		if($milestone != null){
-    		    $milestone_description = $milestone->getDescription();
-    		}
-    	}
-		return $milestone_description;
-	}
-	
-	function getMilestoneChanges(){
-	    $nChanges = 0;
-    	if($this->reportItem->milestoneId != 0 ){
-    	    $currentMilestone = Milestone::newFromId($this->reportItem->milestoneId);
-    		$milestone = $currentMilestone->getRevisionByDate((REPORTING_YEAR-1)."-12-00");
-    		if($milestone == null){
-    		    $first = $currentMilestone;
-    		    $milestone = $first;
-    		    while($first != null){
-    		        $milestone = $first;
-    		        $first = $first->getParent();
-    		    }
-    		}
-    		$parent = $currentMilestone;
-    		while($parent != null && $parent->getId() != $milestone->getId()){
-    		    $nChanges++;
-    		    $parent = $parent->getParent();
-    		}
-    	}
-		return $nChanges;
-	}
-	
-	function getMilestoneAssessment(){
-		$milestone_assessment = "";
-    	if($this->reportItem->milestoneId != 0 ){
-    		$milestone = Milestone::newFromId($this->reportItem->milestoneId);
-    		$milestone_assessment = nl2br($milestone->getAssessment());
-    	}
-		return $milestone_assessment;
-	}
-	
-	function getMilestoneOldAssessment(){
-	    $milestone_assessment = "";
-    	if($this->reportItem->milestoneId != 0 ){
-    		$milestone = Milestone::newFromId($this->reportItem->milestoneId)->getRevisionByDate((REPORTING_YEAR-1)."-12-00");
-    		if($milestone != null){
-    		    $milestone_assessment = $milestone->getAssessment();
-    		}
-    	}
-		return $milestone_assessment;
-	}
-	
-	function getMilestoneLastEditedBy(){
-	    $edited = "";
-	    if($this->reportItem->milestoneId != 0 ){
-	        $milestone = Milestone::newFromId($this->reportItem->milestoneId);
-	        if($milestone->getEditedBy() != null && $milestone->getEditedBy()->getName() != ""){
-	            $edited = "<a href='{$milestone->getEditedBy()->getUrl()}'>{$milestone->getEditedBy()->getNameForForms()}</a>";
-	        }
-	    }
-	    return $edited;
-	}
-	
-	function getMilestoneHQPComments(){
-	    if($this->reportItem->milestoneId != 0 ){
-	        $person = $this->reportItem->getReport()->person;
-	        $project = Project::newFromId($this->reportItem->projectId);
-    		$milestone = Milestone::newFromId($this->reportItem->milestoneId);
-    		$hqp_rep_addr = ReportBlob::create_address(RP_HQP, HQP_MILESTONES, HQP_MIL_CONTRIBUTIONS, 0);
-    		$m_id = $this->reportItem->milestoneId;
+        $milestone_description = "";
+        if($this->reportItem->milestoneId != 0 ){
+            $milestone = Milestone::newFromId($this->reportItem->milestoneId);
+            $milestone_description = nl2br($milestone->getDescription());
+        }
+        return $milestone_description;
+    }
+    
+    function getMilestoneOldDescription(){
+        $milestone_description = "";
+        if($this->reportItem->milestoneId != 0 ){
+            $milestone = Milestone::newFromId($this->reportItem->milestoneId)->getRevisionByDate((REPORTING_YEAR-1)."-12-00");
+            if($milestone != null){
+                $milestone_description = $milestone->getDescription();
+            }
+        }
+        return $milestone_description;
+    }
+    
+    function getMilestoneChanges(){
+        $nChanges = 0;
+        if($this->reportItem->milestoneId != 0 ){
+            $currentMilestone = Milestone::newFromId($this->reportItem->milestoneId);
+            $milestone = $currentMilestone->getRevisionByDate((REPORTING_YEAR-1)."-12-00");
+            if($milestone == null){
+                $first = $currentMilestone;
+                $milestone = $first;
+                while($first != null){
+                    $milestone = $first;
+                    $first = $first->getParent();
+                }
+            }
+            $parent = $currentMilestone;
+            while($parent != null && $parent->getId() != $milestone->getId()){
+                $nChanges++;
+                $parent = $parent->getParent();
+            }
+        }
+        return $nChanges;
+    }
+    
+    function getMilestoneAssessment(){
+        $milestone_assessment = "";
+        if($this->reportItem->milestoneId != 0 ){
+            $milestone = Milestone::newFromId($this->reportItem->milestoneId);
+            $milestone_assessment = nl2br($milestone->getAssessment());
+        }
+        return $milestone_assessment;
+    }
+    
+    function getMilestoneOldAssessment(){
+        $milestone_assessment = "";
+        if($this->reportItem->milestoneId != 0 ){
+            $milestone = Milestone::newFromId($this->reportItem->milestoneId)->getRevisionByDate((REPORTING_YEAR-1)."-12-00");
+            if($milestone != null){
+                $milestone_assessment = $milestone->getAssessment();
+            }
+        }
+        return $milestone_assessment;
+    }
+    
+    function getMilestoneLastEditedBy(){
+        $edited = "";
+        if($this->reportItem->milestoneId != 0 ){
+            $milestone = Milestone::newFromId($this->reportItem->milestoneId);
+            if($milestone->getEditedBy() != null && $milestone->getEditedBy()->getName() != ""){
+                $edited = "<a href='{$milestone->getEditedBy()->getUrl()}'>{$milestone->getEditedBy()->getNameForForms()}</a>";
+            }
+        }
+        return $edited;
+    }
+    
+    function getMilestoneHQPComments(){
+        if($this->reportItem->milestoneId != 0 ){
+            $person = $this->reportItem->getReport()->person;
+            $project = Project::newFromId($this->reportItem->projectId);
+            $milestone = Milestone::newFromId($this->reportItem->milestoneId);
+            $hqp_rep_addr = ReportBlob::create_address(RP_HQP, HQP_MILESTONES, HQP_MIL_CONTRIBUTIONS, 0);
+            $m_id = $this->reportItem->milestoneId;
         }
         else{
             return;
         }
-	    //First get All HQPs that I'm supervising, then we'll fetch their comment on the milestone.
+        //First get All HQPs that I'm supervising, then we'll fetch their comment on the milestone.
         $hqp_objs = $project->getAllPeopleDuring("HQP"); //no range params, so will default to current year
         
         $hqp_milestone_comments = "";
@@ -326,14 +368,14 @@ class ReportItemCallback {
             }
         }
         return $hqp_milestone_comments;
-	}
-	
-	function getMilestoneNIComments(){
-	    if($this->reportItem->milestoneId != 0 ){
-	        $project = Project::newFromId($this->reportItem->projectId);
-    		$milestone = Milestone::newFromId($this->reportItem->milestoneId);
-    		$ni_rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_MILESTONES, RES_MIL_CONTRIBUTIONS, 0);
-    		$m_id = $this->reportItem->milestoneId;
+    }
+    
+    function getMilestoneNIComments(){
+        if($this->reportItem->milestoneId != 0 ){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $milestone = Milestone::newFromId($this->reportItem->milestoneId);
+            $ni_rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_MILESTONES, RES_MIL_CONTRIBUTIONS, 0);
+            $m_id = $this->reportItem->milestoneId;
         }
         else{
             return;
@@ -358,12 +400,12 @@ class ReportItemCallback {
             }
         }
         return $ni_milestone_comments;
-	}
-	
-	function getMilestoneNISummaries(){
-	    if($this->reportItem->projectId != 0 ){
-	        $project = Project::newFromId($this->reportItem->projectId);
-    		$ni_rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_MILESTONES, RES_MIL_SUMMARY, 0);
+    }
+    
+    function getMilestoneNISummaries(){
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $ni_rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_MILESTONES, RES_MIL_SUMMARY, 0);
         }
         else{
             return;
@@ -384,40 +426,40 @@ class ReportItemCallback {
             }
         }
         return $ni_milestone_comments;
-	}
-	
-	function getReportExcellenceNIComments(){
-	    return $this->getReportNIComments(RES_RESACT_EXCELLENCE);
-	}
-	
-	function getReportHQPDevNIComments(){
-	    return $this->getReportNIComments(RES_RESACT_HQPDEV);
-	}
-	
-	function getReportNetworkingNIComments(){
-	    return $this->getReportNIComments(RES_RESACT_NETWORKING);
-	}
-	
-	function getReportKTEENIComments(){
-	    return $this->getReportNIComments(RES_RESACT_KTEE);
-	}
-	
-	function getReportExcellenceHQPComments(){
-	    return $this->getReportHQPComments(HQP_RESACT_EXCELLENCE);
-	}
-	
-	function getReportNetworkingHQPComments(){
-	    return $this->getReportHQPComments(HQP_RESACT_NETWORKING);
-	}
-	
-	function getReportKTEEHQPComments(){
-	    return $this->getReportHQPComments(HQP_RESACT_KTEE);
-	}
-	
-	private function getReportNIComments($item){
-	    if($this->reportItem->projectId != 0){
-	        $project = Project::newFromId($this->reportItem->projectId);
-    		$ni_rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_RESACTIVITY, $item, 0);
+    }
+    
+    function getReportExcellenceNIComments(){
+        return $this->getReportNIComments(RES_RESACT_EXCELLENCE);
+    }
+    
+    function getReportHQPDevNIComments(){
+        return $this->getReportNIComments(RES_RESACT_HQPDEV);
+    }
+    
+    function getReportNetworkingNIComments(){
+        return $this->getReportNIComments(RES_RESACT_NETWORKING);
+    }
+    
+    function getReportKTEENIComments(){
+        return $this->getReportNIComments(RES_RESACT_KTEE);
+    }
+    
+    function getReportExcellenceHQPComments(){
+        return $this->getReportHQPComments(HQP_RESACT_EXCELLENCE);
+    }
+    
+    function getReportNetworkingHQPComments(){
+        return $this->getReportHQPComments(HQP_RESACT_NETWORKING);
+    }
+    
+    function getReportKTEEHQPComments(){
+        return $this->getReportHQPComments(HQP_RESACT_KTEE);
+    }
+    
+    private function getReportNIComments($item){
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $ni_rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_RESACTIVITY, $item, 0);
         }
         else{
             return;
@@ -439,12 +481,12 @@ class ReportItemCallback {
             }
         }
         return $ni_comments;
-	}
-	
-	private function getReportHQPComments($item){
-	    if($this->reportItem->projectId != 0){
-	        $project = Project::newFromId($this->reportItem->projectId);
-    		$hqp_rep_addr = ReportBlob::create_address(RP_HQP, HQP_RESACTIVITY, $item, 0);
+    }
+    
+    private function getReportHQPComments($item){
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $hqp_rep_addr = ReportBlob::create_address(RP_HQP, HQP_RESACTIVITY, $item, 0);
         }
         else{
             return;
@@ -465,210 +507,210 @@ class ReportItemCallback {
             }
         }
         return $hqp_comments;
-	}
-	
-	function getUserUrl(){
-	    $person = Person::newFromId($this->reportItem->personId);
-	    return $person->getUrl();
-	}
-	
-	function getUserName(){
-	    $person = Person::newFromId($this->reportItem->personId);
-	    return $person->getNameForForms();
-	}
-	
-	function getUserReversedName(){
-	    $person = Person::newFromId($this->reportItem->personId);
-	    return $person->getReversedName();
-	}
-	
-	function getUserId(){
-	    return $this->reportItem->personId;
-	}
-	
-	function getUserRoles(){
-	    $person = Person::newFromId($this->reportItem->personId);
-	    $roles = $person->getRoles();
+    }
+    
+    function getUserUrl(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getUrl();
+    }
+    
+    function getUserName(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getNameForForms();
+    }
+    
+    function getUserReversedName(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getReversedName();
+    }
+    
+    function getUserId(){
+        return $this->reportItem->personId;
+    }
+    
+    function getUserRoles(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $roles = $person->getRoles();
         $roleNames = array();
         foreach($roles as $role){
             $roleNames[] = $role->getRole();
         }
         return implode(", ", $roleNames);
-	}
-	
-	function getUserFullRoles(){
-	    $person = Person::newFromId($this->reportItem->personId);
-	    $roles = $this->getUserRoles();
-	    if($person->isProjectLeader()){
-	        $roles .= ", PL";
-	    }
-	    if($person->isProjectCoLeader()){
-	        $roles .= ", COPL";
-	    }
-	    return $roles;
-	}
-	
-	function getUserLevel(){
-	    $person = Person::newFromId($this->reportItem->personId);
-	    $university = $person->getUniversity();
-	    return $university['position'];
-	}
-	
-	function getUserDept(){
-	    $person = Person::newFromId($this->reportItem->personId);
-	    $university = $person->getUniversity();
-	    return $university['department'];
-	}
-	
-	function getUserUni(){
-	    $person = Person::newFromId($this->reportItem->personId);
-	    $university = $person->getUniversity();
-	    return $university['university'];
-	}
-	
-	function getUserSupervisors(){
-	    $supervisors = array();
-	    $person = Person::newFromId($this->reportItem->personId);
-	    $me = $person;
-	    foreach(Person::getAllPeople('all') as $person){
-	        foreach($person->getRelations(SUPERVISES, true) as $rel){
-	            $start = $rel->getStartDate();
-	            $end = $rel->getEndDate();
-	            if($rel->getUser2()->getId() == $me->getId()){
-	                if((strcmp($start, REPORTING_CYCLE_START."00:00:00") <= 0 && (strcmp($end, REPORTING_CYCLE_START."00:00:00") >= 0 || strcmp($end, "0000-00-00 00:00:00") == 0)) ||
-	                   (strcmp($start, REPORTING_CYCLE_END."00:00:00") <= 0 && strcmp($start, REPORTING_CYCLE_START."00:00:00") >= 0) ||
-	                   (strcmp($end, REPORTING_CYCLE_END."00:00:00") <= 0 && strcmp($end, REPORTING_CYCLE_START."00:00:00") >= 0)){
-	                    $sup = $rel->getUser1();
-	                    $supervisors[$sup->getId()] = "<a target='_blank' href='{$sup->getUrl()}'>{$sup->getNameForForms()}</a>";
-	                }
-	            }
-	        }
-	    }
-	    return implode(", ", $supervisors);
-	}
-	
-	function getUserProjects(){
-	    $person = Person::newFromId($this->reportItem->personId);
-	    $projects = array();
-	    foreach($person->getProjectsDuring() as $project){
-	        $deleted = ($project->isDeleted()) ? " (Ended)" : "";
-	        $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";
-	    }
-	    return implode(", ", $projects);
-	}
-	
-	function getUserRequestedBudget(){
-	    $person = Person::newFromId($this->reportItem->personId);
-	    $project = Project::newFromId($this->reportItem->projectId);
-	    
-	    $budget = $person->getRequestedBudget(REPORTING_YEAR);
-	    if($project != null && $project->getName() != ""){
-	        $budgetFirstCol = $budget->copy()->limitCols(0, 1);
-	        $budget = $budget->copy()->select(V_PROJ, array($project->getName()));
+    }
+    
+    function getUserFullRoles(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $roles = $this->getUserRoles();
+        if($person->isProjectLeader()){
+            $roles .= ", PL";
+        }
+        if($person->isProjectCoLeader()){
+            $roles .= ", COPL";
+        }
+        return $roles;
+    }
+    
+    function getUserLevel(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $university = $person->getUniversity();
+        return $university['position'];
+    }
+    
+    function getUserDept(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $university = $person->getUniversity();
+        return $university['department'];
+    }
+    
+    function getUserUni(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $university = $person->getUniversity();
+        return $university['university'];
+    }
+    
+    function getUserSupervisors(){
+        $supervisors = array();
+        $person = Person::newFromId($this->reportItem->personId);
+        $me = $person;
+        foreach(Person::getAllPeople('all') as $person){
+            foreach($person->getRelations(SUPERVISES, true) as $rel){
+                $start = $rel->getStartDate();
+                $end = $rel->getEndDate();
+                if($rel->getUser2()->getId() == $me->getId()){
+                    if((strcmp($start, REPORTING_CYCLE_START."00:00:00") <= 0 && (strcmp($end, REPORTING_CYCLE_START."00:00:00") >= 0 || strcmp($end, "0000-00-00 00:00:00") == 0)) ||
+                       (strcmp($start, REPORTING_CYCLE_END."00:00:00") <= 0 && strcmp($start, REPORTING_CYCLE_START."00:00:00") >= 0) ||
+                       (strcmp($end, REPORTING_CYCLE_END."00:00:00") <= 0 && strcmp($end, REPORTING_CYCLE_START."00:00:00") >= 0)){
+                        $sup = $rel->getUser1();
+                        $supervisors[$sup->getId()] = "<a target='_blank' href='{$sup->getUrl()}'>{$sup->getNameForForms()}</a>";
+                    }
+                }
+            }
+        }
+        return implode(", ", $supervisors);
+    }
+    
+    function getUserProjects(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $projects = array();
+        foreach($person->getProjectsDuring() as $project){
+            $deleted = ($project->isDeleted()) ? " (Ended)" : "";
+            $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";
+        }
+        return implode(", ", $projects);
+    }
+    
+    function getUserRequestedBudget(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $budget = $person->getRequestedBudget(REPORTING_YEAR);
+        if($project != null && $project->getName() != ""){
+            $budgetFirstCol = $budget->copy()->limitCols(0, 1);
+            $budget = $budget->copy()->select(V_PROJ, array($project->getName()));
             $budget = $budgetFirstCol->join($budget);
             $budget->xls[0][1]->value = $person->getReversedName();
-	    }
-	    return $budget->render();
-	}
-	
-	function getUserAllocatedBudget(){
-	    $person = Person::newFromId($this->reportItem->personId);
-	    $project = Project::newFromId($this->reportItem->projectId);
-	    
-	    $budget = $person->getAllocatedBudget(REPORTING_YEAR);
-	    if($project != null && $project->getName() != ""){
-	        $budgetFirstCol = $budget->copy()->limitCols(0, 1);
-	        $budget = $budget->copy()->select(V_PROJ, array($project->getName()));
+        }
+        return $budget->render();
+    }
+    
+    function getUserAllocatedBudget(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $budget = $person->getAllocatedBudget(REPORTING_YEAR);
+        if($project != null && $project->getName() != ""){
+            $budgetFirstCol = $budget->copy()->limitCols(0, 1);
+            $budget = $budget->copy()->select(V_PROJ, array($project->getName()));
             $budget = $budgetFirstCol->join($budget);
             $budget->xls[0][1]->value = $person->getReversedName();
-	    }
-	    return $budget->render();
-	}
-	
-	function getUserProjectComment(){
-	    $person = Person::newFromId($this->reportItem->personId);
-	    $project = Project::newFromId($this->reportItem->projectId);
-	    
-	    $addr = ReportBlob::create_address(RP_LEADER, LDR_NICOMMENTS, LDR_NICOMMENTS_COMMENTS, 0);
-	    $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $project->getId());
-	    $blob->load($addr);
-	    $data = $blob->getData();
-	    if(isset($data[$person->id])){
-	        return $data[$person->id];
-	    }
-	    return "";
-	}
-	
-	function getChampOrg(){
-	    $person = Person::newFromId($this->reportItem->personId);
-	    $project = Project::newFromId($this->reportItem->projectId);
-	    
-	    $champs = $project->getChampionsDuring();
-	    foreach($champs as $champ){
-	        if($champ['user']->getId() == $person->getId()){
-	            return $champ['org'];
-	        }
-	    }
-	    return "";
-	}
-	
-	function getChampTitle(){
-	    $person = Person::newFromId($this->reportItem->personId);
-	    $project = Project::newFromId($this->reportItem->projectId);
-	    
-	    $champs = $project->getChampionsDuring();
-	    foreach($champs as $champ){
-	        if($champ['user']->getId() == $person->getId()){
-	            return $champ['title'];
-	        }
-	    }
-	    return "";
-	}
-	
-	function getProductId(){
-	    $product = Paper::newFromId($this->reportItem->productId);
-	    return $product->getId();
-	}
-	
-	function getProductTitle(){
-	    $product = Paper::newFromId($this->reportItem->productId);
-	    return $product->getTitle();
-	}
-	
-	function getProductUrl(){
-	    $product = Paper::newFromId($this->reportItem->productId);
-	    return $product->getUrl();
-	}
-	
-	function getWgServer(){
-	    global $wgServer;
-	    return $wgServer;
-	}
-	
-	function getWgScriptPath(){
-	    global $wgScriptPath;
-	    return $wgScriptPath;
-	}
-	
-	function getPostId(){
-	    return $this->reportItem->getPostId();
-	}
-	
-	function getTimestamp(){ 
+        }
+        return $budget->render();
+    }
+    
+    function getUserProjectComment(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $addr = ReportBlob::create_address(RP_LEADER, LDR_NICOMMENTS, LDR_NICOMMENTS_COMMENTS, 0);
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $project->getId());
+        $blob->load($addr);
+        $data = $blob->getData();
+        if(isset($data[$person->id])){
+            return $data[$person->id];
+        }
+        return "";
+    }
+    
+    function getChampOrg(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $champs = $project->getChampionsDuring();
+        foreach($champs as $champ){
+            if($champ['user']->getId() == $person->getId()){
+                return $champ['org'];
+            }
+        }
+        return "";
+    }
+    
+    function getChampTitle(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $champs = $project->getChampionsDuring();
+        foreach($champs as $champ){
+            if($champ['user']->getId() == $person->getId()){
+                return $champ['title'];
+            }
+        }
+        return "";
+    }
+    
+    function getProductId(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return $product->getId();
+    }
+    
+    function getProductTitle(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return $product->getTitle();
+    }
+    
+    function getProductUrl(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return $product->getUrl();
+    }
+    
+    function getWgServer(){
+        global $wgServer;
+        return $wgServer;
+    }
+    
+    function getWgScriptPath(){
+        global $wgScriptPath;
+        return $wgScriptPath;
+    }
+    
+    function getPostId(){
+        return $this->reportItem->getPostId();
+    }
+    
+    function getTimestamp(){ 
         return date("Y-m-d H:i:s T", time()); 
-	}
-	
-	function getReportName(){
-	    return $this->reportItem->getReport()->name;
-	}
-	
-	function getReportXMLName(){
-	    return $this->reportItem->getReport()->xmlName;
-	}
-	
-	function getReportSection(){
-	    return $this->reportItem->getSection()->name;
-	}
+    }
+    
+    function getReportName(){
+        return $this->reportItem->getReport()->name;
+    }
+    
+    function getReportXMLName(){
+        return $this->reportItem->getReport()->xmlName;
+    }
+    
+    function getReportSection(){
+        return $this->reportItem->getSection()->name;
+    }
 }
 
 ?>

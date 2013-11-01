@@ -166,9 +166,11 @@
                     <div>
                         <h2><a class='anchor' id='subproject_desc_{$project_id}'>{$project_name}</a></h2>
                         <table>
-                            <tr><td width='50'><b>Id:</b></td><td align='left'>{$project_id}</td></tr>
+                           <tr><td width='50'><b>Id:</b></td><td align='left'>{$project_id}</td></tr>
                             <tr><td width='50'><b>Full Name:</b></td><td align='left'>{$project_full_name}</td></tr>
                             <tr><td width='50'><b>Status:</b></td><td align='left'>{$project_status}</td></tr>
+                            <tr><td width='50'><b>Leader(s)</b>:</td><td align='left'>{$project_leaders}</td></tr>
+                            <tr><td width='50' style='white-space:nowrap;'><b>Co-Leader(s)</b>:</td><td align='left'>{$project_coleaders}</td></tr>
                             <tr><td width='50' valign='top'><b>Description:</b></td><td align='left'>{$project_description}</td></tr>
                         </table>
                     </div>
