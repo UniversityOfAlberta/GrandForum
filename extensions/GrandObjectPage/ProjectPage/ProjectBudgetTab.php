@@ -15,25 +15,14 @@ class ProjectBudgetTab extends AbstractTab {
         global $wgUser, $wgServer, $wgScriptPath;
         $project = $this->project;
         $me = Person::newFromId($wgUser->getId());
-        $edit = $this->visibility['edit'];
-        
-        if($edit){
-            //$this->html .= "<form class='autosave' action='{$project->getUrl()}?edit' method='post'>";
-        }
         
         $this->showBudget();
-        
-        
-        if($edit){
-            //$this->html .= "</form>";
-        }
         
         return $this->html;
     }
 
     function showBudget(){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut;
-        $edit = $this->visibility['edit'];
         $isLead = $this->visibility['isLead'];
         $project = $this->project;
         
@@ -44,16 +33,16 @@ class ProjectBudgetTab extends AbstractTab {
                                                      collapsible: true});
                 });
             </script>");
-            //$this->html .= "<h2><span class='mw-headline'>Budgets</span></h2>";
             $this->html .= "<div id='budgetAccordion'>";
-            for($i=REPORTING_YEAR; $i >= 2011; $i--){
+            $startYear = REPORTING_YEAR;
+            if($project->deleted){
+                $startYear = substr($project->getDeleted(), 0, 4);
+            }
+            for($i=$startYear; $i >= max(2011, substr($project->getCreated(), 0, 4)); $i--){
                 $this->html .= "<h3><a href='#'>".$i."</a></h3>";
                 $this->html .= "<div style='overflow: auto;'>";
 
                 $budget = $project->getAllocatedBudget($i-1);
-                //if($i==REPORTING_YEAR && $budget->nRows()*$budget->nCols() <= 6){
-                //    $budget = $project->getRequestedBudget($i-1);
-                //}
                 if($budget != null){
                     $this->html .= $budget->render();
                 }
@@ -61,6 +50,9 @@ class ProjectBudgetTab extends AbstractTab {
                     $this->html .= "No budget could be found for $i";
                 }
                 $this->html .="</div>";
+            }
+            if($i == $startYear){
+                $this->html .= "No Allocated Budgets have been created yet for this project.";
             }
             $this->html .= "</div>";
 
