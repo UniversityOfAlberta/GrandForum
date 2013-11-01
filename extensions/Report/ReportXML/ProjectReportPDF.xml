@@ -75,7 +75,7 @@
     </ReportSection>
     <ReportSection id="report1" name="Executive Summary: Overview of {$project_name} Activity" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="1" renderpdf="true">
     <!-- Ia. Overview of Activity -->
-        <ReportItem id="Ia" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OVERALL" type="TextareaReportItem">
+        <ReportItem id="Ia" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OVERALL" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
@@ -105,14 +105,14 @@
         <ReportItem id='IId_head' type="StaticReportItem">
             <![CDATA[<h2>D. Knowledge &amp; Technology Exchange &amp; Exploitation: {$project_name} efforts in disseminating research to receptors</h2>]]>
         </ReportItem>
-        <ReportItem id="IId" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_KTEE" type="TextareaReportItem">
+        <ReportItem id="IId" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_KTEE" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     <!-- IIe. Other Project Outcomes -->
         <ReportItem id='IIe_head' type="StaticReportItem">
             <![CDATA[<h2>E. Other Project Outcomes</h2>]]>
         </ReportItem>
-        <ReportItem id="IIe" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHEROUTCOMES" type="TextareaReportItem">
+        <ReportItem id="IIe" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHEROUTCOMES" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
@@ -121,21 +121,21 @@
         <ReportItem id='IIIa_head' type="StaticReportItem">
             <![CDATA[<h2>Planned activities for {$project_name} in GRAND</h2>]]>
         </ReportItem>
-        <ReportItem id="IIIa" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="TextareaReportItem">
+        <ReportItem id="IIIa" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     <!-- IIIb. Benefits from being involved in the Network -->
         <ReportItem id='IIIb_head' type="StaticReportItem">
             <![CDATA[<h2>Benefits from being involved in the Network</h2>]]>
         </ReportItem>
-        <ReportItem id="IIIb" rows="12" limit="600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETBENEFITS" type="TextareaReportItem">
+        <ReportItem id="IIIb" rows="12" limit="600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETBENEFITS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     <!-- IIIc. Additional Comments -->
         <ReportItem id='IIIc_head' type="StaticReportItem">
             <![CDATA[<h2>Additional Comments</h2>]]>
         </ReportItem>
-        <ReportItem id="IIIc" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHER" type="TextareaReportItem">
+        <ReportItem id="IIIc" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHER" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
@@ -150,7 +150,7 @@
     </ReportSection>
     <ReportSection id="budget" name="Project Budget Request" blobSection="LDR_BUDGET" type="EditableReportSection" number="3" renderpdf="true">
         <ReportItem id="budget" type="ProjectBudgetReportItem" />
-        <ReportItem id="budget_just" rows="10" limit="600" blobType="BLOB_TEXT" blobItem="LDR_BUD_JUST" type="TextareaReportItem">
+        <ReportItem id="budget_just" rows="10" limit="600" blobType="BLOB_TEXT" blobItem="LDR_BUD_JUST" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">
             <![CDATA[<h2>Budget Justification</h2> {$item}]]>
         </ReportItem>
     </ReportSection>

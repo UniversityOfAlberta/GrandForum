@@ -181,7 +181,7 @@
         </ReportItem>
     <!-- Ia. Overview of Activity -->
         <ReportItemSet id='Ia_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Overview of {$project_name} Activity">
-            <ReportItem id="Ia" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OVERALL" type="TextareaReportItem">
+            <ReportItem id="Ia" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OVERALL" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
@@ -219,7 +219,7 @@
             </ReportItemSet>
         <!-- IId. Knowledge and Technology Exchange and Exploitation -->
             <ReportItemSet id='IId_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="D. Knowledge &amp; Technology Exchange &amp; Exploitation: {$project_name} efforts in disseminating research to receptors">
-                <ReportItem id="IId" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_KTEE" type="TextareaReportItem">
+                <ReportItem id="IId" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_KTEE" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">
                     <![CDATA[{$item}<br />]]>
                 </ReportItem>
                 <ReportItem id="IId_comments" type="PopupReportItem" title="See NI Comments" text="{$report_ktee_ni_comments}">
@@ -228,7 +228,7 @@
             </ReportItemSet>
         <!-- IIe. Other Project Outcomes -->
             <ReportItemSet id='IIe_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="E. Other Project Outcomes">
-                <ReportItem id="IIe" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHEROUTCOMES" type="TextareaReportItem">
+                <ReportItem id="IIe" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHEROUTCOMES" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">
                     <![CDATA[{$item}]]>
                 </ReportItem>
             </ReportItemSet>
@@ -239,19 +239,19 @@
         </ReportItem>
     <!-- IIIa. Plans for Next Year -->
         <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Planned activities for {$project_name} in GRAND">
-            <ReportItem id="IIIa" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="TextareaReportItem">
+            <ReportItem id="IIIa" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
     <!-- IIIb. Benefits from being involved in the Network -->
         <ReportItemSet id='IIIb_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Benefits of Networking: Benefits from being involved in the Network">
-            <ReportItem id="IIIb" rows="12" width="100%" limit="600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETBENEFITS" type="TextareaReportItem">
+            <ReportItem id="IIIb" rows="12" width="100%" limit="600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETBENEFITS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
     <!-- IIIc. Additional Comments -->
         <ReportItemSet id='IIIc_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Additional Comments">
-            <ReportItem id="IIIc" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHER" type="TextareaReportItem">
+            <ReportItem id="IIIc" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHER" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
@@ -329,7 +329,7 @@
                 <p>This section includes a roll-up of the Budget Request for this project from each of the listed project NIs. Under "Budget Justification", there is a text field to allow for a brief comment on the overall budget request for this project.</p>
             ]]>
         </Instructions>
-        <ReportItem id="budget_just" rows="10" width="100%" limit="600" blobType="BLOB_TEXT" blobItem="LDR_BUD_JUST" type="TextareaReportItem">
+        <ReportItem id="budget_just" rows="10" width="100%" limit="600" blobType="BLOB_TEXT" blobItem="LDR_BUD_JUST" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">
             <![CDATA[<h3>Budget Justification</h3> {$item}</p>]]>
         </ReportItem>
         <ReportItem id="budget" type="ProjectBudgetReportItem" />

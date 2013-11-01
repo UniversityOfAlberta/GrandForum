@@ -348,9 +348,15 @@ abstract class AbstractReportSection {
             return;
         }
         $projectName = "";
+        $phase = "";
         $number = "";
         if($this->getParent()->project != null){
             $projectName = ": ".$this->getParent()->project->getName();
+            $phase = " (Phase {$this->getParent()->project->getPhase()}";
+            if($this->getParent()->project->getPhase() < PROJECT_PHASE){
+                $phase .= ", Final Report";
+            }
+            $phase .= ")";
         }
         if(count($this->number) > 0){
             $numbers = array();
@@ -359,7 +365,7 @@ abstract class AbstractReportSection {
             }
             $number = implode(', ', $numbers).'. ';
         }
-        $wgOut->addHTML("<div><div id='reportHeader'>{$number}{$this->name}{$projectName}</div>
+        $wgOut->addHTML("<div><div id='reportHeader'>{$number}{$this->name}{$projectName}{$phase}</div>
         <hr />
         <div id='reportBody'>");
         if($this->getParent()->project != null && $this->getParent()->project->isDeleted()){

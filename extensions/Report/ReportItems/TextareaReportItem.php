@@ -19,7 +19,7 @@ class TextareaReportItem extends AbstractReportItem {
 	
 	function calculateHeight($limit){
 	    if($limit > 0){
-            $height = max(125, (pow($limit, 0.78)))."px";
+            $height = max(125, (pow($limit, 0.75)))."px";
         }
         else{
             $height = "200px";

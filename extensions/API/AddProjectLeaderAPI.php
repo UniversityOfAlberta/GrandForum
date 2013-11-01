@@ -20,10 +20,10 @@ class AddProjectLeaderAPI extends API{
 		global $wgRequest, $wgUser, $wgServer, $wgScriptPath;
 		$groups = $wgUser->getGroups();
         $me = Person::newFromId($wgUser->getId());
-		if($me->isRoleAtLeast(STAFF)){
+        $project = Project::newFromName($_POST['role']);
+		if($me->isRoleAtLeast(STAFF) || $me->leadershipOf($project->getParent())){
             // Actually Add the Project Member
             $person = Person::newFromName($_POST['user']);
-            $project = Project::newFromName($_POST['role']);
             if(!isset($_POST['co_lead']) || ($_POST['co_lead'] != "False" && $_POST['co_lead'] != "True")){
                 $_POST['co_lead'] = 'False';
             }

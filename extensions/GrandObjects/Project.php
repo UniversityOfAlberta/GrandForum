@@ -10,6 +10,7 @@ class Project extends BackboneModel {
     var $name;
     var $status;
     var $type;
+    var $parentId;
     var $people;
     var $contributions;
     var $multimedia;
@@ -31,7 +32,7 @@ class Project extends BackboneModel {
         if(isset(self::$cache[$id])){
             return self::$cache[$id];
         }
-        $sql = "(SELECT p.id, p.name, p.phase, e2.action, e2.effective_date, e2.id as evolutionId, e2.clear, s.status, s.type
+        $sql = "(SELECT p.id, p.name, p.phase, p.parent_id, e2.action, e2.effective_date, e2.id as evolutionId, e2.clear, s.status, s.type
                  FROM grand_project p, grand_project_evolution e, grand_project_evolution e2, grand_project_status s
                  WHERE e.`project_id` = '{$id}'
                  AND e2.project_id = e.new_id
@@ -39,7 +40,7 @@ class Project extends BackboneModel {
                  AND s.evolution_id = e2.id
                  ORDER BY e2.`date` DESC LIMIT 1)
                 UNION
-                (SELECT p.id, p.name, p.phase, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type
+                (SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type
                  FROM grand_project p, grand_project_evolution e, grand_project_status s
                  WHERE e.`project_id` = '{$id}'
                  AND e.`new_id` != '{$id}'
@@ -48,7 +49,7 @@ class Project extends BackboneModel {
                  AND e.clear != 1
                  ORDER BY `date` DESC LIMIT 1)
                 UNION 
-                (SELECT p.id, p.name, p.phase, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type
+                (SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type
                  FROM grand_project p, grand_project_evolution e, grand_project_status s
                  WHERE p.id = '$id'
                  AND e.new_id = p.id
@@ -77,6 +78,7 @@ class Project extends BackboneModel {
                                     array('p.id',
                                           'p.name',
                                           'p.phase',
+                                          'p.parent_id',
                                           'e.action',
                                           'e.effective_date',
                                           'e.id' => 'evolutionId',
@@ -116,7 +118,7 @@ class Project extends BackboneModel {
         if(isset(self::$cache[$id.'_'.$evolutionId])){
             return self::$cache[$id.'_'.$evolutionId];
         }
-        $sql = "SELECT p.id, p.name, p.phase, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status
+        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status
                 FROM grand_project p, grand_project_evolution e, grand_project_status s
                 WHERE p.id = '$id'
                 AND e.new_id = p.id
@@ -136,7 +138,7 @@ class Project extends BackboneModel {
         if(isset(self::$cache['h_'.$name])){
             return self::$cache['h_'.$name];
         }
-        $sql = "SELECT p.id, p.name, p.phase, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status
+        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status
                 FROM grand_project p, grand_project_evolution e, grand_project_status s
                 WHERE p.name = '$name'
                 AND e.new_id = p.id
@@ -222,6 +224,7 @@ class Project extends BackboneModel {
             $this->status = $data[0]['status'];
             $this->type = $data[0]['type'];
             $this->phase = $data[0]['phase'];
+            $this->parentId = $data[0]['parent_id'];
             $this->succ = false;
             $this->preds = false;
             $this->clear = ($data[0]['clear'] == 1);
@@ -1152,20 +1155,9 @@ EOF;
         return $milestones;
     }
 
-    //Determine whether this is a Sub-Project
+    // Determine whether this is a Sub-Project
     function isSubProject(){
-        $sql =<<<EOF
-            SELECT parent_id
-            FROM grand_project
-            WHERE id = '{$this->id}'
-EOF;
-        $data = DBFunctions::execSQL($sql);
-        if(isset($data[0]['parent_id']) && $data[0]['parent_id'] != 0){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return ($this->parentId != 0);
     }
 
     // Get the subprojects, if any
@@ -1195,15 +1187,20 @@ EOF;
                                     array('name' => 'ASC'));
         foreach($data as $row){
             $subproject = Project::newFromId($row['id']);
-            if((($this->deleted &&
-                 strcmp($this->effectiveDate, $endDate) <= 0 &&
-                 strcmp($this->effectiveDate, $startDate) >= 0) ||
-                !$this->deleted) && 
-               $this->getCreated() <= $endDate){
+            echo $subproject->getCreated();
+            if((($subproject->deleted &&
+                 $subproject->effectiveDate <= $endDate &&
+                 $subproject->effectiveDate >= $startDate) ||
+                !$subproject->deleted) && 
+               $subproject->getCreated() <= $endDate){
                 $subprojects[] = $subproject;
             }
         }
         return $subprojects;
+    }
+    
+    function getParent(){
+        return Project::newFromId($this->parentId);
     }
     
     // Returns an array of milestones where all the milestones which were active at any time during the given year

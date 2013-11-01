@@ -63,6 +63,10 @@ class ProjectPage {
                 }
                 if(!$isLead){
                     $isLead = $me->leadershipOf($project->getName());
+                    $parent = $project->getParent();
+                    if($parent != null){
+                        $isLead = ($isLead || $me->leadershipOf($parent));
+                    }
                 }
             }
             
@@ -82,7 +86,7 @@ class ProjectPage {
             if($project != null && $project->getName() != null){
                 TabUtils::clearActions();
                 $wgOut->clearHTML();
-                $wgOut->setPageTitle($project->getFullName());
+                $wgOut->setPageTitle($project->getFullName()." (Phase ".$project->getPhase().")");
                 
                 $visibility = array();
                 if(!$project->isDeleted()){

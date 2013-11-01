@@ -37,7 +37,9 @@ class CreateProjectAPI extends API{
 	function doAction($noEcho=false){
 	    global $wgUser;
 	    $me = Person::newFromUser($wgUser);
-	    if(!$me->isRoleAtLeast(STAFF)){
+	    $parent_id = (isset($_POST['parent_id'])) ? $_POST['parent_id'] : 0;
+	    $parentProj = Project::newFromId($parent_id);
+	    if(!$me->isRoleAtLeast(STAFF) && !$me->leadershipOf($parentProj)){
 	        return;
 	    }
 		$project = Project::newFromName($_POST['acronym']);
@@ -56,7 +58,7 @@ class CreateProjectAPI extends API{
 	        $nsId = ($row['nsId'] % 2 == 1) ? $row['nsId'] + 1 : $row['nsId'] + 2;
 	    }
 	    $challenge = (isset($_POST['challenge'])) ? $_POST['challenge'] : 0;
-	    $parent_id = (isset($_POST['parent_id'])) ? $_POST['parent_id'] : 0;
+	    
 	    
 	    $status = (isset($_POST['status'])) ? $_POST['status'] : 'Proposed';
 	    $type = (isset($_POST['type'])) ? $_POST['type'] : 'Research';
@@ -114,6 +116,7 @@ class CreateProjectAPI extends API{
 	    		DBFunctions::update('grand_project_challenges',
 	    		                    array('end_date' => EQ(COL('CURRENT_TIMESTAMP'))),
 	    		                    array('id' => EQ($last_challenge_id)),
+	    		                    array(),
 	    		                    true);
 	    	}
 	    	DBFunctions::insert('grand_project_challenges',
