@@ -273,8 +273,8 @@ class Budget extends QueryableTable{
     
     function uncube(){
         $copy = $this->copy();
-        $copy->filter(CUBE_COL_TOTAL);
-        $copy->filterCols(CUBE_ROW_TOTAL);
+        $copy->limit(0, $copy->nRows()-1);
+        $copy->limitCols(0, $copy->nCols()-1);
         return $copy;
     }
     
