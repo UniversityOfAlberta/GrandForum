@@ -954,7 +954,7 @@ class EditMember extends SpecialPage{
             </script>");
         }
         foreach($wgRoles as $role){
-            if($user->isRoleAtLeast($role)){
+            if(($role != ISAC || $user->isRoleAtLeast(STAFF)) && ($user->isRoleAtLeast($role) || ($role == CHAMP && $user->isRoleAtLeast(COPL)))){
                 $boxes .= "&nbsp;<input type='checkbox' name='r_wpNS[]' value='".$role."' ";
                 if(($user->isPNI() || $user->isCNI()) && $role == HQP && $person->isHQP() && !$user->relatedTo($person,"Supervises") && count($person->getSupervisors()) > 0 ){
                     $boxes .= "checked onChange='addComment(this, true)' class='already'"; //Prevent un-check

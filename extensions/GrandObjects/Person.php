@@ -246,6 +246,7 @@ class Person extends BackboneModel {
                 }
             }
             else{
+                /*
                 $this->id = $data[0]['id'];
                 $this->user = $data[0]['user_id'];
                 $this->role = $data[0]['role'];
@@ -258,6 +259,7 @@ class Person extends BackboneModel {
                                                                   'start_date' => '0000-00-00 00:00:00',
                                                                   'end_date' => '0000-00-00 00:00:00',
                                                                   'comment' => ''));
+                */
             }
         }
     }

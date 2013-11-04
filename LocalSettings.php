@@ -29,6 +29,9 @@ require_once( "$IP/includes/DefaultSettings.php" );
 require_once( "$IP/Credentials.php" );
 require_once( "$IP/Path.php" );
 
+if(file_exists("test.tmp")){
+    $wgDBname = $wgTestDBname;
+}
 
 # If PHP's memory limit is very low, some operations may fail.
 //ini_set( 'memory_limit', '20M' );
