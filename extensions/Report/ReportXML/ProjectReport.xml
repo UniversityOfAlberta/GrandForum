@@ -259,7 +259,7 @@
     <ReportSection id="subprojects" tooltip="Discussion of progress against Sub-Projects" name="Sub-Projects" blobSection="LDR_MILESTONE" type="ReportSection" renderpdf="true" reportCharLimits="false">
         <Instructions>
             <![CDATA[
-                
+                This section shows an overview of all this project's sub-projects.  This section is purely for reference purposes.
             ]]>
         </Instructions>
         <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet" blobIndex="projectId">
@@ -302,7 +302,7 @@
     <ReportSection id="budget" tooltip="Budget-request roll-up and justification" name="Project Budget Request" blobSection="LDR_BUDGET" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
-                <p>This section includes a roll-up of the Budget Request for this project from each of the listed project NIs. Under "Budget Justification", there is a text field to allow for a brief comment on the overall budget request for this project.</p>
+                <p>This section includes a roll-up of the Budget Request for this project from each of the listed project PNIs and CNIs. Under "Budget Justification", there is a text field to allow for a brief comment on the overall budget request for this project.</p>
             ]]>
         </Instructions>
         <ReportItem id="budget_just" rows="10" width="100%" limit="600" blobType="BLOB_TEXT" blobItem="LDR_BUD_JUST" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">

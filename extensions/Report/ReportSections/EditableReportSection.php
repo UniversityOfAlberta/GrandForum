@@ -49,13 +49,29 @@ class EditableReportSection extends AbstractReportSection {
             $autosave = " class='autosave'";
         }
         $projectName = "";
+        $phase = "";
         $number = "";
+        if($this->getParent()->project != null){
+            $projectName = ": ".$this->getParent()->project->getName();
+            $phase = " (Phase {$this->getParent()->project->getPhase()}";
+            if($this->getParent()->project->getPhase() < PROJECT_PHASE){
+                $phase .= ", Final Report";
+            }
+            $phase .= ")";
+        }
+        if(count($this->number) > 0){
+            $numbers = array();
+            foreach($this->number as $n){
+                $numbers[] = AbstractReport::rome($n);
+            }
+            $number = implode(', ', $numbers).'. ';
+        }
         if($this->getParent()->project != null){
             $projectName = ": ".$this->getParent()->project->getName();
         }
         
         $wgOut->addHTML("<div><form action='$action' method='post' name='report' enctype='multipart/form-data'$autosave>
-                            <div id='reportHeader'>{$this->name}{$projectName}<span id='reportProgress'><span style='width:{$this->getPercentComplete()}%;' id='reportProgressBar'></span></span><span id='reportProgressLabel'>Progress:&nbsp;</span></div>
+                            <div id='reportHeader'>{$number}{$this->name}{$projectName}{$phase}<span id='reportProgress'><span style='width:{$this->getPercentComplete()}%;' id='reportProgressBar'></span></span><span id='reportProgressLabel'>Progress:&nbsp;</span></div>
                              <hr />
                              <div id='reportBody'>");
                              

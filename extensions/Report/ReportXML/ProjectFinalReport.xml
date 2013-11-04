@@ -16,7 +16,7 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="report" name="Project Report">
+    <ReportSection id="report" name="Project Report" number="1,2,3">
         <ReportItemSet id="II_wrapper" delete="false" />
         <ReportItem id="III_head">
             <![CDATA[<h2>III. Reflections: {$project_name} and GRAND</h2>]]>
@@ -117,7 +117,13 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="budget" name="Project Budget">
+    <ReportSection id="budget" delete="true" />
+    <ReportSection id="budget" name="Project Budget" type="ReportSection" position="5">
+        <Instructions>
+            <![CDATA[
+                The following contains the list of NIs in the project who have mistakenly uploaded a budget request.  If you wish you notify the NI, you can click the 'Notify NI' button next to the NI's name.  This will allow you to send a message to them either through the forum Notifications or by email.
+            ]]>
+        </Instructions>
         <ReportItem id="budget_just" delete="true" />
         <ReportItem id="budget" delete="true" />
         <ReportItem id="budget_message" type="StaticReportItem">

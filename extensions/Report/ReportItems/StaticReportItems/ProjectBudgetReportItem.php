@@ -2,38 +2,41 @@
 
 class ProjectBudgetReportItem extends StaticReportItem {
 
-	function render(){
-		global $wgOut;
-		$project = Project::newFromId($this->projectId);
-		$budget = $project->getRequestedBudget(REPORTING_YEAR);
-		
-		$people = $project->getAllPeopleDuring(null, REPORTING_CYCLE_START, REPORTING_CYCLE_END);
-		$pnis = array("");
-		$cnis = array("");
-		foreach($people as $person){
-		    if($person->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
-		        $pnis[] = $person->getReversedName();
-		    }
-		    else if($person->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
-		        $cnis[] = $person->getReversedName();
-		    }
-		}
-		
-		$PNIBudget = $budget->copy()->uncube()->filterCols(V_PERS_NOT_NULL, $cnis)->cube();
-		$CNIBudget = $budget->copy()->uncube()->filterCols(V_PERS_NOT_NULL, $pnis)->cube();
-		$wgOut->addHTML("<h2>PNI Budget Requests</h2><div>");
-		$wgOut->addHTML($PNIBudget->render());
-		$wgOut->addHTML("</div><h2>CNI Budget Requests</h2><div>");
-		$wgOut->addHTML($CNIBudget->render());
-		$wgOut->addHTML("</div>");
-	}
-	
-	function renderForPDF(){
-	    global $wgOut;
-		$wgOut->addHTML("<div>");
-		$project = Project::newFromId($this->projectId);
-		$budget = $project->getRequestedBudget(REPORTING_YEAR);
-		$budget_legend = array(
+    function render(){
+        global $wgOut;
+        $project = Project::newFromId($this->projectId);
+        $budget = $project->getRequestedBudget(REPORTING_YEAR);
+        $year = $this->getReport()->year;
+        
+        $people = $project->getAllPeopleDuring(null, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH);
+        $pnis = array("");
+        $cnis = array("");
+        foreach($people as $person){
+            if($person->isRoleDuring(PNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
+                $pnis[] = $person->getReversedName();
+            }
+            else if($person->isRoleDuring(CNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
+                $cnis[] = $person->getReversedName();
+            }
+        }
+        
+        $PNIBudget = $budget->copy()->uncube()->filterCols(V_PERS_NOT_NULL, $cnis)->cube();
+        $CNIBudget = $budget->copy()->uncube()->filterCols(V_PERS_NOT_NULL, $pnis)->cube();
+        $wgOut->addHTML("<h2>PNI Budget Requests</h2><div>");
+        $wgOut->addHTML($PNIBudget->render());
+        $wgOut->addHTML("</div><h2>CNI Budget Requests</h2><div>");
+        $wgOut->addHTML($CNIBudget->render());
+        $wgOut->addHTML("</div>");
+    }
+    
+    function renderForPDF(){
+        global $wgOut;
+        $wgOut->addHTML("<div>");
+        $project = Project::newFromId($this->projectId);
+        $budget = $project->getRequestedBudget(REPORTING_YEAR);
+        $year = $this->getReport()->year;
+        
+        $budget_legend = array(
             "Name of network investigator submitting request:" => "Name of NI",
             "1) Salaries and stipends" => "",
             "a) Graduate students" => "1a)",
@@ -89,22 +92,22 @@ class ProjectBudgetReportItem extends StaticReportItem {
                                                      "2) Equipment",
                                                      "5) Travel expenses"));
         
-        $people = $project->getAllPeopleDuring(null, REPORTING_CYCLE_START, REPORTING_CYCLE_END);
-		$pnis = array("");
-		$cnis = array("");
-		foreach($people as $person){
-		    if($person->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
-		        $pnis[] = $person->getReversedName();
-		    }
-		    else if($person->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
-		        $cnis[] = $person->getReversedName();
-		    }
-		}
-		
-		$PNIBudget = $copy->copy()->uncube()->filterCols(V_PERS_NOT_NULL, $cnis)->cube();
-		$CNIBudget = $copy->copy()->uncube()->filterCols(V_PERS_NOT_NULL, $pnis)->cube();
+        $people = $project->getAllPeopleDuring(null, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH);
+        $pnis = array("");
+        $cnis = array("");
+        foreach($people as $person){
+            if($person->isRoleDuring(PNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
+                $pnis[] = $person->getReversedName();
+            }
+            else if($person->isRoleDuring(CNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
+                $cnis[] = $person->getReversedName();
+            }
+        }
+        
+        $PNIBudget = $copy->copy()->uncube()->filterCols(V_PERS_NOT_NULL, $cnis)->cube();
+        $CNIBudget = $copy->copy()->uncube()->filterCols(V_PERS_NOT_NULL, $pnis)->cube();
                                                      
-		$pnibudget_html = $PNIBudget->transpose()
+        $pnibudget_html = $PNIBudget->transpose()
                                     ->renderForPDF();
         $cnibudget_html = $CNIBudget->transpose()
                                     ->renderForPDF();
@@ -132,9 +135,9 @@ class ProjectBudgetReportItem extends StaticReportItem {
         $wgOut->addHTML($new_pnibudget);
         $wgOut->addHTML("</div><h2>CNI Budget Requests</h2><div>");
         $wgOut->addHTML($new_cnibudget);
-		$wgOut->addHTML($budget_legend_html);
-		$wgOut->addHTML("</div>");
-	}
+        $wgOut->addHTML($budget_legend_html);
+        $wgOut->addHTML("</div>");
+    }
 }
 
 ?>
