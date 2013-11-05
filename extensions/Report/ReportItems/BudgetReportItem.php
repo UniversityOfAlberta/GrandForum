@@ -55,6 +55,7 @@ class BudgetReportItem extends AbstractReportItem {
 		if($data !== null){
 		    $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
 		    $budget = $this->filterCols($budget);
+		    $this->checkTotals($budget, $this->getReport()->person, $this->getReport()->year);
 		    $wgOut->addHTML($budget->copy()->filterCols(V_PROJ, array(""))->renderForPDF());
 		}
 		else{
@@ -134,18 +135,18 @@ class BudgetReportItem extends AbstractReportItem {
 		    $budget = $this->filterCols($budget);
 		    $budget = $budget->copy()->filterCols(V_PROJ, array(""));
 		    $person = Person::newFromId($this->personId);
-		    
-		    if($person->isRoleDuring(CNI) && !$person->isRole(PNI)){
+		    if($person->isRoleDuring(CNI, ($this->getReport()->year+1).REPORTING_NCE_START_MONTH, ($this->getReport()->year+2).REPORTING_NCE_END_MONTH) && 
+		       !$person->isRoleDuring(PNI, ($this->getReport()->year+1).REPORTING_NCE_START_MONTH, ($this->getReport()->year+2).REPORTING_NCE_END_MONTH)){
 		        $errors = self::addWorksWithRelation($data, true);
 		        foreach($errors as $key => $error){
 		            $budget->errors[0][] = $error;
 		        }
 		    }
-		    $errors = self::checkDeletedProjects($data);
+		    self::checkTotals($budget, $person, $this->getReport()->year);
+		    $errors = self::checkDeletedProjects($budget);
 		    foreach($errors as $key => $error){
 	            $budget->errors[0][] = $error;
 	        }
-		    
 		    echo $budget->render();
 		}
 		else{
@@ -164,8 +165,8 @@ class BudgetReportItem extends AbstractReportItem {
 	}
 	
 	function filterCols($budget){
+	    $person = $this->getReport()->person;
 	    if($this->getReport()->topProjectOnly){
-	        $person = $this->getReport()->person;
 	        $project = $this->getReport()->project;
             $budget = $budget->copy();
             $personRow = $budget->copy()->where(HEAD1, array("Name of network investigator submitting request:"));
@@ -178,6 +179,10 @@ class BudgetReportItem extends AbstractReportItem {
             $budget = $budget->filter(HEAD1, array("Name of network investigator submitting request:"));
             $budget = $personRow->union($budget);
         }
+        if(!($person->isRoleDuring(CNI, ($this->getReport()->year+1).REPORTING_NCE_START_MONTH, ($this->getReport()->year+2).REPORTING_NCE_END_MONTH) && 
+	         !$person->isRoleDuring(PNI, ($this->getReport()->year+1).REPORTING_NCE_START_MONTH, ($this->getReport()->year+2).REPORTING_NCE_END_MONTH))){
+	        $budget->filter(HEAD1, array("%PNI with whom I collaborate%"));
+	    }
         return $budget;
 	}
 	
@@ -189,22 +194,52 @@ class BudgetReportItem extends AbstractReportItem {
 	    return array();
 	}
 	
-	static function checkDeletedProjects($data){
-	    $errors = array();
-        $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
+	static function checkTotals($budget, $person, $year){
         $projects = $budget->copy()->select(V_PROJ, array())->where(V_PROJ)->xls;
-        foreach($projects as $row){
-            foreach($row as $proj){
+        $total = intval(str_replace("$", "", $budget->copy()->rasterize()->where(HEAD1, array("%TOTALS%"))->select(ROW_TOTAL)->toString()));
+        $name = $budget->copy()->where(V_PERS_NOT_NULL)->select(V_PERS_NOT_NULL)->toString();
+        if($person->isRoleDuring(PNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
+            if($total > 60000){
+                $budget->xls[22][7]->error = "'\$$total' is greater than the maximum $60000 for PNIs";
+            }
+        }
+        else if($person->isRoleDuring(CNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH) &&
+           $person->isProjectCoLeaderDuring(($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
+            if($total > 40000){
+                $budget->xls[22][7]->error = "'\$$total' is greater than the maximum $40000 for CNIs who are co-Leaders";
+            }
+        }
+        else if($person->isRoleDuring(CNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
+            if($total > 30000){
+                $budget->xls[22][7]->error = "'\$$total' is greater than the maximum $30000 for CNIs";
+            }
+        }
+        $v_pers = Person::newFromNameLike($name);
+        if($v_pers->getName() != $person->getName()){
+            if(isset($budget->xls[0][1])){
+                $budget->xls[0][1]->error = "'$name' does not match your own name";
+            }
+        }
+        if(!isset($budget->xls[0][1])){
+            $budget->errors[0][] = "There is something wrong with the structure of your budget.";
+        }
+	}
+	
+	static function checkDeletedProjects($budget){
+	    $errors = array();
+        $projects = $budget->copy()->select(V_PROJ, array())->where(V_PROJ)->xls;
+        foreach($projects as $rowN => $row){
+            foreach($row as $colN => $proj){
                 $project = Project::newFromName($proj->getValue());
                 if($project != null && $project->getName() != null){
                     if($project->deleted && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
-                        $errors[] = "'{$project->getName()}' is not continuing next year";
+                        $budget->xls[$rowN][$colN]->error = "'{$project->getName()}' is not continuing next year";
                     }
                     if($project->getPhase() != PROJECT_PHASE){
-                        $errors[] = "'{$project->getName()}' is not a phase ".PROJECT_PHASE." project";
+                        $budget->xls[$rowN][$colN]->error = "'{$project->getName()}' is not a phase ".PROJECT_PHASE." project";
                     }
                     if($project->isSubProject()){
-                        $errors[] = "'{$project->getName()}' is not a primary project";
+                        $budget->xls[$rowN][$colN]->error = "'{$project->getName()}' is not a primary project";
                     }
                 }
             }
@@ -225,13 +260,13 @@ class BudgetReportItem extends AbstractReportItem {
                 $project = Project::newFromName($proj->getValue());
                 if($project != null && $project->getName() != null){
                     if($project->deleted && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
-                        $errors[] = "'{$project->getName()}' is not continuing next year";
+                        continue;
                     }
                     if($project->getPhase() != PROJECT_PHASE){
-                        $errors[] = "'{$project->getName()}' is not a phase ".PROJECT_PHASE." project";
+                        continue;
                     }
                     if($project->isSubProject()){
-                        $errors[] = "'{$project->getName()}' is not a primary project";
+                        continue;
                     }
                     // Now look for the people
                     $people = $budget->copy()->select(V_PROJ, array($project->getName()))->where(V_PERS)->xls;
