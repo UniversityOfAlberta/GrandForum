@@ -848,7 +848,7 @@ EOF;
 			<tr>
 			<th>LOI Name</th>
 			<th width="30%">Leader Name</th>
-			<th width="30%">Co-Leader Name</th>
+			<th width="30%">co-Leader Name</th>
 			<th width="15%">Feedback PDF</th>
 			<th width="15%">Email</th>
 			</tr>

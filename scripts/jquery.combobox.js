@@ -34,7 +34,7 @@
           });
         this.invis = $("<input>")
             .appendTo(this.wrapper)
-            .val(value)
+            .attr('value', value)
             .hide()
             .attr('name', this.element.attr('name'));
  
@@ -46,40 +46,39 @@
             $(this).trigger( "select", event, {
               item: ui.item.option
             });
-            $(invis).val(ui.item.option.value);
+            $(invis).attr('value', ui.item.option.value);
         });
         
         $(this.input).on('keyup', function(event, ui){
             var found = false;
             _.each($(element).children("option"), function(o){
-                console.log(o.value);
                 if(o.innerHTML == $(event.target).val()){
                     found = o.value;
                 }
             });
             if(!found){
-                $(invis).val($(event.target).val());
+                $(invis).attr('value', $(event.target).val());
             }
             else{
-                $(invis).val(found);
+                $(invis).attr('value', found);
             }
         });
         
         $(this.input).on('change', function(event, ui){
             var found = false;
             _.each($(element).children("option"), function(o){
-                console.log(o.value);
                 if(o.innerHTML == $(event.target).val()){
                     found = o.value;
                 }
             });
             if(!found){
-                $(invis).val($(event.target).val());
+                $(invis).attr('value', $(event.target).val());
             }
             else{
-                $(invis).val(found);
+                $(invis).attr('value', found);
             }
         });
+        $(this.input).trigger('change');
       },
  
       _createShowAllButton: function() {

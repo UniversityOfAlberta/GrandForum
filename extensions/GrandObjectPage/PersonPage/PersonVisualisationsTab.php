@@ -585,7 +585,7 @@ class PersonVisualisationsTab extends AbstractTab {
                     $leads[] = "<a href='{$member->getUrl()}' target='_blank'>{$member->getNameForForms()}</a>";
                 }
                 $description .= implode(", ", $leads);
-                $description .= "<br /><br /><b>Co-Leaders: </b>";
+                $description .= "<br /><br /><b>co-Leaders: </b>";
                 $leads = array();
                 foreach($project->getCoLeaders() as $member){
                     $leads[] = "<a href='{$member->getUrl()}' target='_blank'>{$member->getNameForForms()}</a>";

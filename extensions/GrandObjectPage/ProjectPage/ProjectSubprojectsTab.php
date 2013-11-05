@@ -9,6 +9,9 @@ class ProjectSubprojectsTab extends AbstractTab {
         parent::AbstractTab("Sub-Projects");
         $this->project = $project;
         $this->visibility = $visibility;
+        if(isset($_POST['edit']) && isset($_POST['create_subproject'])){
+            unset($_POST['edit']);
+        }
     }
     
     function generateBody(){
@@ -39,10 +42,10 @@ class ProjectSubprojectsTab extends AbstractTab {
                     asort($names);
                     
                     $create->getElementById("new_pl")->options = $names;
-                    $create->getElementById("new_copl")->options = $names;
                     
                     $create->getElementById("new_subproject_row")->remove();
                     $create->getElementById("new_subprojectdd_row")->remove();
+                    $create->getElementById("new_copl_row")->hide();
                     $create->getElementById("new_status_row")->hide();
                     $create->getElementById("new_type_row")->hide();
                     $create->getElementById("new_phase_row")->hide();
@@ -119,8 +122,6 @@ EOF;
   
     }
 
-
-    //
     function showPeople($subproject){
 
         global $wgUser, $wgServer, $wgScriptPath;
@@ -137,45 +138,20 @@ EOF;
       
         $html = "";
 
-        if(!$edit){
-            $html .= "<h2><span class='mw-headline'>Sub-Project Leadership and Members</span></h2>";
-            $html .= "<table>";
-            if(!empty($leaders)){
-                foreach($leaders as $leader_id){
-                    $leader = Person::newFromId($leader_id);
-                    $leaderRoles = $leader->getRoles();
-                    $html .= "<tr>";
-                    $leaderType = "Leader";
-                    if($leader->managementOf($project->getName())){
-                        $leaderType = "Manager";
-                    }
-                    if(count($leaderRoles) > 0){
-                        $html .= "<td align='right'><b>{$leaderType}:</b></td><td><a href='$wgServer$wgScriptPath/index.php/{$leaderRoles[0]->getRole()}:{$leader->getName()}'>{$leader->getReversedName()}</a></td></tr>";
-                    }
-                    else{
-                        $html .= "<td align='right'><b>{$leaderType}:</b></td><td>{$leader->getReversedName()}</td></td></tr>";
-                    }
-                }    
-            }
-            if(!empty($coleaders)){
-                foreach($coleaders as $leader_id){
-                    $leader = Person::newFromId($leader_id);
-                    $leaderRoles = $leader->getRoles();
-                    $html .= "<tr>";
-                    $leaderType = "Co-Leader";
-                    if($leader->managementOf($project->getName())){
-                        $leaderType = "Manager";
-                    }
-                    if(count($leaderRoles) > 0){
-                        $html .= "<td align='right'><b>{$leaderType}:</b></td><td><a href='$wgServer$wgScriptPath/index.php/{$leaderRoles[0]->getRole()}:{$leader->getName()}'>{$leader->getReversedName()}</a></td></tr>";
-                    }
-                    else{
-                        $html .= "<td align='right'><b>{$leaderType}:</b></td><td>{$leader->getReversedName()}</td></td></tr>";
-                    }
-                }    
-            }
-            $html .= "</table>";
+        $html .= "<h2><span class='mw-headline'>Leaders</span></h2>";
+        $html .= "<table>";
+        if(!empty($leaders)){
+            foreach($leaders as $leader_id){
+                $leader = Person::newFromId($leader_id);
+                $html .= "<tr>";
+                $leaderType = "Leader";
+                if($leader->managementOf($project->getName())){
+                    $leaderType = "Manager";
+                }
+                $html .= "<td align='right'><b>{$leaderType}:</b></td><td><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></td></tr>";
+            }    
         }
+        $html .= "</table>";
         
         $html .= "<table width='100%'><tr><td valign='top' width='50%'>";
         if($edit || !$edit && count($pnis) > 0){

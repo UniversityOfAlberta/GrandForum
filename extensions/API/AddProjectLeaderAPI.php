@@ -53,10 +53,13 @@ class AddProjectLeaderAPI extends API{
                 $lead_type = "manager";
             }
 
+            if(!$person->isMemberOf($project)){
+                APIRequest::doAction('AddProjectMember', true);
+            }
+
             $sql = "INSERT INTO grand_project_leaders (`user_id`,`project_id`,`type`,`start_date`)
 					VALUES ('{$person->getId()}','{$project->getId()}','{$lead_type}', CURRENT_TIMESTAMP)";
             DBFunctions::execSQL($sql, true);
-
             if(!$noEcho){
                 echo "{$person->getReversedName()} is now a project leader of {$project->getName()}\n";
             }

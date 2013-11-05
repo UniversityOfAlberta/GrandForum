@@ -17,10 +17,11 @@ class AddProjectMemberAPI extends API{
 		global $wgRequest, $wgUser, $wgServer, $wgScriptPath;
 		$groups = $wgUser->getGroups();
         $me = Person::newFromId($wgUser->getId());
-		if($me->isRoleAtLeast(STAFF)){
+        $project = Project::newFromName($_POST['role']);
+		if($me->isRoleAtLeast(STAFF) || $me->leadershipOf($project->getParent())){
             // Actually Add the Project Member
             $person = Person::newFromName($_POST['user']);
-            $project = Project::newFromName($_POST['role']);
+            
             if(!$noEcho){
                 if($person->getName() == null){
                     echo "There is no person by the name of '{$_POST['user']}'\n";

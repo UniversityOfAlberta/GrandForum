@@ -24,9 +24,7 @@ class ProjectMainTab extends AbstractEditableTab {
                         <b>Status:</b> {$this->project->getStatus()}<br />";
         $this->showChallenge();
         $this->showChampions();
-        if(!isset($_POST['edit'])){
-            $this->showPeople();
-        }
+        $this->showPeople();
         $this->showDescription();
 
         if(!$project->isSubProject()){
@@ -84,6 +82,21 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         else{
             return "The champions were not added";
+        }
+        
+        if(isset($_POST['pl'])){
+            $leaderName = ($this->project->getLeader() != null) ? $this->project->getLeader()->getName() : "";
+            if($_POST['pl'] != $leaderName){
+                $_POST['role'] = $this->project->getName();
+                $_POST['user'] = $leaderName;
+                $_POST['comment'] = "Automatic Removal";
+                APIRequest::doAction('DeleteProjectLeader', true);
+                
+                $_POST['user'] = $_POST['pl'];
+                $_POST['manager'] = 'False';
+                $_POST['co_lead'] = 'False';
+                APIRequest::doAction('AddProjectLeader', true);
+            }
         }
     }
     
@@ -208,7 +221,7 @@ EOF;
         $project = $this->project;
 
         $champions = $project->getChampions();
-        $this->html .= "<h2><span class='mw-headline'>Project Champions</span></h2>";
+        $this->html .= "<h2><span class='mw-headline'>Champions</span></h2>";
 
         if(!$edit){
             if(count($champions) == 0){
@@ -263,6 +276,8 @@ EOF;
     function showPeople(){
         global $wgUser, $wgServer, $wgScriptPath;
         
+        $me = Person::newFromWgUser();
+        
         $edit = isset($_POST['edit']);
         $project = $this->project;
         
@@ -273,110 +288,132 @@ EOF;
         $ars = $project->getAllPeople(AR);
         $hqps = $project->getAllPeople(HQP);
         
+        $names = array("");
+        if($project->isSubProject()){
+            $people = array_merge($project->getParent()->getAllPeople(), $project->getAllPeople());
+            foreach($people as $person){
+                if($person->isRoleAtLeast(CNI)){
+                    $names[$person->getName()] = $person->getNameForForms();
+                }
+            }
+            if($project->getLeader() != null && !isset($names[$project->getLeader()->getName()])){
+                $names[$project->getLeader()->getName()] = $project->getLeader()->getNameForForms();
+            }
+            
+            asort($names);
+        }
+        
+        $this->html .= "<h2><span class='mw-headline'>Leaders</span></h2>";
+        $this->html .= "<table>";
+        if(!empty($leaders)){
+            foreach($leaders as $leader_id){
+                $leader = Person::newFromId($leader_id);
+                $this->html .= "<tr>";
+                $leaderType = "Leader";
+                if($leader->managementOf($project->getName())){
+                    $leaderType = "Manager";
+                }
+                
+                if(!$edit || !$me->leadershipOf($project->getParent())){
+                    $this->html .= "<td align='right'><b>{$leaderType}:</b></td><td><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></td></tr>";
+                }
+                else if($me->leadershipOf($project->getParent())){
+                    $plRow = new FormTableRow("pl_row");
+                    $plRow->append(new Label("pl_label", "Project Leader", "The leader of this Project.  The person should be a valid person on this project.", VALIDATE_NOTHING));
+                    $plRow->append(new ComboBox("pl", "Project Leader", $leader->getName(), $names, VALIDATE_NI));
+                    $this->html .= $plRow->render();
+                }
+            }    
+        }
+        else if($edit && $me->leadershipOf($project->getParent())){
+            $plRow = new FormTableRow("pl_row");
+            $plRow->append(new Label("pl_label", "Project Leader", "The leader of this Project.  The person should be a valid person on this project.", VALIDATE_NOTHING));
+            $plRow->append(new ComboBox("pl", "Project Leader", "", $names, VALIDATE_NI));
+            $this->html .= $plRow->render();
+        }
+        if(!empty($coleaders)){
+            foreach($coleaders as $leader_id){
+                $leader = Person::newFromId($leader_id);
+                $this->html .= "<tr>";
+                $leaderType = "co-Leader";
+                if($leader->managementOf($project->getName())){
+                    $leaderType = "Manager";
+                }
+                
+                if(!$edit && !$me->leadershipOf($project->getParent())){
+                    $this->html .= "<td align='right'><b>{$leaderType}:</b></td><td><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></td></tr>";
+                }
+                else if($me->leadershipOf($project->getParent())){
+                    
+                }
+            }    
+        }
+        $this->html .= "</table>";
         if(!$edit){
-            $this->html .= "<h2><span class='mw-headline'>Project Leaders</span></h2>";
-            $this->html .= "<table>";
-            if(!empty($leaders)){
-                foreach($leaders as $leader_id){
-                    $leader = Person::newFromId($leader_id);
-                    $leaderRoles = $leader->getRoles();
-                    $this->html .= "<tr>";
-                    $leaderType = "Leader";
-                    if($leader->managementOf($project->getName())){
-                        $leaderType = "Manager";
-                    }
-                    if(count($leaderRoles) > 0){
-                        $this->html .= "<td align='right'><b>{$leaderType}:</b></td><td><a href='$wgServer$wgScriptPath/index.php/{$leaderRoles[0]->getRole()}:{$leader->getName()}'>{$leader->getReversedName()}</a></td></tr>";
-                    }
-                    else{
-                        $this->html .= "<td align='right'><b>{$leaderType}:</b></td><td>{$leader->getReversedName()}</td></td></tr>";
-                    }
-                }    
-            }
-            if(!empty($coleaders)){
-                foreach($coleaders as $leader_id){
-                    $leader = Person::newFromId($leader_id);
-                    $leaderRoles = $leader->getRoles();
-                    $this->html .= "<tr>";
-                    $leaderType = "Co-Leader";
-                    if($leader->managementOf($project->getName())){
-                        $leaderType = "Manager";
-                    }
-                    if(count($leaderRoles) > 0){
-                        $this->html .= "<td align='right'><b>{$leaderType}:</b></td><td><a href='$wgServer$wgScriptPath/index.php/{$leaderRoles[0]->getRole()}:{$leader->getName()}'>{$leader->getReversedName()}</a></td></tr>";
-                    }
-                    else{
-                        $this->html .= "<td align='right'><b>{$leaderType}:</b></td><td>{$leader->getReversedName()}</td></td></tr>";
-                    }
-                }    
-            }
-            $this->html .= "</table>";
-        }
-        
-        $this->html .= "<table width='100%'><tr><td valign='top' width='50%'>";
-        if($edit || !$edit && count($pnis) > 0){
-            $this->html .= "<h2><span class='mw-headline'>PNIs</span></h2>";
-        }
-        $this->html .= "<ul>";
-        foreach($pnis as $pni){
-            if((!empty($leaders) && in_array($pni->getId(), $leaders)) || (!empty($coleaders) && in_array($pni->getId(), $coleaders))){
-                continue;
-            }
-            $target = "";
-            if($edit){
-                $target = " target='_blank'";
-            }
-            $this->html .= "<li><a href='{$pni->getUrl()}'$target>{$pni->getReversedName()}</a></li>";
-        }
-        
-        $this->html .= "</ul>";
-        if($edit || !$edit && count($cnis) > 0){
-            $this->html .= "<h2><span class='mw-headline'>CNIs</span></h2>";
-        }
-        $this->html .= "<ul>";
-        foreach($cnis as $cni){
-            if((!empty($leaders) && in_array($cni->getId(), $leaders)) || (!empty($leaders) && in_array($cni->getId(), $leaders))){
-                continue;
-            }
-            $target = "";
-            if($edit){
-                $target = " target='_blank'";
-            }
-            $this->html .= "<li><a href='{$cni->getUrl()}'$target>{$cni->getReversedName()}</a></li>";
-        }
-        $this->html .= "</ul>";
-        if($edit || !$edit && count($ars) > 0){
-            $this->html .= "<h2><span class='mw-headline'>Associated Researchers</span></h2>";
-        }
-        $this->html .= "<ul>";
-        foreach($ars as $ar){
-            if((!empty($leaders) && in_array($ar->getId(), $leaders)) || (!empty($coleaders) && in_array($ar->getId(), $coleaders))){
-                continue;
-            }
-            $target = "";
-            if($edit){
-                $target = " target='_blank'";
-            }
-            $this->html .= "<li><a href='{$ar->getUrl()}'$target>{$ar->getReversedName()}</a></li>";
-        }
-        $this->html .= "</ul></td>";
-        if($wgUser->isLoggedIn()){
-            $this->html .= "<td width='50%' valign='top'>";
-            if($edit || !$edit && count($hqps) > 0){
-                $this->html .= "<h2><span class='mw-headline'>HQP</span></h2>";
+            $this->html .= "<table width='100%'><tr><td valign='top' width='50%'>";
+            if($edit || !$edit && count($pnis) > 0){
+                $this->html .= "<h2><span class='mw-headline'>PNIs</span></h2>";
             }
             $this->html .= "<ul>";
-            foreach($hqps as $hqp){
-                $target = ""; 
+            foreach($pnis as $pni){
+                if((!empty($leaders) && in_array($pni->getId(), $leaders)) || (!empty($coleaders) && in_array($pni->getId(), $coleaders))){
+                    continue;
+                }
+                $target = "";
                 if($edit){
                     $target = " target='_blank'";
                 }
-                $this->html .= "<li><a href='{$hqp->getUrl()}'$target>{$hqp->getReversedName()}</a></li>";
+                $this->html .= "<li><a href='{$pni->getUrl()}'$target>{$pni->getReversedName()}</a></li>";
+            }
+            
+            $this->html .= "</ul>";
+            if($edit || !$edit && count($cnis) > 0){
+                $this->html .= "<h2><span class='mw-headline'>CNIs</span></h2>";
+            }
+            $this->html .= "<ul>";
+            foreach($cnis as $cni){
+                if((!empty($leaders) && in_array($cni->getId(), $leaders)) || (!empty($leaders) && in_array($cni->getId(), $leaders))){
+                    continue;
+                }
+                $target = "";
+                if($edit){
+                    $target = " target='_blank'";
+                }
+                $this->html .= "<li><a href='{$cni->getUrl()}'$target>{$cni->getReversedName()}</a></li>";
+            }
+            $this->html .= "</ul>";
+            if($edit || !$edit && count($ars) > 0){
+                $this->html .= "<h2><span class='mw-headline'>Associated Researchers</span></h2>";
+            }
+            $this->html .= "<ul>";
+            foreach($ars as $ar){
+                if((!empty($leaders) && in_array($ar->getId(), $leaders)) || (!empty($coleaders) && in_array($ar->getId(), $coleaders))){
+                    continue;
+                }
+                $target = "";
+                if($edit){
+                    $target = " target='_blank'";
+                }
+                $this->html .= "<li><a href='{$ar->getUrl()}'$target>{$ar->getReversedName()}</a></li>";
             }
             $this->html .= "</ul></td>";
+            if($wgUser->isLoggedIn()){
+                $this->html .= "<td width='50%' valign='top'>";
+                if($edit || !$edit && count($hqps) > 0){
+                    $this->html .= "<h2><span class='mw-headline'>HQP</span></h2>";
+                }
+                $this->html .= "<ul>";
+                foreach($hqps as $hqp){
+                    $target = ""; 
+                    if($edit){
+                        $target = " target='_blank'";
+                    }
+                    $this->html .= "<li><a href='{$hqp->getUrl()}'$target>{$hqp->getReversedName()}</a></li>";
+                }
+                $this->html .= "</ul></td>";
+            }
+            $this->html .= "</tr></table>";
         }
-        $this->html .= "</tr></table>";
-        
     }
     
     function showDescription(){

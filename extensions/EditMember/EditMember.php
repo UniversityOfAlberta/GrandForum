@@ -237,7 +237,7 @@ class EditMember extends SpecialPage{
                 foreach($person->getCoLeadProjects() as $project){
                     if(!$person->managementOf($project)){
                         if(!isset($copl[$project->getName()])){
-                            // Remove Project Co-Leadership
+                            // Remove Project co-Leadership
                             $_POST['co_lead'] = 'True';
                             $_POST['manager'] = 'False';
                             $_POST['role'] = $project->getName();
@@ -265,7 +265,7 @@ class EditMember extends SpecialPage{
                 }
                 foreach($copl as $project){
                     if(!isset($currentCoPL[$project])){
-                        // Add Project Co-Leadership
+                        // Add Project co-Leadership
                         $_POST['co_lead'] = 'True';
                         $_POST['manager'] = 'False';
                         $_POST['role'] = $project;
@@ -337,7 +337,7 @@ class EditMember extends SpecialPage{
                 }
                 foreach($person->getCoLeadThemes() as $theme){
                     if(!isset($cotl[$theme])){
-                        // Remove Theme Co-Leadership
+                        // Remove Theme co-Leadership
                         $_POST['co_lead'] = 'True';
                         $_POST['theme'] = $theme;
                         $_POST['name'] = $person->getName();
@@ -362,7 +362,7 @@ class EditMember extends SpecialPage{
                 }
                 foreach($cotl as $theme){
                     if(!isset($currentCoTL[$theme])){
-                        // Add Theme Co-Leadership
+                        // Add Theme co-Leadership
                         $_POST['co_lead'] = 'True';
                         $_POST['theme'] = $theme;
                         $_POST['name'] = $person->getName();
@@ -1083,7 +1083,7 @@ class EditMember extends SpecialPage{
             });
         </script>");
         
-        $wgOut->addHTML("<h2>Project Co-Leader</h2>");
+        $wgOut->addHTML("<h2>Project co-Leader</h2>");
         
         $projList = new ProjectList("copl", "Projects", $myCoLeadProjects, $projects);
         $projList->attr('expand', true);

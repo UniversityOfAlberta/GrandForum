@@ -319,7 +319,7 @@ class Evaluate_Form {
 	    }
 	    else if($rptype == RP_EVAL_PROJECT){
 	        $k = "_Ip{$sub->getId()}";
-	        $type = "Project Leader<br /> and Co-Leader";
+	        $type = "Project Leader<br /> and co-Leader";
 	    }
 		else if($rptype == RP_EVAL_CNI){
 			$k = "_Ic{$sub->getId()}";
@@ -362,7 +362,7 @@ class Evaluate_Form {
 	    }
 	    else if($rptype == RP_EVAL_PROJECT){
 	        $k = "_IIp{$sub->getId()}";
-	        $type = "Project Leader<br /> and Co-Leader";
+	        $type = "Project Leader<br /> and co-Leader";
 	    }
 		else if($rptype == RP_EVAL_CNI){
 			$k = "_IIc{$sub->getId()}";
@@ -400,7 +400,7 @@ class Evaluate_Form {
 	    }
 	    else if($rptype == RP_EVAL_PROJECT){
 	        $k = "_IIIp{$sub->getId()}";
-	        $type = "Project Leader<br /> and Co-Leader";
+	        $type = "Project Leader<br /> and co-Leader";
 	    }
 		else if($rptype == RP_EVAL_CNI){
 			$k = "_IIIc{$sub->getId()}";
@@ -444,7 +444,7 @@ class Evaluate_Form {
 	    }
 	    else if($rptype == RP_EVAL_PROJECT){
 	        $k = "_IVp{$sub->getId()}";
-	        $type = "Project Leader<br /> and Co-Leader";
+	        $type = "Project Leader<br /> and co-Leader";
 	    }
 		else if($rptype == RP_EVAL_CNI){
 			$k = "_IVc{$sub->getId()}";
@@ -489,7 +489,7 @@ class Evaluate_Form {
 	    }
 	    else if($rptype == RP_EVAL_PROJECT){
 	        $k = "_Vp{$sub->getId()}";
-	        $type = "Project Leader<br /> and Co-Leader";
+	        $type = "Project Leader<br /> and co-Leader";
 	    }
 		else if($rptype == RP_EVAL_CNI){
 			$k = "_Vc{$sub->getId()}";
@@ -534,7 +534,7 @@ class Evaluate_Form {
 	    }
 	    else if($rptype == RP_EVAL_PROJECT){
 	        $k = "_VIp{$sub->getId()}";
-	        $type = "Project Leader<br /> and Co-Leader";
+	        $type = "Project Leader<br /> and co-Leader";
 			$typeName = "project";
 	    }
 		else if($rptype == RP_EVAL_CNI){
@@ -573,7 +573,7 @@ class Evaluate_Form {
 	    }
 	    else if($rptype == RP_EVAL_PROJECT){
 	        $k = "_VIIp{$sub->getId()}";
-	        $type = "Project Leader<br /> and Co-Leader";
+	        $type = "Project Leader<br /> and co-Leader";
 	    }
 		else if($rptype == RP_EVAL_CNI){
 			$k = "_VIIc{$sub->getId()}";
@@ -606,7 +606,7 @@ class Evaluate_Form {
 	    }
 	    else if($rptype == RP_EVAL_PROJECT){
 	        $k = "_VIIIp{$sub->getId()}";
-	        $type = "Project Leader<br /> and Co-Leader";
+	        $type = "Project Leader<br /> and co-Leader";
 	    }
 		else if($rptype == RP_EVAL_CNI){
 			$k = "_VIIIc{$sub->getId()}";
@@ -642,7 +642,7 @@ class Evaluate_Form {
 	    }
 	    else if($rptype == RP_EVAL_PROJECT){
 	        $k = "_IXp{$sub->getId()}";
-	        $type = "Project Leader<br /> and Co-Leader";
+	        $type = "Project Leader<br /> and co-Leader";
 	    }
 		else if($rptype == RP_EVAL_CNI){
 			$k = "_IXc{$sub->getId()}";

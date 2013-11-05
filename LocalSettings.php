@@ -185,10 +185,10 @@ define("CNI", "CNI");
 define("PNI", "PNI");
 define("AR", "Associated Researcher");
 define("LOI", "LOI Member");
-define("COPL", "Project Co-Leader"); // This is a special role.
+define("COPL", "Project co-Leader"); // This is a special role.
 define("PL", "Project Leader"); // This is a special role.
 define("PM", "Project Manager"); // This is a special role.
-define("COTL", "Theme Co-Leader"); // This is a special role.
+define("COTL", "Theme co-Leader"); // This is a special role.
 define("TL", "Theme Leader"); // This is a special role.
 define("RMC", "RMC");
 define("EVALUATOR", "Evaluator");
