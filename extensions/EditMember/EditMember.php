@@ -834,11 +834,11 @@ class EditMember extends SpecialPage{
         <p>Select the Roles and Projects to which <b>{$person->getReversedName()}</b> should be a member of.  Deselecting a role or project will prompt further questions, relating to the reason why they are leaving that role.  Removing an HQP from the HQP role, the action will not require any approval, however all other actions will need to be approved by an Administrator.</p>");
         $wgOut->addHTML("<div id='tabs'>
                     <ul>
-                        <li><a href='#tabs-1'>Roles</a></li>
-                        <li><a href='#tabs-2'>Projects</a></li>");
+                        <li><a id='RolesTab' href='#tabs-1'>Roles</a></li>
+                        <li><a id='ProjectsTab' href='#tabs-2'>Projects</a></li>");
         if($me->isRoleAtLeast(STAFF)){
-            $wgOut->addHTML("<li><a href='#tabs-3'>Project Leadership</a></li>
-                             <li><a href='#tabs-4'>Project Manager</a></li>");
+            $wgOut->addHTML("<li><a id='LeadershipTab' href='#tabs-3'>Project Leadership</a></li>
+                             <li><a id='ManagerTab' href='#tabs-4'>Project Manager</a></li>");
         }
         $wgOut->addHTML("
                     </ul>");
@@ -955,7 +955,7 @@ class EditMember extends SpecialPage{
         }
         foreach($wgRoles as $role){
             if(($role != ISAC || $user->isRoleAtLeast(STAFF)) && ($user->isRoleAtLeast($role) || ($role == CHAMP && $user->isRoleAtLeast(COPL)))){
-                $boxes .= "&nbsp;<input type='checkbox' name='r_wpNS[]' value='".$role."' ";
+                $boxes .= "&nbsp;<input id='role_$role' type='checkbox' name='r_wpNS[]' value='".$role."' ";
                 if(($user->isPNI() || $user->isCNI()) && $role == HQP && $person->isHQP() && !$user->relatedTo($person,"Supervises") && count($person->getSupervisors()) > 0 ){
                     $boxes .= "checked onChange='addComment(this, true)' class='already'"; //Prevent un-check
                 }

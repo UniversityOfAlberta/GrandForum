@@ -22,6 +22,7 @@
           .appendTo( this.wrapper )
           .val( value )
           .attr( "title", "" )
+          .attr("id", "combo_" + this.element.attr('name'))
           .width(width)
           .addClass( "custom-combobox-input " +this.uni)
           .autocomplete({

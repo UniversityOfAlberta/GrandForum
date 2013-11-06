@@ -37,7 +37,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                 $already = "already";
             }
             $html .= "<div>
-                        <input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' name='{$this->id}[]' value='{$proj->getName()}' $checked/>{$proj->getName()}
+                        <input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='{$this->id}_{$proj->getName()}' name='{$this->id}[]' value='{$proj->getName()}' $checked/>{$proj->getName()}
                         <div style='display:none; padding-left:30px;'>
                             <fieldset><legend>Reasoning</legend>
                                 <p>Date Effective:<input type='text' class='datepicker' id='{$this->id}_datepicker{$proj->getName()}' name='{$partialId}_datepicker[{$proj->getName()}]' /></p>
@@ -61,7 +61,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                     if($subchecked != ""){
                         $already = "already";
                     }
-                    $html .= "<input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' name='{$this->id}[]' value='{$subProj->getName()}' $subchecked/>{$subProj->getName()}<div style='display:none; padding-left:30px;'>
+                    $html .= "<input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='{$this->id}_{$subProj->getName()}' name='{$this->id}[]' value='{$subProj->getName()}' $subchecked/>{$subProj->getName()}<div style='display:none; padding-left:30px;'>
                             <fieldset><legend>Reasoning</legend>
                                 <p>Date Effective:<input type='text' class='datepicker' id='{$this->id}_datepicker{$subProj->getName()}' name='{$partialId}_datepicker[{$subProj->getName()}]' /></p>
                                 Additional Comments:<br />

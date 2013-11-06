@@ -18,7 +18,7 @@ class VerticalCheckBox extends CheckBox {
                     }
                 }
             }
-            $html .= "<input {$this->renderAttr()} type='checkbox' name='{$this->id}[]' value='{$option}' $checked/>{$option}<br />";
+            $html .= "<input {$this->renderAttr()} id='{$this->id}_{$option}' type='checkbox' name='{$this->id}[]' value='{$option}' $checked/>{$option}<br />";
         }
         return $html;
     }

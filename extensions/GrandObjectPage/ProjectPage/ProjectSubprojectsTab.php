@@ -103,7 +103,7 @@ class ProjectSubprojectsTab extends AbstractTab {
             
             if($can_edit){
                 $this->html .=<<<EOF
-                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/{$title}:Main?edit" target="_blank">Edit</a>
+                <a class="button" href="{$subproject->getUrl()}?edit" target="_blank">Edit</a>
 EOF;
             }
             $this->html .= "</div></div>";
