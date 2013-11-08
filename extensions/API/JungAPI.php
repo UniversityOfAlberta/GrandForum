@@ -186,8 +186,9 @@ class JungAPI extends API{
                          "Information Science");
         $msa = json_decode(file_get_contents("http://grand.cs.ualberta.ca/~dwt/MSResearchCrawler/db.json"));
         $msaAuthors = array();
-        foreach($msa->authors as $author){
-            $forum_id = $author->forum_id;
+        foreach($msa->authors as $name => $author){
+            $person = Person::newFromNameLike($name);
+            $forum_id = $person->getId();
             $msaAuthors[$forum_id] = $author;
         }
         foreach($nodes as $person){
@@ -402,10 +403,10 @@ class JungAPI extends API{
             if(isset($msaAuthors[$person->getId()])){
                 $nPubs = array();
                 $nCits = array();
-                foreach((array)($msaAuthors[$person->getId()]->nPubs) as $year => $pub){
+                foreach(@(array)($msaAuthors[$person->getId()]->nPubs) as $year => $pub){
                     $nPubs[$year] = $pub;
                 }
-                foreach((array)($msaAuthors[$person->getId()]->nCits) as $year => $cit){
+                foreach(@(array)($msaAuthors[$person->getId()]->nCits) as $year => $cit){
                     $nCits[$year] = $cit;
                 }
                 if(isset($nPubs[$this->year]) && isset($nCits[$this->year])){
