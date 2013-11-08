@@ -395,10 +395,10 @@ class JungAPI extends API{
             $tuple['WorksWithDiffDisc'][] = "!".$tuple['Discipline'];
             $tuple['ProducesDiffDisc'][] = "!".$tuple['Discipline'];
             
-            $tuple['GSnPubs'] = "";
-            $tuple['GSnCits'] = "";
-            $tuple['GSnPubsDelta'] = "";
-            $tuple['GSnCitsDelta'] = "";
+            $tuple['ScopusPubs'] = "";
+            $tuple['ScopusCits'] = "";
+            $tuple['ScopusPubsDelta'] = "";
+            $tuple['ScopusCitsDelta'] = "";
             
             if(isset($msaAuthors[$person->getId()])){
                 $nPubs = array();
@@ -410,11 +410,11 @@ class JungAPI extends API{
                     $nCits[$year] = $cit;
                 }
                 if(isset($nPubs[$this->year]) && isset($nCits[$this->year])){
-                    $tuple['GSnPubs'] = (string)$nPubs[$this->year];
-                    $tuple['GSnCits'] = (string)$nCits[$this->year];
+                    $tuple['ScopusPubs'] = (string)$nPubs[$this->year];
+                    $tuple['ScopusCits'] = (string)$nCits[$this->year];
                     
-                    $tuple['GSnPubsDelta'] = @(string)(($nPubs[$this->year] - $nPubs[$this->year-1])/max(1, $nPubs[$this->year-1]));
-                    $tuple['GSnCitsDelta'] = @(string)(($nCits[$this->year] - $nCits[$this->year-1])/max(1, $nCits[$this->year-1]));
+                    $tuple['ScopusPubsDelta'] = @(string)(($nPubs[$this->year] - $nPubs[$this->year-1])/max(1, $nPubs[$this->year-1]));
+                    $tuple['ScopusCitsDelta'] = @(string)(($nCits[$this->year] - $nCits[$this->year-1])/max(1, $nCits[$this->year-1]));
                 }
             }
             $metas[$person->getName()] = $tuple;
