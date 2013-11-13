@@ -49,6 +49,7 @@ class EvolveProjectAPI extends API{
 	    }
 	    $status = $project->getStatus();
 	    $type = $project->getType();
+	    $bigbet = $project->isBigBet();
 	    $clear = (isset($_POST['clear'])) ? ($_POST['clear'] == "Yes") : false;
 	    if(!$clear){
 	        $clear = 0;
@@ -77,7 +78,8 @@ class EvolveProjectAPI extends API{
 	                                    array('evolution_id' => $data[0]['id'],
 	                                          'project_id' => $nsId,
 	                                          'status' => $status,
-	                                          'type' => $type),
+	                                          'type' => $type,
+	                                          'bigbet' => $bigbet),
 	                                    true);
 	    }
 	    if($stat){
