@@ -15,7 +15,7 @@ class ProjectMainTab extends AbstractEditableTab {
         global $wgUser, $wgServer, $wgScriptPath;
         $project = $this->project;
         $me = Person::newFromId($wgUser->getId());
-        $edit = isset($_POST['edit']);
+        $edit = (isset($_POST['edit']) && !isset($this->visibility['overrideEdit']));
         
         if($wgUser->isLoggedIn() && $me->isMemberOf($project)){
             $this->html .="<h3><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:Mail_Index'>{$project->getName()} Mailing List</a></h3>";
@@ -110,7 +110,7 @@ class ProjectMainTab extends AbstractEditableTab {
     
     function showThemes(){
         global $wgServer, $wgScriptPath;
-        $edit = $this->visibility['edit'];
+        $edit = (isset($_POST['edit']) && !isset($this->visibility['overrideEdit']));
         
         $this->html .= "<h2><span class='mw-headline'>Theme Distribution</span></h2>";
         $themes = $this->project->getThemes();
@@ -146,7 +146,7 @@ class ProjectMainTab extends AbstractEditableTab {
 
     function showChallenge(){
         global $wgServer, $wgScriptPath;
-        $edit = isset($_POST['edit']);
+        $edit = (isset($_POST['edit']) && !isset($this->visibility['overrideEdit']));
         
         $this->html .= "<h2><span class='mw-headline'>Primary Challenge</span></h2>";
         $challenge = $this->project->getChallenge();
@@ -198,7 +198,7 @@ EOF;
     function showChampions(){
         global $wgUser, $wgServer, $wgScriptPath;
         
-        $edit = isset($_POST['edit']);
+        $edit = (isset($_POST['edit']) && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
 
         $champions = $project->getChampions();
@@ -251,7 +251,7 @@ EOF;
         
         $me = Person::newFromWgUser();
         
-        $edit = isset($_POST['edit']);
+        $edit = (isset($_POST['edit']) && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
         
         $leaders = $project->getLeaders(true); //only get id's
@@ -392,7 +392,7 @@ EOF;
     function showDescription(){
         global $wgServer, $wgScriptPath;
         
-        $edit = isset($_POST['edit']);
+        $edit = (isset($_POST['edit']) && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
         
         if($edit || !$edit && $project->getDescription() != ""){
@@ -409,7 +409,7 @@ EOF;
     function showProblem(){
         global $wgServer, $wgScriptPath;
         
-        $edit = isset($_POST['edit']);
+        $edit = (isset($_POST['edit']) && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
         
         if($edit || !$edit && $project->getProblem() != ""){
@@ -426,7 +426,7 @@ EOF;
     function showSolution(){
         global $wgServer, $wgScriptPath;
         
-        $edit = isset($_POST['edit']);
+        $edit = (isset($_POST['edit']) && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
         
         if($edit || !$edit && $project->getSolution() != ""){
