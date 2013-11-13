@@ -20,8 +20,12 @@ class ProjectMainTab extends AbstractEditableTab {
         if($wgUser->isLoggedIn() && $me->isMemberOf($project)){
             $this->html .="<h3><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:Mail_Index'>{$project->getName()} Mailing List</a></h3>";
         }
-        $this->html .= "<b>Type:</b> {$this->project->getType()}<br />
-                        <b>Status:</b> {$this->project->getStatus()}<br />";
+        $bigbet = ($this->project->isBigBet()) ? "Yes" : "No";
+        $this->html .= "<table>
+                            <tr><td><b>Type:</b></td><td>{$this->project->getType()}</td></tr>
+                            <tr><td><b>Big-Bet:</b></td><td>{$bigbet}</td></tr>
+                            <tr><td><b>Status:</b></td><td>{$this->project->getStatus()}</td></tr>
+                        </table>";
         $this->showChallenge();
         $this->showChampions();
         $this->showPeople();

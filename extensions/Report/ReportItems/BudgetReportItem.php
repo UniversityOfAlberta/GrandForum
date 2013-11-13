@@ -194,23 +194,41 @@ class BudgetReportItem extends AbstractReportItem {
 	}
 	
 	static function checkTotals($budget, $person, $year){
-        $projects = $budget->copy()->select(V_PROJ, array())->where(V_PROJ)->xls;
-        $total = intval(str_replace("$", "", $budget->copy()->rasterize()->where(HEAD1, array("%TOTALS%"))->select(ROW_TOTAL)->toString()));
+        $projects = $budget->copy()->select(V_PROJ, array())->where(V_PROJ)->xls[1];
+        $total = 0;
+        foreach($projects as $proj){
+            $project = Project::newFromName($proj->toString());
+            if(!$project->isBigBet()){
+                $total += intval(str_replace("$", "", $budget->copy()->rasterize()->select(V_PROJ, array($proj->toString()))->where(COL_TOTAL)->toString()));
+            }
+        }
         $name = $budget->copy()->where(V_PERS_NOT_NULL)->select(V_PERS_NOT_NULL)->toString();
         if($person->isRoleDuring(PNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
-            if($total > 60000){
-                $budget->xls[22][7]->error = "'\$$total' is greater than the maximum $60000 for PNIs";
+            if($total > 65000){
+                $budget->xls[22][7]->error = "'\$$total' is greater than the maximum $65000 for PNIs (excluding Big-Bet Projects)";
             }
         }
         else if($person->isRoleDuring(CNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH) &&
            $person->isProjectCoLeaderDuring(($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
-            if($total > 40000){
-                $budget->xls[22][7]->error = "'\$$total' is greater than the maximum $40000 for CNIs who are co-Leaders";
+            $bigbet = true;
+            foreach($person->leadershipDuring(($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH) as $project){
+                if(!$project->isBigBet()){
+                    $bigbet = false;
+                    continue;
+                }
+            }
+            if($total > 45000 && !$bigbet){
+                $budget->xls[22][7]->error = "'\$$total' is greater than the maximum $45000 for CNIs who are co-Leaders (excluding Big-Bet Projects)";
+            }
+            else{
+                if($total > 35000){
+                    $budget->xls[22][7]->error = "'\$$total' is greater than the maximum $35000 for CNIs (excluding Big-Bet Projects)";
+                }
             }
         }
         else if($person->isRoleDuring(CNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
-            if($total > 30000){
-                $budget->xls[22][7]->error = "'\$$total' is greater than the maximum $30000 for CNIs";
+            if($total > 35000){
+                $budget->xls[22][7]->error = "'\$$total' is greater than the maximum $35000 for CNIs (excluding Big-Bet Projects)";
             }
         }
         $v_pers = Person::newFromNameLike($name);
