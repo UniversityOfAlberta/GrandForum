@@ -84,31 +84,17 @@ class ProjectSubprojectsTab extends AbstractTab {
         $this->html .= "<h2>Current Sub-Projects</h2>";
                 
         foreach($subprojects as $subproject){
-            $key = $subproject->getId();
-            $title = $subproject->getName();
-            $type = $subproject->getType();
-            $status = $subproject->getStatus();
-
-            $description = nl2br($subproject->getDescription());
             $this->html .= "<div class='subprojects_accordion'>";
-            $this->html .= "<h3><a href='#'>{$title}</a></h3>";
+            $this->html .= "<h3><a href='#'>{$subproject->getName()}</a></h3>";
             $this->html .= "<div>";
-            $this->html .= "<b>Type:</b> {$type}<br />
-                            <b>Status:</b> {$status}<br />";
-                            
-            $this->html .= $this->showPeople($subproject);
-            
-            $this->html .= "<h2><span class='mw-headline'>Description</span></h2>";
-        
-            $this->html .= "<p>" . $this->sandboxParse($description) . "</p>";
-            
+            $tab = new ProjectMainTab($subproject, array());
+            $this->html .= $tab->generateBody();
             if($can_edit){
                 $this->html .=<<<EOF
                 <a class="button" href="{$subproject->getUrl()}?edit" target="_blank">Edit</a>
 EOF;
             }
             $this->html .= "</div></div>";
-  
         }
         
         $this->html .=<<<EOF
@@ -121,112 +107,6 @@ EOF;
         </script>
 EOF;
   
-    }
-
-    function showPeople($subproject){
-
-        global $wgUser, $wgServer, $wgScriptPath;
-        
-        $edit = $this->visibility['edit'];
-        $project = $subproject;
-        
-        $leaders = $project->getLeaders(true); //only get id's
-        $coleaders = $project->getCoLeaders(true);
-        $pnis = $project->getAllPeople(PNI);
-        $cnis = $project->getAllPeople(CNI);
-        $ars = $project->getAllPeople(AR);
-        $hqps = $project->getAllPeople(HQP);
-      
-        $html = "";
-
-        $html .= "<h2><span class='mw-headline'>Leaders</span></h2>";
-        $html .= "<table>";
-        if(!empty($leaders)){
-            foreach($leaders as $leader_id){
-                $leader = Person::newFromId($leader_id);
-                $html .= "<tr>";
-                $leaderType = "Leader";
-                if($leader->managementOf($project->getName())){
-                    $leaderType = "Manager";
-                }
-                $html .= "<td align='right'><b>{$leaderType}:</b></td><td><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></td></tr>";
-            }    
-        }
-        $html .= "</table>";
-        
-        $html .= "<table width='100%'><tr><td valign='top' width='50%'>";
-        if($edit || !$edit && count($pnis) > 0){
-            $html .= "<h2><span class='mw-headline'>PNIs</span></h2>";
-        }
-        $html .= "<ul>";
-        foreach($pnis as $pni){
-            if((!empty($leaders) && in_array($pni->getId(), $leaders)) || (!empty($coleaders) && in_array($pni->getId(), $coleaders))){
-                continue;
-            }
-            $target = "";
-            if($edit){
-                $target = " target='_blank'";
-            }
-            $html .= "<li><a href='{$pni->getUrl()}'$target>{$pni->getReversedName()}</a></li>";
-        }
-        
-        $html .= "</ul>";
-        if($edit || !$edit && count($cnis) > 0){
-            $html .= "<h2><span class='mw-headline'>CNIs</span></h2>";
-        }
-        $html .= "<ul>";
-        foreach($cnis as $cni){
-            if((!empty($leaders) && in_array($cni->getId(), $leaders)) || (!empty($leaders) && in_array($cni->getId(), $leaders))){
-                continue;
-            }
-            $target = "";
-            if($edit){
-                $target = " target='_blank'";
-            }
-            $html .= "<li><a href='{$cni->getUrl()}'$target>{$cni->getReversedName()}</a></li>";
-        }
-        $html .= "</ul>";
-        if($edit || !$edit && count($ars) > 0){
-            $html .= "<h2><span class='mw-headline'>Associated Researchers</span></h2>";
-        }
-        $html .= "<ul>";
-        foreach($ars as $ar){
-            if((!empty($leaders) && in_array($ar->getId(), $leaders)) || (!empty($coleaders) && in_array($ar->getId(), $coleaders))){
-                continue;
-            }
-            $target = "";
-            if($edit){
-                $target = " target='_blank'";
-            }
-            $html .= "<li><a href='{$ar->getUrl()}'$target>{$ar->getReversedName()}</a></li>";
-        }
-        $html .= "</ul></td>";
-        if($wgUser->isLoggedIn()){
-            $html .= "<td width='50%' valign='top'>";
-            if($edit || !$edit && count($hqps) > 0){
-                $html .= "<h2><span class='mw-headline'>HQP</span></h2>";
-            }
-            $html .= "<ul>";
-            foreach($hqps as $hqp){
-                $target = ""; 
-                if($edit){
-                    $target = " target='_blank'";
-                }
-                $html .= "<li><a href='{$hqp->getUrl()}'$target>{$hqp->getReversedName()}</a></li>";
-            }
-            $html .= "</ul></td>";
-        }
-        $html .= "</tr></table>";
-        
-        return $html;
-    }
-
-    function sandboxParse($wikiText) {
-        global $wgTitle, $wgUser;
-        $myParser = new Parser();
-        $myParserOptions = ParserOptions::newFromUser($wgUser);
-        $result = $myParser->parse($wikiText, $wgTitle, $myParserOptions);
-        return $result->getText();
     }
 }    
     
