@@ -87,6 +87,10 @@ EOF;
         $typeRow->append(new Label("{$pre}_type_label", "Type", "The type of this project", VALIDATE_NOT_NULL));
         $typeRow->append(new VerticalRadioBox("{$pre}_type", "Type", "Research", array("Research", "Administrative", "Strategic"), VALIDATE_NOT_NULL));
         
+        $bigbetRow = new FormTableRow("{$pre}_bigbet_row");
+        $bigbetRow->append(new Label("{$pre}_bigbet_label", "Big-Bet", "Whether or not this project is considered to be a 'Big-Bet' project", VALIDATE_NOT_NULL));
+        $bigbetRow->append(new VerticalRadioBox("{$pre}_bigbet", "Big-Bet", "No", array("No", "Yes"), VALIDATE_NOT_NULL));
+        
         $phaseRow = new FormTableRow("{$pre}_phase_row");
         $phaseRow->append(new Label("{$pre}_phase_label", "Phase", "What project phase the new project belongs to", VALIDATE_NOT_NULL));
         $phaseRow->append(new SelectBox("{$pre}_phase", "Phase", "Research", range(PROJECT_PHASE, 1, -1), VALIDATE_NOT_NULL));
@@ -175,6 +179,7 @@ EOF;
         $table->append($subprojectDDRow);
         $table->append($statusRow);
         $table->append($typeRow);
+        $table->append($bigbetRow);
         $table->append($phaseRow);
         $table->append($effectiveRow);
         $table->append($plRow);
@@ -208,6 +213,7 @@ EOF;
             $form->getElementById("new_full_name")->setPOST("fullName");
             $form->getElementById("new_status")->setPOST("status");
             $form->getElementById("new_type")->setPOST("type");
+            $form->getElementById("new_bigbet")->setPOST("bigbet");
             $form->getElementById("new_phase")->setPOST("phase");
             $form->getElementById("new_effective")->setPOST("effective_date");
             $form->getElementById("new_pl")->setPOST("pl");

@@ -108,7 +108,6 @@ class IndexTable {
         if($me->isRoleAtLeast(MANAGER)){
             $idHeader = "<th>Project Id</th>";
         }
-
         $startPhase = PROJECT_PHASE;
         
         $this->text .= "<div id='tabs'><ul>";

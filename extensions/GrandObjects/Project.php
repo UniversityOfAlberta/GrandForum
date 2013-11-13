@@ -11,6 +11,7 @@ class Project extends BackboneModel {
     var $status;
     var $type;
     var $parentId;
+    var $bigbet;
     var $people;
     var $contributions;
     var $multimedia;
@@ -32,15 +33,7 @@ class Project extends BackboneModel {
         if(isset(self::$cache[$id])){
             return self::$cache[$id];
         }
-        $sql = "(SELECT p.id, p.name, p.phase, p.parent_id, e2.action, e2.effective_date, e2.id as evolutionId, e2.clear, s.status, s.type
-                 FROM grand_project p, grand_project_evolution e, grand_project_evolution e2, grand_project_status s
-                 WHERE e.`project_id` = '{$id}'
-                 AND e2.project_id = e.new_id
-                 AND e2.project_id = p.id
-                 AND s.evolution_id = e2.id
-                 ORDER BY e2.`date` DESC LIMIT 1)
-                UNION
-                (SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type
+        $sql = "(SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type, s.bigbet
                  FROM grand_project p, grand_project_evolution e, grand_project_status s
                  WHERE e.`project_id` = '{$id}'
                  AND e.`new_id` != '{$id}'
@@ -49,7 +42,7 @@ class Project extends BackboneModel {
                  AND e.clear != 1
                  ORDER BY `date` DESC LIMIT 1)
                 UNION 
-                (SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type
+                (SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type, s.bigbet
                  FROM grand_project p, grand_project_evolution e, grand_project_status s
                  WHERE p.id = '$id'
                  AND e.new_id = p.id
@@ -84,7 +77,8 @@ class Project extends BackboneModel {
                                           'e.id' => 'evolutionId',
                                           'e.clear',
                                           's.type',
-                                          's.status'),
+                                          's.status',
+                                          's.bigbet'),
                                     array('p.name' => $name,
                                           'e.new_id' => EQ(COL('p.id')),
                                           's.evolution_id' => EQ(COL('e.id'))),
@@ -118,7 +112,7 @@ class Project extends BackboneModel {
         if(isset(self::$cache[$id.'_'.$evolutionId])){
             return self::$cache[$id.'_'.$evolutionId];
         }
-        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status
+        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.bigbet
                 FROM grand_project p, grand_project_evolution e, grand_project_status s
                 WHERE p.id = '$id'
                 AND e.new_id = p.id
@@ -138,7 +132,7 @@ class Project extends BackboneModel {
         if(isset(self::$cache['h_'.$name])){
             return self::$cache['h_'.$name];
         }
-        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status
+        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.bigbet
                 FROM grand_project p, grand_project_evolution e, grand_project_status s
                 WHERE p.name = '$name'
                 AND e.new_id = p.id
@@ -223,6 +217,7 @@ class Project extends BackboneModel {
             $this->evolutionId = $data[0]['evolutionId'];
             $this->status = $data[0]['status'];
             $this->type = $data[0]['type'];
+            $this->bigbet = $data[0]['bigbet'];
             $this->phase = $data[0]['phase'];
             $this->parentId = $data[0]['parent_id'];
             $this->succ = false;
@@ -253,6 +248,7 @@ class Project extends BackboneModel {
                        'description' => $this->getDescription(),
                        'status' => $this->getStatus(),
                        'type' => $this->getType(),
+                       'bigbet' => $this->isBigBet(),
                        'phase' => $this->getPhase(),
                        'url' => $this->getUrl(),
                        'deleted' => $this->isDeleted());
@@ -361,6 +357,10 @@ EOF;
     // Returns the type of this Project
     function getType(){
         return $this->type;
+    }
+    
+    function isBigBet(){
+        return $this->bigbet;
     }
     
     // Returns the phase of this Project

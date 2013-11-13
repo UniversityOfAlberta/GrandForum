@@ -186,8 +186,9 @@ class JungAPI extends API{
                          "Information Science");
         $msa = json_decode(file_get_contents("http://grand.cs.ualberta.ca/~dwt/MSResearchCrawler/db.json"));
         $msaAuthors = array();
-        foreach($msa->authors as $author){
-            $forum_id = $author->forum_id;
+        foreach($msa->authors as $name => $author){
+            $person = Person::newFromNameLike($name);
+            $forum_id = $person->getId();
             $msaAuthors[$forum_id] = $author;
         }
         foreach($nodes as $person){
@@ -394,26 +395,26 @@ class JungAPI extends API{
             $tuple['WorksWithDiffDisc'][] = "!".$tuple['Discipline'];
             $tuple['ProducesDiffDisc'][] = "!".$tuple['Discipline'];
             
-            $tuple['GSnPubs'] = "";
-            $tuple['GSnCits'] = "";
-            $tuple['GSnPubsDelta'] = "";
-            $tuple['GSnCitsDelta'] = "";
+            $tuple['ScopusPubs'] = "";
+            $tuple['ScopusCits'] = "";
+            $tuple['ScopusPubsDelta'] = "";
+            $tuple['ScopusCitsDelta'] = "";
             
             if(isset($msaAuthors[$person->getId()])){
                 $nPubs = array();
                 $nCits = array();
-                foreach((array)($msaAuthors[$person->getId()]->nPubs) as $year => $pub){
+                foreach(@(array)($msaAuthors[$person->getId()]->nPubs) as $year => $pub){
                     $nPubs[$year] = $pub;
                 }
-                foreach((array)($msaAuthors[$person->getId()]->nCits) as $year => $cit){
+                foreach(@(array)($msaAuthors[$person->getId()]->nCits) as $year => $cit){
                     $nCits[$year] = $cit;
                 }
                 if(isset($nPubs[$this->year]) && isset($nCits[$this->year])){
-                    $tuple['GSnPubs'] = (string)$nPubs[$this->year];
-                    $tuple['GSnCits'] = (string)$nCits[$this->year];
+                    $tuple['ScopusPubs'] = (string)$nPubs[$this->year];
+                    $tuple['ScopusCits'] = (string)$nCits[$this->year];
                     
-                    $tuple['GSnPubsDelta'] = @(string)(($nPubs[$this->year] - $nPubs[$this->year-1])/max(1, $nPubs[$this->year-1]));
-                    $tuple['GSnCitsDelta'] = @(string)(($nCits[$this->year] - $nCits[$this->year-1])/max(1, $nCits[$this->year-1]));
+                    $tuple['ScopusPubsDelta'] = @(string)(($nPubs[$this->year] - $nPubs[$this->year-1])/max(1, $nPubs[$this->year-1]));
+                    $tuple['ScopusCitsDelta'] = @(string)(($nCits[$this->year] - $nCits[$this->year-1])/max(1, $nCits[$this->year-1]));
                 }
             }
             $metas[$person->getName()] = $tuple;
