@@ -9,20 +9,12 @@ class UserUniversityAPI extends API{
     }
 
     function processParams($params){
-        if(isset($_POST['university'])){
-            $_POST['university'] = str_replace("'", "&#39;", $_POST['university']);
-        }
+        $_POST['university'] = @$_POST['university'];
         if(!isset($_POST['department'])){
             $_POST['department'] = "";
         }
-        else{
-            $_POST['department'] = str_replace("'", "&#39;", $_POST['department']);
-        }
         if(!isset($_POST['title'])){
             $_POST['title'] = "";
-        }
-        else{
-            $_POST['title'] = str_replace("'", "&#39;", $_POST['title']);
         }
     }
 
@@ -32,6 +24,24 @@ class UserUniversityAPI extends API{
         }
         if(!isset($_POST['title'])){
             $_POST['title'] = Person::getDefaultPosition();
+        }
+        $data = DBFunctions::select(array('grand_universities'),
+                                    array('university_name'),
+                                    array('university_name' => $_POST['university']));
+        if(count($data) == 0){
+            DBFunctions::insert('grand_universities',
+                                array('university_name' => $_POST['university'],
+                                      '`order`' => 10000,
+                                      '`default`' => 0));
+        }
+        $data = DBFunctions::select(array('grand_positions'),
+                                    array('position'),
+                                    array('position' => $_POST['title']));
+        if(count($data) == 0){
+            DBFunctions::insert('grand_positions',
+                                array('position' => $_POST['title'],
+                                      '`order`' => 10000,
+                                      '`default`' => 0));
         }
         $universities = Person::getAllUniversities();
         foreach($universities as $id => $uni){

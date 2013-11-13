@@ -62,8 +62,6 @@ class ProjectMainTab extends AbstractEditableTab {
                 $_POST['project'] = $this->project->getName();
                 $champ = Person::newFromName($name);
                 $_POST['champion_id'] = $champ->getId();
-                $_POST['champion_title'] = $_POST['champ_title'][$key];
-                $_POST['champion_org'] = $_POST['champ_org'][$key];
                 if(isset($_POST['champ_del'][$key]) && $_POST['champ_del'][$key] == "true"){
                     APIRequest::doAction('DeleteProjectChampions', true);
                 }
@@ -75,12 +73,10 @@ class ProjectMainTab extends AbstractEditableTab {
         
         $form = $this->champForm();
         if($form->validate()){
-            foreach($_POST['new_champ_name'] as $key => $name){
+            foreach($_POST['new_champ_name2'] as $key => $name){
                 $_POST['project'] = $this->project->getName();
                 $champ = Person::newFromName($name);
                 $_POST['champion_id'] = $champ->getId();
-                $_POST['champion_title'] = $_POST['new_champ_title'][$key];
-                $_POST['champion_org'] = $_POST['new_champ_org'][$key];
                 APIRequest::doAction('ProjectChampions', true);
             }
         }
@@ -192,29 +188,10 @@ EOF;
             }
         }
         asort($names);
-    
-        $champPlusMinus = new PlusMinus("champ_plusminus");
-        $champFieldSet = new FieldSet("champ_fieldset", "New Champion");
-        $champTable = new FormTable("champ_table");
-        
-        $champTableNameRow = new FormTableRow("champ_name_row");
-        $champTableNameRow->append(new Label("champ_name_label", "Name", "The name of the project champion", VALIDATE_NOTHING));
-        $champTableNameRow->append(new ComboBox("new_champ_name[]", "Name", "", $names, VALIDATE_CHAMPION));
-        
-        $champTableTitleRow = new FormTableRow("champ_title_row");
-        $champTableTitleRow->append(new Label("champ_title_label", "Title", "The title of the project champion", VALIDATE_NOTHING));
-        $champTableTitleRow->append(new TextField("new_champ_title[]", "Title", "", VALIDATE_NOTHING));
-        
-        $champTableOrgRow = new FormTableRow("champ_org_row");
-        $champTableOrgRow->append(new Label("champ_org_label", "Organization", "The organization of the project champion", VALIDATE_NOTHING));
-        $champTableOrgRow->append(new TextField("new_champ_org[]", "Organization", "", VALIDATE_NOTHING));
-        
-        $champTable->append($champTableNameRow);
-        $champTable->append($champTableTitleRow);
-        $champTable->append($champTableOrgRow);
-        $champFieldSet->append($champTable);
-        $champPlusMinus->append($champFieldSet);
-        
+        $champPlusMinus = new PlusMinus("new_champ_plusminus2");
+        $champTable = new FormTable("champ_table2");
+        $champTable->append(new ComboBox("new_champ_name2[]", "Name", "", $names, VALIDATE_CHAMPION));
+        $champPlusMinus->append($champTable);
         return $champPlusMinus;
     }
     
@@ -253,14 +230,6 @@ EOF;
                             <legend>{$champion['user']->getNameForForms()}</legend>
                             <input type='hidden' name='champ_name[]' value='{$champion['user']->getName()}' />
                             <table cellspacing="0" cellpadding="2" style='margin-left:15px;'>
-                                <tr>
-                                    <td align='right' valign='top'><b>Title:</b></td>
-                                    <td valign='top'><input type="text" name="champ_title[]" value="{$champion['title']}" /></td>
-                                </tr>
-                                <tr>
-                                    <td align='right' valign='top'><b>Organization:</b></td>
-                                    <td valign='top'><input type="text" name="champ_org[]" value="{$champion['org']}" /></td>
-                                </tr>
                                 <tr>
                                     <td align='right' valign='top'><b>Delete?</b></td>
                                     <td valign='top'><input type="checkbox" name="champ_del[$i]" value="true" /></td>

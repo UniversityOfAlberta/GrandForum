@@ -20,21 +20,23 @@ class PlusMinus extends UIElementArray {
             <button type='button' id='{$this->id}minus' style='width: 30px;padding-left: 10px;padding-right: 10px;'>-</button>
         </div>";
         $html .= "<script type='text/javascript'>
-            var contents = $('.{$this->id}_contents_template').detach();
-            $('#{$this->id} .plusminus_contents').append(contents.html());
-            $('#{$this->id}add').click(function(){
+            _.defer(function(){
+                var contents = $('.{$this->id}_contents_template').detach();
                 $('#{$this->id} .plusminus_contents').append(contents.html());
-                if($('#{$this->id} .plusminus_contents').children().length > 0){
-                    $('#{$this->id}minus').prop('disabled', false);
-                }
-                return false;
-            });
-            $('#{$this->id}minus').click(function(){
-                $('#{$this->id} .plusminus_contents .{$this->id}_contents').last().remove();
-                if($('#{$this->id} .plusminus_contents').children().length == 0){
-                    $('#{$this->id}minus').attr('disabled', 'disabled');
-                }
-                return false;
+                $('#{$this->id}add').click(function(){
+                    $('#{$this->id} .plusminus_contents').append(contents.html());
+                    if($('#{$this->id} .plusminus_contents').children().length > 0){
+                        $('#{$this->id}minus').prop('disabled', false);
+                    }
+                    return false;
+                });
+                $('#{$this->id}minus').click(function(){
+                    $('#{$this->id} .plusminus_contents .{$this->id}_contents').last().remove();
+                    if($('#{$this->id} .plusminus_contents').children().length == 0){
+                        $('#{$this->id}minus').attr('disabled', 'disabled');
+                    }
+                    return false;
+                });
             });
         </script>";
         return $html;

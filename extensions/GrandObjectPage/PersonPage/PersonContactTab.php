@@ -84,13 +84,20 @@ class PersonContactTab extends AbstractEditableTab {
             $_POST['twitter'] = @addslashes($_POST['twitter']);
             $_POST['nationality'] = @addslashes($_POST['nationality']);
             $_POST['email'] = @addslashes($_POST['email']);
-            $_POST['university'] = @addslashes($_POST['university']);
-            $_POST['department'] = @addslashes($_POST['department']);
-            $_POST['title'] = @addslashes($_POST['title']);
+            $_POST['university'] = @$_POST['university'];
+            $_POST['department'] = @$_POST['department'];
+            $_POST['title'] = @$_POST['title'];
             $_POST['gender'] = @addslashes($_POST['gender']);
             if($this->visibility['isChampion']){
-                $_POST['partner'] = @addslashes($_POST['partner']);
+                $_POST['partner'] = @$_POST['org'];
+                $_POST['title'] = @$_POST['title'];
+                $_POST['department'] = @$_POST['department'];
                 $api = new UserPartnerAPI();
+                $api->doAction(true);
+            }
+            else{
+                $api = new UserUniversityAPI();
+                $api->processParams(array());
                 $api->doAction(true);
             }
             $api = new UserTwitterAccountAPI();
@@ -100,9 +107,6 @@ class PersonContactTab extends AbstractEditableTab {
             $api = new UserEmailAPI();
             $api->doAction(true);
             $api = new UserGenderAPI();
-            $api->doAction(true);
-            $api = new UserUniversityAPI();
-            $api->processParams(array());
             $api->doAction(true);
         }
         
@@ -168,7 +172,6 @@ class PersonContactTab extends AbstractEditableTab {
     */
     function showContact($person, $visibility){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
-        $university = $person->getUniversity();
         $this->html .= "<table>";
         if($wgUser->isLoggedIn()){
             $this->html .= "<tr>
@@ -192,32 +195,51 @@ class PersonContactTab extends AbstractEditableTab {
                 </tr>";
             }
         }
-        if(isset($university['university'])){
-            $this->html .= "<tr>
-                                <td align='right'><b>Title:</b></td>
-                                <td>{$university['position']}</td>
-                            </tr>
-                            <tr>
-                                <td align='right'><b>University:</b></td>
-                                <td>{$university['university']}</td>
-                            </tr>
-                            <tr>
-                                <td align='right'><b>Department:</b></td>
-                                <td>{$university['department']}</td>
-                            </tr>";
+        if($person->isRole(CHAMP)){
+            $org = $person->getPartnerName();
+            $title = $person->getPartnerTitle();
+            $dept = $person->getPartnerDepartment();
+            if($title != ""){
+                $this->html .= "<tr>
+                                    <td align='right'><b>Title:</b></td>
+                                    <td>{$title}</td>
+                                </tr>";
+            }
+            if($org != ""){
+                $this->html .= "<tr>
+                                    <td align='right'><b>Organization:</b></td>
+                                    <td>{$org}</td>
+                                </tr>";
+            }
+            if($dept != ""){
+                $this->html .= "<tr>
+                                    <td align='right'><b>Department:</b></td>
+                                    <td>{$dept}</td>
+                                </tr>";
+            }
+        }
+        else{
+            $university = $person->getUniversity();
+            if(isset($university['university'])){
+                $this->html .= "<tr>
+                                    <td align='right'><b>Title:</b></td>
+                                    <td>{$university['position']}</td>
+                                </tr>
+                                <tr>
+                                    <td align='right'><b>University:</b></td>
+                                    <td>{$university['university']}</td>
+                                </tr>
+                                <tr>
+                                    <td align='right'><b>Department:</b></td>
+                                    <td>{$university['department']}</td>
+                                </tr>";
+            }
         }
         if($person->getTwitter() != ""){
             $this->html .= "<tr>
                                 <td align='right'><b>Twitter:</b></td>
                                 <td><a href='$wgServer$wgScriptPath/index.php/{$wgTitle->getNsText()}:{$wgTitle->getText()}?action=getTwitterFeed'>{$person->getTwitter()}</a></td>
                             </tr>";
-        }
-        $partner = $person->getPartnerName();
-        if($partner != ""){
-            $this->html .= "<tr>
-                                <td align='right'><b>Partner:</b></td>
-                                <td>{$partner}</td>
-                             </tr>";
         }
         $this->html .= "</table>";
     }
@@ -278,48 +300,70 @@ class PersonContactTab extends AbstractEditableTab {
                                  ";
             }
         }
-        $universities = Person::getAllUniversities();
-        $positions = Person::getAllPositions();
         $this->html .= "<table>
                             <tr>
                                 <td align='right'><b>Email:</b></td>
                                 <td><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>
                             </tr>
                             {$nationality}
-                            {$gender}
-                            <tr>
+                            {$gender}";
+                            
+        if($person->isRole(CHAMP)){
+            $titles = array_merge(array(""), Person::getAllPartnerTitles());
+            $organizations = array_merge(array(""), Person::getAllPartnerNames());
+            $depts = array_merge(array(""), Person::getAllPartnerDepartments());
+            $titleCombo = new ComboBox('title', "Title", $person->getPartnerTitle(), $titles);
+            $orgCombo = new ComboBox('org', "Organization", $person->getPartnerName(), $organizations);
+            $deptCombo = new ComboBox('department', "Department", $person->getPartnerDepartment(), $depts);
+            $this->html .= "<tr>
                                 <td align='right'><b>Title:</b></td>
-                                <td><select name='title'>
-                                    ";
-        foreach($positions as $pos){
-            $selected = "";
-            if($pos == $university['position']){
-                $selected = " selected";
-            }
-            $this->html .= "<option$selected>{$pos}</option>";
+                                <td>{$titleCombo->render()}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>Organization:</b></td>
+                                <td>{$orgCombo->render()}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>Department:</b></td>
+                                <td>{$deptCombo->render()}
+                                </td>
+                            </tr>";
         }
-        $this->html .= "           </select>
+        else{
+            $universities = Person::getAllUniversities();
+            $positions = Person::getAllPositions();
+            foreach($positions as $key => $position){
+                if($university['position'] == $position){
+                    $myPosition = $key;
+                }
+            }
+            $departments = Person::getAllDepartments();
+            $positionCombo = new ComboBox('title', "Title", $myPosition, $positions);
+            $departmentCombo = new ComboBox('department', "Department", $university['department'], $departments);
+            $this->html .= "<tr>
+                                <td align='right'><b>Title:</b></td>
+                                <td>{$positionCombo->render()}
                                 </td>
                             </tr>
                             <tr>
                                 <td align='right'><b>University:</b></td>
                                 <td><select name='university'>";
-        foreach($universities as $uni){
-            $selected = "";
-            if($uni == $university['university']){
-                $selected = " selected";
+            foreach($universities as $uni){
+                $selected = "";
+                if($uni == $university['university']){
+                    $selected = " selected";
+                }
+                $this->html .= "<option$selected>{$uni}</option>";
             }
-            $this->html .= "<option$selected>{$uni}</option>";
-        }
-        $this->html .= "           </select>
-                                </td>
-                            </tr>
+            $this->html .= "</select></td></tr>
                             <tr>
                                 <td align='right'><b>Department:</b></td>
-                                <td><input type='text' name='department' value='".str_replace("'", "&#39;", $university['department'])."' /></td>
-                            </tr>
-                            {$partnerHTML}
-                        </table>";
+                                <td>{$departmentCombo->render()}</td>
+                            </tr>";
+        }
+        $this->html .= "</table>";
     }
 }
 ?>

@@ -13,7 +13,7 @@ class SelectBox extends UIElement {
         $html = "<select {$this->renderAttr()} name='{$this->id}'>";
         foreach($this->options as $key => $option){
             $selected = "";
-            if($this->value == $key){
+            if($this->value == str_replace("'", "&#39;", $key)){
                 $selected = " selected";
             }
             $value = $option;

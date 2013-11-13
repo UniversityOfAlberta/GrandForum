@@ -123,29 +123,15 @@ EOF;
         
         // Champion
         $champRow = new FormTableRow("{$pre}_champ_row");
-        $champRow->append(new Label("{$pre}_champ_label", "Project Champion", "The champions of this project.  Each champion must be an already existing member in the Champion role.  If the user is not created yet, then request a new member and you will be notified on the forum when the user gets created.", VALIDATE_NOTHING));
+        $champRow->append(new Label("{$pre}_champ_label", "Project Champion(s)", "The champions of this project.  Each champion must be an already existing member in the Champion role.  If the user is not created yet, then request a new member and you will be notified on the forum when the user gets created.", VALIDATE_NOTHING));
         
         $champPlusMinus = new PlusMinus("{$pre}_champ_plusminus");
-        $champFieldSet = new FieldSet("{$pre}_champ_fieldset", "New Champion");
         $champTable = new FormTable("{$pre}_champ_table");
         
-        $champTableNameRow = new FormTableRow("{$pre}_champ_name_row");
-        $champTableNameRow->append(new Label("{$pre}_champ_name_label", "Name", "The name of the project champion", VALIDATE_NOTHING));
-        $champTableNameRow->append(new ComboBox("{$pre}_champ_name[]", "Name", "", $names, VALIDATE_CHAMPION));
-        
-        $champTableTitleRow = new FormTableRow("{$pre}_champ_title_row");
-        $champTableTitleRow->append(new Label("{$pre}_champ_title_label", "Title", "The title of the project champion", VALIDATE_NOTHING));
-        $champTableTitleRow->append(new TextField("{$pre}_champ_title[]", "Title", "", VALIDATE_NOTHING));
-        
-        $champTableOrgRow = new FormTableRow("{$pre}_champ_org_row");
-        $champTableOrgRow->append(new Label("{$pre}_champ_org_label", "Organization", "The organization of the project champion", VALIDATE_NOTHING));
-        $champTableOrgRow->append(new TextField("{$pre}_champ_org[]", "Organization", "", VALIDATE_NOTHING));
+        $champTableNameRow = new ComboBox("{$pre}_champ_name[]", "Name", "", $names, VALIDATE_CHAMPION);
         
         $champTable->append($champTableNameRow);
-        $champTable->append($champTableTitleRow);
-        $champTable->append($champTableOrgRow);
-        $champFieldSet->append($champTable);
-        $champPlusMinus->append($champFieldSet);
+        $champPlusMinus->append($champTable);
         $champRow->append($champPlusMinus);
         
         $descRow = new FormTableRow("{$pre}_description_row");
@@ -218,7 +204,6 @@ EOF;
             $form->getElementById("new_effective")->setPOST("effective_date");
             $form->getElementById("new_pl")->setPOST("pl");
             $form->getElementById("new_copl")->setPOST("copl");
-            $form->getElementById("new_champ_org[]")->setPOST("champ_org");
             $form->getElementById("new_description")->setPOST("description");
             $form->getElementById("new_challenge")->setPOST("challenge");
             $form->getElementById("new_parent_id")->setPOST("parent_id");
@@ -245,8 +230,6 @@ EOF;
                     $_POST['project'] = $_POST['acronym'];
                     $champ = Person::newFromName($name);
                     $_POST['champion_id'] = $champ->getId();
-                    $_POST['champion_title'] = $_POST['new_champ_title'][$key];
-                    $_POST['champion_org'] = $_POST['new_champ_org'][$key];
                     APIRequest::doAction('ProjectChampions', true);
                 }
                 $form->reset();

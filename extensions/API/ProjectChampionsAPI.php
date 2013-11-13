@@ -5,8 +5,6 @@ class ProjectChampionsAPI extends API{
     function ProjectChampionsAPI(){
         $this->addPOST("project",true,"The name of the project","MEOW");
         $this->addPOST("champion_id",true,"The id of the champion","1");
-        $this->addPOST("champion_org",true,"Organization of the champion","JDoe Inc.");
-        $this->addPOST("champion_title",true,"Title of the champion","Chief Technology Officer");
     }
 
     function processParams($params){
@@ -43,22 +41,11 @@ class ProjectChampionsAPI extends API{
                                               'end_date' => EQ('0000-00-00 00:00:00')),
                                         array('id' => 'DESC'),
                                         array(1));
-            if(count($data) > 0){
-                // Update
-                DBFunctions::update('grand_project_champions',
-                                    array('champion_org' => $_POST['champion_org'],
-                                          'champion_title' => $_POST['champion_title']),
-                                    array('id' => $data[0]['id']),
-                                    array(),
-                                    true);
-            }
-            else{
+            if(count($data) == 0){
                 // Insert
                 DBFunctions::insert('grand_project_champions',
                                     array('project_id' => $project->getId(),
                                           'user_id' => $_POST['champion_id'],
-                                          'champion_org' => $_POST['champion_org'],
-                                          'champion_title' => $_POST['champion_title'],
                                           'start_date' => EQ(COL('CURRENT_TIMESTAMP'))),
                                     true);
             }

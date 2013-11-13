@@ -374,6 +374,22 @@ class Person extends BackboneModel {
     }
     
     /**
+     * Returns an array of all Department names
+     * @return array An array of all Department names
+     */
+    static function getAllDepartments(){
+        //TODO: This should eventually be extracted to a new Class
+        $data = DBFunctions::select(array('grand_user_university'),
+                                    array('*'),
+                                    array());
+        $departments = array();
+        foreach($data as $row){
+            $departments[$row['department']] = $row['department'];
+        }
+        return $departments;
+    }
+    
+    /**
      * Returns the default University name
      * @return string The default University name
      */
@@ -1435,16 +1451,65 @@ class Person extends BackboneModel {
         return $projectsDuring;
     }
     
+    static function getAllPartnerNames(){
+        $data = DBFunctions::select(array('grand_champion_partners'),
+                                    array('*'));
+        $names = array();
+        foreach($data as $row){
+            $names[$row['partner']] = $row['partner'];
+        }
+        return $names;
+    }
+    
+    static function getAllPartnerTitles(){
+        $data = DBFunctions::select(array('grand_champion_partners'),
+                                    array('*'));
+        $titles = array();
+        foreach($data as $row){
+            $titles[$row['title']] = $row['title'];
+        }
+        return $titles;
+    }
+    
+    static function getAllPartnerDepartments(){
+        $data = DBFunctions::select(array('grand_champion_partners'),
+                                    array('*'));
+        $depts = array();
+        foreach($data as $row){
+            $depts[$row['department']] = $row['department'];
+        }
+        return $depts;
+    }
+    
     // Returns the name of the partner of this user
     function getPartnerName(){
-        $sql = "SELECT *
-                FROM `grand_champion_partners`
-                WHERE `user_id` = '{$this->id}'";
-        $data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
+        $data = DBFunctions::select(array('grand_champion_partners'),
+                                    array('*'),
+                                    array('user_id' => EQ($this->id)));
+        if(count($data) > 0){
             return $data[0]['partner'];
         }
         return "";
+    }
+    
+    function getPartnerTitle(){
+        $data = DBFunctions::select(array('grand_champion_partners'),
+                                    array('*'),
+                                    array('user_id' => EQ($this->id)));
+        if(count($data) > 0){
+            return $data[0]['title'];
+        }
+        return "";      
+    }
+    
+    function getPartnerDepartment(){
+        $data = DBFunctions::select(array('grand_champion_partners'),
+                                    array('*'),
+                                    array('user_id' => EQ($this->id)));
+        if(count($data) > 0){
+            return $data[0]['department'];
+        }
+        return "";      
     }
     
     // Returns the number of months an HQP has been a part of a project for(Based on data from 2010)

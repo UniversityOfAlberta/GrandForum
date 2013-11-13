@@ -628,9 +628,11 @@ EOF;
                 ORDER BY id DESC";
         $data = DBFunctions::execSQL($sql);
         foreach($data as $row){
-            $champs[] = array('user' => Person::newFromId($row['user_id']),
-                              'org' => $row['champion_org'],
-                              'title' => $row['champion_title'],
+            $champ = Person::newFromId($row['user_id']);
+            $champs[] = array('user' => $champ,
+                              'org' => $champ->getPartnerName(),
+                              'title' => $champ->getPartnerTitle(),
+                              'dept' => $champ->getPartnerDepartment(),
                               'start_date' => $row['start_date'],
                               'end_date' => $row['end_date']);
         }
@@ -646,9 +648,11 @@ EOF;
                                                        'end_date' => $end))),
                                     array('id' => 'DESC'));
         foreach($data as $row){
-            $champs[] = array('user' => Person::newFromId($row['user_id']),
-                              'org' => $row['champion_org'],
-                              'title' => $row['champion_title'],
+            $champ = Person::newFromId($row['user_id']);
+            $champs[] = array('user' => $champ,
+                              'org' => $champ->getPartnerName(),
+                              'title' => $champ->getPartnerTitle(),
+                              'dept' => $champ->getPartnerDepartment(),
                               'start_date' => $row['start_date'],
                               'end_date' => $row['end_date']);
         }
