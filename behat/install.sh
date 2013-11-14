@@ -1,5 +1,9 @@
 #!/bin/bash
 
+mkdir bin
+mkdir output
+mkdir screenshots
+
 curl http://getcomposer.org/installer | php
 echo "This might take a while..."
 php composer.phar install --prefer-source
