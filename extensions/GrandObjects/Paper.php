@@ -398,6 +398,19 @@ class Paper extends BackboneModel{
 	    //return "{$wgServer}{$wgScriptPath}/index.php/Special:Products#/{$this->getCategory()}/{$this->getId()}";
 	}
 	
+	static function getAllAuthors(){
+	    $data = DBFunctions::select(array("grand_product_authors"),
+	                                array("author"));
+	    $authors = array();
+	    foreach($data as $row){
+	        $name = trim($row['author']);
+	        if(!is_numeric($name)){
+	            $authors[$name] = $name;
+	        }
+	    }
+	    return $authors;
+	}
+	
 	// Returns an array of authors who wrote this Paper
 	function getAuthors($evaluate=true, $cache=true){
 	    if($this->authorsWaiting && $evaluate){
