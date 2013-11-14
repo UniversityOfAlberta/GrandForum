@@ -768,6 +768,11 @@ class PublicationPage {
                             $list[] = $person->getNameForForms();
                         }
                     }
+                    foreach(Product::getAllAuthors() as $author){
+                        if(array_search($author, $authorNames) === false){
+                            $list[] = $author;
+                        }
+                    }
                     $wgOut->addHTML("<div class='switcheroo' name='{$authorTitle}' id='authors'>
                                             <div class='left'><span>".implode("</span>\n<span>", $authorNames)."</span></div>
                                             <div class='right'><span>".implode("</span>\n<span>", $list)."</span></div>

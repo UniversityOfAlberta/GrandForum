@@ -26,7 +26,10 @@
                  .replace(/\?/g, '')
                  .replace(/\#/g, '')
                  .replace(/\$/g, '')
-                 .replace(/\-/g, '');
+                 .replace(/\-/g, '')
+                 .replace(/\~/g, '')
+                 .replace(/\^/g, '')
+                 .replace(/\`/g, '');
         return str;
     }
     
