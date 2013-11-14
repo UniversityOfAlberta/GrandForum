@@ -352,8 +352,13 @@ Describe your involvement with receptor organizations, industry partners and Pro
     <ReportSection id="budget" name="Budget Request" blobSection="RES_BUDGET" tooltip="Budget request and justification" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true">
         <Instructions>
             <![CDATA[
-                <p>Below find a budget template, which you should download, complete with your funding request for 2014-15 and upload. As with the past year, the amounts you will be allocating to different projects should be listed in different columns. Please note:<br />
-PNIs should request no more than $60,000, CNIs who are also co-PL should request no more than $40,000, and CNIs no more than $30,000.  <br /><b>Important:</b> You should only request a budget for the Phase 2 projects.  If a Phase 1 project is included in one of the columns, an error will be shown once the budget is uploaded.  A list of valid projects can be found in the "Project List" worksheet.</p>
+                <p>Below find a budget template, which you should download, complete with your funding request for 2014-15 and upload. As with the past year, the amounts you will be allocating to different projects should be listed in different columns. </p>
+                <p>Budget Request Caps:
+                    <ol type="a"><li>PNI: $65K;</li>
+                        <li>CNI $35K;</li>
+                        <li>exception to b. - CNI+PCL: $45K;</li>
+                        <li>Note: Budget requests that relate to special projects (e.g. SYNTHIUS) do not apply against the caps.</li>
+                    </ol><b>Important:</b> You should only request a budget for the Phase 2 projects.  If a Phase 1 project is included in one of the columns, an error will be shown once the budget is uploaded.  A list of valid projects can be found in the "Project List" worksheet.</p>
                 <p>Each PNI is expected to include $2000 in his/her budget for the GRAND Annual Conference.</p>
                 <h3>Budget Justification</h3>
                 <p><i>(Limit: 600 characters)</i></p>
