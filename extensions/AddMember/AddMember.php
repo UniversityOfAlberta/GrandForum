@@ -221,7 +221,7 @@ class AddMember extends SpecialPage{
         $titleCombo = new ComboBox('title', "Title", "", $titles);
         $orgCombo = new ComboBox('org', "Organization", "", $organizations);
         $deptCombo = new ComboBox('department', "Department", "", $depts);
-        
+        /*
         $universities = Person::getAllUniversities();
         $positions = Person::getAllPositions();
         $departments = Person::getAllDepartments();
@@ -240,7 +240,7 @@ class AddMember extends SpecialPage{
         $deptField = new ComboBox("dept_field", "Department", "", $departments, VALIDATE_NOTHING);
 		$deptRow = new FormTableRow("dept_row");
         $deptRow->append($deptLabel)->append($deptField);
-		
+		*/
 		$projects = Project::getAllProjects();
         
 		$projectsLabel = new Label("project_label", "Associated Projects", "The projects the user is a member of", VALIDATE_NOTHING);
@@ -257,9 +257,9 @@ class AddMember extends SpecialPage{
 		          ->append($lastNameRow)
 		          ->append($emailRow)
 		          ->append($rolesRow)
-		          ->append($universityRow)
-		          ->append($positionRow)
-		          ->append($deptRow)
+		          //->append($universityRow)
+		          //->append($positionRow)
+		          //->append($deptRow)
 		          ->append($projectsRow)
 		          ->append($submitRow);
 		
