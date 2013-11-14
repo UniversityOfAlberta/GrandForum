@@ -2,11 +2,12 @@
 
 require_once('commandLine.inc');
 
-function createProject($acronym, $fullName, $status, $type, $phase, $effective_date, $description, $problem, $solution, $challenge=0, $parent_id=0){
+function createProject($acronym, $fullName, $status, $type, $bigbet, $phase, $effective_date, $description, $problem, $solution, $challenge=0, $parent_id=0){
     $_POST['acronym'] = $acronym;
     $_POST['fullName'] = $fullName;
     $_POST['status'] = $status;
     $_POST['type'] = $type;
+    $_POST['bigbet'] = $bigbet;
     $_POST['phase'] = $phase;
     $_POST['effective_date'] = $effective_date;
     $_POST['description'] = $description;
@@ -139,6 +140,7 @@ User::createNew("PNI.User3", array('password' => User::crypt("PNI.Pass3"), 'emai
 User::createNew("CNI.User1", array('password' => User::crypt("CNI.Pass1"), 'email' => "cni.user1@behat.com"));
 User::createNew("CNI.User2", array('password' => User::crypt("CNI.Pass2"), 'email' => "cni.user2@behat.com"));
 User::createNew("CNI.User3", array('password' => User::crypt("CNI.Pass3"), 'email' => "cni.user3@behat.com"));
+User::createNew("CNICOPL.User1", array('password' => User::crypt("CNICOPL.Pass1"), 'email' => "cnicopl.user1@behat.com"));
 User::createNew("HQP.User1", array('password' => User::crypt("HQP.Pass1"), 'email' => "hqp.user1@behat.com"));
 User::createNew("HQP.User2", array('password' => User::crypt("HQP.Pass2"), 'email' => "hqp.user2@behat.com"));
 User::createNew("HQP.User3", array('password' => User::crypt("HQP.Pass3"), 'email' => "hqp.user3@behat.com"));
@@ -157,18 +159,19 @@ DBFunctions::insert('mw_user_groups',
                           'ug_group' => 'sysop'));
 $wgUser = User::newFromName("Admin.User1");
 
-createProject("Phase1Project1", "Phase 1 Project 1", "Active", "Research", 1, "2010-01-01", "", "", "");
-createProject("Phase1Project2", "Phase 1 Project 2", "Active", "Research", 1, "2010-01-01", "", "", "");
-createProject("Phase1Project3", "Phase 1 Project 3", "Active", "Research", 1, "2010-01-01", "", "", "");
-createProject("Phase1Project4", "Phase 1 Project 4", "Active", "Research", 1, "2011-01-01", "", "", "");
-createProject("Phase1Project5", "Phase 1 Project 5", "Active", "Research", 1, "2012-01-01", "", "", "");
-createProject("Phase2Project1", "Phase 2 Project 1", "Active", "Research", 2, "2014-04-01", "", "", "", 1, 0);
-    createProject("Phase2Project1SubProject1", "Phase 2 Project 1 Sub Project 1", "Active", "Research", 2, "2014-04-01", "", "", "", 1, Project::newFromName("Phase2Project1")->getId());
-    createProject("Phase2Project1SubProject2", "Phase 2 Project 1 Sub Project 2", "Active", "Research", 2, "2014-04-01", "", "", "", 1, Project::newFromName("Phase2Project1")->getId());
-createProject("Phase2Project2", "Phase 2 Project 2", "Active", "Research", 2, "2014-04-01", "", "", "", 1, 0);
-createProject("Phase2Project3", "Phase 2 Project 3", "Active", "Research", 2, "2014-04-01", "", "", "", 1, 0);
-createProject("Phase2Project4", "Phase 2 Project 4", "Active", "Research", 2, "2014-04-01", "", "", "", 1, 0);
-createProject("Phase2Project5", "Phase 2 Project 5", "Active", "Research", 2, "2014-04-01", "", "", "", 1, 0);
+createProject("Phase1Project1", "Phase 1 Project 1", "Active", "Research", "No", 1, "2010-01-01", "", "", "");
+createProject("Phase1Project2", "Phase 1 Project 2", "Active", "Research", "No", 1, "2010-01-01", "", "", "");
+createProject("Phase1Project3", "Phase 1 Project 3", "Active", "Research", "No", 1, "2010-01-01", "", "", "");
+createProject("Phase1Project4", "Phase 1 Project 4", "Active", "Research", "No", 1, "2011-01-01", "", "", "");
+createProject("Phase1Project5", "Phase 1 Project 5", "Active", "Research", "No", 1, "2012-01-01", "", "", "");
+createProject("Phase2Project1", "Phase 2 Project 1", "Active", "Research", "No", 2, "2014-04-01", "", "", "", 1, 0);
+    createProject("Phase2Project1SubProject1", "Phase 2 Project 1 Sub Project 1", "Active", "Research", "No", 2, "2014-04-01", "", "", "", 1, Project::newFromName("Phase2Project1")->getId());
+    createProject("Phase2Project1SubProject2", "Phase 2 Project 1 Sub Project 2", "Active", "Research", "No", 2, "2014-04-01", "", "", "", 1, Project::newFromName("Phase2Project1")->getId());
+createProject("Phase2Project2", "Phase 2 Project 2", "Active", "Research", "No", 2, "2014-04-01", "", "", "", 1, 0);
+createProject("Phase2Project3", "Phase 2 Project 3", "Active", "Research", "No", 2, "2014-04-01", "", "", "", 1, 0);
+createProject("Phase2Project4", "Phase 2 Project 4", "Active", "Research", "No", 2, "2014-04-01", "", "", "", 1, 0);
+createProject("Phase2Project5", "Phase 2 Project 5", "Active", "Research", "No", 2, "2014-04-01", "", "", "", 1, 0);
+createProject("Phase2BigBetProject1", "Phase 2 Big Bet Project 1", "Active", "Research", "Yes", 2, "2014-04-01", "", "", "", 1, 0);
 
 addUserRole("Manager.User1", MANAGER);
 addUserRole("PL.User1", PNI);
@@ -179,6 +182,7 @@ addUserRole("PNI.User3", PNI);
 addUserRole("CNI.User1", CNI);
 addUserRole("CNI.User2", CNI);
 addUserRole("CNI.User3", CNI);
+addUserRole("CNICOPL.User1", CNI);
 addUserRole("HQP.User1", HQP);
 addUserRole("HQP.User2", HQP);
 addUserRole("HQP.User3", HQP);
@@ -186,13 +190,19 @@ addUserRole("HQP.User3", HQP);
 addUserProject("PNI.User1", "Phase1Project1");
 addUserProject("PNI.User1", "Phase2Project1");
 addUserProject("PNI.User1", "Phase2Project2");
+addUserProject("PNI.User1", "Phase2BigBetProject1");
 addUserProject("PNI.User2", "Phase2Project1");
 addUserProject("CNI.User1", "Phase2Project1");
+addUserProject("CNI.User1", "Phase2BigBetProject1");
 addUserProject("CNI.User2", "Phase2Project1");
+addUserProject("CNICOPL.User1", "Phase2Project1");
+addUserProject("CNICOPL.User1", "Phase2Project2");
+addUserProject("CNICOPL.User1", "Phase2BigBetProject1");
 addUserProject("HQP.User3", "Phase2Project1");
 
 addProjectLeader("PL.User1", "Phase2Project1");
 addProjectLeader("COPL.User1", "Phase2Project1");
+addProjectLeader("CNICOPL.User1", "Phase2Project2", 'True');
 
 addRelation("PNI.User1", "HQP.User1", "Supervises");
 addRelation("PNI.User1", "HQP.User2", "Supervises");

@@ -352,7 +352,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
     <ReportSection id="budget" name="Budget Request" blobSection="RES_BUDGET" tooltip="Budget request and justification" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true">
         <Instructions>
             <![CDATA[
-                <p>Below find a budget template, which you should download, complete with your funding request for 2014-15 and upload. As with the past year, the amounts you will be allocating to different projects should be listed in different columns. </p>
+                <p>Below find a budget template, which you should download, complete with your funding request for 2014-15 and upload. As with the past year, the amounts you will be allocating to different projects should be listed in different columns.</p>
                 <p>Budget Request Caps:
                     <ol type="a"><li>PNI: $65K;</li>
                         <li>CNI $35K;</li>

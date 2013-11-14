@@ -31,7 +31,7 @@ class BudgetReportItem extends AbstractReportItem {
                                     var lastHeight = $('#budgetFrame' + frameId).height();
                                     $('#budgetFrame' + frameId).remove();
                                     frameId++;
-                                    $('#budgetDiv').html(\"<iframe id='budgetFrame\" + frameId + \"' style='border-width:0;width:100%;' frameborder='0' src='../index.php/Special:Report?report=NIReport&section=Budget+Request&budgetUploadForm{$projectGet}{$year}'></iframe>\");
+                                    $('#budgetDiv').html(\"<iframe name='budget' id='budgetFrame\" + frameId + \"' style='border-width:0;width:100%;' frameborder='0' src='../index.php/Special:Report?report=NIReport&section=Budget+Request&budgetUploadForm{$projectGet}{$year}'></iframe>\");
                                     $('#budgetFrame' + frameId).height(lastHeight);
                                 }
                                 function alertsize(pixels){
@@ -44,7 +44,7 @@ class BudgetReportItem extends AbstractReportItem {
 		$wgOut->addHTML("<div>");
 		$wgOut->addHTML("<h2>Download Budget Template</h2> <ul><li><a href='$wgServer$wgScriptPath/data/GRAND Researcher Budget Request (2014-15).xls'>".(REPORTING_YEAR+1)."-".(REPORTING_YEAR+2)." Budget Template</a></li></ul>" );
 		$wgOut->addHTML("<h2>Budget Upload</h2>
-		                 <div id='budgetDiv'><iframe id='budgetFrame0' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report=NIReport&section=Budget+Request&budgetUploadForm{$projectGet}{$year}'></iframe></div>");
+		                 <div id='budgetDiv'><iframe name='budget' id='budgetFrame0' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report=NIReport&section=Budget+Request&budgetUploadForm{$projectGet}{$year}'></iframe></div>");
 		$wgOut->addHTML("</div>");
 	}
 	
@@ -198,7 +198,7 @@ class BudgetReportItem extends AbstractReportItem {
         $total = 0;
         foreach($projects as $proj){
             $project = Project::newFromName($proj->toString());
-            if(!$project->isBigBet()){
+            if($project != null && !$project->isBigBet()){
                 $total += intval(str_replace("$", "", $budget->copy()->rasterize()->select(V_PROJ, array($proj->toString()))->where(COL_TOTAL)->toString()));
             }
         }
@@ -214,11 +214,12 @@ class BudgetReportItem extends AbstractReportItem {
             foreach($person->leadershipDuring(($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH) as $project){
                 if(!$project->isBigBet()){
                     $bigbet = false;
-                    continue;
                 }
             }
-            if($total > 45000 && !$bigbet){
-                $budget->xls[22][7]->error = "'\$$total' is greater than the maximum $45000 for CNIs who are co-Leaders (excluding Big-Bet Projects)";
+            if(!$bigbet){
+                if($total > 45000){
+                    $budget->xls[22][7]->error = "'\$$total' is greater than the maximum $45000 for CNIs who are co-Leaders (excluding Big-Bet Projects)";
+                }
             }
             else{
                 if($total > 35000){
