@@ -2212,6 +2212,18 @@ class Person extends BackboneModel {
         return $papersArray;
     }
     
+    function getCoAuthors(){
+        $coauthors = array();
+        $papers = $this->getPapers();
+        foreach($papers as $paper){
+            $authors = $paper->getAuthors();
+            foreach($authors as $author){
+                $coauthors[$author->getName()] = $author->getName();
+            }
+        }
+        return $coauthors;
+    }
+    
     // Returns a list of GRAND posters created by this user, or this user's HQP
     function getGrandPosters(){
         $posters = array();

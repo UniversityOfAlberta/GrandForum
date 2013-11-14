@@ -768,9 +768,13 @@ class PublicationPage {
                             $list[] = $person->getNameForForms();
                         }
                     }
-                    foreach(Product::getAllAuthors() as $author){
-                        if(array_search($author, $authorNames) === false){
-                            $list[] = $author;
+                    foreach($me->getCoAuthors() as $author){
+                        $name = $author;
+                        if($author instanceof Person){
+                            $name = $author->getNameForForms();
+                        }
+                        if(array_search($name, $authorNames) === false){
+                            $list[] = $name;
                         }
                     }
                     $wgOut->addHTML("<div class='switcheroo' name='{$authorTitle}' id='authors'>
