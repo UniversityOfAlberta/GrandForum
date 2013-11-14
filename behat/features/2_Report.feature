@@ -1,0 +1,73 @@
+Feature: Reporting
+
+    Scenario: CNI Uploads a budget within limits (with BigBet Project)
+        Given I am logged in as "CNI.User1" using password "CNI.Pass1"
+        When I follow "My Reports"
+        And I click "Budget Request"
+        And I wait until I see "Budget Justification" up to "5000"
+        And I switch to iframe "budget"
+        And I attach the file "CNI.User1_valid.xls" to "budget"
+        And I press "Upload"
+        And I switch to iframe "budget"
+        Then I should see "$85000"
+        And I should not see "is greater than the maximum"
+        
+    Scenario: CNI Uploads a budget which is over the limits
+        Given I am logged in as "CNI.User1" using password "CNI.Pass1"
+        When I follow "My Reports"
+        And I click "Budget Request"
+        And I wait until I see "Budget Justification" up to "5000"
+        And I switch to iframe "budget"
+        And I attach the file "CNI.User1_invalid.xls" to "budget"
+        And I press "Upload"
+        And I switch to iframe "budget"
+        Then I should see "$36000"
+        And I should see "is greater than the maximum $35000"
+        
+    Scenario: CNI who is also a COPL Uploads a budget which is within limits (with BigBet Project)
+        Given I am logged in as "CNICOPL.User1" using password "CNICOPL.Pass1"
+        When I follow "My Reports"
+        And I click "Budget Request"
+        And I wait until I see "Budget Justification" up to "5000"
+        And I switch to iframe "budget"
+        And I attach the file "CNICOPL.User1_valid.xls" to "budget"
+        And I press "Upload"
+        And I switch to iframe "budget"
+        Then I should see "$95000"
+        And I should not see "is greater than the maximum"
+        
+    Scenario: CNI who is also a COPL Uploads a budget which is over the limits
+        Given I am logged in as "CNICOPL.User1" using password "CNICOPL.Pass1"
+        When I follow "My Reports"
+        And I click "Budget Request"
+        And I wait until I see "Budget Justification" up to "5000"
+        And I switch to iframe "budget"
+        And I attach the file "CNICOPL.User1_invalid.xls" to "budget"
+        And I press "Upload"
+        And I switch to iframe "budget"
+        Then I should see "$46000"
+        And I should see "is greater than the maximum $45000"
+        
+    Scenario: PNI Uploads a budget within limits (with BigBet Project)
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I follow "My Reports"
+        And I click "Budget Request"
+        And I wait until I see "Budget Justification" up to "5000"
+        And I switch to iframe "budget"
+        And I attach the file "PNI.User1_valid.xls" to "budget"
+        And I press "Upload"
+        And I switch to iframe "budget"
+        Then I should see "$115000"
+        And I should not see "is greater than the maximum"
+        
+    Scenario: PNI Uploads a budget which is over the limits
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I follow "My Reports"
+        And I click "Budget Request"
+        And I wait until I see "Budget Justification" up to "5000"
+        And I switch to iframe "budget"
+        And I attach the file "PNI.User1_invalid.xls" to "budget"
+        And I press "Upload"
+        And I switch to iframe "budget"
+        Then I should see "$66000"
+        And I should see "is greater than the maximum $65000"

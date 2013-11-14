@@ -1,0 +1,17 @@
+Feature: Search
+    
+    Scenario: PNI searches for User
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I fill in "globalSearchInput" with "CNI"
+        And I wait "1000"
+        Then I should see "CNI User1"
+        And I should see "CNI User2"
+        And I should see "CNI User3"
+        
+    Scenario: PNI searches for a phase 2 Project
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I fill in "globalSearchInput" with "Phase 2 Project"
+        And I wait "1000"
+        Then I should see "Phase2Project1"
+        And I should see "Phase2Project2"
+        And I should see "Phase2Project3"
