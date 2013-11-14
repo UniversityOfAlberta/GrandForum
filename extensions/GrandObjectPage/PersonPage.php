@@ -174,6 +174,13 @@ class PersonPage {
                 }
             }
         }
+        // TODO: This can be removed once April 1st 2014 comes along
+        if($person->isRoleDuring(PNI, "2014-04-01", "2015-03-31")){
+            $roleNames[] = "PNI2";
+        }
+        else if($person->isRoleDuring(CNI, "2014-04-01", "2015-03-31")){
+            $roleNames[] = "CNI2";
+        }
         $wgOut->setPageTitle($person->getReversedName()." (".implode(", ", $roleNames).")");
     }
     
