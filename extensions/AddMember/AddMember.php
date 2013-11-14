@@ -215,6 +215,32 @@ class AddMember extends SpecialPage{
 		$rolesRow = new FormTableRow("role_row");
 		$rolesRow->append($rolesLabel)->append($rolesField);
 		
+		$titles = array_merge(array(""), Person::getAllPartnerTitles());
+        $organizations = array_merge(array(""), Person::getAllPartnerNames());
+        $depts = array_merge(array(""), Person::getAllPartnerDepartments());
+        $titleCombo = new ComboBox('title', "Title", "", $titles);
+        $orgCombo = new ComboBox('org', "Organization", "", $organizations);
+        $deptCombo = new ComboBox('department', "Department", "", $depts);
+        
+        $universities = Person::getAllUniversities();
+        $positions = Person::getAllPositions();
+        $departments = Person::getAllDepartments();
+        
+        $universityLabel = new Label("university_label", "University", "The university that the user is a member of", VALIDATE_NOTHING);
+        $universityField = new SelectBox("university_field", "University", "", $universities, VALIDATE_NOTHING);
+        $universityRow = new FormTableRow("university_row");
+        $universityRow->append($universityLabel)->append($universityField);
+        
+        $positionLabel = new Label("position_label", "Title", "The title of this user", VALIDATE_NOTHING);
+        $positionField = new ComboBox("position_field", "Position", "", $positions, VALIDATE_NOTHING);
+		$positionRow = new FormTableRow("university_row");
+        $positionRow->append($positionLabel)->append($positionField);
+        
+        $deptLabel = new Label("dept_label", "Department", "The department of this user", VALIDATE_NOTHING);
+        $deptField = new ComboBox("dept_field", "Department", "", $departments, VALIDATE_NOTHING);
+		$deptRow = new FormTableRow("dept_row");
+        $deptRow->append($deptLabel)->append($deptField);
+		
 		$projects = Project::getAllProjects();
         
 		$projectsLabel = new Label("project_label", "Associated Projects", "The projects the user is a member of", VALIDATE_NOTHING);
@@ -231,6 +257,9 @@ class AddMember extends SpecialPage{
 		          ->append($lastNameRow)
 		          ->append($emailRow)
 		          ->append($rolesRow)
+		          ->append($universityRow)
+		          ->append($positionRow)
+		          ->append($deptRow)
 		          ->append($projectsRow)
 		          ->append($submitRow);
 		

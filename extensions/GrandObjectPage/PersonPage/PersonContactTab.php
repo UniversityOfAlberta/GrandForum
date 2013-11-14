@@ -334,6 +334,7 @@ class PersonContactTab extends AbstractEditableTab {
         else{
             $universities = Person::getAllUniversities();
             $positions = Person::getAllPositions();
+            $myPosition = "";
             foreach($positions as $key => $position){
                 if($university['position'] == $position){
                     $myPosition = $key;

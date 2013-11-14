@@ -227,7 +227,7 @@ class EditMember extends SpecialPage{
                             $_POST['role'] = $project->getName();
                             $_POST['user'] = $person->getName();
                             $_POST['comment'] = @str_replace("'", "", $_POST["pl_comment"][$project->getName()]);
-                            $_POST['effective_date'] = $_POST["pl_datepicker"][$project->getName()];
+                            $_POST['effective_date'] = @$_POST["pl_datepicker"][$project->getName()];
                             APIRequest::doAction('DeleteProjectLeader', true);
                             $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a project leader of {$project->getName()}");
                         }
@@ -243,7 +243,7 @@ class EditMember extends SpecialPage{
                             $_POST['role'] = $project->getName();
                             $_POST['user'] = $person->getName();
                             $_POST['comment'] = @str_replace("'", "", $_POST["copl_comment"][$project->getName()]);
-                            $_POST['effective_date'] = $_POST["copl_datepicker"][$project->getName()];
+                            $_POST['effective_date'] = @$_POST["copl_datepicker"][$project->getName()];
                             APIRequest::doAction('DeleteProjectLeader', true);
                             $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a co-project leader of {$project->getName()}");
                         }
