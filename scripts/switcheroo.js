@@ -30,7 +30,9 @@
                  .replace(/\~/g, '')
                  .replace(/\^/g, '')
                  .replace(/\`/g, '')
-                 .replace(/\&/g, '');
+                 .replace(/\&amp\;/g, '')
+                 .replace(/\&/g, '')
+                 .replace(/\;/g, '');
         return str;
     }
     
