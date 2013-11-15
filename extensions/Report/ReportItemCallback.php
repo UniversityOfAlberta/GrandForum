@@ -64,6 +64,10 @@ class ReportItemCallback {
             "user_requested_budget" => "getUserRequestedBudget",
             "user_allocated_budget" => "getUserAllocatedBudget",
             "user_project_comment" => "getUserProjectComment",
+            "user_mtg_music" => "getUserMTGMusic",
+            "user_mtg_firstnations" => "getUserMTGFirstNations",
+            "user_mtg_addiction" => "getUserMTGAddiction",
+            "user_mtg_other" => "getUserMTGOther",
             // Champions
             "champ_org" => "getChampOrg",
             "champ_title" => "getChampTitle",
@@ -639,6 +643,42 @@ class ReportItemCallback {
             return $data[$person->id];
         }
         return "";
+    }
+    
+    function getUserMTGMusic(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $addr = ReportBlob::create_address(RP_MTG, MTG_MUSIC, MTG_MUSIC, 0);
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), 0);
+        $blob->load($addr);
+        $data = $blob->getData();
+        return $data;
+    }
+    
+    function getUserMTGFirstNations(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $addr = ReportBlob::create_address(RP_MTG, MTG_FIRST_NATIONS, MTG_FIRST_NATIONS, 0);
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), 0);
+        $blob->load($addr);
+        $data = $blob->getData();
+        return $data;
+    }
+    
+    function getUserMTGAddiction(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $addr = ReportBlob::create_address(RP_MTG, MTG_ADDICTION, MTG_ADDICTION, 0);
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), 0);
+        $blob->load($addr);
+        $data = $blob->getData();
+        return $data;
+    }
+    
+    function getUserMTGOther(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $addr = ReportBlob::create_address(RP_MTG, MTG_OTHER, MTG_OTHER, 0);
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), 0);
+        $blob->load($addr);
+        $data = $blob->getData();
+        return $data;
     }
     
     function getChampOrg(){
