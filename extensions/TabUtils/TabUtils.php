@@ -273,11 +273,17 @@ class TabUtils {
         else if($wgTitle->getText() == "ALL HQP" || ($wgTitle->getNSText() == HQP && !($me->isRole(HQP) && $wgTitle->getText() == $me->getName()))){
             $new_actions[HQP]['class'] = 'people selected hidden';
         }
+        else if($wgTitle->getText() == "ALL PNI" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))){
+            $new_actions[PNI]['class'] = 'people selected hidden';
+        }
+        else if($wgTitle->getText() == "ALL PNI2" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))){
+            $new_actions[PNI.'2']['class'] = 'people selected hidden';
+        }
         else if($wgTitle->getText() == "ALL CNI" || ($wgTitle->getNSText() == CNI && !($me->isRole(CNI) && $wgTitle->getText() == $me->getName()))){
             $new_actions[CNI]['class'] = 'people selected hidden';
         }
-        else if($wgTitle->getText() == "ALL PNI" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))){
-            $new_actions[PNI]['class'] = 'people selected hidden';
+        else if($wgTitle->getText() == "ALL CNI2" || ($wgTitle->getNSText() == CNI && !($me->isRole(CNI) && $wgTitle->getText() == $me->getName()))){
+            $new_actions[CNI.'2']['class'] = 'people selected hidden';
         }
         else if($wgTitle->getText() == "ALL RMC" || ($wgTitle->getNSText() == RMC && !($me->isRole(RMC) && $wgTitle->getText() == $me->getName()))){
             $new_actions[RMC]['class'] = 'people selected hidden';
