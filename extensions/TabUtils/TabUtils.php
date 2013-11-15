@@ -214,12 +214,18 @@ class TabUtils {
                                        'text' => HQP,
                                        'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_HQP");
         }
-        $new_actions[CNI] = array('class' => 'people hidden',
-                                   'text' => CNI,
-                                   'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_CNI");
-        $new_actions[PNI] = array('class' => 'people hidden',
-                                   'text' => PNI,
-                                   'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_PNI");
+        $new_actions[PNI.'1'] = array('class' => 'people hidden',
+                                      'text' => 'Phase1 '.PNI,
+                                      'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_PNI");
+        $new_actions[PNI.'2'] = array('class' => 'people hidden',
+                                      'text' => 'Phase2 '.PNI,
+                                      'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_PNI2");
+        $new_actions[CNI.'1'] = array('class' => 'people hidden',
+                                      'text' => 'Phase1 '.CNI,
+                                      'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_CNI");
+        $new_actions[CNI.'2'] = array('class' => 'people hidden',
+                                      'text' => 'Phase2 '.CNI,
+                                      'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_CNI2");
         $new_actions[RMC] = array('class' => 'people hidden',
                                    'text' => RMC,
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_RMC");

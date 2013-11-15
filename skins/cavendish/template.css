@@ -56,6 +56,7 @@
 		color: #fff;
 		text-decoration: none;
 		line-height:25px;
+		white-space: nowrap;
 	}
 	
 	#submenu li.selected a {
