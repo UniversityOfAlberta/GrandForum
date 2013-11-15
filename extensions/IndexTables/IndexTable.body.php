@@ -64,12 +64,8 @@ class IndexTable {
 				    $this->generatePersonTable(PNI, 2);
 				    break;
 				case 'ALL '.CNI:
-			        $wgOut->setPageTitle("Phase 1 Collaborating Network Investigators");
+			        $wgOut->setPageTitle("Collaborating Network Investigators");
 				    $this->generatePersonTable(CNI, 1);
-				    break;
-				case 'ALL '.CNI.'2':
-			        $wgOut->setPageTitle("Phase 2 Collaborating Network Investigators");
-				    $this->generatePersonTable(CNI, 2);
 				    break;
 				case 'ALL '.RMC:
 			        $wgOut->setPageTitle("Research Management Committee");
