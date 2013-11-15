@@ -51,17 +51,25 @@ class IndexTable {
                 });
             </script>");
 			switch ($wgTitle->getText()) {
-			    case 'ALL '.CNI:
-			        $wgOut->setPageTitle("Collaborating Network Investigators");
-				    $this->generatePersonTable(CNI);
-				    break;
 			    case 'ALL '.HQP:
 			        $wgOut->setPageTitle("Highly Qualified People");
 				    $this->generatePersonTable(HQP);
 				    break;
 			    case 'ALL '.PNI:
-			        $wgOut->setPageTitle("Principal Network Investigators");
-				    $this->generatePersonTable(PNI);
+			        $wgOut->setPageTitle("Phase 1 Principal Network Investigators");
+				    $this->generatePersonTable(PNI, 1);
+				    break;
+				case 'ALL '.PNI.'2':
+			        $wgOut->setPageTitle("Phase 2 Principal Network Investigators");
+				    $this->generatePersonTable(PNI, 2);
+				    break;
+				case 'ALL '.CNI:
+			        $wgOut->setPageTitle("Phase 1 Collaborating Network Investigators");
+				    $this->generatePersonTable(CNI, 1);
+				    break;
+				case 'ALL '.CNI.'2':
+			        $wgOut->setPageTitle("Phase 2 Collaborating Network Investigators");
+				    $this->generatePersonTable(CNI, 2);
 				    break;
 				case 'ALL '.RMC:
 			        $wgOut->setPageTitle("Research Management Committee");
@@ -176,15 +184,24 @@ EOF;
 	 * Consists of the following columns
 	 * User Page | Projects | Twitter
 	 */
-	private function generatePersonTable($table){
+	private function generatePersonTable($table, $phase=0){
 		global $wgServer, $wgScriptPath, $wgUser, $wgOut;
 		$me = Person::newFromId($wgUser->getId());
-		$data = Person::getAllPeople($table);
+		if($phase == 0 || $phase == 1){
+		    $data = Person::getAllPeople($table);
+		}
+		else{
+		    $data = Person::getAllPeopleDuring($table, (REPORTING_YEAR+1).REPORTING_NCE_START_MONTH, (REPORTING_YEAR+2).REPORTING_NCE_END_MONTH);
+		}
 		$idHeader = "";
         if($me->isRoleAtLeast(MANAGER)){
             $idHeader = "<th>User Id</th>";
         }
-        $this->text .= "Below are all the current $table in GRAND.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
+        $phaseText = "current";
+        if($phase == 2){
+            $phaseText = "phase $phase";
+        }
+        $this->text .= "Below are all the $phaseText $table in GRAND.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
 		$this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th>Name</th><th>Projects</th><th>University</th>$idHeader</tr></thead><tbody>
 ";

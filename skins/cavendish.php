@@ -380,7 +380,18 @@ class cavendishTemplate extends QuickTemplate {
 	        <?php
 	        
 	        if($wgScriptPath != ""){
-	            echo "<font style='font-size:36px;color:#FFFFFF;position:relative;bottom:-14px;left:-200px;'>DEVELOPMENT VERSION</font>";
+	            exec("git rev-parse HEAD", $output);
+	            $revId = @substr($output[0], 0, 7);
+	            exec("git rev-parse --abbrev-ref HEAD", $output);
+	            $branch = @$output[1];
+	            if(strstr($wgScriptPath, "staging") !== false){
+	                echo "<div style='font-size:36px;color:#FFFFFF;position:absolute;top:36px;left:350px;'>
+	                        STAGING ($branch, $revId)</div>";
+	            }
+	            else{
+	                echo "<div style='font-size:36px;color:#FFFFFF;position:absolute;top:36px;left:350px;'>
+	                        DEVELOPMENT ($branch, $revId)</div>";
+	            }
 	        }
 	        
 	        ?>

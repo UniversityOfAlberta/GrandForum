@@ -214,12 +214,18 @@ class TabUtils {
                                        'text' => HQP,
                                        'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_HQP");
         }
-        $new_actions[CNI] = array('class' => 'people hidden',
-                                   'text' => CNI,
-                                   'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_CNI");
-        $new_actions[PNI] = array('class' => 'people hidden',
-                                   'text' => PNI,
-                                   'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_PNI");
+        $new_actions[PNI.'1'] = array('class' => 'people hidden',
+                                      'text' => 'Phase1 '.PNI,
+                                      'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_PNI");
+        $new_actions[PNI.'2'] = array('class' => 'people hidden',
+                                      'text' => 'Phase2 '.PNI,
+                                      'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_PNI2");
+        $new_actions[CNI.'1'] = array('class' => 'people hidden',
+                                      'text' => 'Phase1 '.CNI,
+                                      'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_CNI");
+        $new_actions[CNI.'2'] = array('class' => 'people hidden',
+                                      'text' => 'Phase2 '.CNI,
+                                      'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_CNI2");
         $new_actions[RMC] = array('class' => 'people hidden',
                                    'text' => RMC,
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_RMC");
@@ -267,11 +273,17 @@ class TabUtils {
         else if($wgTitle->getText() == "ALL HQP" || ($wgTitle->getNSText() == HQP && !($me->isRole(HQP) && $wgTitle->getText() == $me->getName()))){
             $new_actions[HQP]['class'] = 'people selected hidden';
         }
+        else if($wgTitle->getText() == "ALL PNI" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))){
+            $new_actions[PNI]['class'] = 'people selected hidden';
+        }
+        else if($wgTitle->getText() == "ALL PNI2" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))){
+            $new_actions[PNI.'2']['class'] = 'people selected hidden';
+        }
         else if($wgTitle->getText() == "ALL CNI" || ($wgTitle->getNSText() == CNI && !($me->isRole(CNI) && $wgTitle->getText() == $me->getName()))){
             $new_actions[CNI]['class'] = 'people selected hidden';
         }
-        else if($wgTitle->getText() == "ALL PNI" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))){
-            $new_actions[PNI]['class'] = 'people selected hidden';
+        else if($wgTitle->getText() == "ALL CNI2" || ($wgTitle->getNSText() == CNI && !($me->isRole(CNI) && $wgTitle->getText() == $me->getName()))){
+            $new_actions[CNI.'2']['class'] = 'people selected hidden';
         }
         else if($wgTitle->getText() == "ALL RMC" || ($wgTitle->getNSText() == RMC && !($me->isRole(RMC) && $wgTitle->getText() == $me->getName()))){
             $new_actions[RMC]['class'] = 'people selected hidden';
