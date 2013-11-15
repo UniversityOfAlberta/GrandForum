@@ -308,6 +308,9 @@ class GlobalSearchAPI extends RESTAPI {
                         case RPTP_LOI_REV_REVIEW:
                             $keywords = "loi project reviewer review report pdf";
                             break;
+                        case RPTP_MTG:
+                            $keywords = "mind the gap mtg pdf";
+                            break;
                     }
                     if(!$skip){
                         $results[$pdf->getId()] = 0;
