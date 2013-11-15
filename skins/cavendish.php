@@ -381,16 +381,17 @@ class cavendishTemplate extends QuickTemplate {
 	        
 	        if($wgScriptPath != ""){
 	            exec("git rev-parse HEAD", $output);
-	            $revId = @substr($output[0], 0, 7);
+	            $revId = @substr($output[0], 0, 10);
+	            $revIdFull = "<a style='color:white;' title='{$output[0]}' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/commit/{$output[0]}'>$revId</a>";
 	            exec("git rev-parse --abbrev-ref HEAD", $output);
 	            $branch = @$output[1];
 	            if(strstr($wgScriptPath, "staging") !== false){
 	                echo "<div style='font-size:36px;color:#FFFFFF;position:absolute;top:36px;left:350px;'>
-	                        STAGING ($branch, $revId)</div>";
+	                        STAGING ($branch, $revIdFull)</div>";
 	            }
 	            else{
 	                echo "<div style='font-size:36px;color:#FFFFFF;position:absolute;top:36px;left:350px;'>
-	                        DEVELOPMENT ($branch, $revId)</div>";
+	                        DEVELOPMENT ($branch, $revIdFull)</div>";
 	            }
 	        }
 	        
