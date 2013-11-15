@@ -16,3 +16,19 @@ Feature: EditMember
         And I follow "User Role Request"
         And I press "Accept"
         Then I should see "added to Phase2Project2"
+        
+    Scenario: Admin Adding PL (Make sure PL is also added to project)
+        Given I am logged in as "Admin.User1" using password "Admin.Pass1"
+        When I follow "Edit Member"
+        And I select "PNI User3" from "names"
+        And I press "Next"
+        And I follow "LeadershipTab"
+        And I check "pl_Phase2Project5"
+        And I press "Submit Request"
+        Then I should see "is now a project leader of Phase2Project5"
+        When I go to "index.php/Phase2Project5:Main"
+        Then I should see "Leader: User3, PNI"
+        When I go to "index.php/PNI:PNI.User3?tab=projects"
+        Then I should see "Phase2Project5"
+        
+        

@@ -213,6 +213,26 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
     }
     
     /**
+     * @Then /^I should see "(?P<text1>(?:[^"]|\\")*)" before "(?P<text2>(?:[^"]|\\")*)"$/
+     */
+    public function iShouldSeeBefore($string1, $string2){
+        $text = str_replace("&#39;", "'", $this->getSession()->getPage()->getText());
+        $strpos1 = strpos($text, stripslashes($string1));
+        $strpos2 = strpos($text, stripslashes($string2));
+        assertTrue($strpos1 < $strpos2);
+    }
+    
+    /**
+     * @Then /^I should not see "(?P<text1>(?:[^"]|\\")*)" before "(?P<text2>(?:[^"]|\\")*)"$/
+     */
+    public function iShouldNotSeeBefore($string1, $string2){
+        $text = str_replace("&#39;", "'", $this->getSession()->getPage()->getText());
+        $strpos1 = strpos($text, stripslashes($string1));
+        $strpos2 = strpos($text, stripslashes($string2));
+        assertFalse($strpos1 < $strpos2);
+    }
+    
+    /**
      * @Given /^I press "([^"]*)" by css$/
      */
     public function pressButtonByCss($css){
