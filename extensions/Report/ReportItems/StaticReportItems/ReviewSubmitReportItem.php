@@ -4,6 +4,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
 
 	function render(){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgImpersonating;
+		$reportname = $this->getReport()->name;
 		$person = Person::newFromId($wgUser->getId());
 		$projectGet = "";
 		if($this->getReport()->project != null){
@@ -212,7 +213,7 @@ EOF;
             $pdfcount++;
         }
 
-        $reportname = $this->getReport()->name;
+        
         $wgOut->addHTML("</table></p>");
 		$wgOut->addHTML("<h3>3. Submit the $reportname PDF</h3>");
 		$wgOut->addHTML("<p>You can submit your $reportname PDF for evaluation. Make sure you review it before submitting.<br />Please note:</p>
@@ -228,7 +229,7 @@ EOF;
             <input {$style1} id='submitCheck' type='checkbox' /> - I have reviewed my \"$reportname PDF\"
             </td></tr>
             <tr><td>
-            <button id='submitButton' value='{$tok}' disabled>Submit Final Report PDF</button><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
+            <button id='submitButton' value='{$tok}' disabled>Submit $reportname PDF</button><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
             </td></tr>
             </table></p>
          </div>");

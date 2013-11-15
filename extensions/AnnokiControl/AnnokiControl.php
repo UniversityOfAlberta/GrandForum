@@ -260,6 +260,11 @@ $egAnnokiExtensions['ReportPDFs']     = array( 'name' => 'ReportPDFs',
                           'enabled' => true,
                           );
                           
+$egAnnokiExtensions['MindTheGap']     = array( 'name' => 'MindTheGap',
+                          'path' => "$IP/extensions/Report/SpecialPages/MindTheGap.php",
+                          'enabled' => true,
+                          );
+                          
 $egAnnokiExtensions['ScreenCapture']     = array( 'name' => 'ScreenCapture',
                           'path' => "$IP/extensions/ScreenCapture/ScreenCapture.php",
                           'enabled' => true,

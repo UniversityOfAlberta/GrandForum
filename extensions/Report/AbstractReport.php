@@ -36,6 +36,7 @@ abstract class AbstractReport extends SpecialPage {
     var $pdfType;
     var $pdfFiles;
     var $pdfAllProjects;
+    var $showInstructions = true;
     
     /**
      * @param string $tok
@@ -90,6 +91,9 @@ abstract class AbstractReport extends SpecialPage {
                 break;
             case RPTP_NI_PROJECT_COMMENTS:
                 $type = "ProjectNIComments";
+                break;
+            case RPTP_MTG:
+                $type = "MindTheGap";
                 break;
         }
         
@@ -737,11 +741,16 @@ abstract class AbstractReport extends SpecialPage {
             $this->currentSection->render();
         }
         $wgOut->addHTML("   </div></div>\n");
-        $wgOut->addHTML("   <div id='instructionsToggle'>.<br />.<br />.</div>\n");
-        $wgOut->addHTML("   <div id='reportInstructions' class='displayTableCell'><div><div>
+        $instructionsHide = "";
+        if(!$this->showInstructions){
+            $instructionsHide = "style='display:none;'";
+        }
+        $wgOut->addHTML("   <div $instructionsHide id='instructionsToggle'>.<br />.<br />.</div>\n");
+        $wgOut->addHTML("   <div $instructionsHide id='reportInstructions' class='displayTableCell'><div><div>
                                 <span id='instructionsHeader'>Instructions</span>
                                 {$this->currentSection->getInstructions()}
                             </div></div></div>\n");
+        
         $wgOut->addHTML("</div>\n");
         $wgOut->addHTML("<script type='text/javascript'>
             autosaveDiv = $('.autosaveSpan');

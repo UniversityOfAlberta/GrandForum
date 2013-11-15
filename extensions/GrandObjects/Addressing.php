@@ -30,6 +30,7 @@ define('RP_EVAL_PDF',		7);
 define('RP_EVAL_CNI',		8);
 define('RP_EVAL_LOI_FEED',	10);
 define('RP_REVIEW', 11);
+define('RP_MTG', 12);
 //define('RP_EVAL_RESEARCHER_REV',		9); //Revised answers
 //define('RP_EVAL_CNI_REV',		10); //Revised answers
 //define('RP_EVAL_PROJECT_REV', 11); //Revised answers
@@ -132,6 +133,12 @@ define('SUP_BUDGET',			6);
 define('PDF_PNI',			1);
 define('PDF_PROJ',			2);
 
+// Second level for Mind The Gap
+define('MTG_INTRO', 1);
+define('MTG_MUSIC', 2);
+define('MTG_FIRST_NATIONS', 3);
+define('MTG_ADDICTION', 4);
+define('MTG_OTHER', 5);
 
 /*
  * Third-level identifiers: question within a section.
