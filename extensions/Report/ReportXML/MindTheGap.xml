@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Mind the Gap" reportType="RP_MTG" pdfType="RPTP_MTG" pdfFiles="MindTheGapPDF" ajax="true">
     <Permissions>
-        
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PNI">
+            <SectionPermission id="intro" permissions="rw" />
+            <SectionPermission id="music" permissions="rw" />
+            <SectionPermission id="firstnations" permissions="rw" />
+            <SectionPermission id="addiction" permissions="rw" />
+            <SectionPermission id="other" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="CNI">
+            <SectionPermission id="intro" permissions="rw" />
+            <SectionPermission id="music" permissions="rw" />
+            <SectionPermission id="firstnations" permissions="rw" />
+            <SectionPermission id="addiction" permissions="rw" />
+            <SectionPermission id="other" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
     </Permissions>
     <ReportSection id="intro" name="Mind the Gap" tooltip="" blobSection="MTG_INTRO" type="ReportSection">
         <ReportItem id="intro" type="StaticReportItem">
@@ -61,6 +76,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" name="Submit" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="ReviewSubmitReportItem" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
     </ReportSection>
 </Report>

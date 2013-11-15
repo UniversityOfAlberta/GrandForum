@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Mind the Gap" reportType="RP_MTG" pdfType="RPTP_MTG" pdfFiles="MindTheGapPDF" ajax="true">
     <Permissions>
-        
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END">PNI</Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END">CNI</Role>
     </Permissions>
     <ReportSection name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
