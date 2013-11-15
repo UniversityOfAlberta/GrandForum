@@ -46,8 +46,6 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                                                         $('#generate_success').css('display', 'block');
                                                         $('#download_button_' + index).attr('name', tok);
                                                         $('#download_button_' + index).text(name + ' PDF');
-                                                        $('.submit_status_cell').css('background', 'red');
-		                                                $('.submit_status_cell').html('<b>No</b>');
                                                     }
                                                     else{
                                                         $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:support@forum.grand-nce.ca\">support@forum.grand-nce.ca</a>');
@@ -56,8 +54,6 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                                                 }
 		                                        $('#generate_throbber').css('display', 'none');
 		                                        $('#generateButton').removeAttr('disabled');
-		                                        $('#submitCheck').removeAttr('checked');
-		                                        $('#submitCheck').removeAttr('disabled');
 		                                  },
 		                        error : function(response){
                                               // Error
@@ -65,43 +61,9 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                                               $('#generate_error').css('display', 'block');
 		                                      $('#generateButton').removeAttr('disabled');
 		                                      $('#generate_throbber').css('display', 'none');
-		                                      //$('#submitCheck').removeAttr('disabled');
 		                                  }
 		                });
 		            });
-		            
-		            $('#submitButton').click(function(){
-		                var that = this;
-		                if(errors > 0){
-		                    $('#reportErrors').dialog('destroy');
-		                    $('#reportErrors').dialog({resizable: false,
-		                                               modal: true,
-		                                               buttons: {
-                                                            'Submit': function() {
-                                                                submitReport(that);
-                                                                $( this ).dialog('close');
-                                                            },
-                                                            'Cancel': function() {
-                                                                $( this ).dialog('close');
-                                                            }
-                                                       }});
-                            $('.ui-dialog-buttonset button').removeClass('ui-widget').removeClass('ui-state-default').removeClass('ui-corner-all').removeClass('ui-button-text-only').removeClass('ui-state-hover');
-		                }
-		                else{
-		                    submitReport(that);
-		                }
-		            });
-		            
-		            function submitReport(button){
-		                $('#submitButton').prop('disabled', true);
-		                $('#submit_throbber').css('display', 'inline-block');
-		                $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&submitReport&tok=' + $(button).val() ,function(data){
-		                    $('.submit_status_cell').css('background', '#008800');
-		                    $('.submit_status_cell').html('<b>Yes</b>');
-		                    $('#submitButton').removeAttr('disabled');
-		                    $('#submit_throbber').css('display', 'none');
-		                });
-		            }
 		        });
 		    </script>");
 		}
@@ -134,7 +96,6 @@ EOF;
         foreach($this->getReport()->pdfFiles as $file){
             $tok = false;
             $tst = '';
-            $sub = 0;
             $sto = new ReportStorage($person);
             $project = Project::newFromId($this->projectId);
             $report = new DummyReport($file, $person, $project);
@@ -142,7 +103,6 @@ EOF;
         	if (count($check) > 0) {
         		$tok = $check[0]['token']; 	
         		$tst = $check[0]['timestamp'];
-        		$sub = $check[0]['submitted'];
         	}
         	
         	// Present some data on available reports.
@@ -157,7 +117,6 @@ EOF;
 		    }else{
 		    	$show_pdf = "<br />".$tst;
 		    }
-
 
 		    $subm_table_row =<<<EOF
 		    <tr>
