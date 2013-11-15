@@ -280,7 +280,7 @@
         </ReportItemSet>
         <ReportItem id="table_foot" type="StaticReportItem">
             <![CDATA[
-                <br /><hr /><br /><a target='_blank' href='{$project_url}?tab=sub-projects' class='button'>Go Edit Sub-Projects</a>
+                <br /><hr /><br /><a target='_blank' href='{$project_url}?tab=sub-projects' class='button'>Edit Sub-Projects</a>
             ]]>
         </ReportItem>
     </ReportSection>
