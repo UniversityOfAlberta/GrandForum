@@ -214,7 +214,7 @@ EOF;
 			$this->text .= "
 <tr>
 <td align='left'>
-<a href='{$wgServer}{$wgScriptPath}/index.php/{$table}:{$person->getName()}'>{$person->getReversedName()}</a>
+<a href='{$person->getUrl()}'>{$person->getReversedName()}</a>
 </td>
 <td align='left'>
 ";
