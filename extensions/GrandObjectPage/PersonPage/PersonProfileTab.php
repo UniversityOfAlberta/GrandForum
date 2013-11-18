@@ -73,7 +73,7 @@ class PersonProfileTab extends AbstractEditableTab {
      * Displays the profile for this user
      */
     function showEthics($person, $visibility){
-        global $wgUser;
+        global $wgUser, $wgServer, $wgScriptPath;
         
         $ethics = $person->getEthics();
         $completed_tutorial = ($ethics['completed_tutorial'])? "Yes" : "No";
@@ -81,13 +81,13 @@ class PersonProfileTab extends AbstractEditableTab {
         $ethics_str = "<h3>Ethics: Have not completed the TCPS2 tutorial.</h3>";
         if($completed_tutorial == "Yes"){
             $ethics_str = "<table><tr>
-            <td><img style='vertical-align:bottom;' width='100px' src='/skins/cavendish/ethical_btns/ethical_button.jpg' /></td>
+            <td><img style='vertical-align:bottom;' width='100px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/ethical_button.jpg' /></td>
             <td>&nbsp;<h3>I have completed the TCPS2 tutorial on {$date}.</h3></td>
             <tr></table>";
         }
         else{
             $ethics_str = "<table><tr>
-            <td><img style='vertical-align:bottom;' width='100px' src='/skins/cavendish/ethical_btns/ethical_button_not.jpg' /></td>
+            <td><img style='vertical-align:bottom;' width='100px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/ethical_button_not.jpg' /></td>
             <td>&nbsp;<h3>I have not completed the TCPS2 tutorial.</h3></td>
             <tr></table>";
         }
@@ -145,7 +145,7 @@ EOF;
             }
             </style>
             <table><tr>
-            <td style='position:relative; padding:18px 0;'><img style='vertical-align:bottom;' width='100px' src='/skins/cavendish/ethical_btns/{$button}' /><span class='supervisor_lbl'>Supervisor</span><span class='percent_lbl'>{$perc}</span></td>
+            <td style='position:relative; padding:18px 0;'><img style='vertical-align:bottom;' width='100px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/{$button}' /><span class='supervisor_lbl'>Supervisor</span><span class='percent_lbl'>{$perc}</span></td>
             <td style='padding-left:15px;'><h3>{$ethical_hqp} of my {$total_hqp} students have completed the TCPS2 Tutorial.</h3></td>
             <tr></table>
 EOF;
