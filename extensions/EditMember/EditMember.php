@@ -1055,6 +1055,7 @@ class EditMember extends SpecialPage{
             }
         }
         $projList = new ProjectList("p_wpNS", "Projects", $myProjs, $projs);
+        $projList->attr('expand', false);
         $wgOut->addHTML($projList->render());
         $wgOut->addHTML("<script type='text/javascript'>
             $('input.p_wpNS.already').change(function(){
