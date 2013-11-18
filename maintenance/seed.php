@@ -134,6 +134,8 @@ User::createNew("Admin.User1", array('password' => User::crypt("Admin.Pass1"), '
 User::createNew("Manager.User1", array('password' => User::crypt("Manager.Pass1"), 'email' => "manager.user1@behat.com"));
 User::createNew("PL.User1", array('password' => User::crypt("PL.Pass1"), 'email' => "pl.user1@behat.com"));
 User::createNew("COPL.User1", array('password' => User::crypt("COPL.Pass1"), 'email' => "copl.user1@behat.com"));
+User::createNew("RMC.User1", array('password' => User::crypt("RMC.Pass1"), 'email' => "rmc.user1@behat.com"));
+User::createNew("RMC.User2", array('password' => User::crypt("RMC.Pass2"), 'email' => "rmc.user2@behat.com"));
 User::createNew("PNI.User1", array('password' => User::crypt("PNI.Pass1"), 'email' => "pni.user1@behat.com"));
 User::createNew("PNI.User2", array('password' => User::crypt("PNI.Pass2"), 'email' => "pni.user2@behat.com"));
 User::createNew("PNI.User3", array('password' => User::crypt("PNI.Pass3"), 'email' => "pni.user3@behat.com"));
@@ -176,6 +178,9 @@ createProject("Phase2BigBetProject1", "Phase 2 Big Bet Project 1", "Active", "Re
 addUserRole("Manager.User1", MANAGER);
 addUserRole("PL.User1", PNI);
 addUserRole("COPL.User2", PNI);
+addUserRole("RMC.User1", RMC);
+addUserRole("RMC.User1", PNI);
+addUserRole("RMC.User2", RMC);
 addUserRole("PNI.User1", PNI);
 addUserRole("PNI.User2", PNI);
 addUserRole("PNI.User3", PNI);

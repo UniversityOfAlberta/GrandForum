@@ -31,4 +31,12 @@ Feature: EditMember
         When I go to "index.php/PNI:PNI.User3?tab=projects"
         Then I should see "Phase2Project5"
         
-        
+    Scenario: PL Editing RMC project members (Should see RMC who are also PNI, but not people who are only RMC)
+        Given I am logged in as "PL.User1" using password "PL.Pass1"
+        When I follow "Edit Member"
+        Then I should see "RMC User1"
+        But I should not see "RMC User2"
+        When I select "RMC User1" from "names"
+        And I press "Next"
+        Then I should see "Phase2Project1"
+        But I should not see "PNI"

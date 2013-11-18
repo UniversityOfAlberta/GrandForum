@@ -27,7 +27,8 @@ class EditMember extends SpecialPage{
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
         $user = Person::newFromId($wgUser->getId());
         $date = date("Y-m-d");
-        $wgOut->addScript("<script type='text/javascript'>$(document).ready(function(){
+        $wgOut->addScript("<script type='text/javascript'>
+                                $(document).ready(function(){
                                 $('.datepicker').datepicker({showOn: 'both',
                                                             buttonImage: '../skins/calendar.gif',
                                                             buttonText: 'Date',
@@ -38,13 +39,11 @@ class EditMember extends SpecialPage{
                                     return false;
                                 });
                                 $('.datepicker').attr('value', '$date');
-                                $(function() {
-                                    $('#tabs').tabs({
-                                                        cookie: {
-                                                            expires: 1
-                                                        }
-                                                    });
-                                });
+                                $('#tabs').tabs({
+                                                    cookie: {
+                                                        expires: 1
+                                                    }
+                                                });
                             });
                             
                             function addComment(box, cannotchange){
@@ -96,7 +95,7 @@ class EditMember extends SpecialPage{
                     return;
                 }
                 else if(!$user->isRoleAtLeast(STAFF) && ((($user->isPNI() || $user->isCNI()) && !$user->isProjectLeader() && !$user->isProjectCoLeader() && $person->isRoleAtLeast(CNI)) || // Handles regular PNI/CNI
-                        ((($user->isProjectLeader() || $user->isProjectCoLeader()) && $person->isRoleAtLeast(RMC))) || // Handles Project Leader
+                        ((($user->isProjectLeader() || $user->isProjectCoLeader()) && $person->isRoleAtLeast(RMC) && !$person->isRole(PNI) && !$person->isRole(CNI) && !$person->isRole(HQP))) || // Handles PL/COPL
                         (($user->isRoleAtLeast(RMC) && $user->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF))))){ // Handles RMC-GOV
                     $wgMessage->addError("You do not have permissions to edit this user.");
                     EditMember::generateMain();
@@ -546,7 +545,7 @@ class EditMember extends SpecialPage{
         $names = array();
         foreach($allPeople as $person){
             if(!$user->isRoleAtLeast(STAFF) && ((($user->isPNI() || $user->isCNI()) && !$user->isProjectLeader() && !$user->isProjectCoLeader() && $person->isRoleAtLeast(CNI)) || // Handles regular PNI/CNI
-            ((($user->isProjectLeader() || $user->isProjectCoLeader()) && $person->isRoleAtLeast(RMC))) || // Handles Project Leader
+            ((($user->isProjectLeader() || $user->isProjectCoLeader()) && $person->isRoleAtLeast(RMC) && !$person->isRole(PNI) && !$person->isRole(CNI) && !$person->isRole(HQP))) || // Handles PL/COPL
             (($user->isRoleAtLeast(RMC) && $user->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF)))  // Handles RMC-GOV
             )){ 
                 // User does not have permission for this person
@@ -705,7 +704,7 @@ class EditMember extends SpecialPage{
                 $projs[] = $project->getName();
             }
             if(!$user->isRoleAtLeast(STAFF) && ((($user->isPNI() || $user->isCNI()) && !$user->isProjectLeader() && !$user->isProjectCoLeader() && $person->isRoleAtLeast(CNI)) || // Handles regular PNI/CNI
-            ((($user->isProjectLeader() || $user->isProjectCoLeader()) && $person->isRoleAtLeast(RMC))) || // Handles Project Leader
+            ((($user->isProjectLeader() || $user->isProjectCoLeader()) && $person->isRoleAtLeast(RMC) && !$person->isRole(PNI) && !$person->isRole(CNI) && !$person->isRole(HQP))) || // Handles PL/COPL
             (($user->isRoleAtLeast(RMC) && $user->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF)))  // Handles RMC-GOV
             )){
                 // User does not have permission for this person
@@ -842,13 +841,20 @@ class EditMember extends SpecialPage{
         }
         $wgOut->addHTML("
                     </ul>");
+             
+        $wgOut->addHTML("<div id='tabs-1'>");
+        EditMember::generateRoleFormHTML($wgOut);
+        $wgOut->addHTML("</div>");
         
-        //Condition for whether user can edit the roles of a person
-        //if(($user->isPNI() || $user->isCNI()) && $person->isHQP() && !$user->relatedTo($person,"Supervises")){            
-            $wgOut->addHTML("<div id='tabs-1'>");
-            EditMember::generateRoleFormHTML($wgOut);
-            $wgOut->addHTML("</div>");
-        //}
+        if(!$me->isRoleAtLeast(STAFF) && (($me->isProjectLeader() || $me->isProjectCoLeader()) && $person->isRoleAtLeast(RMC))){
+            $wgOut->addHTML("<script type='text/javascript'>
+                $('#RolesTab').parent().hide();
+                $('#tabs-1').hide();
+                $(document).ready(function(){
+                    $('#tabs').tabs('select', 1);
+                });
+            </script>");
+        }
         
         $wgOut->addHTML("<div id='tabs-2'>");
                         EditMember::generateProjectFormHTML($wgOut);
