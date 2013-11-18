@@ -71,3 +71,14 @@ Feature: Reporting
         And I switch to iframe "budget"
         Then I should see "$66000"
         And I should see "is greater than the maximum $65000"
+        
+    Scenario: PNI Uploads a budget which is over the limits
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I follow "My Reports"
+        And I click "Budget Request"
+        And I wait until I see "Budget Justification" up to "5000"
+        And I switch to iframe "budget"
+        And I attach the file "PNI.User1_duplicate.xls" to "budget"
+        And I press "Upload"
+        And I switch to iframe "budget"
+        Then I should see "has already been used in another column"

@@ -196,11 +196,18 @@ class BudgetReportItem extends AbstractReportItem {
 	static function checkTotals($budget, $person, $year){
         $projects = $budget->copy()->select(V_PROJ, array())->where(V_PROJ)->xls[1];
         $total = 0;
+        $alreadyUsed = array();
+        $i = 0;
         foreach($projects as $proj){
             $project = Project::newFromName($proj->toString());
+            if(isset($alreadyUsed[$proj->toString()])){
+                $budget->xls[1][1+$i]->error = "'{$proj->toString()}' has already been used in another column";
+            }
+            $alreadyUsed[$proj->toString()] = true;
             if($project != null && !$project->isBigBet()){
                 $total += intval(str_replace("$", "", $budget->copy()->rasterize()->select(V_PROJ, array($proj->toString()))->where(COL_TOTAL)->toString()));
             }
+            $i++;
         }
         $name = $budget->copy()->where(V_PERS_NOT_NULL)->select(V_PERS_NOT_NULL)->toString();
         if($person->isRoleDuring(PNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
