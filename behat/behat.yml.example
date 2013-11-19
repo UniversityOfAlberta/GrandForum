@@ -1,0 +1,11 @@
+default:
+    formatter:
+        name: pretty,Behat\Behat\Formatter\MyHtmlFormatter
+        parameters:
+            output_path: null,output/output.html
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: ### URL TO FORUM ###
+            files_path: uploads
+            default_session: selenium2
+            selenium2: ~

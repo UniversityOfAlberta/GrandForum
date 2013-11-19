@@ -379,7 +379,7 @@ class cavendishTemplate extends QuickTemplate {
 	        title="<?php $this->msg('mainpage') ?>"><img style='margin-top:5px;' height='80px' src="<?php echo $wgServer.$wgScriptPath.'/skins/GrandForum-banner.gif'; ?>" alt='Logo' /></a>
 	        <?php
 	        
-	        if($wgScriptPath != ""){
+	        if(!TESTING && $wgScriptPath != ""){
 	            exec("git rev-parse HEAD", $output);
 	            $revId = @substr($output[0], 0, 10);
 	            exec("git rev-parse --abbrev-ref HEAD", $output);

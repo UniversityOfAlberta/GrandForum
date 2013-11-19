@@ -1,7 +1,0 @@
-default:
-    extensions:
-        Behat\MinkExtension\Extension:
-            base_url: http://grand.cs.ualberta.ca/~dwt/grand_forum_test/
-            files_path: uploads
-            default_session: selenium2
-            selenium2: ~

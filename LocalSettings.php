@@ -31,6 +31,10 @@ require_once( "$IP/Path.php" );
 
 if(file_exists("test.tmp")){
     $wgDBname = $wgTestDBname;
+    define("TESTING", true);
+}
+else{
+    define("TESTING", false);
 }
 
 # If PHP's memory limit is very low, some operations may fail.

@@ -42,8 +42,7 @@ use Behat\Gherkin\Node\PyStringNode,
 /**
  * Features context.
  */
-class FeatureContext extends Behat\MinkExtension\Context\MinkContext
-{
+class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
 
     static $dbJSON = array();
     static $scenarioId = 0;
@@ -266,6 +265,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
             $row = str_replace("<br>", "\n", $row);
             self::$dbJSON['authors'][$name]['subjects'] = $row;
         }
+        self::$dbJSON['authors'][$name]['url'] = $this->getSession()->getCurrentUrl();
         file_put_contents("db.json", json_encode(self::$dbJSON));
         $html->clear();
         unset($html);
