@@ -240,6 +240,7 @@ abstract class AbstractReportItem {
                 $blob_data = str_replace("", "", $blob_data);
                 $blob_data = str_replace("", "", $blob_data);
                 $blob_data = str_replace("", "", $blob_data);
+                $blob_data = str_replace("", "fi", $blob_data);
             case BLOB_EXCEL:
             case BLOB_RAW:
                 $value = $blob_data;
