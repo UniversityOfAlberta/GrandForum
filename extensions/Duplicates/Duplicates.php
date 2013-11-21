@@ -47,12 +47,12 @@ class Duplicates extends SpecialPage{
 
 	function Duplicates() {
 		wfLoadExtensionMessages('Duplicates');
-		SpecialPage::SpecialPage("Duplicates", STAFF.'+', true, 'Duplicates::run');
+		SpecialPage::SpecialPage("Duplicates", MANAGER.'+', true, 'Duplicates::run');
 	}
 	
 	function userCanExecute($user){
 	    $me = Person::newFromUser($user);
-	    if($me->getName() == "Adrian.Sheppard" || $me->getName() == "Admin"){
+	    if($me->isRoleAtLeast(MANAGER)){
 	        return true;
 	    }
 	    else{

@@ -503,8 +503,10 @@ class Person extends BackboneModel {
     /// ID as a string, or an array of user IDs.
     static function getAllEvaluators($filterout = 4) {
         if (is_array($filterout)) {
-            $filterout[] = 4; // Admin
-            $filterout[] = 150; // Adrian.Sheppard
+            $managers = Person::getAllPeople(MANAGER);
+            foreach($managers as $manager){
+                $filterout[] = $manager->getId();
+            }
             $filterout = implode(',', $filterout);
         }
         if (strlen($filterout) > 0)

@@ -126,8 +126,7 @@ EOF;
                     OR page = 'http://forum.grand-nce.ca/index.php/Special:Evaluate')
                     AND user_id = '{$person->getId()}'";
             $data = DBFunctions::execSQL($sql);
-            
-            if(DBFunctions::getNRows() > 0 && $person->getName() != "Admin" && $person->getName() != "Adrian.Sheppard"){
+            if(count($data) > 0 && !$person->isRoleAtLeast(MANAGER)){
                 $subData = unserialize($data[0]['data']);
                 $subs = array();
                 foreach($subData as $key => $row){
@@ -483,22 +482,24 @@ EOF;
             $tst = "2011-01-26 12:00:00";
         }
         else{
+            if($leader != null){
             $sto = new ReportStorage($leader);
-            $check = $sto->list_reports($leader->getId(), SUBM, 1, 0, RPTP_LEADER);
-            if (count($check) <= 0) {
-                // Try unsubmitted report.
-                $check = $sto->list_reports($leader->getId(), NOTSUBM, 1, 0, RPTP_LEADER);
-            }
-            if (count($check) > 0) {
-                $tok = $sto->select_report($check[0]['token']);
-            }
-            else{
-                $tok = false;
-            }
-            if($tok !== false) {
-                $tst = $sto->metadata('timestamp');
-                $len = $sto->metadata('len_pdf');
-                $sub = $sto->metadata('submitted');
+                $check = $sto->list_reports($leader->getId(), SUBM, 1, 0, RPTP_LEADER);
+                if (count($check) <= 0) {
+                    // Try unsubmitted report.
+                    $check = $sto->list_reports($leader->getId(), NOTSUBM, 1, 0, RPTP_LEADER);
+                }
+                if (count($check) > 0) {
+                    $tok = $sto->select_report($check[0]['token']);
+                }
+                else{
+                    $tok = false;
+                }
+                if($tok !== false) {
+                    $tst = $sto->metadata('timestamp');
+                    $len = $sto->metadata('len_pdf');
+                    $sub = $sto->metadata('submitted');
+                }
             }
         }
         return array("download" => $download, "tok" => $tok, "tst" => $tst, "len" => $len, "sub" => $sub);

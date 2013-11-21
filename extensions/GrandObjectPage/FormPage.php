@@ -7,8 +7,8 @@ class FormPage {
 
     function processPage($article, $outputDone, $pcache){
         global $wgTitle, $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgFileExtensions, $wgMessage;
-        $me = Person::newFromId($wgUser->getId());
-        if($wgTitle->getNSText() == "Form" && ($me->getName() == "Adrian.Sheppard" || $me->getName() == "Admin")){
+        $me = Person::newFromWgUser();
+        if($wgTitle->getNSText() == "Form" && $me->isRoleAtLeast(MANAGER)){
             $id = $wgTitle->getText();
             $form = Form::newFromId($id);
             $name = $wgTitle->getNSText();

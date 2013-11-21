@@ -13,9 +13,8 @@ function runAddFormPage($par){
 }
 
 function formSearch($action, $request){
-    global $wgUser;
-    $me = Person::newFromId($wgUser->getId());
-    if($me->getName() == "Adrian.Sheppard" || $me->getName() == "Admin"){
+    $me = Person::newFromWgUser();
+    if($me->isRoleAtLeast(MANAGER)){
         if($action == "formSearch"){
             header("Content-type: text/json");
             echo Form::search($_GET['phrase']);
@@ -94,9 +93,9 @@ class AddFormPage extends SpecialPage{
 	}
 
 	function run($par){
-		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
-		$me = Person::newFromId($wgUser->getId());
-		if($me->getName() == "Adrian.Sheppard" || $me->getName() == "Admin"){
+		global $wgOut, $wgServer, $wgScriptPath, $wgTitle;
+		$me = Person::newFromWgUser();
+		if($me->isRoleAtLeast(MANAGER)){
 	        if(isset($_GET['pubSearch'])){
 	            header("Content-type: text/json");
 	            echo Paper::search($_GET['phrase']);
@@ -112,7 +111,7 @@ class AddFormPage extends SpecialPage{
 		                     </fieldset>");
 	    }
 	    else{
-	        $wgOut->addHTML("Only Adrian is allowed to view this page");
+	        $wgOut->addHTML("Only Managers are allowed to view this page");
 	    }
 	}
 }

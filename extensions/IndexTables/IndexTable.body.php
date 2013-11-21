@@ -76,7 +76,7 @@ class IndexTable {
 				    $this->generateMaterialsTable();
 				    break;
 				case 'Forms':
-				    if($me->getName() == "Adrian.Sheppard" || $me->getName() == "Admin"){
+				    if($me->isRoleAtLeast(MANAGER)){
 				        $wgOut->setPageTitle("Forms");
 				        $this->generateFormsTable();
 				    }
