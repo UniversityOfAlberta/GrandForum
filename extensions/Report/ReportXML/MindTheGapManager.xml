@@ -18,7 +18,7 @@
         <ReportItemSet id="ni" type="NIReportItemSet">
             <ReportItem type="StaticReportItem">
                 <![CDATA[
-                    <tr><td style='white-space:nowrap;'>{$user_reversed_name}</td><td>{$user_mtg_music}</td><td>{$user_mtg_firstnations}</td><td>{$user_mtg_addiction}</td><td>{$user_mtg_other}</td></tr>
+                    <tr><td valign='top' style='white-space:nowrap;'>{$user_reversed_name}<br />({$user_full_roles})</td><td valign='top'>{$user_mtg_music}</td><td valign='top'>{$user_mtg_firstnations}</td><td valign='top'>{$user_mtg_addiction}</td><td valign='top'>{$user_mtg_other}</td></tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
