@@ -31,6 +31,9 @@ class DummyReport extends AbstractReport{
                     break;
                 case RP_EVAL_CNI:
                     break;
+                case RP_MTG:
+                    $reportType = "MindTheGap";
+                    break;
             }
         }
     
