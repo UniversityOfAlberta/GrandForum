@@ -2,6 +2,7 @@
 <Report name="Mind the Gap (Manager)" reportType="RP_MTG" pdfType="RPTP_MTG" pdfFiles="MindTheGapPDF" ajax="true">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="MANAGER">
+            <SectionPermission id="full" permissions="r" />
             <SectionPermission id="music" permissions="r" />
             <SectionPermission id="firstnations" permissions="r" />
             <SectionPermission id="addiction" permissions="r" />
