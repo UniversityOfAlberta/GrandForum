@@ -28,8 +28,8 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="addiction" name="Addiction" tooltip="" blobSection="MTG_ADDICTION" type="EditableReportSection">
-        <ReportItem id="addiction_text" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="MTG_ADDICTION">
+    <ReportSection id="socialproblems" name="Social Problems" tooltip="" blobSection="MTG_SOCIAL_PROBLEMS" type="EditableReportSection">
+        <ReportItem id="socialproblems_text" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="MTG_SOCIAL_PROBLEMS">
             <![CDATA[
                 {$item}
             ]]>

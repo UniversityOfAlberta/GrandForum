@@ -137,7 +137,7 @@ define('PDF_PROJ',			2);
 define('MTG_INTRO', 1);
 define('MTG_MUSIC', 2);
 define('MTG_FIRST_NATIONS', 3);
-define('MTG_ADDICTION', 4);
+define('MTG_SOCIAL_PROBLEMS', 4);
 define('MTG_OTHER', 5);
 
 /*

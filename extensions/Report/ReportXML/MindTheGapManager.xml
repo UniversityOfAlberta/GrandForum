@@ -5,21 +5,21 @@
             <SectionPermission id="full" permissions="r" />
             <SectionPermission id="music" permissions="r" />
             <SectionPermission id="firstnations" permissions="r" />
-            <SectionPermission id="addiction" permissions="r" />
+            <SectionPermission id="socialproblems" permissions="r" />
             <SectionPermission id="other" permissions="r" />
         </Role>
     </Permissions>
-    <ReportSection id="full" name="Full Rollup" tooltip="" blobSection="BLOB_NONE" type="ReportSection">
+    <ReportSection id="full" name="Full Rollup" tooltip="" blobSection="SEC_NONE" type="ReportSection">
         <ReportItem type="StaticReportItem">
             <![CDATA[
                 <table cellpadding="1" frame="box" rules="all">
-                    <tr><th>NI</th><th style='min-width:200px;'>Music</th><th style='min-width:200px;'>First&nbsp;Nations</th><th style='min-width:200px;'>Addiction</th><th style='min-width:200px;'>Other</th></tr>
+                    <tr><th>NI</th><th style='min-width:200px;'>Music</th><th style='min-width:200px;'>First&nbsp;Nations</th><th style='min-width:200px;'>Social&nbsp;Problems</th><th style='min-width:200px;'>Other</th></tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="ni" type="NIReportItemSet">
+        <ReportItemSet id="ni" type="MindTheGapReportItemSet">
             <ReportItem type="StaticReportItem">
                 <![CDATA[
-                    <tr><td valign='top' style='white-space:nowrap;'>{$user_reversed_name}<br />({$user_full_roles})</td><td valign='top'>{$user_mtg_music}</td><td valign='top'>{$user_mtg_firstnations}</td><td valign='top'>{$user_mtg_addiction}</td><td valign='top'>{$user_mtg_other}</td></tr>
+                    <tr><td valign='top' style='white-space:nowrap;'>{$user_reversed_name}<br />({$user_full_roles})</td><td valign='top'>{$user_mtg_music}</td><td valign='top'>{$user_mtg_firstnations}</td><td valign='top'>{$user_mtg_socialproblems}</td><td valign='top'>{$user_mtg_other}</td></tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -30,7 +30,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="music" name="Music" tooltip="" blobSection="MTG_MUSIC" type="ReportSection">
-        <ReportItemSet id="ni" type="NIMindTheGapReportItemSet">
+        <ReportItemSet id="ni" type="MindTheGapReportItemSet">
             <ReportItemSet id="ni_music_head" type="ToggleHeaderReportItemSet" title="{$user_reversed_name} ({$user_full_roles})">
                 <ReportItem id="music_text" type="WikiTextReportItem">
                     <![CDATA[
@@ -41,7 +41,7 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="firstnations" name="First Nations" tooltip="" blobSection="MTG_FIRST_NATIONS" type="ReportSection">
-        <ReportItemSet id="ni" type="NIMindTheGapReportItemSet">
+        <ReportItemSet id="ni" type="MindTheGapReportItemSet">
             <ReportItemSet id="ni_firstnations_head" type="ToggleHeaderReportItemSet" title="{$user_reversed_name} ({$user_full_roles})">
                 <ReportItem id="firstnations_text" type="WikiTextReportItem">
                     <![CDATA[
@@ -51,19 +51,19 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="addiction" name="Addiction" tooltip="" blobSection="MTG_ADDICTION" type="ReportSection">
-        <ReportItemSet id="ni" type="NIMindTheGapReportItemSet">
-            <ReportItemSet id="ni_addiction_head" type="ToggleHeaderReportItemSet" title="{$user_reversed_name} ({$user_full_roles})">
-                <ReportItem id="addiction_text" type="WikiTextReportItem">
+    <ReportSection id="socialproblems" name="Social Problems" tooltip="" blobSection="MTG_SOCIAL_PROBLEMS" type="ReportSection">
+        <ReportItemSet id="ni" type="MindTheGapReportItemSet">
+            <ReportItemSet id="ni_socialproblems_head" type="ToggleHeaderReportItemSet" title="{$user_reversed_name} ({$user_full_roles})">
+                <ReportItem id="socialproblems_text" type="WikiTextReportItem">
                     <![CDATA[
-                        {$user_mtg_addiction}
+                        {$user_mtg_socialproblems}
                     ]]>
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="other" name="Other" tooltip="" blobSection="MTG_OTHER" type="ReportSection">
-        <ReportItemSet id="ni" type="NIMindTheGapReportItemSet">
+        <ReportItemSet id="ni" type="MindTheGapReportItemSet">
             <ReportItemSet id="ni_other_head" type="ToggleHeaderReportItemSet" title="{$user_reversed_name} ({$user_full_roles})">
                 <ReportItem id="other_text" type="WikiTextReportItem">
                     <![CDATA[

@@ -5,7 +5,7 @@
             <SectionPermission id="intro" permissions="rw" />
             <SectionPermission id="music" permissions="rw" />
             <SectionPermission id="firstnations" permissions="rw" />
-            <SectionPermission id="addiction" permissions="rw" />
+            <SectionPermission id="socialproblems" permissions="rw" />
             <SectionPermission id="other" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -13,7 +13,7 @@
             <SectionPermission id="intro" permissions="rw" />
             <SectionPermission id="music" permissions="rw" />
             <SectionPermission id="firstnations" permissions="rw" />
-            <SectionPermission id="addiction" permissions="rw" />
+            <SectionPermission id="socialproblems" permissions="rw" />
             <SectionPermission id="other" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -51,13 +51,13 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="addiction" name="Addiction" tooltip="" blobSection="MTG_ADDICTION" type="EditableReportSection">
-        <ReportItem id="addiction" type="StaticReportItem">
+    <ReportSection id="socialproblems" name="Social Problems" tooltip="" blobSection="MTG_SOCIAL_PROBLEMS" type="EditableReportSection">
+        <ReportItem id="socialproblems" type="StaticReportItem">
             <![CDATA[
                 <p>Digital media has brought many improvements to quality of life, but it has also introduced or exacerbated a number of social problems, such as addictive game play, over-indulgence in social media, and cyber-bullying.</p>
             ]]>
         </ReportItem>
-        <ReportItem id="addiction_text" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="MTG_ADDICTION">
+        <ReportItem id="socialproblems_text" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="MTG_SOCIAL_PROBLEMS">
             <![CDATA[
                 {$item}
             ]]>

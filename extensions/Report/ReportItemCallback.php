@@ -67,7 +67,7 @@ class ReportItemCallback {
             "user_project_future" => "getUserProjectFuture",
             "user_mtg_music" => "getUserMTGMusic",
             "user_mtg_firstnations" => "getUserMTGFirstNations",
-            "user_mtg_addiction" => "getUserMTGAddiction",
+            "user_mtg_socialproblems" => "getUserMTGSocialProblems",
             "user_mtg_other" => "getUserMTGOther",
             // Champions
             "champ_org" => "getChampOrg",
@@ -675,9 +675,9 @@ class ReportItemCallback {
         return $data;
     }
     
-    function getUserMTGAddiction(){
+    function getUserMTGSocialProblems(){
         $person = Person::newFromId($this->reportItem->personId);
-        $addr = ReportBlob::create_address(RP_MTG, MTG_ADDICTION, MTG_ADDICTION, 0);
+        $addr = ReportBlob::create_address(RP_MTG, MTG_SOCIAL_PROBLEMS, MTG_SOCIAL_PROBLEMS, 0);
         $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), 0);
         $blob->load($addr);
         $data = $blob->getData();
