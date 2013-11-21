@@ -8,6 +8,26 @@
             <SectionPermission id="other" permissions="r" />
         </Role>
     </Permissions>
+    <ReportSection id="full" name="Full Rollup" tooltip="" blobSection="BLOB_NONE" type="ReportSection">
+        <ReportItem type="StaticReportItem">
+            <![CDATA[
+                <table cellpadding="1" frame="box" rules="all">
+                    <tr><th>NI</th><th style='min-width:200px;'>Music</th><th style='min-width:200px;'>First&nbsp;Nations</th><th style='min-width:200px;'>Addiction</th><th style='min-width:200px;'>Other</th></tr>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="ni" type="NIReportItemSet">
+            <ReportItem type="StaticReportItem">
+                <![CDATA[
+                    <tr><td style='white-space:nowrap;'>{$user_reversed_name}</td><td>{$user_mtg_music}</td><td>{$user_mtg_firstnations}</td><td>{$user_mtg_addiction}</td><td>{$user_mtg_other}</td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem type="StaticReportItem">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="music" name="Music" tooltip="" blobSection="MTG_MUSIC" type="ReportSection">
         <ReportItemSet id="ni" type="NIMindTheGapReportItemSet">
             <ReportItemSet id="ni_music_head" type="ToggleHeaderReportItemSet" title="{$user_reversed_name} ({$user_full_roles})">
