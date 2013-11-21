@@ -515,7 +515,7 @@ class cavendishTemplate extends QuickTemplate {
 					    if(!$user->isRoleAtLeast(MANAGER)){
 					        ReportArchive::createTab();
 					    }
-					        Report::createTab();
+					    Report::createTab();
 					    //if($p->isUnassignedEvaluator()){
 					    //	ReviewerConflicts::createTab();
 					    //}
@@ -523,7 +523,7 @@ class cavendishTemplate extends QuickTemplate {
 					    if($user->isRole(EXTERNAL) || $user->isRole(STAFF) || $user->isRole(MANAGER)){
 					        ReportPDFs::createTab();
 					    }
-
+                        ReportSurvey::createTab();
 					    MyMailingLists::createTab();
 					    Notification::createTab();
 				    }

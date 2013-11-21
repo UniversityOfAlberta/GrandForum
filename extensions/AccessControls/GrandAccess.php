@@ -23,6 +23,18 @@ class GrandAccess {
 	    if(count($me->leadership()) > 0){
 	        $aRights[$i++] = "Leadership";
 	        $aRights[$i++] = "Leadership+";
+	        if($me->isProjectLeader()){
+	            $aRights[$i++] = PL;
+	            $aRights[$i++] = PL.'+';
+	        }
+	        if($me->isProjectLeader()){
+	            $aRights[$i++] = COPL;
+	            $aRights[$i++] = COPL.'+';
+	        }
+	        if($me->isProjectManager()){
+	            $aRights[$i++] = PM;
+	            $aRights[$i++] = PM.'+';
+	        }
 	    }
 	    if($me->isEvaluator()){
 	        $aRights[$i++] = "Evaluator";

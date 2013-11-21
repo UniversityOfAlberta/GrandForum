@@ -510,7 +510,7 @@ abstract class AbstractReport extends SpecialPage {
             foreach($perms as $perm){
                 switch($type){
                     case "Role":
-                        if($this->project != null && ($perm['perm'] == PL || $perm['perm'] == COPL) && 
+                        if($this->project != null && ($perm['perm'] == PL || $perm['perm'] == COPL || $perm['perm'] == "Leadership") && 
                            !$me->isProjectManager()){
                             $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
                             if(count($project_objs) > 0){
@@ -527,7 +527,12 @@ abstract class AbstractReport extends SpecialPage {
                             }
                         }
                         else{
-                            $rResult = ($rResult || $me->isRoleDuring($perm['perm'], $perm['start'], $perm['end']));
+                            if(strstr($perm['perm'], "+") !== false){
+                                $rResult = ($rResult || $me->isRoleAtLeastDuring(constant(str_replace("+", "", $perm['perm'])), $perm['start'], $perm['end']));
+                            }
+                            else{
+                                $rResult = ($rResult || $me->isRoleDuring($perm['perm'], $perm['start'], $perm['end']));
+                            }
                         }
                         break;
                     case "Project":
@@ -562,29 +567,7 @@ abstract class AbstractReport extends SpecialPage {
         if($me->isRole(MANAGER)){
             return array('r' => true, 'w' => true);
         }
-        $roles = array();
-        $roleObjs = $me->getRolesDuring();
-        foreach($roleObjs as $role){
-            $roles[] = $role->getRole();
-        }
-        if($me->isProjectLeader() && !$me->isProjectManager()){
-            $roles[] = PL;
-        }
-        if($me->isProjectCoLeader() && !$me->isProjectManager()){
-            $roles[] = COPL;
-        }
-        if($me->isProjectManager()){
-            $roles[] = PM;
-        }
-        if($me->isEvaluator()){
-            $roles[] = EVALUATOR;
-        }
-        if($me->isRole(EXTERNAL)){
-            $roles[] = EXTERNAL;
-        }
-        if($me->isRole(STAFF)){
-            $roles[] = STAFF;
-        }
+        $roles = $me->getRights();
         
         $permissions = array();
         foreach($roles as $role){

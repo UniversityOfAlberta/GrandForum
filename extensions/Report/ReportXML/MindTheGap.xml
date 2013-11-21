@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Mind the Gap" reportType="RP_MTG" pdfType="RPTP_MTG" pdfFiles="MindTheGapPDF" ajax="true">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PNI">
-            <SectionPermission id="intro" permissions="rw" />
-            <SectionPermission id="music" permissions="rw" />
-            <SectionPermission id="firstnations" permissions="rw" />
-            <SectionPermission id="socialproblems" permissions="rw" />
-            <SectionPermission id="other" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="CNI">
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP+">
             <SectionPermission id="intro" permissions="rw" />
             <SectionPermission id="music" permissions="rw" />
             <SectionPermission id="firstnations" permissions="rw" />

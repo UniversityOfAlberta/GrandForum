@@ -1180,16 +1180,25 @@ class Person extends BackboneModel {
             $ugTable = getTableName("user_groups");
             $this->groups = array();
             $sql = "SELECT DISTINCT ug.ug_group
-                FROM $uTable u, $ugTable ug
-                WHERE u.user_id = ug.ug_user
-                AND u.user_name = '{$this->name}'
-                ORDER BY ug.ug_group";
+                    FROM $uTable u, $ugTable ug
+                    WHERE u.user_id = ug.ug_user
+                    AND u.user_name = '{$this->name}'
+                    ORDER BY ug.ug_group";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 $this->groups[] = $row['ug_group'];
             }
         }
         return $this->groups;
+    }
+    
+    function getRights(){
+        $user = $this->getUser();
+        if($user->mRights == null){
+            $user->mRights = array();
+        }
+        GrandAccess::setupGrandAccess($user, $user->mRights);
+        return $user->mRights;
     }
     
     // Returns what type of Person this is.  This is determined on the Person's user page, and the namespace it is in.
@@ -1833,6 +1842,29 @@ class Person extends BackboneModel {
             return false;
         }
         return (array_search($role, $roles) !== false);
+    }
+    
+    function isRoleAtLeastDuring($role, $startRange = false, $endRange = false){
+        global $wgRoleValues;
+        $roles = $this->getRolesDuring($startRange, $endRange);
+        if($roles != null){
+            foreach($roles as $r){
+                if($r->getRole() != "" && $wgRoleValues[$r->getRole()] >= $wgRoleValues[$role]){
+                    return true;
+                }
+            }
+        }
+        if($wgRoleValues[PL] >= $wgRoleValues[$role]){
+            if($this->isProjectLeaderDuring($startRange, $endRange)){
+                return true;
+            }
+        }
+        if($wgRoleValues[COPL] >= $wgRoleValues[$role]){
+            if($this->isProjectCoLeaderDuring($startRange, $endRange)){
+                return true;
+            }
+        }
+        return false;
     }
     
     // Returns whether or not the Person has a role of at least the given role

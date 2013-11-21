@@ -260,8 +260,8 @@ $egAnnokiExtensions['ReportPDFs']     = array( 'name' => 'ReportPDFs',
                           'enabled' => true,
                           );
                           
-$egAnnokiExtensions['MindTheGap']     = array( 'name' => 'MindTheGap',
-                          'path' => "$IP/extensions/Report/SpecialPages/MindTheGap.php",
+$egAnnokiExtensions['ReportSurvey']     = array( 'name' => 'ReportSurvey',
+                          'path' => "$IP/extensions/Report/SpecialPages/ReportSurvey.php",
                           'enabled' => true,
                           );
                           

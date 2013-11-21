@@ -192,7 +192,10 @@ class ReportXMLParser {
         foreach($children as $key => $child){
             if($key == "Role"){
                 $attributes = $child->attributes();
-                $role = (isset($attributes->role)) ? @constant($attributes->role) : "MANAGER";
+                $role = (isset($attributes->role)) ? @constant($attributes->role) : MANAGER;
+                if(isset($attributes->role) && @constant($attributes->role) == null){
+                    $role = (string)$attributes->role;
+                }
                 $start = (isset($attributes->start)) ? @constant($attributes->start) : "0000-00-00";
                 $end = (isset($attributes->end)) ? @constant($attributes->end) : "2100-12-31";
                 if($start == null){
