@@ -137,10 +137,12 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Reflections: Other Aspects of my involvement in GRAND" blobSection="RES_RESACTIVITY" type="EditableReportSection" number="3" autosave="true" renderpdf="true" private="true">
+    <ReportSection name="Reflections: Other Aspects of my involvement in GRAND" blobSection="RES_RESACTIVITY" type="EditableReportSection" number="3" autosave="true" renderpdf="true">
     <!-- IIIa. Plans for next year -->
         <ReportItem id='IIIa_head' type="StaticReportItem">
-            <![CDATA[<h2>Proposed Activity: My Plans for {$next_year} in GRAND</h2>]]>
+            <![CDATA[<h2>Proposed Activity: My Plans for {$next_year} in GRAND</h2>
+                (Phase2 Projects Only)<br />
+            ]]>
         </ReportItem>
         <ReportItemSet id="ProjectLimit_IId" type="LimitReportItemSet" limit="3600">
             <ReportItemSet id="projects" type="PersonFutureProjectReportItemSet">
@@ -150,17 +152,17 @@
             </ReportItemSet>
         </ReportItemSet>
     <!-- IIIb. Benefits from being involved in the Network -->
-        <ReportItem id='IIIb_head' type="StaticReportItem">
+        <ReportItem id='IIIb_head' type="StaticReportItem" private="true">
             <![CDATA[<h2>Benefits of Networking: The value to my research program of my participation in GRAND</h2>]]>
         </ReportItem>
-        <ReportItem id="IIIb" rows="12" limit="600" blobType="BLOB_TEXT" blobItem="RES_RESACT_BENEF" type="TextareaReportItem">
+        <ReportItem id="IIIb" rows="12" limit="600" blobType="BLOB_TEXT" blobItem="RES_RESACT_BENEF" type="TextareaReportItem" private="true">
             <![CDATA[{$item}]]>
         </ReportItem>
     <!-- IIIc. Additional Comments -->
-        <ReportItem id='IIIc_head' type="StaticReportItem">
+        <ReportItem id='IIIc_head' type="StaticReportItem" private="true">
             <![CDATA[<h2>Additional Comments</h2>]]>
         </ReportItem>
-        <ReportItem id="IIIc" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="RES_RESACT_OTHER" type="TextareaReportItem">
+        <ReportItem id="IIIc" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="RES_RESACT_OTHER" type="TextareaReportItem" private="true">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>

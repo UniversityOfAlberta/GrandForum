@@ -67,17 +67,20 @@
     <ReportSection id="status" tooltip="Evaluation of the project report against the reporting rules" name="Report Completion Status" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
+                <p>At this point, the PLs of Phase2 projects should add NIs to their projects (using the "Edit Member" tool).  As soon as you add a new NI to your project, and after the request has been approved by Central, this person will be listed among your project NIs and will have your project in their list of projects.  This will create a textbox in the "plans forward" part of their NI report and will also allow them to request funds in their budget for this project.  NI budget requests can now be uploaded.</p>
+                <p>As a PL you are also expected to develop your new Phase2 project; the basic description has been added to the Forum by Central but there are no subprojects and no champions yet; the PLs are expected to complete this information.  Note that you have to request a champion account ("Add Member") before you can add them to your project; once your request has been approved by Central, you can add them to your project and subprojects.<br />
+                Note that when the account creation is approved they will get and email from the Forum, so it would be advisable to warn them before through email.</p>
+                <br />
                 <p>This page provides an overview of the degree to which the project report and the project-related reports of the associated NIs are complete. Five aspects of the project report are inspected:</p>
                 <ul>
-                    <li>Regarding the products reported in the dashboard, the degree to which their descriptions are complete is examined.</li>
+                    <li>Regarding the products reported in the dashboard, the degree to which their descriptions are complete is examined.  Note that there is no expectation of actual products associated with Phase2 projects since work on these projects is expected to start in April 2014.  However, we anticipate that work may have already begun in some cases and the corresponding products may be reported.</li>
                     <li>Regarding the open-ended sections of the report, the number of text-boxes edited and whether or not any of them exceed the maximum number of characters allowed is reported.</li>
                     <li>Regarding the project milestones, this page mentions the number of milestones that are mentioned in the overview section of the "Project milestones" page.</li>
                     <li>Regarding the PL comments on the project NIs, the numbers of PNIs and CNIs on which you have commented are reported.</li>
                     <li>Regarding the progress of the project NIs, the following numbers are reported:
                     <ol>
-                        <li>project NIs who have not uploaded a project-related revised allocated budget;</li>
-                        <li>project NIs who have not made a project-related request for the new year are reported; and </li>
-                        <li>project NIs that have not submitted their report.</li>
+                        <li>project NIs who have not made a project-related request for the new year are reported; and</li>
+                        <li>project NIs that have not submitted "plans forward" associated with this project are reported.</li>
                     </ol>
                 </ul>
                 <p>In addition to the summary table under the heading "PL Progress", you can find details on the degree to which the project NIs have completed their reports. </p>
@@ -170,9 +173,12 @@
     <ReportSection id="report" tooltip="Open-ended report narratives" name="Project Report" blobSection="LDR_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" number="1,2">
         <Instructions>
             <![CDATA[
-                <p>The intent of this section is to enable the project co-PLs to report in an open-ended format on the activities and accomplishments of the project researchers during the term of the report.</p>
-                <p>The structure of the project report mimics that of the NI report, and with the NI report, you can see the project-related NI comments regarding each criterion through “See NI Comments” link under each criterion textbox.</p>
-<p><small>NOTE: Clicking on the second-level headings of this page will cause the page to expand (contract) to show (hide) text boxes in which you can provide your information. The color of the heading indicates whether the text under this heading meets (purple) or exceeds (red) the maximum permitted number of characters.</small></p>
+                <p>The intent of this section is to enable the project PLs and co-PLs to report in an executive summary an overview of the project activity for the next year and their reflections on:</p>
+                <ol type="a">
+                    <li>the planned activities for the next year;</li>
+                    <li>the benefits to the project from being involved in the Network; and</li>
+                    <li>any additional comments they wish</li>
+                </ol>
             ]]>
         </Instructions>
 <!-- I. Executive Summary -->
@@ -259,7 +265,7 @@
     <ReportSection id="subprojects" tooltip="Discussion of progress against Sub-Projects" name="Sub-Projects" blobSection="LDR_MILESTONE" type="ReportSection" renderpdf="true" reportCharLimits="false">
         <Instructions>
             <![CDATA[
-                This section shows an overview of all this project's sub-projects.  This section is purely for reference purposes.
+                This section shows an overview of all this project's sub-projects.
             ]]>
         </Instructions>
         <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet" blobIndex="projectId">
@@ -301,7 +307,8 @@
     <ReportSection id="budget" tooltip="Budget-request roll-up and justification" name="Project Budget Request" blobSection="LDR_BUDGET" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
-                <p>This section includes a roll-up of the Budget Request for this project from each of the listed project PNIs and CNIs. Under "Budget Justification", there is a text field to allow for a brief comment on the overall budget request for this project.</p>
+                <p>This section includes a roll-up of the Budget Requests for this project from each of the listed project PNIs and CNIs. Under "Budget Justification", there is a text field to allow for a brief comment on the overall budget request for this project.</p>
+                <p>The Budget Request table includes both PNI and CNI budget requests, imported from the budget requests that are included with their respective NI reports.  The final PNI allocations will be based on the review by the RMC of individual NI reports of those PNIs.  The allocations for the CNIs will be determined by the project.  The RMC will determine the amount of CNI funding that will be made available to each project.  However, please note that this amount will generally not exceed 60% of the total amount of PNI funding allocated to the project and that it will generally not be less than 40% of that amount.  This roughly corresponds to the overall guideline across all projects that 2/3 of the NI research funding allocations will go to PNIs and 1/3 will go to CNIs.  Where the amount requested for CNIs on a project exceeds the amount ultimately allocated, the final amount will be prorated among the CNIs requesting funds for the project, based on the amount of their reqests, unless the project leader provides a revised distribution within the timeframe provided at the time these project CNI allocations are announced.  These allocations will be announced in March 2014.</p>
             ]]>
         </Instructions>
         <ReportItem id="budget_just" rows="10" width="100%" limit="600" blobType="BLOB_TEXT" blobItem="LDR_BUD_JUST" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">

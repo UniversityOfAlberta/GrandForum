@@ -44,6 +44,7 @@ class ProjectNIProgressReportItem extends StaticReportItem {
         
         $nAllocated = 0;
         $nRequested = 0;
+        $nPlansForward = 0;
 		foreach($people as $p){
 		    $pers = Person::newFromId($p['person_id']);
             $allocBudget = $allocatedBudget->copy()->select(V_PERS_NOT_NULL, array($pers->getReversedName()));
@@ -54,14 +55,28 @@ class ProjectNIProgressReportItem extends StaticReportItem {
             if(($reqBudget->nRows() * $reqBudget->nCols()) > 0){
                 $nRequested++;
             }
+            $addr = ReportBlob::create_address(RP_RESEARCHER, RES_RESACTIVITY, RES_RESACT_NEXTPLANS, 0);
+            $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $pers->getId(), $project->getId());
+            $blob->load($addr);
+            $data = $blob->getData();
+            if($data == ""){
+                $nPlansForward++;
+            }
         }
         $error = "";
         if($project->isDeleted() || $project->getPhase() < PROJECT_PHASE && $nRequested > 0){
             $error = "class='inlineError'";
         }
-        $details .= "<tr><td style='white-space:nowrap;' valign='top' rowspan='3'><b>NI Progress</b></td><td>{$nSubmitted} of the {$nPeople} NIs have submitted their reports\n</td></tr>";
+        $rowspan = 3;
+        if($project->getPhase() == PROJECT_PHASE){
+            $rowspan = 4;
+        }
+        $details .= "<tr><td style='white-space:nowrap;' valign='top' rowspan='$rowspan'><b>NI Progress</b></td><td>{$nSubmitted} of the {$nPeople} NIs have submitted their reports\n</td></tr>";
         $details .= "<tr><td>{$nAllocated} of the {$nPeople} NIs have uploaded a revised budget for ".$this->getReport()->year." allocated funds\n</td></tr>";
         $details .= "<tr><td><span $error>{$nRequested} of the {$nPeople} NIs have uploaded a budget request</span>\n</td></tr>";
+        if($project->getPhase() == PROJECT_PHASE){
+            $details .= "<tr><td>{$nPlansForward} of the {$nPeople} NIs have not filled in their \"plans forward\" narrative for this project\n</td></tr>";
+        }
         return $details;
 	}
 }

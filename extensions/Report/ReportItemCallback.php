@@ -64,6 +64,7 @@ class ReportItemCallback {
             "user_requested_budget" => "getUserRequestedBudget",
             "user_allocated_budget" => "getUserAllocatedBudget",
             "user_project_comment" => "getUserProjectComment",
+            "user_project_future" => "getUserProjectFuture",
             // Champions
             "champ_org" => "getChampOrg",
             "champ_title" => "getChampTitle",
@@ -639,6 +640,17 @@ class ReportItemCallback {
             return $data[$person->id];
         }
         return "";
+    }
+    
+    function getUserProjectFuture(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_RESACTIVITY, RES_RESACT_NEXTPLANS, 0);
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), $project->getId());
+        $blob->load($addr);
+        $data = $blob->getData();
+        return $data;
     }
     
     function getChampOrg(){

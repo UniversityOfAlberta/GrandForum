@@ -43,6 +43,12 @@
     <ReportSection id="status" name="Report Completion Status" tooltip="Evaluation of your report against the reporting rules" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
         <Instructions>
             <![CDATA[
+                <p>This year's reporting is similar to last year's with a few changes due to the fact that, effective April 1st 2014, GRAND is entering Phase2</p>
+                <ol>
+                    <li>The report narrative section should refer to your activities from January 2013 to December 2013 on Phase1 projects, except that the "plans forward" section should refer to Phase2 projects.  To that end, you should make sure that you have been added to all Phase2 projects in the context of which you plan to work in Phase2.  The list of Phase2 project can be found at <a href='https://forum.grand-nce.ca/index.php/GRAND:Projects'>GRAND:Projects</a> (see the "Phase 2" tab) and additional information, including the PLs and co-PLs, cam be found by following the individual project link.</li>
+                    <li>The budget-request section will also refer to Phase2 projects.  In general, no request should be made for Phase1 projects.</li>
+                </ol>
+                <br />
                 <p>This page provides an overview of the degree to which your report and the reports of those whose input you require are complete. Five aspects of your report are inspected:</p>
                 <ul>
                     <li>Regarding the products reported in the dashboard, the degree to which their descriptions are complete is examined.</li>
@@ -52,7 +58,7 @@
                     <li>The number of your HQP that have reported (vs. the total number of your HQP) is reported.</li>
                 </ul>
                 <p>In addition to the summary table under the heading "NI Progress", you can find details on the degree to which your HQP have completed their reports. Clicking on the "Report PDF" downloads a copy of the HQP report. Clicking on the "On-Line Report" button enables you to impersonate the HQP in question and view and edit the parts of their report on the projects on which you supervise them (see more on how to impersonate HQP in the <a href='../index.php/Help:Contents'>FAQ</a>). Clicking on the "Notify HQP" lets you send a forum notification to the HQP and (if you wish) an email message, with a communication regarding their report.</p>
-                <p><b>Note: All your PLs have access to your on-line project-specific dashboard rows; your executive summary; your project-specific comments under criteria A B C and D; and your project-specific milestone comments.</b></p>
+                <p><b>Note: All your Phase1 PLs have access to your on-line project-specific dashboard rows; your executive summary; your project-specific comments under criteria A B C and D; and your project-specific milestone comments.  The PLs of your Phase2 projects have access to your executive summary and your project-specific plans forward.</b></p>
             ]]>
         </Instructions>
         <ReportItem id="my_progress_head" type="StaticReportItem" reportType="NIReport">
@@ -115,17 +121,17 @@
 
                 <p>Under <b><i>Partners/Champions</i></b>, the network table reports the organizations that have made a contribution (cash, in-kind or otherwise) towards the GRAND-related activities of the NI (i.e., Partners), and the champions(individuals) with whom the NI is working. An individual is a Champion if the NI has been collaborating with him/her in the context of a project, even if the relation is not formal yet. To specify a "Champion" you have to (a) add them on the forum (using the "add user" tool) and give them the "Champion" role, and (b) specify that you are "working with" them (using the "edit relations" tool).</p>
                 
-                <p>The last two columns of the network table reports are the <b><i>(NI) budget allocation</i></b> for the current funding year (2013-14) and the <b><i>budget request</i></b> for the forthcoming funding year (2014-15). If the first budget amount is missing, then you must upload your budget reflecting your actual 2012-13 allocation (not including carryover), through the "My Profile" - "Budget" page. If the second budget amount is missing, then you have not yet uploaded a proper budget request for 2014-15 in the "NI budget" step of the reporting workflow; a corresponding error message will appear in your report-completion status.</p>
+                <p>The last two columns of the network table reports are the <b><i>(NI) budget allocation</i></b> for the current funding year (2013-14) and the <b><i>budget request</i></b> for the forthcoming funding year (2014-15). If the first budget amount is missing, then you must upload your budget reflecting your actual 2013-14 allocation (not including carryover), through the "My Profile" -> "Budget" page. If the second budget amount is missing, then you have not yet uploaded a proper budget request for 2014-15 in the "NI budget" step of the reporting workflow; a corresponding error message will appear in your report-completion status.</p>
                 <p>The hours/week shown for each project are as reported in the "NI Milestone Comments" tab, under each project-specific heading.</p>
                 
                 <h3>The Productivity Table</h3>
                 <p>Under <b><i>Publications</i></b>, the productivity table reports any publication co-authored by the NI, with a date within current reporting year and two years into the future (to account for "to appear" publications). Publications are of different types but, in principle, are documents that appear in archival venues and can be cited.</p>
 
-                <p>Under <b><i>Artifacts</i></b>, the productivity table reports any artifact co-produced by the NI, with a date within the current reporting year and two years into the future (to account for things like scheduled software releases and planned artistic installations). This category of productivity evidence includes curated data repositories, open-source software, artistic works. They are annotated as "peer reviewed" or "non peer-reviewed".</p>
+                <p>Under <b><i>Artifacts</i></b>, the productivity table reports any artifact co-produced by the NI, with a date within the current reporting year and two years into the future (to account for things like scheduled software releases and planned artistic installations). This category of productivity evidence includes curated data repositories, open-source software, and artistic works. They are annotated as "peer reviewed" or "non peer-reviewed".</p>
 
-                <p>Under <b><i>Presentations</i></b>, the productivity table reports any activity in which the NI was involved, with a date within the current reporting year and two years into the future. This category is meant to include conference organization and similar activities.</p>
+                <p>Under <b><i>Presentations</i></b>, the productivity table reports any activity in which the NI was involved, with a date within the current reporting year and two years into the future. This category is meant to include conference presentations and similar activities.</p>
 
-                <p>Under <b><i>Activities</i></b>, the productivity table reports any activity in which the NI was involved, with a date the current reporting year and two years beyond. This category is meant to include conference organization and similar activities.</p>
+                <p>Under <b><i>Activities</i></b>, the productivity table reports any activity in which the NI was involved, with a date the current reporting year and two years beyond. This category is meant to include conference or workshop organization and similar activities.</p>
                 
                 <!--<p>Under <b><i>Multimedia Stories</i></b>, the productivity table reports stories that might be of interest to the community at large, and could possibly be shared through the public web site. The text associated with the media piece (image/audio/video) should</p>
                 <ol>
@@ -194,6 +200,7 @@ In this section you should describe</p>
                     <li>the ways in which your research is tailored to the Canadian context in terms of topic and content, or in terms of needs of Canadian companies or other receptors;</li>
                     <li>the multidisciplinary nature of your work or the research team that gives this work more excellence or potential for impact and how it enables more multi-sectoral applicability of the results and interactions with receptors.</li>
                 </ul>
+                <p>You can reference Products by writing "@Product Title" in the text box and select the product from the drop-down box appearing below the textbox.</p>
                 
                 <h4>B. Development of Highly Qualified Personnel</h4>
                 <p><i>(Reported by Project - Overall Limit (across all projects): 1800 characters)</i></p>
@@ -203,7 +210,8 @@ In this section you should describe</p>
                     <li>How did the existence of the project affect the HQP (to get better training or position them better for jobs in Canada)?</li>
                     <li>How have HQP affected the project to create those benefits for other HQP?</li>
                 </ul>
-                Please give examples if possible.
+                <p>Please give examples if possible.</p>
+                <p>You can reference HQP by writing "@HQP Name" in the text box and select the HQP from the drop-down box appearing below the textbox.</p>
                 
                 <h4>C. Networking and Partnerships</h4>
                 <p><i>(Reported by Project - Overall Limit (across all projects): 1800 characters)</i></p>
@@ -211,6 +219,7 @@ In this section you should describe</p>
                 <p>Describe your activities networking with other GRAND researchers and projects, and researchers outside of GRAND.
 Describe your involvement with receptor organizations, industry partners and Project Champions.</p>
                 <p>How have these connections accelerated your research or broadened its scope and applicability?</p>
+                <p>You can reference Project Members by writing "@Project Member Name" in the text box and select the member from the drop-down box appearing below the textbox.</p>
                 
                 <h4>D. Knowledge and Technology Exchange and Exploitation</h4>
                 <p><i>(Reported by Project - Overall Limit (across all projects): 1800 characters)</i></p>
@@ -222,11 +231,13 @@ Describe your involvement with receptor organizations, industry partners and Pro
                 <p><i>(Limit: 1800 characters)</i></p>
                 <p>Each Network must have an organizational structure appropriate for the management of the research and business functions of a complex multidisciplinary, multi-institutional program.</p>
                 <p>Outside of your role as a researcher, describe what role(s) you've had in GRAND, whether or not funded by GRAND, that contribute to the operation or success of the Network. As examples, this might include your role as Theme co-Leader or organizer of a networking event, which in turn might include some aspect of Knowledge and Technology Exchange and Exploitation.</p>
+                <p>You can reference a GRAND Forum Member by writing "@Member Name" in the text box and select the member from the drop-down box appearing below the textbox.</p>
                 
                 <h3>III. Reflections: Other Aspects of my involvement in GRAND</h3>
                 <h4>Proposed Activity: My Plans for 2014 in GRAND</h4>
                 <p><i>(Report by Phase 2 Project - Overall Limit (across all Phase 2 projects): 3600 characters)</i></p>
-                <p>In this section, you should discuss your objectives and plans of your Phase 2 projects for the upcoming year.</p>
+                <p>In this section, you should discuss your objectives and plans of your Phase 2 projects for the upcoming year.  To that end you should contact the PL or co-PL of Phase2 projects in order to get added to their projects.</p>
+                <p>You can reference Sub-Projects by writing "@Sub-Project Name" in the text box and select the sub-project from the drop-down box appearing below the textbox.</p>
                 
                 <h4>Benefits of Networking: The value to my research program of my participation in GRAND</h4>
                 <p><i>(Limit: 600 characters)</i></p>
@@ -314,11 +325,14 @@ Describe your involvement with receptor organizations, industry partners and Pro
             </ReportItem>
         </ReportItemSet>
 <!-- III. Supplemental -->
-        <ReportItem id='III_head' type="StaticReportItem" private="true">
+        <ReportItem id='III_head' type="StaticReportItem">
             <![CDATA[<h2>III. Reflections: Other Aspects of my involvement in GRAND</h2>]]>
         </ReportItem>
     <!-- IIIa. Plans for Next Year -->
-        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Proposed Activity: My Plans for {$next_year} in GRAND" private="true">
+        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Proposed Activity: My Plans for {$next_year} in GRAND">
+            <ReportItem id='III_head' type="StaticReportItem">
+                <![CDATA[<i>(Phase2 Projects Only)</i>]]>
+            </ReportItem>
             <ReportItemSet id="ProjectLimit_IId" type="LimitReportItemSet" limit="3600">
                 <ReportItemSet id="projects" type="PersonFutureProjectReportItemSet">
                     <ReportItem id="IIIa" width="100%" blobType="BLOB_TEXT" blobItem="RES_RESACT_NEXTPLANS" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name">
@@ -354,12 +368,13 @@ Describe your involvement with receptor organizations, industry partners and Pro
             <![CDATA[
                 <p>Below find a budget template, which you should download, complete with your funding request for 2014-15 and upload. As with the past year, the amounts you will be allocating to different projects should be listed in different columns.</p>
                 <p>Budget Request Caps:
-                    <ol type="a"><li>PNI: $65K;</li>
-                        <li>CNI $35K;</li>
-                        <li>exception to b. - CNI+PCL: $45K;</li>
+                    <ol type="a">
+                        <li>PNI: $65K;</li>
+                        <li>CNI: $35K; exception: CNIs who are also co-PLs of Phase2 projects may request up to $45K;</li>
                         <li>Note: Budget requests that relate to special projects (e.g. SYNTHIUS) do not apply against the caps.</li>
-                    </ol><b>Important:</b> You should only request a budget for the Phase 2 projects.  If a Phase 1 project is included in one of the columns, an error will be shown once the budget is uploaded.  A list of valid projects can be found in the "Project List" worksheet.</p>
-                <p>Each PNI is expected to include $2000 in his/her budget for the GRAND Annual Conference.</p>
+                    </ol>
+                    <b>Important:</b> You should only request a budget for the Phase2 projects.  If a Phase1 project is included in one of the columns, an error will be shown once the budget is uploaded.  A list of valid projects can be found in the "Project List" worksheet.</p>
+                <p>Each PNI is expected to include $2000 in his/her overall budget for the GRAND Annual Conference.</p>
                 <h3>Budget Justification</h3>
                 <p><i>(Limit: 600 characters)</i></p>
                 <p>Please comment on why your funding request is appropriate based on your contributions to the network and your expectations for contributions in the coming year.</p>
@@ -373,7 +388,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
     <ReportSection id="milestones" name="NI Milestone Comments" tooltip="Discussion of progress against projects' milestones" blobSection="RES_MILESTONES" type="EditableReportSection" autosave="true" reportCharLimits="false" renderpdf="true">
         <Instructions>
             <![CDATA[
-                <p>This section is intended to provide important information that will form a part of the relevant project reports.  However, the specific contents of this section will not be reviewed by the Research Management Committee as part of the evaluation of individual Nis</p>
+                <p>This section is intended to provide important information that will form a part of the relevant project reports.  However, the specific contents of this section will not be reviewed by the Research Management Committee as part of the evaluation of individual NIs</p>
                 <p><small><i>Note: Clicking on the purple second-level headings of this page will cause the page to expand (contract) to show (hide) text boxes in which you can provide your information. </i></small></p>
                 <p>The header notes average hours per week that are devoted to GRAND activity, as well as the percentage of your overall research effort that is GRAND-related. While it is understood that these can only be estimates, this information is useful in our reporting to the NCE Secretariat.</p>
 
