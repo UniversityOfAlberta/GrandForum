@@ -145,7 +145,7 @@ class TabUtils {
                     $nsercClass = false;
                 }
             }
-            if($me->isRole(MANAGER) || $me->getName() == "Admin"){
+            if($me->isRole(MANAGER)){
                 $content_actions['rmc'] = array('class' => $rmcClass,
                                                 'text' => "RMC Meeting",
                                                 'href' => "$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC");

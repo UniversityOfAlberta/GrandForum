@@ -15,7 +15,7 @@ class GrandAccess {
 	            $aRights[$i++] = $project->getName();
 	        }
 	    }
-	    if($me->isRole(MANAGER) || $me->name == "Admin"){
+	    if($me->isRole(MANAGER)){
 	        $aRights[$i++] = RMC;
 	        $aRights[$i++] = PL;
 	        $aRights[$i++] = COPL;
