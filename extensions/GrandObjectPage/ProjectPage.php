@@ -140,7 +140,9 @@ class ProjectPage {
                 $name = $split[0];
             }
             $me = Person::newFromId($wgUser->getId());
-            if($me->isMemberOf(Project::newFromHistoricName(str_replace("_Talk", "", $name)))){
+            $project = Project::newFromHistoricName(str_replace("_Talk", "", $name));
+            if($me->isMemberOf($project) || 
+               ($project != null && $me->isMemberOf($project->getParent()))){
                 foreach($me->getProjects() as $proj){
                     if($proj->isSubProject()){
                         continue;
@@ -161,7 +163,7 @@ class ProjectPage {
                     $action = array (
                          'class' => "$class {$proj->getName()}",
                          'text'  => $title,
-                         'href'  => "{$proj->getUrl()}",
+                         'href'  => "{$proj->getUrl()}"
                     );
                     
                     if($dropdown != null){
@@ -180,7 +182,7 @@ class ProjectPage {
                         $content_actions[] = array (
                              'class' => "$class {$proj->getName()}",
                              'text'  => $title,
-                             'href'  => "{$subproj->getUrl()}",
+                             'href'  => "{$subproj->getUrl()}"
                         );
                     }
                 }

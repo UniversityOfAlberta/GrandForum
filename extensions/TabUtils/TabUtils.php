@@ -258,7 +258,9 @@ class TabUtils {
                                    'text' => "Phase2 LOI Responses",
                                    'href' => "$wgServer$wgScriptPath/index.php/Special:LoiProposals?revision=2");
         }
-        if((Project::newFromName($wgTitle->getNSText()) != null || $wgTitle->getText() == "Projects") && !$me->isMemberOf(Project::newFromName($wgTitle->getNSText()))){
+        $project = Project::newFromHistoricName($wgTitle->getNSText());
+        if((Project::newFromName($wgTitle->getNSText()) != null || $wgTitle->getText() == "Projects") && !($me->isMemberOf($project) || 
+                                                                                                           ($project != null && $me->isMemberOf($project->getParent())))){
             $new_actions['projects']['class'] = 'selected';
         }
         else if($wgTitle->getText() == "ALL HQP" || ($wgTitle->getNSText() == HQP && !($me->isRole(HQP) && $wgTitle->getText() == $me->getName()))){
