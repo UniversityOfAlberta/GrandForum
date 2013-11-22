@@ -69,8 +69,8 @@ class UserSearch extends SpecialPage{
                 else{
                     valSelect = val.replace(/\./g, "");
                 }
-                if(val.replace(/\./g, " ").toLowerCase().regexIndexOf(value.toLowerCase()) != -1 || (typeof oldOptions[valSelect] != "undefined" && oldOptions[valSelect].attr("class").toLowerCase().regexIndexOf(value.toLowerCase()) != -1)){
-                    if(val.replace(/\./g, " ").toLowerCase() == value.toLowerCase()){
+                if(unaccentChars(val.replace(/\./g, " ")).regexIndexOf(unaccentChars(value)) != -1 || (typeof oldOptions[valSelect] != "undefined" && unaccentChars(oldOptions[valSelect].attr("class")).regexIndexOf(unaccentChars(value)) != -1)){
+                    if(unaccentChars(val.replace(/\./g, " ")) == unaccentChars(value)){
                         oldOptions[valSelect].attr("selected", "selected");
                     }
                     else{

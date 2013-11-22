@@ -9,7 +9,7 @@ function runImpersonate($par) {
   Impersonate::run($par);
 }
 
-class Impersonate extends UserSearch{
+class Impersonate extends UserSearch {
 
 	function Impersonate() {
 	    global $wgOut, $wgServer, $wgScriptPath;

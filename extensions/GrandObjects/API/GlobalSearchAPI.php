@@ -12,7 +12,7 @@ class GlobalSearchAPI extends RESTAPI {
         $ids = array();
         $origSearch = $search;
         $search = "*".str_replace(" ", "*", $search)."*";
-        $searchNames = array_filter(explode("*", str_replace(".", "*", strtolower($search))));
+        $searchNames = array_filter(explode("*", str_replace(".", "*", unaccentChars($search))));
         switch($group){
             case 'people':
                 $data = array();
@@ -24,8 +24,8 @@ class GlobalSearchAPI extends RESTAPI {
                     $person->name = $pRow['user_name'];
                     $person->realname = $pRow['user_real_name'];
                     $realName = $person->getNameForForms();
-                    $names = array_merge(explode(".", str_replace(" ", "", strtolower($realName))), 
-                                         explode(" ", str_replace(".", "", strtolower($realName))));
+                    $names = array_merge(explode(".", str_replace(" ", "", unaccentChars($realName))), 
+                                         explode(" ", str_replace(".", "", unaccentChars($realName))));
                     $found = true;
                     foreach($searchNames as $name){
                         $grepped = preg_grep("/^$name.*/", $names);
@@ -55,7 +55,7 @@ class GlobalSearchAPI extends RESTAPI {
                         }
                     }
                     if($continue) continue;
-                    similar_text(strtolower(str_replace(".", " ", $person->getName())), strtolower($origSearch), $percent);
+                    similar_text(unaccentChars(str_replace(".", " ", $person->getName())), unaccentChars($origSearch), $percent);
                     foreach($person->getProjects() as $project){
                         if($me->isMemberOf($project)){
                             $percent += 15;
@@ -95,10 +95,10 @@ class GlobalSearchAPI extends RESTAPI {
                 $data = array();
                 $projects = Project::getAllProjectsDuring('0000','9999', true);
                 foreach($projects as $project){
-                    $pName = strtolower($project->getName());
-                    $pFullName = strtolower($project->getFullName());
-                    $names = array_merge(explode(" ", strtolower($pName)),
-                                         explode(" ", strtolower($pFullName)));
+                    $pName = unaccentChars($project->getName());
+                    $pFullName = unaccentChars($project->getFullName());
+                    $names = array_merge(explode(" ", unaccentChars($pName)),
+                                         explode(" ", unaccentChars($pFullName)));
                     $found = true;
                     foreach($searchNames as $name){
                         $grepped = preg_grep("/^$name.*/", $names);
@@ -115,7 +115,7 @@ class GlobalSearchAPI extends RESTAPI {
                 $results = array();
                 foreach($data as $row){
                     $project = Person::newFromId($row['project_id']);
-                    similar_text(strtolower($row['project_name']), strtolower($origSearch), $percent);
+                    similar_text(unaccentChars($row['project_name']), unaccentChars($origSearch), $percent);
                     if($me->isMemberOf($project)){
                         $percent += 50;
                     }
@@ -133,9 +133,9 @@ class GlobalSearchAPI extends RESTAPI {
                                                 array('title', 'category', 'type', 'id'),
                                                 array('deleted' => '0'));
                 foreach($products as $product){
-                    $pTitle = strtolower($product['title']);
-                    $pCategory = strtolower($product['category']);
-                    $pType = strtolower($product['type']);
+                    $pTitle = unaccentChars($product['title']);
+                    $pCategory = unaccentChars($product['category']);
+                    $pType = unaccentChars($product['type']);
                     $names = array_merge(explode(" ", $pTitle),
                                          explode(" ", $pCategory),
                                          explode(" ", $pType));
@@ -159,7 +159,7 @@ class GlobalSearchAPI extends RESTAPI {
                 $flippedProductIds = array_flip($myProducts->pluck('id'));
                 $products = Product::getByIds($dataCollection->pluck('product_id'));
                 foreach($products as $product){
-                    similar_text(strtolower($product->getTitle()), strtolower($origSearch), $percent);
+                    similar_text(unaccentChars($product->getTitle()), unaccentChars($origSearch), $percent);
                     if(isset($flippedProductIds[$product->getId()])){
                         $percent += 50;
                     }
@@ -315,7 +315,7 @@ class GlobalSearchAPI extends RESTAPI {
                     if(!$skip){
                         $results[$pdf->getId()] = 0;
                         foreach($words as $word){
-                            $text = strtolower($extraKeywords." ".$keywords);
+                            $text = unaccentChars($extraKeywords." ".$keywords);
                             if(strstr($text, $word) !== false){
                                 $results[$pdf->getId()] += (1.0/max(1, count(explode(" ", $text))));
                             }

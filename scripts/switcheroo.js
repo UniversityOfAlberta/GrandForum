@@ -57,7 +57,7 @@
             var skip = false;
             for(i = 0; i < this.values.length; i++){
                 var cleanId = this.cleanId(this.id + this.values[i].replace(/\./g, ""));
-                if(value.replace(/ /g, ".").toLowerCase() == this.values[i].replace(/ /g, ".").toLowerCase()){
+                if(unaccentChars(value.replace(/ /g, ".")) == unaccentChars(this.values[i].replace(/ /g, "."))){
                     skip = true;
                     if(typeof this.oldOptions[cleanId] != "undefined"){
                         this.oldOptions[cleanId].attr("selected", true);
@@ -86,7 +86,7 @@
         for(i = 0; i < this.values.length; i++){
             var val = this.values[i];
             var valSelect = this.cleanId(val.replace(/\./g, ""));
-            if(val.replace(/ /g, ".").toLowerCase().indexOf(value.replace(/ /g, ".").toLowerCase()) != -1){
+            if(unaccentChars(val.replace(/ /g, ".")).indexOf(unaccentChars(value.replace(/ /g, "."))) != -1){
                 if(typeof this.oldOptions[this.id + valSelect] != "undefined"){
                     buffer[i] = "<option id='" + $(this.oldOptions[this.id + valSelect]).attr("id") + "'>" + this.oldOptions[this.id + valSelect].html() + "</option>";
                     this.oldOptions[this.id + valSelect] = undefined;
