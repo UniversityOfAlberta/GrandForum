@@ -147,6 +147,7 @@ User::createNew("HQP.User1", array('password' => User::crypt("HQP.Pass1"), 'emai
 User::createNew("HQP.User2", array('password' => User::crypt("HQP.Pass2"), 'email' => "hqp.user2@behat.com"));
 User::createNew("HQP.User3", array('password' => User::crypt("HQP.Pass3"), 'email' => "hqp.user3@behat.com"));
 User::createNew("Already.Existing", array('password' => User::crypt("Already.Existing1"), 'email' => "already.existing@behat.com"));
+User::createNew("Üšër.WìthÁççénts", array('password' => User::crypt("Üšër WìthÁççénts"), 'email' => "Üšër WìthÁççénts@behat.com"));
 
 DBFunctions::insert('grand_roles',
                     array('user_id' => 1,

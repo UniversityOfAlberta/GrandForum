@@ -15,3 +15,9 @@ Feature: Search
         Then I should see "Phase2Project1"
         And I should see "Phase2Project2"
         And I should see "Phase2Project3"
+        
+    Scenario: PNI searches for a user with accented characters
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I fill in "globalSearchInput" with "User WithAccents"
+        And I wait "1000"
+        Then I should see "Üšër WìthÁççénts"
