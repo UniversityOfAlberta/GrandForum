@@ -176,7 +176,6 @@ class ProjectPage {
                         else{
                             $class = "selected";
                         }
-                        $class .= " {$subproj->getParent()->getName()}";
                         $title = $subproj->getName();
                         $content_actions[] = array (
                              'class' => "$class {$proj->getName()}",

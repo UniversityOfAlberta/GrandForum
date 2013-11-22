@@ -7,7 +7,7 @@ class TabUtils {
     static $customActions = array();
 
     static function actionTabs(&$content_actions){
-        global $wgTitle, $wgServer, $wgScriptPath, $wgOut;
+        global $wgTitle, $wgServer, $wgScriptPath, $wgOut, $dropdownScript;
         $new_actions = array();
         foreach($content_actions as $key => $action){
             if(strstr($action['class'], 'selected') !== false && !is_numeric($key)){
@@ -21,7 +21,7 @@ class TabUtils {
         foreach(self::$customActions as $key => $action){
             $new_actions[$key] = $action;
         }
-        $wgOut->addHTML("<script type='text/javascript'>
+        $dropdownScript = "<script type='text/javascript'>
             function createDropDown(name, title, width){
                 $('li.' + name).wrapAll('<ul class=\'' + name + '\'>');
                 $('ul.' + name).wrapAll('<li class=\'invisible\'>');
@@ -46,15 +46,13 @@ class TabUtils {
             $('div#submenu ul.actions li.actions').css('float', 'right');
             
             createDropDown('products', 'Products', 125);
-            createDropDown('people', 'People', 75);
-        </script>");
+            createDropDown('people', 'People', 75);";
         foreach($content_actions as $key => $content){
             if(isset($content['dropdown'])){
-                $wgOut->addHTML("<script type='text/javascript'>
-                    createDropDown('{$content['dropdown']['name']}', '{$content['dropdown']['title']}', {$content['dropdown']['width']});
-                </script>");
+                $dropdownScript .= "createDropDown('{$content['dropdown']['name']}', '{$content['dropdown']['title']}', {$content['dropdown']['width']});";
             }
         }
+        $dropdownScript .= "</script>";
         $content_actions = $new_actions;
         return true;
     }

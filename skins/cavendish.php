@@ -563,6 +563,7 @@ class cavendishTemplate extends QuickTemplate {
 		     } ?>
 		</ul>
     </div>
+    <?php global $dropdownScript; echo $dropdownScript; ?>
     <a id="sideToggle">Toggle Menu</a>
 	<div id="mBody" class='displayTable <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
 	    <div class='displayTableRow'>
