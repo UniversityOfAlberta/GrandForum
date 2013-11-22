@@ -29,44 +29,46 @@ class Simile extends Visualisation {
         $string .= "<script type='text/javascript'>
             var tl;
             function onLoad{$this->index}() {
-	            var eventSource = new Timeline.DefaultEventSource();
-	            var theme = Timeline.ClassicTheme.create();
-	            theme.event.bubble.width = {$this->popupWidth};
-                theme.event.bubble.height = {$this->popupHeight}; 
-                var bandInfos = [
-                Timeline.createBandInfo({
-                    timeZone:       0,
-                    eventSource:    eventSource,
-                    date:           'Jul 01 {$this->year} 00:00:00 GMT',
-                    width:          '{$this->width}%', 
-                    intervalUnit:   Timeline.DateTime.MONTH, 
-                    intervalPixels: {$this->interval},
-                    theme: theme
-                }),
-                Timeline.createBandInfo({
-		            showEventText:  false,
-                    trackHeight:    0.5,
-                    trackGap:       0.2,
-                    timeZone:       0,
-                    eventSource:    eventSource,
-                    date:           'Jul 01 {$this->year} 00:00:00 GMT',
-                    width:          '".($this->width*0.4)."%', 
-                    intervalUnit:   Timeline.DateTime.YEAR, 
-                    intervalPixels: ".($this->interval*2)."
-                })
-              ];
+                _.defer(function(){
+	                var eventSource = new Timeline.DefaultEventSource();
+	                var theme = Timeline.ClassicTheme.create();
+	                theme.event.bubble.width = {$this->popupWidth};
+                    theme.event.bubble.height = {$this->popupHeight}; 
+                    var bandInfos = [
+                    Timeline.createBandInfo({
+                        timeZone:       0,
+                        eventSource:    eventSource,
+                        date:           'Jul 01 {$this->year} 00:00:00 GMT',
+                        width:          '{$this->width}%', 
+                        intervalUnit:   Timeline.DateTime.MONTH, 
+                        intervalPixels: {$this->interval},
+                        theme: theme
+                    }),
+                    Timeline.createBandInfo({
+		                showEventText:  false,
+                        trackHeight:    0.5,
+                        trackGap:       0.2,
+                        timeZone:       0,
+                        eventSource:    eventSource,
+                        date:           'Jul 01 {$this->year} 00:00:00 GMT',
+                        width:          '".($this->width*0.4)."%', 
+                        intervalUnit:   Timeline.DateTime.YEAR, 
+                        intervalPixels: ".($this->interval*2)."
+                    })
+                ];
               
-              bandInfos[1].syncWith = 0;
-              bandInfos[1].highlight = true;
-              bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
-              
-              tl = Timeline.create(document.getElementById('vis{$this->index}'), bandInfos);
-              Timeline.loadJSON('{$this->url}', function(json, url){
-		            eventSource.loadJSON({
-			            'events' : json,
-			            'dateTimeFormat' : 'iso8601'
-		            }, url);
-	          });
+                  bandInfos[1].syncWith = 0;
+                  bandInfos[1].highlight = true;
+                  bandInfos[1].eventPainter.setLayout(bandInfos[0].eventPainter.getLayout());
+                  
+                  tl = Timeline.create(document.getElementById('vis{$this->index}'), bandInfos);
+                  Timeline.loadJSON('{$this->url}', function(json, url){
+		                eventSource.loadJSON({
+			                'events' : json,
+			                'dateTimeFormat' : 'iso8601'
+		                }, url);
+	              });
+	           });
             }
 
             var resizeTimerID = null;

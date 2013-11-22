@@ -65,8 +65,12 @@ class TabbedPage {
             $i++;
         }
         
-        $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/{$wgTitle->getNsText()}:{$wgTitle->getText()}' method='post' enctype='multipart/form-data'>");
-        $wgOut->addHTML("<div id='{$this->id}'>");
+        $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/{$wgTitle->getNsText()}:{$wgTitle->getText()}' method='post' enctype='multipart/form-data'>
+            <div id='currentViewSpinner' style='text-align:center;margin-top:10%;'></div>
+            <script type='text/javascript'>
+                spin = spinner('currentViewSpinner', 40, 75, 12, 10, '#888');
+            </script>");
+        $wgOut->addHTML("<div style='display:none;' id='{$this->id}'>");
         $wgOut->addHTML("<ul>");
         foreach($this->tabs as $tab){
             if($tab instanceof AbstractEditableTab){
@@ -118,6 +122,8 @@ class TabbedPage {
                 else{
                     $('#{$this->id}').tabs({ selected: {$active_tab} });
                 }
+                $('#currentViewSpinner').remove();
+                $('#{$this->id}').show();
         </script>");
     }
 

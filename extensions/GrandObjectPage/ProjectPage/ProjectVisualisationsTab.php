@@ -81,18 +81,24 @@ class ProjectVisualisationsTab extends AbstractTab {
         if($wgUser->isLoggedIn()){
             $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectTimelineData&project={$project->getId()}";
             $timeline = new Simile($dataUrl);
-            $wgOut->addScript("<script type='text/javascript'>
-                                   var nTimesLoadedTimeline = 0;
-                               </script>");
+            
+            $this->html .="<script type='text/javascript'>
+                                $(document).ready(function(){
+                                    var nTimesLoadedTimeline = 0;
+                                    $('#project').bind('tabsselect', function(event, ui) {
+                                        if(ui.panel.id == 'visualizations'){
+                                            if(nTimesLoadedTimeline == 0){
+                                                onLoad{$timeline->index}();
+                                                nTimesLoadedTimeline++;
+                                            }
+                                        }
+                                    });
+                                });
+                              </script>";
             $this->html .= "<div id='outerTimeline'>";
             $this->html .= $timeline->show();
             $this->html .= "</div>";
-            $this->html .="<script type='text/javascript'>
-                                    if(nTimesLoadedTimeline == 0){
-                                        onLoad{$timeline->index}();
-                                        nTimesLoadedTimeline++;
-                                    }
-                              </script>";
+            
         }
     }
     
