@@ -142,17 +142,48 @@ class ProjectPage {
             $me = Person::newFromId($wgUser->getId());
             if($me->isMemberOf(Project::newFromHistoricName(str_replace("_Talk", "", $name)))){
                 foreach($me->getProjects() as $proj){
+                    if($proj->isSubProject()){
+                        continue;
+                    }
                     if(str_replace("_Talk", "", $name) != $proj->getName()){
                         $class = false;
                     }
                     else{
                         $class = "selected";
                     }
-                    $content_actions[] = array (
-                         'class' => $class,
-                         'text'  => $proj->getName(),
+                    $dropdown = null;
+                    $title = "{$proj->getName()} (Phase{$proj->getPhase()})";
+                    if(count($proj->getSubProjects()) > 0){
+                        $dropdown = array('name' => $proj->getName(), 
+                                          'title' => $title, 
+                                          'width' => 125);
+                    }
+                    $action = array (
+                         'class' => "$class {$proj->getName()}",
+                         'text'  => $title,
                          'href'  => "{$proj->getUrl()}",
+                    );
+                    
+                    if($dropdown != null){
+                        $action['dropdown'] = $dropdown;
+                    }
+                    
+                    $content_actions[] = $action;
+                    foreach($proj->getSubProjects() as $subproj){
+                        if(str_replace("_Talk", "", $name) != $subproj->getName()){
+                            $class = false;
+                        }
+                        else{
+                            $class = "selected";
+                        }
+                        $class .= " {$subproj->getParent()->getName()}";
+                        $title = $subproj->getName();
+                        $content_actions[] = array (
+                             'class' => "$class {$proj->getName()}",
+                             'text'  => $title,
+                             'href'  => "{$subproj->getUrl()}",
                         );
+                    }
                 }
             }
         }

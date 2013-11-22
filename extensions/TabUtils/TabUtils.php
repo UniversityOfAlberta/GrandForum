@@ -22,43 +22,39 @@ class TabUtils {
             $new_actions[$key] = $action;
         }
         $wgOut->addHTML("<script type='text/javascript'>
-            $('li.people').wrapAll('<ul class=\'people\'>');
-            $('li.product').wrapAll('<ul class=\'products\'>');
-            $('ul.people').wrapAll('<li class=\'invisible\'>');
-            $('ul.products').wrapAll('<li class=\'invisible\'>');
-            
-            var productsSelected = false;
-            if($('li.product').filter('.selected').length >= 1){
-                productsSelected = true;
+            function createDropDown(name, title, width){
+                $('li.' + name).wrapAll('<ul class=\'' + name + '\'>');
+                $('ul.' + name).wrapAll('<li class=\'invisible\'>');
+                var selected = false;
+                if($('li.' + name).filter('.selected').length >= 1){
+                    selected = true;
+                }
+                $('div#submenu ul.' + name).dropdown({title: title,
+                                                       width: width + 'px' 
+                                                      });
+                if(selected){
+                    $('ul.' + name + ' > li').addClass('selected');
+                    $('ul.' + name).imgDown();
+                }
             }
             
-            var peopleSelected = false;
-            if($('li.people').filter('.selected').length >= 1){
-                peopleSelected = true;
-            }
-            
-            $('li.action').wrapAll('<ul class=\'actions\' />');
-            $('div#submenu ul.products').dropdown({title: 'Products',
-                                                  width: '125px' 
-                                                  });
-            $('div#submenu ul.people').dropdown({title: 'People',
-                                                  width: '75px' 
-                                                  });                             
+            $('li.action').wrapAll('<ul class=\'actions\' />');                           
             $('div#submenu ul.actions').dropdown({title: 'Actions',
                                                   width: '125px' 
                                                  });
             $('div#submenu ul.actions').css('padding-right', 0);
             $('div#submenu ul.actions li.actions').css('float', 'right');
             
-            if(productsSelected){
-                $('ul.products > li').addClass('selected');
-                $('ul.products').imgDown();
-            }
-            if(peopleSelected){
-                $('ul.people > li').addClass('selected');
-                $('ul.people').imgDown();
-            }
+            createDropDown('products', 'Products', 125);
+            createDropDown('people', 'People', 75);
         </script>");
+        foreach($content_actions as $key => $content){
+            if(isset($content['dropdown'])){
+                $wgOut->addHTML("<script type='text/javascript'>
+                    createDropDown('{$content['dropdown']['name']}', '{$content['dropdown']['title']}', {$content['dropdown']['width']});
+                </script>");
+            }
+        }
         $content_actions = $new_actions;
         return true;
     }
@@ -227,25 +223,25 @@ class TabUtils {
                                    'text' => RMC,
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_RMC");
         if($wgUser->isLoggedIn()){
-            $new_actions["Publications"] = array('class' => 'product hidden',
+            $new_actions["Publications"] = array('class' => 'products hidden',
                                        'text' => "Publications",
                                        'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Publication");
-            $new_actions["Artifacts"] = array('class' => 'product hidden',
+            $new_actions["Artifacts"] = array('class' => 'products hidden',
                                        'text' => "Artifacts",
                                        'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Artifact");
-            $new_actions["Presentations"] = array('class' => 'product hidden',
+            $new_actions["Presentations"] = array('class' => 'products hidden',
                                        'text' => "Presentations",
                                        'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Presentation");
-            $new_actions["Activities"] = array('class' => 'product hidden',
+            $new_actions["Activities"] = array('class' => 'products hidden',
                                               'text' => "Activities",
                                               'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Activity");
-            $new_actions["Press"] = array('class' => 'product hidden',
+            $new_actions["Press"] = array('class' => 'products hidden',
                                           'text' => "Press",
                                           'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Press");
-            $new_actions["Awards"] = array('class' => 'product hidden',
+            $new_actions["Awards"] = array('class' => 'products hidden',
                                            'text' => "Awards",
                                            'href' => "$wgServer$wgScriptPath/index.php/Special:Products#/Award");
-            $new_actions["Multimedia"] = array('class' => 'product hidden',
+            $new_actions["Multimedia"] = array('class' => 'products hidden',
                                            'text' => "Multimedia",
                                            'href' => "$wgServer$wgScriptPath/index.php/GRAND:Multimedia_Stories");
         }
@@ -344,7 +340,7 @@ class TabUtils {
         }
         else{
             foreach($content_actions as $action){
-                if($action['class'] == "selected"){
+                if(strstr($action['class'], "selected") !== false){
                     return;
                 }
             }
