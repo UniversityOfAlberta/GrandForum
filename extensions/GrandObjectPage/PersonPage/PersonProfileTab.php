@@ -126,8 +126,8 @@ EOF;
             $this->html .=<<<EOF
             <style>
             span.supervisor_lbl{
+                text-align: center;
                 color: #8C529D;
-                position: absolute;
                 bottom: 0px;
                 left: 7px;
                 display: block;
@@ -135,8 +135,8 @@ EOF;
                 font-weight: bold;
             }
             span.percent_lbl{
+                text-align: center;
                 color: #8C529D;
-                position: absolute;
                 top: 3px;
                 right: 25px;
                 display: block;
@@ -145,7 +145,11 @@ EOF;
             }
             </style>
             <table><tr>
-            <td style='position:relative; padding:18px 0;'><img style='vertical-align:bottom;' width='100px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/{$button}' /><span class='supervisor_lbl'>Supervisor</span><span class='percent_lbl'>{$perc}</span></td>
+            <td style='position:relative; padding:0;'>
+                <span class='percent_lbl'>{$perc}</span>
+                <img style='vertical-align:bottom;' width='100px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/{$button}' />
+                <span class='supervisor_lbl'>Supervisor</span>
+            </td>
             <td style='padding-left:15px;'><h3>{$ethical_hqp} of my {$total_hqp} students have completed the TCPS2 Tutorial.</h3></td>
             <tr></table>
 EOF;
