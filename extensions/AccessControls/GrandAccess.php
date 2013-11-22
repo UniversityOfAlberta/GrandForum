@@ -27,7 +27,7 @@ class GrandAccess {
 	            $aRights[$i++] = PL;
 	            $aRights[$i++] = PL.'+';
 	        }
-	        if($me->isProjectLeader()){
+	        if($me->isProjectCoLeader()){
 	            $aRights[$i++] = COPL;
 	            $aRights[$i++] = COPL.'+';
 	        }
