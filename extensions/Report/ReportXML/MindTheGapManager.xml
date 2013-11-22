@@ -13,7 +13,7 @@
         <ReportItem type="StaticReportItem">
             <![CDATA[
                 <table cellpadding="1" frame="box" rules="all">
-                    <tr><th>NI</th><th style='min-width:200px;'>Music</th><th style='min-width:200px;'>First&nbsp;Nations</th><th style='min-width:200px;'>Social&nbsp;Problems</th><th style='min-width:200px;'>Other</th></tr>
+                    <tr><th>Person</th><th style='min-width:200px;'>Music</th><th style='min-width:200px;'>First&nbsp;Nations</th><th style='min-width:200px;'>Social&nbsp;Problems</th><th style='min-width:200px;'>Other</th></tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="ni" type="MindTheGapReportItemSet">
