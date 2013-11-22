@@ -1,5 +1,45 @@
 Feature: Reporting
 
+    Scenario: HQP edits and saves their report
+        Given I am logged in as "HQP.User1" using password "HQP.Pass1"
+        When I follow "My Reports"
+        And I click by css "#HQPReport"
+        And I wait until I see "Excellence of the Research Program: How my research contributes to the Network" up to "5000"
+        And I click "Excellence of the Research Program: How my research contributes to the Network"
+        And I fill in "HQPReport_Ia_head_person14_project0_milestone0_OR_person14_project0_milestone0_ProjectLimit_Ia_person14_project0_milestone0_projects_person14_project192_milestone0_Ia" with "lorem ipsum"
+        And I press "Save"
+        And I click "HQP Dashboard"
+        And I wait until I see "Projects:" up to "5000"
+        And I click by css "#HQPReport"
+        And I wait until I see "Excellence of the Research Program: How my research contributes to the Network" up to "5000"
+        And I click "Excellence of the Research Program: How my research contributes to the Network"
+        Then I should see "lorem ipsum"
+        
+    Scenario: HQP attempts to view an NI report
+        Given I am logged in as "HQP.User1" using password "HQP.Pass1"
+        When I go to "index.php/Special:Report?report=NIReport"
+        Then I should see "Permission error"
+        
+    Scenario: HQP attempts to view a PL report
+        Given I am logged in as "HQP.User1" using password "HQP.Pass1"
+        When I go to "index.php/Special:Report?report=ProjectFinalReport&project=Phase1Project1"
+        Then I should see "Permission error"
+        
+    Scenario: PNI attempts to view an HQP report
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I go to "index.php/Special:Report?report=HQPReport"
+        Then I should see "Permission error"
+        
+    Scenario: PNI (who is not a PL) attempts to view a PL report
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I go to "index.php/Special:Report?report=ProjectFinalReport&project=Phase1Project1"
+        Then I should see "Permission error"
+        
+    Scenario: PL attempts to view a PL report which they are not a PL of
+        Given I am logged in as "PL.User1" using password "PL.Pass1"
+        When I go to "index.php/Special:Report?report=ProjectFinalReport&project=Phase1Project1"
+        Then I should see "Permission error"
+
     Scenario: CNI Uploads a budget within limits (with BigBet Project)
         Given I am logged in as "CNI.User1" using password "CNI.Pass1"
         When I follow "My Reports"

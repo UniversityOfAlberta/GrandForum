@@ -203,6 +203,7 @@ addUserProject("CNI.User2", "Phase2Project1");
 addUserProject("CNICOPL.User1", "Phase2Project1");
 addUserProject("CNICOPL.User1", "Phase2Project2");
 addUserProject("CNICOPL.User1", "Phase2BigBetProject1");
+addUserProject("HQP.User1", "Phase1Project1");
 addUserProject("HQP.User3", "Phase2Project1");
 
 addProjectLeader("PL.User1", "Phase2Project1");

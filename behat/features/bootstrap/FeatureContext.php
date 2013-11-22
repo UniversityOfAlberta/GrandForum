@@ -143,7 +143,21 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      * @When /^I click "([^"]*)"$/
      */
     public function iClick($sel){
-        $el = $this->getSession()->getPage()->find('xpath', '//a[text()="'.$sel.'"]');
+        $el = $this->getSession()->getPage()->find('xpath', '//*[text()="'.$sel.'"]');
+        if (null === $el) {
+            throw new \InvalidArgumentException(sprintf('Could not find XPath selector: "%s"', $sel));
+        }
+        $el->click();
+    }
+    
+    /**
+     * @When /^I click by css "([^"]*)"$/
+     */
+    public function iClickByCss($sel){
+        $el = $this->getSession()->getPage()->find('css', $sel);
+        if (null === $el) {
+            throw new \InvalidArgumentException(sprintf('Could not find CSS selector: "%s"', $sel));
+        }
         $el->click();
     }
     
