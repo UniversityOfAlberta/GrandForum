@@ -102,7 +102,10 @@ class NIProgressReportItem extends StaticReportItem {
             }
             else{
 		        if($budget->isError()){
-                    $errorMsg .= "$tr<td><span class='inlineError'>There are errors in your budget request</span></td></tr>\n";
+		            $errors = $budget->showErrorsSimple();
+		            $errors = str_replace("<br />", "</span><br /><span class='inlineError'>", $errors);
+                    $errors = str_replace("<br /><span class='inlineError'></span>", "", $errors);
+                    $errorMsg .= "$tr<td><span class='inlineError'>$errors</span></td></tr>\n";
                 }
             }
         }

@@ -486,6 +486,26 @@ abstract class QueryableTable {
 		return $isError;
     }
     
+    function showErrorsSimple(){
+        $ret = "";
+        foreach($this->xls as $rowN => $row){
+		    foreach($row as $colN => $cell){
+		        if($cell->error != ""){
+			        $ret .= "{$cell->error}<br />\n";
+			    }
+			}
+		}
+		if(count($this->errors) > 0){
+		    foreach($this->errors as $rowN => $rowErrors){
+		        foreach($rowErrors as $colN => $error){
+		            $ret .= "$error<br />\n";
+		        }
+		    }
+		}
+		$ret = substr($ret, 0, strlen($ret) - strlen("<br />\n"));
+		return $ret;
+    }
+    
     // Shows the errors which arose during readCells()
 	function showErrors(){
 	    $ret = "<ul class='pdfnodisplay'>";
@@ -498,21 +518,7 @@ abstract class QueryableTable {
 			else {
 				$ret .= "<li>Please verify that the budget preview below is correct. If not, please contact support.<br />
 				             The following errors were found in your budget:</li><div class='error'>\n";
-
-				foreach($this->xls as $rowN => $row){
-				    foreach($row as $colN => $cell){
-				        if($cell->error != ""){
-					        $ret .= "{$cell->error}<br />\n";
-					    }
-					}
-				}
-				if(count($this->errors) > 0){
-				    foreach($this->errors as $rowN => $rowErrors){
-				        foreach($rowErrors as $colN => $error){
-				            $ret .= "$error<br />\n";
-				        }
-				    }
-				}
+				$ret .= $this->showErrorsSimple();
 				$ret .= "</div>\n";
 			}
 		}
