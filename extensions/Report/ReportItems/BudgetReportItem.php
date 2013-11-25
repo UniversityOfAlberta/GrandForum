@@ -142,7 +142,7 @@ class BudgetReportItem extends AbstractReportItem {
 		        }
 		    }
 		    self::checkTotals($budget, $person, $this->getReport()->year);
-		    $errors = self::checkDeletedProjects($budget);
+		    $errors = self::checkDeletedProjects($budget, $person, $this->getReport()->year);
 		    foreach($errors as $key => $error){
 	            $budget->errors[0][] = $error;
 	        }
@@ -250,7 +250,7 @@ class BudgetReportItem extends AbstractReportItem {
         }
 	}
 	
-	static function checkDeletedProjects($budget){
+	static function checkDeletedProjects($budget, $person, $year){
 	    $errors = array();
         $projects = $budget->copy()->select(V_PROJ, array())->where(V_PROJ)->xls;
         foreach($projects as $rowN => $row){
@@ -265,6 +265,9 @@ class BudgetReportItem extends AbstractReportItem {
                     }
                     if($project->isSubProject()){
                         $budget->xls[$rowN][$colN]->error = "'{$project->getName()}' is not a primary project";
+                    }
+                    if(!$person->isMemberOfDuring($project, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
+                        $budget->xls[$rowN][$colN]->error = "You are not a member of '{$project->getName()}' between ".($year+1).REPORTING_NCE_START_MONTH." and ".($year+2).REPORTING_NCE_END_MONTH;
                     }
                 }
             }

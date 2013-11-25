@@ -72,7 +72,7 @@ class NIProgressReportItem extends StaticReportItem {
 	                    $budget->errors[0][] = $error;
 	                }
                 }
-                $errors = BudgetReportItem::checkDeletedProjects($budget);
+                $errors = BudgetReportItem::checkDeletedProjects($budget, $person, $this->getReport()->year);
                 BudgetReportItem::checkTotals($budget, $person, $this->getReport()->year);
                 foreach($errors as $key => $error){
                     $budget->errors[0][] = $error;
