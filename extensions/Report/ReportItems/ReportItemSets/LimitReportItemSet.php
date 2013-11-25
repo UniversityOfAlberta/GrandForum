@@ -39,7 +39,7 @@ class LimitReportItemSet extends ReportItemSet {
     }
     
     function getEmptyFields(){
-        if($this->getActualNChars() == 0){
+        if($this->getNTextareas() > 0 && $this->getActualNChars() == 0){
             return 1;
         }
         return 0;
@@ -62,7 +62,12 @@ class LimitReportItemSet extends ReportItemSet {
     }
     
     function getNTextareas(){
-        return 1;
+        if(count($this->getTextareas()) > 0){
+            return 1;
+        }
+        else{
+            return 0;
+        }
     }
     
     function render(){

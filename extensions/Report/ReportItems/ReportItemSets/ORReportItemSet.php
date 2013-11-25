@@ -11,7 +11,6 @@ class ORReportItemSet extends ReportItemSet {
     
     function getNComplete(){
         $nComplete = 0;
-        $noFound = false;
         for($i=0;$i < count($this->items); $i++){
             $item = $this->items[$i];
             $nComplete = $item->getNComplete();
@@ -23,7 +22,15 @@ class ORReportItemSet extends ReportItemSet {
     }
     
     function getNFields(){
-        return 1;
+        $count = 0;
+        for($i=0;$i < count($this->items); $i++){
+            $item = $this->items[$i];
+            $count += $item->getNFields();
+            if($count >= 1){
+                return 1;
+            }
+        }
+        return 0;
     }
 }
 

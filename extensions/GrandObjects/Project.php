@@ -1191,7 +1191,6 @@ EOF;
                                     array('name' => 'ASC'));
         foreach($data as $row){
             $subproject = Project::newFromId($row['id']);
-            echo $subproject->getCreated();
             if((($subproject->deleted &&
                  $subproject->effectiveDate <= $endDate &&
                  $subproject->effectiveDate >= $startDate) ||
