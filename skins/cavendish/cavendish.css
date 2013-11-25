@@ -1182,6 +1182,12 @@ a.error_box_close {
     color: #8C529D;
     font-weight: bold;
 }
+
+td.budgetError {
+    color: #D50013;
+    background: #FEB8B8;
+}
+
 /* jQuery dialogs */
 .ui-dialog{
 				border: 1px solid #ccc;

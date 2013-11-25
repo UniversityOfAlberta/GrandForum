@@ -544,13 +544,13 @@ abstract class QueryableTable {
                 $ret[] = "<tr>\n";
                 $i = 0;
                 foreach($row as $colN => $cell){
-                    $errorStyle = "";
+                    $errorClass = "";
                     $errorMsg = "";
                     $errorMsgEnd = "";
                     $style = "";
                     $Cell = $cell;
                     if($Cell->error != ""){
-                        $errorStyle = "background-color:#ff0000;";
+                        $errorClass = "budgetError";
                         $errorMsg = "<span title='{$colN},{$rowN}: {$Cell->error}' class='tooltip'>";
                         $errorMsgEnd = "</span>";
                     }
@@ -561,7 +561,7 @@ abstract class QueryableTable {
                     if(!isset($row[$colN + 1])){
                         $span = $this->nCols() - $colN;
                     }
-                    $ret[] = "<td nowrap='nowrap' style='width:6em;white-space:nowrap;$errorStyle$style' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
+                    $ret[] = "<td nowrap='nowrap' style='width:6em;white-space:nowrap;$style' class='$errorClass' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
                     ++$i;
                 }
                 $ret[] = "</tr>\n";

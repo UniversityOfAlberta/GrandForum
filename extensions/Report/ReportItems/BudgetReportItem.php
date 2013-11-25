@@ -54,12 +54,13 @@ class BudgetReportItem extends AbstractReportItem {
 		if($data !== null){
 		    $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
 		    $budget = $this->filterCols($budget);
+		    $budget = $budget->copy()->filterCols(V_PROJ, array(""));
 		    self::checkTotals($budget, $this->getReport()->person, $this->getReport()->year);
 		    $errors = self::checkDeletedProjects($budget, $this->getReport()->person, $this->getReport()->year);
 		    foreach($errors as $key => $error){
 	            $budget->errors[0][] = $error;
 	        }
-		    $wgOut->addHTML($budget->copy()->filterCols(V_PROJ, array(""))->renderForPDF());
+		    $wgOut->addHTML($budget->renderForPDF());
 		}
 		else{
 		    $wgOut->addHTML("You have not yet uploaded a budget");

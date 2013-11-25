@@ -230,6 +230,11 @@ EOF;
                 -moz-border-radius: 3px;
                 -webkit-border-radius: 3px;
             }
+            
+            #pdfBody .budgetError {
+                color: #D50013;
+                background: #FEB8B8;
+            }
 		    
 		    #pdfBody td, #pdfBody th {
 		        font-family: helvetica !important;

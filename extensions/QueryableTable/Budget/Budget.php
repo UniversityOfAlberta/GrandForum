@@ -280,14 +280,23 @@ class Budget extends QueryableTable{
     
     function renderForPDF($sortable=false){
         $dom = new SmartDOMDocument();
-        $dom->loadHTML($this->render());
+        $errorMsg = "";
+        if($this->isError()){
+            $errors = $this->showErrorsSimple();
+            $errors = str_replace("<br />", "</span><br /><span class='inlineError'>", $errors);
+            $errors = str_replace("<br /><span class='inlineError'></span>", "", $errors);
+            $errorMsg = "<span class='inlineError'>$errors</span><br /><br />";
+        }
+        $dom->loadHTML($errorMsg.$this->render());
         $tabs = $dom->getElementsByTagName("table");
         foreach($tabs as $tab){
             foreach($tab->getElementsByTagName("td") as $td){
                 $td->removeAttribute('width');
                 $td->removeAttribute('nowrap');
                 $td->setAttribute('colspan', '1');
-                $td->setAttribute('style', $td->getAttribute('style').'background-color:#FFFFFF;');
+                if($td->getAttribute('class') != "budgetError"){
+                    $td->setAttribute('style', $td->getAttribute('style').'background-color:#FFFFFF;');
+                }
                 $td->setAttribute('style', $td->getAttribute('style')."padding-top:".max(1, (0.5*DPI_CONSTANT))."px;padding-bottom:".max(1, (0.5*DPI_CONSTANT))."px;");
                 $td->setAttribute('style', str_replace("width:6em;", "", $td->getAttribute('style')));
             }
