@@ -561,7 +561,6 @@ abstract class AbstractReport extends SpecialPage {
         if($nProjectTags == 0){
             $pResult = true;
         }
-
         return ($pResult && $rResult);
     }
     
@@ -572,7 +571,10 @@ abstract class AbstractReport extends SpecialPage {
             return array('r' => true, 'w' => true);
         }
         $roles = $me->getRights();
-        
+        $roleObjs = $me->getRolesDuring();
+        foreach($roleObjs as $role){
+            $roles[] = $role->getRole();
+        }
         $permissions = array();
         foreach($roles as $role){
             if(isset($this->sectionPermissions[$role][$section->id])){
