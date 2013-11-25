@@ -13,24 +13,24 @@ class ProjectDescriptionAPI extends API{
 
     function processParams($params){
         if(isset($_POST['description']) && $_POST['description'] != ""){
-            $_POST['description'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['description'])));
+            $_POST['description'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['description']));
         }
         if(isset($_POST['problem']) && $_POST['problem'] != ""){
-            $_POST['problem'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['problem'])));
+            $_POST['problem'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['problem']));
         }
         else{
             $_POST['problem'] = "";
         }
         if(isset($_POST['solution']) && $_POST['solution'] != ""){
-            $_POST['solution'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['solution'])));
+            $_POST['solution'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['solution']));
         }else{
             $_POST['solution'] = "";
         }
         if(isset($_POST['project']) && $_POST['project'] != ""){
-            $_POST['project'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['project'])));
+            $_POST['project'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['project']));
         }
         if(isset($_POST['fullName']) && $_POST['fullName'] != ""){
-            $_POST['fullName'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['fullName'])));
+            $_POST['fullName'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['fullName']));
         }
     }
 
@@ -66,16 +66,26 @@ class ProjectDescriptionAPI extends API{
 		    $fullName = $_POST['fullName'];
 		}
 		else{
-		    $fullName = @addslashes($project->getFullName());
+		    $fullName = $project->getFullName();
 		}
         DBFunctions::begin();
-        $sql = "UPDATE grand_project_descriptions
-                SET `end_date` = CURRENT_TIMESTAMP
-                WHERE project_id = '{$project->getId()}' AND id = '{$project->getLastHistoryId()}'";
-        DBFunctions::execSQL($sql, true);
-        $sql = "INSERT INTO grand_project_descriptions (`project_id`,`evolution_id`,`full_name`,`themes`,`description`,`problem`,`solution`,`start_date`)
-                VALUES ('{$project->getId()}','{$project->evolutionId}','{$fullName}','{$themes[0]}\n{$themes[1]}\n{$themes[2]}\n{$themes[3]}\n{$themes[4]}','{$_POST['description']}','{$_POST['problem']}','{$_POST['solution']}',CURRENT_TIMESTAMP)";
-        DBFunctions::execSQL($sql, true);
+        DBFunctions::update('grand_project_descriptions',
+                            array('end_date' => EQ(COL('CURRENT_TIMESTAMP'))),
+                            array('project_id' => EQ($project->getId()),
+                                  'id' => EQ($project->getLastHistoryId())),
+                            array(),
+                            true);
+        DBFunctions::insert('grand_project_descriptions',
+                            array('project_id' => $project->getId(),
+                                  'evolution_id' => $project->evolutionId,
+                                  'full_name' => $fullName,
+                                  'themes' => "{$themes[0]}\n{$themes[1]}\n{$themes[2]}\n{$themes[3]}\n{$themes[4]}",
+                                  'description' => $_POST['description'],
+                                  'problem' => $_POST['problem'],
+                                  'solution' => $_POST['solution'],
+                                  'start_date' => 'CURRENT_TIMESTAMP'),
+                            true);
+        DBFunctions::commit();
         if(!$noEcho){
             echo "Project description updated\n";
         }

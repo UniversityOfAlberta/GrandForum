@@ -21,7 +21,13 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->html .="<h3><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:Mail_Index'>{$project->getName()} Mailing List</a></h3>";
         }
         $bigbet = ($this->project->isBigBet()) ? "Yes" : "No";
+        $title = "";
+        if($edit){
+            $fullNameField = new TextField("fullName", "New Title", $this->project->getFullName());
+            $title = "<tr><td><b>New Title:</b></td><td>{$fullNameField->render()}</td></tr>";
+        }
         $this->html .= "<table>
+                            $title
                             <tr><td><b>Type:</b></td><td>{$this->project->getType()}</td></tr>
                             <tr><td><b>Big-Bet:</b></td><td>{$bigbet}</td></tr>
                             <tr><td><b>Status:</b></td><td>{$this->project->getStatus()}</td></tr>
@@ -40,17 +46,21 @@ class ProjectMainTab extends AbstractEditableTab {
     }
     
     function handleEdit(){
+        global $wgOut;
         $_POST['project'] = $this->project->getName();
-        $_POST['description'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['description'])));
-        $_POST['problem'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['problem'])));
-        $_POST['solution'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['solution'])));
-        if( stripslashes($_POST['description']) != $this->project->getDescription() ||
-            stripslashes($_POST['problem']) != $this->project->getProblem() ||
-            stripslashes($_POST['solution']) != $this->project->getSolution() ){
+        $_POST['fullName'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['fullName']));
+        $_POST['description'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['description']));
+        $_POST['problem'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['problem']));
+        $_POST['solution'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['solution']));
+        if($_POST['description'] != $this->project->getDescription() ||
+           $_POST['problem'] != $this->project->getProblem() ||
+           $_POST['solution'] != $this->project->getSolution() ||
+           $_POST['fullName'] != $this->project->getFullName()){
 
             APIRequest::doAction('ProjectDescription', true);
             Project::$cache = array();
             $this->project = Project::newFromId($this->project->getId());
+            $wgOut->setPageTitle($this->project->getFullName()." (Phase ".$this->project->getPhase().")");
         }
 
         if(isset($_POST['challenge_id'])){
