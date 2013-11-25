@@ -59,6 +59,23 @@ Feature: Reporting
         And I wait until I see "Excellence of the Research Program: How my research contributes to the Network" up to "5000"
         And I click "Excellence of the Research Program: How my research contributes to the Network"
         Then I should see "lorem ipsum"
+        
+    Scenario: PNI edits one of their HQP's reports
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I follow "My Reports"
+        And I go to "index.php/Special:Report?report=HQPReport&impersonate=HQP.User1"
+        Then I should see "is currently viewing the forum as HQP User1"
+        When I click by css "#HQPReport"
+        And I wait until I see "Excellence of the Research Program: How my research contributes to the Network" up to "5000"
+        And I click "Excellence of the Research Program: How my research contributes to the Network"
+        And I fill in "HQPReport_Ia_head_person14_project0_milestone0_OR_person14_project0_milestone0_ProjectLimit_Ia_person14_project0_milestone0_projects_person14_project192_milestone0_Ia" with "edited by supervisor"
+        And I press "Save"
+        And I click "HQP Dashboard"
+        And I wait until I see "Projects:" up to "5000"
+        And I click by css "#HQPReport"
+        And I wait until I see "Excellence of the Research Program: How my research contributes to the Network" up to "5000"
+        And I click "Excellence of the Research Program: How my research contributes to the Network"
+        Then I should see "edited by supervisor"       
 
     Scenario: CNI Uploads a budget within limits (with BigBet Project)
         Given I am logged in as "CNI.User1" using password "CNI.Pass1"
@@ -142,3 +159,14 @@ Feature: Reporting
         And I press "Upload"
         And I switch to iframe "budget"
         Then I should see "has already been used in another column"
+        
+    Scenario: PNI Uploads a budget with a project that they are not on
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I follow "My Reports"
+        And I click "Budget Request"
+        And I wait until I see "Budget Justification" up to "5000"
+        And I switch to iframe "budget"
+        And I attach the file "PNI.User1_notonproject.xls" to "budget"
+        And I press "Upload"
+        And I switch to iframe "budget"
+        Then I should see "You are not a member of 'Phase2Project3'"
