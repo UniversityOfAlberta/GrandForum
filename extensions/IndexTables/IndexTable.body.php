@@ -65,7 +65,7 @@ class IndexTable {
 				    break;
 				case 'ALL '.CNI:
 			        $wgOut->setPageTitle("Collaborating Network Investigators");
-				    $this->generatePersonTable(CNI, 1);
+				    $this->generatePersonTable(CNI);
 				    break;
 				case 'ALL '.RMC:
 			        $wgOut->setPageTitle("Research Management Committee");
@@ -203,14 +203,6 @@ EOF;
 ";
 		foreach($data as $person){
 		    $projects = $person->getProjects();
-            $projs = array();
-            foreach($projects as $project){
-                $projs[] = $project->getName();
-            }
-            $university = $person->getUniversity();
-            if(isset($university['university'])){
-                $projs[] = $university['university'];
-            }
 			$this->text .= "
 <tr>
 <td align='left'>
@@ -218,14 +210,22 @@ EOF;
 </td>
 <td align='left'>
 ";
+            $projs = array();
 			foreach($projects as $project){
-				$this->text .= "<a href='{$project->getUrl()}'>{$project->getName()}</a>, ";
+			    if(!$project->isSubProject() && ($phase == 0 || $project->getPhase() == $phase)){
+				    $subprojs = array();
+				    foreach($project->getSubProjects() as $subproject){
+				        $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
+				    }
+				    $subprojects = "";
+				    if(count($subprojs) > 0){
+				        $subprojects = "(".implode(", ", $subprojs).")";
+				    }
+				    $projs[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
+				}
 			}
-			if(count($person->getProjects()) > 0){
-				$pos = strrpos($this->text, ", ");
-				$this->text = substr($this->text, 0, $pos);
-			}
-            $this->text .= "<td align='left'>";
+			$this->text .= implode("<br />", $projs);
+            $this->text .= "</td><td align='left'>";
             $university = $person->getUniversity();
             $this->text .= $university['university'];
 			$this->text .= "</td>";
@@ -250,17 +250,6 @@ EOF;
 		foreach($data as $person){
 		    $projects = $person->getProjects();
 		    $roles = $person->getRoles();
-            $projs = array();
-            foreach($projects as $project){
-                $projs[] = $project->getName();
-            }
-            foreach($roles as $role){
-                $projs[] = $role->getRole();
-            }
-            $university = $person->getUniversity();
-            if(isset($university['university'])){
-                $projs[] = $university['university'];
-            }
 			$this->text .= "
 <tr>
 <td align='left'>

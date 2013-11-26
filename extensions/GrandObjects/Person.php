@@ -1405,8 +1405,9 @@ class Person extends BackboneModel {
         if($this->projects == null && $this->id != null){
             $this->projects = array();
             $sql = "SELECT u.project_id
-                    FROM grand_project_members u
-                    WHERE user_id = '{$this->id}' \n";
+                    FROM grand_project_members u, grand_project p
+                    WHERE user_id = '{$this->id}'
+                    AND p.id = u.project_id \n";
             if($history === false){
                 $sql .= "AND (end_date = '0000-00-00 00:00:00'
                          OR end_date > CURRENT_TIMESTAMP)\n";
@@ -1415,7 +1416,7 @@ class Person extends BackboneModel {
                 $sql .= "AND start_date <= '{$history}'
                          AND (end_date >= '{$history}' OR (end_date = '0000-00-00 00:00:00'))\n";
             }
-            $sql .= "ORDER BY project_id";
+            $sql .= "ORDER BY p.name";
             $data = DBFunctions::execSQL($sql);
             $projectNames = array();
             foreach($data as $row){
