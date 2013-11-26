@@ -54,7 +54,7 @@ abstract class DashboardCell extends Cell {
         $name = ($this->obj != null) ? str_replace(".", "", $this->obj->getName()) : "All";
         $idType = ($type == "All") ? str_replace("(", "", str_replace(")", "", str_replace("/", "", str_replace(".", "", str_replace(" ", "_", $this->label))))) : 
                                      str_replace("(", "", str_replace(")", "", str_replace("/", "", str_replace(".", "", str_replace(" ", "_", $type)))));
-        $details_id = str_replace("/", "", "div_{$name}_{$idType}_{$this->label}_{$id}");
+        $details_id = str_replace("\"", "'", str_replace("/", "", "div_{$name}_{$idType}_{$this->label}_{$id}"));
         $row = <<<EOF
 <tr>
 <td style='$style1' align='right'><a name='$details_id' class='details_div_lnk'>$type</a>:</td>

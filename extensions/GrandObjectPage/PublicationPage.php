@@ -204,14 +204,14 @@ class PublicationPage {
                     foreach($misc_types as $key => $type){
                         $misc_types[$key] = str_replace("\"", "\\\"", $type);
                     }
-                    
+                    $type = str_replace("\"", "\\\"", $paper->getType());
                     $wgOut->addScript('<script type="text/javascript">
                     var oldAttr = Array();
                     
                     var misc_types = ["'.implode("\",\n\"", $misc_types).'"];
 
                     $(document).ready(function(){
-                        var type = "'.$paper->getType().'";
+                        var type = "'.$type.'";
                         if(type == "Paper"){
                             type = "Proceedings Paper";
                         }
@@ -248,7 +248,7 @@ class PublicationPage {
                                         break;
                                     default:
                                     case "Misc":
-                                        $("select[name=type]").parent().append("<input type=\'text\' name=\'misc_type\' value=\''.str_replace("Misc: ", "", $paper->getType()).'\' />");
+                                        $("select[name=type]").parent().append("<input type=\'text\' name=\'misc_type\' value=\''.str_replace("Misc: ", "", $type).'\' />");
                                         $("input[name=misc_type]").autocomplete({
                                             source: misc_types
                                         });
@@ -276,7 +276,7 @@ class PublicationPage {
                                         break;
                                     default:
                                     case "Misc":
-                                        $("select[name=type]").parent().append("<input type=\'text\' name=\'misc_type\' value=\''.str_replace("Misc: ", "", $paper->getType()).'\' />");
+                                        $("select[name=type]").parent().append("<input type=\'text\' name=\'misc_type\' value=\''.str_replace("Misc: ", "", $type).'\' />");
                                         $("input[name=misc_type]").autocomplete({
                                             source: misc_types
                                         });
@@ -299,7 +299,7 @@ class PublicationPage {
                                         break;
                                     default:
                                     case "Misc":
-                                        $("select[name=type]").parent().append("<input type=\'text\' name=\'misc_type\' value=\''.str_replace("Misc: ", "", $paper->getType()).'\' />");
+                                        $("select[name=type]").parent().append("<input type=\'text\' name=\'misc_type\' value=\''.str_replace("Misc: ", "", $type).'\' />");
                                         $("input[name=misc_type]").autocomplete({
                                             source: misc_types
                                         });
@@ -386,7 +386,7 @@ class PublicationPage {
                                         break;
                                     default:
                                     case "Misc":
-                                        $("select[name=type]").parent().append("<input type=\'text\' name=\'misc_type\' value=\''.str_replace("Misc: ", "", $paper->getType()).'\' />");
+                                        $("select[name=type]").parent().append("<input type=\'text\' name=\'misc_type\' value=\''.str_replace("Misc: ", "", $type).'\' />");
                                         $("input[name=misc_type]").autocomplete({
                                             source: misc_types
                                         });
@@ -578,7 +578,7 @@ class PublicationPage {
                                         break;
                                     default:
                                     case "Misc":
-                                        $("select[name=type]").parent().append("<input type=\'text\' name=\'misc_type\' value=\''.str_replace("Misc: ", "", $paper->getType()).'\' />");
+                                        $("select[name=type]").parent().append("<input type=\'text\' name=\'misc_type\' value=\''.str_replace("Misc: ", "", $type).'\' />");
                                         $("input[name=misc_type]").autocomplete({
                                             source: misc_types
                                         });
