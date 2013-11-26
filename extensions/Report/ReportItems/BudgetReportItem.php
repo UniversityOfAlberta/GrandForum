@@ -199,7 +199,7 @@ class BudgetReportItem extends AbstractReportItem {
 	}
 	
 	static function checkTotals($budget, $person, $year){
-        $projects = @$budget->copy()->select(V_PROJ, array())->where(V_PROJ)->xls[1];
+        $projects = $budget->copy()->select(V_PROJ, array())->where(V_PROJ)->xls[1];
         $total = 0;
         $alreadyUsed = array();
         $i = 0;

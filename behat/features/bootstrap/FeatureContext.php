@@ -104,15 +104,17 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public static function afterStep($event){
         global $currentSession;
-        // Check for PHP errors on each step
-        /*$currentSession->assertSession()->pageTextNotContains("Warning:");
-        $currentSession->assertSession()->pageTextNotContains("Fatal error:");
-        $currentSession->assertSession()->pageTextNotContains("Notice:");
-        $currentSession->assertSession()->pageTextNotContains("Parse error:");
-        */
-        
-        //if (4 === $event->getResult()) {
-        try {    
+        /*try {
+            // Check for PHP errors on each step
+            $currentSession->assertSession()->pageTextNotContains("Warning:");
+            $currentSession->assertSession()->pageTextNotContains("Fatal error:");
+            $currentSession->assertSession()->pageTextNotContains("Notice:");
+            $currentSession->assertSession()->pageTextNotContains("Parse error:");
+        }
+        catch(Exception $e){
+            
+        }*/
+        try{
             $currentSession->iTakeAScreenshot();
         }
         catch(Exception $e){
