@@ -191,7 +191,7 @@ EOF;
 		}
 		$idHeader = "";
         if($me->isRoleAtLeast(MANAGER)){
-            $idHeader = "<th>User Id</th>";
+            $idHeader = "<th width='0%' style='white-space: nowrap;'>User Id</th>";
         }
         $phaseText = "current";
         if($phase == 2){
@@ -199,13 +199,13 @@ EOF;
         }
         $this->text .= "Below are all the $phaseText $table in GRAND.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
 		$this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>Name</th><th>Projects</th><th>University</th>$idHeader</tr></thead><tbody>
+<thead><tr><th width='15%' style='white-space: nowrap;'>Name</th><th width='65%' style='white-space: nowrap;'>Projects</th><th width='20%' style='white-space: nowrap;'>University</th>$idHeader</tr></thead><tbody>
 ";
 		foreach($data as $person){
 		    $projects = $person->getProjects();
 			$this->text .= "
 <tr>
-<td align='left'>
+<td align='left' style='white-space: nowrap;'>
 <a href='{$person->getUrl()}'>{$person->getReversedName()}</a>
 </td>
 <td align='left'>
@@ -234,7 +234,7 @@ EOF;
 			}
 			$this->text .= "</tr>";
 		}
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
+		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'bAutoWidth': false});</script>";
 
 		return true;
 	}
@@ -248,7 +248,6 @@ EOF;
 <thead><tr><th>Name</th><th>Roles</th></tr></thead><tbody>
 ";
 		foreach($data as $person){
-		    $projects = $person->getProjects();
 		    $roles = $person->getRoles();
 			$this->text .= "
 <tr>
