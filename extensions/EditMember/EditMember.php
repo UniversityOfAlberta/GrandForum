@@ -1049,7 +1049,9 @@ class EditMember extends SpecialPage{
                 if($person->isMemberOf($project)){
                     $hidden_checkboxes .= "<input type='hidden' name='p_wpNS[]' value='{$project->getName()}' checked='checked' />";
                     foreach($project->getSubProjects() as $subProj){
-                        $hidden_checkboxes .= "<input type='hidden' name='p_wpNS[]' value='{$subProj->getName()}' checked='checked' />";
+                        if($person->isMemberOf($subProj)){
+                            $hidden_checkboxes .= "<input type='hidden' name='p_wpNS[]' value='{$subProj->getName()}' checked='checked' />";
+                        }
                     }
                 }
             }
