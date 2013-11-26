@@ -805,7 +805,7 @@ class EditMember extends SpecialPage{
                 $wgOut->addHTML("<input type='hidden' name='where' value='{$otherData['where']}' />");
             }
             if($history){
-                if($row['created'] == "true"){
+                if($row['created']){
                     $wgOut->addHTML("<td>Accepted</td>");
                 }
                 else{
