@@ -325,8 +325,6 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
             if($amount != null){
                 self::$dbJSON['authors'][$name]['nCits'][$year] = $amount->innertext;
             }
-            $amount->clear();
-            unset($amount);
         }
         file_put_contents("db.json", json_encode(self::$dbJSON));
         $html->clear();

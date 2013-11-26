@@ -22,11 +22,22 @@ class PersonProjectTab extends AbstractTab {
     function showProjects($person, $visibility){
         global $wgOut, $wgScriptPath, $wgServer;
         if($visibility['edit'] || (!$visibility['edit'] && count($person->getProjects()) > 0)){
-            $this->html .= "<ul>";
             foreach($person->getProjects() as $project){
-                $this->html .= "<li><a href='{$project->getUrl()}'>{$project->getName()} - {$project->getFullName()}</a></li>\n";
-            }
-            $this->html .= "</ul>";
+			    if(!$project->isSubProject()){
+				    $subprojs = array();
+				    foreach($project->getSubProjects() as $subproject){
+				        if($person->isMemberOf($subproject)){
+				            $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
+				        }
+				    }
+				    $subprojects = "";
+				    if(count($subprojs) > 0){
+				        $subprojects = "(".implode(", ", $subprojs).")";
+				    }
+				    $projs[] = "<li><a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects</li>";
+				}
+			}
+            $this->html .= "<ul>".implode("\n", $projs)."</ul>";
             if($visibility['isSupervisor']){
                 $this->html .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:EditMember?project&name={$person->getName()}\");' value='Edit Projects' />";
             }

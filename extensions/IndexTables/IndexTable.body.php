@@ -215,7 +215,9 @@ EOF;
 			    if(!$project->isSubProject() && ($phase == 0 || $project->getPhase() == $phase)){
 				    $subprojs = array();
 				    foreach($project->getSubProjects() as $subproject){
-				        $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
+				        if($person->isMemberOf($subproject)){
+				            $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
+				        }
 				    }
 				    $subprojects = "";
 				    if(count($subprojs) > 0){
