@@ -28,9 +28,11 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         $this->html .= "<table>
                             $title
-                            <tr><td><b>Type:</b></td><td>{$this->project->getType()}</td></tr>
-                            <tr><td><b>Big-Bet:</b></td><td>{$bigbet}</td></tr>
-                            <tr><td><b>Status:</b></td><td>{$this->project->getStatus()}</td></tr>
+                            <tr><td><b>Type:</b></td><td>{$this->project->getType()}</td></tr>";
+        if(!$this->project->isSubProject()){
+            $this->html .= "<tr><td><b>Big-Bet:</b></td><td>{$bigbet}</td></tr>";
+        }
+        $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()}</td></tr>
                         </table>";
         $this->showChallenge();
         $this->showChampions();
