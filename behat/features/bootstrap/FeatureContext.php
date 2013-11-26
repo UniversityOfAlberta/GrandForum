@@ -66,11 +66,11 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public static function prepare($event){
         // Create test database
-        //system("php ../maintenance/seed.php &> /dev/null");
-        //system("rm -f screenshots/*");
-        //$fp = fopen("../test.tmp", 'w');
-        //fwrite($fp, "This file should delete it's self once the test suite is done running.\nDo not delete this file until then.");
-        //fclose($fp);
+        system("php ../maintenance/seed.php &> /dev/null");
+        system("rm -f screenshots/*");
+        $fp = fopen("../test.tmp", 'w');
+        fwrite($fp, "This file should delete it's self once the test suite is done running.\nDo not delete this file until then.");
+        fclose($fp);
         
     }
     
@@ -113,7 +113,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         
         //if (4 === $event->getResult()) {
         try {    
-            //$currentSession->iTakeAScreenshot();
+            $currentSession->iTakeAScreenshot();
         }
         catch(Exception $e){
             

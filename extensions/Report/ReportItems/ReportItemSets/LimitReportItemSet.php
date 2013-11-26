@@ -10,7 +10,12 @@ class LimitReportItemSet extends ReportItemSet {
     }
     
     function getLimit(){
-        return $this->getAttr('limit', 0);
+        if($this->getNTextareas() > 0){
+            return $this->getAttr('limit', 0);
+        }
+        else{
+            return 0;
+        }
     }
     
     function getNChars(){
