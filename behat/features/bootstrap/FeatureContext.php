@@ -66,11 +66,11 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public static function prepare($event){
         // Create test database
-        system("php ../maintenance/seed.php &> /dev/null");
-        system("rm -f screenshots/*");
-        $fp = fopen("../test.tmp", 'w');
-        fwrite($fp, "This file should delete it's self once the test suite is done running.\nDo not delete this file until then.");
-        fclose($fp);
+        //system("php ../maintenance/seed.php &> /dev/null");
+        //system("rm -f screenshots/*");
+        //$fp = fopen("../test.tmp", 'w');
+        //fwrite($fp, "This file should delete it's self once the test suite is done running.\nDo not delete this file until then.");
+        //fclose($fp);
         
     }
     
@@ -113,7 +113,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         
         //if (4 === $event->getResult()) {
         try {    
-            $currentSession->iTakeAScreenshot();
+            //$currentSession->iTakeAScreenshot();
         }
         catch(Exception $e){
             
@@ -278,6 +278,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
             $row = str_replace("More...", "", $row);
             $row = str_replace("<br>", "\n", $row);
             self::$dbJSON['authors'][$name]['subjects'] = $row;
+            $sub->clear();
+            unset($sub);
         }
         self::$dbJSON['authors'][$name]['url'] = $this->getSession()->getCurrentUrl();
         file_put_contents("db.json", json_encode(self::$dbJSON));
@@ -298,6 +300,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
                 $amount = str_replace(")", "", str_replace("(", "", $row->find("span.floatL", 0)->innertext));
                 self::$dbJSON['authors'][$name]['nPubs'][$year] = $amount;
             }
+            $pubs->clear();
+            unset($pubs);
         }
         file_put_contents("db.json", json_encode(self::$dbJSON));
         $html->clear();
@@ -321,6 +325,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
             if($amount != null){
                 self::$dbJSON['authors'][$name]['nCits'][$year] = $amount->innertext;
             }
+            $amount->clear();
+            unset($amount);
         }
         file_put_contents("db.json", json_encode(self::$dbJSON));
         $html->clear();
