@@ -766,12 +766,27 @@ class EditMember extends SpecialPage{
             $req_user = Person::newFromId($row['requesting_user']);
             $staff = Person::newFromId($row['staff']);
             $person = Person::newFromId($row['user']);
-            $projects = array();
+            $projects = $req_user->getProjects();
+            $projs = array();
+            if(count($projects) > 0){
+                foreach($projects as $project){
+                    if(!$project->isSubProject()){
+                        $subprojs = array();
+                        foreach($project->getSubProjects() as $subproject){
+                            if($req_user->isMemberOf($subproject)){
+                                $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
+                            }
+                        }
+                        $subprojects = "";
+                        if(count($subprojs) > 0){
+                            $subprojects = "(".implode(", ", $subprojs).")";
+                        }
+                        $projs[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
+                    }
+                }
+            }
             $roles = array();
             if($req_user->getName() != null){
-                foreach($req_user->getProjects() as $project){
-                    $projects[] = $project->getName();
-                }
                 foreach($req_user->getRoles() as $role){
                     $roles[] = $role->getRole();
                 }
@@ -783,9 +798,11 @@ class EditMember extends SpecialPage{
                 $diff = EditMember::roleDiff(Person::newFromId($row['user']), $row['role'], $row['type']);
             }
             $wgOut->addHTML("<tr bgcolor='#FFFFFF'>
-                        <td align='left'><a target='_blank' href='{$req_user->getUrl()}'>{$req_user->getName()}</a><br />
-                        <b>Roles:</b> ".implode(",", $roles)."<br />
-                        <b>Projects:</b> ".implode(",", $projects)."</td> <td align='left'><a target='_blank' href='{$person->getUrl()}'>{$person->getName()}</a></td> <td>{$row['last_modified']}</td> <td>".str_replace(" ::", "<br />", $row['effective_date'])."</td>");
+                        <td align='left'>
+                            <a target='_blank' href='{$req_user->getUrl()}'><b>{$req_user->getName()}</b></a> (".implode(",", $roles).")<br /><a onclick='$(\"#{$row['id']}\").slideToggle();$(this).remove();' style='cursor:pointer;'>Show Projects</a>
+                            <div id='{$row['id']}' style='display:none;padding-left:15px;'>".implode("<br />", $projs)."</div>
+                        </td> 
+                        <td align='left'><a target='_blank' href='{$person->getUrl()}'>{$person->getName()}</a></td> <td>{$row['last_modified']}</td> <td>".str_replace(" ::", "<br />", $row['effective_date'])."</td>");
             if($history){
                 $wgOut->addHTML("<td>{$staff->getName()}</td>");
             } 
