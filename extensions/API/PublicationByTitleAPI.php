@@ -3,7 +3,7 @@
 class PublicationByTitleAPI extends API{
 
     function PublicationByTitleAPI(){
-        $this->addGET("title", true, "The title of the Publication", "Pub Title");
+        $this->addGET("name", true, "The title of the Publication", "Pub Title");
         $this->addGET("category", false, "The category of the Publication", "Artifact");
         $this->addGET("type", false, "The type of Publication", "Proceedings Paper");
         $this->addGET("status", false, "The status of the Publication", "Published");
@@ -18,9 +18,9 @@ class PublicationByTitleAPI extends API{
 	    $matchedPapers = array();
 	    $cat = (isset($_GET['category'])) ? $_GET['category'] : "all";
         $papers = Paper::getAllPapers('all', $cat, 'both');
-        $altTitle = str_replace("'", "&#39;", $_GET['title']);
+        $altTitle = str_replace("'", "&#39;", $_GET['name']);
         foreach($papers as $paper){
-            if((isset($_GET['title']) && ($paper->getTitle() == $_GET['title'] || $paper->getTitle() == $altTitle)) &&
+            if((isset($_GET['name']) && ($paper->getTitle() == $_GET['name'] || $paper->getTitle() == $altTitle)) &&
                (!isset($_GET['category']) || $paper->getCategory() == $_GET['category']) &&
                (!isset($_GET['type']) || $paper->getType() == $_GET['type']) &&
                (!isset($_GET['status']) || $paper->getStatus() == $_GET['status'])){

@@ -69,7 +69,7 @@ function generateContributionScript($category){
 		                            
 		                            function changeLocation(){
 		                                var page = escape($('#title').val().replace(/\‘/g, '\'').replace(/\’/g, '\''));
-		                                document.location = '$wgServer$wgScriptPath/index.php/{$category}:' + page + '?create';
+		                                document.location = '$wgServer$wgScriptPath/index.php/{$category}:New?name=' + page + '&create';
 		                            }
 		                            
 		                            $(document).ready(function(){

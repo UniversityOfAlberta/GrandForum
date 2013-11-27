@@ -10,16 +10,21 @@ class ContributionPage {
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
             $name = $article->getTitle()->getNsText();
-            $title = $article->getTitle()->getText();
-            if($name == ""){
-                $split = explode(":", $title);
-                if(count($split) > 1){
-                    $title = $split[1];
+            if(isset($_GET['name'])){
+                $title = @$_GET['name'];
+            }
+            else{
+                $title = $article->getTitle()->getText();
+                if($name == ""){
+                    $split = explode(":", $title);
+                    if(count($split) > 1){
+                        $title = $split[1];
+                    }
+                    else{
+                        $title = "";
+                    }
+                    $name = $split[0];
                 }
-                else{
-                    $title = "";
-                }
-                $name = $split[0];
             }
             if($name != "Contribution"){
                 return true;
@@ -48,14 +53,16 @@ class ContributionPage {
                         $_POST['users'] = array();
                         if(isset($_POST['researchers'])){
                             $researchers = array();
-                            foreach(array_unique($_POST['researchers']) as $researcher){
-                                 $person = Person::newFromNameLike(str_replace(" ", ".", $researcher));
-                                 if($person != null && $person->getName() != null){
-                                    $researchers[] = $person->getId();
-                                 }
-                                 else{
-                                    $researchers[] = $researcher;
-                                 }
+                            if(is_array($_POST['researchers'])){
+                                foreach(array_unique($_POST['researchers']) as $researcher){
+                                     $person = Person::newFromNameLike(str_replace(" ", ".", $researcher));
+                                     if($person != null && $person->getName() != null){
+                                        $researchers[] = $person->getId();
+                                     }
+                                     else{
+                                        $researchers[] = $researcher;
+                                     }
+                                }
                             }
                             $_POST['users'] = $researchers;
                         }
@@ -68,6 +75,7 @@ class ContributionPage {
                         }
                         $partners = array();
                         $type = array();
+                        $subtype = array();
                         $cash = array();
                         $kind = array();
                         if(isset($_POST['partners'])){
@@ -109,7 +117,7 @@ class ContributionPage {
                         $wgOut->setPageTitle("Contribution: ".str_replace("&#39;", "'", $contribution->getName()));
                     }
                     else{
-                        $wgOut->setPageTitle("Contribution: ".str_replace("&#39;", "'", $contribution->getName()));
+                        $wgOut->setPageTitle("Contribution: $title");
                     }
                     if($edit){
                         $other_types = Contribution::getAllOtherSubTypes();
@@ -279,7 +287,7 @@ class ContributionPage {
                             if(!isset($_POST['title'])){
                                 $titleValue = $title;
                             }
-                            $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/Contribution:$cName?create' method='post'>
+                            $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/Contribution:New?name=".urlencode($cName)."&create' method='post'>
                                             <b>Title:</b> <input size='35' type='text' name='title' value='".str_replace("'", "&#39;", $titleValue)."' />");
                         }
                         else{
@@ -310,12 +318,12 @@ class ContributionPage {
                             }
                         }
                         if($edit){
-                            if(isset($_POST['researchers'])){
-                                $personNames = str_replace(" ", ".", $_POST['researchers']);
+                            if(isset($_POST['users'])){
+                                $personNames = str_replace(" ", ".", $_POST['users']);
                             }
                             $allPeople = Person::getAllPeople('all');
                             foreach($allPeople as $person){
-                                if(array_search($person->getNameForForms(), $personNames) === false &&
+                                if(is_array($personNames) && array_search($person->getNameForForms(), $personNames) === false &&
                                    $person->getNameForForms() != "WikiSysop" &&
                                    $person->isRoleAtLeast(CNI)){
                                     $list[] = $person->getNameForForms();

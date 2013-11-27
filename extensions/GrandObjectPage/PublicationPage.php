@@ -132,17 +132,21 @@ class PublicationPage {
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
             $name = $article->getTitle()->getNsText();
-            $title = $article->getTitle()->getText();
-            
-            if($name == ""){
-                $split = explode(":", $title);
-                if(count($split) > 1){
-                    $title = $split[1];
+            if(isset($_GET['name'])){
+                $title = @$_GET['name'];
+            }
+            else{
+                $title = $article->getTitle()->getText();
+                if($name == ""){
+                    $split = explode(":", $title);
+                    if(count($split) > 1){
+                        $title = $split[1];
+                    }
+                    else{
+                        $title = "";
+                    }
+                    $name = $split[0];
                 }
-                else{
-                    $title = "";
-                }
-                $name = $split[0];
             }
             if(!($name == "Activity" || $name == "Press" || $name == "Award" || $name == "Publication" || $name == "Artifact" || $name == "Presentation")){
                 return true;
@@ -186,11 +190,13 @@ class PublicationPage {
                     // The user has submitted the form
                     self::proccessPost($category);
                     if(!$create){
-                        redirect("$wgServer$wgScriptPath/index.php/$category:".str_replace("?", "%3F", str_replace("&#39;", "'", $title)));
+                        $prod = Product::newFromId($title);
                     }
                     else{
-                        redirect("$wgServer$wgScriptPath/index.php/$category:".str_replace("?", "%3F", $title));
+                        $prod = Product::newFromTitle($title);
                     }
+                    redirect($prod->getUrl());
+                    exit;
                 }
                 $wgOut->clearHTML();
                 if(!$create){
@@ -682,7 +688,7 @@ class PublicationPage {
                 
                 if($edit){
                     if($create){
-                        $wgOut->addHTML("<form name='product' action='$wgServer$wgScriptPath/index.php/{$category}:".str_replace("?", "%3F", str_replace("'", "&#39;", $title))."?create' method='post'>
+                        $wgOut->addHTML("<form name='product' action='$wgServer$wgScriptPath/index.php/{$category}:New?name=".urlencode($title)."&create' method='post'>
                                         <input type='hidden' name='title' value='".str_replace("'", "&#39;", $title)."' /><input type='hidden' name='product_id' value='$product_id' />");
                     }
                     else{
@@ -716,7 +722,7 @@ class PublicationPage {
                                     type = 'Misc: ' + $('form[name=product] [name=misc_type]').val();
                                 }
                                 var status = $('form[name=product] [name=status]').val();
-                                $.get('{$wgServer}{$wgScriptPath}/index.php?action=api.getPublicationInfoByTitle&title=' + escape(title) + 
+                                $.get('{$wgServer}{$wgScriptPath}/index.php?action=api.getPublicationInfoByTitle&name=' + escape(title) + 
                                       '&category=' + escape(category) + 
                                       '&type=' + type + 
                                       '&status=' + status, 
