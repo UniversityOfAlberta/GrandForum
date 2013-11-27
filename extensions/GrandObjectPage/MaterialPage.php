@@ -64,14 +64,14 @@ class MaterialPage {
                 $wgOut->setPageTitle(str_replace("&#39;", "'", $material->getTitle()));
             }
             else{
-                $title = $wgTitle->getText();
+                $title = $_GET['name'];
                 $wgOut->setPageTitle($title);
             }
             if($edit){
                 $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/scripts/switcheroo.js'></script>");
 	        }
             if($create){
-                $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/{$name}:".str_replace("?", "%3F", str_replace("'", "&#39;", $title))."?create' method='post'>
+                $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/{$name}:New?name=".urlencode($title)."&create' method='post'>
                                 <b>Title:</b> <input size='35' type='text' name='title' value='".str_replace("'", "&#39;", $title)."' />");
             }
             else if($edit){

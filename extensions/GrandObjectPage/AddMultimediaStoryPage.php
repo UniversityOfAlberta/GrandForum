@@ -71,7 +71,7 @@ function generateMultimediaStoryScript($category){
 		                            
 		                            function changeLocation(){
 		                                var page = escape($('#title').val().replace(/\‘/g, '\'').replace(/\’/g, '\''));
-		                                document.location = '$wgServer$wgScriptPath/index.php/Multimedia_Story:' + page + '?create';
+		                                document.location = '$wgServer$wgScriptPath/index.php/Multimedia_Story:New?name=' + page + '&create';
 		                            }
 		                            
 		                            $(document).ready(function(){
