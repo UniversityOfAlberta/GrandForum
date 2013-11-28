@@ -143,52 +143,58 @@ class ProjectPage {
             $project = Project::newFromHistoricName(str_replace("_Talk", "", $name));
             if($me->isMemberOf($project) || 
                ($project != null && $me->isMemberOf($project->getParent()))){
-                foreach($me->getProjects() as $proj){
-                    if($proj->isSubProject()){
-                        continue;
-                    }
-                    if(str_replace("_Talk", "", $name) != $proj->getName()){
-                        $class = false;
-                    }
-                    else{
-                        $class = "selected";
-                    }
-                    $dropdown = null;
-                    $title = "{$proj->getName()} (Phase{$proj->getPhase()})";
-                    if(count($proj->getSubProjects()) > 0){
-                        $dropdown = array('name' => $proj->getName(), 
-                                          'title' => $title, 
-                                          'width' => 125);
-                    }
-                    $action = array (
-                         'class' => "$class {$proj->getName()}",
-                         'text'  => $title,
-                         'href'  => "{$proj->getUrl()}"
-                    );
-                    
-                    if($dropdown != null){
-                        $action['dropdown'] = $dropdown;
-                    }
-                    
-                    $content_actions[] = $action;
-                    foreach($proj->getSubProjects() as $subproj){
-                        if(str_replace("_Talk", "", $name) != $subproj->getName()){
-                            $class = false;
-                        }
-                        else{
-                            $class = "selected";
-                        }
-                        $title = $subproj->getName();
-                        $content_actions[] = array (
-                             'class' => "$class {$proj->getName()}",
-                             'text'  => $title,
-                             'href'  => "{$subproj->getUrl()}"
-                        );
-                    }
+                for($phase=PROJECT_PHASE; $phase > 0; $phase--){
+                    self::addPhaseTabs($me, $phase, $name, $content_actions);
                 }
             }
         }
         return true;
+    }
+    
+    function addPhaseTabs($me, $phase, $name, &$content_actions){
+        foreach($me->getProjects() as $proj){
+            if($proj->isSubProject() || $proj->getPhase() != $phase){
+                continue;
+            }
+            if(str_replace("_Talk", "", $name) != $proj->getName()){
+                $class = false;
+            }
+            else{
+                $class = "selected";
+            }
+            $dropdown = null;
+            $title = "{$proj->getName()} (P{$proj->getPhase()})";
+            if(count($proj->getSubProjects()) > 0){
+                $dropdown = array('name' => $proj->getName(), 
+                                  'title' => $title, 
+                                  'width' => 125);
+            }
+            $action = array (
+                 'class' => "$class {$proj->getName()}",
+                 'text'  => $title,
+                 'href'  => "{$proj->getUrl()}"
+            );
+            
+            if($dropdown != null){
+                $action['dropdown'] = $dropdown;
+            }
+            
+            $content_actions[] = $action;
+            foreach($proj->getSubProjects() as $subproj){
+                if(str_replace("_Talk", "", $name) != $subproj->getName()){
+                    $class = false;
+                }
+                else{
+                    $class = "selected";
+                }
+                $title = $subproj->getName();
+                $content_actions[] = array (
+                     'class' => "$class {$proj->getName()}",
+                     'text'  => $title,
+                     'href'  => "{$subproj->getUrl()}"
+                );
+            }
+        }
     }
 }
 ?>

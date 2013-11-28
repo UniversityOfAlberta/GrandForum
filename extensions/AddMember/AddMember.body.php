@@ -49,7 +49,7 @@ class UserCreate {
 				                        array('user_id' => $id,
 				                              'role' => $role,
 				                              'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
-		            if($role == PNI || $role == CNI){
+		            if($role == PNI || $role == CNI || $role == AR){
 		                $person = Person::newFromId($wgUser->getId());
 		                $command = "echo \"{$wgUser->mEmail}\" | /usr/lib/mailman/bin/add_members --admin-notify=n --welcome-msg=n -r - grand-forum-researchers";
 		                exec($command);
