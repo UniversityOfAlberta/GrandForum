@@ -26,6 +26,9 @@ class AddRoleAPI extends API{
                     exit;
                 }
             }
+            if($person->isRole($role)){
+		        return;
+		    }
             if($role == PNI || $role == CNI){
                 $command =  "echo \"{$person->getEmail()}\" | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - grand-forum-researchers";
 		        exec($command);

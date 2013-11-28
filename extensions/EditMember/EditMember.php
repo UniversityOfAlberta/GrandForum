@@ -109,6 +109,15 @@ class EditMember extends SpecialPage{
         }
         else{
             // The Form has been entered
+            $person = @Person::newFromName(str_replace(" ", ".", $_POST['name']));
+            $p_current = array();
+            $r_current = array();
+            $projects = $person->getProjects();
+            $roles = $person->getRoles();
+            foreach($projects as $project){
+                $p_current[] = $project->getName();
+            }
+            $p_current = implode(", ", $p_current);
             if(isset($_POST['p_wpNS'])){
                 $p_nss = implode(", ", $_POST['p_wpNS']);
             }
@@ -116,6 +125,10 @@ class EditMember extends SpecialPage{
                 $p_nss = "";
                 $_POST['p_wpNS'] = array();
             }
+            foreach($roles as $role){
+                $r_current[] = $role->getRole();
+            }
+            $r_current = implode(", ", $r_current);
             if(isset($_POST['r_wpNS'])){
                 $r_nss = implode(", ", $_POST['r_wpNS']);
             }
@@ -123,19 +136,20 @@ class EditMember extends SpecialPage{
                 $r_nss = "";
                 $_POST['r_wpNS'] = array();
             }
-            $person = @Person::newFromName(str_replace(" ", ".", $_POST['name']));
-            $p_comments = @EditMember::varToString($_POST['p_comment'], $p_nss, 'PROJECT', $person);
-            $r_comments = @EditMember::varToString($_POST['r_comment'], $r_nss, 'ROLE', $person);
-            $p_effectiveDates = @EditMember::varToString($_POST['p_datepicker'], $p_nss, 'PROJECT', $person);
-            $r_effectiveDates = @EditMember::varToString($_POST['r_datepicker'], $r_nss, 'ROLE', $person);
+            
+            $p_comments = @EditMember::varToString($_POST['p_comment'], $p_current, $p_nss, 'PROJECT', $person);
+            $r_comments = @EditMember::varToString($_POST['r_comment'], $r_current, $r_nss, 'ROLE', $person);
+            $p_effectiveDates = @EditMember::varToString($_POST['p_datepicker'], $p_current, $p_nss, 'PROJECT', $person);
+            $r_effectiveDates = @EditMember::varToString($_POST['r_datepicker'], $r_current, $r_nss, 'ROLE', $person);
 
             $me = Person::newFromId($wgUser->getId());
             $message = "";
             // Project Request
-            if(EditMember::roleDiff($person, $p_nss, 'PROJECT') != ""){
+            if(EditMember::roleDiff($person, $p_current, $p_nss, 'PROJECT') != ""){
                 DBFunctions::insert('grand_role_request',
                                     array('effective_date' => EditMember::parse($p_effectiveDates),
                                           'requesting_user' => EditMember::parse($wgUser->getId()),
+                                          'current_role' => EditMember::parse($p_current),
                                           'role' => EditMember::parse($p_nss),
                                           'comment' => EditMember::parse($p_comments),
                                           'user' => EditMember::parse($person->getId()),
@@ -143,7 +157,7 @@ class EditMember extends SpecialPage{
                                           'created' => 0,
                                           '`ignore`' => 0));
                 Notification::addNotification("", $me, "Project Change Pending", "{$person->getNameForForms()}'s projects have been requested to be changed.  Once an admin sees this request they will review and accept it", "");
-                $message .= EditMember::roleDiff($person, $p_nss, 'PROJECT');
+                $message .= EditMember::roleDiff($person, $p_current, $p_nss, 'PROJECT');
             }
             
             // Roles Request
@@ -158,9 +172,9 @@ class EditMember extends SpecialPage{
                                "where" => str_replace("'", "&#39;", $_POST['employer']));
             }
             $processOthers = true;
-            if(EditMember::roleDiff($person, $r_nss, 'ROLE') != ""){
+            if(EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE') != ""){
                 $_POST['user'] = $person->getName();
-                if($person->isRole(HQP) && strstr(EditMember::roleDiff($person, $r_nss, 'ROLE'), '-'.HQP) !== false){
+                if($person->isRole(HQP) && strstr(EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE'), '-'.HQP) !== false){
                     // Skip the request, go straight to making the change, but still add the request for logging this history
                     
                     // Check whether the HQP is being 'promoted' or not
@@ -172,10 +186,11 @@ class EditMember extends SpecialPage{
                     }
                     EditMember::processHQPMovedOn();
                 }
-                if($processOthers && EditMember::roleDiff($person, $r_nss, 'ROLE') != "" && EditMember::roleDiff($person, $r_nss, 'ROLE') != "-".INACTIVE."<br />\n"){
+                if($processOthers && EditMember::roleDiff($person,$r_current, $r_nss, 'ROLE') != "" && EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE') != "-".INACTIVE."<br />\n"){
                     DBFunctions::insert('grand_role_request',
                                         array('effective_date' => EditMember::parse($r_effectiveDates),
                                               'requesting_user' => EditMember::parse($wgUser->getId()),
+                                              'current_role' => EditMember::parse($r_current),
                                               'role' => EditMember::parse($r_nss),
                                               'comment' => EditMember::parse($r_comments),
                                               'other' => serialize($other),
@@ -186,8 +201,8 @@ class EditMember extends SpecialPage{
                     Notification::addNotification("", $me, "Role Change Pending", "{$person->getNameForForms()}'s roles have been requested to be changed.  Once an admin sees this request they will review and accept it", "");
                 }
             }
-            if($processOthers && EditMember::roleDiff($person, $r_nss, 'ROLE') != "" && EditMember::roleDiff($person, $r_nss, 'ROLE') != "-".INACTIVE."<br />\n"){
-                $message .= EditMember::roleDiff($person, $r_nss, 'ROLE');
+            if($processOthers && EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE') != "" && EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE') != "-".INACTIVE."<br />\n"){
+                $message .= EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE');
             }
             if($message != ""){
                 $wgMessage->addSuccess("The user <b>{$person->getNameForForms()}</b> has been requested to have the following role changes:<br /><p style='margin-left:15px;'>".$message."</p>Once an admin sees this request they will review and accept it");
@@ -374,8 +389,8 @@ class EditMember extends SpecialPage{
     }
     
     // Returns a string representation of the given variable containing role details
-    private function varToString($var, $nss, $type, $person){
-        $diff = EditMember::roleDiff($person, $nss, $type);
+    private function varToString($var, $current, $nss, $type, $person){
+        $diff = EditMember::roleDiff($person, $current, $nss, $type);
         $return = "";
         if(isset($var)){
             foreach($var as $key => $value){
@@ -487,22 +502,38 @@ class EditMember extends SpecialPage{
     }
     
     // Generates a more human readable form for the string used to add/remove roles
-    function roleDiff($person, $string, $type, $date=false){
+    function roleDiff($person, $current, $string, $type, $date=false){
         $output = "";
+        //$date = "2013-11-28 10:24:25";
+        //echo $date."<br />";
         if($type == "PROJECT"){
             $projects = explode(", ", $string);
-            $projs = $person->getProjects($date);
-            if($projs == null){
-                $projs = array();
+            if(!is_null($current)){
+                if($current == ""){
+                    $current = array();
+                }
+                else{
+                    $current = explode(", ", $current);
+                }
             }
-            foreach($projs as $project){
-                $id = array_search($project->getName(), $projects);
+            else{
+                $current = array();
+                $projs = $person->getProjects($date);
+                if($projs == null){
+                    $projs = array();
+                }
+                foreach($projs as $project){
+                    $current[] = $project->getName();
+                }
+            }
+            foreach($current as $project){
+                $id = array_search($project, $projects);
                 if($id !== false){
                     // No Change
                     unset($projects[$id]);
                 }
                 else{
-                    $output .= "-{$project->getName()}<br />\n";
+                    $output .= "-{$project}<br />\n";
                 }
             }
             foreach($projects as $project){
@@ -513,18 +544,34 @@ class EditMember extends SpecialPage{
         }
         if($type == "ROLE"){
             $roles = explode(", ", $string);
-            if(count($person->getRoles($date)) > 0){
-                foreach($person->getRoles($date) as $role){
-                    $id = array_search($role->getRole(), $roles);
+            if(!is_null($current)){
+                $current = explode(", ", $current);
+                foreach($current as $role){
+                    $id = array_search($role, $roles);
                     if($id !== false){
                         // No Change
                         unset($roles[$id]);
                     }
                     else{
-                        $output .= "-{$role->getRole()}<br />\n";
+                        $output .= "-{$role}<br />\n";
                     }
                 }
             }
+            else{
+                if(count($person->getRoles($date)) > 0){
+                    foreach($person->getRoles($date) as $role){
+                        $id = array_search($role->getRole(), $roles);
+                        if($id !== false){
+                            // No Change
+                            unset($roles[$id]);
+                        }
+                        else{
+                            $output .= "-{$role->getRole()}<br />\n";
+                        }
+                    }
+                }
+            }
+            
             foreach($roles as $role){
                 if($role != ""){
                     $output .= "+{$role}<br />\n";
@@ -792,10 +839,10 @@ class EditMember extends SpecialPage{
                 }
             }
             if($history){
-                $diff = EditMember::roleDiff(Person::newFromId($row['user']), $row['role'], $row['type'], $row['last_modified']);
+                $diff = EditMember::roleDiff(Person::newFromId($row['user']), $row['current_role'], $row['role'], $row['type'], $row['last_modified']);
             }
             else{
-                $diff = EditMember::roleDiff(Person::newFromId($row['user']), $row['role'], $row['type']);
+                $diff = EditMember::roleDiff(Person::newFromId($row['user']), $row['current_role'], $row['role'], $row['type']);
             }
             $wgOut->addHTML("<tr bgcolor='#FFFFFF'>
                         <td align='left'>
@@ -808,6 +855,7 @@ class EditMember extends SpecialPage{
             } 
             $wgOut->addHTML("<td align='left'>".$diff."</td> <td align='left'>".str_replace(" ::", "<br />", $row['comment'])."</td> <td align='left'>".$other."</td> <td align='left'>{$row['type']}</td>
                         <form action='$wgServer$wgScriptPath/index.php/Special:EditMember?action=view&sub' method='post'>
+                            <input type='hidden' name='current_role' value='{$row['current_role']}' />
                             <input type='hidden' name='role' value='{$row['role']}' />
                             <input type='hidden' name='comment' value='{$row['comment']}' />
                             <input type='hidden' name='effectiveDates' value='{$row['effective_date']}' />
@@ -1155,10 +1203,11 @@ class EditMember extends SpecialPage{
             $unsubscribed = array();
             $comments = explode("::", $_POST['comment']);
             $effectiveDates = explode("::", $_POST['effectiveDates']);
+            $current = explode(", ", $_POST['current_role']);
             $roles = explode(", ", $_POST['role']);
-            foreach($person->getProjects() as $project){
+            foreach($current as $project){
                 // Unsubscribe user from all of his project lists(defer until later loop)
-                $unsubscribed[$project->getName()] = true;
+                $unsubscribed[$project] = true;
             }
             foreach($roles as $role){
                 if($role == ""){
@@ -1189,8 +1238,10 @@ class EditMember extends SpecialPage{
                 $_POST['comment'] = $comment;
                 $_POST['effective_date'] = $effectiveDate;
                 $_POST['role'] = $key;
-                APIRequest::doAction('DeleteProjectMember', true);
-                $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> removed from $key");
+                if(Project::newFromName($key) != null){
+                    APIRequest::doAction('DeleteProjectMember', true);
+                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> removed from $key");
+                }
             }
         }
         // Process Role Changes
@@ -1198,12 +1249,11 @@ class EditMember extends SpecialPage{
             $unsubscribed = array();
             $comments = explode("::", $_POST['comment']);
             $effectiveDates = explode("::", $_POST['effectiveDates']);
+            $current = explode(", ", $_POST['current_role']);
             $roles = explode(", ", $_POST['role']);
-            if(count($person->getRoles()) > 0){
-                foreach($person->getRoles() as $role){
-                    // Unsubscribe user from all of his project lists
-                    $unsubscribed[$role->getRole()] = true;
-                }
+            foreach($current as $role){
+                // Unsubscribe user from all of his project lists
+                $unsubscribed[$role] = true;
             }
             foreach($roles as $role){
                 if($role == ""){

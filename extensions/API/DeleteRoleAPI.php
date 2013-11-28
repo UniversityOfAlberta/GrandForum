@@ -53,7 +53,7 @@ class DeleteRoleAPI extends API{
 	                    `end_date` = $effectiveDate
 	                WHERE `role` = '$role'
 	                AND user_id = '{$person->getId()}'
-	                ORDER BY `start_date` DESC LIMIT 1";
+	                AND (`end_date` > CURRENT_DATE OR `end_date` = '0000-00-00 00:00:00')";
             DBFunctions::execSQL($sql, true);
             
             DBFunctions::delete('mw_user_groups',

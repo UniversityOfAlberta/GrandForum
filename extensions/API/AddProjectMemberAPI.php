@@ -32,6 +32,9 @@ class AddProjectMemberAPI extends API{
                     exit;
                 }
             }
+            if($person->isMemberOf($project)){
+                return;
+            }
             MailingList::subscribe($project, $person);
             // Add entry into grand_projects
             $sql = "INSERT INTO grand_project_members (`user_id`,`project_id`,`start_date`)

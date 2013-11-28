@@ -190,12 +190,12 @@ class AddActivityPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Activity"));
 		
 		$wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3>My ".REPORTING_YEAR." Activities</h3>");
+	    $wgOut->addHTML("<h3 id='myactivities'>My ".REPORTING_YEAR." Activities</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Activity");
 	   	$wgOut->addHTML($myPapers_html);
 
-	   	$wgOut->addHTML("<h3>Add/Edit Activity</h3>");
+	   	$wgOut->addHTML("<h3 id='addactivity'>Add/Edit Activity</h3>");
 		$wgOut->addHTML("<div id='add-edit_publications'>");
 		$wgOut->addHTML("Enter in the title of the activity in the text field below.  If there is an already existing activity with the same or similar name, it will be listed below the text field.  If you see the activity in the list, then you can click on the title to edit its information, otherwise you can choose to create the activity with the title you have entered by clicking the 'Create' button.<br /><br />
 		                 <b>Title:</b> <input onKeyPress='submitOnEnter(event)' type='text' id='title' name='title' size='50' onKeyUp='search(this.value);' /> <input type='button' onClick='changeLocation();' name='submit' value='Create' /><br />
@@ -226,12 +226,12 @@ class AddArtifactPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Artifact"));
 		
 	    $wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3>My ".REPORTING_YEAR." Artifacts</h3>");
+	    $wgOut->addHTML("<h3 id='my_artifacts'>My ".REPORTING_YEAR." Artifacts</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Artifact");
 	   	$wgOut->addHTML($myPapers_html);
 
-	   	$wgOut->addHTML("<h3>Add/Edit Artifact</h3>");
+	   	$wgOut->addHTML("<h3 id='add_artifacts'>Add/Edit Artifact</h3>");
 		$wgOut->addHTML("<div id='add-edit_publications'>");
 		$wgOut->addHTML("Enter in the title of the artifact in the text field below.  If there is an already existing artifact with the same or similar name, it will be listed below the text field.  If you see the artifact in the list, then you can click on the title to edit its information, otherwise you can choose to create the artifact with the title you have entered by clicking the 'Create' button.<br /><br />
 		                 <b>Title:</b> <input onKeyPress='submitOnEnter(event)' type='text' id='title' name='title' size='50' onKeyUp='search(this.value);' /> <input type='button' onClick='changeLocation();' name='submit' value='Create' /><br />
@@ -263,12 +263,12 @@ class AddPublicationPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Publication"));
 
 	    $wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3>My ".REPORTING_YEAR." Publications</h3>");
+	    $wgOut->addHTML("<h3 id='mypublications'>My ".REPORTING_YEAR." Publications</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Publication");
 	   	$wgOut->addHTML($myPapers_html);
 		
-		$wgOut->addHTML("<h3>Add/Edit Publication</h3>");
+		$wgOut->addHTML("<h3 id='addpublication'>Add/Edit Publication</h3>");
 		$wgOut->addHTML("<div id='add-edit_publications'>");
 	    $wgOut->addHTML("Enter in the title of the publication in the text field below.  If there is an already existing publication with the same or similar title, it will be listed below the text field.  If you see the publication in the list, then you can click on the title to edit its information, otherwise you can choose to create the publication with the title you have entered by clicking the 'Create' button. You can also add a new publication using the <a href='$wgServer$wgScriptPath/index.php/Special:ImportBibTex'>Import BibTeX</a> page.<br /><br />You can review the complete list of publications in the forum and search by title, author and project (if applicable) at <a href='http://forum.grand-nce.ca/index.php/GRAND:Publications'>GRAND Publications</a>.<br /><br />
 		                 <b>Title:</b> <input onKeyPress='submitOnEnter(event)' type='text' id='title' name='title' size='50' onKeyUp='search(this.value);' /> <input type='button' onClick='changeLocation();' name='submit' value='Create' /><br />
@@ -300,12 +300,12 @@ class AddPressPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Press"));
 
 	    $wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3>My ".REPORTING_YEAR." Press</h3>");
+	    $wgOut->addHTML("<h3 id='mypress'>My ".REPORTING_YEAR." Press</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Press");
 	   	$wgOut->addHTML($myPapers_html);
 
-	   	$wgOut->addHTML("<h3>Add/Edit Press</h3>");
+	   	$wgOut->addHTML("<h3 id='addpress'>Add/Edit Press</h3>");
 		$wgOut->addHTML("<div id='add-edit_publications'>");
 		$wgOut->addHTML("Enter in the title of press item in the text field below.  If there is an already existing press item with the same or similar title, it will be listed below the text field.  If you see the press item in the list, then you can click on the title to edit its information, otherwise you can choose to create the press item with the title you have entered by clicking the 'Create' button.<br /><br />
 		                 <b>Title:</b> <input onKeyPress='submitOnEnter(event)' type='text' id='title' name='title' size='50' onKeyUp='search(this.value);' /> <input type='button' onClick='changeLocation();' name='submit' value='Create' /><br />
@@ -337,12 +337,12 @@ class AddAwardPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Award"));
 
 	    $wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3>My ".REPORTING_YEAR." Awards</h3>");
+	    $wgOut->addHTML("<h3 id='myawards'>My ".REPORTING_YEAR." Awards</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Award");
 	   	$wgOut->addHTML($myPapers_html);
 
-	   	$wgOut->addHTML("<h3>Add/Edit Award</h3>");
+	   	$wgOut->addHTML("<h3 id='addaward'>Add/Edit Award</h3>");
 		$wgOut->addHTML("<div id='add-edit_publications'>");
 
 		$wgOut->addHTML("Enter in the title of the award in the text field below.  If there is an already existing award with the same or similar name, it will be listed below the text field.  If you see the award in the list, then you can click on the title to edit its information, otherwise you can choose to create the award with the title you have entered by clicking the 'Create' button.<br /><br />
@@ -375,12 +375,12 @@ class AddPresentationPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Presentation"));
 
 	    $wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3>My ".REPORTING_YEAR." Presentations</h3>");
+	    $wgOut->addHTML("<h3 id='mypresentations'>My ".REPORTING_YEAR." Presentations</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Presentation");
 	   	$wgOut->addHTML($myPapers_html);
 
-	   	$wgOut->addHTML("<h3>Add/Edit Presentation</h3>");
+	   	$wgOut->addHTML("<h3 id='addpresentation'>Add/Edit Presentation</h3>");
 		$wgOut->addHTML("<div id='add-edit_publications'>");
 
 		$wgOut->addHTML("Enter in the title of the presentation in the text field below.  If there is an already existing presentation with the same or similar name, it will be listed below the text field.  If you see the presentation in the list, then you can click on the title to edit its information, otherwise you can choose to create the presentation with the title you have entered by clicking the 'Create' button.<br /><br />

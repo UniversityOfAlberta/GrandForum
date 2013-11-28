@@ -51,7 +51,7 @@ class DeleteProjectMemberAPI extends API{
 	                `end_date` = $effectiveDate
 	            WHERE `project_id` = '{$project->getId()}'
 	            AND user_id = '{$person->getId()}'
-	            ORDER BY `start_date` DESC LIMIT 1";
+	            AND (`end_date` > CURRENT_DATE OR `end_date` = '0000-00-00 00:00:00')";
             DBFunctions::execSQL($sql, true);
             
             $sql = "DELETE FROM mw_user_groups
@@ -65,7 +65,7 @@ class DeleteProjectMemberAPI extends API{
 	                        `end_date` = $effectiveDate
 	                    WHERE `project_id` = '{$pred->getId()}'
 	                    AND user_id = '{$person->getId()}'
-	                    ORDER BY `start_date` DESC LIMIT 1";
+	                    AND (`end_date` > CURRENT_DATE OR `end_date` = '0000-00-00 00:00:00')";
 	            DBFunctions::execSQL($sql, true);
                 $sql = "DELETE FROM mw_user_groups
                         WHERE ug_user = '{$person->getId()}'
