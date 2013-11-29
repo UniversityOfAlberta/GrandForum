@@ -186,6 +186,21 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     }
     
     /**
+     * @Then /^"([^"]*)" should not be subscribed to "([^"]*)"$/
+     */
+    public function shouldNotBeSubscribedTo($email, $list){
+        $command = "/usr/lib/mailman/bin/list_members $list";
+        exec($command, $output);
+        $found = false;
+        foreach($output as $line){
+            if($line == $email){
+                $found = true;
+            }
+        }
+        assertFalse($found);
+    }
+    
+    /**
      * @Then /^unsubscribe "([^"]*)" from "([^"]*)"$/
      */
     public function unsubscribeFrom($email, $list){

@@ -71,7 +71,7 @@ Feature: EditMember
         And I press "Accept"
         Then I should see "added to Phase2Project2"
         
-    Scenario: Admin Adding PL (Make sure PL is also added to project)
+    Scenario: Admin Adding PL (Make sure PL is also added to project, and subscribed to mailing list)
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
         When I follow "Edit Member"
         And I select "PNI User3" from "names"
@@ -84,6 +84,18 @@ Feature: EditMember
         Then I should see "Leader: User3, PNI"
         When I go to "index.php/PNI:PNI.User3?tab=projects"
         Then I should see "Phase2Project5"
+        And "pni.user3@behat.com" should be subscribed to "grand-forum-project-leaders"
+        
+    Scenario: Admin Removing PL (Make sure that PL is also removed from the mailing list)
+        Given I am logged in as "Admin.User1" using password "Admin.Pass1"
+        When I follow "Edit Member"
+        And I select "PNI User3" from "names"
+        And I press "Next"
+        And I follow "LeadershipTab"
+        And I uncheck "pl_Phase2Project5"
+        And I press "Submit Request"
+        Then I should see "is no longer a project leader of Phase2Project5"
+        And "pni.user3@behat.com" should not be subscribed to "grand-forum-project-leaders"
         
     Scenario: PL Editing RMC project members (Should see RMC who are also PNI, but not people who are only RMC)
         Given I am logged in as "PL.User1" using password "PL.Pass1"
@@ -94,5 +106,3 @@ Feature: EditMember
         And I press "Next"
         Then I should see "Phase2Project1"
         But I should not see "PNI"
-        
-    
