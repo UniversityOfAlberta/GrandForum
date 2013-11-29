@@ -64,6 +64,9 @@ class AddProjectLeaderAPI extends API{
                 echo "{$person->getReversedName()} is now a project leader of {$project->getName()}\n";
             }
             
+            $command =  "echo {$person->getEmail()} | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - grand-forum-project-leaders";
+		    exec($command, $output);
+            
             $sql = "SELECT CURRENT_TIMESTAMP";
             $data = DBFunctions::execSQL($sql);
             $effectiveDate = "'{$data[0]['CURRENT_TIMESTAMP']}'";

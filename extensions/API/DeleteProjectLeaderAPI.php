@@ -84,6 +84,15 @@ class DeleteProjectLeaderAPI extends API{
                 DBFunctions::execSQL($sql, true);
             }
             
+            Person::$cache = array();
+            Person::$leaderCache = array();
+            Person::$coLeaderCache = array();
+            $person = Person::newFromId($person->getId());
+            if(!$person->isProjectLeader() && !$person->isProjectCoLeader()){
+                $command =  "/usr/lib/mailman/bin/remove_members -n -N grand-forum-project-leaders {$person->getEmail()}";
+		        exec($command, $output);
+            }
+            
             $sql = "SELECT CURRENT_TIMESTAMP";
             $data = DBFunctions::execSQL($sql);
             $effectiveDate = "'{$data[0]['CURRENT_TIMESTAMP']}'";

@@ -19,7 +19,8 @@ class UserEmailAPI extends API{
             MailingList::unsubscribe($project, $person);
         }
         if($person->isRole(PNI) || 
-           $person->isRole(CNI)){
+           $person->isRole(CNI) ||
+           $person->isRole(AR)){
             $command =  "/usr/lib/mailman/bin/remove_members -n -N grand-forum-researchers {$person->getEmail()}";
 		    exec($command, $output);
         }
@@ -43,7 +44,8 @@ class UserEmailAPI extends API{
             MailingList::subscribe($project, $person);
         }
         if($person->isRole(PNI) || 
-           $person->isRole(CNI)){
+           $person->isRole(CNI) ||
+           $person->isRole(AR)){
             $command =  "echo {$person->getEmail()} | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - grand-forum-researchers";
 		    exec($command, $output);
         }
