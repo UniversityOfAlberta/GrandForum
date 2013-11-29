@@ -30,8 +30,17 @@ class UserEmailAPI extends API{
         }
         if($person->isProjectLeader() ||
            $person->isProjectCoLeader()){
-            $command =  "/usr/lib/mailman/bin/remove_members -n -N grand-forum-project-leaders {$person->getEmail()}";
-		    exec($command, $output);
+            $changeList = false;
+            foreach($person->leadership() as $project){
+                if($project->isSubProject()){
+                    continue;
+                }
+                $changeList = true;
+            }
+            if($changeList){
+                $command =  "/usr/lib/mailman/bin/remove_members -n -N grand-forum-project-leaders {$person->getEmail()}";
+		        exec($command, $output);
+		    }
         }
         $sql = "UPDATE mw_user
                 SET `user_email` = '{$_POST['email']}'
@@ -55,8 +64,17 @@ class UserEmailAPI extends API{
         }
         if($person->isProjectLeader() ||
            $person->isProjectCoLeader()){
-            $command =  "echo {$person->getEmail()} | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - grand-forum-project-leaders";
-		    exec($command, $output);
+           $changeList = false;
+            foreach($person->leadership() as $project){
+                if($project->isSubProject()){
+                    continue;
+                }
+                $changeList = true;
+            }
+            if($changeList){
+                $command =  "echo {$person->getEmail()} | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - grand-forum-project-leaders";
+		        exec($command, $output);
+		    }
         }
         if(!$noEcho){
             echo "Account email updated\n";
