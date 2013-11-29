@@ -12,7 +12,7 @@ class MailingList {
      * @return int Returns 1 on success, and 0 on failure
      */ 
     static function subscribe($project, $person, &$out=""){
-        global $wgImpersonating;
+        global $wgImpersonating, $wgMessage;
         if($wgImpersonating){
             return 1;
         }
@@ -21,6 +21,9 @@ class MailingList {
 		$command =  "echo \"$email\" | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - $listname";
 		exec($command, $output);
 		$out = $output;
+		if(!self::isSubscribed($project, $person)){
+		    $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be added to <i>$listname</i> mailing list");
+		}
 		if(count($output) > 0 && strstr($output[0], "Subscribed:") !== false){
 		    $rows = DBFunctions::select(array('wikidev_projects'),
 		                                array('projectid'),
@@ -49,7 +52,7 @@ class MailingList {
      * @return int Returns 1 on success, and 0 on failure
      */
     static function unsubscribe($project, $person, &$out=""){
-        global $wgImpersonating;
+        global $wgImpersonating, $wgMessage;
         if($wgImpersonating){
             return 1;
         }
@@ -57,6 +60,9 @@ class MailingList {
         $email = $person->getEmail();
 		$command =  "/usr/lib/mailman/bin/remove_members -n -N $listname $email";
 		exec($command, $output);
+		if(!self::isSubscribed($project, $person)){
+		    $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be removed from <i>$listname</i> mailing list");
+		}
 		$out = $output;
 		if(count($output) == 0 || (count($output) > 0 && $output[0] == "")){
 		    $rows = DBFunctions::select(array('wikidev_projects'),

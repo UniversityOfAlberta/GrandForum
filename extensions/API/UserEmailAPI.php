@@ -15,18 +15,23 @@ class UserEmailAPI extends API{
 	function doAction($noEcho=false){
         $person = Person::newFromName($_POST['user_name']);
         // Remove the person from previous mailing lists
+        $uni = $person->getUni();
+        foreach(MailingList::getListByUniversity($uni) as $list){
+            MailingList::unsubscribe($list, $person);
+        }
         foreach($person->getProjects() as $project){
             MailingList::unsubscribe($project, $person);
         }
         if($person->isRole(PNI) || 
            $person->isRole(CNI) ||
            $person->isRole(AR)){
-            $command =  "/usr/lib/mailman/bin/remove_members -n -N grand-forum-researchers {$person->getEmail()}";
-		    exec($command, $output);
+            MailingList::unsubscribe("grand-forum-researchers", $person);
         }
         if($person->isRole(HQP)){
-            $command =  "/usr/lib/mailman/bin/remove_members -n -N grand-forum-hqps {$person->getEmail()}";
-		    exec($command, $output);
+            MailingList::unsubscribe("grand-forum-hqps", $person);
+        }
+        if($person->isRole(RMC)){
+            MailingList::unsubscribe("rmc-list", $person);
         }
         if($person->isProjectLeader() ||
            $person->isProjectCoLeader()){
@@ -38,8 +43,7 @@ class UserEmailAPI extends API{
                 $changeList = true;
             }
             if($changeList){
-                $command =  "/usr/lib/mailman/bin/remove_members -n -N grand-forum-project-leaders {$person->getEmail()}";
-		        exec($command, $output);
+                MailingList::unsubscribe("grand-forum-project-leaders", $person);
 		    }
         }
         $sql = "UPDATE mw_user
@@ -49,18 +53,22 @@ class UserEmailAPI extends API{
         
         $person->email = $_POST['email'];
         // Re-Add the person to the mailing lists using their new email
+        foreach(MailingList::getListByUniversity($uni) as $list){
+            MailingList::subscribe($list, $person);
+        }
         foreach($person->getProjects() as $project){
             MailingList::subscribe($project, $person);
         }
         if($person->isRole(PNI) || 
            $person->isRole(CNI) ||
            $person->isRole(AR)){
-            $command =  "echo {$person->getEmail()} | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - grand-forum-researchers";
-		    exec($command, $output);
+            MailingList::subscribe("grand-forum-researchers", $person);
+        }
+        if($person->isRole(RMC)){
+            MailingList::subscribe("rmc-list", $person);
         }
         if($person->isRole(HQP)){
-            $command =  "echo {$person->getEmail()} | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - grand-forum-hqps";
-		    exec($command, $output);
+            MailingList::subscribe("grand-forum-hqps", $person);
         }
         if($person->isProjectLeader() ||
            $person->isProjectCoLeader()){
@@ -72,8 +80,7 @@ class UserEmailAPI extends API{
                 $changeList = true;
             }
             if($changeList){
-                $command =  "echo {$person->getEmail()} | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - grand-forum-project-leaders";
-		        exec($command, $output);
+                MailingList::subscribe("grand-forum-project-leaders", $person);
 		    }
         }
         if(!$noEcho){
