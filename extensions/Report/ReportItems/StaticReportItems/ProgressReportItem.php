@@ -84,10 +84,10 @@ class ProgressReportItem extends StaticReportItem {
         $details = "<tr valign='top'><td rowspan='$rowspan' style='white-space:nowrap;width:1%;'><b>Report Status</b></td><td valign='top' style='white-space:nowrap;max-width:500px;'>(Section{$plural} ".implode(", ", $sections).")</td></tr>";
         $details .= "<tr><td>≈$percentChars% of maximum allowable characters (overall)\n</td></tr>";
         $plural = "s";
-        if($nFields == 1){
+        if($nTextareas == 1){
             $plural = "";
-        }  
-        $details .= "<tr><td>{$nComplete} of the {$nFields} field{$plural} include text\n</td></tr>";
+        }
+        $details .= "<tr><td>{$nComplete} of the {$nTextareas} field{$plural} include text\n</td></tr>";
         $details .= "$errorChars";
         return $details;
 	}
