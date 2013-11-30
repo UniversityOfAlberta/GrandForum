@@ -13,7 +13,7 @@ class PersonProjectReportItemSet extends ReportItemSet {
         }
         if(is_array($projects)){
             foreach($projects as $proj){
-                if($proj->getCreated() < REPORTING_NCE_START){
+                if($proj->getCreated() < REPORTING_NCE_START && !$proj->isSubProject()){
                     $tuple = self::createTuple();
                     $tuple['project_id'] = $proj->getId();
                     $data[] = $tuple;

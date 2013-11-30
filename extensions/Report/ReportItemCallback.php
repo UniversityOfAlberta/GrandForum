@@ -598,8 +598,10 @@ class ReportItemCallback {
         $person = Person::newFromId($this->reportItem->personId);
         $projects = array();
         foreach($person->getProjectsDuring() as $project){
-            $deleted = ($project->isDeleted()) ? " (Ended)" : "";
-            $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";
+            if(!$project->isSubProject()){
+                $deleted = ($project->isDeleted()) ? " (Ended)" : "";
+                $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";
+            }
         }
         return implode(", ", $projects);
     }
