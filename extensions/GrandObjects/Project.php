@@ -1247,7 +1247,7 @@ EOF;
                         ( (end_date = '0000-00-00 00:00:00') AND
                         ((start_date <= '$endRange')))
                      )
-                     AND ( (start_date > end_date AND status != 'Closed') OR ( $year BETWEEN YEAR(start_date)  AND YEAR(end_date) ) )";
+                     AND ( (start_date > end_date AND status != 'Closed' AND status != 'Abandoned') OR ( $year BETWEEN YEAR(start_date)  AND YEAR(end_date) ) )";
             
             $data2 = DBFunctions::execSQL($sql2);
             if( count($data2) > 0 ){
