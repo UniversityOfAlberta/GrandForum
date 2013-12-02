@@ -19,7 +19,7 @@ class UpdateProjectAcronymAPI extends API{
 	    $project = Project::newFromName($_POST['old_acronym']);
 	    $newProj = Project::newFromName($_POST['new_acronym']);
 	    if(!preg_match("/^[0-9À-Ÿa-zA-Z\-]+$/", $_POST['new_acronym'])){
-	        $wgMessage->addError("The project acronym cannot contain special characters");
+	        $wgMessage->addError("The project acronym cannot contain any special characters");
 	        return false;
 	    }
 	    if($project == null){

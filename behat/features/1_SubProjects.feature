@@ -24,6 +24,16 @@ Feature: Sub Projects
         And I press "Create Sub-Project"
         Then I should see "The field 'Acronym' must not be an already existing Project"
         
+    Scenario: PL Adding a sub-project that has bad characters in the title
+        Given I am logged in as "PL.User1" using password "PL.Pass1"
+        When I follow "My Projects"
+        And I follow "Sub-Projects"
+        And I press "New Sub-Project"
+        And I fill in "new_acronym" with "aasda.>:[]}{)(+=%^&"
+        And I fill in "new_full_name" with "New Sub Project"
+        And I press "Create Sub-Project"
+        Then I should see "The project acronym cannot contain any special characters"
+        
     Scenario: PL editing sub-project description
         Given I am logged in as "PL.User1" using password "PL.Pass1"
         When I go to "index.php/NewSubProject:Main"
@@ -45,3 +55,27 @@ Feature: Sub Projects
         Then I should see "'Main' updated successfully"
         And I should see "New Sub Project Edited 2"
         And I should see "Last edited by PNI.User1"
+        
+    Scenario: PL editing sub-project acronym
+        Given I am logged in as "PL.User1" using password "PL.Pass1"
+        When I go to "index.php/NewSubProject:Main"
+        And I press "Edit Main"
+        And I fill in "acronym" with "NewSubProject2"
+        And I press "Save Main"
+        Then I should see "The project acronym was changed to 'NewSubProject2'"
+        
+    Scenario: PL editing sub-project acronym with bad characters
+        Given I am logged in as "PL.User1" using password "PL.Pass1"
+        When I go to "index.php/NewSubProject2:Main"
+        And I press "Edit Main"
+        And I fill in "acronym" with "NewSubProject[<>{}90}{'"
+        And I press "Save Main"
+        Then I should see "The project acronym cannot contain any special characters"
+    
+    Scenario: PL editing sub-project acronym to one which already exists
+        Given I am logged in as "PL.User1" using password "PL.Pass1"
+        When I go to "index.php/NewSubProject2:Main"
+        And I press "Edit Main"
+        And I fill in "acronym" with "Phase2Project1SubProject1"
+        And I press "Save Main"
+        Then I should see "A project with the name 'Phase2Project1SubProject1' already exists"
