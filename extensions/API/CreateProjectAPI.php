@@ -37,10 +37,15 @@ class CreateProjectAPI extends API{
     }
 
 	function doAction($noEcho=false){
-	    global $wgUser;
+	    global $wgUser, $wgMessage;
 	    $me = Person::newFromUser($wgUser);
 	    $parent_id = (isset($_POST['parent_id'])) ? $_POST['parent_id'] : 0;
 	    $parentProj = Project::newFromId($parent_id);
+	    $_POST['acronym'] = str_replace(" ", "-", $_POST['acronym']);
+	    if(!preg_match("/^[0-9À-Ÿa-zA-Z\-]+$/", $_POST['acronym'])){
+	        $wgMessage->addError("The project acronym cannot contain special characters");
+	        return false;
+	    }
 	    if(!$me->isRoleAtLeast(STAFF) && !$me->leadershipOf($parentProj)){
 	        return;
 	    }
@@ -60,7 +65,6 @@ class CreateProjectAPI extends API{
 	        $nsId = ($row['nsId'] % 2 == 1) ? $row['nsId'] + 1 : $row['nsId'] + 2;
 	    }
 	    $challenge = (isset($_POST['challenge'])) ? $_POST['challenge'] : 0;
-	    
 	    
 	    $status = (isset($_POST['status'])) ? $_POST['status'] : 'Proposed';
 	    $type = (isset($_POST['type'])) ? $_POST['type'] : 'Research';

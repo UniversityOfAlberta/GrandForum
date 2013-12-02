@@ -247,6 +247,7 @@ class APIRequest{
 		$this->addAction('Projects', 'createProject', new CreateProjectAPI());
 		$this->addAction('Projects', 'addProjectMember', new AddProjectMemberAPI());
 		$this->addAction('Projects', 'addProjectMilestone', new ProjectMilestoneAPI());
+		$this->addAction('Projects', 'updateProjectAcronym', new UpdateProjectAcronymAPI());
 		$this->addAction('Projects', 'updateProjectDescription', new ProjectDescriptionAPI());
 		$this->addAction('Projects', 'updateProjectChampions', new ProjectChampionsAPI());
 		$this->addAction('Projects', 'updateProjectChallenge', new ProjectChallengeAPI());

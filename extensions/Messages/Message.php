@@ -15,6 +15,25 @@ class Message {
     var $infoIndex = 0;
     var $purpleIndex = 0;
     
+    function Message(){
+        if(isset($_COOKIE['errors'])){
+            $this->errors = unserialize($_COOKIE['errors']);
+        }
+        if(isset($_COOKIE['warnings'])){
+            $this->warnings = unserialize($_COOKIE['warnings']);
+        }
+        if(isset($_COOKIE['success'])){
+            $this->success = unserialize($_COOKIE['success']);
+        }
+        if(isset($_COOKIE['info'])){
+            $this->info = unserialize($_COOKIE['info']);
+        }
+        if(isset($_COOKIE['purpleInfo'])){
+            $this->info = unserialize($_COOKIE['purpleInfo']);
+        }
+        $this->clearCookies();
+    }
+    
     // Adds a (red) error message
     function addError($message, $index=false){
         if($index !== false){
@@ -23,6 +42,7 @@ class Message {
         else{
             $this->errors[$this->errorIndex++] = $message;
         }
+        setcookie('errors', serialize($this->errors), time()+3600);
     }
     
     // Adds a (yellow) warning message
@@ -43,6 +63,7 @@ class Message {
         else{
             $this->success[$this->successIndex++] = $message;
         }
+        setcookie('success', serialize($this->success), time()+3600);
     }
     
     // Adds a (blue) info message
@@ -63,6 +84,14 @@ class Message {
         else{
             $this->purpleInfo[$this->purpleIndex++] = $message;
         }
+    }
+    
+    private function clearCookies(){
+        setcookie('errors', serialize(array()), time()-3600);
+        setcookie('warnings', serialize(array()), time()-3600);
+        setcookie('success', serialize(array()), time()-3600);
+        setcookie('info', serialize(array()), time()-3600);
+        setcookie('purpleInfo', serialize(array()), time()-3600);
     }
     
     // Empties all error messages
@@ -97,6 +126,8 @@ class Message {
     
     // Displays the messages
     function showMessages(){
+        $this->clearCookies();
+        
         ksort($this->errors);
         ksort($this->warnings);
         $errors = implode("<br />\n", $this->errors);

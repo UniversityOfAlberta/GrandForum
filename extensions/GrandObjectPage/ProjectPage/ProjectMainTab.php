@@ -23,8 +23,12 @@ class ProjectMainTab extends AbstractEditableTab {
         $bigbet = ($this->project->isBigBet()) ? "Yes" : "No";
         $title = "";
         if($edit){
+            if($project->isSubProject()){
+                $acronymField = new TextField("acronym", "New Acronym", $this->project->getName());
+                $title .= "<tr><td><b>New Acronym:</b></td><td>{$acronymField->render()}</td></tr>";
+            }
             $fullNameField = new TextField("fullName", "New Title", $this->project->getFullName());
-            $title = "<tr><td><b>New Title:</b></td><td>{$fullNameField->render()}</td></tr>";
+            $title .= "<tr><td><b>New Title:</b></td><td>{$fullNameField->render()}</td></tr>";
         }
         $this->html .= "<table>
                             $title
@@ -48,7 +52,7 @@ class ProjectMainTab extends AbstractEditableTab {
     }
     
     function handleEdit(){
-        global $wgOut;
+        global $wgOut, $wgMessage;
         $_POST['project'] = $this->project->getName();
         $_POST['fullName'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['fullName']));
         $_POST['description'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['description']));
@@ -58,7 +62,6 @@ class ProjectMainTab extends AbstractEditableTab {
            $_POST['problem'] != $this->project->getProblem() ||
            $_POST['solution'] != $this->project->getSolution() ||
            $_POST['fullName'] != $this->project->getFullName()){
-
             APIRequest::doAction('ProjectDescription', true);
             Project::$cache = array();
             $this->project = Project::newFromId($this->project->getId());
@@ -108,6 +111,17 @@ class ProjectMainTab extends AbstractEditableTab {
                 $_POST['manager'] = 'False';
                 $_POST['co_lead'] = 'False';
                 APIRequest::doAction('AddProjectLeader', true);
+            }
+        }
+        
+        if(isset($_POST['acronym'])){
+            $_POST['new_acronym'] = str_replace(" ", "-", $_POST['acronym']);
+            $_POST['old_acronym'] = $this->project->getName();
+            $result = APIRequest::doAction('UpdateProjectAcronym', true);
+            if($result){
+                $this->project->name = $_POST['new_acronym'];
+                redirect($this->project->getUrl());
+                exit;
             }
         }
     }
