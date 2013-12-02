@@ -93,9 +93,10 @@
 	        $nExtra++;
 	    }
 	}
-	
+	echo "\n";
+	/*
 	echo "\n== Totals == \n";
 	echo "  Missing: $nMissing\n";
 	echo "    Extra: $nExtra\n";
-	echo "\n";
+	echo "\n";*/
 ?>
