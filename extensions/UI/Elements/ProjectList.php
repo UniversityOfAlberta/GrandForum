@@ -37,14 +37,14 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                 $already = "already";
             }
             $html .= "<div>
-                        <input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='{$this->id}_{$proj->getName()}' name='{$this->id}[]' value='{$proj->getName()}' $checked/>{$proj->getName()}";
+                        <input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='{$this->id}_{$proj->getName()}' name='{$this->id}[]' value='{$proj->getName()}' $checked />{$proj->getName()}";
             if($checked != ""){
                 $html .="<div style='display:none; padding-left:30px;'>
                             <fieldset><legend>Reasoning</legend>
                                 <p>Date Effective:<input type='text' class='datepicker' id='{$this->id}_datepicker{$proj->getName()}' name='{$partialId}_datepicker[{$proj->getName()}]' /></p>
                                 Additional Comments:<br />
                                 <textarea name='{$partialId}_comment[{$proj->getName()}]' cols='15' rows='4' style='height:auto;' ></textarea>
-                            </fielset>
+                            </fieldset>
                          </div>";
             }
             $html .= "<div class='subprojects' style='margin-left:15px;display:$display;'>";
@@ -63,15 +63,18 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                     if($subchecked != ""){
                         $already = "already";
                     }
-                    $html .= "<input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='{$this->id}_{$subProj->getName()}' name='{$this->id}[]' value='{$subProj->getName()}' $subchecked/>{$subProj->getName()}";
+                    $html .= "<input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='{$this->id}_{$subProj->getName()}' name='{$this->id}[]' value='{$subProj->getName()}' $subchecked />{$subProj->getName()}";
                     if($subchecked != ""){
                         $html .= "<div style='display:none; padding-left:30px;'>
                             <fieldset><legend>Reasoning</legend>
                                 <p>Date Effective:<input type='text' class='datepicker' id='{$this->id}_datepicker{$subProj->getName()}' name='{$partialId}_datepicker[{$subProj->getName()}]' /></p>
                                 Additional Comments:<br />
                                 <textarea name='{$partialId}_comment[{$subProj->getName()}]' cols='15' rows='4' style='height:auto;' ></textarea>
-                            </fielset>
+                            </fieldset>
                         </div>";
+                    }
+                    else{
+                        $html .= "<div></div>";
                     }
                     $html .= "<br />";
                 }
@@ -100,7 +103,9 @@ class ProjectList extends MultiColumnVerticalCheckBox {
         }
         else{
             $html .= "<script type='text/javascript'>
-                $('.subprojects', $('input.{$this->id}').parent()).show();
+                $(document).ready(function(){
+                    $('.subprojects', $('input.{$this->id}').parent()).show();
+                });
             </script>";
         }
         return $html;

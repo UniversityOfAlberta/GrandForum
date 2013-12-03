@@ -1067,8 +1067,6 @@ class EditMember extends SpecialPage{
             }
         }
         $wgOut->addHTML($boxes);
-        $wgOut->addHTML("</td>
-                    </tr>");
         $wgOut->addHTML("</td></tr></table>\n");
     }
     
