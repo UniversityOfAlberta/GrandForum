@@ -13,7 +13,7 @@ class ProgressReportItem extends StaticReportItem {
 	function renderForPDF(){
 	    global $wgOut;
         $details = $this->getTableHTML();
-        $item = "$details";
+        $item = str_replace("≈","","$details");
         $item = $this->processCData($item);
 		$wgOut->addHTML($item);
 	}
