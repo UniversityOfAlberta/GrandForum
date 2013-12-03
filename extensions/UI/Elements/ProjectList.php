@@ -73,9 +73,6 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                             </fieldset>
                         </div>";
                     }
-                    else{
-                        $html .= "<div></div>";
-                    }
                     $html .= "<br />";
                 }
             }

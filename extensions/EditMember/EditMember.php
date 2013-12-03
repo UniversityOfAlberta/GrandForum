@@ -1015,12 +1015,7 @@ class EditMember extends SpecialPage{
                 }
                 
                 $(document).ready(function(){
-                    updateStep2();
-                    $.each($('input'), function(index, value){
-                        if($(value).attr('type') == 'checkbox'){
-                            addComment(value, false);
-                        }
-                    });
+                    updateStep2();ad
                 });                           
             </script>");
         }
