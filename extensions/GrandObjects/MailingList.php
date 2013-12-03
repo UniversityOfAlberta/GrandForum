@@ -60,7 +60,7 @@ class MailingList {
         $email = $person->getEmail();
 		$command =  "/usr/lib/mailman/bin/remove_members -n -N $listname $email";
 		exec($command, $output);
-		if(!self::isSubscribed($project, $person)){
+		if(self::isSubscribed($project, $person)){
 		    $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be removed from <i>$listname</i> mailing list");
 		}
 		$out = $output;
