@@ -475,6 +475,9 @@ class Paper extends BackboneModel{
         $insertSQL = "INSERT INTO `grand_product_authors`
                       (`author`, `product_id`, `order`) VALUES\n";
 	    $authors = $this->getAuthors();
+	    if(!is_array($authors)){
+	        $authors = array();
+	    }
 	    $inserts = array();
 	    $alreadyDone = array();
 	    foreach($authors as $key => $author){

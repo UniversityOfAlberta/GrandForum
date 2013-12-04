@@ -71,7 +71,6 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $fp = fopen("../test.tmp", 'w');
         fwrite($fp, "This file should delete it's self once the test suite is done running.\nDo not delete this file until then.");
         fclose($fp);
-        
     }
     
     /**
@@ -271,11 +270,15 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     }
     
     /**
-     * @Given /^I visit profile$/
+     * @Given /^I visit profile for "([^"]*)"$/
      */
-    public function visitProfile(){
+    public function visitProfile($name){
         $html = str_get_html($this->getSession()->getPage()->getContent());
         $a = $html->find('a.Bold', 0);
+        $affiliation = $html->find('li.dataCol5', 0);
+        if($affiliation != null){
+            self::$dbJSON['authors'][$name]['affiliation'] = $affiliation->plaintext;
+        }
         if($a != null){
             $this->getSession()->visit("http://www.scopus.com".$a->href);
         }
@@ -288,9 +291,9 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function scrapeSubjects($name){
         $html = str_get_html($this->getSession()->getPage()->getContent());
-        $sub = @$html->find("#subjectarea", 0);
+        $sub = @$html->find(".tableMbWh-T", 18);
         if($sub != null){
-            $row = $sub->parent()->plaintext;
+            $row = $sub->plaintext;
             $row = str_replace("Less...", "", $row);
             $row = str_replace("More...", "", $row);
             $row = str_replace("<br>", "\n", $row);

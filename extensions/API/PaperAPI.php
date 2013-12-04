@@ -58,6 +58,7 @@ abstract class PaperAPI extends API{
 	            $projects[] = @stripslashes($this->stripQuotes($project));
 	        }
 	    }
+	    $projects = array_unique($projects);
 	    $date = @stripslashes($this->stripQuotes($_POST['date']));
 	    $venue = @stripslashes($this->stripQuotes($_POST['venue']));
 	    $status = @stripslashes($this->stripQuotes($_POST['status']));
