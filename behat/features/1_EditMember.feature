@@ -106,3 +106,8 @@ Feature: EditMember
         And I press "Next"
         Then I should see "Phase2Project1"
         But I should not see "PNI"
+        
+    Scenario: PL Editing Champ project members
+        Given I am logged in as "PL.User1" using password "PL.Pass1"
+        When I follow "Edit Member"
+        Then I should see "Champ User1"

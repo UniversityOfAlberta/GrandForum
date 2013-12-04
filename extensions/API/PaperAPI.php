@@ -11,6 +11,7 @@ abstract class PaperAPI extends API{
         $this->update = $update;
         $this->type = $type;
         $this->category = $category;
+        $this->addPOST("product_id", false,"The id of the item (optional)","42");
         $this->addPOST("title",true,"The title of the referenced item to be imported","My Title");
         $this->addPOST("authors",true,"The list of authors who contributed to this item.  The list should be a String in the form \"First Last, First Last, First Last, ...\"","Author1, Author2");
         $this->addPOST("projects",true,"The list of projects associated with this item.  The list should be in the form \"PROJECT1, PROJECT2, PROJECT3, ...\"","MEOW, NAVEL");
@@ -87,7 +88,12 @@ abstract class PaperAPI extends API{
 	        $paper = null;
 	    }
 	    else{
-	        $paper = Paper::newFromTitle($title, $this->category);
+	        if(!is_null($product_id)){
+	            $paper = Paper::newFromId($product_id);
+	        }
+	        else{
+	            $paper = Paper::newFromTitle($title, $this->category);
+	        }
 	    }
 	    if(strstr($this->type, "Misc") !== false && isset($_POST['misc_type'])){
             $type = "Misc: ".str_replace("'", "&#39", $_POST['misc_type']);
@@ -166,14 +172,24 @@ abstract class PaperAPI extends API{
 	                                      'data' => serialize($data),
 	                                      'date_created' => EQ(COL('CURRENT_TIMESTAMP'))));
 	        Paper::$cache = array();
-	        $paper = Paper::newFromTitle($title, $this->category, $type, $status);
+	        if(!is_null($product_id)){
+	            $paper = Paper::newFromId($product_id);
+	        }
+	        else{
+	            $paper = Paper::newFromTitle($title, $this->category, $status);
+	        }
 	        foreach($projects as $project){
 	            $p = Project::newFromName($project);
 	            DBFunctions::insert("grand_product_projects", array('product_id' => $paper->getId(),
 	                                                                'project_id' => $p->getId()));
 	        }
 	        Paper::$cache = array();
-	        $paper = Paper::newFromTitle($title, $this->category, $type, $status);
+	        if(!is_null($product_id)){
+	            $paper = Paper::newFromId($product_id);
+	        }
+	        else{
+	            $paper = Paper::newFromTitle($title, $this->category, $status);
+	        }
 	        foreach($authors as $author){
 	            $person = Person::newFromNameLike($author);
                 if($person == null || $person->getName() == null){

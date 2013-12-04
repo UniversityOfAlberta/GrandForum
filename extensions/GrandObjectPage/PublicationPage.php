@@ -1135,8 +1135,13 @@ class PublicationPage {
                     }
                 }
                 if($edit){
-                    $projs = Project::getAllProjects();
-                        
+                    $projstmp = Project::getAllProjects();
+                    $projs = array();
+                    foreach($projstmp as $proj){
+                        if(!$proj->deleted){
+                            $projs[] = $proj;
+                        }
+                    }
                     $projList = new ProjectList("projects", "Projects", $pProjects, $projs);
                     $wgOut->addHTML($projList->render());
                     if(count($projs) > 0){
