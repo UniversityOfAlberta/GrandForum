@@ -40,27 +40,8 @@ class MailList{
 	            $text = $title->getText();
 	        }
 	        if($nsText == "Mail"){
-                $project_name = strtolower($text);
-            }
-            else{
-                $project_name = $nsText;
-            }
-            $project = Project::newFromName($project_name);
-            if($user->isLoggedIn()){
-	            if($text == "Mail Index" || $nsText == "Mail" || strpos($text, "MAIL") === 0){
-	                $university = $me->getUniversity();
-	                if(!((($project != null && $project->getName() != "" && 
-			             $me->isMemberOf($project)) || 
-			            ($me->isRole($project_name) || 
-			             $me->isRoleAtLeast(STAFF)) || 
-			            (in_array($project_name, MailingList::getLocationBasedLists()) && 
-			             in_array($project_name, MailingList::getListByUniversity($university['university'])))))){
-                        $result = false;
-                    }
-                }
-            }
-            else if(strpos($text, "MAIL") === 0 || strpos($text, "Mail Index") === 0){
-                $result = false;
+                $list = strtolower($text);
+                $result = MailingList::isSubscribed($list, $me);
             }
         }
 	    return true;
@@ -126,7 +107,9 @@ class MailList{
 				    $people = array();
 				    foreach($data2 as $row2){
 				        $person = Person::newFromName($row2['user_name']);
-					    $people[] = "{$person->getNameForForms()}";
+				        if($person->getName() != ""){
+					        $people[] = "<a href='{$person->getUrl()}'>{$person->getNameForForms()}";
+					    }
 				    }
 				    $users = implode(", ", array_unique($people));
 				    $sql = "SELECT MAX(r.rev_id) as maxRev, MIN(r.rev_id) as minRev, p.page_title

@@ -247,8 +247,7 @@ EOF;
 
         $this->text .= "Below are all the current ".RMC." in GRAND.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
 		$this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>Name</th><th>Roles</th></tr></thead><tbody>
-";
+<thead><tr><th>Name</th><th>Roles</th></tr></thead><tbody>";
 		foreach($data as $person){
 		    $roles = $person->getRoles();
 			$this->text .= "
@@ -268,7 +267,6 @@ EOF;
 			$this->text .= "</tr>";
 		}
 		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
-
 		return true;
 	}
 
