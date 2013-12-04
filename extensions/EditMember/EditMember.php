@@ -178,7 +178,7 @@ class EditMember extends SpecialPage{
                     // Skip the request, go straight to making the change, but still add the request for logging this history
                     
                     // Check whether the HQP is being 'promoted' or not
-                    if(strstr(EditMember::roleDiff($person, $r_nss, 'ROLE'), "+") === false ){
+                    if(strstr(EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE'), "+") === false ){
                         // The only action is removing the HQP role, so go ahead and do the HQP Inactivation
                         EditMember::processHQPInactivation($person, $r_nss, $r_comments, $r_effectiveDates, $other);
                         $person = Person::newFromName($_POST['user']);
@@ -186,7 +186,7 @@ class EditMember extends SpecialPage{
                     }
                     EditMember::processHQPMovedOn();
                 }
-                if($processOthers && EditMember::roleDiff($person,$r_current, $r_nss, 'ROLE') != "" && EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE') != "-".INACTIVE."<br />\n"){
+                if($processOthers && EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE') != "" && EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE') != "-".INACTIVE."<br />\n"){
                     DBFunctions::insert('grand_role_request',
                                         array('effective_date' => EditMember::parse($r_effectiveDates),
                                               'requesting_user' => EditMember::parse($wgUser->getId()),
@@ -457,6 +457,7 @@ class EditMember extends SpecialPage{
                 $nss[] = $role->getRole();
             }
         }
+        $_POST['current_role'] = HQP;
         $_POST['role'] = implode(", ", $nss);
         $_POST['comment'] = HQP.'::'.$comment;
         $_POST['effectiveDates'] = HQP.'::'.$date;
