@@ -84,12 +84,11 @@ abstract class PaperAPI extends API{
 	            $data[$post['name']] = @stripslashes($this->stripQuotes($_POST[$post['name']]));
 	        }
 	    }
-
         if(isset($_GET['create']) && !isset($_GET['edit'])){
 	        $paper = null;
 	    }
 	    else{
-	        if(!is_null($product_id)){
+	        if(!is_null($product_id) && $product_id != ""){
 	            $paper = Paper::newFromId($product_id);
 	        }
 	        else{
@@ -102,7 +101,6 @@ abstract class PaperAPI extends API{
         else {
             $type = $this->type;
         }
-	    
 	    if($this->update && $paper != null && $paper->getTitle() != null){
 	        // Already exists, so just update the old data
 	        $sql = "UPDATE grand_products
@@ -173,11 +171,12 @@ abstract class PaperAPI extends API{
 	                                      'data' => serialize($data),
 	                                      'date_created' => EQ(COL('CURRENT_TIMESTAMP'))));
 	        Paper::$cache = array();
-	        if(!is_null($product_id)){
+	        echo "HELLO";
+	        if(!is_null($product_id) && $product_id != ""){
 	            $paper = Paper::newFromId($product_id);
 	        }
 	        else{
-	            $paper = Paper::newFromTitle($title, $this->category, $status);
+	            $paper = Paper::newFromTitle($title, $this->category, $type, $status);
 	        }
 	        foreach($projects as $project){
 	            $p = Project::newFromName($project);
@@ -185,11 +184,11 @@ abstract class PaperAPI extends API{
 	                                                                'project_id' => $p->getId()));
 	        }
 	        Paper::$cache = array();
-	        if(!is_null($product_id)){
+	        if(!is_null($product_id) && $product_id != ""){
 	            $paper = Paper::newFromId($product_id);
 	        }
 	        else{
-	            $paper = Paper::newFromTitle($title, $this->category, $status);
+	            $paper = Paper::newFromTitle($title, $this->category, $type, $status);
 	        }
 	        foreach($authors as $author){
 	            $person = Person::newFromNameLike($author);

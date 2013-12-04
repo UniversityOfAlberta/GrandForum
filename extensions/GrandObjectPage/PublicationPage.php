@@ -689,7 +689,7 @@ class PublicationPage {
                 if($edit){
                     if($create){
                         $wgOut->addHTML("<form name='product' action='$wgServer$wgScriptPath/index.php/{$category}:New?name=".urlencode($title)."&create' method='post'>
-                                        <input type='hidden' name='title' value='".str_replace("'", "&#39;", $title)."' /><input type='hidden' name='product_id' value='$product_id' />");
+                                        <input type='hidden' name='title' value='".str_replace("'", "&#39;", $title)."' />");
                     }
                     else{
                         $wgOut->addHTML("<form name='product' action='{$paper->getURL()}?edit' method='post'>
