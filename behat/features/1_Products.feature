@@ -17,3 +17,4 @@ Feature: Products
         And I press "Create Publication"
         Then I should see "New Publication"
         And I should see "Jan 4, 2013"
+        And I should see "Phase2Project1"

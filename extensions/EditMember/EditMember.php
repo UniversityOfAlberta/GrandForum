@@ -1016,7 +1016,7 @@ class EditMember extends SpecialPage{
                 }
                 
                 $(document).ready(function(){
-                    updateStep2();ad
+                    updateStep2();
                 });                           
             </script>");
         }

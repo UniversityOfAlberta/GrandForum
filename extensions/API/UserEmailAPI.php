@@ -20,7 +20,9 @@ class UserEmailAPI extends API{
             MailingList::unsubscribe($list, $person);
         }
         foreach($person->getProjects() as $project){
-            MailingList::unsubscribe($project, $person);
+            if(!$project->isSubProject()){
+                MailingList::unsubscribe($project, $person);
+            }
         }
         if($person->isRole(PNI) || 
            $person->isRole(CNI) ||
@@ -57,7 +59,9 @@ class UserEmailAPI extends API{
             MailingList::subscribe($list, $person);
         }
         foreach($person->getProjects() as $project){
-            MailingList::subscribe($project, $person);
+            if(!$project->isSubProject()){
+                MailingList::subscribe($project, $person);
+            }
         }
         if($person->isRole(PNI) || 
            $person->isRole(CNI) ||

@@ -2,7 +2,47 @@
 
 class MailingList {
 
+    static $black_list = array('grand',
+                               'grand-support',
+                               'administrator',
+                               'mailman');
+    static $lists = array();
     static $membershipCache = array();
+
+    /**
+     * Returns the lists that the given person is on
+     * @param Person $person The Person to get the lists for
+     * @return array Returns the array of mailing lists
+     */
+    static function getPersonLists($person){
+        $lists = array();
+        $command = "/usr/lib/mailman/bin/find_member \"^{$person->getEmail()}$\" | grep \"     \"";
+        exec($command, $output);
+        foreach($output as $line){
+            $line = trim($line);
+            if(array_search($line, self::listLists()) !== false){
+                $lists[] = $line;
+            }
+        }
+        return $lists;
+    }
+    
+    /**
+     * Returns all the lists in the system
+     * @return array Returns the array of mailing lists
+     */
+    static function listLists(){
+        if(count(self::$lists) == 0){
+            $command =  "/usr/lib/mailman/bin/list_lists -b";
+		    exec($command, $lists);
+		    foreach($lists as $list){
+		        if(array_search($list, self::$black_list) === false){
+		            self::$lists[] = $list;
+		        }
+		    }
+		}
+		return self::$lists;
+    }
 
     /**
      * Subscribes the given Person to the given Project
@@ -21,6 +61,7 @@ class MailingList {
 		$command =  "echo \"$email\" | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - $listname";
 		exec($command, $output);
 		$out = $output;
+		self::$membershipCache = array();
 		if(!self::isSubscribed($project, $person)){
 		    $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be added to <i>$listname</i> mailing list");
 		}
@@ -60,6 +101,7 @@ class MailingList {
         $email = $person->getEmail();
 		$command =  "/usr/lib/mailman/bin/remove_members -n -N $listname $email";
 		exec($command, $output);
+		self::$membershipCache = array();
 		if(self::isSubscribed($project, $person)){
 		    $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be removed from <i>$listname</i> mailing list");
 		}

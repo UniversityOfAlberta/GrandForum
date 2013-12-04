@@ -149,7 +149,8 @@ User::createNew("HQP.User1", array('password' => User::crypt("HQP.Pass1"), 'emai
 User::createNew("HQP.User2", array('password' => User::crypt("HQP.Pass2"), 'email' => "hqp.user2@behat.com"));
 User::createNew("HQP.User3", array('password' => User::crypt("HQP.Pass3"), 'email' => "hqp.user3@behat.com"));
 User::createNew("Already.Existing", array('password' => User::crypt("Already.Existing1"), 'email' => "already.existing@behat.com"));
-User::createNew("Üšër.WìthÁççénts", array('password' => User::crypt("Üšër WìthÁççénts"), 'email' => "Üšër WìthÁççénts@behat.com"));
+User::createNew("Üšër.WìthÁççénts", array('password' => User::crypt("Üšër WìthÁççénts"), 'email' => "ÜšërWìthÁççénts@behat.com"));
+User::createNew("HQP.ToBeInactivated", array('password' => User::crypt("HQP.ToBeInactivated"), 'email' => "HQP.ToBeInactivated@behat.com"));
 
 DBFunctions::insert('grand_roles',
                     array('user_id' => 1,
@@ -196,6 +197,7 @@ addUserRole("CNICOPL.User1", CNI);
 addUserRole("HQP.User1", HQP);
 addUserRole("HQP.User2", HQP);
 addUserRole("HQP.User3", HQP);
+addUserRole("HQP.ToBeInactivated", HQP);
 
 addUserProject("PNI.User1", "Phase1Project1");
 addUserProject("PNI.User1", "Phase2Project1");
@@ -217,6 +219,7 @@ addProjectLeader("CNICOPL.User1", "Phase2Project2", 'True');
 
 addRelation("PNI.User1", "HQP.User1", "Supervises");
 addRelation("PNI.User1", "HQP.User2", "Supervises");
+addRelation("PNI.User1", "HQP.ToBeInactivated", "Supervises");
 addRelation("PNI.User1", "PNI.User2", "Works With");
 
 ?>

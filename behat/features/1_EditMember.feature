@@ -64,6 +64,15 @@ Feature: EditMember
         And I press "Submit Request"
         Then I should see "+Phase2Project2"
         
+    Scenario: PNI Inactivating HQP
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I follow "Edit Member"
+        And I select "HQP ToBeInactivated" from "names"
+        And I press "Next"
+        And I uncheck "role_HQP"
+        And I press "Submit Request"
+        Then I should see "removed from HQP"
+        
     Scenario: Admin Accepting request
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
         When I follow "lnk-notifications"
