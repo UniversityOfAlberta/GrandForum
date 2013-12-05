@@ -1436,3 +1436,28 @@ input.other_option:focus {
     -webkit-box-shadow: 2px 2px 2px #ccc;
     box-shadow:         2px 2px 2px #ccc;
 }
+
+.inner-message {
+    border-top: 1px solid #aaaaaa;
+    padding: 10px;
+}
+
+.thread-message img.photo {
+    width: 50px;
+    height: 66px;
+}
+
+.thread-message p {
+    margin: 0;
+}
+
+.inner-message blockquote {
+    font-style: normal;
+    font-size: 1.0em;
+    font-family: 'Verdana', sans-serif;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 8px;
+    padding-left: 15px;
+    border-left: 3px solid #AAA;
+}

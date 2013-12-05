@@ -3,11 +3,37 @@
 class MailingList {
 
     static $black_list = array('grand',
-                               'grand-support',
                                'administrator',
                                'mailman');
     static $lists = array();
     static $membershipCache = array();
+    static $threadCache = array();
+
+    static function getThreads($project_name){
+        $project_name = mysql_real_escape_string($project_name);
+        $sql = "SELECT m.refid_header, m.project_id, MIN(date) as first_date, MAX(date) as last_date
+                FROM wikidev_projects p, wikidev_messages m
+                WHERE m.project_id = p.projectid
+                AND p.mailListName = '$project_name'
+                GROUP BY m.refid_header
+                ORDER BY first_date DESC";
+        return DBFunctions::execSQL($sql);
+    }
+    
+    static function getMessages($project_id, $thread){
+        if(!isset(self::$threadCache[$project_id][$thread])){
+            $thread = mysql_real_escape_string($thread);
+            $project_id = mysql_real_escape_string($project_id);
+            $sql = "SELECT m.user_name, m.subject, m.date, m.body, m.refid_header as thread
+                    FROM wikidev_messages m 
+                    WHERE m.project_id = '{$project_id}'";
+            $data = DBFunctions::execSQL($sql);
+            foreach($data as $row){
+                self::$threadCache[$project_id][$row['thread']][] = $row;
+            }
+        }
+        return self::$threadCache[$project_id][$thread];
+    }
 
     /**
      * Returns the lists that the given person is on
@@ -54,6 +80,9 @@ class MailingList {
     static function subscribe($project, $person, &$out=""){
         global $wgImpersonating, $wgMessage;
         if($wgImpersonating){
+            return 1;
+        }
+        if(self::hasUnsubbed($project, $person)){
             return 1;
         }
         $listname = MailingList::listName($project);
@@ -126,6 +155,42 @@ class MailingList {
             }
         }
 		return false;
+    }
+    
+    static function manuallyUnsubscribe($project, $person){
+        $listname = MailingList::listName($project);
+        if(self::unsubscribe($project, $person)){
+            $projects = DBFunctions::select(array('wikidev_projects'),
+                                            array('projectid', 
+                                                  'mailListName'),
+                                            array('mailListName' => EQ($listname)));
+            if(count($projects) > 0){
+                foreach($projects as $proj){
+                    if(!self::hasUnsubbed($proj['mailListName'], $person)){
+                        DBFunctions::insert('wikidev_unsubs',
+                                            array('project_id' => $proj['projectid'],
+                                                  'user_id' => $person->getId()));
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Returns whether this Person has manually unsubscribed from the given mailing list or not
+     * @param Project $project The Project to check
+     * @param Person $person The Person to check
+     * @return boolean Returns true if the Person has unsubscribed from the mailing list and false if not
+     */
+    static function hasUnsubbed($project, $person){
+        $listname = MailingList::listName($project);
+        $data = DBFunctions::select(array('wikidev_unsubs', 'wikidev_projects'),
+                                    array('project_id',
+                                          'user_id'),
+                                    array('project_id' => EQ(COL('projectid')),
+                                          'mailListName' => EQ($listname),
+                                          'user_id' => EQ($person->getId())));
+        return (count($data) > 0);
     }
     
     /**

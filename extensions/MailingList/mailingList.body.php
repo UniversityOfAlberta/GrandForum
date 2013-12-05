@@ -50,15 +50,6 @@ class MailList{
     function removeQuotedText($body) {
         $bodyLines = explode("\n", $body);
         $bodyLines = array_reverse($bodyLines);
-        
-        foreach ($bodyLines as $key => $bodyLine) {
-            $bodyLine = trim($bodyLine);
-            if ($bodyLine === "")
-                unset($bodyLines[$key]);
-            else 
-                break; //$bodyLines[$key] = $bodyLine; //BT: Changed to only remove blank lines at end of message and not trim lines.
-        }
-        
         $hasQuotesAtEnd = false;
         foreach ($bodyLines as $key => $line) {
             $line = trim($line);
@@ -84,8 +75,52 @@ class MailList{
                 break;
             }
         }
-        return $body;
-        //return implode("\n", array_reverse($bodyLines));
+    
+        $bodyLines = array_reverse($bodyLines);
+        $found = false;
+        foreach($bodyLines as $key => $line){
+            $line = trim($line);
+            if(strstr($line, ">>>") !== false){
+                $found = true;
+            }
+            if($found){
+                unset($bodyLines[$key]);
+            }
+        }
+        
+        // If there is still quoted text, it is probably inlined, and shoud be shown, but it should stand out
+        $started = false;
+        foreach($bodyLines as $key => $line){
+            $line = trim($line);
+            if ($line === "")
+                continue;
+            if($line[0] == ">" && !$started){
+                if(isset($bodyLines[$key-1]) && trim($bodyLines[$key-1]) == ""){
+                    unset($bodyLines[$key-1]);
+                }
+                $bodyLines[$key] = "<blockquote>".substr($line, 1)."<br />";
+                $started = true;
+            }
+            else if($line[0] != ">" && $started){
+                $bodyLines[$key] = "</blockquote>$line<br />";
+                $started = false;
+            }
+            else if($line[0] == ">"){
+                $bodyLines[$key] = substr($line, 1)."<br />";
+            }
+        }
+        
+        $bodyLines = array_reverse($bodyLines);
+        foreach ($bodyLines as $key => $bodyLine) {
+            $bodyLine = trim($bodyLine);
+            if ($bodyLine === "")
+                unset($bodyLines[$key]);
+            else 
+                break; //$bodyLines[$key] = $bodyLine; //BT: Changed to only remove blank lines at end of message and not trim lines.
+        }
+        $bodyLines = array_reverse($bodyLines);
+    
+        return implode("\n\n", $bodyLines);
     }
     
     function createMailListTable($action, $article){
@@ -103,7 +138,6 @@ class MailList{
             }
             
             $me = Person::newFromWgUser();
-            
             $data = DBFunctions::select(array('wikidev_projects'),
                                         array('*'),
                                         array('mailListName' => EQ($project_name)));
@@ -113,31 +147,19 @@ class MailList{
             else{
                 $wgOut->addHTML("This Mailing list has not been set up yet");
             }
-            $project_name = mysql_real_escape_string($project_name);
-            $wgOut->addHTML("<h2>$project_name Mail List Archive</h2>");
-            $sql = "SELECT m.refid_header, m.project_id, MIN(date) as first_date, MAX(date) as last_date
-                    FROM wikidev_projects p, wikidev_messages m
-                    WHERE m.project_id = p.projectid
-                    AND p.mailListName = '$project_name'
-                    GROUP BY m.refid_header
-                    ORDER BY first_date DESC";
             
-            $data = DBFunctions::execSQL($sql);    
+            $wgOut->addHTML("<h2>$project_name Mail List Archive</h2>");
+            $data = MailingList::getThreads($project_name);   
             if(DBFunctions::getNRows() > 0){
-                $wgOut->addHTML("<br /><table id='mailingListMessages' frame='box' rules='all'>
+                $wgOut->addHTML("<br /><table style='display:none;' id='mailingListMessages' frame='box' rules='all'>
                         <thead><tr>
                             <th style='white-space:nowrap;'>First Message</th><th style='white-space:nowrap;'>Last Message</th><th style='white-space:nowrap;'>Subject</th><th style='white-space:nowrap;'>Messages</th><th style='white-space:nowrap;'>People</th>
                         </tr></thead>
                         <tbody>");
         
                 foreach($data as $row){
-                    $sql = "SELECT m.user_name, m.subject, m.date, m.body
-                            FROM wikidev_messages m 
-                            WHERE m.refid_header= '{$row['refid_header']}'
-                            AND m.project_id = '{$row['project_id']}'";
-                    $data2 = DBFunctions::execSQL($sql);
+                    $data2 = MailingList::getMessages($row['project_id'], $row['refid_header']);
                     $users = "";
-                    
                     $people = array();
                     foreach($data2 as $row2){
                         $person = Person::newFromName($row2['user_name']);
@@ -160,6 +182,7 @@ class MailList{
                     $('#mailingListMessages').dataTable({'iDisplayLength': 100,
                                         'aaSorting': [ [0,'desc'], [1,'desc']],
                                         'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+                    $('#mailingListMessages').show();
                 </script>");
             }
             else {
@@ -190,13 +213,15 @@ class MailList{
                 $from = "{$row['author']} &lt;<a href='mailto:{$row['address']}'>{$row['address']}</a>&gt;";
                 $date = $row['date'];
                 $date = date_create($date);
+                $img = "";
                 if($person->getName() != ""){
                     $from = "<a href='{$person->getUrl()}'><b>{$row['author']}</b></a> &lt;<a href='mailto:{$row['address']}'>{$row['address']}</a>&gt;";
+                    $img = "<img class='photo' src='{$person->getPhoto()}' />";
                 }
                 $wgOut->addHTML("<div class='thread-message'>");
                     $wgOut->addHTML("<table padding='0'>
-                        <tr><td><b>From:</b></td><td>$from</td></tr>
-                        <tr><td><b>Date:</b></td><td>".date_format($date, "l, F d, Y g:i A")."</td></tr>
+                        <tr><td rowspan='2'>$img</td><td valign='top'><b>From:</b></td><td valign='top'>$from</td></tr>
+                        <tr><td valign='top'><b>Date:</b></td><td valign='top'>".date_format($date, "l, F d, Y g:i A")."</td></tr>
                     </table>");
                     $body = $this->removeQuotedText($this->removeNextPart($row['body']));
                     $wgOut->addHTML("<div class='inner-message'>");

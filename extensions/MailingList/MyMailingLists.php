@@ -11,73 +11,51 @@ function runMyMailingLists($par) {
 
 class MyMailingLists extends SpecialPage{
 
-	function MyMailingLists() {
-		wfLoadExtensionMessages('MyMailingLists');
-		SpecialPage::SpecialPage("MyMailingLists", HQP.'+', true, 'runMyMailingLists');
-	}
+    function MyMailingLists() {
+        wfLoadExtensionMessages('MyMailingLists');
+        SpecialPage::SpecialPage("MyMailingLists", HQP.'+', true, 'runMyMailingLists');
+    }
 
-	function run($par){
-		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
-	    $person = Person::newFromWgUser();
-	    $lists = MailingList::getPersonLists($person);
-	    if($person->isProjectLeader() || $person->isProjectCoLeader()){
-	        $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:MailingListRequest'>Subscribe/Unsubscribe Users</a><br /><br />");
-	    }
-	    $wgOut->addHTML("<table class='mailTable' frame='box' rules='all'><thead>
-	                        <tr><th>List Name</th><th># Messages</th><th><span class='tooltip' title='Unsubscribing will remove you from the selected list(s) and will prevent you from being added to that list in the future'>Unsubscribe?</span></th></tr>
-	                     </thead><tbody>");
-	    foreach($lists as $list){
-	        $wgOut->addHTML("<tr><td><a href='mailto:$list@grand-nce.ca'>$list</a><a style='float:right;' href='$wgServer$wgScriptPath/index.php/Mail:$list'>View Archives</a></td><td align='right'>2</td><td align='center'><input type='checkbox' /></td></tr>\n");
-	    }
-	    $wgOut->addHTML("</tbody></table>");
-	    $wgOut->addHTML("<script type='text/javascript'>
-	        $('.mailTable').dataTable();
-	    </script>");
-	    /*
-	    $universities = array();
-	    if($person->isRoleAtLeast(MANAGER)){
-	        $projects = Project::getAllProjects();
-	        $unis = Person::getAllUniversities();
-	        foreach($unis as $uni){
-	            $universities = array_merge($universities, MailingList::getListByUniversity($uni));
-	        }
-	    }
-	    else{
-	        $university = $person->getUniversity();
-	        $universities = array_merge($universities, MailingList::getListByUniversity($university['university']));
-	        $projects = $person->getProjects();
-	    }
-	    $universities = array_unique($universities);
-	    $count = 0;
-        $wgOut->addHTML("<ul>\n");
-        if($person->isRole(HQP) || $person->isRoleAtLeast(STAFF)){
-	        $wgOut->addHTML("<li><a href='$wgServer$wgScriptPath/index.php/HQP:Mail_Index'>HQP Archives</a></li>");
-	    }
-	    if($person->isRole(CNI)){
-	        $wgOut->addHTML("<li><a href='$wgServer$wgScriptPath/index.php/CNI:Mail_Index'>Researcher Archives</a></li>");
-	    }
-	    if($person->isRole(PNI) || $person->isRoleAtLeast(STAFF)){
-	        $wgOut->addHTML("<li><a href='$wgServer$wgScriptPath/index.php/PNI:Mail_Index'>Researcher Archives</a></li>");
-	    }
-	    foreach($projects as $project){
-	        $wgOut->addHTML("<li><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:Mail_Index'>{$project->getName()} Archives</a></li>");
-	    }
-	    foreach($universities as $uni){
-	        if($uni != ""){
-	            $list = str_replace("- ", "-", ucwords(str_replace("-", "- ", str_replace("grand", "GRAND", $uni))));
-	            $wgOut->addHTML("<li><a href='$wgServer$wgScriptPath/index.php/Mail:$list'>".str_replace("-", " ", $list)." Archives</a></li>");
-	        }
-	    }
-	    $wgOut->addHTML("</ul>");*/
-	}
-	
-	static function createTab() {
-		global $wgServer, $wgScriptPath;
-		echo <<<EOM
+    function run($par){
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $person = Person::newFromWgUser();
+        if(isset($_POST['unsub'])){
+            foreach($_POST['unsub'] as $unsub){
+                $ret = MailingList::manuallyUnsubscribe($unsub, $person);
+                if(!MailingList::isSubscribed($unsub, $person) && 
+                    MailingList::hasUnsubbed($unsub, $person)){
+                    $wgMessage->addSuccess("You have been unsubscribed from '$unsub'");
+                }
+            }
+            redirect("$wgServer$wgScriptPath/index.php/Special:MyMailingLists");
+            exit;
+        }
+        $lists = MailingList::getPersonLists($person);
+        if($person->isProjectLeader() || $person->isProjectCoLeader()){
+            $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:MailingListRequest'>Subscribe/Unsubscribe Users</a><br /><br />");
+        }
+        $wgOut->addHTML("<form method='POST'><table class='mailTable' frame='box' rules='all'><thead>
+                            <tr><th>List Name</th><th># Threads</th><th><span class='tooltip' title='Unsubscribing will remove you from the selected list(s) and will prevent you from being added to that list in the future'>Unsubscribe?</span></th></tr>
+                         </thead><tbody>");
+        foreach($lists as $list){
+            $threads = MailingList::getThreads($list);
+            $wgOut->addHTML("<tr><td><a href='mailto:$list@grand-nce.ca'>$list</a><a style='float:right;' href='$wgServer$wgScriptPath/index.php/Mail:$list'>View Archives</a></td><td align='right'>".count($threads)."</td><td align='center'><input type='checkbox' name='unsub[]' value='{$list}' /></td></tr>\n");
+        }
+        $wgOut->addHTML("</tbody></table><br />
+            <input type='submit' value='Submit' />
+        </form>");
+        $wgOut->addHTML("<script type='text/javascript'>
+            $('.mailTable').dataTable({'iDisplayLength': 100});
+        </script>");
+    }
+    
+    static function createTab() {
+        global $wgServer, $wgScriptPath;
+        echo <<<EOM
 <li class='top-nav-element'><span class='top-nav-left'>&nbsp;</span>
 <a class='top-nav-mid' href='$wgServer$wgScriptPath/index.php/Special:MyMailingLists' class='new'>My Mailing Lists</a>
 <span class='top-nav-right'>&nbsp;</span></li>
 EOM;
-	}
+    }
 }
 ?>
