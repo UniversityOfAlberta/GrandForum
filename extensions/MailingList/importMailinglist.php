@@ -11,7 +11,6 @@ while ($row = $dbr->fetchObject($result)) {
 }
 
 $existing = getExistingMIDs();
-$mapping = getAddressMapping(); 
 
 foreach ($mailmanArchivesPaths as $proj_id => $mailmanArchivesPath) {
 	$allMessages = array();
@@ -52,14 +51,14 @@ function getExistingMIDs() {
 }
 
 function parseMailArchive($filename, $proj_id) {
-	global $mapping, $existing;
+	global $existing;
 	$text = file_get_contents($filename);
 	
 	$pattern = "/From: (.*?) \((.*?)\)\nDate: (.*?)\nSubject: \[.*?\] (.*?)\n.*?(References: (.*?)\n)?Message-ID: <(.*?)>\n\n(.*?)(\n\nFrom|$)/s";
 	preg_match_all($pattern, $text, $matches);
 	$messages = array();
 	$parentMapping = array();
-	list($addresses, $names, $dates, $subjects, $refids, $mids, $bodies) = array($matches[1], $matches[2], $matches[3], $matches[4], $matches[6],  $matches[7], $matches[8]);
+	list($addresses, $names, $dates, $subjects, $refids, $mids, $bodies) = array($matches[1], $matches[2], $matches[3], $matches[4], $matches[6], $matches[7], $matches[8]);
 	for ($i = 0; $i < count($mids); $i++) {
 	    $subjects[$i] = mb_decode_mimeheader($subjects[$i]);
 		if (isset($existing[$mids[$i]])) {

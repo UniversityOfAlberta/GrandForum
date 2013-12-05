@@ -66,18 +66,6 @@ class MailingList {
 		    $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be added to <i>$listname</i> mailing list");
 		}
 		if(count($output) > 0 && strstr($output[0], "Subscribed:") !== false){
-		    $rows = DBFunctions::select(array('wikidev_projects'),
-		                                array('projectid'),
-		                                array('projectname' => EQ($listname)));
-			$row = array();
-            if(count($rows) > 0){
-                $row = $rows[0];
-            }
-		    if(isset($row['projectid']) && $row['projectid'] != null){
-		        DBFunctions::insert('wikidev_projectroles',
-		                            array('projectid' => $row['projectid'],
-		                                  'userid' => $person->getName()));
-		    }
 		    return 1;
 		}
 		else{
@@ -107,18 +95,6 @@ class MailingList {
 		}
 		$out = $output;
 		if(count($output) == 0 || (count($output) > 0 && $output[0] == "")){
-		    $rows = DBFunctions::select(array('wikidev_projects'),
-		                                array('projectid'),
-		                                array('projectname' => EQ($listname)));
-            $row = array();
-            if(count($rows) > 0){
-                $row = $rows[0];
-            }
-		    if(isset($row['projectid']) && $row['projectid'] != null){
-		        DBFunctions::delete('wikidev_projectroles',
-		                            array('userid' => EQ($person->getName()),
-		                                  'projectid' => EQ($row['projectid'])));
-		    }
 		    return 1;
 		}
 		else{

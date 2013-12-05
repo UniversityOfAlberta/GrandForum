@@ -5,8 +5,6 @@ updateUnassigned();
 incrementalUpdate();
 
 function updateUnassigned() {
-	$mapping = getAddressMapping();
-	
 	$sql = "SELECT address FROM wikidev_messages WHERE user_name IS NULL";
 	$dbr = wfGetDB(DB_READ);
 	$result = $dbr->query($sql);
@@ -20,8 +18,16 @@ function updateUnassigned() {
 	if (count($updatedEmails) > 0) {
 		$dbw = wfGetDB(DB_MASTER);
 		foreach ($updatedEmails as $newEmail) {
-			$username = $mapping[$newEmail];
-			$sql = "UPDATE wikidev_messages SET user_name = '$username' WHERE address = '$newEmail'";
+		    $person = Person::newFromEmail($newEmail);
+		    if($person->getName() != ""){
+		        $username = $person->getName();
+		    }
+		    else{
+			    $username = $newEmail;
+			}
+			$usernameEsc = mysql_real_escape_string($username);
+			$newEmailEsc = mysql_real_escape_string($newEmail);
+			$sql = "UPDATE wikidev_messages SET user_name = '{$usernameEsc}' WHERE address = '$newEmailEsc'";
 			$dbw->query($sql);
 			recreateThreads($newEmail);
 		}
@@ -121,7 +127,6 @@ function incrementalUpdate() {
 		return;
 	}
 	
-	createNamespaces($extraNS);
 	importMWPages($pages, $dbw);
 	$sql = "INSERT INTO wikidev_importlog VALUES('mail', '$curLast')";
 	$dbw->query($sql);
@@ -132,9 +137,9 @@ function recreateThreads($emailAddr) {
 	
 	list($pages, $extraNS, $curLast) = buildPages();
 	$sql = "SELECT m.subject, p.projectname
-		FROM wikidev_messages m, wikidev_projects p
-		WHERE m.project_id = p.projectid 
-		AND m.address = '$emailAddr'";
+		    FROM wikidev_messages m, wikidev_projects p
+		    WHERE m.project_id = p.projectid 
+		    AND m.address = '$emailAddr'";
 	$dbr = wfGetDB(DB_READ);
 	$result = $dbr->query($sql);
 	$toRecreate = array();
@@ -159,16 +164,6 @@ function recreateThreads($emailAddr) {
 	}
 	
 	importMWPages($pages, $dbw);	
-}
-
-function removeNextPart($body){
-    $exploded = explode("-------------- next part --------------", $body);
-    $lines = explode("\n", $exploded[0]);
-    $body = "";
-    foreach($lines as $line){
-        $body .= trim($line)."\n";
-    }
-    return $body;
 }
 
 function fixQuotes($body) {
@@ -206,36 +201,6 @@ function fixQuotes($body) {
 	
 	$bodyLines = array_reverse($bodyLines);
 	$body = join("\n", $bodyLines);
-	
-	return $body;
-}
-
-function removeQuotedText($body) {
-	$hasQuotesAtEnd = false;
-	foreach ($body as $key => $line) {
-		$line = trim($line);
-		
-		if ($line === "")
-			continue;
-	
-		if ($line[0] == '>') {
-			unset($body[$key]);
-			$hasQuotesAtEnd = true;
-		}
-		else 
-			break;
-	}
-	
-	//remove first line before start of quoted text (which is something like "On X, Y wrote:" 
-	if ($hasQuotesAtEnd) { 
-		foreach ( $body as $key => $line ) {
-			$line = trim($line);
-			if ($line === "")
-				continue;
-			unset($body[$key]);
-			break;
-		}
-	}
 	
 	return $body;
 }
