@@ -50,9 +50,14 @@ class MyMailingLists extends SpecialPage{
     }
     
     static function createTab() {
-        global $wgServer, $wgScriptPath;
+        global $wgServer, $wgScriptPath, $wgTitle;
+        $selected = "";
+        if($wgTitle->getNSText() == "Mail" || 
+           ($wgTitle->getNSText() == "Special" && $wgTitle->getText() == "MyMailingLists")){
+            $selected = "selected";
+        }
         echo <<<EOM
-<li class='top-nav-element'><span class='top-nav-left'>&nbsp;</span>
+<li class='top-nav-element $selected'><span class='top-nav-left'>&nbsp;</span>
 <a class='top-nav-mid' href='$wgServer$wgScriptPath/index.php/Special:MyMailingLists' class='new'>My Mailing Lists</a>
 <span class='top-nav-right'>&nbsp;</span></li>
 EOM;
