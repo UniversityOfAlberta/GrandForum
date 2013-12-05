@@ -2441,8 +2441,9 @@ class Person extends BackboneModel {
         $projects = array();
         foreach($data as $row){
             $project = Project::newFromId($row['project_id']);
-            if((!$project->isDeleted()) || 
-               ($project->isDeleted() && !($project->effectiveDate < $startRange))){
+            if($project != null && 
+               ((!$project->isDeleted()) || 
+               ($project->isDeleted() && !($project->effectiveDate < $startRange)))){
                 $projects[] = $project;
             }
         }
