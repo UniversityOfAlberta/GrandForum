@@ -24,10 +24,13 @@ class MailingList {
         if(!isset(self::$threadCache[$project_id][$thread])){
             $thread = mysql_real_escape_string($thread);
             $project_id = mysql_real_escape_string($project_id);
-            $sql = "SELECT m.user_name, m.subject, m.date, m.body, m.refid_header as thread
-                    FROM wikidev_messages m 
-                    WHERE m.project_id = '{$project_id}'";
-            $data = DBFunctions::execSQL($sql);
+            $data = DBFunctions::select(array('wikidev_messages'),
+                                        array('user_name',
+                                              'subject',
+                                              'date',
+                                              'body',
+                                              'refid_header' => 'thread'),
+                                        array('project_id' => EQ($project_id)));
             foreach($data as $row){
                 self::$threadCache[$project_id][$row['thread']][] = $row;
             }
