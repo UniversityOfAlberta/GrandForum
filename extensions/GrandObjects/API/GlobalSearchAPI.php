@@ -186,12 +186,15 @@ class GlobalSearchAPI extends RESTAPI {
                                                'Award',
                                                'PNI',
                                                'HQP',
-                                               'CNI');
+                                               'CNI',
+                                               'Mail');
                 if(isset($results->query)){
                     foreach($results->query->pages as $page){
                         $article = Article::newFromId($page->pageid);
                         if($article->getTitle()->userCanRead() && array_search($article->getTitle()->getNSText(), $blacklistedNamespaces) === false){
-                            $ids[] = $page->pageid;
+                            if(strpos($article->getTitle()->getText(), "MAIL") !== 0){
+                                $ids[] = $page->pageid;
+                            }
                         }
                     }
                 }
