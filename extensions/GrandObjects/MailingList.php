@@ -26,6 +26,8 @@ class MailingList {
             $project_id = mysql_real_escape_string($project_id);
             $data = DBFunctions::select(array('wikidev_messages'),
                                         array('user_name',
+                                              'author',
+                                              'address',
                                               'subject',
                                               'date',
                                               'body',

@@ -1423,9 +1423,6 @@ input.other_option:focus {
 }
 
 /* MailingList */
-.spam {
-    display: none;
-}
 
 .thread-message {
     padding: 10px;

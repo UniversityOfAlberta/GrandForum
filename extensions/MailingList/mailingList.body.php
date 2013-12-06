@@ -151,7 +151,7 @@ class MailList{
             $wgOut->addHTML("<h2>$project_name Mail List Archive</h2>");
             $data = MailingList::getThreads($project_name);   
             if(DBFunctions::getNRows() > 0){
-                $wgOut->addHTML("<br /><table style='display:none;' id='mailingListMessages' frame='box' rules='all'>
+                $wgOut->addHTML("<table style='display:none;' id='mailingListMessages' frame='box' rules='all'>
                         <thead><tr>
                             <th style='white-space:nowrap;'>First Message</th><th style='white-space:nowrap;'>Last Message</th><th style='white-space:nowrap;'>Subject</th><th style='white-space:nowrap;'>Messages</th><th style='white-space:nowrap;'>People</th>
                         </tr></thead>
@@ -168,7 +168,11 @@ class MailList{
                         }
                     }
                     $users = implode(", ", array_unique($people));
-                    $wgOut->addHTML("<tr>
+                    $class = "";
+                    if($users == ""){
+                        $class = "spam";
+                    }
+                    $wgOut->addHTML("<tr class='$class'>
                         <td style='white-space:nowrap;'>{$row['first_date']}</td>
                         <td style='white-space:nowrap;'>{$row['last_date']}</td>
                         <td><a href='$wgServer$wgScriptPath/index.php/Mail:$project_name?thread=".urlencode($row['refid_header'])."'>{$data2[0]['subject']}</a></td>
@@ -178,10 +182,26 @@ class MailList{
                 }
                 $wgOut->addHTML("</tbody></table>");
                 $wgOut->addHTML("<script type='text/javascript'>
-                    $('#mailingListMessages').dataTable({'iDisplayLength': 100,
-                                        'aaSorting': [ [0,'desc'], [1,'desc']],
-                                        'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
-                    $('#mailingListMessages').show();
+                    var spam = $('tr.spam').detach();
+                    if(spam.length > 0){
+                        $('#mailingListMessages').before('<span id=\"spamWrapper\"><p>' + spam.length + ' threads were flagged as being spam. <button id=\"spam\">Show Spam</button></p></span>');
+                        $('#spam').click(function(){
+                            $('#mailingListMessages').dataTable().fnDestroy();
+                            $('#mailingListMessages').hide();
+                            $('#mailingListMessages tbody').append(spam);
+                            $('#spamWrapper').remove();
+                            createTable();
+                        });
+                    }
+                    
+                    function createTable(){
+                        $('#mailingListMessages').dataTable({'iDisplayLength': 100,
+                                            'aaSorting': [ [0,'desc'], [1,'desc']],
+                                            'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+                        $('#mailingListMessages').show();
+                    }
+                    
+                    createTable();
                 </script>");
             }
             else {

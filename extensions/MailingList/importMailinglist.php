@@ -71,7 +71,12 @@ function parseMailArchive($filename, $proj_id) {
 		
 		$userTable = getTableName("user");
 		
-		$addr = mysql_real_escape_string("{$fromAddrA[0]}%{$fromAddrA[1]}");
+		if(isset($fromAddrA[1])){
+		    $addr = mysql_real_escape_string("{$fromAddrA[0]}%{$fromAddrA[1]}");
+		}
+		else{
+		    $addr = mysql_real_escape_string($fromAddrA[0]);
+		}
 		
 		$sql = "SELECT DISTINCT u.user_name as user_name
 				FROM $userTable u 
@@ -80,6 +85,7 @@ function parseMailArchive($filename, $proj_id) {
 		$dbr = wfGetDB(DB_READ);
 		$result = $dbr->query($sql);
 		$data = array();
+		$username = "";
 		while ($row = $dbr->fetchRow($result)) {
 			$data[] = $row;
 		}
@@ -88,7 +94,15 @@ function parseMailArchive($filename, $proj_id) {
 			$username = $data[0]['user_name'];
 		}
 		else{
-		    $username = "";
+		    $name = $names[$i];
+		    $explode = explode(",", $names[$i]);
+		    if(count($explode) > 1){
+		        $name = $explode[1]." ".$explode[0];
+		    }
+		    $person = Person::newFromName(trim($name));
+		    if($person->getName() != ""){
+		        $username = $person->getName();
+		    }
 		}
 		
 		$refid = $mids[$i];
