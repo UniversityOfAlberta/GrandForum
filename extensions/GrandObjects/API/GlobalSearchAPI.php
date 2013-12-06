@@ -231,6 +231,7 @@ class GlobalSearchAPI extends RESTAPI {
                         $projects = array_merge($projects, $json->results);
                     }
                 }
+                ini_set('memory_limit', '192M');
                 $pdfs = PDF::getAllPDFs();
                 $lastestRows = array();
                 foreach($pdfs as $pdf){
