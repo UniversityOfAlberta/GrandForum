@@ -31,9 +31,9 @@ class MyMailingLists extends SpecialPage{
             exit;
         }
         $lists = MailingList::getPersonLists($person);
-        if($person->isProjectLeader() || $person->isProjectCoLeader()){
+        /*if($person->isProjectLeader() || $person->isProjectCoLeader()){
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:MailingListRequest'>Subscribe/Unsubscribe Users</a><br /><br />");
-        }
+        }*/
         $wgOut->addHTML("<form method='POST'><table class='mailTable' frame='box' rules='all'><thead>
                             <tr><th>List Name</th><th># Threads</th><th><span class='tooltip' title='Unsubscribing will remove you from the selected list(s) and will prevent you from being added to that list in the future'>Unsubscribe?</span></th></tr>
                          </thead><tbody>");
