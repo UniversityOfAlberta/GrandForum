@@ -14,20 +14,8 @@
         <ReportItem id="intro" type="StaticReportItem">
             <![CDATA[
                 <p>GRAND has identified a set of projects that will form the basis for the research program in Phase 2 of the GRAND NCE. These span a diverse set of areas in which digital media is impacting Canadian society. As part of the ongoing planning effort for the renewal application, GRAND is identifying critical areas that may not currently be in its portfolio. Your help is being enlisted.</p>
-                <p>If you are working in one of the areas below, please provide us some information about the nature of your involvement, any partners or collaborators that you have, the source(s) of funding for the work, the connection to digital media, the opportunities you think exist for future GRAND research, and whether the work is currently associated with a Phase 1 or Phase 2 GRAND project.</p>
+                <p>If you are working in one of the areas to the left, please provide us some information about the nature of your involvement, any partners or collaborators that you have, the source(s) of funding for the work, the connection to digital media, the opportunities you think exist for future GRAND research, and whether the work is currently associated with a Phase 1 or Phase 2 GRAND project.</p>
                 <p>Each tab has a short description of the area of research that might be underway or needed within the GRAND research portfolio. The “Other” tab can be used to provide information on additional areas (one or more) that are not included in the existing tabs. The descriptions are purposely open-ended and should be interpreted broadly.</p>
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="music" name="Music" tooltip="" blobSection="MTG_MUSIC" type="EditableReportSection">
-        <ReportItem id="music" type="StaticReportItem">
-            <![CDATA[
-                <p>One of the earliest impacts of digital media on consumer culture was the switch from analog to digital recording and distribution of music. There has been a long history of electronic music composition and performance, which pre-dates the digital era but which has seen significant innovations since the advent of digital media tools. These and other technological changes have triggered significant social, economic, and legal responses.</p>
-            ]]>
-        </ReportItem>
-        <ReportItem id="music_text" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="MTG_MUSIC">
-            <![CDATA[
-                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
@@ -38,6 +26,18 @@
             ]]>
         </ReportItem>
         <ReportItem id="firstnations_text" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="MTG_FIRST_NATIONS">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="music" name="Music" tooltip="" blobSection="MTG_MUSIC" type="EditableReportSection">
+        <ReportItem id="music" type="StaticReportItem">
+            <![CDATA[
+                <p>One of the earliest impacts of digital media on consumer culture was the switch from analog to digital recording and distribution of music. There has been a long history of electronic music composition and performance, which pre-dates the digital era but which has seen significant innovations since the advent of digital media tools. These and other technological changes have triggered significant social, economic, and legal responses.</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="music_text" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="MTG_MUSIC">
             <![CDATA[
                 {$item}
             ]]>

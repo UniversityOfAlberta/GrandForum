@@ -13,13 +13,13 @@
         <ReportItem type="StaticReportItem">
             <![CDATA[
                 <table cellpadding="1" frame="box" rules="all">
-                    <tr><th>Person</th><th style='min-width:200px;'>Music</th><th style='min-width:200px;'>First&nbsp;Nations</th><th style='min-width:200px;'>Social&nbsp;Problems</th><th style='min-width:200px;'>Other</th></tr>
+                    <tr><th>Person</th><th style='min-width:200px;'>First&nbsp;Nations</th><th style='min-width:200px;'>Music</th><th style='min-width:200px;'>Social&nbsp;Problems</th><th style='min-width:200px;'>Other</th></tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="ni" type="MindTheGapReportItemSet">
             <ReportItem type="StaticReportItem">
                 <![CDATA[
-                    <tr><td valign='top' style='white-space:nowrap;'>{$user_reversed_name}<br />({$user_full_roles})</td><td valign='top'>{$user_mtg_music}</td><td valign='top'>{$user_mtg_firstnations}</td><td valign='top'>{$user_mtg_socialproblems}</td><td valign='top'>{$user_mtg_other}</td></tr>
+                    <tr><td valign='top' style='white-space:nowrap;'>{$user_reversed_name}<br />({$user_full_roles})</td><td valign='top'>{$user_mtg_firstnations}</td><td valign='top'>{$user_mtg_music}</td><td valign='top'>{$user_mtg_socialproblems}</td><td valign='top'>{$user_mtg_other}</td></tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -29,23 +29,23 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="music" name="Music" tooltip="" blobSection="MTG_MUSIC" type="ReportSection">
-        <ReportItemSet id="ni" type="MindTheGapReportItemSet">
-            <ReportItemSet id="ni_music_head" type="ToggleHeaderReportItemSet" title="{$user_reversed_name} ({$user_full_roles})">
-                <ReportItem id="music_text" type="WikiTextReportItem">
-                    <![CDATA[
-                        {$user_mtg_music}
-                    ]]>
-                </ReportItem>
-            </ReportItemSet>
-        </ReportItemSet>
-    </ReportSection>
     <ReportSection id="firstnations" name="First Nations" tooltip="" blobSection="MTG_FIRST_NATIONS" type="ReportSection">
         <ReportItemSet id="ni" type="MindTheGapReportItemSet">
             <ReportItemSet id="ni_firstnations_head" type="ToggleHeaderReportItemSet" title="{$user_reversed_name} ({$user_full_roles})">
                 <ReportItem id="firstnations_text" type="WikiTextReportItem">
                     <![CDATA[
                         {$user_mtg_firstnations}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="music" name="Music" tooltip="" blobSection="MTG_MUSIC" type="ReportSection">
+        <ReportItemSet id="ni" type="MindTheGapReportItemSet">
+            <ReportItemSet id="ni_music_head" type="ToggleHeaderReportItemSet" title="{$user_reversed_name} ({$user_full_roles})">
+                <ReportItem id="music_text" type="WikiTextReportItem">
+                    <![CDATA[
+                        {$user_mtg_music}
                     ]]>
                 </ReportItem>
             </ReportItemSet>
