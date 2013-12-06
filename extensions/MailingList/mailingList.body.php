@@ -1,8 +1,8 @@
 <?php
 
 require_once("MyMailingLists.php");
-require_once("MailingListAdmin.php");
-require_once("MailingListRequest.php");
+//require_once("MailingListAdmin.php");
+//require_once("MailingListRequest.php");
 
 global $wgArticle;
 $mailList = new MailList();
@@ -168,7 +168,6 @@ class MailList{
                         }
                     }
                     $users = implode(", ", array_unique($people));
-                    
                     $wgOut->addHTML("<tr>
                         <td style='white-space:nowrap;'>{$row['first_date']}</td>
                         <td style='white-space:nowrap;'>{$row['last_date']}</td>

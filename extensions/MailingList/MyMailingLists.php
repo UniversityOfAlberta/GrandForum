@@ -39,7 +39,7 @@ class MyMailingLists extends SpecialPage{
                          </thead><tbody>");
         foreach($lists as $list){
             $threads = MailingList::getThreads($list);
-            $wgOut->addHTML("<tr><td><a href='mailto:$list@grand-nce.ca'>$list</a><a style='float:right;' href='$wgServer$wgScriptPath/index.php/Mail:$list'>View Archives</a></td><td align='right'>".count($threads)."</td><td align='center'><input type='checkbox' name='unsub[]' value='{$list}' /></td></tr>\n");
+            $wgOut->addHTML("<tr><td><a href='mailto:$list@forum.grand-nce.ca'>$list</a><a style='float:right;' href='$wgServer$wgScriptPath/index.php/Mail:$list'>View Archives</a></td><td align='right'>".count($threads)."</td><td align='center'><input type='checkbox' name='unsub[]' value='{$list}' /></td></tr>\n");
         }
         $wgOut->addHTML("</tbody></table><br />
             <input type='submit' value='Submit' />

@@ -17,8 +17,8 @@ class ProjectMainTab extends AbstractEditableTab {
         $me = Person::newFromId($wgUser->getId());
         $edit = (isset($_POST['edit']) && !isset($this->visibility['overrideEdit']));
         
-        if($wgUser->isLoggedIn() && $me->isMemberOf($project)){
-            $this->html .="<h3><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:Mail_Index'>{$project->getName()} Mailing List</a></h3>";
+        if($wgUser->isLoggedIn() && MailingList::isSubscribed($project, $me)){
+            $this->html .="<h3><a href='$wgServer$wgScriptPath/index.php/Mail:{$project->getName()}'>{$project->getName()} Mailing List</a></h3>";
         }
         $bigbet = ($this->project->isBigBet()) ? "Yes" : "No";
         $title = "";

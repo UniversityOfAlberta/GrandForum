@@ -79,20 +79,21 @@ class MailingList {
      */ 
     static function subscribe($project, $person, &$out=""){
         global $wgImpersonating, $wgMessage;
+        $listname = MailingList::listName($project);
         if($wgImpersonating){
             return 1;
         }
         if(self::hasUnsubbed($project, $person)){
+            $wgMessage->addWarning("<b>{$person->getNameForForms()}</b> has requested to not be added to the <i>$listname</i> mailing list");
             return 1;
         }
-        $listname = MailingList::listName($project);
         $email = $person->getEmail();
 		$command =  "echo \"$email\" | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - $listname";
 		exec($command, $output);
 		$out = $output;
 		self::$membershipCache = array();
 		if(!self::isSubscribed($project, $person)){
-		    $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be added to <i>$listname</i> mailing list");
+		    $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be added to the <i>$listname</i> mailing list");
 		}
 		if(count($output) > 0 && strstr($output[0], "Subscribed:") !== false){
 		    return 1;

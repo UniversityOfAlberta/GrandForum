@@ -71,9 +71,12 @@ function parseMailArchive($filename, $proj_id) {
 		
 		$userTable = getTableName("user");
 		
+		$addr = mysql_real_escape_string("{$fromAddrA[0]}%{$fromAddrA[1]}");
+		
 		$sql = "SELECT DISTINCT u.user_name as user_name
 				FROM $userTable u 
-				WHERE LOWER(CONVERT(u.user_email USING latin1)) LIKE CONCAT(LOWER('{$fromAddrA[0]}'), '%')";
+				WHERE LOWER(CONVERT(u.user_email USING latin1)) LIKE '{$addr}'";
+				
 		$dbr = wfGetDB(DB_READ);
 		$result = $dbr->query($sql);
 		$data = array();
