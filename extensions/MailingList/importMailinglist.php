@@ -1,5 +1,8 @@
 <?php
-require_once("common.php");
+
+require_once (dirname ( __FILE__ ) . '/../../maintenance/commandLine.inc');
+require_once("WikiDevConfig.php");
+require_once("WikiDevFunctions.php");
 
 $sql = "select projectid, mailListName from wikidev_projects";
 $dbr = wfGetDB(DB_READ);
