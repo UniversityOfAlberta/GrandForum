@@ -227,7 +227,7 @@ abstract class AbstractReportItem {
         // This needs to be checked
         // !!!
         //$blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->getReport()->person->getId(), $this->projectId);
-        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->personId, $this->projectId);
+        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->getReport()->person->getId(), $this->projectId);
 	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
