@@ -71,11 +71,11 @@ class MaterialPage {
                 $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/scripts/switcheroo.js'></script>");
 	        }
             if($create){
-                $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/{$name}:New?name=".urlencode($title)."&create' method='post'>
+                $wgOut->addHTML("<form name='material' action='$wgServer$wgScriptPath/index.php/{$name}:New?name=".urlencode($title)."&create' method='post'>
                                 <b>Title:</b> <input size='35' type='text' name='title' value='".str_replace("'", "&#39;", $title)."' />");
             }
             else if($edit){
-                $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/{$name}:{$material->getId()}?edit' method='post'>
+                $wgOut->addHTML("<form name='material' action='$wgServer$wgScriptPath/index.php/{$name}:{$material->getId()}?edit' method='post'>
                                     <b>Title:</b> <input size='35' type='text' name='title' value='{$material->getTitle()}' />");
             }
             
@@ -186,6 +186,16 @@ class MaterialPage {
                 $wgOut->addScript("<script type='text/javascript'>
                     var keywords = [\"".implode("\",\"", $newAllKeywords)."\"];
                     $(document).ready(function(){
+                        $('form[name=material]').submit(function(){
+                            var title = $('form[name=material] input[name=title]').val();
+                            if(title == ''){
+                                clearError();
+                                addError('The Multimedia Story must not have an empty title');
+                                $('html, body').animate({ scrollTop: 0 });
+                                return false;
+                            }
+                        });
+                    
                         $('#addKeyword').click(function(){
                             $('#keywords').append(\"<input type='text' name='keywords[]' value='' /><input type='button' class='removeKeyword' value='-' /><br />\");
                             
