@@ -53,6 +53,11 @@ class AddContributionAPI extends API{
         }
 		if(isset($_POST['id'])){
 		    //Updating
+		    if($_POST['title'] == ""){
+	            $string = "The Contribution must not have an empty title";
+	            $wgMessage->addError($string);
+	            return $string;
+	        }
 		    $sql = "INSERT INTO `grand_contributions`
                         (`id`,`name`,`users`,`description`,`year`)
                         VALUES ('{$_POST['id']}','{$_POST['title']}','".serialize($_POST['users'])."','".str_replace("'", "&#39;", $_POST['description'])."','{$_POST['year']}')";
@@ -120,6 +125,11 @@ class AddContributionAPI extends API{
 		}
 		else{
 		    //Inserting
+		    if($_POST['title'] == ""){
+	            $string = "The Contribution must not have an empty title";
+	            $wgMessage->addError($string);
+	            return $string;
+	        }
 		    $sql = "SELECT `id`
 		            FROM `grand_contributions`
 		            ORDER BY id DESC LIMIT 1";
