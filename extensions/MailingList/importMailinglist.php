@@ -1,5 +1,8 @@
 <?php
-require_once("common.php");
+
+require_once (dirname ( __FILE__ ) . '/../../maintenance/commandLine.inc');
+require_once("WikiDevConfig.php");
+require_once("WikiDevFunctions.php");
 
 $sql = "select projectid, mailListName from wikidev_projects";
 $dbr = wfGetDB(DB_READ);
@@ -11,7 +14,6 @@ while ($row = $dbr->fetchObject($result)) {
 }
 
 $existing = getExistingMIDs();
-$mapping = getAddressMapping(); 
 
 foreach ($mailmanArchivesPaths as $proj_id => $mailmanArchivesPath) {
 	$allMessages = array();
@@ -52,14 +54,14 @@ function getExistingMIDs() {
 }
 
 function parseMailArchive($filename, $proj_id) {
-	global $mapping, $existing;
+	global $existing;
 	$text = file_get_contents($filename);
 	
 	$pattern = "/From: (.*?) \((.*?)\)\nDate: (.*?)\nSubject: \[.*?\] (.*?)\n.*?(References: (.*?)\n)?Message-ID: <(.*?)>\n\n(.*?)(\n\nFrom|$)/s";
 	preg_match_all($pattern, $text, $matches);
 	$messages = array();
 	$parentMapping = array();
-	list($addresses, $names, $dates, $subjects, $refids, $mids, $bodies) = array($matches[1], $matches[2], $matches[3], $matches[4], $matches[6],  $matches[7], $matches[8]);
+	list($addresses, $names, $dates, $subjects, $refids, $mids, $bodies) = array($matches[1], $matches[2], $matches[3], $matches[4], $matches[6], $matches[7], $matches[8]);
 	for ($i = 0; $i < count($mids); $i++) {
 	    $subjects[$i] = mb_decode_mimeheader($subjects[$i]);
 		if (isset($existing[$mids[$i]])) {
@@ -72,12 +74,21 @@ function parseMailArchive($filename, $proj_id) {
 		
 		$userTable = getTableName("user");
 		
+		if(isset($fromAddrA[1])){
+		    $addr = mysql_real_escape_string("{$fromAddrA[0]}%{$fromAddrA[1]}");
+		}
+		else{
+		    $addr = mysql_real_escape_string($fromAddrA[0]);
+		}
+		
 		$sql = "SELECT DISTINCT u.user_name as user_name
 				FROM $userTable u 
-				WHERE LOWER(CONVERT(u.user_email USING latin1)) LIKE CONCAT(LOWER('{$fromAddrA[0]}'), '%')";
+				WHERE LOWER(CONVERT(u.user_email USING latin1)) LIKE '{$addr}'";
+				
 		$dbr = wfGetDB(DB_READ);
 		$result = $dbr->query($sql);
 		$data = array();
+		$username = "";
 		while ($row = $dbr->fetchRow($result)) {
 			$data[] = $row;
 		}
@@ -86,7 +97,15 @@ function parseMailArchive($filename, $proj_id) {
 			$username = $data[0]['user_name'];
 		}
 		else{
-		    $username = "";
+		    $name = $names[$i];
+		    $explode = explode(",", $names[$i]);
+		    if(count($explode) > 1){
+		        $name = $explode[1]." ".$explode[0];
+		    }
+		    $person = Person::newFromName(trim($name));
+		    if($person->getName() != ""){
+		        $username = $person->getName();
+		    }
 		}
 		
 		$refid = $mids[$i];

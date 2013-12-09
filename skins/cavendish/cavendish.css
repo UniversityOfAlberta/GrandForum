@@ -1425,3 +1425,45 @@ input.other_option:focus {
     left : -229px;
     margin-right : 0;
 }
+
+/* MailingList */
+
+.thread-message {
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #EEEEEE;
+    border: 1px solid #AAA;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    
+    -moz-box-shadow:    2px 2px 2px #ccc;
+    -webkit-box-shadow: 2px 2px 2px #ccc;
+    box-shadow:         2px 2px 2px #ccc;
+}
+
+.inner-message {
+    border-top: 1px solid #aaaaaa;
+    padding: 10px;
+}
+
+.thread-message img.photo {
+    width: 50px;
+    height: 66px;
+}
+
+.thread-message p {
+    margin: 0;
+}
+
+.inner-message blockquote {
+    color: #555555;
+    font-style: normal;
+    font-size: 1.0em;
+    font-family: 'Verdana', sans-serif;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 8px;
+    padding-left: 15px;
+    border-left: 3px solid #AAA;
+}
