@@ -831,18 +831,16 @@ EOF;
 
     //get the project challenge
     function getChallenge(){
-        $sql =<<<EOF
-            SELECT c.name
-            FROM grand_project_challenges pc, grand_challenges c 
-            WHERE c.id = pc.challenge_id
-            AND pc.project_id = '{$this->id}'
-            ORDER BY pc.id DESC LIMIT 1
-EOF;
-        $data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
-            return $data[0]['name'];
+        $data = DBFunctions::select(array('grand_project_challenges' => 'pc',
+                                          'grand_themes' => 't'),
+                                    array('t.acronym'),
+                                    array('t.id' => EQ(COL('pc.challenge_id')),
+                                          'pc.project_id' => EQ($this->id)),
+                                    array('pc.id' => 'DESC'),
+                                    array(1));
+        if(count($data) > 0){
+            return $data[0]['acronym'];
         }
-
         return "Not Specified";
     } 
     
@@ -935,6 +933,13 @@ EOF;
     function getPapers($category="all", $startRange = false, $endRange = false){
         return Paper::getAllPapersDuring($this->name, $category, "grand", $startRange, $endRange);
     }
+    
+    static function getAllThemes($phase="%"){
+        $data = DBFunctions::select(array('grand_themes'),
+                                    array('*'),
+                                    array('phase' => LIKE($phase)));
+        return $data;
+    }
 
     // Returns an array of the theme names.
     static function getDefaultThemeNames() {
@@ -965,7 +970,6 @@ EOF;
     
     // Returns a list of the evaluators who are evaluating this Project
     function getEvaluators($year = REPORTING_YEAR){
-        
         $sql = "SELECT *
                 FROM grand_eval
                 WHERE sub_id = '{$this->id}'

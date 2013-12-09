@@ -177,11 +177,11 @@ class ProjectMainTab extends AbstractEditableTab {
         $this->html .= "<h2><span class='mw-headline'>Primary Challenge</span></h2>";
         $challenge = $this->project->getChallenge();
         
-        $challenges = DBFunctions::execSQL("SELECT id, name FROM grand_challenges");
+        $challenges = Project::getAllThemes($this->project->getPhase());
         $chlg_opts = "<option value='0'>Not Specified</option>";
         foreach ($challenges as $chlg){
             $cid = $chlg['id'];
-            $cname = $chlg['name'];
+            $cname = $chlg['acronym'];
             $selected = ($cname == $challenge)? "selected='selected'" : "";
             $chlg_opts .= "<option value='{$cid}' {$selected}>{$cname}</option>";
         }
