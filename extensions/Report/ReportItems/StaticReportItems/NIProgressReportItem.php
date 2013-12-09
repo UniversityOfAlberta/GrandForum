@@ -68,7 +68,7 @@ class NIProgressReportItem extends StaticReportItem {
                 $budget->filterCols(V_PROJ, array(""));
                 if($person->isRoleDuring(CNI, ($this->getReport()->year+1).REPORTING_NCE_START_MONTH, ($this->getReport()->year+2).REPORTING_NCE_END_MONTH) && 
 		           !$person->isRoleDuring(PNI, ($this->getReport()->year+1).REPORTING_NCE_START_MONTH, ($this->getReport()->year+2).REPORTING_NCE_END_MONTH)){
-                    $errors = BudgetReportItem::addWorksWithRelation($budgetData, true);
+                    $errors = BudgetReportItem::addWorksWithRelation($budgetData, $this->getReport()->year, true);
                     foreach($errors as $key => $error){
 	                    $budget->errors[0][] = $error;
 	                }

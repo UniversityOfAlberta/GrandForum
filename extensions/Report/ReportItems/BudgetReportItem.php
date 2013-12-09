@@ -141,7 +141,7 @@ class BudgetReportItem extends AbstractReportItem {
 		    $person = Person::newFromId($this->personId);
 		    if($person->isRoleDuring(CNI, ($this->getReport()->year+1).REPORTING_NCE_START_MONTH, ($this->getReport()->year+2).REPORTING_NCE_END_MONTH) && 
 		       !$person->isRoleDuring(PNI, ($this->getReport()->year+1).REPORTING_NCE_START_MONTH, ($this->getReport()->year+2).REPORTING_NCE_END_MONTH)){
-		        $errors = self::addWorksWithRelation($data, true);
+		        $errors = self::addWorksWithRelation($data, $this->getReport()->year, true);
 		        foreach($errors as $key => $error){
 		            $budget->errors[0][] = $error;
 		        }
@@ -282,7 +282,7 @@ class BudgetReportItem extends AbstractReportItem {
         return $errors;
 	}
 	
-	static function addWorksWithRelation($data, $dryRun=false){
+	static function addWorksWithRelation($data, $year, $dryRun=false){
 	    global $wgUser;
 	    $errors = array();
 	    $me = Person::newFromId($wgUser->getId());
@@ -334,7 +334,9 @@ class BudgetReportItem extends AbstractReportItem {
                                 
                                 }
                             }
-                            if(!$dryRun && $person != null && $person->getName() != null && $person->isRoleDuring(PNI) && $person->isMemberOfDuring($project)){
+                            if(!$dryRun && $person != null && $person->getName() != null && 
+                               $person->isRoleDuring(PNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH) && 
+                               $person->isMemberOfDuring($project, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
                                 // Ok, it is safe to add this person as a relation
                                 $_POST['type'] = WORKS_WITH;
                                 $_POST['name1'] = $me->getName();
@@ -350,10 +352,10 @@ class BudgetReportItem extends AbstractReportItem {
                             }
                             
                             if($person != null && $person->getName() != null){
-                                if(!$person->isRoleDuring(PNI)){
+                                if(!$person->isRoleDuring(PNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
                                     $errors[] = "'{$pers}' is not a PNI";
                                 }
-                                if(!$person->isMemberOfDuring($project)){
+                                if(!$person->isMemberOfDuring($project, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
                                     $errors[] = "'{$pers}' is not on {$project->getName()}";
                                 }
                             }

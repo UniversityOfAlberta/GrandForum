@@ -303,7 +303,7 @@ abstract class AbstractReportItem {
                 }
                 $blob->store($value, $blob_address);
 	            $blob->load($blob_address);
-	            $this->addWorksWithRelation($blob->getData(), false);
+	            $this->addWorksWithRelation($blob->getData(), $this->getReport()->year, false);
 	            break;
 	        case BLOB_RAW:
 	            $blob->store(utf8_decode($value), $blob_address);
