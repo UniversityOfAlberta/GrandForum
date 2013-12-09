@@ -345,7 +345,7 @@ class EditMember extends SpecialPage{
                         $_POST['comment'] = @str_replace("'", "", $_POST["tl_comment"][$theme]);
                         $_POST['effective_date'] = $_POST["tl_datepicker"][$theme];
                         APIRequest::doAction('DeleteThemeLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a theme leader of theme {$theme} - ".Project::getThemeName($theme));
+                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a theme leader of ".Project::getThemeName($theme));
                     }
                     $currentTL[$theme] = $theme;
                 }
@@ -358,7 +358,7 @@ class EditMember extends SpecialPage{
                         $_POST['comment'] = @str_replace("'", "", $_POST["cotl_comment"][$theme]);
                         $_POST['effective_date'] = $_POST["cotl_datepicker"][$theme];
                         APIRequest::doAction('DeleteThemeLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a co-theme leader of theme {$theme} - ".Project::getThemeName($theme));
+                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a co-theme leader of ".Project::getThemeName($theme));
                     }
                     $currentCoTL[$theme] = $theme;
                 }
@@ -371,7 +371,7 @@ class EditMember extends SpecialPage{
                         $_POST['theme'] = $theme;
                         $_POST['name'] = $person->getName();
                         APIRequest::doAction('AddThemeLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a theme leader of theme {$theme} - ".Project::getThemeName($theme));
+                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a theme leader of ".Project::getThemeName($theme));
                     }
                 }
                 foreach($cotl as $theme){
@@ -381,7 +381,7 @@ class EditMember extends SpecialPage{
                         $_POST['theme'] = $theme;
                         $_POST['name'] = $person->getName();
                         APIRequest::doAction('AddThemeLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a co-theme leader of theme {$theme} - ".Project::getThemeName($theme));
+                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a co-theme leader ".Project::getThemeName($theme));
                     }
                 }
             }
@@ -903,7 +903,8 @@ class EditMember extends SpecialPage{
                         <li><a id='ProjectsTab' href='#tabs-2'>Projects</a></li>");
         if($me->isRoleAtLeast(STAFF)){
             $wgOut->addHTML("<li><a id='LeadershipTab' href='#tabs-3'>Project Leadership</a></li>
-                             <li><a id='ManagerTab' href='#tabs-4'>Project Manager</a></li>");
+                             <li><a id='ManagerTab' href='#tabs-4'>Project Manager</a></li>
+                             <li><a id='ThemesTab' href='#tabs-5'>Theme Leaders</a></li>");
         }
         $wgOut->addHTML("
                     </ul>");
@@ -931,6 +932,9 @@ class EditMember extends SpecialPage{
             $wgOut->addHTML("</div>
                              <div id='tabs-4'>");
                                 EditMember::generatePMFormHTML($wgOut);
+            $wgOut->addHTML("</div>
+                             <div id='tabs-5'>");
+                                EditMember::generateTLFormHTML($wgOut);
             $wgOut->addHTML("</div>");
         }
         $wgOut->addHTML("</div>");
@@ -1161,6 +1165,57 @@ class EditMember extends SpecialPage{
                 addComment(this, false);
             });
         </script>");
+    }
+    
+    function generateTLFormHTML($wgOut){
+        global $wgUser, $wgServer, $wgScriptPath;
+        $user = Person::newFromId($wgUser->getId());
+        if(!isset($_GET['name'])){
+            return;
+        }
+        $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
+        $wgOut->addHTML("<h2>Theme Leader</h2>");
+        $wgOut->addHTML("<table border='0' cellspacing='2'>");
+        $leadThemes = $person->getLeadThemes();
+        $themes = Project::getAllThemes(PROJECT_PHASE);
+        foreach($themes as $theme){
+            $themeId = $theme['id'];
+            $isLead = false;
+            foreach($leadThemes as $t){
+                if($t == $themeId){
+                    $isLead = true;
+                    break;
+                }
+            }
+            if($isLead){
+                $wgOut->addHTML("<tr><td style='min-width:150px;' valign='top'><input type='checkbox' name='tl[]' value='$themeId' checked='checked' class='already' onChange='addComment(this, false);' />{$theme['acronym']}<div style='display:none; padding-left:30px;'><fieldset><legend>Reasoning</legend><p>Date Effective:<input type='text' class='datepicker' id='tl_datepicker{$themeId}' name='tl_datepicker[$themeId]' /></p>Additional Comments:<br /><textarea name='tl_comment[$themeId]' cols='15' rows='4' style='height:auto;'></textarea></fielset></div><br /></td></tr>\n");
+            }
+            else {
+                $wgOut->addHTML("<tr><td style='min-width:150px;' valign='top'><input type='checkbox' name='tl[]' value='$themeId' />{$theme['acronym']}</td></tr>\n");
+            }
+        }
+        $wgOut->addHTML("</table>");
+        
+        $wgOut->addHTML("<h2>Theme Co-Leader</h2>");
+        $wgOut->addHTML("<table border='0' cellspacing='2'>");
+        $coLeadThemes = $person->getCoLeadThemes();
+        foreach($themes as $theme){
+            $themeId = $theme['id'];
+            $isLead = false;
+            foreach($coLeadThemes as $t){
+                if($t == $themeId){
+                    $isLead = true;
+                    break;
+                }
+            }
+            if($isLead){
+                $wgOut->addHTML("<tr><td style='min-width:150px;' valign='top'><input type='checkbox' name='cotl[]' value='$themeId' checked='checked' class='already' onChange='addComment(this, false);' />{$theme['acronym']}<div style='display:none; padding-left:30px;'><fieldset><legend>Reasoning</legend><p>Date Effective:<input type='text' class='datepicker' id='cotl_datepicker{$themeId}' name='cotl_datepicker[$themeId]' /></p>Additional Comments:<br /><textarea name='cotl_comment[$themeId]' cols='15' rows='4' style='height:auto;'></textarea></fielset></div><br /></td></tr>\n");
+            }
+            else {
+                $wgOut->addHTML("<tr><td style='min-width:150px;' valign='top'><input type='checkbox' name='cotl[]' value='$themeId' />{$theme['acronym']}</td></tr>\n");
+            }
+        }
+        $wgOut->addHTML("</table>");
     }
     
     function generatePMFormHTML($wgOut){

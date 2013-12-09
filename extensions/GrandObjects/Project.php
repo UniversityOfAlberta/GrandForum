@@ -948,24 +948,13 @@ EOF;
     
     // Returns accronym the name of the theme
     static function getThemeName($themeId){
-        switch($themeId){
-            default:
-            case 1:
-                return "nMEDIA";
-                break;
-            case 2:
-                return "GamSim";
-                break;
-            case 3:
-                return "AnImage";
-                break;
-            case 4:
-                return "SocLeg";
-                break;
-            case 5:
-                return "TechMeth";
-                break;
+        $data = DBFunctions::select(array('grand_themes'),
+                                    array('acronym'),
+                                    array('id' => EQ($themeId)));
+        if(count($data) > 0){
+            return $data[0]['acronym'];
         }
+        return "Not Specified";
     }
     
     // Returns a list of the evaluators who are evaluating this Project
