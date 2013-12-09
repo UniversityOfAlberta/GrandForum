@@ -41,7 +41,7 @@ abstract class PaperAPI extends API{
 	}
 	
 	function insertPaper($doEcho=true){
-	    global $wgUser, $wgServer, $wgScriptPath, $wgOut;
+	    global $wgUser, $wgServer, $wgScriptPath, $wgOut, $wgMessage;
 	    $me = Person::newFromId($wgUser->getId());
 	    $title = @stripslashes($this->stripQuotes($_POST['title']));
 	    $new_title = (isset($_POST['new_title']))? @stripslashes($this->stripQuotes($_POST['new_title'])) : $title;
@@ -102,10 +102,14 @@ abstract class PaperAPI extends API{
             $type = $this->type;
         }
 	    if($this->update && $paper != null && $paper->getTitle() != null){
+	        if($new_title == ""){
+	            $string = "The {$this->category} must not have an empty title";
+	            $wgMessage->addError($string);
+	            return $string;
+	        }
 	        // Already exists, so just update the old data
 	        $sql = "UPDATE grand_products
-					SET
-	                description = '".$description."',
+					SET description = '".$description."',
 					title = '{$new_title}',
 	                type = '{$type}',
 	                date = '$date',
@@ -159,6 +163,11 @@ abstract class PaperAPI extends API{
 	        $paperAfter->syncAuthors();
 	    }
 	    else{
+	        if($title == ""){
+	            $string = "The {$this->category} must not have an empty title";
+	            $wgMessage->addError($string);
+	            return $string;
+	        }
 	        $result = DBFunctions::insert('grand_products',
 	                                      array('description' => $description,
 	                                      'category' => $this->category,
@@ -171,7 +180,6 @@ abstract class PaperAPI extends API{
 	                                      'data' => serialize($data),
 	                                      'date_created' => EQ(COL('CURRENT_TIMESTAMP'))));
 	        Paper::$cache = array();
-	        echo "HELLO";
 	        if(!is_null($product_id) && $product_id != ""){
 	            $paper = Paper::newFromId($product_id);
 	        }
