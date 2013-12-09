@@ -1453,6 +1453,7 @@ input.other_option:focus {
 }
 
 .inner-message blockquote {
+    color: #555555;
     font-style: normal;
     font-size: 1.0em;
     font-family: 'Verdana', sans-serif;
