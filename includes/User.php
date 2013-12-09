@@ -2428,20 +2428,6 @@ class User {
 	 * @todo Only rarely do all these fields need to be set!
 	 */
 	function saveSettings() {
-		$sql = "SELECT * 
-			FROM wikidev_projectroles r, wikidev_projects p, mw_user u
-			WHERE u.user_name = r.userid
-			AND r.projectid = p.projectid
-			AND r.userid = '{$this->mName}'";
-		$dbr = wfGetDB(DB_READ);
-		$result = $dbr->query($sql);
-		$rows = array();
-		while ($row = $dbr->fetchRow($result)) {
-			if($this->mEmail != $row['user_email']){
-				exec("/usr/lib/mailman/bin/clone_member --listname={$row['projectname']} -r {$row['user_email']} {$this->mEmail}");
-			}
-		}
-		
 		$this->load();
 		if ( wfReadOnly() ) { return; }
 		if ( 0 == $this->mId ) { return; }
