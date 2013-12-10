@@ -48,7 +48,7 @@ class AddMaterialAPI extends API{
     }
 
 	function doAction($noEcho=false){
-		global $wgRequest, $wgUser, $wgServer, $wgScriptPath;
+		global $wgRequest, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 		$groups = $wgUser->getGroups();
 		$me = Person::newFromId($wgUser->getId());
         if(!isset($_POST['projects']) || count($_POST['projects']) == 0){
@@ -65,6 +65,11 @@ class AddMaterialAPI extends API{
             $_POST['type'] = str_replace("'", "&#39;", $_POST['type']);
         }
 		if(isset($_POST['id'])){
+		    if($_POST['title'] == ""){
+	            $string = "The Multimedia Story must not have an empty title";
+	            $wgMessage->addError($string);
+	            return $string;
+	        }
 		    if($this->typeSet && $_POST['type'] == 'form'){
 		        $material = Form::newFromId($_POST['id']);
 		    }
@@ -105,6 +110,11 @@ class AddMaterialAPI extends API{
 		}
 		else{
 		    //Inserting
+		    if($_POST['title'] == ""){
+	            $string = "The Multimedia Story must not have an empty title";
+	            $wgMessage->addError($string);
+	            return $string;
+	        }
 		    if(!$this->typeSet){
 		        $_POST['type'] = 'other';
 		    }

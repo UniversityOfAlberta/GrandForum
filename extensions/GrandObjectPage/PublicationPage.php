@@ -712,7 +712,13 @@ class PublicationPage {
                         });
                         $('form[name=product]').submit(function(){
                             if(!validated){
-                                var title = $('form[name=product] input[name=title]').val();
+                                var title = $('form[name=product] input[name=new_title]').val();
+                                if(title == ''){
+                                    clearError();
+                                    addError('The {$category} must not have an empty title');
+                                    $('html, body').animate({ scrollTop: 0 });
+                                    return false;
+                                }
                                 if($('form[name=product] [name=new_title]').length > 0){
                                     title = $('form[name=product] input[name=new_title]').val();
                                 }

@@ -70,6 +70,11 @@ function generateMultimediaStoryScript($category){
                                     }
 		                            
 		                            function changeLocation(){
+		                                if($('#title').val() == ''){
+                                            clearError();
+                                            addError('The Multimedia Story must not have an empty title');
+                                            return;
+                                        }
 		                                var page = escape($('#title').val().replace(/\‘/g, '\'').replace(/\’/g, '\''));
 		                                document.location = '$wgServer$wgScriptPath/index.php/Multimedia_Story:New?name=' + page + '&create';
 		                            }

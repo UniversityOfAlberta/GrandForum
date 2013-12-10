@@ -124,6 +124,18 @@ class ContributionPage {
                         
                         $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/scripts/switcheroo.js'></script>");
                         $wgOut->addScript("<script type='text/javascript'>
+                                $(document).ready(function(){
+                                    $('form[name=contribution]').submit(function(){
+                                        var title = $('form[name=contribution] input[name=title]').val();
+                                        if(title == ''){
+                                            clearError();
+                                            addError('The Contribution must not have an empty title');
+                                            $('html, body').animate({ scrollTop: 0 });
+                                            return false;
+                                        }
+                                    });
+                                });
+                        
                                 var other_types = ['".implode("',\n'", $other_types)."'];
                         
                                 function validatePartners(id){
@@ -287,14 +299,14 @@ class ContributionPage {
                             if(!isset($_POST['title'])){
                                 $titleValue = $title;
                             }
-                            $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/Contribution:New?name=".urlencode($cName)."&create' method='post'>
+                            $wgOut->addHTML("<form name='contribution' action='$wgServer$wgScriptPath/index.php/Contribution:New?name=".urlencode($cName)."&create' method='post'>
                                             <b>Title:</b> <input size='35' type='text' name='title' value='".str_replace("'", "&#39;", $titleValue)."' />");
                         }
                         else{
                             if(!isset($_POST['title'])){
                                 $titleValue = $contribution->getName();
                             }
-                            $wgOut->addHTML("<form action='{$contribution->getUrl()}?edit' method='post'>
+                            $wgOut->addHTML("<form name='contribution' action='{$contribution->getUrl()}?edit' method='post'>
                                                 <b>Title:</b> <input size='50' type='text' name='title' value='{$titleValue}' />");
                             
                         }
