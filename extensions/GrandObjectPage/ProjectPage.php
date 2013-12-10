@@ -47,7 +47,11 @@ class ProjectPage {
                 if($wgTitle->getText() == "Mail Index"){
                     TabUtils::clearActions();
                 }
-                else if($project != null && !$me->isMemberOf($project) && !$me->isRoleAtLeast(STAFF) && !$me->isThemeLeaderOf($project)){
+                else if($project != null && 
+                        !$me->isMemberOf($project) && 
+                        !$me->isRoleAtLeast(STAFF) && 
+                        !$me->isThemeLeaderOf($project) && 
+                        !($project->isSubProject() && $me->isThemeLeaderOf($project->getParent()))){
                     TabUtils::clearActions();
                     $wgOut->clearHTML();
                     $wgOut->permissionRequired('');

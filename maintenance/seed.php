@@ -67,7 +67,6 @@ system($dump);
 // Copy select table data to Test DB
 DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_universities` SELECT * FROM `{$wgDBname}`.`grand_universities`", true);
 DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_positions` SELECT * FROM `{$wgDBname}`.`grand_positions`", true);
-DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_challenges` SELECT * FROM `{$wgDBname}`.`grand_challenges`", true);
 DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_themes` SELECT * FROM `{$wgDBname}`.`grand_themes`", true);
 DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_disciplines_map` SELECT * FROM `{$wgDBname}`.`grand_disciplines_map`", true);
 DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_partners` SELECT * FROM `{$wgDBname}`.`grand_partners`", true);
@@ -184,6 +183,7 @@ createProject("Phase2Project1", "Phase 2 Project 1", "Active", "Research", "No",
     createProject("Phase2Project1SubProject2", "Phase 2 Project 1 Sub Project 2", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Not Specified", Project::newFromName("Phase2Project1")->getId());
 createProject("Phase2Project2", "Phase 2 Project 2", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Citizenship", 0);
 createProject("Phase2Project3", "Phase 2 Project 3", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Entertainment", 0);
+    createProject("Phase2Project3SubProject1", "Phase 2 Project 3 Sub Project 1", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Not Specified", Project::newFromName("Phase2Project3")->getId());
 createProject("Phase2Project4", "Phase 2 Project 4", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Health", 0);
 createProject("Phase2Project5", "Phase 2 Project 5", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Learning", 0);
 createProject("Phase2BigBetProject1", "Phase 2 Big Bet Project 1", "Active", "Research", "Yes", 2, "2014-04-01", "", "", "", "Sustainability", 0);

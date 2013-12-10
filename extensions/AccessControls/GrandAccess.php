@@ -16,7 +16,7 @@ class GrandAccess {
 	        }
 	    }
 	    foreach(Project::getAllProjects() as $project){
-	        if($me->isThemeLeaderOf($project)){
+	        if($me->isThemeLeaderOf($project) || ($project->isSubProject() && $me->isThemeLeaderOf($project->getParent()))){
 	            $aRights[$i++] = $project->getName();
 	        }
 	    }

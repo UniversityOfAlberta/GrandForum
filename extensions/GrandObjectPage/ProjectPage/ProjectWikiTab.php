@@ -17,7 +17,10 @@ class ProjectWikiTab extends AbstractTab {
         $me = Person::newFromWgUser();
         $edit = $this->visibility['edit'];
         
-        if(!($wgUser->isLoggedIn() && $me->isMemberOf($project)) && !$me->isRoleAtLeast(MANAGER) && !$me->isThemeLeaderOf($project)){
+        if(!($wgUser->isLoggedIn() && $me->isMemberOf($project)) && 
+           !$me->isRoleAtLeast(MANAGER) && 
+           !$me->isThemeLeaderOf($project) &&
+           !($project->isSubProject() && $me->isThemeLeaderOf($project->getParent()))){
             return $this->html;
         }
         
