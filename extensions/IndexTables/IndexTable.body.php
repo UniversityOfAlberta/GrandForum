@@ -156,15 +156,14 @@ class IndexTable {
 "<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th>Themes</th><th>Name</th></tr></thead><tbody>
 ";
-		$data = Project::getDefaultThemeNames();
-		foreach($data as $key => $name){
-			$fn = $this->getThemeFullName($key);
+        $themes = Theme::getAllThemes(1);
+		foreach($themes as $theme){
 			$this->text .= <<<EOF
 <tr>
 <td align='left'>
-<a href='{$wgServer}{$wgScriptPath}/index.php/GRAND:Theme{$key} - {$fn}'>{$name}</a>
+<a href='{$wgServer}{$wgScriptPath}/index.php/GRAND:Theme{$theme->getId()} - {$theme->getName()}'>{$theme->getAcronym()}</a>
 </td><td align='left'>
-{$fn}
+{$theme->getName()}
 </td></tr>
 EOF;
 		}
@@ -335,44 +334,6 @@ EOF;
 	        });
 	    </script>";
 	    return true;
-	}
-	
-	function getThemeFullName($theme){
-		if($theme == 1){
-			$fullName = "New Media Challenges and Opportunities";
-		}
-		else if($theme == 2){
-			$fullName = "Games and Interactive Simulation";
-		}
-		else if($theme == 3){
-			$fullName = "Animation, Graphics, and Imaging";
-		}
-		else if($theme == 4){
-			$fullName = "Social, Legal, Economic, and Cultural Perspectives";
-		}
-		else if($theme == 5){
-			$fullName = "Enabling Technologies and Methodologies";
-		}
-		return $fullName;
-	}
-	
-	private function getThemeName($theme){
-		if($theme == 1){
-			$name = "nMEDIA";
-		}
-		else if($theme == 2){
-			$name = "GamSim";
-		}
-		else if($theme == 3){
-			$name = "AnImage";
-		}
-		else if($theme == 4){
-			$name = "SocLeg";
-		}
-		else if($theme == 5){
-			$name = "TechMeth";
-		}
-		return $name;
 	}
 }
 

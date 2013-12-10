@@ -177,12 +177,12 @@ class ProjectMainTab extends AbstractEditableTab {
         $this->html .= "<h2><span class='mw-headline'>Primary Challenge</span></h2>";
         $challenge = $this->project->getChallenge();
         
-        $challenges = Project::getAllThemes($this->project->getPhase());
+        $challenges = Theme::getAllThemes($this->project->getPhase());
         $chlg_opts = "<option value='0'>Not Specified</option>";
         foreach ($challenges as $chlg){
-            $cid = $chlg['id'];
-            $cname = $chlg['acronym'];
-            $selected = ($cname == $challenge)? "selected='selected'" : "";
+            $cid = $chlg->getId();
+            $cname = $chlg->getAcronym();
+            $selected = ($cname == $challenge->getAcronym())? "selected='selected'" : "";
             $chlg_opts .= "<option value='{$cid}' {$selected}>{$cname}</option>";
         }
         if($edit){
@@ -191,7 +191,7 @@ class ProjectMainTab extends AbstractEditableTab {
 EOF;
         }
         else{
-            $this->html .= "<h4>{$challenge}</h4>";
+            $this->html .= "<h4>{$challenge->getAcronym()}</h4>";
         }   
     }
     

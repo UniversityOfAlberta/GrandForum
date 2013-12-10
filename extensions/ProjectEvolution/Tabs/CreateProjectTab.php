@@ -149,14 +149,13 @@ EOF;
         //Challenges
         $challengeFieldSet = new FieldSet("{$pre}_challenges_set", "Primary Challenge");
        
-        $challenges = array();
-        $challenges_sql = "SELECT * FROM grand_challenges";
-        $challenges_data = DBFunctions::execSQL($challenges_sql);
-        foreach ($challenges_data as $row) {
-            $challenges[$row['id']] = $row['name'];
+        $challengeNames = array();
+        $challenges = Theme::getAllThemes(PROJECT_PHASE);
+        foreach($challenges as $challenge){
+            $challengeNames[$challenge->getId()] = $challenge->getAcronym();
         }
 
-        $challengeRadioBox = new VerticalRadioBox2("{$pre}_challenge", "", "", $challenges, VALIDATE_NOTHING);
+        $challengeRadioBox = new VerticalRadioBox2("{$pre}_challenge", "", "", $challengeNames, VALIDATE_NOTHING);
         $challengeFieldSet->append($challengeRadioBox);
 
         $table->append($acronymRow);

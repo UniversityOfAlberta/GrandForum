@@ -70,13 +70,14 @@ class ProjectInfoAPI extends API{
             $xml .= "\t\t<description>\n";
             $xml .= "\t\t\t".str_replace("&", "&amp;", $description)."\n";
             $xml .= "\t\t</description>\n";
-            $themeNames = Project::getDefaultThemeNames();
+            $coll = new Collection(Theme::getAllThemes(1));
+            $themeNames = $coll->pluck('acronym');
             $xml .= "\t\t<themes>\n";
-            $xml .= "\t\t\t<theme name=\"{$themeNames[1]}\" value=\"{$project->getTheme(1)}\" />\n";
-            $xml .= "\t\t\t<theme name=\"{$themeNames[2]}\" value=\"{$project->getTheme(2)}\" />\n";
-            $xml .= "\t\t\t<theme name=\"{$themeNames[3]}\" value=\"{$project->getTheme(3)}\" />\n";
-            $xml .= "\t\t\t<theme name=\"{$themeNames[4]}\" value=\"{$project->getTheme(4)}\" />\n";
-            $xml .= "\t\t\t<theme name=\"{$themeNames[5]}\" value=\"{$project->getTheme(5)}\" />\n";
+            $xml .= "\t\t\t<theme name=\"{$themeNames[0]}\" value=\"{$project->getTheme(1)}\" />\n";
+            $xml .= "\t\t\t<theme name=\"{$themeNames[1]}\" value=\"{$project->getTheme(2)}\" />\n";
+            $xml .= "\t\t\t<theme name=\"{$themeNames[2]}\" value=\"{$project->getTheme(3)}\" />\n";
+            $xml .= "\t\t\t<theme name=\"{$themeNames[3]}\" value=\"{$project->getTheme(4)}\" />\n";
+            $xml .= "\t\t\t<theme name=\"{$themeNames[4]}\" value=\"{$project->getTheme(5)}\" />\n";
             $xml .= "\t\t</themes>\n";
             $xml .= "\t\t<researchers>\n";
             foreach($project->getAllPeople() as $person){
@@ -109,12 +110,13 @@ class ProjectInfoAPI extends API{
                           "type" => $person->getType());
         }
       }
-      $themeNames = Project::getDefaultThemeNames();
-      $themes = array($themeNames[1] => $project->getTheme(1),
-                      $themeNames[2] => $project->getTheme(2),
-                      $themeNames[3] => $project->getTheme(3),
-                      $themeNames[4] => $project->getTheme(4),
-                      $themeNames[5] => $project->getTheme(5));
+      $coll = new Collection(Theme::getAllThemes(1));
+      $themeNames = $coll->pluck('acronym');
+      $themes = array($themeNames[0] => $project->getTheme(1),
+                      $themeNames[1] => $project->getTheme(2),
+                      $themeNames[2] => $project->getTheme(3),
+                      $themeNames[3] => $project->getTheme(4),
+                      $themeNames[4] => $project->getTheme(5));
       $p = array("id" => $project->getId(),
                  "name" => $project->getName(),
                  "themes" => $themes,

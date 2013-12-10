@@ -2408,9 +2408,9 @@ EOF;
         $chunk .= "<table class='wikitable sortable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>\n<tr><th>Project";
 
         // Print theme names.
-        $themes = Project::getDefaultThemeNames();
-        foreach ($themes as $tname) {
-            $chunk .= "<th>{$tname}";
+        $themes = Theme::getAllThemes(1);
+        foreach ($themes as $theme) {
+            $chunk .= "<th>{$theme->getAcronym()}";
         }
 
         // First pass: grab data.

@@ -788,6 +788,7 @@ EOF;
     }
     
     // Returns the theme percentage of this project of the given theme index $i
+    // OLD: Only used for phase1 projects, should be refactored somehow
     function getTheme($i, $history=false){
         if(!($i >= 1 && $i <= 5)) return 0; // Fail Gracefully if the index was out of bounds, and return 0
         if($this->themes == null){
@@ -819,6 +820,7 @@ EOF;
     }
 
     /// Returns all themes for the project as an associative array.
+    // OLD: Only used for phase1 projects, should be refactored somehow
     function getThemes() {
         $ret = array('names' => array(), 'values' => array());
         // Put up the associative array.  Absent values default to 0.
@@ -833,15 +835,15 @@ EOF;
     function getChallenge(){
         $data = DBFunctions::select(array('grand_project_challenges' => 'pc',
                                           'grand_themes' => 't'),
-                                    array('t.acronym'),
+                                    array('t.id'),
                                     array('t.id' => EQ(COL('pc.challenge_id')),
                                           'pc.project_id' => EQ($this->id)),
                                     array('pc.id' => 'DESC'),
                                     array(1));
         if(count($data) > 0){
-            return $data[0]['acronym'];
+            return Theme::newFromId($data[0]['id']);
         }
-        return "Not Specified";
+        return Theme::newFromName("Not Specified");
     } 
     
     // Returns the description of the Project
@@ -932,29 +934,6 @@ EOF;
     // Returns an array of papers relating to this project
     function getPapers($category="all", $startRange = false, $endRange = false){
         return Paper::getAllPapersDuring($this->name, $category, "grand", $startRange, $endRange);
-    }
-    
-    static function getAllThemes($phase="%"){
-        $data = DBFunctions::select(array('grand_themes'),
-                                    array('*'),
-                                    array('phase' => LIKE($phase)));
-        return $data;
-    }
-
-    // Returns an array of the theme names.
-    static function getDefaultThemeNames() {
-        return array(1 => 'nMEDIA', 2 => 'GamSim', 3 => 'AnImage', 4 => 'SocLeg', 5 => 'TechMeth');
-    }
-    
-    // Returns accronym the name of the theme
-    static function getThemeName($themeId){
-        $data = DBFunctions::select(array('grand_themes'),
-                                    array('acronym'),
-                                    array('id' => EQ($themeId)));
-        if(count($data) > 0){
-            return $data[0]['acronym'];
-        }
-        return "Not Specified";
     }
     
     // Returns a list of the evaluators who are evaluating this Project

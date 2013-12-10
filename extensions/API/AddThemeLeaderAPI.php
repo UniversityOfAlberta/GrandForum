@@ -50,7 +50,7 @@ class AddThemeLeaderAPI extends API{
             if($_POST['co_lead'] == "True"){
                 $type = 'co-';
             }
-            Notification::addNotification($me, $person, "Theme Leader Added", "Effective $effectiveDate you are a theme {$type}leader of 'Theme {$_POST['theme']} - ".Project::getThemeName($_POST['theme'])."'", "{$person->getUrl()}");
+            Notification::addNotification($me, $person, "Theme Leader Added", "Effective $effectiveDate you are a theme {$type}leader of 'Theme {$_POST['theme']} - ".Theme::newFromId($_POST['theme'])->getAcronym()."'", "{$person->getUrl()}");
 		}
 		else {
 		    if(!$noEcho){

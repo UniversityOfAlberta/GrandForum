@@ -67,12 +67,12 @@ function DURING($values){
             $endKey = $key;
         }
     }
-    return "( 
+    return "(
         (($endKey != '0000-00-00 00:00:00') AND
-        (( $startKey BETWEEN '$start' AND '$end' ) || ( $endKey BETWEEN '$start' AND '$end' ) || ($startKey <= '$start' AND $endKey >= '$end') ))
+        (($startKey BETWEEN '$start' AND '$end') || ($endKey BETWEEN '$start' AND '$end') || ($startKey <= '$start' AND $endKey >= '$end') ))
         OR
         (($endKey = '0000-00-00 00:00:00') AND
-        (( $startKey <= '$end')))
+        (($startKey <= '$end')))
     )";
 }
 

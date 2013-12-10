@@ -2,7 +2,7 @@
 
 require_once('commandLine.inc');
 
-function createProject($acronym, $fullName, $status, $type, $bigbet, $phase, $effective_date, $description, $problem, $solution, $challenge=0, $parent_id=0){
+function createProject($acronym, $fullName, $status, $type, $bigbet, $phase, $effective_date, $description, $problem, $solution, $challenge="Not Specified", $parent_id=0){
     $_POST['acronym'] = $acronym;
     $_POST['fullName'] = $fullName;
     $_POST['status'] = $status;
@@ -11,7 +11,7 @@ function createProject($acronym, $fullName, $status, $type, $bigbet, $phase, $ef
     $_POST['phase'] = $phase;
     $_POST['effective_date'] = $effective_date;
     $_POST['description'] = $description;
-    $_POST['challenge'] = $challenge;
+    $_POST['challenge'] = Theme::newFromName($challenge)->getId();
     $_POST['parent_id'] = $parent_id;
     $_POST['problem'] = $problem;
     $_POST['solution'] = $solution;
@@ -40,6 +40,13 @@ function addProjectLeader($name, $project, $coLead='False', $manager='False'){
     APIRequest::doAction('AddProjectLeader', true);
 }
 
+function addThemeLeader($name, $theme, $coLead='False'){
+    $_POST['name'] = $name;
+    $_POST['theme'] = Theme::newFromName($theme)->getId();
+    $_POST['co_lead'] = $coLead;
+    APIRequest::doAction('AddThemeLeader', true);
+}
+
 function addRelation($name1, $name2, $type){
     $_POST['name1'] = $name1;
     $_POST['name2'] = $name2;
@@ -61,6 +68,7 @@ system($dump);
 DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_universities` SELECT * FROM `{$wgDBname}`.`grand_universities`", true);
 DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_positions` SELECT * FROM `{$wgDBname}`.`grand_positions`", true);
 DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_challenges` SELECT * FROM `{$wgDBname}`.`grand_challenges`", true);
+DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_themes` SELECT * FROM `{$wgDBname}`.`grand_themes`", true);
 DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_disciplines_map` SELECT * FROM `{$wgDBname}`.`grand_disciplines_map`", true);
 DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_partners` SELECT * FROM `{$wgDBname}`.`grand_partners`", true);
 DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`mw_page` SELECT * FROM `{$wgDBname}`.`mw_page` WHERE page_id < 10", true);
@@ -133,6 +141,7 @@ foreach($wgRoles as $role){
 User::createNew("Admin.User1", array('password' => User::crypt("Admin.Pass1"), 'email' => "admin.user1@behat.com"));
 User::createNew("Manager.User1", array('password' => User::crypt("Manager.Pass1"), 'email' => "manager.user1@behat.com"));
 User::createNew("PL.User1", array('password' => User::crypt("PL.Pass1"), 'email' => "pl.user1@behat.com"));
+User::createNew("TL.User1", array('password' => User::crypt("TL.Pass1"), 'email' => "tl.user1@behat.com"));
 User::createNew("COPL.User1", array('password' => User::crypt("COPL.Pass1"), 'email' => "copl.user1@behat.com"));
 User::createNew("RMC.User1", array('password' => User::crypt("RMC.Pass1"), 'email' => "rmc.user1@behat.com"));
 User::createNew("RMC.User2", array('password' => User::crypt("RMC.Pass2"), 'email' => "rmc.user2@behat.com"));
@@ -170,17 +179,18 @@ createProject("Phase1Project2", "Phase 1 Project 2", "Active", "Research", "No",
 createProject("Phase1Project3", "Phase 1 Project 3", "Active", "Research", "No", 1, "2010-01-01", "", "", "");
 createProject("Phase1Project4", "Phase 1 Project 4", "Active", "Research", "No", 1, "2011-01-01", "", "", "");
 createProject("Phase1Project5", "Phase 1 Project 5", "Active", "Research", "No", 1, "2012-01-01", "", "", "");
-createProject("Phase2Project1", "Phase 2 Project 1", "Active", "Research", "No", 2, "2014-04-01", "", "", "", 1, 0);
-    createProject("Phase2Project1SubProject1", "Phase 2 Project 1 Sub Project 1", "Active", "Research", "No", 2, "2014-04-01", "", "", "", 1, Project::newFromName("Phase2Project1")->getId());
-    createProject("Phase2Project1SubProject2", "Phase 2 Project 1 Sub Project 2", "Active", "Research", "No", 2, "2014-04-01", "", "", "", 1, Project::newFromName("Phase2Project1")->getId());
-createProject("Phase2Project2", "Phase 2 Project 2", "Active", "Research", "No", 2, "2014-04-01", "", "", "", 1, 0);
-createProject("Phase2Project3", "Phase 2 Project 3", "Active", "Research", "No", 2, "2014-04-01", "", "", "", 1, 0);
-createProject("Phase2Project4", "Phase 2 Project 4", "Active", "Research", "No", 2, "2014-04-01", "", "", "", 1, 0);
-createProject("Phase2Project5", "Phase 2 Project 5", "Active", "Research", "No", 2, "2014-04-01", "", "", "", 1, 0);
-createProject("Phase2BigBetProject1", "Phase 2 Big Bet Project 1", "Active", "Research", "Yes", 2, "2014-04-01", "", "", "", 1, 0);
+createProject("Phase2Project1", "Phase 2 Project 1", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Big Data", 0);
+    createProject("Phase2Project1SubProject1", "Phase 2 Project 1 Sub Project 1", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Not Specified", Project::newFromName("Phase2Project1")->getId());
+    createProject("Phase2Project1SubProject2", "Phase 2 Project 1 Sub Project 2", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Not Specified", Project::newFromName("Phase2Project1")->getId());
+createProject("Phase2Project2", "Phase 2 Project 2", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Citizenship", 0);
+createProject("Phase2Project3", "Phase 2 Project 3", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Entertainment", 0);
+createProject("Phase2Project4", "Phase 2 Project 4", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Health", 0);
+createProject("Phase2Project5", "Phase 2 Project 5", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Learning", 0);
+createProject("Phase2BigBetProject1", "Phase 2 Big Bet Project 1", "Active", "Research", "Yes", 2, "2014-04-01", "", "", "", "Sustainability", 0);
 
 addUserRole("Manager.User1", MANAGER);
 addUserRole("PL.User1", PNI);
+addUserRole("TL.User1", PNI);
 addUserRole("COPL.User2", PNI);
 addUserRole("RMC.User1", RMC);
 addUserRole("RMC.User1", PNI);
@@ -216,6 +226,8 @@ addUserProject("HQP.User3", "Phase2Project1");
 addProjectLeader("PL.User1", "Phase2Project1");
 addProjectLeader("COPL.User1", "Phase2Project1");
 addProjectLeader("CNICOPL.User1", "Phase2Project2", 'True');
+
+addThemeLeader("TL.User1", "Entertainment", 'True');
 
 addRelation("PNI.User1", "HQP.User1", "Supervises");
 addRelation("PNI.User1", "HQP.User2", "Supervises");

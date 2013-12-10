@@ -756,7 +756,7 @@ class Person extends BackboneModel {
         $themes = array_merge($this->getLeadThemes(), $this->getCoLeadThemes());
         $challenge = $project->getChallenge();
         foreach($themes as $theme){
-            if($challenge == Project::getThemeName($theme)){
+            if($challenge->getId() == $theme->getId()){
                 return true;
             }
         }
@@ -2760,7 +2760,7 @@ class Person extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         $themes = array();
         foreach($data as $row){
-            $themes[$row['theme']] = $row['theme'];
+            $themes[$row['theme']] = Theme::newFromId($row['theme']);
         }
         return $themes;
     }
@@ -2777,7 +2777,7 @@ class Person extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         $themes = array();
         foreach($data as $row){
-            $themes[$row['theme']] = $row['theme'];
+            $themes[$row['theme']] = Theme::newFromId($row['theme']);
         }
         return $themes;
     }

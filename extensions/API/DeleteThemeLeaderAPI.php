@@ -62,7 +62,7 @@ class DeleteThemeLeaderAPI extends API{
             if($_POST['co_lead'] == "True"){
                 $type = 'co-';
             }
-            Notification::addNotification($me, $person, "Theme Leader Removed", "Effective $effectiveDate you are no longer a theme {$type}leader of 'Theme {$_POST['theme']} - ".Project::getThemeName($_POST['theme'])."'", "{$person->getUrl()}");
+            Notification::addNotification($me, $person, "Theme Leader Removed", "Effective $effectiveDate you are no longer a theme {$type}leader of 'Theme {$_POST['theme']} - ".Theme::newFromId($_POST['theme'])->getAcronym()."'", "{$person->getUrl()}");
 		}
 		else {
 		    if(!$noEcho){
