@@ -3135,18 +3135,5 @@ class Person extends BackboneModel {
         }
         return false;
     }
-
-    /// Returns a new array of user IDs based on #arr, but sorted by the
-    /// last name of the user (guessed from username).
-    static function sortIdsByLastName($arr) {
-        if (is_array($arr))
-            $arr = implode(',', $arr);
-        $ret = array();
-        $res = DBFunctions::execSQL("SELECT user_id FROM mw_user WHERE user_id IN ({$arr}) ORDER BY SUBSTRING_INDEX(user_name, '.', -1), user_name;");
-        foreach ($res as $r) {
-            $ret[] = $r['user_id'];
-        }
-        return $ret;
-    }
 }
 ?>
