@@ -47,7 +47,7 @@ class ProjectPage {
                 if($wgTitle->getText() == "Mail Index"){
                     TabUtils::clearActions();
                 }
-                else if($project != null && !$me->isMemberOf($project) && !$me->isRoleAtLeast(STAFF)){
+                else if($project != null && !$me->isMemberOf($project) && !$me->isRoleAtLeast(STAFF) && !$me->isThemeLeaderOf($project)){
                     TabUtils::clearActions();
                     $wgOut->clearHTML();
                     $wgOut->permissionRequired('');
@@ -80,6 +80,7 @@ class ProjectPage {
 
             $isLead = ( $isLead && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
             $isMember = ($isMember && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
+            $isMember = true;
             $edit = (isset($_POST['edit']) && $isLead);
             
             // Project Exists and it is the right Namespace

@@ -15,6 +15,11 @@ class GrandAccess {
 	            $aRights[$i++] = $project->getName();
 	        }
 	    }
+	    foreach(Project::getAllProjects() as $project){
+	        if($me->isThemeLeaderOf($project)){
+	            $aRights[$i++] = $project->getName();
+	        }
+	    }
 	    if($me->isRole(MANAGER)){
 	        $aRights[$i++] = RMC;
 	        $aRights[$i++] = PL;

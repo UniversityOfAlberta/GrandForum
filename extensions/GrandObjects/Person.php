@@ -752,6 +752,17 @@ class Person extends BackboneModel {
         return false;
     }
     
+    function isThemeLeaderOf($project){
+        $themes = array_merge($this->getLeadThemes(), $this->getCoLeadThemes());
+        $challenge = $project->getChallenge();
+        foreach($themes as $theme){
+            if($challenge == Project::getThemeName($theme)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     function isChampionOfDuring($project, $start=REPORTING_CYCLE_START, $end=REPORTING_CYCLE_END){
         $champs = $project->getChampionsDuring($start, $end);
         foreach($champs as $champ){

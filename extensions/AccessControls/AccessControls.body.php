@@ -174,7 +174,7 @@ function onUserCan(&$title, &$user, $action, &$result) {
 		$result = true;
 		return $result;
 	}
-
+    
 	//nobody but the user who has id=1 can create pages in the main namespace
 	if ($action == 'create' && !$egNamespaceAllowPagesInMainNS && 
 	    ($title->getNamespace() == NS_MAIN || $title->getNamespace() == NS_TALK) && $user->getId() != 1) {
