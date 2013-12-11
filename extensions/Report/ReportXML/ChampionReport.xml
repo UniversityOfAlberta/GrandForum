@@ -119,7 +119,7 @@
     <ReportSection id="review" name="Review" tooltip="Review of on-line report content" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
-    
+                <p>This section provides (a) an online document with all the information currently contained in the report pages, and (b) an online approximation of what the resulting PDF document will look like. If you are satisfied with this content, then you can proceed to the final step of the reporting workflow where you can "Submit" your report to be forwarded to the RMC.</p>
             ]]>
         </Instructions>
         <ReportItem id="report_review" type="ReviewReportItem">
@@ -131,8 +131,8 @@
             <![CDATA[
                     <p>To submit your report, follow the following three steps.</p>
                     <ol>
-                        <li>Generate a new report for submission: this step will generate two PDF documents: the "NI Report PDF" is the document that will be forwarded to the RMC; the "NI Milestones PDF" is for your own and your PLs records.</li>
-                        <li>Download the two PDF documents for your records.</li>
+                        <li>Generate a new report for submission</li>
+                        <li>Download the PDF document for your records.</li>
                         <li>Submit your report: this step indicates that you have read and approve the contents of the PDF document to be forwarded to the RMC. Note that "submitting" does not lock the reporting workflow; you can regenerate and resubmit your report as many times as you wish before the deadline, if you need to make additional edits to your report. The most recently generated PDF is used for evaluation.</li>
                     </ol>
             ]]>
