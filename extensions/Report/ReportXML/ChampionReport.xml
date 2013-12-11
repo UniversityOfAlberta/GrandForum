@@ -7,13 +7,13 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="report" name="Introduction" tooltip="" blobSection="CHAMP_INTRO" type="EditableReportSection" renderpdf="true">
+    <ReportSection id="report" name="Champion Report" tooltip="" blobSection="CHAMP_REPORT" type="EditableReportSection" renderpdf="true">
         <Instructions>
             <![CDATA[
 
             ]]>
         </Instructions>
-        <ReportItem type="StaticReportItem">
+        <ReportItem id="introTable" type="StaticReportItem">
             <![CDATA[
                 <table>
                     <tr>
@@ -34,9 +34,80 @@
         <ReportItem id="represent" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_REPRESENT" options="As an individual only|As an individual with the consent of my organization|On behalf of my organization" orientation="vertical">
             <![CDATA[
                 <p>
-                    <h3>Q1: In my role as a project champion for AUTO-INSERTED-PROJECT-NAME I am acting RADIO BUTTON or CHECK BOX</h3>
+                    In my role as a project champion for {$project_name} I am acting
+                    <div style='margin-left:15px;'>{$item}</div>
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="qIntro" type="StaticReportItem">
+            <![CDATA[
+                <br />
+                <p>
+                    In answering each of the following questions, please indicate the name(s) of the subproject(s) for which you are providing your comments. It is not expected that a project champion will be engaged with or knowledgeable about all of the subprojects in a project, although some project champions will want to comment on more than one subproject. Please include comments on all of the subprojects in which you are engaged.
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_ACTIVITY">
+            <![CDATA[
+                <p>
+                    <h3>Q1: Describe the research activities that are underway within one or more subprojects that are relevant to you or to your organization.</h3>
                     {$item}
                 </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_ORG">
+            <![CDATA[
+                <p>
+                    <h3>Q2: Describe your (or your organization’s) involvement in the planning and conduct of the research.</h3>
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_BENEFITS">
+            <![CDATA[
+                <p>
+                    <h3>Q3: Describe the benefits that you (or your organization) expect to gain from the research and how it might impact the larger digital media community.</h3>
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_SHORTCOMINGS">
+            <![CDATA[
+                <p>
+                    <h3>Q4: From your perspective, how would you prioritize the project activities? What activities do you see as the most high-yield for your organization? Is there opportunity for other more interesting activities?</h3>
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q5" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_CASH">
+            <![CDATA[
+                <p>
+                    <h3>Q5: Describe any cash or in-kind contributions that your organization has made or might make to the research and the conditions under which those contributions might be made.</h3>
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="q6_head" type="StaticReportItem">
+            <![CDATA[
+                <p>
+                    <h3>Q6: Indicate the researchers that you have been in contact with for this project and how.</h3>
+                </p>
+                <table width='100%'>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="q6_people" type="ProjectPeopleReportItemSet" blobIndex="personId">
+            <ReportItem id="q6" height="75px" type="TextareaReportItem" blobType="BLOB_ARRAY" blobItem="CHAMP_RESEARCHERS">
+                <![CDATA[
+                <tr>
+                    <td style='white-space:nowrap;' valign='top' align='right'><b><a href='{$user_url}' target='_blank'>{$user_name}</a>:</b></td>
+                    <td width='100%'>{$item}</td>
+                </tr>
+            ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="q6_foot" type="StaticReportItem">
+            <![CDATA[
+                </table>
             ]]>
         </ReportItem>
     </ReportSection>

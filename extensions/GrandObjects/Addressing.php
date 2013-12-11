@@ -199,6 +199,12 @@ define('HQP_RESACT_NETWORKING',		3);
 define('HQP_RESACT_KTEE',   		4);
 
 define('CHAMP_REPRESENT', 1);
+define('CHAMP_ACTIVITY', 2);
+define('CHAMP_ORG', 3);
+define('CHAMP_BENEFITS', 4);
+define('CHAMP_SHORTCOMINGS', 5);
+define('CHAMP_CASH', 6);
+define('CHAMP_RESEARCHERS', 7);
 
 // No third-level identifiers for interactions with people (HQP_PEOPLE_INTERACT),
 // projects (HQP_PROJECT_INTERACT), or impact (HQP_IMPACT).
