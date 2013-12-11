@@ -27,16 +27,25 @@ class ThemeLeader extends SpecialPage{
         $projects = Project::getAllProjects();
         $wgOut->addHTML("<table class='tl-projects' style='display:none;' frame='box' rules='all'>
                             <thead>
-                                <tr><th>Acronym</th><th>Name</th></tr>
+                                <tr><th style='width:20%;'>Acronym</th><th style='width:35%;'>Name</th><th style='width:45%;'>Leaders</th></tr>
                             </thead>
                             <tbody>");
         foreach($projects as $project){
-            if($me->isThemeLeaderOf($project)){
-                $wgOut->addHTML("<tr><td><a href='{$project->getUrl()}'>{$project->getName()}</a></td><td>{$project->getFullName()}</td></tr>");
+            if($me->isThemeLeaderOf($project) && !$project->isSubProject()){
+                $lead = array();
+                $leaders = $project->getLeaders();
+                $coleaders = $project->getCoLeaders();
+                foreach($leaders as $leader){
+                    $lead[] = "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()} (PL)</a>";
+                }
+                foreach($coleaders as $leader){
+                    $lead[] = "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()} (co-PL)</a>";
+                }
+                $wgOut->addHTML("<tr><td><a href='{$project->getUrl()}'>{$project->getName()}</a></td><td>{$project->getFullName()}</td><td>".implode(", ", $lead)."</td></tr>");
             }
         }
         $wgOut->addHTML("</tbody></table>");
-        $wgOut->addHTML("<script type='text/javascript'>$('.tl-projects').dataTable({'iDisplayLength': 100});$('.tl-projects').show();</script>");
+        $wgOut->addHTML("<script type='text/javascript'>$('.tl-projects').dataTable({'iDisplayLength': 100, 'bAutoWidth':false});$('.tl-projects').show();</script>");
     }
     
     static function createTab(){

@@ -33,3 +33,13 @@ Feature: Theme Leaders
         And I should see "Dashboard"
         And I should see "Visualizations"
         And I should not see "Wiki"
+        
+    Scenario: TL views the "Theme Leader" page
+        Given I am logged in as "TL.User1" using password "TL.Pass1"
+        And I follow "Theme Lead"
+        Then I should see "Phase2Project3"
+        
+    Scenario: PNI tries viewing the "Theme Leader" page
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        And I go to "index.php/Special:ThemeLeader"
+        Then I should see "Permission error"
