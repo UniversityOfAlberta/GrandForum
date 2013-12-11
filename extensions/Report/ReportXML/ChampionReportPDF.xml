@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Champion Report" reportType="RP_CHAMP" pdfType="RPTP_CHAMP" pdfFiles="ChampionReportPDF" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="Champion">
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PNI">
             <SectionPermission id="intro" permissions="rw" />
             <SectionPermission id="report" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
@@ -45,7 +45,7 @@
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="q1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_ACTIVITY">
+        <ReportItem id="q1" blobType="BLOB_TEXT" blobItem="CHAMP_ACTIVITY" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name" showNotReferenced="true">
             <![CDATA[
                 <br />
                 <p>
@@ -54,7 +54,7 @@
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="q2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_ORG">
+        <ReportItem id="q2" blobType="BLOB_TEXT" blobItem="CHAMP_ORG" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name" showNotReferenced="true">
             <![CDATA[
                 <br />
                 <p>
@@ -63,7 +63,7 @@
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="q3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_BENEFITS">
+        <ReportItem id="q3" blobType="BLOB_TEXT" blobItem="CHAMP_BENEFITS" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name" showNotReferenced="true">
             <![CDATA[
                 <br />
                 <p>
@@ -72,7 +72,7 @@
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="q4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_SHORTCOMINGS">
+        <ReportItem id="q4" blobType="BLOB_TEXT" blobItem="CHAMP_SHORTCOMINGS" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name" showNotReferenced="true">
             <![CDATA[
                 <br />
                 <p>
@@ -81,7 +81,7 @@
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="q5" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_CASH">
+        <ReportItem id="q5" blobType="BLOB_TEXT" blobItem="CHAMP_CASH" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name" showNotReferenced="true">
             <![CDATA[
                 <br />
                 <p>

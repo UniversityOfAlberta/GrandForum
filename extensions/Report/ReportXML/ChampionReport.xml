@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Champion Report" reportType="RP_CHAMP" pdfType="RPTP_CHAMP" pdfFiles="ChampionReportPDF" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="Champion">
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PNI">
             <SectionPermission id="report" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -47,7 +47,7 @@
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="q1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_ACTIVITY">
+        <ReportItem id="q1" blobType="BLOB_TEXT" blobItem="CHAMP_ACTIVITY" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name" showNotReferenced="true">
             <![CDATA[
                 <p>
                     <h3>Q1: Describe the research activities that are underway within one or more subprojects that are relevant to you or to your organization.</h3>
@@ -55,32 +55,36 @@
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="q2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_ORG">
+        <ReportItem id="q2" blobType="BLOB_TEXT" blobItem="CHAMP_ORG" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name" showNotReferenced="true">
             <![CDATA[
+                <br />
                 <p>
                     <h3>Q2: Describe your (or your organization’s) involvement in the planning and conduct of the research.</h3>
                     {$item}
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="q3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_BENEFITS">
+        <ReportItem id="q3" blobType="BLOB_TEXT" blobItem="CHAMP_BENEFITS" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name" showNotReferenced="true">
             <![CDATA[
+                <br />
                 <p>
                     <h3>Q3: Describe the benefits that you (or your organization) expect to gain from the research and how it might impact the larger digital media community.</h3>
                     {$item}
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="q4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_SHORTCOMINGS">
+        <ReportItem id="q4" blobType="BLOB_TEXT" blobItem="CHAMP_SHORTCOMINGS" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name" showNotReferenced="true">
             <![CDATA[
+                <br />
                 <p>
                     <h3>Q4: From your perspective, how would you prioritize the project activities? What activities do you see as the most high-yield for your organization? Is there opportunity for other more interesting activities?</h3>
                     {$item}
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="q5" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_CASH">
+        <ReportItem id="q5" blobType="BLOB_TEXT" blobItem="CHAMP_CASH" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name" showNotReferenced="true">
             <![CDATA[
+                <br />
                 <p>
                     <h3>Q5: Describe any cash or in-kind contributions that your organization has made or might make to the research and the conditions under which those contributions might be made.</h3>
                     {$item}
@@ -89,8 +93,9 @@
         </ReportItem>
         <ReportItem id="q6_head" type="StaticReportItem">
             <![CDATA[
+                <br />
                 <p>
-                    <h3>Q6: Indicate the researchers that you have been in contact with for this project and how.</h3>
+                    <h3>Q6: Comment on the researchers that you have been in contact with for this project and how.</h3>
                 </p>
                 <table width='100%'>
             ]]>
