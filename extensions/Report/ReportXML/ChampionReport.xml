@@ -107,7 +107,7 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="q6_people" type="ProjectPeopleReportItemSet" blobIndex="personId">
-            <ReportItem id="q6" height="75px" type="TextareaReportItem" blobType="BLOB_ARRAY" blobItem="CHAMP_RESEARCHERS">
+            <ReportItem id="q6" height="80px" type="TextareaReportItem" blobType="BLOB_ARRAY" blobItem="CHAMP_RESEARCHERS">
                 <![CDATA[
                 <tr>
                     <td style='white-space:nowrap;' valign='top' align='right'><b><a href='{$user_url}' target='_blank'>{$user_name}</a>:</b></td>
