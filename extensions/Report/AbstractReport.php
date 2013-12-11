@@ -58,6 +58,9 @@ abstract class AbstractReport extends SpecialPage {
             case RPTP_NI_COMMENTS:
                 $type = "NIReportComments";
                 break;
+            case RPTP_CHAMP:
+                $type = "ChampionReport";
+                break;
             case RPTP_INPUT:
                 break;
             case RPTP_LEADER:
