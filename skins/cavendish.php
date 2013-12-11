@@ -525,6 +525,9 @@ class cavendishTemplate extends QuickTemplate {
                         if(count($p->getProjects()) > 0 && !$user->isRoleAtLeast(MANAGER)){
 			                Project::createTab();
 			            }
+			            if($p->isThemeLeader()){
+			                ThemeLeader::createTab();
+			            }
 					    if(!$user->isRoleAtLeast(MANAGER)){
 					        ReportArchive::createTab();
 					    }
