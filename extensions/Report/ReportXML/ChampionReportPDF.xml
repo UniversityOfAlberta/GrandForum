@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Champion Report" reportType="RP_CHAMP" pdfType="RPTP_CHAMP" pdfFiles="ChampionReportPDF" pdfAllProjects="true" ajax="true" disabled="false">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="Champion">
+            <SectionPermission id="intro" permissions="rw" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <ReportItem id="report_info_head" type="StaticReportItem">
+            <![CDATA[
+                <div class='logo_div'>
+                    <div class='logo'></div>
+                    <div class='report_name' style='text-align:right;'><b>Champion Report</b><br /><small><b>Generated:</b> {$timestamp}</small></div>
+                </div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="intro" name="Introduction" tooltip="" blobSection="CHAMP_INTRO" type="EditableReportSection" renderpdf="true">
+        <Instructions>
+            <![CDATA[
+
+            ]]>
+        </Instructions>
+        <ReportItem type="StaticReportItem">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td><b>Name:</b></td>
+                        <td>{$user_full_name}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="report" name="Champion Report" tooltip="" blobSection="CHAMP_REPORT" type="EditableReportSection" renderpdf="true">
+        <Instructions>
+            <![CDATA[
+                
+            ]]>
+        </Instructions>
+    </ReportSection>
+    <ReportSection id="review" name="Review" tooltip="Review of on-line report content" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+    
+            ]]>
+        </Instructions>
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" name="Submit" tooltip="PDF generation and submission to the RMC" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
+        <Instructions>
+            <![CDATA[
+                    <p>To submit your report, follow the following three steps.</p>
+                    <ol>
+                        <li>Generate a new report for submission: this step will generate two PDF documents: the "NI Report PDF" is the document that will be forwarded to the RMC; the "NI Milestones PDF" is for your own and your PLs records.</li>
+                        <li>Download the two PDF documents for your records.</li>
+                        <li>Submit your report: this step indicates that you have read and approve the contents of the PDF document to be forwarded to the RMC. Note that "submitting" does not lock the reporting workflow; you can regenerate and resubmit your report as many times as you wish before the deadline, if you need to make additional edits to your report. The most recently generated PDF is used for evaluation.</li>
+                    </ol>
+            ]]>
+        </Instructions>
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
+    </ReportSection>
+</Report>

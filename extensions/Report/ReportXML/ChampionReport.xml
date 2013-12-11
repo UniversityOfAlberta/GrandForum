@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Champion Report" reportType="RP_CHAMP" pdfType="RPTP_CHAMP" pdfFiles="ChampionReportPDF" pdfAllProjects="true" ajax="true" disabled="false">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="Champion">
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="report" name="Introduction" tooltip="" blobSection="CHAMP_INTRO" type="EditableReportSection" renderpdf="true">
+        <Instructions>
+            <![CDATA[
+
+            ]]>
+        </Instructions>
+        <ReportItem type="StaticReportItem">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td><b>Name:</b></td>
+                        <td>{$user_reversed_name}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Email:</b></td>
+                        <td><a href='mailto:{$user_email}'>{$user_email}</a></td>
+                    </tr>
+                    <tr>
+                        <td><b>Affiliation:</b></td>
+                        <td>{$user_uni}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="represent" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_REPRESENT" options="As an individual only|As an individual with the consent of my organization|On behalf of my organization" orientation="vertical">
+            <![CDATA[
+                <p>
+                    <h3>Q1: In my role as a project champion for AUTO-INSERTED-PROJECT-NAME I am acting RADIO BUTTON or CHECK BOX</h3>
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" name="Review" tooltip="Review of on-line report content" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+    
+            ]]>
+        </Instructions>
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" name="Submit" tooltip="PDF generation and submission to the RMC" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
+        <Instructions>
+            <![CDATA[
+                    <p>To submit your report, follow the following three steps.</p>
+                    <ol>
+                        <li>Generate a new report for submission: this step will generate two PDF documents: the "NI Report PDF" is the document that will be forwarded to the RMC; the "NI Milestones PDF" is for your own and your PLs records.</li>
+                        <li>Download the two PDF documents for your records.</li>
+                        <li>Submit your report: this step indicates that you have read and approve the contents of the PDF document to be forwarded to the RMC. Note that "submitting" does not lock the reporting workflow; you can regenerate and resubmit your report as many times as you wish before the deadline, if you need to make additional edits to your report. The most recently generated PDF is used for evaluation.</li>
+                    </ol>
+            ]]>
+        </Instructions>
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
+    </ReportSection>
+</Report>

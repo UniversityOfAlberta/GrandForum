@@ -31,6 +31,7 @@ define('RP_EVAL_CNI',		8);
 define('RP_EVAL_LOI_FEED',	10);
 define('RP_REVIEW', 11);
 define('RP_MTG', 12);
+define('RP_CHAMP', 13);
 //define('RP_EVAL_RESEARCHER_REV',		9); //Revised answers
 //define('RP_EVAL_CNI_REV',		10); //Revised answers
 //define('RP_EVAL_PROJECT_REV', 11); //Revised answers
@@ -82,6 +83,8 @@ define('LDR_BUDGET',			9);
 define('LDR_RESACTIVITY',		10);
 define('LDR_NICOMMENTS',		11);
 define('LDR_BUDGETJUSTIF',		12);
+
+define('CHAMP_REPORT', 1);
 
 // Second-level identifiers for Evaluator Report.
 define('EVL_EXCELLENCE',		1);
@@ -194,6 +197,8 @@ define('HQP_RESACT_OVERALL',		1);
 define('HQP_RESACT_EXCELLENCE',		2);
 define('HQP_RESACT_NETWORKING',		3);
 define('HQP_RESACT_KTEE',   		4);
+
+define('CHAMP_REPRESENT', 1);
 
 // No third-level identifiers for interactions with people (HQP_PEOPLE_INTERACT),
 // projects (HQP_PROJECT_INTERACT), or impact (HQP_IMPACT).
