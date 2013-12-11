@@ -6,6 +6,11 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="CHAMP">
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
     </Permissions>
     <ReportSection id="report" name="Champion Report" tooltip="" blobSection="CHAMP_REPORT" type="EditableReportSection" renderpdf="true">
         <Instructions>
