@@ -2,6 +2,8 @@
 
 class Theme {
     
+    static $cache = array();
+    
     var $id;
     var $acronym;
     var $name;
@@ -9,17 +11,27 @@ class Theme {
     var $phase;
     
     static function newFromId($id){
+        if(isset(self::$cache[$id])){
+            return self::$cache[$id];
+        }
         $data = DBFunctions::select(array('grand_themes'),
                                     array('*'),
                                     array('id' => EQ($id)));
-        return new Theme($data);
+        $theme = new Theme($data);
+        self::$cache[$id] = &$theme;
+        return self::$cache[$id];
     }
     
     static function newFromName($name){
+        if(isset(self::$cache[$name])){
+            return self::$cache[$name];
+        }
         $data = DBFunctions::select(array('grand_themes'),
                                     array('*'),
                                     array('acronym' => EQ($name)));
-        return new Theme($data);
+        $theme = new Theme($data);
+        self::$cache[$name] = &$theme;
+        return self::$cache[$name];
     }
     
     static function getAllThemes($phase="%"){

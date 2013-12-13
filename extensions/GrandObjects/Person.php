@@ -39,6 +39,7 @@ class Person extends BackboneModel {
     var $aliases = false;
     var $budgets = array();
     var $leadershipCache = array();
+    var $themesCache = array();
     var $hqpCache = array();
     var $projectCache = array();
     var $evaluateCache = array();
@@ -2756,6 +2757,9 @@ class Person extends BackboneModel {
     }
     
     function getLeadThemes($history=false){
+        if(!$history && isset($this->themesCache['currentLead'])){
+            return $this->themesCache['currentLead'];
+        }
         $sql = "SELECT *
                 FROM grand_theme_leaders
                 WHERE user_id = '{$this->id}'
@@ -2769,10 +2773,16 @@ class Person extends BackboneModel {
         foreach($data as $row){
             $themes[$row['theme']] = Theme::newFromId($row['theme']);
         }
+        if(!$history){
+            $this->themesCache['currentLead'] = &$themes;
+        }
         return $themes;
     }
     
     function getCoLeadThemes($history=false){
+        if(!$history && isset($this->themesCache['currentCoLead'])){
+            return $this->themesCache['currentCoLead'];
+        }
         $sql = "SELECT *
                 FROM grand_theme_leaders
                 WHERE user_id = '{$this->id}'
@@ -2785,6 +2795,9 @@ class Person extends BackboneModel {
         $themes = array();
         foreach($data as $row){
             $themes[$row['theme']] = Theme::newFromId($row['theme']);
+        }
+        if(!$history){
+            $this->themesCache['currentCoLead'] = &$themes;
         }
         return $themes;
     }
