@@ -142,7 +142,7 @@
     <ReportSection id="comments" name="Comments" blobSection="LDR_NICOMMENTS" type="EditableReportSection" autosave="true" pagebreak="false" renderpdf="false">
         <ReportItemSet id="members_noleaders" type="ProjectPeopleNoLeadersReportItemSet" blobIndex="personId">
             <ReportItemSet id='comment_head' type="ToggleHeaderReportItemSet" level="3" title="{$user_reversed_name} ({$user_roles})">
-                <ReportItem id="" rows="12" limit="600" type="TextareaReportItem" blobType="BLOB_ARRAY" blobItem="LDR_NICOMMENTS_COMMENTS">
+                <ReportItem id="ni_comments" rows="12" limit="600" type="TextareaReportItem" blobType="BLOB_ARRAY" blobItem="LDR_NICOMMENTS_COMMENTS">
                     <![CDATA[{$item}]]>
                 </ReportItem>
             </ReportItemSet>
