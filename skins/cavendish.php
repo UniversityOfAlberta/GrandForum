@@ -411,7 +411,6 @@ class cavendishTemplate extends QuickTemplate {
 	        }
 	            $wgMessage->addPurpleInfo("Important: The GRAND Forum will be down for maintenance from 1-2AM (MST), Sun, Dec. 14.");
 	        ?>
-	        <span style='font-size:16px;color:red;position:relative;bottom:-14px;left:-250px;'>Important: The GRAND Forum will be down for maintenance from 1-2AM (MST), Sun, Dec. 14.</span>
 		    <a name="top" id="contentTop"></a>
     <ul class="top-nav">
           <?php 
