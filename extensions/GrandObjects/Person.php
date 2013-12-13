@@ -125,10 +125,12 @@ class Person extends BackboneModel {
                 apc_store($wgSitename.'person_name'.$name, serialize($possibleNames), 60*60);
             }
         }
-        foreach($possibleNames as $possible){
-            if(isset(self::$namesCache[$possible])){
-                $data[] = self::$namesCache[$possible];
-                break;
+        if(is_array($possibleNames)){
+            foreach($possibleNames as $possible){
+                if(isset(self::$namesCache[$possible])){
+                    $data[] = self::$namesCache[$possible];
+                    break;
+                }
             }
         }
         $person = new Person($data);
