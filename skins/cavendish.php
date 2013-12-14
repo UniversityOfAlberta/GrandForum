@@ -409,9 +409,8 @@ class cavendishTemplate extends QuickTemplate {
 	                        DEVELOPMENT ($branchFull, $revIdFull)</div>";
 	            }
 	        }
-	        
+	            $wgMessage->addPurpleInfo("Important: The GRAND Forum will be down for maintenance from 1-2AM (MST), Sun, Dec. 15.");
 	        ?>
-	        <!--span style='font-size:16px;color:red;position:relative;bottom:-14px;left:-250px;'>Important: site will be down for maintenance from 9-10AM (MST), Tue, Oct. 8.</span-->
 		    <a name="top" id="contentTop"></a>
     <ul class="top-nav">
           <?php 
@@ -524,6 +523,9 @@ class cavendishTemplate extends QuickTemplate {
 					
                         if(count($p->getProjects()) > 0 && !$user->isRoleAtLeast(MANAGER)){
 			                Project::createTab();
+			            }
+			            if($p->isThemeLeader()){
+			                ThemeLeader::createTab();
 			            }
 					    if(!$user->isRoleAtLeast(MANAGER)){
 					        ReportArchive::createTab();
