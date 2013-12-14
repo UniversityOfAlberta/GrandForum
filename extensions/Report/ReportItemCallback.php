@@ -486,6 +486,7 @@ class ReportItemCallback {
             $ni_blob->load($ni_rep_addr);
             $ni_data = $ni_blob->getData();
             if($ni_data != null){
+                $ni_data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $ni_data);
                 $ni_comments .= $ni->getReversedName() . ":<br /><i style='margin:10px;display:block;'>" . 
                         $ni_data . "</i><br />";
             }
@@ -511,6 +512,7 @@ class ReportItemCallback {
                 $hqp_blob->load($hqp_rep_addr);
                 $hqp_data = $hqp_blob->getData();
                 if($hqp_data != null){
+                    $hqp_comments = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $hqp_comments);
                     $hqp_comments .= $hqp->getReversedName() . ":<br /><i style='margin:10px;display:block;'>" . 
                             $hqp_data . "</i><br />";
                 }
