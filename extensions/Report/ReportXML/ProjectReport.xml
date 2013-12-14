@@ -247,6 +247,9 @@
             <ReportItem id="IIIa" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">
                 <![CDATA[{$item}]]>
             </ReportItem>
+            <ReportItem id="IIIa_comments" type="PopupReportItem" title="See NI Comments" text="{$report_future_ni_comments}">
+                <![CDATA[{$item}]]>
+            </ReportItem>
         </ReportItemSet>
     <!-- IIIb. Benefits from being involved in the Network -->
         <ReportItemSet id='IIIb_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Benefits of Networking: Benefits from being involved in the Network">

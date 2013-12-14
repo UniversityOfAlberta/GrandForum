@@ -45,6 +45,7 @@ class ReportItemCallback {
             "report_hqpdev_ni_comments" => "getReportHQPDevNIComments",
             "report_networking_ni_comments" => "getReportNetworkingNIComments",
             "report_ktee_ni_comments" => "getReportKTEENIComments",
+            "report_future_ni_comments" => "getReportFutureNIComments",
             
             "report_excellence_hqp_comments" => "getReportExcellenceHQPComments",
             "report_networking_hqp_comments" => "getReportNetworkingHQPComments",
@@ -447,6 +448,10 @@ class ReportItemCallback {
     
     function getReportKTEENIComments(){
         return $this->getReportNIComments(RES_RESACT_KTEE);
+    }
+    
+    function getReportFutureNIComments(){
+        return $this->getReportNIComments(RES_RESACT_NEXTPLANS);
     }
     
     function getReportExcellenceHQPComments(){
