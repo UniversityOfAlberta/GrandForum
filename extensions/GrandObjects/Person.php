@@ -121,7 +121,7 @@ class Person extends BackboneModel {
             $possibleNames = unserialize(apc_fetch($wgSitename.'person_name'.$name));
         }
         else{
-            $possibleNames = preg_grep("/.*$name.*/i", array_keys(self::$namesCache));
+            $possibleNames = @preg_grep("/.*$name.*/i", array_keys(self::$namesCache));
             if(function_exists('apc_store')){
                 apc_store($wgSitename.'person_name'.$name, serialize($possibleNames), 60*60);
             }
