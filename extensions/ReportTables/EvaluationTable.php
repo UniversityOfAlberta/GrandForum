@@ -68,9 +68,9 @@ class EvaluationTable extends SpecialPage {
 	}
 	
 	static function show(){
+	    require_once('NSERCTab.php');
 		require_once('NSERCVariableTab.php');
 		require_once('RMC2013Tab.php');
-        require_once('NSERC2013Tab.php');
 	    require_once('RMC2012Tab.php');
         require_once('NSERC2012Tab.php');
         require_once('RMC2011Tab.php');
@@ -92,31 +92,15 @@ class EvaluationTable extends SpecialPage {
 			                   '2012' => 5, 
 			                   '2011' => 6);
 
-			if(isset($_GET['year'])){
+			if(isset($_GET['year']) && isset($init_tabs[$_GET['year']])){
 		    	$init_tab = $init_tabs[$_GET['year']];
 		    }
+		    
 		    $tabbedPage = new TabbedPage("tabs_nserc");
 		    
-	    	$int_start = '2012'.REPORTING_CYCLE_START_MONTH.' 00:00:00';
-			$int_end =  '2012'.REPORTING_CYCLE_END_MONTH. ' 23:59:59';
-			$tabbedPage->addTab(new NSERCVariableTab("Jan-Dec2012", $int_start, $int_end));
+		    $tabbedPage->addTab(new NSERCTab(2014));
+		    $tabbedPage->addTab(new NSERCTab(2013));
 
-			$int_start = '2012'.REPORTING_NCE_START_MONTH.' 00:00:00';
-			$int_end =  '2013'.REPORTING_NCE_END_MONTH. ' 23:59:59';
-			$tabbedPage->addTab(new NSERCVariableTab("Apr2012-Mar2013", $int_start, $int_end));
-
-	    	$int_start = '2012'.REPORTING_CYCLE_START_MONTH.' 00:00:00';
-			$int_end =  '2012'.REPORTING_NCE_END_MONTH. ' 23:59:59';
-			$tabbedPage->addTab(new NSERCVariableTab("Jan-Mar2012", $int_start, $int_end));
-			
-			$int_start = '2012'.REPORTING_NCE_START_MONTH.' 00:00:00';
-			$int_end =  '2012'.REPORTING_CYCLE_END_MONTH. ' 23:59:59';
-			$tabbedPage->addTab(new NSERCVariableTab("Apr-Dec2012", $int_start, $int_end));
-			
-			$int_start = '2013'.REPORTING_CYCLE_START_MONTH.' 00:00:00';
-			$int_end =  '2013'.REPORTING_NCE_END_MONTH. ' 23:59:59';
-			$tabbedPage->addTab(new NSERCVariableTab("Jan-Mar2013", $int_start, $int_end));
-	    	//$tabbedPage->addTab(new NSERC2013Tab());
 	    	$tabbedPage->addTab(new NSERC2012Tab());
 	    	$tabbedPage->addTab(new NSERC2011Tab());
 	    	
@@ -127,7 +111,7 @@ class EvaluationTable extends SpecialPage {
     		                   '2012' => 1, 
     		                   '2011' => 2);
 
-    		if(isset($_GET['year'])){
+    		if(isset($_GET['year']) && isset($init_tabs[$_GET['year']])){
 		    	$init_tab = $init_tabs[$_GET['year']];
 		    }
     		

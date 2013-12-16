@@ -1,6 +1,7 @@
 <?php
 
 require_once('AbstractTab.php');
+require_once('InnerTabbedPage.php');
 require_once('AbstractEditableTab.php');
 
 class TabbedPage {
@@ -107,7 +108,7 @@ class TabbedPage {
         }
         $wgOut->addHTML("</div>\n</form>");
         $wgOut->addHTML("<script type='text/javascript'>
-                var selectedTab = $('#{$this->id} .ui-tabs-selected');
+                var selectedTab = $('#{$this->id} > ul > .ui-tabs-selected');
                 if(selectedTab.length > 0){
                     // If the tabs were created previously but removed from the dome, 
                     // make sure to reselect the same tab as before

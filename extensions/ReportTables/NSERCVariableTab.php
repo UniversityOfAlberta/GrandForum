@@ -5,13 +5,15 @@ class NSERCVariableTab extends AbstractTab {
     var $from = "";
     var $to = "";
     var $label = "";
+    var $year = "";
 
-    function NSERCVariableTab($label, $from, $to){
+    function NSERCVariableTab($label, $from, $to, $year){
         global $wgOut;
         
         $this->label = $label;
         $this->from = $from;
         $this->to = $to;
+        $this->year = $year;
 
         parent::AbstractTab($label);
         $wgOut->setPageTitle("Evaluation Tables: NCE");
@@ -65,7 +67,7 @@ function showDiv(div_id, details_div_id){
         
         $this->showContentsTable();
 
-        if(ArrayUtils::get_string($_GET, 'year') == $label){
+        if(ArrayUtils::get_string($_GET, 'year') == "tabs_{$this->year}_".$label){
         switch (ArrayUtils::get_string($_GET, 'summary')) {
         /*
         case 'table2':
@@ -107,16 +109,16 @@ function showDiv(div_id, details_div_id){
             <tr><td>
             <div id='toctitle'><h2>Contents</h2></div>
             <ul>
-            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Grand'><span class='tocnumber'>4</span> <span class='toctext'>GRAND tables</span></a>
+            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Grand'><span class='tocnumber'>4</span> <span class='toctext'>GRAND tables</span></a>
                 <ul>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Table4.0'><span class='tocnumber'>4.0</span> <span class='toctext'>Table 2: Contributions</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.0'><span class='tocnumber'>4.0</span> <span class='toctext'>Table 2: Contributions</span></a></li>
                 <!--<li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?summary=table3#Table3'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 3: Number of network Research Personnel paid with NCE funds or other funds, by sectors</span></a></li-->
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Table4'><span class='tocnumber'>4.1</span> <span class='toctext'>Table 4: Number of Graduate Students Working on Network Research</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Table4.2'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 4.2: HQP Breakdown by University</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Table4.3'><span class='tocnumber'>4.3</span> <span class='toctext'>Table 4.3: NI Breakdown by University</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Table5'><span class='tocnumber'>4.4</span> <span class='toctext'>Table 5: Post Network employment of graduate students</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Table6'><span class='tocnumber'>4.5</span> <span class='toctext'>Table 6: Dissemination of Network Research Results and Collaborations</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&year={$label}&summary=grand#Table7'><span class='tocnumber'>4.6</span> <span class='toctext'>Table 7: Publications list</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4'><span class='tocnumber'>4.1</span> <span class='toctext'>Table 4: Number of Graduate Students Working on Network Research</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 4.2: HQP Breakdown by University</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.3'><span class='tocnumber'>4.3</span> <span class='toctext'>Table 4.3: NI Breakdown by University</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table5'><span class='tocnumber'>4.4</span> <span class='toctext'>Table 5: Post Network employment of graduate students</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table6'><span class='tocnumber'>4.5</span> <span class='toctext'>Table 6: Dissemination of Network Research Results and Collaborations</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table7'><span class='tocnumber'>4.6</span> <span class='toctext'>Table 7: Publications list</span></a></li>
                 </ul>
             </li>
             </ul>
