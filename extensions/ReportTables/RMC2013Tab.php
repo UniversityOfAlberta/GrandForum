@@ -520,7 +520,7 @@ EOF;
                             if(!empty($comm)){
                                 $response .= "; ".$comm_short;
                                 $comm = implode("<br />", $comm);
-                            } 
+                            }
                             $cell1 = "<td width='10%'><span class='q_tip' title='{$response_orig}<br />{$comm}'><a href='#'>{$response}</a></span></td>";
                         }else{
                             $response = "";
@@ -532,7 +532,10 @@ EOF;
                             if(!empty($comm2)){
                                 $response2 .= "; ".$comm_short2;
                                 $comm2 = implode("<br />", $comm2);
-                            } 
+                            }
+                            else{
+                                $comm2 = "";
+                            }
                             $cell2 = "<td width='10%'><span class='q_tip' title='{$response_rev}<br />{$comm2}'><a href='#'>{$response2}</a></span></td>";
                         }else{
                             $response2 = "";

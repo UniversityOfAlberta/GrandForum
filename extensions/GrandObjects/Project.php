@@ -283,7 +283,7 @@ class Project extends BackboneModel {
         }
         
         $sql = <<<EOF
-        SELECT s.num_projects, COUNT(s.user) as user_count
+        SELECT s.num_projects, COUNT(s.user_id) as user_count
         FROM 
         (SELECT p.user_id, COUNT(p.project_id) as num_projects
         FROM grand_project_members p
