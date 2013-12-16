@@ -48,6 +48,8 @@ class ReportStatsTable extends SpecialPage {
 						  "NI" =>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
 						  "CNI"=>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
 						  "PNI"=>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
+						  "CNI2"=>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
+						  "PNI2"=>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
 						  "Projects"=>array('total'=>0, 'report'=>0,'pdf'=>0, 'submitted'=>0));
 	    
 	    $hqps = array();
@@ -69,6 +71,14 @@ class ReportStatsTable extends SpecialPage {
                 $cnis[$person->getId()] = $person;
                 $nis[$person->getId()] = $person;
             }
+            
+            // Phase 2
+            if($person->isRoleDuring(PNI, "2014".REPORTING_NCE_START_MONTH, "2015".REPORTING_NCE_END_MONTH)){
+            	$pni2s[$person->getId()] = $person;
+            }
+            else if($person->isRoleDuring(CNI, "2014".REPORTING_NCE_START_MONTH, "2015".REPORTING_NCE_END_MONTH)){ 
+                $cni2s[$person->getId()] = $person;
+            }
 	    }
 	    
 	    $wgOut->setPageTitle("Reporting Statistics");
@@ -78,6 +88,8 @@ class ReportStatsTable extends SpecialPage {
 		                        <li><a href='#ni'>NI</a></li>
 		                        <li><a href='#cni'>CNI</a></li>
 		                        <li><a href='#pni'>PNI</a></li>
+		                        <li><a href='#cni2'>CNI2</a></li>
+		                        <li><a href='#pni2'>PNI2</a></li>
 		                        <li><a href='#project'>Projects</a></li>
 		                        <li><a href='#all'>Overall</a></li>
 	                        </ul>");
@@ -91,6 +103,10 @@ class ReportStatsTable extends SpecialPage {
 		$overall['CNI'] = ReportStatsTable::niTable($cnis);
 		$wgOut->addHTML("</div><div id='pni'>");
 		$overall['PNI'] = ReportStatsTable::niTable($pnis);
+		$wgOut->addHTML("</div><div id='cni2'>");
+		$overall['CNI2'] = ReportStatsTable::niTable($cni2s);
+		$wgOut->addHTML("</div><div id='pni2'>");
+		$overall['PNI2'] = ReportStatsTable::niTable($pni2s);
 		$wgOut->addHTML("</div><div id='project'>");
 		$overall['Projects'] = ReportStatsTable::projectTable($projects);
 		$wgOut->addHTML("</div><div id='all'>");
