@@ -29,13 +29,17 @@ class AddRoleAPI extends API{
             if($person->isRole($role)){
 		        return;
 		    }
-            if($role == PNI || $role == CNI){
-                $command =  "echo \"{$person->getEmail()}\" | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - grand-forum-researchers";
-		        exec($command);
+            if($role == PNI || $role == CNI || $role == AR){
+                MailingList::subscribe("grand-forum-researchers", $person);
 		    }
 		    if($role == HQP){
-                $command =  "echo \"{$person->getEmail()}\" | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - grand-forum-hqps";
-		        exec($command);
+                MailingList::subscribe("grand-forum-hqps", $person);
+		    }
+		    if($role == RMC){
+		        MailingList::subscribe("rmc-list", $person);
+		    }
+		    if($role == ISAC){
+		        MailingList::subscribe("isac-list", $person);
 		    }
             // Add entry into grand_roles
             DBFunctions::insert('grand_roles',

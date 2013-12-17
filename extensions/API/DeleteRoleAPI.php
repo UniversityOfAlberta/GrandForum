@@ -29,13 +29,17 @@ class DeleteRoleAPI extends API{
                     exit;
                 }
             }
-            if($role == PNI || $role == CNI){
-                $command =  "/usr/lib/mailman/bin/remove_members -n -N grand-forum-researchers {$person->getEmail()}";
-                exec($command);
+            if($role == PNI || $role == CNI || $role == AR){
+                MailingList::unsubscribe("grand-forum-researchers", $person);
             }
             if($role == HQP){
-                $command =  "/usr/lib/mailman/bin/remove_members -n -N grand-forum-hqps {$person->getEmail()}";
-                exec($command);
+                MailingList::unsubscribe("grand-forum-hqps", $person);
+            }
+            if($role == RMC){
+                MailingList::unsubscribe("rmc-list", $person);
+            }
+            if($role == ISAC){
+                MailingList::unsubscribe("isac-list", $person);
             }
             $effectiveDate = "CURRENT_TIMESTAMP";
             if(isset($_POST['effective_date']) && $_POST['effective_date'] != ""){
