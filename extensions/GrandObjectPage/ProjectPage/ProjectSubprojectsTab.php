@@ -46,7 +46,7 @@ class ProjectSubprojectsTab extends AbstractTab {
                     $create->getElementById("new_subproject_row")->remove();
                     $create->getElementById("new_subprojectdd_row")->remove();
                     $create->getElementById("new_copl_row")->hide();
-                    $create->getElementById("new_status_row")->hide();
+                    //$create->getElementById("new_status_row")->hide();
                     $create->getElementById("new_type_row")->hide();
                     $create->getElementById("new_phase_row")->hide();
                     $create->getElementById("new_bigbet_row")->hide();

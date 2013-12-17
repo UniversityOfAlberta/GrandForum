@@ -39,6 +39,7 @@ class Person extends BackboneModel {
     var $aliases = false;
     var $budgets = array();
     var $leadershipCache = array();
+    var $themesCache = array();
     var $hqpCache = array();
     var $projectCache = array();
     var $evaluateCache = array();
@@ -120,15 +121,17 @@ class Person extends BackboneModel {
             $possibleNames = unserialize(apc_fetch($wgSitename.'person_name'.$name));
         }
         else{
-            $possibleNames = preg_grep("/.*$name.*/i", array_keys(self::$namesCache));
+            $possibleNames = @preg_grep("/.*$name.*/i", array_keys(self::$namesCache));
             if(function_exists('apc_store')){
                 apc_store($wgSitename.'person_name'.$name, serialize($possibleNames), 60*60);
             }
         }
-        foreach($possibleNames as $possible){
-            if(isset(self::$namesCache[$possible])){
-                $data[] = self::$namesCache[$possible];
-                break;
+        if(is_array($possibleNames)){
+            foreach($possibleNames as $possible){
+                if(isset(self::$namesCache[$possible])){
+                    $data[] = self::$namesCache[$possible];
+                    break;
+                }
             }
         }
         $person = new Person($data);
@@ -750,6 +753,11 @@ class Person extends BackboneModel {
             }
         }
         return false;
+    }
+    
+    function isThemeLeader(){
+        $themes = array_merge($this->getLeadThemes(), $this->getCoLeadThemes());
+        return (count($themes) > 0);
     }
     
     function isThemeLeaderOf($project){
@@ -2749,6 +2757,9 @@ class Person extends BackboneModel {
     }
     
     function getLeadThemes($history=false){
+        if(!$history && isset($this->themesCache['currentLead'])){
+            return $this->themesCache['currentLead'];
+        }
         $sql = "SELECT *
                 FROM grand_theme_leaders
                 WHERE user_id = '{$this->id}'
@@ -2762,10 +2773,16 @@ class Person extends BackboneModel {
         foreach($data as $row){
             $themes[$row['theme']] = Theme::newFromId($row['theme']);
         }
+        if(!$history){
+            $this->themesCache['currentLead'] = &$themes;
+        }
         return $themes;
     }
     
     function getCoLeadThemes($history=false){
+        if(!$history && isset($this->themesCache['currentCoLead'])){
+            return $this->themesCache['currentCoLead'];
+        }
         $sql = "SELECT *
                 FROM grand_theme_leaders
                 WHERE user_id = '{$this->id}'
@@ -2778,6 +2795,9 @@ class Person extends BackboneModel {
         $themes = array();
         foreach($data as $row){
             $themes[$row['theme']] = Theme::newFromId($row['theme']);
+        }
+        if(!$history){
+            $this->themesCache['currentCoLead'] = &$themes;
         }
         return $themes;
     }

@@ -16,6 +16,7 @@
     //require_once("MyProjects.php");
     require_once("EditRelations.php");
     require_once("MailingLists.php");
+    require_once("ThemeLeader.php");
     require_once("Products/Products.php");
     
     $wgHooks['AlternateEdit'][] = 'noEdit';

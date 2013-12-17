@@ -28,7 +28,7 @@
             <ReportItem id="comment_head" type="StaticReportItem">
                 <![CDATA[<h2>{$user_reversed_name} ({$user_roles})</h2>]]>
             </ReportItem>
-            <ReportItem id="" rows="12" limit="600" type="TextareaReportItem" blobType="BLOB_ARRAY" blobItem="LDR_NICOMMENTS_COMMENTS">
+            <ReportItem id="ni_comments" rows="12" limit="600" type="TextareaReportItem" blobType="BLOB_ARRAY" blobItem="LDR_NICOMMENTS_COMMENTS">
                     <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
