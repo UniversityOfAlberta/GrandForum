@@ -9,6 +9,7 @@ class DashboardReportItem extends StaticReportItem {
 		$limit = $this->getAttr("limit", "0");
         $dashboard = $this->createDashboard();
         $dashboard = $this->filterRows($dashboard);
+        $dashboard = $this->filterCols($dashboard);
         $dash = "";
         if($limit > 0){
             $top = $dashboard->copy()->limit(0, 1);
@@ -31,6 +32,7 @@ class DashboardReportItem extends StaticReportItem {
 		$totalOnly = ($this->getAttr("totalOnly", "false") == "true");
 	    $dashboard = $this->createDashboard();
         $dashboard = $this->filterRows($dashboard);
+        $dashboard = $this->filterCols($dashboard);
         if($totalOnly){
             $top = $dashboard->copy()->limit(0, 1);
             if(!$this->getReport()->topProjectOnly){
@@ -87,6 +89,16 @@ class DashboardReportItem extends StaticReportItem {
             }
         }
         return $dashboard;
+	}
+	
+	function filterCols($dashboard){
+	    if($this->getAttr("structure") == "PROJECT_REPORT_TIME_STRUCTURE" && $this->getReport()->project != null){
+	        $created = $this->getReport()->project->getCreated();
+	        if($created > $this->getReport()->year.REPORTING_CYCLE_END_MONTH){
+	            $dashboard = $dashboard->copy()->filterCols(HEAD, array("Hours%", "Allocated%"));
+	        }
+	    }
+	    return $dashboard;
 	}
 
 }
