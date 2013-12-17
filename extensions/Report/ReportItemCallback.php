@@ -763,9 +763,6 @@ class ReportItemCallback {
                 }
             }
         }
-        if(count($subs) == 0){
-            $subs[] = "N/A";
-        }
         return implode(", ", $subs);
     }
     
