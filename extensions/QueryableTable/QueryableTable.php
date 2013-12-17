@@ -559,7 +559,7 @@ abstract class QueryableTable {
                     $style = $Cell->style;
                     $span = 1;
                     if(!isset($row[$colN + 1])){
-                        $span = $this->nCols() - $colN;
+                        $span = max(1, $this->nCols() - $colN);
                     }
                     $ret[] = "<td nowrap='nowrap' style='width:6em;white-space:nowrap;$style' class='$errorClass' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
                     ++$i;

@@ -121,7 +121,7 @@ class DashboardTable extends QueryableTable{
                 $style = $Cell->style;
                 $span = 1;
                 if(!isset($row[$colN + 1])){
-                    $span = $this->nCols() - $colN;
+                    $span = max(1, $this->nCols() - $colN);
                 }
                 $ret[] = "<td nowrap='nowrap' style='white-space:nowrap;$style;' colspan='$span' class='smaller'>$cell</td>\n";
                 ++$i;
