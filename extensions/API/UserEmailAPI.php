@@ -35,6 +35,9 @@ class UserEmailAPI extends API{
         if($person->isRole(RMC)){
             MailingList::unsubscribe("rmc-list", $person);
         }
+        if($person->isRole(ISAC)){
+            MailingList::unsubscribe("isac-list", $person);
+        }
         if($person->isProjectLeader() ||
            $person->isProjectCoLeader()){
             $changeList = false;
@@ -73,6 +76,9 @@ class UserEmailAPI extends API{
         }
         if($person->isRole(HQP)){
             MailingList::subscribe("grand-forum-hqps", $person);
+        }
+        if($person->isRole(ISAC)){
+            MailingList::subscribe("isac-list", $person);
         }
         if($person->isProjectLeader() ||
            $person->isProjectCoLeader()){
