@@ -57,7 +57,7 @@
         <ReportItemSet id="project_dashboard_champ" type="ProjectChampionsReportItemSet">
             <ReportItem id="project_champ" type="StaticReportItem">
                 <![CDATA[
-                    <div><h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a></h3>
+                    <div><h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a> ({$champ_subprojects})</h3>
                         <table>
                             <tr>
                                 <td><b>Organization:</b></td>
@@ -78,6 +78,25 @@
         <ReportItem id="Ia" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OVERALL" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tolltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="subprojects" name="Sub-Projects" blobSection="LDR_MILESTONE" type="ReportSection" pagebreak="false" renderpdf="true">
+        <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet">
+            <ReportItem id="subprojects_data" type="StaticReportItem">
+                <![CDATA[
+                    <div>
+                        <h2><a class='anchor' id='subproject_desc_{$project_id}'>{$project_name}</a></h2>
+                        <b>Full Name:</b><br />{$project_full_name}<br /><br />
+                        <b>Status:</b><br />{$project_status}<br /><br />
+                        <b>Leader(s):</b><br />{$project_leaders}<br /><br />
+                        <b>Champion(s):</b><br />{$project_champions}<br /><br />
+                        <b>Description:</b><br />{$project_description}<br /><br />
+                    </div>
+                ]]>
+            </ReportItem>
+            <ReportItem id="" type="PageBreakReportItem">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="report2" name="Assessment: How {$project_name} contributes towards the NCE Evaluation Criteria" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="2" renderpdf="false">
     <!-- IIa. Excellence of the Research Program -->
@@ -158,23 +177,5 @@
         <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true">
             <![CDATA[<div id='appendix'>{$item}</div>]]>
         </ReportItem>
-    </ReportSection>
-    <ReportSection id="subprojects" name="Sub-Projects" blobSection="LDR_MILESTONE" type="ReportSection" pagebreak="false" number="5" renderpdf="true" previewonly="true">
-        <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet">
-            <ReportItem id="subprojects_data" type="StaticReportItem">
-                <![CDATA[
-                    <div>
-                        <h2><a class='anchor' id='subproject_desc_{$project_id}'>{$project_name}</a></h2>
-                        <table>
-                           <tr><td width='50'><b>Id:</b></td><td align='left'>{$project_id}</td></tr>
-                            <tr><td width='50'><b>Full Name:</b></td><td align='left'>{$project_full_name}</td></tr>
-                            <tr><td width='50'><b>Status:</b></td><td align='left'>{$project_status}</td></tr>
-                            <tr><td width='50'><b>Leader(s)</b>:</td><td align='left'>{$project_leaders}</td></tr>
-                            <tr><td width='50' valign='top'><b>Description:</b></td><td align='left'>{$project_description}</td></tr>
-                        </table>
-                    </div>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
     </ReportSection>
 </Report>

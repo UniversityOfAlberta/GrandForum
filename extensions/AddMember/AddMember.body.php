@@ -62,6 +62,9 @@ class UserCreate {
                     else if($role == RMC){
                         MailingList::subscribe("rmc-list", $person);
                     }
+                    else if($role == ISAC){
+                        MailingList::subscribe("isac-list", $person);
+                    }
                 }
             }
         }

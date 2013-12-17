@@ -153,7 +153,7 @@
         <ReportItemSet id="project_dashboard_champ" type="ProjectChampionsReportItemSet">
             <ReportItem id="project_champ" type="StaticReportItem">
                 <![CDATA[
-                    <div><h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a></h3>
+                    <div><h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a> ({$champ_subprojects})</h3>
                         <table>
                             <tr>
                                 <td><b>Organization:</b></td>
@@ -280,6 +280,7 @@
                             <tr><td width='50'><b>Full Name:</b></td><td align='left'>{$project_full_name}</td></tr>
                             <tr><td width='50'><b>Status:</b></td><td align='left'>{$project_status}</td></tr>
                             <tr><td width='50'><b>Leader(s):</b></td><td align='left'>{$project_leaders}</td></tr>
+                            <tr><td width='50'><b>Champion(s):</b></td><td align='left'>{$project_champions}</td></tr>
                             <tr><td width='50' valign='top'><b>Description:</b></td><td align='left'>{$project_description}</td></tr>
                         </table>
                     </div>

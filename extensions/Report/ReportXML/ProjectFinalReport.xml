@@ -46,6 +46,9 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
+    <ReportSection id="dashboard">
+        <ReportItem id="project_dashboard_champ_head" delete="true" />
+    </ReportSection>
     <ReportSection id="report" name="Project Report" number="1,2,3">
         <Instructions>
             <![CDATA[

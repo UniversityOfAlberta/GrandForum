@@ -75,6 +75,7 @@ class PublicationAPI extends API{
 	
 	function outputJSON($papers){
 	    global $wgScriptPath, $wgServer;
+	    ini_set('memory_limit','192M');
 	    $json = array();
 	    foreach($papers as $paper){
 	        $cache = new PublicationJSONCache($paper);

@@ -12,9 +12,13 @@
             <![CDATA[<h2>Project Retrospective</h2>]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="dashboard">
+        <ReportItem id="project_dashboard_champ_head" delete="true" />
+    </ReportSection>
     <ReportSection id="budget" delete="true" />
     <ReportSection id="prod_details" number="4" pagebreak="false" />
-    <ReportSection id="subprojects" name="Milestones" number="5">
+    <ReportSection id="subprojects" delete="true" />
+    <ReportSection id="milestones" blobSection="LDR_MILESTONE" type="ReportSection" pagebreak="false" name="Milestones" number="5" renderpdf="true" previewonly="true">
         <ReportItem id="milestone_desc" height="250px" blobType="BLOB_TEXT" blobItem="LDR_MILE_REPORT" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" showNotReferenced="true" anchor="true" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1800">
             <![CDATA[
                 <h2>Milestone Report</h2>
@@ -56,5 +60,4 @@
             
         </ReportItemSet>
     </ReportSection>
-    
 </Report>
