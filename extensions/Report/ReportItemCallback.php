@@ -19,6 +19,7 @@ class ReportItemCallback {
             "project_coleaders" => "getProjectCoLeaders",
             "project_problem" => "getProjectProblem",
             "project_solution" => "getProjectSolution",
+            "project_champions" => "getProjectChampions",
             // Milestones
             "milestone_id" => "getMilestoneId",
             "milestone_title" => "getMilestoneTitle",
@@ -73,6 +74,7 @@ class ReportItemCallback {
             // Champions
             "champ_org" => "getChampOrg",
             "champ_title" => "getChampTitle",
+            "champ_subprojects" => "getChampSubProjects",
             // Products
             "product_id" => "getProductId",
             "product_title" => "getProductTitle",
@@ -200,6 +202,21 @@ class ReportItemCallback {
             $project_sol = $project->getSolution();
         }
         return $project_sol;
+    }
+    
+    function getProjectChampions(){
+        $champions = array();
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $champs = $project->getChampionsDuring();
+            foreach($champs as $champ){
+                $champions[] = "<a href='{$champ['user']->getUrl()}' target='_blank'>{$champ['user']->getNameForForms()}</a>";
+            }
+        }
+        if(count($champions) == 0){
+            $champions[] = "N/A";
+        }
+        return implode(", ", $champions);
     }
     
     function getMilestoneId(){
@@ -726,6 +743,24 @@ class ReportItemCallback {
             }
         }
         return "";
+    }
+    
+    function getChampSubProjects(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $subs = array();
+        foreach($project->getSubProjects() as $sub){
+            foreach($sub->getChampionsDuring() as $champ){
+                if($champ['user']->getId() == $person->getId()){
+                    $subs[] = "<a href='{$sub->getUrl()}' target='_blank'>{$sub->getName()}</a>";
+                }
+            }
+        }
+        if(count($subs) == 0){
+            $subs[] = "N/A";
+        }
+        return implode(", ", $subs);
     }
     
     function getProductId(){
