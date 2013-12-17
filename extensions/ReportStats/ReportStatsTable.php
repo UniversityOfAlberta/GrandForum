@@ -50,13 +50,27 @@ class ReportStatsTable extends SpecialPage {
 						  "PNI"=>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
 						  "CNI2"=>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
 						  "PNI2"=>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
-						  "Projects"=>array('total'=>0, 'report'=>0,'pdf'=>0, 'submitted'=>0));
+						  "Projects(P1)"=>array('total'=>0, 'report'=>0,'pdf'=>0, 'submitted'=>0),
+						  "Projects(P2)"=>array('total'=>0, 'report'=>0,'pdf'=>0, 'submitted'=>0));
 	    
 	    $hqps = array();
 	    $nis = array();
 	    $cnis = array();
 	    $pnis = array();
+	    $cni2s = array();
+	    $pni2s = array();
+	    $projects1 = array();
+	    $projects2 = array();
+	    
 	    $projects = Project::getAllProjectsDuring();
+	    foreach($projects as $project){
+	        if($project->getPhase() == 1){
+	            $projects1[] = $project;
+	        }
+	        else if($project->getPhase() == 2){
+	            $projects2[] = $project;
+	        }
+	    }
 	    
 	    $people = Person::getAllPeople();
 	    foreach($people as $person){
@@ -90,7 +104,8 @@ class ReportStatsTable extends SpecialPage {
 		                        <li><a href='#pni'>PNI</a></li>
 		                        <li><a href='#cni2'>CNI2</a></li>
 		                        <li><a href='#pni2'>PNI2</a></li>
-		                        <li><a href='#project'>Projects</a></li>
+		                        <li><a href='#project1'>Projects(P1)</a></li>
+		                        <li><a href='#project2'>Projects(P2)</a></li>
 		                        <li><a href='#all'>Overall</a></li>
 	                        </ul>");
 
@@ -107,8 +122,10 @@ class ReportStatsTable extends SpecialPage {
 		$overall['CNI2'] = ReportStatsTable::niTable($cni2s);
 		$wgOut->addHTML("</div><div id='pni2'>");
 		$overall['PNI2'] = ReportStatsTable::niTable($pni2s);
-		$wgOut->addHTML("</div><div id='project'>");
-		$overall['Projects'] = ReportStatsTable::projectTable($projects);
+		$wgOut->addHTML("</div><div id='project1'>");
+		$overall['Projects(P1)'] = ReportStatsTable::projectTable($projects1);
+		$wgOut->addHTML("</div><div id='project2'>");
+		$overall['Projects(P2)'] = ReportStatsTable::projectTable($projects2);
 		$wgOut->addHTML("</div><div id='all'>");
 		ReportStatsTable::overallTable($overall);
 	    $wgOut->addHTML("</div></div>");
