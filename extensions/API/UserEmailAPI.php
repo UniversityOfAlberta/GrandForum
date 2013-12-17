@@ -41,14 +41,28 @@ class UserEmailAPI extends API{
         if($person->isProjectLeader() ||
            $person->isProjectCoLeader()){
             $changeList = false;
+            $changeList1 = false;
+            $changeList2 = false;
             foreach($person->leadership() as $project){
                 if($project->isSubProject()){
                     continue;
+                }
+                if($project->getPhase() == 1){
+                    $changeList1 = true;
+                }
+                if($project->getPhase() == 2){
+                    $changeList2 = true;
                 }
                 $changeList = true;
             }
             if($changeList){
                 MailingList::unsubscribe("grand-forum-project-leaders", $person);
+		    }
+		    if($changeList1){
+                MailingList::unsubscribe("grand-forum-p1-leaders", $person);
+		    }
+		    if($changeList2){
+                MailingList::unsubscribe("grand-forum-p2-leaders", $person);
 		    }
         }
         $sql = "UPDATE mw_user
@@ -83,14 +97,28 @@ class UserEmailAPI extends API{
         if($person->isProjectLeader() ||
            $person->isProjectCoLeader()){
            $changeList = false;
+           $changeList1 = false;
+           $changeList2 = false;
             foreach($person->leadership() as $project){
                 if($project->isSubProject()){
                     continue;
+                }
+                if($project->getPhase() == 1){
+                    $changeList1 = true;
+                }
+                if($project->getPhase() == 2){
+                    $changeList2 = true;
                 }
                 $changeList = true;
             }
             if($changeList){
                 MailingList::subscribe("grand-forum-project-leaders", $person);
+		    }
+		    if($changeList1){
+                MailingList::subscribe("grand-forum-p1-leaders", $person);
+		    }
+		    if($changeList2){
+                MailingList::subscribe("grand-forum-p2-leaders", $person);
 		    }
         }
         if(!$noEcho){

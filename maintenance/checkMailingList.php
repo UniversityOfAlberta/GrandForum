@@ -19,6 +19,10 @@
 	    $mailman = "rmc-list";
 	    $people = array_merge(Person::getAllPeople(RMC));
 	}
+	else if($type == "ISAC"){
+	    $mailman = "isac-list";
+	    $people = array_merge(Person::getAllPeople(ISAC));
+	}
 	else if($type == "NI"){
 	    $mailman = "grand-forum-researchers";
 	    $people = array_merge(Person::getAllPeople(CNI), 
@@ -35,6 +39,44 @@
 	            $add = false;
 	            foreach($p->leadership() as $project){
 	                if($project->isSubProject()){
+	                    continue;
+	                }
+	                $add = true;
+	            }
+	            if($add){
+	                $people[] = $p;
+	            }
+	        }
+	    }
+	}
+	else if($type == "PL1"){
+	    $people = array();
+	    $mailman = "grand-forum-p1-leaders";
+	    $peeps = Person::getAllPeople('all');
+	    foreach($peeps as $p){
+	        if($p->isProjectLeader() || $p->isProjectCoLeader()){
+	            $add = false;
+	            foreach($p->leadership() as $project){
+	                if($project->isSubProject() || $project->getPhase() != 1){
+	                    continue;
+	                }
+	                $add = true;
+	            }
+	            if($add){
+	                $people[] = $p;
+	            }
+	        }
+	    }
+	}
+	else if($type == "PL2"){
+	    $people = array();
+	    $mailman = "grand-forum-p2-leaders";
+	    $peeps = Person::getAllPeople('all');
+	    foreach($peeps as $p){
+	        if($p->isProjectLeader() || $p->isProjectCoLeader()){
+	            $add = false;
+	            foreach($p->leadership() as $project){
+	                if($project->isSubProject() || $project->getPhase() != 2){
 	                    continue;
 	                }
 	                $add = true;
