@@ -332,7 +332,7 @@ abstract class AbstractReportItem {
             if(isset(ReportItemCallback::$callbacks[$m])){
                 $v = str_replace("$", "\\$", call_user_func(array($this->reportCallback, ReportItemCallback::$callbacks[$m])));
                 $regex = '/{\$'.$m.'}/';
-                $cdata = preg_replace($regex, $v, $cdata);
+                $cdata = preg_replace($regex, nl2br($v), $cdata);
             }
         }
         
