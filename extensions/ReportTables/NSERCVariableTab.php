@@ -162,8 +162,7 @@ EOF;
             <script type="text/javascript">
             $(document).ready(function(){
 EOF;
-
-        $contributions = Contribution::getContributionsDuring(null, $this->year);
+        $contributions = Contribution::getContributionsDuring(null, $this->year-1);
 
         foreach ($contributions as $contr) {
             $con_id = $contr->getId();
