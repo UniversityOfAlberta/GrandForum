@@ -163,7 +163,7 @@ EOF;
             $(document).ready(function(){
 EOF;
 
-        $contributions = Contribution::getContributionsDuring(null, 2012);
+        $contributions = Contribution::getContributionsDuring(null, $this->year);
 
         foreach ($contributions as $contr) {
             $con_id = $contr->getId();
