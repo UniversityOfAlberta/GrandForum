@@ -1,5 +1,17 @@
 Feature: Reporting
 
+    Scenario: CNI Uploads a budget within limits (with BigBet Project)
+        Given I am logged in as "CNI.User1" using password "CNI.Pass1"
+        When I follow "My Reports"
+        And I click "Budget Request"
+        And I wait until I see "Budget Justification" up to "5000"
+        And I switch to iframe "budget"
+        And I attach the file "CNI.User1_valid.xls" to "budget"
+        And I press "Upload"
+        And I switch to iframe "budget"
+        Then I should see "$85000"
+        And I should not see "is greater than the maximum"
+
     Scenario: HQP attempts to view an NI report
         Given I am logged in as "HQP.User1" using password "HQP.Pass1"
         When I go to "index.php/Special:Report?report=NIReport"
@@ -77,17 +89,7 @@ Feature: Reporting
         And I click "Excellence of the Research Program: How my research contributes to the Network"
         Then I should see "edited by supervisor"       
 
-    Scenario: CNI Uploads a budget within limits (with BigBet Project)
-        Given I am logged in as "CNI.User1" using password "CNI.Pass1"
-        When I follow "My Reports"
-        And I click "Budget Request"
-        And I wait until I see "Budget Justification" up to "5000"
-        And I switch to iframe "budget"
-        And I attach the file "CNI.User1_valid.xls" to "budget"
-        And I press "Upload"
-        And I switch to iframe "budget"
-        Then I should see "$85000"
-        And I should not see "is greater than the maximum"
+    
         
     Scenario: CNI Uploads a budget which is over the limits
         Given I am logged in as "CNI.User1" using password "CNI.Pass1"
