@@ -19,47 +19,56 @@ class Report extends AbstractReport{
     }
 
     static function createTab(){
-		global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
-		$person = Person::newFromId($wgUser->getId());
-		$page = "Report";
-		if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
-		    $page = "Report?report=HQPReport";
-		}
-		else if($person->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
-		        $person->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
-		        $person->isRoleAtLeast(MANAGER)){
-		    $page = "Report?report=NIReport";
-		}
-		else if(count($person->leadership()) > 0){
-		    $projects = $person->leadership();
-		    $project = $projects[0];
-		    if(!$project->isSubProject()){
-		        if($project->getPhase() < PROJECT_PHASE || $project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
-		            $page = "Report?report=ProjectFinalReport&project={$project->getName()}";
-		        }
-		        else if(!$project->isDeleted()){
-		            $page = "Report?report=ProjectReport&project={$project->getName()}";
-		        }
-		    }
-		}
-		else if($person->isEvaluator()){
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
+        $person = Person::newFromId($wgUser->getId());
+        $page = "Report";
+        if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
+            $page = "Report?report=HQPReport";
+        }
+        else if($person->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
+                $person->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
+                $person->isRoleAtLeast(MANAGER)){
+            $page = "Report?report=NIReport";
+        }
+        else if(count($person->leadership()) > 0){
+            $projects = $person->leadership();
+            $project = $projects[0];
+            if(!$project->isSubProject()){
+                if($project->getPhase() < PROJECT_PHASE || $project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
+                    $page = "Report?report=ProjectFinalReport&project={$project->getName()}";
+                }
+                else if(!$project->isDeleted()){
+                    $page = "Report?report=ProjectReport&project={$project->getName()}";
+                }
+            }
+        }
+        else if($person->isEvaluator()){
             $page = "Report?report=EvalReport";
-		}
+        }
         else if($person->isRoleAtLeast(RMC)){
             $page = "Report?report=EvalLOIReport";
         }
-		
-		$selected = "";
-		if($wgTitle->getText() == "Report"){
-		    $selected = "selected";
-		}
-		
-		echo "<li class='top-nav-element $selected'>\n";
-		echo "	<span class='top-nav-left'>&nbsp;</span>\n";
-		echo "	<a id='lnk-my_report' class='top-nav-mid' href='$wgServer$wgScriptPath/index.php/Special:$page' class='new'>My Reports</a>\n";
-		echo "	<span class='top-nav-right'>&nbsp;</span>\n";
-		echo "</li>";
-	}
+        else if($person->isRole(CHAMP)){
+            $projects = Project::getAllProjects();
+            foreach($projects as $project){
+                if($person->isChampionOfDuring($project)){
+                    $page = "Report?report=ChampionReport&project={$project->getName()}";
+                    break;
+                }
+            }
+        }
+        
+        $selected = "";
+        if($wgTitle->getText() == "Report"){
+            $selected = "selected";
+        }
+        
+        echo "<li class='top-nav-element $selected'>\n";
+        echo "    <span class='top-nav-left'>&nbsp;</span>\n";
+        echo "    <a id='lnk-my_report' class='top-nav-mid' href='$wgServer$wgScriptPath/index.php/Special:$page' class='new'>My Reports</a>\n";
+        echo "    <span class='top-nav-right'>&nbsp;</span>\n";
+        echo "</li>";
+    }
     
     static function showTabs(&$content_actions){
         global $wgTitle, $wgUser, $wgServer, $wgScriptPath;
@@ -102,14 +111,14 @@ class Report extends AbstractReport{
                         }
                         $projectDone[$project->getName()] = true;
                         if($project->getPhase() < PROJECT_PHASE || ($project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR)){
-		                    $type = "ProjectFinalReport";
-		                }
-		                else if(!$project->isDeleted()){
-		                    $type = "ProjectReport";
-		                }
-		                else{
-		                    continue;
-		                }
+                            $type = "ProjectFinalReport";
+                        }
+                        else if(!$project->isDeleted()){
+                            $type = "ProjectReport";
+                        }
+                        else{
+                            continue;
+                        }
                         @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "$type" && $_GET['project'] == $project->getName()) ? "selected" : false;
                         $content_actions[] = array (
                                  'class' => $class,
@@ -122,32 +131,46 @@ class Report extends AbstractReport{
             
             // Evaluator Report
             if($person->isEvaluator()){
-                    @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalReport") ? "selected" : false;
-                    
-                    $content_actions[] = array (
-                             'class' => $class,
-                             'text'  => "Evaluator",
-                             'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalReport",
-                            );
+                @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalReport") ? "selected" : false;
+                
+                $content_actions[] = array (
+                         'class' => $class,
+                         'text'  => "Evaluator",
+                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalReport",
+                        );
             }
 
             //LOI Evaluation
             if($person->isRoleAtLeast(RMC)){
-                    @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalLOIReport") ? "selected" : false;
-                    $content_actions[] = array (
-                             'class' => $class,
-                             'text'  => "LOI",
-                             'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalLOIReport",
-                            );
-                    
-                    @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalRevLOIReport") ? "selected" : false;
-                    $content_actions[] = array (
-                             'class' => $class,
-                             'text'  => "Revised LOI",
-                             'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalRevLOIReport",
-                            );
+                @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalLOIReport") ? "selected" : false;
+                $content_actions[] = array (
+                         'class' => $class,
+                         'text'  => "LOI",
+                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalLOIReport",
+                        );
+                
+                @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalRevLOIReport") ? "selected" : false;
+                $content_actions[] = array (
+                         'class' => $class,
+                         'text'  => "Revised LOI",
+                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalRevLOIReport",
+                        );
             }
             
+            // Champion Report
+            if($person->isRole(CHAMP)){
+                $projects = Project::getAllProjects();
+                foreach($projects as $project){
+                    if($person->isChampionOfDuring($project)){
+                        @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "ChampionReport" && $_GET['project'] == $project->getName()) ? "selected" : false;
+                        $content_actions[] = array (
+                             'class' => $class,
+                             'text'  => "Champion ({$project->getName()})",
+                             'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=ChampionReport&project={$project->getName()}",
+                            );
+                    }
+                }
+            }
         }
         return true;
     }

@@ -14,6 +14,9 @@ class DummyReport extends AbstractReport{
                 case RP_LEADER:
                     $reportType = "ProjectReport";
                     break;
+                case RP_CHAMP:
+                    $reportType = "ChampionReport";
+                    break;
                 case RP_REVIEW:
                     $reportType = "ReviewReport";
                     break;

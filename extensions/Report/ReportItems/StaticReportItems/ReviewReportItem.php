@@ -22,6 +22,7 @@ class ReviewReportItem extends StaticReportItem {
 		        $('#reportMain > div').stop();
                 $('#previewFrame').height(pixels);
                 $('#previewFrame').css('max-height', pixels);
+                $('#reportMain > div').height(pixels);
             }
 		</script>
 		<span id='loading' style='float:left;'><img src='../skins/Throbber.gif' />&nbsp;Loading...</span><iframe id='previewFrame' frameborder='0' style='position:relative;left:0;width:100%;height:100%;border:0;border-width:0;' src='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&generatePDF&preview&dpi=100'></iframe>";

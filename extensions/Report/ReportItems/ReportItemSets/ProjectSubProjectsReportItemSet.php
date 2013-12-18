@@ -6,12 +6,14 @@ class ProjectSubProjectsReportItemSet extends ReportItemSet {
         $data = array();
         $project = Project::newFromId($this->projectId);
         //$projects = $project->getSubProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
-        $projects = $project->getSubProjects();
-        if(is_array($projects)){
-            foreach($projects as $proj){
-                $tuple = self::createTuple();
-                $tuple['project_id'] = $proj->getId();
-                $data[] = $tuple;
+        if($project != null){
+            $projects = $project->getSubProjects();
+            if(is_array($projects)){
+                foreach($projects as $proj){
+                    $tuple = self::createTuple();
+                    $tuple['project_id'] = $proj->getId();
+                    $data[] = $tuple;
+                }
             }
         }
         return $data;

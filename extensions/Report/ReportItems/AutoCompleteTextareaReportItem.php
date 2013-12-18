@@ -73,7 +73,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		if($notReferenced == "true"){
 		    $item .= "<script type='text/javascript'>
 		                function autocompleteLeft{$this->id}(){
-		                    var innerHTML = '<fieldset><legend><b>Items not referenced:</b></legend><ul>';
+		                    var innerHTML = '<fieldset><legend><b>$name not referenced:</b></legend><ul>';
 		                    var left = 0;
                             for (index in {$this->id}){
                                 var item = {$this->id}[index];
@@ -171,8 +171,8 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 	    }
 	    else{
 	        $value = nl2br($this->getReplacedBlobValue());
-	        $value = $this->processCData($value);
-		    $html .= "<p>$value</p>";
+		    $html .= "<p>{$value}</p>";
+	        $html = $this->processCData($html);
 	    }
 		$wgOut->addHTML($html);
 	}

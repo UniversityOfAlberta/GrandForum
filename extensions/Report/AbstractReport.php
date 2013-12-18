@@ -58,6 +58,9 @@ abstract class AbstractReport extends SpecialPage {
             case RPTP_NI_COMMENTS:
                 $type = "NIReportComments";
                 break;
+            case RPTP_CHAMP:
+                $type = "ChampionReport";
+                break;
             case RPTP_INPUT:
                 break;
             case RPTP_LEADER:
@@ -514,7 +517,12 @@ abstract class AbstractReport extends SpecialPage {
             foreach($perms as $perm){
                 switch($type){
                     case "Role":
-                        if($this->project != null && ($perm['perm'] == PL || $perm['perm'] == COPL || $perm['perm'] == "Leadership") && 
+                        if($this->project != null && $perm['perm'] == CHAMP && $me->isRole(CHAMP)){
+                            if($me->isChampionOfDuring($this->project)){
+                                $rResult = true;
+                            }
+                        }
+                        else if($this->project != null && ($perm['perm'] == PL || $perm['perm'] == COPL || $perm['perm'] == "Leadership") && 
                            !$me->isProjectManager()){
                             $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
                             if(count($project_objs) > 0){

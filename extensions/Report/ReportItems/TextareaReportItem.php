@@ -22,7 +22,7 @@ class TextareaReportItem extends AbstractReportItem {
             $height = max(125, (pow($limit, 0.75)))."px";
         }
         else{
-            $height = "200px";
+            $height = $this->getAttr('height', '200px');
         }
         return $height;
 	}
