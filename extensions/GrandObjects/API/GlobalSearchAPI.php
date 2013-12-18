@@ -236,7 +236,7 @@ class GlobalSearchAPI extends RESTAPI {
                 }
                 ini_set('memory_limit', '192M');
                 $pdfs = PDF::getAllPDFs();
-                $lastestRows = array();
+                $latestRows = array();
                 foreach($pdfs as $pdf){
                     if(!(count($people) == 0 || count($projects) == 0) &&
                        !(count($people) > 0 && in_array($pdf->getPerson()->getId(), $people)) &&
