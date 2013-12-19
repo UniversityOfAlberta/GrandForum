@@ -29,6 +29,10 @@
                         <td><b>Affiliation:</b></td>
                         <td>{$user_uni}</td>
                     </tr>
+                    <tr>
+                        <td><b>Sub-Projects:</b></td>
+                        <td>{$champ_subprojects}</td>
+                    </tr>
                 </table><br />
                 <p><i>The {$project_name} Project Report PDF will be available for download on January 3, 2014.</i></p><br />
             ]]>

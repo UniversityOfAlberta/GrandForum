@@ -518,8 +518,15 @@ abstract class AbstractReport extends SpecialPage {
                 switch($type){
                     case "Role":
                         if($this->project != null && $perm['perm'] == CHAMP && $me->isRole(CHAMP)){
-                            if($me->isChampionOfDuring($this->project)){
+                            if($me->isChampionOfDuring($this->project) && !$this->project->isSubProject()){
                                 $rResult = true;
+                            }
+                            else {
+                                foreach($this->project->getSubProjects() as $sub){
+                                    if($me->isChampionOfDuring($sub)){
+                                        $rResult = true;
+                                    }
+                                }
                             }
                         }
                         else if($this->project != null && ($perm['perm'] == PL || $perm['perm'] == COPL || $perm['perm'] == "Leadership") && 

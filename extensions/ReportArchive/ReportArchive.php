@@ -89,7 +89,6 @@ class ReportArchive extends SpecialPage {
                         }
 				        else{
 				            $report = AbstractReport::newFromToken($tok);
-                            
 				            if($report->project != null){
 				                if($report->person->getId() == 0){
 				                    $name = "{$report->name}.{$ext}";
@@ -124,18 +123,21 @@ class ReportArchive extends SpecialPage {
         }
        
         $wgOut->addHTML("<h2>December $year</h2>");
-        showIndividualReport($person, $year);
+        self::showIndividualReport($person, $year);
         if($year == 2010){
-            showPLReport($person, $year);
+            self::showPLReport($person, $year);
         }
         else{
-            showProjectReports($person, $year);
+            self::showProjectReports($person, $year);
             if($year < 2011){
-                showProjectComments($person, $year);
+                self::showProjectComments($person, $year);
             }
         }
+        if($year >= 2013){
+            self::showChampionReports($person, $year);
+        }
 
-        generateHQPReportsHTML($person, $year, true, false);
+        self::generateHQPReportsHTML($person, $year, true, false);
 
         return;
     }
@@ -188,6 +190,359 @@ class ReportArchive extends SpecialPage {
         return true;
     }
     
+    // Shows the HQP report pdf links and buttons to re-generate them
+    static function generateHQPReportsHTML($person, $year, $preview=false, $isactivehqp=false){
+        global $wgOut, $wgServer, $wgScriptPath, $wgTitle, $viewOnly;
+        if($viewOnly == true){
+            $preview = true;
+        }
+        
+        $wgOut->addHTML("<h3>HQP Reports</h3><table>");
+        $noReports = $preview;
+        $allHQP = $person->getHQPDuring("$year".REPORTING_PRODUCTION_MONTH, ($year+1).REPORTING_PRODUCTION_MONTH);
+        $hqpProcessed = array();
+        foreach($allHQP as $hqp){
+            if($isactivehqp && !$hqp->isHQP()){ //contradiction
+                continue;
+            }
+            if(isset($hqpProcessed[$hqp->getId()])){ // HQP has already been processed
+                continue;
+            }
+            
+            $hqpProcessed[$hqp->getId()] = true;
+            $report = new DummyReport("HQPReport", $hqp, null, $year);
+            $check = $report->getPDF();
+            if(count($check) == 0){
+                $report = new DummyReport("NIReport", $hqp, null, $year);
+                $check = $report->getPDF();
+                $report->setName("HQP Report");
+            }
+            $sto = new ReportStorage($hqp);
+            $tok = false;
+            if (count($check) > 0) {
+                foreach($check as $c){
+                    $sto->select_report($c['token']);
+                    $subm = ($c['submitted']) ? "(Submitted)" : "(Not Submitted)";
+                    $tst = $sto->metadata('timestamp');
+                    $tok = $sto->metadata('token');
+                    break;
+                }
+            }
+            if($tok != false){
+                $wgOut->addHTML("<tr>");
+                $wgOut->addHTML("<td><a id='tok{$hqp->getId()}' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download {$hqp->getNameForForms()}'s $year Report PDF</a></td><td>(generated <span id='tst{$hqp->getId()}'>$tst</span>) $subm</span></td>");
+                $noReports = false;
+                $wgOut->addHTML("</tr>");
+            }
+        }
+        $wgOut->addHTML("</table>");
+        if($noReports){
+            $wgOut->addHTML("<b>No Archived PDFs were found.</b>");
+        }
+    }
+    
+    // Displays the project summaries for the given project leader, and reporting year
+    static function showProjectReports($person, $year){
+        global $wgTitle, $wgServer, $wgScriptPath, $wgOut;
+
+        $projs = $person->leadershipDuring(($year).REPORTING_START_MONTH, ($year).REPORTING_END_MONTH);
+        
+        foreach($projs as $proj){
+            foreach($proj->getAllPreds() as $pred){
+                $projs[] = $pred;
+            }
+        }
+        $tbrows = "";
+        $projNames = array();
+        if(count($projs) > 0){
+            $wgOut->addHTML("<h3>Project Leader Report</h3>");
+            $sto = new ReportStorage($person);
+            
+            $plHTML = "";
+            $commentHTML = "";
+            $milestonesHTML = "";
+            foreach ($projs as &$pj) {
+                if(isset($projNames[$pj->getName()])){
+                    continue;
+                }
+                $projNames[$pj->getName()] = true;
+                $plReport = new DummyReport("ProjectReport", $person, $pj, $year);
+                $commentReport = new DummyReport("ProjectReportComments", $person, $pj, $year);
+                $milestonesReport = new DummyReport("ProjectReportMilestones", $person, $pj, $year);
+                
+                $plCheck = $plReport->getPDF();
+                $commentCheck = $commentReport->getPDF();
+                $milestonesCheck = $milestonesReport->getPDF();
+                if (count($plCheck) > 0) {
+            		$tok = $plCheck[0]['token'];
+            		$sto->select_report($tok);    	
+            		$tst = $plCheck[0]['timestamp'];
+            		$subm = ($plCheck[0]['submitted']) ? "(Submitted)" : "(Not Submitted)";
+            		$plHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Report PDF</a></td><td>(generated $tst) $subm</td></tr>";
+            	}
+            	if (count($commentCheck) > 0) {
+            		$tok = $commentCheck[0]['token'];
+            		$sto->select_report($tok);
+            		$tst = $plCheck[0]['timestamp'];
+            		$commentHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Comments PDF</a></td><td>(generated $tst)</td></tr>";
+            	}
+            	if (count($milestonesCheck) > 0) {
+            		$tok = $milestonesCheck[0]['token'];
+            		$sto->select_report($tok);
+            		$tst = $plCheck[0]['timestamp'];
+            		$milestonesHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Milestones PDF</a></td><td>(generated $tst)</td></tr>";
+            	}
+            }
+            if($plHTML != "" || $commentHTML != "" || $milestonesHTML != ""){
+                $wgOut->addHTML("<table>$plHTML</table><br /><table>$commentHTML</table><br /><table>$milestonesHTML</table>");
+            }
+            else{
+                $wgOut->addHTML("<b>No Archived PDFs were found.</b><br />");
+            }
+        }
+    }
+    
+    // Shows the individual reports for the given person and year
+    static function showIndividualReport($person, $year){
+        global $wgTitle, $wgServer, $wgScriptPath, $wgOut, $wgUser;
+
+        $wgOut->addHTML("<h3>Individual Researcher Report</h3>");
+        
+        $roles = $person->getRolesDuring($year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
+        $usedRoles = array();
+        if(count($roles) > 0){
+            $sto = new ReportStorage($person);
+            foreach($roles as $role){
+                if(isset($usedRoles[$role->getRole()])){
+                    continue;
+                }
+                $check = array();
+                if($role->getRole() == PNI || $role->getRole() == CNI){
+                    $usedRoles[PNI] = true;
+                    $usedRoles[CNI] = true;
+                    $report = new DummyReport("NIReport", $person, null, $year);
+                    $check = $report->getPDF();
+                }
+                if($role->getRole() == HQP){
+                    $usedRoles[HQP] = true;
+                    if($year == 2010){
+                        $wgOut->addHTML("<b>The HQP reports were not archived in PDF during the $year reporting period.</b><br />");
+                    }
+                    $report = new DummyReport("HQPReport", $person, null, $year);
+                    $check = $report->getPDF();
+                    if(count($check) == 0){
+                        $report = new DummyReport("NIReport", $person, null, $year);
+                        $check = $report->getPDF();
+                        $report->setName("HQP Report");
+                    }
+                }
+                if (count($check) > 0) {
+            		$tok = $check[0]['token'];
+            		$subm = ($check[0]['submitted']) ? "(Submitted)" : "(Not Submitted)";
+            		$sto->select_report($tok);    	
+            		$tst = $sto->metadata('timestamp');
+            		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst) $subm<br />");
+            	}
+            	$check = array();
+            	if($role->getRole() == HQP){
+                    $usedRoles[HQP] = true;
+                    $report = new DummyReport("HQPReportComments", $person, null, $year);
+                    $check = $report->getPDF();
+                }
+                if (count($check) > 0) {
+            		$tok = $check[0]['token'];
+            		$sto->select_report($tok);    	
+            		$tst = $sto->metadata('timestamp');
+            		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst)<br />");
+            	}
+            	$check = array();
+            	if($role->getRole() == PNI || $role->getRole() == CNI){
+                    $usedRoles[PNI] = true;
+                    $usedRoles[CNI] = true;
+                    $report = new DummyReport("NIReportComments", $person, null, $year);
+                    $check = $report->getPDF();
+                }
+                if (count($check) > 0) {
+            		$tok = $check[0]['token'];
+            		$sto->select_report($tok);    	
+            		$tst = $sto->metadata('timestamp');
+            		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst)<br />");
+            	}
+            }
+        }
+        else{
+            $wgOut->addHTML("<b>No Archived PDFs were found.</b>");
+        }
+    }
+
+
+
+
+    // Displays the project leader comments for the given project leader, and reporting year
+    static function showProjectComments($person, $year){
+        global $wgTitle, $wgServer, $wgScriptPath, $wgOut;
+        $pg = "$wgServer$wgScriptPath/index.php/Special:ProjectData";
+
+        $projs = $person->leadershipDuring(($year).REPORTING_START_MONTH, ($year).REPORTING_END_MONTH);
+        foreach($projs as $proj){
+            foreach($proj->getAllPreds() as $pred){
+                $projs[] = $pred;
+            }
+        }
+        $tbrows = "";
+        if(count($projs) > 0){
+            $wgOut->addHTML("<br />");
+            $sto = new ReportStorage($person);
+            $pjs_done = array();
+            $found = false;
+            foreach ($projs as &$pj) {
+                // Looping through everybody is pretty slow, but for the moment, is an easy way to find all the leader reports
+                $ls = $sto->list_project_reports($pj->getId(), 10000, 0, RPTP_LEADER_COMMENTS);
+                foreach ($ls as &$row) {
+                    if($row['year'] == $year){
+	                    $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$row['token']}&amp;project={$pj->getName()}'>{$year} {$pj->getName()} Project Comments PDF</a> (generated {$row['timestamp']})<br />");
+	                    $found = true;
+	                    break;
+	                }
+                }
+                //if(count($ls) > 0){
+                //    break;
+                //}
+            }
+        }    
+    }
+
+    // Displays the project leader reports for the given project leader and reporting year
+    static function showPLReport($person, $year){
+        global $wgTitle, $wgServer, $wgScriptPath, $wgOut, $wgUser;
+        $type = "Project-Leader";
+        $pg = "$wgServer$wgScriptPath/index.php/Special:ProjectData";
+
+        $projs = $person->leadershipDuring(($year).REPORTING_START_MONTH, ($year).REPORTING_END_MONTH);
+        foreach($projs as $proj){
+            foreach($proj->getAllPreds() as $pred){
+                $projs[] = $pred;
+            }
+        }
+        $tbrows = "";
+        if(count($projs) > 0){
+            $wgOut->addHTML("<h3>Project Leader Report</h3>");
+            $repi = new ReportIndex($person);
+            $pjs_done = array();
+            $wgOut->addHTML("<table>");
+            foreach ($projs as &$pj) {
+                foreach(Person::getAllPeople() as $p){
+                    // Looping through everybody is pretty slow, but for the moment, is an easy way to find all the leader reports
+                    $repi = new ReportIndex($p);
+	                $ls = $repi->list_reports($pj);
+	                foreach ($ls as &$row) {
+	                    if($row['created'] >= ($year).REPORTING_PRODUCTION_MONTH && $row['created'] <= ($year+1).REPORTING_PRODUCTION_MONTH){
+		                    $wgOut->addHTML("<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$row['token']}&amp;project={$pj->getName()}'>{$year} {$pj->getName()} Project Summary</a></td><td>(generated {$row['created']})</td></tr>");
+		                }
+	                }
+	                if(count($ls) > 0){
+	                    break;
+	                }
+	            }
+            }
+            $wgOut->addHTML("</table><br /><table>");
+            $found = false;
+            foreach(Person::getAllPeople() as $p){
+                $sto = new ReportStorage($p);
+                // Leader reports, submitted.
+                $check = $sto->list_reports($p->getId(), SUBM, 1000, 0, RPTP_LEADER);
+                $tok = false;
+                $tst = '';
+                foreach($check as $r){
+                    if($r['timestamp'] >= ($year).REPORTING_PRODUCTION_MONTH && $r['timestamp'] <= ($year+1).REPORTING_PRODUCTION_MONTH){
+                        $tst = $r['timestamp'];
+	                    $tok = $sto->select_report($r['token']);
+	                    break;
+	                }
+                }
+                // Try unsubmitted reports.
+                $check = $sto->list_reports($p->getId(), NOTSUBM, 1000, 0, RPTP_LEADER);
+                foreach($check as $r){
+                    if($r['timestamp'] >= ($year).REPORTING_PRODUCTION_MONTH && $r['timestamp'] <= ($year+1).REPORTING_PRODUCTION_MONTH){
+                        if($tok != false && $tst > $r['timestamp']){
+                            break;
+                        }
+                        else{
+                            $tok = $sto->select_report($r['token']);
+                            break;
+                        }
+                    }
+                }
+                if($tok != false){
+                    $sql = "SELECT `data`,`timestamp`
+	                        FROM `grand_pdf_report`
+	                        WHERE `token` = '{$tok}'";
+                    $dt = DBFunctions::execSQL($sql);
+                    $data = unserialize($dt[0]['data']);
+                    $proj = @$data['proj'];
+                    $tst = @$dt[0]['timestamp'];
+	                $tok = $sto->select_report($tok);
+		            foreach($projs as $project){
+		                if($project->getId() == $proj){
+		                    $wgOut->addHTML("<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download archived {$year} {$project->getName()} $type Report PDF</a></td><td> (generated by {$p->getNameForForms()} on $tst)</td></tr>");
+		                    $found = true;
+		                    break;
+		                }
+		            }
+                }
+            }
+            $wgOut->addHTML("</table>");
+            if(!$found){
+                $wgOut->addHTML("<b>No Archived PDFs were found.</b>");
+            }
+        }
+    }
+
+    static function showChampionReports($person, $year){
+        global $wgTitle, $wgServer, $wgScriptPath, $wgOut, $wgUser;
+        $projs = $person->leadershipDuring(($year).REPORTING_START_MONTH, ($year).REPORTING_END_MONTH);
+        if(count($projs) > 0){
+            $wgOut->addHTML("<h3>Project Champion Reports</h3>");
+            foreach($projs as $proj){
+                if(!$proj->isSubProject() && $proj->getPhase() == 2){
+                    $champs = array();
+                    foreach($proj->getChampionsDuring(($year).REPORTING_START_MONTH, ($year).REPORTING_END_MONTH) as $champ){
+                        $champs[$champ['user']->getId()] = $champ;
+                    }
+                    foreach($proj->getSubProjects() as $sub){
+                        foreach($sub->getChampionsDuring(($year).REPORTING_START_MONTH, ($year).REPORTING_END_MONTH) as $champ){
+                            $champs[$champ['user']->getId()] = $champ;
+                        }
+                    }
+                    if(count($champs) > 0){
+                        $wgOut->addHTML("<table>");
+                        foreach($champs as $champ){
+                            $report = new DummyReport("ChampionReportPDF", $champ['user'], $proj, $year);
+                            if(isset($_GET['preview']) && 
+                               isset($_GET['generatePDF']) &&
+                               isset($_GET['project']) && $_GET['project'] == $proj->getName() &&
+                               isset($_GET['person']) && $_GET['person'] == $champ['user']->getId()){
+                                $wgOut->clearHTML();
+                                $report->renderForPDF();
+                                $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $champ['user'], true);
+                                echo $pdf;
+                                exit;
+                            }
+                            $pdf = "";
+                            $check = $report->getPDF();
+                            if (count($check) > 0) {
+                        		$tok = $check[0]['token'];
+                        		$pdf = "(<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>PDF</a>)";
+                        	}
+                            $wgOut->addHTML("<tr><td>{$year} {$proj->getName()}: {$champ['user']->getReversedName()}</td><td>(<a target='_blank' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?project={$proj->getName()}&person={$champ['user']->getId()}&generatePDF&preview'>Preview</a>){$pdf}</td></tr>");
+                        }
+                        $wgOut->addHTML("</table>");
+                    }
+                }
+            }
+        }
+    }
+    
     static function createTab(){
 		global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
 		
@@ -202,312 +557,6 @@ class ReportArchive extends SpecialPage {
 		echo "	<span class='top-nav-right'>&nbsp;</span>\n";
 		echo "</li>";
 	}
-}
-
-// Shows the HQP report pdf links and buttons to re-generate them
-function generateHQPReportsHTML($person, $year, $preview=false, $isactivehqp=false){
-    global $wgOut, $wgServer, $wgScriptPath, $wgTitle, $viewOnly;
-    if($viewOnly == true){
-        $preview = true;
-    }
-    
-    $wgOut->addHTML("<h3>HQP Reports</h3><table>");
-    $noReports = $preview;
-    $allHQP = $person->getHQPDuring("$year".REPORTING_PRODUCTION_MONTH, ($year+1).REPORTING_PRODUCTION_MONTH);
-    $hqpProcessed = array();
-    foreach($allHQP as $hqp){
-        if($isactivehqp && !$hqp->isHQP()){ //contradiction
-            continue;
-        }
-        if(isset($hqpProcessed[$hqp->getId()])){ // HQP has already been processed
-            continue;
-        }
-        
-        $hqpProcessed[$hqp->getId()] = true;
-        $report = new DummyReport("HQPReport", $hqp, null, $year);
-        $check = $report->getPDF();
-        if(count($check) == 0){
-            $report = new DummyReport("NIReport", $hqp, null, $year);
-            $check = $report->getPDF();
-            $report->setName("HQP Report");
-        }
-        $sto = new ReportStorage($hqp);
-        $tok = false;
-        if (count($check) > 0) {
-            foreach($check as $c){
-                $sto->select_report($c['token']);
-                $subm = ($c['submitted']) ? "(Submitted)" : "(Not Submitted)";
-                $tst = $sto->metadata('timestamp');
-                $tok = $sto->metadata('token');
-                break;
-            }
-        }
-        if($tok != false){
-            $wgOut->addHTML("<tr>");
-            $wgOut->addHTML("<td><a id='tok{$hqp->getId()}' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download {$hqp->getNameForForms()}'s $year Report PDF</a></td><td>(generated <span id='tst{$hqp->getId()}'>$tst</span>) $subm</span></td>");
-            $noReports = false;
-            $wgOut->addHTML("</tr>");
-        }
-    }
-    $wgOut->addHTML("</table>");
-    if($noReports){
-        $wgOut->addHTML("<b>No Archived PDFs were found.</b>");
-    }
-}
-
-// Shows the individual reports for the given person and year
-function showIndividualReport($person, $year){
-    global $wgTitle, $wgServer, $wgScriptPath, $wgOut, $wgUser;
-
-    $wgOut->addHTML("<h3>Individual Researcher Report</h3>");
-    
-    $roles = $person->getRolesDuring($year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
-    $usedRoles = array();
-    if(count($roles) > 0){
-        $sto = new ReportStorage($person);
-        foreach($roles as $role){
-            if(isset($usedRoles[$role->getRole()])){
-                continue;
-            }
-            $check = array();
-            if($role->getRole() == PNI || $role->getRole() == CNI){
-                $usedRoles[PNI] = true;
-                $usedRoles[CNI] = true;
-                $report = new DummyReport("NIReport", $person, null, $year);
-                $check = $report->getPDF();
-            }
-            if($role->getRole() == HQP){
-                $usedRoles[HQP] = true;
-                if($year == 2010){
-                    $wgOut->addHTML("<b>The HQP reports were not archived in PDF during the $year reporting period.</b><br />");
-                }
-                $report = new DummyReport("HQPReport", $person, null, $year);
-                $check = $report->getPDF();
-                if(count($check) == 0){
-                    $report = new DummyReport("NIReport", $person, null, $year);
-                    $check = $report->getPDF();
-                    $report->setName("HQP Report");
-                }
-            }
-            if (count($check) > 0) {
-        		$tok = $check[0]['token'];
-        		$subm = ($check[0]['submitted']) ? "(Submitted)" : "(Not Submitted)";
-        		$sto->select_report($tok);    	
-        		$tst = $sto->metadata('timestamp');
-        		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst) $subm<br />");
-        	}
-        	$check = array();
-        	if($role->getRole() == HQP){
-                $usedRoles[HQP] = true;
-                $report = new DummyReport("HQPReportComments", $person, null, $year);
-                $check = $report->getPDF();
-            }
-            if (count($check) > 0) {
-        		$tok = $check[0]['token'];
-        		$sto->select_report($tok);    	
-        		$tst = $sto->metadata('timestamp');
-        		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst)<br />");
-        	}
-        	$check = array();
-        	if($role->getRole() == PNI || $role->getRole() == CNI){
-                $usedRoles[PNI] = true;
-                $usedRoles[CNI] = true;
-                $report = new DummyReport("NIReportComments", $person, null, $year);
-                $check = $report->getPDF();
-            }
-            if (count($check) > 0) {
-        		$tok = $check[0]['token'];
-        		$sto->select_report($tok);    	
-        		$tst = $sto->metadata('timestamp');
-        		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst)<br />");
-        	}
-        }
-    }
-    else{
-        $wgOut->addHTML("<b>No Archived PDFs were found.</b>");
-    }
-}
-
-
-// Displays the project summaries for the given project leader, and reporting year
-function showProjectReports($person, $year){
-    global $wgTitle, $wgServer, $wgScriptPath, $wgOut;
-
-    $projs = $person->leadershipDuring(($year).REPORTING_START_MONTH, ($year).REPORTING_END_MONTH);
-    
-    foreach($projs as $proj){
-        foreach($proj->getAllPreds() as $pred){
-            $projs[] = $pred;
-        }
-    }
-    $tbrows = "";
-    $projNames = array();
-    if(count($projs) > 0){
-        $wgOut->addHTML("<h3>Project Leader Report</h3>");
-        $sto = new ReportStorage($person);
-        
-        $plHTML = "";
-        $commentHTML = "";
-        $milestonesHTML = "";
-        foreach ($projs as &$pj) {
-            if(isset($projNames[$pj->getName()])){
-                continue;
-            }
-            $projNames[$pj->getName()] = true;
-            $plReport = new DummyReport("ProjectReport", $person, $pj, $year);
-            $commentReport = new DummyReport("ProjectReportComments", $person, $pj, $year);
-            $milestonesReport = new DummyReport("ProjectReportMilestones", $person, $pj, $year);
-            
-            $plCheck = $plReport->getPDF();
-            $commentCheck = $commentReport->getPDF();
-            $milestonesCheck = $milestonesReport->getPDF();
-            if (count($plCheck) > 0) {
-        		$tok = $plCheck[0]['token'];
-        		$sto->select_report($tok);    	
-        		$tst = $plCheck[0]['timestamp'];
-        		$subm = ($plCheck[0]['submitted']) ? "(Submitted)" : "(Not Submitted)";
-        		$plHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Report PDF</a></td><td>(generated $tst) $subm</td></tr>";
-        	}
-        	if (count($commentCheck) > 0) {
-        		$tok = $commentCheck[0]['token'];
-        		$sto->select_report($tok);
-        		$tst = $plCheck[0]['timestamp'];
-        		$commentHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Comments PDF</a></td><td>(generated $tst)</td></tr>";
-        	}
-        	if (count($milestonesCheck) > 0) {
-        		$tok = $milestonesCheck[0]['token'];
-        		$sto->select_report($tok);
-        		$tst = $plCheck[0]['timestamp'];
-        		$milestonesHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Milestones PDF</a></td><td>(generated $tst)</td></tr>";
-        	}
-        }
-        if($plHTML != "" || $commentHTML != "" || $milestonesHTML != ""){
-            $wgOut->addHTML("<table>$plHTML</table><br /><table>$commentHTML</table><br /><table>$milestonesHTML</table>");
-        }
-        else{
-            $wgOut->addHTML("<b>No Archived PDFs were found.</b><br />");
-        }
-    }
-}
-
-// Displays the project leader comments for the given project leader, and reporting year
-function showProjectComments($person, $year){
-    global $wgTitle, $wgServer, $wgScriptPath, $wgOut;
-    $pg = "$wgServer$wgScriptPath/index.php/Special:ProjectData";
-
-    $projs = $person->leadershipDuring(($year).REPORTING_START_MONTH, ($year).REPORTING_END_MONTH);
-    foreach($projs as $proj){
-        foreach($proj->getAllPreds() as $pred){
-            $projs[] = $pred;
-        }
-    }
-    $tbrows = "";
-    if(count($projs) > 0){
-        $wgOut->addHTML("<br />");
-        $sto = new ReportStorage($person);
-        $pjs_done = array();
-        $found = false;
-        foreach ($projs as &$pj) {
-            // Looping through everybody is pretty slow, but for the moment, is an easy way to find all the leader reports
-            $ls = $sto->list_project_reports($pj->getId(), 10000, 0, RPTP_LEADER_COMMENTS);
-            foreach ($ls as &$row) {
-                if($row['year'] == $year){
-	                $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$row['token']}&amp;project={$pj->getName()}'>{$year} {$pj->getName()} Project Comments PDF</a> (generated {$row['timestamp']})<br />");
-	                $found = true;
-	                break;
-	            }
-            }
-            //if(count($ls) > 0){
-            //    break;
-            //}
-        }
-    }    
-}
-
-// Displays the project leader reports for the given project leader and reporting year
-function showPLReport($person, $year){
-    global $wgTitle, $wgServer, $wgScriptPath, $wgOut, $wgUser;
-    $type = "Project-Leader";
-    $pg = "$wgServer$wgScriptPath/index.php/Special:ProjectData";
-
-    $projs = $person->leadershipDuring(($year).REPORTING_START_MONTH, ($year).REPORTING_END_MONTH);
-    foreach($projs as $proj){
-        foreach($proj->getAllPreds() as $pred){
-            $projs[] = $pred;
-        }
-    }
-    $tbrows = "";
-    if(count($projs) > 0){
-        $wgOut->addHTML("<h3>Project Leader Report</h3>");
-        $repi = new ReportIndex($person);
-        $pjs_done = array();
-        $wgOut->addHTML("<table>");
-        foreach ($projs as &$pj) {
-            foreach(Person::getAllPeople() as $p){
-                // Looping through everybody is pretty slow, but for the moment, is an easy way to find all the leader reports
-                $repi = new ReportIndex($p);
-	            $ls = $repi->list_reports($pj);
-	            foreach ($ls as &$row) {
-	                if($row['created'] >= ($year).REPORTING_PRODUCTION_MONTH && $row['created'] <= ($year+1).REPORTING_PRODUCTION_MONTH){
-		                $wgOut->addHTML("<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$row['token']}&amp;project={$pj->getName()}'>{$year} {$pj->getName()} Project Summary</a></td><td>(generated {$row['created']})</td></tr>");
-		            }
-	            }
-	            if(count($ls) > 0){
-	                break;
-	            }
-	        }
-        }
-        $wgOut->addHTML("</table><br /><table>");
-        $found = false;
-        foreach(Person::getAllPeople() as $p){
-            $sto = new ReportStorage($p);
-            // Leader reports, submitted.
-            $check = $sto->list_reports($p->getId(), SUBM, 1000, 0, RPTP_LEADER);
-            $tok = false;
-            $tst = '';
-            foreach($check as $r){
-                if($r['timestamp'] >= ($year).REPORTING_PRODUCTION_MONTH && $r['timestamp'] <= ($year+1).REPORTING_PRODUCTION_MONTH){
-                    $tst = $r['timestamp'];
-	                $tok = $sto->select_report($r['token']);
-	                break;
-	            }
-            }
-            // Try unsubmitted reports.
-            $check = $sto->list_reports($p->getId(), NOTSUBM, 1000, 0, RPTP_LEADER);
-            foreach($check as $r){
-                if($r['timestamp'] >= ($year).REPORTING_PRODUCTION_MONTH && $r['timestamp'] <= ($year+1).REPORTING_PRODUCTION_MONTH){
-                    if($tok != false && $tst > $r['timestamp']){
-                        break;
-                    }
-                    else{
-                        $tok = $sto->select_report($r['token']);
-                        break;
-                    }
-                }
-            }
-            if($tok != false){
-                $sql = "SELECT `data`,`timestamp`
-	                    FROM `grand_pdf_report`
-	                    WHERE `token` = '{$tok}'";
-                $dt = DBFunctions::execSQL($sql);
-                $data = unserialize($dt[0]['data']);
-                $proj = @$data['proj'];
-                $tst = @$dt[0]['timestamp'];
-	            $tok = $sto->select_report($tok);
-		        foreach($projs as $project){
-		            if($project->getId() == $proj){
-		                $wgOut->addHTML("<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download archived {$year} {$project->getName()} $type Report PDF</a></td><td> (generated by {$p->getNameForForms()} on $tst)</td></tr>");
-		                $found = true;
-		                break;
-		            }
-		        }
-            }
-        }
-        $wgOut->addHTML("</table>");
-        if(!$found){
-            $wgOut->addHTML("<b>No Archived PDFs were found.</b>");
-        }
-    }
 }
 
 ?>

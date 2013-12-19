@@ -41,6 +41,10 @@
                         <td><b>Affiliation:</b></td>
                         <td>{$user_uni}</td>
                     </tr>
+                    <tr>
+                        <td><b>Sub-Projects:</b></td>
+                        <td>{$champ_subprojects}</td>
+                    </tr>
                 </table>
             ]]>
         </ReportItem>

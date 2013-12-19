@@ -87,6 +87,28 @@
 	        }
 	    }
 	}
+	else if($type == "CHAMP2"){
+	    $people = array();
+	    $mailman = "grand-forum-p2-champions";
+	    $peeps = Person::getAllPeople(CHAMP);
+	    $projects = Project::getAllProjects();
+	    foreach($peeps as $p){
+	        foreach($projects as $project){
+	            if($project->getPhase() == 2){
+	                if($p->isChampionOfDuring($project)){
+                        $people[$p->getId()] = $p;
+                        break;
+	                }
+	            }
+	            foreach($project->getSubProjects() as $sub){
+	                if($p->isChampionOfDuring($sub)){
+                        $people[$p->getId()] = $p;
+                        break;
+	                }
+	            }
+	        }
+	    }
+	}
 	else if($type == "LOCATION"){
 	    $people = array_merge(Person::getAllPeople(PNI),
 	                          Person::getAllPeople(CNI),
@@ -121,7 +143,7 @@
 	        $nMissing++;
 	    }
 	}
-	echo "\n== Inactive $type on $mailman == \n";
+	/*echo "\n== Inactive $type on $mailman == \n";
 	foreach($list as $email){
 	    $found = false;
 	    foreach($people as $person){
@@ -134,7 +156,7 @@
 	        echo $email."\n";
 	        $nExtra++;
 	    }
-	}
+	}*/
 	echo "\n";
 	/*
 	echo "\n== Totals == \n";
