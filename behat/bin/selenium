@@ -1,3 +1,4 @@
 #!/bin/bash
-Xvfb :10 -ac -screen 0 1024x768x24 &
-java -jar bin/selenium.jar &> /dev/null
+#Xvfb :10 -ac -screen 0 1280x1024x24 &
+#java -jar bin/selenium.jar &> /dev/null
+java -jar bin/selenium.jar -role hub &> /dev/null

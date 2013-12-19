@@ -1,7 +1,6 @@
 <?php
 
 require_once("../Classes/simplehtmldom/simple_html_dom.php");
-
 $pid = pcntl_fork();
 if ($pid == -1) {
      die('could not fork');
@@ -79,8 +78,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     public static function clean($event){
         global $currentSession;
         $currentSession->getSession()->stop();
-        system("killall java");
-        system("killall Xvfb");
+        //system("killall java");
+        //system("killall Xvfb");
         unlink("../test.tmp");
     }
     
