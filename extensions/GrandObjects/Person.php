@@ -771,6 +771,16 @@ class Person extends BackboneModel {
         return false;
     }
     
+    function isChampionOf($project){
+        $champs = $project->getChampions();
+        foreach($champs as $champ){
+            if($champ['user']->getId() == $this->getId()){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     function isChampionOfDuring($project, $start=REPORTING_CYCLE_START, $end=REPORTING_CYCLE_END){
         $champs = $project->getChampionsDuring($start, $end);
         foreach($champs as $champ){

@@ -13,6 +13,7 @@ class ProjectChampionsAPI extends API{
 
     function doAction($noEcho=false){
         $project = Project::newFromName($_POST['project']);
+        $champion = Person::newFromId($_POST['champion_id']);
         if(!$noEcho){
             if($project == null || $project->getName() == null){
                 echo "A valid project must be provided\n";
@@ -50,6 +51,9 @@ class ProjectChampionsAPI extends API{
                                     true);
             }
             DBFunctions::commit();
+            if($project->getPhase() == 2){
+                MailingList::subscribe("grand-forum-p2-champions", $champion);
+            }
             if(!$noEcho){
                 echo "Project champion updated\n";
             }

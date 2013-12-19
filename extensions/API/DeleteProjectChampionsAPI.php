@@ -14,6 +14,7 @@ class DeleteProjectChampionsAPI extends API{
 
     function doAction($noEcho=false){
         $project = Project::newFromName($_POST['project']);
+        $champion = Person::newFromId($_POST['champion_id']);
         if(!$noEcho){
             if($project == null || $project->getName() == null){
                 echo "A valid project must be provided\n";
@@ -54,6 +55,29 @@ class DeleteProjectChampionsAPI extends API{
                                     true);
             }
             DBFunctions::commit();
+            Project::$cache = array();
+            Person::$cache = array();
+            $champion = Person::newFromId($_POST['champion_id']);
+            $unsub = true;
+            foreach(Project::getAllProjects() as $project){
+                if($project->getPhase() == 2){
+                    if($champion->isChampionOf($project)){
+                        $unsub = false;
+                        break;
+                    }
+                    else{
+                        foreach($project->getSubProjects() as $sub){
+                            if($champion->isChampionOf($project)){
+                                $unsub = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if($unsub){
+                MailingList::unsubscribe("grand-forum-p2-champions", $champion);
+            }
             if(!$noEcho){
                 echo "Project champion deleted\n";
             }
