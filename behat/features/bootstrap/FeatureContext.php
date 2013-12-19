@@ -1,7 +1,6 @@
 <?php
 
 require_once("../Classes/simplehtmldom/simple_html_dom.php");
-/*
 $pid = pcntl_fork();
 if ($pid == -1) {
      die('could not fork');
@@ -23,7 +22,7 @@ if ($pid == -1) {
      else{
         exit();
      }
-}*/
+}
 
 use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Context\TranslatedContextInterface,
@@ -66,7 +65,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public static function prepare($event){
         // Create test database
-        //system("php ../maintenance/seed.php &> /dev/null");
+        system("php ../maintenance/seed.php &> /dev/null");
         system("rm -f screenshots/*");
         $fp = fopen("../test.tmp", 'w');
         fwrite($fp, "This file should delete it's self once the test suite is done running.\nDo not delete this file until then.");

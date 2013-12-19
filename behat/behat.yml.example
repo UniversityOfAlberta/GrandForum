@@ -5,7 +5,9 @@ default:
             output_path: null,output/output.html
     extensions:
         Behat\MinkExtension\Extension:
-            base_url: ### URL TO FORUM ###
-            files_path: uploads
+            base_url: http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/
+            files_path: "/opt/uploads"
             default_session: selenium2
-            selenium2: ~
+            selenium2:
+                browser: firefox
+                wd_host: 'http://129.128.184.85:5555/wd/hub'
