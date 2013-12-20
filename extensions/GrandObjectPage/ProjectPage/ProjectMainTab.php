@@ -227,17 +227,43 @@ EOF;
         $edit = (isset($_POST['edit']) && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
 
-        $champions = $project->getChampions();
+        $champions = array();
+        $derivedChamps = array();
+        foreach($project->getChampions() as $champ){
+            $champions[$champ['user']->getId()] = $champ;
+        }
+        if(!$project->isSubProject()){    
+            foreach($project->getSubProjects() as $sub){
+                
+            }
+        }
+        if(!$project->isSubProject()){
+            foreach($project->getSubProjects() as $sub){
+                foreach($sub->getChampions() as $champ){
+                    if(!isset($champions[$champ['user']->getId()])){
+                        if(!isset($derivedChamps[$champ['user']->getId()])){
+                            $derivedChamps[$champ['user']->getId()] = $champ;
+                        }
+                        $derivedChamps[$champ['user']->getId()]['subs'][] = "<a href='{$sub->getUrl()}' target='_blank'>{$sub->getName()}</a>";
+                    }
+                    else{
+                        $champions[$champ['user']->getId()]['subs'][] = "<a href='{$sub->getUrl()}' target='_blank'>{$sub->getName()}</a>";
+                    }
+                }
+            }
+        }
+        
         $this->html .= "<h2><span class='mw-headline'>Champions</span></h2>";
 
         if(!$edit){
-            if(count($champions) == 0){
-                $this->html .= "<strong>N/A</strong>";
-            }
-            else{
+            if(!count($champions) == 0){
                 foreach($champions as $champion){
+                    $subs = "";
+                    if(isset($champion['subs'])){
+                        $subs = " (".implode(", ", $champion['subs']).")";
+                    }
                     $this->html .= "
-                    <h3><a href='{$champion['user']->getUrl()}'>{$champion['user']->getNameForForms()}</a></h3>
+                    <h3><a href='{$champion['user']->getUrl()}'>{$champion['user']->getNameForForms()}</a>$subs</h3>
                     <table cellspacing='0' cellpadding='2' style='margin-left:15px;'>";
                     if($wgUser->isLoggedIn()){
                         $this->html .= "<tr><td><strong>Email:</strong></td><td>{$champion['user']->getEmail()}</td></tr>";
@@ -270,6 +296,26 @@ EOF;
             
             $form = $this->champForm();
             $this->html .= $form->render();
+        }
+        
+        if(!$project->isSubProject()){    
+            if(count($derivedChamps) > 0){
+                $this->html .= "<br /><p>The following champions have been derived from this {$project->getName()}'s sub-projects</p>";
+                foreach($derivedChamps as $champion){
+                    $this->html .= "
+                    <h3><a href='{$champion['user']->getUrl()}'>{$champion['user']->getNameForForms()}</a> (".implode(", ", $champion['subs']).")</h3>
+                    <table cellspacing='0' cellpadding='2' style='margin-left:15px;'>";
+                    if($wgUser->isLoggedIn()){
+                        $this->html .= "<tr><td><strong>Email:</strong></td><td>{$champion['user']->getEmail()}</td></tr>";
+                    }
+                    $this->html .= "<tr><td><strong>Title:</strong></td><td>{$champion['title']}</td></tr>
+                        <tr><td><strong>Organization:</strong></td><td>{$champion['org']}</td></tr>
+                    </table>";
+                }
+            }
+        }
+        if(count($champions) == 0 && count($derivedChamps) == 0){
+            $this->html .= "<strong>N/A</strong>";
         }
     }
 
