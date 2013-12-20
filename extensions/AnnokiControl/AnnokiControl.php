@@ -117,7 +117,7 @@ $egAnnokiExtensions['FeatureRequest']     = array( 'name' => 'FeatureRequest',
                           
 $egAnnokiExtensions['GoogleAlertReader']     = array( 'name' => 'GoogleAlertReader',
                           'path' => "$IP/extensions/GoogleAlertReader/GoogleAlertReader.body.php",
-                          'enabled' => true,
+                          'enabled' => false,
                           );
                           
 $egAnnokiExtensions['SociQL']     = array( 'name' => 'SociQL Queries',

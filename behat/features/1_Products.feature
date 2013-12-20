@@ -24,6 +24,15 @@ Feature: Products
         When I go to "index.php/Special:Products#/Publication"
         Then I should see "New Publication"
         
+    Scenario: Viewing list of Publications as guest (should get permission error)
+        Given I am on "index.php"
+        And I go to "index.php/Special:Products#/Publication"
+        Then I should see "Permission error"
+        
+    Scenario: Viewing Publication as guest (should get permission error)
+        Given I am on "index.php/Publication:1"
+        Then I should see "Permission error"
+        
     Scenario: Editing a Publication
         Given I am logged in as "PNI.User1" using password "PNI.Pass1"
         When I go to "index.php/Special:Products#/Publication"
