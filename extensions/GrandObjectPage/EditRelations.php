@@ -46,7 +46,7 @@ class EditRelations extends SpecialPage{
 	                $currentHQPNames[] = str_replace("'", "&#39;", $hqp->getNameForForms());
 	            }
 	            $names = array();
-	            if(isset($_POST['hqps'])){
+	            if(isset($_POST['hqps']) && is_array($_POST['hqps'])){
 	                foreach($_POST['hqps'] as $name){
 	                    $names[] = str_replace("'", "&#39;", $name);
 	                }
