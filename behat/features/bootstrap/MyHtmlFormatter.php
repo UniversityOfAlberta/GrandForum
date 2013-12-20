@@ -26,6 +26,16 @@ class MyHtmlFormatter extends HtmlFormatter {
         });";
         return $script;
     }
+    
+    protected function printTimeSummary($logger){
+        $this->writeln('');
+        $time       = $logger->getTotalTime();
+        $minutes    = floor($time / 60);
+        $seconds    = round($time - ($minutes * 60), 3);
+
+        $this->writeln($minutes . 'm' . $seconds . 's' .' ('.@date('D, j M Y g:i:s a').')');
+        $this->writeln('');
+    }
 
     protected function printStep($step, $result, $definition = null, $snippet = null, $exception = null){
         $this->writeln('<li class="' . $this->getResultColorCode($result) . '">');

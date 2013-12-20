@@ -18,3 +18,29 @@ Feature: Products
         Then I should see "New Publication"
         And I should see "Jan 4, 2013"
         And I should see "Phase2Project1"
+        
+    Scenario: Viewing list of Publications
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I go to "index.php/Special:Products#/Publication"
+        Then I should see "New Publication"
+        
+    Scenario: Editing a Publication
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I go to "index.php/Special:Products#/Publication"
+        And I follow "New Publication"
+        And I press "Edit Publication"
+        And fill in "description" with "This is an edited description"
+        And I press "Save Publication"
+        Then I should see "This is an edited description"
+        
+    Scenario: Deleting a Publication
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I go to "index.php/Special:Products#/Publication"
+        And I follow "New Publication"
+        And I press "Delete Publication"
+        And I press "Yes"
+        Then I should see "The Publication New Publication was Deleted"
+        And I reload the page
+        Then I should see "This publication has been deleted, and will not show up anywhere else on the forum"
+        When I go to "index.php/Special:Products#/Publication"
+        Then I should not see "New Publication"
