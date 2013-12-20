@@ -1,4 +1,7 @@
 Feature: Products
+    In order to manage products to the forum
+    As a User
+    I need to be able to view/add/edit/delete products
 
     Scenario: Adding a new Publication
         Given I am logged in as "PNI.User1" using password "PNI.Pass1"

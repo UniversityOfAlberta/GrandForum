@@ -1,4 +1,7 @@
 Feature: Search
+    In order to search information on the forum
+    As a User
+    I need to be able to type into the global search and get relevant results
     
     Scenario: PNI searches for User
         Given I am logged in as "PNI.User1" using password "PNI.Pass1"

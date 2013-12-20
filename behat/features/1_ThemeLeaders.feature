@@ -1,4 +1,7 @@
 Feature: Theme Leaders
+    In order to see information about the projects that are in the themes that I lead
+    As a Theme Leader
+    I need to be able to see the full information about those projects as if I were a member
 
     Scenario: TL views Project Page of a Project that has a challenge which is led by TL
         Given I am logged in as "TL.User1" using password "TL.Pass1"

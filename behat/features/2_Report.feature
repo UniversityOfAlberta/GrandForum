@@ -1,4 +1,7 @@
 Feature: Reporting
+    In order to report on the forum
+    As a User
+    I need to be able to access the relevant reports and edit the fields in the report
 
     Scenario: HQP attempts to view an NI report
         Given I am logged in as "HQP.User1" using password "HQP.Pass1"

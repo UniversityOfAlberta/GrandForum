@@ -1,4 +1,7 @@
 Feature: User Profile
+    In order to manage my profile
+    As a User
+    I need to be able to edit my profile
 
     Scenario: Editing University information
         Given I am logged in as "PNI.User1" using password "PNI.Pass1"

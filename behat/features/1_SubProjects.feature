@@ -1,4 +1,7 @@
 Feature: Sub Projects
+    In order to manage sub-projects
+    As a PL
+    I need to be able to add/edit sub-projects for the projects that I lead
 
     Scenario: PL Adding a sub-project
         Given I am logged in as "PL.User1" using password "PL.Pass1"

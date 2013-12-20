@@ -1,4 +1,7 @@
 Feature: AddMember
+    In order to be able to add people to the forum
+    As a User I need to be able to request users
+    As an Admin I need to be able to accept users
 
     Scenario: HQP trying to request a user (should not be allowed to)
         Given I am logged in as "HQP.User1" using password "HQP.Pass1"

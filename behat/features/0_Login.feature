@@ -1,4 +1,7 @@
 Feature: Login
+    In order to use the forum
+    As a valid user on the forums
+    I need to be able to login
 
     Scenario: Viewing page as guest
         Given I am on "index.php"

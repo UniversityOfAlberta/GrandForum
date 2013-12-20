@@ -1,4 +1,7 @@
 Feature: EditMember
+    In order to edit user's roles/projects
+    As a User I need to be able to request role/project changes
+    As an Admin I need to be able to accept role/project changes
 
     Scenario: Two different requests happening at the same time, and then accepted
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
