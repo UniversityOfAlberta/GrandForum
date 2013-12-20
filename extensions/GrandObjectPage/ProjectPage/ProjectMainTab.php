@@ -300,18 +300,11 @@ EOF;
         
         if(!$project->isSubProject()){    
             if(count($derivedChamps) > 0){
-                $this->html .= "<br /><p>The following champions have been derived from this {$project->getName()}'s sub-projects</p>";
+                $this->html .= "<p>The following champions have been derived from this {$project->getName()}'s sub-projects</p><ul>";
                 foreach($derivedChamps as $champion){
-                    $this->html .= "
-                    <h3><a href='{$champion['user']->getUrl()}'>{$champion['user']->getNameForForms()}</a> (".implode(", ", $champion['subs']).")</h3>
-                    <table cellspacing='0' cellpadding='2' style='margin-left:15px;'>";
-                    if($wgUser->isLoggedIn()){
-                        $this->html .= "<tr><td><strong>Email:</strong></td><td>{$champion['user']->getEmail()}</td></tr>";
-                    }
-                    $this->html .= "<tr><td><strong>Title:</strong></td><td>{$champion['title']}</td></tr>
-                        <tr><td><strong>Organization:</strong></td><td>{$champion['org']}</td></tr>
-                    </table>";
+                    $this->html .= "<li><a href='{$champion['user']->getUrl()}'>{$champion['user']->getNameForForms()}</a> (".implode(", ", $champion['subs']).")</li>";
                 }
+                $this->html .= "</ul>";
             }
         }
         if(count($champions) == 0 && count($derivedChamps) == 0){
