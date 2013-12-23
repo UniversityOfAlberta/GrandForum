@@ -277,7 +277,7 @@ class ReportItemCallback {
         $milestone_description = "";
         if($this->reportItem->milestoneId != 0 ){
             $milestone = Milestone::newFromId($this->reportItem->milestoneId);
-            $milestone_description = nl2br($milestone->getDescription());
+            $milestone_description = $milestone->getDescription();
         }
         return $milestone_description;
     }
@@ -319,7 +319,7 @@ class ReportItemCallback {
         $milestone_assessment = "";
         if($this->reportItem->milestoneId != 0 ){
             $milestone = Milestone::newFromId($this->reportItem->milestoneId);
-            $milestone_assessment = nl2br($milestone->getAssessment());
+            $milestone_assessment = $milestone->getAssessment();
         }
         return $milestone_assessment;
     }
