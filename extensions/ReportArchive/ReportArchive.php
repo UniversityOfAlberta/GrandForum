@@ -17,7 +17,17 @@ class ReportArchive extends SpecialPage {
 
 	function __construct() {
 		wfLoadExtensionMessages('ReportArchive');
-		SpecialPage::SpecialPage("ReportArchive", INACTIVE.'+', true, 'runReportArchive');
+		SpecialPage::SpecialPage("ReportArchive", '', true, 'runReportArchive');
+	}
+	
+	function userCanExecute($user){
+	    if($user->isLoggedIn()){
+	        $person = Person::newFromWgUser();
+	        if($person->isRoleAtLeast(INACTIVE)){
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 	
 	function run(){
@@ -144,6 +154,9 @@ class ReportArchive extends SpecialPage {
     
     static function showTabs(&$content_actions){
         global $wgTitle, $wgUser, $wgServer, $wgScriptPath;
+        if(!self::userCanExecute($wgUser)){
+            return true;
+        }
         $current_selection = (isset($_GET['year']) && is_numeric($_GET['year'])) ? $_GET['year'] : date('Y')-1;
         
         if($wgTitle->getText() == "ReportArchive"){
