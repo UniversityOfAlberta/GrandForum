@@ -115,10 +115,16 @@ class EditMember extends SpecialPage{
             $projects = $person->getProjects();
             $roles = $person->getRoles();
             foreach($projects as $project){
-                $p_current[] = $project->getName();
+                $p_current[] = $project->getId();
             }
             $p_current = implode(", ", $p_current);
             if(isset($_POST['p_wpNS'])){
+                foreach($_POST['p_wpNS'] as $key => $proj){
+                    $proj = Project::newFromName($proj);
+                    if($proj != null){
+                        $_POST['p_wpNS'][$key] = $proj->getId();
+                    }
+                }
                 $p_nss = implode(", ", $_POST['p_wpNS']);
             }
             else{
@@ -395,6 +401,10 @@ class EditMember extends SpecialPage{
         if(isset($var)){
             foreach($var as $key => $value){
                 if($value != "" && ($nss == "" || strstr($nss, $key) === false) && strstr($diff, '-'.$key) !== false){
+                    if($type == "PROJECT"){
+                        $proj = Project::newFromName($key);
+                        $key = $proj->getId();
+                    }
                     $return .= "$key::".EditMember::parse($value)." ::";
                 }
             }
@@ -534,11 +544,17 @@ class EditMember extends SpecialPage{
                     unset($projects[$id]);
                 }
                 else{
+                    if(is_numeric($project)){
+                        $project = Project::newFromId($project)->getName();
+                    }
                     $output .= "-{$project}<br />\n";
                 }
             }
             foreach($projects as $project){
                 if($project != ""){
+                    if(is_numeric($project)){
+                        $project = Project::newFromId($project)->getName();
+                    }
                     $output .= "+{$project}<br />\n";
                 }
             }
@@ -845,16 +861,30 @@ class EditMember extends SpecialPage{
             else{
                 $diff = EditMember::roleDiff(Person::newFromId($row['user']), $row['current_role'], $row['role'], $row['type']);
             }
+            $dates = explode("::", $row['effective_date']);
+            foreach($dates as $key => $date){
+                if($key % 2 == 0 && is_numeric($date)){
+                    $proj = Project::newFromId($date);
+                    $dates[$key] = $proj->getName();
+                }
+            }
             $wgOut->addHTML("<tr bgcolor='#FFFFFF'>
                         <td align='left'>
                             <a target='_blank' href='{$req_user->getUrl()}'><b>{$req_user->getName()}</b></a> (".implode(",", $roles).")<br /><a onclick='$(\"#{$row['id']}\").slideToggle();$(this).remove();' style='cursor:pointer;'>Show Projects</a>
                             <div id='{$row['id']}' style='display:none;padding-left:15px;'>".implode("<br />", $projs)."</div>
                         </td> 
-                        <td align='left'><a target='_blank' href='{$person->getUrl()}'>{$person->getName()}</a></td> <td>{$row['last_modified']}</td> <td>".str_replace(" ::", "<br />", $row['effective_date'])."</td>");
+                        <td align='left'><a target='_blank' href='{$person->getUrl()}'>{$person->getName()}</a></td> <td>{$row['last_modified']}</td> <td>".str_replace(" ::", "<br />", implode("::", $dates))."</td>");
             if($history){
                 $wgOut->addHTML("<td>{$staff->getName()}</td>");
-            } 
-            $wgOut->addHTML("<td align='left'>".$diff."</td> <td align='left'>".str_replace(" ::", "<br />", $row['comment'])."</td> <td align='left'>".$other."</td> <td align='left'>{$row['type']}</td>
+            }
+            $comments = explode("::", $row['comment']);
+            foreach($comments as $key => $comment){
+                if($key % 2 == 0 && is_numeric($comment)){
+                    $proj = Project::newFromId($comment);
+                    $comments[$key] = $proj->getName();
+                }
+            }
+            $wgOut->addHTML("<td align='left'>".$diff."</td> <td align='left'>".str_replace(" ::", "<br />", implode("::", $comments))."</td> <td align='left'>".$other."</td> <td align='left'>{$row['type']}</td>
                         <form action='$wgServer$wgScriptPath/index.php/Special:EditMember?action=view&sub' method='post'>
                             <input type='hidden' name='current_role' value='{$row['current_role']}' />
                             <input type='hidden' name='role' value='{$row['role']}' />
@@ -1267,6 +1297,10 @@ class EditMember extends SpecialPage{
                     unset($unsubscribed[$role]);
                 }
                 else{
+                    if(is_numeric($role)){
+                        $proj = Project::newFromId($role);
+                        $role = $proj->getName();
+                    }
                     $_POST['role'] = $role;
                     APIRequest::doAction('AddProjectMember', true);
                     $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> added to $role");
@@ -1286,6 +1320,10 @@ class EditMember extends SpecialPage{
                 }
                 $_POST['comment'] = $comment;
                 $_POST['effective_date'] = $effectiveDate;
+                if(is_numeric($key)){
+                    $proj = Project::newFromId($key);
+                    $key = $proj->getName();
+                }
                 $_POST['role'] = $key;
                 if(Project::newFromName($key) != null){
                     APIRequest::doAction('DeleteProjectMember', true);

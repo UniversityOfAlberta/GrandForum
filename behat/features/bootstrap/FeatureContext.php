@@ -221,7 +221,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $interval = 100;
         $timeElapsed = 0;
         while($timeElapsed < $ms && !$this->getSession()->getPage()->hasContent($text)){
-            $this->getSession()->wait($interval);
+            usleep($interval*1000);
             $timeElapsed += $interval;
         }
         $this->assertSession()->pageTextContains($text);
@@ -234,7 +234,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $interval = 100;
         $timeElapsed = 0;
         while($timeElapsed < $ms && $this->getSession()->getPage()->hasContent($text)){
-            $this->getSession()->wait($interval);
+            usleep($interval*1000);
             $timeElapsed += $interval;
         }
         $this->assertSession()->pageTextNotContains($text);
@@ -296,7 +296,12 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
             $row = str_replace("Less...", "", $row);
             $row = str_replace("More...", "", $row);
             $row = str_replace("<br>", "\n", $row);
-            self::$dbJSON['authors'][$name]['subjects'] = $row;
+            if(!isset(self::$dbJSON['authors'][$name]['subjects'])){
+                self::$dbJSON['authors'][$name]['subjects'] = $row;
+            }
+            else{
+                self::$dbJSON['authors'][$name]['subjects'] .= "<br />".$row;
+            }
             $sub->clear();
             unset($sub);
         }
@@ -317,7 +322,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
             foreach($rows as $row){
                 $year = str_replace(" ", "", $row->find("label", 0)->innertext);
                 $amount = str_replace(")", "", str_replace("(", "", $row->find("span.floatL", 0)->innertext));
-                self::$dbJSON['authors'][$name]['nPubs'][$year] = $amount;
+                @self::$dbJSON['authors'][$name]['nPubs'][$year] += $amount;
             }
             $pubs->clear();
             unset($pubs);
@@ -342,7 +347,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $years[2013] = $html->find("#year_2013 a", 0);
         foreach($years as $year => $amount){
             if($amount != null){
-                self::$dbJSON['authors'][$name]['nCits'][$year] = $amount->innertext;
+                @self::$dbJSON['authors'][$name]['nCits'][$year] += $amount->innertext;
             }
         }
         file_put_contents("db.json", json_encode(self::$dbJSON));
