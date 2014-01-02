@@ -318,7 +318,7 @@ class TabUtils {
                                           $wgTitle->getNsText() == "Press" ||
                                           $wgTitle->getNsText() == "Award" ||
                                           $wgTitle->getNsText() == "Multimedia")){
-            $new_actions["Publications"]['class'] = 'product selected hidden';
+            $new_actions["Publications"]['class'] = 'products selected hidden';
         }
         else if($wgTitle->getText() == "Theme1 - New Media Challenges and Opportunities" ||
                 $wgTitle->getText() == "Theme2 - Games and Interactive Simulation" ||
