@@ -435,7 +435,7 @@ class cavendishTemplate extends QuickTemplate {
 			    <?php
 				    $user = Person::newFromName($wgUser->getName());
 			     	if($user->isRoleAtLeast(Manager) ){ ?>
-			    <li id='grand-tab' class="top-nav-element tab-left
+			    <li id='manager-tab' class="top-nav-element tab-left
 			        <?php if($wgTitle->getText() == "EvaluationTable" ||
                              $wgTitle->getText() == "AcknowledgementsTable" ||
                              $wgTitle->getText() == "Duplicates" ||
@@ -647,7 +647,7 @@ class cavendishTemplate extends QuickTemplate {
 		    }
 	    echo "<li id='f-disclaimer'><a href='mailto:support@forum.grand-nce.ca'>Support</a></li>\n";
     ?>
-    </ul></td><td align="right" width="1%" nowrap="nowrap"><?php if($this->data['poweredbyico']) { ?><div id="f-poweredbyico"><?php $this->html('poweredbyico') ?></div><?php } ?></td></tr></table><img style='display:none;' src='<?php echo "$wgServer$wgScriptPath"; ?>/skins/Throbber.gif' />
+    </ul></td><td align="right" width="1%" nowrap="nowrap"><?php if($this->data['poweredbyico']) { ?><div id="f-poweredbyico"><?php $this->html('poweredbyico') ?></div><?php } ?></td></tr></table><img style='display:none;' src='<?php echo "$wgServer$wgScriptPath"; ?>/skins/Throbber.gif' alt='Throbber' />
 	    </div><!-- end of the FOOTER div -->
 	<div class="visualClear"></div>
 	

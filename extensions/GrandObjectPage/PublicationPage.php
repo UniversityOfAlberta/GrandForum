@@ -761,8 +761,7 @@ class PublicationPage {
                         });
                     </script>");
                 }
-                $wgOut->addWikiText("== {$authorTitle}s ==
-                                     __NOEDITSECTION__\n");
+                $wgOut->addHTML("<h2>{$authorTitle}s</h2>");
                 $authors = $paper->getAuthors();
                 $i = 1;
                 $nAuthors = count($authors);
@@ -809,14 +808,12 @@ class PublicationPage {
                 
                 if($category == "Publication"){
                     if($edit || !$edit && $paper->getDescription() != ""){
-                        $wgOut->addWikiText("== Abstract ==
-                                            __NOEDITSECTION__\n");
+                        $wgOut->addHTML("<h2>Abstract</h2>");
                     }
                 }
                 else if($category == "Artifact" || $category == "Activity" || $category == "Press" || $category == "Award" || $category == "Presentation"){
                     if($edit || !$edit && $paper->getDescription() != ""){
-                        $wgOut->addWikiText("== Description ==
-                                            __NOEDITSECTION__\n");
+                        $wgOut->addHTML("<h2>Description</h2>");
                     }
                 }
                 if($edit){
@@ -827,8 +824,7 @@ class PublicationPage {
                 }
                 
                 $date = $paper->getDate();
-                $wgOut->addWikiText("== $category Information ==
-                                     __NOEDITSECTION__\n");
+                $wgOut->addHTML("<h2>$category</h2>");
                 $wgOut->addHTML("<table border=0 id='attributes'>");
 
 								$hasBibtex = false;
@@ -909,7 +905,7 @@ class PublicationPage {
                                             <td align='right' valign='top'><b>Status:</b><br /><br /></td>
                                             <td>
                                                 <input type='radio' name='status' value='Peer Reviewed'$peerReviewed /> Peer Reviewed<br />
-                                                <input type='radio' name='status' value='Not Peer Reviewed'$notPeerReviewed /> Not Peer Reviewed<br /></br />
+                                                <input type='radio' name='status' value='Not Peer Reviewed'$notPeerReviewed /> Not Peer Reviewed<br /><br />
                                             </td>
                                         </tr>");
                     }
@@ -923,7 +919,7 @@ class PublicationPage {
 
                 // TYPE
                 $align = ($edit) ? "align='right'" : "align='left'";
-                $wgOut->addHTML("<tr title='the type of publication''>
+                $wgOut->addHTML("<tr title='the type of publication'>
                                         <td $align><b>Type:</b></td>");
                 if($create){
                     $type = "Misc";
@@ -1070,7 +1066,7 @@ class PublicationPage {
                                             <td>
                                                 <input type='radio' name='status' value='Not Invited' $notinvitedSelected /> Not Invited<br />
                                                 <input type='radio' name='status' value='Invited' $invitedSelected /> Invited
-                                                </br />
+                                                <br />
                                             </td>
                                         </tr>");
                     }
@@ -1130,8 +1126,7 @@ class PublicationPage {
                 $wgOut->addHTML("</table>");
                 $projects = $paper->getProjects();
                 if($edit || !$edit && count($projects) > 0){
-                    $wgOut->addWikiText("== Related Projects ==
-                                         __NOEDITSECTION__\n");
+                    $wgOut->addHTML("<h2>Related Projects</h2>");
                 }
                 
                 $pProjects = array();
