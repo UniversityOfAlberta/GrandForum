@@ -78,6 +78,17 @@ class Person extends BackboneModel {
         return $person;
     }
     
+    static function newFromReversedName($name){
+        $exploded = explode(",", $name, 2);
+        if(count($exploded) == 2){
+            $fullName = trim($exploded[1])." ".trim($exploded[0]);
+        }
+        else{
+            $fullName = $exploded[0];
+        }
+        return self::newFromNameLike($fullName);
+    }
+    
     // Returns a new Person from the given email (null if not found)
     // In the event of a collision, the first user is returned
     static function newFromEmail($email){

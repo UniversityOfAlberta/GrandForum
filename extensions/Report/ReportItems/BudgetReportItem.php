@@ -246,7 +246,13 @@ class BudgetReportItem extends AbstractReportItem {
                 $budget->xls[22][7]->error = "'\$$total' is greater than the maximum $35000 for CNIs (excluding Big-Bet Projects)";
             }
         }
-        $v_pers = Person::newFromNameLike($name);
+
+        if(strstr($name, ",") !== false){
+            $v_pers = Person::newFromReversedName($name);
+        }
+        else{
+            $v_pers = Person::newFromNameLike($name);
+        }
         if($v_pers->getName() != $person->getName()){
             if(isset($budget->xls[0][1])){
                 $budget->xls[0][1]->error = "'$name' does not match your own name";
