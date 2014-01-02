@@ -1406,8 +1406,8 @@ class Person extends BackboneModel {
         }
         //If no range end are provided, assume it's for the current year.
         if( $startRange === false || $endRange === false ){
-            $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
-            $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+            $startRange = date(REPORTING_CYCLE_START);
+            $endRange = date(REPORTING_CYCLE_END);
         }
         
         $sql = "SELECT *
