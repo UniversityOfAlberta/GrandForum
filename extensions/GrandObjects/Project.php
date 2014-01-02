@@ -491,6 +491,8 @@ EOF;
     // The researchers who are in this project.
     // If $filter is included, only users of that type will be selected
     function getAllPeople($filter = null){
+        $currentDate = date('Y-m-d H:i:s');
+        $created = $this->getCreated();
         $people = array();
         if(!$this->clear){
             $preds = $this->getPreds();
@@ -513,7 +515,7 @@ EOF;
         foreach($this->peopleCache as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if(($filter == null || $person->isRole($filter)) && !$person->isRole(MANAGER)){
+            if(($filter == null || ($currentDate >= $created && $person->isRole($filter)) || $person->isRoleDuring($filter, $created, "9999")) && !$person->isRole(MANAGER)){
                 $people[$person->getId()] = $person;
             }
         }
