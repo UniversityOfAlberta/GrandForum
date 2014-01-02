@@ -44,7 +44,11 @@ class Person extends BackboneModel {
     var $projectCache = array();
     var $evaluateCache = array();
     
-    // Returns a new Person from the given id
+    /**
+     * Returns a new Person from the given id
+     * @param int $id The id of the person
+     * @return Person The Person from the given id
+     */
     static function newFromId($id){
         global $wgUser;
         if(isset(self::$cache[$id])){
@@ -61,7 +65,11 @@ class Person extends BackboneModel {
         return $person;
     }
     
-    // Returns a new Person from the given name
+    /**
+     * Returns a new Person from the given name
+     * @param string $name The name of the person
+     * @return Person The Person from the given name
+     */
     static function newFromName($name){
         $name = str_replace(' ', '.', $name);
         if(isset(Person::$cache[$name])){
@@ -78,6 +86,11 @@ class Person extends BackboneModel {
         return $person;
     }
     
+    /**
+     * Returns a new Person from the given reversed name
+     * @param string $name The reversed name of the person
+     * @return Person The Person from the given reversed name
+     */
     static function newFromReversedName($name){
         $exploded = explode(",", $name, 2);
         if(count($exploded) == 2){
