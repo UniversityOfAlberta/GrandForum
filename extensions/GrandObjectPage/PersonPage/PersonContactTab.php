@@ -180,12 +180,17 @@ class PersonContactTab extends AbstractEditableTab {
                             </tr>";
         }
         if($visibility['isMe'] || $visibility['isSupervisor']){
-            $this->html .= "<tr>
-                <td align='right'><b>Nationality:</b></td>
-                <td>
-                    {$person->getNationality()}
-                </td>
-            </tr>";
+            if($person->isRoleDuring(HQP, "0000", "9999") ||
+               $person->isRoleDuring(CNI, "0000", "9999") ||
+               $person->isRoleDuring(PNI, "0000", "9999") ||
+               $person->isRoleDuring(AR, "0000", "9999")){
+                $this->html .= "<tr>
+                    <td align='right'><b>Nationality:</b></td>
+                    <td>
+                        {$person->getNationality()}
+                    </td>
+                </tr>";
+            }
             if($person->getGender() != ""){
                 $this->html .= "<tr>
                     <td align='right'><b>Gender:</b></td>
@@ -249,19 +254,24 @@ class PersonContactTab extends AbstractEditableTab {
         $university = $person->getUniversity();
         $nationality = "";
         if($visibility['isMe'] || $visibility['isSupervisor']){
-            $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
-            $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
-            $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";
-            $nationality = "<tr>
-                <td align='right'><b>Nationality:</b></td>
-                <td>
-                    <select name='nationality'>
-                        <option value='Canadian' $canSelected>Canadian</option>
-                        <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
-                        <option value='Visa Holder' $visaSelected>Visa Holder</option>
-                    </select>
-                </td>
-            </tr>";
+            if($person->isRoleDuring(HQP, "0000", "9999") ||
+               $person->isRoleDuring(CNI, "0000", "9999") ||
+               $person->isRoleDuring(PNI, "0000", "9999") ||
+               $person->isRoleDuring(AR, "0000", "9999")){
+                $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
+                $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
+                $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";
+                $nationality = "<tr>
+                    <td align='right'><b>Nationality:</b></td>
+                    <td>
+                        <select name='nationality'>
+                            <option value='Canadian' $canSelected>Canadian</option>
+                            <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
+                            <option value='Visa Holder' $visaSelected>Visa Holder</option>
+                        </select>
+                    </td>
+                </tr>";
+            }
             
             $blankSelected = ($person->getGender() == "") ? "selected='selected'" : "";
             $maleSelected = ($person->getGender() == "Male") ? "selected='selected'" : "";
