@@ -2020,8 +2020,8 @@ class Person extends BackboneModel {
     
     function getChampionsDuring($startRange = false, $endRange = false){
         if($startRange === false || $endRange === false ){
-            $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
-            $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+            $startRange = date(REPORTING_CYCLE_START);
+            $endRange = date(REPORTING_CYCLE_END);
         }
         $champions = array();
         $relations = $this->getRelations(WORKS_WITH, true);
@@ -2045,8 +2045,8 @@ class Person extends BackboneModel {
     
     function getHQPDuring($startRange = false, $endRange = false){
         if( $startRange === false || $endRange === false ){
-            $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
-            $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+            $startRange = date(REPORTING_CYCLE_START);
+            $endRange = date(REPORTING_CYCLE_END);
         }
         if(isset($this->hqpCache[$startRange.$endRange])){
             return $this->hqpCache[$startRange.$endRange];
@@ -2120,8 +2120,8 @@ class Person extends BackboneModel {
     
     function getSupervisorsDuring($startRange = false, $endRange = false){
         if( $startRange === false || $endRange === false ){
-            $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
-            $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+            $startRange = date(REPORTING_CYCLE_START);
+            $endRange = date(REPORTING_CYCLE_END);
         }
         $sql = "SELECT *
                 FROM grand_relations

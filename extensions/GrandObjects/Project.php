@@ -1183,6 +1183,7 @@ EOF;
         if($year == '0000'){
             $year = date('Y');
         }
+        
         $startRange = $year.'01-01 00:00:00';
         $endRange = $year.'-12-31 23:59:59';
         
