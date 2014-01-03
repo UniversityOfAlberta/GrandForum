@@ -34,16 +34,8 @@ foreach($allPeople as $person){
     $csv .= '"'.$person_name.'"';
 
     foreach($allProjects as $project){
-        $people = $project->getAllPeople();
-        $conflict = 0;
-        foreach($people as $p){
-            if($person->getId() == $p->getId()){
-                $conflict = 1;
-                break;
-            }
-        }
+        $conflict = ($person->isMemberOf($project)) ? 1 : 0;
         $csv .= ',"'.$conflict.'"';
-
     }
     $csv .= "\n";
 }
