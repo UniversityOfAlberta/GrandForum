@@ -9,18 +9,47 @@ $wgSpecialPageGroups['ReviewerConflicts'] = 'grand-tools';
 
 $wgHooks['SkinTemplateContentActions'][] = 'ReviewerConflicts::showTabs';
 
+$current_evals = array(8,   // Lyn.Bartram
+                       15,  // Charles.Clarke
+                       17,  // Jeremy.Cooperstock
+                       563, // Jason.DellaRocca
+                       152, // Vic.diCiccio
+                       25,  // Abby.Goodrum
+                       90,  // Sean.Gouglas
+                       27,  // Diane.Gromala
+                       28,  // Carl.Gutwin
+                       564, // Beverly.Harrison
+                       32,  // Jennifer.Jenson
+                       687, // Paul.Lalonde
+                       36,  // Regan.Mandryk
+                       38,  // Catherine.Middleton
+                       1263,// Peter.Pirolli
+                       41,  // Pierre.Poulin
+                       48,  // Bart.Simon
+                       55,  // Samuel.Trosow
+                       60,  // Robert.Woodbury
+                       61  // Brian.Wyvill
+                       );
+
 function runReviewerConflicts($par) {
 	ReviewerConflicts::run($par);
 }
-
 
 class ReviewerConflicts extends SpecialPage {
 
 	function __construct() {
 		wfLoadExtensionMessages('ReviewerConflicts');
-		SpecialPage::SpecialPage("ReviewerConflicts", CNI.'+', true, 'runReviewerConflicts');
+		SpecialPage::SpecialPage("ReviewerConflicts", null, true, 'runReviewerConflicts');
 	}
 
+    function userCanExecute($user){
+        global $current_evals;
+        $me = Person::newFromUser($user);
+        if($me->isRole(MANAGER) || array_search($me->getId(), $current_evals) !== false){
+            return true;
+        }
+        return false;
+    }
 
     static function createTab(){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
@@ -135,9 +164,9 @@ class ReviewerConflicts extends SpecialPage {
                     else{
                         $user_conflict = 0;
                     }
-
+                    
                     $sql = "INSERT INTO grand_eval_conflicts(eval_id, sub_id, type, year, conflict, user_conflict) 
-                            VALUES('{$reviewer_id}', '{$project_id}', 'NI', '{$cur_year}', '$conflict', '$user_conflict' ) 
+                            VALUES('{$reviewer_id}', '{$project_id}', 'PROJECT', '{$cur_year}', '$conflict', '$user_conflict' ) 
                             ON DUPLICATE KEY UPDATE conflict='{$conflict}', user_conflict='{$user_conflict}'";
 
                     $data = DBFunctions::execSQL($sql, true);
@@ -167,8 +196,18 @@ class ReviewerConflicts extends SpecialPage {
 		                        <li><a href='#projects'>Projects</a></li>
 	                        </ul>");
 
-        $cnis = Person::getAllPeople(CNI);
-        $pnis = Person::getAllPeople(PNI);
+        $cnistmp = Person::getAllPeopleDuring(CNI, (REPORTING_YEAR+1).REPORTING_NCE_START_MONTH, (REPORTING_YEAR+2).REPORTING_NCE_END_MONTH);
+        $cnis = array();
+        foreach($cnistmp as $cni){
+	        $leadership = $cni->leadership();
+	        foreach($leadership as $lead){
+	            if($lead->getPhase() == 2 && !$lead->isSubProject()){
+	                $cnis[] = $cni;
+	                break;
+	            }
+	        }
+	    }
+        $pnis = Person::getAllPeopleDuring(PNI, (REPORTING_YEAR+1).REPORTING_NCE_START_MONTH, (REPORTING_YEAR+2).REPORTING_NCE_END_MONTH);
 		$wgOut->addHTML("<div id='pnis'>");
 
         $me = Person::newFromId($wgUser->getId());
@@ -258,7 +297,7 @@ class ReviewerConflicts extends SpecialPage {
 
     
     static function managerNiTable($nis, $type='CNI'){
-        global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $current_evals;
         
         $html = "";
         $csv = "";
@@ -316,8 +355,6 @@ EOF;
         
         $wgOut->addScript($js);    
         //$html .= $js;    
-
-        $current_evals = array(17,563,152,25,90,27,28,564,32,565,566,36,38,41,48,55,60,61,1263);
 
         $cur_year = date('Y');
         $sql = "SELECT DISTINCT eval_id FROM grand_eval_conflicts WHERE type='NI' AND year={$cur_year}";
@@ -397,11 +434,12 @@ EOF;
             $position = $position['university'];
             
             //Projects
-            $projects = $person->getProjects();
+            $projects = $person->leadership();
             $proj_names = array();
-            
             foreach($projects as $project){
-                $proj_names[] = $project->getName();
+                if($project->getPhase() == PROJECT_PHASE){
+                    $proj_names[] = $project->getName();
+                }
             }
             $proj_names = implode(' ', $proj_names);
 
@@ -449,8 +487,11 @@ EOF;
                     $eval_organization = $eval_organization['university'];
 
                     $eval_projects = array();
-                    foreach($eval->getProjects() as $eproject){
-                        $eval_projects[] = $eproject->getName();
+                    $evalprojects = $eval->getProjects();
+                    if(count($evalprojects) > 0){
+                        foreach($evalprojects as $eproject){
+                            $eval_projects[] = $eproject->getName();
+                        }
                     }
 
                     //$eval_papers = array();
@@ -543,16 +584,12 @@ EOF;
         </table>
         </div>
         <input type="hidden" name="type" value="{$type}" />
-        <a href="/index.php/Special:ReviewerConflicts?download_csv={$type}" target="_blank">[Download as CSV]</a>
+        <a href="$wgServer$wgScriptPath/index.php/Special:ReviewerConflicts?download_csv={$type}" target="_blank">[Download as CSV]</a>
         </form>
         </div>
 EOF;
-
-        $wgOut->addHTML($html);
-        
+        $wgOut->addHTML($html);    
     }
-
-
     
     static function niTable($nis, $type='CNI'){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
@@ -734,14 +771,16 @@ EOF;
             }
 
             //Projects
-            $projects = $person->getProjects();
+            $projects = $person->leadership();
             $proj_names = array();
             $same_projects = "No";
             foreach($projects as $project){
-            	if(in_array($project->getName(), $my_projects)){
-            		$same_projects = "Yes";
-            	}
-                $proj_names[] = $project->getName();
+                if($project->getPhase() == PROJECT_PHASE){
+                	if(in_array($project->getName(), $my_projects)){
+                		$same_projects = "Yes";
+                	}
+                    $proj_names[] = $project->getName();
+                }
             }
             $proj_names = implode(' ', $proj_names);
            
@@ -857,7 +896,7 @@ EOF;
         $cur_year = date('Y');
         $reviewer_id = $me->getId();
         $sql = "SELECT * FROM grand_eval_conflicts WHERE eval_id = '{$reviewer_id}' AND type='PROJECT' AND year={$cur_year}";
-        $data = DBFunctions::execSQL($sql);    
+        $data = DBFunctions::execSQL($sql);  
 
         $conflicts = array();
         foreach($data as $row){
@@ -866,6 +905,9 @@ EOF;
 
         $allProjects = Project::getAllProjects();
         foreach($allProjects as $project){
+            if($project->getPhase() != PROJECT_PHASE || $project->isSubProject()){
+                continue;
+            }
         	$project_name = $project->getName();
             $project_id = $project->getId();
             $same_projects = "No";
@@ -915,14 +957,13 @@ EOF;
     }
 
     static function managerProjectTable($nis){
-        global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $current_evals;
         
         $html = "";
         $csv = "";
         //$me = Person::newFromId($wgUser->getId());
         
         $cur_year = date('Y');
-        $current_evals = array(17,563,152,25,90,27,28,564,32,565,566,36,38,41,48,55,60,61,1263);
         $sql = "SELECT DISTINCT eval_id FROM grand_eval_conflicts WHERE type='PROJECT' AND year={$cur_year}";
         $data = DBFunctions::execSQL($sql);
         $total_conflict_submissions = count($data);
@@ -965,6 +1006,9 @@ EOF;
 
         $allProjects = Project::getAllProjects();
         foreach($allProjects as $project){
+            if($project->getPhase() != PROJECT_PHASE || $project->isSubProject()){
+                continue;
+            }
             $project_name = $project->getName();
             $project_id = $project->getId();            
            
@@ -1003,8 +1047,11 @@ EOF;
                 }
                 else{
                     $eval_projects = array();
-                    foreach($eval->getProjects() as $eproject){
-                        $eval_projects[] = $eproject->getName();
+                    $evalprojects = $eval->getProjects();
+                    if(count($evalprojects) > 0){
+                        foreach($evalprojects as $eproject){
+                            $eval_projects[] = $eproject->getName();
+                        }
                     }
                     
                     $bgcolor = "#FFFFFF";
@@ -1039,7 +1086,7 @@ EOF;
         </tbody>
         </table>
         <input type="hidden" name="type" value="PROJECTS" />
-        <a href="/index.php/Special:ReviewerConflicts?download_csv=Project" target="_blank">[Download as CSV]</a>
+        <a href="$wgServer$wgScriptPath/index.php/Special:ReviewerConflicts?download_csv=Project" target="_blank">[Download as CSV]</a>
         </form>
         </div>
 EOF;
@@ -1048,9 +1095,9 @@ EOF;
     }
 
     static function downloadEvalProjectsCSV(){
-        global $wgOut;
+        global $wgOut, $current_evals;
 
-        $current_evals = array(17,563,152,25,90,27,28,564,32,565,566,36,38,41,48,55,60,61,1263);
+        
         $cur_year = date('Y');
         $sql = "SELECT DISTINCT eval_id FROM grand_eval_conflicts WHERE type='PROJECT' AND year={$cur_year}";
         $data = DBFunctions::execSQL($sql);
@@ -1096,6 +1143,9 @@ EOF;
 
         $allProjects = Project::getAllProjects();
         foreach($allProjects as $project){
+            if($project->getPhase() != PROJECT_PHASE || $project->isSubProject()){
+                continue;
+            }
             $project_name = $project->getName();
             $project_id = $project->getId();            
             
@@ -1288,8 +1338,6 @@ EOF;
         header("Pragma: public");
         readfile($filename);
         exit;
-
-
     }
 }
 
