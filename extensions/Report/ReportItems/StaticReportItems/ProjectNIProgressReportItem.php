@@ -68,9 +68,6 @@ class ProjectNIProgressReportItem extends StaticReportItem {
             $error = "class='inlineError'";
         }
         $rowspan = 3;
-        if($project->getPhase() == PROJECT_PHASE){
-            $rowspan = 4;
-        }
         $details .= "<tr><td style='white-space:nowrap;' valign='top' rowspan='$rowspan'><b>NI Progress</b></td><td>{$nSubmitted} of the {$nPeople} NIs have submitted their reports\n</td></tr>";
         if($project->getPhase() == 1){ // TODO: Change this for 2014 reporting
             $details .= "<tr><td>{$nAllocated} of the {$nPeople} NIs have uploaded a revised budget for ".$this->getReport()->year." allocated funds\n</td></tr>";

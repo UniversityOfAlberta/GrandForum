@@ -1334,9 +1334,9 @@ EOF;
 
         $alreadySeen = array();
 
-        foreach($this->getAllPeopleDuring(null, ($year)."-00-00 00:00:00", ($year + 1)."-00-00 00:00:00") as $member){
-            if($member->isRoleDuring(PNI, ($year)."-00-00 00:00:00", ($year + 1)."-00-00 00:00:00") || 
-               $member->isRoleDuring(CNI, ($year)."-00-00 00:00:00", ($year + 1)."-00-00 00:00:00")){
+        foreach($this->getAllPeopleDuring(null, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH) as $member){
+            if($member->isRoleDuring(PNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH) || 
+               $member->isRoleDuring(CNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
                 if(isset($alreadySeen[$member->getId()])){
                     continue;
                 }
