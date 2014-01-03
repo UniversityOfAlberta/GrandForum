@@ -35,7 +35,7 @@ class ProjectBudgetReportItem extends StaticReportItem {
         $wgOut->addHTML($CNIBudget->render());
         $wgOut->addHTML("</div><h2>Totals</h2><div>");
         $wgOut->addHTML($totalBudget->render());
-        $wgOut->addHTML("<br /><b>CNI/PNI Request Ratio:</b> ".number_format((($cnitotal/max(1,$total))/max($pnitotal/max(1,$total), 1))*100, 2)."%");
+        $wgOut->addHTML("<br /><b>CNI/PNI Request Ratio:</b> ".number_format(($cnitotal/max($pnitotal, 1))*100, 2)."%");
         $wgOut->addHTML("</div>");
     }
     
