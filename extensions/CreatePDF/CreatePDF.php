@@ -38,7 +38,7 @@ class CreatePDF extends SpecialPage {
 	        }
 	        else{
 	        	$project = @Project::newFromId($_GET['project']);
-	        	if($project != null && $project->deleted){
+	        	if($project != null && ($project->deleted || $project->getPhase() < PROJECT_PHASE)){
 	            	$_GET['report'] = "ProjectFinalReport";
 	        	}
 	        }
