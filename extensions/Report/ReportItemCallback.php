@@ -727,28 +727,12 @@ class ReportItemCallback {
     
     function getChampOrg(){
         $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
-        
-        $champs = $project->getChampionsDuring();
-        foreach($champs as $champ){
-            if($champ['user']->getId() == $person->getId()){
-                return $champ['org'];
-            }
-        }
-        return "";
+        return $person->getPartnerDepartment();
     }
     
     function getChampTitle(){
         $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
-        
-        $champs = $project->getChampionsDuring();
-        foreach($champs as $champ){
-            if($champ['user']->getId() == $person->getId()){
-                return $champ['title'];
-            }
-        }
-        return "";
+        return $person->getPartnerTitle();
     }
     
     function getChampSubProjects(){
