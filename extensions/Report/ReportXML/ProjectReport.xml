@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Project Report" reportType="RP_LEADER" pdfType="RPTP_LEADER" pdfFiles="ProjectReportPDF" personId="0" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
-            <SectionPermission id="status" permissions="rw" />
-            <SectionPermission id="dashboard" permissions="rw" />
-            <SectionPermission id="report" permissions="rw" />
-            <SectionPermission id="subprojects" permissions="rw" />
-            <SectionPermission id="comments" permissions="rw" />
-            <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="COPL">
-            <SectionPermission id="status" permissions="rw" />
-            <SectionPermission id="dashboard" permissions="rw" />
-            <SectionPermission id="report" permissions="rw" />
-            <SectionPermission id="subprojects" permissions="rw" />
-            <SectionPermission id="comments" permissions="rw" />
-            <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PM">
-            <SectionPermission id="status" permissions="rw" />
-            <SectionPermission id="dashboard" permissions="rw" />
-            <SectionPermission id="report" permissions="rw" />
-            <SectionPermission id="subprojects" permissions="rw" />
-            <SectionPermission id="comments" permissions="r" />
-            <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="" />
-        </Role>
         <!--
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
+            <SectionPermission id="status" permissions="rw" />
+            <SectionPermission id="dashboard" permissions="rw" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="subprojects" permissions="rw" />
+            <SectionPermission id="comments" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="COPL">
+            <SectionPermission id="status" permissions="rw" />
+            <SectionPermission id="dashboard" permissions="rw" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="subprojects" permissions="rw" />
+            <SectionPermission id="comments" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PM">
+            <SectionPermission id="status" permissions="rw" />
+            <SectionPermission id="dashboard" permissions="rw" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="subprojects" permissions="rw" />
+            <SectionPermission id="comments" permissions="r" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="" />
+        </Role>
+        -->
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="status" permissions="r" />
             <SectionPermission id="dashboard" permissions="r" />
             <SectionPermission id="report" permissions="r" />
@@ -61,7 +62,7 @@
             <SectionPermission id="budget" permissions="r" />
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="" />
-        </Role>-->
+        </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
     <ReportSection id="status" tooltip="Evaluation of the project report against the reporting rules" name="Report Completion Status" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">

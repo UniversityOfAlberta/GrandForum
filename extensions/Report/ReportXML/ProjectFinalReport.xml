@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report extends="ProjectReport" name="Project Final Report" pdfType="RPTP_LEADER" pdfFiles="ProjectFinalReportPDF,ProjectFinalReportComments,ProjectFinalReportMilestones">
     <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
+            <SectionPermission id="status" permissions="r" />
+            <SectionPermission id="dashboard" permissions="r" />
+            <SectionPermission id="report" permissions="r" />
+            <SectionPermission id="subprojects" permissions="r" />
+            <SectionPermission id="comments" permissions="r" />
+            <SectionPermission id="budget" permissions="r" />
+            <SectionPermission id="review" permissions="r" />
+            <SectionPermission id="submit" permissions="r" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="COPL">
+            <SectionPermission id="status" permissions="r" />
+            <SectionPermission id="dashboard" permissions="r" />
+            <SectionPermission id="report" permissions="r" />
+            <SectionPermission id="subprojects" permissions="r" />
+            <SectionPermission id="comments" permissions="r" />
+            <SectionPermission id="budget" permissions="r" />
+            <SectionPermission id="review" permissions="r" />
+            <SectionPermission id="submit" permissions="r" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PM">
+            <SectionPermission id="status" permissions="r" />
+            <SectionPermission id="dashboard" permissions="r" />
+            <SectionPermission id="report" permissions="r" />
+            <SectionPermission id="subprojects" permissions="r" />
+            <SectionPermission id="comments" permissions="r" />
+            <SectionPermission id="budget" permissions="r" />
+            <SectionPermission id="review" permissions="r" />
+            <SectionPermission id="submit" permissions="" />
+        </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="true" />
     </Permissions>
     <ReportSection id="status">
