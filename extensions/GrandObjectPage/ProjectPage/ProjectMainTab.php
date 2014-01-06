@@ -232,11 +232,6 @@ EOF;
         foreach($project->getChampions() as $champ){
             $champions[$champ['user']->getId()] = $champ;
         }
-        if(!$project->isSubProject()){    
-            foreach($project->getSubProjects() as $sub){
-                
-            }
-        }
         if(!$project->isSubProject()){
             foreach($project->getSubProjects() as $sub){
                 foreach($sub->getChampions() as $champ){
