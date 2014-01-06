@@ -1410,12 +1410,15 @@ EOF;
         $projects = $me->getProjects();
         
         $selected = "";
-        foreach($me->getProjects() as $project){
+        foreach($projects as $key => $project){
             if($wgTitle->getNSText() == $project->getName()){
                 $selected = "selected";
-                break;
+            }
+            if($project->isSubProject()){
+                unset($projects[$key]);
             }
         }
+        $projects = array_values($projects);
         
         echo "<li class='top-nav-element $selected'>\n";
         echo "    <span class='top-nav-left'>&nbsp;</span>\n";
