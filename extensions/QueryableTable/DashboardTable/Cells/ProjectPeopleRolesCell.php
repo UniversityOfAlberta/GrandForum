@@ -35,6 +35,19 @@ class ProjectPeopleRolesCell extends Cell{
                     break;
                 }
             }
+            foreach($table->obj->getSubProjects() as $sub){
+                $break = false;
+                foreach($leads as $lead){
+                    if($lead->getId() == $sub->getId()){
+                        $values[] = "sPL";
+                        $break = true;
+                        break;
+                    }
+                }
+                if($break){
+                    break;
+                }
+            }
             foreach($person->getRoles() as $role){
                 if($role->getRole() == HQP || 
                     $role->getRole() == PNI || 
@@ -44,9 +57,6 @@ class ProjectPeopleRolesCell extends Cell{
                 if($role->getRole() == AR || $role->getRole() == "Associated Researcher"){
                     $values[] = 'AR';
                 }
-            }
-            foreach($person->getLeadershipRoles() as $role){
-                $values[] = $role->getRole();
             }
             $this->value = "<a href='{$person->getUrl()}' target = '_blank'><b>{$person->getReversedName()}</b></a><br />(".implode(", ", $values).")";
         }

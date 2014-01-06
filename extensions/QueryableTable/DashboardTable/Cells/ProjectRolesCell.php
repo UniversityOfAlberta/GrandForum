@@ -42,6 +42,19 @@ class ProjectRolesCell extends Cell{
                     break;
                 }
             }
+            foreach($table->obj->getSubProjects() as $sub){
+                $break = false;
+                foreach($leads as $lead){
+                    if($lead->getId() == $sub->getId()){
+                        $values[] = "sPL";
+                        $break = true;
+                        break;
+                    }
+                }
+                if($break){
+                    break;
+                }
+            }
             foreach($person->getRoles() as $role){
                 if($role->getRole() == HQP || $role->getRole() == PNI || $role->getRole() == CNI || $role->getRole() == AR){
                     if($role->getRole() == AR){
