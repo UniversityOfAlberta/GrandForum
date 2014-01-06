@@ -34,8 +34,10 @@
                         <td>{$champ_subprojects}</td>
                     </tr>
                 </table><br />
-                <p><i>The {$project_name} Project Report PDF will be available for download on January 3, 2014.</i></p><br />
             ]]>
+        </ReportItem>
+        <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true" buttonName="{$project_name} Project Report PDF">
+            <![CDATA[{$item}]]>
         </ReportItem>
         <ReportItem id="represent" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_REPRESENT" options="As an individual only|As an individual with the consent of my organization|On behalf of my organization" orientation="vertical">
             <![CDATA[
