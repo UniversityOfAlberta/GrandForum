@@ -727,7 +727,7 @@ class ReportItemCallback {
     
     function getChampOrg(){
         $person = Person::newFromId($this->reportItem->personId);
-        return $person->getPartnerDepartment();
+        return $person->getPartnerName();
     }
     
     function getChampTitle(){
