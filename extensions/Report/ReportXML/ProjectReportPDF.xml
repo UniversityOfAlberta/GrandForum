@@ -103,8 +103,9 @@
                     <div>
                         <h2><a class='anchor' id='subproject_desc_{$project_id}'>{$project_name}</a></h2>
                         <b>Full Name:</b><br />{$project_full_name}<br /><br />
-                        <b>Status:</b><br />{$project_status}<br /><br />
+                        <!--<b>Status:</b><br />{$project_status}<br /><br />-->
                         <b>Leader(s):</b><br />{$project_leaders}<br /><br />
+                        <b>NI(s):</b><br />{$project_nis}<br /><br />
                         <b>Champion(s):</b><br />{$project_champions}<br /><br />
                         <b>Description:</b><br />{$project_description}<br /><br />
                     </div>

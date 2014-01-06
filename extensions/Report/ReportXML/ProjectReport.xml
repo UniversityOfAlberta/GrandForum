@@ -293,10 +293,11 @@
                     <div>
                         <h2><a target='_blank' href='{$project_url}'>{$project_name}</a></h2>
                         <table>
-                            <tr><td width='50'><b>Id:</b></td><td align='left'>{$project_id}</td></tr>
+                            <!--<tr><td width='50'><b>Id:</b></td><td align='left'>{$project_id}</td></tr>-->
                             <tr><td width='50'><b>Full Name:</b></td><td align='left'>{$project_full_name}</td></tr>
-                            <tr><td width='50'><b>Status:</b></td><td align='left'>{$project_status}</td></tr>
+                            <!--<tr><td width='50'><b>Status:</b></td><td align='left'>{$project_status}</td></tr>-->
                             <tr><td width='50'><b>Leader(s):</b></td><td align='left'>{$project_leaders}</td></tr>
+                            <tr><td width='50'><b>NI(s):</b></td><td align='left'>{$project_nis}</td></tr>
                             <tr><td width='50'><b>Champion(s):</b></td><td align='left'>{$project_champions}</td></tr>
                             <tr><td width='50' valign='top'><b>Description:</b></td><td align='left'>{$project_description}</td></tr>
                         </table>

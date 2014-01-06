@@ -19,6 +19,7 @@ class ReportItemCallback {
             "project_coleaders" => "getProjectCoLeaders",
             "project_problem" => "getProjectProblem",
             "project_solution" => "getProjectSolution",
+            "project_nis" => "getProjectNIs",
             "project_champions" => "getProjectChampions",
             // Milestones
             "milestone_id" => "getMilestoneId",
@@ -203,6 +204,22 @@ class ReportItemCallback {
             $project_sol = $project->getSolution();
         }
         return $project_sol;
+    }
+    
+    function getProjectNIs(){
+        $nis = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            foreach($project->getAllPeopleDuring() as $ni){
+                if(!$ni->leadershipOf($project) && ($ni->isRoleDuring(CNI) || $ni->isRoleDuring(PNI) || $ni->isRoleDuring(AR))){
+                    $nis[] = "<a href='{$ni->getUrl()}' target='_blank'>{$ni->getNameForForms()}</a>";
+                }
+            }
+        }
+        if(count($nis) == 0){
+            $nis[] = "N/A";
+        }
+        return implode(", ", $nis);
     }
     
     function getProjectChampions(){
