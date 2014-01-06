@@ -72,6 +72,23 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
+        <ReportItemSet id="subproject_dashboard_champ" type="SubProjectChampionsReportItemSet">
+            <ReportItem id="subproject_champ" type="StaticReportItem">
+                <![CDATA[
+                    <div><h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a> ({$champ_subprojects})</h3>
+                    <table>
+                        <tr>
+                            <td><b>Organization:</b></td>
+                            <td>{$champ_org}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Title:</b></td>
+                            <td>{$champ_title}</td>
+                        </tr>
+                    </table>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="report1" name="Executive Summary: Overview of {$project_name} Activity" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="1" renderpdf="true">
     <!-- Ia. Overview of Activity -->

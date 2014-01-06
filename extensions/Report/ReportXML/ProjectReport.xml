@@ -169,7 +169,7 @@
             </ReportItem>
         </ReportItemSet>
         <ReportItemSet id="subproject_dashboard_champ" type="SubProjectChampionsReportItemSet">
-            <ReportItem id="project_champ" type="StaticReportItem">
+            <ReportItem id="subproject_champ" type="StaticReportItem">
                 <![CDATA[
                     <div><h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a> ({$champ_subprojects})</h3>
                     <table>
