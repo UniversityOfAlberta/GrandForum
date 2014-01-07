@@ -57,25 +57,24 @@
         <ReportItemSet id="project_dashboard_champ" type="ProjectChampionsReportItemSet">
             <ReportItem id="project_champ" type="StaticReportItem">
                 <![CDATA[
-                    <div><h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a> ({$champ_subprojects})</h3>
-                        <table>
-                            <tr>
-                                <td><b>Organization:</b></td>
-                                <td>{$champ_org}</td>
-                            </tr>
-                            <tr>
-                                <td><b>Title:</b></td>
-                                <td>{$champ_title}</td>
-                            </tr>
-                        </table> 
-                    </div>
+                    <h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a> ({$champ_subprojects})</h3>
+                    <table>
+                        <tr>
+                            <td><b>Organization:</b></td>
+                            <td>{$champ_org}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Title:</b></td>
+                            <td>{$champ_title}</td>
+                        </tr>
+                    </table>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItemSet id="subproject_dashboard_champ" type="SubProjectChampionsReportItemSet">
             <ReportItem id="subproject_champ" type="StaticReportItem">
                 <![CDATA[
-                    <div><h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a> ({$champ_subprojects})</h3>
+                    <h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a> ({$champ_subprojects})</h3>
                     <table>
                         <tr>
                             <td><b>Organization:</b></td>
@@ -193,7 +192,7 @@
     </ReportSection>
     <ReportSection id="prod_details" name="Productivity Details" type="EditableReportSection" pagebreak="false" number="4" renderpdf="true">
         <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true">
-            <![CDATA[<div id='appendix'>{$item}</div>]]>
+            <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
 </Report>

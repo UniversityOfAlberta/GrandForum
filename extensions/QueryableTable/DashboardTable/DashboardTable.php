@@ -136,10 +136,12 @@ class DashboardTable extends QueryableTable{
 	// Similar to render(), but used specifically for when printing PDFs
 	// The Dashboard details are expanded below the table
 	function renderForPDF($table=true, $details=true){
+	    $me = Person::newFromWgUser();
 	    $html = "";
 	    if($table){
 	        $dom = new SmartDOMDocument();
 	        $dom->loadHTML($this->render());
+	        
 	        $scripts = $dom->getElementsByTagName("script");
 	        foreach($scripts as $script){
 	            $script->parentNode->removeChild($script);
@@ -156,7 +158,7 @@ class DashboardTable extends QueryableTable{
 	                foreach($tab->getElementsByTagName("table") as $t){
 	                    $t->setAttribute('style', $t->getAttribute('style').'border-spacing:0px;');
 	                    foreach($t->getElementsByTagName("td") as $td){
-	                        $td->setAttribute('style', $td->getAttribute('style')."padding:".max(1, (0.5*DPI_CONSTANT))."px 0;");
+	                        $td->setAttribute('style', $td->getAttribute('style')."padding:".max(1, floor((0.5*DPI_CONSTANT)))."px 0;");
 	                        $td->setAttribute('style', str_replace("width:16px;", "", $td->getAttribute('style')));
 	                        $td->setAttribute('style', str_replace("width:50%;", "", $td->getAttribute('style')));
 	                    }

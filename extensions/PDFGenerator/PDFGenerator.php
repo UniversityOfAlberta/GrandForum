@@ -326,7 +326,7 @@ EOF;
 		        margin: 0;
 		    }
 		    
-		    #pdfBody small {
+		    #pdfBody small, #pdfBody .small {
 		        font-size: ".max(10, ($fontSize+(-3*DPI_CONSTANT)))."px;
 		        display:inline;
 		    }
@@ -335,9 +335,14 @@ EOF;
 		        font-size: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
 		    }
 		    
+		    #pdfBody ul {
+		        margin-top: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
+		        margin-bottom: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
+		    }
+		    
 		    #pdfBody li {
 		        font-weight: normal !important;
-		        margin-bottom: ".($fontSize+(-3*DPI_CONSTANT))."px;
+		        margin-bottom: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
 		    }
 		    
 		    #pdfBody .label {
