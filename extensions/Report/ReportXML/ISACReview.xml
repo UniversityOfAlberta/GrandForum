@@ -32,7 +32,7 @@
     </ReportSection>
     
     <!-- Phase1 Projects Comments -->
-    <ReportSection id="project1_comments" name="Phase1 Comments" tooltip="Comments for Phase1 Projects" blobSection="ISAC_PHASE1" type="EditableReportSection" renderpdf="false" private="false">
+    <!--ReportSection id="project1_comments" name="Phase1 Comments" tooltip="Comments for Phase1 Projects" blobSection="ISAC_PHASE1" type="EditableReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
                <p>Comment about any of the Phase 1 Projects</p>
@@ -45,9 +45,9 @@
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
-    </ReportSection>
+    </ReportSection-->
     
-    <!-- Phase1 Projects Materials -->
+    <!-- Phase2 Projects Materials -->
     <ReportSection id="project2_materials" name="Phase2 Materials" tooltip="PDF Downloads for Phase1 Projects" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
@@ -69,7 +69,7 @@
         </ReportItem>
     </ReportSection>
     
-    <!-- Phase1 Projects Comments -->
+    <!-- Phase2 Projects Comments -->
     <ReportSection id="project2_comments" name="Phase2 Comments" tooltip="Comments for Phase2 Projects" blobSection="ISAC_PHASE2" type="EditableReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
