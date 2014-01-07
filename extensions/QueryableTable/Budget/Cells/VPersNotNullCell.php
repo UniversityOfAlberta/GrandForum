@@ -8,7 +8,7 @@ class VPersNotNullCell extends Cell{
             $this->value = $cellValue;
         }
         if($cellValue != ''){
-            $origCellValue = str_replace("'", "", $cellValue);
+            $origCellValue = $cellValue;
             $names = explode(',', $origCellValue);
             $person = null;
             if(count($names) > 1){

@@ -1,10 +1,10 @@
 <?php
 
-class VPersCell extends Cell{
+class VPersCell extends Cell {
     
     function VPersCell($cellType, $params, $cellValue, $rowN, $colN, $table){
         if($cellValue != ''){
-            $origCellValue = str_replace("'", "", $cellValue);
+            $origCellValue = $cellValue;
             $names = explode(',', $origCellValue);
             $person = null;
             if(count($names) > 1){
