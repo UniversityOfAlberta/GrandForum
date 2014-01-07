@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="PDF Materials" reportType="RP_ISAC" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="ISAC">
+            <SectionPermission id="project1_materials" permissions="rw" />
+            <SectionPermission id="project1_comments" permissions="rw" />
+            <SectionPermission id="project2_materials" permissions="rw" />
+            <SectionPermission id="project2_comments" permissions="rw" />
+        </Role>
+    </Permissions>
+
+    <!-- Phase1 Projects Materials -->
+    <ReportSection id="project1_materials" name="Phase1 Materials" tooltip="PDF Downloads for Phase1 Projects" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+        <Instructions>
+            <![CDATA[
+               <p>Download the Project Report PDFs for the Phase1 Projects.</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="p1_materials_head" type="StaticReportItem">
+            <![CDATA[
+                <table>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" phase="1">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true" buttonName="Project Report PDF" year="2013">
+                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td></tr>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="project_materials_tail" type="StaticReportItem">
+            <![CDATA[</table>]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Phase1 Projects Comments -->
+    <ReportSection id="project1_comments" name="Phase1 Comments" tooltip="Comments for Phase1 Projects" blobSection="ISAC_PHASE1" type="EditableReportSection" renderpdf="false" private="false">
+        <Instructions>
+            <![CDATA[
+               <p>Comment about any of the Phase 1 Projects</p>
+            ]]>
+        </Instructions>
+        <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" phase="1" blobIndex="projectId">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
+                <ReportItem id="pni_comment" type="TextAreaReportItem" blobType="BLOB_ARRAY" blobItem="ISAC_PHASE1_COMMENT">
+                    <![CDATA[{$item}]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    
+    <!-- Phase1 Projects Materials -->
+    <ReportSection id="project2_materials" name="Phase2 Materials" tooltip="PDF Downloads for Phase1 Projects" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+        <Instructions>
+            <![CDATA[
+               <p>Download the Project Report PDFs for the Phase2 Projects.</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="p2_materials_head" type="StaticReportItem">
+            <![CDATA[
+                <table>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" phase="2">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true" buttonName="Project Report PDF" year="2013">
+                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td></tr>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="project_materials_tail" type="StaticReportItem">
+            <![CDATA[</table>]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Phase1 Projects Comments -->
+    <ReportSection id="project2_comments" name="Phase2 Comments" tooltip="Comments for Phase2 Projects" blobSection="ISAC_PHASE2" type="EditableReportSection" renderpdf="false" private="false">
+        <Instructions>
+            <![CDATA[
+               <p>Comment about any of the Phase 2 Projects</p>
+            ]]>
+        </Instructions>
+        <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" phase="2" blobIndex="projectId">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
+                <ReportItem id="pni_comment" type="TextAreaReportItem" blobType="BLOB_ARRAY" blobItem="ISAC_PHASE2_COMMENT">
+                    <![CDATA[{$item}]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+</Report>

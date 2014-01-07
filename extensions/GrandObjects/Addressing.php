@@ -32,6 +32,7 @@ define('RP_EVAL_LOI_FEED',	10);
 define('RP_REVIEW', 11);
 define('RP_MTG', 12);
 define('RP_CHAMP', 13);
+define('RP_ISAC', 14);
 //define('RP_EVAL_RESEARCHER_REV',		9); //Revised answers
 //define('RP_EVAL_CNI_REV',		10); //Revised answers
 //define('RP_EVAL_PROJECT_REV', 11); //Revised answers
@@ -206,6 +207,9 @@ define('CHAMP_SHORTCOMINGS', 5);
 define('CHAMP_CASH', 6);
 define('CHAMP_RESEARCHERS', 7);
 
+define('ISAC_PHASE1', 1);
+define('ISAC_PHASE2', 1);
+
 // No third-level identifiers for interactions with people (HQP_PEOPLE_INTERACT),
 // projects (HQP_PROJECT_INTERACT), or impact (HQP_IMPACT).
 
@@ -265,6 +269,8 @@ define('SUP_CONT_DETAILS',		3);
 
 define('SUP_OTH_DETAILS',		1);
 
+define('ISAC_PHASE1_COMMENT', 1);
+define('ISAC_PHASE2_COMMENT', 2);
 
 //Third level Eval LOI => Only 2 types for each question: Y/N radio(YN) AND Comment (C)
 define('EVL_LOI_YN',	1);

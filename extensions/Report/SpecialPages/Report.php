@@ -48,6 +48,9 @@ class Report extends AbstractReport{
         else if($person->isRoleAtLeast(RMC)){
             $page = "Report?report=EvalLOIReport";
         }
+        else if($person->isRole(ISAC)){
+            $page = "Report?report=ISACReview";
+        }
         else if($person->isRole(CHAMP)){
             $projects = Project::getAllProjects();
             foreach($projects as $project){
@@ -137,6 +140,17 @@ class Report extends AbstractReport{
                          'class' => $class,
                          'text'  => "Evaluator",
                          'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalReport",
+                        );
+            }
+            
+            // ISAC Review
+            if($person->isEvaluator()){
+                @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "ISACReview") ? "selected" : false;
+                
+                $content_actions[] = array (
+                         'class' => $class,
+                         'text'  => "ISAC",
+                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=ISACReview",
                         );
             }
 
