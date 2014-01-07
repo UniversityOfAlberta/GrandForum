@@ -12,7 +12,7 @@
             <![CDATA[<h2>Project Retrospective</h2>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="dashboard">
+    <ReportSection id="dashboard" pagebreak="false">
         <ReportItem id="project_dashboard_champ_head" delete="true" />
     </ReportSection>
     <ReportSection id="budget" delete="true" />

@@ -20,7 +20,7 @@
             <![CDATA[
             <script type="text/javascript">
                 $(document).ready(function(){ 
-                    $('.project_materials_accordion').accordion({heightStyle: "content", collapsible: true, icons: false, header: "h2" }); 
+                    $('.project_materials_accordion').accordion({heightStyle: "content", collapsible: true, icons: false, header: "h2" });
                 })
             </script>
             ]]>
@@ -46,12 +46,26 @@
             </table>
             </div>
             <div class="project_materials_accordion" style="float: left;">
-            <h2>All Project Materials</h2>
+            <h2>All Phase2 Project Materials</h2>
             <div>
             <table align="left">
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="AllProjectsReportItemSet">
+        <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" phase="2">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true">
+                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="project_materials_tail" type="StaticReportItem">
+            <![CDATA[
+            </table>
+            </div>
+            <h2>All Phase1 Project Materials</h2>
+            <div>
+            <table align="left">
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" phase="1">
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true">
                 <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td>]]>
             </ReportItem>
