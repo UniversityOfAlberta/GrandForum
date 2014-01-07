@@ -16,6 +16,21 @@
             <SectionPermission id="cni_materials" permissions="rw" />
             <SectionPermission id="project_materials" permissions="rw" />
         </Role>
+        <Person id="11">
+            <SectionPermission id="pni_materials" permissions="rw" />
+            <SectionPermission id="cni_materials" permissions="rw" />
+            <SectionPermission id="project_materials" permissions="rw" />
+        </Person>
+        <Person id="22">
+            <SectionPermission id="pni_materials" permissions="rw" />
+            <SectionPermission id="cni_materials" permissions="rw" />
+            <SectionPermission id="project_materials" permissions="rw" />
+        </Person>
+        <Person id="565">
+            <SectionPermission id="pni_materials" permissions="rw" />
+            <SectionPermission id="cni_materials" permissions="rw" />
+            <SectionPermission id="project_materials" permissions="rw" />
+        </Person>
     </Permissions>
 
     <!-- PNI Materials -->
@@ -31,7 +46,7 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="pni_materialss" type="AllMaterialsReportItemSet" subType="PNI">
-            <ReportItem id="pni_pdf" type="PDFReportItem" reportType="NIReport" buttonName="NI Report PDF" year="2012">
+            <ReportItem id="pni_pdf" type="PDFReportItem" reportType="NIReport" buttonName="NI Report PDF" year="2013">
                 <![CDATA[<tr><td><span style="font-size:16px;">{$user_reversed_name}</span></td><td>{$item}</td></tr>]]>
             </ReportItem>
             <!-- <ReportItem id="pni_pdf" type="PDFReportItem" reportType="ProjectNIComments" buttonName="PL Comments PDF">
@@ -56,7 +71,7 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="cni_materialss" type="AllMaterialsReportItemSet" subType="CNI">
-            <ReportItem id="cni_pdf" type="PDFReportItem" reportType="" buttonName="NI Report PDF" year="2012">
+            <ReportItem id="cni_pdf" type="PDFReportItem" reportType="" buttonName="NI Report PDF" year="2013">
                 <![CDATA[<tr><td><span style="font-size:16px;">{$user_reversed_name}</span></td><td>{$item}</td></tr>]]>
             </ReportItem>
             <!-- <ReportItem id="cni_pdf" type="PDFReportItem" reportType="ProjectNIComments" buttonName="PL Comments PDF">
@@ -77,11 +92,24 @@
         </Instructions>
         <ReportItem id="cni_materials_head" type="StaticReportItem">
             <![CDATA[
+            <h2>Phase 2 Project Materials</h2>
             <table>
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materialss" type="AllProjectsReportItemSet">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true" buttonName="Project Report PDF" year="2012">
+        <ReportItemSet id="project_materialss" type="AllProjectsReportItemSet" phase="2">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true" buttonName="Project Report PDF" year="2013">
+                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td></tr>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="cni_materials_head" type="StaticReportItem">
+            <![CDATA[
+            </table>
+            <h2>Phase 1 Project Materials</h2>
+            <table>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="project_materialss" type="AllProjectsReportItemSet" phase="1">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true" buttonName="Project Report PDF" year="2013">
                 <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>

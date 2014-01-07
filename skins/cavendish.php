@@ -535,7 +535,7 @@ class cavendishTemplate extends QuickTemplate {
 					    //	ReviewerConflicts::createTab();
 					    //}
 
-					    if($user->isRole(EXTERNAL) || $user->isRole(STAFF) || $user->isRole(MANAGER)){
+					    if(ReportPDFs::userCanExecute($wgUser)){
 					        ReportPDFs::createTab();
 					    }
                         ReportSurvey::createTab();

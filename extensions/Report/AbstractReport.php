@@ -570,6 +570,11 @@ abstract class AbstractReport extends SpecialPage {
                             }
                         }
                         break;
+                    case "Person":
+                        if($me->getId() == $perm['perm']['id']){
+                            $rResult = true;
+                        }
+                        break;
                 }
             }
         }
@@ -604,6 +609,11 @@ abstract class AbstractReport extends SpecialPage {
                 foreach($this->sectionPermissions[$this->project->getName()][$section->id] as $key => $perm){
                     $permissions[$key] = $perm;
                 }
+            }
+        }
+        if(isset($this->sectionPermissions[$me->getId()])){
+            foreach($this->sectionPermissions[$me->getId()][$section->id] as $key => $perm){
+                $permissions[$key] = $perm;
             }
         }
         return $permissions;

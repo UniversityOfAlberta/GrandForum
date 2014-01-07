@@ -14,7 +14,20 @@ class ReportPDFs extends AbstractReport{
         
         $this->AbstractReport(dirname(__FILE__)."/../ReportXML/$report.xml", -1, false, false);
         wfLoadExtensionMessages("ReportPDFs");
-        SpecialPage::SpecialPage("ReportPDFs", EXTERNAL.'+', true);
+        SpecialPage::SpecialPage("ReportPDFs", null, true);
+    }
+    
+    function userCanExecute($user){
+        $me = Person::newFromWgUser();
+        if($me->isRole(EXTERNAL) ||
+           $me->isRoleAtLeast(MANAGER) ||
+           $me->getId() == 11 ||
+           $me->getId() == 22 ||
+           $me->getId() == 565){
+            // Ids need to be changed in PDFMaterials.xml as well
+            return true;
+        }
+        return false;
     }
 
     static function createTab(){

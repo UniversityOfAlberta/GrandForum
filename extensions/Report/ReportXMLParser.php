@@ -222,6 +222,12 @@ class ReportXMLParser {
                 $this->parseProjectSectionPermissions($child, $projName);
                 $this->report->addPermission("Project", array("deleted" => $deleted, "project" => $projName), "{$start}", "{$end}");
             }
+            else if($key == "Person"){
+                $attributes = $child->attributes();
+                $id = (isset($attributes->id)) ? "{$attributes->id}" : 0;
+                $this->parsePersonSectionPermissions($child, $id);
+                $this->report->addPermission("Person", array("id" => $id));
+            }
         }
     }
     
@@ -244,6 +250,17 @@ class ReportXMLParser {
             $permissions = (isset($attributes->permissions)) ? "{$attributes->permissions}" : "r";
             $sectionId = (isset($attributes->id)) ? "{$attributes->id}" : "";
             $this->report->addSectionPermission($sectionId, $project, $permissions);
+        }
+    }
+    
+    // Parses the <SectionPermission> elements of a <Person> element
+    function parsePersonSectionPermissions($node, $person){
+        $children = $node->children();
+        foreach($children as $key => $child){
+            $attributes = $child->attributes();
+            $permissions = (isset($attributes->permissions)) ? "{$attributes->permissions}" : "r";
+            $sectionId = (isset($attributes->id)) ? "{$attributes->id}" : "";
+            $this->report->addSectionPermission($sectionId, $person, $permissions);
         }
     }
     
