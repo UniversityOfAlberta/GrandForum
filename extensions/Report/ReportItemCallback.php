@@ -689,8 +689,8 @@ class ReportItemCallback {
         $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $project->getId());
         $blob->load($addr);
         $data = $blob->getData();
-        if(isset($data[$person->id])){
-            return $data[$person->id];
+        if(isset($data[$person->id]['ni_comments'])){
+            return $data[$person->id]['ni_comments'];
         }
         return "";
     }
