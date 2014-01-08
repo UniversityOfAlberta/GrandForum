@@ -244,11 +244,31 @@ class ReportItemCallback {
         if($this->reportItem->projectId != 0 ){
             $project = Project::newFromId($this->reportItem->projectId);
             $succs = $project->getSuccs();
+            $people = $project->getAllPeople();
+            foreach($people as $key => $person){
+                if(!$person->isRole(PNI) && !$person->isRole(CNI)){
+                    unset($people[$key]);
+                }
+            }
             foreach($succs as $succ){
-                $projects[] = $succ->getName();
+                $count = 0;
+                foreach($succ->getAllPeople() as $person){
+                    if(isset($people[$person->getId()]) && ($person->isRole(PNI) || !$person->isRole(CNI))){
+                        $count++;
+                    }
+                }
+                $projects[$count][] = $succ->getName()."($count)";
             }
         }
-        return implode(", ", $projects);
+        ksort($projects);
+        $projects = array_reverse($projects);
+        $newProjects = array();
+        foreach($projects as $projs){
+            foreach($projs as $proj){
+                $newProjects[] = $proj;
+            }
+        }
+        return implode(", ", $newProjects);
     }
     
     function getProjectEvolvedFrom(){
@@ -256,11 +276,31 @@ class ReportItemCallback {
         if($this->reportItem->projectId != 0 ){
             $project = Project::newFromId($this->reportItem->projectId);
             $preds = $project->getPreds();
+            $people = $project->getAllPeople();
+            foreach($people as $key => $person){
+                if(!$person->isRole(PNI) && !$person->isRole(CNI)){
+                    unset($people[$key]);
+                }
+            }
             foreach($preds as $pred){
-                $projects[] = $pred->getName();
+                $count = 0;
+                foreach($pred->getAllPeople() as $person){
+                    if(isset($people[$person->getId()]) && ($person->isRole(PNI) || !$person->isRole(CNI))){
+                        $count++;
+                    }
+                }
+                $projects[$count][] = $pred->getName()."($count)";
             }
         }
-        return implode(", ", $projects);
+        ksort($projects);
+        $projects = array_reverse($projects);
+        $newProjects = array();
+        foreach($projects as $projs){
+            foreach($projs as $proj){
+                $newProjects[] = $proj;
+            }
+        }
+        return implode(", ", $newProjects);
     }
     
     function getMilestoneId(){

@@ -48,7 +48,6 @@ class Project extends BackboneModel {
                  AND e.new_id = p.id
                  AND s.evolution_id = e.id
                  ORDER BY e.id DESC LIMIT 1)";
-        
         $data = DBFunctions::execSQL($sql);
         if (DBFunctions::getNRows() > 0){
             $project = new Project($data);
@@ -505,6 +504,7 @@ EOF;
                 }
             }
         }
+            
         if($this->peopleCache == null){
             $sql = "SELECT m.user_id, u.user_name, SUBSTR(u.user_name, LOCATE('.', u.user_name) + 1) as last_name
                     FROM grand_project_members m, mw_user u

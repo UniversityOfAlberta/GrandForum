@@ -13,7 +13,7 @@
     <ReportSection id="project1_materials" name="Phase1 Projects" tooltip="PDF Downloads for Phase1 Projects" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
-               <p>Download the Project Report PDFs for the Phase1 Projects.</p>
+               <p>Download the Project Report PDFs for the Phase1 Projects.  Projects that the Phase1 Project evolved into will be shown along side the number of NIs that the two projects have in common.</p>
             ]]>
         </Instructions>
         <ReportItem id="p1_materials_head" type="StaticReportItem">
@@ -35,10 +35,10 @@
     </ReportSection>
     
     <!-- Phase2 Projects Materials -->
-    <ReportSection id="project2_materials" name="Phase2 Projects" tooltip="PDF Downloads for Phase1 Projects" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+    <ReportSection id="project2_materials" name="Phase2 Projects" tooltip="PDF Downloads for Phase2 Projects" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
-               <p>Download the Project Report PDFs for the Phase2 Projects.</p>
+               <p>Download the Project Report PDFs for the Phase2 Projects.  Projects that the Phase2 Project from will be shown along side the number of NIs that the two projects have in common.</p>
             ]]>
         </Instructions>
         <ReportItem id="p2_materials_head" type="StaticReportItem">
