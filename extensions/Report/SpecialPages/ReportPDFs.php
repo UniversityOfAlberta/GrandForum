@@ -20,10 +20,10 @@ class ReportPDFs extends AbstractReport{
     function userCanExecute($user){
         $me = Person::newFromWgUser();
         if($me->isRole(EXTERNAL) ||
-           $me->isRoleAtLeast(MANAGER) ||
+           $me->isRoleAtLeast(MANAGER) /*||
            $me->getId() == 11 ||
            $me->getId() == 22 ||
-           $me->getId() == 565){
+           $me->getId() == 565*/){
             // Ids need to be changed in PDFMaterials.xml as well
             return true;
         }
