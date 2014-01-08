@@ -49,9 +49,11 @@ class CreatePDF extends SpecialPage {
 	        	$report->generatePDF(null, false);
 	        }
 	        else if($project != null){
-	            $leader = $project->getLeader();
-	            $report->person = $leader;
-	            $report->generatePDF(null, $submitted);
+	            $leaders = array_values($project->getLeaders());
+	            if(count($leaders) > 0){
+	                $report->person = $leaders[0];
+	                $report->generatePDF(null, $submitted);
+	            }
 	        }
 	        else{
 	            $report->generatePDF($person, $submitted);
@@ -230,7 +232,7 @@ class CreatePDF extends SpecialPage {
 	                $ids[] = $project->getId();
 	            }
 	        }
-	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectReport&person=3&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
+	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectReport&person=4&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
 	    else if($type == 'loi'){
 	        foreach(LOI::getAllLOIs() as $loi){
@@ -453,9 +455,9 @@ class CreatePDF extends SpecialPage {
 	        }
 	        $alreadyDone[$pName] = true;
 	        $project = Project::newFromName($pName);
-	        $leader = $project->getLeader();
-	        if($leader != null){
-	            $report = new DummyReport("ProjectReportPDF", $leader, $project);
+	        $leaders = array_values($project->getLeaders());
+	        if(count($leaders) > 0){
+	            $report = new DummyReport("ProjectReportPDF", $leaders[0], $project);
 	            CreatePDF::tableRow($report, $project->getId(), $project->getName(), $project->getName());
 	        }
 	    }
