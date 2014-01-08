@@ -144,9 +144,8 @@ class Report extends AbstractReport{
             }
             
             // ISAC Review
-            if($person->isEvaluator()){
+            if($person->isRole(ISAC) || $person->isRoleAtLeast(MANAGER)){
                 @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "ISACReview") ? "selected" : false;
-                
                 $content_actions[] = array (
                          'class' => $class,
                          'text'  => "ISAC",

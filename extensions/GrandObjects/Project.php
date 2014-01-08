@@ -374,7 +374,7 @@ EOF;
             $sql = "SELECT DISTINCT e.project_id, e.last_id
                     FROM `grand_project_evolution` e
                     WHERE e.new_id = '{$this->id}'
-                    AND (e.id = '{$this->evolutionId}' OR e.action = 'MERGE')
+                    AND (e.id = '{$this->evolutionId}' OR e.action = 'MERGE' OR e.action = 'EVOLVE')
                     AND '{$this->evolutionId}' > e.last_id
                     ORDER BY e.id DESC";
             $data = DBFunctions::execSQL($sql);
@@ -410,15 +410,18 @@ EOF;
         return $preds;
     }   
     
-    // Returns the Successor Project
-    function getSucc(){
+    // Returns the Successor Projects
+    function getSuccs(){
         if(!is_array($this->succ) && $this->succ == false){
+            $this->succ = array();
             $sql = "SELECT e.new_id FROM
                     `grand_project_evolution` e
                     WHERE e.project_id = '{$this->id}'";
             $data = DBFunctions::execSQL($sql);
             if(count($data) > 0){
-                $this->succ = Project::newFromHistoricId($data[0]['new_id']);
+                foreach($data as $row){
+                    $this->succ[] = Project::newFromHistoricId($row['new_id']);
+                }
             }
         }
         return $this->succ;

@@ -21,6 +21,8 @@ class ReportItemCallback {
             "project_solution" => "getProjectSolution",
             "project_nis" => "getProjectNIs",
             "project_champions" => "getProjectChampions",
+            "project_evolved_from" => "getProjectEvolvedFrom",
+            "project_evolved_into" => "getProjectEvolvedInto",
             // Milestones
             "milestone_id" => "getMilestoneId",
             "milestone_title" => "getMilestoneTitle",
@@ -235,6 +237,30 @@ class ReportItemCallback {
             $champions[] = "N/A";
         }
         return implode(", ", $champions);
+    }
+    
+    function getProjectEvolvedInto(){
+        $projects = array();
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $succs = $project->getSuccs();
+            foreach($succs as $succ){
+                $projects[] = $succ->getName();
+            }
+        }
+        return implode(", ", $projects);
+    }
+    
+    function getProjectEvolvedFrom(){
+        $projects = array();
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $preds = $project->getPreds();
+            foreach($preds as $pred){
+                $projects[] = $pred->getName();
+            }
+        }
+        return implode(", ", $projects);
     }
     
     function getMilestoneId(){

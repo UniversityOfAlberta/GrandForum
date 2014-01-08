@@ -10,7 +10,7 @@
     </Permissions>
 
     <!-- Phase1 Projects Materials -->
-    <ReportSection id="project1_materials" name="Phase1 Materials" tooltip="PDF Downloads for Phase1 Projects" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+    <ReportSection id="project1_materials" name="Phase1 Projects" tooltip="PDF Downloads for Phase1 Projects" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
                <p>Download the Project Report PDFs for the Phase1 Projects.</p>
@@ -19,11 +19,14 @@
         <ReportItem id="p1_materials_head" type="StaticReportItem">
             <![CDATA[
                 <table>
+                    <tr style="border-bottom:1px solid #333;">
+                        <th style="font-size:16px;">Project</th><th style="font-size:16px;">PDF</th><th style="font-size:16px;">Evolved Into</th>
+                    </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" phase="1">
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true" buttonName="Project Report PDF" year="2013">
-                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td></tr>]]>
+                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td><td style="font-size:16px;">{$project_evolved_into}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_tail" type="StaticReportItem">
@@ -31,24 +34,8 @@
         </ReportItem>
     </ReportSection>
     
-    <!-- Phase1 Projects Comments -->
-    <!--ReportSection id="project1_comments" name="Phase1 Comments" tooltip="Comments for Phase1 Projects" blobSection="ISAC_PHASE1" type="EditableReportSection" renderpdf="false" private="false">
-        <Instructions>
-            <![CDATA[
-               <p>Comment about any of the Phase 1 Projects</p>
-            ]]>
-        </Instructions>
-        <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" phase="1" blobIndex="projectId">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
-                <ReportItem id="pni_comment" type="TextAreaReportItem" blobType="BLOB_ARRAY" blobItem="ISAC_PHASE1_COMMENT">
-                    <![CDATA[{$item}]]>
-                </ReportItem>
-            </ReportItemSet>
-        </ReportItemSet>
-    </ReportSection-->
-    
     <!-- Phase2 Projects Materials -->
-    <ReportSection id="project2_materials" name="Phase2 Materials" tooltip="PDF Downloads for Phase1 Projects" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+    <ReportSection id="project2_materials" name="Phase2 Projects" tooltip="PDF Downloads for Phase1 Projects" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
                <p>Download the Project Report PDFs for the Phase2 Projects.</p>
@@ -57,11 +44,14 @@
         <ReportItem id="p2_materials_head" type="StaticReportItem">
             <![CDATA[
                 <table>
+                    <tr style="border-bottom:1px solid #333;">
+                        <th style="font-size:16px;">Project</th><th style="font-size:16px;">PDF</th><th style="font-size:16px;">Evolved From</th>
+                    </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" phase="2">
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true" buttonName="Project Report PDF" year="2013">
-                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td></tr>]]>
+                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td><td style="font-size:16px;">{$project_evolved_from}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_tail" type="StaticReportItem">
