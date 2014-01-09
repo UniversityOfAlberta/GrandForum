@@ -151,7 +151,7 @@ class Report extends AbstractReport{
             }
             else if($person->isEvaluator()){
                 // Evaluator Report
-                @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalReport") ? "selected" : false;
+                @$class = ($wgTitle->getText() == "Report" && ($_GET['report'] == "EvalReport" || $_GET['report'] == "EvalOptReport")) ? "selected" : false;
                 $content_actions[] = array (
                          'class' => $class,
                          'text'  => "Evaluator",
