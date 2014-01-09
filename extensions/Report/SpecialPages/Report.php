@@ -42,6 +42,11 @@ class Report extends AbstractReport{
                 }
             }
         }
+        else if($person->getId() == 11 ||
+                $person->getId() == 22 ||
+                $person->getId() == 565){
+            $page = "Report?report=EvalOptReport";
+        }
         else if($person->isEvaluator()){
             $page = "Report?report=EvalReport";
         }
@@ -132,10 +137,21 @@ class Report extends AbstractReport{
                 }
             }
             
-            // Evaluator Report
-            if($person->isEvaluator()){
+            // Evaluator Opt Report
+            if($person->getId() == 11 ||
+               $person->getId() == 22 ||
+               $person->getId() == 565){
+                // Needs to be changed in EvalOptReport.xml as well
+                @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalOptReport") ? "selected" : false;
+                $content_actions[] = array (
+                         'class' => $class,
+                         'text'  => "Evaluator",
+                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalOptReport",
+                        );
+            }
+            else if($person->isEvaluator()){
+                // Evaluator Report
                 @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalReport") ? "selected" : false;
-                
                 $content_actions[] = array (
                          'class' => $class,
                          'text'  => "Evaluator",
