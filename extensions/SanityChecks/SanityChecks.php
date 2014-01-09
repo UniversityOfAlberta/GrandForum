@@ -100,9 +100,11 @@ EOF;
 
 	    		$html .= "<tr><td>";
 				if(!empty($errors['budget_errors'])){
+				    $html .= "<ul>";
 					foreach ($errors['budget_errors'] as $name => $es){
-						$html .= "<strong>{$es}</strong>";
+						$html .= "<li><strong>{$es}</strong></li>";
 					}
+					$html .= "</ul>";
 				}
 				else{
 					$html .= "<strong>No Errors</strong>";
@@ -194,21 +196,25 @@ EOF;
 	    		$niname_reversed = $ni->getReversedName();
 	    		$niname_link = $ni->getUrl();
 	    		$ni_role = ($ni->isCNI())? "role:CNI" : (($ni->isPNI())? "role:PNI" : "role:Other"); 
-	    		$projects = $ni->getProjects();
+	    		$projects = $ni->getProjectsDuring((REPORTING_YEAR+1).REPORTING_NCE_START_MONTH, (REPORTING_YEAR+2).REPORTING_NCE_END_MONTH);
 	    		$project_names = array();
 	    		foreach ($projects as $p) {
-	    			$project_names[] = "project:".$p->getName();
+	    		    if(!$p->isSubProject()){
+	    			    $project_names[] = $p->getName();
+	    			}
 	    		}
 	    		$project_names = implode(', ', $project_names);
 	    		$uni = $ni->getUni();
 	    		$uni = "university:".$uni;
-	    		$html .= "<tr><td><span style='display:none;'>{$niname_reversed} {$ni_role} {$project_names} {$uni}</span><a href='{$niname_link}'>{$niname_reversed}</a></td>";
+	    		$html .= "<tr><td><span style='display:none;'>{$niname_reversed} {$ni_role} {$project_names} {$uni}</span><a href='{$niname_link}'>{$niname_reversed}</a><br />({$project_names})</td>";
 
 	    		$html .= "<td>";
 				if(!empty($errors['budget_errors'])){
+					$html .= "<ul>";
 					foreach ($errors['budget_errors'] as $name => $es){
-						$html .= "<strong>{$es}</strong>";
+						$html .= "<li><strong>{$es}</strong></li>";
 					}
+					$html .= "</ul>";
 				}
 				else{
 					$html .= "<strong>No Errors</strong>";
@@ -293,12 +299,11 @@ EOF;
 			
 			if($person->isActive() && !in_array($person->getId(), $unique)){
 				$unique[] = $person->getId();
-				$year = 2012;
+				$year = REPORTING_YEAR;
 
-				$allocation = $person->getAllocation($year);
-
+				$allocation = $person->getAllocation($year-1);
+                $requested = $person->getRequestedBudget($year);
 				if(!is_null($allocation['allocated_amount']) && $allocation['allocated_amount'] > 0){
-				
 					//Allocated Budget Upload
 					$uid = $person->getId();
 			        $blob_type=BLOB_EXCEL;
@@ -317,6 +322,14 @@ EOF;
 		    	else{
 		    		$ni_errors["{$name}"]['budget_errors'] = array("No allocation");
 		    	}
+		    	if($requested != null){
+                    BudgetReportItem::checkTotals($requested, $person, $year);
+                    BudgetReportItem::checkDeletedProjects($requested, $person, $year);
+                    $errors = $requested->showErrorsSimple();
+                    if($errors != ""){
+                        $ni_errors["{$name}"]['budget_errors'][] = $errors;
+                    }
+                }
 
 				//Product completeness
 				$papers = $person->getPapersAuthored("all", "2012-01-01 00:00:00", "2013-05-01 00:00:00", false);
