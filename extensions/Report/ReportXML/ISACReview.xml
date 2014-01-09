@@ -20,13 +20,13 @@
             <![CDATA[
                 <table>
                     <tr style="border-bottom:1px solid #333;">
-                        <th style="font-size:16px;">Project</th><th style="font-size:16px;">PDF</th><th style="font-size:16px;">Evolved Into</th>
+                        <th>Project</th><th>PDF</th><th>Evolved Into</th>
                     </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" phase="1">
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true" buttonName="Project Report PDF" year="2013">
-                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td><td style="font-size:16px;">{$project_evolved_into}</td></tr>]]>
+                <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td><td>{$project_evolved_into}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_tail" type="StaticReportItem">
@@ -45,13 +45,13 @@
             <![CDATA[
                 <table>
                     <tr style="border-bottom:1px solid #333;">
-                        <th style="font-size:16px;">Project</th><th style="font-size:16px;">PDF</th><th style="font-size:16px;">Evolved From</th>
+                        <th>Project</th><th>PDF</th><th>Evolved From</th>
                     </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" phase="2">
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true" buttonName="Project Report PDF" year="2013">
-                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td><td style="font-size:16px;">{$project_evolved_from}</td></tr>]]>
+                <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td><td>{$project_evolved_from}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_tail" type="StaticReportItem">
