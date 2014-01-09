@@ -19,7 +19,7 @@ class Report extends AbstractReport{
     }
 
     static function createTab(){
-        global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromId($wgUser->getId());
         $page = "Report";
         if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
@@ -42,9 +42,7 @@ class Report extends AbstractReport{
                 }
             }
         }
-        else if($person->getId() == 11 ||
-                $person->getId() == 22 ||
-                $person->getId() == 565){
+        else if(in_array($person->getId(), $special_evals)){
             $page = "Report?report=EvalOptReport";
         }
         else if($person->isEvaluator()){
@@ -79,7 +77,7 @@ class Report extends AbstractReport{
     }
     
     static function showTabs(&$content_actions){
-        global $wgTitle, $wgUser, $wgServer, $wgScriptPath;
+        global $wgTitle, $wgUser, $wgServer, $wgScriptPath, $special_evals;
         if($wgTitle->getText() == "Report"){
             $content_actions = array();
             $person = Person::newFromId($wgUser->getId());
@@ -138,9 +136,7 @@ class Report extends AbstractReport{
             }
             
             // Evaluator Opt Report
-            if($person->getId() == 11 ||
-               $person->getId() == 22 ||
-               $person->getId() == 565){
+            if(in_array($person->getId(), $special_evals)){
                 // Needs to be changed in EvalOptReport.xml as well
                 @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalOptReport") ? "selected" : false;
                 $content_actions[] = array (
