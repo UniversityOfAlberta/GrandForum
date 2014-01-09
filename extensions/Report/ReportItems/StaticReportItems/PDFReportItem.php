@@ -4,6 +4,7 @@ class PDFReportItem extends StaticReportItem {
 
 	function render(){
         global $wgServer, $wgScriptPath, $wgOut;
+        $me = $this->getReport()->person;
         $reportType = $this->getAttr("reportType", 'HQPReport');
         $useProject = $this->getAttr("project", false);
         $buttonName = $this->getAttr("buttonName", "Report PDF");
@@ -21,7 +22,7 @@ class PDFReportItem extends StaticReportItem {
         $sub = 0;
         $sto = new ReportStorage($person);
     	$check = $report->getPDF();
-    	if (count($check) > 0) {
+    	if (count($check) > 0 && ($reportType != "ProjectNIComments" || $person->getId() != $me->getId())) {
     		$tok = $check[0]['token'];
     		$sto->select_report($tok);    	
     		$tst = $sto->metadata('timestamp');

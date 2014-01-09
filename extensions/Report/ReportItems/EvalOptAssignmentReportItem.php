@@ -10,6 +10,11 @@ class EvalOptAssignmentReportItem extends AbstractReportItem {
         $assign_type = $this->getAttr("assign_type", "");
         $year = REPORTING_YEAR;
         
+        if($opt_id == $reviewer_id && ($assign_type == "PNI" || $assign_type == "CNI")){
+            $output = $this->processCData("");
+		    $wgOut->addHTML($output);
+		    return;
+        }
         $sql = "SELECT * FROM grand_eval WHERE user_id=%d AND sub_id=%d AND type='%s' AND year=%d";
         $select_q = sprintf($sql, $reviewer_id, $opt_id, $assign_type, $year);
 
@@ -31,6 +36,7 @@ EOF;
         $opt_id = $this->getAttr("opt_id", "0");
         $assign_type = $this->getAttr("assign_type", "");
         $year = REPORTING_YEAR;
+        
         $select_q = sprintf("SELECT * FROM grand_eval WHERE user_id=%d AND sub_id=%d AND type='%s' AND year=%d", 
                             $reviewer_id, $opt_id, $assign_type, $year);
         $sel_res = DBFunctions::execSQL($select_q);
