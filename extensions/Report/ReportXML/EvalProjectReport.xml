@@ -28,8 +28,8 @@
         <ReportItem id="project_materials_head" type="StaticReportItem">
             <![CDATA[
             <style type="text/css">
-                a#CNIMaterials, a#ProjectMaterials{
-                    margin-top: 15px;
+                a#PNIOverview, a#CNIOverview, a#ProjectOverview{
+                    margin-bottom: 15px;
                 }
             </style>
             <div style="float: left; padding: 1em 2.2em;">
@@ -90,8 +90,8 @@
         <ReportItem id="project_budget_head" type="StaticReportItem">
             <![CDATA[
             <style type="text/css">
-                a#CNIMaterials, a#ProjectMaterials{
-                    margin-top: 15px;
+                a#PNIOverview, a#CNIOverview, a#ProjectOverview{
+                    margin-bottom: 15px;
                 }
             </style>
             <script type="text/javascript">
@@ -119,8 +119,8 @@
                 div#reportFooter {
                     display:none;
                 }
-                a#CNIMaterials, a#ProjectMaterials{
-                    margin-top: 15px;
+                a#PNIOverview, a#CNIOverview, a#ProjectOverview{
+                    margin-bottom: 15px;
                 }
             </style>
             <script type="text/javascript">
@@ -314,8 +314,8 @@
         <ReportItem id="project_overview" type="EvalOverviewReportItem" subType="Project">
             <![CDATA[
             <style type="text/css">
-                a#CNIMaterials, a#ProjectMaterials{
-                    margin-top: 15px;
+                a#PNIOverview, a#CNIOverview, a#ProjectOverview{
+                    margin-bottom: 15px;
                 }
             </style>
             {$item}

@@ -19,8 +19,8 @@
         <ReportItem id="pni_materials_head" type="StaticReportItem">
             <![CDATA[
             <style type="text/css">
-                a#CNIMaterials, a#ProjectMaterials{
-                    margin-top: 15px;
+                a#PNIOverview, a#CNIOverview, a#ProjectOverview{
+                    margin-bottom: 15px;
                 }
             </style>
             <table>
@@ -53,8 +53,8 @@
         <ReportItem id="pni_budget_head" type="StaticReportItem">
             <![CDATA[
             <style type="text/css">
-                a#CNIMaterials, a#ProjectMaterials{
-                    margin-top: 15px;
+                a#PNIOverview, a#CNIOverview, a#ProjectOverview{
+                    margin-bottom: 15px;
                 }
             </style>
             <script type="text/javascript">
@@ -82,8 +82,8 @@
                 div#reportFooter {
                     display:none;
                 }
-                a#CNIMaterials, a#ProjectMaterials{
-                    margin-top: 15px;
+                a#PNIOverview, a#CNIOverview, a#ProjectOverview{
+                    margin-bottom: 15px;
                 }
             </style>
             <script type="text/javascript">
@@ -270,8 +270,8 @@
         <ReportItem id="pni_overview" type="EvalOverviewReportItem" subType="PNI">
             <![CDATA[
             <style type="text/css">
-                a#CNIMaterials, a#ProjectMaterials{
-                    margin-top: 15px;
+                a#PNIOverview, a#CNIOverview, a#ProjectOverview{
+                    margin-bottom: 15px;
                 }
             </style>
             {$item}
