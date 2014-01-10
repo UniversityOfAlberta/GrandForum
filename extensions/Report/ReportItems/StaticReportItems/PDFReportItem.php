@@ -8,6 +8,7 @@ class PDFReportItem extends StaticReportItem {
         $reportType = $this->getAttr("reportType", 'HQPReport');
         $useProject = $this->getAttr("project", false);
         $buttonName = $this->getAttr("buttonName", "Report PDF");
+        $noRenderIfNull = $this->getAttr("noRenderIfNull", "false");
         $year = $this->getAttr("year", $this->getReport()->year);
         $width = $this->getAttr("width", 'auto');
         if(strstr($width, "%") !== false){
@@ -36,6 +37,9 @@ class PDFReportItem extends StaticReportItem {
 		    $wgOut->addHTML($item);
     	}
     	else{
+    	    if($noRenderIfNull == "true"){
+    	        return;
+    	    }
     	    $wgOut->addHTML($this->processCData(""));
     	}
 	}

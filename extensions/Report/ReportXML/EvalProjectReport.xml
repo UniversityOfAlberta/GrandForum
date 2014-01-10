@@ -46,12 +46,12 @@
                 <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
             </ReportItem>
             <ReportItemSet id="project_champions" type="ProjectChampionsReportItemSet">
-                <ReportItem id="project_champion_pdf" type="PDFReportItem" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
+                <ReportItem id="project_champion_pdf" type="PDFReportItem" noRenderIfNull="true" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
                     <![CDATA[<td>{$item}</td>]]>
                 </ReportItem>
             </ReportItemSet>
             <ReportItemSet id="subproject_champions" type="SubProjectChampionsReportItemSet">
-                <ReportItem id="subproject_champion_pdf" type="PDFReportItem" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
+                <ReportItem id="subproject_champion_pdf" type="PDFReportItem" noRenderIfNull="true" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
                     <![CDATA[<td>{$item}</td>]]>
                 </ReportItem>
             </ReportItemSet>
@@ -76,12 +76,12 @@
                 <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
             </ReportItem>
             <ReportItemSet id="project_champions" type="ProjectChampionsReportItemSet">
-                <ReportItem id="project_champion_pdf" type="PDFReportItem" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
+                <ReportItem id="project_champion_pdf" type="PDFReportItem" noRenderIfNull="true" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
                     <![CDATA[<td>{$item}</td>]]>
                 </ReportItem>
             </ReportItemSet>
             <ReportItemSet id="subproject_champions" type="SubProjectChampionsReportItemSet">
-                <ReportItem id="subproject_champion_pdf" type="PDFReportItem" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
+                <ReportItem id="subproject_champion_pdf" type="PDFReportItem" noRenderIfNull="true" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
                     <![CDATA[<td>{$item}</td>]]>
                 </ReportItem>
             </ReportItemSet>
