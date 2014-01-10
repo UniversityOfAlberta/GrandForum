@@ -27,7 +27,7 @@
         </Person>
     </Permissions>
     <!-- Optional PNI Assignments -->
-    <ReportSection id="eval_opt_pni" type="EditableReportSection" name="PNI Assignments" blobSection="SEC_NONE" renderpdf="false" private="true">
+    <ReportSection id="eval_opt_pni" type="EditableReportSection" name="PNI Selection" blobSection="SEC_NONE" renderpdf="false" private="true">
         <Instructions>
             <![CDATA[
                
@@ -66,7 +66,7 @@
     <!-- PNI -->
     <ReportSection id="eval_pni_report" reportType="EvalPNIReport" blobSection="SEC_NONE" type="SubReportSection" renderpdf="false" private="true" />
     <!-- Optional CNI Assignments -->
-    <ReportSection id="eval_opt_cni" type="EditableReportSection" name="CNI Assignments" blobSection="SEC_NONE" renderpdf="false" private="true">
+    <ReportSection id="eval_opt_cni" type="EditableReportSection" name="CNI Selection" blobSection="SEC_NONE" renderpdf="false" private="true">
         <Instructions>
             <![CDATA[
                
@@ -105,7 +105,7 @@
     <!-- CNI -->
     <ReportSection id="eval_cni_report" reportType="EvalCNIReport" blobSection="SEC_NONE" type="SubReportSection" renderpdf="false" private="true" />
     <!-- Optional Project Assignments -->
-    <ReportSection id="eval_opt_project" type="EditableReportSection" name="Project Assignments" blobSection="SEC_NONE" renderpdf="false" private="true">
+    <ReportSection id="eval_opt_project" type="EditableReportSection" name="Project Selection" blobSection="SEC_NONE" renderpdf="false" private="true">
         <Instructions>
             <![CDATA[
                
