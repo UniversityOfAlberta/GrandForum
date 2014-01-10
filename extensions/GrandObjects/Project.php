@@ -288,6 +288,7 @@ class Project extends BackboneModel {
         FROM grand_project_members p
         INNER JOIN mw_user u ON (p.user_id=u.user_id) 
         INNER JOIN grand_roles r ON (p.user_id=r.user_id)
+        INNER JOIN grand_project pp ON (p.project_id=pp.id)
         WHERE r.role = 'HQP'
         AND ( 
                 ( (r.end_date != '0000-00-00 00:00:00') AND
@@ -297,6 +298,7 @@ class Project extends BackboneModel {
                 ((r.start_date <= '$endRange')))
                 )              
         AND u.deleted != '1'
+        AND pp.parent_id = 0
         GROUP BY p.user_id) AS s
         GROUP BY s.num_projects
 EOF;
