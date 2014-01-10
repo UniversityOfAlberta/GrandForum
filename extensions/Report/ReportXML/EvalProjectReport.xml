@@ -34,12 +34,27 @@
             </style>
             <div style="float: left; padding: 1em 2.2em;">
             <table align="left">
+                <tr>
+                    <th style="min-width:110px;">Project Name</th>
+                    <th style="min-width:125px;">Project Report PDF</th>
+                    <th style="min-width:110px;">Champion PDFs</th>
+                </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="Project">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true">
-                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td>]]>
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" width="100%" project="true">
+                <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
             </ReportItem>
+            <ReportItemSet id="project_champions" type="ProjectChampionsReportItemSet">
+                <ReportItem id="project_champion_pdf" type="PDFReportItem" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
+                    <![CDATA[<td>{$item}</td>]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="subproject_champions" type="SubProjectChampionsReportItemSet">
+                <ReportItem id="subproject_champion_pdf" type="PDFReportItem" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
+                    <![CDATA[<td>{$item}</td>]]>
+                </ReportItem>
+            </ReportItemSet>
         </ReportItemSet>
         <ReportItem id="project_materials_tail" type="StaticReportItem">
             <![CDATA[
@@ -49,12 +64,27 @@
             <h2>All Phase2 Project Materials</h2>
             <div>
             <table align="left">
+                <tr>
+                    <th style="min-width:110px;">Project Name</th>
+                    <th style="min-width:125px;">Project Report PDF</th>
+                    <th style="min-width:110px;">Champion PDFs</th>
+                </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" phase="2">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true">
-                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td>]]>
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" width="100%" project="true">
+                <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
             </ReportItem>
+            <ReportItemSet id="project_champions" type="ProjectChampionsReportItemSet">
+                <ReportItem id="project_champion_pdf" type="PDFReportItem" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
+                    <![CDATA[<td>{$item}</td>]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="subproject_champions" type="SubProjectChampionsReportItemSet">
+                <ReportItem id="subproject_champion_pdf" type="PDFReportItem" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
+                    <![CDATA[<td>{$item}</td>]]>
+                </ReportItem>
+            </ReportItemSet>
         </ReportItemSet>
         <ReportItem id="project_materials_tail" type="StaticReportItem">
             <![CDATA[
@@ -63,11 +93,15 @@
             <h2>All Phase1 Project Materials</h2>
             <div>
             <table align="left">
+                <tr>
+                    <th style="min-width:110px;">Project Name</th>
+                    <th style="min-width:125px;">Project Report PDF</th>
+                </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" phase="1">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true">
-                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td>]]>
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" width="100%" project="true">
+                <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_tail" type="StaticReportItem">

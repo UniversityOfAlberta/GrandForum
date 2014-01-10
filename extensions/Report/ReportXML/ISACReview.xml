@@ -19,13 +19,15 @@
         <ReportItem id="p1_materials_head" type="StaticReportItem">
             <![CDATA[
                 <table>
-                    <tr style="border-bottom:1px solid #333;">
-                        <th>Project</th><th>PDF</th><th>Evolved Into</th>
+                    <tr>
+                        <th style="min-width:110px;">Project Name</th>
+                        <th>Project Report PDF</th>
+                        <th style="min-width:110px;">Evolved Into</th>
                     </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" phase="1">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true" buttonName="Project Report PDF" year="2013">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" width="100%" project="true" year="2013">
                 <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td><td>{$project_evolved_into}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
@@ -38,21 +40,33 @@
     <ReportSection id="project2_materials" name="Phase2 Projects" tooltip="PDF Downloads for Phase2 Projects" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
         <Instructions>
             <![CDATA[
-               <p>Download the Project Report PDFs for the Phase2 Projects.  Projects that the Phase2 Project from will be shown along side the number of NIs that the two projects have in common.</p>
+               <p>Download the Project Report PDFs for the Phase2 Projects.</p>
             ]]>
         </Instructions>
         <ReportItem id="p2_materials_head" type="StaticReportItem">
             <![CDATA[
                 <table>
-                    <tr style="border-bottom:1px solid #333;">
-                        <th>Project</th><th>PDF</th><th>Evolved From</th>
+                    <tr>
+                        <th style="min-width:110px;">Project Name</th>
+                        <th>Project Report PDF</th>
+                        <th style="min-width:110px;">Champion PDFs</th>
                     </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" phase="2">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true" buttonName="Project Report PDF" year="2013">
-                <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td><td>{$project_evolved_from}</td></tr>]]>
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" width="100%" project="true" year="2013">
+                <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
             </ReportItem>
+            <ReportItemSet id="project_champions" type="ProjectChampionsReportItemSet">
+                <ReportItem id="project_champion_pdf" type="PDFReportItem" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
+                    <![CDATA[<td>{$item}</td>]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="subproject_champions" type="SubProjectChampionsReportItemSet">
+                <ReportItem id="subproject_champion_pdf" type="PDFReportItem" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
+                    <![CDATA[<td>{$item}</td>]]>
+                </ReportItem>
+            </ReportItemSet>
         </ReportItemSet>
         <ReportItem id="project_materials_tail" type="StaticReportItem">
             <![CDATA[</table>]]>

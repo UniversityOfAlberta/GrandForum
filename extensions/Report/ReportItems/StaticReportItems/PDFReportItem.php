@@ -10,6 +10,9 @@ class PDFReportItem extends StaticReportItem {
         $buttonName = $this->getAttr("buttonName", "Report PDF");
         $year = $this->getAttr("year", $this->getReport()->year);
         $width = $this->getAttr("width", 'auto');
+        if(strstr($width, "%") !== false){
+            $width = $width.";-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box";
+        }
         $project = null;
         if($useProject){
             $project = Project::newFromId($this->projectId);
