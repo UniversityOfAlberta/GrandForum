@@ -30,6 +30,11 @@ $current_evals = array(8,   // Lyn.Bartram
                        60,  // Robert.Woodbury
                        61  // Brian.Wyvill
                        );
+                       
+$special_evals = array(11,  // Kellogg.Booth
+                       22,  // Eugene.Fiume
+                       565  // Gerald.Karam
+                       );
 
 function runReviewerConflicts($par) {
 	ReviewerConflicts::run($par);

@@ -19,7 +19,7 @@ class Report extends AbstractReport{
     }
 
     static function createTab(){
-        global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromId($wgUser->getId());
         $page = "Report";
         if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
@@ -41,6 +41,9 @@ class Report extends AbstractReport{
                     $page = "Report?report=ProjectReport&project={$project->getName()}";
                 }
             }
+        }
+        else if(in_array($person->getId(), $special_evals)){
+            $page = "Report?report=EvalOptReport";
         }
         else if($person->isEvaluator()){
             $page = "Report?report=EvalReport";
@@ -74,7 +77,7 @@ class Report extends AbstractReport{
     }
     
     static function showTabs(&$content_actions){
-        global $wgTitle, $wgUser, $wgServer, $wgScriptPath;
+        global $wgTitle, $wgUser, $wgServer, $wgScriptPath, $special_evals;
         if($wgTitle->getText() == "Report"){
             $content_actions = array();
             $person = Person::newFromId($wgUser->getId());
@@ -132,10 +135,19 @@ class Report extends AbstractReport{
                 }
             }
             
-            // Evaluator Report
-            if($person->isEvaluator()){
-                @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalReport") ? "selected" : false;
-                
+            // Evaluator Opt Report
+            if(in_array($person->getId(), $special_evals)){
+                // Needs to be changed in EvalOptReport.xml as well
+                @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalOptReport") ? "selected" : false;
+                $content_actions[] = array (
+                         'class' => $class,
+                         'text'  => "Evaluator",
+                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalOptReport",
+                        );
+            }
+            else if($person->isEvaluator()){
+                // Evaluator Report
+                @$class = ($wgTitle->getText() == "Report" && ($_GET['report'] == "EvalReport" || $_GET['report'] == "EvalOptReport")) ? "selected" : false;
                 $content_actions[] = array (
                          'class' => $class,
                          'text'  => "Evaluator",
