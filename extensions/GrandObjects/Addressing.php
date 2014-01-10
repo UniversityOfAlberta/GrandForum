@@ -207,7 +207,6 @@ define('CHAMP_SHORTCOMINGS', 5);
 define('CHAMP_CASH', 6);
 define('CHAMP_RESEARCHERS', 7);
 
-define('ISAC_PHASE1', 1);
 define('ISAC_PHASE2', 1);
 
 // No third-level identifiers for interactions with people (HQP_PEOPLE_INTERACT),

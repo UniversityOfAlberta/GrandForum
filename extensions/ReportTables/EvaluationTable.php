@@ -70,6 +70,7 @@ class EvaluationTable extends SpecialPage {
 	static function show(){
 	    require_once('NSERCTab.php');
 		require_once('NSERCVariableTab.php');
+		require_once('RMC2014Tab.php');
 		require_once('RMC2013Tab.php');
 	    require_once('RMC2012Tab.php');
         require_once('NSERC2012Tab.php');
@@ -107,9 +108,10 @@ class EvaluationTable extends SpecialPage {
 	        $tabbedPage->showPage($init_tab);
     	}
     	else{
-    		$init_tabs = array('2013' => 0, 
-    		                   '2012' => 1, 
-    		                   '2011' => 2);
+    		$init_tabs = array('2014' => 0,
+    		                   '2013' => 1, 
+    		                   '2012' => 2, 
+    		                   '2011' => 3);
 
     		if(isset($_GET['year']) && isset($init_tabs[$_GET['year']])){
 		    	$init_tab = $init_tabs[$_GET['year']];
@@ -117,6 +119,7 @@ class EvaluationTable extends SpecialPage {
     		
     		$tabbedPage = new TabbedPage("tabs_rmc");
     		
+    		$tabbedPage->addTab(new RMC2014Tab());
 			$tabbedPage->addTab(new RMC2013Tab());
 	    	$tabbedPage->addTab(new RMC2012Tab());
 	    	$tabbedPage->addTab(new RMC2011Tab());

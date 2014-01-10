@@ -1,10 +1,10 @@
 <?php
 
-class RMC2013Tab extends AbstractTab {
+class RMC2014Tab extends AbstractTab {
 
-    function RMC2013Tab(){
+    function RMC2014Tab(){
         global $wgOut;
-        parent::AbstractTab("2013");
+        parent::AbstractTab("2014");
         //$wgOut->setPageTitle("Evaluation Tables: RMC");
     }
     
@@ -33,9 +33,9 @@ class RMC2013Tab extends AbstractTab {
             $summary = 'question1'; 
         }
         if(!$url_year){
-            $url_year = "2013";
+            $url_year = "2014";
         }
-        if($url_year == "2013"){
+        if($url_year == "2014"){
             eval(@$tabs[$summary]);
         }
 
@@ -92,16 +92,10 @@ class RMC2013Tab extends AbstractTab {
             });
             $('.comment_dialog').dialog( "destroy" );
             $('.comment_dialog').dialog({ autoOpen: false, width: 600, height: 400 });
-
-            $('.indexTable_2013').dataTable({
+            $('.indexTable_2014').dataTable({
                 'aLengthMenu': [[-1], ['All']],
                 "bFilter": true,
                 "aaSorting": [[0,'asc']],
-                "aoColumns": [
-                    null,
-                    null,
-                    { "bSortable": false }
-                ]
                 //"bSort": false
             });
             //$('.dataTables_filter input').css('width', 250);
@@ -116,20 +110,20 @@ class RMC2013Tab extends AbstractTab {
         <div id="aboveTabs"></div>
         <div id="reportTabs">
             
-            <a class="reportTab tooltip $tab1" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=question1#PNI_Summary'>1.1 PNI Questions 1-9</a>
-            <a class="reportTab tooltip $tab2" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=question2#CNI_Summary'>1.2 CNI Questions 1-9</a>
-            <a class="reportTab tooltip $tab3" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=question3#Project_Summary'>1.3 Project Questions 1-8</a>
+            <a class="reportTab tooltip $tab1" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question1#PNI_Summary'>1.1 PNI Questions 1-9</a>
+            <a class="reportTab tooltip $tab2" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question2#CNI_Summary'>1.2 CNI Questions 1-9</a>
+            <a class="reportTab tooltip $tab3" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question3#Project_Summary'>1.3 Project Questions 1-8</a>
             
-            <a class="reportTab tooltip $tab4 marginTop" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=budget1#PNI_Budget_Summary'>2.1 PNI Budget Summary</a>
-            <a class="reportTab tooltip $tab5" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=budget2#CNI_Budget_Summary'>2.2 CNI Budget Summary</a>
-            <a class="reportTab tooltip $tab6" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=budget3#Project_Budget_Summary'>2.3 Project Budget Summary</span></a>
-            <a class="reportTab tooltip $tab7" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=budget4#Full_Budget_Summary'>2.4 Full Budget Summary</a>
+            <a class="reportTab tooltip $tab4 marginTop" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget1#PNI_Budget_Summary'>2.1 PNI Budget Summary</a>
+            <a class="reportTab tooltip $tab5" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget2#CNI_Budget_Summary'>2.2 CNI Budget Summary</a>
+            <a class="reportTab tooltip $tab6" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget3#Project_Budget_Summary'>2.3 Project Budget Summary</span></a>
+            <a class="reportTab tooltip $tab7" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget4#Full_Budget_Summary'>2.4 Full Budget Summary</a>
 
-            <a class="reportTab tooltip $tab8 marginTop" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=productivity#Project_Productivity'>3.1 Project Productivity</a>
-            <a class="reportTab tooltip $tab9" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=researcher#Researcher_Productivity'>3.2 Researcher Productivity</a>
-            <a class="reportTab tooltip $tab10" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=contributions#Uni_Contributions'>3.3 Contributions by University</a>
-            <a class="reportTab tooltip $tab11" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=distribution#Distribution'>3.4 HQP Distribution</a>
-            <a class="reportTab tooltip $tab12" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=themes#Themes'>3.5 Project Themes</a>
+            <a class="reportTab tooltip $tab8 marginTop" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=productivity#Project_Productivity'>3.1 Project Productivity</a>
+            <a class="reportTab tooltip $tab9" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=researcher#Researcher_Productivity'>3.2 Researcher Productivity</a>
+            <a class="reportTab tooltip $tab10" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=contributions#Uni_Contributions'>3.3 Contributions by University</a>
+            <a class="reportTab tooltip $tab11" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=distribution#Distribution'>3.4 HQP Distribution</a>
+            <a class="reportTab tooltip $tab12" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=themes#Themes'>3.5 Project Themes</a>
 
             <a class="reportTab tooltip marginTop" href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type=PNI'>PNI Review Results</a>
             <a class="reportTab tooltip" href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type=CNI'>CNI Review Results</a>
@@ -143,7 +137,7 @@ EOF;
 
         //$this->showContentsTable();
 
-        if($url_year == "2013"){
+        if($url_year == "2014"){
         switch ($summary) {
         case 'question1':
             $this->html .= "<a id='Q_Summary'></a>";
@@ -272,8 +266,7 @@ EOF;
                 });
                 $('.comment_dialog').dialog( "destroy" );
                 $('.comment_dialog').dialog({ autoOpen: false, width: 600, height: 400 });
-
-                $('.indexTable_2013').dataTable({
+                $('.indexTable_2014').dataTable({
                     'aLengthMenu': [[-1], ['All']],
                     "bFilter": true,
                     "aaSorting": [[1,'desc']]
@@ -291,28 +284,28 @@ EOF;
             <tr><td>
             <div id='toctitle'><h2>Contents</h2></div>
             <ul>
-            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=question#Q_Summary'><span class='tocnumber'>1</span> <span class='toctext'>Summary of 1-7</span></a>
+            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question#Q_Summary'><span class='tocnumber'>1</span> <span class='toctext'>Summary of 1-7</span></a>
                 <ul>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=question#PNI_Summary'><span class='tocnumber'>1.1</span> <span class='toctext'>PNI Summary of Questions 1-9</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=question#CNI_Summary'><span class='tocnumber'>1.2</span> <span class='toctext'>CNI Summary of Questions 1-9</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=question#Project_Summary'><span class='tocnumber'>1.3</span> <span class='toctext'>Project Summary of Questions 1-8</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question#PNI_Summary'><span class='tocnumber'>1.1</span> <span class='toctext'>PNI Summary of Questions 1-9</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question#CNI_Summary'><span class='tocnumber'>1.2</span> <span class='toctext'>CNI Summary of Questions 1-9</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question#Project_Summary'><span class='tocnumber'>1.3</span> <span class='toctext'>Project Summary of Questions 1-8</span></a></li>
                 </ul>
             </li>
-            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=budget#Budget_Summary'><span class='tocnumber'>2</span> <span class='toctext'>Budget Summaries</span></a>
+            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget#Budget_Summary'><span class='tocnumber'>2</span> <span class='toctext'>Budget Summaries</span></a>
                 <ul>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=budget#PNI_Budget_Summary'><span class='tocnumber'>2.1</span> <span class='toctext'>PNI Budget Summary</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=budget#CNI_Budget_Summary'><span class='tocnumber'>2.2</span> <span class='toctext'>CNI Budget Summary</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=budget#Project_Budget_Summary'><span class='tocnumber'>2.3</span> <span class='toctext'>Project Budget Summary</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=budget#Full_Budget_Summary'><span class='tocnumber'>2.4</span> <span class='toctext'>Full Budget Summary</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget#PNI_Budget_Summary'><span class='tocnumber'>2.1</span> <span class='toctext'>PNI Budget Summary</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget#CNI_Budget_Summary'><span class='tocnumber'>2.2</span> <span class='toctext'>CNI Budget Summary</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget#Project_Budget_Summary'><span class='tocnumber'>2.3</span> <span class='toctext'>Project Budget Summary</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget#Full_Budget_Summary'><span class='tocnumber'>2.4</span> <span class='toctext'>Full Budget Summary</span></a></li>
                 </ul>
             </li>
-            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=productivity#Other'><span class='tocnumber'>3</span> <span class='toctext'>Other</span></a>
+            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=productivity#Other'><span class='tocnumber'>3</span> <span class='toctext'>Other</span></a>
                 <ul>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=productivity#Project_Productivity'><span class='tocnumber'>3.1</span> <span class='toctext'>Project Productivity</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=researcher#Researcher_Productivity'><span class='tocnumber'>3.2</span> <span class='toctext'>Researcher Productivity</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=contributions#Uni_Contributions'><span class='tocnumber'>3.3</span> <span class='toctext'>Contributions by University</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=distribution#Distribution'><span class='tocnumber'>3.4</span> <span class='toctext'>HQP Distribution</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2013&summary=themes#Themes'><span class='tocnumber'>3.5</span> <span class='toctext'>Project Themes</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=productivity#Project_Productivity'><span class='tocnumber'>3.1</span> <span class='toctext'>Project Productivity</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=researcher#Researcher_Productivity'><span class='tocnumber'>3.2</span> <span class='toctext'>Researcher Productivity</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=contributions#Uni_Contributions'><span class='tocnumber'>3.3</span> <span class='toctext'>Contributions by University</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=distribution#Distribution'><span class='tocnumber'>3.4</span> <span class='toctext'>HQP Distribution</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=themes#Themes'><span class='tocnumber'>3.5</span> <span class='toctext'>Project Themes</span></a></li>
                 </ul>
             </li>
             </td></tr>
@@ -320,7 +313,6 @@ EOF;
 EOF;
 
     }
-
 
     function showEvalNIOverview($type){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript, $reporteeId, $getPerson;
@@ -343,10 +335,9 @@ EOF;
             return $sto->trigger_download($action, "{$action}.pdf", false);
         }
 
-        
         $this->html .=<<<EOF
         <h3>$type Summary of Questions 1-9</h3>
-        <table class='indexTable indexTable_2013' frame="box" rules="all">
+        <table class='indexTable indexTable_2014' frame="box" rules="all">
         <thead>
         <tr>
             <th width="20%">$type</th>
@@ -367,13 +358,11 @@ EOF;
         </thead>
         <tbody>
 EOF;
-
-
         $text_question = EVL_OTHERCOMMENTS;
         $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY);
         $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_MANAGEMENT_COM, EVL_REPORTQUALITY_COM);
 
-        $nis = Person::getAllEvaluates($type, 2012);
+        $nis = Person::getAllEvaluates($type, 2013);
         $sorted_nis = array();
         foreach ($nis as $n){
             $sorted_nis[$n->getId()] = $n->getReversedName();
@@ -384,7 +373,7 @@ EOF;
             $ni = Person::newFromId($ni_id);
             //$ni_id = $ni->getId();
             //$ni_name = $ni->getReversedName();
-            $evaluators = $ni->getEvaluators($type, 2012);
+            $evaluators = $ni->getEvaluators($type, 2013);
 
             $rowspan = count($evaluators);
             if($rowspan == 0){
@@ -393,7 +382,7 @@ EOF;
             $rowspan = $rowspan*2;
 
             $download1 = "Researcher PDF";
-            $report = new DummyReport("NIReport", $ni, null, 2012);
+            $report = new DummyReport("NIReport", $ni, null, 2013);
             $tok = false;
             $check = $report->getPDF();
             if (count($check) > 0) {
@@ -402,7 +391,7 @@ EOF;
             }
 
             $download2 = "PL Comments PDF";
-            $report = new DummyReport("ProjectNIComments", $ni, null, 2012);
+            $report = new DummyReport("ProjectNIComments", $ni, null, 2013);
             $tok = false;
             $check = $report->getPDF();
             if (count($check) > 0) {
@@ -418,8 +407,6 @@ EOF;
             {$download2}
             </td>
 EOF;
-
-
             $average_score = 0;
             $sub_rows = "<table width='100%' rules='all'>";
             $div_count = 0;
@@ -436,7 +423,7 @@ EOF;
                     $sub_row1 = "<tr>";
                     $sub_row2 = "<tr>";
 
-                    $q8 = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $text_question, $ni, $eval_id, 2012);
+                    $q8 = RMC2014Tab::getData(BLOB_ARRAY, $rtype, $text_question, $ni, $eval_id, 2013);
                     $q8_O = (isset($q8['original']))? $q8['original'] : "";
                     $q8_R = (isset($q8['revised']))? $q8['revised'] : "";
                     $diff = strcmp($q8_O, $q8_R);
@@ -480,7 +467,7 @@ EOF;
                         $comm_short2 = array();
                         
                         if($i>1){
-                            $comm = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2012);
+                            $comm = RMC2014Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2013);
                             //$comm = @$comm[$rev]; 
                             $comm2 = (isset($comm['revised']))? $comm['revised'] : array();
                             $comm = (isset($comm['original']))? $comm['original'] : array();
@@ -502,7 +489,7 @@ EOF;
                         $comm_short = implode(", ", $comm_short);
                         $comm_short2 = implode(", ", $comm_short2);
 
-                        $response = RMC2013Tab::getData(BLOB_ARRAY, $rtype,  $q, $ni, $eval_id, 2012);
+                        $response = RMC2014Tab::getData(BLOB_ARRAY, $rtype,  $q, $ni, $eval_id, 2013);
                         //$response_orig = $response = @$response[$rev];
                         $response_orig = (isset($response['original']))? $response['original'] : "";
                         $response_rev = $response2 = (isset($response['revised']))? $response['revised'] : "";
@@ -587,13 +574,9 @@ EOF;
                 </td>
                 </tr>
 EOF;
-            
         }
-        
         $this->html .= "</tbody></table><br />";
-        
     }
-
 
     function exportEvalNIOverview($type){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript, $reporteeId, $getPerson;
@@ -615,18 +598,16 @@ EOF;
             $wgOut->disable();
             return $sto->trigger_download($action, "{$action}.pdf", false);
         }
-
         
         $csv =<<<EOF
 `$type`,`Ave. (Q7)`,`Evaluator`,`Q8`,`Q7`,`Q9`,`Q1`,`Q2`,`Q3`,`Q4`,`Q5`,`Q6`\n
 EOF;
 
-
         $text_question = EVL_OTHERCOMMENTS;
         $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY);
         $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_MANAGEMENT_COM, EVL_REPORTQUALITY_COM);
 
-        $nis = Person::getAllEvaluates($type, 2012);
+        $nis = Person::getAllEvaluates($type, 2013);
         $sorted_nis = array();
         foreach ($nis as $n){
             $sorted_nis[$n->getId()] = $n->getReversedName();
@@ -637,7 +618,7 @@ EOF;
             $ni = Person::newFromId($ni_id);
             //$ni_id = $ni->getId();
             //$ni_name = $ni->getReversedName();
-            $evaluators = $ni->getEvaluators($type, 2012);
+            $evaluators = $ni->getEvaluators($type, 2013);
 
             $rowspan = count($evaluators);
             if($rowspan == 0){
@@ -648,7 +629,6 @@ EOF;
             //$this->html .=<<<EOF
             //    "{$ni_name}",
 //EOF;
-
 
             $average_score = 0;
             $sub_rows = "";
@@ -668,7 +648,7 @@ EOF;
                     $sub_row1 = "";
                     $sub_row2 = "";
 
-                    $q8 = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $text_question, $ni, $eval_id, 2012);
+                    $q8 = RMC2014Tab::getData(BLOB_ARRAY, $rtype, $text_question, $ni, $eval_id, 2013);
                     $q8_O = (isset($q8['original']))? $q8['original'] : "";
                     $q8_R = (isset($q8['revised']))? $q8['revised'] : "";
                     $diff = strcmp($q8_O, $q8_R);
@@ -706,7 +686,7 @@ EOF;
                         $comm_short2 = array();
                         
                         if($i>1){
-                            $comm = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2012);
+                            $comm = RMC2014Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2013);
                             $comm2 = (isset($comm['revised']))? $comm['revised'] : array();
                             $comm = (isset($comm['original']))? $comm['original'] : array();
                             if(!empty($comm)){
@@ -727,7 +707,7 @@ EOF;
                         $comm_short = implode(", ", $comm_short);
                         $comm_short2 = implode(", ", $comm_short2);
 
-                        $response = RMC2013Tab::getData(BLOB_ARRAY, $rtype,  $q, $ni, $eval_id, 2012);
+                        $response = RMC2014Tab::getData(BLOB_ARRAY, $rtype,  $q, $ni, $eval_id, 2013);
                         //$response_orig = $response = @$response[$rev];
                         $response_orig = (isset($response['original']))? $response['original'] : "";
                         $response_rev = $response2 = (isset($response['revised']))? $response['revised'] : "";
@@ -848,11 +828,10 @@ EOF;
             $wgOut->disable();
             return $sto->trigger_download($action, "{$action}.pdf", false);
         }
-
         
         $this->html .=<<<EOF
         <h3>$type Summary of Questions 1-9</h3>
-        <table class='indexTable indexTable_2013' cellspacing='1' cellpadding='4' style='border-style:solid;' width='100%' frame="box" rules="all">
+        <table class='indexTable indexTable_2014' cellspacing='1' cellpadding='4' style='border-style:solid;' width='100%' frame="box" rules="all">
         <thead>
         <tr>
             <th style='background: #EEEEEE;' width="15%">$type</th>
@@ -871,13 +850,11 @@ EOF;
         </thead>
         <tbody>
 EOF;
-
-
         $text_question = EVL_OTHERCOMMENTS;
         $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY);
         $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_MANAGEMENT_COM, EVL_REPORTQUALITY_COM);
 
-        $nis = Person::getAllEvaluates($type, 2012);
+        $nis = Person::getAllEvaluates($type, 2013);
         $sorted_nis = array();
         foreach ($nis as $n){
             $sorted_nis[$n->getId()] = $n->getReversedName();
@@ -888,7 +865,7 @@ EOF;
             $ni = Person::newFromId($ni_id);
             //$ni_id = $ni->getId();
             //$ni_name = $ni->getReversedName();
-            $evaluators = $ni->getEvaluators($type, 2012);
+            $evaluators = $ni->getEvaluators($type, 2013);
 
             $rowspan = count($evaluators);
             if($rowspan == 0){
@@ -922,8 +899,6 @@ EOF;
             {$download2}
             </td>
 EOF;
-
-
             $average_score = 0;
             $sub_rows = "";
             $div_count = 0;
@@ -936,7 +911,6 @@ EOF;
                 }
                 
                 $sub_rows .= "<td rowspan='2'>{$eval_name}</td>";
-               
 
                 foreach(array('original', 'revised') as $ind => $rev){
                     $sub_rows .= "";
@@ -944,7 +918,7 @@ EOF;
                         $sub_rows .= "<tr>";
                     }
                     
-                    $q8 = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $text_question, $ni, $eval_id, 2012);
+                    $q8 = RMC2014Tab::getData(BLOB_ARRAY, $rtype, $text_question, $ni, $eval_id, 2013);
                     $q8 = $q8[$rev];
                     $q8 = nl2br($q8);
                     $comm_label = ucfirst($rev);
@@ -966,7 +940,7 @@ EOF;
                         $comm_short = array();
                         
                         if($i>1){
-                            $comm = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2012);
+                            $comm = RMC2014Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2013);
                             $comm = $comm[$rev];
                             if(!empty($comm)){
                                 foreach($comm as $key=>$c){
@@ -978,7 +952,7 @@ EOF;
                         }
                         $comm_short = implode(", ", $comm_short);
 
-                        $response = RMC2013Tab::getData(BLOB_ARRAY, $rtype,  $q, $ni, $eval_id, 2012);
+                        $response = RMC2014Tab::getData(BLOB_ARRAY, $rtype,  $q, $ni, $eval_id, 2013);
                         $response_orig = $response = $response[$rev];
                         
                         if($response_orig){
@@ -1017,15 +991,11 @@ EOF;
 
             $this->html .=<<<EOF
                 <td rowspan='{$rowspan}' style='background: #FFFFFF;' align='center'>{$average_score}</td>
-                
                 {$sub_rows}
-               
 EOF;
-            
         }
         
         $this->html .= "</tbody></table><br />";
-        
     }
 
     function showEvalProjectOverview(){
@@ -1044,49 +1014,47 @@ EOF;
             $wgOut->disable();
             return $sto->trigger_download($action, "{$action}.pdf", false);
         }
-
         
         $this->html .=<<<EOF
         <h3>$type Summary of Questions 1-9</h3>
-        <table class='indexTable indexTable_2013' cellspacing='1' cellpadding='3' style='border-style:solid;' width='100%' frame="box" rules="all">
+        <table class='indexTable indexTable_2014' cellspacing='1' cellpadding='3' style='border-style:solid;' width='100%' frame="box" rules="all">
         <thead>
         <tr>
-            <th style='background: #EEEEEE;' width="20%">$type</th>
+            <th style='background: #EEEEEE;' width="10%">$type</th>
+            <th style='background: #EEEEEE; padding:0px;'>ISAC</th>
             <th style='background: #EEEEEE; padding:0px;' width="5%">Ave. (Q6)</th>
             <th style='background: #EEEEEE; padding:0px;' >
-            <span class='tableHeader' style="width: 19.978%;">Evaluator</span>
-            <span class='tableHeader borderLeft' style="width: 17.6%;">Q7</span>
-            <span class='tableHeader borderLeft' style="width: 8.7%;">Q6</span>
-            <span class='tableHeader borderLeft' style="width: 8.7%;">Q8</span>
-            <span class='tableHeader borderLeft' style="width: 8.7%;">Q1</span>
-            <span class='tableHeader borderLeft' style="width: 8.7%;">Q2</span>
-            <span class='tableHeader borderLeft' style="width: 8.7%;">Q3</span>
-            <span class='tableHeader borderLeft' style="width: 8.7%;">Q4</span>
-            <span class='tableHeader borderLeft' style="width: 8.7%;">Q5</span>
+                <span class='tableHeader' style="width: 19.978%;">Evaluator</span>
+                <span class='tableHeader borderLeft' style="width: 17.6%;">Q7</span>
+                <span class='tableHeader borderLeft' style="width: 8.7%;">Q6</span>
+                <span class='tableHeader borderLeft' style="width: 8.7%;">Q8</span>
+                <span class='tableHeader borderLeft' style="width: 8.7%;">Q1</span>
+                <span class='tableHeader borderLeft' style="width: 8.7%;">Q2</span>
+                <span class='tableHeader borderLeft' style="width: 8.7%;">Q3</span>
+                <span class='tableHeader borderLeft' style="width: 8.7%;">Q4</span>
+                <span class='tableHeader borderLeft' style="width: 8.7%;">Q5</span>
             </th>
-           
         </tr>
         </thead>
         <tbody>
 EOF;
-
-
         $text_question = EVL_OTHERCOMMENTS;
         $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_REPORTQUALITY);
         $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_REPORTQUALITY_COM);
 
-        $projects = Person::getAllEvaluates($type, 2012);
+        $projects = Person::getAllEvaluates($type, 2013);
+        $isac = Person::getAllPeople(ISAC);
         $sorted_projects = array();
         foreach ($projects as $p){
             $sorted_projects[$p->getId()] = $p->getName();
         }
         asort($sorted_projects);
-
+        
         foreach($sorted_projects as $ni_id => $ni_name){
             $ni = Project::newFromId($ni_id);
             //$ni_id = $ni->getId();
             //$ni_name = $ni->getReversedName();
-            $evaluators = $ni->getEvaluators(2012);
+            $evaluators = $ni->getEvaluators(2013);
 
             $rowspan = count($evaluators);
             if($rowspan == 0){
@@ -1095,13 +1063,24 @@ EOF;
             $rowspan = $rowspan*2;
 
             $download = "Project PDF";
-            $report = new DummyReport("ProjectReport", $ni, $ni, 2012);
+            $report = new DummyReport("ProjectReport", $ni, $ni, 2013);
             $tok = false;
             $check = $report->getPDF();
             if (count($check) > 0) {
                 $tok = $check[0]['token'];
                 $download = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Project PDF</a>";
             }
+            $isac_html = "<table width='100%' rules='all'>";
+            foreach($isac as $person){
+                $addr = ReportBlob::create_address(RP_ISAC, ISAC_PHASE2, ISAC_PHASE2_COMMENT, 0);
+                $blb = new ReportBlob(BLOB_TEXT, 2013, $person->getId(), $ni_id);
+                $result = $blb->load($addr);
+                $data = $blb->getData();
+                if($data != null){
+                    $isac_html .= "<tr><td style='border:none;'><b>{$person->getName()}:</b></td><td style='border:none;'>{$data}</td></tr>";
+                }
+            }
+            $isac_html .= "</table>";
 
             $this->html .=<<<EOF
             <tr>
@@ -1109,11 +1088,10 @@ EOF;
             <b>{$ni_name}</b><br />
             {$download}
             </td>
+            <td>$isac_html</td>
 EOF;
-
-
             $average_score = 0;
-            $sub_rows = "<table width='100%' rules='all'>";
+            $sub_rows = "<table width='100%' rules='none'>";
             $div_count = 0;
             $ev_count = 0;
             foreach($evaluators as $evaluator) {
@@ -1122,13 +1100,13 @@ EOF;
                 
                 $sub_rows .= "<tr><td width='20%'>{$eval_name}</td><td style='padding:0px;'>";
                 $sub_rows .= "<table width='100%' rules='all'>";
-				
-				$additional_score = 0;
+                
+                $additional_score = 0;
                 //foreach(array('original', 'revised') as $ind => $rev){
                     $sub_row1 = "<tr>";
                     $sub_row2 = "<tr>";
                     
-                    $q8 = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $text_question, $ni, $eval_id, 2012, $ni_id);
+                    $q8 = RMC2014Tab::getData(BLOB_ARRAY, $rtype, $text_question, $ni, $eval_id, 2013, $ni_id);
                     //$q8 = @$q8[$rev]; 
                     $q8_O = (isset($q8['original']))? $q8['original'] : "";
                     $q8_R = (isset($q8['revised']))? $q8['revised'] : "";
@@ -1171,7 +1149,7 @@ EOF;
                         $comm_short2 = array();
 
                         if($i>1){
-                            $comm = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2012, $ni_id);
+                            $comm = RMC2014Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2013, $ni_id);
                             //$comm = @$comm[$rev]; 
                             $comm2 = (isset($comm['revised']))? $comm['revised'] : array();
                             $comm = (isset($comm['original']))? $comm['original'] : array();
@@ -1194,7 +1172,7 @@ EOF;
                         $comm_short = implode(", ", $comm_short);
                         $comm_short2 = implode(", ", $comm_short2);
 
-                        $response = RMC2013Tab::getData(BLOB_ARRAY, $rtype,  $q, $ni, $eval_id, 2012, $ni_id);
+                        $response = RMC2014Tab::getData(BLOB_ARRAY, $rtype,  $q, $ni, $eval_id, 2013, $ni_id);
                         //$response_orig = $response = @$response[$rev]; 
                         $response_orig = (isset($response['original']))? $response['original'] : "";
                         $response_rev = $response2 = (isset($response['revised']))? $response['revised'] : "";
@@ -1235,7 +1213,7 @@ EOF;
                             $additional_score = $weights[$response_rev];
                         }
                         else if($q == EVL_OVERALLSCORE && $response_orig && isset($weights[$response_orig])){
-							$additional_score = $weights[$response_orig];
+                            $additional_score = $weights[$response_orig];
                         }
 
                         $sub_row1 .= $cell1;
@@ -1248,13 +1226,13 @@ EOF;
                     $sub_row2 .= "</tr>";
                 //}
 
-				if($additional_score){
-					$average_score += $aves[$additional_score]*$additional_score;
-				    $div_count++;
-				}
-				
+                if($additional_score){
+                    $average_score += $aves[$additional_score]*$additional_score;
+                    $div_count++;
+                }
+                
                 $sub_rows .= $sub_row1;
-                $sub_rows .= $sub_row2;				
+                $sub_rows .= $sub_row2;                
                 $sub_rows .= "</table>";
                 $sub_rows .= "</td></tr>";
                 $ev_count++;
@@ -1275,11 +1253,8 @@ EOF;
                 </td>
                 </tr>
 EOF;
-            
         }
-        
         $this->html .= "</tbody></table><br />";
-        
     }
 
     function showEvalProjectOverview2(){
@@ -1308,12 +1283,11 @@ EOF;
         </tr>
 EOF;
 
-
         $text_question = EVL_OTHERCOMMENTS;
         $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_REPORTQUALITY);
         $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_REPORTQUALITY_COM);
 
-        $projects = Person::getAllEvaluates($type, 2012);
+        $projects = Person::getAllEvaluates($type, 2013);
         $sorted_projects = array();
         foreach ($projects as $p){
             $sorted_projects[$p->getId()] = $p->getName();
@@ -1324,7 +1298,7 @@ EOF;
             $ni = Project::newFromId($ni_id);
             //$ni_id = $ni->getId();
             //$ni_name = $ni->getReversedName();
-            $evaluators = $ni->getEvaluators(2012);
+            $evaluators = $ni->getEvaluators(2013);
 
             $rowspan = count($evaluators);
             if($rowspan == 0){
@@ -1363,7 +1337,7 @@ EOF;
                 
                 $sub_rows .= "<tr><td>{$eval_name}</td>";
                 $cell = "";
-                $q8 = RMC2013Tab::getData(BLOB_TEXT, $rtype, $text_question, $ni, $eval_id, 2012, $ni_id);
+                $q8 = RMC2014Tab::getData(BLOB_TEXT, $rtype, $text_question, $ni, $eval_id, 2013, $ni_id);
                 $q8 = nl2br($q8);
                 if(!empty($q8)){
                     $cell =<<<EOF
@@ -1381,7 +1355,7 @@ EOF;
                     $comm_short = array();
                     
                     if($i>1){
-                        $comm = RMC2013Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2012, $ni_id);
+                        $comm = RMC2014Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2013, $ni_id);
                         if(!empty($comm)){
                             foreach($comm as $key=>$c){
                                 if(strlen($c)>1){
@@ -1392,7 +1366,7 @@ EOF;
                     }
                     $comm_short = implode(", ", $comm_short);
 
-                    $response_orig = $response = RMC2013Tab::getData(BLOB_TEXT, $rtype,  $q, $ni, $eval_id, 2012, $ni_id);
+                    $response_orig = $response = RMC2014Tab::getData(BLOB_TEXT, $rtype,  $q, $ni, $eval_id, 2013, $ni_id);
 
                     if($response_orig){
                         $response = substr($response, 0, 1);
@@ -1415,8 +1389,6 @@ EOF;
 
                     $i++;
                 }
-
-
                 $sub_rows .= "</tr>";
             }
 
@@ -1433,15 +1405,11 @@ EOF;
                 {$sub_rows}
                 <tr><td colspan="12" style="display:table-column;"></td></tr>
 EOF;
-            
         }
-        
         $this->html .= "</table><br />";
-        
     }
 
     static function getData($blob_type, $rptype, $question, $sub, $eval_id=0, $evalYear=EVAL_YEAR, $proj_id=0){
-
         $addr = ReportBlob::create_address($rptype, SEC_NONE, $question, $sub->getId());
         $blb = new ReportBlob($blob_type, $evalYear, $eval_id, $proj_id);
         // echo "rptype=$rptype, section=$question, subid=".$sub->getId() .", blob_type=$blob_type, year=$evalYear, eval=$eval_id <br>";
@@ -1455,16 +1423,14 @@ EOF;
         return $data;
     }
 
-    
-
     function showBudgetTableFor($type){
         global $wgOut, $wgScriptPath, $wgServer, $pl_language_years;
         $this->html .= "<h3>$type Budget Summary</h3>";
         $fullBudget = array();
         if($type == PNI || $type == CNI){
-            $fullBudget[] = new Budget(array(array(HEAD, HEAD, HEAD, HEAD, HEAD)), array(array($type, "Allocated in 2012", "Number of Projects", "Total Request", "Project Requests")));
-            foreach(Person::getAllPeopleDuring($type, "2012-01-01 00:00:00", "2013-01-01 00:00:00") as $person){
-                $budget = $person->getRequestedBudget(2012);
+            $fullBudget[] = new Budget(array(array(HEAD, HEAD, HEAD, HEAD, HEAD)), array(array($type, "Allocated in 2013", "Number of Projects", "Total Request", "Project Requests")));
+            foreach(Person::getAllPeopleDuring($type, "2014-04-01", "2015-03-31") as $person){
+                $budget = $person->getRequestedBudget(2013);
                 if($budget != null){
                     
                     $error = ($budget->isError())? true : false;
@@ -1476,7 +1442,7 @@ EOF;
                     $budgetProjects[] = $budget->copy()->where(V_PERS_NOT_NULL)->limit(0, 1)->select(V_PERS_NOT_NULL);
 
                     //Allocated:
-                    $budget_a = $person->getAllocatedBudget(2011);
+                    $budget_a = $person->getAllocatedBudget(2012);
                     if($budget_a != null){
                         $pers_total_a = $budget_a->copy()->rasterize()->select(HEAD1, array("Total"))->where(ROW_TOTAL);
                         //echo $pers_total_a->render();
@@ -1489,7 +1455,7 @@ EOF;
                     $budgetProjects[] = $pers_total->limit($pers_total->nRows()-1,1);
 
                     //echo $budget->copy()->rasterize()->render();
-                    $cur_year_total = $budget->copy()->rasterize()->where(HEAD1, array("TOTALS for April 1, 2013, to March 31, 2014"));
+                    $cur_year_total = $budget->copy()->rasterize()->where(HEAD1, array("TOTALS for April 1, 2014, to March 31, 2015"));
                     
 
                     $i = 0;
@@ -1514,12 +1480,8 @@ EOF;
                         @$budgetProjects[0]->xls[0][1]->error = "Last year's template is used by ".@$budgetProjects[0]->xls[0][1]->value;
                     }
 
-
                     $rowBudget = Budget::join_tables($budgetProjects);
                     $fullBudget[] = $rowBudget;
-
-
-
                 }
             }
             $fullBudget = Budget::union_tables($fullBudget);
@@ -1531,56 +1493,58 @@ EOF;
             $fullBudget = array();
             $fullBudget[] = new Budget(array(array(HEAD, HEAD, HEAD, HEAD)), array(array($type, "Number of Researchers", "Total Request", "Researcher Requests")));
             foreach(Project::getAllProjects() as $project){
-                $budget = $project->getRequestedBudget(2012);
-                if($budget != null){
-                    $error = false;
-                    if($budget->isError()){
-                        $error = true;
-                    }
-                    $people = $budget->copy()->where(HEAD1, array("Name of network investigator submitting request:"))->select(V_PERS_NOT_NULL);
-                
-                    $budgetPeople = array();
-                    $budgetPeople[] = new Budget(array(array(READ)), array(array($project->getName())));
-                    $budgetPeople[] = $people->copy()->count();
-                    $budgetPeople[] = $budgetTotal = $budget->copy()->where(CUBE_TOTAL)->select(CUBE_TOTAL);
+                if($project->getPhase() == 2){
+                    $budget = $project->getRequestedBudget(2013);
+                    if($budget != null){
+                        $error = false;
+                        if($budget->isError()){
+                            $error = true;
+                        }
+                        $people = $budget->copy()->where(HEAD1, array("Name of network investigator submitting request:"))->select(V_PERS_NOT_NULL);
                     
-                    if($error){
-                        $budgetPeople[0]->xls[0][0]->error = "There is a problem with budget for ".$budgetPeople[0]->xls[0][0]->value;
-                    }
+                        $budgetPeople = array();
+                        $budgetPeople[] = new Budget(array(array(READ)), array(array($project->getName())));
+                        $budgetPeople[] = $people->copy()->count();
+                        $budgetPeople[] = $budgetTotal = $budget->copy()->where(CUBE_TOTAL)->select(CUBE_TOTAL);
+                        
+                        if($error){
+                            $budgetPeople[0]->xls[0][0]->error = "There is a problem with budget for ".$budgetPeople[0]->xls[0][0]->value;
+                        }
 
-                    $nCols = $people->nCols();
-                    for($i = 0; $i < $nCols; $i++){
-                        if(isset($people->xls[0][$i + 1])){
-                            $budgetPeople[] = @$budget->copy()->where(V_PERS_NOT_NULL)
-                                                     ->select(V_PERS_NOT_NULL, array($people->xls[0][$i + 1]->getValue()))
-                                                     ->join($budget->copy()->select(V_PERS_NOT_NULL, array($people->xls[0][$i + 1]->getValue()))
-                                                     ->where(CUBE_COL_TOTAL)
-                                    )->concat();
+                        $nCols = $people->nCols();
+                        for($i = 0; $i < $nCols; $i++){
+                            if(isset($people->xls[0][$i + 1])){
+                                $budgetPeople[] = @$budget->copy()->where(V_PERS_NOT_NULL)
+                                                         ->select(V_PERS_NOT_NULL, array($people->xls[0][$i + 1]->getValue()))
+                                                         ->join($budget->copy()->select(V_PERS_NOT_NULL, array($people->xls[0][$i + 1]->getValue()))
+                                                         ->where(CUBE_COL_TOTAL)
+                                        )->concat();
+                            }
+                            else{
+                                $budgetPeople[] = new Budget();
+                            }
                         }
-                        else{
-                            $budgetPeople[] = new Budget();
-                        }
+                        $rowBudget = @Budget::join_tables($budgetPeople);
+                        $fullBudget[] = $rowBudget;
                     }
-                    $rowBudget = @Budget::join_tables($budgetPeople);
-                    $fullBudget[] = $rowBudget;
                 }
             }
             $fullBudget = Budget::union_tables($fullBudget);
             $this->html .= $fullBudget->render(true);
         }
         else if($type == "Full"){
-            $fullBudget = new Budget(array(array(HEAD, HEAD, HEAD)), array(array("Categories for April 1, 2013, to March 31, 2014", PNI."s", CNI."s")));
+            $fullBudget = new Budget(array(array(HEAD, HEAD, HEAD)), array(array("Categories for April 1, 2014, to March 31, 2015", PNI."s", CNI."s")));
             
             $pniTotals = array();
             $cniTotals = array();
-            foreach(Person::getAllPeople(PNI) as $person){
-                $budget = $person->getRequestedBudget(2012);
+            foreach(Person::getAllPeopleDuring(PNI, "2014-04-01", "2015-03-31") as $person){
+                $budget = $person->getRequestedBudget(2013);
                 if($budget != null){
                     $pniTotals[] = $budget->copy()->limit(8, 14)->rasterize()->select(ROW_TOTAL);
                 }
             }
-            foreach(Person::getAllPeople(CNI) as $person){
-                $budget = $person->getRequestedBudget(2012);
+            foreach(Person::getAllPeopleDuring(CNI, "2014-04-01", "2015-03-31") as $person){
+                $budget = $person->getRequestedBudget(2013);
                 if($budget != null){
                     $cniTotals[] = $budget->copy()->limit(8, 14)->rasterize()->select(ROW_TOTAL);
                 }
@@ -1675,7 +1639,7 @@ EOF;
 
             // HQP stuff            
             foreach ($positions as $pos) {
-                $hqps = Dashboard::getHQP($project, 0, $pos, "2012-01-01 00:00:00", "2013-01-01 00:00:00");
+                $hqps = Dashboard::getHQP($project, 0, $pos, "2013-01-01 00:00:00", "2014-01-01 00:00:00");
                 $hqp_num = count($hqps);
                 $hqp_details = Dashboard::hqpDetails($hqps);
 
@@ -1708,7 +1672,7 @@ EOF;
             }
 
             // Publications.
-            $papers = Dashboard::getPapers($project, '', "Publication", "2012-01-01 00:00:00", "2013-01-01 00:00:00");
+            $papers = Dashboard::getPapers($project, '', "Publication", "2013-01-01 00:00:00", "2014-01-01 00:00:00");
             $paper_num = count($papers);
             $paper_details = Dashboard::paperDetails($papers);
             
@@ -1735,10 +1699,9 @@ EOF;
             else{
                 $chunk .= "0</td>";
             }
-            
 
             // Artifacts.
-            $papers = Dashboard::getPapers($project, '', "Artifact", "2012-01-01 00:00:00", "2013-01-01 00:00:00");
+            $papers = Dashboard::getPapers($project, '', "Artifact", "2013-01-01 00:00:00", "2014-01-01 00:00:00");
             $paper_num = count($papers);
             $paper_details = Dashboard::paperDetails($papers);
             
@@ -1765,10 +1728,9 @@ EOF;
             else{
                 $chunk .= "0</td>";
             }
-            
 
             // Contributions
-            $contributions = Dashboard::getContributions($project, '', '2012');
+            $contributions = Dashboard::getContributions($project, '', '2013');
             $contribution_num = count($contributions);
             $contribution_sum = Dashboard::contributionSum($contributions);
             $contribution_details = Dashboard::contributionDetailsXLS($contributions);
@@ -1924,7 +1886,6 @@ EOF;
             $chunk .= "</tr>";
         }
 
-
         //Totals Row
         $chunk .= "<tr><td><strong>Total:</strong></td>";
             
@@ -2007,7 +1968,7 @@ EOF;
                 $chunk .= "<tr><td>$pname_read <small>({$person->getType()})</small></td>";
                 
                 // HQP stuff.
-                $hqps = Dashboard::getHQP(0, $person, 'all', "2012-01-01 00:00:00", "2013-01-01 00:00:00");
+                $hqps = Dashboard::getHQP(0, $person, 'all', "2013-01-01 00:00:00", "2014-01-01 00:00:00");
                 foreach ($positions as $pos) {
                     $pos_hqps = Dashboard::filterHQP($hqps, $pos);
                     $hqp_num = count($pos_hqps);
@@ -2042,7 +2003,7 @@ EOF;
                 }
                 
                 // Publications.
-                $papers = Dashboard::getPapers(0, $person, "Publication", "2012-01-01 00:00:00", "2013-01-01 00:00:00");
+                $papers = Dashboard::getPapers(0, $person, "Publication", "2013-01-01 00:00:00", "2014-01-01 00:00:00");
                 $paper_num = count($papers);
                 $paper_details = Dashboard::paperDetails($papers);
                 
@@ -2069,10 +2030,9 @@ EOF;
                 else{
                     $chunk .= "0</td>";
                 }
-                
 
                 // Artifacts.
-                $papers = Dashboard::getPapers(0, $person, "Artifact", "2012-01-01 00:00:00", "2013-01-01 00:00:00");
+                $papers = Dashboard::getPapers(0, $person, "Artifact", "2013-01-01 00:00:00", "2014-01-01 00:00:00");
                 $paper_num = count($papers);
                 $paper_details = Dashboard::paperDetails($papers);
                 
@@ -2101,7 +2061,7 @@ EOF;
                 }
                 
                 // Contributions
-                $contributions = Dashboard::getContributions(0, $person, '2012');
+                $contributions = Dashboard::getContributions(0, $person, '2013');
                 $contribution_num = count($contributions);
                 $contribution_sum = Dashboard::contributionSum($contributions);
                 $contribution_details = Dashboard::contributionDetailsXLS($contributions);
@@ -2203,8 +2163,8 @@ EOF;
 
     function getUniContributionStats(){
 
-        $cnis = Person::getAllPeopleDuring(CNI, "2012-01-01 00:00:00", "2013-01-01 00:00:00");
-        $pnis = Person::getAllPeopleDuring(PNI, "2012-01-01 00:00:00", "2013-01-01 00:00:00");
+        $cnis = Person::getAllPeopleDuring(CNI, "2013-01-01 00:00:00", "2014-01-01 00:00:00");
+        $pnis = Person::getAllPeopleDuring(PNI, "2013-01-01 00:00:00", "2014-01-01 00:00:00");
 
         $nis = array();
         $unique_ids = array();
@@ -2223,17 +2183,15 @@ EOF;
             }
         }
 
-
         //Setup the table structure
         $universities = array();
         $unknown = array("uniq"=>array(), "contr"=>array());
-
 
         //Fill the table
         foreach ($nis as $hqp){
             $uid = $hqp->getId();
     
-            $contributions = Dashboard::getContributions(0, $hqp, '2012');
+            $contributions = Dashboard::getContributions(0, $hqp, '2013');
 
             $uniobj = $hqp->getUniversity();
             $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
@@ -2241,7 +2199,6 @@ EOF;
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
                 $universities[$uni] = array("uniq"=>array(), "contr"=>array());
             }
-
 
             foreach($contributions as $contr){
                 $contr_id = $contr->getId();
@@ -2261,7 +2218,6 @@ EOF;
             }
         }
 
-
         //Render the table
         ksort($universities);
         $universities["Unknown"] = $unknown;
@@ -2276,14 +2232,11 @@ EOF;
          <th>Total</th>
          </tr>
 EOF;
-        
-
         foreach ($universities as $uni=>$data){
             $html .=<<<EOF
                 <tr>
                 <th align="left">{$uni}</th>
 EOF;
-            
             
             $uni_contr = $data["contr"];
             
@@ -2314,7 +2267,6 @@ EOF;
             else{
                 $html .= "$ 0.00</td>";
             }            
-
             
             //IN-KIND
             $lnk_id = "lnk_contr_inki_" . $uni_id;
@@ -2367,26 +2319,22 @@ EOF;
             else{
                 $html .= "$ 0.00</td>";
             }      
-
             $html .= "</tr>";
-
         }
-            
         $html .= "</table>";
         $html .= "<div class='pdf_hide details_div' id='$details_div_id' style='display: none;'></div><br />";
         
         $this->html .= $html;
-
     }
 
     function showDistribution() {
         global $wgOut;
 
-        $distr = Project::getHQPDistributionDuring("2012-01-01 00:00:00", "2013-01-01 00:00:00");
+        $distr = Project::getHQPDistributionDuring("2013-01-01 00:00:00", "2014-01-01 00:00:00");
         $chunk =<<<EOF
         <table class='wikitable sortable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
         <tr>
-        <th>Number of Projects</th>
+        <th>Number of Main Projects</th>
         <th>HQP Associated</th>
         </tr>
 EOF;
@@ -2446,6 +2394,7 @@ EOF;
     static function dollar_format($val) {
         return '$&nbsp;' . number_format($val, 2);
     }
+    
     static function getValueOf($value){
         switch($value){
             case "exceptional":
