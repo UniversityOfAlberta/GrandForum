@@ -96,11 +96,6 @@ class RMC2014Tab extends AbstractTab {
                 'aLengthMenu': [[-1], ['All']],
                 "bFilter": true,
                 "aaSorting": [[0,'asc']],
-                "aoColumns": [
-                    null,
-                    null,
-                    { "bSortable": false }
-                ]
                 //"bSort": false
             });
             //$('.dataTables_filter input').css('width', 250);
@@ -319,7 +314,6 @@ EOF;
 
     }
 
-
     function showEvalNIOverview($type){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript, $reporteeId, $getPerson;
         if($type == CNI){
@@ -341,7 +335,6 @@ EOF;
             return $sto->trigger_download($action, "{$action}.pdf", false);
         }
 
-        
         $this->html .=<<<EOF
         <h3>$type Summary of Questions 1-9</h3>
         <table class='indexTable indexTable_2014' frame="box" rules="all">
@@ -365,8 +358,6 @@ EOF;
         </thead>
         <tbody>
 EOF;
-
-
         $text_question = EVL_OTHERCOMMENTS;
         $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY);
         $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_MANAGEMENT_COM, EVL_REPORTQUALITY_COM);
@@ -416,8 +407,6 @@ EOF;
             {$download2}
             </td>
 EOF;
-
-
             $average_score = 0;
             $sub_rows = "<table width='100%' rules='all'>";
             $div_count = 0;
@@ -585,13 +574,9 @@ EOF;
                 </td>
                 </tr>
 EOF;
-            
         }
-        
         $this->html .= "</tbody></table><br />";
-        
     }
-
 
     function exportEvalNIOverview($type){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript, $reporteeId, $getPerson;
@@ -613,12 +598,10 @@ EOF;
             $wgOut->disable();
             return $sto->trigger_download($action, "{$action}.pdf", false);
         }
-
         
         $csv =<<<EOF
 `$type`,`Ave. (Q7)`,`Evaluator`,`Q8`,`Q7`,`Q9`,`Q1`,`Q2`,`Q3`,`Q4`,`Q5`,`Q6`\n
 EOF;
-
 
         $text_question = EVL_OTHERCOMMENTS;
         $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY);
@@ -646,7 +629,6 @@ EOF;
             //$this->html .=<<<EOF
             //    "{$ni_name}",
 //EOF;
-
 
             $average_score = 0;
             $sub_rows = "";
@@ -846,7 +828,6 @@ EOF;
             $wgOut->disable();
             return $sto->trigger_download($action, "{$action}.pdf", false);
         }
-
         
         $this->html .=<<<EOF
         <h3>$type Summary of Questions 1-9</h3>
@@ -869,8 +850,6 @@ EOF;
         </thead>
         <tbody>
 EOF;
-
-
         $text_question = EVL_OTHERCOMMENTS;
         $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY);
         $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_MANAGEMENT_COM, EVL_REPORTQUALITY_COM);
@@ -920,8 +899,6 @@ EOF;
             {$download2}
             </td>
 EOF;
-
-
             $average_score = 0;
             $sub_rows = "";
             $div_count = 0;
@@ -934,7 +911,6 @@ EOF;
                 }
                 
                 $sub_rows .= "<td rowspan='2'>{$eval_name}</td>";
-               
 
                 foreach(array('original', 'revised') as $ind => $rev){
                     $sub_rows .= "";
@@ -1015,15 +991,11 @@ EOF;
 
             $this->html .=<<<EOF
                 <td rowspan='{$rowspan}' style='background: #FFFFFF;' align='center'>{$average_score}</td>
-                
                 {$sub_rows}
-               
 EOF;
-            
         }
         
         $this->html .= "</tbody></table><br />";
-        
     }
 
     function showEvalProjectOverview(){
@@ -1042,44 +1014,42 @@ EOF;
             $wgOut->disable();
             return $sto->trigger_download($action, "{$action}.pdf", false);
         }
-
         
         $this->html .=<<<EOF
         <h3>$type Summary of Questions 1-9</h3>
         <table class='indexTable indexTable_2014' cellspacing='1' cellpadding='3' style='border-style:solid;' width='100%' frame="box" rules="all">
         <thead>
         <tr>
-            <th style='background: #EEEEEE;' width="20%">$type</th>
+            <th style='background: #EEEEEE;' width="10%">$type</th>
+            <th style='background: #EEEEEE; padding:0px;'>ISAC</th>
             <th style='background: #EEEEEE; padding:0px;' width="5%">Ave. (Q6)</th>
             <th style='background: #EEEEEE; padding:0px;' >
-            <span class='tableHeader' style="width: 19.978%;">Evaluator</span>
-            <span class='tableHeader borderLeft' style="width: 17.6%;">Q7</span>
-            <span class='tableHeader borderLeft' style="width: 8.7%;">Q6</span>
-            <span class='tableHeader borderLeft' style="width: 8.7%;">Q8</span>
-            <span class='tableHeader borderLeft' style="width: 8.7%;">Q1</span>
-            <span class='tableHeader borderLeft' style="width: 8.7%;">Q2</span>
-            <span class='tableHeader borderLeft' style="width: 8.7%;">Q3</span>
-            <span class='tableHeader borderLeft' style="width: 8.7%;">Q4</span>
-            <span class='tableHeader borderLeft' style="width: 8.7%;">Q5</span>
+                <span class='tableHeader' style="width: 19.978%;">Evaluator</span>
+                <span class='tableHeader borderLeft' style="width: 17.6%;">Q7</span>
+                <span class='tableHeader borderLeft' style="width: 8.7%;">Q6</span>
+                <span class='tableHeader borderLeft' style="width: 8.7%;">Q8</span>
+                <span class='tableHeader borderLeft' style="width: 8.7%;">Q1</span>
+                <span class='tableHeader borderLeft' style="width: 8.7%;">Q2</span>
+                <span class='tableHeader borderLeft' style="width: 8.7%;">Q3</span>
+                <span class='tableHeader borderLeft' style="width: 8.7%;">Q4</span>
+                <span class='tableHeader borderLeft' style="width: 8.7%;">Q5</span>
             </th>
-           
         </tr>
         </thead>
         <tbody>
 EOF;
-
-
         $text_question = EVL_OTHERCOMMENTS;
         $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_REPORTQUALITY);
         $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_REPORTQUALITY_COM);
 
         $projects = Person::getAllEvaluates($type, 2013);
+        $isac = Person::getAllPeople(ISAC);
         $sorted_projects = array();
         foreach ($projects as $p){
             $sorted_projects[$p->getId()] = $p->getName();
         }
         asort($sorted_projects);
-
+        
         foreach($sorted_projects as $ni_id => $ni_name){
             $ni = Project::newFromId($ni_id);
             //$ni_id = $ni->getId();
@@ -1100,6 +1070,17 @@ EOF;
                 $tok = $check[0]['token'];
                 $download = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Project PDF</a>";
             }
+            $isac_html = "<table width='100%' rules='all'>";
+            foreach($isac as $person){
+                $addr = ReportBlob::create_address(RP_ISAC, ISAC_PHASE2, ISAC_PHASE2_COMMENT, 0);
+                $blb = new ReportBlob(BLOB_TEXT, 2013, $person->getId(), $ni_id);
+                $result = $blb->load($addr);
+                $data = $blb->getData();
+                if($data != null){
+                    $isac_html .= "<tr><td style='border:none;'><b>{$person->getName()}:</b></td><td style='border:none;'>{$data}</td></tr>";
+                }
+            }
+            $isac_html .= "</table>";
 
             $this->html .=<<<EOF
             <tr>
@@ -1107,11 +1088,10 @@ EOF;
             <b>{$ni_name}</b><br />
             {$download}
             </td>
+            <td>$isac_html</td>
 EOF;
-
-
             $average_score = 0;
-            $sub_rows = "<table width='100%' rules='all'>";
+            $sub_rows = "<table width='100%' rules='none'>";
             $div_count = 0;
             $ev_count = 0;
             foreach($evaluators as $evaluator) {
@@ -1120,8 +1100,8 @@ EOF;
                 
                 $sub_rows .= "<tr><td width='20%'>{$eval_name}</td><td style='padding:0px;'>";
                 $sub_rows .= "<table width='100%' rules='all'>";
-				
-				$additional_score = 0;
+                
+                $additional_score = 0;
                 //foreach(array('original', 'revised') as $ind => $rev){
                     $sub_row1 = "<tr>";
                     $sub_row2 = "<tr>";
@@ -1233,7 +1213,7 @@ EOF;
                             $additional_score = $weights[$response_rev];
                         }
                         else if($q == EVL_OVERALLSCORE && $response_orig && isset($weights[$response_orig])){
-							$additional_score = $weights[$response_orig];
+                            $additional_score = $weights[$response_orig];
                         }
 
                         $sub_row1 .= $cell1;
@@ -1246,13 +1226,13 @@ EOF;
                     $sub_row2 .= "</tr>";
                 //}
 
-				if($additional_score){
-					$average_score += $aves[$additional_score]*$additional_score;
-				    $div_count++;
-				}
-				
+                if($additional_score){
+                    $average_score += $aves[$additional_score]*$additional_score;
+                    $div_count++;
+                }
+                
                 $sub_rows .= $sub_row1;
-                $sub_rows .= $sub_row2;				
+                $sub_rows .= $sub_row2;                
                 $sub_rows .= "</table>";
                 $sub_rows .= "</td></tr>";
                 $ev_count++;
@@ -1273,11 +1253,8 @@ EOF;
                 </td>
                 </tr>
 EOF;
-            
         }
-        
         $this->html .= "</tbody></table><br />";
-        
     }
 
     function showEvalProjectOverview2(){
@@ -1305,7 +1282,6 @@ EOF;
             <th style='background: #EEEEEE;' width="7%">Q5</th>
         </tr>
 EOF;
-
 
         $text_question = EVL_OTHERCOMMENTS;
         $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_REPORTQUALITY);
@@ -1413,8 +1389,6 @@ EOF;
 
                     $i++;
                 }
-
-
                 $sub_rows .= "</tr>";
             }
 
@@ -1431,15 +1405,11 @@ EOF;
                 {$sub_rows}
                 <tr><td colspan="12" style="display:table-column;"></td></tr>
 EOF;
-            
         }
-        
         $this->html .= "</table><br />";
-        
     }
 
     static function getData($blob_type, $rptype, $question, $sub, $eval_id=0, $evalYear=EVAL_YEAR, $proj_id=0){
-
         $addr = ReportBlob::create_address($rptype, SEC_NONE, $question, $sub->getId());
         $blb = new ReportBlob($blob_type, $evalYear, $eval_id, $proj_id);
         // echo "rptype=$rptype, section=$question, subid=".$sub->getId() .", blob_type=$blob_type, year=$evalYear, eval=$eval_id <br>";
@@ -1452,8 +1422,6 @@ EOF;
         
         return $data;
     }
-
-    
 
     function showBudgetTableFor($type){
         global $wgOut, $wgScriptPath, $wgServer, $pl_language_years;
@@ -1512,12 +1480,8 @@ EOF;
                         @$budgetProjects[0]->xls[0][1]->error = "Last year's template is used by ".@$budgetProjects[0]->xls[0][1]->value;
                     }
 
-
                     $rowBudget = Budget::join_tables($budgetProjects);
                     $fullBudget[] = $rowBudget;
-
-
-
                 }
             }
             $fullBudget = Budget::union_tables($fullBudget);
@@ -1735,7 +1699,6 @@ EOF;
             else{
                 $chunk .= "0</td>";
             }
-            
 
             // Artifacts.
             $papers = Dashboard::getPapers($project, '', "Artifact", "2013-01-01 00:00:00", "2014-01-01 00:00:00");
@@ -1765,7 +1728,6 @@ EOF;
             else{
                 $chunk .= "0</td>";
             }
-            
 
             // Contributions
             $contributions = Dashboard::getContributions($project, '', '2013');
@@ -1924,7 +1886,6 @@ EOF;
             $chunk .= "</tr>";
         }
 
-
         //Totals Row
         $chunk .= "<tr><td><strong>Total:</strong></td>";
             
@@ -2069,7 +2030,6 @@ EOF;
                 else{
                     $chunk .= "0</td>";
                 }
-                
 
                 // Artifacts.
                 $papers = Dashboard::getPapers(0, $person, "Artifact", "2013-01-01 00:00:00", "2014-01-01 00:00:00");
@@ -2223,11 +2183,9 @@ EOF;
             }
         }
 
-
         //Setup the table structure
         $universities = array();
         $unknown = array("uniq"=>array(), "contr"=>array());
-
 
         //Fill the table
         foreach ($nis as $hqp){
@@ -2241,7 +2199,6 @@ EOF;
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
                 $universities[$uni] = array("uniq"=>array(), "contr"=>array());
             }
-
 
             foreach($contributions as $contr){
                 $contr_id = $contr->getId();
@@ -2261,7 +2218,6 @@ EOF;
             }
         }
 
-
         //Render the table
         ksort($universities);
         $universities["Unknown"] = $unknown;
@@ -2276,14 +2232,11 @@ EOF;
          <th>Total</th>
          </tr>
 EOF;
-        
-
         foreach ($universities as $uni=>$data){
             $html .=<<<EOF
                 <tr>
                 <th align="left">{$uni}</th>
 EOF;
-            
             
             $uni_contr = $data["contr"];
             
@@ -2314,7 +2267,6 @@ EOF;
             else{
                 $html .= "$ 0.00</td>";
             }            
-
             
             //IN-KIND
             $lnk_id = "lnk_contr_inki_" . $uni_id;
@@ -2367,16 +2319,12 @@ EOF;
             else{
                 $html .= "$ 0.00</td>";
             }      
-
             $html .= "</tr>";
-
         }
-            
         $html .= "</table>";
         $html .= "<div class='pdf_hide details_div' id='$details_div_id' style='display: none;'></div><br />";
         
         $this->html .= $html;
-
     }
 
     function showDistribution() {
@@ -2446,6 +2394,7 @@ EOF;
     static function dollar_format($val) {
         return '$&nbsp;' . number_format($val, 2);
     }
+    
     static function getValueOf($value){
         switch($value){
             case "exceptional":

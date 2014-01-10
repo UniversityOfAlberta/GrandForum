@@ -82,7 +82,7 @@
         </Instructions>
         <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" phase="2" blobIndex="projectId">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
-                <ReportItem id="pni_comment" type="TextAreaReportItem" blobType="BLOB_ARRAY" blobItem="ISAC_PHASE2_COMMENT">
+                <ReportItem id="project_comment" type="TextAreaReportItem" blobType="BLOB_TEXT" blobItem="ISAC_PHASE2_COMMENT">
                     <![CDATA[{$item}]]>
                 </ReportItem>
             </ReportItemSet>
