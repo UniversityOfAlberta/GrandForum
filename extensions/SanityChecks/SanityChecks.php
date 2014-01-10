@@ -171,6 +171,12 @@ EOF;
         global $wgOut, $wgServer, $wgScriptPath;
         
         $html =<<<EOF
+            The budget errors column will display the error messages that would appear on the person's requested budget.  Some common search terms to use are:
+            <ul>
+                <li><b>greater than</b>: Shows all the people who have requested too much money</li>
+                <li><b>phase 2</b>: Shows all the people who have requested money for a non-phase 2 project</li>
+                <li><b>not a member</b>: Shows all the people who have requested money for a project that they are not on</li>
+            </ul>
         	<table class='indexTable' frame='box' rules='all'>
             <thead>
                 <tr>

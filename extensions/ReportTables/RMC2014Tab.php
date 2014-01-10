@@ -1016,7 +1016,7 @@ EOF;
         }
         
         $this->html .=<<<EOF
-        <h3>$type Summary of Questions 1-9</h3>
+        <h3>$type Summary of Questions 1-8</h3>
         <table class='indexTable indexTable_2014' cellspacing='1' cellpadding='3' style='border-style:solid;' width='100%' frame="box" rules="all">
         <thead>
         <tr>
