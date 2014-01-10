@@ -1021,7 +1021,7 @@ EOF;
         <thead>
         <tr>
             <th style='background: #EEEEEE;' width="10%">$type</th>
-            <th style='background: #EEEEEE; padding:0px;'>ISAC</th>
+            <th style='background: #EEEEEE; padding:0px;' width="10%">ISAC</th>
             <th style='background: #EEEEEE; padding:0px;' width="5%">Ave. (Q6)</th>
             <th style='background: #EEEEEE; padding:0px;' >
                 <span class='tableHeader' style="width: 19.978%;">Evaluator</span>
@@ -1070,17 +1070,16 @@ EOF;
                 $tok = $check[0]['token'];
                 $download = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Project PDF</a>";
             }
-            $isac_html = "<table width='100%' rules='all'>";
+            $isac_html = "";
             foreach($isac as $person){
                 $addr = ReportBlob::create_address(RP_ISAC, ISAC_PHASE2, ISAC_PHASE2_COMMENT, 0);
                 $blb = new ReportBlob(BLOB_TEXT, 2013, $person->getId(), $ni_id);
                 $result = $blb->load($addr);
                 $data = $blb->getData();
                 if($data != null){
-                    $isac_html .= "<tr><td style='border:none;'><b>{$person->getName()}:</b></td><td style='border:none;'>{$data}</td></tr>";
+                    $isac_html .= "<span class='q_tip' title='".nl2br(str_replace("'", "&#39;", $data))."'><a>{$person->getReversedName()}</a></span><br />";
                 }
             }
-            $isac_html .= "</table>";
 
             $this->html .=<<<EOF
             <tr>
