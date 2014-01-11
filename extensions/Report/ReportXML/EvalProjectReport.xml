@@ -175,7 +175,7 @@
                 <td>
                 ]]>
                 </ReportItem>
-                <ReportItemSet id="options_set1" type="OptionsReportItemSet" options="1 Numerous articles.|2 Numerous artifacts.|3 Articles in high impact journals.|4 Moderate record of publications.|5 Limited productivity in low impact journals or conference publications.">
+                <ReportItemSet id="options_set1" type="OptionsReportItemSet" options="1 Research objectives are clear and appropriate.|2 Research objectives insufficiently clear/appropriate.|3 Subproject set complete, well-suited to objectives.|4 Subproject set incomplete, ill-suited to objectives.|5 Research team of high caliber, suitable to meet objectives.|6 Research team incomplete, unlikely to meet objectives.|7 Research objectives strongly relevant to GRAND.|8 Research objectives peripheral to GRAND.">
                     <ReportItem id="RI1_2" type="EvalReviewCheckboxReportItem" blobType="BLOB_ARRAY" blobItem="EVL_EXCELLENCE_COM" blobSubItem="0"  subType="Project">
                     <![CDATA[
                     {$item}
@@ -203,7 +203,7 @@
                 <td>
                 ]]>
                 </ReportItem>
-                <ReportItemSet id="options_set2" type="OptionsReportItemSet" options="1 Significant HQP role in the research.|2 Large number of HQP.|3 Moderate number of HQP.|4 Small number of HQP.|5 No HQP supervision/activity.">
+                <ReportItemSet id="options_set2" type="OptionsReportItemSet" options="1 Potential for significant HQP role in the research.|2 Potential for large number of HQP.|3 Potential for moderate number of HQP.|4 Potential for small number of HQP.|5 Insufficient information re HQP.">
                     <ReportItem id="RI2_2" type="EvalReviewCheckboxReportItem" blobType="BLOB_ARRAY" blobItem="EVL_HQPDEVELOPMENT_COM" blobSubItem="0"  subType="Project">
                     <![CDATA[
                     {$item}
@@ -224,7 +224,7 @@
                 <td>
                 ]]>
                 </ReportItem>
-                <ReportItemSet id="options_set3" type="OptionsReportItemSet" options="1 High level of partner funding.|2 High level of engagement with receptors.|3 Moderate level of partner funding.|4 Moderate level of engagement with receptors.|5 Low level of partner funding.|6 Low level of engagement with receptors.">
+                <ReportItemSet id="options_set3" type="OptionsReportItemSet" options="1 Potential for high level of partner funding.|2 Potential for moderate level of partner funding.|3 Potential for low level of partner funding.|4 High level of engagement with receptors.|5 Moderate level of engagement with receptors.|6 Low level of engagement with receptors.|7 Insufficient information re prospective partners/receptors.">
                     <ReportItem id="RI3_2" type="EvalReviewCheckboxReportItem" blobType="BLOB_ARRAY" blobItem="EVL_NETWORKING_COM" blobSubItem="0"  subType="Project">
                     <![CDATA[
                     {$item}
@@ -245,7 +245,7 @@
                 <td>
                 ]]>
                 </ReportItem>
-                <ReportItemSet id="options_set4" type="OptionsReportItemSet" options="1 Considerable efforts to commercialize.|2 Considerable efforts to disseminate research to receptors.|3 Moderate efforts to commercialize.|4 Moderate efforts to disseminate research to receptors.|5 Minimal efforts to commercialize.|6 Minimal efforts to disseminate research to receptors.">
+                <ReportItemSet id="options_set4" type="OptionsReportItemSet" options="1 Considerable potential for dissemination of research to receptors.|2 Moderate potential for dissemination of research to receptors.|3 Minimal potential for dissemination of research to receptors.|4 Considerable potential for commercialization.|5 Moderate potential for commercialization.|6 Minimal potential for commercialization.|7 Insufficient information re prospective commercialization or dissemination.">
                     <ReportItem id="RI4_2" type="EvalReviewCheckboxReportItem" blobType="BLOB_ARRAY" blobItem="EVL_KNOWLEDGE_COM" blobSubItem="0"  subType="Project">
                     <![CDATA[
                     {$item}
