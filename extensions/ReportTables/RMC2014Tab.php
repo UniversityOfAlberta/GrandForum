@@ -1102,12 +1102,12 @@ EOF;
             <th style='background: #EEEEEE;' width="10%">Project</th>
             <th style='background: #EEEEEE; padding:0px;'>
                 <span class='tableHeader' style="width: 15%;">Champion</span>
-                <span class='tableHeader' style="width: 10%;">Q1</span>
-                <span class='tableHeader' style="width: 10%;">Q2</span>
-                <span class='tableHeader' style="width: 10%;">Q3</span>
-                <span class='tableHeader' style="width: 10%;">Q4</span>
-                <span class='tableHeader' style="width: 10%;">Q5</span>
-                <span class='tableHeader' style="width: 30%;">Q6</span>
+                <span class='tableHeader' style="width: 12.5%;">Q1</span>
+                <span class='tableHeader' style="width: 12.5%;">Q2</span>
+                <span class='tableHeader' style="width: 12.5%;">Q3</span>
+                <span class='tableHeader' style="width: 12.5%;">Q4</span>
+                <span class='tableHeader' style="width: 12.5%;">Q5</span>
+                <span class='tableHeader' style="width: 20%;">Q6</span>
             </th>
         </tr>
         </thead>
@@ -1151,13 +1151,17 @@ EOF;
                     $result = $blb->load($addr);
                     $data = $blb->getData();
                     $data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
-                    $champion_html .= "<td width='10%'>$data</td>";
+                    $short = "";
+                    if($data != ""){
+                        $short = substr($data, 0, 10)."...";
+                    }
+                    $champion_html .= "<td width='12.5%'><span class='q_tip' title='".nl2br(str_replace("'", "&#39;", $data))."'><a href='#'>$short</a></span></td>";
                 }
                 $blb = new ReportBlob(BLOB_ARRAY, 2013, $champ['user']->getId(), $proj_id);
                 $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_RESEARCHERS, 0);
                 $result = $blb->load($addr);
                 $data = $blb->getData();
-                $champion_html .= "<td width='35%'>";
+                $champion_html .= "<td width='20%'>";
                 if(count($data) > 0){
                     foreach($data as $u_id => $message){
                         if($message['q6'] != ""){
