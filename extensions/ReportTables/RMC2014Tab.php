@@ -12,11 +12,12 @@ class RMC2014Tab extends AbstractTab {
         global $wgUser, $wgServer, $wgScriptPath, $wgOut, $foldscript;
         $wgOut->addStyle("../extensions/Report/style/report.css");
 
-        $tab1 = $tab2 = $tab3 = $tab4 = $tab5 = $tab6 = $tab7 = $tab8 = $tab9 = $tab10 = $tab11 = $tab12 = "";
+        $tab1 = $tab2 = $tab3 = $tab4 = $tab5 = $tab6 = $tab7 = $tab8 = $tab9 = $tab10 = $tab11 = $tab12 = $tab13 = "";
         $tabs = array(
             'question1'=>"\$tab1 = 'selectedReportTab';",
             'question2'=>"\$tab2 = 'selectedReportTab';",
             'question3'=>"\$tab3 = 'selectedReportTab';",
+            'question4'=>"\$tab4 = 'selectedReportTab';",
             'budget1'=>"\$tab4 = 'selectedReportTab';",    
             'budget2'=>"\$tab5 = 'selectedReportTab';",    
             'budget3'=>"\$tab6 = 'selectedReportTab';",
@@ -113,17 +114,18 @@ class RMC2014Tab extends AbstractTab {
             <a class="reportTab tooltip $tab1" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question1#PNI_Summary'>1.1 PNI Questions 1-9</a>
             <a class="reportTab tooltip $tab2" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question2#CNI_Summary'>1.2 CNI Questions 1-9</a>
             <a class="reportTab tooltip $tab3" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question3#Project_Summary'>1.3 Project Questions 1-8</a>
+            <a class="reportTab tooltip $tab4" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question4#Champion_Summary'>1.4 Champion Questions</a>
             
-            <a class="reportTab tooltip $tab4 marginTop" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget1#PNI_Budget_Summary'>2.1 PNI Budget Summary</a>
-            <a class="reportTab tooltip $tab5" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget2#CNI_Budget_Summary'>2.2 CNI Budget Summary</a>
-            <a class="reportTab tooltip $tab6" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget3#Project_Budget_Summary'>2.3 Project Budget Summary</span></a>
-            <a class="reportTab tooltip $tab7" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget4#Full_Budget_Summary'>2.4 Full Budget Summary</a>
+            <a class="reportTab tooltip $tab5 marginTop" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget1#PNI_Budget_Summary'>2.1 PNI Budget Summary</a>
+            <a class="reportTab tooltip $tab6" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget2#CNI_Budget_Summary'>2.2 CNI Budget Summary</a>
+            <a class="reportTab tooltip $tab7" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget3#Project_Budget_Summary'>2.3 Project Budget Summary</span></a>
+            <a class="reportTab tooltip $tab8" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget4#Full_Budget_Summary'>2.4 Full Budget Summary</a>
 
-            <a class="reportTab tooltip $tab8 marginTop" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=productivity#Project_Productivity'>3.1 Project Productivity</a>
-            <a class="reportTab tooltip $tab9" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=researcher#Researcher_Productivity'>3.2 Researcher Productivity</a>
-            <a class="reportTab tooltip $tab10" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=contributions#Uni_Contributions'>3.3 Contributions by University</a>
-            <a class="reportTab tooltip $tab11" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=distribution#Distribution'>3.4 HQP Distribution</a>
-            <a class="reportTab tooltip $tab12" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=themes#Themes'>3.5 Project Themes</a>
+            <a class="reportTab tooltip $tab9 marginTop" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=productivity#Project_Productivity'>3.1 Project Productivity</a>
+            <a class="reportTab tooltip $tab10" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=researcher#Researcher_Productivity'>3.2 Researcher Productivity</a>
+            <a class="reportTab tooltip $tab11" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=contributions#Uni_Contributions'>3.3 Contributions by University</a>
+            <a class="reportTab tooltip $tab12" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=distribution#Distribution'>3.4 HQP Distribution</a>
+            <a class="reportTab tooltip $tab13" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=themes#Themes'>3.5 Project Themes</a>
 
             <a class="reportTab tooltip marginTop" href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type=PNI'>PNI Review Results</a>
             <a class="reportTab tooltip" href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type=CNI'>CNI Review Results</a>
@@ -167,6 +169,14 @@ EOF;
             $this->html .= "<a id='Project_Summary'></a>";
             //$this->showEvalTableFor("Project");
             $this->showEvalProjectOverview();
+            break;
+            
+        case 'question4':
+            $this->html .= "<a id='Q_Summary'></a>";
+            //$this->html .= "<h2>Summary of 1-9</h2>";
+            $this->html .= "<a id='Champion_Summary'></a>";
+            //$this->showEvalTableFor("Project");
+            $this->showEvalChampionOverview();
             break;
 
         case 'budget1':
@@ -344,15 +354,15 @@ EOF;
             <th style='padding:0px;' width="5%">Ave. (Q7)</th>
             <th style='padding:0px;' >
             <span class='tableHeader' style="width: 19.978%;">Evaluator</span>
-            <span class='tableHeader borderLeft' style="width: 15.9%;">Q8</span>
-            <span class='tableHeader borderLeft' style="width: 7.9%;">Q7</span>
-            <span class='tableHeader borderLeft' style="width: 7.9%;">Q9</span>
-            <span class='tableHeader borderLeft' style="width: 7.83%;">Q1</span>
-            <span class='tableHeader borderLeft' style="width: 7.83%;">Q2</span>
-            <span class='tableHeader borderLeft' style="width: 7.8%;">Q3</span>
-            <span class='tableHeader borderLeft' style="width: 7.8%;">Q4</span>
-            <span class='tableHeader borderLeft' style="width: 7.8%;">Q5</span>
-            <span class='tableHeader borderLeft' style="width: 7.7%;">Q6</span>
+            <span class='tableHeader' style="width: 15.9%;">Q8</span>
+            <span class='tableHeader' style="width: 7.9%;">Q7</span>
+            <span class='tableHeader' style="width: 7.9%;">Q9</span>
+            <span class='tableHeader' style="width: 7.83%;">Q1</span>
+            <span class='tableHeader' style="width: 7.83%;">Q2</span>
+            <span class='tableHeader' style="width: 7.8%;">Q3</span>
+            <span class='tableHeader' style="width: 7.8%;">Q4</span>
+            <span class='tableHeader' style="width: 7.8%;">Q5</span>
+            <span class='tableHeader' style="width: 7.7%;">Q6</span>
             </th>
         </tr>
         </thead>
@@ -809,195 +819,6 @@ EOF;
         echo $csv;
     }
 
-    function showEvalNIOverview2($type){
-        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript, $reporteeId, $getPerson;
-        if($type == CNI){
-            $rtype = RP_EVAL_CNI;
-        }
-        else if($type == PNI){
-            $rtype = RP_EVAL_RESEARCHER;
-        }
-
-        $weights = array('Top'=>4, 'Upper Middle'=>3, 'Lower Middle'=>2, 'Bottom'=>1);
-
-        // Check for a download.
-        $action = ArrayUtils::get_string($_GET, 'getpdf');
-        if ($action !== "") {
-            $p = Person::newFromId($wgUser->getId());
-            $sto = new ReportStorage($p);
-            $wgOut->disable();
-            return $sto->trigger_download($action, "{$action}.pdf", false);
-        }
-        
-        $this->html .=<<<EOF
-        <h3>$type Summary of Questions 1-9</h3>
-        <table class='indexTable indexTable_2014' cellspacing='1' cellpadding='4' style='border-style:solid;' width='100%' frame="box" rules="all">
-        <thead>
-        <tr>
-            <th style='background: #EEEEEE;' width="15%">$type</th>
-            <th style='background: #EEEEEE;' width="7%">Average (Q6)</th>
-            <th style='background: #EEEEEE;' width="15%">Evaluator</th>
-            <th style='background: #EEEEEE;' width="7%">Comment (Q8)</th>
-            <th style='background: #EEEEEE;' width="7%">Q7</th>
-            <th style='background: #EEEEEE;' width="7%">Q9</th>
-            <th style='background: #EEEEEE;' width="7%">Q1</th>
-            <th style='background: #EEEEEE;' width="7%">Q2</th>
-            <th style='background: #EEEEEE;' width="7%">Q3</th>
-            <th style='background: #EEEEEE;' width="7%">Q4</th>
-            <th style='background: #EEEEEE;' width="7%">Q5</th>
-            <th style='background: #EEEEEE;' width="7%">Q6</th>
-        </tr>
-        </thead>
-        <tbody>
-EOF;
-        $text_question = EVL_OTHERCOMMENTS;
-        $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY);
-        $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_MANAGEMENT_COM, EVL_REPORTQUALITY_COM);
-
-        $nis = Person::getAllEvaluates($type, 2013);
-        $sorted_nis = array();
-        foreach ($nis as $n){
-            $sorted_nis[$n->getId()] = $n->getReversedName();
-        }
-        asort($sorted_nis);
-
-        foreach($sorted_nis as $ni_id => $ni_name){
-            $ni = Person::newFromId($ni_id);
-            //$ni_id = $ni->getId();
-            //$ni_name = $ni->getReversedName();
-            $evaluators = $ni->getEvaluators($type, 2013);
-
-            $rowspan = count($evaluators);
-            if($rowspan == 0){
-                continue;
-            }
-            $rowspan = $rowspan*2;
-
-            $download1 = "Researcher PDF";
-            $report = new DummyReport("NIReport", $ni, null);
-            $tok = false;
-            $check = $report->getPDF();
-            if (count($check) > 0) {
-                $tok = $check[0]['token'];
-                $download1 = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Researcher PDF</a>";
-            }
-
-            $download2 = "PL Comments PDF";
-            $report = new DummyReport("ProjectNIComments", $ni, null);
-            $tok = false;
-            $check = $report->getPDF();
-            if (count($check) > 0) {
-                $tok = $check[0]['token'];
-                $download2 = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>PL Comments PDF</a>";
-            }
-
-            $this->html .=<<<EOF
-            <tr>
-            <td rowspan="{$rowspan}">
-            <b>{$ni_name}</b><br />
-            {$download1}<br />
-            {$download2}
-            </td>
-EOF;
-            $average_score = 0;
-            $sub_rows = "";
-            $div_count = 0;
-            $ev_count = 0;
-            foreach($evaluators as $evaluator) {
-                $eval_id = $evaluator->getId();
-                $eval_name = $evaluator->getReversedName();
-                if($ev_count > 0){
-                    $sub_rows .= "<tr>";
-                }
-                
-                $sub_rows .= "<td rowspan='2'>{$eval_name}</td>";
-
-                foreach(array('original', 'revised') as $ind => $rev){
-                    $sub_rows .= "";
-                    if($ind > 0){
-                        $sub_rows .= "<tr>";
-                    }
-                    
-                    $q8 = RMC2014Tab::getData(BLOB_ARRAY, $rtype, $text_question, $ni, $eval_id, 2013);
-                    $q8 = $q8[$rev];
-                    $q8 = nl2br($q8);
-                    $comm_label = ucfirst($rev);
-                    if(!empty($q8)){
-                        $cell =<<<EOF
-                            <a href='#' onclick='openDialog("{$eval_id}", "{$ni_id}", {$ind}); return false;'>{$comm_label}</a>
-                            <div id='dialog{$ind}-{$eval_id}-{$ni_id}' class='comment_dialog' title='{$comm_label} Comment by {$eval_name} on {$ni_name}'>
-                            {$q8}
-                            </div>
-EOF;
-                    }else{
-                        $cell = "{$comm_label}";
-                    }
-                    $sub_rows .= "<td align='center'>{$cell}</td>";
-
-                    $i=0;
-                    foreach($radio_questions as $q){
-                        $comm = "";
-                        $comm_short = array();
-                        
-                        if($i>1){
-                            $comm = RMC2014Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2013);
-                            $comm = $comm[$rev];
-                            if(!empty($comm)){
-                                foreach($comm as $key=>$c){
-                                    if(strlen($c)>1){
-                                        $comm_short[] = substr($c, 0, 1);
-                                    }
-                                }
-                            }
-                        }
-                        $comm_short = implode(", ", $comm_short);
-
-                        $response = RMC2014Tab::getData(BLOB_ARRAY, $rtype,  $q, $ni, $eval_id, 2013);
-                        $response_orig = $response = $response[$rev];
-                        
-                        if($response_orig){
-                            $response = substr($response, 0, 1);
-                            if(!empty($comm)){
-                                $response .= "; ".$comm_short;
-                                $comm = implode("<br />", $comm);
-                            } 
-                            $cell = "<td><span class='q_tip' title='{$response_orig}<br />{$comm}'><a href='#'>{$response}</a></span></td>";
-                        }else{
-                            $response = "";
-                            $cell = "<td>{$response}</td>";
-                        }
-
-                        if($q == EVL_OVERALLSCORE && $response_orig && isset($weights[$response_orig])){
-                            $average_score += $weights[$response_orig];
-                            $div_count++;
-                        }
-
-                        $sub_rows .= $cell;
-
-                        $i++;
-                    }
-
-                    $sub_rows .= "</tr>";
-                }
-
-                $ev_count++;
-            }
-            if($div_count > 0){
-                $average_score = round($average_score/$div_count, 1);
-            }
-            else{
-                $average_score = "N/A";
-            }
-
-            $this->html .=<<<EOF
-                <td rowspan='{$rowspan}' style='background: #FFFFFF;' align='center'>{$average_score}</td>
-                {$sub_rows}
-EOF;
-        }
-        
-        $this->html .= "</tbody></table><br />";
-    }
-
     function showEvalProjectOverview(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript, $reporteeId, $getPerson;
         $type = 'Project';
@@ -1025,14 +846,14 @@ EOF;
             <th style='background: #EEEEEE; padding:0px;' width="5%">Ave. (Q6)</th>
             <th style='background: #EEEEEE; padding:0px;' >
                 <span class='tableHeader' style="width: 19.978%;">Evaluator</span>
-                <span class='tableHeader borderLeft' style="width: 17.6%;">Q7</span>
-                <span class='tableHeader borderLeft' style="width: 8.7%;">Q6</span>
-                <span class='tableHeader borderLeft' style="width: 8.7%;">Q8</span>
-                <span class='tableHeader borderLeft' style="width: 8.7%;">Q1</span>
-                <span class='tableHeader borderLeft' style="width: 8.7%;">Q2</span>
-                <span class='tableHeader borderLeft' style="width: 8.7%;">Q3</span>
-                <span class='tableHeader borderLeft' style="width: 8.7%;">Q4</span>
-                <span class='tableHeader borderLeft' style="width: 8.7%;">Q5</span>
+                <span class='tableHeader' style="width: 17.6%;">Q7</span>
+                <span class='tableHeader' style="width: 8.7%;">Q6</span>
+                <span class='tableHeader' style="width: 8.7%;">Q8</span>
+                <span class='tableHeader' style="width: 8.7%;">Q1</span>
+                <span class='tableHeader' style="width: 8.7%;">Q2</span>
+                <span class='tableHeader' style="width: 8.7%;">Q3</span>
+                <span class='tableHeader' style="width: 8.7%;">Q4</span>
+                <span class='tableHeader' style="width: 8.7%;">Q5</span>
             </th>
         </tr>
         </thead>
@@ -1255,157 +1076,105 @@ EOF;
         }
         $this->html .= "</tbody></table><br />";
     }
-
-    function showEvalProjectOverview2(){
+    
+    function showEvalChampionOverview(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript, $reporteeId, $getPerson;
         $type = 'Project';
         $rtype = RP_EVAL_PROJECT;
 
         $weights = array('Top'=>4, 'Upper Middle'=>3, 'Lower Middle'=>2, 'Bottom'=>1);
+        $aves = array('4'=>2, '3'=>1.5, '2'=>1, '1'=>0.5);
 
-        $wgOut->addScript($foldscript);
+        // Check for a download.
+        $action = ArrayUtils::get_string($_GET, 'getpdf');
+        if ($action !== "") {
+            $p = Person::newFromId($wgUser->getId());
+            $sto = new ReportStorage($p);
+            $wgOut->disable();
+            return $sto->trigger_download($action, "{$action}.pdf", false);
+        }
+        
         $this->html .=<<<EOF
-        <h3>$type Summary of Questions 1-9</h3>
-        <table class='wikitable' cellspacing='1' cellpadding='2' style='border-style:solid;' width='100%' frame="box" rules="all">
+        <h3>Project Champion Summary of Questions 1-6</h3>
+        <table class='indexTable indexTable_2014' cellspacing='1' cellpadding='3' style='border-style:solid;' width='100%' frame="box" rules="all">
+        <thead>
         <tr>
-            <th style='background: #EEEEEE;' width="15%">$type</th>
-            <th style='background: #EEEEEE;' width="5%">Weighted Average (Q6)</th>
-            <th style='background: #EEEEEE;' width="15%">Evaluator</th>
-            <th style='background: #EEEEEE;' width="10%">Q8 (Comments)</th>
-            <th style='background: #EEEEEE;' width="7%">Q7</th>
-            <th style='background: #EEEEEE;' width="7%">Q9</th>
-            <th style='background: #EEEEEE;' width="7%">Q1</th>
-            <th style='background: #EEEEEE;' width="7%">Q2</th>
-            <th style='background: #EEEEEE;' width="7%">Q3</th>
-            <th style='background: #EEEEEE;' width="7%">Q4</th>
-            <th style='background: #EEEEEE;' width="7%">Q5</th>
+            <th style='background: #EEEEEE;' width="10%">Project</th>
+            <th style='background: #EEEEEE; padding:0px;'>
+                <span class='tableHeader' style="width: 15%;">Champion</span>
+                <span class='tableHeader' style="width: 10%;">Q1</span>
+                <span class='tableHeader' style="width: 10%;">Q2</span>
+                <span class='tableHeader' style="width: 10%;">Q3</span>
+                <span class='tableHeader' style="width: 10%;">Q4</span>
+                <span class='tableHeader' style="width: 10%;">Q5</span>
+                <span class='tableHeader' style="width: 30%;">Q6</span>
+            </th>
         </tr>
+        </thead>
+        <tbody>
 EOF;
-
         $text_question = EVL_OTHERCOMMENTS;
         $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_REPORTQUALITY);
         $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_REPORTQUALITY_COM);
 
-        $projects = Person::getAllEvaluates($type, 2013);
+        $projects = Project::getAllProjects();
         $sorted_projects = array();
         foreach ($projects as $p){
-            $sorted_projects[$p->getId()] = $p->getName();
+            if($p->getPhase() == 2){
+                $sorted_projects[$p->getId()] = $p->getName();
+            }
         }
         asort($sorted_projects);
-
-        foreach($sorted_projects as $ni_id => $ni_name){
-            $ni = Project::newFromId($ni_id);
-            //$ni_id = $ni->getId();
-            //$ni_name = $ni->getReversedName();
-            $evaluators = $ni->getEvaluators(2013);
-
-            $rowspan = count($evaluators);
-            if($rowspan == 0){
-                continue;
+        
+        foreach($sorted_projects as $proj_id => $proj_name){
+            $project = Project::newFromId($proj_id);
+            $this->html .= "<tr>";
+            $this->html .= "<td><b>{$proj_name}</b></td>";
+            
+            $champion_html = "<table width='100%' rules='none'>";
+            $champions = array();
+            foreach($project->getChampions() as $champ){
+                $champions[$champ['user']->getId()] = $champ;
             }
-            $rowspan++;
-
-            $download = "";
-            $report = new DummyReport("ProjectReport", $ni, $ni);
-            $tok = false;
-            $check = $report->getPDF();
-            if (count($check) > 0) {
-                $tok = $check[0]['token'];
-                $download = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>[Download]</a>";
-            }
-
-            $this->html .=<<<EOF
-            <tr>
-            <td rowspan="{$rowspan}">
-            <b>{$ni_name}</b>
-            <table>
-                <tr>
-                    <td align='right' valign='top'><b>Project PDF:</b></td>
-                    <td algin='left' valign='top'>$download</td>
-                </tr>
-            </table>    
-            </td>
-EOF;
-
-            $average_score = 0;
-            $sub_rows = "";
-            $div_count = 0;
-            foreach($evaluators as $evaluator) {
-                $eval_id = $evaluator->getId();
-                $eval_name = $evaluator->getReversedName();
-                
-                $sub_rows .= "<tr><td>{$eval_name}</td>";
-                $cell = "";
-                $q8 = RMC2014Tab::getData(BLOB_TEXT, $rtype, $text_question, $ni, $eval_id, 2013, $ni_id);
-                $q8 = nl2br($q8);
-                if(!empty($q8)){
-                    $cell =<<<EOF
-                        <a href='#' onclick='openDialog("{$eval_id}", "{$ni_id}", 1); return false;'>See Comment</a>
-                        <div id='dialog1-{$eval_id}-{$ni_id}' class='comment_dialog' title='Original Comment by {$eval_name} on {$ni_name}'>
-                        {$q8}
-                        </div>
-EOF;
+            foreach($project->getSubProjects() as $sub){
+                foreach($sub->getChampions() as $champ){
+                    $champions[$champ['user']->getId()] = $champ;
                 }
-                $sub_rows .= "<td>{$cell}</td>";
-
-                $i=0;
-                foreach($radio_questions as $q){
-                    $comm = "";
-                    $comm_short = array();
-                    
-                    if($i>1){
-                        $comm = RMC2014Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2013, $ni_id);
-                        if(!empty($comm)){
-                            foreach($comm as $key=>$c){
-                                if(strlen($c)>1){
-                                    $comm_short[] = substr($c, 0, 1);
-                                }
-                            }
+            }
+            foreach($champions as $champ){
+                $champion_html .= "<tr>";
+                $champion_html .= "<td width='15%'>{$champ['user']->getReversedName()}</td>";
+                $blb = new ReportBlob(BLOB_TEXT, 2013, $champ['user']->getId(), $proj_id);
+                $sections = array(CHAMP_ACTIVITY, CHAMP_ORG, CHAMP_BENEFITS, CHAMP_SHORTCOMINGS, CHAMP_CASH);
+                foreach($sections as $sec){
+                    $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, $sec, 0);
+                    $result = $blb->load($addr);
+                    $data = $blb->getData();
+                    $data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
+                    $champion_html .= "<td width='10%'>$data</td>";
+                }
+                $blb = new ReportBlob(BLOB_ARRAY, 2013, $champ['user']->getId(), $proj_id);
+                $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_RESEARCHERS, 0);
+                $result = $blb->load($addr);
+                $data = $blb->getData();
+                $champion_html .= "<td width='35%'>";
+                if(count($data) > 0){
+                    foreach($data as $u_id => $message){
+                        if($message['q6'] != ""){
+                            $user = Person::newFromId($u_id);
+                            $champion_html .= "<span class='q_tip' title='".nl2br(str_replace("'", "&#39;", $message['q6']))."'><a href='#'>{$user->getReversedName()}</a></span><br />";
                         }
                     }
-                    $comm_short = implode(", ", $comm_short);
-
-                    $response_orig = $response = RMC2014Tab::getData(BLOB_TEXT, $rtype,  $q, $ni, $eval_id, 2013, $ni_id);
-
-                    if($response_orig){
-                        $response = substr($response, 0, 1);
-                        if(!empty($comm)){
-                            $response .= "; ".$comm_short;
-                            $comm = implode("<br />", $comm);
-                        } 
-                        $cell = "<td><span class='q_tip' title='{$response_orig}<br />{$comm}'><a>{$response}</a></span></td>";
-                    }else{
-                        $response = "";
-                        $cell = "<td>{$response}</td>";
-                    }
-
-                    if($q == EVL_OVERALLSCORE && $response_orig && isset($weights[$response_orig])){
-                        $average_score += $weights[$response_orig];
-                        $div_count++;
-                    }
-
-                    $sub_rows.= $cell;
-
-                    $i++;
                 }
-                $sub_rows .= "</tr>";
+                $champion_html .= "</td>";
+                $champion_html .= "</tr>";
             }
-
-            if($div_count > 0){
-                $average_score = round($average_score/$div_count, 1);
-            }
-            else{
-                $average_score = "N/A";
-            }
-
-            $this->html .=<<<EOF
-                <td rowspan='{$rowspan}' style='background: #FFFFFF;' align='center'>{$average_score}</td>
-                </tr>
-                {$sub_rows}
-                <tr><td colspan="12" style="display:table-column;"></td></tr>
-EOF;
+            $champion_html .= "</table>";
+            
+            $this->html .= "<td style='padding:0px;'>$champion_html</td>";
+            $this->html .= "</tr>";
         }
-        $this->html .= "</table><br />";
+        $this->html .= "</tbody></table><br />";
     }
 
     static function getData($blob_type, $rptype, $question, $sub, $eval_id=0, $evalYear=EVAL_YEAR, $proj_id=0){
