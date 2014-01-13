@@ -19,7 +19,7 @@ class ProjectSubprojectsTab extends AbstractTab {
         if($wgUser->isLoggedIn()){
             $project = $this->project;
             $me = Person::newFromId($wgUser->getId());
-            if($me->isMemberOf($project) || $me->isRoleAtLeast(MANAGER) || $me->isThemeLeaderOf($this->project)){
+            if($me->isMemberOf($project) || $me->isRoleAtLeast(STAFF) || $me->isThemeLeaderOf($this->project)){
                 if($this->visibility['isLead']){
                     if(isset($_POST['create_subproject'])){
                         $error = CreateProjectTab::handleEdit();
