@@ -1300,6 +1300,64 @@ EOF;
         }
     }
     
+    function getRevisedBudget($year){
+        // This is a special Budget with no strongly defined structure, 
+        // though should ideally look exactly like the requested project budget.
+        // After reading the budget, it attempts to change the structure to show 
+        // the same was as the other requested project budgets
+        $rep_addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, LDR_BUD_REVISED, 0);
+        $budget_blob = new ReportBlob(BLOB_EXCEL, $year, 0, $this->getId());
+        $budget_blob->load($rep_addr);
+        $data = $budget_blob->getData();
+        if(!empty($data)){
+            $budget = new Budget($data);
+            $newStructure = array();
+            foreach($budget->structure as $rowN => $row){
+                if($rowN == $budget->nRows()-1){
+                    continue;
+                }
+                foreach($row as $colN => $col){
+                    if($colN == $budget->nCols()-1){
+                        continue;
+                    }
+                    if($colN == 0){
+                        $type = HEAD1;
+                        switch($rowN){
+                            case 0: $type = HEAD1; break;
+                            case 1: $type = HEAD1; break;
+                            case 2: $type = HEAD1; break;
+                            case 3: $type = HEAD2; break;
+                            case 4: $type = HEAD2; break;
+                            case 5: $type = HEAD2; break;
+                            case 6: $type = HEAD2; break;
+                            case 7: $type = HEAD1; break;
+                            case 8: $type = HEAD2; break;
+                            case 9: $type = HEAD2; break;
+                            case 10: $type = HEAD2; break;
+                            case 11: $type = HEAD1; break;
+                            case 12: $type = HEAD1; break;
+                            case 13: $type = HEAD1; break;
+                            case 14: $type = HEAD2; break;
+                            case 15: $type = HEAD2; break;
+                            case 16: $type = HEAD2; break;
+                        }
+                        $newStructure[$rowN][$colN] = $type;
+                    }
+                    else if($rowN == 0){
+                        $newStructure[$rowN][$colN] = V_PERS;
+                    }
+                    else{
+                        $newStructure[$rowN][$colN] = MONEY;
+                    }
+                }
+            }
+            $budget = new Budget("XLS", $newStructure, $data);
+            $budget = $budget->cube();
+            return $budget;
+        }
+        return null;
+    }
+    
     function getRequestedBudget($year, $role='all'){
         $projectBudget = null;
         if(isset($this->budgets['r'.$role.$year])){

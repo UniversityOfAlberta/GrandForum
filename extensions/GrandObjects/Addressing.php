@@ -241,6 +241,7 @@ define('LDR_RESACT_OTHER',   	    9);
 define('LDR_NICOMMENTS_COMMENTS',	0);
 
 define('LDR_BUD_JUST',              0);
+define('LDR_BUD_REVISED',           1);
 
 // Third-level identifiers for Supplemental report: corrections on HQPs.
 define('SUP_HQP_UGRAD_COUNT',		10);

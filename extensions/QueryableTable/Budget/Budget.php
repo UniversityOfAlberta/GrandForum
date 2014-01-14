@@ -19,6 +19,9 @@ class Budget extends QueryableTable{
             case 0:
                 self::EmptyBudget();
                 break;
+            case 1:
+                self::FreeBudget($argv[0]);
+                break;
             case 2:
                 self::DerivedBudget($argv[0], $argv[1]);
                 break;
@@ -33,11 +36,34 @@ class Budget extends QueryableTable{
         }
     }
     
+    // Creates a new Budget with no Structure (Structure is created on the fly)
+    private function FreeBudget($data){
+        global $budgetStructures;
+        $this->QueryableTable();
+        if(!$this->readCells($data)){
+            // Some error happened when reading the data, try to recover
+            $data = array();
+            foreach($this->structure as $rowN => $row){
+                $data[$rowN] = array();
+                foreach($row as $colN => $cell){
+                    $data[$rowN][$colN] = "";
+                }
+            }
+            self::DerivedBudget($this->structure, $data);
+            $this->errors[-1][-1] = "Error Reading File";
+        }
+    }
+    
     // Creates a new Budget instance with the given person ID, structure type, and data set
     private function Budget($structure, $data){
         global $budgetStructures;
         $this->QueryableTable();
-        $this->structure = $this->preprocessStructure($budgetStructures[$structure]);
+        if(is_array($structure)){
+            $this->structure = $this->preprocessStructure($structure);
+        }
+        else{
+            $this->structure = $this->preprocessStructure($budgetStructures[$structure]);
+        }
         if(!$this->readCells($data)){
             // Some error happened when reading the data, try to recover
             $data = array();
@@ -150,10 +176,20 @@ class Budget extends QueryableTable{
 		    $objReader->setReadDataOnly(true);
 			$obj = $objReader->load($tmpn);
 			$obj->setActiveSheetIndex(0);
-			$rowN = 0;
+			
 			$maxCol =$obj->getActiveSheet()->getHighestColumn();
 			$maxRow =$obj->getActiveSheet()->getHighestRow();
 			$cells = $obj->getActiveSheet()->toArray();
+			if($this->structure == null){
+			    // Create a fake structure so that it doesn't fail
+			    $this->structure = array();
+			    foreach($cells as $rowN => $row){
+			        foreach($row as $colN => $col){
+			            $this->structure[$rowN][$colN] = READ;
+			        }
+			    }
+			}
+			$rowN = 0;
 			foreach($this->structure as $row){
 			    $colN = 0;
 			    if($maxRow < $rowN + 1){
