@@ -1146,6 +1146,7 @@ EOF;
                 $champion_html .= "<td width='15%'>{$champ['user']->getReversedName()}</td>";
                 $blb = new ReportBlob(BLOB_TEXT, 2013, $champ['user']->getId(), $proj_id);
                 $sections = array(CHAMP_ACTIVITY, CHAMP_ORG, CHAMP_BENEFITS, CHAMP_SHORTCOMINGS, CHAMP_CASH);
+                $i = 1;
                 foreach($sections as $sec){
                     $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, $sec, 0);
                     $result = $blb->load($addr);
@@ -1155,7 +1156,9 @@ EOF;
                     if($data != ""){
                         $short = substr($data, 0, 10)."...";
                     }
-                    $champion_html .= "<td width='12.5%'><span class='q_tip' title='".nl2br(str_replace("'", "&#39;", $data))."'><a href='#'>$short</a></span></td>";
+                    $id = "{$project->getId()}_{$champ['user']->getId()}_$i";
+                    $champion_html .= "<td width='12.5%'><a onClick='$(\"div#{$id}\").dialog({width: 700});' href='#'>$short</a><div id='{$id}' title='{$project->getName()}: {$champ['user']->getReversedName()}: Q$i' style='display:none;' class='dialog'>".nl2br($data)."</div></td>";
+                    $i++;
                 }
                 $blb = new ReportBlob(BLOB_ARRAY, 2013, $champ['user']->getId(), $proj_id);
                 $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_RESEARCHERS, 0);
@@ -1165,8 +1168,9 @@ EOF;
                 if(count($data) > 0){
                     foreach($data as $u_id => $message){
                         if($message['q6'] != ""){
+                            $id = "{$project->getId()}_{$champ['user']->getId()}_6_{$u_id}";
                             $user = Person::newFromId($u_id);
-                            $champion_html .= "<span class='q_tip' title='".nl2br(str_replace("'", "&#39;", $message['q6']))."'><a href='#'>{$user->getReversedName()}</a></span><br />";
+                            $champion_html .= "<a href='#' onClick='$(\"div#{$id}\").dialog({width: 700});'>{$user->getReversedName()}</a><div class='dialog' id='$id' title='{$project->getName()}: {$champ['user']->getReversedName()}: Q6({$user->getReversedName()})'>".nl2br($message['q6'])."</div><br />";
                         }
                     }
                 }
