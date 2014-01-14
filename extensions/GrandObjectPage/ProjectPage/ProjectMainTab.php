@@ -86,19 +86,6 @@ class ProjectMainTab extends AbstractEditableTab {
             }
         }
         
-        $form = $this->champForm();
-        if($form->validate()){
-            foreach($_POST['new_champ_name2'] as $key => $name){
-                $_POST['project'] = $this->project->getName();
-                $champ = Person::newFromName($name);
-                $_POST['champion_id'] = $champ->getId();
-                APIRequest::doAction('ProjectChampions', true);
-            }
-        }
-        else{
-            return "The champions were not added";
-        }
-        
         if(isset($_POST['pl'])){
             $leaderName = ($this->project->getLeader() != null) ? $this->project->getLeader()->getName() : "";
             if($_POST['pl'] != $leaderName){
@@ -195,32 +182,6 @@ EOF;
         }   
     }
     
-    function champForm(){
-        $project = $this->project;
-        $champions = $project->getChampions();
-    
-        $names = array("");
-        $people = Person::getAllPeople(CHAMP);
-        foreach($people as $person){
-            $skip = false;
-            foreach($champions as $champ){
-                if($champ['user']->getId() == $person->getId()){
-                    $skip = true;
-                    break;
-                }
-            }
-            if(!$skip){
-                $names[$person->getName()] = $person->getNameForForms();
-            }
-        }
-        asort($names);
-        $champPlusMinus = new PlusMinus("new_champ_plusminus2");
-        $champTable = new FormTable("champ_table2");
-        $champTable->append(new ComboBox("new_champ_name2[]", "Name", "", $names, VALIDATE_CHAMPION));
-        $champPlusMinus->append($champTable);
-        return $champPlusMinus;
-    }
-    
     function showChampions(){
         global $wgUser, $wgServer, $wgScriptPath;
         
@@ -235,67 +196,38 @@ EOF;
         if(!$project->isSubProject()){
             foreach($project->getSubProjects() as $sub){
                 foreach($sub->getChampions() as $champ){
-                    if(!isset($champions[$champ['user']->getId()])){
-                        if(!isset($derivedChamps[$champ['user']->getId()])){
-                            $derivedChamps[$champ['user']->getId()] = $champ;
-                        }
-                        $derivedChamps[$champ['user']->getId()]['subs'][] = "<a href='{$sub->getUrl()}' target='_blank'>{$sub->getName()}</a>";
+                    if(!isset($derivedChamps[$champ['user']->getId()])){
+                        $derivedChamps[$champ['user']->getId()] = $champ;
                     }
-                    else{
-                        $champions[$champ['user']->getId()]['subs'][] = "<a href='{$sub->getUrl()}' target='_blank'>{$sub->getName()}</a>";
-                    }
+                    $derivedChamps[$champ['user']->getId()]['subs'][] = "<a href='{$sub->getUrl()}' target='_blank'>{$sub->getName()}</a>";
+                    unset($champions[$champ['user']->getId()]);
                 }
             }
         }
         
         $this->html .= "<h2><span class='mw-headline'>Champions</span></h2>";
 
-        if(!$edit){
-            if(!count($champions) == 0){
-                foreach($champions as $champion){
-                    $subs = "";
-                    if(isset($champion['subs'])){
-                        $subs = " (".implode(", ", $champion['subs']).")";
-                    }
-                    $this->html .= "
-                    <h3><a href='{$champion['user']->getUrl()}'>{$champion['user']->getNameForForms()}</a>$subs</h3>
-                    <table cellspacing='0' cellpadding='2' style='margin-left:15px;'>";
-                    if($wgUser->isLoggedIn()){
-                        $this->html .= "<tr><td><strong>Email:</strong></td><td>{$champion['user']->getEmail()}</td></tr>";
-                    }
-                    $this->html .= "<tr><td><strong>Title:</strong></td><td>{$champion['title']}</td></tr>
-                        <tr><td><strong>Organization:</strong></td><td>{$champion['org']}</td></tr>
-                    </table>";
-                }
-            }
-        }
-        else{
-            $i = 0;
+        if(!count($champions) == 0){
             foreach($champions as $champion){
-                $this->html .= <<<EOF
-                    <div id='champ_div_{$champion['user']->getId()}'>
-                        <fieldset style='display: inline; min-width: 500px;'>
-                            <legend>{$champion['user']->getNameForForms()}</legend>
-                            <input type='hidden' name='champ_name[]' value='{$champion['user']->getName()}' />
-                            <table cellspacing="0" cellpadding="2" style='margin-left:15px;'>
-                                <tr>
-                                    <td align='right' valign='top'><b>Delete?</b></td>
-                                    <td valign='top'><input type="checkbox" name="champ_del[$i]" value="true" /></td>
-                                </tr>
-                            </table>
-                        </fieldset>
-                    </div>
-EOF;
-                $i++;
+                $subs = "";
+                if(isset($champion['subs'])){
+                    $subs = " (".implode(", ", $champion['subs']).")";
+                }
+                $this->html .= "
+                <h3><a href='{$champion['user']->getUrl()}'>{$champion['user']->getNameForForms()}</a>$subs</h3>
+                <table cellspacing='0' cellpadding='2' style='margin-left:15px;'>";
+                if($wgUser->isLoggedIn()){
+                    $this->html .= "<tr><td><strong>Email:</strong></td><td>{$champion['user']->getEmail()}</td></tr>";
+                }
+                $this->html .= "<tr><td><strong>Title:</strong></td><td>{$champion['title']}</td></tr>
+                    <tr><td><strong>Organization:</strong></td><td>{$champion['org']}</td></tr>
+                </table>";
             }
-            
-            $form = $this->champForm();
-            $this->html .= $form->render();
         }
         
         if(!$project->isSubProject()){    
             if(count($derivedChamps) > 0){
-                $this->html .= "<p>The following champions have been derived from this {$project->getName()}'s sub-projects</p><ul>";
+                $this->html .= "<p>The following are Champions of {$project->getName()}'s sub-projects</p><ul>";
                 foreach($derivedChamps as $champion){
                     $this->html .= "<li><a href='{$champion['user']->getUrl()}'>{$champion['user']->getNameForForms()}</a> (".implode(", ", $champion['subs']).")</li>";
                 }

@@ -38,6 +38,9 @@ class AddProjectMemberAPI extends API{
             if(!$project->isSubProject()){
                 MailingList::subscribe($project, $person);
             }
+            if($person->isRole(CHAMP) && $project->getPhase() == PROJECT_PHASE){
+	            MailingList::subscribe("grand-forum-p2-champions", $person);
+	        }
             // Add entry into grand_projects
             $sql = "INSERT INTO grand_project_members (`user_id`,`project_id`,`start_date`)
 					VALUES ('{$person->getId()}','{$project->getId()}', CURRENT_TIMESTAMP)";

@@ -623,45 +623,24 @@ EOF;
     // Get Champions
     function getChampions(){
         $champs = array();
-        $sql = "SELECT *
-                FROM grand_project_champions
-                WHERE project_id = {$this->id}
-                AND (
-                    start_date <= CURRENT_TIMESTAMP AND (
-                        end_date > CURRENT_TIMESTAMP OR
-                        end_date = '0000-00-00 00:00:00'
-                    )
-                )
-                ORDER BY id DESC";
-        $data = DBFunctions::execSQL($sql);
-        foreach($data as $row){
-            $champ = Person::newFromId($row['user_id']);
+        $people = $this->getAllPeople(CHAMP);
+        foreach($people as $champ){
             $champs[] = array('user' => $champ,
                               'org' => $champ->getPartnerName(),
                               'title' => $champ->getPartnerTitle(),
-                              'dept' => $champ->getPartnerDepartment(),
-                              'start_date' => $row['start_date'],
-                              'end_date' => $row['end_date']);
+                              'dept' => $champ->getPartnerDepartment());
         }
         return $champs;
     }
     
     function getChampionsDuring($start=REPORTING_CYCLE_START, $end=REPORTING_CYCLE_END){
         $champs = array();
-        $data = DBFunctions::select(array('grand_project_champions'),
-                                    array('*'),
-                                    array('project_id' => EQ($this->id),
-                                          DURING(array('start_date' => $start,
-                                                       'end_date' => $end))),
-                                    array('id' => 'DESC'));
-        foreach($data as $row){
-            $champ = Person::newFromId($row['user_id']);
+        $people = $this->getAllPeopleDuring(CHAMP, $start, $end);
+        foreach($people as $champ){
             $champs[] = array('user' => $champ,
                               'org' => $champ->getPartnerName(),
                               'title' => $champ->getPartnerTitle(),
-                              'dept' => $champ->getPartnerDepartment(),
-                              'start_date' => $row['start_date'],
-                              'end_date' => $row['end_date']);
+                              'dept' => $champ->getPartnerDepartment());
         }
         return $champs;
     }

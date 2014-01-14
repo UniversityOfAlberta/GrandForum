@@ -38,6 +38,14 @@ class UserEmailAPI extends API{
         if($person->isRole(ISAC)){
             MailingList::unsubscribe("isac-list", $person);
         }
+        if($person->isRole(CHAMP)){
+	        foreach($person->getProjects() as $proj){
+	            if($proj->getPhase() == PROJECT_PHASE){
+	                MailingList::unsubscribe("grand-forum-p2-champions", $person);
+	                break;
+	            }
+	        }
+	    }
         if($person->isProjectLeader() ||
            $person->isProjectCoLeader()){
             $changeList = false;
@@ -94,6 +102,14 @@ class UserEmailAPI extends API{
         if($person->isRole(ISAC)){
             MailingList::subscribe("isac-list", $person);
         }
+        if($person->isRole(CHAMP)){
+	        foreach($person->getProjects() as $proj){
+	            if($proj->getPhase() == PROJECT_PHASE){
+	                MailingList::subscribe("grand-forum-p2-champions", $person);
+	                break;
+	            }
+	        }
+	    }
         if($person->isProjectLeader() ||
            $person->isProjectCoLeader()){
            $changeList = false;

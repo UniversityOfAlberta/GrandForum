@@ -57,14 +57,16 @@ class Report extends AbstractReport{
         else if($person->isRole(CHAMP)){
             $projects = Project::getAllProjects();
             foreach($projects as $project){
-                if($person->isChampionOfDuring($project)){
-                    $page = "Report?report=ChampionReport&project={$project->getName()}";
-                    break;
-                }
-                foreach($project->getSubProjects() as $sub){
-                    if($person->isChampionOfDuring($sub)){
+                if($project->getPhase() == PROJECT_PHASE){
+                    if($person->isChampionOfDuring($project)){
                         $page = "Report?report=ChampionReport&project={$project->getName()}";
                         break;
+                    }
+                    foreach($project->getSubProjects() as $sub){
+                        if($person->isChampionOfDuring($sub)){
+                            $page = "Report?report=ChampionReport&project={$project->getName()}";
+                            break;
+                        }
                     }
                 }
             }
@@ -192,25 +194,27 @@ class Report extends AbstractReport{
             if($person->isRole(CHAMP)){
                 $projects = Project::getAllProjects();
                 foreach($projects as $project){
-                    $showTab = false;
-                    if($person->isChampionOfDuring($project)){
-                        $showTab = true;
-                    }
-                    else{
-                        foreach($project->getSubProjects() as $sub){
-                            if($person->isChampionOfDuring($sub)){
-                                $showTab = true;
-                                break;
+                    if($project->getPhase() == PROJECT_PHASE){
+                        $showTab = false;
+                        if($person->isChampionOfDuring($project)){
+                            $showTab = true;
+                        }
+                        else{
+                            foreach($project->getSubProjects() as $sub){
+                                if($person->isChampionOfDuring($sub)){
+                                    $showTab = true;
+                                    break;
+                                }
                             }
                         }
-                    }
-                    if($showTab){
-                        @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "ChampionReport" && $_GET['project'] == $project->getName()) ? "selected" : false;
-                        $content_actions[] = array (
-                            'class' => $class,
-                            'text'  => "Champion ({$project->getName()})",
-                            'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=ChampionReport&project={$project->getName()}",
-                        );
+                        if($showTab){
+                            @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "ChampionReport" && $_GET['project'] == $project->getName()) ? "selected" : false;
+                            $content_actions[] = array (
+                                'class' => $class,
+                                'text'  => "Champion ({$project->getName()})",
+                                'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=ChampionReport&project={$project->getName()}",
+                            );
+                        }
                     }
                 }
             }

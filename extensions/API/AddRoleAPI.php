@@ -41,6 +41,14 @@ class AddRoleAPI extends API{
 		    if($role == ISAC){
 		        MailingList::subscribe("isac-list", $person);
 		    }
+		    if($role == CHAMP){
+		        foreach($person->getProjects() as $proj){
+		            if($proj->getPhase() == PROJECT_PHASE){
+		                MailingList::subscribe("grand-forum-p2-champions", $person);
+		                break;
+		            }
+		        }
+		    }
             // Add entry into grand_roles
             DBFunctions::insert('grand_roles',
                                 array('user_id' => $person->getId(),
