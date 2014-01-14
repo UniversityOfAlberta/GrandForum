@@ -61,6 +61,12 @@ class Report extends AbstractReport{
                     $page = "Report?report=ChampionReport&project={$project->getName()}";
                     break;
                 }
+                foreach($project->getSubProjects() as $sub){
+                    if($person->isChampionOfDuring($sub)){
+                        $page = "Report?report=ChampionReport&project={$project->getName()}";
+                        break;
+                    }
+                }
             }
         }
         
