@@ -1170,7 +1170,7 @@ EOF;
                         if($message['q6'] != ""){
                             $id = "{$project->getId()}_{$champ['user']->getId()}_6_{$u_id}";
                             $user = Person::newFromId($u_id);
-                            $champion_html .= "<a href='#' onClick='$(\"div#{$id}\").dialog({width: 700});'>{$user->getReversedName()}</a><div class='dialog' id='$id' title='{$project->getName()}: {$champ['user']->getReversedName()}: Q6({$user->getReversedName()})'>".nl2br($message['q6'])."</div><br />";
+                            $champion_html .= "<a href='#' onClick='$(\"div#{$id}\").dialog({width: 700});'>{$user->getReversedName()}</a><div class='dialog' id='$id' title='{$project->getName()}: {$champ['user']->getReversedName()}: Q6({$user->getReversedName()})' style='display:none;' class='dialog'>".nl2br($message['q6'])."</div><br />";
                         }
                     }
                 }
