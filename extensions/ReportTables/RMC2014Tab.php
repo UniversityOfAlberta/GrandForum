@@ -892,13 +892,14 @@ EOF;
                 $download = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Project PDF</a>";
             }
             $isac_html = "";
-            foreach($isac as $person){
+            foreach($isac as $i => $person){
+                $id = "{$ni->getId()}_{$person->getId()}_$i";
                 $addr = ReportBlob::create_address(RP_ISAC, ISAC_PHASE2, ISAC_PHASE2_COMMENT, 0);
                 $blb = new ReportBlob(BLOB_TEXT, 2013, $person->getId(), $ni_id);
                 $result = $blb->load($addr);
                 $data = $blb->getData();
                 if($data != null){
-                    $isac_html .= "<span class='q_tip' title='".nl2br(str_replace("'", "&#39;", $data))."'><a>{$person->getReversedName()}</a></span><br />";
+                    $isac_html .= "<a style='cursor:pointer;' onClick='$(\"div#$id\").dialog({width: 700});'>{$person->getReversedName()}</a><div id='$id' title='{$ni->getName()}: {$person->getReversedName()}' class='dialog' style='display:none;'>".nl2br($data)."</div><br />";
                 }
             }
 
@@ -1157,7 +1158,7 @@ EOF;
                         $short = substr($data, 0, 10)."...";
                     }
                     $id = "{$project->getId()}_{$champ['user']->getId()}_$i";
-                    $champion_html .= "<td width='12.5%'><a onClick='$(\"div#{$id}\").dialog({width: 700});' href='#'>$short</a><div id='{$id}' title='{$project->getName()}: {$champ['user']->getReversedName()}: Q$i' style='display:none;' class='dialog'>".nl2br($data)."</div></td>";
+                    $champion_html .= "<td width='12.5%'><a style='cursor:pointer;' onClick='$(\"div#{$id}\").dialog({width: 700});'>$short</a><div id='{$id}' title='{$project->getName()}: {$champ['user']->getReversedName()}: Q$i' style='display:none;' class='dialog'>".nl2br($data)."</div></td>";
                     $i++;
                 }
                 $blb = new ReportBlob(BLOB_ARRAY, 2013, $champ['user']->getId(), $proj_id);
@@ -1170,7 +1171,7 @@ EOF;
                         if($message['q6'] != ""){
                             $id = "{$project->getId()}_{$champ['user']->getId()}_6_{$u_id}";
                             $user = Person::newFromId($u_id);
-                            $champion_html .= "<a href='#' onClick='$(\"div#{$id}\").dialog({width: 700});'>{$user->getReversedName()}</a><div class='dialog' id='$id' title='{$project->getName()}: {$champ['user']->getReversedName()}: Q6({$user->getReversedName()})' style='display:none;' class='dialog'>".nl2br($message['q6'])."</div><br />";
+                            $champion_html .= "<a style='cursor:pointer;' onClick='$(\"div#{$id}\").dialog({width: 700});'>{$user->getReversedName()}</a><div class='dialog' id='$id' title='{$project->getName()}: {$champ['user']->getReversedName()}: Q6({$user->getReversedName()})' style='display:none;' class='dialog'>".nl2br($message['q6'])."</div><br />";
                         }
                     }
                 }
