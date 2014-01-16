@@ -1461,12 +1461,13 @@ EOF;
             }
         }
         $projects = array_values($projects);
-        
-        echo "<li class='top-nav-element $selected'>\n";
-        echo "    <span class='top-nav-left'>&nbsp;</span>\n";
-        echo "    <a id='lnk-my_projects' class='top-nav-mid' href='{$projects[0]->getUrl()}' class='new'>My Projects</a>\n";
-        echo "    <span class='top-nav-right'>&nbsp;</span>\n";
-        echo "</li>";
+        if(isset($projects[0])){
+            echo "<li class='top-nav-element $selected'>\n";
+            echo "    <span class='top-nav-left'>&nbsp;</span>\n";
+            echo "    <a id='lnk-my_projects' class='top-nav-mid' href='{$projects[0]->getUrl()}' class='new'>My Projects</a>\n";
+            echo "    <span class='top-nav-right'>&nbsp;</span>\n";
+            echo "</li>";
+        }
     }
 }
 
