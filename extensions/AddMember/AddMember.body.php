@@ -65,6 +65,9 @@ class UserCreate {
                     else if($role == ISAC){
                         MailingList::subscribe("isac-list", $person);
                     }
+                    else if($role == CHAMP){
+                        MailingList::subscribe("grand-forum-p2-champions", $person);
+                    }
                 }
             }
         }

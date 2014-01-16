@@ -95,13 +95,13 @@
 	    foreach($peeps as $p){
 	        foreach($projects as $project){
 	            if($project->getPhase() == 2){
-	                if($p->isChampionOfDuring($project)){
+	                if($p->isChampionOfDuring($project, REPORTING_CYCLE_START, REPORTING_RMC_MEETING)){
                         $people[$p->getId()] = $p;
                         break;
 	                }
 	            }
 	            foreach($project->getSubProjects() as $sub){
-	                if($p->isChampionOfDuring($sub)){
+	                if($p->isChampionOfDuring($sub, REPORTING_CYCLE_START, REPORTING_RMC_MEETING)){
                         $people[$p->getId()] = $p;
                         break;
 	                }
