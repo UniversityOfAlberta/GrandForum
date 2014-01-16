@@ -2,32 +2,31 @@
 
 class EvalOverviewReportItem extends AbstractReportItem {
 
-	function render(){
-	    global $wgOut;
+    function render(){
+        global $wgOut;
         $details = $this->getTableHTML();
         $item = "$details";
         $item = $this->processCData($item);
-		$wgOut->addHTML($item);
-        if(isset($_GET['seenReport']) && !empty($_GET['seenReport'])){
+        $wgOut->addHTML($item);
+        
+        if(isset($_GET['seenReport']) && !empty($_GET['seenReport']) && date("Y-m-d H:i:s") >= REPORTING_RMC_REVISED){
             $sub_id = $_GET['seenReport'];
             $this->setSeenOverview($sub_id);
         }
-        
-
-	}
-	
-	function renderForPDF(){
-	    global $wgOut;
+    }
+    
+    function renderForPDF(){
+        global $wgOut;
         $details = $this->getTableHTML();
         $item = "$details";
         $item = $this->processCData($item);
-		$wgOut->addHTML($item);
-	}
-	
-	function getTableHTML(){
+        $wgOut->addHTML($item);
+    }
+    
+    function getTableHTML(){
         global $wgUser, $wgServer, $wgScriptPath;
         $type = $this->getAttr('subType', 'PNI');
-	    $person = Person::newFromId($this->personId);
+        $person = Person::newFromId($this->personId);
         $section_url = "";
 
         $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY);
@@ -35,7 +34,7 @@ class EvalOverviewReportItem extends AbstractReportItem {
         $text_question = EVL_OTHERCOMMENTS;
 
         if($type == "PNI"){
-	        $subs = $person->getEvaluatePNIs();
+            $subs = $person->getEvaluatePNIs();
             $report_url = "EvalPNIReport";
             $section_url = "PNI+Overview";
         }
@@ -51,7 +50,6 @@ class EvalOverviewReportItem extends AbstractReportItem {
             $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_REPORTQUALITY);
             $stock_comments =array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_REPORTQUALITY_COM);
         }
-
         
         $jscript =<<<EOF
             <style type='text/css'>
@@ -121,17 +119,17 @@ EOF;
 
         if($type == "Project"){
             $html .=<<<EOF
-        	<tr>
-        	<th width="20%" align="left">NI Name</th>
+            <tr>
+            <th width="20%" align="left">NI Name</th>
             <th width="10%" title="Evaluator Comments">Q7 (Comments)</th>
-        	<th width="10%" title="Overall Score">Q6</th>
-        	<th width="10%" title="Confidence Level of Evaluator">Q8</th>
-        	<th style="border-left: 5px double #8C529D;" title="Excellence of the Research Program">Q1</th>
-        	<th title="Development of HQP">Q2</th>
-        	<th title="Networking and Partnerships">Q3</th>
-        	<th title="Knowledge and Technology Exchange and Exploitation">Q4</th>
-        	<th title="Rating for Quality of Report">Q5</th>
-        	</tr>
+            <th width="10%" title="Overall Score">Q6</th>
+            <th width="10%" title="Confidence Level of Evaluator">Q8</th>
+            <th style="border-left: 5px double #8C529D;" title="Excellence of the Research Program">Q1</th>
+            <th title="Development of HQP">Q2</th>
+            <th title="Networking and Partnerships">Q3</th>
+            <th title="Knowledge and Technology Exchange and Exploitation">Q4</th>
+            <th title="Rating for Quality of Report">Q5</th>
+            </tr>
 EOF;
         }
         else{
@@ -168,17 +166,21 @@ EOF;
             $incomplete = false;
             foreach($evals as $ev){
                 $sub_row = "";
-            	$ev_id = $ev->getId();
+                $ev_id = $ev->getId();
                 
-            	$ev_name = $ev->getReversedName();
+                $ev_name = $ev->getReversedName();
                 $ev_name_straight = $ev->getFirstName(). " " .$ev->getLastName();
 
-            	$sub_row .= "<tr id='row-{$sub_id}'>";
+                $sub_row .= "<tr id='row-{$sub_id}'>";
                 if($wgUser->getId() != $ev_id){
-            	   $sub_row .= "<td rowspan='3' align='left' style='background-color: #F3EBF5;'>{$ev_name}</td></tr>";
+                   $sub_row .= "<td rowspan='3' align='left' style='background-color: #F3EBF5;'>{$ev_name}</td></tr>";
                 }else{
-                    $sub_row .= "<td rowspan='3' align='left'><a href='#details_sub-{$sub_id}' onclick='expandSubDetails(\"{$sub_id}\"); return false;' >{$sub_name}</a></td></tr>";
-                    //$sub_row .= "<td rowspan='3' align='left'>{$sub_name}</td></tr>";
+                    if(date("Y-m-d H:i:s") >= REPORTING_RMC_REVISED){
+                        $sub_row .= "<td rowspan='3' align='left'><a href='#details_sub-{$sub_id}' onclick='expandSubDetails(\"{$sub_id}\"); return false;' >{$sub_name}</a></td></tr>";
+                    }
+                    else{
+                        $sub_row .= "<td rowspan='3' align='left'>{$sub_name}</td></tr>";
+                    }
                 }
 
                 //Actual Answers
@@ -203,7 +205,7 @@ EOF;
                     if(!empty($q8_R) && $diff != 0){
                         $q8_R = nl2br($q8_R);
                         $sub_row2 .= "<a href='#' onclick='openDialog(\"{$ev_id}\", \"{$sub_id}\", 2); return false;'>Revised</a><div id='dialog2-{$ev_id}-{$sub_id}' class='comment_dialog' title='Revised Comment by {$ev_name_straight} on {$sub_name_straight}'>{$q8_R}</div><br />";
-            	    }
+                    }
                     else{
                         $sub_row2 .= "Revised";
                     }
@@ -262,26 +264,26 @@ EOF;
                     }
                     
                     $response = $response_orig;
-            		
+                    
                     $double_border = '';
                     if($i==2){
                         $double_border = ' style="border-left: 5px double #8C529D;"';
                     }
                     
                     if($response_orig){
-            			$response = substr($response, 0, 1);
+                        $response = substr($response, 0, 1);
                         if(!empty($comm)){
                             $response .= "; ".$comm_short;
                             $comm = implode("<br />", $comm);
                         } 
-            		    $sub_row .= "<td{$double_border}><span class='q8_tip' title='{$response_orig}<br />{$comm}'><a>{$response}</a></span></td>";
+                        $sub_row .= "<td{$double_border}><span class='q8_tip' title='{$response_orig}<br />{$comm}'><a>{$response}</a></span></td>";
                     }else{
-            			$response = "";
+                        $response = "";
                         $sub_row .= "<td{$double_border}>{$response}</td>";
                         if($wgUser->getId() == $ev_id){
                             $incomplete = true;
                         }
-            		}
+                    }
 
                     if($response_rev && ($diff != 0 || !empty($diff2))){
                         $response2 = substr($response2, 0, 1);
@@ -295,11 +297,11 @@ EOF;
                         $sub_row2 .= "<td{$double_border}>{$response2}</td>";
                     }
 
-            		
+                    
                     $i++;
-            	
+                
                 }
-            	$sub_row .= "</tr>";
+                $sub_row .= "</tr>";
                 $sub_row2 .= "</tr>";
 
                 if($wgUser->getId() == $ev_id){
@@ -309,7 +311,7 @@ EOF;
                     $sub_table .= $sub_row;
                     $sub_table .= $sub_row2;
                 }
-        	}
+            }
 
             if($type == "Project"){
                 $sub_table_html =<<<EOF
@@ -388,22 +390,22 @@ EOF;
         $html .= $jscript;
 
         return $html;
-	}
+    }
 
-	function blobValue($blob_type, $evaluator_id, $blobItem, $blobSubItem){
+    function blobValue($blob_type, $evaluator_id, $blobItem, $blobSubItem){
         $project_id = 0;
         if($this->getReport()->reportType == RP_EVAL_PROJECT){
             $project_id = $blobSubItem;
         }
- 		$blob = new ReportBlob($blob_type, $this->getReport()->year, $evaluator_id, $project_id);
-	    $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, $blobItem, $blobSubItem);
-		$blob->load($blob_address);
-	    $blob_data = $blob->getData();
+         $blob = new ReportBlob($blob_type, $this->getReport()->year, $evaluator_id, $project_id);
+        $blob_address = ReportBlob::create_address($this->getReport()->reportType, SEC_NONE, $blobItem, $blobSubItem);
+        $blob->load($blob_address);
+        $blob_data = $blob->getData();
         //$addr = "BlobType=".$blob_type."; Year=". $this->getReport()->year ."; PersonID=". $evaluator_id."; ProjectID=". $this->projectId."<br />";
         //$addr .= "ReportType=".$this->getReport()->reportType."; Section=". SEC_NONE ."; BlobItem=". $blobItem ."; SubItem=". $blobSubItem ."<br /><br>";
         //echo $addr;
-	    return $blob_data;
-	}
+        return $blob_data;
+    }
 
 
     function setSeenOverview($reportSubItem = null){
