@@ -28,7 +28,7 @@ class JungAPI extends API{
 
         $this->year = $_GET['year'];
         $this->startDate = $_GET['year'].REPORTING_CYCLE_END_MONTH;
-        $this->endDate = $_GET['year'].REPORTING_CYCLE_END_MONTH;
+        $this->endDate = $_GET['year'].REPORTING_CYCLE_END_MONTH_ACTUAL;
         
         $nodes = array();
         $edges = array();
@@ -49,7 +49,7 @@ class JungAPI extends API{
         }
 
         foreach($nodes as $key => $node){
-            $projects = $node->getProjectsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+            $projects = $node->getProjectsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
             if(count($projects) == 0){
                 unset($nodes[$key]);
             }
@@ -85,11 +85,11 @@ class JungAPI extends API{
     
     function getProjects(){
         $projData = array();
-        $projects = Project::getAllProjectsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+        $projects = Project::getAllProjectsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
         
         foreach($projects as $project){
-            $people = $project->getAllPeopleDuring(null, $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
-            $products = $project->getPapers('all', "2010".REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+            $people = $project->getAllPeopleDuring(null, $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
+            $products = $project->getPapers('all', "2010".REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
             
             $sumDisc = array();
             foreach($products as $product){
@@ -99,7 +99,7 @@ class JungAPI extends API{
                     $authors = $product->getAuthors();
                     foreach($authors as $author){
                         if(!isset($this->personDisciplines[$author->getName()])){
-                            $pDisc = $author->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH, true);
+                            $pDisc = $author->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
                             $this->personDisciplines[$author->getName()] = $pDisc;
                         }
                         else{
@@ -116,7 +116,7 @@ class JungAPI extends API{
             $discs = array();
             foreach($people as $person){
                 if(!isset($this->personDisciplines[$person->getName()])){
-                    $disc = $person->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH, true);
+                    $disc = $person->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
                     $this->personDisciplines[$person->getName()] = $disc;
                 }
                 else{
@@ -169,7 +169,7 @@ class JungAPI extends API{
             if($edge['type'] == "Person"){
                 if(!isset($personDisciplines[$edge['b']])){
                     $b = Person::newFromName($edge['b']);
-                    $disc = $b->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH, true);
+                    $disc = $b->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
                     $personDisciplines[$edge['b']] = $disc;
                 }
                 else{
@@ -193,14 +193,14 @@ class JungAPI extends API{
         }
         foreach($nodes as $person){
             $tuple = array();
-            $projects = $person->getProjectsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH, true);
+            $projects = $person->getProjectsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
             $projectsAlready = array();
             foreach($projects as $p){
                 if(!isset($projectsAlready[$p->getId()])){
                     $projectsAlready[$p->getId()] = true;
                 }
             }
-            $products = $person->getPapersAuthored('all', "2010".REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH, false);
+            $products = $person->getPapersAuthored('all', "2010".REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, false);
             $projectsByProduct = array();
             $nProductsWith1University = array();
             $nProductsWith2Universities = array();
@@ -220,7 +220,7 @@ class JungAPI extends API{
                 $authors = $product->getAuthors();
                 foreach($authors as $author){
                     if(!isset($this->personUniversities[$author->getName()])){
-                        $uni = $author->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH, true);
+                        $uni = $author->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
                         $this->personUniversities[$author->getName()] = $uni;
                     }
                     else{
@@ -229,7 +229,7 @@ class JungAPI extends API{
                     $universities[$uni['university']] = true;
                     if($isCurrentYear){
                         if(!isset($this->personDisciplines[$author->getName()])){
-                            $disc = $author->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH, true);
+                            $disc = $author->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
                             $this->personDisciplines[$author->getName()] = $disc;
                         }
                         else{
@@ -277,10 +277,10 @@ class JungAPI extends API{
 
             
 
-            if($person->isRoleDuring(HQP, $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH) &&
-               !$person->isRoleDuring(PNI, $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH) &&
-               !$person->isRoleDuring(CNI, $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH)){
-                $sups = $person->getSupervisorsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+            if($person->isRoleDuring(HQP, $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL) &&
+               !$person->isRoleDuring(PNI, $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL) &&
+               !$person->isRoleDuring(CNI, $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL)){
+                $sups = $person->getSupervisorsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
                 $totalSups = $person->getSupervisors(true);
                 $tuple['nCurrentHQP'] = "";
                 $tuple['nTotalHQP'] = "";
@@ -291,7 +291,7 @@ class JungAPI extends API{
             }
             else{
                 $worksWith = $person->getRelationsDuring(WORKS_WITH, $this->startDate, $this->endDate);
-                $hqps = $person->getHQPDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+                $hqps = $person->getHQPDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
                 $totalHqps = $person->getHQP(true);
                 $budgets = array();
                 $totalAllocated = 0;
@@ -311,7 +311,7 @@ class JungAPI extends API{
             }
             
             if(!isset($this->personDisciplines[$person->getName()])){
-                $disc = $person->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH, true);
+                $disc = $person->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
                 $this->personDisciplines[$person->getName()] = $disc;
             }
             else{
@@ -319,7 +319,7 @@ class JungAPI extends API{
             }
             
             if(!isset($this->personUniversities[$person->getName()])){
-                $uni = $person->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH, true);
+                $uni = $person->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
                 $this->personUniversities[$person->getName()] = $uni;
             }
             
@@ -453,9 +453,9 @@ class JungAPI extends API{
             $ids[$node->getId()] = true;
         }
         foreach($nodes as $person){
-            $hqps = $person->getHQPDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+            $hqps = $person->getHQPDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
             foreach($hqps as $hqp){
-                $sups = $hqp->getSupervisorsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+                $sups = $hqp->getSupervisorsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
                 foreach($sups as $sup){
                     if(isset($ids[$sup->getId()]) && $person->getId() != $sup->getId()){
                         $edges[] = array('a' => $person->getName(), 
@@ -498,7 +498,7 @@ class JungAPI extends API{
     function getProjectEdges($nodes){
         $edges = array();
         foreach($nodes as $node){
-            $projects = $node->getProjectsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+            $projects = $node->getProjectsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
             foreach($projects as $project){
                 $edges[] = array('a' => $node->getName(), 
                                  'b' => $project->getName(),
@@ -514,7 +514,7 @@ class JungAPI extends API{
         $edges = array();
         foreach($nodes as $node){
             if(!isset($this->personUniversities[$node->getName()])){
-                $this->personUniversities[$node->getName()] = $node->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+                $this->personUniversities[$node->getName()] = $node->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
             }
             $uni = $this->personUniversities[$node->getName()];
             if($uni['university'] != ""){
@@ -560,7 +560,7 @@ class JungAPI extends API{
         $edges = array();
         foreach($nodes as $node){
             if(!isset($this->personUniversities[$node->getName()])){
-                $this->personUniversities[$node->getName()] = $node->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH);
+                $this->personUniversities[$node->getName()] = $node->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
             }
             $uni = $this->personUniversities[$node->getName()];
             if($uni['department'] != ""){
