@@ -153,8 +153,18 @@ class JungAPI extends API{
             $tuple['name'] = $project->getName();
             $tuple['nProductsUpToNow'] = (string)count($products);
             $tuple['nDisciplines'] = (string)count($discs);
-            $tuple['totalAllocationUpToNow'] = (string)$totalAllocated;
-            $tuple['allocation'] = (string)$allocatedAmount;
+            if($totalAllocated == 0){
+                $tuple['totalAllocationUpToNow'] = "";
+            }
+            else{
+                $tuple['totalAllocationUpToNow'] = (string)$totalAllocated;
+            }
+            if($allocatedAmount == 0){
+                $tuple['allocation'] = "";
+            }
+            else{
+                $tuple['allocation'] = (string)$allocatedAmount;
+            }
             $tuple['contributionsThisYear'] = (string)$contTotal;
             
             if(count($sumDisc) > 0){
@@ -320,8 +330,18 @@ class JungAPI extends API{
                 $tuple['nCurrentSupervisors'] = "";
                 $tuple['nTotalSupervisors'] = "";
                 $tuple['nCurrentWorksWith'] = (string)count($worksWith);
-                $tuple['totalAllocationUpToNow'] = (string)$totalAllocated;
-                $tuple['allocation'] = (string)$allocatedAmount;
+                if($totalAllocated == 0){
+                    $tuple['totalAllocationUpToNow'] = "";
+                }
+                else{
+                    $tuple['totalAllocationUpToNow'] = (string)$totalAllocated;
+                }
+                if($allocatedAmount == 0){
+                    $tuple['allocation'] = "";
+                }
+                else{
+                    $tuple['allocation'] = (string)$allocatedAmount;
+                }
             }
             
             if(!isset($this->personDisciplines[$person->getName()])){
