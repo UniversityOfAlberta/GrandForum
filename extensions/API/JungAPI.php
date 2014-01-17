@@ -154,7 +154,7 @@ class JungAPI extends API{
             $tuple['nProductsUpToNow'] = (string)count($products);
             $tuple['nDisciplines'] = (string)count($discs);
             $tuple['totalAllocationUpToNow'] = (string)$totalAllocated;
-            $tuple['allocated'] = (string)$allocatedAmount;
+            $tuple['allocation'] = (string)$allocatedAmount;
             $tuple['contributionsThisYear'] = (string)$contTotal;
             
             if(count($sumDisc) > 0){
@@ -297,6 +297,7 @@ class JungAPI extends API{
                 $tuple['nTotalSupervisors'] = (string)count($totalSups);
                 $tuple['nCurrentWorksWith'] = "";
                 $tuple['totalAllocationUpToNow'] = "";
+                $tuple['allocation'] = "";
             }
             else{
                 $worksWith = $person->getRelationsDuring(WORKS_WITH, $this->startDate, $this->endDate);
@@ -304,11 +305,14 @@ class JungAPI extends API{
                 $totalHqps = $person->getHQP(true);
                 $budgets = array();
                 $totalAllocated = 0;
+                $allocatedAmount = 0;
                 for($i=2010;$i<=$this->year;$i++){
                     $allocated = $person->getAllocatedBudget($i-1);
+                    $allocatedAmount = 0;
                     if($allocated != null){
                         $value = $allocated->copy()->rasterize()->where(COL_TOTAL)->select(ROW_TOTAL)->toString();
-                        $totalAllocated += (int)str_replace(',', '', str_replace('$', '', $value));
+                        $allocatedAmount = (int)str_replace(',', '', str_replace('$', '', $value));
+                        $totalAllocated += $allocatedAmount;
                     }
                 }
                 $tuple['nCurrentHQP'] = (string)count($hqps);
@@ -317,6 +321,7 @@ class JungAPI extends API{
                 $tuple['nTotalSupervisors'] = "";
                 $tuple['nCurrentWorksWith'] = (string)count($worksWith);
                 $tuple['totalAllocationUpToNow'] = (string)$totalAllocated;
+                $tuple['allocation'] = (string)$allocatedAmount;
             }
             
             if(!isset($this->personDisciplines[$person->getName()])){
