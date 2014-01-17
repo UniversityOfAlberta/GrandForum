@@ -281,9 +281,7 @@ class JungAPI extends API{
             $tuple['nProductsWith2Universities'] = (string)count($nProductsWith2Universities);
             $tuple['nProductsWith3Universities'] = (string)count($nProductsWith3Universities);
             $tuple['nProductsWith4OrMoreUniversities'] = (string)count($nProductsWith4OrMoreUniversities);
-
             
-
             if($person->isRoleDuring(HQP, $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL) &&
                !$person->isRoleDuring(PNI, $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL) &&
                !$person->isRoleDuring(CNI, $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL)){
@@ -438,7 +436,7 @@ class JungAPI extends API{
             $ids[$node->getId()] = true;
         }
         foreach($nodes as $person){
-            $products = $person->getPapersAuthored('all', $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH, true);
+            $products = $person->getPapersAuthored('all', $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
             foreach($products as $product){
                 $authors = $product->getAuthors();
                 foreach($authors as $auth){
