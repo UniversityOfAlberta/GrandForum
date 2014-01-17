@@ -235,7 +235,6 @@ class ReportArchive extends SpecialPage {
             if (count($check) > 0) {
                 foreach($check as $c){
                     $sto->select_report($c['token']);
-                    $subm = ($c['submitted']) ? "(Submitted)" : "(Not Submitted)";
                     $tst = $sto->metadata('timestamp');
                     $tok = $sto->metadata('token');
                     break;
@@ -243,7 +242,7 @@ class ReportArchive extends SpecialPage {
             }
             if($tok != false){
                 $wgOut->addHTML("<tr>");
-                $wgOut->addHTML("<td><a id='tok{$hqp->getId()}' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download {$hqp->getNameForForms()}'s $year Report PDF</a></td><td>(generated <span id='tst{$hqp->getId()}'>$tst</span>) $subm</span></td>");
+                $wgOut->addHTML("<td><a id='tok{$hqp->getId()}' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download {$hqp->getNameForForms()}'s $year Report PDF</a></td><td>(generated <span id='tst{$hqp->getId()}'>$tst</span>)</span></td>");
                 $noReports = false;
                 $wgOut->addHTML("</tr>");
             }
@@ -290,8 +289,7 @@ class ReportArchive extends SpecialPage {
             		$tok = $plCheck[0]['token'];
             		$sto->select_report($tok);    	
             		$tst = $plCheck[0]['timestamp'];
-            		$subm = ($plCheck[0]['submitted']) ? "(Submitted)" : "(Not Submitted)";
-            		$plHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Report PDF</a></td><td>(generated $tst) $subm</td></tr>";
+            		$plHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Report PDF</a></td><td>(generated $tst)</td></tr>";
             	}
             	if (count($commentCheck) > 0) {
             		$tok = $commentCheck[0]['token'];
@@ -321,7 +319,7 @@ class ReportArchive extends SpecialPage {
 
         $wgOut->addHTML("<h3>Individual Researcher Report</h3>");
         
-        $roles = $person->getRolesDuring($year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
+        $roles = $person->getRolesDuring($year.REPORTING_CYCLE_START_MONTH, ($year+1).REPORTING_CYCLE_END_MONTH);
         $usedRoles = array();
         if(count($roles) > 0){
             $sto = new ReportStorage($person);
@@ -351,10 +349,9 @@ class ReportArchive extends SpecialPage {
                 }
                 if (count($check) > 0) {
             		$tok = $check[0]['token'];
-            		$subm = ($check[0]['submitted']) ? "(Submitted)" : "(Not Submitted)";
             		$sto->select_report($tok);    	
             		$tst = $sto->metadata('timestamp');
-            		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst) $subm<br />");
+            		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst)<br />");
             	}
             	$check = array();
             	if($role->getRole() == HQP){
@@ -519,11 +516,11 @@ class ReportArchive extends SpecialPage {
             foreach($projs as $proj){
                 if(!$proj->isSubProject() && $proj->getPhase() == 2){
                     $champs = array();
-                    foreach($proj->getChampionsDuring(($year).REPORTING_START_MONTH, ($year).REPORTING_END_MONTH) as $champ){
+                    foreach($proj->getChampionsDuring(($year).REPORTING_START_MONTH, ($year+1).REPORTING_RMC_MEETING) as $champ){
                         $champs[$champ['user']->getId()] = $champ;
                     }
                     foreach($proj->getSubProjects() as $sub){
-                        foreach($sub->getChampionsDuring(($year).REPORTING_START_MONTH, ($year).REPORTING_END_MONTH) as $champ){
+                        foreach($sub->getChampionsDuring(($year).REPORTING_START_MONTH, ($year+1).REPORTING_RMC_MEETING) as $champ){
                             $champs[$champ['user']->getId()] = $champ;
                         }
                     }
