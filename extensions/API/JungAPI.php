@@ -130,11 +130,14 @@ class JungAPI extends API{
         
             $budgets = array();
             $totalAllocated = 0;
+            $allocatedAmount = 0;
             for($i=2010;$i<=$this->year;$i++){
                 $allocated = $project->getAllocatedBudget($i-1);
+                $allocatedAmount = 0;
                 if($allocated != null){
                     $value = $allocated->copy()->rasterize()->where(CUBE_TOTAL)->select(CUBE_TOTAL)->toString();
-                    $totalAllocated += (int)str_replace(',', '', str_replace('$', '', $value));
+                    $allocatedAmount = (int)str_replace(',', '', str_replace('$', '', $value));
+                    $totalAllocated += $allocatedAmount;
                 }
             }
             
@@ -151,6 +154,7 @@ class JungAPI extends API{
             $tuple['nProductsUpToNow'] = (string)count($products);
             $tuple['nDisciplines'] = (string)count($discs);
             $tuple['totalAllocationUpToNow'] = (string)$totalAllocated;
+            $tuple['allocated'] = (string)$allocatedAmount;
             $tuple['contributionsThisYear'] = (string)$contTotal;
             
             if(count($sumDisc) > 0){
