@@ -633,7 +633,7 @@ EOF;
         return $champs;
     }
     
-    function getChampionsDuring($start=REPORTING_CYCLE_START, $end=REPORTING_CYCLE_END){
+    function getChampionsDuring($start=REPORTING_CYCLE_START, $end=REPORTING_RMC_MEETING){
         $champs = array();
         $people = $this->getAllPeopleDuring(CHAMP, $start, $end);
         foreach($people as $champ){
