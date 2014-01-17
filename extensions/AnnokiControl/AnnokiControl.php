@@ -97,7 +97,7 @@ $egAnnokiExtensions['TextReplace']   = array( 'name' => 'Text Replace',
                           
 $egAnnokiExtensions['Twitter']     = array( 'name' => 'Twitter',
                           'path' => "$IP/extensions/Twitter/Twitter.body.php",
-                          'enabled' => true,
+                          'enabled' => false,
                           );
                           
 $egAnnokiExtensions['MailingList']     = array( 'name' => 'MailingList',

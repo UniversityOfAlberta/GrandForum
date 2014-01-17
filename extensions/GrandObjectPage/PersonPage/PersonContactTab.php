@@ -243,7 +243,7 @@ class PersonContactTab extends AbstractEditableTab {
         if($person->getTwitter() != ""){
             $this->html .= "<tr>
                                 <td align='right'><b>Twitter:</b></td>
-                                <td><a href='$wgServer$wgScriptPath/index.php/{$wgTitle->getNsText()}:{$wgTitle->getText()}?action=getTwitterFeed'>{$person->getTwitter()}</a></td>
+                                <td><a href='http://twitter.com/{$person->getTwitter()}' target='_blank'>{$person->getTwitter()}</a></td>
                             </tr>";
         }
         $this->html .= "</table>";
