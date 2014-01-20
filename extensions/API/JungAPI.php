@@ -310,6 +310,7 @@ class JungAPI extends API{
                 $tuple['nCurrentWorksWith'] = "";
                 $tuple['totalAllocationUpToNow'] = "";
                 $tuple['allocation'] = "";
+                $tuple['nextAllocation'] = "";
                 $tuple['allocationDelta'] = "";
             }
             else{
@@ -320,6 +321,7 @@ class JungAPI extends API{
                 $totalAllocated = 0;
                 $allocatedAmount = 0;
                 $allocationDelta = 0;
+                $nextAllocationAmount = 0;
                 for($i=2010;$i<=$this->year;$i++){
                     $allocated = $person->getAllocatedBudget($i-1);
                     $lastAllocatedAmount = $allocatedAmount;
@@ -336,6 +338,11 @@ class JungAPI extends API{
                         $totalAllocated += $allocatedAmount;
                     }
                 }
+                $allocated = $person->getAllocatedBudget($this->year+1);
+                if($allocated != null){
+                    $value = $allocated->copy()->rasterize()->where(COL_TOTAL)->select(ROW_TOTAL)->toString();
+                    $nextAllocationAmount = (int)str_replace(',', '', str_replace('$', '', $value));
+                }
                 $tuple['nCurrentHQP'] = (string)count($hqps);
                 $tuple['nTotalHQP'] = (string)count($totalHqps);
                 $tuple['nCurrentSupervisors'] = "";
@@ -345,6 +352,7 @@ class JungAPI extends API{
                 $tuple['totalAllocationUpToNow'] = ($totalAllocated == 0) ? "" : (string)$totalAllocated;
                 $tuple['allocation'] = ($allocatedAmount == 0) ? "" : (string)$allocatedAmount;
                 $tuple['allocationDelta'] = ($allocationDelta == 0) ? "" : (string)$allocationDelta;
+                $tuple['nextAllocation'] = ($nextAllocationAmount == 0) ? "" : (string)$nextAllocationAmount;
             }
             
             if(!isset($this->personDisciplines[$person->getName()])){
