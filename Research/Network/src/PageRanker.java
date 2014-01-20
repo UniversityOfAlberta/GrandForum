@@ -35,7 +35,7 @@ public class PageRanker extends Centrality {
 		
 		// http://wwwconference.org/www2007/posters/poster893.pdf
 		double alpha = this.pageRank.getAlpha();
-		double lowerBound = ((alpha + (1d - (alpha)))/this.graph.getVertexCount())*danglerSum;
+		double lowerBound = ((alpha + (1d - (alpha)))/this.graph.getVertexCount())*Math.max(0.0001, danglerSum);
 		for(Node v : this.graph.getVertices()){
 			if(v.degree() == 0){
 				this.results.put(v.toString(), lowerBound);

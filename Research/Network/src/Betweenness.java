@@ -47,7 +47,7 @@ public class Betweenness extends Centrality {
 			// Normalize
 			double score = this.results.get(v.toString());
 			score = (score - Betweenness.min.get(v.getType()))/(Betweenness.max.get(v.getType()) - Betweenness.min.get(v.getType()));
-			this.results.put(v.toString(), score);
+			this.results.put(v.toString(), Math.max(0, score));
 		}
 		Betweenness.firstTime = false;
 	}

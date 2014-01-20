@@ -36,7 +36,7 @@
             "name": "Co-Funded",
             "source": "Person",
             "target": "Person",
-            "desc": "People co-contributing by contributions (both listed under the same contribution) will for edges between each other."
+            "desc": "People co-contributing by contributions (both listed under the same contribution) will form edges between each other."
         },
         {
             "id": "WorksIn",
@@ -207,6 +207,11 @@
                     "desc": "The number of products the Person has up to now"
                 },
                 {
+                    "id": "nCurrentProducts",
+                    "name": "# Current Products",
+                    "desc": "The number of products the Person has this year"
+                },
+                {
                     "id": "nConnectedDisciplines",
                     "name": "# Connected Disciplines",
                     "desc": "The number of disciplines that the person is connected to"
@@ -242,29 +247,44 @@
                     "desc": "The amount of money allocated to the person up to now"
                 },
                 {
+                    "id": "allocation",
+                    "name": "Allocation This Year",
+                    "desc": "The amount of money allocated to the person this year"
+                },
+                {
+                    "id": "allocationDelta",
+                    "name": "Allocation Delta",
+                    "desc": "The change in allocation between years: AllocationDelta(R, Y) = (Allocation(R, Y) - Allocation(R, Y-1))/Allocation(R, Y-1)"
+                },
+                {
+                    "id": "nextAllocation",
+                    "name": "Next Year's Allocation",
+                    "desc": "The amount of money allocated to the person next year"
+                },
+                {
                     "id": "yearRegistered",
                     "name": "Year Registered",
                     "desc": "The year that the user registered"
                 },
                 {
-                    "id": "GSnPubs",
-                    "name": "Google Scholar # Publications",
-                    "desc": "The number of publications found in Google Scholar for this year"
+                    "id": "ScopusPubs",
+                    "name": "Scopus # Publications",
+                    "desc": "The number of publications found in Scopus for this year"
                 },
                 {
-                    "id": "GSnCits",
-                    "name": "Google Scholar # Citations",
-                    "desc": "The number of citations found in Google Scholar for this year"
+                    "id": "ScopusCits",
+                    "name": "Scopus # Citations",
+                    "desc": "The number of citations found in Scopus for this year"
                 },
                 {
-                    "id": "GSnPubsDelta",
-                    "name": "Google Scholar # Publications Delta",
-                    "desc": "The number of publications found in Google Scholar for this year compared to last year"
+                    "id": "ScopusPubsDelta",
+                    "name": "Scopus # Publications Delta",
+                    "desc": "The number of publications found in Scopus for this year compared to last year"
                 },
                 {
-                    "id": "GSnCitsDelta",
-                    "name": "Google Scholar # Citations Delta",
-                    "desc": "The number of citations found in Google Scholar for this year compared to last year"
+                    "id": "ScopusCitsDelta",
+                    "name": "Scopus # Citations Delta",
+                    "desc": "The number of citations found in Scopus for this year compared to last year"
                 }
             ]
         },
@@ -297,6 +317,11 @@
                     "id": "totalAllocationUpToNow",
                     "name": "Total Allocation Up To Now",
                     "desc": "The amount of money allocated to the project up to now"
+                },
+                {
+                    "id": "allocation",
+                    "name": "Allocation This Year",
+                    "desc": "The amount of money allocated to the project this year"
                 }
             ]
         }
@@ -304,8 +329,12 @@
     "transformable": {
         "Person": [
             "totalAllocationUpToNow",
+            "allocation",
+            "nextAllocation",
+            "allocationDelta",
             "contributionsThisYear",
             "nProductsUpToNow",
+            "nCurrentProducts",
             "nCurrentHQP",
             "nCurrentWorksWith",
             "nProductsUpToNow",
@@ -313,10 +342,10 @@
             "nTotalHQP",
             "avgProductDisciplines",
             "avgAuthorsPerProduct",
-            "GSnPubs",
-            "GSnCits",
-            "GSnPubsDelta",
-            "GSnCitsDelta"
+            "ScopusPubs",
+            "ScopusCits",
+            "ScopusPubsDelta",
+            "ScopusCitsDelta"
         ],
         "Project": [
             "nProductsUpToNow",
@@ -426,121 +455,141 @@
         "Person": [
             {
                 "y": "Between.Projects.MINUS.Between.ProjectsDiffUni",
-                "x": "GSnPubsDelta",
+                "x": "ScopusPubsDelta",
                 "type": "scatterplot"
             },
             {
                 "y": "Between.Projects.MINUS.Between.ProjectsDiffUni",
-                "x": "GSnCitsDelta",
+                "x": "ScopusCitsDelta",
                 "type": "scatterplot"
             },
             {
                 "y": "Between.Projects.MINUS.Between.ProjectsDiffDisc",
-                "x": "GSnPubsDelta",
+                "x": "ScopusPubsDelta",
                 "type": "scatterplot"
             },
             {
                 "y": "Between.Projects.MINUS.Between.ProjectsDiffDisc",
-                "x": "GSnCitsDelta",
+                "x": "ScopusCitsDelta",
                 "type": "scatterplot"
             },
             {
                 "y": "Between.WorksWith.MINUS.Between.WorksWithDiffUni",
-                "x": "GSnPubsDelta",
+                "x": "ScopusPubsDelta",
                 "type": "scatterplot"
             },
             {
                 "y": "Between.WorksWith.MINUS.Between.WorksWithDiffUni",
-                "x": "GSnCitsDelta",
+                "x": "ScopusCitsDelta",
                 "type": "scatterplot"
             },
             {
                 "y": "Between.WorksWith.MINUS.Between.WorksWithDiffDisc",
-                "x": "GSnPubsDelta",
+                "x": "ScopusPubsDelta",
                 "type": "scatterplot"
             },
             {
                 "y": "Between.WorksWith.MINUS.Between.WorksWithDiffDisc",
-                "x": "GSnCitsDelta",
+                "x": "ScopusCitsDelta",
                 "type": "scatterplot"
             },
             {
                 "y": "Between.Produces.MINUS.Between.ProducesDiffUni",
-                "x": "GSnPubsDelta",
+                "x": "ScopusPubsDelta",
                 "type": "scatterplot"
             },
             {
                 "y": "Between.Produces.MINUS.Between.ProducesDiffUni",
-                "x": "GSnCitsDelta",
+                "x": "ScopusCitsDelta",
                 "type": "scatterplot"
             },
             {
                 "y": "Between.Produces.MINUS.Between.ProducesDiffDisc",
-                "x": "GSnPubsDelta",
+                "x": "ScopusPubsDelta",
                 "type": "scatterplot"
             },
             {
                 "y": "Between.Produces.MINUS.Between.ProducesDiffDisc",
-                "x": "GSnCitsDelta",
-                "type": "scatterplot"
-            },
-            {
-                "y": "GSnPubsDelta",
-                "x": "yearRegistered",
-                "type": "boxplot"
-            },
-            {
-                "y": "GSnCitsDelta",
-                "x": "yearRegistered",
-                "type": "boxplot"
-            },
-            {
-                "y": "totalAllocationUpToNow",
-                "x": "GSnPubsDelta",
+                "x": "ScopusCitsDelta",
                 "type": "scatterplot"
             },
             {
                 "y": "totalAllocationUpToNow",
-                "x": "GSnCitsDelta",
+                "x": "ScopusPubsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "totalAllocationUpToNow",
+                "x": "ScopusCitsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "allocation",
+                "x": "ScopusPubsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "allocation",
+                "x": "ScopusCitsDelta",
+                "type": "scatterplot"
+            },
+            {
+                "y": "allocation",
+                "x": "ScopusPubs",
+                "type": "scatterplot"
+            },
+            {
+                "y": "allocation",
+                "x": "ScopusCits",
+                "type": "scatterplot"
+            },
+            {
+                "y": "nextAllocation",
+                "x": "ScopusPubs",
+                "type": "scatterplot"
+            },
+            {
+                "y": "nextAllocation",
+                "x": "ScopusCits",
                 "type": "scatterplot"
             },
             {
                 "y": "nCurrentHQP",
-                "x": "GSnPubsDelta",
+                "x": "ScopusPubsDelta",
                 "type": "scatterplot"
             },
             {
                 "y": "nCurrentHQP",
-                "x": "GSnCitsDelta",
+                "x": "ScopusCitsDelta",
                 "type": "scatterplot"
             },
             {
                 "y": "nTotalHQP",
-                "x": "GSnPubsDelta",
+                "x": "ScopusPubsDelta",
                 "type": "scatterplot"
             },
             {
                 "y": "nTotalHQP",
-                "x": "GSnCitsDelta",
+                "x": "ScopusCitsDelta",
                 "type": "scatterplot"
             },
             {
-                "y": "GSnPubsDelta",
+                "y": "ScopusPubsDelta",
                 "x": "Gender",
                 "type": "anova"
             },
             {
-                "y": "GSnCitsDelta",
+                "y": "ScopusCitsDelta",
                 "x": "Gender",
                 "type": "anova"
             },
             {
-                "y": "GSnPubsDelta",
+                "y": "ScopusPubsDelta",
                 "x": "Title",
                 "type": "anova"
             },
             {
-                "y": "GSnCitsDelta",
+                "y": "ScopusCitsDelta",
                 "x": "Title",
                 "type": "anova"
             },
@@ -568,6 +617,21 @@
                 "y": "totalAllocationUpToNow",
                 "x": "nConnectedDisciplines",
                 "type": "boxplot"
+            },
+            {
+                "y": "totalAllocationUpToNow",
+                "x": "nProductsUpToNow",
+                "type": "scatterplot"
+            },
+            {
+                "y": "allocation",
+                "x": "nCurrentProducts",
+                "type": "scatterplot"
+            },
+            {
+                "y": "nextAllocation",
+                "x": "nCurrentProducts",
+                "type": "scatterplot"
             },
             {
                 "y": "PageRank",

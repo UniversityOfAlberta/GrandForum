@@ -48,4 +48,4 @@ fi
 
 # Do some analysis using R, and create some charts
 echo "Analyzing Data"
-Rscript Network.R $startDate $endDate &> /dev/null
+Rscript Network.R $startDate $endDate #&> /dev/null

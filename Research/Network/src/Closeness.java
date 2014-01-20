@@ -52,7 +52,7 @@ public class Closeness extends Centrality {
 			// Normalize
 			double score = this.results.get(v.toString());
 			score = (score - Closeness.min.get(v.getType()))/(Closeness.max.get(v.getType()) - Closeness.min.get(v.getType()));
-			this.results.put(v.toString(), score);
+			this.results.put(v.toString(), Math.max(0, score));
 		}
 		Closeness.firstTime = false;
 	}

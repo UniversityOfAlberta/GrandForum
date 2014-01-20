@@ -1,6 +1,7 @@
 library(car, lib.loc="libs/R/")
 library(rjson, lib.loc="libs/R/")
 library(mvtnorm, lib.loc="libs/R")
+library(TH.data, lib.loc="libs/R/")
 library(multcomp, lib.loc="libs/R/")
 library(plotrix, lib.loc="libs/R/")
 library(gtools, lib.loc="libs/R/")
@@ -314,9 +315,14 @@ runTTest <- function(field1, field2, f1, f2, year, prefix){
                sep='<br />'
               )
         )
+    HTMLhr()
 }
 
 runCorTest <- function(field1, field2, f1, f2, year, prefix, chartType){
+
+    if(all(is.na(field1)) || all(is.na(field2))){
+        return()
+    }
 
     filename <- paste("output/", year, "/charts/tests/", prefix, "/", f2, "_", f1, ".png", sep='')
     setDev(filename)
@@ -444,6 +450,7 @@ runCorTest <- function(field1, field2, f1, f2, year, prefix, chartType){
             HTML(paste(c("&nbsp;&nbsp;<b>Outliers:</b>", paste("", outNames, sep='<br />&nbsp;&nbsp;&nbsp;&nbsp;'))))
         }
     }
+    HTMLhr()
 }
 
 renderHist <- function(field, f, year, prefix, outputHTML=FALSE){
@@ -484,6 +491,9 @@ populateField <- function(field, f){
                 if(!all.is.identical(unlist(Datasets[[y]][f]))){
                     c <- cor.test(unlist(Datasets[[y]][field]), unlist(Datasets[[y]][f]), alternative="two.sided", method="pearson")
                     cor[i] = c$estimate     
+                }
+                else{
+                    cor[i] = 0
                 }
             }
         }
@@ -612,11 +622,21 @@ f<-for(type in config$types){
             if(is.na(s5)){
                 s5 <- 0
             }
-            if(all.is.numeric(d[field]) &&
-               !all.is.identical(unlist(d[field]))){
+            
+            ok <- FALSE
+            for(y in Years){
+                dataset <- Datasets[[y]]
+                if(all.is.numeric(dataset[field]) &&
+                   !all.is.identical(unlist(dataset[field]))){
+                    ok <- TRUE
+                }
+            }
+            
+            if(ok){
                 derivedTransformation(field, d)
                 eT <- explicitTransformation(field)
                 m <- -1
+                
                 if(eT == ""){
                     m <- max(c(s0, s1, s2, s3, s4, s5))
                 }
@@ -628,35 +648,60 @@ f<-for(type in config$types){
                     f <- paste("SQRT.", field, sep='')
                     fields <<- append(fields, f)
                     for(y in Years){
-                        Datasets[[y]][f] <<- unlist(sqrt(Datasets[[y]][field]))
+                        if(!all(is.na(Datasets[[y]][field]))){
+                            Datasets[[y]][f] <<- unlist(sqrt(Datasets[[y]][field]))
+                        }
+                        else{
+                            Datasets[[y]][f] <<- Datasets[[y]][field]
+                        }
                     }
                 }
                 else if(s2 == m || eT == "LN"){
                     f <- paste("LN.", field, sep='')
                     fields <<- append(fields, f)
                     for(y in Years){
-                        Datasets[[y]][f] <<- unlist(log(Datasets[[y]][field]+1))
+                        if(!all(is.na(Datasets[[y]][field]))){
+                            Datasets[[y]][f] <<- unlist(log(Datasets[[y]][field]+1))
+                        }
+                        else{
+                            Datasets[[y]][f] <<- Datasets[[y]][field]
+                        }
                     }
                 }
                 else if(s3 == m || eT == "LOG"){
                     f <- paste("LOG.", field , sep='')
                     fields <<- append(fields, f)
                     for(y in Years){
-                        Datasets[[y]][f] <<- unlist(log(Datasets[[y]][field]+1)/log(10))
+                        if(!all(is.na(Datasets[[y]][field]))){
+                            Datasets[[y]][f] <<- unlist(log(Datasets[[y]][field]+1)/log(10))
+                        }
+                        else{
+                            Datasets[[y]][f] <<- Datasets[[y]][field]
+                        }
                     }
                 }
                 else if(s4 == m || eT == "SQR"){
                     f <- paste("SQR.", field , sep='')
                     fields <<- append(fields, f)
                     for(y in Years){
-                        Datasets[[y]][f] <<- unlist((Datasets[[y]][field])^2)
+                        if(!all(is.na(Datasets[[y]][field]))){
+                            Datasets[[y]][f] <<- unlist((Datasets[[y]][field])^2)
+                        }
+                        else{
+                            Datasets[[y]][f] <<- Datasets[[y]][field]
+                        }
                     }
                 }
                 else if(s5 == m || eT == "INV"){
                     f <- paste("INV.", field , sep='')
                     fields <<- append(fields, f)
                     for(y in Years){
-                        Datasets[[y]][f] <<- unlist((Datasets[[y]][field])^-1)
+                        if(!all(is.na(Datasets[[y]][field]))){
+                            Datasets[[y]][f] <<- unlist((Datasets[[y]][field])^-1)
+                        }
+                        else{
+                            Datasets[[y]][f] <<- Datasets[[y]][field]
+                        }
                     }
                 }
             }
@@ -711,7 +756,6 @@ f<-for(type in config$types){
                     else{
                         runCorTest(y, d, test$x, f1, ".", type, test$type)
                     }
-                    HTMLhr()
                 }
             }
         }
@@ -741,7 +785,6 @@ f<-for(type in config$types){
                             else{
                                 runCorTest(unlist(d[f1]), unlist(d[f2]), f1, f2, year, type, test$type)
                             }
-                            HTMLhr()
                             break
                         }
                     }
