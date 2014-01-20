@@ -131,12 +131,20 @@ class JungAPI extends API{
             $budgets = array();
             $totalAllocated = 0;
             $allocatedAmount = 0;
+            $allocationDelta = 0;
             for($i=2010;$i<=$this->year;$i++){
                 $allocated = $project->getAllocatedBudget($i-1);
+                $lastAllocatedAmount = $allocatedAmount;
                 $allocatedAmount = 0;
                 if($allocated != null){
                     $value = $allocated->copy()->rasterize()->where(CUBE_TOTAL)->select(CUBE_TOTAL)->toString();
                     $allocatedAmount = (int)str_replace(',', '', str_replace('$', '', $value));
+                    if($allocatedAmount == 0 || $lastAllocatedAmount == 0){
+                        $allocationDelta = 0;
+                    }
+                    else{
+                        $allocationDelta = ($allocatedAmount-$lastAllocatedAmount)/max(1, $lastAllocatedAmount);
+                    }
                     $totalAllocated += $allocatedAmount;
                 }
             }
@@ -153,18 +161,10 @@ class JungAPI extends API{
             $tuple['name'] = $project->getName();
             $tuple['nProductsUpToNow'] = (string)count($products);
             $tuple['nDisciplines'] = (string)count($discs);
-            if($totalAllocated == 0){
-                $tuple['totalAllocationUpToNow'] = "";
-            }
-            else{
-                $tuple['totalAllocationUpToNow'] = (string)$totalAllocated;
-            }
-            if($allocatedAmount == 0){
-                $tuple['allocation'] = "";
-            }
-            else{
-                $tuple['allocation'] = (string)$allocatedAmount;
-            }
+            $tuple['totalAllocationUpToNow'] = ($totalAllocated == 0) ? "" : (string)$totalAllocated;
+            $tuple['allocation'] = ($allocatedAmount == 0) ? "" : (string)$allocatedAmount;
+            $tuple['allocationDelta'] = ($allocationDelta == 0) ? "" : (string)$allocationDelta;
+
             $tuple['contributionsThisYear'] = (string)$contTotal;
             
             if(count($sumDisc) > 0){
@@ -219,6 +219,7 @@ class JungAPI extends API{
                     }
                 }
             }
+            $currentProducts = array();
             $products = $person->getPapersAuthored('all', "2010".REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, false);
             $projectsByProduct = array();
             $nProductsWith1University = array();
@@ -260,6 +261,7 @@ class JungAPI extends API{
                     }
                 }
                 if($isCurrentYear){
+                    $currentProducts[] = $product;
                     $sumDisc[] = count($discs);
                 }
                 if(count($universities) == 1){
@@ -308,6 +310,7 @@ class JungAPI extends API{
                 $tuple['nCurrentWorksWith'] = "";
                 $tuple['totalAllocationUpToNow'] = "";
                 $tuple['allocation'] = "";
+                $tuple['allocationDelta'] = "";
             }
             else{
                 $worksWith = $person->getRelationsDuring(WORKS_WITH, $this->startDate, $this->endDate);
@@ -316,12 +319,20 @@ class JungAPI extends API{
                 $budgets = array();
                 $totalAllocated = 0;
                 $allocatedAmount = 0;
+                $allocationDelta = 0;
                 for($i=2010;$i<=$this->year;$i++){
                     $allocated = $person->getAllocatedBudget($i-1);
+                    $lastAllocatedAmount = $allocatedAmount;
                     $allocatedAmount = 0;
                     if($allocated != null){
                         $value = $allocated->copy()->rasterize()->where(COL_TOTAL)->select(ROW_TOTAL)->toString();
                         $allocatedAmount = (int)str_replace(',', '', str_replace('$', '', $value));
+                        if($allocatedAmount == 0 || $lastAllocatedAmount == 0){
+                            $allocationDelta = 0;
+                        }
+                        else{
+                            $allocationDelta = ($allocatedAmount-$lastAllocatedAmount)/max(1, $lastAllocatedAmount);
+                        }
                         $totalAllocated += $allocatedAmount;
                     }
                 }
@@ -330,18 +341,10 @@ class JungAPI extends API{
                 $tuple['nCurrentSupervisors'] = "";
                 $tuple['nTotalSupervisors'] = "";
                 $tuple['nCurrentWorksWith'] = (string)count($worksWith);
-                if($totalAllocated == 0){
-                    $tuple['totalAllocationUpToNow'] = "";
-                }
-                else{
-                    $tuple['totalAllocationUpToNow'] = (string)$totalAllocated;
-                }
-                if($allocatedAmount == 0){
-                    $tuple['allocation'] = "";
-                }
-                else{
-                    $tuple['allocation'] = (string)$allocatedAmount;
-                }
+                
+                $tuple['totalAllocationUpToNow'] = ($totalAllocated == 0) ? "" : (string)$totalAllocated;
+                $tuple['allocation'] = ($allocatedAmount == 0) ? "" : (string)$allocatedAmount;
+                $tuple['allocationDelta'] = ($allocationDelta == 0) ? "" : (string)$allocationDelta;
             }
             
             if(!isset($this->personDisciplines[$person->getName()])){
@@ -366,6 +369,7 @@ class JungAPI extends API{
             
             $tuple['contributionsThisYear'] = (string)$contTotal;
             $tuple['nProductsUpToNow'] = (string)count($products);
+            $tuple['nCurrentProducts'] = (string)count($currentProducts);
             $tuple['nConnectedDisciplines'] = (string)@count($connectedDisciplines[$person->getName()]);
             
             $tuple['Discipline'] = $disc;
