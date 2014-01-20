@@ -338,7 +338,7 @@ class JungAPI extends API{
                         $totalAllocated += $allocatedAmount;
                     }
                 }
-                $allocated = $person->getAllocatedBudget($this->year+1);
+                $allocated = $person->getAllocatedBudget($this->year);
                 if($allocated != null){
                     $value = $allocated->copy()->rasterize()->where(COL_TOTAL)->select(ROW_TOTAL)->toString();
                     $nextAllocationAmount = (int)str_replace(',', '', str_replace('$', '', $value));
