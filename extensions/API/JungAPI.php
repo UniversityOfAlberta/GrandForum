@@ -310,8 +310,10 @@ class JungAPI extends API{
                 $tuple['nCurrentWorksWith'] = "";
                 $tuple['totalAllocationUpToNow'] = "";
                 $tuple['allocation'] = "";
-                $tuple['nextAllocation'] = "";
                 $tuple['allocationDelta'] = "";
+                $tuple['nextAllocation'] = "";
+                $tuple['nextAllocationDelta'] = "";
+                
             }
             else{
                 $worksWith = $person->getRelationsDuring(WORKS_WITH, $this->startDate, $this->endDate);
@@ -358,8 +360,8 @@ class JungAPI extends API{
                 $tuple['totalAllocationUpToNow'] = ($totalAllocated == 0) ? "" : (string)$totalAllocated;
                 $tuple['allocation'] = ($allocatedAmount == 0) ? "" : (string)$allocatedAmount;
                 $tuple['allocationDelta'] = ($allocationDelta == 0) ? "" : (string)$allocationDelta;
-                $tuple['nextAllocationDelta'] = ($nextAllocationDelta == 0) ? "" : (string)$nextAllocationDelta;
                 $tuple['nextAllocation'] = ($nextAllocationAmount == 0) ? "" : (string)$nextAllocationAmount;
+                $tuple['nextAllocationDelta'] = ($nextAllocationDelta == 0) ? "" : (string)$nextAllocationDelta;
             }
             
             if(!isset($this->personDisciplines[$person->getName()])){
@@ -465,31 +467,17 @@ class JungAPI extends API{
                     $nCits[$year] = $cit;
                 }
                 if(isset($nPubs[$this->year]) && isset($nCits[$this->year])){
-                    if(!isset($nPubs[$this->year]) || $nPubs[$this->year] == 0){
-                        $tuple['ScopusPubs'] = "";
-                    }
-                    else{
+                    if($nPubs[$this->year] != 0){
                         $tuple['ScopusPubs'] = (string)$nPubs[$this->year];
                     }
-                    if(!isset($nCits[$this->year]) || $nCits[$this->year] == 0){
-                        $tuple['ScopusCits'] = "";
-                    }
-                    else{
+                    if($nCits[$this->year] != 0){
                         $tuple['ScopusCits'] = (string)$nCits[$this->year];
                     }
                     
-                    if(!isset($nPubs[$this->year]) || $nPubs[$this->year] == 0 || 
-                       !isset($nPubs[$this->year-1]) || $nPubs[$this->year-1] == 0){
-                        $tuple['ScopusPubsDelta'] = "";
-                    }
-                    else{
+                    if($nPubs[$this->year] != 0 && isset($nPubs[$this->year-1]) && $nPubs[$this->year-1] != 0){
                         $tuple['ScopusPubsDelta'] = @(string)(($nPubs[$this->year] - $nPubs[$this->year-1])/max(1, $nPubs[$this->year-1]));
                     }
-                    if(!isset($nCits[$this->year]) || $nCits[$this->year] == 0 || 
-                       !isset($nCits[$this->year-1]) || $nCits[$this->year-1] == 0){
-                        $tuple['ScopusCitsDelta'] = "";
-                    }
-                    else{
+                    if($nCits[$this->year] != 0 && isset($nCits[$this->year-1]) && $nCits[$this->year-1] != 0){
                         $tuple['ScopusCitsDelta'] = @(string)(($nCits[$this->year] - $nCits[$this->year-1])/max(1, $nCits[$this->year-1]));
                     }
                 }
