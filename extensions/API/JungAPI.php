@@ -329,12 +329,6 @@ class JungAPI extends API{
                     if($allocated != null){
                         $value = $allocated->copy()->rasterize()->where(COL_TOTAL)->select(ROW_TOTAL)->toString();
                         $allocatedAmount = (int)str_replace(',', '', str_replace('$', '', $value));
-                        if($allocatedAmount == 0 || $lastAllocatedAmount == 0){
-                            $allocationDelta = 0;
-                        }
-                        else{
-                            $allocationDelta = ($allocatedAmount-$lastAllocatedAmount)/max(1, $lastAllocatedAmount);
-                        }
                         $totalAllocated += $allocatedAmount;
                     }
                 }
@@ -342,6 +336,12 @@ class JungAPI extends API{
                 if($allocated != null){
                     $value = $allocated->copy()->rasterize()->where(COL_TOTAL)->select(ROW_TOTAL)->toString();
                     $nextAllocationAmount = (int)str_replace(',', '', str_replace('$', '', $value));
+                }
+                if($nextAllocationAmount == 0 || $allocatedAmount == 0){
+                    $allocationDelta = 0;
+                }
+                else{
+                    $allocationDelta = ($nextAllocationAmount-$allocatedAmount)/max(1, $nextAllocationAmount);
                 }
                 $tuple['nCurrentHQP'] = (string)count($hqps);
                 $tuple['nTotalHQP'] = (string)count($totalHqps);
