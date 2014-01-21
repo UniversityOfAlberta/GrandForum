@@ -260,8 +260,10 @@ class ReportArchive extends SpecialPage {
         $projs = $person->leadershipDuring(($year).REPORTING_START_MONTH, ($year).REPORTING_END_MONTH);
         
         foreach($projs as $proj){
-            foreach($proj->getAllPreds() as $pred){
-                $projs[] = $pred;
+            if(!$proj->clear){
+                foreach($proj->getAllPreds() as $pred){
+                    $projs[] = $pred;
+                }
             }
         }
         $tbrows = "";
@@ -395,8 +397,10 @@ class ReportArchive extends SpecialPage {
 
         $projs = $person->leadershipDuring(($year).REPORTING_START_MONTH, ($year).REPORTING_END_MONTH);
         foreach($projs as $proj){
-            foreach($proj->getAllPreds() as $pred){
-                $projs[] = $pred;
+            if(!$proj->clear){
+                foreach($proj->getAllPreds() as $pred){
+                    $projs[] = $pred;
+                }
             }
         }
         $tbrows = "";
@@ -430,8 +434,10 @@ class ReportArchive extends SpecialPage {
 
         $projs = $person->leadershipDuring(($year).REPORTING_START_MONTH, ($year).REPORTING_END_MONTH);
         foreach($projs as $proj){
-            foreach($proj->getAllPreds() as $pred){
-                $projs[] = $pred;
+            if(!$proj->clear){
+                foreach($proj->getAllPreds() as $pred){
+                    $projs[] = $pred;
+                }
             }
         }
         $tbrows = "";

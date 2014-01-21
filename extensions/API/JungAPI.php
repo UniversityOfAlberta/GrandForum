@@ -329,6 +329,12 @@ class JungAPI extends API{
                     if($allocated != null){
                         $value = $allocated->copy()->rasterize()->where(COL_TOTAL)->select(ROW_TOTAL)->toString();
                         $allocatedAmount = (int)str_replace(',', '', str_replace('$', '', $value));
+                        if($lastAllocatedAmount == 0 || $allocatedAmount == 0){
+                            $allocationDelta = 0;
+                        }
+                        else{
+                            $allocationDelta = ($allocatedAmount-$lastAllocatedAmount)/max(1, $lastAllocatedAmount);
+                        }
                         $totalAllocated += $allocatedAmount;
                     }
                 }
@@ -338,10 +344,10 @@ class JungAPI extends API{
                     $nextAllocationAmount = (int)str_replace(',', '', str_replace('$', '', $value));
                 }
                 if($nextAllocationAmount == 0 || $allocatedAmount == 0){
-                    $allocationDelta = 0;
+                    $nextAllocationDelta = 0;
                 }
                 else{
-                    $allocationDelta = ($nextAllocationAmount-$allocatedAmount)/max(1, $nextAllocationAmount);
+                    $nextAllocationDelta = ($nextAllocationAmount-$allocatedAmount)/max(1, $nextAllocationAmount);
                 }
                 $tuple['nCurrentHQP'] = (string)count($hqps);
                 $tuple['nTotalHQP'] = (string)count($totalHqps);
@@ -352,6 +358,7 @@ class JungAPI extends API{
                 $tuple['totalAllocationUpToNow'] = ($totalAllocated == 0) ? "" : (string)$totalAllocated;
                 $tuple['allocation'] = ($allocatedAmount == 0) ? "" : (string)$allocatedAmount;
                 $tuple['allocationDelta'] = ($allocationDelta == 0) ? "" : (string)$allocationDelta;
+                $tuple['nextAllocationDelta'] = ($nextAllocationDelta == 0) ? "" : (string)$nextAllocationDelta;
                 $tuple['nextAllocation'] = ($nextAllocationAmount == 0) ? "" : (string)$nextAllocationAmount;
             }
             
@@ -461,8 +468,20 @@ class JungAPI extends API{
                     $tuple['ScopusPubs'] = (string)$nPubs[$this->year];
                     $tuple['ScopusCits'] = (string)$nCits[$this->year];
                     
-                    $tuple['ScopusPubsDelta'] = @(string)(($nPubs[$this->year] - $nPubs[$this->year-1])/max(1, $nPubs[$this->year-1]));
-                    $tuple['ScopusCitsDelta'] = @(string)(($nCits[$this->year] - $nCits[$this->year-1])/max(1, $nCits[$this->year-1]));
+                    if(!isset($nPubs[$this->year]) || $nPubs[$this->year] == 0 || 
+                       !isset($nPubs[$this->year-1]) || $nPubs[$this->year-1]){
+                        $tuple['ScopusPubsDelta'] = "";
+                    }
+                    else{
+                        $tuple['ScopusPubsDelta'] = @(string)(($nPubs[$this->year] - $nPubs[$this->year-1])/max(1, $nPubs[$this->year-1]));
+                    }
+                    if(!isset($nCits[$this->year]) || $nCits[$this->year] == 0 || 
+                       !isset($nCits[$this->year-1]) || $nCits[$this->year-1]){
+                        $tuple['ScopusCitsDelta'] = "";
+                    }
+                    else{
+                        $tuple['ScopusCitsDelta'] = @(string)(($nCits[$this->year] - $nCits[$this->year-1])/max(1, $nCits[$this->year-1]));
+                    }
                 }
             }
             $metas[$person->getName()] = $tuple;
