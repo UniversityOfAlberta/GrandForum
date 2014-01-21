@@ -465,18 +465,28 @@ class JungAPI extends API{
                     $nCits[$year] = $cit;
                 }
                 if(isset($nPubs[$this->year]) && isset($nCits[$this->year])){
-                    $tuple['ScopusPubs'] = (string)$nPubs[$this->year];
-                    $tuple['ScopusCits'] = (string)$nCits[$this->year];
+                    if(!isset($nPubs[$this->year]) || $nPubs[$this->year] == 0){
+                        $tuple['ScopusPubs'] = "";
+                    }
+                    else{
+                        $tuple['ScopusPubs'] = (string)$nPubs[$this->year];
+                    }
+                    if(!isset($nCits[$this->year]) || $nCits[$this->year] == 0){
+                        $tuple['ScopusCits'] = "";
+                    }
+                    else{
+                        $tuple['ScopusCits'] = (string)$nCits[$this->year];
+                    }
                     
                     if(!isset($nPubs[$this->year]) || $nPubs[$this->year] == 0 || 
-                       !isset($nPubs[$this->year-1]) || $nPubs[$this->year-1]){
+                       !isset($nPubs[$this->year-1]) || $nPubs[$this->year-1] == 0){
                         $tuple['ScopusPubsDelta'] = "";
                     }
                     else{
                         $tuple['ScopusPubsDelta'] = @(string)(($nPubs[$this->year] - $nPubs[$this->year-1])/max(1, $nPubs[$this->year-1]));
                     }
                     if(!isset($nCits[$this->year]) || $nCits[$this->year] == 0 || 
-                       !isset($nCits[$this->year-1]) || $nCits[$this->year-1]){
+                       !isset($nCits[$this->year-1]) || $nCits[$this->year-1] == 0){
                         $tuple['ScopusCitsDelta'] = "";
                     }
                     else{
