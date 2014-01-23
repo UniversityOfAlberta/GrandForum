@@ -230,7 +230,7 @@ class ReportItemCallback {
         $champions = array();
         if($this->reportItem->projectId != 0 ){
             $project = Project::newFromId($this->reportItem->projectId);
-            $champs = $project->getChampionsDuring();
+            $champs = $project->getChampionsOn(($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH);
             foreach($champs as $champ){
                 $champions[] = "<a href='{$champ['user']->getUrl()}' target='_blank'>{$champ['user']->getNameForForms()}</a>";
             }
