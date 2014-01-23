@@ -203,10 +203,32 @@ class JungAPI extends API{
                          "Information Science");
         $msa = json_decode(file_get_contents("http://grand.cs.ualberta.ca/~dwt/MSResearchCrawler/db.json"));
         $msaAuthors = array();
+        $nCitsSum = 0;
+        $nPubsSum = 0;
+        $nCitsMax = 0;
+        $nPubsMax = 0;
         foreach($msa->authors as $name => $author){
             $person = Person::newFromNameLike($name);
             $forum_id = $person->getId();
             $msaAuthors[$forum_id] = $author;
+            foreach(@(array)($author->nPubs) as $year => $pub){
+                $nPubs[$year] = $pub;
+            }
+            foreach(@(array)($author->nCits) as $year => $cit){
+                $nCits[$year] = $cit;
+            }
+            if(isset($nPubs[$this->year])){
+                $nPubsSum += $nPubs[$this->year];
+                if($nPubs[$this->year] > $nPubsMax){
+                    $nPubsMax = $nPubs[$this->year];
+                }
+            }
+            if(isset($nCits[$this->year])){
+                $nCitsSum += $nCits[$this->year];
+                if($nCits[$this->year] > $nCitsMax){
+                    $nCitsMax = $nCits[$this->year];
+                }
+            }
         }
         foreach($nodes as $person){
             $tuple = array();
@@ -313,7 +335,6 @@ class JungAPI extends API{
                 $tuple['allocationDelta'] = "";
                 $tuple['nextAllocation'] = "";
                 $tuple['nextAllocationDelta'] = "";
-                
             }
             else{
                 $worksWith = $person->getRelationsDuring(WORKS_WITH, $this->startDate, $this->endDate);
@@ -474,11 +495,11 @@ class JungAPI extends API{
                         $tuple['ScopusCits'] = (string)$nCits[$this->year];
                     }
                     
-                    if($nPubs[$this->year] != 0 && isset($nPubs[$this->year-1]) && $nPubs[$this->year-1] != 0){
-                        $tuple['ScopusPubsDelta'] = @(string)(($nPubs[$this->year] - $nPubs[$this->year-1])/max(1, $nPubs[$this->year-1]));
+                    if($nPubs[$this->year] != 0){
+                        $tuple['ScopusPubsDelta'] = (string)($nPubs[$this->year]/$nPubsSum);
                     }
-                    if($nCits[$this->year] != 0 && isset($nCits[$this->year-1]) && $nCits[$this->year-1] != 0){
-                        $tuple['ScopusCitsDelta'] = @(string)(($nCits[$this->year] - $nCits[$this->year-1])/max(1, $nCits[$this->year-1]));
+                    if($nCits[$this->year] != 0){
+                        $tuple['ScopusCitsDelta'] = (string)($nCits[$this->year]/$nCitsSum);
                     }
                 }
             }

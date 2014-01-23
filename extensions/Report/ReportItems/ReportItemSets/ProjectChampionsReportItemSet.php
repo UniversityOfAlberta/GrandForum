@@ -6,7 +6,7 @@ class ProjectChampionsReportItemSet extends ReportItemSet {
         $data = array();
         $proj = Project::newFromId($this->projectId);
         if($proj != null){
-            $champs = $proj->getChampionsDuring();
+            $champs = $proj->getChampionsOn(($this->getReport()->year+1).REPORTING_RMC_MEETING_MONTH);
             $alreadySeen = array();
             foreach($champs as $c){
                 if(isset($alreadySeen[$c['user']->getId()])){

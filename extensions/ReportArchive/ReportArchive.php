@@ -387,9 +387,6 @@ class ReportArchive extends SpecialPage {
         }
     }
 
-
-
-
     // Displays the project leader comments for the given project leader, and reporting year
     static function showProjectComments($person, $year){
         global $wgTitle, $wgServer, $wgScriptPath, $wgOut;
@@ -522,11 +519,11 @@ class ReportArchive extends SpecialPage {
             foreach($projs as $proj){
                 if(!$proj->isSubProject() && $proj->getPhase() == 2){
                     $champs = array();
-                    foreach($proj->getChampionsDuring(($year).REPORTING_START_MONTH, ($year+1).REPORTING_RMC_MEETING) as $champ){
+                    foreach($proj->getChampionsOn(($year+1).REPORTING_RMC_MEETING_MONTH) as $champ){
                         $champs[$champ['user']->getId()] = $champ;
                     }
                     foreach($proj->getSubProjects() as $sub){
-                        foreach($sub->getChampionsDuring(($year).REPORTING_START_MONTH, ($year+1).REPORTING_RMC_MEETING) as $champ){
+                        foreach($sub->getChampionsOn(($year+1).REPORTING_RMC_MEETING_MONTH) as $champ){
                             $champs[$champ['user']->getId()] = $champ;
                         }
                     }

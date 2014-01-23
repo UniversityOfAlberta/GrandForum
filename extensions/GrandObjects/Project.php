@@ -531,7 +531,7 @@ EOF;
     // The researchers who are in this project or were in the project during the specified period
     // If $filter is included, only users of that type will be selected
     function getAllPeopleDuring($filter = null, $startRange = false, $endRange = false, $includeManager=false){
-        if( $startRange === false || $endRange === false ){
+        if($startRange === false || $endRange === false){
             $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
             $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
         }
@@ -562,6 +562,34 @@ EOF;
             $id = $row['user_id'];
             $person = Person::newFromId($id);
             if(($filter == null || $person->isRoleDuring($filter, $startRange, $endRange)) && ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
+                $people[$person->getId()] = $person;
+            }
+        }
+        return $people;
+    }
+    
+    function getAllPeopleOn($filter, $date, $includeManager=false){
+        $people = array();
+        if(!$this->clear){
+            $preds = $this->getPreds();
+            foreach($preds as $pred){
+                foreach($pred->getAllPeopleOn($filter, $date, $includeManager) as $person){
+                    $people[$person->getId()] = $person;
+                }
+            }
+        }
+        $sql = "SELECT p.user_id, u.user_name, SUBSTR(u.user_name, LOCATE('.', u.user_name) + 1) as last_name
+                FROM grand_project_members p, mw_user u
+                WHERE p.user_id = u.user_id
+                AND p.project_id = '{$this->id}'
+                AND (('$date' BETWEEN p.start_date AND p.end_date ) OR (p.start_date <= '$date' AND p.end_date = '0000-00-00 00:00:00'))
+                AND u.`deleted` != '1'
+                ORDER BY last_name ASC";
+        $data = DBFunctions::execSQL($sql);
+        foreach($data as $row){
+            $id = $row['user_id'];
+            $person = Person::newFromId($id);
+            if(($filter == null || $person->isRoleOn($filter, $date)) && ($includeManager || !$person->isRoleOn(MANAGER, $date))){
                 $people[$person->getId()] = $person;
             }
         }
@@ -636,6 +664,23 @@ EOF;
     function getChampionsDuring($start=REPORTING_CYCLE_START, $end=REPORTING_RMC_MEETING){
         $champs = array();
         $people = $this->getAllPeopleDuring(CHAMP, $start, $end);
+        foreach($people as $champ){
+            $champs[] = array('user' => $champ,
+                              'org' => $champ->getPartnerName(),
+                              'title' => $champ->getPartnerTitle(),
+                              'dept' => $champ->getPartnerDepartment());
+        }
+        return $champs;
+    }
+    
+    /**
+     * Returns all the People who were Champions on the given date
+     * @param string $date The date to check
+     * @return array The People who were Champions on the given date array(user, org, title, dept)
+     */
+    function getChampionsOn($date){
+        $champs = array();
+        $people = $this->getAllPeopleOn(CHAMP, $date);
         foreach($people as $champ){
             $champs[] = array('user' => $champ,
                               'org' => $champ->getPartnerName(),

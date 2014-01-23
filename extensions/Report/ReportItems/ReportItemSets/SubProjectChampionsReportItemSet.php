@@ -8,12 +8,12 @@ class SubProjectChampionsReportItemSet extends ReportItemSet {
         if($proj != null){
             $champions = array();
             $derivedChamps = array();
-            foreach($proj->getChampionsDuring() as $champ){
+            foreach($proj->getChampionsOn(($this->getReport()->year+1).REPORTING_RMC_MEETING_MONTH) as $champ){
                 $champions[$champ['user']->getId()] = $champ;
             }
             if(!$proj->isSubProject()){
                 foreach($proj->getSubProjects() as $sub){
-                    foreach($sub->getChampionsDuring() as $champ){
+                    foreach($sub->getChampionsOn(($this->getReport()->year+1).REPORTING_RMC_MEETING_MONTH) as $champ){
                         if(!isset($champions[$champ['user']->getId()])){
                             if(!isset($derivedChamps[$champ['user']->getId()])){
                                 $derivedChamps[$champ['user']->getId()] = $champ;

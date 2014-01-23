@@ -497,6 +497,22 @@ abstract class AbstractReport extends SpecialPage {
         return $sections;
     }
     
+    /**
+     * Returns whether or not the Person has started the report yet
+     * @return boolean Whether or not the Person has started the report yet
+     */
+    function hasStarted(){
+        $personId = $this->person->getId();
+        $projectId = ($this->project != null) ? $this->project->getId() : 0;
+        $data = DBFunctions::select(array('grand_report_blobs'),
+                                    array('*'),
+                                    array('user_id' => EQ($personId),
+                                          'proj_id' => EQ($projectId),
+                                          'rp_type' => EQ($this->reportType),
+                                          'year' => EQ($this->year)));
+        return (count($data) > 0);
+    }
+    
     // Checks the permissions of the Person with the required Permissions of the Report
     function checkPermissions(){
         global $wgUser;
@@ -518,12 +534,12 @@ abstract class AbstractReport extends SpecialPage {
                 switch($type){
                     case "Role":
                         if($this->project != null && $perm['perm'] == CHAMP && $me->isRole(CHAMP)){
-                            if($me->isChampionOfDuring($this->project, $perm['start'], $perm['end']) && !$this->project->isSubProject()){
+                            if($me->isChampionOfOn($this->project, $perm['end']) && !$this->project->isSubProject()){
                                 $rResult = true;
                             }
                             else {
                                 foreach($this->project->getSubProjects() as $sub){
-                                    if($me->isChampionOfDuring($sub, $perm['start'], $perm['end'])){
+                                    if($me->isChampionOfOn($sub, $perm['end'])){
                                         $rResult = true;
                                     }
                                 }

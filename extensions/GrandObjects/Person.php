@@ -805,6 +805,16 @@ class Person extends BackboneModel {
         return false;
     }
     
+    function isChampionOfOn($project, $date){
+        $champs = $project->getChampionsOn($date);
+        foreach($champs as $champ){
+            if($champ['user']->getId() == $this->getId()){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     function isChampionOfDuring($project, $start=REPORTING_CYCLE_START, $end=REPORTING_CYCLE_END){
         $champs = $project->getChampionsDuring($start, $end);
         foreach($champs as $champ){
@@ -1450,7 +1460,24 @@ class Person extends BackboneModel {
             $roles[] = new Role(array(0 => $row));
         }
         return $roles;        
-    }    
+    }
+    
+    function getRolesOn($date){
+        if($this->id == 0){
+            return array();
+        }
+        
+        $sql = "SELECT *
+                FROM grand_roles
+                WHERE user_id = '{$this->id}'
+                AND (('$date' BETWEEN start_date AND end_date) OR (start_date <= '$date' AND end_date = '0000-00-00 00:00:00'))";
+        $data = DBFunctions::execSQL($sql);
+        $roles = array();
+        foreach($data as $row){
+            $roles[] = new Role(array(0 => $row));
+        }
+        return $roles;        
+    }   
     
     // Returns an array of Projects that this Person is a part of
     // If history is set to true, then all the Projects regardless of date are included
@@ -1869,6 +1896,30 @@ class Person extends BackboneModel {
         }
         if($role == EVALUATOR && $this->isEvaluator()){
             $roles[] = EVALUATOR;
+        }
+        return (array_search($role, $roles) !== false);
+    }
+    
+    function isRoleOn($role, $date){
+        $roles = array();
+        $role_objs = $this->getRolesOn($date);
+        if($role == PL || $role == COPL || $role == "PL" || $role == "COPL"){
+            $project_objs = $this->leadershipOn($date);
+            if(count($project_objs) > 0){
+                $roles[] = "PL";
+                $roles[] = "COPL";
+            }
+        }
+        if(count($role_objs) > 0){
+            foreach($role_objs as $r){
+                $roles[] = $r->getRole();
+            }
+        }
+        if($role == EVALUATOR && $this->isEvaluator()){
+            $roles[] = EVALUATOR;
+        }
+        if(count($roles) == 0){
+            return false;
         }
         return (array_search($role, $roles) !== false);
     }
@@ -2502,7 +2553,30 @@ class Person extends BackboneModel {
         }
         $this->leadershipCache[$startRange.$endRange] = $projects;
         return $projects;
-    }  
+    }
+    
+    function leadershipOn($date){
+        if(isset($this->leadershipCache[$date])){
+            return $this->leadershipCache[$date];
+        }
+        
+        $sql = "SELECT DISTINCT project_id
+                FROM grand_project_leaders
+                WHERE user_id = '{$this->id}'
+                AND (('$date' BETWEEN start_date AND end_date ) OR (start_date <= '$date' AND end_date = '0000-00-00 00:00:00'))";
+        $data = DBFunctions::execSQL($sql);
+        $projects = array();
+        foreach($data as $row){
+            $project = Project::newFromId($row['project_id']);
+            if($project != null && 
+               ((!$project->isDeleted()) || 
+               ($project->isDeleted() && !($project->effectiveDate < $startRange)))){
+                $projects[] = $project;
+            }
+        }
+        $this->leadershipCache[$date] = $projects;
+        return $projects;
+    } 
     
     // Returns true if this person is a leader or co-leader of a given project, false otherwise
     function leadershipOf($project) {
