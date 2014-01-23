@@ -31,6 +31,8 @@ define('RPTP_LOI_EVAL_FEEDBACK', 16);
 define('RPTP_LOI_REV_REVIEW', 17);
 define('RPTP_MTG', 18); // Mind The Gap
 define('RPTP_CHAMP', 19);
+define('RPTP_PROJECT_CHAMP', 20);
+define('RPTP_PROJECT_ISAC', 21);
 
 define('RPTP_NI_ZIP', 100);
 define('RPTP_PROJ_ZIP', 101); 

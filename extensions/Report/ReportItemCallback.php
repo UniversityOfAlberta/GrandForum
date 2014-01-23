@@ -81,6 +81,8 @@ class ReportItemCallback {
             "champ_org" => "getChampOrg",
             "champ_title" => "getChampTitle",
             "champ_subprojects" => "getChampSubProjects",
+            // ISAC
+            "isac_comment" => "getISACComment",
             // Products
             "product_id" => "getProductId",
             "product_title" => "getProductTitle",
@@ -843,6 +845,17 @@ class ReportItemCallback {
             }
         }
         return implode(", ", $subs);
+    }
+    
+    function getISACComment(){
+        $addr = ReportBlob::create_address(RP_ISAC, ISAC_PHASE2, ISAC_PHASE2_COMMENT, 0);
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        if($data != null){
+           return $data;
+        }
+        return "";
     }
     
     function getProductId(){

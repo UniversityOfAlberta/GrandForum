@@ -517,8 +517,30 @@ class Person extends BackboneModel {
             $rowA = array();
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
-            //$projects = $person->getProjects();
             if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleDuring($filter, $startRange, $endRange))){
+                $people[] = $person;
+            }
+        }
+        return $people;
+    }
+    
+    /**
+     * Returns an array of People of the type $filter
+     * @param string $filter The role to get ('all' if including everyone, even if on no project)
+     * @param string $date The date that the person was on the role $filter
+     * @return array An array of People of the type $filter
+     */
+    static function getAllPeopleOn($filter=null, $date){
+        $data = DBFunctions::select(array('mw_user'),
+                                    array('user_id', 'user_name'),
+                                    array('deleted' => NEQ(1)),
+                                    array('user_name' => 'ASC'));
+        $people = array();
+        foreach($data as $row){
+            $rowA = array();
+            $rowA[0] = $row;
+            $person = Person::newFromId($rowA[0]['user_id']);
+            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleOn($filter, $date))){
                 $people[] = $person;
             }
         }

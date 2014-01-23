@@ -33,6 +33,8 @@ define('RP_REVIEW', 11);
 define('RP_MTG', 12);
 define('RP_CHAMP', 13);
 define('RP_ISAC', 14);
+define('RP_PROJECT_CHAMP', 15);
+define('RP_PROJECT_ISAC', 16);
 //define('RP_EVAL_RESEARCHER_REV',		9); //Revised answers
 //define('RP_EVAL_CNI_REV',		10); //Revised answers
 //define('RP_EVAL_PROJECT_REV', 11); //Revised answers
