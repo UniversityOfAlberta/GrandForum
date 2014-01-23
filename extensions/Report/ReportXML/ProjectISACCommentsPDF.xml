@@ -18,11 +18,20 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="isac_comments" name="ISAC Comments" tooltip="" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" private="true" pagebreak="false">
+    <ReportSection id="isac_comments" name="ISAC Comments" tooltip="" blobSection="SEC_NONE" type="HeaderReportSection" renderpdf="true" private="true" pagebreak="false">
+        <ReportItem id="last_break" type="StaticReportItem">
+            <![CDATA[
+                <style>
+                    .pagebreak:last-child {
+                        display:none;
+                    }
+                </style>
+            ]]>
+        </ReportItem>
         <ReportItemSet type="ProjectISACReportItemSet">
-            <ReportItem type="SubBookmarkReportItem" text="{$user_reversed_name}">
+            <ReportItem type="BookmarkReportItem" text="{$user_reversed_name}">
                 <![CDATA[
-                   <h2>{$user_reversed_name}</h2>
+                   <h1>{$user_reversed_name}</h1>
                    <p>{$isac_comment}</p>
                 ]]>
             </ReportItem>

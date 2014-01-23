@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Project Champion Reports" reportType="RP_PROJECT_CHAMP" pdfType="RPTP_PROJECT_CHAMP" pdfFiles="ProjectChampionsReportPDF" ajax="true" disabled="false">
+    <ReportSection name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <ReportItem id="report_info_head" type="StaticReportItem">
+            <![CDATA[
+                <div class='logo_div'>
+                    <div class='logo'></div>
+                    <div class='report_name' style='text-align:right;'><b>{$report_name}</b>
+            ]]>
+        </ReportItem>
+        <ReportItem id="report_info_head" type="FootnoteReportItem" text="{$project_full_name}">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="report_info_foot" type="StaticReportItem">
+            <![CDATA[
+                <br /><small><b>Generated:</b> {$timestamp}</small></div>
+                </div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="champion_comments" name="Champion Comments" tooltip="" blobSection="SEC_NONE" type="HeaderReportSection" renderpdf="true" private="true" pagebreak="false">
+        <ReportItem id="last_break" type="StaticReportItem">
+            <![CDATA[
+                <style>
+                    .pagebreak:last-child {
+                        display:none;
+                    }
+                </style>
+            ]]>
+        </ReportItem>
+        <ReportItemSet type="ReviewProjectChampionsReportItemSet">
+            <ReportItem type="BookmarkReportItem" text="{$user_reversed_name}">
+                <![CDATA[
+                   <h1 {$champ_is_still_champion}>{$user_reversed_name} ({$champ_subprojects})</h1>
+                ]]>
+            </ReportItem>
+            <ReportItem type="SubBookmarkReportItem" text="Question 1">
+                <![CDATA[
+                   <h2>Question 1</h2>
+                   {$champ_q1}
+                ]]>
+            </ReportItem>
+            <ReportItem type="SubBookmarkReportItem" text="Question 2">
+                <![CDATA[
+                   <h2>Question 2</h2>
+                   {$champ_q2}
+                ]]>
+            </ReportItem>
+            <ReportItem type="SubBookmarkReportItem" text="Question 3">
+                <![CDATA[
+                   <h2>Question 3</h2>
+                   {$champ_q3}
+                ]]>
+            </ReportItem>
+            <ReportItem type="SubBookmarkReportItem" text="Question 4">
+                <![CDATA[
+                   <h2>Question 4</h2>
+                   {$champ_q4}
+                ]]>
+            </ReportItem>
+            <ReportItem type="SubBookmarkReportItem" text="Question 5">
+                <![CDATA[
+                   <h2>Question 5</h2>
+                   {$champ_q5}
+                ]]>
+            </ReportItem>
+            <ReportItem type="SubBookmarkReportItem" text="Question 6">
+                <![CDATA[
+                   <h2>Question 6</h2>
+                   {$champ_q6}
+                ]]>
+            </ReportItem>
+            <ReportItem type="PageBreakReportItem">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
+    </ReportSection>
+</Report>

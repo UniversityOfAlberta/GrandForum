@@ -81,6 +81,13 @@ class ReportItemCallback {
             "champ_org" => "getChampOrg",
             "champ_title" => "getChampTitle",
             "champ_subprojects" => "getChampSubProjects",
+            "champ_is_still_champion" => "getChampIsStillChampion",
+            "champ_q1" => "getChampQ1",
+            "champ_q2" => "getChampQ2",
+            "champ_q3" => "getChampQ3",
+            "champ_q4" => "getChampQ4",
+            "champ_q5" => "getChampQ5",
+            "champ_q6" => "getChampQ6",
             // ISAC
             "isac_comment" => "getISACComment",
             // Products
@@ -845,6 +852,70 @@ class ReportItemCallback {
             }
         }
         return implode(", ", $subs);
+    }
+    
+    function getChampIsStillChampion(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        return (!$person->isChampionOfOn($project, '2014'.REPORTING_RMC_MEETING_MONTH.' 23:59:59')) ? "style='color:red;text-decoration:line-through;'" : "";
+    }
+    
+    function getChampQ1(){
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_ACTIVITY, 0);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        return $data;
+    }
+    
+    function getChampQ2(){
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_ORG, 0);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        return $data;
+    }
+    
+    function getChampQ3(){
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_BENEFITS, 0);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        return $data;
+    }
+    
+    function getChampQ4(){
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_SHORTCOMINGS, 0);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        return $data;
+    }
+    
+    function getChampQ5(){
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_CASH, 0);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        return $data;
+    }
+    
+    function getChampQ6(){
+        $champion_html = "";
+        $blb = new ReportBlob(BLOB_ARRAY, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_RESEARCHERS, 0);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        if(count($data) > 0){
+            foreach($data as $u_id => $message){
+                if($message['q6'] != ""){
+                    $user = Person::newFromId($u_id);
+                    $champion_html .= "<h3>{$user->getReversedName()}</h3>{$message['q6']}";
+                }
+            }
+        }
+        return $champion_html;
     }
     
     function getISACComment(){
