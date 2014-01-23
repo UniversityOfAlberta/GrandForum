@@ -61,6 +61,12 @@ abstract class AbstractReport extends SpecialPage {
             case RPTP_CHAMP:
                 $type = "ChampionReport";
                 break;
+            case RPTP_PROJECT_CHAMP:
+                $type = "ProjectChampionsReportPDF";
+                break;
+            case RPTP_PROJECT_ISAC:
+                $type = "ProjectISACCommentsPDF";
+                break;
             case RPTP_INPUT:
                 break;
             case RPTP_LEADER:
