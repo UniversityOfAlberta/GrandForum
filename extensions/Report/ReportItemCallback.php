@@ -866,6 +866,7 @@ class ReportItemCallback {
         $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_ACTIVITY, 0);
         $result = $blb->load($addr);
         $data = $blb->getData();
+        $data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
         return $data;
     }
     
@@ -874,6 +875,7 @@ class ReportItemCallback {
         $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_ORG, 0);
         $result = $blb->load($addr);
         $data = $blb->getData();
+        $data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
         return $data;
     }
     
@@ -882,6 +884,7 @@ class ReportItemCallback {
         $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_BENEFITS, 0);
         $result = $blb->load($addr);
         $data = $blb->getData();
+        $data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
         return $data;
     }
     
@@ -890,6 +893,7 @@ class ReportItemCallback {
         $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_SHORTCOMINGS, 0);
         $result = $blb->load($addr);
         $data = $blb->getData();
+        $data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
         return $data;
     }
     
@@ -898,6 +902,7 @@ class ReportItemCallback {
         $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_CASH, 0);
         $result = $blb->load($addr);
         $data = $blb->getData();
+        $data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
         return $data;
     }
     

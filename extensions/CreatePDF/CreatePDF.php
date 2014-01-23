@@ -20,6 +20,7 @@ class CreatePDF extends SpecialPage {
                           'hqp' => 'HQP',
                           'project' => 'Project',
                           'isac_comments' => 'ISAC Project Comments',
+                          'champ_comments' => 'Champion Project Comments',
                           'loi' => 'LOI');
 
 	function __construct() {
@@ -244,6 +245,15 @@ class CreatePDF extends SpecialPage {
 	        }
 	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectISACCommentsPDF&person=4&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
+	    else if($type == 'champ_comments'){
+	        foreach(Project::getAllProjectsDuring() as $project){
+	            if(array_search($project->getId(), $ids) === false && $project->getPhase() == PROJECT_PHASE){
+	                $names[] = $project->getName();
+	                $ids[] = $project->getId();
+	            }
+	        }
+	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectChampionsReportPDF&person=4&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
+	    }
 	    else if($type == 'loi'){
 	        foreach(LOI::getAllLOIs() as $loi){
 	            if(array_search($loi->getId(), $ids) === false){
@@ -270,6 +280,9 @@ class CreatePDF extends SpecialPage {
 	    }
 	    else if($type == 'isac_comments'){
 	        CreatePDF::showISACTable($names, $ids);
+	    }
+	    else if($type == 'champ_comments'){
+	        CreatePDF::showChampionTable($names, $ids);
 	    }
 	    else if($type == 'loi'){
 	        CreatePDF::showLOITable($names, $ids);
@@ -491,6 +504,26 @@ class CreatePDF extends SpecialPage {
 	        $leaders = array_values($project->getLeaders());
 	        if(count($leaders) > 0){
 	            $report = new DummyReport("ProjectISACCommentsPDF", $leaders[0], $project);
+	            CreatePDF::tableRow($report, $project->getId(), $project->getName(), $project->getName());
+	        }
+	    }
+	    CreatePDF::tableFoot();
+	}
+	
+	static function showChampionTable($names, $ids){
+	    global $wgOut, $wgServer, $wgScriptPath;
+	    $wgOut->setPageTitle("Champion Project Comment PDFs");
+	    CreatePDF::tableHead();
+	    $alreadyDone = array();
+	    foreach($names as $pName){
+	        if(isset($alreadyDone[$pName])){
+	            continue;
+	        }
+	        $alreadyDone[$pName] = true;
+	        $project = Project::newFromName($pName);
+	        $leaders = array_values($project->getLeaders());
+	        if(count($leaders) > 0){
+	            $report = new DummyReport("ProjectChampionsReportPDF", $leaders[0], $project);
 	            CreatePDF::tableRow($report, $project->getId(), $project->getName(), $project->getName());
 	        }
 	    }
