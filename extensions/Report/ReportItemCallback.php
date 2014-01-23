@@ -836,7 +836,7 @@ class ReportItemCallback {
         
         $subs = array();
         foreach($project->getSubProjects() as $sub){
-            foreach($sub->getChampionsDuring() as $champ){
+            foreach($sub->getChampionsOn(($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH) as $champ){
                 if($champ['user']->getId() == $person->getId()){
                     $subs[] = "<a href='{$sub->getUrl()}' target='_blank'>{$sub->getName()}</a>";
                 }
