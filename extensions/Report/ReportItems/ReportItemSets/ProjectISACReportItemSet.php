@@ -19,9 +19,10 @@ class ProjectISACReportItemSet extends ReportItemSet {
                 if($blobdata != null){
                     $tuple = self::createTuple();
                     $tuple['person_id'] = $person->getId();
-                    $data[] = $tuple;
+                    $data[$person->getReversedName()] = $tuple;
                 }
             }
+            ksort($data);
         }
         return $data;
     }
