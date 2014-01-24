@@ -80,7 +80,7 @@
             <![CDATA[
                 <br />
                 <p>
-                    <h2>Question 4</h2>
+                    <h2>Question 3</h2>
                     <p><i><small>Describe the benefits that you (or your organization) expect to gain from the research and how it might impact the larger digital media community.</small></i></p><br />
                     {$item}
                 </p>
