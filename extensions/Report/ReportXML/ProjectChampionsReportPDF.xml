@@ -29,7 +29,7 @@
             ]]>
         </ReportItem>
         <ReportItemSet type="ReviewProjectChampionsReportItemSet">
-            <ReportItem type="BookmarkReportItem" text="{$user_reversed_name}">
+            <ReportItem type="BookmarkReportItem" text="{$user_reversed_name} ({$champ_subprojects})">
                 <![CDATA[
                    <h1 {$champ_is_still_champion}>{$user_reversed_name} ({$champ_subprojects})</h1>
                 ]]>

@@ -492,6 +492,7 @@ if ( isset($pdf) ) {
      */
     function addChapter($title){
         global $wgOut;
+        $title = strip_tags($title);
         $wgOut->addHTML("<div></div>
                         <script type='text/php'>
                             \$GLOBALS['chapters'][] = array('title' => \"{$title}\", 
@@ -506,6 +507,7 @@ if ( isset($pdf) ) {
      */
     function addSubChapter($title){
         global $wgOut;
+        $title = strip_tags($title);
         $wgOut->addHTML("<div></div>
                         <script type='text/php'>
                             \$GLOBALS['chapters'][count(\$GLOBALS['chapters'])-1]['subs'][] = array('title' => \"{$title}\", 
