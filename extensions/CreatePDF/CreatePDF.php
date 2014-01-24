@@ -47,7 +47,7 @@ class CreatePDF extends SpecialPage {
 
 	        $report = new DummyReport($_GET['report'], $person, $project);
 	        $submitted = $report->isSubmitted();
-	        if($project != null && $_GET['report'] == "LOIEvalReportPDF"){
+	        if($project != null && $_GET['report'] == "LOIEvalReportPDF" || $report->person->id != 0){
 	        	$report->generatePDF(null, false);
 	        }
 	        else if($project != null){
@@ -492,6 +492,7 @@ class CreatePDF extends SpecialPage {
 	
 	static function showISACTable($names, $ids){
 	    global $wgOut, $wgServer, $wgScriptPath;
+	    $me = Person::newFromWgUser();
 	    $wgOut->setPageTitle("ISAC Project Comment PDFs");
 	    CreatePDF::tableHead();
 	    $alreadyDone = array();
@@ -501,17 +502,15 @@ class CreatePDF extends SpecialPage {
 	        }
 	        $alreadyDone[$pName] = true;
 	        $project = Project::newFromName($pName);
-	        $leaders = array_values($project->getLeaders());
-	        if(count($leaders) > 0){
-	            $report = new DummyReport("ProjectISACCommentsPDF", $leaders[0], $project);
-	            CreatePDF::tableRow($report, $project->getId(), $project->getName(), $project->getName());
-	        }
+            $report = new DummyReport("ProjectISACCommentsPDF", $me, $project);
+            CreatePDF::tableRow($report, $project->getId(), $project->getName(), $project->getName());
 	    }
 	    CreatePDF::tableFoot();
 	}
 	
 	static function showChampionTable($names, $ids){
 	    global $wgOut, $wgServer, $wgScriptPath;
+	    $me = Person::newFromWgUser();
 	    $wgOut->setPageTitle("Champion Project Comment PDFs");
 	    CreatePDF::tableHead();
 	    $alreadyDone = array();
@@ -521,11 +520,8 @@ class CreatePDF extends SpecialPage {
 	        }
 	        $alreadyDone[$pName] = true;
 	        $project = Project::newFromName($pName);
-	        $leaders = array_values($project->getLeaders());
-	        if(count($leaders) > 0){
-	            $report = new DummyReport("ProjectChampionsReportPDF", $leaders[0], $project);
-	            CreatePDF::tableRow($report, $project->getId(), $project->getName(), $project->getName());
-	        }
+            $report = new DummyReport("ProjectChampionsReportPDF", $me, $project);
+            CreatePDF::tableRow($report, $project->getId(), $project->getName(), $project->getName());
 	    }
 	    CreatePDF::tableFoot();
 	}

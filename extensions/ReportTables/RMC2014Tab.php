@@ -18,15 +18,15 @@ class RMC2014Tab extends AbstractTab {
             'question2'=>"\$tab2 = 'selectedReportTab';",
             'question3'=>"\$tab3 = 'selectedReportTab';",
             'question4'=>"\$tab4 = 'selectedReportTab';",
-            'budget1'=>"\$tab4 = 'selectedReportTab';",    
-            'budget2'=>"\$tab5 = 'selectedReportTab';",    
-            'budget3'=>"\$tab6 = 'selectedReportTab';",
-            'budget4'=>"\$tab7 = 'selectedReportTab';",
-            'productivity'=>"\$tab8 = 'selectedReportTab';",    
-            'researcher'=>"\$tab9 = 'selectedReportTab';",
-            'contributions'=>"\$tab10 = 'selectedReportTab';",
-            'distribution'=>"\$tab11 = 'selectedReportTab';", 
-            'themes'=>"\$tab12 = 'selectedReportTab';",
+            'budget1'=>"\$tab5 = 'selectedReportTab';",    
+            'budget2'=>"\$tab6 = 'selectedReportTab';",    
+            'budget3'=>"\$tab7 = 'selectedReportTab';",
+            'budget4'=>"\$tab8 = 'selectedReportTab';",
+            'productivity'=>"\$tab9 = 'selectedReportTab';",    
+            'researcher'=>"\$tab10 = 'selectedReportTab';",
+            'contributions'=>"\$tab11 = 'selectedReportTab';",
+            'distribution'=>"\$tab12 = 'selectedReportTab';", 
+            'themes'=>"\$tab13 = 'selectedReportTab';",
         );
         $summary = ArrayUtils::get_string($_GET, 'summary');
         $url_year = ArrayUtils::get_string($_GET, 'year');
@@ -821,6 +821,7 @@ EOF;
 
     function showEvalProjectOverview(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript, $reporteeId, $getPerson;
+        $me = Person::newFromWgUser();
         $type = 'Project';
         $rtype = RP_EVAL_PROJECT;
 
@@ -883,13 +884,20 @@ EOF;
             }
             $rowspan = $rowspan*2;
 
-            $download = "Project PDF";
+            $download = "<br />Project PDF";
+            $isac_download = "";
             $report = new DummyReport("ProjectReport", $ni, $ni, 2013);
             $tok = false;
             $check = $report->getPDF();
-            if (count($check) > 0) {
-                $tok = $check[0]['token'];
-                $download = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Project PDF</a>";
+            if(count($check) > 0) {
+                $pdf = PDF::newFromToken($check[0]['token']);
+                $download = "<br /><a href='{$pdf->getUrl()}' target='_blank'>Project PDF</a>";
+            }
+            $isac_report = new DummyReport("ProjectISACCommentsPDF", $me, $ni);
+            $data = $isac_report->getPDF();
+            if(isset($data[0]['token'])){
+                $pdf = PDF::newFromToken($data[0]['token']);
+                $isac_download = "<br /><a href='{$pdf->getUrl()}' target='_blank'>ISAC PDF</a>";
             }
             $isac_html = "";
             foreach($isac as $i => $person){
@@ -906,13 +914,14 @@ EOF;
             $this->html .=<<<EOF
             <tr>
             <td>
-            <b>{$ni_name}</b><br />
+            <b>{$ni_name}</b>
             {$download}
+            {$isac_download}
             </td>
             <td>$isac_html</td>
 EOF;
             $average_score = 0;
-            $sub_rows = "<table width='100%' rules='none'>";
+            $sub_rows = "<table style='border-collapse:collapse;' width='100%' rules='none'>";
             $div_count = 0;
             $ev_count = 0;
             foreach($evaluators as $evaluator) {
@@ -920,7 +929,7 @@ EOF;
                 $eval_name = $evaluator->getReversedName();
                 
                 $sub_rows .= "<tr><td width='20%'>{$eval_name}</td><td style='padding:0px;'>";
-                $sub_rows .= "<table width='100%' rules='all'>";
+                $sub_rows .= "<table style='border-collapse:collapse;' width='100%' rules='all'>";
                 
                 $additional_score = 0;
                 //foreach(array('original', 'revised') as $ind => $rev){
@@ -1080,6 +1089,7 @@ EOF;
     
     function showEvalChampionOverview(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript, $reporteeId, $getPerson;
+        $me = Person::newFromWgUser();
         $type = 'Project';
         $rtype = RP_EVAL_PROJECT;
 
@@ -1129,10 +1139,17 @@ EOF;
         
         foreach($sorted_projects as $proj_id => $proj_name){
             $project = Project::newFromId($proj_id);
+            $proj_pdf = "";
+            $report = new DummyReport("ProjectChampionsReportPDF", $me, $project, 2013);
+            $data = $report->getPDF();
+            if(isset($data[0]['token'])){
+                $pdf = PDF::newFromToken($data[0]['token']);
+                $proj_pdf = "<a href='{$pdf->getUrl()}' target='_blank'>Champions PDF</a>";;
+            }
             $this->html .= "<tr>";
-            $this->html .= "<td><b>{$proj_name}</b></td>";
+            $this->html .= "<td><b>{$proj_name}</b><br />{$proj_pdf}</td>";
             
-            $champion_html = "<table width='100%' rules='none'>";
+            $champion_html = "<table style='border-collapse:collapse;' width='100%' rules='none'>";
             $champions = array();
             foreach($project->getChampionsDuring('2014'.REPORTING_PRODUCTION_MONTH, '2014'.REPORTING_RMC_MEETING_MONTH) as $champ){
                 $champions[$champ['user']->getId()] = $champ;
@@ -1143,9 +1160,9 @@ EOF;
                 }
             }
             foreach($champions as $champ){
-                $scratched = (!$champ['user']->isChampionOfOn($project, '2014'.REPORTING_RMC_MEETING_MONTH.' 23:59:59')) ? "style='text-decoration:line-through;'" : "";
+                $scratched = ($champ['user']->isChampionOfOn($project, '2014'.REPORTING_RMC_MEETING_MONTH.' 23:59:59')) ? "style='text-decoration:line-through;'" : "";
                 $champion_html .= "<tr>";
-                $champion_html .= "<td $scratched width='15%'>{$champ['user']->getReversedName()}</td>";
+                $champion_html .= "<td width='15%'>{$champ['user']->getReversedName()}</td>";
                 $blb = new ReportBlob(BLOB_TEXT, 2013, $champ['user']->getId(), $proj_id);
                 $sections = array(CHAMP_ACTIVITY, CHAMP_ORG, CHAMP_BENEFITS, CHAMP_SHORTCOMINGS, CHAMP_CASH);
                 $i = 1;
