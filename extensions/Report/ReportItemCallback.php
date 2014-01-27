@@ -858,7 +858,13 @@ class ReportItemCallback {
         $person = Person::newFromId($this->reportItem->personId);
         $project = Project::newFromId($this->reportItem->projectId);
         
-        return (!$person->isChampionOfOn($project, '2014'.REPORTING_RMC_MEETING_MONTH.' 23:59:59')) ? "style='color:red;text-decoration:line-through;'" : "";
+        $result = $person->isChampionOfOn($project, ($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH.' 23:59:59');
+        if(!$result && !$project->isSubProject()){
+            foreach($project->getSubProjects() as $sub){
+                $result = ($result || $person->isChampionOfOn($sub, ($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH.' 23:59:59'));
+            }
+        }
+        return (!$result) ? "style='color:red;text-decoration:line-through;'" : "";
     }
     
     function getChampQ1(){

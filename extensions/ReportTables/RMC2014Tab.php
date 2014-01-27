@@ -1160,9 +1160,16 @@ EOF;
                 }
             }
             foreach($champions as $champ){
-                $scratched = ($champ['user']->isChampionOfOn($project, '2014'.REPORTING_RMC_MEETING_MONTH.' 23:59:59')) ? "style='text-decoration:line-through;'" : "";
+                $result = (!$champ['user']->isChampionOfOn($project, '2014'.REPORTING_RMC_MEETING_MONTH.' 23:59:59')) ? "style='text-decoration:line-through;'" : "";
+                $result = $champ['user']->isChampionOfOn($project, '2014'.REPORTING_RMC_MEETING_MONTH.' 23:59:59');
+                if(!$result && !$project->isSubProject()){
+                    foreach($project->getSubProjects() as $sub){
+                        $result = ($result || $champ['user']->isChampionOfOn($sub, ('2014'.REPORTING_RMC_MEETING_MONTH.' 23:59:59')));
+                    }
+                }
+                $scratched = (!$result) ? "style='color:red;text-decoration:line-through;'" : "";
                 $champion_html .= "<tr>";
-                $champion_html .= "<td width='15%'>{$champ['user']->getReversedName()}</td>";
+                $champion_html .= "<td $scratched width='15%'>{$champ['user']->getReversedName()}</td>";
                 $blb = new ReportBlob(BLOB_TEXT, 2013, $champ['user']->getId(), $proj_id);
                 $sections = array(CHAMP_ACTIVITY, CHAMP_ORG, CHAMP_BENEFITS, CHAMP_SHORTCOMINGS, CHAMP_CASH);
                 $i = 1;
