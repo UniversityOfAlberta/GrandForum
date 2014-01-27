@@ -546,10 +546,14 @@ class CreatePDF extends SpecialPage {
 	    CreatePDF::tableFoot();
 	}
 	
-	static function tableHead(){
+	static function tableHead($downloadAll=false){
 	    global $wgOut, $wgServer, $wgScriptPath;
+	    $showDownload = "";
+	    if(!$downloadAll){
+	        $showDownload = "display:none;";
+	    }
 	    $wgOut->addHTML("
-	    <button id='allButton' onClick='clickAllButton();'>Generate All</button>&nbsp;<button onClick='clickStopButton();'>Stop Generation</button>&nbsp;<button id='downloadAllButton' onClick='clickDownloadAllButton();'>Download All</button><img id='downloadAllThrobber' style='display:none;' src='../skins/Throbber.gif' /><br />
+	    <button id='allButton' onClick='clickAllButton();'>Generate All</button>&nbsp;<button onClick='clickStopButton();'>Stop Generation</button>&nbsp;<button style='$showDownload' id='downloadAllButton' onClick='clickDownloadAllButton();'>Download All</button><img id='downloadAllThrobber' style='display:none;' src='../skins/Throbber.gif' /><br />
 	    <table class='wikitable sortable' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
 	        <tr><th>Name</th><th>PDF Download</th><th>Generate PDF</th><th>Generation Status</th></tr>");
 	}
