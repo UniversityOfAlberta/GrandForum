@@ -58,12 +58,12 @@ class Report extends AbstractReport{
             $projects = Project::getAllProjects();
             foreach($projects as $project){
                 if($project->getPhase() == PROJECT_PHASE){
-                    if($person->isChampionOfOn($project, REPORTING_CYCLE_START)){
+                    if($person->isChampionOf($project, REPORTING_RMC_MEETING)){
                         $page = "Report?report=ChampionReport&project={$project->getName()}";
                         break;
                     }
                     foreach($project->getSubProjects() as $sub){
-                        if($person->isChampionOfOn($sub, REPORTING_CYCLE_START)){
+                        if($person->isChampionOfOn($sub, REPORTING_RMC_MEETING)){
                             $page = "Report?report=ChampionReport&project={$project->getName()}";
                             break;
                         }
