@@ -4,12 +4,18 @@ class JungAPI extends API{
 
     var $personDisciplines = array();
     var $personUniversities = array();
-    var $year = 2012;
+    var $year = REPORTING_YEAR;
     var $startDate = REPORTING_END;
     var $endDate = REPORTING_END;
+    var $type;
+    var $nodeType;
+    var $output = "json";
 
     function JungAPI(){
         $this->addGET("year", true, "", "2012");
+        $this->addGET("type", false, "", "Physical");
+        $this->addGET("nodeType", false, "", "Person");
+        $this->addGET("output", false, "", "json"); 
     }
 
     function processParams($params){
@@ -27,6 +33,9 @@ class JungAPI extends API{
         $json = array();
 
         $this->year = $_GET['year'];
+        $this->type = isset($_GET['type']) ? $_GET['type'] : "Physical";
+        $this->nodeType = isset($_GET['nodeType']) ? $_GET['nodeType'] : "Person";
+        $this->output = isset($_GET['output']) ? $_GET['output'] : "json";
         $this->startDate = $_GET['year'].REPORTING_CYCLE_END_MONTH;
         $this->endDate = $_GET['year'].REPORTING_CYCLE_END_MONTH_ACTUAL;
         
@@ -34,7 +43,7 @@ class JungAPI extends API{
         $edges = array();
         $metas = array();
         $projects = array();
-
+            
         $pnis = Person::getAllPeopleDuring(PNI, $this->startDate, $this->endDate);
         $cnis = Person::getAllPeopleDuring(CNI, $this->startDate, $this->endDate);
         $hqps = Person::getAllPeopleDuring(HQP, $this->startDate, $this->endDate);
@@ -54,32 +63,74 @@ class JungAPI extends API{
                 unset($nodes[$key]);
             }
         }
-        
-        $edges = array_merge($this->getWorksWithEdges($nodes),
-                             $this->getCoProduceEdges($nodes),
-                             $this->getCoSuperviseEdges($nodes),
-                             $this->getProjectEdges($nodes),
-                             $this->getUniversityEdges($nodes),
-                             $this->getDepartmentEdges($nodes),
-                             $this->getContributionEdges($nodes));
+        switch($this->type){
+            case "Physical":
+                $edges = array_merge($this->getContributionEdges($nodes),
+                                     $this->getCoProduceEdges($nodes),
+                                     $this->getCoSuperviseEdges($nodes));
+                break;
+            case "Explicit":
+                $edges = array_merge($this->getWorksWithEdges($nodes),
+                                     $this->getContributionEdges($nodes),
+                                     $this->getCoProduceEdges($nodes),
+                                     $this->getCoSuperviseEdges($nodes));
+                break;
+            case "Implicit":
+                $edges = array_merge($this->getProjectEdges($nodes),
+                                     $this->getUniversityEdges($nodes),
+                                     $this->getDisciplineEdges($nodes));
+                break;
+            case "All":
+                $edges = array_merge($this->getWorksWithEdges($nodes),
+                                     $this->getCoProduceEdges($nodes),
+                                     $this->getCoSuperviseEdges($nodes),
+                                     $this->getProjectEdges($nodes),
+                                     $this->getUniversityEdges($nodes),
+                                     $this->getDisciplineEdges($nodes),
+                                     $this->getContributionEdges($nodes));
+                break;
+        }
         
         $metas = $this->getMetas($nodes, $edges);
         $projects = $this->getProjects();
         
         $json['nodes'] = array();
-        foreach($nodes as $node){
-            $json['nodes'][] = array('type' => "Person", 
-                                     'name' => $node->getName(),
-                                     'meta' => $metas[$node->getName()]);
+        if($this->nodeType == "Person"){
+            foreach($nodes as $node){
+                $json['nodes'][] = array('type' => "Person", 
+                                         'name' => $node->getName(),
+                                         'meta' => $metas[$node->getName()]);
+            }
         }
-        foreach($projects as $project){
-            $json['nodes'][] = array('type' => "Project",
-                                     'name' => $project['name'],
-                                     'meta' => $project);
+        else if($this->nodeType == "Project"){
+            foreach($projects as $project){
+                $json['nodes'][] = array('type' => "Project",
+                                         'name' => $project['name'],
+                                         'meta' => $project);
+            }
         }
         
         $json['edges'] = $edges;
-        echo json_encode($json);
+        if($this->output == "json"){
+            echo json_encode($json);
+        }
+        else if($this->output == "csv_nodes"){
+            echo "\"Nodes\",\"Id\",\"Discipline\",\"University\",\"Title\",\"Gender\"\n";
+            foreach($json['nodes'] as $node){
+                $meta = $node['meta'];
+                $disc = $meta['Discipline'];
+                $uni = ($meta['University'] != "") ? $meta['University'] : "Unknown";
+                $title = ($meta['Title'] != "") ? $meta['Title'] : "Unknown";
+                $gender = ($meta['Gender'] != "") ? $meta['Gender'] : "Unknown";
+                echo "\"{$node['name']}\",\"{$node['name']}\",\"{$disc}\",\"{$uni}\",\"{$title}\",\"{$gender}\"\n";
+            }
+        }
+        else if($this->output == "csv_edges"){
+            echo "\"Source\",\"Target\",\"Type\"\n";
+            foreach($json['edges'] as $edge){
+                echo "{$edge['a']},{$edge['b']},{$edge['direction']}\n";
+            }
+        }
         exit;
     }
     
@@ -143,7 +194,7 @@ class JungAPI extends API{
                         $allocationDelta = 0;
                     }
                     else{
-                        $allocationDelta = ($allocatedAmount-$lastAllocatedAmount)/max(1, $lastAllocatedAmount);
+                        $allocationDelta = ($allocatedAmount-$lastAllocatedAmount);
                     }
                     $totalAllocated += $allocatedAmount;
                 }
@@ -488,18 +539,14 @@ class JungAPI extends API{
                     $nCits[$year] = $cit;
                 }
                 if(isset($nPubs[$this->year]) && isset($nCits[$this->year])){
-                    if($nPubs[$this->year] != 0){
-                        $tuple['ScopusPubs'] = (string)$nPubs[$this->year];
+                    $tuple['ScopusPubs'] = @(string)$nPubs[$this->year];
+                    $tuple['ScopusCits'] = @(string)$nCits[$this->year];
+
+                    if(@$nPubs[$this->year] != 0 && @$nPubs[$this->year-1] != 0){
+                        $tuple['ScopusPubsDelta'] = @(string)($nPubs[$this->year]-$nPubs[$this->year-1]);
                     }
-                    if($nCits[$this->year] != 0){
-                        $tuple['ScopusCits'] = (string)$nCits[$this->year];
-                    }
-                    
-                    if($nPubs[$this->year] != 0){
-                        $tuple['ScopusPubsDelta'] = (string)($nPubs[$this->year]/$nPubsSum);
-                    }
-                    if($nCits[$this->year] != 0){
-                        $tuple['ScopusCitsDelta'] = (string)($nCits[$this->year]/$nCitsSum);
+                    if(@$nCits[$this->year] != 0 && @$nCits[$this->year-1] != 0){
+                        $tuple['ScopusCitsDelta'] = @(string)($nCits[$this->year]-$nCits[$this->year-1]);
                     }
                 }
             }
@@ -519,7 +566,7 @@ class JungAPI extends API{
             foreach($products as $product){
                 $authors = $product->getAuthors();
                 foreach($authors as $auth){
-                    if(isset($ids[$auth->getId()]) && $person->getId() != $auth->getId()){
+                    if(isset($ids[$auth->getId()]) && $person->getId() < $auth->getId()){
                         $edges[] = array('a' => $person->getName(), 
                                          'b' => $auth->getName(),
                                          'type' => "Person",
@@ -543,7 +590,7 @@ class JungAPI extends API{
             foreach($hqps as $hqp){
                 $sups = $hqp->getSupervisorsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
                 foreach($sups as $sup){
-                    if(isset($ids[$sup->getId()]) && $person->getId() != $sup->getId()){
+                    if(isset($ids[$sup->getId()]) && $person->getId() < $sup->getId()){
                         $edges[] = array('a' => $person->getName(), 
                                          'b' => $sup->getName(),
                                          'type' => "Person",
@@ -568,7 +615,7 @@ class JungAPI extends API{
             foreach($relations as $relation){
                 if(isset($ids[$relation->getUser2()->getId()]) && 
                    !isset($alreadyDone[$relation->getUser2()->getId()]) &&
-                   $person->getId() != $relation->getUser2()->getId()){
+                   $person->getId() < $relation->getUser2()->getId()){
                     $edges[] = array('a' => $relation->getUser1()->getName(), 
                                      'b' => $relation->getUser2()->getName(),
                                      'type' => "Person",
@@ -583,15 +630,26 @@ class JungAPI extends API{
     
     function getProjectEdges($nodes){
         $edges = array();
+        $projs = array();
+        foreach($nodes as $node){
+            $projects = $node->getProjectsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
+            foreach($projects as $project){
+                $projs[$project->getName()][] = $node;
+            }
+        }
         foreach($nodes as $node){
             $projects = $node->getProjectsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
             foreach($projects as $project){
                 if($project->getCreated() <= $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL){
-                    $edges[] = array('a' => $node->getName(), 
-                                     'b' => $project->getName(),
-                                     'type' => "Project",
-                                     'edgeType' => "MemberOf",
-                                     'direction' => "Undirected");
+                    foreach($projs[$project->getName()] as $node2){
+                        if($node->getId() < $node2->getId()){
+                            $edges[] = array('a' => $node->getName(), 
+                                             'b' => $node2->getName(),
+                                             'type' => "Person",
+                                             'edgeType' => "SameProject",
+                                             'direction' => "Undirected");
+                        }
+                    }
                 }
             }
         }
@@ -600,17 +658,24 @@ class JungAPI extends API{
     
     function getUniversityEdges($nodes){
         $edges = array();
+        $unis = array();
         foreach($nodes as $node){
             if(!isset($this->personUniversities[$node->getName()])){
                 $this->personUniversities[$node->getName()] = $node->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
             }
             $uni = $this->personUniversities[$node->getName()];
-            if($uni['university'] != ""){
-                $edges[] = array('a' => $node->getName(), 
-                                 'b' => $uni['university'],
-                                 'type' => "University",
-                                 'edgeType' => "WorksAt",
-                                 'direction' => "Undirected");
+            $unis[$uni['university']][] = $node;
+        }
+        foreach($nodes as $node){
+            $uni = $this->personUniversities[$node->getName()];
+            foreach($unis[$uni['university']] as $node2){
+                if($node->getId() < $node2->getId()){
+                    $edges[] = array('a' => $node->getName(), 
+                                     'b' => $node2->getName(),
+                                     'type' => "Person",
+                                     'edgeType' => "SameUniversity",
+                                     'direction' => "Undirected");
+                }
             }
         }
         return $edges;
@@ -630,7 +695,7 @@ class JungAPI extends API{
                     foreach($people as $person){
                         if($person instanceof Person && 
                            isset($ids[$person->getId()]) &&
-                           $person->getId() != $node->getId()){
+                           $node->getId() < $person->getId()){
                             $edges[] = array('a' => $node->getName(),
                                              'b' => $person->getName(),
                                              'type' => "Person",
@@ -644,19 +709,23 @@ class JungAPI extends API{
         return $edges;
     }
     
-    function getDepartmentEdges($nodes){
+    function getDisciplineEdges($nodes){
+        $depts = array();
+        foreach($nodes as $node){
+            $disc = $node->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
+            $depts[$disc][] = $node;
+        }
         $edges = array();
         foreach($nodes as $node){
-            if(!isset($this->personUniversities[$node->getName()])){
-                $this->personUniversities[$node->getName()] = $node->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
-            }
-            $uni = $this->personUniversities[$node->getName()];
-            if($uni['department'] != ""){
-                $edges[] = array('a' => $node->getName(), 
-                                 'b' => $uni['department'],
-                                 'type' => "Department",
-                                 'edgeType' => "WorksIn",
-                                 'direction' => "Undirected");
+            $disc = $node->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
+            foreach($depts[$disc] as $node2){
+                if($node->getId() < $node2->getId()){
+                    $edges[] = array('a' => $node->getName(), 
+                                     'b' => $node2->getName(),
+                                     'type' => "Person",
+                                     'edgeType' => "SameDiscipline",
+                                     'direction' => "Undirected");
+                }
             }
         }
         return $edges;

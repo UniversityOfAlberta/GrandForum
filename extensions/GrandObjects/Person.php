@@ -336,9 +336,9 @@ class Person extends BackboneModel {
             foreach($data as $row){
                 if(!isset(self::$universityCache[$row['user_id']])){
                     self::$universityCache[$row['user_id']] = 
-                        array("university" => str_replace("&", "&amp;", $row['university_name']),
-                              "department" => str_replace("&", "&amp;", $row['department']),
-                              "position"   => str_replace("&", "&amp;", $row['position']));
+                        array("university" => $row['university_name'],
+                              "department" => $row['department'],
+                              "position"   => $row['position']);
                 }
             }
         }
