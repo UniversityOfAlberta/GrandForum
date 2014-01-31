@@ -255,6 +255,10 @@ EOF;
 		        margin-right:0 !important;
 		    }
 		    
+		    #pdfBody .report_info > tbody > tr > td {
+		        vertical-align: top;
+		    }
+		    
 		    #pdfBody .progress_table {
 		        white-space: nowrap;
 		        font-size: ".($fontSize+(-3*DPI_CONSTANT))."px;

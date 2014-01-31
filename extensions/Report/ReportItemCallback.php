@@ -54,6 +54,7 @@ class ReportItemCallback {
             "report_excellence_hqp_comments" => "getReportExcellenceHQPComments",
             "report_networking_hqp_comments" => "getReportNetworkingHQPComments",
             "report_ktee_hqp_comments" => "getReportKTEEHQPComments",
+            "report_has_started" => "getReportHasStarted",
             // People
             "user_name" => "getUserName",
             "user_url" => "getUserUrl",
@@ -81,7 +82,9 @@ class ReportItemCallback {
             "champ_org" => "getChampOrg",
             "champ_title" => "getChampTitle",
             "champ_subprojects" => "getChampSubProjects",
+            "champ_full_project" => "getChampFullProject",
             "champ_is_still_champion" => "getChampIsStillChampion",
+            "champ_has_started" => "getChampReportHasStarted",
             "champ_q1" => "getChampQ1",
             "champ_q2" => "getChampQ2",
             "champ_q3" => "getChampQ3",
@@ -578,6 +581,25 @@ class ReportItemCallback {
         return $this->getReportHQPComments(HQP_RESACT_KTEE);
     }
     
+    function getReportHasStarted(){
+        $report = $this->reportItem->getReport();
+        if($report->hasStarted()){
+            return "<span style='font-weight:bold;color:#008800;'>Yes</span>";
+        }
+        return "<span>No</span>";
+    }
+    
+    function getChampReportHasStarted(){
+        $project = Project::newFromId($this->reportItem->projectId);
+        $person = Person::newFromId($this->reportItem->personId);
+        
+        $report = new DummyReport(RP_CHAMP, $person, $project, $this->reportItem->getReport()->year);
+        if($report->hasStarted()){
+            return "<span style='font-weight:bold;color:#008800;'>Yes</span>";
+        }
+        return "<span>No</span>";
+    }
+    
     private function getReportNIComments($item){
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
@@ -852,6 +874,20 @@ class ReportItemCallback {
             }
         }
         return implode(", ", $subs);
+    }
+    
+    function getChampFullProject(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        foreach($project->getSubProjects() as $sub){
+            foreach($sub->getChampionsOn(($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH) as $champ){
+                if($champ['user']->getId() == $person->getId()){
+                    return "";
+                }
+            }
+        }
+        return "Full Project";
     }
     
     function getChampIsStillChampion(){

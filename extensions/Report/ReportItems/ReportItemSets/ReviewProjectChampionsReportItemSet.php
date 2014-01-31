@@ -3,17 +3,26 @@
 class ReviewProjectChampionsReportItemSet extends ReportItemSet {
     
     function getData(){
+        $onlyShowStarted = (strtolower($this->getAttr("onlyShowStarted", "false")) == "true");
         $data = array();
         $proj = Project::newFromId($this->projectId);
         if($proj != null){
             $champions = array();
             foreach($proj->getChampionsDuring(($this->getReport()->year+1).REPORTING_PRODUCTION_MONTH, ($this->getReport()->year+1).REPORTING_RMC_MEETING_MONTH) as $champ){
-                $champions[$champ['user']->getId()] = $champ;
+                $report = new DummyReport(RP_CHAMP, $champ['user'], $proj, $this->getReport()->year);
+                if(!$onlyShowStarted || 
+                   ($report->hasStarted())){
+                    $champions[$champ['user']->getId()] = $champ;
+                }
             }
             if(!$proj->isSubProject()){
                 foreach($proj->getSubProjects() as $sub){
                     foreach($sub->getChampionsDuring(($this->getReport()->year+1).REPORTING_PRODUCTION_MONTH, ($this->getReport()->year+1).REPORTING_RMC_MEETING_MONTH) as $champ){
-                        $champions[$champ['user']->getId()] = $champ;
+                        $report = new DummyReport(RP_CHAMP, $champ['user'], $proj, $this->getReport()->year);
+                        if(!$onlyShowStarted || 
+                           ($report->hasStarted())){
+                            $champions[$champ['user']->getId()] = $champ;
+                        }
                     }
                 }
             }
