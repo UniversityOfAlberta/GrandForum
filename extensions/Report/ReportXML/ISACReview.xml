@@ -57,16 +57,9 @@
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" width="100%" project="true" year="2013">
                 <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
             </ReportItem>
-            <ReportItemSet id="project_champions" type="ProjectChampionsReportItemSet">
-                <ReportItem id="project_champion_pdf" type="PDFReportItem" noRenderIfNull="true" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
-                    <![CDATA[<td>{$item}</td>]]>
-                </ReportItem>
-            </ReportItemSet>
-            <ReportItemSet id="subproject_champions" type="SubProjectChampionsReportItemSet">
-                <ReportItem id="subproject_champion_pdf" type="PDFReportItem" noRenderIfNull="true" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
-                    <![CDATA[<td>{$item}</td>]]>
-                </ReportItem>
-            </ReportItemSet>
+            <ReportItem id="project_champion_pdf" type="PDFReportItem" reportType="ProjectChampionsReportPDF" width="100%" project="true" year="2013" buttonName="Champions PDF">
+                <![CDATA[<td>{$item}</td></tr>]]>
+            </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_tail" type="StaticReportItem">
             <![CDATA[</table>]]>
