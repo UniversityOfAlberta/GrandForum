@@ -125,7 +125,40 @@ foreach($hqps as $hqp){
     if(($dept == "" || $dept == "Unknown" || $dept == "Other" ||
        $uni == "" || $uni == "Unknown") &&
        ($dept2 != $dept || $uni2 != $uni)){
-        addUniversity($hqp, $uni2, $dept2, $person->getPosition());
+        addUniversity($hqp, $uni2, $dept2, $hqp->getPosition());
+    }
+    else{
+        $uni = $hqp->getUni();
+        $dept = $hqp->getDepartment();
+        $uni2 = $uni;
+        $dept2 = $dept;
+        if($uni == "" || $uni == "Unknown"){
+            $unis = array();
+            foreach($hqp->getSupervisorsDuring('2010-01-01','2100-01-01') as $sup){
+                if($sup->getUni() != "" && $sup->getUni() != "Unknown"){
+                    $unis[$sup->getUni()] = $sup->getUni();
+                }
+            }
+            if(count($unis) == 1){
+                $uni2 = implode($unis);
+            }
+        }
+        if($dept == "" || $dept == "Unknown" || $dept == "Other"){
+            $depts = array();
+            foreach($hqp->getSupervisorsDuring('2010-01-01','2100-01-01') as $sup){
+                if($sup->getDepartment() != "" && $sup->getDepartment() != "Unknown" && $sup->getDepartment() != "Other"){
+                    $depts[$sup->getDepartment()] = $sup->getDepartment();
+                }
+            }
+            if(count($depts) == 1){
+                $dept2 = implode($depts);
+            }
+        }
+        if(($dept == "" || $dept == "Unknown" || $dept == "Other" ||
+           $uni == "" || $uni == "Unknown") &&
+           ($dept2 != $dept || $uni2 != $uni)){
+            addUniversity($hqp, $uni2, $dept2, $hqp->getPosition());
+        }
     }
 }
 
