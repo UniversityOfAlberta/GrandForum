@@ -39,7 +39,7 @@
                     </tr>
                     <tr>
                         <td><b>Affiliation:</b></td>
-                        <td>{$user_uni}</td>
+                        <td>{$champ_org}</td>
                     </tr>
                     <tr>
                         <td><b>Sub-Projects:</b></td>
