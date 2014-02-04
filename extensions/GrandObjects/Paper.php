@@ -535,7 +535,7 @@ class Paper extends BackboneModel{
 	}
 	
 	function isGrandRelated(){
-	    return (count($this->getProject()) > 0);
+	    return (count($this->getProjects()) > 0);
 	}
 	
 	// Returns the date of this Paper
