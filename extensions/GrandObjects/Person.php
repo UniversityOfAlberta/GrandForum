@@ -2388,9 +2388,16 @@ class Person extends BackboneModel {
         
         foreach($papers as $pId){
             $paper = Paper::newFromId($pId);
-            if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
-               count($paper->getProjects()) > 0){
-                $papersArray[] = $paper;
+            if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category)){
+                if($grand == 'grand' && count($paper->getProjects()) > 0){
+                    $papersArray[] = $paper;
+                }
+                else if($grand == 'nonGrand' && count($paper->getProjects()) == 0){
+                    $papersArray[] = $paper;
+                }
+                else if($grand == 'both'){
+                    $papersArray[] = $paper;
+                }
             }
         }
         return $papersArray;
