@@ -85,6 +85,7 @@ class ReportItemCallback {
             "champ_full_project" => "getChampFullProject",
             "champ_is_still_champion" => "getChampIsStillChampion",
             "champ_has_started" => "getChampReportHasStarted",
+            "champ_represent" => "getChampRepresent",
             "champ_q1" => "getChampQ1",
             "champ_q2" => "getChampQ2",
             "champ_q3" => "getChampQ3",
@@ -901,6 +902,14 @@ class ReportItemCallback {
             }
         }
         return (!$result) ? "style='color:red;text-decoration:line-through;'" : "";
+    }
+    
+    function getChampRepresent(){
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_REPRESENT, 0);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        return $data;
     }
     
     function getChampQ1(){
