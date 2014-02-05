@@ -154,6 +154,9 @@ class JungAPI extends API{
                     foreach($authors as $author){
                         if(!isset($this->personDisciplines[$author->getName()])){
                             $pDisc = $author->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
+                            if($pDisc == "" || $pDisc == "Unknown" || $pDisc == "Other"){
+                                $pDisc = $author->getDiscipline();
+                            }
                             $this->personDisciplines[$author->getName()] = $pDisc;
                         }
                         else{
@@ -171,6 +174,9 @@ class JungAPI extends API{
             foreach($people as $person){
                 if(!isset($this->personDisciplines[$person->getName()])){
                     $disc = $person->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
+                    if($disc == "" || $disc == "Unknown" || $disc == "Other"){
+                        $disc = $person->getDiscipline();
+                    }
                     $this->personDisciplines[$person->getName()] = $disc;
                 }
                 else{
@@ -238,6 +244,9 @@ class JungAPI extends API{
                 if(!isset($personDisciplines[$edge['b']])){
                     $b = Person::newFromName($edge['b']);
                     $disc = $b->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
+                    if($disc == "" || $disc == "Unknown" || $disc == "Other"){
+                        $disc = $b->getDiscipline();
+                    }
                     $personDisciplines[$edge['b']] = $disc;
                 }
                 else{
@@ -328,6 +337,9 @@ class JungAPI extends API{
                     if($isCurrentYear){
                         if(!isset($this->personDisciplines[$author->getName()])){
                             $disc = $author->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
+                            if($disc == "" || $disc == "Unknown" || $disc == "Other"){
+                                $disc = $author->getDiscipline();
+                            }
                             $this->personDisciplines[$author->getName()] = $disc;
                         }
                         else{
@@ -441,6 +453,9 @@ class JungAPI extends API{
             
             if(!isset($this->personDisciplines[$person->getName()])){
                 $disc = $person->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
+                if($disc == "" || $disc == "Unknown" || $disc == "Other"){
+                    $disc = $person->getDiscipline();
+                }
                 $this->personDisciplines[$person->getName()] = $disc;
             }
             else{
@@ -723,6 +738,9 @@ class JungAPI extends API{
         $depts = array();
         foreach($nodes as $node){
             $disc = $node->getDisciplineDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
+            if($disc == "" || $disc == "Unknown" || $disc == "Other"){
+                $disc = $node->getDiscipline();
+            }
             $depts[$disc][] = $node;
         }
         $edges = array();
