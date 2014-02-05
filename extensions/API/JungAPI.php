@@ -316,6 +316,9 @@ class JungAPI extends API{
                 foreach($authors as $author){
                     if(!isset($this->personUniversities[$author->getName()])){
                         $uni = $author->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
+                        if($uni == "" || $uni == "Unknown"){
+                            $uni = $author->getUniversity();
+                        }
                         $this->personUniversities[$author->getName()] = $uni;
                     }
                     else{
@@ -446,6 +449,9 @@ class JungAPI extends API{
             
             if(!isset($this->personUniversities[$person->getName()])){
                 $uni = $person->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
+                if($uni == "" || $uni == "Unknown"){
+                    $uni = $person->getUniversity();
+                }
                 $this->personUniversities[$person->getName()] = $uni;
             }
             
@@ -661,7 +667,11 @@ class JungAPI extends API{
         $unis = array();
         foreach($nodes as $node){
             if(!isset($this->personUniversities[$node->getName()])){
-                $this->personUniversities[$node->getName()] = $node->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
+                $uni = $node->getUniversityDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
+                if($uni == "" || $uni == "Unknown"){
+                    $uni = $node->getUniversity();
+                }
+                $this->personUniversities[$node->getName()] = $uni;
             }
             $uni = $this->personUniversities[$node->getName()];
             $unis[$uni['university']][] = $node;
