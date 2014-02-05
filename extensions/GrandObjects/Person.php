@@ -1212,9 +1212,9 @@ class Person extends BackboneModel {
                 ORDER BY uu.id DESC";
         $data = DBFunctions::execSQL($sql);
         if(DBFunctions::getNRows() > 0){
-            return array("university" => str_replace("&", "&amp;", $data[0]['university_name']),
-                         "department" => str_replace("&", "&amp;", $data[0]['department']),
-                         "position"   => str_replace("&", "&amp;", $data[0]['position']));
+            return array("university" => $data[0]['university_name'],
+                         "department" => $data[0]['department'],
+                         "position"   => $data[0]['position']);
         }
         else{
             return null;
