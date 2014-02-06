@@ -49,7 +49,8 @@
                     <tr>
                         <th style="min-width:110px;">Project Name</th>
                         <th>Project Report PDF</th>
-                        <th style="min-width:110px;">Champion PDFs</th>
+                        <th style="min-width:110px;">Champion PDF</th>
+                        <th style="min-width:110px;">ISAC PDF</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -58,6 +59,9 @@
                 <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
             </ReportItem>
             <ReportItem id="project_champion_pdf" type="PDFReportItem" reportType="ProjectChampionsReportPDF" width="100%" project="true" year="2013" buttonName="Champions PDF">
+                <![CDATA[<td>{$item}</td>]]>
+            </ReportItem>
+            <ReportItem id="project_isac_pdf" type="PDFReportItem" reportType="ProjectISACCommentsPDF" width="100%" project="true" year="2013" buttonName="ISAC PDF">
                 <![CDATA[<td>{$item}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>

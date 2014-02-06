@@ -172,6 +172,15 @@ class Report extends AbstractReport{
                          'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=ISACReview",
                         );
             }
+            if($person->isRole(ISAC) || $person->isRoleAtLeast(MANAGER) || $person->getId() == 11){ 
+                // Check if the person is ISAC, MANAGER or K.S.B, which is super ugly, but was requested last minute, so no time to do it any better
+                @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "ISACMaterials") ? "selected" : false;
+                $content_actions[] = array (
+                         'class' => $class,
+                         'text'  => "ISAC Materials",
+                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=ISACMaterials",
+                        );
+            }
 
             //LOI Evaluation
             if($person->isRoleAtLeast(RMC)){
