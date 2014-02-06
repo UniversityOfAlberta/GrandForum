@@ -29,6 +29,10 @@ class JungAPI extends API{
     }
     
     function outputJSON(){
+        $me = Person::newFromWgUser();
+        if(!$me->isRoleAtLeast(MANAGER)){
+            return;
+        }
         ini_set("memory_limit", "512M");
         $json = array();
 
