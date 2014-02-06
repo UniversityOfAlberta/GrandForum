@@ -760,7 +760,7 @@ class JungAPI extends API{
     }
     
     function isLoginRequired(){
-        return false;
+        return true;
     }
 }
 
