@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="ISAC Materials" reportType="RP_ISAC" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
+<Report name="ISAC Reviews" reportType="RP_ISAC" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
         <Role role="ISAC">
             <SectionPermission id="project2_materials" permissions="rw" />

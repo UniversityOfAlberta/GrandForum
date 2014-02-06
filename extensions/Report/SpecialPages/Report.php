@@ -177,7 +177,7 @@ class Report extends AbstractReport{
                 @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "ISACMaterials") ? "selected" : false;
                 $content_actions[] = array (
                          'class' => $class,
-                         'text'  => "ISAC Materials",
+                         'text'  => "ISAC Reviews",
                          'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=ISACMaterials",
                         );
             }
