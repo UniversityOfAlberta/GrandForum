@@ -7,6 +7,7 @@ $wgSpecialPages['CCVExport'] = 'CCVExport';
 $wgExtensionMessagesFiles['CCVExport'] = $dir . 'CCVExport.i18n.php';
 $wgSpecialPageGroups['CCVExport'] = 'grand-tools';
 
+
 function runCCVExport($par) {
 	CCVExport::run($par);
 }
@@ -21,7 +22,12 @@ class CCVExport extends SpecialPage {
 	
 	static function run(){
 	  global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
+    global $userID, $wgDBname;
 	  
+    $userID = $wgUser->getId();
+    #$userID = 1392;  // TEST
+    #$userID = 3;     // TEST
+
 	  if(isset($_GET['getXML'])){
       $table_type = $_GET['getXML'];
       $xml = "";
@@ -65,6 +71,10 @@ class CCVExport extends SpecialPage {
     # Display export preview
     $xml = CCVExport::exportXML();
     $xml = str_replace("<", "&lt;", $xml); # show tags as text
+    $xml = str_replace("\n", "<br/>", $xml); # show newlines
+    $xml = str_replace(" ", "&nbsp;", $xml); # show indents
+    #$wgOut->addHTML('<p><b>userID</b> '.$userID);    // TEST
+    #$wgOut->addHTML('<p><b>dbase</b> '.$wgDBname);   // TEST
     # 'pre-wrap' for extra-long lines:
     $wgOut->addHTML('<p><pre style="white-space:pre-wrap;">'.$xml."</pre></p>");
   }
@@ -73,6 +83,7 @@ class CCVExport extends SpecialPage {
 
   static function exportXML(){
     global $wgOut, $wgUser;
+    global $userID;
 
     $map_file = getcwd()."/extensions/CCVExport/Products.xml";
     $hqp_file = getcwd()."/extensions/CCVExport/HQP.xml";
@@ -82,11 +93,10 @@ class CCVExport extends SpecialPage {
     $hqp_map = simplexml_load_file($hqp_file);
     $ccv = simplexml_load_file($ccv_tmpl);
 
-    ## For testing, use e.g.:
-    #$person = Person::newFromId(3);
-    $person = Person::newFromId($wgUser->getId());
+    $person = Person::newFromId($userID); // Set at top in case testing
 
-    $all_products = $person->getPapers("Publication");
+    #$all_products = $person->getPapers("Publication");
+    $all_products = $person->getPapers("Publication", false, "both");
 
     $prod_sorted = array();
 
