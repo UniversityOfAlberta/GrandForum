@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Champion Reports" reportType="RP_PROJECT_CHAMP" pdfType="RPTP_PROJECT_CHAMP" pdfFiles="ProjectChampionsReportPDF" ajax="true" disabled="false">
+<Report name="Project Champion Reports" reportType="RP_PROJECT_CHAMP" pdfType="RPTP_PROJECT_CHAMP" pdfFiles="ProjectChampionsReportPDF" ajax="true" disabled="false" personId="0">
     <ReportSection name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
