@@ -198,13 +198,13 @@ class PersonProfileTab extends AbstractEditableTab {
         $ethics_str = "<b>Have not completed the TCPS2 tutorial.</b>";
         if($completed_tutorial == "Yes"){
             $ethics_str = "<table><tr>
-            <td><img style='vertical-align:bottom;' width='100px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/ethical_button.jpg' /></td>
+            <td><img style='vertical-align:bottom;' height='66px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/ethical_button.jpg' /></td>
             <td>&nbsp;<h3>I have completed the TCPS2 tutorial on {$date}.</h3></td>
             <tr></table>";
         }
         else{
             $ethics_str = "<table><tr>
-            <td><img style='vertical-align:bottom;' width='100px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/ethical_button_not.jpg' /></td>
+            <td><img style='vertical-align:bottom;' height='66px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/ethical_button_not.jpg' /></td>
             <td>&nbsp;<h3>I have not completed the TCPS2 tutorial.</h3></td>
             <tr></table>";
         }
@@ -264,7 +264,7 @@ EOF;
             <table><tr>
             <td style='position:relative; padding:0;'>
                 <span class='percent_lbl'>{$perc}</span>
-                <img style='vertical-align:bottom;' width='100px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/{$button}' />
+                <img style='vertical-align:bottom;' height='66px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/{$button}' />
                 <span class='supervisor_lbl'>Supervisor</span>
             </td>
             <td style='padding-left:15px;'><h3>{$ethical_hqp} of my {$total_hqp} students have completed the TCPS2 Tutorial.</h3></td>
