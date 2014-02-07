@@ -25,8 +25,8 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" phase="2">
-            <ReportItem id="project_name" type="StaticReportItem">
-                <![CDATA[<tr><td>{$project_name}</td>]]>
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" width="100%" project="true" year="2013">
+                <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
             </ReportItem>
             <ReportItem id="project_isac_pdf" type="PDFReportItem" reportType="ProjectISACCommentsPDF" width="100%" project="true" year="2013" buttonName="ISAC PDF">
                 <![CDATA[<td>{$item}</td></tr>]]>
