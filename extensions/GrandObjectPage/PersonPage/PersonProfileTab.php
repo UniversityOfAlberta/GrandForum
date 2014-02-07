@@ -332,7 +332,8 @@ EOF;
      */
     function showCCV($person, $visibility){
         global $wgUser, $wgServer, $wgScriptPath;
-        if($person->isRole(PNI) || $person->isRole(CNI)){
+        $me = Person::newFromWgUser();
+        if(($person->isRole(PNI) || $person->isRole(CNI)) && $me->getId() == $person->getId()){
             $this->html .= "<a style='margin-left:35px;' class='button' href='$wgServer$wgScriptPath/index.php/Special:CCVExport?getXML'>Download CCV</a>";
         }
     }
