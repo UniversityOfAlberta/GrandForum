@@ -898,7 +898,7 @@ class Person extends BackboneModel {
     // Returns the path to a photo of this Person if it exists
     function getPhoto($cached=false){
         global $wgServer, $wgScriptPath;
-        if($this->photo == null || $cached){
+        if($this->photo == null || !$cached){
             if(file_exists("Photos/".str_ireplace(".", "_", $this->name).".jpg")){
                 $this->photo = "$wgServer$wgScriptPath/Photos/".str_ireplace(".", "_", $this->name).".jpg";
                 if(!$cached){
