@@ -16,14 +16,17 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->person->getLastRole();
         $this->html .= "<table width='100%'>";
         $this->showPhoto($this->person, $this->visibility);
-        $this->html .= "</td><td width='40%' valign='top'>";
+        $this->html .= "</td><td width='35%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
         if($wgUser->isLoggedIn()){
             $this->html .= "</td><td width='20%'>";
-            $this->html .= "</td><td valign='top' width='40%'>";
+            $this->html .= "</td><td valign='top' width='45%'>";
             $this->showEthics($this->person, $this->visibility);
             $this->html .= "</td><td>";
             $this->showCCV($this->person, $this->visibility);
+        }
+        else{
+            $this->html .= "</td><td width='65%'>";
         }
         $this->html .= "</td></tr></table>";
         $this->html .= "<h2>Profile</h2>";
