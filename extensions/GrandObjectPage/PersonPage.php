@@ -91,7 +91,6 @@ class PersonPage {
                 $tabbedPage = new TabbedPage("person");
                 
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
-                //$tabbedPage->addTab(new PersonContactTab($person, $visibility));
                 $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
                 $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));

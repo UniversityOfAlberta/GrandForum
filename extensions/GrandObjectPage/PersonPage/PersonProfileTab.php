@@ -14,25 +14,29 @@ class PersonProfileTab extends AbstractEditableTab {
     function generateBody(){
         global $wgUser;
         $this->person->getLastRole();
-        $this->html .= "<table>";
-            $this->showPhoto($this->person, $this->visibility);
-        $this->html .= "</td><td style='padding-right:25px;' valign='top'>";
-            $this->showContact($this->person, $this->visibility);
-        $this->html .= "</table>";
+        $this->html .= "<table width='100%'>";
+        $this->showPhoto($this->person, $this->visibility);
+        $this->html .= "</td><td width='40%' valign='top'>";
+        $this->showContact($this->person, $this->visibility);
+        if($wgUser->isLoggedIn()){
+            $this->html .= "</td><td width='20%'>";
+            $this->html .= "</td><td valign='top' width='40%'>";
+            $this->showEthics($this->person, $this->visibility);
+            $this->html .= "</td><td>";
+            $this->showCCV($this->person, $this->visibility);
+        }
+        $this->html .= "</td></tr></table>";
         $this->html .= "<h2>Profile</h2>";
         $this->showProfile($this->person, $this->visibility);
-        if($wgUser->isLoggedIn()){
-            $this->showCCV($this->person, $this->visibility);
-            $this->showEthics($this->person, $this->visibility);
-        }
+        
         return $this->html;
     }
     
     function generateEditBody(){
         $this->html .= "<table>";
-            $this->showEditPhoto($this->person, $this->visibility);
+        $this->showEditPhoto($this->person, $this->visibility);
         $this->html .= "</td><td style='padding-right:25px;' valign='top'>";
-            $this->showEditContact($this->person, $this->visibility);
+        $this->showEditContact($this->person, $this->visibility);
         $this->html .= "</table>";
         $this->html .= "<h2>Profile</h2>";
         $this->showEditProfile($this->person, $this->visibility);
@@ -191,15 +195,15 @@ class PersonProfileTab extends AbstractEditableTab {
         $ethics = $person->getEthics();
         $completed_tutorial = ($ethics['completed_tutorial'])? "Yes" : "No";
         $date = ($ethics['date'] == '0000-00-00')? "" : $ethics['date'];
-        $ethics_str = "<h2>Ethics</h2><b>Have not completed the TCPS2 tutorial.</b>";
+        $ethics_str = "<b>Have not completed the TCPS2 tutorial.</b>";
         if($completed_tutorial == "Yes"){
-            $ethics_str = "<h2>Ethics</h2><table><tr>
+            $ethics_str = "<table><tr>
             <td><img style='vertical-align:bottom;' width='100px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/ethical_button.jpg' /></td>
             <td>&nbsp;<h3>I have completed the TCPS2 tutorial on {$date}.</h3></td>
             <tr></table>";
         }
         else{
-            $ethics_str = "<h2>Ethics</h2><table><tr>
+            $ethics_str = "<table><tr>
             <td><img style='vertical-align:bottom;' width='100px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/ethical_button_not.jpg' /></td>
             <td>&nbsp;<h3>I have not completed the TCPS2 tutorial.</h3></td>
             <tr></table>";
@@ -257,7 +261,6 @@ EOF;
                 font-weight: bold;
             }
             </style>
-            <h2>Ethics</h2>
             <table><tr>
             <td style='position:relative; padding:0;'>
                 <span class='percent_lbl'>{$perc}</span>
@@ -292,7 +295,6 @@ EOF;
                 $( "#datepicker" ).datepicker( { dateFormat: "yy-mm-dd" } );
             });
             </script>
-            <br /><br />
             <table border='0' cellpadding='5' cellspacing='0' width='70%'>
             <tr>
             <td>
@@ -328,7 +330,7 @@ EOF;
     function showCCV($person, $visibility){
         global $wgUser, $wgServer, $wgScriptPath;
         if($person->isRole(PNI) || $person->isRole(CNI)){
-            $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:CCVExport?getXML'>Download CCV</a>";
+            $this->html .= "<a style='margin-left:35px;' class='button' href='$wgServer$wgScriptPath/index.php/Special:CCVExport?getXML'>Download CCV</a>";
         }
     }
     
