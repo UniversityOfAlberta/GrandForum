@@ -24,9 +24,9 @@ class CCVExport extends SpecialPage {
 	  global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
     global $userID, $wgDBname;
 	  
-    #$userID = $wgUser->getId();
+    $userID = $wgUser->getId();
     #$userID = 1392;  // TEST
-    $userID = 3;     // TEST
+    #$userID = 3;     // TEST
 
 	  if(isset($_GET['getXML'])){
       $table_type = $_GET['getXML'];
@@ -73,8 +73,8 @@ class CCVExport extends SpecialPage {
     $xml = str_replace("<", "&lt;", $xml); # show tags as text
     $xml = str_replace("\n", "<br/>", $xml); # show newlines
     $xml = str_replace(" ", "&nbsp;", $xml); # show indents
-    $wgOut->addHTML('<p><b>userID</b> '.$userID);    // TEST
-    $wgOut->addHTML('<p><b>dbase</b> '.$wgDBname);   // TEST
+    #$wgOut->addHTML('<p><b>userID</b> '.$userID);    // TEST
+    #$wgOut->addHTML('<p><b>dbase</b> '.$wgDBname);   // TEST
     # 'pre-wrap' for extra-long lines:
     $wgOut->addHTML('<p><pre style="white-space:pre-wrap;">'.$xml."</pre></p>");
   }
