@@ -179,11 +179,6 @@ $egAnnokiExtensions['QueryableTable']     = array( 'name' => 'Queryable Table',
                           'path' => "$IP/extensions/QueryableTable/QueryableTable.php",
                           'enabled' => true,
                           );
-                          
-$egAnnokiExtensions['OutputArticleText']     = array( 'name' => 'OutputArticleText',
-                          'path' => "$IP/extensions/OutputArticleText/OutputArticleText.php",
-                          'enabled' => true,
-                          );
 
 $egAnnokiExtensions['CreatePDF']     = array( 'name' => 'Create PDF Tool',
                           'path' => "$IP/extensions/CreatePDF/CreatePDF.php",
