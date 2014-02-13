@@ -60,6 +60,26 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         self::$scenarioId++;
     }
     
+    public function spin($lambda, $wait = 5000, $args=array()){
+        $interval = 500*1000;
+        $timeElapsed = 0;
+        $start = microtime(true);
+        $time = microtime(true);
+        while($timeElapsed*1000 < $wait){
+            try{
+                if($lambda($this, $args)){
+                    return true;
+                }
+            }catch(Exception $e){
+                // do nothing
+            }
+            usleep($interval);
+            $time = microtime(true);
+            $timeElapsed = ($time - $start);
+        }
+        throw new Exception("Timeout thrown");
+    }
+    
     /**
      * @BeforeSuite
      */
@@ -78,8 +98,6 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     public static function clean($event){
         global $currentSession;
         $currentSession->getSession()->stop();
-        //system("killall java");
-        //system("killall Xvfb");
         unlink("../test.tmp");
     }
     
@@ -162,6 +180,45 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     }
     
     /**
+     * @When /^I click by css "([^"]*)" if exists$/
+     */
+    public function iClickByCssIfExists($sel){
+        $el = $this->getSession()->getPage()->find('css', $sel);
+        if (null === $el) {
+            return true;
+        }
+        $el->click();
+    }
+    
+    /**
+     * @When /^(?:|I )check "(?P<option>(?:[^"]|\\")*)" if exists$/
+     */
+    public function iCheckIfExists($option){
+        try {
+            $this->checkOption($option);
+        }
+        catch(Exception $e){
+            
+        }
+        // Always pass
+        return true;
+    }
+    
+    /**
+     * @When /^(?:|I )uncheck "(?P<option>(?:[^"]|\\")*)" if exists$/
+     */
+    public function iUnCheckIfExists($option){
+        try {
+            $this->unCheckOption($option);
+        }
+        catch(Exception $e){
+            
+        }
+        // Always pass
+        return true;
+    }
+    
+    /**
      * @When /^I switch to iframe "([^"]*)"$/
      */
     public function iSwitchToIframe($name){
@@ -218,26 +275,20 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      * @Given /^I wait until I see "([^"]*)" up to "([^"]*)"$/
      */
     public function iWaitOrUntilISee($text, $ms){
-        $interval = 100;
-        $timeElapsed = 0;
-        while($timeElapsed < $ms && !$this->getSession()->getPage()->hasContent($text)){
-            usleep($interval*1000);
-            $timeElapsed += $interval;
-        }
-        $this->assertSession()->pageTextContains($text);
+        $this->spin(function($context, $args){
+            $context->assertPageContainsText($args['text']);
+            return true;
+        }, $ms, array('text' => $text));
     }
     
     /**
      * @Given /^I wait until I no longer see "([^"]*)" up to "([^"]*)"$/
      */
     public function iWaitOrUntilINoLongerSee($text, $ms){
-        $interval = 100;
-        $timeElapsed = 0;
-        while($timeElapsed < $ms && $this->getSession()->getPage()->hasContent($text)){
-            usleep($interval*1000);
-            $timeElapsed += $interval;
-        }
-        $this->assertSession()->pageTextNotContains($text);
+        $this->spin(function($context, $args){
+            $context->assertPageNotContainsText($args['text']);
+            return true;
+        }, $ms, array('text' => $text));
     }
     
     /**
@@ -273,14 +324,16 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function visitProfile($name){
         $html = str_get_html($this->getSession()->getPage()->getContent());
-        $a = $html->find('a.Bold', 0);
-        $affiliation = $html->find('li.dataCol5', 0);
+        $a = $html->find('span.docTitle > a', 0);
+        $affiliation = $html->find('div.dataCol5', 0);
         if($affiliation != null){
             self::$dbJSON['authors'][$name]['affiliation'] = $affiliation->plaintext;
         }
         if($a != null){
             $this->getSession()->visit("http://www.scopus.com".$a->href);
+            self::$dbJSON['authors'][$name]['url'] = "http://www.scopus.com".$a->href;
         }
+        file_put_contents("db.json", json_encode(self::$dbJSON));
         $html->clear();
         unset($html);
     }
@@ -290,25 +343,73 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function scrapeSubjects($name){
         $html = str_get_html($this->getSession()->getPage()->getContent());
-        $sub = @$html->find(".tableMbWh-T", 18);
-        if($sub != null){
-            $row = $sub->plaintext;
-            $row = str_replace("Less...", "", $row);
-            $row = str_replace("More...", "", $row);
-            $row = str_replace("<br>", "\n", $row);
-            if(!isset(self::$dbJSON['authors'][$name]['subjects'])){
-                self::$dbJSON['authors'][$name]['subjects'] = $row;
+        $subjs = @$html->find("#clusterAttribute_SUBJAREA", 0);
+        if($subjs != null){
+            $rows = $subjs->find("li");
+            foreach($rows as $row){
+                $subject = trim($row->find("label", 0)->innertext);
+                $amount = str_replace(")", "", str_replace("(", "", $row->find("span.floatL", 0)->innertext));
+                @self::$dbJSON['authors'][$name]['subjects'][$subject] += $amount;
             }
-            else{
-                self::$dbJSON['authors'][$name]['subjects'] .= "<br />".$row;
-            }
-            $sub->clear();
-            unset($sub);
+            $subjs->clear();
+            unset($subjs);
         }
-        self::$dbJSON['authors'][$name]['url'] = $this->getSession()->getCurrentUrl();
         file_put_contents("db.json", json_encode(self::$dbJSON));
         $html->clear();
         unset($html);
+    }
+    
+    /**
+     * @Given /^I scrape subjects for "([^"]*)" before$/
+     */
+    public function scrapeSubjectsBefore($name){
+        if(isset(self::$dbJSON['authors'][$name]['nPubs'][2007]) ||
+           isset(self::$dbJSON['authors'][$name]['nPubs'][2008]) ||
+           isset(self::$dbJSON['authors'][$name]['nPubs'][2009])){
+            $html = str_get_html($this->getSession()->getPage()->getContent());
+            $subjs = @$html->find("#clusterAttribute_SUBJAREA", 0);
+            if($subjs != null){
+                $rows = $subjs->find("li");
+                foreach($rows as $row){
+                    $subject = trim($row->find("label", 0)->innertext);
+                    $amount = str_replace(")", "", str_replace("(", "", $row->find("span.floatL", 0)->innertext));
+                    @self::$dbJSON['authors'][$name]['subjectsBefore'][$subject] += $amount;
+                }
+                $subjs->clear();
+                unset($subjs);
+            }
+            file_put_contents("db.json", json_encode(self::$dbJSON));
+            $html->clear();
+            unset($html);
+            $this->getSession()->back();
+        }
+    }
+    
+    /**
+     * @Given /^I scrape subjects for "([^"]*)" after$/
+     */
+    public function scrapeSubjectsAfter($name){
+        if(isset(self::$dbJSON['authors'][$name]['nPubs'][2010]) ||
+           isset(self::$dbJSON['authors'][$name]['nPubs'][2011]) ||
+           isset(self::$dbJSON['authors'][$name]['nPubs'][2012]) ||
+           isset(self::$dbJSON['authors'][$name]['nPubs'][2013])){
+            $html = str_get_html($this->getSession()->getPage()->getContent());
+            $subjs = @$html->find("#clusterAttribute_SUBJAREA", 0);
+            if($subjs != null){
+                $rows = $subjs->find("li");
+                foreach($rows as $row){
+                    $subject = trim($row->find("label", 0)->innertext);
+                    $amount = str_replace(")", "", str_replace("(", "", $row->find("span.floatL", 0)->innertext));
+                    @self::$dbJSON['authors'][$name]['subjectsAfter'][$subject] += $amount;
+                }
+                $subjs->clear();
+                unset($subjs);
+            }
+            file_put_contents("db.json", json_encode(self::$dbJSON));
+            $html->clear();
+            unset($html);
+            $this->getSession()->back();
+        }
     }
     
     /**
@@ -337,18 +438,16 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function scrapeCitationYears($name){
         $html = str_get_html($this->getSession()->getPage()->getContent());
-        $years = array();
-        $years[2007] = $html->find("#year_2007 a", 0);
-        $years[2008] = $html->find("#year_2008 a", 0);
-        $years[2009] = $html->find("#year_2009 a", 0);
-        $years[2010] = $html->find("#year_2010 a", 0);
-        $years[2011] = $html->find("#year_2011 a", 0);
-        $years[2012] = $html->find("#year_2012 a", 0);
-        $years[2013] = $html->find("#year_2013 a", 0);
-        foreach($years as $year => $amount){
-            if($amount != null){
-                @self::$dbJSON['authors'][$name]['nCits'][$year] += $amount->innertext;
+        $pubs = @$html->find("#clusterAttribute_PUBYEAR", 0);
+        if($pubs != null){
+            $rows = $pubs->find("li");
+            foreach($rows as $row){
+                $year = str_replace(" ", "", $row->find("label", 0)->innertext);
+                $amount = str_replace(")", "", str_replace("(", "", $row->find("span.floatL", 0)->innertext));
+                @self::$dbJSON['authors'][$name]['nCits'][$year] += $amount;
             }
+            $pubs->clear();
+            unset($pubs);
         }
         file_put_contents("db.json", json_encode(self::$dbJSON));
         $html->clear();
