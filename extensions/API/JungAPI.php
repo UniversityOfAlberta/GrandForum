@@ -15,11 +15,13 @@ class JungAPI extends API{
         $this->addGET("year", true, "", "2012");
         $this->addGET("type", false, "", "Physical");
         $this->addGET("nodeType", false, "", "Person");
-        $this->addGET("output", false, "", "json"); 
+        $this->addGET("output", false, "", "json");
+        $this->addGET("passcode", false, "", "");
     }
 
     function processParams($params){
         $_GET['year'] = mysql_real_escape_string($_GET['year']);
+        $_GET['passcode'] = (isset($_GET['passcode'])) ? $_GET['passcode'] : "";
     }
 
     function doAction(){
@@ -30,10 +32,10 @@ class JungAPI extends API{
     
     function outputJSON(){
         $me = Person::newFromWgUser();
-        if(!$me->isRoleAtLeast(MANAGER)){
+        ini_set("memory_limit", "512M");
+        if($_GET['passcode'] != "grandjungstats"){
             return;
         }
-        ini_set("memory_limit", "512M");
         $json = array();
 
         $this->year = $_GET['year'];
@@ -68,6 +70,9 @@ class JungAPI extends API{
             }
         }
         switch($this->type){
+            case "Publication":
+                $edges = array_merge($this->getCoPublicationEdges($nodes));
+                break;
             case "Physical":
                 $edges = array_merge($this->getContributionEdges($nodes),
                                      $this->getCoProduceEdges($nodes),
@@ -604,6 +609,30 @@ class JungAPI extends API{
         return $edges;
     }
     
+    function getCoPublicationEdges($nodes){
+        $edges = array();
+        $ids = array();
+        foreach($nodes as $node){
+            $ids[$node->getId()] = true;
+        }
+        foreach($nodes as $person){
+            $products = $person->getPapersAuthored('Publication', $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
+            foreach($products as $product){
+                $authors = $product->getAuthors();
+                foreach($authors as $auth){
+                    if(isset($ids[$auth->getId()]) && $person->getId() < $auth->getId()){
+                        $edges[] = array('a' => $person->getName(), 
+                                         'b' => $auth->getName(),
+                                         'type' => "Person",
+                                         'edgeType' => 'CoPublication',
+                                         'direction' => "Undirected");
+                    }
+                }
+            }
+        }
+        return $edges;
+    }
+    
     function getCoSuperviseEdges($nodes){
         $edges = array();
         $ids = array();
@@ -764,7 +793,7 @@ class JungAPI extends API{
     }
     
     function isLoginRequired(){
-        return true;
+        return false;
     }
 }
 
