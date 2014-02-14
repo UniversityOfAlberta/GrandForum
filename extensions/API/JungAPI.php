@@ -2,6 +2,36 @@
 
 class JungAPI extends API{
 
+    static $geoCodes = array('University of Toronto' => '43.670906,-79.393331',
+                             'University of Alberta' => '53.538198,-113.502964',
+                             'University of Calgary' => '51.040733,-114.079665',
+                             'Simon Fraser University' => '49.245794,-122.976173',
+                             'University of British Columbia' => '49.253976,-123.108091',
+                             'University of Victoria' => '48.426808,-123.362217',
+                             'Royal Rhodes University' => '48.426808,-123.362217',
+                             'Emily Carr University of Art and Design' => '49.266357,-123.135943',
+                             'University of Saskatchewan' => '52.130824,-106.653276',
+                             'University of Manitoba' => '49.893209,-97.274861',
+                             'Ontario College of Art & Design' => '43.670906,-79.393331',
+                             'Carleton University' => '45.393348,-75.695610',
+                             'University of Western Ontario' => '42.980791,-81.246983',
+                             'University of Waterloo' => '43.465192,-80.521889',
+                             'Ryerson University' => '43.670906,-79.393331',
+                             'University of Ottawa' => '45.393348,-75.695610',
+                             'Wilfrid Laurier University' => '43.465192,-80.521889',
+                             'University of Ontario Institute of Technology' => '43.897274,-78.860550',
+                             'Queen`s University' => '44.241469,-76.525730',
+                             'York University' => '43.670906,-79.393331',
+                             'Concordia University' => '45.536482,-73.592702',
+                             'McGill University' => '45.536482,-73.592702',
+                             'University of Montreal' => '45.536482,-73.592702',
+                             'Ecole de technologie superieure de l`universite du Quebec' => '45.536482,-73.592702',
+                             'Dalhousie University' => '44.654813,-63.601594',
+                             'Nova Scotia College of Art and Design' => '44.654813,-63.601594',
+                             'Memorial University of Newfoundland' => '47.564597,-52.709055',
+                             'McMaster University' => '43.238352,-79.849854');
+                             
+
     var $personDisciplines = array();
     var $personUniversities = array();
     var $year = REPORTING_YEAR;
@@ -124,14 +154,17 @@ class JungAPI extends API{
             echo json_encode($json);
         }
         else if($this->output == "csv_nodes"){
-            echo "\"Nodes\",\"Id\",\"Discipline\",\"University\",\"Title\",\"Gender\"\n";
+            echo "\"Nodes\",\"Id\",\"Discipline\",\"University\",\"Title\",\"Gender\",\"latitude\",\"longitude\"\n";
             foreach($json['nodes'] as $node){
                 $meta = $node['meta'];
                 $disc = $meta['Discipline'];
                 $uni = ($meta['University'] != "") ? $meta['University'] : "Unknown";
                 $title = ($meta['Title'] != "") ? $meta['Title'] : "Unknown";
                 $gender = ($meta['Gender'] != "") ? $meta['Gender'] : "Unknown";
-                echo "\"{$node['name']}\",\"{$node['name']}\",\"{$disc}\",\"{$uni}\",\"{$title}\",\"{$gender}\"\n";
+                $geoCode = ($meta['geoCode'] != "") ? $meta['geoCode'] : ",";
+                if($geoCode != ","){
+                    echo "\"{$node['name']}\",\"{$node['name']}\",\"{$disc}\",\"{$uni}\",\"{$title}\",\"{$gender}\",{$geoCode}\n";
+                }
             }
         }
         else if($this->output == "csv_edges"){
@@ -513,6 +546,8 @@ class JungAPI extends API{
             $tuple['Gender'] = (string)$person->getGender();
             $tuple['Nationality'] = (string)$person->getNationality();
             $tuple['yearRegistered'] = (string)substr($person->getRegistration(), 0, 4);
+            
+            @$tuple['geoCode'] = self::$geoCodes[$tuple['University']];
             
             // Extra
             $tuple['Projects'] = array();
