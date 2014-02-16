@@ -238,6 +238,7 @@ EOF;
 		    
 		    #pdfBody td, #pdfBody th {
 		        font-family: helvetica !important;
+		        background-color: #FFFFFF;
 		    }
 		    
 		    #pdfBody .report_name {
