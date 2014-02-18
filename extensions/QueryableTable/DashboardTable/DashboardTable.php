@@ -153,7 +153,7 @@ class DashboardTable extends QueryableTable{
 	                foreach($tab->getElementsByTagName("td") as $td){
 	                    $td->removeAttribute('width');
 	                    $td->removeAttribute('nowrap');
-	                    $td->setAttribute('style', $td->getAttribute('style').'background-color:#FFFFFF;');
+	                    $td->setAttribute('style', $td->getAttribute('style'));
 	                }
 	                foreach($tab->getElementsByTagName("table") as $t){
 	                    $t->setAttribute('style', $t->getAttribute('style').'border-spacing:0px;');

@@ -314,10 +314,12 @@ class SpecialAllpages extends IncludableSpecialPage {
 					
 					//$pr = getPageRankFor($s->page_namespace, $s->page_title);
 					
+					$page_title = mysql_real_escape_string($s->page_title);
+					$page_namespace = mysql_real_escape_string($s->page_namespace);
 					$sql = "SELECT r.rev_timestamp, p.page_id
 						FROM mw_page p, mw_revision r
-						WHERE p.page_title = '{$s->page_title}'
-						AND p.page_namespace = '{$s->page_namespace}'
+						WHERE p.page_title = '{$page_title}'
+						AND p.page_namespace = '{$page_namespace}'
 						AND p.page_latest = r.rev_id";
 					$data = $dbr->query($sql);
 					$row = $dbr->fetchRow($data);

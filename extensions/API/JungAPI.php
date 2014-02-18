@@ -2,6 +2,36 @@
 
 class JungAPI extends API{
 
+    static $geoCodes = array('University of Toronto' => '43.670906,-79.393331',
+                             'University of Alberta' => '53.538198,-113.502964',
+                             'University of Calgary' => '51.040733,-114.079665',
+                             'Simon Fraser University' => '49.245794,-122.976173',
+                             'University of British Columbia' => '49.253976,-123.108091',
+                             'University of Victoria' => '48.426808,-123.362217',
+                             'Royal Rhodes University' => '48.426808,-123.362217',
+                             'Emily Carr University of Art and Design' => '49.266357,-123.135943',
+                             'University of Saskatchewan' => '52.130824,-106.653276',
+                             'University of Manitoba' => '49.893209,-97.274861',
+                             'Ontario College of Art & Design' => '43.670906,-79.393331',
+                             'Carleton University' => '45.393348,-75.695610',
+                             'University of Western Ontario' => '42.980791,-81.246983',
+                             'University of Waterloo' => '43.465192,-80.521889',
+                             'Ryerson University' => '43.670906,-79.393331',
+                             'University of Ottawa' => '45.393348,-75.695610',
+                             'Wilfrid Laurier University' => '43.465192,-80.521889',
+                             'University of Ontario Institute of Technology' => '43.897274,-78.860550',
+                             'Queen`s University' => '44.241469,-76.525730',
+                             'York University' => '43.670906,-79.393331',
+                             'Concordia University' => '45.536482,-73.592702',
+                             'McGill University' => '45.536482,-73.592702',
+                             'University of Montreal' => '45.536482,-73.592702',
+                             'Ecole de technologie superieure de l`universite du Quebec' => '45.536482,-73.592702',
+                             'Dalhousie University' => '44.654813,-63.601594',
+                             'Nova Scotia College of Art and Design' => '44.654813,-63.601594',
+                             'Memorial University of Newfoundland' => '47.564597,-52.709055',
+                             'McMaster University' => '43.238352,-79.849854');
+                             
+
     var $personDisciplines = array();
     var $personUniversities = array();
     var $year = REPORTING_YEAR;
@@ -15,11 +45,13 @@ class JungAPI extends API{
         $this->addGET("year", true, "", "2012");
         $this->addGET("type", false, "", "Physical");
         $this->addGET("nodeType", false, "", "Person");
-        $this->addGET("output", false, "", "json"); 
+        $this->addGET("output", false, "", "json");
+        $this->addGET("passcode", false, "", "");
     }
 
     function processParams($params){
         $_GET['year'] = mysql_real_escape_string($_GET['year']);
+        $_GET['passcode'] = (isset($_GET['passcode'])) ? $_GET['passcode'] : "";
     }
 
     function doAction(){
@@ -30,10 +62,10 @@ class JungAPI extends API{
     
     function outputJSON(){
         $me = Person::newFromWgUser();
-        if(!$me->isRoleAtLeast(MANAGER)){
+        ini_set("memory_limit", "512M");
+        if($_GET['passcode'] != "grandjungstats"){
             return;
         }
-        ini_set("memory_limit", "512M");
         $json = array();
 
         $this->year = $_GET['year'];
@@ -68,6 +100,9 @@ class JungAPI extends API{
             }
         }
         switch($this->type){
+            case "Publication":
+                $edges = array_merge($this->getCoPublicationEdges($nodes));
+                break;
             case "Physical":
                 $edges = array_merge($this->getContributionEdges($nodes),
                                      $this->getCoProduceEdges($nodes),
@@ -119,14 +154,17 @@ class JungAPI extends API{
             echo json_encode($json);
         }
         else if($this->output == "csv_nodes"){
-            echo "\"Nodes\",\"Id\",\"Discipline\",\"University\",\"Title\",\"Gender\"\n";
+            echo "\"Nodes\",\"Id\",\"Discipline\",\"University\",\"Title\",\"Gender\",\"latitude\",\"longitude\"\n";
             foreach($json['nodes'] as $node){
                 $meta = $node['meta'];
                 $disc = $meta['Discipline'];
                 $uni = ($meta['University'] != "") ? $meta['University'] : "Unknown";
                 $title = ($meta['Title'] != "") ? $meta['Title'] : "Unknown";
                 $gender = ($meta['Gender'] != "") ? $meta['Gender'] : "Unknown";
-                echo "\"{$node['name']}\",\"{$node['name']}\",\"{$disc}\",\"{$uni}\",\"{$title}\",\"{$gender}\"\n";
+                $geoCode = ($meta['geoCode'] != "") ? $meta['geoCode'] : ",";
+                if($geoCode != ","){
+                    echo "\"{$node['name']}\",\"{$node['name']}\",\"{$disc}\",\"{$uni}\",\"{$title}\",\"{$gender}\",{$geoCode}\n";
+                }
             }
         }
         else if($this->output == "csv_edges"){
@@ -395,6 +433,8 @@ class JungAPI extends API{
                !$person->isRoleDuring(CNI, $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL)){
                 $sups = $person->getSupervisorsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
                 $totalSups = $person->getSupervisors(true);
+                $tuple['alwaysPNI'] = "No";
+                $tuple['role'] = "HQP";
                 $tuple['nCurrentHQP'] = "";
                 $tuple['nTotalHQP'] = "";
                 $tuple['nCurrentSupervisors'] = (string)count($sups);
@@ -441,6 +481,20 @@ class JungAPI extends API{
                 }
                 else{
                     $nextAllocationDelta = ($nextAllocationAmount-$allocatedAmount)/max(1, $nextAllocationAmount);
+                }
+                $tuple['role'] = "Other";
+                if($person->isRoleDuring(PNI, $this->startDate, $this->endDate)){
+                    $tuple['role'] = "PNI";
+                }
+                else if($person->isRoleDuring(CNI, $this->startDate, $this->endDate)){
+                    $tuple['role'] = "CNI";
+                }
+                $tuple['alwaysPNI'] = "No";
+                if($person->isRoleDuring(PNI, "2010-01-01", "2010-12-31") &&
+                   $person->isRoleDuring(PNI, "2011-01-01", "2011-12-31") &&
+                   $person->isRoleDuring(PNI, "2012-01-01", "2012-12-31") &&
+                   $person->isRoleDuring(PNI, "2013-01-01", "2013-12-31")){
+                    $tuple['alwaysPNI'] = "Yes";
                 }
                 $tuple['nCurrentHQP'] = (string)count($hqps);
                 $tuple['nTotalHQP'] = (string)count($totalHqps);
@@ -492,6 +546,8 @@ class JungAPI extends API{
             $tuple['Gender'] = (string)$person->getGender();
             $tuple['Nationality'] = (string)$person->getNationality();
             $tuple['yearRegistered'] = (string)substr($person->getRegistration(), 0, 4);
+            
+            @$tuple['geoCode'] = self::$geoCodes[$tuple['University']];
             
             // Extra
             $tuple['Projects'] = array();
@@ -596,6 +652,30 @@ class JungAPI extends API{
                                          'b' => $auth->getName(),
                                          'type' => "Person",
                                          'edgeType' => 'CoProduces',
+                                         'direction' => "Undirected");
+                    }
+                }
+            }
+        }
+        return $edges;
+    }
+    
+    function getCoPublicationEdges($nodes){
+        $edges = array();
+        $ids = array();
+        foreach($nodes as $node){
+            $ids[$node->getId()] = true;
+        }
+        foreach($nodes as $person){
+            $products = $person->getPapersAuthored('Publication', $this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL, true);
+            foreach($products as $product){
+                $authors = $product->getAuthors();
+                foreach($authors as $auth){
+                    if(isset($ids[$auth->getId()]) && $person->getId() < $auth->getId()){
+                        $edges[] = array('a' => $person->getName(), 
+                                         'b' => $auth->getName(),
+                                         'type' => "Person",
+                                         'edgeType' => 'CoPublication',
                                          'direction' => "Undirected");
                     }
                 }
@@ -764,7 +844,7 @@ class JungAPI extends API{
     }
     
     function isLoginRequired(){
-        return true;
+        return false;
     }
 }
 

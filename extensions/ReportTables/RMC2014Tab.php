@@ -1457,12 +1457,12 @@ EOF;
                     //$chunk .= "<td align='right'>{$hqp_num}</td>";
                     $chunk .=<<<EOF
                     <td align="right">
-                    <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    <a id="$lnk_id" onclick="showdiv('$div_id','$details_div_id');" href="#$details_div_id">
                     $hqp_num
                     </a>
                     <div style="display: none;" id="$div_id" class="cell_details_div">
                         <p><span class="label">$p_name / HQP / $pos:</span> 
-                        <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                        <button class="hide_div" onclick="$('#$div_id').hide();return false;">x</button></p> 
                         <ul>$hqp_details</ul>
                     </div>
                     </td>
@@ -1487,12 +1487,12 @@ EOF;
             $chunk .= "<td align='right'>";
             if($paper_num > 0){
                 $chunk .=<<<EOF
-                    <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    <a id="$lnk_id" onclick="showdiv('$div_id','$details_div_id');" href="#$details_div_id">
                     $paper_num
                     </a>
                     <div style="display: none;" id="$div_id" class="cell_details_div">
                         <p><span class="label">$p_name / Publications:</span> 
-                        <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                        <button class="hide_div" onclick="$('#$div_id').hide();return false;">x</button></p> 
                         <ul>$paper_details</ul>
                     </div>
                     </td>
@@ -1516,12 +1516,12 @@ EOF;
             $chunk .= "<td align='right'>";
             if($paper_num > 0){
                 $chunk .=<<<EOF
-                    <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    <a id="$lnk_id" onclick="showdiv('$div_id','$details_div_id');" href="#$details_div_id">
                     $paper_num
                     </a>
                     <div style="display: none;" id="$div_id" class="cell_details_div">
                         <p><span class="label">$p_name / Artifacts:</span> 
-                        <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                        <button class="hide_div" onclick="$('#$div_id').hide();return false;">x</button></p> 
                         <ul>$paper_details</ul>
                     </div>
                     </td>
@@ -1549,12 +1549,12 @@ EOF;
                 $contribution_sum = self::dollar_format( $contribution_sum );
             
                 $chunk .=<<<EOF
-                    <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    <a id="$lnk_id" onclick="showdiv('$div_id','$details_div_id');" href="#$details_div_id">
                     $contribution_sum
                     </a>
                     <div style="display: none;" id="$div_id" class="cell_details_div">
                         <p><span class="label">$p_name / Contributions:</span> 
-                        <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                        <button class="hide_div" onclick="$('#$div_id').hide();return false;">x</button></p> 
                         <ul>$contribution_details</ul>
                     </div> 
                     </td>           
@@ -1595,12 +1595,12 @@ EOF;
             $num = count($unique[$key]);
             $chunk .=<<<EOF
                 <td align='right'>
-                    <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    <a id="$lnk_id" onclick="showdiv('$div_id','$details_div_id');" href="#$details_div_id">
                     $num
                     </a>
                     <div style="display: none;" id="$div_id" class="cell_details_div">
                         <p><span class="label">Total {$key}:</span> 
-                        <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                        <button class="hide_div" onclick="$('#$div_id').hide();return false;">x</button></p> 
                         <ul>$details</ul>
                     </div> 
                     </td>
@@ -1612,12 +1612,12 @@ EOF;
                 $div_id = "div_{$key}_total2";
                 $chunk .=<<<EOF
                 <td align='right'>
-                    <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    <a id="$lnk_id" onclick="showdiv('$div_id','$details_div_id');" href="#$details_div_id">
                     $sum
                     </a>
                     <div style="display: none;" id="$div_id" class="cell_details_div">
                         <p><span class="label">Total {$key}:</span> 
-                        <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                        <button class="hide_div" onclick="$('#$div_id').hide();return false;">x</button></p> 
                         <ul>$details</ul>
                     </div> 
                     </td>
@@ -1670,12 +1670,12 @@ EOF;
                 $contribution_sum = self::dollar_format( $contribution_sum );
             
                 $chunk .=<<<EOF
-                    <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    <a id="$lnk_id" onclick="showdiv('$div_id','$details_div_id');" href="#$details_div_id">
                     $contribution_sum
                     </a>
                     <div style="display: none;" id="$div_id" class="cell_details_div">
                         <p><span class="label">Contributions / $readable:</span> 
-                        <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                        <button class="hide_div" onclick="$('#$div_id').hide();return false;">x</button></p> 
                         <ul>$contribution_details</ul>
                     </div> 
                     </td>           
@@ -1708,12 +1708,12 @@ EOF;
             $contribution_sum = self::dollar_format( $contribution_sum );
         
             $chunk .=<<<EOF
-                <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                <a id="$lnk_id" onclick="showdiv('$div_id','$details_div_id');" href="#$details_div_id">
                 $contribution_sum
                 </a>
                 <div style="display: none;" id="$div_id" class="cell_details_div">
                     <p><span class="label">Contributions / Total:</span> 
-                    <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                    <button class="hide_div" onclick="$('#$div_id').hide();return false;">x</button></p> 
                     <ul>$contribution_details</ul>
                 </div> 
                 </td>           
@@ -1788,12 +1788,12 @@ EOF;
                         //$chunk .= "<td align='right'>{$hqp_num}</td>";
                         $chunk .=<<<EOF
                         <td align="right">
-                        <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                        <a id="$lnk_id" onclick="showdiv('$div_id','$details_div_id');" href="#$details_div_id">
                         $hqp_num
                         </a>
                         <div style="display: none;" id="$div_id" class="cell_details_div">
                             <p><span class="label">$pname_read / HQP / $pos:</span> 
-                            <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                            <button class="hide_div" onclick="$('#$div_id').hide();return false;">x</button></p> 
                             <ul>$hqp_details</ul>
                         </div>
                         </td>
@@ -1818,12 +1818,12 @@ EOF;
                 $chunk .= "<td align='right'>";
                 if($paper_num > 0){
                     $chunk .=<<<EOF
-                        <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                        <a id="$lnk_id" onclick="showdiv('$div_id','$details_div_id');" href="#$details_div_id">
                         $paper_num
                         </a>
                         <div style="display: none;" id="$div_id" class="cell_details_div">
                             <p><span class="label">$pname_read / Publications:</span> 
-                            <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                            <button class="hide_div" onclick="$('#$div_id').hide();return false;">x</button></p> 
                             <ul>$paper_details</ul>
                         </div>
                         </td>
@@ -1847,12 +1847,12 @@ EOF;
                 $chunk .= "<td align='right'>";
                 if($paper_num > 0){
                     $chunk .=<<<EOF
-                        <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                        <a id="$lnk_id" onclick="showdiv('$div_id','$details_div_id');" href="#$details_div_id">
                         $paper_num
                         </a>
                         <div style="display: none;" id="$div_id" class="cell_details_div">
                             <p><span class="label">$pname_read / Artifacts:</span> 
-                            <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                            <button class="hide_div" onclick="$('#$div_id').hide();return false;">x</button></p> 
                             <ul>$paper_details</ul>
                         </div>
                         </td>
@@ -1880,12 +1880,12 @@ EOF;
                     $contribution_sum = self::dollar_format( $contribution_sum );
                 
                     $chunk .=<<<EOF
-                        <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                        <a id="$lnk_id" onclick="showdiv('$div_id','$details_div_id');" href="#$details_div_id">
                         $contribution_sum
                         </a>
                         <div style="display: none;" id="$div_id" class="cell_details_div">
                             <p><span class="label">$pname_read / Contributions:</span> 
-                            <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                            <button class="hide_div" onclick="$('#$div_id').hide();return false;">x</button></p> 
                             <ul>$contribution_details</ul>
                         </div> 
                         </td>           
@@ -1926,12 +1926,12 @@ EOF;
             $num = count($unique[$key]);
             $chunk .=<<<EOF
                 <td align='right'>
-                    <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    <a id="$lnk_id" onclick="showdiv('$div_id','$details_div_id');" href="#$details_div_id">
                     $num
                     </a>
                     <div style="display: none;" id="$div_id" class="cell_details_div">
                         <p><span class="label">Total {$key}:</span> 
-                        <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                        <button class="hide_div" onclick="$('#$div_id').hide();return false;">x</button></p> 
                         <ul>$details</ul>
                     </div> 
                     </td>
@@ -1943,12 +1943,12 @@ EOF;
                 $div_id = "div_{$key}_total4";
                 $chunk .=<<<EOF
                 <td align='right'>
-                    <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    <a id="$lnk_id" onclick="showdiv('$div_id','$details_div_id');" href="#$details_div_id">
                     $sum
                     </a>
                     <div style="display: none;" id="$div_id" class="cell_details_div">
                         <p><span class="label">Total {$key}:</span> 
-                        <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                        <button class="hide_div" onclick="$('#$div_id').hide();return false;">x</button></p> 
                         <ul>$details</ul>
                     </div> 
                     </td>
@@ -2055,12 +2055,12 @@ EOF;
                 $contribution_sum = self::dollar_format( $contribution_sum );
             
                 $html .=<<<EOF
-                    <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    <a id="$lnk_id" onclick="showdiv('$div_id','$details_div_id');" href="#$details_div_id">
                     $contribution_sum
                     </a>
                     <div style="display: none;" id="$div_id" class="cell_details_div">
                         <p><span class="label">{$uni} / Cash Contributions:</span> 
-                        <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                        <button class="hide_div" onclick="$('#$div_id').hide();return false;">x</button></p> 
                         <ul>$contribution_details</ul>
                     </div> 
                     </td>           
@@ -2081,12 +2081,12 @@ EOF;
                 $contribution_sum = self::dollar_format( $contribution_sum );
             
                 $html .=<<<EOF
-                    <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    <a id="$lnk_id" onclick="showdiv('$div_id','$details_div_id');" href="#$details_div_id">
                     $contribution_sum
                     </a>
                     <div style="display: none;" id="$div_id" class="cell_details_div">
                         <p><span class="label">{$uni} / In-Kind Contributions:</span> 
-                        <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                        <button class="hide_div" onclick="$('#$div_id').hide();return false;">x</button></p> 
                         <ul>$contribution_details</ul>
                     </div> 
                     </td>           
@@ -2107,12 +2107,12 @@ EOF;
                 $contribution_sum = self::dollar_format( $contribution_sum );
             
                 $html .=<<<EOF
-                    <a id="$lnk_id" onclick="showdiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    <a id="$lnk_id" onclick="showdiv('$div_id','$details_div_id');" href="#$details_div_id">
                     $contribution_sum
                     </a>
                     <div style="display: none;" id="$div_id" class="cell_details_div">
                         <p><span class="label">{$uni} / All Contributions:</span> 
-                        <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                        <button class="hide_div" onclick="$('#$div_id').hide();return false;">x</button></p> 
                         <ul>$contribution_details</ul>
                     </div> 
                     </td>           
