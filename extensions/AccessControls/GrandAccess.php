@@ -64,7 +64,7 @@ class GrandAccess {
 	            }
 	        }
 	    }
-	    foreach($me->getRolesDuring() as $role){
+	    foreach($me->getRolesDuring(CYCLE_START, CYCLE_END) as $role){
 	        $aRights[$i++] = $role->getRole().'During';
 	        $aRights[$i++] = $role->getRole().'During+';
 	    }

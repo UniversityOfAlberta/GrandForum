@@ -49,14 +49,14 @@ class PLProgressReportItem extends StaticReportItem {
 		
 		foreach($nis as $nid){
 		    $ni = Person::newFromId($nid['person_id']);
-		    if($ni->isRoleDuring(PNI)){
+		    if($ni->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
 		        $comment = $this->findComments($ni);
 		        if($comment != null && $comment != ""){
 		            $totalPNIs++;
 		        }
 		        $nPNIs++;
 		    }
-		    else if($ni->isRoleDuring(CNI)){
+		    else if($ni->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
 		        $comment = $this->findComments($ni);
 		        if($comment != null && $comment != ""){
 		            $totalCNIs++;

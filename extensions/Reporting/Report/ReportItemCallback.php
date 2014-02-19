@@ -227,8 +227,10 @@ class ReportItemCallback {
         $nis = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            foreach($project->getAllPeopleDuring() as $ni){
-                if(!$ni->leadershipOf($project) && ($ni->isRoleDuring(CNI) || $ni->isRoleDuring(PNI) || $ni->isRoleDuring(AR))){
+            foreach($project->getAllPeopleDuring(null, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59") as $ni){
+                if(!$ni->leadershipOf($project) && ($ni->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
+                                                    $ni->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
+                                                    $ni->isRoleDuring(AR, REPORTING_CYCLE_START, REPORTING_CYCLE_END))){
                     $nis[] = "<a href='{$ni->getUrl()}' target='_blank'>{$ni->getNameForForms()}</a>";
                 }
             }
@@ -456,7 +458,7 @@ class ReportItemCallback {
             return;
         }
         //First get All HQPs that I'm supervising, then we'll fetch their comment on the milestone.
-        $hqp_objs = $project->getAllPeopleDuring("HQP"); //no range params, so will default to current year
+        $hqp_objs = $project->getAllPeopleDuring("HQP", REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
         
         $hqp_milestone_comments = "";
         $alreadyDone = array();
@@ -502,7 +504,8 @@ class ReportItemCallback {
         else{
             return;
         }
-        $nis = array_merge($project->getAllPeopleDuring(PNI), $project->getAllPeopleDuring(CNI));
+        $nis = array_merge($project->getAllPeopleDuring(PNI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59"), 
+                           $project->getAllPeopleDuring(CNI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59"));
         $ni_milestone_comments = "";
         $alreadyDone = array();
         foreach($nis as $ni){
@@ -532,7 +535,8 @@ class ReportItemCallback {
         else{
             return;
         }
-        $nis = array_merge($project->getAllPeopleDuring(PNI), $project->getAllPeopleDuring(CNI));
+        $nis = array_merge($project->getAllPeopleDuring(PNI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59"), 
+                           $project->getAllPeopleDuring(CNI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59"));
         $ni_milestone_comments = "";
         $alreadyDone = array();
         foreach($nis as $ni){
@@ -609,7 +613,8 @@ class ReportItemCallback {
         else{
             return;
         }
-        $nis = array_merge($project->getAllPeopleDuring(PNI), $project->getAllPeopleDuring(CNI));
+        $nis = array_merge($project->getAllPeopleDuring(PNI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59"), 
+                           $project->getAllPeopleDuring(CNI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59"));
         $ni_comments = "";
         $alreadyDone = array();
         foreach($nis as $ni){
@@ -754,7 +759,7 @@ class ReportItemCallback {
     function getUserProjects(){
         $person = Person::newFromId($this->reportItem->personId);
         $projects = array();
-        foreach($person->getProjectsDuring() as $project){
+        foreach($person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
             if(!$project->isSubProject()){
                 $deleted = ($project->isDeleted()) ? " (Ended)" : "";
                 $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";

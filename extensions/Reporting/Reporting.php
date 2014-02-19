@@ -10,6 +10,8 @@ require_once("ReviewerConflicts/ReviewerConflicts.php");
 require_once("Report/SpecialPages/ReportPDFs.php");
 require_once("Report/SpecialPages/ReportSurvey.php");
 require_once("ReviewResults/ReviewResults.php");
+require_once("LoiProposals/LoiProposals.php");
 require_once("SanityChecks/SanityChecks.php");
+require_once("AdminVisualizations/AdminVisualizations.php");
 
 ?>

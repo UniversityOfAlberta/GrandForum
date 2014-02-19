@@ -309,7 +309,7 @@ EOF;
 		if($receiver instanceof Person){
 			$champs = array();
 			foreach($projects as $pr){
-				$champs = array_merge($champs, $pr->getAllPeopleDuring(CHAMP)); //all champions on a project throughout the year
+				$champs = array_merge($champs, $pr->getAllPeopleDuring(CHAMP, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59")); //all champions on a project throughout the year
 			}
 			
 			foreach ($champs as $champ){

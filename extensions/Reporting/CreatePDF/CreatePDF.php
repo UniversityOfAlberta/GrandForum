@@ -153,7 +153,7 @@ class CreatePDF extends SpecialPage {
                 echo json_encode($json);
 	        }
 	        else if($type == 'project'){
-	            $projects = Project::getAllProjectsDuring();
+	            $projects = Project::getAllProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
 	            $command = "zip -9 /tmp/ProjectReports.zip";
 	            foreach($projects as $project){
 	                $leader = $project->getLeader();
@@ -228,7 +228,7 @@ class CreatePDF extends SpecialPage {
 	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=HQPReport&person=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
 	    else if($type == 'project'){
-	        foreach(Project::getAllProjectsDuring() as $project){
+	        foreach(Project::getAllProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
 	            if(array_search($project->getId(), $ids) === false){
 	                $names[] = $project->getName();
 	                $ids[] = $project->getId();
@@ -237,7 +237,7 @@ class CreatePDF extends SpecialPage {
 	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectReport&person=4&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
 	    else if($type == 'isac_comments'){
-	        foreach(Project::getAllProjectsDuring() as $project){
+	        foreach(Project::getAllProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
 	            if(array_search($project->getId(), $ids) === false && $project->getPhase() == PROJECT_PHASE){
 	                $names[] = $project->getName();
 	                $ids[] = $project->getId();
@@ -246,7 +246,7 @@ class CreatePDF extends SpecialPage {
 	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectISACCommentsPDF&person=4&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
 	    else if($type == 'champ_comments'){
-	        foreach(Project::getAllProjectsDuring() as $project){
+	        foreach(Project::getAllProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
 	            if(array_search($project->getId(), $ids) === false && $project->getPhase() == PROJECT_PHASE){
 	                $names[] = $project->getName();
 	                $ids[] = $project->getId();

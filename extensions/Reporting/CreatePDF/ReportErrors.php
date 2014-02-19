@@ -134,7 +134,7 @@ class ReportErrors extends SpecialPage {
 	        }
 	    }
 	    else if($type == 'project'){
-	        foreach(Project::getAllProjectsDuring() as $project){
+	        foreach(Project::getAllProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
 	            if(array_search($project->getId(), $ids) === false){
 	                $names[] = $project->getName();
 	                $ids[] = $project->getId();

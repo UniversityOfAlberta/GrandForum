@@ -152,6 +152,31 @@ require_once("$IP/extensions/Widgets/Widgets.php");
 $wgGroupPermissions['sysop']['editwidgets'] = true;
 */
 
+define("YEAR", 2013);
+define("CYCLE_START_MONTH", '-00-00');
+define("NCE_START_MONTH", '-04-01');
+define("START_MONTH", '-09-01');
+define("END_MONTH", '-12-31');
+define("CYCLE_END_MONTH_ACTUAL", '-12-31');
+define("CYCLE_END_MONTH", '-01-15');
+define("PRODUCTION_MONTH", '-01-15');
+define("RMC_REVISED_MONTH", '-02-19');
+define("RMC_MEETING_MONTH", '-02-28');
+define("NCE_END_MONTH", '-03-31');
+define("NCE_PRODUCTION_MONTH", '-06-15');
+
+define("CYCLE_START", YEAR.CYCLE_START_MONTH); // Start of internal reporting cycle (Used for range queries)
+define("NCE_START", YEAR.NCE_START_MONTH); // Start of NCE reporting cycle
+define("START", YEAR.START_MONTH); // Start of reporting period
+define("END", YEAR.END_MONTH); // End of reporting period for HQP, NIs and Projects
+define("CYCLE_END_ACTUAL", YEAR.CYCLE_END_MONTH_ACTUAL); // End of internal reporting cycle (Used for range queries)
+define("CYCLE_END", (YEAR+1).CYCLE_END_MONTH); // End of internal reporting cycle (Used for range queries)
+define("PRODUCTION", (YEAR+1).PRODUCTION_MONTH); // Production of NI and Project reports
+define("RMC_REVISED", (YEAR+1).RMC_REVISED_MONTH); // RMC when evaluator reports can be revised
+define("RMC_MEETING", (YEAR+1).RMC_MEETING_MONTH); // RMC meeting for fund allocation
+define("NCE_END", (YEAR+1).NCE_END_MONTH); // End of NCE reporting cycle
+define("NCE_PRODUCTION", (YEAR+1).NCE_PRODUCTION_MONTH); // Production of NCE report
+
 require_once("$IP/extensions/AnnokiControl/AnnokiControl.php");
 
 $wgLocalTZoffset = date_default_timezone_set("MST") / 60;
@@ -180,6 +205,9 @@ define("DEBUG", false);
 define("FROZEN", false);
 
 define("PROJECT_PHASE", 2);
+
+$projectPhaseDates = array('1' => "2010-01-01 00:00:00",
+                           '2' => "2014-04-01 00:00:00");
 
 // Names of User Roles
 define("INACTIVE", "Inactive"); // This is an implied role.

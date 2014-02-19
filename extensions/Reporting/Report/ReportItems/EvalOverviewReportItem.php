@@ -159,7 +159,7 @@ EOF;
             }
             else if($type == "Project"){
                 $sub_name = $sub_name_straight = $sub->getName();
-                $evals = $sub->getEvaluators();
+                $evals = $sub->getEvaluators($this->getReport()->year);
             }
             
             $sub_table = "";

@@ -127,37 +127,7 @@ function impersonate(){
         $wgMessage->addInfo($message);
         
         $pageAllowed = false;
-        if($person->isRoleDuring(HQP)){
-            $hqps = $realPerson->getHQPDuring();
-            foreach($hqps as $hqp){
-                if($hqp->getId() == $person->getId()){
-                    if(("$ns:$title" == "Special:Report" &&
-                       @$_GET['report'] == "HQPReport") || ("$ns:$title" == "Special:ReportArchive" && checkSupervisesImpersonee())){
-                        $pageAllowed = true;
-                    }
-                    break;
-                }
-            }
-        }
-        
-        if($realPerson->isRoleAtLeast(MANAGER)){
-            $pageAllowed = true;
-        }
-        else{
-            $leadership = $realPerson->leadershipDuring();
-            if(count($leadership) > 0){
-                foreach($leadership as $proj){
-                    if(($person->isRoleDuring(PNI) || $person->isRoleDuring(CNI)) &&
-                       $person->isMemberOfDuring($proj)){
-                        if("$ns:$title" == "Special:Report" &&
-                           @$_GET['report'] == "NIReport" &&
-                           @$_GET['project'] == $proj->getName()){
-                            $pageAllowed = true;
-                        }
-                    }
-                }
-            }
-        }
+        wfRunHooks('CheckImpersonationPermissions', array($person, $realPerson, $ns, $title, &$pageAllowed));
         
         if(!$pageAllowed && !((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions']) || (isset($_GET['action']) && $_GET['action'] == 'getUserMode'))){
             permissionError();
@@ -186,27 +156,8 @@ function getImpersonatingMessage(){
     }
     $realPerson = Person::newFromId($wgRealUser->getId());
     $wgImpersonating = true;
-    $isSupervisor = false;
-    $showReadOnly = true;
     $wgUser = User::newFromId($person->getId());
-    
-    if($person->isRoleDuring(HQP)){
-        $hqps = $realPerson->getHQPDuring();
-        foreach($hqps as $hqp){
-            if($hqp->getId() == $person->getId()){
-                if(checkSupervisesImpersonee()){
-                    $showReadOnly = false;
-                }
-                $isSupervisor = false;
-                break;
-            }
-        }
-    }
-    
-    $readOnly = "";
-    if($showReadOnly){
-        $readOnly = " in read-only mode";
-    }
+
     $message = "";
     if(!isset($_GET['nocookie'])){
         if(strstr($page, "?") !== false){
@@ -219,15 +170,13 @@ function getImpersonatingMessage(){
             $impersonate = "?impersonate={$person->getName()}";
             $renewSession = "?renewSession";
         }
-        $message .= "<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>$readOnly.  This session will expire in ".ceil($time/(60))." minutes.<br />
+        $message .= "<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a> in read-only mode.  This session will expire in ".ceil($time/(60))." minutes.<br />
                             <a href='{$wgServer}{$page}{$renewSession}'>Renew My Session as {$person->getNameForForms()}</a> | <a href='{$wgServer}{$page}{$stopImpersonating}'>Stop Impersonating and Resume as {$realPerson->getNameForForms()}</a>";
     }
     else{
-        $message .= "<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>$readOnly.  This session will expire once you navigate away from this page";
+        $message .= "<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a> in read-only mode.  This session will expire once you navigate away from this page";
     }
-    if($isSupervisor){
-        $message .= "<br />As a supervisor, you are able to edit, generate and submit the report of your HQP.  The user who edits, generates and submits the report is recorded.";
-    }
+    wfRunHooks('ImpersonationMessage', array($person, $realPerson, $ns, $title, &$message));
     return $message;
 }
 
@@ -236,7 +185,7 @@ function checkSupervisesImpersonee(){
     if($wgImpersonating){
         $realPerson = Person::newFromId($wgRealUser->getId());
         $person = Person::newFromId($wgUser->getId());
-        $hqps = $realPerson->getHQPDuring();
+        $hqps = $realPerson->getHQPDuring(CYCLE_START, CYCLE_END);
         
         foreach($hqps as $hqp){
             if($person->getId() == $hqp->getId()){

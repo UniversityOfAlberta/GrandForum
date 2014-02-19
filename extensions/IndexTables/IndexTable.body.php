@@ -180,13 +180,20 @@ EOF;
 	 * User Page | Projects | Twitter
 	 */
 	private function generatePersonTable($table, $phase=0){
-		global $wgServer, $wgScriptPath, $wgUser, $wgOut;
+		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $projectPhaseDates;
 		$me = Person::newFromId($wgUser->getId());
 		if($phase == 0 || $phase == 1){
 		    $data = Person::getAllPeople($table);
 		}
 		else{
-		    $data = Person::getAllPeopleDuring($table, (REPORTING_YEAR+1).REPORTING_NCE_START_MONTH, (REPORTING_YEAR+2).REPORTING_NCE_END_MONTH);
+		    $start = $projectPhaseDates[$phase];
+		    if(isset($projectPhaseDates[$phase+1])){
+		        $end = $projectPhaseDates[$phase+1];
+		    }
+		    else{
+		        $end = "2999-01-01 00:00:00";
+		    }
+		    $data = Person::getAllPeopleDuring($table, $start, $end);
 		}
 		$idHeader = "";
         if($me->isRoleAtLeast(MANAGER)){

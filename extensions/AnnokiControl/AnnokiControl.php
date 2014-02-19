@@ -249,11 +249,7 @@ $egAnnokiExtensions['AdvancedSearch']     = array( 'name' => 'AdvancedSearch',
                           'path' => "$IP/extensions/AdvancedSearch/AdvancedSearch.php",
                           'enabled' => true,
                           );
-
-$egAnnokiExtensions['LoiProposals']     = array( 'name' => 'LoiProposals',
-                          'path' => "$IP/extensions/LoiProposals/LoiProposals.php",
-                          'enabled' => true,
-                          );
+                          
 $egAnnokiExtensions['CCVExport']     = array( 'name' => 'CCVExport',
                           'path' => "$IP/extensions/CCVExport/CCVExport.php",
                           'enabled' => true,

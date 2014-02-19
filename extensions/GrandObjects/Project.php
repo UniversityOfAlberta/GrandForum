@@ -171,13 +171,7 @@ class Project extends BackboneModel {
         return $projects;
     }
     
-    static function getAllProjectsDuring($startDate=false, $endDate=false, $subProjects=false){
-        if($startDate == false){
-            $startDate = REPORTING_CYCLE_START;
-        }
-        if($endDate == false){
-            $endDate = REPORTING_CYCLE_END;
-        }
+    static function getAllProjectsDuring($startDate, $endDate, $subProjects=false){
         if($subProjects == false){
             $subProjects = EQ(0);
         }
@@ -274,13 +268,7 @@ class Project extends BackboneModel {
     
     }
     
-    static function getHQPDistributionDuring($startRange = false, $endRange = false){
-         //If no range end are provided, assume it's for the current year.
-        if( $startRange === false || $endRange === false ){
-            $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
-            $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
-        }
-        
+    static function getHQPDistributionDuring($startRange, $endRange){
         $sql = <<<EOF
         SELECT s.num_projects, COUNT(s.user_id) as user_count
         FROM 
@@ -532,8 +520,8 @@ EOF;
     // If $filter is included, only users of that type will be selected
     function getAllPeopleDuring($filter = null, $startRange = false, $endRange = false, $includeManager=false){
         if($startRange === false || $endRange === false){
-            $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
-            $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+            $startRange = date("Y-01-01 00:00:00");
+            $endRange = date("Y-12-31 23:59:59");
         }
         $people = array();
         if(!$this->clear){
@@ -648,7 +636,10 @@ EOF;
         return $this->multimedia;
     }
     
-    // Get Champions
+    /**
+     * Returns all the current Champions
+     * @param array The current Champions array(user, org, title, dept)
+     */
     function getChampions(){
         $champs = array();
         $people = $this->getAllPeople(CHAMP);
@@ -661,7 +652,13 @@ EOF;
         return $champs;
     }
     
-    function getChampionsDuring($start=REPORTING_CYCLE_START, $end=REPORTING_RMC_MEETING){
+    /**
+     * Returns all the Champions between the given time frame
+     * @param string $start the starting date of the range
+     * @param string $end the ending date of the range
+     * @param array The People who were Champions during the given date array(user, org, title, dept)
+     */
+    function getChampionsDuring($start, $end){
         $champs = array();
         $people = $this->getAllPeopleDuring(CHAMP, $start, $end);
         foreach($people as $champ){
@@ -945,7 +942,7 @@ EOF;
     
     /**
      * Returns an array of Articles that belong to this Project
-     * @returns array Returns an array of Articles that belong to this Project
+     * @return array Returns an array of Articles that belong to this Project
      */
     function getWikiPages(){
         $sql = "SELECT page_id
@@ -967,8 +964,12 @@ EOF;
         return Paper::getAllPapersDuring($this->name, $category, "grand", $startRange, $endRange);
     }
     
-    // Returns a list of the evaluators who are evaluating this Project
-    function getEvaluators($year = REPORTING_YEAR){
+    /**
+     * Returns an array of Evaluators who are evaluating this Project
+     * @param string $year The evaluation year
+     * @return array The array of Evaluators who are evaluating this Project during $year
+     */
+    function getEvaluators($year){
         $sql = "SELECT *
                 FROM grand_eval
                 WHERE sub_id = '{$this->id}'
@@ -1167,7 +1168,10 @@ EOF;
         return ($this->parentId != 0);
     }
 
-    // Get the subprojects, if any
+    /**
+     * Returns an array of this Project's current Sub-Projects
+     * @return array An array of this Project's current Sub-Projects
+     */
     function getSubProjects(){
         $subprojects = array();
 
@@ -1184,8 +1188,13 @@ EOF;
         return $subprojects;
     }
     
-    // Get the subprojects, if any
-    function getSubProjectsDuring($startDate=REPORTING_CYCLE_START, $endDate=REPORTING_CYCLE_END){
+    /**
+     * Returns an array of Sub-Projects during the given date range
+     * @param string $startDate The start date of the range
+     * @param string $endDate The end date of the range
+     * @return array An array of Sub-Projects during the given date range
+     */
+    function getSubProjectsDuring($startDate, $endDate){
         $subprojects = array();
 
         $data = DBFunctions::select(array('grand_project'),
@@ -1421,9 +1430,9 @@ EOF;
 
         $alreadySeen = array();
 
-        foreach($this->getAllPeopleDuring(null, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH) as $member){
-            if($member->isRoleDuring(PNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH) || 
-               $member->isRoleDuring(CNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
+        foreach($this->getAllPeopleDuring(null, ($year+1).NCE_START_MONTH, ($year+2).NCE_END_MONTH) as $member){
+            if($member->isRoleDuring(PNI, ($year+1).NCE_START_MONTH, ($year+2).NCE_END_MONTH) || 
+               $member->isRoleDuring(CNI, ($year+1).NCE_START_MONTH, ($year+2).NCE_END_MONTH)){
                 if(isset($alreadySeen[$member->getId()])){
                     continue;
                 }

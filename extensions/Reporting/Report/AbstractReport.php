@@ -4,6 +4,9 @@
  * @package Report
  * @abstract
  */
+ 
+$wgHooks['CheckImpersonationPermissions'][] = 'AbstractReport::checkImpersonationPermissions';
+$wgHooks['ImpersonationMessage'][] = 'AbstractReport::impersonationMessage';
 
 require_once("ReportConstants.php");
 require_once("SpecialPages/Report.php");
@@ -294,7 +297,7 @@ abstract class AbstractReport extends SpecialPage {
                 $me = Person::newFromId($wgUser->getId());
                 foreach($this->pdfFiles as $file){
                     if($this->pdfAllProjects){
-                        foreach($this->person->getProjectsDuring() as $project){
+                        foreach($this->person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
                             $report = new DummyReport($file, $this->person, $project, $this->year);
                             $report->submitReport();
                         }
@@ -613,7 +616,7 @@ abstract class AbstractReport extends SpecialPage {
             return array('r' => true, 'w' => true);
         }
         $roles = $me->getRights();
-        $roleObjs = $me->getRolesDuring();
+        $roleObjs = $me->getRolesDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
         foreach($roleObjs as $role){
             $roles[] = $role->getRole();
         }
@@ -652,7 +655,7 @@ abstract class AbstractReport extends SpecialPage {
         $json = array();
         $preview = isset($_GET['preview']);
         if($this->pdfAllProjects && !$preview){
-            foreach($this->person->getProjectsDuring() as $project){
+            foreach($this->person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
                 foreach($this->pdfFiles as $pdfFile){
                     set_time_limit(120); // Renew the execution timer
                     $wgOut->clearHTML();
@@ -900,6 +903,56 @@ abstract class AbstractReport extends SpecialPage {
         for($a=5,$b=$s='';$N;$b++,$a^=7) 
                 for($o=$N%$a,$N=$N/$a^0;$o--;$s=$c[$o>2?$b+$N-($N&=-2)+$o=1:$b].$s); 
         return $s; 
+    }
+    
+    static function checkImpersonationPermissions($person, $realPerson, $ns, $title, $pageAllowed){
+        if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
+            $hqps = $realPerson->getHQPDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+            foreach($hqps as $hqp){
+                if($hqp->getId() == $person->getId()){
+                    if(("$ns:$title" == "Special:Report" &&
+                       @$_GET['report'] == "HQPReport") || ("$ns:$title" == "Special:ReportArchive" && checkSupervisesImpersonee())){
+                        $pageAllowed = true;
+                    }
+                    break;
+                }
+            }
+        }
+        
+        if($realPerson->isRoleAtLeast(MANAGER)){
+            $pageAllowed = true;
+        }
+        else{
+            $leadership = $realPerson->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+            if(count($leadership) > 0){
+                foreach($leadership as $proj){
+                    if(($person->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
+                        $person->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END)) &&
+                       $person->isMemberOfDuring($proj, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
+                        if("$ns:$title" == "Special:Report" &&
+                           @$_GET['report'] == "NIReport" &&
+                           @$_GET['project'] == $proj->getName()){
+                            $pageAllowed = true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    static function impersonationMessage($person, $realPerson, $ns, $title, $message){
+        $isSupervisor = false;
+        if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
+            if(checkSupervisesImpersonee()){
+                $message = str_replace(" in read-only mode", "", $message);
+            }
+            $isSupervisor = false;
+        }
+        if($isSupervisor){
+            $message .= "<br />As a supervisor, you are able to edit, generate and submit the report of your HQP.  The user who edits, generates and submits the report is recorded.";
+        }
+        return false;
     }
 }
 

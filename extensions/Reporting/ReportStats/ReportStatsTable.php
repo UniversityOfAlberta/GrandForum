@@ -62,7 +62,7 @@ class ReportStatsTable extends SpecialPage {
 	    $projects1 = array();
 	    $projects2 = array();
 	    
-	    $projects = Project::getAllProjectsDuring();
+	    $projects = Project::getAllProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
 	    foreach($projects as $project){
 	        if($project->getPhase() == 1){
 	            $projects1[] = $project;
@@ -74,14 +74,14 @@ class ReportStatsTable extends SpecialPage {
 	    
 	    $people = Person::getAllPeople();
 	    foreach($people as $person){
-            if($person->isRoleDuring(HQP)){
+            if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
                 $hqps[$person->getId()] = $person;
             }
-            else if($person->isRoleDuring(PNI)){
+            else if($person->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
             	$pnis[$person->getId()] = $person;
             	$nis[$person->getId()] = $person;
             }
-            else if($person->isRoleDuring(CNI)){ 
+            else if($person->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){ 
                 $cnis[$person->getId()] = $person;
                 $nis[$person->getId()] = $person;
             }

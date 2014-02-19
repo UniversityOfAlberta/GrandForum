@@ -1110,9 +1110,11 @@ EOF;
 			"Part J (2): Are the proposed secondary impact areas appropriate?",
 			"Comments only to the RMC: Do you think this LOI should be accepted?"
 		);
+		
+		$year = date("Y");
 
 		$evals = Person::getAllPeople(RMC); 
-		$lois = LOI::getAllLOIs(REPORTING_YEAR, $revision);
+		$lois = LOI::getAllLOIs($year, $revision);
 
 		$me = Person::newFromId($wgUser->getId());
 		$editable = $me->isRole(MANAGER);
@@ -1121,9 +1123,8 @@ EOF;
 		foreach($lois as $loi){
 			$loi_id = $loi->getId();
 			$loi_name = $loi->getName();
-			$evals = $loi->getEvaluators();
+			$evals = $loi->getEvaluators(REPORTING_YEAR);
 			$evals_count = count($evals);
-
 
 			$admin = Person::newFromId(4); //Owner of this report
 	        $report = new DummyReport("LOIEvalReportPDF", $admin, $loi);
@@ -1149,8 +1150,8 @@ EOF;
 					$html .= "<tr><td width='15%'>{$eval_name}</td>";
 
 					for ($q=1; $q<=15; $q++){
-						$yes_no = LoiProposals::getData(BLOB_ARRAY, RP_EVAL_LOI, $q, EVL_LOI_YN, $eval_id, REPORTING_YEAR, $loi_id);
-						$comment = LoiProposals::getData(BLOB_TEXT,RP_EVAL_LOI, $q, EVL_LOI_C, $eval_id, REPORTING_YEAR, $loi_id);
+						$yes_no = LoiProposals::getData(BLOB_ARRAY, RP_EVAL_LOI, $q, EVL_LOI_YN, $eval_id, $year, $loi_id);
+						$comment = LoiProposals::getData(BLOB_TEXT,RP_EVAL_LOI, $q, EVL_LOI_C, $eval_id, $year, $loi_id);
 
 						if(is_array($yes_no) && !empty($yes_no)){
 							$yes_no = reset($yes_no);

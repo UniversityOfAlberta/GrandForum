@@ -6,13 +6,14 @@ class Simile extends Visualisation {
     
     static $a = 0;
     var $url = "";
-    var $year = REPORTING_YEAR;
+    var $year = "";
     var $width = "70";
     var $interval = "50";
     var $popupWidth = 300;
     var $popupHeight = 175;
     
     function Simile($url){
+        $this->year = date("Y")-1;
         $this->url = $url;
         self::Visualisation();
     }
@@ -38,7 +39,7 @@ class Simile extends Visualisation {
                     Timeline.createBandInfo({
                         timeZone:       0,
                         eventSource:    eventSource,
-                        date:           'Jul 01 {$this->year} 00:00:00 GMT',
+                        date:           'Dec 31 {$this->year} 00:00:00 GMT',
                         width:          '{$this->width}%', 
                         intervalUnit:   Timeline.DateTime.MONTH, 
                         intervalPixels: {$this->interval},
@@ -50,7 +51,7 @@ class Simile extends Visualisation {
                         trackGap:       0.2,
                         timeZone:       0,
                         eventSource:    eventSource,
-                        date:           'Jul 01 {$this->year} 00:00:00 GMT',
+                        date:           'Dec 31 {$this->year} 00:00:00 GMT',
                         width:          '".($this->width*0.4)."%', 
                         intervalUnit:   Timeline.DateTime.YEAR, 
                         intervalPixels: ".($this->interval*2)."

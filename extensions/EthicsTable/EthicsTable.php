@@ -45,11 +45,6 @@ class EthicsTable extends SpecialPage {
             exit;
         }
 	    
-	    //$projects = Project::getAllProjectsDuring();
-	    
-	    //$people = Person::getAllPeople();
-	   
-	    
 	    $wgOut->setPageTitle("TCPS2 Tutorial Completion");
 	    
 		EthicsTable::ethicsTable();

@@ -507,7 +507,7 @@ class Person extends BackboneModel {
     
     // Returns an array of People of the type $filter, and have at least one project
     // If $filter='all' then, even people with no projects are included.
-    static function getAllPeopleDuring($filter=null, $startRange = false, $endRange = false){
+    static function getAllPeopleDuring($filter=null, $startRange, $endRange){
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id', 'user_name'),
                                     array('deleted' => NEQ(1)),
@@ -789,7 +789,7 @@ class Person extends BackboneModel {
     }
     
     // Returns whether this Person is a member of the given Project during the given dates
-    function isMemberOfDuring($project, $start=REPORTING_CYCLE_START, $end=REPORTING_CYCLE_END){
+    function isMemberOfDuring($project, $start, $end){
         $projects = $this->getProjectsDuring($start, $end);
         if(count($projects) > 0 && $project != null){
             foreach($projects as $project1){
@@ -837,7 +837,7 @@ class Person extends BackboneModel {
         return false;
     }
     
-    function isChampionOfDuring($project, $start=REPORTING_CYCLE_START, $end=REPORTING_CYCLE_END){
+    function isChampionOfDuring($project, $start, $end){
         $champs = $project->getChampionsDuring($start, $end);
         foreach($champs as $champ){
             if($champ['user']->getId() == $this->getId()){
@@ -1179,15 +1179,11 @@ class Person extends BackboneModel {
     
     /**
      * Returns the last University that this Person was at between the given range
-     * @param string $startRange The start date to look at (default start of the current reporting year)
-     * @param string $endRange The end date to look at (default end of the current reporting year)
+     * @param string $startRange The start date to look at
+     * @param string $endRange The end date to look at
      * @return array The last University that this Person was at between the given range
      */ 
-    function getUniversityDuring($startRange=false, $endRange=false){
-        if( $startRange === false || $endRange === false ){
-            $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
-            $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
-        }
+    function getUniversityDuring($startRange, $endRange){
         $sql = "SELECT * 
                 FROM grand_user_university uu, grand_universities u, grand_positions p
                 WHERE uu.user_id = '{$this->id}'
@@ -1227,17 +1223,13 @@ class Person extends BackboneModel {
     
     /**
      * Returns the discipline of this Person during the given start and end dates
-     * @param string $startRange The start date to look at (default start of the current reporting year)
-     * @param string $endRange The end date to look at (default end of the current reporting year)
+     * @param string $startRange The start date to look at
+     * @param string $endRange The end date to look at
      * @param boolean $checkLater Whether or not to check the current Discipline if the range specified does not return any results
      * @return string The name of the discipline that this Person belongs to during the specified dates
      */
-    function getDisciplineDuring($startRange=false, $endRange=false, $checkLater=false){
+    function getDisciplineDuring($startRange, $endRange, $checkLater=false){
         self::generateDisciplineMap();
-        if( $startRange === false || $endRange === false ){
-            $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
-            $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
-        }
         $university = $this->getUniversityDuring($startRange, $endRange);
         if($checkLater && $university['department'] == "" || $university['university'] == ""){
             $university = $this->getUniversity();
@@ -1342,67 +1334,6 @@ class Person extends BackboneModel {
         return $this->roles;
     }
     
-    
-    function getLeadershipRoles(){
-        $roles = array();
-        $pm = $this->isProjectManager();
-        if($this->isProjectLeader() && !$pm){
-            $roles[] = new Role(array(0 => array('id' => -1,
-                                                       'user_id' => $this->id,
-                                                       'role' => "PL",
-                                                       'start_date' => '0000-00-00 00:00:00',
-                                                       'end_date' => '0000-00-00 00:00:00',
-                                                       'comment' => '')));
-        }
-        if($this->isProjectCoLeader() && !$pm){
-            $roles[] = new Role(array(0 => array('id' => -1,
-                                                       'user_id' => $this->id,
-                                                       'role' => "COPL",
-                                                       'start_date' => '0000-00-00 00:00:00',
-                                                       'end_date' => '0000-00-00 00:00:00',
-                                                       'comment' => '')));
-        }
-        if($pm){
-            $roles[] = new Role(array(0 => array('id' => -1,
-                                                       'user_id' => $this->id,
-                                                       'role' => "PM",
-                                                       'start_date' => '0000-00-00 00:00:00',
-                                                       'end_date' => '0000-00-00 00:00:00',
-                                                       'comment' => '')));
-        }
-        return $roles;
-    }
-    
-    function getLeadershipRolesDuring($startDate=false, $endDate=false){
-        $roles = array();
-        $pm = $this->isProjectManagerDuring($startDate, $endDate);
-        if($this->isProjectLeaderDuring($startDate, $endDate) && !$pm){
-            $roles[] = new Role(array(0 => array('id' => -1,
-                                                       'user_id' => $this->id,
-                                                       'role' => "PL",
-                                                       'start_date' => '0000-00-00 00:00:00',
-                                                       'end_date' => '0000-00-00 00:00:00',
-                                                       'comment' => '')));
-        }
-        if($this->isProjectCoLeaderDuring($startDate, $endDate) && !$pm){
-            $roles[] = new Role(array(0 => array('id' => -1,
-                                                       'user_id' => $this->id,
-                                                       'role' => "COPL",
-                                                       'start_date' => '0000-00-00 00:00:00',
-                                                       'end_date' => '0000-00-00 00:00:00',
-                                                       'comment' => '')));
-        }
-        if($pm){
-            $roles[] = new Role(array(0 => array('id' => -1,
-                                                       'user_id' => $this->id,
-                                                       'role' => "PM",
-                                                       'start_date' => '0000-00-00 00:00:00',
-                                                       'end_date' => '0000-00-00 00:00:00',
-                                                       'comment' => '')));
-        }
-        return $roles;
-    }
-    
     // Returns the last role that this Person had before they were Inactivated, null if this Person has never had any Roles
     function getLastRole(){
         $roles = $this->getRoles(true);
@@ -1446,15 +1377,10 @@ class Person extends BackboneModel {
     }
     
     // Returns an array of roles that the user is a part of
-    // During a given range. If no range is provided, the range for the current year is given
-    function getRolesDuring($startRange = false, $endRange = false){
+    // During a given range.
+    function getRolesDuring($startRange, $endRange){
         if($this->id == 0){
             return array();
-        }
-        //If no range end are provided, assume it's for the current year.
-        if( $startRange === false || $endRange === false ){
-            $startRange = date(REPORTING_CYCLE_START);
-            $endRange = date(REPORTING_CYCLE_END);
         }
         
         $sql = "SELECT *
@@ -1533,7 +1459,7 @@ class Person extends BackboneModel {
     
     // Returns an array of Projects that this Person is a part of
     // TODO: This might be slow.
-    function getProjectsDuring($start=REPORTING_CYCLE_START, $end=REPORTING_CYCLE_END){
+    function getProjectsDuring($start, $end){
         if(isset($this->projectCache[$start.$end])){
             return $this->projectCache[$start.$end];
         }
@@ -1938,7 +1864,7 @@ class Person extends BackboneModel {
     }
     
     // Returns whether this Person is of type $role or not during a specific period
-    function isRoleDuring($role, $startRange = false, $endRange = false){
+    function isRoleDuring($role, $startRange, $endRange){
         $roles = array();
         $role_objs = $this->getRolesDuring($startRange, $endRange);
         if($role == PL || $role == COPL || $role == "PL" || $role == "COPL"){
@@ -1962,7 +1888,7 @@ class Person extends BackboneModel {
         return (array_search($role, $roles) !== false);
     }
     
-    function isRoleAtLeastDuring($role, $startRange = false, $endRange = false){
+    function isRoleAtLeastDuring($role, $startRange, $endRange){
         global $wgRoleValues;
         $roles = $this->getRolesDuring($startRange, $endRange);
         if($roles != null){
@@ -2106,11 +2032,7 @@ class Person extends BackboneModel {
         return $this->hqps;
     }
     
-    function getChampionsDuring($startRange = false, $endRange = false){
-        if($startRange === false || $endRange === false ){
-            $startRange = date(REPORTING_CYCLE_START);
-            $endRange = date(REPORTING_CYCLE_END);
-        }
+    function getChampionsDuring($startRange, $endRange){
         $champions = array();
         $relations = $this->getRelations(WORKS_WITH, true);
         foreach($relations as $relation){
@@ -2131,11 +2053,7 @@ class Person extends BackboneModel {
         return $champions;
     }
     
-    function getHQPDuring($startRange = false, $endRange = false){
-        if( $startRange === false || $endRange === false ){
-            $startRange = date(REPORTING_CYCLE_START);
-            $endRange = date(REPORTING_CYCLE_END);
-        }
+    function getHQPDuring($startRange, $endRange){
         if(isset($this->hqpCache[$startRange.$endRange])){
             return $this->hqpCache[$startRange.$endRange];
         }
@@ -2206,11 +2124,7 @@ class Person extends BackboneModel {
         return $people;
     }
     
-    function getSupervisorsDuring($startRange = false, $endRange = false){
-        if( $startRange === false || $endRange === false ){
-            $startRange = date(REPORTING_CYCLE_START);
-            $endRange = date(REPORTING_CYCLE_END);
-        }
+    function getSupervisorsDuring($startRange, $endRange){
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user2 = '{$this->id}'
@@ -2402,11 +2316,7 @@ class Person extends BackboneModel {
      * @param boolean $includeHQP Whether or not to include HQP in the result
      * @return array Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
      */
-    function getPapersAuthored($category="all", $startRange = false, $endRange = false, $includeHQP=false){
-        if( $startRange === false || $endRange === false ){
-            $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
-            $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
-        }
+    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false){
         self::generateAuthorshipCache();
         $processed = array();
         $papersArray = array();
@@ -2541,12 +2451,7 @@ class Person extends BackboneModel {
     
     // Returns an array of projects that the user is a leader of
     // During a given range. If no range is provided, the range for the current year is given
-    function leadershipDuring($startRange = false, $endRange = false){
-        //If no range end are provided, assume it's for the current year.
-        if( $startRange === false || $endRange === false ){
-            $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
-            $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
-        }
+    function leadershipDuring($startRange, $endRange){
         if(isset($this->leadershipCache[$startRange.$endRange])){
             return $this->leadershipCache[$startRange.$endRange];
         }
@@ -2645,12 +2550,7 @@ class Person extends BackboneModel {
         return $this->isProjectLeader;
     }
     
-    function isProjectLeaderDuring($startRange = false, $endRange = false){
-        //If no range end are provided, assume it's for the current year.
-        if( $startRange === false || $endRange === false ){
-            $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
-            $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
-        }
+    function isProjectLeaderDuring($startRange, $endRange){
         $sql = "SELECT p.id
                 FROM grand_project_leaders l, grand_project p
                 WHERE l.type = 'leader'
@@ -2700,12 +2600,7 @@ class Person extends BackboneModel {
         return $this->isProjectManager;
     }
     
-    function isProjectManagerDuring($startRange = false, $endRange = false){
-        //If no range end are provided, assume it's for the current year.
-        if( $startRange === false || $endRange === false ){
-            $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
-            $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
-        }
+    function isProjectManagerDuring($startRange, $endRange){
         $sql = "SELECT p.id
                 FROM grand_project_leaders l, grand_project p
                 WHERE l.type = 'manager'
@@ -2774,12 +2669,7 @@ class Person extends BackboneModel {
         return $this->isProjectCoLeader;
     }
     
-    function isProjectCoLeaderDuring($startRange = false, $endRange = false){
-        //If no range end are provided, assume it's for the current year.
-        if( $startRange === false || $endRange === false ){
-            $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
-            $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
-        }
+    function isProjectCoLeaderDuring($startRange, $endRange){
         $sql = "SELECT p.id
                 FROM grand_project_leaders l, grand_project p
                 WHERE l.type = 'co-leader'
@@ -2989,7 +2879,7 @@ class Person extends BackboneModel {
                 $this->budgets[$index] = new Budget("CSV", REPORT_STRUCTURE, $data);
             }
             else {
-                if($type == RES_ALLOC_BUDGET && $this->isRoleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
+                if($type == RES_ALLOC_BUDGET && $this->isRoleDuring(CNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
                     $this->budgets[$index] = new Budget("XLS", REPORT2_STRUCTURE, $data);
                 }
                 else{
@@ -3024,7 +2914,7 @@ class Person extends BackboneModel {
     }
     
     // Returns true if the person is an evaluator
-    function isEvaluator($year = REPORTING_YEAR){
+    function isEvaluator($year = YEAR){
         if(!isset($this->isEvaluator[$year])){
             $sql = "SELECT *
                     FROM grand_eval
@@ -3042,7 +2932,7 @@ class Person extends BackboneModel {
     }
     
     // Returns the list of Evaluation Submissions for this person
-    function getEvaluateSubs($year = REPORTING_YEAR){
+    function getEvaluateSubs($year = YEAR){
         
         $sql = "SELECT *
                 FROM grand_eval
@@ -3062,7 +2952,7 @@ class Person extends BackboneModel {
         return $subs;
     }
     
-    static function getAllEvaluates($type, $year = REPORTING_YEAR){
+    static function getAllEvaluates($type, $year = YEAR){
         $type = mysql_real_escape_string($type);
         
         $sql = "SELECT DISTINCT sub_id 
@@ -3083,7 +2973,7 @@ class Person extends BackboneModel {
     }
 
 
-    function getEvaluates($type, $year = REPORTING_YEAR){
+    function getEvaluates($type, $year = YEAR){
         $type = mysql_real_escape_string($type);
         
         $sql = "SELECT *
@@ -3108,7 +2998,7 @@ class Person extends BackboneModel {
         return $subs;
     }
 
-    function getEvaluatePNIs($year = REPORTING_YEAR){
+    function getEvaluatePNIs($year = YEAR){
        
         $sql = "SELECT *
                 FROM grand_eval
@@ -3126,7 +3016,7 @@ class Person extends BackboneModel {
     }
     
     // Returns the list of Evaluation Submissions for this person
-    function getEvaluateCNIs($year = REPORTING_YEAR){
+    function getEvaluateCNIs($year = YEAR){
         
         $sql = "SELECT *
                 FROM grand_eval
@@ -3143,7 +3033,7 @@ class Person extends BackboneModel {
         return $subs;
     }
     
-    function getEvaluateProjects($year = REPORTING_YEAR){
+    function getEvaluateProjects($year = YEAR){
         
         $sql = "SELECT *
                 FROM grand_eval
@@ -3162,7 +3052,7 @@ class Person extends BackboneModel {
 
     // Returns a list of the evaluators who are evaluating this Person
     // Provide type 
-    function getEvaluators($type='Researcher', $year = REPORTING_YEAR){
+    function getEvaluators($type='Researcher', $year = YEAR){
         
         $sql = "SELECT *
                 FROM grand_eval

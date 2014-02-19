@@ -132,7 +132,7 @@ class PersonProductAPI extends RESTAPI {
         if($this->getParam(0) == "person"){
             $person = Person::newFromId($this->getParam('id'));
             $json = array();
-            $products = $person->getPapersAuthored("all", false, false, false);
+            $products = $person->getPapersAuthored("all", CYCLE_START, CYCLE_START_ACTUAL,false);
             foreach($products as $product){
                 $array = array('productId' => $product->getId(), 
                                'personId'=> $this->getParam('id'),

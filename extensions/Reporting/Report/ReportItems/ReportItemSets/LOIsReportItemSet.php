@@ -70,7 +70,7 @@ class LOIsReportItemSet extends ReportItemSet {
         }
         else if($type == "LOI_EVALS"){
             $loi = LOI::newFromId($this->projectId);
-            $evals = $loi->getEvaluators();
+            $evals = $loi->getEvaluators($this->getReport()->year);
             $subs = array();
 
             foreach($evals as $e){

@@ -9,7 +9,7 @@ class PersonProjectReportItemSet extends ReportItemSet {
             $projects = array($this->getReport()->project);
         }
         else{
-            $projects = $person->getProjectsDuring();
+            $projects = $person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
         }
         if(is_array($projects)){
             foreach($projects as $proj){
