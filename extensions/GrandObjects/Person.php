@@ -1005,24 +1005,15 @@ class Person extends BackboneModel {
 
     // Returns the moved on row for when HQPs are inactivated
     // Returns an array of key/value pairs representing the DB row
-    function getAllMovedOnDuring( $startRange = false, $endRange = false ){
-         //If no range end are provided, assume it's for the current year.
-        if( $startRange === false || $endRange === false ){
-            $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
-            $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
-            //$endRange = date("2012-08-31 23:59:59");
-        }
-
+    function getAllMovedOnDuring($startRange, $endRange){
         $sql = "SELECT `user_id`
                 FROM `grand_movedOn`
                 WHERE date_created BETWEEN '$startRange' AND '$endRange'";
-
         $data = DBFunctions::execSQL($sql);
         $people = array();
         foreach($data as $row){
             $people[] = Person::newFromId($row['user_id']);
         }
-
         return $people;
     }
     
@@ -3186,9 +3177,12 @@ class Person extends BackboneModel {
         return $subs;
     }
 
-    /// Returns the allocation for this person  for year #year,
-    /// or empty array if allocation not found in grand_review_results.
-    function getAllocation($year = REPORTING_YEAR) {
+    /**
+     * Returns the allocation for this Person for year $year
+     * @param string $year The allocation year to use
+     * @return array The allocation information
+     */
+    function getAllocation($year) {
         
         $allocation = array('allocated_amount' => null, 'overall_score'=>null, 'email_sent'=>null);
 

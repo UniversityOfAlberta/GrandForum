@@ -122,12 +122,12 @@ $egAnnokiExtensions['GoogleAlertReader']     = array( 'name' => 'GoogleAlertRead
                           
 $egAnnokiExtensions['SociQL']     = array( 'name' => 'SociQL Queries',
                           'path' => "$IP/extensions/SociQL/Queries.php",
-                          'enabled' => true,
+                          'enabled' => false,
                           );
                           
 $egAnnokiExtensions['VQE']     = array( 'name' => 'Visual Query Editor',
                           'path' => "$IP/extensions/VisualQueryEditor/VQE.php",
-                          'enabled' => true,
+                          'enabled' => false,
                           );
                           
 $egAnnokiExtensions['SociQLMaintenance']     = array( 'name' => 'SociQL Maintenance',
@@ -155,18 +155,8 @@ $egAnnokiExtensions['Poll']     = array( 'name' => 'Poll',
                           'enabled' => true,
                           );
                           
-$egAnnokiExtensions['PDFGenerator']     = array( 'name' => 'PDF Generator',
-                          'path' => "$IP/extensions/PDFGenerator/PDFGenerator.php",
-                          'enabled' => true,
-                          );
-                          
-$egAnnokiExtensions['Report']     = array( 'name' => 'Report',
-                          'path' => "$IP/extensions/Report/AbstractReport.php",
-                          'enabled' => true,
-                          );
-                                                    
-$egAnnokiExtensions['ReportStats']     = array( 'name' => 'ReportStats',
-                          'path' => "$IP/extensions/ReportStats/ReportStats.php",
+$egAnnokiExtensions['Reporting']     = array( 'name' => 'Reporting',
+                          'path' => "$IP/extensions/Reporting/Reporting.php",
                           'enabled' => true,
                           );
 
@@ -180,16 +170,6 @@ $egAnnokiExtensions['QueryableTable']     = array( 'name' => 'Queryable Table',
                           'enabled' => true,
                           );
 
-$egAnnokiExtensions['CreatePDF']     = array( 'name' => 'Create PDF Tool',
-                          'path' => "$IP/extensions/CreatePDF/CreatePDF.php",
-                          'enabled' => true,
-                          );
-
-$egAnnokiExtensions['EvaluationTable']     = array( 'name' => 'Evaluation Table',
-                          'path' => "$IP/extensions/ReportTables/EvaluationTable.php",
-                          'enabled' => true,
-                          );
-
 $egAnnokiExtensions['Postings']     = array( 'name' => 'GRAND Postings',
                           'path' => "$IP/extensions/Postings/Postings.php",
                           'enabled' => true,
@@ -197,11 +177,6 @@ $egAnnokiExtensions['Postings']     = array( 'name' => 'GRAND Postings',
                           
 $egAnnokiExtensions['EmptyEmailList']     = array( 'name' => 'Empty Email List',
                           'path' => "$IP/extensions/EmptyEmailList/EmptyEmailList.php",
-                          'enabled' => true,
-                          );
-                          
-$egAnnokiExtensions['ReportArchive']     = array( 'name' => 'Report Archive',
-                          'path' => "$IP/extensions/ReportArchive/ReportArchive.php",
                           'enabled' => true,
                           );
                           
@@ -245,21 +220,6 @@ $egAnnokiExtensions['ProjectEvolution']     = array( 'name' => 'Project Evolutio
                           'enabled' => true,
                           );
                           
-$egAnnokiExtensions['ReviewerConflicts']     = array( 'name' => 'Reviewer Conflicts',
-                          'path' => "$IP/extensions/ReviewerConflicts/ReviewerConflicts.php",
-                          'enabled' => true,
-                          );
-                          
-$egAnnokiExtensions['ReportPDFs']     = array( 'name' => 'ReportPDFs',
-                          'path' => "$IP/extensions/Report/SpecialPages/ReportPDFs.php",
-                          'enabled' => true,
-                          );
-                          
-$egAnnokiExtensions['ReportSurvey']     = array( 'name' => 'ReportSurvey',
-                          'path' => "$IP/extensions/Report/SpecialPages/ReportSurvey.php",
-                          'enabled' => true,
-                          );
-                          
 $egAnnokiExtensions['ScreenCapture']     = array( 'name' => 'ScreenCapture',
                           'path' => "$IP/extensions/ScreenCapture/ScreenCapture.php",
                           'enabled' => true,
@@ -280,16 +240,8 @@ $egAnnokiExtensions['TravelForm']     = array( 'name' => 'TravelForm',
                           'enabled' => true,
                           );
 
-$egAnnokiExtensions['ReviewResults']     = array( 'name' => 'ReviewResults',
-                          'path' => "$IP/extensions/ReviewResults/ReviewResults.php",
-                          'enabled' => true,
-                          );
 $egAnnokiExtensions['EthicsTable']     = array( 'name' => 'EthicsTable',
                           'path' => "$IP/extensions/EthicsTable/EthicsTable.php",
-                          'enabled' => true,
-                          );
-$egAnnokiExtensions['SanityChecks']     = array( 'name' => 'SanityChecks',
-                          'path' => "$IP/extensions/SanityChecks/SanityChecks.php",
                           'enabled' => true,
                           );
 

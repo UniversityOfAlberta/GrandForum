@@ -7,8 +7,6 @@ $wgSpecialPages['ReportArchive'] = 'ReportArchive';
 $wgExtensionMessagesFiles['ReportArchive'] = $dir . 'ReportArchive.i18n.php';
 $wgSpecialPageGroups['ReportArchive'] = 'reporting-tools';
 
-#require_once($dir . '../Report/ReportStorage.php');
-
 function runReportArchive($par) {
 	ReportArchive::run($par);
 }

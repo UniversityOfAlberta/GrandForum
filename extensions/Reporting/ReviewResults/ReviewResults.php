@@ -5,7 +5,7 @@ $wgSpecialPages['ReviewResults'] = 'ReviewResults';
 $wgExtensionMessagesFiles['ReviewResults'] = $dir . 'ReviewResults.i18n.php';
 $wgSpecialPageGroups['ReviewResults'] = 'grand-tools';
 
-require_once($dir . '../../Classes/PHPExcel/IOFactory.php');
+require_once($dir . '../../../Classes/PHPExcel/IOFactory.php');
 
 function runReviewResults($par) {
 	ReviewResults::run($par);

@@ -151,6 +151,7 @@ require_once("$IP/Swift/lib/swift_required.php");
 require_once("$IP/extensions/Widgets/Widgets.php");
 $wgGroupPermissions['sysop']['editwidgets'] = true;
 */
+
 require_once("$IP/extensions/AnnokiControl/AnnokiControl.php");
 
 $wgLocalTZoffset = date_default_timezone_set("MST") / 60;

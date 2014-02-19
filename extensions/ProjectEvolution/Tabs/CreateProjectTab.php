@@ -97,7 +97,7 @@ EOF;
         
         $effectiveRow = new FormTableRow("{$pre}_effective_row");
         $effectiveRow->append(new Label("{$pre}_effective_label", "Effective Date", "When this action is to take place", VALIDATE_NOT_NULL));
-        $effectiveRow->append(new CalendarField("{$pre}_effective", "Effective Date", (REPORTING_YEAR+1)."-04-01", VALIDATE_NOT_NULL));
+        $effectiveRow->append(new CalendarField("{$pre}_effective", "Effective Date", date("Y")."-04-01", VALIDATE_NOT_NULL));
         
         $names = array("");
         $people = array_merge(Person::getAllPeople(PNI), Person::getAllPeople(CNI));
