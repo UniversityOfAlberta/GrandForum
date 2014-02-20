@@ -8,6 +8,7 @@ define("SUPERVISES", 'Supervises');
 autoload_register('GrandObjects');
 autoload_register('GrandObjects/API');
 $wgHooks['BeforePageDisplay'][] = 'createModels';
+$wgHooks['TopLevelTabs'][] = 'Project::createTab';
 
 global $apiRequest;
 // Person

@@ -381,10 +381,21 @@ class cavendishTemplate extends QuickTemplate {
 
 <div id="internal"></div>
 <div id="container">
-
-	<div id="p-personal">
-		
-	</div>
+	<div id="topheader">
+        <?php
+            echo "<div class='smallLogo'><img src='$wgServer$wgScriptPath/skins/Grand_Logo_Small.png' /></div>";
+            echo "<div class='search'></div>";
+            echo "<div class='login'>";
+	        if($wgUser->isLoggedIn()){
+		        $p = Person::newFromId($wgUser->getId());
+		        echo "<a href='{$p->getUrl()}'><img src='{$p->getPhoto()}' />&nbsp;{$p->getNameForForms()}</a>";
+	        }
+	        else{
+		        echo "Not logged in";
+	        }
+	        echo "</div>";
+        ?>
+    </div>
     <div style="position:relative;">
 	    <div id="header">
 		    <a
@@ -415,6 +426,8 @@ class cavendishTemplate extends QuickTemplate {
     <ul class="top-nav">
           <?php 
 				      global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage;
+                    $GLOBALS['tabs'] = array();
+			        wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
 		      ?>
 		        <li class="top-nav-element tab-right"
 		        <?php if($wgTitle->getNSText() == "Help"){
@@ -509,9 +522,19 @@ class cavendishTemplate extends QuickTemplate {
 				    <?php
 				    } ?>
 			    </li>
+			    
 			    <?php 
 				    // Report Tab
-				    global $notifications, $notificationFunctions, $wgUser, $wgScriptPath;
+				    global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $tabs;
+				    
+				    foreach($tabs as $key => $tab){
+				        echo "<li class='top-nav-element {$tab['selected']}'>\n";
+                        echo "    <span class='top-nav-left'>&nbsp;</span>\n";
+                        echo "    <a id='{$tab['id']}' class='top-nav-mid' href='{$tab['href']}' class='new'>{$tab['text']}</a>\n";
+                        echo "    <span class='top-nav-right'>&nbsp;</span>\n";
+                        echo "</li>";
+				    }
+				    
 				    if($wgUser->isLoggedIn()){
 				        $p = Person::newFromId($wgUser->getId());
 				        // Notification Tab
@@ -521,46 +544,32 @@ class cavendishTemplate extends QuickTemplate {
                             }
                         }	
 					
-                        if(count($p->getProjects()) > 0 && !$user->isRoleAtLeast(MANAGER)){
-			                Project::createTab();
-			            }
-			            if($p->isThemeLeader()){
-			                ThemeLeader::createTab();
-			            }
-					    if(!$user->isRoleAtLeast(MANAGER)){
-					        ReportArchive::createTab();
-					    }
-					    Report::createTab();
+                        //if(count($p->getProjects()) > 0 && !$user->isRoleAtLeast(MANAGER)){
+			            //    Project::createTab();
+			            //}
+			            //if($p->isThemeLeader()){
+			            //    ThemeLeader::createTab();
+			            //}
+					    //if(!$user->isRoleAtLeast(MANAGER)){
+					    //    ReportArchive::createTab();
+					    //}
+					    //Report::createTab();
 					    //if($p->isUnassignedEvaluator()){
 					    //	ReviewerConflicts::createTab();
 					    //}
 
-					    if(ReportPDFs::userCanExecute($wgUser)){
-					        ReportPDFs::createTab();
-					    }
+					    //if(ReportPDFs::userCanExecute($wgUser)){
+					    //    ReportPDFs::createTab();
+					    //}
                         ReportSurvey::createTab();
 					    MyMailingLists::createTab();
 					    Notification::createTab();
 				    }
 			    ?>
-
 		    </ul>
 		    <form>
 		        <div id="loggedin">
-			        <?php 
-				        if($wgUser->isLoggedIn()){ 
-					        $p = Person::newFromId($wgUser->getId());
-					        $name = $p->getNameForForms();
-					        $href = "#";
-					        if(count($p->getRoles()) > 0){
-			                    $href = "{$p->getUrl()}";
-			                }
-					        echo "Logged in as: <a style='color:#FFFFFF;font-weight:bold;' href='$href'>$name</a>";
-				        }
-				        else{
-					        echo "Not logged in";
-				        }
-			        ?>
+			        
 		        </div>
 		    </form>
 	    </div>

@@ -940,7 +940,7 @@ abstract class AbstractReport extends SpecialPage {
                 }
             }
         }
-        return false;
+        return true;
     }
     
     static function impersonationMessage($person, $realPerson, $ns, $title, $message){
@@ -954,7 +954,7 @@ abstract class AbstractReport extends SpecialPage {
         if($isSupervisor){
             $message .= "<br />As a supervisor, you are able to edit, generate and submit the report of your HQP.  The user who edits, generates and submits the report is recorded.";
         }
-        return false;
+        return true;
     }
     
     static function canUserReadPDF($me, $pdf, $result){
@@ -969,7 +969,7 @@ abstract class AbstractReport extends SpecialPage {
                 if($hqp->getId() == $pdf->userId){
                     // I should be able to read any pdf which was created by my hqp (for that year)
                     $result = true;
-                    return false;
+                    return true;
                 }
             }
         }
@@ -982,7 +982,7 @@ abstract class AbstractReport extends SpecialPage {
                     if($project->getId() == $pdf->getProjectId()){
                         // I should be able to read any pdf for a Project that I was a project leader to (for that year)
                         $result = true;
-                        return false;
+                        return true;
                     }
                 }
             }
@@ -997,7 +997,7 @@ abstract class AbstractReport extends SpecialPage {
                         if($pdf->getProjectId() == $eval->getId()){
                             // I should be able to read any pdf for the Projects that I am evaluating (for that year)
                             $result = true;
-                            return false;
+                            return true;
                         }
                     }
                     else if($eval instanceof Person &&
@@ -1005,14 +1005,14 @@ abstract class AbstractReport extends SpecialPage {
                         if($pdf->getPerson()->getId() == $eval->getId()){
                             // I should be able to read any pdf for the People that I am evaluating (for that year)
                             $result = true;
-                            return false;
+                            return true;
                         }
                     }
                 }
             }
         }
         $result = false;
-        return false;
+        return true;
     }
 }
 

@@ -6,6 +6,7 @@ $wgExtensionMessagesFiles['ReportPDFs'] = $dir . 'ReportPDFs.i18n.php';
 $wgSpecialPageGroups['ReportPDFs'] = 'reporting-tools';
 
 $wgHooks['SkinTemplateContentActions'][] = 'ReportPDFs::showTabs';
+$wgHooks['TopLevelTabs'][] = 'ReportPDFs::createTab';
 
 class ReportPDFs extends AbstractReport{
     
@@ -26,23 +27,25 @@ class ReportPDFs extends AbstractReport{
         return false;
     }
 
-    static function createTab(){
+    static function createTab($tabs){
 		global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
-		$person = Person::newFromId($wgUser->getId());
+		if(!$wgUser->isLoggedIn() || !self::userCanExecute($wgUser)){
+            return true;
+        }
+        $person = Person::newFromWgUser();
 		$page = "ReportPDFs?report=PDFMaterials";
 		
 		$selected = "";
 		if($wgTitle->getText() == "ReportPDFs"){
 		    $selected = "selected";
 		}
-		
-		echo "<li class='top-nav-element $selected'>\n";
-		echo "	<span class='top-nav-left'>&nbsp;</span>\n";
-		echo "	<a id='lnk-my_report' class='top-nav-mid' href='$wgServer$wgScriptPath/index.php/Special:$page' class='new'>Report PDFs</a>\n";
-		echo "	<span class='top-nav-right'>&nbsp;</span>\n";
-		echo "</li>";
+		$tabs["Report PDFs"] = array('id' => "lnk-my_report",
+                                    'href' => "$wgServer$wgScriptPath/index.php/Special:$page", 
+                                    'text' => "Report PDFs", 
+                                    'selected' => $selected);
+        return true;
 	}
-    static function showTabs(&$content_actions){return true; }
+    static function showTabs(&$content_actions){ return true; }
 
     /*static function showTabs(&$content_actions){
         global $wgTitle, $wgUser, $wgServer, $wgScriptPath;

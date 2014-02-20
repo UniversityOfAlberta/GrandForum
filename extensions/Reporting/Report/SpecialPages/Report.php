@@ -6,6 +6,7 @@ $wgExtensionMessagesFiles['Report'] = $dir . 'Report.i18n.php';
 $wgSpecialPageGroups['Report'] = 'reporting-tools';
 
 $wgHooks['SkinTemplateContentActions'][] = 'Report::showTabs';
+$wgHooks['TopLevelTabs'][] = 'Report::createTab';
 
 class Report extends AbstractReport{
     
@@ -18,9 +19,12 @@ class Report extends AbstractReport{
         $this->AbstractReport(dirname(__FILE__)."/../ReportXML/$report.xml", -1, false, $topProjectOnly);
     }
 
-    static function createTab(){
+    static function createTab($tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
-        $person = Person::newFromId($wgUser->getId());
+        if(!$wgUser->isLoggedIn()){
+            return true;
+        }
+        $person = Person::newFromWgUser();
         $page = "Report";
         if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
             $page = "Report?report=HQPReport";
@@ -71,17 +75,18 @@ class Report extends AbstractReport{
                 }
             }
         }
-        
-        $selected = "";
-        if($wgTitle->getText() == "Report"){
-            $selected = "selected";
+
+        if($page != "Report"){
+            $selected = "";
+            if($wgTitle->getText() == "Report"){
+                $selected = "selected";
+            }
+            $tabs["My Reports"] = array('id' => "lnk-my_report",
+                                        'href' => "$wgServer$wgScriptPath/index.php/Special:$page", 
+                                        'text' => "My Reports", 
+                                        'selected' => $selected);
         }
-        
-        echo "<li class='top-nav-element $selected'>\n";
-        echo "    <span class='top-nav-left'>&nbsp;</span>\n";
-        echo "    <a id='lnk-my_report' class='top-nav-mid' href='$wgServer$wgScriptPath/index.php/Special:$page' class='new'>My Reports</a>\n";
-        echo "    <span class='top-nav-right'>&nbsp;</span>\n";
-        echo "</li>";
+        return true;
     }
     
     static function showTabs(&$content_actions){

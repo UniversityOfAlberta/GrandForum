@@ -1500,11 +1500,14 @@ EOF;
         }
     }
     
-    static function createTab(){
+    static function createTab($tabs){
         global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
-        $me = Person::newFromId($wgUser->getId());
+        $me = Person::newFromWgUser();
         $projects = $me->getProjects();
-        
+        if(!$wgUser->isLoggedIn() || count($projects) == 0 || $me->isRoleAtLeast(MANAGER)){
+		    return true;
+		}
+
         $selected = "";
         foreach($projects as $key => $project){
             if($wgTitle->getNSText() == $project->getName()){
@@ -1516,12 +1519,12 @@ EOF;
         }
         $projects = array_values($projects);
         if(isset($projects[0])){
-            echo "<li class='top-nav-element $selected'>\n";
-            echo "    <span class='top-nav-left'>&nbsp;</span>\n";
-            echo "    <a id='lnk-my_projects' class='top-nav-mid' href='{$projects[0]->getUrl()}' class='new'>My Projects</a>\n";
-            echo "    <span class='top-nav-right'>&nbsp;</span>\n";
-            echo "</li>";
+            $tabs["My Projects"] = array('id' => "lnk-my_projects",
+                                         'href' => $projects[0]->getUrl(),
+                                         'text' => "My Projects",
+                                         'selected' => $selected);
         }
+        return true;
     }
 }
 

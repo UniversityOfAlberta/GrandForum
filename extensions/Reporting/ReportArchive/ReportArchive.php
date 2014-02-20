@@ -7,6 +7,8 @@ $wgSpecialPages['ReportArchive'] = 'ReportArchive';
 $wgExtensionMessagesFiles['ReportArchive'] = $dir . 'ReportArchive.i18n.php';
 $wgSpecialPageGroups['ReportArchive'] = 'reporting-tools';
 
+$wgHooks['TopLevelTabs'][] = 'ReportArchive::createTab';
+
 function runReportArchive($par) {
 	ReportArchive::run($par);
 }
@@ -554,19 +556,22 @@ class ReportArchive extends SpecialPage {
         }
     }
     
-    static function createTab(){
+    static function createTab($tabs){
 		global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
-		
+		$person = Person::newFromWgUser();
+		if(!$wgUser->isLoggedIn() || $person->isRoleAtLeast(MANAGER)){
+		    return true;
+		}
 		$selected = "";
 		if($wgTitle->getText() == "ReportArchive"){
 		    $selected = "selected";
 		}
 		
-		echo "<li class='top-nav-element $selected'>\n";
-		echo "	<span class='top-nav-left'>&nbsp;</span>\n";
-		echo "	<a id='lnk-my_archive' class='top-nav-mid' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive' class='new'>My Archive</a>\n";
-		echo "	<span class='top-nav-right'>&nbsp;</span>\n";
-		echo "</li>";
+		$tabs["My Archive"] = array('id' => "lnk-my_archive",
+		                            'href' => "$wgServer$wgScriptPath/index.php/Special:ReportArchive",
+		                            'text' => "My Archive",
+		                            'selected' => $selected);
+		return true;
 	}
 }
 

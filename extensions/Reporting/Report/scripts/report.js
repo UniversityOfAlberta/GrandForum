@@ -86,7 +86,7 @@ function toggleFullscreen(){
         $('#bodyContent').css('bottom', bottom + 'px');
         $('#bodyContent').css('left', left + 'px');
         $('#bodyContent').css('width', 'auto');
-        $('#bodyContent').css('z-index', 1000);
+        $('#bodyContent').css('z-index', 1001);
         $('#reportMain').animate({
                                     'width' : '10000px',
                                     'max-width' : '10000px'
@@ -96,7 +96,7 @@ function toggleFullscreen(){
                                     'left' : 0,
                                     'right' : 0,
                                     'bottom' : 0,
-                                    'z-index' : 1000
+                                    'z-index' : 1001
                                   }, animationTime, easing, toggleFullscreenAfterAnimation);
         var divHeight = ($('#reportMain > div > div').height() + paddingHeight);
         if(divHeight > $(window).height()){

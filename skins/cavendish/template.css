@@ -11,12 +11,59 @@
 	
 	#ignored {}
 	
+	#topheader {
+	    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #F0F0F0) ) !important;
+        background:-moz-linear-gradient( center top, #f8f8f8 5%, #F0F0F0 100% ) !important;
+        background: -o-linear-gradient(top, #f8f8f8, #F0F0F0) !important;
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8', endColorstr='#F0F0F0');
+        background: -ms-linear-gradient(top, #f8f8f8 0%, #F0F0F0 100%);
+        background-color:#f8f8f8 !important;
+	    position: absolute;
+	    top:0;
+	    left:0;
+	    right:0;
+	    height: 23px;
+	    padding: 5px 20px 5px 20px;
+	    z-index: 1000;
+	    border-bottom: 1px solid #E0E0E0;
+	    color: #333333;
+	    text-shadow: 1px 1px 0 #FFFFFF;
+	    font-size: 12px;
+	    font-weight: bold;
+	}
+	
+	#topheader .smallLogo {
+	    float: left;
+	}
+	
+	#topheader .search {
+	    
+	}
+	
+	#topheader .login {
+	    float: right;
+	    height: 100%;
+	}
+	
+	#topheader .login img {
+	    height: 100%;
+	}
+	
+	#topheader a {
+	    color: #333333;
+	    text-decoration: none;
+	}
+	
+	#topheader a:hover {
+	    color: #8C529D;
+	}
+	
 	/* MAIN MENU */
 	#header {
 		background: #8C529D;
 		position: relative;
 		min-height: 39px;
-		margin-top: 15px;
+		margin-top: 50px;
 		height: 95px;
 		padding: 0;
 		padding: 10px 0;
@@ -104,7 +151,7 @@
 		position: absolute;
 		top: 0;
 		right: 0;
-		padding: 10px 20px 0 0;
+		padding: 0 20px 0 0;
 		margin: 0; /* need for IE Mac */
 		text-align: right; /* need for IE Mac */
 		white-space: nowrap; /* for Opera */

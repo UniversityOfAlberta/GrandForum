@@ -5,6 +5,8 @@ $wgSpecialPages['ThemeLeader'] = 'ThemeLeader'; # Let MediaWiki know about the s
 $wgExtensionMessagesFiles['ThemeLeader'] = $dir . 'ThemeLeader.i18n.php';
 $wgSpecialPageGroups['ThemeLeader'] = 'grand-tools';
 
+$wgHooks['TopLevelTabs'][] = 'ThemeLeader::createTab';
+
 function runThemeLeader($par) {
     ThemeLeader::run($par);
 }
@@ -48,18 +50,20 @@ class ThemeLeader extends SpecialPage{
         $wgOut->addHTML("<script type='text/javascript'>$('.tl-projects').dataTable({'iDisplayLength': 100, 'bAutoWidth':false});$('.tl-projects').show();</script>");
     }
     
-    static function createTab(){
+    static function createTab($tabs){
         global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
         $me = Person::newFromId($wgUser->getId());
+        if(!$wgUser->isLoggedIn() || !$me->isThemeLeader()){
+            return true;
+        }
         if($wgTitle->getNSText() == "Special" && $wgTitle->getText() == "ThemeLeader"){
             $selected = "selected";
         }
-        
-        echo "<li class='top-nav-element $selected'>\n";
-        echo "    <span class='top-nav-left'>&nbsp;</span>\n";
-        echo "    <a id='lnk-tl_projects' class='top-nav-mid' href='$wgServer$wgScriptPath/index.php/Special:ThemeLeader' class='new'>Theme Lead</a>\n";
-        echo "    <span class='top-nav-right'>&nbsp;</span>\n";
-        echo "</li>";
+        $tabs["Theme Lead"] = array('id' => "lnk-tl_projects",
+                                    'href' => "$wgServer$wgScriptPath/index.php/Special:ThemeLeader",
+                                    'text' => "Theme Lead",
+                                    'selected' => $selected);
+        return true;
     }
     
 }
