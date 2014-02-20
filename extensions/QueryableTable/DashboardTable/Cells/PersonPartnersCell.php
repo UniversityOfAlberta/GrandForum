@@ -38,7 +38,7 @@ class PersonPartnersCell extends DashboardCell {
                         }
                     }
                 }
-                $champions = $person->getChampionsDuring($start.REPORTING_CYCLE_START_MONTH, $end.REPORTING_CYCLE_END_MONTH);
+                $champions = $person->getChampionsDuring($start, $end);
                 foreach($champions as $champ){
                     if($champ->isMemberOfDuring($project, $start, $end) || $champ->isChampionOfDuring($project, $start, $end)){
                         $values['Champion'][] = array('type' => 'Champion', 'id' => $champ->getId());
@@ -63,7 +63,7 @@ class PersonPartnersCell extends DashboardCell {
                     }
                 }
             }
-            $champions = $person->getChampionsDuring($start.REPORTING_CYCLE_START_MONTH, $end.REPORTING_CYCLE_END_MONTH);
+            $champions = $person->getChampionsDuring($start, $end);
             foreach($champions as $champ){
                 $values['All'][] = array('type' => 'Champion', 'id' => $champ->getId());
             }

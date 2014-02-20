@@ -206,8 +206,6 @@ class PDF extends BackboneModel {
      */
     function canUserRead(){
         $me = Person::newFromWgUser();
-        $start = $this->getYear().REPORTING_CYCLE_START_MONTH;
-        $end = $this->getYear().REPORTING_CYCLE_END_MONTH;
 
         if(!$me->isLoggedIn()){
             // Not logged in?  Too bad, you can't read anything!
@@ -223,53 +221,9 @@ class PDF extends BackboneModel {
             // I should be able to read any pdf which was created by me
             return true;
         }
-        else if($this->getType() == RPTP_HQP ||
-                $this->getType() == RPTP_EXIT_HQP ||
-                $this->getType() == RPTP_HQP_COMMENTS) {
-            $hqps = $me->getHQPDuring($start, $end);
-            foreach($hqps as $hqp){
-                if($hqp->getId() == $this->userId){
-                    // I should be able to read any pdf which was created by my hqp (for that year)
-                    return true;
-                }
-            }
-        }
-        else if($this->getType() == RPTP_LEADER ||
-                $this->getType() == RPTP_LEADER_COMMENTS ||
-                $this->getType() == RPTP_LEADER_MILESTONES){
-            if($this->getProjectId() != ""){
-                $leads = $me->leadershipDuring($start, $end);
-                foreach($leads as $project){
-                    if($project->getId() == $this->getProjectId()){
-                        // I should be able to read any pdf for a Project that I was a project leader to (for that year)
-                        return true;
-                    }
-                }
-            }
-        }
-        if($this->getType() == RPTP_LEADER ||
-           $this->getType() == RPTP_NORMAL){
-            if($me->isEvaluator($this->getYear())){
-                $evals = $me->getEvaluateSubs($this->getYear());
-                foreach($evals as $eval){
-                    if($eval instanceof Project && 
-                       $this->getType() == RPTP_LEADER){
-                        if($this->getProjectId() == $eval->getId()){
-                            // I should be able to read any pdf for the Projects that I am evaluating (for that year)
-                            return true;
-                        }
-                    }
-                    else if($eval instanceof Person &&
-                            $this->getType() == RPTP_NORMAL){
-                        if($this->getPerson()->getId() == $eval->getId()){
-                            // I should be able to read any pdf for the People that I am evaluating (for that year)
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
+        $result = false;
+        wgRunHooks('CanUserReadPDF', array($me, $this, &$result));
+        return $result;
     }
     
     function create(){

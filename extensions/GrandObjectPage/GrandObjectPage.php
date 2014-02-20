@@ -13,7 +13,6 @@
     require_once("AddContributionPage.php");
     require_once("AddMultimediaStoryPage.php");
     //require_once("AddFormPage.php");
-    //require_once("MyProjects.php");
     require_once("EditRelations.php");
     require_once("MailingLists.php");
     require_once("ThemeLeader.php");

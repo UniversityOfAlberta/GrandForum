@@ -73,7 +73,7 @@ class LOI extends BackboneModel {
 		}
 	}
 
-	static function getAllLOIs($year=REPORTING_YEAR, $revision=1){
+	static function getAllLOIs($year, $revision=1){
 		$sql = "SELECT * FROM grand_loi WHERE year={$year} AND revision={$revision} ORDER BY name";
 		$results = DBFunctions::execSQL($sql);
 		$lois = array();
@@ -86,7 +86,7 @@ class LOI extends BackboneModel {
 		return $lois;
 	}
 
-	static function getNonConflictingLOIs($evaluator_id, $year=REPORTING_YEAR){
+	static function getNonConflictingLOIs($evaluator_id, $year){
 		$sql = "SELECT l.*, lc.conflict 
 				FROM grand_loi l
 				LEFT JOIN grand_eval_conflicts lc ON(l.id=lc.sub_id AND lc.eval_id={$evaluator_id} AND lc.type='LOI' AND lc.year={$year})
@@ -110,7 +110,7 @@ class LOI extends BackboneModel {
 		return $lois;
 	}
 
-	static function getAssignedLOIs($year=REPORTING_YEAR){
+	static function getAssignedLOIs($year){
 		$sql = "SELECT DISTINCT l.* 
 				FROM grand_loi l
 				INNER JOIN grand_eval e ON(l.id=e.sub_id AND e.type IN('LOI', 'OPT_LOI') AND e.year={$year} AND l.year={$year}) 
@@ -280,8 +280,7 @@ class LOI extends BackboneModel {
 		return $this->manager_comments;
 	}
 
-	function getEvaluators($type=null, $year = REPORTING_YEAR){
-	    
+	function getEvaluators($type=null, $year){
 	    $sql = "SELECT *
 	            FROM grand_eval
 	            WHERE sub_id = '{$this->id}'

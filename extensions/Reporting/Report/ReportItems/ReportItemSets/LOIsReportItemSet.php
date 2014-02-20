@@ -38,7 +38,7 @@ class LOIsReportItemSet extends ReportItemSet {
             //print_r($subs);
         }
         else if($type == "ALL_LOI"){
-            $subs = LOI::getAllLOIs();
+            $subs = LOI::getAllLOIs(REPORTING_YEAR);
         }
         else if($type == "ALL_LOI2"){
             //Revision 2
@@ -51,7 +51,7 @@ class LOIsReportItemSet extends ReportItemSet {
                 $assigned_ids[] = $a->getId();
             }
 
-            $nonconf = LOI::getNonConflictingLOIs($person->getId());
+            $nonconf = LOI::getNonConflictingLOIs($person->getId(), REPORTING_YEAR);
             $count = 0;
             foreach($nonconf as $loi){
                 if(!in_array($loi->getId(), $assigned_ids)){

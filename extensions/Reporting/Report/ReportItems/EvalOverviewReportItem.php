@@ -155,7 +155,7 @@ EOF;
             if($type == "PNI" || $type == "CNI"){
                 $sub_name = $sub->getReversedName();
                 $sub_name_straight = $sub->getFirstName(). " " .$sub->getLastName();
-                $evals = $sub->getEvaluators($type);
+                $evals = $sub->getEvaluators($type, $this->getReport()->year);
             }
             else if($type == "Project"){
                 $sub_name = $sub_name_straight = $sub->getName();

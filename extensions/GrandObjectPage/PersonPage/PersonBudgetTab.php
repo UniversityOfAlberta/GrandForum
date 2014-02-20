@@ -13,7 +13,7 @@ class PersonBudgetTab extends AbstractEditableTab {
     
     function handleEdit(){
         global $wgUser, $wgServer, $wgScriptPath;
-        $year= REPORTING_YEAR-1;
+        $year= YEAR-1;
 	    $uid = $this->person->getId();
 		$blob_type=BLOB_EXCEL;
 		$rptype = RP_RESEARCHER;
@@ -45,19 +45,19 @@ class PersonBudgetTab extends AbstractEditableTab {
 		$me = Person::newFromId($wgUser->getId());
 	    $this->html .= "<div>";
 	    $this->html .= "<h2>Download Budget Template</h2>
-	                    This budget is for the allocated, or accepted budget for ".REPORTING_YEAR."-".(REPORTING_YEAR+1).".
+	                    This budget is for the allocated, or accepted budget for ".YEAR."-".(YEAR+1).".
                         <ul>
-                            <li><a href='$wgServer$wgScriptPath/data/GRAND Researcher Budget Allocated (2013-14).xls'>".REPORTING_YEAR."-".(REPORTING_YEAR+1)." Budget Template</a></li>
+                            <li><a href='$wgServer$wgScriptPath/data/GRAND Researcher Budget Allocated (2013-14).xls'>".YEAR."-".(YEAR+1)." Budget Template</a></li>
                         </ul>";
 	
         $this->html .= "<h2>Budget Upload</h2>
               <input type='file' name='budget' />";
 	
 	    $this->html .= "</div>";            
-	    $budget = $this->person->getAllocatedBudget(REPORTING_YEAR-1);
+	    $budget = $this->person->getAllocatedBudget(YEAR-1);
 	
 	    // Show a preview of the budget
-	    $this->html .= "<h2>".REPORTING_YEAR." Budget Preview</h2>";
+	    $this->html .= "<h2>".YEAR." Budget Preview</h2>";
 	    if($budget !== null){
 	        $this->html .= $budget->copy()->filterCols(V_PROJ, array(""))->render();
 	    }
@@ -70,7 +70,7 @@ class PersonBudgetTab extends AbstractEditableTab {
      * Displays the budget for this user
      */
     function showBudget($person, $visibility){
-        global $wgOut, $wgUser;
+        global $wgOut, $wgUser, $projectPhaseDates;
         $me = Person::newFromId($wgUser->getId());
         if($this->visibility['isMe'] || $me->isRoleAtLeast(MANAGER)){
             $wgOut->addScript("<script type='text/javascript'>
@@ -80,7 +80,7 @@ class PersonBudgetTab extends AbstractEditableTab {
                 });
             </script>");
             $this->html .= "<div id='budgetAccordion'>";
-            for($i=REPORTING_YEAR; $i >= 2011; $i--){
+            for($i=YEAR; $i >= (substr($projectPhaseDates[1], 0, 4)+1); $i--){
                 $this->html .= "<h3><a href='#'>".$i."</a></h3><div>";
                 $budget = $person->getAllocatedBudget($i-1);
                 if($budget != null){

@@ -155,6 +155,11 @@ $egAnnokiExtensions['Poll']     = array( 'name' => 'Poll',
                           'enabled' => true,
                           );
                           
+$egAnnokiExtensions['QueryableTable']     = array( 'name' => 'Queryable Table',
+                          'path' => "$IP/extensions/QueryableTable/QueryableTable.php",
+                          'enabled' => true,
+                          );
+                          
 $egAnnokiExtensions['Reporting']     = array( 'name' => 'Reporting',
                           'path' => "$IP/extensions/Reporting/Reporting.php",
                           'enabled' => true,
@@ -162,11 +167,6 @@ $egAnnokiExtensions['Reporting']     = array( 'name' => 'Reporting',
 
 $egAnnokiExtensions['SessionData']     = array( 'name' => 'Session Data',
                           'path' => "$IP/extensions/SessionData/SessionData.php",
-                          'enabled' => true,
-                          );
-                          
-$egAnnokiExtensions['QueryableTable']     = array( 'name' => 'Queryable Table',
-                          'path' => "$IP/extensions/QueryableTable/QueryableTable.php",
                           'enabled' => true,
                           );
 
@@ -314,6 +314,12 @@ function orderSpecialPages(&$aSpecialPages){
     }
     $aSpecialPages = array_merge($array1, $array2);
     return true;
+}
+
+function debug($message, $type=E_USER_NOTICE){
+    if(DEBUG){
+        trigger_error($message, $type);
+    }
 }
 
 ?>

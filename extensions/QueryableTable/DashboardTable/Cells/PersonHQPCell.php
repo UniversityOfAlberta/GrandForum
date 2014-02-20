@@ -154,7 +154,7 @@ class PersonHQPCell extends DashboardCell {
             $inactive = " (Inactive)";
         }
         
-        $blob = new ReportBlob(BLOB_ARRAY, REPORTING_YEAR, $hqp->getId(), 0);
+        $blob = new ReportBlob(BLOB_ARRAY, YEAR, $hqp->getId(), 0);
 	    $blob_address = ReportBlob::create_address(RP_HQP, HQP_MILESTONES, HQP_MIL_CONTRIBUTIONS, 0);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();

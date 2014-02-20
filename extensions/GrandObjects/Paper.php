@@ -198,8 +198,9 @@ class Paper extends BackboneModel{
 	// $strict: whether to stick with the date range for everything(true), or show anything 'to appear' as well (false)
 	static function getAllPapersDuring($project='all', $category='all', $grand='grand', $startRange = false, $endRange = false, $strict = true){
 		if( $startRange === false || $endRange === false ){
-	        $startRange = date(REPORTING_YEAR."-01-01 00:00:00");
-	        $endRange = date(REPORTING_YEAR."-12-31 23:59:59");
+		    debug("Don't use default values for Project::getAllPapersDuring");
+	        $startRange = date(YEAR."-01-01 00:00:00");
+	        $endRange = date(YEAR."-12-31 23:59:59");
 	    }
 	    $str = ($strict) ? 'true' : 'false';
 	    $proj = $project;

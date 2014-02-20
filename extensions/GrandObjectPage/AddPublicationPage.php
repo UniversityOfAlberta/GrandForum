@@ -68,7 +68,7 @@ function getMyPapers($cat){
 	$html  = "<div id='my_papers'>";
 	$html .= "<table id='mypubtable' class='wikitable sortable' width='100%' cellspacing='1' cellpadding='5' rules='all' frame='box'><tr><th align='center' style='white-space:nowrap;'>Publication Date</th><th>Project</th><th>Product</th></tr>";
 
-	$myPapers = $me->getPapersAuthored($cat, (REPORTING_YEAR-1)."-01-01", REPORTING_YEAR."-12-31");
+	$myPapers = $me->getPapersAuthored($cat, YEAR, YEAR+1);
 	   	
    	foreach($myPapers as $paper){
    		$id = $paper->getId();
@@ -195,7 +195,7 @@ class AddActivityPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Activity"));
 		
 		$wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3 id='myactivities'>My ".REPORTING_YEAR." Activities</h3>");
+	    $wgOut->addHTML("<h3 id='myactivities'>My ".YEAR." Activities</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Activity");
 	   	$wgOut->addHTML($myPapers_html);
@@ -231,7 +231,7 @@ class AddArtifactPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Artifact"));
 		
 	    $wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3 id='my_artifacts'>My ".REPORTING_YEAR." Artifacts</h3>");
+	    $wgOut->addHTML("<h3 id='my_artifacts'>My ".YEAR." Artifacts</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Artifact");
 	   	$wgOut->addHTML($myPapers_html);
@@ -268,7 +268,7 @@ class AddPublicationPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Publication"));
 
 	    $wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3 id='mypublications'>My ".REPORTING_YEAR." Publications</h3>");
+	    $wgOut->addHTML("<h3 id='mypublications'>My ".YEAR." Publications</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Publication");
 	   	$wgOut->addHTML($myPapers_html);
@@ -305,7 +305,7 @@ class AddPressPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Press"));
 
 	    $wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3 id='mypress'>My ".REPORTING_YEAR." Press</h3>");
+	    $wgOut->addHTML("<h3 id='mypress'>My ".YEAR." Press</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Press");
 	   	$wgOut->addHTML($myPapers_html);
@@ -342,7 +342,7 @@ class AddAwardPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Award"));
 
 	    $wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3 id='myawards'>My ".REPORTING_YEAR." Awards</h3>");
+	    $wgOut->addHTML("<h3 id='myawards'>My ".YEAR." Awards</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Award");
 	   	$wgOut->addHTML($myPapers_html);
@@ -380,7 +380,7 @@ class AddPresentationPage extends SpecialPage{
 	    $wgOut->addScript(generateScript("Presentation"));
 
 	    $wgOut->addHTML("<div id='addpub_accordion'>");
-	    $wgOut->addHTML("<h3 id='mypresentations'>My ".REPORTING_YEAR." Presentations</h3>");
+	    $wgOut->addHTML("<h3 id='mypresentations'>My ".YEAR." Presentations</h3>");
 	    
 	   	$myPapers_html = getMyPapers("Presentation");
 	   	$wgOut->addHTML($myPapers_html);

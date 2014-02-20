@@ -255,7 +255,7 @@ class CreatePDF extends SpecialPage {
 	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectChampionsReportPDF&person=4&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
 	    else if($type == 'loi'){
-	        foreach(LOI::getAllLOIs() as $loi){
+	        foreach(LOI::getAllLOIs(REPORTING_YEAR) as $loi){
 	            if(array_search($loi->getId(), $ids) === false){
 	                $names[] = $loi->getName();
 	                $ids[] = $loi->getId();

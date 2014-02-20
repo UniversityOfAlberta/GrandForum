@@ -849,9 +849,7 @@ class Person extends BackboneModel {
     
     // Returns whether or not this Person is a member of the give project name or not.
     function is_member($proj) {
-        if(DEBUG){
-            trigger_error("Deprecated function 'is_member()' called.", E_USER_NOTICE);
-        }
+        debug("Deprecated function 'is_member()' called.", E_USER_NOTICE);
         return isMemberOf($proj);
     }
     
@@ -1049,9 +1047,7 @@ class Person extends BackboneModel {
     
     // Returns the biography of the Person
     function getBiography(){
-        if(DEBUG){
-            trigger_error("Deprecated function 'getBiography()' called.", E_USER_NOTICE);
-        }
+        debug("Deprecated function 'getBiography()' called.", E_USER_NOTICE);
         $ns = 0;
         if($this->isPNI()){
             $ns = NS_GRAND_NI;
@@ -1332,6 +1328,66 @@ class Person extends BackboneModel {
             }
         }
         return $this->roles;
+    }
+    
+    function getLeadershipRoles(){
+        $roles = array();
+        $pm = $this->isProjectManager();
+        if($this->isProjectLeader() && !$pm){
+            $roles[] = new Role(array(0 => array('id' => -1,
+                                                       'user_id' => $this->id,
+                                                       'role' => "PL",
+                                                       'start_date' => '0000-00-00 00:00:00',
+                                                       'end_date' => '0000-00-00 00:00:00',
+                                                       'comment' => '')));
+        }
+        if($this->isProjectCoLeader() && !$pm){
+            $roles[] = new Role(array(0 => array('id' => -1,
+                                                       'user_id' => $this->id,
+                                                       'role' => "COPL",
+                                                       'start_date' => '0000-00-00 00:00:00',
+                                                       'end_date' => '0000-00-00 00:00:00',
+                                                       'comment' => '')));
+        }
+        if($pm){
+            $roles[] = new Role(array(0 => array('id' => -1,
+                                                       'user_id' => $this->id,
+                                                       'role' => "PM",
+                                                       'start_date' => '0000-00-00 00:00:00',
+                                                       'end_date' => '0000-00-00 00:00:00',
+                                                       'comment' => '')));
+        }
+        return $roles;
+    }
+    
+    function getLeadershipRolesDuring($startDate=false, $endDate=false){
+        $roles = array();
+        $pm = $this->isProjectManagerDuring($startDate, $endDate);
+        if($this->isProjectLeaderDuring($startDate, $endDate) && !$pm){
+            $roles[] = new Role(array(0 => array('id' => -1,
+                                                       'user_id' => $this->id,
+                                                       'role' => "PL",
+                                                       'start_date' => '0000-00-00 00:00:00',
+                                                       'end_date' => '0000-00-00 00:00:00',
+                                                       'comment' => '')));
+        }
+        if($this->isProjectCoLeaderDuring($startDate, $endDate) && !$pm){
+            $roles[] = new Role(array(0 => array('id' => -1,
+                                                       'user_id' => $this->id,
+                                                       'role' => "COPL",
+                                                       'start_date' => '0000-00-00 00:00:00',
+                                                       'end_date' => '0000-00-00 00:00:00',
+                                                       'comment' => '')));
+        }
+        if($pm){
+            $roles[] = new Role(array(0 => array('id' => -1,
+                                                       'user_id' => $this->id,
+                                                       'role' => "PM",
+                                                       'start_date' => '0000-00-00 00:00:00',
+                                                       'end_date' => '0000-00-00 00:00:00',
+                                                       'comment' => '')));
+        }
+        return $roles;
     }
     
     // Returns the last role that this Person had before they were Inactivated, null if this Person has never had any Roles
@@ -3053,7 +3109,6 @@ class Person extends BackboneModel {
     // Returns a list of the evaluators who are evaluating this Person
     // Provide type 
     function getEvaluators($type='Researcher', $year = YEAR){
-        
         $sql = "SELECT *
                 FROM grand_eval
                 WHERE sub_id = '{$this->id}'
@@ -3073,7 +3128,6 @@ class Person extends BackboneModel {
      * @return array The allocation information
      */
     function getAllocation($year) {
-        
         $allocation = array('allocated_amount' => null, 'overall_score'=>null, 'email_sent'=>null);
 
         if (!is_numeric($year)) {
@@ -3081,7 +3135,6 @@ class Person extends BackboneModel {
         }
 
         $query = "SELECT * FROM grand_review_results WHERE user_id = '{$this->id}' AND year='{$year}'";
-        
         $res = DBFunctions::execSQL($query);
 
         if (count($res) > 0) {
@@ -3094,7 +3147,6 @@ class Person extends BackboneModel {
     }
 
     function getEthics(){
-
         $query = "SELECT * FROM grand_ethics WHERE user_id='{$this->id}'";
         $data = DBFunctions::execSQL($query);
         
@@ -3104,7 +3156,6 @@ class Person extends BackboneModel {
         $ethics['date'] = (isset($data[0]['date']))? $data[0]['date'] : '0000-00-00';
 
         return $ethics; 
-        
     }
     
     function isAuthorOf($paper){
