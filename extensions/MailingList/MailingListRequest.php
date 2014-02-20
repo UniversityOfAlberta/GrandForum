@@ -20,7 +20,7 @@ class MailingListRequest extends SpecialPage{
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
         $groups = $wgUser->getGroups();
         $me = Person::newFromId($wgUser->getId());
-        if(isset($_GET['action']) && $_GET['action'] = "view" && array_search("sysop", $groups) !== false){
+        if(isset($_GET['action']) && $_GET['action'] == "view" && array_search("sysop", $groups) !== false){
             if(isset($_POST['submit']) && $_POST['submit'] == "Accept"){
                 // Admin Accepted
                 $status = false;

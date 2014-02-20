@@ -719,7 +719,7 @@ abstract class AbstractReport extends SpecialPage {
         $check = $this->getPDF();
         if(count($check) > 0){
             $sto->mark_submitted_ns($check[0]['token']);
-            if(($this->xmlName = "HQPReport" || $this->xmlName == "HQPReportPDF") && $this->project == null){
+            if(($this->xmlName == "HQPReport" || $this->xmlName == "HQPReportPDF") && $this->project == null){
                 $this->notifySupervisors($check[0]['token']);
             }
         }

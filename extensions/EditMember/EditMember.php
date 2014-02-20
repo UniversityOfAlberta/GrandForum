@@ -63,7 +63,7 @@ class EditMember extends SpecialPage{
                                 }
                             }  
                            </script>");
-        if(isset($_GET['action']) && $_GET['action'] = "view" && $user->isRoleAtLeast(STAFF)){
+        if(isset($_GET['action']) && $_GET['action'] == "view" && $user->isRoleAtLeast(STAFF)){
             if(isset($_POST['submit']) && $_POST['submit'] == "Accept"){
                 // Admin Accepted
                 EditMember::handleAdminAccept();
