@@ -2047,8 +2047,8 @@ EOF;
             //CASH
             $lnk_id = "lnk_contr_cash_" . $uni_id;
             $div_id = "div_contr_cash_" . $uni_id;
-            $contr_cash = Dashboard::filterContributions($uni_contr, 'cash');
-            $contribution_sum = Dashboard::contributionSum($contr_cash);
+            $contr_cash = array_merge(Dashboard::filterContributions($uni_contr, 'cash'), Dashboard::filterContributions($uni_contr, 'caki'));
+            $contribution_sum = Dashboard::contributionSumCash($contr_cash);
             $contribution_details = Dashboard::contributionDetailsXLS($contr_cash);
             $html .= "<td align='right'>";
             if($contribution_sum > 0){
@@ -2073,8 +2073,8 @@ EOF;
             //IN-KIND
             $lnk_id = "lnk_contr_inki_" . $uni_id;
             $div_id = "div_contr_inki_" . $uni_id;
-            $contr_inki = Dashboard::filterContributions($uni_contr, 'inki');
-            $contribution_sum = Dashboard::contributionSum($contr_inki);
+            $contr_inki = array_merge(Dashboard::filterContributions($uni_contr, 'inki'), Dashboard::filterContributions($uni_contr, 'caki'));
+            $contribution_sum = Dashboard::contributionSumKind($contr_inki);
             $contribution_details = Dashboard::contributionDetailsXLS($contr_inki);
             $html .= "<td align='right'>";
             if($contribution_sum > 0){
