@@ -968,7 +968,8 @@ abstract class AbstractReport extends SpecialPage {
             foreach($hqps as $hqp){
                 if($hqp->getId() == $pdf->userId){
                     // I should be able to read any pdf which was created by my hqp (for that year)
-                    return true;
+                    $result = true;
+                    return false;
                 }
             }
         }
@@ -980,7 +981,8 @@ abstract class AbstractReport extends SpecialPage {
                 foreach($leads as $project){
                     if($project->getId() == $pdf->getProjectId()){
                         // I should be able to read any pdf for a Project that I was a project leader to (for that year)
-                        return true;
+                        $result = true;
+                        return false;
                     }
                 }
             }
@@ -994,19 +996,22 @@ abstract class AbstractReport extends SpecialPage {
                        $pdf->getType() == RPTP_LEADER){
                         if($pdf->getProjectId() == $eval->getId()){
                             // I should be able to read any pdf for the Projects that I am evaluating (for that year)
-                            return true;
+                            $result = true;
+                            return false;
                         }
                     }
                     else if($eval instanceof Person &&
                             $pdf->getType() == RPTP_NORMAL){
                         if($pdf->getPerson()->getId() == $eval->getId()){
                             // I should be able to read any pdf for the People that I am evaluating (for that year)
-                            return true;
+                            $result = true;
+                            return false;
                         }
                     }
                 }
             }
         }
+        $result = false;
         return false;
     }
 }
