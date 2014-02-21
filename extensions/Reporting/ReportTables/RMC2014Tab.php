@@ -10,7 +10,7 @@ class RMC2014Tab extends AbstractTab {
     
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath, $wgOut, $foldscript;
-        $wgOut->addStyle("../extensions/Report/style/report.css");
+        $wgOut->addStyle("../extensions/Reporting/Report/style/report.css");
 
         $tab1 = $tab2 = $tab3 = $tab4 = $tab5 = $tab6 = $tab7 = $tab8 = $tab9 = $tab10 = $tab11 = $tab12 = $tab13 = "";
         $tabs = array(

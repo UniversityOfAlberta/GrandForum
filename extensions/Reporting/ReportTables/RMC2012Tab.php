@@ -2,7 +2,6 @@
 
 include 'Evaluate_Form.php';
 //include 'EvaluationTable.php';
-include 'ReportIndex.php';
 
 class RMC2012Tab extends AbstractTab {
 

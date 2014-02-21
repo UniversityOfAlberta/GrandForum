@@ -34,49 +34,30 @@ img.ui-datepicker-trigger{
     list-style: none;
     z-index: 90; /* below the H1 */
     line-height: 0.8em;
+    height: 100%;
 }
 
 #header li {
+    height: 100%;
+    color: #333333;
     font-size: 11px;
     padding: 0 2px 0 2px;
     margin: 0 2px 0 2px;
     float: left;
-    -moz-border-top-left-radius: 4px;
-    -webkit-border-top-left-radius: 4px;
-    border-top-left-radius: 4px;
-    -moz-border-top-right-radius: 4px;
-    -webkit-border-top-right-radius: 4px;
-    border-top-right-radius: 4px;
     
-    background: #8b6e93; /* for non-css3 browsers */
-    background: -ms-linear-gradient(top, #96789f 0%, #8b6e93 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#96789f), to(#8b6e93)); /* for webkit browsers */
-    background: -moz-linear-gradient(top, #96789f, #8b6e93); /* for firefox 3.6+ */ 
-    background: -o-linear-gradient(top, #96789f, #8b6e93);
+    background: #FFFFFF;
 }
 
 #header ul li:hover {
-    background: #A385AD; /* for non-css3 browsers */
-    background: -ms-linear-gradient(top, #A385AD 0%, #96789f 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#A385AD), to(#96789f)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #A385AD, #96789f); /* for firefox 3.6+ */ 
-    background: -o-linear-gradient(top, #A385AD, #96789f);
+    background: #FFFFFF;
 }
 
 #header li.selected {
-    background: #FFFFFF; /* for non-css3 browsers */
-    background: -ms-linear-gradient(top, #EEEEEE 0%, #FFFFFF 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#FFFFFF)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #EEEEEE, #FFFFFF); /* for firefox 3.6+ */ 
-    background: -o-linear-gradient(top, #EEEEEE, #FFFFFF);
+    background: #FFFFFF;
 }
 
 #header ul li:hover.selected{
-    background: #EEEEEE; /* for non-css3 browsers */
-    background: -ms-linear-gradient(top, #DDDDDD 0%, #FFFFFF 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#DDDDDD), to(#FFFFFF)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #DDDDDD, #FFFFFF); /* for firefox 3.6+ */
-    background: -o-linear-gradient(top, #DDDDDD, #FFFFFF);
+    background: #FFFFFF;
 }
 
 
@@ -191,11 +172,8 @@ div#header {
     display: block;
     margin: 0 0 0 6px;
     font-size: 12px;
-    padding: 0 7px 0 7px;
+    padding: 0;
     float: left;
-    -moz-box-shadow:    0 0 7px 0 #46294F;
-    -webkit-box-shadow: 0 0 7px 0 #46294F;
-    box-shadow:         0 0 7px 0 #46294F;
 }
 
 #header .top-nav-left {

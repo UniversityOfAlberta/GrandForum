@@ -383,7 +383,8 @@ class cavendishTemplate extends QuickTemplate {
 <div id="container">
 	<div id="topheader">
         <?php
-            echo "<div class='smallLogo'><img src='$wgServer$wgScriptPath/skins/Grand_Logo_Small.png' /></div>";
+            global $wgSitename;
+            echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/skins/logo_small.png' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
             echo "<div class='login'>";
 	        if($wgUser->isLoggedIn()){
@@ -398,11 +399,8 @@ class cavendishTemplate extends QuickTemplate {
     </div>
     <div style="position:relative;">
 	    <div id="header">
-		    <a
-	        href="<?php echo htmlspecialchars($this->data['nav_urls']['mainpage']['href'])?>"
-	        title="<?php $this->msg('mainpage') ?>"><img style='margin-top:5px;' height='80px' src="<?php echo $wgServer.$wgScriptPath.'/skins/GrandForum-banner.gif'; ?>" alt='Logo' /></a>
 	        <?php
-	        
+	        /*
 	        if(!TESTING && $wgScriptPath != ""){
 	            exec("git rev-parse HEAD", $output);
 	            $revId = @substr($output[0], 0, 10);
@@ -419,7 +417,7 @@ class cavendishTemplate extends QuickTemplate {
 	                echo "<div style='font-size:36px;color:#FFFFFF;position:absolute;top:36px;left:350px;'>
 	                        DEVELOPMENT ($branchFull, $revIdFull)</div>";
 	            }
-	        }
+	        }*/
 	            //$wgMessage->addPurpleInfo("Important: The GRAND Forum will be down for maintenance from 1-2AM (MST), Sun, Dec. 15.");
 	        ?>
 		    <a name="top" id="contentTop"></a>
@@ -440,7 +438,7 @@ class cavendishTemplate extends QuickTemplate {
 			    <li id='grand-tab' class="top-nav-element tab-left
 		        <?php if($wgTitle->getNSText() != "Help"){
 		            echo "selected";
-		        } ?>" style='margin-right:25px;margin-left:215px;'>
+		        } ?>">
 				    <span class="top-nav-left">&nbsp;</span>
 				    <a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Main_Page">GRAND</a>	
 				    <span class="top-nav-right">&nbsp;</span>

@@ -22,7 +22,7 @@
 	    top:0;
 	    left:0;
 	    right:0;
-	    height: 25px;
+	    height: 35px;
 	    padding: 5px 20px 5px 20px;
 	    z-index: 1000;
 	    border-bottom: 1px solid #E0E0E0;
@@ -34,11 +34,19 @@
 	
 	#topheader .smallLogo {
 	    float: left;
+	    height: 100%;
+	}
+	
+	#topheader .smallLogo img {
+	    height: 100%;
 	}
 	
 	#topheader .search {
 	    position:absolute;
-	    left: 0;
+	    left: 200px;
+	    top:9px;
+	    text-shadow: none;
+	    font-weight: normal;
 	}
 	
 	#topheader .login {
@@ -61,16 +69,16 @@
 	
 	/* MAIN MENU */
 	#header {
-		background: #8C529D;
+		background: #FFFFFF;
 		position: relative;
-		min-height: 39px;
-		margin-top: 50px;
-		height: 95px;
+		margin-top: 46px;
+		height: 40px;
 		padding: 0;
-		padding: 10px 0;
-		-moz-border-radius: 10px;
-	    -webkit-border-radius: 10px;
-	    border-radius: 10px;
+		padding: 5px 20px 0 0;
+		margin-left: 200px;
+		border-width: 0 0 1px 1px;
+		border-style: solid;
+		border-color: #E0E0E0;
 	    overflow:hidden;
 	} 
 	
@@ -87,9 +95,11 @@
 	#header ul a {
 		display: block;
 		font-weight: bold;
-		color: #fff;
+		color: #555555;
 		text-decoration: none;
-		line-height:25px;
+		line-height:45px;
+		height: 100%;
+		padding: 0 7px 0 7px;
 	}
 	
 	#header li.selected a {

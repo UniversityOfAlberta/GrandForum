@@ -1306,19 +1306,31 @@ input.other_option:focus {
     -moz-border-radius: 5px 0 0 5px;
 	-webkit-border-radius: 5px 0 0 5px;
 	border-radius: 5px 0 0 5px;
-	border: none;
+	border-width: 1px 0 1px 1px;
+	border-style: solid;
+	border-color: #E0E0E0;
 	height:14px;
 }
 
 #globalSearchInput:focus {
-    border: none !important;
+    border-width: 1px 0 1px 1px !important;
+	border-style: solid !important;
+	border-color: #E0E0E0 !important;
+}
+
+#globalSearchThrobber {
+	border-width: 1px 0 1px 0;
+	border-style: solid;
+	border-color: #E0E0E0;
 }
 
 #globalSearchButton {
     filter: none;
     background: #fff url('../search.png') no-repeat !important;
     margin: 0;
-    border: none !important;
+    border-width: 1px 1px 1px 0 !important;
+	border-style: solid !important;
+	border-color: #E0E0E0 !important;
     font-size: 12px;
     padding: 6px;
     -moz-box-shadow: none;
@@ -1328,7 +1340,7 @@ input.other_option:focus {
 	-webkit-border-radius: 0 5px 5px 0;
 	border-radius: 0 5px 5px 0;
 	width: 30px;
-	height: 26px;
+	height: 28px;
 	vertical-align:top;
 }
 
