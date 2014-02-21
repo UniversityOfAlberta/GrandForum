@@ -15,6 +15,20 @@
 	    $mailman = "grand-forum-hqps";
 	    $people = array_merge(Person::getAllPeople(HQP));
 	}
+	else if ($type == "STUD"){
+	    $mailman = "hqp-students";
+	    $tmppeople = Person::getAllPeople(HQP);
+	    $people = array();
+	    foreach($tmppeople as $person){
+	        $title = $person->getPosition();
+	        if($title == "Undergraduate" ||
+	           $title == "Masters Student" ||
+	           $title == "PhD Student" ||
+	           $title == "PostDoc"){
+	            $people[] = $person;
+	        }
+	    }
+	}
 	else if($type == "RMC"){
 	    $mailman = "rmc-list";
 	    $people = array_merge(Person::getAllPeople(RMC));
@@ -152,7 +166,7 @@
 	            break;
 	        }
 	    }
-	    if(!$found && !isBlackListed($email)){
+	    if(!$found){
 	        echo $email."\n";
 	        $nExtra++;
 	    }
