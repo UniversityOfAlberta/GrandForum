@@ -383,13 +383,18 @@ class cavendishTemplate extends QuickTemplate {
 <div id="container">
 	<div id="topheader">
         <?php
-            global $wgSitename;
+            global $wgSitename, $notifications, $notificationFunctions;
+            if(count($notifications) == 0){
+                foreach($notificationFunctions as $function){
+                    call_user_func($function);
+                }
+            }
             echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/skins/logo_small.png' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
             echo "<div class='login'>";
 	        if($wgUser->isLoggedIn()){
 		        $p = Person::newFromId($wgUser->getId());
-		        echo "<a href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' />&nbsp;{$p->getNameForForms()}</a> <img src='$wgServer$wgScriptPath/skins/iconic/gray_dark/mail_16x12.png' >";
+		        echo "<a href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' />&nbsp;{$p->getNameForForms()}</a><a href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/skins/iconic/gray_dark/mail_16x12.png' /><sup>".count($notifications)."</sup></span>";
 	        }
 	        else{
 		        echo "Not logged in";
@@ -535,12 +540,6 @@ class cavendishTemplate extends QuickTemplate {
 				    
 				    if($wgUser->isLoggedIn()){
 				        $p = Person::newFromId($wgUser->getId());
-				        // Notification Tab
-                        if(count($notifications) == 0){
-                            foreach($notificationFunctions as $function){
-                                call_user_func($function);
-                            }
-                        }	
 					
                         //if(count($p->getProjects()) > 0 && !$user->isRoleAtLeast(MANAGER)){
 			            //    Project::createTab();
@@ -561,7 +560,7 @@ class cavendishTemplate extends QuickTemplate {
 					    //}
                         ReportSurvey::createTab();
 					    MyMailingLists::createTab();
-					    Notification::createTab();
+					    //Notification::createTab();
 				    }
 			    ?>
 		    </ul>
@@ -587,10 +586,7 @@ class cavendishTemplate extends QuickTemplate {
     </div>
     <?php global $dropdownScript; echo $dropdownScript; ?>
     <a id="sideToggle">Toggle Menu</a>
-	<div id="mBody" class='displayTable <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
-	    <div class='displayTableRow'>
-            
-		<div id="side" class='displayTableCell'>
+    <div id="side">
 		    <ul id="nav">
 		    <?php
 			    global $wgUser;
@@ -611,8 +607,7 @@ class cavendishTemplate extends QuickTemplate {
 		    </ul>
 		    
 		</div><!-- end of SIDE div -->
-		<div id="spacer" class='displayTableCell'>
-		</div>
+	<div id="mBody" class='displayTable <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
 		<div id="bodyContent" class='displayTableCell'>
 			<?php if($this->data['sitenotice']) { ?><div id="siteNotice"><?php $this->html('sitenotice') ?></div><?php } ?>
 			<h1><?php $this->text('title') ?></h1>
@@ -627,7 +622,6 @@ class cavendishTemplate extends QuickTemplate {
 			<!-- end content -->
 			<?php if($this->data['dataAfterContent']) { $this->html ('dataAfterContent'); } ?>
 		</div><!-- end of MAINCONTENT div -->	
-	</div>
 	</div><!-- end of MBODY div -->
 	<div id="recordDiv"></div>
 	<div id="footer"><table><tr><td align="left" width="1%" nowrap="nowrap">
@@ -671,22 +665,21 @@ class cavendishTemplate extends QuickTemplate {
 	function toolbox() {
 ?>
 	<li class="portlet" id="p-tb">
-		
 <?php
 	global $wgScriptPath, $wgUser, $wgRequest;
 		if($wgUser->isLoggedIn()){
 		    $me = Person::newFromId($wgUser->getId());
 		    if($me->isRoleAtLeast(CNI)){
 		        echo "<span>People</span>
-			    <ul class='pBody' style='background:#F3EBF5'>";
+			    <ul class='pBody'>";
 		        //echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:UserSearch'>Find Member</a></li>";
 		        echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:AddMember'>Add Member</a></li>";
 		        echo "<li id='userEditRequest'><a href='{$wgScriptPath}/index.php/Special:EditMember'>Edit Member</a></li>";
 		        echo "<li id='userEditRelation'><a href='{$wgScriptPath}/index.php/Special:EditRelations'>Edit Relations</a></li>";
 		        echo "</ul>";
 		    }
-		    echo "<span>Products</span>
-				<ul class='pBody' style='background:#F3EBF5'>";
+		    echo "<span><hr />Products</span>
+				<ul class='pBody'>";
 		    echo "<li id='addPublication'><a href='{$wgScriptPath}/index.php/Special:AddPublicationPage'>Add/Edit Publication</a></li>";
 		    echo "<li id='addArtifact'><a href='{$wgScriptPath}/index.php/Special:AddArtifactPage'>Add/Edit Artifact</a></li>";
 		    echo "<li id='addPresentation'><a href='{$wgScriptPath}/index.php/Special:AddPresentationPage'>Add/Edit Presentation</a></li>";
@@ -698,13 +691,12 @@ class cavendishTemplate extends QuickTemplate {
 			}
 			echo "<li id='addMultimedia'><a href='{$wgScriptPath}/index.php/Special:AddMultimediaStoryPage'>Add/Edit Multimedia Story</a></li>";
 			echo "</ul>";
-			echo "<span style='padding-top: 2px; padding-bottom: 2px;'></span>
-				<ul class='pBody' style='background:#F3EBF5'>";
+			echo "<ul class='pBody'>";
 			echo "<li id='addMultimedia'><a href='{$wgScriptPath}/index.php/Special:MyDuplicateProducts'>Duplicate Management</a></li>";
 			//echo "<li id='sanityChecks'><a href='{$wgScriptPath}/index.php/Special:SanityChecks'>Data Quality Issues</a></li>";
 			echo "</ul>";
-		    echo "<span>Other</span>
-				<ul class='pBody' style='background:#F3EBF5'>";
+		    echo "<span><hr />Other</span>
+				<ul class='pBody'>";
 			echo "<li id='grandinstructions'><a href='{$wgScriptPath}/index.php/GRAND:Instructions'>Instructions</a></li>";
 			echo "<li id='messageBoard'><a href='{$wgScriptPath}/index.php/Special:Postings'>Message Board</a></li>";
 			//echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php?action=getNews'>Recent News</a></li>";

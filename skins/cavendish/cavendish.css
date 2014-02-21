@@ -40,7 +40,7 @@
 
    Body */
 body {
-	background: #fff;
+	background: #F0F0F0;
 	color: #000;
 	font-size: 90%;
 }
@@ -57,22 +57,26 @@ body {
     display: table-cell;
 }
 
-#bodyContent,#side {
+#bodyContent, #side {
 	background: #fff;
 	line-height: 1.5em; /* value other than 'normal' needed for WinIE */
-	color: #000;
-	-moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
+	color: #333333;
 }
 
 #side {
-    position:relative;
-    margin-top: -2px;
+    font-size: 12px;
+    position:absolute;
+    top:0;
+    bottom: 0;
+    margin-top: 46px;
+    margin-bottom: 0;
     vertical-align: top;
     width:200px;
     min-width:200px;
     max-width:200px;
+    border-width: 0 1px 0 0;
+    border-style: solid;
+    border-color: #E0E0E0;
 }
 
 #sideToggle {
@@ -115,14 +119,13 @@ body {
 }
 
 #bodyContent {
-    position:relative;
+    left: 225px;
+    right: 25px;
+    top: 121px;
+    position:absolute;
     padding: 10px;
-    
-    -moz-box-shadow:    0 0 3px 1px #ccc;
-    -webkit-box-shadow: 0 0 3px 1px #ccc;
-    box-shadow:         0 0 3px 1px #ccc;
-    border: 1px solid #AAAAAA;
-    width:100%;
+
+    border: 1px solid #E0E0E0;
 }
 
 .deepLevel #bodyContent {
@@ -130,7 +133,13 @@ body {
 }
 
 #nav {
-	line-height: 1em;
+	
+}
+
+#nav hr {
+    margin-top: 0;
+    margin-bottom: 8px;
+    background-color: #E0E0E0;
 }
 
 /* Random HTML Styles */
@@ -140,7 +149,7 @@ input::-ms-clear {
 }
 
 hr {
-	background-color: #000;
+	background-color: #E0E0E0;
 	color: #000;
 	margin: 2em 0;
 }
@@ -1266,7 +1275,7 @@ input.other_option:focus {
 }
 
 .small_card:hover, .small_card_hover {
-    background: #96789F !important;
+    background: #8C529D !important;
     color: #ffffff !important;
 }
 
@@ -1350,7 +1359,7 @@ input.other_option:focus {
 }
 
 #globalSearchResults {
-    border: 1px solid #AAA;
+    border: 1px solid #D8D8D8;
     border-bottom: 0;
     background: #FFFFFF;
     width: 428px;
@@ -1365,8 +1374,8 @@ input.other_option:focus {
 }
 
 .globalSearchResultsGroup {
-    background: #DDD;
-    border-right: 1px solid #AAA;
+    background: #F0F0F0;
+    border-right: 1px solid #D8D8D8;
     text-align: right;
     width: 100px;
     padding: 5px;

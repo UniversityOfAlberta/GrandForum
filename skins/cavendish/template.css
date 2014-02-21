@@ -23,7 +23,7 @@
 	    left:0;
 	    right:0;
 	    height: 35px;
-	    padding: 5px 20px 5px 20px;
+	    padding: 5px 25px 5px 25px;
 	    z-index: 1000;
 	    border-bottom: 1px solid #E0E0E0;
 	    color: #333333;
@@ -52,6 +52,10 @@
 	#topheader .login {
 	    float: right;
 	    height: 100%;
+	}
+	
+	#topheader .login a {
+	    margin-left: 25px;
 	}
 	
 	#topheader .login img.photo {
@@ -97,28 +101,51 @@
 		font-weight: bold;
 		color: #555555;
 		text-decoration: none;
-		line-height:45px;
-		height: 100%;
+		line-height:42px;
 		padding: 0 7px 0 7px;
+	}
+	
+	#header ul a:hover {
+	    color: #8C529D;
+	    border-width: 0 0 3px 0;
+	    border-style: solid;
+	    border-color: #8C529D;
 	}
 	
 	#header li.selected a {
 		color:#8C529D;
+		border-width: 0 0 3px 0;
+	    border-style: solid;
+	    border-color: #8C529D;
 	}
 	
 	/* SUB MENU */
 
 	#submenu ul a {
 		display: block;
+		padding: 0 5px 0 5px;
 		font-weight: bold;
-		color: #fff;
+		color: #555555;
 		text-decoration: none;
-		line-height:25px;
+		line-height:22px;
 		white-space: nowrap;
+		border-width: 3px 0 0 0;
+	    border-style: solid;
+	    border-color: #E0E0E0;
+	}
+	
+	#submenu ul a:hover {
+	    color: #8C529D;
+	    border-width: 3px 0 0 0;
+	    border-style: solid;
+	    border-color: #8C529D;
 	}
 	
 	#submenu li.selected a {
 		color:#8C529D;
+		border-width: 3px 0 0 0;
+	    border-style: solid;
+	    border-color: #8C529D;
 	}
 	
 	body.sectionAbout li#menu_aboutus a,
@@ -186,7 +213,7 @@
 		padding: 7px;
 	}
 /* Sidebar */
-
+/*
 	#nav:before {
 		line-height: 0.1;
 		font-size: 1px;
@@ -211,7 +238,7 @@
 		background: transparent url("menu_br.gif") scroll no-repeat bottom right ;
 		border-top: 1px solid #fff;
 	}
-	
+	*/
 	#nav, #nav ul {
 		margin: 0;
 		padding: 0;
@@ -230,7 +257,7 @@
 		display: block;
 		padding: 6px 10px;
 		font-weight: bold;
-		color: #666;
+		color: #8C529D;
 	}
 
 	#nav li span#configParent, #nav li span #configuration {
@@ -243,17 +270,15 @@
 		display: block;
 		padding: 8px 10px;
 		text-decoration: none;
-		background: #f3ebf5;
-		border-bottom: 1px solid #ddd;
-		border-top: 1px solid #fff;
-		border-right: 1px solid #ddd;
+		color: #555555;
+		font-weight: bold;
 	}
 	#nav li a[href^="http://"] {
-		background: #f3ebf5 none repeat scroll 0 0;
 	}
 
 	#nav li a:hover {
-		background: #eadded;
+		background: #8C529D;
+		color: #FFFFFF;
 	}
 	
 	#nav li li span { /* used for un-linked menu items */
@@ -261,7 +286,7 @@
 	}
 	
 	#nav li li a {
-		padding: 6px 8px 6px 20px;
+		padding: 5px 8px 5px 20px;
 	}
 	
 	#oN {
@@ -301,10 +326,14 @@
 /* Footer */
 
 	#footer {
-		border-top: 1px solid #999;
+	    left: 215px;
+	    right: 15px;
+	    position: absolute;
 		margin: 2em 0;
 		padding: 1em 0;
 		text-align: center;
+		margin-bottom: 0;
+		bottom: 0;
 	}
 	
 	#footer ul {

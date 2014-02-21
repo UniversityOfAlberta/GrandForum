@@ -6,6 +6,7 @@
  * Modified by DaSch for MW 1.15 and WeCoWi
  */ /* Basic Structure */
 body {
+    height: 100%;
 	min-width: 610px;
 	margin: 0;
 }
