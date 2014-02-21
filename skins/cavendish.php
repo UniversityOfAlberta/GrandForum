@@ -384,11 +384,11 @@ class cavendishTemplate extends QuickTemplate {
 	<div id="topheader">
         <?php
             echo "<div class='smallLogo'><img src='$wgServer$wgScriptPath/skins/Grand_Logo_Small.png' /></div>";
-            echo "<div class='search'></div>";
+            echo "<div class='search'><div id='globalSearch'></div></div>";
             echo "<div class='login'>";
 	        if($wgUser->isLoggedIn()){
 		        $p = Person::newFromId($wgUser->getId());
-		        echo "<a href='{$p->getUrl()}'><img src='{$p->getPhoto()}' />&nbsp;{$p->getNameForForms()}</a>";
+		        echo "<a href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' />&nbsp;{$p->getNameForForms()}</a> <img src='$wgServer$wgScriptPath/skins/iconic/gray_dark/mail_16x12.png' >";
 	        }
 	        else{
 		        echo "Not logged in";
@@ -573,7 +573,7 @@ class cavendishTemplate extends QuickTemplate {
 		        </div>
 		    </form>
 	    </div>
-	    <div id="globalSearch" style="position:absolute;top:48px;right:15px;text-align:right;"></div>
+	    
 	</div>
     <div id='submenu'>
         <ul>

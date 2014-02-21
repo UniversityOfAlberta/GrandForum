@@ -22,7 +22,7 @@
 	    top:0;
 	    left:0;
 	    right:0;
-	    height: 23px;
+	    height: 25px;
 	    padding: 5px 20px 5px 20px;
 	    z-index: 1000;
 	    border-bottom: 1px solid #E0E0E0;
@@ -37,7 +37,8 @@
 	}
 	
 	#topheader .search {
-	    
+	    position:absolute;
+	    left: 0;
 	}
 	
 	#topheader .login {
@@ -45,7 +46,7 @@
 	    height: 100%;
 	}
 	
-	#topheader .login img {
+	#topheader .login img.photo {
 	    height: 100%;
 	}
 	
