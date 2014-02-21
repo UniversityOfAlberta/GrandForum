@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="PDF Materials" reportType="RP_HQP" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="2013-04-01" role="EXTERNAL"> <!-- The end date is not specific -->
+        <Role start="REPORTING_CYCLE_START" end="2013-04-01" role="NCE"> <!-- The end date is not specific -->
             <SectionPermission id="pni_materials" permissions="rw" />
             <SectionPermission id="cni_materials" permissions="rw" />
             <SectionPermission id="project_materials" permissions="rw" />

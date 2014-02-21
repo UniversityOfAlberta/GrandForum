@@ -19,7 +19,7 @@ class ReportPDFs extends AbstractReport{
     
     function userCanExecute($user){
         $me = Person::newFromWgUser();
-        if($me->isRole(EXTERNAL) ||
+        if($me->isRole(NCE) ||
            $me->isRoleAtLeast(MANAGER)){
             return true;
         }
