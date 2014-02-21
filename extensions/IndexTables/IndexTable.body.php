@@ -67,6 +67,18 @@ class IndexTable {
 			        $wgOut->setPageTitle("Collaborating Network Investigators");
 				    $this->generatePersonTable(CNI);
 				    break;
+				case 'ALL '.ISAC:
+			        $wgOut->setPageTitle("ISAC Members");
+				    $this->generatePersonTable(ISAC);
+				    break;
+				case 'ALL '.EXTERNAL:
+			        $wgOut->setPageTitle("External Members");
+				    $this->generatePersonTable(EXTERNAL);
+				    break;
+				case 'ALL '.NCE:
+			        $wgOut->setPageTitle("NCE Reps");
+				    $this->generatePersonTable(NCE);
+				    break;
 				case 'ALL '.RMC:
 			        $wgOut->setPageTitle("Research Management Committee");
 				    $this->generateRMCTable();
