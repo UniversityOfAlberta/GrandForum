@@ -83,7 +83,10 @@
         </ReportItem>
         <ReportItemSet id="project_materialss" type="AllProjectsReportItemSet" phase="2">
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true" buttonName="Project Report PDF" year="2013">
-                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td></tr>]]>
+                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td>]]>
+            </ReportItem>
+            <ReportItem id="champion_pdf" type="PDFReportItem" reportType="ProjectChampionsReportPDF" project="true" buttonName="Champions PDF" year="2013">
+                <![CDATA[<td>{$item}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="cni_materials_head" type="StaticReportItem">
