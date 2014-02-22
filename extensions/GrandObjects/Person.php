@@ -995,10 +995,10 @@ class Person extends BackboneModel {
             return $data[0];
         }
         else{
-            return array("studies" => "",
-                         "city" => "",
-                         "works" => "",
+            return array("where" => "",
+                         "studies" => "",
                          "employer" => "",
+                         "city" => "",
                          "country" => "");
         }
     }
@@ -1055,7 +1055,27 @@ class Person extends BackboneModel {
         }
         return $paper;
     }
-    
+
+    // Returns the date that degree was started 
+    function getDegreeStartDate($guess = true){
+        $data = DBFunctions::select(array('grand_relations'),
+                                    array('start_date'),
+                                    array('user2' => EQ($this->getId())));
+        if(DBFunctions::getNRows() > 0)
+          return $data[0]['start_date'];
+        return NULL;
+    }
+
+    // Returns the date that degree was received
+    function getDegreeReceivedDate($guess = true){
+        $data = DBFunctions::select(array('grand_relations'),
+                                    array('end_date'),
+                                    array('user2' => EQ($this->getId())));
+        if(DBFunctions::getNRows() > 0)
+          return $data[0]['end_date'];
+        return NULL;
+    }
+
     // Returns the biography of the Person
     function getBiography(){
         if(DEBUG){
@@ -1182,8 +1202,31 @@ class Person extends BackboneModel {
     }
 
     function getPosition(){
-        $university = $this->getUniversity();
-        return (isset($university['position'])) ? $university['position'] : "";
+        $pos = array();
+        ## See if still studying w/ GRAND
+        if($this->isActive()){
+          $hqp_pos = $this->getUniversity();
+          if ($hqp_pos['position'] !== '') 
+            $pos[] = $hqp_pos['position'];
+          if ($hqp_pos['department'] !== '') 
+            $pos[] = $hqp_pos['department'];
+          if ($hqp_pos['university'] !== '') 
+            $pos[] = $hqp_pos['university'];
+        } else {
+          ## Otherwise get new position
+          $hqp_pos = $this->getMovedOn();
+          if(!empty($hqp_pos)){
+            if ($hqp_pos['studies'] !== '') 
+              $pos[] = $hqp_pos['studies'];
+            if ($hqp_pos['employer'] !== '') 
+              $pos[] = $hqp_pos['employer'];
+            if ($hqp_pos['city'] !== '') 
+              $pos[] = $hqp_pos['city'];
+            if ($hqp_pos['country'] !== '') 
+              $pos[] = $hqp_pos['country'];
+          }   
+        }
+        return implode(", ", $pos);
     }
     
     /**

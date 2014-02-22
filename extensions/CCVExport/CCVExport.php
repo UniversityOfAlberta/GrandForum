@@ -7,6 +7,12 @@ $wgSpecialPages['CCVExport'] = 'CCVExport';
 $wgExtensionMessagesFiles['CCVExport'] = $dir . 'CCVExport.i18n.php';
 $wgSpecialPageGroups['CCVExport'] = 'grand-tools';
 
+$degree_map = 
+  array('Masters Student'=>array("00000000000000000000000000000072","Master's Thesis"),
+        'PhD Student'=>array("00000000000000000000000000000073","Doctorate"),
+        'Undergraduate'=>array("00000000000000000000000000000071","Bachelor's"),
+        'PostDoc'=>array("00000000000000000000000000000074","Post-doctorate"));
+
 
 function runCCVExport($par) {
 	CCVExport::run($par);
@@ -14,6 +20,7 @@ function runCCVExport($par) {
 
 
 class CCVExport extends SpecialPage {
+
 
 	function __construct() {
 		wfLoadExtensionMessages('CCVExport');
@@ -144,7 +151,7 @@ class CCVExport extends SpecialPage {
   }
 
   static function mapHQP($person, $section, $rel, $ccv){
-    global $wgUser;
+    global $wgUser, $degree_map;
 
     $hqp = $rel->getUser2();
 
@@ -165,7 +172,13 @@ class CCVExport extends SpecialPage {
         $field->addAttribute('label', $item_name);
         $lov = $field->addChild('lov');
         $lov->addAttribute('id', '00000000000000000000000100002900');
-        $field->lov = "Principal Supervisor";
+        $supers = $hqp->getSupervisors();
+        #echo 'SUPERS<br/>';
+        #echo '<pre>'.var_dump($supers).'</pre>'; // TEST DUMP
+        if (count($supers) > 1) 
+          $field->lov =  "Co-Supervisor";
+        else
+          $field->lov =  "Principal Supervisor";
       }
       else if($item_name == "Supervision Start Date"){
         $field = $ccv_item->addChild("field");
@@ -176,16 +189,6 @@ class CCVExport extends SpecialPage {
         $val->addAttribute('format', "yyyy/MM");
         $start_date = preg_split('/\-/', $rel->getStartDate());
         $field->value = $start_date[0].'/'.$start_date[1];
-      }
-      else if($item_name == "Supervision End Date"){
-        $field = $ccv_item->addChild("field");
-        $field->addAttribute('id', $item_id);
-        $field->addAttribute('label', $item_name);
-        $val = $field->addChild('value');
-        $val->addAttribute('type', "YearMonth");
-        $val->addAttribute('format', "yyyy/MM");
-        $end_date = preg_split('/\-/', $rel->getEndDate());
-        $field->value = $end_date[0].'/'.$end_date[1];
       }
       else if($item_name == "Supervision End Date"){
         $field = $ccv_item->addChild("field");
@@ -218,7 +221,6 @@ class CCVExport extends SpecialPage {
         $field->value = $hqp_uni;
       }
       else if($item_name == "Student Canadian Residency Status"){
-        
         $status_map = array('Canadian'=>array("00000000000000000000000000000034","Canadian Citizen"),
                   'Landed Immigrant'=>array("00000000000000000000000000000035","Permanent Resident"),
                   'Foreign'=>array("00000000000000000000000000000040","Study Permit"),
@@ -228,8 +230,6 @@ class CCVExport extends SpecialPage {
         $field->addAttribute('id', $item_id);
         $field->addAttribute('label', $item_name);
         $val = $field->addChild('lov');
-        
-        
         $hqp_status = $hqp->getNationality();
         if(!empty($hqp_status) && isset($status_map[$hqp_status])){
           $lov_id = $status_map[$hqp_status][0];
@@ -238,13 +238,13 @@ class CCVExport extends SpecialPage {
         }
       }
       else if($item_name == "Study / Postdoctoral Level"){
-        $hqp_pos = $hqp->getPosition();
+        $uni = $hqp->getUniversity();
+        $hqp_pos = $uni['position'];
+        #echo 'UNI POSITION<br/>';
+        #echo '<pre>'.$hqp_pos.'</pre>'; // TEST DUMP
+        #echo 'DEGREE MAP<br/>';
+        #echo '<pre>'.$degree_map.'</pre>'; // TEST DUMP
         if(!empty($hqp_pos) && isset($degree_map[$hqp_pos])){
-          $degree_map = array('Masters Student'=>array("00000000000000000000000000000072","Master's Thesis"),
-                    'PhD Student'=>array("00000000000000000000000000000073","Doctorate"),
-                    'Undergraduate'=>array("00000000000000000000000000000071","Bachelor's"),
-                    'PostDoc'=>array("00000000000000000000000000000074","Post-doctorate"));
-
           $field = $ccv_item->addChild("field");
           $field->addAttribute('id', $item_id);
           $field->addAttribute('label', $item_name);
@@ -255,19 +255,65 @@ class CCVExport extends SpecialPage {
         }
       }
       else if($item_name == "Student Degree Status"){
+        # If active  Completed 
+        # Otherwise  In Progress
+        $uni = $hqp->getUniversity();
+        $hqp_pos = $uni['position'];
+        if(!empty($hqp_pos) && $hqp_pos !== 'PostDoc'){
+          $status_map = array('Completed'=>"00000000000000000000000000000068",
+                              'In Progress'=>"00000000000000000000000000000070");
+
+          $field = $ccv_item->addChild("field");
+          $field->addAttribute('id', $item_id);
+          $field->addAttribute('label', $item_name);
+          $val = $field->addChild('lov');
         
-       
+          if ($hqp->isActive()){
+            $lov_id = $status_map['Completed'];
+            $field->lov = "Completed";
+          } else {
+            $lov_id = $status_map['In Progress'];
+            $field->lov = "In Progress";
+          }
+          $val->addAttribute('id', $lov_id);
+        }
       }
       else if($item_name == "Student Degree Start Date"){
-        
-        
+        $uni = $hqp->getUniversity();
+        $hqp_pos = $uni['position'];
+        if(!empty($hqp_pos) && $hqp_pos !== 'PostDoc'){
+          $degree_date = $hqp->getDegreeStartDate();
+          if (!is_null($degree_date)){
+            $field = $ccv_item->addChild("field");
+            $field->addAttribute('id', $item_id);
+            $field->addAttribute('label', $item_name);
+            $val = $field->addChild('value');
+            $val->addAttribute('type', "YearMonth");
+            $val->addAttribute('format', "yyyy/MM");
+            $date = preg_split('/\-/', $degree_date);
+            $field->value = $date[0].'/'.$date[1];
+          }        
+        }        
       }
       else if($item_name == "Student Degree Received Date"){
-        
-        
+        $uni = $hqp->getUniversity();
+        $hqp_pos = $uni['position'];
+        if(!empty($hqp_pos) && $hqp_pos !== 'PostDoc'){
+          $degree_date = $hqp->getDegreeReceivedDate();
+          if (!is_null($degree_date)){
+            $field = $ccv_item->addChild("field");
+            $field->addAttribute('id', $item_id);
+            $field->addAttribute('label', $item_name);
+            $val = $field->addChild('value');
+            $val->addAttribute('type', "YearMonth");
+            $val->addAttribute('format', "yyyy/MM");
+            $date = preg_split('/\-/', $degree_date);
+            $field->value = $date[0].'/'.$date[1];
+          }        
+        }        
       }
       else if($item_name == "Student Degree Expected Date"){
-        
+        ## Not available in the Forum 
         
       }
       else if($item_name == "Thesis/Project Title"){
@@ -296,7 +342,7 @@ class CCVExport extends SpecialPage {
       }
       else if($item_name == "Present Position"){
         $hqp_pos = $hqp->getPosition();
-        if(!empty($hqp_pos)){
+        if ($hqp_pos !== ''){
           $field = $ccv_item->addChild("field");
           $field->addAttribute('id', $item_id);
           $field->addAttribute('label', $item_name);
