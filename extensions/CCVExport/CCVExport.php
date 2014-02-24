@@ -341,7 +341,7 @@ class CCVExport extends SpecialPage {
         } 
       }
       else if($item_name == "Present Position"){
-        $hqp_pos = $hqp->getPosition();
+        $hqp_pos = $hqp->getPresentPosition();
         if ($hqp_pos !== ''){
           $field = $ccv_item->addChild("field");
           $field->addAttribute('id', $item_id);

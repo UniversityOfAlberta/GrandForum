@@ -1202,6 +1202,14 @@ class Person extends BackboneModel {
     }
 
     function getPosition(){
+        $university = $this->getUniversity();
+        return (isset($university['position'])) ? $university['position'] : "";
+    }    
+    
+    /**
+     * Used by CCVExport to determine the current position of active/inactive HQP
+     */
+    function getPresentPosition(){
         $pos = array();
         ## See if still studying w/ GRAND
         if($this->isActive()){
