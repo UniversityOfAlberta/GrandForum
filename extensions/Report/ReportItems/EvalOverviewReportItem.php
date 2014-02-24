@@ -449,9 +449,6 @@ EOF;
                     break;
                 }
             }
-            if(!$complete){
-                break;
-            }
         //}
 
         if($complete){
