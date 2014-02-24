@@ -1057,20 +1057,24 @@ class Person extends BackboneModel {
     }
 
     // Returns the date that degree was started 
+    // Currently set to the supervision start date
     function getDegreeStartDate($guess = true){
         $data = DBFunctions::select(array('grand_relations'),
                                     array('start_date'),
-                                    array('user2' => EQ($this->getId())));
+                                    array('user2' => EQ($this->getId())),
+                                    array('start_date' => 'ASC'));
         if(DBFunctions::getNRows() > 0)
           return $data[0]['start_date'];
         return NULL;
     }
 
     // Returns the date that degree was received
+    // Currently set to the supervision end date
     function getDegreeReceivedDate($guess = true){
         $data = DBFunctions::select(array('grand_relations'),
                                     array('end_date'),
-                                    array('user2' => EQ($this->getId())));
+                                    array('user2' => EQ($this->getId())),
+                                    array('end_date' => 'ASC'));
         if(DBFunctions::getNRows() > 0)
           return $data[0]['end_date'];
         return NULL;
@@ -1899,12 +1903,7 @@ class Person extends BackboneModel {
         $roles = $this->getRoles();
         if(count($roles) > 0){
             $role = $roles[0]->getRole();
-            if($role == INACTIVE){
-                return false;
-            }
-            else{
-                return true;
-            }
+            return $role != INACTIVE;
         }
         else{
             return false;

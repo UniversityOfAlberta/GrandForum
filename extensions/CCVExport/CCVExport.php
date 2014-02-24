@@ -191,14 +191,20 @@ class CCVExport extends SpecialPage {
         $field->value = $start_date[0].'/'.$start_date[1];
       }
       else if($item_name == "Supervision End Date"){
-        $field = $ccv_item->addChild("field");
-        $field->addAttribute('id', $item_id);
-        $field->addAttribute('label', $item_name);
-        $val = $field->addChild('value');
-        $val->addAttribute('type', "YearMonth");
-        $val->addAttribute('format', "yyyy/MM");
-        $end_date = preg_split('/\-/', $rel->getEndDate());
-        $field->value = $end_date[0].'/'.$end_date[1];
+        $date = $rel->getEndDate();
+        if (!is_null($date)){
+          $date = preg_split('/\-/', $date);
+          $date = $date[0].'/'.$date[1];
+          if ($date !== '0000/00'){
+            $field = $ccv_item->addChild("field");
+            $field->addAttribute('id', $item_id);
+            $field->addAttribute('label', $item_name);
+            $val = $field->addChild('value');
+            $val->addAttribute('type', "YearMonth");
+            $val->addAttribute('format', "yyyy/MM");
+            $field->value = $date;
+          }        
+        }        
       }
       else if($item_name == "Student Name"){
         $field = $ccv_item->addChild("field");
@@ -257,8 +263,7 @@ class CCVExport extends SpecialPage {
       else if($item_name == "Student Degree Status"){
         # If active  Completed 
         # Otherwise  In Progress
-        $uni = $hqp->getUniversity();
-        $hqp_pos = $uni['position'];
+        $hqp_pos = $hqp->getPosition();
         if(!empty($hqp_pos) && $hqp_pos !== 'PostDoc'){
           $status_map = array('Completed'=>"00000000000000000000000000000068",
                               'In Progress'=>"00000000000000000000000000000070");
@@ -268,7 +273,7 @@ class CCVExport extends SpecialPage {
           $field->addAttribute('label', $item_name);
           $val = $field->addChild('lov');
         
-          if ($hqp->isActive()){
+          if (!$hqp->isActive()){
             $lov_id = $status_map['Completed'];
             $field->lov = "Completed";
           } else {
@@ -284,14 +289,17 @@ class CCVExport extends SpecialPage {
         if(!empty($hqp_pos) && $hqp_pos !== 'PostDoc'){
           $degree_date = $hqp->getDegreeStartDate();
           if (!is_null($degree_date)){
-            $field = $ccv_item->addChild("field");
-            $field->addAttribute('id', $item_id);
-            $field->addAttribute('label', $item_name);
-            $val = $field->addChild('value');
-            $val->addAttribute('type', "YearMonth");
-            $val->addAttribute('format', "yyyy/MM");
             $date = preg_split('/\-/', $degree_date);
-            $field->value = $date[0].'/'.$date[1];
+            $date = $date[0].'/'.$date[1];
+            if ($date !== '0000/00'){
+              $field = $ccv_item->addChild("field");
+              $field->addAttribute('id', $item_id);
+              $field->addAttribute('label', $item_name);
+              $val = $field->addChild('value');
+              $val->addAttribute('type', "YearMonth");
+              $val->addAttribute('format', "yyyy/MM");
+              $field->value = $date;
+            }        
           }        
         }        
       }
@@ -301,14 +309,17 @@ class CCVExport extends SpecialPage {
         if(!empty($hqp_pos) && $hqp_pos !== 'PostDoc'){
           $degree_date = $hqp->getDegreeReceivedDate();
           if (!is_null($degree_date)){
-            $field = $ccv_item->addChild("field");
-            $field->addAttribute('id', $item_id);
-            $field->addAttribute('label', $item_name);
-            $val = $field->addChild('value');
-            $val->addAttribute('type', "YearMonth");
-            $val->addAttribute('format', "yyyy/MM");
             $date = preg_split('/\-/', $degree_date);
-            $field->value = $date[0].'/'.$date[1];
+            $date = $date[0].'/'.$date[1];
+            if ($date !== '0000/00'){
+              $field = $ccv_item->addChild("field");
+              $field->addAttribute('id', $item_id);
+              $field->addAttribute('label', $item_name);
+              $val = $field->addChild('value');
+              $val->addAttribute('type', "YearMonth");
+              $val->addAttribute('format', "yyyy/MM");
+              $field->value = $date;
+            }        
           }        
         }        
       }
