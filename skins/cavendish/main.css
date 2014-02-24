@@ -60,6 +60,7 @@ img.ui-datepicker-trigger{
 
 
 /* SUB MENU */
+
 #submenu ul {
     padding-right: 1em;
     padding-left: 0;
@@ -76,14 +77,19 @@ img.ui-datepicker-trigger{
     width: auto;
 }
 
+#submenu > ul {
+    margin-left: 25px;
+}
+
 #submenu li {
     font-size: 11px;
     margin: 0 2px 0 2px;
     float: left;
     
-    background: #F8F8F8;
+    background: #FFFFFF;
+    /*
     border: solid #E0E0E0;
-    border-width: 1px 1px 0 1px;
+    border-width: 1px 1px 0 1px;*/
 }
 
 #submenu li.invisible {
@@ -112,11 +118,16 @@ img.ui-datepicker-trigger{
 }
 
 div#submenu {
+    background: #FFFFFF;
     height: 25px;
     position: absolute;
-    left: 245px;
-    margin-top:-25px;
-    right:25px;
+    top: 92px;
+    left: 200px;
+    right:0;
+    z-index: 1000;
+    border-width: 0 0 1px 1px;
+    border-style: solid;
+    border-color: #E0E0E0;
 }
 
 div#header {

@@ -61,6 +61,10 @@ body {
 	background: #fff;
 	line-height: 1.5em; /* value other than 'normal' needed for WinIE */
 	color: #333333;
+	
+	box-shadow: 0 0 3px #D8D8D8;
+    -moz-box-shadow: 0 0 3px #D8D8D8;
+    -webkit-box-shadow: 0 0 3px #D8D8D8;
 }
 
 #side {
@@ -119,8 +123,8 @@ body {
 }
 
 #bodyContent {
-    left: 225px;
-    right: 25px;
+    left: 230px;
+    right: 30px;
     top: 121px;
     position:absolute;
     padding: 10px;

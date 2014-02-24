@@ -72,6 +72,14 @@
 	}
 	
 	/* MAIN MENU */
+	#outerHeader {
+	    position: absolute;
+	    left: 200px;
+	    right: 0;
+	    overflow-x: hidden;
+	    z-index: 1000;
+	}
+	
 	#header {
 		background: #FFFFFF;
 		position: relative;
@@ -79,11 +87,14 @@
 		height: 40px;
 		padding: 0;
 		padding: 5px 20px 0 0;
-		margin-left: 200px;
 		border-width: 0 0 1px 1px;
 		border-style: solid;
 		border-color: #E0E0E0;
 	    overflow:hidden;
+	    
+	    box-shadow: 0 0 3px #D8D8D8;
+        -moz-box-shadow: 0 0 3px #D8D8D8;
+        -webkit-box-shadow: 0 0 3px #D8D8D8;
 	} 
 	
 	#header h6 {
@@ -129,21 +140,21 @@
 		text-decoration: none;
 		line-height:22px;
 		white-space: nowrap;
-		border-width: 3px 0 0 0;
+		/*border-width: 3px 0 0 0;
 	    border-style: solid;
-	    border-color: #E0E0E0;
+	    border-color: #E0E0E0;*/
 	}
 	
 	#submenu ul a:hover {
 	    color: #8C529D;
-	    border-width: 3px 0 0 0;
+	    border-width: 0 0 3px 0;
 	    border-style: solid;
 	    border-color: #8C529D;
 	}
 	
 	#submenu li.selected a {
 		color:#8C529D;
-		border-width: 3px 0 0 0;
+		border-width: 0 0 3px 0;
 	    border-style: solid;
 	    border-color: #8C529D;
 	}

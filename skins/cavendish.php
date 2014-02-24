@@ -402,7 +402,7 @@ class cavendishTemplate extends QuickTemplate {
 	        echo "</div>";
         ?>
     </div>
-    <div style="position:relative;">
+    <div id="outerHeader">
 	    <div id="header">
 	        <?php
 	        /*
