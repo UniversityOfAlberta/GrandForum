@@ -65,11 +65,21 @@ class PersonPage {
                 }
                 $isChampion = $person->isRole(CHAMP);
                 if($isChampion){
-                    $isSupervisor = true;
+                    $creators = $person->getCreators();
+                    foreach($creators as $creator){
+                        if($creator->getId() == $me->getId()){
+                            $isSupervisor = true;
+                        }
+                    }
+                    foreach($person->getProjects() as $project){
+                        if(($project->isSubProject() && $me->leadershipOf($project->getParent())) || $me->leadershipOf($project)){
+                            $isSupervisor = true;
+                        }
+                    }
                 }
                 $isSupervisor = ( $isSupervisor || (!FROZEN && $me->isRoleAtLeast(MANAGER)) );
                 $isMe = ( $isMe && (!FROZEN || $me->isRoleAtLeast(MANAGER)) );
-                $edit = (isset($_GET['edit']) && ($isMe || $isSupervisor || $isChampion));
+                $edit = (isset($_GET['edit']) && ($isMe || $isSupervisor));
                 $edit = ( $edit && (!FROZEN || $me->isRoleAtLeast(MANAGER)) );
                 
                 $post = ((isset($_POST['submit']) && $_POST['submit'] == "Save Profile"));

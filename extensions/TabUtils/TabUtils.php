@@ -217,6 +217,15 @@ class TabUtils {
         $new_actions[CNI] = array('class' => 'people hidden',
                                   'text' => CNI,
                                   'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_CNI");
+        $new_actions[ISAC] = array('class' => 'people hidden',
+                                   'text' => ISAC,
+                                   'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_ISAC");
+        $new_actions[EXTERNAL] = array('class' => 'people hidden',
+                                   'text' => EXTERNAL,
+                                   'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_External");
+        $new_actions[NCE] = array('class' => 'people hidden',
+                                   'text' => NCE,
+                                   'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_NCE_Rep");
         $new_actions[RMC] = array('class' => 'people hidden',
                                    'text' => RMC,
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_RMC");
@@ -274,6 +283,15 @@ class TabUtils {
         }
         else if($wgTitle->getText() == "ALL CNI" || ($wgTitle->getNSText() == CNI && !($me->isRole(CNI) && $wgTitle->getText() == $me->getName()))){
             $new_actions[CNI]['class'] = 'people selected hidden';
+        }
+        else if($wgTitle->getText() == "ALL ISAC" || ($wgTitle->getNSText() == ISAC && !($me->isRole(ISAC) && $wgTitle->getText() == $me->getName()))){
+            $new_actions[ISAC]['class'] = 'people selected hidden';
+        }
+        else if($wgTitle->getText() == "ALL External" || ($wgTitle->getNSText() == EXTERNAL && !($me->isRole(EXTERNAL) && $wgTitle->getText() == $me->getName()))){
+            $new_actions[EXTERNAL]['class'] = 'people selected hidden';
+        }
+        else if($wgTitle->getText() == "ALL NCE Rep" || ($wgTitle->getNSText() == NCE && !($me->isRole(NCE) && $wgTitle->getText() == $me->getName()))){
+            $new_actions[NCE]['class'] = 'people selected hidden';
         }
         else if($wgTitle->getText() == "ALL RMC" || ($wgTitle->getNSText() == RMC && !($me->isRole(RMC) && $wgTitle->getText() == $me->getName()))){
             $new_actions[RMC]['class'] = 'people selected hidden';

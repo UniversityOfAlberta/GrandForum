@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="PDF Materials" reportType="RP_HQP" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="2013-04-01" role="EXTERNAL"> <!-- The end date is not specific -->
+        <Role start="REPORTING_CYCLE_START" end="2013-04-01" role="NCE"> <!-- The end date is not specific -->
             <SectionPermission id="pni_materials" permissions="rw" />
             <SectionPermission id="cni_materials" permissions="rw" />
             <SectionPermission id="project_materials" permissions="rw" />
@@ -83,7 +83,10 @@
         </ReportItem>
         <ReportItemSet id="project_materialss" type="AllProjectsReportItemSet" phase="2">
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true" buttonName="Project Report PDF" year="2013">
-                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td></tr>]]>
+                <![CDATA[<tr><td><span style="font-size:16px;">{$project_name}</span></td><td>{$item}</td>]]>
+            </ReportItem>
+            <ReportItem id="champion_pdf" type="PDFReportItem" reportType="ProjectChampionsReportPDF" project="true" buttonName="Champions PDF" year="2013">
+                <![CDATA[<td>{$item}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="cni_materials_head" type="StaticReportItem">

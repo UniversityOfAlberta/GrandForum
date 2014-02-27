@@ -993,10 +993,10 @@ class Person extends BackboneModel {
             return $data[0];
         }
         else{
-            return array("studies" => "",
-                         "city" => "",
-                         "works" => "",
+            return array("where" => "",
+                         "studies" => "",
                          "employer" => "",
+                         "city" => "",
                          "country" => "");
         }
     }
@@ -1044,7 +1044,31 @@ class Person extends BackboneModel {
         }
         return $paper;
     }
-    
+
+    // Returns the date that degree was started 
+    // Currently set to the supervision start date
+    function getDegreeStartDate($guess = true){
+        $data = DBFunctions::select(array('grand_relations'),
+                                    array('start_date'),
+                                    array('user2' => EQ($this->getId())),
+                                    array('start_date' => 'ASC'));
+        if(DBFunctions::getNRows() > 0)
+          return $data[0]['start_date'];
+        return NULL;
+    }
+
+    // Returns the date that degree was received
+    // Currently set to the supervision end date
+    function getDegreeReceivedDate($guess = true){
+        $data = DBFunctions::select(array('grand_relations'),
+                                    array('end_date'),
+                                    array('user2' => EQ($this->getId())),
+                                    array('end_date' => 'ASC'));
+        if(DBFunctions::getNRows() > 0)
+          return $data[0]['end_date'];
+        return NULL;
+    }
+
     // Returns the biography of the Person
     function getBiography(){
         debug("Deprecated function 'getBiography()' called.", E_USER_NOTICE);
@@ -1171,6 +1195,37 @@ class Person extends BackboneModel {
     function getPosition(){
         $university = $this->getUniversity();
         return (isset($university['position'])) ? $university['position'] : "";
+    }    
+    
+    /**
+     * Used by CCVExport to determine the current position of active/inactive HQP
+     */
+    function getPresentPosition(){
+        $pos = array();
+        ## See if still studying w/ GRAND
+        if($this->isActive()){
+          $hqp_pos = $this->getUniversity();
+          if ($hqp_pos['position'] !== '') 
+            $pos[] = $hqp_pos['position'];
+          if ($hqp_pos['department'] !== '') 
+            $pos[] = $hqp_pos['department'];
+          if ($hqp_pos['university'] !== '') 
+            $pos[] = $hqp_pos['university'];
+        } else {
+          ## Otherwise get new position
+          $hqp_pos = $this->getMovedOn();
+          if(!empty($hqp_pos)){
+            if ($hqp_pos['studies'] !== '') 
+              $pos[] = $hqp_pos['studies'];
+            if ($hqp_pos['employer'] !== '') 
+              $pos[] = $hqp_pos['employer'];
+            if ($hqp_pos['city'] !== '') 
+              $pos[] = $hqp_pos['city'];
+            if ($hqp_pos['country'] !== '') 
+              $pos[] = $hqp_pos['country'];
+          }   
+        }
+        return implode(", ", $pos);
     }
     
     /**
@@ -1821,12 +1876,7 @@ class Person extends BackboneModel {
         $roles = $this->getRoles();
         if(count($roles) > 0){
             $role = $roles[0]->getRole();
-            if($role == INACTIVE){
-                return false;
-            }
-            else{
-                return true;
-            }
+            return $role != INACTIVE;
         }
         else{
             return false;

@@ -26,7 +26,7 @@ class AddMember extends SpecialPage{
     function run($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
         $user = Person::newFromId($wgUser->getId());
-        if(isset($_GET['action']) && $_GET['action'] = "view" && $user->isRoleAtLeast(STAFF)){
+        if(isset($_GET['action']) && $_GET['action'] == "view" && $user->isRoleAtLeast(STAFF)){
             if(isset($_POST['submit']) && $_POST['submit'] == "Accept"){
                 $request = UserCreateRequest::newFromId($_POST['id']);
                 $sendEmail = "false";
@@ -214,7 +214,7 @@ class AddMember extends SpecialPage{
         }
         $roleOptions = array();
         foreach($wgRoles as $role){
-            if($me->isRoleAtLeast($role) && $role != CHAMP && $role != ISAC){
+            if($me->isRoleAtLeast($role) && $role != CHAMP && $role != ISAC && $role != NCE){
                 $roleOptions[] = $role;
             }
         }
@@ -223,6 +223,9 @@ class AddMember extends SpecialPage{
         }
         if($me->isRoleAtLeast(STAFF)){
             $roleOptions[] = ISAC;
+        }
+        if($me->isRoleAtLeast(MANAGER)){
+            $roleOptions[] = NCE;
         }
         $rolesLabel = new Label("role_label", "Roles", "The roles the new user should belong to", $roleValidations);
         $rolesField = new VerticalCheckBox("role_field", "Roles", array(), $roleOptions, $roleValidations);

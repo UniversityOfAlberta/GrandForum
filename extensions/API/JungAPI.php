@@ -435,6 +435,7 @@ class JungAPI extends API{
                 $sups = $person->getSupervisorsDuring($this->year.CYCLE_START_MONTH, $this->year.CYCLE_END_MONTH_ACTUAL);
                 $totalSups = $person->getSupervisors(true);
                 $tuple['alwaysPNI'] = "No";
+                $tuple['alwaysNI'] = "No";
                 $tuple['role'] = "HQP";
                 $tuple['nCurrentHQP'] = "";
                 $tuple['nTotalHQP'] = "";
@@ -491,11 +492,18 @@ class JungAPI extends API{
                     $tuple['role'] = "CNI";
                 }
                 $tuple['alwaysPNI'] = "No";
+                $tuple['alwaysNI'] = "No";
                 if($person->isRoleDuring(PNI, "2010-01-01", "2010-12-31") &&
                    $person->isRoleDuring(PNI, "2011-01-01", "2011-12-31") &&
                    $person->isRoleDuring(PNI, "2012-01-01", "2012-12-31") &&
                    $person->isRoleDuring(PNI, "2013-01-01", "2013-12-31")){
                     $tuple['alwaysPNI'] = "Yes";
+                }
+                if(($person->isRoleDuring(PNI, "2010-01-01", "2010-12-31") || $person->isRoleDuring(CNI, "2010-01-01", "2010-12-31")) &&
+                   ($person->isRoleDuring(PNI, "2011-01-01", "2011-12-31") || $person->isRoleDuring(CNI, "2011-01-01", "2011-12-31")) &&
+                   ($person->isRoleDuring(PNI, "2012-01-01", "2012-12-31") || $person->isRoleDuring(CNI, "2012-01-01", "2012-12-31")) &&
+                   ($person->isRoleDuring(PNI, "2013-01-01", "2013-12-31") || $person->isRoleDuring(CNI, "2013-01-01", "2013-12-31"))){
+                    $tuple['alwaysNI'] = "Yes";
                 }
                 $tuple['nCurrentHQP'] = (string)count($hqps);
                 $tuple['nTotalHQP'] = (string)count($totalHqps);

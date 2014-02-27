@@ -1,7 +1,7 @@
 <?php
 $dir = dirname(__FILE__);
 if(isset($_GET['generatePDF'])){
-    require_once($dir . '/../../Classes/SmartDomDocument/SmartDomDocument.php');
+    require_once($dir . '/../../../Classes/SmartDomDocument/SmartDomDocument.php');
 }
 require_once('PDFParams.php');
 require_once('ReportIndex.php');
@@ -107,7 +107,7 @@ abstract class PDFGenerator {
 		    </script>";
         }
         else{
-            require_once(dirname(__FILE__) . '/../../Classes/dompdf_beta/dompdf_config.inc.php');
+            require_once(dirname(__FILE__) . '/../../../Classes/dompdf_beta/dompdf_config.inc.php');
             $dompdf = new DOMPDF();
         }
         

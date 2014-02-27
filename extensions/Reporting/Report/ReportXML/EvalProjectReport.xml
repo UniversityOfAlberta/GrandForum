@@ -37,7 +37,7 @@
                 <tr>
                     <th style="min-width:110px;">Project Name</th>
                     <th style="min-width:125px;">Project Report PDF</th>
-                    <th style="min-width:110px;">Champion PDFs</th>
+                    <th style="min-width:110px;">Champions PDF</th>
                 </tr>
             ]]>
         </ReportItem>
@@ -45,16 +45,9 @@
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" width="100%" project="true">
                 <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
             </ReportItem>
-            <ReportItemSet id="project_champions" type="ProjectChampionsReportItemSet">
-                <ReportItem id="project_champion_pdf" type="PDFReportItem" noRenderIfNull="true" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
-                    <![CDATA[<td>{$item}</td>]]>
-                </ReportItem>
-            </ReportItemSet>
-            <ReportItemSet id="subproject_champions" type="SubProjectChampionsReportItemSet">
-                <ReportItem id="subproject_champion_pdf" type="PDFReportItem" noRenderIfNull="true" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
-                    <![CDATA[<td>{$item}</td>]]>
-                </ReportItem>
-            </ReportItemSet>
+            <ReportItem id="champion_pdf" type="PDFReportItem" reportType="ProjectChampionsReportPDF" project="true" buttonName="Champions PDF">
+                <![CDATA[<td>{$item}</td></tr>]]>
+            </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_tail" type="StaticReportItem">
             <![CDATA[
@@ -67,7 +60,7 @@
                 <tr>
                     <th style="min-width:110px;">Project Name</th>
                     <th style="min-width:125px;">Project Report PDF</th>
-                    <th style="min-width:110px;">Champion PDFs</th>
+                    <th style="min-width:110px;">Champions PDF</th>
                 </tr>
             ]]>
         </ReportItem>
@@ -75,16 +68,9 @@
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" width="100%" project="true">
                 <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
             </ReportItem>
-            <ReportItemSet id="project_champions" type="ProjectChampionsReportItemSet">
-                <ReportItem id="project_champion_pdf" type="PDFReportItem" noRenderIfNull="true" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
-                    <![CDATA[<td>{$item}</td>]]>
-                </ReportItem>
-            </ReportItemSet>
-            <ReportItemSet id="subproject_champions" type="SubProjectChampionsReportItemSet">
-                <ReportItem id="subproject_champion_pdf" type="PDFReportItem" noRenderIfNull="true" width="100%" reportType="ChampionReport" project="true" buttonName="{$user_last_name}">
-                    <![CDATA[<td>{$item}</td>]]>
-                </ReportItem>
-            </ReportItemSet>
+            <ReportItem id="champion_pdf" type="PDFReportItem" reportType="ProjectChampionsReportPDF" project="true" buttonName="Champions PDF" year="2013">
+                <![CDATA[<td>{$item}</td></tr>]]>
+            </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_tail" type="StaticReportItem">
             <![CDATA[
