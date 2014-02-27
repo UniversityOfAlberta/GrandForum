@@ -423,7 +423,7 @@ class cavendishTemplate extends QuickTemplate {
                     call_user_func($function);
                 }
             }
-            echo "<div title='$wgSitename' class='smallLogo menuTooltip'><a href='{$this->data['nav_urls']['mainpage']['href']}'><img src='$wgServer$wgScriptPath/skins/logo_small.png' /></a></div>";
+            echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/skins/logo_small.png' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
             echo "<div class='login'>";
             echo "<a name='question_mark_8x16' class='menuTooltip' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/iconic/gray_dark/question_mark_8x16.png' /></a>";
