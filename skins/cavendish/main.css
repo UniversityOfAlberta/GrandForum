@@ -108,9 +108,7 @@ img.ui-datepicker-trigger{
 }
 
 #submenu li.selected {
-    background: #FFFFFF;
-    border: solid #E0E0E0;
-    border-width: 1px 1px 0 1px;
+
 }
 
 #submenu ul li:hover.selected{
@@ -122,12 +120,15 @@ div#submenu {
     height: 25px;
     position: absolute;
     top: 92px;
-    left: 200px;
+    left: 0;
     right:0;
-    z-index: 1000;
+    z-index: 998;
     border-width: 0 0 1px 1px;
     border-style: solid;
     border-color: #E0E0E0;
+    box-shadow: 0 0 3px #D8D8D8;
+    -moz-box-shadow: 0 0 3px #D8D8D8;
+    -webkit-box-shadow: 0 0 3px #D8D8D8;
 }
 
 div#header {

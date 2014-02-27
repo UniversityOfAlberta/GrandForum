@@ -125,7 +125,7 @@ body {
 #bodyContent {
     left: 230px;
     right: 30px;
-    top: 121px;
+    top: 145px;
     position:absolute;
     padding: 10px;
 
@@ -1339,7 +1339,7 @@ input.other_option:focus {
 
 #globalSearchButton {
     filter: none;
-    background: #fff url('../search.png') no-repeat !important;
+    background: #fff url('../iconic/purple/magnifying_glass_16x16.png') 3px no-repeat !important;
     margin: 0;
     border-width: 1px 1px 1px 0 !important;
 	border-style: solid !important;

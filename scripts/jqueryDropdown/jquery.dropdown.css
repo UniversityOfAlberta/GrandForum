@@ -9,7 +9,7 @@ li.actions {
 
 li.actions > a {
     text-decoration:none;
-    height: 22px;
+    height: 20px;
 }
 
 div.actions {
@@ -60,7 +60,7 @@ li.action a {
 }
 
 li.action:hover {
-    background: #96789F !important;
+    background: #8C529D !important;
 }
 
 li.action:hover a {

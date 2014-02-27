@@ -344,6 +344,32 @@ class cavendishTemplate extends QuickTemplate {
 		                delay: 500
 		            }
 		        });
+		        $('.menuTooltip').qtip({
+		            position: {
+                        my: 'top center',  // Position my top left...
+                        at: 'bottom center', // at the bottom right of...
+                    },
+		            show: {
+		                delay: 0
+		            },
+		            style: {
+                        classes: 'qtip-tipsy'
+                    }
+		        });
+		        
+		        $.each($('.login a'), function(index, el){
+		            if($(this).attr("name") != undefined){
+		                var dark = '<?php echo "$wgServer$wgScriptPath"; ?>/skins/iconic/gray_dark/' + $(this).attr("name") + '.png';
+		                var light = '<?php echo "$wgServer$wgScriptPath"; ?>/skins/iconic/purple/' + $(this).attr("name") + '.png';
+		                $("img", $(this)).attr('src', dark);
+		                $(this).hover(function(){
+		                    $("img", $(this)).attr('src', light);
+		                },
+		                function(){
+		                    $("img", $(this)).attr('src', dark);
+		                });
+		            }
+		        });
 		        
 		        $("#sideToggle").click(function(e, force){
 		            $("#sideToggle").stop();
@@ -392,13 +418,40 @@ class cavendishTemplate extends QuickTemplate {
             echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/skins/logo_small.png' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
             echo "<div class='login'>";
+            echo "<a name='question_mark_8x16' class='menuTooltip' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/iconic/gray_dark/question_mark_8x16.png' /></a>";
 	        if($wgUser->isLoggedIn()){
 		        $p = Person::newFromId($wgUser->getId());
-		        echo "<a href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' />&nbsp;{$p->getNameForForms()}</a><a href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/skins/iconic/gray_dark/mail_16x12.png' /><sup>".count($notifications)."</sup></span>";
+		        
+		        $smallNotificationText = "";
+		        if(count($notifications) > 0){
+		            $notificationText = " (".count($notifications).")";
+		            $smallNotificationText = "*";
+		        }
+		        echo "<a name='mail_16x12' class='menuTooltip' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/skins/iconic/gray_dark/mail_16x12.png' />$smallNotificationText</a>";
+		        echo "<a class='menuTooltip' title='Profile' href='{$p->getUrl()}'>{$p->getNameForForms()}</a>";
+		        echo "<a class='menuTooltip' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
+		        if(!$wgImpersonating){
+		            $logout = $this->data['personal_urls']['logout'];
+	                $getStr = "";
+                    foreach($_GET as $key => $get){
+                        if($key == "title" || $key == "returnto"){
+                            continue;
+                        }
+                        if(strlen($getStr) == 0){
+                            $getStr .= "?$key=$get";
+                        }
+                        else{
+                            $getStr .= "&$key=$get";
+                        }
+                    }
+	                $logout['href'] .= urlencode($getStr);
+	                echo "<a name='arrow_right_16x16' class='menuTooltip' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/skins/iconic/gray_dark/arrow_right_16x16.png' /></a>";
+	            }
 	        }
 	        else{
 		        echo "Not logged in";
 	        }
+	        
 	        echo "</div>";
         ?>
     </div>
@@ -432,14 +485,6 @@ class cavendishTemplate extends QuickTemplate {
                     $GLOBALS['tabs'] = array();
 			        wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
 		      ?>
-		        <li class="top-nav-element tab-right"
-		        <?php if($wgTitle->getNSText() == "Help"){
-		            echo "selected";
-		        } ?>>
-				    <span class="top-nav-left">&nbsp;</span>
-				    <a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Help:Contents">Help/FAQ</a>	
-				    <span class="top-nav-right">&nbsp;</span>
-			    </li>
 			    <li id='grand-tab' class="top-nav-element tab-left
 		        <?php if($wgTitle->getNSText() != "Help"){
 		            echo "selected";
@@ -488,26 +533,7 @@ class cavendishTemplate extends QuickTemplate {
 			            continue;
 			        }
 			        else if($key == "logout"){
-			            if(!$wgImpersonating){
-			                $getStr = "";
-		                    foreach($_GET as $key => $get){
-		                        if($key == "title" || $key == "returnto"){
-		                            continue;
-		                        }
-		                        if(strlen($getStr) == 0){
-		                            $getStr .= "?$key=$get";
-		                        }
-		                        else{
-		                            $getStr .= "&$key=$get";
-		                        }
-		                    }
-			                $item['text'] = "Logout";
-			                $item['href'].= urlencode($getStr);
-			                $tabLeft = "tab-right";
-			            }
-			            else {
-			                continue;
-			            }
+			            continue;
 			        }
 			        else if($key == "anonlogin"){
 			            continue;
@@ -570,20 +596,20 @@ class cavendishTemplate extends QuickTemplate {
 		        </div>
 		    </form>
 	    </div>
-	    
+	    <div id='submenu'>
+            <ul>
+		       	<?php
+		       	 TabUtils::grandTabs($this->data['content_actions']);
+		       	 foreach($this->data['content_actions'] as $key => $action) {
+		           ?><li
+		           <?php if($action['class']) { ?>class="<?php echo htmlspecialchars($action['class']) ?>"<?php } ?>
+		           ><a href="<?php echo htmlspecialchars($action['href']) ?>"><?php
+		           echo htmlspecialchars($action['text']) ?></a></li><?php
+		         } ?>
+		    </ul>
+        </div>
 	</div>
-    <div id='submenu'>
-        <ul>
-		   	<?php
-		   	 TabUtils::grandTabs($this->data['content_actions']);
-		   	 foreach($this->data['content_actions'] as $key => $action) {
-		       ?><li
-		       <?php if($action['class']) { ?>class="<?php echo htmlspecialchars($action['class']) ?>"<?php } ?>
-		       ><a href="<?php echo htmlspecialchars($action['href']) ?>"><?php
-		       echo htmlspecialchars($action['text']) ?></a></li><?php
-		     } ?>
-		</ul>
-    </div>
+    
     <?php global $dropdownScript; echo $dropdownScript; ?>
     <a id="sideToggle">Toggle Menu</a>
     <div id="side">
