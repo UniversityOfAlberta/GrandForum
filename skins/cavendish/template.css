@@ -86,13 +86,17 @@
 	    height: 100%;
 	}
 	
+	#outerHeader.menu-in {
+	    left: 0;
+	}
+	
 	#header {
 		background: #FFFFFF;
 		position: relative;
 		margin-top: 46px;
 		height: 40px;
 		padding: 0;
-		padding: 5px 20px 0 0;
+		padding: 5px 30px 0 0;
 		border-width: 0 0 1px 1px;
 		border-style: solid;
 		border-color: #E0E0E0;
@@ -155,7 +159,7 @@
 	    border-width: 3px 0 0 0;
 	    border-style: solid;
 	    border-color: #8C529D;
-	    line-height:20px;
+	    line-height:19px;
 	}
 	
 	#submenu ul li.selected a {
@@ -163,7 +167,11 @@
 		border-width: 3px 0 0 0;
 	    border-style: solid;
 	    border-color: #8C529D;
-	    line-height:20px;
+	    line-height:19px;
+	}
+	
+	#submenu ul.dropdown div.actions a {
+	    border: none;
 	}
 	
 	body.sectionAbout li#menu_aboutus a,
@@ -344,14 +352,13 @@
 /* Footer */
 
 	#footer {
-	    left: 215px;
-	    right: 15px;
+	    left: 0;
+	    right: 0;
 	    position: absolute;
 		margin: 2em 0;
 		padding: 1em 0;
 		text-align: center;
 		margin-bottom: 0;
-		bottom: 0;
 	}
 	
 	#footer ul {

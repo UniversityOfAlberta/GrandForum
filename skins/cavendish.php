@@ -374,26 +374,34 @@ class cavendishTemplate extends QuickTemplate {
 		        $("#sideToggle").click(function(e, force){
 		            $("#sideToggle").stop();
 		            if((sideToggled == 'out' && force == null) || force == 'in'){
-		                var marginRight = '0';
-		                if ($.browser.msie && $.browser.version <= 7){
-		                    marginRight = '-229px';
-		                }
-		                $('#mBody').animate({'margin-left' : '-229px',
-		                                     'left' : '-229px',
-		                                     'margin-right' : marginRight
-                                            }, 200, 'swing', function(){
-                                                jsPlumb.repaintEverything();
-                                            });
+		                $("#sideToggle").html("&gt;");
+		                $("#side").animate({
+		                    'left': '-200px'
+		                }, 200, 'swing');
+		                $("#outerHeader").animate({
+		                    'left': '0'
+		                }, 200, 'swing');
+		                $("#bodyContent").animate({
+		                    'left': '30px'
+		                }, 200, 'swing', function(){
+		                    jsPlumb.repaintEverything();
+		                });
                         sideToggled = 'in';
                         $.cookie('sideToggled', 'in', {expires: 30});
                     }
                     else{
-                        $('#mBody').animate({'margin-left' : '0px',
-                                             'left' : '0px',
-                                             'margin-right' : '0px'
-                                            }, 200, 'swing', function(){
-                                                jsPlumb.repaintEverything();
-                                            });
+                        $("#sideToggle").html("&lt;");
+                        $("#side").animate({
+		                    'left': '0px'
+		                }, 200, 'swing');
+		                $("#outerHeader").animate({
+		                    'left': '200px'
+		                }, 200, 'swing');
+		                $("#bodyContent").animate({
+		                    'left': '230px'
+		                }, 200, 'swing', function(){
+		                    jsPlumb.repaintEverything();
+		                });
                         sideToggled = 'out';
                         $.cookie('sideToggled', 'out', {expires: 30});
                     }
@@ -455,8 +463,12 @@ class cavendishTemplate extends QuickTemplate {
 	        echo "</div>";
         ?>
     </div>
-    <div id="outerHeader">
+    <div id="outerHeader" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
+        <div id="sideToggle">
+            <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') { echo "&gt;"; } else { echo "&lt;";}?>
+        </div>
 	    <div id="header">
+	        
 	        <?php
 	        /*
 	        if(!TESTING && $wgScriptPath != ""){
@@ -611,8 +623,7 @@ class cavendishTemplate extends QuickTemplate {
 	</div>
     
     <?php global $dropdownScript; echo $dropdownScript; ?>
-    <a id="sideToggle">Toggle Menu</a>
-    <div id="side">
+    <div id="side" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
 		    <ul id="nav">
 		    <?php
 			    global $wgUser;
@@ -629,12 +640,10 @@ class cavendishTemplate extends QuickTemplate {
 		    }
 	    }
 	    ?>
-			
-		    </ul>
-		    
+		    </ul>  
 		</div><!-- end of SIDE div -->
-	<div id="mBody" class='displayTable <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
-		<div id="bodyContent" class='displayTableCell'>
+	<div id="mBody">
+		<div id="bodyContent" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
 			<?php if($this->data['sitenotice']) { ?><div id="siteNotice"><?php $this->html('sitenotice') ?></div><?php } ?>
 			<h1><?php $this->text('title') ?></h1>
 			<div id='wgMessages'><?php $wgMessage->showMessages(); ?></div>
@@ -647,10 +656,7 @@ class cavendishTemplate extends QuickTemplate {
 			<?php if($this->data['catlinks']) { ?><div id="catlinks"><?php       $this->html('catlinks') ?></div><?php } ?>
 			<!-- end content -->
 			<?php if($this->data['dataAfterContent']) { $this->html ('dataAfterContent'); } ?>
-		</div><!-- end of MAINCONTENT div -->	
-	</div><!-- end of MBODY div -->
-	<div id="recordDiv"></div>
-	<div id="footer"><table><tr><td align="left" width="1%" nowrap="nowrap">
+				<div id="footer"><table><tr><td align="left" width="1%" nowrap="nowrap">
 		    <?php if($this->data['copyrightico']) { ?><div id="f-copyrightico"><?php $this->html('copyrightico') ?></div><?php } ?></td><td align="center">
     <?php	// Generate additional footer links
 		    $footerlinks = array(
@@ -676,8 +682,9 @@ class cavendishTemplate extends QuickTemplate {
     ?>
     </ul></td><td align="right" width="1%" nowrap="nowrap"><?php if($this->data['poweredbyico']) { ?><div id="f-poweredbyico"><?php $this->html('poweredbyico') ?></div><?php } ?></td></tr></table><img style='display:none;' src='<?php echo "$wgServer$wgScriptPath"; ?>/skins/Throbber.gif' alt='Throbber' />
 	    </div><!-- end of the FOOTER div -->
-	<div class="visualClear"></div>
-	
+		</div><!-- end of MAINCONTENT div -->	
+	</div><!-- end of MBODY div -->
+	<div id="recordDiv"></div>
 </div><!-- end of the CONTAINER div -->
 <?php $this->html('bottomscripts'); /* JS call to runBodyOnloadHook */ ?>
 <?php $this->html('reporttime') ?>

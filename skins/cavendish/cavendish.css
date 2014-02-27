@@ -71,8 +71,7 @@ body {
     font-size: 12px;
     position:absolute;
     top:0;
-    bottom: 0;
-    margin-top: 46px;
+    height: 100%;
     margin-bottom: 0;
     vertical-align: top;
     width:200px;
@@ -83,27 +82,33 @@ body {
     border-color: #E0E0E0;
 }
 
+#side.menu-in {
+    left: -200px;
+}
+
+#side > ul {
+    margin-top: 46px;
+    position: relative;
+}
+
 #sideToggle {
-    font-size: 12px;
-    position:absolute;
-    left:-40px;
-    top:233px;
-    background:#96789F;
-    color:#FFFFFF;
-    text-align:center;
-    width:100px;
-    -ms-transform:rotate(-90deg);
-	-webkit-transform:rotate(-90deg);
-	-moz-transform:rotate(-90deg);
-	-o-transform: rotate(-90deg);
-	white-space:nowrap;
-	display:block;
-	line-height:20px;
-    cursor:pointer;
-    color:#FFFFFF;
-    font-weight:bold;
-    text-decoration:none;
-    z-index:1000;
+    width: 30px;
+    height: 71px;
+    line-height: 65px;
+    top: 46px;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    color: #888888;
+    z-index: 100;
+    background: #FFFFFF;
+    border-width: 0 1px 0 1px;
+    border-style: solid;
+    border-color: #E0E0E0;
+    z-index: 1000;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -113,7 +118,7 @@ body {
 }
 
 #sideToggle:hover {
-    background:#A284AC;
+    background:#F0F0F0;
 }
 
 #spacer {
@@ -130,6 +135,10 @@ body {
     padding: 10px;
 
     border: 1px solid #E0E0E0;
+}
+
+#bodyContent.menu-in {
+    left: 30px;
 }
 
 .deepLevel #bodyContent {
@@ -394,7 +403,7 @@ address {
 }
 
 input {
-    border: 1px solid #888;
+    border: 1px solid #AAA;
 	background: #ffffff;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
@@ -416,7 +425,7 @@ input {
 	-moz-border-radius-bottomright: 0;
 	-webkit-border-bottom-right-radius: 0;
 	border-bottom-right-radius: 0;
-	border: 1px solid #888 !important;
+	border: 1px solid #AAA !important;
 	margin-right: 0 !important;
 	max-height: 15px !important;
 	min-width: 100px;
@@ -447,7 +456,7 @@ input {
 }
 
 input.dark {
-    border: 1px solid #888;
+    border: 1px solid #AAA;
 	background: #ffffff;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
@@ -466,7 +475,7 @@ input:focus {
 }
 
 select {
-	border: 1px solid #888 !important;
+	border: 1px solid #AAA !important;
 	background: #ffffff;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
@@ -563,7 +572,7 @@ input[type=button]:active, input[type=submit]:active, .button:active, .ui-button
 textarea {
     width: 99%;
     height: 400px;
-    border: 1px solid #888 !important;
+    border: 1px solid #AAA !important;
 	background: #ffffff;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
@@ -1443,12 +1452,6 @@ input.other_option:focus {
     width: 20px;
     height:20px;
     background: url('../Throbber.gif');
-}
-
-.menu-in {
-    margin-left : -229px;
-    left : -229px;
-    margin-right : 0;
 }
 
 /* MailingList */
