@@ -423,7 +423,7 @@ class cavendishTemplate extends QuickTemplate {
                     call_user_func($function);
                 }
             }
-            echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/skins/logo_small.png' /></a></div>";
+            echo "<div title='$wgSitename' class='smallLogo menuTooltip'><a href='{$this->data['nav_urls']['mainpage']['href']}'><img src='$wgServer$wgScriptPath/skins/logo_small.png' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
             echo "<div class='login'>";
             echo "<a name='question_mark_8x16' class='menuTooltip' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/iconic/gray_dark/question_mark_8x16.png' /></a>";
@@ -578,27 +578,7 @@ class cavendishTemplate extends QuickTemplate {
 				    
 				    if($wgUser->isLoggedIn()){
 				        $p = Person::newFromId($wgUser->getId());
-					
-                        //if(count($p->getProjects()) > 0 && !$user->isRoleAtLeast(MANAGER)){
-			            //    Project::createTab();
-			            //}
-			            //if($p->isThemeLeader()){
-			            //    ThemeLeader::createTab();
-			            //}
-					    //if(!$user->isRoleAtLeast(MANAGER)){
-					    //    ReportArchive::createTab();
-					    //}
-					    //Report::createTab();
-					    //if($p->isUnassignedEvaluator()){
-					    //	ReviewerConflicts::createTab();
-					    //}
-
-					    //if(ReportPDFs::userCanExecute($wgUser)){
-					    //    ReportPDFs::createTab();
-					    //}
-                        ReportSurvey::createTab();
 					    MyMailingLists::createTab();
-					    //Notification::createTab();
 				    }
 			    ?>
 		    </ul>

@@ -6,6 +6,7 @@ $wgExtensionMessagesFiles['ReportSurvey'] = $dir . 'ReportSurvey.i18n.php';
 $wgSpecialPageGroups['ReportSurvey'] = 'reporting-tools';
 
 $wgHooks['SkinTemplateContentActions'][] = 'ReportSurvey::showTabs';
+$wgHooks['TopLevelTabs'][] = 'ReportSurvey::createTab';
 
 class ReportSurvey extends AbstractReport{
     
@@ -17,9 +18,12 @@ class ReportSurvey extends AbstractReport{
         $this->showInstructions = false;
     }
 
-    static function createTab(){
+    static function createTab($tabs){
 		global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
 		$person = Person::newFromId($wgUser->getId());
+		if(!$wgUser->isLoggedIn()){
+            return true;
+        }
 		if($person->isRoleAtLeast(HQP)){
 		    $page = "ReportSurvey?report=MindTheGap";
 		}
@@ -32,12 +36,12 @@ class ReportSurvey extends AbstractReport{
 		    $selected = "selected";
 		}
 		if($page != null){
-		    echo "<li class='top-nav-element $selected'>\n";
-		    echo "	<span class='top-nav-left'>&nbsp;</span>\n";
-		    echo "	<a id='lnk-surveys' class='top-nav-mid' href='$wgServer$wgScriptPath/index.php/Special:$page' class='new'>Surveys</a>\n";
-		    echo "	<span class='top-nav-right'>&nbsp;</span>\n";
-		    echo "</li>";
+		    $tabs["Surveys"] = array('id' => "lnk-my_surveys",
+                                     'href' => "$wgServer$wgScriptPath/index.php/Special:$page", 
+                                     'text' => "Surveys", 
+                                     'selected' => $selected);
 		}
+        return true;
 	}
 
     static function showTabs(&$content_actions){
