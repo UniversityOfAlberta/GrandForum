@@ -164,11 +164,6 @@ $egAnnokiExtensions['IndexTables']     = array( 'name' => 'IndexTables',
                           'path' => "$IP/extensions/IndexTables/IndexTable.body.php",
                           'enabled' => true,
                           );
-
-$egAnnokiExtensions['Postings']     = array( 'name' => 'GRAND Postings',
-                          'path' => "$IP/extensions/Postings/Postings.php",
-                          'enabled' => true,
-                          );
                           
 $egAnnokiExtensions['EmptyEmailList']     = array( 'name' => 'Empty Email List',
                           'path' => "$IP/extensions/EmptyEmailList/EmptyEmailList.php",
