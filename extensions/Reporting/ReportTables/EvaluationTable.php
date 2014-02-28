@@ -1,6 +1,6 @@
 <?php
 
-autoload_register('ReportTables');
+autoload_register('Reporting/ReportTables');
 
 $dir = dirname(__FILE__) . '/';
 
@@ -80,7 +80,7 @@ class EvaluationTable extends SpecialPage {
         require_once('Productivity.php');
         require_once('ResearcherProductivity.php');
         require_once('Themes.php');
-	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript;
+	    global $wgOut, $wgUser, $wgServer, $wgScriptPath;
 	 
 	    $init_tab = 0;
 	    
@@ -128,5 +128,7 @@ class EvaluationTable extends SpecialPage {
     	}
 	}
 }
+
+
 
 ?>

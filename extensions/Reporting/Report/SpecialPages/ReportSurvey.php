@@ -5,8 +5,8 @@ $wgSpecialPages['ReportSurvey'] = 'ReportSurvey'; # Let MediaWiki know about the
 $wgExtensionMessagesFiles['ReportSurvey'] = $dir . 'ReportSurvey.i18n.php';
 $wgSpecialPageGroups['ReportSurvey'] = 'reporting-tools';
 
-$wgHooks['SkinTemplateContentActions'][] = 'ReportSurvey::showTabs';
 $wgHooks['TopLevelTabs'][] = 'ReportSurvey::createTab';
+$wgHooks['SubLevelTabs'][] = 'ReportSurvey::createSubTabs';
 
 class ReportSurvey extends AbstractReport{
     
@@ -19,56 +19,25 @@ class ReportSurvey extends AbstractReport{
     }
 
     static function createTab($tabs){
-		global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
-		$person = Person::newFromId($wgUser->getId());
-		if(!$wgUser->isLoggedIn()){
-            return true;
-        }
-		if($person->isRoleAtLeast(HQP)){
-		    $page = "ReportSurvey?report=MindTheGap";
-		}
-		if($person->isRoleAtLeast(MANAGER)){
-		    $page = "ReportSurvey?report=MindTheGapManager";
-		}
-		
-		$selected = "";
-		if($wgTitle->getText() == "ReportSurvey"){
-		    $selected = "selected";
-		}
-		if($page != null){
-		    $tabs["Surveys"] = array('id' => "lnk-my_surveys",
-                                     'href' => "$wgServer$wgScriptPath/index.php/Special:$page", 
-                                     'text' => "Surveys", 
-                                     'selected' => $selected);
-		}
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
+        $tabs["Surveys"] = TabUtils::createTab("Surveys");
         return true;
-	}
-
-    static function showTabs(&$content_actions){
-        global $wgTitle, $wgUser, $wgServer, $wgScriptPath;
-        if($wgTitle->getText() == "ReportSurvey"){
-            $content_actions = array();
-            $person = Person::newFromId($wgUser->getId());
-            
-            // Individual Report
-            if($person->isRoleAtLeast(MANAGER)){
-                $class = @($wgTitle->getText() == "ReportSurvey" && ($_GET['report'] == "MindTheGapManager")) ? "selected" : false;
-                $text = "Mind The Gap (Manager)";
-                $content_actions[] = array (
-                         'class' => $class,
-                         'text'  => $text,
-                         'href'  => "$wgServer$wgScriptPath/index.php/Special:ReportSurvey?report=MindTheGapManager",
-                        );
-            }
-            if($person->isRoleAtLeast(HQP)){
-                $class = @($wgTitle->getText() == "ReportSurvey" && ($_GET['report'] == "MindTheGap")) ? "selected" : false;
-                $text = "Mind The Gap";
-                $content_actions[] = array (
-                         'class' => $class,
-                         'text'  => $text,
-                         'href'  => "$wgServer$wgScriptPath/index.php/Special:ReportSurvey?report=MindTheGap",
-                        );
-            }
+    }
+    
+    static function createSubTabs($tabs){
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
+        $person = Person::newFromWgUser();
+        if($person->isRoleAtLeast(MANAGER)){
+            $selected = @($wgTitle->getText() == "ReportSurvey" && ($_GET['report'] == "MindTheGapManager")) ? "selected" : "";
+            $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("Mind The Gap (Manager)",
+                                                                   "$wgServer$wgScriptPath/index.php/Special:ReportSurvey?report=MindTheGapManager",
+                                                                   $selected);
+        }
+        if($person->isRoleAtLeast(HQP)){
+            $selected = @($wgTitle->getText() == "ReportSurvey" && ($_GET['report'] == "MindTheGap")) ? "selected" : "";
+            $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("Mind The Gap", 
+                                                                   "$wgServer$wgScriptPath/index.php/Special:ReportSurvey?report=MindTheGap", 
+                                                                   $selected);
         }
         return true;
     }

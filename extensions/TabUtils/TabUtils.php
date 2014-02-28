@@ -5,6 +5,20 @@ $wgHooks['SkinTemplateContentActions'][1000] = 'TabUtils::actionTabs';
 class TabUtils {
 
     static $customActions = array();
+    
+    static function createTab($text, $href="", $selected=false){
+        return array('id' => "lnk-".htmlspecialchars($text),
+                     'text' => $text,
+                     'href' => $href,
+                     'selected' => $selected,
+                     'subtabs' => array());
+    }
+    
+    static function createSubTab($text, $href, $selected=false){
+        return array('text' => $text,
+                     'href' => $href,
+                     'selected' => $selected);
+    }
 
     static function actionTabs(&$content_actions){
         global $wgTitle, $wgServer, $wgScriptPath, $wgOut, $dropdownScript;

@@ -496,6 +496,7 @@ class cavendishTemplate extends QuickTemplate {
 				      global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage;
                     $GLOBALS['tabs'] = array();
 			        wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
+			        wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
 		      ?>
 			    <li id='grand-tab' class="top-nav-element tab-left
 		        <?php if($wgTitle->getNSText() != "Help"){
@@ -565,15 +566,25 @@ class cavendishTemplate extends QuickTemplate {
 			    </li>
 			    
 			    <?php 
-				    // Report Tab
-				    global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $tabs;
-				    
+				    global $wgUser, $wgScriptPath, $tabs;
 				    foreach($tabs as $key => $tab){
-				        echo "<li class='top-nav-element {$tab['selected']}'>\n";
-                        echo "    <span class='top-nav-left'>&nbsp;</span>\n";
-                        echo "    <a id='{$tab['id']}' class='top-nav-mid' href='{$tab['href']}' class='new'>{$tab['text']}</a>\n";
-                        echo "    <span class='top-nav-right'>&nbsp;</span>\n";
-                        echo "</li>";
+				        if(isset($tabs[$key]['subtabs'][0])){
+				            $tabs[$key]['href'] = $tab['subtabs'][0]['href'];
+				        }
+		           	    foreach($tab['subtabs'] as $subtab){
+		           	        if($subtab['selected'] == "selected"){
+		           	            $tabs[$key]['selected'] = "selected";
+		           	        }
+		           	    }
+		           	}
+				    foreach($tabs as $key => $tab){
+				        if($tab['href'] != ""){
+				            echo "<li class='top-nav-element {$tab['selected']}'>\n";
+                            echo "    <span class='top-nav-left'>&nbsp;</span>\n";
+                            echo "    <a id='{$tab['id']}' class='top-nav-mid' href='{$tab['href']}' class='new'>{$tab['text']}</a>\n";
+                            echo "    <span class='top-nav-right'>&nbsp;</span>\n";
+                            echo "</li>";
+                        }
 				    }
 				    
 				    if($wgUser->isLoggedIn()){
@@ -592,6 +603,15 @@ class cavendishTemplate extends QuickTemplate {
             <ul>
 		       	<?php
 		       	 TabUtils::grandTabs($this->data['content_actions']);
+		       	 foreach($tabs as $tab){
+		       	    if($tab['selected'] == "selected"){
+		       	        foreach($tab['subtabs'] as $subtab){
+		           	        echo "<li class='{$subtab['selected']}'><a href='".htmlspecialchars($subtab['href'])."'>".htmlspecialchars($subtab['text'])."</a></li>";
+		           	    }
+		           	    $this->data['content_actions'] = array();
+		           	    break;
+		       	    }
+		       	 }
 		       	 foreach($this->data['content_actions'] as $key => $action) {
 		           ?><li
 		           <?php if($action['class']) { ?>class="<?php echo htmlspecialchars($action['class']) ?>"<?php } ?>
@@ -759,7 +779,7 @@ If you have forgotten your password please enter your login and ID and request a
 		    }
 		    $wgUser->setCookies();
 		    $token = LoginForm::getLoginToken();
-		    $name = $wgRequest->getText( 'wpName' );
+		    $name = $wgRequest->getText('wpName');
 		    $getStr = "";
 		    foreach($_GET as $key => $get){
 		        if($key == "title" || $key == "returnto"){
@@ -786,7 +806,7 @@ If you have forgotten your password please enter your login and ID and request a
 		    $returnTo .= $getStr;
 		    $returnTo = urlencode($returnTo);
 		    echo "<span>Login</span>
-			<ul class='pBody' style='background:#F3EBF5'>";
+			<ul class='pBody'>";
 		    echo <<< EOF
 		    <li style='padding:5px;'>
 <form style='position:relative;left:5px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">

@@ -5,8 +5,8 @@ $wgSpecialPages['Report'] = 'Report'; # Let MediaWiki know about the special pag
 $wgExtensionMessagesFiles['Report'] = $dir . 'Report.i18n.php';
 $wgSpecialPageGroups['Report'] = 'reporting-tools';
 
-$wgHooks['SkinTemplateContentActions'][] = 'Report::showTabs';
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
+$wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
 
 class Report extends AbstractReport{
     
@@ -21,9 +21,6 @@ class Report extends AbstractReport{
 
     static function createTab($tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
-        if(!$wgUser->isLoggedIn()){
-            return true;
-        }
         $person = Person::newFromWgUser();
         $page = "Report";
         if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
@@ -75,160 +72,108 @@ class Report extends AbstractReport{
                 }
             }
         }
-
-        if($page != "Report"){
-            $selected = "";
-            if($wgTitle->getText() == "Report"){
-                $selected = "selected";
-            }
-            $tabs["My Reports"] = array('id' => "lnk-my_report",
-                                        'href' => "$wgServer$wgScriptPath/index.php/Special:$page", 
-                                        'text' => "My Reports", 
-                                        'selected' => $selected);
-        }
+        $tabs["Reports"] = TabUtils::createTab("My Reports");
+        
         return true;
     }
     
-    static function showTabs(&$content_actions){
-        global $wgTitle, $wgUser, $wgServer, $wgScriptPath, $special_evals;
-        if($wgTitle->getText() == "Report"){
-            $content_actions = array();
-            $person = Person::newFromId($wgUser->getId());
-            
-            // Individual Report
-            if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRoleAtLeast(MANAGER)){
-                $class = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPReport")) ? "selected" : false;
-                $text = HQP;
-                $content_actions[] = array (
-                         'class' => $class,
-                         'text'  => $text,
-                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=HQPReport",
-                        );
-            }
-            if($person->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRoleAtLeast(MANAGER)){
-                $class = @($wgTitle->getText() == "Report" && ($_GET['report'] == "NIReport")) ? "selected" : false;
-                $text = "Individual";
-                if($person->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END))
-                    $text = PNI;
-                else if($person->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END))
-                    $text = CNI;
-                $content_actions[] = array (
-                         'class' => $class,
-                         'text'  => $text,
-                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport",
-                        );
-            }
-            
-            // Project Leader Report
-            $leadership = $person->leadership();
-            if(count($leadership) > 0){
-                $projectDone = array();
-                foreach($leadership as $project){
-                    if(!$project->isSubProject()){
-                        if(isset($projectDone[$project->getName()])){
-                            continue;
-                        }
-                        $projectDone[$project->getName()] = true;
-                        if($project->getPhase() < PROJECT_PHASE || ($project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR)){
-                            $type = "ProjectFinalReport";
-                        }
-                        else if(!$project->isDeleted()){
-                            $type = "ProjectReport";
-                        }
-                        else{
-                            continue;
-                        }
-                        @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "$type" && $_GET['project'] == $project->getName()) ? "selected" : false;
-                        $content_actions[] = array (
-                                 'class' => $class,
-                                 'text'  => "{$project->getName()}",
-                                 'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=$type&project={$project->getName()}",
-                                );
+    static function createSubTabs($tabs){
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
+        $person = Person::newFromWgUser();
+        $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
+        
+        // HQP Report
+        if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
+           $person->isRoleAtLeast(MANAGER)){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPReport")) ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("HQP", "{$url}HQPReport", $selected);
+        }
+        
+        // NI Report
+        if($person->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
+           $person->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
+           $person->isRoleAtLeast(MANAGER)){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "NIReport")) ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("NI", "{$url}NIReport", $selected);
+        }
+        
+        // Project Leader Reports
+        $leadership = $person->leadership();
+        if(count($leadership) > 0){
+            $projectDone = array();
+            foreach($leadership as $project){
+                if(!$project->isSubProject()){
+                    if(isset($projectDone[$project->getName()])){
+                        continue;
                     }
+                    $projectDone[$project->getName()] = true;
+                    if($project->getPhase() < PROJECT_PHASE || ($project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR)){
+                        $type = "ProjectFinalReport";
+                    }
+                    else if(!$project->isDeleted()){
+                        $type = "ProjectReport";
+                    }
+                    else{
+                        continue;
+                    }
+                    $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "$type" && $_GET['project'] == $project->getName()) ? "selected" : false;
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab($project->getName(), "{$url}$type&project={$project->getName()}", $selected);
                 }
             }
+        }
+        
+        // Evaluator Opt Report
+        if(in_array($person->getId(), $special_evals)){
+            // Needs to be changed in EvalOptReport.xml as well
+            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "EvalOptReport") ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Evaluator", "{$url}EvalOptReport", $selected);
+        }
+        else if($person->isEvaluator()){
+            // Evaluator Report
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EvalReport" || $_GET['report'] == "EvalOptReport")) ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Evaluator", "{$url}EvalReport", $selected);
+        }
+        
+        // ISAC Review
+        if($person->isRole(ISAC) || $person->isRoleAtLeast(MANAGER)){
+            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "ISACReview") ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("ISAC", "{$url}ISACReview", $selected);
+        }
+        if($person->isRole(ISAC) || $person->isRoleAtLeast(MANAGER) || $person->getId() == 11){ 
+            // Check if the person is ISAC, MANAGER or K.S.B, which is super ugly, but was requested last minute, so no time to do it any better
+            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "ISACMaterials") ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("ISAC Reviews", "{$url}ISACMaterials", $selected);
+        }
+        
+        //LOI Evaluation
+        if($person->isRoleAtLeast(RMC)){
+            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "EvalLOIReport") ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("LOI", "{$url}EvalLOIReport", $selected);
             
-            // Evaluator Opt Report
-            if(in_array($person->getId(), $special_evals)){
-                // Needs to be changed in EvalOptReport.xml as well
-                @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalOptReport") ? "selected" : false;
-                $content_actions[] = array (
-                         'class' => $class,
-                         'text'  => "Evaluator",
-                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalOptReport",
-                        );
-            }
-            else if($person->isEvaluator()){
-                // Evaluator Report
-                @$class = ($wgTitle->getText() == "Report" && ($_GET['report'] == "EvalReport" || $_GET['report'] == "EvalOptReport")) ? "selected" : false;
-                $content_actions[] = array (
-                         'class' => $class,
-                         'text'  => "Evaluator",
-                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalReport",
-                        );
-            }
-            
-            // ISAC Review
-            if($person->isRole(ISAC) || $person->isRoleAtLeast(MANAGER)){
-                @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "ISACReview") ? "selected" : false;
-                $content_actions[] = array (
-                         'class' => $class,
-                         'text'  => "ISAC",
-                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=ISACReview",
-                        );
-            }
-            if($person->isRole(ISAC) || $person->isRoleAtLeast(MANAGER) || $person->getId() == 11){ 
-                // Check if the person is ISAC, MANAGER or K.S.B, which is super ugly, but was requested last minute, so no time to do it any better
-                @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "ISACMaterials") ? "selected" : false;
-                $content_actions[] = array (
-                         'class' => $class,
-                         'text'  => "ISAC Reviews",
-                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=ISACMaterials",
-                        );
-            }
-
-            //LOI Evaluation
-            if($person->isRoleAtLeast(RMC)){
-                @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalLOIReport") ? "selected" : false;
-                $content_actions[] = array (
-                         'class' => $class,
-                         'text'  => "LOI",
-                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalLOIReport",
-                        );
-                
-                @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "EvalRevLOIReport") ? "selected" : false;
-                $content_actions[] = array (
-                         'class' => $class,
-                         'text'  => "Revised LOI",
-                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=EvalRevLOIReport",
-                        );
-            }
-            
-            // Champion Report
-            if($person->isRole(CHAMP)){
-                $projects = Project::getAllProjects();
-                foreach($projects as $project){
-                    if($project->getPhase() == PROJECT_PHASE){
-                        $showTab = false;
-                        if($person->isChampionOfOn($project, REPORTING_RMC_MEETING)){
-                            $showTab = true;
-                        }
-                        else{
-                            foreach($project->getSubProjects() as $sub){
-                                if($person->isChampionOfOn($sub, REPORTING_RMC_MEETING)){
-                                    $showTab = true;
-                                    break;
-                                }
+            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "EvalRevLOIReport") ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Revised LOI", "{$url}EvalRevLOIReport", $selected);
+        }
+        
+        // Champion Report
+        if($person->isRole(CHAMP)){
+            $projects = Project::getAllProjects();
+            foreach($projects as $project){
+                if($project->getPhase() == PROJECT_PHASE){
+                    $showTab = false;
+                    if($person->isChampionOfOn($project, REPORTING_RMC_MEETING)){
+                        $showTab = true;
+                    }
+                    else{
+                        foreach($project->getSubProjects() as $sub){
+                            if($person->isChampionOfOn($sub, REPORTING_RMC_MEETING)){
+                                $showTab = true;
+                                break;
                             }
                         }
-                        if($showTab){
-                            @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "ChampionReport" && $_GET['project'] == $project->getName()) ? "selected" : false;
-                            $content_actions[] = array (
-                                'class' => $class,
-                                'text'  => "Champion ({$project->getName()})",
-                                'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=ChampionReport&project={$project->getName()}",
-                            );
-                        }
+                    }
+                    if($showTab){
+                        $selected = ($wgTitle->getText() == "Report" && $_GET['report'] == "ChampionReport" && $_GET['project'] == $project->getName()) ? "selected" : false;
+                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Champion ({$project->getName()})", "{$url}ChampionReport&project={$project->getName()}", $selected);
                     }
                 }
             }
