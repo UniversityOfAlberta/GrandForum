@@ -29,9 +29,15 @@ class Head1Cell extends Cell{
     function render(){
         $superScript = "";
         foreach($this->footnotes as $foot){
-            FootnoteReportItem::$nFootnotes++;
-            $superScript .= "<sup title='$foot' class='tooltip'>[".FootnoteReportItem::$nFootnotes."]</sup>";
-            PDFGenerator::addFootnote($foot);
+            if(class_exists("Report")){
+                FootnoteReportItem::$nFootnotes++;
+                $superScript .= "<sup title='$foot' class='tooltip'>[".FootnoteReportItem::$nFootnotes."]</sup>";
+                PDFGenerator::addFootnote($foot);
+            }
+            else{
+                self::$nFootnotes++;
+                $superScript .= "<sup title='$foot' class='tooltip'>[".HeadCell::$nFootnotes."]</sup>";
+            }
         }
         return "<b>{$this->value}</b>$superScript";
     }
