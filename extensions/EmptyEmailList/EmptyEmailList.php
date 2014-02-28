@@ -5,6 +5,8 @@ $wgSpecialPages['EmptyEmailList'] = 'EmptyEmailList'; # Let MediaWiki know about
 $wgExtensionMessagesFiles['EmptyEmailList'] = $dir . 'EmptyEmailList.i18n.php';
 $wgSpecialPageGroups['EmptyEmailList'] = 'other-tools';
 
+$wgHooks['SubLevelTabs'][] = 'EmptyEmailList::createSubTabs';
+
 function runEmptyEmailList($par) {
   EmptyEmailList::run($par);
 }
@@ -38,5 +40,15 @@ class EmptyEmailList extends SpecialPage{
         }
 	    $wgOut->addHTML("</table>");                 
 	}
+	
+	static function createSubTabs($tabs){
+	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
+	    $person = Person::newFromWgUser($wgUser);
+	    if($person->isRoleAtLeast(MANAGER)){
+	        $selected = @($wgTitle->getText() == "EmptyEmailList") ? "selected" : false;
+	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Empty Emails", "$wgServer$wgScriptPath/index.php/Special:EmptyEmailList", $selected);
+	    }
+	    return true;
+    }
 }
 ?>

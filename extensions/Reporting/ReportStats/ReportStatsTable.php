@@ -7,6 +7,8 @@ $wgSpecialPages['ReportStatsTable'] = 'ReportStatsTable';
 $wgExtensionMessagesFiles['ReportStatsTable'] = $dir . 'ReportStatsTable.i18n.php';
 $wgSpecialPageGroups['ReportStatsTable'] = 'grand-tools';
 
+$wgHooks['SubLevelTabs'][] = 'ReportStatsTable::createSubTabs';
+
 function runReportStatsTable($par) {
 	ReportStatsTable::run($par);
 }
@@ -129,13 +131,7 @@ class ReportStatsTable extends SpecialPage {
 		$wgOut->addHTML("</div><div id='all'>");
 		ReportStatsTable::overallTable($overall);
 	    $wgOut->addHTML("</div></div>");
-	    
-	    //                    <div id='unreg'>");
-		/*ReportStatsTable::unregTable();
-	    $wgOut->addHTML("</div>
-	                        <div id='addAck'>");
-	    ReportStatsTable::addAck();
-	    $wgOut->addHTML("</div>");*/
+
 	    $wgOut->addScript("<script type='text/javascript'>
                                 $(document).ready(function(){
 	                                $('.indexTable').dataTable({'iDisplayLength': 100,
@@ -147,8 +143,6 @@ class ReportStatsTable extends SpecialPage {
                                     $('input[name=date]').datepicker('option', 'dateFormat', 'dd-mm-yy');
                                 });
                             </script>");
-    	 //print_r($overall);
-
     }
     
     static function overallTable($overall){
@@ -435,37 +429,15 @@ class ReportStatsTable extends SpecialPage {
 	    $wgOut->addHTML("</tbody></table>");
 	    return $overall;    
     }
-
-    function addAck(){
-        global $wgOut, $wgServer, $wgScriptPath, $wgMessage;
-        $people = Person::getAllPeople();
-        $names = array();
-        foreach($people as $person){
-            $names[] = $person->getNameForForms();
-        }
-        $universities = Person::getAllUniversities();
-        
-        $wgOut->addScript("<script type='text/javascript'>
-            var names = ['".implode("',\n'", $names)."'];
-            var uniNames = ['".implode("',\n'", $universities)."'];
-            $(document).ready(function(){
-                $('input[name=name]').autocomplete({source: names});
-                $('input[name=university]').autocomplete({source: uniNames});
-                $('input[name=supervisor]').autocomplete({source: names});
-            });
-        </script>");
-        
-        $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/Special:ReportStatsTable' method='post' enctype='multipart/form-data'>
-	                            <table>
-	                                <tr><td align='right'><b>Name:</b></td><td><input type='text' name='name' /></td></tr>
-	                                <tr><td align='right'><b>Date:</b></td><td><input type='text' name='date' /></td></tr>
-	                                <tr><td align='right'><b>University:</b></td><td><input type='text' name='university' /></td></tr>
-	                                <tr><td align='right'><b>Supervisor:</b></td><td><input type='text' name='supervisor' /></td></tr>
-	                                <tr><td align='right'><b>PDF Upload:</b></td><td><input type='file' name='pdf' /></td></tr>
-	                                <tr><td align='right'></td><td><input type='submit' name='submit' value='Add Acknowledgement' /></td></tr>
-	                            </table>
-	                            </form>
-	                        </div>");
+    
+    static function createSubTabs($tabs){
+	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
+	    $person = Person::newFromWgUser($wgUser);
+	    if($person->isRoleAtLeast(MANAGER)){
+	        $selected = @($wgTitle->getText() == "ReportStatsTable") ? "selected" : false;
+	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Reporting Stats", "$wgServer$wgScriptPath/index.php/Special:ReportStatsTable", $selected);
+	    }
+	    return true;
     }
 }
 

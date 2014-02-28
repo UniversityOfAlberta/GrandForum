@@ -7,6 +7,8 @@ $wgSpecialPages['ProjectEvolution'] = 'ProjectEvolution'; # Let MediaWiki know a
 $wgExtensionMessagesFiles['ProjectEvolution'] = $dir . 'ProjectEvolution.i18n.php';
 $wgSpecialPageGroups['ProjectEvolution'] = 'grand-tools';
 
+$wgHooks['SubLevelTabs'][] = 'ProjectEvolution::createSubTabs';
+
 function runProjectEvolution($par){
     ProjectEvolution::run($par);
 }
@@ -31,6 +33,16 @@ class ProjectEvolution extends SpecialPage {
         $wgOut->output();
         $wgOut->disable();
         return true;
+    }
+    
+    static function createSubTabs($tabs){
+	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
+	    $person = Person::newFromWgUser($wgUser);
+	    if($person->isRoleAtLeast(MANAGER)){
+	        $selected = @($wgTitle->getText() == "ProjectEvolution") ? "selected" : false;
+	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Project Evolution", "$wgServer$wgScriptPath/index.php/Special:ProjectEvolution", $selected);
+	    }
+	    return true;
     }
 }
 ?>

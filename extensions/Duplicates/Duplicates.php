@@ -15,6 +15,7 @@ $wgExtensionMessagesFiles['Duplicates'] = $dir . 'Duplicates.i18n.php';
 $wgSpecialPageGroups['Duplicates'] = 'other-tools';
 
 $wgHooks['UnknownAction'][] = 'handleDuplicates';
+$wgHooks['SubLevelTabs'][] = 'Duplicates::createSubTabs';
 
 function handleDuplicates($action, $request){
     global $wgServer, $wgScriptPath;
@@ -73,6 +74,16 @@ class Duplicates extends SpecialPage{
         $tabbedPage->addTab(new DuplicatesTab("People", $handlers['people']));
         $tabbedPage->showPage();
 	}
+	
+	static function createSubTabs($tabs){
+	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
+	    $person = Person::newFromWgUser($wgUser);
+	    if($person->isRoleAtLeast(MANAGER)){
+	        $selected = @($wgTitle->getText() == "Duplicates") ? "selected" : false;
+	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Duplicates", "$wgServer$wgScriptPath/index.php/Special:Duplicates", $selected);
+	    }
+	    return true;
+    }
 }
 
 ?>

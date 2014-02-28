@@ -531,6 +531,10 @@ class cavendishTemplate extends QuickTemplate {
           <?php 
 				      global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage;
                     $GLOBALS['tabs'] = array();
+                    
+                    $GLOBALS['tabs']['Main'] = TabUtils::createTab("GRAND");
+                    $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
+                    
 			        wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
 			        wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
 		      ?>
@@ -542,27 +546,6 @@ class cavendishTemplate extends QuickTemplate {
 				    <a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Main_Page">GRAND</a>	
 				    <span class="top-nav-right">&nbsp;</span>
 			    </li>
-			    <?php
-				    $user = Person::newFromName($wgUser->getName());
-			     	if($user->isRoleAtLeast(Manager) ){ ?>
-			    <li id='manager-tab' class="top-nav-element tab-left
-			        <?php if($wgTitle->getText() == "EvaluationTable" ||
-                             $wgTitle->getText() == "AcknowledgementsTable" ||
-                             $wgTitle->getText() == "Duplicates" ||
-                             $wgTitle->getText() == "EmptyEmailList" ||
-                             $wgTitle->getText() == "InactiveUsers" ||
-                             $wgTitle->getText() == "ReportStatsTable"||
-                             $wgTitle->getText() == "Impersonate"||
-                             $wgTitle->getText() == "ProjectEvolution"||
-                             $wgTitle->getText() == "AdminVisualizations"){
-			            echo "selected";
-			        } ?>" >
-				    <span class="top-nav-left">&nbsp;</span>
-				    <a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Special:EvaluationTable?section=RMC">Manager</a>	
-				    <span class="top-nav-right">&nbsp;</span>
-			    </li>
-			    <?php } ?>
-
 			    <?php global $wgImpersonating;
 			        foreach($this->data['personal_urls'] as $key => $item) {
 			        //echo $key;

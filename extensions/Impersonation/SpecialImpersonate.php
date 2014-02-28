@@ -5,6 +5,8 @@ $wgSpecialPages['Impersonate'] = 'Impersonate'; # Let MediaWiki know about the s
 $wgExtensionMessagesFiles['Impersonate'] = $dir . 'SpecialImpersonate.i18n.php';
 $wgSpecialPageGroups['Impersonate'] = 'grand-tools';
 
+$wgHooks['SubLevelTabs'][] = 'Impersonate::createSubTabs';
+
 function runImpersonate($par) {
   Impersonate::run($par);
 }
@@ -39,6 +41,16 @@ class Impersonate extends UserSearch {
 	        });
 	    </script>");
 	}
+	
+	static function createSubTabs($tabs){
+	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
+	    $person = Person::newFromWgUser($wgUser);
+	    if($person->isRoleAtLeast(MANAGER)){
+	        $selected = @($wgTitle->getText() == "Impersonate") ? "selected" : false;
+	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Impersonate", "$wgServer$wgScriptPath/index.php/Special:Impersonate", $selected);
+	    }
+	    return true;
+    }
 }
 
 ?>

@@ -2,10 +2,12 @@
 $dir = dirname(__FILE__) . '/';
 
 $wgHooks['UnknownAction'][] = 'getack';
+$wgHooks['SubLevelTabs'][] = 'AcknowledgementsTable::createSubTabs';
 
 $wgSpecialPages['AcknowledgementsTable'] = 'AcknowledgementsTable';
 $wgExtensionMessagesFiles['AcknowledgementsTable'] = $dir . 'AcknowledgementsTable.i18n.php';
 $wgSpecialPageGroups['AcknowledgementsTable'] = 'grand-tools';
+
 
 function runAcknowledgementsTable($par) {
 	AcknowledgementsTable::run($par);
@@ -348,6 +350,16 @@ class AcknowledgementsTable extends SpecialPage {
 	                            </table>
 	                            </form>
 	                        </div>");
+    }
+    
+    static function createSubTabs($tabs){
+	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
+	    $person = Person::newFromWgUser($wgUser);
+	    if($person->isRoleAtLeast(MANAGER)){
+	        $selected = @($wgTitle->getText() == "AcknowledgementsTable") ? "selected" : false;
+	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Acknowledgements", "$wgServer$wgScriptPath/index.php/Special:AcknowledgementsTable", $selected);
+	    }
+	    return true;
     }
 }
 

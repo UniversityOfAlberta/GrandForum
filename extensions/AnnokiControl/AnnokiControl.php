@@ -105,11 +105,6 @@ $egAnnokiExtensions['MailingList']     = array( 'name' => 'MailingList',
                           'enabled' => true,
                           );
                           
-$egAnnokiExtensions['IndexTables']     = array( 'name' => 'IndexTables',
-                          'path' => "$IP/extensions/IndexTables/IndexTable.body.php",
-                          'enabled' => true,
-                          );
-                          
 $egAnnokiExtensions['FeatureRequest']     = array( 'name' => 'FeatureRequest',
                           'path' => "$IP/extensions/FeatureRequest/FeatureRequest.body.php",
                           'enabled' => true,
@@ -162,6 +157,11 @@ $egAnnokiExtensions['QueryableTable']     = array( 'name' => 'Queryable Table',
                           
 $egAnnokiExtensions['Reporting']     = array( 'name' => 'Reporting',
                           'path' => "$IP/extensions/Reporting/Reporting.php",
+                          'enabled' => true,
+                          );
+                          
+$egAnnokiExtensions['IndexTables']     = array( 'name' => 'IndexTables',
+                          'path' => "$IP/extensions/IndexTables/IndexTable.body.php",
                           'enabled' => true,
                           );
 

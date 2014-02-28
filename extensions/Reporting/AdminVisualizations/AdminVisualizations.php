@@ -11,6 +11,8 @@ $wgSpecialPages['AdminVisualizations'] = 'AdminVisualizations'; # Let MediaWiki 
 $wgExtensionMessagesFiles['AdminVisualizations'] = $dir . 'AdminVisualizations.i18n.php';
 $wgSpecialPageGroups['AdminVisualizations'] = 'other-tools';
 
+$wgHooks['SubLevelTabs'][] = 'AdminVisualizations::createSubTabs';
+
 function runAdminVisualizations($par) {
   AdminVisualizations::run($par);
 }
@@ -31,6 +33,16 @@ class AdminVisualizations extends SpecialPage{
         $tabbedPage->addTab(new AdminMapTab());
         //$tabbedPage->addTab(new AdminCustomTab());
         $tabbedPage->showPage();
+    }
+    
+    static function createSubTabs($tabs){
+	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
+	    $person = Person::newFromWgUser($wgUser);
+	    if($person->isRoleAtLeast(MANAGER)){
+	        $selected = @($wgTitle->getText() == "AdminVisualizations") ? "selected" : false;
+	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Visualizations", "$wgServer$wgScriptPath/index.php/Special:AdminVisualizations", $selected);
+	    }
+	    return true;
     }
 }
 ?>

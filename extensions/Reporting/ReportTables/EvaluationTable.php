@@ -8,46 +8,7 @@ $wgSpecialPages['EvaluationTable'] = 'EvaluationTable';
 $wgExtensionMessagesFiles['EvaluationTable'] = $dir . 'EvaluationTable.i18n.php';
 $wgSpecialPageGroups['EvaluationTable'] = 'report-reviewing';
 
-$foldscript = "
-<script type='text/javascript'>
-function mySelect(form){ form.select(); }
-function ShowOrHide(d1, d2) {
-	if (d1 != '') DoDiv(d1);
-	if (d2 != '') DoDiv(d2);
-}
-function DoDiv(id) {
-	var item = null;
-	if (document.getElementById) {
-		item = document.getElementById(id);
-	} else if (document.all) {
-		item = document.all[id];
-	} else if (document.layers) {
-		item = document.layers[id];
-	}
-	if (!item) {
-	}
-	else if (item.style) {
-		if (item.style.display == 'none') { item.style.display = ''; }
-		else { item.style.display = 'none'; }
-	}
-	else { item.visibility = 'show'; }
-}
-function showdiv(div_id, details_div_id){   
-    details_div_id = '#' + details_div_id;
-    $(details_div_id).html( $(div_id).html() );
-    $(details_div_id).show();
-}
-</script>
-<style media='screen,projection' type='text/css'>
-#details_div, .details_div{
-    border: 1px solid #CCCCCC;
-    margin-top: 10px;
-    padding: 10px;
-    position: relative;
-    width: 980px;
-} 
-</style>
-";
+$wgHooks['SubLevelTabs'][] = 'EvaluationTable::createSubTabs';
 
 function runEvaluationTable($par) {
 	global $wgScriptPath, $wgOut, $wgUser, $wgTitle, $_tokusers;
@@ -127,8 +88,18 @@ class EvaluationTable extends SpecialPage {
 	        $tabbedPage->showPage($init_tab);
     	}
 	}
+	
+	static function createSubTabs($tabs){
+	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
+	    $person = Person::newFromWgUser($wgUser);
+	    if($person->isRoleAtLeast(MANAGER)){
+	        $selected = @($wgTitle->getText() == "EvaluationTable" && $_GET['section'] == "RMC") ? "selected" : false;
+	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("RMC Meeting", "$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC", $selected);
+	        $selected = @($wgTitle->getText() == "EvaluationTable" && $_GET['section'] == "NSERC") ? "selected" : false;
+	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("NCE", "$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC", $selected);
+	    }
+	    return true;
+	}
 }
-
-
 
 ?>

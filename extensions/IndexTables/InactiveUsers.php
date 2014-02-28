@@ -6,6 +6,8 @@ $wgSpecialPages['InactiveUsers'] = 'InactiveUsers'; # Let MediaWiki know about t
 $wgExtensionMessagesFiles['InactiveUsers'] = $dir . 'InactiveUsers.i18n.php';
 $wgSpecialPageGroups['InactiveUsers'] = 'other-tools';
 
+$wgHooks['SubLevelTabs'][] = 'InactiveUsers::createSubTabs';
+
 function runInactiveUsers($par){
     InactiveUsers::run($par);
 }
@@ -60,6 +62,16 @@ class InactiveUsers extends SpecialPage {
         $wgOut->addHTML($text);
 		return true;
 	}
+	
+	static function createSubTabs($tabs){
+	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
+	    $person = Person::newFromWgUser($wgUser);
+	    if($person->isRoleAtLeast(MANAGER)){
+	        $selected = @($wgTitle->getText() == "InactiveUsers") ? "selected" : false;
+	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Inactive Users", "$wgServer$wgScriptPath/index.php/Special:InactiveUsers", $selected);
+	    }
+	    return true;
+    }
 }
 
 ?>
