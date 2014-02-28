@@ -1,5 +1,6 @@
 <?php
 
+autoload_register('Reporting/SessionData');
 require_once("ReportTables/EvaluationTable.php");
 require_once("Report/AbstractReport.php");
 require_once("PDFGenerator/PDFGenerator.php");

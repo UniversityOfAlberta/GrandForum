@@ -165,11 +165,6 @@ $egAnnokiExtensions['IndexTables']     = array( 'name' => 'IndexTables',
                           'enabled' => true,
                           );
 
-$egAnnokiExtensions['SessionData']     = array( 'name' => 'Session Data',
-                          'path' => "$IP/extensions/SessionData/SessionData.php",
-                          'enabled' => true,
-                          );
-
 $egAnnokiExtensions['Postings']     = array( 'name' => 'GRAND Postings',
                           'path' => "$IP/extensions/Postings/Postings.php",
                           'enabled' => true,
