@@ -1348,7 +1348,7 @@ input.other_option:focus {
 
 #globalSearchButton {
     filter: none;
-    background: #fff url('../iconic/purple/magnifying_glass_16x16.png') 3px no-repeat !important;
+    background: #fff url('../icons/purple/magnifying_glass_16x16.png') 3px no-repeat !important;
     margin: 0;
     border-width: 1px 1px 1px 0 !important;
 	border-style: solid !important;
@@ -1494,4 +1494,24 @@ input.other_option:focus {
     margin-left: 8px;
     padding-left: 15px;
     border-left: 3px solid #AAA;
+}
+
+/*qtip*/
+.qtip-light .qtip-content {
+    -moz-box-shadow: 0 0 3px #E0E0E0;
+    -webkit-box-shadow: 0 0 3px #E0E0E0;
+    box-shadow: 0 0 3px #E0E0E0;
+    font-weight: bold;
+}
+
+.qtip-light .qtip-content a {
+    color: #454545;
+    text-decoration: none;
+    display: block;
+    padding: 2px 0 2px 0;
+}
+
+.qtip-light .qtip-content a:hover {
+    color: #8C529D;
+    text-decoration: none;
 }

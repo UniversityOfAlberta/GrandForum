@@ -238,6 +238,10 @@ class cavendishTemplate extends QuickTemplate {
 		    ?>
 		    );
 		    
+		    function changeImg(el, img){
+                $(el).attr('src', img);
+            }
+		    
 		    function unaccentChars(str){
 		        var dict = {'Š':'S', 'š':'s', 'Ð':'Dj','Ž':'Z', 'ž':'z', 'À':'A', 'Á':'A', 'Â':'A', 'Ã':'A', 'Ä':'A',
                             'Å':'A', 'Æ':'A', 'Ç':'C', 'È':'E', 'É':'E', 'Ê':'E', 'Ë':'E', 'Ì':'I', 'Í':'I', 'Î':'I',
@@ -352,22 +356,42 @@ class cavendishTemplate extends QuickTemplate {
 		            show: {
 		                delay: 0
 		            },
+		            hide: {
+		                delay: 100
+		            },
 		            style: {
-                        classes: 'qtip-tipsy'
+                        classes: 'qtip-light'
+                    }
+		        });
+		        $('.menuTooltipHTML').qtip({
+		            content: {
+                        text: function(){
+                            return $("#" + $(this).attr('id') + "_template");
+                        }
+                    },
+		            position: {
+                        my: 'top center',  // Position my top left...
+                        at: 'bottom center', // at the bottom right of...
+                    },
+		            show: {
+		                delay: 0
+		            },
+		            style: {
+                        classes: 'qtip-light'
+                    },
+		            hide: {
+                          fixed: true,
+                          delay: 100
                     }
 		        });
 		        
-		        $.each($('.login a'), function(index, el){
+		        $.each($('a.changeImg'), function(index, el){
 		            if($(this).attr("name") != undefined){
-		                var dark = '<?php echo "$wgServer$wgScriptPath"; ?>/skins/iconic/gray_dark/' + $(this).attr("name") + '.png';
-		                var light = '<?php echo "$wgServer$wgScriptPath"; ?>/skins/iconic/purple/' + $(this).attr("name") + '.png';
-		                $("img", $(this)).attr('src', dark);
-		                $(this).hover(function(){
-		                    $("img", $(this)).attr('src', light);
-		                },
-		                function(){
-		                    $("img", $(this)).attr('src', dark);
-		                });
+		                var dark = '<?php echo "$wgServer$wgScriptPath"; ?>/skins/icons/gray_dark/' + $(this).attr("name") + '.png';
+		                var light = '<?php echo "$wgServer$wgScriptPath"; ?>/skins/icons/purple/' + $(this).attr("name") + '.png';
+		                
+		                $(this).attr('onmouseover', "changeImg($('img', $(this)), '" + light + "')");
+		                $(this).attr('onmouseout', "changeImg($('img', $(this)), '" + dark + "')");
 		            }
 		        });
 		        
@@ -426,7 +450,22 @@ class cavendishTemplate extends QuickTemplate {
             echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/skins/logo_small.png' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
             echo "<div class='login'>";
-            echo "<a name='question_mark_8x16' class='menuTooltip' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/iconic/gray_dark/question_mark_8x16.png' /></a>";
+            echo "<div style='display:none;' id='share_template'>
+                    <a class='changeImg' name='glyphicons_social_35_flickr' href='http://www.flickr.com/photos/grand_nce' target='_blank'>
+	                    <img src='$wgServer$wgScriptPath/skins/icons/gray_dark/glyphicons_social_35_flickr.png' />&nbsp;Flickr
+	                </a>
+	                <a class='changeImg' name='glyphicons_social_31_twitter' href='http://twitter.com/GRAND_NCE' target='_blank'>
+	                    <img src='$wgServer$wgScriptPath/skins/icons/gray_dark/glyphicons_social_31_twitter.png' />&nbsp;Twitter
+	                </a>
+	                <a class='changeImg' name='glyphicons_social_17_linked_in' href='http://www.linkedin.com/groups/GRAND-NCE-4004842' target='_blank'>
+	                    <img src='$wgServer$wgScriptPath/skins/icons/gray_dark/glyphicons_social_17_linked_in.png' />&nbsp;LinkedIn
+	                </a>
+	                <a class='changeImg' name='glyphicons_social_22_youtube' href='http://www.youtube.com/user/grandnce' target='_blank'>
+	                    <img src='$wgServer$wgScriptPath/skins/icons/gray_dark/glyphicons_social_22_youtube.png' />&nbsp;YouTube
+	                </a>
+	        </div>";
+            echo "<a name='question_mark_8x16' class='menuTooltip changeImg' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/icons/gray_dark/question_mark_8x16.png' /></a>";
+	        echo "<a id='share' style='cursor:pointer;' name='share_16x16' class='menuTooltipHTML changeImg'><img src='$wgServer$wgScriptPath/skins/icons/gray_dark/share_16x16.png' />&nbsp;▼</a>";
 	        if($wgUser->isLoggedIn()){
 		        $p = Person::newFromId($wgUser->getId());
 		        
@@ -435,7 +474,7 @@ class cavendishTemplate extends QuickTemplate {
 		            $notificationText = " (".count($notifications).")";
 		            $smallNotificationText = "*";
 		        }
-		        echo "<a name='mail_16x12' class='menuTooltip' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/skins/iconic/gray_dark/mail_16x12.png' />$smallNotificationText</a>";
+		        echo "<a name='mail_16x12' class='menuTooltip changeImg' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/skins/icons/gray_dark/mail_16x12.png' />$smallNotificationText</a>";
 		        echo "<a class='menuTooltip' title='Profile' href='{$p->getUrl()}'>{$p->getNameForForms()}</a>";
 		        echo "<a class='menuTooltip' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
 		        if(!$wgImpersonating){
@@ -453,11 +492,8 @@ class cavendishTemplate extends QuickTemplate {
                         }
                     }
 	                $logout['href'] .= urlencode($getStr);
-	                echo "<a name='arrow_right_16x16' class='menuTooltip' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/skins/iconic/gray_dark/arrow_right_16x16.png' /></a>";
+	                echo "<a name='arrow_right_16x16' class='menuTooltip changeImg' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/skins/icons/gray_dark/arrow_right_16x16.png' /></a>";
 	            }
-	        }
-	        else{
-		        echo "Not logged in";
 	        }
 	        
 	        echo "</div>";
@@ -593,11 +629,6 @@ class cavendishTemplate extends QuickTemplate {
 				    }
 			    ?>
 		    </ul>
-		    <form>
-		        <div id="loggedin">
-			        
-		        </div>
-		    </form>
 	    </div>
 	    <div id='submenu'>
             <ul>
@@ -680,7 +711,7 @@ class cavendishTemplate extends QuickTemplate {
 		    }
 	    echo "<li id='f-disclaimer'><a href='mailto:support@forum.grand-nce.ca'>Support</a></li>\n";
     ?>
-    </ul></td><td align="right" width="1%" nowrap="nowrap"><?php if($this->data['poweredbyico']) { ?><div id="f-poweredbyico"><?php $this->html('poweredbyico') ?></div><?php } ?></td></tr></table><img style='display:none;' src='<?php echo "$wgServer$wgScriptPath"; ?>/skins/Throbber.gif' alt='Throbber' />
+    </ul>Icons by <a href="http://somerandomdude.com/work/iconic/" target='_blank'>Iconic</a> & <a href="http://glyphicons.com/" target='_blank'>Glyphicons</a>.</td><td align="right" width="1%" nowrap="nowrap"><?php if($this->data['poweredbyico']) { ?><div id="f-poweredbyico"><?php $this->html('poweredbyico') ?></div><?php } ?></td></tr></table><img style='display:none;' src='<?php echo "$wgServer$wgScriptPath"; ?>/skins/Throbber.gif' alt='Throbber' />
 	    </div><!-- end of the FOOTER div -->
 		</div><!-- end of MAINCONTENT div -->	
 	</div><!-- end of MBODY div -->

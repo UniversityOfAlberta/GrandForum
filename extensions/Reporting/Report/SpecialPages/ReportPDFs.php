@@ -5,8 +5,8 @@ $wgSpecialPages['ReportPDFs'] = 'ReportPDFs'; # Let MediaWiki know about the spe
 $wgExtensionMessagesFiles['ReportPDFs'] = $dir . 'ReportPDFs.i18n.php';
 $wgSpecialPageGroups['ReportPDFs'] = 'reporting-tools';
 
-$wgHooks['SkinTemplateContentActions'][] = 'ReportPDFs::showTabs';
 $wgHooks['TopLevelTabs'][] = 'ReportPDFs::createTab';
+$wgHooks['SubLevelTabs'][] = 'ReportPDFs::createSubTabs';
 
 class ReportPDFs extends AbstractReport{
     
@@ -29,45 +29,20 @@ class ReportPDFs extends AbstractReport{
 
     static function createTab($tabs){
 		global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
-		if(!$wgUser->isLoggedIn() || !self::userCanExecute($wgUser)){
-            return true;
-        }
-        $person = Person::newFromWgUser();
 		$page = "ReportPDFs?report=PDFMaterials";
-		
-		$selected = "";
-		if($wgTitle->getText() == "ReportPDFs"){
-		    $selected = "selected";
-		}
-		$tabs["Report PDFs"] = array('id' => "lnk-my_report",
-                                    'href' => "$wgServer$wgScriptPath/index.php/Special:$page", 
-                                    'text' => "Report PDFs", 
-                                    'selected' => $selected);
+		$tabs["Report PDFs"] = TabUtils::createTab("Report PDFs");
         return true;
 	}
-    static function showTabs(&$content_actions){ return true; }
-
-    /*static function showTabs(&$content_actions){
-        global $wgTitle, $wgUser, $wgServer, $wgScriptPath;
-        if($wgTitle->getText() == "Report"){
-            $content_actions = array();
-            $person = Person::newFromId($wgUser->getId());
-            
-            // Individual Report
-            if($person->isRoleAtLeast(PNI)){
-                $class = @($wgTitle->getText() == "Report" && ($_GET['report'] == "PDFMaterials")) ? "selected" : false;
-                $text = "PDFMaterials";
-                $content_actions[] = array (
-                         'class' => $class,
-                         'text'  => $text,
-                         'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=PDFMaterials",
-                        );
-            }
-            
-            
+	
+	static function createSubTabs($tabs){
+	    global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
+	    if(!$wgUser->isLoggedIn() || !self::userCanExecute($wgUser)){
+            return true;
         }
+        $selected = ($wgTitle->getText() == "ReportPDFs" && $_GET['report'] == "PDFMaterials") ? "selected" : false;
+        $tabs["Report PDFs"]['subtabs'][] = TabUtils::createSubTab("PDF Materials", "$wgServer$wgScriptPath/index.php/Special:ReportPDFs?report=PDFMaterials", $selected);
         return true;
-    }*/
+	}
 }
 
 ?>
