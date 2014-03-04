@@ -130,13 +130,13 @@ class PersonProfileTab extends AbstractEditableTab {
         if($error == ""){
             // Insert the new data into the DB
             $_POST['user_name'] = $this->person->getName();
-            $_POST['twitter'] = $_POST['twitter'];
-            $_POST['nationality'] = $_POST['nationality'];
-            $_POST['email'] = $_POST['email'];
+            $_POST['twitter'] = @$_POST['twitter'];
+            $_POST['nationality'] = @$_POST['nationality'];
+            $_POST['email'] = @$_POST['email'];
             $_POST['university'] = @$_POST['university'];
             $_POST['department'] = @$_POST['department'];
             $_POST['title'] = @$_POST['title'];
-            $_POST['gender'] = $_POST['gender'];
+            $_POST['gender'] = @$_POST['gender'];
             if($this->visibility['isChampion']){
                 $_POST['partner'] = @$_POST['org'];
                 $_POST['title'] = @$_POST['title'];
