@@ -46,6 +46,7 @@ $wgHooks['SkinTemplateTabs'][] = 'checkTabsPermissions';
 $wgHooks['ParserAfterTidy'][] = 'checkPublicSections';
 $wgHooks['OutputPageParserOutput'][] = 'test';
 $wgHooks['UserGetRights'][] = 'GrandAccess::setupGrandAccess';
+$wgHooks['isValidEmailAddr'][] = 'isValidEmailAddr';
 
 //$wgHooks['WatchArticle'][] = 'preventUnauthorizedWatching'; //This doesn't work anyway.  Users can still add pages to their watchlist through the raw editor.
 
@@ -97,4 +98,10 @@ function permissionError(){
     $wgOut->disable();
     exit;
 }
+
+function isValidEmailAddr($addr, $result){
+    $result = filter_var($addr, FILTER_VALIDATE_EMAIL);
+    return false;
+}
+
 ?>

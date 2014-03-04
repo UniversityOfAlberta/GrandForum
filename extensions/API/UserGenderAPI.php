@@ -14,10 +14,9 @@ class UserGenderAPI extends API{
 
 	function doAction($noEcho=false){
         $person = Person::newFromName($_POST['user_name']);
-        $sql = "UPDATE mw_user
-                SET `user_gender` = '{$_POST['gender']}'
-                WHERE user_id = '{$person->getId()}'";
-        DBFunctions::execSQL($sql, true);
+        DBFunctions::update('mw_user',
+                            array('user_gender' => $_POST['gender']),
+                            array('user_id' => EQ($person->getId())));
         if(!$noEcho){
             echo "User's Gender updated\n";
         }

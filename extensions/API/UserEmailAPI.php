@@ -8,12 +8,19 @@ class UserEmailAPI extends API{
 
     function processParams($params){
         if(isset($_POST['email']) && $_POST['email'] != ""){
-            $_POST['email'] = str_replace("'", "&#39;", $_POST['email']);
+            $_POST['email'] = $_POST['email'];
         }
     }
 
 	function doAction($noEcho=false){
+	    global $wgMessage;
+	    
         $person = Person::newFromName($_POST['user_name']);
+        $valid = @User::isValidEmailAddr($_POST['email']);
+        if(!$valid){
+            @$wgMessage->addError("<b>{$_POST['email']}</b> is not a valid email address");
+            return false;
+        }
         // Remove the person from previous mailing lists
         $uni = $person->getUni();
         foreach(MailingList::getListByUniversity($uni) as $list){
@@ -73,11 +80,9 @@ class UserEmailAPI extends API{
                 MailingList::unsubscribe("grand-forum-p2-leaders", $person);
 		    }
         }
-        $sql = "UPDATE mw_user
-                SET `user_email` = '{$_POST['email']}'
-                WHERE user_id = '{$person->getId()}'";
-        DBFunctions::execSQL($sql, true);
-        
+        DBFunctions::update('mw_user',
+                            array('user_email' => $_POST['email']),
+                            array('user_id' => EQ($person->getId())));
         $person->email = $_POST['email'];
         // Re-Add the person to the mailing lists using their new email
         foreach(MailingList::getListByUniversity($uni) as $list){

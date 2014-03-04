@@ -130,13 +130,13 @@ class PersonProfileTab extends AbstractEditableTab {
         if($error == ""){
             // Insert the new data into the DB
             $_POST['user_name'] = $this->person->getName();
-            $_POST['twitter'] = @addslashes($_POST['twitter']);
-            $_POST['nationality'] = @addslashes($_POST['nationality']);
-            $_POST['email'] = @addslashes($_POST['email']);
+            $_POST['twitter'] = $_POST['twitter'];
+            $_POST['nationality'] = $_POST['nationality'];
+            $_POST['email'] = $_POST['email'];
             $_POST['university'] = @$_POST['university'];
             $_POST['department'] = @$_POST['department'];
             $_POST['title'] = @$_POST['title'];
-            $_POST['gender'] = @addslashes($_POST['gender']);
+            $_POST['gender'] = $_POST['gender'];
             if($this->visibility['isChampion']){
                 $_POST['partner'] = @$_POST['org'];
                 $_POST['title'] = @$_POST['title'];
@@ -382,7 +382,7 @@ EOF;
         if($wgUser->isLoggedIn()){
             $this->html .= "<tr>
                                 <td align='right'><b>Email:</b></td>
-                                <td><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>
+                                <td><a href=\"mailto:{$person->getEmail()}\">{$person->getEmail()}</a></td>
                             </tr>";
         }
         if($visibility['isMe'] || $visibility['isSupervisor']){
