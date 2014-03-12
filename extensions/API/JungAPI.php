@@ -95,9 +95,9 @@ class JungAPI extends API{
 
         foreach($nodes as $key => $node){
             $projects = $node->getProjectsDuring($this->year.REPORTING_CYCLE_START_MONTH, $this->year.REPORTING_CYCLE_END_MONTH_ACTUAL);
-            if(count($projects) == 0){
+            /*if(count($projects) == 0){
                 unset($nodes[$key]);
-            }
+            }*/
         }
         switch($this->type){
             case "Publication":
