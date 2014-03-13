@@ -199,6 +199,7 @@ class MailList{
                                             'aaSorting': [ [0,'desc'], [1,'desc']],
                                             'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
                         $('#mailingListMessages').show();
+                        $('#mailingListMessages').width('100%');
                     }
                     
                     createTable();
