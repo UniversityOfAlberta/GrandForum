@@ -56,9 +56,9 @@ function getExistingMIDs() {
 function parseMailArchive($filename, $proj_id) {
 	global $existing;
 	$text = file_get_contents($filename);
-	
-	$pattern = "/From: (.*?) \((.*?)\)\nDate: (.*?)\nSubject: \[.*?\] (.*?)\n.*?(References: (.*?)\n)?Message-ID: <(.*?)>\n\n(.*?)(\n\nFrom|$)/s";
+	$pattern = "/From: (.*?) \((.*?)\)\nDate: (.*?)\nSubject: \[.*?\] (.*?)\n.*?(References: (.*?)\n)?Message-ID: <(.*?)>\n\n(.*?)(\n\n(From:.*?)*(From |$))/s";
 	preg_match_all($pattern, $text, $matches);
+	
 	$messages = array();
 	$parentMapping = array();
 	list($addresses, $names, $dates, $subjects, $refids, $mids, $bodies) = array($matches[1], $matches[2], $matches[3], $matches[4], $matches[6], $matches[7], $matches[8]);
