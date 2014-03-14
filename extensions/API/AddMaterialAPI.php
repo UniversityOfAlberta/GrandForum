@@ -239,6 +239,7 @@ class AddMaterialAPI extends API{
 	            $_POST['mediaLocal'] = str_replace("youtu.be/", "", $media);
 	            $_POST['mediaLocal'] = str_replace("youtube.com/watch?v=", "", $_POST['mediaLocal']);
 	            $_POST['mediaLocal'] = str_replace("http://", "", $_POST['mediaLocal']);
+	            $_POST['mediaLocal'] = str_replace("https://", "", $_POST['mediaLocal']);
 	            $_POST['mediaLocal'] = str_replace("www.", "", $_POST['mediaLocal']);
 	            $_POST['mediaLocal'] = str_replace("youtube.com/watch?v=", "", $_POST['mediaLocal']);
 	            $_POST['mediaLocal'] = preg_replace("/&feature=.*/", "", $_POST['mediaLocal']);
