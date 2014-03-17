@@ -164,7 +164,6 @@ EOF;
 	    
 	    $content = chunk_split(base64_encode($content));
 	    $uid = md5(uniqid(time()));
-	   
 	    $header = "From: ".$from."\r\n";
 	    $header .= "Cc: ".$cc."\r\n";
 	    $header .= "Reply-To: ".$from."\r\n";
