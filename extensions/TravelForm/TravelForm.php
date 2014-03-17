@@ -44,6 +44,7 @@ class TravelForm extends SpecialPage {
             $phone_number = (isset($row['phone_number']))? $row['phone_number'] : "N/A";
             $gender = (isset($row['gender']))? $row['gender'] : "N/A";
             $dob = (isset($row['dob']))? $row['dob'] : "N/A";
+            $type = (isset($row['type']))? $row['type'] : "plane";
             $leaving_from = (isset($row['leaving_from']))? $row['leaving_from'] : "N/A";
             $going_to = (isset($row['going_to']))? $row['going_to'] : "N/A";
             $departure_date = (isset($row['departure_date']))? $row['departure_date'] : "N/A";
@@ -51,15 +52,20 @@ class TravelForm extends SpecialPage {
             $return_date = (isset($row['return_date']))? $row['return_date'] : "N/A";
             $return_time = (isset($row['return_time']))? $row['return_time'] : "N/A";
 
-            $preferred_seat = (isset($row['preferred_seat']))? $row['preferred_seat'] : "N/A";
-            $preferred_carrier = (isset($row['preferred_carrier']))? $row['preferred_carrier'] : "N/A";
-            $frequent_flyer = (isset($row['frequent_flyer']))? $row['frequent_flyer'] : "N/A";
+            $preferred_seat = (isset($row['preferred_seat']) && $row['preferred_seat'] != "")? $row['preferred_seat'] : "N/A";
+            $preferred_carrier = (isset($row['preferred_carrier']) && $row['preferred_carrier'] != "")? $row['preferred_carrier'] : "N/A";
+            $frequent_flyer = (isset($row['frequent_flyer']) && $row['frequent_flyer'] != "")? $row['frequent_flyer'] : "N/A";
 
             $hotel_checkin = (isset($row['hotel_checkin']))? $row['hotel_checkin'] : "N/A";
             $hotel_checkout = (isset($row['hotel_checkout']))? $row['hotel_checkout'] : "N/A";
             $roommate_preference = (isset($row['roommate_preference']))? $row['roommate_preference'] : "N/A";
 
             $comments = (isset($row['comments']))? $row['comments'] : "N/A";
+            
+            $typePar = "airport";
+            if($type == "train"){
+                $typePar = "train station";
+            }
             
             $fields = array(
             	"First name"=> $first_name,
@@ -68,8 +74,9 @@ class TravelForm extends SpecialPage {
 				"Phone Number"=> $phone_number,
 				"Gender"=> $gender,
 				"Date of Birth"=> $dob,
-				"Leaving from (airport)"=> $leaving_from,
-				"Going to (airport)"=> $going_to,
+				"Travel Method" => ucfirst($type),
+				"Leaving from ($typePar)"=> $leaving_from,
+				"Going to ($typePar)"=> $going_to,
 				"Departure Date"=> $departure_date,
 				"Departure Time"=> $departure_time,
 				"Return Date"=> $return_date,
@@ -133,12 +140,13 @@ EOF;
 				}
 			}
 			$email_body .=<<<EOF
-Regards,
+\nRegards,
 GRAND Forum
 support@forum.grand-nce.ca
 EOF;
 
 			$to = "fauve_mackenzie@gnwc.ca"; 
+			//$to = "dwt@ualberta.ca";
 			$cc = $email;
 			$subject = "Travel Form {$title}: $first_name $last_name";
 			$from = "GRAND Forum <support@forum.grand-nce.ca>";
@@ -194,10 +202,10 @@ EOF;
 		}
 		$preferred_seat = "";
 		$gender = "";
-		$post_vars = array('first_name', 'last_name', 'email', 'phone_number', 'dob', 'leaving_from', 'going_to', 'departure_date', 'departure_time', 'return_date', 'return_time', 'preferred_carrier', 'frequent_flyer', 'hotel_checkin', 'hotel_checkout', 'roommate_preference', 'comments');
+		$post_vars = array('first_name', 'last_name', 'email', 'phone_number', 'dob', 'type', 'leaving_from', 'going_to', 'departure_date', 'departure_time', 'return_date', 'return_time', 'preferred_carrier', 'frequent_flyer', 'hotel_checkin', 'hotel_checkout', 'roommate_preference', 'comments');
 		//extract($_POST);
 		foreach($post_vars as $var){
-			$$var = filter_var($_POST[$var], FILTER_SANITIZE_STRING);
+			$$var = filter_var(@$_POST[$var], FILTER_SANITIZE_STRING);
 			//echo "$var = ".$$var ."<br>";
 		}
 		$gender = (isset($_POST['gender']))? $_POST['gender'] : "";
@@ -211,7 +219,8 @@ EOF;
 				gender = '{$gender}', 
 				email = '{$email}', 
 				phone_number = '{$phone_number}', 
-				dob = '{$dob}', 
+				dob = '{$dob}',
+				type = '{$type}',
 				leaving_from = '{$leaving_from}', 
 				going_to = '{$going_to}', 
 				departure_date = '{$departure_date}', 
@@ -231,8 +240,8 @@ EOF;
 	
 		}else{
 			$query =<<<EOF
-			INSERT INTO grand_travel_forms(user_id, year, first_name, last_name, gender, email, phone_number, dob, leaving_from, going_to, departure_date, departure_time, return_date, return_time, preferred_seat, preferred_carrier, frequent_flyer, hotel_checkin, hotel_checkout, roommate_preference, comments)
-			VALUES('$my_id', '$curr_year', '$first_name', '$last_name', '$gender', '$email', '$phone_number', '$dob', '$leaving_from', '$going_to', '$departure_date', '$departure_time', '$return_date', '$return_time', '{$preferred_seat}', '$preferred_carrier', '$frequent_flyer', '$hotel_checkin', '$hotel_checkout', '$roommate_preference', '$comments')
+			INSERT INTO grand_travel_forms(user_id, year, first_name, last_name, gender, email, phone_number, dob, type, leaving_from, going_to, departure_date, departure_time, return_date, return_time, preferred_seat, preferred_carrier, frequent_flyer, hotel_checkin, hotel_checkout, roommate_preference, comments)
+			VALUES('$my_id', '$curr_year', '$first_name', '$last_name', '$gender', '$email', '$phone_number', '$dob', '$type', '$leaving_from', '$going_to', '$departure_date', '$departure_time', '$return_date', '$return_time', '{$preferred_seat}', '$preferred_carrier', '$frequent_flyer', '$hotel_checkin', '$hotel_checkout', '$roommate_preference', '$comments')
 EOF;
 			$result = DBFunctions::execSQL($query, true);
 		}
@@ -245,9 +254,6 @@ EOF;
 		}
 	}
 
-
-
-
 	static function travelForm(){
 		global $wgOut, $wgScriptPath, $wgServer, $wgUser;
 
@@ -258,6 +264,7 @@ EOF;
 		$email = $me->getEmail();
 		$gender = $me->getGender();
 		$phone_number = $dob = $leaving_from = $going_to = $departure_date = $departure_time = $return_date = $return_time = $preferred_seat = $preferred_carrier = $frequent_flyer = $hotel_checkin = $hotel_checkout = $roommate_preference = $comments = "";
+		$type = "plane";
 
 		$curr_year = date("Y");
 
@@ -272,6 +279,7 @@ EOF;
             $phone_number = (isset($row['phone_number']))? $row['phone_number'] : $phone_number;
             $gender = (isset($row['gender']))? $row['gender'] : $gender;
             $dob = (isset($row['dob']))? $row['dob'] : $dob;
+            $type = (isset($row['type']))? $row['type'] : $type;
             $leaving_from = (isset($row['leaving_from']))? $row['leaving_from'] : $leaving_from;
             $going_to = (isset($row['going_to']))? $row['going_to'] : $going_to;
             $departure_date = (isset($row['departure_date']))? $row['departure_date'] : $departure_date;
@@ -289,17 +297,24 @@ EOF;
 
             $comments = (isset($row['comments']))? $row['comments'] : $comments;
         }
-        else{
+        /*else{
         	$wgOut->addHTML("<p>Unfortunately you are not allowed to access the Travel Form.</p>");
         	return;
-        }
+        }*/
 
-        $male_checked = $female_checked = $aisle_checked = $middle_checked = $window_checked = "";
+        $male_checked = $female_checked = $aisle_checked = $middle_checked = $window_checked = $plane_selected = $train_selected = "";
         if($gender == 'M'){
         	$male_checked = "checked='checked'";
         }
         else if($gender == 'F'){
         	$female_checked = "checked='checked'";
+        }
+        
+        if($type == "plane"){
+            $plane_selected = "selected";
+        }
+        else if($type == "train"){
+            $train_selected = "selected";
         }
 
         if($preferred_seat == 'Aisle'){
@@ -337,8 +352,32 @@ EOF;
 				},'Must be greater than Check-in Date.');
 			
 			$(function() {
-    			$( "#departure_date, #return_date, #hotel_checkout, #hotel_checkin" ).datepicker();
-  				$( "#dob").datepicker({
+			    var type = "$type";
+			    var plane = $("#plane");
+			    var train = $("#train");
+			
+			    function updateTravelMethod(){
+			        if(type == "plane"){
+			            train = train.detach();
+			            plane.show();
+			            $("#travelMethod").append(plane);
+			        }
+			        else if(type == "train"){
+			            plane = plane.detach();
+			            train.show();
+			            $("#travelMethod").append(train);
+			        }
+			    }
+			    
+			    updateTravelMethod();
+			    
+			    $("select[name=type]").change(function(e){
+			        type = $(e.target).val();
+			        updateTravelMethod();
+			    });
+			    
+    			$("#departure_date, #return_date, #hotel_checkout, #hotel_checkin" ).datepicker({defaultDate: '05/01/14'});
+  				$("#dob").datepicker({
   					changeMonth: true,
       				changeYear: true,
       				yearRange: "1920:2000"
@@ -409,30 +448,55 @@ EOF;
 			</table>
 			<br />
 			<table width='50%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
-			<tr><td class='label'>Leaving from (airport)</td><td><input type='text' name="leaving_from" value='{$leaving_from}' /></td></tr>
-			<tr><td class='label'>Going to (airport)</td><td><input type='text' name="going_to" value='{$going_to}' /></td></tr>
-			<tr><td class='label'>Departure Date</td><td><input type='text' id="departure_date" name="departure_date" value='{$departure_date}' /></td></tr>
-			<tr><td class='label'>Departure Time</td><td><input type='text' name="departure_time" value='{$departure_time}' /></td></tr>
-			<tr><td class='label'>Return Date</td><td><input type='text' id="return_date" name="return_date" value='{$return_date}' /></td></tr>
-			<tr><td class='label'>Return Time</td><td><input type='text' name="return_time" value='{$return_time}' /></td></tr>
+			    <tr>
+			        <td class='label'>Travel Method</td><td>
+			            <select name='type'>
+			                <option value='plane' $plane_selected>Plane</option>
+			                <option value='train' $train_selected>Train</option>
+			            <select>
+			        </td>
+			    </tr>
 			</table>
 			<br />
-			<table width='50%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
-			<tr><td class='label'>Preferred Seat</td>
-			<td>
-			<span style="white-space: nowrap;">
-			Aisle <input type='radio' name='preferred_seat'  value='Aisle' {$aisle_checked} />
-			&nbsp;&nbsp;
-			Middle <input type='radio' name='preferred_seat' value='Middle' {$middle_checked} />
-			&nbsp;&nbsp;
-			Window <input type='radio' name='preferred_seat' value='Window' {$window_checked} />
-			</span>
-			</td>
-			</tr>
-			<tr><td class='label'>Preferred Carrier</td><td><input type='text' name="preferred_carrier" value='{$preferred_carrier}' /></td></tr>
-			<tr><td class='label'>Frequent Flyer Number</td><td><input type='text' name="frequent_flyer" value='{$frequent_flyer}' /></td>
-			</tr>
-			</table>
+			<div id='travelMethod'>
+			    <div id='plane' style='display:none;'>
+			        <table width='50%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
+			            <tr><td class='label'>Leaving from (airport)</td><td><input type='text' name="leaving_from" value='{$leaving_from}' /></td></tr>
+			            <tr><td class='label'>Going to (airport)</td><td><input type='text' name="going_to" value='{$going_to}' /></td></tr>
+			            <tr><td class='label'>Departure Date</td><td><input type='text' id="departure_date" name="departure_date" value='{$departure_date}' /></td></tr>
+			            <tr><td class='label'>Departure Time</td><td><input type='text' name="departure_time" value='{$departure_time}' /></td></tr>
+			            <tr><td class='label'>Return Date</td><td><input type='text' id="return_date" name="return_date" value='{$return_date}' /></td></tr>
+			            <tr><td class='label'>Return Time</td><td><input type='text' name="return_time" value='{$return_time}' /></td></tr>
+			        </table>
+			        <br />
+			        <table width='50%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
+			            <tr><td class='label'>Preferred Seat</td>
+			            <td>
+			            <span style="white-space: nowrap;">
+			            Aisle <input type='radio' name='preferred_seat'  value='Aisle' {$aisle_checked} />
+			            &nbsp;&nbsp;
+			            Middle <input type='radio' name='preferred_seat' value='Middle' {$middle_checked} />
+			            &nbsp;&nbsp;
+			            Window <input type='radio' name='preferred_seat' value='Window' {$window_checked} />
+			            </span>
+			            </td>
+			            </tr>
+			            <tr><td class='label'>Preferred Carrier</td><td><input type='text' name="preferred_carrier" value='{$preferred_carrier}' /></td></tr>
+			            <tr><td class='label'>Frequent Flyer Number</td><td><input type='text' name="frequent_flyer" value='{$frequent_flyer}' /></td>
+			            </tr>
+			        </table>
+			    </div>
+			    <div id='train' style='display:none;'>
+			        <table width='50%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
+			            <tr><td class='label'>Leaving from (train station)</td><td><input type='text' name="leaving_from" value='{$leaving_from}' /></td></tr>
+			            <tr><td class='label'>Going to (train station)</td><td><input type='text' name="going_to" value='{$going_to}' /></td></tr>
+			            <tr><td class='label'>Departure Date</td><td><input type='text' id="departure_date" name="departure_date" value='{$departure_date}' /></td></tr>
+			            <tr><td class='label'>Departure Time</td><td><input type='text' name="departure_time" value='{$departure_time}' /></td></tr>
+			            <tr><td class='label'>Return Date</td><td><input type='text' id="return_date" name="return_date" value='{$return_date}' /></td></tr>
+			            <tr><td class='label'>Return Time</td><td><input type='text' name="return_time" value='{$return_time}' /></td></tr>
+			        </table>
+			    </div>
+			</div>
 			<br />
 			<table width='50%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
 			<tr><td class='label'><span class="requ">*</span>Hotel Check-in Date</td><td><input type='text' class="required" id="hotel_checkin" name="hotel_checkin" value='{$hotel_checkin}' /></td></tr>
