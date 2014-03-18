@@ -296,10 +296,10 @@ EOF;
 
             $comments = (isset($row['comments']))? $row['comments'] : $comments;
         }
-        /*else{
+        else{
         	$wgOut->addHTML("<p>Unfortunately you are not allowed to access the Travel Form.</p>");
         	return;
-        }*/
+        }
 
         $male_checked = $female_checked = $aisle_checked = $middle_checked = $window_checked = $plane_selected = $train_selected = "";
         if($gender == 'M'){
