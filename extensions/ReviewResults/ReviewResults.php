@@ -24,6 +24,9 @@ class ReviewResults extends SpecialPage {
         if(!empty($_GET['type']) && $_GET['type'] == 'CNI'){
             $type = "CNI";
         }
+        else if(!empty($_GET['type']) && $_GET['type'] == 'Project'){
+            $type = "Project";
+        }
         else if(!empty($_GET['type']) && $_GET['type'] == 'LOI'){
             $type = "LOI";
         }
@@ -84,6 +87,7 @@ class ReviewResults extends SpecialPage {
             <ul>
             <li><a href='#pni'>PNI</a></li>
             <li><a href='#cni'>CNI</a></li>
+            <li><a href='#project'>Project</a></li>
             <li><a href='#loi'>LOI</a></li>
             </ul>
 EOF;
@@ -95,6 +99,10 @@ EOF;
         $html .= "<div id='cni' style='width: 100%; overflow: auto;'>";
         $html .= ReviewResults::reviewResults('CNI');
         $html .= "</div>";
+        
+        $html .= "<div id='project' style='width: 100%; overflow: auto;'>";
+        $html .= ReviewResults::reviewResults('Project');
+        $html .= "</div>";
 
         $html .= "<div id='loi' style='width: 100%; overflow: auto;'>";
         $html .= ReviewResults::reviewLOIResults();
@@ -102,7 +110,6 @@ EOF;
 
         $html .=<<<EOF
         </div>
-
 EOF;
         
         $wgOut->addHTML($html);
@@ -232,7 +239,7 @@ EOF;
             $loi_id = $loi->getId();
             $sql = sprintf($query, $loi_id);
             $data = DBFunctions::execSQL($sql);
-            if(count($data)>0 && $data[0]['email_sent'] == 1){
+            if(count($data) > 0 && $data[0]['email_sent'] == 1){
                 continue;
             }
 
@@ -521,17 +528,27 @@ EOF;
                 $report = new DummyReport("LOIFeedbackReportPDF", $admin, $loi);
                 $report->generatePDF(null, false);
                 //break;
-
             }
         }
         else{
-            $nis = Person::getAllEvaluates($type); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+            if($type == PNI || $type == CNI){
+                $nis = Person::getAllEvaluates($type); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+            }
+            else if($type == "Project"){
+                $nis = array();
+                $projects = Project::getAllProjects();
+                foreach($projects as $project){
+                    if($project->getPhase() == 2){
+                        $nis[$project->getName()] = $project;
+                    }
+                }
+            }
 
             foreach ($nis as $ni) {
                 $ni_id = $ni->getId();
 
                 ReviewResults::generateFeedback($ni_id, $type);
-                echo $ni->getNameForForms() ."<br />";
+                echo $ni->getName() ."<br />";
             }
         }
     }
@@ -540,8 +557,17 @@ EOF;
         global $wgOut;
 
         $wgOut->clearHTML();
-
-        $ni = Person::newFromId($ni_id);
+        if($type == PNI || $type == CNI){
+            $ni = Person::newFromId($ni_id);
+            $name = $ni->getNameForForms();
+            $university = $ni->getUni();
+        }
+        else if($type == "Project"){
+            $ni = Project::newFromId($ni_id);
+            $name = $ni->getName();
+            $leaders = $ni->getLeaders();
+            $coleaders = $ni->getCoLeaders();
+        }
         $curr_year = REPORTING_YEAR;
         $boilerplate = "";
         if($type == "PNI"){
@@ -552,8 +578,12 @@ EOF;
             $rtype = RP_EVAL_CNI;
             $boilerplate = "There were 80 CNIs evaluated in this review cycle. Some CNIs had two reviewers and others had only one reviewer; this was determined based on whether the amount of funding received in 2012-13 met a certain threshold amount. Funding allocations are based on the scores from the review, in conjunction with the funding request and the amount awarded for 2012-13. There was a limit placed on the incremental increase a CNI could be awarded over the previous year. The largest amount of funding awarded to any CNI for 2014-15 was $25,000 (9 CNIs). The total amount of research funding allocated to CNIs for 2014-15 is the same as it was for 2012-13.";
         }
+        else if($type == "Project"){
+            $rtype = RP_EVAL_PROJECT;
+            $boilerplate = "Project Blurb";
+        }
 
-        $query = "SELECT * FROM grand_review_results WHERE year={$curr_year} AND user_id={$ni_id}";
+        $query = "SELECT * FROM grand_review_results WHERE year={$curr_year} AND user_id={$ni_id} AND type = '{$type}'";
         $data = DBFunctions::execSQL($query);
         
         $allocated_amount = $allocated_amount2 = $overall_score = "";
@@ -564,21 +594,16 @@ EOF;
             $overall_score = $row['overall_score']; 
         }
 
-        $name = $ni->getNameForForms();
-           $university = $ni->getUni();
-
-           setlocale(LC_MONETARY, 'en_CA');
+        setlocale(LC_MONETARY, 'en_CA');
         $allocated_amount = @money_format('%i', $allocated_amount);
         $allocated_amount2 = @money_format('%i', $allocated_amount2);
-        $html =<<<EOF
-        <style type="text/css">
-        td {
-            vertical-align: top;
-        }
-        </style>
-        <div>
-            <h2>GRAND NCE - Research Management Committee - Network Investigator Review 2014 - Feedback</h2>
-            <table>
+        $allocated_amount3 = @money_format('%i', $allocated_amount3);
+        
+        $allocated_html = "";
+        if($type == PNI || $type == CNI){
+            // NI Specific HTML variables
+            $title = "GRAND NCE - Research Management Committee - Network Investigator Review 2014 - Feedback";
+            $person_html = <<<EOF
                 <tr>
                     <td><strong>Name:</strong></td>
                     <td>{$name}</td>
@@ -587,6 +612,8 @@ EOF;
                     <td><strong>University:</strong></td>
                     <td>{$university}</td>
                 </tr>
+EOF;
+            $allocated_html = <<<EOF
                 <tr>
                     <td><strong>9m (April 1- Dec 31 2014) Allocation:</strong></td>
                     <td>{$allocated_amount}</td>
@@ -595,30 +622,99 @@ EOF;
                     <td><strong>2015 Amount (Subject to renewal):</strong></td>
                     <td>{$allocated_amount2}</td>
                 </tr>
+EOF;
+            $sections = array(
+                "Q7: Overall Score" => array(EVL_OVERALLSCORE, 0),
+                "Q1: Excellence of Research Program" => array(EVL_EXCELLENCE, EVL_EXCELLENCE_COM),
+                "Q2: Development of HQP" => array(EVL_HQPDEVELOPMENT, EVL_HQPDEVELOPMENT_COM),
+                "Q3: Networking and Partnerships" => array(EVL_NETWORKING, EVL_NETWORKING_COM),
+                "Q4: Knowledge and Technology Exchange and Exploitation" => array(EVL_KNOWLEDGE, EVL_KNOWLEDGE_COM),
+                "Q5: Management of the Network" => array(EVL_MANAGEMENT, EVL_MANAGEMENT_COM),
+                "Q6: Rating for Quality of Report" => array(EVL_REPORTQUALITY, EVL_REPORTQUALITY_COM),
+                "Q8: Evaluator Comments" => array(0, EVL_OTHERCOMMENTS),
+                "Q9: Confidence Level of Evaluator" => array(EVL_CONFIDENCE, 0)
+            );
+
+            $evaluators = $ni->getEvaluators($type, 2013);
+        }
+        else if($type == "Project"){
+            // Project Specific HTML variables
+            $title = "GRAND NCE - Research Management Committee - Phase2 Project Review 2014 - Feedback";
+            $leader_names = array();
+            $coleader_names = array();
+            
+            foreach($leaders as $leader){
+                $leader_names[] = $leader->getNameForForms();
+            }
+            foreach($coleaders as $leader){
+                $coleader_names[] = $leader->getNameForForms();
+            }
+            $lead_names = implode(", ", $leader_names);
+            $colead_names = implode(", ", $coleader_names);
+            $person_html = <<<EOF
+            <tr>
+                <td><strong>Project Name:</strong></td>
+                <td>{$name}</td>
+            </tr>
+            <tr>
+                <td><strong>Leader(s):</strong></td>
+                <td>{$lead_names}</td>
+            </tr>
+            <tr>
+                <td><strong>Co-Leader(s):</strong></td>
+                <td>{$colead_names}</td>
+            </tr>
+EOF;
+            $allocated_html = <<<EOF
+                <tr>
+                    <td><strong>9m Budget (based on PNI commitments):</strong></td>
+                    <td>{$allocated_amount}</td>
+                </tr>
+                <tr>
+                    <td><strong>9m CNI Budget:</strong></td>
+                    <td>{$allocated_amount}</td>
+                </tr>
+                <tr>
+                    <td><strong>2015 Overall Amount (Subject to renewal):</strong></td>
+                    <td>{$allocated_amount2}</td>
+                </tr>
+EOF;
+            $sections = array(
+                "Q7: Overall Score" => array(EVL_OVERALLSCORE, 0),
+                "Q1: Excellence of Research Program" => array(EVL_EXCELLENCE, EVL_EXCELLENCE_COM),
+                "Q2: Development of HQP" => array(EVL_HQPDEVELOPMENT, EVL_HQPDEVELOPMENT_COM),
+                "Q3: Networking and Partnerships" => array(EVL_NETWORKING, EVL_NETWORKING_COM),
+                "Q4: Knowledge and Technology Exchange and Exploitation" => array(EVL_KNOWLEDGE, EVL_KNOWLEDGE_COM),
+                "Q5: Rating for Quality of Report" => array(EVL_REPORTQUALITY, EVL_REPORTQUALITY_COM),
+                "Q6: Evaluator Comments" => array(0, EVL_OTHERCOMMENTS),
+                "Q8: Confidence Level of Evaluator" => array(EVL_CONFIDENCE, 0)
+            );
+
+            $evaluators = $ni->getEvaluators(2013);
+        }
+        
+        $html =<<<EOF
+        <style type="text/css">
+        td {
+            vertical-align: top;
+        }
+        </style>
+        <div>
+            <h2>{$title}</h2>
+            <table>
+                {$person_html}
+                {$allocated_html}
             </table>
         </div>
         <div>
-        <h3>Description of Overall Process and Results:</h3>
+        <h3>Description of Overall Process and Results</h3>
         <p>{$boilerplate}</p>
         </div>
 
-        <h3>Scores and Feedback:</h3>
+        <h3>Scores and Feedback</h3>
         <p style="font-size:105%; font-weight:bold; margin: 15px 0 10px 0;">Overall Score: {$overall_score}</p>
 EOF;
 
-        $sections = array(
-            "Q7: Overall Score" => array(EVL_OVERALLSCORE, 0),
-            "Q1: Excellence of Research Program" => array(EVL_EXCELLENCE, EVL_EXCELLENCE_COM),
-            "Q2: Development of HQP" => array(EVL_HQPDEVELOPMENT, EVL_HQPDEVELOPMENT_COM),
-            "Q3: Networking and Partnerships" => array(EVL_NETWORKING, EVL_NETWORKING_COM),
-            "Q4: Knowledge and Technology Exchange and Exploitation" => array(EVL_KNOWLEDGE, EVL_KNOWLEDGE_COM),
-            "Q5: Management of the Network" => array(EVL_MANAGEMENT, EVL_MANAGEMENT_COM),
-            "Q6: Rating for Quality of Report" => array(EVL_REPORTQUALITY, EVL_REPORTQUALITY_COM),
-            "Q8: Evaluator Comments" => array(0, EVL_OTHERCOMMENTS),
-            "Q9: Confidence Level of Evaluator" => array(EVL_CONFIDENCE, 0)
-        );
-
-        $evaluators = $ni->getEvaluators($type, 2013);
         //now loop through all questions and evaluators and get the data
         foreach ($sections as $sec_name => $sec_addr){
             $score_html = ($sec_addr[0] != 0) ? "<th align='left'>Score</th>" : "";
@@ -633,8 +729,14 @@ EOF;
             foreach($evaluators as $eval){
                 $ev_name = $eval->getNameForForms();
                 $ev_id = $eval->getId();
-                
-                $score = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[0], $ni, $ev_id, $curr_year);
+                if($type == PNI || $type == CNI){
+                    $score = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[0], $ni, $ev_id, $curr_year);
+                    $comments = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[1], $ni, $ev_id, $curr_year);
+                }
+                else if($type == "Project"){
+                    $score = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[0], $ni, $ev_id, $curr_year, $ni);
+                    $comments = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[1], $ni, $ev_id, $curr_year, $ni);
+                }
                 
                 if(isset($score['revised']) && !empty($score['revised'])){
                     $score = $score['revised'];
@@ -642,7 +744,6 @@ EOF;
                     $score = $score['original'];
                 }
                 
-                $comments = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[1], $ni, $ev_id, $curr_year);
                 if(is_array($comments)){
                     if(isset($comments['revised']) && !empty($comments['revised'])){
                         $comments = $comments['revised'];
@@ -705,19 +806,32 @@ EOF;
         $my_id = $wgUser->getId();
         $me = Person::newFromId($wgUser->getId());
         
-        if($type != "CNI" && $type != "PNI"){
+        if($type != "CNI" && $type != "PNI" && $type != "Project"){
             $type = "PNI";
         }
 
         $curr_year = REPORTING_YEAR;
-        $nis = Person::getAllEvaluates($type); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+        if($type == PNI || $type == CNI){
+            $nis = Person::getAllEvaluates($type); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
 
-        $nis_sorted = array();
-        foreach ($nis as $ni){
-            $ni_rev_name = $ni->getReversedName();
-            $nis_sorted[$ni_rev_name] = $ni;
+            $nis_sorted = array();
+            foreach ($nis as $ni){
+                $ni_rev_name = $ni->getReversedName();
+                $nis_sorted[$ni_rev_name] = $ni;
+            }
+            ksort($nis_sorted);
         }
-        ksort($nis_sorted);
+        else if($type == "Project"){
+            $nis = array();
+            $projects = Project::getAllProjects();
+            foreach($projects as $project){
+                if($project->getPhase() == 2){
+                    $nis[$project->getName()] = $project;
+                }
+            }
+            $nis_sorted = $nis;
+            ksort($nis_sorted);
+        }
 
         $query = "SELECT * FROM grand_review_results WHERE year={$curr_year} AND type='{$type}'";
         $data = DBFunctions::execSQL($query);
@@ -733,15 +847,28 @@ EOF;
                                   'email_sent'          => $row['email_sent']);    
         }
 
+        if($type == PNI || $type == CNI){
+            $allocationHeadCells = <<<EOF
+            <th width="15%">2014 Allocation</th>
+            <th width="15%">2015 Allocation</th>
+EOF;
+        }
+        else if($type == "Project"){
+            $allocationHeadCells = <<<EOF
+            <th width="10%">2014 PNI Allocation</th>
+            <th width="10%">2014 CNI Allocation</th>
+            <th width="10%">2015 Amount</th>
+EOF;
+        }
+
         $html =<<<EOF
             <h3>RMC Review Results ({$type})</h3>
             <form id="resultsForm" action='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type={$type}#{$type}' method='post'>
             
-            <table width='90%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
+            <table width='97.5%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
             <tr>
             <th>NI Name</th>
-            <th width="15%">2014 Allocation</th>
-            <th width="15%">2015 Allocation</th>
+            $allocationHeadCells
             <th width="15%">Overall Score</th>
             <th width="15%">Feedback PDF</th>
             <th width="15%">Send Email?</th>
@@ -755,6 +882,7 @@ EOF;
                 //$ni_name = $ni->getNameForForms();
                 $allocated_amount = "";
                 $allocated_amount2 = "";
+                $allocated_amount3 = "";
                 $overall_score = "";
                 $send_email_checked = "checked='checked'";
                 $email_sent = "Email&nbsp;Not&nbsp;Sent";
@@ -762,6 +890,7 @@ EOF;
                 if(isset($fetched[$ni_id])){
                     $allocated_amount = (isset($fetched[$ni_id]['allocated_amount'])) ? $fetched[$ni_id]['allocated_amount'] : "";
                     $allocated_amount2 = (isset($fetched[$ni_id]['allocated_amount2'])) ? $fetched[$ni_id]['allocated_amount2'] : "";
+                    $allocated_amount3 = (isset($fetched[$ni_id]['allocated_amount3'])) ? $fetched[$ni_id]['allocated_amount3'] : "";
                     $overall_score = (isset($fetched[$ni_id]['overall_score'])) ? $fetched[$ni_id]['overall_score'] : "";
                     if(isset($fetched[$ni_id]['send_email']) && $fetched[$ni_id]['send_email'] == 0){
                         $send_email_checked = "";
@@ -777,11 +906,24 @@ EOF;
                 }else{
                     $file_link = "No&nbsp;PDF&nbsp;found";
                 }
+                
+                if($type == PNI || $type == CNI){
+                    $allocationCells = <<<EOF
+                    <td><input style='width:175px;' type="text" name="ni[{$ni_id}][allocated_amount]" value="{$allocated_amount}" class="number" /></td>
+                    <td><input style='width:175px;' type="text" name="ni[{$ni_id}][allocated_amount2]" value="{$allocated_amount2}" class="number" /></td>
+EOF;
+                }
+                else if($type == "Project"){
+                    $allocationCells = <<<EOF
+                    <td><input style='width:175px;' type="text" name="ni[{$ni_id}][allocated_amount]" value="{$allocated_amount}" class="number" /></td>
+                    <td><input style='width:175px;' type="text" name="ni[{$ni_id}][allocated_amount2]" value="{$allocated_amount2}" class="number" /></td>
+                    <td><input style='width:175px;' type="text" name="ni[{$ni_id}][allocated_amount3]" value="{$allocated_amount3}" class="number" /></td>
+EOF;
+                }
                 $html .=<<<EOF
                 <tr>
                 <td>{$ni_name}</td>
-                <td><input type="text" name="ni[{$ni_id}][allocated_amount]" value="{$allocated_amount}" class="number" /></td>
-                <td><input type="text" name="ni[{$ni_id}][allocated_amount2]" value="{$allocated_amount2}" class="number" /></td>
+                $allocationCells
                 <td><input type="text" name="ni[{$ni_id}][overall_score]" value="{$overall_score}" /></td>
                 <td align="center">{$file_link}</td>
                 <td align="center"><input type='checkbox' name='ni[{$ni_id}][send_email]' {$send_email_checked} /></td>
@@ -857,7 +999,6 @@ EOF;
                 $email_sent = "Email Not Sent";
                 $email_sent_bg = "background-color: red;";
                 if(isset($fetched[$loi_id])){
-                    
                     if(isset($fetched[$loi_id]['email_sent']) &&  $fetched[$loi_id]['email_sent'] == 1){
                         $email_sent = "Email Sent";
                         $email_sent_bg = "background-color: green;";
