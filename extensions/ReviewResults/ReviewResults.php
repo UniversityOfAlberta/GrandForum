@@ -142,7 +142,6 @@ EOF;
             $ni_id = $_GET['emailPDF'];
             ReviewResults::emailPDF($ni_id, $type);
         }
-        
 
        // ReviewResults::reviewResults($type);
     }
@@ -161,7 +160,6 @@ EOF;
             ReviewResults::generateAllFeedback('LOI');
             exit;
         }
-      
 
        // ReviewResults::reviewLOIResults();
     }
@@ -181,6 +179,9 @@ EOF;
 
         $data = DBFunctions::execSQL($query);
         foreach($data as $row){
+            if($row['send_email'] == 0){
+                continue;
+            }
             $ni_id = $row['user_id'];
             $ni = Person::newFromId($ni_id);
             $ni_name = $ni->getNameForForms();
@@ -195,7 +196,6 @@ EOF;
             else if($error == 2){
                 $file_fail[] = $ni_name;
             }
-
         }
         if(!empty($sent_success)){
             $message = "Email was sent successfully to the following:<br />";
@@ -214,7 +214,6 @@ EOF;
             $message .= implode("<br />", $file_fail);
             $wgMessage->addError($message);
         }
-
     }
 
     static function emailAllLOIPDFs(){
@@ -228,7 +227,6 @@ EOF;
         $sent_success = array();
         $sent_fail = array();
         $file_fail = array();
-
         
         foreach($lois as $loi){
             $loi_id = $loi->getId();
@@ -288,7 +286,6 @@ EOF;
         else{
             $lead_email = "adrian_sheppard@gnwc.ca";
         }
-        
 
         $colead = $loi->getCoLeadEmail();    
         if(!empty($colead['email'])){
@@ -297,7 +294,6 @@ EOF;
         else{
             $colead_email = "";
         }
-        
 
         $to = $lead_email;
         if(!empty($colead_email)){
@@ -463,28 +459,27 @@ EOF;
         if(!empty($type) && !empty($year) && !empty($nis)){
             
             foreach($nis as $ni_id => $ni_data){
-                $allocated_amount = (isset($ni_data['allocated_amount']))? $ni_data['allocated_amount'] : 0;
-                if(isset($ni_data['allocated_amount']) && !empty($ni_data['allocated_amount'])){
-                    $allocated_amount = $ni_data['allocated_amount'];
-                }
-                else{
-                    $allocated_amount = 0;
-                }
+                $allocated_amount = (isset($ni_data['allocated_amount']) && !empty($ni_data['allocated_amount'])) ? $ni_data['allocated_amount'] : 0;
+                $allocated_amount2 = (isset($ni_data['allocated_amount2']) && !empty($ni_data['allocated_amount2'])) ? $ni_data['allocated_amount2'] : 0;
+                $allocated_amount3 = (isset($ni_data['allocated_amount3']) && !empty($ni_data['allocated_amount3'])) ? $ni_data['allocated_amount3'] : 0;
                 
-                $overall_score = (isset($ni_data['overall_score']))? $ni_data['overall_score'] : "";
-                //if(empty($ni_data['allocated_amount']) && empty($ni_data['overall_score'])){
-                //    continue;
-                //}
+                $overall_score = (isset($ni_data['overall_score'])) ? $ni_data['overall_score'] : "";
+                $send_email = (isset($ni_data['send_email'])) ? 1 : 0;
                 
                 $allocated_amount = mysql_real_escape_string(floatval(str_replace(",", "", $allocated_amount)));
+                $allocated_amount2 = mysql_real_escape_string(floatval(str_replace(",", "", $allocated_amount2)));
+                $allocated_amount3 = mysql_real_escape_string(floatval(str_replace(",", "", $allocated_amount3)));
                 $overall_score = mysql_real_escape_string($overall_score);
 
                 $query =<<<EOF
-                INSERT INTO grand_review_results (user_id, type, year, allocated_amount, overall_score)
-                VALUES ({$ni_id}, '{$type}', {$year}, '{$allocated_amount}', '{$overall_score}')
+                INSERT INTO grand_review_results (user_id, type, year, allocated_amount, allocated_amount2, allocated_amount3, overall_score, send_email)
+                VALUES ({$ni_id}, '{$type}', {$year}, '{$allocated_amount}', '{$allocated_amount2}', '{$allocated_amount3}', '{$overall_score}', '{$send_email}')
                 ON DUPLICATE KEY UPDATE
                 allocated_amount = '{$allocated_amount}',
-                overall_score = '{$overall_score}'
+                allocated_amount2 = '{$allocated_amount2}',
+                allocated_amount3 = '{$allocated_amount3}',
+                overall_score = '{$overall_score}',
+                send_email = '{$send_email}'
 EOF;
                 $result = DBFunctions::execSQL($query, true);
             }
@@ -561,10 +556,11 @@ EOF;
         $query = "SELECT * FROM grand_review_results WHERE year={$curr_year} AND user_id={$ni_id}";
         $data = DBFunctions::execSQL($query);
         
-        $allocated_amount = $overall_score = "";
+        $allocated_amount = $allocated_amount2 = $overall_score = "";
         if(count($data) > 0){
             $row = $data[0];
             $allocated_amount = $row['allocated_amount'];
+            $allocated_amount2 = $row['allocated_amount2'];
             $overall_score = $row['overall_score']; 
         }
 
@@ -573,6 +569,7 @@ EOF;
 
            setlocale(LC_MONETARY, 'en_CA');
         $allocated_amount = @money_format('%i', $allocated_amount);
+        $allocated_amount2 = @money_format('%i', $allocated_amount2);
         $html =<<<EOF
         <style type="text/css">
         td {
@@ -580,10 +577,25 @@ EOF;
         }
         </style>
         <div>
-        <h2>GRAND NCE - Research Management Committee - Network Investigator Review 2014 - Feedback</h2>
-        <strong>Name:</strong> {$name}<br />
-        <strong>University:</strong> {$university}<br />
-        <strong>2014-15 Allocation:</strong> {$allocated_amount}
+            <h2>GRAND NCE - Research Management Committee - Network Investigator Review 2014 - Feedback</h2>
+            <table>
+                <tr>
+                    <td><strong>Name:</strong></td>
+                    <td>{$name}</td>
+                </tr>
+                <tr>
+                    <td><strong>University:</strong></td>
+                    <td>{$university}</td>
+                </tr>
+                <tr>
+                    <td><strong>9m (April 1- Dec 31 2014) Allocation:</strong></td>
+                    <td>{$allocated_amount}</td>
+                </tr>
+                <tr>
+                    <td><strong>2015 Amount (Subject to renewal):</strong></td>
+                    <td>{$allocated_amount2}</td>
+                </tr>
+            </table>
         </div>
         <div>
         <h3>Description of Overall Process and Results:</h3>
@@ -713,7 +725,12 @@ EOF;
         $fetched = array();
         foreach($data as $row){
             $id = $row['user_id'];
-            $fetched[$id] = array('allocated_amount'=>$row['allocated_amount'], 'overall_score'=>$row['overall_score'], 'email_sent'=>$row['email_sent']);    
+            $fetched[$id] = array('allocated_amount'    => $row['allocated_amount'], 
+                                  'allocated_amount2'   => $row['allocated_amount2'],
+                                  'allocated_amount3'   => $row['allocated_amount3'],
+                                  'overall_score'       => $row['overall_score'],
+                                  'send_email'          => $row['send_email'], 
+                                  'email_sent'          => $row['email_sent']);    
         }
 
         $html =<<<EOF
@@ -723,9 +740,11 @@ EOF;
             <table width='90%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
             <tr>
             <th>NI Name</th>
-            <th width="30%">Allocated Amount</th>
-            <th width="30%">Overall Score</th>
+            <th width="15%">2014 Allocation</th>
+            <th width="15%">2015 Allocation</th>
+            <th width="15%">Overall Score</th>
             <th width="15%">Feedback PDF</th>
+            <th width="15%">Send Email?</th>
             <th width="15%">Email</th>
             </tr>
 EOF;
@@ -735,32 +754,37 @@ EOF;
 
                 //$ni_name = $ni->getNameForForms();
                 $allocated_amount = "";
+                $allocated_amount2 = "";
                 $overall_score = "";
-                $email_sent = "Email Not Sent";
+                $send_email_checked = "checked='checked'";
+                $email_sent = "Email&nbsp;Not&nbsp;Sent";
                 $email_sent_bg = "background-color: red;";
                 if(isset($fetched[$ni_id])){
-                    if(isset($fetched[$ni_id]['allocated_amount'])){
-                        $allocated_amount = $fetched[$ni_id]['allocated_amount'];
+                    $allocated_amount = (isset($fetched[$ni_id]['allocated_amount'])) ? $fetched[$ni_id]['allocated_amount'] : "";
+                    $allocated_amount2 = (isset($fetched[$ni_id]['allocated_amount2'])) ? $fetched[$ni_id]['allocated_amount2'] : "";
+                    $overall_score = (isset($fetched[$ni_id]['overall_score'])) ? $fetched[$ni_id]['overall_score'] : "";
+                    if(isset($fetched[$ni_id]['send_email']) && $fetched[$ni_id]['send_email'] == 0){
+                        $send_email_checked = "";
                     }
-                    if(isset($fetched[$ni_id]['overall_score'])){
-                        $overall_score = $fetched[$ni_id]['overall_score'];
-                    }
-                    if(isset($fetched[$ni_id]['email_sent']) &&  $fetched[$ni_id]['email_sent'] == 1){
-                        $email_sent = "Email Sent";
+
+                    if(isset($fetched[$ni_id]['email_sent']) && $fetched[$ni_id]['email_sent'] == 1){
+                        $email_sent = "Email&nbsp;Sent";
                         $email_sent_bg = "background-color: green;";
                     }
                 }
                 if(file_exists("/local/data/www-root/grand_forum/data/review-feedback/{$type}/{$filename}.March2014.pdf")){
                     $file_link = "<a href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type={$type}&getPDF={$filename}' target='_blank'>Download</a>"; 
                 }else{
-                    $file_link = "No PDF found";
+                    $file_link = "No&nbsp;PDF&nbsp;found";
                 }
                 $html .=<<<EOF
                 <tr>
                 <td>{$ni_name}</td>
                 <td><input type="text" name="ni[{$ni_id}][allocated_amount]" value="{$allocated_amount}" class="number" /></td>
+                <td><input type="text" name="ni[{$ni_id}][allocated_amount2]" value="{$allocated_amount2}" class="number" /></td>
                 <td><input type="text" name="ni[{$ni_id}][overall_score]" value="{$overall_score}" /></td>
                 <td align="center">{$file_link}</td>
+                <td align="center"><input type='checkbox' name='ni[{$ni_id}][send_email]' {$send_email_checked} /></td>
                 <td align="center"><span style="padding:5px; {$email_sent_bg}">{$email_sent}</span></td>
                 </tr>
 EOF;
