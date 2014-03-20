@@ -133,7 +133,7 @@ EOF;
         }
         else if(isset($_GET['getPDF'])){
             $filename = $_GET['getPDF'] .".March2014.pdf";
-            $file = "/local/data/www-root/grand_forum/data/review-feedback/{$type}/{$filename}";
+            $file = "data/review-feedback/{$type}/{$filename}";
             if(file_exists($file)){
                 header('Content-type: application/pdf');
                 header('Content-Disposition: inline; filename="' . $filename . '"');
@@ -330,7 +330,7 @@ EOF;
         
         $from = "Adrian Sheppard <adrian_sheppard@gnwc.ca>";
         $filename = "{$loi_name}_Feedback-August2013.pdf";
-        //$file = "/local/data/www-root/grand_forum/data/review-feedback/{$type}/{$filename}";
+        //$file = "data/review-feedback/{$type}/{$filename}";
         //$file_content = @file_get_contents($file);
         $admin = Person::newFromId(4);
         $report = new DummyReport("LOIFeedbackReportPDF", $admin, $loi);
@@ -371,63 +371,76 @@ EOF;
 
     static function emailPDF($ni_id, $type){
         global $wgUser, $wgMessage;
-        $ni = Person::newFromId($ni_id);
-        $ni_name = $ni->getName();
-        $ni_email = $ni->getEmail();
-        $ni_name_good = $ni->getNameForForms();
-
-        $to = $ni_email; 
-        $subject = "GRAND PNI Allocations 2014-15";
+        $recipients = array();
+        if($type == CNI || $type == PNI){
+            $ni = Person::newFromId($ni_id);
+            
+            $recipients[] = $ni;
+        }
+        else if($type == "Project"){
+            $ni = Project::newFromId($ni_id);
+            $leaders = $ni->getLeaders();
+            $coleaders = $ni->getCoLeaders();
+            $recipients = array_merge($leaders, $coleaders);
+        }
         
-        $email_body =<<<EOF
-Dear {$ni_name_good},
+        $subject = "GRAND {$type} Allocations 2014-15";
+        $ni_name = $ni->getName();
+        
+        foreach($recipients as $rec){
+            $to = $rec->getEmail();
+            $rec_name_good = $rec->getNameForForms();
+            
+            $email_body =<<<EOF
+Dear {$rec_name_good},
 
 Please find attached a PDF with your GRAND {$type} Research Funding Allocation for 2014-15, along with reviewer feedback from the Research Management Committee.
 
 Best Regards,
 Adrian Sheppard
 EOF;
-        
-        $from = "Adrian Sheppard <adrian_sheppard@gnwc.ca>";
-        $filename = "{$ni_name}.March2014.pdf";
-        $file = "/local/data/www-root/grand_forum/data/review-feedback/{$type}/{$filename}";
-        $file_content = @file_get_contents($file);
-        
-        $error_code = 0; //If all is good return 0;
 
-        if($file_content !== false){
-            $success = ReviewResults::mail_attachment($file_content, $filename, $to, $from, $subject, $email_body);
-            if($success){
-                //Update the NI record that the email was sent out.
-                $curr_year = REPORTING_YEAR;
-                $query =<<<EOF
-                UPDATE grand_review_results
-                SET email_sent = 1
-                WHERE user_id = {$ni_id} AND type = '{$type}' AND year = {$curr_year}
-EOF;
-                $result = DBFunctions::execSQL($query, true);
-
-                //$wgMessage->addSuccess("Email has been sent successfully!");
+            $from = "Adrian Sheppard <adrian_sheppard@gnwc.ca>";
+            $filename = "{$ni_name}.March2014.pdf";
+            $file = "data/review-feedback/{$type}/{$filename}";
+            $file_content = @file_get_contents($file);
             
+            $error_code = 0; //If all is good return 0;
+
+            if($file_content !== false){
+                $success = ReviewResults::mail_attachment($file_content, $filename, $to, $from, $subject, $email_body);
+                if($success){
+                    //Update the NI record that the email was sent out.
+                    $curr_year = REPORTING_YEAR;
+                    $query =<<<EOF
+                    UPDATE grand_review_results
+                    SET email_sent = 1
+                    WHERE user_id = {$ni_id} AND type = '{$type}' AND year = {$curr_year}
+EOF;
+                    $result = DBFunctions::execSQL($query, true);
+
+                    //$wgMessage->addSuccess("Email has been sent successfully!");
+                
+                }
+                else{
+                    $error_code = max($error_code, 1); 
+                    //$wgMessage->addError("There was a problem with sending the email.");
+                }
             }
             else{
-                $error_code = 1; 
-                //$wgMessage->addError("There was a problem with sending the email.");
+                $error_code = max($error_code, 2);
+                //$wgMessage->addError("There was a problem with reading the PDF file.");
             }
         }
-        else{
-            $error_code = 2;
-            //$wgMessage->addError("There was a problem with reading the PDF file.");
-        }
-
+        exit;
         return $error_code;
     }
     
     static function mail_attachment($content, $filename, $to, $from, $subject, $message) {
-        /*
+        $to = "dwt@ualberta.ca";
         $content = chunk_split(base64_encode($content));
         $uid = md5(uniqid(time()));
-       
+        
         $header = "From: ".$from."\r\n";
         //$header .= "Cc: ".$cc."\r\n";
         $header .= "Reply-To: ".$from."\r\n";
@@ -449,7 +462,6 @@ EOF;
         } else {
             return false;
         }
-        */
     }
 
     static function handleSubmit(){
@@ -572,18 +584,26 @@ EOF;
         $boilerplate = "";
         if($type == "PNI"){
             $rtype = RP_EVAL_RESEARCHER;
-            $boilerplate = "There were 62 PNIs evaluated in this review cycle. Funding allocations for 2014-15 were made in four tiers:  Top Tier: $50,000 (17 PNIs); Upper Middle Tier: $40,000 (26 PNIs); Lower Middle Tier: $30,000 (12 PNIs); and Bottom Tier: $25,000 (3 PNIs plus an additional 4 PNIs who requested $25K or less). Note that while the total amount of research funding allocated to PNIs is the same for 2014-15 as it was for 2012-13, the funding levels for the upper tiers are slightly lower, largely as a result of more PNIs achieving higher scores from reviewers. As more researchers gravitated toward the upper tiers, a fixed budget required the funding amounts corresponding to those tiers to be reduced accordingly.";
+            $boilerplate = "<p>There were 49 prospective PNIs evaluated in this review cycle, along with an additional 11 CNIs who were proposed as project co-leaders.  Funding allocations for 2014-15 were made in four tiers:  Top Tier: $65,000; Upper Middle: $55,000; Lower Middle: $45,000; and Bottom Tier: $35,000.  Note that a researcher was not awarded more than his/her budget request, notwithstanding their funding tier.</p>
+<br />
+<p>Of the 49 prospective PNIs evaluated, 46 were funded as PNIs: 21 were Top Tier, 19 were Upper Middle, 6 were Lower Middle, and 3 were not funded as PNIs.  Of the 11 CNIs who were proposed as project co-leaders, they were evaluated across all four tiers, although they were only eligible for funding at the $45,000 and $35,000 levels.  Six were funded at the $45,000 level, four were funded at the $35,000 level, and one was awarded no funding.  Again, a researcher was not awarded more than his/her budget request, notwithstanding their funding tier.</p>
+<br />
+<p>The \"2015 Allocation\" amounts are full year allocations based on a proposed \"Phase 2\" research budget.  The \"April-December 2014 Amount\" is your actual allocation for the funding period from 01Apr2014 through 31Dec2014.  These amounts are notably lower than the \"2015 Allocation\" for two reasons: (1) they have been prorated down to fit within the Phase 1 research budget, and (2) they are providing funding for only a nine-month period.  If GRAND is renewed at a funding level consistent with the proposed Phase 2 research budget, then additional allocations of research funding for 01Jan2015 – 31Mar2015 are expected to be a full 25% of the 2015 Allocation indicated.</p>";
         }
         else if($type == "CNI"){
             $rtype = RP_EVAL_CNI;
-            $boilerplate = "There were 80 CNIs evaluated in this review cycle. Some CNIs had two reviewers and others had only one reviewer; this was determined based on whether the amount of funding received in 2012-13 met a certain threshold amount. Funding allocations are based on the scores from the review, in conjunction with the funding request and the amount awarded for 2012-13. There was a limit placed on the incremental increase a CNI could be awarded over the previous year. The largest amount of funding awarded to any CNI for 2014-15 was $25,000 (9 CNIs). The total amount of research funding allocated to CNIs for 2014-15 is the same as it was for 2012-13.";
+            $boilerplate = "<p>There were 49 prospective PNIs evaluated in this review cycle, along with an additional 11 CNIs who were proposed as project co-leaders.  Funding allocations for 2014-15 were made in four tiers:  Top Tier: $65,000; Upper Middle: $55,000; Lower Middle: $45,000; and Bottom Tier: $35,000.  Note that a researcher was not awarded more than his/her budget request, notwithstanding their funding tier.</p>
+<br />
+<p>Of the 49 prospective PNIs evaluated, 46 were funded as PNIs: 21 were Top Tier, 19 were Upper Middle, 6 were Lower Middle, and 3 were not funded as PNIs.  Of the 11 CNIs who were proposed as project co-leaders, they were evaluated across all four tiers, although they were only eligible for funding at the $45,000 and $35,000 levels.  Six were funded at the $45,000 level, four were funded at the $35,000 level, and one was awarded no funding.  Again, a researcher was not awarded more than his/her budget request, notwithstanding their funding tier.</p>
+<br />
+<p>The \"2015 Allocation\" amounts are full year allocations based on a proposed \"Phase 2\" research budget.  The \"April-December 2014 Amount\" is your actual allocation for the funding period from 01Apr2014 through 31Dec2014.  These amounts are notably lower than the \"2015 Allocation\" for two reasons: (1) they have been prorated down to fit within the Phase 1 research budget, and (2) they are providing funding for only a nine-month period.  If GRAND is renewed at a funding level consistent with the proposed Phase 2 research budget, then additional allocations of research funding for 01Jan2015 – 31Mar2015 are expected to be a full 25% of the 2015 Allocation indicated.</p>";
         }
         else if($type == "Project"){
             $rtype = RP_EVAL_PROJECT;
             $boilerplate = "Project Blurb";
         }
 
-        $query = "SELECT * FROM grand_review_results WHERE year={$curr_year} AND user_id={$ni_id} AND type = '{$type}'";
+        $query = "SELECT * FROM grand_review_results WHERE year='{$curr_year}' AND user_id='{$ni_id}' AND type = '{$type}'";
         $data = DBFunctions::execSQL($query);
         
         $allocated_amount = $allocated_amount2 = $overall_score = "";
@@ -605,34 +625,34 @@ EOF;
             $title = "GRAND NCE - Research Management Committee - Network Investigator Review 2014 - Feedback";
             $person_html = <<<EOF
                 <tr>
-                    <td><strong>Name:</strong></td>
+                    <td align='right'><strong>Name:</strong></td>
                     <td>{$name}</td>
                 </tr>
                 <tr>
-                    <td><strong>University:</strong></td>
+                    <td align='right'><strong>University:</strong></td>
                     <td>{$university}</td>
                 </tr>
 EOF;
             $allocated_html = <<<EOF
                 <tr>
-                    <td><strong>9m (April 1- Dec 31 2014) Allocation:</strong></td>
-                    <td>{$allocated_amount}</td>
+                    <td align='right'><strong>2015 Allocation:</strong></td>
+                    <td>{$allocated_amount2}</td>
                 </tr>
                 <tr>
-                    <td><strong>2015 Amount (Subject to renewal):</strong></td>
-                    <td>{$allocated_amount2}</td>
+                    <td align='right'><strong>Apr-Dec 2014 Amount:</strong></td>
+                    <td>{$allocated_amount}</td>
                 </tr>
 EOF;
             $sections = array(
-                "Q7: Overall Score" => array(EVL_OVERALLSCORE, 0),
-                "Q1: Excellence of Research Program" => array(EVL_EXCELLENCE, EVL_EXCELLENCE_COM),
-                "Q2: Development of HQP" => array(EVL_HQPDEVELOPMENT, EVL_HQPDEVELOPMENT_COM),
-                "Q3: Networking and Partnerships" => array(EVL_NETWORKING, EVL_NETWORKING_COM),
-                "Q4: Knowledge and Technology Exchange and Exploitation" => array(EVL_KNOWLEDGE, EVL_KNOWLEDGE_COM),
-                "Q5: Management of the Network" => array(EVL_MANAGEMENT, EVL_MANAGEMENT_COM),
-                "Q6: Rating for Quality of Report" => array(EVL_REPORTQUALITY, EVL_REPORTQUALITY_COM),
-                "Q8: Evaluator Comments" => array(0, EVL_OTHERCOMMENTS),
-                "Q9: Confidence Level of Evaluator" => array(EVL_CONFIDENCE, 0)
+                "Overall Score" => array(EVL_OVERALLSCORE, 0),
+                "Excellence of Research Program" => array(EVL_EXCELLENCE, EVL_EXCELLENCE_COM),
+                "Development of HQP" => array(EVL_HQPDEVELOPMENT, EVL_HQPDEVELOPMENT_COM),
+                "Networking and Partnerships" => array(EVL_NETWORKING, EVL_NETWORKING_COM),
+                "Knowledge and Technology Exchange and Exploitation" => array(EVL_KNOWLEDGE, EVL_KNOWLEDGE_COM),
+                "Management of the Network" => array(EVL_MANAGEMENT, EVL_MANAGEMENT_COM),
+                "Rating for Quality of Report" => array(EVL_REPORTQUALITY, EVL_REPORTQUALITY_COM),
+                "Evaluator Comments" => array(0, EVL_OTHERCOMMENTS),
+                "Confidence Level of Evaluator" => array(EVL_CONFIDENCE, 0)
             );
 
             $evaluators = $ni->getEvaluators($type, 2013);
@@ -653,41 +673,41 @@ EOF;
             $colead_names = implode(", ", $coleader_names);
             $person_html = <<<EOF
             <tr>
-                <td><strong>Project Name:</strong></td>
+                <td align='right'><strong>Project Name:</strong></td>
                 <td>{$name}</td>
             </tr>
             <tr>
-                <td><strong>Leader(s):</strong></td>
+                <td align='right'><strong>Leader(s):</strong></td>
                 <td>{$lead_names}</td>
             </tr>
             <tr>
-                <td><strong>Co-Leader(s):</strong></td>
+                <td align='right'><strong>Co-Leader(s):</strong></td>
                 <td>{$colead_names}</td>
             </tr>
 EOF;
             $allocated_html = <<<EOF
                 <tr>
-                    <td><strong>9m Budget (based on PNI commitments):</strong></td>
+                    <td align='right'><strong>9m Budget (based on PNI commitments):</strong></td>
                     <td>{$allocated_amount}</td>
                 </tr>
                 <tr>
-                    <td><strong>9m CNI Budget:</strong></td>
+                    <td align='right'><strong>9m CNI Budget:</strong></td>
                     <td>{$allocated_amount}</td>
                 </tr>
                 <tr>
-                    <td><strong>2015 Overall Amount (Subject to renewal):</strong></td>
+                    <td align='right'><strong>2015 Overall Amount (Subject to renewal):</strong></td>
                     <td>{$allocated_amount2}</td>
                 </tr>
 EOF;
             $sections = array(
-                "Q7: Overall Score" => array(EVL_OVERALLSCORE, 0),
-                "Q1: Excellence of Research Program" => array(EVL_EXCELLENCE, EVL_EXCELLENCE_COM),
-                "Q2: Development of HQP" => array(EVL_HQPDEVELOPMENT, EVL_HQPDEVELOPMENT_COM),
-                "Q3: Networking and Partnerships" => array(EVL_NETWORKING, EVL_NETWORKING_COM),
-                "Q4: Knowledge and Technology Exchange and Exploitation" => array(EVL_KNOWLEDGE, EVL_KNOWLEDGE_COM),
-                "Q5: Rating for Quality of Report" => array(EVL_REPORTQUALITY, EVL_REPORTQUALITY_COM),
-                "Q6: Evaluator Comments" => array(0, EVL_OTHERCOMMENTS),
-                "Q8: Confidence Level of Evaluator" => array(EVL_CONFIDENCE, 0)
+                "Overall Score" => array(EVL_OVERALLSCORE, 0),
+                "Excellence of Research Program" => array(EVL_EXCELLENCE, EVL_EXCELLENCE_COM),
+                "Development of HQP" => array(EVL_HQPDEVELOPMENT, EVL_HQPDEVELOPMENT_COM),
+                "Networking and Partnerships" => array(EVL_NETWORKING, EVL_NETWORKING_COM),
+                "Knowledge and Technology Exchange and Exploitation" => array(EVL_KNOWLEDGE, EVL_KNOWLEDGE_COM),
+                "Rating for Quality of Report" => array(EVL_REPORTQUALITY, EVL_REPORTQUALITY_COM),
+                "Evaluator Comments" => array(0, EVL_OTHERCOMMENTS),
+                "Confidence Level of Evaluator" => array(EVL_CONFIDENCE, 0)
             );
 
             $evaluators = $ni->getEvaluators(2013);
@@ -715,6 +735,29 @@ EOF;
         <p style="font-size:105%; font-weight:bold; margin: 15px 0 10px 0;">Overall Score: {$overall_score}</p>
 EOF;
 
+        // Do an initial pass of the evaluators to see which have not done anything
+        foreach($evaluators as $key => $eval){
+            $found = false;
+            foreach ($sections as $sec_name => $sec_addr){
+                $ev_id = $eval->getId();
+                if($type == PNI || $type == CNI){
+                    $score = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[0], $ni, $ev_id, $curr_year);
+                    $comments = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[1], $ni, $ev_id, $curr_year);
+                }
+                else if($type == "Project"){
+                    $score = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[0], $ni, $ev_id, $curr_year, $ni);
+                    $comments = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[1], $ni, $ev_id, $curr_year, $ni);
+                }
+                
+                if($score != null || $comments != null){
+                    $found = true;
+                    break;
+                }
+            }
+            if(!$found){
+                unset($evaluators[$key]);
+            }
+        }
         //now loop through all questions and evaluators and get the data
         foreach ($sections as $sec_name => $sec_addr){
             $score_html = ($sec_addr[0] != 0) ? "<th align='left'>Score</th>" : "";
@@ -761,17 +804,18 @@ EOF;
                     }
                     $comments = implode("<br />", $coms);
                 }
-                
-                $score_cell = ($sec_addr[0] != 0) ? "<td width='13%'>{$score}</td>" : "";
-                $comment_cell = ($sec_addr[1] != 0) ? "<td>{$comments}</td>" : "<td>&nbsp;</td>";
+                if($score != "" || $comments != ""){
+                    $score_cell = ($sec_addr[0] != 0) ? "<td width='13%'>{$score}</td>" : "";
+                    $comment_cell = ($sec_addr[1] != 0) ? "<td>{$comments}</td>" : "<td>&nbsp;</td>";
 
-                $html .=<<<EOF
-                <tr>
-                <td width="11%"><strong>RMC{$ev_count}</strong></td>
-                $score_cell
-                $comment_cell
-                </tr>
+                    $html .=<<<EOF
+                    <tr>
+                    <td width="11%"><strong>RMC{$ev_count}</strong></td>
+                    $score_cell
+                    $comment_cell
+                    </tr>
 EOF;
+                }
                 $ev_count++;
             }
 
@@ -789,7 +833,7 @@ EOF;
             $filename = $ni->getName();
             $filename .= ".March2014";
             //var_dump($pdf);
-            file_put_contents("/local/data/www-root/grand_forum/data/review-feedback/{$type}/{$filename}.pdf", $pdf['pdf']);
+            file_put_contents("data/review-feedback/{$type}/{$filename}.pdf", $pdf['pdf']);
         }
         catch(DOMPDF_Internal_Exception $e){
             echo "ERROR!!!";
@@ -901,7 +945,7 @@ EOF;
                         $email_sent_bg = "background-color: green;";
                     }
                 }
-                if(file_exists("/local/data/www-root/grand_forum/data/review-feedback/{$type}/{$filename}.March2014.pdf")){
+                if(file_exists("data/review-feedback/{$type}/{$filename}.March2014.pdf")){
                     $file_link = "<a href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type={$type}&getPDF={$filename}' target='_blank'>Download</a>"; 
                 }else{
                     $file_link = "No&nbsp;PDF&nbsp;found";
