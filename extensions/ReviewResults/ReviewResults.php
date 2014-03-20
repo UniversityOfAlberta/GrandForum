@@ -588,7 +588,11 @@ EOF;
 <br />
 <p>Of the 49 prospective PNIs evaluated, 46 were funded as PNIs: 21 were Top Tier, 19 were Upper Middle, 6 were Lower Middle, and 3 were not funded as PNIs.  Of the 11 CNIs who were proposed as project co-leaders, they were evaluated across all four tiers, although they were only eligible for funding at the $45,000 and $35,000 levels.  Six were funded at the $45,000 level, four were funded at the $35,000 level, and one was awarded no funding.  Again, a researcher was not awarded more than his/her budget request, notwithstanding their funding tier.</p>
 <br />
-<p>The \"2015 Allocation\" amounts are full year allocations based on a proposed \"Phase 2\" research budget.  The \"April-December 2014 Amount\" is your actual allocation for the funding period from 01Apr2014 through 31Dec2014.  These amounts are notably lower than the \"2015 Allocation\" for two reasons: (1) they have been scaled down to fit within the Phase 1 research budget, which is less than the proposed Phase 2 research budget, and (2) they are providing funding for only a nine-month period.  If GRAND is renewed at a funding level consistent with the proposed Phase 2 research budget, then additional allocations of research funding for 01Jan2015 – 31Mar2015 are expected to be a full 25% of the 2015 Allocation indicated.</p>";
+<p>The \"2015 Allocation\" amounts are full year allocations based on a proposed \"Phase 2\" research budget.  The \"April-December 2014 Amount\" is your actual allocation for the funding period from 01Apr2014 through 31Dec2014.  These amounts are notably lower than the \"2015 Allocation\" for two reasons: (1) they have been scaled down to fit within the Phase 1 research budget, which is less than the proposed Phase 2 research budget, and (2) they are providing funding for only a nine-month period.  If GRAND is renewed at a funding level consistent with the proposed Phase 2 research budget, then additional allocations of research funding for 01Jan2015 – 31Mar2015 are expected to be a full 25% of the 2015 Allocation indicated.</p>
+<br />
+<p>Project Leaders and co-leaders will be receiving separate feedback from the RMC regarding their projects which will also include details regarding project funding available for CNIs.</p>
+<br />
+<p>Each PNI and CNI who is a project co-leader was reviewed by at least two RMC evaluators.  The Overall Rating is based not only on the reviewer scores, but also on the discussion at the RMC meeting.  The available scores are as follows:  1) Overall Score:  Top, Upper Middle, Lower Middle, Bottom; 2) Each of the 5 NCE Evaluation Criteria and Rating for Quality of Report: Exceptional, Very Good, Satisfactory, Unsatisfactory; and 3) Confidence Level of Evaluator: Very High, High, Moderate, Low.</p>";
         }
         else if($type == "CNI"){
             $rtype = RP_EVAL_CNI;
@@ -596,7 +600,11 @@ EOF;
 <br />
 <p>Of the 49 prospective PNIs evaluated, 46 were funded as PNIs: 21 were Top Tier, 19 were Upper Middle, 6 were Lower Middle, and 3 were not funded as PNIs.  Of the 11 CNIs who were proposed as project co-leaders, they were evaluated across all four tiers, although they were only eligible for funding at the $45,000 and $35,000 levels.  Six were funded at the $45,000 level, four were funded at the $35,000 level, and one was awarded no funding.  Again, a researcher was not awarded more than his/her budget request, notwithstanding their funding tier.</p>
 <br />
-<p>The \"2015 Allocation\" amounts are full year allocations based on a proposed \"Phase 2\" research budget.  The \"April-December 2014 Amount\" is your actual allocation for the funding period from 01Apr2014 through 31Dec2014.  These amounts are notably lower than the \"2015 Allocation\" for two reasons: (1) they have been scaled down to fit within the Phase 1 research budget, which is less than the proposed Phase 2 research budget, and (2) they are providing funding for only a nine-month period.  If GRAND is renewed at a funding level consistent with the proposed Phase 2 research budget, then additional allocations of research funding for 01Jan2015 – 31Mar2015 are expected to be a full 25% of the 2015 Allocation indicated.</p>";
+<p>The \"2015 Allocation\" amounts are full year allocations based on a proposed \"Phase 2\" research budget.  The \"April-December 2014 Amount\" is your actual allocation for the funding period from 01Apr2014 through 31Dec2014.  These amounts are notably lower than the \"2015 Allocation\" for two reasons: (1) they have been scaled down to fit within the Phase 1 research budget, which is less than the proposed Phase 2 research budget, and (2) they are providing funding for only a nine-month period.  If GRAND is renewed at a funding level consistent with the proposed Phase 2 research budget, then additional allocations of research funding for 01Jan2015 – 31Mar2015 are expected to be a full 25% of the 2015 Allocation indicated.</p>
+<br />
+<p>Project Leaders and co-leaders will be receiving separate feedback from the RMC regarding their projects which will also include details regarding project funding available for CNIs.</p>
+<br />
+<p>Each PNI and CNI who is a project co-leader was reviewed by at least two RMC evaluators.  The Overall Rating is based not only on the reviewer scores, but also on the discussion at the RMC meeting.  The available scores are as follows:  1) Overall Score:  Top, Upper Middle, Lower Middle, Bottom; 2) Each of the 5 NCE Evaluation Criteria and Rating for Quality of Report: Exceptional, Very Good, Satisfactory, Unsatisfactory; and 3) Confidence Level of Evaluator: Very High, High, Moderate, Low.</p>";
         }
         else if($type == "Project"){
             $rtype = RP_EVAL_PROJECT;
@@ -643,7 +651,7 @@ EOF;
                     <td>{$allocated_amount}</td>
                 </tr>
                 <tr>
-                    <td align='right'><strong>Overall Rating:</strong></td>
+                    <td align='right'><strong>Overall Rating (Tier):</strong></td>
                     <td>{$overall_score}</td>
                 </tr>
 EOF;
@@ -701,6 +709,10 @@ EOF;
                 <tr>
                     <td align='right'><strong>2015 Overall Amount (Subject to renewal):</strong></td>
                     <td>{$allocated_amount2}</td>
+                </tr>
+                <tr>
+                    <td align='right'><strong>Overall Rating (Tier):</strong></td>
+                    <td>{$overall_score}</td>
                 </tr>
 EOF;
             $sections = array(
