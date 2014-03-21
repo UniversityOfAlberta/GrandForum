@@ -373,18 +373,17 @@ EOF;
         global $wgUser, $wgMessage;
         $recipients = array();
         if($type == CNI || $type == PNI){
+            $subject = "GRAND NCE - RMC Feedback 2014 - PNIs and CNIs";
             $ni = Person::newFromId($ni_id);
-            
             $recipients[] = $ni;
         }
         else if($type == "Project"){
+            $subject = "GRAND NCE - RMC Feedback 2014 - Projects";
             $ni = Project::newFromId($ni_id);
             $leaders = $ni->getLeaders();
             $coleaders = $ni->getCoLeaders();
             $recipients = array_merge($leaders, $coleaders);
         }
-        
-        $subject = "GRAND {$type} Allocations 2014-15";
         $ni_name = $ni->getName();
         
         foreach($recipients as $rec){
@@ -394,10 +393,30 @@ EOF;
             $email_body =<<<EOF
 Dear {$rec_name_good},
 
-Please find attached a PDF with your GRAND {$type} Research Funding Allocation for 2014-15, along with reviewer feedback from the Research Management Committee.
+Please find attached a PDF containing the results of the review of your
+2013 Network Investigator Report by GRAND's Research Management Committee.
+The PDF contains information regarding your 2014-15 research funding
+allocation as well as specific feedback based on your report.
 
-Best Regards,
+Please note that additional information regarding the Phase 2 Process
+around projects and themes, including project funding for CNIs and the
+preparation of project and theme descriptions for the renewal application,
+will be made available on the GRAND Forum under GRAND => Phase 2 =>
+Process (https://forum.grand-nce.ca/index.php/GRAND:Process) early next
+week.
+
+Regards,
+
+A.
+________________________
 Adrian Sheppard
+Director, Operations
+GRAND NCE
+Centre for Digital Media
+685 Great Northern Way
+Vancouver BC V5T 0C6
+
+www.grand-nce.ca
 EOF;
 
             $from = "Adrian Sheppard <adrian_sheppard@gnwc.ca>";
@@ -432,12 +451,18 @@ EOF;
                 //$wgMessage->addError("There was a problem with reading the PDF file.");
             }
         }
-        exit;
         return $error_code;
     }
     
     static function mail_attachment($content, $filename, $to, $from, $subject, $message) {
+        // For testing
+        /*if($to != "stroulia@ualberta.ca"){
+            return true;
+        }
+        //$to = "adrian_sheppard@gnwc.ca";
         $to = "dwt@ualberta.ca";
+        */
+        
         $content = chunk_split(base64_encode($content));
         $uid = md5(uniqid(time()));
         
@@ -457,7 +482,7 @@ EOF;
         $header .= "Content-Disposition: attachment; filename=\"".$filename."\"\r\n\r\n";
         $header .= $content."\r\n\r\n";
         $header .= "--".$uid."--";
-        if (mail($to, $subject, "", $header)) {
+        if(mail($to, $subject, "", $header)) {
             return true;
         } else {
             return false;
@@ -1028,7 +1053,7 @@ EOF;
             <input type='hidden' name='ni_type' value='{$type}' />
             <input type='hidden' name='year' value='{$curr_year}' />
             <input type='submit' name='submit' value='Submit' />
-            <input type='submit' name='submit' value='Send out Emails' disabled />
+            <input type='submit' name='submit' value='Send out Emails' />
             </form>
 EOF;
         return $html;
