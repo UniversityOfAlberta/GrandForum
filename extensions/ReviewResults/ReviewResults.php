@@ -740,7 +740,7 @@ EOF;
         </div>
         <div>
         <h3>Description of Overall Process and Results</h3>
-        <p>{$boilerplate}</p>
+        <small><p>{$boilerplate}</p></small>
         </div>
 EOF;
 
@@ -773,6 +773,7 @@ EOF;
             $comment_html = ($sec_addr[1] != 0) ? "<th align='left'>Comment</th>" : "<th>&nbsp;</th>";
             $html .=<<<EOF
             <h3>{$sec_name}</h3>
+            <small>
             <table cellpadding="4" style="margin-bottom:15px;" width="100%" align="left;">
                 <tr><th>&nbsp;</th>{$score_html}{$comment_html}</tr>
 EOF;
@@ -866,6 +867,7 @@ EOF;
             $html .= implode("", $rows);
             $html .=<<<EOF
             </table>
+            </small>
             <br />
 EOF;
         }
