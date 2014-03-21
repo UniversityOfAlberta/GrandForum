@@ -78,13 +78,13 @@ class LoiProposals extends SpecialPage {
 			echo $html;
 			exit;
 		}
-		else if(isset($_GET['ajaxtab']) && $_GET['ajaxtab']=="5"){
+		/*else if(isset($_GET['ajaxtab']) && $_GET['ajaxtab']=="5"){
 			$wgOut->disable();
             ob_clean();
 			$html = LoiProposals::conflictsTable($revision);
 			echo $html;
 			exit;
-		}
+		}*/
 		else if(isset($_GET['ajaxtab']) && $_GET['ajaxtab']=="6"){
 			$wgOut->disable();
             ob_clean();
@@ -184,7 +184,7 @@ class LoiProposals extends SpecialPage {
 	            <li><a href='#lois_res'>Responses</a></li>
 	            <li><a href='#faq'>FAQ</a></li>
 	            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=4'>CV</a></li>
-	            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=5'>Conflicts/Preferences</a></li>
+	            <!--<li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=5'>Conflicts/Preferences</a></li>-->
 	            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=6'>Report Stats</a></li>";
 	        }
 			else if($me->isRoleAtLeast(HQP)){
