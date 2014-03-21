@@ -813,7 +813,6 @@ EOF;
                     }
                     $comments = implode("<br />", $coms);
                 }
-                $comments = nl2br($comments);
                 if($ev_id == 11){ // K.S.Booth
                     $score = "";
                 }
@@ -851,7 +850,7 @@ EOF;
                     $result = $blb->load($addr);
                     $data = $blb->getData();
                     if($data != null){
-                        $comment_cell = "<td>".nl2br($data)."</td>";
+                        $comment_cell = "<td>$data</td>";
                         $rows[1000+$isacN] = <<<EOF
                         <tr>
                         <td width="11%"><strong>ISAC{$isacN}</strong></td>
@@ -862,6 +861,8 @@ EOF;
                     }
                 }
             }
+            ksort($rows);
+            $rows = array_reverse($rows);
             $html .= implode("", $rows);
             $html .=<<<EOF
             </table>
