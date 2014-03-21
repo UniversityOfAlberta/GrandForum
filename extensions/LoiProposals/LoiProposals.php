@@ -991,8 +991,8 @@ EOF;
 
 		$query = "SELECT l.id, l.name, l.full_name, lc.*
 				  FROM grand_loi l 
-				  LEFT JOIN grand_loi_conflicts lc ON(l.id = lc.loi_id AND lc.reviewer_id={$my_id}) 
-				  WHERE l.year=2013 AND l.revision={$revision}";
+				  LEFT JOIN grand_eval_conflicts lc ON(l.id = lc.sub_id AND lc.eval_id={$my_id}) 
+				  WHERE l.year=2013 AND l.revision={$revision} AND lc.type='LOI'";
 		
 		$data = DBFunctions::execSQL($query);
 		foreach($data as $row){
