@@ -740,7 +740,7 @@ EOF;
         </div>
         <div>
         <h3>Description of Overall Process and Results</h3>
-        <small><p>{$boilerplate}</p></small>
+        <p>{$boilerplate}</p>
         </div>
 EOF;
 
@@ -773,7 +773,6 @@ EOF;
             $comment_html = ($sec_addr[1] != 0) ? "<th align='left'>Comment</th>" : "<th>&nbsp;</th>";
             $html .=<<<EOF
             <h3>{$sec_name}</h3>
-            <small>
             <table cellpadding="4" style="margin-bottom:15px;" width="100%" align="left;">
                 <tr><th>&nbsp;</th>{$score_html}{$comment_html}</tr>
 EOF;
@@ -820,7 +819,7 @@ EOF;
                 }
                 if($score != "" || $comments != ""){
                     $score_cell = ($sec_addr[0] != 0) ? "<td width='13%'>{$score}</td>" : "";
-                    $comment_cell = ($sec_addr[1] != 0) ? "<td>{$comments}</td>" : "<td>&nbsp;</td>";
+                    $comment_cell = ($sec_addr[1] != 0) ? "<td><small>{$comments}</small></td>" : "<td>&nbsp;</td>";
                     if($ev_id == 11){ // K.S.Booth
                         $rows[100+$ev_count] = <<<EOF
                         <tr>
@@ -852,7 +851,7 @@ EOF;
                     $result = $blb->load($addr);
                     $data = $blb->getData();
                     if($data != null){
-                        $comment_cell = "<td>".nl2br($data)."</td>";
+                        $comment_cell = "<td><small>".nl2br($data)."</small></td>";
                         $rows[1000+$isacN] = <<<EOF
                         <tr>
                         <td width="11%"><strong>ISAC{$isacN}</strong></td>
@@ -867,7 +866,6 @@ EOF;
             $html .= implode("", $rows);
             $html .=<<<EOF
             </table>
-            </small>
             <br />
 EOF;
         }
