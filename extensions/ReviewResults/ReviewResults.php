@@ -820,7 +820,7 @@ EOF;
                 if($score != "" || $comments != ""){
                     $score_cell = ($sec_addr[0] != 0) ? "<td width='13%'>{$score}</td>" : "";
                     $comment_cell = ($sec_addr[1] != 0) ? "<td><small>{$comments}</small></td>" : "<td>&nbsp;</td>";
-                    if($ev_id == 11){ // K.S.Booth
+                    if($ev_id == 11 && $sec_addr[1] == EVL_OTHERCOMMENTS){ // K.S.Booth
                         $rows[100+$ev_count] = <<<EOF
                         <tr>
                         <td width="11%"><strong>Additional&nbsp;RMC&nbsp;Comments</strong></td>
@@ -828,9 +828,8 @@ EOF;
                         $comment_cell
                         </tr>
 EOF;
-                        $ev_count--;
                     }
-                    else{
+                    else if($ev_id != 11){
                         $rows[$ev_count] = <<<EOF
                         <tr>
                         <td width="11%"><strong>RMC{$ev_count}</strong></td>
@@ -840,7 +839,9 @@ EOF;
 EOF;
                     }
                 }
-                $ev_count++;
+                if($ev_id != 11){ // K.S.Booth
+                    $ev_count++;
+                }
             }
             if($type == "Project" && $sec_addr[1] == EVL_OTHERCOMMENTS){
                 $isac = Person::getAllPeople(ISAC);
