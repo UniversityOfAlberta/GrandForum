@@ -608,7 +608,15 @@ EOF;
         }
         else if($type == "Project"){
             $rtype = RP_EVAL_PROJECT;
-            $boilerplate = "Project Blurb";
+            $boilerplate = "<p>There were 23 projects evaluated in this review cycle.  Each project was reviewed by three RMC evaluators.  The highest scoring project received three \"Top Tier\" overall ratings, and the lowest scoring project received three \"Bottom Tier\" ratings.  However all but a few projects received at least one \"Upper Middle\" overall rating.  There were 22 standard projects and one \"alliance\" project.  Alliance projects are funded from a separate pool of funds.  Of the 22 standard projects, 19 were deemed ready to proceed as full projects, with the remaining three to proceed on a development basis with reduced funding and additional oversight.</p>
+<br />
+<p>The funding level for each project was impacted significantly by the level of PNI investment in the project.  The goal across the research funding allocations for standard projects is for two-thirds of the funding to go to PNIs and the remaining one-third to go to CNIs.  Based on the RMC allocations to PNIs, the level of PNI investment in that project was determined based on the percentage of that PNI's funding request that was designated for that project.  The presumptive amount that project will then have for CNIs will be 50% of the amount of that PNI investment.  Although some adjustments were made to address some outliers, in most cases the application of this formula led to a reasonable result.</p>
+<br />
+<p>For CNIs who are project co-leaders, their RMC allocations were also applied to their projects based on the percentage of that CNI's funding request that was designated for that project.  These amounts are deducted from the overall CNI allocation for the project.  The balance of the CNI allocation for the project will be distributed among the remaining CNIs on the project at the direction of the Project Leader and Co-Leader.</p>
+<br />
+<p>Project Leaders and co-leaders will be receiving shortly a separate document that provides the details of their overall project funding for 2014-15.</p>
+<br />
+<p>For the reviewer scoring of projects, the available scores are as follows:  1) Overall Score:  Top, Upper Middle, Lower Middle, Bottom; 2) Each of the 4 NCE Evaluation Criteria and Rating for Quality of Report: Exceptional, Very Good, Satisfactory, Unsatisfactory; and 3) Confidence Level of Evaluator: Very High, High, Moderate, Low.</p>";
         }
 
         $query = "SELECT * FROM grand_review_results WHERE year='{$curr_year}' AND user_id='{$ni_id}' AND type = '{$type}'";
@@ -676,17 +684,17 @@ EOF;
             $coleader_names = array();
             
             foreach($leaders as $leader){
-                $leader_names[] = $leader->getNameForForms();
+                $leader_names[] = $leader->getNameForForms()." ({$leader->getUni()})";
             }
             foreach($coleaders as $leader){
-                $coleader_names[] = $leader->getNameForForms();
+                $coleader_names[] = $leader->getNameForForms()." ({$leader->getUni()})";
             }
-            $lead_names = implode(", ", $leader_names);
-            $colead_names = implode(", ", $coleader_names);
+            $lead_names = implode("<br />", $leader_names);
+            $colead_names = implode("<br />", $coleader_names);
             $person_html = <<<EOF
             <tr>
                 <td align='right'><strong>Project Name:</strong></td>
-                <td>{$name}</td>
+                <td>{$name} - {$ni->getFullName()}</td>
             </tr>
             <tr>
                 <td align='right'><strong>Leader(s):</strong></td>
@@ -698,18 +706,6 @@ EOF;
             </tr>
 EOF;
             $allocated_html = <<<EOF
-                <tr>
-                    <td align='right'><strong>9m Budget (based on PNI commitments):</strong></td>
-                    <td>{$allocated_amount}</td>
-                </tr>
-                <tr>
-                    <td align='right'><strong>9m CNI Budget:</strong></td>
-                    <td>{$allocated_amount}</td>
-                </tr>
-                <tr>
-                    <td align='right'><strong>2015 Overall Amount (Subject to renewal):</strong></td>
-                    <td>{$allocated_amount2}</td>
-                </tr>
                 <tr>
                     <td align='right'><strong>Overall Rating (Tier):</strong></td>
                     <td>{$overall_score}</td>
@@ -782,6 +778,7 @@ EOF;
 EOF;
             $ev_count = 1;
 
+            $rows = array();
             foreach($evaluators as $eval){
                 $ev_name = $eval->getNameForForms();
                 $ev_id = $eval->getId();
@@ -817,21 +814,55 @@ EOF;
                     }
                     $comments = implode("<br />", $coms);
                 }
+                if($ev_id == 11){ // K.S.Booth
+                    $score = "";
+                }
                 if($score != "" || $comments != ""){
                     $score_cell = ($sec_addr[0] != 0) ? "<td width='13%'>{$score}</td>" : "";
                     $comment_cell = ($sec_addr[1] != 0) ? "<td>{$comments}</td>" : "<td>&nbsp;</td>";
-
-                    $html .=<<<EOF
-                    <tr>
-                    <td width="11%"><strong>RMC{$ev_count}</strong></td>
-                    $score_cell
-                    $comment_cell
-                    </tr>
+                    if($ev_id == 11){ // K.S.Booth
+                        $rows[100+$ev_count] = <<<EOF
+                        <tr>
+                        <td width="11%"><strong>Additional RMC Comments</strong></td>
+                        $score_cell
+                        $comment_cell
+                        </tr>
 EOF;
+                        $ev_count--;
+                    }
+                    else{
+                        $rows[] = <<<EOF
+                        <tr>
+                        <td width="11%"><strong>RMC{$ev_count}</strong></td>
+                        $score_cell
+                        $comment_cell
+                        </tr>
+EOF;
+                    }
                 }
                 $ev_count++;
             }
-
+            if($type == "Project" && $sec_addr[1] == EVL_OTHERCOMMENTS){
+                $isac = Person::getAllPeople(ISAC);
+                $isacN = 1;
+                foreach($isac as $i => $person){
+                    $addr = ReportBlob::create_address(RP_ISAC, ISAC_PHASE2, ISAC_PHASE2_COMMENT, 0);
+                    $blb = new ReportBlob(BLOB_TEXT, 2013, $person->getId(), $ni_id);
+                    $result = $blb->load($addr);
+                    $data = $blb->getData();
+                    if($data != null){
+                        $comment_cell = "<td>".nl2br($data)."</td>";
+                        $rows[1000+$isacN] = <<<EOF
+                        <tr>
+                        <td width="11%"><strong>ISAC{$isacN}</strong></td>
+                        $comment_cell
+                        </tr>
+EOF;
+                        $isacN++;
+                    }
+                }
+            }
+            $html .= implode("", $rows);
             $html .=<<<EOF
             </table>
             <br />
