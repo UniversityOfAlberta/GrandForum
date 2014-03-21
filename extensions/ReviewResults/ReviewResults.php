@@ -771,8 +771,12 @@ EOF;
         foreach ($sections as $sec_name => $sec_addr){
             $score_html = ($sec_addr[0] != 0) ? "<th align='left'>Score</th>" : "";
             $comment_html = ($sec_addr[1] != 0) ? "<th align='left'>Comment</th>" : "<th>&nbsp;</th>";
+            $pagebreak = "";
+            if($sec_addr[1] == EVL_OTHERCOMMENTS){
+                $pagebreak = "page-break-before: always;";
+            }
             $html .=<<<EOF
-            <h3>{$sec_name}</h3>
+            <h3 style='{$pagebreak}'>{$sec_name}</h3>
             <table cellpadding="4" style="margin-bottom:15px;" width="100%" align="left;">
                 <tr><th>&nbsp;</th>{$score_html}{$comment_html}</tr>
 EOF;
@@ -823,7 +827,7 @@ EOF;
                     if($ev_id == 11){ // K.S.Booth
                         $rows[100+$ev_count] = <<<EOF
                         <tr>
-                        <td width="11%"><strong>Additional RMC Comments</strong></td>
+                        <td width="11%"><strong>Additional&nbsp;RMC&nbsp;Comments</strong></td>
                         $score_cell
                         $comment_cell
                         </tr>
@@ -851,7 +855,7 @@ EOF;
                     $result = $blb->load($addr);
                     $data = $blb->getData();
                     if($data != null){
-                        $comment_cell = "<td>$data</td>";
+                        $comment_cell = "<td>".nl2br($data)."</td>";
                         $rows[1000+$isacN] = <<<EOF
                         <tr>
                         <td width="11%"><strong>ISAC{$isacN}</strong></td>
