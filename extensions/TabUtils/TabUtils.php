@@ -262,10 +262,10 @@ class TabUtils {
 
         if($wgUser->isLoggedIn()){
           $new_actions['loi_proposals'] = array('class' => 'phase2 hidden',
-                                   'text' => "Phase2 LOIs",
+                                   'text' => "LOIs",
                                    'href' => "$wgServer$wgScriptPath/index.php/Special:LoiProposals");
           $new_actions['loi_proposals2'] = array('class' => 'phase2 hidden',
-                                   'text' => "Phase2 LOI Responses",
+                                   'text' => "LOI Responses",
                                    'href' => "$wgServer$wgScriptPath/index.php/Special:LoiProposals?revision=2");
           $new_actions['process'] = array('class' => 'phase2 hidden',
                                    'text' => "Process",
