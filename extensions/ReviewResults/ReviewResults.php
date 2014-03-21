@@ -780,7 +780,6 @@ EOF;
 
             $rows = array();
             foreach($evaluators as $eval){
-                $ev_name = $eval->getNameForForms();
                 $ev_id = $eval->getId();
                 if($type == PNI || $type == CNI){
                     $score = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[0], $ni, $ev_id, $curr_year);
@@ -814,6 +813,7 @@ EOF;
                     }
                     $comments = implode("<br />", $coms);
                 }
+                $comments = nl2br($comments);
                 if($ev_id == 11){ // K.S.Booth
                     $score = "";
                 }
@@ -831,7 +831,7 @@ EOF;
                         $ev_count--;
                     }
                     else{
-                        $rows[] = <<<EOF
+                        $rows[$ev_count] = <<<EOF
                         <tr>
                         <td width="11%"><strong>RMC{$ev_count}</strong></td>
                         $score_cell
