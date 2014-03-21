@@ -773,7 +773,7 @@ EOF;
             $comment_html = ($sec_addr[1] != 0) ? "<th align='left'>Comment</th>" : "<th>&nbsp;</th>";
             $html .=<<<EOF
             <h3>{$sec_name}</h3>
-            <table cellpadding="4" style="margin-bottom:15px;" width="100%" align="left;">
+            <table cellpadding="6" style="margin-bottom:15px;" width="100%" align="left;">
                 <tr><th>&nbsp;</th>{$score_html}{$comment_html}</tr>
 EOF;
             $ev_count = 1;
