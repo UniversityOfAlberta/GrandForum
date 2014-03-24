@@ -497,6 +497,24 @@ class cavendishTemplate extends QuickTemplate {
 	        }
 	        
 	        echo "</div>";
+            if(!TESTING && $wgScriptPath != ""){
+                exec("git rev-parse HEAD", $output);
+                $revId = @substr($output[0], 0, 10);
+                exec("git rev-parse --abbrev-ref HEAD", $output);
+                $branch = @$output[1];
+                $revIdFull = "<a title='{$output[0]}' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/commit/{$output[0]}'>$revId</a>";
+                $branchFull = "<a title='$branch' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/tree/$branch'>$branch</a>";
+                
+                if(strstr($wgScriptPath, "staging") !== false){
+                    echo "<div style='position:absolute;top:15px;left:525px;'>
+                            STAGING ($branchFull, $revIdFull)</div>";
+                }
+                else{
+                    echo "<div style='position:absolute;top:15px;left:525px;'>
+                            DEVELOPMENT ($branchFull, $revIdFull)</div>";
+                }
+            }
+            //$wgMessage->addPurpleInfo("Important: The GRAND Forum will be down for maintenance from 1-2AM (MST), Sun, Dec. 15.");
         ?>
     </div>
     <div id="outerHeader" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
@@ -504,28 +522,6 @@ class cavendishTemplate extends QuickTemplate {
             <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') { echo "&gt;"; } else { echo "&lt;";}?>
         </div>
 	    <div id="header">
-	        
-	        <?php
-	        /*
-	        if(!TESTING && $wgScriptPath != ""){
-	            exec("git rev-parse HEAD", $output);
-	            $revId = @substr($output[0], 0, 10);
-	            exec("git rev-parse --abbrev-ref HEAD", $output);
-	            $branch = @$output[1];
-	            $revIdFull = "<a style='color:white;' title='{$output[0]}' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/commit/{$output[0]}'>$revId</a>";
-                $branchFull = "<a style='color:white; title='$branch' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/tree/$branch'>$branch</a>";
-                
-	            if(strstr($wgScriptPath, "staging") !== false){
-	                echo "<div style='font-size:36px;color:#FFFFFF;position:absolute;top:36px;left:350px;'>
-	                        STAGING ($branchFull, $revIdFull)</div>";
-	            }
-	            else{
-	                echo "<div style='font-size:36px;color:#FFFFFF;position:absolute;top:36px;left:350px;'>
-	                        DEVELOPMENT ($branchFull, $revIdFull)</div>";
-	            }
-	        }*/
-	            //$wgMessage->addPurpleInfo("Important: The GRAND Forum will be down for maintenance from 1-2AM (MST), Sun, Dec. 15.");
-	        ?>
 		    <a name="top" id="contentTop"></a>
     <ul class="top-nav">
           <?php 
