@@ -137,29 +137,29 @@ foreach($wgRoles as $role){
     $id += 2;
 }
 
-User::createNew("Admin.User1", array('password' => User::crypt("Admin.Pass1"), 'email' => "admin.user1@behat.com"));
-User::createNew("Manager.User1", array('password' => User::crypt("Manager.Pass1"), 'email' => "manager.user1@behat.com"));
-User::createNew("PL.User1", array('password' => User::crypt("PL.Pass1"), 'email' => "pl.user1@behat.com"));
-User::createNew("TL.User1", array('password' => User::crypt("TL.Pass1"), 'email' => "tl.user1@behat.com"));
-User::createNew("COPL.User1", array('password' => User::crypt("COPL.Pass1"), 'email' => "copl.user1@behat.com"));
-User::createNew("RMC.User1", array('password' => User::crypt("RMC.Pass1"), 'email' => "rmc.user1@behat.com"));
-User::createNew("RMC.User2", array('password' => User::crypt("RMC.Pass2"), 'email' => "rmc.user2@behat.com"));
-User::createNew("CHAMP.User1", array('password' => User::crypt("CHAMP.Pass1"), 'email' => "champ.user1@behat.com"));
-User::createNew("CHAMP.User2", array('password' => User::crypt("CHAMP.Pass2"), 'email' => "champ.user2@behat.com"));
-User::createNew("PNI.User1", array('password' => User::crypt("PNI.Pass1"), 'email' => "pni.user1@behat.com"));
-User::createNew("PNI.User2", array('password' => User::crypt("PNI.Pass2"), 'email' => "pni.user2@behat.com"));
-User::createNew("PNI.User3", array('password' => User::crypt("PNI.Pass3"), 'email' => "pni.user3@behat.com"));
-User::createNew("CNI.User1", array('password' => User::crypt("CNI.Pass1"), 'email' => "cni.user1@behat.com"));
-User::createNew("CNI.User2", array('password' => User::crypt("CNI.Pass2"), 'email' => "cni.user2@behat.com"));
-User::createNew("CNI.User3", array('password' => User::crypt("CNI.Pass3"), 'email' => "cni.user3@behat.com"));
-User::createNew("CNICOPL.User1", array('password' => User::crypt("CNICOPL.Pass1"), 'email' => "cnicopl.user1@behat.com"));
-User::createNew("HQP.User1", array('password' => User::crypt("HQP.Pass1"), 'email' => "hqp.user1@behat.com"));
-User::createNew("HQP.User2", array('password' => User::crypt("HQP.Pass2"), 'email' => "hqp.user2@behat.com"));
-User::createNew("HQP.User3", array('password' => User::crypt("HQP.Pass3"), 'email' => "hqp.user3@behat.com"));
-User::createNew("HQP.User4", array('password' => User::crypt("HQP.Pass4"), 'email' => "hqp.user4@behat.com"));
-User::createNew("Already.Existing", array('password' => User::crypt("Already.Existing1"), 'email' => "already.existing@behat.com"));
-User::createNew("Üšër.WìthÁççénts", array('password' => User::crypt("Üšër WìthÁççénts"), 'email' => "ÜšërWìthÁççénts@behat.com"));
-User::createNew("HQP.ToBeInactivated", array('password' => User::crypt("HQP.ToBeInactivated"), 'email' => "HQP.ToBeInactivated@behat.com"));
+User::createNew("Admin.User1", array('password' => User::crypt("Admin.Pass1"), 'email' => "admin.user1@behat-test.com"));
+User::createNew("Manager.User1", array('password' => User::crypt("Manager.Pass1"), 'email' => "manager.user1@behat-test.com"));
+User::createNew("PL.User1", array('password' => User::crypt("PL.Pass1"), 'email' => "pl.user1@behat-test.com"));
+User::createNew("TL.User1", array('password' => User::crypt("TL.Pass1"), 'email' => "tl.user1@behat-test.com"));
+User::createNew("COPL.User1", array('password' => User::crypt("COPL.Pass1"), 'email' => "copl.user1@behat-test.com"));
+User::createNew("RMC.User1", array('password' => User::crypt("RMC.Pass1"), 'email' => "rmc.user1@behat-test.com"));
+User::createNew("RMC.User2", array('password' => User::crypt("RMC.Pass2"), 'email' => "rmc.user2@behat-test.com"));
+User::createNew("CHAMP.User1", array('password' => User::crypt("CHAMP.Pass1"), 'email' => "champ.user1@behat-test.com"));
+User::createNew("CHAMP.User2", array('password' => User::crypt("CHAMP.Pass2"), 'email' => "champ.user2@behat-test.com"));
+User::createNew("PNI.User1", array('password' => User::crypt("PNI.Pass1"), 'email' => "pni.user1@behat-test.com"));
+User::createNew("PNI.User2", array('password' => User::crypt("PNI.Pass2"), 'email' => "pni.user2@behat-test.com"));
+User::createNew("PNI.User3", array('password' => User::crypt("PNI.Pass3"), 'email' => "pni.user3@behat-test.com"));
+User::createNew("CNI.User1", array('password' => User::crypt("CNI.Pass1"), 'email' => "cni.user1@behat-test.com"));
+User::createNew("CNI.User2", array('password' => User::crypt("CNI.Pass2"), 'email' => "cni.user2@behat-test.com"));
+User::createNew("CNI.User3", array('password' => User::crypt("CNI.Pass3"), 'email' => "cni.user3@behat-test.com"));
+User::createNew("CNICOPL.User1", array('password' => User::crypt("CNICOPL.Pass1"), 'email' => "cnicopl.user1@behat-test.com"));
+User::createNew("HQP.User1", array('password' => User::crypt("HQP.Pass1"), 'email' => "hqp.user1@behat-test.com"));
+User::createNew("HQP.User2", array('password' => User::crypt("HQP.Pass2"), 'email' => "hqp.user2@behat-test.com"));
+User::createNew("HQP.User3", array('password' => User::crypt("HQP.Pass3"), 'email' => "hqp.user3@behat-test.com"));
+User::createNew("HQP.User4", array('password' => User::crypt("HQP.Pass4"), 'email' => "hqp.user4@behat-test.com"));
+User::createNew("Already.Existing", array('password' => User::crypt("Already.Existing1"), 'email' => "already.existing@behat-test.com"));
+User::createNew("Üšër.WìthÁççénts", array('password' => User::crypt("Üšër WìthÁççénts"), 'email' => "ÜšërWìthÁççénts@behat-test.com"));
+User::createNew("HQP.ToBeInactivated", array('password' => User::crypt("HQP.ToBeInactivated"), 'email' => "HQP.ToBeInactivated@behat-test.com"));
 
 DBFunctions::insert('grand_roles',
                     array('user_id' => 1,
