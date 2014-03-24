@@ -78,13 +78,13 @@ class LoiProposals extends SpecialPage {
 			echo $html;
 			exit;
 		}
-		else if(isset($_GET['ajaxtab']) && $_GET['ajaxtab']=="5"){
+		/*else if(isset($_GET['ajaxtab']) && $_GET['ajaxtab']=="5"){
 			$wgOut->disable();
             ob_clean();
 			$html = LoiProposals::conflictsTable($revision);
 			echo $html;
 			exit;
-		}
+		}*/
 		else if(isset($_GET['ajaxtab']) && $_GET['ajaxtab']=="6"){
 			$wgOut->disable();
             ob_clean();
@@ -184,7 +184,7 @@ class LoiProposals extends SpecialPage {
 	            <li><a href='#lois_res'>Responses</a></li>
 	            <li><a href='#faq'>FAQ</a></li>
 	            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=4'>CV</a></li>
-	            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=5'>Conflicts/Preferences</a></li>
+	            <!--<li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=5'>Conflicts/Preferences</a></li>-->
 	            <li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:LoiProposals?ajaxtab=6'>Report Stats</a></li>";
 	        }
 			else if($me->isRoleAtLeast(HQP)){
@@ -991,8 +991,8 @@ EOF;
 
 		$query = "SELECT l.id, l.name, l.full_name, lc.*
 				  FROM grand_loi l 
-				  LEFT JOIN grand_loi_conflicts lc ON(l.id = lc.loi_id AND lc.reviewer_id={$my_id}) 
-				  WHERE l.year=2013 AND l.revision={$revision}";
+				  LEFT JOIN grand_eval_conflicts lc ON(l.id = lc.sub_id AND lc.eval_id={$my_id}) 
+				  WHERE l.year=2013 AND l.revision={$revision} AND lc.type='LOI'";
 		
 		$data = DBFunctions::execSQL($query);
 		foreach($data as $row){

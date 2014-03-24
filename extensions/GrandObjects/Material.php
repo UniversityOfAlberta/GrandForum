@@ -212,10 +212,10 @@ class Material {
             $html .= "<embed src='$url' autostart='false'></embed>";
         }
         else if($this->getType() == "youtube"){
-            $html .= "<iframe width='853' height='480' src='http://www.youtube.com/embed/{$this->getMediaLocal()}' frameborder='0' allowfullscreen></iframe>";
+            $html .= "<iframe width='853' height='480' src='https://www.youtube.com/embed/{$this->getMediaLocal()}' frameborder='0' allowfullscreen></iframe>";
         }
         else if($this->getType() == "vimeo"){
-            $html .= "<iframe src='http://player.vimeo.com/video/{$this->getMediaLocal()}' width='853' height='480' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
+            $html .= "<iframe src='https://player.vimeo.com/video/{$this->getMediaLocal()}' width='853' height='480' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
         }
         else {
             if($this->getMediaLocal() != ""){

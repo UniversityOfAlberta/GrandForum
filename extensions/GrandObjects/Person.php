@@ -1445,6 +1445,15 @@ class Person extends BackboneModel {
         return $roles;
     }
     
+    // Returns the first role that this Person had, null if this Person has never had any Roles
+    function getFirstRole(){
+        $roles = $this->getRoles(true);
+        if(count($roles) > 0){
+            return $roles[0];
+        }
+        return null;
+    }
+    
     // Returns the last role that this Person had before they were Inactivated, null if this Person has never had any Roles
     function getLastRole(){
         $roles = $this->getRoles(true);

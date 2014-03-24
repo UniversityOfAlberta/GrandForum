@@ -60,7 +60,8 @@ class TabUtils {
             $('div#submenu ul.actions li.actions').css('float', 'right');
             
             createDropDown('products', 'Products', 125);
-            createDropDown('people', 'People', 75);";
+            createDropDown('people', 'People', 75);
+            createDropDown('phase2', 'Phase2', 125);";
         foreach($content_actions as $key => $content){
             if(isset($content['dropdown'])){
                 $dropdownScript .= "createDropDown('{$content['dropdown']['name']}', '{$content['dropdown']['title']}', {$content['dropdown']['width']});";
@@ -192,12 +193,15 @@ class TabUtils {
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_Conferences");
 
         if($wgUser->isLoggedIn()){
-          $new_actions['loi_proposals'] = array('class' => false,
-                                   'text' => "Phase2 LOIs",
+          $new_actions['loi_proposals'] = array('class' => 'phase2 hidden',
+                                   'text' => "LOIs",
                                    'href' => "$wgServer$wgScriptPath/index.php/Special:LoiProposals");
-          $new_actions['loi_proposals2'] = array('class' => false,
-                                   'text' => "Phase2 LOI Responses",
+          $new_actions['loi_proposals2'] = array('class' => 'phase2 hidden',
+                                   'text' => "LOI Responses",
                                    'href' => "$wgServer$wgScriptPath/index.php/Special:LoiProposals?revision=2");
+          $new_actions['process'] = array('class' => 'phase2 hidden',
+                                   'text' => "Process",
+                                   'href' => "$wgServer$wgScriptPath/index.php/GRAND:Process");
         }
         $project = Project::newFromHistoricName($wgTitle->getNSText());
         if((Project::newFromName($wgTitle->getNSText()) != null || $wgTitle->getText() == "Projects") && !($me->isMemberOf($project) || 
@@ -228,11 +232,8 @@ class TabUtils {
         else if($wgTitle->getText() == "ALL RMC" || ($wgTitle->getNSText() == RMC && !($me->isRole(RMC) && $wgTitle->getText() == $me->getName()))){
             $new_actions[RMC]['class'] = 'people selected hidden';
         }
-        else if($wgTitle->getText() == "LoiProposals" && isset($_GET['revision']) && $_GET['revision']==2){
-            $new_actions['loi_proposals2']['class'] = 'selected';
-        }
-        else if($wgTitle->getText() == "LoiProposals"){
-            $new_actions['loi_proposals']['class'] = 'selected';
+        else if($wgTitle->getText() == "LoiProposals" || ($wgTitle->getNSText() == "GRAND" && $wgTitle->getText() == "Process")){
+            $new_actions['loi_proposals']['class'] = 'phase2 hidden selected';
         }
         else if($wgTitle->getNSText() == INACTIVE && !($me->isRole(INACTIVE) && $wgTitle->getText() == $me->getName())){
             $person = Person::newFromName($wgTitle->getText());

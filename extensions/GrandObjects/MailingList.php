@@ -122,7 +122,7 @@ class MailingList {
         }
         $listname = MailingList::listName($project);
         $email = $person->getEmail();
-		$command =  "/usr/lib/mailman/bin/remove_members -n -N $listname $email";
+		$command =  "/usr/lib/mailman/bin/remove_members -n -N $listname \"$email\"";
 		exec($command, $output);
 		self::$membershipCache = array();
 		if(self::isSubscribed($project, $person)){
