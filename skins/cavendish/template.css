@@ -73,10 +73,6 @@
 	    text-decoration: none;
 	}
 	
-	#topheader a:hover {
-	    color: #8C529D;
-	}
-	
 	/* MAIN MENU */
 	#outerHeader {
 	    position: absolute;
@@ -127,19 +123,11 @@
 	#header ul a:hover {
 	    height: 42px;
 	    line-height: 40px;
-	    color: #8C529D;
-	    border-width: 3px 0 0 0;
-	    border-style: solid;
-	    border-color: #8C529D;
 	}
 	
 	#header li.selected a {
 	    height: 42px;
 	    line-height: 40px;
-		color:#8C529D;
-		border-width: 3px 0 0 0;
-	    border-style: solid;
-	    border-color: #8C529D;
 	}
 	
 	/* SUB MENU */
@@ -151,23 +139,18 @@
 		color: #555555;
 		text-decoration: none;
 		line-height:25px;
+		height: 25px;
 		white-space: nowrap;
 	}
 	
 	#submenu ul a:hover {
-	    color: #8C529D;
-	    border-width: 3px 0 0 0;
-	    border-style: solid;
-	    border-color: #8C529D;
 	    line-height:19px;
+	    height: 22px;
 	}
 	
 	#submenu ul li.selected a {
-		color:#8C529D;
-		border-width: 3px 0 0 0;
-	    border-style: solid;
-	    border-color: #8C529D;
 	    line-height:19px;
+	    height: 22px;
 	}
 	
 	#submenu ul.dropdown div.actions a {
@@ -283,7 +266,6 @@
 		display: block;
 		padding: 6px 10px;
 		font-weight: bold;
-		color: #8C529D;
 	}
 
 	#nav li span#configParent, #nav li span #configuration {
@@ -303,7 +285,6 @@
 	}
 
 	#nav li a:hover {
-		background: #8C529D;
 		color: #FFFFFF;
 	}
 	

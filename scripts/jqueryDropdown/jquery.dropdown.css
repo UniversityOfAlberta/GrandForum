@@ -47,7 +47,6 @@ li.action {
 }
 
 li.action a {
-    color: #555 !important;
     font-size:12px !important;
     font-weight: bold;
     line-height:27px !important;
@@ -55,8 +54,8 @@ li.action a {
     padding:0 10px 0 10px !important;
 }
 
-li.action:hover {
-    background: #8C529D !important;
+li.action a {
+    display: inline !important;
 }
 
 li.action:hover a {

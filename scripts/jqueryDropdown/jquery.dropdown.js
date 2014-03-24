@@ -31,6 +31,8 @@
     $(lis).removeClass('selected');
     $(lis).addClass('action');
     $(lis).css('display', 'block');
+    $('a', $(lis)).removeClass('highlights-tab');
+    $(lis).addClass('highlights-background-hover');
     
     $(this).append("<div class='actions' />");
     var divActions = $('div.actions' ,$(this));
@@ -45,6 +47,7 @@
     var that = this;
     
     var unHoverTimeout = null;
+    $('li.actions > a', $(this)).addClass('highlights-tab');
     $('li.actions', $(this)).mouseenter(function(e){
         if(unHoverTimeout != null){
             clearTimeout(unHoverTimeout);

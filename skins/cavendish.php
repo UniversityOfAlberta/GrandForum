@@ -229,6 +229,7 @@ class cavendishTemplate extends QuickTemplate {
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jqueryDropdown/jquery.dropdown.css" rel="Stylesheet" />
 		<script type="text/javascript" src="<?php $this->text('stylepath' ) ?>/common/wikibits.js"></script>
 		<link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/colorbox/colorbox.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/cavendish/highlights.css.php" />
 		<script type='text/javascript'>
 		
 		    me = new Person(
@@ -451,21 +452,21 @@ class cavendishTemplate extends QuickTemplate {
             echo "<div class='search'><div id='globalSearch'></div></div>";
             echo "<div class='login'>";
             echo "<div style='display:none;' id='share_template'>
-                    <a class='changeImg' name='glyphicons_social_35_flickr' href='http://www.flickr.com/photos/grand_nce' target='_blank'>
+                    <a class='changeImg highlights-text-hover' name='glyphicons_social_35_flickr' href='http://www.flickr.com/photos/grand_nce' target='_blank'>
 	                    <img src='$wgServer$wgScriptPath/skins/icons/gray_dark/glyphicons_social_35_flickr.png' />&nbsp;Flickr
 	                </a>
-	                <a class='changeImg' name='glyphicons_social_31_twitter' href='http://twitter.com/GRAND_NCE' target='_blank'>
+	                <a class='changeImg highlights-text-hover' name='glyphicons_social_31_twitter' href='http://twitter.com/GRAND_NCE' target='_blank'>
 	                    <img src='$wgServer$wgScriptPath/skins/icons/gray_dark/glyphicons_social_31_twitter.png' />&nbsp;Twitter
 	                </a>
-	                <a class='changeImg' name='glyphicons_social_17_linked_in' href='http://www.linkedin.com/groups/GRAND-NCE-4004842' target='_blank'>
+	                <a class='changeImg highlights-text-hover' name='glyphicons_social_17_linked_in' href='http://www.linkedin.com/groups/GRAND-NCE-4004842' target='_blank'>
 	                    <img src='$wgServer$wgScriptPath/skins/icons/gray_dark/glyphicons_social_17_linked_in.png' />&nbsp;LinkedIn
 	                </a>
-	                <a class='changeImg' name='glyphicons_social_22_youtube' href='http://www.youtube.com/user/grandnce' target='_blank'>
+	                <a class='changeImg highlights-text-hover' name='glyphicons_social_22_youtube' href='http://www.youtube.com/user/grandnce' target='_blank'>
 	                    <img src='$wgServer$wgScriptPath/skins/icons/gray_dark/glyphicons_social_22_youtube.png' />&nbsp;YouTube
 	                </a>
 	        </div>";
-            echo "<a name='question_mark_8x16' class='menuTooltip changeImg' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/icons/gray_dark/question_mark_8x16.png' /></a>";
-	        echo "<a id='share' style='cursor:pointer;' name='share_16x16' class='menuTooltipHTML changeImg'><img src='$wgServer$wgScriptPath/skins/icons/gray_dark/share_16x16.png' />&nbsp;▼</a>";
+            echo "<a name='question_mark_8x16' class='menuTooltip changeImg highlights-text-hover' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/icons/gray_dark/question_mark_8x16.png' /></a>";
+	        echo "<a id='share' style='cursor:pointer;' name='share_16x16' class='menuTooltipHTML changeImg highlights-text-hover'><img src='$wgServer$wgScriptPath/skins/icons/gray_dark/share_16x16.png' />&nbsp;▼</a>";
 	        if($wgUser->isLoggedIn()){
 		        $p = Person::newFromId($wgUser->getId());
 		        
@@ -474,9 +475,9 @@ class cavendishTemplate extends QuickTemplate {
 		            $notificationText = " (".count($notifications).")";
 		            $smallNotificationText = "*";
 		        }
-		        echo "<a name='mail_16x12' class='menuTooltip changeImg' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/skins/icons/gray_dark/mail_16x12.png' />$smallNotificationText</a>";
-		        echo "<a class='menuTooltip' title='Profile' href='{$p->getUrl()}'>{$p->getNameForForms()}</a>";
-		        echo "<a class='menuTooltip' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
+		        echo "<a name='mail_16x12' class='menuTooltip changeImg highlights-text-hover' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/skins/icons/gray_dark/mail_16x12.png' />$smallNotificationText</a>";
+		        echo "<a class='menuTooltip highlights-text-hover' title='Profile' href='{$p->getUrl()}'>{$p->getNameForForms()}</a>";
+		        echo "<a class='menuTooltip highlights-text-hover' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
 		        if(!$wgImpersonating){
 		            $logout = $this->data['personal_urls']['logout'];
 	                $getStr = "";
@@ -492,7 +493,7 @@ class cavendishTemplate extends QuickTemplate {
                         }
                     }
 	                $logout['href'] .= urlencode($getStr);
-	                echo "<a name='arrow_right_16x16' class='menuTooltip changeImg' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/skins/icons/gray_dark/arrow_right_16x16.png' /></a>";
+	                echo "<a name='arrow_right_16x16' class='menuTooltip changeImg highlights-text-hover' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/skins/icons/gray_dark/arrow_right_16x16.png' /></a>";
 	            }
 	        }
 	        
@@ -502,8 +503,8 @@ class cavendishTemplate extends QuickTemplate {
                 $revId = @substr($output[0], 0, 10);
                 exec("git rev-parse --abbrev-ref HEAD", $output);
                 $branch = @$output[1];
-                $revIdFull = "<a title='{$output[0]}' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/commit/{$output[0]}'>$revId</a>";
-                $branchFull = "<a title='$branch' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/tree/$branch'>$branch</a>";
+                $revIdFull = "<a class='highlights-text-hover' title='{$output[0]}' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/commit/{$output[0]}'>$revId</a>";
+                $branchFull = "<a class='highlights-text-hover' title='$branch' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/tree/$branch'>$branch</a>";
                 
                 if(strstr($wgScriptPath, "staging") !== false){
                     echo "<div style='position:absolute;top:15px;left:525px;'>
@@ -539,7 +540,7 @@ class cavendishTemplate extends QuickTemplate {
 		            echo "selected";
 		        } ?>">
 				    <span class="top-nav-left">&nbsp;</span>
-				    <a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Main_Page"><?php echo $config->getValue("networkName"); ?></a>	
+				    <a class="top-nav-mid highlights-tab" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Main_Page"><?php echo $config->getValue("networkName"); ?></a>	
 				    <span class="top-nav-right">&nbsp;</span>
 			    </li>
 			    <?php global $wgImpersonating;
@@ -570,7 +571,7 @@ class cavendishTemplate extends QuickTemplate {
 			
 			    <li class="top-nav-element <?php echo $selected.' '.$tabLeft; ?>">
 				    <span class="top-nav-left">&nbsp;</span>
-				    <a id="lnk-<?php echo $key; ?>" class="top-nav-mid" href="<?php
+				    <a id="lnk-<?php echo $key; ?>" class="top-nav-mid highlights-tab" href="<?php
 					    echo htmlspecialchars($item['href']) ?>"<?php
 					    if(!empty($item['class'])) { ?> class="<?php
 						       echo htmlspecialchars($item['class']) ?>"<?php } ?>><?php
@@ -596,7 +597,7 @@ class cavendishTemplate extends QuickTemplate {
 				        if($tab['href'] != ""){
 				            echo "<li class='top-nav-element {$tab['selected']}'>\n";
                             echo "    <span class='top-nav-left'>&nbsp;</span>\n";
-                            echo "    <a id='{$tab['id']}' class='top-nav-mid' href='{$tab['href']}' class='new'>{$tab['text']}</a>\n";
+                            echo "    <a id='{$tab['id']}' class='top-nav-mid highlights-tab' href='{$tab['href']}' class='new'>{$tab['text']}</a>\n";
                             echo "    <span class='top-nav-right'>&nbsp;</span>\n";
                             echo "</li>";
                         }
@@ -616,7 +617,7 @@ class cavendishTemplate extends QuickTemplate {
 		       	 foreach($tabs as $tab){
 		       	    if($tab['selected'] == "selected"){
 		       	        foreach($tab['subtabs'] as $subtab){
-		           	        echo "<li class='{$subtab['selected']}'><a href='".htmlspecialchars($subtab['href'])."'>".htmlspecialchars($subtab['text'])."</a></li>";
+		           	        echo "<li class='{$subtab['selected']}'><a class='highlights-tab' href='".htmlspecialchars($subtab['href'])."'>".htmlspecialchars($subtab['text'])."</a></li>";
 		           	    }
 		           	    $this->data['content_actions'] = array();
 		           	    break;
@@ -625,7 +626,7 @@ class cavendishTemplate extends QuickTemplate {
 		       	 foreach($this->data['content_actions'] as $key => $action) {
 		           ?><li
 		           <?php if($action['class']) { ?>class="<?php echo htmlspecialchars($action['class']) ?>"<?php } ?>
-		           ><a href="<?php echo htmlspecialchars($action['href']) ?>"><?php
+		           ><a class='highlights-tab' href="<?php echo htmlspecialchars($action['href']) ?>"><?php
 		           echo htmlspecialchars($action['text']) ?></a></li><?php
 		         } ?>
 		    </ul>
@@ -713,42 +714,42 @@ class cavendishTemplate extends QuickTemplate {
 		if($wgUser->isLoggedIn()){
 		    $me = Person::newFromId($wgUser->getId());
 		    if($me->isRoleAtLeast(CNI)){
-		        echo "<span>People</span>
+		        echo "<span class='highlights-text'>People</span>
 			    <ul class='pBody'>";
 		        //echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:UserSearch'>Find Member</a></li>";
-		        echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:AddMember'>Add Member</a></li>";
-		        echo "<li id='userEditRequest'><a href='{$wgScriptPath}/index.php/Special:EditMember'>Edit Member</a></li>";
-		        echo "<li id='userEditRelation'><a href='{$wgScriptPath}/index.php/Special:EditRelations'>Edit Relations</a></li>";
+		        echo "<li id='userRequest'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddMember'>Add Member</a></li>";
+		        echo "<li id='userEditRequest'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:EditMember'>Edit Member</a></li>";
+		        echo "<li id='userEditRelation'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:EditRelations'>Edit Relations</a></li>";
 		        echo "</ul>";
 		    }
-		    echo "<span><hr />Products</span>
+		    echo "<span class='highlights-text'><hr />Products</span>
 				<ul class='pBody'>";
-		    echo "<li id='addPublication'><a href='{$wgScriptPath}/index.php/Special:AddPublicationPage'>Add/Edit Publication</a></li>";
-		    echo "<li id='addArtifact'><a href='{$wgScriptPath}/index.php/Special:AddArtifactPage'>Add/Edit Artifact</a></li>";
-		    echo "<li id='addPresentation'><a href='{$wgScriptPath}/index.php/Special:AddPresentationPage'>Add/Edit Presentation</a></li>";
-			echo "<li id='addActivity'><a href='{$wgScriptPath}/index.php/Special:AddActivityPage'>Add/Edit Activity</a></li>";
-			echo "<li id='addPress'><a href='{$wgScriptPath}/index.php/Special:AddPressPage'>Add/Edit Press</a></li>";
-			echo "<li id='addAward'><a href='{$wgScriptPath}/index.php/Special:AddAwardPage'>Add/Edit Award</a></li>";
+		    echo "<li id='addPublication'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddPublicationPage'>Add/Edit Publication</a></li>";
+		    echo "<li id='addArtifact'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddArtifactPage'>Add/Edit Artifact</a></li>";
+		    echo "<li id='addPresentation'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddPresentationPage'>Add/Edit Presentation</a></li>";
+			echo "<li id='addActivity'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddActivityPage'>Add/Edit Activity</a></li>";
+			echo "<li id='addPress'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddPressPage'>Add/Edit Press</a></li>";
+			echo "<li id='addAward'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddAwardPage'>Add/Edit Award</a></li>";
 			if($me->isRoleAtLeast(CNI)){
-			    echo "<li id='addContribution'><a href='{$wgScriptPath}/index.php/Special:AddContributionPage'>Add/Edit Contribution</a></li>";
+			    echo "<li id='addContribution'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddContributionPage'>Add/Edit Contribution</a></li>";
 			}
-			echo "<li id='addMultimedia'><a href='{$wgScriptPath}/index.php/Special:AddMultimediaStoryPage'>Add/Edit Multimedia Story</a></li>";
+			echo "<li id='addMultimedia'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddMultimediaStoryPage'>Add/Edit Multimedia Story</a></li>";
 			echo "</ul>";
 			echo "<ul class='pBody'>";
-			echo "<li id='addMultimedia'><a href='{$wgScriptPath}/index.php/Special:MyDuplicateProducts'>Duplicate Management</a></li>";
-			//echo "<li id='sanityChecks'><a href='{$wgScriptPath}/index.php/Special:SanityChecks'>Data Quality Issues</a></li>";
+			echo "<li id='addMultimedia'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:MyDuplicateProducts'>Duplicate Management</a></li>";
+			//echo "<li id='sanityChecks'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:SanityChecks'>Data Quality Issues</a></li>";
 			echo "</ul>";
-		    echo "<span><hr />Other</span>
+		    echo "<span class='highlights-text'><hr />Other</span>
 				<ul class='pBody'>";
-			echo "<li id='grandinstructions'><a href='{$wgScriptPath}/index.php/GRAND:Instructions'>Instructions</a></li>";
-			//echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php?action=getNews'>Recent News</a></li>";
-			//echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php/Special:Solr'>Full Text Search</a></li>";
-			echo "<li id='academiamap'><a href='{$wgScriptPath}/index.php/Special:AcademiaMap'>Academia Map</a></li>";
-			echo "<li id='othertools'><a href='{$wgScriptPath}/index.php/Special:SpecialPages'>Other Tools</a></li>";
+			echo "<li id='grandinstructions'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/GRAND:Instructions'>Instructions</a></li>";
+			//echo "<li id='recentNews'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php?action=getNews'>Recent News</a></li>";
+			//echo "<li id='recentNews'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:Solr'>Full Text Search</a></li>";
+			echo "<li id='academiamap'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AcademiaMap'>Academia Map</a></li>";
+			echo "<li id='othertools'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:SpecialPages'>Other Tools</a></li>";
 			if($me->isRoleAtLeast(HQP)){
-				echo "<li id='recentNews'><a href='{$wgScriptPath}/index.php/Special:LoiProposals'>LOI Proposals</a></li>";
+				echo "<li id='recentNews'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:LoiProposals'>LOI Proposals</a></li>";
 			}
-			echo "<li id='sanityChecks'><a href='{$wgScriptPath}/index.php/Special:AdvancedSearch'>Search for Experts</a></li>";
+			echo "<li id='sanityChecks'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AdvancedSearch'>Search for Experts</a></li>";
 		}
 		else {
 		    global $wgSiteName, $wgTitle;

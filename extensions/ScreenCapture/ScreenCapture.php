@@ -24,7 +24,7 @@ class ScreenCapture {
                        ($.browser.mozilla && browserVersion >= 3.5) ||
                        ($.browser.opera && browserVersion >= 12) ||
                        ($.browser.webkit)){
-                        $('#nav .pBody').last().append('<li><a href=\"{$wgServer}{$wgScriptPath}/index.php/Special:MyScreenCaptures\">My Screen Captures</a></li>');
+                        $('#nav .pBody').last().append('<li><a class=\"highlights-background-hover\" href=\"{$wgServer}{$wgScriptPath}/index.php/Special:MyScreenCaptures\">My Screen Captures</a></li>');
                     }
                     $('#bodyContent').record({
                         convertSVG: true,

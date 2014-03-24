@@ -466,14 +466,6 @@ input.dark {
 	padding:3px 3px;
 }
 
-input:focus {
-    border: 1px solid #8C529D !important;
-	box-shadow: inset 0 0 3px #8C529D;
-    -moz-box-shadow: inset 0 0 3px #8C529D;
-    -webkit-box-shadow: inset 0 0 3px #8C529D;
-    outline:none;
-}
-
 select {
 	border: 1px solid #AAA !important;
 	background: #ffffff;
@@ -542,7 +534,6 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:ho
     font-family: Arial, Verdana, sans-serif;
     font-size:13px;
     line-height:15px;
-    color:#8C529D !important;
     display:inline-block;
     border-color:#888888;
     font-weight: bold;
@@ -564,9 +555,9 @@ input[type=button]:active, input[type=submit]:active, .button:active, .ui-button
     font-family: Arial, Verdana, sans-serif;
     font-weight: bold;
     font-size:13px;
-    color:#8C529D !important;
     cursor:pointer;
     white-space:nowrap;
+    outline: none;
 }
 
 textarea {
@@ -590,14 +581,6 @@ textarea {
 textarea[disabled] {
     background: #cccccc !important;
     color: #777777 !important;
-}
-
-textarea:focus {
-    border: 1px solid #8C529D !important;
-	box-shadow: inset 0 0 5px #8C529D;
-    -moz-box-shadow: inset 0 0 5px #8C529D;
-    -webkit-box-shadow: inset 0 0 5px #8C529D;
-    outline:none;
 }
 
 input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabled], button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:active {
@@ -844,17 +827,12 @@ input::-moz-focus-inner{
 .ui-widget-header{
 	background: none;
 	border: none;
-	border-bottom: 1px solid #AAAAAA;
+	border-bottom: 1px solid #d3d3d3;
 	border-bottom-left-radius: 0px;
 	border-bottom-right-radius: 0px;
 }
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-	background: #96789f; /* for non-css3 browsers */
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#96789f', endColorstr='#8b6e93'); /* for IE */
-	background: -ms-linear-gradient(top, #96789f 0%, #8b6e93 100%);
-	background: -webkit-gradient(linear, left top, left bottom, from(#96789f), to(#8b6e93)); /* for webkit browsers */
-	background: -moz-linear-gradient(top,  #96789f,  #8b6e93); /* for firefox 3.6+ */
-	background: -o-linear-gradient(top, #96789f, #8b6e93);
+	background: #EEE; /* for non-css3 browsers */
 }
 
 .ui-dialog {
@@ -870,46 +848,26 @@ input::-moz-focus-inner{
 
 .ui-datepicker-header {
     background: #999; /* for non-css3 browsers */
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#96789f', endColorstr='#8b6e93'); /* for IE */
-	background: -ms-linear-gradient(top, #96789f 0%, #8b6e93 100%);
-	background: -webkit-gradient(linear, left top, left bottom, from(#96789f), to(#8b6e93)); /* for webkit browsers */
-	background: -moz-linear-gradient(top, #96789f, #8b6e93); /* for firefox 3.6+ */
-	background: -o-linear-gradient(top, #96789f, #8b6e93);
-}
-
-.ui-datepicker {
-    border: 1px solid #8b6e93 !important;
 }
 
 .ui-tabs .ui-tabs-nav li a {
-	color: #FFFFFF;
+	color: #555555;
 	font-weight: bold;				
 }
+
 .ui-tabs .ui-tabs-nav li{
-	border-color: #96789F;
 	margin: 0 2px 0 2px;
 }
+
 .ui-tabs .ui-tabs-nav li:hover{
-	background: #A385AD; /* for non-css3 browsers */
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#A385AD', endColorstr='#96789f'); /* for IE */
-	background: -ms-linear-gradient(top, #A385AD 0%, #96789f 100%);
-	background: -webkit-gradient(linear, left top, left bottom, from(#A385AD), to(#96789f)); /* for webkit browsers */
-	background: -moz-linear-gradient(top, #A385AD, #96789f); /* for firefox 3.6+ */
-	background: -o-linear-gradient(top, #A385AD, #96789f); 
+	border-color: #d3d3d3;
 }
+
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected {
 	margin: 0 2px 0 2px;
 	padding-bottom: 1px;
 	background: #FFFFFF; /* for non-css3 browsers */
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F3EBF5', endColorstr='#FFFFFF'); /* for IE */
-	background: -ms-linear-gradient(top, #F3EBF5 0%, #FFFFFF 100%);
-	background: -webkit-gradient(linear, left top, left bottom, from(#F3EBF5), to(#FFFFFF)); /* for webkit browsers */
-	background: -moz-linear-gradient(top, #F3EBF5, #FFFFFF); /* for firefox 3.6+ */
-	background: -o-linear-gradient(top, #F3EBF5, #FFFFFF); 
 	border-color: #CCCCCC;
-}
-.ui-tabs .ui-tabs-nav li.ui-tabs-selected a{
-	color: #8C529D;
 }
 
 div#person .ui-tabs-panel {
@@ -926,14 +884,12 @@ div#person .ui-tabs-panel {
 
 .ui-progressbar .ui-progressbar-value {
     border: 1px solid #aaaaaa;
-    background: #a56ec4 url(../smoothness/images/pbar-done.gif);
     height: 22px; 
     color: #222222; 
     font-weight: bold;
     padding-top:1px;
     color: #FFFFFF;
-    text-shadow: #000000 1px 1px 2px;
-    
+    text-shadow: #000000 1px 1px 2px; 
 }
 
 .ui-progressbar {
@@ -1205,7 +1161,6 @@ a.error_box_close {
 }
 
 .purpleInfo a, .purpleInfo a:visited, .inlinePurpleInfo a, .inlinePurpleInfo a:visited {
-    color: #8C529D;
     font-weight: bold;
 }
 
@@ -1288,8 +1243,7 @@ input.other_option:focus {
 }
 
 .small_card:hover, .small_card_hover {
-    background: #8C529D !important;
-    color: #ffffff !important;
+    
 }
 
 .card_photo {
@@ -1509,9 +1463,4 @@ input.other_option:focus {
     text-decoration: none;
     display: block;
     padding: 2px 0 2px 0;
-}
-
-.qtip-light .qtip-content a:hover {
-    color: #8C529D;
-    text-decoration: none;
 }
