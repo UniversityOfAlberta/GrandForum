@@ -103,7 +103,8 @@ class APIRequest{
 	function doAction($api, $param=false){
 	    global $apiPaths;
 	    $api = $api."API";
-	    return $api::doAction($param);
+	    $obj = new $api();
+	    return $obj->doAction($param);
 	}
 	
 	function addAction($category, $action, $apiObj){
