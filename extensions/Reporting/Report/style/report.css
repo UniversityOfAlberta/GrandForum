@@ -78,22 +78,16 @@
 }
 
 #reportTabs {
-    background: #F3EBF5;
+    background: #F8F8F8;
     padding-bottom:15px;
     min-width:200px;
     padding-top:15px;
     padding-bottom:15px;
-    border-width: 1px 1px 0 0;
+    border-width: 0 1px 0 0;
     border-style: solid;
     border-color: #AAAAAA;
-    -moz-top-right-border-radius:5px;
-    -moz-bottom-left-border-radius:5px;
-    -webkit-top-right-border-radius:5px;
-    -webkit-bottom-left-border-radius:5px;
-    border-top-right-radius:5px;
-    border-bottom-left-radius:5px;
     position:absolute;
-    top:10px;
+    top:0;
     bottom:0;
     display:block;
     width:200px;
@@ -274,7 +268,6 @@
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8', endColorstr='#E8E8E8', GradientType=1);
     background: -ms-linear-gradient(top, #f8f8f8 0%, #E8E8E8 100%);
     background-color:#f8f8f8;
-    color:#8C529D !important;
     text-decoration:none;
     font-weight: bold;
     text-shadow:1px 1px 0px #FFFFFF;

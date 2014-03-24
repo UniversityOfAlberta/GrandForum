@@ -247,7 +247,6 @@ EOF;
             <style>
             span.supervisor_lbl{
                 text-align: center;
-                color: #8C529D;
                 bottom: 0px;
                 left: 7px;
                 display: block;
@@ -256,7 +255,6 @@ EOF;
             }
             span.percent_lbl{
                 text-align: center;
-                color: #8C529D;
                 top: 3px;
                 right: 25px;
                 display: block;
@@ -266,9 +264,9 @@ EOF;
             </style>
             <table><tr>
             <td style='position:relative; padding:0;'>
-                <span class='percent_lbl'>{$perc}</span>
+                <span class='percent_lbl highlights-text'>{$perc}</span>
                 <img style='vertical-align:bottom;' height='66px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/{$button}' />
-                <span class='supervisor_lbl'>Supervisor</span>
+                <span class='supervisor_lbl highlights-text'>Supervisor</span>
             </td>
             <td style='padding-left:15px;'><h3>{$ethical_hqp} of my {$total_hqp} students have completed the TCPS2 Tutorial.</h3></td>
             <tr></table>
