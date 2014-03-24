@@ -441,13 +441,13 @@ class cavendishTemplate extends QuickTemplate {
 <div id="container">
 	<div id="topheader">
         <?php
-            global $wgSitename, $notifications, $notificationFunctions;
+            global $wgSitename, $notifications, $notificationFunctions, $config;
             if(count($notifications) == 0){
                 foreach($notificationFunctions as $function){
                     call_user_func($function);
                 }
             }
-            echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/skins/logo_small.png' /></a></div>";
+            echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/{$config->getValue('logo')}' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
             echo "<div class='login'>";
             echo "<div style='display:none;' id='share_template'>
@@ -525,10 +525,10 @@ class cavendishTemplate extends QuickTemplate {
 		    <a name="top" id="contentTop"></a>
     <ul class="top-nav">
           <?php 
-				      global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage;
+				      global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage, $config;
                     $GLOBALS['tabs'] = array();
                     
-                    $GLOBALS['tabs']['Main'] = TabUtils::createTab("GRAND");
+                    $GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"));
                     $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
                     
 			        wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
@@ -539,7 +539,7 @@ class cavendishTemplate extends QuickTemplate {
 		            echo "selected";
 		        } ?>">
 				    <span class="top-nav-left">&nbsp;</span>
-				    <a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Main_Page">GRAND</a>	
+				    <a class="top-nav-mid" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Main_Page"><?php echo $config->getValue("networkName"); ?></a>	
 				    <span class="top-nav-right">&nbsp;</span>
 			    </li>
 			    <?php global $wgImpersonating;
