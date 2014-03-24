@@ -21,13 +21,9 @@ div.actions {
     border: 1px solid #AAA !important;
     padding: 5px 0 5px 0 !important;
     
-    -moz-border-radius: 5px !important;
-    -webkit-border-radius: 5px !important;
-    border-radius: 5px !important;
-    
-    -moz-box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
-    -webkit-box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
-    box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
+    -moz-box-shadow: 0 0 3px #D8D8D8 !important;
+    -webkit-box-shadow: 0 0 3px #D8D8D8 !important;
+    box-shadow: 0 0 3px #D8D8D8 !important;
 }
 
 div.actions ul {
@@ -56,7 +52,7 @@ li.action a {
     font-weight: bold;
     line-height:27px !important;
     margin:0 !important;
-    padding:0 5px 0 5px !important;
+    padding:0 10px 0 10px !important;
 }
 
 li.action:hover {
