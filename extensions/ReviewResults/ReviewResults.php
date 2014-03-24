@@ -638,7 +638,7 @@ EOF;
 <p>Project Leaders and co-leaders will be receiving a separate document that provide the details of the overall funding for their project for 2014-15.</p>
 <br />
 <p>
-Each Phase 2 Project was reviewed by at least there RMC evaluators.  The International Scientific Advisory Committee (ISAC) were also given access to all of the Phase 2 Project Reports.  While the primary goal of the ISAC was to review GRAND's Phase 2 research program as a whole, in some cases comments were provided on individual projects.  For projects that received specific comments from an ISAC reviewer, those comments are also included below.
+Each Phase 2 Project was reviewed by at least three RMC evaluators.  The International Scientific Advisory Committee (ISAC) were also given access to all of the Phase 2 Project Reports.  While the primary goal of the ISAC was to review GRAND's Phase 2 research program as a whole, in some cases comments were provided on individual projects.  For projects that received specific comments from an ISAC reviewer, those comments are also included below.
 </p>
 <br />
 <p>For the RMC reviewer scoring of projects, the available scores were as follows:  1) Overall Score:  Top, Upper Middle, Lower Middle, Bottom; 2) Each of the 4 NCE Evaluation Criteria and Rating for Quality of Report: Exceptional, Very Good, Satisfactory, Unsatisfactory; and 3) Confidence Level of Evaluator: Very High, High, Moderate, Low.</p>";
