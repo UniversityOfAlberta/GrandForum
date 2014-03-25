@@ -602,11 +602,6 @@ class cavendishTemplate extends QuickTemplate {
                             echo "</li>";
                         }
 				    }
-				    
-				    if($wgUser->isLoggedIn()){
-				        $p = Person::newFromId($wgUser->getId());
-					    MyMailingLists::createTab();
-				    }
 			    ?>
 		    </ul>
 	    </div>

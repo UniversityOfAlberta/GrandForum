@@ -5,6 +5,8 @@ $wgSpecialPages['MyMailingLists'] = 'MyMailingLists'; # Let MediaWiki know about
 $wgExtensionMessagesFiles['MyMailingLists'] = $dir . 'MyMailingLists.i18n.php';
 $wgSpecialPageGroups['MyMailingLists'] = 'other-tools';
 
+$wgHooks['TopLevelTabs'][] = 'MyMailingLists::createTab';
+
 function runMyMailingLists($par) {
   MyMailingLists::run($par);
 }
@@ -49,18 +51,17 @@ class MyMailingLists extends SpecialPage{
         </script>");
     }
     
-    static function createTab() {
-        global $wgServer, $wgScriptPath, $wgTitle;
-        $selected = "";
-        if($wgTitle->getNSText() == "Mail" || 
-           ($wgTitle->getNSText() == "Special" && $wgTitle->getText() == "MyMailingLists")){
-            $selected = "selected";
+    static function createTab($tabs){
+        global $wgUser, $wgTitle, $wgServer, $wgScriptPath;
+        if($wgUser->isLoggedIn()){
+            $selected = "";
+            if($wgTitle->getNSText() == "Mail" || 
+               ($wgTitle->getNSText() == "Special" && $wgTitle->getText() == "MyMailingLists")){
+                $selected = "selected";
+            }
+            $tabs["MailingLists"] = TabUtils::createTab("My Mailing Lists", "$wgServer$wgScriptPath/index.php/Special:MyMailingLists", $selected);
         }
-        echo <<<EOM
-<li class='top-nav-element $selected'><span class='top-nav-left'>&nbsp;</span>
-<a class='top-nav-mid' href='$wgServer$wgScriptPath/index.php/Special:MyMailingLists' class='new'>My Mailing Lists</a>
-<span class='top-nav-right'>&nbsp;</span></li>
-EOM;
+        return true;
     }
 }
 ?>
