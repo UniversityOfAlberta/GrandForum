@@ -4,7 +4,7 @@ $dir = dirname(__FILE__) . '/';
 
 $wgSpecialPages['AddContributionPage'] = 'AddContributionPage'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['AddContributionPage'] = $dir . 'AddContributionPage.i18n.php';
-$wgSpecialPageGroups['AddContributionPage'] = 'grand-tools';
+$wgSpecialPageGroups['AddContributionPage'] = 'network-tools';
 
 $wgHooks['UnknownAction'][] = 'contributionSearch';
 

@@ -4,7 +4,7 @@ $dir = dirname(__FILE__) . '/';
 
 $wgSpecialPages['AddFormPage'] = 'AddFormPage'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['AddFormPage'] = $dir . 'AddFormPage.i18n.php';
-$wgSpecialPageGroups['AddFormPage'] = 'grand-tools';
+$wgSpecialPageGroups['AddFormPage'] = 'network-tools';
 
 $wgHooks['UnknownAction'][] = 'formSearch';
 

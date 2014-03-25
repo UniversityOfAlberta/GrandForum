@@ -1,6 +1,6 @@
 <?php
 
-BackbonePage::register('AdvancedSearch', 'Expert Search', 'grand-tools', dirname(__FILE__));
+BackbonePage::register('AdvancedSearch', 'Expert Search', 'network-tools', dirname(__FILE__));
 
 class AdvancedSearch extends BackbonePage {
     function userCanExecute($user){

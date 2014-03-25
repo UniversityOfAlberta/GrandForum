@@ -2,7 +2,7 @@
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['ImportBibTex'] = 'ImportBibTex'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['ImportBibTex'] = $dir . 'ImportBibTex.i18n.php';
-$wgSpecialPageGroups['ImportBibTex'] = 'grand-tools';
+$wgSpecialPageGroups['ImportBibTex'] = 'network-tools';
 
 function runImportBibTex($par) {
   ImportBibTex::run($par);

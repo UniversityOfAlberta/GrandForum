@@ -5,7 +5,7 @@ require_once("AcademiaMapProxy.php");
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['AcademiaMap'] = 'AcademiaMap';
 $wgExtensionMessagesFiles['AcademiaMap'] = $dir . 'AcademiaMap.i18n.php';
-$wgSpecialPageGroups['AcademiaMap'] = 'grand-tools';
+$wgSpecialPageGroups['AcademiaMap'] = 'network-tools';
 
 function runAcademiaMap($par) {
 	AcademiaMap::run($par);

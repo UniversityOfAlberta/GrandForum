@@ -5,7 +5,7 @@ $wgHooks['UnknownAction'][] = 'getack';
 
 $wgSpecialPages['ReportStatsTable'] = 'ReportStatsTable';
 $wgExtensionMessagesFiles['ReportStatsTable'] = $dir . 'ReportStatsTable.i18n.php';
-$wgSpecialPageGroups['ReportStatsTable'] = 'grand-tools';
+$wgSpecialPageGroups['ReportStatsTable'] = 'network-tools';
 
 $wgHooks['SubLevelTabs'][] = 'ReportStatsTable::createSubTabs';
 

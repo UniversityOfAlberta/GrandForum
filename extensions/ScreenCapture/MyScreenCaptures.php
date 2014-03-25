@@ -3,7 +3,7 @@
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['MyScreenCaptures'] = 'MyScreenCaptures';
 $wgExtensionMessagesFiles['MyScreenCaptures'] = $dir . 'MyScreenCaptures.i18n.php';
-$wgSpecialPageGroups['MyScreenCaptures'] = 'grand-tools';
+$wgSpecialPageGroups['MyScreenCaptures'] = 'network-tools';
 
 function runMyScreenCaptures($par) {
 	MyScreenCaptures::run($par);

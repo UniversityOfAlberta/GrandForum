@@ -4,7 +4,7 @@ $dir = dirname(__FILE__) . '/';
 
 $wgSpecialPages['MailingLists'] = 'MailingLists'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['MailingLists'] = $dir . 'MailingLists.i18n.php';
-$wgSpecialPageGroups['MailingLists'] = 'grand-tools';
+$wgSpecialPageGroups['MailingLists'] = 'network-tools';
 
 function runMailingLists($par){
     MailingLists::run($par);

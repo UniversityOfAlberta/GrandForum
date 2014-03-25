@@ -5,7 +5,7 @@ $dir = dirname(__FILE__) . '/';
 
 $wgSpecialPages['SanityChecks'] = 'SanityChecks';
 $wgExtensionMessagesFiles['SanityChecks'] = $dir . 'SanityChecks.i18n.php';
-$wgSpecialPageGroups['SanityChecks'] = 'grand-tools';
+$wgSpecialPageGroups['SanityChecks'] = 'network-tools';
 
 function runSanityChecks($par) {
 	SanityChecks::run($par);

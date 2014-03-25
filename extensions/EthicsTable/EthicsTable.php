@@ -5,7 +5,7 @@ $wgHooks['UnknownAction'][] = 'getack';
 
 $wgSpecialPages['EthicsTable'] = 'EthicsTable';
 $wgExtensionMessagesFiles['EthicsTable'] = $dir . 'EthicsTable.i18n.php';
-$wgSpecialPageGroups['EthicsTable'] = 'grand-tools';
+$wgSpecialPageGroups['EthicsTable'] = 'network-tools';
 
 function runEthicsTable($par) {
 	EthicsTable::run($par);

@@ -4,7 +4,7 @@ $dir = dirname(__FILE__) . '/';
 
 /*$wgSpecialPages['UserSearch'] = 'UserSearch'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['UserSearch'] = $dir . 'UserSearch.i18n.php';
-$wgSpecialPageGroups['UserSearch'] = 'grand-tools';*/
+$wgSpecialPageGroups['UserSearch'] = 'network-tools';*/
 
 function runUserSearch($par){
     UserSearch::run($par);

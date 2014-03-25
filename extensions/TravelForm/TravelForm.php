@@ -3,7 +3,7 @@
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['TravelForm'] = 'TravelForm';
 $wgExtensionMessagesFiles['TravelForm'] = $dir . 'TravelForm.i18n.php';
-$wgSpecialPageGroups['TravelForm'] = 'grand-tools';
+$wgSpecialPageGroups['TravelForm'] = 'network-tools';
 
 require_once($dir . '../../Classes/PHPExcel/IOFactory.php');
 

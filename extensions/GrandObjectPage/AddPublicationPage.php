@@ -4,27 +4,27 @@ $dir = dirname(__FILE__) . '/';
 
 $wgSpecialPages['AddArtifactPage'] = 'AddArtifactPage'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['AddArtifactPage'] = $dir . 'AddArtifactPage.i18n.php';
-$wgSpecialPageGroups['AddArtifactPage'] = 'grand-tools';
+$wgSpecialPageGroups['AddArtifactPage'] = 'network-tools';
 
 $wgSpecialPages['AddPublicationPage'] = 'AddPublicationPage'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['AddPublicationPage'] = $dir . 'AddPublicationPage.i18n.php';
-$wgSpecialPageGroups['AddPublicationPage'] = 'grand-tools';
+$wgSpecialPageGroups['AddPublicationPage'] = 'network-tools';
 
 $wgSpecialPages['AddActivityPage'] = 'AddActivityPage'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['AddActivityPage'] = $dir . 'AddActivityPage.i18n.php';
-$wgSpecialPageGroups['AddActivityPage'] = 'grand-tools';
+$wgSpecialPageGroups['AddActivityPage'] = 'network-tools';
 
 $wgSpecialPages['AddPressPage'] = 'AddPressPage'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['AddPressPage'] = $dir . 'AddPressPage.i18n.php';
-$wgSpecialPageGroups['AddPressPage'] = 'grand-tools';
+$wgSpecialPageGroups['AddPressPage'] = 'network-tools';
 
 $wgSpecialPages['AddAwardPage'] = 'AddAwardPage'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['AddAwardPage'] = $dir . 'AddAwardPage.i18n.php';
-$wgSpecialPageGroups['AddAwardPage'] = 'grand-tools';
+$wgSpecialPageGroups['AddAwardPage'] = 'network-tools';
 
 $wgSpecialPages['AddPresentationPage'] = 'AddPresentationPage'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['AddPresentationPage'] = $dir . 'AddPresentationPage.i18n.php';
-$wgSpecialPageGroups['AddPresentationPage'] = 'grand-tools';
+$wgSpecialPageGroups['AddPresentationPage'] = 'network-tools';
 
 $wgHooks['UnknownAction'][] = 'pubSearch';
 

@@ -5,7 +5,7 @@ $dir = dirname(__FILE__) . '/';
 
 $wgSpecialPages['LoiProposals'] = 'LoiProposals';
 $wgExtensionMessagesFiles['LoiProposals'] = $dir . 'LoiProposals.i18n.php';
-$wgSpecialPageGroups['LoiProposals'] = 'grand-tools';
+$wgSpecialPageGroups['LoiProposals'] = 'network-tools';
 
 function runLoiProposals($par) {
 	LoiProposals::run($par);

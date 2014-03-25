@@ -3,7 +3,7 @@
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['Solr'] = 'Solr';
 $wgExtensionMessagesFiles['Solr'] = $dir . 'Solr.i18n.php';
-$wgSpecialPageGroups['Solr'] = 'grand-tools';
+$wgSpecialPageGroups['Solr'] = 'network-tools';
 
 // SQL tables
 $sqlTables = array("milestone" => "grand_milestones",
@@ -117,7 +117,7 @@ class Solr extends SpecialPage {
 					});
 
 
-          $("#query").live("keypress", function(e){
+          $("#query").on("keypress", function(e){
             if (e.which == 13){
 							e.preventDefault();
               query = $("#query").val();
@@ -135,7 +135,7 @@ class Solr extends SpecialPage {
           });
 
           
-					$("#b_search").live("click", function() {
+					$("#b_search").on("click", function() {
 						var press = jQuery.Event("keypress");
 						press.which = 13;
 						$("#query").trigger(press);

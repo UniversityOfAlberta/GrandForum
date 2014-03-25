@@ -3,7 +3,7 @@
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['EditRelations'] = 'EditRelations'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['EditRelations'] = $dir . 'EditRelations.i18n.php';
-$wgSpecialPageGroups['EditRelations'] = 'grand-tools';
+$wgSpecialPageGroups['EditRelations'] = 'network-tools';
 
 function runEditRelations($par) {
   EditRelations::run($par);

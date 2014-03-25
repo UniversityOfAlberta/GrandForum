@@ -6,7 +6,7 @@ $wgHooks['SubLevelTabs'][] = 'AcknowledgementsTable::createSubTabs';
 
 $wgSpecialPages['AcknowledgementsTable'] = 'AcknowledgementsTable';
 $wgExtensionMessagesFiles['AcknowledgementsTable'] = $dir . 'AcknowledgementsTable.i18n.php';
-$wgSpecialPageGroups['AcknowledgementsTable'] = 'grand-tools';
+$wgSpecialPageGroups['AcknowledgementsTable'] = 'network-tools';
 
 
 function runAcknowledgementsTable($par) {

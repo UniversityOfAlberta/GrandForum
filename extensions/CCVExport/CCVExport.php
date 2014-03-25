@@ -5,7 +5,7 @@ $wgHooks['UnknownAction'][] = 'getack';
 
 $wgSpecialPages['CCVExport'] = 'CCVExport';
 $wgExtensionMessagesFiles['CCVExport'] = $dir . 'CCVExport.i18n.php';
-$wgSpecialPageGroups['CCVExport'] = 'grand-tools';
+$wgSpecialPageGroups['CCVExport'] = 'network-tools';
 
 $degree_map = 
   array('Masters Student'=>array("00000000000000000000000000000072","Master's Thesis"),

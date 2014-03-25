@@ -3,7 +3,7 @@
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['Impersonate'] = 'Impersonate'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['Impersonate'] = $dir . 'SpecialImpersonate.i18n.php';
-$wgSpecialPageGroups['Impersonate'] = 'grand-tools';
+$wgSpecialPageGroups['Impersonate'] = 'network-tools';
 
 $wgHooks['SubLevelTabs'][] = 'Impersonate::createSubTabs';
 

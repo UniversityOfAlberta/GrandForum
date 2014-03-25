@@ -3,7 +3,7 @@
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['AddMember'] = 'AddMember'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['AddMember'] = $dir . 'AddMember.i18n.php';
-$wgSpecialPageGroups['AddMember'] = 'grand-tools';
+$wgSpecialPageGroups['AddMember'] = 'network-tools';
 
 function runAddMember($par) {
   AddMember::run($par);

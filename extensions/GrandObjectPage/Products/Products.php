@@ -1,6 +1,6 @@
 <?php
 
-BackbonePage::register('Products', 'Products', 'grand-tools', dirname(__FILE__));
+BackbonePage::register('Products', 'Products', 'network-tools', dirname(__FILE__));
 
 class Products extends BackbonePage {
     

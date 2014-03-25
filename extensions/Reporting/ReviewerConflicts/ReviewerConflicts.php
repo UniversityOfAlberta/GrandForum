@@ -5,7 +5,7 @@ $wgHooks['UnknownAction'][] = 'getack';
 
 $wgSpecialPages['ReviewerConflicts'] = 'ReviewerConflicts';
 $wgExtensionMessagesFiles['ReviewerConflicts'] = $dir . 'ReviewerConflicts.i18n.php';
-$wgSpecialPageGroups['ReviewerConflicts'] = 'grand-tools';
+$wgSpecialPageGroups['ReviewerConflicts'] = 'network-tools';
 
 $wgHooks['SkinTemplateContentActions'][] = 'ReviewerConflicts::showTabs';
 

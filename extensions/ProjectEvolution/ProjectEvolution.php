@@ -5,7 +5,7 @@ autoload_register('ProjectEvolution/Tabs');
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['ProjectEvolution'] = 'ProjectEvolution'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['ProjectEvolution'] = $dir . 'ProjectEvolution.i18n.php';
-$wgSpecialPageGroups['ProjectEvolution'] = 'grand-tools';
+$wgSpecialPageGroups['ProjectEvolution'] = 'network-tools';
 
 $wgHooks['SubLevelTabs'][] = 'ProjectEvolution::createSubTabs';
 

@@ -3,7 +3,7 @@
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['ThemeLeader'] = 'ThemeLeader'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['ThemeLeader'] = $dir . 'ThemeLeader.i18n.php';
-$wgSpecialPageGroups['ThemeLeader'] = 'grand-tools';
+$wgSpecialPageGroups['ThemeLeader'] = 'network-tools';
 
 $wgHooks['TopLevelTabs'][] = 'ThemeLeader::createTab';
 

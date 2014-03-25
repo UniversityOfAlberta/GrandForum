@@ -4,7 +4,7 @@ $dir = dirname(__FILE__) . '/';
 
 $wgSpecialPages['AddMultimediaStoryPage'] = 'AddMultimediaStoryPage'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['AddMultimediaStoryPage'] = $dir . 'AddMultimediaStoryPage.i18n.php';
-$wgSpecialPageGroups['AddMultimediaStoryPage'] = 'grand-tools';
+$wgSpecialPageGroups['AddMultimediaStoryPage'] = 'network-tools';
 
 $wgHooks['UnknownAction'][] = 'MultimediaStorySearch';
 

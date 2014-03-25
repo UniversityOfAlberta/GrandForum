@@ -3,7 +3,7 @@
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['ReviewResults'] = 'ReviewResults';
 $wgExtensionMessagesFiles['ReviewResults'] = $dir . 'ReviewResults.i18n.php';
-$wgSpecialPageGroups['ReviewResults'] = 'grand-tools';
+$wgSpecialPageGroups['ReviewResults'] = 'network-tools';
 
 require_once($dir . '../../../Classes/PHPExcel/IOFactory.php');
 
