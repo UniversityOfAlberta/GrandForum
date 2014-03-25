@@ -1286,22 +1286,23 @@ input.other_option:focus {
 }
 
 #globalSearchButton {
+    display: inline-block;
     filter: none;
-    background: #fff url('../icons/purple/magnifying_glass_16x16.png') 3px no-repeat !important;
+    background: #fff !important;
     margin: 0;
-    border-width: 1px 1px 1px 0 !important;
-	border-style: solid !important;
-	border-color: #E0E0E0 !important;
+    border-width: 1px 1px 1px 0;
+	border-style: solid;
+	border-color: #E0E0E0;
     font-size: 12px;
-    padding: 6px;
+    padding: 4px;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
     -moz-border-radius: 0 5px 5px 0;
 	-webkit-border-radius: 0 5px 5px 0;
 	border-radius: 0 5px 5px 0;
-	width: 30px;
-	height: 28px;
+	width: 20px;
+	height: 18px;
 	vertical-align:top;
 }
 
