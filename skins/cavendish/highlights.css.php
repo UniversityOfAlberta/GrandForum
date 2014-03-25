@@ -79,6 +79,10 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:ho
 	background: $hl;
 }
 
+li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-item > a.ui-state-focus {
+    background: $hl !important;
+}
+
 /* Other */
 
 .purpleInfo a, .purpleInfo a:visited, .inlinePurpleInfo a, .inlinePurpleInfo a:visited {
