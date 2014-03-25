@@ -29,8 +29,32 @@ require_once( "$IP/includes/DefaultSettings.php" );
 require_once( "$IP/config/Config.php" );
 require_once( "$IP/Credentials.php" );
 
+## Path settings
 $wgSitename         = $config->getValue("siteName");
 $wgScriptPath       = $config->getValue("path");
+
+## Database settings
+$wgDBtype           = $config->getValue("dbType");
+$wgDBserver         = $config->getValue("dbServer");
+$wgDBname           = $config->getValue("dbName");
+$wgTestDBname       = $config->getValue("dbTestName");
+
+## Database credentials
+$wgDBuser           = $config->getValue("dbUser");
+$wgDBpassword       = $config->getValue("dbPassword");
+
+$wgDBadminuser           = $config->getValue("dbUser");
+$wgDBadminpassword       = $config->getValue("dbPassword");
+
+## From MediaWiki manual:
+##   "This value is used to generate a persistent cookie
+##    for authentication that is resilient to spoofing."
+$wgSecretKey = "7b32642dd51dcddf7a65fa3bea2757256caebc0220154c52ec8aebea1b87d7bf";
+
+## Mailing List settings
+$wgListAdmins           = $config->getValue("listAdmins");
+$wgListAdminPassword    = $config->getValue("listAdminPassword");
+
 $wgFavicon          = "$wgServer$wgScriptPath/favicon.ico";
 
 if(file_exists("test.tmp")){
