@@ -887,7 +887,7 @@ div#person .ui-tabs-panel {
 }
 
 .ui-progressbar {
-    border: 1px solid #aaa;
+    border: 1px solid #555;
     height: 22px;
     background: #eee;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ddd', endColorstr='#eee'); /* for IE */
@@ -895,10 +895,6 @@ div#person .ui-tabs-panel {
 	background: -webkit-gradient(linear, left top, left bottom, from(#ddd), to(#eee)); /* for webkit browsers */
 	background: -moz-linear-gradient(top,  #ddd,  #eee); /* for firefox 3.6+ */ 
 	background: -o-linear-gradient(top, #ddd, #eee); 
-}
-
-.ui-widget-content a {
-    color: #039;
 }
 
 .ui-accordion-header > a {
@@ -929,7 +925,7 @@ div#person .ui-tabs-panel {
 }
 
 .toggleHeader, .ui-accordion-header {
-    background-color: #F3EBF5 !important;
+    background-color: #EEEEEE !important;
     background-image: url('../black_gradient.png') !important;
 	border: 1px solid #AAAAAA !important;
 	color: #000000;
@@ -1165,16 +1161,11 @@ td.budgetError {
 
 /* jQuery dialogs */
 .ui-dialog{
-				border: 1px solid #ccc;
-				
+    border: 1px solid #ccc;
 }
+
 .ui-dialog .ui-dialog-titlebar {
-				color: #FFFFFF;
-				background: #CCCCCC; /* for non-css3 browsers */
-				filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#96789f', endColorstr='#8b6e93'); /* for IE */
-				background: -ms-linear-gradient(top, #96789f 0%, #8b6e93 100%);
-				background: -webkit-gradient(linear, left top, left bottom, from(#96789f), to(#8b6e93)); /* for webkit browsers */
-				background: -moz-linear-gradient(top, #96789f, #8b6e93); /* for firefox 3.6+ */
+	color: #FFFFFF;
 }
 
 /* jQuery tablesort plugin CSS */

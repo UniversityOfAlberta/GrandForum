@@ -64,11 +64,19 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:ho
 }
 
 .ui-progressbar .ui-progressbar-value {
-    background: $hl url(../smoothness/images/pbar-done.gif);
+    background: $hl;
 }
 
 .ui-tabs .ui-tabs-nav li:hover a{
     color: $hl;
+}
+
+.ui-widget-content a {
+    color: $hl;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+	background: $hl;
 }
 
 /* Other */
