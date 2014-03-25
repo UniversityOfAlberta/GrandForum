@@ -54,8 +54,10 @@ li.action a {
     padding:0 10px 0 10px !important;
 }
 
-li.action a {
-    display: inline !important;
+li.action a, li.action a:hover {
+    line-height: 25px !important;
+    height: 25px !important;
+    border-width: 0 !important;
 }
 
 li.action:hover a {
