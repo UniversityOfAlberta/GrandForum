@@ -154,6 +154,7 @@ $wgGroupPermissions['sysop']['editwidgets'] = true;
 
 require_once("$IP/extensions/AnnokiControl/AnnokiControl.php");
 
+$wgRestrictDisplayTitle = false;
 $wgLocalTZoffset = date_default_timezone_set("MST") / 60;
 $wgRawHtml = true;
 $wgEnableUploads       = true;

@@ -635,13 +635,13 @@ EOF;
             $rtype = RP_EVAL_PROJECT;
             $boilerplate = "<p>There were 23 projects evaluated in this review cycle.  Each project was reviewed by three RMC evaluators.  The highest scoring project received three \"Top Tier\" overall ratings, and the lowest scoring project received three \"Bottom Tier\" ratings.  However all but a few projects received at least one \"Upper Middle\" overall rating.  There were 22 standard projects and one \"alliance\" project.  Alliance projects are funded from a separate pool of funds.  Of the 22 standard projects, 19 were deemed ready to proceed as full projects, with the remaining three to proceed on a development basis with reduced funding and additional oversight.</p>
 <br />
-<p>The funding level for each project was impacted significantly by the level of PNI investment in the project.  The goal across the research funding allocations for standard projects is for two-thirds of the funding to go to PNIs and the remaining one-third to go to CNIs.  Based on the RMC allocations to PNIs, the level of PNI investment in that project was determined based on the percentage of that PNI's funding request that was designated for that project.  The presumptive amount that project will then have for CNIs will be 50% of the amount of that PNI investment.  Although some adjustments were made to address some outliers, in most cases the application of this formula led to a reasonable result.</p>
+<p>Project Leaders and co-leaders will be receiving a separate document that provide the details of the overall funding for their project for 2014-15.</p>
 <br />
-<p>For CNIs who are project co-leaders, their RMC allocations were also applied to their projects based on the percentage of that CNI's funding request that was designated for that project.  These amounts are deducted from the overall CNI allocation for the project.  The balance of the CNI allocation for the project will be distributed among the remaining CNIs on the project at the direction of the Project Leader and Co-Leader.</p>
+<p>
+Each Phase 2 Project was reviewed by at least three RMC evaluators.  The International Scientific Advisory Committee (ISAC) were also given access to all of the Phase 2 Project Reports.  While the primary goal of the ISAC was to review GRAND's Phase 2 research program as a whole, in some cases comments were provided on individual projects.  For projects that received specific comments from an ISAC reviewer, those comments are also included below.
+</p>
 <br />
-<p>Project Leaders and co-leaders will be receiving shortly a separate document that provides the details of their overall project funding for 2014-15.</p>
-<br />
-<p>For the reviewer scoring of projects, the available scores are as follows:  1) Overall Score:  Top, Upper Middle, Lower Middle, Bottom; 2) Each of the 4 NCE Evaluation Criteria and Rating for Quality of Report: Exceptional, Very Good, Satisfactory, Unsatisfactory; and 3) Confidence Level of Evaluator: Very High, High, Moderate, Low.</p>";
+<p>For the RMC reviewer scoring of projects, the available scores were as follows:  1) Overall Score:  Top, Upper Middle, Lower Middle, Bottom; 2) Each of the 4 NCE Evaluation Criteria and Rating for Quality of Report: Exceptional, Very Good, Satisfactory, Unsatisfactory; and 3) Confidence Level of Evaluator: Very High, High, Moderate, Low.</p>";
         }
 
         $query = "SELECT * FROM grand_review_results WHERE year='{$curr_year}' AND user_id='{$ni_id}' AND type = '{$type}'";
@@ -878,6 +878,7 @@ EOF;
                     $data = $blb->getData();
                     if($data != null){
                         $comment_cell = "<td><small>".nl2br($data)."</small></td>";
+                        $rows[999] = "<tr><td colspan='2'><hr /></td></tr>";
                         $rows[1000+$isacN] = <<<EOF
                         <tr>
                         <td width="11%"><strong>ISAC{$isacN}</strong></td>
