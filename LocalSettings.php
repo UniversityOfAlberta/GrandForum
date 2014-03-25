@@ -31,6 +31,7 @@ require_once( "$IP/Credentials.php" );
 
 $wgSitename         = $config->getValue("siteName");
 $wgScriptPath       = $config->getValue("path");
+$wgFavicon          = "$wgServer$wgScriptPath/favicon.ico";
 
 if(file_exists("test.tmp")){
     $wgDBname = $wgTestDBname;
