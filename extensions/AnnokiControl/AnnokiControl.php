@@ -33,222 +33,144 @@ function redirect($url){
     exit;
 }
 
+function isExtensionEnabled($ext){
+    global $config;
+    $extensions = $config->getValue('extensions');
+    return (array_search($ext, $extensions) !== false);
+}
+
 $egAnnokiExtensions = array();
 
-$egAnnokiExtensions['AccessControl'] = array( 'name' => 'Annoki Access Controls',
-                          'path' => "$IP/extensions/AccessControls/AccessControls.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['AccessControl'] = array('name' => 'Annoki Access Controls',
+                                             'path' => "$IP/extensions/AccessControls/AccessControls.php");
                           
-$egAnnokiExtensions['Cache']     = array( 'name' => 'Cache',
-                          'path' => "$IP/extensions/Cache/Cache.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['Cache'] = array('name' => 'Cache',
+                                     'path' => "$IP/extensions/Cache/Cache.php");
                           
-$egAnnokiExtensions['Messages']     = array( 'name' => 'Messages',
-                          'path' => "$IP/extensions/Messages/Message.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['Messages'] = array('name' => 'Messages',
+                                        'path' => "$IP/extensions/Messages/Message.php");
                           
-$egAnnokiExtensions['TabUtils']     = array( 'name' => 'TabUtils',
-                          'path' => "$IP/extensions/TabUtils/TabUtils.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['TabUtils'] = array('name' => 'TabUtils',
+                                        'path' => "$IP/extensions/TabUtils/TabUtils.php");
                           
-$egAnnokiExtensions['API']     = array( 'name' => 'API',
-                          'path' => "$IP/extensions/API/API.body.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['API'] = array('name' => 'API',
+                                   'path' => "$IP/extensions/API/API.body.php");
                           
-$egAnnokiExtensions['GrandObjects']     = array( 'name' => 'GrandObjects',
-                          'path' => "$IP/extensions/GrandObjects/GrandObjects.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['GrandObjects'] = array('name' => 'GrandObjects',
+                                            'path' => "$IP/extensions/GrandObjects/GrandObjects.php");
                           
-$egAnnokiExtensions['UI'] = array( 'name' => 'User Interface',
-                          'path' => "$IP/extensions/UI/UIElement.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['UI'] = array('name' => 'User Interface',
+                                  'path' => "$IP/extensions/UI/UIElement.php");
                           
-$egAnnokiExtensions['Notification']     = array( 'name' => 'Notification',
-                          'path' => "$IP/extensions/Notification/Notification.body.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['Notification'] = array('name' => 'Notification',
+                                            'path' => "$IP/extensions/Notification/Notification.body.php");
                           
-$egAnnokiExtensions['GrandObjectPage']     = array( 'name' => 'GrandObjectPage',
-                          'path' => "$IP/extensions/GrandObjectPage/GrandObjectPage.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['GrandObjectPage'] = array('name' => 'GrandObjectPage',
+                                               'path' => "$IP/extensions/GrandObjectPage/GrandObjectPage.php");
 
-$egAnnokiExtensions['Cal']           = array( 'name' => 'Calendar',
-                          'path' => "$IP/extensions/Calendar/calendar_extension.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['Cal'] = array('name' => 'Calendar',
+                                   'path' => "$IP/extensions/Calendar/calendar_extension.php");
 
-$egAnnokiExtensions['TempEd']        = array( 'name' => 'Template Editor',
-                          'path' => "$IP/extensions/TemplateEditor/TemplateEditor.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['TempEd'] = array('name' => 'Template Editor',
+                                      'path' => "$IP/extensions/TemplateEditor/TemplateEditor.php");
 
-$egAnnokiExtensions['TextReplace']   = array( 'name' => 'Text Replace',
-                          'path' => "$IP/extensions/TextReplace/TextReplace.php",
-                          'enabled' => false,
-                          );
+$egAnnokiExtensions['TextReplace'] = array('name' => 'Text Replace',
+                                           'path' => "$IP/extensions/TextReplace/TextReplace.php");
                           
-$egAnnokiExtensions['Twitter']     = array( 'name' => 'Twitter',
-                          'path' => "$IP/extensions/Twitter/Twitter.body.php",
-                          'enabled' => false,
-                          );
+$egAnnokiExtensions['Twitter'] = array('name' => 'Twitter',
+                                       'path' => "$IP/extensions/Twitter/Twitter.body.php");
                           
-$egAnnokiExtensions['MailingList']     = array( 'name' => 'MailingList',
-                          'path' => "$IP/extensions/MailingList/mailingList.body.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['MailingList'] = array('name' => 'MailingList',
+                                           'path' => "$IP/extensions/MailingList/mailingList.body.php");
                           
-$egAnnokiExtensions['FeatureRequest']     = array( 'name' => 'FeatureRequest',
-                          'path' => "$IP/extensions/FeatureRequest/FeatureRequest.body.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['FeatureRequest'] = array('name' => 'FeatureRequest',
+                                              'path' => "$IP/extensions/FeatureRequest/FeatureRequest.body.php");
                           
-$egAnnokiExtensions['GoogleAlertReader']     = array( 'name' => 'GoogleAlertReader',
-                          'path' => "$IP/extensions/GoogleAlertReader/GoogleAlertReader.body.php",
-                          'enabled' => false,
-                          );
+$egAnnokiExtensions['GoogleAlertReader'] = array('name' => 'GoogleAlertReader',
+                                                 'path' => "$IP/extensions/GoogleAlertReader/GoogleAlertReader.body.php");
                           
-$egAnnokiExtensions['SociQL']     = array( 'name' => 'SociQL Queries',
-                          'path' => "$IP/extensions/SociQL/Queries.php",
-                          'enabled' => false,
-                          );
+$egAnnokiExtensions['SociQL'] = array('name' => 'SociQL Queries',
+                                      'path' => "$IP/extensions/SociQL/Queries.php");
                           
-$egAnnokiExtensions['VQE']     = array( 'name' => 'Visual Query Editor',
-                          'path' => "$IP/extensions/VisualQueryEditor/VQE.php",
-                          'enabled' => false,
-                          );
+$egAnnokiExtensions['VQE'] = array('name' => 'Visual Query Editor',
+                                   'path' => "$IP/extensions/VisualQueryEditor/VQE.php");
                           
-$egAnnokiExtensions['SociQLMaintenance']     = array( 'name' => 'SociQL Maintenance',
-                          'path' => "$IP/extensions/MaintenanceService/SociQLMaintenance.php",
-                          'enabled' => false,
-                          );
+$egAnnokiExtensions['SociQLMaintenance'] = array('name' => 'SociQL Maintenance',
+                                                 'path' => "$IP/extensions/MaintenanceService/SociQLMaintenance.php");
                           
-$egAnnokiExtensions['AddMember']     = array( 'name' => 'AddMember',
-                          'path' => "$IP/extensions/AddMember/AddMember.body.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['AddMember'] = array('name' => 'AddMember',
+                                         'path' => "$IP/extensions/AddMember/AddMember.body.php");
                           
-$egAnnokiExtensions['EditMember']     = array( 'name' => 'EditMember',
-                          'path' => "$IP/extensions/EditMember/EditMember.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['EditMember'] = array('name' => 'EditMember',
+                                          'path' => "$IP/extensions/EditMember/EditMember.php");
                           
-$egAnnokiExtensions['ImportBibTex']     = array( 'name' => 'Import BibTex',
-                          'path' => "$IP/extensions/ImportBibTex/ImportBibTex.body.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['ImportBibTex'] = array('name' => 'Import BibTex',
+                                            'path' => "$IP/extensions/ImportBibTex/ImportBibTex.body.php");
                           
-$egAnnokiExtensions['Poll']     = array( 'name' => 'Poll',
-                          'path' => "$IP/extensions/Poll/Poll.body.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['Poll'] = array('name' => 'Poll',
+                                    'path' => "$IP/extensions/Poll/Poll.body.php");
                           
-$egAnnokiExtensions['QueryableTable']     = array( 'name' => 'Queryable Table',
-                          'path' => "$IP/extensions/QueryableTable/QueryableTable.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['QueryableTable'] = array('name' => 'Queryable Table',
+                                              'path' => "$IP/extensions/QueryableTable/QueryableTable.php");
                           
-$egAnnokiExtensions['Reporting']     = array( 'name' => 'Reporting',
-                          'path' => "$IP/extensions/Reporting/Reporting.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['Reporting'] = array('name' => 'Reporting',
+                                         'path' => "$IP/extensions/Reporting/Reporting.php");
                           
-$egAnnokiExtensions['IndexTables']     = array( 'name' => 'IndexTables',
-                          'path' => "$IP/extensions/IndexTables/IndexTable.body.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['IndexTables'] = array( 'name' => 'IndexTables',
+                          'path' => "$IP/extensions/IndexTables/IndexTable.body.php");
                           
-$egAnnokiExtensions['EmptyEmailList']     = array( 'name' => 'Empty Email List',
-                          'path' => "$IP/extensions/EmptyEmailList/EmptyEmailList.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['EmptyEmailList'] = array('name' => 'Empty Email List',
+                                              'path' => "$IP/extensions/EmptyEmailList/EmptyEmailList.php");
                           
-$egAnnokiExtensions['GlobalSearch']     = array( 'name' => 'Global Search',
-                          'path' => "$IP/extensions/GlobalSearch/GlobalSearch.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['GlobalSearch'] = array('name' => 'Global Search',
+                                            'path' => "$IP/extensions/GlobalSearch/GlobalSearch.php");
                           
-$egAnnokiExtensions['Impersonation']     = array( 'name' => 'Impersonation',
-                          'path' => "$IP/extensions/Impersonation/Impersonate.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['Impersonation'] = array('name' => 'Impersonation',
+                                             'path' => "$IP/extensions/Impersonation/Impersonate.php");
                           
-$egAnnokiExtensions['Visualisations']     = array( 'name' => 'Visualisations',
-                          'path' => "$IP/extensions/Visualisations/Visualisation.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['Visualisations'] = array('name' => 'Visualisations',
+                                              'path' => "$IP/extensions/Visualisations/Visualisation.php");
                           
-$egAnnokiExtensions['Survey']     = array( 'name' => 'Survey',
-                          'path' => "$IP/extensions/Survey/Survey.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['Survey'] = array('name' => 'Survey',
+                                      'path' => "$IP/extensions/Survey/Survey.php");
                           
-$egAnnokiExtensions['Duplicates']     = array( 'name' => 'Duplicates',
-                          'path' => "$IP/extensions/Duplicates/Duplicates.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
+                                          'path' => "$IP/extensions/Duplicates/Duplicates.php");
                           
-$egAnnokiExtensions['Acknowledgements']     = array( 'name' => 'Acknowledgements',
-                          'path' => "$IP/extensions/Acknowledgements/Acknowledgements.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['Acknowledgements'] = array('name' => 'Acknowledgements',
+                                                'path' => "$IP/extensions/Acknowledgements/Acknowledgements.php");
                           
-$egAnnokiExtensions['AllocatedBudgets']     = array( 'name' => 'Allocated Budgets',
-                          'path' => "$IP/extensions/AllocatedBudgets/AllocatedBudgets.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['AllocatedBudgets'] = array('name' => 'Allocated Budgets',
+                                                'path' => "$IP/extensions/AllocatedBudgets/AllocatedBudgets.php");
                           
-$egAnnokiExtensions['ProjectEvolution']     = array( 'name' => 'Project Evolution',
-                          'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
+                                                'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");
                           
-$egAnnokiExtensions['ScreenCapture']     = array( 'name' => 'ScreenCapture',
-                          'path' => "$IP/extensions/ScreenCapture/ScreenCapture.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['ScreenCapture'] = array('name' => 'ScreenCapture',
+                                             'path' => "$IP/extensions/ScreenCapture/ScreenCapture.php");
                           
-$egAnnokiExtensions['Solr']     = array( 'name' => 'Solr',
-                          'path' => "$IP/extensions/Solr/Solr.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['Solr'] = array('name' => 'Solr',
+                                    'path' => "$IP/extensions/Solr/Solr.php");
                           
-$egAnnokiExtensions['AcademiaMap']     = array( 'name' => 'AcademiaMap',
-                          'path' => "$IP/extensions/AcademiaMap/AcademiaMap.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['AcademiaMap'] = array('name' => 'AcademiaMap',
+                                           'path' => "$IP/extensions/AcademiaMap/AcademiaMap.php");
 
-$egAnnokiExtensions['TravelForm']     = array( 'name' => 'TravelForm',
-                          'path' => "$IP/extensions/TravelForm/TravelForm.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['TravelForm'] = array('name' => 'TravelForm',
+                                          'path' => "$IP/extensions/TravelForm/TravelForm.php");
 
-$egAnnokiExtensions['EthicsTable']     = array( 'name' => 'EthicsTable',
-                          'path' => "$IP/extensions/EthicsTable/EthicsTable.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['EthicsTable'] = array('name' => 'EthicsTable',
+                                           'path' => "$IP/extensions/EthicsTable/EthicsTable.php");
 
-$egAnnokiExtensions['AdvancedSearch']     = array( 'name' => 'AdvancedSearch',
-                          'path' => "$IP/extensions/AdvancedSearch/AdvancedSearch.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['AdvancedSearch'] = array('name' => 'AdvancedSearch',
+                                              'path' => "$IP/extensions/AdvancedSearch/AdvancedSearch.php");
                           
-$egAnnokiExtensions['CCVExport']     = array( 'name' => 'CCVExport',
-                          'path' => "$IP/extensions/CCVExport/CCVExport.php",
-                          'enabled' => true,
-                          );
+$egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
+                                         'path' => "$IP/extensions/CCVExport/CCVExport.php");
 
 
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
-    if ($extension['enabled'] && is_readable($extension['path'])){
+    if (isExtensionEnabled($key) && is_readable($extension['path'])){
         $start = microtime(true);
         $mem_before = memory_get_usage();
         require_once($extension['path']);

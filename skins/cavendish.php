@@ -232,6 +232,12 @@ class cavendishTemplate extends QuickTemplate {
 		<link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/cavendish/highlights.css.php" />
 		<script type='text/javascript'>
 		
+		    extensions = <?php global $config; echo json_encode($config->getValue('extensions')); ?>;
+		
+		    function isExtensionEnabled(ext){
+		        return (extensions.indexOf(ext) != -1);
+		    }
+		
 		    me = new Person(
 		    <?php
 		        $me = Person::newFromWGUser();

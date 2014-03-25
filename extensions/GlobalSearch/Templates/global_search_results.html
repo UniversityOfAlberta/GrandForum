@@ -3,5 +3,7 @@
     <%= subview('projectResults') %>
     <%= subview('productResults') %>
     <%= subview('wikiResults') %>
-    <%= subview('pdfResults') %>
+    <% if(isExtensionEnabled('Reporting')){ %>
+        <%= subview('pdfResults') %>
+    <% } %>
 </div>
