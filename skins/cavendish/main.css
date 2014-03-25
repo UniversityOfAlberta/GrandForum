@@ -204,14 +204,6 @@ a {
     background: none;
 }
 
-a:visited {
-    color: #5a3696;
-}
-
-a:active {
-    color: #faa700;
-}
-
 a:hover {
     text-decoration: underline;
 }
@@ -836,15 +828,6 @@ span.label {
     line-height: 1.5em;
 }
 
-/*
-** keep the whitespace in front of the ^=, hides rule from konqueror
-** this is css3, the validator doesn't like it when validating as css2
-*/
-#bodyContent a.external,#bodyContent a[href ^="gopher://"] {
-    background: url("external.png") center right no-repeat;
-    padding: 0 13px;
-}
-
 .rtl #bodyContent a.external,.rtl #bodyContent a[href ^="gopher://"] {
     background-image: url("external-rtl.png");
 }
@@ -920,17 +903,6 @@ span.label {
 /* correction for ltr wikis */
 .ltr #bodyContent a.external {
     padding-left: 0;
-}
-
-/* disable interwiki styling */
-#bodyContent a.extiw,#bodyContent a.extiw:active {
-    color: #36b;
-    background: none;
-    padding: 0;
-}
-
-#bodyContent a.external {
-    color: #36b;
 }
 
 /* this can be used in the content area to switch off

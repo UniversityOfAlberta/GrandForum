@@ -87,6 +87,32 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:ho
     text-decoration: none;
 }
 
+#bodyContent a.extiw,#bodyContent a.extiw:active {
+    color: $hl;
+    background: none;
+    padding: 0;
+}
+
+#bodyContent a.external {
+    color: $hl;
+}
+
+a {
+    color: $hl;
+}
+
+a:hover {
+    color: $hl;
+}
+
+a:visited {
+    color: $hl;
+}
+
+a:active {
+    color: $hl;
+}
+
 EOF;
 
 ?>

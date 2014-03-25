@@ -248,21 +248,15 @@ h6 {
 
 /* Navigation */
 :link {
-	color: #039;
 	text-decoration: none;
 }
 
 :visited {
-	color: #636;
 	text-decoration: none;
 }
 
 :link :hover,:visited :hover {
 	text-decoration: underline;
-}
-
-:link :active,:link :active {
-	color: #000;
 }
 
 /* Quotations */ /* Comments and other Asides */
