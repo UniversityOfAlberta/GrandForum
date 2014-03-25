@@ -14,8 +14,6 @@ class PersonDataQualityTab extends AbstractTab {
     
     function generateBody(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
-        $me = Person::newFromId($wgUser->getId());
-        $my_id = $me->getId();
 
         if($this->visibility['isMe'] || $me->isRoleAtLeast(MANAGER)){
             $wgOut->addScript(
@@ -50,7 +48,7 @@ class PersonDataQualityTab extends AbstractTab {
                 </style>"
             );
 
-            $errors = PersonDataQualityTab::getErrors($my_id);
+            $errors = PersonDataQualityTab::getErrors($this->person->getId());
 
             $profile_checks = $this->getProfileChecks($errors);
             $hqp_checks = $this->getHqpChecks($errors);
@@ -90,7 +88,7 @@ EOF;
      */
     function getProfileChecks($errors){
         global $wgOut, $wgUser;
-        $me = Person::newFromId($wgUser->getId());
+        $me = Person::newFromId($this->person->getId());
         $html = "";// "<h3>Profile Errors:</h3>";
         if(!empty($errors['profile_errors'])){
             $html .= "<ul>";
@@ -112,7 +110,7 @@ EOF;
      */
     function getHqpChecks($errors){
         global $wgOut, $wgUser;
-        $me = Person::newFromId($wgUser->getId());
+        $me = Person::newFromId($this->person->getId());
         
         $html = "";//"";//"<h3>Student Errors:</h3>";
         if(!empty($errors['student_errors'])){
@@ -150,7 +148,7 @@ EOF;
      */
     function getProductChecks($errors){
         global $wgOut, $wgUser;
-        $me = Person::newFromId($wgUser->getId());
+        $me = Person::newFromId($this->person->getId());
         
         $html = "";//"<h3>Product Errors:</h3>";
         if(!empty($errors['paper_errors'])){
@@ -253,22 +251,24 @@ EOF;
         
         if($person->isActive() ){
             
-            //Allocated Budget Upload
-            //$person->getAllocatedBudget(2012);
-            $year = 2012;
-            $uid = $person->getId();
-            $blob_type=BLOB_EXCEL;
-            $rptype = RP_RESEARCHER;
-            $section = RES_ALLOC_BUDGET;
-            $item = 0;
-            $subitem = 0;
-            $rep_addr = ReportBlob::create_address($rptype,$section,$item,$subitem);
-            $budget_blob = new ReportBlob($blob_type, ($year-1), $uid, 0);
-            $budget_blob->load($rep_addr);
-            $data = $budget_blob->getData();
-            $ni_errors['profile_errors'] = array();
-            if(is_null($data)){
-                $ni_errors['profile_errors'][] = "No revised budget";
+            if(isExtensionEnabled('AllocatedBudgets')){
+                //Allocated Budget Upload
+                //$person->getAllocatedBudget(2012);
+                $year = 2012;
+                $uid = $person->getId();
+                $blob_type=BLOB_EXCEL;
+                $rptype = RP_RESEARCHER;
+                $section = RES_ALLOC_BUDGET;
+                $item = 0;
+                $subitem = 0;
+                $rep_addr = ReportBlob::create_address($rptype,$section,$item,$subitem);
+                $budget_blob = new ReportBlob($blob_type, ($year-1), $uid, 0);
+                $budget_blob->load($rep_addr);
+                $data = $budget_blob->getData();
+                $ni_errors['profile_errors'] = array();
+                if(is_null($data)){
+                    $ni_errors['profile_errors'][] = "No revised budget";
+                }
             }
 
             $gender = $person->getGender();
@@ -335,30 +335,34 @@ EOF;
                 $ishqp = $s->isHQP();
                 $related = $person->relatedTo($s, 'Supervises');
 
-                //Check for Ethics tutorial completion
-                $ethics = $s->getEthics();
-                if($ethics['completed_tutorial'] == 0 && $ishqp && $related){
-                    $errors[] = "Not Completed TCPS2";
+                if(isExtensionEnabled('EthicsTable')){
+                    //Check for Ethics tutorial completion
+                    $ethics = $s->getEthics();
+                    if($ethics['completed_tutorial'] == 0 && $ishqp && $related){
+                        $errors[] = "Not Completed TCPS2";
+                    }
                 }
 
-                //Acknowledgements
-                if($ishqp && $related){
-                    $acks = $s->getAcknowledgements();
-                    if(count($acks) > 0){
-                        $ack_found = false;
-                        foreach ($acks as $a){
-                            $supervisor = $a->getSupervisor();
-                            if($supervisor == $name_normal){
-                                $ack_found = true;
-                                break;
+                if(isExtensionEnabled('Acknowledgements')){
+                    //Acknowledgements
+                    if($ishqp && $related){
+                        $acks = $s->getAcknowledgements();
+                        if(count($acks) > 0){
+                            $ack_found = false;
+                            foreach ($acks as $a){
+                                $supervisor = $a->getSupervisor();
+                                if($supervisor == $name_normal){
+                                    $ack_found = true;
+                                    break;
+                                }
+                            }
+                            if(!$ack_found){
+                                $errors[] = "No Acknowledgement";
                             }
                         }
-                        if(!$ack_found){
+                        else{
                             $errors[] = "No Acknowledgement";
                         }
-                    }
-                    else{
-                        $errors[] = "No Acknowledgement";
                     }
                 }
 

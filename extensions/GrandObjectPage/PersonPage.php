@@ -104,13 +104,15 @@ class PersonPage {
                 $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
                 $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
-                if($person->isRoleAtLeast(CNI) && !$person->isRole(AR)){
+                if(isExtensionEnabled('AllocatedBudgets') && $person->isRoleAtLeast(CNI) && !$person->isRole(AR)){
                     $tabbedPage->addTab(new PersonBudgetTab($person, $visibility));
                 }
                 if($wgUser->isLoggedIn() && $person->isRole(INACTIVE) && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
                     $tabbedPage->addTab(new HQPExitTab($person, $visibility));
                 }
-                $tabbedPage->addTab(new PersonAcknowledgementTab($person, $visibility));
+                if(isExtensionEnabled('Acknowledgements')){
+                    $tabbedPage->addTab(new PersonAcknowledgementTab($person, $visibility));
+                }
                 $tabbedPage->addTab(new PersonVisualisationsTab($person, $visibility));
                 $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 $tabbedPage->showPage();

@@ -21,7 +21,9 @@ class PersonProfileTab extends AbstractEditableTab {
         if($wgUser->isLoggedIn()){
             $this->html .= "</td><td width='20%'>";
             $this->html .= "</td><td valign='top' width='45%'>";
-            $this->showEthics($this->person, $this->visibility);
+            if(isExtensionEnabled('EthicsTable')){
+                $this->showEthics($this->person, $this->visibility);
+            }
             $this->html .= "</td><td>";
             $this->showCCV($this->person, $this->visibility);
         }
@@ -43,7 +45,9 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "</table>";
         $this->html .= "<h2>Profile</h2>";
         $this->showEditProfile($this->person, $this->visibility);
-        $this->showEditEthics($this->person, $this->visibility);
+        if(isExtensionEnabled('EthicsTable')){
+            $this->showEditEthics($this->person, $this->visibility);
+        }
     }
     
     function canEdit(){
@@ -61,7 +65,7 @@ class PersonProfileTab extends AbstractEditableTab {
         $_POST['type'] = "private";
         $_POST['profile'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['private_profile'])));
         APIRequest::doAction('UserProfile', true);
-        if($this->person->isHQP()){
+        if(isExtensionEnabled('EthicsTable') && $this->person->isHQP()){
             APIRequest::doAction('UserEthics', true);
         }
         Person::$cache = array();

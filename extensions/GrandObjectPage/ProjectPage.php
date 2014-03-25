@@ -114,7 +114,7 @@ class ProjectPage {
                     $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
                 }
                 $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
-                if(!$project->isSubProject()){
+                if(isExtensionEnabled('AllocatedBudgets') && !$project->isSubProject()){
                     $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
                 }
                 $tabbedPage->addTab(new ProjectVisualisationsTab($project, $visibility));

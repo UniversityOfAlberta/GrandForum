@@ -36,7 +36,7 @@ class PersonVisualisationsTab extends AbstractTab {
 	            <ul>
 		            <li><a href='#timeline'>Timeline</a></li>
 		            <li><a href='#chart'>Productivity Chart</a></li>";
-            if(($wgUser->isLoggedIn() && $this->person->getId() == $me->getId()) || $me->isRoleAtLeast(MANAGER)){
+            if(isExtensionEnabled('Survey') && (($wgUser->isLoggedIn() && $this->person->getId() == $me->getId()) || $me->isRoleAtLeast(MANAGER))){
                 $this->html .= "<li><a href='#survey'>Survey Graph</a></li>";
             }
 		    $this->html .= "<!--<li><a href='#network'>Network</a></li>-->
@@ -46,13 +46,15 @@ class PersonVisualisationsTab extends AbstractTab {
 	        $this->html .= "</div>
 	        <div id='chart'>";
 		        $this->showDoughnut($this->person, $this->visibility);
-	        $this->html .= "</div>
-	        <div id='survey'>";
-		        $this->showSurvey($this->person, $this->visibility);
-	        /*$this->html .= "</div>
-	        <div id='network'>";
-		        $this->showGraph($this->person, $this->visibility);*/
-	        $this->html.= "</div>
+		    if(isExtensionEnabled('Survey')){
+                $this->html .= "</div>
+                <div id='survey'>";
+	                $this->showSurvey($this->person, $this->visibility);
+	        }
+            /*$this->html .= "</div>
+            <div id='network'>";
+                $this->showGraph($this->person, $this->visibility);*/
+            $this->html.= "</div>
     </div>
     <script type='text/javascript'>
         
