@@ -14,6 +14,12 @@ class WikiPage extends BackboneModel {
 	    return new WikiPage($article);
 	}
 	
+	static function newFromTitle($text){
+	    $title = Title::newFromText("$text");
+	    $article = new Article($title);
+	    return new WikiPage($article);
+	}
+	
 	function WikiPage($article){
 		$this->id = $article->getId();
 		$this->ns = $article->getTitle()->getNsText();
@@ -48,7 +54,7 @@ class WikiPage extends BackboneModel {
 	}
 	
 	function exists(){
-        return $this->title->exists();
+        return $this->article->exists();
 	}
 	
 	function getCacheId(){

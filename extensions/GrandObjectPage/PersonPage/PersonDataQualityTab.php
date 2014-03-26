@@ -14,7 +14,7 @@ class PersonDataQualityTab extends AbstractTab {
     
     function generateBody(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
-
+        $me = Person::newFromWgUser();
         if($this->visibility['isMe'] || $me->isRoleAtLeast(MANAGER)){
             $wgOut->addScript(
                 "<script type='text/javascript'>

@@ -7,13 +7,88 @@ $indexTable = new IndexTable();
 $wgHooks['OutputPageParserOutput'][] = array($indexTable, 'generateTable');
 $wgHooks['userCan'][] = array($indexTable, 'userCanExecute');
 
+$wgHooks['SubLevelTabs'][] = 'IndexTable::createSubTabs';
+
 class IndexTable {
 
 	var $text = "";
 	
+	static function createSubTabs($tabs){
+        global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle;
+        $me = Person::newFromWgUser();
+        $project = Project::newFromHistoricName($wgTitle->getNSText());
+        $selected = ((Project::newFromName($wgTitle->getNSText()) != null || $wgTitle->getText() == "Projects") && 
+                     !($me->isMemberOf($project) || ($project != null && $me->isMemberOf($project->getParent())))) ? "selected" : "";
+        $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
+        
+        $lastRole = "";
+        if($wgTitle->getNSText() == INACTIVE && !($me->isRole(INACTIVE) && $wgTitle->getText() == $me->getName())){
+            $person = Person::newFromName($wgTitle->getText());
+            if($person != null & $person->getName() != null && $person->isRole(INACTIVE)){
+                $roles = $person->getRoles(true);
+                $lastRole = "";
+                for($i = count($roles) - 1; $i >= 0; $i--){
+                    $role = $roles[$i];
+                    if($role->getRole() != INACTIVE){
+                        $lastRole = $role->getRole();
+                        break;
+                    }
+                }
+            }
+        }
+        if($me->isLoggedIn()){
+            $selected = ($lastRole == HQP || $wgTitle->getText() == "ALL HQP" || ($wgTitle->getNSText() == HQP && !($me->isRole(HQP) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab(HQP, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_HQP", "$selected people hidden");
+        }
+        $selected = ($lastRole == PNI || $wgTitle->getText() == "ALL PNI" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+        $tabs['Main']['subtabs'][] = TabUtils::createSubTab('Phase1 '.PNI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_PNI", "$selected people hidden");
+        
+        $selected = ($lastRole == PNI || $wgTitle->getText() == "ALL PNI2" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+        $tabs['Main']['subtabs'][] = TabUtils::createSubTab('Phase2 '.PNI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_PNI2", "$selected people hidden");
+        
+        $selected = ($lastRole == CNI || $wgTitle->getText() == "ALL CNI" || ($wgTitle->getNSText() == CNI && !($me->isRole(CNI) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+        $tabs['Main']['subtabs'][] = TabUtils::createSubTab(PNI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_CNI", "$selected people hidden");
+        
+        $selected = ($lastRole == ISAC || $wgTitle->getText() == "ALL ISAC" || ($wgTitle->getNSText() == ISAC && !($me->isRole(ISAC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+        $tabs['Main']['subtabs'][] = TabUtils::createSubTab(ISAC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_ISAC", "$selected people hidden");
+        
+        $selected = ($lastRole == EXTERNAL || $wgTitle->getText() == "ALL External" || ($wgTitle->getNSText() == EXTERNAL && !($me->isRole(EXTERNAL) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+        $tabs['Main']['subtabs'][] = TabUtils::createSubTab(EXTERNAL, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_External", "$selected people hidden");
+        
+        $selected = ($lastRole == NCE || $wgTitle->getText() == "ALL NCE Rep" || ($wgTitle->getNSText() == NCE && !($me->isRole(NCE) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+        $tabs['Main']['subtabs'][] = TabUtils::createSubTab(NCE, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_NCE_Rep", "$selected people hidden");
+        
+        $selected = ($lastRole == RMC || $wgTitle->getText() == "ALL RMC" || ($wgTitle->getNSText() == RMC && !($me->isRole(RMC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+        $tabs['Main']['subtabs'][] = TabUtils::createSubTab(RMC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_RMC", "$selected people hidden");
+
+        if($wgUser->isLoggedIn()){
+            $selected = ($wgTitle->getText() == "Products" || 
+                         $wgTitle->getText() == "Multimedia Stories" ||
+                         $wgTitle->getNsText() == "Publication" ||
+                         $wgTitle->getNsText() == "Artifact" ||
+                         $wgTitle->getNsText() == "Presentation" ||
+                         $wgTitle->getNsText() == "Activity" ||
+                         $wgTitle->getNsText() == "Press" ||
+                         $wgTitle->getNsText() == "Award" ||
+                         $wgTitle->getNsText() == "Multimedia_Story") ? "selected" : "";
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Publications", "$wgServer$wgScriptPath/index.php/Special:Products#/Publication", "$selected products hidden");
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Artifacts", "$wgServer$wgScriptPath/index.php/Special:Products#/Artifact", "$selected products hidden");
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Presentations", "$wgServer$wgScriptPath/index.php/Special:Products#/Presentation", "$selected products hidden");
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Activities", "$wgServer$wgScriptPath/index.php/Special:Products#/Activity", "$selected products hidden");
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Press", "$wgServer$wgScriptPath/index.php/Special:Products#/Press", "$selected products hidden");
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Awards", "$wgServer$wgScriptPath/index.php/Special:Products#/Award", "$selected products hidden");
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia_Stories", "$selected products hidden");
+        }
+        if(WikiPage::newFromTitle("{$config->getValue('networkName')}:ALL_Conferences")->exists()){
+            $selected = ($wgTitle->getNSText() == "Conference" || $wgTitle->getText() == "ALL Conferences") ? "selected" : "";
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Conferences", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Conferences", "$selected");
+        }
+        return true;
+    }
+	
 	function userCanExecute(&$title, &$user, $action, &$result){
-	    global $wgOut, $wgServer, $wgScriptPath;
-	    if($title->getNSText() == "GRAND"){
+	    global $wgOut, $wgServer, $wgScriptPath, $config;
+	    if($title->getNSText() == "{$config->getValue('networkName')}"){
 	        $me = Person::newFromUser($user);
 	        $text = $title->getText();
 	        switch ($title->getText()) {
@@ -30,10 +105,10 @@ class IndexTable {
 	}
 
 	function generateTable($out, $parseroutput){
-		global $wgTitle, $wgOut, $wgUser;
+		global $wgTitle, $wgOut, $wgUser, $config;
 		$me = Person::newFromId($wgUser->getId());
 		
-		if($wgTitle != null && $wgTitle->getNsText() == "GRAND" && !$wgOut->isDisabled()){
+		if($wgTitle != null && $wgTitle->getNsText() == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){
 		    $result = true;
 		    $this->userCanExecute($wgTitle, $wgUser, "read", $result);
 		    if(!$result){
@@ -163,7 +238,7 @@ class IndexTable {
 	 * Theme | Name 
 	 */
 	private function generateThemesTable(){
-		global $wgScriptPath, $wgServer;
+		global $wgScriptPath, $wgServer, $config;
 		$this->text .=
 "<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th>Themes</th><th>Name</th></tr></thead><tbody>
@@ -173,7 +248,7 @@ class IndexTable {
 			$this->text .= <<<EOF
 <tr>
 <td align='left'>
-<a href='{$wgServer}{$wgScriptPath}/index.php/GRAND:Theme{$theme->getId()} - {$theme->getName()}'>{$theme->getAcronym()}</a>
+<a href='{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:Theme{$theme->getId()} - {$theme->getName()}'>{$theme->getAcronym()}</a>
 </td><td align='left'>
 {$theme->getName()}
 </td></tr>
@@ -192,7 +267,7 @@ EOF;
 	 * User Page | Projects | Twitter
 	 */
 	private function generatePersonTable($table, $phase=0){
-		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $projectPhaseDates;
+		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $projectPhaseDates, $config;
 		$me = Person::newFromId($wgUser->getId());
 		if($phase == 0 || $phase == 1){
 		    $data = Person::getAllPeople($table);
@@ -215,7 +290,7 @@ EOF;
         if($phase == 2){
             $phaseText = "phase $phase";
         }
-        $this->text .= "Below are all the $phaseText $table in GRAND.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
+        $this->text .= "Below are all the $phaseText $table in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
 		$this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th width='15%' style='white-space: nowrap;'>Name</th><th width='65%' style='white-space: nowrap;'>Projects</th><th width='20%' style='white-space: nowrap;'>University</th>$idHeader</tr></thead><tbody>
 ";
@@ -260,10 +335,10 @@ EOF;
 	}
 	
 	private function generateRMCTable(){
-		global $wgServer, $wgScriptPath, $wgUser, $wgOut;
+		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
 		$data = Person::getAllPeople(RMC);
 
-        $this->text .= "Below are all the current ".RMC." in GRAND.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
+        $this->text .= "Below are all the current ".RMC." in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
 		$this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th>Name</th><th>Roles</th></tr></thead><tbody>";
 		foreach($data as $person){

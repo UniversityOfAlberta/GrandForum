@@ -48,7 +48,7 @@ pageRouter.on('route:showGrandProducts', function(category){
     products.grand = 'grand';
     
     category = pluralizeCategory(category);
-    main.set('title', 'GRAND ' + category);
+    main.set('title', networkName + ' ' + category);
     this.closeCurrentView();
     this.currentView = new ProductListView({el: $("#currentView"), model: products});
 });
@@ -60,7 +60,7 @@ pageRouter.on('route:showNonGrandProducts', function(category){
     products.grand = 'nonGrand';
     
     category = pluralizeCategory(category);
-    main.set('title', 'Non-GRAND ' + category);
+    main.set('title', 'Non ' + networkName + ' ' + category);
     this.closeCurrentView();
     this.currentView = new ProductListView({el: $("#currentView"), model: products});
 });

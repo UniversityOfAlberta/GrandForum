@@ -43,30 +43,33 @@ $egAnnokiExtensions = array();
 
 $egAnnokiExtensions['AccessControl'] = array('name' => 'Annoki Access Controls',
                                              'path' => "$IP/extensions/AccessControls/AccessControls.php");
-                          
+
 $egAnnokiExtensions['Cache'] = array('name' => 'Cache',
                                      'path' => "$IP/extensions/Cache/Cache.php");
-                          
+
 $egAnnokiExtensions['Messages'] = array('name' => 'Messages',
                                         'path' => "$IP/extensions/Messages/Message.php");
-                          
+
 $egAnnokiExtensions['TabUtils'] = array('name' => 'TabUtils',
                                         'path' => "$IP/extensions/TabUtils/TabUtils.php");
-                          
+
 $egAnnokiExtensions['API'] = array('name' => 'API',
                                    'path' => "$IP/extensions/API/API.body.php");
-                          
+
 $egAnnokiExtensions['GrandObjects'] = array('name' => 'GrandObjects',
                                             'path' => "$IP/extensions/GrandObjects/GrandObjects.php");
-                          
+
 $egAnnokiExtensions['UI'] = array('name' => 'User Interface',
                                   'path' => "$IP/extensions/UI/UIElement.php");
-                          
+
 $egAnnokiExtensions['Notification'] = array('name' => 'Notification',
                                             'path' => "$IP/extensions/Notification/Notification.body.php");
-                          
+
 $egAnnokiExtensions['GrandObjectPage'] = array('name' => 'GrandObjectPage',
                                                'path' => "$IP/extensions/GrandObjectPage/GrandObjectPage.php");
+
+$egAnnokiExtensions['IndexTables'] = array( 'name' => 'IndexTables',
+                                            'path' => "$IP/extensions/IndexTables/IndexTable.body.php");
 
 $egAnnokiExtensions['Cal'] = array('name' => 'Calendar',
                                    'path' => "$IP/extensions/Calendar/calendar_extension.php");
@@ -76,82 +79,79 @@ $egAnnokiExtensions['TempEd'] = array('name' => 'Template Editor',
 
 $egAnnokiExtensions['TextReplace'] = array('name' => 'Text Replace',
                                            'path' => "$IP/extensions/TextReplace/TextReplace.php");
-                          
+
 $egAnnokiExtensions['Twitter'] = array('name' => 'Twitter',
                                        'path' => "$IP/extensions/Twitter/Twitter.body.php");
-                          
+
 $egAnnokiExtensions['MailingList'] = array('name' => 'MailingList',
                                            'path' => "$IP/extensions/MailingList/mailingList.body.php");
-                          
+
 $egAnnokiExtensions['FeatureRequest'] = array('name' => 'FeatureRequest',
                                               'path' => "$IP/extensions/FeatureRequest/FeatureRequest.body.php");
-                          
+
 $egAnnokiExtensions['GoogleAlertReader'] = array('name' => 'GoogleAlertReader',
                                                  'path' => "$IP/extensions/GoogleAlertReader/GoogleAlertReader.body.php");
-                          
+
 $egAnnokiExtensions['SociQL'] = array('name' => 'SociQL Queries',
                                       'path' => "$IP/extensions/SociQL/Queries.php");
-                          
+
 $egAnnokiExtensions['VQE'] = array('name' => 'Visual Query Editor',
                                    'path' => "$IP/extensions/VisualQueryEditor/VQE.php");
-                          
+
 $egAnnokiExtensions['SociQLMaintenance'] = array('name' => 'SociQL Maintenance',
                                                  'path' => "$IP/extensions/MaintenanceService/SociQLMaintenance.php");
-                          
+
 $egAnnokiExtensions['AddMember'] = array('name' => 'AddMember',
                                          'path' => "$IP/extensions/AddMember/AddMember.body.php");
-                          
+
 $egAnnokiExtensions['EditMember'] = array('name' => 'EditMember',
                                           'path' => "$IP/extensions/EditMember/EditMember.php");
-                          
+
 $egAnnokiExtensions['ImportBibTex'] = array('name' => 'Import BibTex',
                                             'path' => "$IP/extensions/ImportBibTex/ImportBibTex.body.php");
-                          
+
 $egAnnokiExtensions['Poll'] = array('name' => 'Poll',
                                     'path' => "$IP/extensions/Poll/Poll.body.php");
-                          
+
 $egAnnokiExtensions['QueryableTable'] = array('name' => 'Queryable Table',
                                               'path' => "$IP/extensions/QueryableTable/QueryableTable.php");
-                          
+
 $egAnnokiExtensions['Reporting'] = array('name' => 'Reporting',
                                          'path' => "$IP/extensions/Reporting/Reporting.php");
-                          
-$egAnnokiExtensions['IndexTables'] = array( 'name' => 'IndexTables',
-                          'path' => "$IP/extensions/IndexTables/IndexTable.body.php");
-                          
+
 $egAnnokiExtensions['EmptyEmailList'] = array('name' => 'Empty Email List',
                                               'path' => "$IP/extensions/EmptyEmailList/EmptyEmailList.php");
-                          
+
 $egAnnokiExtensions['GlobalSearch'] = array('name' => 'Global Search',
                                             'path' => "$IP/extensions/GlobalSearch/GlobalSearch.php");
-                          
+
 $egAnnokiExtensions['Impersonation'] = array('name' => 'Impersonation',
                                              'path' => "$IP/extensions/Impersonation/Impersonate.php");
-                          
+
 $egAnnokiExtensions['Visualisations'] = array('name' => 'Visualisations',
                                               'path' => "$IP/extensions/Visualisations/Visualisation.php");
-                          
+
 $egAnnokiExtensions['Survey'] = array('name' => 'Survey',
                                       'path' => "$IP/extensions/Survey/Survey.php");
-                          
+
 $egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
                                           'path' => "$IP/extensions/Duplicates/Duplicates.php");
-                          
+
 $egAnnokiExtensions['Acknowledgements'] = array('name' => 'Acknowledgements',
                                                 'path' => "$IP/extensions/Acknowledgements/Acknowledgements.php");
-                          
+
 $egAnnokiExtensions['AllocatedBudgets'] = array('name' => 'Allocated Budgets',
                                                 'path' => "$IP/extensions/AllocatedBudgets/AllocatedBudgets.php");
-                          
+
 $egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
                                                 'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");
-                          
+
 $egAnnokiExtensions['ScreenCapture'] = array('name' => 'ScreenCapture',
                                              'path' => "$IP/extensions/ScreenCapture/ScreenCapture.php");
-                          
+
 $egAnnokiExtensions['Solr'] = array('name' => 'Solr',
                                     'path' => "$IP/extensions/Solr/Solr.php");
-                          
+
 $egAnnokiExtensions['AcademiaMap'] = array('name' => 'AcademiaMap',
                                            'path' => "$IP/extensions/AcademiaMap/AcademiaMap.php");
 
@@ -163,7 +163,7 @@ $egAnnokiExtensions['EthicsTable'] = array('name' => 'EthicsTable',
 
 $egAnnokiExtensions['AdvancedSearch'] = array('name' => 'AdvancedSearch',
                                               'path' => "$IP/extensions/AdvancedSearch/AdvancedSearch.php");
-                          
+
 $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
                                          'path' => "$IP/extensions/CCVExport/CCVExport.php");
 

@@ -43,11 +43,11 @@ ProductListView = Backbone.View.extend({
         var templateData = {'url' : '', 'title' : ''};
         if(Backbone.history.fragment.indexOf('nonGrand') == -1){
             templateData.url = '../index.php/Special:Products#/' + Backbone.history.fragment + '/nonGrand';
-            templateData.name = 'Non-' + main.get('title');
+            templateData.name = 'Non ' + main.get('title');
         }
         else{
             templateData.url = '../index.php/Special:Products#/' + Backbone.history.fragment.replace('/nonGrand', '');
-            templateData.name = main.get('title').replace('Non-', '');
+            templateData.name = main.get('title').replace('Non ', '');
         }
         this.$el.html(this.template(templateData));
         var showButton = this.$("#showButton").detach();

@@ -232,8 +232,9 @@ class cavendishTemplate extends QuickTemplate {
 		<link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/cavendish/highlights.css.php" />
 		<script type='text/javascript'>
 		
+		    // Configs
+		    networkName = "<?php echo $config->getValue('networkName'); ?>";
 		    extensions = <?php echo json_encode($config->getValue('extensions')); ?>;
-		    
 		    iconPath = "<?php echo $config->getValue('iconPath'); ?>";
 		    iconPathHighlighted = "<?php echo $config->getValue('iconPathHighlighted'); ?>";
 		
@@ -343,9 +344,7 @@ class cavendishTemplate extends QuickTemplate {
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();
                 });
-		        if($(".top-nav-element.selected").length > 1){
-		            $("#grand-tab").removeClass("selected");
-		        }
+
 		        setMinWidth();
 		        $('.tooltip').qtip({
 		            position: {
@@ -553,20 +552,14 @@ class cavendishTemplate extends QuickTemplate {
 				      global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage, $config;
                     $GLOBALS['tabs'] = array();
                     
-                    $GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"));
+                    $GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"), "$wgServer$wgScriptPath/index.php/Main_Page");
+                    $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
                     $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
                     
 			        wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
 			        wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
 		      ?>
-			    <li id='grand-tab' class="top-nav-element tab-left
-		        <?php if($wgTitle->getNSText() != "Help"){
-		            echo "selected";
-		        } ?>">
-				    <span class="top-nav-left">&nbsp;</span>
-				    <a class="top-nav-mid highlights-tab" href="<?php echo $wgServer.$wgScriptPath; ?>/index.php/Main_Page"><?php echo $config->getValue("networkName"); ?></a>	
-				    <span class="top-nav-right">&nbsp;</span>
-			    </li>
+			    
 			    <?php global $wgImpersonating;
 			        foreach($this->data['personal_urls'] as $key => $item) {
 			        //echo $key;
@@ -593,7 +586,7 @@ class cavendishTemplate extends QuickTemplate {
 			        }
 			    ?>
 			
-			    <li class="top-nav-element <?php echo $selected.' '.$tabLeft; ?>">
+			    <!--li class="top-nav-element <?php echo $selected.' '.$tabLeft; ?>">
 				    <span class="top-nav-left">&nbsp;</span>
 				    <a id="lnk-<?php echo $key; ?>" class="top-nav-mid highlights-tab" href="<?php
 					    echo htmlspecialchars($item['href']) ?>"<?php
@@ -603,25 +596,31 @@ class cavendishTemplate extends QuickTemplate {
 				    <span class="top-nav-right">&nbsp;</span>
 				    <?php
 				    } ?>
-			    </li>
+			    </li-->
 			    
 			    <?php 
 				    global $wgUser, $wgScriptPath, $tabs;
+				    $selectedFound = false;
 				    foreach($tabs as $key => $tab){
-				        if(isset($tabs[$key]['subtabs'][0])){
+				        if($tabs[$key]['href'] == "" && isset($tabs[$key]['subtabs'][0])){
 				            $tabs[$key]['href'] = $tab['subtabs'][0]['href'];
 				        }
 		           	    foreach($tab['subtabs'] as $subtab){
-		           	        if($subtab['selected'] == "selected"){
+		           	        if(strstr($subtab['selected'], "selected") !== false){
 		           	            $tabs[$key]['selected'] = "selected";
+		           	            $selectedFound = true;
 		           	        }
 		           	    }
+		           	}
+		           	if(!$selectedFound){
+		           	    // If a selected tab wasn't found, just default to the Main Tab
+		           	    $tabs['Main']['selected'] = "selected";
 		           	}
 				    foreach($tabs as $key => $tab){
 				        if($tab['href'] != ""){
 				            echo "<li class='top-nav-element {$tab['selected']}'>\n";
                             echo "    <span class='top-nav-left'>&nbsp;</span>\n";
-                            echo "    <a id='{$tab['id']}' class='top-nav-mid highlights-tab' href='{$tab['href']}' class='new'>{$tab['text']}</a>\n";
+                            echo "    <a id='{$tab['id']}' class='top-nav-mid highlights-tab' href='{$tab['href']}'>{$tab['text']}</a>\n";
                             echo "    <span class='top-nav-right'>&nbsp;</span>\n";
                             echo "</li>";
                         }
@@ -632,13 +631,11 @@ class cavendishTemplate extends QuickTemplate {
 	    <div id='submenu'>
             <ul>
 		       	<?php
-		       	 TabUtils::grandTabs($this->data['content_actions']);
 		       	 foreach($tabs as $tab){
 		       	    if($tab['selected'] == "selected"){
 		       	        foreach($tab['subtabs'] as $subtab){
 		           	        echo "<li class='{$subtab['selected']}'><a class='highlights-tab' href='".htmlspecialchars($subtab['href'])."'>".htmlspecialchars($subtab['text'])."</a></li>";
 		           	    }
-		           	    $this->data['content_actions'] = array();
 		           	    break;
 		       	    }
 		       	 }

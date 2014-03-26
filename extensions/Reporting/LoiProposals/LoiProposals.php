@@ -7,6 +7,8 @@ $wgSpecialPages['LoiProposals'] = 'LoiProposals';
 $wgExtensionMessagesFiles['LoiProposals'] = $dir . 'LoiProposals.i18n.php';
 $wgSpecialPageGroups['LoiProposals'] = 'network-tools';
 
+$wgHooks['SubLevelTabs'][] = 'LoiProposals::createSubTabs';
+
 function runLoiProposals($par) {
 	LoiProposals::run($par);
 }
@@ -1281,18 +1283,6 @@ EOF;
 
 	}
 
-	// static function createTab(){
-	// 	global $notifications, $wgServer, $wgScriptPath;
-		
-	// 	$selected = "";
-		
-	// 	    echo "<li class='top-nav-element $selected'>\n";
-	// 	    echo "	<span class='top-nav-left'>&nbsp;</span>\n";
-	// 	    echo "	<a id='lnk-notifications' class='top-nav-mid' href='$wgServer$wgScriptPath/index.php/Special' class='new'>My&nbsp;Notifications</a>\n";
-	// 	    echo "	<span class='top-nav-right'>&nbsp;</span>\n";
-		
-	// }
-
 	static function getData($blob_type, $rptype, $question, $subitem, $eval_id=0, $evalYear=EVAL_YEAR, $proj_id=0){
 
         $addr = ReportBlob::create_address($rptype, SEC_NONE, $question, $subitem);
@@ -1305,6 +1295,18 @@ EOF;
         $data = $blb->getData();
         
         return $data;
+    }
+    
+    static function createSubTabs($tabs){
+        global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle;
+        if($wgUser->isLoggedIn()){
+            $selected = ($wgTitle->getText() == "LoiProposals") ? "selected" : "";
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("LOIs", "$wgServer$wgScriptPath/index.php/Special:LoiProposals", "$selected phase2 hidden");
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("LOI Responses", "$wgServer$wgScriptPath/index.php/Special:LoiProposals?revision=2", "$selected phase2 hidden");
+            $selected = ($wgTitle->getNSText() == "GRAND" && $wgTitle->getText() == "Process") ? "selected" : "";
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Process", "$wgServer$wgScriptPath/index.php/GRAND:Process", "$selected phase2 hidden");
+        }
+        return true;
     }
 }
 
