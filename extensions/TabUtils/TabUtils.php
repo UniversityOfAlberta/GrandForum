@@ -19,6 +19,16 @@ class TabUtils {
                      'href' => $href,
                      'selected' => $selected);
     }
+    
+    static function createToolboxHeader($text){
+        return array('text' => $text, 
+                     'links' => array());
+    }
+    
+    static function createToolboxLink($text, $href){
+        return array('text' => $text,
+                     'href' => $href);
+    }
 
     static function actionTabs(&$content_actions){
         global $wgTitle, $wgServer, $wgScriptPath, $wgOut, $dropdownScript;

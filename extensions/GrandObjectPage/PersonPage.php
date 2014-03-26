@@ -5,8 +5,9 @@ autoload_register('GrandObjectPage/PersonPage');
 
 $personPage = new PersonPage();
 $wgHooks['ArticleViewHeader'][] = array($personPage, 'processPage');
-$wgHooks['SkinTemplateTabs'][] = array($personPage, 'addTabs');
 $wgHooks['userCan'][] = array($personPage, 'userCanExecute');
+
+$wgHooks['SubLevelTabs'][] = 'PersonPage::createSubTabs';
 
 class PersonPage {
 
@@ -195,16 +196,12 @@ class PersonPage {
         $wgOut->setPageTitle($person->getReversedName()." (".implode(", ", $roleNames).")");
     }
     
-    function addTabs($skin, &$content_actions){
+    static function createSubTabs($tabs){
         global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
-        $me = Person::newFromId($wgUser->getId());
-        if($me->isRole($wgTitle->getNSText()) && $me->getName() == $wgTitle->getText()){
-            $content_actions = array();
-            $content_actions[] = array('text' => $me->getNameForForms(),
-                                       'class' => 'selected',
-                                       'href' => "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}"
-                                    
-            );
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            $selected = ($me->isRole($wgTitle->getNSText()) && $me->getName() == $wgTitle->getText()) ? "selected" : "";
+            $tabs['Profile']['subtabs'][] = TabUtils::createSubTab($me->getNameForForms(), $me->getUrl(), $selected);
         }
         return true;
     }

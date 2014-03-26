@@ -551,6 +551,7 @@ class cavendishTemplate extends QuickTemplate {
           <?php 
 				      global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage, $config;
                     $GLOBALS['tabs'] = array();
+                    $GLOBALS['toolbox'] = array();
                     
                     $GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"), "$wgServer$wgScriptPath/index.php/Main_Page");
                     $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
@@ -558,46 +559,10 @@ class cavendishTemplate extends QuickTemplate {
                     
 			        wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
 			        wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
+			        
+			        wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
+			        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
 		      ?>
-			    
-			    <?php global $wgImpersonating;
-			        foreach($this->data['personal_urls'] as $key => $item) {
-			        //echo $key;
-			        $selected = "";
-			        $tabLeft = "";
-			        if($key == "userpage"){
-			            $user = Person::newFromName($wgUser->getName());
-			            if(count($user->getRoles()) > 0){
-			                if($wgTitle->getText() == $user->getName() && $user->isRole($wgTitle->getNSText())){
-			                    $selected = "selected";
-			                }
-			                $item['href'] = "{$user->getUrl()}";
-			                $item['text'] = "My Profile";
-			            }
-			        }
-			        else if($key == "mytalk" || $key == "mycontris" || $key == "watchlist" || $key == "anonuserpage" || $key == "anontalk" || $key == "preferences"){
-			            continue;
-			        }
-			        else if($key == "logout"){
-			            continue;
-			        }
-			        else if($key == "anonlogin"){
-			            continue;
-			        }
-			    ?>
-			
-			    <!--li class="top-nav-element <?php echo $selected.' '.$tabLeft; ?>">
-				    <span class="top-nav-left">&nbsp;</span>
-				    <a id="lnk-<?php echo $key; ?>" class="top-nav-mid highlights-tab" href="<?php
-					    echo htmlspecialchars($item['href']) ?>"<?php
-					    if(!empty($item['class'])) { ?> class="<?php
-						       echo htmlspecialchars($item['class']) ?>"<?php } ?>><?php
-						       echo $item['text'] ?></a>
-				    <span class="top-nav-right">&nbsp;</span>
-				    <?php
-				    } ?>
-			    </li-->
-			    
 			    <?php 
 				    global $wgUser, $wgScriptPath, $tabs;
 				    $selectedFound = false;
@@ -762,9 +727,6 @@ class cavendishTemplate extends QuickTemplate {
 			//echo "<li id='recentNews'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:Solr'>Full Text Search</a></li>";
 			echo "<li id='academiamap'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AcademiaMap'>Academia Map</a></li>";
 			echo "<li id='othertools'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:SpecialPages'>Other Tools</a></li>";
-			if($me->isRoleAtLeast(HQP)){
-				echo "<li id='recentNews'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:LoiProposals'>LOI Proposals</a></li>";
-			}
 			echo "<li id='sanityChecks'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AdvancedSearch'>Search for Experts</a></li>";
 		}
 		else {
