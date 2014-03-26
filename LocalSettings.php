@@ -27,7 +27,6 @@ set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_includ
 
 require_once( "$IP/includes/DefaultSettings.php" );
 require_once( "$IP/config/Config.php" );
-require_once( "$IP/Credentials.php" );
 
 ## Path settings
 $wgSitename         = $config->getValue("siteName");
@@ -95,19 +94,6 @@ $wgPasswordSender = "support@forum";
 $wgEnotifUserTalk = true; # UPO
 $wgEnotifWatchlist = true; # UPO
 $wgEmailAuthentication = true;
-
-## Database settings
-#$wgDBtype           = "";
-#$wgDBserver         = "";
-#$wgDBname           = "";
-
-## Please edit Credentials.php for configuring $wgDBuser, $wgDBpassword,
-## $wgDBadminuser, and $wgDBadminpassword.
-#$wgDBuser           = "";
-#$wgDBpassword       = "";
-#
-#$wgDBadminuser      = "";
-#$wgDBadminpassword  = "";
 
 # MySQL specific settings
 $wgDBprefix         = "mw_";
