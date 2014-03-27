@@ -1,8 +1,6 @@
 <?php
 $dir = dirname(__FILE__) . '/';
 
-//$wgHooks['UnknownAction'][] = 'getack';
-
 $wgSpecialPages['SanityChecks'] = 'SanityChecks';
 $wgExtensionMessagesFiles['SanityChecks'] = $dir . 'SanityChecks.i18n.php';
 $wgSpecialPageGroups['SanityChecks'] = 'network-tools';

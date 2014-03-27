@@ -1,8 +1,6 @@
 <?php
 $dir = dirname(__FILE__) . '/';
 
-$wgHooks['UnknownAction'][] = 'getack';
-
 $wgSpecialPages['CCVExport'] = 'CCVExport';
 $wgExtensionMessagesFiles['CCVExport'] = $dir . 'CCVExport.i18n.php';
 $wgSpecialPageGroups['CCVExport'] = 'network-tools';
@@ -12,7 +10,6 @@ $degree_map =
         'PhD Student'=>array("00000000000000000000000000000073","Doctorate"),
         'Undergraduate'=>array("00000000000000000000000000000071","Bachelor's"),
         'PostDoc'=>array("00000000000000000000000000000074","Post-doctorate"));
-
 
 function runCCVExport($par) {
 	CCVExport::run($par);

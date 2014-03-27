@@ -1,8 +1,6 @@
 <?php
 $dir = dirname(__FILE__) . '/';
 
-$wgHooks['UnknownAction'][] = 'getack';
-
 $wgSpecialPages['EthicsTable'] = 'EthicsTable';
 $wgExtensionMessagesFiles['EthicsTable'] = $dir . 'EthicsTable.i18n.php';
 $wgSpecialPageGroups['EthicsTable'] = 'network-tools';
@@ -10,7 +8,6 @@ $wgSpecialPageGroups['EthicsTable'] = 'network-tools';
 function runEthicsTable($par) {
 	EthicsTable::run($par);
 }
-
 
 class EthicsTable extends SpecialPage {
 

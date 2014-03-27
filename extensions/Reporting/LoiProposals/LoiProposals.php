@@ -1,8 +1,6 @@
 <?php
 $dir = dirname(__FILE__) . '/';
 
-//$wgHooks['UnknownAction'][] = 'getack';
-
 $wgSpecialPages['LoiProposals'] = 'LoiProposals';
 $wgExtensionMessagesFiles['LoiProposals'] = $dir . 'LoiProposals.i18n.php';
 $wgSpecialPageGroups['LoiProposals'] = 'network-tools';

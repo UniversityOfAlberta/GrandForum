@@ -47,6 +47,7 @@ $wgHooks['ParserAfterTidy'][] = 'checkPublicSections';
 $wgHooks['OutputPageParserOutput'][] = 'test';
 $wgHooks['UserGetRights'][] = 'GrandAccess::setupGrandAccess';
 $wgHooks['isValidEmailAddr'][] = 'isValidEmailAddr';
+$wgHooks['UserSetCookies'][] = 'userSetCookies';
 
 //$wgHooks['WatchArticle'][] = 'preventUnauthorizedWatching'; //This doesn't work anyway.  Users can still add pages to their watchlist through the raw editor.
 
@@ -104,4 +105,11 @@ function isValidEmailAddr($addr, $result){
     return false;
 }
 
+function userSetCookies($user, $session, $cookies){
+    global $wgCookiePrefix;
+    foreach($cookies as $name => $value){
+        $_COOKIE[$wgCookiePrefix . $name] = $value;
+    }
+    return true;
+}
 ?>

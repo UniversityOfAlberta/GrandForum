@@ -1,8 +1,6 @@
 <?php
 $dir = dirname(__FILE__) . '/';
 
-$wgHooks['UnknownAction'][] = 'getack';
-
 $wgSpecialPages['ReviewerConflicts'] = 'ReviewerConflicts';
 $wgExtensionMessagesFiles['ReviewerConflicts'] = $dir . 'ReviewerConflicts.i18n.php';
 $wgSpecialPageGroups['ReviewerConflicts'] = 'network-tools';

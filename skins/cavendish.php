@@ -675,13 +675,13 @@ class cavendishTemplate extends QuickTemplate {
 ?>
 	<li class="portlet" id="p-tb">
 <?php
-	global $wgServer, $wgScriptPath, $wgUser, $wgRequest;
+	global $wgServer, $wgScriptPath, $wgUser, $wgRequest, $wgAuth, $wgTitle, $config;
 	    $GLOBALS['toolbox'] = array();
-                
+        
         $GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader("People");
         $GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader("Products");
         $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader("Other");
-	    
+        
 		if($wgUser->isLoggedIn()){
 		    wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
 	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
@@ -700,7 +700,7 @@ class cavendishTemplate extends QuickTemplate {
 	        }
 		}
 		else {
-		    global $wgSiteName, $wgTitle;
+		    global $wgSiteName;
 		    setcookie('sideToggled', 'out', time()-3600);
 		    $loginFailed = (isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword']));
 		    if($loginFailed){
@@ -715,7 +715,11 @@ class cavendishTemplate extends QuickTemplate {
 		        else if(isset($_POST['wpMailmypassword'])){
 		            $user = User::newFromName($_POST['wpName']);
 		            $user->load();
-		            $failMessage = "<p>A new password has been sent to the e-mail address registered for \"{$_POST['wpName']}\".  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>.<br /><b>NOTE: Only one password reset can be requested every half hour.</b></p>";
+		            $failMessage = "<p>A new password has been sent to the e-mail address registered for \"{$_POST['wpName']}\".  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>.<br /><b>NOTE: Only one password reset can be requested every half hour.</b></p>";
+		        }
+		        else if($person->getUser()->checkTemporaryPassword($_POST['wpPassword'])){
+		            $failMessage = "";
+		            return;
 		        }
 		        else{
 		            $failMessage = "<p>Incorrect password entered. Please try again.</p>";
@@ -735,38 +739,47 @@ If you have forgotten your password please enter your login and ID and request a
 		        wfSetupSession();
 		        LoginForm::setLoginToken();
 		    }
+		    $getStr = "";
+	        foreach($_GET as $key => $get){
+	            if($key == "title" || 
+	               $key == "returnto" || 
+	               ($key == "action" && $get == "submitlogin") ||
+	               ($key == "type" && $get == "login")){
+	                continue;
+	            }
+	            if(strlen($getStr) == 0){
+	                $getStr .= "?$key=$get";
+	            }
+	            else{
+	                $getStr .= "&$key=$get";
+	            }
+	        }
+	        $returnTo = "";
+	        if(isset($_GET['returnto'])){
+	            $returnTo = $_GET['returnto'];
+	        }
+	        else if($wgTitle->getNsText() != ""){
+	            $returnTo .= str_replace(" ", "_", $wgTitle->getNsText()).':';
+	        }
+	        if(!isset($_GET['returnto'])){
+	            $returnTo .= str_replace(" ", "_", $wgTitle->getText());
+	        }
+	        $returnTo .= $getStr;
+	        $returnTo = urlencode($returnTo);
+	        if(isset($_POST['returnto'])){
+	            $returnTo = $_POST['returnto'];
+	        }
+	        
 		    $wgUser->setCookies();
+		    if(isset($_COOKIE[$config->getValue('dbName').'_mw_UserID'])){
+		        redirect("$wgServer$wgScriptPath/index.php/$returnTo");
+		    }
 		    $token = LoginForm::getLoginToken();
 		    $name = $wgRequest->getText('wpName');
-		    $getStr = "";
-		    foreach($_GET as $key => $get){
-		        if($key == "title" || $key == "returnto"){
-		            continue;
-		        }
-		        if(strlen($getStr) == 0){
-		            $getStr .= "?$key=$get";
-		        }
-		        else{
-		            $getStr .= "&$key=$get";
-		        }
-		    }
-		    $returnTo = "";
-		    if(isset($_GET['returnto'])){
-		        $returnTo = $_GET['returnto'];
-		    }
-		    else if($wgTitle->getNsText() != ""){
-		        $returnTo .= str_replace(" ", "_", $wgTitle->getNsText()).':';
-		    }
 		    
-		    if(!isset($_GET['returnto'])){
-		        $returnTo .= str_replace(" ", "_", $wgTitle->getText());
-		    }
-		    $returnTo .= $getStr;
-		    $returnTo = urlencode($returnTo);
-		    echo "<span>Login</span>
+		    echo "<span class='highlights-text'>Login</span>
 			<ul class='pBody'>";
 		    echo <<< EOF
-		    <li style='padding:5px;'>
 <form style='position:relative;left:5px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
 	<table style='width:185px;'>
 	    $message

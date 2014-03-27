@@ -1,8 +1,6 @@
 <?php
 $dir = dirname(__FILE__) . '/';
 
-$wgHooks['UnknownAction'][] = 'getack';
-
 $wgSpecialPages['ReportStatsTable'] = 'ReportStatsTable';
 $wgExtensionMessagesFiles['ReportStatsTable'] = $dir . 'ReportStatsTable.i18n.php';
 $wgSpecialPageGroups['ReportStatsTable'] = 'network-tools';
@@ -12,29 +10,6 @@ $wgHooks['SubLevelTabs'][] = 'ReportStatsTable::createSubTabs';
 function runReportStatsTable($par) {
 	ReportStatsTable::run($par);
 }
-
-/*
-function getack($action, $article){
-    global $wgOut;
-    if($action == 'getack'){
-        $ack = ReportStats::newFromMd5(@$_GET['ack']);
-        if($ack == null || $ack->getPdf() == ""){
-            return false;
-        }
-        else{
-            $wgOut->disable();
-	        ob_clean();
-	        header('Content-Type: application/pdf');
-	        header('Content-Disposition: attachment; filename="Acknowledgement_'.$ack->getName().'.pdf"');
-	        header('Cache-Control: private, max-age=0, must-revalidate');
-	        header('Pragma: public');
-	        ini_set('zlib.output_compression','0');
-	        echo $ack->getPdf();
-	        exit;
-	    }
-    }
-    return false;
-}*/
 
 class ReportStatsTable extends SpecialPage {
 

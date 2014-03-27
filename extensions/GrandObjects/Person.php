@@ -723,7 +723,9 @@ class Person extends BackboneModel {
     
     // Returns the Mediawiki User object for this Person
     function getUser(){
-        return User::newFromId($this->id);
+        $user = User::newFromId($this->id);
+        $user->load();
+        return $user;
     }
     
     // Returns whether or not this Person is logged in or not

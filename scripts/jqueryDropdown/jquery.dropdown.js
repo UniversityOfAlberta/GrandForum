@@ -42,7 +42,7 @@
     $(lis).appendTo($(divActions));
     $(this).append("<li class='actions'><a>" + title + "<span class='dropdown down' style='margin-left:5px;'>&#x25BC;</span></a></li>");
     $(this).imgDown();
-    $(divActions).append("<img class='dropdowntop' src='../skins/dropdowntop.png' />");
+    $(divActions).append("<img class='dropdowntop' src='" + wgServer + wgScriptPath + "/skins/dropdowntop.png' />");
     var dropdownTop = $('.dropdowntop', $(this));
     var that = this;
     
