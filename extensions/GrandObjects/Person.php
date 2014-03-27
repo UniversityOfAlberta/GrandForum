@@ -849,12 +849,6 @@ class Person extends BackboneModel {
         return false;
     }
     
-    // Returns whether or not this Person is a member of the give project name or not.
-    function is_member($proj) {
-        debug("Deprecated function 'is_member()' called.", E_USER_NOTICE);
-        return isMemberOf($proj);
-    }
-    
     // Returns the name of this Person
     function getName(){
         return $this->name;
@@ -1069,37 +1063,6 @@ class Person extends BackboneModel {
         if(DBFunctions::getNRows() > 0)
           return $data[0]['end_date'];
         return NULL;
-    }
-
-    // Returns the biography of the Person
-    function getBiography(){
-        debug("Deprecated function 'getBiography()' called.", E_USER_NOTICE);
-        $ns = 0;
-        if($this->isPNI()){
-            $ns = NS_GRAND_NI;
-        }
-        else if($this->isCNI()){
-            $ns = NS_GRAND_CR;
-        }
-        else if($this->isHQP()){
-            $ns = NS_STUDENT;
-        }
-        $title = Title::newFromText($this->getName(), $ns);
-        $article = Article::newFromId($title->getArticleId());
-        if($article != null){
-            $text = $article->getRawText();
-            $bio = preg_replace("/}}$/", "", $text);
-            $bio = preg_replace("/\|events.*/s", "", $bio);
-            $bio = preg_replace("/\|biography_public.*/s", "", $bio);
-            $bio = preg_replace("/^.*\|biography = /s", "", $bio);
-            $bio = preg_replace("/\&#39;/", "'", $bio);
-            $bio = preg_replace("/\&quot;/", "\"", $bio);
-            $bio = preg_replace("/\&/", "&amp;", $bio);
-            return $bio;
-        }
-        else{
-            return "";
-        }
     }
     
     /**

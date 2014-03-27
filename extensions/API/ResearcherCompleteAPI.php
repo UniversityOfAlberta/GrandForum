@@ -111,7 +111,7 @@ class ResearcherCompleteAPI extends ResearcherAPI{
                       "department"  => $uni['department'],
                       "position"    => $uni['position'],
                       "projects" => $projects,
-                      "biography" => $person->getBiography(),
+                      "biography" => $person->getProfile(),
                       "publications" => $publications,
                       "arifacts" => $artifacts
                      );

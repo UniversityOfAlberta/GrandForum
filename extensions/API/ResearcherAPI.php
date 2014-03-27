@@ -124,7 +124,7 @@ class ResearcherAPI extends API{
                       "department"  => $uni['department'],
                       "position"    => $uni['position'],
                       "projects" => $projects,
-                      "biography" => $person->getBiography()
+                      "biography" => $person->getProfile()
                      );
         if(file_exists("Photos/".str_ireplace(".", "_", $person->getName()).".jpg")){
             $p["photo"] = "$wgServer$wgScriptPath/Photos/".str_ireplace(".", "_", $person->getName()).".jpg";
