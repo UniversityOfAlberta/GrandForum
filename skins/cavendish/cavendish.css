@@ -486,7 +486,6 @@ input[type=button], input[type=submit], .button, .button:visited, .ui-button, .b
     border-radius:3px;
     border:1px solid #AAAAAA !important;
     display:inline-block;
-    color:#606060 !important;
     font-family: Arial, Verdana, sans-serif !important;
     font-size:13px;
     line-height:15px;
@@ -586,7 +585,6 @@ input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabl
     -webkit-border-radius:3px;
     border-radius:3px;
     display:inline-block;
-    color:#606060 !important;
     font-family: Arial, Verdana, sans-serif !important;
     font-size:13px;
     line-height:15px;
@@ -1084,7 +1082,7 @@ a.error_box_close {
 }
 
 .error a, .error a:visited, .inlineError a, .inlineError a:visited {
-    color: #D50013;
+    color: #D50013 !important;
     font-weight: bold;
 }
 
@@ -1102,7 +1100,7 @@ a.error_box_close {
 }
 
 .warning a, .warning a:visited, .inlineWarning a, .inlineWarning a:visited {
-    color: #9C600D;
+    color: #9C600D !important;
     font-weight: bold;
 }
 
@@ -1138,7 +1136,7 @@ a.error_box_close {
 }
 
 .info a, .info a:visited, .inlineInfo a, .inlineInfo a:visited {
-    color: #0A5398;
+    color: #0A5398 !important;
     font-weight: bold;
 }
 

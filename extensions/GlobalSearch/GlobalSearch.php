@@ -1,7 +1,5 @@
 <?php
 
-require_once("UserSearch.php");
-
 $wgHooks['BeforePageDisplay'][] = 'initGlobalSearch';
 
 function initGlobalSearch($out, $skin){
@@ -15,7 +13,6 @@ function initGlobalSearch($out, $skin){
     $globalSearch->loadMain();
     return true;
 }
-
 
 class GlobalSearch extends BackbonePage {
     

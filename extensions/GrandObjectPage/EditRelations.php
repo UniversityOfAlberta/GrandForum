@@ -5,6 +5,8 @@ $wgSpecialPages['EditRelations'] = 'EditRelations'; # Let MediaWiki know about t
 $wgExtensionMessagesFiles['EditRelations'] = $dir . 'EditRelations.i18n.php';
 $wgSpecialPageGroups['EditRelations'] = 'network-tools';
 
+$wgHooks['ToolboxLinks'][] = 'EditRelations::createToolboxLinks';
+
 function runEditRelations($par) {
   EditRelations::run($par);
 }
@@ -242,5 +244,14 @@ class EditRelations extends SpecialPage{
         }
         $wgOut->addHTML("</table>");
 	}
+	
+	static function createToolboxLinks($toolbox){
+        global $wgServer, $wgScriptPath;
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(CNI)){
+            $toolbox['People']['links'][2] = TabUtils::createToolboxLink("Edit Relations", "$wgServer$wgScriptPath/index.php/Special:EditRelations");
+        }
+        return true;
+    }
 }
 ?>

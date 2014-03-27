@@ -53,6 +53,14 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:ho
     color: $hl !important;
 }
 
+input[type=button], input[type=submit], .button, .button:visited, .ui-button, .button:link , button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
+    color:#606060 !important;
+}
+
+input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabled], button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:active {
+    color:#606060 !important;
+}
+
 /* JQuery UI */
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected a{

@@ -127,6 +127,9 @@ function impersonate(){
         $wgMessage->addInfo($message);
         
         $pageAllowed = false;
+        if($realPerson->isRoleAtLeast(MANAGER)){
+            $pageAllowed = true;
+        }
         wfRunHooks('CheckImpersonationPermissions', array($person, $realPerson, $ns, $title, &$pageAllowed));
         
         if(!$pageAllowed && !((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions']) || (isset($_GET['action']) && $_GET['action'] == 'getUserMode'))){

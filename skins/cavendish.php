@@ -547,50 +547,47 @@ class cavendishTemplate extends QuickTemplate {
         </div>
 	    <div id="header">
 		    <a name="top" id="contentTop"></a>
-    <ul class="top-nav">
-          <?php 
-				      global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage, $config;
-                    $GLOBALS['tabs'] = array();
-                    $GLOBALS['toolbox'] = array();
-                    
-                    $GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"), "$wgServer$wgScriptPath/index.php/Main_Page");
-                    $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
-                    $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
-                    
-			        wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
-			        wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
-			        
-			        wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
-			        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
-		      ?>
-			    <?php 
-				    global $wgUser, $wgScriptPath, $tabs;
-				    $selectedFound = false;
-				    foreach($tabs as $key => $tab){
-				        if($tabs[$key]['href'] == "" && isset($tabs[$key]['subtabs'][0])){
-				            $tabs[$key]['href'] = $tab['subtabs'][0]['href'];
-				        }
-		           	    foreach($tab['subtabs'] as $subtab){
-		           	        if(strstr($subtab['selected'], "selected") !== false){
-		           	            $tabs[$key]['selected'] = "selected";
-		           	            $selectedFound = true;
-		           	        }
-		           	    }
-		           	}
-		           	if(!$selectedFound){
-		           	    // If a selected tab wasn't found, just default to the Main Tab
-		           	    $tabs['Main']['selected'] = "selected";
-		           	}
-				    foreach($tabs as $key => $tab){
-				        if($tab['href'] != ""){
-				            echo "<li class='top-nav-element {$tab['selected']}'>\n";
-                            echo "    <span class='top-nav-left'>&nbsp;</span>\n";
-                            echo "    <a id='{$tab['id']}' class='top-nav-mid highlights-tab' href='{$tab['href']}'>{$tab['text']}</a>\n";
-                            echo "    <span class='top-nav-right'>&nbsp;</span>\n";
-                            echo "</li>";
-                        }
-				    }
-			    ?>
+            <ul class="top-nav">
+            <?php 
+		        global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage, $config;
+                $GLOBALS['tabs'] = array();
+                
+                $GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"), "$wgServer$wgScriptPath/index.php/Main_Page");
+                $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
+                $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
+                
+	            wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
+	            wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
+            ?>
+		    <?php 
+			    global $wgUser, $wgScriptPath, $tabs;
+			    $selectedFound = false;
+			    foreach($tabs as $key => $tab){
+			        ksort($tab['subtabs']);
+			        if($tabs[$key]['href'] == "" && isset($tabs[$key]['subtabs'][0])){
+			            $tabs[$key]['href'] = $tab['subtabs'][0]['href'];
+			        }
+	           	    foreach($tab['subtabs'] as $subtab){
+	           	        if(strstr($subtab['selected'], "selected") !== false){
+	           	            $tabs[$key]['selected'] = "selected";
+	           	            $selectedFound = true;
+	           	        }
+	           	    }
+	           	}
+	           	if(!$selectedFound){
+	           	    // If a selected tab wasn't found, just default to the Main Tab
+	           	    $tabs['Main']['selected'] = "selected";
+	           	}
+			    foreach($tabs as $key => $tab){
+			        if($tab['href'] != ""){
+			            echo "<li class='top-nav-element {$tab['selected']}'>\n";
+                        echo "    <span class='top-nav-left'>&nbsp;</span>\n";
+                        echo "    <a id='{$tab['id']}' class='top-nav-mid highlights-tab' href='{$tab['href']}'>{$tab['text']}</a>\n";
+                        echo "    <span class='top-nav-right'>&nbsp;</span>\n";
+                        echo "</li>";
+                    }
+			    }
+		    ?>
 		    </ul>
 	    </div>
 	    <div id='submenu'>
@@ -618,20 +615,8 @@ class cavendishTemplate extends QuickTemplate {
     <div id="side" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
 		    <ul id="nav">
 		    <?php
-			    global $wgUser;
-	    $sidebar = $this->data['sidebar'];
-	    if ( !isset( $sidebar['TOOLBOX'] ) ) $sidebar['TOOLBOX'] = true;
-	    if ( !isset( $sidebar['LANGUAGES'] ) ) $sidebar['LANGUAGES'] = true;
-	    foreach ($sidebar as $boxName => $cont) {
-		    if ( $boxName == 'TOOLBOX' ) {
 		        $this->toolbox();
-		    } elseif ( $boxName == 'LANGUAGES' ) {
-			    $this->languageBox();
-		    } else {
-			    $this->customBox( $boxName, $cont );
-		    }
-	    }
-	    ?>
+	        ?>
 		    </ul>  
 		</div><!-- end of SIDE div -->
 	<div id="mBody">
@@ -686,48 +671,33 @@ class cavendishTemplate extends QuickTemplate {
 
 <?php
 	}
-/*************************************************************************************************/
 	function toolbox() {
 ?>
 	<li class="portlet" id="p-tb">
 <?php
-	global $wgScriptPath, $wgUser, $wgRequest;
+	global $wgServer, $wgScriptPath, $wgUser, $wgRequest;
+	    $GLOBALS['toolbox'] = array();
+                
+        $GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader("People");
+        $GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader("Products");
+        $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader("Other");
+	    
 		if($wgUser->isLoggedIn()){
-		    $me = Person::newFromId($wgUser->getId());
-		    if($me->isRoleAtLeast(CNI)){
-		        echo "<span class='highlights-text'>People</span>
-			    <ul class='pBody'>";
-		        //echo "<li id='userRequest'><a href='{$wgScriptPath}/index.php/Special:UserSearch'>Find Member</a></li>";
-		        echo "<li id='userRequest'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddMember'>Add Member</a></li>";
-		        echo "<li id='userEditRequest'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:EditMember'>Edit Member</a></li>";
-		        echo "<li id='userEditRelation'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:EditRelations'>Edit Relations</a></li>";
-		        echo "</ul>";
-		    }
-		    echo "<span class='highlights-text'><hr />Products</span>
-				<ul class='pBody'>";
-		    echo "<li id='addPublication'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddPublicationPage'>Add/Edit Publication</a></li>";
-		    echo "<li id='addArtifact'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddArtifactPage'>Add/Edit Artifact</a></li>";
-		    echo "<li id='addPresentation'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddPresentationPage'>Add/Edit Presentation</a></li>";
-			echo "<li id='addActivity'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddActivityPage'>Add/Edit Activity</a></li>";
-			echo "<li id='addPress'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddPressPage'>Add/Edit Press</a></li>";
-			echo "<li id='addAward'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddAwardPage'>Add/Edit Award</a></li>";
-			if($me->isRoleAtLeast(CNI)){
-			    echo "<li id='addContribution'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddContributionPage'>Add/Edit Contribution</a></li>";
-			}
-			echo "<li id='addMultimedia'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AddMultimediaStoryPage'>Add/Edit Multimedia Story</a></li>";
-			echo "</ul>";
-			echo "<ul class='pBody'>";
-			echo "<li id='addMultimedia'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:MyDuplicateProducts'>Duplicate Management</a></li>";
-			//echo "<li id='sanityChecks'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:SanityChecks'>Data Quality Issues</a></li>";
-			echo "</ul>";
-		    echo "<span class='highlights-text'><hr />Other</span>
-				<ul class='pBody'>";
-			echo "<li id='grandinstructions'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/GRAND:Instructions'>Instructions</a></li>";
-			//echo "<li id='recentNews'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php?action=getNews'>Recent News</a></li>";
-			//echo "<li id='recentNews'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:Solr'>Full Text Search</a></li>";
-			echo "<li id='academiamap'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AcademiaMap'>Academia Map</a></li>";
-			echo "<li id='othertools'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:SpecialPages'>Other Tools</a></li>";
-			echo "<li id='sanityChecks'><a class='highlights-background-hover' href='{$wgScriptPath}/index.php/Special:AdvancedSearch'>Search for Experts</a></li>";
+		    wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
+	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
+	        $GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
+	        global $toolbox;
+	        $i = 0;
+	        foreach($toolbox as $key => $header){
+	            $hr = ($i > 0) ? "<hr />" : "";
+	            echo "<span class='highlights-text'>{$hr}{$header['text']}</span><ul class='pBody'>";
+	            ksort($header['links']);
+	            foreach($header['links'] as $lKey => $link){
+	                echo "<li><a class='highlights-background-hover' href='{$link['href']}'>{$link['text']}</a></li>";
+	            }
+	            echo "</ul>";
+	            $i++;
+	        }
 		}
 		else {
 		    global $wgSiteName, $wgTitle;
@@ -838,49 +808,6 @@ EOF;
 		wfRunHooks( 'SkinTemplateToolboxEnd', array( &$this ) );
 ?>
 			</ul>
-	</li>
-<?php
-	}
-
-	/*************************************************************************************************/
-	function languageBox() {
-		if( $this->data['language_urls'] ) {
-?>
-	<li id="p-lang" class="portlet">
-		<span><?php $this->msg('otherlanguages') ?></span>
-			<ul class="pBody">
-<?php		foreach($this->data['language_urls'] as $langlink) { ?>
-				<li class="<?php echo htmlspecialchars($langlink['class'])?>"><?php
-				?><a href="<?php echo htmlspecialchars($langlink['href']) ?>"><?php echo $langlink['text'] ?></a></li>
-<?php		} ?>
-			</ul>
-	</li>
-<?php
-		}
-	}
-
-	/*************************************************************************************************/
-	function customBox( $bar, $cont ) {
-?>
-	<li class='generated-sidebar portlet' id='<?php echo Sanitizer::escapeId( "p-$bar" ) ?>'<?php echo $this->skin->tooltip('p-'.$bar) ?>>
-		<span><?php $out = wfMsg( $bar ); if (wfEmptyMsg($bar, $out)) echo $bar; else echo $out; ?></span>
-<?php   if ( is_array( $cont ) ) { ?>
-			<ul class='pBody'>
-<?php
-	global $wgUser;
-	 			foreach($cont as $key => $val) {
-					if(($val['id'] == "n-recentchanges" && $wgUser->isLoggedIn()) || $val['id'] != "n-recentchanges"){ ?>
-					<li id="<?php echo Sanitizer::escapeId($val['id']) ?>"<?php
-						if ( $val['active'] ) { ?> class="active" <?php }
-					?>><a href="<?php echo htmlspecialchars($val['href']) ?>"<?php echo $this->skin->tooltipAndAccesskey($val['id']) ?>><?php echo htmlspecialchars($val['text']) ?></a></li>
-<?php				}
-			} ?>
-			</ul>
-<?php   } else {
-			# allow raw HTML block to be defined by extensions
-			print $cont;
-		}
-?>
 	</li>
 <?php
 	}

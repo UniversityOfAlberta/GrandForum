@@ -7,6 +7,8 @@ $wgSpecialPages['AcademiaMap'] = 'AcademiaMap';
 $wgExtensionMessagesFiles['AcademiaMap'] = $dir . 'AcademiaMap.i18n.php';
 $wgSpecialPageGroups['AcademiaMap'] = 'network-tools';
 
+$wgHooks['ToolboxLinks'][] = 'AcademiaMap::createToolboxLinks';
+
 function runAcademiaMap($par) {
 	AcademiaMap::run($par);
 }
@@ -27,6 +29,13 @@ class AcademiaMap extends SpecialPage {
 	    </script>
 	    <iframe id='academiaMapFrame' frameborder='0' scrolling='no' style='border-width:0;min-width:1000px;min-height:500px;' src='$wgServer$wgScriptPath/index.php?action=academiaMapProxy&url=http://academiamap.com/?de=cs&as=grand_nce'></iframe>");
 	}
+	
+	static function createToolboxLinks($toolbox){
+        global $wgServer, $wgScriptPath;
+        $me = Person::newFromWgUser();
+        $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Academia Map", "$wgServer$wgScriptPath/index.php/Special:AcademiaMap");
+        return true;
+    }
 	
 }
 ?>

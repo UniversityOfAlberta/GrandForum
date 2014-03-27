@@ -7,6 +7,8 @@ $wgSpecialPages['EditMember'] = 'EditMember'; # Let MediaWiki know about the spe
 $wgExtensionMessagesFiles['EditMember'] = $dir . 'EditMember.i18n.php';
 $wgSpecialPageGroups['EditMember'] = 'network-tools';
 
+$wgHooks['ToolboxLinks'][] = 'EditMember::createToolboxLinks';
+
 function runEditMember($par) {
   EditMember::run($par);
 }
@@ -1390,13 +1392,13 @@ class EditMember extends SpecialPage{
         return $text;
     }
     
-    static function createTab() {
+    static function createToolboxLinks($toolbox){
         global $wgServer, $wgScriptPath;
-        echo <<<EOM
-<li class='top-nav-element'><span class='top-nav-left'>&nbsp;</span>
-<a class='top-nav-mid' href='$wgServer$wgScriptPath/index.php/Special:EditMember' class='new'>Role&nbsp;Management</a>
-<span class='top-nav-right'>&nbsp;</span></li>
-EOM;
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(CNI)){
+            $toolbox['People']['links'][1] = TabUtils::createToolboxLink("Edit Member", "$wgServer$wgScriptPath/index.php/Special:EditMember");
+        }
+        return true;
     }
 }
 

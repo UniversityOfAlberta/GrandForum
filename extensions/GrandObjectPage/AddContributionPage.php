@@ -7,6 +7,7 @@ $wgExtensionMessagesFiles['AddContributionPage'] = $dir . 'AddContributionPage.i
 $wgSpecialPageGroups['AddContributionPage'] = 'network-tools';
 
 $wgHooks['UnknownAction'][] = 'contributionSearch';
+$wgHooks['ToolboxLinks'][] = 'AddContributionPage::createToolboxLinks';
 
 function runAddContributionPage($par){
     AddContributionPage::run($par);
@@ -107,6 +108,15 @@ class AddContributionPage extends SpecialPage{
 		                    It looks like there might be a contribution with a similar name to the one entered.<br /><br />
 		                    <div id='suggestions'></div>
 		                 </fieldset>");
+	}
+	
+	static function createToolboxLinks($toolbox){
+	    global $wgServer, $wgScriptPath;
+	    $me = Person::newFromWgUser();
+	    if($me->isRoleAtLeast(CNI)){
+	        $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add/Edit Contribution", "$wgServer$wgScriptPath/index.php/Special:AddContributionPage");
+	    }
+	    return true;
 	}
 }
 

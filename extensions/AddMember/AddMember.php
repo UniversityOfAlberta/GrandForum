@@ -5,6 +5,8 @@ $wgSpecialPages['AddMember'] = 'AddMember'; # Let MediaWiki know about the speci
 $wgExtensionMessagesFiles['AddMember'] = $dir . 'AddMember.i18n.php';
 $wgSpecialPageGroups['AddMember'] = 'network-tools';
 
+$wgHooks['ToolboxLinks'][] = 'AddMember::createToolboxLinks';
+
 function runAddMember($par) {
   AddMember::run($par);
 }
@@ -295,6 +297,15 @@ class AddMember extends SpecialPage{
         
         $form = self::createForm();
         $wgOut->addHTML($form->render());
+    }
+    
+    static function createToolboxLinks($toolbox){
+        global $wgServer, $wgScriptPath;
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(CNI)){
+            $toolbox['People']['links'][0] = TabUtils::createToolboxLink("Add Member", "$wgServer$wgScriptPath/index.php/Special:AddMember");
+        }
+        return true;
     }
 }
 

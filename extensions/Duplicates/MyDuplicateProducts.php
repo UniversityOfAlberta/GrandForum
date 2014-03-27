@@ -6,6 +6,8 @@ $wgSpecialPages['MyDuplicateProducts'] = 'MyDuplicateProducts'; # Let MediaWiki 
 $wgExtensionMessagesFiles['MyDuplicateProducts'] = $dir . 'MyDuplicateProducts.i18n.php';
 $wgSpecialPageGroups['MyDuplicateProducts'] = 'other-tools';
 
+$wgHooks['ToolboxLinks'][] = 'MyDuplicateProducts::createToolboxLinks';
+
 function runMyDuplicateProducts($par){
     MyDuplicateProducts::run($par);
 }
@@ -30,6 +32,13 @@ class MyDuplicateProducts extends SpecialPage{
         $tabbedPage->addTab(new DuplicatesTab("Presentations", $handlers['myPresentation']));
         
         $tabbedPage->showPage();
+	}
+	
+	static function createToolboxLinks($toolbox){
+	    global $wgServer, $wgScriptPath;
+	    $me = Person::newFromWgUser();
+	    $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Duplicate Management", "$wgServer$wgScriptPath/index.php/Special:MyDuplicateProducts");
+	    return true;
 	}
 }
 

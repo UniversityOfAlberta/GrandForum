@@ -7,6 +7,7 @@ $wgExtensionMessagesFiles['AddMultimediaStoryPage'] = $dir . 'AddMultimediaStory
 $wgSpecialPageGroups['AddMultimediaStoryPage'] = 'network-tools';
 
 $wgHooks['UnknownAction'][] = 'MultimediaStorySearch';
+$wgHooks['ToolboxLinks'][] = 'AddMultimediaStoryPage::createToolboxLinks';
 
 function runAddMultimediaStoryPage($par){
     AddMultimediaStoryPage::run($par);
@@ -109,6 +110,13 @@ class AddMultimediaStoryPage extends SpecialPage{
 		                    It looks like there might be a Multimedia Story with a similar name to the one entered.<br /><br />
 		                    <div id='suggestions'></div>
 		                 </fieldset>");
+	}
+	
+	static function createToolboxLinks($toolbox){
+	    global $wgServer, $wgScriptPath;
+	    $me = Person::newFromWgUser();
+	    $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add/Edit Multimedia Story", "$wgServer$wgScriptPath/index.php/Special:AddMultimediaStoryPage");
+	    return true;
 	}
 }
 

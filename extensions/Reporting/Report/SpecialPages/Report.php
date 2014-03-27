@@ -7,6 +7,7 @@ $wgSpecialPageGroups['Report'] = 'reporting-tools';
 
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
+$wgHooks['ToolboxLinks'][] = 'Report::createToolboxLinks';
 
 class Report extends AbstractReport{
     
@@ -178,6 +179,13 @@ class Report extends AbstractReport{
                 }
             }
         }
+        return true;
+    }
+    
+    static function createToolboxLinks($toolbox){
+        global $wgServer, $wgScriptPath, $config;
+        $me = Person::newFromWgUser();
+        $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Instructions", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Instructions");
         return true;
     }
 }

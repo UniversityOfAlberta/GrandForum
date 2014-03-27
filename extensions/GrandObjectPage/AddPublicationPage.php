@@ -27,6 +27,12 @@ $wgExtensionMessagesFiles['AddPresentationPage'] = $dir . 'AddPresentationPage.i
 $wgSpecialPageGroups['AddPresentationPage'] = 'network-tools';
 
 $wgHooks['UnknownAction'][] = 'pubSearch';
+$wgHooks['ToolboxLinks'][] = 'AddPublicationPage::createToolboxLinks';
+$wgHooks['ToolboxLinks'][] = 'AddArtifactPage::createToolboxLinks';
+$wgHooks['ToolboxLinks'][] = 'AddPresentationPage::createToolboxLinks';
+$wgHooks['ToolboxLinks'][] = 'AddActivityPage::createToolboxLinks';
+$wgHooks['ToolboxLinks'][] = 'AddPressPage::createToolboxLinks';
+$wgHooks['ToolboxLinks'][] = 'AddAwardPage::createToolboxLinks';
 
 function runAddPublicationPage($par){
     AddPublicationPage::run($par);
@@ -213,6 +219,13 @@ class AddActivityPage extends SpecialPage{
 		$wgOut->addHTML("</div>");
 		$wgOut->addHTML("</div>");
 	}
+	
+	static function createToolboxLinks($toolbox){
+	    global $wgServer, $wgScriptPath;
+	    $me = Person::newFromWgUser();
+	    $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add/Edit Activity", "$wgServer$wgScriptPath/index.php/Special:AddActivityPage");
+	    return true;
+	}
 }
 
 class AddArtifactPage extends SpecialPage{
@@ -248,6 +261,13 @@ class AddArtifactPage extends SpecialPage{
 
 		$wgOut->addHTML("</div>");
 		$wgOut->addHTML("</div>");
+	}
+	
+	static function createToolboxLinks($toolbox){
+	    global $wgServer, $wgScriptPath;
+	    $me = Person::newFromWgUser();
+	    $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add/Edit Artifact", "$wgServer$wgScriptPath/index.php/Special:AddArtifactPage");
+	    return true;
 	}
 }
 
@@ -286,6 +306,13 @@ class AddPublicationPage extends SpecialPage{
 		$wgOut->addHTML("</div>");
 		$wgOut->addHTML("</div>");
 	}
+	
+	static function createToolboxLinks($toolbox){
+	    global $wgServer, $wgScriptPath;
+	    $me = Person::newFromWgUser();
+	    $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add/Edit Publication", "$wgServer$wgScriptPath/index.php/Special:AddPublicationPage");
+	    return true;
+	}
 }
 
 class AddPressPage extends SpecialPage{
@@ -322,6 +349,13 @@ class AddPressPage extends SpecialPage{
 
 		$wgOut->addHTML("</div>");
 		$wgOut->addHTML("</div>");
+	}
+	
+	static function createToolboxLinks($toolbox){
+	    global $wgServer, $wgScriptPath;
+	    $me = Person::newFromWgUser();
+	    $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add/Edit Press", "$wgServer$wgScriptPath/index.php/Special:AddPressPage");
+	    return true;
 	}
 }
 
@@ -361,6 +395,13 @@ class AddAwardPage extends SpecialPage{
 		$wgOut->addHTML("</div>");
 		$wgOut->addHTML("</div>");
 	}
+	
+	static function createToolboxLinks($toolbox){
+	    global $wgServer, $wgScriptPath;
+	    $me = Person::newFromWgUser();
+	    $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add/Edit Award", "$wgServer$wgScriptPath/index.php/Special:AddAwardPage");
+	    return true;
+	}
 }
 
 class AddPresentationPage extends SpecialPage{
@@ -398,6 +439,13 @@ class AddPresentationPage extends SpecialPage{
 
 		$wgOut->addHTML("</div>");
 		$wgOut->addHTML("</div>");
+	}
+	
+	static function createToolboxLinks($toolbox){
+	    global $wgServer, $wgScriptPath;
+	    $me = Person::newFromWgUser();
+	    $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add/Edit Presentation", "$wgServer$wgScriptPath/index.php/Special:AddPresentationPage");
+	    return true;
 	}
 }
 
