@@ -1,10 +1,16 @@
 <?php
 
+    $config = new Config();
+
+    require_once("default_config.php");
     require_once("config.php");
+    
+    $config->define();
     
     class Config {
     
         var $config = array();
+        var $constants = array();
         
         function setValue($key, $value){
             $this->config[$key] = $value;
@@ -14,8 +20,18 @@
             return $this->config[$key];
         }
         
-        function define($key, $value){
-            define($key, $value);
+        function setConst($key, $value){
+            $this->constants[$key] = $value;
+        }
+        
+        function getConst($key){
+            return $this->constants[$key];
+        }
+        
+        function define(){
+            foreach($this->constants as $key => $value){
+                define($key, $value);
+            }
         }
     }
     
