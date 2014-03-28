@@ -118,13 +118,13 @@ class PollView {
 	}
 	
 	function sendEmails(){
-		global $wgOut, $wgServer, $wgScriptPath;
+		global $wgOut, $wgServer, $wgScriptPath, $config;
 		if(isset($_GET['email']) && $_GET['email'] == true){
 			foreach($this->pollCollection->getPotentialVoters() as $user){
 				if(!$this->pollCollection->hasUserVoted($user->user_id)){
 					$to = $user->user_email;
 					if($to != ""){
-						$subject = "GRAND: You have been requested to vote on a poll";
+						$subject = "{$config->getValue('siteName')}: You have been requested to vote on a poll";
 						$headers = 'From: support@forum.grand-nce.ca' . "\r\n" .
 							    
 							    'Content-type:text/html;charset=iso-8859-1' . "" .
@@ -136,7 +136,7 @@ class PollView {
 						<br />
 						$authorName has requested that you submit your vote for the poll \"<a href='$wgServer$wgScriptPath/index.php?action=viewPoll&id={$this->pollCollection->id}'>{$this->pollCollection->name}</a>\".<br /><br />
 						Best Regards<br />
-						GRAND Forum Team";
+						{$config->getValue('siteName')} Forum Team";
 						mail("dwt@ualberta.ca", $subject, $message, $headers);
 					}
 				}

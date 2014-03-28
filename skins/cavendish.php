@@ -771,9 +771,19 @@ If you have forgotten your password please enter your login and ID and request a
 	        }
 	        
 		    $wgUser->setCookies();
-		    if(isset($_COOKIE[$config->getValue('dbName').'_mw_UserID'])){
-		        redirect("$wgServer$wgScriptPath/index.php/$returnTo");
+		    
+		    if(isset($_POST['wpPassword']) &&
+		       isset($_POST['wpNewPassword']) &&
+		       isset($_POST['wpRetype']) &&
+		       isset($_POST['wpName']) &&
+		       $_POST['wpNewPassword'] == $_POST['wpRetype']){
+		        $user = User::newFromName($_POST['wpName']);
+		        $user->load();
+		        if($user->checkPassword($_POST['wpNewPassword'])){
+		            redirect("$wgServer$wgScriptPath/index.php/$returnTo");
+		        }
 		    }
+		    
 		    $token = LoginForm::getLoginToken();
 		    $name = $wgRequest->getText('wpName');
 		    

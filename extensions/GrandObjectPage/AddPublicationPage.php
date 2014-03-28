@@ -279,7 +279,7 @@ class AddPublicationPage extends SpecialPage{
 	}
 
 	function run($par){
-		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
+		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
 	    if(isset($_GET['pubSearch'])){
 	        header("Content-type: text/json");
 	        echo Paper::search($_GET['phrase']);
@@ -295,7 +295,11 @@ class AddPublicationPage extends SpecialPage{
 		
 		$wgOut->addHTML("<h3 id='addpublication'>Add/Edit Publication</h3>");
 		$wgOut->addHTML("<div id='add-edit_publications'>");
-	    $wgOut->addHTML("Enter in the title of the publication in the text field below.  If there is an already existing publication with the same or similar title, it will be listed below the text field.  If you see the publication in the list, then you can click on the title to edit its information, otherwise you can choose to create the publication with the title you have entered by clicking the 'Create' button. You can also add a new publication using the <a href='$wgServer$wgScriptPath/index.php/Special:ImportBibTex'>Import BibTeX</a> page.<br /><br />You can review the complete list of publications in the forum and search by title, author and project (if applicable) at <a href='$wgServer$wgScriptPath/index.php/Special:Products#/Publication'>GRAND Publications</a>.<br /><br />
+	    $wgOut->addHTML("Enter in the title of the publication in the text field below.  If there is an already existing publication with the same or similar title, it will be listed below the text field.  If you see the publication in the list, then you can click on the title to edit its information, otherwise you can choose to create the publication with the title you have entered by clicking the 'Create' button.");
+	    if(isExtensionEnabled('ImportBibTex')){
+	        $wgOut->addHTML("You can also add a new publication using the <a href='$wgServer$wgScriptPath/index.php/Special:ImportBibTex'>Import BibTeX</a> page.");
+	    }
+	    $wgOut->addHTML("<br /><br />You can review the complete list of publications in the forum and search by title, author and project (if applicable) at <a href='$wgServer$wgScriptPath/index.php/Special:Products#/Publication'>{$config->getValue('siteName')} Publications</a>.<br /><br />
 		                 <b>Title:</b> <input onKeyPress='submitOnEnter(event)' type='text' id='title' name='title' size='50' onKeyUp='search(this.value);' /> <input type='button' onClick='changeLocation();' name='submit' value='Create' /><br />
 		                 <fieldset id='sug' style='display:none;'>
 		                    <legend>Suggestions</legend>

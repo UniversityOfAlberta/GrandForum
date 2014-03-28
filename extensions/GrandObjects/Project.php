@@ -1499,33 +1499,6 @@ EOF;
             return null;
         }
     }
-    
-    static function createTab($tabs){
-        global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
-        $me = Person::newFromWgUser();
-        $projects = $me->getProjects();
-        if(!$wgUser->isLoggedIn() || count($projects) == 0 || $me->isRoleAtLeast(MANAGER)){
-		    return true;
-		}
-
-        $selected = "";
-        foreach($projects as $key => $project){
-            if($wgTitle->getNSText() == $project->getName()){
-                $selected = "selected";
-            }
-            if($project->isSubProject()){
-                unset($projects[$key]);
-            }
-        }
-        $projects = array_values($projects);
-        if(isset($projects[0])){
-            $tabs["My Projects"] = array('id' => "lnk-my_projects",
-                                         'href' => $projects[0]->getUrl(),
-                                         'text' => "My Projects",
-                                         'selected' => $selected);
-        }
-        return true;
-    }
 }
 
 ?>

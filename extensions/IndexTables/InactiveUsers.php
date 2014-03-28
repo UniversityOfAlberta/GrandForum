@@ -20,11 +20,11 @@ class InactiveUsers extends SpecialPage {
 	}
 
     function run($par){
-		global $wgServer, $wgScriptPath, $wgUser, $wgOut;
+		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
 		$text = "";
 		$data = Person::getAllPeople(INACTIVE);
 
-        $text .= "Below are all the current ".INACTIVE." users in GRAND.  To search for someone in particular, use the search box below.  You can search by name, project or university.  Regular Expressions are supported, so a search such as 'MEOW|CAPSIM' will list every member in either MEOW or CAPSIM.<br />";
+        $text .= "Below are all the current ".INACTIVE." users in the {$config->getValue('siteName')}.  To search for someone in particular, use the search box below.  You can search by name, project or university.  Regular Expressions are supported, so a search such as 'PROJ1|PROJ2' will list every member in either PROJ1 or PROJ2.<br />";
 		$text .= "<b>Search:</b> <input id='search' type='text' size='50' onKeyUp='filterResults(this.value);' />
 <table class='wikitable sortable' bgcolor='#aaaaaa' cellspacing='1' cellpadding='2' style='text-align:center;'>
 <tr bgcolor='#F2F2F2'><th>Last Name</th><th>First Name</th><th>Last Role</th></tr>

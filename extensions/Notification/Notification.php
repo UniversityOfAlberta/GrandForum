@@ -44,7 +44,7 @@ class Notification{
 	}
 	
 	static function addNotification($creator, $user, $name, $message, $url, $mail=false){
-	    global $wgServer, $wgScriptPath, $wgImpersonating;
+	    global $wgServer, $wgScriptPath, $wgImpersonating, $config;
 	    if($wgImpersonating){
 	        return;
 	    }
@@ -62,9 +62,9 @@ class Notification{
                 VALUES('{$id}','{$user->getId()}','$name','{$message}','{$url}',CURRENT_TIMESTAMP,'1')";
         if($mail){
             $headers = "Content-type: text/html\r\n"; 
-            $headers .= 'From: GRAND Forum <noreply@forum.grand-nce.ca>' . "\r\n";
+            $headers .= "From: {$config->getValue('siteName')} <support@forum.grand-nce.ca>" . "\r\n";
             $wUser = User::newFromId($user->getId());
-            mail($wUser->getEmail(), $name, nl2br($message)."<br /><br /><a href='$url'>Notification URL</a><br /><br /><a href='{$wgServer}{$wgScriptPath}'>GRAND Forum</a>", $headers);
+            mail($wUser->getEmail(), $name, nl2br($message)."<br /><br /><a href='$url'>Notification URL</a><br /><br /><a href='{$wgServer}{$wgScriptPath}'>{$config->getValue('siteName')}</a>", $headers);
         }
         DBFunctions::execSQL($sql, true);
 	}
@@ -110,7 +110,7 @@ class Notification{
     }
 	
 	static function createTable(){
-		global $wgUser, $wgOut, $notifications, $notificationFunctions, $wgServer, $wgScriptPath;
+		global $wgUser, $wgOut, $notifications, $notificationFunctions, $wgServer, $wgScriptPath, $config;
 		$me = Person::newFromId($wgUser->getId());
 		if($me == null || $me->getName() == ""){
 		    permissionError();
@@ -158,7 +158,7 @@ class Notification{
                 $wgOut->addHTML("<a href='{$notification->creator->getUrl()}'>{$notification->creator->getReversedName()}</a>");
             }
             else{
-                $wgOut->addHTML("GRAND Forum");
+                $wgOut->addHTML($config->getValue('siteName'));
             }
             $wgOut->addHTML("</td> <td>{$notification->description}</td> <td>{$notification->time}</td>
 		            </tr>");

@@ -6,6 +6,9 @@ $projectPage = new ProjectPage();
 $wgHooks['ArticleViewHeader'][] = array($projectPage, 'processPage');
 $wgHooks['SkinTemplateTabs'][] = array($projectPage, 'showTabs');
 
+$wgHooks['TopLevelTabs'][] = 'ProjectPage::createTab';
+$wgHooks['SubLevelTabs'][] = 'ProjectPage::createSubTabs';
+
 class ProjectPage {
 
     function processPage($article, $outputDone, $pcache){
@@ -200,6 +203,35 @@ class ProjectPage {
                 );
             }
         }
+    }
+    
+    static function createTab($tabs){
+        $tabs["My Projects"] = TabUtils::createTab("My Projects");
+        return true;
+    }
+    
+    static function createSubTabs($tabs){
+        global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
+        $me = Person::newFromWgUser();
+        $projects = $me->getProjects();
+        if(!$wgUser->isLoggedIn() || count($projects) == 0 || $me->isRoleAtLeast(MANAGER)){
+		    return true;
+		}
+
+        $selected = "";
+        foreach($projects as $key => $project){
+            if($wgTitle->getNSText() == $project->getName()){
+                $selected = "selected";
+            }
+            if($project->isSubProject()){
+                unset($projects[$key]);
+            }
+        }
+        $projects = array_values($projects);
+        foreach($projects as $project){
+            
+        }
+        return true;
     }
 }
 ?>
