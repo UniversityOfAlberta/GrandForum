@@ -5,13 +5,13 @@
      */
     
     // The name of the Network
-    $config->setValue("networkName", "AGE-WELL");
+    $config->setValue("networkName", "NETWORK");
     
     // The name of the Site
     $config->setValue("siteName", "{$config->getValue("networkName")} Forum");
     
     // The path for the Forum
-    $config->setValue("path", "/~dwt/grand_forum_test");
+    $config->setValue("path", "");
     
     // DB Type (ie. mysql)
     $config->setValue("dbType", "mysql");
@@ -20,36 +20,34 @@
     $config->setValue("dbServer", "localhost");
     
     // DB Name
-    $config->setValue("dbName", "grand_giga_test");
+    $config->setValue("dbName", "");
     
     // DB Test Name
-    $config->setValue("dbTestName", "grand_behat");
+    $config->setValue("dbTestName", "");
     
     // DB User
-    $config->setValue("dbUser", "dwt");
+    $config->setValue("dbUser", "");
     
     // DB Password
-    $config->setValue("dbPassword", "ZjiTYF7nW5yqxn1tw9UhC73K");
+    $config->setValue("dbPassword", "");
     
     // Default Mailing List Admins
-    $config->setValue("listAdmins", array("dwt@ualberta.ca",
-                                          "adrian_sheppard@gnwc.ca"
-    ));
+    $config->setValue("listAdmins", array());
     
     // Default Mailing List Password
-    $config->setValue("listAdminPassword", "BigLasagna");
+    $config->setValue("listAdminPassword", "");
     
     // Logo path
-    $config->setValue("logo", "skins/logos/age-well_logo.png");
+    $config->setValue("logo", "skins/logos/logo.png");
     
     // Icon path (gray)
     $config->setValue("iconPath", "skins/icons/gray_dark/");
     
     // Icon path (highlighted)
-    $config->setValue("iconPathHighlighted", "skins/icons/age-well/");
+    $config->setValue("iconPathHighlighted", "skins/icons/gray_dark/");
     
     // Highlight color for skin
-    $config->setValue("highlightColor", "#E74D3C");
+    $config->setValue("highlightColor", "#0088FF");
     
     // Which extensions to enable
     $config->setValue("extensions", array(
