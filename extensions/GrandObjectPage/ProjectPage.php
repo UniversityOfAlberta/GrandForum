@@ -4,7 +4,7 @@ autoload_register('GrandObjectPage/ProjectPage');
 
 $projectPage = new ProjectPage();
 $wgHooks['ArticleViewHeader'][] = array($projectPage, 'processPage');
-$wgHooks['SkinTemplateTabs'][] = array($projectPage, 'showTabs');
+//$wgHooks['SkinTemplateTabs'][] = array($projectPage, 'showTabs');
 
 $wgHooks['TopLevelTabs'][] = 'ProjectPage::createTab';
 $wgHooks['SubLevelTabs'][] = 'ProjectPage::createSubTabs';
@@ -206,7 +206,7 @@ class ProjectPage {
     }
     
     static function createTab($tabs){
-        $tabs["My Projects"] = TabUtils::createTab("My Projects");
+        $tabs["Projects"] = TabUtils::createTab("My Projects");
         return true;
     }
     
@@ -218,18 +218,23 @@ class ProjectPage {
 		    return true;
 		}
 
-        $selected = "";
         foreach($projects as $key => $project){
-            if($wgTitle->getNSText() == $project->getName()){
-                $selected = "selected";
-            }
             if($project->isSubProject()){
                 unset($projects[$key]);
             }
         }
         $projects = array_values($projects);
         foreach($projects as $project){
-            
+            $selected = ($wgTitle->getNSText() == $project->getName()) ? "selected" : "";
+            $subtab = TabUtils::createSubTab($project->getName(), $project->getUrl(), $selected);
+            $subprojects = $project->getSubProjects();
+            if(count($subprojects) > 0){
+                $subtab['dropdown'][] = TabUtils::createSubTab($project->getName(), $project->getUrl(), $selected);
+                foreach($project->getSubProjects() as $subProject){
+                    $subtab['dropdown'][] = TabUtils::createSubTab($subProject->getName(), $subProject->getUrl(), $selected);
+                }
+            }
+            $tabs["Projects"]['subtabs'][] = $subtab;
         }
         return true;
     }

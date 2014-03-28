@@ -1299,10 +1299,12 @@ EOF;
         global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle;
         if($wgUser->isLoggedIn()){
             $selected = ($wgTitle->getText() == "LoiProposals") ? "selected" : "";
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("LOIs", "$wgServer$wgScriptPath/index.php/Special:LoiProposals", "$selected phase2 hidden");
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("LOI Responses", "$wgServer$wgScriptPath/index.php/Special:LoiProposals?revision=2", "$selected phase2 hidden");
+            $subTab = TabUtils::createSubTab("Phase2");
+            $subTab['dropdown'][] = TabUtils::createSubTab("LOIs", "$wgServer$wgScriptPath/index.php/Special:LoiProposals", "$selected");
+            $subTab['dropdown'][] = TabUtils::createSubTab("LOI Responses", "$wgServer$wgScriptPath/index.php/Special:LoiProposals?revision=2", "$selected");
             $selected = ($wgTitle->getNSText() == "GRAND" && $wgTitle->getText() == "Process") ? "selected" : "";
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Process", "$wgServer$wgScriptPath/index.php/GRAND:Process", "$selected phase2 hidden");
+            $subTab['dropdown'][] = TabUtils::createSubTab("Process", "$wgServer$wgScriptPath/index.php/GRAND:Process", "$selected");
+            $tabs['Main']['subtabs'][] = $subTab;
         }
         return true;
     }

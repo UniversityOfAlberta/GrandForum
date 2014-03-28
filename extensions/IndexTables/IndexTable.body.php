@@ -36,31 +36,34 @@ class IndexTable {
                 }
             }
         }
+        $peopleSubTab = TabUtils::createSubTab("People");
         if($me->isLoggedIn()){
             $selected = ($lastRole == HQP || $wgTitle->getText() == "ALL HQP" || ($wgTitle->getNSText() == HQP && !($me->isRole(HQP) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab(HQP, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_HQP", "$selected people hidden");
+            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(HQP, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_HQP", "$selected");
         }
         $selected = ($lastRole == PNI || $wgTitle->getText() == "ALL PNI" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-        $tabs['Main']['subtabs'][] = TabUtils::createSubTab('Phase1 '.PNI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_PNI", "$selected people hidden");
+        $peopleSubTab['dropdown'][] = TabUtils::createSubTab('Phase1 '.PNI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_PNI", "$selected");
         
         $selected = ($lastRole == PNI || $wgTitle->getText() == "ALL PNI2" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-        $tabs['Main']['subtabs'][] = TabUtils::createSubTab('Phase2 '.PNI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_PNI2", "$selected people hidden");
+        $peopleSubTab['dropdown'][] = TabUtils::createSubTab('Phase2 '.PNI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_PNI2", "$selected");
         
         $selected = ($lastRole == CNI || $wgTitle->getText() == "ALL CNI" || ($wgTitle->getNSText() == CNI && !($me->isRole(CNI) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-        $tabs['Main']['subtabs'][] = TabUtils::createSubTab(PNI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_CNI", "$selected people hidden");
+        $peopleSubTab['dropdown'][] = TabUtils::createSubTab(PNI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_CNI", "$selected");
         
         $selected = ($lastRole == ISAC || $wgTitle->getText() == "ALL ISAC" || ($wgTitle->getNSText() == ISAC && !($me->isRole(ISAC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-        $tabs['Main']['subtabs'][] = TabUtils::createSubTab(ISAC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_ISAC", "$selected people hidden");
+        $peopleSubTab['dropdown'][] = TabUtils::createSubTab(ISAC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_ISAC", "$selected");
         
         $selected = ($lastRole == EXTERNAL || $wgTitle->getText() == "ALL External" || ($wgTitle->getNSText() == EXTERNAL && !($me->isRole(EXTERNAL) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-        $tabs['Main']['subtabs'][] = TabUtils::createSubTab(EXTERNAL, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_External", "$selected people hidden");
+        $peopleSubTab['dropdown'][] = TabUtils::createSubTab(EXTERNAL, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_External", "$selected");
         
         $selected = ($lastRole == NCE || $wgTitle->getText() == "ALL NCE Rep" || ($wgTitle->getNSText() == NCE && !($me->isRole(NCE) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-        $tabs['Main']['subtabs'][] = TabUtils::createSubTab(NCE, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_NCE_Rep", "$selected people hidden");
+        $peopleSubTab['dropdown'][] = TabUtils::createSubTab(NCE, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_NCE_Rep", "$selected");
         
         $selected = ($lastRole == RMC || $wgTitle->getText() == "ALL RMC" || ($wgTitle->getNSText() == RMC && !($me->isRole(RMC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-        $tabs['Main']['subtabs'][] = TabUtils::createSubTab(RMC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_RMC", "$selected people hidden");
-
+        $peopleSubTab['dropdown'][] = TabUtils::createSubTab(RMC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_RMC", "$selected");
+        
+        $tabs['Main']['subtabs'][] = $peopleSubTab;
+        
         if($wgUser->isLoggedIn()){
             $selected = ($wgTitle->getText() == "Products" || 
                          $wgTitle->getText() == "Multimedia Stories" ||
@@ -71,13 +74,15 @@ class IndexTable {
                          $wgTitle->getNsText() == "Press" ||
                          $wgTitle->getNsText() == "Award" ||
                          $wgTitle->getNsText() == "Multimedia_Story") ? "selected" : "";
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Publications", "$wgServer$wgScriptPath/index.php/Special:Products#/Publication", "$selected products hidden");
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Artifacts", "$wgServer$wgScriptPath/index.php/Special:Products#/Artifact", "$selected products hidden");
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Presentations", "$wgServer$wgScriptPath/index.php/Special:Products#/Presentation", "$selected products hidden");
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Activities", "$wgServer$wgScriptPath/index.php/Special:Products#/Activity", "$selected products hidden");
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Press", "$wgServer$wgScriptPath/index.php/Special:Products#/Press", "$selected products hidden");
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Awards", "$wgServer$wgScriptPath/index.php/Special:Products#/Award", "$selected products hidden");
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia_Stories", "$selected products hidden");
+            $productsSubTab = TabUtils::createSubTab("Products");
+            $productsSubTab['dropdown'][] = TabUtils::createSubTab("Publications", "$wgServer$wgScriptPath/index.php/Special:Products#/Publication", "$selected");
+            $productsSubTab['dropdown'][] = TabUtils::createSubTab("Artifacts", "$wgServer$wgScriptPath/index.php/Special:Products#/Artifact", "$selected");
+            $productsSubTab['dropdown'][] = TabUtils::createSubTab("Presentations", "$wgServer$wgScriptPath/index.php/Special:Products#/Presentation", "$selected");
+            $productsSubTab['dropdown'][] = TabUtils::createSubTab("Activities", "$wgServer$wgScriptPath/index.php/Special:Products#/Activity", "$selected");
+            $productsSubTab['dropdown'][] = TabUtils::createSubTab("Press", "$wgServer$wgScriptPath/index.php/Special:Products#/Press", "$selected");
+            $productsSubTab['dropdown'][] = TabUtils::createSubTab("Awards", "$wgServer$wgScriptPath/index.php/Special:Products#/Award", "$selected");
+            $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia_Stories", "$selected");
+            $tabs['Main']['subtabs'][] = $productsSubTab;
         }
         if(WikiPage::newFromTitle("{$config->getValue('networkName')}:ALL_Conferences")->exists()){
             $selected = ($wgTitle->getNSText() == "Conference" || $wgTitle->getText() == "ALL Conferences") ? "selected" : "";

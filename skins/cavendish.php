@@ -295,6 +295,22 @@ class cavendishTemplate extends QuickTemplate {
 	            }
 	        }
 	        
+	        function createDropDown(name, title, width){
+                $('li.' + name).wrapAll('<ul class=\'' + name + '\'>');
+                $('ul.' + name).wrapAll('<li class=\'invisible\'>');
+                var selected = false;
+                if($('li.' + name).filter('.selected').length >= 1){
+                    selected = true;
+                }
+                $('div#submenu ul.' + name).dropdown({title: title,
+                                                       width: width + 'px' 
+                                                      });
+                if(selected){
+                    $('ul.' + name + ' > li').addClass('selected');
+                    $('ul.' + name).imgDown();
+                }
+            }
+	        
 	        var sideToggled = $.cookie('sideToggled');
 	        if(sideToggled == undefined){
 	            sideToggled = 'out';
@@ -572,6 +588,14 @@ class cavendishTemplate extends QuickTemplate {
 	           	            $tabs[$key]['selected'] = "selected";
 	           	            $selectedFound = true;
 	           	        }
+	           	        if(count($subtab['dropdown']) > 0){
+	           	            foreach($subtab['dropdown'] as $dropdown){
+	           	                if(strstr($dropdown['selected'], "selected") !== false){
+	                   	            $tabs[$key]['selected'] = "selected";
+	                   	            $selectedFound = true;
+	                   	        }
+	           	            }
+	           	        }
 	           	    }
 	           	}
 	           	if(!$selectedFound){
@@ -592,11 +616,24 @@ class cavendishTemplate extends QuickTemplate {
 	    </div>
 	    <div id='submenu'>
             <ul>
-		       	<?php
+		       	<?php global $dropdownScript;
+		       	 $i = 0;
 		       	 foreach($tabs as $tab){
+		       	    $i++;
 		       	    if($tab['selected'] == "selected"){
+		       	        $j = 0;
 		       	        foreach($tab['subtabs'] as $subtab){
-		           	        echo "<li class='{$subtab['selected']}'><a class='highlights-tab' href='".htmlspecialchars($subtab['href'])."'>".htmlspecialchars($subtab['text'])."</a></li>";
+		       	            $j++;
+		       	            $class = "subtab_{$i}_{$j}";
+		           	        if(count($subtab['dropdown']) > 0){
+		           	            foreach($subtab['dropdown'] as $dropdown){
+		           	                echo "<li class='$class hidden {$dropdown['selected']}'><a class='highlights-tab' href='".htmlspecialchars($dropdown['href'])."'>".htmlspecialchars($dropdown['text'])."</a></li>";
+		           	            }
+		           	            $dropdownScript .= "createDropDown('$class', '{$subtab['text']}', 125);";
+		           	        }
+		           	        else{
+		           	            echo "<li class='$class {$subtab['selected']}'><a class='highlights-tab' href='".htmlspecialchars($subtab['href'])."'>".htmlspecialchars($subtab['text'])."</a></li>";
+		           	        }
 		           	    }
 		           	    break;
 		       	    }
@@ -611,7 +648,7 @@ class cavendishTemplate extends QuickTemplate {
         </div>
 	</div>
     
-    <?php global $dropdownScript; echo $dropdownScript; ?>
+    <?php global $dropdownScript; echo "<script type='text/javascript'>$dropdownScript</script>"; ?>
     <div id="side" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
 		    <ul id="nav">
 		    <?php
