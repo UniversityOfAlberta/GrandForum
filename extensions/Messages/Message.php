@@ -87,11 +87,11 @@ class Message {
     }
     
     private function clearCookies(){
-        setcookie('errors', serialize(array()), time()-3600);
-        setcookie('warnings', serialize(array()), time()-3600);
-        setcookie('success', serialize(array()), time()-3600);
-        setcookie('info', serialize(array()), time()-3600);
-        setcookie('purpleInfo', serialize(array()), time()-3600);
+        @setcookie('errors', serialize(array()), time()-3600);
+        @setcookie('warnings', serialize(array()), time()-3600);
+        @setcookie('success', serialize(array()), time()-3600);
+        @setcookie('info', serialize(array()), time()-3600);
+        @setcookie('purpleInfo', serialize(array()), time()-3600);
     }
     
     // Empties all error messages
