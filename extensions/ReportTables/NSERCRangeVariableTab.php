@@ -152,10 +152,11 @@ EOF;
         
         $dialog_js =<<<EOF
             <script type="text/javascript">
-            $(document).ready(function(){
 EOF;
         $contributions = Contribution::getContributionsDuring(null, $this->startYear, $this->endYear);
-
+        $totalCash = 0;
+        $totalKind = 0;
+        $totalTotal = 0;
         foreach ($contributions as $contr) {
             $con_id = $contr->getId();
             $name_plain = $contr->getName();
@@ -203,9 +204,7 @@ EOF;
                         $details .="<tr><td align='right'><b>Estimated Value:</b></td><td>{$tmp_cash}</td></tr>";
                     }
                     $details .= "</table>";
-                    
                 }
-
             }
             if(empty($details)){
                 $details .= "<h4>Other</h4>";
@@ -235,6 +234,10 @@ EOF;
             $date = substr($contr->getDate(), 0, 10);
             $project_names = implode(', ', $project_names);
             if(!empty($total) && (!empty($people_names) || !empty($project_names))){
+                $totalTotal += $total;
+                $totalCash += $cash;
+                $totalKind += $kind;
+            
                 $total = number_format($total, 2);
                 $cash = number_format($cash, 2);
                 $kind = number_format($kind, 2);
@@ -261,10 +264,16 @@ EOF;
             }
         }
 
-
-        $html .= "</tbody></table>";
+        $html .= "</tbody>
+        <tfoot>
+            <tr>
+                <th colspan='5'></th>
+                <th>$".number_format($totalCash, 2)."</th>
+                <th>$".number_format($totalKind, 2)."</th>
+                <th>$".number_format($totalTotal, 2)."</th>
+            </tr>
+        </tfoot></table>";
         $dialog_js .=<<<EOF
-            });
             </script>
 EOF;
         $this->html .= $html .  $dialog_js ;   
