@@ -808,7 +808,7 @@ EOF;
         $item = RES_MIL_CONTRIBUTIONS;
         $subitem = 0;
         $blob_type = BLOB_ARRAY;
-        $year = $this->year; //REPORTING_YEAR;
+        $year = $this->year-1;
 
         $rep_addr = ReportBlob::create_address($rptype,$section,$item,$subitem);
 
