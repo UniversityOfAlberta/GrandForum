@@ -69,7 +69,9 @@ class EvaluationTable extends SpecialPage {
 	
 	static function show(){
 	    require_once('NSERCTab.php');
+	    require_once('NSERCRangeTab.php');
 		require_once('NSERCVariableTab.php');
+		require_once('NSERCRangeVariableTab.php');
 		require_once('RMC2014Tab.php');
 		require_once('RMC2013Tab.php');
 	    require_once('RMC2012Tab.php');
@@ -83,7 +85,6 @@ class EvaluationTable extends SpecialPage {
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript;
 	 
 	    $init_tab = 0;
-	    
 		if(isset($_GET['section']) && $_GET['section'] == 'NSERC'){
 			$init_tabs = array('Jan-Dec2012' => 0, 
 			                   'Apr2012-Mar2013' => 1, 
@@ -99,6 +100,7 @@ class EvaluationTable extends SpecialPage {
 		    
 		    $tabbedPage = new TabbedPage("tabs_nserc");
 		    
+		    $tabbedPage->addTab(new NSERCRangeTab(2010, 2014));
 		    $tabbedPage->addTab(new NSERCTab(2014));
 		    $tabbedPage->addTab(new NSERCTab(2013));
 

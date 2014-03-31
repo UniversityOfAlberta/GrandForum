@@ -126,11 +126,14 @@ class Contribution {
 	    return $json;
 	}
 
-    static function getContributionsDuring($type, $year){
-
+    static function getContributionsDuring($type, $startYear, $endYear=-1){
+        if($endYear == -1){
+            $endYear = $startYear;
+        }
         $sql = "SELECT DISTINCT id
                 FROM grand_contributions
-                WHERE year={$year}";
+                WHERE year >= {$startYear}
+                AND year <= {$endYear}";
 
         if(!is_null($type) && $type != ""){
             $sql .= " AND type = '{$type}'";

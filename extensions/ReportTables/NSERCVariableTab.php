@@ -99,7 +99,6 @@ function showDiv(div_id, details_div_id){
         return $this->html;
     }
 
-
     function showContentsTable(){
         global $wgServer, $wgScriptPath;
         $label = $this->label;
@@ -648,7 +647,6 @@ EOF;
     }
 
     function getHQPUniStats(){
-
         $hqps = Person::getAllPeopleDuring(HQP, $this->from, $this->to);
 
         //Setup the table structure
