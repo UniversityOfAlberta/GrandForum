@@ -97,7 +97,7 @@ function showDiv(div_id, details_div_id){
         $label = $this->label;
 
         $this->html .=<<<EOF
-            <h2>Dec{$this->startYear}-Mar{$this->endYear}</h2>
+            <h2>Jan{$this->startYear}-Mar{$this->endYear}</h2>
             <table class='toc' summary='Contents'>
             <tr><td>
             <div id='toctitle'><h2>Contents</h2></div>
