@@ -186,12 +186,7 @@ EOF;
         foreach ($paper_objs as $p){
 			$im_author = ($author instanceof Person)? $author->isAuthorOf($p) : true;
             if($im_author){
-				$pap_date = substr($p->getDate(), 0, 4);
-				if( $pap_date >= REPORTING_YEAR && $pap_date <= REPORTING_YEAR+2 ){
-					$papers[] = $p;
-				}else if( $pap_date == REPORTING_YEAR-1){
-                    $papers[] = $p;
-                }
+                $papers[] = $p;
 			}
 		}
 		return $papers;
@@ -272,7 +267,7 @@ EOF;
                 continue;
             }
             
-            if($year === false || ($year == $c->getYear()) || ($year == REPORTING_YEAR && $c->getYear() == (REPORTING_YEAR+1)) ){
+            if($year === false || ($year == $c->getYear())){
     			$im_receiver = ($receiver instanceof Person)? $receiver->isReceiverOf($c) : true;
                 if($c->getTotal() > 0 && $im_receiver){
                     $contributions[] = $c; 
