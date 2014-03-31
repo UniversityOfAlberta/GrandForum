@@ -13,6 +13,7 @@ class NSERCRangeTab extends AbstractTab {
     }
     
     function generateBody(){
+        global $wgOut;
         $last_year = $this->startYear;
         $this_year = $this->endYear;
         
