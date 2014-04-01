@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="HQP Report" reportType="RP_HQP" pdfType="RPTP_HQP" pdfFiles="HQPReportPDF,HQPReportComments" pdfAllProjects="true" ajax="true" disabled="false">
+<Report name="HQP Report" reportType="RP_HQP" pdfType="RPTP_HQP" pdfFiles="HQPReportPDF" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
         
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP">
@@ -52,9 +52,6 @@
             <![CDATA[{$item}]]>
         </ReportItem>
         <ReportItem id="my_progress_head" type="ProgressReportItem" reportType="HQPReport">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="my_milestone_progress_head" type="NIProgressReportItem" reportType="HQPReport">
             <![CDATA[{$item}</table>]]>
         </ReportItem>
     </ReportSection>
@@ -157,70 +154,6 @@ Briefly describe your interactions (if any) with receptors, companies, Project C
             <ReportItem id="involved_until" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS" type="CalendarReportItem">
                 <![CDATA[<tr><td><b>Involved Until:</b></td><td width='250px' align='left' style='white-space:nowrap;'>{$item}&nbsp;<i>(actual&nbsp;or&nbsp;anticipated)</i></td></tr></table>]]>
             </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="projects" type="PersonProjectReportItemSet">
-            <ReportItemSet id='project_head' type="ToggleHeaderReportItemSet" level="3" title="{$project_name}">
-                <ReportItem id="static1" type="StaticReportItem">
-                <![CDATA[
-                <table cellpadding='5' cellspacing='0' frame='box' rules='all' class="milestones_hdr_table">
-                <thead>
-                <tr>
-                <th width="10%">Worked On</th>
-                <th width="35%">Milestone Description</th>                
-                <th width="55%">Comments<br />
-                <span style="font-size:10px; font-style: italic;font-weight: normal;">up to 300 characters</span></th></th>
-                </tr>
-                </thead>
-                <tbody>
-                ]]>
-                </ReportItem>
-            
-                <ReportItemSet id="milestones" type="MilestoneRadioReportItemSet" blobIndex="milestoneId">
-                    <ReportItem id="static2" type="StaticReportItem">
-                        <![CDATA[
-                        <tr>
-                        <td align="left" width="10%" style="padding-left:15px;">
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="contribution" type="RadioReportItem" options="No|Yes" orientation="vertical" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS">
-                        <![CDATA[{$item}]]>
-                    </ReportItem>
-                    <ReportItem id="static3" type="SnippetReportItem" limit="280" text="{$milestone_description}">
-                        <![CDATA[
-                            </td>
-                            <td width="35%">{$item}<br />
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="milestone_description_full" type="PopupReportItem" title="See Description" text="{$milestone_description}">
-                        <![CDATA[{$item}<br />]]>
-                    </ReportItem>
-                    <ReportItem id="milestone_history" type="PopupReportItem" title="See History" url="{$wgServer}{$wgScriptPath}/index.php?action=api.getProjectMilestoneHistory/{$milestone_id}/{$last_year}-12-01" text="Loading...">
-                        <![CDATA[{$item}]]>
-                    </ReportItem>
-                    <ReportItem id="static4" type="StaticReportItem">
-                        <![CDATA[</td>
-                            <td width="55%">
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="comment" type="TextareaReportItem" limit="300" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS" recommended="true">
-                        <![CDATA[{$item}]]>
-                    </ReportItem>
-                    <ReportItem id="static5" type="StaticReportItem">
-                        <![CDATA[
-                        </td>
-                        </tr> 
-                        ]]>
-                    </ReportItem>
-                </ReportItemSet>
-
-                <ReportItem id="static2" type="StaticReportItem">
-                <![CDATA[ 
-                </tbody>
-                </table>
-                <br />
-                ]]>
-                </ReportItem>
-            </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="review" name="Review" tooltip="Review of on-line report content" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
