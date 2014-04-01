@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="NI Report" reportType="RP_RESEARCHER" pdfType="RPTP_NORMAL" pdfFiles="NIReportPDF,NIReportComments" pdfAllProjects="true" ajax="true" disabled="false">
+<Report name="NI Report" reportType="RP_RESEARCHER" pdfType="RPTP_NORMAL" pdfFiles="NIReportPDF" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
         <!--<Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PNI">
             <SectionPermission id="status" permissions="rw" />
@@ -42,7 +42,6 @@
             <SectionPermission id="dashboard" permissions="r" />
             <SectionPermission id="report" permissions="r" />
             <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="milestones" permissions="r" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Person>
@@ -78,9 +77,6 @@
             <![CDATA[{$item}]]>
         </ReportItem>
         <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="NIReport">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="my_milestone_progress_head" type="NIProgressReportItem" reportType="NIReport">
             <![CDATA[{$item}]]>
         </ReportItem>
         <ReportItem id="progress_head" type="StaticReportItem">
@@ -394,106 +390,6 @@ Describe your involvement with receptor organizations, industry partners and Pro
         </ReportItem>
         <ReportItem id="budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="BudgetReportItem" />
     </ReportSection>
-    <ReportSection id="milestones" name="NI Milestone Comments" tooltip="Discussion of progress against projects' milestones" blobSection="RES_MILESTONES" type="EditableReportSection" autosave="true" reportCharLimits="false" renderpdf="true">
-        <Instructions>
-            <![CDATA[
-                <p>This section is intended to provide important information that will form a part of the relevant project reports.  However, the specific contents of this section will not be reviewed by the Research Management Committee as part of the evaluation of individual NIs</p>
-                <p><small><i>Note: Clicking on the purple second-level headings of this page will cause the page to expand (contract) to show (hide) text boxes in which you can provide your information. </i></small></p>
-                <p>The header notes average hours per week that are devoted to GRAND activity, as well as the percentage of your overall research effort that is GRAND-related. While it is understood that these can only be estimates, this information is useful in our reporting to the NCE Secretariat.</p>
-
-                <p>The purple headings show/hide the milestones for each of the projects in which you are involved.  For each project, the average number of hours per week (estimated) spent on work related to that project are to be recorded. Also for each project, the milestones are listed (click on each milestone for a more detailed description).  In the "Milestone Report" an overview of the project progress against the milestones that were "active" during the past year is reported. You can reference Milestones by writing "@Milestone ID" in the text box or you can start  typing "@Milestone Title" and select the milestone from the drop-down box appearing below the overview textbox. Please indicate those milestones with which you were involved by checking the box on the "Worked On" column, and add a brief comment regarding your involvement with this milestone. Your comments on the applicable milestones will be made available to the project leader to assist with the completion of a similar set of specific comments regarding milestones as part of the project report.</p>
-            ]]>
-        </Instructions>
-        <ReportItem id="grand_time" width="40px" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem" private="true">
-            <![CDATA[<div>{$item}<span style="font-weight:bold;"> Time Devoted to GRAND Research and Management (hours / week)</span></div>]]>
-        </ReportItem>
-        <ReportItem id="grand_percent" width="40px" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem" private="true">
-            <![CDATA[<div>{$item}<span style="font-weight:bold;"> GRAND-related Research Activity relative to Overall Research Activity (%)</span></div><br />]]>
-        </ReportItem>
-        <ReportItemSet id="projects" type="PersonProjectReportItemSet">
-            <ReportItemSet id='project_head' type="ToggleHeaderReportItemSet" level="3" title="{$project_name}">
-                <ReportItem id="0']['time" width="40px" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem">
-                    <![CDATA[<span><b>Time Commitment:</b> {$item} hours / week</span>]]>
-                </ReportItem>
-                <ReportItem id="milestone_summary" width="100%" blobType="BLOB_TEXT" blobItem="RES_MIL_SUMMARY" type="AutoCompleteTextareaReportItem" set="MilestoneReportItemSet" index="milestone_id" label="milestone_title" name="Milestones" anchor="true" tooltipOptionId="Milestone ID" tooltipOptionName="Milestone Title" limit="1800">
-                    <![CDATA[
-                        <h3>Milestone Report</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="static1" type="StaticReportItem">
-                <![CDATA[
-                <table cellpadding='5' cellspacing='0' frame='box' rules='all' class="milestones_hdr_table">
-                <thead>
-                <tr>
-                <th width="5%">ID</th>
-                <th width="5%">Worked On</th>
-                <th width="35%">Milestone Description</th>                
-                <th width="55%">Comments<br />
-                <span style="font-size:10px; font-style: italic;font-weight: normal;">up to 300 characters</span></th></th>
-                </tr>
-                </thead>
-                <tbody>
-                ]]>
-                </ReportItem>
-                <ReportItemSet id="milestones" type="MilestoneRadioReportItemSet" blobIndex="milestoneId">
-                    <ReportItem id="static2" type="StaticReportItem">
-                        <![CDATA[
-                        <tr>
-                        <td align="right" width="5%">
-                            {$milestone_id}
-                        </td>
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="static2" type="StaticReportItem">
-                        <![CDATA[
-                        <td align="left" width="5%" style="padding-left:15px;">
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="contribution" type="RadioReportItem" options="No|Yes" orientation="vertical" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS">
-                        <![CDATA[{$item}]]>
-                    </ReportItem>
-                    <ReportItem id="static3" type="SnippetReportItem" limit="280" text="{$milestone_description}">
-                        <![CDATA[
-                            </td>
-                            <td width="35%">{$item}<br />
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="milestone_description_full" type="PopupReportItem" title="See Description" text="{$milestone_description}">
-                        <![CDATA[{$item}<br />]]>
-                    </ReportItem>
-                    <ReportItem id="milestone_history" type="PopupReportItem" title="See History" url="{$wgServer}{$wgScriptPath}/index.php?action=api.getProjectMilestoneHistory/{$milestone_id}/{$last_year}-12-01" text="Loading...">
-                        <![CDATA[{$item}<br />]]>
-                    </ReportItem>
-                    <ReportItem id="milestone_hqp_comments" type="PopupReportItem" title="See HQP Comments" text="{$milestone_hqp_comments}">
-                        <![CDATA[{$item}]]>
-                    </ReportItem>
-                    <ReportItem id="static4" type="StaticReportItem">
-                        <![CDATA[</td>
-                            <td width="55%">
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="comment" type="TextareaReportItem" limit="300" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" recommended="true">
-                        <![CDATA[{$item}]]>
-                    </ReportItem>
-                    <ReportItem id="static5" type="StaticReportItem">
-                        <![CDATA[
-                        </td>
-                        </tr> 
-                        ]]>
-                    </ReportItem>
-                </ReportItemSet>
-
-                <ReportItem id="static2" type="StaticReportItem">
-                <![CDATA[ 
-                </tbody>
-                </table>
-                <br />
-                ]]>
-                </ReportItem>
-            </ReportItemSet>
-        </ReportItemSet>
-    </ReportSection>
     <ReportSection id="review" name="Review" tooltip="Review of on-line report content" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
@@ -531,9 +427,6 @@ Note that there are two distinct differences between the online document that yo
             <![CDATA[{$item}]]>
         </ReportItem>
         <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="NIReport">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="my_milestone_progress_head" type="NIProgressReportItem" reportType="NIReport">
             <![CDATA[{$item}</table>]]>
         </ReportItem>
         <ReportItem id="review" type="ReviewSubmitReportItem" />
