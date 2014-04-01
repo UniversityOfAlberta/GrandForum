@@ -534,7 +534,8 @@ class ReportArchive extends SpecialPage {
                             if(isset($_GET['preview']) && 
                                isset($_GET['generatePDF']) &&
                                isset($_GET['project']) && $_GET['project'] == $proj->getName() &&
-                               isset($_GET['person']) && $_GET['person'] == $champ['user']->getId()){
+                               isset($_GET['person']) && $_GET['person'] == $champ['user']->getId() &&
+                               isset($_GET['year']) && $_GET['year'] == $year){
                                 $wgOut->clearHTML();
                                 $report->renderForPDF();
                                 $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $champ['user'], true);
@@ -547,7 +548,7 @@ class ReportArchive extends SpecialPage {
                         		$tok = $check[0]['token'];
                         		$pdf = "(<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>PDF</a>)";
                         	}
-                            $wgOut->addHTML("<tr><td>{$year} {$proj->getName()}: {$champ['user']->getReversedName()}</td><td>(<a target='_blank' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?project={$proj->getName()}&person={$champ['user']->getId()}&generatePDF&preview'>Preview</a>){$pdf}</td></tr>");
+                            $wgOut->addHTML("<tr><td>{$year} {$proj->getName()}: {$champ['user']->getReversedName()}</td><td>(<a target='_blank' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?project={$proj->getName()}&person={$champ['user']->getId()}&generatePDF&preview&year=$year'>Preview</a>){$pdf}</td></tr>");
                         }
                         $wgOut->addHTML("</table>");
                     }

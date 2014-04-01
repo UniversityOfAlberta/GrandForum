@@ -1530,7 +1530,7 @@ EOF;
         else if($type == "Project"){
             $fullBudget = array();
             $fullBudget[] = new Budget(array(array(HEAD, HEAD, HEAD, HEAD)), array(array($type, "Number of Researchers", "Total Request", "Researcher Requests")));
-            foreach(Project::getAllProjects() as $project){
+            foreach(Project::getAllProjectsDuring("2012-01-01", "2012-12-31") as $project){
                 $budget = $project->getRequestedBudget(2012);
                 if($budget != null){
                     $error = false;
@@ -1638,7 +1638,7 @@ EOF;
     function showProjectProductivity() {
         global $wgOut;
 
-        $projects = Project::getAllProjects();
+        $projects = Project::getAllProjectsDuring("2012-01-01", "2012-12-31");
         $chunk = "
 <table class='wikitable sortable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='1000px'>
 <tr><th>Project
@@ -1871,7 +1871,7 @@ EOF;
     function showOtherContributions(){
         global $wgOut;
 
-        $projects = Project::getAllProjects();
+        $projects = Project::getAllProjectsDuring("2012-01-01", "2012-12-31");
         $chunk =<<<EOF
         <table class='wikitable sortable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='1000px'>
         <tr>
@@ -2417,7 +2417,7 @@ EOF;
         }
 
         // First pass: grab data.
-        $projects = Project::getAllProjects();
+        $projects = Project::getAllProjectsDuring("2012-01-01", "2012-12-31");
         foreach ($projects as $project) {
             if($project->getPhase() == 1){
                 $th = new Themes($project);

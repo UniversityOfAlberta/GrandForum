@@ -1128,7 +1128,7 @@ EOF;
         $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_REPORTQUALITY);
         $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_REPORTQUALITY_COM);
 
-        $projects = Project::getAllProjects();
+        $projects = Project::getAllProjectsDuring("2013-01-01", "2014-04-01");
         $sorted_projects = array();
         foreach ($projects as $p){
             if($p->getPhase() == 2){
@@ -1294,7 +1294,7 @@ EOF;
         else if($type == "Project"){
             $fullBudget = array();
             $fullBudget[] = new Budget(array(array(HEAD, HEAD, HEAD, HEAD)), array(array($type, "Number of Researchers", "Total Request", "Researcher Requests")));
-            foreach(Project::getAllProjects() as $project){
+            foreach(Project::getAllProjectsDuring("2013-01-01", "2014-04-01") as $project){
                 if($project->getPhase() == 2){
                     $budget = $project->getRequestedBudget(2013);
                     if($budget != null){
@@ -1404,7 +1404,7 @@ EOF;
     function showProjectProductivity() {
         global $wgOut;
 
-        $projects = Project::getAllProjects();
+        $projects = Project::getAllProjectsDuring("2013-01-01", "2014-04-01");
         $chunk = "
 <table class='wikitable sortable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='1000px'>
 <tr><th>Project
@@ -1635,7 +1635,7 @@ EOF;
     function showOtherContributions(){
         global $wgOut;
 
-        $projects = Project::getAllProjects();
+        $projects = Project::getAllProjectsDuring("2013-01-01", "2013-12-31");
         $chunk =<<<EOF
         <table class='wikitable sortable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='1000px'>
         <tr>
@@ -2167,7 +2167,7 @@ EOF;
         }
 
         // First pass: grab data.
-        $projects = Project::getAllProjects();
+        $projects = Project::getAllProjectsDuring("2013-01-01", "2014-04-01");
         foreach ($projects as $project) {
             if($project->getPhase() == 1){
                 $th = new Themes($project);

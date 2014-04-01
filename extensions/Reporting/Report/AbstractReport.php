@@ -796,12 +796,6 @@ abstract class AbstractReport extends SpecialPage {
         $wgOut->addHTML("<script type='text/javascript'>
             autosaveDiv = $('.autosaveSpan');
         </script>");
-        //TODO: Get rid of this once we no longer have Phase 1 projects being reported
-        if($this->project != null && $this->project->getPhase() > 1){
-            $wgOut->addHTML("<script type='text/javascript'>
-                $('#NIMilestoneComments').hide();
-            </script>");
-        } 
     }
     
     function renderTabs(){
