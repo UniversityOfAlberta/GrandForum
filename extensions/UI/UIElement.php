@@ -187,10 +187,12 @@ abstract class UIElement {
                     foreach($_POST as $key => $post){
                         if(is_array($post) && count($post) > 0){
                             foreach($post as $k => $p){
+                                $p = str_replace("'", "&#39;", trim($p));
                                 $postArr[] = "<input type='hidden' name='{$key}[]' value='{$p}' />";
                             }
                         }
                         else{
+                            $post = str_replace("'", "&#39;", trim($post));
                             $postArr[] = "<input type='hidden' name='$key' value='{$post}' />";
                         }
                     }

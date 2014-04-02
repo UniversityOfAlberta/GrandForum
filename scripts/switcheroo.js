@@ -15,6 +15,7 @@
     
     this.cleanId = function(str){
         str = str.replace(/ /g, '')
+                 .replace(/'/g, '')
                  .replace(/\(/g, '')
                  .replace(/\)/g, '')
                  .replace(/\//g, '')

@@ -76,12 +76,11 @@ class AddMember extends SpecialPage{
                 
                 $_POST['wpFirstName'] = ucfirst($_POST['wpFirstName']);
                 $_POST['wpLastName'] = ucfirst($_POST['wpLastName']);
-                $_POST['wpName'] = ucfirst(strtolower($_POST['wpFirstName'])).".".ucfirst(strtolower($_POST['wpLastName']));
                 $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
+                $_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
                 $_POST['user_name'] = $user->getName();
                 $_POST['wpUserType'] = $types;
                 $_POST['wpNS'] = $nss;
-                
                 $result = APIRequest::doAction('RequestUser', false);
                 if($result){
                     $form->reset();

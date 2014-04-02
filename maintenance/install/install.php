@@ -141,7 +141,13 @@ if($wgUser->getID() == 0){
 
 if(file_exists("people.csv")){
     if(question("Import People from people.csv (y/n)") == 'y'){
+        DBFunctions::execSQL("TRUNCATE TABLE `grand_universities`", true);
+        DBFunctions::execSQL("TRUNCATE TABLE `grand_positions`", true);
         DBFunctions::execSQL("TRUNCATE TABLE `grand_user_university`", true);
+        DBFunctions::execSQL("INSERT INTO `grand_universities` (`university_name`,`order`,`default`)
+                              VALUES ('Unknown', 0, 1)", true);
+        DBFunctions::execSQL("INSERT INTO `grand_positions` (`position`,`order`,`default`)
+                              VALUES ('Other', 0, 1)", true);
         $lines = explode("\n", file_get_contents("people.csv"));
         foreach($lines as $line){
             $cells = str_getcsv($line);
@@ -154,7 +160,7 @@ if(file_exists("people.csv")){
                 $department = $cells[5];
                 $title = $cells[6];
                 $email = $cells[7];
-                $username = str_replace(" ", "", "$fname.$lname");
+                $username = str_replace(" ", "", str_replace("'", "", "$fname.$lname"));
                 
                 User::createNew($username, array('real_name' => "$fname $lname", 
                                                  'password' => User::crypt(mt_rand()), 
