@@ -165,9 +165,6 @@ if(file_exists("people.csv")){
         }
     }
 }
-else{
-    echo "\n'themes.csv' not found...skipping\n";
-}
 
 if(file_exists("themes.csv")){
     if(question("Import Themes from themes.csv (y/n)") == 'y'){
