@@ -554,7 +554,7 @@ class cavendishTemplate extends QuickTemplate {
                             DEVELOPMENT ($branchFull, $revIdFull)</div>";
                 }
             }
-            //$wgMessage->addPurpleInfo("Important: The GRAND Forum will be down for maintenance from 1-2AM (MST), Sun, Dec. 15.");
+            //$wgMessage->addInfo("Important: The {$config->getValue('siteName')} will be down for maintenance from 1-2AM (MST), Sun, Dec. 15.");
         ?>
     </div>
     <div id="outerHeader" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
