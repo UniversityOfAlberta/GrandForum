@@ -45,6 +45,7 @@ class TabUtils {
             $('div#submenu ul.actions').css('padding-right', 0);
             $('div#submenu ul.actions li.actions').css('float', 'right');
             
+            createDropDown('projects', 'Projects', 100);
             createDropDown('products', 'Products', 125);
             createDropDown('people', 'People', 75);
             createDropDown('phase2', 'Phase2', 125);";
@@ -201,20 +202,20 @@ class TabUtils {
 
         $me = Person::newFromId($wgUser->getId());
         $new_actions = array();
-        $new_actions['projects'] = array('class' => false,
-                                   'text' => "Projects",
+        $new_actions['currentprojects'] = array('class' => 'projects hidden',
+                                   'text' => "Current",
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:Projects");
+        $new_actions['completedprojects'] = array('class' => 'projects hidden',
+                                   'text' => "Completed",
+                                   'href' => "$wgServer$wgScriptPath/index.php/GRAND:CompletedProjects");
         if($me->isLoggedIn()){
             $new_actions[HQP] = array('class' => 'people hidden',
                                        'text' => HQP,
                                        'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_HQP");
         }
         $new_actions[PNI] = array('class' => 'people hidden',
-                                  'text' => 'Phase1 '.PNI,
+                                  'text' => PNI,
                                   'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_PNI");
-        $new_actions[PNI.'2'] = array('class' => 'people hidden',
-                                      'text' => 'Phase2 '.PNI,
-                                      'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_PNI2");
         $new_actions[CNI] = array('class' => 'people hidden',
                                   'text' => CNI,
                                   'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_CNI");
@@ -274,16 +275,17 @@ class TabUtils {
         $project = Project::newFromHistoricName($wgTitle->getNSText());
         if((Project::newFromName($wgTitle->getNSText()) != null || $wgTitle->getText() == "Projects") && !($me->isMemberOf($project) || 
                                                                                                            ($project != null && $me->isMemberOf($project->getParent())))){
-            $new_actions['projects']['class'] = 'selected';
+            $new_actions['currentprojects']['class'] = 'projects selected hidden';
+        }
+        else if((Project::newFromName($wgTitle->getNSText()) != null || $wgTitle->getText() == "CompletedProjects") && !($me->isMemberOf($project) || 
+                                                                                                           ($project != null && $me->isMemberOf($project->getParent())))){
+            $new_actions['completedprojects']['class'] = 'projects selected hidden';
         }
         else if($wgTitle->getText() == "ALL HQP" || ($wgTitle->getNSText() == HQP && !($me->isRole(HQP) && $wgTitle->getText() == $me->getName()))){
             $new_actions[HQP]['class'] = 'people selected hidden';
         }
         else if($wgTitle->getText() == "ALL PNI" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))){
             $new_actions[PNI]['class'] = 'people selected hidden';
-        }
-        else if($wgTitle->getText() == "ALL PNI2" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))){
-            $new_actions[PNI.'2']['class'] = 'people selected hidden';
         }
         else if($wgTitle->getText() == "ALL CNI" || ($wgTitle->getNSText() == CNI && !($me->isRole(CNI) && $wgTitle->getText() == $me->getName()))){
             $new_actions[CNI]['class'] = 'people selected hidden';

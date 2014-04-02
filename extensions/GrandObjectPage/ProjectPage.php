@@ -91,7 +91,7 @@ class ProjectPage {
             if($project != null && $project->getName() != null){
                 TabUtils::clearActions();
                 $wgOut->clearHTML();
-                $wgOut->setPageTitle($project->getFullName()." (Phase ".$project->getPhase().")");
+                $wgOut->setPageTitle($project->getFullName());
                 
                 $visibility = array();
                 if(!$project->isDeleted()){

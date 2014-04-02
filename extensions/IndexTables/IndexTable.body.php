@@ -56,12 +56,8 @@ class IndexTable {
 				    $this->generatePersonTable(HQP);
 				    break;
 			    case 'ALL '.PNI:
-			        $wgOut->setPageTitle("Phase 1 Principal Network Investigators");
+			        $wgOut->setPageTitle("Principal Network Investigators");
 				    $this->generatePersonTable(PNI, 1);
-				    break;
-				case 'ALL '.PNI.'2':
-			        $wgOut->setPageTitle("Phase 2 Principal Network Investigators");
-				    $this->generatePersonTable(PNI, 2);
 				    break;
 				case 'ALL '.CNI:
 			        $wgOut->setPageTitle("Collaborating Network Investigators");
@@ -94,8 +90,12 @@ class IndexTable {
 				    }
 				    break;
 			    case 'Projects':
-			        $wgOut->setPageTitle("Projects");
-				    $this->generateProjectsTable();
+			        $wgOut->setPageTitle("Current Projects");
+				    $this->generateProjectsTable('Active');
+				    break;
+				case 'CompletedProjects':
+			        $wgOut->setPageTitle("Completed Projects");
+				    $this->generateProjectsTable('Ended');
 				    break;
 			    case 'Themes':
 			        $wgOut->setPageTitle("Themes");
@@ -117,42 +117,32 @@ class IndexTable {
 	 * Consists of the following columns
 	 * Acronym | Name 
 	 */
-	private function generateProjectsTable(){
+	private function generateProjectsTable($status){
 		global $wgScriptPath, $wgServer, $wgOut, $wgUser;
         $me = Person::newFromId($wgUser->getId());
         $idHeader = "";
         if($me->isRoleAtLeast(MANAGER)){
             $idHeader = "<th>Project Id</th>";
         }
-        $startPhase = PROJECT_PHASE;
-        
-        $this->text .= "<div id='tabs'><ul>";
-        for($phase = $startPhase; $phase > 0; $phase--){
-            $this->text .= "<li><a href='#tabs-{$phase}'>Phase {$phase}</a></li>";
-        }
-        $this->text .= "</ul>";
-        $data = Project::getAllProjects();
-        
-        for($phase = $startPhase; $phase > 0; $phase--){
-		    $this->text .= "
-                <div id='tabs-{$phase}'><table class='indexTable' style='display:none;' frame='box' rules='all'>
-                <thead>
-                <tr><th>Acronym</th><th>Name</th>$idHeader</tr></thead><tbody>";
-		    foreach($data as $proj){
-		        if($proj->getPhase() == $phase){
-			        $this->text .= "
-                        <tr>
-                        <td align='left'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
-                        <td align='left'>{$proj->getFullName()}</td>";
-                    if($me->isRoleAtLeast(MANAGER)){
-                        $this->text .= "<td>{$proj->getId()}</td>\n";
-                    }
-                    $this->text .= "</tr>\n";
+        $data = Project::getAllProjectsEver();
+	    $this->text .= "
+            <table class='indexTable' style='display:none;' frame='box' rules='all'>
+            <thead>
+            <tr><th>Acronym</th><th>Name</th>$idHeader</tr></thead><tbody>";
+	    foreach($data as $proj){
+	        if($proj->getStatus() == $status){
+	            $this->text .= "
+                    <tr>
+                    <td align='left'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
+                    <td align='left'>{$proj->getFullName()}</td>";
+                if($me->isRoleAtLeast(MANAGER)){
+                    $this->text .= "<td>{$proj->getId()}</td>\n";
                 }
-		    }
-		    $this->text .= "</tbody></table></div>";
-		}
-		$this->text .= "</div><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});$('#tabs').tabs();</script>";
+                $this->text .= "</tr>\n";
+            }
+	    }
+	    $this->text .= "</tbody></table>";
+		$this->text .= "</div><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
 
 		return true;
 	}
@@ -191,24 +181,15 @@ EOF;
 	 * Consists of the following columns
 	 * User Page | Projects | Twitter
 	 */
-	private function generatePersonTable($table, $phase=0){
+	private function generatePersonTable($table){
 		global $wgServer, $wgScriptPath, $wgUser, $wgOut;
 		$me = Person::newFromId($wgUser->getId());
-		if($phase == 0 || $phase == 1){
-		    $data = Person::getAllPeople($table);
-		}
-		else{
-		    $data = Person::getAllPeopleDuring($table, (REPORTING_YEAR+1).REPORTING_NCE_START_MONTH, (REPORTING_YEAR+2).REPORTING_NCE_END_MONTH);
-		}
+		$data = Person::getAllPeople($table);
 		$idHeader = "";
         if($me->isRoleAtLeast(MANAGER)){
             $idHeader = "<th width='0%' style='white-space: nowrap;'>User Id</th>";
         }
-        $phaseText = "current";
-        if($phase == 2){
-            $phaseText = "phase $phase";
-        }
-        $this->text .= "Below are all the $phaseText $table in GRAND.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
+        $this->text .= "Below are all the current $table in GRAND.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
 		$this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th width='15%' style='white-space: nowrap;'>Name</th><th width='65%' style='white-space: nowrap;'>Projects</th><th width='20%' style='white-space: nowrap;'>University</th>$idHeader</tr></thead><tbody>
 ";
@@ -223,7 +204,7 @@ EOF;
 ";
             $projs = array();
 			foreach($projects as $project){
-			    if(!$project->isSubProject() && ($phase == 0 || $project->getPhase() == $phase)){
+			    if(!$project->isSubProject() && ($project->getPhase() == PROJECT_PHASE)){
 				    $subprojs = array();
 				    foreach($project->getSubProjects() as $subproject){
 				        if($person->isMemberOf($subproject)){

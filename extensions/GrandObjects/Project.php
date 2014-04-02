@@ -171,6 +171,32 @@ class Project extends BackboneModel {
         return $projects;
     }
     
+    // Same as getAllProjects, but will also return deleted projects
+    static function getAllProjectsEver($subProjects=false){
+        if($subProjects == false){
+            $subProjects = EQ(0);
+        }
+        else{
+            $subProjects = LIKE("%");
+        }
+        $data = DBFunctions::select(array('grand_project'),
+                                    array('id', 'name'),
+                                    array('parent_id' => $subProjects),
+                                    array('name' => 'ASC'));
+        $projects = array();
+        foreach($data as $row){
+            $project = Project::newFromId($row['id']);
+            if($project != null && $project->getName() != ""){
+                if(!isset($projects[$project->name])){
+                    $projects[$project->getName()] = $project;
+                }
+            }
+        }
+        ksort($projects);
+        $projects = array_values($projects);
+        return $projects;
+    }
+    
     static function getAllProjectsDuring($startDate=false, $endDate=false, $subProjects=false){
         if($startDate == false){
             $startDate = REPORTING_CYCLE_START;

@@ -13,9 +13,8 @@ class PersonProjectTab extends AbstractTab {
 
     function generateBody(){
         global $wgServer, $wgScriptPath;
-        for($phase=PROJECT_PHASE; $phase > 0; $phase--){
-            $this->showProjects($this->person, $this->visibility, $phase);
-        }
+        $this->showProjects($this->person, $this->visibility, 'Active');
+        $this->showProjects($this->person, $this->visibility, 'Ended');
         if($this->visibility['isSupervisor']){
             $this->html .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:EditMember?project&name={$this->person->getName()}\");' value='Edit Projects' />";
         }
@@ -25,12 +24,18 @@ class PersonProjectTab extends AbstractTab {
     /*
      * Displays the list of projects for this user
      */
-    function showProjects($person, $visibility, $phase=1){
+    function showProjects($person, $visibility, $status='Active'){
         global $wgOut, $wgScriptPath, $wgServer;
-        if($visibility['edit'] || (!$visibility['edit'] && count($person->getProjects()) > 0)){
+        if($status == 'Active'){
+            $projects = $person->getProjects();
+        }
+        else if($status == 'Ended'){
+            $projects = $person->getProjects(true);
+        }
+        if($visibility['edit'] || (!$visibility['edit'] && count($projects) > 0)){
             $projs = array();
-            foreach($person->getProjects() as $project){
-			    if(!$project->isSubProject() && $project->getPhase() == $phase){
+            foreach($projects as $project){
+			    if(!$project->isSubProject() && $project->getStatus() == $status){
 				    $subprojs = array();
 				    foreach($project->getSubProjects() as $subproject){
 				        if($person->isMemberOf($subproject)){
@@ -45,7 +50,12 @@ class PersonProjectTab extends AbstractTab {
 				}
 			}
 			if(count($projs) > 0){
-			    $this->html .= "<h3>Phase $phase</h3>";
+			    if($status == 'Active'){
+			        $this->html .= "<h3>Current Projects</h3>";
+			    }
+			    else if($status == 'Ended'){
+			        $this->html .= "<h3>Completed Projects</h3>";
+			    }
 			    $this->html .= "<ul>".implode("\n", $projs)."</ul>";
 			}
         }

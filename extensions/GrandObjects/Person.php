@@ -1568,8 +1568,8 @@ class Person extends BackboneModel {
     // Returns an array of Projects that this Person is a part of
     // If history is set to true, then all the Projects regardless of date are included
     function getProjects($history=false){
-        if($this->projects == null && $this->id != null){
-            $this->projects = array();
+        $projects = array();
+        if(($this->projects == null || $history) && $this->id != null){
             $sql = "SELECT u.project_id
                     FROM grand_project_members u, grand_project p
                     WHERE user_id = '{$this->id}'
@@ -1592,16 +1592,19 @@ class Person extends BackboneModel {
                         if(!$project->isDeleted() || ($project->isDeleted() && $history)){
                             // Make sure that the project is not being added twice
                             $projectNames[$project->getName()] = true;
-                            $this->projects[] = $project;
+                            $projects[] = $project;
                         }
                     }
                 }
             }
         }
-        //else{
-        //    $this->projects = array();
-        //}
-        return $this->projects;
+        if($history === false && $this->projects == null){
+            $this->projects = $projects;
+        }
+        if($history === false && $this->projects != null){
+            return $this->projects;
+        }
+        return $projects;
     }
     
     // Returns an array of Projects that this Person is a part of
