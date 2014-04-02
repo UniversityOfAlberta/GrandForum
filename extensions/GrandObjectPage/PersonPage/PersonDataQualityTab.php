@@ -236,7 +236,7 @@ EOF;
     }
 
     static function getErrors($ni_id = null){
-        
+        global $config;
         if(!is_null($ni_id)){
             $person = Person::newFromId($ni_id);
         }
@@ -274,7 +274,7 @@ EOF;
             $gender = $person->getGender();
             $nationality = $person->getNationality();
             $email = $person->getEmail();
-            $email = ($email == "support@forum.grand-nce.ca")? "" : $email;
+            $email = ($email == "{$config->getValue('supportEmail')}")? "" : $email;
             $profile_pub = $person->getProfile();
             $profile_pri = $person->getProfile(true);
             $ni_uni = $person->getUniversity();

@@ -55,7 +55,7 @@ class SurveyPage {
 
     // Writes all of the html
     function showPage($init_tab = 0){
-        global $wgOut, $wgServer, $wgScriptPath, $wgTitle, $wgMessage, $wgStylePath;
+        global $wgOut, $wgServer, $wgScriptPath, $wgTitle, $wgMessage, $wgStylePath, $config;
 
         //Handle Submit
         $active_tab = $init_tab;
@@ -202,7 +202,7 @@ EOF;
                         success: function( xhr, status, index, anchor) { $(".ui-tabs-hide").empty(); },
                         error: function( xhr, status, index, anchor ) {
                             $( anchor.hash ).html(
-                            "Something went wrong and we could not get the contents of this tab. Please reload the page and try again. If the problem persists, please contact support@forum.grand-nce.ca.");
+                            "Something went wrong and we could not get the contents of this tab. Please reload the page and try again. If the problem persists, please contact {$config->getValue('supportEmail')}.");
                         },
                         cache: false
             
@@ -225,7 +225,7 @@ EOF;
                         success: function( xhr, status, index, anchor) { $(".ui-tabs-hide").empty(); },
                         error: function( xhr, status, index, anchor ) {
                             $( anchor.hash ).html(
-                            "Something went wrong and we could not get the contents of this tab. Please reload the page and try again. If the problem persists, please contact support@forum.grand-nce.ca.");
+                            "Something went wrong and we could not get the contents of this tab. Please reload the page and try again. If the problem persists, please contact {$config->getValue('supportEmail')}.");
                         },
                         cache: false
                     }, 

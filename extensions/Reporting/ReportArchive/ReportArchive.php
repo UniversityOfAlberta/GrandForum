@@ -43,7 +43,7 @@ class ReportArchive extends SpecialPage {
 
     // Gives a listing of all the ReportArchived pdfs
     static function generateReportArchivedReportsHTML($year){
-        global $wgUser, $wgOut, $wgTitle, $wgServer, $wgScriptPath;
+        global $wgUser, $wgOut, $wgTitle, $wgServer, $wgScriptPath, $wgMessage, $config;
 		$person = Person::newFromId($wgUser->getId());
 		if($person->isRoleAtLeast(STAFF) && isset($_GET['person'])){
 		    $person = Person::newFromName($_GET['person']);
@@ -68,7 +68,7 @@ class ReportArchive extends SpecialPage {
 			    $pdf_owner = Person::newFromId($user_id);
 			    $pdf_owner_name = $pdf_owner->getName();
 			    if ($pdf == false || $len == 0) {
-				    $wgOut->addHTML("<h4>Warning</h4><p>Could not retrieve PDF for report ID<tt>{$tok}</tt>.  Please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>, and include the report ID in your request.</p>");
+				    $wgMessage->addError("Could not retrieve PDF for report ID: <tt>{$tok}</tt>.  Please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>, and include the report ID in your request.");
 			    }
 			    else {
 			        $ext = "pdf";

@@ -132,7 +132,7 @@ class DBFunctions {
     // If $update is set to true, then an update is performed instead.
     // If $rollback is set to true, the DB is rolledback in the event of an error
     static function execSQL($sql, $update=false, $rollback=false){
-        global $wgImpersonating, $wgRealUser, $wgUser, $wgOut, $wgMessage;
+        global $wgImpersonating, $wgRealUser, $wgUser, $wgOut, $wgMessage, $config;
         try{
             DBFunctions::initDB();
             if(self::$queryDebug){
@@ -185,7 +185,7 @@ class DBFunctions {
 		            $wgMessage->addError("<pre class='inlineError' style='font-weight:bold;background:none;border:none;padding:0;overflow:hidden;margin:0;'>".$e->getMessage()."in <i>{$file}</i> on line <i>{$line}</i></pre>");
 		        }
 		        else{
-		            $wgMessage->addError("A Database error #{$e->errno} has occurred, please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>.");
+		            $wgMessage->addError("A Database error #{$e->errno} has occurred, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.");
 		        }
 		    }
 		    if($rollback){

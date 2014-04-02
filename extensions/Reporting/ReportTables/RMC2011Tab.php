@@ -115,7 +115,7 @@ EOF;
 
 
     function showEvalTableFor($type){
-        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript;
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript, $config;
         $people = Person::getAllPeople();
         $peopleTiers = array();
         $projectTiers = array();
@@ -123,7 +123,7 @@ EOF;
             $sql = "SELECT *
                     FROM mw_session_data
                     WHERE (page = 'Special:Evaluate'
-                    OR page = 'http://forum.grand-nce.ca/index.php/Special:Evaluate')
+                    OR page = 'http://{$config->getValue('domain')}/index.php/Special:Evaluate')
                     AND user_id = '{$person->getId()}'";
             $data = DBFunctions::execSQL($sql);
             if(count($data) > 0 && !$person->isRoleAtLeast(MANAGER)){
@@ -448,7 +448,7 @@ EOF;
     function getPLProjectPDF($pj){
         // TODO: This is a horrible hack which came to be since we only considered one to one relations between PLs and Projects.
         // The reality is that it is a one to many relation.
-        global $wgServer, $wgScriptPath;
+        global $wgServer, $wgScriptPath, $config;
         $pg = "$wgServer$wgScriptPath/index.php/Special:Evaluate";
         $leader = $pj->getLeader();
         $tst = "";
@@ -457,28 +457,28 @@ EOF;
         $tok = "";
         $download = null;
         if ($pj->getName() == "ENCAD") {
-            $download = "http://forum.grand-nce.ca/exception/Robert_Woodbury_ENCAD.pdf";
+            $download = "http://{$config->getValue('domain')}/exception/Robert_Woodbury_ENCAD.pdf";
             $tst = "2011-01-26 12:00:00";
         }
         else if($pj->getName() == "GRNCTY"){
-            $download = "http://forum.grand-nce.ca/exception/Robert_Woodbury_GRNCTY.pdf";
+            $download = "http://{$config->getValue('domain')}/exception/Robert_Woodbury_GRNCTY.pdf";
             $tst = "2011-01-26 12:00:00";
         }
         else if($pj->getName() == "HCTSL"){
-            $download = "http://forum.grand-nce.ca/exception/Robert_Woodbury_HCTSL.pdf";
+            $download = "http://{$config->getValue('domain')}/exception/Robert_Woodbury_HCTSL.pdf";
             $tst = "2011-01-26 12:00:00";
         }
         else if($pj->getName() == "GAMFIT"){
-            $download = "http://forum.grand-nce.ca/exception/Nicholas_Graham_GAMFIT.pdf";
+            $download = "http://{$config->getValue('domain')}/exception/Nicholas_Graham_GAMFIT.pdf";
             $tst = "2011-01-26 12:00:00";
         }
         /*
         else if($pj->getName() == "HSCEG"){
-            $download = "http://forum.grand-nce.ca/exception/Nicholas_Graham_HSCEG.pdf";
+            $download = "http://{$config->getValue('domain')}/exception/Nicholas_Graham_HSCEG.pdf";
         }
 */
         else if($pj->getName() == "NEUROGAM"){
-            $download = "http://forum.grand-nce.ca/exception/Nicholas_Graham_NEUROGAM.pdf";
+            $download = "http://{$config->getValue('domain')}/exception/Nicholas_Graham_NEUROGAM.pdf";
             $tst = "2011-01-26 12:00:00";
         }
         else{

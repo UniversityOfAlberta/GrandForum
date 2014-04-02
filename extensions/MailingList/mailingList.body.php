@@ -124,7 +124,7 @@ class MailList{
     }
     
     function createMailListTable($action, $article){
-        global $wgOut, $wgTitle, $wgScriptPath, $wgServer, $wgUser;
+        global $wgOut, $wgTitle, $wgScriptPath, $wgServer, $wgUser, $config;
         $result = true;
         if($wgTitle->getText() == "Mail Index" || $wgTitle->getNsText() == "Mail" && strpos($wgTitle->getText(), "MAIL") !== 0){
             $this->userCanExecute($wgTitle, $wgUser, "read", $result);
@@ -142,7 +142,7 @@ class MailList{
                                         array('*'),
                                         array('mailListName' => EQ($project_name)));
             if(count($data) > 0){
-                $wgOut->addHTML("<b>Mail List Address:</b> <a href='mailto:{$data[0]['mailListName']}@forum.grand-nce.ca'>{$data[0]['mailListName']}@forum.grand-nce.ca</a>");
+                $wgOut->addHTML("<b>Mail List Address:</b> <a href='mailto:{$data[0]['mailListName']}@{$config->getValue('domain')}'>{$data[0]['mailListName']}@{$config->getValue('domain')}</a>");
             }
             else{
                 $wgOut->addHTML("This Mailing list has not been set up yet");

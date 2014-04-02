@@ -62,7 +62,7 @@ class Notification{
                 VALUES('{$id}','{$user->getId()}','$name','{$message}','{$url}',CURRENT_TIMESTAMP,'1')";
         if($mail){
             $headers = "Content-type: text/html\r\n"; 
-            $headers .= "From: {$config->getValue('siteName')} <support@forum.grand-nce.ca>" . "\r\n";
+            $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
             $wUser = User::newFromId($user->getId());
             mail($wUser->getEmail(), $name, nl2br($message)."<br /><br /><a href='$url'>Notification URL</a><br /><br /><a href='{$wgServer}{$wgScriptPath}'>{$config->getValue('siteName')}</a>", $headers);
         }

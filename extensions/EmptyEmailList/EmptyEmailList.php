@@ -23,7 +23,7 @@ class EmptyEmailList extends SpecialPage{
 	    $wgOut->addHTML("<table class='wikitable sortable' bgcolor='#aaaaaa' cellspacing='1' cellpadding='2' style='text-align:center;'>
 <tr bgcolor='#F2F2F2'><th>Last Name</th><th>First Name</th><th>Type</th><th>Email</th></tr>");
         foreach(Person::getAllPeople('all') as $person){
-            if(($person->getEmail() == "" || $person->getEmail() == "grand-support@forum.grand-nce.ca" || $person->getEmail() == "support@forum.grand-nce.ca") && 
+            if(($person->getEmail() == "" || $person->getEmail() == "{$config->getValue('supportEmail')}") && 
                ($person->isRole(HQP) || $person->isRole(PNI) || $person->isRole(CNI))){
                 $names = explode(".", $person->getName());
                 $wgOut->addHTML("<tr bgcolor='#FFFFFF'>

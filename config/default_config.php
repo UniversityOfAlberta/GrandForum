@@ -13,6 +13,9 @@
     // The path for the Forum
     $config->setValue("path", "");
     
+    // The domain for the Forum (used for things like mailing list addresses)
+    $config->setValue("domain", "");
+    
     // DB Type (ie. mysql)
     $config->setValue("dbType", "mysql");
     
@@ -37,6 +40,12 @@
     // Default Mailing List Password
     $config->setValue("listAdminPassword", "");
     
+    // Support Email Address
+    $config->setValue("supportEmail", "");
+    
+    // Network Website
+    $config->setValue("networkSite", "");
+    
     // Logo path
     $config->setValue("logo", "skins/logos/logo.png");
     
@@ -48,6 +57,9 @@
     
     // Highlight color for skin
     $config->setValue("highlightColor", "#0088FF");
+    
+    // Global Message (ie. maintenance message)
+    $config->setValue("globalMessage", "");
     
     // Which extensions to enable
     $config->setValue("extensions", array(

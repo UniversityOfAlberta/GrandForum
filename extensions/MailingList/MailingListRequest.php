@@ -123,7 +123,7 @@ class MailingListRequest extends SpecialPage{
     }
     
     function generateSubscribeFormHTML($wgOut){
-        global $wgUser, $wgServer, $wgScriptPath;
+        global $wgUser, $wgServer, $wgScriptPath, $config;
         $wgOut->addHTML("To subscribe a new user to a project mailing list, select the project list that the user should be added to, and select the user you wish to add.  If you do not see the user in the drop down list, then it either means one of three possibilities:
         <ol>
             <li>The user is already subscribed.  You can check this by going to the project main page and looking at the mailing list information.</li>
@@ -142,7 +142,7 @@ class MailingListRequest extends SpecialPage{
                             function updateList(){
                                 var project = $('#projects').val();");
             foreach($projects as $project){
-                $wgOut->addScript("if(project == '".strtolower($project->getName())."@forum.grand-nce.ca'){");
+                $wgOut->addScript("if(project == '".strtolower($project->getName())."@{$config->getValue('domain')}'){");
                 $wgOut->addScript("$('#users').html('');");
                 foreach($project->getAllPeople() as $user){
                     if(!MailingList::isSubscribed($project, $user)){
@@ -160,7 +160,7 @@ class MailingListRequest extends SpecialPage{
                         <td class='mw-input'>
                             <select id='projects' name='project' onchange='updateList();'>");
         foreach($projects as $project){
-            $wgOut->addHTML("<option>".strtolower($project->getName())."@forum.grand-nce.ca</option>");
+            $wgOut->addHTML("<option>".strtolower($project->getName())."@{$config->getValue('domain')}</option>");
         }
         $wgOut->addHTML("</select>
                     </td>
@@ -188,8 +188,8 @@ class MailingListRequest extends SpecialPage{
         $wgOut->addHTML("</form>\n");
     }
     
-        function generateUnsubscribeFormHTML($wgOut){
-        global $wgUser, $wgServer, $wgScriptPath;
+    function generateUnsubscribeFormHTML($wgOut){
+        global $wgUser, $wgServer, $wgScriptPath, $config;
         $wgOut->addHTML("To unsubscribe a user from a project mailing list, select the project list that the user should be removed from, and select the user you wish to unsubscribe.<br />
                         <form action='$wgScriptPath/index.php/Special:MailingListRequest?unsub' method='post'>\n");
         $person = Person::newFromId($wgUser->getId());
@@ -203,7 +203,7 @@ class MailingListRequest extends SpecialPage{
                             function updateList(){
                                 var project = $('#projects').val();");
             foreach($projects as $project){
-                $wgOut->addScript("if(project == '".strtolower($project->getName())."@forum.grand-nce.ca'){");
+                $wgOut->addScript("if(project == '".strtolower($project->getName())."@{$config->getValue('domain')}'){");
                 $wgOut->addScript("$('#users').html('');");
                 foreach($project->getAllPeople() as $user){
                     if(MailingList::isSubscribed($project, $user)){
@@ -221,7 +221,7 @@ class MailingListRequest extends SpecialPage{
                         <td class='mw-input'>
                             <select id='projects' name='project' onchange='updateList();'>");
         foreach($projects as $project){
-            $wgOut->addHTML("<option>".strtolower($project->getName())."@forum.grand-nce.ca</option>");
+            $wgOut->addHTML("<option>".strtolower($project->getName())."@{$config->getValue('domain')}</option>");
         }
         $wgOut->addHTML("</select>
                     </td>

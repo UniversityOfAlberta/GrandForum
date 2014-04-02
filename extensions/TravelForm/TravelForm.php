@@ -142,14 +142,14 @@ EOF;
 			$email_body .=<<<EOF
 \nRegards,
 {$config->getValue('siteName')}
-support@forum.grand-nce.ca
+{$config->getValue('supportEmail')}
 EOF;
 
 			$to = "fauve_mackenzie@gnwc.ca"; 
 			//$to = "dwt@ualberta.ca";
 			$cc = $email;
 			$subject = "Travel Form {$title}: $first_name $last_name";
-			$from = "{$config->getValue('networkName')} Forum <support@forum.grand-nce.ca>";
+			$from = "{$config->getValue('siteName')} <{$config->getValue('supportEmail')}>";
 			$filename = "{$last_name}_{$first_name}.xls";
 			if($resubmission){
 				$filename = "Resubmission-{$last_name}_{$first_name}.xls";
@@ -188,7 +188,7 @@ EOF;
 	}
 	
 	static function handleSubmit(){
-		global $wgUser, $wgMessage;
+		global $wgUser, $wgMessage, $config;
 
 		$my_id = $wgUser->getId();
 		$curr_year = date("Y");
@@ -249,7 +249,7 @@ EOF;
 			$wgMessage->addSuccess("Thank you! Your Travel Form has been successfully submitted! ");
 		}
 		else{
-			$wgMessage->addError("There was a problem with submitting the form. If the problem persists, please contact support@forum.grand-nce.ca.");
+			$wgMessage->addError("There was a problem with submitting the form. If the problem persists, please contact {$config->getValue('supportEmail')}.");
 		}
 	}
 

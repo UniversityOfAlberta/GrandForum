@@ -3,7 +3,7 @@
 class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 
 	function render(){
-		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgImpersonating;
+		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgImpersonating, $config;
 		$reportname = $this->getReport()->name;
 		$person = Person::newFromId($wgUser->getId());
 		$projectGet = "";
@@ -48,7 +48,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                                                         $('#download_button_' + index).text(name + ' PDF');
                                                     }
                                                     else{
-                                                        $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:support@forum.grand-nce.ca\">support@forum.grand-nce.ca</a>');
+                                                        $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
                                                         $('#generate_error').css('display', 'block');
                                                     }
                                                 }
@@ -57,7 +57,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		                                  },
 		                        error : function(response){
                                               // Error
-                                              $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:support@forum.grand-nce.ca\">support@forum.grand-nce.ca</a>');
+                                              $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
                                               $('#generate_error').css('display', 'block');
 		                                      $('#generateButton').removeAttr('disabled');
 		                                      $('#generate_throbber').css('display', 'none');

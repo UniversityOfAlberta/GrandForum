@@ -125,7 +125,7 @@ class PollView {
 					$to = $user->user_email;
 					if($to != ""){
 						$subject = "{$config->getValue('siteName')}: You have been requested to vote on a poll";
-						$headers = 'From: support@forum.grand-nce.ca' . "\r\n" .
+						$headers = "From: {$config->getValue('supportEmail')}\r\n" .
 							    
 							    'Content-type:text/html;charset=iso-8859-1' . "" .
 							    'X-Mailer: PHP/' . phpversion();
