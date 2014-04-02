@@ -109,7 +109,7 @@ if($wgUser->getID() == 0){
     DBFunctions::insert('grand_roles',
                         array('user_id' => 1,
                               'role' => 'Staff',
-                              'start_date' => '0000-00-00 00:00:00',
+                              'start_date' => date('Y-m-d'),
                               'end_date' => '0000-00-00 00:00:00'));
     DBFunctions::insert('mw_user_groups',
                         array('ug_user' => 1,
