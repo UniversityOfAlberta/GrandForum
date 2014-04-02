@@ -66,7 +66,6 @@
         //'Twitter',
         'MailingList',
         //'FeatureRequest',
-        //'GoogleAlertReader',
         'AddMember',
         'EditMember',
         //'ImportBibTex',

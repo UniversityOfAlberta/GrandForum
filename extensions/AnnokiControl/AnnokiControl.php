@@ -89,9 +89,6 @@ $egAnnokiExtensions['MailingList'] = array('name' => 'MailingList',
 $egAnnokiExtensions['FeatureRequest'] = array('name' => 'FeatureRequest',
                                               'path' => "$IP/extensions/FeatureRequest/FeatureRequest.body.php");
 
-$egAnnokiExtensions['GoogleAlertReader'] = array('name' => 'GoogleAlertReader',
-                                                 'path' => "$IP/extensions/GoogleAlertReader/GoogleAlertReader.body.php");
-
 $egAnnokiExtensions['SociQL'] = array('name' => 'SociQL Queries',
                                       'path' => "$IP/extensions/SociQL/Queries.php");
 
