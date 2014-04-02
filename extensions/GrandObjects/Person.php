@@ -951,11 +951,11 @@ class Person extends BackboneModel {
     function getReversedName(){
         $first = $this->getFirstName();
         $last = $this->getLastName();
-        if($last != ""){
+        if($first != ""){
             return "{$last}, {$first}";
         }
         else{
-            return "{$first}";
+            return "{$last}";
         }
     }
 
