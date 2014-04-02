@@ -131,9 +131,10 @@ EOF;
     }
 
     function showIntro(){
+        global $config;
         $this->html =<<<EOF
 <div>
-<p>For each of your friends or colleagues in GRAND, please choose the TOP TWO media you use to communicate with this person and then indicate how often you use them. To reduce the work on completing this section, we have excluded from the list below the acquaintances with whom you do not work or exchange advice.</p>
+<p>For each of your friends or colleagues in {$config->getValue('networkName')}, please choose the TOP TWO media you use to communicate with this person and then indicate how often you use them. To reduce the work on completing this section, we have excluded from the list below the acquaintances with whom you do not work or exchange advice.</p>
 <p>If you only use one medium to contact a person, then please select just one option. You cannot choose more than two media. Once you have selected two media, the rest become unavailable; to change your media selection you have to first deselect an old option.</p>
 <p>You can use the filter below to locate a specific person in your network.</p>
 </div>
@@ -142,7 +143,7 @@ EOF;
     }
 
     function showForm(){
-        global $wgOut, $wgServer, $wgScriptPath;
+        global $wgOut, $wgServer, $wgScriptPath, $config;
 
         $connections = $this->getSavedData();
        
@@ -222,7 +223,7 @@ EOF;
 </tr>
 <tr>
 <td width="18%" class="hdr_medium_cln" title='Click to apply this medium for all people currently shown'>
-<input class="all_forum_checkbox" type="checkbox" onchange="headerRowCheckbox(this, 'tr.hotlist:visible input.forum');" /> GRAND Forum
+<input class="all_forum_checkbox" type="checkbox" onchange="headerRowCheckbox(this, 'tr.hotlist:visible input.forum');" /> {$config->getValue('siteName')}
 </td>
 <td width="10%" class="hdr_radio"><input type="radio" name="selectallfreq4" onchange="headerRowRadio(this, 'tr.hotlist:visible input.forum_moredaily');" /></td>
 <td width="10%" class="hdr_radio"><input type="radio" name="selectallfreq4" onchange="headerRowRadio(this, 'tr.hotlist:visible input.forum_daily');" /></td>
@@ -289,11 +290,12 @@ EOF;
     }
 
     function getInfoRow($name, $vals, $rownum){
+        global $config;
         $all_media = array(
                         "inperson"=>"In Person",
                         "email"=>"Email",
                         "phone"=>"Phone, Skype",
-                        "forum"=>"GRAND Forum",
+                        "forum"=>"{$config->getValue('siteName')}",
                         "inperson"=>"In Person",
                         "other"=>"Other"
                     );

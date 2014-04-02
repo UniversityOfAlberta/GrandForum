@@ -23,6 +23,7 @@ class NetworkTab extends AbstractSurveyTab {
     }
 
     function showIntro(){
+        global $config;
         $this->html =<<<EOF
 <style type="text/css">
 #survey_connections, #forum_connections {
@@ -30,15 +31,15 @@ class NetworkTab extends AbstractSurveyTab {
 }
 </style>
 <div>
-<p>Please tell us who you know among GRAND participants by checking off their names. You "know" someone if you have talked to that person at conferences or meetings, discussed professional or personal matters, or worked together on projects or publications.</p>
+<p>Please tell us who you know among {$config->getValue('networkName')} participants by checking off their names. You "know" someone if you have talked to that person at conferences or meetings, discussed professional or personal matters, or worked together on projects or publications.</p>
 <p>You can select and confirm your network members from several sources:
 <ul>
 <li>from the list of connections you indicated in the 2010 survey (if you completed the survey);</li>
 <li>from the information you have entered on the forum pages;</li>
-<li>from the list of all GRAND members.</li>
+<li>from the list of all {$config->getValue('networkName')} members.</li>
 </ul>
 </p>
-<p>You can search the list of GRAND participants. You can also sort all the lists by first name, last name, project, or university.</p>
+<p>You can search the list of {$config->getValue('networkName')} participants. You can also sort all the lists by first name, last name, project, or university.</p>
 <p>When you confirm a name from any of these sources, it is pooled in Your 2012 Network table at the bottom of the page and is no longer available for selection. You can edit the list of names before finalizing Your 2012 Network.</p>
 </div>
 EOF;
@@ -559,7 +560,7 @@ EOF;
     }
 
     function newConnectionForm(){
-        global $wgServer, $wgScriptPath, $wgUser, $wgOut;
+        global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
 
         $me = Person::newFromId($wgUser->getId());
         $allPeople = $this->allpeps; //array_merge(Person::getAllPeople(CNI), Person::getAllPeople(PNI));
@@ -627,7 +628,7 @@ EOF;
 
         $this->html .=<<<EOF
         <h3><a id='lnk_new_connections' href='#'>
-            <span id='spn_new_connections'>+</span> Select your connections in GRAND (if you have pre-populated data, this section provides additional connections)
+            <span id='spn_new_connections'>+</span> Select your connections in {$config->getValue('networkName')} (if you have pre-populated data, this section provides additional connections)
         </a></h3>
 
         <div id='div_new_connections' style='display:none;'>

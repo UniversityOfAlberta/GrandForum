@@ -5,16 +5,17 @@ class GrandExperienceTab extends AbstractSurveyTab {
     var $warnings = false;
     
     function GrandExperienceTab(){
+        global $config;
         parent::AbstractSurveyTab("grand-experience");
-        $this->title = "GRAND";
+        $this->title = "{$config->getValue('networkName')}";
     }
     
     function generateBody(){
-        global $wgUser, $wgServer, $wgScriptPath;
+        global $wgUser, $wgServer, $wgScriptPath, $config;
         
         $this->html .=<<<EOF
             <p>
-            Please tell us about your experience in GRAND and your views on professional networking. This information is treated as confidential; it will be anonymized and used only in a summary form. The survey area is accessible only to the programmers. 
+            Please tell us about your experience in {$config->getValue('networkName')} and your views on professional networking. This information is treated as confidential; it will be anonymized and used only in a summary form. The survey area is accessible only to the programmers. 
             </p>
 EOF;
         $this->showForm();  
@@ -25,7 +26,7 @@ EOF;
 
 
     function showForm(){
-        global $wgOut, $wgServer, $wgScriptPath;
+        global $wgOut, $wgServer, $wgScriptPath, $config;
 
         $experience = $this->getSavedData();
         $grand_comments = "";
@@ -40,7 +41,7 @@ EOF;
 
         //Rendering
         $this->html .=<<<EOF
-            <h3>GRAND</h3>
+            <h3>{$config->getValue('networkName')}</h3>
             <div>
             <table width='100%' id='grand_experience' class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
             <thead>
@@ -56,7 +57,7 @@ EOF;
             </thead>
             <tbody>
             <tr>
-            <th align="left">I am satisfied with the networking opportunities provided by GRAND initiatives.</th>
+            <th align="left">I am satisfied with the networking opportunities provided by {$config->getValue('networkName')} initiatives.</th>
 EOF;
         foreach ($all_values as $v){
             $checked = "";
@@ -72,7 +73,7 @@ EOF;
         $this->html .=<<<EOF
             </tr>
             <tr>
-            <th align="left">I am satisfied with how GRAND communication procedures keep me informed about events, news, or opportunities related to GRAND.</th>
+            <th align="left">I am satisfied with how {$config->getValue('networkName')} communication procedures keep me informed about events, news, or opportunities related to {$config->getValue('networkName')}.</th>
 EOF;
         foreach ($all_values as $v){
             $checked = "";
@@ -88,7 +89,7 @@ EOF;
         $this->html .=<<<EOF
             </tr>
             <tr>
-            <th align="left">I am satisfied with the administrative procedures in GRAND.</th>
+            <th align="left">I am satisfied with the administrative procedures in {$config->getValue('networkName')}.</th>
 EOF;
         foreach ($all_values as $v){
             $checked = "";
@@ -104,7 +105,7 @@ EOF;
         $this->html .=<<<EOF
             </tr>
             <tr>
-            <th align="left">I am satisfied with the reporting procedures in GRAND.</th>
+            <th align="left">I am satisfied with the reporting procedures in {$config->getValue('networkName')}.</th>
 EOF;
         foreach ($all_values as $v){
             $checked = "";
@@ -120,7 +121,7 @@ EOF;
         $this->html .=<<<EOF
             </tr>
             <tr>
-            <th align="left">I am satisfied with the funding allocation procedures in GRAND.</th>
+            <th align="left">I am satisfied with the funding allocation procedures in {$config->getValue('networkName')}.</th>
 EOF;
         foreach ($all_values as $v){
             $checked = "";
@@ -136,7 +137,7 @@ EOF;
         $this->html .=<<<EOF
             </tr>
             <tr>
-            <th align="left">I am satisfied with the impact my participation in GRAND has on my research agenda.</th>
+            <th align="left">I am satisfied with the impact my participation in {$config->getValue('networkName')} has on my research agenda.</th>
 EOF;
         foreach ($all_values as $v){
             $checked = "";
@@ -152,7 +153,7 @@ EOF;
         $this->html .=<<<EOF
             </tr>
             <tr>
-            <th align="left">I am satisfied with the impact my participation in GRAND has on my career.</th>
+            <th align="left">I am satisfied with the impact my participation in {$config->getValue('networkName')} has on my career.</th>
 EOF;
         foreach ($all_values as $v){
             $checked = "";
@@ -269,7 +270,7 @@ EOF;
 EOF;
 
         if(!$this->isSubmitted()){
-            $this->html .= '<button onclick="submitGrandExperience();return false;">Save GRAND Experience</button>';
+            $this->html .= '<button onclick="submitGrandExperience();return false;">Save {$config->getValue('networkName')} Experience</button>';
         }
         $this->html .=<<<EOF
             </div>
@@ -280,7 +281,7 @@ EOF;
     
 
     function submitForm(){
-        global $wgServer, $wgScriptPath, $wgOut;
+        global $wgServer, $wgScriptPath, $wgOut, $config;
 
         if($this->warnings){
             $validate_onload = "validateGrandExperience();";
@@ -344,7 +345,7 @@ EOF;
                     }
                     else{
                         $(this).attr("bgcolor", "yellow");
-                        error_msg = "GRAND Experience: You need to provide answers for all GRAND and Value of Networking questions to successfully complete the section.";
+                        error_msg = "{$config->getValue('networkName')} Experience: You need to provide answers for all {$config->getValue('networkName')} and Value of Networking questions to successfully complete the section.";
                     }
                     
                 });
@@ -364,7 +365,7 @@ EOF;
                     }
                     else{
                         $(this).attr("bgcolor", "yellow");
-                        error_msg = "GRAND Experience: You need to provide answers for all GRAND and Value of Networking questions to successfully complete the section.";
+                        error_msg = "{$config->getValue('networkName')} Experience: You need to provide answers for all {$config->getValue('networkName')} and Value of Networking questions to successfully complete the section.";
                     }
                     
                 });

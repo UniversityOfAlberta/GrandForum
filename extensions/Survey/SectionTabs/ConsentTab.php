@@ -18,16 +18,16 @@ class ConsentTab extends AbstractSurveyTab {
     }
 
     function showConsent(){
-
+        global $config;
         $this->html =<<<EOF
 <div>
 <h3>Introductory Letter</h3>
-<p>Part of GRAND's mandate is to create a community of professionals engaged in collaborative research, innovation, and knowledge transfer. Understanding the relationships among the members of this community is crucial for the success of GRAND.</p>
-<p>Many of you are already familiar with the NAVEL (Network Assessment and Validation for Effective Leadership), an internal project of GRAND: we trace the formation and evolution of the collaborative relationships among GRAND's participants. Our 2010 baseline survey showed how the researchers in GRAND are connected to each other before the network was fully operational. This second survey will enable us to capture the changes in the relations among GRAND researchers and will give new participants a chance to get themselves on the GRAND map.</p>
+<p>Part of {$config->getValue('networkName')}'s mandate is to create a community of professionals engaged in collaborative research, innovation, and knowledge transfer. Understanding the relationships among the members of this community is crucial for the success of {$config->getValue('networkName')}.</p>
+<p>Many of you are already familiar with the NAVEL (Network Assessment and Validation for Effective Leadership), an internal project of {$config->getValue('networkName')}: we trace the formation and evolution of the collaborative relationships among {$config->getValue('networkName')}'s participants. Our 2010 baseline survey showed how the researchers in {$config->getValue('networkName')} are connected to each other before the network was fully operational. This second survey will enable us to capture the changes in the relations among {$config->getValue('networkName')} researchers and will give new participants a chance to get themselves on the {$config->getValue('networkName')} map.</p>
 <p>
 We are confident that our second survey is easier to complete than the 2010 baseline survey. The time for completing the survey varies significantly depending on how connected a person is; we estimate the survey will take from 15 min to 35 – 45 min for the most connected members. You can complete the survey in MULTIPLE SESSIONS: you can stop at any time and come back to it later.
 </p>
-<p>We know that there are constraints on your time but it is only with your help - and with the input of as many of GRAND's participants as possible - that we can learn how the network functions. For those who complete the survey, we will offer the analyses we have produced and a brief individual report. Thank you in advance for your time and effort.</p>
+<p>We know that there are constraints on your time but it is only with your help - and with the input of as many of {$config->getValue('networkName')}'s participants as possible - that we can learn how the network functions. For those who complete the survey, we will offer the analyses we have produced and a brief individual report. Thank you in advance for your time and effort.</p>
 
 <p style='text-align:right;'>Barry Wellman, Project Leader, NAVEL project</p>
 </div>
@@ -39,7 +39,7 @@ of the NAVEL study as well as its potential benefits and/or risks to me. Further
 raise any questions or concerns with the NAVEL team before proceeding with the survey (contact
 information below) and that by providing this consent I am confirming that my questions have
 been answered; (b) I can download a copy of the Consent Form for my records; and (c) I will
-receive feedback about my personal network in GRAND. Based on these, I voluntarily consent to
+receive feedback about my personal network in {$config->getValue('networkName')}. Based on these, I voluntarily consent to
 participate in the survey.
 </p>
 <p>

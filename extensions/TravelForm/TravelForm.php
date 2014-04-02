@@ -28,7 +28,7 @@ class TravelForm extends SpecialPage {
 	}
 
 	static function sendEmail($resubmission){
-		global $wgUser;
+		global $wgUser, $config;
 
 		$my_id = $wgUser->getId();
 		$curr_year = date("Y");
@@ -128,7 +128,7 @@ class TravelForm extends SpecialPage {
             }
 
             $email_body =<<<EOF
-New GRAND Forum Travel Form {$title}!\n
+New {$config->getValue('networkName')} Forum Travel Form {$title}!\n
 Travel Information:\n
 EOF;
 			foreach($fields as $label=>$value){
@@ -141,7 +141,7 @@ EOF;
 			}
 			$email_body .=<<<EOF
 \nRegards,
-GRAND Forum
+{$config->getValue('siteName')}
 support@forum.grand-nce.ca
 EOF;
 
@@ -149,7 +149,7 @@ EOF;
 			//$to = "dwt@ualberta.ca";
 			$cc = $email;
 			$subject = "Travel Form {$title}: $first_name $last_name";
-			$from = "GRAND Forum <support@forum.grand-nce.ca>";
+			$from = "{$config->getValue('networkName')} Forum <support@forum.grand-nce.ca>";
 			$filename = "{$last_name}_{$first_name}.xls";
 			if($resubmission){
 				$filename = "Resubmission-{$last_name}_{$first_name}.xls";

@@ -1,8 +1,6 @@
 <?php
 
 class ReviewTab extends AbstractSurveyTab {
-
-
     
     function ReviewTab(){
         parent::AbstractSurveyTab("review-submit");
@@ -67,7 +65,7 @@ EOF;
 
 
       function submitForm(){
-        global $wgServer, $wgScriptPath, $wgOut;
+        global $wgServer, $wgScriptPath, $wgOut, $config;
 
         $completed = $this->getCompleted();
         $completed = implode(",", $completed);
@@ -76,7 +74,7 @@ EOF;
             <script type="text/javascript">
             var completed = new Array({$completed});
 
-            var section_names = new Array("Intro & Consent", "You", "Network", "Relations", "Communication", "Project(s)", "GRAND", "Review & Submit");
+            var section_names = new Array("Intro & Consent", "You", "Network", "Relations", "Communication", "Project(s)", "{$config->getValue('networkName')}", "Review & Submit");
 
             function submitSurvey(submitted){
                 window.onbeforeunload = null;

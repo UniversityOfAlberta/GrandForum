@@ -40,14 +40,14 @@ class PersonBudgetTab extends AbstractEditableTab {
     }
     
     function generateEditBody(){
-	    global $wgUser, $wgServer, $wgScriptPath;
+	    global $wgUser, $wgServer, $wgScriptPath, $config;
 		// Allow user to download the budget template
 		$me = Person::newFromId($wgUser->getId());
 	    $this->html .= "<div>";
 	    $this->html .= "<h2>Download Budget Template</h2>
 	                    This budget is for the allocated, or accepted budget for ".YEAR."-".(YEAR+1).".
                         <ul>
-                            <li><a href='$wgServer$wgScriptPath/data/GRAND Researcher Budget Allocated (2013-14).xls'>".YEAR."-".(YEAR+1)." Budget Template</a></li>
+                            <li><a href='$wgServer$wgScriptPath/data/{$config->getValue('networkName')} Researcher Budget Allocated (2013-14).xls'>".YEAR."-".(YEAR+1)." Budget Template</a></li>
                         </ul>";
 	
         $this->html .= "<h2>Budget Upload</h2>

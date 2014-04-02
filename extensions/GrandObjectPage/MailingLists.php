@@ -18,12 +18,12 @@ class MailingLists extends SpecialPage{
 	}
 
 	function run($par){
-		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
+		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
 		$location = array();
 		foreach(MailingList::getLocationBasedLists() as $list){
 		    $location[] = "<a href='mailto:$list@forum.grand-nce.ca'>$list@forum.grand-nce.ca</a>";
 		}
-		$wgOut->addHTML('The following are mailing lists for GRAND.  Each project has a project list where each project member is subscribed from.  Special mailing lists are also included on this page, like separate role based lists, support email, and university lists.<br />
+		$wgOut->addHTML('The following are mailing lists for '.$config->getValue('networkName').'.  Each project has a project list where each project member is subscribed from.  Special mailing lists are also included on this page, like separate role based lists, support email, and university lists.<br />
 		                <h2>Project Lists</h2>
 		                <a href="mailto:aesthvis@forum.grand-nce.ca">aesthvis@forum.grand-nce.ca</a><br />
                         <a href="mailto:afeval@forum.grand-nce.ca">afeval@forum.grand-nce.ca</a><br />

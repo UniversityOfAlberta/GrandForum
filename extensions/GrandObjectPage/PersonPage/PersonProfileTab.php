@@ -181,13 +181,14 @@ class PersonProfileTab extends AbstractEditableTab {
     }
     
     function showEditProfile($person, $visibility){
+        global $config;
         $this->html .= "<table>
                             <tr>
-                                <td align='right' valign='top'><b>GRAND Website:</b></td>
+                                <td align='right' valign='top'><b>{$config->getValue('networkName')} Website:</b></td>
                                 <td><textarea style='width:600px; height:150px;' name='public_profile'>{$person->getProfile(false)}</textarea></td>
                             </tr>
                             <tr>
-                                <td align='right' valign='top'><b>GRAND Forum:</b></td>
+                                <td align='right' valign='top'><b>{$config->getValue('siteName')}:</b></td>
                                 <td><textarea style='width:600px; height:150px;' name='private_profile'>{$person->getProfile(true)}</textarea></td>
                             </tr>
                         </table>";
@@ -280,7 +281,7 @@ EOF;
     }
     
     function showEditEthics($person, $visibility){
-
+        global $config;
         $ethics = $person->getEthics();
 
         if($ethics['completed_tutorial']){
@@ -304,8 +305,8 @@ EOF;
             <tr>
             <td>
             <i>
-            <p>All GRAND HQP are required to complete the TCPS2 tutorial <b>Course on Research Ethics (CORE)</b>.  This interactive online tutorial can be completed in approximately two hours and provides an essential orientation to the Tri Council Policy Statement.</p>
-            <p>Please note, the current version of the ethics module was released February 2011. If you completed a previous version (i.e. the one that HQP were asked to complete when GRAND started), you are still required to complete the most recent version.</p>
+            <p>All {$config->getValue('networkName')} HQP are required to complete the TCPS2 tutorial <b>Course on Research Ethics (CORE)</b>.  This interactive online tutorial can be completed in approximately two hours and provides an essential orientation to the Tri Council Policy Statement.</p>
+            <p>Please note, the current version of the ethics module was released February 2011. If you completed a previous version (i.e. the one that HQP were asked to complete when {$config->getValue('networkName')} started), you are still required to complete the most recent version.</p>
             </i>
             </td>
             </tr>

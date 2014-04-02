@@ -1278,6 +1278,7 @@ EOF;
     }
     
     function getAllocatedBudget($year){
+        global $config;
         $projectBudget = null;
         if(isset($this->budgets['s'.$year])){
             return unserialize($this->budgets['s'.$year]);
@@ -1332,7 +1333,7 @@ EOF;
                                                            array("5) Travel expenses"),
                                                            array("a) Field trips"),
                                                            array("b) Conferences"),
-                                                           array("c) GRAND annual conference")));
+                                                           array("c) {$config->getValue('networkName')} annual conference")));
                     }
                     $nBudget = $budget->copy()->limit(0, 1)->select(V_PERS_NOT_NULL)->union(new Budget());
                     $pBudget = $budget->copy()->select(V_PROJ, $projectNames)->limit(6, 16);
@@ -1415,6 +1416,7 @@ EOF;
     }
     
     function getRequestedBudget($year, $role='all'){
+        global $config;
         $projectBudget = null;
         if(isset($this->budgets['r'.$role.$year])){
             return unserialize($this->budgets['r'.$role.$year]);
@@ -1478,7 +1480,7 @@ EOF;
                                                                array("5) Travel expenses"),
                                                                array("a) Field trips"),
                                                                array("b) Conferences"),
-                                                               array("c) GRAND annual conference")));
+                                                               array("c) {$config->getValue('networkName')} annual conference")));
                         }
                         $nBudget = $budget->copy()->limit(0, 1)->select(V_PERS_NOT_NULL)->union(new Budget());
                         $pBudget = $budget->copy()->select(V_PROJ, $projectNames)->limit(6, 16);
