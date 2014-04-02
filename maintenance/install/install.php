@@ -87,6 +87,9 @@ if(question("Initialize namespaces (y/n)") == 'y'){
                               VALUES ('".($nsId++)."', '{$config->getValue('networkName')}', NULL, 1)", true);
     $nsId++;
     DBFunctions::execSQL("INSERT INTO `mw_an_extranamespaces` (`nsId`, `nsName`, `nsUser`, `public`)
+                              VALUES ('".($nsId++)."', 'Mail', NULL, 0)", true);
+    $nsId++;
+    DBFunctions::execSQL("INSERT INTO `mw_an_extranamespaces` (`nsId`, `nsName`, `nsUser`, `public`)
                               VALUES ('".($nsId++)."', 'Inactive', NULL, 1)", true);
     DBFunctions::execSQL("INSERT INTO `mw_an_extranamespaces` (`nsId`, `nsName`, `nsUser`, `public`)
                           VALUES ('".($nsId++)."', 'Inactive_Talk', NULL, 1)", true);
@@ -95,6 +98,20 @@ if(question("Initialize namespaces (y/n)") == 'y'){
                               VALUES ('".($nsId++)."', '{$role}', NULL, 1)", true);
         DBFunctions::execSQL("INSERT INTO `mw_an_extranamespaces` (`nsId`, `nsName`, `nsUser`, `public`)
                               VALUES ('".($nsId++)."', '{$role}_Talk', NULL, 1)", true);
+    }
+    $productNamespaces = array('Publication', 
+                               'Artifact',
+                               'Presentation',
+                               'Activity',
+                               'Press',
+                               'Award',
+                               'Contribution',
+                               'Multimedia_Story');
+    foreach($productNamespaces as $product){
+        DBFunctions::execSQL("INSERT INTO `mw_an_extranamespaces` (`nsId`, `nsName`, `nsUser`, `public`)
+                              VALUES ('".($nsId++)."', '{$product}', NULL, 1)", true);
+        DBFunctions::execSQL("INSERT INTO `mw_an_extranamespaces` (`nsId`, `nsName`, `nsUser`, `public`)
+                              VALUES ('".($nsId++)."', '{$product}_Talk', NULL, 1)", true);
     }
 }
 $wgUser = User::newFromName("Admin");
@@ -109,7 +126,7 @@ if($wgUser->getID() == 0){
     DBFunctions::insert('grand_roles',
                         array('user_id' => 1,
                               'role' => 'Staff',
-                              'start_date' => date('Y-m-d'),
+                              'start_date' => '0000-00-00 00:00:00',
                               'end_date' => '0000-00-00 00:00:00'));
     DBFunctions::insert('mw_user_groups',
                         array('ug_user' => 1,
