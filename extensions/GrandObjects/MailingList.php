@@ -64,7 +64,7 @@ class MailingList {
      */
     static function listLists(){
         if(count(self::$lists) == 0){
-            $command =  "/usr/lib/mailman/bin/list_lists -b";
+            $command =  "/usr/lib/mailman/bin/list_lists -b 2> /dev/null";
 		    exec($command, $lists);
 		    foreach($lists as $list){
 		        if(array_search($list, self::$black_list) === false){
@@ -93,7 +93,7 @@ class MailingList {
             return 1;
         }
         $email = $person->getEmail();
-		$command =  "echo \"$email\" | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - $listname";
+		$command =  "echo \"$email\" | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - $listname 2> /dev/null";
 		exec($command, $output);
 		$out = $output;
 		self::$membershipCache = array();
@@ -122,7 +122,7 @@ class MailingList {
         }
         $listname = MailingList::listName($project);
         $email = $person->getEmail();
-		$command =  "/usr/lib/mailman/bin/remove_members -n -N $listname \"$email\"";
+		$command =  "/usr/lib/mailman/bin/remove_members -n -N $listname \"$email\" 2> /dev/null";
 		exec($command, $output);
 		self::$membershipCache = array();
 		if(self::isSubscribed($project, $person)){
@@ -148,7 +148,7 @@ class MailingList {
         $listname = MailingList::listName($project);
         $email = $person->getEmail();
         if(!isset(self::$membershipCache[$listname])){
-            $command = "/usr/lib/mailman/bin/list_members $listname";
+            $command = "/usr/lib/mailman/bin/list_members $listname 2> /dev/null";
             exec($command, $output);
             self::$membershipCache[$listname] = $output;
         }

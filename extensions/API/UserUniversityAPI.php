@@ -47,12 +47,14 @@ class UserUniversityAPI extends API{
         foreach($universities as $id => $uni){
             if($uni == $_POST['university']){
                 $_POST['university'] = $id;
+                break;
             }
         }
         $positions = Person::getAllPositions();
         foreach($positions as $id => $pos){
             if($pos == $_POST['title']){
                 $_POST['title'] = $id;
+                break;
             }
         }
         $person = Person::newFromName($_POST['user_name']);

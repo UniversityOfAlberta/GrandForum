@@ -42,7 +42,7 @@ class Message {
         else{
             $this->errors[$this->errorIndex++] = $message;
         }
-        setcookie('errors', serialize($this->errors), time()+3600);
+        @setcookie('errors', serialize($this->errors), time()+3600);
     }
     
     // Adds a (yellow) warning message
@@ -63,7 +63,7 @@ class Message {
         else{
             $this->success[$this->successIndex++] = $message;
         }
-        setcookie('success', serialize($this->success), time()+3600);
+        @setcookie('success', serialize($this->success), time()+3600);
     }
     
     // Adds a (blue) info message

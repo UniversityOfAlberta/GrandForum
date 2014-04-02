@@ -216,6 +216,7 @@ define("EVALUATOR", "Evaluator");
 define("BOD", "BOD");
 define("CHAMP", "Champion");
 define("GOV", "Gov");
+define("SD", "Scientific Director");
 define("STAFF", "Staff");
 define("MANAGER", "Manager");
 #define("PNIA", "PNI-Admin");
@@ -241,6 +242,7 @@ $wgRoleValues = array(INACTIVE => 0,
                       RMC => 12,
                       EVALUATOR => 12,
                       BOD => 12,
+                      SD => 13,
                       GOV => 13,
                       STAFF => 16,
                       MANAGER => 17);

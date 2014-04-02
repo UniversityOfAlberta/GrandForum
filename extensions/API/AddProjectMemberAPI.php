@@ -90,10 +90,11 @@ class AddProjectMemberAPI extends API{
                     }
                 }
             }
+            $name = mysql_real_escape_string($person->getName());
             $sql = "SELECT `id`
 	                FROM grand_notifications
 	                WHERE user_id = '{$creator->getId()}'
-	                AND message LIKE '%{$person->getName()}%'
+	                AND message LIKE '%{$name}%'
 	                AND url = ''
 	                AND creator = ''
 	                AND active = '1'";
