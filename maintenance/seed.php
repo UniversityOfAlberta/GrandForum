@@ -212,6 +212,7 @@ addUserRole("HQP.User4", HQP);
 addUserRole("HQP.ToBeInactivated", HQP);
 
 addUserProject("PNI.User1", "Phase1Project1");
+addUserProject("PNI.User1", "Phase1Project5");
 addUserProject("PNI.User1", "Phase2Project1");
 addUserProject("PNI.User1", "Phase2Project2");
 addUserProject("PNI.User1", "Phase2BigBetProject1");
