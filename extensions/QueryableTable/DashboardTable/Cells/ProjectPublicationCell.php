@@ -54,7 +54,7 @@ abstract class ProjectPublicationCell extends PublicationCell {
                                 $type .= "(Not PR)";
                             }
                         }
-                        $values[$type][] = $paper->getId();
+                        $values[$type][$paper->getId()] = $paper->getId();
                     }
                     else if(!$person->isRole(HQP)){
                         foreach($hqps as $hqp){
@@ -78,7 +78,7 @@ abstract class ProjectPublicationCell extends PublicationCell {
                                         $type .= "(Not PR)";
                                     }
                                 }
-                                $values[$type][] = $paper->getId();
+                                $values[$type][$paper->getId()] = $paper->getId();
                                 break;
                             }
                         }  
@@ -93,7 +93,7 @@ abstract class ProjectPublicationCell extends PublicationCell {
             $papers = $project->getPapers($this->category, $start, $end);
             $values = array();
             foreach($papers as $paper){
-                $values['All'][] = $paper->getId();
+                $values['All'][$paper->getId()] = $paper->getId();
             }
             $this->setValues($values);
         }
