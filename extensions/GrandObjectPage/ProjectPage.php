@@ -168,7 +168,7 @@ class ProjectPage {
                 $class = "selected";
             }
             $dropdown = null;
-            $title = "{$proj->getName()} (P{$proj->getPhase()})";
+            $title = "{$proj->getName()}";
             if(count($proj->getSubProjects()) > 0){
                 $dropdown = array('name' => $proj->getName(), 
                                   'title' => $title, 

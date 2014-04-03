@@ -187,7 +187,7 @@ class Project extends BackboneModel {
                                     array('name' => 'ASC'));
         $projects = array();
         foreach($data as $row){
-            $project = Project::newFromId($row['id']);
+            $project = Project::newFromHistoricId($row['id']);
             if($project != null && $project->getName() != ""){
                 if(!isset($projects[$project->name])){
                     $projects[$project->getName()] = $project;
@@ -218,7 +218,7 @@ class Project extends BackboneModel {
                                     array('name' => 'ASC'));
         $projects = array();
         foreach($data as $row){
-            $project = Project::newFromId($row['id']);
+            $project = Project::newFromHistoricId($row['id']);
             if($project != null && $project->getName() != ""){
                 if(!isset($projects[$project->name])){
                     if(($project->deleted &&

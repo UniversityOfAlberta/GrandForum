@@ -1617,6 +1617,7 @@ class Person extends BackboneModel {
         $projects = $this->getProjects(true);
         if(count($projects) > 0){
             foreach($projects as $project){
+                $project = Project::newFromHistoricName($project->getName());
                 if((!$project->isDeleted()) || 
                    ($project->isDeleted() && !($project->effectiveDate < $start))){
                     $members = $project->getAllPeopleDuring(null, $start, $end, true);

@@ -6,11 +6,11 @@ $wgUser = User::newFromName("Admin");
 $projects = Project::getAllProjectsEver();
 foreach($projects as $project){
     if($project->getPhase() == 1){
-        echo $project->getName()."\n";
-        if(!$project->getStatus() == 'Ended'){
+        if($project->getStatus() != 'Ended' && !$project->isDeleted()){
             $_POST['project'] = $project->getName();
             $_POST['effective_date'] = '2014-03-31 23:59:59';
             APIRequest::doAction('DeleteProject', true);
+            echo $project->getName()."\n";
         }
         foreach($project->getAllPeople() as $person){
             DBFunctions::execSQL("UPDATE `grand_project_members`
@@ -33,7 +33,6 @@ foreach($projects as $project){
                                   WHERE user_id = '{$leader->getId()}'
                                   AND project_id = '{$project->getId()}'
                                   AND end_date = '0000-00-00 00:00:00'", true);
-            echo "\t".$leader->getName()."\n";
         }
         foreach($project->getAllPreds() as $pred){
             foreach($pred->getAllPeople() as $person){

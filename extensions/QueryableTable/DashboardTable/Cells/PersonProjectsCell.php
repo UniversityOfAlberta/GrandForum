@@ -21,7 +21,7 @@ class PersonProjectsCell extends Cell{
     
     function render(){
         global $wgServer, $wgScriptPath;
-        $project = Project::newFromName($this->value);
+        $project = Project::newFromHistoricName($this->value);
         $deleted = ($project->isDeleted()) ? " (Completed)" : "";
         return "<a href='{$project->getUrl()}' target = '_blank'><b>{$project->getName()}{$deleted}</b></a>";
     }
