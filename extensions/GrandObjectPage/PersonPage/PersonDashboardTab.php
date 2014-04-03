@@ -51,7 +51,7 @@ class PersonDashboardTab extends AbstractTab {
                     });
                     newRow.click(function(){
                         completedRows.show();
-                        newRow.hide(100);
+                        newRow.hide();
                     });
                     last.after(newRow);
                 }
