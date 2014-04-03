@@ -1586,7 +1586,15 @@ class Person extends BackboneModel {
             $data = DBFunctions::execSQL($sql);
             $projectNames = array();
             foreach($data as $row){
-                $project = Project::newFromId($row['project_id']);
+                if($history){
+                    // First find the project by id
+                    $project = Project::newFromId($row['project_id']);
+                    // Then find the project from it's historic name (will grab the latest version)
+                    $project = Project::newFromHistoricName($project->getName());
+                }
+                else{
+                    $project = Project::newFromId($row['project_id']);
+                }
                 if($project != null && $project->getName() != ""){
                     if(!isset($projectNames[$project->getName()])){
                         if(!$project->isDeleted() || ($project->isDeleted() && $history)){
