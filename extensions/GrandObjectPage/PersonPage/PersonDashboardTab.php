@@ -37,6 +37,25 @@ class PersonDashboardTab extends AbstractTab {
             if($dashboard != null){
                 $this->html = $dashboard->render();
             }
+            $this->html .= "<script type='text/javascript'>
+                var completedRows = $('table.dashboard td:contains((Completed))').parent();
+                completedRows.hide();
+                if(completedRows.length > 0){
+                    var last = completedRows.last();
+                    var colspan = completedRows.children().length;
+                    var newRow = $('<tr><td style=\'cursor:pointer;\' align=\'center\' colspan=\'' + colspan + '\'><b>Show Completed Projects</b></td></tr>');
+                    newRow.hover(function(){
+                        $(this).css('background', '#DDDDDD');
+                    }, function(){
+                        $(this).css('background', '#FFFFFF');
+                    });
+                    newRow.click(function(){
+                        completedRows.show();
+                        newRow.hide(100);
+                    });
+                    last.after(newRow);
+                }
+            </script>";
         }
     }
 }

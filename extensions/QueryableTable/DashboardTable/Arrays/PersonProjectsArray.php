@@ -18,7 +18,12 @@
             $person = $table->obj;
             $projects = $person->getProjectsDuring($start, $end);
             foreach($projects as $project){
-                if(!$project->isSubProject()){
+                if(!$project->isSubProject() && $project->getStatus() == 'Active'){
+                    $this->array[] = $project->getName();
+                }
+            }
+            foreach($projects as $project){
+                if(!$project->isSubProject() && $project->getStatus() != 'Active'){
                     $this->array[] = $project->getName();
                 }
             }
