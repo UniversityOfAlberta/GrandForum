@@ -20,8 +20,14 @@ class IndexTable {
         $selected = ((Project::newFromName($wgTitle->getNSText()) != null || $wgTitle->getText() == "Projects") && 
                      !($me->isMemberOf($project) || ($project != null && $me->isMemberOf($project->getParent())))) ? "selected" : "";
         $projectTab = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
-        $projectTab['dropdown'][] = TabUtils::createSubTab("Current", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", $selected);
-        $projectTab['dropdown'][] = TabUtils::createSubTab("Completed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:CompletedProjects", $selected);
+        $completedProjects = Project::getAllProjectsEver();
+        foreach($completedProjects as $project){
+            if($project->getStatus() == 'Ended' || $project->isDeleted()){
+                $projectTab['dropdown'][] = TabUtils::createSubTab("Current", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", $selected);
+                $projectTab['dropdown'][] = TabUtils::createSubTab("Completed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:CompletedProjects", $selected);
+                break;
+            }
+        }
         
         $tabs['Main']['subtabs'][] = $projectTab;
         
