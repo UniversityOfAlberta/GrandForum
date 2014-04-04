@@ -64,7 +64,7 @@
             unHoverTimeout = null;
         }
         else if(divActions.is(":visible")){
-            unHoverTimeout = setTimeout(function(){$('li.actions', $(that)).click();}, 100);
+            unHoverTimeout = setTimeout(function(){$('li.actions', $(that)).click();}, 75);
         }
     });
     
@@ -74,7 +74,7 @@
             unHoverTimeout = null;
         }
         else if(divActions.is(":visible")){
-            unHoverTimeout = setTimeout(function(){$('li.actions', $(that)).click();}, 100);
+            unHoverTimeout = setTimeout(function(){$('li.actions', $(that)).click();}, 75);
         }
     });
     
@@ -92,12 +92,12 @@
         $(dropdownTop).css('position', 'absolute');
         $(dropdownTop).css('top', -5);
         if(divActions.is(":visible")){
-            $(divActions).fadeOut(200);
+            $(divActions).fadeOut(100);
         }
         else{
             divActions.css('opacity', 1);
             unHoverTimeout=setTimeout(function(){
-                $(divActions).fadeIn(200);
+                $(divActions).fadeIn(100);
                 unHoverTimeout=null;
                 $('div.actions').parent().css('z-index', 999);
                 divActions.parent().css('z-index', 1000);
@@ -108,7 +108,7 @@
                     $(divActions).css('right', (tabWidth - $(divActions).width()) - shiftAmount);
                     $(dropdownTop).css('right', Math.ceil((tabWidth - 7)/2) - (tabWidth - $(divActions).width()) + shiftAmount);
                 }
-            }, 100);   
+            }, 75);   
             
             
         }
