@@ -94,7 +94,7 @@ class ProjectPage {
             if($project != null && $project->getName() != null){
                 TabUtils::clearActions();
                 $wgOut->clearHTML();
-                $wgOut->setPageTitle($project->getFullName()." (Phase ".$project->getPhase().")");
+                $wgOut->setPageTitle($project->getFullName());
                 
                 $visibility = array();
                 if(!$project->isDeleted()){
@@ -171,7 +171,7 @@ class ProjectPage {
                 $class = "selected";
             }
             $dropdown = null;
-            $title = "{$proj->getName()} (P{$proj->getPhase()})";
+            $title = "{$proj->getName()}";
             if(count($proj->getSubProjects()) > 0){
                 $dropdown = array('name' => $proj->getName(), 
                                   'title' => $title, 

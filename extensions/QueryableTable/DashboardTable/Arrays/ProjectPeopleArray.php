@@ -4,12 +4,15 @@
         
         function ProjectPeopleArray($table){
             $project = $table->obj;
-            $people = $project->getAllPeople();
+            $start = $project->getCreated();
+            $end = ($project->isDeleted()) ? $project->getDeleted() : date('Y-m-d')." 23:59:59";
+            $people = $project->getAllPeopleDuring(null, $start, $end);
+
             foreach($people as $person){
-                if($person->isRole(PNI) || $person->isRole(CNI) || $person->isRole(AR) || $person->leadershipOf($project)){
+                if($person->isRoleDuring(PNI, $start, $end) || $person->isRoleDuring(CNI, $start, $end) || $person->isRoleDuring(AR, $start, $end) || $person->leadershipOf($project)){
                     $this->array[] = $person->getName();
                 }
-            }
+            }            
         }
         
     }

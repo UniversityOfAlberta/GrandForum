@@ -111,11 +111,13 @@ class Project extends BackboneModel {
         if(isset(self::$cache[$id.'_'.$evolutionId])){
             return self::$cache[$id.'_'.$evolutionId];
         }
+        $sqlExtra = ($evolutionId != null) ? $sqlExtra = "AND e.id = $evolutionId" : "";
         $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.bigbet
                 FROM grand_project p, grand_project_evolution e, grand_project_status s
                 WHERE p.id = '$id'
                 AND e.new_id = p.id
                 AND s.evolution_id = e.id
+                $sqlExtra
                 ORDER BY e.id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
         if (DBFunctions::getNRows() > 0){
@@ -184,7 +186,7 @@ class Project extends BackboneModel {
                                     array('name' => 'ASC'));
         $projects = array();
         foreach($data as $row){
-            $project = Project::newFromId($row['id']);
+            $project = Project::newFromHistoricId($row['id']);
             if($project != null && $project->getName() != ""){
                 if(!isset($projects[$project->name])){
                     if(($project->deleted &&
@@ -195,6 +197,32 @@ class Project extends BackboneModel {
                             $projects[$project->getName()] = $project;
                         }
                     }
+                }
+            }
+        }
+        ksort($projects);
+        $projects = array_values($projects);
+        return $projects;
+    }
+    
+    // Same as getAllProjects, but will also return deleted projects
+    static function getAllProjectsEver($subProjects=false){
+        if($subProjects == false){
+            $subProjects = EQ(0);
+        }
+        else{
+            $subProjects = LIKE("%");
+        }
+        $data = DBFunctions::select(array('grand_project'),
+                                    array('id', 'name'),
+                                    array('parent_id' => $subProjects),
+                                    array('name' => 'ASC'));
+        $projects = array();
+        foreach($data as $row){
+            $project = Project::newFromHistoricId($row['id']);
+            if($project != null && $project->getName() != ""){
+                if(!isset($projects[$project->name])){
+                    $projects[$project->getName()] = $project;
                 }
             }
         }

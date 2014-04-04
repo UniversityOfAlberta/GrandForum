@@ -1136,20 +1136,19 @@ class PublicationPage {
                     }
                 }
                 if($edit){
-                    $projstmp = Project::getAllProjects();
+                    $projstmp = Project::getAllProjectsDuring(date('Y-m-d', time() - 3600*24*30*2)." 00:00:00", date('Y-m-d')." 00:00:00");
                     $projs = array();
                     foreach($projstmp as $proj){
-                        if(!$proj->deleted){
-                            $projs[] = $proj;
-                        }
+                        $projs[] = $proj;
                     }
                     $projList = new ProjectList("projects", "Projects", $pProjects, $projs);
                     $wgOut->addHTML($projList->render());
                     if(count($projs) > 0){
-                        foreach($projs as $project){
+                        foreach($pProjects as $project){
                             // Add any deleted projects so that they remain as part of this project
-                            if($project->deleted){
-                                $wgOut->addHTML("<input style='display:none;' type='checkbox' name='projects[]' value='{$project->getName()}' checked='checked' />");
+                            $proj = Project::newFromName($project);
+                            if($proj->deleted && $proj->getDeleted() < date('Y-m-d', time() - 3600*24*30*2)." 00:00:00"){
+                                $wgOut->addHTML("<input style='display:none;' type='checkbox' name='projects[]' value='{$proj->getName()}' checked='checked' />");
                             }
                         }
                     }
@@ -1158,9 +1157,7 @@ class PublicationPage {
                     $projectList = array();
                     if(count($projects) > 0){
                         foreach($projects as $project){
-                            if(!$project->deleted){
-                                $projectList[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
-                            }
+                            $projectList[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
                         }
                     }
                     $wgOut->addHTML(implode(", ", $projectList));

@@ -53,7 +53,7 @@ class TabUtils {
                                                  });
             $('div#submenu ul.actions').css('padding-right', 0);
             $('div#submenu ul.actions li.actions').css('float', 'right');
-            ";
+        ";
         foreach($content_actions as $key => $content){
             if(isset($content['dropdown'])){
                 $dropdownScript .= "createDropDown('{$content['dropdown']['name']}', '{$content['dropdown']['title']}', {$content['dropdown']['width']});";
@@ -99,6 +99,7 @@ class TabUtils {
         global $wgHooks;
         $wgHooks['SkinTemplateTabs'][] = 'TabUtils::clearTabs';
     }
+
 }
 
 ?>
