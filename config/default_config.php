@@ -61,6 +61,15 @@
     // Global Message (ie. maintenance message)
     $config->setValue("globalMessage", "");
     
+    // Whether or not to allow bigBetProjects
+    $config->setValue("bigBetProjects", false);
+    
+    // Whether or not to allow projectTypes
+    $config->setValue("projectTypes", false);
+    
+    // Whether or not to allow projectStatus
+    $config->setValue("projectStatus", true);
+    
     // Which extensions to enable
     $config->setValue("extensions", array(
         'AccessControl',

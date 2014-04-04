@@ -7,6 +7,7 @@ class CreateProjectTab extends ProjectTab {
     }
     
     static function createForm($pre){
+        global $config;
     
         $form = new FormContainer("{$pre}_form_container");
     
@@ -157,6 +158,16 @@ EOF;
 
         $challengeRadioBox = new VerticalRadioBox2("{$pre}_challenge", "", "", $challengeNames, VALIDATE_NOTHING);
         $challengeFieldSet->append($challengeRadioBox);
+
+        if(!$config->getValue("projectTypes")){
+            $typeRow->hide();
+        }
+        if(!$config->getValue("projectStatus")){
+            $statusRow->hide();
+        }
+        if(!$config->getValue("bigBetProjects")){
+            $bigbetRow->hide();
+        }
 
         $table->append($acronymRow);
         $table->append($fullNameRow);
