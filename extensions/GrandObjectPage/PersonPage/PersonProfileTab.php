@@ -135,6 +135,7 @@ class PersonProfileTab extends AbstractEditableTab {
             // Insert the new data into the DB
             $_POST['user_name'] = $this->person->getName();
             $_POST['twitter'] = @$_POST['twitter'];
+            $_POST['website'] = @$_POST['website'];
             $_POST['nationality'] = @$_POST['nationality'];
             $_POST['email'] = @$_POST['email'];
             $_POST['university'] = @$_POST['university'];
@@ -154,6 +155,8 @@ class PersonProfileTab extends AbstractEditableTab {
                 $api->doAction(true);
             }
             $api = new UserTwitterAccountAPI();
+            $api->doAction(true);
+            $api = new UserWebsiteAPI();
             $api->doAction(true);
             $api = new UserNationalityAPI();
             $api->doAction(true);
@@ -372,6 +375,10 @@ EOF;
                                                     <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li></small></td>
                             </tr>
                             <tr>
+                                <td align='right'><b>Website URL:</b></td>
+                                <td><input type='text' size='40' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
+                            </tr>
+                            <tr>
                                 <td align='right'><b>Twitter Account:</b></td>
                                 <td><input type='text' name='twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
                             </tr>
@@ -450,6 +457,12 @@ EOF;
                                     <td>{$university['department']}</td>
                                 </tr>";
             }
+        }
+        if($person->getWebsite() != ""){
+            $this->html .= "<tr>
+                                <td align='right'><b>Website:</b></td>
+                                <td><a href='{$person->getWebsite()}' target='_blank'>{$person->getWebsite()}</a></td>
+                            </tr>";
         }
         if($person->getTwitter() != ""){
             $this->html .= "<tr>

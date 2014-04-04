@@ -21,6 +21,7 @@ class PersonAPI extends RESTAPI {
         $person->email = $this->POST('email');
         $person->name = $this->POST('name');
         $person->twitter = $this->POST('twitter');
+        $person->website = $this->POST('website');
         $person->gender = $this->POST('gender');
         $person->publicProfile = $this->POST('publicProfile');
         $person->privateProfile = $this->POST('privateProfile');
@@ -46,6 +47,7 @@ class PersonAPI extends RESTAPI {
         $person->email = $this->POST('email');
         $person->name = $this->POST('name');
         $person->twitter = $this->POST('twitter');
+        $person->website = $this->POST('website');
         $person->gender = $this->POST('gender');
         $person->publicProfile = $this->POST('publicProfile');
         $person->privateProfile = $this->POST('privateProfile');

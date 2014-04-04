@@ -19,6 +19,7 @@ class Person extends BackboneModel {
     var $gender;
     var $photo;
     var $twitter;
+    var $website;
     var $publicProfile;
     var $privateProfile;
     var $realname;
@@ -226,10 +227,10 @@ class Person extends BackboneModel {
         if(count(self::$aliasCache) == 0){
             $uaTable = getTableName("user_aliases");
             $uTable = getTableName("user");
-            $sql = "SELECT ua.alias, u.user_id, u.user_name, u.user_real_name, u.user_email, u.user_twitter, user_public_profile, user_private_profile, user_nationality, user_gender
-                FROM {$uaTable} as ua, {$uTable} as u 
-                WHERE ua.user_id = u.user_id
-                AND u.deleted != '1'";
+            $sql = "SELECT ua.alias, u.user_id, u.user_name, u.user_real_name, u.user_email, u.user_twitter, u.user_website, user_public_profile, user_private_profile, user_nationality, user_gender
+                    FROM `mw_user_aliases` as ua, `mw_user` as u 
+                    WHERE ua.user_id = u.user_id
+                    AND u.deleted != '1'";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 self::$aliasCache[$row['alias']] = array(0 => $row);
@@ -240,10 +241,9 @@ class Person extends BackboneModel {
     // Caches the resultset of the user table for superfast access
     static function generateNamesCache(){
         if(count(self::$namesCache) == 0){
-            $uTable = getTableName("user");
-            $sql = "SELECT `user_id`,`user_name`,`user_real_name`,`user_email`,`user_twitter`,`user_public_profile`,`user_private_profile`,`user_nationality`,`user_gender`
-                FROM $uTable u
-                WHERE `deleted` != '1'";
+            $sql = "SELECT `user_id`,`user_name`,`user_real_name`,`user_email`,`user_twitter`,`user_website`,`user_public_profile`,`user_private_profile`,`user_nationality`,`user_gender`
+                    FROM `mw_user` u
+                    WHERE `deleted` != '1'";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 self::$namesCache[$row['user_name']] = $row;
@@ -600,6 +600,7 @@ class Person extends BackboneModel {
             $this->nationality = $data[0]['user_nationality'];
             $this->university = false;
             $this->twitter = $data[0]['user_twitter'];
+            $this->website = $data[0]['user_website'];
             $this->publicProfile = $data[0]['user_public_profile'];
             $this->privateProfile = $data[0]['user_private_profile'];
             $this->hqps = null;
@@ -623,6 +624,7 @@ class Person extends BackboneModel {
                       'gender' => $this->getGender(),
                       'nationality' => $this->getNationality(),
                       'twitter' => $this->getTwitter(),
+                      'website' => $this->getWebsite(),
                       'photo' => $this->getPhoto(),
                       'cachedPhoto' => $this->getPhoto(true),
                       'university' => $this->getUni(),
@@ -655,6 +657,7 @@ class Person extends BackboneModel {
             $specialUserLogin->execute();
             $status = DBFunctions::update('mw_user', 
                                     array('user_twitter' => $this->getTwitter(),
+                                          'user_website' => $this->getWebsite(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_public_profile' => $this->getProfile(false),
@@ -688,6 +691,7 @@ class Person extends BackboneModel {
                                     array('user_name' => $this->getName(),
                                           'user_real_name' => $this->getRealName(),
                                           'user_twitter' => $this->getTwitter(),
+                                          'user_website' => $this->getWebsite(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_public_profile' => $this->getProfile(false),
@@ -875,12 +879,26 @@ class Person extends BackboneModel {
         return $this->nationality;
     }
     
-    // Returns the name of this Person's twitter account
+    /**
+     * Returns the handle of this Person's twitter account
+     * @return string The handle of this Person's twitter account
+     */
     function getTwitter(){
         return $this->twitter;
     }
     
-    // Returns the url of this Person's profile page
+    /**
+     * Returns the url of this Person's website
+     * @return string The url of this Person's website
+     */
+    function getWebsite(){
+        return $this->website;
+    }
+    
+    /**
+     * Returns the url of this Person's profile page
+     * @return string The url of this Person's profile page
+     */
     function getUrl(){
         global $wgServer, $wgScriptPath;
         if($this->id > 0){
