@@ -130,6 +130,7 @@ class PersonProductAPI extends RESTAPI {
     
     function doGET(){
         if($this->getParam(0) == "person"){
+            exit;
             $person = Person::newFromId($this->getParam('id'));
             $json = array();
             $products = $person->getPapersAuthored("all", CYCLE_START, CYCLE_START_ACTUAL,false);
