@@ -46,9 +46,9 @@ class DeleteProjectAPI extends API{
 	        Project::$cache = array();
 	        $project = Project::newFromId($nsId);
 	        $_POST['project'] = $project->getName();
-	        $_POST['description'] = @mysql_real_escape_string($project->getDescription());
-	        $_POST['problem'] = @mysql_real_escape_string($project->getProblem());
-	        $_POST['solution'] = @mysql_real_escape_string($project->getSolution());
+	        $_POST['description'] = $project->getDescription();
+	        $_POST['problem'] = $project->getProblem();
+	        $_POST['solution'] = $project->getSolution();
 	        //$_POST['themes'] = "{$theme1},{$theme2},{$theme3},{$theme4},{$theme5}";
 	        APIRequest::doAction('ProjectDescription', true);
 	        //MailingList::removeMailingList($project);
