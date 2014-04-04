@@ -240,11 +240,11 @@ abstract class UIElement {
     function setPOST($index){
         if(is_array($this->value)){
             foreach($this->value as $key => $value){
-                $_POST[$index][$key] = mysql_real_escape_string($value);
+                $_POST[$index][$key] = $value;
             }
         }
         else{
-            $_POST[$index] = mysql_real_escape_string($this->value);
+            $_POST[$index] = $this->value;
         }
     }
     
