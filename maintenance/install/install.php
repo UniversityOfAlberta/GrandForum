@@ -23,6 +23,12 @@ function createProject($acronym, $fullName, $status, $type, $bigbet, $phase, $ef
     APIRequest::doAction('CreateProject', true);
 }
 
+function addUserWebsite($name, $website){
+    $_POST['user_name'] = $name;
+    $_POST['website'] = $website;
+    APIRequest::doAction('UserWebsite', true);
+}
+
 function addUserRole($name, $role){
     Person::$cache = array();
     Person::$namesCache = array();
@@ -167,6 +173,7 @@ if(file_exists("people.csv")){
                                                  'email' => $email));
                 addUserUniversity($username, $university, $department, $title);
                 addUserRole($username, $role);
+                addUserWebsite($username, $website);
             }
         }
     }
