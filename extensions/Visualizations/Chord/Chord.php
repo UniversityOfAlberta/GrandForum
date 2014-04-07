@@ -25,9 +25,9 @@ class Chord extends Visualization {
 
     function show(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $string = "<div style='height:".($this->height)."px;width:".($this->width)."px;display:inline-block;' class='chordChart' id='vis{$this->index}'>
+        $string = "<div style='position:absolute;' id='visSpinner{$this->index}'></div>
+                   <div style='height:".($this->height)."px;width:".($this->width)."px;display:inline-block;' class='chordChart' id='vis{$this->index}'>
                    </div>
-                   <div style='position:absolute;' id='visSpinner{$this->index}'></div>
                    <div style='display:inline-block;vertical-align:top;'>
                        <div style='margin-top:25px;margin-left:25px;' id='visOptions{$this->index}'></div>
                        <div style='margin-top:25px;margin-left:25px;' id='visSort{$this->index}'></div>
