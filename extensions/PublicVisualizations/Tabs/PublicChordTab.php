@@ -5,7 +5,7 @@ $wgHooks['UnknownAction'][] = 'PublicChordTab::getPublicChordData';
 class PublicChordTab extends AbstractTab {
 	
 	function PublicChordTab(){
-        parent::AbstractTab("Chord");
+        parent::AbstractTab("Project Relations");
     }
 
     function generateBody(){
