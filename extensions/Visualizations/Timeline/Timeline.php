@@ -1,19 +1,19 @@
 <?php
 
-class Timeline extends Visualisation {
+class Timeline extends Visualization {
     
     static $a = 0;
     var $url = "";
     
     function Timeline($url){
         $this->url = $url;
-        self::Visualisation();
+        self::Visualization();
     }
     
     static function init(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $wgOut->addStyle($wgServer.$wgScriptPath.'/extensions/Visualisations/Timeline/TimeGlider/js/timeglider/Timeglider.css');
-        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Timeline/TimeGlider/js/timeglider-0.1.3.min.js" type="text/javascript" charset="utf-8"></script>');
+        $wgOut->addStyle($wgServer.$wgScriptPath.'/extensions/Visualizations/Timeline/TimeGlider/js/timeglider/Timeglider.css');
+        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/Timeline/TimeGlider/js/timeglider-0.1.3.min.js" type="text/javascript" charset="utf-8"></script>');
     }
 
     function show(){
@@ -25,7 +25,7 @@ class Timeline extends Visualisation {
                         'data_source':'{$this->url}',
                         'min_zoom':30,
                         'max_zoom':45, 
-                        'icon_folder':'$wgServer$wgScriptPath/extensions/Visualisations/Timeline/TimeGlider/js/timeglider/icons/'
+                        'icon_folder':'$wgServer$wgScriptPath/extensions/Visualizations/Timeline/TimeGlider/js/timeglider/icons/'
                     });
                 }
             });

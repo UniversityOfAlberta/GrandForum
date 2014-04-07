@@ -1,5 +1,5 @@
 <?php
-require_once('ProjectPage/ProjectVisualisationsTab.php');
+require_once('ProjectPage/ProjectVisualizationsTab.php');
 autoload_register('GrandObjectPage/ProjectPage');
 
 $projectPage = new ProjectPage();
@@ -120,7 +120,7 @@ class ProjectPage {
                 if(isExtensionEnabled('AllocatedBudgets') && !$project->isSubProject()){
                     $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
                 }
-                $tabbedPage->addTab(new ProjectVisualisationsTab($project, $visibility));
+                $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
                 $tabbedPage->showPage();
                 

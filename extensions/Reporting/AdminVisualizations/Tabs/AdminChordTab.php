@@ -172,7 +172,7 @@ class AdminChordTab extends AbstractTab {
             
             if(!isset($_GET['noCoAuthorship'])){
                 foreach($people as $k1 => $person){
-                    $papers = $person->getPapersAuthored("all", $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH, false);
+                    $papers = $person->getPapersAuthored("all", $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH_ACTUAL, false);
                     foreach($papers as $paper){
                         foreach($paper->getAuthors() as $p){
                             if(isset($matrix[$p->getId()]) && $person->getId() != $p->getId()){

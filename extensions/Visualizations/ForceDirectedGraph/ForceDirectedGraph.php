@@ -1,6 +1,6 @@
 <?php
 
-class ForceDirectedGraph extends Visualisation {
+class ForceDirectedGraph extends Visualization {
     
     static $a = 0;
     var $url = "";
@@ -9,12 +9,12 @@ class ForceDirectedGraph extends Visualisation {
     
     function ForceDirectedGraph($url){
         $this->url = $url;
-        self::Visualisation();
+        self::Visualization();
     }
     
     static function init(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/ForceDirectedGraph/fdg.js" type="text/javascript" charset="utf-8"></script>');
+        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/ForceDirectedGraph/fdg.js" type="text/javascript" charset="utf-8"></script>');
     }
 
     function show(){

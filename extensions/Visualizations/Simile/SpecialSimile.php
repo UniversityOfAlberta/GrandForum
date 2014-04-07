@@ -90,7 +90,7 @@ class SpecialSimile extends SpecialPage {
             foreach($person->getPapers('all') as $paper){
                 $start = $paper->getDate();
                 $content = "&lt;a href='{$paper->getUrl()}' target='_blank'&gt;Wiki Page&lt;/a&gt;";
-                echo "<event start='$start' title='".str_replace("&amp;#39;", "&#39;", str_replace("&", "&amp;", $paper->getTitle()))."' link='' icon='$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/yellow-circle.png'>$content</event>\n";
+                echo "<event start='$start' title='".str_replace("&amp;#39;", "&#39;", str_replace("&", "&amp;", $paper->getTitle()))."' link='' icon='$wgServer$wgScriptPath/extensions/Visualizations/Simile/images/yellow-circle.png'>$content</event>\n";
             }
             echo "</data>";
             $array['events'] = $events;

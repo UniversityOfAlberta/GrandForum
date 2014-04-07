@@ -30,7 +30,7 @@ class AdminCustomTab extends AbstractTab {
 	static function showVisualization($action){
 	    global $wgServer, $wgScriptPath;
 	    if($action == "showVisualization"){
-	        Visualisation::$visIndex = 1000;
+	        Visualization::$visIndex = 1000;
 	        $data = $_POST['data'];
 	        foreach($data as $obj){
 	            echo '<h1>'.$obj['name'].'</h1>';
@@ -40,27 +40,27 @@ class AdminCustomTab extends AbstractTab {
 	                echo "<h2>$visName</h2>";
 	                if($visName == 'Timeline'){
 	                    $vis = new Simile($visUrl);
-	                    echo "<link href='$wgServer$wgScriptPath/extensions/Visualisations/Simile/simile.css' type='text/css' rel='stylesheet'>";
-                        echo "<script src='$wgServer$wgScriptPath/extensions/Visualisations/Simile/Simile.js' type='text/javascript' charset='utf-8'></script>";
+	                    echo "<link href='$wgServer$wgScriptPath/extensions/Visualizations/Simile/simile.css' type='text/css' rel='stylesheet'>";
+                        echo "<script src='$wgServer$wgScriptPath/extensions/Visualizations/Simile/Simile.js' type='text/javascript' charset='utf-8'></script>";
 	                    echo $vis->show();
 	                }
 	                else if($visName == 'Productivity'){
 	                    $vis = new Doughnut($visUrl);
-	                    echo "<script src='$wgServer$wgScriptPath/extensions/Visualisations/Doughnut/doughnut/popup.js' type='text/javascript' charset='utf-8'></script>";
-                        echo "<script src='$wgServer$wgScriptPath/extensions/Visualisations/Doughnut/doughnut/spinner.js' type='text/javascript' charset='utf-8'></script>";
-                        echo "<script src='$wgServer$wgScriptPath/extensions/Visualisations/Doughnut/doughnut/doughnut.js' type='text/javascript' charset='utf-8'></script>";
+	                    echo "<script src='$wgServer$wgScriptPath/extensions/Visualizations/Doughnut/doughnut/popup.js' type='text/javascript' charset='utf-8'></script>";
+                        echo "<script src='$wgServer$wgScriptPath/extensions/Visualizations/Doughnut/doughnut/spinner.js' type='text/javascript' charset='utf-8'></script>";
+                        echo "<script src='$wgServer$wgScriptPath/extensions/Visualizations/Doughnut/doughnut/doughnut.js' type='text/javascript' charset='utf-8'></script>";
 	                    echo $vis->show();
 	                }
 	                else if($visName == 'Survey Graph'){
 	                    $vis = new ForceDirectedGraph($visUrl);
-	                    echo "<script src='$wgServer$wgScriptPath/extensions/Visualisations/ForceDirectedGraph/fdg.js' type='text/javascript' charset='utf-8'></script>";
+	                    echo "<script src='$wgServer$wgScriptPath/extensions/Visualizations/ForceDirectedGraph/fdg.js' type='text/javascript' charset='utf-8'></script>";
 	                    echo $vis->show();
 	                }
 	                else if($visName == 'Tag Cloud'){
 	                    $vis = new Wordle($visUrl);
                         $vis->width = 640;
                         $vis->height = 480;
-                        echo "<script src='$wgServer$wgScriptPath/extensions/Visualisations/Wordle/js/d3.layout.cloud.js' type='text/javascript' charset='utf-8'></script>";
+                        echo "<script src='$wgServer$wgScriptPath/extensions/Visualizations/Wordle/js/d3.layout.cloud.js' type='text/javascript' charset='utf-8'></script>";
                         echo $vis->show();
                         echo "<script type='text/javascript'>onLoad{$vis->index}();</script>";
 	                }

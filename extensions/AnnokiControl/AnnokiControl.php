@@ -125,8 +125,11 @@ $egAnnokiExtensions['GlobalSearch'] = array('name' => 'Global Search',
 $egAnnokiExtensions['Impersonation'] = array('name' => 'Impersonation',
                                              'path' => "$IP/extensions/Impersonation/Impersonate.php");
 
-$egAnnokiExtensions['Visualisations'] = array('name' => 'Visualisations',
-                                              'path' => "$IP/extensions/Visualisations/Visualisation.php");
+$egAnnokiExtensions['Visualizations'] = array('name' => 'Visualizations',
+                                              'path' => "$IP/extensions/Visualizations/Visualization.php");
+                                              
+$egAnnokiExtensions['PublicVisualizations'] = array('name' => 'Public Visualizations',
+                                                    'path' => "$IP/extensions/PublicVisualizations/PublicVisualizations.php");
 
 $egAnnokiExtensions['Survey'] = array('name' => 'Survey',
                                       'path' => "$IP/extensions/Survey/Survey.php");

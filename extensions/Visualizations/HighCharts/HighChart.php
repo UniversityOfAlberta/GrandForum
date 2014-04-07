@@ -1,6 +1,6 @@
 <?php
 
-class HighChart extends Visualisation {
+class HighChart extends Visualization {
     
     static $a = 0;
     var $url = "";
@@ -9,13 +9,13 @@ class HighChart extends Visualisation {
     
     function HighChart($url){
         $this->url = $url;
-        self::Visualisation();
+        self::Visualization();
     }
     
     static function init(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/HighCharts/js/highcharts.js" type="text/javascript" charset="utf-8"></script>');
-        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/HighCharts/js/modules/exporting.js" type="text/javascript" charset="utf-8"></script>');
+        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/HighCharts/js/highcharts.js" type="text/javascript" charset="utf-8"></script>');
+        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/HighCharts/js/modules/exporting.js" type="text/javascript" charset="utf-8"></script>');
     }
 
     function show(){

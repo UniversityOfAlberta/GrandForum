@@ -1,18 +1,18 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectTimelineData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectMilestoneTimelineData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectDoughnutData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectGraphData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectChordData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectWordleData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectTimelineData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectMilestoneTimelineData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectDoughnutData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectGraphData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectChordData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectWordleData';
 
-class ProjectVisualisationsTab extends AbstractTab {
+class ProjectVisualizationsTab extends AbstractTab {
 
     var $project;
     var $visibility;
 
-    function ProjectVisualisationsTab($project, $visibility){
+    function ProjectVisualizationsTab($project, $visibility){
         parent::AbstractTab("Visualizations");
         $this->project = $project;
         $this->visibility = $visibility;
@@ -249,7 +249,7 @@ class ProjectVisualisationsTab extends AbstractTab {
                 }
                 $status = $milestone->getStatus();
                 
-                echo "<event trackNum='$i' start='$start_date' end='$end_date' isDuration='true' icon='$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/{$images[$i]}' color='#4272B2'></event>\n";
+                echo "<event trackNum='$i' start='$start_date' end='$end_date' isDuration='true' icon='$wgServer$wgScriptPath/extensions/Visualizations/Simile/images/{$images[$i]}' color='#4272B2'></event>\n";
                 while($milestone != null){
                     $start = str_replace("-", "/", substr($milestone->getStartDate(), 0, 10));
                     $end = str_replace("-", "/", substr($milestone->getEndDate(), 0, 10));
@@ -299,7 +299,7 @@ class ProjectVisualisationsTab extends AbstractTab {
                      $content = str_replace("&amp;#39;", "&#39;", $content);
                      $content = str_replace("<", "&lt;", $content);
                      $content = str_replace(">", "&gt;", $content);
-                    //echo "<event trackNum='$i' start='$start' icon='$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/{$images[$i]}' color='#4272B2'>$content</event>\n";
+                    //echo "<event trackNum='$i' start='$start' icon='$wgServer$wgScriptPath/extensions/Visualizations/Simile/images/{$images[$i]}' color='#4272B2'>$content</event>\n";
                     $milestone = $milestone->getParent();
                 }
                 $i++;
@@ -344,7 +344,7 @@ class ProjectVisualisationsTab extends AbstractTab {
                 $content = "<a href='{$paper->getUrl()}' target='_blank'>Wiki Page</a>";
                 $array[] = array('title' => $paper->getTitle(),
                                  'color' => '#BCB326',
-                                 'icon' => "$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/yellow-circle.png",
+                                 'icon' => "$wgServer$wgScriptPath/extensions/Visualizations/Simile/images/yellow-circle.png",
                                  'start' => $start,
                                  'description' => $content);
             }
@@ -460,7 +460,7 @@ class ProjectVisualisationsTab extends AbstractTab {
                 $relations = $person->getRelations();
                 $data['nodes']['p'.$person->getId()]['id'] = 'p'.$person->getId();
                 if(count($person->leadership()) > 0){
-                    $data['nodes']['p'.$person->getId()]['name'] = "<img style='width:8px;height:8px;vertical-align:top;' src='$wgServer$wgScriptPath/extensions/Visualisations/Graph/lead.png' />&nbsp;";
+                    $data['nodes']['p'.$person->getId()]['name'] = "<img style='width:8px;height:8px;vertical-align:top;' src='$wgServer$wgScriptPath/extensions/Visualizations/Graph/lead.png' />&nbsp;";
                 }
                 @$data['nodes']['p'.$person->getId()]['name'] .= str_replace(" ", "&nbsp;", $person->getNameForForms());
                 

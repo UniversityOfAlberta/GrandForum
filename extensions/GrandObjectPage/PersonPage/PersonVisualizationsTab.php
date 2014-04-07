@@ -1,16 +1,16 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'PersonVisualisationsTab::getTimelineData';
-$wgHooks['UnknownAction'][] = 'PersonVisualisationsTab::getDoughnutData';
-$wgHooks['UnknownAction'][] = 'PersonVisualisationsTab::getGraphData';
-$wgHooks['UnknownAction'][] = 'PersonVisualisationsTab::getSurveyData';
+$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getTimelineData';
+$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getDoughnutData';
+$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getGraphData';
+$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getSurveyData';
 
-class PersonVisualisationsTab extends AbstractTab {
+class PersonVisualizationsTab extends AbstractTab {
 
     var $person;
     var $visibility;
 
-    function PersonVisualisationsTab($person, $visibility){
+    function PersonVisualizationsTab($person, $visibility){
         parent::AbstractTab("Visualizations");
         $this->person = $person;
         $this->visibility = $visibility;
@@ -269,7 +269,7 @@ class PersonVisualisationsTab extends AbstractTab {
                 $content = "<a href='{$paper->getUrl()}' target='_blank'>Wiki Page</a>";
                 $array[] = array('title' => str_replace("&#39;", "'", $paper->getTitle()),
                                  'color' => '#BCB326',
-                                 'icon' => "$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/yellow-circle.png",
+                                 'icon' => "$wgServer$wgScriptPath/extensions/Visualizations/Simile/images/yellow-circle.png",
                                  'start' => $start,
                                  'description' => $content);
             }
@@ -527,7 +527,7 @@ class PersonVisualisationsTab extends AbstractTab {
                 $relations = $person->getRelations();
                 $data['nodes']['p'.$person->getId()]['id'] = 'p'.$person->getId();
                 if(count($person->leadership()) > 0){
-                    $data['nodes']['p'.$person->getId()]['name'] = "<img style='width:8px;height:8px;vertical-align:top;' src='$wgServer$wgScriptPath/extensions/Visualisations/Graph/lead.png' />&nbsp;";
+                    $data['nodes']['p'.$person->getId()]['name'] = "<img style='width:8px;height:8px;vertical-align:top;' src='$wgServer$wgScriptPath/extensions/Visualizations/Graph/lead.png' />&nbsp;";
                 }
                 @$data['nodes']['p'.$person->getId()]['name'] .= str_replace(" ", "&nbsp;", $person->getNameForForms());
                 

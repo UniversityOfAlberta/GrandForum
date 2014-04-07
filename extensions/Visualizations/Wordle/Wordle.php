@@ -2,7 +2,7 @@
 
 require_once("Classes/removeCommonWords/removeCommonWords.php");
 
-class Wordle extends Visualisation {
+class Wordle extends Visualization {
     
     
     static $commonWords = array('and', 'i', 'then', 'or', 'but', 'an', 'from', 'for', 'will', 'upon', 
@@ -17,12 +17,12 @@ class Wordle extends Visualisation {
     
     function Wordle($url){
         $this->url = $url;
-        self::Visualisation();
+        self::Visualization();
     }
     
     static function init(){
-        global $wgOut, $wgServer, $wgScriptPath, $visualisations;
-        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Wordle/js/d3.layout.cloud.js" type="text/javascript" charset="utf-8"></script>');
+        global $wgOut, $wgServer, $wgScriptPath, $visualizations;
+        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/Wordle/js/d3.layout.cloud.js" type="text/javascript" charset="utf-8"></script>');
     }
     
     static function createDataFromText($text){

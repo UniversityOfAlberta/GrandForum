@@ -48,7 +48,7 @@ class SpecialGraph extends SpecialPage {
                 $relations = $person->getRelations();
                 $data['nodes']['p'.$person->getId()]['id'] = 'p'.$person->getId();
                 if(count($person->leadership()) > 0){
-                    $data['nodes']['p'.$person->getId()]['name'] = "<img style='width:8px;height:8px;vertical-align:top;' src='$wgServer$wgScriptPath/extensions/Visualisations/Graph/lead.png' />&nbsp;";
+                    $data['nodes']['p'.$person->getId()]['name'] = "<img style='width:8px;height:8px;vertical-align:top;' src='$wgServer$wgScriptPath/extensions/Visualizations/Graph/lead.png' />&nbsp;";
                 }
                 @$data['nodes']['p'.$person->getId()]['name'] .= str_replace(" ", "&nbsp;", $person->getNameForForms());
                 

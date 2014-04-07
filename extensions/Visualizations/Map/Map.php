@@ -1,6 +1,6 @@
 <?php
 
-class Map extends Visualisation {
+class Map extends Visualization {
     
     static $a = 0;
     var $url = "";
@@ -9,14 +9,14 @@ class Map extends Visualisation {
     
     function Map($url){
         $this->url = $url;
-        self::Visualisation();
+        self::Visualization();
     }
     
     static function init(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Map/js/jquery-jvectormap.min.js" type="text/javascript" charset="utf-8"></script>');
-        $wgOut->addScript('<link href="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Map/style/jquery-jvectormap.css" type="text/css" rel="stylesheet" charset="utf-8"></script>');
-        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Map/js/canada.js" type="text/javascript" charset="utf-8"></script>');
+        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/Map/js/jquery-jvectormap.min.js" type="text/javascript" charset="utf-8"></script>');
+        $wgOut->addScript('<link href="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/Map/style/jquery-jvectormap.css" type="text/css" rel="stylesheet" charset="utf-8"></script>');
+        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/Map/js/canada.js" type="text/javascript" charset="utf-8"></script>');
     }
 
     function show(){

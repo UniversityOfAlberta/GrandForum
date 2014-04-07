@@ -1,6 +1,6 @@
 <?php
 
-require_once('PersonPage/PersonVisualisationsTab.php');
+require_once('PersonPage/PersonVisualizationsTab.php');
 autoload_register('GrandObjectPage/PersonPage');
 
 $personPage = new PersonPage();
@@ -115,7 +115,7 @@ class PersonPage {
                 if(isExtensionEnabled('Acknowledgements')){
                     $tabbedPage->addTab(new PersonAcknowledgementTab($person, $visibility));
                 }
-                $tabbedPage->addTab(new PersonVisualisationsTab($person, $visibility));
+                $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
                 $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 $tabbedPage->showPage();
 

@@ -2,7 +2,7 @@
 
 //require_once("SpecialSimile.php");
 
-class Simile extends Visualisation {
+class Simile extends Visualization {
     
     static $a = 0;
     var $url = "";
@@ -15,13 +15,13 @@ class Simile extends Visualisation {
     function Simile($url){
         $this->year = date("Y")-1;
         $this->url = $url;
-        self::Visualisation();
+        self::Visualization();
     }
     
     static function init(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $wgOut->addStyle($wgServer.$wgScriptPath.'/extensions/Visualisations/Simile/simile.css');
-        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Simile/Simile.js" type="text/javascript" charset="utf-8"></script>');
+        $wgOut->addStyle($wgServer.$wgScriptPath.'/extensions/Visualizations/Simile/simile.css');
+        $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/Simile/Simile.js" type="text/javascript" charset="utf-8"></script>');
     }
 
     function show(){
@@ -82,7 +82,7 @@ class Simile extends Visualisation {
                 }
             }
             
-            Timeline.urlPrefix = '$wgServer$wgScriptPath/extensions/Visualisations/Simile/';
+            Timeline.urlPrefix = '$wgServer$wgScriptPath/extensions/Visualizations/Simile/';
             
             $(document).ready(function(){
                 if($('#vis{$this->index}:visible').length > 0){

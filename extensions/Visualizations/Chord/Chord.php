@@ -1,6 +1,6 @@
 <?php
 
-class Chord extends Visualisation {
+class Chord extends Visualization {
     
     static $a = 0;
     var $url = "";
@@ -9,28 +9,30 @@ class Chord extends Visualisation {
     
     function Chord($url){
         $this->url = $url;
-        self::Visualisation();
+        self::Visualization();
     }
     
     static function init(){
-        global $wgOut, $wgServer, $wgScriptPath, $visualisations;
+        global $wgOut, $wgServer, $wgScriptPath, $visualizations;
         $wgOut->addScript('<style rel="stylesheet" type="text/css">
 
 }</style>');
         if(strstr($wgOut->getScript(), 'raphael') === false){
-            $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Doughnut/doughnut/raphael.js" type="text/javascript" charset="utf-8"></script>');
-            $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualisations/Doughnut/doughnut/spinner.js" type="text/javascript" charset="utf-8"></script>');
+            $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/Doughnut/doughnut/raphael.js" type="text/javascript" charset="utf-8"></script>');
+            $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/Doughnut/doughnut/spinner.js" type="text/javascript" charset="utf-8"></script>');
         }
     }
 
     function show(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $string = "<div style='height:".($this->height)."px;width:".($this->width)."px;float:left;' class='chordChart' id='vis{$this->index}'>
+        $string = "<div style='height:".($this->height)."px;width:".($this->width)."px;display:inline-block;' class='chordChart' id='vis{$this->index}'>
                    </div>
                    <div style='position:absolute;' id='visSpinner{$this->index}'></div>
-                   <div style='margin-top:25px;margin-left:25px;' id='visOptions{$this->index}'></div>
-                   <div style='margin-top:25px;margin-left:25px;' id='visSort{$this->index}'></div>
-                   <div style='margin-top:25px;margin-left:25px;' id='visLegend{$this->index}'></div>";
+                   <div style='display:inline-block;vertical-align:top;'>
+                       <div style='margin-top:25px;margin-left:25px;' id='visOptions{$this->index}'></div>
+                       <div style='margin-top:25px;margin-left:25px;' id='visSort{$this->index}'></div>
+                       <div style='margin-top:25px;margin-left:25px;' id='visLegend{$this->index}'></div>
+                   </div>";
         $string .= <<<EOF
 <script type='text/javascript'>
     var params = Array();
