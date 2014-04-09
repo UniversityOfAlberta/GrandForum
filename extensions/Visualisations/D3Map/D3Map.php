@@ -49,7 +49,7 @@ class D3Map extends Visualisation {
 }
 </style>');
         $wgOut->addScript('<meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>');
-        $wgOut->addScript('<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>');
+        $wgOut->addScript('<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>');
     }
 
     function show(){
@@ -269,8 +269,8 @@ class D3Map extends Visualisation {
                 $("#visOptions{$this->index}").append("<tr class='showHide'><td><b>Highlight:</b><br /><div id='visShowHide{$this->index}'></div></td></tr>");
                 _.each(locations, function(loc){
                     $("#visShowHide{$this->index}").append("<input value='" + loc.name.replace("'", "") + "' type='checkbox' />&nbsp" + loc.name + "<br />");
-                    if(showHide[loc] == true){
-                        
+                    if(showHide[loc.name] == true){
+                        $("#visShowHide{$this->index} input").last().prop('checked', true);
                     }
                 });
                 $("#visShowHide{$this->index} input").change(function(e){
