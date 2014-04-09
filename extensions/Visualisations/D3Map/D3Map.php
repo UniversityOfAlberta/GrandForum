@@ -269,6 +269,9 @@ class D3Map extends Visualisation {
                 $("#visOptions{$this->index}").append("<tr class='showHide'><td><b>Highlight:</b><br /><div id='visShowHide{$this->index}'></div></td></tr>");
                 _.each(locations, function(loc){
                     $("#visShowHide{$this->index}").append("<input value='" + loc.name.replace("'", "") + "' type='checkbox' />&nbsp" + loc.name + "<br />");
+                    if(showHide[loc] == true){
+                        
+                    }
                 });
                 $("#visShowHide{$this->index} input").change(function(e){
                     var checked = $(e.currentTarget).is(":checked");
