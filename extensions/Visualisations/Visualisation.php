@@ -38,6 +38,10 @@ $visualisations = array('Timeline' => array("name" => "Timeline",
                         'ForceDirectedGraph' => array("name" => "FDG",
                               "path" => "ForceDirectedGraph/ForceDirectedGraph.php",
                               "enabled" => true,
+                              "initialized" => false),
+                        'D3Map' => array("name" => "D3Map",
+                              "path" => "D3Map/D3Map.php",
+                              "enabled" => true,
                               "initialized" => false)
                        );
       

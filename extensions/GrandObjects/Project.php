@@ -189,6 +189,7 @@ class Project extends BackboneModel {
         foreach($data as $row){
             $project = Project::newFromHistoricId($row['id']);
             if($project != null && $project->getName() != ""){
+                $project = Project::newFromHistoricName($project->getName());
                 if(!isset($projects[$project->name])){
                     $projects[$project->getName()] = $project;
                 }

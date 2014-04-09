@@ -3123,7 +3123,6 @@ class Person extends BackboneModel {
     
     // Returns the list of Evaluation Submissions for this person
     function getEvaluateSubs($year = REPORTING_YEAR){
-        
         $sql = "SELECT *
                 FROM grand_eval
                 WHERE user_id = '{$this->id}'
@@ -3189,7 +3188,6 @@ class Person extends BackboneModel {
     }
 
     function getEvaluatePNIs($year = REPORTING_YEAR){
-       
         $sql = "SELECT *
                 FROM grand_eval
                 WHERE user_id = '{$this->id}'
@@ -3207,7 +3205,6 @@ class Person extends BackboneModel {
     
     // Returns the list of Evaluation Submissions for this person
     function getEvaluateCNIs($year = REPORTING_YEAR){
-        
         $sql = "SELECT *
                 FROM grand_eval
                 WHERE user_id = '{$this->id}'
@@ -3224,7 +3221,6 @@ class Person extends BackboneModel {
     }
     
     function getEvaluateProjects($year = REPORTING_YEAR){
-        
         $sql = "SELECT *
                 FROM grand_eval
                 WHERE user_id = '{$this->id}'
