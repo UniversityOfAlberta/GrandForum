@@ -1,5 +1,7 @@
 <?php
 
+require_once("SpecialChord.php");
+
 class Chord extends Visualization {
     
     static $a = 0;
