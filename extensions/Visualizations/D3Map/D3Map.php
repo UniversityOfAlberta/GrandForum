@@ -128,10 +128,6 @@ class D3Map extends Visualization {
                                 if(edges.selectAll("svg.stroke_" + i)[0][0] == null){
                                     edges.append("svg")
                                          .attr("class", "edgeStroke stroke_" + i)
-                                         .style({'left': Math.min(sourceTransform[0], targetTransform[0]) - dr + "px",
-                                                 'top': Math.min(sourceTransform[1], targetTransform[1]) - dr + "px",
-                                                 'width': Math.abs(dx) + dr*2 + "px",
-                                                 'height': Math.abs(dy) + dr*2 + "px"})
                                          .append("path")
                                          .attr("stroke-width", Math.sqrt(t) + 2)
                                 }
@@ -157,10 +153,6 @@ class D3Map extends Visualization {
                                 if(edges.selectAll("svg.edge_" + i)[0][0] == null){
                                     edges.append("svg")
                                          .attr("class", "edgeStroke edge_" + i)
-                                         .style({'left': Math.min(sourceTransform[0], targetTransform[0]) - dr + "px",
-                                                 'top': Math.min(sourceTransform[1], targetTransform[1]) - dr + "px",
-                                                 'width': Math.abs(dx) + dr*2 + "px",
-                                                 'height': Math.abs(dy) + dr*2 + "px"})
                                          .append("path")
                                          .attr("class", "edge")
                                          .attr("stroke-width", Math.sqrt(t) + 1)
