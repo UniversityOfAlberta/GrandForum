@@ -125,18 +125,21 @@ class D3Map extends Visualization {
                                 var dr = Math.sqrt(dx * dx + dy * dy);
                                 
                                 var colorFn = d3.interpolateRgb(locSource.color, locTarget.color);
-                                if(edges.select("svg.stroke_" + i)[0][0] == null){
+                                if(edges.selectAll("svg.stroke_" + i)[0][0] == null){
                                     edges.append("svg")
                                          .attr("class", "edgeStroke stroke_" + i)
+                                         .style({'left': Math.min(sourceTransform[0], targetTransform[0]) - dr + "px",
+                                                 'top': Math.min(sourceTransform[1], targetTransform[1]) - dr + "px",
+                                                 'width': Math.abs(dx) + dr*2 + "px",
+                                                 'height': Math.abs(dy) + dr*2 + "px"})
                                          .append("path")
                                          .attr("stroke-width", Math.sqrt(t) + 2)
                                 }
-
-                                edges.select("svg.stroke_" + i)
-                                    .style("left", Math.min(sourceTransform[0], targetTransform[0]) - dr)
-                                    .style("top", Math.min(sourceTransform[1], targetTransform[1]) - dr)
-                                    .style("width", Math.abs(dx) + dr*2)
-                                    .style("height", Math.abs(dy) + dr*2)
+                                edges.selectAll("svg.stroke_" + i)
+                                    .style({'left': Math.min(sourceTransform[0], targetTransform[0]) - dr + "px",
+                                            'top': Math.min(sourceTransform[1], targetTransform[1]) - dr + "px",
+                                            'width': Math.abs(dx) + dr*2 + "px",
+                                            'height': Math.abs(dy) + dr*2 + "px"})
                                     .select("path")
                                     .attr("d", function(){
                                         var startX = dr;
@@ -151,19 +154,23 @@ class D3Map extends Visualization {
                                     })
                                     .attr("opacity", function(d){if(showHide[locSource.name] == true || showHide[locTarget.name] == true){ return 1;} return 0;});
                                 
-                                if(edges.select("svg.edge_" + i)[0][0] == null){
+                                if(edges.selectAll("svg.edge_" + i)[0][0] == null){
                                     edges.append("svg")
                                          .attr("class", "edgeStroke edge_" + i)
+                                         .style({'left': Math.min(sourceTransform[0], targetTransform[0]) - dr + "px",
+                                                 'top': Math.min(sourceTransform[1], targetTransform[1]) - dr + "px",
+                                                 'width': Math.abs(dx) + dr*2 + "px",
+                                                 'height': Math.abs(dy) + dr*2 + "px"})
                                          .append("path")
                                          .attr("class", "edge")
                                          .attr("stroke-width", Math.sqrt(t) + 1)
                                          .attr("stroke", colorFn(0.5))
                                 }
-                                edges.select("svg.edge_" + i)
-                                    .style("left", Math.min(sourceTransform[0], targetTransform[0]) - dr)
-                                    .style("top", Math.min(sourceTransform[1], targetTransform[1]) - dr)
-                                    .style("width", Math.abs(dx) + dr*2)
-                                    .style("height", Math.abs(dy) + dr*2)
+                                edges.selectAll("svg.edge_" + i)
+                                    .style({'left': Math.min(sourceTransform[0], targetTransform[0]) - dr + "px",
+                                            'top': Math.min(sourceTransform[1], targetTransform[1]) - dr + "px",
+                                            'width': Math.abs(dx) + dr*2 + "px",
+                                            'height': Math.abs(dy) + dr*2 + "px"})
                                     .select("path")
                                     .attr("d", function(){
                                         var startX = dr;
