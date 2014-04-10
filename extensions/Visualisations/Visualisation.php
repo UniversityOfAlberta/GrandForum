@@ -1,7 +1,9 @@
 <?php
 
-// All visualizations go into this array.
-$visualizations = array('Timeline' => array("name" => "Timeline",
+require_once("AdminVisualizations/AdminVisualizations.php");
+
+// All visualisations go into this array.
+$visualisations = array('Timeline' => array("name" => "Timeline",
                               "path" => "Timeline/Timeline.php",
                               "enabled" => false,
                               "initialized" => false),
@@ -43,20 +45,20 @@ $visualizations = array('Timeline' => array("name" => "Timeline",
                               "initialized" => false)
                        );
       
-// Activate all enabled visualizations                 
-foreach($visualizations as $vis){
+// Activate all enabled visualisations                 
+foreach($visualisations as $vis){
     if($vis['enabled'] === true){
         require_once($vis['path']);
     }
 }
 
-abstract class Visualization {
+abstract class Visualisation {
     
     static $visIndex = 0;
     var $initialized = false;
     var $index;
     
-    function Visualization(){
+    function Visualisation(){
         if(!$this->initialized){
             $this->init();
             $this->initialized = true;
@@ -79,10 +81,10 @@ abstract class Visualization {
                   .str_pad((($i)&0xFF), 2, '0');
     }
     
-    // This is called when the visualization is 'required'.  Javascript libraries and whatnot should be imported here
+    // This is called when the visualisation is 'required'.  Javascript libraries and whatnot should be imported here
     abstract static function init();
 
-    // This should return a string, which is the html, javascript to show the visualization
+    // This should return a string, which is the html, javascript to show the visualisation
     abstract function show();
 }
 

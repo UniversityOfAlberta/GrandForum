@@ -188,6 +188,7 @@ class Project extends BackboneModel {
         foreach($data as $row){
             $project = Project::newFromHistoricId($row['id']);
             if($project != null && $project->getName() != ""){
+                $project = Project::newFromHistoricName($project->getName());
                 if(!isset($projects[$project->name])){
                     if(($project->deleted &&
                         substr($project->effectiveDate, 0, 8) >= $endDate || 
@@ -302,7 +303,7 @@ class Project extends BackboneModel {
         $sql = <<<EOF
         SELECT s.num_projects, COUNT(s.user_id) as user_count
         FROM 
-        (SELECT p.user_id, COUNT(p.project_id) as num_projects
+        (SELECT p.user_id, COUNT(DISTINCT p.project_id) as num_projects
         FROM grand_project_members p
         INNER JOIN mw_user u ON (p.user_id=u.user_id) 
         INNER JOIN grand_roles r ON (p.user_id=r.user_id)
@@ -1346,7 +1347,7 @@ EOF;
                                                            array(HEAD2),
                                                            array(HEAD2),
                                                            array(HEAD2)),
-                                                     array(array("Budget Categories for April 1, ".($year).", to March 31, ".($year+1).""),
+                                                     array(array("Budget Categories for April 1, ".($year+1).", to March 31, ".($year+2).""),
                                                            array("1) Salaries and stipends"),
                                                            array("a) Graduate students"),
                                                            array("b) Postdoctoral fellows"),

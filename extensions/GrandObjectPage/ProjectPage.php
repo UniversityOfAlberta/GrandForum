@@ -69,10 +69,21 @@ class ProjectPage {
                     $isLead = true;
                 }
                 if(!$isLead){
-                    $isLead = $me->leadershipOf($project->getName());
-                    $parent = $project->getParent();
-                    if($parent != null){
-                        $isLead = ($isLead || $me->leadershipOf($parent));
+                    if($project->isDeleted()){
+                        $leadership = $me->leadershipOn($project->getDeleted());
+                        foreach($leadership as $proj){
+                            if($proj->getName() == $project->getName()){
+                                $isLead = true;
+                                break;
+                            }
+                        }
+                    }
+                    else{
+                        $isLead = $me->leadershipOf($project->getName());
+                        $parent = $project->getParent();
+                        if($parent != null){
+                            $isLead = ($isLead || $me->leadershipOf($parent));
+                        }
                     }
                 }
             }
@@ -85,7 +96,7 @@ class ProjectPage {
                 $_POST['submit'] = "Edit Main";
             }
 
-            $isLead = ( $isLead && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
+            $isLead = ($isLead && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
             $isMember = ($isMember && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
             $isMember = true;
             $edit = (isset($_POST['edit']) && $isLead);
@@ -104,7 +115,7 @@ class ProjectPage {
                 }
                 else{
                     $visibility['edit'] = false;
-                    $visibility['isLead'] = false;
+                    $visibility['isLead'] = $isLead;
                     $visibility['isMember'] = false;
                 }
                 

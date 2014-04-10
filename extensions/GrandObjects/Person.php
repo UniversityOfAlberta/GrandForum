@@ -2605,7 +2605,7 @@ class Person extends BackboneModel {
             $project = Project::newFromId($row['project_id']);
             if($project != null && 
                ((!$project->isDeleted()) || 
-               ($project->isDeleted() && !($project->effectiveDate < $startRange)))){
+               ($project->isDeleted() && !($project->effectiveDate < $date)))){
                 $projects[] = $project;
             }
         }
@@ -3043,7 +3043,6 @@ class Person extends BackboneModel {
     
     // Returns the list of Evaluation Submissions for this person
     function getEvaluateSubs($year = YEAR){
-        
         $sql = "SELECT *
                 FROM grand_eval
                 WHERE user_id = '{$this->id}'
@@ -3109,7 +3108,6 @@ class Person extends BackboneModel {
     }
 
     function getEvaluatePNIs($year = YEAR){
-       
         $sql = "SELECT *
                 FROM grand_eval
                 WHERE user_id = '{$this->id}'
@@ -3127,7 +3125,6 @@ class Person extends BackboneModel {
     
     // Returns the list of Evaluation Submissions for this person
     function getEvaluateCNIs($year = YEAR){
-        
         $sql = "SELECT *
                 FROM grand_eval
                 WHERE user_id = '{$this->id}'
@@ -3144,7 +3141,6 @@ class Person extends BackboneModel {
     }
     
     function getEvaluateProjects($year = YEAR){
-        
         $sql = "SELECT *
                 FROM grand_eval
                 WHERE user_id = '{$this->id}'

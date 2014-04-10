@@ -36,7 +36,7 @@ class ProjectBudgetTab extends AbstractTab {
             $this->html .= "<div id='budgetAccordion'>";
             $startYear = YEAR;
             if($project->deleted){
-                $startYear = substr($project->getDeleted(), 0, 4);
+                $startYear = substr($project->getDeleted(), 0, 4)-1;
             }
             for($i=$startYear; $i >= max((substr($projectPhaseDates[1], 0, 4)+1), substr($project->getCreated(), 0, 4)); $i--){
                 $this->html .= "<h3><a href='#'>".$i."</a></h3>";
