@@ -61,9 +61,15 @@ class SpecialD3Map extends SpecialPage {
                 foreach($projectUnis2 as $uni1){
                     $j = 0;
                     foreach($projectUnis2 as $uni2){
-                        if($i > $j && $uni1->getId() != $uni2->getId()){
-                            $edges[$uni1->getId().$uni2->getId()] = array('source' => $uni1->getName(),
-                                                                         'target' => $uni2->getName());
+                        if($uni1->getId() != $uni2->getId()){
+                            if($uni1->getId() <= $uni2->getId()){
+                                $edges[] = array('source' => $uni1->getName(),
+                                                 'target' => $uni2->getName());
+                            }
+                            else{
+                                $edges[] = array('source' => $uni2->getName(),
+                                                 'target' => $uni1->getName());
+                            }
                         }
                         $j++;
                     }
