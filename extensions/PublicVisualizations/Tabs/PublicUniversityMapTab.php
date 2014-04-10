@@ -83,7 +83,7 @@ class PublicUniversityMapTab extends AbstractTab {
             foreach($projects as $project){
                 $created = intval(substr($project->getCreated(), 0, 4));
                 if($created < $startYear){
-                    $startYear = $created;
+                    $startYear = intval($created);
                 }
                 $labels[] = $project->getName();
             }

@@ -115,9 +115,9 @@ class PublicChordTab extends AbstractTab {
             
             $startYear = date('Y');
             foreach($projects as $project){
-                $created = substr($project->getCreated(), 0, 4);
+                $created = intval(substr($project->getCreated(), 0, 4));
                 if($created < $startYear){
-                    $startYear = $created;
+                    $startYear = intval($created);
                 }
                 $labels[] = $project->getName();
             }
