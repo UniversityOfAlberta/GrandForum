@@ -1,6 +1,6 @@
 <?php
 
-require_once("SpecialChord.php");
+//require_once("SpecialChord.php");
 
 class Chord extends Visualization {
     
