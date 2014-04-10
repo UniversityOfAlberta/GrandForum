@@ -195,14 +195,6 @@ class D3Map extends Visualization {
                             .attr("cy", padding)
                             .attr("fill", function(d){return d.value.color;});
 
-                        // Add a label.
-                      
-                        marker.append("svg:text")
-                            .attr("x", padding + 7)
-                            .attr("y", padding)
-                            .attr("dy", ".31em")
-                            .text(function(d) { return d.value.name; });
-
                         function transformX(d){
                             d = new google.maps.LatLng(d.latitude, d.longitude);
                             d = projection.fromLatLngToDivPixel(d);
