@@ -54,9 +54,11 @@ class D3Map extends Visualisation {
 
     function show(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $string = "<div style='height:".($this->height)."px;width:".($this->width)."px;float:left;' id='vis{$this->index}'>
-                   </div>
-                   <div style='margin-top:25px;margin-left:25px;' id='visOptions{$this->index}'></div>";
+        $string = "<div style='height:{$this->height};width:{$this->width};'>
+                        <div style='display:inline-block;width:75%;height:{$this->height};float:left;' id='vis{$this->index}'>
+                        </div>
+                        <div style='display:inline-block;width:24%;float:right;' id='visOptions{$this->index}'></div>
+                   </div>";
         $string .= <<<EOF
 <script type='text/javascript'>
     var params = Array();
@@ -100,14 +102,16 @@ class D3Map extends Visualisation {
                         
                     var edges = layer.append("div")
                         .attr("class", "edges");
+                        
+                    edges.selectAll("svg").remove();
                     
                     // Draw each marker as a separate SVG element.
                     // We could use a single SVG, but what size would it have?
                     overlay.draw = function() {
                         var projection = this.getProjection(),
                             padding = 10;
-                        edges.selectAll("svg").remove();
                         
+                        var i = 0;
                         _.each(arcs, function(s, source){
                             _.each(s, function(t, target){
                                 var locSource = locIndex[source];
@@ -121,13 +125,19 @@ class D3Map extends Visualisation {
                                 var dr = Math.sqrt(dx * dx + dy * dy);
                                 
                                 var colorFn = d3.interpolateRgb(locSource.color, locTarget.color);
-                                edges.append("svg")
+                                if(edges.select("svg.stroke_" + i)[0][0] == null){
+                                    edges.append("svg")
+                                         .attr("class", "edgeStroke stroke_" + i)
+                                         .append("path")
+                                         .attr("stroke-width", Math.sqrt(t) + 2)
+                                }
+
+                                edges.select("svg.stroke_" + i)
                                     .style("left", Math.min(sourceTransform[0], targetTransform[0]) - dr)
                                     .style("top", Math.min(sourceTransform[1], targetTransform[1]) - dr)
                                     .style("width", Math.abs(dx) + dr*2)
                                     .style("height", Math.abs(dy) + dr*2)
-                                    .append("path")
-                                    .attr("class", "edgeStroke")
+                                    .select("path")
                                     .attr("d", function(){
                                         var startX = dr;
                                         var startY = dr;
@@ -139,16 +149,22 @@ class D3Map extends Visualisation {
                                         }
                                         return "M" + startX + "," + startY + "A" + dr + "," + dr + " 0 0,1 " + (dx + startX) + "," + (dy + startY);
                                     })
-                                    .attr("stroke-width", Math.sqrt(t) + 2)
                                     .attr("opacity", function(d){if(showHide[locSource.name] == true || showHide[locTarget.name] == true){ return 1;} return 0;});
                                 
-                                edges.append("svg")
+                                if(edges.select("svg.edge_" + i)[0][0] == null){
+                                    edges.append("svg")
+                                         .attr("class", "edgeStroke edge_" + i)
+                                         .append("path")
+                                         .attr("class", "edge")
+                                         .attr("stroke-width", Math.sqrt(t) + 1)
+                                         .attr("stroke", colorFn(0.5))
+                                }
+                                edges.select("svg.edge_" + i)
                                     .style("left", Math.min(sourceTransform[0], targetTransform[0]) - dr)
                                     .style("top", Math.min(sourceTransform[1], targetTransform[1]) - dr)
                                     .style("width", Math.abs(dx) + dr*2)
                                     .style("height", Math.abs(dy) + dr*2)
-                                    .append("path")
-                                    .attr("class", "edge")
+                                    .select("path")
                                     .attr("d", function(){
                                         var startX = dr;
                                         var startY = dr;
@@ -160,9 +176,8 @@ class D3Map extends Visualisation {
                                         }
                                         return "M" + startX + "," + startY + "A" + dr + "," + dr + " 0 0,1 " + (dx + startX) + "," + (dy + startY);
                                     })
-                                    .attr("stroke-width", Math.sqrt(t) + 1)
-                                    .attr("stroke", colorFn(0.5))
-                                    .attr("opacity", function(d){if(showHide[locSource.name] == true || showHide[locTarget.name] == true){ return 1;} return 0.1;});
+                                    .attr("opacity", function(d){if(showHide[locSource.name] == true || showHide[locTarget.name] == true){ return 1;} return 0.2;});
+                                i++;
                             });
                         });
 
@@ -171,7 +186,8 @@ class D3Map extends Visualisation {
                             .each(transform) // update existing markers
                             .enter().append("svg:svg")
                             .each(transform)
-                            .attr("class", "marker");
+                            .attr("class", "marker")
+                            .attr("opacity", function(d){if(showHide[d.value.name] == true){ return 1;} return 0.5;});
 
                         // Add a circle.
                         marker.append("svg:circle")
@@ -277,8 +293,10 @@ class D3Map extends Visualisation {
                     var checked = $(e.currentTarget).is(":checked");
                     var loc = $(e.currentTarget).val();
                     showHide[loc] = checked;
-                    overlay.onAdd();
-                    overlay.draw();
+                    _.defer(function(){
+                        overlay.onAdd();
+                        overlay.draw();
+                    });
                 });
             });
         }

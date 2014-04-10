@@ -19,8 +19,8 @@ class SpecialD3Map extends SpecialPage {
 	function run(){
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    $map = new D3Map("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialD3MapData");
-	    $map->width = 800;
-	    $map->height = 600;
+	    $map->width = "100%";
+	    $map->height = "600px";
 	    $string = $map->show();
 	    $wgOut->addHTML($string);
 	}
@@ -48,7 +48,7 @@ class SpecialD3Map extends SpecialPage {
                 $university = University::newFromName($uni['university']);
                 if($university->getLatitude() != "" && $university->getLongitude() != ""){
                     foreach($person->getProjectsDuring($start, $end) as $project){
-                        $universities[$university->getId()] = array('name' => $university->getName(),
+                        $universities[$university->getName()] = array('name' => $university->getName(),
                                                                     'latitude' => $university->getLatitude(),
                                                                     'longitude' => $university->getLongitude(),
                                                                     'color' => $university->getColor());
@@ -57,13 +57,17 @@ class SpecialD3Map extends SpecialPage {
                 }
             }
             foreach($projectUnis as $projectUnis2){
+                $i = 0;
                 foreach($projectUnis2 as $uni1){
+                    $j = 0;
                     foreach($projectUnis2 as $uni2){
-                        if($uni1->getId() != $uni2->getId()){
-                            $edges[] = array('source' => $uni1->getName(),
-                                             'target' => $uni2->getName());
+                        if($i > $j && $uni1->getId() != $uni2->getId()){
+                            $edges[$uni1->getId().$uni2->getId()] = array('source' => $uni1->getName(),
+                                                                         'target' => $uni2->getName());
                         }
+                        $j++;
                     }
+                    $i++;
                 }
             }
             
@@ -86,6 +90,7 @@ class SpecialD3Map extends SpecialPage {
                 }
             }
             
+            ksort($universities);
             $array['locations'] = array_values($universities);
             $array['edges'] = $edges;
             
