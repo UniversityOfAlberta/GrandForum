@@ -1,33 +1,35 @@
 <?php
-$dir = dirname(__FILE__) . '/';
-$wgSpecialPages['SpecialD3Map'] = 'SpecialD3Map';
-$wgExtensionMessagesFiles['SpecialD3Map'] = $dir . 'SpecialD3Map.i18n.php';
 
-$wgHooks['UnknownAction'][] = 'SpecialD3Map::getSpecialD3MapData';
+$wgHooks['UnknownAction'][] = 'PublicUniversityMapTab::getPublicUniversityMapData';
 
-function runSpecialD3Map($par) {
-	SpecialD3Map::run($par);
-}
-
-class SpecialD3Map extends SpecialPage {
-
-	function __construct() {
-		wfLoadExtensionMessages('SpecialD3Map');
-		SpecialPage::SpecialPage("SpecialD3Map", MANAGER.'+', true, 'runSpecialD3Map');
-	}
+class PublicUniversityMapTab extends AbstractTab {
 	
-	function run(){
-	    global $wgOut, $wgServer, $wgScriptPath;
-	    $map = new D3Map("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialD3MapData");
+	function PublicUniversityMapTab(){
+        parent::AbstractTab("University Map");
+    }
+
+    function generateBody(){
+	    global $wgServer, $wgScriptPath;
+	    $map = new D3Map("{$wgServer}{$wgScriptPath}/index.php?action=getPublicUniversityMapData");
 	    $map->width = "100%";
 	    $map->height = "600px";
-	    $string = $map->show();
-	    $wgOut->addHTML($string);
+	    $this->html = $map->show();
+	    $this->html .= "<script type='text/javascript'>
+            $('#publicVis').bind('tabsselect', function(event, ui) {
+                if(ui.panel.id == 'university-map'){
+                    _.defer(function(){
+	                    onLoad{$map->index}();
+	                });
+	            }
+	        });
+	    </script>";
 	}
 	
-	static function getSpecialD3MapData($action, $article){
+	static function getPublicUniversityMapData($action, $article){
 	    global $wgServer, $wgScriptPath;
-	    if($action == "getSpecialD3MapData"){
+	    $me = Person::newFromWgUser();
+	    $year = (isset($_GET['date'])) ? $_GET['date'] : date('Y');
+	    if($action == "getPublicUniversityMapData"){
 	        $array = array();
 	        $universities = array();
 	        $edges = array();
