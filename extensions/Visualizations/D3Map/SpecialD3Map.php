@@ -35,8 +35,8 @@ class SpecialD3Map extends SpecialPage {
 	        
 	        $year = (isset($_GET['date'])) ? $_GET['date'] : date('Y');
             
-            $start = "$year".REPORTING_CYCLE_START_MONTH;
-            $end = "$year".REPORTING_CYCLE_END_MONTH_ACTUAL;
+            $start = "$year".CYCLE_START_MONTH;
+            $end = "$year".CYCLE_END_MONTH_ACTUAL;
             
             $pni = (!isset($_GET['noPNI']) || true) ? Person::getAllPeopleDuring(PNI, $start, $end) : array();
             $cni = (isset($_GET['showCNI']) || true) ? Person::getAllPeopleDuring(CNI, $start, $end) : array();
