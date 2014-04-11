@@ -905,6 +905,22 @@ EOF;
         if(count($data) > 0){
             return Theme::newFromId($data[0]['id']);
         }
+        else{
+            // TODO: This should be refactored in the database so that the above query also determines this information
+            // Will need to migrate the data from grand_project_themes into grand_project_challenges
+            $themes = $this->getThemes();
+            $values = $themes['values'];
+            $names = $themes['names'];
+            $largest = 0;
+            $largestKey = 0;
+            foreach($values as $key => $value){
+                if($value > $largest){
+                    $largest = $value;
+                    $largestKey = $key;
+                }
+            }
+            return Theme::newFromId($largestKey);
+        }
         return Theme::newFromName("Not Specified");
     } 
     
