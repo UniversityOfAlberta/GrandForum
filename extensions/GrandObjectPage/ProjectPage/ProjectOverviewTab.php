@@ -173,7 +173,7 @@ class ProjectOverviewTab extends AbstractTab {
         $this->html .= "<table frame='box' rules='all' cellpadding='1' style='page-break-inside: avoid;'><tr><th>University</th><th>Cash</th><th>In-Kind</th><th>Total</th></tr>";
         foreach($contribs as $contrib){
             foreach($contrib->getPeople() as $person){
-                if($person->isMemberOfDuring($this->project, $year."-01-01", $year."-12-31")){
+                if($person instanceof Person && $person->isMemberOfDuring($this->project, $year."-01-01", $year."-12-31")){
                     $university = $person->getUniversityDuring($year."-01-01", $year."-12-31");
                     $uni = $university['university'];
                     @$unis[$uni]['cash'] += $contrib->getCash();
