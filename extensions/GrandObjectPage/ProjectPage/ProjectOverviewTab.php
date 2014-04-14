@@ -24,7 +24,7 @@ class ProjectOverviewTab extends AbstractTab {
         global $wgUser, $wgServer, $wgScriptPath;
         if($this->visibility['isLead']){
             for($y=$this->startYear; $y<=$this->endYear; $y++){
-                $this->html .= "<h2 style='page-break-before:always;'>{$y}</h2>";
+                $this->html .= "<h2>{$y}</h2>";
                 $this->showExecutiveSummary($y);
                 $this->showBudgetSummary($y);
                 $this->showResearcherProductivity($y);
@@ -50,12 +50,14 @@ class ProjectOverviewTab extends AbstractTab {
     }
     
     function showExecutiveSummary($year){
-        $this->html .= "<h3>Executive Summary</h3>";
         $addr = ReportBlob::create_address(RP_LEADER, LDR_RESACTIVITY, LDR_RESACT_OVERALL, 0);
         $blob = new ReportBlob(BLOB_TEXT, $year, 0, $this->project->getId());
-        $blob->load($addr);
+        $res = $blob->load($addr);
         $data = nl2br($blob->getData());
-        $this->html .= "$data";
+        if($res){
+            $this->html .= "<h3>Executive Summary</h3>";
+            $this->html .= "$data";
+        }
     }
     
     function showBudgetSummary($year){
@@ -165,7 +167,7 @@ class ProjectOverviewTab extends AbstractTab {
     }
     
     function showContributionsByUniversity($year){
-        $this->html .= "<h3 style='page-break-before:always;'>Contributions by University</h3>";
+        $this->html .= "<h3'>Contributions by University</h3>";
         $contribs = $this->project->getContributionsDuring($year);
         $unis = array();
         $this->html .= "<table frame='box' rules='all' cellpadding='1' style='page-break-inside: avoid;'><tr><th>University</th><th>Cash</th><th>In-Kind</th><th>Total</th></tr>";
@@ -188,7 +190,7 @@ class ProjectOverviewTab extends AbstractTab {
     }
     
     function showHQPBreakdown($year){
-        $this->html .= "<h3 style='page-break-before:always;'>HQP Breakdown by University</h3>";
+        $this->html .= "<h3>HQP Breakdown by University</h3>";
         $unis = array();
         $hqps = $this->project->getAllPeopleDuring(HQP, $year."-01-01", $year."-12-31");
         foreach($hqps as $hqp){
