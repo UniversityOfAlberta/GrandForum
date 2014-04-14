@@ -1861,6 +1861,17 @@ class Person extends BackboneModel {
         return $this->contributions;
     }
     
+    // Returns the contributions this person has made during the given year
+    function getContributionsDuring($year){
+        $contribs = array();
+        foreach($this->getContributions() as $contrib){
+            if($contrib->getYear() == $year){
+                $contribs[] = $contrib;
+            }
+        }
+        return $contribs;
+    }
+    
     // Returns an array of Multimedia involved by this Person
     function getMultimedia(){
         if($this->multimedia == null){

@@ -655,6 +655,17 @@ EOF;
         return $this->contributions;
     }
     
+    // Returns the contributions relevant to this projeect during the given year
+    function getContributionsDuring($year){
+        $contribs = array();
+        foreach($this->getContributions() as $contrib){
+            if($contrib->getYear() == $year){
+                $contribs[] = $contrib;
+            }
+        }
+        return $contribs;
+    }
+    
     // Returns an array of Materials for this Project
     function getMultimedia(){
         if($this->multimedia == null){
