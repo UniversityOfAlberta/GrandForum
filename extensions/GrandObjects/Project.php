@@ -650,7 +650,10 @@ EOF;
                     GROUP BY id";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                $this->contributions[$row['id']] = Contribution::newFromId($row['id']);
+                $contribution = Contribution::newFromId($row['id']);
+                if($contribution->belongsToProject($this)){
+                    $this->contributions[$row['id']] = $contribution;
+                }
             }
         }
         return $this->contributions;

@@ -193,6 +193,7 @@ class ProjectOverviewTab extends AbstractTab {
                 $contribs = array();
                 for($y=$year;$y<=$end;$y++){
                     $contribs = array_merge($contribs, $person->getContributionsDuring($y));
+                    
                 }
                 $nHQP = 0;
                 $nUndergraduate = 0;

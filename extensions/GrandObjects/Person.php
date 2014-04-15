@@ -1855,7 +1855,10 @@ class Person extends BackboneModel {
                     GROUP BY id";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                $this->contributions[] = Contribution::newFromId($row['id']);
+                $contribution = Contribution::newFromId($row['id']);
+                if($this->isReceiverOf($contribution)){
+                    $this->contributions[] = $contribution;
+                }
             }
         }
         return $this->contributions;
