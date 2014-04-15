@@ -31,10 +31,21 @@ class ProjectOverviewTab extends AbstractTab {
                     $this->html .= "<h2 style='page-break-before:always;'>$y</h2>";
                 }
                 $this->showExecutiveSummary($y);
-                $this->showBudgetSummary($y-1);
-                $this->showResearcherProductivity($y);
-                $this->showContributionsByUniversity($y);
-                $this->showHQPBreakdown($y);
+                $this->showBudgetSummary($y-1, $y-1);
+                $this->showResearcherProductivity($y, $y);
+                $this->showContributionsByUniversity($y, $y);
+                $this->showHQPBreakdown($y, $y);
+            }
+            if($this->project->isDeleted()){
+                $createdYear = intval(substr($this->project->getCreated(),0,4));
+                $deletedYear = intval(substr($this->project->getDeleted(),0,4));
+                if($createdYear < $deletedYear){
+                    $this->html .= "<h2 style='page-break-before:always;'>$createdYear-$deletedYear</h2>";
+                    $this->showBudgetSummary($createdYear-1, $deletedYear-2);
+                    $this->showResearcherProductivity($createdYear, $deletedYear);
+                    $this->showContributionsByUniversity($createdYear, $deletedYear);
+                    $this->showHQPBreakdown($createdYear, $deletedYear);
+                }
             }
             if(isset($_GET['downloadOverview'])){
                 if(!isset($_GET['preview'])){
@@ -65,26 +76,35 @@ class ProjectOverviewTab extends AbstractTab {
         }
     }
     
-    function showBudgetSummary($year){
-        $fullBudget = new Budget(array(array(HEAD, HEAD, HEAD)), array(array("Categories for April 1, ".($year+1).", to March 31, ".($year+2), PNI."s", CNI."s")));
+    function showBudgetSummary($year, $end){
+        $fullBudget = new Budget(array(array(HEAD, HEAD, HEAD)), array(array("Categories for April 1, ".($year+1).", to March 31, ".($end+2), PNI."s", CNI."s")));
             
         $pniTotals = array();
         $cniTotals = array();
-        foreach($this->project->getAllPeopleDuring(PNI, $year."-04-01", ($year+1)."-03-31") as $person){
-            $budget = $person->getRequestedBudget($year);
-            if($budget != null){
-                $b = $budget->copy()->rasterize()->select(V_PROJ, array($this->project->getName()))->limit(6, 16);
-                if($b->nCols() > 0 && $b->nRows() > 0){
-                    $pniTotals[] = $b;
+        for($y=$year;$y<=$end;$y++){
+            $people = array();
+            foreach($this->project->getAllPeopleDuring(PNI, $y."-04-01", ($y+1)."-03-31") as $person){
+                if(!isset($people[$person->getId()])){
+                    $budget = $person->getRequestedBudget($y);
+                    if($budget != null){
+                        $b = $budget->copy()->rasterize()->select(V_PROJ, array($this->project->getName()))->limit(6, 16);
+                        if($b->nCols() > 0 && $b->nRows() > 0){
+                            $pniTotals[] = $b;
+                            $people[$person->getId()] = true;
+                        }
+                    }
                 }
             }
-        }
-        foreach($this->project->getAllPeopleDuring(CNI, $year."-04-01", ($year+1)."-03-31") as $person){
-            $budget = $person->getRequestedBudget($year);
-            if($budget != null){
-                $b = $budget->copy()->rasterize()->select(V_PROJ, array($this->project->getName()))->limit(6, 16);
-                if($b->nCols() > 0 && $b->nRows() > 0){
-                    $cniTotals[] = $b;
+            foreach($this->project->getAllPeopleDuring(CNI, $y."-04-01", ($y+1)."-03-31") as $person){
+                if(!isset($people[$person->getId()])){
+                    $budget = $person->getRequestedBudget($y);
+                    if($budget != null){
+                        $b = $budget->copy()->rasterize()->select(V_PROJ, array($this->project->getName()))->limit(6, 16);
+                        if($b->nCols() > 0 && $b->nRows() > 0){
+                            $cniTotals[] = $b;
+                            $people[$person->getId()] = true;
+                        }
+                    }
                 }
             }
         }
@@ -142,12 +162,12 @@ class ProjectOverviewTab extends AbstractTab {
         $this->html .= $fullBudget->cube()->render();
     }
     
-    function showResearcherProductivity($year){
+    function showResearcherProductivity($year, $end){
         $this->html .= "<h3>Researcher Productivity</h3>";
         $people = array();
-        $tmpPeople = array_merge($this->project->getAllPeopleDuring(PNI, $year."-01-01", $year."-12-31"), 
-                                 $this->project->getAllPeopleDuring(CNI, $year."-01-01", $year."-12-31"),
-                                 $this->project->getAllPeopleDuring(AR, $year."-01-01", $year."-12-31"));
+        $tmpPeople = array_merge($this->project->getAllPeopleDuring(PNI, $year."-01-01", $end."-12-31"), 
+                                 $this->project->getAllPeopleDuring(CNI, $year."-01-01", $end."-12-31"),
+                                 $this->project->getAllPeopleDuring(AR, $year."-01-01", $end."-12-31"));
         foreach($tmpPeople as $person){
             $people[$person->getReversedName()] = $person;
         }
@@ -167,10 +187,13 @@ class ProjectOverviewTab extends AbstractTab {
         if(count($people) > 0){
             foreach($people as $person){
                 $this->html .= "<tr><td>{$person->getReversedName()}</td>";
-                $hqps = $person->getHQPDuring($year."-01-01", $year."-12-31");
-                $publications = $person->getPapersAuthored('Publication', $year."-01-01", $year."-12-31");
-                $artifacts = $person->getPapersAuthored('Artifact', $year."-01-01", $year."-12-31");
-                $contribs = $person->getContributionsDuring($year);
+                $hqps = $person->getHQPDuring($year."-01-01", $end."-12-31");
+                $publications = $person->getPapersAuthored('Publication', $year."-01-01", $end."-12-31");
+                $artifacts = $person->getPapersAuthored('Artifact', $year."-01-01", $end."-12-31");
+                $contribs = array();
+                for($y=$year;$y<=$end;$y++){
+                    $contribs = array_merge($contribs, $person->getContributionsDuring($y));
+                }
                 $nHQP = 0;
                 $nUndergraduate = 0;
                 $nMasters = 0;
@@ -183,8 +206,8 @@ class ProjectOverviewTab extends AbstractTab {
                 $nContribs = 0;
                 $vContribs = 0;
                 foreach($hqps as $hqp){
-                    if($hqp->isMemberOfDuring($this->project, $year."-01-01", $year."-12-31")){
-                        $university = $hqp->getUniversityDuring($year."-01-01", $year."-12-31");
+                    if($hqp->isMemberOfDuring($this->project, $year."-01-01", $end."-12-31")){
+                        $university = $hqp->getUniversityDuring($year."-01-01", $end."-12-31");
                         $nHQP++;
                         $totalHQP++;
                         switch($university['position']){
@@ -236,7 +259,6 @@ class ProjectOverviewTab extends AbstractTab {
                     }
                 }
                 $this->html .= "<td align='right'>$nHQP</td><td align='right'>$nUndergraduate</td><td align='right'>$nMasters</td><td align='right'>$nPhD</td><td align='right'>$nPostDoc</td><td align='right'>$nTech</td><td align='right'>$nOther</td><td align='right'>$nPubs</td><td align='right'>$nArts</td><td align='right'>$nContribs</td><td align='right'>$".number_format($vContribs, 2)."</td></tr>";
-            //$this->html .= "<tr><td><b>Total</b></td><td align='right'>$totalHQP</td><td align='right'>$totalUndergraduate</td><td align='right'>$totalMasters</td><td align='right'>$totalPhD</td><td align='right'>$totalPostDoc</td><td align='right'>$totalTech</td><td align='right'>$totalOther</td><td align='right'>$totalPubs</td><td align='right'>$totalArts</td><td align='right'>$totalContribs</td><td align='right'>$".number_format($totalVContribs, 2)."</td></tr>";
             }
             $this->html .= "</table>";
         }
@@ -245,14 +267,17 @@ class ProjectOverviewTab extends AbstractTab {
         }
     }
     
-    function showContributionsByUniversity($year){
+    function showContributionsByUniversity($year, $end){
         $this->html .= "<h3>Contributions by University</h3>";
-        $contribs = $this->project->getContributionsDuring($year);
+        $contribs = array();
+        for($y=$year;$y<=$end;$y++){
+            $contribs = array_merge($contribs, $this->project->getContributionsDuring($y));
+        }
         $unis = array();
         foreach($contribs as $contrib){
             foreach($contrib->getPeople() as $person){
-                if($person instanceof Person && $person->isMemberOfDuring($this->project, $year."-01-01", $year."-12-31")){
-                    $university = $person->getUniversityDuring($year."-01-01", $year."-12-31");
+                if($person instanceof Person && $person->isMemberOfDuring($this->project, $year."-01-01", $end."-12-31")){
+                    $university = $person->getUniversityDuring($year."-01-01", $end."-12-31");
                     $uni = $university['university'];
                     @$unis[$uni]['cash'] += $contrib->getCash();
                     @$unis[$uni]['kind'] += $contrib->getKind();
@@ -273,12 +298,12 @@ class ProjectOverviewTab extends AbstractTab {
         }
     }
     
-    function showHQPBreakdown($year){
+    function showHQPBreakdown($year, $end){
         $this->html .= "<h3>HQP Breakdown by University</h3>";
         $unis = array();
-        $hqps = $this->project->getAllPeopleDuring(HQP, $year."-01-01", $year."-12-31");
+        $hqps = $this->project->getAllPeopleDuring(HQP, $year."-01-01", $end."-12-31");
         foreach($hqps as $hqp){
-            $university = $hqp->getUniversityDuring($year."-01-01", $year."-12-31");
+            $university = $hqp->getUniversityDuring($year."-01-01", $end."-12-31");
             $uni = $university['university'];
             $pos = $university['position'];
             if(!isset($unis[$uni])){
