@@ -276,12 +276,16 @@ class ProjectOverviewTab extends AbstractTab {
         $unis = array();
         foreach($contribs as $contrib){
             foreach($contrib->getPeople() as $person){
+                $tmpUnis = array();
                 if($person instanceof Person && $person->isMemberOfDuring($this->project, $year."-01-01", $end."-12-31")){
                     $university = $person->getUniversityDuring($year."-01-01", $end."-12-31");
                     $uni = $university['university'];
-                    @$unis[$uni]['cash'] += $contrib->getCash();
-                    @$unis[$uni]['kind'] += $contrib->getKind();
-                    @$unis[$uni]['total'] += $contrib->getTotal();
+                    if(!isset($tmpUnis[$uni])){
+                        @$unis[$uni]['cash'] += $contrib->getCash();
+                        @$unis[$uni]['kind'] += $contrib->getKind();
+                        @$unis[$uni]['total'] += $contrib->getTotal();
+                        $tmpUnis[$uni] = true;
+                    }
                 }
             }
         }
