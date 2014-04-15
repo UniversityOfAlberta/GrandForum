@@ -26,7 +26,7 @@ class ProjectOverviewTab extends AbstractTab {
             for($y=$this->startYear; $y<=$this->endYear; $y++){
                 $this->html .= "<h2>{$y}</h2>";
                 $this->showExecutiveSummary($y);
-                $this->showBudgetSummary($y);
+                $this->showBudgetSummary($y-1);
                 $this->showResearcherProductivity($y);
                 $this->showContributionsByUniversity($y);
                 $this->showHQPBreakdown($y);
@@ -63,7 +63,7 @@ class ProjectOverviewTab extends AbstractTab {
     function showBudgetSummary($year){
         $budget = $this->project->getRequestedBudget($year);
         if($budget->nCols() > 2 && $budget->nRows() > 2){
-            $this->html .= "<h3>Budget Summary</h3>";
+            $this->html .= "<h3>Budget Summary (Requested)</h3>";
             $this->html .= $budget->render();
         }
     }
