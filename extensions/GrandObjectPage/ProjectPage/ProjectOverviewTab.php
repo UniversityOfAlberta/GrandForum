@@ -24,7 +24,12 @@ class ProjectOverviewTab extends AbstractTab {
         global $wgUser, $wgServer, $wgScriptPath;
         if($this->visibility['isLead']){
             for($y=$this->startYear; $y<=$this->endYear; $y++){
-                $this->html .= "<h2>{$y}</h2>";
+                if($y == $this->startYear){
+                    $this->html .= "<h2>{$y}</h2>";
+                }
+                else{
+                    $this->html .= "<h2 style='page-break-before:always;'>$y</h2>";
+                }
                 $this->showExecutiveSummary($y);
                 $this->showBudgetSummary($y-1);
                 $this->showResearcherProductivity($y);
@@ -61,11 +66,80 @@ class ProjectOverviewTab extends AbstractTab {
     }
     
     function showBudgetSummary($year){
-        $budget = $this->project->getRequestedBudget($year);
-        if($budget->nCols() > 2 && $budget->nRows() > 2){
-            $this->html .= "<h3>Budget Summary (Requested)</h3>";
-            $this->html .= $budget->render();
+        $fullBudget = new Budget(array(array(HEAD, HEAD, HEAD)), array(array("Categories for April 1, ".$year.", to March 31, ".($year+1), PNI."s", CNI."s")));
+            
+        $pniTotals = array();
+        $cniTotals = array();
+        foreach($this->project->getAllPeopleDuring(PNI, $year."-04-01", ($year+1)."-03-31") as $person){
+            $budget = $person->getRequestedBudget($year);
+            if($budget != null){
+                $b = $budget->copy()->rasterize()->select(V_PROJ, array($this->project->getName()))->limit(6, 16);
+                if($b->nCols() > 0 && $b->nRows() > 0){
+                    $pniTotals[] = $b;
+                }
+            }
         }
+        foreach($this->project->getAllPeopleDuring(CNI, $year."-04-01", ($year+1)."-03-31") as $person){
+            $budget = $person->getRequestedBudget($year);
+            if($budget != null){
+                $b = $budget->copy()->rasterize()->select(V_PROJ, array($this->project->getName()))->limit(6, 16);
+                if($b->nCols() > 0 && $b->nRows() > 0){
+                    $cniTotals[] = $b;
+                }
+            }
+        }
+        if(count($pniTotals) == 0 && count($cniTotals) == 0){
+            return;
+        }
+        @$pniTotals = Budget::join_tables($pniTotals);
+        @$cniTotals = Budget::join_tables($cniTotals);
+        
+        $cubedPNI = new Budget();
+        $cubedCNI = new Budget();
+        if($pniTotals != null){
+            $cubedPNI = @$pniTotals->cube();
+        }
+        if($cniTotals != null){
+            $cubedCNI = @$cniTotals->cube();
+        }
+        
+        $categoryBudget = new Budget(array(array(HEAD1),
+                                           array(HEAD2),
+                                           array(HEAD2),
+                                           array(HEAD2),
+                                           array(HEAD2),
+                                           array(HEAD1),
+                                           array(HEAD2),
+                                           array(HEAD2),
+                                           array(HEAD2),
+                                           array(HEAD1),
+                                           array(HEAD1),
+                                           array(HEAD1),
+                                           array(HEAD2),
+                                           array(HEAD2),
+                                           array(HEAD2)), 
+                                     array(array("1) Salaries and stipends"),
+                                           array("a) Graduate students"),
+                                           array("b) Postdoctoral fellows"),
+                                           array("c) Technical and professional assistants"),
+                                           array("d) Undergraduate students"),
+                                           array("2) Equipment"),
+                                           array("a) Purchase or rental"),
+                                           array("b) Maintenance costs"),
+                                           array("c) Operating costs"),
+                                           array("3) Materials and supplies"),
+                                           array("4) Computing costs"),
+                                           array("5) Travel expenses"),
+                                           array("a) Field trips"),
+                                           array("b) Conferences"),
+                                           array("c) GRAND annual conference")));
+                                        
+        $categoryBudget = @$categoryBudget->join($cubedPNI->select(CUBE_ROW_TOTAL)->filter(CUBE_TOTAL)->filter(HEAD, array("TOTAL")))
+                                          ->join($cubedCNI->select(CUBE_ROW_TOTAL)->filter(CUBE_TOTAL)->filter(HEAD, array("TOTAL")));
+                                         
+        $fullBudget = $fullBudget->union($categoryBudget);
+        $this->html .= "<h3>Budget Summary (Requested)</h3>";
+        $this->html .= $fullBudget->cube()->render();
     }
     
     function showResearcherProductivity($year){
