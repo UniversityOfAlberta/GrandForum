@@ -222,6 +222,7 @@ class Project extends BackboneModel {
             $project = Project::newFromHistoricId($row['id']);
             if($project != null && $project->getName() != ""){
                 if(!isset($projects[$project->name])){
+                    $project = Project::newFromHistoricName($project->getName());
                     if(($project->deleted &&
                         substr($project->effectiveDate, 0, 8) >= $endDate || 
                         (substr($project->effectiveDate, 0, 8) <= $endDate && substr($project->effectiveDate, 0, 8) >= $startDate)) ||
@@ -655,7 +656,7 @@ EOF;
         return $this->contributions;
     }
     
-    // Returns the contributions relevant to this projeect during the given year
+    // Returns the contributions relevant to this project during the given year
     function getContributionsDuring($year){
         $contribs = array();
         foreach($this->getContributions() as $contrib){
