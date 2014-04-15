@@ -19,7 +19,7 @@ class ProjectOverviewTab extends AbstractTab {
         }
         $this->visibility = $visibility;
     }
-    
+
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath;
         if($this->visibility['isLead']){
@@ -167,7 +167,7 @@ class ProjectOverviewTab extends AbstractTab {
     }
     
     function showContributionsByUniversity($year){
-        $this->html .= "<h3'>Contributions by University</h3>";
+        $this->html .= "<h3>Contributions by University</h3>";
         $contribs = $this->project->getContributionsDuring($year);
         $unis = array();
         $this->html .= "<table frame='box' rules='all' cellpadding='1' style='page-break-inside: avoid;'><tr><th>University</th><th>Cash</th><th>In-Kind</th><th>Total</th></tr>";
