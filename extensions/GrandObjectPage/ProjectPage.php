@@ -129,7 +129,9 @@ class ProjectPage {
                 }
                 $tabbedPage->addTab(new ProjectVisualisationsTab($project, $visibility));
                 $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
-                $tabbedPage->addTab(new ProjectOverviewTab($project, $visibility));
+                if(!$project->isSubProject()){
+                    $tabbedPage->addTab(new ProjectOverviewTab($project, $visibility));
+                }
                 $tabbedPage->showPage();
                 
                 $wgOut->output();
