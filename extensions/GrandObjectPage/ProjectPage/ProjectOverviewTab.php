@@ -90,87 +90,91 @@ class ProjectOverviewTab extends AbstractTab {
         $totalArts = 0;
         $totalContribs = 0;
         $totalVContribs = 0;
-        foreach($people as $person){
-            $this->html .= "<tr><td>{$person->getReversedName()}</td>";
-            $hqps = $person->getHQPDuring($year."-01-01", $year."-12-31");
-            $publications = $person->getPapersAuthored('Publication', $year."-01-01", $year."-12-31");
-            $artifacts = $person->getPapersAuthored('Artifact', $year."-01-01", $year."-12-31");
-            $contribs = $person->getContributionsDuring($year);
-            $nHQP = 0;
-            $nUndergraduate = 0;
-            $nMasters = 0;
-            $nPhD = 0;
-            $nPostDoc = 0;
-            $nTech = 0;
-            $nOther = 0;
-            $nPubs = 0;
-            $nArts = 0;
-            $nContribs = 0;
-            $vContribs = 0;
-            foreach($hqps as $hqp){
-                if($hqp->isMemberOfDuring($this->project, $year."-01-01", $year."-12-31")){
-                    $university = $hqp->getUniversityDuring($year."-01-01", $year."-12-31");
-                    $nHQP++;
-                    $totalHQP++;
-                    switch($university['position']){
-                        case "Undergraduate":
-                            $nUndergraduate++;
-                            $totalUndergraduate++;
-                            break;
-                        case "Masters Student":
-                            $nMasters++;
-                            $totalMasters++;
-                            break;
-                        case "PhD Student":
-                            $nPhD++;
-                            $totalPhD++;
-                            break;
-                        case "PostDoc":
-                            $nPostDoc++;
-                            $totalPostDoc++;
-                            break;
-                        case "Technician":
-                            $nTech++;
-                            $totalTech++;
-                            break;
-                        default:
-                            $nOther++;
-                            $totalOther++;
-                            break;
+        if(count($people) > 0){
+            foreach($people as $person){
+                $this->html .= "<tr><td>{$person->getReversedName()}</td>";
+                $hqps = $person->getHQPDuring($year."-01-01", $year."-12-31");
+                $publications = $person->getPapersAuthored('Publication', $year."-01-01", $year."-12-31");
+                $artifacts = $person->getPapersAuthored('Artifact', $year."-01-01", $year."-12-31");
+                $contribs = $person->getContributionsDuring($year);
+                $nHQP = 0;
+                $nUndergraduate = 0;
+                $nMasters = 0;
+                $nPhD = 0;
+                $nPostDoc = 0;
+                $nTech = 0;
+                $nOther = 0;
+                $nPubs = 0;
+                $nArts = 0;
+                $nContribs = 0;
+                $vContribs = 0;
+                foreach($hqps as $hqp){
+                    if($hqp->isMemberOfDuring($this->project, $year."-01-01", $year."-12-31")){
+                        $university = $hqp->getUniversityDuring($year."-01-01", $year."-12-31");
+                        $nHQP++;
+                        $totalHQP++;
+                        switch($university['position']){
+                            case "Undergraduate":
+                                $nUndergraduate++;
+                                $totalUndergraduate++;
+                                break;
+                            case "Masters Student":
+                                $nMasters++;
+                                $totalMasters++;
+                                break;
+                            case "PhD Student":
+                                $nPhD++;
+                                $totalPhD++;
+                                break;
+                            case "PostDoc":
+                                $nPostDoc++;
+                                $totalPostDoc++;
+                                break;
+                            case "Technician":
+                                $nTech++;
+                                $totalTech++;
+                                break;
+                            default:
+                                $nOther++;
+                                $totalOther++;
+                                break;
+                        }
                     }
                 }
-            }
-            foreach($publications as $pub){
-                if($pub->belongsToProject($this->project)){
-                    $nPubs++;
-                    $totalPubs++;
+                foreach($publications as $pub){
+                    if($pub->belongsToProject($this->project)){
+                        $nPubs++;
+                        $totalPubs++;
+                    }
                 }
-            }
-            foreach($artifacts as $art){
-                if($art->belongsToProject($this->project)){
-                    $nArts++;
-                    $totalArts++;
+                foreach($artifacts as $art){
+                    if($art->belongsToProject($this->project)){
+                        $nArts++;
+                        $totalArts++;
+                    }
                 }
-            }
-            foreach($contribs as $contrib){
-                if($contrib->belongsToProject($this->project)){
-                    $nContribs++;
-                    $totalContribs++;
-                    $vContribs += $contrib->getTotal();
-                    $totalVContribs += $contrib->getTotal();
+                foreach($contribs as $contrib){
+                    if($contrib->belongsToProject($this->project)){
+                        $nContribs++;
+                        $totalContribs++;
+                        $vContribs += $contrib->getTotal();
+                        $totalVContribs += $contrib->getTotal();
+                    }
                 }
+                $this->html .= "<td align='right'>$nHQP</td><td align='right'>$nUndergraduate</td><td align='right'>$nMasters</td><td align='right'>$nPhD</td><td align='right'>$nPostDoc</td><td align='right'>$nTech</td><td align='right'>$nOther</td><td align='right'>$nPubs</td><td align='right'>$nArts</td><td align='right'>$nContribs</td><td align='right'>$".number_format($vContribs, 2)."</td></tr>";
+            //$this->html .= "<tr><td><b>Total</b></td><td align='right'>$totalHQP</td><td align='right'>$totalUndergraduate</td><td align='right'>$totalMasters</td><td align='right'>$totalPhD</td><td align='right'>$totalPostDoc</td><td align='right'>$totalTech</td><td align='right'>$totalOther</td><td align='right'>$totalPubs</td><td align='right'>$totalArts</td><td align='right'>$totalContribs</td><td align='right'>$".number_format($totalVContribs, 2)."</td></tr>";
             }
-            $this->html .= "<td align='right'>$nHQP</td><td align='right'>$nUndergraduate</td><td align='right'>$nMasters</td><td align='right'>$nPhD</td><td align='right'>$nPostDoc</td><td align='right'>$nTech</td><td align='right'>$nOther</td><td align='right'>$nPubs</td><td align='right'>$nArts</td><td align='right'>$nContribs</td><td align='right'>$".number_format($vContribs, 2)."</td></tr>";
-        //$this->html .= "<tr><td><b>Total</b></td><td align='right'>$totalHQP</td><td align='right'>$totalUndergraduate</td><td align='right'>$totalMasters</td><td align='right'>$totalPhD</td><td align='right'>$totalPostDoc</td><td align='right'>$totalTech</td><td align='right'>$totalOther</td><td align='right'>$totalPubs</td><td align='right'>$totalArts</td><td align='right'>$totalContribs</td><td align='right'>$".number_format($totalVContribs, 2)."</td></tr>";
+            $this->html .= "</table>";
         }
-        $this->html .= "</table>";
+        else{
+            $this->html .= "No Researchers";
+        }
     }
     
     function showContributionsByUniversity($year){
         $this->html .= "<h3>Contributions by University</h3>";
         $contribs = $this->project->getContributionsDuring($year);
         $unis = array();
-        $this->html .= "<table frame='box' rules='all' cellpadding='1' style='page-break-inside: avoid;'><tr><th>University</th><th>Cash</th><th>In-Kind</th><th>Total</th></tr>";
         foreach($contribs as $contrib){
             foreach($contrib->getPeople() as $person){
                 if($person instanceof Person && $person->isMemberOfDuring($this->project, $year."-01-01", $year."-12-31")){
@@ -182,11 +186,17 @@ class ProjectOverviewTab extends AbstractTab {
                 }
             }
         }
-        ksort($unis);
-        foreach($unis as $name => $row){
-            $this->html .= "<tr><td>$name</td><td align='right'>$".number_format($row['cash'], 2)."</td><td align='right'>$".number_format($row['kind'], 2)."</td><td align='right'>$".number_format($row['total'], 2)."</td></tr>";
+        if(count($unis) > 0){
+            $this->html .= "<table frame='box' rules='all' cellpadding='1' style='page-break-inside: avoid;'><tr><th>University</th><th>Cash</th><th>In-Kind</th><th>Total</th></tr>";
+            ksort($unis);
+            foreach($unis as $name => $row){
+                $this->html .= "<tr><td>$name</td><td align='right'>$".number_format($row['cash'], 2)."</td><td align='right'>$".number_format($row['kind'], 2)."</td><td align='right'>$".number_format($row['total'], 2)."</td></tr>";
+            }
+            $this->html .= "</table>";
         }
-        $this->html .= "</table>";
+        else{
+            $this->html .= "No Contributions";
+        }
     }
     
     function showHQPBreakdown($year){
@@ -228,21 +238,26 @@ class ProjectOverviewTab extends AbstractTab {
             }
             @$unis[$uni]['Total']++;
         }
-        $this->html .= "<table frame='box' rules='all' cellpadding='1' style='page-break-inside: avoid;'><tr><th>University</th><th>Ugrad</th><th>Masters</th><th>PhD</th><th>PostDoc</th><th>Tech</th><th>Other</th><th>Total</th></tr>";
-        ksort($unis);
-        foreach($unis as $uni => $row){
-            $this->html .= "<tr>
-                                <td>$uni</td>
-                                <td align='right'>{$row['Ugrad']}</td>
-                                <td align='right'>{$row['Masters']}</td>
-                                <td align='right'>{$row['PhD']}</td>
-                                <td align='right'>{$row['PostDoc']}</td>
-                                <td align='right'>{$row['Tech']}</td>
-                                <td align='right'>{$row['Other']}</td>
-                                <td align='right'>{$row['Total']}</td>
-                            </tr>";
+        if(count($unis) > 0){
+            $this->html .= "<table frame='box' rules='all' cellpadding='1' style='page-break-inside: avoid;'><tr><th>University</th><th>Ugrad</th><th>Masters</th><th>PhD</th><th>PostDoc</th><th>Tech</th><th>Other</th><th>Total</th></tr>";
+            ksort($unis);
+            foreach($unis as $uni => $row){
+                $this->html .= "<tr>
+                                    <td>$uni</td>
+                                    <td align='right'>{$row['Ugrad']}</td>
+                                    <td align='right'>{$row['Masters']}</td>
+                                    <td align='right'>{$row['PhD']}</td>
+                                    <td align='right'>{$row['PostDoc']}</td>
+                                    <td align='right'>{$row['Tech']}</td>
+                                    <td align='right'>{$row['Other']}</td>
+                                    <td align='right'>{$row['Total']}</td>
+                                </tr>";
+            }
+            $this->html .= "</table>";
         }
-        $this->html .= "</table>";
+        else{
+            $this->html .= "No HQP Universities";
+        }
     }
 }    
     
