@@ -66,7 +66,7 @@ class ProjectOverviewTab extends AbstractTab {
     }
     
     function showBudgetSummary($year){
-        $fullBudget = new Budget(array(array(HEAD, HEAD, HEAD)), array(array("Categories for April 1, ".$year.", to March 31, ".($year+1), PNI."s", CNI."s")));
+        $fullBudget = new Budget(array(array(HEAD, HEAD, HEAD)), array(array("Categories for April 1, ".($year+1).", to March 31, ".($year+2), PNI."s", CNI."s")));
             
         $pniTotals = array();
         $cniTotals = array();
