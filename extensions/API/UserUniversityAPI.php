@@ -92,7 +92,9 @@ class UserUniversityAPI extends API{
                                           'position_id' => $_POST['title'],
                                           'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
                 foreach(MailingList::getListByUniversity($_POST['university']) as $list){
-                    MailingList::subscribe($list, $person);
+                    if($person->isRole(HQP) || $person->isRole(CNI) || $person->isRole(PNI) || $person->isRole(AR)){
+                        MailingList::subscribe($list, $person);
+                    }
                 }
                 if(!$noEcho){
                     echo "Account University Updated\n";
