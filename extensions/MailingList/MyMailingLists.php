@@ -30,7 +30,12 @@ class MyMailingLists extends SpecialPage{
             redirect("$wgServer$wgScriptPath/index.php/Special:MyMailingLists");
             exit;
         }
-        $lists = MailingList::getPersonLists($person);
+        if($person->isRoleAtLeast(MANAGER)){
+            $lists = MailingList::listLists();
+        }
+        else{
+            $lists = MailingList::getPersonLists($person);
+        }
         /*if($person->isProjectLeader() || $person->isProjectCoLeader()){
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:MailingListRequest'>Subscribe/Unsubscribe Users</a><br /><br />");
         }*/
