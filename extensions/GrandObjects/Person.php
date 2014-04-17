@@ -1976,6 +1976,11 @@ class Person extends BackboneModel {
         }
         return false;
     }
+    
+    // Alias for isLoggedIn()
+    function isMe(){
+        return $this->isLoggedIn();
+    }
 
     // Returns whether this Person is of type $role or not.
     function isRole($role){
