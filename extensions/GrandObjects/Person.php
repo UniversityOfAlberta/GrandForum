@@ -1977,9 +1977,10 @@ class Person extends BackboneModel {
         return false;
     }
     
-    // Alias for isLoggedIn()
+    // Returns whether this Person is the same as $wgUser
     function isMe(){
-        return $this->isLoggedIn();
+        global $wgUser;
+        return ($wgUser->getId() == $this->getId());
     }
 
     // Returns whether this Person is of type $role or not.
