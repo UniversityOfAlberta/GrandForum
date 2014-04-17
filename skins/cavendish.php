@@ -409,7 +409,7 @@ class cavendishTemplate extends QuickTemplate {
 	                        DEVELOPMENT ($branchFull, $revIdFull)</div>";
 	            }
 	        }
-	            $wgMessage->addPurpleInfo("Important: The GRAND Forum will be down for maintenance from 10-11AM (MDT), Thu, Apr. 17.");
+	            //$wgMessage->addPurpleInfo("Important: The GRAND Forum will be down for maintenance from 10-11AM (MDT), Thu, Apr. 17.");
 	        ?>
 		    <a name="top" id="contentTop"></a>
     <ul class="top-nav">
