@@ -29,7 +29,7 @@ require_once( "$IP/includes/DefaultSettings.php" );
 require_once( "$IP/Credentials.php" );
 require_once( "$IP/Path.php" );
 
-if(file_exists("test.tmp")){
+if(file_exists("$IP/test.tmp")){
     $wgDBname = $wgTestDBname;
     define("TESTING", true);
 }
