@@ -74,6 +74,48 @@ class MailingList {
 		}
 		return self::$lists;
     }
+    
+    /**
+     * Subscribes the given Person to all the mailing lists 
+     * that the Person should be in based on the current roles/projects
+     * @param Person $person The Person to subscribe
+     * @return int Returns 1 on success, and 0 on failure
+     */
+    static function subscribeAll($person){
+        $uni = $person->getUni();
+        foreach(MailingList::getListByUniversity($uni) as $list){
+            if(($person->isRole(HQP) || $person->isRole(CNI) || $person->isRole(PNI) || $person->isRole(AR))){
+                MailingList::subscribe($list, $person);
+            }
+        }
+        foreach($person->getProjects() as $project){
+            if(!$project->isSubProject() && ($person->isRole(HQP) || $person->isRole(CNI) || $person->isRole(PNI) || $person->isRole(AR))){
+                MailingList::subscribe($project, $person);
+            }
+        }
+        if($person->isRole(PNI) || 
+           $person->isRole(CNI) ||
+           $person->isRole(AR)){
+            MailingList::subscribe("grand-forum-researchers", $person);
+        }
+        if($person->isRole(RMC)){
+            MailingList::subscribe("rmc-list", $person);
+        }
+        if($person->isRole(HQP)){
+            MailingList::subscribe("grand-forum-hqps", $person);
+        }
+        if($person->isRole(ISAC)){
+            MailingList::subscribe("isac-list", $person);
+        }
+        if($person->isRole(CHAMP)){
+	        foreach($person->getProjects() as $proj){
+	            if($proj->getPhase() == PROJECT_PHASE){
+	                MailingList::subscribe("grand-forum-p2-champions", $person);
+	                break;
+	            }
+	        }
+	    }
+    }
 
     /**
      * Subscribes the given Person to the given Project
@@ -138,6 +180,7 @@ class MailingList {
 		    return 0;
 		}
     }
+    
     
     /**
      * Returns whether the Person is subscribed to the given mailing list or not 

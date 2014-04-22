@@ -3101,7 +3101,6 @@ class Person extends BackboneModel {
         return $subs;
     }
 
-
     function getEvaluates($type, $year = YEAR){
         $type = mysql_real_escape_string($type);
         

@@ -1,6 +1,7 @@
 <?php
 
 require_once("MyMailingLists.php");
+require_once("MailingListMapper.php");
 //require_once("MailingListAdmin.php");
 //require_once("MailingListRequest.php");
 
