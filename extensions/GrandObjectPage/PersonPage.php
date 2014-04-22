@@ -54,7 +54,7 @@ class PersonPage {
                 TabUtils::clearActions();
                 $supervisors = $person->getSupervisors();
                 
-                $isMe = ($person->getId() == $me->getId() ||
+                $isMe = ($person->isMe() ||
                         $me->isRoleAtLeast(MANAGER));
                 $isSupervisor = false;
                 foreach($supervisors as $supervisor){
