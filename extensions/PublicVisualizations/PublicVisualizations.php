@@ -1,7 +1,8 @@
 <?php
-
+require_once("Tabs/PublicWordleTab.php");
 require_once("Tabs/PublicChordTab.php");
 require_once("Tabs/PublicUniversityMapTab.php");
+
 
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['PublicVisualizations'] = 'PublicVisualizations'; # Let MediaWiki know about the special page.
@@ -26,6 +27,7 @@ class PublicVisualizations extends SpecialPage{
         $tabbedPage = new TabbedPage("publicVis");
         $tabbedPage->addTab(new PublicChordTab());
         $tabbedPage->addTab(new PublicUniversityMapTab());
+        $tabbedPage->addTab(new PublicWordleTab());
         $tabbedPage->showPage();
     }
     
