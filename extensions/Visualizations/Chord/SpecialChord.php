@@ -39,6 +39,12 @@ class SpecialChord extends SpecialPage {
                 if($project->getChallenge()->getName() == "Not Specified"){
                     unset($projects[$key]);
                 }
+                if($year <= 2013 && $project->getPhase() != 1){
+                    unset($projects[$key]);
+                }
+                if($year >= 2014 && $project->getPhase() != 2){
+                    unset($projects[$key]);
+                }
             }
             $sortedProjects = array();
             
@@ -51,11 +57,11 @@ class SpecialChord extends SpecialPage {
                     unset($people[$key]);
                     continue;
                 }
-                if(!isset($_GET['showCNI']) && $person->isRoleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH_ACTUAL)){
+                if(isset($_GET['noCNI']) && $person->isRoleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH_ACTUAL)){
                     unset($people[$key]);
                     continue;
                 }
-                if(!isset($_GET['showAR']) && $person->isRoleDuring(AR, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH_ACTUAL)){
+                if(isset($_GET['noAR']) && $person->isRoleDuring(AR, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH_ACTUAL)){
                     unset($people[$key]);
                     continue;
                 }
@@ -128,13 +134,16 @@ class SpecialChord extends SpecialPage {
             }
             $matrix = $newMatrix;
             
-            $startYear = date('Y');
             foreach($projects as $project){
+                $labels[] = $project->getName();
+            }
+            
+            $startYear = date('Y');
+            foreach(Project::getAllProjectsEver() as $project){
                 $created = intval(substr($project->getCreated(), 0, 4));
                 if($created < $startYear){
                     $startYear = intval($created);
                 }
-                $labels[] = $project->getName();
             }
             
             $dates = array();
@@ -148,8 +157,8 @@ class SpecialChord extends SpecialPage {
             }
             
             $array['filterOptions'] = array(array('name' => 'Show PNI Chords', 'param' => 'noPNI', 'checked' => 'checked'),
-                                            array('name' => 'Show CNI Chords', 'param' => 'showCNI', 'checked' => 'checked', 'inverted' => true),
-                                            array('name' => 'Show AR Chords', 'param' => 'showAR', 'checked' => 'checked', 'inverted' => true));
+                                            array('name' => 'Show CNI Chords', 'param' => 'noCNI', 'checked' => 'checked'),
+                                            array('name' => 'Show AR Chords', 'param' => 'noAR', 'checked' => 'checked'));
 
             $array['dateOptions'] = $dates;
                                       

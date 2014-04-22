@@ -1,6 +1,6 @@
 <?php
 
-//require_once("SpecialD3Map.php");
+require_once("SpecialD3Map.php");
 
 class D3Map extends Visualization {
     
@@ -15,7 +15,7 @@ class D3Map extends Visualization {
     }
     
     static function init(){
-        global $wgOut, $wgServer, $wgScriptPath;
+        global $wgOut, $wgServer, $wgScriptPath, $visualizations;
         $wgOut->addScript('<style rel="stylesheet" type="text/css">
 .container, .container svg {
   position: absolute;
@@ -125,17 +125,18 @@ class D3Map extends Visualization {
                                 var dr = Math.sqrt(dx * dx + dy * dy);
                                 
                                 var colorFn = d3.interpolateRgb(locSource.color, locTarget.color);
-                                if(edges.selectAll("svg.stroke_" + i)[0][0] == null){
+                                if(edges.select("svg.stroke_" + i)[0][0] == null){
                                     edges.append("svg")
                                          .attr("class", "edgeStroke stroke_" + i)
                                          .append("path")
                                          .attr("stroke-width", Math.sqrt(t) + 2)
                                 }
-                                edges.selectAll("svg.stroke_" + i)
-                                    .style({'left': Math.min(sourceTransform[0], targetTransform[0]) - dr + "px",
-                                            'top': Math.min(sourceTransform[1], targetTransform[1]) - dr + "px",
-                                            'width': Math.abs(dx) + dr*2 + "px",
-                                            'height': Math.abs(dy) + dr*2 + "px"})
+
+                                edges.select("svg.stroke_" + i)
+                                    .style("left", Math.min(sourceTransform[0], targetTransform[0]) - dr)
+                                    .style("top", Math.min(sourceTransform[1], targetTransform[1]) - dr)
+                                    .style("width", Math.abs(dx) + dr*2)
+                                    .style("height", Math.abs(dy) + dr*2)
                                     .select("path")
                                     .attr("d", function(){
                                         var startX = dr;
@@ -150,7 +151,7 @@ class D3Map extends Visualization {
                                     })
                                     .attr("opacity", function(d){if(showHide[locSource.name] == true || showHide[locTarget.name] == true){ return 1;} return 0;});
                                 
-                                if(edges.selectAll("svg.edge_" + i)[0][0] == null){
+                                if(edges.select("svg.edge_" + i)[0][0] == null){
                                     edges.append("svg")
                                          .attr("class", "edgeStroke edge_" + i)
                                          .append("path")
@@ -158,11 +159,11 @@ class D3Map extends Visualization {
                                          .attr("stroke-width", Math.sqrt(t) + 1)
                                          .attr("stroke", colorFn(0.5))
                                 }
-                                edges.selectAll("svg.edge_" + i)
-                                    .style({'left': Math.min(sourceTransform[0], targetTransform[0]) - dr + "px",
-                                            'top': Math.min(sourceTransform[1], targetTransform[1]) - dr + "px",
-                                            'width': Math.abs(dx) + dr*2 + "px",
-                                            'height': Math.abs(dy) + dr*2 + "px"})
+                                edges.select("svg.edge_" + i)
+                                    .style("left", Math.min(sourceTransform[0], targetTransform[0]) - dr)
+                                    .style("top", Math.min(sourceTransform[1], targetTransform[1]) - dr)
+                                    .style("width", Math.abs(dx) + dr*2)
+                                    .style("height", Math.abs(dy) + dr*2)
                                     .select("path")
                                     .attr("d", function(){
                                         var startX = dr;

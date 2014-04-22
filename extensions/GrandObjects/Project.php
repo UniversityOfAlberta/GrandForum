@@ -638,10 +638,24 @@ EOF;
                     GROUP BY id";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                $this->contributions[$row['id']] = Contribution::newFromId($row['id']);
+                $contribution = Contribution::newFromId($row['id']);
+                if($contribution->belongsToProject($this)){
+                    $this->contributions[$row['id']] = $contribution;
+                }
             }
         }
         return $this->contributions;
+    }
+    
+    // Returns the contributions relevant to this project during the given year
+    function getContributionsDuring($year){
+        $contribs = array();
+        foreach($this->getContributions() as $contrib){
+            if($contrib->getYear() == $year){
+                $contribs[] = $contrib;
+            }
+        }
+        return $contribs;
     }
     
     // Returns an array of Materials for this Project
@@ -902,6 +916,22 @@ EOF;
                                     array(1));
         if(count($data) > 0){
             return Theme::newFromId($data[0]['id']);
+        }
+        else{
+            // TODO: This should be refactored in the database so that the above query also determines this information
+            // Will need to migrate the data from grand_project_themes into grand_project_challenges
+            $themes = $this->getThemes();
+            $values = $themes['values'];
+            $names = $themes['names'];
+            $largest = 0;
+            $largestKey = 0;
+            foreach($values as $key => $value){
+                if($value > $largest){
+                    $largest = $value;
+                    $largestKey = $key;
+                }
+            }
+            return Theme::newFromId($largestKey);
         }
         return Theme::newFromName("Not Specified");
     } 

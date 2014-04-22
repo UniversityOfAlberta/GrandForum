@@ -15,6 +15,10 @@ class MailList{
         global $wgOut, $wgServer, $wgScriptPath;
         if($action == "read"){
             $me = Person::newFromUser($user);
+            if($me->isRoleAtLeast(MANAGER)){
+                $result = true;
+                return true;
+            }
             $nsText = "";
             $text = "";
             if($title->getNSText() != ""){
@@ -143,6 +147,25 @@ class MailList{
                                         array('mailListName' => EQ($project_name)));
             if(count($data) > 0){
                 $wgOut->addHTML("<b>Mail List Address:</b> <a href='mailto:{$data[0]['mailListName']}@{$config->getValue('domain')}'>{$data[0]['mailListName']}@{$config->getValue('domain')}</a>");
+                $emails = MailingList::listMembers($project_name);
+                $wgOut->addHTML("<h2>List Members</h2><a id='showPeople' class='button'>Show Members on List</a>
+                <script type='text/javascript'>
+                    $('#showPeople').click(function(){
+                        $(this).hide();
+                        $('#people').show();
+                    });
+                </script>");
+                $wgOut->addHTML("<div style='display:none;' id='people'>");
+                foreach($emails as $email){
+                    $person = Person::newFromEmail($email);
+                    if($person != null && $person->getId() != 0){
+                        $wgOut->addHTML("<a href='{$person->getUrl()}'>{$person->getNameForForms()}</a> &lt;$email&gt;<br />");
+                    }
+                    else{
+                        $wgOut->addHTML("$email<br />");
+                    }
+                }
+                $wgOut->addHTML("</div>");
             }
             else{
                 $wgOut->addHTML("This Mailing list has not been set up yet");

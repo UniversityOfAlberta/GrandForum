@@ -86,10 +86,12 @@ class UserEmailAPI extends API{
         $person->email = $_POST['email'];
         // Re-Add the person to the mailing lists using their new email
         foreach(MailingList::getListByUniversity($uni) as $list){
-            MailingList::subscribe($list, $person);
+            if(($person->isRole(HQP) || $person->isRole(CNI) || $person->isRole(PNI) || $person->isRole(AR))){
+                MailingList::subscribe($list, $person);
+            }
         }
         foreach($person->getProjects() as $project){
-            if(!$project->isSubProject()){
+            if(!$project->isSubProject() && ($person->isRole(HQP) || $person->isRole(CNI) || $person->isRole(PNI) || $person->isRole(AR))){
                 MailingList::subscribe($project, $person);
             }
         }

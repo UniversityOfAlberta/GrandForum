@@ -98,6 +98,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     public static function clean($event){
         global $currentSession;
         $currentSession->getSession()->stop();
+        system("php ../maintenance/cleanAllLists.php &> /dev/null");
         unlink("../test.tmp");
     }
     

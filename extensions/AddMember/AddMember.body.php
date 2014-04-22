@@ -96,7 +96,7 @@ class UserCreate {
         if($email != null){
             foreach($user->getGroups() as $group){
                 $project = Project::newFromId($group);
-                if($project != null && !$project->isSubProject()){
+                if($project != null && !$project->isSubProject() && ($person->isRole(HQP) || $person->isRole(CNI) || $person->isRole(PNI) || $person->isRole(AR))){
                     MailingList::subscribe($project, $person);
                 }
             }

@@ -1811,10 +1811,24 @@ class Person extends BackboneModel {
                     GROUP BY id";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                $this->contributions[] = Contribution::newFromId($row['id']);
+                $contribution = Contribution::newFromId($row['id']);
+                if($this->isReceiverOf($contribution)){
+                    $this->contributions[] = $contribution;
+                }
             }
         }
         return $this->contributions;
+    }
+    
+    // Returns the contributions this person has made during the given year
+    function getContributionsDuring($year){
+        $contribs = array();
+        foreach($this->getContributions() as $contrib){
+            if($contrib->getYear() == $year){
+                $contribs[] = $contrib;
+            }
+        }
+        return $contribs;
     }
     
     // Returns an array of Multimedia involved by this Person
@@ -1917,6 +1931,12 @@ class Person extends BackboneModel {
             }
         }
         return false;
+    }
+    
+    // Returns whether this Person is the same as $wgUser
+    function isMe(){
+        global $wgUser;
+        return ($wgUser->getId() == $this->getId());
     }
 
     // Returns whether this Person is of type $role or not.

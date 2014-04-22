@@ -535,7 +535,6 @@ class cavendishTemplate extends QuickTemplate {
 	                echo "<a name='arrow_right_16x16' class='menuTooltip changeImg highlights-text-hover' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}arrow_right_16x16.png' /></a>";
 	            }
 	        }
-	        
 	        echo "</div>";
             if(!TESTING && $wgScriptPath != ""){
                 exec("git rev-parse HEAD", $output);

@@ -35,7 +35,6 @@ class ProjectPage {
                 }
             </script>");
             
-            
             if($name == ""){
                 $split = explode(":", $name);
                 if(count($split) > 1){
@@ -133,6 +132,9 @@ class ProjectPage {
                 }
                 $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
+                if(!$project->isSubProject()){
+                    $tabbedPage->addTab(new ProjectOverviewTab($project, $visibility));
+                }
                 $tabbedPage->showPage();
                 
                 $wgOut->output();

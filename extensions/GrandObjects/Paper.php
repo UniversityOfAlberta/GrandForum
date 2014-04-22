@@ -526,8 +526,8 @@ class Paper extends BackboneModel{
 	function getProjects(){
 	    if($this->projectsWaiting){
 	        $data = DBFunctions::select(array("grand_product_projects"), 
-	                                   array("project_id"), 
-	                                   array("product_id" => EQ($this->id)));
+	                                    array("project_id"), 
+	                                    array("product_id" => EQ($this->id)));
 			foreach($data as $row){
 	            $this->projects[] = Project::newFromId($row['project_id']);
             }

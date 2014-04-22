@@ -35,7 +35,7 @@ class AddProjectMemberAPI extends API{
             if($person->isMemberOf($project)){
                 return;
             }
-            if(!$project->isSubProject()){
+            if(!$project->isSubProject() && ($person->isRole(HQP) || $person->isRole(CNI) || $person->isRole(PNI) || $person->isRole(AR))){
                 MailingList::subscribe($project, $person);
             }
             if($person->isRole(CHAMP) && $project->getPhase() == PROJECT_PHASE){

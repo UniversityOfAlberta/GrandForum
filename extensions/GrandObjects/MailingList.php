@@ -147,14 +147,8 @@ class MailingList {
      * @return boolean Returns true if the Person is subscribed to the given mailing list and false if not
      */
     static function isSubscribed($project, $person){
-        $listname = MailingList::listName($project);
         $email = $person->getEmail();
-        if(!isset(self::$membershipCache[$listname])){
-            $command = "/usr/lib/mailman/bin/list_members $listname 2> /dev/null";
-            exec($command, $output);
-            self::$membershipCache[$listname] = $output;
-        }
-        $emails = self::$membershipCache[$listname];
+        $emails = MailingList::listMembers($project);
         if(count($emails) > 0){
             foreach($emails as $addr){
                 if(trim(strtolower($addr)) == trim(strtolower($email))){
@@ -162,7 +156,22 @@ class MailingList {
                 }
             }
         }
-		return false;
+        return false;
+    }
+    
+    /**
+     * Returns an array of email addresses who are subscribed to the given mailing list
+     * @param Project $project The Project to check
+     * @return array An array of email addresses
+     */
+    static function listMembers($project){
+        $listname = MailingList::listName($project);
+        if(!isset(self::$membershipCache[$listname])){
+            $command = "/usr/lib/mailman/bin/list_members $listname";
+            exec($command, $output);
+            self::$membershipCache[$listname] = $output;
+        }
+        return self::$membershipCache[$listname];
     }
     
     static function manuallyUnsubscribe($project, $person){
