@@ -13,7 +13,16 @@ class PublicUniversityMapTab extends AbstractTab {
 	    $map = new D3Map("{$wgServer}{$wgScriptPath}/index.php?action=getPublicUniversityMapData");
 	    $map->width = "100%";
 	    $map->height = "600px";
-	    $this->html = $map->show();
+	    $this->html = "<div><a class='button' onClick='$(\"#help{$map->index}\").show();$(this).hide();'>Show Help</a>
+	        <div id='help{$map->index}' style='display:none;'>
+	            <p>This visualization shows the relations between universities.  Each arc represents a project that has people in more than one university.</p>
+	            <ul>
+	                <li>Using the date slider allows the map to only show universities and their relations from the specified year.</li>
+	                <li>To highlight a University and its relations, check/uncheck the Universities you wish to highlight.</li>
+	            </ul>
+	        </div>
+	    </div>";
+	    $this->html .= $map->show();
 	    $this->html .= "<script type='text/javascript'>
             $('#publicVis').bind('tabsselect', function(event, ui) {
                 if(ui.panel.id == 'university-map'){

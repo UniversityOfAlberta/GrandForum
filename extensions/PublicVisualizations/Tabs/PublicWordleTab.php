@@ -13,12 +13,21 @@ class PublicWordleTab extends AbstractTab {
 	    $wordle = new Wordle("{$wgServer}{$wgScriptPath}/index.php?action=getPublicWordleData");
 	    $wordle->width = 640;
         $wordle->height = 480;
-	    $this->html = $wordle->show();
+        $this->html = "<div><a class='button' onClick='$(\"#help{$wordle->index}\").show();$(this).hide();'>Show Help</a>
+	        <div id='help{$wordle->index}' style='display:none;'>
+	            <p>This visualization shows the most used keywords in the project descriptions.  The more times the word is used, the larger it appears in the tag cloud.</p>
+	        </div>
+	    </div>";
+	    $this->html .= $wordle->show();
 	    $this->html .= "<script type='text/javascript'>
+	        var nTimesLoadedProjectWordle = 0;
             $('#publicVis').bind('tabsselect', function(event, ui) {
                 if(ui.panel.id == 'project-tag-cloud'){
                     _.defer(function(){
-	                    onLoad{$wordle->index}();
+                        if(nTimesLoadedProjectWordle == 0){
+	                        onLoad{$wordle->index}();
+	                        nTimesLoadedProjectWordle++;
+	                    }
 	                });
 	            }
 	        });
