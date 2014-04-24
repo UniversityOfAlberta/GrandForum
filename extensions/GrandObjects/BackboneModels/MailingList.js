@@ -27,24 +27,29 @@ MailingLists = Backbone.Collection.extend({
 MailingListRule = RelationModel.extend({
     initialize: function(){
         this.on("change:type", this.changeValues);
+        this.on("change:possibleValues", function(){
+            if(this.get('value') == ""){
+                this.set('value', _.first(this.get('possibleValues')));
+            }
+        });
         this.on("sync", this.changeValues);
         this.changeValues(this);
     },
     
-    changeValues: function(m){
-        var type = m.get('type');
+    changeValues: function(){
+        var type = this.get('type');
         switch(type){
             case "ROLE":
-                m.set('possibleValues', wgRoles);
+                this.set('possibleValues', wgRoles);
                 break;
             case "PROJ":
-                m.set('possibleValues', new Array());
+                this.set('possibleValues', new Array());
                 break;
             case "PHASE":
-                m.set('possibleValues', new Array());
+                this.set('possibleValues', new Array());
                 break;
             case "LOC":
-                m.set('possibleValues', new Array());
+                this.set('possibleValues', new Array());
                 break;
         }
     },

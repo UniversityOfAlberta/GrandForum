@@ -95,8 +95,15 @@ ListRulesView = Backbone.View.extend({
     },
     
     saveRules: function(e){
+        clearAllMessages();
+        var ajax = Array();
         this.model.rules.each(function(r){
-            r.save();
+            ajax.push(r.save());
+        });
+        $.when.apply($, ajax).then(function(){
+            addSuccess("Mailing List Rules Saved");
+        }, function(){
+            addError("There was an error saving the rules");
         });
     },
     
