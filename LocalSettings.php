@@ -248,6 +248,7 @@ $wgRoleValues = array(INACTIVE => 0,
                       MANAGER => 17);
                      
 $wgRoles = array(HQP, EXTERNAL, ISAC, NCE, CNI, PNI, AR, LOI, RMC, BOD, CHAMP, GOV, STAFF, MANAGER);
+$wgAllRoles = array(HQP, EXTERNAL, ISAC, NCE, CNI, PNI, AR, LOI, COPL, PL, PM, TL, RMC, EVALUATOR, BOD, CHAMP, GOV, SD, STAFF, MANAGER);
 
 // Defining Custom Namespace Constants
 define("NS_GRAND_PROJ", 122);

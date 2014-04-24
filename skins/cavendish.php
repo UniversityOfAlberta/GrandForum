@@ -233,6 +233,8 @@ class cavendishTemplate extends QuickTemplate {
 		<script type='text/javascript'>
 		
 		    // Configs
+		    wgRoles = <?php global $wgAllRoles; echo json_encode($wgAllRoles); ?>;
+		    
 		    networkName = "<?php echo $config->getValue('networkName'); ?>";
 		    extensions = <?php echo json_encode($config->getValue('extensions')); ?>;
 		    iconPath = "<?php echo $config->getValue('iconPath'); ?>";

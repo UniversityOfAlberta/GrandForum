@@ -59,7 +59,7 @@ ProjectProduct = RelationModel.extend({
     idAttribute: 'productId',
     
     getOwner: function(){
-        project = new Project({id: this.get('projectId')});
+        var project = new Project({id: this.get('projectId')});
         project.fetch();
         return person;
     },

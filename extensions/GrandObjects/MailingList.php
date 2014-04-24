@@ -1,13 +1,110 @@
 <?php
 
-class MailingList {
+class MailingList extends BackboneModel {
 
+    static $cache = array();
     static $black_list = array('grand',
                                'administrator',
                                'mailman');
     static $lists = array();
     static $membershipCache = array();
     static $threadCache = array();
+    
+    var $id;
+    var $name;
+    var $rules = null;
+    
+    static function newFromId($id){
+        if(isset($cache[$id])){
+            return $cache[$id];
+        }
+        $data = DBFunctions::select(array('wikidev_projects'),
+                                    array('*'),
+                                    array('projectid' => EQ($id)));
+        $list = new MailingList($data);
+        $cache[$id] = &$list;
+        return $list;
+    }
+    
+    static function newFromName($name){
+        $name = MailingList::listName($name);
+        if(isset($cache[$name])){
+            return $cache[$name];
+        }
+        $data = DBFunctions::select(array('wikidev_projects'),
+                                    array('*'),
+                                    array('mailListName' => EQ($name)));
+        $list = new MailingList($data);
+        $cache[$name] = &$list;
+        return $list;
+    }
+    
+    static function getAllMailingLists(){
+        $lists = array();
+        $data = DBFunctions::select(array('wikidev_projects'),
+                                    array('*'),
+                                    array(),
+                                    array('mailListName' => 'ASC'));
+        foreach($data as $row){
+            if(array_search($row['mailListName'], MailingList::listLists()) !== false){
+                $lists[] = MailingList::newFromId($row['projectid']);
+            }
+        }
+        return $lists;
+    }
+    
+    function MailingList($data){
+        if(count($data) > 0){
+            $this->id = $data[0]['projectid'];
+            $this->name = $data[0]['mailListName'];
+        }
+    }
+    
+    function getId(){
+        return $this->id;
+    }
+    
+    function getName(){
+        return $this->name;
+    }
+    
+    function getRules(){
+        if($this->rules == null){
+            $this->rules = array();
+            $data = DBFunctions::select(array('wikidev_projects_rules'),
+                                        array('*'),
+                                        array('project_id' => EQ($this->id)));
+            foreach($data as $row){
+                $this->rules[] = MailingListRule::newFromId($row['id']);
+            }
+        }
+        return $this->rules;
+    }
+    
+    function create(){
+        
+    }
+    
+    function update(){
+        
+    }
+    
+    function delete(){
+        
+    }
+    
+    function toArray(){
+        return array('id' => $this->id,
+                     'name' => $this->name);
+    }
+    
+    function exists(){
+        return true;
+    }
+    
+    function getCacheId(){
+        
+    }
 
     static function getThreads($project_name){
         $project_name = mysql_real_escape_string($project_name);
@@ -64,10 +161,17 @@ class MailingList {
      */
     static function listLists(){
         if(count(self::$lists) == 0){
+            $data = DBFunctions::select(array('wikidev_projects'),
+                                        array('mailListName'));
+            $listNames = array();
+            foreach($data as $row){
+                $listNames[] = $row['mailListName'];
+            }
             $command =  "/usr/lib/mailman/bin/list_lists -b 2> /dev/null";
 		    exec($command, $lists);
 		    foreach($lists as $list){
-		        if(array_search($list, self::$black_list) === false){
+		        if(array_search($list, self::$black_list) === false && 
+		           array_search($list, $listNames) !== false){
 		            self::$lists[] = $list;
 		        }
 		    }

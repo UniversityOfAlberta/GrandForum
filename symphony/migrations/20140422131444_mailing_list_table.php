@@ -22,10 +22,10 @@ class MailingListTable extends AbstractMigration
      */
     public function up()
     {
-        $table = $this->table('wikidev_projects_map', array('id' => false, 'primary_key' => array('type', 'project_id', 'item')));
-        $table->addColumn('type', 'string' , array('limit' => 32))
+        $table = $this->table('wikidev_projects_rules', array('id' => true, 'primary_key' => array('id')));
+        $table->addColumn('type', 'string', array('limit' => 32))
               ->addColumn('project_id', 'integer')
-              ->addColumn('item', 'string', array('limit' => 64))
+              ->addColumn('value', 'string', array('limit' => 64))
               ->create();
     }
 

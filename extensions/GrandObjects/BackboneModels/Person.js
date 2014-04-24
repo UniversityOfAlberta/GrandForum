@@ -99,7 +99,7 @@ PersonProject = RelationModel.extend({
     },
     
     getOwner: function(){
-        person = new Person({id: this.get('personId')});
+        var person = new Person({id: this.get('personId')});
         return person;
     },
     
@@ -140,7 +140,7 @@ PersonRole = RelationModel.extend({
     },
     
     getOwner: function(){
-        person = new Person({id: this.get('personId')});
+        var person = new Person({id: this.get('personId')});
         return person;
     },
     
@@ -183,7 +183,7 @@ PersonProduct = RelationModel.extend({
     idAttribute: 'productId',
     
     getOwner: function(){
-        person = new Person({id: this.get('personId')});
+        var person = new Person({id: this.get('personId')});
         return person;
     },
     

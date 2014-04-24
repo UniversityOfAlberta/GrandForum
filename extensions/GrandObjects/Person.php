@@ -638,7 +638,7 @@ class Person extends BackboneModel {
     
     function create(){
         global $wgRequest;
-        $me = Person::newFromWGUser();
+        $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(STAFF)){
             $wgRequest->setVal('wpCreateaccountMail', true);
             $wgRequest->setSessionData('wsCreateaccountToken', 'true');
@@ -677,7 +677,7 @@ class Person extends BackboneModel {
     }
     
     function update(){
-        $me = Person::newFromWGUser();
+        $me = Person::newFromWgUser();
         foreach($this->getSupervisors() as $supervisor){
             if($supervisor->getId() == $me->getId()){
                 $isSupervisor = true;
@@ -707,7 +707,7 @@ class Person extends BackboneModel {
     }
     
     function delete(){
-        $me = Person::newFromWGUser();
+        $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(MANAGER)){
             return DBFunctions::update('mw_user',
                                  array('deleted' => 1),
