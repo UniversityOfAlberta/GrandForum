@@ -34,15 +34,7 @@ class DeleteProjectMemberAPI extends API{
                     exit;
                 }
             }
-            MailingList::unsubscribe($project, $person);
-            if($person->isRole(CHAMP) && $project->getPhase() == PROJECT_PHASE){
-                foreach($person->getProjects() as $proj){
-	                if($proj->getPhase() == PROJECT_PHASE && $project->getId() != $proj->getId()){
-	                    MailingList::unsubscribe("grand-forum-p2-champions", $person);
-	                    break;
-	                }
-	            }
-	        }
+            MailingList::unsubscribeAll($person);
             $effectiveDate = "CURRENT_TIMESTAMP";
             if(isset($_POST['effective_date']) && $_POST['effective_date'] != ""){
                 $effectiveDate = "'{$_POST['effective_date']} 00:00:00'";
@@ -80,6 +72,8 @@ class DeleteProjectMemberAPI extends API{
                         AND ug_group = '{$pred->getName()}'";
                 DBFunctions::execSQL($sql, true);
             }
+            $person->projects = null;
+            MailingList::subscribeAll($person);
             if(!$noEcho){
                 echo "{$person->getReversedName()} deleted from {$project->getName()}\n";
             }
