@@ -5,7 +5,8 @@ BackbonePage::register('MailingListRules', 'MailingListRules', 'network-tools', 
 class MailingListRules extends BackbonePage {
     
     function userCanExecute($user){
-        return true;
+        $me = Person::newFromUser($user);
+        return $me->isRole(MANAGER);
     }
     
     function getTemplates(){
