@@ -84,10 +84,6 @@ class UserUniversityAPI extends API{
                                     array('end_date' => EQ(COL('CURRENT_TIMESTAMP'))),
                                     array('id' => EQ($last_id)));
                 MailingList::unsubscribeAll($person);
-                /*
-                foreach(MailingList::getListByUniversity($uni) as $list){
-                    MailingList::unsubscribe($list, $person);
-                }*/
                 //Insert New
                 DBFunctions::insert('grand_user_university',
                                     array('user_id' => $person->getId(),
@@ -98,12 +94,6 @@ class UserUniversityAPI extends API{
                 Person::$universityCache = array();
                 $person->university = false;
                 MailingList::subscribeAll($person);
-                /*
-                foreach(MailingList::getListByUniversity($_POST['university']) as $list){
-                    if($person->isRole(HQP) || $person->isRole(CNI) || $person->isRole(PNI) || $person->isRole(AR)){
-                        MailingList::subscribe($list, $person);
-                    }
-                }*/
                 if(!$noEcho){
                     echo "Account University Updated\n";
                 }

@@ -28,7 +28,7 @@ MailingListRule = RelationModel.extend({
     initialize: function(){
         this.on("change:type", this.changeValues);
         this.on("change:possibleValues", function(){
-            if(this.get('value') == ""){
+            if(!_.contains(this.get('possibleValues').ids, this.get('value'))){
                 this.set('value', _.first(this.get('possibleValues').ids));
             }
         });
@@ -47,7 +47,6 @@ MailingListRule = RelationModel.extend({
                 $.when(projects.fetch()).then($.proxy(function(){
                     this.set('possibleValues', {ids: projects.pluck('id'), names: projects.pluck('name')});
                 }, this));
-                this.set('possibleValues', {ids: new Array(), names: new Array()});
                 break;
             case "PHASE":
                 var phases = _.range(1, projectPhase+1);

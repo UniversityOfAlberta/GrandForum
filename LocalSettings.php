@@ -199,6 +199,7 @@ $projectPhaseDates = array(1 => "2010-01-01 00:00:00",
 // Names of User Roles
 define("INACTIVE", "Inactive"); // This is an implied role.
 define("HQP", "HQP");
+define("STUDENT", "Student");
 define("EXTERNAL", "External");
 define("ISAC", "ISAC");
 define("NCE", "NCE Rep");
@@ -248,7 +249,7 @@ $wgRoleValues = array(INACTIVE => 0,
                       MANAGER => 17);
                      
 $wgRoles = array(HQP, EXTERNAL, ISAC, NCE, CNI, PNI, AR, LOI, RMC, BOD, CHAMP, GOV, STAFF, MANAGER);
-$wgAllRoles = array(HQP, EXTERNAL, ISAC, NCE, CNI, PNI, AR, LOI, COPL, PL, PM, TL, RMC, EVALUATOR, BOD, CHAMP, GOV, SD, STAFF, MANAGER);
+$wgAllRoles = array(HQP, STUDENT, EXTERNAL, ISAC, NCE, CNI, PNI, AR, LOI, COPL, PL, PM, TL, RMC, EVALUATOR, BOD, CHAMP, GOV, SD, STAFF, MANAGER);
 
 // Defining Custom Namespace Constants
 define("NS_GRAND_PROJ", 122);

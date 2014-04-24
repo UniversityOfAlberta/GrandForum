@@ -210,6 +210,9 @@ class MailingList extends BackboneModel {
                         else if($value == EVALUATOR && $person->isEvaluator()){
                             $roleResult = ($roleResult || true);
                         }
+                        else if($value == STUDENT && $person->isStudent()){
+                            $roleResult = ($roleResult || true);
+                        }
                         else {
                             $roleResult = ($roleResult || $person->isRole($value));
                         }

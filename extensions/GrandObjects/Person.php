@@ -1921,7 +1921,7 @@ class Person extends BackboneModel {
      * @return boolean Returns whether or not his person is a Student
      */
     function isStudent(){
-        if($this->isHQP()){
+        if($this->isRole(HQP)){
             $uni = $this->getUniversity();
             if(strtolower($uni['position']) == 'undergraduate' ||
                strtolower($uni['position']) == 'masters student' ||
