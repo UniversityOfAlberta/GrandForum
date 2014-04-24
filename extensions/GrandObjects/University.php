@@ -36,6 +36,18 @@ class University extends BackboneModel {
         return $university;
     }
     
+    static function getAllUniversities(){
+        $data = DBFunctions::select(array('grand_universities'),
+                                    array('university_id', '`order`'),
+                                    array(),
+                                    array('`order`' => 'ASC'));
+        $unis = array();
+        foreach($data as $row){
+            $unis[] = University::newFromId($row['university_id']);
+        }
+        return $unis;
+    }
+    
     function University($data){
         if(count($data) > 0){
             $row = $data[0];
@@ -51,16 +63,11 @@ class University extends BackboneModel {
     
     function toArray(){
         global $wgUser;
-        $privateProfile = "";
-        $publicProfile = $this->getProfile(false);
-        if($wgUser->isLoggedIn()){
-            $privateProfile = $this->getProfile(true);
-        }
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
-                      'latitude' => $this->getRealName(),
-                      'longitude' => $this->getNameForForms(),
-                      'color' => $this->getReversedName(),
+                      'latitude' => $this->getLatitude(),
+                      'longitude' => $this->getLongitude(),
+                      'color' => $this->getColor(),
                       'order' => $this->getOrder(),
                       'default' => $this->isDefault());
         return $json;

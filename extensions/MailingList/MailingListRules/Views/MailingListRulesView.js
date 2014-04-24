@@ -89,9 +89,12 @@ ListRulesView = Backbone.View.extend({
         clearAllMessages();
         var ruleId = $(e.currentTarget).parent().parent().attr('id');
         var rule = this.model.rules.get(ruleId);
+        if(rule.isNew()){
+            rule.destroy();
+            return;
+        }
         $.when(rule.destroy()).then($.proxy(function(){
             addSuccess("Mailing List Rule Deleted");
-            $(e.currentTarget).removeAttr("disabled");
         }, this),$.proxy(function(){
             addError("There was an error deleting the rule");
             $(e.currentTarget).removeAttr("disabled");

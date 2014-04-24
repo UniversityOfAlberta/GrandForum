@@ -29,7 +29,7 @@ MailingListRule = RelationModel.extend({
         this.on("change:type", this.changeValues);
         this.on("change:possibleValues", function(){
             if(this.get('value') == ""){
-                this.set('value', _.first(this.get('possibleValues')));
+                this.set('value', _.first(this.get('possibleValues').ids));
             }
         });
         this.on("sync", this.changeValues);
@@ -40,16 +40,24 @@ MailingListRule = RelationModel.extend({
         var type = this.get('type');
         switch(type){
             case "ROLE":
-                this.set('possibleValues', wgRoles);
+                this.set('possibleValues', {ids: wgRoles, names: wgRoles});
                 break;
             case "PROJ":
-                this.set('possibleValues', new Array());
+                var projects = new Projects();
+                $.when(projects.fetch()).then($.proxy(function(){
+                    this.set('possibleValues', {ids: projects.pluck('id'), names: projects.pluck('name')});
+                }, this));
+                this.set('possibleValues', {ids: new Array(), names: new Array()});
                 break;
             case "PHASE":
-                this.set('possibleValues', new Array());
+                var phases = _.range(1, projectPhase+1);
+                this.set('possibleValues', {ids: phases, names: phases});
                 break;
             case "LOC":
-                this.set('possibleValues', new Array());
+                var unis = new Universities();
+                $.when(unis.fetch()).then($.proxy(function(){
+                    this.set('possibleValues', {ids: unis.pluck('id'), names: unis.pluck('name')});
+                }, this));
                 break;
         }
     },
@@ -73,7 +81,7 @@ MailingListRule = RelationModel.extend({
         ruleId: "",
         type: "ROLE",
         value: "",
-        possibleValues: Array()
+        possibleValues: {ids: new Array(), names: new Array()}
     }
 });
 
