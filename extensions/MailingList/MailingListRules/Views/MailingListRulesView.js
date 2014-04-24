@@ -85,9 +85,17 @@ ListRulesView = Backbone.View.extend({
     },
     
     deleteRule: function(e){
+        $(e.currentTarget).attr("disabled", true);
+        clearAllMessages();
         var ruleId = $(e.currentTarget).parent().parent().attr('id');
         var rule = this.model.rules.get(ruleId);
-        this.model.rules.remove(rule);
+        $.when(rule.destroy()).then($.proxy(function(){
+            addSuccess("Mailing List Rule Deleted");
+            $(e.currentTarget).removeAttr("disabled");
+        }, this),$.proxy(function(){
+            addError("There was an error deleting the rule");
+            $(e.currentTarget).removeAttr("disabled");
+        }, this));
     },
     
     addNewRule: function(e){
@@ -95,16 +103,19 @@ ListRulesView = Backbone.View.extend({
     },
     
     saveRules: function(e){
+        this.$("button#saveRules").attr("disabled", true);
         clearAllMessages();
         var ajax = Array();
         this.model.rules.each(function(r){
             ajax.push(r.save());
         });
-        $.when.apply($, ajax).then(function(){
+        $.when.apply($, ajax).then($.proxy(function(){
             addSuccess("Mailing List Rules Saved");
-        }, function(){
+            this.$("button#saveRules").removeAttr("disabled");
+        }, this),$.proxy(function(){
             addError("There was an error saving the rules");
-        });
+            this.$("button#saveRules").removeAttr("disabled");
+        }, this));
     },
     
     events: {

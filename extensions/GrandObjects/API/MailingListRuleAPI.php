@@ -46,6 +46,15 @@ class MailingListRuleAPI extends RESTAPI {
     }
     
     function doDELETE(){
+        $ruleId = $this->getParam('ruleId');
+        if($ruleId != ""){
+            $rule = MailingListRule::newFromId($ruleId);
+            $status = $rule->delete();
+            if(!$status){
+                $this->throwError("There was an error deleting the rule");
+            }
+            return $rule->toJSON();
+        }
         return $this->doGet();
     }
 	

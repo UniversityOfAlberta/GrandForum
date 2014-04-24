@@ -79,7 +79,13 @@ class MailingListRule extends BackboneModel {
     }
     
     function delete(){
-        
+        $me = Person::newFromWgUser();
+        if($me->isRole(MANAGER)){
+           $status = DBFunctions::delete('wikidev_projects_rules',
+                                         array('id' => EQ($this->id)));
+            return $status;
+        }
+        return false;
     }
     
     function toArray(){
