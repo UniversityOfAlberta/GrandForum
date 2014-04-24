@@ -22,6 +22,7 @@ class UserEmailAPI extends API{
             return false;
         }
         // Remove the person from previous mailing lists
+        /*
         $uni = $person->getUni();
         foreach(MailingList::getListByUniversity($uni) as $list){
             MailingList::unsubscribe($list, $person);
@@ -79,12 +80,14 @@ class UserEmailAPI extends API{
 		    if($changeList2){
                 MailingList::unsubscribe("grand-forum-p2-leaders", $person);
 		    }
-        }
+        }*/
+        MailingList::unsubscribeAll($person);
         DBFunctions::update('mw_user',
                             array('user_email' => $_POST['email']),
                             array('user_id' => EQ($person->getId())));
         $person->email = $_POST['email'];
         // Re-Add the person to the mailing lists using their new email
+        /*
         foreach(MailingList::getListByUniversity($uni) as $list){
             if(($person->isRole(HQP) || $person->isRole(CNI) || $person->isRole(PNI) || $person->isRole(AR))){
                 MailingList::subscribe($list, $person);
@@ -143,7 +146,8 @@ class UserEmailAPI extends API{
 		    if($changeList2){
                 MailingList::subscribe("grand-forum-p2-leaders", $person);
 		    }
-        }
+        }*/
+        MailingList::subscribeAll($person);
         if(!$noEcho){
             echo "Account email updated\n";
         }

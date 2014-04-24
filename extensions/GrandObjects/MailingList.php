@@ -156,6 +156,88 @@ class MailingList extends BackboneModel {
     }
     
     /**
+     * Returns the lists that the given person should be on
+     * @param Person $person The Person to get the lists for
+     * @return array Returns the array of mailing lists
+     */
+    static function getPersonListsByRules($person){
+        $lists = MailingList::getAllMailingLists();
+        foreach($lists as $list){
+            $results = array();
+            $subscribe = false;
+            $roleResult = false;
+            $projResult = false;
+            $locResult = false;
+            $rules = $list->getRules();
+            $phaseRules = array();
+            foreach($rules as $rule){
+                // Phase rules are a little different than other types
+                if($rule->getType() == "PHASE"){
+                    $phaseRules[] = $rule->getValue();
+                }
+            }
+            foreach($rules as $rule){
+                $subscribe = true;
+                $value = $rule->getValue();
+                switch($rule->getType()){
+                    case "ROLE":
+                        if($value == CHAMP && $person->isRole($value)){
+                            foreach($person->getProjects() as $proj){
+                                if(count($phaseRules) > 0){
+                                    $roleResult = ($roleResult || (array_search($proj->getPhase(), $phaseRules)));
+                                }
+                                else{
+                                    $roleResult = ($roleResult || true);
+                                }
+                            }
+                        }
+                        else if(($value == PL && $person->isProjectLeader()) ||
+                                ($value == COPL && $person->isProjectCoLeader()) ||
+                                ($value == PM && $person->isProjectManager())){
+                            $leadership = $person->leadership();
+                            foreach($leadership as $proj){
+                                if(count($phaseRules) > 0){
+                                    $roleResult = ($roleResult || (array_search($proj->getPhase(), $phaseRules)));
+                                }
+                                else{
+                                    $roleResult = ($roleResult || true);
+                                }
+                            }
+                        }
+                        else if($value == TL && $person->isThemeLeader()){
+                            $roleResult = ($roleResult || true);
+                        }
+                        else if($value == EVALUATOR && $person->isEvaluator()){
+                            $roleResult = ($roleResult || true);
+                        }
+                        else {
+                            $roleResult = ($roleResult || $person->isRole($value));
+                        }
+                        $results['roleResult'] = $roleResult;
+                        break;
+                    case "PROJ":
+                        $project = Project::newFromId($value);
+                        $projResult = ($projResult || $person->isMemberOf($project));
+                        $results['projResult'] = $projResult;
+                        break;
+                    case "LOC":
+                        $uni = University::newFromName($person->getUni());
+                        $locResult = ($locResult || ($uni->getId() == $value));
+                        $results['locResult'] = $locResult;
+                        break;
+                }
+            }
+            foreach($results as $result){
+                $subscribe = $subscribe && $result;
+            }
+            if($subscribe){
+                $personLists[] = $list->getName(); 
+            }
+        }
+        return $personLists;
+    }
+    
+    /**
      * Returns all the lists in the system
      * @return array Returns the array of mailing lists
      */
@@ -168,57 +250,29 @@ class MailingList extends BackboneModel {
                 $listNames[] = $row['mailListName'];
             }
             $command =  "/usr/lib/mailman/bin/list_lists -b 2> /dev/null";
-		    exec($command, $lists);
-		    foreach($lists as $list){
-		        if(array_search($list, self::$black_list) === false && 
-		           array_search($list, $listNames) !== false){
-		            self::$lists[] = $list;
-		        }
-		    }
-		}
-		return self::$lists;
+            exec($command, $lists);
+            foreach($lists as $list){
+                if(array_search($list, self::$black_list) === false && 
+                   array_search($list, $listNames) !== false){
+                    self::$lists[] = $list;
+                }
+            }
+        }
+        return self::$lists;
     }
     
     /**
      * Subscribes the given Person to all the mailing lists 
-     * that the Person should be in based on the current roles/projects
+     * that the Person should be in based on the mailing list rules
      * @param Person $person The Person to subscribe
      * @return int Returns 1 on success, and 0 on failure
      */
     static function subscribeAll($person){
-        $uni = $person->getUni();
-        foreach(MailingList::getListByUniversity($uni) as $list){
-            if(($person->isRole(HQP) || $person->isRole(CNI) || $person->isRole(PNI) || $person->isRole(AR))){
-                MailingList::subscribe($list, $person);
-            }
+        global $wgMessage;
+        foreach(MailingList::getPersonListsByRules($person) as $list){
+            $wgMessage->addInfo("SUBSCRIBE: {$list}");
         }
-        foreach($person->getProjects() as $project){
-            if(!$project->isSubProject() && ($person->isRole(HQP) || $person->isRole(CNI) || $person->isRole(PNI) || $person->isRole(AR))){
-                MailingList::subscribe($project, $person);
-            }
-        }
-        if($person->isRole(PNI) || 
-           $person->isRole(CNI) ||
-           $person->isRole(AR)){
-            MailingList::subscribe("grand-forum-researchers", $person);
-        }
-        if($person->isRole(RMC)){
-            MailingList::subscribe("rmc-list", $person);
-        }
-        if($person->isRole(HQP)){
-            MailingList::subscribe("grand-forum-hqps", $person);
-        }
-        if($person->isRole(ISAC)){
-            MailingList::subscribe("isac-list", $person);
-        }
-        if($person->isRole(CHAMP)){
-	        foreach($person->getProjects() as $proj){
-	            if($proj->getPhase() == PROJECT_PHASE){
-	                MailingList::subscribe("grand-forum-p2-champions", $person);
-	                break;
-	            }
-	        }
-	    }
+        self::$membershipCache = array();
     }
 
     /**
@@ -240,19 +294,33 @@ class MailingList extends BackboneModel {
             return 1;
         }
         $email = $person->getEmail();
-		$command =  "echo \"$email\" | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - $listname 2> /dev/null";
-		exec($command, $output);
-		$out = $output;
-		self::$membershipCache = array();
-		if(!self::isSubscribed($project, $person)){
-		    $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be added to the <i>$listname</i> mailing list");
-		}
-		if(count($output) > 0 && strstr($output[0], "Subscribed:") !== false){
-		    return 1;
-		}
-		else{
-		    return 0;
-		}
+        $command =  "echo \"$email\" | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - $listname 2> /dev/null";
+        exec($command, $output);
+        $out = $output;
+        self::$membershipCache = array();
+        if(!self::isSubscribed($project, $person)){
+            $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be added to the <i>$listname</i> mailing list");
+        }
+        if(count($output) > 0 && strstr($output[0], "Subscribed:") !== false){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
+    
+    /**
+     * Unsubscribes the given Person from all the mailing lists 
+     * that the Person should be in based on the mailing list rules
+     * @param Person $person The Person to subscribe
+     * @return int Returns 1 on success, and 0 on failure
+     */
+    static function unsubscribeAll($person){
+        global $wgMessage;
+        foreach(MailingList::getPersonListsByRules($person) as $list){
+            $wgMessage->addInfo("UNSUBSCRIBE: {$list}");
+        }
+        self::$membershipCache = array();
     }
 
     /**
@@ -270,19 +338,19 @@ class MailingList extends BackboneModel {
         }
         $listname = MailingList::listName($project);
         $email = $person->getEmail();
-		$command =  "/usr/lib/mailman/bin/remove_members -n -N $listname \"$email\" 2> /dev/null";
-		exec($command, $output);
-		self::$membershipCache = array();
-		if(self::isSubscribed($project, $person)){
-		    $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be removed from <i>$listname</i> mailing list");
-		}
-		$out = $output;
-		if(count($output) == 0 || (count($output) > 0 && $output[0] == "")){
-		    return 1;
-		}
-		else{
-		    return 0;
-		}
+        $command =  "/usr/lib/mailman/bin/remove_members -n -N $listname \"$email\" 2> /dev/null";
+        exec($command, $output);
+        self::$membershipCache = array();
+        if(self::isSubscribed($project, $person)){
+            $wgMessage->addError("<b>{$person->getNameForForms()}</b> could not be removed from <i>$listname</i> mailing list");
+        }
+        $out = $output;
+        if(count($output) == 0 || (count($output) > 0 && $output[0] == "")){
+            return 1;
+        }
+        else{
+            return 0;
+        }
     }
     
     
