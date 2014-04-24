@@ -17,7 +17,6 @@
             </td>
             <td>
                 <select name="value">
-                    <% console.log(r.cid, r.get('possibleValues')); %>
                     <% _.each(r.get('possibleValues').ids, function(v, i){ %>
                         <option value="<%= v %>" <% if(r.get('value') == v){ %>selected<% } %>><%= r.get('possibleValues').names[i] %></option>
                     <% }) %>
