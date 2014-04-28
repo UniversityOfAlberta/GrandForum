@@ -39,18 +39,18 @@ class AnnokiControl extends SpecialPage {
 <tr><td><b>Extension</b></td><td><b>Installation Status</b></td><td><b>Extension Status</b></td><td><b>Memory Usage (MB)</b></td><td><b>Execution Time (ms)</b></td></tr>\n";
     $totalMem = 0;
     $totalTime = 0;
-    foreach($egAnnokiExtensions as $extension){
+    foreach($egAnnokiExtensions as $key => $extension){
       $exist = "<td>" . (is_readable($extension['path'])?"Installed":"Not Installed") . "</td>";
 
       $status = "<td bgcolor=";
-      if (!$extension['enabled'])
+      if (!isExtensionEnabled($key))
 	$status .= "grey";
       elseif (!is_readable($extension['path']))
 	$status .= "red";
       else
 	$status .= "green";
       
-      $status .= ">" . ($extension['enabled']?"Enabled":"Disabled") . "</td>";
+      $status .= ">" . (isExtensionEnabled($key)?"Enabled":"Disabled") . "</td>";
       $newHTML .= "<tr><td>".$extension['name']."</td>$exist$status<td align='right'>{$extension['size']}</td><td align='right'>{$extension['time']}</td></tr>\n";
       $totalMem += $extension['size'];
       $totalTime += $extension['time'];

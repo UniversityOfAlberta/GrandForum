@@ -18,27 +18,10 @@ class GlobalSearchAPI extends RESTAPI {
                 $data = array();
                 $people = DBFunctions::select(array('mw_user'),
                                               array('user_name', 'user_real_name', 'user_id'),
-                                              array('deleted' => '0'));
-                foreach($people as $pRow){
-                    $person = new Person(array());
-                    $person->name = $pRow['user_name'];
-                    $person->realname = $pRow['user_real_name'];
-                    $realName = $person->getNameForForms();
-                    $names = array_merge(explode(".", str_replace(" ", "", unaccentChars($realName))), 
-                                         explode(" ", str_replace(".", "", unaccentChars($realName))));
-                    $found = true;
-                    foreach($searchNames as $name){
-                        $grepped = preg_grep("/^$name.*/", $names);
-                        if(count($grepped) == 0){
-                            $found = false;
-                            break;
-                        }
-                    }
-                    if($found){
-                        $data[] = array('user_id' => $pRow['user_id'],
-                                        'user_name' => $person->getName());
-                    }
-                }
+                                              array('deleted' => '0',
+                                                    'LOWER(CONVERT(user_name USING utf8))' => LIKE("%".implode("%", $searchNames)."%"),
+                                                    WHERE_OR('LOWER(CONVERT(user_real_name USING utf8))') => LIKE("%".implode("%", $searchNames)."%")));
+                $data = $people;
                 $results = array();
                 $myRelations = $me->getRelations();
                 $sups = $me->getSupervisors();
@@ -93,7 +76,7 @@ class GlobalSearchAPI extends RESTAPI {
                 break;
             case 'projects':
                 $data = array();
-                $projects = Project::getAllProjectsDuring('0000','9999', true);
+                $projects = Project::getAllProjectsEver();
                 foreach($projects as $project){
                     $pName = unaccentChars($project->getName());
                     $pFullName = unaccentChars($project->getFullName());
