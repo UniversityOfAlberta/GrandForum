@@ -18,12 +18,12 @@ Feature: EditMember
         And I click by css "#ProjectsTab"
         And I check "p_wpNS_Phase2Project5"
         And I press "Submit Request"
-        And I follow "lnk-notifications"
+        And I follow "status_notifications"
         And I follow "User Role Request"
         And I press "Accept"
         Then I should see "added to Phase2Project5"
         And I should not see "removed"
-        When I follow "lnk-notifications"
+        When I follow "status_notifications"
         And I follow "User Role Request"
         And I press "Accept"
         Then I should see "added to Phase2Project3"
@@ -45,12 +45,12 @@ Feature: EditMember
         And I click by css "#ProjectsTab"
         And I uncheck "p_wpNS_Phase2Project5"
         And I press "Submit Request"
-        And I follow "lnk-notifications"
+        And I follow "status_notifications"
         And I follow "User Role Request"
         And I press "Accept"
         Then I should see "removed from Phase2Project5"
         And I should not see "added"
-        When I follow "lnk-notifications"
+        When I follow "status_notifications"
         And I follow "User Role Request"
         And I press "Accept"
         Then I should see "removed from Phase2Project3"
@@ -78,7 +78,7 @@ Feature: EditMember
         
     Scenario: Admin Accepting request
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
-        When I follow "lnk-notifications"
+        When I follow "status_notifications"
         And I follow "User Role Request"
         And I press "Accept"
         Then I should see "added to Phase2Project2"
@@ -96,7 +96,7 @@ Feature: EditMember
         Then I should see "Leader: User3, PNI"
         When I go to "index.php/PNI:PNI.User3?tab=projects"
         Then I should see "Phase2Project5"
-        And "pni.user3@behat-test.com" should be subscribed to "grand-forum-project-leaders"
+        And "pni.user3@behat-test.com" should be subscribed to "test-leaders"
         
     Scenario: Admin Removing PL (Make sure that PL is also removed from the mailing list)
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
@@ -107,7 +107,7 @@ Feature: EditMember
         And I uncheck "pl_Phase2Project5"
         And I press "Submit Request"
         Then I should see "is no longer a project leader of Phase2Project5"
-        And "pni.user3@behat-test.com" should not be subscribed to "grand-forum-project-leaders"
+        And "pni.user3@behat-test.com" should not be subscribed to "test-leaders"
         
     Scenario: PL Editing RMC project members (Should see RMC who are also PNI, but not people who are only RMC)
         Given I am logged in as "PL.User1" using password "PL.Pass1"

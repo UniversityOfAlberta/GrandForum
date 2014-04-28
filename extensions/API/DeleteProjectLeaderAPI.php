@@ -63,6 +63,8 @@ class DeleteProjectLeaderAPI extends API{
             }else if($_POST['manager'] == 1){
                 $lead_type = "manager";
             }
+            
+            MailingList::unsubscribeAll($person);
 
             $sql = "UPDATE grand_project_leaders
 	                SET `comment` = '$comment',
@@ -85,13 +87,12 @@ class DeleteProjectLeaderAPI extends API{
             }
             
             Person::$cache = array();
+            Person::$idsCache = array();
+            Person::$namesCache = array();
             Person::$leaderCache = array();
             Person::$coLeaderCache = array();
             $person = Person::newFromId($person->getId());
-            if(!$person->isProjectLeader() && !$person->isProjectCoLeader()){
-                $command =  "/usr/lib/mailman/bin/remove_members -n -N grand-forum-project-leaders {$person->getEmail()}";
-		        exec($command, $output);
-            }
+            MailingList::subscribeAll($person);
             
             $sql = "SELECT CURRENT_TIMESTAMP";
             $data = DBFunctions::execSQL($sql);

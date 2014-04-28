@@ -23,12 +23,12 @@ Feature: AddMember
     
     Scenario: Admin Accepting request
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
-        When I follow "lnk-notifications"
+        When I follow "status_notifications"
         And I follow "User Creation Request"
         And I press "Accept"
         Then I should see "User created successfully"
-        And "new.user@behat-test.com" should be subscribed to "grand-forum-hqps"
-        And unsubscribe "new.user@behat-test.com" from "grand-forum-hqps"
+        And "new.user@behat-test.com" should be subscribed to "test-hqps"
+        And unsubscribe "new.user@behat-test.com" from "test-hqps"
         
     Scenario: PNI Requesting an already existing user
         Given I am logged in as "PNI.User1" using password "PNI.Pass1"
@@ -70,7 +70,7 @@ Feature: AddMember
         
     Scenario: Admin Ignoring request
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
-        When I follow "lnk-notifications"
+        When I follow "status_notifications"
         And I follow "User Creation Request"
         And I press "Ignore"
         Then I should not see "Ààè.Öå"

@@ -64,10 +64,13 @@ class AddProjectLeaderAPI extends API{
                 echo "{$person->getReversedName()} is now a project leader of {$project->getName()}\n";
             }
             
-            if(!$project->isSubProject()){
-                $command =  "echo {$person->getEmail()} | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - grand-forum-project-leaders";
-		        exec($command, $output);
-		    }
+            Person::$cache = array();
+            Person::$idsCache = array();
+            Person::$namesCache = array();
+            Person::$leaderCache = array();
+            Person::$coLeaderCache = array();
+            $person = Person::newFromId($person->getId());
+            MailingList::subscribeAll($person);
             
             $sql = "SELECT CURRENT_TIMESTAMP";
             $data = DBFunctions::execSQL($sql);

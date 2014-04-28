@@ -123,7 +123,7 @@
      */
      
     // The current cycle year
-    $config->setConst("YEAR", 2013);
+    $config->setConst("YEAR", 2014);
 
     // Start of internal reporting cycle (Used for range queries)
     $config->setConst("CYCLE_START_MONTH", '-00-00');
