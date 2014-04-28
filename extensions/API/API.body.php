@@ -251,13 +251,11 @@ class APIRequest{
 		$this->addAction('Projects', 'addProjectMilestone', new ProjectMilestoneAPI());
 		$this->addAction('Projects', 'updateProjectAcronym', new UpdateProjectAcronymAPI());
 		$this->addAction('Projects', 'updateProjectDescription', new ProjectDescriptionAPI());
-		$this->addAction('Projects', 'updateProjectChampions', new ProjectChampionsAPI());
 		$this->addAction('Projects', 'updateProjectChallenge', new ProjectChallengeAPI());
 		$this->addAction('Projects', 'updateProjectMilestone', new ProjectMilestoneAPI(true));
 		$this->addAction('Projects', 'evolveProject', new EvolveProjectAPI());
 		$this->addAction('Projects', 'deleteProjectMember', new DeleteProjectMemberAPI());
 		$this->addAction('Projects', 'deleteProject', new DeleteProjectAPI());
-		$this->addAction('Projects', 'deleteProjectChampions', new DeleteProjectChampionsAPI());
 		//GET
 		$this->addAction('Projects', 'getProjectInfo', new ProjectInfoAPI());
 		

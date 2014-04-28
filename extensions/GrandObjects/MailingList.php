@@ -493,48 +493,6 @@ $listname-unsubscribe:  |/usr/lib/mailman/mail/mailman unsubscribe $listname";
                 WHERE `mailListName` = '$listname'";
         DBFunctions::execSQL($sql, true);
     }
-    
-    /**
-     * Returns all the location based lists
-     * Location lists are considered to be between 1000 and 1999 inclusive
-     * @return array Returns all the location based lists
-     */
-    static function getLocationBasedLists(){
-        $data = DBFunctions::select(array('wikidev_projects'),
-                                    array('mailListName'),
-                                    array('projectid' => GTEQ(1000),
-                                          'projectid' => LTEQ(1999)));
-        $lists = array();
-        foreach($data as $row){
-            $lists[] = $row['mailListName'];
-        }
-        return $lists;
-    }
-    
-    // TODO: Put this in the database somewhere since this is a really ugly function
-    static function getListByUniversity($university){
-        $hash = array('University of British Columbia' => array('grand-vancouver'),
-                      'Simon Fraser University' => array('grand-vancouver'),
-                      'Emily Carr University of Art and Design', array('grand-vancouver'),
-                      'University of Alberta' => array('grand-alberta'),
-                      'University of Calgary' => array('grand-calgary'),
-                      'University of Ottawa' => array('grand-ottawa', 'grand-ontario'),
-                      'Carleton University' => array('grand-ottawa', 'grand-ontario'),
-                      'University of Victoria' => array('grand-victoria'),
-                      'University of Toronto' => array('grand-toronto', 'grand-ontario'),
-                      'Ryerson University' => array('grand-toronto', 'grand-ontario'),
-                      'York University' => array('grand-toronto', 'grand-ontario'),
-                      'Ontario College of Art & Design' => array('grand-toronto', 'grand-ontario'),
-                      'University of Ontario Institute of Technology' => array('grand-toronto', 'grand-ontario'),
-                      'Queen`s University' => array('grand-ontario'),
-                      'University of Waterloo' => array('grand-ontario'),
-                      'University of Western Ontario' => array('grand-ontario'),
-                      'Wilfrid Laurier University' => array('grand-ontario'));
-        if(isset($hash[$university])){
-            return $hash[$university];
-        }
-        return array();           
-    }
 }
 
 ?>

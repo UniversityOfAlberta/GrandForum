@@ -115,26 +115,6 @@ EOF;
         $coplRow->append(new Label("{$pre}_copl_label", "Co-Project Leader", "The co-leader of this Project.  The person should be a valid person on this project.", VALIDATE_NOTHING));
         $coplRow->append(new ComboBox("{$pre}_copl", "Co-Project Leader", "", $names, VALIDATE_NI));
         
-        $names = array("");
-        $people = Person::getAllPeople(CHAMP);
-        foreach($people as $person){
-            $names[$person->getName()] = $person->getNameForForms();
-        }
-        asort($names);
-        
-        // Champion
-        $champRow = new FormTableRow("{$pre}_champ_row");
-        $champRow->append(new Label("{$pre}_champ_label", "Project Champion(s)", "The champions of this project.  Each champion must be an already existing member in the Champion role.  If the user is not created yet, then request a new member and you will be notified on the forum when the user gets created.", VALIDATE_NOTHING));
-        
-        $champPlusMinus = new PlusMinus("{$pre}_champ_plusminus");
-        $champTable = new FormTable("{$pre}_champ_table");
-        
-        $champTableNameRow = new ComboBox("{$pre}_champ_name[]", "Name", "", $names, VALIDATE_CHAMPION);
-        
-        $champTable->append($champTableNameRow);
-        $champPlusMinus->append($champTable);
-        $champRow->append($champPlusMinus);
-        
         $descRow = new FormTableRow("{$pre}_description_row");
         $descRow->append(new Label("{$pre}_description_label", "Description", "The description of the project", VALIDATE_NOTHING));
         $descRow->append(new TextareaField("{$pre}_description", "Description", "", VALIDATE_NOTHING));
@@ -180,7 +160,6 @@ EOF;
         $table->append($effectiveRow);
         $table->append($plRow);
         $table->append($coplRow);
-        $table->append($champRow);
         $table->append($descRow);
         $table->append($probRow);
         $table->append($solRow);
@@ -235,12 +214,6 @@ EOF;
                     $_POST['role'] = $_POST['acronym'];
                     $_POST['user'] = $_POST['copl'];
                     APIRequest::doAction('AddProjectLeader', true);
-                }
-                foreach($_POST['new_champ_name'] as $key => $name){
-                    $_POST['project'] = $_POST['acronym'];
-                    $champ = Person::newFromName($name);
-                    $_POST['champion_id'] = $champ->getId();
-                    APIRequest::doAction('ProjectChampions', true);
                 }
                 $form->reset();
             }

@@ -91,9 +91,6 @@ class UserUniversityAPI extends API{
                                           'department' => $_POST['department'],
                                           'position_id' => $_POST['title'],
                                           'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
-                Person::$universityCache = array();
-                $person->university = false;
-                MailingList::subscribeAll($person);
                 if(!$noEcho){
                     echo "Account University Updated\n";
                 }
@@ -107,15 +104,13 @@ class UserUniversityAPI extends API{
                                       'department' => $_POST['department'],
                                       'position_id' => $_POST['title'],
                                       'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
-            foreach(MailingList::getListByUniversity($_POST['university']) as $list){
-                MailingList::subscribe($list, $person);
-            }
             if(!$noEcho){
                 echo "Account University Added\n";
             }
         }
         $person->university = false;
         Person::$universityCache = array();
+        MailingList::subscribeAll($person);
     }
     
     function isLoginRequired(){

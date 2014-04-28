@@ -76,20 +76,6 @@ class ProjectMainTab extends AbstractEditableTab {
             APIRequest::doAction('ProjectChallenge', true);
         }
         
-        if(isset($_POST['champ_name'])){
-            foreach($_POST['champ_name'] as $key => $name){
-                $_POST['project'] = $this->project->getName();
-                $champ = Person::newFromName($name);
-                $_POST['champion_id'] = $champ->getId();
-                if(isset($_POST['champ_del'][$key]) && $_POST['champ_del'][$key] == "true"){
-                    APIRequest::doAction('DeleteProjectChampions', true);
-                }
-                else{
-                    APIRequest::doAction('ProjectChampions', true);
-                }
-            }
-        }
-        
         if(isset($_POST['pl'])){
             $leaderName = ($this->project->getLeader() != null) ? $this->project->getLeader()->getName() : "";
             if($_POST['pl'] != $leaderName){
