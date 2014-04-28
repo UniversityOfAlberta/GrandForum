@@ -13,6 +13,7 @@ class Person extends BackboneModel {
     static $idsCache = array();
     static $disciplineMap = array();
 
+    var $user = null;
     var $name;
     var $email;
     var $nationality;
@@ -727,9 +728,11 @@ class Person extends BackboneModel {
     
     // Returns the Mediawiki User object for this Person
     function getUser(){
-        $user = User::newFromId($this->id);
-        $user->load();
-        return $user;
+        if($this->user == null){
+            $this->user = User::newFromId($this->id);
+            $this->user->load();
+        }
+        return $this->user;
     }
     
     // Returns whether or not this Person is logged in or not
