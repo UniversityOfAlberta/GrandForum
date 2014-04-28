@@ -324,7 +324,7 @@ EOF;
             </tr>
             <tr>
                 <th align='right' style='padding-right:15px;'>Date: </th>
-                <td width='10%'>
+                <td>
                     <input id='datepicker' name='date' type='text' value='{$date}' />
                 </td>
             </tr>
