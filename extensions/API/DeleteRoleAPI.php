@@ -29,21 +29,7 @@ class DeleteRoleAPI extends API{
                     exit;
                 }
             }
-            if($role == PNI || $role == CNI || $role == AR){
-                MailingList::unsubscribe("grand-forum-researchers", $person);
-            }
-            if($role == HQP){
-                MailingList::unsubscribe("grand-forum-hqps", $person);
-            }
-            if($role == RMC){
-                MailingList::unsubscribe("rmc-list", $person);
-            }
-            if($role == ISAC){
-                MailingList::unsubscribe("isac-list", $person);
-            }
-            if($role == CHAMP){
-		        MailingList::unsubscribe("grand-forum-p2-champions", $person);
-		    }
+            MailingList::unsubscribeAll($person);
             $effectiveDate = "CURRENT_TIMESTAMP";
             if(isset($_POST['effective_date']) && $_POST['effective_date'] != ""){
                 $effectiveDate = "'{$_POST['effective_date']} 00:00:00'";
@@ -73,6 +59,9 @@ class DeleteRoleAPI extends API{
                                           'type' => EQ('Supervises'),
                                           'start_date' => GT(COL('end_date'))));
             }
+            Person::$rolesCache = array();
+            $person->roles = null;
+            MailingList::subscribeAll($person);
             if(!$noEcho){
                 echo "{$person->getReversedName()} deleted from $role\n";
             }

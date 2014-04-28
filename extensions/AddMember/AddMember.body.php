@@ -35,8 +35,6 @@ class UserCreate {
         DBFunctions::commit();
         DBFunctions::begin();
         
-        $person = Person::newFromId($wgUser->getId());
-        $person->email = $wgUser->mEmail;
         if(isset($_POST['wpUserType'])){
             if($_POST['wpUserType'] != ""){
                 foreach($_POST['wpUserType'] as $role){
@@ -51,23 +49,6 @@ class UserCreate {
                                         array('user_id' => $id,
                                               'role' => $role,
                                               'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
-                    if($role == PNI || 
-                       $role == CNI || 
-                       $role == AR){
-                        MailingList::subscribe("grand-forum-researchers", $person);
-                    }
-                    else if($role == HQP){
-                        MailingList::subscribe("grand-forum-hqps", $person);
-                    }
-                    else if($role == RMC){
-                        MailingList::subscribe("rmc-list", $person);
-                    }
-                    else if($role == ISAC){
-                        MailingList::subscribe("isac-list", $person);
-                    }
-                    else if($role == CHAMP){
-                        MailingList::subscribe("grand-forum-p2-champions", $person);
-                    }
                 }
             }
         }
@@ -88,20 +69,14 @@ class UserCreate {
             }
         }
         
-        $continue = UserCreate::addNewUserPage($wgUser);
-        
-        // Add User MailingList
-        $user = User::newFromId($wgUser->getId());
-        $email = $wgUser->mEmail;
-        if($email != null){
-            foreach($user->getGroups() as $group){
-                $project = Project::newFromId($group);
-                if($project != null && !$project->isSubProject() && ($person->isRole(HQP) || $person->isRole(CNI) || $person->isRole(PNI) || $person->isRole(AR))){
-                    MailingList::subscribe($project, $person);
-                }
-            }
-        }
+        UserCreate::addNewUserPage($wgUser);
         DBFunctions::commit();
+        Person::$cache = array();
+        Person::$idsCache = array();
+        Person::$namesCache = array();
+        Person::$rolesCache = array();
+        $person = Person::newFromId($wgUser->getId());
+        MailingList::subscribeAll($person);
         return true;
     }
     

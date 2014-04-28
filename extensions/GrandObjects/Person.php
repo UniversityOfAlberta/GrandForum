@@ -52,7 +52,6 @@ class Person extends BackboneModel {
      * @return Person The Person from the given id
      */
     static function newFromId($id){
-        global $wgUser;
         if(isset(self::$cache[$id])){
             return self::$cache[$id];
         }
@@ -264,7 +263,7 @@ class Person extends BackboneModel {
                     FROM grand_roles
                     WHERE (end_date = '0000-00-00 00:00:00'
                            OR end_date > CURRENT_TIMESTAMP)
-                    AND start_date < CURRENT_TIMESTAMP";
+                    AND start_date <= CURRENT_TIMESTAMP";
             $data = DBFunctions::execSQL($sql);
             if(count($data) > 0){
                 foreach($data as $row){

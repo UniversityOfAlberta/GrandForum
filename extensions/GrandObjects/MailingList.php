@@ -162,6 +162,7 @@ class MailingList extends BackboneModel {
      */
     static function getPersonListsByRules($person){
         $lists = MailingList::getAllMailingLists();
+        $personLists = array();
         foreach($lists as $list){
             $results = array();
             $subscribe = false;
@@ -268,12 +269,11 @@ class MailingList extends BackboneModel {
      * Subscribes the given Person to all the mailing lists 
      * that the Person should be in based on the mailing list rules
      * @param Person $person The Person to subscribe
-     * @return int Returns 1 on success, and 0 on failure
      */
     static function subscribeAll($person){
         global $wgMessage;
         foreach(MailingList::getPersonListsByRules($person) as $list){
-            $wgMessage->addInfo("SUBSCRIBE: {$list}");
+            MailingList::subscribe($list, $person);
         }
         self::$membershipCache = array();
     }
@@ -316,12 +316,11 @@ class MailingList extends BackboneModel {
      * Unsubscribes the given Person from all the mailing lists 
      * that the Person should be in based on the mailing list rules
      * @param Person $person The Person to subscribe
-     * @return int Returns 1 on success, and 0 on failure
      */
     static function unsubscribeAll($person){
         global $wgMessage;
         foreach(MailingList::getPersonListsByRules($person) as $list){
-            $wgMessage->addInfo("UNSUBSCRIBE: {$list}");
+            MailingList::unsubscribe($list, $person);
         }
         self::$membershipCache = array();
     }

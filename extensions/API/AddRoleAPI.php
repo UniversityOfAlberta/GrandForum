@@ -18,7 +18,7 @@ class AddRoleAPI extends API{
 		$me = Person::newFromId($wgUser->getId());
 		$person = Person::newFromName($_POST['user']);
 		if($me->isRoleAtLeast(STAFF) || ($me->isRoleAtLeast(CNI) && $person->isRole(INACTIVE) && $_POST['role'] == HQP)){
-            // Actually Add the Project Member
+            // Actually Add the Role
             $role = $_POST['role'];
             if(!$noEcho){
                 if($person->getName() == null){
@@ -28,26 +28,6 @@ class AddRoleAPI extends API{
             }
             if($person->isRole($role)){
 		        return;
-		    }
-            if($role == PNI || $role == CNI || $role == AR){
-                MailingList::subscribe("grand-forum-researchers", $person);
-		    }
-		    if($role == HQP){
-                MailingList::subscribe("grand-forum-hqps", $person);
-		    }
-		    if($role == RMC){
-		        MailingList::subscribe("rmc-list", $person);
-		    }
-		    if($role == ISAC){
-		        MailingList::subscribe("isac-list", $person);
-		    }
-		    if($role == CHAMP){
-		        foreach($person->getProjects() as $proj){
-		            if($proj->getPhase() == PROJECT_PHASE){
-		                MailingList::subscribe("grand-forum-p2-champions", $person);
-		                break;
-		            }
-		        }
 		    }
             // Add entry into grand_roles
             DBFunctions::insert('grand_roles',
@@ -73,6 +53,9 @@ class AddRoleAPI extends API{
             if(!$noEcho){
                 echo "{$person->getReversedName()} added to $role\n";
             }
+            Person::$rolesCache = array();
+            $person->roles = null;
+            MailingList::subscribeAll($person);
             $sql = "SELECT CURRENT_TIMESTAMP";
             $data = DBFunctions::execSQL($sql);
             $effectiveDate = "'{$data[0]['CURRENT_TIMESTAMP']}'";
