@@ -84,6 +84,7 @@ function showDiv(div_id, details_div_id){
             self::showArtDisseminations();
             self::showActDisseminations();
             self::showPublicationList();
+            self::showProjectRequests();
             break;
         }
         }
@@ -112,6 +113,7 @@ function showDiv(div_id, details_div_id){
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->startYear}-{$this->endYear}&year=tabs_{$this->startYear}-{$this->endYear}_{$label}&summary=grand#Table5'><span class='tocnumber'>4.4</span> <span class='toctext'>Table 5: Post Network employment of graduate students</span></a></li>
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->startYear}-{$this->endYear}&year=tabs_{$this->startYear}-{$this->endYear}_{$label}&summary=grand#Table6'><span class='tocnumber'>4.5</span> <span class='toctext'>Table 6: Dissemination of Network Research Results and Collaborations</span></a></li>
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->startYear}-{$this->endYear}&year=tabs_{$this->startYear}-{$this->endYear}_{$label}&summary=grand#Table7'><span class='tocnumber'>4.6</span> <span class='toctext'>Table 7: Publications list</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->startYear}-{$this->endYear}&year=tabs_{$this->startYear}-{$this->endYear}_{$label}&summary=grand#Table8'><span class='tocnumber'>4.7</span> <span class='toctext'>Table 8: Project Budget Requests</span></a></li>
                 </ul>
             </li>
             </ul>
@@ -277,6 +279,120 @@ EOF;
             </script>
 EOF;
         $this->html .= $html .  $dialog_js ;   
+    }
+    
+    function showProjectRequests(){
+        $html = "";
+        $allProjects = Project::getAllProjectsEver();
+        $table = "<table cellpadding='3' frame='box' rules='all'><tr><th>&nbsp;</th>";
+        for($y=$this->startYear;$y<=$this->endYear;$y++){
+            $table .= "<th colspan='3'>$y</th>";
+        }
+        $table .= "<th colspan='3'>{$this->startYear} - {$this->endYear}</th></tr>";
+        $table .= "<tr><th>Project</th>";
+        for($y=$this->startYear;$y<=$this->endYear;$y++){
+            $table .= "<th>PNI</th>";
+            $table .= "<th>CNI</th>";
+            $table .= "<th>Total</th>";
+        }
+        $table .= "<th>PNI</th>";
+        $table .= "<th>CNI</th>";
+        $table .= "<th>Total</th>";
+        $table .= "</tr>";
+        $overallPNITotals = array();
+        $overallCNITotals = array();
+        $overallTotals = array();
+        foreach($allProjects as $project){
+            if($project->getPhase() == 1 && $project->getStatus() == "Ended"){
+                $pniTotals = array();
+                $cniTotals = array();
+                for($y=$this->startYear;$y<=$this->endYear;$y++){
+                    $pniTotals[$y] = array();
+                    $cniTotals[$y] = array();
+                    $people = array();
+                    foreach($project->getAllPeopleDuring(PNI, $y."-04-01", ($y+1)."-03-31") as $person){
+                        if(!isset($people[$person->getId()])){
+                            $budget = $person->getRequestedBudget($y);
+                            if($budget != null){
+                                $b = $budget->copy()->rasterize()->select(V_PROJ, array($project->getName()))->where(COL_TOTAL);
+                                if($b->nCols() > 0 && $b->nRows() > 0){
+                                    $pniTotals[$y][] = $b;
+                                    $people[$person->getId()] = true;
+                                }
+                            }
+                        }
+                    }
+                    foreach($project->getAllPeopleDuring(CNI, $y."-04-01", ($y+1)."-03-31") as $person){
+                        if(!isset($people[$person->getId()])){
+                            $budget = $person->getRequestedBudget($y);
+                            if($budget != null){
+                                $b = $budget->copy()->rasterize()->select(V_PROJ, array($project->getName()))->where(COL_TOTAL);
+                                if($b->nCols() > 0 && $b->nRows() > 0){
+                                    $cniTotals[$y][] = $b;
+                                    $people[$person->getId()] = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                $pniSums = array();
+                $cniSums = array();
+                foreach($pniTotals as $year => $budgets){
+                    $joined = Budget::join_tables($budgets);
+                    $pniSums[] = $joined->sum()->xls[0][0]->getValue();
+                }
+                foreach($cniTotals as $year => $budgets){
+                    $joined = Budget::join_tables($budgets);
+                    $cniSums[] = $joined->sum()->xls[0][0]->getValue();
+                }
+                $pniTotalTotal = 0;
+                $cniTotalTotal = 0;
+                $totalTotal = 0;
+                $table .= "<tr><td><b>{$project->getName()}</b></td>";
+                for($y=$this->startYear;$y<=$this->endYear;$y++){
+                    $pniTotal = $pniSums[$y-$this->startYear];
+                    $cniTotal = $cniSums[$y-$this->startYear];
+                    $total = $pniSums[$y-$this->startYear] + $cniSums[$y-$this->startYear];
+                    $table .= "<td align='right'>\$".number_format(intval($pniTotal), 2)."</td>
+                               <td align='right'>\$".number_format(intval($cniTotal), 2)."</td>
+                               <td align='right'>\$".number_format(intval($total), 2)."</td>";
+                    $pniTotalTotal += $pniTotal;
+                    $cniTotalTotal += $cniTotal;
+                    $totalTotal += $total;
+                    
+                    @$overallPNITotals[$y] += $pniTotal;
+                    @$overallCNITotals[$y] += $cniTotal;
+                    @$overallTotals[$y] += $total;
+                }
+                $table .= "<td align='right'>\$".number_format($pniTotalTotal, 2)."</td>
+                           <td align='right'>\$".number_format($cniTotalTotal, 2)."</td>
+                           <td align='right'>\$".number_format($totalTotal, 2)."</td></tr>";
+            }
+        }
+        $pniTotalTotal = 0;
+        $cniTotalTotal = 0;
+        $totalTotal = 0;
+        $table .= "<tr><td><b>Total</b></td>";
+        for($y=$this->startYear;$y<=$this->endYear;$y++){
+            $pniTotal = $overallPNITotals[$y];
+            $cniTotal = $overallCNITotals[$y];
+            $total = $overallPNITotals[$y] + $overallCNITotals[$y];
+            $table .= "<td align='right'>\$".number_format(intval($pniTotal), 2)."</td>
+                       <td align='right'>\$".number_format(intval($cniTotal), 2)."</td>
+                       <td align='right'>\$".number_format(intval($total), 2)."</td>";
+            $pniTotalTotal += $pniTotal;
+            $cniTotalTotal += $cniTotal;
+            $totalTotal += $total;
+        }
+        $table .= "<td align='right'>\$".number_format(intval($pniTotalTotal), 2)."</td>
+                   <td align='right'>\$".number_format(intval($cniTotalTotal), 2)."</td>
+                   <td align='right'>\$".number_format(intval($totalTotal), 2)."</td>";
+        $table .= "</table>";
+        
+        $this-> html .= <<<EOF
+            <a id='Table8'></a><h3>Table 8: Project Budget Requests</h3>
+            $table
+EOF;
     }
 }    
     

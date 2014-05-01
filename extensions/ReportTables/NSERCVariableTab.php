@@ -2016,7 +2016,6 @@ EOF;
 
     }
 
-
     static function dollar_format($val) {
         return '$&nbsp;' . number_format($val, 2);
     }
