@@ -286,12 +286,12 @@ EOF;
         $html = "";
         $allProjects = Project::getAllProjectsEver();
         $table = "<table cellpadding='3' frame='box' rules='all'><tr><th>&nbsp;</th>";
-        for($y=$this->startYear;$y<=$this->endYear;$y++){
+        for($y=$this->startYear+1;$y<=$this->endYear-1;$y++){
             $table .= "<th colspan='3'>$y</th>";
         }
-        $table .= "<th colspan='3'>{$this->startYear} - {$this->endYear}</th></tr>";
+        $table .= "<th colspan='3'>".($this->startYear+1)." - ".($this->endYear-1)."</th></tr>";
         $table .= "<tr><th>Project</th>";
-        for($y=$this->startYear;$y<=$this->endYear;$y++){
+        for($y=$this->startYear+1;$y<=$this->endYear-1;$y++){
             $table .= "<th>PNI</th>";
             $table .= "<th>CNI</th>";
             $table .= "<th>Total</th>";
@@ -307,7 +307,7 @@ EOF;
             if($project->getPhase() == 1 && $project->getStatus() == "Ended"){
                 $pniTotals = array();
                 $cniTotals = array();
-                for($y=$this->startYear;$y<=$this->endYear;$y++){
+                for($y=$this->startYear;$y<=$this->endYear-2;$y++){
                     $pniTotals[$y] = array();
                     $cniTotals[$y] = array();
                     $people = array();
@@ -350,7 +350,7 @@ EOF;
                 $cniTotalTotal = 0;
                 $totalTotal = 0;
                 $table .= "<tr><td><b>{$project->getName()}</b></td>";
-                for($y=$this->startYear;$y<=$this->endYear;$y++){
+                for($y=$this->startYear;$y<=$this->endYear-2;$y++){
                     $pniTotal = $pniSums[$y-$this->startYear];
                     $cniTotal = $cniSums[$y-$this->startYear];
                     $total = $pniSums[$y-$this->startYear] + $cniSums[$y-$this->startYear];
@@ -374,7 +374,7 @@ EOF;
         $cniTotalTotal = 0;
         $totalTotal = 0;
         $table .= "<tr><td><b>Total</b></td>";
-        for($y=$this->startYear;$y<=$this->endYear;$y++){
+        for($y=$this->startYear;$y<=$this->endYear-2;$y++){
             $pniTotal = $overallPNITotals[$y];
             $cniTotal = $overallCNITotals[$y];
             $total = $overallPNITotals[$y] + $overallCNITotals[$y];
