@@ -282,6 +282,7 @@ EOF;
     }
     
     function showProjectRequests(){
+        ini_set("memory_limit","256M");
         $html = "";
         $allProjects = Project::getAllProjectsEver();
         $table = "<table cellpadding='3' frame='box' rules='all'><tr><th>&nbsp;</th>";
@@ -314,7 +315,7 @@ EOF;
                         if(!isset($people[$person->getId()])){
                             $budget = $person->getRequestedBudget($y);
                             if($budget != null){
-                                $b = $budget->copy()->rasterize()->select(V_PROJ, array($project->getName()))->where(COL_TOTAL);
+                                $b = $budget->copy()->rasterize()->select(V_PROJ, array($project->getName()))->limit(22, 1);
                                 if($b->nCols() > 0 && $b->nRows() > 0){
                                     $pniTotals[$y][] = $b;
                                     $people[$person->getId()] = true;
@@ -326,7 +327,7 @@ EOF;
                         if(!isset($people[$person->getId()])){
                             $budget = $person->getRequestedBudget($y);
                             if($budget != null){
-                                $b = $budget->copy()->rasterize()->select(V_PROJ, array($project->getName()))->where(COL_TOTAL);
+                                $b = $budget->copy()->rasterize()->select(V_PROJ, array($project->getName()))->limit(22, 1);
                                 if($b->nCols() > 0 && $b->nRows() > 0){
                                     $cniTotals[$y][] = $b;
                                     $people[$person->getId()] = true;
@@ -386,7 +387,7 @@ EOF;
         }
         $table .= "<td align='right'>\$".number_format(intval($pniTotalTotal), 2)."</td>
                    <td align='right'>\$".number_format(intval($cniTotalTotal), 2)."</td>
-                   <td align='right'>\$".number_format(intval($totalTotal), 2)."</td>";
+                   <td align='right'>\$".number_format(intval($totalTotal), 2)."</td></tr>";
         $table .= "</table>";
         
         $this-> html .= <<<EOF
