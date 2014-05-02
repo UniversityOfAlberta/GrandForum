@@ -1138,8 +1138,10 @@ class PublicationPage {
                 if($edit){
                     $projstmp = Project::getAllProjectsDuring(date('Y-m-d', time() - 3600*24*30*2)." 00:00:00", date('Y-m-d')." 00:00:00");
                     $projs = array();
+                    $currentProjs = array();
                     foreach($projstmp as $proj){
                         $projs[] = $proj;
+                        $currentProjs[$proj->getId()] = $proj;
                     }
                     $projList = new ProjectList("projects", "Projects", $pProjects, $projs);
                     $wgOut->addHTML($projList->render());
@@ -1147,7 +1149,7 @@ class PublicationPage {
                         foreach($pProjects as $project){
                             // Add any deleted projects so that they remain as part of this project
                             $proj = Project::newFromName($project);
-                            if($proj->deleted && $proj->getDeleted() >= date('Y-m-d', time() - 3600*24*30*2)." 00:00:00"){
+                            if(!isset($currentProjs[$proj->getId()])){
                                 $wgOut->addHTML("<input style='display:none;' type='checkbox' name='projects[]' value='{$proj->getName()}' checked='checked' />");
                             }
                         }
