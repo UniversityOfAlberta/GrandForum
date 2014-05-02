@@ -191,10 +191,10 @@ class Project extends BackboneModel {
                 $project = Project::newFromHistoricName($project->getName());
                 if(!isset($projects[$project->name])){
                     if(($project->deleted &&
-                        substr($project->effectiveDate, 0, 8) >= $endDate || 
-                        (substr($project->effectiveDate, 0, 8) <= $endDate && substr($project->effectiveDate, 0, 8) >= $startDate)) ||
+                        substr($project->effectiveDate, 0, 10) >= $endDate || 
+                        (substr($project->effectiveDate, 0, 10) <= $endDate && substr($project->effectiveDate, 0, 10) >= $startDate)) ||
                        !$project->deleted){
-                        if(substr($project->getCreated(), 0, 8) <= $endDate){
+                        if(substr($project->getCreated(), 0, 10) <= $endDate){
                             $projects[$project->getName()] = $project;
                         }
                     }
