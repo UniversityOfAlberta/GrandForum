@@ -1147,7 +1147,7 @@ class PublicationPage {
                         foreach($pProjects as $project){
                             // Add any deleted projects so that they remain as part of this project
                             $proj = Project::newFromName($project);
-                            if($proj->deleted && $proj->getDeleted() < date('Y-m-d', time() - 3600*24*30*2)." 00:00:00"){
+                            if($proj->deleted && $proj->getDeleted() >= date('Y-m-d', time() - 3600*24*30*2)." 00:00:00"){
                                 $wgOut->addHTML("<input style='display:none;' type='checkbox' name='projects[]' value='{$proj->getName()}' checked='checked' />");
                             }
                         }

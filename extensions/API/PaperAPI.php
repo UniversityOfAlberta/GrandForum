@@ -161,6 +161,9 @@ abstract class PaperAPI extends API{
                 }
 	        }
 	        $paperAfter->syncAuthors();
+	        if(function_exists('apc_delete')){
+                apc_delete($paperAfter->getCacheId());
+            }
 	    }
 	    else{
 	        if($title == ""){
