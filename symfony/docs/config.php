@@ -8,7 +8,7 @@ $iterator = Finder::create()
     ->name('*.php')
     ->exclude('AnnokiControl')
     ->exclude('AccessControls')
-    ->in('../extensions/')
+    ->in('extensions/')
 ;
 
 return new Sami($iterator, array(
