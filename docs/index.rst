@@ -19,8 +19,3 @@ Contents:
    mailing lists
    API <http://grand.cs.ualberta.ca/docs/>
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-
