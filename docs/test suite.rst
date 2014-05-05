@@ -1,7 +1,7 @@
-.. index:: single: Test Suite
+.. index:: single: Running Tests
 
-Test Suite
-============
+Running Tests
+=============
 
 The Forum uses `behat`_ and `mink`_ as a testing framework.
 

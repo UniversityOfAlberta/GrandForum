@@ -1,21 +1,19 @@
-.. Forum documentation master file, created by
-   sphinx-quickstart on Tue Apr 29 15:21:00 2014.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to The Forum's documentation!
 =====================================
 
-Contents:
+The Forum is a collaborative social network tool which can be used by research networks.  The Forum is based off of Mediawiki_ but is heavily modified with extensions to support the networking features.
+
+.. _Mediawiki: http://www.mediawiki.org/wiki/MediaWiki
+
+Developer Documentation
+-----------------------
 
 .. toctree::
    :maxdepth: 2
-
-   intro
+   
    installation
-   conventions
    test suite
-   hooks
    mailing lists
+   conventions
+   hooks
    API <http://grand.cs.ualberta.ca/docs/>
-
