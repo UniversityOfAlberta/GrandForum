@@ -27,7 +27,7 @@ Results
 -------
 
 The results will show up both in your terminal, as well as in
-behat/output/output.html which can be viewed in the web browser.
+symfony/output/output.html which can be viewed in the web browser.
 Clicking on one of the steps will bring up a screenshot of the browser
 view of that step.
 
