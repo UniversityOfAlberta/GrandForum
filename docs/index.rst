@@ -13,8 +13,10 @@ Contents:
 
    intro
    installation
+   conventions
    test suite
    hooks
+   mailing lists
    API <http://grand.cs.ualberta.ca/docs/>
 
 Indices and tables

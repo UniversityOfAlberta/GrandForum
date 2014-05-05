@@ -26,7 +26,7 @@ database (dbName), then you are ready to start installing the forum.
 To install the forum, you should first cd into maintenance/install, then
 run install.php. 
 
-::
+.. code:: bash
 
     $ cd maintenance/install
     $ php install.php
