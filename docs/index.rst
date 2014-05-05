@@ -13,7 +13,7 @@ Contents:
 
    intro
    installation
-   person
+   API <http://grand.cs.ualberta.ca/docs/>
 
 Indices and tables
 ==================
