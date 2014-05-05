@@ -29,7 +29,7 @@ sys.path.insert(0, os.path.abspath('../extensions'))
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc', 'sphinxcontrib_phpautodoc', 'sphinxcontrib.phpdomain']
+extensions = ['sphinx.ext.autodoc', 'sphinxcontrib.phpdomain']
 
 # The name of the default domain.
 primary_domain = 'php'

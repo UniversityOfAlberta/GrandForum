@@ -6,7 +6,8 @@
         "behat/mink": "1.4.*",
         "behat/mink-selenium2-driver": "*",
         "robmorgan/phinx": "*",
-        "phpdocumentor/phpdocumentor": "2.*"
+        "phpdocumentor/phpdocumentor": "2.*",
+        "doxphp/doxphp": "*"
     },
 
     "config": {

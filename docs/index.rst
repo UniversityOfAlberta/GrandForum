@@ -13,6 +13,7 @@ Contents:
 
    intro
    installation
+   person
 
 Indices and tables
 ==================
