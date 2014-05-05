@@ -24,7 +24,12 @@ Once you have set those variables, and you have created a new empty
 database (dbName), then you are ready to start installing the forum.
 
 To install the forum, you should first cd into maintenance/install, then
-run install.php. ``$ cd maintenance/install $ php install.php``
+run install.php. 
+
+::
+
+    $ cd maintenance/install
+    $ php install.php
 
 This will initialize the database with all the necessary tables, and
 will ask you several questions about the installation, like setting up

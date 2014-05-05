@@ -31,8 +31,13 @@ sys.path.insert(0, os.path.abspath('../extensions'))
 # ones.
 extensions = ['sphinx.ext.autodoc']
 
-# The name of the default domain.
-primary_domain = 'php'
+# hack to enable PHP highlighting for PHP code not between "<?php" "?>" by default
+from sphinx.highlighting import lexers
+from pygments.lexers.web import PhpLexer
+lexers['php'] = PhpLexer(startinline=True)
+lexers['php-annotations'] = PhpLexer(startinline=True)
+pygments_style = 'sphinx'
+primary_domain = "php"
 
 # The default language to highlight source code in.
 highlight_language = 'php'

@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to The Forum's documentation!
-=================================
+=====================================
 
 Contents:
 
@@ -13,6 +13,8 @@ Contents:
 
    intro
    installation
+   test suite
+   hooks
    API <http://grand.cs.ualberta.ca/docs/>
 
 Indices and tables
