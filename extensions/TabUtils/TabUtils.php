@@ -254,9 +254,9 @@ class TabUtils {
                                            'text' => "Multimedia",
                                            'href' => "$wgServer$wgScriptPath/index.php/GRAND:Multimedia_Stories");
         }
-        /*$new_actions['themes'] = array('class' => false,
+        $new_actions['themes'] = array('class' => false,
                                    'text' => "Themes",
-                                   'href' => "$wgServer$wgScriptPath/index.php/GRAND:Themes");*/
+                                   'href' => "$wgServer$wgScriptPath/index.php/GRAND:Themes");
         $new_actions['conferences'] = array('class' => false,
                                    'text' => "Conferences",
                                    'href' => "$wgServer$wgScriptPath/index.php/GRAND:ALL_Conferences");

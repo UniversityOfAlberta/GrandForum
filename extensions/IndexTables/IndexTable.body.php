@@ -158,12 +158,12 @@ class IndexTable {
 "<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th>Themes</th><th>Name</th></tr></thead><tbody>
 ";
-        $themes = Theme::getAllThemes(1);
+        $themes = Theme::getAllThemes(PROJECT_PHASE);
 		foreach($themes as $theme){
 			$this->text .= <<<EOF
 <tr>
 <td align='left'>
-<a href='{$wgServer}{$wgScriptPath}/index.php/GRAND:Theme{$theme->getId()} - {$theme->getName()}'>{$theme->getAcronym()}</a>
+<a href='{$wgServer}{$wgScriptPath}/index.php/GRAND:{$theme->getAcronym()} - {$theme->getName()}'>{$theme->getAcronym()}</a>
 </td><td align='left'>
 {$theme->getName()}
 </td></tr>
