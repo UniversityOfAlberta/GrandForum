@@ -91,6 +91,20 @@ class IndexTable {
             $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia_Stories", "$selected");
             $tabs['Main']['subtabs'][] = $productsSubTab;
         }
+        
+        $themesColl = new Collection(Theme::getAllThemes());
+        $themeAcronyms = $themesColl->pluck('getAcronym()');
+        $themeNames = $themesColl->pluck('getName()');
+        $themes = array();
+        foreach($themeAcronyms as $id => $acronym){
+            $themes[] = $themeAcronyms[$id].' - '.$themeNames[$id];
+        }
+        
+        $selected = ($wgTitle->getNSText() == $config->getValue('networkName') && 
+                     ($wgTitle->getText() == "Themes" || array_search($wgTitle->getText(), $themes) !== false)) ? "selected" : "";
+        
+        $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Themes", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Themes", "$selected");
+        
         if(WikiPage::newFromTitle("{$config->getValue('networkName')}:ALL_Conferences")->exists()){
             $selected = ($wgTitle->getNSText() == "Conference" || $wgTitle->getText() == "ALL Conferences") ? "selected" : "";
             $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Conferences", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Conferences", "$selected");
@@ -245,12 +259,12 @@ class IndexTable {
 "<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th>Themes</th><th>Name</th></tr></thead><tbody>
 ";
-        $themes = Theme::getAllThemes(1);
+        $themes = Theme::getAllThemes(PROJECT_PHASE);
 		foreach($themes as $theme){
 			$this->text .= <<<EOF
 <tr>
 <td align='left'>
-<a href='{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:Theme{$theme->getId()} - {$theme->getName()}'>{$theme->getAcronym()}</a>
+<a href='{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:{$theme->getAcronym()} - {$theme->getName()}'>{$theme->getAcronym()}</a>
 </td><td align='left'>
 {$theme->getName()}
 </td></tr>
