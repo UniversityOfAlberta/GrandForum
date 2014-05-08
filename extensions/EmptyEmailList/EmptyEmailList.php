@@ -19,7 +19,7 @@ class EmptyEmailList extends SpecialPage{
 	}
 
 	function run($par){
-		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
+		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
 	    $wgOut->addHTML("<table class='wikitable sortable' bgcolor='#aaaaaa' cellspacing='1' cellpadding='2' style='text-align:center;'>
 <tr bgcolor='#F2F2F2'><th>Last Name</th><th>First Name</th><th>Type</th><th>Email</th></tr>");
         foreach(Person::getAllPeople('all') as $person){
