@@ -1,13 +1,13 @@
 <?php
 $dir = dirname(__FILE__) . '/';
 
-$wgHooks['SkinTemplateContentActions'][] = 'ReportArchive::showTabs';
 
 $wgSpecialPages['ReportArchive'] = 'ReportArchive';
 $wgExtensionMessagesFiles['ReportArchive'] = $dir . 'ReportArchive.i18n.php';
 $wgSpecialPageGroups['ReportArchive'] = 'reporting-tools';
 
 $wgHooks['TopLevelTabs'][] = 'ReportArchive::createTab';
+$wgHooks['SubLevelTabs'][] = 'ReportArchive::createSubTabs';
 
 function runReportArchive($par) {
 	ReportArchive::run($par);
@@ -150,57 +150,6 @@ class ReportArchive extends SpecialPage {
         self::generateHQPReportsHTML($person, $year, true, false);
 
         return;
-    }
-    
-    static function showTabs(&$content_actions){
-        global $wgTitle, $wgUser, $wgServer, $wgScriptPath;
-        if(!self::userCanExecute($wgUser)){
-            return true;
-        }
-        $current_selection = (isset($_GET['year']) && is_numeric($_GET['year'])) ? $_GET['year'] : date('Y')-1;
-        
-        if($wgTitle->getText() == "ReportArchive"){
-            $content_actions = array();
-
-            $getString = "";
-            if(isset($_GET['person'])){
-                $getString = "&person={$_GET['person']}";
-                $me = Person::newFromName($_GET['person']);
-                if($me->getName() == ""){
-                    $me = Person::newFromId($wgUser->getId());
-                }
-            }
-            else{
-                $me = Person::newFromId($wgUser->getId());
-            }
-            
-            $registration = $wgUser->getRegistration();
-            $year = substr($registration, 0, 4);
-            $month = substr($registration, 4, 2);
-            
-            for($i = date('Y'); $i >= $year; $i--){
-                if($i == date('Y')){
-                    if(date('m') >= 3){
-                        $current_selection = (isset($_GET['year']) && is_numeric($_GET['year'])) ? $_GET['year'] : date('Y');
-                    }
-                    else{
-                        continue;
-                    }
-                }
-                if($current_selection == $i){
-                    $class = "selected";
-                }
-                else{
-                    $class = false;
-                }
-                $content_actions[] = array (
-                     'class' => $class,
-                     'text'  => $i,
-                     'href'  => "$wgServer$wgScriptPath/index.php/Special:ReportArchive?year={$i}{$getString}",
-                    );
-            }
-        }
-        return true;
     }
     
     // Shows the HQP report pdf links and buttons to re-generate them
@@ -559,20 +508,49 @@ class ReportArchive extends SpecialPage {
     
     static function createTab($tabs){
 		global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
-		$person = Person::newFromWgUser();
-		if(!$wgUser->isLoggedIn() || $person->isRoleAtLeast(MANAGER)){
-		    return true;
-		}
-		$selected = "";
-		if($wgTitle->getText() == "ReportArchive"){
-		    $selected = "selected";
-		}
-		
-		$tabs["My Archive"] = array('id' => "lnk-my_archive",
-		                            'href' => "$wgServer$wgScriptPath/index.php/Special:ReportArchive",
-		                            'text' => "My Archive",
-		                            'selected' => $selected);
+		$tabs["My Archive"] = TabUtils::createTab("My Archive");
 		return true;
+	}
+	
+	static function createSubTabs($tabs){
+        global $wgTitle, $wgUser, $wgServer, $wgScriptPath;
+        if(!self::userCanExecute($wgUser)){
+            return true;
+        }
+        $current_selection = (isset($_GET['year']) && is_numeric($_GET['year'])) ? $_GET['year'] : date('Y')-1;
+
+        $content_actions = array();
+
+        $getString = "";
+        if(isset($_GET['person'])){
+            $getString = "&person={$_GET['person']}";
+            $me = Person::newFromName($_GET['person']);
+            if($me->getName() == ""){
+                $me = Person::newFromId($wgUser->getId());
+            }
+        }
+        else{
+            $me = Person::newFromId($wgUser->getId());
+        }
+        
+        $registration = $wgUser->getRegistration();
+        $year = substr($registration, 0, 4);
+        $month = substr($registration, 4, 2);
+        
+        for($i = date('Y'); $i >= $year; $i--){
+            if($i == date('Y')){
+                if(date('m') >= 3){
+                    $current_selection = (isset($_GET['year']) && is_numeric($_GET['year'])) ? $_GET['year'] : date('Y');
+                }
+                else{
+                    continue;
+                }
+            }
+            $selected = ($wgTitle->getText() == "ReportArchive" && $current_selection == $i) ? "selected" : "";
+            $tabs["My Archive"]['subtabs'][] = TabUtils::createSubTab($i, "$wgServer$wgScriptPath/index.php/Special:ReportArchive?year={$i}{$getString}", $selected);
+        }
+        
+        return true;
 	}
 }
 
