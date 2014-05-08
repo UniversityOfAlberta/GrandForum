@@ -864,6 +864,49 @@ EOF;
         return $ret;
     }
     
+    /// Returns an array with the leaders of the project.  By default, the
+    /// resulting array contains instances of Person.  If #onlyid is set to
+    /// true, then the resulting array contains only numerical user IDs.
+    function getManagers($onlyid = false) {
+        $onlyIdStr = ($onlyid) ? 'true' : 'false';
+        if(isset($this->leaderCache['managers'.$onlyIdStr])){
+            return $this->leaderCache['managers'.$onlyIdStr];
+        }
+        $ret = array();
+        if(!$this->clear){
+            $preds = $this->getPreds();
+            foreach($preds as $pred){
+                foreach($pred->getManagers($onlyid) as $leader){
+                    if($onlyid){
+                        $ret[$leader] = $leader;
+                    }
+                    else{
+                        $ret[$leader->getId()] = $leader;
+                    }
+                }
+            }
+        }
+        $sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
+                WHERE pl.project_id = '{$this->id}'
+                AND pl.type = 'manager'
+                AND pl.user_id NOT IN (4, 150)
+                AND u.user_id = pl.user_id
+                AND u.deleted != '1'
+                AND (pl.end_date = '0000-00-00 00:00:00'
+                     OR pl.end_date > CURRENT_TIMESTAMP)";
+        $data = DBFunctions::execSQL($sql);
+        if ($onlyid) {
+            foreach ($data as &$row)
+                $ret[$row['user_id']] = $row['user_id'];
+        }
+        else {
+            foreach ($data as &$row)
+                $ret[$row['user_id']] = Person::newFromId($row['user_id']);
+        }
+        $this->leaderCache['managers'.$onlyIdStr] = $ret;
+        return $ret;
+    }
+    
     // Returns the theme percentage of this project of the given theme index $i
     // OLD: Only used for phase1 projects, should be refactored somehow
     function getTheme($i, $history=false){

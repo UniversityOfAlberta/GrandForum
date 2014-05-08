@@ -249,6 +249,7 @@ EOF;
         
         $leaders = $project->getLeaders(true); //only get id's
         $coleaders = $project->getCoLeaders(true);
+        $managers = $project->getManagers(true);
         $pnis = $project->getAllPeople(PNI);
         $cnis = $project->getAllPeople(CNI);
         $ars = $project->getAllPeople(AR);
@@ -275,13 +276,9 @@ EOF;
             foreach($leaders as $leader_id){
                 $leader = Person::newFromId($leader_id);
                 $this->html .= "<tr>";
-                $leaderType = "Leader";
-                if($leader->managementOf($project->getName())){
-                    $leaderType = "Manager";
-                }
                 
                 if(!$edit || !$me->leadershipOf($project->getParent())){
-                    $this->html .= "<td align='right'><b>{$leaderType}:</b></td><td><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></td></tr>";
+                    $this->html .= "<td align='right'><b>Leader:</b></td><td><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></td></tr>";
                 }
                 else if($me->leadershipOf($project->getParent())){
                     $plRow = new FormTableRow("pl_row");
@@ -300,18 +297,13 @@ EOF;
         if(!empty($coleaders)){
             foreach($coleaders as $leader_id){
                 $leader = Person::newFromId($leader_id);
-                $this->html .= "<tr>";
-                $leaderType = "co-Leader";
-                if($leader->managementOf($project->getName())){
-                    $leaderType = "Manager";
-                }
-                
-                if(!$edit && !$me->leadershipOf($project->getParent())){
-                    $this->html .= "<td align='right'><b>{$leaderType}:</b></td><td><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></td></tr>";
-                }
-                else if($me->leadershipOf($project->getParent())){
-                    
-                }
+                $this->html .= "<tr><td align='right'><b>co-Leader:</b></td><td><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></td></tr>";
+            }    
+        }
+        if(!empty($managers)){
+            foreach($managers as $leader_id){
+                $leader = Person::newFromId($leader_id);
+                $this->html .= "<tr><td align='right'><b>Manager:</b></td><td><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></td></tr>";
             }    
         }
         $this->html .= "</table>";
@@ -322,7 +314,9 @@ EOF;
             }
             $this->html .= "<ul>";
             foreach($pnis as $pni){
-                if((!empty($leaders) && in_array($pni->getId(), $leaders)) || (!empty($coleaders) && in_array($pni->getId(), $coleaders))){
+                if((!empty($leaders) && in_array($pni->getId(), $leaders)) || 
+                   (!empty($coleaders) && in_array($pni->getId(), $coleaders)) ||
+                   (!empty($managers) && in_array($pni->getId(), $managers))){
                     continue;
                 }
                 $target = "";
@@ -338,7 +332,9 @@ EOF;
             }
             $this->html .= "<ul>";
             foreach($cnis as $cni){
-                if((!empty($leaders) && in_array($cni->getId(), $leaders)) || (!empty($leaders) && in_array($cni->getId(), $leaders))){
+                if((!empty($leaders) && in_array($cni->getId(), $leaders)) || 
+                   (!empty($coleaders) && in_array($cni->getId(), $coleaders)) ||
+                   (!empty($managers) && in_array($cni->getId(), $managers))){
                     continue;
                 }
                 $target = "";
@@ -353,7 +349,9 @@ EOF;
             }
             $this->html .= "<ul>";
             foreach($ars as $ar){
-                if((!empty($leaders) && in_array($ar->getId(), $leaders)) || (!empty($coleaders) && in_array($ar->getId(), $coleaders))){
+                if((!empty($leaders) && in_array($ar->getId(), $leaders)) || 
+                   (!empty($coleaders) && in_array($ar->getId(), $coleaders)) ||
+                   (!empty($managers) && in_array($ar->getId(), $managers))){
                     continue;
                 }
                 $target = "";
