@@ -197,7 +197,7 @@ class ReportBlob {
 	public function store(&$data, $address = null) {
 		// Some checks before trying to actually store data.
 		global $wgImpersonating, $wgRealUser;
-		self::$cache[$this->getCacheId($address)] = $data;
+		Cache::delete($this->getCacheId($address));
 		if ($address === null && $this->_address === null)
 			return false;
 
@@ -267,7 +267,7 @@ class ReportBlob {
 	    $impersonateId = $this->_owner_id;
 		if (count($res) > 0) {
 			// Update query.
-			$this->_blob_id = $res[0][0];
+			$this->_blob_id = $res[0]['blob_id'];
 			
 			DBFunctions::execSQL("UPDATE grand_report_blobs SET data = '{$this->_data_transformed}', " .
 				"blob_type = {$this->_type} ," .
@@ -305,6 +305,7 @@ class ReportBlob {
 	        }
 		}
 		DBFunctions::commit();
+		//Cache::store($this->getCacheId($address), $data);
 		return true;
 	}
 
@@ -354,8 +355,8 @@ class ReportBlob {
 	/// of the Blob instance is unchanged.
 	public function load($address = null) {
 	    $cacheId = $this->getCacheId($address);
-	    if(isset(self::$cache[$cacheId])){
-	        $this->_data = self::$cache[$cacheId];
+	    if(Cache::exists($cacheId)){
+	        $this->_data = Cache::fetch($cacheId);
 	        return true;
 	    }
 		// Some checks before going to the database.
@@ -399,9 +400,7 @@ class ReportBlob {
 			//echo ">>>> Offending SQL:\n{$sql}\n";
 			throw new DomainException('Address leads to ambiguous data.');
 		}
-		if($ret == true){
-		    self::$cache[$cacheId] = $this->_data;
-		}
+		Cache::store($cacheId, $this->_data);
 		return $ret;
 	}
 

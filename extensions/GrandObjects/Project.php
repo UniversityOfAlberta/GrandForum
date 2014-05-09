@@ -150,7 +150,6 @@ class Project extends BackboneModel {
     
     // Gets all of the Projects from the database
     static function getAllProjects($subProjects=false){
-        global $wgOut;
         if($subProjects == false){
             $subProjects = EQ(0);
         }

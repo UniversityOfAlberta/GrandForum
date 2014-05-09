@@ -13,6 +13,36 @@ abstract class Cache {
 		$this->fileName = $directory.$fileName;
 		$this->compress = true;
 	}
+	
+	static function store($key, $data, $time=3600){
+	    global $wgSitename;
+	    if(function_exists('apc_store')){
+            apc_store($wgSitename.$key, $data, $time);
+        }
+	}
+	
+	static function fetch($key){
+	    global $wgSitename;
+	    if(function_exists('apc_fetch')){
+            return apc_fetch($wgSitename.$key);
+        }
+        return "";
+	}
+	
+	static function delete($key){
+	    global $wgSitename;
+	    if(function_exists('apc_delete')){
+            apc_delete($wgSitename.$key);
+        }
+	}
+	
+	static function exists($key){
+	    global $wgSitename;
+	    if(function_exists('apc_exists')){
+            return apc_exists($wgSitename.$key);
+        }
+        return false;
+	}
 
 	function getCache(){
 		$xml = "";

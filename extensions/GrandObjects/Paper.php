@@ -842,9 +842,7 @@ class Paper extends BackboneModel{
 	                                array('deleted' => '1'),
 	                                array('id' => $this->getId()));
 	        if($status){
-	            if(function_exists('apc_delete')){
-	                apc_delete($this->getCacheId());
-	            }
+	            Cache::delete($this->getCacheId());
                 foreach($this->getAuthors() as $author){
                     if($author instanceof Person && $me->getId() != $author->getId()){
                         Notification::addNotification($me, $author, "{$this->getCategory()} Deleted", "Your ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i> has been deleted", "{$this->getUrl()}");
@@ -859,8 +857,8 @@ class Paper extends BackboneModel{
 	}
 
 	function toArray(){
-	    if(function_exists('apc_exists') && apc_exists($this->getCacheId())){
-	        $json = apc_fetch($this->getCacheId());
+	    if(Cache::exists($this->getCacheId())){
+	        $json = Cache::fetch($this->getCacheId());
 	        $authors = $json['authors'];
 	        $change = false;
 	        foreach($authors as $key => $author){
@@ -883,8 +881,8 @@ class Paper extends BackboneModel{
 	            }
 	        }
 	        $json['authors'] = $authors;
-	        if($change && function_exists('apc_store')){
-	            apc_store($this->getCacheId(), $json, 60*60);
+	        if($change){
+	            Cache::store($this->getCacheId(), $json, 60*60);
 	        }
 	        return $json;
 	    }
@@ -914,10 +912,7 @@ class Paper extends BackboneModel{
 	                      'projects' => $projects,
 	                      'lastModified' => $this->lastModified,
 	                      'deleted' => $this->isDeleted());
-	        
-	        if(function_exists('apc_store')){
-	            apc_store($this->getCacheId(), $json, 60*60);
-	        }
+	        Cache::store($this->getCacheId(), $json, 60*60);
 	        return $json;
 	    }
 	}
@@ -927,8 +922,7 @@ class Paper extends BackboneModel{
 	}
 	
 	function getCacheId(){
-	    global $wgSitename;
-	    return $wgSitename.'product'.$this->getId();
+	    return 'product'.$this->getId();
 	}
 }
 ?>
