@@ -29,10 +29,18 @@ abstract class Cache {
         return "";
 	}
 	
-	static function delete($key){
+	static function delete($key, $prefix=false){
 	    global $wgSitename;
 	    if(function_exists('apc_delete')){
-            apc_delete($wgSitename.$key);
+	        if($prefix){
+	            $it = new APCIterator('user', '/^'.str_replace(")", '\)', str_replace("(", '\(', $wgSitename)).$key.'/', APC_ITER_KEY);
+	            foreach($it as $k){
+	                apc_delete($k['key']);
+	            }
+	        }
+	        else{
+                apc_delete($wgSitename.$key);
+            }
         }
 	}
 	

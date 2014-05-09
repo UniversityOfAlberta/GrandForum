@@ -53,6 +53,7 @@ class AddRoleAPI extends API{
             if(!$noEcho){
                 echo "{$person->getReversedName()} added to $role\n";
             }
+            Cache::delete("personRolesDuring".$person->getId(), true);
             Person::$rolesCache = array();
             $person->roles = null;
             MailingList::subscribeAll($person);

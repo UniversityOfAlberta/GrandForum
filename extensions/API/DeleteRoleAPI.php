@@ -59,6 +59,7 @@ class DeleteRoleAPI extends API{
                                           'type' => EQ('Supervises'),
                                           'start_date' => GT(COL('end_date'))));
             }
+            Cache::delete("personRolesDuring".$person->getId(), true);
             Person::$rolesCache = array();
             $person->roles = null;
             MailingList::subscribeAll($person);

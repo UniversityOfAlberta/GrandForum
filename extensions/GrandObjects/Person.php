@@ -1492,7 +1492,11 @@ class Person extends BackboneModel {
         if($this->id == 0){
             return array();
         }
-        if(!isset($this->rolesDuring[$startRange.$endRange])){
+        $cacheId = "personRolesDuring".$this->id."_".$startRange.$endRange;
+        if(Cache::exists($cacheId)){
+            $data = Cache::fetch($cacheId);
+        }
+        else{
             $sql = "SELECT *
                     FROM grand_roles
                     WHERE user_id = '{$this->id}'
@@ -1504,13 +1508,13 @@ class Person extends BackboneModel {
                     ((start_date <= '$endRange')))
                     )";
             $data = DBFunctions::execSQL($sql);
-            $roles = array();
-            foreach($data as $row){
-                $roles[] = new Role(array(0 => $row));
-            }
-            $this->rolesDuring[$startRange.$endRange] = $roles;
+            Cache::store($cacheId, $data);
         }
-        return $this->rolesDuring[$startRange.$endRange];     
+        $roles = array();
+        foreach($data as $row){
+            $roles[] = new Role(array(0 => $row));
+        }
+        return $roles; 
     }
     
     function getRolesOn($date){
