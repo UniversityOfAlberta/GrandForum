@@ -4,6 +4,7 @@ class Paper extends BackboneModel{
 
     static $cache = array();
     static $dataCache = array();
+    static $productProjectsCache = array();
 
     var $id;
     var $category;
@@ -20,16 +21,14 @@ class Paper extends BackboneModel{
 	var $authorsWaiting;
 	var $projectsWaiting;
 	var $deleted;
+	var $reported = array();
 	
 	// Returns a new Paper from the given id
 	static function newFromId($id){
 	    if(isset(self::$cache[$id])){
 	        return self::$cache[$id];
 	    }
-		$sql = "SELECT *, (SELECT COUNT( * ) 
-                           FROM `grand_product_projects` 
-                           WHERE `product_id` = `id`
-                          ) AS nProjects
+		$sql = "SELECT *
 			    FROM grand_products
 			    WHERE id = '$id'";
 		$data = DBFunctions::execSQL($sql);
@@ -37,6 +36,29 @@ class Paper extends BackboneModel{
         self::$cache[$paper->id] = &$paper;
         self::$cache[$paper->title] = &$paper;
 		return $paper;
+	}
+	
+	/**
+	 * Returns an array of new Papers from the given array of ids
+	 * @param array $ids The array of ids
+	 * @return array The array of Papers
+	 */
+	static function newFromIds($ids){
+	    if(count($ids) == 0){
+	        return array();
+	    }
+	    $sql = "SELECT *
+			    FROM grand_products
+			    WHERE id IN (".implode(",", $ids).")";
+		$data = DBFunctions::execSQL($sql);
+		$papers = array();
+		foreach($data as $row){
+		    $paper = new Paper(array($row));
+            self::$cache[$paper->id] = &$paper;
+            self::$cache[$paper->title] = &$paper;
+            $papers[] = $paper;
+        }
+		return $papers;
 	}
 	
 	// Returns a new Paper from the given id
@@ -50,10 +72,7 @@ class Paper extends BackboneModel{
 	        return self::$cache[$title.$category.$type.$status];
 	    }
 	    
-		$sql = "SELECT *, (SELECT COUNT( * ) 
-                           FROM `grand_product_projects` 
-                           WHERE `product_id` = `id`
-                          ) AS nProjects
+		$sql = "SELECT *
 			    FROM grand_products
 			    WHERE (`title` = '$title' OR
 			           `title` = '".str_replace(" ", "_", $title)."')
@@ -103,19 +122,27 @@ class Paper extends BackboneModel{
 	 * @return array The array of Products
 	 */
 	static function getByIds($ids){
-	    $data = DBFunctions::select(array('grand_products'),
-	                                array('*'),
-	                                array('id' => IN($ids)));
+	    if(count($ids) == 0){
+	        return array();
+	    }
 	    $papers = array();
-	    foreach($data as $row){
-	        if(isset(self::$cache[$row['id']])){
-                $papers[] = self::$cache[$row['id']];
-            }
-            else{
+	    foreach($ids as $key => $id){
+	        if(isset(self::$cache[$id])){
+	            $paper = self::$cache[$id];
+	            $papers[$paper->getId()] = $paper;
+	            unset($ids[$key]);
+	        }
+	    }
+	    if(count($ids) > 0){
+	        $sql = "SELECT *
+			        FROM grand_products
+			        WHERE id IN (".implode(",", $ids).")";
+		    $data = DBFunctions::execSQL($sql);
+		    foreach($data as $row){
                 $paper = new Paper(array($row));
                 self::$cache[$paper->getId()] = $paper;
                 $papers[$paper->getId()] = $paper;
-            }
+	        }
 	    }
 	    return $papers;
 	}
@@ -151,10 +178,7 @@ class Paper extends BackboneModel{
 	        if($project instanceof Project){
                 $project = $project->getName();
             }
-	        $sql = "SELECT *, (SELECT COUNT( * ) 
-                               FROM `grand_product_projects` 
-                               WHERE `product_id` = p.`id`
-                              ) AS nProjects
+	        $sql = "SELECT *
 			        FROM `grand_products` p";
             if($project != "all"){
                 $p = Project::newFromName($project);
@@ -172,17 +196,20 @@ class Paper extends BackboneModel{
             $sql .= "\nORDER BY p.`type`, p.`title`";
 	        $data = DBFunctions::execSQL($sql);
 	        foreach($data as $row){
-	            if(($grand == 'grand' && $row['nProjects'] > 0) ||
-                   ($grand == 'nonGrand' && $row['nProjects'] == 0) ||
-                    $grand == 'both'){
-                    if(isset(self::$cache[$row['id']])){
-                        $papers[] = self::$cache[$row['id']];
-                    }
-                    else{
-                        $paper = new Paper(array($row));
-                        self::$cache[$paper->id] = $paper;
-                        $papers[$paper->getId()] = $paper;
-                    }
+                if(!isset(self::$cache[$row['id']])){
+                    $paper = new Paper(array($row));
+                    self::$cache[$paper->id] = $paper;
+                }
+                else{
+                    $paper = self::$cache[$row['id']];
+                }
+                if($project != "all"){
+                    $papers[] = $paper;
+                }
+	            else if(($grand == 'grand' && $paper->isGrandRelated()) ||
+                        ($grand == 'nonGrand' && !$paper->isGrandRelated()) ||
+                         $grand == 'both'){
+                    $papers[] = $paper;
                 }
 	        }
 	        self::$dataCache[$project.$category.$grand] = $papers;
@@ -233,10 +260,7 @@ class Paper extends BackboneModel{
             }
 	        $data = array();
 	        
-	        $sql = "SELECT *, (SELECT COUNT( * ) 
-                               FROM `grand_product_projects` 
-                               WHERE `product_id` = p.`id`
-                              ) AS nProjects
+	        $sql = "SELECT *
 			        FROM `grand_products` p";
             if($project != "all"){
                 $p = Project::newFromName($project);
@@ -261,17 +285,20 @@ class Paper extends BackboneModel{
             
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-	            if(($grand == 'grand' && $row['nProjects'] > 0) ||
-                   ($grand == 'nonGrand' && $row['nProjects'] == 0) ||
-                    $grand == 'both'){
-                    if(isset(self::$cache[$row['id']])){
-                        $papers[] = self::$cache[$row['id']];
-                    }
-                    else{
-                        $paper = new Paper(array($row));
-                        self::$cache[$paper->id] = $paper;
-                        $papers[$paper->getId()] = $paper;
-                    }
+                if(!isset(self::$cache[$row['id']])){
+                    $paper = new Paper(array($row));
+                    self::$cache[$paper->id] = $paper;
+                }
+                else{
+                    $paper = self::$cache[$row['id']];
+                }
+                if($project != "all"){
+                    $papers[] = $paper;
+                }
+	            else if(($grand == 'grand' && $paper->isGrandRelated()) ||
+                        ($grand == 'nonGrand' && !$paper->isGrandRelated()) ||
+                         $grand == 'both'){
+                    $papers[] = $paper;
                 }
 	        }
 	        self::$dataCache[$proj.$category.$grand.$startRange.$endRange.$str] = $papers;
@@ -308,6 +335,16 @@ class Paper extends BackboneModel{
 	    return $json;
 	}
 	
+	static function generateProductProjectsCache(){
+	    if(count(self::$productProjectsCache) == 0){
+	        $data = DBFunctions::select(array('grand_product_projects'),
+	                                    array('product_id', 'project_id'));
+	        foreach($data as $row){
+	            self::$productProjectsCache[$row['product_id']][] = $row['project_id'];
+	        }
+	    }
+	}
+	
 	// Constructor
 	function Paper($data){
 		if(count($data) > 0){
@@ -322,10 +359,6 @@ class Paper extends BackboneModel{
 			$this->deleted = $data[0]['deleted'];
 			$this->projects = array();
 			$this->projectsWaiting = true;
-			if(isset($data[0]['nProjects']) && $data[0]['nProjects'] == 0){
-			    // This Product has no projects so no need to query for them later
-			    $this->projectsWaiting = false;
-			}
 			$this->authors = $data[0]['authors'];
 			$this->authorsWaiting = true;
 			$this->data = unserialize($data[0]['data']);
@@ -525,11 +558,14 @@ class Paper extends BackboneModel{
 	// Returns an array of Projects which this Paper is related to
 	function getProjects(){
 	    if($this->projectsWaiting){
-	        $data = DBFunctions::select(array("grand_product_projects"), 
-	                                    array("project_id"), 
-	                                    array("product_id" => EQ($this->id)));
-			foreach($data as $row){
-	            $this->projects[] = Project::newFromId($row['project_id']);
+	        self::generateProductProjectsCache();
+	        if(isset(self::$productProjectsCache[$this->id])){
+	            $data = self::$productProjectsCache[$this->id];
+	            if(is_array($data)){
+			        foreach($data as $projectId){
+	                    $this->projects[] = Project::newFromId($projectId);
+                    }
+                }
             }
             $this->projectsWaiting = false;
 	    }
@@ -586,7 +622,10 @@ class Paper extends BackboneModel{
 	// Returns whether or not this Paper has been reported in the given year, with the reported type (must be either 'RMC' or 'NCE')
 	function hasBeenReported($year, $reportedType){
 	    if(($reportedType == 'RMC' || $reportedType == 'NCE')){
-	        $years = $this->getReportedYears($reportedType);
+	        if(!isset($this->reported[$reportedType])){
+	            $this->getReportedYears();
+	        }
+	        $years = $this->reported[$reportedType];
 	        if(isset($years[$year])){
 	            return true;
 	        }
@@ -595,18 +634,18 @@ class Paper extends BackboneModel{
 	}
 	
 	function getReportedYears($reportedType){
-	    $years = array();
-        if(($reportedType == 'RMC' || $reportedType == 'NCE')){
-	        $sql = "SELECT DISTINCT `year`
-	                FROM `grand_products_reported`
-	                WHERE `product_id` = '{$this->id}'
-	                AND `reported_type` = '{$reportedType}'";
-	        $data = DBFunctions::execSQL($sql);
-	        foreach($data as $row){
-	            $years[$row['year']] = $row['year'];
-	        }
-	    }
-	    return $years;
+	    if(!isset($this->reported[$reportedType])){
+	        $this->reported['RMC'] = array();
+	        $this->reported['NCE'] = array();
+            $sql = "SELECT DISTINCT `year`, `reported_type`
+                    FROM `grand_products_reported`
+                    WHERE `product_id` = '{$this->id}'";
+            $data = DBFunctions::execSQL($sql);
+            foreach($data as $row){
+                $this->reported[$row['reported_type']][] = $row['year'];
+            }
+        }
+        return $this->reported[$reportedType];
     }
 	
 	function getProperCitation(){

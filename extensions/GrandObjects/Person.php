@@ -26,10 +26,12 @@ class Person extends BackboneModel {
     var $realname;
     var $projects;
     var $university;
+    var $universityDuring;
     var $isProjectLeader;
     var $isProjectCoLeader;
     var $groups;
     var $roles;
+    var $rolesDuring;
     var $isEvaluator = array();
     var $isProjectManager = null;
     var $relations;
@@ -1220,28 +1222,31 @@ class Person extends BackboneModel {
      * @return array The last University that this Person was at between the given range
      */ 
     function getUniversityDuring($startRange, $endRange){
-        $sql = "SELECT * 
-                FROM grand_user_university uu, grand_universities u, grand_positions p
-                WHERE uu.user_id = '{$this->id}'
-                AND u.university_id = uu.university_id
-                AND uu.position_id = p.position_id
-                AND ( 
-                ( (end_date != '0000-00-00 00:00:00') AND
-                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
-                OR
-                ( (end_date = '0000-00-00 00:00:00') AND
-                ((start_date <= '$endRange')))
-                )
-                ORDER BY uu.id DESC";
-        $data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
-            return array("university" => $data[0]['university_name'],
-                         "department" => $data[0]['department'],
-                         "position"   => $data[0]['position']);
+        if(!isset($this->universityDuring[$startRange.$endRange])){
+            $sql = "SELECT * 
+                    FROM grand_user_university uu, grand_universities u, grand_positions p
+                    WHERE uu.user_id = '{$this->id}'
+                    AND u.university_id = uu.university_id
+                    AND uu.position_id = p.position_id
+                    AND ( 
+                    ( (end_date != '0000-00-00 00:00:00') AND
+                    (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                    OR
+                    ( (end_date = '0000-00-00 00:00:00') AND
+                    ((start_date <= '$endRange')))
+                    )
+                    ORDER BY uu.id DESC";
+            $data = DBFunctions::execSQL($sql);
+            if(count($data) > 0){
+                $this->universityDuring[$startRange.$endRange] = array("university" => $data[0]['university_name'],
+                                                                       "department" => $data[0]['department'],
+                                                                       "position"   => $data[0]['position']);
+            }
+            else{
+                $this->universityDuring[$startRange.$endRange] = null;
+            }
         }
-        else{
-            return null;
-        }
+        return $this->universityDuring[$startRange.$endRange];
     }
     
     /**
@@ -1487,23 +1492,25 @@ class Person extends BackboneModel {
         if($this->id == 0){
             return array();
         }
-        
-        $sql = "SELECT *
-                FROM grand_roles
-                WHERE user_id = '{$this->id}'
-                AND ( 
-                ( (end_date != '0000-00-00 00:00:00') AND
-                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
-                OR
-                ( (end_date = '0000-00-00 00:00:00') AND
-                ((start_date <= '$endRange')))
-                )";
-        $data = DBFunctions::execSQL($sql);
-        $roles = array();
-        foreach($data as $row){
-            $roles[] = new Role(array(0 => $row));
+        if(!isset($this->rolesDuring[$startRange.$endRange])){
+            $sql = "SELECT *
+                    FROM grand_roles
+                    WHERE user_id = '{$this->id}'
+                    AND ( 
+                    ( (end_date != '0000-00-00 00:00:00') AND
+                    (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                    OR
+                    ( (end_date = '0000-00-00 00:00:00') AND
+                    ((start_date <= '$endRange')))
+                    )";
+            $data = DBFunctions::execSQL($sql);
+            $roles = array();
+            foreach($data as $row){
+                $roles[] = new Role(array(0 => $row));
+            }
+            $this->rolesDuring[$startRange.$endRange] = $roles;
         }
-        return $roles;        
+        return $this->rolesDuring[$startRange.$endRange];     
     }
     
     function getRolesOn($date){
@@ -2473,11 +2480,11 @@ class Person extends BackboneModel {
             }
         }
         
-        foreach($papers as $pId){
-            $paper = Paper::newFromId($pId);
+        $papers = Product::getByIds($papers);
+        foreach($papers as $paper){
             $date = $paper->getDate();
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
-               count($paper->getProjects()) > 0 &&
+               $paper->isGrandRelated() &&
                (strcmp($date, $startRange) >= 0 && strcmp($date, $endRange) <= 0 )){
                 $papersArray[] = $paper;
             }
@@ -3229,13 +3236,18 @@ class Person extends BackboneModel {
         return $ethics; 
     }
     
+    /**
+     * Returns whether or not this Person is the author of the given Product
+     * @param Product $paper The Product to see if this Person is on
+     * @return boolean Whether or not this Person is the author of the given Product
+     */
     function isAuthorOf($paper){
         if($paper instanceof Paper){
             $paper_authors = $paper->getAuthors();
             
             $im_author = false;    
             foreach ($paper_authors as $auth){
-                if( $auth->getName() == $this->name ){
+                if($auth->getName() == $this->name){
                     $im_author = true;
                     break;
                 }

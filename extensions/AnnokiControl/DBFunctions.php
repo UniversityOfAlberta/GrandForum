@@ -142,8 +142,7 @@ class DBFunctions {
                 while(strstr($printedSql, "  ") !== false){
                     $printedSql = str_replace("  ", " ", $printedSql);
                 }
-                $printedSql = "<!-- $printedSql -->\n";
-                echo $printedSql;
+                $printedSql = "<!-- ".self::$queryCount.": $printedSql -->\n";
                 $wgOut->addHTML($printedSql);
             }
 		    if($update != false){
@@ -161,7 +160,7 @@ class DBFunctions {
 	        $rows = array();
 	        // I would like to use MYSQL_ASSOC here, but that causes breakage at the moment
 	        if($result != null){
-	            while ($row = mysql_fetch_array($result->result, MYSQL_BOTH)) {
+	            while ($row = mysql_fetch_array($result->result, MYSQL_ASSOC)) {
 		            $rows[] = $row;
 	            }
 	        }

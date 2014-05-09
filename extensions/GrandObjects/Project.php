@@ -26,6 +26,7 @@ class Project extends BackboneModel {
     private $succ;
     private $preds;
     private $peopleCache = null;
+    private $peopleDuringCache = array();
     private $leaderCache = array();
 
     // Returns a new Project from the given id
@@ -564,21 +565,23 @@ EOF;
                 }
             }
         }
-        $sql = "SELECT p.user_id, u.user_name, SUBSTR(u.user_name, LOCATE('.', u.user_name) + 1) as last_name
-                FROM grand_project_members p, mw_user u
-                WHERE p.user_id = u.user_id
-                AND p.project_id = '{$this->id}'
-                AND ( 
-                ( (p.end_date != '0000-00-00 00:00:00') AND
-                (( p.start_date BETWEEN '$startRange' AND '$endRange' ) || ( p.end_date BETWEEN '$startRange' AND '$endRange' ) || (p.start_date <= '$startRange' AND p.end_date >= '$endRange') ))
-                OR
-                ( (p.end_date = '0000-00-00 00:00:00') AND
-                ((p.start_date <= '$endRange')))
-                )
-                AND u.`deleted` != '1'
-                ORDER BY last_name ASC";
-        $data = DBFunctions::execSQL($sql);
-        foreach($data as $row){
+        if(!isset($this->peopleDuringCache[$startRange.$endRange])){
+            $sql = "SELECT p.user_id, u.user_name, SUBSTR(u.user_name, LOCATE('.', u.user_name) + 1) as last_name
+                    FROM grand_project_members p, mw_user u
+                    WHERE p.user_id = u.user_id
+                    AND p.project_id = '{$this->id}'
+                    AND ( 
+                    ( (p.end_date != '0000-00-00 00:00:00') AND
+                    (( p.start_date BETWEEN '$startRange' AND '$endRange' ) || ( p.end_date BETWEEN '$startRange' AND '$endRange' ) || (p.start_date <= '$startRange' AND p.end_date >= '$endRange') ))
+                    OR
+                    ( (p.end_date = '0000-00-00 00:00:00') AND
+                    ((p.start_date <= '$endRange')))
+                    )
+                    AND u.`deleted` != '1'
+                    ORDER BY last_name ASC";
+            $this->peopleDuringCache[$startRange.$endRange] = DBFunctions::execSQL($sql);
+        }
+        foreach($this->peopleDuringCache[$startRange.$endRange] as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
             if(($filter == null || $person->isRoleDuring($filter, $startRange, $endRange)) && ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
