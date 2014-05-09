@@ -150,6 +150,7 @@ class Project extends BackboneModel {
     
     // Gets all of the Projects from the database
     static function getAllProjects($subProjects=false){
+        global $wgOut;
         if($subProjects == false){
             $subProjects = EQ(0);
         }
@@ -182,14 +183,13 @@ class Project extends BackboneModel {
             $subProjects = LIKE("%");
         }
         $data = DBFunctions::select(array('grand_project'),
-                                    array('id'),
+                                    array('name'),
                                     array('parent_id' => $subProjects),
                                     array('name' => 'ASC'));
         $projects = array();
         foreach($data as $row){
-            $project = Project::newFromHistoricId($row['id']);
+            $project = Project::newFromHistoricName($row['name']);
             if($project != null && $project->getName() != ""){
-                $project = Project::newFromHistoricName($project->getName());
                 if(!isset($projects[$project->name])){
                     if(($project->deleted &&
                         substr($project->effectiveDate, 0, 10) >= $endDate || 
@@ -216,14 +216,13 @@ class Project extends BackboneModel {
             $subProjects = LIKE("%");
         }
         $data = DBFunctions::select(array('grand_project'),
-                                    array('id', 'name'),
+                                    array('name'),
                                     array('parent_id' => $subProjects),
                                     array('name' => 'ASC'));
         $projects = array();
         foreach($data as $row){
-            $project = Project::newFromHistoricId($row['id']);
+            $project = Project::newFromHistoricName($row['name']);
             if($project != null && $project->getName() != ""){
-                $project = Project::newFromHistoricName($project->getName());
                 if(!isset($projects[$project->name])){
                     $projects[$project->getName()] = $project;
                 }

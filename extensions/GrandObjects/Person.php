@@ -1535,7 +1535,7 @@ class Person extends BackboneModel {
     function getProjects($history=false){
         $projects = array();
         if(($this->projects == null || $history) && $this->id != null){
-            $sql = "SELECT u.project_id
+            $sql = "SELECT p.name
                     FROM grand_project_members u, grand_project p
                     WHERE user_id = '{$this->id}'
                     AND p.id = u.project_id \n";
@@ -1551,15 +1551,7 @@ class Person extends BackboneModel {
             $data = DBFunctions::execSQL($sql);
             $projectNames = array();
             foreach($data as $row){
-                if($history){
-                    // First find the project by id
-                    $project = Project::newFromId($row['project_id']);
-                    // Then find the project from it's historic name (will grab the latest version)
-                    $project = Project::newFromHistoricName($project->getName());
-                }
-                else{
-                    $project = Project::newFromId($row['project_id']);
-                }
+                $project = Project::newFromHistoricName($row['name']);
                 if($project != null && $project->getName() != ""){
                     if(!isset($projectNames[$project->getName()])){
                         if(!$project->isDeleted() || ($project->isDeleted() && $history)){

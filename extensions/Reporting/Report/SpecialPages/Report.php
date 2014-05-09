@@ -22,57 +22,6 @@ class Report extends AbstractReport{
 
     static function createTab($tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
-        $person = Person::newFromWgUser();
-        $page = "Report";
-        if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
-            $page = "Report?report=HQPReport";
-        }
-        else if($person->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
-                $person->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
-                $person->isRoleAtLeast(MANAGER)){
-            $page = "Report?report=NIReport";
-        }
-        else if(count($person->leadership()) > 0){
-            $projects = $person->leadership();
-            $project = $projects[0];
-            if(!$project->isSubProject()){
-                if($project->getPhase() < PROJECT_PHASE || $project->isDeleted() && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
-                    $page = "Report?report=ProjectFinalReport&project={$project->getName()}";
-                }
-                else if(!$project->isDeleted()){
-                    $page = "Report?report=ProjectReport&project={$project->getName()}";
-                }
-            }
-        }
-        else if(in_array($person->getId(), $special_evals)){
-            $page = "Report?report=EvalOptReport";
-        }
-        else if($person->isEvaluator()){
-            $page = "Report?report=EvalReport";
-        }
-        else if($person->isRoleAtLeast(RMC)){
-            $page = "Report?report=EvalLOIReport";
-        }
-        else if($person->isRole(ISAC)){
-            $page = "Report?report=ISACReview";
-        }
-        else if($person->isRole(CHAMP)){
-            $projects = Project::getAllProjects();
-            foreach($projects as $project){
-                if($project->getPhase() == PROJECT_PHASE){
-                    if($person->isChampionOf($project, REPORTING_RMC_MEETING)){
-                        $page = "Report?report=ChampionReport&project={$project->getName()}";
-                        break;
-                    }
-                    foreach($project->getSubProjects() as $sub){
-                        if($person->isChampionOfOn($sub, REPORTING_RMC_MEETING)){
-                            $page = "Report?report=ChampionReport&project={$project->getName()}";
-                            break;
-                        }
-                    }
-                }
-            }
-        }
         $tabs["Reports"] = TabUtils::createTab("My Reports");
         
         return true;

@@ -227,6 +227,7 @@ class ProjectPage {
         global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
         $me = Person::newFromWgUser();
         $projects = $me->getProjects();
+        
         if(!$wgUser->isLoggedIn() || count($projects) == 0 || $me->isRoleAtLeast(MANAGER)){
 		    return true;
 		}
