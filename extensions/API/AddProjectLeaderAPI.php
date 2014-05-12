@@ -63,7 +63,7 @@ class AddProjectLeaderAPI extends API{
             if(!$noEcho){
                 echo "{$person->getReversedName()} is now a project leader of {$project->getName()}\n";
             }
-            
+            Cache::delete("project{$project->getId()}_people", true);
             Person::$cache = array();
             Person::$idsCache = array();
             Person::$namesCache = array();

@@ -71,7 +71,9 @@ class DeleteProjectMemberAPI extends API{
                         WHERE ug_user = '{$person->getId()}'
                         AND ug_group = '{$pred->getName()}'";
                 DBFunctions::execSQL($sql, true);
+                Cache::delete("project{$pred->getId()}_people", true);
             }
+            Cache::delete("project{$project->getId()}_people", true);
             $person->projects = null;
             MailingList::subscribeAll($person);
             if(!$noEcho){

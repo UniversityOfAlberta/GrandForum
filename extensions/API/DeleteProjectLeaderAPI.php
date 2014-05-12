@@ -84,8 +84,9 @@ class DeleteProjectLeaderAPI extends API{
 	                    AND `type` = '{$lead_type}'
 	                    ORDER BY `start_date` DESC LIMIT 1";
                 DBFunctions::execSQL($sql, true);
+                Cache::delete("project{$pred->getId()}_people", true);
             }
-            
+            Cache::delete("project{$project->getId()}_people", true);
             Person::$cache = array();
             Person::$idsCache = array();
             Person::$namesCache = array();

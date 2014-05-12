@@ -55,6 +55,7 @@ class AddProjectMemberAPI extends API{
 	                    VALUES ('{$person->getId()}','{$project->getName()}')";
                 DBFunctions::execSQL($sql, true);
             }
+            Cache::delete("project{$project->getId()}_people", true);
             $person->projects = null;
             MailingList::subscribeAll($person);
             if(!$noEcho){
