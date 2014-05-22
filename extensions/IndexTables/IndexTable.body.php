@@ -52,7 +52,7 @@ class IndexTable {
             </script>");
 			switch ($wgTitle->getText()) {
 			    case 'ALL '.HQP:
-			        $wgOut->setPageTitle("Highly Qualified People");
+			        $wgOut->setPageTitle("Highly Qualified Personnel");
 				    $this->generatePersonTable(HQP);
 				    break;
 			    case 'ALL '.PNI:
