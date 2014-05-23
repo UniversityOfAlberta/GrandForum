@@ -92,7 +92,7 @@ class EditRelations extends SpecialPage{
 	                $currentWorksWithNames[] = str_replace("'", "&#39;", $relation->getUser2()->getNameForForms());
 	            }
 	            $names = array();
-	            if(isset($_POST['coworkers'])){
+	            if(isset($_POST['coworkers']) && is_array($_POST['coworkers'])){
 	                foreach($_POST['coworkers'] as $name){
 	                    $names[] = str_replace("'", "&#39;", $name);
 	                }
