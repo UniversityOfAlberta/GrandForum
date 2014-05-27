@@ -35,7 +35,8 @@ define('RPTP_PROJECT_CHAMP', 20);
 define('RPTP_PROJECT_ISAC', 21);
 
 define('RPTP_NI_ZIP', 100);
-define('RPTP_PROJ_ZIP', 101); 
+define('RPTP_PROJ_ZIP', 101);
+define('RPTP_HQP_ZIP', 102);
 
 // Subject types (for RPTP_EVALUATOR reports)
 define('EVTP_PERSON', 1);

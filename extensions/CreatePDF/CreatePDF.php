@@ -103,7 +103,8 @@ class CreatePDF extends SpecialPage {
 	            $data = "";
 	            $zip = file_get_contents("/tmp/NIReports.zip");
 	            $sto = new ReportStorage($me);
-                $sto->store_report($data, "", $zip, 0, 0, RPTP_NI_ZIP);
+	            $str = "";
+                $sto->store_report($data, $str, $zip, 0, 0, RPTP_NI_ZIP);
 		        $tok = $sto->metadata('token');
                 $tst = $sto->metadata('timestamp');
                 $len = $sto->metadata('pdf_len');
@@ -142,7 +143,8 @@ class CreatePDF extends SpecialPage {
 	            $data = "";
 	            $zip = file_get_contents("/tmp/HQPReports.zip");
 	            $sto = new ReportStorage($me);
-                $sto->store_report($data, "", $zip, 0, 0, RPTP_NI_ZIP);
+	            $str = "";
+                $sto->store_report($data, $str, $zip, 0, 0, RPTP_HQP_ZIP);
 		        $tok = $sto->metadata('token');
                 $tst = $sto->metadata('timestamp');
                 $len = $sto->metadata('pdf_len');
@@ -157,6 +159,9 @@ class CreatePDF extends SpecialPage {
 	            $command = "zip -9 /tmp/ProjectReports.zip";
 	            foreach($projects as $project){
 	                $leader = $project->getLeader();
+	                if($leader == null){
+	                    $leader = Person::newFromName("Admin");
+	                }
 	                if($leader != null){
 	                    $sto = new ReportStorage($leader);
 	                    if($project->deleted){
@@ -182,7 +187,8 @@ class CreatePDF extends SpecialPage {
 	            $data = "";
 	            $zip = file_get_contents("/tmp/ProjectReports.zip");
 	            $sto = new ReportStorage($me);
-                $sto->store_report($data, "", $zip, 0, 0, RPTP_PROJ_ZIP);
+	            $str = "";
+                $sto->store_report($data, $str, $zip, 0, 0, RPTP_PROJ_ZIP);
 		        $tok = $sto->metadata('token');
                 $tst = $sto->metadata('timestamp');
                 $len = $sto->metadata('pdf_len');
@@ -416,7 +422,7 @@ class CreatePDF extends SpecialPage {
 	static function showNITable($names, $ids){
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    $wgOut->setPageTitle("NI Report PDFs");
-	    CreatePDF::tableHead();
+	    CreatePDF::tableHead(true);
 	    $alreadyDone = array();
 	    foreach($names as $pName){
 	        if(isset($alreadyDone[$pName])){
@@ -450,7 +456,7 @@ class CreatePDF extends SpecialPage {
 	static function showHQPTable($names, $ids){
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    $wgOut->setPageTitle("HQP Report PDFs");
-	    CreatePDF::tableHead();
+	    CreatePDF::tableHead(true);
 	    $alreadyDone = array();
 	    foreach($names as $pName){
 	        if(isset($alreadyDone[$pName])){
@@ -473,7 +479,7 @@ class CreatePDF extends SpecialPage {
 	static function showProjectTable($names, $ids){
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    $wgOut->setPageTitle("Project Report PDFs");
-	    CreatePDF::tableHead();
+	    CreatePDF::tableHead(true);
 	    $alreadyDone = array();
 	    foreach($names as $pName){
 	        if(isset($alreadyDone[$pName])){
@@ -482,10 +488,12 @@ class CreatePDF extends SpecialPage {
 	        $alreadyDone[$pName] = true;
 	        $project = Project::newFromName($pName);
 	        $leaders = array_values($project->getLeaders());
-	        if(count($leaders) > 0){
+	        if(count($leaders) == 0){
+	            $leaders[0] = Person::newFromName("Admin");
+	        }
 	            $report = new DummyReport("ProjectReportPDF", $leaders[0], $project);
 	            CreatePDF::tableRow($report, $project->getId(), $project->getName(), $project->getName());
-	        }
+	        //}
 	    }
 	    CreatePDF::tableFoot();
 	}
