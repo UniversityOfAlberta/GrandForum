@@ -155,7 +155,7 @@ class CreatePDF extends SpecialPage {
                 echo json_encode($json);
 	        }
 	        else if($type == 'project'){
-	            $projects = Project::getAllProjectsDuring();
+	            $projects = Project::getAllProjects();
 	            $command = "zip -9 /tmp/ProjectReports.zip";
 	            foreach($projects as $project){
 	                $leader = $project->getLeader();
@@ -234,7 +234,7 @@ class CreatePDF extends SpecialPage {
 	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=HQPReport&person=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
 	    else if($type == 'project'){
-	        foreach(Project::getAllProjectsDuring() as $project){
+	        foreach(Project::getAllProjects() as $project){
 	            if(array_search($project->getId(), $ids) === false){
 	                $names[] = $project->getName();
 	                $ids[] = $project->getId();
