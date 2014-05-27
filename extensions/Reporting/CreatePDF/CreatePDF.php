@@ -103,7 +103,8 @@ class CreatePDF extends SpecialPage {
 	            $data = "";
 	            $zip = file_get_contents("/tmp/NIReports.zip");
 	            $sto = new ReportStorage($me);
-                $sto->store_report($data, "", $zip, 0, 0, RPTP_NI_ZIP);
+	            $str = "";
+                $sto->store_report($data, $str, $zip, 0, 0, RPTP_NI_ZIP);
 		        $tok = $sto->metadata('token');
                 $tst = $sto->metadata('timestamp');
                 $len = $sto->metadata('pdf_len');
@@ -142,7 +143,8 @@ class CreatePDF extends SpecialPage {
 	            $data = "";
 	            $zip = file_get_contents("/tmp/HQPReports.zip");
 	            $sto = new ReportStorage($me);
-                $sto->store_report($data, "", $zip, 0, 0, RPTP_NI_ZIP);
+	            $str = "";
+                $sto->store_report($data, $str, $zip, 0, 0, RPTP_HQP_ZIP);
 		        $tok = $sto->metadata('token');
                 $tst = $sto->metadata('timestamp');
                 $len = $sto->metadata('pdf_len');
@@ -153,10 +155,13 @@ class CreatePDF extends SpecialPage {
                 echo json_encode($json);
 	        }
 	        else if($type == 'project'){
-	            $projects = Project::getAllProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+	            $projects = Project::getAllProjects();
 	            $command = "zip -9 /tmp/ProjectReports.zip";
 	            foreach($projects as $project){
 	                $leader = $project->getLeader();
+	                if($leader == null){
+	                    $leader = Person::newFromName("Admin");
+	                }
 	                if($leader != null){
 	                    $sto = new ReportStorage($leader);
 	                    if($project->deleted){
@@ -182,7 +187,8 @@ class CreatePDF extends SpecialPage {
 	            $data = "";
 	            $zip = file_get_contents("/tmp/ProjectReports.zip");
 	            $sto = new ReportStorage($me);
-                $sto->store_report($data, "", $zip, 0, 0, RPTP_PROJ_ZIP);
+	            $str = "";
+                $sto->store_report($data, $str, $zip, 0, 0, RPTP_PROJ_ZIP);
 		        $tok = $sto->metadata('token');
                 $tst = $sto->metadata('timestamp');
                 $len = $sto->metadata('pdf_len');
@@ -228,7 +234,7 @@ class CreatePDF extends SpecialPage {
 	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=HQPReport&person=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
 	    else if($type == 'project'){
-	        foreach(Project::getAllProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
+	        foreach(Project::getAllProjects() as $project){
 	            if(array_search($project->getId(), $ids) === false){
 	                $names[] = $project->getName();
 	                $ids[] = $project->getId();
@@ -237,7 +243,7 @@ class CreatePDF extends SpecialPage {
 	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectReport&person=4&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
 	    else if($type == 'isac_comments'){
-	        foreach(Project::getAllProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
+	        foreach(Project::getAllProjectsDuring() as $project){
 	            if(array_search($project->getId(), $ids) === false && $project->getPhase() == PROJECT_PHASE){
 	                $names[] = $project->getName();
 	                $ids[] = $project->getId();
@@ -246,7 +252,7 @@ class CreatePDF extends SpecialPage {
 	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectISACCommentsPDF&person=4&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
 	    else if($type == 'champ_comments'){
-	        foreach(Project::getAllProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
+	        foreach(Project::getAllProjectsDuring() as $project){
 	            if(array_search($project->getId(), $ids) === false && $project->getPhase() == PROJECT_PHASE){
 	                $names[] = $project->getName();
 	                $ids[] = $project->getId();
@@ -255,7 +261,7 @@ class CreatePDF extends SpecialPage {
 	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectChampionsReportPDF&person=4&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
 	    else if($type == 'loi'){
-	        foreach(LOI::getAllLOIs(REPORTING_YEAR) as $loi){
+	        foreach(LOI::getAllLOIs() as $loi){
 	            if(array_search($loi->getId(), $ids) === false){
 	                $names[] = $loi->getName();
 	                $ids[] = $loi->getId();
@@ -416,7 +422,7 @@ class CreatePDF extends SpecialPage {
 	static function showNITable($names, $ids){
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    $wgOut->setPageTitle("NI Report PDFs");
-	    CreatePDF::tableHead();
+	    CreatePDF::tableHead(true);
 	    $alreadyDone = array();
 	    foreach($names as $pName){
 	        if(isset($alreadyDone[$pName])){
@@ -450,7 +456,7 @@ class CreatePDF extends SpecialPage {
 	static function showHQPTable($names, $ids){
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    $wgOut->setPageTitle("HQP Report PDFs");
-	    CreatePDF::tableHead();
+	    CreatePDF::tableHead(true);
 	    $alreadyDone = array();
 	    foreach($names as $pName){
 	        if(isset($alreadyDone[$pName])){
@@ -473,7 +479,7 @@ class CreatePDF extends SpecialPage {
 	static function showProjectTable($names, $ids){
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    $wgOut->setPageTitle("Project Report PDFs");
-	    CreatePDF::tableHead();
+	    CreatePDF::tableHead(true);
 	    $alreadyDone = array();
 	    foreach($names as $pName){
 	        if(isset($alreadyDone[$pName])){
@@ -482,10 +488,12 @@ class CreatePDF extends SpecialPage {
 	        $alreadyDone[$pName] = true;
 	        $project = Project::newFromName($pName);
 	        $leaders = array_values($project->getLeaders());
-	        if(count($leaders) > 0){
+	        if(count($leaders) == 0){
+	            $leaders[0] = Person::newFromName("Admin");
+	        }
 	            $report = new DummyReport("ProjectReportPDF", $leaders[0], $project);
 	            CreatePDF::tableRow($report, $project->getId(), $project->getName(), $project->getName());
-	        }
+	        //}
 	    }
 	    CreatePDF::tableFoot();
 	}
