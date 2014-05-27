@@ -1705,27 +1705,6 @@ EOF;
         $a1_details = "";
         foreach($pub_count['a1'] as $pub){
             $data = $pub->getData();
-            $type = $pub->getType();
-            $title = $pub->getTitle();
-            $au = array();
-            foreach($pub->getAuthors() as $a){
-                if($a->getId()){
-                    $au[] = "<strong>". $a->getNameForForms() ."</strong>";
-                }else{
-                    $au[] = $a->getNameForForms();
-                }
-            }
-            $au = implode(', ', $au);
-            $yr = substr($pub->getDate(), 0, 4);
-            $vn = ArrayUtils::get_string($data, 'journal_title', 'no venue');
-            $pg = ArrayUtils::get_string($data, 'pages');
-            if (strlen($pg) > 0){
-                $pg = "{$pg}pp.";
-            }
-            else{
-                $pg = "(no pages)";
-            }
-            $pb = ArrayUtils::get_string($data, 'publisher', '(no publisher)');
             $issub = ArrayUtils::get_field($data, 'submitted');
             if ($issub !== false){
                 $ptr = &$list_sub;
@@ -1733,7 +1712,7 @@ EOF;
             else{
                 $ptr = &$list_pub;
             }
-            $ptr .= "<li>{$au}. {$yr}. <i>{$title}</i>.&emsp;{$type}: {$vn}. {$pg} {$pb}\n";
+            $ptr .= "<li>{$pub->getProperCitation(false, false, false)}\n";
         }
         if (strlen($list_pub) > 0)
             $a1_details .= "Published:<ol>\n{$list_pub}\n</ol>";
@@ -1765,35 +1744,14 @@ EOF;
         $a2_details = "";
         foreach($pub_count['a2'] as $pub){
             $data = $pub->getData();
-            $type = $pub->getType();
-            $title = $pub->getTitle();
-            $au = array();
-            foreach($pub->getAuthors() as $a){
-                if($a->getId()){
-                    $au[] = "<strong>". $a->getNameForForms() ."</strong>";
-                }else{
-                    $au[] = $a->getNameForForms();
-                }
-            }
-            $au = implode(', ', $au);
-            $yr = substr($pub->getDate(), 0, 4);
-            $vn = ArrayUtils::get_string($data, 'book_title', 'no venue');
-            $pg = ArrayUtils::get_string($data, 'pages');
-            if (strlen($pg) > 0){
-                $pg = "{$pg}pp.";
-            }
-            else{
-                $pg = "(no pages)";
-            }
-            $pb = ArrayUtils::get_string($data, 'publisher', '(no publisher)');
-            $issub = ($pub->getStatus() == "Submitted")? true : false; //ArrayUtils::get_field($data, 'submitted');
+            $issub = ArrayUtils::get_field($data, 'submitted');
             if ($issub !== false){
                 $ptr = &$list_sub;
             }
             else{
                 $ptr = &$list_pub;
             }
-            $ptr .= "<li>{$au}. {$yr}. <i>{$title}</i>.&emsp;{$type}: {$vn}. {$pg} {$pb}\n";
+            $ptr .= "<li>{$pub->getProperCitation(false, false, false)}\n";
         }
         if (strlen($list_pub) > 0)
             $a2_details .= "Published:<ol>\n{$list_pub}\n</ol>";
@@ -1853,36 +1811,14 @@ EOF;
         $b_details = "";
         foreach($pub_count['b'] as $pub){
             $data = $pub->getData();
-            $type = $pub->getType();
-            $title = $pub->getTitle();
-            $au = array();
-            foreach($pub->getAuthors() as $a){
-                if($a->getId()){
-                    $au[] = "<strong>". $a->getNameForForms() ."</strong>";
-                }else{
-                    $au[] = $a->getNameForForms();
-                }
-            }
-            $au = implode(', ', $au);
-            $yr = substr($pub->getDate(), 0, 4);
-            
-            $vn = ArrayUtils::get_string($data, 'book_title', ArrayUtils::get_string($data, 'eventname', 'no venue'));
-
-            if (strlen($pg) > 0){
-                $pg = "{$pg}pp.";
-            }
-            else{
-                $pg = "(no pages)";
-            }
-            $pb = ArrayUtils::get_string($data, 'publisher', '(no publisher)');
-            $issub = ($pub->getStatus() == "Submitted")? true : false; //ArrayUtils::get_field($data, 'submitted');
+            $issub = ArrayUtils::get_field($data, 'submitted');
             if ($issub !== false){
                 $ptr = &$list_sub;
             }
             else{
                 $ptr = &$list_pub;
             }
-            $ptr .= "<li>{$au}. {$yr}. <i>{$title}</i>.&emsp;{$type}: {$vn}\n";
+            $ptr .= "<li>{$pub->getProperCitation(false, false, false)}\n";
         }
         if (strlen($list_pub) > 0)
             $b_details .= "Published:<ol>\n{$list_pub}\n</ol>";
@@ -1914,36 +1850,14 @@ EOF;
         $c_details = "";
         foreach($pub_count['c'] as $pub){
             $data = $pub->getData();
-            $type = $pub->getType();
-            $title = $pub->getTitle();
-            $au = array();
-            foreach($pub->getAuthors() as $a){
-                if($a->getId()){
-                    $au[] = "<strong>". $a->getNameForForms() ."</strong>";
-                }else{
-                    $au[] = $a->getNameForForms();
-                }
-            }
-            $au = implode(', ', $au);
-            $yr = substr($pub->getDate(), 0, 4);
-            
-            $vn = ArrayUtils::get_string($elem, 'book_title', ArrayUtils::get_string($elem, 'eventname', 'no venue'));
-
-            if (strlen($pg) > 0){
-                $pg = "{$pg}pp.";
-            }
-            else{
-                $pg = "(no pages)";
-            }
-            $pb = ArrayUtils::get_string($data, 'publisher', '(no publisher)');
-            $issub = ($pub->getStatus() == "Submitted")? true : false; //ArrayUtils::get_field($data, 'submitted');
+            $issub = ArrayUtils::get_field($data, 'submitted');
             if ($issub !== false){
                 $ptr = &$list_sub;
             }
             else{
                 $ptr = &$list_pub;
             }
-            $ptr .= "<li>{$au}. {$yr}. <i>{$title}</i>.&emsp;{$type}: {$vn}\n";
+            $ptr .= "<li>{$pub->getProperCitation(false, false, false)}\n";
         }
         if (strlen($list_pub) > 0)
             $c_details .= "Published:<ol>\n{$list_pub}\n</ol>";
@@ -2011,9 +1925,7 @@ EOF;
             <div class='pdf_hide details_div' id='$details_div_id' style='display: none;'></div>
 
 EOF;
-
         $this->html .= $html;
-
     }
 
     static function dollar_format($val) {
