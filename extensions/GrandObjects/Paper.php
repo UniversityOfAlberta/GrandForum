@@ -648,18 +648,30 @@ class Paper extends BackboneModel{
         return $this->reported[$reportedType];
     }
 	
-	function getProperCitation(){
+	/**
+	 * Return a string with a citation-like format
+	 * @param boolean $showStatus Whether or not to show the publication status
+	 * @param boolean $showPeerReviewed Whether or not to show the peer reviewed status
+	 * @param boolean $hyperlink Whether or not to use hyperlinks in the citation
+	 * @return string The citation text
+	 */
+	function getProperCitation($showStatus=true, $showPeerReviewed=true, $hyperlink=true){
 		global $wgServer, $wgScriptPath;
 
 		$data = $this->getData();
         $type = $this->getType();
         $title = $this->getTitle();
-        $status = $this->getStatus();
+        $status = ($showStatus) ? $this->getStatus() : "";
         $category = $this->getCategory();
         $au = array();
         foreach($this->getAuthors() as $a){
             if($a->getId()){
-                $au[] = "<a target='_blank' href='{$a->getUrl()}'><strong>". $a->getNameForForms() ."</strong></a>";
+                if($hyperlink){
+                    $au[] = "<a target='_blank' href='{$a->getUrl()}'><strong>". $a->getNameForForms() ."</strong></a>";
+                }
+                else{
+                    $au[] = "<strong>". $a->getNameForForms() ."</strong>";
+                }
             }else{
                 $au[] = $a->getNameForForms();
             }
@@ -690,7 +702,6 @@ class Paper extends BackboneModel{
             }
         }
 
-
         $pg = ArrayUtils::get_string($data, 'pages');
         if (strlen($pg) > 0){
             $pg = "{$pg}pp.";
@@ -699,10 +710,9 @@ class Paper extends BackboneModel{
             $pg = "(no pages)";
         }
         $pb = ArrayUtils::get_string($data, 'publisher', '(no publisher)');
-        
 
         $peer_rev = "";
-        if($category == "Publication"){
+        if($showPeerReviewed && $category == "Publication"){
         	if(isset($data['peer_reviewed']) && $data['peer_reviewed'] == "Yes"){
         		$peer_rev = ",&nbsp;Peer Reviewed";
         	}
@@ -711,17 +721,27 @@ class Paper extends BackboneModel{
         	}
         }
 
+        if($hyperlink){
+            $text = "<a href='$wgServer$wgScriptPath/index.php/{$category}:{$this->getId()}'>{$title}</a>";
+        }
+        else{
+            $text = $title;
+        }
+        
         if( in_array($type, array('Book', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
             if($vn != ""){
                 $vn .= ".";
             }
-       		$citation = "{$au}.&nbsp;{$yr}.&nbsp;<i><a href='$wgServer$wgScriptPath/index.php/{$category}:{$this->getId()}'>{$title}</a>.</i>&nbsp;{$type}:&nbsp;{$vn}&nbsp;{$pg}&nbsp;{$pb}<span class='pdfnodisplay'>,&nbsp;{$status}{$peer_rev}</span>";
+            $comma = ($status != "" || $peer_rev != "") ? ",&nbsp" : "";
+       		$citation = "{$au}.&nbsp;{$yr}.&nbsp;<i>{$text}.</i>&nbsp;{$type}:&nbsp;{$vn}&nbsp;{$pg}&nbsp;{$pb}<span class='pdfnodisplay'>{$comma}{$status}{$peer_rev}</span>";
     	}
     	else{
     	    if($vn != ""){
-                $vn .= "<span class='pdfnodisplay'>,</span>";
+    	        if($status != "" || $peer_rev != ""){
+                    $vn .= "<span class='pdfnodisplay'>,</span>";
+                }
             }
-        	$citation = "{$au}.&nbsp;{$yr}.&nbsp;<i><a href='$wgServer$wgScriptPath/index.php/{$category}:{$this->getId()}'>{$title}</a>.</i>&nbsp;{$type}:&nbsp;{$vn}&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
+        	$citation = "{$au}.&nbsp;{$yr}.&nbsp;<i>{$text}.</i>&nbsp;{$type}:&nbsp;{$vn}&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
         }
 
 		return trim($citation);
