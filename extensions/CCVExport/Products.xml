@@ -262,6 +262,7 @@
 			</statuses>
 			<data>
 				<field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal">published_in</field>
+				<field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal">journal_title</field>
 				<field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume">volume</field>
 				<field ccv_id="cc1d9e14945b4e8496641dbe22b3448a" ccv_name="Issue">number</field>
 				<field ccv_id="00ba1799ece344dc8d0779a3f05a4df8" ccv_name="Page Range">pages</field>
@@ -449,6 +450,7 @@
 			</statuses>
 			<data>
 				<field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal">published_in</field>
+				<field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal">journal_title</field>
 				<field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume">volume</field>
 				<field ccv_id="cc1d9e14945b4e8496641dbe22b3448a" ccv_name="Issue">number</field>
 				<field ccv_id="00ba1799ece344dc8d0779a3f05a4df8" ccv_name="Page Range">pages</field>
@@ -475,6 +477,7 @@
 			</statuses>
 			<data>
 				<field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal">published_in</field>
+				<field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal">journal_title</field>
 				<field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume">volume</field>
 				<field ccv_id="cc1d9e14945b4e8496641dbe22b3448a" ccv_name="Issue">number</field>
 				<field ccv_id="00ba1799ece344dc8d0779a3f05a4df8" ccv_name="Page Range">pages</field>
