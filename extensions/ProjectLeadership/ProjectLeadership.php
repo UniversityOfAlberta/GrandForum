@@ -22,8 +22,8 @@ class ProjectLeadership extends SpecialPage {
         $wgOut->addHTML("<table cellpadding='3' frame='box' rules='all'>
             <thead>
                 <th>Project</th>
-                <th colspan='3'>Leaders</th>
-                <th colspan='3'>Co-Leaders</th>
+                <th colspan='4'>Leaders</th>
+                <th colspan='4'>Co-Leaders</th>
             </thead>
             <tbody>");
         foreach($projects as $project){
@@ -34,22 +34,26 @@ class ProjectLeadership extends SpecialPage {
                     $names = array();
                     $starts = array();
                     $ends = array();
+                    $universities = array();
                     foreach($project->getLeadersHistory() as $leader){
                         $names[] = $leader->getReversedName();
                         $starts[] = $leader->getLeaderStartDate($project);
                         $ends[] = $leader->getLeaderEndDate($project);
+                        $universities[] = $leader->getUni();
                     }
-                    $wgOut->addHTML("<td>".implode("<br />", $names)."</td><td>".implode("<br />", $starts)."</td><td>".implode("<br />", $ends)."</td>");
+                    $wgOut->addHTML("<td>".implode("<br />", $names)."</td><td>".implode("<br />", $universities)."</td><td>".implode("<br />", $starts)."</td><td>".implode("<br />", $ends)."</td>");
                     // Co-Leaders
                     $names = array();
                     $starts = array();
                     $ends = array();
+                    $universities = array();
                     foreach($project->getCoLeadersHistory() as $leader){
                         $names[] = $leader->getReversedName();
                         $starts[] = $leader->getCoLeaderStartDate($project);
                         $ends[] = $leader->getCoLeaderEndDate($project);
+                        $universities[] = $leader->getUni();
                     }
-                    $wgOut->addHTML("<td>".implode("<br />", $names)."</td><td>".implode("<br />", $starts)."</td><td>".implode("<br />", $ends)."</td>");
+                    $wgOut->addHTML("<td>".implode("<br />", $names)."</td><td>".implode("<br />", $universities)."</td><td>".implode("<br />", $starts)."</td><td>".implode("<br />", $ends)."</td>");
                 $wgOut->addHTML("</tr>");
             }
         }
