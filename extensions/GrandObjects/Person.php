@@ -2601,6 +2601,72 @@ class Person extends BackboneModel {
         return $posters;
     }
     
+    /**
+     * Returns the date that this person became leader of the given Project
+     * @param Project $project The Project that this person is/was a leader of
+     * @return string The date that this person became a leader
+     */
+    function getLeaderStartDate($project){
+        $dates = $this->getLeaderDates($project, 'leader');
+        return $dates['start_date'];
+    }
+    
+    /**
+     * Returns the date that this person stopped being leader of the given Project
+     * @param Project $project The Project that this person is/was a leader of
+     * @return string The date that this person stopped being a leader
+     */
+    function getLeaderEndDate($project){
+        $dates = $this->getLeaderDates($project, 'leader');
+        return $dates['end_date'];
+    }
+    
+    /**
+     * Returns the date that this person became co-leader of the given Project
+     * @param Project $project The Project that this person is/was a co-leader of
+     * @return string The date that this person became a co-leader
+     */
+    function getCoLeaderStartDate($project){
+        $dates = $this->getLeaderDates($project, 'co-leader');
+        return $dates['start_date'];
+    }
+    
+    /**
+     * Returns the date that this person stopped being co-leader of the given Project
+     * @param Project $project The Project that this person is/was a co-leader of
+     * @return string The date that this person stopped being a co-leader
+     */
+    function getCoLeaderEndDate($project){
+        $dates = $this->getLeaderDates($project, 'co-leader');
+        return $dates['end_date'];
+    }
+    
+    /**
+     * Returns an array containing both the start and end dates that this Person
+     * was leader/co-leader of the given project
+     * @param Project $project The Project that this person is/was a leader of
+     * @param string $lead Whether to look for 'leader' or 'co-leader'
+     * @return array An array containing both the start and end 
+     */
+    private function getLeaderDates($project, $lead='leader'){
+        foreach($project->getAllPreds() as $pred){
+            $projectIds[] = $pred->getId();
+        }
+        $sql = "SELECT start_date, end_date
+                FROM grand_project_leaders l, grand_project p
+                WHERE l.project_id = p.id
+                AND p.id IN (".implode(",", $projectIds).")
+                AND l.user_id = '{$this->id}'
+                AND l.type = '$lead'";
+        $data = DBFunctions::execSQL($sql);
+        $date = "";
+        if(count($data) > 0){
+            return $data[0];
+        }
+        return array('start_date' => '0000-00-00 00:00:00',
+                     'end_date'   => '0000-00-00 00:00:00');
+    }
+    
     // Returns an array of projects that this person is a leader or co-leader.
     function leadership($history=false) {
         $ret = array();

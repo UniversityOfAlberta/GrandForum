@@ -250,6 +250,11 @@ $egAnnokiExtensions['ProjectEvolution']     = array( 'name' => 'Project Evolutio
                           'enabled' => true,
                           );
                           
+$egAnnokiExtensions['ProjectLeadership']     = array( 'name' => 'Project Leadership',
+                          'path' => "$IP/extensions/ProjectLeadership/ProjectLeadership.php",
+                          'enabled' => true,
+                          );
+                          
 $egAnnokiExtensions['ReviewerConflicts']     = array( 'name' => 'Reviewer Conflicts',
                           'path' => "$IP/extensions/ReviewerConflicts/ReviewerConflicts.php",
                           'enabled' => true,
