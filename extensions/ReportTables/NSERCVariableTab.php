@@ -1647,7 +1647,12 @@ EOF;
         $publications = Paper::getAllPapersDuring('all', 'Publication', "grand", $this->from, $this->to);
         $pub_count = array("a1"=>array(), "a2"=>array(), "b"=>array(), "c"=>array());
 
+        $alreadyDone = array();
         foreach($publications as $pub){
+            if(isset($alreadyDone[$pub->getId()])){
+                continue;
+            }
+            $alreadyDone[$pub->getId()] = true;
             $status = $pub->getStatus();
             //if($status != "Published"){
             //    continue;
