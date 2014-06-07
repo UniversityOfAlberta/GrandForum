@@ -795,8 +795,7 @@ EOF;
                             "PhD Student"=>"PhD",
                             "PostDoc"=>"PostDoc",
                             "Technician"=>"Tech",
-                            "Other"=>"Other",
-                            "Unknown"=>"Unknown");
+                            "Other"=>"Other");
 
         //Fill the table
         foreach ($hqps as $hqp){
@@ -808,7 +807,7 @@ EOF;
                 if($project->getPhase() == 1){
                     if(!isset($projects[$project->getName()])){
                         $projects[$project->getName()] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "PostDoc"=>array(), 
-                                                             "Tech"=>array(), "Other"=>array(), "Unknown"=>array());
+                                                             "Tech"=>array(), "Other"=>array());
                     }
                     $projects[$project->getName()][$pos][] = $hqp;
                 }
@@ -828,7 +827,6 @@ EOF;
          <th>PostDoc</th>
          <th>Tech</th>
          <th>Other</th>
-         <th>Unknown</th>
          <th>Total</th>
          </tr>
 EOF;
