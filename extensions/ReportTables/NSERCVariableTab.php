@@ -83,8 +83,10 @@ function showDiv(div_id, details_div_id){
         */
         case 'grand':
             $wgOut->addScript($foldscript);
-            $this->html .= "<a id='Contributions'></a><h2>Contributions</h2>";
+            $this->html .= "<a id='Table2.1'></a><h2>Contributions</h2>";
             self::showContributionsTable();
+            $this->html .= "<a id='Table2.2'></a><h2>Contributions by Project</h2>";
+            self::showContributionsByProjectTable();
             $this->html .= "<a id='Grand'></a><h2>GRAND tables</h2>";
             self::showGrandTables();
             self::showDisseminations();
@@ -110,7 +112,8 @@ function showDiv(div_id, details_div_id){
             <ul>
             <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Grand'><span class='tocnumber'>4</span> <span class='toctext'>GRAND tables</span></a>
                 <ul>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.0'><span class='tocnumber'>4.0</span> <span class='toctext'>Table 2: Contributions</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.0'><span class='tocnumber'>2.1</span> <span class='toctext'>Table 2.1: Contributions</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table2.2'><span class='tocnumber'>2.2</span> <span class='toctext'>Table 2.2: Contributions by Project</span></a></li>
                 <!--<li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?summary=table3#Table3'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 3: Number of network Research Personnel paid with NCE funds or other funds, by sectors</span></a></li-->
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4'><span class='tocnumber'>4.1</span> <span class='toctext'>Table 4: Number of Graduate Students Working on Network Research</span></a></li>
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2a'><span class='tocnumber'>4.2a</span> <span class='toctext'>Table 4.2a: HQP Breakdown by University</span></a></li>
@@ -285,6 +288,63 @@ EOF;
             </script>
 EOF;
         $this->html .= $html .  $dialog_js ;   
+    }
+    
+    function showContributionsByProjectTable(){
+        $projects = Project::getAllProjectsEver();
+        
+        $this-> html .= "<table class='wikitable' cellpadding='2' frame='box' rules='all' width='100%'>
+                            <thead>
+                                <th>Project Name</th>
+                                <th>Contribution</th>
+                                <th>Partner</th>
+                                <th>Cash</th>
+                                <th>In-Kind</th>
+                                <th>Sub-Total</th>
+                                <th>Cash Total</th>
+                                <th>In-Kind Total</th>
+                                <th>Total</th>
+                            </thead>
+                            <tbody>";
+        foreach($projects as $project){
+            if($project->getPhase() == 1){
+                $contributions = $project->getContributions();
+                foreach($contributions as $contribution){
+                    $partners = $contribution->getPartners();
+                    $nRows = max(1, count($partners));
+                    $this->html .= "<tr>
+                                        <td rowspan='$nRows'>{$project->getName()}</td>
+                                        <td rowspan='$nRows'><a href='{$contribution->getUrl()}' target='_blank'>{$contribution->getName()}</td>";
+                    if(count($partners) > 0){
+                        foreach($partners as $i => $partner){
+                            $this->html .= "<td>{$partner->organization}</td>
+                                            <td align='right'>$".number_format($contribution->getCashFor($partner), 2)."</td>
+                                            <td align='right'>$".number_format($contribution->getKindFor($partner), 2)."</td>
+                                            <td align='right'>$".number_format($contribution->getTotalFor($partner), 2)."</td>";
+                            if($i == 0){
+                                $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getCash(), 2)."</td>";
+                                $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getKind(), 2)."</td>";
+                                $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getTotal(), 2)."</td>";
+                            }
+                            $this->html .= "</tr>";
+                            if($i < $nRows-1){
+                                $this->html .= "<tr>";
+                            }
+                        }
+                    }
+                    else{
+                        $this->html .= "<td></td>
+                                        <td align='right'>$".number_format($contribution->getCash(), 2)."</td>
+                                        <td align='right'>$".number_format($contribution->getKind(), 2)."</td>
+                                        <td align='right'>$".number_format($contribution->getTotal(), 2)."</td>
+                                        <td align='right'>$".number_format($contribution->getCash(), 2)."</td>
+                                        <td align='right'>$".number_format($contribution->getKind(), 2)."</td>
+                                        <td align='right'>$".number_format($contribution->getTotal(), 2)."</td></tr>";
+                    }
+                }
+            }
+        }
+        $this->html .= "</tbody></table>";
     }
 
     function showGrandTables() {
