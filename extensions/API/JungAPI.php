@@ -304,7 +304,7 @@ class JungAPI extends API{
                          "Media, Arts & Design",
                          "Other Social Sciences & Humanities",
                          "Information Science");
-        $msa = json_decode(file_get_contents("http://grand.cs.ualberta.ca/~dwt/MSResearchCrawler/db.json"));
+        $msa = json_decode(file_get_contents("http://grand.cs.ualberta.ca/~dwt/MSResearchCrawler/db_tmp.json"));
         $msaAuthors = array();
         $nCitsSum = 0;
         $nPubsSum = 0;

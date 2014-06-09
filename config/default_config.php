@@ -104,6 +104,7 @@
         //'Acknowledgements',
         //'AllocatedBudgets',
         'ProjectEvolution',
+        'ProjectLeadership',
         //'ScreenCapture',
         //'Solr',
         //'AcademiaMap',

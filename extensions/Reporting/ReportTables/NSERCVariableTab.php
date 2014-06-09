@@ -83,8 +83,10 @@ function showDiv(div_id, details_div_id){
         */
         case 'grand':
             $wgOut->addScript($foldscript);
-            $this->html .= "<a id='Contributions'></a><h2>Contributions</h2>";
+            $this->html .= "<a id='Table2.1'></a><h2>Contributions</h2>";
             self::showContributionsTable();
+            $this->html .= "<a id='Table2.2'></a><h2>Contributions by Project</h2>";
+            self::showContributionsByProjectTable();
             $this->html .= "<a id='Grand'></a><h2>GRAND tables</h2>";
             self::showGrandTables();
             self::showDisseminations();
@@ -110,10 +112,12 @@ function showDiv(div_id, details_div_id){
             <ul>
             <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Grand'><span class='tocnumber'>4</span> <span class='toctext'>GRAND tables</span></a>
                 <ul>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.0'><span class='tocnumber'>4.0</span> <span class='toctext'>Table 2: Contributions</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.0'><span class='tocnumber'>2.1</span> <span class='toctext'>Table 2.1: Contributions</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table2.2'><span class='tocnumber'>2.2</span> <span class='toctext'>Table 2.2: Contributions by Project</span></a></li>
                 <!--<li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?summary=table3#Table3'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 3: Number of network Research Personnel paid with NCE funds or other funds, by sectors</span></a></li-->
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4'><span class='tocnumber'>4.1</span> <span class='toctext'>Table 4: Number of Graduate Students Working on Network Research</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 4.2: HQP Breakdown by University</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2a'><span class='tocnumber'>4.2a</span> <span class='toctext'>Table 4.2a: HQP Breakdown by University</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2b'><span class='tocnumber'>4.2b</span> <span class='toctext'>Table 4.2b: HQP Breakdown by Project</span></a></li>
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.3'><span class='tocnumber'>4.3</span> <span class='toctext'>Table 4.3: NI Breakdown by University</span></a></li>
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table5'><span class='tocnumber'>4.4</span> <span class='toctext'>Table 5: Post Network employment of graduate students</span></a></li>
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table6'><span class='tocnumber'>4.5</span> <span class='toctext'>Table 6: Dissemination of Network Research Results and Collaborations</span></a></li>
@@ -285,6 +289,63 @@ EOF;
 EOF;
         $this->html .= $html .  $dialog_js ;   
     }
+    
+    function showContributionsByProjectTable(){
+        $projects = Project::getAllProjectsEver();
+        
+        $this-> html .= "<table class='wikitable' cellpadding='2' frame='box' rules='all' width='100%'>
+                            <thead>
+                                <th>Project Name</th>
+                                <th>Contribution</th>
+                                <th>Partner</th>
+                                <th>Cash</th>
+                                <th>In-Kind</th>
+                                <th>Sub-Total</th>
+                                <th>Cash Total</th>
+                                <th>In-Kind Total</th>
+                                <th>Total</th>
+                            </thead>
+                            <tbody>";
+        foreach($projects as $project){
+            if($project->getPhase() == 1){
+                $contributions = $project->getContributions();
+                foreach($contributions as $contribution){
+                    $partners = $contribution->getPartners();
+                    $nRows = max(1, count($partners));
+                    $this->html .= "<tr>
+                                        <td rowspan='$nRows'>{$project->getName()}</td>
+                                        <td rowspan='$nRows'><a href='{$contribution->getUrl()}' target='_blank'>{$contribution->getName()}</td>";
+                    if(count($partners) > 0){
+                        foreach($partners as $i => $partner){
+                            $this->html .= "<td>{$partner->organization}</td>
+                                            <td align='right'>$".number_format($contribution->getCashFor($partner), 2)."</td>
+                                            <td align='right'>$".number_format($contribution->getKindFor($partner), 2)."</td>
+                                            <td align='right'>$".number_format($contribution->getTotalFor($partner), 2)."</td>";
+                            if($i == 0){
+                                $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getCash(), 2)."</td>";
+                                $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getKind(), 2)."</td>";
+                                $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getTotal(), 2)."</td>";
+                            }
+                            $this->html .= "</tr>";
+                            if($i < $nRows-1){
+                                $this->html .= "<tr>";
+                            }
+                        }
+                    }
+                    else{
+                        $this->html .= "<td></td>
+                                        <td align='right'>$".number_format($contribution->getCash(), 2)."</td>
+                                        <td align='right'>$".number_format($contribution->getKind(), 2)."</td>
+                                        <td align='right'>$".number_format($contribution->getTotal(), 2)."</td>
+                                        <td align='right'>$".number_format($contribution->getCash(), 2)."</td>
+                                        <td align='right'>$".number_format($contribution->getKind(), 2)."</td>
+                                        <td align='right'>$".number_format($contribution->getTotal(), 2)."</td></tr>";
+                    }
+                }
+            }
+        }
+        $this->html .= "</tbody></table>";
+    }
 
     function showGrandTables() {
         global $wgOut, $_pdata, $_projects;
@@ -345,7 +406,8 @@ EOF;
             }   
         }
 
-        $this->html .= "<a id='Table4.2'></a><h3>Table 4.2: HQP Breakdown by University</h3>" .self::getHQPUniStats();
+        $this->html .= "<a id='Table4.2a'></a><h3>Table 4.2a: HQP Breakdown by University</h3>" .self::getHQPUniStats();
+        $this->html .= "<a id='Table4.2b'></a><h3>Table 4.2b: HQP Breakdown by University</h3>" .self::getHQPProjStats();
         $this->html .= "<a id='Table4.3'></a><h3>Table 4.3: NI Breakdown by University</h3>" .self::getNiUniStats();
         $this->html .= "<a id='Table5'></a><h3>Table 5: Post Network employment of graduate students</h3>" . self::getHQPEmployment($movedons, "all");
         $this->html .= "<h4>Canadian</h4>". self::getHQPEmployment($canadian, "canada");
@@ -781,6 +843,122 @@ EOF;
         return $html;
 
     }
+    
+    function getHQPProjStats(){
+        $hqps = Person::getAllPeopleDuring(HQP, $this->from, $this->to);
+
+        //Setup the table structure
+        $projects = array();
+
+        $positions = array( "Undergraduate"=>"Ugrad",
+                            "Masters Student"=>"Masters",
+                            "PhD Student"=>"PhD",
+                            "PostDoc"=>"PostDoc",
+                            "Technician"=>"Tech",
+                            "Other"=>"Other");
+
+        //Fill the table
+        foreach ($hqps as $hqp){
+            $projs = $hqp->getProjectsDuring($this->from, $this->to);
+            $uni = $hqp->getUni();
+            $pos = $hqp->getPosition();
+            $pos = (isset($positions[$pos])) ? $positions[$pos] : "Other";
+            foreach($projs as $project){
+                if($project->getPhase() == 1){
+                    if(!isset($projects[$project->getName()])){
+                        $projects[$project->getName()] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "PostDoc"=>array(), 
+                                                             "Tech"=>array(), "Other"=>array());
+                    }
+                    $projects[$project->getName()][$pos][] = $hqp;
+                }
+            }
+        }
+
+        ksort($projects);
+
+        $details_div_id = "hqp_proj_details";
+        $html =<<<EOF
+         <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
+         <tr>
+         <th>Project</th>
+         <th>Ugrad</th>
+         <th>Masters</th>
+         <th>PhD</th>
+         <th>PostDoc</th>
+         <th>Tech</th>
+         <th>Other</th>
+         <th>Total</th>
+         </tr>
+EOF;
+        foreach ($projects as $projName => $data){
+            $html .=<<<EOF
+                <tr>
+                <th align="left">{$projName}</th>
+EOF;
+            $total_proj = array();
+            foreach($data as $posi => $hqpa){
+                $proj_id = preg_replace('/ /', '', $projName);
+                $lnk_id = "lnk_" . $proj_id . "_" . $posi;
+                $div_id = "div_" . $proj_id . "_" . $posi;
+
+                $total_proj = array_merge($total_proj, $hqpa);
+                $num_students = count($hqpa);   
+                $student_details = Dashboard::hqpDetails($hqpa);
+                if($num_students > 0){
+                    $html .=<<<EOF
+                        <td>
+                        <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                        $num_students
+                        </a>
+                        <div style="display: none;" id="$div_id" class="cell_details_div">
+                            <p><span class="label">{$projName} / {$posi}:</span> 
+                            <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                            <ul>$student_details</ul>
+                        </div>
+                        </td>
+EOF;
+                }
+                else{
+                    $html .= "<td>0</td>";
+                }
+
+            }
+
+            //Row Total
+            $lnk_id = "lnk_" . $proj_id . "_total";
+            $div_id = "div_" . $proj_id . "_total";
+
+            $num_students = count($total_proj);   
+            $student_details = Dashboard::hqpDetails($total_proj);
+            if($num_students > 0){
+                $html .=<<<EOF
+                    <td>
+                    <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                    $num_students
+                    </a>
+                    <div style="display: none;" id="$div_id" class="cell_details_div">
+                        <p><span class="label">{$projName} / {$posi}:</span> 
+                        <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                        <ul>$student_details</ul>
+                    </div>
+                    </td>
+EOF;
+            }
+            else{
+                $html .= "<td>0</td>";
+            }
+
+
+            $html .= "</tr>";
+
+        }
+            
+        $html .= "</table>";
+        $html .= "<div class='pdf_hide details_div' id='$details_div_id' style='display: none;'></div><br />";
+        
+        return $html;
+
+    }
 
     function getNIUniStats(){
 
@@ -913,7 +1091,9 @@ EOF;
     }
 
     function getHQPEmployment($people, $type){
-        $movedons = $people;
+        $movedons = $people; //Person::getAllMovedOnDuring();
+
+        
         $positions = array( "Undergraduate"=>"Ugrad",
                             "Masters Student"=>"Masters",
                             "PhD Student"=>"PhD",
@@ -1130,8 +1310,6 @@ EOF;
         $html .= "<div class='pdf_hide details_div' id='$details_div_id' style='display: none;'></div><br />";
         return $html;
     }
-
-    
 
     static function showHQPTable(){
         global $wgOut;
@@ -1645,7 +1823,12 @@ EOF;
         $publications = Paper::getAllPapersDuring('all', 'Publication', "grand", $this->from, $this->to);
         $pub_count = array("a1"=>array(), "a2"=>array(), "b"=>array(), "c"=>array());
 
+        $alreadyDone = array();
         foreach($publications as $pub){
+            if(isset($alreadyDone[$pub->getId()])){
+                continue;
+            }
+            $alreadyDone[$pub->getId()] = true;
             $status = $pub->getStatus();
             //if($status != "Published"){
             //    continue;

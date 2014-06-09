@@ -145,6 +145,9 @@ $egAnnokiExtensions['AllocatedBudgets'] = array('name' => 'Allocated Budgets',
 
 $egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
                                                 'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");
+                                                
+$egAnnokiExtensions['ProjectLeadership'] = array('name' => 'Project Leadership',
+                                                 'path' => "$IP/extensions/ProjectLeadership/ProjectLeadership.php");
 
 $egAnnokiExtensions['ScreenCapture'] = array('name' => 'ScreenCapture',
                                              'path' => "$IP/extensions/ScreenCapture/ScreenCapture.php");
@@ -166,7 +169,6 @@ $egAnnokiExtensions['AdvancedSearch'] = array('name' => 'AdvancedSearch',
 
 $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
                                          'path' => "$IP/extensions/CCVExport/CCVExport.php");
-
 
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){

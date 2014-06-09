@@ -825,6 +825,29 @@ EOF;
         $this->leaderCache['coleaders'.$onlyIdStr] = $ret;
         return $ret;
     }
+    
+    function getCoLeadersHistory(){
+        $ret = array();
+        if(!$this->clear){
+            $preds = $this->getPreds();
+            foreach($preds as $pred){
+                foreach($pred->getCoLeadersHistory() as $leader){
+                    $ret[$leader->getId()] = $leader;
+                }
+            }
+        }
+        $sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
+                WHERE pl.project_id = '{$this->id}'
+                AND pl.type = 'co-leader'
+                AND pl.user_id NOT IN (4, 150)
+                AND u.user_id = pl.user_id
+                AND u.deleted != '1'";
+        $data = DBFunctions::execSQL($sql);
+        foreach ($data as &$row){
+            $ret[$row['user_id']] = Person::newFromId($row['user_id']);
+        }
+        return $ret;
+    }
 
     /// Returns an array with the leaders of the project.  By default, the
     /// resulting array contains instances of Person.  If #onlyid is set to
@@ -866,6 +889,29 @@ EOF;
                 $ret[$row['user_id']] = Person::newFromId($row['user_id']);
         }
         $this->leaderCache['leaders'.$onlyIdStr] = $ret;
+        return $ret;
+    }
+    
+    function getLeadersHistory(){
+        $ret = array();
+        if(!$this->clear){
+            $preds = $this->getPreds();
+            foreach($preds as $pred){
+                foreach($pred->getLeadersHistory() as $leader){
+                    $ret[$leader->getId()] = $leader;
+                }
+            }
+        }
+        $sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
+                WHERE pl.project_id = '{$this->id}'
+                AND pl.type = 'leader'
+                AND pl.user_id NOT IN (4, 150)
+                AND u.user_id = pl.user_id
+                AND u.deleted != '1'";
+        $data = DBFunctions::execSQL($sql);
+        foreach ($data as &$row){
+            $ret[$row['user_id']] = Person::newFromId($row['user_id']);
+        }
         return $ret;
     }
     
