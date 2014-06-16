@@ -271,6 +271,10 @@ class Contribution {
                     else if($row['type'] == 'inki'){
                         $this->cash[$id] = 0;
                         $this->kind[$id] = $row['kind'];
+                    }
+                    else if($row['type'] == 'none'){
+                        $this->cash[$id] = $row['cash'];
+                        $this->kind[$id] = 0;
                     }else{
                         $this->cash[$id] = 0;
                         $this->kind[$id] = 0;
