@@ -76,10 +76,18 @@ class AddContributionAPI extends API{
                 if($value == ""){
                     $value = $partner['name'];
                 }
-                $sql = "INSERT INTO `grand_contributions_partners`
+                DBFunctions::insert('grand_contributions_partners',
+                                    array('contribution_id' => $contribution->rev_id,
+                                          'partner' => $value,
+                                          'type' => @$_POST['type'][$key],
+                                          'subtype' => @$_POST['subtype'][$key],
+                                          'cash' => @$_POST['cash'][$key],
+                                          'kind' => @$_POST['kind'][$key]));
+                                          
+                /*$sql = "INSERT INTO `grand_contributions_partners`
                         (`contribution_id`,`partner`,`type`,`subtype`,`cash`,`kind`)
                         VALUES ('{$contribution->rev_id}','{$value}','{$_POST['type'][$key]}','{$_POST['subtype'][$key]}','{$_POST['cash'][$key]}','{$_POST['kind'][$key]}')";
-                DBFunctions::execSQL($sql, true);
+                DBFunctions::execSQL($sql, true);*/
             }
             
             Contribution::$cache = array();
