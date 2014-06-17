@@ -270,7 +270,7 @@ EOF;
 EOF;
 
         if(!$this->isSubmitted()){
-            $this->html .= '<button onclick="submitGrandExperience();return false;">Save {$config->getValue('networkName')} Experience</button>';
+            $this->html .= '<button onclick="submitGrandExperience();return false;">Save '.$config->getValue('networkName').' Experience</button>';
         }
         $this->html .=<<<EOF
             </div>
