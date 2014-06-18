@@ -1232,7 +1232,15 @@ EOF;
         if($person != null && $person instanceof Person){
             $this->getEndDates();
             if(isset($this->endDates[$person->getId()])){
-                return $this->endDates[$person->getId()];
+                if(($this->getDeleted() > "0000-00-00 00:00:00" && 
+                    $this->endDates[$person->getId()] == "0000-00-00 00:00:00") ||
+                   ($this->getDeleted() <= $this->endDates[$person->getId()] &&
+                    $this->getDeleted() != "0000-00-00 00:00:00")){
+                    return $this->getDeleted();
+                }
+                else{
+                    return $this->endDates[$person->getId()];
+                }
             }
             else{
                 return "";

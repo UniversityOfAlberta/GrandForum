@@ -75,6 +75,7 @@ table.dataTable tr.even td.sorting_3 { background-color: #F3F3F3; }
  */
 .dataTables_length {
 	padding: 5px;
+	height: 30px;
 	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #E2E2E2), color-stop(1, #CCCCCC) ) !important;
     background:-moz-linear-gradient( center top, #E2E2E2 5%, #CCCCCC 100% ) !important;
     background: -o-linear-gradient(top, #E2E2E2, #CCCCCC) !important;
@@ -293,6 +294,12 @@ table.dataTable tr.even td.sorting_3 { background-color: #F3F3F3; }
 .sorting_asc_disabled { background: url('../images/sort_asc_disabled.png') no-repeat center right; }
 .sorting_desc_disabled { background: url('../images/sort_desc_disabled.png') no-repeat center right; }
  
+ 
+table.dataTable thead th.sorting_disabled {
+    padding: 5px 10px; 
+    cursor: default;
+}
+
 table.dataTable th:active {
 	outline: none;
 }
@@ -310,3 +317,57 @@ table.dataTable th:active {
 	-webkit-overflow-scrolling: touch;
 }
 
+/*
+ * Other
+ */
+ 
+.angledTableHead {
+    padding: 0 !important;
+    position: relative;
+    vertical-align: bottom;
+    border-right-color: rgba(0,0,0,0) !important;
+    height: 100%;
+    width: 40px;
+    min-width: 40px;
+}
+
+.angledTableBorder {
+   -webkit-transform: skewX(-45deg);
+      -moz-transform: skewX(-45deg);
+       -ms-transform: skewX(-45deg);
+        -o-transform: skewX(-45deg);
+           transform: skewX(-45deg);
+   transform-origin: 100% 100%;
+   -ms-transform-origin: 100% 100%;
+   -webkit-transform-origin: 100% 100%;
+   position: absolute;
+   bottom: 0;
+   left: 1px;
+   border-width: 0 1px 0 0;
+   border-style: solid;
+   border-color: #AAAAAA;
+   background: #e6e6e6 url(../../../skins/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;
+   width: 100%;
+   height: 100%;
+}
+
+.angledTableHead:first-child .angledTableBorder {
+    border-width: 0 1px 0 1px;
+    left: 0;
+}
+
+.angledTableText {
+   -webkit-transform: rotate(-45deg);
+      -moz-transform: rotate(-45deg);
+       -ms-transform: rotate(-45deg);
+        -o-transform: rotate(-45deg);
+           transform: rotate(-45deg);
+   transform-origin: 0 0;
+   -ms-transform-origin: 0 0;
+   -webkit-transform-origin: 0 0;
+   position: absolute;
+   bottom: 0;
+   left: 60%;
+}
+</style>
+}

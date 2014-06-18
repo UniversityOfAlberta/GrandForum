@@ -52,10 +52,10 @@ ProductListView = Backbone.View.extend({
         this.$el.html(this.template(templateData));
         var showButton = this.$("#showButton").detach();
         var data = this.processData();
-        this.$el.find('#listTable').dataTable({'iDisplayLength': 100,
-	                                           'aaSorting': [ [0,'desc'], [1,'asc'], [4, 'asc'] ],
-	                                           'aaData' : data,
-	                                           'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+        this.$('#listTable').dataTable({'iDisplayLength': 100,
+	                                    'aaSorting': [ [0,'desc'], [1,'asc'], [4, 'asc'] ],
+	                                    'aaData' : data,
+	                                    'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
 	    this.$("#listTable_length").append(showButton);
         this.$el.css('display', 'block');
         return this.$el;

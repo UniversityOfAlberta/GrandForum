@@ -79,10 +79,12 @@ class PersonProjectsAPI extends RESTAPI {
         $json = array();
         $projects = $person->getProjects(true);
         foreach($projects as $project){
-            $json[] = array('projectId' => $project->getId(),
-                            'personId' => $person->getId(),
-                            'startDate' => $project->getJoinDate($person),
-                            'endDate' => $project->getEndDate($person));
+            if(!$project->isSubProject()){
+                $json[] = array('projectId' => $project->getId(),
+                                'personId' => $person->getId(),
+                                'startDate' => $project->getJoinDate($person),
+                                'endDate' => $project->getEndDate($person));
+            }
         }
         return json_encode($json);
     }
@@ -132,10 +134,9 @@ class PersonProductAPI extends RESTAPI {
     
     function doGET(){
         if($this->getParam(0) == "person"){
-            exit;
             $person = Person::newFromId($this->getParam('id'));
             $json = array();
-            $products = $person->getPapersAuthored("all", CYCLE_START, CYCLE_START_ACTUAL,false);
+            $products = $person->getPapers("all", true, 'both');
             foreach($products as $product){
                 $array = array('productId' => $product->getId(), 
                                'personId'=> $this->getParam('id'),

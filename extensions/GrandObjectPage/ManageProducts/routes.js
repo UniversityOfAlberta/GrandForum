@@ -1,4 +1,6 @@
 PageRouter = Backbone.Router.extend({
+
+    currentView: null,
     
     initialize: function(){
         this.bind('all', function(event){
@@ -25,7 +27,9 @@ PageRouter = Backbone.Router.extend({
 var pageRouter = new PageRouter;
 
 pageRouter.on('route:defaultRoute', function (actions) {
-    alert(actions); 
+    this.closeCurrentView();
+    var products = me.getProducts();
+    this.currentView = new ManageProductsView({el: $("#currentView"), model: products});
 });
 
 // Start Backbone history a necessary step for bookmarkable URL's

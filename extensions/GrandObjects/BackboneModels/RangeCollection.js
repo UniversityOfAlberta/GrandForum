@@ -26,8 +26,10 @@ RangeCollection = Backbone.Collection.extend({
     getAll: function(){
         allModels = this.newModel();
         _.each(this.models, function(model){
-            allModels.add(model.getTarget());
-        });
+            var target = model.getTarget();
+            this.xhrs.push(target.fetch());
+            allModels.add(target);
+        }, this);
         return allModels;
     },
 

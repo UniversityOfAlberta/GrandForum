@@ -1,0 +1,24 @@
+<table id="listTable" frame="box" rules="all" style="table-layout: fixed;">
+    <thead>
+        <tr>
+            <th class="angledTableHead"><div class="angledTableBorder"></div><div class="angledTableText">Other</div></th>
+            <% _.each(this.projects.models, function(p){ %>
+                <th class="angledTableHead"><div class="angledTableBorder"></div><div class="angledTableText"><%= p.get('name') %></div></th>
+            <% }) %>
+            <th width="90%" colspan="4" style="border-left: 2px solid rgba(0,0,0,0);">Product Information</th>
+        </tr>
+        <tr style="border-bottom: 2px solid #AAAAAA;">
+            <td></td>
+            <% _.each(this.projects.models, function(p){ %>
+                <th><input type="checkbox" /></th>
+            <% }) %>
+            <th style="border-left: 2px solid #AAAAAA;">Date</th>
+            <th>Type</th>
+            <th>Title</th>
+            <th>Authors</th>
+        </tr>
+    </thead>
+    <tbody id="productRows">
+        
+    </tbody>
+</table>
