@@ -16,6 +16,13 @@ class AdminUniTreeTab extends AbstractTab {
 	        $tree->height = 500;
 	        $tree->width = 960;
 	        $this->html .= $tree->show();
+	        $this->html .= "<script type='text/javascript'>
+                $('#adminVis').bind('tabsselect', function(event, ui) {
+                    if(ui.panel.id == 'university-funding'){
+                        onLoad{$tree->index}();
+                    }
+                });
+                </script>";
 	    }
 	}
 	
