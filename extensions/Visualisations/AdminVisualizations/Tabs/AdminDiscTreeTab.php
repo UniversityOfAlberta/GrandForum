@@ -18,7 +18,7 @@ class AdminDiscTreeTab extends AbstractTab {
 	        $this->html .= $tree->show();
 	        $this->html .= "<script type='text/javascript'>
                 $('#adminVis').bind('tabsselect', function(event, ui) {
-                    if(ui.panel.id == 'university-funding'){
+                    if(ui.panel.id == 'discipline-funding'){
                         onLoad{$tree->index}();
                     }
                 });
