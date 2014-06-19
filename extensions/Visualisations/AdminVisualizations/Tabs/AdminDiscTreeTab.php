@@ -31,7 +31,7 @@ class AdminDiscTreeTab extends AbstractTab {
 	    $me = Person::newFromWgUser();
 	    $year = (isset($_GET['date'])) ? $_GET['date'] : REPORTING_YEAR;
 	    if($action == "getAdminDiscTreeData" && $me->isRoleAtLeast(MANAGER)){
-	        session_write_close();  
+	        session_write_close();
             $data = array("name" => "GRAND",
                           "children" => array());
             $people = Person::getAllPeopleDuring(null, $year."-01-01", $year."-12-31");
