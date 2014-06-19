@@ -22,7 +22,7 @@ class AdminUniTreeTab extends AbstractTab {
                         onLoad{$tree->index}();
                     }
                 });
-                </script>";
+                </script><br />";
 	    }
 	}
 	

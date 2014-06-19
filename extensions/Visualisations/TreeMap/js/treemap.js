@@ -7,6 +7,7 @@
         y = d3.scale.linear().range([0, h]),
         root,
         node,
+        type = "size",
         id = $(this).attr("id");
 
     var treemap = d3.layout.treemap()
@@ -53,7 +54,7 @@
           .attr("text-anchor", "middle")
           .text(function(d) { return d.name; })
           .style("cursor", "default")
-          .style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; });
+          .style("opacity", function(d) { d.w = this.getComputedTextLength(); if(type == "size" && d.size == 0){return 0;} return d.dx > d.w ? 1 : 0; });
           
       var catCell = svg.selectAll("g.catCell")
           .data(categories)
@@ -92,7 +93,7 @@
           .style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; });
 
       d3.selectAll("#" + id + "options input").on("change", function() {
-        console.log(node);
+        type = this.value;
         treemap.value(this.value == "size" ? size : count).nodes(root);
         zoom(node);
       });
