@@ -14,7 +14,7 @@ class AdminUniTreeTab extends AbstractTab {
 	        $this->html .= "<h2>$year</h2>";
 	        $tree = new TreeMap("{$wgServer}{$wgScriptPath}/index.php?action=getAdminUniTreeData&date={$year}");
 	        $tree->height = 500;
-	        $tree->width = 960;
+	        $tree->width = 1000;
 	        $this->html .= $tree->show();
 	        $this->html .= "<script type='text/javascript'>
                 $('#adminVis').bind('tabsselect', function(event, ui) {
@@ -40,6 +40,9 @@ class AdminUniTreeTab extends AbstractTab {
                 if($person->isRoleDuring(CNI, $year."-01-01", $year."-12-31") ||
                    $person->isRoleDuring(PNI, $year."-01-01", $year."-12-31")){
                     $uni = $person->getUniversityDuring($year."01-01", $year."12-31");
+                    if($uni['university'] == ""){
+                        $uni['university'] = "Unknown";
+                    }
                     $budget = $person->getRequestedBudget($year-1);
                     if($budget != null){
                         $total = str_replace('$', "", $budget->copy()->rasterize()->where(HEAD1, array("TOTALS%"))->limit(0, 1)->select(ROW_TOTAL)->toString());
@@ -48,7 +51,15 @@ class AdminUniTreeTab extends AbstractTab {
                 }
             }
             foreach($unis as $uni => $person){
+                $university = University::newFromName($uni);
+                if($uni == "Unknown"){
+                    $color = "#888888";
+                }
+                else{
+                    $color = $university->getColor();
+                }
                 $uniData = array("name" => $uni,
+                                 "color" => $color,
                                  "children" => array());
                 $personData = array();
                 foreach($person as $name => $total){
