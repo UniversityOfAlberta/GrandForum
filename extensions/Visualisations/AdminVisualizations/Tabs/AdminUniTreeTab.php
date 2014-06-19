@@ -42,7 +42,7 @@ class AdminUniTreeTab extends AbstractTab {
                     $uni = $person->getUniversityDuring($year."01-01", $year."12-31");
                     $budget = $person->getRequestedBudget($year-1);
                     if($budget != null){
-                        $total = str_replace('$', "", $budget->copy()->rasterize()->where(COL_TOTAL)->select(ROW_TOTAL)->toString());
+                        $total = str_replace('$', "", $budget->copy()->rasterize()->where(HEAD1, array("TOTALS%"))->limit(0, 1)->select(ROW_TOTAL)->toString());
                         @$unis[$uni['university']][$person->getName()] = ($total == "") ? "0" : $total;
                     }
                 }
