@@ -79,7 +79,7 @@ class AdminProjTreeTab extends AbstractTab {
                     case "Entertainment":
                         $color = "#723C96";
                         break;
-                    case "Health":
+                    case "Healthcare":
                         $color = "#EC2528";
                         break;
                     case "Learning":
