@@ -42,6 +42,10 @@ $visualisations = array('Timeline' => array("name" => "Timeline",
                         'D3Map' => array("name" => "D3Map",
                               "path" => "D3Map/D3Map.php",
                               "enabled" => true,
+                              "initialized" => false),
+                        'TreeMap' => array("name" => "TreeMap",
+                              "path" => "TreeMap/TreeMap.php",
+                              "enabled" => true,
                               "initialized" => false)
                        );
       
