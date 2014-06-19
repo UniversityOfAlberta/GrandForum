@@ -54,7 +54,7 @@
           .attr("text-anchor", "middle")
           .text(function(d) { return d.name; })
           .style("cursor", "default")
-          .style("opacity", function(d) { d.w = this.getComputedTextLength(); if(type == "size" && d.size == 0){return 0;} return d.dx > d.w ? 1 : 0; });
+          .style("opacity", function(d) { d.w = this.getComputedTextLength(); if(type == "size" && d.size == 0){ return 0; } return d.dx > d.w ? 1 : 0; });
           
       var catCell = svg.selectAll("g.catCell")
           .data(categories)
@@ -80,7 +80,7 @@
           .style("cursor", "default")
           .style("font-weight", "bold")
           .style("stroke", function(d){ return d.color; })
-          .style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; });
+          .style("opacity", function(d) { d.w = this.getComputedTextLength(); if(type == "size" && d.size == 0){ return 0; } return d.dx > d.w ? 1 : 0; });
 
       catCell.append("svg:text")
           .attr("x", function(d) { return d.dx / 2; })
@@ -90,7 +90,7 @@
           .text(function(d) { return d.name; })
           .style("cursor", "default")
           .style("font-weight", "bold")
-          .style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; });
+          .style("opacity", function(d) { d.w = this.getComputedTextLength(); if(type == "size" && d.size == 0){ return 0; } return d.dx > d.w ? 1 : 0; });
 
       d3.selectAll("#" + id + "options input").on("change", function() {
         type = this.value;
@@ -134,12 +134,12 @@
       t.select("g.cell text")
           .attr("x", function(d) { return kx * d.dx / 2; })
           .attr("y", function(d) { return ky * d.dy / 2; })
-          .style("opacity", function(d) { return kx * d.dx > d.w ? 1 : 0; });
+          .style("opacity", function(d) { if(type == "size" && d.size == 0){ return 0; } return kx * d.dx > d.w ? 1 : 0; });
           
       t.selectAll("g.catCell text")
           .attr("x", function(d) { return kx * d.dx / 2; })
           .attr("y", function(d) { return (!textpos) ? kx * d.dy / 2 : kx * 2; })
-          .style("opacity", function(d) { return kx * d.dx > d.w ? 1 : 0; });
+          .style("opacity", function(d) { if(type == "size" && d.size == 0){ return 0; } return kx * d.dx > d.w ? 1 : 0; });
 
       node = d;
       d3.event.stopPropagation();
