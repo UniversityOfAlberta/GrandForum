@@ -45,15 +45,14 @@ class AdminProjTreeTab extends AbstractTab {
                         foreach($people->xls[0] as $cell){
                             $name = $cell->getValue();
                             $total = str_replace('$', "", $budget->copy()->rasterize()->select(V_PERS_NOT_NULL, array($name))->where(CUBE_COL_TOTAL)->toString());
-                            @$projs[$project->getName()][$name] = ($total == "") ? "0" : $total;
+                            $challenge = $project->getChallenge();
+                            $theme = ($challenge != null) ? $challenge->getAcronym() : "Unknown";
+                            @$projs[$theme][$project->getName()][$name] = ($total == "") ? "0" : $total;
                         }
                     }
                 }
             }
-            foreach($projs as $proj => $person){
-                $project = Project::newFromName($proj);
-                $challenge = $project->getChallenge();
-                $theme = ($challenge != null) ? $challenge->getAcronym() : "Unknown";
+            foreach($projs as $theme => $projs2){
                 switch($theme){
                     case "nMEDIA": 
                         $color = "#B6D661";
@@ -95,16 +94,26 @@ class AdminProjTreeTab extends AbstractTab {
                         $color = "#888888";
                         break;
                 }
-                $projData = array("name" => $proj,
-                                  "color" => $color,
-                                  "children" => array());
-                $personData = array();
-                foreach($person as $name => $total){
-                    $personData[] = array("name" => $name,
-                                          "size" => $total);
+                $themeData = array("name" => $theme,
+                                   "color" => $color,
+                                   "children" => array());
+                foreach($projs2 as $proj => $person){
+                    $project = Project::newFromName($proj);
+                    $challenge = $project->getChallenge();
+                    $theme = ($challenge != null) ? $challenge->getAcronym() : "Unknown";
+                    
+                    $projData = array("name" => $proj,
+                                      "color" => $color,
+                                      "children" => array());
+                    $personData = array();
+                    foreach($person as $name => $total){
+                        $personData[] = array("name" => $name,
+                                              "size" => $total);
+                    }
+                    $projData['children'] = $personData;
+                    $themeData['children'][] = $projData;
                 }
-                $projData['children'] = $personData;
-                $data['children'][] = $projData;
+                $data['children'][] = $themeData;
             }
             header("Content-Type: application/json");
             echo json_encode($data);

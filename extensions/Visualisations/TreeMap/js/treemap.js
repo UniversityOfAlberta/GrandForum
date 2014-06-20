@@ -30,7 +30,7 @@
       node = root = data;
 
       var categories = treemap.nodes(root)
-          .filter(function(d) { return d.children && d.parent; });
+          .filter(function(d) { return d.children && d.parent; }).reverse();
 
       var nodes = treemap.nodes(root)
           .filter(function(d) { return !d.children; });
@@ -38,6 +38,8 @@
       var cell = svg.selectAll("g.cell")
           .data(nodes)
         .enter().append("svg:g")
+          .attr("title", function(d){ return d.name; })
+          .attr("depth", function(d) { return d.depth; })
           .attr("class", "cell")
           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
           .on("click", function(d) { return zoom(node == d.parent ? root : d.parent); });
@@ -59,28 +61,19 @@
       var catCell = svg.selectAll("g.catCell")
           .data(categories)
         .enter().append("svg:g")
+          .attr("title", function(d){ return d.name; })
+          .attr("depth", function(d) { return d.depth; })
           .attr("class", "catCell")
           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+          .style("opacity", 0.9)
           .on("click", function(d) { return zoom(node == d.parent ? d : root); });
       
       catCell.append("svg:rect")
           .attr("width", function(d) { return d.dx - 1; })
           .attr("height", function(d) { return d.dy - 1; })
           .style("fill", function(d) { return d.color; })
-          .style("fill-opacity", 0.9)
           .style("stroke", "#000000")
           .style("stroke-width", "2px");
-
-      catCell.append("svg:text")
-          .attr("x", function(d) { return d.dx / 2; })
-          .attr("y", function(d) { return d.dy / 2; })
-          .attr("dy", ".35em")
-          .attr("text-anchor", "middle")
-          .text(function(d) { return d.name; })
-          .style("cursor", "default")
-          .style("font-weight", "bold")
-          .style("stroke", function(d){ return d.color; })
-          .style("opacity", function(d) { d.w = this.getComputedTextLength(); if(type == "size" && d.size == 0){ return 0; } return d.dx > d.w ? 1 : 0; });
 
       catCell.append("svg:text")
           .attr("x", function(d) { return d.dx / 2; })
@@ -97,6 +90,8 @@
         treemap.value(this.value == "size" ? size : count).nodes(root);
         zoom(node);
       });
+      
+      $("g").qtip({'style': 'qtip-tipsy', 'position': {my: 'bottom center', at: 'top center'}});
     });
 
     function size(d) {
@@ -108,37 +103,42 @@
     }
 
     function zoom(d) {
-      var opacity = 0.1;
-      var textpos = 20;
+      var depth = d.depth;
+        
+      svg.selectAll("g")
+        .filter(function(d){
+            return (d.depth > depth);
+        })
+        .style("display", "inline");
       
       var kx = w / d.dx, ky = h / d.dy;
       x.domain([d.x, d.x + d.dx]);
       y.domain([d.y, d.y + d.dy]);
-      
-      if(!d.parent){
-        opacity = 0.9;
-        textpos = 0;
-      }
 
       var t = svg.selectAll("g").transition()
-          .duration(d3.event.altKey ? 7500 : 750)
+          .duration(500)
           .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+
+      t.filter(function(d){
+            return (d.depth > depth);
+        })
+        .style("opacity", function(d){ return (!d.children) ? 1 : 0.9; });
+
+      t.filter(function(d){
+            return (d.depth <= depth);
+        })
+        .style("opacity", 0)
+        .each("end", function(){
+            d3.select(this).style("display", "none");
+        });
 
       t.select("rect")
           .attr("width", function(d) { return kx * d.dx - 1; })
           .attr("height", function(d) { return ky * d.dy - 1; })
 
-      t.select("g.catCell rect")
-        .style("fill-opacity", opacity);
-
-      t.select("g.cell text")
+      t.select("text")
           .attr("x", function(d) { return kx * d.dx / 2; })
           .attr("y", function(d) { return ky * d.dy / 2; })
-          .style("opacity", function(d) { if(type == "size" && d.size == 0){ return 0; } return kx * d.dx > d.w ? 1 : 0; });
-          
-      t.selectAll("g.catCell text")
-          .attr("x", function(d) { return kx * d.dx / 2; })
-          .attr("y", function(d) { return (!textpos) ? kx * d.dy / 2 : kx * 2; })
           .style("opacity", function(d) { if(type == "size" && d.size == 0){ return 0; } return kx * d.dx > d.w ? 1 : 0; });
 
       node = d;
