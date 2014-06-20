@@ -124,4 +124,3 @@ class AdminUniversityMapTab extends AbstractTab {
 	}
 }
 ?>
-
