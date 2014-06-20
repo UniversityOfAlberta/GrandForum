@@ -614,6 +614,20 @@ class Person extends BackboneModel {
         if($wgUser->isLoggedIn()){
             $privateProfile = $this->getProfile(true);
         }
+        if($this->isRole(CHAMP)){
+            $university = $this->getPartnerName();
+            $department = $this->getPartnerDepartment();
+            $position = $this->getPartnerTitle();
+            
+            $university = ($university != "") ? $university : $this->getUni();
+            $department = ($department != "") ? $department : $this->getDepartment();
+            $position = ($position != "") ? $position : $this->getPosition();
+        }
+        else{
+            $university = $this->getUni();
+            $department = $this->getDepartment();
+            $position = $this->getPosition();
+        }
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
                       'realName' => $this->getRealName(),
@@ -625,9 +639,9 @@ class Person extends BackboneModel {
                       'twitter' => $this->getTwitter(),
                       'photo' => $this->getPhoto(),
                       'cachedPhoto' => $this->getPhoto(true),
-                      'university' => $this->getUni(),
-                      'department' => $this->getDepartment(),
-                      'position' => $this->getPosition(),
+                      'university' => $university,
+                      'department' => $department,
+                      'position' => $position,
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $publicProfile,
                       'url' => $this->getURL());
