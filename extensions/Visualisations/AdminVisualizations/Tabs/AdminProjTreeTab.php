@@ -69,7 +69,7 @@ class AdminProjTreeTab extends AbstractTab {
                     case "TechMeth":
                         $color = "#8D539F";
                         break;
-                    case "Big Data":
+                    case "(Big) Data":
                         $color = "#21A3DC";
                         break;
                     case "Citizenship":
@@ -78,7 +78,7 @@ class AdminProjTreeTab extends AbstractTab {
                     case "Entertainment":
                         $color = "#723C96";
                         break;
-                    case "Healthcare":
+                    case "Health":
                         $color = "#EC2528";
                         break;
                     case "Learning":
