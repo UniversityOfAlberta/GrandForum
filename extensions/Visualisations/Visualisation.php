@@ -46,6 +46,10 @@ $visualisations = array('Timeline' => array("name" => "Timeline",
                         'TreeMap' => array("name" => "TreeMap",
                               "path" => "TreeMap/TreeMap.php",
                               "enabled" => true,
+                              "initialized" => false),
+                        'Cluster' => array("name" => "Cluster",
+                              "path" => "Cluster/Cluster.php",
+                              "enabled" => true,
                               "initialized" => false)
                        );
       
