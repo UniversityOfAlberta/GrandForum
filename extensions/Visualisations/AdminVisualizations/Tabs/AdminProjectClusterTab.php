@@ -45,6 +45,8 @@ class AdminProjectClusterTab extends AbstractTab {
 	        
 	        foreach($themes as $name => $projs){
 	            $theme = Theme::newFromName($name);
+	            $tFullName = $theme->getName();
+	            $tDesc = $theme->getDescription();
 	            $tleader = $theme->getLeader();
 	            $tcoleader = $theme->getCoLeader();
 	            switch($name){
@@ -85,6 +87,8 @@ class AdminProjectClusterTab extends AbstractTab {
 	                    break;
 	                default:
 	                    $name = "Strategic";
+	                    $tFullName = "Strategic Projects";
+	                    $description = "GRAND has special projects characterized by their high risk / high reward and cross-cutting nature, as well as by their potential to have a very significant impact on the Canadian digital media sector. The projects are high-visibility co-investments with external partners. As compared with regular GRAND projects, Strategic projects have a higher degree of autonomy in allocating their resources, and are expected to have much greater engagement with and larger contributions from the receptor community.";
 	                    $color = "#555555";
 	                    $image = "";
 	                    $turl = "{$wgServer}{$wgScriptPath}/index.php/GRAND:Themes";
@@ -113,6 +117,8 @@ class AdminProjectClusterTab extends AbstractTab {
 	                        $scolead['uni'] = $scoleader->getUni();
 	                    }
 	                    $projChildren[] = array("name" => $sub->getName(),
+	                                            "fullname" => $sub->getFullName(),
+	                                            "description" => $sub->getDescription(),
 	                                            "color" => $color,
 	                                            "url" => $sub->getUrl(),
 	                                            "leader" => $slead,
@@ -131,6 +137,8 @@ class AdminProjectClusterTab extends AbstractTab {
 	                    $pcolead['uni'] = $pcoleader->getUni();
 	                }
 	                $themeChildren[] = array("name" => $proj->getName(),
+	                                         "fullname" => $proj->getFullName(),
+	                                         "description" => $proj->getDescription(),
 	                                         "color" => $color,
 	                                         "url" => $proj->getUrl(),
 	                                         "leader" => $plead,
@@ -153,6 +161,8 @@ class AdminProjectClusterTab extends AbstractTab {
 	            if($image != ""){
 	                $image = "{$wgServer}{$wgScriptPath}/extensions/Visualisations/Cluster/images/{$image}";
 	                $data['children'][] = array("name" => $name,
+	                                            "fullname" => $tFullName,
+	                                            "description" => $tDesc,
 	                                            "color" => $color,
 	                                            "image" => $image,
 	                                            "url" => $turl,
