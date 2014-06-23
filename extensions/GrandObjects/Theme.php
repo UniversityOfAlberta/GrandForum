@@ -87,7 +87,7 @@ class Theme {
             $data = DBFunctions::select(array("grand_theme_leaders"),
                                         array("user_id"),
                                         array("theme" => $this->getId(),
-                                              "co_lead" => EQ(0),
+                                              "co_lead" => EQ("False"),
                                               "end_date" => EQ("0000-00-00 00:00:00")));
             if(count($data) > 0){
                 $this->leader = Person::newFromId($data[0]['user_id']);
@@ -101,7 +101,7 @@ class Theme {
             $data = DBFunctions::select(array("grand_theme_leaders"),
                                         array("user_id"),
                                         array("theme" => $this->getId(),
-                                              "co_lead" => EQ(1),
+                                              "co_lead" => EQ("True"),
                                               "end_date" => EQ("0000-00-00 00:00:00")));
             if(count($data) > 0){
                 $this->coleader = Person::newFromId($data[0]['user_id']);
