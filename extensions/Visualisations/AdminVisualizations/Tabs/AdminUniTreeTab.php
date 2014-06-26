@@ -50,24 +50,32 @@ class AdminUniTreeTab extends AbstractTab {
                     }
                 }
             }
-            foreach($unis as $uni => $person){
+            $provinces = array();
+            foreach($unis as $uni => $people){
                 $university = University::newFromName($uni);
-                if($uni == "Unknown"){
-                    $color = "#888888";
+                $province = $university->getProvince();
+                $provinces[$province][$uni] = $people;
+            }
+            foreach($provinces as $province => $universities){
+                $provData = array("name" => $province,
+                                  "color" => "#888888",
+                                  "children" => array());
+                $unisData = array();
+                foreach($universities as $uni => $people){
+                    $university = University::newFromName($uni);
+                    $provData['color'] = $university->getColor();
+                    $uniData = array("name" => $uni,
+                                     "color" => $university->getColor(),
+                                     "children" => array());
+                    $personData = array();
+                    foreach($people as $name => $total){
+                        $personData[] = array("name" => $name,
+                                              "size" => $total);
+                    }
+                    $uniData['children'] = $personData;
+                    $provData['children'][] = $uniData;
                 }
-                else{
-                    $color = $university->getColor();
-                }
-                $uniData = array("name" => $uni,
-                                 "color" => $color,
-                                 "children" => array());
-                $personData = array();
-                foreach($person as $name => $total){
-                    $personData[] = array("name" => $name,
-                                          "size" => $total);
-                }
-                $uniData['children'] = $personData;
-                $data['children'][] = $uniData;
+                $data['children'][] = $provData;
             }
             header("Content-Type: application/json");
             echo json_encode($data);

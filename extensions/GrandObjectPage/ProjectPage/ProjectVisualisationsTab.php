@@ -2,7 +2,6 @@
 
 $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectTimelineData';
 $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectDoughnutData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectGraphData';
 $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectChordData';
 $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectWordleData';
 
@@ -162,42 +161,6 @@ class ProjectVisualisationsTab extends AbstractTab {
                                     });
                               </script>");
             $this->html .= $wordle->show();
-        }
-    }
-    
-    function showGraph($project, $visibility){
-        global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
-        if($wgUser->isLoggedIn()){
-            $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectGraphData&project={$project->getId()}";
-            $graph = new Graph($dataUrl);
-            $wgOut->addScript("<script type='text/javascript'>
-                                    $(document).ready(function(){
-                                        $('#projectVis').bind('tabsselect', function(event, ui) {
-                                            if(ui.panel.id == 'network'){
-                                                if(graph != null){
-                                                    graph.destroy();
-                                                    graph = null;
-                                                    $('#vis{$graph->index}').html(\"<div style='height:700px;' id='vis{$graph->index}'></div>\");
-                                                    $('#vis{$graph->index}').graph('{$graph->url}');
-                                                }
-                                                else{
-                                                    $('#vis{$graph->index}').graph('{$graph->url}');
-                                                }
-                                            }
-                                            else{
-                                                if(graph != null){
-                                                    graph.destroy();
-                                                }
-                                            }
-                                        });
-                                        $('#project').bind('tabsselect', function(event, ui){
-                                            if(ui.panel.id != 'visualize' && graph != null){
-                                                graph.destroy();
-                                            }
-                                        });
-                                    });
-                              </script>");
-            $this->html .= $graph->show();
         }
     }
     
