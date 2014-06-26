@@ -1766,3 +1766,14 @@ img {
     border: none;
     vertical-align: middle;
 }
+
+/* qTip */
+.qtip-close:hover {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.qtip-content a {
+    color: #FFFFFF;
+    font-weight: bold;
+}

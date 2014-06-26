@@ -18,29 +18,6 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             $me = Person::newFromId($wgUser->getId());
             if($me->isMemberOf($project) || $me->isRoleAtLeast(MANAGER)){
                 $edit = $this->visibility['edit'];
-                $dataUrl = "$wgServer$wgScriptPath/index.php?action=getProjectMilestoneTimelineData&project={$project->getId()}";
-                $timeline = new Simile($dataUrl);
-                $timeline->interval = "50";
-                $timeline->popupWidth = "500";
-                $timeline->popupHeight = "300";
-                /*$wgOut->addScript("<script type='text/javascript'>
-                    var firstTimeLoaded = true;
-                    function toggleTimeline(){
-                        $('#milestoneTimeline').toggle();
-                        if($('#timelineButton').html() == 'Show Milestone Timeline'){
-                            $('#timelineButton').html('Hide Milestone Timeline');
-                            if(firstTimeLoaded){
-                                onLoad{$timeline->index}();
-                                firstTimeLoaded = false;
-                            }
-                        }
-                        else{
-                            $('#timelineButton').html('Show Milestone Timeline');
-                        }
-                    }
-                </script>");
-                $this->html .= "<a id='timelineButton' class='button' onClick=\"toggleTimeline();\">Show Milestone Timeline</a><div id='milestoneTimeline' class='pdfnodisplay' style='display:none;'>".$timeline->show()."</div>";
-                */
                 $this->showPastMilestones();
                 $this->html .= "<br />";
                 $this->showMilestones();

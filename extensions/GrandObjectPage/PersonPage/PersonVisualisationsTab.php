@@ -77,7 +77,8 @@ class PersonVisualisationsTab extends AbstractTab {
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
         if($wgUser->isLoggedIn()){
             $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getTimelineData&person={$person->getId()}";
-            $timeline = new Simile($dataUrl);
+            $timeline = new VisTimeline($dataUrl);
+            $timeline->height = "600px";
             
             $this->html .="<script type='text/javascript'>
                                 $(document).ready(function(){
@@ -205,6 +206,22 @@ class PersonVisualisationsTab extends AbstractTab {
             $today = date("Y-m-d");
             
             $array = array();
+            $items = array();
+            $groups = array(array('id' => 'roles',
+                                  'content' => 'Roles',
+                                  'className' => 'visRed'),
+                            array('id' => 'locations',
+                                  'content' => 'Locations',
+                                  'className' => 'visPurple'),
+                            array('id' => 'projects',
+                                  'content' => 'Projects',
+                                  'className' => 'visBlue'),
+                            array('id' => 'relations',
+                                  'content' => 'Relations',
+                                  'className' => 'visGreen'),
+                            array('id' => 'products',
+                                  'content' => 'Products',
+                                  'className' => 'visOrange'));
             foreach($person->getRoles(true) as $role){
                 $start = substr($role->getStartDate(), 0, 10);
                 $end = substr($role->getEndDate(), 0, 10);
@@ -214,12 +231,42 @@ class PersonVisualisationsTab extends AbstractTab {
                 if(strcmp($start, $end) > 0){
                     $start = $end;
                 }
-                $array[] = array('title' => $role->getRole(),
-                                 'color' => '#4E9B05',
+                $items[] = array('content' => $role->getRole(),
+                                 'description' => array('title' => $role->getRole(),
+                                                        'text' => ""),
+                                 'group' => 'roles',
                                  'start' => $start,
-                                 'end' => $end,
-                                 'description' => "",
-                                 'durationEvent' => true);
+                                 'end' => $end);
+            }
+            
+            foreach($person->getUniversities() as $university){
+                $start = substr($university['start'], 0, 10);
+                $end = substr($university['end'], 0, 10);
+                if($end == "0000-00-00"){
+                    $end = $today;
+                }
+                if($start == "0000-00-00"){
+                    $startY = substr($person->getRegistration(), 0, 4);
+                    $startM = substr($person->getRegistration(), 4, 2);
+                    $startD = substr($person->getRegistration(), 6, 2);
+                    $start = "$startY-$startM-$startD";
+                }
+                if(strcmp($start, $end) > 0){
+                    $start = $end;
+                }
+                $items[] = array('content' => $university['university'],
+                                 'description' => array('title' => $university['university'],
+                                                        'text' => "<table>
+                                                                    <tr>
+                                                                        <td><b>Title:</b></td><td>{$university['position']}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>Department:</b></td><td>{$university['department']}</td>
+                                                                    </tr>
+                                                                    </table>"),
+                                 'group' => 'locations',
+                                 'start' => $start,
+                                 'end' => $end);
             }
        
             foreach($person->getProjects(true) as $project){
@@ -231,13 +278,13 @@ class PersonVisualisationsTab extends AbstractTab {
                 if(strcmp($start, $end) > 0){
                     $start = $end;
                 }
-                $content = "<a href='{$project->getUrl()}' target='_blank'>Wiki Page</a>";
-                $array[] = array('title' => $project->getName(),
-                                 'color' => '#E41B05',
+                $content = "<a href='{$project->getUrl()}' target='_blank'>View Project's Page</a>";
+                $items[] = array('content' => $project->getName(),
+                                 'description' => array('title' => $project->getName(),
+                                                        'text' => $content),
+                                 'group' => 'projects',
                                  'start' => $start,
-                                 'end' => $end,
-                                 'durationEvent' => true,
-                                 'description' => $content);
+                                 'end' => $end);
             }
            
             if(count($person->getRelations('all', true)) > 0){
@@ -252,25 +299,28 @@ class PersonVisualisationsTab extends AbstractTab {
                             $start = $end;
                         }
                         $content = "<a href='{$relation->getUser1()->getUrl()}' target='_blank'>{$relation->getUser1()->getNameForForms()}</a> {$relation->getType()} <a href='{$relation->getUser2()->getUrl()}' target='_blank'>{$relation->getUser2()->getNameForForms()}</a>";
-                        $array[] = array('title' => $relation->getUser2()->getNameForForms(),
-                                         'color' => '#4272B2',
+                        $items[] = array('content' => $relation->getUser2()->getNameForForms(),
+                                         'description' => array('title' => $relation->getUser2()->getNameForForms(),
+                                                                'text' => "$content"),
+                                         'group' => 'relations',
                                          'start' => $start,
-                                         'end' => $end,
-                                         'durationEvent' => true,
-                                         'description' => $content);
+                                         'end' => $end);
                     }
                 }
             }
             
             foreach($person->getPapers('all') as $paper){
                 $start = $paper->getDate();
-                $content = "<a href='{$paper->getUrl()}' target='_blank'>Wiki Page</a>";
-                $array[] = array('title' => str_replace("&#39;", "'", $paper->getTitle()),
-                                 'color' => '#BCB326',
-                                 'icon' => "$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/yellow-circle.png",
+                $content = "<a href='{$paper->getUrl()}' target='_blank'>View Product's Page</a>";
+                $items[] = array('content' => str_replace("&#39;", "'", $paper->getTitle()),
+                                 'description' => array('title' => str_replace("&#39;", "'", $paper->getTitle()),
+                                                        'text' => $content),
+                                 'group' => 'products',
                                  'start' => $start,
-                                 'description' => $content);
+                                 'type' => 'point');
             }
+            $array['items'] = $items;
+            $array['groups'] = $groups;
             echo json_encode($array);
             exit;
         }

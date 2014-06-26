@@ -1,0 +1,101 @@
+.vis.timeline .center {
+    text-align: left;
+}
+
+.vis.timeline .currenttime {
+    width: 1px;
+}
+
+.timeaxis.foreground {
+    font-weight: bold;
+    background: #FFF7D9;
+}
+
+.vispanel.background.vertical {
+    z-index: 1;
+}
+
+.timeaxis.foreground .minor {
+    font-weight: normal;
+}
+
+.vis.timeline .item {
+    cursor: pointer;
+    position: absolute;
+    z-index: 2;
+    padding: 0;
+    font-size: 11px;
+    line-height: 11px;
+    font-weight: bold;
+    border-width: 0 0 2px 0;
+    border-style: solid;
+    border-radius: 0 !important;
+    background: none;
+}
+
+.vis.timeline .item.selected {
+    background: none !important;
+}
+
+.vis.timeline .item.dot {
+    border-radius: 4px !important;
+}
+
+.vis.timeline .item.point {
+    border: none;
+}
+
+.visRed {
+    color: #EC2528 !important;
+    font-weight: bold;
+}
+
+.visBlue {
+    color: #21A3DC !important;
+    font-weight: bold;
+}
+
+.visGreen {
+    color: #12A551 !important;
+    font-weight: bold;
+}
+
+.visOrange {
+    color: #F47F20 !important;
+    font-weight: bold;
+}
+
+.visPurple {
+    color: #723C96 !important;
+    font-weight: bold;
+}
+
+.vis.timeline .visRed .item {
+    color: #EC2528;
+    font-weight: bold;
+    border-color: #EC2528;
+}
+
+.vis.timeline .visBlue .item {
+    color: #21A3DC;
+    font-weight: bold;
+    border-color: #21A3DC;
+}
+
+.vis.timeline .visGreen .item {
+    color: #12A551;
+    font-weight: bold;
+    border-color: #12A551;
+}
+
+.vis.timeline .visOrange .item {
+    color: #F47F20;
+    font-weight: bold;
+    border-color: #F47F20;
+}
+
+.vis.timeline .visPurple .item {
+    color: #723C96;
+    font-weight: bold;
+    border-color: #723C96;
+}

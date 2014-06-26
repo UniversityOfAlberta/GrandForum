@@ -6,6 +6,8 @@ class Cluster extends Visualisation {
     var $url = "";
     var $width = "800";
     var $height = "800";
+    var $sizeLabel = "";
+    var $countLabel = "";
     
     function Cluster($url, $sizeLabel="Size", $countLabel="Count"){
         $this->url = $url;
@@ -21,7 +23,7 @@ class Cluster extends Visualisation {
 
     function show(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $string = "<div style='height:".($this->height)."px;width:".($this->width)."px;' class='Cluster' id='vis{$this->index}'></div></div>";
+        $string = "<div style='height:".($this->height)."px;width:".($this->width)."px;' class='Cluster' id='vis{$this->index}'></div>";
         $string .= <<<EOF
 <script type='text/javascript'>
     

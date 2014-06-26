@@ -13,6 +13,7 @@ class Person extends BackboneModel {
     static $idsCache = array();
     static $disciplineMap = array();
 
+    var $user = null;
     var $name;
     var $email;
     var $nationality;
@@ -737,7 +738,11 @@ class Person extends BackboneModel {
     
     // Returns the Mediawiki User object for this Person
     function getUser(){
-        return User::newFromId($this->id);
+        if($this->user == null){
+            $this->user = User::newFromId($this->id);
+            $this->user->load();
+        }
+        return $this->user;
     }
     
     // Returns whether or not this Person is logged in or not
@@ -1280,7 +1285,7 @@ class Person extends BackboneModel {
                 )
                 ORDER BY uu.id DESC";
         $data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
+        if(count($data) > 0){
             return array("university" => $data[0]['university_name'],
                          "department" => $data[0]['department'],
                          "position"   => $data[0]['position']);
@@ -1288,6 +1293,31 @@ class Person extends BackboneModel {
         else{
             return null;
         }
+    }
+    
+    /**
+     * Returns all the Universities that this Person has been a part of
+     * @return array The last University that this Person was at between the given range
+     */ 
+    function getUniversities(){
+        $sql = "SELECT * 
+                FROM grand_user_university uu, grand_universities u, grand_positions p
+                WHERE uu.user_id = '{$this->id}'
+                AND u.university_id = uu.university_id
+                AND uu.position_id = p.position_id
+                ORDER BY uu.id DESC";
+        $data = DBFunctions::execSQL($sql);
+        $array = array();
+        if(count($data) > 0){
+            foreach($data as $row){
+                $array[] = array("university" => $row['university_name'],
+                                 "department" => $row['department'],
+                                 "position"   => $row['position'],
+                                 "start" => $row['start_date'],
+                                 "end" => $row['end_date']);
+            }
+        }
+        return $array;
     }
     
     /**

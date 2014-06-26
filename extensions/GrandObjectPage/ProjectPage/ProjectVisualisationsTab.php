@@ -1,7 +1,6 @@
 <?php
 
 $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectTimelineData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectMilestoneTimelineData';
 $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectDoughnutData';
 $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectGraphData';
 $wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectChordData';
@@ -39,7 +38,6 @@ class ProjectVisualisationsTab extends AbstractTab {
 		            <li><a href='#chart'>Productivity Chart</a></li>
 		            <li><a href='#chord'>Relations</a></li>
 		            <li><a href='#wordle'>Tag Cloud</a></li>
-		            <!--<li><a href='#network'>Network</a></li>-->
 	            </ul>
 	        <div id='timeline'>";
 		        $this->showTimeline($this->project, $this->visibility);
@@ -52,9 +50,6 @@ class ProjectVisualisationsTab extends AbstractTab {
 	        $this->html .= "</div>
 	                        <div id='wordle'>";
 		        $this->showWordle($this->project, $this->visibility);
-	        /*$this->html .= "</div>
-	                        <div id='network'>";
-		        $this->showGraph($this->project, $this->visibility);*/
 	        $this->html.= "</div>
     </div>
     <script type='text/javascript'>
@@ -80,7 +75,7 @@ class ProjectVisualisationsTab extends AbstractTab {
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
         if($wgUser->isLoggedIn()){
             $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectTimelineData&project={$project->getId()}";
-            $timeline = new Simile($dataUrl);
+            $timeline = new VisTimeline($dataUrl);
             
             $this->html .="<script type='text/javascript'>
                                 $(document).ready(function(){
@@ -206,113 +201,6 @@ class ProjectVisualisationsTab extends AbstractTab {
         }
     }
     
-    static function getProjectMilestoneTimelineData($action, $article){
-        $images = array();
-        $images[] = 'dark-blue-circle.png';
-        $images[] = 'dark-green-circle.png';
-        $images[] = 'dark-yellow-circle.png';
-        $images[] = 'dark-red-circle.png';
-        $images[] = 'dull-blue-circle.png';
-        $images[] = 'dull-green-circle.png';
-        $images[] = 'dull-red-circle.png';
-        $images[] = 'dark-purple-circle.png';
-        $images[] = 'dark-magenta-circle.png';
-        $images[] = 'gray-circle.png';
-        $images[] = 'green-circle.png';
-        $images[] = 'red-circle.png';
-        $images[] = 'yellow-circle.png';
-        $images[] = 'purple-circle.png';
-        $images[] = 'magenta-circle.png';
-        if($action == "getProjectMilestoneTimelineData" && isset($_GET['project'])){
-            global $wgServer, $wgScriptPath;
-            header("Content-Type: application/xml");
-            $project = Project::newFromId($_GET['project']);
-            $today = date("Y/m/d");
-            
-            echo "<data>\n";
-            $i = 0;
-            if(isset($_GET['year'])){
-                $milestones = $project->getMilestonesDuring($_GET['year']);
-            }
-            else{
-                $milestones = $project->getMilestones();
-            }
-            foreach($milestones as $milestone){
-                $key = $milestone->getMilestoneId();
-                $title = $milestone->getTitle();
-                $description = nl2br($milestone->getDescription());
-                $assessment = nl2br($milestone->getAssessment());
-                $start_date = str_replace("-", "/", substr($milestone->getVeryStartDate(), 0, 10));
-                $end_date = str_replace("-", "/", substr($milestone->getEndDate(), 0, 10));
-                if($end_date == "0000/00/00"){
-                    $end_date = $today;
-                }
-                $status = $milestone->getStatus();
-                
-                echo "<event trackNum='$i' start='$start_date' end='$end_date' isDuration='true' icon='$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/{$images[$i]}' color='#4272B2'></event>\n";
-                while($milestone != null){
-                    $start = str_replace("-", "/", substr($milestone->getStartDate(), 0, 10));
-                    $end = str_replace("-", "/", substr($milestone->getEndDate(), 0, 10));
-                    if($end == "0000/00/00"){
-                        $end = $today;
-                    }
-                    
-                    $p_status = $milestone->getStatus();
-                    $changed_on = $milestone->getStartDate();
-                    $p_title = $milestone->getTitle();
-                    $p_end_date = $milestone->getProjectedEndDate();
-                    $p_description = nl2br($milestone->getDescription());
-                    $p_assessment = nl2br($milestone->getAssessment());
-                    $p_comment = nl2br($milestone->getComment());
-                    if($p_comment){
-                        $p_comment = "<br /><strong>Comment:</strong> $p_comment";
-                    }
-                    if($p_status == "New"){
-                        $label = "Created";
-                    }
-                    else{
-                        $label = $status;
-                    }
-                    
-                    $peopleInvolved = array();
-                    foreach($milestone->getPeople() as $person){
-                        $peopleInvolved[] = "<a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>";
-                    }
-                    $people = "";
-                    if(count($peopleInvolved) > 0){
-                        $people = implode(", ", $peopleInvolved);
-                        $people = "<strong>People Involved:</strong> $people<br />";
-                    }
-                    
-                    $lastEdit = "";
-                    if($milestone->getEditedBy() != null && $milestone->getEditedBy()->getName() != ""){
-                        $lastEdit = "<strong>Last Edited By:</strong> <a href='{$milestone->getEditedBy()->getUrl()}'>{$milestone->getEditedBy()->getNameForForms()}</a><br />";
-                    }
-                    $content = str_replace("'", "&#39;", "<strong>$label</strong> on $changed_on<br />
-                     <strong>Projected End Date:</strong> $p_end_date<br />
-                     $people
-                     <strong>Description:</strong> $p_description<br />
-                     <strong>Assessment:</strong> $p_assessment
-                     $p_comment<br />
-                     $lastEdit");
-                     $content = str_replace("&", "&amp;", $content);
-                     $content = str_replace("&amp;#39;", "&#39;", $content);
-                     $content = str_replace("<", "&lt;", $content);
-                     $content = str_replace(">", "&gt;", $content);
-                    //echo "<event trackNum='$i' start='$start' icon='$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/{$images[$i]}' color='#4272B2'>$content</event>\n";
-                    $milestone = $milestone->getParent();
-                }
-                $i++;
-                if(count($images) == $i){
-                    $i = 0;
-                }
-            }
-            echo "</data>";
-            exit;
-        }
-        return true;
-    }
-    
     static function getProjectTimelineData($action, $article){
         if($action == "getProjectTimelineData" && isset($_GET['project'])){
             global $wgServer, $wgScriptPath;
@@ -321,33 +209,47 @@ class ProjectVisualisationsTab extends AbstractTab {
             $today = date("Y-m-d");
             
             $array = array();
+            $items = array();
+            $groups = array(array('id' => 'members',
+                                  'content' => 'Members (NI)',
+                                  'className' => 'visRed'),
+                            array('id' => 'products',
+                                  'content' => 'Products',
+                                  'className' => 'visOrange'));
             foreach($project->getAllPeopleDuring(null, '0000-00-00 00:00:00', '2100-00-00 00:00:00') as $person){
                 $start = substr($project->getJoinDate($person), 0, 10);
                 $end = substr($project->getEndDate($person), 0, 10);
-                if($end == "0000-00-00"){
-                    $end = $today;
+                if($person->isRoleDuring(PNI, $start, $end) ||
+                   $person->isRoleDuring(CNI, $start, $end) ||
+                   $person->isRoleDuring(AR, $start, $end)){
+                    if($end == "0000-00-00"){
+                        $end = $today;
+                    }
+                    if(strcmp($start, $end) > 0){
+                        $start = $end;
+                    }
+                    $content = "<a href='{$person->getUrl()}' target='_blank'>View Member's Page</a>";
+                    $items[] = array('content' => $person->getNameForForms(),
+                                     'description' => array('title' => $person->getNameForForms(),
+                                                            'text' => $content),
+                                     'group' => 'members',
+                                     'start' => $start,
+                                     'end' => $end);
                 }
-                if(strcmp($start, $end) > 0){
-                    $start = $end;
-                }
-                $content = "<a href='{$person->getUrl()}' target='_blank'>{$person->getNameForForms()}</a>";
-                $array[] = array('title' => $person->getNameForForms(),
-                                 'color' => '#4272B2',
-                                 'start' => $start,
-                                 'end' => $end,
-                                 'durationEvent' => true,
-                                 'description' => $content);
             }
 
             foreach($project->getPapers('all', '0000-00-00 00:00:00', '2100-00-00 00:00:00') as $paper){
                 $start = $paper->getDate();
-                $content = "<a href='{$paper->getUrl()}' target='_blank'>Wiki Page</a>";
-                $array[] = array('title' => $paper->getTitle(),
-                                 'color' => '#BCB326',
-                                 'icon' => "$wgServer$wgScriptPath/extensions/Visualisations/Simile/images/yellow-circle.png",
+                $content = "<a href='{$paper->getUrl()}' target='_blank'>View Product's Page</a>";
+                $items[] = array('content' => $paper->getTitle(),
+                                 'description' => array('title' => $paper->getTitle(),
+                                                        'text' => $content),
+                                 'group' => 'products',
                                  'start' => $start,
-                                 'description' => $content);
+                                 'type' => 'point');
             }
+            $array['items'] = $items;
+            $array['groups'] = $groups;
             echo json_encode($array);
             exit;
         }
@@ -430,132 +332,6 @@ class ProjectVisualisationsTab extends AbstractTab {
             
             header("Content-Type: application/json");
             echo json_encode(array($array));
-            exit;
-        }
-        return true;
-	}
-	
-	static function getProjectGraphData($action, $article){
-	    global $wgServer, $wgScriptPath;
-	    if($action == "getProjectGraphData"){
-            $project = Project::newFromId($_GET['project']);
-            
-            $data = array();
-            $data['legend'] = array();
-            $data['legend'][PNI] = array('color' => "#4E9B05",
-                                         'name' => PNI);
-            $data['legend'][CNI] = array('color' => "#46731D",
-                                         'name' => CNI);
-            $data['legend'][HQP] = array('color' => "#394D26",
-                                         'name' => HQP);     
-            $data['legend']["Project"] = array('color' => "#E41B05",
-                                               'name' => "Project");                        
-            $data['nodes'] = array();
-            $people = Person::getAllPeople();
-            $projects = Project::getAllProjects();
-            foreach($people as $person){
-                if($person->isRole(INACTIVE)){
-                    continue;
-                }
-                $relations = $person->getRelations();
-                $data['nodes']['p'.$person->getId()]['id'] = 'p'.$person->getId();
-                if(count($person->leadership()) > 0){
-                    $data['nodes']['p'.$person->getId()]['name'] = "<img style='width:8px;height:8px;vertical-align:top;' src='$wgServer$wgScriptPath/extensions/Visualisations/Graph/lead.png' />&nbsp;";
-                }
-                @$data['nodes']['p'.$person->getId()]['name'] .= str_replace(" ", "&nbsp;", $person->getNameForForms());
-                
-                if($person->isHQP()){
-                    $data['nodes']['p'.$person->getId()]['type'] = HQP;
-                }
-                else if($person->isCNI()){
-                    $data['nodes']['p'.$person->getId()]['type'] = CNI;
-                }
-                else if($person->isPNI()){
-                    $data['nodes']['p'.$person->getId()]['type'] = PNI;
-                }
-                $description = array();
-                $description[] = "<img src='{$person->getPhoto()}' /><br />";
-                
-                $description[] = "<b>Roles:</b> ";
-                $roles = array();
-                foreach($person->getRoles() as $role){
-                    $roles[] = $role->getRole();
-                }
-                $description[] = implode(", ", $roles);
-                
-                $projs = array();
-                $description[] = "<br /><br /><b>Projects:</b> ";
-                foreach($person->getProjects() as $proj){
-                    $projs[] = "<a href='{$proj->getUrl()}' target='_blank'>{$proj->getName()}</a>";
-                }
-                $description[] = implode(", ", $projs);
-                
-                $description[] = "<br /><br /><a href='{$person->getUrl()}' target='_blank'>User Page</a>";
-                
-                $data['nodes']['p'.$person->getId()]['description'] = implode('', $description);
-
-                if(count($relations) > 0){
-                    foreach($relations as $relationTypes){
-                        foreach($relationTypes as $relation){
-                            $weight = 3;
-                            $type = $relation->getType();
-                            if($type == "Supervises"){
-                                $weight = 6;
-                            }
-                            $data['nodes']['p'.$relation->getUser1()->getId()]['connections'][] = array('a' => 'p'.$relation->getUser1()->getId(),
-                                                                                        'b' => 'p'.$relation->getUser2()->getId(),
-                                                                                        'weight' => $weight);
-                            $data['nodes']['p'.$relation->getUser2()->getId()]['connections'][] = array('a' => 'p'.$relation->getUser1()->getId(),
-                                                                                          'b' => 'p'.$relation->getUser2()->getId(),
-                                                                                          'weight' => $weight);
-                        }
-                    }
-                }
-            }
-            foreach($projects as $project){
-                $members = $project->getAllPeople();
-                $data['nodes']['pr'.$project->getId()]['id'] = 'pr'.$project->getId();
-                $data['nodes']['pr'.$project->getId()]['name'] = str_replace(" ", "&nbsp", $project->getName());
-                $data['nodes']['pr'.$project->getId()]['type'] = "Project";
-                
-                $description = array();
-                
-                $description[] = "<b>Leaders: </b>";
-                $leads = array();
-                foreach($project->getLeaders() as $member){
-                    $leads[] = "<a href='{$member->getUrl()}' target='_blank'>{$member->getNameForForms()}</a>";
-                }
-                $description[] = implode(", ", $leads);
-                $description[] = "<br /><br /><b>co-Leaders: </b>";
-                $leads = array();
-                foreach($project->getCoLeaders() as $member){
-                    $leads[] = "<a href='{$member->getUrl()}' target='_blank'>{$member->getNameForForms()}</a>";
-                }
-                $description[] = implode(", ", $leads);
-                $description[] = "<br /><br /><b>Members: </b>";
-                $membs = array();
-                foreach($members as $member){
-                    $membs[] = "<a href='{$member->getUrl()}' target='_blank'>{$member->getNameForForms()}</a>";
-                }
-                $description[] = implode(", ", $membs);
-                $description[] = "<br /><br /><a href='{$project->getUrl()}' target='_blank'>Project Page</a>";
-                $data['nodes']['pr'.$project->getId()]['description'] = implode('', $description);
-                foreach($members as $member){
-                    if($member->isRole(INACTIVE)){
-                        continue;
-                    }
-                    $data['nodes']['p'.$member->getId()]['connections'][] = array('a' => 'p'.$member->getId(),
-                                                                                  'b' => 'pr'.$project->getId(),
-                                                                                  'weight' => 3);
-                    $data['nodes']['pr'.$project->getId()]['connections'][] = array('a' => 'p'.$member->getId(),
-                                                                                  'b' => 'pr'.$project->getId(),
-                                                                                  'weight' => 3);
-                }
-            }
-            $data['start_node'] = 'pr'.$_GET['project'];
-            header("Content-Type: application/json");
-           
-            echo json_encode($data);
             exit;
         }
         return true;
