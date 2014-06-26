@@ -40,15 +40,17 @@
             margin: {item: 4, axis: 4},
             zoomMax: 315360000000,
             zoomMin: 26280000000,
-            start: lastYear,
-            end: today,
             max: nextYear
         };
+        
+        
 
         var timeline = new vis.Timeline(container);
         timeline.setOptions(opts);
         timeline.setGroups(groups);
         timeline.setItems(items);
+        
+        timeline.fit();
         
         timeline.on('select', $.proxy(function(properties){
             var id = _.first(properties.items);
@@ -118,6 +120,7 @@
                 return _.contains(values, g.id);
             }));
             timeline.setGroups(filteredGroups);
+            timeline.fit();
         });
 
     }, this));
