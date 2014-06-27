@@ -6,8 +6,8 @@
     $.get(options.url, $.proxy(function(json){
         
         _.each(json.items, function(i){
-            if(i.content.length > 30){
-                i.content = i.content.substr(0, 30) + "...";
+            if(i.content.length > 25){
+                i.content = i.content.substr(0, 25) + "...";
             }
         });
         
