@@ -43,7 +43,19 @@
             max: nextYear
         };
         
-        
+        this.alternateBackground = function(){
+            $("div.vlabel", this).each(function(i, e){
+                if(i % 2 == 1){
+                    $(e).css("background", "rgba(0,0,0,0.05)");
+                }
+            });
+              
+            $("div.foreground div.group", this).each(function(i, e){
+                if(i % 2 == 1){
+                    $(e).css("background", "rgba(0,0,0,0.05)");
+                }
+            });
+        }
 
         var timeline = new vis.Timeline(container);
         timeline.setOptions(opts);
@@ -97,21 +109,11 @@
                 }
             });
         }, this));
-          
-        $("div.vlabel", this).each(function(i, e){
-            if(i % 2 == 1){
-                $(e).css("background", "rgba(0,0,0,0.05)");
-            }
-        });
-          
-        $("div.foreground div.group", this).each(function(i, e){
-            if(i % 2 == 1){
-                $(e).css("background", "rgba(0,0,0,0.05)");
-            }
-        });
+        
+        this.alternateBackground();
         
         // Handle Filter Changes
-        $("#" + id + "Filter > input").change(function(e){
+        $("#" + id + "Filter > input").change($.proxy(function(e){
             var values = new Array();
             $("#" + id + "Filter > input:checked").each(function(i, v){
                 values.push($(v).val());
@@ -120,8 +122,9 @@
                 return _.contains(values, g.id);
             }));
             timeline.setGroups(filteredGroups);
+            this.alternateBackground();
             timeline.fit();
-        });
+        }, this));
 
     }, this));
 }
