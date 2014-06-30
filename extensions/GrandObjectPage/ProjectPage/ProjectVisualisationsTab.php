@@ -182,15 +182,15 @@ class ProjectVisualisationsTab extends AbstractTab {
             foreach($project->getAllPeopleDuring(null, '0000-00-00 00:00:00', '2100-00-00 00:00:00') as $person){
                 $start = substr($project->getJoinDate($person), 0, 10);
                 $end = substr($project->getEndDate($person), 0, 10);
+                if($end == "0000-00-00"){
+                    $end = $today;
+                }
+                if(strcmp($start, $end) > 0){
+                    $start = $end;
+                }
                 if($person->isRoleDuring(PNI, $start, $end) ||
                    $person->isRoleDuring(CNI, $start, $end) ||
                    $person->isRoleDuring(AR, $start, $end)){
-                    if($end == "0000-00-00"){
-                        $end = $today;
-                    }
-                    if(strcmp($start, $end) > 0){
-                        $start = $end;
-                    }
                     $content = "<a href='{$person->getUrl()}' target='_blank'>View Member's Page</a>";
                     $items[] = array('content' => $person->getNameForForms(),
                                      'description' => array('title' => $person->getNameForForms(),
