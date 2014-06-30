@@ -8,18 +8,18 @@
         _.each(json.items, function(i, index){
             if(i.content.length > 25){
                 i.content = i.content.substr(0, 25) + "...";
-                if(i.start != undefined){
-                    if(i.start.indexOf("0000" != -1)){
-                        delete json.items[index];
-                    }
-                    i.start = i.start.replace(/-00/g, "-01");
+            }
+            if(i.start != undefined){
+                if(i.start.indexOf("0000") != -1){
+                    delete json.items[index];
                 }
-                if(i.end != undefined){
-                    if(i.end.indexOf("0000" != -1)){
-                        delete json.items[index];
-                    }
-                    i.end = i.end.replace(/-00/g, "-01");
+                i.start = i.start.replace(/-00/g, "-01");
+            }
+            if(i.end != undefined){
+                if(i.end.indexOf("0000") != -1){
+                    delete json.items[index];
                 }
+                i.end = i.end.replace(/-00/g, "-01");
             }
         });
         

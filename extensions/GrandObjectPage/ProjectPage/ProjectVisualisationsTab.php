@@ -201,7 +201,11 @@ class ProjectVisualisationsTab extends AbstractTab {
                 }
             }
 
+            $papersDone = array();
             foreach($project->getPapers('all', '0000-00-00 00:00:00', '2100-00-00 00:00:00') as $paper){
+                if(isset($papersDone[$paper->getId()])){
+                    continue;
+                }
                 $start = $paper->getDate();
                 $content = "<a href='{$paper->getUrl()}' target='_blank'>View Product's Page</a>";
                 $items[] = array('content' => $paper->getTitle(),
@@ -210,6 +214,7 @@ class ProjectVisualisationsTab extends AbstractTab {
                                  'group' => 'products',
                                  'start' => $start,
                                  'type' => 'point');
+                $papersDone[$paper->getId()] = $paper;
             }
             $array['items'] = $items;
             $array['groups'] = $groups;
