@@ -29,6 +29,13 @@ class HQPPromotionsTab extends AbstractTab {
 	            $timeline = new VisTimeline("{$wgServer}{$wgScriptPath}/index.php?action=getHQPPromotionsTimelineData&person={$person->getId()}");
 	            $timeline->height = 600;
 	            $this->html .= $timeline->show();
+	            $this->html .= "<script type='text/javascript'>
+                $('#adminVis').bind('tabsselect', function(event, ui) {
+                    if(ui.panel.id == 'hqp-promotions'){
+                        onLoad{$timeline->index}();
+                    }
+                });
+                </script><br />";
 	        }
 	    }
 	}
