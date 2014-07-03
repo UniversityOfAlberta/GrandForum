@@ -39,7 +39,7 @@
           .data(nodes)
         .enter().append("svg:g")
           .attr("title", function(d){ return d.name + "<table>" + 
-                                                      "<tr><td>" + options.sizeLabel + ":</td><td align=right>" + options.sizeUnit + addCommas(d.value) + "</td><td>(" + Math.round(d.value*100*10/d.parent.value)/10 + "%)</td></tr>" + 
+                                                      "<tr><td>" + options.sizeLabel + ":</td><td align=right>" + options.sizeUnit + addCommas(Math.round(d.value)) + "</td><td>(" + Math.round(d.value*100*10/d.parent.value)/10 + "%)</td></tr>" + 
                                                       "<tr><td>" + options.countLabel + ":</td><td align=right>" + options.countUnit + addCommas(recursiveCount(d)) + "</td><td>(" + Math.round(recursiveCount(d)*100*10/recursiveCount(d.parent))/10 + "%)</td></tr>" + 
                                                       "</table>"; })
           .attr("depth", function(d) { return d.depth; })
@@ -65,7 +65,7 @@
           .data(categories)
         .enter().append("svg:g")
           .attr("title", function(d){ return d.name + "<table>" + 
-                                                      "<tr><td>" + options.sizeLabel + ":</td><td align=right>" + options.sizeUnit + addCommas(d.value) + "</td><td>(" + Math.round(d.value*100*10/d.parent.value)/10 + "%)</td></tr>" + 
+                                                      "<tr><td>" + options.sizeLabel + ":</td><td align=right>" + options.sizeUnit + addCommas(Math.round(d.value)) + "</td><td>(" + Math.round(d.value*100*10/d.parent.value)/10 + "%)</td></tr>" + 
                                                       "<tr><td>" + options.countLabel + ":</td><td align=right>" + options.countUnit + addCommas(recursiveCount(d)) + "</td><td>(" + Math.round(recursiveCount(d)*100*10/recursiveCount(d.parent))/10 + "%)</td></tr>" + 
                                                       "</table>"; })
           .attr("depth", function(d) { return d.depth; })
