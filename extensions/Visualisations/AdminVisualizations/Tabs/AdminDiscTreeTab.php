@@ -12,7 +12,7 @@ class AdminDiscTreeTab extends AbstractTab {
 	    global $wgServer, $wgScriptPath;
 	    for($year=2011; $year <= REPORTING_YEAR+1; $year++){
 	        $this->html .= "<h2>$year</h2>";
-	        $tree = new TreeMap("{$wgServer}{$wgScriptPath}/index.php?action=getAdminDiscTreeData&date={$year}", "Funding", "Count");
+	        $tree = new TreeMap("{$wgServer}{$wgScriptPath}/index.php?action=getAdminDiscTreeData&date={$year}", "Funding", "Count", "$", "");
 	        $tree->height = 500;
 	        $tree->width = 1000;
 	        $this->html .= $tree->show();
@@ -43,7 +43,7 @@ class AdminDiscTreeTab extends AbstractTab {
                     $budget = $person->getRequestedBudget($year-1);
                     if($budget != null){
                         $total = str_replace('$', "", $budget->copy()->rasterize()->where(HEAD1, array("TOTALS%"))->limit(0, 1)->select(ROW_TOTAL)->toString());
-                        @$unis[$disc][$person->getName()] = ($total == "") ? "0" : $total;
+                        @$unis[$disc][$person->getReversedName()] = ($total == "") ? "0" : $total;
                     }
                 }
             }

@@ -70,6 +70,11 @@
     font-weight: bold;
 }
 
+.visYellow {
+    color: #FCB722 !important;
+    font-weight: bold;
+}
+
 .vis.timeline .visRed .item {
     color: #EC2528;
     font-weight: bold;
@@ -98,4 +103,10 @@
     color: #723C96;
     font-weight: bold;
     border-color: #723C96;
+}
+
+.vis.timeline .visYellow .item {
+    color: #FCB722;
+    font-weight: bold;
+    border-color: #FCB722;
 }

@@ -6,13 +6,17 @@ class TreeMap extends Visualisation {
     var $url = "";
     var $sizeLabel;
     var $countLabel;
+    var $sizeUnit;
+    var $countUnit;
     var $width = "500";
     var $height = "500";
     
-    function TreeMap($url, $sizeLabel="Size", $countLabel="Count"){
+    function TreeMap($url, $sizeLabel="Size", $countLabel="Count", $sizeUnit="", $countUnit=""){
         $this->url = $url;
         $this->sizeLabel = $sizeLabel;
         $this->countLabel = $countLabel;
+        $this->sizeUnit = $sizeUnit;
+        $this->countUnit = $countUnit;
         self::Visualisation();
     }
     
@@ -32,7 +36,11 @@ class TreeMap extends Visualisation {
 <script type='text/javascript'>
     
     function onLoad{$this->index}(){
-        $('#vis{$this->index}').treemap({url: '{$this->url}'});
+        $('#vis{$this->index}').treemap({url: '{$this->url}',
+                                         sizeLabel: '{$this->sizeLabel}',
+                                         sizeUnit: '{$this->sizeUnit}',
+                                         countLabel: '{$this->countLabel}',
+                                         countUnit: '{$this->countUnit}'});
     }
             
     $(document).ready(function(){

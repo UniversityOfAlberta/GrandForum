@@ -38,7 +38,10 @@
       var cell = svg.selectAll("g.cell")
           .data(nodes)
         .enter().append("svg:g")
-          .attr("title", function(d){ return d.name; })
+          .attr("title", function(d){ return d.name + "<table>" + 
+                                                      "<tr><td>" + options.sizeLabel + ":</td><td align=right>" + options.sizeUnit + addCommas(d.value) + "</td><td>(" + Math.round(d.value*100*10/d.parent.value)/10 + "%)</td></tr>" + 
+                                                      "<tr><td>" + options.countLabel + ":</td><td align=right>" + options.countUnit + addCommas(recursiveCount(d)) + "</td><td>(" + Math.round(recursiveCount(d)*100*10/recursiveCount(d.parent))/10 + "%)</td></tr>" + 
+                                                      "</table>"; })
           .attr("depth", function(d) { return d.depth; })
           .attr("class", "cell")
           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
@@ -61,7 +64,10 @@
       var catCell = svg.selectAll("g.catCell")
           .data(categories)
         .enter().append("svg:g")
-          .attr("title", function(d){ return d.name; })
+          .attr("title", function(d){ return d.name + "<table>" + 
+                                                      "<tr><td>" + options.sizeLabel + ":</td><td align=right>" + options.sizeUnit + addCommas(d.value) + "</td><td>(" + Math.round(d.value*100*10/d.parent.value)/10 + "%)</td></tr>" + 
+                                                      "<tr><td>" + options.countLabel + ":</td><td align=right>" + options.countUnit + addCommas(recursiveCount(d)) + "</td><td>(" + Math.round(recursiveCount(d)*100*10/recursiveCount(d.parent))/10 + "%)</td></tr>" + 
+                                                      "</table>"; })
           .attr("depth", function(d) { return d.depth; })
           .attr("class", "catCell")
           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
@@ -97,9 +103,34 @@
     function size(d) {
       return d.size;
     }
-
+    
     function count(d) {
       return 1;
+    }
+    
+    function recursiveCount(d){
+        var count = 0;
+        if(!d.children){
+            return 1;
+        }
+        else {
+            _.each(d.children, function(child){
+                count += recursiveCount(child);
+            });
+        }
+        return count;
+    }
+    
+    function addCommas(nStr){
+	    nStr += '';
+	    var x = nStr.split('.');
+	    var x1 = x[0];
+	    var x2 = x.length > 1 ? '.' + x[1] : '';
+	    var rgx = /(\d+)(\d{3})/;
+	    while (rgx.test(x1)) {
+		    x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	    }
+	    return x1 + x2;
     }
 
     function zoom(d) {

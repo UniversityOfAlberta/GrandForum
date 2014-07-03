@@ -12,7 +12,7 @@ class AdminProjTreeTab extends AbstractTab {
 	    global $wgServer, $wgScriptPath;
 	    for($year=2011; $year <= REPORTING_YEAR+1; $year++){
 	        $this->html .= "<h2>$year</h2>";
-	        $tree = new TreeMap("{$wgServer}{$wgScriptPath}/index.php?action=getAdminProjTreeData&date={$year}", "Funding", "Count");
+	        $tree = new TreeMap("{$wgServer}{$wgScriptPath}/index.php?action=getAdminProjTreeData&date={$year}", "Funding", "Count", "$", "");
 	        $tree->height = 500;
 	        $tree->width = 1000;
 	        $this->html .= $tree->show();

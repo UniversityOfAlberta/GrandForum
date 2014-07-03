@@ -12,7 +12,7 @@ class AdminUniTreeTab extends AbstractTab {
 	    global $wgServer, $wgScriptPath;
 	    for($year=2011; $year <= REPORTING_YEAR+1; $year++){
 	        $this->html .= "<h2>$year</h2>";
-	        $tree = new TreeMap("{$wgServer}{$wgScriptPath}/index.php?action=getAdminUniTreeData&date={$year}", "Funding", "Count");
+	        $tree = new TreeMap("{$wgServer}{$wgScriptPath}/index.php?action=getAdminUniTreeData&date={$year}", "Funding", "Count", "$", "");
 	        $tree->height = 500;
 	        $tree->width = 1000;
 	        $this->html .= $tree->show();
@@ -46,14 +46,14 @@ class AdminUniTreeTab extends AbstractTab {
                     $budget = $person->getRequestedBudget($year-1);
                     if($budget != null){
                         $total = str_replace('$', "", $budget->copy()->rasterize()->where(HEAD1, array("TOTALS%"))->limit(0, 1)->select(ROW_TOTAL)->toString());
-                        @$unis[$uni['university']][$person->getName()] = ($total == "") ? "0" : $total;
+                        @$unis[$uni['university']][$person->getReversedName()] = ($total == "") ? "0" : $total;
                     }
                 }
             }
             $provinces = array();
             foreach($unis as $uni => $people){
                 $university = University::newFromName($uni);
-                $province = $university->getProvince();
+                $province = str_replace("Saskatchewan", "Sask", $university->getProvince());
                 $provinces[$province][$uni] = $people;
             }
             foreach($provinces as $province => $universities){

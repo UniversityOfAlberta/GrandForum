@@ -6,7 +6,7 @@
     $.get(options.url, $.proxy(function(json){
         
         _.each(json.items, function(i, index){
-            if(i.content.length > 25){
+            if(i.content != undefined && i.content.length > 25){
                 i.content = i.content.substr(0, 25) + "...";
             }
             if(i.start != undefined){
