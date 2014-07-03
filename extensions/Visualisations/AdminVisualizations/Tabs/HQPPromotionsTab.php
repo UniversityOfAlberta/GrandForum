@@ -176,11 +176,12 @@ class HQPPromotionsTab extends AbstractTab {
                     AND `user_id` != '0'
                     AND `blob_type` != '16385'";
             $data = DBFunctions::execSQL($sql);
+            $reportsAlreadyDone = array();
             foreach($data as $row){
                 $year = $row['year'];
                 $start = $year."-12-31";
                 $user = Person::newFromId($row['user_id']);
-                if($user->getId() != $person->getId()){
+                if(!isset($reportsAlreadyDone[$year."_".$user->getId()]) && $user->getId() != $person->getId()){
                     $items[] = array('content' => $user->getNameForForms(),
                                      'description' => array('title' => $user->getNameForForms(),
                                                             'text' => ''),
@@ -188,6 +189,7 @@ class HQPPromotionsTab extends AbstractTab {
                                      'start' => $start,
                                      'type' => 'point');
                 }
+                $reportsAlreadyDone[$year."_".$user->getId()] = true;
             }
             $array['items'] = $items;
             $array['groups'] = $groups;
