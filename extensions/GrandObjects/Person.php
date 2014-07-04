@@ -617,6 +617,20 @@ class Person extends BackboneModel {
         if($wgUser->isLoggedIn()){
             $privateProfile = $this->getProfile(true);
         }
+        if($this->isRole(CHAMP)){
+            $university = $this->getPartnerName();
+            $department = $this->getPartnerDepartment();
+            $position = $this->getPartnerTitle();
+            
+            $university = ($university != "") ? $university : $this->getUni();
+            $department = ($department != "") ? $department : $this->getDepartment();
+            $position = ($position != "") ? $position : $this->getPosition();
+        }
+        else{
+            $university = $this->getUni();
+            $department = $this->getDepartment();
+            $position = $this->getPosition();
+        }
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
                       'realName' => $this->getRealName(),
@@ -629,9 +643,9 @@ class Person extends BackboneModel {
                       'website' => $this->getWebsite(),
                       'photo' => $this->getPhoto(),
                       'cachedPhoto' => $this->getPhoto(true),
-                      'university' => $this->getUni(),
-                      'department' => $this->getDepartment(),
-                      'position' => $this->getPosition(),
+                      'university' => $university,
+                      'department' => $department,
+                      'position' => $position,
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $publicProfile,
                       'url' => $this->getURL());
@@ -1247,6 +1261,31 @@ class Person extends BackboneModel {
             }
         }
         return $this->universityDuring[$startRange.$endRange];
+    }
+    
+    /**
+     * Returns all the Universities that this Person has been a part of
+     * @return array The last University that this Person was at between the given range
+     */ 
+    function getUniversities(){
+        $sql = "SELECT * 
+                FROM grand_user_university uu, grand_universities u, grand_positions p
+                WHERE uu.user_id = '{$this->id}'
+                AND u.university_id = uu.university_id
+                AND uu.position_id = p.position_id
+                ORDER BY uu.id DESC";
+        $data = DBFunctions::execSQL($sql);
+        $array = array();
+        if(count($data) > 0){
+            foreach($data as $row){
+                $array[] = array("university" => $row['university_name'],
+                                 "department" => $row['department'],
+                                 "position"   => $row['position'],
+                                 "start" => $row['start_date'],
+                                 "end" => $row['end_date']);
+            }
+        }
+        return $array;
     }
     
     /**

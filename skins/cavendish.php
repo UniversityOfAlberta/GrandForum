@@ -491,6 +491,14 @@ class cavendishTemplate extends QuickTemplate {
                         $img = "glyphicons_social_31_twitter";
                         $text = "Twitter";
                         break;
+                    case 'facebook':
+                        $img = "glyphicons_social_30_facebook";
+                        $text = "Facebook";
+                        break;
+                    case 'vimeo':
+                        $img = "glyphicons_social_34_vimeo";
+                        $text = "Vimeo";
+                        break;
                     case 'linkedin':
                         $img = "glyphicons_social_17_linked_in";
                         $text = "LinkedIn";

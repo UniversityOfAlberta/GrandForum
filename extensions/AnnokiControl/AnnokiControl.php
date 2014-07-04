@@ -129,7 +129,10 @@ $egAnnokiExtensions['Visualizations'] = array('name' => 'Visualizations',
                                               'path' => "$IP/extensions/Visualizations/Visualization.php");
                                               
 $egAnnokiExtensions['PublicVisualizations'] = array('name' => 'Public Visualizations',
-                                                    'path' => "$IP/extensions/PublicVisualizations/PublicVisualizations.php");
+                                                    'path' => "$IP/extensions/Visualizations/PublicVisualizations/PublicVisualizations.php");
+                                                    
+$egAnnokiExtensions['AdminVisualizations'] = array('name' => 'Admin Visualizations',
+                                                   'path' => "$IP/extensions/Visualizations/AdminVisualizations/AdminVisualizations.php");
 
 $egAnnokiExtensions['Survey'] = array('name' => 'Survey',
                                       'path' => "$IP/extensions/Survey/Survey.php");

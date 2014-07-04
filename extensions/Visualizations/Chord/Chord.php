@@ -1,7 +1,5 @@
 <?php
 
-//require_once("SpecialChord.php");
-
 class Chord extends Visualization {
     
     static $a = 0;
@@ -27,14 +25,12 @@ class Chord extends Visualization {
 
     function show(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $string = "<div style='position:absolute;' id='visSpinner{$this->index}'></div>
-                   <div style='height:".($this->height)."px;width:".($this->width)."px;display:inline-block;' class='chordChart' id='vis{$this->index}'>
+        $string = "<div style='height:".($this->height)."px;width:".($this->width)."px;float:left;' class='chordChart' id='vis{$this->index}'>
                    </div>
-                   <div style='display:inline-block;vertical-align:top;'>
-                       <div style='margin-top:25px;margin-left:25px;' id='visOptions{$this->index}'></div>
-                       <div style='margin-top:25px;margin-left:25px;' id='visSort{$this->index}'></div>
-                       <div style='margin-top:25px;margin-left:25px;' id='visLegend{$this->index}'></div>
-                   </div>";
+                   <div style='position:absolute;' id='visSpinner{$this->index}'></div>
+                   <div style='margin-top:25px;margin-left:25px;' id='visOptions{$this->index}'></div>
+                   <div style='margin-top:25px;margin-left:25px;' id='visSort{$this->index}'></div>
+                   <div style='margin-top:25px;margin-left:25px;' id='visLegend{$this->index}'></div>";
         $string .= <<<EOF
 <script type='text/javascript'>
     var params = Array();

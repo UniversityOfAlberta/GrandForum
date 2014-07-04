@@ -1,16 +1,16 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectTimelineData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectDoughnutData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectChordData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectWordleData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectTimelineData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectDoughnutData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectChordData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualisationsTab::getProjectWordleData';
 
-class ProjectVisualizationsTab extends AbstractTab {
+class ProjectVisualisationsTab extends AbstractTab {
 
     var $project;
     var $visibility;
 
-    function ProjectVisualizationsTab($project, $visibility){
+    function ProjectVisualisationsTab($project, $visibility){
         parent::AbstractTab("Visualizations");
         $this->project = $project;
         $this->visibility = $visibility;
