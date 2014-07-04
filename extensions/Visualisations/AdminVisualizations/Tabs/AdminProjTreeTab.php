@@ -10,6 +10,7 @@ class AdminProjTreeTab extends AbstractTab {
 
     function generateBody(){
 	    global $wgServer, $wgScriptPath;
+	    $this->html .= "The following tree map visualizations show the distribution of funding for Themes/Projects/People.  Clicking on a section will zoom in to that section.  If 'Funding' is selected, the area that the section takes up is based on how much funding each section gets.  If 'Count' is selected, the area is based on how many sub-sections each section has.";
 	    for($year=2011; $year <= REPORTING_YEAR+1; $year++){
 	        $this->html .= "<h2>$year</h2>";
 	        $tree = new TreeMap("{$wgServer}{$wgScriptPath}/index.php?action=getAdminProjTreeData&date={$year}", "Funding", "Count", "$", "");
