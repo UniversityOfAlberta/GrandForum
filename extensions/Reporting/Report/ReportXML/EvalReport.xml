@@ -2,9 +2,9 @@
 <Report name="Evaluation Report" reportType="" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
-            <SectionPermission id="eval_pni_report" permissions="rw" />
-            <SectionPermission id="eval_cni_report" permissions="rw" />
-            <SectionPermission id="eval_project_report" permissions="rw" />
+            <SectionPermission id="eval_pni_report" permissions="r" />
+            <SectionPermission id="eval_cni_report" permissions="r" />
+            <SectionPermission id="eval_project_report" permissions="r" />
         </Role>
     </Permissions>
     <!-- PNI -->

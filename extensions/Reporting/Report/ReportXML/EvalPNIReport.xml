@@ -2,10 +2,10 @@
 <Report name="PNI Evaluation" reportType="RP_EVAL_RESEARCHER" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
-            <SectionPermission id="pni_materials" permissions="rw" />
-            <SectionPermission id="pni_budget" permissions="rw" />
-            <SectionPermission id="pni_reviews" permissions="rw" />
-            <SectionPermission id="pni_overview" permissions="rw" />
+            <SectionPermission id="pni_materials" permissions="r" />
+            <SectionPermission id="pni_budget" permissions="r" />
+            <SectionPermission id="pni_reviews" permissions="r" />
+            <SectionPermission id="pni_overview" permissions="r" />
         </Role>
     </Permissions>
 

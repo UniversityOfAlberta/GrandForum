@@ -191,7 +191,6 @@ class AddArtifactPage extends SpecialPage{
 	        exit;
 	    }
 	    $wgOut->addScript(generateScript("Artifact"));
-
 		$wgOut->addHTML("Enter in the title of the artifact in the text field below.  If there is an already existing artifact with the same or similar name, it will be listed below the text field.  If you see the artifact in the list, then you can click on the title to edit its information, otherwise you can choose to create the artifact with the title you have entered by clicking the 'Create' button.<br /><br />
 		                 <b>Title:</b> <input onKeyPress='submitOnEnter(event)' type='text' id='title' name='title' size='50' onKeyUp='search(this.value);' /> <input type='button' onClick='changeLocation();' name='submit' value='Create' /><br />
 		                 <fieldset id='sug' style='display:none;'>
@@ -224,7 +223,6 @@ class AddPublicationPage extends SpecialPage{
 	        exit;
 	    }
 	    $wgOut->addScript(generateScript("Publication"));
-
 	    $wgOut->addHTML("Enter in the title of the publication in the text field below.  If there is an already existing publication with the same or similar title, it will be listed below the text field.  If you see the publication in the list, then you can click on the title to edit its information, otherwise you can choose to create the publication with the title you have entered by clicking the 'Create' button.");
 	    if(isExtensionEnabled('ImportBibTex')){
 	        $wgOut->addHTML("You can also add a new publication using the <a href='$wgServer$wgScriptPath/index.php/Special:ImportBibTex'>Import BibTeX</a> page.");
@@ -325,7 +323,6 @@ class AddPresentationPage extends SpecialPage{
 	        exit;
 	    }
 	    $wgOut->addScript(generateScript("Presentation"));
-
 		$wgOut->addHTML("Enter in the title of the presentation in the text field below.  If there is an already existing presentation with the same or similar name, it will be listed below the text field.  If you see the presentation in the list, then you can click on the title to edit its information, otherwise you can choose to create the presentation with the title you have entered by clicking the 'Create' button.<br /><br />
 		                 <b>Title:</b> <input onKeyPress='submitOnEnter(event)' type='text' id='title' name='title' size='50' onKeyUp='search(this.value);' /> <input type='button' onClick='changeLocation();' name='submit' value='Create' /><br />
 		                 <fieldset id='sug' style='display:none;'>

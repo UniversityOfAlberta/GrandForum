@@ -2,9 +2,9 @@
 <Report name="Champion Report" reportType="RP_CHAMP" pdfType="RPTP_CHAMP" pdfFiles="ChampionReportPDF" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
         <Role end="REPORTING_RMC_MEETING" role="CHAMP">
-            <SectionPermission id="report" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
+            <SectionPermission id="report" permissions="r" />
+            <SectionPermission id="review" permissions="r" />
+            <SectionPermission id="submit" permissions="r" />
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_RMC_MEETING" deleted="false" />
     </Permissions>

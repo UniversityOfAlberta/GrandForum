@@ -1,7 +1,6 @@
 <?php
 $dir = dirname(__FILE__) . '/';
 
-
 $wgSpecialPages['ReportArchive'] = 'ReportArchive';
 $wgExtensionMessagesFiles['ReportArchive'] = $dir . 'ReportArchive.i18n.php';
 $wgSpecialPageGroups['ReportArchive'] = 'reporting-tools';
@@ -72,7 +71,7 @@ class ReportArchive extends SpecialPage {
 			    }
 			    else {
 			        $ext = "pdf";
-			        if($type == RPTP_NI_ZIP || $type == RPTP_PROJ_ZIP){
+			        if($type == RPTP_NI_ZIP || $type == RPTP_PROJ_ZIP || $type == RPTP_HQP_ZIP){
 			            $ext = "zip";
 			        }
 				    $tst = $sto->metadata('timestamp');
@@ -84,6 +83,9 @@ class ReportArchive extends SpecialPage {
 				        }
 				        else if($type == RPTP_NI_ZIP){
 				            $name = "NIReports_{$tst}.zip";
+				        }
+				        else if($type == RPTP_HQP_ZIP){
+				            $name = "HQPReports_{$tst}.zip";
 				        }
                         else if($type == RPTP_LOI_REVIEW){
                             $report = AbstractReport::newFromToken($tok);

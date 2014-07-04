@@ -2,10 +2,10 @@
 <Report name="Project Evaluation" reportType="RP_EVAL_PROJECT" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
-            <SectionPermission id="project_materials" permissions="rw" />
-            <SectionPermission id="project_budget" permissions="rw" />
-            <SectionPermission id="project_reviews" permissions="rw" />
-            <SectionPermission id="project_overview" permissions="rw" />
+            <SectionPermission id="project_materials" permissions="r" />
+            <SectionPermission id="project_budget" permissions="r" />
+            <SectionPermission id="project_reviews" permissions="r" />
+            <SectionPermission id="project_overview" permissions="r" />
         </Role>
     </Permissions>
 
