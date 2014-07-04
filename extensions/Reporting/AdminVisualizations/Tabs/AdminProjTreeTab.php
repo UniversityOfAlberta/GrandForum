@@ -54,47 +54,8 @@ class AdminProjTreeTab extends AbstractTab {
                 }
             }
             foreach($projs as $theme => $projs2){
-                switch($theme){
-                    case "nMEDIA": 
-                        $color = "#B6D661";
-                        break;
-                    case "GamSim":
-                        $color = "#CF292D";
-                        break;
-                    case "AnImage":
-                        $color = "#FCB722";
-                        break;
-                    case "SocLeg":
-                        $color = "#23A69D";
-                        break;
-                    case "TechMeth":
-                        $color = "#8D539F";
-                        break;
-                    case "(Big) Data":
-                        $color = "#21A3DC";
-                        break;
-                    case "Citizenship":
-                        $color = "#FFC90D";
-                        break;
-                    case "Entertainment":
-                        $color = "#723C96";
-                        break;
-                    case "Health":
-                        $color = "#EC2528";
-                        break;
-                    case "Learning":
-                        $color = "#F47F20";
-                        break;
-                    case "Sustainability":
-                        $color = "#12A551";
-                        break;
-                    case "Work":
-                        $color = "#075693";
-                        break;
-                    default:
-                        $color = "#888888";
-                        break;
-                }
+                $challenge = Theme::newFromName($theme);
+                $color = $challenge->getColor();
                 $themeData = array("name" => $theme,
                                    "color" => $color,
                                    "children" => array());

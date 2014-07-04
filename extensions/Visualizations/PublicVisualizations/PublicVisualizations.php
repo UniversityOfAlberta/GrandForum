@@ -1,8 +1,11 @@
 <?php
 
 require_once("Tabs/PublicDiscTreeTab.php");
+require_once("Tabs/PublicProjTreeTab.php");
+require_once("Tabs/PublicUniTreeTab.php");
 require_once("Tabs/PublicWordleTab.php");
 require_once("Tabs/PublicChordTab.php");
+require_once("Tabs/PublicProjectClusterTab.php");
 require_once("Tabs/PublicUniversityMapTab.php");
 
 $dir = dirname(__FILE__) . '/';
@@ -27,7 +30,10 @@ class PublicVisualizations extends SpecialPage{
         global $wgOut;
         $tabbedPage = new TabbedPage("publicVis");
         $tabbedPage->addTab(new PublicChordTab());
+        $tabbedPage->addTab(new PublicProjectClusterTab());
         $tabbedPage->addTab(new PublicDiscTreeTab());
+        $tabbedPage->addTab(new PublicProjTreeTab());
+        $tabbedPage->addTab(new PublicUniTreeTab());
         $tabbedPage->addTab(new PublicUniversityMapTab());
         $tabbedPage->addTab(new PublicWordleTab());
         $tabbedPage->showPage();

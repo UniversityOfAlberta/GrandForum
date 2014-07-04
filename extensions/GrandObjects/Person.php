@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @package GrandObjects
+ */
+
 class Person extends BackboneModel {
 
     static $cache = array();
@@ -1185,17 +1189,17 @@ class Person extends BackboneModel {
 
     function getUni(){
         $university = $this->getUniversity();
-        return (isset($university['university'])) ? $university['university'] : "";
+        return (isset($university['university'])) ? $university['university'] : "Unknown";
     }
 
     function getDepartment(){
         $university = $this->getUniversity();
-        return (isset($university['department'])) ? $university['department'] : "";
+        return (isset($university['department'])) ? $university['department'] : "Unknown";
     }
 
     function getPosition(){
         $university = $this->getUniversity();
-        return (isset($university['position'])) ? $university['position'] : "";
+        return (isset($university['position'])) ? $university['position'] : "Unkown";
     }    
     
     /**

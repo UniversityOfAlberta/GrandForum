@@ -1,100 +1,49 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'AdminProjTreeTab::getAdminProjTreeData';
+$wgHooks['UnknownAction'][] = 'PublicProjTreeTab::getPublicProjTreeData';
 
-class AdminProjTreeTab extends AbstractTab {
+class PublicProjTreeTab extends AbstractTab {
 	
-	function AdminProjTreeTab(){
-        parent::AbstractTab("Project Funding");
+	function PublicProjTreeTab(){
+        parent::AbstractTab("Projects");
     }
 
     function generateBody(){
 	    global $wgServer, $wgScriptPath;
-	    $this->html .= "The following tree map visualizations show the distribution of funding for Themes/Projects/People.  Clicking on a section will zoom in to that section.  If 'Funding' is selected, the area that the section takes up is based on how much funding each section gets.  If 'Count' is selected, the area is based on how many sub-sections each section has.";
-	    for($year=2011; $year <= REPORTING_YEAR+1; $year++){
-	        $this->html .= "<h2>$year</h2>";
-	        $tree = new TreeMap("{$wgServer}{$wgScriptPath}/index.php?action=getAdminProjTreeData&date={$year}", "Funding", "Count", "$", "");
-	        $tree->height = 500;
-	        $tree->width = 1000;
-	        $this->html .= $tree->show();
-	        $this->html .= "<script type='text/javascript'>
-                $('#adminVis').bind('tabsselect', function(event, ui) {
-                    if(ui.panel.id == 'project-funding'){
-                        onLoad{$tree->index}();
-                    }
-                });
-                </script><br />";
-	    }
+        $tree = new TreeMap("{$wgServer}{$wgScriptPath}/index.php?action=getPublicProjTreeData", "Count", "", "", "");
+        $tree->height = 500;
+        $tree->width = 1000;
+        $this->html .= $tree->show();
+        $this->html .= "<script type='text/javascript'>
+            $('#publicVis').bind('tabsselect', function(event, ui) {
+                if(ui.panel.id == 'projects'){
+                    onLoad{$tree->index}();
+                }
+            });
+            </script>";
 	}
 	
-	static function getAdminProjTreeData($action, $article){
-	    global $wgServer, $wgScriptPath;
-	    $me = Person::newFromWgUser();
-	    $year = (isset($_GET['date'])) ? $_GET['date'] : REPORTING_YEAR;
-	    if($action == "getAdminProjTreeData" && $me->isRoleAtLeast(MANAGER)){
+	static function getPublicProjTreeData($action, $article){
+	    global $wgServer, $wgScriptPath, $config;
+	    if($action == "getPublicProjTreeData"){
 	        session_write_close();  
-            $data = array("name" => "GRAND",
+            $data = array("name" => $config->getValue('networkName'),
                           "children" => array());
             $projs = array();
-            $projects = Project::getAllProjectsDuring($year."-01-01", $year."-12-31");
-            $people = Person::getAllPeopleDuring(null, $year."-01-01", $year."-12-31");
+            $projects = Project::getAllProjects();
             foreach($projects as $project){
-                $budget = $project->getRequestedBudget($year-1);
-                if($budget != null){
-                    $people = $budget->copy()->where(V_PERS_NOT_NULL)->select(V_PERS_NOT_NULL);
-                    if($people->nRows() > 0){
-                        foreach($people->xls[0] as $cell){
-                            $name = $cell->getValue();
-                            $total = str_replace('$', "", $budget->copy()->rasterize()->select(V_PERS_NOT_NULL, array($name))->where(CUBE_COL_TOTAL)->toString());
-                            $challenge = $project->getChallenge();
-                            $theme = ($challenge != null) ? $challenge->getAcronym() : "Unknown";
-                            @$projs[$theme][$project->getName()][$name] = ($total == "") ? "0" : $total;
-                        }
+                $people = $project->getAllPeople();
+                $challenge = $project->getChallenge();
+                $theme = ($challenge != null) ? $challenge->getAcronym() : "Unknown";
+                foreach($people as $person){
+                    if($person->isRole(PNI) || $person->isRole(CNI)){
+                        @$projs[$theme][$project->getName()][$person->getReversedName()] = 1;
                     }
                 }
             }
             foreach($projs as $theme => $projs2){
-                switch($theme){
-                    case "nMEDIA": 
-                        $color = "#B6D661";
-                        break;
-                    case "GamSim":
-                        $color = "#CF292D";
-                        break;
-                    case "AnImage":
-                        $color = "#FCB722";
-                        break;
-                    case "SocLeg":
-                        $color = "#23A69D";
-                        break;
-                    case "TechMeth":
-                        $color = "#8D539F";
-                        break;
-                    case "(Big) Data":
-                        $color = "#21A3DC";
-                        break;
-                    case "Citizenship":
-                        $color = "#FFC90D";
-                        break;
-                    case "Entertainment":
-                        $color = "#723C96";
-                        break;
-                    case "Health":
-                        $color = "#EC2528";
-                        break;
-                    case "Learning":
-                        $color = "#F47F20";
-                        break;
-                    case "Sustainability":
-                        $color = "#12A551";
-                        break;
-                    case "Work":
-                        $color = "#075693";
-                        break;
-                    default:
-                        $color = "#888888";
-                        break;
-                }
+                $challenge = Theme::newFromName($theme);
+                $color = $challenge->getColor();
                 $themeData = array("name" => $theme,
                                    "color" => $color,
                                    "children" => array());

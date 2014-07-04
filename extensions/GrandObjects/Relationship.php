@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @package GrandObjects
+ */
+
 class Relationship{
 
     static $cache = array();

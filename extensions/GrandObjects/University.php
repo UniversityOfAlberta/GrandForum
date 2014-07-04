@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @package GrandObjects
+ */
+
 class University extends BackboneModel {
     
     static $cache = array();

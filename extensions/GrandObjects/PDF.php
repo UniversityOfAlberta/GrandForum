@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @package GrandObjects
+ */
+
 class PDF extends BackboneModel {
     
     static $projectsCache = array();

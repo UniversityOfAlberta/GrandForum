@@ -92,6 +92,9 @@ define('BLOB_RAW',		65535);
 // INDEX (  `year` ,  `user_id` ,  `proj_id` ,  `rp_type` ,  `rp_section` ,  `rp_item` ,  `rp_subitem` )
 // ) ENGINE = INNODB;
 
+/**
+ * @package GrandObjects
+ */
 
 class ReportBlob {
 

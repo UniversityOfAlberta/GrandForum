@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @package GrandObjects
+ */
+
 class Project extends BackboneModel {
 
     static $cache = array();

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @package GrandObjects
+ */
+
 class WikiPage extends BackboneModel {
 
     var $id;

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @package GrandObjects
+ */
+
 class Role extends BackboneModel {
 
     static $cache = array();

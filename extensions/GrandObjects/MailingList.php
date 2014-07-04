@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @package GrandObjects
+ */
+
 class MailingList extends BackboneModel {
 
     static $cache = array();

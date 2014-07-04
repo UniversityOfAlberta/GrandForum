@@ -1,10 +1,10 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'AdminProjectClusterTab::getProjectClusterData';
+$wgHooks['UnknownAction'][] = 'PublicProjectClusterTab::getProjectClusterData';
 
-class AdminProjectClusterTab extends AbstractTab {
+class PublicProjectClusterTab extends AbstractTab {
 	
-	function AdminProjectClusterTab(){
+	function PublicProjectClusterTab(){
         parent::AbstractTab("Project Cluster");
     }
 
@@ -15,7 +15,7 @@ class AdminProjectClusterTab extends AbstractTab {
         $cluster->width = 800;
         $this->html .= $cluster->show();
         $this->html .= "<script type='text/javascript'>
-            $('#adminVis').bind('tabsselect', function(event, ui) {
+            $('#publicVis').bind('tabsselect', function(event, ui) {
                 if(ui.panel.id == 'project-cluster'){
                     onLoad{$cluster->index}();
                 }
@@ -26,7 +26,6 @@ class AdminProjectClusterTab extends AbstractTab {
 	static function getProjectClusterData($action, $article){
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
-	    $year = (isset($_GET['date'])) ? $_GET['date'] : REPORTING_YEAR;
 	    if($action == "getProjectClusterData"){
 	        session_write_close();
 	        $data = array("name" => "",
@@ -38,8 +37,6 @@ class AdminProjectClusterTab extends AbstractTab {
 	            if($project->getPhase() == PROJECT_PHASE){
 	                $theme = $project->getChallenge();
 	                @$themes[$theme->getAcronym()][$project->getId()] = $project;
-	                
-	                
 	            }
 	        }
 	        
@@ -49,41 +46,29 @@ class AdminProjectClusterTab extends AbstractTab {
 	            $tDesc = $theme->getDescription();
 	            $tleader = $theme->getLeader();
 	            $tcoleader = $theme->getCoLeader();
+	            $color = $theme->getColor();
+	            $turl = $theme->getUrl();
 	            switch($name){
 	                case "(Big) Data":
-	                    $color = "#02a6ea";
 	                    $image = "data.png";
-	                    $turl = $theme->getUrl();
 	                    break;
 	                case "Citizenship":
-	                    $color = "#E6B507";
 	                    $image = "citizenship.png";
-	                    $turl = $theme->getUrl();
 	                    break;
 	                case "Entertainment":
-	                    $color = "#692d97";
 	                    $image = "entertainment.png";
-	                    $turl = $theme->getUrl();
 	                    break;
 	                case "Health":
-	                    $color = "#ee1e23";
 	                    $image = "health.png";
-	                    $turl = $theme->getUrl();
 	                    break;
 	                case "Learning":
-	                    $color = "#f68312";
 	                    $image = "learning.png";
-	                    $turl = $theme->getUrl();
 	                    break;
 	                case "Sustainability":
-	                    $color = "#00a550";
 	                    $image = "sustainability.png";
-	                    $turl = $theme->getUrl();
 	                    break;
 	                case "Work":
-	                    $color = "#234f98";
 	                    $image = "work.png";
-	                    $turl = $theme->getUrl();
 	                    break;
 	                default:
 	                    $name = "Strategic";

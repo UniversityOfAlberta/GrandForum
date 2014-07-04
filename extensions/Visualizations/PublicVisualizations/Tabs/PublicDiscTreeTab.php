@@ -5,7 +5,7 @@ $wgHooks['UnknownAction'][] = 'PublicDiscTreeTab::getPublicDiscTreeData';
 class PublicDiscTreeTab extends AbstractTab {
 	
 	function PublicDiscTreeTab(){
-        parent::AbstractTab("Discipline Distribution");
+        parent::AbstractTab("Disciplines");
     }
 
     function generateBody(){
@@ -16,16 +16,15 @@ class PublicDiscTreeTab extends AbstractTab {
         $this->html .= $tree->show();
         $this->html .= "<script type='text/javascript'>
             $('#publicVis').bind('tabsselect', function(event, ui) {
-                if(ui.panel.id == 'discipline-distribution'){
+                if(ui.panel.id == 'disciplines'){
                     onLoad{$tree->index}();
                 }
             });
-            </script><br />";
+            </script>";
 	}
 	
 	static function getPublicDiscTreeData($action, $article){
 	    global $wgServer, $wgScriptPath, $config;
-	    $me = Person::newFromWgUser();
 	    if($action == "getPublicDiscTreeData"){
 	        session_write_close();
             $data = array("name" => $config->getValue('networkName'),

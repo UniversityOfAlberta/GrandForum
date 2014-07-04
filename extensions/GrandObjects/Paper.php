@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @package GrandObjects
+ */
+
 class Paper extends BackboneModel{
 
     static $cache = array();
