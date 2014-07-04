@@ -2,10 +2,10 @@
 <Report name="ISAC Reviews" reportType="RP_ISAC" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
         <Role role="ISAC">
-            <SectionPermission id="project2_materials" permissions="rw" />
+            <SectionPermission id="project2_materials" permissions="r" />
         </Role>
         <Person id="11">
-            <SectionPermission id="project2_materials" permissions="rw" />
+            <SectionPermission id="project2_materials" permissions="r" />
         </Person>
     </Permissions>
     <!-- Phase2 Projects Materials -->

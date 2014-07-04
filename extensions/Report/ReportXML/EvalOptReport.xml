@@ -2,28 +2,28 @@
 <Report name="Evaluation Report" reportType="" pdfType="" pdfFiles="" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
         <Person id="11">
-            <SectionPermission id="eval_opt_pni" permissions="rw" />
-            <SectionPermission id="eval_pni_report" permissions="rw" />
-            <SectionPermission id="eval_opt_cni" permissions="rw" />
-            <SectionPermission id="eval_cni_report" permissions="rw" />
-            <SectionPermission id="eval_opt_project" permissions="rw" />
-            <SectionPermission id="eval_project_report" permissions="rw" />
+            <SectionPermission id="eval_opt_pni" permissions="r" />
+            <SectionPermission id="eval_pni_report" permissions="r" />
+            <SectionPermission id="eval_opt_cni" permissions="r" />
+            <SectionPermission id="eval_cni_report" permissions="r" />
+            <SectionPermission id="eval_opt_project" permissions="r" />
+            <SectionPermission id="eval_project_report" permissions="r" />
         </Person>
         <Person id="22">
-            <SectionPermission id="eval_opt_pni" permissions="rw" />
-            <SectionPermission id="eval_pni_report" permissions="rw" />
-            <SectionPermission id="eval_opt_cni" permissions="rw" />
-            <SectionPermission id="eval_cni_report" permissions="rw" />
-            <SectionPermission id="eval_opt_project" permissions="rw" />
-            <SectionPermission id="eval_project_report" permissions="rw" />
+            <SectionPermission id="eval_opt_pni" permissions="r" />
+            <SectionPermission id="eval_pni_report" permissions="r" />
+            <SectionPermission id="eval_opt_cni" permissions="r" />
+            <SectionPermission id="eval_cni_report" permissions="r" />
+            <SectionPermission id="eval_opt_project" permissions="r" />
+            <SectionPermission id="eval_project_report" permissions="r" />
         </Person>
         <Person id="565">
-            <SectionPermission id="eval_opt_pni" permissions="rw" />
-            <SectionPermission id="eval_pni_report" permissions="rw" />
-            <SectionPermission id="eval_opt_cni" permissions="rw" />
-            <SectionPermission id="eval_cni_report" permissions="rw" />
-            <SectionPermission id="eval_opt_project" permissions="rw" />
-            <SectionPermission id="eval_project_report" permissions="rw" />
+            <SectionPermission id="eval_opt_pni" permissions="r" />
+            <SectionPermission id="eval_pni_report" permissions="r" />
+            <SectionPermission id="eval_opt_cni" permissions="r" />
+            <SectionPermission id="eval_cni_report" permissions="r" />
+            <SectionPermission id="eval_opt_project" permissions="r" />
+            <SectionPermission id="eval_project_report" permissions="r" />
         </Person>
     </Permissions>
     <!-- Optional PNI Assignments -->
