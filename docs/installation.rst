@@ -37,6 +37,12 @@ the Admin user, but will also ask you whether or not to import data from
 several csv files if they exist. These files are in the following
 formats: 
 
+**provinces.csv**
+name, color
+
+**universities.csv**
+name, province, latitude, longitude, order, default
+
 **people.csv**
 
 lastName, firstName, role, website, university, department, title, email 
