@@ -22,7 +22,7 @@ class ProjectOverviewTab extends AbstractTab {
 
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath;
-        if($this->visibility['isLead']){
+        if($this->visibility['isLead'] && isExtensionEnabled("Reporting")){
             for($y=$this->startYear; $y<=$this->endYear; $y++){
                 if($y == $this->startYear){
                     $this->html .= "<h2>{$y}</h2>";

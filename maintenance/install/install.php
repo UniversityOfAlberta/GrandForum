@@ -143,15 +143,49 @@ if($wgUser->getID() == 0){
     $wgUser = User::newFromName("Admin");
 }
 
-// Creating Other Users
+// Creating Provinces
+if(file_exists("provinces.csv")){
+    if(question("Import Provinces from provinces.csv (y/n)") == 'y'){
+        DBFunctions::execSQL("TRUNCATE TABLE `grand_provinces`", true);
+        $lines = explode("\n", file_get_contents("provinces.csv"));
+        foreach($lines as $line){
+            $cells = str_getcsv($line);
+            if(count($cells) > 1){
+                $prov = mysql_real_escape_string($cells[0]);
+                $color = mysql_real_escape_string($cells[1]);
+                DBFunctions::execSQL("INSERT INTO `grand_provinces` (`province`,`color`)
+                                      VALUES ('$prov','$color')", true); 
+            }
+        }
+    }
+}
 
+// Creating Universities
+if(file_exists("universities.csv")){
+    if(question("Import Universities from universities.csv (y/n)") == 'y'){
+        DBFunctions::execSQL("TRUNCATE TABLE `grand_universities`", true);
+        $lines = explode("\n", file_get_contents("universities.csv"));
+        foreach($lines as $line){
+            $cells = str_getcsv($line);
+            if(count($cells) > 1){
+                $uni = mysql_real_escape_string($cells[0]);
+                $prov = Province::newFromName(mysql_real_escape_string($cells[1]));
+                $lat = mysql_real_escape_string($cells[2]);
+                $long = mysql_real_escape_string($cells[3]);
+                $order = mysql_real_escape_string($cells[4]);
+                $default = mysql_real_escape_string($cells[5]);
+                DBFunctions::execSQL("INSERT INTO `grand_universities` (`university_name`,`province_id`,`latitude`,`longitude`,`order`,`default`)
+                                      VALUES ('$uni','{$prov->getId()}','$lat','$long','$order','$default')", true); 
+            }
+        }
+    }
+}
+
+// Creating Other Users
 if(file_exists("people.csv")){
     if(question("Import People from people.csv (y/n)") == 'y'){
-        DBFunctions::execSQL("TRUNCATE TABLE `grand_universities`", true);
         DBFunctions::execSQL("TRUNCATE TABLE `grand_positions`", true);
         DBFunctions::execSQL("TRUNCATE TABLE `grand_user_university`", true);
-        DBFunctions::execSQL("INSERT INTO `grand_universities` (`university_name`,`order`,`default`)
-                              VALUES ('Unknown', 0, 1)", true);
         DBFunctions::execSQL("INSERT INTO `grand_positions` (`position`,`order`,`default`)
                               VALUES ('Other', 0, 1)", true);
         $lines = explode("\n", file_get_contents("people.csv"));
@@ -190,9 +224,10 @@ if(file_exists("themes.csv")){
                 $name = mysql_real_escape_string($cells[1]);
                 $description = mysql_real_escape_string($cells[2]);
                 $phase = mysql_real_escape_string($cells[3]);
+                $color = mysql_real_escape_string($cells[4]);
                 if($name != ""){
-                    DBFunctions::execSQL("INSERT INTO `grand_themes` (`acronym`,`name`,`description`,`phase`)
-                                          VALUES('$acronym','$name','$description','$phase')", true);
+                    DBFunctions::execSQL("INSERT INTO `grand_themes` (`acronym`,`name`,`description`,`phase`,`color`)
+                                          VALUES('$acronym','$name','$description','$phase','$color')", true);
                 }
             }
         }
@@ -221,17 +256,23 @@ if(file_exists("projects.csv")){
                 $description = $cells[5];
                 $problem = $cells[6];
                 $solution = $cells[7];
-                $pl = Person::newFromName($cells[8]);
-                $copl = Person::newFromName($cells[9]);
+                $leaders = explode(",", $cells[8]);
+                $coleaders = explode(",", $cells[9]);
                 $phase = $cells[10];
                 $bigBet = $cells[11];
                 
                 createProject($acronym, $title, $status, $type, $bigBet, $phase, date('Y-m-d'), $description, $problem, $solution, $challenge);
-                if($pl->getId() != 0){
-                    addProjectLeader($pl->getName(), $acronym, 'False');
+                foreach($leaders as $leader){
+                    $pl = Person::newFromName($leader);
+                    if($pl->getId() != 0){
+                        addProjectLeader($pl->getName(), $acronym, 'False');
+                    }
                 }
-                if($copl->getId() != 0){
-                    addProjectLeader($copl->getName(), $acronym, 'True');
+                foreach($coleaders as $leader){
+                    $copl = Person::newFromName($leader);
+                    if($copl->getId() != 0){
+                        addProjectLeader($copl->getName(), $acronym, 'True');
+                    }
                 }
             }
         }
