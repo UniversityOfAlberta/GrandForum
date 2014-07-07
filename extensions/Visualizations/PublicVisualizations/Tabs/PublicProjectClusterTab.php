@@ -48,6 +48,7 @@ class PublicProjectClusterTab extends AbstractTab {
 	            $tcoleader = $theme->getCoLeader();
 	            $color = $theme->getColor();
 	            $turl = $theme->getUrl();
+	            $image = "";
 	            switch($name){
 	                case "(Big) Data":
 	                    $image = "data.png";
@@ -69,14 +70,6 @@ class PublicProjectClusterTab extends AbstractTab {
 	                    break;
 	                case "Work":
 	                    $image = "work.png";
-	                    break;
-	                default:
-	                    $name = "Strategic";
-	                    $tFullName = "Strategic Projects";
-	                    $description = "GRAND has special projects characterized by their high risk / high reward and cross-cutting nature, as well as by their potential to have a very significant impact on the Canadian digital media sector. The projects are high-visibility co-investments with external partners. As compared with regular GRAND projects, Strategic projects have a higher degree of autonomy in allocating their resources, and are expected to have much greater engagement with and larger contributions from the receptor community.";
-	                    $color = "#555555";
-	                    $image = "";
-	                    $turl = "{$wgServer}{$wgScriptPath}/index.php/GRAND:Themes";
 	                    break;
 	            }
 	            

@@ -25,6 +25,8 @@ class ProvinceMigration extends AbstractMigration
         $uni_table = $this->table('grand_universities');
         if($uni_table->hasColumn('color')){
             $uni_table->removeColumn('color')
+                      ->addColumn('province_id', 'integer', array('after' => 'university_name'))
+                      ->addIndex(array('province_id'))
                       ->save();
         }
         
