@@ -158,6 +158,7 @@ if(file_exists("provinces.csv")){
             }
         }
     }
+    Province::$cache = array();
 }
 
 // Creating Universities
@@ -179,6 +180,7 @@ if(file_exists("universities.csv")){
             }
         }
     }
+    University::$cache = array();
 }
 
 // Creating Other Users
