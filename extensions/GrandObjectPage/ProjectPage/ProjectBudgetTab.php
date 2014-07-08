@@ -22,7 +22,7 @@ class ProjectBudgetTab extends AbstractTab {
     }
 
     function showBudget(){
-        global $wgServer, $wgScriptPath, $wgUser, $wgOut, $projectPhaseDates;
+        global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
         $isLead = $this->visibility['isLead'];
         $project = $this->project;
         
@@ -38,7 +38,8 @@ class ProjectBudgetTab extends AbstractTab {
             if($project->deleted){
                 $startYear = substr($project->getDeleted(), 0, 4)-1;
             }
-            for($i=$startYear; $i >= max((substr($projectPhaseDates[1], 0, 4)+1), substr($project->getCreated(), 0, 4)); $i--){
+            $phaseDates = $config->getValue("projectPhaseDates");
+            for($i=$startYear; $i >= max((substr($phaseDates[1], 0, 4)+1), substr($project->getCreated(), 0, 4)); $i--){
                 $this->html .= "<h3><a href='#'>".$i."</a></h3>";
                 $this->html .= "<div style='overflow: auto;'>";
 

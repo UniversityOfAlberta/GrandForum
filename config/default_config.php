@@ -118,13 +118,19 @@
     // should be an associative array with the index as the type of social network, and the value is the url
     // Options: twitter, linkedin, flickr, youtube
     $config->setValue("socialLinks", array());
+
+    // The dates that each phase started
+    $config->setValue("projectPhaseDates", array());
     
     /*
      * Constants
      */
      
+    // The current Project Phase
+    $config->setConst("PROJECT_PHASE", 2);
+     
     // The current cycle year
-    $config->setConst("YEAR", 2014);
+    $config->setConst("YEAR", date('Y'));
 
     // Start of internal reporting cycle (Used for range queries)
     $config->setConst("CYCLE_START_MONTH", '-00-00');

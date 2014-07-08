@@ -70,7 +70,7 @@ class PersonBudgetTab extends AbstractEditableTab {
      * Displays the budget for this user
      */
     function showBudget($person, $visibility){
-        global $wgOut, $wgUser, $projectPhaseDates;
+        global $wgOut, $wgUser;
         $me = Person::newFromId($wgUser->getId());
         if($this->visibility['isMe'] || $me->isRoleAtLeast(MANAGER)){
             $wgOut->addScript("<script type='text/javascript'>
@@ -80,7 +80,7 @@ class PersonBudgetTab extends AbstractEditableTab {
                 });
             </script>");
             $this->html .= "<div id='budgetAccordion'>";
-            for($i=YEAR; $i >= (substr($projectPhaseDates[1], 0, 4)+1); $i--){
+            for($i=YEAR; $i >= (substr($person->getRegistration(), 0, 4)+1); $i--){
                 $this->html .= "<h3><a href='#'>".$i."</a></h3><div>";
                 $budget = $person->getAllocatedBudget($i-1);
                 if($budget != null){
