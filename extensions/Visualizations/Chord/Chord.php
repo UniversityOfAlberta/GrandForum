@@ -25,12 +25,14 @@ class Chord extends Visualization {
 
     function show(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $string = "<div style='height:".($this->height)."px;width:".($this->width)."px;float:left;' class='chordChart' id='vis{$this->index}'>
+        $string = "<div style='height:".($this->height)."px;width:".($this->width)."px;display:inline-block;' class='chordChart' id='vis{$this->index}'>
                    </div>
                    <div style='position:absolute;' id='visSpinner{$this->index}'></div>
-                   <div style='margin-top:25px;margin-left:25px;' id='visOptions{$this->index}'></div>
-                   <div style='margin-top:25px;margin-left:25px;' id='visSort{$this->index}'></div>
-                   <div style='margin-top:25px;margin-left:25px;' id='visLegend{$this->index}'></div>";
+                   <div style='display:inline-block;vertical-align:top;'>
+                    <div style='margin-top:25px;margin-left:25px;' id='visOptions{$this->index}'></div>
+                    <div style='margin-top:25px;margin-left:25px;' id='visSort{$this->index}'></div>
+                    <div style='margin-top:25px;margin-left:25px;' id='visLegend{$this->index}'></div>
+                   </div>";
         $string .= <<<EOF
 <script type='text/javascript'>
     var params = Array();
@@ -66,12 +68,24 @@ class Chord extends Visualization {
         
         var colors = Array();
         var showLegend = true;
-        for(lId in data.colorHashs){
-            var label = data.colorHashs[lId];
-            if(label == data.labels[lId]){
-                showLegend = false;
+        
+        if(data.colors != undefined && data.colors.length == data.labels.length){
+            colors = data.colors;
+            for(lId in data.colorHashs){
+                var label = data.colorHashs[lId];
+                if(label == data.labels[lId]){
+                    showLegend = false;
+                }
             }
-            colors.push("#" + intToRGB(hashCode(label)));
+        }
+        else{
+            for(lId in data.colorHashs){
+                var label = data.colorHashs[lId];
+                if(label == data.labels[lId]){
+                    showLegend = false;
+                }
+                colors.push("#" + intToRGB(hashCode(label)));
+            }
         }
         if(showLegend){
             $("#visLegend{$this->index}").append("<h3>Legend</h3><table><tr><td valign='top'>").css('white-space','nowrap');
@@ -79,7 +93,7 @@ class Chord extends Visualization {
             var i = 0;
             for(lId in data.colorHashs){
                 var label = data.colorHashs[lId];
-                var color = intToRGB(hashCode(label));
+                var color = colors[lId].replace("#", "");
                 if(lastLabel != label){
                     if(i % 20 == 0){
                         $("#visLegend{$this->index} table tr").append("<td valign='top'>").css('white-space','nowrap');

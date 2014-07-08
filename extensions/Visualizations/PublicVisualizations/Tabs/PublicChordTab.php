@@ -74,18 +74,21 @@ class PublicChordTab extends AbstractTab {
             }
 
             $colorHashs = array();
+            $colors = array();
             $projects = array();
             ksort($sortedProjects);
             foreach($sortedProjects as $key => $sort){
                 foreach($sort as $project){
+                    $theme = $project->getChallenge();
+                    $color = $theme->getColor();
                     $projects[] = $project;
                     $colorHashs[] = $key;
+                    $colors[] = $color;
                 }
             }
             
             $labels = array();
             $matrix = array();
-            $colors = array();
             
             // Initialize
             foreach($projects as $k1 => $project){
@@ -159,6 +162,7 @@ class PublicChordTab extends AbstractTab {
             $array['matrix'] = $matrix;
             $array['labels'] = $labels;
             $array['colorHashs'] = $colorHashs;
+            $array['colors'] = $colors;
 
             header("Content-Type: application/json");
             echo json_encode($array);

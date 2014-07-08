@@ -28,6 +28,7 @@ class Cluster extends Visualization {
 <script type='text/javascript'>
     
     function onLoad{$this->index}(){
+        $('#vis{$this->index}').empty();
         $('#vis{$this->index}').cluster({url: '{$this->url}'});
     }
             

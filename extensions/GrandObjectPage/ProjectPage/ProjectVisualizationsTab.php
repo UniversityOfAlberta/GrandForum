@@ -308,25 +308,25 @@ class ProjectVisualizationsTab extends AbstractTab {
 	static function getProjectChordData($action, $article){
 	    global $wgServer, $wgScriptPath;
 	    if($action == "getProjectChordData"){
-	        $year = (isset($_GET['date'])) ? $_GET['date'] : REPORTING_YEAR;
+	        $year = (isset($_GET['date'])) ? $_GET['date'] : YEAR;
 	        $array = array();
             $project = Project::newFromId($_GET['project']);
-            $people = $project->getAllPeople(null, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
+            $people = $project->getAllPeople(null, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
             $sortedPeople = array();
             foreach($people as $key => $person){
-                if(!$person->isRoleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) && !$person->isRoleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) && !$person->isRoleDuring(AR, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
+                if(!$person->isRoleDuring(CNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH) && !$person->isRoleDuring(PNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH) && !$person->isRoleDuring(AR, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
                     unset($people[$key]);
                     continue;
                 }
-                if(isset($_GET['noPNI']) && $person->isRoleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
+                if(isset($_GET['noPNI']) && $person->isRoleDuring(PNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
                     unset($people[$key]);
                     continue;
                 }
-                if(isset($_GET['noCNI']) && $person->isRoleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
+                if(isset($_GET['noCNI']) && $person->isRoleDuring(CNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
                     unset($people[$key]);
                     continue;
                 }
-                if(isset($_GET['noAR']) && $person->isRoleDuring(AR, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
+                if(isset($_GET['noAR']) && $person->isRoleDuring(AR, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
                     unset($people[$key]);
                     continue;
                 }
@@ -334,7 +334,7 @@ class ProjectVisualizationsTab extends AbstractTab {
                     $sortedPeople[$person->getReversedName()][] = $person;
                 }
                 else if($_GET['sortBy'] == 'uni'){
-                    $university = $person->getUniversityDuring($year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
+                    $university = $person->getUniversityDuring($year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
                     if($university['university'] != ''){
                         $sortedPeople[$university['university']][] = $person;
                     }
@@ -343,7 +343,7 @@ class ProjectVisualizationsTab extends AbstractTab {
                     }
                 }
                 else if($_GET['sortBy'] == 'dept'){
-                    $university = $person->getUniversityDuring($year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
+                    $university = $person->getUniversityDuring($year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
                     if($university['department'] != ''){
                         $sortedPeople[$university['department']][] = $person;
                     }
@@ -352,7 +352,7 @@ class ProjectVisualizationsTab extends AbstractTab {
                     }
                 }
                 else if($_GET['sortBy'] == 'position'){
-                    $university = $person->getUniversityDuring($year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
+                    $university = $person->getUniversityDuring($year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
                     if($university['position'] != ''){
                         $sortedPeople[$university['position']][] = $person;
                     }
@@ -361,13 +361,13 @@ class ProjectVisualizationsTab extends AbstractTab {
                     }
                 }
                 else if($_GET['sortBy'] == 'role'){
-                    if($person->isRoleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
+                    if($person->isRoleDuring(PNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
                         $sortedPeople[PNI][] = $person;
                     }
-                    else if($person->isRoleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
+                    else if($person->isRoleDuring(CNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
                         $sortedPeople[CNI][] = $person;
                     }
-                    else if($person->isRoleDuring(AR, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
+                    else if($person->isRoleDuring(AR, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
                         $sortedPeople[AR][] = $person;
                     }
                 }
@@ -396,7 +396,7 @@ class ProjectVisualizationsTab extends AbstractTab {
             
             if(!isset($_GET['noCoAuthorship'])){
                 foreach($people as $k1 => $person){
-                    $papers = $person->getPapersAuthored('all', $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
+                    $papers = $person->getPapersAuthored('all', $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
                     foreach($papers as $paper){
                         if($paper->belongsToProject($project)){
                             foreach($paper->getAuthors() as $p){
@@ -411,7 +411,7 @@ class ProjectVisualizationsTab extends AbstractTab {
             if(!isset($_GET['noRelations'])){
                 foreach($people as $k1 => $person){
                     foreach($people as $k2 => $p){
-                        $relations = $person->getRelationsDuring(WORKS_WITH, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH);
+                        $relations = $person->getRelationsDuring(WORKS_WITH, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
                         if(count($relations) > 0){
                             foreach($relations as $relation){
                                 if($relation instanceof Relationship && $relation->getUser2()->getId() == $p->getId()){
@@ -451,8 +451,8 @@ class ProjectVisualizationsTab extends AbstractTab {
             }
             
             $dates = array();
-            for($i=2010; $i <= REPORTING_YEAR; $i++){
-                if($i == REPORTING_YEAR){
+            for($i=2010; $i <= YEAR; $i++){
+                if($i == YEAR){
                     $dates[] = array('date' => $i, 'checked' => 'checked');
                 }
                 else{
