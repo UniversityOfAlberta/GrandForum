@@ -137,7 +137,7 @@ class PublicProjectClusterTab extends AbstractTab {
 	                $tcolead['uni'] = $tcoleader->getUni();
 	            }
 	            if($image != ""){
-	                $image = "{$wgServer}{$wgScriptPath}/extensions/Visualisations/Cluster/images/{$image}";
+	                $image = "{$wgServer}{$wgScriptPath}/extensions/Visualizations/Cluster/images/{$image}";
 	                $data['children'][] = array("name" => $name,
 	                                            "fullname" => $tFullName,
 	                                            "description" => $tDesc,
