@@ -126,8 +126,7 @@ ManageProductsViewRow = Backbone.View.extend({
         if(target.is(":checked")){
             this.select(projectId);
             if(target.attr('name') == "project"){
-                //$("div.subprojectPopup").hide();
-                //this.$("div[data-project=" + projectId + "] div.subprojectPopup").slideDown();
+                this.$("div[data-project=" + projectId + "] div.subprojectPopup").slideDown();
             }
             else{
                 var parentId = target.attr('data-parent');
@@ -152,9 +151,27 @@ ManageProductsViewRow = Backbone.View.extend({
         this.$("div[data-project=" + projectId + "] div.subprojectPopup").slideDown();
     },
     
+    filterSearch: function(e){
+        var target = $(e.currentTarget);
+        var value = target.val();
+        var block = target.parent();
+        var options = $("div", block);
+        options.each(function(i, el){
+            var text = $(el).text();
+            if(unaccentChars(text).indexOf(unaccentChars(value)) == -1){
+                $(el).slideUp(150);
+            }
+            else{
+                $(el).slideDown(150);
+            }
+        });
+    },
+    
     events: {
         "change input[type=checkbox]": "toggleSelect",
-        "click div.showSubprojects": "showSubprojects"
+        "click div.showSubprojects": "showSubprojects",
+        "change input.popupBlockSearch": "filterSearch",
+        "keyup input.popupBlockSearch": "filterSearch"
     },
     
     render: function(){

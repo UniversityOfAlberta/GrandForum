@@ -9,12 +9,15 @@
                 <div style="display:none;" class="subprojectPopup">
                     <div class="popupHeader">Sub-Projects</div>
                     <div class="popupBlock">
+                        <input type="text" class="popupBlockSearch" placeholder="Search..." autocomplete="off" />
                         <% _.each(p.get('subprojects'), function(sub){ %>
-                            <input data-project="<%= sub.id %>" 
-                                   data-parent="<%= p.get('id') %>" 
-                                   type="checkbox" 
-                                   name="subproject" 
-                                   <%= projectChecked(projects, sub.id) %> />&nbsp;<%= sub.name %><br />
+                            <div>
+                                <input data-project="<%= sub.id %>" 
+                                       data-parent="<%= p.get('id') %>" 
+                                       type="checkbox" 
+                                       name="subproject" 
+                                       <%= projectChecked(projects, sub.id) %> />&nbsp;<%= sub.name %>
+                            </div>
                         <% }) %>
                     </div>
                 </div>

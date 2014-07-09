@@ -53,6 +53,7 @@ div.showSubprojects:hover {
 }
 
 div.subprojectPopup {
+    min-width: 200px;
     display: block;
     position: absolute;
     top: -1px;
@@ -75,8 +76,13 @@ div.popupHeader {
 
 div.popupBlock {
     padding: 3px;
-    padding-right: 20px;
-    max-height: 250px;
+    padding-right: 18px;
+    max-height: 200px;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+input.popupBlockSearch {
+    width: 100%;
+    margin: 0 3px 2px 3px;
 }
