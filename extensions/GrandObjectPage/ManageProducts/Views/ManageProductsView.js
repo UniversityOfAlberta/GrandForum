@@ -48,12 +48,19 @@ ManageProductsView = Backbone.View.extend({
     
     render: function(){
         this.$el.empty();
-        $(document).click(function(e){
-            var popup = $("div.subprojectPopup:visible").first();
+        $(document).click($.proxy(function(e){
+            var popup = $("div.subprojectPopup:visible").not(":animated").first();
             if(popup.length > 0 && !$.contains(popup[0], e.target)){
-                $("div.subprojectPopup").not(':animated').hide();
+                _.each(this.subViews, function(view){
+                    if(view.$("div.subprojectPopup").is(":visible")){
+                        // Need to defer the event so that unchecking a project is not in conflict
+                        _.defer(function(){
+                            view.model.trigger("change:projects");
+                        });
+                    }
+                });
             }
-        });
+        }, this));
         this.$el.html(this.template());
         this.addRows();
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
@@ -90,7 +97,9 @@ ManageProductsViewRow = Backbone.View.extend({
         var projects = this.model.get('projects');
         if(_.where(projects, {id: projectId}).length == 0){
             projects.push({id: projectId});
-            this.model.set('projects', projects);
+        }
+        // Only trigger an event if this is a parent
+        if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
             this.model.trigger("change:projects");
         }
     },
@@ -101,39 +110,40 @@ ManageProductsViewRow = Backbone.View.extend({
         // Unselect all subprojects as well
         if(project != undefined){
             _.each(project.get('subprojects'), $.proxy(function(sub){
-                projects = _.without(projects, _.findWhere(projects, {id: sub.id}));
+                projects.splice(_.indexOf(projects, _.findWhere(projects, {id: sub.id})), 1);
             }, this));
         }
-        projects = _.without(projects, _.findWhere(projects, {id: projectId}));
-        this.model.set('projects', projects);
+        projects.splice(_.indexOf(projects, _.findWhere(projects, {id: projectId})), 1);
+        // Only trigger an event if this is a parent
+        if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
+            this.model.trigger("change:projects");
+        }
     },
     
     toggleSelect: function(e){
-        _.defer($.proxy(function(){
-            var target = $(e.currentTarget);
-            var projectId = target.attr('data-project');
-            if(target.is(":checked")){
-                this.select(projectId);
-                if(target.attr('name') == "project"){
-                    $("div.subprojectPopup").hide();
-                    //this.$("div[data-project=" + projectId + "] div.subprojectPopup").slideDown();
-                }
-                else{
-                    var parentId = target.attr('data-parent');
-                    this.$("div[data-project=" + parentId + "] div.subprojectPopup").show();
-                }
+        var target = $(e.currentTarget);
+        var projectId = target.attr('data-project');
+        if(target.is(":checked")){
+            this.select(projectId);
+            if(target.attr('name') == "project"){
+                //$("div.subprojectPopup").hide();
+                //this.$("div[data-project=" + projectId + "] div.subprojectPopup").slideDown();
             }
             else{
-                this.unselect(projectId);
-                if(target.attr('name') == "project"){
-                    $("div.subprojectPopup").slideUp();
-                }
-                else{
-                    var parentId = target.attr('data-parent');
-                    this.$("div[data-project=" + parentId + "] div.subprojectPopup").show();
-                }
+                var parentId = target.attr('data-parent');
+                this.$("div[data-project=" + parentId + "] div.subprojectPopup").show();
             }
-        }, this));
+        }
+        else{
+            this.unselect(projectId);
+            if(target.attr('name') == "project"){
+                $("div.subprojectPopup").slideUp();
+            }
+            else{
+                var parentId = target.attr('data-parent');
+                this.$("div[data-project=" + parentId + "] div.subprojectPopup").show();
+            }
+        }
     },
     
     showSubprojects: function(e){
