@@ -126,7 +126,7 @@ ManageProductsViewRow = Backbone.View.extend({
         if(target.is(":checked")){
             this.select(projectId);
             if(target.attr('name') == "project"){
-                this.$("div[data-project=" + projectId + "] div.subprojectPopup").slideDown();
+                //this.$("div[data-project=" + projectId + "] div.subprojectPopup").slideDown();
             }
             else{
                 var parentId = target.attr('data-parent');

@@ -77,7 +77,7 @@ div.popupHeader {
 div.popupBlock {
     padding: 3px;
     padding-right: 18px;
-    max-height: 200px;
+    max-height: 155px;
     overflow-y: auto;
     overflow-x: hidden;
 }
