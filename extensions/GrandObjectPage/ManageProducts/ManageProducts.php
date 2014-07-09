@@ -27,7 +27,7 @@ class ManageProducts extends BackbonePage {
     
     static function createToolboxLinks($toolbox){
 	    global $wgServer, $wgScriptPath;
-	    //$toolbox['Products']['links'][] = TabUtils::createToolboxLink("Manage Products", "$wgServer$wgScriptPath/index.php/Special:ManageProducts");
+	    $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Manage Products", "$wgServer$wgScriptPath/index.php/Special:ManageProducts");
 	    return true;
 	}
 

@@ -31,7 +31,8 @@ Project = Backbone.Model.extend({
         type: '',
         phase: '',
         url: '',
-        deleted: ''
+        deleted: '',
+        subprojects: new Array()
     },
 });
 

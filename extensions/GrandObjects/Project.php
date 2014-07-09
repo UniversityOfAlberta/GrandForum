@@ -269,6 +269,13 @@ class Project extends BackboneModel {
     }
     
     function toArray(){
+        $subProjects = $this->getSubProjects();
+        $subs = array();
+        foreach($subProjects as $sub){
+            $subs[] = array('id' => $sub->getId(),
+                            'name' => $sub->getName(),
+                            'url' => $sub->getUrl());
+        }
         $array = array('id' => $this->getId(),
                        'name' => $this->getName(),
                        'fullname' => $this->getFullName(),
@@ -278,7 +285,8 @@ class Project extends BackboneModel {
                        'bigbet' => $this->isBigBet(),
                        'phase' => $this->getPhase(),
                        'url' => $this->getUrl(),
-                       'deleted' => $this->isDeleted());
+                       'deleted' => $this->isDeleted(),
+                       'subprojects' => $subs);
         return $array;
     }
     

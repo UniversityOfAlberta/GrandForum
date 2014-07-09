@@ -70,6 +70,10 @@ abstract class BackbonePage extends SpecialPage {
                                 #contentSub { display:none; }
                                 #currentViewSpinner {text-align: center; margin-top:10%;}
                            </style>");
+        $exploded = explode("extensions/", self::$dirs[strtolower(get_class($this))]);
+        if(file_exists(self::$dirs[strtolower(get_class($this))]."/style.css")){
+            $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/{$exploded[1]}/style.css' type='text/css' rel='stylesheet' />");
+        }
         $wgOut->addHTML("<div id='backbone_main'></div>");
         $this->loadTemplates();
         $this->loadModels();

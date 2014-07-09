@@ -1,12 +1,27 @@
-<td align="center">
-    <input type="checkbox" />
+<td class="checkboxCell" align="center">
+    <input class="other" type="checkbox" />
 </td>
-<td align="center">
-    <input type="checkbox" />
-</td>
-<td align="center">
-    <input type="checkbox" />
-</td>
+<% _.each(this.parent.projects.models, function(p){ %>
+    <td class="checkboxCell">
+        <div class="checkboxOuter" data-project="<%= p.get('id') %>">
+            <input data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= projectChecked(projects, p.get('id')) %> /><% if(projectChecked(projects, p.get('id')) != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
+            <% if(p.get('subprojects').length > 0){ %>
+                <div style="display:none;" class="subprojectPopup">
+                    <div class="popupHeader">Sub-Projects</div>
+                    <div class="popupBlock">
+                        <% _.each(p.get('subprojects'), function(sub){ %>
+                            <input data-project="<%= sub.id %>" 
+                                   data-parent="<%= p.get('id') %>" 
+                                   type="checkbox" 
+                                   name="subproject" 
+                                   <%= projectChecked(projects, sub.id) %> />&nbsp;<%= sub.name %><br />
+                        <% }) %>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </td>
+<% }) %>
 <td style="border-left: 2px solid #AAAAAA;">
     <%= date %>
 </td>
@@ -17,5 +32,5 @@
     <%= title %>
 </td>
 <td>
-    Author1, Author2
+    <%= _.pluck(authors, 'name').join(', ') %>
 </td>

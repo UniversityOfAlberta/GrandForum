@@ -1,0 +1,82 @@
+/* Any custom styles should go here */
+
+tbody#productRows td:not(.checkboxCell) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 500px;
+}
+
+.checkboxCell {
+    white-space: nowrap;
+    padding: 0 !important;
+    text-align: left;
+    height: 100%;
+    position: relative;
+}
+
+div.checkboxOuter {
+    position: absolute;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    white-space: nowrap;
+    height: 100%;
+    line-height: 22px;
+}
+
+.checkboxCell > input[type=checkbox] {
+    width: 50%;
+    margin-left: 1px;
+    margin-right: 0;
+}
+
+.checkboxOuter > input[type=checkbox] {
+    width: 50%;
+    margin: 0;
+    text-align: center;
+    vertical-align: middle;
+}
+
+div.showSubprojects {
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    color: #555555;
+    width: 50%;
+    height: 100%;
+}
+
+div.showSubprojects:hover {
+    color: #333333;
+}
+
+div.subprojectPopup {
+    display: block;
+    position: absolute;
+    top: -1px;
+    left: 100%;
+    border: 1px solid #AAAAAA;
+    background: #FFFFFF;
+    z-index: 100;
+    white-space: nowrap;
+    box-shadow: 0 0 3px #d8d8d8 !important;
+    font-weight: bold;
+}
+
+div.popupHeader {
+    padding: 3px;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: #AAAAAA;
+    text-align: center;
+}
+
+div.popupBlock {
+    padding: 3px;
+    padding-right: 20px;
+    max-height: 250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
