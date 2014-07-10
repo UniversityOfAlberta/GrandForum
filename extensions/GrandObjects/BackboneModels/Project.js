@@ -32,15 +32,21 @@ Project = Backbone.Model.extend({
         phase: '',
         url: '',
         deleted: '',
-        subprojects: new Array()
+        subprojects: new Array(),
+        startDate: '',
+        endDate: ''
     },
 });
 
 /**
  * Projects Collection
  */
-Projects = Backbone.Collection.extend({
+Projects = RangeCollection.extend({
     model: Project,
+    
+    newModel: function(){
+        return new Projects();
+    },
     
     url: 'index.php?action=api.project'
 });

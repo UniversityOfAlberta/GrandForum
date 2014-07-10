@@ -1,6 +1,8 @@
 ManageProductsView = Backbone.View.extend({
 
     allProjects: null,
+    otherProjects: null,
+    oldProjects: null,
     products: null,
     projects: null,
     table: null,
@@ -16,13 +18,22 @@ ManageProductsView = Backbone.View.extend({
             this.products = this.model.getAll();
             this.projects = me.projects.getCurrent();
             this.model.ready().then($.proxy(function(){
-                me.projects.ready().then(this.render);
+                this.allProjects.ready().then($.proxy(function(){
+                    this.otherProjects = this.allProjects.getCurrent();
+                    this.oldProjects = this.allProjects.getOld();
+                    this.otherProjects.remove(this.projects.models);
+                    this.oldProjects.remove(this.projects.models);
+                    me.projects.ready().then($.proxy(function(){
+                        this.render();
+                    }, this));
+                }, this));
             }, this));
         }, this);
     },
     
     addRows: function(){
         this.products.each($.proxy(function(p){
+            p.dirty = false;
             var row = new ManageProductsViewRow({model: p, parent: this});
             this.subViews.push(row);
             this.$("#productRows").append(row.render());
@@ -44,7 +55,17 @@ ManageProductsView = Backbone.View.extend({
     
     saveProducts: function(){
         this.products.each(function(product){
-            
+            if(product.dirty){
+                product.save({}, {
+                    success: function(){
+                        product.dirty = false;
+                        addSuccess("Saved " + product.get('id'));
+                    },
+                    error: function(){
+                        addError("Failed Saving " + product.get('id'));
+                    }
+                });
+            }
         });
     },
     
@@ -56,13 +77,13 @@ ManageProductsView = Backbone.View.extend({
     render: function(){
         this.$el.empty();
         $(document).click($.proxy(function(e){
-            var popup = $("div.subprojectPopup:visible").not(":animated").first();
+            var popup = $("div.popupBox:visible").not(":animated").first();
             if(popup.length > 0 && !$.contains(popup[0], e.target)){
                 _.each(this.subViews, function(view){
-                    if(view.$("div.subprojectPopup").is(":visible")){
+                    if(view.$("div.popupBox").is(":visible")){
                         // Need to defer the event so that unchecking a project is not in conflict
                         _.defer(function(){
-                            view.model.trigger("change:projects");
+                            view.model.trigger("change");
                         });
                     }
                 });
@@ -99,6 +120,10 @@ ManageProductsViewRow = Backbone.View.extend({
         this.template = _.template($('#manage_products_row_template').html());
     },
     
+    setDirty: function(){
+        this.model.dirty = true;
+    },
+    
     select: function(projectId){
         var projects = this.model.get('projects');
         if(_.where(projects, {id: projectId}).length == 0){
@@ -106,8 +131,9 @@ ManageProductsViewRow = Backbone.View.extend({
         }
         // Only trigger an event if this is a parent
         if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
-            this.model.trigger("change:projects");
+            this.model.trigger("change");
         }
+        this.setDirty();
     },
     
     unselect: function(projectId){
@@ -122,8 +148,9 @@ ManageProductsViewRow = Backbone.View.extend({
         projects.splice(_.indexOf(projects, _.findWhere(projects, {id: projectId})), 1);
         // Only trigger an event if this is a parent
         if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
-            this.model.trigger("change:projects");
+            this.model.trigger("change");
         }
+        this.setDirty();
     },
     
     toggleSelect: function(e){
@@ -134,7 +161,7 @@ ManageProductsViewRow = Backbone.View.extend({
             if(target.attr('name') == "project"){
                 //this.$("div[data-project=" + projectId + "] div.subprojectPopup").slideDown();
             }
-            else{
+            else if(target.attr('name') == "subproject") {
                 var parentId = target.attr('data-parent');
                 this.$("div[data-project=" + parentId + "] div.subprojectPopup").show();
             }
@@ -142,9 +169,9 @@ ManageProductsViewRow = Backbone.View.extend({
         else{
             this.unselect(projectId);
             if(target.attr('name') == "project"){
-                $("div.subprojectPopup").slideUp();
+                // Do nothing
             }
-            else{
+            else if(target.attr('name') == "subproject"){
                 var parentId = target.attr('data-parent');
                 this.$("div[data-project=" + parentId + "] div.subprojectPopup").show();
             }
@@ -155,6 +182,10 @@ ManageProductsViewRow = Backbone.View.extend({
         var target = $(e.currentTarget);
         var projectId = target.attr('data-project');
         this.$("div[data-project=" + projectId + "] div.subprojectPopup").slideDown();
+    },
+    
+    showOther: function(e){
+        this.$("div.otherPopup").slideDown();
     },
     
     filterSearch: function(e){
@@ -176,6 +207,7 @@ ManageProductsViewRow = Backbone.View.extend({
     events: {
         "change input[type=checkbox]": "toggleSelect",
         "click div.showSubprojects": "showSubprojects",
+        "click div.showOther": "showOther",
         "change input.popupBlockSearch": "filterSearch",
         "keyup input.popupBlockSearch": "filterSearch"
     },

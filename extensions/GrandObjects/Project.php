@@ -286,7 +286,9 @@ class Project extends BackboneModel {
                        'phase' => $this->getPhase(),
                        'url' => $this->getUrl(),
                        'deleted' => $this->isDeleted(),
-                       'subprojects' => $subs);
+                       'subprojects' => $subs,
+                       'startDate' => $this->getCreated(),
+                       'endDate' => $this->getDeleted());
         return $array;
     }
     

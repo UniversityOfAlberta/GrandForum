@@ -8,6 +8,10 @@ function between(object, start, end){
            );
 }
 
+Backbone.Model.prototype.getTarget = function(){
+    return this;
+}
+
 RangeCollection = Backbone.Collection.extend({
 
     xhrs: Array(),
@@ -24,10 +28,12 @@ RangeCollection = Backbone.Collection.extend({
      * Returns a collection of all the Models
      */
     getAll: function(){
-        allModels = this.newModel();
+        var allModels = this.newModel();
         _.each(this.models, function(model){
             var target = model.getTarget();
-            this.xhrs.push(target.fetch());
+            if(target != model){
+                this.xhrs.push(target.fetch());
+            }
             allModels.add(target);
         }, this);
         return allModels;
@@ -42,6 +48,18 @@ RangeCollection = Backbone.Collection.extend({
         return this.getDuring(date, '5000');  
     },
     
+    /**
+     * Returns a collection of Models which were from the past (no longer active or whatever)
+     * TODO: Make this work with ajax requests.
+     */
+    getOld: function(){
+        var oldModels = this.newModel();
+        var all = this.getAll();
+        var current = this.getCurrent();
+        all.remove(current.models);
+        return all;
+    },
+    
     ready: function(){
         return $.when.apply(null, this.xhrs);
     },
@@ -50,11 +68,13 @@ RangeCollection = Backbone.Collection.extend({
      * Returns a collection of Models which fall between startDate and endDate
      */
     getDuring: function(startDate, endDate){
-        modelsDuring = this.newModel();
+        var modelsDuring = this.newModel();
         _.each(this.models, function(model){
             if(between(model, startDate, endDate)){
                 var target = model.getTarget();
-                this.xhrs.push(target.fetch());
+                if(target != model){
+                    this.xhrs.push(target.fetch());
+                }
                 modelsDuring.add(target);
             }
         }, this);

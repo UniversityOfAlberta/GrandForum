@@ -6,3 +6,21 @@ function projectChecked(projects, projectId){
     }
     return "";
 }
+
+function otherChecked(view){
+    var ret = '';
+    var projects = view.parent.projects.models;
+    var allProjects = new Array();
+    _.each(projects, function(proj){
+        allProjects.push(proj);
+        _.each(proj.get('subprojects'), function(sub){
+            allProjects.push(sub);
+        });
+    });
+    _.each(view.model.get('projects'), function(proj){
+        if(_.where(allProjects, {id: proj.id}).length == 0){
+            ret = 'checked="checked"';
+        }
+    });
+    return ret;
+}
