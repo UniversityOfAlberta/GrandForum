@@ -139,10 +139,15 @@ ManageProductsViewRow = Backbone.View.extend({
     unselect: function(projectId){
         var project = _.findWhere(this.parent.projects.models, {id: projectId});
         var projects = this.model.get('projects');
+        console.log(projects);
+
         // Unselect all subprojects as well
         if(project != undefined){
             _.each(project.get('subprojects'), $.proxy(function(sub){
-                projects.splice(_.indexOf(projects, _.findWhere(projects, {id: sub.id})), 1);
+                var index = _.indexOf(projects, _.findWhere(projects, {id: sub.id}));
+                if(index != -1){
+                    projects.splice(index, 1);
+                }
             }, this));
         }
         projects.splice(_.indexOf(projects, _.findWhere(projects, {id: projectId})), 1);
