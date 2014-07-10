@@ -64,7 +64,7 @@ class PublicChordTab extends AbstractTab {
             
             if(!isset($_GET['sortBy']) || (isset($_GET['sortBy']) && $_GET['sortBy'] == 'theme')){
                 foreach($projects as $project){
-                    $sortedProjects[$project->getChallenge()->getName()][] = $project;
+                    $sortedProjects[$project->getChallenge()->getId()."-".$project->getChallenge()->getName()][] = $project;
                 }
             }
             else if(isset($_GET['sortBy']) && $_GET['sortBy'] == 'name'){
@@ -79,6 +79,8 @@ class PublicChordTab extends AbstractTab {
             ksort($sortedProjects);
             foreach($sortedProjects as $key => $sort){
                 foreach($sort as $project){
+                    $key = explode("-", $key);
+                    $key = $key[count($key)-1];
                     $theme = $project->getChallenge();
                     $color = $theme->getColor();
                     $projects[] = $project;
