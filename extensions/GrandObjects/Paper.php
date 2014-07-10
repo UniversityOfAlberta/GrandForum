@@ -453,7 +453,20 @@ class Paper extends BackboneModel{
 	function getAuthors($evaluate=true, $cache=true){
 	    if($this->authorsWaiting && $evaluate){
 	        $authors = array();
-	        $unserialized = unserialize($this->authors);
+	        $unserialized = array();
+	        if(is_array($this->authors)){
+	            foreach($this->authors as $auth){
+	                if(isset($auth->id)){
+	                    $unserialized[] = $auth->id;
+	                }
+	                else{
+	                    $unserialized[] = $auth->name;
+	                }
+	            }
+	        }
+	        else{
+	            $unserialized = unserialize($this->authors);
+	        }
 	        foreach(@$unserialized as $author){
 	            if($author == ""){
 	                continue;
@@ -856,7 +869,60 @@ class Paper extends BackboneModel{
 	}
 	
 	function update(){
-	
+	    $me = Person::newFromWGUser();
+	    if($me->isLoggedIn()){
+	        // Begin Transaction
+	        DBFunctions::begin();
+	        $authors = array();
+	        foreach($this->authors as $author){
+	            if($author->id != 0){
+	                $authors[] = $author->id;
+	            }
+	            else{
+	                $authors[] = $author->name;
+	            }
+	        }
+	        // Update products table
+	        $status = DBFunctions::update('grand_products',
+	                                      array('category' => $this->category,
+	                                            'description' => $this->description,
+	                                            'type' => $this->type,
+	                                            'title' => $this->title,
+	                                            'date' => $this->date,
+	                                            'venue' => $this->venue,
+	                                            'status' => $this->status,
+	                                            'authors' => serialize($authors),
+	                                            'data' => serialize($this->data)),
+	                                      array('id' => EQ($this->id)),
+	                                      array(),
+	                                      true);
+	        // Update product_projects table
+            if($status){
+                $status = DBFunctions::delete("grand_product_projects", 
+                                              array('product_id' => $this->id),
+                                              true);
+            }
+	        foreach($this->projects as $project){
+	            if($status){
+	                $status = DBFunctions::insert("grand_product_projects", 
+	                                              array('product_id' => $this->id,
+	                                                    'project_id' => $project->id),
+	                                              true);
+	            }
+	        }
+	        // Commit transaction
+	        DBFunctions::commit();
+	        if($status){
+	            // Sync Authors
+	            $this->syncAuthors();
+	            Cache::delete($this->getCacheId());
+	            self::$cache = array();
+	            self::$dataCache = array();
+	            self::$productProjectsCache = array();
+            }
+            return $status;
+	    }
+	    return false;
 	}
 	
 	function delete(){
@@ -895,7 +961,6 @@ class Paper extends BackboneModel{
 	                if($person == null || $person->getName() == ""){
 	                    $person = Person::newFromAlias($author['name']);
 	                }
-	                
 	                if($person != null && $person->getName() != ""){
 	                    $change = true;
 	                    $authors[$key] = array('id' => $person->getId(),

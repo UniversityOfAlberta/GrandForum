@@ -1,3 +1,4 @@
+<button id="saveProducts">Save All</button>
 <table id="listTable" frame="box" rules="all">
     <thead>
         <tr>
@@ -5,7 +6,7 @@
             <% _.each(this.projects.models, function(p){ %>
                 <th class="angledTableHead checkboxCell"><div class="angledTableBorder"></div><div class="angledTableText"><%= p.get('name') %></div></th>
             <% }) %>
-            <th width="100%" colspan="4" style="border-left: 2px solid rgba(0,0,0,0);">Product Information</th>
+            <th width="100%" colspan="4" style="border-left: 2px solid rgba(0,0,0,0);text-align: center;">Product Information</th>
         </tr>
         <tr style="border-bottom: 2px solid #AAAAAA;">
             <th width="40px"></th>

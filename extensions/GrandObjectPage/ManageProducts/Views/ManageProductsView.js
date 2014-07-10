@@ -42,8 +42,15 @@ ManageProductsView = Backbone.View.extend({
         });
     },
     
+    saveProducts: function(){
+        this.products.each(function(product){
+            
+        });
+    },
+    
     events: {
-        "change .selectAll": "toggleSelect"
+        "change .selectAll": "toggleSelect",
+        "click #saveProducts": "saveProducts"
     },
     
     render: function(){
@@ -70,9 +77,8 @@ ManageProductsView = Backbone.View.extend({
                                                      ],
 	                                                 'aaSorting': [ [this.projects.length + 1,'desc']],
 	                                                 'aLengthMenu': [[-1], ['All']]});
-	    table = this.table;
 	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
-	    var maxWidth = 30;
+	    var maxWidth = 50;
 	    this.$('.angledTableText').each(function(i, e){
 	        maxWidth = Math.max(maxWidth, $(e).width());
 	    });
@@ -89,7 +95,7 @@ ManageProductsViewRow = Backbone.View.extend({
     
     initialize: function(options){
         this.parent = options.parent;
-        this.model.bind("change:projects", this.render);
+        this.model.bind("change", this.render);
         this.template = _.template($('#manage_products_row_template').html());
     },
     

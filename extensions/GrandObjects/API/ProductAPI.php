@@ -36,12 +36,26 @@ class ProductAPI extends RESTAPI {
     }
     
     function doPUT(){
-        $paper = Paper::newFromId($this->getParam('id'));
+        $paper = Product::newFromId($this->getParam('id'));
         if($paper == null || $paper->getTitle() == ""){
             $this->throwError("This product does not exist");
         }
         header('Content-Type: application/json');
-        $paper->update();
+        $paper->title = $this->POST('title');
+        $paper->category = $this->POST('category');
+        $paper->type = $this->POST('type');
+        $paper->description = $this->POST('description');
+        $paper->date = $this->POST('date');
+        $paper->status = $this->POST('status');
+        $paper->authors = $this->POST('authors');
+        $paper->projects = $this->POST('projects');
+        $paper->data = (array)($this->POST('data'));
+        $status = $paper->update();
+        if(!$status){
+            $this->throwError("The product <i>{$product->getTitle()}</i> could not be updated");
+        }
+        $paper = Product::newFromId($this->getParam('id'));
+        return $paper->toJSON();
     }
     
     function doDELETE(){
