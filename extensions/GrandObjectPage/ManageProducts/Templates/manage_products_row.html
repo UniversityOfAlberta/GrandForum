@@ -2,54 +2,7 @@
     <div class="checkboxOuter">
         <input class="other" name="other"  type="checkbox" <%= otherChecked(this) %> disabled /><div class="showOther">&#9660;</div>
         <div style="display:none;" class="otherPopup popupBox">
-            <% if(this.parent.otherProjects.length > 0) { %>
-                <div class="popupHeader">Current Projects</div>
-                <div class="popupBlock">
-                    <input type="text" class="popupBlockSearch" placeholder="Search..." autocomplete="off" />
-                    <% this.parent.otherProjects.each(function(p){ %>
-                        <div>
-                            <input data-project="<%= p.id %>"
-                                   type="checkbox" 
-                                   name="otherproject" 
-                                   <%= projectChecked(projects, p.id) %> />&nbsp;<%= p.get('name') %>
-                            <div class="otherSubProjects" <% if(projectChecked(projects, p.id) == ""){ %>style="display:none;" <% } %>>
-                                <% _.each(p.get('subprojects'), function(sub) { %>
-                                    <div class="subproject">
-                                        <input data-project="<%= sub.id %>"
-                                               type="checkbox" 
-                                               name="othersubproject" 
-                                               <%= projectChecked(projects, sub.id) %> />&nbsp;<%= sub.name %>
-                                    </div>
-                                <% }) %>
-                            </div>
-                        </div>
-                    <% }) %>
-                </div>
-            <% } %>
-            <% if(this.parent.oldProjects.length > 0) { %>
-                <div class="popupHeader">Ended Projects</div>
-                <div class="popupBlock">
-                    <input type="text" class="popupBlockSearch" placeholder="Search..." autocomplete="off" />
-                    <% this.parent.oldProjects.each(function(p){ %>
-                        <div>
-                            <input data-project="<%= p.id %>"
-                                   type="checkbox" 
-                                   name="otherproject" 
-                                   <%= projectChecked(projects, p.id) %> />&nbsp;<%= p.get('name') %>
-                            <div class="otherSubProjects" <% if(projectChecked(projects, p.id) == ""){ %>style="display:none;" <% } %>>
-                                <% _.each(p.get('subprojects'), function(sub) { %>
-                                    <div class="subproject">
-                                        <input data-project="<%= sub.id %>"
-                                               type="checkbox" 
-                                               name="othersubproject" 
-                                               <%= projectChecked(projects, sub.id) %> />&nbsp;<%= sub.name %>
-                                    </div>
-                                <% }) %>
-                            </div>
-                        </div>
-                    <% }) %>
-                </div>
-            <% } %>
+            
         </div>
     </div>
 </td>
@@ -59,19 +12,7 @@
             <input data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= projectChecked(projects, p.get('id')) %> /><% if(projectChecked(projects, p.get('id')) != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
             <% if(p.get('subprojects').length > 0){ %>
                 <div style="display:none;" class="subprojectPopup popupBox">
-                    <div class="popupHeader">Sub-Projects</div>
-                    <div class="popupBlock">
-                        <input type="text" class="popupBlockSearch" placeholder="Search..." autocomplete="off" />
-                        <% _.each(p.get('subprojects'), function(sub){ %>
-                            <div>
-                                <input data-project="<%= sub.id %>" 
-                                       data-parent="<%= p.get('id') %>" 
-                                       type="checkbox" 
-                                       name="subproject" 
-                                       <%= projectChecked(projects, sub.id) %> />&nbsp;<%= sub.name %>
-                            </div>
-                        <% }) %>
-                    </div>
+                    
                 </div>
             <% } %>
         </div>

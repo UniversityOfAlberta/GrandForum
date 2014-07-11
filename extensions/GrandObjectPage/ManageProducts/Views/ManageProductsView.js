@@ -82,6 +82,7 @@ ManageProductsView = Backbone.View.extend({
                 view.unselect(projectId);
             }
         });
+        this.productChanged();
     },
     
     saveProducts: function(){
@@ -175,11 +176,15 @@ ManageProductsViewRow = Backbone.View.extend({
         this.parent = options.parent;
         this.listenTo(this.model, "change", this.render);
         this.template = _.template($('#manage_products_row_template').html());
+        this.otherPopupTemplate = _.template($('#manage_products_other_popup_template').html());
+        this.projectsPopupTemplate = _.template($('#manage_products_projects_popup_template').html());
     },
     
-    setDirty: function(){
+    setDirty: function(trigger){
         this.model.dirty = true;
-        this.model.trigger("dirty");
+        if(trigger){
+            this.model.trigger("dirty");
+        }
     },
     
     select: function(projectId){
@@ -191,7 +196,7 @@ ManageProductsViewRow = Backbone.View.extend({
         if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
             this.model.trigger("change");
         }
-        this.setDirty();
+        this.setDirty(false);
     },
     
     unselect: function(projectId){
@@ -215,7 +220,7 @@ ManageProductsViewRow = Backbone.View.extend({
         if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
             this.model.trigger("change");
         }
-        this.setDirty();
+        this.setDirty(false);
     },
     
     toggleSelect: function(e){
@@ -249,15 +254,19 @@ ManageProductsViewRow = Backbone.View.extend({
                 $("div.otherSubProjects", target.parent()).slideUp();
             }
         }
+        this.setDirty(true);
     },
     
     showSubprojects: function(e){
         var target = $(e.currentTarget);
         var projectId = target.attr('data-project');
+        var project = _.findWhere(this.parent.projects.models, {id: projectId});
+        this.$("div[data-project=" + projectId + "] div.subprojectPopup").html(this.projectsPopupTemplate(_.extend(project.toJSON(), {projects: this.model.get('projects')})));
         this.$("div[data-project=" + projectId + "] div.subprojectPopup").slideDown();
     },
     
     showOther: function(e){
+        this.$("div.otherPopup").html(this.otherPopupTemplate(this.model.toJSON()));
         this.$("div.otherPopup").slideDown();
     },
     
@@ -286,7 +295,7 @@ ManageProductsViewRow = Backbone.View.extend({
     },
     
     render: function(){
-        this.$el.html(this.template(this.model.toJSON()));
+        this.el.innerHTML = this.template(this.model.toJSON());
         return this.$el;
     }
     
