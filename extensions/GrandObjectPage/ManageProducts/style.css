@@ -17,13 +17,13 @@ tbody#productRows td:not(.checkboxCell) {
 
 div.checkboxOuter {
     position: absolute;
-    top:0;
+    top:-1px;
     right:0;
-    left:0;
+    left:-1px;
     bottom:0;
     white-space: nowrap;
     height: 100%;
-    line-height: 22px;
+    line-height: 23px;
 }
 
 div.otherSubProjects {
@@ -53,7 +53,7 @@ div.showSubprojects, div.showOther {
 }
 
 div.showSubprojects:hover, div.showOther:hover {
-    color: #333333;
+    color: #222222;
 }
 
 div.popupBox {

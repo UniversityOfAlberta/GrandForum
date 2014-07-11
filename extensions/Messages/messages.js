@@ -1,5 +1,5 @@
 function closeParent(link){
-    $(link).parent().fadeOut(250, function(){
+    $(link).parent().slideUp(250, function(){
         $(this).remove();
     });
 }
@@ -13,12 +13,12 @@ function addMessage(type, message){
         $('#wgMessages .' + type).remove();
         $('#wgMessages').append("<div class='" + type + "' style='display:none'><span style='display:inline-block;'>" + message + "</span></div>");
         addClose($('#wgMessages .' + type));
-        $('#wgMessages .' + type).fadeIn(300);
+        $('#wgMessages .' + type).slideDown(250);
     }
 }
 
 function clearMessage(type){
-    $('#wgMessages .' + type).fadeOut(250, function(){
+    $('#wgMessages .' + type).slideUp(250, function(){
         $(this).remove();
     });
 }
