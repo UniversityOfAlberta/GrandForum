@@ -17,10 +17,10 @@ tbody#productRows td:not(.checkboxCell) {
 
 div.checkboxOuter {
     position: absolute;
-    top:-1px;
-    right:0;
-    left:-1px;
-    bottom:0;
+    top: -1px;
+    right: 0;
+    left: -1px;
+    bottom: 0;
     white-space: nowrap;
     height: 100%;
     line-height: 23px;
@@ -82,7 +82,7 @@ div.popupHeader {
 div.popupBlock {
     padding: 3px;
     padding-right: 18px;
-    max-height: 155px;
+    max-height: 158px;
     overflow-y: auto;
     overflow-x: hidden;
     border-bottom: 1px solid #AAAAAA;
