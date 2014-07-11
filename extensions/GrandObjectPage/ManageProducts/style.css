@@ -26,13 +26,17 @@ div.checkboxOuter {
     line-height: 22px;
 }
 
-.checkboxCell > input[type=checkbox] {
+div.otherSubProjects {
+    margin-left: 20px;
+}
+
+.checkboxCell > input[type=checkbox], .checkboxCell > input[type=checkbox][disabled] {
     width: 50%;
     margin-left: 1px;
     margin-right: 0;
 }
 
-.checkboxOuter > input[type=checkbox] {
+.checkboxOuter > input[type=checkbox], .checkboxOuter > input[type=checkbox][disabled] {
     width: 50%;
     margin: 0;
     text-align: center;
@@ -63,7 +67,7 @@ div.popupBox {
     background: #FFFFFF;
     z-index: 100;
     white-space: nowrap;
-    box-shadow: 0 0 3px #d8d8d8 !important;
+    box-shadow: 0 0 5px #AAAAAA !important;
     font-weight: bold;
 }
 

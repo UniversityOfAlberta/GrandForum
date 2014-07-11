@@ -11,6 +11,16 @@
                                type="checkbox" 
                                name="otherproject" 
                                <%= projectChecked(projects, p.id) %> />&nbsp;<%= p.get('name') %>
+                        <div class="otherSubProjects" <% if(projectChecked(projects, p.id) == ""){ %>style="display:none;" <% } %>>
+                            <% _.each(p.get('subprojects'), function(sub) { %>
+                                <div class="subproject">
+                                    <input data-project="<%= sub.id %>"
+                                           type="checkbox" 
+                                           name="othersubproject" 
+                                           <%= projectChecked(projects, sub.id) %> />&nbsp;<%= sub.name %>
+                                </div>
+                            <% }) %>
+                        </div>
                     </div>
                 <% }) %>
             </div>
@@ -23,6 +33,16 @@
                                type="checkbox" 
                                name="otherproject" 
                                <%= projectChecked(projects, p.id) %> />&nbsp;<%= p.get('name') %>
+                        <div class="otherSubProjects" <% if(projectChecked(projects, p.id) == ""){ %>style="display:none;" <% } %>>
+                            <% _.each(p.get('subprojects'), function(sub) { %>
+                                <div class="subproject">
+                                    <input data-project="<%= sub.id %>"
+                                           type="checkbox" 
+                                           name="othersubproject" 
+                                           <%= projectChecked(projects, sub.id) %> />&nbsp;<%= sub.name %>
+                                </div>
+                            <% }) %>
+                        </div>
                     </div>
                 <% }) %>
             </div>

@@ -54,19 +54,41 @@ ManageProductsView = Backbone.View.extend({
     },
     
     saveProducts: function(){
+        this.$("#saveProducts").prop('disabled', true);
+        this.$(".throbber").show();
+        var xhrs = new Array();
         this.products.each(function(product){
             if(product.dirty){
-                product.save({}, {
+                // Save all Dirty Products
+                xhrs.push(product.save({}, {
                     success: function(){
+                        // Save was successful, mark it as 'clean'
                         product.dirty = false;
-                        addSuccess("Saved " + product.get('id'));
-                    },
-                    error: function(){
-                        addError("Failed Saving " + product.get('id'));
                     }
-                });
+                }));
             }
         });
+        $.when.apply(null, xhrs).done($.proxy(function(){
+            // Success
+            clearAllMessages();
+            addSuccess("All products have been successfully saved");
+            this.$("#saveProducts").prop('disabled', false);
+            this.$(".throbber").hide();
+        }, this)).fail($.proxy(function(e){
+            // Failure
+            clearAllMessages();
+            var list = new Array();
+            list.push("There was a problem saving the following products:<ul>");
+            this.products.each(function(product){
+                if(product.dirty){
+                    list.push("<li>" + product.get('title') + "</li>");
+                }
+            });
+            list.push("</ul>");
+            addError(list.join(''));
+            this.$("#saveProducts").prop('disabled', false);
+            this.$(".throbber").hide();
+        }, this));
     },
     
     events: {
@@ -137,9 +159,10 @@ ManageProductsViewRow = Backbone.View.extend({
     },
     
     unselect: function(projectId){
-        var project = _.findWhere(this.parent.projects.models, {id: projectId});
+        var project = _.findWhere(this.parent.projects.models
+                                      .concat(this.parent.otherProjects.models)
+                                      .concat(this.parent.oldProjects.models), {id: projectId});
         var projects = this.model.get('projects');
-        console.log(projects);
 
         // Unselect all subprojects as well
         if(project != undefined){
@@ -147,6 +170,7 @@ ManageProductsViewRow = Backbone.View.extend({
                 var index = _.indexOf(projects, _.findWhere(projects, {id: sub.id}));
                 if(index != -1){
                     projects.splice(index, 1);
+                    this.$("input[data-project=" + sub.id + "]").prop('checked', false);
                 }
             }, this));
         }
@@ -162,16 +186,21 @@ ManageProductsViewRow = Backbone.View.extend({
         var target = $(e.currentTarget);
         var projectId = target.attr('data-project');
         if(target.is(":checked")){
+            // 'Check' Project
             this.select(projectId);
             if(target.attr('name') == "project"){
                 //this.$("div[data-project=" + projectId + "] div.subprojectPopup").slideDown();
             }
-            else if(target.attr('name') == "subproject") {
+            else if(target.attr('name') == "subproject"){
                 var parentId = target.attr('data-parent');
                 this.$("div[data-project=" + parentId + "] div.subprojectPopup").show();
             }
+            else if(target.attr('name') == "otherproject"){
+                $("div.otherSubProjects", target.parent()).slideDown();
+            }
         }
         else{
+            // 'Uncheck' Project
             this.unselect(projectId);
             if(target.attr('name') == "project"){
                 // Do nothing
@@ -179,6 +208,9 @@ ManageProductsViewRow = Backbone.View.extend({
             else if(target.attr('name') == "subproject"){
                 var parentId = target.attr('data-parent');
                 this.$("div[data-project=" + parentId + "] div.subprojectPopup").show();
+            }
+            else if(target.attr('name') == "otherproject"){
+                $("div.otherSubProjects", target.parent()).slideUp();
             }
         }
     },
@@ -197,7 +229,7 @@ ManageProductsViewRow = Backbone.View.extend({
         var target = $(e.currentTarget);
         var value = target.val();
         var block = target.parent();
-        var options = $("div", block);
+        var options = $("div", block).not(".subproject");
         options.each(function(i, el){
             var text = $(el).text();
             if(unaccentChars(text).indexOf(unaccentChars(value)) == -1){

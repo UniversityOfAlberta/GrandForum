@@ -1395,6 +1395,8 @@ input.other_option:focus {
     width: 20px;
     height:20px;
     background: url('../Throbber.gif');
+    display: inline-block;
+    vertical-align: middle;
 }
 
 /* MailingList */
