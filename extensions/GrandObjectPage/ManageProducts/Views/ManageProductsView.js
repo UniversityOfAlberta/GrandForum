@@ -14,25 +14,55 @@ ManageProductsView = Backbone.View.extend({
         this.allProjects.fetch();
         this.template = _.template($('#manage_products_template').html());
         me.getProjects();
-        this.model.bind('sync', function(){
+        this.listenTo(this.model, "sync", function(){
             this.products = this.model.getAll();
-            this.projects = me.projects.getCurrent();
-            this.model.ready().then($.proxy(function(){
-                this.allProjects.ready().then($.proxy(function(){
-                    this.otherProjects = this.allProjects.getCurrent();
-                    this.oldProjects = this.allProjects.getOld();
-                    this.otherProjects.remove(this.projects.models);
-                    this.oldProjects.remove(this.projects.models);
-                    me.projects.ready().then($.proxy(function(){
-                        this.render();
+            me.projects.ready().then($.proxy(function(){
+                this.projects = me.projects.getCurrent();
+                this.model.ready().then($.proxy(function(){
+                    this.allProjects.ready().then($.proxy(function(){
+                        this.otherProjects = this.allProjects.getCurrent();
+                        this.oldProjects = this.allProjects.getOld();
+                        this.otherProjects.remove(this.projects.models);
+                        this.oldProjects.remove(this.projects.models);
+                        me.projects.ready().then($.proxy(function(){
+                            this.render();
+                        }, this));
                     }, this));
                 }, this));
             }, this));
         }, this);
     },
     
+    productChanged: function(){
+        // Count how many products there are dirty
+        var sum = 0;
+        this.products.each(function(product){
+            if(product.dirty){
+                sum++;
+            }
+        });
+        this.$("#saveN").html("(" + sum + ")");
+        
+        // Change the state of the 'selectAll' checkbox
+        this.projects.each(function(project){
+            var allFound = true;
+            this.products.each(function(product){
+                if(allFound && _.where(product.get('projects'), {id: project.get('id')}).length == 0){
+                    allFound = false;
+                }
+            }, this);
+            if(allFound){
+                this.$("input.selectAll[data-project=" + project.get('id') + "]").prop('checked', true);
+            }
+            else{
+                this.$("input.selectAll[data-project=" + project.get('id') + "]").prop('checked', false);
+            }
+        }, this);
+    },
+    
     addRows: function(){
         this.products.each($.proxy(function(p){
+            this.listenTo(p, "dirty", this.productChanged);
             p.dirty = false;
             var row = new ManageProductsViewRow({model: p, parent: this});
             this.subViews.push(row);
@@ -43,8 +73,9 @@ ManageProductsView = Backbone.View.extend({
     toggleSelect: function(e){
         var target = $(e.currentTarget);
         var projectId = target.attr('data-project');
+        var checked = target.is(":checked");
         _.each(this.subViews, function(view){
-            if(target.is(":checked")){
+            if(checked){
                 view.select(projectId);
             }
             else{
@@ -74,6 +105,7 @@ ManageProductsView = Backbone.View.extend({
             addSuccess("All products have been successfully saved");
             this.$("#saveProducts").prop('disabled', false);
             this.$(".throbber").hide();
+            this.productChanged();
         }, this)).fail($.proxy(function(e){
             // Failure
             clearAllMessages();
@@ -88,11 +120,12 @@ ManageProductsView = Backbone.View.extend({
             addError(list.join(''));
             this.$("#saveProducts").prop('disabled', false);
             this.$(".throbber").hide();
+            this.productChanged();
         }, this));
     },
     
     events: {
-        "change .selectAll": "toggleSelect",
+        "click .selectAll": "toggleSelect",
         "click #saveProducts": "saveProducts"
     },
     
@@ -120,6 +153,7 @@ ManageProductsView = Backbone.View.extend({
                                                      ],
 	                                                 'aaSorting': [ [this.projects.length + 1,'desc']],
 	                                                 'aLengthMenu': [[-1], ['All']]});
+	    table = this.table;
 	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
 	    var maxWidth = 50;
 	    this.$('.angledTableText').each(function(i, e){
@@ -127,6 +161,7 @@ ManageProductsView = Backbone.View.extend({
 	    });
 	    this.$('.angledTableHead').height(maxWidth +"px");
 	    this.$('.angledTableHead').width('40px');
+	    this.productChanged();
         return this.$el;
     }
 
@@ -138,12 +173,13 @@ ManageProductsViewRow = Backbone.View.extend({
     
     initialize: function(options){
         this.parent = options.parent;
-        this.model.bind("change", this.render);
+        this.listenTo(this.model, "change", this.render);
         this.template = _.template($('#manage_products_row_template').html());
     },
     
     setDirty: function(){
         this.model.dirty = true;
+        this.model.trigger("dirty");
     },
     
     select: function(projectId){
