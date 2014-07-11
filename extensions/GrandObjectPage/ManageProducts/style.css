@@ -4,7 +4,7 @@ tbody#productRows td:not(.checkboxCell) {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 500px;
+    max-width: 50px;
 }
 
 .checkboxCell {
