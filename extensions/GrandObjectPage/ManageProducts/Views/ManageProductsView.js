@@ -16,6 +16,8 @@ ManageProductsView = Backbone.View.extend({
         me.getProjects();
         this.listenTo(this.model, "sync", function(){
             this.products = this.model.getAll();
+            this.listenTo(this.products, "add", this.addRows);
+            products = this.products;
             me.projects.ready().then($.proxy(function(){
                 this.projects = me.projects.getCurrent();
                 this.model.ready().then($.proxy(function(){
@@ -61,6 +63,7 @@ ManageProductsView = Backbone.View.extend({
     },
     
     addRows: function(){
+        this.$("#productRows").empty();
         this.products.each($.proxy(function(p){
             this.listenTo(p, "dirty", this.productChanged);
             p.dirty = false;
