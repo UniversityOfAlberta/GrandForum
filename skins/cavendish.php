@@ -88,7 +88,6 @@ class cavendishTemplate extends QuickTemplate {
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/date.js"></script>
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/inflection.js"></script>
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/to-title-case.js"></script>
-		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/excanvas.min.js"></script>
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/countries.en.js"></script>
 
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.min.js"></script>
@@ -251,6 +250,11 @@ class cavendishTemplate extends QuickTemplate {
 		        echo $me->toJSON();
 		    ?>
 		    );
+		    
+		    productStructure = <?php
+		        $structure = Product::structure();
+		        echo json_encode($structure);
+		    ?>;
 		    
 		    function changeImg(el, img){
                 $(el).attr('src', img);

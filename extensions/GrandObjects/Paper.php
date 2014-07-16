@@ -349,6 +349,45 @@ class Paper extends BackboneModel{
 	    }
 	}
 	
+	/**
+	 * Returns a php version of the Products.xml structure
+	 * @return array The array containing all the structure in Products.xml
+	 */
+	static function structure(){
+	    $file = file_get_contents("extensions/GrandObjects/Products.xml");
+	    $parser = simplexml_load_string($file);
+	    $categories = array('categories' => array());
+	    foreach($parser->children() as $category){
+	        $cattrs = $category->attributes();
+	        $cname = "{$cattrs->category}";
+	        foreach($category->children() as $type){
+	            $tattrs = $type->attributes();
+	            $tname = "{$tattrs->type}";
+	            $tstatus = explode("|", "{$tattrs->status}");
+	            $categories['categories'][$cname]['types'][$tname] = array('data' => array(),
+	                                                                       'status' => $tstatus);
+	            foreach($type->children() as $child){
+	                if($child->getName() == "data"){
+	                    foreach($child->children() as $field){
+	                        $fattrs = $field->attributes();
+	                        $fid = "$field";
+	                        $flabel = "{$fattrs->label}";
+	                        $ftype = "{$fattrs->type}";
+	                        $categories['categories'][$cname]['types'][$tname]['data'][$fid] = array('label' => $flabel,
+	                                                                                                 'type' => $ftype);
+	                    }
+	                }
+	            }
+	            $misc_types = Paper::getAllMiscTypes($cname);
+                foreach($misc_types as $key => $type){
+                    $misc_types[$key] = str_replace("\"", "\\\"", $type);
+                }
+                $categories['categories'][$cname]['misc'] = $misc_types;
+	        }
+	    }
+	    return $categories;
+	}
+	
 	// Constructor
 	function Paper($data){
 		if(count($data) > 0){
@@ -432,8 +471,8 @@ class Paper extends BackboneModel{
 	// Returns the url of this Paper's page
 	function getUrl(){
 	    global $wgServer, $wgScriptPath;
-	    return "{$wgServer}{$wgScriptPath}/index.php/{$this->getCategory()}:{$this->getId()}";
-	    //return "{$wgServer}{$wgScriptPath}/index.php/Special:Products#/{$this->getCategory()}/{$this->getId()}";
+	    //return "{$wgServer}{$wgScriptPath}/index.php/{$this->getCategory()}:{$this->getId()}";
+	    return "{$wgServer}{$wgScriptPath}/index.php/Special:Products#/{$this->getCategory()}/{$this->getId()}";
 	}
 	
 	static function getAllAuthors(){
@@ -455,6 +494,7 @@ class Paper extends BackboneModel{
 	        $authors = array();
 	        $unserialized = array();
 	        if(is_array($this->authors)){
+	            // For creation/update of Product
 	            foreach($this->authors as $auth){
 	                if(isset($auth->id)){
 	                    $unserialized[] = $auth->id;
@@ -865,10 +905,6 @@ class Paper extends BackboneModel{
 	}
 
 	function create(){
-	    
-	}
-	
-	function update(){
 	    $me = Person::newFromWGUser();
 	    if($me->isLoggedIn()){
 	        // Begin Transaction
@@ -880,6 +916,81 @@ class Paper extends BackboneModel{
 	            }
 	            else{
 	                $authors[] = $author->name;
+	            }
+	        }
+	        // Update products table
+	        $status = DBFunctions::insert('grand_products',
+	                                      array('category' => $this->category,
+	                                            'description' => $this->description,
+	                                            'type' => $this->type,
+	                                            'title' => $this->title,
+	                                            'date' => $this->date,
+	                                            'venue' => $this->venue,
+	                                            'status' => $this->status,
+	                                            'authors' => serialize($authors),
+	                                            'data' => serialize($this->data)),
+	                                      true);
+	        // Get the Product Id
+	        if($status){
+	            $data = DBFunctions::select(array('grand_products'),
+	                                        array('id'),
+	                                        array('title' => EQ($this->title),
+	                                              'category' => EQ($this->category),
+	                                              'type' => EQ($this->type)),
+	                                        array('id' => 'DESC'));
+	            if(count($data) > 0){
+	                $id = $data[0]['id'];
+	                $this->id = $id;
+	            }
+	        }
+	        // Update product_projects table
+            if($status){
+                $status = DBFunctions::delete("grand_product_projects", 
+                                              array('product_id' => $this->id),
+                                              true);
+            }
+	        foreach($this->projects as $project){
+	            if($status){
+	                $status = DBFunctions::insert("grand_product_projects", 
+	                                              array('product_id' => $this->id,
+	                                                    'project_id' => $project->id),
+	                                              true);
+	            }
+	        }
+	        if($status){
+	            // Commit transaction
+	            DBFunctions::commit();
+	            // Sync Authors
+	            $this->authorsWaiting = true;
+	            $this->syncAuthors();
+	            Cache::delete($this->getCacheId());
+	            self::$cache = array();
+	            self::$dataCache = array();
+	            self::$productProjectsCache = array();
+            }
+            return $status;
+	    }
+	    return false;
+	}
+	
+	function update(){
+	    $me = Person::newFromWGUser();
+	    if($me->isLoggedIn()){
+	        // Begin Transaction
+	        DBFunctions::begin();
+	        $authors = array();
+	        foreach($this->authors as $author){
+	            if(isset($author->id) && $author->id != 0){
+	                $authors[] = $author->id;
+	            }
+	            else{
+	                $authors[] = $author->name;
+	            }
+	        }
+	        foreach($this->projects as $project){
+	            if(!isset($project->id) || $project->id == 0){
+	                $p = Project::newFromName($project->name);
+	                $project->id = $p->getId();
 	            }
 	        }
 	        // Update products table
@@ -899,7 +1010,7 @@ class Paper extends BackboneModel{
 	        // Update product_projects table
             if($status){
                 $status = DBFunctions::delete("grand_product_projects", 
-                                              array('product_id' => $this->id),
+                                              array('product_id' => EQ($this->id)),
                                               true);
             }
 	        foreach($this->projects as $project){
@@ -910,10 +1021,11 @@ class Paper extends BackboneModel{
 	                                              true);
 	            }
 	        }
-	        // Commit transaction
-	        DBFunctions::commit();
 	        if($status){
+	            // Commit transaction
+	            DBFunctions::commit();
 	            // Sync Authors
+	            $this->authorsWaiting = true;
 	            $this->syncAuthors();
 	            Cache::delete($this->getCacheId());
 	            self::$cache = array();

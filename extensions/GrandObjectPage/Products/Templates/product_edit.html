@@ -1,18 +1,32 @@
 <form>
-<b>Change Title:</b> <%= HTML.TextBox(this, 'title', {size: '80'}) %>
+<b>Title:</b> <%= HTML.TextBox(this, 'title', {size: '50'}) %>
 <h2>Authors</h2>
-<div id='productAuthors'>
+<div id="productAuthors">
     
 </div>
 <h2>Description</h2>
 <%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
 <h2><%= category %> Information</h2>
 <table id="productData">
-    <tr><td align='right'><b>Status:</b></td><td><%= HTML.TextBox(this, 'status') %></td></tr>
-    <tr><td align='right'><b>Type:</b></td><td><%= HTML.TextBox(this, 'type') %></td></tr>
-    <tr><td align='right'><b>Date:</b></td><td><%= HTML.DatePicker(this, 'date',{format: 'yy-mm-dd'}) %></td></tr>
-    <% _.each(data, function(val, index) { %>
-        <tr><td align='right'><b><%= index.toTitleCase() %>:</b></td><td><%= HTML.TextBox(this, 'data.' + index, {size: 50}) %></td></tr>
+    <tr>
+        <td align='right'><b>Type:</b></td>
+        <td>
+            <%= HTML.Select(this, 'type', {options: this.model.getPossibleTypes()}) %>
+            <% if(type.split('Misc').length > 1){ %>
+                <%= HTML.MiscAutoComplete(this, 'type', {size: '30', misc: this.model.getPossibleMiscTypes()}) %>
+            <% } %>
+        </td>
+    </tr>
+    <tr><td align='right'><b>Status:</b></td><td><%= HTML.Select(this, 'status', {options: this.model.getPossibleStatus()}) %></td></tr>
+    
+    <tr><td align='right'><b>Date:</b></td><td><%= HTML.DatePicker(this, 'date', {format: 'yy-mm-dd'}) %></td></tr>
+    <% _.each(this.model.getPossibleFields(), function(val, index){ %>
+        <% if(data[index] != ""){ %>
+            <tr>
+                <td align='right'><b><%= val.label %>:</b></td>
+                <td><%= HTML.TextBox(this, 'data.' + index, {size: 50}) %></td>
+            </tr>
+        <% } %>
     <% }, this) %>
 </table>
 <h2>Related Projects</h2>
@@ -21,8 +35,10 @@
     
 </div>
 </form>
-<% if(parseInt(me.get('id')) > 0) { %>
-    <br />
-    <button id='saveProduct'>Save <%= category %></button><button id='cancel'>Cancel</button>
-<% } %>
-
+<br />
+<div style="width:180px;display:inline-block;">
+    <button id='saveProduct'>Save <%= category %></button><span class="throbber" style="display:none;"></span>
+</div>
+<div style="width:180px;display:inline-block;">
+    <button id='cancel'>Cancel</button>
+</div>

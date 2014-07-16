@@ -33,6 +33,19 @@ ManageProductsView = Backbone.View.extend({
                 }, this));
             }, this));
         }, this);
+        Backbone.Subviews.add(this);
+    },
+    
+    subviewCreators: {
+        "addProduct" : function() {
+            return new AddProductView();
+        }
+    },
+    
+    addProduct: function(){
+        this.$("#addProductButton").hide();
+        this.subviews.addProduct.model = new Product({authors: [me.toJSON()]});
+        this.subviews.addProduct.render();
     },
     
     productChanged: function(){
@@ -63,10 +76,15 @@ ManageProductsView = Backbone.View.extend({
     },
     
     addRows: function(){
+        _.map(this.subViews, function(v){
+            v.remove();
+        });
         this.$("#productRows").empty();
         this.products.each($.proxy(function(p){
             this.listenTo(p, "dirty", this.productChanged);
-            p.dirty = false;
+            if(p.dirty == undefined){
+                p.dirty = false;
+            }
             var row = new ManageProductsViewRow({model: p, parent: this});
             this.subViews.push(row);
             this.$("#productRows").append(row.render());
@@ -130,7 +148,8 @@ ManageProductsView = Backbone.View.extend({
     
     events: {
         "click .selectAll": "toggleSelect",
-        "click #saveProducts": "saveProducts"
+        "click #saveProducts": "saveProducts",
+        "click #addProductButton": "addProduct"
     },
     
     render: function(){
@@ -157,8 +176,8 @@ ManageProductsView = Backbone.View.extend({
                                                      ],
 	                                                 'aaSorting': [ [this.projects.length + 1,'desc']],
 	                                                 'aLengthMenu': [[-1], ['All']]});
-	    table = this.table;
 	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
+	    this.$("#listTable_length").html('<button id="saveProducts">Save All <span id="saveN">(0)</span></button><span style="display:none;" class="throbber"></span>');
 	    var maxWidth = 50;
 	    this.$('.angledTableText').each(function(i, e){
 	        maxWidth = Math.max(maxWidth, $(e).width());

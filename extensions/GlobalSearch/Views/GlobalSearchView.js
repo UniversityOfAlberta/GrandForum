@@ -6,10 +6,10 @@ GlobalSearchView = Backbone.View.extend({
 
     initialize: function(){
         this.template = _.template($("#global_search_template").html());
-        Backbone.Subviews.add( this );
+        Backbone.Subviews.add(this);
     },
     
-    subviewCreators : {
+    subviewCreators: {
         "globalSearchResults" : function() {
             return new GlobalSearchResultsView();
         }

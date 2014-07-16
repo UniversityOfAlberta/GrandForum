@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Products>
 	<!-- Activities -->
-	<Activities>
+	<Activities category="Activity">
 		<Activity type="Event Organization" status="Not Invited">
 			<data>
-				<field>conference</field>
-				<field>location</field>
-				<field>organizing_body</field>
-				<field>url</field>
+				<field label="Conference" type="String">conference</field>
+				<field label="Location" type="String">location</field>
+				<field label="Organizing Body" type="String">organizing_body</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Activity>
 		
 		<Activity type="Panel" status="Not Invited">
 			<data>
-				<field>conference</field>
-				<field>location</field>
-				<field>organizing_body</field>
-				<field>url</field>
+				<field label="Conference" type="String">conference</field>
+				<field label="Location" type="String">location</field>
+				<field label="Organizing Body" type="String">organizing_body</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Activity>
 
@@ -35,195 +35,195 @@
 	</Activities>
 	
 	<!-- Artifacts -->
-	<Artifacts>
-		<Artifact typе="Aesthetic Object" status="Peer Reviewed|Not Peer Reviewed">
+	<Artifacts category="Artifact">
+		<Artifact type="Aesthetic Object" status="Peer Reviewed|Not Peer Reviewed">
 			<data></data>
 		</Artifact>
 
-		<Artifact typе="Device/Machine" status="Peer Reviewed|Not Peer Reviewed">
+		<Artifact type="Device/Machine" status="Peer Reviewed|Not Peer Reviewed">
 			<data></data>
 		</Artifact>
 
-		<Artifact typе="Misc" status="Peer Reviewed|Not Peer Reviewed">
+		<Artifact type="Misc" status="Peer Reviewed|Not Peer Reviewed">
 			<data></data>
 		</Artifact>
 
-		<Artifact typе="Open Software" status="Peer Reviewed|Not Peer Reviewed">
+		<Artifact type="Open Software" status="Peer Reviewed|Not Peer Reviewed">
 			<data>
-				<field>url</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Artifact>
 
-		<Artifact typе="Patent" status="Peer Reviewed|Not Peer Reviewed">
+		<Artifact type="Patent" status="Peer Reviewed|Not Peer Reviewed">
 			<data>
-				<field>number</field>
+				<field label="Number" type="String">number</field>
 			</data>
 		</Artifact>
 
-		<Artifact typе="Repository" status="Peer Reviewed|Not Peer Reviewed">
+		<Artifact type="Repository" status="Peer Reviewed|Not Peer Reviewed">
 			<data>
-				<field>url</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Artifact>
 	</Artifacts>	
 
 	<!-- Awards -->
 	
-	<Awards>
-		<Award typе="Award" status="">
+	<Awards category="Award">
+		<Award type="Award" status="">
 			<data>
-				<field>url</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Award>
 	</Awards>
 	
 
 	<!-- Presentations -->
-	<Presentations>
-		<Presentation typе="2MM" status="Invited|Not Invited">
+	<Presentations category="Presentation">
+		<Presentation type="2MM" status="Invited|Not Invited">
 			<data>
-				<field>event_title</field>
-				<field>event_location</field>
-				<field>organizing_body</field>
-				<field>url</field>
+				<field label="Event Title" type="String">event_title</field>
+				<field label="Event Location" type="String">event_location</field>
+				<field label="Organizing Body" type="String">organizing_body</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Presentation>
 
-		<Presentation typе="Departmental Lecture" status="Invited|Not Invited">
+		<Presentation type="Departmental Lecture" status="Invited|Not Invited">
 			<data>
-				<field>event_title</field>
-				<field>host_institution</field>
-				<field>host_department</field>
-				<field>url</field>
+				<field label="Event Title" type="String">event_title</field>
+				<field label="Host Institution" type="String">host_institution</field>
+				<field label="Host Department" type="String">host_department</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Presentation>
 
-		<Presentation typе="Departmental Seminar" status="Invited|Not Invited">
+		<Presentation type="Departmental Seminar" status="Invited|Not Invited">
 			<data>
-				<field>event_title</field>
-				<field>host_institution</field>
-				<field>host_department</field>
-				<field>url</field>
+				<field label="Event Title" type="String">event_title</field>
+				<field label="Host Institution" type="String">host_institution</field>
+				<field label="Host Department" type="String">host_department</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Presentation>
 
-		<Presentation typе="Distinguished Lecture" status="Invited|Not Invited">
+		<Presentation type="Distinguished Lecture" status="Invited|Not Invited">
 			<data>
-				<field>event_title</field>
-				<field>host_institution</field>
-				<field>host_department</field>
-				<field>url</field>
+				<field label="Event Title" type="String">event_title</field>
+				<field label="Host Institution" type="String">host_institution</field>
+				<field label="Host Department" type="String">host_department</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Presentation>
 
-		<Presentation typе="Group Seminar" status="Invited|Not Invited">
+		<Presentation type="Group Seminar" status="Invited|Not Invited">
 			<data>
-				<field>event_title</field>
-				<field>host_institution</field>
-				<field>host_department</field>
-				<field>host_research_group</field>
-				<field>url</field>
+				<field label="Event Title" type="String">event_title</field>
+				<field label="Host Institution" type="String">host_institution</field>
+				<field label="Host Department" type="String">host_department</field>
+				<field label="Host Research Group" type="String">host_research_group</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Presentation>
 
-		<Presentation typе="Keynote" status="Invited|Not Invited">
+		<Presentation type="Keynote" status="Invited|Not Invited">
 			<data>
-				<field>event_title</field>
-				<field>event_location</field>
-				<field>organizing_body</field>
-				<field>url</field>
+				<field label="Event Title" type="String">event_title</field>
+				<field label="Event Location" type="String">event_location</field>
+				<field label="Organizing Body" type="String">organizing_body</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Presentation>
 
-		<Presentation typе="Misc" status="Invited|Not Invited">
+		<Presentation type="Misc" status="Invited|Not Invited">
 			<data>
-				<field>misc</field> <!-- Not implemented yet: currently this is not part of data and is just edded to type "Misc:[misc]" -->
-				<field>event_title</field>
-				<field>event_location</field>
-				<field>organizing_body</field>
-				<field>url</field>
+				<!-- field>misc</field> Not implemented yet: currently this is not part of data and is just edded to type "Misc:[misc]" -->
+				<field label="Event Title" type="String">event_title</field>
+				<field label="Event Location" type="String">event_location</field>
+				<field label="Organizing Body" type="String">organizing_body</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Presentation>
 
-		<Presentation typе="Panel" status="Invited|Not Invited">
+		<Presentation type="Panel" status="Invited|Not Invited">
 			<data>
-				<field>event_title</field>
-				<field>event_location</field>
-				<field>organizing_body</field>
-				<field>url</field>
+				<field label="Event Title" type="String">event_title</field>
+				<field label="Event Location" type="String">event_location</field>
+				<field label="Organizing Body" type="String">organizing_body</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Presentation>
 
-		<Presentation typе="Paper Session" status="Invited|Not Invited">
+		<Presentation type="Paper Session" status="Invited|Not Invited">
 			<data>
-				<field>event_title</field>
-				<field>event_location</field>
-				<field>organizing_body</field>
-				<field>url</field>
+				<field label="Event Title" type="String">event_title</field>
+				<field label="Event Location" type="String">event_location</field>
+				<field label="Organizing Body" type="String">organizing_body</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Presentation>
 
-		<Presentation typе="RNotes" status="Invited|Not Invited">
+		<Presentation type="RNotes" status="Invited|Not Invited">
 			<data>
-				<field>event_title</field>
-				<field>event_location</field>
-				<field>organizing_body</field>
-				<field>url</field>
+				<field label="Event Title" type="String">event_title</field>
+				<field label="Event Location" type="String">event_location</field>
+				<field label="Organizing Body" type="String">organizing_body</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Presentation>
 
-		<Presentation typе="Tutorial" status="Invited|Not Invited">
+		<Presentation type="Tutorial" status="Invited|Not Invited">
 			<data>
-				<field>event_title</field>
-				<field>event_location</field>
-				<field>organizing_body</field>
-				<field>url</field>
+				<field label="Event Title" type="String">event_title</field>
+				<field label="Event Location" type="String">event_location</field>
+				<field label="Organizing Body" type="String">organizing_body</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Presentation>
 
-		<Presentation typе="WIP" status="Invited|Not Invited">
+		<Presentation type="WIP" status="Invited|Not Invited">
 			<data>
-				<field>event_title</field>
-				<field>event_location</field>
-				<field>organizing_body</field>
-				<field>url</field>
+				<field label="Event Title" type="String">event_title</field>
+				<field label="Event Location" type="String">event_location</field>
+				<field label="Organizing Body" type="String">organizing_body</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Presentation>
 	</Presentations>
 	
 	<!-- Press -->
-	<Presses>
-		<Press typе="International News" status="">
+	<Presses category="Press">
+		<Press type="International News" status="">
 			<data>
-				<field>url</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Press>
-		<Press typе="Misc" status="">
+		<Press type="Misc" status="">
 			<data>
-				<field>misc</field> <!-- Not implemented yet: currently this is not part of data and is just edded to type "Misc:[misc]" -->
-				<field>url</field>
+				<!--<field>misc</field> Not implemented yet: currently this is not part of data and is just edded to type "Misc:[misc]" -->
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Press>
-		<Press typе="National News" status="">
+		<Press type="National News" status="">
 			<data>
-				<field>url</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Press>
-		<Press typе="Provincial News" status="">
+		<Press type="Provincial News" status="">
 			<data>
-				<field>url</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Press>
-		<Press typе="University Press" status="">
+		<Press type="University Press" status="">
 			<data>
-				<field>url</field>
+				<field label="URL" type="URL">url</field>
 			</data>
 		</Press>
 	</Presses>
 	
 	<!-- Publications -->
-	<Publications>
-		<Publication typе="Bachelors Thesis" status="Submitted|To Appear|Under Revision|Published|Rejected">
+	<Publications category="Publication">
+		<Publication type="Bachelors Thesis" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<statuses>
 				<status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
 				<status lov_id="00000000000000000000000100001702" lov_name="Accepted">To Appear</status>
@@ -232,284 +232,284 @@
 				<status lov_id="00000000000000000000000100001703" lov_name="In Press">Rejected</status>
 			</statuses>
 			<data>
-				<field>university</field>
-				<field>department</field>
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="University" type="String">university</field>
+				<field label="Department" type="String">department</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
 		<!-- Not certain we're going to have this type -->
-		<Publication typе="BibTex Article" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="BibTex Article" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>published_in</field>
-				<field>pages</field>
-				<field>volume</field>
-				<field>number</field>
-				<field>publisher</field>
-				<field>address</field>
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="Published In" type="String">published_in</field>
+				<field label="Pages" type="String">pages</field>
+				<field label="Volume" type="String">volume</field>
+				<field label="Number" type="String">number</field>
+				<field label="Publisher" type="String">publisher</field>
+				<field label="Address" type="Address">address</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
 		<!-- Not certain we're going to have this type -->
-		<Publication typе="BibTex Book" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="BibTex Book" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>book_title</field>
-				<field>editors</field>
-				<field>pages</field>
-				<field>volume</field>
-				<field>number</field>
-				<field>publisher</field>
-				<field>address</field>
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="Book Title" type="String">book_title</field>
+				<field label="Editors" type="String">editors</field>
+				<field label="Pages" type="String">pages</field>
+				<field label="Volume" tye="String">volume</field>
+				<field label="Number" type="String">number</field>
+				<field label="Publisher" type="String">publisher</field>
+				<field label="Address" type="String">address</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
-		<Publication typе="Book" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="Book" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>publisher</field>
+				<field label="Publisher" type="String">publisher</field>
 				<!--field>address</field--> <!-- In some entried in DB, but not in UI -->
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
-		<Publication typе="Book Chapter" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="Book Chapter" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>book_title</field>
-				<field>editors</field>
-				<field>pages</field>
-				<field>publisher</field>
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="Book Title" type="String">book_title</field>
+				<field label="Editors" type="String">editors</field>
+				<field label="Pages" type="String">pages</field>
+				<field label="Publisher" type="String">publisher</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
-		<Publication typе="Book Review" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="Book Review" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>book_title</field>
-				<field>published_in</field>
-				<field>volume</field>
-				<field>number</field>
-				<field>pages</field>
-				<field>publisher</field>
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="Book Title" type="String">book_title</field>
+				<field label="Published In" type="String">published_in</field>
+				<field label="Volume" type="String">volume</field>
+				<field label="Number" type="String">number</field>
+				<field label="Pages" type="String">pages</field>
+				<field label="Publisher" type="String">publisher</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
-		<Publication typе="Collections Paper" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="Collections Paper" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>book_title</field>
-				<field>editors</field>
-				<field>pages</field>
-				<field>publisher</field>
-				<field>address</field>
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="Book Title" type="String">book_title</field>
+				<field label="Editors" type="String">editors</field>
+				<field label="Pages" type="String">pages</field>
+				<field label="Publisher" type="String">publisher</field>
+				<field label="Address" type="String">address</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
-		<Publication typе="Edited Book" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="Edited Book" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>publisher</field>
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="Publisher" type="String">publisher</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
-		<Publication typе="Journal Abstract" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="Journal Abstract" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>published_in</field>
-				<field>volume</field>
-				<field>number</field>
-				<field>pages</field>
-				<field>publisher</field>
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>peer_reviewed</field>
+				<field label="Published In" type="String">published_in</field>
+				<field label="Volume" type="String">volume</field>
+				<field label="Number" type="String">number</field>
+				<field label="Pages" type="String">pages</field>
+				<field label="Publisher" type="String">publisher</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
-		<Publication typе="Journal Paper" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="Journal Paper" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>published_in</field>
-				<field>volume</field>
-				<field>number</field>
-				<field>pages</field>
-				<field>publisher</field>
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="Published In" type="String">published_in</field>
+				<field label="Volume" type="String">volume</field>
+				<field label="Number" type="String">number</field>
+				<field label="Pages" type="String">pages</field>
+				<field label="Publisher" type="String">publisher</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
-		<Publication typе="Magazine/Newspaper Article" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="Magazine/Newspaper Article" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>published_in</field>
-				<field>volume</field>
-				<field>number</field>
-				<field>pages</field>
-				<field>publisher</field>
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="Published In" type="String">published_in</field>
+				<field label="Volume" type="String">volume</field>
+				<field label="Number" type="String">number</field>
+				<field label="Pages" type="String">pages</field>
+				<field label="Publisher" type="String">publisher</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="String">doi</field>
+				<field label="URL" type="String">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
-		<Publication typе="Manual" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="Manual" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>volume</field>
-				<field>edition</field>
-				<field>series</field>
-				<field>pages</field>
-				<field>publisher</field>
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="Volume" type="String">volume</field>
+				<field label="Edition" type="String">edition</field>
+				<field label="Series" type="String">series</field>
+				<field label="Pages" type="String">pages</field>
+				<field label="Publisher" type="String">publisher</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
-		<Publication typе="Masters Thesis" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="Masters Thesis" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>university</field>
-				<field>department</field>
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="University" type="String">university</field>
+				<field label="Department" type="String">department</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
-		<Publication typе="Misc" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="Misc" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>misc</field> <!-- Not implemented yet: currently this is not part of data and is just edded to type "Misc:[misc]" -->
-				<field>venue</field>
-				<field>how_published</field>
-				<field>note</field>
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<!--field>misc</field>  Not implemented yet: currently this is not part of data and is just edded to type "Misc:[misc]" -->
+				<field label="Venue" type="String">venue</field>
+				<field label="How Published" type="String">how_published</field>
+				<field label="Note" type="String">note</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
 		<!-- Not certain about this one - there are a lot of these in the DB, but not in the UI. Data fields vary -->
-		<Publication typе="Paper" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="Paper" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
 			</data>
 		</Publication>
 
-		<Publication typе="PHD Thesis" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="PHD Thesis" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>university</field>
-				<field>department</field>
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="University" type="String">university</field>
+				<field label="Department" type="String">department</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
-		<Publication typе="Poster" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="Poster" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>event_title</field>
-				<field>event_location</field>
-				<field>pages</field>
-				<field>publisher</field>
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="Event Title" type="String">event_title</field>
+				<field label="Event Location" type="String">event_location</field>
+				<field label="Pages" type="String">pages</field>
+				<field label="Publisher" type="String">publisher</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="String">peer_reviewed</field>
 			</data>
 		</Publication>
 
-		<Publication typе="Proceedings Paper" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="Proceedings Paper" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>event_title</field>
-				<field>event_location</field>
-				<field>pages</field>
-				<field>publisher</field>
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="Event Title" type="String">event_title</field>
+				<field label="Event Location" type="String">event_location</field>
+				<field label="Pages" type="String">pages</field>
+				<field label="Publisher" type="String">publisher</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
-		<Publication typе="Review Article" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="Review Article" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>published_in</field>
-				<field>volume</field>
-				<field>number</field>
-				<field>pages</field>
-				<field>publisher</field>
-				<field>isbn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="Published In" type="String">published_in</field>
+				<field label="Volume" type="String">volume</field>
+				<field label="Number" type="String">number</field>
+				<field label="Pages" type="String">pages</field>
+				<field label="Publisher" type="String">publisher</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
-		<Publication typе="Tech Report" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="Tech Report" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>university</field>
-				<field>department</field>
-				<field>isbn</field>
-				<field>issn</field>
-				<field>doi</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="University" type="String">university</field>
+				<field label="Department" type="String">department</field>
+				<field label="ISBN" type="String">isbn</field>
+				<field label="ISSN" type="String">issn</field>
+				<field label="DOI" type="DOI">doi</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 
-		<Publication typе="White Paper" status="Submitted|To Appear|Under Revision|Published|Rejected">
+		<Publication type="White Paper" status="Submitted|To Appear|Under Revision|Published|Rejected">
 			<data>
-				<field>published_in</field>
-				<field>pages</field>
-				<field>editor</field>
-				<field>publisher</field>
-				<field>url</field>
-				<field>peer_reviewed</field>
+				<field label="Published In" type="String">published_in</field>
+				<field label="Pages" type="String">pages</field>
+				<field label="Editor" type="String">editor</field>
+				<field label="Publisher" type="String">publisher</field>
+				<field label="URL" type="URL">url</field>
+				<field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
 			</data>
 		</Publication>
 	</Publications>

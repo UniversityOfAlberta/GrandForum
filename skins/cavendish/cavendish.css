@@ -410,6 +410,10 @@ input {
 	margin:2px;
 }
 
+input[type=text] {
+    height: 16px;
+}
+
 .custom-combobox-input {
     background: #FFFFFF !important;
     font-weight: bold;
@@ -1273,7 +1277,9 @@ input.other_option:focus {
 	border-width: 1px 0 1px 1px;
 	border-style: solid;
 	border-color: #E0E0E0;
-	height:14px;
+	height:16px;
+	color: #555555;
+	font-weight: bold;
 }
 
 #globalSearchInput:focus {
@@ -1286,6 +1292,12 @@ input.other_option:focus {
 	border-width: 1px 0 1px 0;
 	border-style: solid;
 	border-color: #E0E0E0;
+	display: inline-block;
+	width: 22px;
+	height:22px;
+	padding: 3px;
+	vertical-align: top;
+	background: #FFF;
 }
 
 #globalSearchButton {
@@ -1305,7 +1317,7 @@ input.other_option:focus {
 	-webkit-border-radius: 0 5px 5px 0;
 	border-radius: 0 5px 5px 0;
 	width: 20px;
-	height: 18px;
+	height: 20px;
 	vertical-align:top;
 }
 

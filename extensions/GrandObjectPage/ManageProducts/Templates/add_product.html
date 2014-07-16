@@ -1,0 +1,30 @@
+<fieldset>
+    <legend>Add Product</legend>
+    <table>
+        <tr>
+            <td align="right"><b>Title:</b></td>
+            <td><%= HTML.TextBox(this, 'title', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td align="right"><b>Category:</b></td>
+            <td><select name="category">
+                    <option>Category</option>
+                </select></td>
+        </tr>
+        <tr>
+            <td align="right"><b>Type:</b></td>
+            <td><select name="type">
+                    <option>Type</option>
+                </select></td>
+        </tr>
+        <tr>
+            <td align="right"><b>Date:</b></td>
+            <td><%= HTML.DatePicker(this, 'date', {format: 'yy-mm-dd'}) %></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button id="createProduct">Create Product</button><span class="throbber" style="display:none;"></span></td>
+        </tr>
+    </table>
+</fieldset>
+<br />

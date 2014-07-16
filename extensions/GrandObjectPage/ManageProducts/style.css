@@ -92,3 +92,7 @@ input.popupBlockSearch {
     width: 100%;
     margin: 0 3px 2px 3px;
 }
+
+#saveN {
+    vertical-align: top;
+}

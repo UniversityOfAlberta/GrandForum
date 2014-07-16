@@ -1,7 +1,5 @@
 ProductEditView = Backbone.View.extend({
 
-
-
     initialize: function(){
         this.model.fetch();
         this.model.bind('change', this.render, this);
@@ -14,7 +12,22 @@ ProductEditView = Backbone.View.extend({
     },
     
     saveProduct: function(){
-        
+        this.$(".throbber").show();
+        this.$("#saveProduct").prop('disabled', true);
+        this.model.save(null, {
+            success: $.proxy(function(){
+                this.$(".throbber").hide();
+                this.$("#saveProduct").prop('disabled', false);
+                clearAllMessages();
+                document.location = this.model.get('url');
+            }, this),
+            error: $.proxy(function(){
+                this.$(".throbber").hide();
+                this.$("#saveProduct").prop('disabled', false);
+                clearAllMessages();
+                addFailure("There was a problem saving the Product");
+            }, this)
+        });
     },
     
     cancel: function(){
@@ -23,8 +36,7 @@ ProductEditView = Backbone.View.extend({
     
     renderAuthorsWidget: function(){
         var left = _.pluck(this.model.get('authors'), 'name');
-        var right = this.allPeople.pluck('realname');
-        
+        var right = this.allPeople.pluck('realName');
         var html = HTML.Switcheroo(this, 'authors.name', {name: 'author',
                                                           'left': left,
                                                           'right': right
@@ -39,6 +51,7 @@ ProductEditView = Backbone.View.extend({
         }
         else{
             this.allPeople = new People();
+            allPeople = this.allPeople;
             this.allPeople.fetch();
             var spin = spinner("productAuthors", 10, 20, 10, 3, '#888');
             this.allPeople.bind('sync', function(){
@@ -53,7 +66,7 @@ ProductEditView = Backbone.View.extend({
                               {
                                suggestions: this.current.pluck('name'),
                                values: _.pluck(this.model.get('projects'), 'name'),
-                               capitalize: true,
+                               capitalize: false,
                                options: {availableTags: this.allProjects.pluck('name')}
                               });
         this.$("#productProjects").html(html);

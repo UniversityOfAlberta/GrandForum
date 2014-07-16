@@ -9,9 +9,6 @@ ul.tagit {
     background: inherit;
 }
 ul.tagit li.tagit-choice {
-    -moz-border-radius: 6px;
-    border-radius: 6px;
-    -webkit-border-radius: 6px;
     border: 1px solid #A284AC;
 
     background: none;

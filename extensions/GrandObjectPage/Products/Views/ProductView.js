@@ -16,7 +16,6 @@ ProductView = Backbone.View.extend({
     },
     
     deleteProduct: function(){
-        console.log(this.model.toJSON());
         if(this.model.get('deleted') != true){
             this.model.destroy({
                 success: function(model, response) {
@@ -49,22 +48,14 @@ ProductView = Backbone.View.extend({
         var views = Array();
         var that = this;
         _.each(this.model.get('authors'), function(author, index){
-            if(author.id == ""){
-                var link = new Link({id: author.id,
-                                     text: author.name,
-                                     url: author.url,
-                                     target: '_blank'});
-                //that.$el.find("#productAuthors").append(new PersonLinkView({model: link}).render());
-                views.push(new PersonLinkView({model: link}).render());
-            }
-            else{
-                var person = new Person({id: author.id});
-                views.push(new SmallPersonCardView({model: person}).render());
-                //that.$el.find("#productAuthors").append(new SmallPersonCardView({model: person}).render());
-            }
+            var link = new Link({id: author.id,
+                                 text: author.name,
+                                 url: author.url,
+                                 target: ''});
+            views.push(new PersonLinkView({model: link}).render());
         });
         csv = new CSVView({el: this.$el.find('#productAuthors'), model: views});
-        csv.separator = ' ';
+        csv.separator = ', ';
         csv.render();
     },
     

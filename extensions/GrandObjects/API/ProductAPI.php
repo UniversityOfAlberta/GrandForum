@@ -30,9 +30,23 @@ class ProductAPI extends RESTAPI {
     }
     
     function doPOST(){
-        $paper = Paper::newFromId($this->getParam('id'));
+        $paper = new Paper(array());
         header('Content-Type: application/json');
-        $paper->create();
+        $paper->title = $this->POST('title');
+        $paper->category = $this->POST('category');
+        $paper->type = $this->POST('type');
+        $paper->description = $this->POST('description');
+        $paper->date = $this->POST('date');
+        $paper->status = $this->POST('status');
+        $paper->authors = $this->POST('authors');
+        $paper->projects = $this->POST('projects');
+        $paper->data = (array)($this->POST('data'));
+        $status = $paper->create();
+        if(!$status){
+            $this->throwError("The product <i>{$paper->getTitle()}</i> could not be created");
+        }
+        $paper = Product::newFromId($paper->getId());
+        return $paper->toJSON();
     }
     
     function doPUT(){
@@ -52,7 +66,7 @@ class ProductAPI extends RESTAPI {
         $paper->data = (array)($this->POST('data'));
         $status = $paper->update();
         if(!$status){
-            $this->throwError("The product <i>{$product->getTitle()}</i> could not be updated");
+            $this->throwError("The product <i>{$paper->getTitle()}</i> could not be updated");
         }
         $paper = Product::newFromId($this->getParam('id'));
         return $paper->toJSON();

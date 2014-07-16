@@ -100,6 +100,59 @@ HTML.DatePicker = function(view, attr, options){
     };
     view.delegateEvents(events);
     $(el).wrap('div');
+    _.defer(function(){
+        view.$('input[name=' + HTML.Name(attr) + ']').keydown(function() {
+            return false;
+        });
+    });
+    return $(el).parent().html();
+}
+
+HTML.Select = function(view, attr, options){
+    var el = HTML.Element("<select />", options);
+    $(el).attr('name', HTML.Name(attr));
+    var val = HTML.Value(view, attr);
+    _.each(options.options, function(opt){
+        var selected = "";
+        if(val.split(":")[0] == opt){
+            selected = "selected='selected'";
+        }
+        $(el).append("<option " + selected + ">" + opt + "</option>");
+    });
+    var events = view.events;
+    view.events['change select[name=' + HTML.Name(attr) + ']'] = function(e){
+        view.model.set(attr, $(e.target).val());
+    };
+    view.delegateEvents(events);
+    $(el).wrap('div');
+    return $(el).parent().html();
+}
+
+HTML.MiscAutoComplete = function(view, attr, options){
+    var el = HTML.Element("<input type='text' />", options);
+    $(el).attr('name', HTML.Name(attr));
+    $(el).attr('value', HTML.Value(view, attr).replace("Misc: ", "").replace("Misc", ""));
+    $(el).wrap('div');
+    var evt = function(e){
+        _.defer(function(){
+            if(attr.indexOf('.') != -1){
+                var index = attr.indexOf('.');
+                var data = view.model.get(attr.substr(0, index));
+                data[attr.substr(index+1)] = "Misc: " + $(e.target).val();
+                view.model.set(attr.substr(0, index), _.clone(data));
+            }
+            else{                
+                view.model.set(attr, "Misc: " + $(e.target).val());
+            }
+        });
+    };
+    _.defer(function(){
+        view.$('input[name=' + HTML.Name(attr) + ']').autocomplete({
+            source: options.misc,
+            select: evt,
+            change: evt
+        });
+    });
     return $(el).parent().html();
 }
 
@@ -123,7 +176,7 @@ HTML.TagIt = function(view, attr, options){
         var newItems = Array();
         for(cId in current){
             var c = current[cId];
-            var tuple = new Array();
+            var tuple = {};
             tuple[subName] = c;
             newItems.push(tuple);
         }
@@ -144,14 +197,14 @@ HTML.Switcheroo = function(view, attr, options){
 
     $(el).attr('name', HTML.Name(attr));
     var events = view.events;
-    view.events['change input[name=author]'] = function(e){
+    view.events['change input[name=' + options.name + ']'] = function(e){
         var current = switcherooView.switcheroo().getValue();
         var newItems = Array();
         var index = attr.indexOf('.');
         var subName = attr.substr(index+1);
         for(cId in current){
             var c = current[cId];
-            var tuple = new Array();
+            var tuple = {};
             tuple[subName] = c;
             newItems.push(tuple);
         }

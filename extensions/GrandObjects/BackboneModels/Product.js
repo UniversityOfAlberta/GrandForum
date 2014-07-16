@@ -27,6 +27,28 @@ Product = Backbone.Model.extend({
                          target: ''});
                                
     },
+    
+    getPossibleCategories: function(){
+        return productStructure.categories;
+    },
+    
+    getPossibleTypes: function(){
+        return _.keys(productStructure.categories[this.get('category')].types);
+    },
+    
+    getPossibleMiscTypes: function(){
+        return productStructure.categories[this.get('category')].misc;
+    },
+    
+    getPossibleFields: function(){
+        var type = this.get('type').split(":")[0];
+        return productStructure.categories[this.get('category')].types[type].data;
+    },
+    
+    getPossibleStatus: function(){
+        var type = this.get('type').split(":")[0];
+        return productStructure.categories[this.get('category')].types[type].status;
+    },
 
     urlRoot: 'index.php?action=api.product',
     
@@ -36,7 +58,7 @@ Product = Backbone.Model.extend({
         category: "",
         type: "",
         description: "",
-        date: "",
+        date: Date.format(new Date(), 'yyyy-MM-dd'),
         url: "",
         status: "",
         data: new Array(),
