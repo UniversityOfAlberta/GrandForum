@@ -781,7 +781,7 @@ class Paper extends BackboneModel{
         }
 
         if($hyperlink){
-            $text = "<a href='$wgServer$wgScriptPath/index.php/{$category}:{$this->getId()}'>{$title}</a>";
+            $text = "<a href='{$this->getUrl()}'>{$title}</a>";
         }
         else{
             $text = $title;

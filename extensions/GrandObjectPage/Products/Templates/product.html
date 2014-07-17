@@ -12,7 +12,15 @@
         <% if(data[index] != "" && data[index] != undefined){ %>
             <tr>
                 <td align="right"><b><%= val.label %>:</b></td>
-                <td><%= data[index] %></td>
+                <td>
+                    <% if(val.type == "String" || val.type == "Radio"){ %>
+                        <%= data[index] %>
+                    <% } else if(val.type == "URL"){ %>
+                        <a href="<%= data[index] %>" target="_blank"><%= data[index] %></a>
+                    <% } else { %>
+                        <%= data[index] %>
+                    <% } %>
+                </td>
             </tr>
         <% } %>
     <% }, this) %>

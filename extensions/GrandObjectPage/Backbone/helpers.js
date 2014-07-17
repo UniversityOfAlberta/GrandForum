@@ -65,11 +65,8 @@ HTML.TextBox = function(view, attr, options){
         if(attr.indexOf('.') != -1){
             var index = attr.indexOf('.');
             var data = view.model.get(attr.substr(0, index));
-            console.log(data);
             data[attr.substr(index+1)] = $(e.target).val();
             view.model.set(attr.substr(0, index), _.clone(data));
-            console.log(attr.substr(0, index), attr.substr(index+1), $(e.target).val());
-            
         }
         else{
             view.model.set(attr, $(e.target).val());

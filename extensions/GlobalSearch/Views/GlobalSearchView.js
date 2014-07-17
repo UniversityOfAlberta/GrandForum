@@ -66,7 +66,7 @@ GlobalSearchView = Backbone.View.extend({
             case 13:
                 break;
             default:
-                var value = this.$el.find("#globalSearchInput").val();
+                var value = this.$("#globalSearchInput").val();
                 this.subviews.globalSearchResults.search(value);
                 break;
         };
@@ -202,12 +202,18 @@ GlobalSearchResultsView = Backbone.View.extend({
     render: function(){
         this.$el.html(this.template());
         this.$el.css('display', 'none');
-        var that = this;
-        $(document).click(function(e){
+        $(document).click($.proxy(function(e){
             if($("#globalSearchResults").has($(e.target)).length == 0 && $(e.target).attr('id') != "globalSearchInput"){
-                that.$el.css('display', 'none');
+                this.$el.css('display', 'none');
             }
-        });
+        }, this));
+        if(typeof pageRouter != 'undefined'){
+            // In the event clicking the result only changes the router page
+            pageRouter.bind('all', $.proxy(function(event){
+                this.$el.css('display', 'none');
+                $("#globalSearchInput").val("");
+            }, this));
+        }
         return this.$el;
     }
     
@@ -297,8 +303,15 @@ ResultsView = Backbone.View.extend({
         this.parent.shift();
     },
     
+    forceRoute: function(){
+        if(typeof pageRouter != 'undefined'){
+            pageRouter.navigate('/');
+        }
+    },
+    
     events: {
-        "click #showMoreResults": "toggleMoreResults"
+        "click #showMoreResults": "toggleMoreResults",
+        "click .card_link": "forceRoute"
     },
     
     renderResults: function(){
