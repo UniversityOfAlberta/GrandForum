@@ -8,6 +8,14 @@ Product = Backbone.Model.extend({
         
         this.projects = new ProductAuthors();
         this.projects.url = this.urlRoot + '/' + this.get('id') + '/projects';
+        
+        if(this.isNew()){
+            if(this.get('category') == ""){
+                this.set("category", _.first(_.keys(productStructure.categories)), {silent: true});
+            }
+            this.set("type", _.first(_.keys(productStructure.categories[this.get('category')].types)), {silent:true});
+            this.set("status", _.first(_.first(_.values(productStructure.categories[this.get('category')].types)).status), {silent:true});
+        }
     },
 
     getAuthors: function(){
@@ -42,11 +50,17 @@ Product = Backbone.Model.extend({
     
     getPossibleFields: function(){
         var type = this.get('type').split(":")[0];
+        if(productStructure.categories[this.get('category')].types[type] == undefined){
+            return _.first(_.values(productStructure.categories[this.get('category')].types)).data;
+        }
         return productStructure.categories[this.get('category')].types[type].data;
     },
     
     getPossibleStatus: function(){
         var type = this.get('type').split(":")[0];
+        if(productStructure.categories[this.get('category')].types[type] == undefined){
+            return _.first(_.values(productStructure.categories[this.get('category')].types)).status;
+        }
         return productStructure.categories[this.get('category')].types[type].status;
     },
 
@@ -61,7 +75,7 @@ Product = Backbone.Model.extend({
         date: Date.format(new Date(), 'yyyy-MM-dd'),
         url: "",
         status: "",
-        data: new Array(),
+        data: {},
         authors: new Array(),
         projects: new Array(),
         lastModified: "",

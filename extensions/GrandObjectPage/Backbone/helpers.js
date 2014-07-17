@@ -65,8 +65,11 @@ HTML.TextBox = function(view, attr, options){
         if(attr.indexOf('.') != -1){
             var index = attr.indexOf('.');
             var data = view.model.get(attr.substr(0, index));
+            console.log(data);
             data[attr.substr(index+1)] = $(e.target).val();
             view.model.set(attr.substr(0, index), _.clone(data));
+            console.log(attr.substr(0, index), attr.substr(index+1), $(e.target).val());
+            
         }
         else{
             view.model.set(attr, $(e.target).val());
@@ -84,6 +87,32 @@ HTML.TextArea = function(view, attr, options){
     var events = view.events;
     view.events['change textarea[name=' + HTML.Name(attr) + ']'] = function(e){
         view.model.set(attr, $(e.target).val());
+    };
+    view.delegateEvents(events);
+    $(el).wrap('div');
+    return $(el).parent().html();
+}
+
+HTML.Radio = function(view, attr, options){
+    var el = HTML.Element("<span>");
+    _.each(options.options, function(opt){
+        var checked = "";
+        if(HTML.Value(view, attr) == opt){
+            checked = "checked='checked'"
+        }
+        $(el).append("<p><input type='radio' name='" + HTML.Name(attr) + "' value='" + opt + "'" + checked + " />" + opt + "</p>");
+    });
+    var events = view.events;
+    view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
+        if(attr.indexOf('.') != -1){
+            var index = attr.indexOf('.');
+            var data = view.model.get(attr.substr(0, index));
+            data[attr.substr(index+1)] = $(e.target).val();
+            view.model.set(attr.substr(0, index), _.clone(data));
+        }
+        else{
+            view.model.set(attr, $(e.target).val());
+        }
     };
     view.delegateEvents(events);
     $(el).wrap('div');
@@ -133,24 +162,26 @@ HTML.MiscAutoComplete = function(view, attr, options){
     $(el).attr('name', HTML.Name(attr));
     $(el).attr('value', HTML.Value(view, attr).replace("Misc: ", "").replace("Misc", ""));
     $(el).wrap('div');
+    
     var evt = function(e){
         _.defer(function(){
             if(attr.indexOf('.') != -1){
                 var index = attr.indexOf('.');
                 var data = view.model.get(attr.substr(0, index));
                 data[attr.substr(index+1)] = "Misc: " + $(e.target).val();
-                view.model.set(attr.substr(0, index), _.clone(data));
+                view.model.set(attr.substr(0, index), _.clone(data), {silent: true});
             }
             else{                
-                view.model.set(attr, "Misc: " + $(e.target).val());
+                view.model.set(attr, "Misc: " + $(e.target).val(), {silent: true});
             }
         });
     };
+    var events = view.events;
+    view.events['change input[name=' + HTML.Name(attr) + ']'] = evt;
     _.defer(function(){
         view.$('input[name=' + HTML.Name(attr) + ']').autocomplete({
             source: options.misc,
-            select: evt,
-            change: evt
+            select: evt
         });
     });
     return $(el).parent().html();

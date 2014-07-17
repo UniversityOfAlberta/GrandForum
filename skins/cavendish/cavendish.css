@@ -1044,8 +1044,14 @@ del {
 
 .label {
     text-align:right;
+    font-size: 10pt;
     font-weight: bold;
     vertical-align: top;
+    line-height: 27px;
+}
+
+.field {
+    
 }
 
 /* Messages */

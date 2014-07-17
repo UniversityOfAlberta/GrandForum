@@ -43,7 +43,7 @@ var pageRouter = new PageRouter;
 
 pageRouter.on('route:showGrandProducts', function(category){
     // Get All Products
-    products = new Products();
+    var products = new Products();
     products.category = category;
     products.grand = 'grand';
     
@@ -55,7 +55,7 @@ pageRouter.on('route:showGrandProducts', function(category){
 
 pageRouter.on('route:showNonGrandProducts', function(category){
     // Get All Products
-    products = new Products();
+    var products = new Products();
     products.category = category;
     products.grand = 'nonGrand';
     
@@ -67,19 +67,21 @@ pageRouter.on('route:showNonGrandProducts', function(category){
 
 pageRouter.on('route:newProduct', function(category){
     // Create New Product
-    products = new Product();
+    var product = new Product({'category': category});
+    this.closeCurrentView();
+    this.currentView = new ProductEditView({el: $("#currentView"), model: product});
 });
 
 pageRouter.on('route:showProduct', function (category, id) {
     // Get A single product
-    product = new Product({'id': id});
+    var product = new Product({'id': id});
     this.closeCurrentView();
     this.currentView = new ProductView({el: $("#currentView"), model: product});
 });
 
 pageRouter.on('route:editProduct', function (category, id) {
     // Get A single product
-    product = new Product({'id': id});
+    var product = new Product({'id': id});
     this.closeCurrentView();
     this.currentView = new ProductEditView({el: $("#currentView"), model: product});
 });

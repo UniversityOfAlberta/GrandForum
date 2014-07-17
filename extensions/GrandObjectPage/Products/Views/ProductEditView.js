@@ -1,9 +1,18 @@
 ProductEditView = Backbone.View.extend({
 
     initialize: function(){
-        this.model.fetch();
-        this.model.bind('change', this.render, this);
+        this.listenTo(this.model, "sync", this.render);
+        this.listenTo(this.model, "change:type", this.render);
+        this.listenTo(this.model, "change:title", function(){
+            main.set('title', this.model.get('title'));
+        });
         this.template = _.template($('#product_edit_template').html());
+        if(!this.model.isNew()){
+            this.model.fetch();
+        }
+        else{
+            _.defer(this.render);
+        }
     },
     
     events: {
@@ -12,6 +21,11 @@ ProductEditView = Backbone.View.extend({
     },
     
     saveProduct: function(){
+        if(this.model.get('title').trim() == ""){
+            clearAllMessages();
+            addError("The Product must have a title", true);
+            return;
+        }
         this.$(".throbber").show();
         this.$("#saveProduct").prop('disabled', true);
         this.model.save(null, {
@@ -25,7 +39,7 @@ ProductEditView = Backbone.View.extend({
                 this.$(".throbber").hide();
                 this.$("#saveProduct").prop('disabled', false);
                 clearAllMessages();
-                addFailure("There was a problem saving the Product");
+                addError("There was a problem saving the Product", true);
             }, this)
         });
     },
@@ -46,12 +60,11 @@ ProductEditView = Backbone.View.extend({
     },
     
     renderAuthors: function(){
-        if(this.allPeople != null){
+        if(this.allPeople != null && this.allPeople.length > 0){
             this.renderAuthorsWidget();
         }
         else{
             this.allPeople = new People();
-            allPeople = this.allPeople;
             this.allPeople.fetch();
             var spin = spinner("productAuthors", 10, 20, 10, 3, '#888');
             this.allPeople.bind('sync', function(){
@@ -73,39 +86,27 @@ ProductEditView = Backbone.View.extend({
     },
     
     renderProjects: function(){
-        if(this.allProjects != null){
+        if(this.allProjects != null && this.current != null){
             this.renderProjectsWidget();
         }
         else{
             this.allProjects = new Projects();
-            var that = this;
             var myProjects;
             var spin = spinner("productSpinner", 10, 20, 10, 3, '#888');
-            $.when(that.allProjects.fetch(), 
-                   that.myProjects = me.getProjects()).then(function(){
-                that.current = that.myProjects.getCurrent();
-                that.myProjects.ready().then(function(){
-                    that.renderProjectsWidget();
-                });
-            });
+            $.when(this.allProjects.fetch(), 
+                   this.myProjects = me.getProjects()).then($.proxy(function(){
+                this.current = this.myProjects.getCurrent();
+                this.myProjects.ready().then($.proxy(function(){
+                    this.renderProjectsWidget();
+                }, this));
+            }, this));
         }
     },
     
     render: function(){
-        main.set('title', this.model.get('title'));
-        this.$el.empty();
-        var data = this.model.toJSON();
-        _.extend(data, dateTimeHelpers);
-        this.$el.html(this.template(data));
+        this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
         this.renderProjects();
-        if(this.model.get('deleted') == true){
-            this.$el.find("#deleteProduct").prop('disabled', true);
-            this.$el.find("#editProduct").prop('disabled', true);
-            clearInfo();
-            addInfo('This ' + this.model.get('category') + ' has been deleted, and will not show up anywhere else on the forum');
-        }
-
         return this.$el;
     }
 

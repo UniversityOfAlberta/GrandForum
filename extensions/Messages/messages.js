@@ -4,7 +4,7 @@ function closeParent(link){
     });
 }
 
-function addMessage(type, message){
+function addMessage(type, message, scroll){
     if($('#wgMessages .' + type).length && !$('#wgMessages .' + type).is(':animated')){
         $('#wgMessages .' + type).append('<br />' + message);
     }
@@ -15,6 +15,9 @@ function addMessage(type, message){
         addClose($('#wgMessages .' + type));
         $('#wgMessages .' + type).slideDown(250);
     }
+    if(scroll == true){
+        $('html,body').animate({scrollTop: $('#wgMessages').offset().top}, 250);
+    }
 }
 
 function clearMessage(type){
@@ -23,24 +26,24 @@ function clearMessage(type){
     });
 }
 
-function addError(message){
-    addMessage('error', message);
+function addError(message, scroll){
+    addMessage('error', message, scroll);
 }
 
-function addSuccess(message){
-    addMessage('success', message);
+function addSuccess(message, scroll){
+    addMessage('success', message, scroll);
 }
 
-function addWarning(message){
-    addMessage('warning', message);
+function addWarning(message, scroll){
+    addMessage('warning', message, scroll);
 }
 
-function addInfo(message){
-    addMessage('info', message);
+function addInfo(message, scroll){
+    addMessage('info', message, scroll);
 }
 
-function addPurpleInfo(message){
-    addMessage('purpleInfo', message);
+function addPurpleInfo(message, scroll){
+    addMessage('purpleInfo', message, scroll);
 }
 
 function clearError(){

@@ -373,8 +373,10 @@ class Paper extends BackboneModel{
 	                        $fid = "$field";
 	                        $flabel = "{$fattrs->label}";
 	                        $ftype = "{$fattrs->type}";
+	                        $foptions = explode("|", "{$fattrs->options}");
 	                        $categories['categories'][$cname]['types'][$tname]['data'][$fid] = array('label' => $flabel,
-	                                                                                                 'type' => $ftype);
+	                                                                                                 'type' => $ftype,
+	                                                                                                 'options' => $foptions);
 	                    }
 	                }
 	            }
@@ -906,16 +908,22 @@ class Paper extends BackboneModel{
 
 	function create(){
 	    $me = Person::newFromWGUser();
-	    if($me->isLoggedIn()){
+	    if($me->isLoggedIn() && trim($this->title) != ""){
 	        // Begin Transaction
 	        DBFunctions::begin();
 	        $authors = array();
 	        foreach($this->authors as $author){
-	            if($author->id != 0){
+	            if(isset($author->id) && $author->id != 0){
 	                $authors[] = $author->id;
 	            }
 	            else{
 	                $authors[] = $author->name;
+	            }
+	        }
+	        foreach($this->projects as $project){
+	            if(!isset($project->id) || $project->id == 0){
+	                $p = Project::newFromName($project->name);
+	                $project->id = $p->getId();
 	            }
 	        }
 	        // Update products table
@@ -975,7 +983,7 @@ class Paper extends BackboneModel{
 	
 	function update(){
 	    $me = Person::newFromWGUser();
-	    if($me->isLoggedIn()){
+	    if($me->isLoggedIn() && trim($this->title) != ""){
 	        // Begin Transaction
 	        DBFunctions::begin();
 	        $authors = array();
