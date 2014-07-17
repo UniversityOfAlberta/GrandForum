@@ -9,6 +9,12 @@
 <h2><%= category %> Information</h2>
 <table id="productData">
     <tr>
+        <td class="label">Category:</td>
+        <td class="field">
+            <%= HTML.Select(this, 'category', {options: _.keys(this.model.getPossibleCategories())}) %>
+        </td>
+    </tr>
+    <tr>
         <td class="label">Type:</td>
         <td class="field">
             <%= HTML.Select(this, 'type', {options: this.model.getPossibleTypes()}) %>
@@ -42,16 +48,22 @@
         <% } %>
     <% }, this) %>
 </table>
-<h2>Related Projects</h2>
-<div id='productSpinner'></div>
-<div id='productProjects' style='width:650px;'>
-    
-</div>
+<% if(!this.isDialog){ %>
+    <h2>Related Projects</h2>
+    <div id='productSpinner'></div>
+    <div id='productProjects' style='width:650px;'>
+        
+    </div>
+<% } %>
 </form>
-<br />
-<div style="width:180px;display:inline-block;">
-    <button id='saveProduct'><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> <%= category %></button><span class="throbber" style="display:none;"></span>
-</div>
-<div style="width:180px;display:inline-block;">
-    <button id='cancel'>Cancel</button>
-</div>
+<% if(!this.isDialog){ %>
+    <br />
+<% } %>
+<% if(!this.isDialog){ %>
+    <div style="width:180px;display:inline-block;">
+        <button id='saveProduct'><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> <%= category %></button><span class="throbber" style="display:none;"></span>
+    </div>
+    <div style="width:180px;display:inline-block;">
+        <button id='cancel'>Cancel</button>
+    </div>
+<% } %>

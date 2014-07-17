@@ -1,3 +1,4 @@
+<div id="editDialog" style="display:none;"></div>
 <button id="addProductButton">Add Product</button>
 <%= subview('addProduct') %>
 <br />
@@ -8,15 +9,16 @@
             <% _.each(this.projects.models, function(p){ %>
                 <th class="angledTableHead checkboxCell"><div class="angledTableBorder"></div><div class="angledTableText"><%= p.get('name') %></div></th>
             <% }) %>
-            <th width="100%" colspan="4" style="border-left: 2px solid rgba(0,0,0,0);text-align: center;">Product Information</th>
+            <th width="100%" colspan="5" style="border-left: 2px solid rgba(0,0,0,0);text-align: center;">Product Information</th>
         </tr>
         <tr style="border-bottom: 2px solid #AAAAAA;">
             <th width="40px"></th>
             <% _.each(this.projects.models, function(p){ %>
                 <th width="40px" class="checkboxCell"><input class="selectAll" data-project="<%= p.id %>" type="checkbox" /></th>
             <% }) %>
-            <th width="10%" style="border-left: 2px solid #AAAAAA;">Date</th>
-            <th width="25%">Type</th>
+            <th width="5%" style="border-left: 2px solid #AAAAAA;">Edit</th>
+            <th width="10%">Date</th>
+            <th width="20%">Type</th>
             <th width="35%">Title</th>
             <th width="30%">Authors</th>
         </tr>

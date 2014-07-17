@@ -1,13 +1,21 @@
 ProductEditView = Backbone.View.extend({
 
-    initialize: function(){
+    isDialog: false,
+
+    initialize: function(options){
         this.listenTo(this.model, "sync", this.render);
+        this.listenTo(this.model, "change:category", this.render);
         this.listenTo(this.model, "change:type", this.render);
         this.listenTo(this.model, "change:title", function(){
-            main.set('title', this.model.get('title'));
+            if(!this.isDialog){
+                main.set('title', this.model.get('title'));
+            }
         });
+        if(options.isDialog != undefined){
+            this.isDialog = options.isDialog;
+        }
         this.template = _.template($('#product_edit_template').html());
-        if(!this.model.isNew()){
+        if(!this.model.isNew() && !this.isDialog){
             this.model.fetch();
         }
         else{
@@ -20,10 +28,18 @@ ProductEditView = Backbone.View.extend({
         "click #cancel": "cancel"
     },
     
-    saveProduct: function(){
+    validate: function(){
         if(this.model.get('title').trim() == ""){
+            return "The Product must have a title";
+        }
+        return "";
+    },
+    
+    saveProduct: function(){
+        var validation = this.validate();
+        if(validation != ""){
             clearAllMessages();
-            addError("The Product must have a title", true);
+            addError(validation, true);
             return;
         }
         this.$(".throbber").show();
@@ -106,7 +122,9 @@ ProductEditView = Backbone.View.extend({
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
-        this.renderProjects();
+        if(!this.isDialog){
+            this.renderProjects();
+        }
         return this.$el;
     }
 

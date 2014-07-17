@@ -12,6 +12,7 @@ class ManageProducts extends BackbonePage {
     
     function getTemplates(){
         return array('Backbone/*',
+                     'Products/*',
                      'manage_products',
                      'manage_products_row',
                      'manage_products_other_popup',
@@ -21,6 +22,7 @@ class ManageProducts extends BackbonePage {
     
     function getViews(){
         return array('Backbone/*',
+                     'Products/*',
                      'ManageProductsView',
                      'AddProductView');
     }

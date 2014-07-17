@@ -16,6 +16,14 @@ Product = Backbone.Model.extend({
             this.set("type", _.first(_.keys(productStructure.categories[this.get('category')].types)), {silent:true});
             this.set("status", _.first(_.first(_.values(productStructure.categories[this.get('category')].types)).status), {silent:true});
         }
+        
+        this.on("change:category", function(){
+            var type = this.get('type').split(":")[0];
+            if(productStructure.categories[this.get('category')].types[type] == undefined){
+                this.set("type", _.first(_.keys(productStructure.categories[this.get('category')].types)));
+                this.set("status", _.first(_.first(_.values(productStructure.categories[this.get('category')].types)).status));
+            }
+        });
     },
 
     getAuthors: function(){

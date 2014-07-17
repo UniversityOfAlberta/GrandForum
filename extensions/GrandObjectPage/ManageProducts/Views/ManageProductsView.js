@@ -8,6 +8,7 @@ ManageProductsView = Backbone.View.extend({
     table: null,
     nProjects: 0,
     subViews: new Array(),
+    dialog: null,
 
     initialize: function(){
         this.allProjects = new Projects();
@@ -33,19 +34,18 @@ ManageProductsView = Backbone.View.extend({
                 }, this));
             }, this));
         }, this);
-        Backbone.Subviews.add(this);
-    },
-    
-    subviewCreators: {
-        "addProduct" : function() {
-            return new AddProductView();
-        }
     },
     
     addProduct: function(){
-        this.$("#addProductButton").hide();
-        this.subviews.addProduct.model = new Product({authors: [me.toJSON()]});
-        this.subviews.addProduct.render();
+        var model = new Product({authors: [me.toJSON()]});
+        var view = new ProductEditView({el: this.dialog, model: model, isDialog: true});
+        this.dialog.view = view;
+        this.dialog.dialog({
+            height: $(window).height()*0.75, 
+            width: 800,
+            title: "Create Product"
+        });
+        this.dialog.dialog('open');
     },
     
     productChanged: function(){
@@ -107,6 +107,7 @@ ManageProductsView = Backbone.View.extend({
     },
     
     saveProducts: function(){
+        // TODO: Validate that title is not empty
         this.$("#saveProducts").prop('disabled', true);
         this.$(".throbber").show();
         var xhrs = new Array();
@@ -172,9 +173,9 @@ ManageProductsView = Backbone.View.extend({
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'autoWidth': false,
                                                      'aoColumnDefs': [
-                                                        {'bSortable': false, 'aTargets': _.range(0, this.projects.length + 1) }
+                                                        {'bSortable': false, 'aTargets': _.range(0, this.projects.length + 2) }
                                                      ],
-	                                                 'aaSorting': [ [this.projects.length + 1,'desc']],
+	                                                 'aaSorting': [ [this.projects.length + 2,'desc']],
 	                                                 'aLengthMenu': [[-1], ['All']]});
 	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
 	    this.$("#listTable_length").html('<button id="saveProducts">Save All <span id="saveN">(0)</span></button><span style="display:none;" class="throbber"></span>');
@@ -185,6 +186,43 @@ ManageProductsView = Backbone.View.extend({
 	    this.$('.angledTableHead').height(maxWidth +"px");
 	    this.$('.angledTableHead').width('40px');
 	    this.productChanged();
+	    this.dialog = this.$("#editDialog").dialog({
+	        autoOpen: false,
+	        modal: true,
+	        show: 'fade',
+	        resizable: false,
+	        draggable: false,
+	        open: function(){
+	            $("html").css("overflow", "hidden");
+	        },
+	        beforeClose: $.proxy(function(){
+	            this.dialog.view.stopListening();
+	            $("html").css("overflow", "auto");
+	        }, this),
+	        buttons: {
+                "Save Product": $.proxy(function(){
+                    var validation = this.dialog.view.validate();
+                    if(validation != ""){
+                        // TODO: Add error message
+                        return "";
+                    }
+                    this.dialog.view.model.save(null, {
+                        success: $.proxy(function(){
+                            clearAllMessages();
+                            this.dialog.view.model.dirty = false;
+                            this.dialog.dialog("close");
+                            addSuccess("The Product has been saved sucessfully");
+                        }, this),
+                        error: $.proxy(function(){
+                            this.dialog.dialog("close");
+                        }, this)
+                    });
+                }, this)
+            }
+	    });
+	    $(window).resize($.proxy(function(){
+	        this.dialog.dialog({height: $(window).height()*0.75});
+	    }, this));
         return this.$el;
     }
 
@@ -193,6 +231,7 @@ ManageProductsView = Backbone.View.extend({
 ManageProductsViewRow = Backbone.View.extend({
     
     tagName: 'tr',
+    parent: null,
     
     initialize: function(options){
         this.parent = options.parent;
@@ -308,12 +347,24 @@ ManageProductsViewRow = Backbone.View.extend({
         });
     },
     
+    editProduct: function(){
+        var view = new ProductEditView({el: this.parent.dialog, model: this.model, isDialog: true});
+        this.parent.dialog.view = view;
+        this.parent.dialog.dialog({
+            height: $(window).height()*0.75, 
+            width: 800,
+            title: "Edit Product"
+        });
+        this.parent.dialog.dialog('open');
+    },
+    
     events: {
         "change input[type=checkbox]": "toggleSelect",
         "click div.showSubprojects": "showSubprojects",
         "click div.showOther": "showOther",
         "change input.popupBlockSearch": "filterSearch",
-        "keyup input.popupBlockSearch": "filterSearch"
+        "keyup input.popupBlockSearch": "filterSearch",
+        "click .edit-icon": "editProduct"
     },
     
     render: function(){

@@ -5,6 +5,8 @@ header('Content-Type: text/css');
 require_once("../../config/Config.php");
 
 $hl = $config->getValue("highlightColor");
+$iconPath = $config->getValue("iconPath");
+$iconPathHighlighted = $config->getValue("iconPathHighlighted");
 
 echo <<<EOF
 
@@ -59,6 +61,21 @@ input[type=button], input[type=submit], .button, .button:visited, .ui-button, .b
 
 input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabled], button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:active {
     color:#606060 !important;
+}
+
+/* Icons */
+.edit-icon {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: bottom;
+    width: 20px;
+    height: 17px;
+    margin-left: 3px;
+    background: url("../../{$iconPath}glyphicons_150_edit_small.png");
+}
+
+.edit-icon:hover {
+    background: url("../../{$iconPathHighlighted}glyphicons_150_edit_small.png");
 }
 
 /* JQuery UI */
