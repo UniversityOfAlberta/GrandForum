@@ -18,7 +18,6 @@ ManageProductsView = Backbone.View.extend({
         this.listenTo(this.model, "sync", function(){
             this.products = this.model.getAll();
             this.listenTo(this.products, "add", this.addRows);
-            products = this.products;
             me.projects.ready().then($.proxy(function(){
                 this.projects = me.projects.getCurrent();
                 this.model.ready().then($.proxy(function(){
@@ -57,6 +56,14 @@ ManageProductsView = Backbone.View.extend({
             }
         });
         this.$("#saveN").html("(" + sum + ")");
+        if(sum > 0){
+            window.onbeforeunload = function(){
+                return "You have unsaved Products";
+            }
+        }
+        else{
+            window.onbeforeunload = null;
+        }
         
         // Change the state of the 'selectAll' checkbox
         this.projects.each(function(project){
@@ -76,19 +83,51 @@ ManageProductsView = Backbone.View.extend({
     },
     
     addRows: function(){
-        _.map(this.subViews, function(v){
-            v.remove();
-        });
-        this.$("#productRows").empty();
-        this.products.each($.proxy(function(p){
-            this.listenTo(p, "dirty", this.productChanged);
-            if(p.dirty == undefined){
-                p.dirty = false;
+        if(this.table != undefined){
+            this.table.destroy();
+            this.table = null;
+        }
+        var models = _.pluck(_.pluck(this.subViews, 'model'), 'id');
+        this.products.each($.proxy(function(p, i){
+            if(!_.contains(models, p.id)){
+                this.listenTo(p, "dirty", this.productChanged);
+                if(p.dirty == undefined){
+                    p.dirty = false;
+                }
+                var row = new ManageProductsViewRow({model: p, parent: this});
+                this.subViews.push(row);
+                this.$("#productRows").append(row.$el);
             }
-            var row = new ManageProductsViewRow({model: p, parent: this});
-            this.subViews.push(row);
-            this.$("#productRows").append(row.render());
         }, this));
+        _.each(this.subViews, $.proxy(function(row){
+            row.render();
+        }, this));
+        this.createDataTable();
+        this.productChanged();
+    },
+    
+    cacheRows: function(){
+        if(this.table != null){
+            var rows = this.table.rows().indexes();
+            var table = this.table;
+            rows.each($.proxy(function(i, val){
+                this.subViews[i].row = this.table.row(i);
+            }, this));
+        }
+    },
+    
+    createDataTable: function(){
+        this.table = this.$('#listTable').DataTable({'bPaginate': false,
+                                                     'autoWidth': false,
+                                                     'aoColumnDefs': [
+                                                        {'bSortable': false, 'aTargets': _.range(0, this.projects.length + 2) }
+                                                     ],
+	                                                 'aLengthMenu': [[-1], ['All']]});
+	    this.cacheRows();
+	    this.table.order([this.projects.length + 2,'desc']).draw();
+	    table = this.table;
+	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
+	    this.$("#listTable_length").html('<button id="saveProducts">Save All <span id="saveN">(0)</span></button><span style="display:none;" class="throbber"></span>');
     },
     
     toggleSelect: function(e){
@@ -107,7 +146,16 @@ ManageProductsView = Backbone.View.extend({
     },
     
     saveProducts: function(){
-        // TODO: Validate that title is not empty
+        var error = false;
+        this.products.each(function(product){
+            if(product.get('title').trim() == ""){
+                error = true;
+            }
+        });
+        if(error){
+            addError("There is a product without a title");
+            return;
+        }
         this.$("#saveProducts").prop('disabled', true);
         this.$(".throbber").show();
         var xhrs = new Array();
@@ -170,15 +218,6 @@ ManageProductsView = Backbone.View.extend({
         }, this));
         this.$el.html(this.template());
         this.addRows();
-        this.table = this.$('#listTable').DataTable({'bPaginate': false,
-                                                     'autoWidth': false,
-                                                     'aoColumnDefs': [
-                                                        {'bSortable': false, 'aTargets': _.range(0, this.projects.length + 2) }
-                                                     ],
-	                                                 'aaSorting': [ [this.projects.length + 2,'desc']],
-	                                                 'aLengthMenu': [[-1], ['All']]});
-	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
-	    this.$("#listTable_length").html('<button id="saveProducts">Save All <span id="saveN">(0)</span></button><span style="display:none;" class="throbber"></span>');
 	    var maxWidth = 50;
 	    this.$('.angledTableText').each(function(i, e){
 	        maxWidth = Math.max(maxWidth, $(e).width());
@@ -197,13 +236,15 @@ ManageProductsView = Backbone.View.extend({
 	        },
 	        beforeClose: $.proxy(function(){
 	            this.dialog.view.stopListening();
+	            this.dialog.view.undelegateEvents();
 	            $("html").css("overflow", "auto");
 	        }, this),
 	        buttons: {
                 "Save Product": $.proxy(function(){
                     var validation = this.dialog.view.validate();
                     if(validation != ""){
-                        // TODO: Add error message
+                        clearAllMessages("#dialogMessages");
+                        addError(validation, true, "#dialogMessages");
                         return "";
                     }
                     this.dialog.view.model.save(null, {
@@ -212,9 +253,13 @@ ManageProductsView = Backbone.View.extend({
                             this.dialog.view.model.dirty = false;
                             this.dialog.dialog("close");
                             addSuccess("The Product has been saved sucessfully");
+                            if(this.products.indexOf(this.dialog.view.model) == -1){
+                                this.products.add(this.dialog.view.model);
+                            }
                         }, this),
                         error: $.proxy(function(){
-                            this.dialog.dialog("close");
+                            clearAllMessages("#dialogMessages");
+                            addError("There was an error saving Product", true, "#dialogMessages");
                         }, this)
                     });
                 }, this)
@@ -232,6 +277,7 @@ ManageProductsViewRow = Backbone.View.extend({
     
     tagName: 'tr',
     parent: null,
+    row: null,
     
     initialize: function(options){
         this.parent = options.parent;
@@ -368,7 +414,26 @@ ManageProductsViewRow = Backbone.View.extend({
     },
     
     render: function(){
+        var classes = new Array();
+        this.$("td").each(function(i, val){
+            classes.push($(val).attr("class"));
+        });
         this.el.innerHTML = this.template(this.model.toJSON());
+        if(this.parent.table != null){
+            var data = new Array();
+            this.$("td").each(function(i, val){
+                data.push($(val).htmlClean().html());
+            });
+            if(this.row != null){
+                this.row.data(data);
+            }
+        }
+        if(classes.length > 0){
+            this.$("td").each(function(i, val){
+                $(val).addClass(classes[i]);
+            });
+        }
+        
         return this.$el;
     }
     

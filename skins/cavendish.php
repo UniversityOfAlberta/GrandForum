@@ -259,6 +259,20 @@ class cavendishTemplate extends QuickTemplate {
 		    function changeImg(el, img){
                 $(el).attr('src', img);
             }
+            
+            jQuery.fn.htmlClean = function() {
+                this.contents().filter(function() {
+                    if (this.nodeType != 3) {
+                        $(this).htmlClean();
+                        return false;
+                    }
+                    else {
+                        this.textContent = $.trim(this.textContent);
+                        return !/\S/.test(this.nodeValue);
+                    }
+                }).remove();
+                return this;
+            }
 		    
 		    function unaccentChars(str){
 		        var dict = {'Š':'S', 'š':'s', 'Ð':'Dj','Ž':'Z', 'ž':'z', 'À':'A', 'Á':'A', 'Â':'A', 'Ã':'A', 'Ä':'A',

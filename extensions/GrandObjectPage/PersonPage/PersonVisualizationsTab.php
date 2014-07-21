@@ -46,12 +46,11 @@ class PersonVisualizationsTab extends AbstractTab {
 	        $this->html .= "</div>
 	        <div id='chart'>";
 		        $this->showDoughnut($this->person, $this->visibility);
-	        $this->html .= "</div>
-	        <div id='survey'>";
-		        $this->showSurvey($this->person, $this->visibility);
-	        /*$this->html .= "</div>
-	        <div id='network'>";
-		        $this->showGraph($this->person, $this->visibility);*/
+	        if(isExtensionEnabled("Survey") && (($wgUser->isLoggedIn() && $this->person->getId() == $me->getId()) || $me->isRoleAtLeast(MANAGER))){
+	            $this->html .= "</div>
+	            <div id='survey'>";
+		            $this->showSurvey($this->person, $this->visibility);
+		    }
 	        $this->html.= "</div>
     </div>
     <script type='text/javascript'>

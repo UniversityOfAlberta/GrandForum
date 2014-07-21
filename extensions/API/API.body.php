@@ -2,12 +2,6 @@
 
 autoload_register('API');
 autoload_register('API/Publications');
-autoload_register('API/Publications/Activities');
-autoload_register('API/Publications/Artifacts');
-autoload_register('API/Publications/Awards');
-autoload_register('API/Publications/Press');
-autoload_register('API/Publications/Publications');
-autoload_register('API/Publications/Presentations');
 global $apiRequest;
 $apiRequest = new APIRequest();
 
@@ -113,105 +107,7 @@ class APIRequest{
 	
 	function createActions(){
 		//POST
-		$this->addAction('Publications', 'addBibtexArticleRef', new BibtexArticleAPI());
-		$this->addAction('Publications', 'addBibtexBookRef', new BibtexBookAPI());
-		$this->addAction('Publications', 'addBibtexCollectionRef', new BibtexCollectionAPI());
-		$this->addAction('Publications', 'addProceedingsPaperRef', new ProceedingsPaperAPI());
-		$this->addAction('Publications', 'addCollectionRef', new CollectionAPI());
-		$this->addAction('Publications', 'addJournalPaperRef', new JournalPaperAPI());
-		$this->addAction('Publications', 'addJournalAbstractRef', new JournalAbstractAPI());
-		$this->addAction('Publications', 'addBookRef', new BookAPI());
-		$this->addAction('Publications', 'addEditedBookRef', new EditedBookAPI());
-		$this->addAction('Publications', 'addBookChapterRef', new BookChapterAPI());
-		$this->addAction('Publications', 'addBookReviewRef', new BookReviewAPI());
-		$this->addAction('Publications', 'addReviewArticleRef', new ReviewArticleAPI());
-		$this->addAction('Publications', 'addWhitePaperRef', new WhitePaperAPI());
-		$this->addAction('Publications', 'addMagazineRef', new MagazineAPI());
-		$this->addAction('Publications', 'addPHDThesisRef', new PHDThesisAPI());
-		$this->addAction('Publications', 'addMastersThesisRef', new MastersThesisAPI());
-		$this->addAction('Publications', 'addBachelorsThesisRef', new BachelorsThesisAPI());
-		$this->addAction('Publications', 'addTechReportRef', new TechReportAPI());
-		$this->addAction('Publications', 'addPosterRef', new PosterAPI());
-		$this->addAction('Publications', 'addManualRef', new ManualAPI());
-		$this->addAction('Publications', 'addMiscRef', new MiscAPI());
-		$this->addAction('Publications', 'updateBibtexArticleRef', new BibtexArticleAPI(true));
-		$this->addAction('Publications', 'updateBibtexBookRef', new BibtexBookAPI(true));
-		$this->addAction('Publications', 'updateBibtexCollectionRef', new BibtexCollectionAPI(true));
-		$this->addAction('Publications', 'updateProceedingsPaperRef', new ProceedingsPaperAPI(true));
-		$this->addAction('Publications', 'updateCollectionRef', new CollectionAPI(true));
-		$this->addAction('Publications', 'updateJournalPaperRef', new JournalPaperAPI(true));
-		$this->addAction('Publications', 'updateJournalAbstractRef', new JournalAbstractAPI(true));
-		$this->addAction('Publications', 'updateBookRef', new BookAPI(true));
-		$this->addAction('Publications', 'updateEditedBookRef', new EditedBookAPI(true));
-		$this->addAction('Publications', 'updateBookChapterRef', new BookChapterAPI(true));
-		$this->addAction('Publications', 'updateBookReviewRef', new BookReviewAPI(true));
-		$this->addAction('Publications', 'updateReviewArticleRef', new ReviewArticleAPI(true));
-		$this->addAction('Publications', 'updateWhitePaperRef', new WhitePaperAPI(true));
-		$this->addAction('Publications', 'updateMagazineRef', new MagazineAPI(true));
-		$this->addAction('Publications', 'updatePHDThesisRef', new PHDThesisAPI(true));
-		$this->addAction('Publications', 'updateMastersThesisRef', new MastersThesisAPI(true));
-		$this->addAction('Publications', 'updateBachelorsThesisRef', new BachelorsThesisAPI(true));
-		$this->addAction('Publications', 'updateTechReportRef', new TechReportAPI(true));
-		$this->addAction('Publications', 'updatePosterRef', new PosterAPI(true));
-		$this->addAction('Publications', 'updateManualRef', new ManualAPI(true));
-		$this->addAction('Publications', 'updateMiscRef', new MiscAPI(true));
-		//GET
-		$this->addAction('Publications', 'getPublicationInfo', new PublicationAPI());
-		$this->addAction('Publications', 'getPublicationInfoByTitle', new PublicationByTitleAPI());
-		
-		//POST
-		$this->addAction('Artifacts', 'addRepositoryRef', new RepositoryAPI());
-		$this->addAction('Artifacts', 'addOpenSoftwareRef', new SoftwareAPI());
-		$this->addAction('Artifacts', 'addPatentRef', new PatentAPI());
-		$this->addAction('Artifacts', 'addDeviceRef', new DeviceAPI());
-		$this->addAction('Artifacts', 'addAestheticObjectRef', new AestheticObjectAPI());
-		$this->addAction('Artifacts', 'addMiscArtifactRef', new ArtifactAPI());
-		$this->addAction('Artifacts', 'updateRepositoryRef', new RepositoryAPI(true));
-		$this->addAction('Artifacts', 'updateOpenSoftwareRef', new SoftwareAPI(true));
-		$this->addAction('Artifacts', 'updatePatentRef', new PatentAPI(true));
-		$this->addAction('Artifacts', 'updateDeviceRef', new DeviceAPI(true));
-		$this->addAction('Artifacts', 'updateAestheticObjectRef', new AestheticObjectAPI(true));
-		$this->addAction('Artifacts', 'updateMiscArtifactRef', new ArtifactAPI(true));
-		
-		//POST
-		//$this->addAction('Activities', 'addInvitedPresentationRef', new InvitedPresentationAPI());
-		//$this->addAction('Activities', 'addPresentationRef', new PresentationAPI());
-		$this->addAction('Activities', 'addPanelRef', new PanelAPI());
-		$this->addAction('Activities', 'addTutorialRef', new TutorialAPI());
-		$this->addAction('Activities', 'addEventOrganizationRef', new EventOrganizationAPI());
-		$this->addAction('Activities', 'addSpinOffRef', new SpinOffAPI());
-		//$this->addAction('Activities', 'updateInvitedPresntaqtionRef', new InvitedPresentationAPI(true));
-		//$this->addAction('Activities', 'updatePresentationRef', new PresentationAPI(true));
-		$this->addAction('Activities', 'updatePanelRef', new PanelAPI(true));
-		$this->addAction('Activities', 'updateTutorialRef', new TutorialAPI(true));
-		$this->addAction('Activities', 'updateEventOrganizationRef', new EventOrganizationAPI(true));
-		$this->addAction('Activities', 'updateSpinOffRef', new SpinOffAPI(true));
-		
-		//POST
-		$this->addAction('Press', 'addUniveristyPressRef', new UniversityPressAPI());
-		$this->addAction('Press', 'addProvincialPressRef', new ProvincialPressAPI());
-		$this->addAction('Press', 'addNationalPressRef', new NationalPressAPI());
-		$this->addAction('Press', 'addInternationalPressRef', new InternationalPressAPI());
-		$this->addAction('Press', 'addMiscPressRef', new PressAPI());
-		$this->addAction('Press', 'updateUniveristyPressRef', new UniversityPressAPI(true));
-		$this->addAction('Press', 'updateProvincialPressRef', new ProvincialPressAPI(true));
-		$this->addAction('Press', 'updateNationalPressRef', new NationalPressAPI(true));
-		$this->addAction('Press', 'updateInternationalPressRef', new InternationalPressAPI(true));
-		$this->addAction('Press', 'updateMiscPressRef', new PressAPI(true));
-		
-		//POST
-		$this->addAction('Awards', 'addAwardRef', new AwardsAPI());
-		$this->addAction('Awards', 'updateAwardRef', new AwardsAPI(true));
-		
-		//POST
 		$this->addAction('Products', 'deletePaperRef', new DeletePaperAPI());
-		
-		//POST
-		$this->addAction('Materials', 'addMaterialRef', new AwardsAPI());
-		$this->addAction('Materials', 'updateMaterialRef', new AwardsAPI(true));
-		//GET
-		$this->addAction('Materials', 'getMaterialList', new MaterialListAPI());
-		$this->addAction('Materials', 'getMaterialInfo', new MaterialAPI());
 		
 		//POST
 		$this->addAction('User Accounts', 'addUserAccount', new CreateUserAPI());

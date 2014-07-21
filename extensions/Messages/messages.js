@@ -4,74 +4,86 @@ function closeParent(link){
     });
 }
 
-function addMessage(type, message, scroll){
-    if($('#wgMessages .' + type).length && !$('#wgMessages .' + type).is(':animated')){
-        $('#wgMessages .' + type).append('<br />' + message);
+function addMessage(type, message, scroll, selector){
+    if(selector == undefined){
+        selector = "#wgMessages";
+    }
+    if($(selector + ' .' + type).length && !$(selector + ' .' + type).is(':animated')){
+        $(selector + ' .' + type).append('<br />' + message);
     }
     else{
-        $('#wgMessages .' + type).stop();
-        $('#wgMessages .' + type).remove();
-        $('#wgMessages').append("<div class='" + type + "' style='display:none'><span style='display:inline-block;'>" + message + "</span></div>");
-        addClose($('#wgMessages .' + type));
-        $('#wgMessages .' + type).slideDown(250);
+        $(selector + ' .' + type).stop();
+        $(selector + ' .' + type).remove();
+        $(selector).append("<div class='" + type + "' style='display:none'><span style='display:inline-block;'>" + message + "</span></div>");
+        addClose($(selector + ' .' + type));
+        $(selector + ' .' + type).slideDown(250);
     }
     if(scroll == true){
-        $('html,body').animate({scrollTop: $('#wgMessages').offset().top}, 250);
+        var parent = $(selector).parent().get(0);
+        if(parent.scrollHeight > parent.clientHeight){
+            $(parent).animate({scrollTop: $(selector).position().top}, 300);
+        }
+        else{
+            $('html,body').animate({scrollTop: $(selector).offset().top}, 300);
+        }
     }
 }
 
-function clearMessage(type){
-    $('#wgMessages .' + type).slideUp(250, function(){
+function clearMessage(type, selector){
+    if(selector == undefined){
+        selector = "#wgMessages";
+    }
+    $(selector + ' .' + type).slideUp(250, function(){
         $(this).remove();
     });
 }
 
-function addError(message, scroll){
-    addMessage('error', message, scroll);
+function addError(message, scroll, selector){
+    addMessage('error', message, scroll, selector);
 }
 
-function addSuccess(message, scroll){
-    addMessage('success', message, scroll);
+function addSuccess(message, scroll, selector){
+    addMessage('success', message, scroll, selector);
 }
 
-function addWarning(message, scroll){
+function addWarning(message, scroll, selector){
     addMessage('warning', message, scroll);
 }
 
-function addInfo(message, scroll){
-    addMessage('info', message, scroll);
+function addInfo(message, scroll, selector){
+    addMessage('info', message, scroll, selector);
 }
 
-function addPurpleInfo(message, scroll){
-    addMessage('purpleInfo', message, scroll);
+function addPurpleInfo(message, scroll, selector){
+    addMessage('purpleInfo', message, scroll, selector);
 }
 
-function clearError(){
-    clearMessage('error');
+function clearError(selector){
+    clearMessage('error', selector);
 }
 
-function clearSuccess(){
-    clearMessage('success');
+function clearSuccess(selector){
+    clearMessage('success', selector);
 }
 
-function clearWarning(){
-    clearMessage('warning');
+function clearWarning(selector){
+    clearMessage('warning', selector);
 }
 
-function clearInfo(){
-    clearMessage('info');
+function clearInfo(selector){
+    clearMessage('info', selector);
 }
 
-function clearPurpleInfo(){
-    clearMessage('purpleInfo');
+function clearPurpleInfo(selector){
+    clearMessage('purpleInfo', selector);
 }
 
-function clearAllMessages(){
-    clearError();
-	clearSuccess();
-	clearWarning();
-	clearInfo();
-	clearPurpleInfo();
+function clearAllMessages(selector){
+    clearError(selector);
+	clearSuccess(selector);
+	clearWarning(selector);
+	clearInfo(selector);
+	clearPurpleInfo(selector);
 }
 
 function addClose(messageBox){

@@ -16,15 +16,13 @@ class ManageProducts extends BackbonePage {
                      'manage_products',
                      'manage_products_row',
                      'manage_products_other_popup',
-                     'manage_products_projects_popup',
-                     'add_product');
+                     'manage_products_projects_popup');
     }
     
     function getViews(){
         return array('Backbone/*',
                      'Products/*',
-                     'ManageProductsView',
-                     'AddProductView');
+                     'ManageProductsView');
     }
     
     function getModels(){
