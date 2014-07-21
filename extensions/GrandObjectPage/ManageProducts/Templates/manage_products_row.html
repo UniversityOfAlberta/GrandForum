@@ -25,10 +25,13 @@
     <%= date %>
 </td>
 <td>
-    <%= category %>/<%= type %>
+    <%= category %>
 </td>
 <td>
-    <%= title %>
+    <%= type %>
+</td>
+<td>
+    <a href="<%= url %>"><%= title %></a>
 </td>
 <td>
     <%= _.pluck(authors, 'name').join(', ') %>
