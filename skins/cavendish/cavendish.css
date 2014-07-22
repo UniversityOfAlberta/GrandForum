@@ -1537,7 +1537,7 @@ div.popupBox {
     border: 1px solid #AAAAAA;
     border-bottom: none;
     background: #FFFFFF;
-    z-index: 100;
+    z-index: 1001;
     white-space: nowrap;
     box-shadow: 0 0 5px #AAAAAA !important;
     font-weight: bold;
