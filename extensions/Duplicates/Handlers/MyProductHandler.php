@@ -92,7 +92,8 @@ class MyProductHandler extends AbstractDuplicatesHandler {
     }
     
     function handleDelete(){
-        APIRequest::doAction('DeletePaper');
+        $product = Product::newFromId($_POST['id']);
+        $product->delete();
     }
 }
 

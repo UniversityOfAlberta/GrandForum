@@ -1,7 +1,6 @@
 <?php
 
 autoload_register('API');
-autoload_register('API/Publications');
 global $apiRequest;
 $apiRequest = new APIRequest();
 
@@ -106,9 +105,6 @@ class APIRequest{
 	}
 	
 	function createActions(){
-		//POST
-		$this->addAction('Products', 'deletePaperRef', new DeletePaperAPI());
-		
 		//POST
 		$this->addAction('User Accounts', 'addUserAccount', new CreateUserAPI());
 		$this->addAction('User Accounts', 'addUserRequest', new RequestUserAPI());
