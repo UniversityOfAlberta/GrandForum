@@ -97,11 +97,6 @@ class AddMultimediaStoryPage extends SpecialPage{
 
 	function run($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
-	    if(isset($_GET['pubSearch'])){
-	        header("Content-type: text/json");
-	        echo Paper::search($_GET['phrase']);
-	        exit;
-	    }
 	    $wgOut->addScript(generateMultimediaStoryScript("Multimedia_Story"));
 		$wgOut->addHTML("<i>Multimedia Stories</i> are any media form which has been produced as a result of {$config->getValue('networkName')} participation.<br /><br />Enter a short title for the Story in the text field below. If there is an already existing Story with the same or similar title, it will be listed below the text field. If you see the Story in the list, then you can click on the title to edit its information, otherwise you can choose to create the Story with the name you have entered by clicking the 'Create' button.<br /><br />
 		                 <b>Name:</b> <input onKeyPress='submitOnEnter(event)' type='text' id='title' name='title' size='50' onKeyUp='search(this.value);' /> <input type='button' onClick='changeLocation();' name='submit' value='Create' /><br />

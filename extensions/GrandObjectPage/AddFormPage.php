@@ -96,11 +96,6 @@ class AddFormPage extends SpecialPage{
 		global $wgOut, $wgServer, $wgScriptPath, $wgTitle;
 		$me = Person::newFromWgUser();
 		if($me->isRoleAtLeast(MANAGER)){
-	        if(isset($_GET['pubSearch'])){
-	            header("Content-type: text/json");
-	            echo Paper::search($_GET['phrase']);
-	            exit;
-	        }
 	        $wgOut->addScript(generateFormScript("Form"));
 		    $wgOut->addHTML("Enter a short title for the Form in the text field below. If there is an already existing Form with the same or similar title, it will be listed below the text field. If you see the Form in the list, then you can click on the title to edit its information, otherwise you can choose to create the Form with the name you have entered by clicking the 'Create' button.<br /><br />
 		                     <b>Name:</b> <input onKeyPress='submitOnEnter(event)' type='text' id='title' name='title' size='50' onKeyUp='search(this.value);' /> <input type='button' onClick='changeLocation();' name='submit' value='Create' /><br />

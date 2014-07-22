@@ -310,35 +310,6 @@ class Paper extends BackboneModel{
 	    }
 	}
 	
-	// Searches for the given phrase in the table of publications
-	// Returns an array of publications which fit the search
-	static function search($phrase, $category='all'){
-	    session_write_close();
-	    $splitPhrase = explode(" ", $phrase);
-	    $sql = "SELECT id, title, date FROM grand_products
-	            WHERE title LIKE '%'
-	            AND deleted != '1'\n";
-	    foreach($splitPhrase as $word){
-	        $sql .= "AND title LIKE '%$word%'\n";
-	    }
-	    if($category != "all"){
-	        $sql .= "AND category = '$category'";
-	    }
-	    $data = DBFunctions::execSQL($sql);
-	    $papers = array();
-	    foreach($data as $row){
-	        $projects = array();
-	        $product = Product::newFromId($row['id']);
-	        foreach($product->getProjects() as $project){
-	            $projects[] = $project->getName();
-	        }
-	    	$projects = implode(', ', $projects);
-	        $papers[] = array("id"=>$row['id'], "title"=>$row['title'], "date"=>$row['date'], "projects"=>$projects);
-	    }
-	    $json = json_encode($papers);
-	    return $json;
-	}
-	
 	static function generateProductProjectsCache(){
 	    if(count(self::$productProjectsCache) == 0){
 	        $data = DBFunctions::select(array('grand_product_projects'),
