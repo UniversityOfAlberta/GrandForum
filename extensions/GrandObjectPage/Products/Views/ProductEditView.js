@@ -1,9 +1,16 @@
 ProductEditView = Backbone.View.extend({
 
     isDialog: false,
+    projects: null,
+    allProjects: null,
+    otherProjects: null,
+    oldProjects: null,
+    parent: null,
 
     initialize: function(options){
+        this.parent = this;
         this.listenTo(this.model, "sync", this.render);
+        this.listenTo(this.model, "change:projects", this.render);
         this.listenTo(this.model, "change:category", this.render);
         this.listenTo(this.model, "change:type", this.render);
         this.listenTo(this.model, "change:title", function(){
@@ -15,17 +22,139 @@ ProductEditView = Backbone.View.extend({
             this.isDialog = options.isDialog;
         }
         this.template = _.template($('#product_edit_template').html());
-        if(!this.model.isNew() && !this.isDialog){
-            this.model.fetch();
+        this.otherPopupTemplate = _.template($('#manage_products_other_popup_template').html());
+        this.projectsPopupTemplate = _.template($('#manage_products_projects_popup_template').html());
+        
+        this.allProjects = new Projects();
+        this.allProjects.fetch();
+        me.getProjects();
+        me.projects.ready().then($.proxy(function(){
+            this.projects = me.projects.getCurrent();
+            this.allProjects.ready().then($.proxy(function(){
+                this.otherProjects = this.allProjects.getCurrent();
+                this.oldProjects = this.allProjects.getOld();
+                this.otherProjects.remove(this.projects.models);
+                this.oldProjects.remove(this.projects.models);
+                if(!this.model.isNew() && !this.isDialog){
+                    this.model.fetch();
+                }
+                else{
+                    _.defer(this.render);
+                }
+            }, this));
+        }, this));
+        $(document).click($.proxy(function(e){
+            var popup = $("div.popupBox:visible").not(":animated").first();
+            if(popup.length > 0 && !$.contains(popup[0], e.target)){
+                this.model.trigger("change:projects");
+            }
+        }, this));
+    },
+    
+    select: function(projectId){
+        var projects = this.model.get('projects');
+        if(_.where(projects, {id: projectId}).length == 0){
+            projects.push({id: projectId});
+        }
+        // Only trigger an event if this is a parent
+        if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
+            this.model.trigger("change:projects");
+        }
+    },
+    
+    unselect: function(projectId){
+        var project = _.findWhere(this.parent.projects.models
+                                      .concat(this.parent.otherProjects.models)
+                                      .concat(this.parent.oldProjects.models), {id: projectId});
+        var projects = this.model.get('projects');
+
+        // Unselect all subprojects as well
+        if(project != undefined){
+            _.each(project.get('subprojects'), $.proxy(function(sub){
+                var index = _.indexOf(projects, _.findWhere(projects, {id: sub.id}));
+                if(index != -1){
+                    projects.splice(index, 1);
+                    this.$("input[data-project=" + sub.id + "]").prop('checked', false);
+                }
+            }, this));
+        }
+        projects.splice(_.indexOf(projects, _.findWhere(projects, {id: projectId})), 1);
+        // Only trigger an event if this is a parent
+        if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
+            this.model.trigger("change:projects");
+        }
+    },
+    
+    toggleSelect: function(e){
+        var target = $(e.currentTarget);
+        var projectId = target.attr('data-project');
+        if(target.is(":checked")){
+            // 'Check' Project
+            this.select(projectId);
+            if(target.attr('name') == "project"){
+                //this.$("div[data-project=" + projectId + "] div.subprojectPopup").slideDown();
+            }
+            else if(target.attr('name') == "subproject"){
+                var parentId = target.attr('data-parent');
+                this.$("div[data-project=" + parentId + "] div.subprojectPopup").show();
+            }
+            else if(target.attr('name') == "otherproject"){
+                $("div.otherSubProjects", target.parent()).slideDown();
+            }
         }
         else{
-            _.defer(this.render);
+            // 'Uncheck' Project
+            this.unselect(projectId);
+            if(target.attr('name') == "project"){
+                // Do nothing
+            }
+            else if(target.attr('name') == "subproject"){
+                var parentId = target.attr('data-parent');
+                this.$("div[data-project=" + parentId + "] div.subprojectPopup").show();
+            }
+            else if(target.attr('name') == "otherproject"){
+                $("div.otherSubProjects", target.parent()).slideUp();
+            }
         }
+    },
+    
+    filterSearch: function(e){
+        var target = $(e.currentTarget);
+        var value = target.val();
+        var block = target.parent();
+        var options = $("div.popupMainProject", block);
+        options.each(function(i, el){
+            var text = $(el).text();
+            if(unaccentChars(text).indexOf(unaccentChars(value)) == -1){
+                $(el).slideUp(150);
+            }
+            else{
+                $(el).slideDown(150);
+            }
+        });
+    },
+    
+    showOther: function(e){
+        this.$("div.otherPopup").html(this.otherPopupTemplate(this.model.toJSON()));
+        this.$("div.otherPopup").slideDown();
+    },
+    
+    showSubprojects: function(e){
+        var target = $(e.currentTarget);
+        var projectId = target.attr('data-project');
+        var project = _.findWhere(this.parent.projects.models, {id: projectId});
+        this.$("div[data-project=" + projectId + "] div.subprojectPopup").html(this.projectsPopupTemplate(_.extend(project.toJSON(), {projects: this.model.get('projects')})));
+        this.$("div[data-project=" + projectId + "] div.subprojectPopup").slideDown();
     },
     
     events: {
         "click #saveProduct": "saveProduct",
-        "click #cancel": "cancel"
+        "click #cancel": "cancel",
+        "click div.showOther": "showOther",
+        "click div.showSubprojects": "showSubprojects",
+        "change input.popupBlockSearch": "filterSearch",
+        "keyup input.popupBlockSearch": "filterSearch",
+        "change div#productProjects input[type=checkbox]": "toggleSelect"
     },
     
     validate: function(){
@@ -84,47 +213,16 @@ ProductEditView = Backbone.View.extend({
             this.allPeople.fetch();
             var spin = spinner("productAuthors", 10, 20, 10, 3, '#888');
             this.allPeople.bind('sync', function(){
-                this.renderAuthorsWidget();
+                if(this.allPeople.length > 0){
+                    this.renderAuthorsWidget();
+                }
             }, this);
-        }
-    },
-    
-    renderProjectsWidget: function(){
-        this.$("#productSpinner").empty();
-        var html = HTML.TagIt(this, 'projects.name', 
-                              {
-                               suggestions: this.current.pluck('name'),
-                               values: _.pluck(this.model.get('projects'), 'name'),
-                               capitalize: false,
-                               options: {availableTags: this.allProjects.pluck('name')}
-                              });
-        this.$("#productProjects").html(html);
-    },
-    
-    renderProjects: function(){
-        if(this.allProjects != null && this.current != null){
-            this.renderProjectsWidget();
-        }
-        else{
-            this.allProjects = new Projects();
-            var myProjects;
-            var spin = spinner("productSpinner", 10, 20, 10, 3, '#888');
-            $.when(this.allProjects.fetch(), 
-                   this.myProjects = me.getProjects()).then($.proxy(function(){
-                this.current = this.myProjects.getCurrent();
-                this.myProjects.ready().then($.proxy(function(){
-                    this.renderProjectsWidget();
-                }, this));
-            }, this));
         }
     },
     
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
-        if(!this.isDialog){
-            this.renderProjects();
-        }
         return this.$el;
     }
 

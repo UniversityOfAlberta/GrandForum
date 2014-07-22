@@ -3,7 +3,7 @@
     <div class="popupBlock">
         <input type="text" class="popupBlockSearch" placeholder="Search..." autocomplete="off" />
         <% this.parent.otherProjects.each(function(p){ %>
-            <div>
+            <div class="popupMainProject">
                 <input data-project="<%= p.id %>"
                        type="checkbox" 
                        name="otherproject"
@@ -27,7 +27,7 @@
     <div class="popupBlock">
         <input type="text" class="popupBlockSearch" placeholder="Search..." autocomplete="off" />
         <% this.parent.oldProjects.each(function(p){ %>
-            <div>
+            <div class="popupMainProject">
                 <input data-project="<%= p.id %>"
                        type="checkbox" 
                        name="otherproject" 

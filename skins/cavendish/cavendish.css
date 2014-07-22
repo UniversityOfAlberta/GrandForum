@@ -1477,3 +1477,90 @@ input.other_option:focus {
     display: block;
     padding: 2px 0 2px 0;
 }
+
+/* Baqckbone popup */
+.checkboxCell {
+    white-space: nowrap;
+    padding: 0 !important;
+    text-align: left;
+    height: 100%;
+    position: relative;
+}
+
+div.checkboxOuter {
+    position: absolute;
+    top: -1px;
+    right: 0;
+    left: -1px;
+    bottom: 0;
+    white-space: nowrap;
+    height: 100%;
+    line-height: 23px;
+}
+
+div.otherSubProjects {
+    margin-left: 20px;
+}
+
+.checkboxCell > input[type=checkbox], .checkboxCell > input[type=checkbox][disabled] {
+    width: 50%;
+    margin-left: 1px;
+    margin-right: 0;
+}
+
+.checkboxOuter > input[type=checkbox], .checkboxOuter > input[type=checkbox][disabled] {
+    width: 50%;
+    margin: 0;
+    text-align: center;
+    vertical-align: middle;
+}
+
+div.showSubprojects, div.showOther {
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    color: #555555;
+    width: 50%;
+    height: 100%;
+}
+
+div.showSubprojects:hover, div.showOther:hover {
+    color: #222222;
+}
+
+div.popupBox {
+    min-width: 200px;
+    display: block;
+    position: absolute;
+    top: -1px;
+    left: 100%;
+    border: 1px solid #AAAAAA;
+    border-bottom: none;
+    background: #FFFFFF;
+    z-index: 100;
+    white-space: nowrap;
+    box-shadow: 0 0 5px #AAAAAA !important;
+    font-weight: bold;
+}
+
+div.popupHeader {
+    padding: 3px;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: #AAAAAA;
+    text-align: center;
+}
+
+div.popupBlock {
+    padding: 3px;
+    padding-right: 18px;
+    max-height: 158px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-bottom: 1px solid #AAAAAA;
+}
+
+input.popupBlockSearch {
+    width: 100%;
+    margin: 0 3px 2px 3px;
+}

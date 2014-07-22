@@ -14,7 +14,13 @@ Backbone.Model.prototype.getTarget = function(){
 
 RangeCollection = Backbone.Collection.extend({
 
-    xhrs: Array(),
+    xhrs: new Array(),
+    
+    fetch: function(options){
+        var xhr = Backbone.Collection.prototype.fetch.call(this, options);
+        this.xhrs.push(xhr);
+        return xhr;
+    },
 
     /**
      * Returns a new Collection

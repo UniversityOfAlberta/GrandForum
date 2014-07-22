@@ -282,6 +282,7 @@ ManageProductsViewRow = Backbone.View.extend({
     initialize: function(options){
         this.parent = options.parent;
         this.listenTo(this.model, "change", this.render);
+        this.listenTo(this.model, "change:projects", this.render);
         this.template = _.template($('#manage_products_row_template').html());
         this.otherPopupTemplate = _.template($('#manage_products_other_popup_template').html());
         this.projectsPopupTemplate = _.template($('#manage_products_projects_popup_template').html());
@@ -381,7 +382,7 @@ ManageProductsViewRow = Backbone.View.extend({
         var target = $(e.currentTarget);
         var value = target.val();
         var block = target.parent();
-        var options = $("div", block).not(".subproject");
+        var options = $("div.popupMainProject", block);
         options.each(function(i, el){
             var text = $(el).text();
             if(unaccentChars(text).indexOf(unaccentChars(value)) == -1){

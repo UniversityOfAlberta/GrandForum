@@ -2,7 +2,7 @@
 <div class="popupBlock">
     <input type="text" class="popupBlockSearch" placeholder="Search..." autocomplete="off" />
     <% _.each(subprojects, function(sub){ %>
-        <div>
+        <div class="popupMainProject">
             <input data-project="<%= sub.id %>" 
                    data-parent="<%= id %>" 
                    type="checkbox" 

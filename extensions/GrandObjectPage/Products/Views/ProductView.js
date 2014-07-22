@@ -54,21 +54,42 @@ ProductView = Backbone.View.extend({
                                  target: ''});
             views.push(new PersonLinkView({model: link}).render());
         });
-        csv = new CSVView({el: this.$el.find('#productAuthors'), model: views});
+        var csv = new CSVView({el: this.$('#productAuthors'), model: views});
         csv.separator = ', ';
         csv.render();
     },
     
     renderProjects: function(){
-        var views = Array();
-        _.each(this.model.get('projects'), function(project, index){
-            var link = new Link({id: project.id,
-                                 text: project.name,
-                                 url: project.url,
-                                 target: '_blank'});
-            views.push(new ProjectLinkView({model: link}).render());
+        var xhrs = new Array();
+        var projects = new Array();
+        _.each(this.model.get('projects'), function(proj){
+            var project = new Project({id: proj.id});
+            projects.push(project);
+            xhrs.push(project.fetch());
         });
-        csv = new CSVView({el: this.$el.find('#productProjects'), model: views}).render();
+        $.when.apply(null, xhrs).done($.proxy(function(){
+            this.$('#productProjects').empty();
+            this.$('#productProjects').append("<ul>");
+            _.each(projects, function(project){
+                if(project.get('subprojects').length > 0){
+                    projects = _.without(projects, project);
+                    this.$('#productProjects ul').append("<li id='" + project.get('id') + "'><a href='" + project.get('url') + "'>" + project.get('name') + "</a></li>");
+                    var subs = new Array();
+                    _.each(project.get('subprojects'), function(sub){
+                        if(_.where(projects, {id: sub.id}).length > 0){
+                            subs.push("<a href='" + sub.url + "'>" + sub.name + "</a>");
+                            projects = _.without(projects, _.findWhere(projects, {id: sub.id}));
+                        }
+                    });
+                    if(subs.length > 0){
+                        this.$('#productProjects li#' + project.get('id')).append("&nbsp;<span>(" + subs.join(', ') + ")</span>");
+                    }
+                }
+            });
+            _.each(projects, function(project){
+                this.$('#productProjects ul').append("<li id='" + project.get('id') + "'><a href='" + project.get('url') + "'>" + project.get('name') + "</a></li>");
+            });
+        }, this));
     },
     
     render: function(){
@@ -81,7 +102,6 @@ ProductView = Backbone.View.extend({
         this.renderProjects();
         if(this.model.get('deleted') == true){
             this.$el.find("#deleteProduct").prop('disabled', true);
-            //this.$el.find("#editProduct").prop('disabled', true);
             clearInfo();
             addInfo('This ' + this.model.get('category') + ' has been deleted, and will not show up anywhere else on the forum.  You may still edit the ' + this.model.get('category') + '.');
         }
