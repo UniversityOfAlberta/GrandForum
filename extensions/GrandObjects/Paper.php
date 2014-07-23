@@ -344,10 +344,12 @@ class Paper extends BackboneModel{
 	                        $fid = "$field";
 	                        $flabel = "{$fattrs->label}";
 	                        $ftype = "{$fattrs->type}";
+	                        $fhidden = (strtolower("{$fattrs->hidden}") == "true");
 	                        $foptions = explode("|", "{$fattrs->options}");
 	                        $categories['categories'][$cname]['types'][$tname]['data'][$fid] = array('label' => $flabel,
 	                                                                                                 'type' => $ftype,
-	                                                                                                 'options' => $foptions);
+	                                                                                                 'options' => $foptions,
+	                                                                                                 'hidden' => $fhidden);
 	                    }
 	                }
 	            }
