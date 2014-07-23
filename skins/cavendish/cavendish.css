@@ -1345,6 +1345,8 @@ input.other_option:focus {
     position:relative;
     color: #555;
     font-size: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
     
     -moz-box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
     -webkit-box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;

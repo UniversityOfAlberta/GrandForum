@@ -86,6 +86,9 @@ GlobalSearchResultsView = Backbone.View.extend({
         this.searchIndex = -1;
         this.fetchPromises = Array();
         Backbone.Subviews.add(this);
+        $(window).resize(function(){
+            this.$("#globalSearchResults").css("max-height", ($(window).height() - this.$("#globalSearchResults").offset().top - 25) + "px");
+        });
     },
     
     events: {
@@ -201,6 +204,7 @@ GlobalSearchResultsView = Backbone.View.extend({
     
     render: function(){
         this.$el.html(this.template());
+        this.$("#globalSearchResults").css("max-height", ($(window).height() - this.$("#globalSearchResults").offset().top - 25) + "px");
         this.$el.css('display', 'none');
         $(document).click($.proxy(function(e){
             if($("#globalSearchResults").has($(e.target)).length == 0 && $(e.target).attr('id') != "globalSearchInput"){

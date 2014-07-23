@@ -159,14 +159,10 @@ class GlobalSearchAPI extends RESTAPI {
                 $flippedProductIds = array_flip($myProducts->pluck('id'));
                 $products = Product::getByIds($dataCollection->pluck('product_id'));
                 foreach($products as $product){
+                    $percent = 0;
                     similar_text(unaccentChars($product->getTitle()), unaccentChars($origSearch), $percent);
                     if(isset($flippedProductIds[$product->getId()])){
                         $percent += 50;
-                    }
-                    foreach($product->getProjects() as $project){
-                        if($me->isMemberOf($project)){
-                            $percent += 15;
-                        }
                     }
                     $results[$product->getId()] = $percent;
                 }
