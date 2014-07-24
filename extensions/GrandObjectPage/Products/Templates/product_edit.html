@@ -24,10 +24,12 @@
             <% } %>
         </td>
     </tr>
-    <tr>
-        <td class="label">Status:</td>
-        <td class="field"><%= HTML.Select(this, 'status', {options: this.model.getPossibleStatus()}) %></td>
-    </tr>
+    <% if(this.model.getPossibleStatus().length > 0){ %>
+        <tr>
+            <td class="label">Status:</td>
+            <td class="field"><%= HTML.Select(this, 'status', {options: this.model.getPossibleStatus()}) %></td>
+        </tr>
+    <% } %>
     <tr>
         <td class="label">Date:</td>
         <td class="field"><%= HTML.DatePicker(this, 'date', {format: 'yy-mm-dd'}) %></td>

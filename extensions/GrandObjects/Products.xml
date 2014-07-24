@@ -70,7 +70,7 @@
 	<!-- Awards -->
 	
 	<Awards category="Award">
-		<Award type="Award" status="">
+		<Award type="Award">
 			<data>
 				<field label="URL" type="URL">url</field>
 			</data>

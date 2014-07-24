@@ -345,7 +345,12 @@ class Paper extends BackboneModel{
             foreach($category->children() as $type){
                 $tattrs = $type->attributes();
                 $tname = "{$tattrs->type}";
-                $tstatus = explode("|", "{$tattrs->status}");
+                if(trim("{$tattrs->status}") != ""){
+                    $tstatus = explode("|", "{$tattrs->status}");
+                }
+                else{
+                    $tstatus = array();
+                }
                 $categories['categories'][$cname]['types'][$tname] = array('data' => array(),
                                                                            'status' => $tstatus,
                                                                            'ccv_status' => array());
