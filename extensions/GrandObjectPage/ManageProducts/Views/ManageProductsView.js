@@ -8,7 +8,9 @@ ManageProductsView = Backbone.View.extend({
     table: null,
     nProjects: 0,
     subViews: new Array(),
-    dialog: null,
+    editDialog: null,
+    ccvDialog: null,
+    bibtexDialog: null,
 
     initialize: function(){
         this.allProjects = new Projects();
@@ -37,14 +39,22 @@ ManageProductsView = Backbone.View.extend({
     
     addProduct: function(){
         var model = new Product({authors: [me.toJSON()]});
-        var view = new ProductEditView({el: this.dialog, model: model, isDialog: true});
-        this.dialog.view = view;
-        this.dialog.dialog({
+        var view = new ProductEditView({el: this.editDialog, model: model, isDialog: true});
+        this.editDialog.view = view;
+        this.editDialog.dialog({
             height: $(window).height()*0.75, 
             width: 800,
             title: "Create Product"
         });
-        this.dialog.dialog('open');
+        this.editDialog.dialog('open');
+    },
+    
+    uploadCCV: function(){
+        this.ccvDialog.dialog('open');
+    },
+    
+    importBibTeX: function(){
+        this.bibtexDialog.dialog('open');
     },
     
     productChanged: function(){
@@ -124,7 +134,7 @@ ManageProductsView = Backbone.View.extend({
                                                      ],
 	                                                 'aLengthMenu': [[-1], ['All']]});
 	    this.cacheRows();
-	    this.table.order([this.projects.length + 2,'desc']).draw();
+	    this.table.order([this.projects.length + 3,'desc']).draw();
 	    table = this.table;
 	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
 	    this.$("#listTable_length").html('<button id="saveProducts">Save All <span id="saveN">(0)</span></button><span style="display:none;" class="throbber"></span>');
@@ -198,7 +208,9 @@ ManageProductsView = Backbone.View.extend({
     events: {
         "click .selectAll": "toggleSelect",
         "click #saveProducts": "saveProducts",
-        "click #addProductButton": "addProduct"
+        "click #addProductButton": "addProduct",
+        "click #uploadCCVButton": "uploadCCV",
+        "click #importBibTexButton": "importBibTeX"
     },
     
     render: function(){
@@ -225,7 +237,7 @@ ManageProductsView = Backbone.View.extend({
 	    this.$('.angledTableHead').height(maxWidth +"px");
 	    this.$('.angledTableHead').width('40px');
 	    this.productChanged();
-	    this.dialog = this.$("#editDialog").dialog({
+	    this.editDialog = this.$("#editDialog").dialog({
 	        autoOpen: false,
 	        modal: true,
 	        show: 'fade',
@@ -235,26 +247,26 @@ ManageProductsView = Backbone.View.extend({
 	            $("html").css("overflow", "hidden");
 	        },
 	        beforeClose: $.proxy(function(){
-	            this.dialog.view.stopListening();
-	            this.dialog.view.undelegateEvents();
+	            this.editDialog.view.stopListening();
+	            this.editDialog.view.undelegateEvents();
 	            $("html").css("overflow", "auto");
 	        }, this),
 	        buttons: {
                 "Save Product": $.proxy(function(){
-                    var validation = this.dialog.view.validate();
+                    var validation = this.editDialog.view.validate();
                     if(validation != ""){
                         clearAllMessages("#dialogMessages");
                         addError(validation, true, "#dialogMessages");
                         return "";
                     }
-                    this.dialog.view.model.save(null, {
+                    this.editDialog.view.model.save(null, {
                         success: $.proxy(function(){
                             clearAllMessages();
-                            this.dialog.view.model.dirty = false;
-                            this.dialog.dialog("close");
+                            this.editDialog.view.model.dirty = false;
+                            this.editDialog.dialog("close");
                             addSuccess("The Product has been saved sucessfully");
-                            if(this.products.indexOf(this.dialog.view.model) == -1){
-                                this.products.add(this.dialog.view.model);
+                            if(this.products.indexOf(this.editDialog.view.model) == -1){
+                                this.products.add(this.editDialog.view.model);
                             }
                         }, this),
                         error: $.proxy(function(){
@@ -265,177 +277,60 @@ ManageProductsView = Backbone.View.extend({
                 }, this)
             }
 	    });
+	    this.ccvDialog = this.$("#ccvDialog").dialog({
+	        autoOpen: false,
+	        modal: true,
+	        show: 'fade',
+	        resizable: false,
+	        draggable: false,
+	        width: "800px",
+	        open: function(){
+	            $("html").css("overflow", "hidden");
+	        },
+	        beforeClose: function(){
+	            $("html").css("overflow", "auto");
+	        },
+	        buttons: {
+	            "Upload": $.proxy(function(){
+	                var form = $("form", this.ccvDialog);
+	                form.submit();
+
+	                
+	                //submit.click();
+	                //this.ccvDialog.dialog('close');
+	            }, this),
+	            "Cancel": $.proxy(function(){
+	                this.ccvDialog.dialog('close');
+	            }, this)
+	        }
+	    });
+	    this.bibtexDialog = this.$("#bibtexDialog").dialog({
+	        autoOpen: false,
+	        modal: true,
+	        show: 'fade',
+	        resizable: false,
+	        draggable: false,
+	        width: "800px",
+	        open: function(){
+	            $("html").css("overflow", "hidden");
+	        },
+	        beforeClose: function(){
+	            $("html").css("overflow", "auto");
+	        },
+	        buttons: {
+	            "Import": $.proxy(function(){
+	                
+	                this.bibtexDialog.dialog('close');
+	            }, this),
+	            "Cancel": $.proxy(function(){
+	                this.bibtexDialog.dialog('close');
+	            }, this)
+	        }
+	    });
 	    $(window).resize($.proxy(function(){
-	        this.dialog.dialog({height: $(window).height()*0.75});
+	        this.editDialog.dialog({height: $(window).height()*0.75});
 	    }, this));
         return this.$el;
     }
 
-});
-
-ManageProductsViewRow = Backbone.View.extend({
-    
-    tagName: 'tr',
-    parent: null,
-    row: null,
-    
-    initialize: function(options){
-        this.parent = options.parent;
-        this.listenTo(this.model, "change", this.render);
-        this.listenTo(this.model, "change:projects", this.render);
-        this.template = _.template($('#manage_products_row_template').html());
-        this.otherPopupTemplate = _.template($('#manage_products_other_popup_template').html());
-        this.projectsPopupTemplate = _.template($('#manage_products_projects_popup_template').html());
-    },
-    
-    setDirty: function(trigger){
-        this.model.dirty = true;
-        if(trigger){
-            this.model.trigger("dirty");
-        }
-    },
-    
-    select: function(projectId){
-        var projects = this.model.get('projects');
-        if(_.where(projects, {id: projectId}).length == 0){
-            projects.push({id: projectId});
-        }
-        // Only trigger an event if this is a parent
-        if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
-            this.model.trigger("change");
-        }
-        this.setDirty(false);
-    },
-    
-    unselect: function(projectId){
-        var project = _.findWhere(this.parent.projects.models
-                                      .concat(this.parent.otherProjects.models)
-                                      .concat(this.parent.oldProjects.models), {id: projectId});
-        var projects = this.model.get('projects');
-
-        // Unselect all subprojects as well
-        if(project != undefined){
-            _.each(project.get('subprojects'), $.proxy(function(sub){
-                var index = _.indexOf(projects, _.findWhere(projects, {id: sub.id}));
-                if(index != -1){
-                    projects.splice(index, 1);
-                    this.$("input[data-project=" + sub.id + "]").prop('checked', false);
-                }
-            }, this));
-        }
-        projects.splice(_.indexOf(projects, _.findWhere(projects, {id: projectId})), 1);
-        // Only trigger an event if this is a parent
-        if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
-            this.model.trigger("change");
-        }
-        this.setDirty(false);
-    },
-    
-    toggleSelect: function(e){
-        var target = $(e.currentTarget);
-        var projectId = target.attr('data-project');
-        if(target.is(":checked")){
-            // 'Check' Project
-            this.select(projectId);
-            if(target.attr('name') == "project"){
-                //this.$("div[data-project=" + projectId + "] div.subprojectPopup").slideDown();
-            }
-            else if(target.attr('name') == "subproject"){
-                var parentId = target.attr('data-parent');
-                this.$("div[data-project=" + parentId + "] div.subprojectPopup").show();
-            }
-            else if(target.attr('name') == "otherproject"){
-                $("div.otherSubProjects", target.parent()).slideDown();
-            }
-        }
-        else{
-            // 'Uncheck' Project
-            this.unselect(projectId);
-            if(target.attr('name') == "project"){
-                // Do nothing
-            }
-            else if(target.attr('name') == "subproject"){
-                var parentId = target.attr('data-parent');
-                this.$("div[data-project=" + parentId + "] div.subprojectPopup").show();
-            }
-            else if(target.attr('name') == "otherproject"){
-                $("div.otherSubProjects", target.parent()).slideUp();
-            }
-        }
-        this.setDirty(true);
-    },
-    
-    showSubprojects: function(e){
-        var target = $(e.currentTarget);
-        var projectId = target.attr('data-project');
-        var project = _.findWhere(this.parent.projects.models, {id: projectId});
-        this.$("div[data-project=" + projectId + "] div.subprojectPopup").html(this.projectsPopupTemplate(_.extend(project.toJSON(), {projects: this.model.get('projects')})));
-        this.$("div[data-project=" + projectId + "] div.subprojectPopup").slideDown();
-    },
-    
-    showOther: function(e){
-        this.$("div.otherPopup").html(this.otherPopupTemplate(this.model.toJSON()));
-        this.$("div.otherPopup").slideDown();
-    },
-    
-    filterSearch: function(e){
-        var target = $(e.currentTarget);
-        var value = target.val();
-        var block = target.parent();
-        var options = $("div.popupMainProject", block);
-        options.each(function(i, el){
-            var text = $(el).text();
-            if(unaccentChars(text).indexOf(unaccentChars(value)) == -1){
-                $(el).slideUp(150);
-            }
-            else{
-                $(el).slideDown(150);
-            }
-        });
-    },
-    
-    editProduct: function(){
-        var view = new ProductEditView({el: this.parent.dialog, model: this.model, isDialog: true});
-        this.parent.dialog.view = view;
-        this.parent.dialog.dialog({
-            height: $(window).height()*0.75, 
-            width: 800,
-            title: "Edit Product"
-        });
-        this.parent.dialog.dialog('open');
-    },
-    
-    events: {
-        "change input[type=checkbox]": "toggleSelect",
-        "click div.showSubprojects": "showSubprojects",
-        "click div.showOther": "showOther",
-        "change input.popupBlockSearch": "filterSearch",
-        "keyup input.popupBlockSearch": "filterSearch",
-        "click .edit-icon": "editProduct"
-    },
-    
-    render: function(){
-        var classes = new Array();
-        this.$("td").each(function(i, val){
-            classes.push($(val).attr("class"));
-        });
-        this.el.innerHTML = this.template(this.model.toJSON());
-        if(this.parent.table != null){
-            var data = new Array();
-            this.$("td").each(function(i, val){
-                data.push($(val).htmlClean().html());
-            });
-            if(this.row != null){
-                this.row.data(data);
-            }
-        }
-        if(classes.length > 0){
-            this.$("td").each(function(i, val){
-                $(val).addClass(classes[i]);
-            });
-        }
-        
-        return this.$el;
-    }
-    
 });

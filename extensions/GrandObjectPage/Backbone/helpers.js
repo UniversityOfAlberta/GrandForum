@@ -90,6 +90,40 @@ HTML.TextArea = function(view, attr, options){
     return $(el).parent().html();
 }
 
+HTML.CheckBox = function(view, attr, options){
+    var el = HTML.Element("<input type='checkbox' />", options);
+    $(el).attr('name', HTML.Name(attr));
+    if(HTML.Value(view, attr) == options.value){
+        $(el).attr('checked', 'checked');
+    }
+    var events = view.events;
+    view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
+        if(attr.indexOf('.') != -1){
+            var index = attr.indexOf('.');
+            var data = view.model.get(attr.substr(0, index));
+            if($(e.currentTarget).is(":checked")){
+                data[attr.substr(index+1)] = $(e.target).val();
+            }
+            else{
+                data[attr.substr(index+1)] = options.default;
+            }
+            view.model.set(attr.substr(0, index), _.clone(data));
+        }
+        else{
+            if($(e.currentTarget).is(":checked")){
+                view.model.set(attr, $(e.target).val());
+            }
+            else{
+                view.model.set(attr, options.default);
+            }
+        }
+        console.log(view.model.toJSON());
+    };
+    view.delegateEvents(events);
+    $(el).wrap('div');
+    return $(el).parent().html();
+}
+
 HTML.Radio = function(view, attr, options){
     var el = HTML.Element("<span>");
     _.each(options.options, function(opt){

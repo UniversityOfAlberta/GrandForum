@@ -21,6 +21,9 @@
 <td style="border-left: 2px solid #AAAAAA;" align="center">
     <span class="edit-icon"></span>
 </td>
+<td align="center">
+    <span style="display:none;">-<%= access_id %></span><%= HTML.CheckBox(this, 'access_id', {value: me.get('id'), default: 0}) %>
+</td>
 <td>
     <%= date %>
 </td>

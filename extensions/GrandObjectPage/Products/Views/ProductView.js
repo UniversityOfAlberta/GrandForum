@@ -1,7 +1,11 @@
 ProductView = Backbone.View.extend({
 
     initialize: function(){
-        this.model.fetch();
+        this.model.fetch({
+            error: $.proxy(function(e){
+                this.$el.html("This Product does not exist");
+            }, this)
+        });
         this.model.bind('change', this.render, this);
         this.template = _.template($('#product_template').html());
     },

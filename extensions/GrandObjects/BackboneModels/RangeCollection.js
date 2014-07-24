@@ -16,6 +16,10 @@ RangeCollection = Backbone.Collection.extend({
 
     xhrs: new Array(),
     
+    multiUrl: function(){
+        return "";
+    },
+    
     fetch: function(options){
         var xhr = Backbone.Collection.prototype.fetch.call(this, options);
         this.xhrs.push(xhr);
@@ -35,13 +39,20 @@ RangeCollection = Backbone.Collection.extend({
      */
     getAll: function(){
         var allModels = this.newModel();
-        _.each(this.models, function(model){
-            var target = model.getTarget();
-            if(target != model){
-                this.xhrs.push(target.fetch());
-            }
-            allModels.add(target);
-        }, this);
+        if(this.multiUrl() != ""){
+            allModels.url = this.multiUrl() + _.without(_.pluck(this.models, 'id'), null).join(',');
+            this.xhrs.push(allModels.fetch({silent: true}));
+            return allModels;
+        }
+        else{
+            _.each(this.models, function(model){
+                var target = model.getTarget();
+                if(target != model){
+                    this.xhrs.push(target.fetch());
+                }
+                allModels.add(target);
+            }, this);
+        }
         return allModels;
     },
 

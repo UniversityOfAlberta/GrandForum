@@ -134,9 +134,14 @@ class PersonProductAPI extends RESTAPI {
     
     function doGET(){
         if($this->getParam(0) == "person"){
+            // Get Products
             $person = Person::newFromId($this->getParam('id'));
             $json = array();
-            $products = $person->getPapers("all", true, 'both');
+            $onlyPublic = true;
+            if($this->getParam(3) == "private"){
+                $onlyPublic = false;
+            }
+            $products = $person->getPapers("all", true, 'both', $onlyPublic);
             foreach($products as $product){
                 $array = array('productId' => $product->getId(), 
                                'personId'=> $this->getParam('id'),
@@ -152,6 +157,7 @@ class PersonProductAPI extends RESTAPI {
             return json_encode($json);
         }
         else if($this->getParam(0) == "product"){
+            // Get Authors
             $product = Paper::newFromId($this->getParam('id'));
             $json = array();
             $authors = $product->getAuthors(); 

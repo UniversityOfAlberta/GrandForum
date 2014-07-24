@@ -3,12 +3,20 @@
 class ProductAPI extends RESTAPI {
     
     function doGET(){
-        if($this->getParam('id') != ""){
+        if($this->getParam('id') != "" && count(explode(",", $this->getParam('id'))) == 1){
             $paper = Paper::newFromId($this->getParam('id'));
             if($paper == null || $paper->getTitle() == ""){
                 $this->throwError("This product does not exist");
             }
             return $paper->toJSON();
+        }
+        else if($this->getParam('id') != "" && count(explode(",", $this->getParam('id'))) > 1){
+            $json = array();
+            $papers = Product::newFromIds(explode(",", $this->getParam('id')), false);
+            foreach($papers as $paper){
+                $json[] = $paper->toArray();
+            }
+            return json_encode($json);
         }
         else{
             $json = array();
@@ -41,6 +49,7 @@ class ProductAPI extends RESTAPI {
         $paper->authors = $this->POST('authors');
         $paper->projects = $this->POST('projects');
         $paper->data = (array)($this->POST('data'));
+        $paper->access_id = $this->POST('access_id');
         $status = $paper->create();
         if(!$status){
             $this->throwError("The product <i>{$paper->getTitle()}</i> could not be created");
@@ -64,6 +73,7 @@ class ProductAPI extends RESTAPI {
         $paper->authors = $this->POST('authors');
         $paper->projects = $this->POST('projects');
         $paper->data = (array)($this->POST('data'));
+        $paper->access_id = $this->POST('access_id');
         $status = $paper->update();
         if(!$status){
             $this->throwError("The product <i>{$paper->getTitle()}</i> could not be updated");

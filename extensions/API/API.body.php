@@ -105,6 +105,9 @@ class APIRequest{
 	}
 	
 	function createActions(){
+	    //POST
+	    $this->addAction('Products', 'uploadCCV', new UploadCCVAPI());
+	
 		//POST
 		$this->addAction('User Accounts', 'addUserAccount', new CreateUserAPI());
 		$this->addAction('User Accounts', 'addUserRequest', new RequestUserAPI());

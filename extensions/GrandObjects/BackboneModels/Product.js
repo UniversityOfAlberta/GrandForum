@@ -87,7 +87,9 @@ Product = Backbone.Model.extend({
         authors: new Array(),
         projects: new Array(),
         lastModified: "",
-        deleted: ""
+        deleted: "",
+        access_id: 0,
+        created_by: 0
     },
 });
 

@@ -22,7 +22,8 @@ class ManageProducts extends BackbonePage {
     function getViews(){
         return array('Backbone/*',
                      'Products/*',
-                     'ManageProductsView');
+                     'ManageProductsView',
+                     'ManageProductsRowView');
     }
     
     function getModels(){

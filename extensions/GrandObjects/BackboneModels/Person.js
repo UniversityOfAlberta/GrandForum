@@ -12,6 +12,9 @@ Person = Backbone.Model.extend({
         
         this.products = new PersonProducts();
         this.products.url = this.urlRoot + '/' + this.get('id') + '/products';
+        
+        this.privateProducts = new PersonProducts();
+        this.privateProducts.url = this.urlRoot + '/' + this.get('id') + '/products/private';
         /*
         this.bind("sync", function(model, response, options){
             clearAllMessages();
@@ -52,6 +55,11 @@ Person = Backbone.Model.extend({
     getProducts: function(){
         this.products.fetch();
         return this.products;
+    },
+    
+    getPrivateProducts: function(){
+        this.privateProducts.fetch();
+        return this.privateProducts;
     },
 
     urlRoot: 'index.php?action=api.person',
@@ -205,6 +213,10 @@ PersonProduct = RelationModel.extend({
  */
 PersonProducts = RangeCollection.extend({
     model: PersonProduct,
+    
+    multiUrl: function(){
+        return 'index.php?action=api.product/';
+    },
     
     newModel: function(){
         return new Products();
