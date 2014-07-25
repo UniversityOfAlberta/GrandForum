@@ -156,7 +156,8 @@ class GlobalSearchAPI extends RESTAPI {
                 $results = array();
                 $myProducts = new Collection($me->getPapers('all', false, 'both'));
                 $productIds = $myProducts->pluck('id');
-                $flippedProductIds = array_flip($myProducts->pluck('id'));
+                $flippedProductIds = @array_flip($productIds);
+                
                 $products = Product::getByIds($dataCollection->pluck('product_id'));
                 foreach($products as $product){
                     $percent = 0;
