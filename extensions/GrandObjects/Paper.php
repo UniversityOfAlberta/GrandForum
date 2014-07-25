@@ -1064,14 +1064,34 @@ class Paper extends BackboneModel{
     function delete(){
         $me = Person::newFromWGUser();
         if($me->isLoggedIn()){
-            $status = DBFunctions::update('grand_products',
-                                    array('deleted' => '1'),
-                                    array('id' => $this->getId()));
+            if($this->getAccessId() > 0){
+                // Delete Permanently
+                $status = DBFunctions::delete('grand_products',
+                                              array('id' => EQ($this->getId())));
+                if($status){
+                    // Clean up other tables
+                    DBFunctions::delete('grand_product_authors',
+                                        array('product_id' => EQ($this->getId())));
+                    DBFunctions::delete('grand_product_projects',
+                                        array('product_id' => EQ($this->getId())));
+                    DBFunctions::delete('grand_products_reported',
+                                        array('product_id' => EQ($this->getId())));
+                }
+            }
+            else{
+                // Soft Delete
+                $status = DBFunctions::update('grand_products',
+                                        array('deleted' => '1'),
+                                        array('id' => EQ($this->getId())));
+            }
             if($status){
                 Cache::delete($this->getCacheId());
-                foreach($this->getAuthors() as $author){
-                    if($author instanceof Person && $me->getId() != $author->getId()){
-                        Notification::addNotification($me, $author, "{$this->getCategory()} Deleted", "Your ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i> has been deleted", "{$this->getUrl()}");
+                if($this->getAccessId() == 0){
+                    // Only send out notifications if the Product was public
+                    foreach($this->getAuthors() as $author){
+                        if($author instanceof Person && $me->getId() != $author->getId()){
+                            Notification::addNotification($me, $author, "{$this->getCategory()} Deleted", "Your ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i> has been deleted", "{$this->getUrl()}");
+                        }
                     }
                 }
                 self::$cache = array();

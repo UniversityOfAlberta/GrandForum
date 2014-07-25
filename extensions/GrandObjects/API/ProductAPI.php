@@ -88,7 +88,11 @@ class ProductAPI extends RESTAPI {
             $this->throwError("This product does not exist");
         }
         header('Content-Type: application/json');
-        $paper->delete();
+        $status = $paper->delete();
+        if($paper->getAccessId() > 0 && $status){
+            $paper->deleted = "1";
+            return $paper->toJSON();
+        }
         return $this->doGET();
     }
 	
