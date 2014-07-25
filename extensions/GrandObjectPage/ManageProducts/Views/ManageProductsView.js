@@ -128,6 +128,7 @@ ManageProductsView = Backbone.View.extend({
         _.each(this.subViews, function(row){
             row.render();
         });
+        var end = new Date();
         this.createDataTable(order, searchStr);
         this.productChanged();
     },

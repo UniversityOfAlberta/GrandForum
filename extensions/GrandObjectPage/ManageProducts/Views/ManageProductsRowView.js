@@ -3,14 +3,14 @@ ManageProductsViewRow = Backbone.View.extend({
     tagName: 'tr',
     parent: null,
     row: null,
+    template: _.template($('#manage_products_row_template').html()),
+    otherPopupTemplate: _.template($('#manage_products_other_popup_template').html()),
+    projectsPopupTemplate: _.template($('#manage_products_projects_popup_template').html()),
     
     initialize: function(options){
         this.parent = options.parent;
         this.listenTo(this.model, "change", this.render);
         this.listenTo(this.model, "change:projects", this.render);
-        this.template = _.template($('#manage_products_row_template').html());
-        this.otherPopupTemplate = _.template($('#manage_products_other_popup_template').html());
-        this.projectsPopupTemplate = _.template($('#manage_products_projects_popup_template').html());
     },
     
     setDirty: function(trigger){
@@ -164,7 +164,6 @@ ManageProductsViewRow = Backbone.View.extend({
                 $(val).addClass(classes[i]);
             });
         }
-        
         return this.$el;
     }
     
