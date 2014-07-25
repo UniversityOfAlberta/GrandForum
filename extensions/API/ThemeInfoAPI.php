@@ -119,14 +119,21 @@ class ThemeInfoAPI extends API{
                     $json['projects'][] = array('name' => $project->getName(),
                                                 'fullName' => $project->getFullName());
                 }
+                if($theme->getAcronym() == "Strategic" && $project->isBigBet()){
+                    $json['projects'][] = array('name' => $project->getName(),
+                                                'fullName' => $project->getFullName());
+                }
             }
         }
         else {
             $themes = Theme::getAllThemes(PROJECT_PHASE);
+            $strategic = new Theme(array());
+            $theme->acronym = "Strategic";
+            $strategic->name = "Partner Projects";
+            $themes[] = $strategic;
             foreach($themes as $theme){
                 $data['name'] = $theme->getAcronym();
                 $data['fullName'] = $theme->getName();
-                $data['description'] = $theme->getDescription();
                 $data['leaders'] = array();
                 $data['coleaders'] = array();
                 $data['projects'] = array();
