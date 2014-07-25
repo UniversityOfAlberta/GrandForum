@@ -9,6 +9,7 @@ ManageProductsView = Backbone.View.extend({
     nProjects: 0,
     subViews: new Array(),
     editDialog: null,
+    deleteDialog: null,
     ccvDialog: null,
     bibtexDialog: null,
 
@@ -20,6 +21,7 @@ ManageProductsView = Backbone.View.extend({
         this.listenTo(this.model, "sync", function(){
             this.products = this.model.getAll();
             this.listenTo(this.products, "add", this.addRows);
+            this.listenTo(this.products, "remove", this.addRows);
             me.projects.ready().then($.proxy(function(){
                 this.projects = me.projects.getCurrent();
                 this.model.ready().then($.proxy(function(){
@@ -97,6 +99,15 @@ ManageProductsView = Backbone.View.extend({
             this.table.destroy();
             this.table = null;
         }
+        // First remove deleted models
+        _.each(this.subViews, $.proxy(function(view){
+            var m = view.model;
+            if(this.products.where({id: m.get('id')}).length == 0){
+                this.subViews = _.without(this.subViews, view);
+                view.remove();
+            }
+        }, this));
+        // Then add new ones
         var models = _.pluck(_.pluck(this.subViews, 'model'), 'id');
         this.products.each($.proxy(function(p, i){
             if(!_.contains(models, p.id)){
@@ -277,6 +288,56 @@ ManageProductsView = Backbone.View.extend({
                 }, this)
             }
 	    });
+	    this.deleteDialog = this.$("#deleteDialog").dialog({
+	        autoOpen: false,
+	        modal: true,
+	        show: 'fade',
+	        resizable: false,
+	        draggable: false,
+	        open: function(){
+	            $("html").css("overflow", "hidden");
+	        },
+	        beforeClose: function(){
+	            $("html").css("overflow", "auto");
+	        },
+	        buttons: {
+	            "Delete": $.proxy(function(){
+	                var model = this.deleteDialog.model;
+	                if(model.get('deleted') != true){
+                        model.destroy({
+                            success: $.proxy(function(model, response) {
+                                this.deleteDialog.dialog('close');
+                                if(response.deleted == true){
+                                    model.set(response);
+                                    clearSuccess();
+                                    clearError();
+                                    addSuccess('The ' + response.category + ' <i>' + response.title + '</i> was deleted sucessfully');
+                                }
+                                else{
+                                    clearSuccess();
+                                    clearError();
+                                    addError('The ' + response.category + ' <i>' + response.title + '</i> was not deleted sucessfully');
+                                }
+                            }, this),
+                            error: $.proxy(function(model, response) {
+                                this.deleteDialog.dialog('close');
+                                clearSuccess();
+                                clearError();
+                                addError('The ' + response.category + ' <i>' + response.title + '</i> was not deleted sucessfully');
+                            }, this)
+                        });
+                    }
+                    else{
+                        this.deleteDialog.dialog('close');
+                        clearAllMessages();
+                        addError('This ' + model.get('category') + ' is already deleted');
+                    }
+	            }, this),
+	            "Cancel": $.proxy(function(){
+	                this.deleteDialog.dialog('close');
+	            }, this)
+	        }
+	    });
 	    this.ccvDialog = this.$("#ccvDialog").dialog({
 	        autoOpen: false,
 	        modal: true,
@@ -292,12 +353,17 @@ ManageProductsView = Backbone.View.extend({
 	        },
 	        buttons: {
 	            "Upload": $.proxy(function(){
+	                ccvUploaded = $.proxy(function(response){
+	                    // Purposefully global so that iframe can access
+	                    this.products.add(response, {silent: true});
+	                    this.addRows();
+	                    clearAllMessages();
+	                    var titles = _.map(_.pluck(response, 'title'), function(t){ return "<li>" + t + "</li>"; });
+	                    addSuccess("The following Products were added: <ul>" + titles.join("\n") + "</ul>");
+	                    this.ccvDialog.dialog('close');
+	                }, this);
 	                var form = $("form", this.ccvDialog);
 	                form.submit();
-
-	                
-	                //submit.click();
-	                //this.ccvDialog.dialog('close');
 	            }, this),
 	            "Cancel": $.proxy(function(){
 	                this.ccvDialog.dialog('close');

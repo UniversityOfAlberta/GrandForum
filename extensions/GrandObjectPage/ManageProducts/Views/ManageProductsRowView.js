@@ -129,13 +129,19 @@ ManageProductsViewRow = Backbone.View.extend({
         this.parent.editDialog.dialog('open');
     },
     
+    deleteProduct: function(){
+        this.parent.deleteDialog.model = this.model;
+        this.parent.deleteDialog.dialog('open');
+    },
+    
     events: {
         "change input[type=checkbox]": "toggleSelect",
         "click div.showSubprojects": "showSubprojects",
         "click div.showOther": "showOther",
         "change input.popupBlockSearch": "filterSearch",
         "keyup input.popupBlockSearch": "filterSearch",
-        "click .edit-icon": "editProduct"
+        "click .edit-icon": "editProduct",
+        "click .delete-icon": "deleteProduct"
     },
     
     render: function(){

@@ -70,12 +70,28 @@ input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabl
     vertical-align: bottom;
     width: 20px;
     height: 17px;
-    margin-left: 3px;
+    margin-left: 1px;
+    margin-right:1px;
     background: url("../../{$iconPath}glyphicons_150_edit_small.png");
 }
 
 .edit-icon:hover {
     background: url("../../{$iconPathHighlighted}glyphicons_150_edit_small.png");
+}
+
+.delete-icon {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: bottom;
+    width: 16px;
+    height: 16px;
+    margin-left: 1px;
+    margin-right:1px;
+    background: url("../../{$iconPath}glyphicons_207_remove_2.png");
+}
+
+.delete-icon:hover {
+    background: url("../../{$iconPathHighlighted}glyphicons_207_remove_2.png");
 }
 
 /* JQuery UI */

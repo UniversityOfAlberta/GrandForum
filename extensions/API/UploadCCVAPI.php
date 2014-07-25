@@ -41,7 +41,14 @@ class UploadCCVAPI extends API{
                 }
             }
         }
-        $product->create();
+        $status = $product->create();
+        if($status){
+            $product = Product::newFromId($product->getId());
+            return $product;
+        }
+        else{
+            return null;
+        }
     }
 
 	function doAction($noEcho=false){
@@ -58,16 +65,39 @@ class UploadCCVAPI extends API{
             $bookChapters = $cv->getBookChapters();
             $reviewedConferencePapers = $cv->getReviewedConferencePapers();
             $reviewedJournalPapers = $cv->getReviewedJournalPapers();
-            header('Content-Type: application/json');
+            $createdProducts = array();
             foreach($conferencePapers as $paper){
-                $this->createProduct($paper, "Publication", "Conference Paper");
+                $product = $this->createProduct($paper, "Publication", "Conference Paper");
+                if($product != null){
+                    $createdProducts[] = $product;
+                }
             }
             foreach($journalPapers as $paper){
-                $this->createProduct($paper, "Publication", "Journal Paper");
+                $product = $this->createProduct($paper, "Publication", "Journal Paper");
+                if($product != null){
+                    $createdProducts[] = $product;
+                }
             }
             foreach($bookChapters as $paper){
-                $this->createProduct($paper, "Publication", "Book Chapter");
+                $product = $this->createProduct($paper, "Publication", "Book Chapter");
+                if($product != null){
+                    $createdProducts[] = $product;
+                }
             }
+            foreach($createdProducts as $product){
+                $json[] = $product->toArray();
+            }
+            $obj = json_encode($json);
+            echo <<<EOF
+            <html>
+                <head>
+                    <script type='text/javascript'>
+                        parent.ccvUploaded($obj);
+                    </script>
+                </head>
+            </html>
+EOF;
+            exit;
         }
 	}
 	
