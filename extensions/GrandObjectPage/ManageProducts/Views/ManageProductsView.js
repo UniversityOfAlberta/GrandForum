@@ -95,7 +95,11 @@ ManageProductsView = Backbone.View.extend({
     },
     
     addRows: function(){
+        var searchStr = "";
+        var order = [this.projects.length + 3, 'desc'];
         if(this.table != undefined){
+            order = this.table.order();
+            searchStr = this.table.search();
             this.table.destroy();
             this.table = null;
         }
@@ -111,6 +115,7 @@ ManageProductsView = Backbone.View.extend({
         var models = _.pluck(_.pluck(this.subViews, 'model'), 'id');
         this.products.each($.proxy(function(p, i){
             if(!_.contains(models, p.id)){
+                // Product isn't in the table yet
                 this.listenTo(p, "dirty", this.productChanged);
                 if(p.dirty == undefined){
                     p.dirty = false;
@@ -120,10 +125,10 @@ ManageProductsView = Backbone.View.extend({
                 this.$("#productRows").append(row.$el);
             }
         }, this));
-        _.each(this.subViews, $.proxy(function(row){
+        _.each(this.subViews, function(row){
             row.render();
-        }, this));
-        this.createDataTable();
+        });
+        this.createDataTable(order, searchStr);
         this.productChanged();
     },
     
@@ -137,7 +142,7 @@ ManageProductsView = Backbone.View.extend({
         }
     },
     
-    createDataTable: function(){
+    createDataTable: function(order, searchStr){
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'autoWidth': false,
                                                      'aoColumnDefs': [
@@ -145,8 +150,10 @@ ManageProductsView = Backbone.View.extend({
                                                      ],
 	                                                 'aLengthMenu': [[-1], ['All']]});
 	    this.cacheRows();
-	    this.table.order([this.projects.length + 3,'desc']).draw();
-	    table = this.table;
+	    this.table.draw();
+	    this.table.order(order);
+	    this.table.search(searchStr);
+	    this.table.draw();
 	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
 	    this.$("#listTable_length").html('<button id="saveProducts">Save All <span id="saveN">(0)</span></button><span style="display:none;" class="throbber"></span>');
     },
