@@ -71,7 +71,7 @@ abstract class AbstractReportItem {
     }
 
     function getId(){
-        return $this->id;
+        return $this->varSubstitute($this->id);
     }
     
     function getParent(){
@@ -178,7 +178,7 @@ abstract class AbstractReportItem {
     function getPostId(){
         $parent = $this->getParent();
         if($this instanceof AbstractReportItem){
-            $postId = str_replace("\"", "", str_replace("]", "", str_replace("[", "", str_replace("'", "", "_{$this->id}"))));
+            $postId = str_replace("\"", "", str_replace("]", "", str_replace("[", "", str_replace("'", "", "_{$this->getId()}"))));
         }
         if(!($parent instanceof AbstractReportSection)){
             $postId = @$parent->getPostId()."_person{$this->personId}_project{$this->projectId}_milestone{$this->milestoneId}".$postId;

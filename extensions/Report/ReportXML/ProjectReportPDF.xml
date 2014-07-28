@@ -96,11 +96,22 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="subprojects" name="Sub-Projects" blobSection="LDR_MILESTONE" type="ReportSection" pagebreak="false" renderpdf="true">
+        <ReportItem id='III_head' type="StaticReportItem">
+            <![CDATA[<h2>Sub-Project Leader Comments</h2>]]>
+        </ReportItem>
+        <ReportItemSet id="subleaders" type="AllSubProjectLeadersReportItemSet">
+            <ReportItem id='comment' type="StaticReportItem">
+                <![CDATA[<h3>{$user_name}</h3>{$user_subproject_comments}]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id='III_head' type="StaticReportItem">
+            <![CDATA[<br /><h2>Sub-Project Descriptions</h2>]]>
+        </ReportItem>
         <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet">
             <ReportItem id="subprojects_data" type="StaticReportItem">
                 <![CDATA[
                     <div>
-                        <h2><a class='anchor' id='subproject_desc_{$project_id}'>{$project_name}</a></h2>
+                        <h3><a class='anchor' id='subproject_desc_{$project_id}'>{$project_name}</a></h3>
                         <b>Full Name:</b><br />{$project_full_name}<br /><br />
                         <!--<b>Status:</b><br />{$project_status}<br /><br />-->
                         <b>Leader(s):</b><br />{$project_leaders}<br /><br />

@@ -825,7 +825,7 @@ class ReportItemCallback {
         $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), $project->getId());
         $blob->load($addr);
         $data = $blob->getData();
-        return $data;
+        return preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
     }
     
     function getUserMTGMusic(){

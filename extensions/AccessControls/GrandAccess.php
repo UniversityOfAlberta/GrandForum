@@ -45,6 +45,7 @@ class GrandAccess {
 	            if($lead->isSubProject()){
 	                $aRights[$i++] = "SUB-PL";
 	                $aRights[$i++] = "SUB-COPL";
+	                break;
 	            }
 	        }
 	    }
