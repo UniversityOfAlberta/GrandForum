@@ -114,10 +114,13 @@ class GlobalSearchAPI extends RESTAPI {
                 }
                 $results = array();
                 foreach($data as $row){
-                    $project = Person::newFromId($row['project_id']);
+                    $project = Project::newFromId($row['project_id']);
                     similar_text(unaccentChars($row['project_name']), unaccentChars($origSearch), $percent);
                     if($me->isMemberOf($project)){
                         $percent += 50;
+                    }
+                    if($project->isDeleted()){
+                        $percent -= 50;
                     }
                     $results[$row['project_id']] = $percent;
                 }
