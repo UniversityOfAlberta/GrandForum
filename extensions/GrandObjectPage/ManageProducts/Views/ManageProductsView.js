@@ -10,6 +10,7 @@ ManageProductsView = Backbone.View.extend({
     subViews: new Array(),
     editDialog: null,
     deleteDialog: null,
+    deletePrivateDialog: null,
     ccvDialog: null,
     bibtexDialog: null,
 
@@ -68,6 +69,12 @@ ManageProductsView = Backbone.View.extend({
             }
         });
         this.$("#saveN").html("(" + sum + ")");
+        if(sum == 0){
+            this.$("#saveProducts").prop("disabled", true);
+        }
+        else{
+            this.$("#saveProducts").prop("disabled", false);
+        }
         if(sum > 0){
             window.onbeforeunload = function(){
                 return "You have unsaved Products";
@@ -85,6 +92,12 @@ ManageProductsView = Backbone.View.extend({
             }
         });
         this.$("#privateN").html("(" + sum + ")");
+        if(sum == 0){
+            this.$("#deletePrivate").prop("disabled", true);
+        }
+        else{
+            this.$("#deletePrivate").prop("disabled", false);
+        }
         
         // Change the state of the 'selectAll' checkbox
         this.projects.each(function(project){
@@ -187,37 +200,7 @@ ManageProductsView = Backbone.View.extend({
     },
     
     deletePrivate: function(){
-        this.$("#deletePrivate").prop('disabled', true);
-        this.$(".throbber").show();
-        var xhrs = new Array();
-        this.products.each(function(product){
-            if(product.get('access_id') > 0){
-                xhrs.push(product.destroy({silent: true}));
-            }
-        });
-        $.when.apply(null, xhrs).done($.proxy(function(){
-            // Success
-            clearAllMessages();
-            addSuccess("All private products have been successfully deleted");
-            this.$("#deletePrivate").prop('disabled', false);
-            this.$(".throbber").hide();
-            this.addRows();
-        }, this)).fail($.proxy(function(e){
-            // Failure
-            clearAllMessages();
-            var list = new Array();
-            list.push("There was a problem deleting the following products:<ul>");
-            this.products.each(function(product){
-                if(product.get('access_id') > 0){
-                    list.push("<li>" + product.get('title') + "</li>");
-                }
-            });
-            list.push("</ul>");
-            addError(list.join(''));
-            this.$("#deletePrivate").prop('disabled', false);
-            this.$(".throbber").hide();
-            this.addRows();
-        }, this));
+        this.deletePrivateDialog.dialog('open');
     },
     
     saveProducts: function(){
@@ -393,6 +376,61 @@ ManageProductsView = Backbone.View.extend({
 	            }, this)
 	        }
 	    });
+	    this.deletePrivateDialog = this.$("#deletePrivateDialog").dialog({
+	        autoOpen: false,
+	        modal: true,
+	        show: 'fade',
+	        resizable: false,
+	        draggable: false,
+	        open: function(){
+	            $("html").css("overflow", "hidden");
+	        },
+	        beforeClose: function(){
+	            $("html").css("overflow", "auto");
+	        },
+	        buttons: {
+	            "Delete": $.proxy(function(e){
+	                var button = $(e.currentTarget);
+	                button.prop("disabled", true);
+                    var xhrs = new Array();
+                    var toDelete = new Array();
+                    this.products.each(function(product){
+                        if(product.get('access_id') > 0){
+                            toDelete.push(product);
+                        }
+                    });
+                    _.each(toDelete, function(product){
+                        xhrs.push(product.destroy({silent: true}));
+                    });
+                    $.when.apply(null, xhrs).done($.proxy(function(){
+                        // Success
+                        clearAllMessages();
+                        addSuccess("All private products have been successfully deleted");
+                        this.addRows();
+                        button.prop("disabled", false);
+                        this.deletePrivateDialog.dialog('close');
+                    }, this)).fail($.proxy(function(e){
+                        // Failure
+                        clearAllMessages();
+                        var list = new Array();
+                        list.push("There was a problem deleting the following products:<ul>");
+                        this.products.each(function(product){
+                            if(product.get('access_id') > 0){
+                                list.push("<li>" + product.get('title') + "</li>");
+                            }
+                        });
+                        list.push("</ul>");
+                        addError(list.join(''));
+                        this.addRows();
+                        button.prop("disabled", false);
+                        this.deletePrivateDialog.dialog('close');
+                    }, this));
+	            }, this),
+	            "Cancel": $.proxy(function(){
+	                this.deletePrivateDialog.dialog('close');
+	            }, this)
+	        }
+	    });
 	    this.ccvDialog = this.$("#ccvDialog").dialog({
 	        autoOpen: false,
 	        modal: true,
@@ -407,15 +445,26 @@ ManageProductsView = Backbone.View.extend({
 	            $("html").css("overflow", "auto");
 	        },
 	        buttons: {
-	            "Upload": $.proxy(function(){
-	                ccvUploaded = $.proxy(function(response){
-	                    // Purposefully global so that iframe can access
-	                    this.products.add(response, {silent: true});
-	                    this.addRows();
-	                    clearAllMessages();
-	                    var titles = _.map(_.pluck(response, 'title'), function(t){ return "<li>" + t + "</li>"; });
-	                    addSuccess("The following Products were added: <ul>" + titles.join("\n") + "</ul>");
-	                    this.ccvDialog.dialog('close');
+	            "Upload": $.proxy(function(e){
+	                var button = $(e.currentTarget);
+	                button.prop("disabled", true);
+	                ccvUploaded = $.proxy(function(response, error){
+	                    if(error == undefined || error == ""){
+	                        // Purposefully global so that iframe can access
+	                        this.products.add(response, {silent: true});
+	                        this.addRows();
+	                        clearAllMessages();
+	                        var titles = _.map(_.pluck(response, 'title'), function(t){ return "<li>" + t + "</li>"; });
+	                        addSuccess("The following Products were added: <ul>" + titles.join("\n") + "</ul>");
+	                        button.prop("disabled", false);
+	                        this.ccvDialog.dialog('close');
+	                    }
+	                    else{
+	                        button.prop("disabled", false);
+	                        clearAllMessages();
+	                        addError(error);
+	                        this.ccvDialog.dialog('close');
+	                    }
 	                }, this);
 	                var form = $("form", this.ccvDialog);
 	                form.submit();

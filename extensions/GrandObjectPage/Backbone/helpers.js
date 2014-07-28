@@ -117,7 +117,6 @@ HTML.CheckBox = function(view, attr, options){
                 view.model.set(attr, options.default);
             }
         }
-        console.log(view.model.toJSON());
     };
     view.delegateEvents(events);
     $(el).wrap('div');

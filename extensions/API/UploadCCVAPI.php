@@ -58,32 +58,42 @@ class UploadCCVAPI extends API{
         if($ccv['type'] == "text/xml" && $ccv['size'] > 0){
             $this->structure = Product::structure();
             $dir = dirname(__FILE__);
+            $error = "";
             require_once($dir."/../../Classes/CCCVTK/common-cv.lib.php");
-            $cv = new CommonCV($ccv['tmp_name']);
-            $conferencePapers = $cv->getConferencePapers();
-            $journalPapers = $cv->getJournalPapers();
-            $bookChapters = $cv->getBookChapters();
-            $reviewedConferencePapers = $cv->getReviewedConferencePapers();
-            $reviewedJournalPapers = $cv->getReviewedJournalPapers();
-            $createdProducts = array();
-            foreach($conferencePapers as $paper){
-                $product = $this->createProduct($paper, "Publication", "Conference Paper");
-                if($product != null){
-                    $createdProducts[] = $product;
+            $file_contents = file_get_contents($ccv['tmp_name']);
+            $dom = new DOMDocument();
+            $valid = $dom->loadXML($file_contents);
+            if($valid){
+                $cv = new CommonCV($ccv['tmp_name']);
+                $conferencePapers = $cv->getConferencePapers();
+                $journalPapers = $cv->getJournalPapers();
+                $bookChapters = $cv->getBookChapters();
+                $reviewedConferencePapers = $cv->getReviewedConferencePapers();
+                $reviewedJournalPapers = $cv->getReviewedJournalPapers();
+                $createdProducts = array();
+                foreach($conferencePapers as $paper){
+                    $product = $this->createProduct($paper, "Publication", "Conference Paper");
+                    if($product != null){
+                        $createdProducts[] = $product;
+                    }
+                }
+                foreach($journalPapers as $paper){
+                    $product = $this->createProduct($paper, "Publication", "Journal Paper");
+                    if($product != null){
+                        $createdProducts[] = $product;
+                    }
+                }
+                foreach($bookChapters as $paper){
+                    $product = $this->createProduct($paper, "Publication", "Book Chapter");
+                    if($product != null){
+                        $createdProducts[] = $product;
+                    }
                 }
             }
-            foreach($journalPapers as $paper){
-                $product = $this->createProduct($paper, "Publication", "Journal Paper");
-                if($product != null){
-                    $createdProducts[] = $product;
-                }
+            else{
+                $error = "There was an error reading the CCV file";
             }
-            foreach($bookChapters as $paper){
-                $product = $this->createProduct($paper, "Publication", "Book Chapter");
-                if($product != null){
-                    $createdProducts[] = $product;
-                }
-            }
+            $json = array();
             foreach($createdProducts as $product){
                 $json[] = $product->toArray();
             }
@@ -92,7 +102,19 @@ class UploadCCVAPI extends API{
             <html>
                 <head>
                     <script type='text/javascript'>
-                        parent.ccvUploaded($obj);
+                        parent.ccvUploaded($obj, "$error");
+                    </script>
+                </head>
+            </html>
+EOF;
+            exit;
+        }
+        else{
+            echo <<<EOF
+            <html>
+                <head>
+                    <script type='text/javascript'>
+                        parent.ccvUploaded([], "The uploaded file was not in XML format");
                     </script>
                 </head>
             </html>
