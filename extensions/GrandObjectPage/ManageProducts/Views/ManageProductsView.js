@@ -77,6 +77,15 @@ ManageProductsView = Backbone.View.extend({
             window.onbeforeunload = null;
         }
         
+        // Count how many products are private
+        var sum = 0;
+        this.products.each(function(product){
+            if(product.get('access_id') > 0){
+                sum++;
+            }
+        });
+        this.$("#privateN").html("(" + sum + ")");
+        
         // Change the state of the 'selectAll' checkbox
         this.projects.each(function(project){
             var allFound = true;
@@ -156,7 +165,10 @@ ManageProductsView = Backbone.View.extend({
 	    this.table.search(searchStr);
 	    this.table.draw();
 	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
-	    this.$("#listTable_length").html('<button id="saveProducts">Save All <span id="saveN">(0)</span></button><span style="display:none;" class="throbber"></span>');
+	    this.$("#listTable_length").empty();
+	    this.$("#listTable_length").append('<button id="saveProducts">Save All <span id="saveN">(0)</span></button>');
+	    this.$("#listTable_length").append('<button id="deletePrivate">Delete All Private <span id="privateN">(0)</span></button>');
+	    this.$("#listTable_length").append('<span style="display:none;" class="throbber"></span>');
     },
     
     toggleSelect: function(e){
@@ -172,6 +184,40 @@ ManageProductsView = Backbone.View.extend({
             }
         });
         this.productChanged();
+    },
+    
+    deletePrivate: function(){
+        this.$("#deletePrivate").prop('disabled', true);
+        this.$(".throbber").show();
+        var xhrs = new Array();
+        this.products.each(function(product){
+            if(product.get('access_id') > 0){
+                xhrs.push(product.destroy({silent: true}));
+            }
+        });
+        $.when.apply(null, xhrs).done($.proxy(function(){
+            // Success
+            clearAllMessages();
+            addSuccess("All private products have been successfully deleted");
+            this.$("#deletePrivate").prop('disabled', false);
+            this.$(".throbber").hide();
+            this.addRows();
+        }, this)).fail($.proxy(function(e){
+            // Failure
+            clearAllMessages();
+            var list = new Array();
+            list.push("There was a problem deleting the following products:<ul>");
+            this.products.each(function(product){
+                if(product.get('access_id') > 0){
+                    list.push("<li>" + product.get('title') + "</li>");
+                }
+            });
+            list.push("</ul>");
+            addError(list.join(''));
+            this.$("#deletePrivate").prop('disabled', false);
+            this.$(".throbber").hide();
+            this.addRows();
+        }, this));
     },
     
     saveProducts: function(){
@@ -227,6 +273,7 @@ ManageProductsView = Backbone.View.extend({
     events: {
         "click .selectAll": "toggleSelect",
         "click #saveProducts": "saveProducts",
+        "click #deletePrivate": "deletePrivate",
         "click #addProductButton": "addProduct",
         "click #uploadCCVButton": "uploadCCV",
         "click #importBibTexButton": "importBibTeX"
