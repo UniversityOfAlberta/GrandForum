@@ -558,6 +558,7 @@ abstract class AbstractReport extends SpecialPage {
                                 foreach($project_objs as $project){
                                     if($project->getId() == $this->project->getId()){
                                         $rResult = true;
+                                        break;
                                     }
                                 }
                             }
@@ -565,6 +566,17 @@ abstract class AbstractReport extends SpecialPage {
                         else if($this->project != null && ($perm['perm'] == PM)){
                             if($me->isProjectManager()){
                                 $rResult = true;
+                            }
+                        }
+                        else if($perm['perm'] == "SUB-PL" || $perm['perm'] == "SUB-COPL"){
+                            $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
+                            if(count($project_objs) > 0){
+                                foreach($project_objs as $project){
+                                    if($project->isSubProject()){
+                                        $rResult = true;
+                                        break;
+                                    }
+                                }
                             }
                         }
                         else{

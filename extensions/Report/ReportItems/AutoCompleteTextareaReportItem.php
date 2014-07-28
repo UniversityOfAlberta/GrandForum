@@ -41,7 +41,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		    $item .= "</script>";
 		}
 		$item .= "<span style='float:right;margin-right:30px;' class='pdfnodisplay tooltip' title='You should reference $name by writing <code>@$tooltipOptionId</code> in the text box. You can also start typing <code>@$tooltipOptionName</code> and a drop-down box will appear below the text box where you can select the one you wish to reference.'><b>@autocomplete:</b> {$name}</span>".$this->getHTML();
-		$item .= "<div id='{$this->id}_div'></div>";
+		$item .= "<div id='{$this->id}_div_{$this->getPostId()}'></div>";
 		$item .= "<script type='text/javascript'>";
 		$item .= "$('textarea[name={$this->getPostId()}]').addClass('autocomplete');
 		            $('textarea[name={$this->getPostId()}]').triggeredAutocomplete({
@@ -72,7 +72,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
         $item .= "</script>";
 		if($notReferenced == "true"){
 		    $item .= "<script type='text/javascript'>
-		                function autocompleteLeft{$this->id}(){
+		                function autocompleteLeft{$this->id}(postId){
 		                    var innerHTML = '<fieldset><legend><b>$name not referenced:</b></legend><ul>';
 		                    var left = 0;
                             for (index in {$this->id}){
@@ -84,7 +84,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
                                 var str = label.replace('[', '\\\[')
                                                .replace('(', '\\\(')
                                                .replace(')', '\\\)');
-                                var val = $('textarea[name={$this->getPostId()}]').val();
+                                var val = $('textarea[name=' + postId + ']').val();
                                 var regex = RegExp('@\\\[' + str + ']','g');
                                 if(regex.test(val) == false){
                                     innerHTML += '<li>' + label + '</li>';
@@ -93,15 +93,15 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
                             }
                             innerHTML += '</ul></fieldset>';
                             if(left > 0){
-                                $('#{$this->id}_div').html(innerHTML);
+                                $('#{$this->id}_div_{$this->getPostId()}').html(innerHTML);
                             }
                             else{
-                                $('#{$this->id}_div').html('');
+                                $('#{$this->id}_div_{$this->getPostId()}').html('');
                             }
                         }
                         
                         $('textarea[name={$this->getPostId()}]').keyup(function(){
-                            autocompleteLeft{$this->id}();
+                            autocompleteLeft{$this->id}({$this->getPostId()});
                         });
                         autocompleteLeft{$this->id}();
 		    </script>";

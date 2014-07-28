@@ -63,6 +63,7 @@ define('RES_CONTRIBUTIONS',		11);
 define('RES_RESACTIVITY',		12);
 define('RES_BUDGET_PNIADMIN',	13);
 define('RES_ALLOC_BUDGET',      14);
+define('RES_SUBPROJECTS',		5);
 
 define('HQP_DEMOGRAPHIC',		1);
 define('HQP_EFFORT',			2);
@@ -181,6 +182,8 @@ define('RES_RESACT_BENEF',   		7);
 define('RES_RESACT_OTHER',   		8);
 define('RES_RESACT_NEXTPLANS',      9);
 define('RES_RESACT_FILE',           10);
+
+define('RES_SUBPROJECT_COMMENTS',   1);
 
 define('HQP_DEM_LEVEL',			1);
 define('HQP_DEM_GENDER',		2);

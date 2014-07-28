@@ -1,41 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="NI Report" reportType="RP_RESEARCHER" pdfType="RPTP_NORMAL" pdfFiles="NIReportPDF" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
-        <!--<Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PNI">
-            <SectionPermission id="status" permissions="rw" />
-            <SectionPermission id="dashboard" permissions="rw" />
-            <SectionPermission id="report" permissions="rw" />
-            <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="CNI">
-            <SectionPermission id="status" permissions="rw" />
-            <SectionPermission id="dashboard" permissions="rw" />
-            <SectionPermission id="report" permissions="rw" />
-            <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>-->
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PNI">
-            <SectionPermission id="status" permissions="r" />
-            <SectionPermission id="dashboard" permissions="r" />
-            <SectionPermission id="report" permissions="r" />
-            <SectionPermission id="budget" permissions="r" />
-            <SectionPermission id="milestones" permissions="r" />
-            <SectionPermission id="review" permissions="r" />
-            <SectionPermission id="submit" permissions="r" />
+            <SectionPermission id="status" permissions="rw" />
+            <SectionPermission id="dashboard" permissions="rw" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="subprojects" permissions="" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="CNI">
-            <SectionPermission id="status" permissions="r" />
-            <SectionPermission id="dashboard" permissions="r" />
-            <SectionPermission id="report" permissions="r" />
-            <SectionPermission id="budget" permissions="r" />
-            <SectionPermission id="milestones" permissions="r" />
-            <SectionPermission id="review" permissions="r" />
-            <SectionPermission id="submit" permissions="r" />
+            <SectionPermission id="status" permissions="rw" />
+            <SectionPermission id="dashboard" permissions="rw" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="subprojects" permissions="" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SUB-PL">
+            <SectionPermission id="status" permissions="" />
+            <SectionPermission id="dashboard" permissions="" />
+            <SectionPermission id="report" permissions="" />
+            <SectionPermission id="subprojects" permissions="rw" />
+            <SectionPermission id="budget" permissions="" />
+            <SectionPermission id="milestones" permissions="" />
+            <SectionPermission id="review" permissions="" />
+            <SectionPermission id="submit" permissions="" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SUB-COPL">
+            <SectionPermission id="status" permissions="" />
+            <SectionPermission id="dashboard" permissions="" />
+            <SectionPermission id="report" permissions="" />
+            <SectionPermission id="subprojects" permissions="rw" />
+            <SectionPermission id="budget" permissions="" />
+            <SectionPermission id="milestones" permissions="" />
+            <SectionPermission id="review" permissions="" />
+            <SectionPermission id="submit" permissions="" />
         </Role>
     </Permissions>
     <ReportSection id="status" name="Report Completion Status" tooltip="Evaluation of your report against the reporting rules" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
@@ -359,6 +363,18 @@ Describe your involvement with receptor organizations, industry partners and Pro
                 <![CDATA[You can attach any file to present to the Evaluators to review.  If you want to attach multiple files, then put them in a zip file and attach the zip file.<br />{$item}]]>
             </ReportItem>
         </ReportItemSet-->
+    </ReportSection>
+    <ReportSection id="subprojects" name="Sub-Project Leader" tooltip="Comments about lead sub-projects" blobSection="RES_SUBPROJECTS" type="EditableReportSection" autosave="true" reportCharLimits="false" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+                Lorem Ipsum
+            ]]>
+        </Instructions>
+        <ReportItemSet id="projects" type="PersonSubLeadProjectReportItemSet">
+            <ReportItem id="sub_project" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_COMMENTS" type="AutoCompleteTextareaReportItem" set="PersonSubLeadSubProjectReportItemSet" index="project_id" label="project_name" name="Sub-Projects" showNotReferenced="true" tooltipOptionId="Project ID" tooltipOptionName="Project Name">
+                <![CDATA[<i>{$project_name}</i><br />{$item}<br />]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="budget" name="Budget Request" blobSection="RES_BUDGET" tooltip="Budget request and justification" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true">
         <Instructions>

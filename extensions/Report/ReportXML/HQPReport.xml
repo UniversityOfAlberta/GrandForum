@@ -2,20 +2,12 @@
 <Report name="HQP Report" reportType="RP_HQP" pdfType="RPTP_HQP" pdfFiles="HQPReportPDF" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP">
-        <!--
             <SectionPermission id="status" permissions="rw" />
             <SectionPermission id="dashboard" permissions="rw" />
             <SectionPermission id="report" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
-        -->
-            <SectionPermission id="status" permissions="r" />
-            <SectionPermission id="dashboard" permissions="r" />
-            <SectionPermission id="report" permissions="r" />
-            <SectionPermission id="milestones" permissions="r" />
-            <SectionPermission id="review" permissions="r" />
-            <SectionPermission id="submit" permissions="r" />
         </Role>
     </Permissions>
     <ReportSection id="status" name="Report Completion Status" tooltip="Evaluation of your report against the reporting rules" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">

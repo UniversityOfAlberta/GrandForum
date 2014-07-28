@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Project Report" reportType="RP_LEADER" pdfType="RPTP_LEADER" pdfFiles="ProjectReportPDF" personId="0" ajax="true" disabled="false">
     <Permissions>
-        <!--
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="status" permissions="rw" />
             <SectionPermission id="dashboard" permissions="rw" />
@@ -30,37 +29,6 @@
             <SectionPermission id="comments" permissions="r" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="" />
-        </Role>
-        -->
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
-            <SectionPermission id="status" permissions="r" />
-            <SectionPermission id="dashboard" permissions="r" />
-            <SectionPermission id="report" permissions="r" />
-            <SectionPermission id="subprojects" permissions="r" />
-            <SectionPermission id="comments" permissions="r" />
-            <SectionPermission id="budget" permissions="r" />
-            <SectionPermission id="review" permissions="r" />
-            <SectionPermission id="submit" permissions="r" />
-        </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="COPL">
-            <SectionPermission id="status" permissions="r" />
-            <SectionPermission id="dashboard" permissions="r" />
-            <SectionPermission id="report" permissions="r" />
-            <SectionPermission id="subprojects" permissions="r" />
-            <SectionPermission id="comments" permissions="r" />
-            <SectionPermission id="budget" permissions="r" />
-            <SectionPermission id="review" permissions="r" />
-            <SectionPermission id="submit" permissions="r" />
-        </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PM">
-            <SectionPermission id="status" permissions="r" />
-            <SectionPermission id="dashboard" permissions="r" />
-            <SectionPermission id="report" permissions="r" />
-            <SectionPermission id="subprojects" permissions="r" />
-            <SectionPermission id="comments" permissions="r" />
-            <SectionPermission id="budget" permissions="r" />
-            <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="" />
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
@@ -288,6 +256,14 @@
                 This section shows an overview of all this project's sub-projects.
             ]]>
         </Instructions>
+        <ReportItem id='III_head' type="StaticReportItem">
+            <![CDATA[<h2>Sub-Project Leader Comments</h2>]]>
+        </ReportItem>
+        <ReportItemSet id="subleaders" type="AllSubProjectLeadersReportItemSet">
+            <ReportItem id='comment' type="StaticReportItem">
+                <![CDATA[<h3>{$user_name}</h3>{$user_subproject_comments}]]>
+            </ReportItem>
+        </ReportItemSet>
         <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet" blobIndex="projectId">
             <ReportItem id="subprojects_data" type="StaticReportItem">
                 <![CDATA[
