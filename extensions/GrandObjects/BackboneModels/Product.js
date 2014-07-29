@@ -149,7 +149,7 @@ ProductDuplicates = Backbone.Collection.extend({
     },
     
     url: function(){
-        var url = 'index.php?action=api.productDuplicates/' + this.category + '/' + this.title + '/' + this.id;
+        var url = 'index.php?action=api.productDuplicates/' + this.category + '/' + this.title.replace(/[^a-zA-Z0-9-_]/g, '') + '/' + this.id;
         return url;
     },
     

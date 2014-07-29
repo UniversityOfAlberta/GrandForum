@@ -39,6 +39,7 @@ ManageProductsView = Backbone.View.extend({
                 }, this));
             }, this));
         }, this);
+        this.duplicatesDialog = new DuplicatesDialogView();
     },
     
     addProduct: function(){
@@ -227,9 +228,14 @@ ManageProductsView = Backbone.View.extend({
         $.when.apply(null, xhrs).done($.proxy(function(){
             xhrs = new Array();
             var duplicateProducts = new Array();
-            this.products.each(function(product){
+            this.products.each($.proxy(function(product){
                 if(product.dirty){
                     if(product.duplicates.length > 0){
+                        var newDuplicates = new Array();
+                        product.duplicates.each($.proxy(function(dupe){
+                            newDuplicates.push(this.products.findWhere({id: dupe.get('id')}));
+                        }, this));
+                        product.duplicates.reset(newDuplicates);
                         duplicateProducts.push(product);
                     }
                     else{
@@ -242,10 +248,10 @@ ManageProductsView = Backbone.View.extend({
                         }));
                     }
                 }
-            });
+            }, this));
             if(duplicateProducts.length > 0){
-                this.duplicatesDialog.duplicateProducts = duplicateProducts;
-                this.duplicatesDialog.dialog('open');
+                this.duplicatesDialog.model = duplicateProducts;
+                this.duplicatesDialog.open();
             }
             $.when.apply(null, xhrs).done($.proxy(function(){
                 // Success
@@ -513,33 +519,6 @@ ManageProductsView = Backbone.View.extend({
 	            }, this),
 	            "Cancel": $.proxy(function(){
 	                this.bibtexDialog.dialog('close');
-	            }, this)
-	        }
-	    });
-	    this.duplicatesDialog = this.$("#duplicatesDialog").dialog({
-	        autoOpen: false,
-	        modal: true,
-	        show: 'fade',
-	        resizable: false,
-	        draggable: false,
-	        width: "800px",
-	        open: $.proxy(function(){
-	            $("html").css("overflow", "hidden");
-	            console.log(this.duplicatesDialog.duplicateProducts);
-	            var firstProduct = _.first(this.duplicatesDialog.duplicateProducts);
-	            firstProduct.duplicates.each($.proxy(function(prod){
-	                $("ul", this.duplicatesDialog).append('<li>' + prod.get('title') + '</li>');
-	            }, this));
-	        }, this),
-	        beforeClose: function(){
-	            $("html").css("overflow", "auto");
-	        },
-	        buttons: {
-	            "Not a Duplicate": $.proxy(function(){
-	                
-	            }, this),
-	            "Delete this Product": $.proxy(function(){
-	                
 	            }, this)
 	        }
 	    });
