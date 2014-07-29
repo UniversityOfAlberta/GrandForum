@@ -48,7 +48,7 @@ class ResearcherAPI extends API{
             header("Content-type: text/xml");
         }
         else if($_GET['format'] == "JSON"){
-            header("Content-type: text/json");
+            header("Content-type: application/json");
         }
         $cache = new ResearcherFullCache($this);
         echo $cache->getCache();
@@ -75,7 +75,7 @@ class ResearcherAPI extends API{
           }
           $xml .= "\t\t<projects>\n";
           foreach($person->getProjects() as $project){
-            if($project->getPhase() == 1 && !$project->isSubProject()){
+            if($project->getPhase() == PROJECT_PHASE && !$project->isSubProject()){
                 $xml .= "\t\t\t<project id=\"{$project->getId()}\" name=\"{$project->getName()}\" />\n";
             }
           }
@@ -105,7 +105,7 @@ class ResearcherAPI extends API{
           $name = $person->splitName();
         $projects = array();
         foreach($person->getProjects() as $project){
-            if($project->getPhase() == 1 && !$project->isSubProject()){
+            if($project->getPhase() == PROJECT_PHASE && !$project->isSubProject()){
               $projects[] = array("id" => $project->getId(),
                                   "name" => $project->getName());
             }
