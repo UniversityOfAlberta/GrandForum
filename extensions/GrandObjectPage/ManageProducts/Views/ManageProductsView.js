@@ -233,7 +233,15 @@ ManageProductsView = Backbone.View.extend({
                     if(product.duplicates.length > 0){
                         var newDuplicates = new Array();
                         product.duplicates.each($.proxy(function(dupe){
-                            newDuplicates.push(this.products.findWhere({id: dupe.get('id')}));
+                            var myProduct = this.products.findWhere({id: dupe.get('id')});
+                            if(myProduct != undefined){
+                                // This product is in my table
+                                newDuplicates.push(myProduct);
+                            }
+                            else{
+                                // This product is someone else's
+                                newDuplicates.push(dupe);
+                            }
                         }, this));
                         product.duplicates.reset(newDuplicates);
                         duplicateProducts.push(product);
