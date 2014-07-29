@@ -2,12 +2,15 @@
  * Product Model
  */
 Product = Backbone.Model.extend({
+    
     initialize: function(){
         this.authors = new ProductAuthors();
         this.authors.url = this.urlRoot + '/' + this.get('id') + '/authors';
         
         this.projects = new ProductAuthors();
         this.projects.url = this.urlRoot + '/' + this.get('id') + '/projects';
+        
+        this.duplicates = new ProductDuplicates();
         
         if(this.isNew()){
             if(this.get('category') == ""){
@@ -34,6 +37,14 @@ Product = Backbone.Model.extend({
     getProjects: function(){
         this.projects.fetch();
         return this.projects;
+    },
+    
+    getDuplicates: function(){
+        this.duplicates.category = this.get('category');
+        this.duplicates.title = this.get('title');
+        this.duplicates.id = this.get('id');
+        this.duplicates.fetch();
+        return this.duplicates;
     },
     
     getLink: function(){
@@ -110,6 +121,38 @@ Products = Backbone.Collection.extend({
         var url = 'index.php?action=api.product/' + this.project + '/' + this.category + '/' + this.grand;
         return url;
     }
+});
+
+/**
+ * ProductDuplicates Collection
+ */
+ProductDuplicates = Backbone.Collection.extend({
+    
+    model: Product,
+    
+    xhrs: new Array(),
+    
+    category: '',
+    
+    title: '',
+    
+    id: '',
+    
+    fetch: function(options){
+        var xhr = Backbone.Collection.prototype.fetch.call(this, options);
+        this.xhrs.push(xhr);
+        return xhr;
+    },
+    
+    ready: function(){
+        return $.when.apply(null, this.xhrs);
+    },
+    
+    url: function(){
+        var url = 'index.php?action=api.productDuplicates/' + this.category + '/' + this.title + '/' + this.id;
+        return url;
+    },
+    
 });
 
 /**

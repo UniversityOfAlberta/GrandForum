@@ -13,6 +13,7 @@ ManageProductsView = Backbone.View.extend({
     deletePrivateDialog: null,
     ccvDialog: null,
     bibtexDialog: null,
+    duplicatesDialog: null,
 
     initialize: function(){
         this.allProjects = new Projects();
@@ -219,37 +220,56 @@ ManageProductsView = Backbone.View.extend({
         var xhrs = new Array();
         this.products.each(function(product){
             if(product.dirty){
-                // Save all Dirty Products
-                xhrs.push(product.save({}, {
-                    success: function(){
-                        // Save was successful, mark it as 'clean'
-                        product.dirty = false;
-                    }
-                }));
+                var duplicates = product.getDuplicates();
+                xhrs.push(duplicates.ready());
             }
         });
         $.when.apply(null, xhrs).done($.proxy(function(){
-            // Success
-            clearAllMessages();
-            addSuccess("All products have been successfully saved");
-            this.$("#saveProducts").prop('disabled', false);
-            this.$(".throbber").hide();
-            this.productChanged();
-        }, this)).fail($.proxy(function(e){
-            // Failure
-            clearAllMessages();
-            var list = new Array();
-            list.push("There was a problem saving the following products:<ul>");
+            xhrs = new Array();
+            var duplicateProducts = new Array();
             this.products.each(function(product){
                 if(product.dirty){
-                    list.push("<li>" + product.get('title') + "</li>");
+                    if(product.duplicates.length > 0){
+                        duplicateProducts.push(product);
+                    }
+                    else{
+                        // Save all Dirty Products
+                        xhrs.push(product.save({}, {
+                            success: function(){
+                                // Save was successful, mark it as 'clean'
+                                product.dirty = false;
+                            }
+                        }));
+                    }
                 }
             });
-            list.push("</ul>");
-            addError(list.join(''));
-            this.$("#saveProducts").prop('disabled', false);
-            this.$(".throbber").hide();
-            this.productChanged();
+            if(duplicateProducts.length > 0){
+                this.duplicatesDialog.duplicateProducts = duplicateProducts;
+                this.duplicatesDialog.dialog('open');
+            }
+            $.when.apply(null, xhrs).done($.proxy(function(){
+                // Success
+                clearAllMessages();
+                addSuccess("All products have been successfully saved");
+                this.$("#saveProducts").prop('disabled', false);
+                this.$(".throbber").hide();
+                this.productChanged();
+            }, this)).fail($.proxy(function(e){
+                // Failure
+                clearAllMessages();
+                var list = new Array();
+                list.push("There was a problem saving the following products:<ul>");
+                this.products.each(function(product){
+                    if(product.dirty){
+                        list.push("<li>" + product.get('title') + "</li>");
+                    }
+                });
+                list.push("</ul>");
+                addError(list.join(''));
+                this.$("#saveProducts").prop('disabled', false);
+                this.$(".throbber").hide();
+                this.productChanged();
+            }, this));
         }, this));
     },
     
@@ -489,11 +509,37 @@ ManageProductsView = Backbone.View.extend({
 	        },
 	        buttons: {
 	            "Import": $.proxy(function(){
-	                
 	                this.bibtexDialog.dialog('close');
 	            }, this),
 	            "Cancel": $.proxy(function(){
 	                this.bibtexDialog.dialog('close');
+	            }, this)
+	        }
+	    });
+	    this.duplicatesDialog = this.$("#duplicatesDialog").dialog({
+	        autoOpen: false,
+	        modal: true,
+	        show: 'fade',
+	        resizable: false,
+	        draggable: false,
+	        width: "800px",
+	        open: $.proxy(function(){
+	            $("html").css("overflow", "hidden");
+	            console.log(this.duplicatesDialog.duplicateProducts);
+	            var firstProduct = _.first(this.duplicatesDialog.duplicateProducts);
+	            firstProduct.duplicates.each($.proxy(function(prod){
+	                $("ul", this.duplicatesDialog).append('<li>' + prod.get('title') + '</li>');
+	            }, this));
+	        }, this),
+	        beforeClose: function(){
+	            $("html").css("overflow", "auto");
+	        },
+	        buttons: {
+	            "Not a Duplicate": $.proxy(function(){
+	                
+	            }, this),
+	            "Delete this Product": $.proxy(function(){
+	                
 	            }, this)
 	        }
 	    });
