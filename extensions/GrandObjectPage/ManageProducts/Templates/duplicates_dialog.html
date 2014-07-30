@@ -3,17 +3,20 @@ The following Products have similar titles.  Please verify that they are indeed 
     <tr>
         <th>Title</th>
         <th>Type</th>
+        <th>Date</th>
         <th>Delete?</th>
     </tr>
     <tr>
         <td><a href="<%= url %>" target="_blank"><%= title %></a></td>
         <td><%= type %></td>
+        <td align="center"><%= date %></td>
         <td align="center"><input type="checkbox" value="<%= id %>" /></td>
     </th>
 <% duplicates.each(function(duplicate){ %>
     <tr>
         <td><a href="<%= duplicate.get('url') %>" target="_blank"><%= duplicate.get('title') %></a></td>
         <td><%= duplicate.get('type') %></td>
+        <td align="center"><%= duplicate.get('date') %></td>
         <td align="center"><input type="checkbox" value="<%= duplicate.get('id') %>" /></td>
     </th>
 <% }) %>
