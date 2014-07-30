@@ -153,6 +153,7 @@ class APIRequest{
 		$this->addAction('Projects', 'deleteProject', new DeleteProjectAPI());
 		//GET
 		$this->addAction('Projects', 'getProjectInfo', new ProjectInfoAPI());
+		$this->addAction('Themes', 'getThemeInfo', new ThemeInfoAPI());
 		
 		//GET
 		$this->addAction('University', 'getEthicsStats', new UniversityEthicsAPI());
