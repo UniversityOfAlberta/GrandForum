@@ -345,13 +345,44 @@ ManageProductsView = Backbone.View.extend({
                     }
                     this.editDialog.view.model.save(null, {
                         success: $.proxy(function(){
-                            clearAllMessages();
-                            this.editDialog.view.model.dirty = false;
-                            this.editDialog.dialog("close");
-                            addSuccess("The Product has been saved sucessfully");
-                            if(this.products.indexOf(this.editDialog.view.model) == -1){
-                                this.products.add(this.editDialog.view.model);
-                            }
+                            var product = this.editDialog.view.model;
+                            var duplicates = product.getDuplicates();
+                            $.when(duplicates.ready()).done($.proxy(function(){
+                                product.dirty = false;
+                                this.editDialog.dialog("close");
+                                var duplicateProducts = new Array();
+                                // First make sure that there are no duplicates
+                                if(product.duplicates.length > 0){
+                                    // This product has duplicates
+                                    var newDuplicates = new Array();
+                                    product.duplicates.each($.proxy(function(dupe){
+                                        var myProduct = this.products.findWhere({id: dupe.get('id')});
+                                        if(myProduct != undefined){
+                                            // This product is in my table
+                                            newDuplicates.push(myProduct);
+                                        }
+                                        else{
+                                            // This product is someone else's
+                                            newDuplicates.push(dupe);
+                                        }
+                                    }, this));
+                                    product.duplicates.reset(newDuplicates);
+                                    duplicateProducts.push(product);
+                                }
+                                else{
+                                    // No Duplicates so show success!
+                                    clearAllMessages();
+                                    addSuccess("The Product has been saved sucessfully");
+                                    if(this.products.indexOf(this.editDialog.view.model) == -1){
+                                        this.products.add(this.editDialog.view.model);
+                                    }
+                                }
+                                if(duplicateProducts.length > 0){
+                                    this.duplicatesDialog.model = duplicateProducts;
+                                    this.duplicatesDialog.open();
+                                }
+                            }, this));
+                            
                         }, this),
                         error: $.proxy(function(){
                             clearAllMessages("#dialogMessages");
