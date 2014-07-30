@@ -27,9 +27,14 @@ class Paper extends BackboneModel{
     var $deleted;
     var $access_id = 0;
     var $created_by = 0;
+    var $ccv_id;
     var $reported = array();
     
-    // Returns a new Paper from the given id
+    /**
+     * Returns a new Paper from the given id
+     * @param integer $id The id of the Paper
+     * @return Paper The Paper with the given id
+     */
     static function newFromId($id){
         if(isset(self::$cache[$id])){
             return self::$cache[$id];
@@ -43,6 +48,28 @@ class Paper extends BackboneModel{
         $paper = new Paper($data);
         self::$cache[$paper->id] = &$paper;
         self::$cache[$paper->title] = &$paper;
+        return $paper;
+    }
+    
+    /**
+     * Returns a new Paper from the given ccv_id
+     * @param integer $ccv_id The id of the Paper
+     * @return Paper The Paper with the given ccv_id
+     */
+    static function newFromCCVId($ccv_id){
+        if(isset(self::$cache[$ccv_id])){
+            return self::$cache[$ccv_id];
+        }
+        $me = Person::newFromWgUser();
+        $sql = "SELECT *
+                FROM grand_products
+                WHERE ccv_id = '$ccv_id'
+                AND (access_id = '{$me->getId()}' OR access_id = 0)";
+        $data = DBFunctions::execSQL($sql);
+        $paper = new Paper($data);
+        self::$cache[$paper->id] = &$paper;
+        self::$cache[$paper->title] = &$paper;
+        self::$cache[$paper->ccv_id] = &$paper;
         return $paper;
     }
     
@@ -407,6 +434,7 @@ class Paper extends BackboneModel{
             $this->deleted = $data[0]['deleted'];
             $this->access_id = $data[0]['access_id'];
             $this->created_by = $data[0]['created_by'];
+            $this->ccv_id = $data[0]['ccv_id'];
             $this->projects = array();
             $this->projectsWaiting = true;
             $this->authors = $data[0]['authors'];
@@ -951,7 +979,8 @@ class Paper extends BackboneModel{
                                                 'authors' => serialize($authors),
                                                 'data' => serialize($this->data),
                                                 'access_id' => $this->access_id,
-                                                'created_by' => $me->getId()),
+                                                'created_by' => $me->getId(),
+                                                'ccv_id' => $this->ccv_id),
                                           true);
             // Get the Product Id
             if($status){

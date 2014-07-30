@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class ThemeColors extends AbstractMigration
+class ProductCcvId extends AbstractMigration
 {
     /**
      * Change Method.
@@ -22,10 +22,11 @@ class ThemeColors extends AbstractMigration
      */
     public function up()
     {
-        $table = $this->table('grand_themes');
-        if(!$table->hasColumn('color')){
-            $table->addColumn('color', 'string', array('limit' => 16, 
-                                                       'after' => 'phase'))
+        $table = $this->table('grand_products');
+        if(!$table->hasColumn('ccv_id')){
+            $table->addColumn('ccv_id', 'string', array('limit' => '256',
+                                                        'after' => 'created_by'))
+                  ->addIndex(array('ccv_id'))
                   ->save();
         }
     }

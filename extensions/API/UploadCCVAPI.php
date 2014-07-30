@@ -12,7 +12,19 @@ class UploadCCVAPI extends API{
         
     }
     
-    function createProduct($paper, $category, $type){
+    function createProduct($paper, $category, $type, $ccv_id){
+        $checkProduct = Product::newFromCCVId($ccv_id);
+        if($checkProduct->getId() != 0){
+            // Make sure that this entry was not already entered
+            return null;
+        }
+        $checkProduct = Product::newFromTitle($paper['title']);
+        if($checkProduct->getId() != 0 && 
+           $checkProduct->getCategory() == $category &&
+           $checkProduct->getType() == $type){
+            // Make sure that a product with the same title/category/type does not already exist
+            return null;
+        }
         $me = Person::newFromWgUser();
         $structure = $this->structure['categories'][$category]['types'][$type];
         $product = new Product(array());
@@ -25,6 +37,7 @@ class UploadCCVAPI extends API{
         $product->projects = array();
         $product->authors = array();
         $product->access_id = $me->getId();
+        $product->ccv_id = $ccv_id;
         $authors = explode(",", $paper['authors']);
         foreach($authors as $author){
             $obj = new stdClass;
@@ -71,31 +84,45 @@ class UploadCCVAPI extends API{
                 $reviewedConferencePapers = $cv->getReviewedConferencePapers();
                 $reviewedJournalPapers = $cv->getReviewedJournalPapers();
                 $createdProducts = array();
-                foreach($conferencePapers as $paper){
-                    $product = $this->createProduct($paper, "Publication", "Conference Paper");
+                $errorProducts = array();
+                foreach($conferencePapers as $ccv_id => $paper){
+                    $product = $this->createProduct($paper, "Publication", "Conference Paper", $ccv_id);
                     if($product != null){
                         $createdProducts[] = $product;
                     }
+                    else{
+                        $errorProducts[] = $paper;
+                    }
                 }
-                foreach($journalPapers as $paper){
-                    $product = $this->createProduct($paper, "Publication", "Journal Paper");
+                foreach($journalPapers as $ccv_id => $paper){
+                    $product = $this->createProduct($paper, "Publication", "Journal Paper", $ccv_id);
                     if($product != null){
                         $createdProducts[] = $product;
                     }
+                    else{
+                        $errorProducts[] = $paper;
+                    }
                 }
-                foreach($bookChapters as $paper){
-                    $product = $this->createProduct($paper, "Publication", "Book Chapter");
+                foreach($bookChapters as $ccv_id => $paper){
+                    $product = $this->createProduct($paper, "Publication", "Book Chapter", $ccv_id);
                     if($product != null){
                         $createdProducts[] = $product;
+                    }
+                    else{
+                        $errorProducts[] = $paper;
                     }
                 }
             }
             else{
                 $error = "There was an error reading the CCV file";
             }
-            $json = array();
+            $json = array('created' => array(),
+                          'error' => array());
             foreach($createdProducts as $product){
-                $json[] = $product->toArray();
+                $json['created'][] = $product->toArray();
+            }
+            foreach($errorProducts as $product){
+                $json['error'][] = $product;
             }
             $obj = json_encode($json);
             echo <<<EOF

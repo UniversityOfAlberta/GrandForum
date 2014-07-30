@@ -332,6 +332,7 @@ ManageProductsView = Backbone.View.extend({
 	        beforeClose: $.proxy(function(){
 	            this.editDialog.view.stopListening();
 	            this.editDialog.view.undelegateEvents();
+	            this.editDialog.view.$el.empty();
 	            $("html").css("overflow", "auto");
 	        }, this),
 	        buttons: {
@@ -485,11 +486,17 @@ ManageProductsView = Backbone.View.extend({
 	                ccvUploaded = $.proxy(function(response, error){
 	                    if(error == undefined || error == ""){
 	                        // Purposefully global so that iframe can access
-	                        this.products.add(response, {silent: true});
+	                        this.products.add(response.created, {silent: true});
 	                        this.addRows();
 	                        clearAllMessages();
-	                        var titles = _.map(_.pluck(response, 'title'), function(t){ return "<li>" + t + "</li>"; });
-	                        addSuccess("The following Products were added: <ul>" + titles.join("\n") + "</ul>");
+                            var nCreated = response.created.length;
+                            var nError = response.error.length;
+                            if(nCreated > 0){
+	                            addSuccess("<b>" + nCreated + "</b> products were created");
+	                        }
+	                        if(nError > 0){
+	                            addInfo("<b>" + nError + "</b> products were ignored (probably duplicates)");
+	                        }
 	                        button.prop("disabled", false);
 	                        this.ccvDialog.dialog('close');
 	                    }

@@ -6,7 +6,7 @@
     <p>Are you sure you want to delete this product?</p>
 </div>
 <div id="ccvDialog" style="display:none;" title="Upload Canadian CCV">
-    <p>You can upload your Canadian CCV using the form below.  Any product that can be read into the Forum will automatically imported, but will not be visible to anyone else on the forum except you.  The product will be placed in a separate "private" queue, and can be released to the rest of the Forum by unchecking the "private" checkbox in the Product Management table.  This way any unwanted products will not get added to the forum, and also gives you a chance to make changes to the product and associate it with projects before releasing it.</p>
+    <p>You can upload your Canadian CCV using the form below.  Any product that can be read into the Forum will automatically imported, but will not be visible to anyone else on the forum except you.  The product will be placed in a separate "private" queue, and can be released to the rest of the Forum by unchecking the "private" checkbox in the Product Management table.  This way any unwanted products will not get added to the forum, and also gives you a chance to make changes to the product and associate it with projects before releasing it.  A product will not get added twice into the forum, so uploading the CCV a second time will generally not result in duplicate entries.</p>
     <iframe name="fileUpload" style="display:none;"></iframe>
     <form target="fileUpload" action="<%= wgServer + wgScriptPath %>/index.php?action=api.uploadCCV" method="POST" enctype="multipart/form-data">
         <input type="file" name="ccv" />
