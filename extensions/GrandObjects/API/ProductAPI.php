@@ -30,10 +30,10 @@ class ProductAPI extends RESTAPI {
             else{
                 $papers = Paper::getAllPapers('all', 'all', 'both');
             }
-            foreach($papers as $paper){
+            foreach($papers as $id => $paper){
                 $json[] = $paper->toArray();
             }
-            return json_encode($json);
+            return large_json_encode($json);
         }
     }
     

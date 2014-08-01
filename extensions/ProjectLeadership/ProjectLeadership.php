@@ -3,7 +3,7 @@
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['ProjectLeadership'] = 'ProjectLeadership'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['ProjectLeadership'] = $dir . 'ProjectLeadership.i18n.php';
-$wgSpecialPageGroups['ProjectLeadership'] = 'grand-tools';
+$wgSpecialPageGroups['ProjectLeadership'] = 'network-tools';
 
 function runProjectLeadership($par){
     ProjectLeadership::run($par);

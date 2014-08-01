@@ -515,8 +515,8 @@ ManageProductsView = Backbone.View.extend({
 	                var button = $(e.currentTarget);
 	                button.prop("disabled", true);
 	                ccvUploaded = $.proxy(function(response, error){
+	                    // Purposefully global so that iframe can access
 	                    if(error == undefined || error == ""){
-	                        // Purposefully global so that iframe can access
 	                        this.products.add(response.created, {silent: true});
 	                        this.addRows();
 	                        clearAllMessages();
@@ -560,8 +560,25 @@ ManageProductsView = Backbone.View.extend({
 	            $("html").css("overflow", "auto");
 	        },
 	        buttons: {
-	            "Import": $.proxy(function(){
-	                this.bibtexDialog.dialog('close');
+	            "Import": $.proxy(function(e){
+	                var button = $(e.currentTarget);
+	                button.prop("disabled", true);
+	                var value = $("textarea[name=bibtex]", this.bibtexDialog).val();
+	                $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: value}, $.proxy(function(response){
+                        this.products.add(response.created, {silent: true});
+                        this.addRows();
+                        clearAllMessages();
+                        var nCreated = response.created.length;
+                        var nError = response.error.length;
+                        if(nCreated > 0){
+                            addSuccess("<b>" + nCreated + "</b> products were created");
+                        }
+                        if(nError > 0){
+                            addInfo("<b>" + nError + "</b> products were ignored (probably duplicates)");
+                        }
+                        button.prop("disabled", false);
+                        this.bibtexDialog.dialog('close');
+	                }, this));
 	            }, this),
 	            "Cancel": $.proxy(function(){
 	                this.bibtexDialog.dialog('close');

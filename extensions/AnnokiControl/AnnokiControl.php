@@ -104,9 +104,6 @@ $egAnnokiExtensions['AddMember'] = array('name' => 'AddMember',
 $egAnnokiExtensions['EditMember'] = array('name' => 'EditMember',
                                           'path' => "$IP/extensions/EditMember/EditMember.php");
 
-$egAnnokiExtensions['ImportBibTex'] = array('name' => 'Import BibTex',
-                                            'path' => "$IP/extensions/ImportBibTex/ImportBibTex.body.php");
-
 $egAnnokiExtensions['Poll'] = array('name' => 'Poll',
                                     'path' => "$IP/extensions/Poll/Poll.body.php");
 

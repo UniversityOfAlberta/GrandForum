@@ -6,6 +6,7 @@
 
 class Paper extends BackboneModel{
 
+    static $oldSyncCache = array();
     static $cache = array();
     static $dataCache = array();
     static $productProjectsCache = array();
@@ -28,6 +29,7 @@ class Paper extends BackboneModel{
     var $access_id = 0;
     var $created_by = 0;
     var $ccv_id;
+    var $bibtex_id;
     var $reported = array();
     
     /**
@@ -70,6 +72,28 @@ class Paper extends BackboneModel{
         self::$cache[$paper->id] = &$paper;
         self::$cache[$paper->title] = &$paper;
         self::$cache[$paper->ccv_id] = &$paper;
+        return $paper;
+    }
+    
+    /**
+     * Returns a new Paper from the given bibtex_id
+     * @param integer $bibtex_id The id of the Paper
+     * @return Paper The Paper with the given bibtex_id
+     */
+    static function newFromBibTeXId($bibtex_id){
+        if(isset(self::$cache[$bibtex_id])){
+            return self::$cache[$bibtex_id];
+        }
+        $me = Person::newFromWgUser();
+        $sql = "SELECT *
+                FROM grand_products
+                WHERE bibtex_id = '$bibtex_id'
+                AND (access_id = '{$me->getId()}' OR access_id = 0)";
+        $data = DBFunctions::execSQL($sql);
+        $paper = new Paper($data);
+        self::$cache[$paper->id] = &$paper;
+        self::$cache[$paper->title] = &$paper;
+        self::$cache[$paper->bibtex_id] = &$paper;
         return $paper;
     }
     
@@ -122,7 +146,7 @@ class Paper extends BackboneModel{
                 AND `category` LIKE '$category'
                 AND `type` LIKE '$type'
                 AND `status` LIKE '$status'
-                AND access_id = '0'
+                AND (access_id = '0' OR access_id = '{$me->getId()}')
                 ORDER BY `id` desc";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
@@ -389,10 +413,12 @@ class Paper extends BackboneModel{
                             $flabel = "{$fattrs->label}";
                             $ftype = "{$fattrs->type}";
                             $fccvtk = "{$fattrs->ccvtk}";
+                            $fbibtex = "{$fattrs->bibtex}";
                             $fhidden = (strtolower("{$fattrs->hidden}") == "true");
                             $foptions = explode("|", "{$fattrs->options}");
                             
                             $categories['categories'][$cname]['types'][$tname]['data'][$fid] = array('ccvtk' => $fccvtk,
+                                                                                                     'bibtex' => $fbibtex,
                                                                                                      'label' => $flabel,
                                                                                                      'type' => $ftype,
                                                                                                      'options' => $foptions,
@@ -435,6 +461,7 @@ class Paper extends BackboneModel{
             $this->access_id = $data[0]['access_id'];
             $this->created_by = $data[0]['created_by'];
             $this->ccv_id = $data[0]['ccv_id'];
+            $this->bibtex_id = $data[0]['bibtex_id'];
             $this->projects = array();
             $this->projectsWaiting = true;
             $this->authors = $data[0]['authors'];
@@ -598,14 +625,30 @@ class Paper extends BackboneModel{
         return $this->authors;
     }
     
+    function generateOldSyncCache(){
+        if(count(self::$oldSyncCache) == 0){
+            $sql = "SELECT *
+                    FROM `grand_product_authors`";
+            $data = DBFunctions::execSQL($sql);
+            foreach($data as $row){
+                self::$oldSyncCache[$row['product_id']][] = $row;
+            }
+        }
+    }
+    
     /**
      * Synchronizes the `grand_products` table and the `grand_product_authors` table for this Paper
      * @param boolean $massSync Whether or not to run this for a massSynchronization, or just for this Paper
      * @return array If $massSync=true, returns the sql statements required to update the DB
      */
     function syncAuthors($massSync=false){
+        self::generateOldSyncCache();
+        $data = array();
+        if(isset(self::$oldSyncCache[$this->id])){
+            $data = self::$oldSyncCache[$this->id];
+        }
         $deleteSQL = "DELETE FROM `grand_product_authors`
-                WHERE `product_id` = '{$this->id}'";
+                      WHERE `product_id` = '{$this->id}'";
         $order = 0;
         $insertSQL = "INSERT INTO `grand_product_authors`
                       (`author`, `product_id`, `order`) VALUES\n";
@@ -615,19 +658,41 @@ class Paper extends BackboneModel{
         }
         $inserts = array();
         $alreadyDone = array();
+        $invalidate = false;
+        $keyOffset = 0;
         foreach($authors as $key => $author){
             if(isset($alreadyDone[$author->getName()])){
+                $keyOffset++;
                 continue;
+            }
+            if(isset($data[$key-$keyOffset])){
+                $pastAuthor = $data[$key-$keyOffset];
+            }
+            else{
+                $pastAuthor = array();
+                $invalidate = true;
             }
             $alreadyDone[$author->getName()] = true;
             if($author->getId() != ""){
+                if(@$pastAuthor['author'] != $author->getId()){
+                    // Author has changed
+                    $invalidate = true;
+                }
                 $inserts[] = "('{$author->getId()}','{$this->getId()}','{$order}')";
             }
             else{
+                if(@$pastAuthor['author'] != substr($author->getName(), 0, 128)){
+                    // Author has changed
+                    $invalidate = true;
+                }
                 $name = mysql_real_escape_string($author->getName());
                 $inserts[] = "('{$name}','{$this->getId()}','{$order}')";
             }
             $order++;
+        }
+        if($invalidate){
+            // The Author data has changed, so invalidate the cache
+            Cache::delete($this->getCacheId());
         }
         if(!$massSync){
             DBFunctions::begin();
@@ -980,7 +1045,8 @@ class Paper extends BackboneModel{
                                                 'data' => serialize($this->data),
                                                 'access_id' => $this->access_id,
                                                 'created_by' => $me->getId(),
-                                                'ccv_id' => $this->ccv_id),
+                                                'ccv_id' => $this->ccv_id,
+                                                'bibtex_id' => $this->bibtex_id),
                                           true);
             // Get the Product Id
             if($status){
@@ -1134,6 +1200,12 @@ class Paper extends BackboneModel{
     function toArray(){
         if(Cache::exists($this->getCacheId())){
             $json = Cache::fetch($this->getCacheId());
+            /* // TODO: I don't think the following is needed anymore since we do a better job
+               //       at invalidating the cache whenever a change is made to the entry in the database.
+               //       I think the only time that the authors won't be completely up to date is if
+               //       a new user is added to the forum, there will be a brief time when it won't
+               //       correctly identify that user, however the cron job will resync the authors every 
+               //       10 minutes or so, forcing the invalidation.
             $authors = $json['authors'];
             $change = false;
             foreach($authors as $key => $author){
@@ -1157,7 +1229,7 @@ class Paper extends BackboneModel{
             $json['authors'] = $authors;
             if($change){
                 Cache::store($this->getCacheId(), $json, 60*60);
-            }
+            }*/
             return $json;
         }
         else{

@@ -107,6 +107,7 @@ class APIRequest{
 	function createActions(){
 	    //POST
 	    $this->addAction('Products', 'uploadCCV', new UploadCCVAPI());
+	    $this->addAction('Products', 'importBibTeX', new ImportBibTeXAPI());
 	
 		//POST
 		$this->addAction('User Accounts', 'addUserAccount', new CreateUserAPI());

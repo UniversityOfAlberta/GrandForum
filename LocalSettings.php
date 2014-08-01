@@ -272,3 +272,34 @@ function unaccentChars($str){
     );
     return strtolower(strtr($str, $normalizeChars));
 }
+
+// Encodes a large json object (usually arrays)
+// It still returns a string, but constructs it incrementally
+function large_json_encode($data){
+    $string = "";
+    if(is_object($data)){
+        $string .= "{";
+    }
+    else{
+        $string .= "[";
+    }
+    $first = true;
+    foreach($data as $key => $item){
+	    if ($first) {
+		    $first = false;
+	    } else {
+		    $string .= ",";
+	    }
+	    if(is_object($data)){
+            $string .= "$key:";
+        }
+	    $string .= json_encode($item);
+    }
+    if(is_object($data)){
+        $string .= "}";
+    }
+    else{
+        $string .= "]";
+    }
+    return $string;
+}
