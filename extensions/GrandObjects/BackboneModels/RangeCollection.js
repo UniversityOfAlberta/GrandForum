@@ -40,7 +40,7 @@ RangeCollection = Backbone.Collection.extend({
     getAll: function(){
         var allModels = this.newModel();
         if(this.multiUrl() != ""){
-            allModels.url = this.multiUrl() + _.without(_.pluck(this.models, 'id'), null).join(',');
+            allModels.url = this.multiUrl() + "-1," +  _.without(_.pluck(this.models, 'id'), null).join(',');
             this.xhrs.push(allModels.fetch({silent: true}));
             return allModels;
         }

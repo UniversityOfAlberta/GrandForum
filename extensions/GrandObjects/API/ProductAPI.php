@@ -16,7 +16,7 @@ class ProductAPI extends RESTAPI {
             foreach($papers as $paper){
                 $json[] = $paper->toArray();
             }
-            return json_encode($json);
+            return large_json_encode($json);
         }
         else{
             $json = array();
