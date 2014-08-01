@@ -89,7 +89,6 @@
         //'FeatureRequest',
         'AddMember',
         'EditMember',
-        //'ImportBibTex',
         'Poll',
         'QueryableTable',
         'IndexTables',
