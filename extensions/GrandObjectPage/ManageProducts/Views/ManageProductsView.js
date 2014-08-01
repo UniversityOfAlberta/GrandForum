@@ -162,7 +162,9 @@ ManageProductsView = Backbone.View.extend({
             var rows = this.table.rows().indexes();
             var table = this.table;
             rows.each($.proxy(function(i, val){
-                this.subViews[i].row = this.table.row(i);
+                if(this.subViews[i] != undefined){
+                    this.subViews[i].row = this.table.row(i);
+                }
             }, this));
         }
     },
