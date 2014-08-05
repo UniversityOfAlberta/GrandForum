@@ -4,6 +4,7 @@ class ImportBibTeXAPI extends API{
 
     static $bibtexHash = array('inproceedings' => 'Proceedings Paper',
                                'proceedings' => 'Proceedings Paper',
+                               'inbook' => 'Proceedings Paper',
                                'book' => 'Book',
                                'article' => 'Journal Paper',
                                'collection' => 'Collections Paper',
@@ -114,6 +115,7 @@ class ImportBibTeXAPI extends API{
             require_once($dir."/../../Classes/CCCVTK/bibtex-bib.lib.php");
             $md5 = md5($_POST['bibtex']);
             $fileName = "/tmp/".$md5;
+            $_POST['bibtex'] = preg_replace("/((\\w+?)\\s*=\\s*\\{(.*?)\\},*)(\\s)*/ms", "\n$1\n", $_POST['bibtex']);
             file_put_contents($fileName, $_POST['bibtex']);
             $bib = new Bibliography($fileName);
             unlink($fileName);

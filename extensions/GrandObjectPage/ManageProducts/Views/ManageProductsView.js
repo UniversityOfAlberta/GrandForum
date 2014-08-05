@@ -54,6 +54,10 @@ ManageProductsView = Backbone.View.extend({
         this.editDialog.dialog('open');
     },
     
+    addFromDOI: function(){
+        this.doiDialog.dialog('open');
+    },
+    
     uploadCCV: function(){
         this.ccvDialog.dialog('open');
     },
@@ -294,6 +298,7 @@ ManageProductsView = Backbone.View.extend({
         "click #saveProducts": "saveProducts",
         "click #deletePrivate": "deletePrivate",
         "click #addProductButton": "addProduct",
+        "click #addFromDOIButton": "addFromDOI",
         "click #uploadCCVButton": "uploadCCV",
         "click #importBibTexButton": "importBibTeX"
     },
@@ -584,6 +589,45 @@ ManageProductsView = Backbone.View.extend({
 	            }, this),
 	            "Cancel": $.proxy(function(){
 	                this.bibtexDialog.dialog('close');
+	            }, this)
+	        }
+	    });
+	    this.doiDialog = this.$("#doiDialog").dialog({
+	        autoOpen: false,
+	        modal: true,
+	        show: 'fade',
+	        resizable: false,
+	        draggable: false,
+	        width: "500px",
+	        open: function(){
+	            $("html").css("overflow", "hidden");
+	        },
+	        beforeClose: function(){
+	            $("html").css("overflow", "auto");
+	        },
+	        buttons: {
+	            "Add Product": $.proxy(function(e){
+	                var button = $(e.currentTarget);
+	                //button.prop("disabled", true);
+	                var value = $("input[name=doi]", this.doiDialog).val();
+	                $.post(wgServer + wgScriptPath + "/index.php?action=api.importDOI", {doi: value}, $.proxy(function(response){
+                        this.products.add(response.created, {silent: true});
+                        this.addRows();
+                        clearAllMessages();
+                        var nCreated = response.created.length;
+                        var nError = response.error.length;
+                        if(nCreated > 0){
+                            addSuccess("<b>" + nCreated + "</b> products were created");
+                        }
+                        if(nError > 0){
+                            addInfo("<b>" + nError + "</b> products were ignored (probably duplicates)");
+                        }
+                        button.prop("disabled", false);
+                        this.doiDialog.dialog('close');
+	                }, this));
+	            }, this),
+	            "Cancel": $.proxy(function(){
+	                this.doiDialog.dialog('close');
 	            }, this)
 	        }
 	    });
