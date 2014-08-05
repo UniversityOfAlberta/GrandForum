@@ -8,7 +8,7 @@ abstract class SerializedCache extends Cache{
 	function getCache(){
 		$xml = "";
 		//if(true){
-		if(!file_exists("extensions/Cache/cache/{$this->fileName}") || (time() - filemtime("extensions/Cache/cache/{$this->fileName}")) > 3600){
+		if(!file_exists("extensions/Cache/cache/{$this->fileName}") || (time() - filemtime("extensions/Cache/cache/{$this->fileName}")) > 0){
 			// Miss
 			$xml = serialize($this->run());
 			$zp = gzopen("extensions/Cache/cache/{$this->fileName}", "w9");
