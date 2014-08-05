@@ -312,6 +312,10 @@ $egAnnokiExtensions['LoiProposals']     = array( 'name' => 'LoiProposals',
                           'path' => "$IP/extensions/LoiProposals/LoiProposals.php",
                           'enabled' => true,
                           );
+$egAnnokiExtensions['FundedCNI']     = array( 'name' => 'FundedCNI',
+                          'path' => "$IP/extensions/FundedCNI/FundedCNI.php",
+                          'enabled' => true,
+                          );
 $egAnnokiExtensions['CCVExport']     = array( 'name' => 'CCVExport',
                           'path' => "$IP/extensions/CCVExport/CCVExport.php",
                           'enabled' => true,

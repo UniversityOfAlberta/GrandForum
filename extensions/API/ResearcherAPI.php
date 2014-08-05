@@ -116,7 +116,7 @@ class ResearcherAPI extends API{
                        "department" => '',
                        "position"   => '');
         }
-        $funded = $person->isFundedFor(date('Y'));
+        $funded = $person->isFundedFor(REPORTING_YEAR);
         $p = array("type" => $person->getType(),
                    "id" => $person->getId(),
                       "firstname" => $name['first'],
