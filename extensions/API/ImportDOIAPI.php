@@ -13,6 +13,7 @@ class ImportDOIAPI extends API{
 	function doAction($noEcho=false){
 	    global $wgMessage;
 	    if(isset($_POST['doi'])){
+	        $_POST['doi'] = preg_replace("/\\s/", "", $_POST['doi']);
 	        $url = "http://dx.doi.org/{$_POST['doi']}";
 	        $ch = curl_init();
 	        $headers = array("Accept: text/bibliography; style=bibtex");

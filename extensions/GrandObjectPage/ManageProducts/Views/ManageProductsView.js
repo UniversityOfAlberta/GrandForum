@@ -608,7 +608,7 @@ ManageProductsView = Backbone.View.extend({
 	        buttons: {
 	            "Add Product": $.proxy(function(e){
 	                var button = $(e.currentTarget);
-	                //button.prop("disabled", true);
+	                button.prop("disabled", true);
 	                var value = $("input[name=doi]", this.doiDialog).val();
 	                $.post(wgServer + wgScriptPath + "/index.php?action=api.importDOI", {doi: value}, $.proxy(function(response){
                         this.products.add(response.created, {silent: true});
