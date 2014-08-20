@@ -19,9 +19,6 @@
             <![CDATA[{$item}]]>
         </ReportItem>
         <ReportItem id="report_progress" type="ProgressReportItem" reportType="HQPReport" private="true">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="my_milestone_progress_head" type="NIProgressReportItem" reportType="HQPReport" private="true">
             <![CDATA[{$item}</table></small></td></tr>]]>
         </ReportItem>
         <ReportItem id="report_info_foot" type="StaticReportItem">
@@ -106,36 +103,5 @@
         <ReportItem id="hqp_dashboard_productivity" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[If there is an error in any of the information reported in the dashboard, please edit the corresponding element through the appropriate tool. If the error is in a system-controlled field, please contact support.<br /><br /><div>{$item}</div>]]>
         </ReportItem>
-    </ReportSection>
-    <ReportSection name="Milestone Comments" blobSection="HQP_MILESTONES" type="EditableReportSection" autosave="true" renderpdf="true" pagebreak="false" previewonly="true">
-        <ReportItemSet id="projects" pdfBookmark="true" type="PersonProjectReportItemSet">
-            <ReportItem id="" type="StaticReportItem">
-                <![CDATA[<h2>{$project_name}</h2>]]>
-            </ReportItem>
-            <ReportItemSet id="milestones" type="MilestoneRadioReportItemSet" blobIndex="milestoneId">
-                <ReportItem id="static3" type="SnippetReportItem" limit="280" text="{$milestone_description}">
-                <![CDATA[
-                    <h3>{$milestone_title}</h3>
-                    <small>{$item}</small><br />
-                ]]>
-                </ReportItem>
-                <ReportItem id="contribution" type="RadioReportItem" options="No|Yes" orientation="vertical" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS">
-                <![CDATA[
-                    <b>Worked On:</b> {$item}
-                ]]>
-                </ReportItem>
-                <ReportItem id="comment" type="TextareaReportItem" limit="300" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS" recommended="true">
-                <![CDATA[
-                    <br />
-                    <b>Comments:</b> {$item}
-                ]]>
-                </ReportItem>
-            </ReportItemSet>
-            <ReportItem id="static2" type="StaticReportItem">
-            <![CDATA[ 
-            <br />
-            ]]>
-            </ReportItem>
-        </ReportItemSet>
     </ReportSection>
 </Report>

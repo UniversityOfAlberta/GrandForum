@@ -165,6 +165,13 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="subprojects" name="Sub-Project Leader" tooltip="Comments about lead sub-projects" blobSection="RES_SUBPROJECTS" type="EditableReportSection" autosave="true" reportCharLimits="false" renderpdf="true">
+        <ReportItemSet id="projects" type="PersonSubLeadProjectReportItemSet">
+            <ReportItem id="sub_project_{$project_id}" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_COMMENTS" type="AutoCompleteTextareaReportItem" set="PersonSubLeadSubProjectReportItemSet" index="project_id" label="project_name" name="Sub-Projects" showNotReferenced="true" tooltipOptionId="Project ID" tooltipOptionName="Project Name">
+                <![CDATA[<h2>{$project_name}</h2><br />{$item}<br />]]>
+            </ReportItem>
+        </ReportItemSet>
+    </ReportSection>
     <ReportSection name="Budget Request" blobSection="RES_BUDGET" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true">
         <ReportItem id="budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="BudgetReportItem" />
         <ReportItem id="budget_just" rows="10" limit="600" blobType="BLOB_TEXT" blobItem="RES_BUD_JUSTIF" type="TextareaReportItem">

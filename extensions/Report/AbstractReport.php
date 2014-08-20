@@ -873,6 +873,10 @@ abstract class AbstractReport extends SpecialPage {
             $this->header->render();
         }
         foreach($sections as $section){
+            $permissions = $this->getSectionPermissions($section);
+            if(!isset($permissions['r'])){
+                continue;
+            }
             if(isset($_GET['preview']) || (!isset($_GET['preview']) && !$section->previewOnly)){
                 if(!$this->topProjectOnly || ($this->topProjectOnly && !$section->private)){
                     if(!($section instanceof HeaderReportSection)){

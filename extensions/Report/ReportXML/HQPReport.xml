@@ -5,7 +5,6 @@
             <SectionPermission id="status" permissions="rw" />
             <SectionPermission id="dashboard" permissions="rw" />
             <SectionPermission id="report" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -80,6 +79,14 @@ Briefly describe your activities networking with other GRAND researchers and pro
 Briefly describe your interactions (if any) with receptors, companies, Project Champions and others in which research challenges and outcomes were discussed or presented.  For those with multiple projects, the field will be subdivided by project.</p>
             ]]>
         </Instructions>
+        <ReportItemSet id="AND" type="ANDReportItemSet">
+            <ReportItem id="involved_since" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS" type="CalendarReportItem">
+                <![CDATA[<h3>Involved With Grand</h3><table><tr><td><b>Involved Since:</b></td><td align='left' width='250px'>{$item}</td></tr>]]>
+            </ReportItem>
+            <ReportItem id="involved_until" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS" type="CalendarReportItem">
+                <![CDATA[<tr><td><b>Involved Until:</b></td><td width='250px' align='left' style='white-space:nowrap;'>{$item}&nbsp;<i>(actual&nbsp;or&nbsp;anticipated)</i></td></tr></table>]]>
+            </ReportItem>
+        </ReportItemSet>
     <!-- Ia. Excellence of the Research Program -->
         <ReportItemSet id='Ia_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Excellence of the Research Program: How my research contributes to the Network">
             <ReportItemSet id="OR" type="ORReportItemSet">
@@ -117,26 +124,6 @@ Briefly describe your interactions (if any) with receptors, companies, Project C
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="milestones" name="HQP Milestone Comments" tooltip="Discussion of progress against projects' milestones" blobSection="HQP_MILESTONES" type="EditableReportSection" autosave="true" reportCharLimits="false" renderpdf="true">
-        <Instructions>
-            <![CDATA[
-                <p style="font-weight: bold; font-style: italic;">*NOTE: Clicking on the bold blue headings will cause the page to expand (contract) to show (hide) text boxes in which you can provide your information.</p>
-<p>The Questionnaire is designed to gather additional data regarding specific involvement with GRAND Research.</p>
-<ol>
-<li>The header notes the actual or expected duration of the involvement with GRAND, and should include the month and year when activity with GRAND (as an HQP) commenced as well as the month and year when activity with GRAND (as an HQP) was, or is expected to be, completed (e.g., expected graduation date, etc.).</li>
-<li>The table allows for each applicable project to be selected. For each project, the milestones are listed (click on each milestone for a more detailed description).  Please indicate those milestones with which you were involved by checking the box on the "Worked On" column, and add a brief comment regarding your involvement with this milestone.  Your comments on the applicable milestones will be made available to your supervisor to assist with the completion of a similar questionnaire as part of his/her report.</li>
-</ol>
-            ]]>
-        </Instructions>
-        <ReportItemSet id="AND" type="ANDReportItemSet">
-            <ReportItem id="involved_since" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS" type="CalendarReportItem">
-                <![CDATA[<h3>Involved With Grand</h3><table><tr><td><b>Involved Since:</b></td><td align='left' width='250px'>{$item}</td></tr>]]>
-            </ReportItem>
-            <ReportItem id="involved_until" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS" type="CalendarReportItem">
-                <![CDATA[<tr><td><b>Involved Until:</b></td><td width='250px' align='left' style='white-space:nowrap;'>{$item}&nbsp;<i>(actual&nbsp;or&nbsp;anticipated)</i></td></tr></table>]]>
-            </ReportItem>
-        </ReportItemSet>
-    </ReportSection>
     <ReportSection id="review" name="Review" tooltip="Review of on-line report content" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
@@ -155,9 +142,6 @@ Briefly describe your interactions (if any) with receptors, companies, Project C
             <![CDATA[{$item}]]>
         </ReportItem>
         <ReportItem id="my_progress_head" type="ProgressReportItem" reportType="HQPReport">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="my_milestone_progress_head" type="NIProgressReportItem" reportType="HQPReport">
             <![CDATA[{$item}</table>]]>
         </ReportItem>
         <Instructions>

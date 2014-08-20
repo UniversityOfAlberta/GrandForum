@@ -50,7 +50,7 @@ define('RP_PROJECT_ISAC', 16);
 define('SEC_NONE',              0); 
 
 define('RES_EFFORT',			1);
-define('RES_MILESTONES',		2);
+define('RES_MILESTONES',		12); // Used to be '2', but moved into RES_RESACTIVITY ('12')
 define('RES_PEOPLE_INTERACT',		3);
 define('RES_PROJECT_INTERACT',		4);
 define('RES_IMPACT',			5);
@@ -67,7 +67,7 @@ define('RES_SUBPROJECTS',		5);
 
 define('HQP_DEMOGRAPHIC',		1);
 define('HQP_EFFORT',			2);
-define('HQP_MILESTONES',		3);
+define('HQP_MILESTONES',		7); // Used to be '3', but moved into HQP_RESACTIVITY ('7')
 define('HQP_PEOPLE_INTERACT',		4);
 define('HQP_PROJECT_INTERACT',		5);
 define('HQP_IMPACT',			6);

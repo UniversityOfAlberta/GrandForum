@@ -7,7 +7,6 @@
             <SectionPermission id="report" permissions="rw" />
             <SectionPermission id="subprojects" permissions="" />
             <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -17,7 +16,6 @@
             <SectionPermission id="report" permissions="rw" />
             <SectionPermission id="subprojects" permissions="" />
             <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -27,7 +25,6 @@
             <SectionPermission id="report" permissions="" />
             <SectionPermission id="subprojects" permissions="rw" />
             <SectionPermission id="budget" permissions="" />
-            <SectionPermission id="milestones" permissions="" />
             <SectionPermission id="review" permissions="" />
             <SectionPermission id="submit" permissions="" />
         </Role>
@@ -37,7 +34,6 @@
             <SectionPermission id="report" permissions="" />
             <SectionPermission id="subprojects" permissions="rw" />
             <SectionPermission id="budget" permissions="" />
-            <SectionPermission id="milestones" permissions="" />
             <SectionPermission id="review" permissions="" />
             <SectionPermission id="submit" permissions="" />
         </Role>
@@ -246,6 +242,15 @@ Describe your involvement with receptor organizations, industry partners and Pro
                 <p>If you have any additional comments that you wish to convey to the evaluators, please enter them here. If there have been delays in your research due to medical or other personal issues, you may wish to indicate the impact these have had and your expectations for future progress.</p>
             ]]>
         </Instructions>
+        <ReportItem id='0_head' type="StaticReportItem">
+            <![CDATA[<h2>GRAND Time</h2>]]>
+        </ReportItem>
+        <ReportItem id="grand_time" width="40px" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem" private="true">
+            <![CDATA[<div>{$item}<span style="font-weight:bold;"> Time Devoted to GRAND Research and Management (hours / week)</span></div>]]>
+        </ReportItem>
+        <ReportItem id="grand_percent" width="40px" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem" private="true">
+            <![CDATA[<div>{$item}<span style="font-weight:bold;"> GRAND-related Research Activity relative to Overall Research Activity (%)</span></div><br />]]>
+        </ReportItem>
 <!-- I. Executive Summary -->
         <ReportItem id='I_head' type="StaticReportItem">
             <![CDATA[<h2>I. Executive Summary: Overview of all of my GRAND Activity</h2>]]>
@@ -397,23 +402,6 @@ Describe your involvement with receptor organizations, industry partners and Pro
             <![CDATA[<h3>Budget Justification</h3> {$item}</p>]]>
         </ReportItem>
         <ReportItem id="budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="BudgetReportItem" />
-    </ReportSection>
-    <ReportSection id="milestones" name="NI Milestone Comments" tooltip="Discussion of progress against projects' milestones" blobSection="RES_MILESTONES" type="EditableReportSection" autosave="true" reportCharLimits="false" renderpdf="true">
-        <Instructions>
-            <![CDATA[
-                <p>This section is intended to provide important information that will form a part of the relevant project reports.  However, the specific contents of this section will not be reviewed by the Research Management Committee as part of the evaluation of individual NIs</p>
-                <p><small><i>Note: Clicking on the purple second-level headings of this page will cause the page to expand (contract) to show (hide) text boxes in which you can provide your information. </i></small></p>
-                <p>The header notes average hours per week that are devoted to GRAND activity, as well as the percentage of your overall research effort that is GRAND-related. While it is understood that these can only be estimates, this information is useful in our reporting to the NCE Secretariat.</p>
-
-                <p>The purple headings show/hide the milestones for each of the projects in which you are involved.  For each project, the average number of hours per week (estimated) spent on work related to that project are to be recorded. Also for each project, the milestones are listed (click on each milestone for a more detailed description).  In the "Milestone Report" an overview of the project progress against the milestones that were "active" during the past year is reported. You can reference Milestones by writing "@Milestone ID" in the text box or you can start  typing "@Milestone Title" and select the milestone from the drop-down box appearing below the overview textbox. Please indicate those milestones with which you were involved by checking the box on the "Worked On" column, and add a brief comment regarding your involvement with this milestone. Your comments on the applicable milestones will be made available to the project leader to assist with the completion of a similar set of specific comments regarding milestones as part of the project report.</p>
-            ]]>
-        </Instructions>
-        <ReportItem id="grand_time" width="40px" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem" private="true">
-            <![CDATA[<div>{$item}<span style="font-weight:bold;"> Time Devoted to GRAND Research and Management (hours / week)</span></div>]]>
-        </ReportItem>
-        <ReportItem id="grand_percent" width="40px" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem" private="true">
-            <![CDATA[<div>{$item}<span style="font-weight:bold;"> GRAND-related Research Activity relative to Overall Research Activity (%)</span></div><br />]]>
-        </ReportItem>
     </ReportSection>
     <ReportSection id="review" name="Review" tooltip="Review of on-line report content" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
