@@ -22,8 +22,19 @@ class ImportDOIAPI extends API{
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
             $_POST['bibtex'] = curl_exec($ch);
-            $_POST['bibtex'] = $_POST['bibtex']."\n";
-            return APIRequest::doAction('ImportBibTeX', true);
+            if(strstr($_POST['bibtex'], "<title>Error: DOI Not Found</title>") !== false){
+                $this->addError("DOI Not Found");
+            }
+            else{
+                $_POST['bibtex'] = $_POST['bibtex']."\n";
+                $res = APIRequest::doAction('ImportBibTeX', true);
+                if($res === false){
+                    $this->addError("No BibTeX references were found from this DOI");
+                }
+                else{
+                    return $res;
+                }
+            }
 	    }
 	}
 	

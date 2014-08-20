@@ -572,17 +572,25 @@ ManageProductsView = Backbone.View.extend({
 	                button.prop("disabled", true);
 	                var value = $("textarea[name=bibtex]", this.bibtexDialog).val();
 	                $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: value}, $.proxy(function(response){
-                        this.products.add(response.created, {silent: true});
-                        this.addRows();
+	                    var data = response.data;
+	                    if(data.created != undefined){
+                            this.products.add(data.created, {silent: true});
+                            this.addRows();
+                        }
+                        
                         clearAllMessages();
-                        var nCreated = response.created.length;
-                        var nError = response.error.length;
+                        var nCreated = data.created.length;
+                        var nError = response.messages.length;
+                        if(response.errors.length > 0){
+                            addError(response.errors.join("<br />"));
+                        }
                         if(nCreated > 0){
                             addSuccess("<b>" + nCreated + "</b> products were created");
                         }
                         if(nError > 0){
                             addInfo("<b>" + nError + "</b> products were ignored (probably duplicates)");
                         }
+                        
                         button.prop("disabled", false);
                         this.bibtexDialog.dialog('close');
 	                }, this));
@@ -614,13 +622,11 @@ ManageProductsView = Backbone.View.extend({
                         this.products.add(response.created, {silent: true});
                         this.addRows();
                         clearAllMessages();
-                        var nCreated = response.created.length;
-                        var nError = response.error.length;
-                        if(nCreated > 0){
-                            addSuccess("<b>" + nCreated + "</b> products were created");
+                        if(response.errors.length > 0){
+                            addError(response.errors.join("<br />"));
                         }
-                        if(nError > 0){
-                            addInfo("<b>" + nError + "</b> products were ignored (probably duplicates)");
+                        else{
+                            addSuccess("<b>1</b> product was created");
                         }
                         button.prop("disabled", false);
                         this.doiDialog.dialog('close');

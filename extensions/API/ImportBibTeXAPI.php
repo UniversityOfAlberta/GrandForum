@@ -121,28 +121,32 @@ class ImportBibTeXAPI extends API{
             unlink($fileName);
             $createdProducts = array();
             $errorProducts = array();
-            foreach($bib->m_entries as $bibtex_id => $paper){
-                $type = (isset(self::$bibtexHash[$paper['bibtex_type']])) ? self::$bibtexHash[$paper['bibtex_type']] : "Misc";
-                $product = $this->createProduct($paper, "Publication", $type, $bibtex_id);
-                if($product != null){
-                    $createdProducts[] = $product;
-                }
-                else{
-                    $errorProducts[] = $paper;
+            if(is_array($bib->m_entries) && count($bib->m_entries) > 0){
+                foreach($bib->m_entries as $bibtex_id => $paper){
+                    $type = (isset(self::$bibtexHash[$paper['bibtex_type']])) ? self::$bibtexHash[$paper['bibtex_type']] : "Misc";
+                    $product = $this->createProduct($paper, "Publication", $type, $bibtex_id);
+                    if($product != null){
+                        $createdProducts[] = $product;
+                    }
+                    else{
+                        $errorProducts[] = $paper;
+                    }
                 }
             }
+            else{
+                // Error
+                $this->addError("No BibTeX references were found");
+                return false;
+            }
             $json = array('created' => array(),
-                          'error' => array());
+                          'errors' => array());
             foreach($createdProducts as $product){
                 $json['created'][] = $product->toArray();
             }
             foreach($errorProducts as $product){
-                $json['error'][] = $product;
+                $this->addMessage($product->getId());
             }
-            header('Content-Type: application/json');
-            $obj = json_encode($json);
-            echo $obj;
-            exit;
+            return $json;
         }
 	}
 	
