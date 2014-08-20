@@ -1,8 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="NI Report" reportType="RP_RESEARCHER" pdfType="RPTP_NORMAL" pdfFiles="NIReportPDF" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END">PNI</Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END">CNI</Role>
+        <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PNI">
+            <SectionPermission id="status" permissions="rw" />
+            <SectionPermission id="dashboard" permissions="rw" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="subprojects" permissions="" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="CNI">
+            <SectionPermission id="status" permissions="rw" />
+            <SectionPermission id="dashboard" permissions="rw" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="subprojects" permissions="" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SUB-PL">
+            <SectionPermission id="status" permissions="" />
+            <SectionPermission id="dashboard" permissions="" />
+            <SectionPermission id="report" permissions="" />
+            <SectionPermission id="subprojects" permissions="rw" />
+            <SectionPermission id="budget" permissions="" />
+            <SectionPermission id="review" permissions="" />
+            <SectionPermission id="submit" permissions="" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SUB-COPL">
+            <SectionPermission id="status" permissions="" />
+            <SectionPermission id="dashboard" permissions="" />
+            <SectionPermission id="report" permissions="" />
+            <SectionPermission id="subprojects" permissions="rw" />
+            <SectionPermission id="budget" permissions="" />
+            <SectionPermission id="review" permissions="" />
+            <SectionPermission id="submit" permissions="" />
+        </Role>
+    </Permissions>
     </Permissions>
     <ReportSection name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
