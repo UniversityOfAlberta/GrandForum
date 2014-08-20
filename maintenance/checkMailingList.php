@@ -152,7 +152,7 @@
 
 	echo "== Active $type not on $mailman ==\n";
 	foreach($people as $person){
-	    if(!MailingList::isSubscribed($mailman, $person) && !isBlackListed($person->getEmail())){
+	    if(!MailingList::isSubscribed($mailman, $person) && !isBlackListed($person->getEmail()) && !MailingList::hasUnsubbed($mailman, $person)){
 	        echo $person->getEmail()."\n";
 	        $nMissing++;
 	    }
