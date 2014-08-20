@@ -131,7 +131,7 @@
 	    foreach($people as $person){
 	        $uni = $person->getUni();
 	        foreach(MailingList::getListByUniversity($uni) as $list){
-	            if(!MailingList::isSubscribed($list, $person) && !isBlackListed($person->getEmail())){
+	            if(!MailingList::isSubscribed($list, $person) && !isBlackListed($person->getEmail()) && !MailingList::hasUnsubbed($mailman, $person)){
 	                $array[$list][] = "{$person->getName()} - {$person->getEmail()}\n";
 	            }
 	        }
