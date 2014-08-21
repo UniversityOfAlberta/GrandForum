@@ -32,6 +32,7 @@ class ImportDOIAPI extends API{
                     $this->addError("No BibTeX references were found from this DOI");
                 }
                 else{
+                    $this->data = $res;
                     return $res;
                 }
             }

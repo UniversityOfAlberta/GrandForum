@@ -144,8 +144,9 @@ class ImportBibTeXAPI extends API{
                 $json['created'][] = $product->toArray();
             }
             foreach($errorProducts as $product){
-                $this->addMessage($product->getId());
+                $this->addMessage("Duplicate");
             }
+            $this->data = $json;
             return $json;
         }
 	}
