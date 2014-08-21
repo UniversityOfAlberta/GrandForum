@@ -156,7 +156,7 @@ define('MTG_OTHER', 5);
  */
 
 define('RES_MIL_NOTAPPLICABLE',		1);
-define('RES_MIL_CONTRIBUTIONS',		2);
+define('RES_MIL_CONTRIBUTIONS',		11); // Used to be '2', changed to '11'
 define('RES_MIL_PRIMCRITERIA',		3);
 define('RES_MIL_SECCRITERIA',		4);
 define('RES_MIL_SUMMARY',		    5);
@@ -182,6 +182,7 @@ define('RES_RESACT_BENEF',   		7);
 define('RES_RESACT_OTHER',   		8);
 define('RES_RESACT_NEXTPLANS',      9);
 define('RES_RESACT_FILE',           10);
+define('RES_RESACT_CONTRIBUTIONS',  11);
 
 define('RES_SUBPROJECT_COMMENTS',   1);
 
@@ -195,7 +196,7 @@ define('HQP_EFF_MONTHS',		2);
 define('HQP_EFF_REMARKS',		3);
 
 define('HQP_MIL_NOTAPPLICABLE',		1);
-define('HQP_MIL_CONTRIBUTIONS',		2);
+define('HQP_MIL_CONTRIBUTIONS',		5); // Used to be '2', changed to '5'
 define('HQP_MIL_PRIMCRITERIA',		3);
 define('HQP_MIL_SECCRITERIA',		4);
 
@@ -203,6 +204,7 @@ define('HQP_RESACT_OVERALL',		1);
 define('HQP_RESACT_EXCELLENCE',		2);
 define('HQP_RESACT_NETWORKING',		3);
 define('HQP_RESACT_KTEE',   		4);
+define('HQP_RESACT_CONTRIBUTIONS',  5);
 
 define('CHAMP_REPRESENT', 1);
 define('CHAMP_ACTIVITY', 2);
