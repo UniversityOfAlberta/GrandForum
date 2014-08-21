@@ -94,7 +94,7 @@ class DashboardReportItem extends StaticReportItem {
 	function filterCols($dashboard){
 	    if($this->getAttr("structure") == "PROJECT_REPORT_TIME_STRUCTURE" && $this->getReport()->project != null){
 	        $created = $this->getReport()->project->getCreated();
-	        if($created > $this->getReport()->year.REPORTING_CYCLE_END_MONTH){
+	        if($created > ($this->getReport()->year+1).REPORTING_CYCLE_END_MONTH){
 	            $dashboard = $dashboard->copy()->filterCols(HEAD, array("Hours%", "Allocated%"));
 	        }
 	    }
