@@ -94,7 +94,7 @@ abstract class AbstractDuplicatesHandler {
     
     function addControls($id1, $id2){
         return "<tr><td class='duplicateControls'><input style='vertical-align:middle;' type='button' value='Delete' onClick='delete{$this->upperId}(this, {$id1});' ".CONTROLS_DISABLED." /></td><td class='duplicateControls'><input type='button' value='Delete' onClick='delete{$this->upperId}(this, {$id2});' ".CONTROLS_DISABLED." /></td></tr>
-                <tr><td colspan='2' class='duplicateControls'><input style='vertical-align:middle;' type='button' value='Ignore Pair' onClick='ignore{$this->upperId}(this, {$id1}, {$id2});' ".CONTROLS_DISABLED." /></td></tr>";
+                <tr><td colspan='2' class='duplicateControls'><input style='vertical-align:middle;' type='button' value='Not Duplicates' onClick='ignore{$this->upperId}(this, {$id1}, {$id2});' ".CONTROLS_DISABLED." /></td></tr>";
     }
     
     function endTable(){
@@ -167,7 +167,7 @@ abstract class AbstractDuplicatesHandler {
                     url: 'index.php?action=ignoreDuplicates&handler={$this->id}',
                     data: data,
                     success: function (data) {
-                        $('#{$this->id}' + id1 + '_' + id2).prev().html('IGNORED - ' + $('#{$this->id}' + id1 + '_' + id2).prev().html());
+                        $('#{$this->id}' + id1 + '_' + id2).prev().html('NOT DUPLICATES - ' + $('#{$this->id}' + id1 + '_' + id2).prev().html());
                         $('#{$this->id}' + id1 + '_' + id2).prev().css('color', '#00aa00');
                         $('#{$this->id}' + id1 + '_' + id2).remove();
                     }
