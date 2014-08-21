@@ -1082,6 +1082,14 @@ class Paper extends BackboneModel{
                 $this->authorsWaiting = true;
                 $this->syncAuthors();
                 Cache::delete($this->getCacheId());
+                if($this->getAccessId() == 0){
+                    // Only send out notifications if the Product is public
+                    foreach($this->getAuthors() as $author){
+                        if($author instanceof Person && $me->getId() != $author->getId()){
+                            Notification::addNotification($me, $author, "Author Added", "You have been added as an author to the ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i>", "{$this->getUrl()}");
+                        }
+                    }
+                }
                 self::$cache = array();
                 self::$dataCache = array();
                 self::$productProjectsCache = array();
@@ -1097,6 +1105,9 @@ class Paper extends BackboneModel{
             // Begin Transaction
             DBFunctions::begin();
             $authors = array();
+            $oldProduct = new Product(DBFunctions::select(array('grand_products'),
+                                                          array('*'),
+                                                          array('id' => EQ($this->getId()))));
             foreach($this->authors as $author){
                 if(isset($author->id) && $author->id != 0){
                     $authors[] = $author->id;
@@ -1147,6 +1158,33 @@ class Paper extends BackboneModel{
                 $this->authorsWaiting = true;
                 $this->syncAuthors();
                 Cache::delete($this->getCacheId());
+                if($this->getAccessId() == 0){
+                    // Only send out notifications if the Product was public
+                    foreach($oldProduct->getAuthors() as $oldAuthor){
+                        $found = false;
+                        foreach($this->getAuthors() as $author){
+                            if($author->getId() == $oldAuthor->getId()){
+                                $found = true;
+                            }
+                        }
+                        if(!$found && $oldAuthor instanceof Person && $me->getId() != $oldAuthor->getId()){
+                            // Author was Deleted
+                            Notification::addNotification($me, $oldAuthor, "Author Removed", "You have been removed as an author from the ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i>", "{$this->getUrl()}");
+                        }
+                    }
+                    foreach($this->getAuthors() as $author){
+                        $found = false;
+                        foreach($oldProduct->getAuthors() as $oldAuthor){
+                            if($author->getId() == $oldAuthor->getId()){
+                                $found = true;
+                            }
+                        }
+                        if(!$found && $author instanceof Person && $me->getId() != $author->getId()){
+                            // Author was Added
+                            Notification::addNotification($me, $author, "Author Added", "You have been added as an author to the ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i>", "{$this->getUrl()}");
+                        }
+                    }
+                }
                 self::$cache = array();
                 self::$dataCache = array();
                 self::$productProjectsCache = array();

@@ -447,6 +447,11 @@ class DBFunctions {
 	    DBFunctions::$dbw->rollback();
 	}
 	
+	static function close(){
+	    DBFunctions::initDB();
+	    DBFunctions::$dbw->close();
+	}
+	
 	/**
 	 * Returns the number of rows returned in the last resultset
 	 */
