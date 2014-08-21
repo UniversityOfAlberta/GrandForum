@@ -253,10 +253,28 @@
     <ReportSection id="subprojects" tooltip="Discussion of progress against Sub-Projects" name="Sub-Projects" blobSection="LDR_MILESTONE" type="ReportSection" renderpdf="true" reportCharLimits="false">
         <Instructions>
             <![CDATA[
-                This section shows an overview of all this project's sub-projects.
+                This section shows the comments made by the sub-project leaders.
             ]]>
         </Instructions>
-        <ReportItem id='III_head' type="StaticReportItem">
+        <ReportItem type="StaticReportItem">
+            <![CDATA[<ul>]]>
+        </ReportItem>
+        <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet" blobIndex="projectId">
+            <ReportItem id="subprojects_data" type="StaticReportItem">
+                <![CDATA[
+                    <li><a target='_blank' href='{$project_url}'>{$project_name}</a></li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem type="StaticReportItem">
+            <![CDATA[</ul>]]>
+        </ReportItem>
+        <ReportItem id="table_foot" type="StaticReportItem">
+            <![CDATA[
+                <a target='_blank' href='{$project_url}?tab=sub-projects' class='button'>Edit Sub-Projects</a>
+            ]]>
+        </ReportItem>
+        <ReportItem id='head' type="StaticReportItem">
             <![CDATA[<h2>Sub-Project Leader Comments</h2>]]>
         </ReportItem>
         <ReportItemSet id="subleaders" type="AllSubProjectLeadersReportItemSet">
@@ -264,29 +282,7 @@
                 <![CDATA[<h3>{$user_name}</h3>{$user_subproject_comments}]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet" blobIndex="projectId">
-            <ReportItem id="subprojects_data" type="StaticReportItem">
-                <![CDATA[
-                    <div>
-                        <h2><a target='_blank' href='{$project_url}'>{$project_name}</a></h2>
-                        <table>
-                            <!--<tr><td width='50'><b>Id:</b></td><td align='left'>{$project_id}</td></tr>-->
-                            <tr><td width='50'><b>Full Name:</b></td><td align='left'>{$project_full_name}</td></tr>
-                            <!--<tr><td width='50'><b>Status:</b></td><td align='left'>{$project_status}</td></tr>-->
-                            <tr><td width='50'><b>Leader(s):</b></td><td align='left'>{$project_leaders}</td></tr>
-                            <tr><td width='50'><b>NI(s):</b></td><td align='left'>{$project_nis}</td></tr>
-                            <tr><td width='50'><b>Champion(s):</b></td><td align='left'>{$project_champions}</td></tr>
-                            <tr><td width='50' valign='top'><b>Description:</b></td><td align='left'>{$project_description}</td></tr>
-                        </table>
-                    </div>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="table_foot" type="StaticReportItem">
-            <![CDATA[
-                <br /><hr /><br /><a target='_blank' href='{$project_url}?tab=sub-projects' class='button'>Edit Sub-Projects</a>
-            ]]>
-        </ReportItem>
+        
     </ReportSection>
     <!--ReportSection id="comments" tooltip="Comments on NI contributions to the project" name="Comments" blobSection="LDR_NICOMMENTS" type="EditableReportSection" autosave="true" renderpdf="false" reportCharLimits="false">
         <Instructions>

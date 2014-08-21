@@ -660,6 +660,9 @@ class Paper extends BackboneModel{
                 $vn .= "($number)";
             }
         }
+        if($type == "Book Chapter"){
+            $vn .= ArrayUtils::get_string($data, 'book_title');
+        }
 
         $pg = ArrayUtils::get_string($data, 'pages');
         if (strlen($pg) > 0){
@@ -687,20 +690,23 @@ class Paper extends BackboneModel{
             $text = $title;
         }
         
-        if( in_array($type, array('Book', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
+        if( in_array($type, array('Book', 'Book Chapter', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
             if($vn != ""){
                 $vn .= ".";
             }
-            $comma = ($status != "" || $peer_rev != "") ? ",&nbsp" : "";
-       		$citation = "{$au}.&nbsp;{$yr}.&nbsp;<i>{$text}.</i>&nbsp;{$type}:&nbsp;{$vn}&nbsp;{$pg}&nbsp;{$pb}<span class='pdfnodisplay'>{$comma}{$status}{$peer_rev}</span>";
+            if($vn != "" || $pg != "" || $pb != ""){
+                $vn = ":&nbsp;$vn";
+            }
+       		$citation = "{$au}.&nbsp;{$yr}.&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}&nbsp;{$pg}&nbsp;{$pb}<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
     	}
     	else{
     	    if($vn != ""){
+    	        $vn = ":&nbsp;$vn";
     	        if($status != "" || $peer_rev != ""){
                     $vn .= "<span class='pdfnodisplay'>,</span>";
                 }
             }
-        	$citation = "{$au}.&nbsp;{$yr}.&nbsp;<i>{$text}.</i>&nbsp;{$type}:&nbsp;{$vn}&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
+        	$citation = "{$au}.&nbsp;{$yr}.&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
         }
 
 		return trim($citation);

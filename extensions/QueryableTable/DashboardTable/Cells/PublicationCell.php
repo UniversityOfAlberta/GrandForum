@@ -64,13 +64,16 @@ abstract class PublicationCell extends DashboardCell {
             case "Book Chapter":
                 $value = 1;
                 break;
+            case "Conference Paper":
             case "Collections Paper":
             case "Proceedings Paper":
                 $value = 2;
                 break;
-            case "PhD Thesis":
+            case "PHD Dissertation":
+            case "PHD Thesis":
                 $value = 3;
                 break;
+            case "Masters Dissertation":
             case "Masters Thesis":
                 $value = 4;
                 break;
@@ -90,7 +93,7 @@ abstract class PublicationCell extends DashboardCell {
     
     function getHeaders(){
         if($this->category == "Publication" || $this->category == "Artifact"){
-            return array("Publication Date", "Projects", "First Author", "Previously Reported", $this->category);
+            return array("Publication Date", "Projects", "First Author", $this->category);
         }
         return array("Publication Date", "Projects", "First Author", $this->category);
     }
@@ -124,7 +127,7 @@ abstract class PublicationCell extends DashboardCell {
             }*/
             $reported = "<td style='text-align:left;'><b>Reported to RMC:</b> {$rmc}{$nce}</td>";
         }
-        $hqpAuthored = "<br />";
+        $hqpAuthored = "";
         if($this instanceof PersonPublicationCell){
             $found = false;
             foreach($paper->getAuthors() as $author){
@@ -133,10 +136,11 @@ abstract class PublicationCell extends DashboardCell {
                 }
             }
             if(!$found){
-                $hqpAuthored = "<span class='pdfOnly'>;</span> (Authored by HQP)<br />";
+                $hqpAuthored = "<span class='pdfOnly'>;</span> (Authored by HQP)";
             }
         }
-        $details = "<td style='white-space:nowrap;text-align:left;'>{$paper->getDate()}<span class='pdfOnly'>, </span></td><td style='text-align:left;'>".implode(", ", $projs)."<span class='pdfOnly'>; </span></td><td class='pdfnodisplay' style='text-align:left;'>{$first_author}<span class='pdfnodisplay'>{$hqpAuthored}</span></td>{$reported}<td style='width:50%;text-align:left;'><span class='pdfOnly'>{$hqpAuthored}</span>{$citation}</td>\n";
+        $date = date("M Y", strtotime($paper->getDate()));
+        $details = "<td style='white-space:nowrap;text-align:left;' class='pdfnodisplay'>{$paper->getDate()}</td><td style='text-align:left;' class='pdfnodisplay'>".implode(", ", $projs)."</td><td class='pdfnodisplay' style='text-align:left;'>{$first_author}{$hqpAuthored}</td><td style='width:50%;text-align:left;'>{$citation}<div class='pdfOnly' style='width:100%;text-align:right;'><i>{$hqpAuthored}{$date};&nbsp;".implode(", ", $projs)."</i></div></td>\n";
         return $details;
     }
     
