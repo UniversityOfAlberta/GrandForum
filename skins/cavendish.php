@@ -756,14 +756,16 @@ class cavendishTemplate extends QuickTemplate {
 	        global $toolbox;
 	        $i = 0;
 	        foreach($toolbox as $key => $header){
-	            $hr = ($i > 0) ? "<hr />" : "";
-	            echo "<span class='highlights-text'>{$hr}{$header['text']}</span><ul class='pBody'>";
-	            ksort($header['links']);
-	            foreach($header['links'] as $lKey => $link){
-	                echo "<li><a class='highlights-background-hover' href='{$link['href']}'>{$link['text']}</a></li>";
+	            if(count($header['links']) > 0){
+	                $hr = ($i > 0) ? "<hr />" : "";
+	                echo "<span class='highlights-text'>{$hr}{$header['text']}</span><ul class='pBody'>";
+	                ksort($header['links']);
+	                foreach($header['links'] as $lKey => $link){
+	                    echo "<li><a class='highlights-background-hover' href='{$link['href']}'>{$link['text']}</a></li>";
+	                }
+	                echo "</ul>";
+	                $i++;
 	            }
-	            echo "</ul>";
-	            $i++;
 	        }
 		}
 		else {
