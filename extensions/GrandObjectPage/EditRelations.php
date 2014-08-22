@@ -147,7 +147,7 @@ class EditRelations extends SpecialPage{
                     <ul>
                         <li><a href='#tabs-1'>Supervises</a></li>
                         <li><a href='#tabs-2'>Works With</a></li>
-                        <li><a href='#tabs-3'>Qualify Relations w. Projects</a></li>
+                        <!--li><a href='#tabs-3'>Qualify Relations w. Projects</a></li-->
                     </ul>
                     <div id='tabs-1'>");
                         EditRelations::generateSupervisesHTML($person, $wgOut);
@@ -155,10 +155,10 @@ class EditRelations extends SpecialPage{
         $wgOut->addHTML("</div>
                     <div id='tabs-2'>");
                         EditRelations::generateWorksWithHTML($person, $wgOut);
-        $wgOut->addHTML("</div>
+        /*$wgOut->addHTML("</div>
                     <div id='tabs-3'>");
                         EditRelations::generateQualifyRelationHTML($person, 'Supervises', $wgOut);
-                        EditRelations::generateQualifyRelationHTML($person, 'Works With', $wgOut);
+                        EditRelations::generateQualifyRelationHTML($person, 'Works With', $wgOut);*/
         $wgOut->addHTML("</div>
                     </div>");
         $wgOut->addHTML("<br /><input type='submit' name='submit' value='Save Relations' />
