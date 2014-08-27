@@ -3,7 +3,7 @@
 class PersonPresentationsCell extends PersonPublicationCell {
     
     function PersonPresentationsCell($cellType, $params, $cellValue, $rowN, $colN, $table){
-        $this->label = "Presentation";
+        $this->label = "Presentations";
         $this->category = "Presentation";
         $this->PersonPublicationCell($cellType, $params, $cellValue, $rowN, $colN, $table);
     }

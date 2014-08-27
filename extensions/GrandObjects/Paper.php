@@ -620,13 +620,17 @@ class Paper extends BackboneModel{
 		$data = $this->getData();
         $type = $this->getType();
         $title = $this->getTitle();
-        $status = ($showStatus) ? $this->getStatus() : "";
+        $status = ($showStatus) ? ",&nbsp;".$this->getStatus() : "";
         $category = $this->getCategory();
         $au = array();
         foreach($this->getAuthors() as $a){
             if($a->getId()){
                 if($hyperlink){
-                    $au[] = "<a target='_blank' href='{$a->getUrl()}'><strong>". $a->getNameForForms() ."</strong></a>";
+                    $name = $a->getNameForForms();
+                    if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
+                        $name = "<u>{$a->getNameForForms()}</u>";
+                    }
+                    $au[] = "<a target='_blank' href='{$a->getUrl()}'><strong>{$name}</strong></a>";
                 }
                 else{
                     $au[] = "<strong>". $a->getNameForForms() ."</strong>";
@@ -636,7 +640,6 @@ class Paper extends BackboneModel{
             }
         }
         $au = implode(',&nbsp;', $au);
-        $yr = substr($this->getDate(), 0, 4);
         $vn = $this->getVenue();
 
         if(($type == "Proceedings Paper" || $category == "Presentation") && empty($vn)){
@@ -689,15 +692,13 @@ class Paper extends BackboneModel{
         else{
             $text = $title;
         }
-        
+        $date = date("M Y", strtotime($this->getDate()));
+        $type = str_replace("Misc: ", "", $type);
         if( in_array($type, array('Book', 'Book Chapter', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
-            if($vn != ""){
-                $vn .= ".";
-            }
             if($vn != "" || $pg != "" || $pb != ""){
                 $vn = ":&nbsp;$vn";
             }
-       		$citation = "{$au}.&nbsp;{$yr}.&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}&nbsp;{$pg}&nbsp;{$pb}<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
+       		$citation = "{$au}.&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn},&nbsp;{$pg}&nbsp;{$pb},&nbsp;{$date}<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
     	}
     	else{
     	    if($vn != ""){
@@ -706,7 +707,7 @@ class Paper extends BackboneModel{
                     $vn .= "<span class='pdfnodisplay'>,</span>";
                 }
             }
-        	$citation = "{$au}.&nbsp;{$yr}.&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
+        	$citation = "{$au}.&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn},&nbsp;{$date}&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
         }
 
 		return trim($citation);

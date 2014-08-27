@@ -43,7 +43,7 @@
         <ReportItem id="basic_info" type="StaticReportItem">
         <![CDATA[
             <div class='basic_info' style='margin-bottom:20px;'>
-                <p style='font-size:150%;'><span class='label'>Name:</span> {$user_reversed_name} ({$user_full_roles})</p>
+                <p style='font-size:150%;'>{$user_reversed_name} ({$user_full_roles})</p>
                 <p><span class='label'>Position:</span> {$user_level}</p>
                 <p><span class='label'>Department:</span> {$user_dept}</p>
                 <p><span class='label'>University:</span> {$user_uni}</p>
@@ -59,7 +59,7 @@
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="grand_time" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem" private="true">
-            <![CDATA[</p><p><span class='label'>Time Devoted to GRAND Research and Management (hours / week):</span> {$item}</p>]]>
+            <![CDATA[</p><br /><p><span class='label'>Time Devoted to GRAND Research and Management (hours / week):</span> {$item}</p>]]>
         </ReportItem>
         <ReportItem id="grand_percent" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem" private="true">
             <![CDATA[<span class='label'>GRAND-related Research Activity relative to Overall Research Activity (%):</span> {$item}</p></div>]]>

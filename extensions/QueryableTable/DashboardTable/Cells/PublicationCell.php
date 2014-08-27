@@ -104,7 +104,9 @@ abstract class PublicationCell extends DashboardCell {
         $projects = $paper->getProjects();
         $projs = array();
         foreach($projects as $project){
-            $projs[] = "<a href='{$project->getUrl()}' target='_blank'>{$project->getName()}</a>";
+            if(!$project->isSubProject()){
+                $projs[] = "<a href='{$project->getUrl()}' target='_blank'>{$project->getName()}</a>";
+            }
         }
         $authors = $paper->getAuthors();
         $first_author = (isset($authors[0]))? explode(' ', $authors[0]->getNameForForms()) : array("","");
@@ -139,8 +141,7 @@ abstract class PublicationCell extends DashboardCell {
                 $hqpAuthored = "<span class='pdfOnly'>;</span> (Authored by HQP)";
             }
         }
-        $date = date("M Y", strtotime($paper->getDate()));
-        $details = "<td style='white-space:nowrap;text-align:left;' class='pdfnodisplay'>{$paper->getDate()}</td><td style='text-align:left;' class='pdfnodisplay'>".implode(", ", $projs)."</td><td class='pdfnodisplay' style='text-align:left;'>{$first_author}{$hqpAuthored}</td><td style='width:50%;text-align:left;'>{$citation}<div class='pdfOnly' style='width:100%;text-align:right;'><i>{$hqpAuthored}{$date};&nbsp;".implode(", ", $projs)."</i></div></td>\n";
+        $details = "<td style='white-space:nowrap;text-align:left;' class='pdfnodisplay'>{$paper->getDate()}</td><td style='text-align:left;' class='pdfnodisplay'>".implode(", ", $projs)."</td><td class='pdfnodisplay' style='text-align:left;'>{$first_author}{$hqpAuthored}</td><td style='width:50%;text-align:left;'>{$citation}<div class='pdfOnly' style='width:100%;text-align:right;'><i>{$hqpAuthored}".implode(", ", $projs)."</i></div></td>\n";
         return $details;
     }
     

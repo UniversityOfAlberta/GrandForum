@@ -372,11 +372,11 @@ Describe your involvement with receptor organizations, industry partners and Pro
     <ReportSection id="subprojects" name="Sub-Project Leader" tooltip="Comments about lead sub-projects" blobSection="RES_SUBPROJECTS" type="EditableReportSection" autosave="true" reportCharLimits="false" renderpdf="false">
         <Instructions>
             <![CDATA[
-                Lorem Ipsum
+                This section is for sub-project leaders to be able to talk about their sub-projects that they lead.  Each Project is listed below, and the @autocomplete functionality will allow you to reference the sub-projects.
             ]]>
         </Instructions>
         <ReportItemSet id="projects" type="PersonSubLeadProjectReportItemSet">
-            <ReportItem id="sub_project_{$project_id}" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_COMMENTS" type="AutoCompleteTextareaReportItem" set="PersonSubLeadSubProjectReportItemSet" index="project_id" label="project_name" name="Sub-Projects" showNotReferenced="true" tooltipOptionId="Project ID" tooltipOptionName="Project Name">
+            <ReportItem id="sub_project_{$project_id}" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_COMMENTS" type="AutoCompleteTextareaReportItem" set="PersonSubLeadSubProjectReportItemSet" index="project_id" label="project_name" name="Sub-Projects" showNotReferenced="true" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name">
                 <![CDATA[<h2>{$project_name}</h2><br />{$item}<br />]]>
             </ReportItem>
         </ReportItemSet>

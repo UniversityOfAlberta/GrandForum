@@ -29,12 +29,12 @@
         <ReportItem id="basic_info" type="StaticReportItem">
         <![CDATA[
             <div class='basic_info' style='margin-bottom:20px;'>
-                <p style='font-size:150%;'><span class='label'>Name:</span> {$user_reversed_name} ({$user_full_roles})</p>
+                <p style='font-size:150%;'>{$user_reversed_name} ({$user_full_roles})</p>
                 <p><span class='label'>Position:</span> {$user_level}</p>
                 <p><span class='label'>Department:</span> {$user_dept}</p>
                 <p><span class='label'>University:</span> {$user_uni}</p>
                 <p><span class='label'>Supervisor(s):</span> {$user_supervisors}</p>
-                        <p><span class='label'>Projects:</span>
+                <p><span class='label'>Projects:</span>
         ]]>
         </ReportItem>
         <ReportItemSet id="user_projects" type="PersonProjectReportItemSet">
