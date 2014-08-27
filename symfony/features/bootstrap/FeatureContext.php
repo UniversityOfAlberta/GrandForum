@@ -109,7 +109,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         global $currentSession;
         // Delay the session so that it doesn't process futher while the page is still loading
         try{
-            $currentSession->getSession()->wait(10);
+            $currentSession->getSession()->wait(25);
         }
         catch(Exception $e){
             

@@ -60,7 +60,7 @@
                 <td class="label"><%= p.get('name') %>:</td>
                 <td class="checkboxCell" style="width:40px;">
                     <div class="checkboxOuter" data-project="<%= p.get('id') %>">
-                        <input data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= projectChecked(projects, p.get('id')) %> /><% if(projectChecked(projects, p.get('id')) != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
+                        <input id="projects_<%= p.get('name') %>" data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= projectChecked(projects, p.get('id')) %> /><% if(projectChecked(projects, p.get('id')) != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
                         <% if(p.get('subprojects').length > 0){ %>
                             <div style="display:none;" class="subprojectPopup popupBox">
                                 
