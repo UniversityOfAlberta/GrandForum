@@ -336,7 +336,9 @@ class GlobalSearchAPI extends RESTAPI {
                 asort($results);
                 $results = array_reverse($results, true);
 	            foreach($results as $key => $row){
-	                $ids[] = $key;
+	                $report = DummyReport::newFromToken($key);
+	                $pdf = $report->getPDF();
+	                $ids[] = $pdf[0]['token'];
 	            }
                 break;
         }
