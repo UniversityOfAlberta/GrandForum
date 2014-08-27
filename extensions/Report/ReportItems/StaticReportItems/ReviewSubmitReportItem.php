@@ -217,12 +217,12 @@ EOF;
         
         $wgOut->addHTML("</table></p>");
 		$wgOut->addHTML("<h3>3. Submit the $reportname PDF</h3>");
-		$wgOut->addHTML("<p>You can submit your $reportname PDF for evaluation. Make sure you review it before submitting.<br />Please note:</p>
+		$wgOut->addHTML("<p>You can submit your most recently generated $reportname PDF for evaluation. Make sure you review it before submitting.<br />Please note:</p>
          <ul>
          <li>If you need to make a correction to your $reportname PDF that is already submitted, you can generate and submit again.</li>
-        <li>The most recently submitted $reportname PDF is used for evaluation.</li>
-        <li>If no $reportname PDFs have been submitted, then the most recently generated $reportname PDF will be used instead.</li>
-        <li>If you encounter any issues, please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a></li>
+         <li>The most recently submitted $reportname PDF is used for evaluation.</li>
+         <li>If no $reportname PDFs have been submitted, then the most recently generated $reportname PDF will be used for evaluation instead.</li>
+         <li>If you encounter any issues, please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a></li>
          </ul></p>\n
          <div id='report_submit_div' style=''>
             <p>
