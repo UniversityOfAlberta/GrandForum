@@ -46,7 +46,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		                        success : function(data){
 		                                        //var data = jQuery.parseJSON(response);
 		                                        for(index in data){
-		                                            val = data[index];
+		                                            var val = data[index];
 		                                            if(typeof val.tok != 'undefined'){
 		                                                var tok = val.tok;
 		                                                var time = val.time;
@@ -63,8 +63,6 @@ class ReviewSubmitReportItem extends StaticReportItem {
                                                         $('#generate_success').css('display', 'block');
                                                         $('#download_button_' + index).attr('name', tok);
                                                         $('#download_button_' + index).text(name + ' PDF');
-                                                        $('.submit_status_cell').css('background', 'red');
-		                                                $('.submit_status_cell').html('<b>No</b>');
                                                     }
                                                     else{
                                                         $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:support@forum.grand-nce.ca\">support@forum.grand-nce.ca</a>');
@@ -75,6 +73,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		                                        $('#generateButton').removeAttr('disabled');
 		                                        $('#submitCheck').removeAttr('checked');
 		                                        $('#submitCheck').removeAttr('disabled');
+		                                        updateEvalReport();
 		                                  },
 		                        error : function(response){
                                               // Error
@@ -113,11 +112,31 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		                $('#submitButton').prop('disabled', true);
 		                $('#submit_throbber').css('display', 'inline-block');
 		                $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&submitReport&tok=' + $(button).val() ,function(data){
-		                    $('.submit_status_cell').css('background', '#008800');
-		                    $('.submit_status_cell').html('<b>Yes</b>');
+		                    updateEvalReport();
 		                    $('#submitButton').removeAttr('disabled');
 		                    $('#submit_throbber').css('display', 'none');
 		                });
+		            }
+		            
+		            function updateEvalReport(){
+		                $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&getPDF' ,function(data){
+		                    
+	                        if(data.length > 0){
+	                            var val = data[0];
+	                            if(typeof val != 'undefined'){
+                                    var tok = val.token;
+                                    var time = val.timestamp;
+                                    var len = val.len;
+                                    var name = val.name;
+                                    var status = val.status;
+                                    
+                                    $('#download_submitted').attr('name', tok);
+                                    $('#download_submitted').text(name + ' PDF');
+                                    $('.submit_status_cell').html('<b>' + status + '</b>');
+                                    $('#ex_time_submitted').html(time);
+                                }
+	                        }
+	                    });
 		            }
 		        });
 		    </script>");
@@ -136,20 +155,98 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		                    <small>Depending on the size of the report, this could take several moments.</small>
 		                    <div style='display:none;' class='error' id='generate_error'></div><div style='display:none;' class='success' id='generate_success'></div></p>");
 
-		$wgOut->addHTML("<h3>2. Download the Report PDF submitted for reviewing</h3>");
+		$wgOut->addHTML("<h3>2. Review the most recently generated PDF</h3>");
 		
 		$gmt_date = date('P');
 		$temp_html =<<<EOF
-		<p><table cellspacing='5'>
+		<p><table cellpadding='5' rules='all' frame='box'>
         <tr>
-        	<th align='left'><span style="font-size:8pt; font-family:monospace;">Identifier</span><br />Generated (GMT {$gmt_date})</th>
-        	<th>Download</th><th>Submitted?</th>
+        	<th align='left'>Generated (GMT {$gmt_date})</th><th>Download</th>
         </tr>
 EOF;
 
 		$wgOut->addHTML($temp_html);
 		$pdfcount = 1;
 		$wgOut->addHTML("<iframe id='pdf_download_frame' style='position:absolute;top:-1000px;left:-1000px;width:1px;height:1px;'></iframe>");
+        foreach($this->getReport()->pdfFiles as $file){
+            $tok = false;
+            $tst = '';
+            $sub = 0;
+            $sto = new ReportStorage($person);
+            $project = Project::newFromId($this->projectId);
+            $report = new DummyReport($file, $person, $project);
+        	$check = $report->getLatestPDF();
+        	if (count($check) > 0) {
+        		$tok = $check[0]['token']; 	
+        		$tst = $check[0]['timestamp'];
+        		$sub = $check[0]['submitted'];
+        	}
+        	
+        	// Present some data on available reports.
+        	$style1 = "";
+        	if ($tok === false) {
+        		// No reports available.
+        		$style1 = "disabled='disabled'";
+        	}
+        	  
+        	if ($sub == 1) {
+			    $subm = "Submitted";
+		    }
+		    else {
+			    $subm = "Incomplete";
+		    }
+
+		    if($tok === false){
+		    	$show_pdf = "No PDF has been generated yet";
+		    }else{
+		    	$show_pdf = $tst;
+		    }
+
+		    $subm_table_row =<<<EOF
+		    <tr>
+		    <td>
+		    	<span id='ex_time_{$file}'>{$show_pdf}</span></td>
+            <td>
+            	<button id='download_button_{$file}' name='{$tok}' onClick='clickButton(this)' {$style1}>{$report->name} PDF</button>
+            </td></tr>
+EOF;
+
+            $wgOut->addHTML($subm_table_row);
+            $pdfcount++;
+        }
+        
+        $wgOut->addHTML("</table></p>");
+		$wgOut->addHTML("<h3>3. Submit the $reportname PDF</h3>");
+		$wgOut->addHTML("<p>You can submit your $reportname PDF for evaluation. Make sure you review it before submitting.<br />Please note:</p>
+         <ul>
+         <li>If you need to make a correction to your $reportname PDF that is already submitted, you can generate and submit again.</li>
+        <li>The most recently submitted $reportname PDF is used for evaluation.</li>
+        <li>If no $reportname PDFs have been submitted, then the most recently generated $reportname PDF will be used instead.</li>
+        <li>If you encounter any issues, please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a></li>
+         </ul></p>\n
+         <div id='report_submit_div' style=''>
+            <p>
+            <table border='0' style='margin-top: 20px;' cellpadding='3'>
+            <tr><td valign='top'>
+            <input {$style1} id='submitCheck' type='checkbox' /> - I have reviewed my \"$reportname PDF\"
+            </td></tr>
+            <tr><td>
+            <button id='submitButton' value='{$tok}' disabled>Submit $reportname PDF</button><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
+            </td></tr>
+            </table></p>
+         </div>");
+         
+        $wgOut->addHTML("<h3>4. Download the PDF which will be used for evaluation</h3>");
+        $gmt_date = date('P');
+		$temp_html =<<<EOF
+		<p><table cellpadding='5' rules='all' frame='box'>
+        <tr>
+        	<th align='left'>Generated (GMT {$gmt_date})</th><th>Download</th><th>Status</th>
+        </tr>
+EOF;
+
+		$wgOut->addHTML($temp_html);
+		$pdfcount = 1;
         foreach($this->getReport()->pdfFiles as $file){
             $tok = false;
             $tst = '';
@@ -172,33 +269,29 @@ EOF;
         	}
         	  
         	if ($sub == 1) {
-			    $subm = "Yes";
-			    $subm_style = "background-color:#008800;";
+			    $subm = "Submitted";
 		    }
 		    else {
-			    $subm = "No";
-			    $subm_style = "background-color:red;";
+			    $subm = "Incomplete";
 		    }
 
 		    if($tok === false){
 		    	$show_pdf = "No PDF has been generated yet";
 		    }else{
-		    	$show_pdf = "<br />".$tst;
+		    	$show_pdf = $tst;
 		    }
-
 
 		    $subm_table_row =<<<EOF
 		    <tr>
 		    <td>
-		    	<span style="font-size:8pt; font-family: monospace;" id='ex_token_{$file}'>{$tok}</span>
-		    	<span id='ex_time_{$file}'>{$show_pdf}</span></td>
+		    	<span id='ex_time_submitted'>{$show_pdf}</span></td>
             <td>
-            	<button id='download_button_{$file}' name='{$tok}' onClick='clickButton(this)' {$style1}>{$report->name} PDF</button>
+            	<button id='download_submitted' name='{$tok}' onClick='clickButton(this)' {$style1}>{$report->name} PDF</button>
             </td>
 EOF;
 			if($pdfcount == 1 ){
 				$subm_table_row .=<<<EOF
-            		<td align='center' class='submit_status_cell' style='$subm_style'>
+            		<td align='center' class='submit_status_cell'>
             			<b>$subm</b>
             		</td>
 EOF;
@@ -212,27 +305,6 @@ EOF;
             $wgOut->addHTML($subm_table_row);
             $pdfcount++;
         }
-
-        
-        $wgOut->addHTML("</table></p>");
-		$wgOut->addHTML("<h3>3. Submit the $reportname PDF</h3>");
-		$wgOut->addHTML("<p>You can submit your $reportname PDF for evaluation. Make sure you review it before submitting.<br />Please note:</p>
-         <ul>
-         <li>If you need to make a correction to your $reportname PDF that is already submitted, you can generate and submit again</li>
-        <li>The most recently generated $reportname PDF is used for evaluation</li>
-        <li>If you encounter any issues, please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a></li>
-         </ul></p>\n
-         <div id='report_submit_div' style=''>
-            <p>
-            <table border='0' style='margin-top: 20px;' cellpadding='3'>
-            <tr><td valign='top'>
-            <input {$style1} id='submitCheck' type='checkbox' /> - I have reviewed my \"$reportname PDF\"
-            </td></tr>
-            <tr><td>
-            <button id='submitButton' value='{$tok}' disabled>Submit $reportname PDF</button><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
-            </td></tr>
-            </table></p>
-         </div>");
 	}
 	
 	function renderForPDF(){
