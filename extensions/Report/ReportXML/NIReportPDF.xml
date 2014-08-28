@@ -188,7 +188,7 @@
             <![CDATA[<h3>Budget Justification</h3> {$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="HQP Details" blobSection="SEC_NONE" type="ReportSection" number="5" pagebreak="true" renderpdf="true">
+    <ReportSection name="Network Details" blobSection="SEC_NONE" type="ReportSection" number="5" pagebreak="true" renderpdf="true">
         <ReportItem id="ni_dashboard" type="DashboardReportItem" structure="NI_REPORT_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
