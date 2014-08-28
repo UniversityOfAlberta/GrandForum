@@ -134,6 +134,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
                                     $('#download_submitted').text(name + ' PDF');
                                     $('.submit_status_cell').html('<b>' + status + '</b>');
                                     $('#ex_time_submitted').html(time);
+                                    $('#download_submitted').removeAttr('disabled');
                                 }
 	                        }
 	                    });

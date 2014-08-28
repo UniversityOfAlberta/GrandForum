@@ -388,7 +388,6 @@ abstract class AbstractReport extends SpecialPage {
     	    else{
     	        $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
             }
-            $foundSameUser = true;
     	}
     	else{
     	    // First check submitted
