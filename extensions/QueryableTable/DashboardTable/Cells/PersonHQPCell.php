@@ -198,13 +198,25 @@ class PersonHQPCell extends DashboardCell {
 	        $movedOn = $hqp->getMovedOn();
 	        $where = $movedOn['where'];
 	        $when = date("M d, Y", strtotime($when));
-	        $movedOnString = "Moved To {$where}";
-	        if($thesis != null){
-	            $movedOnString .= " / Graduated";
+	        if($where != ""){
+	            $movedOnString .= "Moved To {$where}";
 	        }
-	        $movedOnString .= " on {$when} / ";
+	        if($thesis != null){
+	            if($where != ""){
+	                $movedOnString .= " / ";
+	            }
+	            $movedOnString .= "Graduated";
+	        }
+	        if($movedOnString != ""){
+	            $movedOnString .= " on {$when}";
+	        }
 	    }
-        $details = "<td style='$style;'><span class='pdfnodisplay'>".implode(", ", $projectNames)."</span></td><td style='$style;'><a href='{$hqp->getUrl()}' target='_blank'>{$hqp->getReversedName()}</a>$inactive<span class='pdfOnly'>; </span></td><td style='$style;'><span class='pdfnodisplay'>{$posString}</span></td><td style='$style;'>{$uniString}<div class='pdfOnly' style='width:100%;text-align:right;'><i>$movedOnString".implode(", ", $projectNames)."</i></div></td>";
+	    $projString = "";
+	    if($movedOnString != "" && count($projectNames) > 0){
+	        $projString .= " / ";
+	    }
+	    $projString .= implode(", ", $projectNames);
+        $details = "<td style='$style;'><span class='pdfnodisplay'>".implode(", ", $projectNames)."</span></td><td style='$style;'><a href='{$hqp->getUrl()}' target='_blank'>{$hqp->getReversedName()}</a>$inactive<span class='pdfOnly'>; </span></td><td style='$style;'><span class='pdfnodisplay'>{$posString}</span></td><td style='$style;'>{$uniString}<div class='pdfOnly' style='width:100%;text-align:right;'><i>{$movedOnString}{$projString}</i></div></td>";
         return $details;
     }
 }

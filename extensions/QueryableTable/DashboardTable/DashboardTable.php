@@ -244,6 +244,9 @@ class DashboardTable extends QueryableTable{
                                 $cell instanceof PublicationCell){
                                 $details .= "</ul></li>\n";
                             }
+                            if(($cell->label == "HQP") && $cell instanceof PersonHQPCell){
+                                $details .= "</ul></li>\n";
+                            }
                             $details .= "</ul></div>\n";
                         }
                     }
