@@ -192,8 +192,8 @@ class DashboardTable extends QueryableTable{
                     if($cell instanceof DashboardCell){
                         foreach($cell->values as $type => $values){
                             $extra = ($type == "All") ? "" : ' / '.$type;
-                            $details .= "<div style='margin-left:25px;'><p><span class='label'>{$cell->label}$extra:</span></p><ul>\n";
-                            $firstTimeStatus = array();
+                            $details .= "<h2>{$cell->label}$extra</h2><div><ul>\n";
+                            $firstTimeType = array();
                             foreach($values as $item){
                                 $row = new SmartDomDocument();
                                 $row->loadHTML($cell->detailsRow($item));
@@ -225,7 +225,15 @@ class DashboardTable extends QueryableTable{
                                         $pr = $data['peer_reviewed'];
                                     }
                                     $status = $paper->getStatus().$pr;
-                                    if(!isset($firstTimeStatus[$status])){
+                                    $type = $paper->getCCVType();
+                                    if(!isset($firstTimeType[$type])){
+                                        if(count($firstTimeType) > 0){
+                                            $details .= "</ul></li>\n";
+                                        }
+                                        $details .= "<li>$type<ul>";
+                                        $firstTimeType[$type] = true;
+                                    }
+                                    /*if(!isset($firstTimeStatus[$status])){
                                         if(count($firstTimeStatus) > 0){
                                             $details .= "</ul></li>\n";
                                         }
@@ -239,8 +247,7 @@ class DashboardTable extends QueryableTable{
                                             }
                                         }
                                         $details .= "<li>".$paper->getStatus()."{$peerReviewedStatus}<ul>";
-                                        $firstTimeStatus[$status] = true;
-                                    }
+                                    }*/
                                 }
                                 $details .= "<li>".$row."</li>\n";
                             }

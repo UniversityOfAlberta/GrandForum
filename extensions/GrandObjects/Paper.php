@@ -548,6 +548,38 @@ class Paper extends BackboneModel{
 	    return $this->type;
 	}
 	
+	/**
+	 * Returns the 'CCV' type of this Paper
+	 * @return string The 'CCV' type of this Paper
+	 * TODO: Change this to use the Products.xml once it is used
+	 */
+	function getCCVType(){
+	    switch($this->getType()){
+	        case "Aesthetic Object":
+	            return "Aesthetic Object";
+	        case "Device/Machine":
+	            return "Device/Machine";
+	        case "Open Software":
+	            return "Open Software";
+	        case "Patent":
+	            return "Patent";
+	        case "Startup Company":
+	            return "Startup Company";
+	        case "Repository":
+	            return "Repository";
+	        case "Journal Paper":
+	            return "Journals";
+	        case "Book Chapter":
+	            return "Book Chapters";
+	        case "Conference Paper":
+            case "Collections Paper":
+            case "Proceedings Paper":
+                return "Conference Publications";
+            default:
+                return "Other";
+	    }
+	}
+	
 	// Returns the venue for this Paper
 	function getVenue(){
 		$venue = $this->venue;

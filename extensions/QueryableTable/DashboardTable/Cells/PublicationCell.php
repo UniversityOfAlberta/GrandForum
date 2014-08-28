@@ -59,29 +59,29 @@ abstract class PublicationCell extends DashboardCell {
         $value = 0;
         switch($type){
             case "Journal Paper":
-                $value = 0;
+                $value = 100;
                 break;
             case "Book Chapter":
-                $value = 1;
+                $value = 200;
                 break;
             case "Conference Paper":
             case "Collections Paper":
             case "Proceedings Paper":
-                $value = 2;
+                $value = 300;
                 break;
             case "PHD Dissertation":
             case "PHD Thesis":
-                $value = 3;
+                $value = 400;
                 break;
             case "Masters Dissertation":
             case "Masters Thesis":
-                $value = 4;
+                $value = 500;
                 break;
             case "Bachelors Thesis":
-                $value = 5;
+                $value = 600;
                 break;
             default:
-                $value = 100;
+                $value = 1000;
                 break;
         }
         return $value;
@@ -101,6 +101,7 @@ abstract class PublicationCell extends DashboardCell {
     function detailsRow($item){
         global $wgServer, $wgScriptPath;
         $paper = Paper::newFromId($item);
+        $data = $paper->getData();
         $projects = $paper->getProjects();
         $projs = array();
         foreach($projects as $project){
@@ -141,7 +142,29 @@ abstract class PublicationCell extends DashboardCell {
                 $hqpAuthored = "<span class='pdfOnly'>;</span> (Authored by HQP)";
             }
         }
-        $details = "<td style='white-space:nowrap;text-align:left;' class='pdfnodisplay'>{$paper->getDate()}</td><td style='text-align:left;' class='pdfnodisplay'>".implode(", ", $projs)."</td><td class='pdfnodisplay' style='text-align:left;'>{$first_author}{$hqpAuthored}</td><td style='width:50%;text-align:left;'>{$citation}<div class='pdfOnly' style='width:100%;text-align:right;'><i>{$hqpAuthored}".implode(", ", $projs)."</i></div></td>\n";
+        $status = $paper->getStatus();
+        if(!isset($data['peer_reviewed'])){
+            $pr = "No";
+        }
+        else{
+            $pr = $data['peer_reviewed'];
+        }
+        if($pr == "No"){
+            $pr = "Not Peer Reviewed";
+        }
+        else if($pr == "Yes"){
+            $pr = "Peer Reviewed";
+        }
+        $stat = "";
+        if($paper->getCategory() == "Publication"){
+            $stat = "{$status}&nbsp;/&nbsp;{$pr}&nbsp;/&nbsp;";
+        }
+        else{
+            if($status != ""){
+                $stat = "{$status}&nbsp;/&nbsp;";
+            }
+        }
+        $details = "<td style='white-space:nowrap;text-align:left;' class='pdfnodisplay'>{$paper->getDate()}</td><td style='text-align:left;' class='pdfnodisplay'>".implode(", ", $projs)."</td><td class='pdfnodisplay' style='text-align:left;'>{$first_author}{$hqpAuthored}</td><td style='width:50%;text-align:left;'>{$citation}<div class='pdfOnly' style='width:100%;text-align:right;'><i>{$stat}".implode(", ", $projs)."</i></div></td>\n";
         return $details;
     }
     
