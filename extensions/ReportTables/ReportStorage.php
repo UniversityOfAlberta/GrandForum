@@ -144,7 +144,8 @@ class ReportStorage {
 
         DBFunctions::execSQL("UPDATE grand_pdf_report 
                               SET submitted = 1,
-                                  submission_user_id = $impersonateId
+                                  submission_user_id = $impersonateId,
+                                  timestamp = timestamp
                               WHERE token = '{$tok}' AND user_id = {$this->_uid};", true);
         // Refresh.
         $this->load_metadata($tok);
@@ -178,7 +179,8 @@ class ReportStorage {
 
         DBFunctions::execSQL("UPDATE grand_pdf_report 
                               SET submitted = 1,
-                                  submission_user_id = $impersonateId 
+                                  submission_user_id = $impersonateId,
+                                  timestamp = timestamp
                               WHERE token = '{$tok}'", true);
         // Refresh.
         $this->load_metadata($tok);
