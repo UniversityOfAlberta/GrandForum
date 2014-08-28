@@ -331,7 +331,8 @@
                     <ol>
                         <li>Generate a new report for submission: this step will generate three PDF documents: (a) the "Project Report PDF" is the document that will be forwarded to the RMC; (b) the "Project Milestones PDF" is for the project records; and (c) the "Project Comments PDF" includes all the co-PLs comments regarding the project NIs.</li>
                         <li>Download the PDF documents for your records.</li>
-                        <li>Submit your report: this step indicates that you have read and approve the contents of the PDF document to be forwarded to the RMC. Note that "submitting" does not lock the reporting workflow; you can regenerate and resubmit your report as many times as you wish before the deadline, if you need to make additional edits to your report. The most recently generated PDF is used for evaluation.</li>
+                        <li>Submit your report: this step indicates that you have read and approve the contents of the PDF document to be forwarded to the RMC. Note that "submitting" does not lock the reporting workflow; you can regenerate and resubmit your report as many times as you wish before the deadline, if you need to make additional edits to your report. The most recently submitted PDF is used for evaluation.</li>
+                        <li>Download the PDF which will be used for evaluation; To verify that the correct PDF will be used for evaluation, you can download the submitted PDF.</li>
             ]]>
         </Instructions>
         <ReportItem id="my_progress_head" type="ProgressReportItem" reportType="ProjectReport">

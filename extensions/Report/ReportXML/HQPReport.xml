@@ -154,9 +154,13 @@ Briefly describe your interactions (if any) with receptors, companies, Project C
 Please note:
                         <ul>
                             <li>If you need to make a correction to your report that is already submitted, you can generate and submit again</li>
-                            <li>The most recently generated pdf is used for evaluation</li>
+                            <li>The most recently submitted pdf is used for evaluation</li>
+                            <li>If no pdf has been submitted, then the most recently generated pdf will be used for evaluation instead.</li>
                             <li>If you encounter any issues, please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a></li>
                         </ul>
+                    </p>
+                    <p><b>4. Download the PDF which will be used for evaluation</b><br />
+                        To verify that the correct PDF will be used for evaluation, you can download the submitted PDF
                     </p>
                     <p><b>Note: All your Supervisors have access to your on-line project-specific dashboard rows; your project-specific comments under criteria A B C; and your project-specific milestone comments.</b></p>
             ]]>

@@ -423,9 +423,11 @@ Note that there are two distinct differences between the online document that yo
             <![CDATA[
                     <p>To submit your report, follow the following three steps.</p>
                     <ol>
-                        <li>Generate a new report for submission: this step will generate two PDF documents: the "NI Report PDF" is the document that will be forwarded to the RMC; the "NI Milestones PDF" is for your own and your PLs records.</li>
-                        <li>Download the two PDF documents for your records.</li>
-                        <li>Submit your report: this step indicates that you have read and approve the contents of the PDF document to be forwarded to the RMC. Note that "submitting" does not lock the reporting workflow; you can regenerate and resubmit your report as many times as you wish before the deadline, if you need to make additional edits to your report. The most recently generated PDF is used for evaluation.</li>
+                        <li>Generate a new report for submission: this step will generate a PDF document.</li>
+                        <li>Download the PDF document for your records.</li>
+                        <li>Submit your report: this step indicates that you have read and approve the contents of the PDF document to be forwarded to the RMC. Note that "submitting" does not lock the reporting workflow; you can regenerate and resubmit your report as many times as you wish before the deadline, if you need to make additional edits to your report. The most recently submitted PDF is used for evaluation.  If no PDF has been submitted, then the most recently generated PDF is used for evaluation.</li>
+                        <li>Download the PDF which will be used for evaluation; To verify that the correct PDF will be used for evaluation, you can download the submitted PDF.</li>
+                    </p>
                     </ol>
                     <p><b>Note: All your PLs have access to your on-line project-specific dashboard rows; your executive summary; your project-specific comments under criteria A B C and D; and your project-specific milestone comments.</b></p>
             ]]>
