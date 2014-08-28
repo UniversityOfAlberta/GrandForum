@@ -27,6 +27,7 @@ class Paper extends BackboneModel{
     var $projectsWaiting;
     var $deleted;
     var $access_id = 0;
+    var $access = "Forum"; // Either 'Public' or 'Forum'
     var $created_by = 0;
     var $ccv_id;
     var $bibtex_id;
@@ -45,7 +46,8 @@ class Paper extends BackboneModel{
         $sql = "SELECT *
                 FROM grand_products
                 WHERE id = '$id'
-                AND (access_id = '{$me->getId()}' OR access_id = 0)";
+                AND (access_id = '{$me->getId()}' OR access_id = 0)
+                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
         self::$cache[$paper->id] = &$paper;
@@ -66,7 +68,8 @@ class Paper extends BackboneModel{
         $sql = "SELECT *
                 FROM grand_products
                 WHERE ccv_id = '$ccv_id'
-                AND (access_id = '{$me->getId()}' OR access_id = 0)";
+                AND (access_id = '{$me->getId()}' OR access_id = 0)
+                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
         self::$cache[$paper->id] = &$paper;
@@ -88,7 +91,8 @@ class Paper extends BackboneModel{
         $sql = "SELECT *
                 FROM grand_products
                 WHERE bibtex_id = '$bibtex_id'
-                AND (access_id = '{$me->getId()}' OR access_id = 0)";
+                AND (access_id = '{$me->getId()}' OR access_id = 0)
+                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
         self::$cache[$paper->id] = &$paper;
@@ -107,9 +111,11 @@ class Paper extends BackboneModel{
         if(count($ids) == 0){
             return array();
         }
+        $me = Person::newFromWgUser();
         $sql = "SELECT *
                 FROM grand_products
-                WHERE id IN (".implode(",", $ids).")";
+                WHERE id IN (".implode(",", $ids).")
+                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
         if(!$onlyPublic){
             $me = Person::newFromWgUser();
             $sql .= "\nAND (access_id = '{$me->getId()}' OR access_id = '0')";
@@ -147,6 +153,7 @@ class Paper extends BackboneModel{
                 AND `type` LIKE '$type'
                 AND `status` LIKE '$status'
                 AND (access_id = '0' OR access_id = '{$me->getId()}')
+                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))
                 ORDER BY `id` desc";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
@@ -178,7 +185,8 @@ class Paper extends BackboneModel{
             $sql = "SELECT *
                     FROM grand_products
                     WHERE id IN (".implode(",", $ids).")
-                    AND access_id = 0";
+                    AND access_id = 0
+                    AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 $paper = new Paper(array($row));
@@ -235,6 +243,7 @@ class Paper extends BackboneModel{
             else {
                 $sql .= "\nWHERE 1";
             }
+            $sql .= "\nAND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
             $sql .= "\nAND p.`deleted` = '0'";
             if($category != "all"){
                 $sql .= "\nAND p.`category` = '$category'";
@@ -328,6 +337,7 @@ class Paper extends BackboneModel{
             else {
                 $sql .= "\nWHERE 1";
             }
+            $sql .= "\nAND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
             $sql .= "\nAND p.`deleted` = '0'";
             if($category != "all"){
                 $sql .= "\nAND p.`category` = '$category'";
@@ -460,6 +470,7 @@ class Paper extends BackboneModel{
             $this->deleted = $data[0]['deleted'];
             $this->access_id = $data[0]['access_id'];
             $this->created_by = $data[0]['created_by'];
+            $this->access = $data[0]['access'];
             $this->ccv_id = $data[0]['ccv_id'];
             $this->bibtex_id = $data[0]['bibtex_id'];
             $this->projects = array();
@@ -503,6 +514,10 @@ class Paper extends BackboneModel{
     
     function getCreatedBy(){
         return $this->created_by;
+    }
+    
+    function getAccess(){
+        return $this->access;
     }
     
     function isPublished(){
@@ -1045,6 +1060,7 @@ class Paper extends BackboneModel{
                                                 'data' => serialize($this->data),
                                                 'access_id' => $this->access_id,
                                                 'created_by' => $me->getId(),
+                                                'access' => $this->access,
                                                 'ccv_id' => $this->ccv_id,
                                                 'bibtex_id' => $this->bibtex_id),
                                           true);
@@ -1133,7 +1149,8 @@ class Paper extends BackboneModel{
                                                 'status' => $this->status,
                                                 'authors' => serialize($authors),
                                                 'data' => serialize($this->data),
-                                                'access_id' => $this->access_id),
+                                                'access_id' => $this->access_id,
+                                                'access' => $this->access),
                                           array('id' => EQ($this->id)),
                                           array(),
                                           true);
@@ -1297,7 +1314,8 @@ class Paper extends BackboneModel{
                           'lastModified' => $this->lastModified,
                           'deleted' => $this->isDeleted(),
                           'access_id' => $this->getAccessId(),
-                          'created_by' => $this->getCreatedBy());
+                          'created_by' => $this->getCreatedBy(),
+                          'access' => $this->getAccess());
             Cache::store($this->getCacheId(), $json, 60*60);
             return $json;
         }

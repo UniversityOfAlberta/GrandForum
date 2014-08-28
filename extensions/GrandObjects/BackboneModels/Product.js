@@ -100,7 +100,8 @@ Product = Backbone.Model.extend({
         lastModified: "",
         deleted: "",
         access_id: 0,
-        created_by: 0
+        created_by: 0,
+        access: "Forum"
     },
 });
 

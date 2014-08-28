@@ -50,6 +50,7 @@ class ProductAPI extends RESTAPI {
         $paper->projects = $this->POST('projects');
         $paper->data = (array)($this->POST('data'));
         $paper->access_id = $this->POST('access_id');
+        $paper->access = $this->POST('access');
         $status = $paper->create();
         if(!$status){
             $this->throwError("The product <i>{$paper->getTitle()}</i> could not be created");
@@ -74,6 +75,7 @@ class ProductAPI extends RESTAPI {
         $paper->projects = $this->POST('projects');
         $paper->data = (array)($this->POST('data'));
         $paper->access_id = $this->POST('access_id');
+        $paper->access = $this->POST('access');
         $status = $paper->update();
         if(!$status){
             $this->throwError("The product <i>{$paper->getTitle()}</i> could not be updated");

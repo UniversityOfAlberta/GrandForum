@@ -61,6 +61,10 @@ Person = Backbone.Model.extend({
         this.privateProducts.fetch();
         return this.privateProducts;
     },
+    
+    isLoggedIn: function(){
+        return (this.get('id') != 0);
+    },
 
     urlRoot: 'index.php?action=api.person',
     

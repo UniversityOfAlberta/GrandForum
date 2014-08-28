@@ -5,7 +5,7 @@ BackbonePage::register('Products', 'Products', 'network-tools', dirname(__FILE__
 class Products extends BackbonePage {
     
     function userCanExecute($user){
-        return $user->isLoggedIn();
+        return true;
     }
     
     function getTemplates(){

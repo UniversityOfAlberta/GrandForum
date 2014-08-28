@@ -67,9 +67,15 @@ pageRouter.on('route:showNonGrandProducts', function(category){
 
 pageRouter.on('route:newProduct', function(category){
     // Create New Product
-    var product = new Product({'category': category});
-    this.closeCurrentView();
-    this.currentView = new ProductEditView({el: $("#currentView"), model: product});
+    if(!me.isLoggedIn()){
+        clearAllMessages();
+        addError("You do not have permissions to view this page");
+    }
+    else{
+        var product = new Product({'category': category});
+        this.closeCurrentView();
+        this.currentView = new ProductEditView({el: $("#currentView"), model: product});
+    }
 });
 
 pageRouter.on('route:showProduct', function (category, id) {
@@ -81,9 +87,15 @@ pageRouter.on('route:showProduct', function (category, id) {
 
 pageRouter.on('route:editProduct', function (category, id) {
     // Get A single product
-    var product = new Product({'id': id});
-    this.closeCurrentView();
-    this.currentView = new ProductEditView({el: $("#currentView"), model: product});
+    if(!me.isLoggedIn()){
+        clearAllMessages();
+        addError("You do not have permissions to view this page");
+    }
+    else{
+        var product = new Product({'id': id});
+        this.closeCurrentView();
+        this.currentView = new ProductEditView({el: $("#currentView"), model: product});
+    }
 });
 
 // Start Backbone history a necessary step for bookmarkable URL's
