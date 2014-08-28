@@ -157,11 +157,11 @@ abstract class PublicationCell extends DashboardCell {
         }
         $stat = "";
         if($paper->getCategory() == "Publication"){
-            $stat = "{$status}&nbsp;/&nbsp;{$pr}&nbsp;/&nbsp;";
+            $stat = "{$status} / {$pr} / ";
         }
         else{
             if($status != ""){
-                $stat = "{$status}&nbsp;/&nbsp;";
+                $stat = "{$status} / ";
             }
         }
         $details = "<td style='white-space:nowrap;text-align:left;' class='pdfnodisplay'>{$paper->getDate()}</td><td style='text-align:left;' class='pdfnodisplay'>".implode(", ", $projs)."</td><td class='pdfnodisplay' style='text-align:left;'>{$first_author}{$hqpAuthored}</td><td style='width:50%;text-align:left;'>{$citation}<div class='pdfOnly' style='width:100%;text-align:right;'><i>{$stat}".implode(", ", $projs)."</i></div></td>\n";

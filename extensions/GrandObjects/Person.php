@@ -1092,7 +1092,8 @@ class Person extends BackboneModel {
     function getDegreeReceivedDate($guess = true){
         $data = DBFunctions::select(array('grand_relations'),
                                     array('end_date'),
-                                    array('user2' => EQ($this->getId())),
+                                    array('user2' => EQ($this->getId()),
+                                          'type' => EQ('Supervises')),
                                     array('end_date' => 'ASC'));
         if(DBFunctions::getNRows() > 0)
           return $data[0]['end_date'];
