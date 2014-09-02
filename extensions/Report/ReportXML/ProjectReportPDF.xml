@@ -171,7 +171,7 @@
     <ReportSection id="subprojects" name="Sub-Project Leader Comments" number="3" blobSection="LDR_MILESTONE" type="ReportSection" pagebreak="false" renderpdf="true">
         <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet">
             <ReportItem id="subhead" type="StaticReportItem">
-                <![CDATA[<h2>{$project_name}</h2>]]>
+                <![CDATA[<h2>{$project_name} - {$project_full_name}</h2>]]>
             </ReportItem>
             <ReportItemSet id="leaders" type="ProjectLeadersReportItemSet">
                 <ReportItem id="name" type="StaticReportItem">

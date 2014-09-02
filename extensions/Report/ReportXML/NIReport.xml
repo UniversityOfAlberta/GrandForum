@@ -397,7 +397,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
                 <![CDATA[<h2>{$project_name}</h2>]]>
             </ReportItem>
             <ReportItemSet id="subprojects" type="PersonSubLeadSubProjectReportItemSet">
-                <ReportItemSet id='sub_head' type="ToggleHeaderReportItemSet" changeColor="true" level="3" title="{$project_name}">
+                <ReportItemSet id='sub_head' type="ToggleHeaderReportItemSet" changeColor="true" level="3" title="{$project_name} - {$project_full_name}">
                     <ReportItemSet id="sub_limit" type="LimitReportItemSet" limit="3600" noun="Question">
                         <ReportItem id="sub_project_goals" rows="7" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_GOALS" type="TextareaReportItem">
                             <![CDATA[<h3>Goals for this year</h3>{$item}<br />]]>
