@@ -42,6 +42,7 @@ class DashboardReportItem extends StaticReportItem {
                 $dashboard = $top->copy()->union($dashboard->copy()->limit(1,1)->union($dashboard->copy()->limit(1,1))->union($dashboard->copy()->limit(1,1)) );
             }
             $dashboard->filterCols(HEAD, array("Projects"));
+            $dashboard->filterCols(HEAD, array("People"));
         }
 		$dash = "";
         if($limit > 0){

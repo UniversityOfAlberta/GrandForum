@@ -55,7 +55,8 @@
                 <p><span class='label'>Department:</span> {$user_dept}</p>
                 <p><span class='label'>University:</span> {$user_uni}</p>
                 <p><span class='label'>Supervisor(s):</span> {$user_supervisors}</p>
-                <p><span class='label'>Projects:</span> {$user_projects}</p>
+                <p><span class='label'>Phase 2 Projects:</span> {$user_phase2_projects}</p>
+                <p><span class='label'>Phase 1 Projects:</span> {$user_phase1_projects}</p>
             </div>
         ]]>
         </ReportItem>

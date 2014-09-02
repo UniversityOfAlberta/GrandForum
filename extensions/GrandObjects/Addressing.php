@@ -184,7 +184,10 @@ define('RES_RESACT_NEXTPLANS',      9);
 define('RES_RESACT_FILE',           10);
 define('RES_RESACT_CONTRIBUTIONS',  11);
 
-define('RES_SUBPROJECT_COMMENTS',   1);
+define('RES_SUBPROJECT_GOALS',          1);
+define('RES_SUBPROJECT_ACHEIVEMENTS',   2);
+define('RES_SUBPROJECT_FUTURE',         3);
+define('RES_SUBPROJECT_CHAMPS',         4);
 
 define('HQP_DEM_LEVEL',			1);
 define('HQP_DEM_GENDER',		2);
@@ -291,3 +294,5 @@ define('EVL_LOI_C',		2);
  * RP_EVAL_RESEARCHER; project ID if report type is RP_EVAL_PROJECT.
  */
 
+// Sub-Items
+define('RES_RESACT_PHASE1',     1);

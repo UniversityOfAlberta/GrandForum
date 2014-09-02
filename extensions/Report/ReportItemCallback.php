@@ -70,11 +70,16 @@ class ReportItemCallback {
             "user_uni" => "getUserUni",
             "user_supervisors" => "getUserSupervisors",
             "user_projects" => "getUserProjects",
+            "user_phase1_projects" => "getUserPhase1Projects", // Hopefully temporary
+            "user_phase2_projects" => "getUserPhase2Projects", // Hopefully temporary
             "user_requested_budget" => "getUserRequestedBudget",
             "user_allocated_budget" => "getUserAllocatedBudget",
             "user_project_comment" => "getUserProjectComment",
             "user_project_future" => "getUserProjectFuture",
-            "user_subproject_comments" => "getUserSubProjectComments",
+            "user_subproject_goals" => "getUserSubProjectGoals",
+            "user_subproject_acheivements" => "getUserSubProjectAcheivements",
+            "user_subproject_future" => "getUserSubProjectFuture",
+            "user_subproject_champs" => "getUserSubProjectChamps",
             "user_mtg_music" => "getUserMTGMusic",
             "user_mtg_firstnations" => "getUserMTGFirstNations",
             "user_mtg_socialproblems" => "getUserMTGSocialProblems",
@@ -93,6 +98,8 @@ class ReportItemCallback {
             "champ_q4" => "getChampQ4",
             "champ_q5" => "getChampQ5",
             "champ_q6" => "getChampQ6",
+            // Sub-PL (SPL)
+            "spl_subprojects" => "getSPLSubProjects",
             // ISAC
             "isac_comment" => "getISACComment",
             // Products
@@ -137,6 +144,8 @@ class ReportItemCallback {
             $deleted = ($project->isDeleted()) ? " (Ended)" : "";
             $project_name = $project->getName().$deleted;
         }
+        $project_name = str_replace("<", "&lt;", $project_name);
+        $project_name = str_replace(">", "&gt;", $project_name);
         return $project_name;
     }
     
@@ -761,7 +770,40 @@ class ReportItemCallback {
                 $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";
             }
         }
-        return implode(", ", $projects);
+        if(count($projects) > 0){
+            return implode(", ", $projects);
+        }
+        return "N/A";
+    }
+    
+    function getUserPhase1Projects(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $projects = array();
+        foreach($person->getProjectsDuring() as $project){
+            if(!$project->isSubProject() && $project->getPhase() == 1){
+                $deleted = ($project->isDeleted()) ? " (Ended)" : "";
+                $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";
+            }
+        }
+        if(count($projects) > 0){
+            return implode(", ", $projects);
+        }
+        return "N/A";
+    }
+    
+    function getUserPhase2Projects(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $projects = array();
+        foreach($person->getProjectsDuring() as $project){
+            if(!$project->isSubProject() && $project->getPhase() == 2){
+                $deleted = ($project->isDeleted()) ? " (Ended)" : "";
+                $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";
+            }
+        }
+        if(count($projects) > 0){
+            return implode(", ", $projects);
+        }
+        return "N/A";
     }
     
     function getUserRequestedBudget(){
@@ -817,15 +859,44 @@ class ReportItemCallback {
         return $data;
     }
     
-    function getUserSubProjectComments(){
+    function getUserSubProjectGoals(){
         $person = Person::newFromId($this->reportItem->personId);
         $project = Project::newFromId($this->reportItem->projectId);
         
-        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_SUBPROJECTS, RES_SUBPROJECT_COMMENTS, 0);
+        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_SUBPROJECTS, RES_SUBPROJECT_GOAL, 0);
         $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), $project->getId());
         $blob->load($addr);
         $data = $blob->getData();
-        return preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
+    }
+    
+    function getUserSubProjectAcheivements(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_SUBPROJECTS, RES_SUBPROJECT_ACHEIVEMENTS, 0);
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), $project->getId());
+        $blob->load($addr);
+        $data = $blob->getData();
+    }
+    
+    function getUserSubProjectFuture(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_SUBPROJECTS, RES_SUBPROJECT_FUTURE, 0);
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), $project->getId());
+        $blob->load($addr);
+        $data = $blob->getData();
+    }
+    
+    function getUserSubProjectChamps(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_SUBPROJECTS, RES_SUBPROJECT_CHAMPS, 0);
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), $project->getId());
+        $blob->load($addr);
+        $data = $blob->getData();
     }
     
     function getUserMTGMusic(){
@@ -984,6 +1055,19 @@ class ReportItemCallback {
             }
         }
         return $champion_html;
+    }
+    
+    function getSPLSubProjects(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $subs = array();
+        foreach($project->getSubProjects() as $sub){
+            if($person->leadershipOf($sub)){
+                $subs[] = "<a href='{$sub->getUrl()}' target='_blank'>{$sub->getName()}</a>";
+            }
+        }
+        return implode(", ", $subs);
     }
     
     function getISACComment(){

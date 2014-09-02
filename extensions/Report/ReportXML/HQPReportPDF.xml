@@ -34,10 +34,23 @@
                 <p><span class='label'>Department:</span> {$user_dept}</p>
                 <p><span class='label'>University:</span> {$user_uni}</p>
                 <p><span class='label'>Supervisor(s):</span> {$user_supervisors}</p>
-                <p><span class='label'>Projects:</span>
+                <p><span class='label'>Phase 2 Projects:</span>
         ]]>
         </ReportItem>
-        <ReportItemSet id="user_projects" type="PersonProjectReportItemSet">
+        <ReportItemSet id="user_projects" type="PersonProjectReportItemSet" phase="2">
+            <ReportItem id="user_project" type="StaticReportItem">
+                 <![CDATA[&nbsp;{$project_name}]]>
+            </ReportItem>
+            <ReportItem id="user_project_footnote" type="FootnoteReportItem" text="{$project_full_name}">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="basic_info" type="StaticReportItem">
+        <![CDATA[
+                </p><p><span class='label'>Phase 1 Projects:</span>
+        ]]>
+        </ReportItem>
+        <ReportItemSet id="user_projects" type="PersonProjectReportItemSet" phase="1">
             <ReportItem id="user_project" type="StaticReportItem">
                  <![CDATA[&nbsp;{$project_name}]]>
             </ReportItem>

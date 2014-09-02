@@ -47,10 +47,23 @@
                 <p><span class='label'>Position:</span> {$user_level}</p>
                 <p><span class='label'>Department:</span> {$user_dept}</p>
                 <p><span class='label'>University:</span> {$user_uni}</p>
-                <p><span class='label'>Projects:</span>
+                <p><span class='label'>Phase 2 Projects:</span>
         ]]>
         </ReportItem>
-        <ReportItemSet id="user_projects" type="PersonProjectReportItemSet">
+        <ReportItemSet id="user_projects" type="PersonProjectReportItemSet" phase="2">
+            <ReportItem id="user_project" type="StaticReportItem">
+                 <![CDATA[&nbsp;{$project_name}]]>
+            </ReportItem>
+            <ReportItem id="user_project_footnote" type="FootnoteReportItem" text="{$project_full_name}">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="basic_info" type="StaticReportItem">
+        <![CDATA[
+                </p><p><span class='label'>Phase 1 Projects:</span>
+        ]]>
+        </ReportItem>
+        <ReportItemSet id="user_projects" type="PersonProjectReportItemSet" phase="1">
             <ReportItem id="user_project" type="StaticReportItem">
                  <![CDATA[&nbsp;{$project_name}]]>
             </ReportItem>
@@ -90,11 +103,14 @@
         </ReportItem>
         <ReportItemSet id="OR" type="ORReportItemSet">
             <ReportItemSet id="ProjectLimit_IIa" type="LimitReportItemSet" limit="1800">
-                <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+                <ReportItemSet id="projects" type="PersonProjectReportItemSet" phase="2">
                     <ReportItem id="IIa" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_EXCELLENCE" type="AutoCompleteTextareaReportItem" set="PersonProductsReportItemSet" index="product_id" label="product_title" name="Products" tooltipOptionId="Product ID" tooltipOptionName="Product Title">
                         <![CDATA[<i>{$project_name}:</i><br />{$item}<br /><br />]]>
                     </ReportItem>
                 </ReportItemSet>
+                <ReportItem id="IIa" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_EXCELLENCE" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="PersonProductsReportItemSet" index="product_id" label="product_title" name="Products" tooltipOptionId="Product ID" tooltipOptionName="Product Title">
+                    <![CDATA[<i>Phase 1 Projects:</i><br />{$item}<br /><br />]]>
+                </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
     <!-- IIb. Development of Highly Qualified Personnel -->
@@ -103,11 +119,14 @@
         </ReportItem>
         <ReportItemSet id="OR" type="ORReportItemSet">
             <ReportItemSet id="ProjectLimit_IIb" type="LimitReportItemSet" limit="1800">
-                <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+                <ReportItemSet id="projects" type="PersonProjectReportItemSet" phase="2">
                     <ReportItem id="IIb" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_HQPDEV" type="AutoCompleteTextareaReportItem" set="PersonSupervisesReportItemSet" index="user_id" label="user_name" name="HQP" tooltipOptionId="HQP ID" tooltipOptionName="HQP Name">
                         <![CDATA[<i>{$project_name}:</i><br />{$item}<br /><br />]]>
                     </ReportItem>
                 </ReportItemSet>
+                <ReportItem id="IIb" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_HQPDEV" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="PersonSupervisesReportItemSet" index="user_id" label="user_name" name="HQP" tooltipOptionId="HQP ID" tooltipOptionName="HQP Name">
+                    <![CDATA[<i>Phase 1 Projects:</i><br />{$item}<br /><br />]]>
+                </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
     <!-- IIc. Networking and Partnerships -->
@@ -116,11 +135,14 @@
         </ReportItem>
         <ReportItemSet id="OR" type="ORReportItemSet">
             <ReportItemSet id="ProjectLimit_IIc" type="LimitReportItemSet" limit="1800">
-                <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+                <ReportItemSet id="projects" type="PersonProjectReportItemSet" phase="2">
                     <ReportItem id="IIc" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETWORKING" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members">
                         <![CDATA[<i>{$project_name}:</i><br />{$item}<br /><br />]]>
                     </ReportItem>
                 </ReportItemSet>
+                <ReportItem id="IIc" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETWORKING" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members">
+                    <![CDATA[<i>Phase 1 Projects:</i><br />{$item}<br /><br />]]>
+                </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
     <!-- IId. Knowledge and Technology Exchange and Exploitation -->
@@ -129,11 +151,14 @@
         </ReportItem>
         <ReportItemSet id="OR" type="ORReportItemSet">
             <ReportItemSet id="ProjectLimit_IId" type="LimitReportItemSet" limit="1800">
-                <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+                <ReportItemSet id="projects" type="PersonProjectReportItemSet" phase="2">
                     <ReportItem id="IId" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_KTEE" type="TextareaReportItem">
                         <![CDATA[<i>{$project_name}:</i><br />{$item}<br /><br />]]>
                     </ReportItem>
                 </ReportItemSet>
+                <ReportItem id="IId" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_KTEE" blobSubItem="RES_RESACT_PHASE1" type="TextareaReportItem">
+                    <![CDATA[<i>Phase 1 Projects:</i><br />{$item}<br /><br />]]>
+                </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
     <!-- IIe. Management of the Network -->
@@ -175,11 +200,33 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="subprojects" name="Sub-Project Leader" tooltip="Comments about lead sub-projects" blobSection="RES_SUBPROJECTS" type="EditableReportSection" autosave="true" reportCharLimits="false" renderpdf="true">
+    <ReportSection id="subprojects" name="Sub Project Leader" tooltip="Comments about lead sub-projects" blobSection="RES_SUBPROJECTS" type="EditableReportSection" autosave="true" reportCharLimits="false" pagebreak="false" renderpdf="true">
         <ReportItemSet id="projects" type="PersonSubLeadProjectReportItemSet">
-            <ReportItem id="sub_project_{$project_id}" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_COMMENTS" type="AutoCompleteTextareaReportItem" set="PersonSubLeadSubProjectReportItemSet" index="project_id" label="project_name" name="Sub-Projects" showNotReferenced="true" tooltipOptionId="Project ID" tooltipOptionName="Project Name">
-                <![CDATA[<h2>{$project_name}</h2><br />{$item}<br />]]>
+            <ReportItem id="project" type="StaticReportItem">
+                <![CDATA[<h2>{$project_name}</h2>]]>
             </ReportItem>
+            <ReportItemSet id="subprojects" type="PersonSubLeadSubProjectReportItemSet">
+                <ReportItem id="project" type="StaticReportItem">
+                    <![CDATA[<h3>{$project_name}</h3>]]>
+                </ReportItem>
+                <ReportItemSet id="sub_limit" type="LimitReportItemSet" limit="3600" noun="Question">
+                    <ReportItem id="sub_project_goals" rows="7" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_GOALS" type="TextareaReportItem">
+                        <![CDATA[<b>Goals for this year</b><br />{$item}<br />]]>
+                    </ReportItem>
+                    <ReportItem id="sub_project_acheivements" rows="10" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_ACHEIVEMENTS" type="TextareaReportItem">
+                        <![CDATA[<b>Acheivements</b><br />{$item}<br />]]>
+                    </ReportItem>
+                    <ReportItem id="sub_project_future" rows="7" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_FUTURE" type="TextareaReportItem">
+                        <![CDATA[<b>Future Goals</b><br />{$item}<br />]]>
+                    </ReportItem>
+                    <ReportItem id="sub_project_champs" rows="4" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_CHAMPS" type="TextareaReportItem">
+                        <![CDATA[<b>Engagement with Champions</b><br />{$item}<br />]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="pagebreak" type="PageBreakReportItem">
+                    <![CDATA[{$item}]]>
+                </ReportItem>
+            </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
     <ReportSection name="Budget Request" blobSection="RES_BUDGET" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true">

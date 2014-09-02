@@ -253,39 +253,33 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="subprojects" tooltip="Discussion of progress against Sub-Projects" name="Sub-Projects" blobSection="LDR_MILESTONE" type="ReportSection" renderpdf="true" reportCharLimits="false">
+    <ReportSection id="subprojects" tooltip="Discussion of progress against Sub-Projects" name="Sub Projects" blobSection="LDR_MILESTONE" type="ReportSection" renderpdf="true" reportCharLimits="false">
         <Instructions>
             <![CDATA[
                 This section shows the comments made by the sub-project leaders.
             ]]>
         </Instructions>
-        <ReportItem type="StaticReportItem">
-            <![CDATA[<ul>]]>
-        </ReportItem>
-        <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet" blobIndex="projectId">
-            <ReportItem id="subprojects_data" type="StaticReportItem">
-                <![CDATA[
-                    <li><a target='_blank' href='{$project_url}'>{$project_name}</a></li>
-                ]]>
-            </ReportItem>
+        <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet">
+            <ReportItemSet type="ToggleHeaderReportItemSet" level="3" title="{$project_name}">
+                <ReportItemSet id="leaders" type="ProjectLeaderReportItemSet">
+                    <ReportItem id="name" type="StaticReportItem">
+                        <![CDATA[<h3>{$user_name}</h3>]]>
+                    </ReportItem>
+                    <ReportItem id='goals' type="StaticReportItem">
+                        <![CDATA[<p><b>Goals for this year</b><br />{$user_subproject_goals}</p>]]>
+                    </ReportItem>
+                    <ReportItem id='acheivements' type="StaticReportItem">
+                        <![CDATA[<p><b>Acheivements</b><br />{$user_subproject_acheivements}</p>]]>
+                    </ReportItem>
+                    <ReportItem id='future' type="StaticReportItem">
+                        <![CDATA[<p><b>Future Goals</b><br />{$user_subproject_future}</p>]]>
+                    </ReportItem>
+                    <ReportItem id='champs' type="StaticReportItem">
+                        <![CDATA[<p><b>Engagement with Champions</b><br />{$user_subproject_champs}</p>]]>
+                    </ReportItem>
+                </ReportItemSet>
+            </ReportItemSet>
         </ReportItemSet>
-        <ReportItem type="StaticReportItem">
-            <![CDATA[</ul>]]>
-        </ReportItem>
-        <ReportItem id="table_foot" type="StaticReportItem">
-            <![CDATA[
-                <a target='_blank' href='{$project_url}?tab=sub-projects' class='button'>Edit Sub-Projects</a>
-            ]]>
-        </ReportItem>
-        <ReportItem id='head' type="StaticReportItem">
-            <![CDATA[<h2>Sub-Project Leader Comments</h2>]]>
-        </ReportItem>
-        <ReportItemSet id="subleaders" type="AllSubProjectLeadersReportItemSet">
-            <ReportItem id='comment' type="StaticReportItem">
-                <![CDATA[<h3>{$user_name}</h3>{$user_subproject_comments}]]>
-            </ReportItem>
-        </ReportItemSet>
-        
     </ReportSection>
     <!--ReportSection id="comments" tooltip="Comments on NI contributions to the project" name="Comments" blobSection="LDR_NICOMMENTS" type="EditableReportSection" autosave="true" renderpdf="false" reportCharLimits="false">
         <Instructions>
