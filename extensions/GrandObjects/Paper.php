@@ -659,9 +659,11 @@ class Paper extends BackboneModel{
             if($a->getId()){
                 if($hyperlink){
                     $name = $a->getNameForForms();
-                    if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP) || 
-                       $a->isRoleOn(EXTERNAL, $this->getDate()) || $a->wasLastRole(EXTERNAL)){
+                    if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
                         $name = "<u>{$a->getNameForForms()}</u>";
+                    }
+                    else if($a->isRoleOn(EXTERNAL, $this->getDate()) || $a->wasLastRole(EXTERNAL)){
+                        $name = "<span style='border-bottom: 3px double;'>{$a->getNameForForms()}</span>";
                     }
                     $au[] = "<a target='_blank' href='{$a->getUrl()}'><strong>{$name}</strong></a>";
                 }
