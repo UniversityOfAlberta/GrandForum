@@ -261,21 +261,21 @@
         </Instructions>
         <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet">
             <ReportItemSet type="ToggleHeaderReportItemSet" level="3" title="{$project_name}">
-                <ReportItemSet id="leaders" type="ProjectLeaderReportItemSet">
+                <ReportItemSet id="leaders" type="ProjectLeadersReportItemSet">
                     <ReportItem id="name" type="StaticReportItem">
-                        <![CDATA[<h3>{$user_name}</h3>]]>
+                        <![CDATA[<h2>{$user_name}</h2>]]>
                     </ReportItem>
                     <ReportItem id='goals' type="StaticReportItem">
-                        <![CDATA[<p><b>Goals for this year</b><br />{$user_subproject_goals}</p>]]>
+                        <![CDATA[<h3>Goals for this year</h3>{$user_subproject_goals}]]>
                     </ReportItem>
                     <ReportItem id='acheivements' type="StaticReportItem">
-                        <![CDATA[<p><b>Acheivements</b><br />{$user_subproject_acheivements}</p>]]>
+                        <![CDATA[<h3>Acheivements</h3>{$user_subproject_acheivements}]]>
                     </ReportItem>
                     <ReportItem id='future' type="StaticReportItem">
-                        <![CDATA[<p><b>Future Goals</b><br />{$user_subproject_future}</p>]]>
+                        <![CDATA[<h3>Future Goals</h3>{$user_subproject_future}]]>
                     </ReportItem>
                     <ReportItem id='champs' type="StaticReportItem">
-                        <![CDATA[<p><b>Engagement with Champions</b><br />{$user_subproject_champs}</p>]]>
+                        <![CDATA[<h3>Engagement with Champions</h3>{$user_subproject_champs}]]>
                     </ReportItem>
                 </ReportItemSet>
             </ReportItemSet>

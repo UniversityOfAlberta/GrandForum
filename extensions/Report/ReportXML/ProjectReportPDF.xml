@@ -173,7 +173,7 @@
             <ReportItem id="subhead" type="StaticReportItem">
                 <![CDATA[<h2>{$project_name}</h2>]]>
             </ReportItem>
-            <ReportItemSet id="leaders" type="ProjectLeaderReportItemSet">
+            <ReportItemSet id="leaders" type="ProjectLeadersReportItemSet">
                 <ReportItem id="name" type="StaticReportItem">
                     <![CDATA[<h3>{$user_name}</h3>]]>
                 </ReportItem>

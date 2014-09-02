@@ -863,7 +863,7 @@ class ReportItemCallback {
         $person = Person::newFromId($this->reportItem->personId);
         $project = Project::newFromId($this->reportItem->projectId);
         
-        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_SUBPROJECTS, RES_SUBPROJECT_GOAL, 0);
+        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_SUBPROJECTS, RES_SUBPROJECT_GOALS, 0);
         $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), $project->getId());
         $blob->load($addr);
         $data = $blob->getData();
