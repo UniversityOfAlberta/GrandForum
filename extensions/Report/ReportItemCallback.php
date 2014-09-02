@@ -141,8 +141,7 @@ class ReportItemCallback {
         $project_name = "";
         if($this->reportItem->projectId != 0 ){
             $project = Project::newFromId($this->reportItem->projectId);
-            $deleted = ($project->isDeleted()) ? " (Ended)" : "";
-            $project_name = $project->getName().$deleted;
+            $project_name = $project->getName();
         }
         $project_name = str_replace("<", "&lt;", $project_name);
         $project_name = str_replace(">", "&gt;", $project_name);
@@ -781,8 +780,7 @@ class ReportItemCallback {
         $projects = array();
         foreach($person->getProjectsDuring() as $project){
             if(!$project->isSubProject() && $project->getPhase() == 1){
-                $deleted = ($project->isDeleted()) ? " (Ended)" : "";
-                $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";
+                $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>";
             }
         }
         if(count($projects) > 0){
@@ -796,8 +794,7 @@ class ReportItemCallback {
         $projects = array();
         foreach($person->getProjectsDuring() as $project){
             if(!$project->isSubProject() && $project->getPhase() == 2){
-                $deleted = ($project->isDeleted()) ? " (Ended)" : "";
-                $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";
+                $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>";
             }
         }
         if(count($projects) > 0){

@@ -111,7 +111,7 @@ class DashboardReportItem extends StaticReportItem {
 	    $rest->limit(0, $rest->nRows()-1);
 	    if($completed->nRows() > 0){
 	        $rest->union(new DashboardTable(array(array(HEAD)),
-                                             array(array("Completed Projects")), null));
+                                             array(array("Phase 1 Projects")), null));
 	        $rest->union($completed);
 	    }
 	    $rest->union($last);

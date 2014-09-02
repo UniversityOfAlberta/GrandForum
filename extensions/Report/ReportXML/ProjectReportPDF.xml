@@ -54,27 +54,6 @@
         <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="true" details="false">
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
-        <ReportItem id="project_champions_bookmark" type="SubBookmarkReportItem" text="Champions" />
-        <ReportItem id="project_dashboard_champ_head" type="StaticReportItem">
-            <![CDATA[<h2>Champions</h2>]]>
-        </ReportItem>
-        <ReportItemSet id="project_dashboard_champ" type="ProjectChampionsReportItemSet">
-            <ReportItem id="project_champ" type="StaticReportItem">
-                <![CDATA[
-                    <h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a> ({$champ_subprojects})</h3>
-                    <table>
-                        <tr>
-                            <td><b>Organization:</b></td>
-                            <td>{$champ_org}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Title:</b></td>
-                            <td>{$champ_title}</td>
-                        </tr>
-                    </table>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
         <ReportItemSet id="subproject_dashboard_champ" type="SubProjectChampionsReportItemSet">
             <ReportItem id="subproject_champ" type="StaticReportItem">
                 <![CDATA[
@@ -201,9 +180,28 @@
             <![CDATA[<h2>Budget Justification</h2> {$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="prod_details" name="Productivity Details" type="EditableReportSection" pagebreak="false" number="5" renderpdf="true">
+    <ReportSection id="prod_details" name="Productivity Details" type="EditableReportSection" pagebreak="true" number="5" renderpdf="true">
         <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[{$item}]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="champions" name="Project Champions" type="ReportSection" blobSection="SEC_NONE" pagebreak="false">
+        <ReportItemSet id="project_dashboard_champ" type="ProjectChampionsReportItemSet">
+            <ReportItem id="project_champ" type="StaticReportItem">
+                <![CDATA[
+                    <h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a> ({$champ_subprojects})</h3>
+                    <table>
+                        <tr>
+                            <td><b>Organization:</b></td>
+                            <td>{$champ_org}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Title:</b></td>
+                            <td>{$champ_title}</td>
+                        </tr>
+                    </table>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
 </Report>

@@ -109,7 +109,7 @@
                     </ReportItem>
                 </ReportItemSet>
                 <ReportItem id="IIa" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_EXCELLENCE" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="PersonProductsReportItemSet" index="product_id" label="product_title" name="Products" tooltipOptionId="Product ID" tooltipOptionName="Product Title">
-                    <![CDATA[<i>Phase 1 Projects:</i><br />{$item}<br /><br />]]>
+                    <![CDATA[<i>Phase 1 Projects ({$user_phase1_projects})</i><br />{$item}<br /><br />]]>
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
@@ -125,7 +125,7 @@
                     </ReportItem>
                 </ReportItemSet>
                 <ReportItem id="IIb" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_HQPDEV" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="PersonSupervisesReportItemSet" index="user_id" label="user_name" name="HQP" tooltipOptionId="HQP ID" tooltipOptionName="HQP Name">
-                    <![CDATA[<i>Phase 1 Projects:</i><br />{$item}<br /><br />]]>
+                    <![CDATA[<i>Phase 1 Projects ({$user_phase1_projects})</i><br />{$item}<br /><br />]]>
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
@@ -141,7 +141,7 @@
                     </ReportItem>
                 </ReportItemSet>
                 <ReportItem id="IIc" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETWORKING" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members">
-                    <![CDATA[<i>Phase 1 Projects:</i><br />{$item}<br /><br />]]>
+                    <![CDATA[<i>Phase 1 Projects ({$user_phase1_projects})</i><br />{$item}<br /><br />]]>
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
@@ -157,7 +157,7 @@
                     </ReportItem>
                 </ReportItemSet>
                 <ReportItem id="IId" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_KTEE" blobSubItem="RES_RESACT_PHASE1" type="TextareaReportItem">
-                    <![CDATA[<i>Phase 1 Projects:</i><br />{$item}<br /><br />]]>
+                    <![CDATA[<i>Phase 1 Projects ({$user_phase1_projects})</i><br />{$item}<br /><br />]]>
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
