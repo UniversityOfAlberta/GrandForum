@@ -10,6 +10,7 @@ class DashboardReportItem extends StaticReportItem {
         $dashboard = $this->createDashboard();
         $dashboard = $this->filterRows($dashboard);
         $dashboard = $this->filterCols($dashboard);
+        $dashboard = $this->splitCompleted($dashboard);
         $dash = "";
         if($limit > 0){
             $top = $dashboard->copy()->limit(0, 1);
@@ -33,6 +34,7 @@ class DashboardReportItem extends StaticReportItem {
 	    $dashboard = $this->createDashboard();
         $dashboard = $this->filterRows($dashboard);
         $dashboard = $this->filterCols($dashboard);
+        $dashboard = $this->splitCompleted($dashboard);
         if($totalOnly){
             $top = $dashboard->copy()->limit(0, 1);
             if(!$this->getReport()->topProjectOnly){
@@ -100,6 +102,20 @@ class DashboardReportItem extends StaticReportItem {
 	        }
 	    }
 	    return $dashboard;
+	}
+	
+	function splitCompleted($dashboard){
+	    $completed = $dashboard->copy()->where(PERSON_PROJECTS, array("%Completed%"));
+	    $rest = $dashboard->copy()->filter(PERSON_PROJECTS, array("%Completed%"));
+	    $last = $rest->copy()->limit($rest->nRows()-1, 1);
+	    $rest->limit(0, $rest->nRows()-1);
+	    if($completed->nRows() > 0){
+	        $rest->union(new DashboardTable(array(array(HEAD)),
+                                             array(array("Completed Projects")), null));
+	        $rest->union($completed);
+	    }
+	    $rest->union($last);
+	    return $rest;
 	}
 
 }

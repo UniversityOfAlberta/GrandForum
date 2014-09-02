@@ -4,7 +4,9 @@ class PersonProjectsCell extends Cell{
     
     function PersonProjectsCell($cellType, $params, $cellValue, $rowN, $colN, $table){
         if(isset($params[0])){
-            $this->value = $params[0];
+            $project = Project::newFromHistoricName(str_replace(" (Completed)", "", $params[0]));
+            $deleted = ($project->isDeleted()) ? " (Completed)" : "";
+            $this->value = $params[0].$deleted;
         }
         else{
             $this->value = $cellValue;
@@ -21,7 +23,7 @@ class PersonProjectsCell extends Cell{
     
     function render(){
         global $wgServer, $wgScriptPath;
-        $project = Project::newFromHistoricName($this->value);
+        $project = Project::newFromHistoricName(str_replace(" (Completed)", "", $this->value));
         $deleted = ($project->isDeleted()) ? " (Completed)" : "";
         return "<a href='{$project->getUrl()}' target = '_blank'><b>{$project->getName()}{$deleted}</b></a>";
     }
