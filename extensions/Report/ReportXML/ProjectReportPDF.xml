@@ -205,22 +205,20 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="champions" name="Project Champions" type="ReportSection" blobSection="SEC_NONE" pagebreak="false">
-        <ReportItemSet id="project_dashboard_champ" type="ProjectChampionsReportItemSet">
-            <ReportItem id="project_champ" type="StaticReportItem">
-                <![CDATA[
-                    <h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a> ({$champ_subprojects})</h3>
-                    <table>
-                        <tr>
-                            <td><b>Organization:</b></td>
-                            <td>{$champ_org}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Title:</b></td>
-                            <td>{$champ_title}</td>
-                        </tr>
-                    </table>
-                ]]>
+        <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet">
+            <ReportItem id="sub_head" type="StaticReportItem">
+                <![CDATA[<h2>{$project_name} - {$project_full_name}</h2>]]>
             </ReportItem>
+            <ReportItemSet id="project_dashboard_champ" type="ProjectChampionsReportItemSet">
+                <ReportItem id="project_champ" type="StaticReportItem">
+                    <![CDATA[
+                        <p>
+                            {$user_reversed_name}<br />
+                            {$champ_subtitle}
+                        </p><br />
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
 </Report>

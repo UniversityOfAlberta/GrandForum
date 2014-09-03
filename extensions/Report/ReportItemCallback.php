@@ -87,6 +87,7 @@ class ReportItemCallback {
             // Champions
             "champ_org" => "getChampOrg",
             "champ_title" => "getChampTitle",
+            "champ_subtitle" => "getChampSubTitle",
             "champ_subprojects" => "getChampSubProjects",
             "champ_full_project" => "getChampFullProject",
             "champ_is_still_champion" => "getChampIsStillChampion",
@@ -940,6 +941,22 @@ class ReportItemCallback {
     function getChampTitle(){
         $person = Person::newFromId($this->reportItem->personId);
         return $person->getPartnerTitle();
+    }
+    
+    function getChampSubTitle(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $org = $person->getPartnerName();
+        $title = $person->getPartnerTitle();
+        if($org != "" && $title != ""){
+            return "$org, $title";
+        }
+        else if($org != "" && $title == ""){
+            return $org;
+        }
+        else if($org == "" && $title != ""){
+            return $title;
+        }
+        return "";
     }
     
     function getChampSubProjects(){
