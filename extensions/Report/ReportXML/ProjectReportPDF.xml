@@ -212,7 +212,7 @@
             <ReportItemSet id="project_dashboard_champ" type="ProjectChampionsReportItemSet">
                 <ReportItem id="project_champ" type="StaticReportItem">
                     <![CDATA[
-                        <h3>{$user_reversed_name}</h3>
+                        <h3>{$user_name}</h3>
                         <p>
                             {$champ_subtitle}
                         </p>
