@@ -1018,13 +1018,41 @@ class Person extends BackboneModel {
                          "studies" => "",
                          "employer" => "",
                          "city" => "",
-                         "country" => "");
+                         "country" => "",
+                         "effective_date" => "");
         }
+    }
+    
+    function getAllMovedOn(){
+        $sql = "SELECT *
+                FROM `grand_movedOn`
+                WHERE `user_id` = '{$this->getId()}'
+                ORDER BY `effective_date` DESC";
+        $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            $newData = array();
+            foreach($data as $row){
+                $sql = "SELECT *
+                        FROM `grand_theses`
+                        WHERE `moved_on` = '{$row['id']}'";
+                $thesis = DBFunctions::execSQL($sql);
+                $row['thesis'] = null;
+                $row['reason'] = "movedOn";
+                $row['effective_date'] = substr($row['effective_date'], 0, 10);
+                if(count($thesis) > 0){
+                    $row['thesis'] = Product::newFromId($thesis[0]['publication_id']);
+                    $row['reason'] = "graduated";
+                }
+                $newData[$row['id']] = $row;
+            }
+            return $newData;
+        }
+        return array();
     }
 
     // Returns the moved on row for when HQPs are inactivated
     // Returns an array of key/value pairs representing the DB row
-    function getAllMovedOnDuring( $startRange = false, $endRange = false ){
+    function getAllMovedOnDuring($startRange = false, $endRange = false){
          //If no range end are provided, assume it's for the current year.
         if( $startRange === false || $endRange === false ){
             $startRange = date(REPORTING_YEAR."-01-01 00:00:00");

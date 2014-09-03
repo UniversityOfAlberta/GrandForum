@@ -208,7 +208,6 @@ class DBFunctions {
 	 * @param array $order The hash of columns to order by (<b>key:</b> The name of the column; <b>value:</b> DESC/ASC)
 	 * @param array $limit How to limit results (array of 1 or 2 values)
 	 * @return array Returns the result set
-	 * TODO: This is not yet fully tested
 	 */
 	static function select($tables=array(), $cols=array(), $where=array(), $order=array(), $limit=array()){
 	    $colSQL = array();
@@ -293,7 +292,6 @@ class DBFunctions {
 	 * @param string $table The name of the table to insert
 	 * @param array $values The hash of the column/values for the insertion
 	 * @return boolean Returns whether the insertion was successful or not
-	 * TODO: This is not yet fully tested
 	 */
 	static function insert($table, $values=array(), $rollback=false){
 	    $table = mysql_real_escape_string($table);
@@ -321,7 +319,6 @@ class DBFunctions {
 	 * @param string $table The name of the table to delete
 	 * @param array $where The hash of the column/values for the deletion
 	 * @return boolean Returns whether the insertion was successful or not
-	 * TODO: This is not yet fully tested
 	 */
 	static function delete($table, $where=array(), $rollback=false){
 	    $whereSQL = array();
@@ -366,7 +363,6 @@ class DBFunctions {
 	 * @param boolean $rollback Whether or not to perform a rollback if the update fails
 	 * @param array $limit How to limit results (array of 1 or 2 values)
 	 * @return boolean Returns whether or not the update was successfull
-	 * TODO: This is not yet fully tested
 	 */
     static function update($table, $values=array(), $where=array(), $limit=array(), $rollback=false){
         $table = mysql_real_escape_string($table);
