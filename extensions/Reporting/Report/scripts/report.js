@@ -44,12 +44,7 @@ function toggleFullscreenAfterAnimation(){
         $('#reportInstructions > div').height("100%");
         $('#outerReport #reportMain > div').css('min-height', '');
         $('#outerReport #reportMain > div').height(height);
-        $('#bodyContent').css('position', 'relative')
-                         .css('width', '100%')
-                         .css('bottom', '0')
-                         .css('top', '0')
-                         .css('left', '0')
-                         .css('right', '0')
+        $('#bodyContent').css('bottom', '')
                          .css('z-index', '1');
         if($.browser.msie){
             // IE doesn't render the bodyContent correctly until it is repainted, so force a Repaint
@@ -65,18 +60,18 @@ function toggleFullscreen(){
     var easing = 'swing';
     var animationTime = 250;
     if(sideToggled == 'out'){
-        var left = $('#side').width() + $('#spacer').width() + parseInt($('body').css('margin-left'));
+        var left = $('#side').width() + 30 + parseInt($('body').css('margin-left'));
     }
     else{
         left = 20;
     }
-    var right = parseInt($('body').css('margin-left'));
+    var right = parseInt($('body').css('margin-left')) + 30;
     var top = $('#header').height() + 
               parseInt($('#header').css('margin-top')) + 
               parseInt($('#header').css('margin-bottom')) + 
               parseInt($('#header').css('padding-bottom')) + 
               parseInt($('#header').css('padding-top')) + 
-              parseInt($('body').css('margin-top'));
+              parseInt($('body').css('margin-top')) + 25;
     var bottom = $(window).height() - $('#bodyContent').height() - top - 14;
     if(!$('#instructionsToggle').hasClass('instructionsToggleCustom')){
         $('#bodyContent').toggleClass('bodyContentNoRoundedShadow');
