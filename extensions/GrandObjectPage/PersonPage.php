@@ -107,7 +107,7 @@ class PersonPage {
                 if($person->isRoleAtLeast(CNI) && !$person->isRole(AR)){
                     $tabbedPage->addTab(new PersonBudgetTab($person, $visibility));
                 }
-                if($wgUser->isLoggedIn() && $person->isRole(INACTIVE) && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
+                if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
                     $tabbedPage->addTab(new HQPExitTab($person, $visibility));
                 }
                 $tabbedPage->addTab(new PersonAcknowledgementTab($person, $visibility));

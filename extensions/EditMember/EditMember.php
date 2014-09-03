@@ -493,22 +493,24 @@ class EditMember extends SpecialPage{
     private function processHQPMovedOn(){
         global $wgMessage;
         $person = Person::newFromId($_POST['user']);
-        if(isset($_POST['thesis'])){
-            APIRequest::doAction('AddHQPThesis', true);
-            $wgMessage->addInfo("<b>{$person->getNameForForms()}</b>'s thesis added.");
-        }
+        $_POST['id'] = "new";
         if(isset($_POST['where']) || 
-                isset($_POST['studies']) || 
-                isset($_POST['employer']) || 
-                isset($_POST['city']) || 
-                isset($_POST['country'])){
+           isset($_POST['studies']) || 
+           isset($_POST['employer']) || 
+           isset($_POST['city']) || 
+           isset($_POST['country'])){
             $_POST['where'] = @str_replace("'", "&#39;", $_POST['where']);
             $_POST['studies'] = @str_replace("'", "&#39;", $_POST['studies']);
             $_POST['employer'] = @str_replace("'", "&#39;", $_POST['employer']);
             $_POST['city'] = @str_replace("'", "&#39;", $_POST['city']);
             $_POST['country'] = @str_replace("'", "&#39;", $_POST['country']);
+            $_POST['effective_date'] = @str_replace("'", "&#39;", $_POST['r_datepicker'][HQP]);
             APIRequest::doAction('AddHQPMovedOn', true);
             $wgMessage->addInfo("<b>{$person->getNameForForms()}</b>'s moved on information added.");
+        }
+        if(isset($_POST['thesis'])){
+            APIRequest::doAction('AddHQPThesis', true);
+            $wgMessage->addInfo("<b>{$person->getNameForForms()}</b>'s thesis added.");
         }
     }
     

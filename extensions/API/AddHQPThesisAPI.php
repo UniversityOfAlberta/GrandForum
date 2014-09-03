@@ -3,6 +3,7 @@
 class AddHQPThesisAPI extends API{
 
     function AddHQPThesisAPI(){
+        $this->addPOST("id",true,"The id of the moved on", 13);
         $this->addPOST("name",true,"The User Name of the user","UserName");
         $this->addPOST("thesis",true,"The id of the thesis","231");
     }
@@ -31,22 +32,27 @@ class AddHQPThesisAPI extends API{
 		    }
 		}
 		if($me->isRole(STAFF) || $me->isRole(MANAGER) || count($me->leadership()) > 0 || $isSupervisor || $me->getId() == $person->getId()){
-            // Actually Add the Project Member
-            $data = DBFunctions::select(array('grand_theses'),
-                                        array('*'),
-                                        array('user_id' => EQ($person->getId())));
-            if(count($data) > 0){
-                if($_POST['thesis'] == "No Thesis"){
-                    DBFunctions::delete('grand_theses',
-                                        array('user_id' => EQ($person->getId())));
+            if(is_numeric($_POST['id'])){
+                DBFunctions::delete('grand_theses',
+                                    array('moved_on' => EQ($_POST['id'])));
+                if($_POST['thesis'] != "No Thesis"){
+                    DBFunctions::insert('grand_theses',
+                                        array('user_id' => $person->getId(),
+                                              'publication_id' => $_POST['thesis'],
+                                              'moved_on' => $_POST['id']));
                 }
-                DBFunctions::update('grand_theses',
-                                    array('publication_id' => $_POST['thesis']),
-                                    array('user_id' => EQ($person->getId())));
             }
             else if($_POST['thesis'] != "No Thesis"){
+                $data = DBFunctions::select(array('grand_movedOn'),
+                                            array('*'),
+                                            array('user_id' => EQ($person->getId())));
+                $id = 0;
+                foreach($data as $row){
+                    $id = max($id, $row['id']);
+                }
                 DBFunctions::insert('grand_theses',
                                     array('user_id' => $person->getId(),
+                                          'moved_on' => $id,
                                           'publication_id' => $_POST['thesis']));
             }
             if(!$noEcho){
