@@ -23,7 +23,7 @@ class PersonRelationsTab extends AbstractTab {
         global $wgUser, $wgOut, $wgScriptPath, $wgServer;
         if($wgUser->isLoggedIn() && ($visibility['edit'] || (!$visibility['edit'] && (count($person->getRelations('public')) > 0 || count($person->getSupervisors(true)) > 0 || ($visibility['isMe'] && count($person->getRelations()) > 0))))){
             if($person->isRoleAtLeast(HQP) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(HQP))){
-                if($person->isHQP() || ($person->isRole(INACTIVE) && $person->wasLastRole(HQP))){
+                if($person->isRole(HQP) || $person->isRole(EXTERNAL) || ($person->isRole(INACTIVE) && $person->wasLastRole(HQP))){
                     if($visibility['edit'] && $visibility['isSupervisor']){
                         $this->html .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:EditRelations\");' value='Edit Relations' />";
                     }

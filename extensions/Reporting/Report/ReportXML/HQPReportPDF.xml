@@ -19,9 +19,6 @@
             <![CDATA[{$item}]]>
         </ReportItem>
         <ReportItem id="report_progress" type="ProgressReportItem" reportType="HQPReport" private="true">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="my_milestone_progress_head" type="NIProgressReportItem" reportType="HQPReport" private="true">
             <![CDATA[{$item}</table></small></td></tr>]]>
         </ReportItem>
         <ReportItem id="report_info_foot" type="StaticReportItem">
@@ -32,15 +29,28 @@
         <ReportItem id="basic_info" type="StaticReportItem">
         <![CDATA[
             <div class='basic_info' style='margin-bottom:20px;'>
-                <p style='font-size:150%;'><span class='label'>Name:</span> {$user_reversed_name} ({$user_full_roles})</p>
+                <p style='font-size:150%;'>{$user_reversed_name} ({$user_full_roles})</p>
                 <p><span class='label'>Position:</span> {$user_level}</p>
                 <p><span class='label'>Department:</span> {$user_dept}</p>
                 <p><span class='label'>University:</span> {$user_uni}</p>
                 <p><span class='label'>Supervisor(s):</span> {$user_supervisors}</p>
-                        <p><span class='label'>Projects:</span>
+                <p><span class='label'>Phase 2 Projects:</span>
         ]]>
         </ReportItem>
-        <ReportItemSet id="user_projects" type="PersonProjectReportItemSet">
+        <ReportItemSet id="user_projects" type="PersonProjectReportItemSet" phase="2">
+            <ReportItem id="user_project" type="StaticReportItem">
+                 <![CDATA[&nbsp;{$project_name}]]>
+            </ReportItem>
+            <ReportItem id="user_project_footnote" type="FootnoteReportItem" text="{$project_full_name}">
+                <![CDATA[{$item}]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="basic_info" type="StaticReportItem">
+        <![CDATA[
+                </p><p><span class='label'>Phase 1 Projects:</span>
+        ]]>
+        </ReportItem>
+        <ReportItemSet id="user_projects" type="PersonProjectReportItemSet" phase="1">
             <ReportItem id="user_project" type="StaticReportItem">
                  <![CDATA[&nbsp;{$project_name}]]>
             </ReportItem>
@@ -106,36 +116,5 @@
         <ReportItem id="hqp_dashboard_productivity" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[If there is an error in any of the information reported in the dashboard, please edit the corresponding element through the appropriate tool. If the error is in a system-controlled field, please contact support.<br /><br /><div>{$item}</div>]]>
         </ReportItem>
-    </ReportSection>
-    <ReportSection name="Milestone Comments" blobSection="HQP_MILESTONES" type="EditableReportSection" autosave="true" renderpdf="true" pagebreak="false" previewonly="true">
-        <ReportItemSet id="projects" pdfBookmark="true" type="PersonProjectReportItemSet">
-            <ReportItem id="" type="StaticReportItem">
-                <![CDATA[<h2>{$project_name}</h2>]]>
-            </ReportItem>
-            <ReportItemSet id="milestones" type="MilestoneRadioReportItemSet" blobIndex="milestoneId">
-                <ReportItem id="static3" type="SnippetReportItem" limit="280" text="{$milestone_description}">
-                <![CDATA[
-                    <h3>{$milestone_title}</h3>
-                    <small>{$item}</small><br />
-                ]]>
-                </ReportItem>
-                <ReportItem id="contribution" type="RadioReportItem" options="No|Yes" orientation="vertical" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS">
-                <![CDATA[
-                    <b>Worked On:</b> {$item}
-                ]]>
-                </ReportItem>
-                <ReportItem id="comment" type="TextareaReportItem" limit="300" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS" recommended="true">
-                <![CDATA[
-                    <br />
-                    <b>Comments:</b> {$item}
-                ]]>
-                </ReportItem>
-            </ReportItemSet>
-            <ReportItem id="static2" type="StaticReportItem">
-            <![CDATA[ 
-            <br />
-            ]]>
-            </ReportItem>
-        </ReportItemSet>
     </ReportSection>
 </Report>

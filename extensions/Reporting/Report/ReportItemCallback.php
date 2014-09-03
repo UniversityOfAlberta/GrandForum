@@ -70,10 +70,16 @@ class ReportItemCallback {
             "user_uni" => "getUserUni",
             "user_supervisors" => "getUserSupervisors",
             "user_projects" => "getUserProjects",
+            "user_phase1_projects" => "getUserPhase1Projects", // Hopefully temporary
+            "user_phase2_projects" => "getUserPhase2Projects", // Hopefully temporary
             "user_requested_budget" => "getUserRequestedBudget",
             "user_allocated_budget" => "getUserAllocatedBudget",
             "user_project_comment" => "getUserProjectComment",
             "user_project_future" => "getUserProjectFuture",
+            "user_subproject_goals" => "getUserSubProjectGoals",
+            "user_subproject_acheivements" => "getUserSubProjectAcheivements",
+            "user_subproject_future" => "getUserSubProjectFuture",
+            "user_subproject_champs" => "getUserSubProjectChamps",
             "user_mtg_music" => "getUserMTGMusic",
             "user_mtg_firstnations" => "getUserMTGFirstNations",
             "user_mtg_socialproblems" => "getUserMTGSocialProblems",
@@ -81,6 +87,7 @@ class ReportItemCallback {
             // Champions
             "champ_org" => "getChampOrg",
             "champ_title" => "getChampTitle",
+            "champ_subtitle" => "getChampSubTitle",
             "champ_subprojects" => "getChampSubProjects",
             "champ_full_project" => "getChampFullProject",
             "champ_is_still_champion" => "getChampIsStillChampion",
@@ -92,6 +99,8 @@ class ReportItemCallback {
             "champ_q4" => "getChampQ4",
             "champ_q5" => "getChampQ5",
             "champ_q6" => "getChampQ6",
+            // Sub-PL (SPL)
+            "spl_subprojects" => "getSPLSubProjects",
             // ISAC
             "isac_comment" => "getISACComment",
             // Products
@@ -133,9 +142,10 @@ class ReportItemCallback {
         $project_name = "";
         if($this->reportItem->projectId != 0 ){
             $project = Project::newFromId($this->reportItem->projectId);
-            $deleted = ($project->isDeleted()) ? " (Ended)" : "";
-            $project_name = $project->getName().$deleted;
+            $project_name = $project->getName();
         }
+        $project_name = str_replace("<", "&lt;", $project_name);
+        $project_name = str_replace(">", "&gt;", $project_name);
         return $project_name;
     }
     
@@ -765,7 +775,38 @@ class ReportItemCallback {
                 $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";
             }
         }
-        return implode(", ", $projects);
+        if(count($projects) > 0){
+            return implode(", ", $projects);
+        }
+        return "N/A";
+    }
+    
+    function getUserPhase1Projects(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $projects = array();
+        foreach($person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
+            if(!$project->isSubProject() && $project->getPhase() == 1){
+                $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>";
+            }
+        }
+        if(count($projects) > 0){
+            return implode(", ", $projects);
+        }
+        return "N/A";
+    }
+    
+    function getUserPhase2Projects(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $projects = array();
+        foreach($person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
+            if(!$project->isSubProject() && $project->getPhase() == 2){
+                $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>";
+            }
+        }
+        if(count($projects) > 0){
+            return implode(", ", $projects);
+        }
+        return "N/A";
     }
     
     function getUserRequestedBudget(){
@@ -821,6 +862,46 @@ class ReportItemCallback {
         return $data;
     }
     
+    function getUserSubProjectGoals(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_SUBPROJECTS, RES_SUBPROJECT_GOALS, 0);
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), $project->getId());
+        $blob->load($addr);
+        $data = $blob->getData();
+    }
+    
+    function getUserSubProjectAcheivements(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_SUBPROJECTS, RES_SUBPROJECT_ACHEIVEMENTS, 0);
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), $project->getId());
+        $blob->load($addr);
+        $data = $blob->getData();
+    }
+    
+    function getUserSubProjectFuture(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_SUBPROJECTS, RES_SUBPROJECT_FUTURE, 0);
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), $project->getId());
+        $blob->load($addr);
+        $data = $blob->getData();
+    }
+    
+    function getUserSubProjectChamps(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_SUBPROJECTS, RES_SUBPROJECT_CHAMPS, 0);
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), $project->getId());
+        $blob->load($addr);
+        $data = $blob->getData();
+    }
+    
     function getUserMTGMusic(){
         $person = Person::newFromId($this->reportItem->personId);
         $addr = ReportBlob::create_address(RP_MTG, MTG_MUSIC, MTG_MUSIC, 0);
@@ -865,6 +946,22 @@ class ReportItemCallback {
     function getChampTitle(){
         $person = Person::newFromId($this->reportItem->personId);
         return $person->getPartnerTitle();
+    }
+    
+    function getChampSubTitle(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $org = $person->getPartnerName();
+        $title = $person->getPartnerTitle();
+        if($org != "" && $title != ""){
+            return "$org, $title";
+        }
+        else if($org != "" && $title == ""){
+            return $org;
+        }
+        else if($org == "" && $title != ""){
+            return $title;
+        }
+        return "";
     }
     
     function getChampSubProjects(){
@@ -977,6 +1074,19 @@ class ReportItemCallback {
             }
         }
         return $champion_html;
+    }
+    
+    function getSPLSubProjects(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $subs = array();
+        foreach($project->getSubProjects() as $sub){
+            if($person->leadershipOf($sub)){
+                $subs[] = "<a href='{$sub->getUrl()}' target='_blank'>{$sub->getName()}</a>";
+            }
+        }
+        return implode(", ", $subs);
     }
     
     function getISACComment(){

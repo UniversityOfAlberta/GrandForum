@@ -1033,8 +1033,36 @@ class Person extends BackboneModel {
                          "studies" => "",
                          "employer" => "",
                          "city" => "",
-                         "country" => "");
+                         "country" => "",
+                         "effective_date" => "");
         }
+    }
+    
+    function getAllMovedOn(){
+        $sql = "SELECT *
+                FROM `grand_movedOn`
+                WHERE `user_id` = '{$this->getId()}'
+                ORDER BY `effective_date` DESC";
+        $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            $newData = array();
+            foreach($data as $row){
+                $sql = "SELECT *
+                        FROM `grand_theses`
+                        WHERE `moved_on` = '{$row['id']}'";
+                $thesis = DBFunctions::execSQL($sql);
+                $row['thesis'] = null;
+                $row['reason'] = "movedOn";
+                $row['effective_date'] = substr($row['effective_date'], 0, 10);
+                if(count($thesis) > 0){
+                    $row['thesis'] = Product::newFromId($thesis[0]['publication_id']);
+                    $row['reason'] = "graduated";
+                }
+                $newData[$row['id']] = $row;
+            }
+            return $newData;
+        }
+        return array();
     }
 
     // Returns the moved on row for when HQPs are inactivated
@@ -1098,7 +1126,8 @@ class Person extends BackboneModel {
     function getDegreeReceivedDate($guess = true){
         $data = DBFunctions::select(array('grand_relations'),
                                     array('end_date'),
-                                    array('user2' => EQ($this->getId())),
+                                    array('user2' => EQ($this->getId()),
+                                          'type' => EQ('Supervises')),
                                     array('end_date' => 'ASC'));
         if(DBFunctions::getNRows() > 0)
           return $data[0]['end_date'];
@@ -1133,6 +1162,28 @@ class Person extends BackboneModel {
             }
         }
         return "Unknown";
+    }
+    
+    /**
+     * Returns whether this Person is funded or not for the given year
+     * This is only for the CNIs that are in the `grand_funded_cni` table
+     * @param integer $year The year to see if the Person is funded or not
+     * @return boolean Whether or not this Person is funded
+     */
+    function isFundedFor($year){
+        if($this->isRoleDuring(CNI, $year."-01-01", $year."-12-31")){
+            // The Person was a CNI Now check if they were actually funded
+            $data = DBFunctions::select(array('grand_funded_cni'),
+                                        array('*'),
+                                        array('user_id' => EQ($this->getId()),
+                                              'year' => EQ($year)));
+            if(count($data) > 0){
+                // This Person was funded
+                return true;
+            }
+        }
+        // This Person was not funded
+        return false;
     }
     
     /**

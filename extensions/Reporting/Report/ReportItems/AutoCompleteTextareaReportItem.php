@@ -15,7 +15,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		$reportItemSet = $this->getSet();
 		if(class_exists($set)){
 		    $item .= "<script type='text/javascript'>
-		                var {$this->id} = Array();\n";
+		                var {$this->getId()} = Array();\n";
 		    foreach($reportItemSet->getData() as $tuple){
 		        $staticLabel = new StaticReportItem();
 		        $staticValue = new StaticReportItem();
@@ -36,17 +36,17 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		        $javascriptLabel = str_replace("'", "\'", str_replace("\'", "'", $staticLabel->processCData("")));
 		        $javascriptValue = str_replace("'", "\'", str_replace("\'", "'", $staticValue->processCData("")));
 		        
-		        $item .= "{$this->id}.push({'value':'{$javascriptValue}', 'label':'{$javascriptValue} - {$javascriptLabel}'});\n";
+		        $item .= "{$this->getId()}.push({'value':'{$javascriptValue}', 'label':'{$javascriptValue} - {$javascriptLabel}'});\n";
 		    }
 		    $item .= "</script>";
 		}
 		$item .= "<span style='float:right;margin-right:30px;' class='pdfnodisplay tooltip' title='You should reference $name by writing <code>@$tooltipOptionId</code> in the text box. You can also start typing <code>@$tooltipOptionName</code> and a drop-down box will appear below the text box where you can select the one you wish to reference.'><b>@autocomplete:</b> {$name}</span>".$this->getHTML();
-		$item .= "<div id='{$this->id}_div'></div>";
+		$item .= "<div id='{$this->getId()}_div'></div>";
 		$item .= "<script type='text/javascript'>";
 		$item .= "$('textarea[name={$this->getPostId()}]').addClass('autocomplete');
 		            $('textarea[name={$this->getPostId()}]').triggeredAutocomplete({
-                        hidden: '#hidden_inputbox{$this->id}',
-                        source: {$this->id},
+                        hidden: '#hidden_inputbox{$this->getId()}',
+                        source: {$this->getId()},
                         trigger: '@'
                     });";
 	    if($this->getLimit() > 0){
@@ -72,11 +72,11 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
         $item .= "</script>";
 		if($notReferenced == "true"){
 		    $item .= "<script type='text/javascript'>
-		                function autocompleteLeft{$this->id}(){
+		                function autocompleteLeft{$this->getId()}(){
 		                    var innerHTML = '<fieldset><legend><b>$name not referenced:</b></legend><ul>';
 		                    var left = 0;
-                            for (index in {$this->id}){
-                                var item = {$this->id}[index];
+                            for (index in {$this->getId()}){
+                                var item = {$this->getId()}[index];
                                 
                                 var value = item.value;
                                 var label = item.label;
@@ -93,17 +93,17 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
                             }
                             innerHTML += '</ul></fieldset>';
                             if(left > 0){
-                                $('#{$this->id}_div').html(innerHTML);
+                                $('#{$this->getId()}_div').html(innerHTML);
                             }
                             else{
-                                $('#{$this->id}_div').html('');
+                                $('#{$this->getId()}_div').html('');
                             }
                         }
                         
                         $('textarea[name={$this->getPostId()}]').keyup(function(){
-                            autocompleteLeft{$this->id}();
+                            autocompleteLeft{$this->getId()}();
                         });
-                        autocompleteLeft{$this->id}();
+                        autocompleteLeft{$this->getId()}();
 		    </script>";
 		}
 		$item = $this->processCData($item);
@@ -199,7 +199,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 		        $anchorText = $staticValue->processCData("");
 		        
 		        if($anchor && !isset($_GET['preview'])){
-		            $value = preg_replace("/@\[[^-]+-([^\]]*)]/", "<a class='anchor' href='#{$this->id}_{$id}'>$1</a>$2", $value);
+		            $value = preg_replace("/@\[[^-]+-([^\]]*)]/", "<a class='anchor' href='#{$this->getId()}_{$id}'>$1</a>$2", $value);
 		        }
 		        else{
 		            $value = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $value);

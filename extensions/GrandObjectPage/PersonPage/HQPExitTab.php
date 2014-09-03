@@ -6,7 +6,7 @@ class HQPExitTab extends AbstractEditableTab {
     var $visibility;
 
     function HQPExitTab($person, $visibility){
-        parent::AbstractEditableTab("HQP Exit");
+        parent::AbstractEditableTab("HQP Moved On");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -19,38 +19,55 @@ class HQPExitTab extends AbstractEditableTab {
     function handleEdit(){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgMessage;
         $me = Person::newFromId($wgUser->getId());
-        if(isset($_POST['where']) || 
-           isset($_POST['studies']) || 
-           isset($_POST['employer']) || 
-           isset($_POST['city']) || 
-           isset($_POST['country'])){
-            $_POST['user'] = $this->person->getName();
-            $_POST['where'] = @str_replace("'", "&#39;", $_POST['where']);
-            $_POST['studies'] = @str_replace("'", "&#39;", $_POST['studies']);
-            $_POST['employer'] = @str_replace("'", "&#39;", $_POST['employer']);
-            $_POST['city'] = @str_replace("'", "&#39;", $_POST['city']);
-            $_POST['country'] = @str_replace("'", "&#39;", $_POST['country']);
-            APIRequest::doAction('AddHQPMovedOn', true);
-            $wgMessage->addSuccess("{$_POST['user']}'s movedOn added");
-        }
-        if(isset($_POST['thesis'])){
-            $_POST['user'] = $this->person->getName();
-            APIRequest::doAction('AddHQPThesis', true);
-            $wgMessage->addSuccess("{$_POST['user']}'s thesis added");
-        }
-        else{
-            $_POST['user'] = $this->person->getName();
-            $_POST['thesis'] = "No Thesis";
-            APIRequest::doAction('AddHQPThesis', true);
+        if(isset($_POST['reason'])){
+            $studies = $_POST['studies'];
+            $employer = $_POST['employer'];
+            $city = $_POST['city'];
+            $country = $_POST['country'];
+            $thesis = $_POST['thesis'];
+            $effective_date = $_POST['effective_date'];
+            foreach($_POST['reason'] as $key => $reason){
+                if(($key == "new" && !isset($_POST['doNew'])) || 
+                    isset($_POST['delete']['new'])){
+                    continue;
+                }
+                $_POST['id'] = $key;
+                $_POST['user'] = $this->person->getName();
+                $_POST['studies'] = @str_replace("'", "&#39;", $studies[$key]);
+                $_POST['employer'] = @str_replace("'", "&#39;", $employer[$key]);
+                $_POST['city'] = @str_replace("'", "&#39;", $city[$key]);
+                $_POST['country'] = @str_replace("'", "&#39;", $country[$key]);
+                $_POST['effective_date'] = @str_replace("'", "&#39;", $effective_date[$key]);
+                APIRequest::doAction('AddHQPMovedOn', true);
+                if($reason == "graduated"){
+                    $_POST['thesis'] = $thesis[$key];
+                    APIRequest::doAction('AddHQPThesis', true);
+                }
+                else{
+                    $_POST['thesis'] = "No Thesis";
+                    APIRequest::doAction('AddHQPThesis', true);
+                }
+            }
+            foreach($_POST['delete'] as $key => $id){
+                if(is_numeric($id)){
+                    DBFunctions::delete('grand_movedOn',
+                                        array('id' => EQ($id)));
+                    DBFunctions::delete('grand_theses',
+                                        array('moved_on' => EQ($id)));
+                }
+            }
+            $wgMessage->addSuccess("The 'Moved On' information for {$this->person->getNameForForms()} has been updated");
         }
         if($this->visibility['isSupervisor']){
-            Notification::addNotification($me, $this->person, "Profile Change", "Your profile has been edited by {$me->getName()}.", "{$this->person->getUrl()}");
+            Notification::addNotification($me, $this->person, "Profile Change", "Your profile has been edited by {$me->getNameForForms()}.", "{$this->person->getUrl()}");
             foreach($this->person->getSupervisors() as $supervisor){
                 if($me->getName() != $supervisor->getName()){
                     Notification::addNotification($me, $this->person, "Profile Change", "{$this->person->getNameForForms()}'s profile has been edited by {$me->getReversedName()}.", "{$this->person->getUrl()}");
                 }
             }
         }
+        header("Location: {$this->person->getUrl()}?tab=hqp-moved-on");
+        exit;
     }
     
     function generateEditBody(){
@@ -72,146 +89,200 @@ class HQPExitTab extends AbstractEditableTab {
         return ($found || $me->getId() == $this->person->getId() || $me->isRoleAtLeast(STAFF));
     }
     
+    function addEditHTML($id, $row, $hidden=false){
+        $person = $this->person;
+        $theses = $person->getPapers();
+        $thesisHTML = "";
+        foreach($theses as $thesis){
+            $title = $thesis->getTitle();
+            if(strlen($thesis->getTitle()) > 50){
+                $title = substr(trim($title), 0, 50)."...";
+            }
+            $title = str_replace("'", "&#39;", $title);
+            $thesisHTML .= "<option value='{$thesis->getId()}'>{$title}</option>\n";
+        }
+        $display = "";
+        if($hidden){
+            $display = "display:none;";
+        }
+        $thesisDisplay = "";
+        if($row['reason'] != "graduated"){
+            $thesisDisplay = "display:none;";
+        }
+        $graduatedChecked = "";
+        $movedOnChecked = "";
+        if($row['reason'] == "graduated"){
+            $graduatedChecked = "checked='checked'";
+        }
+        else {
+            $movedOnChecked = "checked='checked'";
+        }
+        $html = <<<EOF
+            <div id='movedOn_{$id}' style="$display">
+                <fieldset>
+                    <legend><b>Date:</b> <input type='text' class='datepicker' name='effective_date[{$id}]' value='{$row['effective_date']}' /></legend>
+                    <table>
+                    <tr id='step1'>
+                        <td colspan='2'><input type='radio' class='reason' name='reason[{$id}]' value='graduated' $graduatedChecked /> Graduated</td>
+                    </tr>
+                    <tr>
+                        <td colspan='2'><input type='radio' class='reason' name='reason[{$id}]' value='movedOn' $movedOnChecked /> Moved On</td>
+                    </tr>
+                    <tbody id='step2'>
+                        <tr id='thesis_{$id}' style="$thesisDisplay">
+                            <td align='right'><b>Thesis:</b></td>
+                            <td>
+                                <select name='thesis[{$id}]'>
+                                    $thesisHTML
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align='right'><b>Further Studies at:</b></td>
+                            <td><input id='studies' type='text' name='studies[{$id}]' value='{$row['studies']}' /></td>
+                        </tr>
+                        <tr>
+                            <td align='right'><b>Employed By:</b></td>
+                            <td><input id='employer' type='text' name='employer[{$id}]' value='{$row['employer']}' /></td>
+                        </tr>
+                        <tr>
+                            <td align='right'><b>City:</b></td>
+                            <td><input id='city' type='text' name='city[{$id}]' value='{$row['city']}' /></td>
+                        </tr>
+                        <tr>
+                            <td align='right'><b>Country:</b></td>
+                            <td><input id='country' type='text' name='country[{$id}]' value='{$row['country']}' /></td>
+                        </tr>
+                        <tr>
+                            <td align='right'><b>Delete?</b></td><td><input type='checkbox' value='{$id}' name='delete[{$id}]' onChange="deleteMovedOn('{$id}')" /></td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </fieldset>
+            </div>
+            <script type='text/javascript'>
+                var container = $('#movedOn_$id');
+                $('.datepicker', container).datepicker({dateFormat: 'yy-mm-dd',
+                                                        changeMonth: true,
+                                                        changeYear: true,
+                                                        showOn: 'both',
+                                                        buttonImage: '../skins/calendar.gif',
+                                                        buttonText: 'Date',
+                                                        buttonImageOnly: true
+                                                       });
+                $('.datepicker', container).keydown(function(){
+                    return false;
+                });
+                
+                $('#employer', container).autocomplete({
+                    source: partners
+                });
+                $('#country', container).autocomplete({
+                    source: countries
+                });
+                $('#studies', container).autocomplete({
+                    source: universities
+                });
+                
+                $('.reason', container).change(function(){
+                    var val = $('.reason:checked', $('#movedOn_$id')).val();
+                    if(val == 'graduated'){
+                        $('#thesis_{$id}', $('#movedOn_$id')).show();
+                    }
+                    else{
+                        $('#thesis_{$id}', $('#movedOn_$id')).hide();
+                    }
+                });
+            </script>
+EOF;
+        return $html;
+    }
+    
     function generateInactiveHQPHTML($person, $edit){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $wgOut;
         $user = Person::newFromId($wgUser->getId());
         $person = Person::newFromName(str_replace(" ", ".", $person->getName()));
         $boxes = "";
         if($person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
-            $wgOut->addScript("<script type='text/javascript'>
-                var theses = Array();\n");
-            $theses = $person->getPapers();
-            foreach($theses as $thesis){
-                $title = $thesis->getTitle();
-                if(strlen($thesis->getTitle()) > 50){
-                    $title = substr($title, 0, 50)."...";
-                }
-                $wgOut->addScript("theses[{$thesis->getId()}] = '".str_replace("'", "&#39;", $title)."';\n");
-            }
-            $partners = array();
-            foreach(Partner::getAllPartners() as $partner){
-                $partners[] = $partner->getOrganization();
-            }
-            $universities = array();
-            foreach(Person::getAllUniversities() as $uni){
-                $universities[] = $uni;
-            }
-            $movedOn = $person->getMovedOn();
-            $thesis = $person->getThesis(false);
-            $tId = ($thesis != null) ? $thesis->getId() : 0;
-            
-            $roleHistory = $person->getRoles(true);
-            $lastHQPRole = null;
-            foreach($roleHistory as $role){
-                if($role->getRole() == HQP){
-                    if($lastHQPRole == null){
-                        $lastHQPRole = $role;
-                    }
-                    else if($role->getEndDate() >= $lastHQPRole->getEndDate()){
-                        $lastHQPRole = $role;
-                    }
-                }
-            }
-            
-            $wgOut->addScript("
-                var partners = [\"".implode("\",\n\"", $partners)."\"];
-                var universities = [\"".implode("\",\n\"", $universities)."\"];
-                
-                function updateStep2(){
-                    var reason = $('input[name=reason]:checked').val();
-                    if(reason == 'graduated'){
-                        var options = '<option value=\"No Thesis\">No Thesis</option>';
-                        for(index in theses){
-                            if(index != 'indexOf'){
-                                if(index == $tId){
-                                    options += '<option value=\"' + index + '\" selected=\"selected\">' + theses[index] + '</option>';
-                                }
-                                else{
-                                    options += '<option value=\"' + index + '\">' + theses[index] + '</option>';
-                                }
-                            }
-                        }
-                        var text = \"<tr><td valign='top' align='right'>Thesis:</td><td><select name='thesis'>\" + options + \"</select><br /><small>If The thesis is not in the list, then you can <a target='_blank' href='$wgServer$wgScriptPath/index.php/Special:AddPublicationPage'>add it</a> and then <a href='javascript:history.go(0);'>reload</a> this page.</small></td></tr>\" +
-                                   \"<tr><td align='right'>Further&nbsp;Studies&nbsp;at:</td><td><input type='text' id='studies' size='25' name='studies' value='".str_replace("\"", "&quot;", $movedOn['studies'])."' /></td></tr>\" +
-                                   \"<tr><td align='right'>Employed&nbsp;by:</td><td><input type='text' id='employer' name='employer' size='25' value='".str_replace("\"", "", $movedOn['employer'])."' /></td></tr>\" +
-                                   \"<tr><td align='right' valign='top'>Location:</td><td></tr><tr><td align='right'>City:</td><td><input type='text' id='city' name='city' size='25' value='".str_replace("\"", "&quot;", $movedOn['city'])."' /></td></tr><td align='right'>Country:</td><td><input type='text' id='country' name='country' size='25' value='".str_replace("\"", "&quot;", $movedOn['country'])."' /></td></tr>\";
-                        $('#step2').html(text);
-                        $('#employer').autocomplete({
-                            source: partners
-                        });
-                        $('#country').autocomplete({
-                            source: countries
-                        });
-                        $('#studies').autocomplete({
-                            source: universities
-                        });
-                    }
-                    else if(reason == 'movedOn'){
-                        var text = \"<tr><td align='right'>Further&nbsp;Studies&nbsp;at:</td><td><input type='text' id='studies' size='25' name='studies' value='".str_replace("\"", "&quot;", $movedOn['studies'])."' /></td></tr>\" +
-                                   \"<tr><td align='right'>Employed&nbsp;by:</td><td><input type='text' id='employer' name='employer' size='25' value='".str_replace("\"", "&quot;", $movedOn['employer'])."' /></td></tr>\" +
-                                   \"<tr><td align='right' valign='top'>Location:</td><td></tr><tr><td align='right'>City:</td><td><input type='text' id='city' name='city' size='25' value='".str_replace("\"", "&quot;", $movedOn['city'])."' /></td></tr><td align='right'>Country:</td><td><input type='text' id='country' name='country' size='25' value='".str_replace("\"", "&quot;", $movedOn['country'])."' /></td></tr>\";
-                        $('#step2').html(text);
-                        $('#employer').autocomplete({
-                            source: partners
-                        });
-                        $('#country').autocomplete({
-                            source: countries
-                        });
-                        $('#studies').autocomplete({
-                            source: universities
-                        });
-                    }
-                    $('#step3').show();
-                }
-                
-                $(document).ready(function(){
-                    updateStep2();
-                });  
-                                         
-            </script>");
-            if($tId != 0){
-                $checkedGraduated = " checked='checked'";
-                $checkedMovedOn = "";
-            }
-            else{
-                $checkedGraduated = "";
-                $checkedMovedOn = " checked='checked'";
-            }
+            $movedOn = $person->getAllMovedOn();
             if($edit){
-                $this->html .= "<div style='padding-left:30px;'>
-                                <fieldset><legend>Reason for ".HQP." Inactivation</legend>
-                                <table>
-                                <tr>
-                                    <td>Date&nbsp;Effective:</td><td>{$lastHQPRole->getEndDate()}</td>
-                                </tr>
-                                <tr id='step1'>
-                                    <td colspan='2'><input type='radio' name='reason' value='graduated' onChange='updateStep2()'$checkedGraduated /> Graduated</td>
-                                </tr>
-                                <tr>
-                                    <td colspan='2'><input type='radio' name='reason' value='movedOn' onChange='updateStep2()'$checkedMovedOn /> Moved On</td>
-                                </tr>
-                                <tbody id='step2'>
-                                    
-                                </tbody>
-                                </table>
-                                </fieldset>
-                            </div><br />";
+                $wgOut->addScript("<script type='text/javascript'>
+                    var theses = Array();\n");
+                $theses = $person->getPapers();
+                foreach($theses as $thesis){
+                    $title = $thesis->getTitle();
+                    if(strlen($thesis->getTitle()) > 50){
+                        $title = substr($title, 0, 50)."...";
+                    }
+                    $wgOut->addScript("theses[{$thesis->getId()}] = '".str_replace("'", "&#39;", $title)."';\n");
+                }
+                $partners = array();
+                foreach(Partner::getAllPartners() as $partner){
+                    $partners[] = $partner->getOrganization();
+                }
+                $universities = array();
+                foreach(Person::getAllUniversities() as $uni){
+                    $universities[] = $uni;
+                }
+                $wgOut->addScript("
+                    var partners = [\"".implode("\",\n\"", $partners)."\"];
+                    var universities = [\"".implode("\",\n\"", $universities)."\"];
+                    
+                    function showNewMovedOn(){
+                        $('#movedOn_new').show();
+                        $('#movedOn_new').append('<input type=hidden name=doNew value=new />');
+                        $('#addMovedOn').hide();
+                    }
+                    
+                    function deleteMovedOn(id){
+                        if($('#movedOn_' + id).hasClass('deleted')){
+                            $('#movedOn_' + id).removeClass('deleted');
+                            $('#movedOn_' + id).css('background', '#FFFFFF');
+                        }
+                        else{
+                            $('#movedOn_' + id).addClass('deleted');
+                            $('#movedOn_' + id).css('background', '#DDDDDD');
+                        }
+                    }
+                    </script>
+                ");
+                
+                foreach($movedOn as $key => $row){
+                    $this->html .= $this->addEditHTML($key, $row);
+                }
+                $this->html .= $this->addEditHTML("new", array("effective_date" => date('Y-m-d'), 
+                                                               "studies" => "", 
+                                                               "employer" => "", 
+                                                               "city" => "", 
+                                                               "country" => "",
+                                                               "thesis" => null,
+                                                               "reason" => "graduated"), true);
+                $this->html .= "<br /><input id='addMovedOn' type='button' onClick='showNewMovedOn();' value='Add \"Moved On\"' /><br />";
             }
             else{
-                $this->html .= "<table style='margin-left:30px;'>";
-                if($lastHQPRole != null){
-                    $this->html .= "<tr><td align='right'>Effective Date:</td><td>{$lastHQPRole->getEndDate()}</td></tr>";
-                }
-                if($thesis != null){
-                    $this->html .= "<tr><td align='right'>Thesis:</td><td><a href='{$thesis->getUrl()}'>{$thesis->getTitle()}</a></td></tr>";
-                }
                 if(count($movedOn) > 0){
-                    $this->html .="<tr><td align='right'>Further Studies at:</td><td>{$movedOn['studies']}</td></tr>";
-                    $this->html .="<tr><td align='right'>Employed By:</td><td>{$movedOn['employer']}</td></tr>";
-                    $this->html .="<tr><td align='right'>City:</td><td>{$movedOn['city']}</td></tr>";
-                    $this->html .="<tr><td align='right'>Country:</td><td>{$movedOn['country']}</td></tr>";
+                    foreach($movedOn as $key => $row){
+                        if($row['reason'] == "graduated"){
+                            $type = "Graduated";
+                        }
+                        else{
+                            $type = "Moved On";
+                        }
+                        $this->html .= "<h3>{$type} {$row['effective_date']}</h3>";
+                        $this->html .= "<table style='margin-left:30px;'>";
+                        if($row['thesis'] != null){
+                            $this->html .= "<tr><td align='right'><b>Thesis:</b></td><td><a href='{$row['thesis']->getUrl()}'>{$row['thesis']->getTitle()}</a></td></tr>";
+                        }
+                        if($row['studies'] != "") $this->html .= "<tr><td align='right'><b>Further Studies at:</b></td><td>{$row['studies']}</td></tr>";
+                        if($row['employer'] != "") $this->html .= "<tr><td align='right'><b>Employed By:</b></td><td>{$row['employer']}</td></tr>";
+                        if($row['city'] != "") $this->html .= "<tr><td align='right'><b>City:</b></td><td>{$row['city']}</td></tr>";
+                        if($row['country'] != "") $this->html .= "<tr><td align='right'><b>Country:</b></td><td>{$row['country']}</td></tr>";
+                        $this->html .="</table>";
+                    }
                 }
-                $this->html .="</table>";
+                else{
+                    $this->html .= "{$person->getNameForForms()} does not have any moved on or graduation information yet.";
+                }
             }
         }
     }

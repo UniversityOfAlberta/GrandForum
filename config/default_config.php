@@ -102,6 +102,7 @@
         'Duplicates',
         //'Acknowledgements',
         //'AllocatedBudgets',
+        'FundedCNI',
         'ProjectEvolution',
         'ProjectLeadership',
         //'ScreenCapture',

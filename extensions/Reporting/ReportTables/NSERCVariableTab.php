@@ -1091,8 +1091,7 @@ EOF;
     }
 
     function getHQPEmployment($people, $type){
-        $movedons = $people; //Person::getAllMovedOnDuring();
-
+        $movedons = $people;
         
         $positions = array( "Undergraduate"=>"Ugrad",
                             "Masters Student"=>"Masters",

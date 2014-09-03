@@ -2,6 +2,9 @@
 
 class PersonHQPCell extends DashboardCell {
     
+    var $start;
+    var $end;
+    
     function PersonHQPCell($cellType, $params, $cellValue, $rowN, $colN, $table){
         $this->label = "HQP";
         $start = "0000-00-00";
@@ -13,10 +16,12 @@ class PersonHQPCell extends DashboardCell {
             if(isset($params[0])){
                 // Start
                 $start = $params[0];
+                $this->start = $start;
             }
             if(isset($params[1])){
                 // End
                 $end = $params[1];
+                $this->end = $end;
             }
         }
         if(isset($params[2])){
@@ -140,11 +145,18 @@ class PersonHQPCell extends DashboardCell {
         global $wgServer, $wgScriptPath;
         $hqp = Person::newFromId($item);
         $uni = $hqp->getUniversity();
-        $projects = $hqp->getProjects();
+        if($this->start != null && $this->end != null){
+            $projects = $hqp->getProjectsDuring($this->start, $this->end);
+        }
+        else{
+            $projects = $hqp->getProjects();
+        }
         $projectNames = array();
         if(is_array($projects)){
             foreach($projects as $project){
-                $projectNames[] = "<a href='{$project->getUrl()}' target='_blank'>{$project->getName()}</a>";
+                if(!$project->isSubProject()){
+                    $projectNames[] = "<a href='{$project->getUrl()}' target='_blank'>{$project->getName()}</a>";
+                }
             }
         }
         $style = "";
@@ -172,15 +184,39 @@ class PersonHQPCell extends DashboardCell {
 	    }
 	    $posString = "";
 	    if($uni['position'] != ""){
-	        $posString .= "{$uni['position']}<span class='pdfOnly'>; </span>";
+	        $posString = "{$uni['position']}";
 	    }
 	    
 	    $uniString = "";
 	    if($uni['university'] != ""){
-	        $uniString .= "{$uni['university']}<span class='pdfOnly'>; </span>";
+	        $uniString = "{$uni['university']}";
 	    }
-	    
-        $details = "<td style='$style;'>".implode(", ", $projectNames)."<span class='pdfOnly'>; $range<br /></span></td><td style='$style;'><a href='{$hqp->getUrl()}' target='_blank'>{$hqp->getReversedName()}</a>$inactive<span class='pdfOnly'>; </span></td><td style='$style;'>{$posString}</td><td style='$style;'>{$uniString}</td>";
+	    $movedOnString = "";
+	    $when = $hqp->getDegreeReceivedDate();
+	    if($when != "0000-00-00 00:00:00"){
+	        $thesis = $hqp->getThesis(false);
+	        $movedOn = $hqp->getMovedOn();
+	        $where = $movedOn['where'];
+	        $when = date("M d, Y", strtotime($when));
+	        if($where != ""){
+	            $movedOnString .= "Moved To {$where}";
+	        }
+	        if($thesis != null){
+	            if($where != ""){
+	                $movedOnString .= " / ";
+	            }
+	            $movedOnString .= "Graduated";
+	        }
+	        if($movedOnString != ""){
+	            $movedOnString .= " on {$when}";
+	        }
+	    }
+	    $projString = "";
+	    if($movedOnString != "" && count($projectNames) > 0){
+	        $projString .= " / ";
+	    }
+	    $projString .= implode(", ", $projectNames);
+        $details = "<td style='$style;'><span class='pdfnodisplay'>".implode(", ", $projectNames)."</span></td><td style='$style;'><a href='{$hqp->getUrl()}' target='_blank'>{$hqp->getReversedName()}</a>$inactive<span class='pdfOnly'>; </span></td><td style='$style;'><span class='pdfnodisplay'>{$posString}</span></td><td style='$style;'>{$uniString}<div class='pdfOnly' style='width:100%;text-align:right;'><i>{$movedOnString}{$projString}</i></div></td>";
         return $details;
     }
 }

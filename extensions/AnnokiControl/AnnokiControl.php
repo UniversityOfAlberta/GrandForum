@@ -143,6 +143,9 @@ $egAnnokiExtensions['Acknowledgements'] = array('name' => 'Acknowledgements',
 $egAnnokiExtensions['AllocatedBudgets'] = array('name' => 'Allocated Budgets',
                                                 'path' => "$IP/extensions/AllocatedBudgets/AllocatedBudgets.php");
 
+$egAnnokiExtensions['FundedCNI'] = array('name' => 'Funded CNI',
+                                         'path' => "$IP/extensions/FundedCNI/FundedCNI.php");
+
 $egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
                                                 'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");
                                                 

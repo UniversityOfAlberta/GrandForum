@@ -144,7 +144,8 @@ class ReportStorage {
 
         DBFunctions::execSQL("UPDATE grand_pdf_report 
                               SET submitted = 1,
-                                  submission_user_id = $impersonateId
+                                  submission_user_id = $impersonateId,
+                                  timestamp = timestamp
                               WHERE token = '{$tok}' AND user_id = {$this->_uid};", true);
         // Refresh.
         $this->load_metadata($tok);
@@ -178,7 +179,8 @@ class ReportStorage {
 
         DBFunctions::execSQL("UPDATE grand_pdf_report 
                               SET submitted = 1,
-                                  submission_user_id = $impersonateId 
+                                  submission_user_id = $impersonateId,
+                                  timestamp = timestamp
                               WHERE token = '{$tok}'", true);
         // Refresh.
         $this->load_metadata($tok);
@@ -292,7 +294,7 @@ class ReportStorage {
     /// entries per user.  By default, submitted reports are considered, which
     /// can be changed with #subm.  #uarr is either an array of numeric user IDs
     /// or an integer (for the user ID).
-    static function list_reports($uarr, $subm = 1, $lim = 1, $special = 0, $type = 0) {
+    static function list_reports($uarr, $subm = 1, $lim = 1, $special = 0, $type = 0, $year = "") {
         if (is_array($uarr)) {
             $uarr = implode(', ', $uarr);
         }
@@ -305,11 +307,15 @@ class ReportStorage {
         else{
             $lim = "LIMIT {$lim}";
         }
-        $sql = "SELECT user_id, report_id, submitted, auto, token, timestamp, year
+        if($year != ""){
+            $year = "AND year = {$year}";
+        }
+        $sql = "SELECT user_id, generation_user_id, submission_user_id, report_id, submitted, auto, token, timestamp, year
                 FROM grand_pdf_report 
                 WHERE user_id IN ({$uarr}) 
                 AND submitted = {$subm} 
                 AND type = {$type} 
+                {$year}
                 AND report_id NOT IN (SELECT `report_id` FROM grand_pdf_index)
                 ORDER BY timestamp DESC
                 {$lim};";
@@ -329,7 +335,7 @@ class ReportStorage {
         else{
             $lim = "LIMIT {$lim}";
         }
-        $sql = "SELECT user_id, report_id, submitted, auto, token, timestamp, year
+        $sql = "SELECT user_id, generation_user_id, submission_user_id, report_id, submitted, auto, token, timestamp, year
                 FROM grand_pdf_report 
                 WHERE user_id IN ({$uarr}) 
                 AND submitted = {$subm} 
@@ -349,7 +355,7 @@ class ReportStorage {
         else{
             $lim = "LIMIT {$lim}";
         }
-        $sql = "SELECT r.user_id, r.report_id, r.submitted, r.auto, r.token, r.timestamp, r.year
+        $sql = "SELECT r.user_id, generation_user_id, submission_user_id, r.report_id, r.submitted, r.auto, r.token, r.timestamp, r.year
                 FROM grand_pdf_report r, grand_pdf_index i 
                 WHERE r.report_id = i.report_id
                 AND i.sub_id = {$sub_id}
@@ -368,7 +374,7 @@ class ReportStorage {
         else{
             $lim = "LIMIT {$lim}";
         }
-        $sql = "SELECT r.user_id, r.report_id, r.submitted, r.auto, r.token, r.timestamp, r.year
+        $sql = "SELECT r.user_id, generation_user_id, submission_user_id, r.report_id, r.submitted, r.auto, r.token, r.timestamp, r.year
                 FROM grand_pdf_report r, grand_pdf_index i 
                 WHERE r.report_id = i.report_id
                 AND i.sub_id = {$sub_id}

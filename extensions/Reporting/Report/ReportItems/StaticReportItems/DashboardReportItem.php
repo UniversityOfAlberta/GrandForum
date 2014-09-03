@@ -10,6 +10,7 @@ class DashboardReportItem extends StaticReportItem {
         $dashboard = $this->createDashboard();
         $dashboard = $this->filterRows($dashboard);
         $dashboard = $this->filterCols($dashboard);
+        $dashboard = $this->splitCompleted($dashboard);
         $dash = "";
         if($limit > 0){
             $top = $dashboard->copy()->limit(0, 1);
@@ -33,6 +34,7 @@ class DashboardReportItem extends StaticReportItem {
 	    $dashboard = $this->createDashboard();
         $dashboard = $this->filterRows($dashboard);
         $dashboard = $this->filterCols($dashboard);
+        $dashboard = $this->splitCompleted($dashboard);
         if($totalOnly){
             $top = $dashboard->copy()->limit(0, 1);
             if(!$this->getReport()->topProjectOnly){
@@ -42,6 +44,7 @@ class DashboardReportItem extends StaticReportItem {
                 $dashboard = $top->copy()->union($dashboard->copy()->limit(1,1)->union($dashboard->copy()->limit(1,1))->union($dashboard->copy()->limit(1,1)) );
             }
             $dashboard->filterCols(HEAD, array("Projects"));
+            $dashboard->filterCols(HEAD, array("People"));
         }
 		$dash = "";
         if($limit > 0){
@@ -94,11 +97,25 @@ class DashboardReportItem extends StaticReportItem {
 	function filterCols($dashboard){
 	    if($this->getAttr("structure") == "PROJECT_REPORT_TIME_STRUCTURE" && $this->getReport()->project != null){
 	        $created = $this->getReport()->project->getCreated();
-	        if($created > $this->getReport()->year.REPORTING_CYCLE_END_MONTH){
+	        if($created > ($this->getReport()->year+1).REPORTING_CYCLE_END_MONTH){
 	            $dashboard = $dashboard->copy()->filterCols(HEAD, array("Hours%", "Allocated%"));
 	        }
 	    }
 	    return $dashboard;
+	}
+	
+	function splitCompleted($dashboard){
+	    $completed = $dashboard->copy()->where(PERSON_PROJECTS, array("%Completed%"));
+	    $rest = $dashboard->copy()->filter(PERSON_PROJECTS, array("%Completed%"));
+	    $last = $rest->copy()->limit($rest->nRows()-1, 1);
+	    $rest->limit(0, $rest->nRows()-1);
+	    if($completed->nRows() > 0){
+	        $rest->union(new DashboardTable(array(array(HEAD)),
+                                             array(array("Phase 1 Projects")), null));
+	        $rest->union($completed);
+	    }
+	    $rest->union($last);
+	    return $rest;
 	}
 
 }

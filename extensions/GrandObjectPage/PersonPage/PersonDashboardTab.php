@@ -31,7 +31,7 @@ class PersonDashboardTab extends AbstractTab {
                     $dashboard = new DashboardTable(NI_PUBLIC_PROFILE_STRUCTURE, $person);
                 }
             }
-            else if($person->isHQP() || ($person->isRole(INACTIVE) && $person->wasLastRole(HQP))){
+            else if($person->isRole(HQP) || $person->isRole(EXTERNAL) || ($person->isRole(INACTIVE) && $person->wasLastRole(HQP))){
                 $dashboard = new DashboardTable(HQP_PUBLIC_PROFILE_STRUCTURE, $person);
             }
             if($dashboard != null){

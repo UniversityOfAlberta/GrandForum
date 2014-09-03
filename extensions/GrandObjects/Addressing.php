@@ -50,7 +50,7 @@ define('RP_PROJECT_ISAC', 16);
 define('SEC_NONE',              0); 
 
 define('RES_EFFORT',			1);
-define('RES_MILESTONES',		2);
+define('RES_MILESTONES',		12); // Used to be '2', but moved into RES_RESACTIVITY ('12')
 define('RES_PEOPLE_INTERACT',		3);
 define('RES_PROJECT_INTERACT',		4);
 define('RES_IMPACT',			5);
@@ -63,10 +63,11 @@ define('RES_CONTRIBUTIONS',		11);
 define('RES_RESACTIVITY',		12);
 define('RES_BUDGET_PNIADMIN',	13);
 define('RES_ALLOC_BUDGET',      14);
+define('RES_SUBPROJECTS',		5);
 
 define('HQP_DEMOGRAPHIC',		1);
 define('HQP_EFFORT',			2);
-define('HQP_MILESTONES',		3);
+define('HQP_MILESTONES',		7); // Used to be '3', but moved into HQP_RESACTIVITY ('7')
 define('HQP_PEOPLE_INTERACT',		4);
 define('HQP_PROJECT_INTERACT',		5);
 define('HQP_IMPACT',			6);
@@ -154,11 +155,11 @@ define('MTG_OTHER', 5);
  * are prefixed with the section they belong to in order to make it manageable.
  */
 
-define('RES_MIL_NOTAPPLICABLE',		1);
-define('RES_MIL_CONTRIBUTIONS',		2);
-define('RES_MIL_PRIMCRITERIA',		3);
-define('RES_MIL_SECCRITERIA',		4);
-define('RES_MIL_SUMMARY',		    5);
+define('RES_MIL_NOTAPPLICABLE',		12);  // Used to be '1', changed to '12'
+define('RES_MIL_CONTRIBUTIONS',		11);  // Used to be '2', changed to '11'
+define('RES_MIL_PRIMCRITERIA',		13);  // Used to be '3', changed to '13'
+define('RES_MIL_SECCRITERIA',		14);  // Used to be '4', changed to '14'
+define('RES_MIL_SUMMARY',		    15);  // Used to be '5', changed to '15'
 
 define('RES_HQP_MILESTONEFEEDBACK',	1);
 define('RES_HQP_PPLINTERACTFEEDBACK',	2);
@@ -181,6 +182,16 @@ define('RES_RESACT_BENEF',   		7);
 define('RES_RESACT_OTHER',   		8);
 define('RES_RESACT_NEXTPLANS',      9);
 define('RES_RESACT_FILE',           10);
+define('RES_RESACT_CONTRIBUTIONS',  11);
+define('RES_RESACT_NOTAPPLICABLE',  12);
+define('RES_RESACT_PRIMCRITERIA',   13);
+define('RES_RESACT_SECCRITERIA',    14);
+define('RES_RESACT_SUMMARY',        15);
+
+define('RES_SUBPROJECT_GOALS',          1);
+define('RES_SUBPROJECT_ACHEIVEMENTS',   2);
+define('RES_SUBPROJECT_FUTURE',         3);
+define('RES_SUBPROJECT_CHAMPS',         4);
 
 define('HQP_DEM_LEVEL',			1);
 define('HQP_DEM_GENDER',		2);
@@ -191,15 +202,19 @@ define('HQP_EFF_HOURS',			1);
 define('HQP_EFF_MONTHS',		2);
 define('HQP_EFF_REMARKS',		3);
 
-define('HQP_MIL_NOTAPPLICABLE',		1);
-define('HQP_MIL_CONTRIBUTIONS',		2);
-define('HQP_MIL_PRIMCRITERIA',		3);
-define('HQP_MIL_SECCRITERIA',		4);
+define('HQP_MIL_NOTAPPLICABLE',		6); // Used to be '1', changed to '6'
+define('HQP_MIL_CONTRIBUTIONS',		5); // Used to be '2', changed to '5'
+define('HQP_MIL_PRIMCRITERIA',		7); // Used to be '3', changed to '7'
+define('HQP_MIL_SECCRITERIA',		8); // Used to be '4', changed to '8'
 
 define('HQP_RESACT_OVERALL',		1);
 define('HQP_RESACT_EXCELLENCE',		2);
 define('HQP_RESACT_NETWORKING',		3);
 define('HQP_RESACT_KTEE',   		4);
+define('HQP_RESACT_CONTRIBUTIONS',  5);
+define('HQP_RESACT_NOTAPPLICABLE',  6);
+define('HQP_RESACT_PRIMCRITERIA',   7);
+define('HQP_RESACT_SECCRITERIA',    8);
 
 define('CHAMP_REPRESENT', 1);
 define('CHAMP_ACTIVITY', 2);
@@ -286,3 +301,5 @@ define('EVL_LOI_C',		2);
  * RP_EVAL_RESEARCHER; project ID if report type is RP_EVAL_PROJECT.
  */
 
+// Sub-Items
+define('RES_RESACT_PHASE1',     1);

@@ -192,8 +192,8 @@ class DashboardTable extends QueryableTable{
                     if($cell instanceof DashboardCell){
                         foreach($cell->values as $type => $values){
                             $extra = ($type == "All") ? "" : ' / '.$type;
-                            $details .= "<div style='margin-left:25px;'><p><span class='label'>{$cell->label}$extra:</span></p><ul>\n";
-                            $firstTimeStatus = array();
+                            $details .= "<h2>{$cell->label}$extra</h2><div><ul>\n";
+                            $firstTimeType = array();
                             foreach($values as $item){
                                 $row = new SmartDomDocument();
                                 $row->loadHTML($cell->detailsRow($item));
@@ -214,38 +214,37 @@ class DashboardTable extends QueryableTable{
                                     $i--;
                                     DOMRemove($td);
                                 }
+                                if(($cell->label == "HQP") && $cell instanceof PersonHQPCell){
+                                    $hqp = Person::newFromId($item);
+                                    $position = $hqp->getPosition();
+                                    $position = ($position != "") ? $position : "Other";
+                                    if(!isset($firstTimeType[$position])){
+                                        if(count($firstTimeType) > 0){
+                                            $details .= "</ul></li>\n";
+                                        }
+                                        $details .= "<li>{$position}s<ul>";
+                                        $firstTimeType[$position] = true;
+                                    }
+                                }
                                 if(($cell->label == "Publications" || $cell->label == "Artifacts") && 
                                     $cell instanceof PublicationCell){
                                     $paper = Paper::newFromId($item);
-                                    $data = $paper->getData();
-                                    if(!isset($data['peer_reviewed'])){
-                                        $pr = "No";
-                                    }
-                                    else{
-                                        $pr = $data['peer_reviewed'];
-                                    }
-                                    $status = $paper->getStatus().$pr;
-                                    if(!isset($firstTimeStatus[$status])){
-                                        if(count($firstTimeStatus) > 0){
+                                    $type = $paper->getCCVType();
+                                    if(!isset($firstTimeType[$type])){
+                                        if(count($firstTimeType) > 0){
                                             $details .= "</ul></li>\n";
                                         }
-                                        $peerReviewedStatus = "";
-                                        if($cell->label == "Publications"){
-                                            if($pr == "Yes"){
-                                                $peerReviewedStatus = "<span class='pdfOnly'> / Peer Reviewed</span>";
-                                            }
-                                            else{
-                                                $peerReviewedStatus = "<span class='pdfOnly'> / Not Peer Reviewed</span>";
-                                            }
-                                        }
-                                        $details .= "<li>".$paper->getStatus()."{$peerReviewedStatus}<ul>";
-                                        $firstTimeStatus[$status] = true;
+                                        $details .= "<li>$type<ul>";
+                                        $firstTimeType[$type] = true;
                                     }
                                 }
                                 $details .= "<li>".$row."</li>\n";
                             }
                             if(($cell->label == "Publications" || $cell->label == "Artifacts") && 
                                 $cell instanceof PublicationCell){
+                                $details .= "</ul></li>\n";
+                            }
+                            if(($cell->label == "HQP") && $cell instanceof PersonHQPCell){
                                 $details .= "</ul></li>\n";
                             }
                             $details .= "</ul></div>\n";

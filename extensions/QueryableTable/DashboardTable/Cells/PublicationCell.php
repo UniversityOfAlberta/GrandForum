@@ -59,26 +59,29 @@ abstract class PublicationCell extends DashboardCell {
         $value = 0;
         switch($type){
             case "Journal Paper":
-                $value = 0;
+                $value = 100;
                 break;
             case "Book Chapter":
-                $value = 1;
+                $value = 200;
                 break;
+            case "Conference Paper":
             case "Collections Paper":
             case "Proceedings Paper":
-                $value = 2;
+                $value = 300;
                 break;
-            case "PhD Thesis":
-                $value = 3;
+            case "PHD Dissertation":
+            case "PHD Thesis":
+                $value = 400;
                 break;
+            case "Masters Dissertation":
             case "Masters Thesis":
-                $value = 4;
+                $value = 500;
                 break;
             case "Bachelors Thesis":
-                $value = 5;
+                $value = 600;
                 break;
             default:
-                $value = 100;
+                $value = 1000;
                 break;
         }
         return $value;
@@ -90,7 +93,7 @@ abstract class PublicationCell extends DashboardCell {
     
     function getHeaders(){
         if($this->category == "Publication" || $this->category == "Artifact"){
-            return array("Publication Date", "Projects", "First Author", "Previously Reported", $this->category);
+            return array("Publication Date", "Projects", "First Author", $this->category);
         }
         return array("Publication Date", "Projects", "First Author", $this->category);
     }
@@ -98,10 +101,13 @@ abstract class PublicationCell extends DashboardCell {
     function detailsRow($item){
         global $wgServer, $wgScriptPath;
         $paper = Paper::newFromId($item);
+        $data = $paper->getData();
         $projects = $paper->getProjects();
         $projs = array();
         foreach($projects as $project){
-            $projs[] = "<a href='{$project->getUrl()}' target='_blank'>{$project->getName()}</a>";
+            if(!$project->isSubProject()){
+                $projs[] = "<a href='{$project->getUrl()}' target='_blank'>{$project->getName()}</a>";
+            }
         }
         $authors = $paper->getAuthors();
         $first_author = (isset($authors[0]))? explode(' ', $authors[0]->getNameForForms()) : array("","");
@@ -124,7 +130,7 @@ abstract class PublicationCell extends DashboardCell {
             }*/
             $reported = "<td style='text-align:left;'><b>Reported to RMC:</b> {$rmc}{$nce}</td>";
         }
-        $hqpAuthored = "<br />";
+        $hqpAuthored = "";
         if($this instanceof PersonPublicationCell){
             $found = false;
             foreach($paper->getAuthors() as $author){
@@ -133,10 +139,32 @@ abstract class PublicationCell extends DashboardCell {
                 }
             }
             if(!$found){
-                $hqpAuthored = "<span class='pdfOnly'>;</span> (Authored by HQP)<br />";
+                $hqpAuthored = "<span class='pdfOnly'>;</span> (Authored by HQP)";
             }
         }
-        $details = "<td style='white-space:nowrap;text-align:left;'>{$paper->getDate()}<span class='pdfOnly'>, </span></td><td style='text-align:left;'>".implode(", ", $projs)."<span class='pdfOnly'>; </span></td><td class='pdfnodisplay' style='text-align:left;'>{$first_author}<span class='pdfnodisplay'>{$hqpAuthored}</span></td>{$reported}<td style='width:50%;text-align:left;'><span class='pdfOnly'>{$hqpAuthored}</span>{$citation}</td>\n";
+        $status = $paper->getStatus();
+        if(!isset($data['peer_reviewed'])){
+            $pr = "No";
+        }
+        else{
+            $pr = $data['peer_reviewed'];
+        }
+        if($pr == "No"){
+            $pr = "Not Peer Reviewed";
+        }
+        else if($pr == "Yes"){
+            $pr = "Peer Reviewed";
+        }
+        $stat = "";
+        if($paper->getCategory() == "Publication"){
+            $stat = "{$status} / {$pr} / ";
+        }
+        else{
+            if($status != ""){
+                $stat = "{$status} / ";
+            }
+        }
+        $details = "<td style='white-space:nowrap;text-align:left;' class='pdfnodisplay'>{$paper->getDate()}</td><td style='text-align:left;' class='pdfnodisplay'>".implode(", ", $projs)."</td><td class='pdfnodisplay' style='text-align:left;'>{$first_author}{$hqpAuthored}</td><td style='width:50%;text-align:left;'>{$citation}<div class='pdfOnly' style='width:100%;text-align:right;'><i>{$stat}".implode(", ", $projs)."</i></div></td>\n";
         return $details;
     }
     

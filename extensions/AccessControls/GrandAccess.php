@@ -25,7 +25,8 @@ class GrandAccess {
 	        $aRights[$i++] = PL;
 	        $aRights[$i++] = COPL;
 	    }
-	    if(count($me->leadership()) > 0){
+	    $leadership = $me->leadership();
+	    if(count($leadership) > 0){
 	        $aRights[$i++] = "Leadership";
 	        $aRights[$i++] = "Leadership+";
 	        if($me->isProjectLeader()){
@@ -39,6 +40,13 @@ class GrandAccess {
 	        if($me->isProjectManager()){
 	            $aRights[$i++] = PM;
 	            $aRights[$i++] = PM.'+';
+	        }
+	        foreach($leadership as $lead){
+	            if($lead->isSubProject()){
+	                $aRights[$i++] = "SUB-PL";
+	                $aRights[$i++] = "SUB-COPL";
+	                break;
+	            }
 	        }
 	    }
 	    if($me->isEvaluator()){

@@ -116,6 +116,7 @@ class ResearcherAPI extends API{
                        "department" => '',
                        "position"   => '');
         }
+        $funded = $person->isFundedFor(REPORTING_YEAR);
         $p = array("type" => $person->getType(),
                    "id" => $person->getId(),
                       "firstname" => $name['first'],
@@ -124,7 +125,8 @@ class ResearcherAPI extends API{
                       "department"  => $uni['department'],
                       "position"    => $uni['position'],
                       "projects" => $projects,
-                      "biography" => $person->getProfile()
+                      "biography" => $person->getProfile(),
+                      "funded" => $funded
                      );
         if(file_exists("Photos/".str_ireplace(".", "_", $person->getName()).".jpg")){
             $p["photo"] = "$wgServer$wgScriptPath/Photos/".str_ireplace(".", "_", $person->getName()).".jpg";

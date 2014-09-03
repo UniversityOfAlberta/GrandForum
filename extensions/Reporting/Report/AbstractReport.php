@@ -310,6 +310,11 @@ abstract class AbstractReport extends SpecialPage {
                 }
                 exit;
             }
+            else if(isset($_GET['getPDF'])){
+                header('Content-Type: application/json');
+                echo json_encode($this->getPDF());
+                exit;
+            }
             if(!$this->generatePDF){
                 $wgOut->setPageTitle($this->name);
                 $this->render();
@@ -349,7 +354,7 @@ abstract class AbstractReport extends SpecialPage {
         }
     }
     
-    function getPDF($submittedByOwner=false){
+    function getLatestPDF(){
     	$sto = new ReportStorage($this->person);
     	if($this->project != null){
     	    if($this->pdfAllProjects){
@@ -360,8 +365,8 @@ abstract class AbstractReport extends SpecialPage {
             }
     	}
     	else{
-    	    $check = array_merge($sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType), 
-    	                         $sto->list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType));
+    	    $check = array_merge($sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType, $this->year), 
+    	                         $sto->list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType, $this->year));
     	}
     	$largestDate = "0000-00-00 00:00:00";
     	$return = array();
@@ -370,15 +375,63 @@ abstract class AbstractReport extends SpecialPage {
     	    $sto->select_report($tok);
     	    $year = $c['year'];
     	    $tst = $sto->metadata('timestamp');
-    	    if($year == $this->year && 
-    	       strcmp($tst, $largestDate) > 0){
-    	        if(($submittedByOwner &&
-    	           $sto->metadata('generation_user_id') == $this->person->getId() &&
-    	           $sto->metadata('submission_user_id') == $this->person->getId()) || 
-    	           !$submittedByOwner){
-        	        $largestDate = $tst;
-        	        $return = array($c);
-        	    }
+    	    if(strcmp($tst, $largestDate) > 0){
+    	        $largestDate = $tst;
+    	        $return = array($c);
+    	    }
+    	}
+        return $return;
+    }
+    
+    function getPDF($submittedByOwner=false){
+    	$sto = new ReportStorage($this->person);
+    	$foundSameUser = false;
+    	if($this->project != null){
+    	    if($this->pdfAllProjects){
+    	        $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType);
+    	    }
+    	    else{
+    	        $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
+            }
+    	}
+    	else{
+    	    // First check submitted
+    	    $check = $sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType, $this->year);
+    	    if(count($check) == 0){
+    	        // If found none, then look for any generated PDF
+    	        $check = $sto->list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType, $this->year);
+    	    }
+    	    foreach($check as $c){
+	            if($c['generation_user_id'] == $c['user_id']){
+	               $foundSameUser = true;
+	               break;
+	            }
+	        }
+    	}
+    	foreach($check as $key => $c){
+    	    if($foundSameUser && $c['generation_user_id'] != $c['user_id']){
+    	        unset($check[$key]);
+    	    }
+    	}
+    	$largestDate = "0000-00-00 00:00:00";
+    	$return = array();
+    	foreach($check as $c){
+    	    $tok = $c['token'];
+    	    $sto->select_report($tok);
+    	    $tst = $sto->metadata('timestamp');
+    	    if($c['submitted'] == 1){
+    	        $c['status'] = "Submitted";
+    	    }
+    	    else if($foundSameUser){
+    	        $c['status'] = "Not Submitted";
+    	    }
+    	    else if(!$foundSameUser){
+    	        $c['status'] = "Incomplete";
+    	    }
+    	    $c['name'] = $this->name;
+    	    if(strcmp($tst, $largestDate) > 0){
+    	        $largestDate = $tst;
+    	        $return = array($c);
     	    }
     	}
         return $return;
@@ -483,8 +536,14 @@ abstract class AbstractReport extends SpecialPage {
     
     function addSectionPermission($sectionId, $role, $permissions){
         $permissions = str_split($permissions);
-        foreach($permissions as $permission){
-            $this->sectionPermissions[$role][$sectionId][$permission] = true;
+        if(count($permissions) > 0){
+            foreach($permissions as $permission){
+                $this->sectionPermissions[$role][$sectionId][$permission] = true;
+            }
+        }
+        else{
+            // No permissions were explicitly defined, so add 'empty' permission (signals that the user has no permissions)
+            $this->sectionPermissions[$role][$sectionId][""] = true;
         }
     }
     
@@ -617,14 +676,16 @@ abstract class AbstractReport extends SpecialPage {
         if($me->isRole(MANAGER)){
             return array('r' => true, 'w' => true);
         }
+        $found = false;
         $roles = $me->getRights();
-        $roleObjs = $me->getRolesDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+        $roleObjs = $me->getRolesDuring();
         foreach($roleObjs as $role){
             $roles[] = $role->getRole();
         }
         $permissions = array();
         foreach($roles as $role){
             if(isset($this->sectionPermissions[$role][$section->id])){
+                $found = true;
                 foreach($this->sectionPermissions[$role][$section->id] as $key => $perm){
                     $permissions[$key] = $perm;
                 }
@@ -633,15 +694,22 @@ abstract class AbstractReport extends SpecialPage {
         if($this->person->getId() == 0 &&
            $this->project != null){
             if(isset($this->sectionPermissions[$this->project->getName()][$section->id])){
+                $found = true;
                 foreach($this->sectionPermissions[$this->project->getName()][$section->id] as $key => $perm){
                     $permissions[$key] = $perm;
                 }
             }
         }
         if(isset($this->sectionPermissions[$me->getId()])){
+            $found = true;
             foreach($this->sectionPermissions[$me->getId()][$section->id] as $key => $perm){
                 $permissions[$key] = $perm;
             }
+        }
+        if(!$found){
+            // If neither the section permissions were never defined, initialize them here as true
+            $permissions['r'] = true;
+            $permissions['w'] = true;
         }
         return $permissions;
     }
@@ -721,7 +789,7 @@ abstract class AbstractReport extends SpecialPage {
             $me = $person;
         }
         $sto = new ReportStorage($me);
-        $check = $this->getPDF();
+        $check = $this->getLatestPDF();
         if(count($check) > 0){
             $sto->mark_submitted_ns($check[0]['token']);
             if(($this->xmlName == "HQPReport" || $this->xmlName == "HQPReportPDF") && $this->project == null){
@@ -866,6 +934,10 @@ abstract class AbstractReport extends SpecialPage {
             $this->header->render();
         }
         foreach($sections as $section){
+            $permissions = $this->getSectionPermissions($section);
+            if(!isset($permissions['r'])){
+                continue;
+            }
             if(isset($_GET['preview']) || (!isset($_GET['preview']) && !$section->previewOnly)){
                 if(!$this->topProjectOnly || ($this->topProjectOnly && !$section->private)){
                     if(!($section instanceof HeaderReportSection)){
