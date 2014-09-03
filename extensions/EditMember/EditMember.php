@@ -754,7 +754,8 @@ class EditMember extends SpecialPage{
                 $allPeople[] = $person;
             }
         }
-        $wgOut->addHTML("Select a user from the list below, and then click the 'Next' button.  You can filter out the selection box by searching a name or project below.<table>
+        $wgOut->addHTML("This page can be used to edit the roles and projects of members on the forum.<br />
+                         Select a user from the list below, and then click the 'Next' button.  You can filter out the selection box by searching a name or project below.<table>
                             <tr><td>
                                 <a href='javascript:sortBy(\"first\");'>Sort by First Name</a> | <a href='javascript:sortBy(\"last\");'>Sort by Last Name</a><br />
                                 <b>Search:</b> <input style='width:100%;' id='search' type='text' onKeyUp='filterResults(this.value);' />
@@ -1396,7 +1397,7 @@ class EditMember extends SpecialPage{
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(CNI)){
-            $toolbox['People']['links'][1] = TabUtils::createToolboxLink("Edit Member", "$wgServer$wgScriptPath/index.php/Special:EditMember");
+            $toolbox['People']['links'][1] = TabUtils::createToolboxLink("Edit Member Roles", "$wgServer$wgScriptPath/index.php/Special:EditMember");
         }
         return true;
     }
