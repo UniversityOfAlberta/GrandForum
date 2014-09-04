@@ -1,8 +1,12 @@
 <?php
 
-BackbonePage::register('MailingListRules', 'MailingListRules', 'network-tools', dirname(__FILE__));
+BackbonePage::register('MailingListRules', 'Mailing List Rules', 'network-tools', dirname(__FILE__));
 
 class MailingListRules extends BackbonePage {
+    
+    function isListed(){
+        return true;
+    }
     
     function userCanExecute($user){
         $me = Person::newFromUser($user);

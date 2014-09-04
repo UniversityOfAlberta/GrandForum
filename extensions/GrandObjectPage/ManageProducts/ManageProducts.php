@@ -6,8 +6,12 @@ BackbonePage::register('ManageProducts', 'Manage Products', 'network-tools', dir
 
 class ManageProducts extends BackbonePage {
     
-    function userCanExecute($user){
+    function isListed(){
         return true;
+    }
+    
+    function userCanExecute($user){
+        return $user->isLoggedIn();
     }
     
     function getTemplates(){
