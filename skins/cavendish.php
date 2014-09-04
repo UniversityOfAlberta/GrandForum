@@ -900,7 +900,6 @@ EOF;
 		wfRunHooks( 'MonoBookTemplateToolboxEnd', array( &$this ) );
 		wfRunHooks( 'SkinTemplateToolboxEnd', array( &$this ) );
 ?>
-			</ul>
 	</li>
 <?php
 	}

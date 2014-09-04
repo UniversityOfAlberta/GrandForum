@@ -50,13 +50,13 @@
         <ReportItem id="basic_info" type="StaticReportItem">
         <![CDATA[
             <div class='basic_info' style='margin-bottom:20px;'>
-                <p><span class='label'>Name:</span> {$user_reversed_name} ({$user_full_roles})</p>
-                <p><span class='label'>Position:</span> {$user_level}</p>
-                <p><span class='label'>Department:</span> {$user_dept}</p>
-                <p><span class='label'>University:</span> {$user_uni}</p>
-                <p><span class='label'>Supervisor(s):</span> {$user_supervisors}</p>
-                <p><span class='label'>Phase 2 Projects:</span> {$user_phase2_projects}</p>
-                <p><span class='label'>Phase 1 Projects:</span> {$user_phase1_projects}</p>
+                <p><b>Name:</b {$user_reversed_name} ({$user_full_roles})</p>
+                <p><b>Position:</b> {$user_level}</p>
+                <p><b>Department:</b> {$user_dept}</p>
+                <p><b>University:</b> {$user_uni}</p>
+                <p><b>Supervisor(s):</b> {$user_supervisors}</p>
+                <p><b>Phase 2 Projects:</b> {$user_phase2_projects}</p>
+                <p><b>Phase 1 Projects:</b> {$user_phase1_projects}</p>
             </div>
         ]]>
         </ReportItem>

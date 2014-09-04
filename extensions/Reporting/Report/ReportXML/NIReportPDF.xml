@@ -44,10 +44,10 @@
         <![CDATA[
             <div class='basic_info' style='margin-bottom:20px;'>
                 <p style='font-size:150%;'>{$user_reversed_name} ({$user_full_roles})</p>
-                <p><span class='label'>Position:</span> {$user_level}</p>
-                <p><span class='label'>Department:</span> {$user_dept}</p>
-                <p><span class='label'>University:</span> {$user_uni}</p>
-                <p><span class='label'>Phase 2 Projects:</span>
+                <p><b>Position:</b> {$user_level}</p>
+                <p><b>Department:</b> {$user_dept}</p>
+                <p><b>University:</b> {$user_uni}</p>
+                <p><b>Phase 2 Projects:</b>
         ]]>
         </ReportItem>
         <ReportItemSet id="user_projects" type="PersonProjectReportItemSet" phase="2">
@@ -60,7 +60,7 @@
         </ReportItemSet>
         <ReportItem id="basic_info" type="StaticReportItem">
         <![CDATA[
-                </p><p><span class='label'>Phase 1 Projects:</span>
+                </p><p><b>Phase 1 Projects:</b>
         ]]>
         </ReportItem>
         <ReportItemSet id="user_projects" type="PersonProjectReportItemSet" phase="1">

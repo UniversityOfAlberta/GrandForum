@@ -8,7 +8,6 @@
 
 #bodyContent {
     padding:0 !important;
-    overflow:hidden;
 }
 
 #outerReport {
@@ -57,6 +56,7 @@
     padding:0 !important;
     border-width: 0 !important;
     min-height:100%;
+    overflow: hidden;
 }
 
 #contentSub {
