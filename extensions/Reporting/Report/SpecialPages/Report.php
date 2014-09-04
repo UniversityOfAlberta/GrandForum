@@ -96,6 +96,7 @@ class Report extends AbstractReport{
         }
         
         //LOI Evaluation
+        /*
         if($person->isRoleAtLeast(RMC)){
             $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "EvalLOIReport") ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("LOI", "{$url}EvalLOIReport", $selected);
@@ -103,6 +104,7 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "EvalRevLOIReport") ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Revised LOI", "{$url}EvalRevLOIReport", $selected);
         }
+        */
         
         // Champion Report
         if($person->isRole(CHAMP)){
