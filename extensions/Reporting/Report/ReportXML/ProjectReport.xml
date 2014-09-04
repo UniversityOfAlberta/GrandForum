@@ -260,7 +260,7 @@
             ]]>
         </Instructions>
         <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet">
-            <ReportItemSet type="ToggleHeaderReportItemSet" level="3" title="{$project_name} - {$project_full_name}">
+            <ReportItemSet id="sub_head" type="ToggleHeaderReportItemSet" level="3" title="{$project_name} - {$project_full_name}">
                 <ReportItemSet id="leaders" type="ProjectLeadersReportItemSet">
                     <ReportItem id="name" type="StaticReportItem">
                         <![CDATA[<h2>{$user_name}</h2>]]>
