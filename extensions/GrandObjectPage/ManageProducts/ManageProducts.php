@@ -1,7 +1,6 @@
 <?php
 
 $wgHooks['ToolboxLinks'][] = 'ManageProducts::createToolboxLinks';
-
 BackbonePage::register('ManageProducts', 'Manage Products', 'network-tools', dirname(__FILE__));
 
 class ManageProducts extends BackbonePage {
