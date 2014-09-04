@@ -16,4 +16,5 @@ Developer Documentation
    mailing lists
    conventions
    hooks
+   project evolution
    API <http://grand.cs.ualberta.ca/docs/>

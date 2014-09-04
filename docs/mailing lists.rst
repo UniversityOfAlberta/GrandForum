@@ -57,3 +57,20 @@ Remove the aliases (to avoid cruft) in /etc/aliases
 -  Open /etc/aliases in your favourite editor (emacs of course!)
 -  After removing/adding entries, you need to run the command: sudo
    newaliases
+   
+Managing Mailing List Rules from the Forum
+------------------------------------------
+
+You can manage who gets automatically subscribed/unsubscribed by going to Special:MailingListRules
+
+1. Select the mailing list to edit
+2. Add/Edit a rule
+    a. Select the type of rule (Role, Project, Phase, Location)
+    b. Then select the value of that rule
+    c. The rules which have the same type use the 'OR' operation, and those which are of different types use the 'AND' operation when evaluating whether or not a person should be in that list
+        i. For example if the rules are as follows:
+            - Role: PNI
+            - Role: CNI
+            - Location: Toronto
+            - Project: KNOW
+           It will result in the following boolean expression: ((Role == PNI || Role == CNI) && (Location == 'Toronto') && (Project == 'KNOW'))
