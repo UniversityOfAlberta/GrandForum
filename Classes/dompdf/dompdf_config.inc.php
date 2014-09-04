@@ -55,8 +55,8 @@ require_once(DOMPDF_INC_DIR . "/functions.inc.php");
 /**
  * Username and password used by the configuration utility in www/
  */
-def("DOMPDF_ADMIN_USERNAME", "Admin");
-def("DOMPDF_ADMIN_PASSWORD", "BigLasagna");
+def("DOMPDF_ADMIN_USERNAME", "");
+def("DOMPDF_ADMIN_PASSWORD", "");
 
 /**
  * The location of the DOMPDF font directory

@@ -68,11 +68,19 @@ Selenium Grid Setup
 -------------------
 
 By default the testing environment uses `Selenium Grid`_ to allow there
-to be a single hub, and any number of nodes executing the tests. ## Hub
+to be a single hub, and any number of nodes executing the tests.
+
+Hub
+~~~
+
 Wherever you run behat, the hub will automatically get started at that
 location and will point to wherever wd\_host is set. The hub will be
-running on 129.128.184.79:4444 (grand.cs.ualberta.ca:4444). ## Node The
-node will be always running on 129.128.184.85:5555
+running on 129.128.184.79:4444 (grand.cs.ualberta.ca:4444). 
+
+Node
+~~~~
+ 
+The node will be always running on 129.128.184.85:5555
 (ssrg5.cs.ualberta.ca:5555), with a Xvfb frame buffer running on
 display=:10. Selenium and Xvfb are configured to be started as init.d
 daemons, so if anything need to be changed with respect to either of
