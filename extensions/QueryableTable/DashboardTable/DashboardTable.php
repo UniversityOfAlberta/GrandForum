@@ -167,7 +167,7 @@ class DashboardTable extends QueryableTable{
 	                $tab->removeAttribute('rules');
 	                $tab->removeAttribute('boxes');
 	                $tab->removeAttribute('frame');
-	                $tab->setAttribute('style', "width:100%;page-break-after:always;background-color:#000000;border-color:#000000;margin-bottom:15px;border-spacing:".max(1, (0.5*DPI_CONSTANT))."px;");
+	                $tab->setAttribute('style', "width:100%;page-break-inside: avoid;background-color:#000000;border-color:#000000;margin-bottom:15px;border-spacing:".max(1, (0.5*DPI_CONSTANT))."px;");
 	                $tab->setAttribute('width', '100%');
                     $tab->setAttribute('cellpadding', '1');
                     $tab->setAttribute('cellspacing', '1');

@@ -268,8 +268,8 @@
                     <ReportItem id='goals' type="StaticReportItem">
                         <![CDATA[<h3>Goals for this year</h3>{$user_subproject_goals}]]>
                     </ReportItem>
-                    <ReportItem id='acheivements' type="StaticReportItem">
-                        <![CDATA[<h3>Acheivements</h3>{$user_subproject_acheivements}]]>
+                    <ReportItem id='achievements' type="StaticReportItem">
+                        <![CDATA[<h3>Achievements</h3>{$user_subproject_achievements}]]>
                     </ReportItem>
                     <ReportItem id='future' type="StaticReportItem">
                         <![CDATA[<h3>Future Goals</h3>{$user_subproject_future}]]>

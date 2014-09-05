@@ -89,10 +89,13 @@
         <ReportItem id="ni_dashboard_productivity" type="DashboardReportItem" structure="NI_REPORT_PRODUCTIVITY_STRUCTURE" table="true" details="false">
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
+        <ReportItem id="pagebreak" type="PageBreakReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
         <ReportItem id="tmp_top_pubs" type="StaticReportItem">
             <![CDATA[
             <h2>Top Publications</h2>
-            <table frame="box" rules="all" cellpadding="1px">
+            <table frame="box" rules="all" cellpadding="10px">
                 <tr>
                     <th>Rank</th>
                     <th>Year</th>
@@ -105,7 +108,7 @@
                 </tr>
                 <tr>
                     <td align="center">2</td>
-                    <td align="center"><b>2014</b></td>
+                    <td align="center"><b><u>2014</u></b></td>
                     <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Roy.Eagleson"><strong>Roy Eagleson</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Eleni.Stroulia"><strong>Eleni Stroulia</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/CNI:Bill.Kapralos"><strong>Bill Kapralos</strong></a>,&nbsp;Adam Dubrowski,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HQP:Faizal.Haji"><strong><u>Faizal Haji</u></strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/CNI:Sandrine.deRibaupierre"><strong>Sandrine de Ribaupierre</strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:7746">Healthcare training enhancement through virtual reality and serious games</a>.</i>&nbsp;Book Chapter:&nbsp;Virtual and Augmented Reality in Healthcare 1,&nbsp;(no pages)&nbsp;Springer-Verlag,&nbsp;Nov 2013<span class="pdfnodisplay">,&nbsp;To Appear,&nbsp;Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>To Appear / Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/DIGLT:Main" target="_blank">DIGLT</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HLTHSIM:Main" target="_blank">HLTHSIM</a></i></div></td>
                 </tr>
                 <tr>
@@ -249,8 +252,8 @@
                     <ReportItem id="sub_project_goals" rows="7" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_GOALS" type="TextareaReportItem">
                         <![CDATA[<b>Goals for this year</b><br />{$item}<br />]]>
                     </ReportItem>
-                    <ReportItem id="sub_project_acheivements" rows="10" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_ACHEIVEMENTS" type="TextareaReportItem">
-                        <![CDATA[<b>Acheivements</b><br />{$item}<br />]]>
+                    <ReportItem id="sub_project_achievements" rows="10" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_ACHIEVEMENTS" type="TextareaReportItem">
+                        <![CDATA[<b>Achievements</b><br />{$item}<br />]]>
                     </ReportItem>
                     <ReportItem id="sub_project_future" rows="7" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_FUTURE" type="TextareaReportItem">
                         <![CDATA[<b>Future Goals</b><br />{$item}<br />]]>
@@ -278,7 +281,7 @@
     </ReportSection>
     <ReportSection name="Productivity Details" blobSection="SEC_NONE" type="ReportSection" number="6" pagebreak="false" renderpdf="true">
         <ReportItem id="ni_dashboard_productivity" type="DashboardReportItem" structure="NI_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
-            <![CDATA[If there is an error in any of the information reported in the dashboard, please edit the corresponding element using the Product Management tool. If the error is in a system-controlled field, please contact support.<br /><br /><div>{$item}</div>]]>
+            <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
 </Report>

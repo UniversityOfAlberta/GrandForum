@@ -57,7 +57,7 @@
         <ReportItem id="tmp_top_pubs" type="StaticReportItem">
             <![CDATA[
             <h2>Top Publications</h2>
-            <table frame="box" rules="all" cellpadding="1px">
+            <table frame="box" rules="all" cellpadding="10px">
                 <tr>
                     <th>Rank</th>
                     <th>Year</th>
@@ -178,8 +178,8 @@
                 <ReportItem id='goals' type="StaticReportItem">
                     <![CDATA[<p><b>Goals for this year</b><br />{$user_subproject_goals}</p>]]>
                 </ReportItem>
-                <ReportItem id='acheivements' type="StaticReportItem">
-                    <![CDATA[<p><b>Acheivements</b><br />{$user_subproject_acheivements}</p>]]>
+                <ReportItem id='achievements' type="StaticReportItem">
+                    <![CDATA[<p><b>Achievements</b><br />{$user_subproject_achievements}</p>]]>
                 </ReportItem>
                 <ReportItem id='future' type="StaticReportItem">
                     <![CDATA[<p><b>Future Goals</b><br />{$user_subproject_future}</p>]]>

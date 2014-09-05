@@ -665,10 +665,10 @@ class Paper extends BackboneModel{
                     else if($a->isRoleOn(EXTERNAL, $this->getDate()) || $a->wasLastRole(EXTERNAL)){
                         $name = "<u style='border-bottom: 1px solid;'>{$a->getNameForForms()}</u>";
                     }
-                    $au[] = "<a target='_blank' href='{$a->getUrl()}'><strong>{$name}</strong></a>";
+                    $au[] = "<a target='_blank' href='{$a->getUrl()}'><b>{$name}</b></a>";
                 }
                 else{
-                    $au[] = "<strong>". $a->getNameForForms() ."</strong>";
+                    $au[] = "<b>". $a->getNameForForms() ."</b>";
                 }
             }else{
                 $au[] = $a->getNameForForms();

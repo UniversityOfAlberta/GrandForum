@@ -350,6 +350,10 @@ EOF;
 		        margin-bottom: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
 		    }
 		    
+		    #pdfBody b, #pdfBody strong {
+		        font-weight: bold !important;
+		    }
+		    
 		    #pdfBody .label {
 		        font-weight: bold;
 		    }
@@ -371,7 +375,7 @@ EOF;
             }
             
             #pdfBody .logo {
-                width:".(144*DPI_CONSTANT)."px;
+                width:".(203*DPI_CONSTANT)."px;
                 height:".(68*DPI_CONSTANT)."px;
                 position:absolute;
                 margin-top: ".(10*DPI_CONSTANT)."px;

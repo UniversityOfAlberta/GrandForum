@@ -77,7 +77,7 @@ class ReportItemCallback {
             "user_project_comment" => "getUserProjectComment",
             "user_project_future" => "getUserProjectFuture",
             "user_subproject_goals" => "getUserSubProjectGoals",
-            "user_subproject_acheivements" => "getUserSubProjectAcheivements",
+            "user_subproject_achievements" => "getUserSubProjectAchievements",
             "user_subproject_future" => "getUserSubProjectFuture",
             "user_subproject_champs" => "getUserSubProjectChamps",
             "user_mtg_music" => "getUserMTGMusic",
@@ -867,11 +867,11 @@ class ReportItemCallback {
         $data = $blob->getData();
     }
     
-    function getUserSubProjectAcheivements(){
+    function getUserSubProjectAchievements(){
         $person = Person::newFromId($this->reportItem->personId);
         $project = Project::newFromId($this->reportItem->projectId);
         
-        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_SUBPROJECTS, RES_SUBPROJECT_ACHEIVEMENTS, 0);
+        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_SUBPROJECTS, RES_SUBPROJECT_ACHIEVEMENTS, 0);
         $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), $project->getId());
         $blob->load($addr);
         $data = $blob->getData();
