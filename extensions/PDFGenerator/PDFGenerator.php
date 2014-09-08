@@ -38,7 +38,7 @@ abstract class PDFGenerator {
      * @param boolean $preview Whether or not this should be a preview
      * @returns array Returns an array containing the final html, as well as the pdf string
      */
-    function generate($name, $html, $head, $person=null, $preview=false){
+    function generate($name, $html, $head, $person=null, $project=null, $preview=false){
         global $wgServer, $wgScriptPath, $wgUser;
         
         if(self::$preview){
@@ -89,7 +89,6 @@ abstract class PDFGenerator {
                 }
                 
                 function load_page() {
-                    
                     $(\"body\").width($(\"body\").width() - 50);
                     parent.alertsize($(\"body\").height() + 50 + 38);
                     $(\"body\").width('auto');
@@ -399,6 +398,13 @@ EOF;
 		$head
 		$previewScript
 		</head>";
+		$headerName = "";
+		if($project != null){
+		    $headerName = "{$project->getName()}: {$project->getFullName()}";
+		}
+		else {
+		    $headerName = "{$person->getReversedName()}";
+		}
         $pages = '
         <script type="text/php">
 
@@ -427,14 +433,14 @@ if ( isset($pdf) ) {
   // Center the text
   $width = Font_Metrics::get_text_width("Page 1 of 50", $font, $size2);
   
-  $nameWidth = Font_Metrics::get_text_width("'.$person->getReversedName().'", $font, $size);
+  $nameWidth = Font_Metrics::get_text_width("'.$headerName.'", $font, $size);
   
   $pdf->page_text($w - $width - 22, $y+4 - $text_height2, $text, $font, $size2, $color);
-  $pdf->page_text($w - $nameWidth - 22, 20, "'.$person->getReversedName().'", $font, $size, $color);
+  $pdf->page_text($w - $nameWidth - 22, 20, "'.$headerName.'", $font, $size, $color);
 }
 </script>';
         if($preview){
-            echo $header."<body><div id='pdfBody'><div id='page_header'>{$person->getReversedName()}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".(10*DPI_CONSTANT)."px;' />$html</div></body></html>";
+            echo $header."<body><div id='pdfBody'><div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".(10*DPI_CONSTANT)."px;' />$html</div></body></html>";
             return;
         }
         

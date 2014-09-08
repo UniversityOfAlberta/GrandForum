@@ -541,7 +541,7 @@ class ReportArchive extends SpecialPage {
                                isset($_GET['year']) && $_GET['year'] == $year){
                                 $wgOut->clearHTML();
                                 $report->renderForPDF();
-                                $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $champ['user'], true);
+                                $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $champ['user'], null, true);
                                 echo $pdf;
                                 exit;
                             }

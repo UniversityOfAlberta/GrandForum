@@ -901,7 +901,7 @@ EOF;
 
         $pdf = "";
         try {
-            $pdf = PDFGenerator::generate("Report" , $html, "", null, false);
+            $pdf = PDFGenerator::generate("Report" , $html, "", null, null, false);
             $filename = $ni->getName();
             $filename .= ".March2014";
             //var_dump($pdf);

@@ -232,7 +232,7 @@
             <![CDATA[<h2>II. Reflections: {$project_name} and GRAND</h2>]]>
         </ReportItem>
     <!-- IIIa. Plans for Next Year -->
-        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Planned activities for {$project_name} in GRAND">
+        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Achievements and Plans">
             <ReportItem id="IIIa" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
                 <![CDATA[{$item}]]>
             </ReportItem>
