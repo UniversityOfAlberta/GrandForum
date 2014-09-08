@@ -145,12 +145,12 @@
         <ReportItem id="basic_info" type="StaticReportItem">
         <![CDATA[
             <div class='basic_info' style='margin-bottom:20px;'>
-                <p><b>Name:</b> {$user_reversed_name} ({$user_full_roles})</p>
-                <p><b>Position:</b> {$user_level}</p>
-                <p><b>Department:</b> {$user_dept}</p>
-                <p><b>University:</b> {$user_uni}</p>
-                <p><b>Phase 2 Projects:</b> {$user_phase2_projects}</p>
-                <p><b>Phase 1 Projects:</b> {$user_phase1_projects}</p>
+                <p><span class='label'>Name:</span> {$user_reversed_name} ({$user_full_roles})</p>
+                <p><span class='label'>Position:</span> {$user_level}</p>
+                <p><span class='label'>Department:</span> {$user_dept}</p>
+                <p><span class='label'>University:</span> {$user_uni}</p>
+                <p><span class='label'>Phase 2 Projects:</span> {$user_phase2_projects}</p>
+                <p><span class='label'>Phase 1 Projects:</span> {$user_phase1_projects}</p>
             </div>
         ]]>
         </ReportItem>
@@ -387,7 +387,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
             <![CDATA[
                 This section is for sub-project leaders to be able to talk about their sub-projects that they lead.  Each Project and your sub-projects are listed below.  For each sub-project please fill in the following fields:
                 <p><b>Goals for this year</b><br />Details</p>
-                <p><b>Acheivements</b><br />Details</p>
+                <p><b>Achievements</b><br />Details</p>
                 <p><b>Future Goals</b><br />Details</p>
                 <p><b>Engagement with Champions</b><br />Details</p>
             ]]>
@@ -402,8 +402,8 @@ Describe your involvement with receptor organizations, industry partners and Pro
                         <ReportItem id="sub_project_goals" rows="7" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_GOALS" type="TextareaReportItem">
                             <![CDATA[<h3>Goals for this year</h3>{$item}<br />]]>
                         </ReportItem>
-                        <ReportItem id="sub_project_acheivements" rows="10" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_ACHEIVEMENTS" type="TextareaReportItem">
-                            <![CDATA[<h3>Acheivements</h3>{$item}<br />]]>
+                        <ReportItem id="sub_project_achievements" rows="10" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_ACHIEVEMENTS" type="TextareaReportItem">
+                            <![CDATA[<h3>Achievements</h3>{$item}<br />]]>
                         </ReportItem>
                         <ReportItem id="sub_project_future" rows="7" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_FUTURE" type="TextareaReportItem">
                             <![CDATA[<h3>Future Goals</h3>{$item}<br />]]>

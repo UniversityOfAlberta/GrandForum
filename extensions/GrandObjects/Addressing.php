@@ -189,7 +189,7 @@ define('RES_RESACT_SECCRITERIA',    14);
 define('RES_RESACT_SUMMARY',        15);
 
 define('RES_SUBPROJECT_GOALS',          1);
-define('RES_SUBPROJECT_ACHEIVEMENTS',   2);
+define('RES_SUBPROJECT_ACHIEVEMENTS',   2);
 define('RES_SUBPROJECT_FUTURE',         3);
 define('RES_SUBPROJECT_CHAMPS',         4);
 

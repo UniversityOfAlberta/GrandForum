@@ -232,7 +232,7 @@
             <![CDATA[<h2>II. Reflections: {$project_name} and GRAND</h2>]]>
         </ReportItem>
     <!-- IIIa. Plans for Next Year -->
-        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Planned activities for {$project_name} in GRAND">
+        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Achievements and Plans">
             <ReportItem id="IIIa" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
                 <![CDATA[{$item}]]>
             </ReportItem>
@@ -260,7 +260,7 @@
             ]]>
         </Instructions>
         <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet">
-            <ReportItemSet id="sub_head" type="ToggleHeaderReportItemSet" level="3" title="{$project_name} - {$project_full_name}">
+            <ReportItemSet type="ToggleHeaderReportItemSet" level="3" title="{$project_name} - {$project_full_name}">
                 <ReportItemSet id="leaders" type="ProjectLeadersReportItemSet">
                     <ReportItem id="name" type="StaticReportItem">
                         <![CDATA[<h2>{$user_name}</h2>]]>
@@ -268,8 +268,8 @@
                     <ReportItem id='goals' type="StaticReportItem">
                         <![CDATA[<h3>Goals for this year</h3>{$user_subproject_goals}]]>
                     </ReportItem>
-                    <ReportItem id='acheivements' type="StaticReportItem">
-                        <![CDATA[<h3>Acheivements</h3>{$user_subproject_acheivements}]]>
+                    <ReportItem id='achievements' type="StaticReportItem">
+                        <![CDATA[<h3>Achievements</h3>{$user_subproject_achievements}]]>
                     </ReportItem>
                     <ReportItem id='future' type="StaticReportItem">
                         <![CDATA[<h3>Future Goals</h3>{$user_subproject_future}]]>

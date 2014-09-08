@@ -732,7 +732,7 @@ abstract class AbstractReport extends SpecialPage {
                     $report = new DummyReport($pdfFile, $this->person, $project, $this->year);
                     $report->renderForPDF();
                     $data = "";
-                    $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, false);
+                    $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, null, false);
                     $sto = new ReportStorage($this->person);
                     $sto->store_report($data, $pdf['html'], $pdf['pdf'], 0, 0, $report->pdfType, $this->year);
                     if($project != null){
@@ -752,7 +752,7 @@ abstract class AbstractReport extends SpecialPage {
             $report = new DummyReport($pdfFile, $this->person, $this->project, $this->year);
             $report->renderForPDF();
             $data = "";
-            $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, false);
+            $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, $this->project, false);
             if($preview){
                 exit;
             }

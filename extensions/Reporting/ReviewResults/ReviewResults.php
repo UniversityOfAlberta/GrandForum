@@ -3,7 +3,7 @@
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['ReviewResults'] = 'ReviewResults';
 $wgExtensionMessagesFiles['ReviewResults'] = $dir . 'ReviewResults.i18n.php';
-$wgSpecialPageGroups['ReviewResults'] = 'network-tools';
+$wgSpecialPageGroups['ReviewResults'] = 'grand-tools';
 
 require_once($dir . '../../../Classes/PHPExcel/IOFactory.php');
 
@@ -370,15 +370,15 @@ EOF;
     }
 
     static function emailPDF($ni_id, $type){
-        global $wgUser, $wgMessage, $config;
+        global $wgUser, $wgMessage;
         $recipients = array();
         if($type == CNI || $type == PNI){
-            $subject = "{$config->getValue('networkName')} NCE - RMC Feedback 2014 - PNIs and CNIs";
+            $subject = "GRAND NCE - RMC Feedback 2014 - PNIs and CNIs";
             $ni = Person::newFromId($ni_id);
             $recipients[] = $ni;
         }
         else if($type == "Project"){
-            $subject = "{$conig->getValue('networkName')} NCE - RMC Feedback 2014 - Projects";
+            $subject = "GRAND NCE - RMC Feedback 2014 - Projects";
             $ni = Project::newFromId($ni_id);
             $leaders = $ni->getLeaders();
             $coleaders = $ni->getCoLeaders();
@@ -394,15 +394,15 @@ EOF;
 Dear {$rec_name_good},
 
 Please find attached a PDF containing the results of the review of your
-2013 Network Investigator Report by {$config->getValue('networkName')}'s Research Management Committee.
+2013 Network Investigator Report by GRAND's Research Management Committee.
 The PDF contains information regarding your 2014-15 research funding
 allocation as well as specific feedback based on your report.
 
 Please note that additional information regarding the Phase 2 Process
 around projects and themes, including project funding for CNIs and the
 preparation of project and theme descriptions for the renewal application,
-will be made available on the {$config->getValue('siteName')} under {$config->getValue('networkName')} => Phase 2 =>
-Process (https://{$config->getValue('domain')}/index.php/{$config->getValue('networkName')}:Process) early next
+will be made available on the GRAND Forum under GRAND => Phase 2 =>
+Process (https://forum.grand-nce.ca/index.php/GRAND:Process) early next
 week.
 
 Regards,
@@ -901,7 +901,7 @@ EOF;
 
         $pdf = "";
         try {
-            $pdf = PDFGenerator::generate("Report" , $html, "", null, false);
+            $pdf = PDFGenerator::generate("Report" , $html, "", null, null, false);
             $filename = $ni->getName();
             $filename .= ".March2014";
             //var_dump($pdf);

@@ -126,7 +126,7 @@ class Evaluate_Form {
 			//Generate
 			$dompdf = "";
 			try {
-				$dompdf = PDFGenerator::generate("Report" , $html, "", false);
+				$dompdf = PDFGenerator::generate("Report" , $html, "", null, false);
 				//exit;
 			}
 			catch(DOMPDF_Internal_Exception $e){
@@ -240,7 +240,7 @@ class Evaluate_Form {
 			//Generate
 			$dompdf = "";
 			try {
-				$dompdf = PDFGenerator::generate("Report" , $html, "", false);
+				$dompdf = PDFGenerator::generate("Report" , $html, "", null, false);
 				//exit;
 			}
 			catch(DOMPDF_Internal_Exception $e){
@@ -261,8 +261,6 @@ class Evaluate_Form {
 				echo json_encode(array("error"=>0, "blob_id"=>$blob_id));
 				return;
 			}
-			
-			
 		}
 		echo json_encode(array("error"=>1, "blob_id"=>0));
 		return;

@@ -54,10 +54,13 @@
         <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="true" details="false">
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
+        <ReportItem id="pagebreak" type="PageBreakReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
         <ReportItem id="tmp_top_pubs" type="StaticReportItem">
             <![CDATA[
             <h2>Top Publications</h2>
-            <table frame="box" rules="all" cellpadding="1px">
+            <table frame="box" rules="all" cellpadding="10px">
                 <tr>
                     <th>Rank</th>
                     <th>Year</th>
@@ -85,6 +88,31 @@
                 </tr>
                 <tr>
                     <td align="center">5</td>
+                    <td align="center">2012</td>
+                    <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Champion:Lee.Rainie"><strong>Lee Rainie</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Barry.Wellman"><strong>Barry Wellman</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HQP:Christian.Beermann"><strong><u>Christian Beermann</u></strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HQP:Zack.Hayat"><strong><u>Zack Hayat</u></strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:10970">The Individual in a Networked World: Two Scenarios</a>.</i>&nbsp;Magazine/Newspaper Article,&nbsp;Jun 2012&nbsp;<span class="pdfnodisplay">,&nbsp;Submitted,&nbsp;Not Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>Submitted / Not Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/DINS:Main" target="_blank">DINS</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/NAVEL:Main" target="_blank">NAVEL</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/KNOW:Main" target="_blank">KNOW</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PROTECT:Main" target="_blank">PROTECT</a></i></div></td>
+                </tr>
+                                <tr>
+                    <td align="center">6</td>
+                    <td align="center">2013</td>
+                    <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/RMC:Catherine.Middleton"><strong>Catherine Middleton</strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:10650">Response to the Consultation on Capitalizing on Big Data: Toward a Policy Framework for Advancing Digital Scholarship in Canada</a>.</i>&nbsp;Consultation response:&nbsp;Tri-council policy consultation<span class="pdfnodisplay">,</span>,&nbsp;Dec 2013&nbsp;<span class="pdfnodisplay">,&nbsp;Submitted,&nbsp;Not Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>Submitted / Not Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/KNOW:Main" target="_blank">KNOW</a></i></div></td>
+                </tr>
+                <tr>
+                    <td align="center">7</td>
+                    <td align="center">2011</td>
+                    <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Anatoliy.Gruzd"><strong>Anatoliy Gruzd</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Inactive:Kathleen.Staves"><strong><u>Kathleen Staves</u></strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Inactive:Amanda.Wilk"><strong><u>Amanda Wilk</u></strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:9771"> Connected Scholars: Examining the Role of Social Media in Research Practices of Faculty using the UTAUT model.</a>.</i>&nbsp;Journal Paper:&nbsp;Computers in Human Behavior 28(6),&nbsp;2340-2350pp.&nbsp;(no publisher),&nbsp;Nov 2011<span class="pdfnodisplay">,&nbsp;Published,&nbsp;Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>Published / Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/DINS:Main" target="_blank">DINS</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/NAVEL:Main" target="_blank">NAVEL</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/KNOW:Main" target="_blank">KNOW</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/SENSE-I:Main" target="_blank">SENSE-I</a></i></div></td>
+                </tr>
+                <tr>
+                    <td align="center">8</td>
+                    <td align="center">2011</td>
+                    <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Anatoliy.Gruzd"><strong>Anatoliy Gruzd</strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:5589">Investigating Biomedical Research Literature in the Blogosphere: A Case Study of Diabetes and HbA1c</a>.</i>&nbsp;Journal Paper:&nbsp; 100(1),&nbsp;(no pages)&nbsp;(no publisher),&nbsp;Nov 2011<span class="pdfnodisplay">,&nbsp;Published,&nbsp;Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>Published / Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/DINS:Main" target="_blank">DINS</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/KNOW:Main" target="_blank">KNOW</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/NEWS2:Main" target="_blank">NEWS2</a></i></div></td>
+                </tr>
+                <tr>
+                    <td align="center">9</td>
+                    <td align="center">2012</td>
+                    <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Anatoliy.Gruzd"><strong>Anatoliy Gruzd</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Inactive:Melissa.Goertzen"><strong><u>Melissa Goertzen</u></strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:7223">Wired Academia: Why Social Science Scholars are using Social Media</a>.</i>&nbsp;Proceedings Paper:&nbsp;Proceedings of the 46th Hawaii International Conference on System Sciences (HICSS),&nbsp;(no pages)&nbsp;(no publisher),&nbsp;Nov 2012<span class="pdfnodisplay">,&nbsp;Published,&nbsp;Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>Published / Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/DINS:Main" target="_blank">DINS</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/NAVEL:Main" target="_blank">NAVEL</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/KNOW:Main" target="_blank">KNOW</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/SENSE-I:Main" target="_blank">SENSE-I</a></i></div></td>
+                </tr>
+                <tr>
+                    <td align="center">10</td>
                     <td align="center">2012</td>
                     <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Champion:Lee.Rainie"><strong>Lee Rainie</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Barry.Wellman"><strong>Barry Wellman</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HQP:Christian.Beermann"><strong><u>Christian Beermann</u></strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HQP:Zack.Hayat"><strong><u>Zack Hayat</u></strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:10970">The Individual in a Networked World: Two Scenarios</a>.</i>&nbsp;Magazine/Newspaper Article,&nbsp;Jun 2012&nbsp;<span class="pdfnodisplay">,&nbsp;Submitted,&nbsp;Not Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>Submitted / Not Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/DINS:Main" target="_blank">DINS</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/NAVEL:Main" target="_blank">NAVEL</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/KNOW:Main" target="_blank">KNOW</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PROTECT:Main" target="_blank">PROTECT</a></i></div></td>
                 </tr>
@@ -137,7 +165,7 @@
     <ReportSection id="report3" name="Reflections: Other Aspects of my project's involvement in GRAND" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="2" renderpdf="true">
     <!-- IIIa. Plans for Next Year -->
         <ReportItem id='IIIa_head' type="StaticReportItem">
-            <![CDATA[<h2>Planned activities for {$project_name} in GRAND</h2>]]>
+            <![CDATA[<h2>Achievements and Plans</h2>]]>
         </ReportItem>
         <ReportItem id="IIIa" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
@@ -178,8 +206,8 @@
                 <ReportItem id='goals' type="StaticReportItem">
                     <![CDATA[<p><b>Goals for this year</b><br />{$user_subproject_goals}</p>]]>
                 </ReportItem>
-                <ReportItem id='acheivements' type="StaticReportItem">
-                    <![CDATA[<p><b>Acheivements</b><br />{$user_subproject_acheivements}</p>]]>
+                <ReportItem id='achievements' type="StaticReportItem">
+                    <![CDATA[<p><b>Achievements</b><br />{$user_subproject_achievements}</p>]]>
                 </ReportItem>
                 <ReportItem id='future' type="StaticReportItem">
                     <![CDATA[<p><b>Future Goals</b><br />{$user_subproject_future}</p>]]>
