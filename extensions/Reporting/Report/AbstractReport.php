@@ -678,7 +678,7 @@ abstract class AbstractReport extends SpecialPage {
         }
         $found = false;
         $roles = $me->getRights();
-        $roleObjs = $me->getRolesDuring();
+        $roleObjs = $me->getRolesDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
         foreach($roleObjs as $role){
             $roles[] = $role->getRole();
         }
