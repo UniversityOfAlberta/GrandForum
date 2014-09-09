@@ -414,6 +414,15 @@ input[type=text] {
     height: 16px;
 }
 
+input[type=checkbox], 
+input[type=radio], 
+input[type=checkbox][disabled], 
+input[type=radio][disabled],
+input[type=checkbox][disabled]:hover,
+input[type=radio][disabled]:hover {
+    background: none !important;
+}
+
 .custom-combobox-input {
     background: #FFFFFF !important;
     font-weight: bold;
