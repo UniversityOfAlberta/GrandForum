@@ -24,7 +24,7 @@
         });
         
         json.items = _.filter(json.items, function(i){
-            return (i.start != i.end);  
+            return (i != undefined && i.start != i.end);  
         });
         
         _.each(json.groups, function(g){
