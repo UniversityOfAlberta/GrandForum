@@ -555,7 +555,6 @@ if ( isset($pdf) ) {
                                     \$y = \$h - \$text_height - 24;
                                     
                                     \$maxX = array(0 => 0);
-                                    \$pageI = 0;
                                     ksort(\$GLOBALS[\"footnotes\"][\$PAGE_NUM]);
                                     foreach(\$GLOBALS[\"footnotes\"][\$PAGE_NUM] as \$key => \$footnote){
                                         \$key -= \$GLOBALS[\"nFootnotesProcessed\"];
@@ -571,7 +570,6 @@ if ( isset($pdf) ) {
                                             \$xOffsetAlready = \$maxX[\$xOffset-1];
                                         }
                                         \$maxX[\$xOffset] = max(\$maxX[\$xOffset], \$xOffsetAlready+\$text_width);
-                                        \$pageI++;
                                     }
                                     \$i = 0;
                                     foreach(\$GLOBALS[\"footnotes\"][\$PAGE_NUM] as \$key => \$footnote){
