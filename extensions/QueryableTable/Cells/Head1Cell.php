@@ -32,7 +32,7 @@ class Head1Cell extends Cell{
             if(class_exists("Report")){
                 FootnoteReportItem::$nFootnotes++;
                 $superScript .= "<sup title='$foot' class='tooltip'>[".FootnoteReportItem::$nFootnotes."]</sup>";
-                PDFGenerator::addFootnote($foot);
+                PDFGenerator::addFootNote($foot);
             }
             else{
                 self::$nFootnotes++;
