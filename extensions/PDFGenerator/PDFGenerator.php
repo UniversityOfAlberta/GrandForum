@@ -554,7 +554,9 @@ if ( isset($pdf) ) {
                                     \$h = \$pdf->get_height();
                                     \$y = \$h - \$text_height - 24;
                                     
-                                    \$maxX = array();
+                                    \$maxX = array(0 => 0);
+                                    \$pageI = 0;
+                                    ksort(\$GLOBALS[\"footnotes\"][\$PAGE_NUM]);
                                     foreach(\$GLOBALS[\"footnotes\"][\$PAGE_NUM] as \$key => \$footnote){
                                         \$key -= \$GLOBALS[\"nFootnotesProcessed\"];
                                         \$id = \$footnote[\"id\"];
@@ -569,6 +571,7 @@ if ( isset($pdf) ) {
                                             \$xOffsetAlready = \$maxX[\$xOffset-1];
                                         }
                                         \$maxX[\$xOffset] = max(\$maxX[\$xOffset], \$xOffsetAlready+\$text_width);
+                                        \$pageI++;
                                     }
                                     \$i = 0;
                                     foreach(\$GLOBALS[\"footnotes\"][\$PAGE_NUM] as \$key => \$footnote){
@@ -578,16 +581,18 @@ if ( isset($pdf) ) {
                                             \$id = \$footnote[\"id\"];
                                             \$note = \$footnote[\"note\"];
                                             \$xOffset = floor(\$key / 3);
-                                            \$x = 0;
-                                            if(isset(\$maxX[\$xOffset-1])){
-                                                \$x = \$maxX[\$xOffset-1];
+                                            if(\$xOffset >= 0){
+                                                \$x = 0;
+                                                if(isset(\$maxX[\$xOffset-1])){
+                                                    \$x = \$maxX[\$xOffset-1];
+                                                }
+                                                \$extraHeight = 0;
+                                                if((\$key + 1) > 6){
+                                                    \$extraHeight = \$text_height;
+                                                }
+                                                \$pdf->text(22 + \$x + 8*\$xOffset, \$y+(\$extraHeight + \$text_height*(\$key - (\$xOffset)*3)) - \$text_height + 4, \"[\$id] \$note\", \$font, \$size, \$color);
+                                                \$i++;
                                             }
-                                            \$extraHeight = 0;
-                                            if((\$key + 1) > 6){
-                                                \$extraHeight = \$text_height;
-                                            }
-                                            \$pdf->text(22 + \$x + 8*\$xOffset, \$y+(\$extraHeight + \$text_height*(\$key - (\$xOffset)*3)) - \$text_height + 4, \"[\$id] \$note\", \$font, \$size, \$color);
-                                            \$i++;
                                         }
                                     }
                                     \$GLOBALS[\"nFootnotesProcessed\"] += \$i;

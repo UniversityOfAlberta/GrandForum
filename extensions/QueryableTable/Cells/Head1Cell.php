@@ -31,7 +31,7 @@ class Head1Cell extends Cell{
         foreach($this->footnotes as $foot){
             FootnoteReportItem::$nFootnotes++;
             $superScript .= "<sup title='$foot' class='tooltip'>[".FootnoteReportItem::$nFootnotes."]</sup>";
-            PDFGenerator::addFootnote($foot);
+            PDFGenerator::addFootNote($foot);
         }
         return "<b>{$this->value}</b>$superScript";
     }
