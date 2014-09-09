@@ -421,6 +421,7 @@ input[type=radio][disabled],
 input[type=checkbox][disabled]:hover,
 input[type=radio][disabled]:hover {
     background: none !important;
+    border: none !important;
 }
 
 .custom-combobox-input {
