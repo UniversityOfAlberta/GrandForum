@@ -25,7 +25,7 @@
             <![CDATA[</table></div></div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="HQP Dashboard" type="HeaderReportSection" blobSection="HQP_MILESTONES" renderpdf="true" pagebreak="false">
+    <ReportSection name="HQP Dashboard" type="HeaderReportSection" blobSection="HQP_MILESTONES" renderpdf="true" pagebreak="true">
         <ReportItem id="basic_info" type="StaticReportItem">
         <![CDATA[
             <div class='basic_info' style='margin-bottom:20px;'>

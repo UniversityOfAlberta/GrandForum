@@ -437,10 +437,19 @@ class cavendishTemplate extends QuickTemplate {
 		                var dark = '<?php echo "$wgServer$wgScriptPath"; ?>/' + iconPath + $(this).attr("name") + '.png';
 		                var light = '<?php echo "$wgServer$wgScriptPath"; ?>/' + iconPathHighlighted + $(this).attr("name") + '.png';
 		                
-		                $(this).attr('onmouseover', "changeImg($('img', $(this)), '" + light + "')");
-		                $(this).attr('onmouseout', "changeImg($('img', $(this)), '" + dark + "')");
+		                $(this).attr('onmouseover', "changeImg($('img:not(.overlay)', $(this)), '" + light + "')");
+		                $(this).attr('onmouseout', "changeImg($('img:not(.overlay)', $(this)), '" + dark + "')");
 		            }
 		        });
+		        
+		        var animate = function (){
+		            var opac = Math.abs(1 - $("img.overlay").css('opacity'));
+		            $("img.overlay").animate({
+		                opacity: opac
+		            }, 1000, 'easeInOutQuad', animate);
+		        }
+		        
+		        animate();
 		        
 		        $("#sideToggle").click(function(e, force){
 		            $("#sideToggle").stop();
@@ -542,7 +551,7 @@ class cavendishTemplate extends QuickTemplate {
 		        $smallNotificationText = "";
 		        if(count($notifications) > 0){
 		            $notificationText = " (".count($notifications).")";
-		            $smallNotificationText = "*";
+		            $smallNotificationText = "<img class='overlay' style='margin-left:-16px;' src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12_red.png' />*";
 		        }
 		        echo "<a id='status_notifications' name='mail_16x12' class='menuTooltip changeImg highlights-text-hover' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12.png' />$smallNotificationText</a>";
 		        echo "<a id='status_profile' class='menuTooltip highlights-text-hover' title='Profile' href='{$p->getUrl()}'>{$p->getNameForForms()}</a>";
