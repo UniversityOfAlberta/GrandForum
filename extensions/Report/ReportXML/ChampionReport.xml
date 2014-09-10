@@ -2,9 +2,9 @@
 <Report name="Champion Report" reportType="RP_CHAMP" pdfType="RPTP_CHAMP" pdfFiles="ChampionReportPDF" ajax="true" disabled="false">
     <Permissions>
         <Role end="REPORTING_RMC_MEETING" role="CHAMP">
-            <SectionPermission id="report" permissions="r" />
-            <SectionPermission id="review" permissions="r" />
-            <SectionPermission id="submit" permissions="r" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
     <ReportSection id="report" name="Champion Report" tooltip="" blobSection="CHAMP_REPORT" type="EditableReportSection" renderpdf="true" number="1">
