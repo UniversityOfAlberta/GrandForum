@@ -7,7 +7,7 @@
             <SectionPermission id="submit" permissions="r" />
         </Role>
     </Permissions>
-    <ReportSection id="report" name="Champion Report" tooltip="" blobSection="CHAMP_REPORT" type="EditableReportSection" renderpdf="true">
+    <ReportSection id="report" name="Champion Report" tooltip="" blobSection="CHAMP_REPORT" type="EditableReportSection" renderpdf="true" number="1">
         <Instructions>
             <![CDATA[
                 

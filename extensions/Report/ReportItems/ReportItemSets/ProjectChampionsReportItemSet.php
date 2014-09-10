@@ -4,10 +4,14 @@ class ProjectChampionsReportItemSet extends ReportItemSet {
     
     function getData(){
         $data = array();
-        $proj = Project::newFromId($this->projectId);
-        if($proj != null){
+        $project = Project::newFromId($this->projectId);
+        $projects = array();
+        if($project != null){
+            $projects[] = $project;
+        }
+        $alreadySeen = array();
+        foreach($projects as $proj){
             $champs = $proj->getChampionsOn(($this->getReport()->year+1).REPORTING_RMC_MEETING_MONTH);
-            $alreadySeen = array();
             foreach($champs as $c){
                 if(isset($alreadySeen[$c['user']->getId()])){
                     continue;
@@ -18,6 +22,7 @@ class ProjectChampionsReportItemSet extends ReportItemSet {
                 $data[] = $tuple;
             }
         }
+        
         return $data;
     }
 }
