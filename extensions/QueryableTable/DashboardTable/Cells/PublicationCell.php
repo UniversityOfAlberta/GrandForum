@@ -180,7 +180,7 @@ abstract class PublicationCell extends DashboardCell {
                     $details .= '<tr>'.$this->detailsRow($item)."</tr>\n";
                 }
                 $details .= "</tbody></table><br /><br />\n";
-                $details .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:Add{$this->category}Page\");' value='Add {$this->category}' />\n";
+                $details .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:ManageProducts\");' value='Manage Products' />\n";
             }
             $table .= $this->dashboardRow($type, $details);
         }
