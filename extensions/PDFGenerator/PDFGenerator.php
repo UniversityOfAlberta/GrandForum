@@ -572,6 +572,7 @@ if ( isset($pdf) ) {
                                         \$maxX[\$xOffset] = max(\$maxX[\$xOffset], \$xOffsetAlready+\$text_width);
                                     }
                                     \$i = 0;
+                                    \$extraHeight = 0;
                                     foreach(\$GLOBALS[\"footnotes\"][\$PAGE_NUM] as \$key => \$footnote){
                                         if(!\$footnote[\"processed\"]){
                                             \$GLOBALS[\"footnotes\"][\$PAGE_NUM][\$key][\"processed\"] = true;
@@ -579,13 +580,14 @@ if ( isset($pdf) ) {
                                             \$id = \$footnote[\"id\"];
                                             \$note = \$footnote[\"note\"];
                                             \$xOffset = floor(\$key / 3);
+                                            \$w = \$pdf->get_width();
+                                            \$text_width = Font_Metrics::get_text_width(\"[\$id] \$note\", \$font, \$size);
                                             if(\$xOffset >= 0){
                                                 \$x = 0;
                                                 if(isset(\$maxX[\$xOffset-1])){
                                                     \$x = \$maxX[\$xOffset-1];
                                                 }
-                                                \$extraHeight = 0;
-                                                if((\$key + 1) > 6){
+                                                if((\$key) % 3 == 0 && (22 + \$x + 8*\$xOffset + \$text_width) > (\$w - 75)){
                                                     \$extraHeight = \$text_height;
                                                 }
                                                 \$pdf->text(22 + \$x + 8*\$xOffset, \$y+(\$extraHeight + \$text_height*(\$key - (\$xOffset)*3)) - \$text_height + 4, \"[\$id] \$note\", \$font, \$size, \$color);
