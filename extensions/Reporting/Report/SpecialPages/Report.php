@@ -108,27 +108,8 @@ class Report extends AbstractReport{
         
         // Champion Report
         if($person->isRole(CHAMP)){
-            $projects = Project::getAllProjects();
-            foreach($projects as $project){
-                if($project->getPhase() == PROJECT_PHASE){
-                    $showTab = false;
-                    if($person->isChampionOfOn($project, REPORTING_RMC_MEETING)){
-                        $showTab = true;
-                    }
-                    else{
-                        foreach($project->getSubProjects() as $sub){
-                            if($person->isChampionOfOn($sub, REPORTING_RMC_MEETING)){
-                                $showTab = true;
-                                break;
-                            }
-                        }
-                    }
-                    if($showTab){
-                        $selected = ($wgTitle->getText() == "Report" && $_GET['report'] == "ChampionReport" && $_GET['project'] == $project->getName()) ? "selected" : false;
-                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Champion ({$project->getName()})", "{$url}ChampionReport&project={$project->getName()}", $selected);
-                    }
-                }
-            }
+            $selected = ($wgTitle->getText() == "Report" && $_GET['report'] == "ChampionReport") ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Champion", "{$url}ChampionReport", $selected);
         }
         return true;
     }

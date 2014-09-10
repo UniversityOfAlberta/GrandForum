@@ -110,6 +110,8 @@ class ReportItemCallback {
             // Other
             "wgServer" => "getWgServer",
             "wgScriptPath" => "getWgScriptPath",
+            "id" => "getId",
+            "name" => "getName"
         );
     
     var $reportItem;
@@ -1123,6 +1125,41 @@ class ReportItemCallback {
     function getWgScriptPath(){
         global $wgScriptPath;
         return $wgScriptPath;
+    }
+    
+    function getId(){
+        $personId = $this->reportItem->personId;
+        $projectId = $this->reportItem->projectId;
+        $productId = $this->reportItem->productId;
+        
+        if($personId != 0){
+            return $personId;
+        }
+        else if($projectId != 0){
+            return $projectId;
+        }
+        else if($productId != 0){
+            return $productId;
+        }
+    }
+    
+    function getName(){
+        $personId = $this->reportItem->personId;
+        $projectId = $this->reportItem->projectId;
+        $productId = $this->reportItem->productId;
+        
+        if($personId != 0){
+            $person = Person::newFromId($personId);
+            return $person->getNameForForms();
+        }
+        else if($projectId != 0){
+            $project = Project::newFromId($projectId);
+            return $project->getName();
+        }
+        else if($productId != 0){
+            $product = Product::newFromId($productId);
+            return $product->getTitle();
+        }
     }
     
     function getPostId(){
