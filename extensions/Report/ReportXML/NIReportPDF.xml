@@ -147,7 +147,7 @@
                         <![CDATA[<i>{$project_name}:</i><br />{$item}<br /><br />]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="IIa" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_EXCELLENCE" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="PersonProductsReportItemSet" index="product_id" label="product_title" name="Products" tooltipOptionId="Product ID" tooltipOptionName="Product Title">
+                <ReportItem id="IIa" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_EXCELLENCE" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="PersonProductsReportItemSet" index="product_id" label="product_title" name="Products" tooltipOptionId="Product ID" tooltipOptionName="Product Title" private="true">
                     <![CDATA[<i>Phase 1 Projects ({$user_phase1_projects})</i><br />{$item}<br /><br />]]>
                 </ReportItem>
             </ReportItemSet>
@@ -163,7 +163,7 @@
                         <![CDATA[<i>{$project_name}:</i><br />{$item}<br /><br />]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="IIb" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_HQPDEV" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="PersonSupervisesReportItemSet" index="user_id" label="user_name" name="HQP" tooltipOptionId="HQP ID" tooltipOptionName="HQP Name">
+                <ReportItem id="IIb" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_HQPDEV" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="PersonSupervisesReportItemSet" index="user_id" label="user_name" name="HQP" tooltipOptionId="HQP ID" tooltipOptionName="HQP Name" private="true">
                     <![CDATA[<i>Phase 1 Projects ({$user_phase1_projects})</i><br />{$item}<br /><br />]]>
                 </ReportItem>
             </ReportItemSet>
@@ -179,7 +179,7 @@
                         <![CDATA[<i>{$project_name}:</i><br />{$item}<br /><br />]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="IIc" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETWORKING" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members">
+                <ReportItem id="IIc" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETWORKING" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members" private="true">
                     <![CDATA[<i>Phase 1 Projects ({$user_phase1_projects})</i><br />{$item}<br /><br />]]>
                 </ReportItem>
             </ReportItemSet>
@@ -195,7 +195,7 @@
                         <![CDATA[<i>{$project_name}:</i><br />{$item}<br /><br />]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="IId" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_KTEE" blobSubItem="RES_RESACT_PHASE1" type="TextareaReportItem">
+                <ReportItem id="IId" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_KTEE" blobSubItem="RES_RESACT_PHASE1" type="TextareaReportItem" private="true">
                     <![CDATA[<i>Phase 1 Projects ({$user_phase1_projects})</i><br />{$item}<br /><br />]]>
                 </ReportItem>
             </ReportItemSet>

@@ -244,17 +244,33 @@ abstract class ReportItemSet extends AbstractReportItem{
         }
         return $nTextareas;
     }
-
-    function render(){
+    
+    function renderItems(){
         foreach($this->items as $item){
-            $item->render();
+            if(!$this->getReport()->topProjectOnly || ($this->getReport()->topProjectOnly && !$item->private)){
+                if(!$item->deleted){
+                    $item->render();
+                }
+            }
         }
     }
     
-    function renderForPDF(){
+    function renderItemsForPDF(){
         foreach($this->items as $item){
-            $item->renderForPDF();
+            if(!$this->getReport()->topProjectOnly || ($this->getReport()->topProjectOnly && !$item->private)){
+                if(!$item->deleted){
+                    $item->renderForPDF();
+                }
+            }
         }
+    }
+
+    function render(){
+        $this->renderItems();
+    }
+    
+    function renderForPDF(){
+        $this->renderItemsForPDF();
     }
 }
 

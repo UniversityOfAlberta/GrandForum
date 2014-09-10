@@ -56,11 +56,15 @@ class LimitReportItemSet extends ReportItemSet {
         }
         $textareas = array();
         foreach($it->items as $item){
-            if($item instanceof ReportItemSet){
-                $textareas = array_merge($textareas, $this->getTextareas($item));
-            }
-            else if($item instanceof TextareaReportItem){
-                $textareas[] = $item;
+            if(!$this->getReport()->topProjectOnly || ($this->getReport()->topProjectOnly && !$item->private)){
+                if(!$item->deleted){
+                    if($item instanceof ReportItemSet){
+                        $textareas = array_merge($textareas, $this->getTextareas($item));
+                    }
+                    else if($item instanceof TextareaReportItem){
+                        $textareas[] = $item;
+                    }
+                }
             }
         }
         return $textareas;
@@ -93,9 +97,7 @@ class LimitReportItemSet extends ReportItemSet {
         }
         $wgOut->addHTML("<p id='limit_{$this->getPostId()}'><span class='pdf_hide inlineMessage'>(Reported By {$noun} - currently <span id='{$this->getPostId()}_chars_left'>{$nChars}</span> characters out of an overall {$type} {$limit} across all $pluralNoun)</span>&nbsp;<a style='font-style:italic; font-size:11px; font-weight:bold;cursor:pointer;' onClick='popup{$this->getPostId()}();'><i>Preview</i></a><div id='preview_{$this->getPostId()}' style='display:none;'></div></p>
         <div id='div_{$this->getPostId()}'>");
-        foreach($this->items as $item){
-            $item->render();
-        }
+        $this->renderItems();
         $wgOut->addHTML("</div>");
         // Scripts
         $wgOut->addHTML("<script type='text/javascript'>

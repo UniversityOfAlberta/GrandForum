@@ -8,8 +8,8 @@ class DashboardReportItem extends StaticReportItem {
 		$details = ($this->getAttr("details", "true") == "true");
 		$limit = $this->getAttr("limit", "0");
         $dashboard = $this->createDashboard();
-        $dashboard = $this->filterRows($dashboard);
         $dashboard = $this->filterCols($dashboard);
+        $dashboard = $this->filterRows($dashboard);
         $dashboard = $this->splitCompleted($dashboard);
         $dash = "";
         if($limit > 0){
@@ -32,8 +32,8 @@ class DashboardReportItem extends StaticReportItem {
 		$limit = $this->getAttr("limit", "0");
 		$totalOnly = ($this->getAttr("totalOnly", "false") == "true");
 	    $dashboard = $this->createDashboard();
-        $dashboard = $this->filterRows($dashboard);
         $dashboard = $this->filterCols($dashboard);
+        $dashboard = $this->filterRows($dashboard);
         $dashboard = $this->splitCompleted($dashboard);
         if($totalOnly){
             $top = $dashboard->copy()->limit(0, 1);
@@ -85,9 +85,9 @@ class DashboardReportItem extends StaticReportItem {
 	        $project = $this->getReport()->project;
             $dashboard = $dashboard->copy();
             $dashboard->filter(HEAD, array('Total:'));
-            foreach($person->getProjects() as $proj){
+            foreach($person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $proj){
                 if($proj->getId() != $project->getId()){
-                    $dashboard = $dashboard->filter(PERSON_PROJECTS, array($proj->getName()));
+                    $dashboard = $dashboard->filter(PERSON_PROJECTS, array("%{$proj->getName()}%"));
                 }
             }
         }
