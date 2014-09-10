@@ -10,6 +10,9 @@ class PersonSubLeadProjectReportItemSet extends ReportItemSet {
         if(count($leadership) > 0){
             foreach($leadership as $lead){
                 if($lead->isSubProject()){
+                    if($this->getReport()->topProjectOnly && $lead->getId() == $this->projectId){
+                        continue;
+                    }
                     $parent = $lead->getParent();
                     $projects[$parent->getId()] = $parent;
                 }

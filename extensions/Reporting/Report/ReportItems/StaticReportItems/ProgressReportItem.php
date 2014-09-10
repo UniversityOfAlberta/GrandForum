@@ -53,13 +53,13 @@ class ProgressReportItem extends StaticReportItem {
                 }
             }
         }
+        $rowspan = 3;
         if($limit > 0){
             $percentChars = number_format(($actualChars/max(1, $limit)*100), 0);
         }
         else{
-            $percentChars = 100;
+            $rowspan--;
         }
-        $rowspan = 3;
         $errorChars = "";
         if($nExceeding > 0){
             $rowspan++;
@@ -78,11 +78,13 @@ class ProgressReportItem extends StaticReportItem {
             $errorChars .= "<tr><td><span class='inlineWarning'>{$nEmpty} of the {$nTextareas}</span> field{$plural} contain no text\n</td></tr>";
         }
         $plural = "s";
-        if(count($sections) == 1){
+        if(count($sections) <= 1){
             $plural = "";
         }
         $details = "<tr valign='top'><td rowspan='$rowspan' style='white-space:nowrap;width:1%;'><b>Report Status</b></td><td valign='top' style='white-space:nowrap;max-width:500px;'>(Section{$plural} ".implode(", ", $sections).")</td></tr>";
-        $details .= "<tr><td>≈$percentChars% of maximum allowable characters (overall)\n</td></tr>";
+        if($limit > 0){
+            $details .= "<tr><td>≈$percentChars% of maximum allowable characters (overall)\n</td></tr>";
+        }
         $plural = "s";
         if($nTextareas == 1){
             $plural = "";

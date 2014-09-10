@@ -21,7 +21,11 @@ class ReportSubmissionStatusItem extends StaticReportItem {
 	function getHTML(){
 	    $reportType = $this->getAttr('reportType', 'HQPReport');
         $person = Person::newFromId($this->personId);
-        $project = $this->getReport()->project;
+        $useProject = $this->getAttr("project", "true");
+        $project = null;
+        if($useProject == "true"){
+            $project = $this->getReport()->project;
+        }
         $report = new DummyReport($reportType, $person, $project);
         if($report->isSubmitted()){
         	$details = "Submitted";

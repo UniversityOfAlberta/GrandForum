@@ -74,36 +74,64 @@
         <ReportItem id="report_pni_progress" type="ProjectNIProgressReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
-        <ReportItem id="progress_head" type="StaticReportItem">
-            <![CDATA[</table><h3>NI Progress</h3>]]>
+        <ReportItem id="progress_foot" type="StaticReportItem">
+            <![CDATA[</table><br />]]>
         </ReportItem>
-        <ReportItem id="static_pni_progress" type="StaticReportItem">
-            <![CDATA[<style>#ni_completion table tr:first-child td:first-child {display:none;}</style><table id="ni_completion" style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'><tr><th>NI</th><th>Completion Status</th><th>Actions</th></tr>]]>
-        </ReportItem>
-        <ReportItemSet id="project_people" type="ProjectPeopleReportItemSet">
-        	<ReportItem id="ni_submission" type="ReportSubmissionStatusItem" reportType="NIReport">
-                <![CDATA[
-                    <tr><td valgin='top'><a href='{$user_url}' target='_blank'><small><b>{$user_reversed_name}</b></small></a><br /><small>({$item})</small></td>
-                ]]>
+        <ReportItemSet id='ni_head' type="ToggleHeaderReportItemSet" level="3" title="NI Progress">
+            <ReportItem id="static_pni_progress" type="StaticReportItem">
+                <![CDATA[<style>#ni_completion table tr:first-child td:first-child {display:none;}</style><table id="ni_completion" style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'><tr><th>NI</th><th>Completion Status</th><th>Actions</th></tr>]]>
             </ReportItem>
-            <ReportItem id="ni_progress" type="ProgressReportItem" reportType="NIReport">
-                <![CDATA[
-                    <td style='white-space:nowrap;padding:0;'><small><table cellpadding="1" frame="void" rules="all" height="95px" width="100%">{$item}</table></small></td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="ni_pdf" type="PDFReportItem" reportType="NIReport" project="false" width="90px">
-                <![CDATA[<td valign='top'>{$item}<br />]]>
-            </ReportItem>
-            <ReportItem id="ni_report" type="SeeReportReportItem" reportType="NIReport" project="true" width="90px">
-                <![CDATA[{$item}<br />]]>
-            </ReportItem>
-            <ReportItem id="ni_notify" type="NotificationReportItem" title="Notify NI" url="Special:Report?report=NIReport" width="90px">
-                <![CDATA[{$item}</td></tr>]]>
+            <ReportItemSet id="project_people" type="ProjectPeopleReportItemSet">
+            	<ReportItem id="ni_submission" type="ReportSubmissionStatusItem" reportType="NIReport">
+                    <![CDATA[
+                        <tr><td valgin='top'><a href='{$user_url}' target='_blank'><small><b>{$user_reversed_name}</b></small></a><br /><small>({$item})</small></td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ni_progress" type="ProgressReportItem" reportType="NIReport">
+                    <![CDATA[
+                        <td style='white-space:nowrap;padding:0;'><small><table cellpadding="1" frame="void" rules="all" height="95px" width="100%">{$item}</table></small></td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ni_pdf" type="PDFReportItem" reportType="NIReport" project="false" width="90px">
+                    <![CDATA[<td valign='top'>{$item}<br />]]>
+                </ReportItem>
+                <ReportItem id="ni_report" type="SeeReportReportItem" reportType="NIReport" project="true" width="90px">
+                    <![CDATA[{$item}<br />]]>
+                </ReportItem>
+                <ReportItem id="ni_notify" type="NotificationReportItem" title="Notify NI" url="Special:Report?report=NIReport" width="90px">
+                    <![CDATA[{$item}</td></tr>]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="progress_foot" type="StaticReportItem">
+                <![CDATA[</table><br />]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="progress_foot" type="StaticReportItem">
-            <![CDATA[</table>]]>
-        </ReportItem>
+        <ReportItemSet id='champ_head' type="ToggleHeaderReportItemSet" level="3" title="Champion Progress">
+            <ReportItem id="static_champ_progress" type="StaticReportItem">
+                <![CDATA[<style>#champ_completion table tr:first-child td:first-child {display:none;}</style><table id="champ_completion" style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'><tr><th>Champion</th><th>Completion Status</th><th>Actions</th></tr>]]>
+            </ReportItem>
+            <ReportItemSet id="project_people" type="ProjectChampionsReportItemSet">
+            	<ReportItem id="champ_submission" type="ReportSubmissionStatusItem" project="false" reportType="ChampionReport">
+                    <![CDATA[
+                        <tr><td valgin='top'><a href='{$user_url}' target='_blank'><small><b>{$user_reversed_name}</b></small></a><br /><small>({$item})</small></td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="champ_progress" type="ProgressReportItem" reportType="ChampionReport">
+                    <![CDATA[
+                        <td style='white-space:nowrap;padding:0;'><small><table cellpadding="1" frame="void" rules="all" height="60px" width="100%">{$item}</table></small></td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="champ_pdf" type="PDFReportItem" reportType="ChampionReport" width="110px">
+                    <![CDATA[<td valign='top'>{$item}<br />]]>
+                </ReportItem>
+                <ReportItem id="champ_notify" type="NotificationReportItem" title="Notify Champion" url="Special:Report?report=ChampionReport" width="110px">
+                    <![CDATA[{$item}</td></tr>]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="progress_foot" type="StaticReportItem">
+                <![CDATA[</table><br />]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="dashboard" tooltip="Overview of this year's activity and productivity" name="Project Dashboard" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
         <Instructions>
@@ -114,47 +142,38 @@
             ]]>
         </Instructions>
         <ReportItem id="project_dashboard_time" type="DashboardReportItem" structure="PROJECT_REPORT_TIME_STRUCTURE">
-            <![CDATA[<h3>Time and Budget:</h3><div>{$item}</div>]]>
+            <![CDATA[<h2>Time and Budget</h2><div>{$item}</div>]]>
         </ReportItem>
         <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE">
-            <![CDATA[<h3>Productivity:</h3><div>{$item}</div>]]>
+            <![CDATA[<h2>Productivity</h2><div>{$item}</div>]]>
         </ReportItem>
         <ReportItem id="project_dashboard_champ_head" type="StaticReportItem">
-            <![CDATA[<h3>Champions:</h3>]]>
+            <![CDATA[<h2>Champions</h2>]]>
         </ReportItem>
-        <ReportItemSet id="project_dashboard_champ" type="ProjectChampionsReportItemSet">
-            <ReportItem id="project_champ" type="StaticReportItem">
-                <![CDATA[
-                    <div><h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a> ({$champ_subprojects})</h3>
-                        <table>
-                            <tr>
-                                <td><b>Organization:</b></td>
-                                <td>{$champ_org}</td>
-                            </tr>
-                            <tr>
-                                <td><b>Title:</b></td>
-                                <td>{$champ_title}</td>
-                            </tr>
-                        </table> 
-                    </div>
-                ]]>
+        <ReportItemSet id="project_subprojects" type="ProjectSubProjectsReportItemSet">
+            <ReportItem id="subproject_head" type="StaticReportItem">
+                <![CDATA[<h3>{$project_name}</h3><div style='margin-left:15px;'>]]>
             </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="subproject_dashboard_champ" type="SubProjectChampionsReportItemSet">
-            <ReportItem id="subproject_champ" type="StaticReportItem">
-                <![CDATA[
-                    <div><h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a> ({$champ_subprojects})</h3>
-                    <table>
-                        <tr>
-                            <td><b>Organization:</b></td>
-                            <td>{$champ_org}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Title:</b></td>
-                            <td>{$champ_title}</td>
-                        </tr>
-                    </table>
-                ]]>
+            <ReportItemSet id="project_dashboard_champ" type="ProjectChampionsReportItemSet">
+                <ReportItem id="project_champ" type="StaticReportItem">
+                    <![CDATA[
+                        <div><h3><a href='{$user_url}' target='_blank'>{$user_reversed_name}</a></h3>
+                            <table>
+                                <tr>
+                                    <td><b>Organization:</b></td>
+                                    <td>{$champ_org}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Title:</b></td>
+                                    <td>{$champ_title}</td>
+                                </tr>
+                            </table> 
+                        </div>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="subproject_foot" type="StaticReportItem">
+                <![CDATA[</div>]]>
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
