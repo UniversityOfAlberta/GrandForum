@@ -36,8 +36,12 @@ class RadioReportItem extends AbstractReportItem {
 	
 	function renderForPDF(){
 	    global $wgOut;
+	    $attr = strtolower($this->getAttr("onlyShowIfNotEmpty"));
 	    $val = $this->getBlobValue();
-	    if(empty($val)){
+	    if($attr == "true" && empty($val)){
+	        return "";
+	    }
+	    else if(empty($val)){
 	    	$val = "N/A";
 	    }
 

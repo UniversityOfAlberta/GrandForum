@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Champion Report" reportType="RP_CHAMP" pdfType="RPTP_CHAMP" pdfFiles="ChampionReportPDF" pdfAllProjects="true" ajax="true" disabled="false">
+<Report name="Champion Report" reportType="RP_CHAMP" pdfType="RPTP_CHAMP" pdfFiles="ChampionReportPDF" ajax="true" disabled="false">
     <Permissions>
         <Role end="REPORTING_RMC_MEETING" role="CHAMP">
             <SectionPermission id="report" permissions="r" />
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="r" />
         </Role>
-        <Project start="REPORTING_CYCLE_START" end="REPORTING_RMC_MEETING" deleted="false" />
     </Permissions>
     <ReportSection id="report" name="Champion Report" tooltip="" blobSection="CHAMP_REPORT" type="EditableReportSection" renderpdf="true">
         <Instructions>
             <![CDATA[
-
+                
             ]]>
         </Instructions>
         <ReportItem id="introTable" type="StaticReportItem">
@@ -30,14 +29,23 @@
                         <td>{$champ_org}</td>
                     </tr>
                     <tr>
-                        <td><b>Sub-Projects:</b></td>
-                        <td>{$champ_subprojects}</td>
+                        <td valign="top"><b>Projects:</b></td>
+                        <td><ul style="margin-top:0;">
+            ]]>
+        </ReportItem>  
+        <ReportItemSet id="champ_projects" type="PersonProjectReportItemSet">
+            <ReportItem id="champ_project" type="StaticReportItem">
+                <![CDATA[
+                    <li style="margin-top:0;"><b>{$project_name}: {$champ_subprojects}</li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="introTable_foot" type="StaticReportItem">
+            <![CDATA[              
+                        </ul></td>
                     </tr>
                 </table><br />
             ]]>
-        </ReportItem>
-        <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectReport" project="true" buttonName="{$project_name} Project Report PDF">
-            <![CDATA[{$item}]]>
         </ReportItem>
         <ReportItem id="represent" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CHAMP_REPRESENT" options="As an individual only|As an individual with the consent of my organization|On behalf of my organization" orientation="vertical">
             <![CDATA[
@@ -55,7 +63,7 @@
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="q1" blobType="BLOB_TEXT" blobItem="CHAMP_ACTIVITY" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name" showNotReferenced="true">
+        <ReportItem id="q1" blobType="BLOB_TEXT" blobItem="CHAMP_ACTIVITY" type="AutoCompleteTextareaReportItem" set="ChampionKeywordsReportItemSet" index="id" label="name" name="People/Projects" tooltipOptionId="Person/Project ID" tooltipOptionName="Person/Project Name">
             <![CDATA[
                 <p>
                     <h3>Q1: Describe the research activities that are underway within one or more subprojects that are relevant to you or to your organization.</h3>
@@ -63,7 +71,7 @@
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="q2" blobType="BLOB_TEXT" blobItem="CHAMP_ORG" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name" showNotReferenced="true">
+        <ReportItem id="q2" blobType="BLOB_TEXT" blobItem="CHAMP_ORG" type="AutoCompleteTextareaReportItem" set="ChampionKeywordsReportItemSet" index="id" label="name" name="People/Projects" tooltipOptionId="Person/Project ID" tooltipOptionName="Person/Project Name">
             <![CDATA[
                 <br />
                 <p>
@@ -72,7 +80,7 @@
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="q3" blobType="BLOB_TEXT" blobItem="CHAMP_BENEFITS" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name" showNotReferenced="true">
+        <ReportItem id="q3" blobType="BLOB_TEXT" blobItem="CHAMP_BENEFITS" type="AutoCompleteTextareaReportItem" set="ChampionKeywordsReportItemSet" index="id" label="name" name="People/Projects" tooltipOptionId="Person/Project ID" tooltipOptionName="Person/Project Name">
             <![CDATA[
                 <br />
                 <p>
@@ -81,7 +89,7 @@
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="q4" blobType="BLOB_TEXT" blobItem="CHAMP_SHORTCOMINGS" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name" showNotReferenced="true">
+        <ReportItem id="q4" blobType="BLOB_TEXT" blobItem="CHAMP_SHORTCOMINGS" type="AutoCompleteTextareaReportItem" set="ChampionKeywordsReportItemSet" index="id" label="name" name="People/Projects" tooltipOptionId="Person/Project ID" tooltipOptionName="Person/Project Name">
             <![CDATA[
                 <br />
                 <p>
@@ -90,7 +98,7 @@
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="q5" blobType="BLOB_TEXT" blobItem="CHAMP_CASH" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name" showNotReferenced="true">
+        <ReportItem id="q5" blobType="BLOB_TEXT" blobItem="CHAMP_CASH" type="AutoCompleteTextareaReportItem" set="ChampionKeywordsReportItemSet" index="id" label="name" name="People/Projects" tooltipOptionId="Person/Project ID" tooltipOptionName="Person/Project Name">
             <![CDATA[
                 <br />
                 <p>
@@ -99,6 +107,7 @@
                 </p>
             ]]>
         </ReportItem>
+        <!--
         <ReportItem id="q6_head" type="StaticReportItem">
             <![CDATA[
                 <br />
@@ -123,6 +132,7 @@
                 </table>
             ]]>
         </ReportItem>
+        -->
     </ReportSection>
     <ReportSection id="review" name="Review" tooltip="Review of on-line report content" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>

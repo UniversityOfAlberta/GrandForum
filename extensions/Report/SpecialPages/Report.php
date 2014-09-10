@@ -55,21 +55,7 @@ class Report extends AbstractReport{
             $page = "Report?report=ISACReview";
         }
         else if($person->isRole(CHAMP)){
-            $projects = Project::getAllProjects();
-            foreach($projects as $project){
-                if($project->getPhase() == PROJECT_PHASE){
-                    if($person->isChampionOf($project, REPORTING_RMC_MEETING)){
-                        $page = "Report?report=ChampionReport&project={$project->getName()}";
-                        break;
-                    }
-                    foreach($project->getSubProjects() as $sub){
-                        if($person->isChampionOfOn($sub, REPORTING_RMC_MEETING)){
-                            $page = "Report?report=ChampionReport&project={$project->getName()}";
-                            break;
-                        }
-                    }
-                }
-            }
+            $page = "Report?report=ChampionReport";
         }
         
         $selected = "";
@@ -201,31 +187,12 @@ class Report extends AbstractReport{
             
             // Champion Report
             if($person->isRole(CHAMP)){
-                $projects = Project::getAllProjects();
-                foreach($projects as $project){
-                    if($project->getPhase() == PROJECT_PHASE){
-                        $showTab = false;
-                        if($person->isChampionOfOn($project, REPORTING_RMC_MEETING)){
-                            $showTab = true;
-                        }
-                        else{
-                            foreach($project->getSubProjects() as $sub){
-                                if($person->isChampionOfOn($sub, REPORTING_RMC_MEETING)){
-                                    $showTab = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if($showTab){
-                            @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "ChampionReport" && $_GET['project'] == $project->getName()) ? "selected" : false;
-                            $content_actions[] = array (
-                                'class' => $class,
-                                'text'  => "Champion ({$project->getName()})",
-                                'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=ChampionReport&project={$project->getName()}",
-                            );
-                        }
-                    }
-                }
+                @$class = ($wgTitle->getText() == "Report" && $_GET['report'] == "ChampionReport") ? "selected" : false;
+                $content_actions[] = array (
+                    'class' => $class,
+                    'text'  => "Champion",
+                    'href'  => "$wgServer$wgScriptPath/index.php/Special:Report?report=ChampionReport",
+                );
             }
         }
         return true;
