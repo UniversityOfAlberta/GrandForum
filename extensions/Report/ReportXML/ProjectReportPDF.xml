@@ -14,39 +14,6 @@
         <ReportItem id="report_info_head" type="FootnoteReportItem" text="{$project_full_name}">
             <![CDATA[{$item}]]>
         </ReportItem>
-        <ReportItem id="report_info_head" type="FootnoteReportItem" text="{$project_full_name}">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="report_info_head" type="FootnoteReportItem" text="{$project_full_name}">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="report_info_head" type="FootnoteReportItem" text="{$project_full_name}">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="report_info_head" type="FootnoteReportItem" text="{$project_full_name}">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="report_info_head" type="FootnoteReportItem" text="{$project_full_name}">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="report_info_head" type="FootnoteReportItem" text="{$project_full_name}">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="report_info_head" type="FootnoteReportItem" text="{$project_full_name}">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="report_info_head" type="FootnoteReportItem" text="{$project_full_name}">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="report_info_head" type="FootnoteReportItem" text="{$project_full_name}asdfasdf">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="report_info_head" type="FootnoteReportItem" text="{$project_full_name}">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="report_info_head" type="FootnoteReportItem" text="{$project_full_name}">
-            <![CDATA[{$item}]]>
-        </ReportItem>
         <ReportItem id="report_info_head2" type="StaticReportItem">
             <![CDATA[<br /><small><b>Generated:</b> {$timestamp}</small></div>
                     <div class='report_info'><table class='report_info'><tr><td width='100%'></td>
