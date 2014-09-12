@@ -27,7 +27,6 @@ class Head1Cell extends Cell{
     }
     
     function render(){
-        $this->style = 'background:#DDDDDD;';
         $superScript = "";
         foreach($this->footnotes as $foot){
             if(class_exists("Report")){
