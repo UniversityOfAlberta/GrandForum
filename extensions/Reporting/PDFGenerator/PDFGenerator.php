@@ -252,7 +252,7 @@ EOF;
 		    
 		    #pdfBody .report_info {
 		        width: 100%;
-		        height: ".(($fontSize+4)*($nInfo) + (25*DPI_CONSTANT))."px;
+		        height: ".(($fontSize+4)*($nInfo) + (10*DPI_CONSTANT))."px;
 		        font-size: ".($fontSize+(-3*DPI_CONSTANT))."px;
 		        top:0;
 		        margin-right:0 !important;
@@ -268,11 +268,11 @@ EOF;
 		        border-spacing:".max(1, (0.5*DPI_CONSTANT))."px;
 		        border-width:".max(1, (0.5*DPI_CONSTANT))."px;
 		        border-color: #000000;
-		        margin-top:".(25*DPI_CONSTANT)."px;
+		        margin-top:".(5*DPI_CONSTANT)."px;
 		    }
 		    
 		    #pdfBody .report_info > table {
-		        height: ".(($fontSize+4)*($nInfo) + (25*DPI_CONSTANT))."px;
+		        height: ".(($fontSize+4)*($nInfo) + (10*DPI_CONSTANT))."px;
 		    }
 		    
 		    #pdfBody hr {
@@ -385,8 +385,12 @@ EOF;
             }
             
             #pdfBody .logo_div {
-                margin-bottom:".(DPI_CONSTANT)."px;
-                height: ".(($fontSize+4)*$nInfo + (25*DPI_CONSTANT))."px;
+                margin-bottom: 0;
+                height: ".(($fontSize+4)*$nInfo + (10*DPI_CONSTANT))."px;
+            }
+            
+            #pdfBody br {
+                font-size: 0.5em;
             }
 		    
 		</style>
@@ -443,8 +447,9 @@ if ( isset($pdf) ) {
   $pdf->page_text($w - $nameWidth - 22, 20, "'.$headerName.'", $font, $size, $color);
 }
 </script>';
+        $dateStr = date("Y-m-d H:i:s T", time());
         if($preview){
-            echo $header."<body><div id='pdfBody'><div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".(10*DPI_CONSTANT)."px;' />$html</div></body></html>";
+            echo $header."<body><div id='pdfBody'><div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".(10*DPI_CONSTANT)."px;' /><div style='position:absolute;top:0;font-size:smaller;'><i>Generated: $dateStr</i></div>$html</div></body></html>";
             return;
         }
         
@@ -454,7 +459,7 @@ if ( isset($pdf) ) {
         $html = str_replace("”", '"', $html);
         //$html = utf8_encode($html);
         $html = preg_replace('/\cP/', '', $html);
-        $finalHTML = utf8_decode($header."<body id='pdfBody'>$pages$html</body></html>");
+        $finalHTML = utf8_decode($header."<body id='pdfBody'><div style='margin-top:-".($fontSize*1.6)."px;font-size:smaller;'><i>Generated: $dateStr</i></div>$pages$html</body></html>");
         $dompdf->load_html($finalHTML);
         $dompdf->render();
         //$pdfStr = $dompdf->output();

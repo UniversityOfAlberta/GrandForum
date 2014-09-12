@@ -9,7 +9,7 @@ class SmallProjectBudgetReportItem extends StaticReportItem {
         
         $start = intval($this->getAttr("start", "0000"));
         $end = intval($this->getAttr("end", REPORTING_YEAR));
-        $item = "<table><tr><th>&nbsp;Funding Period&nbsp;</th><th>&nbsp;Requested&nbsp;</th><th>&nbsp;Allocated&nbsp;</th></tr>";
+        $item = "<table cellspacing='0' cellpadding='0'><tr><th>&nbsp;Funding Period&nbsp;</th><th>&nbsp;Requested&nbsp;</th><th>&nbsp;Allocated&nbsp;</th></tr>";
         for($i = $start; $i <= $end; $i++){
             $iS = $i+1;
             $iE = $i+2;

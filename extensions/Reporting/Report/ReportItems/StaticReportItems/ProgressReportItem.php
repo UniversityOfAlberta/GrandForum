@@ -53,21 +53,21 @@ class ProgressReportItem extends StaticReportItem {
                 }
             }
         }
-        $rowspan = 3;
+        $rowspan = 0;
         if($limit > 0){
             $percentChars = number_format(($actualChars/max(1, $limit)*100), 0);
         }
         else{
             $rowspan--;
         }
-        $errorChars = "";
+        $errorChars = array();
         if($nExceeding > 0){
             $rowspan++;
             $plural = "s";
             if($nTextareas == 1){
                 $plural = "";
             }    
-            $errorChars .= "<tr><td><span class='inlineError'>{$nExceeding} of the {$nTextareas}</span> field{$plural} exceeds maximum allowed characters\n</td></tr>";
+            $errorChars[] = "<td><span class='inlineError'>{$nExceeding} of the {$nTextareas}</span> field{$plural} exceeds maximum allowed characters\n</td>";
         }
         if($nEmpty > 0){
             $rowspan++;
@@ -75,22 +75,21 @@ class ProgressReportItem extends StaticReportItem {
             if($nTextareas == 1){
                 $plural = "";
             }  
-            $errorChars .= "<tr><td><span class='inlineWarning'>{$nEmpty} of the {$nTextareas}</span> field{$plural} contain no text\n</td></tr>";
+            $errorChars[] = "<td><span class='inlineWarning'>{$nEmpty} of the {$nTextareas}</span> field{$plural} contain no text\n</td>";
         }
         $plural = "s";
         if(count($sections) <= 1){
             $plural = "";
         }
-        $details = "<tr valign='top'><td rowspan='$rowspan' style='white-space:nowrap;width:1%;'><b>Report Status</b></td><td valign='top' style='white-space:nowrap;max-width:500px;'>(Section{$plural} ".implode(", ", $sections).")</td></tr>";
+        $details = "<tr valign='top'><td rowspan='$rowspan' style='white-space:nowrap;width:1%;'><b>Report Status</b></td>";
         if($limit > 0){
-            $details .= "<tr><td>≈$percentChars% of maximum allowable characters (overall)\n</td></tr>";
+            //$details .= "<tr><td>≈$percentChars% of maximum allowable characters (overall)\n</td></tr>";
         }
         $plural = "s";
         if($nTextareas == 1){
             $plural = "";
         }
-        $details .= "<tr><td>{$nComplete} of the {$nTextareas} field{$plural} include text\n</td></tr>";
-        $details .= "$errorChars";
+        $details .= implode("</tr><tr>", $errorChars)."</tr>";
         return $details;
 	}
 }

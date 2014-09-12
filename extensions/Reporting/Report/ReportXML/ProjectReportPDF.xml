@@ -9,10 +9,10 @@
             <![CDATA[
                 <div class='logo_div'>
                     <div class='logo'></div>
-                    <div class='report_name' style='text-align:right;'><b>{$report_name}</b>]]>
+                    ]]>
         </ReportItem>
         <ReportItem id="report_info_head2" type="StaticReportItem">
-            <![CDATA[<br /><small><b>Generated:</b> {$timestamp}</small></div>
+            <![CDATA[
                     <div class='report_info'><table class='report_info'><tr><td width='100%'></td>
             ]]>
         </ReportItem>
@@ -42,18 +42,20 @@
         <ReportItem id="basic_info" type="StaticReportItem">
             <![CDATA[
                 <div class='basic_info'>
-                    <p style='font-size:150%;'>{$project_name} ({$project_full_name})</p>
-                        <table style='width:100%;'>
+                        <table style='width:100%;' cellspacing='0' cellpadding='0'>
                         <tr>
                             <td valign="top" width="100%">
-                                <p><b>Theme:</b> {$project_theme}</p>
-                                <p><b>Leader:</b> {$project_leaders}</p>
-                                <p><b>Co-Leader:</b> {$project_coleaders}</p>
+                                <p style='font-size:150%;font-weight:bold;'>{$project_name}</p>
+                                <table cellspacing='0' cellpadding='0'>
+                                    <tr><td align='right'><b>Theme:</b>&nbsp;</td><td>{$project_theme}</td></tr>
+                                    <tr><td align='right'><b>Leader:</b>&nbsp;</td><td>{$project_leaders}</td></tr>
+                                    <tr><td align='right'><b>Co-Leader:</b>&nbsp;</td><td>{$project_coleaders}</td></tr>
+                                </table>
                             </td>
             ]]>
         </ReportItem>
         <ReportItem id="small_budget" type="SmallProjectBudgetReportItem" start="{$2_years_ago}" end="{$this_year}">
-            <![CDATA[<td style='white-space:nowrap;'>{$item}</td></tr></table></div>]]>
+            <![CDATA[<td style='white-space:nowrap;' valign='bottom'>{$item}</td></tr></table></div>]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="report1" name="Executive Summary: Overview of {$project_name} Activity" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="1" renderpdf="true">
@@ -67,13 +69,16 @@
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="top_products" name="Top Products" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" pagebreak="true">
+    <ReportSection id="top_products" name="Top Research Outcomes" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" pagebreak="true">
+        <ReportItem id="legend" type="StaticReportItem">
+            <![CDATA[
+                <div style='text-align:right;'>
+                    Legend: <b>NI</b>, <b><u>HQP</u></b>, <b style='border-bottom: 1px solid #000000;'><u>External</u></b>, other authors<br /><br />
+                </div>
+            ]]>
+        </ReportItem>
         <ReportItem id="tmp_top_pubs" type="StaticReportItem">
             <![CDATA[
-            <b>NI</b><br />
-            <b><u>HQP</u></b><br />
-            <b><u style='border-bottom: 1px solid #000000;'>External</u></b><br />
-            other authors<br />
             <table frame="box" rules="all" cellpadding="10px">
                 <tr>
                     <th>Rank</th>
@@ -176,7 +181,7 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="report3" name="Reflections: Other Aspects of my project's involvement in GRAND" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="4" renderpdf="true">
+    <ReportSection id="report3" name="Reflections: Other Aspects of {$project_name}'s involvement in GRAND" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="4" renderpdf="true">
     <!-- IIIa. Plans for Next Year -->
         <ReportItem id='IIIa_head' type="StaticReportItem">
             <![CDATA[<h2>Achievements and Plans</h2>]]>
