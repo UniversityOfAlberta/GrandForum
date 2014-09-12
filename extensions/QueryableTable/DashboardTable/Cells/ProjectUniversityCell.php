@@ -20,12 +20,22 @@ class ProjectUniversityCell extends Cell{
         }
         if(isset($params[2])){
             $person = Person::newFromName($params[2]);
-            $university = $person->getUniversity();
-            if($university != null){
-                $this->value = $university['university'].', '.$university['department'];
+            $uni = $person->getPartnerName();
+            $dept = $person->getPartnerTitle();
+            
+            $uni = ($uni == "") ? $person->getUni() : $uni;
+            $dept = ($dept == "") ? $person->getDepartment() : $dept;
+            if($uni != "" && $dept != ""){
+                $this->value = "$uni, $dept";
+            }
+            else if($uni != "" && $dept == ""){
+                $this->value = $uni;
+            }
+            else if($uni == "" && $dept != ""){
+                $this->value = $dept;
             }
             else{
-                $this->value = 'Unknown, Unknown';
+                $this->value = "Unknown";
             }
         }
         else{

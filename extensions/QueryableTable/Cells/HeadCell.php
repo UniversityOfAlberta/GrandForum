@@ -33,7 +33,7 @@ class HeadCell extends Cell{
     }
     
     function render(){
-        $this->style = 'text-align:center;';
+        $this->style = 'text-align:center;background:#AAAAAA;';
         $superScript = "";
         $tooltip = "";
         foreach($this->footnotes as $foot){

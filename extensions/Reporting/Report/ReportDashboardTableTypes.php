@@ -6,6 +6,7 @@ define('HQP_REPORT_STRUCTURE', 102);
 
 define('PROJECT_REPORT_PRODUCTIVITY_STRUCTURE', 103);
 define('PROJECT_REPORT_TIME_STRUCTURE', 104);
+define('PROJECT_ROSTER_STRUCTURE', 105);
 
 $dashboardStructures[NI_REPORT_STRUCTURE] =
     array(array(STRUCT(HEAD, "Projects"), 
@@ -170,7 +171,20 @@ $dashboardStructures[PROJECT_REPORT_TIME_STRUCTURE] =
                 STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                 STRUCT(PROJECT_HOURS, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                 STRUCT(PROJECT_ALLOCATED_BUDGET, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
-                STRUCT(PROJECT_BUDGET, REPORTING_CYCLE_START, REPORTING_CYCLE_END), )
+                STRUCT(PROJECT_BUDGET, REPORTING_CYCLE_START, REPORTING_CYCLE_END))
     );
+    
+$dashboardStructures[PROJECT_ROSTER_STRUCTURE] =
+    array(array(HEAD."(PEOPLE)", HEAD."(Roles, PNI: Principle Network Investigator, CNI: Collaborating Network Investigator, PL: Project Leader, COPL: Co Project Leader, PM: Project Manager, sPL: Sub-Project Leader)", HEAD."(Affiliation)"),
+          array(PROJECT_HEAD),
+          STRUCT(GROUP_BY, PROJECT_CHAMPIONS_ARRAY) => array(PROJECT_PEOPLE,
+                                                           STRUCT(PROJECT_ROLES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                           STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
+          STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array(PROJECT_PEOPLE,
+                                                           STRUCT(PROJECT_ROLES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                           STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
+          STRUCT(GROUP_BY, PROJECT_PEOPLE_NO_LEADERS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array(PROJECT_PEOPLE,
+                                                           STRUCT(PROJECT_ROLES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
+                                                           STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END)));
 
 ?>

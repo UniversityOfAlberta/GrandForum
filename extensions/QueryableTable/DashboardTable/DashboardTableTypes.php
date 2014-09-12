@@ -26,7 +26,7 @@ define('PERSON_PRESENTATIONS', 117);
 define('PERSON_PROJECTS_ARRAY', 125);
 
 //// Project Types
-define('PROJECT_NAME', 1001);
+define('PROJECT_HEAD', 1001);
 define('PROJECT_PEOPLE', 1002);
 define('PROJECT_ROLES', 1003);
 define('PROJECT_PARTNERS', 1004);
@@ -47,6 +47,7 @@ define('PROJECT_PRESENTATIONS', 1018);
 define('PROJECT_PEOPLE_ARRAY', 1125);
 define('PROJECT_LEADERS_ARRAY', 1126);
 define('PROJECT_PEOPLE_NO_LEADERS_ARRAY', 1127);
+define('PROJECT_CHAMPIONS_ARRAY', 1128);
 
 $cellTypes[PERSON_NAME] = "PersonNameCell";
 $cellTypes[PERSON_ROLES] = "PersonRolesCell";
@@ -68,7 +69,7 @@ $cellTypes[PERSON_PRESENTATIONS] = "PersonPresentationsCell";
 $cellTypes[PERSON_CONTRIBUTIONS] = "PersonContributionsCell";
 $arrayTypes[PERSON_PROJECTS_ARRAY] = "PersonProjectsArray";
 
-$cellTypes[PROJECT_NAME] = "ProjectNameCell";
+$cellTypes[PROJECT_HEAD] = "ProjectHeadCell";
 $cellTypes[PROJECT_PEOPLE] = "ProjectPeopleCell";
 $cellTypes[PROJECT_ROLES] = "ProjectRolesCell";
 $cellTypes[PROJECT_PARTNERS] = "ProjectPartnersCell";
@@ -88,6 +89,7 @@ $cellTypes[PROJECT_PEOPLE_ROLES] = "ProjectPeopleRolesCell";
 $arrayTypes[PROJECT_PEOPLE_ARRAY] = "ProjectPeopleArray";
 $arrayTypes[PROJECT_LEADERS_ARRAY] = "ProjectLeadersArray";
 $arrayTypes[PROJECT_PEOPLE_NO_LEADERS_ARRAY] = "ProjectPeopleNoLeadersArray";
+$arrayTypes[PROJECT_CHAMPIONS_ARRAY] = "ProjectChampionsArray";
 
 //DashboardTable Structures
 define('NI_PUBLIC_PROFILE_STRUCTURE', 1);

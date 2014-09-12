@@ -56,7 +56,7 @@ class ProjectRolesCell extends Cell{
                 }
             }
             foreach($person->getRoles() as $role){
-                if($role->getRole() == HQP || $role->getRole() == PNI || $role->getRole() == CNI || $role->getRole() == AR){
+                if($role->getRole() == HQP || $role->getRole() == PNI || $role->getRole() == CNI || $role->getRole() == AR || $role->getRole() == CHAMP){
                     if($role->getRole() == AR){
                         $values[] = "AR";
                     }

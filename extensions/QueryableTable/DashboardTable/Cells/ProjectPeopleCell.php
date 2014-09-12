@@ -17,14 +17,14 @@ class ProjectPeopleCell extends Cell{
     
     function toString(){
         $person = Person::newFromName($this->value);
-        return $person->getReversedName();
+        return $person->getNameForForms();
     }
     
     function render(){
         global $wgServer, $wgScriptPath;
         $this->style = 'text-align:left;';
         $person = Person::newFromName($this->value);
-        return "<a href='{$person->getUrl()}' target = '_blank'><b>{$person->getReversedName()}</b></a>";
+        return "<a href='{$person->getUrl()}' target = '_blank'><b>{$person->getNameForForms()}</b></a>";
     }
 }
 

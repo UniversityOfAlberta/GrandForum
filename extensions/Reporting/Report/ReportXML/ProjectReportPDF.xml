@@ -63,7 +63,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="dashboard" name="Project Team" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" pagebreak="true">
-        <ReportItem id="project_dashboard_time" type="DashboardReportItem" structure="PROJECT_REPORT_TIME_STRUCTURE" table="true" details="false">
+        <ReportItem id="project_roster" type="ProjectRosterReportItem">
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
