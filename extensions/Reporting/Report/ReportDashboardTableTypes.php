@@ -175,7 +175,7 @@ $dashboardStructures[PROJECT_REPORT_TIME_STRUCTURE] =
     );
     
 $dashboardStructures[PROJECT_ROSTER_STRUCTURE] =
-    array(array(HEAD."(PEOPLE)", HEAD."(Roles, PNI: Principle Network Investigator, CNI: Collaborating Network Investigator, PL: Project Leader, COPL: Co Project Leader, PM: Project Manager, sPL: Sub-Project Leader)", HEAD."(Affiliation)"),
+    array(array(HEAD."(People)", HEAD."(Roles, PNI: Principle Network Investigator, CNI: Collaborating Network Investigator, PL: Project Leader, COPL: Co Project Leader, PM: Project Manager, sPL: Sub-Project Leader)", HEAD."(Affiliation)"),
           array(PROJECT_HEAD),
           STRUCT(GROUP_BY, PROJECT_CHAMPIONS_ARRAY) => array(PROJECT_PEOPLE,
                                                            STRUCT(PROJECT_ROLES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
