@@ -304,6 +304,7 @@ EOF;
 
             $wgOut->addHTML($subm_table_row);
             $pdfcount++;
+            break; // Only the first PDF gets submitted
         }
 	}
 	

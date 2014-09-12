@@ -5,6 +5,7 @@ class ReportItemCallback {
     static $callbacks = 
         array(
             // Dates
+            "2_years_ago" => "get2YearsAgo",
             "last_year" => "getLastYear",
             "this_year" => "getThisYear",
             "next_year" => "getNextYear",
@@ -15,6 +16,7 @@ class ReportItemCallback {
             "project_url" => "getProjectUrl",
             "project_status" => "getProjectStatus",
             "project_description" => "getProjectDescription",
+            "project_theme" => "getProjectTheme",
             "project_leaders" => "getProjectLeaders",
             "project_coleaders" => "getProjectCoLeaders",
             "project_problem" => "getProjectProblem",
@@ -120,6 +122,10 @@ class ReportItemCallback {
         $this->reportItem = $reportItem;
     }
     
+    function get2YearsAgo(){
+        return REPORTING_YEAR-2;
+    }
+    
     function getLastYear(){
         return REPORTING_YEAR-1;
     }
@@ -185,6 +191,15 @@ class ReportItemCallback {
             $project_desc = $project->getDescription();
         }
         return $project_desc;
+    }
+    
+    function getProjectTheme(){
+        $project_theme = "";
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $project_theme = $project->getChallenge()->getAcronym();
+        }
+        return $project_theme;
     }
     
     function getProjectLeaders(){

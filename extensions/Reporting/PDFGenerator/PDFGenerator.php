@@ -92,7 +92,6 @@ abstract class PDFGenerator {
                 }
                 
                 function load_page() {
-                    
                     $(\"body\").width($(\"body\").width() - 50);
                     parent.alertsize($(\"body\").height() + 50 + 38);
                     $(\"body\").width('auto');
@@ -185,7 +184,7 @@ EOF;
                 margin-top: 0.75cm;
                 margin-left: 0.75cm;
                 margin-right: 0.75cm;
-                margin-bottom: 0.75cm;
+                margin-bottom: 0.50cm;
             }
 		
 		    #pdfBody  {
@@ -286,6 +285,7 @@ EOF;
 		        background-color: #333333;
 		        color: #FFFFFF;
 		        margin-top:0;
+		        margin-bottom: 0.25em;
 		        font-size: ".($fontSize+(4*DPI_CONSTANT))."px;
 		        font-weight:normal;
 		        border: ".max(1, (0.5*DPI_CONSTANT))."px solid #000000;
