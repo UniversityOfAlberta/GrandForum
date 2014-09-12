@@ -268,7 +268,7 @@ EOF;
 		        border-spacing:".max(1, (0.5*DPI_CONSTANT))."px;
 		        border-width:".max(1, (0.5*DPI_CONSTANT))."px;
 		        border-color: #000000;
-		        margin-top:".(35*DPI_CONSTANT)."px;
+		        margin-top:".(25*DPI_CONSTANT)."px;
 		    }
 		    
 		    #pdfBody .report_info > table {
@@ -385,7 +385,7 @@ EOF;
             }
             
             #pdfBody .logo_div {
-                margin-bottom:".(15*DPI_CONSTANT)."px;
+                margin-bottom:".(DPI_CONSTANT)."px;
                 height: ".(($fontSize+4)*$nInfo + (25*DPI_CONSTANT))."px;
             }
 		    
