@@ -32,7 +32,12 @@ class ProjectRolesCell extends Cell{
             }
             foreach($leads as $lead){
                 if($lead->getId() == $table->obj->getId()){
-                    $values[] = "PL";
+                    if($table->obj->isSubProject()){
+                        $values[] = "sPL";
+                    }
+                    else{
+                        $values[] = "PL";
+                    }
                     break;
                 }
             }
