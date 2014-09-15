@@ -138,8 +138,20 @@
             </table><i>Last updated on: Dec 13, 2015</i>]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="champions" name="Champions Progress" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
+        <ReportItem id="champion_table" type="StaticReportItem">
+            <![CDATA[<img src="http://grand.cs.ualberta.ca/~dwt/champions.png" width='100%' />]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="budget" name="Project Budget Request" blobSection="LDR_BUDGET" type="EditableReportSection" number="2" renderpdf="true">
-        <ReportItem id="budget" type="ProjectBudgetReportItem" />
+        <!--ReportItem id="budget" type="ProjectBudgetReportItem" /-->
+        <ReportItem id="budgets" type="StaticReportItem">
+            <![CDATA[<h2>Budget Categories</h2>
+                     <img src="http://grand.cs.ualberta.ca/~dwt/budget2.png" width='100%' />
+                     <h2>NI Budgets</h2>
+                     <img src="http://grand.cs.ualberta.ca/~dwt/budget1.png" width='100%' /><br />
+            ]]>
+        </ReportItem>
         <ReportItem id="budget_just" rows="10" limit="600" blobType="BLOB_TEXT" blobItem="LDR_BUD_JUST" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[<h2>Budget Justification</h2> {$item}]]>
         </ReportItem>
