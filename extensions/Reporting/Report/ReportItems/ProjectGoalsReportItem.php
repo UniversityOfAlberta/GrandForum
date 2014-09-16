@@ -96,14 +96,16 @@ EOF
     }
     
     function getTemplateForPDF($title, $status, $description, $assessment){
-        $tplt = "<h4>$title ({$status})</h4>
+        $tplt = "<div style='page-break-inside:avoid;'>
+                    <h4>$title ({$status})</h4>
                     <div style='margin-left:50px;margin-bottom:25px;'>
                         <b>How it will be achieved:</b><br />
                         {$description}<br />
                         <b>Assessment:</b><br />
                         {$assessment}<br />
-                    </div>";
-        return trim(str_replace("\n", "", $tplt));
+                    </div>
+                 </div>";
+        return $tplt;
     }
     
     // Overriden Functions
