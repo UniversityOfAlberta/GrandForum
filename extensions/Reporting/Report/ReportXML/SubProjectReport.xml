@@ -31,7 +31,7 @@
         <ReportItem id="future_goals" type="ProjectGoalsReportItem" year="{$next_year}" max="5">
             <![CDATA[<h2>New Goals for Next Year</h2>{$item}]]>
         </ReportItem>
-        <ReportItem id="sub_project_champs" width="100%" blobType="BLOB_TEXT" blobItem="SUB_SUBPROJECT_COMMENTS" limit="1200">
+        <ReportItem id="sub_project_champs" width="100%" blobType="BLOB_TEXT" blobItem="SUB_SUBPROJECT_COMMENTS" type="TextareaReportItem" limit="1200">
             <![CDATA[<h2>General Comments</h2>{$item}]]>
         </ReportItem>
     </ReportSection>
