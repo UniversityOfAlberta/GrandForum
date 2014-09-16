@@ -22,7 +22,7 @@ class ProjectHeadCell extends HeadCell {
     
     function render(){
         global $wgServer, $wgScriptPath;
-        $this->style = 'text-align:center;background:#DDDDDD;';
+        $this->style = 'background:#DDDDDD;';
         $project = Project::newFromName($this->value);
         return "<a href='{$project->getUrl()}' target = '_blank'><b>{$project->getName()}: {$project->getFullName()}</b></a>";
     }

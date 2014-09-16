@@ -884,6 +884,7 @@ class ReportItemCallback {
         $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $project->getId());
         $blob->load($addr);
         $data = $blob->getData();
+        $data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
         return $data;
     }
     
@@ -894,6 +895,7 @@ class ReportItemCallback {
         $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $project->getId());
         $blob->load($addr);
         $data = $blob->getData();
+        $data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
         return $data;
     }
     
