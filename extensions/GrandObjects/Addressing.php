@@ -35,6 +35,7 @@ define('RP_CHAMP', 13);
 define('RP_ISAC', 14);
 define('RP_PROJECT_CHAMP', 15);
 define('RP_PROJECT_ISAC', 16);
+define('RP_SUBPROJECT', 17);
 //define('RP_EVAL_RESEARCHER_REV',		9); //Revised answers
 //define('RP_EVAL_CNI_REV',		10); //Revised answers
 //define('RP_EVAL_PROJECT_REV', 11); //Revised answers
@@ -64,6 +65,8 @@ define('RES_RESACTIVITY',		12);
 define('RES_BUDGET_PNIADMIN',	13);
 define('RES_ALLOC_BUDGET',      14);
 define('RES_SUBPROJECTS',		5);
+
+define('SUB_SUBPROJECTS',       1);
 
 define('HQP_DEMOGRAPHIC',		1);
 define('HQP_EFFORT',			2);
@@ -188,11 +191,6 @@ define('RES_RESACT_PRIMCRITERIA',   13);
 define('RES_RESACT_SECCRITERIA',    14);
 define('RES_RESACT_SUMMARY',        15);
 
-define('RES_SUBPROJECT_GOALS',          1);
-define('RES_SUBPROJECT_ACHIEVEMENTS',   2);
-define('RES_SUBPROJECT_FUTURE',         3);
-define('RES_SUBPROJECT_CHAMPS',         4);
-
 define('HQP_DEM_LEVEL',			1);
 define('HQP_DEM_GENDER',		2);
 define('HQP_DEM_FULLNAME',		3);
@@ -223,6 +221,9 @@ define('CHAMP_BENEFITS', 4);
 define('CHAMP_SHORTCOMINGS', 5);
 define('CHAMP_CASH', 6);
 define('CHAMP_RESEARCHERS', 7);
+
+define('SUB_SUBPROJECT_CHAMPS',     1);
+define('SUB_SUBPROJECT_COMMENTS',   2);
 
 define('ISAC_PHASE2', 1);
 

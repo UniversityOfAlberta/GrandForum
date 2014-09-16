@@ -5,7 +5,6 @@
             <SectionPermission id="status" permissions="rw" />
             <SectionPermission id="dashboard" permissions="rw" />
             <SectionPermission id="report" permissions="rw" />
-            <SectionPermission id="subprojects" permissions="" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -14,28 +13,9 @@
             <SectionPermission id="status" permissions="rw" />
             <SectionPermission id="dashboard" permissions="rw" />
             <SectionPermission id="report" permissions="rw" />
-            <SectionPermission id="subprojects" permissions="" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
-        </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SUB-PL">
-            <SectionPermission id="status" permissions="" />
-            <SectionPermission id="dashboard" permissions="" />
-            <SectionPermission id="report" permissions="" />
-            <SectionPermission id="subprojects" permissions="rw" />
-            <SectionPermission id="budget" permissions="" />
-            <SectionPermission id="review" permissions="" />
-            <SectionPermission id="submit" permissions="" />
-        </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SUB-COPL">
-            <SectionPermission id="status" permissions="" />
-            <SectionPermission id="dashboard" permissions="" />
-            <SectionPermission id="report" permissions="" />
-            <SectionPermission id="subprojects" permissions="rw" />
-            <SectionPermission id="budget" permissions="" />
-            <SectionPermission id="review" permissions="" />
-            <SectionPermission id="submit" permissions="" />
         </Role>
     </Permissions>
     <ReportSection id="status" name="Report Completion Status" tooltip="Evaluation of your report against the reporting rules" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
@@ -381,40 +361,6 @@ Describe your involvement with receptor organizations, industry partners and Pro
                 <![CDATA[You can attach any file to present to the Evaluators to review.  If you want to attach multiple files, then put them in a zip file and attach the zip file.<br />{$item}]]>
             </ReportItem>
         </ReportItemSet-->
-    </ReportSection>
-    <ReportSection id="subprojects" name="Sub Project Leader" tooltip="Comments about lead sub-projects" blobSection="RES_SUBPROJECTS" type="EditableReportSection" autosave="true" reportCharLimits="false" renderpdf="false">
-        <Instructions>
-            <![CDATA[
-                This section is for sub-project leaders to be able to talk about their sub-projects that they lead.  Each Project and your sub-projects are listed below.  For each sub-project please fill in the following fields:
-                <p><b>Goals for this year</b><br />Details</p>
-                <p><b>Achievements</b><br />Details</p>
-                <p><b>Future Goals</b><br />Details</p>
-                <p><b>Engagement with Champions</b><br />Details</p>
-            ]]>
-        </Instructions>
-        <ReportItemSet id="projects" type="PersonSubLeadProjectReportItemSet">
-            <ReportItem id="project" type="StaticReportItem">
-                <![CDATA[<h2>{$project_name}</h2>]]>
-            </ReportItem>
-            <ReportItemSet id="subprojects" type="PersonSubLeadSubProjectReportItemSet">
-                <ReportItemSet id='sub_head' type="ToggleHeaderReportItemSet" changeColor="true" level="3" title="{$project_name} - {$project_full_name}">
-                    <ReportItemSet id="sub_limit" type="LimitReportItemSet" limit="3600" noun="Question">
-                        <ReportItem id="sub_project_goals" rows="7" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_GOALS" type="TextareaReportItem">
-                            <![CDATA[<h3>Goals for this year</h3>{$item}<br />]]>
-                        </ReportItem>
-                        <ReportItem id="sub_project_achievements" rows="10" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_ACHIEVEMENTS" type="TextareaReportItem">
-                            <![CDATA[<h3>Achievements</h3>{$item}<br />]]>
-                        </ReportItem>
-                        <ReportItem id="sub_project_future" rows="7" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_FUTURE" type="TextareaReportItem">
-                            <![CDATA[<h3>Future Goals</h3>{$item}<br />]]>
-                        </ReportItem>
-                        <ReportItem id="sub_project_champs" rows="4" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_CHAMPS" type="TextareaReportItem">
-                            <![CDATA[<h3>Engagement with Champions</h3>{$item}<br />]]>
-                        </ReportItem>
-                    </ReportItemSet>
-                </ReportItemSet>
-            </ReportItemSet>
-        </ReportItemSet>
     </ReportSection>
     <ReportSection id="budget" name="Budget Request" blobSection="RES_BUDGET" tooltip="Budget request and justification" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true">
         <Instructions>

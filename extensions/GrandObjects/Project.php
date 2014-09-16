@@ -1456,6 +1456,48 @@ EOF;
         return $milestones;
     }
     
+    function getGoalsDuring($year){
+        $milestones = array();
+        $milestoneIds = array();
+        if(!$this->clear){
+            $preds = $this->getPreds();
+            foreach($preds as $pred){
+                foreach($pred->getGoalsDuring($year) as $milestone){
+                    if(isset($milestoneIds[$milestone->getMilestoneId()])){
+                        continue;
+                    }
+                    $milestoneIds[$milestone->getMilestoneId()] = $milestone->getMilestoneId();
+                    $milestones[] = $milestone;
+                }
+            }
+        }
+        $sql = "SELECT MAX(id) as max_id, milestone_id
+                FROM grand_milestones
+                WHERE project_id ='{$this->id}'
+                AND milestone_id NOT IN ('".implode("','", $milestoneIds)."')
+                GROUP BY milestone_id
+                ORDER BY milestone_id";
+        $data = DBFunctions::execSQL($sql);
+        foreach ($data as $row){
+            $max_id = $row['max_id'];
+            $sql2 = "SELECT milestone_id
+                     FROM grand_milestones
+                     WHERE id = '{$max_id}'
+                     AND (projected_end_date LIKE '%{$year}%')";
+            
+            $data2 = DBFunctions::execSQL($sql2);
+            if(count($data2) > 0){
+                $row2 = $data2[0];
+                if(isset($milestoneIds[$row2['milestone_id']])){
+                    continue;
+                }
+                $milestoneIds[$row2['milestone_id']] = true;
+                $milestones[] = Milestone::newFromId($row2['milestone_id']);
+            }
+        }
+        return $milestones;
+    }
+    
     function getAllocatedBudget($year){
         global $config;
         $projectBudget = null;

@@ -216,31 +216,26 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="subprojects" name="Sub-Project Comments" number="5" blobSection="LDR_MILESTONE" type="ReportSection" pagebreak="false" renderpdf="true">
+    <ReportSection id="subprojects" name="Sub-Project Comments" tooltip="Comments about lead sub-projects" type="EditableReportSection" reportCharLimits="false" renderpdf="true" pagebreak="false">
         <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet">
-            <ReportItem id="subhead" type="StaticReportItem">
-                <![CDATA[<h2>{$project_name} - {$project_full_name}</h2>]]>
+            <ReportItem id="sub_head" type="StaticReportItem">
+                <![CDATA[<h2>{$project_name}</h2>]]>
             </ReportItem>
-            <ReportItemSet id="leaders" type="ProjectLeadersReportItemSet">
-                <ReportItem id="name" type="StaticReportItem">
-                    <![CDATA[<h3>{$user_name}</h3>]]>
-                </ReportItem>
-                <ReportItem id='goals' type="StaticReportItem">
-                    <![CDATA[<p><b>Goals for this year</b><br />{$user_subproject_goals}</p>]]>
-                </ReportItem>
-                <ReportItem id='achievements' type="StaticReportItem">
-                    <![CDATA[<p><b>Achievements</b><br />{$user_subproject_achievements}</p>]]>
-                </ReportItem>
-                <ReportItem id='future' type="StaticReportItem">
-                    <![CDATA[<p><b>Future Goals</b><br />{$user_subproject_future}</p>]]>
-                </ReportItem>
-                <ReportItem id='champs' type="StaticReportItem">
-                    <![CDATA[<p><b>Engagement with Champions</b><br />{$user_subproject_champs}</p>]]>
-                </ReportItem>
-                <ReportItem id="pagebreak" type="PageBreakReportItem">
-                    <![CDATA[{$item}]]>
-                </ReportItem>
-            </ReportItemSet>
+            <ReportItem id="sub_project_goals" type="StaticReportItem">
+                <![CDATA[<h3>Engagement with Champions</h3>{$user_subproject_champs}]]>
+            </ReportItem>
+            <ReportItem id="current_goals" type="ProjectGoalsReportItem" year="{$this_year}" max="5">
+                <![CDATA[<h3>This Year's Goals</h3>{$item}]]>
+            </ReportItem>
+            <ReportItem id="future_goals" type="ProjectGoalsReportItem" year="{$next_year}" max="5">
+                <![CDATA[<h3>New Goals for Next Year</h3>{$item}]]>
+            </ReportItem>
+            <ReportItem id="sub_project_champs" type="StaticReportItem">
+                <![CDATA[<h3>General Comments</h3>{$user_subproject_comments}]]>
+            </ReportItem>
+            <ReportItem id="pagebreak" type="PageBreakReportItem">
+                <![CDATA[{$item}]]>
+            </ReportItem>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="prod_dashboard" name="Productivity Details" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" pagebreak="false" number="6">

@@ -78,9 +78,7 @@ class ReportItemCallback {
             "user_allocated_budget" => "getUserAllocatedBudget",
             "user_project_comment" => "getUserProjectComment",
             "user_project_future" => "getUserProjectFuture",
-            "user_subproject_goals" => "getUserSubProjectGoals",
-            "user_subproject_acheivements" => "getUserSubProjectAcheivements",
-            "user_subproject_future" => "getUserSubProjectFuture",
+            "user_subproject_comments" => "getUserSubProjectComments",
             "user_subproject_champs" => "getUserSubProjectChamps",
             "user_mtg_music" => "getUserMTGMusic",
             "user_mtg_firstnations" => "getUserMTGFirstNations",
@@ -879,44 +877,24 @@ class ReportItemCallback {
         return $data;
     }
     
-    function getUserSubProjectGoals(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
-        
-        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_SUBPROJECTS, RES_SUBPROJECT_GOALS, 0);
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), $project->getId());
-        $blob->load($addr);
-        $data = $blob->getData();
-    }
-    
-    function getUserSubProjectAcheivements(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
-        
-        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_SUBPROJECTS, RES_SUBPROJECT_ACHEIVEMENTS, 0);
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), $project->getId());
-        $blob->load($addr);
-        $data = $blob->getData();
-    }
-    
-    function getUserSubProjectFuture(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
-        
-        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_SUBPROJECTS, RES_SUBPROJECT_FUTURE, 0);
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), $project->getId());
-        $blob->load($addr);
-        $data = $blob->getData();
-    }
-    
     function getUserSubProjectChamps(){
-        $person = Person::newFromId($this->reportItem->personId);
         $project = Project::newFromId($this->reportItem->projectId);
         
-        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_SUBPROJECTS, RES_SUBPROJECT_CHAMPS, 0);
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), $project->getId());
+        $addr = ReportBlob::create_address(RP_SUBPROJECT, SUB_SUBPROJECTS, SUB_SUBPROJECT_CHAMPS, 0);
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $project->getId());
         $blob->load($addr);
         $data = $blob->getData();
+        return $data;
+    }
+    
+    function getUserSubProjectComments(){
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $addr = ReportBlob::create_address(RP_SUBPROJECT, SUB_SUBPROJECTS, SUB_SUBPROJECT_COMMENTS, 0);
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $project->getId());
+        $blob->load($addr);
+        $data = $blob->getData();
+        return $data;
     }
     
     function getUserMTGMusic(){

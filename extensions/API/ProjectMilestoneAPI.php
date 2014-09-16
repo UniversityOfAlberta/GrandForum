@@ -16,6 +16,7 @@ class ProjectMilestoneAPI extends API{
 	    $this->addPOST("comment",false,"The comment for this milestone. Usually this will only be used if the status is Closed or Abandoned","My comment");
 	    $this->addPOST("new_title", false, "The new title for this milestone.  If left blank, the previous title is used", "My Milestone");
 	    $this->addPOST("identifier", false, "Used when creating a new milestone.  If you do not know exactly what you are doing, do not use this parameter as in most cases it is not required", "123456");
+	    $this->addPOST("id", false, "Used to more accurately reference milestones.", "98");
     }
 
     function processParams($params){
@@ -55,6 +56,9 @@ class ProjectMilestoneAPI extends API{
         if(isset($_POST['identifier']) && $_POST['identifier'] != ""){
             $_POST['identifier'] = @addslashes(str_replace("'", "&#39;", str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['identifier']))));
         }
+        if(isset($_POST['id']) && $_POST['id'] != ""){
+            $_POST['id'] = @addslashes(str_replace("'", "&#39;", str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['id']))));
+        }
     }
 
 	function doAction($noEcho=false){
@@ -91,24 +95,30 @@ class ProjectMilestoneAPI extends API{
 		}
 		$me = Person::newFromName($_POST['user_name']);
 		
+		DBFunctions::begin();
+		if(isset($_POST['id']) && $_POST['id'] != ''){
+            $join = "milestone_id = '{$_POST['id']}'";
+        }
+        else{
+            $join = "title = '".mysql_real_escape_string($_POST['title'])."'";
+        }
         if($this->update){
-            $sql = sprintf("UPDATE grand_milestones
+            $sql = "UPDATE grand_milestones
                     SET `end_date` = CURRENT_TIMESTAMP
                     WHERE (project_id = '{$project->getId()}'
                         ".implode("", $projectIds)."
                     )
-                    AND title = '%s'
+                    AND $join
                     ORDER BY id DESC
-                    LIMIT 1", mysql_real_escape_string($_POST['title']));
+                    LIMIT 1";
             DBFunctions::execSQL($sql, true);
         }
-        $sql = sprintf("SELECT *
-
+        $sql = "SELECT *
                 FROM grand_milestones
-                WHERE title = '%s'
+                WHERE $join
                 AND (project_id = '{$project->getID()}' 
                      ".implode("", $projectIds)."
-                     )", mysql_real_escape_string($_POST['title']));
+                     )";
         
         $rows = DBFunctions::execSQL($sql);
 		
@@ -170,6 +180,7 @@ class ProjectMilestoneAPI extends API{
                     Milestone::$cache = array();
                     $this->updatePeople($people);
                     Milestone::$cache = array();
+                    DBFunctions::commit();
                     return;
                 }
             }
@@ -217,6 +228,7 @@ class ProjectMilestoneAPI extends API{
             echo "Project milestones updated\n";
         }
         Milestone::$cache = array();
+        DBFunctions::commit();
 	}
 	
 	function updatePeople($people){

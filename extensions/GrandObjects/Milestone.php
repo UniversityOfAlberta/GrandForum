@@ -102,7 +102,7 @@ class Milestone {
         }
     }
     
-    // Returns the id of this Milestone
+    // Returns the revision number of this Milestone
     function getId(){
         return $this->id;
     }
@@ -112,7 +112,7 @@ class Milestone {
         return $this->identifier;
     }
     
-    // Returns the revision number of this Milestone
+    // Returns the id of this Milestone
     function getMilestoneId(){
         return $this->milestone_id;
     }

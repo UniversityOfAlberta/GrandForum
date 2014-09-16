@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Sub Project Report" reportType="RP_SUBPROJECT" pdfType="RPTP_SUBPROJECT" pdfFiles="SubProjectReportPDF" personId="0" ajax="true" disabled="false">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SUB-PL">
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SUB-COPL">
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="report" name="Report" tooltip="Comments about lead sub-projects" blobSection="SUB_SUBPROJECTS" type="EditableReportSection" autosave="true" reportCharLimits="false" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+                This section is for sub-project leaders to be able to talk about their sub-projects that they lead.  Each Project and your sub-projects are listed below.  For each sub-project please fill in the following fields:
+                <p><b>Engagements with Champions</b><br />Details</p>
+                <p><b>This Year's Goals</b><br />Details</p>
+                <p><b>Next Year's Goals</b><br />Details</p>
+                <p><b>Engagement with Champions</b><br />Details</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="sub_project_goals" width="100%" blobType="BLOB_TEXT" blobItem="SUB_SUBPROJECT_CHAMPS" type="AutoCompleteTextareaReportItem" limit="1200" set="ProjectChampionsReportItemSet" index="user_id" label="user_name" name="Champion" tooltipOptionId="Champion ID" tooltipOptionName="Champion Name">
+            <![CDATA[<h2>Engagement with Champions</h2>{$item}]]>
+        </ReportItem>
+        <ReportItem id="current_goals" type="ProjectGoalsReportItem" year="{$this_year}" max="5">
+            <![CDATA[<h2>This Year's Goals</h2>{$item}]]>
+        </ReportItem>
+        <ReportItem id="future_goals" type="ProjectGoalsReportItem" year="{$next_year}" max="5">
+            <![CDATA[<h2>New Goals for Next Year</h2>{$item}]]>
+        </ReportItem>
+        <ReportItem id="sub_project_champs" width="100%" blobType="BLOB_TEXT" blobItem="SUB_SUBPROJECT_COMMENTS" type="AutoCompleteTextareaReportItem" limit="1200" set="ProjectChampionsReportItemSet" index="user_id" label="user_name" name="Champion" tooltipOptionId="Champion ID" tooltipOptionName="Champion Name">
+            <![CDATA[<h2>General Comments</h2>{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" name="Review" tooltip="Review of on-line report content" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
+        <Instructions>
+            <![CDATA[
+                    <p>This section provides (a) an online document with all the information currently contained in the report pages, and (b) an online approximation of what the resulting PDF document will look like. If you are satisfied with this content, then you can proceed to the final step of the reporting workflow where you can "Submit" your report to be forwarded to the RMC.<br />
+Note that there are two distinct differences between the online document that you can see in this page and the PDF document that will be forwarded to the RMC.</p>
+                    <ol>
+                        <li>Over-limit characters are included in the online document, where they are shown in red. These characters will not be included in the PDF document.</li>
+                        <li>Section VII, on "Milestones Comments" is not part of the document that will be reviewed by the Research Management Committee (RMC). If there is information here that you want to be considered as part of your evaluation, it should be included in a previous section. Please provide the full details in Section VII - this section will be provided to your project leaders to assist with their project reporting.</li>
+                    </ol>
+            ]]>
+        </Instructions>
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" name="Submit" tooltip="PDF generation and submission to the RMC" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
+        <Instructions>
+            <![CDATA[
+                    <p>To submit your report, follow the following three steps.</p>
+                    <ol>
+                        <li>Generate a new report for submission: this step will generate a PDF document.</li>
+                        <li>Download the PDF document for your records.</li>
+                        <li>Submit your report: this step indicates that you have read and approve the contents of the PDF document to be forwarded to the RMC. Note that "submitting" does not lock the reporting workflow; you can regenerate and resubmit your report as many times as you wish before the deadline, if you need to make additional edits to your report. The most recently submitted PDF is used for evaluation.  If no PDF has been submitted, then the most recently generated PDF is used for evaluation.</li>
+                        <li>Download the PDF which will be used for evaluation; To verify that the correct PDF will be used for evaluation, you can download the submitted PDF.</li>
+                    </p>
+                    </ol>
+                    <p><b>Note: All your PLs have access to your on-line project-specific dashboard rows; your executive summary; your project-specific comments under criteria A B C and D; and your project-specific milestone comments.</b></p>
+            ]]>
+        </Instructions>
+        <ReportItem id="my_progress_head" type="StaticReportItem" reportType="NIReport">
+            <![CDATA[<h3>Report Completion Status</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">]]>
+        </ReportItem>
+        <ReportItem id="ni_progress_head" type="ProgressReportItem" reportType="NIReport">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="my_hqp_progress_head" type="SupervisorProgressReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="NIReport">
+            <![CDATA[{$item}</table>]]>
+        </ReportItem>
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
+    </ReportSection>
+</Report>

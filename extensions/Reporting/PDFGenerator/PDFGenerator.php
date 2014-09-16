@@ -306,7 +306,7 @@ EOF;
 		    #pdfBody h3 {
 		        background-color: #999999;
 		        color: #FFFFFF;
-		        font-size: ".($fontSize+(0*DPI_CONSTANT))."px;
+		        font-size: ".($fontSize+(1*DPI_CONSTANT))."px;
 		        font-weight:normal;
 		        border: ".max(1, (0.5*DPI_CONSTANT))."px solid #000000;
 		        padding: ".max(1, (0.5*DPI_CONSTANT))."px ".(3*DPI_CONSTANT)."px ".(2*DPI_CONSTANT)."px ".(3*DPI_CONSTANT)."px;
@@ -315,7 +315,9 @@ EOF;
 		    }
 		    
 		    #pdfBody h4 {
+		        margin-top:0;
 		        margin-bottom:0;
+		        font-size: ".($fontSize+(1*DPI_CONSTANT))."px;
 		    }
 		    
 		    #pdfBody #ni_report_wrapper, #pdfBody #hqp_report_wrapper, #pdfBody #ldr_report_wrapper, #pdfBody #ldr_comments_wrapper, #pdfBody #ldr_budget_wrapper {

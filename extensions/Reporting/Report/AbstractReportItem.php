@@ -8,17 +8,6 @@
  * @abstract
  */
 
-// ReportItems
-require_once("ReportItems/StaticReportItem.php");
-require_once("ReportItems/TextReportItem.php");
-require_once("ReportItems/BudgetReportItem.php");
-require_once("ReportItems/RadioReportItem.php");
-require_once("ReportItems/TextareaReportItem.php");
-require_once("ReportItems/AutoCompleteTextareaReportItem.php");
-require_once("ReportItems/CalendarReportItem.php");
-
-require_once("ReportItems/ReportItemSet.php");
-
 // Other
 require_once("ReportItemCallback.php");
 
