@@ -321,25 +321,25 @@ Describe your involvement with receptor organizations, industry partners and Pro
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
-<!-- III. Supplemental -->
-        <ReportItem id='III_head' type="StaticReportItem">
-            <![CDATA[<h2>III. Reflections: Other Aspects of my involvement in GRAND</h2>]]>
-        </ReportItem>
-    <!-- IIIa. Plans for Next Year -->
-        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Proposed Activity: My Plans for {$next_year} in GRAND">
-            <ReportItem id='III_head' type="StaticReportItem">
+        <!-- IIf. Plans for Next Year -->
+        <ReportItemSet id='IIf_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="F. My Plans for {$next_year} in GRAND">
+            <ReportItem id='IIf_head' type="StaticReportItem">
                 <![CDATA[<i>(Phase2 Projects Only)</i>]]>
             </ReportItem>
             <ReportItemSet id="OR" type="ORReportItemSet">
-                <ReportItemSet id="ProjectLimit_IId" type="LimitReportItemSet" limit="3600">
+                <ReportItemSet id="ProjectLimit_IIf" type="LimitReportItemSet" limit="3600">
                     <ReportItemSet id="projects" type="PersonFutureProjectReportItemSet">
-                        <ReportItem id="IIIa" width="100%" blobType="BLOB_TEXT" blobItem="RES_RESACT_NEXTPLANS" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name">
+                        <ReportItem id="IIa" width="100%" blobType="BLOB_TEXT" blobItem="RES_RESACT_NEXTPLANS" type="AutoCompleteTextareaReportItem" set="ProjectSubProjectsReportItemSet" index="project_id" label="project_name" name="Sub-Projects" tooltipOptionId="Sub-Project ID" tooltipOptionName="Sub-Project Name">
                             <![CDATA[<i>{$project_name}</i><br />{$item}<br />]]>
                         </ReportItem>
                     </ReportItemSet>
                 </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>
+<!-- III. Supplemental -->
+        <ReportItem id='III_head' type="StaticReportItem">
+            <![CDATA[<h2>III. Reflections: Other Aspects of my involvement in GRAND</h2>]]>
+        </ReportItem>
     <!-- IIIb. Benefits from being involved in the Network -->
         <ReportItemSet id='IIIb_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Benefits of Networking: The value to my research program of my participation in GRAND" private="true">
             <ReportItem id="IIIb" rows="12" width="100%" limit="600" blobType="BLOB_TEXT" blobItem="RES_RESACT_BENEF" type="TextareaReportItem">

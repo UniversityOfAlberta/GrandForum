@@ -1,11 +1,11 @@
 <?php
 
-class SmallProjectBudgetReportItem extends StaticReportItem {
+class SmallNIBudgetReportItem extends StaticReportItem {
 
     function render(){
         global $wgServer, $wgScriptPath, $wgOut;
         
-        $project = Project::newFromId($this->projectId);
+        $person = Person::newFromId($this->personId);
         
         $start = intval($this->getAttr("start", "0000"));
         $end = intval($this->getAttr("end", REPORTING_YEAR));
@@ -14,11 +14,17 @@ class SmallProjectBudgetReportItem extends StaticReportItem {
             $iS = $i+1;
             $iE = $i+2;
             
-            $requested = $project->getRequestedBudget($i);
-            $allocated = $project->getAllocatedBudget($i+1);
+            $requested = $person->getRequestedBudget($i);
+            $allocated = $person->getAllocatedBudget($i+1);
             
-            $rAmnt = '$'.@number_format(str_replace("$", "", $requested->copy()->rasterize()->where(CUBE_TOTAL)->select(CUBE_TOTAL)->toString()), 0);
-            $aAmnt = '$'.@number_format(str_replace("$", "", $allocated->copy()->rasterize()->where(CUBE_TOTAL)->select(CUBE_TOTAL)->toString()), 0);
+            $rAmnt = "$0";
+            $aAmnt = "$0";
+            if($requested != null){
+                $rAmnt = '$'.@number_format(str_replace("$", "", $requested->copy()->rasterize()->where(HEAD1, array("TOTALS%"))->select(ROW_TOTAL)->toString()), 0);
+            }
+            if($allocated != null){
+                $aAmnt = '$'.@number_format(str_replace("$", "", $allocated->copy()->rasterize()->where(HEAD1, array("TOTALS%"))->select(ROW_TOTAL)->toString()), 0);
+            }
             
             if($rAmnt == '$0' || $rAmnt == '$'){
                 $rAmnt = "N/A";
