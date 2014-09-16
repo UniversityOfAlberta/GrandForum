@@ -81,15 +81,18 @@ class ProgressReportItem extends StaticReportItem {
         if(count($sections) <= 1){
             $plural = "";
         }
-        $details = "<tr valign='top'><td rowspan='$rowspan' style='white-space:nowrap;width:1%;'><b>Report Status</b></td>";
-        if($limit > 0){
-            //$details .= "<tr><td>≈$percentChars% of maximum allowable characters (overall)\n</td></tr>";
+        $details = "";
+        if($rowspan > 0){
+            $details = "<tr valign='top'><td rowspan='$rowspan' style='white-space:nowrap;width:1%;'><b>Report Status</b></td>";
+            if($limit > 0){
+                //$details .= "<tr><td>≈$percentChars% of maximum allowable characters (overall)\n</td></tr>";
+            }
+            $plural = "s";
+            if($nTextareas == 1){
+                $plural = "";
+            }
+            $details .= implode("</tr><tr>", $errorChars)."</tr>";
         }
-        $plural = "s";
-        if($nTextareas == 1){
-            $plural = "";
-        }
-        $details .= implode("</tr><tr>", $errorChars)."</tr>";
         return $details;
 	}
 }
