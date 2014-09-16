@@ -8,6 +8,7 @@ class ProjectMilestoneAPI extends API{
         $this->update = $update;
         $this->addPOST("project",true,"The name of the project","MEOW");
         $this->addPOST("milestone",true,"The title of the milestone","MEOW is great");
+        $this->addPOST("problem",true,"The problem of this milestone","Show that MEOW is great");
 	    $this->addPOST("description",true,"The description for this milestone","Show that MEOW is great");
 	    $this->addPOST("assessment",true,"The assessment for this milestone","Use surveys to determine MEOW\'s greatness");
 	    $this->addPOST("status",true,"The status of this milestone. Can be one of either ('New','Revised','Continuing','Closed','Abandoned')","New");
@@ -20,6 +21,9 @@ class ProjectMilestoneAPI extends API{
     }
 
     function processParams($params){
+        if(isset($_POST['problem']) && $_POST['problem'] != ""){
+            $_POST['problem'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['problem'])));
+        }
         if(isset($_POST['description']) && $_POST['description'] != ""){
             $_POST['description'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['description'])));
         }
@@ -102,6 +106,9 @@ class ProjectMilestoneAPI extends API{
         else{
             $join = "title = '".mysql_real_escape_string($_POST['title'])."'";
         }
+        if(!isset($_POST['problem'])){
+            $_POST['problem'] = '';
+        }
         if($this->update){
             $sql = "UPDATE grand_milestones
                     SET `end_date` = CURRENT_TIMESTAMP
@@ -127,7 +134,8 @@ class ProjectMilestoneAPI extends API{
                           (`milestone_id`, 
                            `project_id`, 
                            `title`, 
-                           `status`, 
+                           `status`,
+                           `problem`,
                            `description`, 
                            `assessment`, 
                            `comment`, 
@@ -137,7 +145,8 @@ class ProjectMilestoneAPI extends API{
                     VALUES ('{$rows[0]['milestone_id']}', 
                             '{$project->getId()}', 
                             '%s', 
-                            '{$_POST['status']}', 
+                            '{$_POST['status']}',
+                            '%s',
                             '%s',
                             '%s',
                             '%s',
@@ -145,6 +154,7 @@ class ProjectMilestoneAPI extends API{
                              CURRENT_TIMESTAMP,
                             '{$_POST['end_date']}-00')",
                             mysql_real_escape_string($_POST['new_title']),
+                            mysql_real_escape_string($_POST['problem']),
                             mysql_real_escape_string($_POST['description']),
                             mysql_real_escape_string($_POST['assessment']),
                             mysql_real_escape_string($_POST['comment'])
@@ -163,6 +173,7 @@ class ProjectMilestoneAPI extends API{
                 if($this->checkIdentifier($project)){
                     $sql = sprintf("UPDATE grand_milestones
                             SET `title` = '%s',
+                                `problem` = '%s',
                                 `description` = '%s',
                                 `assessment` = '%s',
                                 `start_date` = CURRENT_TIMESTAMP,
@@ -172,6 +183,7 @@ class ProjectMilestoneAPI extends API{
                                  ".implode("", $projectIds)."
                                  )",
                             mysql_real_escape_string($_POST['title']),
+                            mysql_real_escape_string($_POST['problem']), 
                             mysql_real_escape_string($_POST['description']), 
                             mysql_real_escape_string($_POST['assessment'])
                             );
@@ -199,6 +211,7 @@ class ProjectMilestoneAPI extends API{
                      `project_id`,
                      `title`,
                      `status`,
+                     `problem`,
                      `description`,
                      `assessment`,
                      `edited_by`,
@@ -212,10 +225,12 @@ class ProjectMilestoneAPI extends API{
                      '{$_POST['status']}',
                      '%s',
                      '%s',
+                     '%s',
                      '{$me->getId()}',
                      CURRENT_TIMESTAMP,
                      '{$_POST['end_date']}-00')",
                       mysql_real_escape_string($_POST['title']),
+                      mysql_real_escape_string($_POST['problem']),
                       mysql_real_escape_string($_POST['description']),
                       mysql_real_escape_string($_POST['assessment'])
                      );

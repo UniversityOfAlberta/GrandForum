@@ -17,6 +17,7 @@ class Milestone {
     var $peopleWaiting;
     var $title;
     var $status;
+    var $problem;
     var $description;
     var $assessment;
     var $parentWaiting;
@@ -92,6 +93,7 @@ class Milestone {
             $this->project = Project::newFromId($data[0]['project_id']);
             $this->people = array();
             $this->peopleWaiting = true;
+            $this->problem = $data[0]['problem'];
             $this->description = $data[0]['description'];
             $this->assessment = $data[0]['assessment'];
             $this->start_date = $data[0]['start_date'];
@@ -187,6 +189,15 @@ class Milestone {
             $this->peopleWaiting = false;
         }
         return $this->people;
+    }
+    
+    // Returns the problem statement of this Milestone
+    function getProblem(){
+        return str_replace("\\'", "&#39;", 
+               str_replace("\\&quot;", "&quot;", 
+               str_replace("\n\n", "\n", 
+               str_replace("&lt;br /&gt;", "\n", 
+               str_replace("&lt;br/&gt;", "\n", $this->problem)))));
     }
     
     // Returns the description of this Milestone

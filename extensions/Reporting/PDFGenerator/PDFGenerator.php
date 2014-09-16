@@ -252,7 +252,7 @@ EOF;
 		    
 		    #pdfBody .report_info {
 		        width: 100%;
-		        height: ".(($fontSize+4)*($nInfo) + (10*DPI_CONSTANT))."px;
+		        height: ".(($fontSize+4)*($nInfo) + (20*DPI_CONSTANT))."px;
 		        font-size: ".($fontSize+(-3*DPI_CONSTANT))."px;
 		        top:0;
 		        margin-right:0 !important;
@@ -272,7 +272,7 @@ EOF;
 		    }
 		    
 		    #pdfBody .report_info > table {
-		        height: ".(($fontSize+4)*($nInfo) + (10*DPI_CONSTANT))."px;
+		        height: ".(($fontSize+4)*($nInfo) + (20*DPI_CONSTANT))."px;
 		    }
 		    
 		    #pdfBody hr {
@@ -388,7 +388,7 @@ EOF;
             
             #pdfBody .logo_div {
                 margin-bottom: 0;
-                height: ".(($fontSize+4)*$nInfo + (10*DPI_CONSTANT))."px;
+                height: ".(($fontSize+4)*$nInfo + (20*DPI_CONSTANT))."px;
             }
             
             #pdfBody br {

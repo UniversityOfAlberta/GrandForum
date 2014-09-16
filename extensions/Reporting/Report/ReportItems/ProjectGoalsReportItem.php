@@ -9,12 +9,12 @@ class ProjectGoalsReportItem extends AbstractReportItem {
         $max = $this->getAttr("max", 5);
         $milestones = $project->getGoalsDuring($year);
         $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "150px";
-        $item = "<ol id='{$this->getPostId()}'></ol><a class='button' onClick=\"addMilestone{$this->getPostId()}('new', '', '', 'Current', '')\">Add Goal</a>";
+        $item = "<ol id='{$this->getPostId()}'></ol><a class='button' onClick=\"addMilestone{$this->getPostId()}('new', '', '', '', 'Current', '')\">Add Goal</a>";
         $item = $this->processCData($item);
         $wgOut->addHTML($item);
         $wgOut->addHTML(<<<EOF
 <script type='text/javascript'>
-    function addMilestone{$this->getPostId()}(id, title, description, status, assessment){
+    function addMilestone{$this->getPostId()}(id, title, problem, description, status, assessment){
         var template = $("{$this->getTemplate()}");
         $("#milestone_id", template).val(id);
         $("#identifier", template).val(new Date().getTime());
@@ -25,6 +25,7 @@ class ProjectGoalsReportItem extends AbstractReportItem {
            status == 'Abandoned'){
             $("#status", template).val(status);
         }
+        $("#problem", template).val(problem);
         $("#description", template).val(description);
         $("#assessment", template).val(assessment);
         $("#{$this->getPostId()}").append(template);
@@ -37,10 +38,11 @@ EOF
                 $wgOut->addHTML("<script type='text/javascript'>
                     var milestone = ".json_encode(array('id' => $milestone->getMilestoneId(),
                                                         'title' => $milestone->getTitle(),
+                                                        'problem' => $milestone->getProblem(),
                                                         'description' => $milestone->getDescription(),
                                                         'status' => $milestone->getStatus(),
                                                         'assessment' => $milestone->getAssessment())).";
-                    addMilestone{$this->getPostId()}(milestone.id, milestone.title, milestone.description, milestone.status, milestone.assessment);
+                    addMilestone{$this->getPostId()}(milestone.id, milestone.title, milestone.problem, milestone.description, milestone.status, milestone.assessment);
                 </script>");
             }
         }
@@ -58,6 +60,7 @@ EOF
             foreach($milestones as $milestone){
                 $item .= $this->getTemplateForPDF($milestone->getTitle(),
                                                   $milestone->getStatus(),
+                                                  $milestone->getProblem(),
                                                   $milestone->getDescription(),
                                                   $milestone->getAssessment());
             }
@@ -67,6 +70,8 @@ EOF
     }
     
     function getTemplate(){
+        $year = $this->getAttr("year", REPORTING_YEAR);
+        $display = ($year > REPORTING_YEAR) ? "display:none;" : "";
         $tplt = "<li style='font-weight: bold; font-size: 2.0em;margin-bottom: 25px;'>
                     <input id='milestone_id' type='hidden' name='{$this->getPostId()}_milestone_id[]' />
                     <input id='title' type='hidden' name='{$this->getPostId()}_title[]' style='width:97%;' />
@@ -82,12 +87,18 @@ EOF
                             </td>
                         </tr>
                         <tr>
-                            <td width='50%' colspan='2'><b>How it will be achieved:</b></td>
-                            <td><b>Assessment:</b></td>
+                            <td width='50%' colspan='2'><b>Problem Statement:</b></td>
+                            <td><b>Plan & Expected Outcomes:</b></td>
                         </tr>
                         <tr>
-                            <td width='50%' colspan='2'><textarea id='description' name='{$this->getPostId()}_description[]' style='height: 80px;resize: none;'></textarea></td>
-                            <td><textarea id='assessment' name='{$this->getPostId()}_assessment[]' style='height: 80px;resize: none;'></textarea></td>
+                            <td width='50%' colspan='2'><textarea id='problem' name='{$this->getPostId()}_problem[]' style='height: 80px;resize: none;'></textarea></td>
+                            <td><textarea id='description' name='{$this->getPostId()}_description[]' style='height: 80px;resize: none;'></textarea></td>
+                        </tr>
+                        <tr style='{$display}'>
+                            <td colspan='3'><b>Assessment:</b></td>
+                        </tr>
+                        <tr style='{$display}'>
+                            <td colspan='3'><textarea id='assessment' name='{$this->getPostId()}_assessment[]' style='height: 80px;resize: none;'></textarea></td>
                         </tr>
                     </table>
                     <hr />
@@ -95,14 +106,15 @@ EOF
         return trim(str_replace("\n", "", $tplt));
     }
     
-    function getTemplateForPDF($title, $status, $description, $assessment){
+    function getTemplateForPDF($title, $status, $problem, $description, $assessment){
+        $year = $this->getAttr("year", REPORTING_YEAR);
+        $display = ($year > REPORTING_YEAR) ? "display:none;" : "";
         $tplt = "<div style='page-break-inside:avoid;'>
                     <h4>$title ({$status})</h4>
                     <div style='margin-left:50px;margin-bottom:25px;'>
-                        <b>How it will be achieved:</b><br />
-                        {$description}<br />
-                        <b>Assessment:</b><br />
-                        {$assessment}<br />
+                        <p><b>Problem Statement:&nbsp;</b>{$problem}</p>
+                        <p><b>Plan & Expected Outcomes:&nbsp;</b>{$description}</p>
+                        <p style='{$display}'><b>Assessment:&nbsp;</b>{$assessment}</p>
                     </div>
                  </div>";
         return $tplt;
@@ -117,6 +129,7 @@ EOF
             $identifiers = $_POST["{$this->getPostId()}_identifier"];
             $titles = $_POST["{$this->getPostId()}_title"];
             $new_titles = $_POST["{$this->getPostId()}_new_title"];
+            $problems = $_POST["{$this->getPostId()}_problem"];
             $descriptions = $_POST["{$this->getPostId()}_description"];
             $statuses = $_POST["{$this->getPostId()}_status"];
             $assessments = $_POST["{$this->getPostId()}_assessment"];
@@ -130,6 +143,7 @@ EOF
                     $_POST['id'] = $id;
                 }
                 $_POST['new_title'] = $new_titles[$key];
+                $_POST['problem'] = $problems[$key];
                 $_POST['description'] = $descriptions[$key];
                 $_POST['status'] = $statuses[$key];
                 $_POST['assessment'] = $assessments[$key];

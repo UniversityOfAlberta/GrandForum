@@ -42,16 +42,16 @@
         <ReportItem id="basic_info" type="StaticReportItem">
             <![CDATA[
                 <div class='basic_info'>
-                        <table style='width:100%;' cellspacing='0' cellpadding='0'>
-                        <tr>
-                            <td valign="top" width="100%">
-                                <p style='font-size:150%;font-weight:bold;'>{$project_name}</p>
-                                <table cellspacing='0' cellpadding='0'>
-                                    <tr><td align='right'><b>Theme:</b>&nbsp;</td><td>{$project_theme}</td></tr>
-                                    <tr><td align='right'><b>Leader:</b>&nbsp;</td><td>{$project_leaders}</td></tr>
-                                    <tr><td align='right'><b>Co-Leader:</b>&nbsp;</td><td>{$project_coleaders}</td></tr>
-                                </table>
-                            </td>
+                    <table style='width:100%;' cellspacing='0' cellpadding='0'>
+                    <tr>
+                        <td valign="top" width="100%">
+                            <p style='font-size:150%;font-weight:bold;'>{$project_name}</p>
+                            <table cellspacing='0' cellpadding='0'>
+                                <tr><td align='right'><b>Theme:</b>&nbsp;</td><td>{$project_theme}</td></tr>
+                                <tr><td align='right'><b>Leader:</b>&nbsp;</td><td>{$project_leaders}</td></tr>
+                                <tr><td align='right'><b>Co-Leader:</b>&nbsp;</td><td>{$project_coleaders}</td></tr>
+                            </table>
+                        </td>
             ]]>
         </ReportItem>
         <ReportItem id="small_budget" type="SmallProjectBudgetReportItem" start="{$2_years_ago}" end="{$this_year}">

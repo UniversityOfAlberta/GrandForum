@@ -17,7 +17,7 @@
             ]]>
         </ReportItem>
         <ReportItem id="report_info_foot" type="StaticReportItem">
-            <![CDATA[</table></small></td></tr></table></div></div><br /><br />]]>
+            <![CDATA[</table></small></td></tr></table></div></div>]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="report" name="{$project_name} Goals" tooltip="Comments about lead sub-projects" blobSection="SUB_SUBPROJECTS" type="EditableReportSection" reportCharLimits="false" renderpdf="true">

@@ -1,26 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="NI Report" reportType="RP_RESEARCHER" pdfType="RPTP_NORMAL" pdfFiles="NIReportPDF" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PNI">
-            <SectionPermission id="subprojects" permissions="" />
-        </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="CNI">
-            <SectionPermission id="subprojects" permissions="" />
-        </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SUB-PL">
-            <SectionPermission id="subprojects" permissions="rw" />
-        </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SUB-COPL">
-            <SectionPermission id="subprojects" permissions="rw" />
-        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PNI"></Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="CNI"></Role>
     </Permissions>
     <ReportSection name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
                 <div class='logo_div'>
                     <div class='logo'></div>
-                    <div class='report_name' style='text-align:right;'><b>Network Investigator (NI) Report</b><br /><small><b>Generated:</b> {$timestamp}</small></div>
-                    <div class='report_info'><table class='report_info'><tr><td width='100%'></td>
+                    <table class='report_info'><tr><td width='100%'></td>
             ]]>
         </ReportItem>
         <ReportItem id="my_progress_head" type="StaticReportItem" private="true">
@@ -39,62 +28,81 @@
             <![CDATA[</table></div></div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="NI Dashboard" blobSection="RES_MILESTONES" type="HeaderReportSection" renderpdf="true" pagebreak="true">
+    <ReportSection id="info" name="Information" blobSection="RES_MILESTONES" type="HeaderReportSection" renderpdf="true" pagebreak="false">
         <ReportItem id="basic_info" type="StaticReportItem">
-        <![CDATA[
-            <div class='basic_info' style='margin-bottom:20px;'>
-                <p style='font-size:150%;'>{$user_reversed_name} ({$user_full_roles})</p>
-                <p><span class='label'>Position:</span> {$user_level}</p>
-                <p><span class='label'>Department:</span> {$user_dept}</p>
-                <p><span class='label'>University:</span> {$user_uni}</p>
-                <p><span class='label'>Phase 2 Projects:</span>
-        ]]>
+            <![CDATA[
+                <div class='basic_info'>
+                    <table style='width:100%;' cellspacing='0' cellpadding='0'>
+                    <tr>
+                        <td valign="top" width="100%" style='white-space:nowrap;'>
+                        <p style='font-size:150%;font-weight:bold;'>{$user_reversed_name} ({$user_full_roles})</p>
+                        <table cellspacing='0' cellpadding='0' style='width:100%;'>
+                            <tr><td align='right' width='1%'><b>Position:</b>&nbsp;</td><td>{$user_level}</td></tr>
+                            <tr><td align='right' ><b>Department:</b>&nbsp;</td><td>{$user_dept}</td></tr>
+                            <tr><td align='right'><b>University:</b>&nbsp;</td><td>{$user_uni}</td></tr>
+                            <tr><td align='right'><b>Phase 2 Projects:</b>&nbsp;</td><td>
+            ]]>
         </ReportItem>
         <ReportItemSet id="user_projects" type="PersonProjectReportItemSet" phase="2">
             <ReportItem id="user_project" type="StaticReportItem">
-                 <![CDATA[&nbsp;{$project_name}]]>
+                 <![CDATA[{$project_name}]]>
             </ReportItem>
             <ReportItem id="user_project_footnote" type="FootnoteReportItem" text="{$project_full_name}">
-                <![CDATA[{$item}]]>
+                <![CDATA[{$item}&nbsp;]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="basic_info" type="StaticReportItem">
-        <![CDATA[
-                </p><p><span class='label'>Phase 1 Projects:</span>
-        ]]>
+            <![CDATA[
+                    </td></tr>
+                <tr><td align='right'><b>Phase 2 Projects:</b>&nbsp;</td><td>
+            ]]>
         </ReportItem>
         <ReportItemSet id="user_projects" type="PersonProjectReportItemSet" phase="1">
             <ReportItem id="user_project" type="StaticReportItem">
-                 <![CDATA[&nbsp;{$project_name}]]>
+                 <![CDATA[{$project_name}]]>
             </ReportItem>
             <ReportItem id="user_project_footnote" type="FootnoteReportItem" text="{$project_full_name}">
-                <![CDATA[{$item}]]>
+                <![CDATA[{$item}&nbsp;]]>
             </ReportItem>
         </ReportItemSet>
+        <ReportItem id="basic_info" type="StaticReportItem">
+            <![CDATA[
+                    </td></tr>
+                </table>
+                </td>
+                <td style='white-space:nowrap;'>
+            ]]>
+        </ReportItem>
         <ReportItem id="grand_time" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem" private="true">
-            <![CDATA[</p><br /><p><span class='label'>Time Devoted to GRAND Research and Management (hours / week):</span> {$item}</p>]]>
+            <![CDATA[<b>Time (hours/week):</b> {$item}<br />]]>
         </ReportItem>
         <ReportItem id="grand_percent" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem" private="true">
-            <![CDATA[<span class='label'>GRAND-related Research Activity relative to Overall Research Activity (%):</span> {$item}</p></div>]]>
+            <![CDATA[<b>Research Activity (%):</b> {$item}]]>
         </ReportItem>
-        <ReportItem id="ni_dashboard_bookmark" type="BookmarkReportItem" text="NI Network Dashboard">
-            <![CDATA[<div>{$item}</div>]]>
+        <ReportItem id="basic_info" type="StaticReportItem">
+            <![CDATA[
+                    </td></tr>
+                </table>
+                </div>
+            ]]>
         </ReportItem>
-        <ReportItem id="ni_dashboard" type="DashboardReportItem" structure="NI_REPORT_STRUCTURE" table="true" details="false">
-            <![CDATA[<div>{$item}</div>]]>
-        </ReportItem>
-        <ReportItem id="ni_dashboard_productivity_bookmark" type="BookmarkReportItem" text="NI Productivity Dashboard">
-            <![CDATA[<div>{$item}</div>]]>
-        </ReportItem>
-        <ReportItem id="ni_dashboard_productivity" type="DashboardReportItem" structure="NI_REPORT_PRODUCTIVITY_STRUCTURE" table="true" details="false">
-            <![CDATA[<div>{$item}</div>]]>
-        </ReportItem>
-        <ReportItem id="pagebreak" type="PageBreakReportItem">
+    </ReportSection>
+    <ReportSection name="Executive Summary: Overview of all of my GRAND Activity" blobSection="RES_RESACTIVITY" type="EditableReportSection" number="1" autosave="true" renderpdf="true">
+    <!-- Ia. Overview of NI Activity -->
+        <ReportItem id="Ia" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="RES_RESACT_OVERALL" type="TextareaReportItem">
             <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="top_products" name="Top Research Outcomes" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" pagebreak="true">
+        <ReportItem id="legend" type="StaticReportItem">
+            <![CDATA[
+                <div style='text-align:right;'>
+                    Legend: <b>NI</b>, <b><u>HQP</u></b>, <b style='border-bottom: 1px solid #000000;'><u>External</u></b>, other authors<br /><br />
+                </div>
+            ]]>
         </ReportItem>
         <ReportItem id="tmp_top_pubs" type="StaticReportItem">
             <![CDATA[
-            <h2>Top Publications</h2>
             <table frame="box" rules="all" cellpadding="10px">
                 <tr>
                     <th>Rank</th>
@@ -126,7 +134,25 @@
                     <td align="center">2013</td>
                     <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Inactive:Morteza.Ghandehari"><strong><u>Morteza Ghandehari</u></strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:7776">A Lightweight Coordination Approach for Resource-Centric Collaborations - MSc Thesis</a>.</i>&nbsp;Masters Thesis,&nbsp;Jan 2013&nbsp;<span class="pdfnodisplay">,&nbsp;Published,&nbsp;Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>Published / Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/MEOW:Main" target="_blank">MEOW</a></i></div></td>
                 </tr>
-            </table>]]>
+            </table>
+            <i>Last updated on: Dec 13, 2015</i>]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="dashboard" name="Dashboard" blobSection="RES_MILESTONES" type="HeaderReportSection" renderpdf="true" pagebreak="false">
+        <ReportItem id="ni_dashboard_bookmark" type="BookmarkReportItem" text="NI Network Dashboard">
+            <![CDATA[<div>{$item}</div>]]>
+        </ReportItem>
+        <ReportItem id="ni_dashboard" type="DashboardReportItem" structure="NI_REPORT_STRUCTURE" table="true" details="false">
+            <![CDATA[<div>{$item}</div>]]>
+        </ReportItem>
+        <ReportItem id="ni_dashboard_productivity_bookmark" type="BookmarkReportItem" text="NI Productivity Dashboard">
+            <![CDATA[<div>{$item}</div>]]>
+        </ReportItem>
+        <ReportItem id="ni_dashboard_productivity" type="DashboardReportItem" structure="NI_REPORT_PRODUCTIVITY_STRUCTURE" table="true" details="false">
+            <![CDATA[<div>{$item}</div>]]>
+        </ReportItem>
+        <ReportItem id="pagebreak" type="PageBreakReportItem">
+            <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
     <ReportSection name="Executive Summary: Overview of all of my GRAND Activity" blobSection="RES_RESACTIVITY" type="EditableReportSection" number="1" autosave="true" renderpdf="true">
@@ -238,35 +264,6 @@
         <ReportItem id="IIIc" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="RES_RESACT_OTHER" type="TextareaReportItem" private="true">
             <![CDATA[{$item}]]>
         </ReportItem>
-    </ReportSection>
-    <ReportSection id="subprojects" name="Sub Project Leader" tooltip="Comments about lead sub-projects" blobSection="RES_SUBPROJECTS" type="EditableReportSection" autosave="true" reportCharLimits="false" pagebreak="false" renderpdf="true">
-        <ReportItemSet id="projects" type="PersonSubLeadProjectReportItemSet">
-            <ReportItem id="project" type="StaticReportItem">
-                <![CDATA[<h2>{$project_name}</h2>]]>
-            </ReportItem>
-            <ReportItemSet id="subprojects" type="PersonSubLeadSubProjectReportItemSet">
-                <ReportItem id="project" type="StaticReportItem">
-                    <![CDATA[<h3>{$project_name} - {$project_full_name}</h3>]]>
-                </ReportItem>
-                <ReportItemSet id="sub_limit" type="LimitReportItemSet" limit="3600" noun="Question">
-                    <ReportItem id="sub_project_goals" rows="7" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_GOALS" type="TextareaReportItem">
-                        <![CDATA[<b>Goals for this year</b><br />{$item}<br />]]>
-                    </ReportItem>
-                    <ReportItem id="sub_project_achievements" rows="10" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_ACHIEVEMENTS" type="TextareaReportItem">
-                        <![CDATA[<b>Achievements</b><br />{$item}<br />]]>
-                    </ReportItem>
-                    <ReportItem id="sub_project_future" rows="7" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_FUTURE" type="TextareaReportItem">
-                        <![CDATA[<b>Future Goals</b><br />{$item}<br />]]>
-                    </ReportItem>
-                    <ReportItem id="sub_project_champs" rows="4" width="100%" blobType="BLOB_TEXT" blobItem="RES_SUBPROJECT_CHAMPS" type="TextareaReportItem">
-                        <![CDATA[<b>Engagement with Champions</b><br />{$item}<br />]]>
-                    </ReportItem>
-                </ReportItemSet>
-                <ReportItem id="pagebreak" type="PageBreakReportItem">
-                    <![CDATA[{$item}]]>
-                </ReportItem>
-            </ReportItemSet>
-        </ReportItemSet>
     </ReportSection>
     <ReportSection name="Budget Request" blobSection="RES_BUDGET" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true">
         <ReportItem id="budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="BudgetReportItem" />
