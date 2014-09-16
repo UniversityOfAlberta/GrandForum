@@ -109,13 +109,11 @@ EOF
     function getTemplateForPDF($title, $status, $problem, $description, $assessment){
         $year = $this->getAttr("year", REPORTING_YEAR);
         $display = ($year > REPORTING_YEAR) ? "display:none;" : "";
-        $tplt = "<div style='page-break-inside:avoid;'>
+        $tplt = "<div style='page-break-inside:avoid;margin-bottom:25px;'>
                     <h4>$title ({$status})</h4>
-                    <div style='margin-left:50px;margin-bottom:25px;'>
-                        <p><b>Problem Statement:&nbsp;</b>{$problem}</p>
-                        <p><b>Plan & Expected Outcomes:&nbsp;</b>{$description}</p>
-                        <p style='{$display}'><b>Assessment:&nbsp;</b>{$assessment}</p>
-                    </div>
+                        <p style='margin-left:50px;'><b>Problem Statement:&nbsp;</b>{$problem}</p>
+                        <p style='margin-left:50px;'><b>Plan & Expected Outcomes:&nbsp;</b>{$description}</p>
+                        <p style='margin-left:50px;{$display}'><b>Assessment:&nbsp;</b>{$assessment}</p>
                  </div>";
         return $tplt;
     }
