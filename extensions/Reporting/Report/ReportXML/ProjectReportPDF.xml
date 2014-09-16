@@ -218,6 +218,9 @@
     </ReportSection>
     <ReportSection id="subprojects" name="Sub-Project Comments" tooltip="Comments about lead sub-projects" type="EditableReportSection" reportCharLimits="false" renderpdf="true" pagebreak="false">
         <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet">
+            <ReportItem id="sub_bookmark" type="SubBookmarkReportItem" text="{$project_name}">
+                <![CDATA[{$item}]]>
+            </ReportItem>
             <ReportItem id="sub_head" type="StaticReportItem">
                 <![CDATA[<h2>{$project_name}</h2>]]>
             </ReportItem>
