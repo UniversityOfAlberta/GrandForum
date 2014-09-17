@@ -485,7 +485,15 @@ if ( isset($pdf) ) {
             if(count($chapter['subs']) > 0){
                 $str .= "[/Count ".count($chapter['subs'])." /Title ({$chapter['title']}) /Page {$chapter['page']} /OUT pdfmark\n";
                 foreach($chapter['subs'] as $sub){
-                    $str .= "[/Title ({$sub['title']}) /Page {$sub['page']} /OUT pdfmark\n";
+                    if(count($sub['subs']) > 0){
+                        $str .= "[/Count -".count($sub['subs'])." /Title ({$sub['title']}) /Page {$sub['page']} /OUT pdfmark\n";
+                        foreach($sub['subs'] as $sub1){
+                            $str .= "[/Title ({$sub1['title']}) /Page {$sub1['page']} /OUT pdfmark\n";
+                        }
+                    }
+                    else{
+                        $str .= "[/Title ({$sub['title']}) /Page {$sub['page']} /OUT pdfmark\n";
+                    }
                 }
             }
             else{
@@ -513,7 +521,7 @@ if ( isset($pdf) ) {
     }
     
     /**
-     * Adds a chapter bookmark to the document
+     * Adds a top level bookmark to the document
      * @param string $title The title of the bookmark
      */
     function addChapter($title){
@@ -528,7 +536,7 @@ if ( isset($pdf) ) {
     }
     
     /**
-     * Adds a sub-Chapter bookmark to the document
+     * Adds a second level Chapter bookmark to the document
      * @param string $title The title of the sub-bookmark
      */
     function addSubChapter($title){
@@ -537,6 +545,21 @@ if ( isset($pdf) ) {
         $wgOut->addHTML("<div></div>
                         <script type='text/php'>
                             \$GLOBALS['chapters'][count(\$GLOBALS['chapters'])-1]['subs'][] = array('title' => \"{$title}\", 
+                                                            'page' => \$pdf->get_page_number(),
+                                                            'subs' => array());
+                        </script>");
+    }
+    
+    /**
+     * Adds a third level Chapter bookmark to the document
+     * @param string $title The title of the sub-bookmark
+     */
+    function addSubSubChapter($title){
+        global $wgOut;
+        $title = strip_tags($title);
+        $wgOut->addHTML("<div></div>
+                        <script type='text/php'>
+                            \$GLOBALS['chapters'][count(\$GLOBALS['chapters'])-1]['subs'][count(\$GLOBALS['chapters'][count(\$GLOBALS['chapters'])-1]['subs'])-1]['subs'][] = array('title' => \"{$title}\", 
                                                             'page' => \$pdf->get_page_number(),
                                                             'subs' => array());
                         </script>");
