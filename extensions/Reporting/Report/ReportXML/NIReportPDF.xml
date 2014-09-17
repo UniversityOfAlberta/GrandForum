@@ -151,7 +151,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection type="BookmarkReportSection" name="Section 3" />
-    <ReportSection name="Assessment: How I contribute towards the NCE Evaluation Criteria" title="Assessment" subBookmark="true" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
+    <ReportSection name="Assessment: How I contribute towards the NCE Evaluation Criteria" title="Assessment" subBookmark="true" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" pagebreak="false">
     <!-- IIa. Excellence of the Research Program -->
         <ReportItem id='IIa_head' type="StaticReportItem">
             <![CDATA[<h2>A. Excellence of the Research Program: How my research contributes to the Network</h2>]]>
@@ -223,9 +223,11 @@
         <ReportItem id="IIe" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETMAN" type="AutoCompleteTextareaReportItem" set="AllPeopleReportItemSet" index="user_id" label="user_name" name="Members">
             <![CDATA[{$item}<br /><br />]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection name="Achievements &amp; Plans" subBookmark="true" type="EditableReportSection" blobSection="RES_RESACTIVITY" pagebreak="false">
         <!-- IIIa. Plans for next year -->
         <ReportItem id='IIf_head' type="StaticReportItem">
-            <![CDATA[<h2>F. My Plans for {$next_year} in GRAND</h2>
+            <![CDATA[<h2>My Plans for {$next_year} in GRAND</h2>
                 (Phase2 Projects Only)<br />
             ]]>
         </ReportItem>
