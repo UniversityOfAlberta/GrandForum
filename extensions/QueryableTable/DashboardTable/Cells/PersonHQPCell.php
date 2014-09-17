@@ -32,7 +32,7 @@ class PersonHQPCell extends DashboardCell {
                 $hqps = $person->getHQPDuring($start, $end);
                 $values = array();
                 foreach($hqps as $hqp){
-                    if($hqp->isMemberOf($project)){
+                    if($hqp->isMemberOfDuring($project, $start, $end)){
                         $uni = $hqp->getUniversity();
                         $position = ($uni['position'] != "") ? $uni['position'] : "Other";
                         $values[$position][] = $hqp->getId();
