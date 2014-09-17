@@ -243,7 +243,7 @@ class CreatePDF extends SpecialPage {
 	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectReport&person=4&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
 	    else if($type == 'isac_comments'){
-	        foreach(Project::getAllProjectsDuring() as $project){
+	        foreach(Project::getAllProjectsDuring($year.REPORTING_CYCLE_START_MONTH, ($year+1).REPORTING_CYCLE_END_MONTH) as $project){
 	            if(array_search($project->getId(), $ids) === false && $project->getPhase() == PROJECT_PHASE){
 	                $names[] = $project->getName();
 	                $ids[] = $project->getId();
@@ -252,7 +252,7 @@ class CreatePDF extends SpecialPage {
 	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=ProjectISACCommentsPDF&person=4&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
 	    else if($type == 'champ_comments'){
-	        foreach(Project::getAllProjectsDuring() as $project){
+	        foreach(Project::getAllProjectsDuring($year.REPORTING_CYCLE_START_MONTH, ($year+1).REPORTING_CYCLE_END_MONTH) as $project){
 	            if(array_search($project->getId(), $ids) === false && $project->getPhase() == PROJECT_PHASE){
 	                $names[] = $project->getName();
 	                $ids[] = $project->getId();

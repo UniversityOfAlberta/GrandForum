@@ -28,22 +28,6 @@
                         <td><b>Affiliation:</b></td>
                         <td>{$champ_org}</td>
                     </tr>
-                    <tr>
-                        <td valign="top"><b>Projects:</b></td>
-                        <td><ul style="margin-top:0;">
-            ]]>
-        </ReportItem>  
-        <ReportItemSet id="champ_projects" type="PersonProjectReportItemSet">
-            <ReportItem id="champ_project" type="StaticReportItem">
-                <![CDATA[
-                    <li style="margin-top:0;"><b>{$project_name}: {$champ_subprojects}</li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="introTable_foot" type="StaticReportItem">
-            <![CDATA[              
-                        </ul></td>
-                    </tr>
                 </table><br />
             ]]>
         </ReportItem>
