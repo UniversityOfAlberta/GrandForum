@@ -90,13 +90,14 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Executive Summary: Overview of all of my GRAND Activity" blobSection="RES_RESACTIVITY" type="EditableReportSection" number="1" autosave="true" renderpdf="true">
+    <ReportSection type="BookmarkReportSection" name="Section 1" />
+    <ReportSection id="executive_summary" name="Executive Summary: Overview of all of my GRAND Activity" title="Executive Summary" subBookmark="true" blobSection="RES_RESACTIVITY" type="EditableReportSection" renderpdf="true">
         <!-- Ia. Overview of NI Activity -->
         <ReportItem id="Ia" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="RES_RESACT_OVERALL" type="TextareaReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="top_products" name="Top Research Outcomes" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" pagebreak="true">
+    <ReportSection id="top_products" name="Top Research Outcomes" subBookmark="true" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" pagebreak="true">
         <ReportItem id="legend" type="StaticReportItem">
             <![CDATA[
                 <div style='text-align:right;'>
@@ -107,45 +108,6 @@
         <ReportItem id="tmp_top_pubs" type="StaticReportItem">
             <![CDATA[
             <div style='page-break-inside:avoid;'>
-            <h2>Top Publications</h2>
-            <table frame="box" rules="all" cellpadding="10px">
-                <tr>
-                    <th>Rank</th>
-                    <th>Year</th>
-                    <th>Publication</th>
-                </tr>
-                <tr>
-                    <td align="center">1</td>
-                    <td align="center">2013</td>
-                    <td><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/CNI:Patricia.Boechler" target="_blank"><strong>Patricia Boechler</strong></a>,&nbsp;<a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Eleni.Stroulia" target="_blank"><strong>Eleni Stroulia</strong></a>,&nbsp;<a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HQP:Erik.deJong" target="_blank"><strong><u>Erik deJong</u></strong></a>,&nbsp;<a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Inactive:Matt.Delaney" target="_blank"><strong><u>Matt Delaney</u></strong></a>,&nbsp;<a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/CNI:Mike.Carbonaro" target="_blank"><strong>Mike Carbonaro</strong></a>,&nbsp;Corbett Artym,&nbsp;<a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HQP:Wayne.Thomas" target="_blank"><strong><u>Wayne Thomas</u></strong></a>,&nbsp;Jeff Klassen.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:10243">Virtual Campus Orientation: Supporting Students' Transition to Post-Secondary Before They Actually Arrive. </a>.</i>&nbsp;Proceedings Paper:&nbsp;Society for Information Technology and Teacher Education,&nbsp;pp. 246-249pp.&nbsp;Association for the Advancement of Computers in Education,&nbsp;Mar 2013<span class="pdfnodisplay">,&nbsp;Published,&nbsp;Peer Reviewed</span><div style="width:100%;text-align:right;" class="pdfOnly"><i>Published / Peer Reviewed / <a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HLTHSIM:Main">HLTHSIM</a></i></div></td>
-                </tr>
-                <tr>
-                    <td align="center">2</td>
-                    <td align="center"><b><u>2014</u></b></td>
-                    <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Roy.Eagleson"><strong>Roy Eagleson</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Eleni.Stroulia"><strong>Eleni Stroulia</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/CNI:Bill.Kapralos"><strong>Bill Kapralos</strong></a>,&nbsp;Adam Dubrowski,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HQP:Faizal.Haji"><strong><u>Faizal Haji</u></strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/CNI:Sandrine.deRibaupierre"><strong>Sandrine de Ribaupierre</strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:7746">Healthcare training enhancement through virtual reality and serious games</a>.</i>&nbsp;Book Chapter:&nbsp;Virtual and Augmented Reality in Healthcare 1,&nbsp;(no pages)&nbsp;Springer-Verlag,&nbsp;Nov 2013<span class="pdfnodisplay">,&nbsp;To Appear,&nbsp;Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>To Appear / Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/DIGLT:Main" target="_blank">DIGLT</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HLTHSIM:Main" target="_blank">HLTHSIM</a></i></div></td>
-                </tr>
-                <tr>
-                    <td align="center">3</td>
-                    <td align="center">2013</td>
-                    <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Eleni.Stroulia"><strong>Eleni Stroulia</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HQP:David.Turner"><strong><u>David Turner</u></strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Inactive:Denis.Golovan"><strong><u>Denis Golovan</u></strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HQP:Michael.Huggett"><strong><u>Michael Huggett</u></strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:10625">The GRAND Forum:  Supporting An Interdisciplinary Research Community</a>.</i>&nbsp;Poster:&nbsp;GRAND Annual Conference 2013<span class="pdfnodisplay">,</span>,&nbsp;May 2013&nbsp;<span class="pdfnodisplay">,&nbsp;Published,&nbsp;Not Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>Published / Not Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/MEOW:Main" target="_blank">MEOW</a></i></div></td>
-                </tr>
-                <tr>
-                    <td align="center">4</td>
-                    <td align="center">2012</td>
-                    <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Inactive:David.Chodos"><strong><u>David Chodos</u></strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Eleni.Stroulia"><strong>Eleni Stroulia</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/CNI:Sharla.King"><strong>Sharla King</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/CNI:Mike.Carbonaro"><strong>Mike Carbonaro</strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:3888">A framework for monitoring instructional environments in a virtual world</a>.</i>&nbsp;Journal Paper:&nbsp;British Journal of Educational Technology,&nbsp;17pp.&nbsp;Wiley,&nbsp;Aug 2012<span class="pdfnodisplay">,&nbsp;To Appear,&nbsp;Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>To Appear / Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HLTHSIM:Main" target="_blank">HLTHSIM</a></i></div></td>
-                </tr>
-                <tr>
-                    <td align="center">5</td>
-                    <td align="center">2013</td>
-                    <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Inactive:Morteza.Ghandehari"><strong><u>Morteza Ghandehari</u></strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:7776">A Lightweight Coordination Approach for Resource-Centric Collaborations - MSc Thesis</a>.</i>&nbsp;Masters Thesis,&nbsp;Jan 2013&nbsp;<span class="pdfnodisplay">,&nbsp;Published,&nbsp;Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>Published / Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/MEOW:Main" target="_blank">MEOW</a></i></div></td>
-                </tr>
-            </table>
-            <i>Last updated on: Dec 13, 2015</i></div>]]>
-        </ReportItem>
-        <ReportItem id="tmp_top_other" type="StaticReportItem">
-            <![CDATA[
-            <div style='page-break-inside:avoid;'>
-            <h2>Additional Research Output</h2>
             <table frame="box" rules="all" cellpadding="10px">
                 <tr>
                     <th>Rank</th>
@@ -178,16 +140,18 @@
                     <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Inactive:Morteza.Ghandehari"><strong><u>Morteza Ghandehari</u></strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:7776">A Lightweight Coordination Approach for Resource-Centric Collaborations - MSc Thesis</a>.</i>&nbsp;Masters Thesis,&nbsp;Jan 2013&nbsp;<span class="pdfnodisplay">,&nbsp;Published,&nbsp;Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>Published / Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/MEOW:Main" target="_blank">MEOW</a></i></div></td>
                 </tr>
             </table>
-            <i>Last updated on: Dec 13, 2015</i></div>]]>
+            <i>Last updated on: Dec 13, 2014</i></div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Budget Request" blobSection="RES_BUDGET" type="EditableReportSection" autosave="true" number="2" renderpdf="true" private="true">
+    <ReportSection type="BookmarkReportSection" name="Section 2" />
+    <ReportSection name="Budget Request" title="Budget" blobSection="RES_BUDGET" subBookmark="true" type="EditableReportSection" autosave="true" renderpdf="true" private="true">
         <ReportItem id="budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="BudgetReportItem" />
         <ReportItem id="budget_just" rows="10" limit="600" blobType="BLOB_TEXT" blobItem="RES_BUD_JUSTIF" type="TextareaReportItem">
             <![CDATA[<h3>Budget Justification</h3> {$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Assessment: How I contribute towards the NCE Evaluation Criteria" blobSection="RES_RESACTIVITY" type="EditableReportSection" number="3" autosave="true" renderpdf="true">
+    <ReportSection type="BookmarkReportSection" name="Section 3" />
+    <ReportSection name="Assessment: How I contribute towards the NCE Evaluation Criteria" title="Assessment" subBookmark="true" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
     <!-- IIa. Excellence of the Research Program -->
         <ReportItem id='IIa_head' type="StaticReportItem">
             <![CDATA[<h2>A. Excellence of the Research Program: How my research contributes to the Network</h2>]]>
@@ -275,7 +239,7 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection name="Reflections: Other Aspects of my involvement in GRAND" blobSection="RES_RESACTIVITY" type="EditableReportSection" number="4" autosave="true" renderpdf="true">
+    <ReportSection name="Reflections: Other Aspects of my involvement in GRAND" title="Reflections" subBookmark="true" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
     <!-- IIIb. Benefits from being involved in the Network -->
         <ReportItem id='IIIb_head' type="StaticReportItem" private="true">
             <![CDATA[<h2>Benefits of Networking: The value to my research program of my participation in GRAND</h2>]]>
@@ -291,7 +255,8 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Network Dashboard" blobSection="SEC_NONE" type="ReportSection" number="5" pagebreak="true" renderpdf="true">
+    <ReportSection type="BookmarkReportSection" name="Section 4" />
+    <ReportSection name="Network Dashboard" blobSection="SEC_NONE" subBookmark="true" type="ReportSection" pagebreak="true" renderpdf="true">
         <ReportItem id="ni_dashboard" type="DashboardReportItem" structure="NI_REPORT_STRUCTURE" table="true" details="false">
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
@@ -299,7 +264,7 @@
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Productivity Dashboard" blobSection="SEC_NONE" type="ReportSection" number="6" pagebreak="false" renderpdf="true">
+    <ReportSection name="Productivity Dashboard" blobSection="SEC_NONE" subBookmark="true" type="ReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="ni_dashboard_productivity" type="DashboardReportItem" structure="NI_REPORT_PRODUCTIVITY_STRUCTURE" table="true" details="false">
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>

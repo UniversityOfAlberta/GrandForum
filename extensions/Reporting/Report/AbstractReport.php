@@ -950,7 +950,13 @@ abstract class AbstractReport extends SpecialPage {
                             $number = implode(', ', $numbers).'. ';
                         }
                         $name = $section->varSubstitute($section->name);
-                        PDFGenerator::addChapter($number.$name);
+                        $title = $section->getAttr("title", $number.$name, true);
+                        if(strtolower($section->getAttr("subBookmark", "false")) == "true"){
+                            PDFGenerator::addSubChapter($title);
+                        }
+                        else{
+                            PDFGenerator::addChapter($title);
+                        }
                     }
                     $section->renderForPDF();
                     if(!($section instanceof HeaderReportSection)){

@@ -58,18 +58,19 @@
             <![CDATA[<td style='white-space:nowrap;' valign='bottom'>{$item}</td></tr></table></div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="report1" name="Executive Summary: Overview of {$project_name} Activity" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="1" renderpdf="true">
+    <ReportSection type="BookmarkReportSection" name="Section 1" />
+    <ReportSection id="report1" name="Executive Summary: Overview of {$project_name} Activity" title="Executive Summary" subBookmark="true" blobSection="LDR_RESACTIVITY" type="EditableReportSection" renderpdf="true">
     <!-- Ia. Overview of Activity -->
         <ReportItem id="Ia" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OVERALL" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="dashboard" name="Project Team" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" pagebreak="true">
+    <ReportSection id="dashboard" name="Project Team" subBookmark="true" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" pagebreak="true">
         <ReportItem id="project_roster" type="ProjectRosterReportItem">
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="top_products" name="Top Research Outcomes" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" pagebreak="true">
+    <ReportSection id="top_products" name="Top Research Outcomes" subBookmark="true" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" pagebreak="true">
         <ReportItem id="legend" type="StaticReportItem">
             <![CDATA[
                 <div style='text-align:right;'>
@@ -135,15 +136,16 @@
                     <td align="center">2012</td>
                     <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Champion:Lee.Rainie"><strong>Lee Rainie</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Barry.Wellman"><strong>Barry Wellman</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HQP:Christian.Beermann"><strong><u>Christian Beermann</u></strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HQP:Zack.Hayat"><strong><u>Zack Hayat</u></strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:10970">The Individual in a Networked World: Two Scenarios</a>.</i>&nbsp;Magazine/Newspaper Article,&nbsp;Jun 2012&nbsp;<span class="pdfnodisplay">,&nbsp;Submitted,&nbsp;Not Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>Submitted / Not Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/DINS:Main" target="_blank">DINS</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/NAVEL:Main" target="_blank">NAVEL</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/KNOW:Main" target="_blank">KNOW</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PROTECT:Main" target="_blank">PROTECT</a></i></div></td>
                 </tr>
-            </table><i>Last updated on: Dec 13, 2015</i>]]>
+            </table><i>Last updated on: Dec 13, 2014</i>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="champions" name="Champions Progress" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
+    <ReportSection id="champions" name="Champions Progress" subBookmark="true" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
         <ReportItem id="champion_table" type="StaticReportItem">
             <![CDATA[<img src="http://grand.cs.ualberta.ca/~dwt/champions.png" width='100%' />]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="budget" name="Project Budget Request" blobSection="LDR_BUDGET" type="EditableReportSection" number="2" renderpdf="true">
+    <ReportSection type="BookmarkReportSection" name="Section 2" />
+    <ReportSection id="budget" name="Project Budget Request" title="Budget" subBookmark="true" blobSection="LDR_BUDGET" type="EditableReportSection" renderpdf="true">
         <!--ReportItem id="budget" type="ProjectBudgetReportItem" /-->
         <ReportItem id="budgets" type="StaticReportItem">
             <![CDATA[<h2>Budget Categories</h2>
@@ -156,7 +158,8 @@
             <![CDATA[<h2>Budget Justification</h2> {$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="report2" name="Assessment: How {$project_name} contributes towards the NCE Evaluation Criteria" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="3">
+    <ReportSection type="BookmarkReportSection" name="Section 3" />
+    <ReportSection id="report2" name="Assessment: How {$project_name} contributes towards the NCE Evaluation Criteria" title="Assessment" subBookmark="true" blobSection="LDR_RESACTIVITY" type="EditableReportSection">
     <!-- IIa. Excellence of the Research Program -->
         <ReportItem id='IIIa_head' type="StaticReportItem">
             <![CDATA[<h2>A. Excellence of the Research Program: How {$project_name} contributes to the Network</h2>]]>
@@ -193,7 +196,7 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="report3" name="Reflections: Other Aspects of {$project_name}'s involvement in GRAND" blobSection="LDR_RESACTIVITY" type="EditableReportSection" number="4" renderpdf="true">
+    <ReportSection id="report3" name="Reflections: Other Aspects of {$project_name}'s involvement in GRAND" title="Reflections" subBookmark="true" blobSection="LDR_RESACTIVITY" type="EditableReportSection" renderpdf="true">
     <!-- IIIa. Plans for Next Year -->
         <ReportItem id='IIIa_head' type="StaticReportItem">
             <![CDATA[<h2>Achievements and Plans</h2>]]>
@@ -216,11 +219,8 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="subprojects" name="Sub-Project Comments" tooltip="Comments about lead sub-projects" type="EditableReportSection" reportCharLimits="false" renderpdf="true" pagebreak="false">
+    <ReportSection id="subprojects" name="Sub-Project Comments" tooltip="Comments about lead sub-projects" subBookmark="true" type="EditableReportSection" reportCharLimits="false" renderpdf="true" pagebreak="false">
         <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet">
-            <ReportItem id="sub_bookmark" type="SubBookmarkReportItem" text="{$project_name}">
-                <![CDATA[{$item}]]>
-            </ReportItem>
             <ReportItem id="sub_head" type="StaticReportItem">
                 <![CDATA[<h2>{$project_name}</h2>]]>
             </ReportItem>
@@ -241,7 +241,8 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="prod_dashboard" name="Productivity Details" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" pagebreak="false" number="6">
+    <ReportSection type="BookmarkReportSection" name="Section 4" />
+    <ReportSection id="prod_dashboard" name="Productivity Details" blobSection="SEC_NONE" type="ReportSection" subBookmark="true" renderpdf="true" pagebreak="false">
         <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="true" details="false">
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>

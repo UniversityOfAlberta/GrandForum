@@ -9,7 +9,7 @@ class BookmarkReportItem extends StaticReportItem {
 	
 	function renderForPDF(){
 	    global $wgOut;
-	    $text = $this->getAttr('text');
+	    $text = $this->getAttr('text', $this->getAttr("title"));
 		PDFGenerator::addChapter($text);
 		$wgOut->addHTML($this->processCData(""));
 	}
