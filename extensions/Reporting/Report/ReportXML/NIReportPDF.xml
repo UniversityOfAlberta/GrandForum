@@ -257,14 +257,14 @@
         </ReportItem>
     </ReportSection>
     <ReportSection type="BookmarkReportSection" name="Section 4" />
-    <ReportSection name="Network Dashboard" blobSection="SEC_NONE" subBookmark="true" type="ReportSection" pagebreak="true" renderpdf="true">
+    <!--ReportSection name="Network Dashboard" blobSection="SEC_NONE" subBookmark="true" type="ReportSection" pagebreak="true" renderpdf="true">
         <ReportItem id="ni_dashboard" type="DashboardReportItem" structure="NI_REPORT_STRUCTURE" table="true" details="false">
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
         <ReportItem id="ni_dashboard" type="DashboardReportItem" structure="NI_REPORT_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
     <ReportSection name="Productivity Dashboard" blobSection="SEC_NONE" subBookmark="true" type="ReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="ni_dashboard_productivity" type="DashboardReportItem" structure="NI_REPORT_PRODUCTIVITY_STRUCTURE" table="true" details="false">
             <![CDATA[<div>{$item}</div>]]>
