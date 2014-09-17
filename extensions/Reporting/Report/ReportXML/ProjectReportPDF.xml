@@ -198,9 +198,6 @@
     </ReportSection>
     <ReportSection name="Achievements &amp; Plans" subBookmark="true" type="EditableReportSection" blobSection="LDR_RESACTIVITY" pagebreak="false">
         <!-- IIIa. Plans for Next Year -->
-        <ReportItem id='IIIa_head' type="StaticReportItem">
-            <![CDATA[<h2>Achievements and Plans</h2>]]>
-        </ReportItem>
         <ReportItem id="IIIa" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>

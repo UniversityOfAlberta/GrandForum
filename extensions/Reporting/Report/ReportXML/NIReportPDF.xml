@@ -227,8 +227,7 @@
     <ReportSection name="Achievements &amp; Plans" subBookmark="true" type="EditableReportSection" blobSection="RES_RESACTIVITY" pagebreak="false">
         <!-- IIIa. Plans for next year -->
         <ReportItem id='IIf_head' type="StaticReportItem">
-            <![CDATA[<h2>My Plans for {$next_year} in GRAND</h2>
-                (Phase2 Projects Only)<br />
+            <![CDATA[(Phase2 Projects Only)<br />
             ]]>
         </ReportItem>
         <ReportItemSet id="OR" type="ORReportItemSet">
