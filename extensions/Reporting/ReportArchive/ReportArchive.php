@@ -1,57 +1,58 @@
 <?php
 $dir = dirname(__FILE__) . '/';
 
-$wgHooks['SkinTemplateContentActions'][] = 'ReportArchive::showTabs';
-
 $wgSpecialPages['ReportArchive'] = 'ReportArchive';
 $wgExtensionMessagesFiles['ReportArchive'] = $dir . 'ReportArchive.i18n.php';
 $wgSpecialPageGroups['ReportArchive'] = 'reporting-tools';
 
+$wgHooks['TopLevelTabs'][] = 'ReportArchive::createTab';
+$wgHooks['SubLevelTabs'][] = 'ReportArchive::createSubTabs';
+
 #require_once($dir . '../Report/ReportStorage.php');
 
 function runReportArchive($par) {
-	ReportArchive::run($par);
+    ReportArchive::run($par);
 }
 
 class ReportArchive extends SpecialPage {
 
-	function __construct() {
-		wfLoadExtensionMessages('ReportArchive');
-		SpecialPage::SpecialPage("ReportArchive", '', true, 'runReportArchive');
-	}
-	
-	function userCanExecute($user){
-	    if($user->isLoggedIn()){
-	        $person = Person::newFromWgUser();
-	        if($person->isRoleAtLeast(INACTIVE)){
-	            return true;
-	        }
-	    }
-	    return false;
-	}
-	
-	function run(){
-	    global $wgOut, $wgUser, $wgServer, $wgScriptPath;
-	    if(date('m') >= 3){
+    function __construct() {
+        wfLoadExtensionMessages('ReportArchive');
+        SpecialPage::SpecialPage("ReportArchive", '', true, 'runReportArchive');
+    }
+    
+    function userCanExecute($user){
+        if($user->isLoggedIn()){
+            $person = Person::newFromWgUser();
+            if($person->isRoleAtLeast(INACTIVE)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    function run(){
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+        if(date('m') >= 3){
             $year = (isset($_GET['year']) && is_numeric($_GET['year'])) ? $_GET['year'] : date('Y');
         }
         else{
             $year = (isset($_GET['year']) && is_numeric($_GET['year'])) ? $_GET['year'] : date('Y') - 1;
         }
-	    ReportArchive::generateReportArchivedReportsHTML($year);
+        ReportArchive::generateReportArchivedReportsHTML($year);
     }
 
     // Gives a listing of all the ReportArchived pdfs
     static function generateReportArchivedReportsHTML($year){
         global $wgUser, $wgOut, $wgTitle, $wgServer, $wgScriptPath;
-		$person = Person::newFromId($wgUser->getId());
-		if($person->isRoleAtLeast(STAFF) && isset($_GET['person'])){
-		    $person = Person::newFromName($_GET['person']);
-		    if($person->getName() == ""){
-		        // Just in case the username entered is incorrect
-		        $person = Person::newFromId($wgUser->getId());
-		    }
-		}
+        $person = Person::newFromId($wgUser->getId());
+        if($person->isRoleAtLeast(STAFF) && isset($_GET['person'])){
+            $person = Person::newFromName($_GET['person']);
+            if($person->getName() == ""){
+                // Just in case the username entered is incorrect
+                $person = Person::newFromId($wgUser->getId());
+            }
+        }
 
         $repi = new ReportIndex($person);
         // Check for a download.
@@ -59,35 +60,35 @@ class ReportArchive extends SpecialPage {
         if ($action !== "") {
             $tok = $action;
             
-		    $sto = new ReportStorage($person);
-	        if (! empty($tok)) {
-			    $pdf = $sto->fetch_pdf($tok, false);
-			    $len = $sto->metadata('len_pdf');
-			    $user_id = $sto->metadata('user_id');
-			    $type = $sto->metadata('type');
-			    $pdf_owner = Person::newFromId($user_id);
-			    $pdf_owner_name = $pdf_owner->getName();
-			    if ($pdf == false || $len == 0) {
-				    $wgOut->addHTML("<h4>Warning</h4><p>Could not retrieve PDF for report ID<tt>{$tok}</tt>.  Please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>, and include the report ID in your request.</p>");
-			    }
-			    else {
-			        $ext = "pdf";
-			        if($type == RPTP_NI_ZIP || $type == RPTP_PROJ_ZIP || $type == RPTP_HQP_ZIP){
-			            $ext = "zip";
-			        }
-				    $tst = $sto->metadata('timestamp');
-				    // Make timestamp usable in filename.
-				    $tst = strtr($tst, array(':' => '', '-' => '', ' ' => '_'));
-				    if($wgTitle->getText() == "ReportArchive"){
-				        if($type == RPTP_PROJ_ZIP){
-				            $name = "ProjectReports_{$tst}.zip";
-				        }
-				        else if($type == RPTP_NI_ZIP){
-				            $name = "NIReports_{$tst}.zip";
-				        }
-				        else if($type == RPTP_HQP_ZIP){
-				            $name = "HQPReports_{$tst}.zip";
-				        }
+            $sto = new ReportStorage($person);
+            if (! empty($tok)) {
+                $pdf = $sto->fetch_pdf($tok, false);
+                $len = $sto->metadata('len_pdf');
+                $user_id = $sto->metadata('user_id');
+                $type = $sto->metadata('type');
+                $pdf_owner = Person::newFromId($user_id);
+                $pdf_owner_name = $pdf_owner->getName();
+                if ($pdf == false || $len == 0) {
+                    $wgOut->addHTML("<h4>Warning</h4><p>Could not retrieve PDF for report ID<tt>{$tok}</tt>.  Please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>, and include the report ID in your request.</p>");
+                }
+                else {
+                    $ext = "pdf";
+                    if($type == RPTP_NI_ZIP || $type == RPTP_PROJ_ZIP || $type == RPTP_HQP_ZIP){
+                        $ext = "zip";
+                    }
+                    $tst = $sto->metadata('timestamp');
+                    // Make timestamp usable in filename.
+                    $tst = strtr($tst, array(':' => '', '-' => '', ' ' => '_'));
+                    if($wgTitle->getText() == "ReportArchive"){
+                        if($type == RPTP_PROJ_ZIP){
+                            $name = "ProjectReports_{$tst}.zip";
+                        }
+                        else if($type == RPTP_NI_ZIP){
+                            $name = "NIReports_{$tst}.zip";
+                        }
+                        else if($type == RPTP_HQP_ZIP){
+                            $name = "HQPReports_{$tst}.zip";
+                        }
                         else if($type == RPTP_LOI_REVIEW){
                             $report = AbstractReport::newFromToken($tok);
                             $name = "{$report->person->getReversedName()} LOI Evaluation Report.pdf";
@@ -100,39 +101,57 @@ class ReportArchive extends SpecialPage {
                             
                             $name = "{$loi_name} Evaluation Report.pdf";
                         }
-				        else{
-				            $report = AbstractReport::newFromToken($tok);
-				            if($report->project != null){
-				                if($report->person->getId() == 0){
-				                    $name = "{$report->name}.{$ext}";
-				                }
-				                else{
-				                    $name = "{$report->person->getReversedName()} {$report->name}.{$ext}";
-				                }
-				            }
-				            else{
-				                $name = "{$report->person->getReversedName()} {$report->name}.{$ext}";
-				            }
-				        }
-				    }
-				    if ($len == 0) {
-					    // No data, or no report at all.
-					    $wgOut->addHTML("No reports available for download.");
-					    return false;
-				    }
-				    // Good -- transmit it.
-				    $wgOut->disable();
-				    ob_clean();
-				    header("Content-Type: application/{$ext}");
-				    header('Content-Length: ' . $len);
-				    header('Content-Disposition: attachment; filename="'.$name.'"');
-				    header('Cache-Control: private, max-age=0, must-revalidate');
-				    header('Pragma: public');
-				    ini_set('zlib.output_compression','0');
-				    echo $pdf;
-				    return true;
-			    }
-		    }
+                        else{
+                            $report = AbstractReport::newFromToken($tok);
+                            $year = substr($tst, 0, 4);
+                            $month = substr($tst, 4, 2);
+                            $day = substr($tst, 6, 2);
+                            $hour = substr($tst, 9, 2);
+                            $minute = substr($tst, 11, 2);
+                            $date = "{$year}-{$month}-{$day}_{$hour}-{$minute}";
+                            if($report->name == "NI Report"){
+                                $reportName = "NI";
+                            }
+                            else if($report->name == "HQP Report"){
+                                $reportName = "HQP";
+                            }
+                            if($report->project != null){
+                                $project = $report->project;
+                                if($report->person->getId() == 0){
+                                    // Project Reports
+                                    $name = "{$project->getName()}_{$date}.{$ext}";
+                                }
+                                else{
+                                    $firstName = $report->person->getFirstName();
+                                    $lastName = $report->person->getLastName();
+                                    $name = "{$lastName}".substr($lastName, 0, 1)."-{$reportName}:{$project->getName()}_{$date}.{$ext}";
+                                }
+                            }
+                            else{
+                                $firstName = $report->person->getFirstName();
+                                $lastName = $report->person->getLastName();
+                                $name = "{$lastName}".substr($lastName, 0, 1)."-{$reportName}_{$date}.{$ext}";
+                            }
+                        }
+                    }
+                    if ($len == 0) {
+                        // No data, or no report at all.
+                        $wgOut->addHTML("No reports available for download.");
+                        return false;
+                    }
+                    // Good -- transmit it.
+                    $wgOut->disable();
+                    ob_clean();
+                    header("Content-Type: application/{$ext}");
+                    header('Content-Length: ' . $len);
+                    header('Content-Disposition: attachment; filename="'.$name.'"');
+                    header('Cache-Control: private, max-age=0, must-revalidate');
+                    header('Pragma: public');
+                    ini_set('zlib.output_compression','0');
+                    echo $pdf;
+                    return true;
+                }
+            }
         }
        
         $wgOut->addHTML("<h2>December $year</h2>");
@@ -291,23 +310,23 @@ class ReportArchive extends SpecialPage {
                 $commentCheck = $commentReport->getPDF();
                 $milestonesCheck = $milestonesReport->getPDF();
                 if (count($plCheck) > 0) {
-            		$tok = $plCheck[0]['token'];
-            		$sto->select_report($tok);    	
-            		$tst = $plCheck[0]['timestamp'];
-            		$plHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Report PDF</a></td><td>(generated $tst)</td></tr>";
-            	}
-            	if (count($commentCheck) > 0) {
-            		$tok = $commentCheck[0]['token'];
-            		$sto->select_report($tok);
-            		$tst = $plCheck[0]['timestamp'];
-            		$commentHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Comments PDF</a></td><td>(generated $tst)</td></tr>";
-            	}
-            	if (count($milestonesCheck) > 0) {
-            		$tok = $milestonesCheck[0]['token'];
-            		$sto->select_report($tok);
-            		$tst = $plCheck[0]['timestamp'];
-            		$milestonesHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Milestones PDF</a></td><td>(generated $tst)</td></tr>";
-            	}
+                    $tok = $plCheck[0]['token'];
+                    $sto->select_report($tok);        
+                    $tst = $plCheck[0]['timestamp'];
+                    $plHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Report PDF</a></td><td>(generated $tst)</td></tr>";
+                }
+                if (count($commentCheck) > 0) {
+                    $tok = $commentCheck[0]['token'];
+                    $sto->select_report($tok);
+                    $tst = $plCheck[0]['timestamp'];
+                    $commentHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Comments PDF</a></td><td>(generated $tst)</td></tr>";
+                }
+                if (count($milestonesCheck) > 0) {
+                    $tok = $milestonesCheck[0]['token'];
+                    $sto->select_report($tok);
+                    $tst = $plCheck[0]['timestamp'];
+                    $milestonesHTML .= "<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&project={$pj->getName()}'>{$year} {$pj->getName()} Project Milestones PDF</a></td><td>(generated $tst)</td></tr>";
+                }
             }
             if($plHTML != "" || $commentHTML != "" || $milestonesHTML != ""){
                 $wgOut->addHTML("<table>$plHTML</table><br /><table>$commentHTML</table><br /><table>$milestonesHTML</table>");
@@ -353,36 +372,36 @@ class ReportArchive extends SpecialPage {
                     }
                 }
                 if (count($check) > 0) {
-            		$tok = $check[0]['token'];
-            		$sto->select_report($tok);    	
-            		$tst = $sto->metadata('timestamp');
-            		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst)<br />");
-            	}
-            	$check = array();
-            	if($role->getRole() == HQP){
+                    $tok = $check[0]['token'];
+                    $sto->select_report($tok);        
+                    $tst = $sto->metadata('timestamp');
+                    $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst)<br />");
+                }
+                $check = array();
+                if($role->getRole() == HQP){
                     $usedRoles[HQP] = true;
                     $report = new DummyReport("HQPReportComments", $person, null, $year);
                     $check = $report->getPDF();
                 }
                 if (count($check) > 0) {
-            		$tok = $check[0]['token'];
-            		$sto->select_report($tok);    	
-            		$tst = $sto->metadata('timestamp');
-            		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst)<br />");
-            	}
-            	$check = array();
-            	if($role->getRole() == PNI || $role->getRole() == CNI){
+                    $tok = $check[0]['token'];
+                    $sto->select_report($tok);        
+                    $tst = $sto->metadata('timestamp');
+                    $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst)<br />");
+                }
+                $check = array();
+                if($role->getRole() == PNI || $role->getRole() == CNI){
                     $usedRoles[PNI] = true;
                     $usedRoles[CNI] = true;
                     $report = new DummyReport("NIReportComments", $person, null, $year);
                     $check = $report->getPDF();
                 }
                 if (count($check) > 0) {
-            		$tok = $check[0]['token'];
-            		$sto->select_report($tok);    	
-            		$tst = $sto->metadata('timestamp');
-            		$wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst)<br />");
-            	}
+                    $tok = $check[0]['token'];
+                    $sto->select_report($tok);        
+                    $tst = $sto->metadata('timestamp');
+                    $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst)<br />");
+                }
             }
         }
         else{
@@ -414,10 +433,10 @@ class ReportArchive extends SpecialPage {
                 $ls = $sto->list_project_reports($pj->getId(), 10000, 0, RPTP_LEADER_COMMENTS);
                 foreach ($ls as &$row) {
                     if($row['year'] == $year){
-	                    $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$row['token']}&amp;project={$pj->getName()}'>{$year} {$pj->getName()} Project Comments PDF</a> (generated {$row['timestamp']})<br />");
-	                    $found = true;
-	                    break;
-	                }
+                        $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$row['token']}&amp;project={$pj->getName()}'>{$year} {$pj->getName()} Project Comments PDF</a> (generated {$row['timestamp']})<br />");
+                        $found = true;
+                        break;
+                    }
                 }
                 //if(count($ls) > 0){
                 //    break;
@@ -450,16 +469,16 @@ class ReportArchive extends SpecialPage {
                 foreach(Person::getAllPeople() as $p){
                     // Looping through everybody is pretty slow, but for the moment, is an easy way to find all the leader reports
                     $repi = new ReportIndex($p);
-	                $ls = $repi->list_reports($pj);
-	                foreach ($ls as &$row) {
-	                    if($row['created'] >= ($year).REPORTING_PRODUCTION_MONTH && $row['created'] <= ($year+1).REPORTING_PRODUCTION_MONTH){
-		                    $wgOut->addHTML("<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$row['token']}&amp;project={$pj->getName()}'>{$year} {$pj->getName()} Project Summary</a></td><td>(generated {$row['created']})</td></tr>");
-		                }
-	                }
-	                if(count($ls) > 0){
-	                    break;
-	                }
-	            }
+                    $ls = $repi->list_reports($pj);
+                    foreach ($ls as &$row) {
+                        if($row['created'] >= ($year).REPORTING_PRODUCTION_MONTH && $row['created'] <= ($year+1).REPORTING_PRODUCTION_MONTH){
+                            $wgOut->addHTML("<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$row['token']}&amp;project={$pj->getName()}'>{$year} {$pj->getName()} Project Summary</a></td><td>(generated {$row['created']})</td></tr>");
+                        }
+                    }
+                    if(count($ls) > 0){
+                        break;
+                    }
+                }
             }
             $wgOut->addHTML("</table><br /><table>");
             $found = false;
@@ -472,9 +491,9 @@ class ReportArchive extends SpecialPage {
                 foreach($check as $r){
                     if($r['timestamp'] >= ($year).REPORTING_PRODUCTION_MONTH && $r['timestamp'] <= ($year+1).REPORTING_PRODUCTION_MONTH){
                         $tst = $r['timestamp'];
-	                    $tok = $sto->select_report($r['token']);
-	                    break;
-	                }
+                        $tok = $sto->select_report($r['token']);
+                        break;
+                    }
                 }
                 // Try unsubmitted reports.
                 $check = $sto->list_reports($p->getId(), NOTSUBM, 1000, 0, RPTP_LEADER);
@@ -491,20 +510,20 @@ class ReportArchive extends SpecialPage {
                 }
                 if($tok != false){
                     $sql = "SELECT `data`,`timestamp`
-	                        FROM `grand_pdf_report`
-	                        WHERE `token` = '{$tok}'";
+                            FROM `grand_pdf_report`
+                            WHERE `token` = '{$tok}'";
                     $dt = DBFunctions::execSQL($sql);
                     $data = unserialize($dt[0]['data']);
                     $proj = @$data['proj'];
                     $tst = @$dt[0]['timestamp'];
-	                $tok = $sto->select_report($tok);
-		            foreach($projs as $project){
-		                if($project->getId() == $proj){
-		                    $wgOut->addHTML("<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download archived {$year} {$project->getName()} $type Report PDF</a></td><td> (generated by {$p->getNameForForms()} on $tst)</td></tr>");
-		                    $found = true;
-		                    break;
-		                }
-		            }
+                    $tok = $sto->select_report($tok);
+                    foreach($projs as $project){
+                        if($project->getId() == $proj){
+                            $wgOut->addHTML("<tr><td><a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download archived {$year} {$project->getName()} $type Report PDF</a></td><td> (generated by {$p->getNameForForms()} on $tst)</td></tr>");
+                            $found = true;
+                            break;
+                        }
+                    }
                 }
             }
             $wgOut->addHTML("</table>");
@@ -548,9 +567,9 @@ class ReportArchive extends SpecialPage {
                             $pdf = "";
                             $check = $report->getPDF();
                             if (count($check) > 0) {
-                        		$tok = $check[0]['token'];
-                        		$pdf = "(<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>PDF</a>)";
-                        	}
+                                $tok = $check[0]['token'];
+                                $pdf = "(<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>PDF</a>)";
+                            }
                             $wgOut->addHTML("<tr><td>{$year} {$proj->getName()}: {$champ['user']->getReversedName()}</td><td>(<a target='_blank' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?project={$proj->getName()}&person={$champ['user']->getId()}&generatePDF&preview&year=$year'>Preview</a>){$pdf}</td></tr>");
                         }
                         $wgOut->addHTML("</table>");
@@ -560,20 +579,52 @@ class ReportArchive extends SpecialPage {
         }
     }
     
-    static function createTab(){
-		global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
-		
-		$selected = "";
-		if($wgTitle->getText() == "ReportArchive"){
-		    $selected = "selected";
-		}
-		
-		echo "<li class='top-nav-element $selected'>\n";
-		echo "	<span class='top-nav-left'>&nbsp;</span>\n";
-		echo "	<a id='lnk-my_archive' class='top-nav-mid' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive' class='new'>My Archive</a>\n";
-		echo "	<span class='top-nav-right'>&nbsp;</span>\n";
-		echo "</li>";
-	}
+    static function createTab($tabs){
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
+        $tabs["My Archive"] = TabUtils::createTab("My Archive");
+        return true;
+    }
+    
+    static function createSubTabs($tabs){
+        global $wgTitle, $wgUser, $wgServer, $wgScriptPath;
+        if(!self::userCanExecute($wgUser)){
+            return true;
+        }
+        $current_selection = (isset($_GET['year']) && is_numeric($_GET['year'])) ? $_GET['year'] : date('Y')-1;
+
+        $content_actions = array();
+
+        $getString = "";
+        if(isset($_GET['person'])){
+            $getString = "&person={$_GET['person']}";
+            $me = Person::newFromName($_GET['person']);
+            if($me->getName() == ""){
+                $me = Person::newFromId($wgUser->getId());
+            }
+        }
+        else{
+            $me = Person::newFromId($wgUser->getId());
+        }
+        
+        $registration = $wgUser->getRegistration();
+        $year = substr($registration, 0, 4);
+        $month = substr($registration, 4, 2);
+        
+        for($i = date('Y'); $i >= $year; $i--){
+            if($i == date('Y')){
+                if(date('m') >= 3){
+                    $current_selection = (isset($_GET['year']) && is_numeric($_GET['year'])) ? $_GET['year'] : date('Y');
+                }
+                else{
+                    continue;
+                }
+            }
+            $selected = ($wgTitle->getText() == "ReportArchive" && $current_selection == $i) ? "selected" : "";
+            $tabs["My Archive"]['subtabs'][] = TabUtils::createSubTab($i, "$wgServer$wgScriptPath/index.php/Special:ReportArchive?year={$i}{$getString}", $selected);
+        }
+        
+        return true;
+    }
 }
 
 ?>
