@@ -220,7 +220,7 @@ class LimitReportItemSet extends ReportItemSet {
 	            $plural = "";
 	        }
 	        $html .= "<span class='$class'><small>(<i>Reported By {$noun} - currently {$length} character{$plural} out of a {$type} {$this->getLimit()} across all {$pluralNoun}.</i>)</small></span>";
-	        $html .= nl2br("<p>{$text}</p>");
+	        $html .= nl2br("{$text}");
 	    }
 	    $wgOut->addHTML($html);
     }

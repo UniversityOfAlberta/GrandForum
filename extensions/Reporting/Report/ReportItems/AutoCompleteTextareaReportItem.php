@@ -171,7 +171,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 	    }
 	    else{
 	        $value = nl2br($this->getReplacedBlobValue());
-		    $html .= "<p>{$value}</p>";
+		    $html .= "{$value}";
 	        $html = $this->processCData($html);
 	    }
 		$wgOut->addHTML($html);
