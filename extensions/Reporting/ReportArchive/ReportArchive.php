@@ -109,25 +109,23 @@ class ReportArchive extends SpecialPage {
                             $hour = substr($tst, 9, 2);
                             $minute = substr($tst, 11, 2);
                             $date = "{$year}-{$month}-{$day}_{$hour}-{$minute}";
-                            if($report->name == "NI Report"){
-                                $reportName = "NI";
-                            }
-                            else if($report->name == "HQP Report"){
-                                $reportName = "HQP";
-                            }
+                            $reportName = str_replace(" ", "-", trim(str_replace(":", "", str_replace("Report", "", $report->name))));
                             if($report->project != null){
                                 $project = $report->project;
                                 if($report->person->getId() == 0){
+                                    $reportName = trim(str_replace($project->getName(), "", $reportName), " \t\n\r\0\x0B-");
                                     // Project Reports
-                                    $name = "{$project->getName()}_{$date}.{$ext}";
+                                    $name = "{$project->getName()}-{$reportName}_{$date}.{$ext}";
                                 }
                                 else{
+                                    // Individual Reports, but project version
                                     $firstName = $report->person->getFirstName();
                                     $lastName = $report->person->getLastName();
                                     $name = "{$lastName}".substr($lastName, 0, 1)."-{$reportName}:{$project->getName()}_{$date}.{$ext}";
                                 }
                             }
                             else{
+                                // Individual Reports
                                 $firstName = $report->person->getFirstName();
                                 $lastName = $report->person->getLastName();
                                 $name = "{$lastName}".substr($lastName, 0, 1)."-{$reportName}_{$date}.{$ext}";
