@@ -117,12 +117,14 @@ EOF;
             $projs = array();
             $parts = array();
             foreach($projects as $project){
-                $projs[] = "<a href='{$project->getUrl()}' target='_blank'>{$project->getName()}</a>";
+                if(!$project->isSubProject()){
+                    $projs[] = "<a href='{$project->getUrl()}' target='_blank'>{$project->getName()}</a>";
+                }
             }
             foreach($partners as $partner){
                 $parts[] = $partner->getOrganization();
             }
-            $details = "<td style='white-space:nowrap;text-align:center;'>{$date} </td><td style='text-align:right;'>\$".number_format($contribution->getTotal())." </td><td>".implode(", ", $projs)."<br /></td><td>".implode(", ", $parts)."</td><td> <a href='{$contribution->getUrl()}' target='_blank'><i>{$contribution->getName()}</i></a><br /></td>";
+            $details = "<td style='white-space:nowrap;text-align:center;' class='pdfnodisplay'>{$date} </td><td style='text-align:right;'>\$".number_format($contribution->getTotal())." </td><td class='pdfnodisplay'>".implode(", ", $projs)."<br /></td><td>".implode(", ", $parts)."</td><td> <a href='{$contribution->getUrl()}' target='_blank'><i>{$contribution->getName()}</i></a><span class='pdfOnly'>, {$date}</span><div class='pdfOnly' style='width:50%;margin-left:50%;text-align:right;'><i>".implode(", ", $projs)."</i></div></td>";
             return $details;
         }
         
