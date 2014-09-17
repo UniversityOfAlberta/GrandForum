@@ -3,7 +3,7 @@
 class ProjectPresentationsCell extends ProjectPublicationCell {
     
     function ProjectPresentationsCell($cellType, $params, $cellValue, $rowN, $colN, $table){
-        $this->label = "Presentation";
+        $this->label = "Presentations";
         $this->category = "Presentation";
         $this->ProjectPublicationCell($cellType, $params, $cellValue, $rowN, $colN, $table);
     }
