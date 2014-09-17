@@ -36,7 +36,8 @@ $dashboardStructures[NI_REPORT_STRUCTURE] =
     );
 
 $dashboardStructures[NI_REPORT_PRODUCTIVITY_STRUCTURE] =
-    array(array(STRUCT(HEAD, "Projects"), 
+    array(array(STRUCT(HEAD, "Projects"),
+                STRUCT(HEAD, "HQP", "tooltip=\"Under HQP, the productivity table reports HQP who have been listed as being supervised by the NI during the current reporting period. The detailed listing of the HQP (accessible when you click on and of the HQP column links) documents more precisely why each individual HQP is listed.\""), 
                 STRUCT(HEAD, "Publications", "PB: Published", "tooltip=\"Under Publications, the productivity table reports any publication co-authored by the NI, with a date within current reporting year and two years into the future (to account for 'to appear' publications). Publications are of different types but, in principle, are documents that appear in archival venues and can be cited.\""), 
                 STRUCT(HEAD, "Artifacts", "PR: Peer Reviewed", "tooltip=\"Under Artifacts, the productivity table reports any artifact co-produced by the NI, with a date within the current reporting year and two years into the future (to account for things like scheduled software releases and planned artistic installations). This category of productivity evidence includes curated data repositories, open-source software, artistic works. They are annotated as \\\"peer reviewed\\\" or \\\"non peer-reviewed\\\".\""), 
                 STRUCT(HEAD, "Activities", "tooltip=\"Under Activities, the productivity table reports any activity in which the NI was involved, with a date the current reporting year and two years beyond. This category is meant to include conference organization and similar activities.\""), 
@@ -46,6 +47,7 @@ $dashboardStructures[NI_REPORT_PRODUCTIVITY_STRUCTURE] =
                 STRUCT(HEAD, "Multimedia", "tooltip=\"Under Multimedia, the productivity table reports multimedia stories in which the NI was involved within the current reporting year.\""), 
                 STRUCT(HEAD, "Contributions", "tooltip=\"Under Contributions, the productivity table reports cash and in-kind contributions to the NI's GRAND-related research activities by agencies outside GRAND during the current reporting year.\"")), 
     array(HEAD.'(Total:)',
+          STRUCT(PERSON_HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
           STRUCT(PERSON_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END_ACTUAL), 
           STRUCT(PERSON_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END_ACTUAL), 
           STRUCT(PERSON_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END_ACTUAL),
@@ -55,6 +57,7 @@ $dashboardStructures[NI_REPORT_PRODUCTIVITY_STRUCTURE] =
           STRUCT(PERSON_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_CYCLE_END_ACTUAL),
           STRUCT(PERSON_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END_ACTUAL)), 
           STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array(PERSON_PROJECTS,
+                                                           STRUCT(PERSON_HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
                                                            STRUCT(PERSON_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END_ACTUAL), 
                                                            STRUCT(PERSON_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END_ACTUAL), 
                                                            STRUCT(PERSON_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END_ACTUAL),
@@ -63,7 +66,8 @@ $dashboardStructures[NI_REPORT_PRODUCTIVITY_STRUCTURE] =
                                                            STRUCT(PERSON_AWARDS, REPORTING_CYCLE_START, REPORTING_CYCLE_END_ACTUAL),
                                                            STRUCT(PERSON_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_CYCLE_END_ACTUAL),
                                                            STRUCT(PERSON_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END_ACTUAL)), 
-      array(HEAD.'(Total:)', 
+      array(HEAD.'(Total:)',
+            STRUCT(PERSON_HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
             STRUCT(PERSON_PUBLICATIONS, REPORTING_CYCLE_START, REPORTING_CYCLE_END_ACTUAL), 
             STRUCT(PERSON_ARTIFACTS, REPORTING_CYCLE_START, REPORTING_CYCLE_END_ACTUAL), 
             STRUCT(PERSON_ACTIVITIES, REPORTING_CYCLE_START, REPORTING_CYCLE_END_ACTUAL),
