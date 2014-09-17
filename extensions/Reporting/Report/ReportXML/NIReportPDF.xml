@@ -101,7 +101,7 @@
         <ReportItem id="legend" type="StaticReportItem">
             <![CDATA[
                 <div style='text-align:right;'>
-                    Legend: <b>NI</b>, <b><u>HQP</u></b>, <b style='border-bottom: 1px solid #000000;'><u>External</u></b>, other authors<br /><br />
+                    Legend: <b>NI</b>, <b><u>HQP</u></b>, <b><i>Other GRAND authors</i></b>, External<br /><br />
                 </div>
             ]]>
         </ReportItem>

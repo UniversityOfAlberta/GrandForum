@@ -111,9 +111,9 @@ EOF
         $display = ($year > REPORTING_YEAR) ? "display:none;" : "";
         $tplt = "<div style='page-break-inside:avoid;margin-bottom:25px;'>
                     <h4>$title ({$status})</h4>
-                        <p style='margin-left:50px;'><b>Problem Statement:&nbsp;</b>{$problem}</p>
-                        <p style='margin-left:50px;'><b>Plan & Expected Outcomes:&nbsp;</b>{$description}</p>
-                        <p style='margin-left:50px;{$display}'><b>Assessment:&nbsp;</b>{$assessment}</p>
+                        <p style='margin-left:50px;'><b>Problem Statement:&nbsp;</b><small>(Currently 298 out of 300 characters)</small><br />{$problem}</p>
+                        <p style='margin-left:50px;'><b>Plan & Expected Outcomes:&nbsp;</b><small>(Currently 298 out of 300 characters)</small><br />{$description}</p>
+                        <p style='margin-left:50px;{$display}'><b>Assessment:&nbsp;</b><small>(Currently 497 out of 500 characters)</small><br />{$assessment}</p>
                  </div>";
         return $tplt;
     }
