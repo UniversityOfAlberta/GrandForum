@@ -608,6 +608,7 @@ class cavendishTemplate extends QuickTemplate {
 		        global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage, $config;
                 $GLOBALS['tabs'] = array();
                 
+                $GLOBALS['tabs']['Other'] = TabUtils::createTab("", "");
                 $GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"), "$wgServer$wgScriptPath/index.php/Main_Page");
                 $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
                 $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
@@ -627,12 +628,18 @@ class cavendishTemplate extends QuickTemplate {
 	           	        if(strstr($subtab['selected'], "selected") !== false){
 	           	            $tabs[$key]['selected'] = "selected";
 	           	            $selectedFound = true;
+	           	            if($tabs[$key]['text'] == ""){
+	           	                $tabs['Main']['selected'] = "selected";
+	           	            }
 	           	        }
 	           	        if(count($subtab['dropdown']) > 0){
 	           	            foreach($subtab['dropdown'] as $dropdown){
 	           	                if(strstr($dropdown['selected'], "selected") !== false){
 	                   	            $tabs[$key]['selected'] = "selected";
 	                   	            $selectedFound = true;
+	                   	            if($tabs[$key]['text'] == ""){
+	                   	                $tabs['Main']['selected'] = "selected";
+	                   	            }
 	                   	        }
 	           	            }
 	           	        }
@@ -643,7 +650,7 @@ class cavendishTemplate extends QuickTemplate {
 	           	    $tabs['Main']['selected'] = "selected";
 	           	}
 			    foreach($tabs as $key => $tab){
-			        if($tab['href'] != ""){
+			        if($tab['href'] != "" && $tab['text'] != ""){
 			            echo "<li class='top-nav-element {$tab['selected']}'>\n";
                         echo "    <span class='top-nav-left'>&nbsp;</span>\n";
                         echo "    <a id='{$tab['id']}' class='top-nav-mid highlights-tab' href='{$tab['href']}'>{$tab['text']}</a>\n";

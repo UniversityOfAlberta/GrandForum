@@ -1,8 +1,6 @@
 <?php
 
-require_once("ReportErrors.php");
-
-$wgHooks['SkinTemplateContentActions'][] = 'ReportErrors::showTabs';
+$wgHooks['SubLevelTabs'][] = 'ReportErrors::createSubTabs';
 
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['ReportErrors'] = 'ReportErrors';
@@ -351,25 +349,13 @@ class ReportErrors extends SpecialPage {
 	    $wgOut->addHTML("</table>");
 	}
     
-    static function showTabs(&$content_actions){
+    static function createSubTabs($tabs){
         global $wgTitle, $wgUser, $wgServer, $wgScriptPath;
-        $current_selection = (isset($_GET['type'])) ? $_GET['type'] : "ni";
-        
         if($wgTitle->getText() == "ReportErrors"){
-            $content_actions = array();
-            
+            $current_selection = (isset($_GET['type'])) ? $_GET['type'] : "ni";
             foreach(ReportErrors::$types as $key => $type){
-                if($current_selection == $key){
-                    $class = "selected";
-                }
-                else{
-                    $class = false;
-                }
-                $content_actions[] = array (
-                     'class' => $class,
-                     'text'  => $type,
-                     'href'  => "$wgServer$wgScriptPath/index.php/Special:ReportErrors?type={$key}",
-                    );
+                $selected = ($current_selection == $key) ? "selected" : false;
+                $tabs['Other']['subtabs'][] = TabUtils::createSubTab($type, "$wgServer$wgScriptPath/index.php/Special:ReportErrors?type={$key}", $selected);
             }
         }
         return true;

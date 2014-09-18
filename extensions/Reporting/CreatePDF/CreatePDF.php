@@ -2,7 +2,7 @@
 
 require_once("ReportErrors.php");
 
-$wgHooks['SkinTemplateContentActions'][] = 'CreatePDF::showTabs';
+$wgHooks['SubLevelTabs'][] = 'CreatePDF::createSubTabs';
 
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['CreatePDF'] = 'CreatePDF';
@@ -586,25 +586,13 @@ class CreatePDF extends SpecialPage {
 	    $wgOut->addHTML("</table>");
 	}
     
-    static function showTabs(&$content_actions){
+    static function createSubTabs($tabs){
         global $wgTitle, $wgUser, $wgServer, $wgScriptPath;
-        $current_selection = (isset($_GET['type'])) ? $_GET['type'] : "ni";
-        
         if($wgTitle->getText() == "CreatePDF"){
-            $content_actions = array();
-            
+            $current_selection = (isset($_GET['type'])) ? $_GET['type'] : "ni";
             foreach(CreatePDF::$types as $key => $type){
-                if($current_selection == $key){
-                    $class = "selected";
-                }
-                else{
-                    $class = false;
-                }
-                $content_actions[] = array (
-                     'class' => $class,
-                     'text'  => $type,
-                     'href'  => "$wgServer$wgScriptPath/index.php/Special:CreatePDF?type={$key}",
-                    );
+                $selected = ($current_selection == $key) ? "selected" : false;
+                $tabs['Other']['subtabs'][] = TabUtils::createSubTab($type, "$wgServer$wgScriptPath/index.php/Special:CreatePDF?type={$key}", $selected);
             }
         }
         return true;

@@ -1,7 +1,7 @@
 <?php
 $dir = dirname(__FILE__) . '/';
 
-$wgHooks['SkinTemplateContentActions'][] = 'AllocatedBudgets::showTabs';
+$wgHooks['SubLevelTabs'][] = 'AllocatedBudgets::createSubTabs';
 
 $wgSpecialPages['AllocatedBudgets'] = 'AllocatedBudgets';
 $wgExtensionMessagesFiles['AllocatedBudgets'] = $dir . 'AllocatedBudgets.i18n.php';
@@ -43,7 +43,7 @@ class AllocatedBudgets extends SpecialPage {
             exit;
         }
 	    $people = Person::getAllPeopleDuring('all', "{$year}-00-00", ($year+1)."-00-00");
-	    $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='none'>
+	    $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
                             <thead>
                                 <tr>
                                     <th>Name</th><th>Allocated Budget</th><th>Total</th>
@@ -116,15 +116,13 @@ class AllocatedBudgets extends SpecialPage {
         return $data;
     }
     
-    static function showTabs(&$content_actions){
+    static function createSubTabs($tabs){
         global $wgTitle, $wgUser, $wgServer, $wgScriptPath;
-        $current_selection = (isset($_GET['year']) && is_numeric($_GET['year'])) ? $_GET['year'] : date('Y')-1;
-        
         if($wgTitle->getText() == "AllocatedBudgets"){
+            $current_selection = (isset($_GET['year']) && is_numeric($_GET['year'])) ? $_GET['year'] : date('Y')-1;
             $content_actions = array();
             
             $year = "2011";
-            
             for($i = date('Y'); $i >= $year; $i--){
                 if($i == date('Y')){
                     if(date('m') >= 3){
@@ -134,17 +132,8 @@ class AllocatedBudgets extends SpecialPage {
                         continue;
                     }
                 }
-                if($current_selection == $i){
-                    $class = "selected";
-                }
-                else{
-                    $class = false;
-                }
-                $content_actions[] = array (
-                     'class' => $class,
-                     'text'  => $i,
-                     'href'  => "$wgServer$wgScriptPath/index.php/Special:AllocatedBudgets?year={$i}",
-                    );
+                $selected = ($current_selection == $i) ? "selected" : false;
+                $tabs['Other']['subtabs'][] = TabUtils::createSubTab($i, "$wgServer$wgScriptPath/index.php/Special:AllocatedBudgets?year={$i}", $selected);
             }
         }
         return true;

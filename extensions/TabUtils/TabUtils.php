@@ -30,6 +30,11 @@ class TabUtils {
         return array('text' => $text,
                      'href' => $href);
     }
+    
+    static function clearSubTabs($id){
+        global $tabs;
+        $tabs[$id]['subtabs'] = array();
+    }
 
     static function actionTabs(&$content_actions){
         global $wgTitle, $wgServer, $wgScriptPath, $wgOut, $dropdownScript;
