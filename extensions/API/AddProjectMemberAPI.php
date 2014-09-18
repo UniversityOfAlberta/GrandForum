@@ -18,7 +18,9 @@ class AddProjectMemberAPI extends API{
 		$groups = $wgUser->getGroups();
         $me = Person::newFromId($wgUser->getId());
         $project = Project::newFromName($_POST['role']);
-		if($me->isRoleAtLeast(STAFF) || $me->leadershipOf($project->getParent())){
+		if($me->isRoleAtLeast(STAFF) || 
+		   $me->leadershipOf($project) || 
+		   ($project->isSubProject() && $me->leadershipOf($project->getParent()))){
             // Actually Add the Project Member
             $person = Person::newFromName($_POST['user']);
             

@@ -76,6 +76,28 @@ class ProjectMainTab extends AbstractEditableTab {
             APIRequest::doAction('ProjectChallenge', true);
         }
         
+        // Deleting Champions
+        if(isset($_POST['champ_del'])){
+            foreach($_POST['champ_del'] as $key => $id){
+                $champ = Person::newFromId($id);
+                $_POST['role'] = $this->project->getName();
+                $_POST['user'] = $champ->getName();
+                $_POST['comment'] = "Automatic Removal";
+                APIRequest::doAction('DeleteProjectMember', true);
+            }
+        }
+        
+        // Adding New Champions
+        if(isset($_POST['champ_name'])){
+            foreach($_POST['champ_name'] as $key => $name){
+                if($name != ""){
+                    $_POST['role'] = $this->project->getName();
+                    $_POST['user'] = $name;
+                    APIRequest::doAction('AddProjectMember', true);
+                }
+            }
+        }
+        
         if(isset($_POST['pl'])){
             $leaderName = ($this->project->getLeader() != null) ? $this->project->getLeader()->getName() : "";
             if($_POST['pl'] != $leaderName){
@@ -194,28 +216,32 @@ EOF;
                 }
             }
         }
-        
-        $this->html .= "<h2><span class='mw-headline'>Champions</span></h2>";
 
-        if(!count($champions) == 0){
-            foreach($champions as $champion){
-                $subs = "";
-                if(isset($champion['subs'])){
-                    $subs = " (".implode(", ", $champion['subs']).")";
+        $this->html .= "<h2><span class='mw-headline'>Champions</span></h2>";
+        if($edit){
+            $this->showEditChampions($champions);
+        }
+        else{
+            if(!count($champions) == 0){
+                foreach($champions as $champion){
+                    $subs = "";
+                    if(isset($champion['subs'])){
+                        $subs = " (".implode(", ", $champion['subs']).")";
+                    }
+                    $this->html .= "
+                    <h3><a href='{$champion['user']->getUrl()}'>{$champion['user']->getNameForForms()}</a>$subs</h3>
+                    <table cellspacing='0' cellpadding='2' style='margin-left:15px;'>";
+                    if($wgUser->isLoggedIn()){
+                        $this->html .= "<tr><td><strong>Email:</strong></td><td>{$champion['user']->getEmail()}</td></tr>";
+                    }
+                    $this->html .= "<tr><td><strong>Title:</strong></td><td>{$champion['title']}</td></tr>
+                        <tr><td><strong>Organization:</strong></td><td>{$champion['org']}</td></tr>
+                    </table>";
                 }
-                $this->html .= "
-                <h3><a href='{$champion['user']->getUrl()}'>{$champion['user']->getNameForForms()}</a>$subs</h3>
-                <table cellspacing='0' cellpadding='2' style='margin-left:15px;'>";
-                if($wgUser->isLoggedIn()){
-                    $this->html .= "<tr><td><strong>Email:</strong></td><td>{$champion['user']->getEmail()}</td></tr>";
-                }
-                $this->html .= "<tr><td><strong>Title:</strong></td><td>{$champion['title']}</td></tr>
-                    <tr><td><strong>Organization:</strong></td><td>{$champion['org']}</td></tr>
-                </table>";
             }
         }
         
-        if(!$project->isSubProject()){    
+        if(!$project->isSubProject()){
             if(count($derivedChamps) > 0){
                 $this->html .= "<p>The following are Champions of {$project->getName()}'s sub-projects</p><ul>";
                 foreach($derivedChamps as $champion){
@@ -224,9 +250,42 @@ EOF;
                 $this->html .= "</ul>";
             }
         }
-        if(count($champions) == 0 && count($derivedChamps) == 0){
-            $this->html .= "<strong>N/A</strong>";
+        if(!$edit){
+            if(count($champions) == 0 && count($derivedChamps) == 0){
+                $this->html .= "<strong>N/A</strong>";
+            }
         }
+    }
+    
+    function showEditChampions($champions){
+        $this->html .= "<table>";
+        if(count($champions) > 0){
+            $this->html .= "<tr><th></th><th>Delete?</th></tr>";
+        }
+        foreach($champions as $champ){
+            $user = $champ['user'];
+            $this->html .= "<tr>
+                    <td style='padding-left:6px;'><b>{$user->getNameForForms()}</b></td>
+                    <td align='center'><input type='checkbox' name='champ_del[]' value='{$user->getId()}' /></td>
+                </tr>";
+        }
+        $names = array("");
+        $people = Person::getAllPeople(CHAMP);
+        foreach($people as $person){
+            $names[$person->getName()] = $person->getNameForForms();
+        }
+        asort($names);
+
+        $plusMinus = new PlusMinus("champ_plusminus");
+        $table = new FormTable("champ_table");
+        
+        $combo = new ComboBox("champ_name[]", "Name", "", $names, VALIDATE_CHAMPION);
+        
+        $table->append($combo);
+        $plusMinus->append($table);
+        $this->html .= "<tr><td>";
+        $this->html .= $plusMinus->render();
+        $this->html .= "</td><td></td></tr></table>";
     }
 
     function showPeople(){

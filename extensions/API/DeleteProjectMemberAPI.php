@@ -19,10 +19,12 @@ class DeleteProjectMemberAPI extends API{
 		global $wgRequest, $wgUser, $wgServer, $wgScriptPath;
 		$groups = $wgUser->getGroups();
         $me = Person::newFromId($wgUser->getId());
-		if($me->isRoleAtLeast(STAFF)){
+        $project = Project::newFromName($_POST['role']);
+		if($me->isRoleAtLeast(STAFF) || 
+		   $me->leadershipOf($project) || 
+		   ($project->isSubProject() && $me->leadershipOf($project->getParent()))){
             // Actually Add the Project Member
             $person = Person::newFromName($_POST['user']);
-            $project = Project::newFromName($_POST['role']);
             $comment = str_replace("'", "&#39;", $_POST['comment']);
             if(!$noEcho){
                 if($person->getName() == null){
