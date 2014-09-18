@@ -624,6 +624,9 @@ class cavendishTemplate extends QuickTemplate {
 			        if($tabs[$key]['href'] == "" && isset($tabs[$key]['subtabs'][0])){
 			            $tabs[$key]['href'] = $tab['subtabs'][0]['href'];
 			        }
+			        if(strstr($tab['selected'], "selected") !== false){
+			            $selectedFound = true;
+			        }
 	           	    foreach($tab['subtabs'] as $subtab){
 	           	        if(strstr($subtab['selected'], "selected") !== false){
 	           	            $tabs[$key]['selected'] = "selected";
