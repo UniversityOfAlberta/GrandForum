@@ -87,7 +87,10 @@ class ProjectSubprojectsTab extends AbstractTab {
             $this->html .= "<div class='subprojects_accordion'>";
             $this->html .= "<h3><a href='#'>{$subproject->getName()}</a></h3>";
             $this->html .= "<div>";
-            $tab = new ProjectMainTab($subproject, array('overrideEdit' => true));
+            $tab = new ProjectMainTab($subproject, array('edit' => false,
+                                                         'isLead' => false,
+                                                         'isMember' => false,
+                                                         'overrideEdit' => true));
             $this->html .= $tab->generateBody();
             $this->html .= "<a class='button' href='{$subproject->getUrl()}' target='_blank'>View Project Page</a>";
             if($can_edit){
