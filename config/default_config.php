@@ -133,7 +133,7 @@
     $config->setConst("YEAR", date('Y'));
 
     // Start of internal reporting cycle (Used for range queries)
-    $config->setConst("CYCLE_START_MONTH", '-00-00');
+    $config->setConst("CYCLE_START_MONTH", '-01-01');
     $config->setConst("CYCLE_START", $config->getConst('YEAR').$config->getConst('CYCLE_START_MONTH'));
     
     // Start of NCE reporting cycle

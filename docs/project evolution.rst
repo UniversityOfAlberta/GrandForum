@@ -1,7 +1,7 @@
 .. index:: single: Project Evolution
 
 Project Evolution
-=============
+=================
 
 The purpose for Project Evolution is to track the evolution of a
 project. There are 3 types of projects, and 3 types of status.
@@ -30,26 +30,33 @@ There are 4 types of actions which can occur during a project’s
 lifetime:
 
 -  CREATE
-    -  Initializes the project with its first revision. last\_id, and
-       project\_id are set to -1. new\_id is set to the id of the project.
+
+   -  Initializes the project with its first revision. last\_id, and
+      project\_id are set to -1. new\_id is set to the id of the project.
+
 -  EVOLVE
-    -  Changes the project from one to another (ie. PROJECTA -> PROJECTB).
-       The project’s name can remain the same(ie. PROJECTA -> PROJECTA). The
-       status and type can change. last\_id is set to the previous
-       evolution\_id. project\_id is set to the previous id of the project.
-       new\_id is set to the new id of the project.
+
+   -  Changes the project from one to another (ie. PROJECTA -> PROJECTB).
+      The project’s name can remain the same(ie. PROJECTA -> PROJECTA). The
+      status and type can change. last\_id is set to the previous
+      evolution\_id. project\_id is set to the previous id of the project.
+      new\_id is set to the new id of the project.
+
 -  MERGE
-    -  This is a special case of EVOLVE, except that there are multiple
-       parents.
+
+   -  This is a special case of EVOLVE, except that there are multiple
+      parents.
+
 -  DELETE
-    -  Sets a project as deleted (or ‘ended’ as it would appear on the
-       forum). This does not mean that the project no longer exists, just
-       that it is no longer active (so a soft delete). project\_id and
-       new\_id are set to the id of the project. last\_id is set to the last
-       evolution\_id.
-       For each of these actions, there are at least one entry in
-       grand\_project\_status and grand\_project\_descriptions, related by
-       by evolution\_id and project\_id.
+
+   -  Sets a project as deleted (or ‘ended’ as it would appear on the
+      forum). This does not mean that the project no longer exists, just
+      that it is no longer active (so a soft delete). project\_id and
+      new\_id are set to the id of the project. last\_id is set to the last
+      evolution\_id.
+      For each of these actions, there are at least one entry in
+      grand\_project\_status and grand\_project\_descriptions, related by
+      by evolution\_id and project\_id.
 
 User Interface
 --------------

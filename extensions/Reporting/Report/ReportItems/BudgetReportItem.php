@@ -42,7 +42,7 @@ class BudgetReportItem extends AbstractReportItem {
                             </script>");
 		$wgOut->addHTML("<h2>Budget Preview</h2>");
 		$wgOut->addHTML("<div>");
-		$wgOut->addHTML("<h2>Download Budget Template</h2> <ul><li><a href='$wgServer$wgScriptPath/data/GRAND Researcher Budget Request (2014-15).xls'>".(REPORTING_YEAR+1)."-".(REPORTING_YEAR+2)." Budget Template</a></li></ul>" );
+		$wgOut->addHTML("<h2>Download Budget Template</h2> <ul><li><a href='$wgServer$wgScriptPath/data/GRAND Researcher Budget Request (2015-16).xls'>".(REPORTING_YEAR+1)."-".(REPORTING_YEAR+2)." Budget Template</a></li></ul>" );
 		$wgOut->addHTML("<h2>Budget Upload</h2>
 		                 <div id='budgetDiv'><iframe name='budget' id='budgetFrame0' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report=NIReport&section=Budget+Request&budgetUploadForm{$projectGet}{$year}'></iframe></div>");
 		$wgOut->addHTML("</div>");
@@ -89,7 +89,7 @@ class BudgetReportItem extends AbstractReportItem {
                     <link rel='stylesheet' href='$wgServer$wgScriptPath/skins/cavendish/cavendish.css' type='text/css' />
                     <script type='text/javascript'>
                         function load_page() {
-                            parent.alertsize($(\"body\").height()+38);
+                            parent.alertsize($(\"#bodyContent\").height()+38);
                         }
                     </script>
                     <style type='text/css'>
@@ -100,6 +100,7 @@ class BudgetReportItem extends AbstractReportItem {
                         }
                         
                         #bodyContent {
+                            position: relative;
                             font-size: 9pt;
                             font-family: Verdana, sans-serif;
                             -moz-border-radius: 0px;
@@ -111,6 +112,8 @@ class BudgetReportItem extends AbstractReportItem {
 	                        box-shadow: none;
 	                        border-width:0;
 	                        padding:0;
+	                        top: 0;
+	                        left: 0;
                         }
                         
                         table {

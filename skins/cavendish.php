@@ -240,6 +240,7 @@ class cavendishTemplate extends QuickTemplate {
 		    extensions = <?php echo json_encode($config->getValue('extensions')); ?>;
 		    iconPath = "<?php echo $config->getValue('iconPath'); ?>";
 		    iconPathHighlighted = "<?php echo $config->getValue('iconPathHighlighted'); ?>";
+		    highlightColor = "<?php echo $config->getValue('highlightColor'); ?>";
 		
 		    function isExtensionEnabled(ext){
 		        return (extensions.indexOf(ext) != -1);

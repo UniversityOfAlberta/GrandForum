@@ -31,7 +31,7 @@ abstract class Cache {
 	
 	static function delete($key, $prefix=false){
 	    global $wgSitename;
-	    if(function_exists('apc_delete')){
+	    if(function_exists('apc_delete') && class_exists('APCIterator')){
 	        if($prefix){
 	            $it = new APCIterator('user', '/^'.str_replace(")", '\)', str_replace("(", '\(', $wgSitename)).$key.'/', APC_ITER_KEY);
 	            foreach($it as $k){
