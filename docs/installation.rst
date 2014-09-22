@@ -38,9 +38,11 @@ several csv files if they exist. These files are in the following
 formats: 
 
 **provinces.csv**
+
 name, color
 
 **universities.csv**
+
 name, province, latitude, longitude, order, default
 
 **people.csv**
