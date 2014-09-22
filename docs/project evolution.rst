@@ -76,4 +76,4 @@ the UI for these changes.
 Database ER Diagram
 -------------------
 
-.. image:: ../../images/evolution_er.png
+.. image:: _images/evolution_er.png
