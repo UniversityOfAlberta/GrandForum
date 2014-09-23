@@ -3130,6 +3130,28 @@ class Person extends BackboneModel {
     }
     
     /**
+     * Returns an array of Projects that this Person is a Theme Leader of
+     * @return array The Projects that this Person is a Theme Leader of
+     */
+    function getThemeProjects(){
+        $projects = array();
+        $themes = array_merge($this->getLeadThemes(), $this->getCoLeadThemes());
+        if(count($themes) > 0){
+            $themeIds = array();
+            foreach($themes as $theme){
+                $themeIds[] = $theme->getId();
+            }
+            $data = DBFunctions::select(array('grand_project_challenges'),
+                                        array('project_id'),
+                                        array('challenge_id' => IN($themeIds)));
+            foreach($data as $row){
+                $project = Project::newFromId($row['project_id']);
+            }
+        }
+        return $projects;
+    }
+    
+    /**
      * Returns the allocated Budget for this Person for the given year
      * @param int $year The reporting year that the budget was requested
      * @return Budget The allocated Budget for this Person for the given year

@@ -1058,14 +1058,20 @@ class Paper extends BackboneModel{
     
     // Returns an array of strings representing all the custom misc types
     static function getAllMiscTypes($category="%"){
-        $sql = "SELECT DISTINCT SUBSTR(type, 7) as type
-                FROM grand_products
-                WHERE SUBSTR(type, 1, 6) = 'Misc: ' AND
-                category LIKE '$category'";
-        $data = DBFunctions::execSQL($sql);
-        $return = array();
-        foreach($data as $row){
-            $return[] = $row['type'];
+        if(!Cache::exists("{$category}_misc_types")){
+            $sql = "SELECT DISTINCT SUBSTR(type, 7) as type
+                    FROM grand_products
+                    WHERE SUBSTR(type, 1, 6) = 'Misc: ' AND
+                    category LIKE '$category'";
+            $data = DBFunctions::execSQL($sql);
+            $return = array();
+            foreach($data as $row){
+                $return[] = $row['type'];
+            }
+            Cache::store("{$category}_misc_types", $return);
+        }
+        else{
+            $return = Cache::fetch("{$category}_misc_types");
         }
         return $return;
     }

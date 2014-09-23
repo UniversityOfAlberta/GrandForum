@@ -17,7 +17,7 @@ class IndexTable {
         global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle;
         $me = Person::newFromWgUser();
         $project = Project::newFromHistoricName($wgTitle->getNSText());
-        $selected = ((Project::newFromName($wgTitle->getNSText()) != null || $wgTitle->getText() == "Projects") && 
+        $selected = (($project != null || $wgTitle->getText() == "Projects") && 
                      !($me->isMemberOf($project) || ($project != null && $me->isMemberOf($project->getParent())))) ? "selected" : "";
         $projectTab = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
         $completedProjects = Project::getAllProjectsEver();

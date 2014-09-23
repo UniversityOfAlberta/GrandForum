@@ -32,7 +32,11 @@ class Project extends BackboneModel {
     private $peopleCache = null;
     private $leaderCache = array();
 
-    // Returns a new Project from the given id
+    /**
+     * Returns a new Project from the given id
+     * @param integer $id The id of the project
+     * @return Project The Project with the given id
+     */
     static function newFromId($id){
         if(isset(self::$cache[$id])){
             return self::$cache[$id];
@@ -63,7 +67,11 @@ class Project extends BackboneModel {
             return null;
     }
     
-    // Returns a new Project from the given name
+    /**
+     * Returns a new Project from the given name
+     * @param string $name The name of the Project
+     * @return Project The Project with the given name
+     */
     static function newFromName($name){
         if(isset(self::$cache[$name])){
             return self::$cache[$name];
@@ -110,7 +118,12 @@ class Project extends BackboneModel {
             return null;
     }
     
-    // Returns a Project from the given historic ID
+    /**
+     * Returns a new Project from the given historic id
+     * @param integer $id The historic id of the project
+     * @param integer $evolutionId The id of the evolution entry
+     * @return Project The Project with the given historic id
+     */
     static function newFromHistoricId($id, $evolutionId=null){
         if(isset(self::$cache[$id.'_'.$evolutionId])){
             return self::$cache[$id.'_'.$evolutionId];
@@ -132,7 +145,11 @@ class Project extends BackboneModel {
         }
     }
     
-    // Returns a Project from the given historic name
+    /**
+     * Returns a new Project from the given historic name
+     * @param string $name The historic name of the Project
+     * @return Project The Project with the given historic name
+     */
     static function newFromHistoricName($name){
         if(isset(self::$cache['h_'.$name])){
             return self::$cache['h_'.$name];
@@ -151,7 +168,11 @@ class Project extends BackboneModel {
         }
     }
     
-    // Gets all of the Projects from the database
+    /**
+     * Returns all of the current Projects from the database
+     * @param boolean $subProjects Whether or not to include sub-projects
+     * @return array An array of Projects
+     */
     static function getAllProjects($subProjects=false){
         if($subProjects == false){
             $subProjects = EQ(0);

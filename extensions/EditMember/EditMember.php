@@ -307,7 +307,7 @@ class EditMember extends SpecialPage{
                         $_POST['role'] = $project->getName();
                         $_POST['user'] = $person->getName();
                         $_POST['comment'] = @str_replace("'", "", $_POST["pm_comment"][$project->getName()]);
-                        $_POST['effective_date'] = $_POST["pm_datepicker"][$project->getName()];
+                        $_POST['effective_date'] = @$_POST["pm_datepicker"][$project->getName()];
                         APIRequest::doAction('DeleteProjectLeader', true);
                         $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a project manager of {$project->getName()}");
                     }
