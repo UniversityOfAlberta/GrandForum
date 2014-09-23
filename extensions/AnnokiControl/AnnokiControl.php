@@ -89,15 +89,6 @@ $egAnnokiExtensions['MailingList'] = array('name' => 'MailingList',
 $egAnnokiExtensions['FeatureRequest'] = array('name' => 'FeatureRequest',
                                               'path' => "$IP/extensions/FeatureRequest/FeatureRequest.body.php");
 
-$egAnnokiExtensions['SociQL'] = array('name' => 'SociQL Queries',
-                                      'path' => "$IP/extensions/SociQL/Queries.php");
-
-$egAnnokiExtensions['VQE'] = array('name' => 'Visual Query Editor',
-                                   'path' => "$IP/extensions/VisualQueryEditor/VQE.php");
-
-$egAnnokiExtensions['SociQLMaintenance'] = array('name' => 'SociQL Maintenance',
-                                                 'path' => "$IP/extensions/MaintenanceService/SociQLMaintenance.php");
-
 $egAnnokiExtensions['AddMember'] = array('name' => 'AddMember',
                                          'path' => "$IP/extensions/AddMember/AddMember.body.php");
 
