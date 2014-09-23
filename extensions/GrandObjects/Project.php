@@ -256,6 +256,14 @@ class Project extends BackboneModel {
         return $projects;
     }
     
+    static function areThereDeletedProjects(){
+        $data = DBFunctions::select(array('grand_project_evolution'),
+                                    array('project_id'),
+                                    array('action' => EQ('DELETE')));
+        return (count($data) > 0);
+    }
+                                
+    
     // Constructor
     // Takes in a resultset containing the 'project id' and 'project name'
     function Project($data){

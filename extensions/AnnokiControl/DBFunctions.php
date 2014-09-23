@@ -103,6 +103,7 @@ function WHERE_AND($value){
  */
 class DBFunctions {
 
+    static $queryLength = 0;
     static $queryCount = 0;
     static $lastResult;
     static $dbr;
@@ -165,6 +166,7 @@ class DBFunctions {
 	        if(self::$queryDebug){
 		        $end = microtime(true);
 		        $diff = number_format(($end - $start)*1000, 5);
+		        self::$queryLength += $diff;
 		        $printedSql = "<!-- ".self::$queryCount.": ($diff ms) $printedSql -->\n";
 		        $wgOut->addHTML($printedSql);
 		    }
