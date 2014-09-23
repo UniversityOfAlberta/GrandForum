@@ -7,6 +7,11 @@
 class MailingListRule extends BackboneModel {
 
     static $cache = array();
+    
+    var $id;
+    var $type;
+    var $listId;
+    var $value;
 
     static function newFromId($id){
         if(isset($cache[$id])){
