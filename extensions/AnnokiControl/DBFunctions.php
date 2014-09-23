@@ -136,14 +136,13 @@ class DBFunctions {
         try{
             DBFunctions::initDB();
             if(self::$queryDebug){
+                $start = microtime(true);
                 self::$queryCount++;
                 $printedSql = str_replace("\n", " ", $sql);
                 $printedSql = str_replace("\t", " ", $printedSql);
                 while(strstr($printedSql, "  ") !== false){
                     $printedSql = str_replace("  ", " ", $printedSql);
                 }
-                $printedSql = "<!-- ".self::$queryCount.": $printedSql -->\n";
-                $wgOut->addHTML($printedSql);
             }
 		    if($update != false){
 		        if(!DBFunctions::DBWritable()){
@@ -158,12 +157,17 @@ class DBFunctions {
 		    $result = DBFunctions::$dbr->query($sql);
 		    self::$lastResult = $result;
 	        $rows = array();
-	        // I would like to use MYSQL_ASSOC here, but that causes breakage at the moment
 	        if($result != null){
 	            while ($row = mysql_fetch_array($result->result, MYSQL_ASSOC)) {
 		            $rows[] = $row;
 	            }
 	        }
+	        if(self::$queryDebug){
+		        $end = microtime(true);
+		        $diff = number_format(($end - $start)*1000, 5);
+		        $printedSql = "<!-- ".self::$queryCount.": ($diff ms) $printedSql -->\n";
+		        $wgOut->addHTML($printedSql);
+		    }
 		    return $rows;
 		}
 		catch (DBQueryError $e){

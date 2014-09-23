@@ -397,61 +397,67 @@ class Paper extends BackboneModel{
      * @return array The array containing all the structure in Products.xml
      */
     static function structure(){
-        $file = file_get_contents("extensions/GrandObjects/Products.xml");
-        $parser = simplexml_load_string($file);
-        $categories = array('categories' => array());
-        foreach($parser->children() as $category){
-            $cattrs = $category->attributes();
-            $cname = "{$cattrs->category}";
-            foreach($category->children() as $type){
-                $tattrs = $type->attributes();
-                $tname = "{$tattrs->type}";
-                if(trim("{$tattrs->status}") != ""){
-                    $tstatus = explode("|", "{$tattrs->status}");
-                }
-                else{
-                    $tstatus = array();
-                }
-                $categories['categories'][$cname]['types'][$tname] = array('data' => array(),
-                                                                           'status' => $tstatus,
-                                                                           'ccv_status' => array());
-                foreach($type->children() as $child){
-                    if($child->getName() == "data"){
-                        foreach($child->children() as $field){
-                            $fattrs = $field->attributes();
-                            $fid = "$field";
-                            $flabel = "{$fattrs->label}";
-                            $ftype = "{$fattrs->type}";
-                            $fccvtk = "{$fattrs->ccvtk}";
-                            $fbibtex = "{$fattrs->bibtex}";
-                            $fhidden = (strtolower("{$fattrs->hidden}") == "true");
-                            $foptions = explode("|", "{$fattrs->options}");
-                            
-                            $categories['categories'][$cname]['types'][$tname]['data'][$fid] = array('ccvtk' => $fccvtk,
-                                                                                                     'bibtex' => $fbibtex,
-                                                                                                     'label' => $flabel,
-                                                                                                     'type' => $ftype,
-                                                                                                     'options' => $foptions,
-                                                                                                     'hidden' => $fhidden);
-                        }
+        if(!Cache::exists("product_structure")){
+            $file = file_get_contents("extensions/GrandObjects/Products.xml");
+            $parser = simplexml_load_string($file);
+            $categories = array('categories' => array());
+            foreach($parser->children() as $category){
+                $cattrs = $category->attributes();
+                $cname = "{$cattrs->category}";
+                foreach($category->children() as $type){
+                    $tattrs = $type->attributes();
+                    $tname = "{$tattrs->type}";
+                    if(trim("{$tattrs->status}") != ""){
+                        $tstatus = explode("|", "{$tattrs->status}");
                     }
-                    else if($child->getName() == "statuses"){
-                        foreach($child->children() as $status){
-                            $sattrs = $status->attributes();
-                            $sid = "{$sattrs->lov_id}";
-                            $sname = "$status";
-                            if($sid != ""){
-                                $categories['categories'][$cname]['types'][$tname]['ccv_status'][$sid] = $sname;
+                    else{
+                        $tstatus = array();
+                    }
+                    $categories['categories'][$cname]['types'][$tname] = array('data' => array(),
+                                                                               'status' => $tstatus,
+                                                                               'ccv_status' => array());
+                    foreach($type->children() as $child){
+                        if($child->getName() == "data"){
+                            foreach($child->children() as $field){
+                                $fattrs = $field->attributes();
+                                $fid = "$field";
+                                $flabel = "{$fattrs->label}";
+                                $ftype = "{$fattrs->type}";
+                                $fccvtk = "{$fattrs->ccvtk}";
+                                $fbibtex = "{$fattrs->bibtex}";
+                                $fhidden = (strtolower("{$fattrs->hidden}") == "true");
+                                $foptions = explode("|", "{$fattrs->options}");
+                                
+                                $categories['categories'][$cname]['types'][$tname]['data'][$fid] = array('ccvtk' => $fccvtk,
+                                                                                                         'bibtex' => $fbibtex,
+                                                                                                         'label' => $flabel,
+                                                                                                         'type' => $ftype,
+                                                                                                         'options' => $foptions,
+                                                                                                         'hidden' => $fhidden);
+                            }
+                        }
+                        else if($child->getName() == "statuses"){
+                            foreach($child->children() as $status){
+                                $sattrs = $status->attributes();
+                                $sid = "{$sattrs->lov_id}";
+                                $sname = "$status";
+                                if($sid != ""){
+                                    $categories['categories'][$cname]['types'][$tname]['ccv_status'][$sid] = $sname;
+                                }
                             }
                         }
                     }
+                    $misc_types = Paper::getAllMiscTypes($cname);
+                    foreach($misc_types as $key => $type){
+                        $misc_types[$key] = str_replace("\"", "\\\"", $type);
+                    }
+                    $categories['categories'][$cname]['misc'] = $misc_types;
                 }
-                $misc_types = Paper::getAllMiscTypes($cname);
-                foreach($misc_types as $key => $type){
-                    $misc_types[$key] = str_replace("\"", "\\\"", $type);
-                }
-                $categories['categories'][$cname]['misc'] = $misc_types;
             }
+            Cache::store("product_structure", $categories);
+        }
+        else{
+            $categories = Cache::fetch("product_structure");
         }
         return $categories;
     }
