@@ -80,6 +80,13 @@
 		    <data>
 		        <field label="Company Name" type="String">name</field>
 		    </data>
+		</Artifact>
+		
+		<Artifact type="Spin-Off Company">
+		    <data>
+		        <field label="Parent Company" type="String">parent_name</field>
+		        <field label="Spin-Off Company" type="String">name</field>
+		    </data>
 		</Artifact> 
 
 		<Artifact type="Repository" status="Peer Reviewed|Not Peer Reviewed">
