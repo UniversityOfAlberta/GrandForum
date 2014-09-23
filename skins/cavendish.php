@@ -583,14 +583,15 @@ class cavendishTemplate extends QuickTemplate {
                 $branch = @$output[1];
                 $revIdFull = "<a class='highlights-text-hover' title='{$output[0]}' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/commit/{$output[0]}'>$revId</a>";
                 $branchFull = "<a class='highlights-text-hover' title='$branch' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/tree/$branch'>$branch</a>";
+                $docs = "<a class='highlights-text-hover' title='docs' target='_blank' href='http://ssrg5.cs.ualberta.ca/rtd/docs/grand-forum/en/latest/'>Docs</a>";
                 
                 if(strstr($wgScriptPath, "staging") !== false){
                     echo "<div style='position:absolute;top:15px;left:525px;'>
-                            STAGING ($branchFull, $revIdFull)</div>";
+                            STAGING ($branchFull, $revIdFull), $docs</div>";
                 }
                 else{
                     echo "<div style='position:absolute;top:15px;left:525px;'>
-                            DEVELOPMENT ($branchFull, $revIdFull)</div>";
+                            DEVELOPMENT ($branchFull, $revIdFull), $docs</div>";
                 }
             }
             if($config->getValue('globalMessage') != ""){
