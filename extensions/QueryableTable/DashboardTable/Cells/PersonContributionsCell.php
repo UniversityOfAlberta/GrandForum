@@ -29,8 +29,10 @@
                     $values = array();
                     foreach($contributions as $contribution){
                         if($contribution->belongsToProject($project) && $contribution->getYear() >= $start && $contribution->getYear() <= $end){
-                            $type = $contribution->getHumanReadableType();
-                            $values[$type][] = $contribution->getId();
+                            foreach($contribution->getPartners() as $partner){
+                                $type = $contribution->getHumanReadableTypeFor($partner);
+                                $values[$type][$partner->getOrganization()][] = $contribution->getId();
+                            }
                         }
                     }
                     $this->setValues($values);
@@ -42,7 +44,7 @@
                 $values = array();
                 foreach($contributions as $contribution){
                     if($contribution->getYear() >= $start && $contribution->getYear() <= $end){
-                        $values['All'][] = $contribution->getId();
+                        $values['All'][""][] = $contribution->getId();
                     }
                 }
                 $this->setValues($values);
@@ -68,17 +70,28 @@
             }
             $extra = ($type == "All") ? "" : ' / '.$type;
             $count = 0;
-            foreach($this->values[$type] as $value){
-                $contribution = Contribution::newFromId($value);
-                $count += $contribution->getTotal();
+            foreach($this->values[$type] as $partnerOrg => $values){
+                foreach($values as $value){
+                    $partner = null;
+                    if($partnerOrg != ""){
+                        $partner = Partner::newFromName($partnerOrg);
+                        $partner->organization = $partnerOrg;
+                    }
+                    $contribution = Contribution::newFromId($value);
+                    $count += $contribution->getByType($type, $partner);
+                }
             }
             $count = number_format($count);
-            $name = ($this->obj != null) ? $this->obj->getName() : "All";
+            $name = ($this->obj != null) ? $this->obj->getId() : "All";
             $idType = ($type == "All") ? str_replace(" ", "_", $this->label) : str_replace(" ", "_", $type);
             $row = <<<EOF
 <tr>
-    <td style='$style1' align='right'><a name='div_{$name}_{$idType}_{$this->label}_{$id}' class='details_div_lnk'>$type</a>:</td>
-    <td style='$style2' align='right'><span>\$$count</span><div style='display:none;' id='div_{$name}_{$idType}_{$this->label}_{$id}'>$details</div></td>
+    <td style='$style1' align='right'>
+        <a name='div_{$name}_{$idType}_{$this->label}_{$id}' class='details_div_lnk'>$type</a>:
+    </td>
+    <td style='$style2' align='right'>
+        <span>\$$count</span><div style='display:none;' id='div_{$name}_{$idType}_{$this->label}_{$id}'>$details</div>
+    </td>
 </tr>
 EOF;
             return $row;
@@ -86,9 +99,11 @@ EOF;
         
         protected function simpleDashboardRow($type){
             $count = 0;
-            foreach($this->values[$type] as $value){
-                $contribution = Contribution::newFromId($value);
-                $count += $contribution->getTotal();
+            foreach($this->values[$type] as $partnerId => $values){
+                foreach($values as $value){
+                    $contribution = Contribution::newFromId($value);
+                    $count += $contribution->getByType($type);
+                }
             }
             $count = number_format($count);
             return "$type: \$$count";
@@ -99,6 +114,10 @@ EOF;
         }
         
         function detailsRow($item){
+            return $this->detailsRowWithType($item, "All", null);
+        }
+        
+        function detailsRowWithType($item, $type, $partner){
             global $wgServer, $wgScriptPath;
             $contribution = Contribution::newFromId($item);
             $date = $contribution->getYear();
@@ -111,32 +130,46 @@ EOF;
                     $projs[] = "<a href='{$project->getUrl()}' target='_blank'>{$project->getName()}</a>";
                 }
             }
-            foreach($partners as $partner){
-                $parts[] = $partner->getOrganization();
+            $amount = 0;
+            foreach($partners as $part){
+                if($type == "All" || $part->getOrganization() == $partner->getOrganization()){
+                    $parts[] = $part->getOrganization();
+                    $amount += $contribution->getByType($type, $partner);
+                }
             }
-            $details = "<td style='white-space:nowrap;text-align:center;' class='pdfnodisplay'>{$date} </td><td style='text-align:right;'>\$".number_format($contribution->getTotal())." </td><td class='pdfnodisplay'>".implode(", ", $projs)."<br /></td><td>".implode(", ", $parts)."</td><td> <a href='{$contribution->getUrl()}' target='_blank'><i>{$contribution->getName()}</i></a><span class='pdfOnly'>, {$date}</span><div class='pdfOnly' style='width:50%;margin-left:50%;text-align:right;'><i>".implode(", ", $projs)."</i></div></td>";
+            if($type == "All"){
+                $amount = $contribution->getTotal();
+            }
+            $details = "<td style='white-space:nowrap;text-align:center;' class='pdfnodisplay'>{$date} </td><td style='text-align:right;'>\${$amount} </td><td class='pdfnodisplay'>".implode(", ", $projs)."<br /></td><td>".implode(", ", $parts)."</td><td> <a href='{$contribution->getUrl()}' target='_blank'><i>{$contribution->getName()}</i></a><span class='pdfOnly'>, {$date}</span><div class='pdfOnly' style='width:50%;margin-left:50%;text-align:right;'><i>".implode(", ", $projs)."</i></div></td>";
             return $details;
         }
         
         function render(){
             global $wgServer, $wgScriptPath;
-            $table = "<table width='100%'>";
+            $table = "<table width='100%'>\n";
             foreach($this->values as $type => $values){
                 $details = "";
                 if(!isset($_GET['generatePDF']) && !isset($_GET['evalPDF'])){
                     $details = $this->initDetailsTable($type, $this->getHeaders());
-                    foreach($values as $item){
-                        $details .= '<tr>'.$this->detailsRow($item).'</tr>';
+                    foreach($values as $partnerOrg => $items){
+                        $partner = null;
+                        if($partnerOrg != ""){
+                            $partner = Partner::newFromName($partnerOrg);
+                            $partner->organization = $partnerOrg;
+                        }
+                        foreach($items as $item){
+                            $details .= '<tr>'.$this->detailsRowWithType($item, $type, $partner)."</tr>\n";
+                        }
                     }
-                    $details .= "</tbody></table><br /><br />";
-                    $details .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:AddContributionPage\");' value='Add Contribution' />";
+                    $details .= "</tbody></table><br /><br />\n";
+                    $details .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:AddContributionPage\");' value='Add Contribution' />\n";
                 }
                 $table .= $this->dashboardRow($type, $details);
             }
             if(count($this->values) == 0){
-                $table .= "<tr><td style='text-align:right;border-width:0px;'>$0</td></tr>";
+                $table .= "<tr><td style='text-align:right;border-width:0px;'>$0</td></tr>\n";
             }
-            $table .= "</table>";
+            $table .= "</table>\n";
             return "$table";
         }
         

@@ -246,7 +246,6 @@ class Contribution {
     function getPartners(){
         if($this->partnersWaiting){
             $partners = array();
-
             $sql = "SELECT *
                     FROM `grand_contributions_partners`
                     WHERE contribution_id = '{$this->rev_id}'";
@@ -424,6 +423,34 @@ class Contribution {
                 break;
         }
         return $type;
+    }
+    
+    function getByType($type, $partner=null){
+        switch($type){
+            case "All":
+                // Special Case, just return the total
+                return $this->getTotal();
+                break;
+            case "Cash":
+            case "cash":
+                if($partner != null){
+                    return $this->getCashFor($partner);
+                }
+                return $this->getCash();
+            case "Cash and In-Kind":
+            case "caki":
+                if($partner != null){
+                    return $this->getTotalFor($partner);
+                }
+                return $this->getTotal();
+            case "In-Kind":
+            case "inki":
+                if($partner != null){
+                    return $this->getKindFor($partner);
+                }
+                return $this->getKind();
+        }
+        return 0;
     }
     
     // Returns the cash value for this Contribution

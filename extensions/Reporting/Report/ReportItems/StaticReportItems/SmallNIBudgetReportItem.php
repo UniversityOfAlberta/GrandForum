@@ -33,7 +33,7 @@ class SmallNIBudgetReportItem extends StaticReportItem {
                 $aAmnt = "N/A";
             }
             
-            $item .= "<tr><td align='center'>{$iE}</td><td align='right'>$rAmnt</td><td align='right'>$aAmnt</td></tr>";
+            $item .= "<tr><td align='center'>Apr {$iS} to Mar {$iE}</td><td align='right'>$rAmnt</td><td align='right'>$aAmnt</td></tr>";
         }
         $item .= "</table>";
         $item = $this->processCData($item);

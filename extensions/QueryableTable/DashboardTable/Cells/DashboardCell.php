@@ -29,6 +29,9 @@ abstract class DashboardCell extends Cell {
     function initDetailsTable($type, $headers){
         $extra = ($type == "All") ? "" : ' / '.$type;
         $name = ($this->obj != null) ? $this->obj->getName() : "All";
+        if($this->obj instanceof Person){
+            $name = $this->obj->getNameForForms();
+        }
         
         $details = "<p><span class='label'>{$name} {$this->label}$extra:</span></p>";
         $details .= "<table style='background:#ffffff;border-color:#aaa;' cellspacing='1' cellpadding='3' frame='box' rules='all'><thead>\n";

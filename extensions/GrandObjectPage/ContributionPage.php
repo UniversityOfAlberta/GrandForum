@@ -220,10 +220,12 @@ class ContributionPage {
                                     function addOtherField(){
                                         var that = $('.subtype', $(el).parent());
                                         if($(that).val() == 'othe'){
-                                            $(that).parent().append('<input class=\"other_type\" name=\"other_type' + id + '\" size=\"30\" type=\"text\" />');
-                                            $('input[name=other_type' + id + ']').autocomplete({
-                                                source: other_types
-                                            });
+                                            if($('input[name=other_type' + id + ']').length == 0){
+                                                $(that).parent().append('<input class=\"other_type\" name=\"other_type' + id + '\" size=\"30\" type=\"text\" />');
+                                                $('input[name=other_type' + id + ']').autocomplete({
+                                                    source: other_types
+                                                });
+                                            }
                                         }
                                         else{
                                             $('input[name=other_type' + id + ']').remove();
