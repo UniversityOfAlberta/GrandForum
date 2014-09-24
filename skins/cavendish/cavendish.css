@@ -1576,3 +1576,11 @@ input.popupBlockSearch {
     width: 100%;
     margin: 0 3px 2px 3px;
 }
+
+/* Dashboard */
+
+table.dashboard, table.dashboard tr, table.dashboard tr td {
+    border-color: gray;
+}
+
+table
