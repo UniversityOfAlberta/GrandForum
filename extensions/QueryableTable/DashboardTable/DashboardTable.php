@@ -195,50 +195,53 @@ class DashboardTable extends QueryableTable{
                             $details .= "<h2>{$cell->label}$extra</h2><div><ul>\n";
                             $firstTimeType = array();
                             foreach($values as $item){
-                                $row = new SmartDomDocument();
-                                $row->loadHTML($cell->detailsRow($item));
-                                $tds = $row->getElementsByTagName('td');
-                                for($i=0; $i<$tds->length; $i++){
-                                    $td = $tds->item($i);
-                                    if($td->getAttribute('class') == 'pdfnodisplay'){
-                                        $td->nodeValue = '';
-                                        $td->appendChild(new DOMElement('span', ''));
-                                    }
-                                    else{
-                                        $td->appendChild(new DOMElement('span', ''));
-                                    }
-                                }
-                                $tds = $row->getElementsByTagName('td');
-                                for($i=0; $i<$tds->length; $i++){
-                                    $td = $tds->item($i);
-                                    $i--;
-                                    DOMRemove($td);
-                                }
-                                if(($cell->label == "HQP") && $cell instanceof PersonHQPCell){
-                                    $hqp = Person::newFromId($item);
-                                    $position = $hqp->getPosition();
-                                    $position = ($position != "") ? $position : "Other";
-                                    if(!isset($firstTimeType[$position])){
-                                        if(count($firstTimeType) > 0){
-                                            $details .= "</ul></li>\n";
+                                $items = (is_array($item)) ? $item : array($item);
+                                foreach($items as $item){
+                                    $row = new SmartDomDocument();
+                                    $row->loadHTML($cell->detailsRow($item));
+                                    $tds = $row->getElementsByTagName('td');
+                                    for($i=0; $i<$tds->length; $i++){
+                                        $td = $tds->item($i);
+                                        if($td->getAttribute('class') == 'pdfnodisplay'){
+                                            $td->nodeValue = '';
+                                            $td->appendChild(new DOMElement('span', ''));
                                         }
-                                        $details .= "<li>{$position}s<ul>";
-                                        $firstTimeType[$position] = true;
-                                    }
-                                }
-                                if(($cell->label == "Publications" || $cell->label == "Artifacts") && 
-                                    $cell instanceof PublicationCell){
-                                    $paper = Paper::newFromId($item);
-                                    $type = $paper->getCCVType();
-                                    if(!isset($firstTimeType[$type])){
-                                        if(count($firstTimeType) > 0){
-                                            $details .= "</ul></li>\n";
+                                        else{
+                                            $td->appendChild(new DOMElement('span', ''));
                                         }
-                                        $details .= "<li>$type<ul>";
-                                        $firstTimeType[$type] = true;
                                     }
+                                    $tds = $row->getElementsByTagName('td');
+                                    for($i=0; $i<$tds->length; $i++){
+                                        $td = $tds->item($i);
+                                        $i--;
+                                        DOMRemove($td);
+                                    }
+                                    if(($cell->label == "HQP") && $cell instanceof PersonHQPCell){
+                                        $hqp = Person::newFromId($item);
+                                        $position = $hqp->getPosition();
+                                        $position = ($position != "") ? $position : "Other";
+                                        if(!isset($firstTimeType[$position])){
+                                            if(count($firstTimeType) > 0){
+                                                $details .= "</ul></li>\n";
+                                            }
+                                            $details .= "<li>{$position}s<ul>";
+                                            $firstTimeType[$position] = true;
+                                        }
+                                    }
+                                    if(($cell->label == "Publications" || $cell->label == "Artifacts") && 
+                                        $cell instanceof PublicationCell){
+                                        $paper = Paper::newFromId($item);
+                                        $type = $paper->getCCVType();
+                                        if(!isset($firstTimeType[$type])){
+                                            if(count($firstTimeType) > 0){
+                                                $details .= "</ul></li>\n";
+                                            }
+                                            $details .= "<li>$type<ul>";
+                                            $firstTimeType[$type] = true;
+                                        }
+                                    }
+                                    $details .= "<li>".$row."</li>\n";
                                 }
-                                $details .= "<li>".$row."</li>\n";
                             }
                             if(($cell->label == "Publications" || $cell->label == "Artifacts") && 
                                 $cell instanceof PublicationCell){

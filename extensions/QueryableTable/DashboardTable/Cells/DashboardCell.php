@@ -86,7 +86,14 @@ EOF;
             if(!isset($_GET['generatePDF']) && !isset($_GET['evalPDF'])){
                 $details = $this->initDetailsTable($type, $this->getHeaders());
                 foreach($values as $item){
-                    $details .= "<tr>".$this->detailsRow($item)."</tr>\n";
+                    if(is_array($item)){
+                        foreach($item as $it){
+                            $details .= "<tr>".$this->detailsRow($it)."</tr>\n";
+                        }
+                    }
+                    else{
+                        $details .= "<tr>".$this->detailsRow($item)."</tr>\n";
+                    }
                 }
                 $details .= "</tbody></table><br /><br />\n";
             }
