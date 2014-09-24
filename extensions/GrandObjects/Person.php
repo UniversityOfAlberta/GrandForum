@@ -109,8 +109,12 @@ class Person extends BackboneModel {
         return self::newFromNameLike($fullName);
     }
     
-    // Returns a new Person from the given email (null if not found)
-    // In the event of a collision, the first user is returned
+    /**
+     * Returns a new Person from the given email (null if not found)
+     * In the event of a collision, the first user is returned
+     * @param string $email The email address of the Person
+     * @return Person The Person from the given email
+     */
     static function newFromEmail($email){
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id'),
@@ -122,19 +126,32 @@ class Person extends BackboneModel {
             return null;
         }
     }
-    
-    // Creates a new Person from the given Mediawiki User
+
+    /**
+     * Returns a new Person from the given Mediawiki User
+     * @param User $user The Mediawiki User
+     * @return Person The Person from the given Mediawiki User
+     */
     static function newFromUser($user){
         return Person::newFromId($user->getId());
     }
-    
-    // Creates a new Person from the current $wgUser User
+
+    /**
+     * Returns a new Person from the current logged in user ($wgUser)
+     * @return Person The Person who is currently logged in
+     */
     static function newFromWgUser(){
         global $wgUser;
         return Person::newFromId($wgUser->getId());
     }
     
-    // Returns a new Person from the given name
+    /**
+     * Returns a new Person who's name is similar to $name
+     * Similarity is based on re-arranging the name where there are spaces, or dots etc.
+     * Abbreviated names will also attempt to be matched
+     * @param string $name The name of the Person
+     * @return Person the Person that matches the name
+     */
     static function newFromNameLike($name){
         global $wgSitename;
         $tmpPerson = Person::newFromName(str_replace(" ", ".", $name));
@@ -179,9 +196,13 @@ class Person extends BackboneModel {
         return $person;
     }
 
-    /// Returns a new Person instance from the given alias, if found and
-    /// the respective user ID is valid (ie, non-zero).
-    /// NOTE: if the alias is not unique, an exception is thrown instead.
+    /**
+     * Returns a new Person from the given alias, if found
+     * the respective user ID is valid (ie, non-zero).
+     * NOTE: if the alias is not unique, an exception is thrown
+     * @param string $alias The alias of the Person
+     * @return Person the Person from the given alias
+     */
     static function newFromAlias($alias) {
         // Normalize the alias: trim, remove duplicate spaces / dots, and strip HTML.
         $alias = preg_replace(
@@ -228,7 +249,9 @@ class Person extends BackboneModel {
         }
     }
     
-    // Caches the resultset of the alias table for superfast access
+    /**
+     * Caches the resultset of the alis table for superfast access
+     */
     static function generateAliasCache(){
         if(count(self::$aliasCache) == 0){
             $uaTable = getTableName("user_aliases");
@@ -243,8 +266,10 @@ class Person extends BackboneModel {
             }
         }
     }
-    
-    // Caches the resultset of the user table for superfast access
+
+    /**
+     * Caches the resultset of the user table for superfast access
+     */
     static function generateNamesCache(){
         if(count(self::$namesCache) == 0){
             $sql = "SELECT `user_id`,`user_name`,`user_real_name`,`user_email`,`user_twitter`,`user_website`,`user_public_profile`,`user_private_profile`,`user_nationality`,`user_gender`
@@ -261,8 +286,10 @@ class Person extends BackboneModel {
         }
     }
     
-    // Caches the resultset of the user roles table
-    // NOTE: This only caches the current roles, not the history
+    /**
+     * Caches the resultset of the user roles table
+     * NOTE: This only caches the current roles, not the history
+     */
     static function generateRolesCache(){
         if(count(self::$rolesCache) == 0){
             $sql = "SELECT *
@@ -279,26 +306,12 @@ class Person extends BackboneModel {
                     self::$rolesCache[$row['user_id']][] = $row;
                 }
             }
-            else{
-                /*
-                $this->id = $data[0]['id'];
-                $this->user = $data[0]['user_id'];
-                $this->role = $data[0]['role'];
-                $this->startDate = $data[0]['start_date'];
-                $this->endDate = $data[0]['end_date'];
-                $this->comment = $data[0]['comment'];
-                self::$rolesCache[$this->id][] = array(0 => array('id' => '-1',
-                                                                  'user_id' => $this->id,
-                                                                  'role' => INACTIVE,
-                                                                  'start_date' => '0000-00-00 00:00:00',
-                                                                  'end_date' => '0000-00-00 00:00:00',
-                                                                  'comment' => ''));
-                */
-            }
         }
     }
     
-    // Caches the resultset of the co leaders
+    /**
+     * Caches the resultset of the co leaders
+     */
     static function generateCoLeaderCache(){
         if(count(self::$coLeaderCache) == 0){
             $sql = "SELECT *
@@ -314,7 +327,9 @@ class Person extends BackboneModel {
         }
     }
     
-    // Caches the resultset of the leaders
+    /**
+     * Caches the resultset of the leaders
+     */
     static function generateLeaderCache(){
         if(count(self::$leaderCache) == 0){
             $sql = "SELECT *
@@ -330,6 +345,9 @@ class Person extends BackboneModel {
         }
     }
     
+    /**
+     * Caches the resultset of the user universities
+     */
     static function generateUniversityCache(){
         if(count(self::$universityCache) == 0){
             $data = DBFunctions::select(array('grand_user_university' => 'uu',
@@ -350,6 +368,9 @@ class Person extends BackboneModel {
         }
     }
     
+    /**
+     * Caches the resultset of the disciplines map
+     */
     static function generateDisciplineMap(){
         if(count(self::$disciplineMap) == 0){
             $sql = "SELECT m.department, d.discipline
@@ -362,6 +383,9 @@ class Person extends BackboneModel {
         }
     }
     
+    /**
+     * Caches the resultset of the product authors
+     */
     static function generateAuthorshipCache(){
         if(count(self::$authorshipCache) == 0){
             $sql = "SELECT *
@@ -474,6 +498,10 @@ class Person extends BackboneModel {
         return $people;
     }
     
+    /**
+     * Returns all the People who currently have at least the Staff role
+     * @return array The People who currently have at least the Staff fole
+     */
     static function getAllStaff(){
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id', 'user_name'),
@@ -490,9 +518,12 @@ class Person extends BackboneModel {
         }
         return $people;
     }
-    
-    // Returns an array of People of the type $filter, and have at least one project
-    // If $filter='all' then, even people with no projects are included.
+
+    /**
+     * Returns an array of People of the type $filter
+     * @param string $filter The role to filter by
+     * @return array The array of People of the type $filter
+     */
     static function getAllPeople($filter=null){
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id', 'user_name'),
@@ -503,7 +534,6 @@ class Person extends BackboneModel {
             $rowA = array();
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
-            //$projects = $person->getProjects();
             if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter))){
                 $people[] = $person;
             }
@@ -511,8 +541,13 @@ class Person extends BackboneModel {
         return $people;
     }
     
-    // Returns an array of People of the type $filter, and have at least one project
-    // If $filter='all' then, even people with no projects are included.
+    /**
+     * Returns an array of People of the type $filter between $startRange and $endRange
+     * @param string $filter The role to filter by
+     * @param string $startRange The start date of the role
+     * @param string $endRange The end date of the role
+     * @return array The array of People of the type $filter between $startRange and $endRange
+     */
     static function getAllPeopleDuring($filter=null, $startRange, $endRange){
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id', 'user_name'),
