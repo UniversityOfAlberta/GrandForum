@@ -341,6 +341,11 @@ EOF;
 		        display:inline;
 		    }
 		    
+		    #pdfBody td.small {
+		        font-size: ".max(10, ($fontSize+(-3*DPI_CONSTANT)))."px;
+		        display:table-cell;
+		    }
+		    
 		    #pdfBody .smaller {
 		        font-size: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
 		    }

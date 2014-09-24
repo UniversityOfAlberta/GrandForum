@@ -58,7 +58,7 @@ class ProjectPeopleRolesCell extends Cell{
                     $values[] = 'AR';
                 }
             }
-            $this->value = "<a href='{$person->getUrl()}' target = '_blank'><b>{$person->getReversedName()}</b></a><br />(".implode(", ", $values).")";
+            $this->value = "<a href='{$person->getUrl()}' target = '_blank'><b>{$person->getNameForForms()}</b></a><br />(".implode(", ", $values).")";
         }
         else{
             $this->value = $cellValue;

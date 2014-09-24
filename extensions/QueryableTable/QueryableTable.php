@@ -326,13 +326,32 @@ abstract class QueryableTable {
         $this->transpose()->filter($key, $values)->transpose();
         return $this;
     }
+    
+    private function fillEmpty($table){
+        if($this->nRows() < $table->nRows()){
+            for($i = $this->nRows(); $i < $table->nRows(); $i++){
+                $struct = array();
+                $xls = array();
+                for($j = 0; $j < $this->nCols(); $j++){
+                    $struct[] = BLANK;
+                    $xls[] = new BlankCell(BLANK, array(), "", $i, $j, $this);
+                }
+                $this->xls[$i] = $xls;
+                $this->structure[$i] = $struct;
+            }
+        }
+        return $table;
+    }
 	
 	// Joins the two QueryableTables together
-    function join($table){
+    function join($table, $fillEmpty=false){
         reset($table->structure);
         $resultSet = array();
         $structure = array();
         $rowNumber = 0;
+        if($fillEmpty){
+            $table = $this->fillEmpty($table);
+        }
         foreach($this->structure as $nRow => $row){
             $colNumber = 0;
             foreach($row as $nCol => $cell){
