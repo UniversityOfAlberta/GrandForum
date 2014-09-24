@@ -68,13 +68,13 @@ class ProjectNIProgressReportItem extends StaticReportItem {
             $error = "class='inlineError'";
         }
         $rowspan = 3;
-        $details .= "<tr><td style='white-space:nowrap;' valign='top' rowspan='$rowspan'><b>NI Progress</b></td><td>{$nSubmitted} of the {$nPeople} NIs have submitted their reports\n</td></tr>";
+        $details .= "<tr><td style='white-space:nowrap;' valign='top' rowspan='$rowspan'><b>NI Progress</b></td><td>{$nSubmitted} of the {$nPeople} NIs ".Inflect::smart_pluralize($nSubmitted, "has")." submitted their ".Inflect::smart_pluralize($nSubmitted, "report")."\n</td></tr>";
         if($project->getPhase() == 1){ // TODO: Change this for 2014 reporting
-            $details .= "<tr><td>{$nAllocated} of the {$nPeople} NIs have uploaded a revised budget for ".$this->getReport()->year." allocated funds\n</td></tr>";
+            $details .= "<tr><td>{$nAllocated} of the {$nPeople} NIs ".Inflect::smart_pluralize($nAllocated, "has")." uploaded a revised budget for ".$this->getReport()->year." allocated funds\n</td></tr>";
         }
-        $details .= "<tr><td><span $error>{$nRequested} of the {$nPeople} NIs have uploaded a budget request</span>\n</td></tr>";
+        $details .= "<tr><td><span $error>{$nRequested} of the {$nPeople} NIs ".Inflect::smart_pluralize($nRequested, "has")." uploaded a budget request</span>\n</td></tr>";
         if($project->getPhase() == PROJECT_PHASE){
-            $details .= "<tr><td>{$nPlansForward} of the {$nPeople} NIs have not filled in their \"plans forward\" narrative for this project\n</td></tr>";
+            $details .= "<tr><td>{$nPlansForward} of the {$nPeople} NIs ".Inflect::smart_pluralize($nPlansForward, "has")." not filled in their \"plans forward\" narrative for this project\n</td></tr>";
         }
         return $details;
 	}

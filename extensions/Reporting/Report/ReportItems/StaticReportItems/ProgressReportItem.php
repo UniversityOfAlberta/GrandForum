@@ -62,34 +62,18 @@ class ProgressReportItem extends StaticReportItem {
         }
         $errorChars = array();
         if($nExceeding > 0){
-            $rowspan++;
-            $plural = "s";
-            if($nTextareas == 1){
-                $plural = "";
-            }    
-            $errorChars[] = "<td><span class='inlineError'>{$nExceeding} of the {$nTextareas}</span> field{$plural} exceeds maximum allowed characters\n</td>";
+            $rowspan++; 
+            $errorChars[] = "<td><span class='inlineError'>{$nExceeding} of the {$nTextareas}</span> ".Inflect::smart_pluralize($nTextareas, "field")." ".Inflect::smart_pluralize($nExceeding, "exceed")." the maximum allowed characters\n</td>";
         }
         if($nEmpty > 0){
             $rowspan++;
-            $plural = "s";
-            if($nTextareas == 1){
-                $plural = "";
-            }  
-            $errorChars[] = "<td><span class='inlineWarning'>{$nEmpty} of the {$nTextareas}</span> field{$plural} contain no text\n</td>";
-        }
-        $plural = "s";
-        if(count($sections) <= 1){
-            $plural = "";
+            $errorChars[] = "<td><span class='inlineWarning'>{$nEmpty} of the {$nTextareas}</span> ".Inflect::smart_pluralize($nTextareas, "field")." contain no text\n</td>";
         }
         $details = "";
         if($rowspan > 0){
             $details = "<tr valign='top'><td rowspan='$rowspan' style='white-space:nowrap;width:1%;'><b>Report Status</b></td>";
             if($limit > 0){
                 //$details .= "<tr><td>≈$percentChars% of maximum allowable characters (overall)\n</td></tr>";
-            }
-            $plural = "s";
-            if($nTextareas == 1){
-                $plural = "";
             }
             $details .= implode("</tr><tr>", $errorChars)."</tr>";
         }

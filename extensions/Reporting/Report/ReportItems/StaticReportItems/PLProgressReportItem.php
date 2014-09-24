@@ -66,22 +66,22 @@ class PLProgressReportItem extends StaticReportItem {
 		}
 		
         $details .= "<tr><td><b>Milestones</b></td>";
-        $details .= "<td>{$total} of the {$nItems} milestones have been cited in your milestone status overview\n</td></tr>";
+        $details .= "<td>{$total} of the {$nItems} ".Inflect::smart_pluralize($nItems, "milestone")." ".Inflect::smart_pluralize($total, "has")." been cited in your milestone status overview\n</td></tr>";
         $details .= "<tr><td valign='top' style='white-space:nowrap;'><b>NI Comments</b></td>";
         $pniComments = "{$totalPNIs} of the {$nPNIs}";
         $cniComments = "{$totalCNIs} of the {$nCNIs}";
         
         if($totalPNIs < $nPNIs){
-            $details .= "<td><span class='inlineError'>$pniComments</span> PNIs; ";
+            $details .= "<td><span class='inlineError'>$pniComments</span> ".Inflect::smart_pluralize($nPNIs, "PNI")."; ";
         }
         else{
-            $details .= "<td>$pniComments PNIs; ";
+            $details .= "<td>$pniComments ".Inflect::smart_pluralize($nPNIs, "PNI")."; ";
         }
         if($totalCNIs < $nCNIs){
-            $details .= "<span class='inlineError'>$cniComments</span> CNIs\n</td></tr>";
+            $details .= "<span class='inlineError'>$cniComments</span> ".Inflect::smart_pluralize($nCNIs, "CNI")."\n</td></tr>";
         }
         else{
-            $details .= "$cniComments CNIs\n</td></tr>";
+            $details .= "$cniComments ".Inflect::smart_pluralize($nCNIs, "CNI")."\n</td></tr>";
         }
         return $details;
 	}

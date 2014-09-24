@@ -38,7 +38,7 @@ class SupervisorProgressReportItem extends StaticReportItem {
                 $nSubmitted++;
             }
         }
-        $details .= "<tr><td><b>HQP</b></td><td>{$nSubmitted} of {$nHqps} HQP have submitted their reports\n</td></tr>";
+        $details .= "<tr><td><b>HQP</b></td><td>{$nSubmitted} of {$nHqps} ".Inflect::smart_pluralize($nHqps, "HQP")." ".Inflect::smart_pluralize($nSubmitted, "has")." submitted their ".Inflect::smart_pluralize($nSubmitted, "report")."\n</td></tr>";
         return $details;
 	}
 }
