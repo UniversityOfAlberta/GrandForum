@@ -62,6 +62,20 @@ abstract class PersonPublicationCell extends PublicationCell {
             $papers = $person->getPapersAuthored($this->category, $start, $end, true);
             $values = array();
             foreach($papers as $paper){
+                if(!$person->isAuthorOf($paper)){
+                    // Must have been authored by an HQP, 
+                    // just make sure that it is still on a project that $person was on
+                    $found = false;
+                    foreach($paper->getProjects() as $project){
+                        if($person->isMemberOfDuring($project, $start, $end)){
+                            $found = true;
+                            break;
+                        }
+                    }
+                    if(!$found){
+                        continue;
+                    }
+                }
                 $values['All'][] = $paper->getId();
             }
             $this->setValues($values);
