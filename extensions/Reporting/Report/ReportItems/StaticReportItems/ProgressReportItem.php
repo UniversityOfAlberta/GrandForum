@@ -63,7 +63,7 @@ class ProgressReportItem extends StaticReportItem {
         $errorChars = array();
         if($nExceeding > 0){
             $rowspan++; 
-            $errorChars[] = "<td><span class='inlineError'>{$nExceeding} of the {$nTextareas}</span> ".Inflect::smart_pluralize($nTextareas, "field")." ".Inflect::smart_pluralize($nExceeding, "exceed")." the maximum allowed characters\n</td>";
+            $errorChars[] = "<td><span class='inlineError'>{$nExceeding} of the {$nTextareas}</span> ".Inflect::smart_pluralize($nTextareas, "field")." exceed the maximum allowed characters\n</td>";
         }
         if($nEmpty > 0){
             $rowspan++;
