@@ -45,8 +45,8 @@ class ProjectRosterReportItem extends StaticReportItem {
             $item = $dash->renderForPDF(true, false);
             $item = str_replace("<br />", "&nbsp;", $item);
             $item = str_replace("class=\"smaller\"", "class=\"small\"", $item);
-            $item = str_replace("><b>NIs</b>", "width='15%'><b>NIs</b>", $item);
             $item = str_replace("><b>Champions</b>", "width='15%'><b>Champions</b>", $item);
+            $item = str_replace("><b>NIs</b>", "width='15%'><b>NIs</b>", $item);
             $item = str_replace("><b>Affiliation</b>", "width='35%'><b>Affiliation</b>", $item);
         }
         $item = $this->processCData($item);

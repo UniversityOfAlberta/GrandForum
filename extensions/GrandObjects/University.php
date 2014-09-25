@@ -10,6 +10,7 @@ class University extends BackboneModel {
     
     var $id;
     var $name;
+    var $shortName;
     var $latitude;
     var $longitude;
     var $color;
@@ -62,6 +63,7 @@ class University extends BackboneModel {
             $row = $data[0];
             $this->id = $row['university_id'];
             $this->name = $row['university_name'];
+            $this->shortName = $row['short_name'];
             $this->latitude = $row['latitude'];
             $this->longitude = $row['longitude'];
             $this->province = $row['province'];
@@ -109,6 +111,13 @@ class University extends BackboneModel {
     
     function getName(){
         return $this->name;
+    }
+    
+    function getShortName(){
+        if($this->shortName == ""){
+            return $this->getName();
+        }
+        return $this->shortName;
     }
     
     function getLatitude(){
