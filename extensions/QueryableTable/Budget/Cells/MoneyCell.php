@@ -28,6 +28,9 @@ class MoneyCell extends Cell{
     function render(){
         if($this->value != ""){
             $this->style = "text-align:right;";
+            if(is_numeric($this->value)){
+                return "$".number_format($this->value);
+            }
             return "$".$this->value;
         }
         else{

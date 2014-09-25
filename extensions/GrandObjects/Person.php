@@ -3253,7 +3253,7 @@ class Person extends BackboneModel {
                 }
             }
             if($this->budgets[$index]->nRows()*$this->budgets[$index]->nCols() > 1){
-                $this->budgets[$index]->xls[0][1]->setValue($this->getReversedName());
+                $this->budgets[$index]->xls[0][1]->setValue($this->getNameForForms());
             }
             if(is_writable(CACHE_FOLDER)){
                 $contents = array($lastChanged, $this->budgets[$index]);

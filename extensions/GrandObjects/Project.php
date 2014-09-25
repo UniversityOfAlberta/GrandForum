@@ -262,7 +262,6 @@ class Project extends BackboneModel {
                                     array('action' => EQ('DELETE')));
         return (count($data) > 0);
     }
-                                
     
     // Constructor
     // Takes in a resultset containing the 'project id' and 'project name'
@@ -1685,8 +1684,11 @@ EOF;
         $alreadySeen = array();
 
         foreach($this->getAllPeopleDuring(null, ($year+1).NCE_START_MONTH, ($year+2).NCE_END_MONTH) as $member){
-            if($member->isRoleDuring(PNI, ($year+1).NCE_START_MONTH, ($year+2).NCE_END_MONTH) || 
-               $member->isRoleDuring(CNI, ($year+1).NCE_START_MONTH, ($year+2).NCE_END_MONTH)){
+            $isPNI = $member->isRoleDuring(PNI, ($year+1).NCE_START_MONTH, ($year+2).NCE_END_MONTH);
+            $isCNI = $member->isRoleDuring(CNI, ($year+1).NCE_START_MONTH, ($year+2).NCE_END_MONTH);
+            if(($role == PNI && $isPNI && !$isCNI) || 
+               ($role == CNI && $isCNI && !$isPNI) ||
+               ($role == 'all' && ($isPNI || $isCNI))){
                 if(isset($alreadySeen[$member->getId()])){
                     continue;
                 }

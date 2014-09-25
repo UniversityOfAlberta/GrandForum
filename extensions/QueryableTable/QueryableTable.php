@@ -7,16 +7,18 @@ define('NA', -100);
 define('BLANK', -101);
 define('READ', -102);
 define('HEAD', -103);
-define('HEAD1', -104);
-define('HEAD2', -105);
-define('HEAD3', -106);
+define('HEAD_ROW', -104);
+define('HEAD1', -105);
+define('HEAD2', -106);
+define('HEAD3', -107);
 // Complex Structure Types
-define('GROUP_BY', -107);
+define('GROUP_BY', -108);
 
 $cellTypes[NA] = "NACell";
 $cellTypes[BLANK] = "BlankCell";
 $cellTypes[READ] = "ReadCell";
 $cellTypes[HEAD] = "HeadCell";
+$cellTypes[HEAD_ROW] = "HeadRowCell";
 $cellTypes[HEAD1] = "Head1Cell";
 $cellTypes[HEAD2] = "Head2Cell";
 $cellTypes[HEAD3] = "Head3Cell";
@@ -563,13 +565,13 @@ abstract class QueryableTable {
                 $ret[] = "<tr>\n";
                 $i = 0;
                 foreach($row as $colN => $cell){
-                    $errorClass = "";
+                    $class = "";
                     $errorMsg = "";
                     $errorMsgEnd = "";
                     $style = "";
                     $Cell = $cell;
                     if($Cell->error != ""){
-                        $errorClass = "budgetError";
+                        $class .= " budgetError";
                         $errorMsg = "<span title='{$colN},{$rowN}: {$Cell->error}' class='tooltip'>";
                         $errorMsgEnd = "</span>";
                     }
@@ -580,7 +582,11 @@ abstract class QueryableTable {
                     if(!isset($row[$colN + 1])){
                         $span = max(1, $this->nCols() - $colN);
                     }
-                    $ret[] = "<td nowrap='nowrap' style='width:6em;white-space:nowrap;$style' class='$errorClass' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
+                    if($Cell->span != null){
+                        $span = $Cell->span;
+                        $class .= " explicitSpan";
+                    }
+                    $ret[] = "<td nowrap='nowrap' style='width:6em;white-space:nowrap;$style' class='$class' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
                     ++$i;
                 }
                 $ret[] = "</tr>\n";

@@ -5,6 +5,7 @@ abstract class Cell {
     var $value;
     var $error;
     var $style;
+    var $span;
     var $dynamic = false;
     var $params = array();
     

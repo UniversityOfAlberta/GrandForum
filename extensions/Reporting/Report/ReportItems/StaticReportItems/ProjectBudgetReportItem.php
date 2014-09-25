@@ -162,7 +162,6 @@ class ProjectBudgetReportItem extends StaticReportItem {
             }
         }
         
-        
         $pnitotal = intval(str_replace("$", "", $PNIBudget->copy()->rasterize()->select(CUBE_TOTAL)->where(CUBE_TOTAL)->toString()));
         $cnitotal = intval(str_replace("$", "", $CNIBudget->copy()->rasterize()->select(CUBE_TOTAL)->where(CUBE_TOTAL)->toString()));
         $total = $pnitotal + $cnitotal;
