@@ -5,17 +5,18 @@ class ProjectCategoryBudgetReportItem extends StaticReportItem {
     private function getBudget(){
         $project = Project::newFromId($this->projectId);
         
+        $budget = $project->getRequestedBudget(REPORTING_YEAR);
         $cniBudget = $project->getRequestedBudget(REPORTING_YEAR, CNI);
         $pniBudget = $project->getRequestedBudget(REPORTING_YEAR, PNI);
         
         $cniTotal = $this->getTotalBudget($cniBudget);
         $pniTotal = $this->getTotalBudget($pniBudget);
         
-        $categories = $cniBudget->copy()->filter(HEAD1, array("Name of network investigator submitting request:"))->filter(CUBE_TOTAL)->select(HEAD1);
+        $categories = $budget->copy()->filter(HEAD1, array("Name of network investigator submitting request:"))->filter(CUBE_TOTAL)->select(HEAD1);
         
-        $toBeJoined = array($categories,
-                            $pniTotal,
-                            $cniTotal);
+        $toBeJoined = array($categories->copy(),
+                            $pniTotal->copy(),
+                            $cniTotal->copy());
         
         $joined = Budget::join_tables($toBeJoined);
         $joined = $joined->cube();

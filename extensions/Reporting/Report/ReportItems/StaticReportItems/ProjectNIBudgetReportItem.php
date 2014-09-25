@@ -46,7 +46,7 @@ class ProjectNIBudgetReportItem extends StaticReportItem {
                                 array(array("CNI Subtotal", $cniSumAllocated->xls[0][0]->value/max(1, $sumAllocated), $cniSumAllocated->xls[0][0]->value, $cniSum->xls[0][0]->value/max(1, $sum), $cniSum->xls[0][0]->value)));
                                 
         $projectTotal = new Budget(array(array(HEAD1, BLANK, MONEY, PERC, MONEY)),
-                                   array(array("Project Total", "asdf", $sumAllocated, ($sum-$sumAllocated)/max(1, $sumAllocated), $sum)));
+                                   array(array("Project Total", "", $sumAllocated, ($sum-$sumAllocated)/max(1, $sumAllocated), $sum)));
         
         $pniPerc = $this->getPercBudget($pniTotal, $sum);
         $cniPerc = $this->getPercBudget($cniTotal, $sum);
