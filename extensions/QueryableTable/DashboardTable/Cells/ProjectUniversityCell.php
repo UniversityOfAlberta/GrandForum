@@ -23,9 +23,11 @@ class ProjectUniversityCell extends Cell{
             $uni = $person->getPartnerName();
             $dept = $person->getPartnerTitle();
             
-            $uni = ($uni == "") ? $person->getUni() : $uni;
-            $university = University::newFromName($uni);
-            $uni = $university->getShortName();
+            if($uni == ""){
+                $uni = ($uni == "") ? $person->getUni() : $uni;
+                $university = University::newFromName($uni);
+                $uni = $university->getShortName();
+            }
             $dept = ($dept == "") ? $person->getDepartment() : $dept;
             if($uni != "" && $dept != ""){
                 $this->value = "$uni, $dept";
