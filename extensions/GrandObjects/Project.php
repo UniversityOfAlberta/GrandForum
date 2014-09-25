@@ -1682,7 +1682,40 @@ EOF;
         }
 
         $alreadySeen = array();
-
+        $nameBudget[] = new Budget(array(array(HEAD1)),
+                                   array(array("Name of network investigator submitting request:")));
+        $projectBudget[] = new Budget(array(array(HEAD1),
+                                           array(HEAD1),
+                                           array(HEAD2),
+                                           array(HEAD2),
+                                           array(HEAD2),
+                                           array(HEAD2),
+                                           array(HEAD1),
+                                           array(HEAD2),
+                                           array(HEAD2),
+                                           array(HEAD2),
+                                           array(HEAD1),
+                                           array(HEAD1),
+                                           array(HEAD1),
+                                           array(HEAD2),
+                                           array(HEAD2),
+                                           array(HEAD2)),
+                                     array(array("Budget Categories for April 1, {$year_fr}, to March 31, {$year_to}"),
+                                           array("1) Salaries and stipends"),
+                                           array("a) Graduate students"),
+                                           array("b) Postdoctoral fellows"),
+                                           array("c) Technical and professional assistants"),
+                                           array("d) Undergraduate students"),
+                                           array("2) Equipment"),
+                                           array("a) Purchase or rental"),
+                                           array("b) Maintenance costs"),
+                                           array("c) Operating costs"),
+                                           array("3) Materials and supplies"),
+                                           array("4) Computing costs"),
+                                           array("5) Travel expenses"),
+                                           array("a) Field trips"),
+                                           array("b) Conferences"),
+                                           array("c) {$config->getValue('networkName')} annual conference")));
         foreach($this->getAllPeopleDuring(null, ($year+1).NCE_START_MONTH, ($year+2).NCE_END_MONTH) as $member){
             $isPNI = $member->isRoleDuring(PNI, ($year+1).NCE_START_MONTH, ($year+2).NCE_END_MONTH);
             $isCNI = $member->isRoleDuring(CNI, ($year+1).NCE_START_MONTH, ($year+2).NCE_END_MONTH);
@@ -1698,42 +1731,6 @@ EOF;
                 
                 foreach($budgets as $budget){
                     if($budget != null){
-                        if(count($projectBudget) == 0){
-                            $nameBudget[] = new Budget(array(array(HEAD1)),
-                                                       array(array("Name of network investigator submitting request:")));
-                            $projectBudget[] = new Budget(array(array(HEAD1),
-                                                               array(HEAD1),
-                                                               array(HEAD2),
-                                                               array(HEAD2),
-                                                               array(HEAD2),
-                                                               array(HEAD2),
-                                                               array(HEAD1),
-                                                               array(HEAD2),
-                                                               array(HEAD2),
-                                                               array(HEAD2),
-                                                               array(HEAD1),
-                                                               array(HEAD1),
-                                                               array(HEAD1),
-                                                               array(HEAD2),
-                                                               array(HEAD2),
-                                                               array(HEAD2)),
-                                                         array(array("Budget Categories for April 1, {$year_fr}, to March 31, {$year_to}"),
-                                                               array("1) Salaries and stipends"),
-                                                               array("a) Graduate students"),
-                                                               array("b) Postdoctoral fellows"),
-                                                               array("c) Technical and professional assistants"),
-                                                               array("d) Undergraduate students"),
-                                                               array("2) Equipment"),
-                                                               array("a) Purchase or rental"),
-                                                               array("b) Maintenance costs"),
-                                                               array("c) Operating costs"),
-                                                               array("3) Materials and supplies"),
-                                                               array("4) Computing costs"),
-                                                               array("5) Travel expenses"),
-                                                               array("a) Field trips"),
-                                                               array("b) Conferences"),
-                                                               array("c) {$config->getValue('networkName')} annual conference")));
-                        }
                         $nBudget = $budget->copy()->limit(0, 1)->select(V_PERS_NOT_NULL)->union(new Budget());
                         $pBudget = $budget->copy()->select(V_PROJ, $projectNames)->limit(6, 16);
                         if($pBudget->nRows()*$pBudget->nCols() > 0){
