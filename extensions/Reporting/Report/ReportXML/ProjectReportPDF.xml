@@ -140,8 +140,8 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="champions" name="Champions" subBookmark="true" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
-        <ReportItem id="champion_table" type="StaticReportItem">
-            <![CDATA[<img src="http://grand.cs.ualberta.ca/~dwt/champions.png" width='100%' />]]>
+        <ReportItem id="champion_table" type="ProjectChampionsTableReportItem">
+            <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
     <ReportSection type="BookmarkReportSection" name="Section 2" />

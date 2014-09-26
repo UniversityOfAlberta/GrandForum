@@ -864,6 +864,24 @@ class Person extends BackboneModel {
         return false;
     }
     
+    /**
+     * Returns the amount of time that this Person has been on the specified project
+     * @param Project $project The Project that the person has been on
+     * @param string $format The format for the time (Defaults to number of days)
+     * @param string $now What time to compare the join date to (Defaults to now)
+     * @return string The time spent on the specified project
+     */
+    function getTimeOnProject($project, $format="%d", $now=""){
+        if($now == ""){
+            $now = time();
+        }
+        $joined = new DateTime($project->getJoinDate($this));
+        $now = new DateTime(date("Y-m-d", $now));
+        $interval = $joined->diff($now);
+        $diff = $interval->format('%m');
+        return $diff;
+    }
+    
     function isThemeLeader(){
         $themes = array_merge($this->getLeadThemes(), $this->getCoLeadThemes());
         return (count($themes) > 0);
