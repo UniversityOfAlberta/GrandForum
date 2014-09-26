@@ -12,7 +12,7 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
             $table .= "<th class='small' style='display:table-cell;'>{$sub->getName()}</th>";
         }
         $table .= "<th></th></tr>
-                   <tr><th style='background: #DDDDDD;' align='right'>First</th><th style='background: #DDDDDD;' align='left'>Last</th><th style='background: #DDDDDD;'>Organization</th>";
+                   <tr><th style='background: #DDDDDD;' align='right'>First&nbsp;</th><th style='background: #DDDDDD;' align='left'>&nbsp;Last</th><th style='background: #DDDDDD;'>Organization</th>";
         foreach($subs as $sub){
             $count = count($sub->getChampions());
             $table .= "<th style='background: #DDDDDD;'>{$count}</th>";
@@ -32,8 +32,8 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
             }
             
             $table .= "<tr>";
-            $table .= "<td align='right'>{$champion->getFirstName()}</td>";
-            $table .= "<td align='left'>{$champion->getLastName()}</td>";
+            $table .= "<td align='right'>{$champion->getFirstName()}&nbsp;</td>";
+            $table .= "<td align='left'>&nbsp;{$champion->getLastName()}</td>";
             $table .= "<td>{$org}</td>";
             $count = 0;
             foreach($subs as $sub){
