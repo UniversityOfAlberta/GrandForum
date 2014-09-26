@@ -48,6 +48,7 @@ class ProjectRosterReportItem extends StaticReportItem {
             $item = str_replace("><b>Champions</b>", "width='15%'><b>Champions</b>", $item);
             $item = str_replace("><b>NIs</b>", "width='15%'><b>NIs</b>", $item);
             $item = str_replace("><b>Affiliation</b>", "width='35%'><b>Affiliation</b>", $item);
+            $item = str_replace("page-break-inside:avoid;", "", $item);
         }
         $item = $this->processCData($item);
         $wgOut->addHTML($item);
