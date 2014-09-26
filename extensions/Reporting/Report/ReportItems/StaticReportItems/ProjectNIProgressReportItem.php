@@ -47,11 +47,11 @@ class ProjectNIProgressReportItem extends StaticReportItem {
         $nPlansForward = 0;
 		foreach($people as $p){
 		    $pers = Person::newFromId($p['person_id']);
-            $allocBudget = $allocatedBudget->copy()->select(V_PERS_NOT_NULL, array($pers->getReversedName()));
+            $allocBudget = $allocatedBudget->copy()->select(V_PERS_NOT_NULL, array($pers->getNameForForms()));
             if(($allocBudget->nRows() * $allocBudget->nCols()) > 0){
                 $nAllocated++;
             }
-            $reqBudget = $requestedBudget->copy()->select(V_PERS_NOT_NULL, array($pers->getReversedName()));
+            $reqBudget = $requestedBudget->copy()->select(V_PERS_NOT_NULL, array($pers->getNameForForms()));
             if(($reqBudget->nRows() * $reqBudget->nCols()) > 0){
                 $nRequested++;
             }
