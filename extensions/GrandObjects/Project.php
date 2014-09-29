@@ -1165,6 +1165,31 @@ EOF;
         return Paper::getAllPapersDuring($this->name, $category, "grand", $startRange, $endRange);
     }
     
+    function getTopProductsLastUpdated(){
+        $data = DBFunctions::select(array('grand_top_products'),
+                                    array('changed'),
+                                    array('type' => EQ('PROJECT'),
+                                          'obj_id' => EQ($this->getId())),
+                                    array('changed' => 'DESC'));
+        if(count($data) > 0){
+            return $data[0]['changed'];
+        }
+    }
+    
+    function getTopProducts(){
+        $products = array();
+        $data = DBFunctions::select(array('grand_top_products' => 't', 'grand_products' => 'p'),
+                                    array('t.product_id'),
+                                    array('t.type' => EQ('PROJECT'),
+                                          'obj_id' => EQ($this->getId()),
+                                          't.product_id' => EQ(COL('p.id'))),
+                                    array('p.date' => 'DESC'));
+        foreach($data as $row){
+            $products[] = Product::newFromId($row['product_id']);
+        }
+        return $products;
+    }
+    
     /**
      * Returns an array of Evaluators who are evaluating this Project
      * @param string $year The evaluation year

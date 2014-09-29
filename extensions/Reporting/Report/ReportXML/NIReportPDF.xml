@@ -105,42 +105,8 @@
                 </div>
             ]]>
         </ReportItem>
-        <ReportItem id="tmp_top_pubs" type="StaticReportItem">
-            <![CDATA[
-            <div style='page-break-inside:avoid;'>
-            <table frame="box" rules="all" cellpadding="10px">
-                <tr>
-                    <th>Rank</th>
-                    <th>Year</th>
-                    <th>Product</th>
-                </tr>
-                <tr>
-                    <td align="center">1</td>
-                    <td align="center">2013</td>
-                    <td><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/CNI:Patricia.Boechler" target="_blank"><strong>Patricia Boechler</strong></a>,&nbsp;<a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Eleni.Stroulia" target="_blank"><strong>Eleni Stroulia</strong></a>,&nbsp;<a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HQP:Erik.deJong" target="_blank"><strong><u>Erik deJong</u></strong></a>,&nbsp;<a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Inactive:Matt.Delaney" target="_blank"><strong><u>Matt Delaney</u></strong></a>,&nbsp;<a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/CNI:Mike.Carbonaro" target="_blank"><strong>Mike Carbonaro</strong></a>,&nbsp;Corbett Artym,&nbsp;<a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HQP:Wayne.Thomas" target="_blank"><strong><u>Wayne Thomas</u></strong></a>,&nbsp;Jeff Klassen.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:10243">Virtual Campus Orientation: Supporting Students' Transition to Post-Secondary Before They Actually Arrive. </a>.</i>&nbsp;Proceedings Paper:&nbsp;Society for Information Technology and Teacher Education,&nbsp;pp. 246-249pp.&nbsp;Association for the Advancement of Computers in Education,&nbsp;Mar 2013<span class="pdfnodisplay">,&nbsp;Published,&nbsp;Peer Reviewed</span><div style="width:100%;text-align:right;" class="pdfOnly"><i>Published / Peer Reviewed / <a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HLTHSIM:Main">HLTHSIM</a></i></div></td>
-                </tr>
-                <tr>
-                    <td align="center">2</td>
-                    <td align="center"><b><u>2014</u></b></td>
-                    <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Roy.Eagleson"><strong>Roy Eagleson</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Eleni.Stroulia"><strong>Eleni Stroulia</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/CNI:Bill.Kapralos"><strong>Bill Kapralos</strong></a>,&nbsp;Adam Dubrowski,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HQP:Faizal.Haji"><strong><u>Faizal Haji</u></strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/CNI:Sandrine.deRibaupierre"><strong>Sandrine de Ribaupierre</strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:7746">Healthcare training enhancement through virtual reality and serious games</a>.</i>&nbsp;Book Chapter:&nbsp;Virtual and Augmented Reality in Healthcare 1,&nbsp;(no pages)&nbsp;Springer-Verlag,&nbsp;Nov 2013<span class="pdfnodisplay">,&nbsp;To Appear,&nbsp;Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>To Appear / Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/DIGLT:Main" target="_blank">DIGLT</a>, <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HLTHSIM:Main" target="_blank">HLTHSIM</a></i></div></td>
-                </tr>
-                <tr>
-                    <td align="center">3</td>
-                    <td align="center">2013</td>
-                    <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Eleni.Stroulia"><strong>Eleni Stroulia</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HQP:David.Turner"><strong><u>David Turner</u></strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Inactive:Denis.Golovan"><strong><u>Denis Golovan</u></strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HQP:Michael.Huggett"><strong><u>Michael Huggett</u></strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:10625">The GRAND Forum:  Supporting An Interdisciplinary Research Community</a>.</i>&nbsp;Poster:&nbsp;GRAND Annual Conference 2013<span class="pdfnodisplay">,</span>,&nbsp;May 2013&nbsp;<span class="pdfnodisplay">,&nbsp;Published,&nbsp;Not Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>Published / Not Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/MEOW:Main" target="_blank">MEOW</a></i></div></td>
-                </tr>
-                <tr>
-                    <td align="center">4</td>
-                    <td align="center">2012</td>
-                    <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Inactive:David.Chodos"><strong><u>David Chodos</u></strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/PNI:Eleni.Stroulia"><strong>Eleni Stroulia</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/CNI:Sharla.King"><strong>Sharla King</strong></a>,&nbsp;<a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/CNI:Mike.Carbonaro"><strong>Mike Carbonaro</strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:3888">A framework for monitoring instructional environments in a virtual world</a>.</i>&nbsp;Journal Paper:&nbsp;British Journal of Educational Technology,&nbsp;17pp.&nbsp;Wiley,&nbsp;Aug 2012<span class="pdfnodisplay">,&nbsp;To Appear,&nbsp;Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>To Appear / Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/HLTHSIM:Main" target="_blank">HLTHSIM</a></i></div></td>
-                </tr>
-                <tr>
-                    <td align="center">5</td>
-                    <td align="center">2013</td>
-                    <td><a target="_blank" href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Inactive:Morteza.Ghandehari"><strong><u>Morteza Ghandehari</u></strong></a>.&nbsp;<i><a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/Publication:7776">A Lightweight Coordination Approach for Resource-Centric Collaborations - MSc Thesis</a>.</i>&nbsp;Masters Thesis,&nbsp;Jan 2013&nbsp;<span class="pdfnodisplay">,&nbsp;Published,&nbsp;Peer Reviewed</span><div class="pdfOnly" style="width:100%;text-align:right;"><i>Published / Peer Reviewed / <a href="http://grand.cs.ualberta.ca/~dwt/grand_forum_staging/index.php/MEOW:Main" target="_blank">MEOW</a></i></div></td>
-                </tr>
-            </table>
-            <i>Last updated on: Dec 13, 2014</i></div>]]>
+        <ReportItem id="top_prods" type="PersonTopProductsReportItem" max="5">
+            <![CDATA[<div style='page-break-inside:avoid;'>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
     <ReportSection type="BookmarkReportSection" name="Section 2" />

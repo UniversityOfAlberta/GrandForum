@@ -127,9 +127,14 @@ class Paper extends BackboneModel{
         $papers = array();
         foreach($data as $row){
             $paper = new Paper(array($row));
-            self::$cache[$paper->id] = &$paper;
-            self::$cache[$paper->title] = &$paper;
-            $papers[] = $paper;
+            if(isset(self::$cache[$paper->id])){
+                $papers[] = self::$cache[$paper->id];
+            }
+            else {
+                self::$cache[$paper->id] = &$paper;
+                self::$cache[$paper->title] = &$paper;
+                $papers[] = $paper;
+            }
         }
         return $papers;
     }

@@ -101,7 +101,8 @@ class Inflect
         'money',
         'rice',
         'information',
-        'equipment'
+        'equipment',
+        'press'
     );
 
 	/**
