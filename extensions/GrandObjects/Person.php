@@ -2662,12 +2662,10 @@ class Person extends BackboneModel {
     
     function getTopProducts(){
         $products = array();
-        $data = DBFunctions::select(array('grand_top_products' => 't', 'grand_products' => 'p'),
-                                    array('t.product_id'),
-                                    array('t.type' => EQ('PERSON'),
-                                          'obj_id' => EQ($this->getId()),
-                                          't.product_id' => EQ(COL('p.id'))),
-                                    array('p.date' => 'DESC'));
+        $data = DBFunctions::select(array('grand_top_products'),
+                                    array('product_id'),
+                                    array('type' => EQ('PERSON'),
+                                          'obj_id' => EQ($this->getId())));
         foreach($data as $row){
             $product = Product::newFromId($row['product_id']);
             $year = substr($product->getDate(), 0, 4);
@@ -2679,6 +2677,8 @@ class Person extends BackboneModel {
             $products["{$year}"][$name] = $product;
             ksort($products["{$year}"]);
         }
+        ksort($products);
+        $products = array_reverse($products);
         $newProducts = array();
         foreach($products as $year => $prods){
             $newProducts = array_merge($newProducts, $prods);

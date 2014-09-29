@@ -1178,16 +1178,28 @@ EOF;
     
     function getTopProducts(){
         $products = array();
-        $data = DBFunctions::select(array('grand_top_products' => 't', 'grand_products' => 'p'),
-                                    array('t.product_id'),
-                                    array('t.type' => EQ('PROJECT'),
-                                          'obj_id' => EQ($this->getId()),
-                                          't.product_id' => EQ(COL('p.id'))),
-                                    array('p.date' => 'DESC'));
+        $data = DBFunctions::select(array('grand_top_products'),
+                                    array('product_id'),
+                                    array('type' => EQ('PROJECT'),
+                                          'obj_id' => EQ($this->getId())));
         foreach($data as $row){
-            $products[] = Product::newFromId($row['product_id']);
+            $product = Product::newFromId($row['product_id']);
+            $year = substr($product->getDate(), 0, 4);
+            $authors = $product->getAuthors();
+            $name = "";
+            foreach($authors as $author){
+                $name = $author->getNameForForms();
+            }
+            $products["{$year}"][$name] = $product;
+            ksort($products["{$year}"]);
         }
-        return $products;
+        ksort($products);
+        $products = array_reverse($products);
+        $newProducts = array();
+        foreach($products as $year => $prods){
+            $newProducts = array_merge($newProducts, $prods);
+        }
+        return $newProducts;
     }
     
     /**
