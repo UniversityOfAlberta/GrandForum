@@ -95,27 +95,32 @@ class PersonDashboardTab extends AbstractEditableTab {
         $this->html .= "<h2>Top Research Outcomes</h2>";
         $products = $person->getTopProducts();
         $lastUpdated = $person->getTopProductsLastUpdated();
-        $this->html .= "<table class='dashboard' cellspacing='1' cellpadding='3' rules='all' frame='box' style='max-width: 800px;border-spacing:".max(1, (0.5*DPI_CONSTANT))."px;'>
-                            <tr>
-                                <td align='center'><b>Year</b></td>
-                                <td align='center'><b>Category</b></td>
-                                <td align='center'><b>Product</b></td>
-                            </th>";
-        foreach($products as $product){
-            $year = substr($product->getDate(), 0, 4);
-            if($year == "0000"){
-                $year = "";
+        if(count($products) > 0){
+            $this->html .= "<table class='dashboard' cellspacing='1' cellpadding='3' rules='all' frame='box' style='max-width: 800px;border-spacing:".max(1, (0.5*DPI_CONSTANT))."px;'>
+                                <tr>
+                                    <td align='center'><b>Year</b></td>
+                                    <td align='center'><b>Category</b></td>
+                                    <td align='center'><b>Product</b></td>
+                                </th>";
+            foreach($products as $product){
+                $year = substr($product->getDate(), 0, 4);
+                if($year == "0000"){
+                    $year = "";
+                }
+                if($year == YEAR){
+                    $year = "<b><u>$year</u></b>";
+                }
+                $this->html .= "<tr>
+                                    <td align='center'>{$year}</td>
+                                    <td>{$product->getCategory()}</td>
+                                    <td>{$product->getProperCitation()}</td>
+                                </tr>";
             }
-            if($year == YEAR){
-                $year = "<b><u>$year</u></b>";
-            }
-            $this->html .= "<tr>
-                                <td align='center'>{$year}</td>
-                                <td>{$product->getCategory()}</td>
-                                <td>{$product->getProperCitation()}</td>
-                            </tr>";
+            $this->html .= "</table><br />";
         }
-        $this->html .= "</table><br />";
+        else{
+            $this->html .= "You have not entered any <i>Top Research Outcomes</i> yet<br />";
+        }
         $this->html .= "<input type='submit' value='Edit Dashboard' name='submit'>";
     }
     
