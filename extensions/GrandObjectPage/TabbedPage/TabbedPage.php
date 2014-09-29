@@ -126,6 +126,15 @@ class TabbedPage {
                 $('#currentViewSpinner').remove();
                 $('#{$this->id}').show();
         </script>");
+        foreach($this->tabs as $tab){
+            $wgOut->addHTML("<script type='text/javascript'>
+                $('#{$this->id}').bind('tabsselect', function(event, ui) {
+                    if(ui.panel.id == '{$tab->id}'){
+                        {$tab->tabSelect()}
+                    }
+                });
+            </script>");
+        }
     }
 
 }

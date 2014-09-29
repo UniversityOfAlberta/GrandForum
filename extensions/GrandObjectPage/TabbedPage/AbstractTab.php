@@ -12,6 +12,11 @@ abstract class AbstractTab {
         $this->html = "";
     }
     
+    function tabSelect(){
+        // Do nothing by default
+        return "";
+    }
+    
     abstract function generateBody();
 }
 

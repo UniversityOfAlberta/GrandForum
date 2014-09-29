@@ -11,6 +11,12 @@ class PersonDashboardTab extends AbstractEditableTab {
         $this->visibility = $visibility;
     }
     
+    function tabSelect(){
+        return "_.defer(function(){
+            $('select.chosen').chosen();
+        });";
+    }
+    
     function handleEdit(){
         if($this->canEdit() && isset($_POST['top_products']) && is_array($_POST['top_products'])){
             DBFunctions::delete('grand_top_products',
@@ -40,6 +46,11 @@ class PersonDashboardTab extends AbstractEditableTab {
     function generateEditBody(){
         $this->showEditTopProducts($this->person, $this->visibility);
         $this->showDashboard($this->person, $this->visibility);
+        $this->html .= "<script type='text/javascript'>
+            _.defer(function(){
+                $('select.chosen:visible').chosen();
+            });
+        </script>";
     }
     
     private function optGroup($products, $category, $value){
@@ -63,7 +74,7 @@ class PersonDashboardTab extends AbstractEditableTab {
     
     private function selectList($person, $value){
         $allProducts = $person->getPapers('all', true, 'grand');
-        $html = "<select name='top_products[]' style='max-width:800px;'>";
+        $html = "<select class='chosen' name='top_products[]' style='max-width:800px;'>";
         $html .= "<option value=''>---</option>";
         $html .= $this->optGroup($allProducts, "Publication", $value);
         $html .= $this->optGroup($allProducts, "Artifact", $value);
@@ -87,8 +98,8 @@ class PersonDashboardTab extends AbstractEditableTab {
         for($i; $i < 5; $i++){
             $this->html .= $this->selectList($person, "");
         }
-        $this->html .= "<input type='submit' value='Save Dashboard' name='submit'>
-                        <input type='submit' value='Cancel' name='submit'>";
+        $this->html .= "<br /><button type='submit' value='Save Dashboard' name='submit'>Save Top Research Outcomes</button>
+                        <input type='submit' value='Cancel' name='submit' />";
     }
     
     function showTopProducts($person, $visibility){
@@ -121,7 +132,7 @@ class PersonDashboardTab extends AbstractEditableTab {
         else{
             $this->html .= "You have not entered any <i>Top Research Outcomes</i> yet<br />";
         }
-        $this->html .= "<input type='submit' value='Edit Dashboard' name='submit'>";
+        $this->html .= "<button type='submit' value='Edit Dashboard' name='submit'>Edit Top Research Outcomes</button>";
     }
     
     function showDashboard($person, $visibility){
