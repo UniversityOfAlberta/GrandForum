@@ -2669,9 +2669,21 @@ class Person extends BackboneModel {
                                           't.product_id' => EQ(COL('p.id'))),
                                     array('p.date' => 'DESC'));
         foreach($data as $row){
-            $products[] = Product::newFromId($row['product_id']);
+            $product = Product::newFromId($row['product_id']);
+            $year = substr($product->getDate(), 0, 4);
+            $authors = $product->getAuthors();
+            $name = "";
+            foreach($authors as $author){
+                $name = $author->getNameForForms();
+            }
+            $products["{$year}"][$name] = $product;
+            ksort($products["{$year}"]);
         }
-        return $products;
+        $newProducts = array();
+        foreach($products as $year => $prods){
+            $newProducts = array_merge($newProducts, $prods);
+        }
+        return $newProducts;
     }
     
     function getCoAuthors(){

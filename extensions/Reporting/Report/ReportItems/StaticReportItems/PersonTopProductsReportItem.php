@@ -14,8 +14,9 @@ class PersonTopProductsReportItem extends StaticReportItem {
                         <td align='center'><b>Product</b></td>
                     </th>";
         $i = 0;
+        $lastYear = "---";
         foreach($products as $product){
-            if($i == $max) 
+            if($i == $max)
                 break;
             $year = substr($product->getDate(), 0, 4);
             if($year == "0000"){
@@ -24,14 +25,18 @@ class PersonTopProductsReportItem extends StaticReportItem {
             if($year == YEAR){
                 $year = "<b><u>$year</u></b>";
             }
+            if($lastYear != "---" && $year != $lastYear){
+                $table .= "<tr><td colspan='3' style='background:#000000;'></td></tr>";
+            }
             $table .= "<tr>
-                                <td>{$year}</td>
-                                <td>{$product->getCategory()}</td>
-                                <td>{$product->getProperCitation()}</td>
-                            </tr>";
+                           <td align='center'>{$year}</td>
+                           <td>{$product->getCategory()}</td>
+                           <td>{$product->getProperCitation()}</td>
+                       </tr>";
+            $lastYear = $year;
             $i++;
         }
-        $table .= "</table><br />
+        $table .= "</table>
                    <i>Last updated on: $date</i>";
         return $table;
 	}

@@ -110,7 +110,7 @@ class PersonDashboardTab extends AbstractEditableTab {
                 $year = "<b><u>$year</u></b>";
             }
             $this->html .= "<tr>
-                                <td>{$year}</td>
+                                <td align='center'>{$year}</td>
                                 <td>{$product->getCategory()}</td>
                                 <td>{$product->getProperCitation()}</td>
                             </tr>";
