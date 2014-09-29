@@ -61,7 +61,8 @@ class PersonDashboardTab extends AbstractEditableTab {
         foreach($products as $product){
             if($category == $product->getCategory()){
                 $selected = ($value == $product->getId()) ? "selected='selected'" : "";
-                $html .= "<option value='{$product->getId()}' $selected>{$product->getType()}: {$product->getTitle()}</option>";
+                $year = substr($product->getDate(), 0, 4);
+                $html .= "<option value='{$product->getId()}' $selected>($year) {$product->getType()}: {$product->getTitle()}</option>";
                 $count++;
             }
         }
@@ -74,14 +75,21 @@ class PersonDashboardTab extends AbstractEditableTab {
     
     private function selectList($person, $value){
         $allProducts = $person->getPapers('all', true, 'grand');
+        $products = array();
+        foreach($allProducts as $product){
+            $date = $product->getDate();
+            $products[$date."_{$product->getId()}"] = $product;
+        }
+        ksort($products);
+        $products = array_reverse($products);
         $html = "<select class='chosen' name='top_products[]' style='max-width:800px;'>";
         $html .= "<option value=''>---</option>";
-        $html .= $this->optGroup($allProducts, "Publication", $value);
-        $html .= $this->optGroup($allProducts, "Artifact", $value);
-        $html .= $this->optGroup($allProducts, "Activity", $value);
-        $html .= $this->optGroup($allProducts, "Presentation", $value);
-        $html .= $this->optGroup($allProducts, "Press", $value);
-        $html .= $this->optGroup($allProducts, "Award", $value);
+        $html .= $this->optGroup($products, "Publication", $value);
+        $html .= $this->optGroup($products, "Artifact", $value);
+        $html .= $this->optGroup($products, "Activity", $value);
+        $html .= $this->optGroup($products, "Presentation", $value);
+        $html .= $this->optGroup($products, "Press", $value);
+        $html .= $this->optGroup($products, "Award", $value);
         $html .= "</select><br />";
         return $html;
     }
