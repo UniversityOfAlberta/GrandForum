@@ -135,10 +135,13 @@
         ]]>
         </ReportItem>
         <ReportItem id="ni_dashboard" type="DashboardReportItem" structure="NI_REPORT_STRUCTURE">
-            <![CDATA[<h3>Network:</h3><div>{$item}</div>]]>
+            <![CDATA[<h2>Network</h2><div>{$item}</div>]]>
+        </ReportItem>
+        <ReportItem id="top_prods" type="PersonTopProductsReportItem" max="5">
+            <![CDATA[<h2>Top Research Outcomes</h2><div>{$item}</div>]]>
         </ReportItem>
         <ReportItem id="ni_dashboard_productivity" type="DashboardReportItem" structure="NI_REPORT_PRODUCTIVITY_STRUCTURE">
-            <![CDATA[<h3>Productivity:</h3>
+            <![CDATA[<h2>Productivity</h2>
                         <div style='max-width:900px;'>If there is an error in any of the information reported in the dashboard, please edit the corresponding element through the appropriate tool. If the error is in a system-controlled field, please contact <a href='mailto:support@forum.grand-nce.ca'>support</a>.</div><div>{$item}</div>]]>
         </ReportItem>
     </ReportSection>

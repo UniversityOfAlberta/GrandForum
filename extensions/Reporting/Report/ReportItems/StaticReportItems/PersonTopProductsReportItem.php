@@ -2,7 +2,7 @@
 
 class PersonTopProductsReportItem extends StaticReportItem {
 
-	private function getTable(){
+	private function getTable($pdf=false){
 	    $max = $this->getAttr("max", 5);
 	    $person = Person::newFromId($this->personId);
 	    $products = $person->getTopProducts();
@@ -26,7 +26,12 @@ class PersonTopProductsReportItem extends StaticReportItem {
                 $year = "<b><u>$year</u></b>";
             }
             if($lastYear != "---" && $year != $lastYear){
-                $table .= "<tr><td colspan='3' style='background:#000000;'></td></tr>";
+                if($pdf){
+                    $table .= "<tr><td colspan='3' style='background:#808080;'></td></tr>";
+                }
+                else{
+                    $table .= "<tr><td colspan='3' style='background:#DDDDDD;'></td></tr>";
+                }
             }
             $table .= "<tr>
                            <td align='center'>{$year}</td>
@@ -43,14 +48,16 @@ class PersonTopProductsReportItem extends StaticReportItem {
 	
 	function render(){
 		global $wgOut, $wgUser;
-		$item = $this->getTable();
+		$person = Person::newFromId($this->personId);
+		$item = $this->getTable(false);
+		$item .= "<br /><a class='button' target='_blank' href='{$person->getUrl()}?tab=dashboard&edit'>Edit Top Research Outcomes</a>";
         $item = $this->processCData($item);
 		$wgOut->addHTML($item);
 	}
 	
 	function renderForPDF(){
 	    global $wgOut, $wgUser;
-	    $item = $this->getTable();
+	    $item = $this->getTable(true);
 	    $item = $this->processCData($item);
 		$wgOut->addHTML($item);
 	}

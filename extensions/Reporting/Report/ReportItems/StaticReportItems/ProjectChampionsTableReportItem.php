@@ -2,17 +2,22 @@
 
 class ProjectChampionsTableReportItem extends StaticReportItem {
 
-    private function getTable(){
+    private function getTable($pdf=false){
         $project = Project::newFromId($this->projectId);
         $subs = $project->getSubProjects();
         $table = "";
-        $table .= "<table class='dashboard' width='100%' style='width:100%;background-color:#000000;border-color:#000000;margin-bottom:15px;border-spacing:".max(1, (0.5*DPI_CONSTANT))."px;'>
-            <tr><th></th><th></th><th></th>";
+        if($pdf){
+            $table .= "<table cellspacing='1' class='dashboard' width='100%' style='width:100%;background-color:#000000;border-color:#000000;margin-bottom:15px;border-spacing:".max(1, (0.5*DPI_CONSTANT))."px;'>";
+        }
+        else{
+            $table .= "<table cellspacing='1' class='dashboard' width='100%' style='width:100%;max-width:900px;background-color:#808080;'>";
+        }
+        $table .= "<tr style='background: #FFFFFF;'><th></th><th></th><th></th>";
         foreach($subs as $sub){
             $table .= "<th class='small' style='display:table-cell;'>{$sub->getName()}</th>";
         }
         $table .= "<th></th></tr>
-                   <tr><th style='background: #DDDDDD;' align='right'>First&nbsp;</th><th style='background: #DDDDDD;' align='left'>&nbsp;Last</th><th style='background: #DDDDDD;'>Organization</th>";
+                   <tr style='background: #FFFFFF;'><th style='background: #DDDDDD;' align='right'>First&nbsp;</th><th style='background: #DDDDDD;' align='left'>&nbsp;Last</th><th style='background: #DDDDDD;'>Organization</th>";
         $champions = $project->getChampions();
         foreach($subs as $sub){
             $count = 0;
@@ -44,7 +49,7 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
                 $org = $uni->getShortName();
             }
             
-            $table .= "<tr>";
+            $table .= "<tr style='background: #FFFFFF;'>";
             $table .= "<td align='right'>{$champion->getFirstName()}&nbsp;</td>";
             $table .= "<td align='left'>&nbsp;{$champion->getLastName()}</td>";
             $table .= "<td>{$org}</td>";
@@ -77,14 +82,14 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
 
     function render(){
         global $wgOut;
-        $item = $this->getTable();
+        $item = $this->getTable(false);
         $item = $this->processCData($item);
         $wgOut->addHTML($item);
     }
     
     function renderForPDF(){
         global $wgOut;
-        $item = $this->getTable();
+        $item = $this->getTable(true);
         $item = $this->processCData($item);
         $wgOut->addHTML($item);
     }

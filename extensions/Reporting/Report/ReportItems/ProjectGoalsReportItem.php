@@ -4,6 +4,11 @@ class ProjectGoalsReportItem extends AbstractReportItem {
     
     function render(){
         global $wgOut;
+        $preview = strtolower($this->getAttr("preview", "false"));
+        if($preview == "true"){
+            $this->renderForPDF();
+            return;
+        }
         $project = Project::newFromId($this->projectId);
         $year = $this->getAttr("year", REPORTING_YEAR);
         $max = $this->getAttr("max", 5);
@@ -124,7 +129,8 @@ EOF
         $problemLength = strlen($problem);
         $descriptionLength = strlen($description);
         $assessmentLength = strlen($assessment);
-        $tplt = "<div style='page-break-inside:avoid;margin-bottom:25px;'>
+        $margin = 2*DPI_CONSTANT;
+        $tplt = "<div style='page-break-inside:avoid;margin-bottom:{$margin}px;'>
                     <h4>$title ({$status})</h4>
                         <p style='margin-left:50px;'><b>Problem Statement:&nbsp;</b><small>(Currently $problemLength out of 300 characters)</small><br />{$problem}</p>
                         <p style='margin-left:50px;'><b>Plan & Expected Outcomes:&nbsp;</b><small>(Currently $descriptionLength out of 300 characters)</small><br />{$description}</p>

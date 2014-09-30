@@ -13,13 +13,15 @@ class ProjectRosterReportItem extends StaticReportItem {
         foreach($subs as $sub){
             $dashboard1 = new DashboardTable(PROJECT_CHAMP_ROSTER_STRUCTURE, $sub);
             $dashboard2 = new DashboardTable(PROJECT_NI_ROSTER_STRUCTURE, $sub);
-            $joined = $dashboard1->join($dashboard2->copy());
+            $joined = $dashboard1->join($dashboard2->copy(), true);
             $header = $joined->copy()->where(HEAD);
             $joined->filter(HEAD);
             $dashboards[] = $joined;
         }
-        $dash = DashboardTable::union_tables(array_merge($header, $dashboards));
-        $item = $dash->render(true, false);
+        $dash = DashboardTable::union_tables(array_merge(array($header), $dashboards));
+        if($dash != null){
+            $item = $dash->render(true, false);
+        }
         $item = $this->processCData($item);
         $wgOut->addHTML($item);
     }

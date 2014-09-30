@@ -87,6 +87,12 @@ class PersonPage {
                 $post = ( $post && (!FROZEN || $me->isRoleAtLeast(MANAGER)) );
                 $wgOut->clearHTML();
                 
+                //Adding support for GET['edit']
+                if(isset($_GET['edit'])){
+                    $_POST['edit'] = true;
+                    $_POST['submit'] = "Edit Main";
+                }
+                
                 /*
                  * Start the PersonPage
                  */
