@@ -13,12 +13,25 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
         }
         $table .= "<th></th></tr>
                    <tr><th style='background: #DDDDDD;' align='right'>First&nbsp;</th><th style='background: #DDDDDD;' align='left'>&nbsp;Last</th><th style='background: #DDDDDD;'>Organization</th>";
+        $champions = $project->getChampions();
         foreach($subs as $sub){
-            $count = count($sub->getChampions());
+            $count = 0;
+            foreach($sub->getChampions() as $champ){
+                $found = false;
+                foreach($champions as $c){
+                    if($c['user']->getId() == $champ['user']->getId()){
+                        $found = true;
+                    }
+                }
+                if(!$found){
+                    $champions[] = $champ;
+                }
+                $count++;
+            }
             $table .= "<th style='background: #DDDDDD;'>{$count}</th>";
         }
         $table .= "<th style='background: #DDDDDD;'></th></tr>";
-        foreach($project->getChampions() as $c){
+        foreach($champions as $c){
             $champion = $c['user'];
             $org = $champion->getPartnerName();
             if($org == ""){
