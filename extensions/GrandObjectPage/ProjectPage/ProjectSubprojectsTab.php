@@ -82,7 +82,7 @@ class ProjectSubprojectsTab extends AbstractTab {
         $subprojects = $project->getSubProjects();
        
         $this->html .= "<h2>Current Sub-Projects</h2>";
-                
+        
         foreach($subprojects as $subproject){
             $this->html .= "<div class='subprojects_accordion'>";
             $this->html .= "<h3><a href='#'>{$subproject->getName()}</a></h3>";

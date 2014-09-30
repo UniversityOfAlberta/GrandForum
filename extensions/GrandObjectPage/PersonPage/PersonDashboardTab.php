@@ -96,9 +96,8 @@ class PersonDashboardTab extends AbstractEditableTab {
     
     function showEditTopProducts($person, $visibility){
         $this->html .= "<h2>Top Research Outcomes</h2>";
-        $this->html .= "<small>Select the top 5 research outcomes that you believe showcase your productivity the greatest.  These top 5 products will be shown in your annual report</small><br />";
+        $this->html .= "<small>Select up to 5 research outcomes that you believe showcase your productivity the greatest.  The order that you specify them in does not matter.  The products will be sorted in descending order by date.  These top products will be shown in your annual report.</small><br />";
         $products = $person->getTopProducts();
-        $lastUpdated = $person->getTopProductsLastUpdated();
         $i = 0;
         foreach($products as $product){
             $this->html .= $this->selectList($person, $product->getId());
@@ -117,9 +116,9 @@ class PersonDashboardTab extends AbstractEditableTab {
             return;
         }
         $this->html .= "<h2>Top Research Outcomes</h2>";
-        $lastUpdated = $person->getTopProductsLastUpdated();
+        $date = date('M j, Y', strtotime($person->getTopProductsLastUpdated()));
         if(count($products) > 0){
-            $this->html .= "<table class='dashboard' cellspacing='1' cellpadding='3' rules='all' frame='box' style='max-width: 800px;border-spacing:".max(1, (0.5*DPI_CONSTANT))."px;'>
+            $this->html .= "<table class='dashboard' cellspacing='1' cellpadding='3' rules='all' frame='box' style='max-width: 800px;'>
                                 <tr>
                                     <td align='center'><b>Year</b></td>
                                     <td align='center'><b>Category</b></td>
@@ -139,7 +138,7 @@ class PersonDashboardTab extends AbstractEditableTab {
                                     <td>{$product->getProperCitation()}</td>
                                 </tr>";
             }
-            $this->html .= "</table><br />";
+            $this->html .= "</table><i>Last updated on: $date</i><br />";
         }
         else{
             $this->html .= "You have not entered any <i>Top Research Outcomes</i> yet<br />";
