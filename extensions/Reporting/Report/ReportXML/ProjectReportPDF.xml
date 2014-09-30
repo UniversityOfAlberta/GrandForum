@@ -168,7 +168,7 @@
                 <![CDATA[<h2>{$project_name}</h2>]]>
             </ReportItem>
             <ReportItem id="sub_project_goals" type="StaticReportItem">
-                <![CDATA[<h3>Engagement with Champions</h3><small>(Currently 1199 out of 1200 characters)</small><br />{$user_subproject_champs}]]>
+                <![CDATA[<h3>Engagement with Champions</h3>{$user_subproject_champs}]]>
             </ReportItem>
             <ReportItem id="current_goals" type="ProjectGoalsReportItem" year="{$this_year}" max="5">
                 <![CDATA[<h3>This Year's Goals</h3>{$item}]]>
@@ -177,7 +177,7 @@
                 <![CDATA[<h3>New Goals for Next Year</h3>{$item}]]>
             </ReportItem>
             <ReportItem id="sub_project_champs" type="StaticReportItem">
-                <![CDATA[<h3>General Comments</h3><small>(Currently 1189 out of 1200 characters)</small><br />{$user_subproject_comments}]]>
+                <![CDATA[<h3>General Comments</h3>{$user_subproject_comments}]]>
             </ReportItem>
             <ReportItem id="pagebreak" type="PageBreakReportItem">
                 <![CDATA[{$item}]]>

@@ -89,30 +89,16 @@ EOF;
         return $item;
 	}
 	
-	function getLimit(){
-	    return $this->getAttr('limit', 0);
-	}
-	
-	function getNChars(){
-	    $blobValue = utf8_decode(str_replace("\r", "", $this->getBlobValue()));
-	    return min($this->getLimit(), strlen($blobValue));
-	}
-	
-	function getActualNChars(){
-	    $blobValue = utf8_decode(str_replace("\r", "", $this->getBlobValue()));
-	    return strlen($blobValue);
-	}
-	
-	function renderForPDF(){
-	    global $wgOut;
+	function getHTMLForPDF(){
 	    $limit = $this->getLimit();
 	    $html = "";
 	    $blobValue = str_replace("\r", "", $this->getBlobValue());
 	    $recommended = $this->getAttr('recommended', false);
+	    $reportLimits = strtolower($this->getAttr('reportLimits', "false"));
 	    $length = strlen(utf8_decode($blobValue));
 	    $lengthDiff = strlen($blobValue) - $length;
 	    $class = "inlineMessage";
-	    if($limit > 0){
+	    if($limit > 0 && $reportLimits == "true"){
 	        if(!$recommended){
 	            $type = "maximum of";
 	            $blobValue1 = substr($blobValue, 0, $limit + $lengthDiff);
@@ -138,14 +124,30 @@ EOF;
 	        else{
 	            $type = "recommended";
 	        }
-	        $plural = "s";
-	        if($length == 1){
-	            $plural = "";
-	        }
-	        //$html .= "<span class='$class'><small>(<i>currently {$length} character{$plural} out of a {$type} {$limit}</i>)</small></span>";
+	        $html .= "<span class='$class'><small>(<i>currently {$length} ".Inflect::smart_pluralize($length, "character")." out of a {$type} {$limit}</i>)</small></span>";
 	    }
 	    $html .= nl2br("<p>{$blobValue}</p>");
-	    $item = $this->processCData($html);
+	    return $html;
+	}
+	
+	function getLimit(){
+	    return $this->getAttr('limit', 0);
+	}
+	
+	function getNChars(){
+	    $blobValue = utf8_decode(str_replace("\r", "", $this->getBlobValue()));
+	    return min($this->getLimit(), strlen($blobValue));
+	}
+	
+	function getActualNChars(){
+	    $blobValue = utf8_decode(str_replace("\r", "", $this->getBlobValue()));
+	    return strlen($blobValue);
+	}
+	
+	function renderForPDF(){
+	    global $wgOut;
+	    $item = $this->getHTMLForPDF();
+	    $item = $this->processCData($item);
 		$wgOut->addHTML($item);
 	}
 

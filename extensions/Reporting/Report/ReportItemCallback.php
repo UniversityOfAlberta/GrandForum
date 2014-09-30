@@ -880,23 +880,19 @@ class ReportItemCallback {
     function getUserSubProjectChamps(){
         $project = Project::newFromId($this->reportItem->projectId);
         
-        $addr = ReportBlob::create_address(RP_SUBPROJECT, SUB_SUBPROJECTS, SUB_SUBPROJECT_CHAMPS, 0);
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $project->getId());
-        $blob->load($addr);
-        $data = $blob->getData();
-        $data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
-        return $data;
+        $report = new DummyReport(RP_SUBPROJECT, new Person(array()), $project, $this->reportItem->getReport()->year);
+        $item = $report->getSectionById("report")->getReportItemById("sub_project_champs");
+        
+        return $item->getHTMLForPDF();
     }
     
     function getUserSubProjectComments(){
         $project = Project::newFromId($this->reportItem->projectId);
         
-        $addr = ReportBlob::create_address(RP_SUBPROJECT, SUB_SUBPROJECTS, SUB_SUBPROJECT_COMMENTS, 0);
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $project->getId());
-        $blob->load($addr);
-        $data = $blob->getData();
-        $data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
-        return $data;
+        $report = new DummyReport(RP_SUBPROJECT, new Person(array()), $project, $this->reportItem->getReport()->year);
+        $item = $report->getSectionById("report")->getReportItemById("sub_project_comments");
+        
+        return $item->getHTMLForPDF();
     }
     
     function getUserMTGMusic(){

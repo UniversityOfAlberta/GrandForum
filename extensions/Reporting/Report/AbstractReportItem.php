@@ -50,6 +50,10 @@ abstract class AbstractReportItem {
         $this->id = $id;
     }
     
+    function setAttr($key, $value){
+        $this->setAttribute($key, $value);
+    }
+    
     function setAttribute($key, $value){
         $this->attributes[$key] = $value;
     }

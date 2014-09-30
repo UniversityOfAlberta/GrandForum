@@ -124,8 +124,7 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 	    return null;
 	}
 	
-	function renderForPDF(){
-	    global $wgOut;
+	function getHTMLForPDF(){
 	    $limit = $this->getLimit();
 	    $nChars = $this->getActualNChars();
 	    $anchor = ($this->getAttr("anchor", "false") == "true");
@@ -167,14 +166,20 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
                     $blobValue = $blobValue1;
                 }
             }
-            $html .= nl2br($this->processCData($blobValue));
+            $html .= nl2br($blobValue);
 	    }
 	    else{
 	        $value = nl2br($this->getReplacedBlobValue());
 		    $html .= "{$value}";
-	        $html = $this->processCData($html);
 	    }
-		$wgOut->addHTML($html);
+	    return $html;
+	}
+	
+	function renderForPDF(){
+	    global $wgOut;
+	    $item = $this->getHTMLForPDF();
+	    $item = $this->processCData($item);
+		$wgOut->addHTML($item);
 	}
 	
 	function getReplacedBlobValue(){

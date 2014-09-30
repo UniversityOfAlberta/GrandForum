@@ -28,7 +28,11 @@ class ProjectGoalsReportItem extends AbstractReportItem {
         $("#problem", template).val(problem);
         $("#description", template).val(description);
         $("#assessment", template).val(assessment);
+        $('#problem', template).limit(300, $('#{$this->getPostId()}_problem_chars_left', template));
+        $('#description', template).limit(300, $('#{$this->getPostId()}_description_chars_left', template));
+        $('#assessment', template).limit(500, $('#{$this->getPostId()}_assessment_chars_left', template));
         $("#{$this->getPostId()}").append(template);
+        
     }
 </script>
 EOF
@@ -91,14 +95,22 @@ EOF
                             <td><b>Plan & Expected Outcomes:</b></td>
                         </tr>
                         <tr>
-                            <td width='50%' colspan='2'><textarea id='problem' name='{$this->getPostId()}_problem[]' style='height: 80px;resize: none;'></textarea></td>
-                            <td><textarea id='description' name='{$this->getPostId()}_description[]' style='height: 80px;resize: none;'></textarea></td>
+                            <td width='50%' colspan='2'>
+                                <small>(currently <span id='{$this->getPostId()}_problem_chars_left'>0</span> characters out of a maximum of 300)</small><br />
+                                <textarea id='problem' name='{$this->getPostId()}_problem[]' style='height: 80px;resize: none;'></textarea></td>
+                            <td>
+                                <small>(currently <span id='{$this->getPostId()}_description_chars_left'>0</span> characters out of a maximum of 300)</small><br />
+                                <textarea id='description' name='{$this->getPostId()}_description[]' style='height: 80px;resize: none;'></textarea>
+                            </td>
                         </tr>
                         <tr style='{$display}'>
                             <td colspan='3'><b>Assessment:</b></td>
                         </tr>
                         <tr style='{$display}'>
-                            <td colspan='3'><textarea id='assessment' name='{$this->getPostId()}_assessment[]' style='height: 80px;resize: none;'></textarea></td>
+                            <td colspan='3'>
+                                <small>(currently <span id='{$this->getPostId()}_assessment_chars_left'>0</span> characters out of a maximum of 500)</small><br />
+                                <textarea id='assessment' name='{$this->getPostId()}_assessment[]' style='height: 80px;resize: none;'></textarea>
+                            </td>
                         </tr>
                     </table>
                     <hr />
@@ -109,11 +121,14 @@ EOF
     function getTemplateForPDF($title, $status, $problem, $description, $assessment){
         $year = $this->getAttr("year", REPORTING_YEAR);
         $display = ($year > REPORTING_YEAR) ? "display:none;" : "";
+        $problemLength = strlen($problem);
+        $descriptionLength = strlen($description);
+        $assessmentLength = strlen($assessment);
         $tplt = "<div style='page-break-inside:avoid;margin-bottom:25px;'>
                     <h4>$title ({$status})</h4>
-                        <p style='margin-left:50px;'><b>Problem Statement:&nbsp;</b><small>(Currently 298 out of 300 characters)</small><br />{$problem}</p>
-                        <p style='margin-left:50px;'><b>Plan & Expected Outcomes:&nbsp;</b><small>(Currently 298 out of 300 characters)</small><br />{$description}</p>
-                        <p style='margin-left:50px;{$display}'><b>Assessment:&nbsp;</b><small>(Currently 497 out of 500 characters)</small><br />{$assessment}</p>
+                        <p style='margin-left:50px;'><b>Problem Statement:&nbsp;</b><small>(Currently $problemLength out of 300 characters)</small><br />{$problem}</p>
+                        <p style='margin-left:50px;'><b>Plan & Expected Outcomes:&nbsp;</b><small>(Currently $descriptionLength out of 300 characters)</small><br />{$description}</p>
+                        <p style='margin-left:50px;{$display}'><b>Assessment:&nbsp;</b><small>(Currently $assessmentLength out of 500 characters)</small><br />{$assessment}</p>
                  </div>";
         return $tplt;
     }
