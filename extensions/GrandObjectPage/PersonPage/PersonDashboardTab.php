@@ -96,6 +96,7 @@ class PersonDashboardTab extends AbstractEditableTab {
     
     function showEditTopProducts($person, $visibility){
         $this->html .= "<h2>Top Research Outcomes</h2>";
+        $this->html .= "<small>Select the top 5 research outcomes that you believe showcase your productivity the greatest.  These top 5 products will be shown in your annual report</small><br />";
         $products = $person->getTopProducts();
         $lastUpdated = $person->getTopProductsLastUpdated();
         $i = 0;
@@ -111,8 +112,11 @@ class PersonDashboardTab extends AbstractEditableTab {
     }
     
     function showTopProducts($person, $visibility){
-        $this->html .= "<h2>Top Research Outcomes</h2>";
         $products = $person->getTopProducts();
+        if(!$visibility['isMe'] && count($products) == 0){
+            return;
+        }
+        $this->html .= "<h2>Top Research Outcomes</h2>";
         $lastUpdated = $person->getTopProductsLastUpdated();
         if(count($products) > 0){
             $this->html .= "<table class='dashboard' cellspacing='1' cellpadding='3' rules='all' frame='box' style='max-width: 800px;border-spacing:".max(1, (0.5*DPI_CONSTANT))."px;'>
@@ -140,7 +144,9 @@ class PersonDashboardTab extends AbstractEditableTab {
         else{
             $this->html .= "You have not entered any <i>Top Research Outcomes</i> yet<br />";
         }
-        $this->html .= "<button type='submit' value='Edit Dashboard' name='submit'>Edit Top Research Outcomes</button>";
+        if($this->canEdit()){
+            $this->html .= "<button type='submit' value='Edit Dashboard' name='submit'>Edit Top Research Outcomes</button>";
+        }
     }
     
     function showDashboard($person, $visibility){
