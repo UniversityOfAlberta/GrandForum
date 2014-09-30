@@ -386,12 +386,18 @@ abstract class AbstractReport extends SpecialPage {
     function getPDF($submittedByOwner=false){
     	$sto = new ReportStorage($this->person);
     	$foundSameUser = false;
+    	$foundSubmitted = false;
     	if($this->project != null){
     	    if($this->pdfAllProjects){
     	        $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType);
     	    }
     	    else{
     	        $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
+    	        foreach($check as $c){
+    	            if($c['submitted'] == 1){
+    	                $foundSubmitted = true;
+    	            }
+    	        }
             }
     	}
     	else{
@@ -410,6 +416,9 @@ abstract class AbstractReport extends SpecialPage {
     	}
     	foreach($check as $key => $c){
     	    if($foundSameUser && $c['generation_user_id'] != $c['user_id']){
+    	        unset($check[$key]);
+    	    }
+    	    if($foundSubmitted && $c['submitted'] != 1){
     	        unset($check[$key]);
     	    }
     	}
