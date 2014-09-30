@@ -1,12 +1,12 @@
 <?php
 
-class PersonTopProductsReportItem extends StaticReportItem {
+class ProjectTopProductsReportItem extends StaticReportItem {
 
 	private function getTable(){
-	    $max = $this->getAttr("max", 5);
-	    $person = Person::newFromId($this->personId);
-	    $products = $person->getTopProducts();
-	    $date = date('M j, Y', strtotime($person->getTopProductsLastUpdated()));
+	    $max = $this->getAttr("max", 10);
+	    $project = Project::newFromId($this->projectId);
+	    $products = $project->getTopProducts();
+	    $date = date('M j, Y', strtotime($project->getTopProductsLastUpdated()));
 		$table = "<table class='dashboard' cellspacing='1' cellpadding='3' rules='all' frame='box' style='border: none;'>
                     <tr>
                         <td align='center'><b>Year</b></td>

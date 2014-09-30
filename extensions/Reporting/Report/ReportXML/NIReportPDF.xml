@@ -106,7 +106,7 @@
             ]]>
         </ReportItem>
         <ReportItem id="top_prods" type="PersonTopProductsReportItem" max="5">
-            <![CDATA[<div style='page-break-inside:avoid;'>{$item}</div>]]>
+            <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
     <ReportSection type="BookmarkReportSection" name="Section 2" />
