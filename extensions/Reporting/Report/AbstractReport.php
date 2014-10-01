@@ -629,7 +629,17 @@ abstract class AbstractReport extends SpecialPage {
                             $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
                             if(count($project_objs) > 0){
                                 foreach($project_objs as $project){
-                                    if($project->getId() == $this->project->getId()){
+                                    if(!$project->isSubProject() && $project->getId() == $this->project->getId()){
+                                        $rResult = true;
+                                    }
+                                }
+                            }
+                        }
+                        else if($this->project != null && ($perm['perm'] == "SUB-PL" || $perm['perm'] == "SUB-COPL")){
+                            $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
+                            if(count($project_objs) > 0){
+                                foreach($project_objs as $project){
+                                    if($project->isSubProject() && $project->getId() == $this->project->getId()){
                                         $rResult = true;
                                     }
                                 }
