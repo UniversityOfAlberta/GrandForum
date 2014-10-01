@@ -590,7 +590,16 @@ textarea[disabled] {
     color: #777777 !important;
 }
 
-input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabled], button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:active {
+input[disabled] {
+    background: #cccccc !important;
+    color: #777777 !important;
+    margin: 2px;
+    padding: 3px;
+}
+
+input[type=button][disabled], input[type=button][disabled]:hover, input[type=button][disabled]:active,
+input[type=submit][disabled], input[type=submit][disabled]:hover, input[type=submit][disabled]:active,
+select[disabled], button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:active {
     background: #cccccc !important;
     color: #777777 !important;
     top:0;
