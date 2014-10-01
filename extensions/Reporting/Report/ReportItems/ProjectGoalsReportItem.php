@@ -14,11 +14,21 @@ class ProjectGoalsReportItem extends AbstractReportItem {
         $max = $this->getAttr("max", 5);
         $milestones = $project->getGoalsDuring($year);
         $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "150px";
-        $item = "<ol id='{$this->getPostId()}'></ol><a class='button' onClick=\"addMilestone{$this->getPostId()}('new', '', '', '', 'Current', '')\">Add Goal</a>";
+        $item = "<div style='display:none;' id='{$this->getPostId()}_diag' title='Delete Project Goal?'>Are you sure you want to <b>permanently</b> delete this Goal?</div><span id='{$this->getPostId()}_deleted_milestones'></span><ol id='{$this->getPostId()}'></ol>
+                 <button type='button' id='{$this->getPostId()}_add' onClick=\"addMilestone{$this->getPostId()}('new', '', '', '', 'Current', '')\">Add Goal</button>";
         $item = $this->processCData($item);
         $wgOut->addHTML($item);
         $wgOut->addHTML(<<<EOF
 <script type='text/javascript'>
+    function updateMilestones{$this->getPostId()}(){
+        if($("#{$this->getPostId()}").children().length >= $max){
+            $('#{$this->getPostId()}_add').prop('disabled', true);
+        }
+        else{
+            $('#{$this->getPostId()}_add').prop('disabled', false);
+        }
+    }
+
     function addMilestone{$this->getPostId()}(id, title, problem, description, status, assessment){
         var template = $("{$this->getTemplate()}");
         $("#milestone_id", template).val(id);
@@ -36,9 +46,37 @@ class ProjectGoalsReportItem extends AbstractReportItem {
         $('#problem', template).limit(300, $('#{$this->getPostId()}_problem_chars_left', template));
         $('#description', template).limit(300, $('#{$this->getPostId()}_description_chars_left', template));
         $('#assessment', template).limit(500, $('#{$this->getPostId()}_assessment_chars_left', template));
+        $('#delete', template).click(function(){
+            deleteMilestone{$this->getPostId()}($(this).parent(), id, $("#identifier", template).val());
+        });
         $("#{$this->getPostId()}").append(template);
+        updateMilestones{$this->getPostId()}();
+    }
+    
+    function deleteMilestone{$this->getPostId()}(item, id, identifier){
+        $('#{$this->getPostId()}_diag').dialog({
+            modal: true,
+            buttons: {
+                "Delete Goal": function() {
+                    if(id != 'new'){
+                        $('#{$this->getPostId()}_deleted_milestones').append("<input type='hidden' name='del_milestones_id[]' value='" + id + "' />");
+                    }
+                    else{
+                        $('#{$this->getPostId()}_deleted_milestones').append("<input type='hidden' name='del_milestones_identifier[]' value='" + identifier + "' />");
+                    }
+                    item.remove();
+                    updateMilestones{$this->getPostId()}();
+                    $(this).dialog("close");
+                },
+                Cancel: function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
         
     }
+    
+    updateMilestones{$this->getPostId()}();
 </script>
 EOF
         );
@@ -118,6 +156,7 @@ EOF
                             </td>
                         </tr>
                     </table>
+                    <button id='delete' type='button'>Delete</button>
                     <hr />
             </li>";
         return trim(str_replace("\n", "", $tplt));
@@ -175,6 +214,19 @@ EOF
                 $api->doAction(true);
                 unset($_POST['identifier']);
                 unset($_POST['id']);
+            }
+        }
+        if(isset($_POST['del_milestones_id']) && is_array($_POST['del_milestones_id'])){
+            foreach($_POST['del_milestones_id'] as $milestoneId){
+                DBFunctions::delete('grand_milestones',
+                                    array('milestone_id' => EQ($milestoneId)));
+            }
+        }
+        if(isset($_POST['del_milestones_identifier']) && is_array($_POST['del_milestones_identifier'])){
+            foreach($_POST['del_milestones_identifier'] as $milestoneId){
+                DBFunctions::delete('grand_milestones',
+                                    array('identifier' => EQ($milestoneId),
+                                          'project_id' => EQ($this->projectId)));
             }
         }
         return array();
