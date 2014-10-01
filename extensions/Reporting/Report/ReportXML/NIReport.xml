@@ -134,18 +134,23 @@
             </div>
         ]]>
         </ReportItem>
-        <ReportItem id="ni_dashboard" type="DashboardReportItem" structure="NI_REPORT_STRUCTURE">
-            <![CDATA[<h2>Network</h2><div>{$item}</div>]]>
-        </ReportItem>
-        <ReportItem id="top_prods" type="PersonTopProductsReportItem" max="5">
-            <![CDATA[<h2>Top Research Outcomes</h2><div>{$item}</div>]]>
-        </ReportItem>
-        <ReportItem id="ni_dashboard_productivity" type="DashboardReportItem" structure="NI_REPORT_PRODUCTIVITY_STRUCTURE">
-            <![CDATA[<h2>Productivity</h2>
-                        <div style='max-width:900px;'>If there is an error in any of the information reported in the dashboard, please edit the corresponding element through the appropriate tool. If the error is in a system-controlled field, please contact <a href='mailto:support@forum.grand-nce.ca'>support</a>.</div><div>{$item}</div>]]>
-        </ReportItem>
+        <ReportItemSet id='ni_dashboard_head' type="ToggleHeaderReportItemSet" level="3" title="Network Dashboard">
+            <ReportItem id="ni_dashboard" type="DashboardReportItem" structure="NI_REPORT_STRUCTURE">
+                <![CDATA[<div>{$item}</div><br />]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id='top_prods_head' type="ToggleHeaderReportItemSet" level="3" title="Top Research Outcomes">
+            <ReportItem id="top_prods" type="PersonTopProductsReportItem" max="5">
+                <![CDATA[<div>{$item}</div><br />]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id='ni_dashboard_productivity_head' type="ToggleHeaderReportItemSet" level="3" title="Productivity Dashboard">
+            <ReportItem id="ni_dashboard_productivity" type="DashboardReportItem" structure="NI_REPORT_PRODUCTIVITY_STRUCTURE">
+                <![CDATA[<div style='max-width:900px;'>If there is an error in any of the information reported in the dashboard, please edit the corresponding element through the appropriate tool. If the error is in a system-controlled field, please contact <a href='mailto:support@forum.grand-nce.ca'>support</a>.</div><div>{$item}</div>]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
-    <ReportSection id="report" name="NI Report" tooltip="Open-ended report narratives" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" number="1,2,3" renderpdf="true">
+    <ReportSection id="report" name="NI Report" tooltip="Open-ended report narratives" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
                 <p>The intent of this section is to enable each NI report in an open-ended format on his/her activities and accomplishments during the term of the report.</p>
@@ -237,7 +242,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
         </ReportItem>
 <!-- I. Executive Summary -->
         <ReportItem id='I_head' type="StaticReportItem">
-            <![CDATA[<h2>I. Executive Summary: Overview of all of my GRAND Activity</h2>]]>
+            <![CDATA[<h2>Executive Summary: Overview of all of my GRAND Activity</h2>]]>
         </ReportItem>
     <!-- Ia. Overview of NI Activity -->
         <ReportItemSet id='Ia_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Overview of NI Activity">
@@ -247,7 +252,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
         </ReportItemSet>
 <!-- II. NCE Criteria -->
         <ReportItem id='II_head' type="StaticReportItem">
-            <![CDATA[<h2>II. Assessment: How I contribute towards the NCE Evaluation Criteria</h2>]]>
+            <![CDATA[<h2>Assessment: How I contribute towards the NCE Evaluation Criteria</h2>]]>
         </ReportItem>
     <!-- IIa. Excellence of the Research Program -->
         <ReportItemSet id='IIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="A. Excellence of the Research Program: How my research contributes to the Network">
@@ -324,8 +329,11 @@ Describe your involvement with receptor organizations, industry partners and Pro
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
+        <ReportItem id='III_head' type="StaticReportItem">
+            <![CDATA[<h2>Outlook: My Plans for {$next_year} in GRAND</h2>]]>
+        </ReportItem>
         <!-- IIf. Plans for Next Year -->
-        <ReportItemSet id='IIf_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="F. My Plans for {$next_year} in GRAND">
+        <ReportItemSet id='IIf_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Achievements &amp; Plans">
             <ReportItem id='IIf_head' type="StaticReportItem">
                 <![CDATA[<i>(Phase2 Projects Only)</i>]]>
             </ReportItem>
@@ -341,7 +349,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
         </ReportItemSet>
 <!-- III. Supplemental -->
         <ReportItem id='III_head' type="StaticReportItem">
-            <![CDATA[<h2>III. Reflections: Other Aspects of my involvement in GRAND</h2>]]>
+            <![CDATA[<h2>Reflections: Other Aspects of my involvement in GRAND</h2>]]>
         </ReportItem>
     <!-- IIIb. Benefits from being involved in the Network -->
         <ReportItemSet id='IIIb_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Benefits of Networking: The value to my research program of my participation in GRAND" private="true">
@@ -365,7 +373,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
             </ReportItem>
         </ReportItemSet-->
     </ReportSection>
-    <ReportSection id="budget" name="Budget Request" blobSection="RES_BUDGET" tooltip="Budget request and justification" type="EditableReportSection" autosave="true" number="4" renderpdf="true" private="true">
+    <ReportSection id="budget" name="Budget Request" blobSection="RES_BUDGET" tooltip="Budget request and justification" type="EditableReportSection" autosave="true" renderpdf="true" private="true">
         <Instructions>
             <![CDATA[
                 <p>Below find a budget template, which you should download, complete with your funding request for 2014-15 and upload. As with the past year, the amounts you will be allocating to different projects should be listed in different columns.</p>

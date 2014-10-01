@@ -141,18 +141,26 @@
                 <p>The project dashboard is compiled based on the data reported on the project-related rows of all the NIs of the project. The "Time and Budget" table of the project dashboard relies on the "Network" table of the NI dashboards. The "Productivity" table of the project dashboard relies on the “Productivity” table of the NI dashboards.</p>
             ]]>
         </Instructions>
-        <ReportItem id="project_roster" type="ProjectRosterReportItem">
-            <![CDATA[<h2>Project Team</h2><div>{$item}</div>]]>
-        </ReportItem>
-        <ReportItem id="top_prods" type="ProjectTopProductsReportItem" max="10">
-            <![CDATA[<h2>Top Research Outcomes</h2><div>{$item}</div>]]>
-        </ReportItem>
-        <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE">
-            <![CDATA[<h2>Productivity</h2><div>{$item}</div>]]>
-        </ReportItem>
-        <ReportItem id="champion_table" type="ProjectChampionsTableReportItem">
-            <![CDATA[<h2>Champions</h2><div>{$item}</div>]]>
-        </ReportItem>
+        <ReportItemSet id='project_roster_head' type="ToggleHeaderReportItemSet" level="3" title="Project Team">
+            <ReportItem id="project_roster" type="ProjectRosterReportItem">
+                <![CDATA[<div>{$item}</div><br />]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id='top_prods_head' type="ToggleHeaderReportItemSet" level="3" title="Top Research Outcomes">
+            <ReportItem id="top_prods" type="ProjectTopProductsReportItem" max="10">
+                <![CDATA[<div>{$item}</div><br />]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id='project_dashboard_prod_head' type="ToggleHeaderReportItemSet" level="3" title="Productivity Dashboard">
+            <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE">
+                <![CDATA[<div>{$item}</div><br />]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id='champion_table_head' type="ToggleHeaderReportItemSet" level="3" title="Champions">
+            <ReportItem id="champion_table" type="ProjectChampionsTableReportItem">
+                <![CDATA[<div>{$item}</div><br />]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="budget" tooltip="Budget-request roll-up and justification" name="Project Budget Request" blobSection="LDR_BUDGET" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
@@ -171,7 +179,7 @@
             <![CDATA[<h2>NI Budgets</h2>{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="report" tooltip="Open-ended report narratives" name="Project Report" blobSection="LDR_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" number="1,2">
+    <ReportSection id="report" tooltip="Open-ended report narratives" name="Project Report" blobSection="LDR_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
                 <p>The intent of this section is to enable the project PLs and co-PLs to report in an executive summary an overview of the project activity for the next year and their reflections on:</p>
@@ -184,7 +192,7 @@
         </Instructions>
 <!-- I. Executive Summary -->
         <ReportItem id='I_head' type="StaticReportItem">
-            <![CDATA[<h2>I. Executive Summary: Overview of {$project_name} Activity</h2>]]>
+            <![CDATA[<h2>Executive Summary: Overview of {$project_name} Activity</h2>]]>
         </ReportItem>
     <!-- Ia. Overview of Activity -->
         <ReportItemSet id='Ia_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Overview of {$project_name} Activity">
@@ -195,7 +203,7 @@
 <!-- II. NCE Criteria -->
         <ReportItemSet id='II_wrapper' type="IdentityReportItemSet">
             <ReportItem id='II_head' type="StaticReportItem">
-                <![CDATA[<h2>II. Assessment: How {$project_name} contributes towards the NCE Evaluation Criteria</h2>]]>
+                <![CDATA[<h2>Assessment: How {$project_name} contributes towards the NCE Evaluation Criteria</h2>]]>
             </ReportItem>
         <!-- IIa. Excellence of the Research Program -->
             <ReportItemSet id='IIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="A. Excellence of the Research Program: How {$project_name} contributes to the Network">
@@ -234,18 +242,17 @@
                 </ReportItem>
             </ReportItemSet>
         <!-- IIe. Other Project Outcomes -->
-            <ReportItemSet id='IIe_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="E. Other Project Outcomes">
+            <ReportItemSet id='IIe_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="E.Other Project Outcomes">
                 <ReportItem id="IIe" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHEROUTCOMES" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
                     <![CDATA[{$item}]]>
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
-<!-- III. Supplemental -->
         <ReportItem id='III_head' type="StaticReportItem">
-            <![CDATA[<h2>II. Reflections: {$project_name} and GRAND</h2>]]>
+            <![CDATA[<h2>Achievements & Plans</h2>]]>
         </ReportItem>
     <!-- IIIa. Plans for Next Year -->
-        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Achievements and Plans">
+        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Achievements &amp; Plans">
             <ReportItem id="IIIa" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
                 <![CDATA[{$item}]]>
             </ReportItem>
@@ -253,6 +260,10 @@
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
+<!-- III. Supplemental -->
+        <ReportItem id='III_head' type="StaticReportItem">
+            <![CDATA[<h2>Reflections: {$project_name} and GRAND</h2>]]>
+        </ReportItem>
     <!-- IIIb. Benefits from being involved in the Network -->
         <ReportItemSet id='IIIb_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Benefits of Networking: Benefits from being involved in the Network">
             <ReportItem id="IIIb" rows="12" width="100%" limit="600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETBENEFITS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
