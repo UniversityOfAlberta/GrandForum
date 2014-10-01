@@ -15,10 +15,13 @@ class DeleteProjectAPI extends API{
 	function doAction($noEcho=false){
 	    global $wgUser;
 	    $me = Person::newFromUser($wgUser);
-	    if(!$me->isRoleAtLeast(STAFF)){
+	    $project = Project::newFromName($_POST['project']);
+	    if(!$me->isRoleAtLeast(STAFF) && 
+	       (!$me->leadershipOf($project) ||
+	        ($project->isSubProject() && !$me->leadershipOf($project->getParent()))
+	       )){
 	        return;
 	    }
-	    $project = Project::newFromName($_POST['project']);
 	    $theme1 = $project->getTheme(1);
 	    $theme2 = $project->getTheme(2);
 	    $theme3 = $project->getTheme(3);

@@ -82,11 +82,38 @@ class ProjectSubprojectsTab extends AbstractTab {
         $subprojects = $project->getSubProjects();
        
         $this->html .= "<h2>Current Sub-Projects</h2>";
-        
+        if($can_edit){
+            $this->html .= "<div id='end_diag' style='display:none;' title='End Sub-Project'>Are you sure you want to end this sub-project?</div><script type='text/javascript'>
+                function endProject(name, id){
+                    $('#end_diag').dialog({
+                        width: 400,
+                        modal: true,
+                        buttons: {
+                            'End Sub-Project': function(){
+                                $.post('$wgServer$wgScriptPath/index.php?action=api.deleteProject', {'project': name}, function(response){
+                                    clearAllMessages();
+                                    if(response.errors.length == 0){
+                                        addSuccess('The sub-project <b>' + name + '</b> was ended');
+                                        $('#sub_' + id).parent().slideUp();
+                                    }
+                                    else{
+                                        addError('There were errors ending the sub-project <b>' + name + '</b>');
+                                    }
+                                });
+                                $(this).dialog('close');
+                            },
+                            'Cancel': function(){
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                }
+            </script>";
+        }
         foreach($subprojects as $subproject){
             $this->html .= "<div class='subprojects_accordion'>";
             $this->html .= "<h3><a href='#'>{$subproject->getName()}</a></h3>";
-            $this->html .= "<div>";
+            $this->html .= "<div id='sub_{$subproject->getId()}'>";
             $tab = new ProjectMainTab($subproject, array('edit' => false,
                                                          'isLead' => false,
                                                          'isMember' => false,
@@ -95,7 +122,8 @@ class ProjectSubprojectsTab extends AbstractTab {
             $this->html .= "<a class='button' href='{$subproject->getUrl()}' target='_blank'>View Project Page</a>";
             if($can_edit){
                 $this->html .=<<<EOF
-                <a class="button" href="{$subproject->getUrl()}?edit" target="_blank">Edit</a>
+                <a class="button" href="{$subproject->getUrl()}?edit" target="_blank">Edit Sub-Project</a>
+                <button type="button" onClick="endProject('{$subproject->getName()}', '{$subproject->getId()}')">End Sub-Project</button>
 EOF;
             }
             $this->html .= "</div></div>";

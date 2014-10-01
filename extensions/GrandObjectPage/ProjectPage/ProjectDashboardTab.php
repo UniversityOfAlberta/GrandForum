@@ -34,18 +34,22 @@ class ProjectDashboardTab extends AbstractEditableTab {
     }
     
     function canEdit(){
-        return ($this->visibility['isLead']);
+        return ($this->visibility['isLead'] && !$this->project->isSubProject());
     }
     
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath;
-        $this->showTopProducts($this->project, $this->visibility);
+        if(!$this->project->isSubProject()){
+            $this->showTopProducts($this->project, $this->visibility);
+        }
         $this->showDashboard($this->project, $this->visibility);
         return $this->html;
     }
     
     function generateEditBody(){
-        $this->showEditTopProducts($this->project, $this->visibility);
+        if(!$this->project->isSubProject()){
+            $this->showEditTopProducts($this->project, $this->visibility);
+        }
         $this->showDashboard($this->project, $this->visibility);
         $this->html .= "<script type='text/javascript'>
             _.defer(function(){
