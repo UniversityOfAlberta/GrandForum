@@ -51,6 +51,7 @@ class Report extends AbstractReport{
         $leadership = $person->leadership();
         if(count($leadership) > 0){
             $projectDone = array();
+            $subs = array();
             foreach($leadership as $project){
                 if($project->isSubProject()){
                     if(isset($projectDone[$project->getName()])){
@@ -65,7 +66,12 @@ class Report extends AbstractReport{
                         continue;
                     }
                     $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "$type" && $_GET['project'] == $project->getName()) ? "selected" : false;
-                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} ({$parent->getName()})", "{$url}$type&project={$project->getName()}", $selected);
+                    $subs[$project->getParent()->getName()][] = TabUtils::createSubTab("<i>{$project->getName()}</i> ({$parent->getName()})", "{$url}$type&project={$project->getName()}", $selected);
+                }
+            }
+            foreach($subs as $proj){
+                foreach($proj as $sub){
+                    $tabs["Reports"]['subtabs'][] = $sub;
                 }
             }
             foreach($leadership as $project){

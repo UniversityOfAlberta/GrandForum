@@ -53,7 +53,12 @@ class EditableReportSection extends AbstractReportSection {
         $number = "";
         if($this->getParent()->project != null){
             $projectName = ": ".$this->getParent()->project->getName();
-            $phase = " (Phase {$this->getParent()->project->getPhase()}";
+            if($this->getParent()->project->isSubProject()){
+                $phase = " ({$this->getParent()->project->getParent()->getName()}";
+            }
+            else{
+                $phase = " (Phase {$this->getParent()->project->getPhase()}";
+            }
             if($this->getParent()->project->getPhase() < PROJECT_PHASE){
                 $phase .= ", Final Report";
             }

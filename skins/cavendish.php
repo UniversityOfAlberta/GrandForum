@@ -681,7 +681,7 @@ class cavendishTemplate extends QuickTemplate {
 		           	            $dropdownScript .= "createDropDown('$class', '{$subtab['text']}', 125);";
 		           	        }
 		           	        else{
-		           	            echo "<li class='$class {$subtab['selected']}'><a class='highlights-tab' href='".htmlspecialchars($subtab['href'])."'>".htmlspecialchars($subtab['text'])."</a></li>";
+		           	            echo "<li class='$class {$subtab['selected']}'><a class='highlights-tab' href='".htmlspecialchars($subtab['href'])."'>".$subtab['text']."</a></li>";
 		           	        }
 		           	    }
 		           	    break;
