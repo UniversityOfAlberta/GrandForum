@@ -244,7 +244,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
         <ReportItem id="projects_time_head" type="StaticReportItem">
             <![CDATA[<table id="projects_time">
                 <tr>
-                    <th>Project</th><th>&nbsp;Time Commitment (hours / week)</th>
+                    <th align='center'>Project</th><th align='center'>&nbsp;Time Commitment (hours / week)</th>
                 </tr>
                 <tr>
                     <td colspan="2" style="height:1px;padding:0;background:#808080;"</td>
