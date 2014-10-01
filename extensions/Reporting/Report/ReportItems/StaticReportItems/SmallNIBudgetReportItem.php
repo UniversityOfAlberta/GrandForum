@@ -2,9 +2,8 @@
 
 class SmallNIBudgetReportItem extends StaticReportItem {
 
-    function render(){
-        global $wgServer, $wgScriptPath, $wgOut;
-        
+    function getHTML(){
+        global $wgServer, $wgScriptPath;
         $person = Person::newFromId($this->personId);
         
         $start = intval($this->getAttr("start", "0000"));
@@ -36,12 +35,23 @@ class SmallNIBudgetReportItem extends StaticReportItem {
             $item .= "<tr><td align='center'>Apr {$iS} to Mar {$iE}</td><td align='right'>$rAmnt</td><td align='right'>$aAmnt</td></tr>";
         }
         $item .= "</table>";
+        return $item;
+    }
+
+    function render(){
+        global $wgOut;
+        $item = $this->getHTML();
+        $item = str_replace("cellspacing='0'", "cellspacing='1'", $item);
+        $item = str_replace("cellpadding='0'", "cellpadding='1'", $item);
         $item = $this->processCData($item);
         $wgOut->addHTML($item);
     }
     
     function renderForPDF(){
-        $this->render();
+        global $wgOut;
+        $item = $this->getHTML();
+        $item = $this->processCData($item);
+        $wgOut->addHTML($item);
     }
 }
 

@@ -15,7 +15,7 @@ jQuery.fn.forceNumeric = function (options) {
             $(target).val(Math.max(options.min, $(target).val()));
         }
         
-        /*if(options.max != undefined && options.max != ""){
+        if(options.max != undefined && options.max != ""){
             $(this).keyup(function(e){
                 validateMax(e.target);
             });
@@ -26,7 +26,7 @@ jQuery.fn.forceNumeric = function (options) {
                 validateMin(e.target);
             });
             validateMin(this);
-        }*/
+        }
         if(!(/^[0-9]+$/.test($(this).val()))){
             $(this).val("");
         }

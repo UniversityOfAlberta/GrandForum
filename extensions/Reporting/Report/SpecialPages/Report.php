@@ -52,6 +52,22 @@ class Report extends AbstractReport{
         if(count($leadership) > 0){
             $projectDone = array();
             foreach($leadership as $project){
+                if($project->isSubProject()){
+                    if(isset($projectDone[$project->getName()])){
+                        continue;
+                    }
+                    $projectDone[$project->getName()] = true;
+                    if(!$project->isDeleted()){
+                        $type = "SubProjectReport";
+                    }
+                    else{
+                        continue;
+                    }
+                    $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "$type" && $_GET['project'] == $project->getName()) ? "selected" : false;
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab($project->getName(), "{$url}$type&project={$project->getName()}", $selected);
+                }
+            }
+            foreach($leadership as $project){
                 if(!$project->isSubProject()){
                     if(isset($projectDone[$project->getName()])){
                         continue;

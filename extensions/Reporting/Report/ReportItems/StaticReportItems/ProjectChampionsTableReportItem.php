@@ -10,14 +10,14 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
             $table .= "<table cellspacing='1' class='dashboard' width='100%' style='width:100%;background-color:#000000;border-color:#000000;margin-bottom:15px;border-spacing:".max(1, (0.5*DPI_CONSTANT))."px;'>";
         }
         else{
-            $table .= "<table cellspacing='1' class='dashboard' width='100%' style='width:100%;max-width:900px;background-color:#808080;'>";
+            $table .= "<table class='dashboard' width='100%' style='border-spacing: 1px;width:100%;max-width:900px;background-color:#808080;' frame='box' rules='all'>";
         }
-        $table .= "<tr style='background: #FFFFFF;'><th></th><th></th><th></th>";
+        $table .= "<tr style='background: #FFFFFF;'><td></td><td></td><td></td>";
         foreach($subs as $sub){
-            $table .= "<th class='small' style='display:table-cell;'>{$sub->getName()}</th>";
+            $table .= "<td class='small' style='display:table-cell;' align='center'><b>{$sub->getName()}</b></td>";
         }
-        $table .= "<th></th></tr>
-                   <tr style='background: #FFFFFF;'><th style='background: #DDDDDD;' align='right'>First&nbsp;</th><th style='background: #DDDDDD;' align='left'>&nbsp;Last</th><th style='background: #DDDDDD;'>Organization</th>";
+        $table .= "<td></td></tr>
+                   <tr style='background: #FFFFFF;'><td style='background: #DDDDDD;' align='right'><b>First&nbsp;</b></td><td style='background: #DDDDDD;' align='left'><b>&nbsp;Last</b></td><td style='background: #DDDDDD;'><b>Organization</b></td>";
         $champions = $project->getChampions();
         foreach($subs as $sub){
             $count = 0;
@@ -33,9 +33,9 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
                 }
                 $count++;
             }
-            $table .= "<th style='background: #DDDDDD;'>{$count}</th>";
+            $table .= "<td style='background: #DDDDDD;' align='center'><b>{$count}</b></td>";
         }
-        $table .= "<th style='background: #DDDDDD;'></th></tr>";
+        $table .= "<td style='background: #DDDDDD;' align='center'></td></tr>";
         foreach($champions as $c){
             $champion = $c['user'];
             $org = $champion->getPartnerName();

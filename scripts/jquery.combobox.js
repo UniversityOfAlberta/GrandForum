@@ -1,17 +1,23 @@
 (function( $ ) {
     $.widget( "custom.combobox", {
       _create: function() {
-        var next = this.element.next();
-        if(next.hasClass('custom-combobox')){
-            next.remove();
-        }
-        this.wrapper = $( "<span>" )
-          .addClass( "custom-combobox" )
-          .insertAfter( this.element );
-        this.element.addClass('combobox');
-        this.element.hide();
-        this._createAutocomplete();
-        this._createShowAllButton();
+        var interval = setInterval($.proxy(function(){
+            if(this.element.is(":visible")){
+                var next = this.element.next();
+                if(next.hasClass('custom-combobox')){
+                    next.remove();
+                }
+                this.wrapper = $( "<span>" )
+                  .addClass( "custom-combobox" )
+                  .insertAfter( this.element );
+                this.element.addClass('combobox');
+                this.element.hide();
+                this._createAutocomplete();
+                this._createShowAllButton();
+                clearInterval(interval);
+                interval = null;
+            }
+        }, this), 10);
       },
  
       _createAutocomplete: function() {

@@ -122,23 +122,21 @@
                 <p>To reiterate, the Dashboard is designed to provide an overview of a researcher's activity in GRAND, both within the context of specific projects (each represented by a row in the Dashboard table) and overall (reflected in the final "Totals" row of the table). The data reported in the dashboard has already been input to the Forum through the various functionalities of the "Toolbox".</p>
             ]]>
         </Instructions>
-        <ReportItem id="basic_info" type="StaticReportItem">
-        <![CDATA[
-            <div class='basic_info' style='margin-bottom:20px;'>
-                <p><b>Name:</b> {$user_reversed_name} ({$user_full_roles})</p>
-                <p><b>Position:</b> {$user_level}</p>
-                <p><b>Department:</b> {$user_dept}</p>
-                <p><b>University:</b> {$user_uni}</p>
-                <p><b>Phase 2 Projects:</b> {$user_phase2_projects}</p>
-                <p><b>Phase 1 Projects:</b> {$user_phase1_projects}</p>
-            </div>
-        ]]>
+        <ReportItem id="small_budget" type="SmallNIBudgetReportItem" start="{$2_years_ago}" end="{$this_year}">
+            <![CDATA[<div style='float:right;'>{$item}</div>]]>
         </ReportItem>
-        <ReportItemSet id='ni_dashboard_head' type="ToggleHeaderReportItemSet" level="3" title="Network Dashboard">
-            <ReportItem id="ni_dashboard" type="DashboardReportItem" structure="NI_REPORT_STRUCTURE">
-                <![CDATA[<div>{$item}</div><br />]]>
-            </ReportItem>
-        </ReportItemSet>
+        <ReportItem id="basic_info" type="StaticReportItem">
+            <![CDATA[
+                <div class='basic_info' style='margin-bottom:20px;'>
+                    <p><b>Name:</b> {$user_reversed_name} ({$user_full_roles})</p>
+                    <p><b>Position:</b> {$user_level}</p>
+                    <p><b>Department:</b> {$user_dept}</p>
+                    <p><b>University:</b> {$user_uni}</p>
+                    <p><b>Phase 2 Projects:</b> {$user_phase2_projects}</p>
+                    <p><b>Phase 1 Projects:</b> {$user_phase1_projects}</p>
+                </div>
+            ]]>
+        </ReportItem>
         <ReportItemSet id='top_prods_head' type="ToggleHeaderReportItemSet" level="3" title="Top Research Outcomes">
             <ReportItem id="top_prods" type="PersonTopProductsReportItem" max="5">
                 <![CDATA[<div>{$item}</div><br />]]>
@@ -241,9 +239,9 @@ Describe your involvement with receptor organizations, industry partners and Pro
             <![CDATA[<div>{$item}<span style="font-weight:bold;"> GRAND-related Research Activity relative to Overall Research Activity (%)</span></div><br />]]>
         </ReportItem>
         <ReportItem id="projects_time_head" type="StaticReportItem">
-            <![CDATA[<table>
+            <![CDATA[<table id="projects_time">
                 <tr>
-                    <th>Project</th><th>&nbsp;Time Commitment (hours / week)</th>
+                    <th>Project</th><th>&nbsp;Time Commitment (<span id='nHours'>0</span> hours / week)</th>
                 </tr>
                 <tr>
                     <td colspan="2" style="height:1px;padding:0;background:#808080;"</td>
@@ -255,13 +253,23 @@ Describe your involvement with receptor organizations, industry partners and Pro
                 <![CDATA[<tr><td align="right"><b>{$project_name}:</b></td><td>&nbsp;{$item}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="projects" type="PersonProjectReportItemSet" phase="1">
-            <ReportItem id="0']['time" width="40px" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="IntegerReportItem" min="0" max="168">
-                <![CDATA[<tr><td align="right"><b>{$project_name}:</b></td><td>&nbsp;{$item}</td></tr>]]>
-            </ReportItem>
-        </ReportItemSet>
         <ReportItem id="projects_time_foot" type="StaticReportItem">
-            <![CDATA[</table>]]>
+            <![CDATA[</table>
+            <script type='text/javascript'>
+                var fn = function(){
+                    var total = 0;
+                    $('#projects_time input').each(function(i, el){
+                        var val = parseInt($(el).val());
+                        if(!isNaN(val)){
+                           total += val;
+                        }
+                    });
+                    $('#nHours').html(total);
+                }
+                $('#projects_time input').change(fn);
+                $('#projects_time input').keyup(fn);
+                fn();
+            </script>]]>
         </ReportItem>
 <!-- I. Executive Summary -->
         <ReportItem id='I_head' type="StaticReportItem">
