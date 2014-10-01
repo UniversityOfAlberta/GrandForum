@@ -74,6 +74,7 @@ class ReportItemCallback {
             "user_projects" => "getUserProjects",
             "user_phase1_projects" => "getUserPhase1Projects", // Hopefully temporary
             "user_phase2_projects" => "getUserPhase2Projects", // Hopefully temporary
+            "user_research_time" => "getUserResearchTime",
             "user_requested_budget" => "getUserRequestedBudget",
             "user_allocated_budget" => "getUserAllocatedBudget",
             "user_project_comment" => "getUserProjectComment",
@@ -822,6 +823,19 @@ class ReportItemCallback {
             return implode(", ", $projects);
         }
         return "N/A";
+    }
+    
+    function getUserResearchTime(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $total = 0;
+        $rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_MILESTONES, RES_MIL_CONTRIBUTIONS, 0);
+        foreach($person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
+            $blob = new ReportBlob(BLOB_ARRAY, substr(REPORTING_CYCLE_START, 0, 4), $person->getId(), $project->getId());
+            $blob->load($rep_addr);
+            $data = $blob->getData();
+            $total += (isset($data[0]) && $data[0]["time"])? $data[0]["time"] : 0;
+        }
+        return $total;
     }
     
     function getUserRequestedBudget(){

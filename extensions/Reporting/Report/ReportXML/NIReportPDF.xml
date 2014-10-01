@@ -74,10 +74,12 @@
             ]]>
         </ReportItem>
         <ReportItem id="grand_time" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem" private="true">
-            <![CDATA[<b>Time (hours/week):</b> {$item}<br />]]>
+            <![CDATA[<table>
+                        <tr><td align='right'><b>Research (hours/week):</b></td><td>{$user_research_time}</td></tr>
+                        <tr><td align='right'><b>Management (hours/week):</b></td><td>{$item}</td></tr>]]>
         </ReportItem>
         <ReportItem id="grand_percent" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem" private="true">
-            <![CDATA[<b>Research Activity (%):</b> {$item}]]>
+            <![CDATA[<tr><td align='right'><b>Research Activity (%):</b></td><td>{$item}</td></tr></table>]]>
         </ReportItem>
         <ReportItem id="small_budget" type="SmallNIBudgetReportItem" start="{$2_years_ago}" end="{$this_year}">
             <![CDATA[{$item}]]>

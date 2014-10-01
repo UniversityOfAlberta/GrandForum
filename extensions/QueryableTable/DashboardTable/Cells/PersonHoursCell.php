@@ -25,7 +25,7 @@ class PersonHoursCell extends Cell{
             $blob = new ReportBlob(BLOB_ARRAY, substr($start, 0, 4), $person->getId(), $project->getId());
             $blob->load($rep_addr);
             $data = $blob->getData();
-            $this->value = (isset($data[0]) && $data[0]["time"])? $data[0]["time"] : 0;
+            $this->value = (isset($data[0]) && $data[0]["time"])? $data[0]["time"] : "";
         }
         else{
             $person = $table->obj;
@@ -46,13 +46,16 @@ class PersonHoursCell extends Cell{
     }
     
     function toString(){
-        return number_format(doubleval($this->value), 1);
+        if($this->value == ""){
+            return "";
+        }
+        return number_format(intval($this->value));
     }
     
     function render(){
         global $wgServer, $wgScriptPath;
         $this->style = 'text-align:right;';
-        return number_format(doubleval($this->value), 1);
+        return $this->toString();
     }
 }
 

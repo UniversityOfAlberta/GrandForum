@@ -232,8 +232,11 @@ Describe your involvement with receptor organizations, industry partners and Pro
         <ReportItem id='0_head' type="StaticReportItem">
             <![CDATA[<h2>GRAND Time</h2>]]>
         </ReportItem>
+        <ReportItem id="grand_time_res" width="40px" type="StaticReportItem" private="true">
+            <![CDATA[<div><input name='time_research' type='text' value='0' style='text-align:left;padding:3px;width:40px;margin:2px;' disabled /><span style="font-weight:bold;"> Time Devoted to GRAND Research (hours / week)</span></div>]]>
+        </ReportItem>
         <ReportItem id="grand_time" width="40px" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="IntegerReportItem" private="true" min="0" max="168">
-            <![CDATA[<div>{$item}<span style="font-weight:bold;"> Time Devoted to GRAND Research and Management (hours / week)</span></div>]]>
+            <![CDATA[<div>{$item}<span style="font-weight:bold;"> Time Devoted to GRAND Management (hours / week)</span></div>]]>
         </ReportItem>
         <ReportItem id="grand_percent" width="40px" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="IntegerReportItem" private="true" min="0" max="100">
             <![CDATA[<div>{$item}<span style="font-weight:bold;"> GRAND-related Research Activity relative to Overall Research Activity (%)</span></div><br />]]>
@@ -241,7 +244,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
         <ReportItem id="projects_time_head" type="StaticReportItem">
             <![CDATA[<table id="projects_time">
                 <tr>
-                    <th>Project</th><th>&nbsp;Time Commitment (<span id='nHours'>0</span> hours / week)</th>
+                    <th>Project</th><th>&nbsp;Time Commitment (hours / week)</th>
                 </tr>
                 <tr>
                     <td colspan="2" style="height:1px;padding:0;background:#808080;"</td>
@@ -264,7 +267,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
                            total += val;
                         }
                     });
-                    $('#nHours').html(total);
+                    $('input[name=time_research]').val(total);
                 }
                 $('#projects_time input').change(fn);
                 $('#projects_time input').keyup(fn);

@@ -56,6 +56,7 @@ class Report extends AbstractReport{
                     if(isset($projectDone[$project->getName()])){
                         continue;
                     }
+                    $parent = $project->getParent();
                     $projectDone[$project->getName()] = true;
                     if(!$project->isDeleted()){
                         $type = "SubProjectReport";
@@ -64,7 +65,7 @@ class Report extends AbstractReport{
                         continue;
                     }
                     $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "$type" && $_GET['project'] == $project->getName()) ? "selected" : false;
-                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab($project->getName(), "{$url}$type&project={$project->getName()}", $selected);
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} ({$parent->getName()})", "{$url}$type&project={$project->getName()}", $selected);
                 }
             }
             foreach($leadership as $project){
