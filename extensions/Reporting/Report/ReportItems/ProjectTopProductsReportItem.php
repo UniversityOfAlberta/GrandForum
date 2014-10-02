@@ -6,7 +6,13 @@ class ProjectTopProductsReportItem extends StaticReportItem {
 	    $max = $this->getAttr("max", 10);
 	    $project = Project::newFromId($this->projectId);
 	    $products = $project->getTopProducts();
-	    $date = date('M j, Y', strtotime($project->getTopProductsLastUpdated()));
+	    $lastUpdated = $project->getTopProductsLastUpdated();
+        if($lastUpdated != ""){
+            $date = date('M j, Y', strtotime($lastUpdated));
+        }
+        else{
+            $date = "Never";
+        }
 		$table = "<div><table id='top_prods' class='dashboard' cellspacing='1' cellpadding='3' rules='all' frame='box' style='border: none;'>
                     <tr>
                         <td align='center'><b>Year</b></td>

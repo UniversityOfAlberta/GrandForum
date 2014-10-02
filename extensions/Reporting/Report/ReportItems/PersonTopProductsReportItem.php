@@ -6,7 +6,13 @@ class PersonTopProductsReportItem extends AbstractReportItem {
         $max = $this->getAttr("max", 5);
         $person = Person::newFromId($this->personId);
         $products = $person->getTopProducts();
-        $date = date('M j, Y', strtotime($person->getTopProductsLastUpdated()));
+        $lastUpdated = $person->getTopProductsLastUpdated();
+        if($lastUpdated != ""){
+            $date = date('M j, Y', strtotime($lastUpdated));
+        }
+        else{
+            $date = "Never";
+        }
         $table = "<div><table id='top_prods' class='dashboard' cellspacing='1' cellpadding='3' rules='all' frame='box' style='border: none;'>
                     <tr>
                         <td align='center'><b>Year</b></td>
