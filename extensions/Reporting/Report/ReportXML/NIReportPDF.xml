@@ -35,12 +35,12 @@
                     <table style='width:100%;' cellspacing='0' cellpadding='0'>
                     <tr>
                         <td valign="top" width="100%" style='white-space:nowrap;'>
-                        <p style='font-size:150%;font-weight:bold;'>{$user_reversed_name} ({$user_full_roles})</p>
-                        <table cellspacing='0' cellpadding='0' style='width:100%;'>
-                            <tr><td align='right' width='1%'><b>Position:</b>&nbsp;</td><td>{$user_level}</td></tr>
-                            <tr><td align='right' ><b>Department:</b>&nbsp;</td><td>{$user_dept}</td></tr>
-                            <tr><td align='right'><b>University:</b>&nbsp;</td><td>{$user_uni}</td></tr>
-                            <tr><td align='right'><b>Phase 2 Projects:</b>&nbsp;</td><td>
+                            <p style='font-size:150%;font-weight:bold;'>{$user_reversed_name} ({$user_full_roles})</p>
+                            <table cellspacing='0' cellpadding='0' style='width:100%;'>
+                                <tr><td align='right' width='1%'><b>Position:</b>&nbsp;</td><td>{$user_level}</td></tr>
+                                <tr><td align='right' ><b>Department:</b>&nbsp;</td><td>{$user_dept}</td></tr>
+                                <tr><td align='right'><b>University:</b>&nbsp;</td><td>{$user_uni}</td></tr>
+                                <tr><td align='right'><b>Phase 2 Projects:</b>&nbsp;</td><td>
             ]]>
         </ReportItem>
         <ReportItemSet id="user_projects" type="PersonProjectReportItemSet" phase="2">

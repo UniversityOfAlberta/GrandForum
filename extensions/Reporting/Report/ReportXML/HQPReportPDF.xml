@@ -8,7 +8,7 @@
             <![CDATA[
                 <div class='logo_div'>
                     <div class='logo'></div>
-                    <div class='report_name' style='text-align:right;'><b>Highly Qualified Person (HQP) Report</b><br /><small><b>Generated:</b> {$timestamp}</small></div>
+                    
                     <div class='report_info'><table class='report_info'><tr><td width='100%'></td>
             ]]>
         </ReportItem>
@@ -29,40 +29,51 @@
         <ReportItem id="basic_info" type="StaticReportItem">
         <![CDATA[
             <div class='basic_info' style='margin-bottom:20px;'>
-                <p style='font-size:150%;'>{$user_reversed_name} ({$user_full_roles})</p>
-                <p><b>Position:</b> {$user_level}</p>
-                <p><b>Department:</b> {$user_dept}</p>
-                <p><b>University:</b> {$user_uni}</p>
-                <p><b>Supervisor(s):</b> {$user_supervisors}</p>
-                <p><b>Phase 2 Projects:</b>
+                <table style='width:100%;' cellspacing='0' cellpadding='0'>
+                    <tr>
+                        <td valign="top" width="100%" style='white-space:nowrap;'>
+                            <p style='font-size:150%;font-weight:bold;'>{$user_reversed_name} ({$user_full_roles})</p>
+                            <table cellspacing='0' cellpadding='0' style='width:100%;'>
+                                <tr><td align='right' width='1%'><b>Position:</b>&nbsp;</td><td>{$user_level}</td>
+                                <tr><td align='right'><b>Department:</b>&nbsp;</td><td>{$user_dept}</td></tr>
+                                <tr><td align='right'><b>University:</b>&nbsp;</td><td>{$user_uni}</td></tr>
+                                <tr><td align='right'><b>Supervisor(s):</b>&nbsp;</td><td>{$user_supervisors}</td></tr>
+                                <tr><td align='right'><b>Phase 2 Projects:</b>&nbsp;</td><td>
         ]]>
         </ReportItem>
         <ReportItemSet id="user_projects" type="PersonProjectReportItemSet" phase="2">
             <ReportItem id="user_project" type="StaticReportItem">
-                 <![CDATA[&nbsp;{$project_name}]]>
+                 <![CDATA[{$project_name}]]>
             </ReportItem>
             <ReportItem id="user_project_footnote" type="FootnoteReportItem" text="{$project_full_name}">
-                <![CDATA[{$item}]]>
+                <![CDATA[{$item}&nbsp;]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="basic_info" type="StaticReportItem">
         <![CDATA[
-                </p><p><b>Phase 1 Projects:</b>
+                </td>
+            </tr>
+            <tr><td align='right'><b>Phase 1 Projects:</b>&nbsp;</td><td>
         ]]>
         </ReportItem>
         <ReportItemSet id="user_projects" type="PersonProjectReportItemSet" phase="1">
             <ReportItem id="user_project" type="StaticReportItem">
-                 <![CDATA[&nbsp;{$project_name}]]>
+                 <![CDATA[{$project_name}]]>
             </ReportItem>
             <ReportItem id="user_project_footnote" type="FootnoteReportItem" text="{$project_full_name}">
-                <![CDATA[{$item}]]>
+                <![CDATA[{$item}&nbsp;]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="involved_since" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS" type="TextReportItem">
-            <![CDATA[</p><p><b>Involved Since:</b> {$item}</p>]]>
+            <![CDATA[</td></tr></table>
+            </td>
+                <td style='white-space:nowrap;vertical-align:bottom;'>
+                    <table>
+                        <tr><td align='right'><b>Involved Since:</b>&nbsp;</td><td>{$item}</td></tr>]]>
         </ReportItem>
         <ReportItem id="involved_until" blobType="BLOB_ARRAY" blobItem="HQP_MIL_CONTRIBUTIONS" type="TextReportItem">
-            <![CDATA[<span class='label'>Involved Until:</span> {$item}</p></div>]]>
+            <![CDATA[<tr><td align='right'><b>Involved Until:</b>&nbsp;</td><td>{$item}</td></tr>
+            </table></td></tr></table></div>]]>
         </ReportItem>
         <ReportItem id="hqp_dashboard_bookmark" type="BookmarkReportItem" text="HQP Dashboard">
             <![CDATA[<div>{$item}</div>]]>
@@ -71,18 +82,21 @@
             <![CDATA[</p></div><div>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="HQP Report" blobSection="HQP_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" number="1">
+    <ReportSection name="HQP Report" blobSection="HQP_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
     <!-- Ia. Excellence of the Research Program -->
         <ReportItem id='Ic_head' type="StaticReportItem">
             <![CDATA[<h2>Excellence of the Research Program: How my research contributes to the Network</h2>]]>
         </ReportItem>
         <ReportItemSet id="OR" type="ORReportItemSet">
             <ReportItemSet id="ProjectLimit_Ia" type="LimitReportItemSet" limit="1800">
-                <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+                <ReportItemSet id="projects" type="PersonProjectReportItemSet" phase="2">
                     <ReportItem id="Ia" rows="12" blobType="BLOB_TEXT" blobItem="HQP_RESACT_EXCELLENCE" type="AutoCompleteTextareaReportItem" set="PersonProductsReportItemSet" index="product_id" label="product_title" name="Products">
                         <![CDATA[<i>{$project_name}</i><br />{$item}<br /><br />]]>
                     </ReportItem>
                 </ReportItemSet>
+                <ReportItem id="Ia" rows="12" blobType="BLOB_TEXT" blobItem="HQP_RESACT_EXCELLENCE" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="PersonProductsReportItemSet" index="product_id" label="product_title" name="Products">
+                    <![CDATA[<i>Phase 1 Projects ({$user_phase1_projects})</i><br />{$item}<br /><br />]]>
+                </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
     <!-- Ib. Networking and Partnerships -->
@@ -91,11 +105,14 @@
         </ReportItem>
         <ReportItemSet id="OR" type="ORReportItemSet">
             <ReportItemSet id="ProjectLimit_Ib" type="LimitReportItemSet" limit="1800">
-                <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+                <ReportItemSet id="projects" type="PersonProjectReportItemSet" phase="2">
                     <ReportItem id="Ib" rows="12" blobType="BLOB_TEXT" blobItem="HQP_RESACT_NETWORKING" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_name" label="user_id" name="{$project_name} Members">
                         <![CDATA[<i>{$project_name}</i><br />{$item}<br /><br />]]>
                     </ReportItem>
                 </ReportItemSet>
+                <ReportItem id="Ia" rows="12" blobType="BLOB_TEXT" blobItem="HQP_RESACT_NETWORKING" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_name" label="user_id" name="{$project_name} Members">
+                    <![CDATA[<i>Phase 1 Projects ({$user_phase1_projects})</i><br />{$item}<br /><br />]]>
+                </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
     <!-- Ic. Knowledge and Technology Exchange and Exploitation -->
@@ -104,17 +121,20 @@
         </ReportItem>
         <ReportItemSet id="OR" type="ORReportItemSet">
             <ReportItemSet id="ProjectLimit_Ic" type="LimitReportItemSet" limit="1800">
-                <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+                <ReportItemSet id="projects" type="PersonProjectReportItemSet" phase="2">
                     <ReportItem id="Ic" rows="12" blobType="BLOB_TEXT" blobItem="HQP_RESACT_KTEE" type="TextareaReportItem">
                         <![CDATA[<i>{$project_name}</i><br />{$item}<br /><br />]]>
                     </ReportItem>
                 </ReportItemSet>
+                <ReportItem id="Ia" rows="12" blobType="BLOB_TEXT" blobItem="HQP_RESACT_KTEE" blobSubItem="RES_RESACT_PHASE1" type="TextareaReportItem">
+                    <![CDATA[<i>Phase 1 Projects ({$user_phase1_projects})</i><br />{$item}<br /><br />]]>
+                </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection name="Productivity Details" blobSection="SEC_NONE" type="ReportSection" number="2" pagebreak="false" renderpdf="true">
+    <ReportSection name="Productivity Details" blobSection="SEC_NONE" type="ReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="hqp_dashboard_productivity" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true">
-            <![CDATA[If there is an error in any of the information reported in the dashboard, please edit the corresponding element through the appropriate tool. If the error is in a system-controlled field, please contact support.<br /><br /><div>{$item}</div>]]>
+            <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
 </Report>

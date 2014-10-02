@@ -2,39 +2,12 @@
 <Report name="HQP Report" reportType="RP_HQP" pdfType="RPTP_HQP" pdfFiles="HQPReportPDF" pdfAllProjects="true" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP">
-            <SectionPermission id="status" permissions="rw" />
             <SectionPermission id="dashboard" permissions="rw" />
             <SectionPermission id="report" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="status" name="Report Completion Status" tooltip="Evaluation of your report against the reporting rules" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
-        <Instructions>
-            <![CDATA[
-                <p>
-                    This page provides an overview of the degree to which your On-Line Report is complete.
-                </p>
-                <p>
-                    Completion is determined by two factors:
-                    <ol>
-                        <li><b>Number of Fields Complete:</b> A field is considered complete if it is not blank.  In some cases, like the <i>Milestone Comments</i> Section, selecting 'No' will consider the comment for that milestone unessesary to fill out.  Selecting Yes requires a comment though to be considered complete.</li>
-                        <li><b>Average % of characters used:</b> Any textarea which has a recommended limit to the number of characters used, is used in this calculation.  This is the percent of those characters used.  Generally speaking, the higher the percentage the better, however it is up to the discretion of the Supervisor and Project Leader.</li>
-                    </ol>
-                </p>
-                <p><b>Note: All your Supervisors have access to your on-line project-specific dashboard rows; your project-specific comments under criteria A B C; and your project-specific milestone comments.</b></p>
-            ]]>
-        </Instructions>
-        <ReportItem id="my_progress_head" type="StaticReportItem">
-            <![CDATA[<h3>HQP Progress</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">]]>
-        </ReportItem>
-        <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="HQPReport">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="my_progress_head" type="ProgressReportItem" reportType="HQPReport">
-            <![CDATA[{$item}</table>]]>
-        </ReportItem>
-    </ReportSection>
     <ReportSection id="dashboard" name="HQP Dashboard" tooltip="Overview of this year's activity and productivity" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
         <Instructions>
             <![CDATA[
@@ -47,10 +20,19 @@
 </ol>   
             ]]>
         </Instructions>
+        <ReportItem id="my_progress_head" type="StaticReportItem">
+            <![CDATA[<table style='float:right;width:375px;' cellpadding="1" frame="box" rules="all">]]>
+        </ReportItem>
+        <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="HQPReport">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="my_progress_head" type="ProgressReportItem" reportType="HQPReport">
+            <![CDATA[{$item}</table>]]>
+        </ReportItem>
         <ReportItem id="basic_info" type="StaticReportItem">
         <![CDATA[
             <div class='basic_info' style='margin-bottom:20px;'>
-                <p><b>Name:</b {$user_reversed_name} ({$user_full_roles})</p>
+                <p><b>Name:</b> {$user_reversed_name} ({$user_full_roles})</p>
                 <p><b>Position:</b> {$user_level}</p>
                 <p><b>Department:</b> {$user_dept}</p>
                 <p><b>University:</b> {$user_uni}</p>
@@ -92,11 +74,14 @@ Briefly describe your interactions (if any) with receptors, companies, Project C
         <ReportItemSet id='Ia_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Excellence of the Research Program: How my research contributes to the Network">
             <ReportItemSet id="OR" type="ORReportItemSet">
                 <ReportItemSet id="ProjectLimit_Ia" type="LimitReportItemSet" limit="1800">
-                    <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+                    <ReportItemSet id="projects" type="PersonProjectReportItemSet" phase="2">
                         <ReportItem id="Ia" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="HQP_RESACT_EXCELLENCE" type="AutoCompleteTextareaReportItem" set="PersonProductsReportItemSet" index="product_id" label="product_title" name="Products" tooltipOptionId="Product ID" tooltipOptionName="Product Title">
                             <![CDATA[<i>{$project_name}</i><br />{$item}<br />]]>
                         </ReportItem>
                     </ReportItemSet>
+                    <ReportItem id="Ia" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="HQP_RESACT_EXCELLENCE" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="PersonProductsReportItemSet" index="product_id" label="product_title" name="Products" tooltipOptionId="Product ID" tooltipOptionName="Product Title" private="true">
+                        <![CDATA[<i>Phase 1 Projects ({$user_phase1_projects})</i><br />{$item}<br />]]>
+                    </ReportItem>
                 </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>
@@ -104,11 +89,14 @@ Briefly describe your interactions (if any) with receptors, companies, Project C
         <ReportItemSet id='Ib_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Networking and Partnerships: My efforts and successes in building linkages">
             <ReportItemSet id="OR" type="ORReportItemSet">
                 <ReportItemSet id="ProjectLimit_Ib" type="LimitReportItemSet" limit="1800">
-                    <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+                    <ReportItemSet id="projects" type="PersonProjectReportItemSet" phase="2">
                         <ReportItem id="Ib" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="HQP_RESACT_NETWORKING" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members" tooltipOptionId="Member ID" tooltipOptionName="Member Title">
                             <![CDATA[<i>{$project_name}</i><br />{$item}<br />]]>
                         </ReportItem>
                     </ReportItemSet>
+                    <ReportItem id="Ib" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="HQP_RESACT_NETWORKING" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members" tooltipOptionId="Member ID" tooltipOptionName="Member Title" private="true">
+                        <![CDATA[<i>Phase 1 Projects ({$user_phase1_projects})</i><br />{$item}<br />]]>
+                    </ReportItem>
                 </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>
@@ -116,11 +104,14 @@ Briefly describe your interactions (if any) with receptors, companies, Project C
         <ReportItemSet id='Ic_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Knowledge &amp; Technology Exchange &amp; Exploitation: My efforts in disseminating research to receptors">
             <ReportItemSet id="OR" type="ORReportItemSet">
                 <ReportItemSet id="ProjectLimit_Ic" type="LimitReportItemSet" limit="1800">
-                    <ReportItemSet id="projects" type="PersonProjectReportItemSet">
+                    <ReportItemSet id="projects" type="PersonProjectReportItemSet" phase="2">
                         <ReportItem id="Ic" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="HQP_RESACT_KTEE" type="TextareaReportItem">
                             <![CDATA[<i>{$project_name}</i><br />{$item}<br />]]>
                         </ReportItem>
                     </ReportItemSet>
+                    <ReportItem id="Ic" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="HQP_RESACT_KTEE" blobSubItem="RES_RESACT_PHASE1" type="TextareaReportItem" private="true">
+                        <![CDATA[<i>Phase 1 Projects ({$user_phase1_projects})</i><br />{$item}<br />]]>
+                    </ReportItem>
                 </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>
