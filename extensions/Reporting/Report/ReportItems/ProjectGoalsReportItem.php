@@ -212,9 +212,13 @@ EOF
         $description = $this->getTruncatedString($description, 300);
         $assessment = $this->gettruncatedString($assessment, 500);
         
-        $problemClass = ($problemLength > 300) ? "inlineError" : "";
-        $descriptionClass = ($descriptionLength > 300) ? "inlineError" : "";
-        $assessmentClass = ($assessmentLength > 500) ? "inlineError" : "";
+        $problemClass = ($problemLength == 0) ? "inlineWarning" : "";
+        $descriptionClass = ($descriptionLength == 0) ? "inlineWarning" : "";
+        $assessmentClass = ($assessmentLength == 0) ? "inlineWarning" : "";
+        
+        $problemClass = ($problemLength > 300) ? "inlineError" : $problemClass;
+        $descriptionClass = ($descriptionLength > 300) ? "inlineError" : $descriptionClass;
+        $assessmentClass = ($assessmentLength > 500) ? "inlineError" : $assessmentClass;
         
         $year = $this->getAttr("year", REPORTING_YEAR);
         $display = ($year > REPORTING_YEAR) ? "display:none;" : "";
