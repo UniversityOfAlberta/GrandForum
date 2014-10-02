@@ -294,10 +294,10 @@ Describe your involvement with receptor organizations, industry partners and Pro
                 <ReportItemSet id="ProjectLimit_IIa" type="LimitReportItemSet" limit="1800">
                     <ReportItemSet id="projects" type="PersonProjectReportItemSet" phase="2">
                         <ReportItem id="IIa" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="RES_RESACT_EXCELLENCE" type="AutoCompleteTextareaReportItem" set="PersonProductsReportItemSet" index="product_id" label="product_title" name="Products" tooltipOptionId="Product ID" tooltipOptionName="Product Title">
-                            <![CDATA[<i>{$project_name}</i><br />{$item}<br />]]>
+                            <![CDATA[<i>{$project_name}</i><br />{$item}]]>
                         </ReportItem>
                         <ReportItem id="excellence_hqp_comments" type="PopupReportItem" title="See HQP Comments" text="{$report_excellence_hqp_comments}">
-                            <![CDATA[{$item}<br />]]>
+                            <![CDATA[{$item}<br /><br />]]>
                         </ReportItem>
                     </ReportItemSet>
                     <ReportItem id="IIa" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="RES_RESACT_EXCELLENCE" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="PersonProductsReportItemSet" index="product_id" label="product_title" name="Products" tooltipOptionId="Product ID" tooltipOptionName="Product Title" private="true">
@@ -330,10 +330,10 @@ Describe your involvement with receptor organizations, industry partners and Pro
                 <ReportItemSet id="ProjectLimit_IIc" type="LimitReportItemSet" limit="1800">
                     <ReportItemSet id="projects" type="PersonProjectReportItemSet" phase="2">
                         <ReportItem id="IIc" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETWORKING" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
-                            <![CDATA[<i>{$project_name}</i><br />{$item}<br />]]>
+                            <![CDATA[<i>{$project_name}</i><br />{$item}]]>
                         </ReportItem>
                         <ReportItem id="networking_hqp_comments" type="PopupReportItem" title="See HQP Comments" text="{$report_networking_hqp_comments}">
-                            <![CDATA[{$item}<br />]]>
+                            <![CDATA[{$item}<br /><br />]]>
                         </ReportItem>
                     </ReportItemSet>
                     <ReportItem id="IIc" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETWORKING" blobSubItem="RES_RESACT_PHASE1" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members" tooltipOptionId="Member ID" tooltipOptionName="Member Name" private="true">
@@ -351,10 +351,10 @@ Describe your involvement with receptor organizations, industry partners and Pro
                 <ReportItemSet id="ProjectLimit_IId" type="LimitReportItemSet" limit="1800">
                     <ReportItemSet id="projects" type="PersonProjectReportItemSet" phase="2">
                         <ReportItem id="IId" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="RES_RESACT_KTEE" type="TextareaReportItem">
-                            <![CDATA[<i>{$project_name}</i><br />{$item}<br />]]>
+                            <![CDATA[<i>{$project_name}</i><br />{$item}]]>
                         </ReportItem>
                         <ReportItem id="ktee_hqp_comments" type="PopupReportItem" title="See HQP Comments" text="{$report_ktee_hqp_comments}">
-                            <![CDATA[{$item}<br />]]>
+                            <![CDATA[{$item}<br /><br />]]>
                         </ReportItem>
                     </ReportItemSet>
                     <ReportItem id="IId" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="RES_RESACT_KTEE" blobSubItem="RES_RESACT_PHASE1" type="TextareaReportItem" private="true">
