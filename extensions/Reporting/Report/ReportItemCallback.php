@@ -663,18 +663,19 @@ class ReportItemCallback {
     private function getReportHQPComments($item){
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            $hqp_rep_addr = ReportBlob::create_address(RP_HQP, HQP_RESACTIVITY, $item, 0, RES_RESACT_PHASE1);
+            $hqp_rep_addr = ReportBlob::create_address(RP_HQP, HQP_RESACTIVITY, $item, 0);
         }
         else{
-            return;
+            $project = null;
+            $hqp_rep_addr = ReportBlob::create_address(RP_HQP, HQP_RESACTIVITY, $item, RES_RESACT_PHASE1);
         }
         $me = Person::newFromId($this->reportItem->personId);
         
         $hqps = $me->getHQPDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
         $hqp_comments = "";
         foreach($hqps as $hqp){
-            if($hqp->isMemberOfDuring($project, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
-                $hqp_blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $hqp->getId(), $project->getId());
+            if($this->reportItem->projectId == 0 || $hqp->isMemberOfDuring($project, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
+                $hqp_blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $hqp->getId(), $this->reportItem->projectId);
                 $hqp_blob->load($hqp_rep_addr);
                 $hqp_data = $hqp_blob->getData();
                 if($hqp_data != null){
