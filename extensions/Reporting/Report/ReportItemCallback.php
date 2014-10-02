@@ -663,7 +663,7 @@ class ReportItemCallback {
     private function getReportHQPComments($item){
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            $hqp_rep_addr = ReportBlob::create_address(RP_HQP, HQP_RESACTIVITY, $item, 0);
+            $hqp_rep_addr = ReportBlob::create_address(RP_HQP, HQP_RESACTIVITY, $item, 0, RES_RESACT_PHASE1);
         }
         else{
             return;
