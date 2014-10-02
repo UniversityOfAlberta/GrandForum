@@ -143,6 +143,10 @@
 		white-space: nowrap;
 	}
 	
+	#submenu ul a:hover * {
+	    text-decoration: none;
+	}
+	
 	#submenu ul a:hover {
 	    line-height:19px;
 	    height: 22px;
