@@ -1189,15 +1189,18 @@ EOF;
             $name = "";
             foreach($authors as $author){
                 $name = $author->getNameForForms();
+                break;
             }
-            $products["{$year}"][$name] = $product;
+            $products["{$year}"][$name][] = $product;
             ksort($products["{$year}"]);
         }
         ksort($products);
         $products = array_reverse($products);
         $newProducts = array();
         foreach($products as $year => $prods){
-            $newProducts = array_merge($newProducts, $prods);
+            foreach($prods as $prod){
+                $newProducts = array_merge($newProducts, $prod);
+            }
         }
         return $newProducts;
     }

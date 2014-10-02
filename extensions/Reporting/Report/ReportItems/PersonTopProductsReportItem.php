@@ -93,9 +93,7 @@ class PersonTopProductsReportItem extends AbstractReportItem {
                 $('#NIDashboard').click();
             });
             if(typeof(needsOpening) != 'undefined' && needsOpening){
-                _.delay(function(){
-                    $('.toggleHeader').eq(0).click();
-                }, 250);
+                $('.toggleHeader').first().click();
             }
             needsOpening = false;
         </script>";

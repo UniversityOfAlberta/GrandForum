@@ -1,13 +1,13 @@
 <?php
 
-class PersonTopProductsReportItem extends AbstractReportItem {
+class ProjectTopProductsReportItem extends StaticReportItem {
 
-    private function getTable($pdf=false){
-        $max = $this->getAttr("max", 5);
-        $person = Person::newFromId($this->personId);
-        $products = $person->getTopProducts();
-        $date = date('M j, Y', strtotime($person->getTopProductsLastUpdated()));
-        $table = "<div><table id='top_prods' class='dashboard' cellspacing='1' cellpadding='3' rules='all' frame='box' style='border: none;'>
+	private function getTable($pdf=false){
+	    $max = $this->getAttr("max", 10);
+	    $project = Project::newFromId($this->projectId);
+	    $products = $project->getTopProducts();
+	    $date = date('M j, Y', strtotime($project->getTopProductsLastUpdated()));
+		$table = "<div><table id='top_prods' class='dashboard' cellspacing='1' cellpadding='3' rules='all' frame='box' style='border: none;'>
                     <tr>
                         <td align='center'><b>Year</b></td>
                         <td align='center'><b>Category</b></td>
@@ -44,24 +44,24 @@ class PersonTopProductsReportItem extends AbstractReportItem {
         $table .= "</table>
                    <i>Last updated on: $date</i></div>";
         return $table;
-    }
-    
-    function renderWidget(){
-        $person = Person::newFromId($this->personId);
-        $tab = new PersonDashboardTab($person, array('isMe' => true));
-        $tab->showEditTopProducts($person, array('isMe' => true));
+	}
+	
+	function renderWidget(){
+        $project = Project::newFromId($this->projectId);
+        $tab = new ProjectDashboardTab($project, array('isLead' => true));
+        $tab->showEditTopProducts($project, array('isMe' => true));
         
         $html = "<div id='top_widget' style='display:none;' title='Edit Top Research Outcomes'>";
         $html .= $tab->html;
         $html .= "</div>";
         return $html;
     }
-    
-    function render(){
-        global $wgOut, $wgUser;
-        $person = Person::newFromId($this->personId);
-        $item = $this->getTable(false);
-        $item .= $this->renderWidget();
+	
+	function render(){
+		global $wgOut, $wgUser;
+		$project = Project::newFromId($this->projectId);
+		$item = $this->getTable(false);
+		$item .= $this->renderWidget();
         $item .= "<br /><button id='edit_top' type='button'>Edit Top Research Outcomes</button>";
         $item .= "<script type='text/javascript'>
             $('#edit_top').click(function(){
@@ -90,29 +90,29 @@ class PersonTopProductsReportItem extends AbstractReportItem {
             $('button[name=submit]').click(function(){
                 $('button[name=submit]').prop('disabled', true);
                 needsOpening = true;
-                $('#NIDashboard').click();
+                $('#ProjectDashboard').click();
             });
             if(typeof(needsOpening) != 'undefined' && needsOpening){
                 _.delay(function(){
-                    $('.toggleHeader').eq(0).click();
+                    $('.toggleHeader').eq(1).click();
                 }, 250);
             }
             needsOpening = false;
         </script>";
         $item = $this->processCData($item);
-        $wgOut->addHTML($item);
-    }
-    
-    function renderForPDF(){
-        global $wgOut, $wgUser;
-        $item = $this->getTable(true);
-        $item = $this->processCData($item);
-        $wgOut->addHTML($item);
-    }
-    
-    function save(){
-        $person = Person::newFromId($this->personId);
-        $tab = new PersonDashboardTab($person, array('isMe' => true));
+		$wgOut->addHTML($item);
+	}
+	
+	function renderForPDF(){
+	    global $wgOut, $wgUser;
+	    $item = $this->getTable(true);
+	    $item = $this->processCData($item);
+		$wgOut->addHTML($item);
+	}
+	
+	function save(){
+        $project = Project::newFromId($this->projectId);
+        $tab = new ProjectDashboardTab($project, array('isLead' => true));
         $tab->handleEdit();
         return array();
     }

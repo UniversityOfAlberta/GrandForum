@@ -55,7 +55,6 @@ class PersonDashboardTab extends AbstractEditableTab {
                     $('select.chosen').trigger('chosen:updated');
                     $(el).change(function(e, p){
                         var id = $(this).val();
-                        console.log(prevVal, id);
                         $('option[value=' + prevVal + ']', $('select.chosen').not(this)).prop('disabled', false);
                         $('option[value=' + id + ']', $('select.chosen').not(this)).prop('disabled', true);
                         $('select.chosen').trigger('chosen:updated');

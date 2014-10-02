@@ -82,7 +82,7 @@
             <![CDATA[</table>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="dashboard" name="NI Dashboard" tooltip="Overview of this year's activity and productivity" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
+    <ReportSection id="dashboard" name="NI Dashboard" tooltip="Overview of this year's activity and productivity" blobSection="SEC_NONE" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
                 <p>The Dashboard is designed to provide an overview of a researcher's activity in GRAND, both within the context of specific projects (each represented by a row in the Dashboard table) and overall (reflected in the final "Totals" row of the table). The data reported in the dashboard has already been input to the Forum through the various functionalities of the "Toolbox".</p>

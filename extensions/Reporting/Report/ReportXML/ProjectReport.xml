@@ -133,7 +133,7 @@
             </ReportItem>
         </ReportItemSet-->
     </ReportSection>
-    <ReportSection id="dashboard" tooltip="Overview of this year's activity and productivity" name="Project Dashboard" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
+    <ReportSection id="dashboard" tooltip="Overview of this year's activity and productivity" name="Project Dashboard" blobSection="SEC_NONE" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
                 <p>The Dashboard is designed to provide an overview of all project-related activity in GRAND, by all project NIs (each represented by a row in the Dashboard table) and overall (reflected in the final "Totals" row of the table). The data reported in the dashboard has already been input to the Forum through the various functionalities of the "Toolbox".</p>
