@@ -20,6 +20,21 @@ class ProjectGoalsReportItem extends AbstractReportItem {
         $wgOut->addHTML($item);
         $wgOut->addHTML(<<<EOF
 <script type='text/javascript'>
+    function changeColor{$this->getPostId()}(element, strlen, limit){
+    	if(strlen > limit){
+            $(element).parent().addClass('inlineError');
+            $(element).parent().removeClass('warningError');
+        }
+        else if(strlen == 0){
+            $(element).parent().addClass('inlineWarning');
+            $(element).parent().removeClass('inlineError');
+        }
+        else{
+            $(element).parent().removeClass('inlineError');
+            $(element).parent().removeClass('inlineWarning');
+        }
+    }
+    
     function updateMilestones{$this->getPostId()}(){
         if($("#{$this->getPostId()}").children().length >= $max){
             $('#{$this->getPostId()}_add').prop('disabled', true);
@@ -43,9 +58,35 @@ class ProjectGoalsReportItem extends AbstractReportItem {
         $("#problem", template).val(problem);
         $("#description", template).val(description);
         $("#assessment", template).val(assessment);
-        $('#problem', template).limit(300, $('#{$this->getPostId()}_problem_chars_left', template));
-        $('#description', template).limit(300, $('#{$this->getPostId()}_description_chars_left', template));
-        $('#assessment', template).limit(500, $('#{$this->getPostId()}_assessment_chars_left', template));
+        $('#problem', template).limit(10000000, $('#{$this->getPostId()}_problem_chars_left', template));
+        $('#description', template).limit(10000000, $('#{$this->getPostId()}_description_chars_left', template));
+        $('#assessment', template).limit(10000000, $('#{$this->getPostId()}_assessment_chars_left', template));
+        
+        $('#problem', template).keypress(function(){
+            changeColor{$this->getPostId()}($('#{$this->getPostId()}_problem_chars_left', template), $(this).val().length, 300);
+        });
+        $('#problem', template).keyup(function(){
+            changeColor{$this->getPostId()}($('#{$this->getPostId()}_problem_chars_left', template), $(this).val().length, 300);
+        });
+        
+        $('#description', template).keypress(function(){
+            changeColor{$this->getPostId()}($('#{$this->getPostId()}_description_chars_left', template), $(this).val().length, 300);
+        });
+        $('#description', template).keyup(function(){
+            changeColor{$this->getPostId()}($('#{$this->getPostId()}_description_chars_left', template), $(this).val().length, 300);
+        });
+        
+        $('#assessment', template).keypress(function(){
+            changeColor{$this->getPostId()}($('#{$this->getPostId()}_assessment_chars_left', template), $(this).val().length, 500);
+        });
+        $('#assessment', template).keyup(function(){
+            changeColor{$this->getPostId()}($('#{$this->getPostId()}_assessment_chars_left', template), $(this).val().length, 500);
+        });
+        
+        changeColor{$this->getPostId()}($('#{$this->getPostId()}_problem_chars_left', template),     $('#problem', template).val().length, 300);
+        changeColor{$this->getPostId()}($('#{$this->getPostId()}_description_chars_left', template), $('#description', template).val().length, 300);
+        changeColor{$this->getPostId()}($('#{$this->getPostId()}_assessment_chars_left', template),  $('#assessment', template).val().length, 500);
+        
         $('#delete', template).click(function(){
             deleteMilestone{$this->getPostId()}($(this).parent(), id, $("#identifier", template).val());
         });
@@ -139,10 +180,10 @@ EOF
                         </tr>
                         <tr>
                             <td width='50%' colspan='2'>
-                                <small>(currently <span id='{$this->getPostId()}_problem_chars_left'>0</span> characters out of a maximum of 300)</small><br />
+                                <small class='inlineMessage'>(currently <span id='{$this->getPostId()}_problem_chars_left'>0</span> characters out of a maximum of 300)</small><br />
                                 <textarea id='problem' name='{$this->getPostId()}_problem[]' style='height: 80px;resize: none;'></textarea></td>
                             <td>
-                                <small>(currently <span id='{$this->getPostId()}_description_chars_left'>0</span> characters out of a maximum of 300)</small><br />
+                                <small class='inlineMessage'>(currently <span id='{$this->getPostId()}_description_chars_left'>0</span> characters out of a maximum of 300)</small><br />
                                 <textarea id='description' name='{$this->getPostId()}_description[]' style='height: 80px;resize: none;'></textarea>
                             </td>
                         </tr>
@@ -163,19 +204,48 @@ EOF
     }
     
     function getTemplateForPDF($title, $status, $problem, $description, $assessment){
-        $year = $this->getAttr("year", REPORTING_YEAR);
-        $display = ($year > REPORTING_YEAR) ? "display:none;" : "";
         $problemLength = strlen($problem);
         $descriptionLength = strlen($description);
         $assessmentLength = strlen($assessment);
+        
+        $problem = $this->getTruncatedString($problem, 300);
+        $description = $this->getTruncatedString($description, 300);
+        $assessment = $this->gettruncatedString($assessment, 500);
+        
+        $problemClass = ($problemLength > 300) ? "inlineError" : "";
+        $descriptionClass = ($descriptionLength > 300) ? "inlineError" : "";
+        $assessmentClass = ($assessmentLength > 500) ? "inlineError" : "";
+        
+        $year = $this->getAttr("year", REPORTING_YEAR);
+        $display = ($year > REPORTING_YEAR) ? "display:none;" : "";
         $margin = 2*DPI_CONSTANT;
         $tplt = "<div style='page-break-inside:avoid;margin-bottom:{$margin}px;'>
                     <h4>$title ({$status})</h4>
-                        <p style='margin-left:50px;'><b>Problem Statement:&nbsp;</b><small>(Currently $problemLength out of 300 characters)</small><br />{$problem}</p>
-                        <p style='margin-left:50px;'><b>Plan & Expected Outcomes:&nbsp;</b><small>(Currently $descriptionLength out of 300 characters)</small><br />{$description}</p>
-                        <p style='margin-left:50px;{$display}'><b>Assessment:&nbsp;</b><small>(Currently $assessmentLength out of 500 characters)</small><br />{$assessment}</p>
+                        <p style='margin-left:50px;'><b>Problem Statement:&nbsp;</b><small class='$problemClass'>(Currently $problemLength out of 300 characters)</small><br />{$problem}</p>
+                        <p style='margin-left:50px;'><b>Plan & Expected Outcomes:&nbsp;</b><small class='$descriptionClass'>(Currently $descriptionLength out of 300 characters)</small><br />{$description}</p>
+                        <p style='margin-left:50px;{$display}'><b>Assessment:&nbsp;</b><small class='$assessmentClass'>(Currently $assessmentLength out of 500 characters)</small><br />{$assessment}</p>
                  </div>";
         return $tplt;
+    }
+    
+    function getTruncatedString($string, $limit){
+        $string = str_replace("\r", "", $string);
+        $length = strlen(utf8_decode($string));   
+        $lengthDiff = strlen($string) - $length;
+        $string1 = substr($string, 0, $limit + $lengthDiff);
+	    $string2 = substr($string, $limit + $lengthDiff);
+	    if($string2 != ""){
+            if(isset($_GET['preview'])){
+                $string = "{$string1}<s style='color:red;'>{$string2}</s>";
+            }
+            else{
+                $string = "$string1...";
+            }
+        }
+        else{
+            $string = $string1;
+        }
+        return $string;
     }
     
     // Overriden Functions
