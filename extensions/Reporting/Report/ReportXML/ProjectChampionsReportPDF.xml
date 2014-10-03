@@ -10,12 +10,13 @@
         <ReportItem id="report_info_foot" type="StaticReportItem">
             <![CDATA[
                 </div>
+                <p style='font-size:150%;font-weight:bold;'>{$project_name} Champions Report</p>
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="champion_dashboard" name="Champion Dashboard" tooltip="" blobSection="SEC_NONE" type="HeaderReportSection" renderpdf="true" private="true" pagebreak="true">
-        <ReportItem id="champion_table" type="StaticReportItem">
-            <![CDATA[<img src="http://grand.cs.ualberta.ca/~dwt/champions.png" width='100%' />]]>
+        <ReportItem id="champion_table" type="ProjectChampionsTableReportItem">
+            <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="champion_comments" name="Champion Comments" tooltip="" blobSection="SEC_NONE" type="HeaderReportSection" renderpdf="true" pagebreak="false">
@@ -47,7 +48,7 @@
             <ReportItem id="represent" type="StaticReportItem">
                 <![CDATA[
                     <p>
-                        In my role as a project champion for {$project_name} I am acting
+                        In my role as a receptor community champion for the {$project_name} project I am acting
                         <div style='margin-left:15px;'>{$champ_represent}</div>
                     </p><br />
                 ]]>
@@ -75,15 +76,15 @@
             </ReportItem>
             <ReportItem type="SubBookmarkReportItem" text="Question 4">
                 <![CDATA[
-                   <h2>4. How would you steer the research agenda for the next year?</h2>
+                   <h2>4. How would you like to steer the research agenda for the next year?</h2>
                    <p><i><small>From your perspective, how would you prioritize the project activities? What activities do you see as the most high-yield for your organization? Is there opportunity for other more interesting activities?</small></i></p><br />
                    <p>{$champ_q4}</p><br />
                 ]]>
             </ReportItem>
             <ReportItem type="SubBookmarkReportItem" text="Question 5">
                 <![CDATA[
-                   <h2>5. What contributions will you be making?</h2>
-                   <p><i><small>In many cases, it is anticipated that partner organizations represented by Project Champions will be direct receptors of research outcomes and may (at some point) become contributing supporters of the research.  What is the likelihood that, within the next two years,  your organization will make a cash and/or in-kind contribution in support of this research.  If there is such a likelihood, please describe what such a contribution might be and the conditions under which such a contribution might be made.  Please be as specific as possible.  Nothing included here will be considered a commitment regarding any prospective contributions.</small></i></p><br />
+                   <h2>5. What contributions do you foresee you or your organization making?</h2>
+                   <p><i><small>In many cases, it is anticipated that partner organizations represented by Receptor Community Champions will be direct receptors of research outcomes and may (at some point) become contributing supporters of the research.  What is the likelihood that, within the next two years,  your organization will make a cash and/or in-kind contribution in support of this research.  If there is such a likelihood, please describe what such a contribution might be and the conditions under which such a contribution might be made.  Please be as specific as possible.  Nothing included here will be considered a commitment regarding any prospective contributions.</small></i></p><br />
                    <p>{$champ_q5}</p><br />
                 ]]>
             </ReportItem>

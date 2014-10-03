@@ -12,12 +12,17 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
         else{
             $table .= "<table class='dashboard' width='100%' style='border-spacing: 1px;width:100%;max-width:900px;background-color:#808080;' frame='box' rules='all'>";
         }
-        $table .= "<tr style='background: #FFFFFF;'><td></td><td></td><td></td>";
+        $table .= "<tr style='background: #FFFFFF;'><td></td><td></td><td></td><td></td><td></td>";
         foreach($subs as $sub){
             $table .= "<td class='small' style='display:table-cell;' align='center'><b>{$sub->getName()}</b></td>";
         }
-        $table .= "<td></td></tr>
-                   <tr style='background: #FFFFFF;'><td style='background: #DDDDDD;' align='right'><b>First&nbsp;</b></td><td style='background: #DDDDDD;' align='left'><b>&nbsp;Last</b></td><td style='background: #DDDDDD;'><b>Organization</b></td>";
+        $table .= "</tr>
+                   <tr style='background: #FFFFFF;'>
+                        <td class='small' style='background: #DDDDDD;' align='right'><b>First&nbsp;</b></td>
+                        <td class='small' style='background: #DDDDDD;' align='left'><b>&nbsp;Last</b></td>
+                        <td class='small' style='background: #DDDDDD;'><b>Organization</b></td>
+                        <td class='small' style='background: #DDDDDD;' align='center'><b>#Subs</b></td>
+                        <td class='small' style='background: #DDDDDD;' align='center'><b>Submitted</b></td>";
         $champions = $project->getChampions();
         foreach($subs as $sub){
             $count = 0;
@@ -33,9 +38,9 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
                 }
                 $count++;
             }
-            $table .= "<td style='background: #DDDDDD;' align='center'><b>{$count}</b></td>";
+            $table .= "<td class='small' style='background: #DDDDDD;' align='center'><b>{$count}</b></td>";
         }
-        $table .= "<td style='background: #DDDDDD;' align='center'></td></tr>";
+        $table .= "</tr>";
         foreach($champions as $c){
             $champion = $c['user'];
             $org = $champion->getPartnerName();
@@ -50,10 +55,11 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
             }
             
             $table .= "<tr style='background: #FFFFFF;'>";
-            $table .= "<td align='right'>{$champion->getFirstName()}&nbsp;</td>";
-            $table .= "<td align='left'>&nbsp;{$champion->getLastName()}</td>";
-            $table .= "<td>{$org}</td>";
+            $table .= "<td class='small' align='right'>{$champion->getFirstName()}&nbsp;</td>";
+            $table .= "<td class='small' align='left'>&nbsp;{$champion->getLastName()}</td>";
+            $table .= "<td class='small'>{$org}</td>";
             $count = 0;
+            $subHTML = "";
             foreach($subs as $sub){
                 if($champion->isMemberOf($sub)){
                     $count++;
@@ -61,20 +67,23 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
                     if($time == 0){
                         $time = 1;
                     }
-                    $table .= "<td align='center'>{$time}</td>";
+                    $subHTML .= "<td class='small' align='center'>{$time}</td>";
                 }
                 else{
-                    $table .= "<td></td>";
+                    $subHTML .= "<td class='small'></td>";
                 }
             }
-            $table .= "<td align='center' style='background: #DDDDDD;font-weight:bold;'>{$count}</td></tr>";
+            $report = new DummyReport(RP_CHAMP, $champion, $project, $this->getReport()->year);
+            $submitted = ($report->isSubmitted()) ? "<span style='font-weight:bold;color:#008800;'>Yes</span>" : "<span>N/A</span>";
+            $table .= "<td class='small' align='center' style='background: #DDDDDD;font-weight:bold;'>{$count}</td><td class='small' align='center'>$submitted</td>$subHTML</tr>";
         }
         $table .= "</table>";
         $table .= "<small>
             <ul>
-                <li>The numbers in the middle of the table represent the number of months that the Champion has been with the project.</li>
-                <li>The numbers on the top edge represent the number of Champions are on each Project.</li>
-                <li>The numbers on the right edge represent the number of Sub-Projects the Champion is on.</li>
+                <li>The numbers in the middle of the table (6th column and onward) represent the number of months that the Champion has been with the project.</li>
+                <li>The numbers on the top edge represent (2nd row) the number of Champions are on each Sub-Project.</li>
+                <li>The numbers in the 4th column represent the number of Sub-Projects the Champion is on.</li>
+                <li>The numbers in the 5th column represent whether the Champion has submitted their report or not.</li>
             </ul>
             </small>";
         return $table;

@@ -93,6 +93,7 @@ class ReportItemCallback {
             "champ_full_project" => "getChampFullProject",
             "champ_is_still_champion" => "getChampIsStillChampion",
             "champ_has_started" => "getChampReportHasStarted",
+            "champ_has_submitted" => "getChampReportHasSubmitted",
             "champ_represent" => "getChampRepresent",
             "champ_q1" => "getChampQ1",
             "champ_q2" => "getChampQ2",
@@ -629,6 +630,17 @@ class ReportItemCallback {
             return "<span style='font-weight:bold;color:#008800;'>Yes</span>";
         }
         return "<span>No</span>";
+    }
+    
+    function getChampReportHasSubmitted(){
+        $project = Project::newFromId($this->reportItem->projectId);
+        $person = Person::newFromId($this->reportItem->personId);
+        
+        $report = new DummyReport(RP_CHAMP, $person, $project, $this->reportItem->getReport()->year);
+        if($report->isSubmitted()){
+            return "<span style='font-weight:bold;color:#008800;'>Yes</span>";
+        }
+        return "<span>N/A</span>";
     }
     
     private function getReportNIComments($item){
