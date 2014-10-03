@@ -62,6 +62,8 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
                     $championsnSubm[$champion->getLastName()] = $c;
                 }
             }
+            ksort($championsSubm);
+            ksort($championsnSubm);
             $champions = array_merge($championsSubm, $championsnSubm);
         }
         else{
@@ -71,8 +73,8 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
                 $newChampions[$champion->getLastName()] = $c;
             }
             $champions = $newChampions;
+            ksort($champions);
         }
-        ksort($champions);
         foreach($champions as $c){
             $champion = $c['user'];
             $org = $champion->getPartnerName();
