@@ -156,7 +156,7 @@
                 <![CDATA[<div>{$item}</div><br />]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id='champion_table_head' type="ToggleHeaderReportItemSet" level="3" title="Champions">
+        <ReportItemSet id='champion_table_head' type="ToggleHeaderReportItemSet" level="3" title="Receptor Community Champions">
             <ReportItem id="champion_table" type="ProjectChampionsTableReportItem" submitted="false">
                 <![CDATA[<div>{$item}</div><br />]]>
             </ReportItem>
