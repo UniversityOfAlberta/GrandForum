@@ -15,6 +15,9 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="champion_dashboard" name="Champion Dashboard" tooltip="" blobSection="SEC_NONE" type="HeaderReportSection" renderpdf="true" private="true" pagebreak="true">
+        <ReportItem type="BookmarkReportItem" text="Receptor Community Champions">
+
+        </ReportItem>
         <ReportItem id="champion_table" type="ProjectChampionsTableReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
