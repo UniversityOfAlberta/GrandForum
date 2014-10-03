@@ -60,10 +60,14 @@ class ProjectUniversityCell extends Cell{
     function render(){
         global $wgServer, $wgScriptPath;
         if(!isset($_GET['generatePDF'])){
-            $this->style = 'text-align:left;white-space:normal !important;';
+            if(strstr($this->style, 'text-align:left;white-space:normal !important;') === false){
+                $this->style .= 'text-align:left;white-space:normal !important;';
+            }
         }
         else{
-            $this->style = 'text-align:left;';
+            if(strstr($this->style, 'text-align:left;') === false){
+                $this->style .= 'text-align:left;';
+            }
         }
         return "{$this->value}";
     }

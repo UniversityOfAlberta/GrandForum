@@ -99,16 +99,16 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="top_products" name="Top Research Outcomes" subBookmark="true" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" pagebreak="true">
+    <ReportSection id="top_products" name="Top 5 Research Outcomes (in GRAND)" subBookmark="true" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" pagebreak="true">
         <ReportItem id="legend" type="StaticReportItem">
             <![CDATA[
                 <div style='text-align:right;'>
-                    Legend: <b>NI</b>, <b><u>HQP</u></b>, <b><i>Other GRAND authors</i></b>, External<br /><br />
+                    Legend: <b>NI</b>, <b><u>HQP</u></b>, <b><i>Other GRAND Personnel</i></b>, External<br /><br />
                 </div>
             ]]>
         </ReportItem>
         <ReportItem id="top_prods" type="PersonTopProductsReportItem" max="5">
-            <![CDATA[{$item}]]>
+            <![CDATA[<small>The following are the cumulative top 5 research outcomes.</small>{$item}]]>
         </ReportItem>
     </ReportSection>
     <ReportSection type="BookmarkReportSection" name="Section 2" />
@@ -119,7 +119,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection type="BookmarkReportSection" name="Section 3" />
-    <ReportSection name="Assessment: How I contribute towards the NCE Evaluation Criteria" title="Assessment" subBookmark="true" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" pagebreak="false">
+    <ReportSection name="Assessment: How I contribute toward meeting the NCE Evaluation Criteria" title="Assessment" subBookmark="true" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" pagebreak="false">
     <!-- IIa. Excellence of the Research Program -->
         <ReportItem id='IIa_head' type="StaticReportItem">
             <![CDATA[<h2>A. Excellence of the Research Program: How my research contributes to the Network</h2>]]>

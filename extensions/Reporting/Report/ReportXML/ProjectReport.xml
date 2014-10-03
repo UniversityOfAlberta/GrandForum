@@ -146,7 +146,7 @@
                 <![CDATA[<div>{$item}</div><br />]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id='top_prods_head' type="ToggleHeaderReportItemSet" level="3" title="Top Research Outcomes">
+        <ReportItemSet id='top_prods_head' type="ToggleHeaderReportItemSet" level="3" title="Top 10 Research Outcomes">
             <ReportItem id="top_prods" type="ProjectTopProductsReportItem" max="10">
                 <![CDATA[<div>{$item}</div><br />]]>
             </ReportItem>
@@ -157,7 +157,7 @@
             </ReportItem>
         </ReportItemSet>
         <ReportItemSet id='champion_table_head' type="ToggleHeaderReportItemSet" level="3" title="Champions">
-            <ReportItem id="champion_table" type="ProjectChampionsTableReportItem">
+            <ReportItem id="champion_table" type="ProjectChampionsTableReportItem" submitted="false">
                 <![CDATA[<div>{$item}</div><br />]]>
             </ReportItem>
         </ReportItemSet>
@@ -173,10 +173,10 @@
             <![CDATA[<h2>Budget Justification</h2> {$item}]]>
         </ReportItem>
        <ReportItem id="budget_categories" type="ProjectCategoryBudgetReportItem">
-            <![CDATA[<h2>Budget Categories</h2>{$item}]]>
+            <![CDATA[<h2>Project Budget by Category</h2>{$item}]]>
         </ReportItem>
         <ReportItem id="ni_budgets" type="ProjectNIBudgetReportItem">
-            <![CDATA[<h2>NI Budgets</h2>{$item}]]>
+            <![CDATA[<h2>Individual NI Budgets</h2>{$item}]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="report" tooltip="Open-ended report narratives" name="Project Report" blobSection="LDR_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
@@ -287,13 +287,13 @@
             <ReportItemSet id="subproject_heads" type="ToggleHeaderReportItemSet" level="3" title="{$project_name} - {$project_full_name}">
                 <ReportItemSet id="leaders" type="ProjectLeadersReportItemSet">
                     <ReportItem id="sub_project_goals" type="StaticReportItem">
-                        <![CDATA[<h3>Engagement with Champions</h3>{$user_subproject_champs}]]>
+                        <![CDATA[<h3>Engagement with Receptor Community Champions</h3>{$user_subproject_champs}]]>
                     </ReportItem>
                     <ReportItem id="current_goals" type="ProjectGoalsReportItem" year="{$this_year}" max="5" preview="true">
                         <![CDATA[<h3>This Year's Goals</h3>{$item}]]>
                     </ReportItem>
                     <ReportItem id="future_goals" type="ProjectGoalsReportItem" year="{$next_year}" max="5" preview="true">
-                        <![CDATA[<h3>New Goals for Next Year</h3>{$item}]]>
+                        <![CDATA[<h3>New Goals for Next Year</h3><p><small><i>Each subproject may have up to 5 active goals, including those carrying forward from the past year and the newly defined ones.</i></small></p>{$item}]]>
                     </ReportItem>
                     <ReportItem id="sub_project_champs" type="StaticReportItem">
                         <![CDATA[<h3>General Comments</h3>{$user_subproject_comments}]]>

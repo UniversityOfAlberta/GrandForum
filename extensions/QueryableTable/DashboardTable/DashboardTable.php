@@ -116,6 +116,7 @@ class DashboardTable extends QueryableTable{
             $i = 0;
             foreach($row as $colN => $cell){
                 $style = "";
+                $class = "";
                 $Cell = $cell;
                 $cell = $Cell->render();
                 $style = $Cell->style;
@@ -123,7 +124,11 @@ class DashboardTable extends QueryableTable{
                 if(!isset($row[$colN + 1])){
                     $span = max(1, $this->nCols() - $colN);
                 }
-                $ret[] = "<td nowrap='nowrap' style='white-space:nowrap;$style;' colspan='$span' class='smaller'>$cell</td>\n";
+                if($Cell->span != null){
+                    $span = $Cell->span;
+                    $class .= " explicitSpan";
+                }
+                $ret[] = "<td nowrap='nowrap' style='white-space:nowrap;$style;' colspan='$span' class='smaller $class'>$cell</td>\n";
                 ++$i;
             }
             $ret[] = "</tr>\n";

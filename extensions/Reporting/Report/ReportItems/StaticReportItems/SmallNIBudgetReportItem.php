@@ -29,7 +29,12 @@ class SmallNIBudgetReportItem extends StaticReportItem {
                 $rAmnt = "N/A";
             }
             if($aAmnt == '$0' || $aAmnt == '$'){
-                $aAmnt = "N/A";
+                if($i == REPORTING_YEAR){
+                    $aAmnt = "";
+                }
+                else{
+                    $aAmnt = "N/A";
+                }
             }
             
             $item .= "<tr><td align='center'>Apr {$iS} to Mar {$iE}</td><td align='right'>$rAmnt</td><td align='right'>$aAmnt</td></tr>";

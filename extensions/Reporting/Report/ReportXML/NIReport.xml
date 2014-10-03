@@ -137,7 +137,7 @@
                 </div>
             ]]>
         </ReportItem>
-        <ReportItemSet id='top_prods_head' type="ToggleHeaderReportItemSet" level="3" title="Top Research Outcomes">
+        <ReportItemSet id='top_prods_head' type="ToggleHeaderReportItemSet" level="3" title="Top 5 Research Outcomes (in GRAND)">
             <ReportItem id="top_prods" type="PersonTopProductsReportItem" max="5">
                 <![CDATA[<div>{$item}</div><br />]]>
             </ReportItem>
@@ -165,7 +165,7 @@
                     <li>What did you do to address these problems?</li>
                     <li>What evidence do you have that your approaches are good ones?</li>
                 </ul>
-                <h3>II. Assessment: How I contribute towards the NCE Evaluation Criteria</h3>
+                <h3>II. Assessment: How I contribute toward meeting the NCE Evaluation Criteria</h3>
                 <p>The five NCE Program criteria used in assessing our network are described in detail on the <a href='http://www.nce-rce.gc.ca/ReportsPublications-RapportsPublications/NCE-RCE/ProgramGuide-GuideProgramme_eng.asp#a35'>NCE website</a>. Note that these criteria are written to describe the evaluation of the overall network, but we seek information from each researcher that can help build a composite story for progress, success and good management in the area of each criterion. Each of the boxes below has the definition of the NCE criterion that is required for the entire GRAND network, and some suggestions of information to be provided about the research in the project to elicit information relevant to the criterion.</p>
 
                 <p>We do not expect each researcher to contribute equally to success against each criterion, but researchers with stronger contributions in several of the criteria will receive a more positive evaluation than those without strong contributions in at least some of the criteria. As such, please give us information about your contributions as measured by these criteria if relevant and significant.</p>

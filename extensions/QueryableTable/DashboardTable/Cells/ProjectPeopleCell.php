@@ -22,7 +22,9 @@ class ProjectPeopleCell extends Cell{
     
     function render(){
         global $wgServer, $wgScriptPath;
-        $this->style = 'text-align:left;';
+        if(strstr($this->style, 'text-align:left;') === false){
+            $this->style .= 'text-align:left;';
+        }
         $person = Person::newFromName($this->value);
         return "<a href='{$person->getUrl()}' target = '_blank'><b>{$person->getNameForForms()}</b></a>";
     }

@@ -13,6 +13,14 @@ class ProjectRosterReportItem extends StaticReportItem {
         foreach($subs as $sub){
             $dashboard1 = new DashboardTable(PROJECT_CHAMP_ROSTER_STRUCTURE, $sub);
             $dashboard2 = new DashboardTable(PROJECT_NI_ROSTER_STRUCTURE, $sub);
+            /*if($sub->getLeader() != null){
+                $dashboard1->xls[1][0]->span = 2;
+                $dashboard2->xls[1][0]->style .= "background:#DDDDDD;";
+                $dashboard2->xls[1][1]->style .= "background:#DDDDDD;";
+            }
+            else{
+                $dashboard1->xls[1][0]->span = 4;
+            }*/
             $joined = $dashboard1->join($dashboard2->copy(), true);
             $header = $joined->copy()->where(HEAD);
             $joined->filter(HEAD);
@@ -37,6 +45,15 @@ class ProjectRosterReportItem extends StaticReportItem {
         foreach($subs as $sub){
             $dashboard1 = new DashboardTable(PROJECT_CHAMP_ROSTER_STRUCTURE, $sub);
             $dashboard2 = new DashboardTable(PROJECT_NI_ROSTER_STRUCTURE, $sub);
+            /*if($sub->getLeader() != null){
+                $dashboard1->xls[1][0]->span = 2;
+                $dashboard2->xls[1][0]->style .= "background:#DDDDDD;";
+                $dashboard2->xls[1][1]->style .= "background:#DDDDDD;";
+            }
+            else{
+                $dashboard1->xls[1][0]->span = 4;
+            }
+            */
             $joined = $dashboard1->join($dashboard2->copy(), true);
             $header = $joined->copy()->where(HEAD);
             $joined->filter(HEAD);

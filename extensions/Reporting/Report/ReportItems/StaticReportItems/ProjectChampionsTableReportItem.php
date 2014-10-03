@@ -3,6 +3,7 @@
 class ProjectChampionsTableReportItem extends StaticReportItem {
 
     private function getTable($pdf=false){
+        $submitted = strtolower($this->getAttr("submitted", "true"));
         $project = Project::newFromId($this->projectId);
         $subs = $project->getSubProjects();
         $table = "";
@@ -12,7 +13,10 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
         else{
             $table .= "<table class='dashboard' width='100%' style='border-spacing: 1px;width:100%;max-width:900px;background-color:#808080;' frame='box' rules='all'>";
         }
-        $table .= "<tr style='background: #FFFFFF;'><td></td><td></td><td></td><td></td><td></td>";
+        $table .= "<tr style='background: #FFFFFF;'><td></td><td></td><td></td><td></td>";
+        if($submitted == "true"){
+            $table .= "<td></td>";
+        }
         foreach($subs as $sub){
             $table .= "<td class='small' style='display:table-cell;' align='center'><b>{$sub->getName()}</b></td>";
         }
@@ -21,8 +25,10 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
                         <td class='small' style='background: #DDDDDD;' align='right'><b>First&nbsp;</b></td>
                         <td class='small' style='background: #DDDDDD;' align='left'><b>&nbsp;Last</b></td>
                         <td class='small' style='background: #DDDDDD;'><b>Organization</b></td>
-                        <td class='small' style='background: #DDDDDD;' align='center'><b>#Subs</b></td>
-                        <td class='small' style='background: #DDDDDD;' align='center'><b>Submitted</b></td>";
+                        <td class='small' style='background: #DDDDDD;' align='center'><b>#Subs</b></td>";
+        if($submitted == "true"){
+            $table .= "<td class='small' style='background: #DDDDDD;' align='center'><b>Submitted</b></td>";
+        }
         $champions = $project->getChampions();
         foreach($subs as $sub){
             $count = 0;
@@ -74,18 +80,32 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
                 }
             }
             $report = new DummyReport(RP_CHAMP, $champion, $project, $this->getReport()->year);
-            $submitted = ($report->isSubmitted()) ? "<span style='font-weight:bold;color:#008800;'>Yes</span>" : "<span>N/A</span>";
-            $table .= "<td class='small' align='center' style='background: #DDDDDD;font-weight:bold;'>{$count}</td><td class='small' align='center'>$submitted</td>$subHTML</tr>";
+            $submitted = "";
+            if($submitted == "true"){
+                $submitted = ($report->isSubmitted()) ? "<td class='small' align='center'><span style='font-weight:bold;color:#008800;'>Yes</span></td>" : "<td class='small' align='center'><span>N/A</span></td>";
+            }
+            $table .= "<td class='small' align='center' style='background: #DDDDDD;font-weight:bold;'>{$count}</td>$submitted</td>$subHTML</tr>";
         }
         $table .= "</table>";
-        $table .= "<small>
-            <ul>
-                <li>The numbers in the middle of the table (6th column and onward) represent the number of months that the Champion has been with the project.</li>
-                <li>The numbers on the top edge represent (2nd row) the number of Champions are on each Sub-Project.</li>
-                <li>The numbers in the 4th column represent the number of Sub-Projects the Champion is on.</li>
-                <li>The numbers in the 5th column represent whether the Champion has submitted their report or not.</li>
-            </ul>
-            </small>";
+        if($submitted == "true"){
+            $table .= "<small>
+                <ul>
+                    <li>The numbers in the middle of the table (6th column and onward) represent the number of months that the Champion has been with the project.</li>
+                    <li>The numbers on the top edge represent (2nd row) the number of Champions are on each Sub-Project.</li>
+                    <li>The numbers in the 4th column represent the number of Sub-Projects the Champion is on.</li>
+                    <li>The numbers in the 5th column represent whether the Champion has submitted their report or not.</li>
+                </ul>
+                </small>";
+        }
+        else{
+            $table .= "<small>
+                <ul>
+                    <li>The numbers in the middle of the table (5th column and onward) represent the number of months that the Champion has been with the project.</li>
+                    <li>The numbers on the top edge represent (2nd row) the number of Champions are on each Sub-Project.</li>
+                    <li>The numbers in the 4th column represent the number of Sub-Projects the Champion is on.</li>
+                </ul>
+                </small>";
+        }
         return $table;
     }
 

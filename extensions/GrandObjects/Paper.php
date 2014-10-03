@@ -769,7 +769,12 @@ class Paper extends BackboneModel{
     
     // Returns the date of this Paper
     function getDate(){
-        return $this->date;
+        global $config;
+        $dates = $config->getValue('projectPhaseDates');
+        $date = $this->date;
+        $date = str_replace("0000", substr($dates[1], 0, 4), $date);
+        $date = str_replace("-00", "-01", $date);
+        return $date;
     }
     
     // Returns the type of this Paper
@@ -961,13 +966,13 @@ class Paper extends BackboneModel{
         else{
             $text = $title;
         }
-        $date = date("M Y", strtotime($this->getDate()));
+        $date = date("Y M", strtotime($this->getDate()));
         $type = str_replace("Misc: ", "", $type);
         if( in_array($type, array('Book', 'Book Chapter', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
             if($vn != "" || $pg != "" || $pb != ""){
                 $vn = ":&nbsp;$vn";
             }
-       		$citation = "{$au}.&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn},&nbsp;{$pg}&nbsp;{$pb},&nbsp;{$date}<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
+       		$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn},&nbsp;{$pg}&nbsp;{$pb},&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
     	}
     	else{
     	    if($vn != ""){
@@ -976,7 +981,7 @@ class Paper extends BackboneModel{
                     $vn .= "<span class='pdfnodisplay'>,</span>";
                 }
             }
-        	$citation = "{$au}.&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn},&nbsp;{$date}&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
+        	$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn},&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
         }
         return trim($citation);
     }
