@@ -30,32 +30,6 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
             $table .= "<td class='small' style='background: #DDDDDD;' align='center'><b>Submitted</b></td>";
         }
         $champions = $project->getChampions();
-        if($submitted == "true"){
-            // First sort by whether they have submitted or not
-            $championsSubm = array();
-            $championsnSubm = array();
-            foreach($champions as $c){
-                $champion = $c['user'];
-                $report = new DummyReport(RP_CHAMP, $champion, $project, $this->getReport()->year);
-                $subm = $report->isSubmitted();
-                if($subm){
-                    $championsSubm[$champion->getLastName()] = array('user' => $champion);
-                }
-                else{
-                    $championsnSubm[$champion->getLastName()] = array('user' => $champion);
-                }
-            }
-            $champions = array_merge($championsSubm, $championsnSubm);
-        }
-        else{
-            $newChampions = array();
-            foreach($champions as $c){
-                $champion = $c['user'];
-                $newChampions[$champion->getLastName()] = array('user' => $champion);
-            }
-            $champions = $newChampions;
-        }
-        ksort($champions);
         foreach($subs as $sub){
             $count = 0;
             foreach($sub->getChampions() as $champ){
@@ -73,6 +47,32 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
             $table .= "<td class='small' style='background: #DDDDDD;' align='center'><b>{$count}</b></td>";
         }
         $table .= "</tr>";
+        if($submitted == "true"){
+            // First sort by whether they have submitted or not
+            $championsSubm = array();
+            $championsnSubm = array();
+            foreach($champions as $c){
+                $champion = $c['user'];
+                $report = new DummyReport(RP_CHAMP, $champion, $project, $this->getReport()->year);
+                $subm = $report->isSubmitted();
+                if($subm){
+                    $championsSubm[$champion->getLastName()] = $c;
+                }
+                else{
+                    $championsnSubm[$champion->getLastName()] = $c;
+                }
+            }
+            $champions = array_merge($championsSubm, $championsnSubm);
+        }
+        else{
+            $newChampions = array();
+            foreach($champions as $c){
+                $champion = $c['user'];
+                $newChampions[$champion->getLastName()] = $c;
+            }
+            $champions = $newChampions;
+        }
+        ksort($champions);
         foreach($champions as $c){
             $champion = $c['user'];
             $org = $champion->getPartnerName();
