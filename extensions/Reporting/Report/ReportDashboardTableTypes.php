@@ -197,7 +197,7 @@ $dashboardStructures[PROJECT_CHAMP_ROSTER_STRUCTURE] =
                                                              
 $dashboardStructures[PROJECT_NI_ROSTER_STRUCTURE] = 
     array(array(HEAD."(NIs)", HEAD."(Affiliation)"),
-          array(),
+          //array(),
           STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array(PROJECT_PEOPLE_ROLES,
                                                            STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
           STRUCT(GROUP_BY, PROJECT_PNI_NO_LEADERS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array(PROJECT_PEOPLE_ROLES,
