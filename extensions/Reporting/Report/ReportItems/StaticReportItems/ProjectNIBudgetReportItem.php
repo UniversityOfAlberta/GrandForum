@@ -58,6 +58,9 @@ class ProjectNIBudgetReportItem extends StaticReportItem {
         $cniJoined = Budget::join_tables(array($cniNames, $cniPercAllocated, $cniTotalAllocated, $cniPerc, $cniTotal));
         
         $joined = Budget::union_tables(array($topHeader, $pniHeader, $pniJoined, $pniFooter, $cniHeader, $cniJoined, $cniFooter, $projHeader, $projectTotal));
+        foreach($joined->xls[count($joined->xls)-1] as $cell){
+            $cell->style .= "font-weight: bold;";
+        }
         return $joined;
     }
     

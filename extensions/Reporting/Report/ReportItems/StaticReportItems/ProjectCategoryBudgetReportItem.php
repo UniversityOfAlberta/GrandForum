@@ -51,30 +51,24 @@ class ProjectCategoryBudgetReportItem extends StaticReportItem {
                 $joined->xls[$rowN][5] = new PercCell("", "", $percCNI, "", "", $joined);
             }
         }
-        $joined->xls[1][0]->style = "background:#DDDDDD;";
-        $joined->xls[1][1]->style = "background:#DDDDDD;";
-        $joined->xls[1][2]->style = "background:#DDDDDD;";
-        $joined->xls[1][3]->style = "background:#DDDDDD;";
-        $joined->xls[1][4]->style = "background:#DDDDDD;";
-        $joined->xls[1][5]->style = "background:#DDDDDD;";
-        
-        $joined->xls[6][0]->style = "background:#DDDDDD;";
-        $joined->xls[6][1]->style = "background:#DDDDDD;";
-        $joined->xls[6][2]->style = "background:#DDDDDD;";
-        $joined->xls[6][3]->style = "background:#DDDDDD;";
-        $joined->xls[6][4]->style = "background:#DDDDDD;";
-        $joined->xls[6][5]->style = "background:#DDDDDD;";
-        
-        $joined->xls[10][0]->style = "background:#DDDDDD;";
-        
-        $joined->xls[11][0]->style = "background:#DDDDDD;";
-
-        $joined->xls[12][0]->style = "background:#DDDDDD;";
-        $joined->xls[12][1]->style = "background:#DDDDDD;";
-        $joined->xls[12][2]->style = "background:#DDDDDD;";
-        $joined->xls[12][3]->style = "background:#DDDDDD;";
-        $joined->xls[12][4]->style = "background:#DDDDDD;";
-        $joined->xls[12][5]->style = "background:#DDDDDD;";
+        foreach($joined->xls[1] as $cell){
+            $cell->style = "background:#DDDDDD;";
+        }
+        foreach($joined->xls[6] as $cell){
+            $cell->style = "background:#DDDDDD;";
+        }
+        foreach($joined->xls[10] as $cell){
+            $cell->style = "background:#DDDDDD;";
+        }
+        foreach($joined->xls[11] as $cell){
+            $cell->style = "background:#DDDDDD;";
+        }
+        foreach($joined->xls[12] as $cell){
+            $cell->style = "background:#DDDDDD;";
+        }
+        foreach($joined->xls[16] as $cell){
+            $cell->style = "font-weight: bold;";
+        }
         return $joined;
     }
 
