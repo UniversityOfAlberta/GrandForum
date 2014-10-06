@@ -2,9 +2,17 @@
 
 class MoneyCell extends Cell{
     
+    var $table = null;
+    var $totalX = -1;
+    var $totalY = -1;
+    
     function MoneyCell($cellType, $params, $cellValue, $rowN, $colN, $table){
         $value = '';
         if($cellValue != ''){
+            if(isset($params[0]) && isset($params[1])){
+                $this->totalY = $params[0];
+                $this->totalX = $params[1];
+            }
             $cellValue = str_replace(',', '', $cellValue);
             if(is_numeric($cellValue)){
                 $value = $cellValue;
@@ -15,6 +23,7 @@ class MoneyCell extends Cell{
             }
         }
         $this->value = $value;
+        $this->table = $table;
     }
     
     function rasterize(){
@@ -26,16 +35,24 @@ class MoneyCell extends Cell{
     }
     
     function render(){
+        $str = "";
         if($this->value != ""){
-            $this->style = "text-align:right;";
-            if(is_numeric($this->value)){
-                return "$".number_format($this->value);
+            if(strstr($this->style, "text-align:right;font-family:monospace !important;") === false){
+                $this->style .= "text-align:right;font-family:monospace !important;";
             }
-            return "$".$this->value;
+            if($this->totalX != -1 && $this->totalY != -1){
+                if(isset($this->table->xls[$this->totalY][$this->totalX])){
+                    $totalCell = $this->table->xls[$this->totalY][$this->totalX];
+                    $totalValue = $totalCell->getValue();
+                    $percValue = round(($this->value / max(1, $totalValue))*100);
+                    $str .= "($percValue%)&nbsp;";
+                }
+            }
+            if(is_numeric($this->value)){
+                $str .= "$".number_format($this->value);
+            }
         }
-        else{
-            return "";
-        }
+        return $str;
     }
 }
 

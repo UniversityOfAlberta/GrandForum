@@ -60,6 +60,7 @@ class BudgetReportItem extends AbstractReportItem {
 		    foreach($errors as $key => $error){
 	            $budget->errors[0][] = $error;
 	        }
+	        $budget = $this->colorBudget($budget);
 		    $wgOut->addHTML($budget->renderForPDF());
 		}
 		else{
@@ -154,6 +155,7 @@ class BudgetReportItem extends AbstractReportItem {
 		    foreach($errors as $key => $error){
 	            $budget->errors[0][] = $error;
 	        }
+	        $budget = $this->colorBudget($budget);
 		    echo $budget->render();
 		}
 		else{
@@ -171,8 +173,31 @@ class BudgetReportItem extends AbstractReportItem {
 	    exit;
 	}
 	
+	function colorBudget($budget){
+	    foreach($budget->xls[7] as $cell){
+	        $cell->style .= "background: #DDDDDD;";
+	    }
+	    foreach($budget->xls[12] as $cell){
+	        $cell->style .= "background: #DDDDDD;";
+	    }
+	    foreach($budget->xls[16] as $cell){
+	        $cell->style .= "background: #DDDDDD;";
+	    }
+	    foreach($budget->xls[17] as $cell){
+	        $cell->style .= "background: #DDDDDD;";
+	    }
+	    foreach($budget->xls[18] as $cell){
+	        $cell->style .= "background: #DDDDDD;";
+	    }
+	    foreach($budget->xls[22] as $cell){
+	        $cell->style .= "font-weight: bold;";
+	    }
+	    return $budget;
+	}
+	
 	function filterCols($budget){
 	    $person = $this->getReport()->person;
+	    
 	    if($this->getReport()->topProjectOnly){
 	        $project = $this->getReport()->project;
             $budget = $budget->copy();
