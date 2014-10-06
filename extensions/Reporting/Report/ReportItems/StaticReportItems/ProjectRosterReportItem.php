@@ -49,6 +49,7 @@ class ProjectRosterReportItem extends StaticReportItem {
                 $joined->xls[1][0]->span = 2;
                 $joined->xls[1][1]->style .= "background:#DDDDDD;";
                 $joined->xls[1][2]->style .= "background:#DDDDDD;";
+                $joined->xls[1][2]->span = 1;
             }
             $dashboards[] = $joined;
         }
