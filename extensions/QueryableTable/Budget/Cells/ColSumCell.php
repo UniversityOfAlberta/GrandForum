@@ -7,7 +7,7 @@ class ColSumCell extends MoneyCell{
         $projection = array_project($table->xls, $colN);
         foreach($projection as $rowN1 => $row){
             if($row instanceof Cell){
-                if(is_numeric($row->getValue()) && $rowN1 < $rowN){
+                if(is_numeric($row->getValue()) && $row->summable && $rowN1 < $rowN){
                     $value += $row->getValue();
                 }
             }

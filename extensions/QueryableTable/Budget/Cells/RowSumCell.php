@@ -6,7 +6,7 @@ class RowSumCell extends MoneyCell{
         $value = 0;
         foreach($table->xls[$rowN] as $colN1 => $col){
             if($col instanceof Cell){
-                if(is_numeric($col->getValue()) && $colN1 < $colN){
+                if(is_numeric($col->getValue()) && $col->summable && $colN1 < $colN){
                     $value += $col->getValue();
                 }
             }

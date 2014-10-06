@@ -8,6 +8,7 @@ abstract class Cell {
     var $span;
     var $dynamic = false;
     var $params = array();
+    var $summable = true;
     
     function setValue($value){
         $this->value = $value;

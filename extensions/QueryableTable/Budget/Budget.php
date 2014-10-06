@@ -283,8 +283,10 @@ class Budget extends QueryableTable{
                 if(isset($this->xls[$rowN][$colN]) &&
                    is_numeric($this->xls[$rowN][$colN]->getValue())){
                     $cell = $this->xls[$rowN][$colN]->getValue();
-                    $rowTotalResultSet[$rowN][0] += $cell;
-                    $colTotalResultSet[0][$colN] += $cell;
+                    if($cell->summable){
+                        $rowTotalResultSet[$rowN][0] += $cell;
+                        $colTotalResultSet[0][$colN] += $cell;
+                    }
                     $totalResultSet[0][0] += $cell;
                     $rowTotalStructure[$rowN][0] = CUBE_ROW_TOTAL;
                     $colTotalStructure[0][$colN] = CUBE_COL_TOTAL;
