@@ -75,6 +75,8 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
             $champions = $newChampions;
             ksort($champions);
         }
+        $foundNotSubmitted = false;
+        $first = true;
         foreach($champions as $c){
             $champion = $c['user'];
             $org = $champion->getPartnerName();
@@ -87,7 +89,11 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
             if($uni->getName() != ""){
                 $org = $uni->getShortName();
             }
-            
+            $report = new DummyReport(RP_CHAMP, $champion, $project, $this->getReport()->year);
+            if($submitted == "true" && !$report->isSubmitted() && !$foundNotSubmitted && !$first){
+                $table .= "<tr><td colspan='".(count($subs) + 5)."' style='background:#808080;height:5px;'></td></tr>";
+                $foundNotSubmitted = true;
+            }
             $table .= "<tr style='background: #FFFFFF;'>";
             $table .= "<td class='small' align='right'>{$champion->getFirstName()}&nbsp;</td>";
             $table .= "<td class='small' align='left'>&nbsp;{$champion->getLastName()}</td>";
@@ -107,12 +113,13 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
                     $subHTML .= "<td class='small'></td>";
                 }
             }
-            $report = new DummyReport(RP_CHAMP, $champion, $project, $this->getReport()->year);
+            
             $subm = "";
             if($submitted == "true"){
                 $subm = ($report->isSubmitted()) ? "<td class='small' align='center'><span style='font-weight:bold;color:#008800;'>Yes</span></td>" : "<td class='small' align='center'><span>N/A</span></td>";
             }
             $table .= "<td class='small' align='center' style='background: #DDDDDD;font-weight:bold;'>{$count}</td>$subm</td>$subHTML</tr>";
+            $first = false;
         }
         $table .= "</table>";
         if($submitted == "true"){
