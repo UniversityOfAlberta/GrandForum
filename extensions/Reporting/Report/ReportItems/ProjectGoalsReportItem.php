@@ -175,7 +175,7 @@ EOF
                     <table width='100%' style='font-size:9pt;'>
                         <tr>
                             <td width='1%'><b>Title:</b></td><td><input id='new_title' type='text' name='{$this->getPostId()}_new_title[]' style='width:97%;' /></td>
-                            <td width='50%'><b>Status:</b>&nbsp;<select id='status' style='vertical-align: middle;' name='{$this->getPostId()}_status[]'>
+                            <td width='50%' style='$display'><b>Status:</b>&nbsp;<select id='status' style='vertical-align: middle;' name='{$this->getPostId()}_status[]'>
                                     <option selected>Current</option>
                                     <option>Completed</option>
                                     <option>Abandoned</option>
@@ -232,7 +232,7 @@ EOF
         $display = ($year > REPORTING_YEAR) ? "display:none;" : "";
         $margin = 2*DPI_CONSTANT;
         $tplt = "<div style='page-break-inside:avoid;margin-bottom:{$margin}px;'>
-                    <h4>$title ({$status})</h4>
+                    <h4>$title <span style='$display'>({$status})</span></h4>
                         <p style='margin-left:50px;'><b>Problem Statement:&nbsp;</b><small class='$problemClass'>(Currently $problemLength out of 300 characters)</small><br />{$problem}</p>
                         <p style='margin-left:50px;'><b>Plan & Expected Outcomes:&nbsp;</b><small class='$descriptionClass'>(Currently $descriptionLength out of 300 characters)</small><br />{$description}</p>
                         <p style='margin-left:50px;{$display}'><b>Assessment:&nbsp;</b><small class='$assessmentClass'>(Currently $assessmentLength out of 500 characters)</small><br />{$assessment}</p>
