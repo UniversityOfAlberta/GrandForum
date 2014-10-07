@@ -31,7 +31,7 @@ class BudgetReportItem extends AbstractReportItem {
                                     var lastHeight = $('#budgetFrame' + frameId).height();
                                     $('#budgetFrame' + frameId).remove();
                                     frameId++;
-                                    $('#budgetDiv').html(\"<iframe name='budget' id='budgetFrame\" + frameId + \"' style='border-width:0;width:100%;' frameborder='0' src='../index.php/Special:Report?report=NIReport&section=Budget+Request&budgetUploadForm{$projectGet}{$year}'></iframe>\");
+                                    $('#budgetDiv').html(\"<iframe name='budget' id='budgetFrame\" + frameId + \"' style='border-width:0;width:100%;' frameborder='0' src='../index.php/Special:Report?report=NIReport&section=Budget&budgetUploadForm{$projectGet}{$year}'></iframe>\");
                                     $('#budgetFrame' + frameId).height(lastHeight);
                                 }
                                 function alertsize(pixels){
@@ -44,7 +44,7 @@ class BudgetReportItem extends AbstractReportItem {
 		$wgOut->addHTML("<div>");
 		$wgOut->addHTML("<h2>Download Budget Template</h2> <ul><li><a href='$wgServer$wgScriptPath/data/GRAND Researcher Budget Request (2015-16).xls'>".(REPORTING_YEAR+1)."-".(REPORTING_YEAR+2)." Budget Template</a></li></ul>" );
 		$wgOut->addHTML("<h2>Budget Upload</h2>
-		                 <div id='budgetDiv'><iframe name='budget' id='budgetFrame0' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report=NIReport&section=Budget+Request&budgetUploadForm{$projectGet}{$year}'></iframe></div>");
+		                 <div id='budgetDiv'><iframe name='budget' id='budgetFrame0' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report=NIReport&section=Budget&budgetUploadForm{$projectGet}{$year}'></iframe></div>");
 		$wgOut->addHTML("</div>");
 	}
 	
@@ -131,14 +131,14 @@ class BudgetReportItem extends AbstractReportItem {
         echo "</head>
               <body style='margin:0;'>
                     <div id='bodyContent'>
-                        <form action='$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport&section=Budget+Request&budgetUploadForm{$projectGet}{$year}' method='post' enctype='multipart/form-data'>
+                        <form action='$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport&section=Budget&budgetUploadForm{$projectGet}{$year}' method='post' enctype='multipart/form-data'>
                             <input type='file' name='budget' />
 	                        <input type='submit' name='upload' value='Upload' />
 	                    </form>";
 	            
 	    $data = $this->getBlobValue();
 	    if($data !== null){
-	        echo "<br /><a href='$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport&section=Budget+Request&downloadBudget{$projectGet}{$year}'>Download Uploaded Budget</a>";
+	        echo "<br /><a href='$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport&section=Budget&downloadBudget{$projectGet}{$year}'>Download Uploaded Budget</a>";
 		    $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
 		    $budget = $this->filterCols($budget);
 		    $budget = $budget->copy()->filterCols(V_PROJ, array(""));

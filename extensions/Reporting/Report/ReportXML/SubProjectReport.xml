@@ -15,11 +15,31 @@
     <ReportSection id="report" name="Report" tooltip="Comments about lead sub-projects" blobSection="SUB_SUBPROJECTS" type="EditableReportSection" autosave="true" reportCharLimits="true" renderpdf="false">
         <Instructions>
             <![CDATA[
-                This section is for sub-project leaders to be able to talk about their sub-projects that they lead.  Each Project and your sub-projects are listed below.  For each sub-project please fill in the following fields:
-                <p><b>Engagements with Champions</b><br />Details</p>
-                <p><b>This Year's Goals</b><br />Details</p>
-                <p><b>New Goals for Next Year</b><br />Details</p>
-                <p><b>Engagement with Champions</b><br />Details</p>
+                <p>The intent of <b><i>Report</i></b> page is to enable each sPL to report on his/her SubProject activities and accomplishments during the term of the report.</p>
+
+                <h3>Engagement with Champions</h3>
+
+                In this textfield, you should report on your interactions with the SubProject Champions.
+
+                <h3>This Year's Goals</h3>
+
+                At any point in time, a SubProject may have up to five "Current" goals.
+
+                When a new goal is added, the following information has to be provided:
+                <ul>
+                  <li>a short title</li>
+                  <li>the problem statement that the goal is conceived to address</li>
+                  <li>the plan of the to-be-conducted research, including tasks and expected outcomes.</li>
+                </ul>
+                When a current goal is either "Completed" or "Abandoned", an assessment of the associated activities and outcomes has to be provided.
+
+                <h3>New Goals for Next Year</h3>
+
+                As long as there are fewer than five current goals, new goals can be defined for the SubProject (up to a total of five).
+
+                <h3>General Comments</h3>
+
+                In this textfield, you are expected to provide any additional information relevant to your SubProject.
             ]]>
         </Instructions>
         <ReportItem id="sub_project_champs" width="100%" blobType="BLOB_TEXT" blobItem="SUB_SUBPROJECT_CHAMPS" type="AutoCompleteTextareaReportItem" limit="1200" set="ProjectChampionsReportItemSet" index="user_id" label="user_name" name="Champion" tooltipOptionId="Champion ID" tooltipOptionName="Champion Name" reportLimits="true">
@@ -38,12 +58,18 @@
     <ReportSection id="review" name="Review" tooltip="Review of on-line report content" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
         <Instructions>
             <![CDATA[
-                    <p>This section provides (a) an online document with all the information currently contained in the report pages, and (b) an online approximation of what the resulting PDF document will look like. If you are satisfied with this content, then you can proceed to the final step of the reporting workflow where you can "Submit" your report to be forwarded to the RMC.<br />
-Note that there are two distinct differences between the online document that you can see in this page and the PDF document that will be forwarded to the RMC.</p>
-                    <ol>
-                        <li>Over-limit characters are included in the online document, where they are shown in red. These characters will not be included in the PDF document.</li>
-                        <li>Section VII, on "Milestones Comments" is not part of the document that will be reviewed by the Research Management Committee (RMC). If there is information here that you want to be considered as part of your evaluation, it should be included in a previous section. Please provide the full details in Section VII - this section will be provided to your project leaders to assist with their project reporting.</li>
-                    </ol>
+                <p>The intent of <b><i>Review</i></b> page is to provide
+                <ul>
+                  <li>an online document with all the information currently contained in the report, and </li>
+                  <li> an online approximation of what the resulting PDF document will look like. </li>
+                </ul>
+
+                <p>Note that at the top right of the page, a table provides an overview of the degree to which your report is complete. Regarding the open-ended sections of the <b><i>Report</i></b>, the number of text-boxes edited and whether or not any of them exceed the maximum number of characters allowed is examined.</li>
+                </ul>
+
+                If you are satisfied with this content, then you can proceed to the final step of the reporting workflow where you can <b><i>Submit</i></b> your report to be forwarded to the RMC.</p>
+
+                <b>Note that over-limit characters, shown in red in this online document, will not be included in the PDF document.</b>
             ]]>
         </Instructions>
         <ReportItem id="report_review" type="ReviewReportItem">
@@ -53,15 +79,28 @@ Note that there are two distinct differences between the online document that yo
     <ReportSection id="submit" name="Submit" tooltip="PDF generation and submission to the RMC" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
         <Instructions>
             <![CDATA[
-                    <p>To submit your report, follow the following three steps.</p>
-                    <ol>
-                        <li>Generate a new report for submission: this step will generate a PDF document.</li>
-                        <li>Download the PDF document for your records.</li>
-                        <li>Submit your report: this step indicates that you have read and approve the contents of the PDF document to be forwarded to the RMC. Note that "submitting" does not lock the reporting workflow; you can regenerate and resubmit your report as many times as you wish before the deadline, if you need to make additional edits to your report. The most recently submitted PDF is used for evaluation.  If no PDF has been submitted, then the most recently generated PDF is used for evaluation.</li>
-                        <li>Download the PDF which will be used for evaluation; To verify that the correct PDF will be used for evaluation, you can download the submitted PDF.</li>
-                    </p>
-                    </ol>
-                    <p><b>Note: All your PLs have access to your on-line project-specific dashboard rows; your executive summary; your project-specific comments under criteria A B C and D; and your project-specific milestone comments.</b></p>
+                <p><b>Note: The Sub-Project Report will be included as-is in the Project Report.</b></p>
+
+                To submit your report, follow the following steps:
+                <ol>
+                  <li><b>Generate a new report for submission:</b> This step will generate a PDF document on the Forum.</li>
+                  <p></p>
+                  <li><b>Download the PDF report for reviewing:</b> The most recently generated PDF report will be downloaded to your local machine for your records.</li>
+                  <p></p>
+                  <li><b>Submit the report for evaluation:</b> Make sure you have reviewed the PDF document before submitting.
+                  <p>
+                Please note:
+                <ul>
+                  <li>If you need to make a correction to your report that is already submitted, you can generate and submit again.</li>
+                  <li>The most recently submitted pdf is used for evaluation.</li>
+                  <li>If no pdf has been submitted, then the most recently generated pdf will be used for evaluation instead.</li>
+                  <li>If you encounter any issues, please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a></li>
+                </ul>
+                </p>
+                <li><b>Download the PDF which will be used for evaluation:</b>
+                To verify that the correct PDF will be used for evaluation, you can download the submitted PDF.
+                </li>
+                </ol>
             ]]>
         </Instructions>
         <ReportItem id="my_progress_head" type="StaticReportItem">

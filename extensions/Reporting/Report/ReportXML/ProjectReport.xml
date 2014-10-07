@@ -36,27 +36,41 @@
     <ReportSection id="status" tooltip="Evaluation of the project report against the reporting rules" name="Completion Status" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
-                <p>At this point, the PLs of Phase2 projects should add NIs to their projects (using the "Edit Member" tool).  As soon as you add a new NI to your project, and after the request has been approved by Central, this person will be listed among your project NIs and will have your project in their list of projects.  This will create a textbox in the "plans forward" part of their NI report and will also allow them to request funds in their budget for this project.  NI budget requests can now be uploaded.</p>
-                <p>As a PL you are also expected to develop your new Phase2 project; the basic description has been added to the Forum by Central but there are no subprojects and no champions yet; the PLs are expected to complete this information.  Note that you have to request a champion account ("Add Member") before you can add them to your project; once your request has been approved by Central, you can add them to your project and subprojects.  Note that when the account creation is approved they will get and email from the Forum, so it would be advisable to warn them before through email.</p>
-                <br />
-                <p>This page provides an overview of the degree to which the project report and the project-related reports of the associated NIs are complete. Five aspects of the project report are inspected:</p>
+                <h3> Reporting on the <i>January 2014 - December 2014</i> Activities</h3>
+
+                <p>The <b><i>Completion Status</i></b> page consists of three parts:
                 <ul>
-                    <li>Regarding the products reported in the dashboard, the degree to which their descriptions are complete is examined.  Note that there is no expectation of actual products associated with Phase2 projects since work on these projects is expected to start in April 2014.  However, we anticipate that work may have already begun in some cases and the corresponding products may be reported.</li>
-                    <li>Regarding the open-ended sections of the report, the number of text-boxes edited and whether or not any of them exceed the maximum number of characters allowed is reported.</li>
-                    <li>Regarding the project milestones, this page mentions the number of milestones that are mentioned in the overview section of the "Project milestones" page.</li>
-                    <li>Regarding the PL comments on the project NIs, the numbers of PNIs and CNIs on which you have commented are reported.</li>
-                    <li>Regarding the progress of the project NIs, the following numbers are reported:
-                    <ol>
-                        <li>project NIs who have not made a project-related request for the new year are reported; and</li>
-                        <li>project NIs that have not submitted "plans forward" associated with this project are reported.</li>
-                    </ol>
+                 <li> the <i>PL Progress</i> table, </li>
+                 <li> the <i>NI Progress</i> table, and</li>
+                 <li> the <i>Champion Progress</i> table.</li>
                 </ul>
-                <p>In addition to the summary table under the heading "PL Progress", you can find details on the degree to which the project NIs have completed their reports. </p>
+
+                <h3> The <i>PL Progress</i> table </h3>
+
+                <p>This table provides an overview of the degree to which the project report and the project-related reports of the associated NIs are complete. The following aspects of the project report are inspected:</p>
                 <ul>
-                    <li>Clicking on the "Report PDF" downloads a copy of the project-specific slice of the NI report, which includes project-related products, the executive summary and the NI’s comments associated with the project on the NCE criteria A through D.</li>
-                    <li>Clicking on the "On-Line Report" button enables you to impersonate the NI in question and view the project-related slice of their report.</li>
-                    <li>Clicking on the "Notify NI" lets you send a forum notification to the NI and (if you wish) an email message, with a communication regarding their report.</li>
+                  <li>Regarding the products reported in the dashboard, the degree to which their descriptions are complete is examined. </li>
+                  <li>Regarding the open-ended sections of the report, the number of text-boxes edited and whether or not any of them exceed the maximum number of characters allowed is reported.</li>
+                  <li>Regarding the PL comments on the project NIs, the numbers of PNIs and CNIs on which you have commented are reported.</li>
+                  <li>Regarding the progress of the project NIs, the following numbers are reported:
+                  <ol>
+                    <li>project NIs who have not made a project-related request for the new year are reported; and</li>
+                    <li>project NIs that have not submitted "plans forward" associated with this project are reported.</li>
+                  </ol>
                 </ul>
+
+                <h3> The <i>NI Progress</i> table </h3>
+
+                <p>In addition to the summary table under the accordeon heading "PL Progress", you can find details on the degree to which the project NIs have completed their reports. </p>
+                <ul>
+                  <li>Clicking on the "Report PDF" downloads a copy of the project-specific slice of the NI report, which includes project-related products, the executive summary and the comments of the NIs associated with the project on the NCE criteria A-through-D.</li>
+                  <li>Clicking on the "On-Line Report" button enables you to impersonate the NI in question and view the project-related slice of their report.</li>
+                  <li>Clicking on the "Notify NI" lets you send a forum notification to the NI and (if you wish) an email message, with a communication regarding their report.</li>
+                </ul>
+
+                <h3> The <i>Champion Progress</i> table </h3>
+
+                <p>Similarly, under the accordeon heading "Champion Progress", you can find correspopnding details on the degree to which the project Champions have completed their reports. </p>
             ]]>
         </Instructions>
         <ReportItem id="my_progress_head" type="ProgressReportItem" reportType="ProjectReport">
@@ -136,9 +150,89 @@
     <ReportSection id="dashboard" tooltip="Overview of this year's activity and productivity" name="Dashboard" blobSection="SEC_NONE" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
-                <p>The Dashboard is designed to provide an overview of all project-related activity in GRAND, by all project NIs (each represented by a row in the Dashboard table) and overall (reflected in the final "Totals" row of the table). The data reported in the dashboard has already been input to the Forum through the various functionalities of the "Toolbox".</p>
+                <p>The <b><i>Dashboard</i></b> page is designed to provide an overview of a Project's activity, throughout the GRAND lifecycle (in the case of the <b><i>Project => Dashboard</i></b>) or during the current reporting year, January 1st to December 31st (in the case of the <b><i>My Reports => ProjectName => Dashboard</i></b>).
 
-                <p>The project dashboard is compiled based on the data reported on the project-related rows of all the NIs of the project. The "Time and Budget" table of the project dashboard relies on the "Network" table of the NI dashboards. The "Productivity" table of the project dashboard relies on the “Productivity” table of the NI dashboards.</p>
+                <p>The <b><i>Dashboard</i></b> page consists of four parts:
+                <ul>
+                 <li> the <i>Project Team</i> table,</li>
+                 <li> the <i>Top 10 Research Outcomes</i> list, </li>
+                 <li> the <i>Productivity Dashboard</i> table, and</li>
+                 <li> the <i>Receptor Community Champions</i> table. </li>
+                </ul>
+
+                <h3> The <i>Project Team</i> table </h3>
+
+                The table lists the Project members, organized by SubProject. For every SubProject, the SubProject Lead is identified, the SubProject Champions (in the two leftmost columns of the table) and the SubProject Researchers (in the two rightmost columns of the table).
+
+                <h3> The <i>Top 10 Research Outcomes</i> list </h3>
+
+                This list identifies the 10 most important research outcomes of the Project throughout the GRAND lifecycle. 
+
+                <ol>
+                 <li>
+                 In the beginning the list is empty.
+                 </li>
+                 <li> When the "Edit Top Research Outcomes" button is pressed, a list of 10 empty labels appears.
+                 </li>
+                 <li>
+                 Clicking on any of these labels reveals a list of all the Project's products; selecting any of these products will associate it with the corresponding label.
+                 </li>
+                 <li>
+                 Clicking on the "Save Top Research Outcomes" saves the current list, which is rendered in tabular form, as the first part of the <b><i>Dashboard</i></b> page.
+                 </li>
+                </ol>
+                 
+                <h3>The <i>Productivity Overview</i> Table</h3>
+
+                This table reports aggregate numbers on the Project's GRAND activity, including 
+                <b><i>Publications, </i></b>
+                <b><i>Artifacts, </i></b>
+                <b><i>Activities, </i></b>
+                <b><i>Presentations, </i></b>
+                <b><i>Press, </i></b>
+                <b><i>Awards, </i></b>
+                <b><i>Multimedia Stories, </i></b, and
+                <b><i>Contributions</i></b>.
+
+                <p>The content of this table is not editable; it simply reflects the information that has already been entered in the Forum through the "Products" tools (to the left of the page). If there is an error in any of the information reported in the dashboard, please edit the corresponding element through the appropriate tool. If the error is in a system-controlled field, please contact <a href="mailto:support@forum.grand-nce.ca">support</a>. </p>
+
+                <p> In the case of the <b><i>Project => Dashboard</i></b> page, the table reports all known outcomes associated with the Project, organized in rows, where each row corresponds to a NI associated with the Project. In the case of the <b><i>My Reports => ProjectName => Dashboard</i></b> page the table reports outcomes that have appeared in the current reporting year or are scheduled to appear on a date within a two-year window in the future. 
+                </p>
+
+                <p> Note that each row of the table is researcher-specific and there might be redundancy across some rows, when for example a publication is co-authored by several NIs in the Project. The 'Total' row only reports unique entities.</p></p>
+
+                <p> Finally, clicking on the link in any of the cells produces a listing below the Dashboard table with all the relevant details. 
+                </p>
+
+                <h4>The <i>Dashboard Table</i> Columns</h4>
+
+                <p>Under <b><i>Publications</i></b>, the table reports any publication co-authored by the Researcher (associated with the Project) including any "to appear" publications. Publications are of different types but, in principle, are documents that appear in archival venues and can be cited.</p>
+
+                <p>Under <b><i>Artifacts</i></b>, the table reports any artifact co-produced by the Researcher (associated with the Project). This category includes curated data repositories, open-source software, and artistic works. </p>
+
+                <p>Under <b><i>Activities</i></b>, the table reports any activity in which the Researcher was involved (associated with the Project). This category is meant to include conference or workshop organization and similar activities.</p>
+
+                <p>Under <b><i>Presentations</i></b>, the table reports any conference presentations, panel statements, seminars etc. given by the Researcher (associated with the Project).</p>
+
+                <p>Under <b><i>Awards</i></b>, the table reports awards bestowed to the Researcher (associated with the Project).</p>
+
+                <p>Under <b><i>Press</i></b>, the table reports any press pieces mentioning the Researcher (associated with the Project).</p>
+
+                <p>Under <b><i>Multimedia</i></b>, the table reports a special case of products that include a multimedia component, such as a video for example, co-produced by the Researcher (associated with the Project). This category is conceived to include video demonstrations (frequently submitted to conferences) or short films produced to illustrate a research activity.</p>
+
+                <p>Under <b><i>Contributions</i></b>, the table reports cash and in-kind contributions to the Researcher (associated with the Project) by agencies outside GRAND.</p>
+
+                <h3>The <i>Receptor Community Champions</i> Table</h3>
+
+                The table lists the Project Champions as rows. For every Champion,
+                <ul>
+                  <li>the third column identifies the Champion's organization;
+                  </li>
+                  <li>the fourth column identifies the number of SupProjects (within this Project) with which the Champion is associated; and
+                  </li>
+                  <li>the subsequent columns correspond to each of the SupProjects and, if the Champion is associated with a SubProject, the corresponding cell indicates the length of the ascoiation (in months).  
+                  </li>
+                </ul>
             ]]>
         </Instructions>
         <ReportItemSet id='project_roster_head' type="ToggleHeaderReportItemSet" level="3" title="Project Team">
@@ -165,8 +259,22 @@
     <ReportSection id="budget" tooltip="Budget-request roll-up and justification" name="Budget" blobSection="LDR_BUDGET" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
-                <p>This section includes a roll-up of the Budget Requests for this project from each of the listed project PNIs and CNIs. Under "Budget Justification", there is a text field to allow for a brief comment on the overall budget request for this project.</p>
-                <p>The Budget Request table includes both PNI and CNI budget requests, imported from the budget requests that are included with their respective NI reports.  The final PNI allocations will be based on the review by the RMC of individual NI reports of those PNIs.  The allocations for the CNIs will be determined by the project.  The RMC will determine the amount of CNI funding that will be made available to each project.  However, please note that this amount will generally not exceed 60% of the total amount of PNI funding allocated to the project and that it will generally not be less than 40% of that amount.  This roughly corresponds to the overall guideline across all projects that 2/3 of the NI research funding allocations will go to PNIs and 1/3 will go to CNIs.  Where the amount requested for CNIs on a project exceeds the amount ultimately allocated, the final amount will be prorated among the CNIs requesting funds for the project, based on the amount of their reqests, unless the project leader provides a revised distribution within the timeframe provided at the time these project CNI allocations are announced.  These allocations will be announced in March 2014.</p>
+                <p>The <b><i>Budget</i></b> page includes three elements:
+                <ul>
+                 <li> the <i>Budget Justification</i>,</li>
+                 <li> the <i>Project Budget by Category</i> table, and, </li>
+                 <li> the <i>Individual NI Budgets</i> table. </li>
+                </ul>
+
+                The "Budget Justification" text field allows for a brief comment on the overall budget request for this project.</p>
+
+                <h3> The <i>Project Budget by Category</i> table </h3>
+
+                <p>This table includes both PNI and CNI budget requests, imported from the budget requests that are included with the respective NI reports. The final PNI allocations will be based on the review by the RMC of individual NI reports of those PNIs. The allocations for the CNIs will be determined by the project. The RMC will determine the amount of CNI funding that will be made available to each project. However, please note that this amount will generally not exceed 60% of the total amount of PNI funding allocated to the project and that it will generally not be less than 40% of that amount. This roughly corresponds to the overall guideline across all projects that 2/3 of the NI research funding allocations will go to PNIs and 1/3 will go to CNIs. Where the amount requested for CNIs on a project exceeds the amount ultimately allocated, the final amount will be prorated among the CNIs requesting funds for the project, based on the amount of their reqests, unless the project leader provides a revised distribution within the timeframe provided at the time these project CNI allocations are announced. These allocations will be announced in March 2015.</p>
+
+                <h3> The <i>Individual NI Budgets</i> table </h3>
+
+                This table reports the funds allocated to this Project by the Project NIs in the past year, against the funds they request this year. 
             ]]>
         </Instructions>
         <ReportItem id="budget_just" rows="10" limit="600" blobType="BLOB_TEXT" blobItem="LDR_BUD_JUST" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
@@ -182,12 +290,7 @@
     <ReportSection id="report" tooltip="Open-ended report narratives" name="Report" blobSection="LDR_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
-                <p>The intent of this section is to enable the project PLs and co-PLs to report in an executive summary an overview of the project activity for the next year and their reflections on:</p>
-                <ol type="a">
-                    <li>the planned activities for the next year;</li>
-                    <li>the benefits to the project from being involved in the Network; and</li>
-                    <li>any additional comments they wish</li>
-                </ol>
+                <p>The <b><i>Report</i></b> page is similar in structure to the <b><i>Researcher Report</i></b> page and it is meant to be co-developed by the project PL and co-PL.
             ]]>
         </Instructions>
 <!-- I. Executive Summary -->
@@ -280,7 +383,7 @@
     <ReportSection id="subprojects" tooltip="Discussion of progress against Sub-Projects" name="Sub-Projects" blobSection="LDR_MILESTONE" type="ReportSection" renderpdf="true" reportCharLimits="false">
         <Instructions>
             <![CDATA[
-                This section shows the comments made by the sub-project leaders.
+                <p>The <b><i>Sub-Projects</i></b> page includes accordeon headings for each one of the Project SubProjects. Under each heading the information provided by the SubProject PL is shown.
             ]]>
         </Instructions>
         <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet">
@@ -305,7 +408,7 @@
     <ReportSection id="comments" tooltip="Comments on NI contributions to the project" name="NI Comments" blobSection="LDR_NICOMMENTS" type="EditableReportSection" autosave="true" renderpdf="false" reportCharLimits="false">
         <Instructions>
             <![CDATA[
-                <p>In this section, the project co-PLs provide comments on the contributions of individual NIs who are involved in the project. Clicking on the name of the researcher will open a text box. These comments are not reviewed by the RMC as part of the Project Report, however the comments here will be included as part of the Individual Network-Investigator Reports as part of the evaluation of individual researchers.</p>
+                <p>The <b><i>NI Comments</i></b> page includes the comments of the Project PL and co-PL on the contributions of individual NIs who are involved in the Project. There are accordeon headings for each Researcher on the Project. Clicking on a heading opens a text box, where the PL and co-PL enter their comments. These comments are not reviewed by the RMC as part of the Report, however the comments here will be included as part of the Individual Researcher Reports.</p>
             ]]>
         </Instructions>
         <ReportItemSet id="members_noleaders" type="ProjectPeopleNoLeadersReportItemSet" blobIndex="personId">
@@ -319,8 +422,14 @@
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
-                    <p>This section provides (a) an online document with all the information currently contained in the report pages, and (b) an online approximation of what the resulting PDF document will look like. If you are satisfied with this content, then you can proceed to the final step of the reporting workflow where you can "Submit" your report to be forwarded to the RMC.</p>
-                    <p>As with the NI on-line report, over-limit characters are included in the online document, (where they are shown in red) but not in the PDF document. The "Milestones" section is not part of the document that will be reviewed by the Research Management Committee (RMC).</p>
+                <p>The intent of <b><i>Review</i></b> page is to provide
+                <ul>
+                  <li>an online document with all the information currently contained in the report, and </li>
+                  <li> an online approximation of what the resulting PDF document will look like. </li>
+                </ul>
+                If you are satisfied with this content, then you can proceed to the final step of the reporting workflow where you can <b><i>Submit</i></b> your report to be forwarded to the RMC.</p>
+
+                <b>Note that over-limit characters, shown in red in this online document, will not be included in the PDF document.</b>
             ]]>
         </Instructions>
         <ReportItem id="report_review" type="ReviewReportItem">
@@ -330,12 +439,29 @@
     <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
-                    <p>To submit the project report, follow the following three steps.</p>
-                    <ol>
-                        <li>Generate a new report for submission: this step will generate three PDF documents: (a) the "Project Report PDF" is the document that will be forwarded to the RMC; (b) the "Project Milestones PDF" is for the project records; and (c) the "Project Comments PDF" includes all the co-PLs comments regarding the project NIs.</li>
-                        <li>Download the PDF documents for your records.</li>
-                        <li>Submit your report: this step indicates that you have read and approve the contents of the PDF document to be forwarded to the RMC. Note that "submitting" does not lock the reporting workflow; you can regenerate and resubmit your report as many times as you wish before the deadline, if you need to make additional edits to your report. The most recently submitted PDF is used for evaluation.</li>
-                        <li>Download the PDF which will be used for evaluation; To verify that the correct PDF will be used for evaluation, you can download the submitted PDF.</li>
+                To submit your report, follow the following steps:
+                <ol>
+                  <li><b>Generate a new report for submission:</b> This step will generate two PDF documents on the Forum:</li>
+                  <ol>
+                    <li>the "Project Report PDF" is the document that will be forwarded to the RMC, and</li>
+                    <li>the "Project Comments PDF" includes all the co-PLs comments regarding the project NIs.</li>
+                  </ol>
+                  <p></p>
+                  <li><b>Download the PDFs for reviewing:</b> The most recently generated PDF report will be downloaded to your local machine for your records.</li>
+                  <p></p>
+                  <li><b>Submit the report for evaluation:</b> This step indicates that you have read and that you approve the contents of the PDF document to be forwarded to the RMC.   <p>
+                Please note:
+                  <ul>
+                    <li>If you need to make a correction to your report that is already submitted, you can generate and submit again.</li>
+                    <li>The most recently submitted pdf is used for evaluation.</li>
+                    <li>If no pdf has been submitted, then the most recently generated pdf will be used for evaluation instead.</li>
+                    <li>If you encounter any issues, please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a></li>
+                  </ul>
+                  <p></p>
+                  <li><b>Download the PDF which will be used for evaluation:</b>
+                  To verify that the correct PDF documents will be used for evaluation, you can download the submitted PDFs.
+                </li>
+                </ol>
             ]]>
         </Instructions>
         <ReportItem id="my_progress_head" type="ProgressReportItem" reportType="ProjectReport">
