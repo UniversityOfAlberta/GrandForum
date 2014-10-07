@@ -1,6 +1,14 @@
 <?php
 
-class ProjectGoalsReportItem extends AbstractReportItem {
+class ProjectGoalsReportItem extends ReportItemSet {
+    // Even though this is a subclass to ReportItemSet, 
+    // it should actually be treated as a ReportItem as that is how it behaves.
+    // I went with ReportItemSet because it made it much easier to do the char limits
+    // for the progress status.
+    
+    function getData(){
+    
+    }
     
     function render(){
         global $wgOut;
@@ -306,8 +314,38 @@ EOF
         return array();
     }
     
-    function getNFields(){
-        return 0;
+    function getNTextareas(){
+        $project = Project::newFromId($this->projectId);
+        $year = $this->getAttr("year", REPORTING_YEAR);
+        $milestones = $project->getGoalsDuring($year);
+        $factor = ($year > REPORTING_YEAR) ? 2 : 3;
+        return count($milestones)*$factor;
+    }
+    
+    function getExceedingFields(){
+        $project = Project::newFromId($this->projectId);
+        $year = $this->getAttr("year", REPORTING_YEAR);
+        $milestones = $project->getGoalsDuring($year);
+        $nOver = 0;
+        foreach($milestones as $milestone){
+            $problem = $milestone->getProblem();
+            $description = $milestone->getDescription();
+            $assessment = ($year > REPORTING_YEAR) ? "" : $milestone->getAssessment();
+            if(strlen($problem) > 300){
+                $nOver++;
+            }
+            if(strlen($description) > 300){
+                $nOver++;
+            }
+            if(strlen($assessment) > 500){
+                $nOver++;
+            }
+        }
+        return $nOver;
+    }
+    
+    function getLimit(){
+        return 1;
     }
         
 }

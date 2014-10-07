@@ -153,7 +153,6 @@ EOF;
 
 	function getNComplete(){
         $opt = $this->getAttr('optional', '0');
-
         if($opt == '1'){
             return 0;
         }
