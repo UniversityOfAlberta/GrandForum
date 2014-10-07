@@ -96,7 +96,7 @@ class ProjectTopProductsReportItem extends StaticReportItem {
             $('button[name=submit]').click(function(){
                 $('button[name=submit]').prop('disabled', true);
                 needsOpening = true;
-                $('#ProjectDashboard').click();
+                $('#Dashboard').click();
             });
             if(typeof(needsOpening) != 'undefined' && needsOpening){
                 _.delay(function(){

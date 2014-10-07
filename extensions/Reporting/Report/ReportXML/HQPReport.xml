@@ -8,7 +8,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="dashboard" name="Dashboard" tooltip="Overview of this year's activity and productivity" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
+    <ReportSection id="dashboard" name="Dashboard" tooltip="Overview of this year's activity and productivity" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="true">
         <Instructions>
             <![CDATA[
                 <p>The Dashboard is designed to provide an overview of an HQP's activity in GRAND. The data reported in the dashboard has already been input to the Forum through the various functionalities of the "Toolbox".</p>
@@ -33,9 +33,16 @@
             </div>
         ]]>
         </ReportItem>
-        <ReportItem id="ni_dashboard" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE">
-            <![CDATA[<div style='max-width:900px;'>If there is an error in any of the information reported in the dashboard, please edit the corresponding element through the appropriate tool. If the error is in a system-controlled field, please contact <a href='mailto:support@forum.grand-nce.ca'>support</a>.</div><div>{$item}</div>]]>
-        </ReportItem>
+        <ReportItemSet id='top_prods_head' type="ToggleHeaderReportItemSet" level="3" title="Top 3 Research Outcomes (in GRAND)">
+            <ReportItem id="top_prods" type="PersonTopProductsReportItem" max="3">
+                <![CDATA[<div>{$item}</div><br />]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id='hqp_dashboard_productivity_head' type="ToggleHeaderReportItemSet" level="3" title="Productivity Dashboard">
+            <ReportItem id="hqp_dashboard" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE">
+                <![CDATA[<div style='max-width:900px;'>If there is an error in any of the information reported in the dashboard, please edit the corresponding element through the appropriate tool. If the error is in a system-controlled field, please contact <a href='mailto:support@forum.grand-nce.ca'>support</a>.</div><div>{$item}</div>]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="report" name="Report" tooltip="Open-ended report narratives" blobSection="HQP_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" number="1">
         <Instructions>

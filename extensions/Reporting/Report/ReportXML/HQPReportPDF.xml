@@ -25,7 +25,7 @@
             <![CDATA[</table></div></div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="HQP Dashboard" type="HeaderReportSection" blobSection="HQP_MILESTONES" renderpdf="true" pagebreak="true">
+    <ReportSection name="Header" type="HeaderReportSection" blobSection="HQP_MILESTONES" renderpdf="true" pagebreak="false">
         <ReportItem id="basic_info" type="StaticReportItem">
         <![CDATA[
             <div class='basic_info' style='margin-bottom:20px;'>
@@ -75,11 +75,25 @@
             <![CDATA[<tr><td align='right'><b>Involved Until:</b>&nbsp;</td><td>{$item}</td></tr>
             </table></td></tr></table></div>]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="dashboard" name="Dashboard" type="ReportSection" pagebreak="false">
         <ReportItem id="hqp_dashboard_bookmark" type="BookmarkReportItem" text="HQP Dashboard">
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
         <ReportItem id="hqp_dashboard" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" details="false" table="true">
             <![CDATA[</p></div><div>{$item}</div>]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="top_products" name="Top 3 Research Outcomes (in GRAND)" subBookmark="true" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" pagebreak="true">
+        <ReportItem id="legend" type="StaticReportItem">
+            <![CDATA[
+                <div style='text-align:right;'>
+                    Legend: <b>NI</b>, <b><u>HQP</u></b>, <b><i>Other GRAND Personnel</i></b>, External<br /><br />
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="top_prods" type="PersonTopProductsReportItem" max="3">
+            <![CDATA[<small>The following are the cumulative top 3 research outcomes.</small>{$item}]]>
         </ReportItem>
     </ReportSection>
     <ReportSection name="Report" blobSection="HQP_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">

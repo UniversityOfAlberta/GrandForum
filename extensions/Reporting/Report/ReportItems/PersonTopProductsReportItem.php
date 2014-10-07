@@ -54,8 +54,9 @@ class PersonTopProductsReportItem extends AbstractReportItem {
     
     function renderWidget(){
         $person = Person::newFromId($this->personId);
+        $max = $this->getAttr("max", 5);
         $tab = new PersonDashboardTab($person, array('isMe' => true));
-        $tab->showEditTopProducts($person, array('isMe' => true));
+        $tab->showEditTopProducts($person, array('isMe' => true), $max);
         
         $html = "<div id='top_widget' style='display:none;' title='Edit Top Research Outcomes'>";
         $html .= $tab->html;
@@ -96,7 +97,7 @@ class PersonTopProductsReportItem extends AbstractReportItem {
             $('button[name=submit]').click(function(){
                 $('button[name=submit]').prop('disabled', true);
                 needsOpening = true;
-                $('#NIDashboard').click();
+                $('#Dashboard').click();
             });
             if(typeof(needsOpening) != 'undefined' && needsOpening){
                 $('.toggleHeader').first().click();

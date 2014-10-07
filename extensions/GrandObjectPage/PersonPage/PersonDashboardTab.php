@@ -38,13 +38,21 @@ class PersonDashboardTab extends AbstractEditableTab {
     }
 
     function generateBody(){
-        $this->showTopProducts($this->person, $this->visibility);
+        $amount = 3;
+        if($this->person->isRoleAtLeast(CNI)){
+            $amount = 5;
+        }
+        $this->showTopProducts($this->person, $this->visibility, $amount);
         $this->showDashboard($this->person, $this->visibility);
         return $this->html;
     }
     
     function generateEditBody(){
-        $this->showEditTopProducts($this->person, $this->visibility);
+        $amount = 3;
+        if($this->person->isRoleAtLeast(CNI)){
+            $amount = 5;
+        }
+        $this->showEditTopProducts($this->person, $this->visibility, $amount);
         $this->showDashboard($this->person, $this->visibility);
         $this->html .= "<script type='text/javascript'>
             _.defer(function(){
@@ -106,23 +114,26 @@ class PersonDashboardTab extends AbstractEditableTab {
         return $html;
     }
     
-    function showEditTopProducts($person, $visibility){
+    function showEditTopProducts($person, $visibility, $max=5){
         $this->html .= "<h2>Top Research Outcomes</h2>";
-        $this->html .= "<small>Select up to 5 research outcomes that you believe showcase your productivity the greatest.  The order that you specify them in does not matter.  The products will be sorted in descending order by date.  These top products will be shown in your annual report.</small><br />";
+        $this->html .= "<small>Select up to {$max} research outcomes that you believe showcase your productivity the greatest.  The order that you specify them in does not matter.  The products will be sorted in descending order by date.  These top products will be shown in your annual report.</small><br />";
         $products = $person->getTopProducts();
         $i = 0;
         foreach($products as $product){
+            if($i == $max){
+                break;
+            }
             $this->html .= $this->selectList($person, $product->getId());
             $i++;
         }
-        for($i; $i < 5; $i++){
+        for($i; $i < $max; $i++){
             $this->html .= $this->selectList($person, "");
         }
         $this->html .= "<br /><button type='submit' value='Save Dashboard' name='submit'>Save Top Research Outcomes</button>
                         <input type='submit' value='Cancel' name='submit' />";
     }
     
-    function showTopProducts($person, $visibility){
+    function showTopProducts($person, $visibility, $max=5){
         $products = $person->getTopProducts();
         if(!$visibility['isMe'] && count($products) == 0){
             return;
@@ -136,7 +147,11 @@ class PersonDashboardTab extends AbstractEditableTab {
                                     <td align='center'><b>Category</b></td>
                                     <td align='center'><b>Product</b></td>
                                 </th>";
+            $i = 0;
             foreach($products as $product){
+                if($i == $max){
+                    break;
+                }
                 $year = substr($product->getDate(), 0, 4);
                 if($year == "0000"){
                     $year = "";
@@ -149,6 +164,7 @@ class PersonDashboardTab extends AbstractEditableTab {
                                     <td>{$product->getCategory()}</td>
                                     <td>{$product->getProperCitation()}</td>
                                 </tr>";
+                $i++;
             }
             $this->html .= "</table><i>Last updated on: $date</i><br />";
         }
