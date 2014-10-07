@@ -300,8 +300,10 @@ abstract class AbstractReport extends SpecialPage {
                 foreach($this->pdfFiles as $file){
                     if($this->pdfAllProjects){
                         foreach($this->person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
-                            $report = new DummyReport($file, $this->person, $project, $this->year);
-                            $report->submitReport();
+                            if(!$project->isSubProject()){
+                                $report = new DummyReport($file, $this->person, $project, $this->year);
+                                $report->submitReport();
+                            }
                         }
                     }
                     $report = new DummyReport($file, $this->person, $this->project, $this->year);
@@ -745,22 +747,24 @@ abstract class AbstractReport extends SpecialPage {
         $preview = isset($_GET['preview']);
         if($this->pdfAllProjects && !$preview){
             foreach($this->person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
-                foreach($this->pdfFiles as $pdfFile){
-                    set_time_limit(120); // Renew the execution timer
-                    $wgOut->clearHTML();
-                    $report = new DummyReport($pdfFile, $this->person, $project, $this->year);
-                    $report->renderForPDF();
-                    $data = "";
-                    $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, null, false);
-                    $sto = new ReportStorage($this->person);
-                    $sto->store_report($data, $pdf['html'], $pdf['pdf'], 0, 0, $report->pdfType, $this->year);
-                    if($project != null){
-                        $ind = new ReportIndex($this->person);
-                        $rid = $sto->metadata('report_id');
-                        $ind->insert_report($rid, $report->project);
-                    }
-                    if($submit){
-                        $report->submitReport($person);
+                if(!$project->isSubProject()){
+                    foreach($this->pdfFiles as $pdfFile){
+                        set_time_limit(120); // Renew the execution timer
+                        $wgOut->clearHTML();
+                        $report = new DummyReport($pdfFile, $this->person, $project, $this->year);
+                        $report->renderForPDF();
+                        $data = "";
+                        $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, null, false);
+                        $sto = new ReportStorage($this->person);
+                        $sto->store_report($data, $pdf['html'], $pdf['pdf'], 0, 0, $report->pdfType, $this->year);
+                        if($project != null){
+                            $ind = new ReportIndex($this->person);
+                            $rid = $sto->metadata('report_id');
+                            $ind->insert_report($rid, $report->project);
+                        }
+                        if($submit){
+                            $report->submitReport($person);
+                        }
                     }
                 }
             }
