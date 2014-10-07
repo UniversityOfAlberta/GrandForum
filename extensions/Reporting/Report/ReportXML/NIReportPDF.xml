@@ -112,7 +112,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection type="BookmarkReportSection" name="Section 2" />
-    <ReportSection name="Budget Request" title="Budget" blobSection="RES_BUDGET" subBookmark="true" type="EditableReportSection" autosave="true" renderpdf="true" private="true">
+    <ReportSection name="Budget" title="Budget" blobSection="RES_BUDGET" subBookmark="true" type="EditableReportSection" autosave="true" renderpdf="true" private="true">
         <ReportItem id="budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="BudgetReportItem" />
         <ReportItem id="budget_just" rows="10" limit="600" blobType="BLOB_TEXT" blobItem="RES_BUD_JUSTIF" type="TextareaReportItem">
             <![CDATA[<h3>Budget Justification</h3> {$item}]]>

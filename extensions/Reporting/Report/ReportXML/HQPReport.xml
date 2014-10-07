@@ -8,7 +8,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="dashboard" name="HQP Dashboard" tooltip="Overview of this year's activity and productivity" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
+    <ReportSection id="dashboard" name="Dashboard" tooltip="Overview of this year's activity and productivity" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
         <Instructions>
             <![CDATA[
                 <p>The Dashboard is designed to provide an overview of an HQP's activity in GRAND. The data reported in the dashboard has already been input to the Forum through the various functionalities of the "Toolbox".</p>
@@ -20,15 +20,6 @@
 </ol>   
             ]]>
         </Instructions>
-        <ReportItem id="my_progress_head" type="StaticReportItem">
-            <![CDATA[<table style='float:right;width:375px;' cellpadding="1" frame="box" rules="all">]]>
-        </ReportItem>
-        <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="HQPReport">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="my_progress_head" type="ProgressReportItem" reportType="HQPReport">
-            <![CDATA[{$item}</table>]]>
-        </ReportItem>
         <ReportItem id="basic_info" type="StaticReportItem">
         <![CDATA[
             <div class='basic_info' style='margin-bottom:20px;'>
@@ -46,7 +37,7 @@
             <![CDATA[<div style='max-width:900px;'>If there is an error in any of the information reported in the dashboard, please edit the corresponding element through the appropriate tool. If the error is in a system-controlled field, please contact <a href='mailto:support@forum.grand-nce.ca'>support</a>.</div><div>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="report" name="HQP Report" tooltip="Open-ended report narratives" blobSection="HQP_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" number="1">
+    <ReportSection id="report" name="Report" tooltip="Open-ended report narratives" blobSection="HQP_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" number="1">
         <Instructions>
             <![CDATA[
                 <p style="font-weight: bold; font-style: italic;">*NOTE: Clicking on the bold blue headings will cause the page to expand (contract) to show (hide) text boxes in which you can provide your information.</p>
@@ -128,13 +119,13 @@ Briefly describe your interactions (if any) with receptors, companies, Project C
     </ReportSection>
     <ReportSection id="submit" name="Submit" tooltip="PDF generation and submission to the Supervisor" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
         <ReportItem id="my_progress_head" type="StaticReportItem">
-            <![CDATA[<h3>HQP Progress</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">]]>
+            <![CDATA[<div style='display:none;'><h3>HQP Progress</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">]]>
         </ReportItem>
         <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="HQPReport">
             <![CDATA[{$item}]]>
         </ReportItem>
         <ReportItem id="my_progress_head" type="ProgressReportItem" reportType="HQPReport">
-            <![CDATA[{$item}</table>]]>
+            <![CDATA[{$item}</table></div>]]>
         </ReportItem>
         <Instructions>
             <![CDATA[

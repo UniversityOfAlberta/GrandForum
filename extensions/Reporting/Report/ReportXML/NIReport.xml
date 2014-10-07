@@ -18,7 +18,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="status" name="Report Completion Status" tooltip="Evaluation of your report against the reporting rules" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
+    <ReportSection id="status" name="Completion Status" tooltip="Evaluation of your report against the reporting rules" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
         <Instructions>
             <![CDATA[
                 <p>This year's reporting is similar to last year's with a few changes due to the fact that, effective April 1st 2014, GRAND is entering Phase2</p>
@@ -82,7 +82,7 @@
             <![CDATA[</table>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="dashboard" name="NI Dashboard" tooltip="Overview of this year's activity and productivity" blobSection="SEC_NONE" type="EditableReportSection" autosave="true" renderpdf="true">
+    <ReportSection id="dashboard" name="Dashboard" tooltip="Overview of this year's activity and productivity" blobSection="SEC_NONE" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
                 <p>The Dashboard is designed to provide an overview of a researcher's activity in GRAND, both within the context of specific projects (each represented by a row in the Dashboard table) and overall (reflected in the final "Totals" row of the table). The data reported in the dashboard has already been input to the Forum through the various functionalities of the "Toolbox".</p>
@@ -148,7 +148,7 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="report" name="NI Report" tooltip="Open-ended report narratives" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
+    <ReportSection id="report" name="Report" tooltip="Open-ended report narratives" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
                 <p>The intent of this section is to enable each NI report in an open-ended format on his/her activities and accomplishments during the term of the report.</p>
@@ -416,7 +416,7 @@ Describe your involvement with receptor organizations, industry partners and Pro
             </ReportItem>
         </ReportItemSet-->
     </ReportSection>
-    <ReportSection id="budget" name="Budget Request" blobSection="RES_BUDGET" tooltip="Budget request and justification" type="EditableReportSection" autosave="true" renderpdf="true" private="true">
+    <ReportSection id="budget" name="Budget" blobSection="RES_BUDGET" tooltip="Budget request and justification" type="EditableReportSection" autosave="true" renderpdf="true" private="true">
         <Instructions>
             <![CDATA[
                 <p>Below find a budget template, which you should download, complete with your funding request for 2014-15 and upload. As with the past year, the amounts you will be allocating to different projects should be listed in different columns.</p>
@@ -468,7 +468,7 @@ Note that there are two distinct differences between the online document that yo
             ]]>
         </Instructions>
         <ReportItem id="my_progress_head" type="StaticReportItem" reportType="NIReport">
-            <![CDATA[<h3>Report Completion Status</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">]]>
+            <![CDATA[<div style='display:none;'><h3>Completion Status</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">]]>
         </ReportItem>
         <ReportItem id="ni_progress_head" type="ProgressReportItem" reportType="NIReport">
             <![CDATA[{$item}]]>
@@ -477,7 +477,7 @@ Note that there are two distinct differences between the online document that yo
             <![CDATA[{$item}]]>
         </ReportItem>
         <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="NIReport">
-            <![CDATA[{$item}</table>]]>
+            <![CDATA[{$item}</table></div>]]>
         </ReportItem>
         <ReportItem id="review" type="ReviewSubmitReportItem" />
     </ReportSection>

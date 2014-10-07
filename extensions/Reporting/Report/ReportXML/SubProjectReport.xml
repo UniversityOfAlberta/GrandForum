@@ -64,18 +64,6 @@ Note that there are two distinct differences between the online document that yo
                     <p><b>Note: All your PLs have access to your on-line project-specific dashboard rows; your executive summary; your project-specific comments under criteria A B C and D; and your project-specific milestone comments.</b></p>
             ]]>
         </Instructions>
-        <ReportItem id="my_progress_head" type="StaticReportItem" reportType="NIReport">
-            <![CDATA[<h3>Report Completion Status</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">]]>
-        </ReportItem>
-        <ReportItem id="ni_progress_head" type="ProgressReportItem" reportType="NIReport">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="my_hqp_progress_head" type="SupervisorProgressReportItem">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-        <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="NIReport">
-            <![CDATA[{$item}</table>]]>
-        </ReportItem>
         <ReportItem id="review" type="ReviewSubmitReportItem" />
     </ReportSection>
 </Report>

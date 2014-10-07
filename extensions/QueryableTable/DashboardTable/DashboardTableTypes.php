@@ -121,10 +121,9 @@ $dashboardStructures[NI_PUBLIC_PROFILE_STRUCTURE] =
     );
     
 $dashboardStructures[NI_PRIVATE_PROFILE_STRUCTURE] =
-    array(array(HEAD."(Projects)", HEAD."(Sponsors)", HEAD."(HQP)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Multimedia)", HEAD."(Contributions)"),
-    array(HEAD.'(Total:)', PERSON_PARTNERS, PERSON_HQP, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS, PERSON_MULTIMEDIA, PERSON_CONTRIBUTIONS),
+    array(array(HEAD."(Projects)", HEAD."(HQP)", HEAD."(Publications, PB: Published)", HEAD."(Artifacts, PR: Peer Reviewed)", HEAD."(Activities)", HEAD."(Presentations)", HEAD."(Press)", HEAD."(Awards)", HEAD."(Multimedia)", HEAD."(Contributions)"),
+    array(HEAD.'(Total:)', PERSON_HQP, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS, PERSON_MULTIMEDIA, PERSON_CONTRIBUTIONS),
           STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY) => array(PERSON_PROJECTS,
-                                                          PERSON_PARTNERS, 
                                                           PERSON_HQP, 
                                                           PERSON_PUBLICATIONS, 
                                                           PERSON_ARTIFACTS, 
@@ -134,7 +133,7 @@ $dashboardStructures[NI_PRIVATE_PROFILE_STRUCTURE] =
                                                           PERSON_AWARDS,
                                                           PERSON_MULTIMEDIA,
                                                           PERSON_CONTRIBUTIONS),
-          array(HEAD.'(Total:)', PERSON_PARTNERS, PERSON_HQP, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS, PERSON_MULTIMEDIA, PERSON_CONTRIBUTIONS)
+          array(HEAD.'(Total:)', PERSON_HQP, PERSON_PUBLICATIONS, PERSON_ARTIFACTS, PERSON_ACTIVITIES, PERSON_PRESENTATIONS, PERSON_PRESS, PERSON_AWARDS, PERSON_MULTIMEDIA, PERSON_CONTRIBUTIONS)
     );
     
 $dashboardStructures[HQP_PUBLIC_PROFILE_STRUCTURE] =

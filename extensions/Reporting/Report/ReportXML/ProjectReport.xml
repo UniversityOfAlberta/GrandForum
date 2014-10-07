@@ -33,7 +33,7 @@
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
-    <ReportSection id="status" tooltip="Evaluation of the project report against the reporting rules" name="Report Completion Status" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <ReportSection id="status" tooltip="Evaluation of the project report against the reporting rules" name="Completion Status" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
                 <p>At this point, the PLs of Phase2 projects should add NIs to their projects (using the "Edit Member" tool).  As soon as you add a new NI to your project, and after the request has been approved by Central, this person will be listed among your project NIs and will have your project in their list of projects.  This will create a textbox in the "plans forward" part of their NI report and will also allow them to request funds in their budget for this project.  NI budget requests can now be uploaded.</p>
@@ -133,7 +133,7 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="dashboard" tooltip="Overview of this year's activity and productivity" name="Project Dashboard" blobSection="SEC_NONE" type="EditableReportSection" autosave="true" renderpdf="true">
+    <ReportSection id="dashboard" tooltip="Overview of this year's activity and productivity" name="Dashboard" blobSection="SEC_NONE" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
                 <p>The Dashboard is designed to provide an overview of all project-related activity in GRAND, by all project NIs (each represented by a row in the Dashboard table) and overall (reflected in the final "Totals" row of the table). The data reported in the dashboard has already been input to the Forum through the various functionalities of the "Toolbox".</p>
@@ -162,7 +162,7 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="budget" tooltip="Budget-request roll-up and justification" name="Project Budget Request" blobSection="LDR_BUDGET" type="EditableReportSection" autosave="true" renderpdf="true">
+    <ReportSection id="budget" tooltip="Budget-request roll-up and justification" name="Budget" blobSection="LDR_BUDGET" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
                 <p>This section includes a roll-up of the Budget Requests for this project from each of the listed project PNIs and CNIs. Under "Budget Justification", there is a text field to allow for a brief comment on the overall budget request for this project.</p>
@@ -179,7 +179,7 @@
             <![CDATA[<h2>Individual NI Budgets</h2>{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="report" tooltip="Open-ended report narratives" name="Project Report" blobSection="LDR_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
+    <ReportSection id="report" tooltip="Open-ended report narratives" name="Report" blobSection="LDR_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
                 <p>The intent of this section is to enable the project PLs and co-PLs to report in an executive summary an overview of the project activity for the next year and their reflections on:</p>
@@ -277,7 +277,7 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="subprojects" tooltip="Discussion of progress against Sub-Projects" name="Sub Projects" blobSection="LDR_MILESTONE" type="ReportSection" renderpdf="true" reportCharLimits="false">
+    <ReportSection id="subprojects" tooltip="Discussion of progress against Sub-Projects" name="Sub-Projects" blobSection="LDR_MILESTONE" type="ReportSection" renderpdf="true" reportCharLimits="false">
         <Instructions>
             <![CDATA[
                 This section shows the comments made by the sub-project leaders.
@@ -302,7 +302,7 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="comments" tooltip="Comments on NI contributions to the project" name="Comments" blobSection="LDR_NICOMMENTS" type="EditableReportSection" autosave="true" renderpdf="false" reportCharLimits="false">
+    <ReportSection id="comments" tooltip="Comments on NI contributions to the project" name="NI Comments" blobSection="LDR_NICOMMENTS" type="EditableReportSection" autosave="true" renderpdf="false" reportCharLimits="false">
         <Instructions>
             <![CDATA[
                 <p>In this section, the project co-PLs provide comments on the contributions of individual NIs who are involved in the project. Clicking on the name of the researcher will open a text box. These comments are not reviewed by the RMC as part of the Project Report, however the comments here will be included as part of the Individual Network-Investigator Reports as part of the evaluation of individual researchers.</p>
@@ -339,7 +339,7 @@
             ]]>
         </Instructions>
         <ReportItem id="my_progress_head" type="ProgressReportItem" reportType="ProjectReport">
-            <![CDATA[<h3>Report Completion Status</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">{$item}]]>
+            <![CDATA[<div style='display:none;'><h3>Completion Status</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">{$item}]]>
         </ReportItem>
         <ReportItem id="subproject_progress" type="SubProjectProgressReportItem">
             <![CDATA[{$item}]]>
@@ -351,7 +351,7 @@
             <![CDATA[{$item}]]>
         </ReportItem>
         <ReportItem id="report_pni_progress" type="ProjectNIProgressReportItem">
-            <![CDATA[{$item}</table>]]>
+            <![CDATA[{$item}</table></div>]]>
         </ReportItem>
         <ReportItem id="review" type="ReviewSubmitReportItem" />
     </ReportSection>

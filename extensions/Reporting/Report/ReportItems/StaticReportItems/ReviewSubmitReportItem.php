@@ -193,7 +193,7 @@ EOF;
 			    $subm = "Submitted";
 		    }
 		    else {
-			    $subm = "Incomplete";
+			    $subm = "Not Submitted";
 		    }
 
 		    if($tok === false){
@@ -272,7 +272,7 @@ EOF;
 			    $subm = "Submitted";
 		    }
 		    else {
-			    $subm = "Incomplete";
+			    $subm = "Not Submitted";
 		    }
 
 		    if($tok === false){

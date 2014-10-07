@@ -82,7 +82,7 @@
             <![CDATA[</p></div><div>{$item}</div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="HQP Report" blobSection="HQP_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
+    <ReportSection name="Report" blobSection="HQP_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
     <!-- Ia. Excellence of the Research Program -->
         <ReportItem id='Ic_head' type="StaticReportItem">
             <![CDATA[<h2>Excellence of the Research Program: How my research contributes to the Network</h2>]]>
