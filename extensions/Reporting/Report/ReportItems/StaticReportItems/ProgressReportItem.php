@@ -80,7 +80,7 @@ class ProgressReportItem extends StaticReportItem {
         }
         else if($showCompleted == "true"){
             $details = "<tr valign='top'><td rowspan='1' style='white-space:nowrap;width:1%;'><b>Report Status</b></td>";
-            $details .= "<td><span class='inlineSuccess'>Report Completed</span>\n</td></tr>";
+            $details .= "<td><span class='inlineSuccess'>All narative sections of the report have text and do not exceed character limits</span>\n</td></tr>";
         }
         return $details;
 	}
