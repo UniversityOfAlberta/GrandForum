@@ -30,24 +30,6 @@ class NIProgressReportItem extends StaticReportItem {
         else{
             $projects = $person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
         }
-		
-		$nMilestones = 0;
-		$nComplete = 0;
-		$nInvolved = 0;
-		$nNotInvolved = 0;
-		$nNotMentioned = 0;
-		$nProjects = count($projects);
-		$data = array();
-		
-        foreach($projects as $proj){
-            $results = $this->findMilestones($proj, $report);
-            $nComplete += $results['nComplete'];
-            $nMilestones += $results['nMilestones'];
-            $nInvolved += $results['nInvolved'];
-            $nNotInvolved += $results['nNotInvolved'];
-            $nNotMentioned += $results['nNotMentioned'];
-            $data[$proj->getName()] = $results;
-        }
         
         $errorMsg = "";
         $rowspan = 0;
@@ -112,82 +94,10 @@ class NIProgressReportItem extends StaticReportItem {
         }
         
         $details = "";
-        $milestoneProjects = array();
-        foreach($projects as $project){
-            if($project->getCreated() < REPORTING_NCE_START){
-                $milestoneProjects[] = $project;
-            }
-        }
-        $rowspan = count($milestoneProjects) + 1;
-        if($rowspan > 1){
-            $details .= "<tr><td valign='top' rowspan='1'><b>Milestones</b></td><td style='padding:0;'>";
-            $details .= "<table cellpadding='1' frame='void' rules='all' width='100%'><tr><td><b>Projects</b></td><td><b>Working On</b></td><td><b>Comments On</b></td><td><b>NOT Involved</b></td><td><b>No Indication</b>\n</td></tr>";
-            foreach($milestoneProjects as $proj){
-                $results = $data[$proj->getName()];
-                $notMentionedErrorStart = "";
-                $notMentionedErrorEnd = "";
-                if($results['nNotMentioned'] > 0){
-                    $notMentionedErrorStart = "<span class='inlineError'>";
-                    $notMentionedErrorEnd = "</span>";
-                }
-                $details .= "<tr><td>{$proj->getName()}</td><td>{$results['nInvolved']} of {$results['nMilestones']}</td><td>{$results['nCommented']} of {$results['nMilestones']}</td><td>{$results['nNotInvolved']} of {$results['nMilestones']}</td><td>{$notMentionedErrorStart}{$results['nNotMentioned']} of {$results['nMilestones']}{$notMentionedErrorEnd}\n</td></tr>";
-            }
-            $details .= "</table>";
-        }
+        
         $details .= "$errorMsg</td></tr>";
         return $details;
 	}
-	
-	function findMilestones($project, $report){
-	    $reportType = $this->getAttr('reportType', 'NIReport');
-	    foreach($report->sections as $section){
-	        if(($section->sec == RES_MILESTONES && ($reportType == "NIReport")) ||
-	           ($section->sec == HQP_MILESTONES && ($reportType == "HQPReport"))){
-	            foreach($section->items as $item){
-	                if($item->id == "projects"){
-	                    foreach($item->items as $milestoneItem){
-	                        if($milestoneItem->projectId == $project->getId() && $milestoneItem->id == "project_head"){
-	                            foreach($milestoneItem->items as $toggleItem){
-	                                if($toggleItem->id == "milestones"){
-	                                    return array('nComplete' => $toggleItem->getNMilestonesComplete(),
-	                                                 'nCommented' => $toggleItem->getNMilestonesCommented(),
-	                                                 'nInvolved' => $toggleItem->getNMilestonesInvolved(),
-	                                                 'nNotInvolved' => $toggleItem->getNMilestonesNotInvolved(),
-	                                                 'nNotMentioned' => $toggleItem->getNMilestonesNotMentioned(),
-	                                                 'nMilestones' => count($toggleItem->getData()));
-	                                }
-	                            }
-	                        }
-	                    }
-	                }
-	            }
-	        }
-	    }
-	    return array('nComplete' => 0,
-	                 'nMilestones' => 0,
-	                 'nCommented' => 0,
-	                 'nInvolved' => 0,
-	                 'nNotInvolved' => 0,
-	                 'nNotMentioned' => 0,
-	                 'nMilestones' => 0);
-	}
-	/*
-	function findBudget($report){
-	    $reportType = $this->getAttr('reportType', 'NIReport');
-	    foreach($report->sections as $section){
-	        if($section->sec == RES_BUDGET){
-	            foreach($section->items as $item){
-	                if($item->id == "budget"){
-	                    if($item->getBlobValue() != ""){
-                            return new Budget("XLS", REPORT2_STRUCTURE, $item->getBlobValue());
-                        }
-                        return null;
-	                }
-	            }
-	        }
-	    }
-	}
-	*/
 }
 
 ?>

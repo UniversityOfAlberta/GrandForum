@@ -392,7 +392,7 @@ EOF;
             }
             
             #pdfBody .logo_div {
-                margin-bottom: 0;
+                margin-bottom: ".DPI_CONSTANT."px;
                 height: ".(($fontSize+4)*$nInfo + (20*DPI_CONSTANT))."px;
             }
             

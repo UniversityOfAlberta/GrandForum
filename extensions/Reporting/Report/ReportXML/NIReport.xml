@@ -58,6 +58,9 @@
         <ReportItem id="ni_progress_head" type="ProgressReportItem" reportType="NIReport">
             <![CDATA[{$item}]]>
         </ReportItem>
+        <ReportItem id="ni_progress_head2" type="NIProgressReportItem" reportType="NIReport">
+            <![CDATA[{$item}]]>
+        </ReportItem>
         <ReportItem id="my_hqp_progress_head" type="SupervisorProgressReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
@@ -562,6 +565,9 @@
             <![CDATA[<div style='display:none;'><h3>Completion Status</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">]]>
         </ReportItem>
         <ReportItem id="ni_progress_head" type="ProgressReportItem" reportType="NIReport">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+        <ReportItem id="ni_progress_head2" type="NIProgressReportItem" reportType="NIReport">
             <![CDATA[{$item}]]>
         </ReportItem>
         <ReportItem id="my_hqp_progress_head" type="SupervisorProgressReportItem">

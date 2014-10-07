@@ -18,6 +18,9 @@
         <ReportItem id="ni_progress_head" type="ProgressReportItem" reportType="NIReport" private="true">
             <![CDATA[{$item}]]>
         </ReportItem>
+        <ReportItem id="ni_progress_head2" type="NIProgressReportItem" reportType="NIReport">
+            <![CDATA[{$item}]]>
+        </ReportItem>
         <ReportItem id="my_hqp_progress_head" type="SupervisorProgressReportItem" private="true">
             <![CDATA[{$item}]]>
         </ReportItem>

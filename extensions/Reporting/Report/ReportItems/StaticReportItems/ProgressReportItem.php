@@ -20,6 +20,7 @@ class ProgressReportItem extends StaticReportItem {
 	
 	function getTableHTML(){
 	    $reportType = $this->getAttr('reportType', 'HQPReport');
+	    $showCompleted = strtolower($this->getAttr('showCompleted', "true"));
         $person = Person::newFromId($this->personId);
         $project = $this->getReport()->project;
         $report = new DummyReport($reportType, $person, $project);
@@ -76,6 +77,10 @@ class ProgressReportItem extends StaticReportItem {
                 //$details .= "<tr><td>≈$percentChars% of maximum allowable characters (overall)\n</td></tr>";
             }
             $details .= implode("</tr><tr>", $errorChars)."</tr>";
+        }
+        else if($showCompleted == "true"){
+            $details = "<tr valign='top'><td rowspan='1' style='white-space:nowrap;width:1%;'><b>Report Status</b></td>";
+            $details .= "<td><span class='inlineSuccess'>Report Completed</span>\n</td></tr>";
         }
         return $details;
 	}
