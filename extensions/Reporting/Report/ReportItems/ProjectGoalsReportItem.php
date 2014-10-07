@@ -51,7 +51,7 @@ class ProjectGoalsReportItem extends AbstractReportItem {
         $("#title", template).val(title);
         $("#new_title", template).val(title);
         if(status == 'Current' ||
-           status == 'Closed' ||
+           status == 'Completed' ||
            status == 'Abandoned'){
             $("#status", template).val(status);
         }
@@ -169,7 +169,7 @@ EOF
                             <td width='1%'><b>Title:</b></td><td><input id='new_title' type='text' name='{$this->getPostId()}_new_title[]' style='width:97%;' /></td>
                             <td width='50%'><b>Status:</b>&nbsp;<select id='status' style='vertical-align: middle;' name='{$this->getPostId()}_status[]'>
                                     <option selected>Current</option>
-                                    <option>Closed</option>
+                                    <option>Completed</option>
                                     <option>Abandoned</option>
                                 </select>
                             </td>
