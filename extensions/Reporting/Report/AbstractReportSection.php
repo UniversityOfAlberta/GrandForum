@@ -350,8 +350,11 @@ abstract class AbstractReportSection {
         $projectName = "";
         $phase = "";
         $number = "";
+        if($this->getParent()->person != null && $this->getParent()->person->getId() != 0){
+            $projectName .= ": ".$this->getParent()->person->getNameForForms();
+        }
         if($this->getParent()->project != null){
-            $projectName = ": ".$this->getParent()->project->getName();
+            $projectName .= ": ".$this->getParent()->project->getName();
             if($this->getParent()->project->isSubProject()){
                 $phase = " ({$this->getParent()->project->getParent()->getName()}";
             }
