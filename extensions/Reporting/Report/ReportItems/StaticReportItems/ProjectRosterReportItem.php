@@ -13,15 +13,21 @@ class ProjectRosterReportItem extends StaticReportItem {
         foreach($subs as $sub){
             $dashboard1 = new DashboardTable(PROJECT_CHAMP_ROSTER_STRUCTURE, $sub);
             $dashboard2 = new DashboardTable(PROJECT_NI_ROSTER_STRUCTURE, $sub);
+            if($sub->getLeader() == null){
+                $head = $dashboard2->copy()->where(HEAD);
+                $dashboard2->filter(HEAD);
+                $blankDash = new DashboardTable(array(array(BLANK, BLANK)),
+                                                array(array(new BlankCell(BLANK, "", "", "", "", ""), new BlankCell(BLANK, "", "", "", "", ""))),
+                                                null);
+                $dashboard2 = DashboardTable::union_tables(array($head, $blankDash, $dashboard2));
+            }
             $joined = $dashboard1->join($dashboard2->copy(), true);
             $header = $joined->copy()->where(HEAD);
             $joined->filter(HEAD);
             $dashboards[] = $joined;
-            if($sub->getLeader() != null){
-                $joined->xls[1][0]->span = 2;
-                $joined->xls[1][1]->style .= "background:#DDDDDD;";
-                $joined->xls[1][2]->style .= "background:#DDDDDD;";
-            }
+            $joined->xls[1][0]->span = 2;
+            $joined->xls[1][1]->style .= "background:#DDDDDD;";
+            $joined->xls[1][2]->style .= "background:#DDDDDD;";
         }
         $dash = DashboardTable::union_tables(array_merge(array($header), $dashboards));
         if($dash != null){
@@ -42,15 +48,21 @@ class ProjectRosterReportItem extends StaticReportItem {
         foreach($subs as $sub){
             $dashboard1 = new DashboardTable(PROJECT_CHAMP_ROSTER_STRUCTURE, $sub);
             $dashboard2 = new DashboardTable(PROJECT_NI_ROSTER_STRUCTURE, $sub);
+            if($sub->getLeader() == null){
+                $head = $dashboard2->copy()->where(HEAD);
+                $dashboard2->filter(HEAD);
+                $blankDash = new DashboardTable(array(array(BLANK, BLANK)),
+                                                array(array(new BlankCell(BLANK, "", "", "", "", ""), new BlankCell(BLANK, "", "", "", "", ""))),
+                                                null);
+                $dashboard2 = DashboardTable::union_tables(array($head, $blankDash, $dashboard2));
+            }
             $joined = $dashboard1->join($dashboard2->copy(), true);
             $header = $joined->copy()->where(HEAD);
             $joined->filter(HEAD);
-            if($sub->getLeader() != null){
-                $joined->xls[1][0]->span = 2;
-                $joined->xls[1][1]->style .= "background:#DDDDDD;";
-                $joined->xls[1][2]->style .= "background:#DDDDDD;";
-                $joined->xls[1][2]->span = 1;
-            }
+            $joined->xls[1][0]->span = 2;
+            $joined->xls[1][1]->style .= "background:#DDDDDD;";
+            $joined->xls[1][2]->style .= "background:#DDDDDD;";
+            $joined->xls[1][2]->span = 1;
             $dashboards[] = $joined;
         }
         $dash = DashboardTable::union_tables(array_merge(array($header), $dashboards));

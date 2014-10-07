@@ -151,7 +151,7 @@
                 <![CDATA[<div>{$item}</div><br />]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id='project_dashboard_prod_head' type="ToggleHeaderReportItemSet" level="3" title="Productivity Dashboard">
+        <ReportItemSet id='project_dashboard_prod_head' type="ToggleHeaderReportItemSet" level="3" title="Productivity Overview">
             <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE">
                 <![CDATA[<div>{$item}</div><br />]]>
             </ReportItem>

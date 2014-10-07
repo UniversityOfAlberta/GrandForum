@@ -233,7 +233,7 @@
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
     </ReportSection-->
-    <ReportSection name="Productivity Dashboard" blobSection="SEC_NONE" subBookmark="true" type="ReportSection" pagebreak="false" renderpdf="true">
+    <ReportSection name="Productivity Overview" blobSection="SEC_NONE" subBookmark="true" type="ReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="ni_dashboard_productivity" type="DashboardReportItem" structure="NI_REPORT_PRODUCTIVITY_STRUCTURE" table="true" details="false">
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
