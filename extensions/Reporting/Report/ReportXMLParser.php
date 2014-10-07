@@ -570,7 +570,7 @@ function is_base64($s){
 }
 
 function encode_binary_data($str){
-    $result = base64_encode($str);
+    $result = @base64_encode($str);
     if($result !== false && base64_decode($result) === $str){
         return $result;
     }
