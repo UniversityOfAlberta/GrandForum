@@ -110,7 +110,7 @@ class PersonPage {
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
                 $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
-                $tabbedPage->addTab(new PersonProductsTab($person, $visibility));
+                //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
                 $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
                 if(isExtensionEnabled('AllocatedBudgets') && $person->isRoleAtLeast(CNI) && !$person->isRole(AR)){
                     $tabbedPage->addTab(new PersonBudgetTab($person, $visibility));
