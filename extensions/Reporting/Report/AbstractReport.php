@@ -431,13 +431,13 @@ abstract class AbstractReport extends SpecialPage {
     	    $sto->select_report($tok);
     	    $tst = $sto->metadata('timestamp');
     	    if($c['submitted'] == 1){
-    	        $c['status'] = "Submitted";
+    	        $c['status'] = "Generated/Submitted";
     	    }
     	    else if($foundSameUser){
-    	        $c['status'] = "Not Submitted";
+    	        $c['status'] = "Generated/Not Submitted";
     	    }
     	    else if(!$foundSameUser){
-    	        $c['status'] = "Incomplete";
+    	        $c['status'] = "Generated/Not Submitted";
     	    }
     	    $c['name'] = $this->name;
     	    if(strcmp($tst, $largestDate) > 0){

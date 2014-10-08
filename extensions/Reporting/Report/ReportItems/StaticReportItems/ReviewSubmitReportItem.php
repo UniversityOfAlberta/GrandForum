@@ -44,44 +44,45 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		                $.ajax({
 		                        url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&generatePDF', 
 		                        success : function(data){
-		                                        //var data = jQuery.parseJSON(response);
-		                                        for(index in data){
-		                                            var val = data[index];
-		                                            if(typeof val.tok != 'undefined'){
-		                                                var tok = val.tok;
-		                                                var time = val.time;
-		                                                var len = val.len;
-		                                                var name = val.name;
-		                                                
-		                                                $('#ex_token_' + index).html(tok);
-                                                        $('#ex_time_' + index).html(time);
-                                                        $('#generate_button_' + index).attr('value', tok);
-                                                        $('#download_button_' + index).removeAttr('disabled');
-                                                        $('#report_submit_div').show();
-                                                        
-                                                        $('#generate_success').html('PDF Generated Successfully.');
-                                                        $('#generate_success').css('display', 'block');
-                                                        $('#download_button_' + index).attr('name', tok);
-                                                        $('#download_button_' + index).text(name + ' PDF');
-                                                    }
-                                                    else{
-                                                        $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
-                                                        $('#generate_error').css('display', 'block');
-                                                    }
-                                                }
-		                                        $('#generate_throbber').css('display', 'none');
-		                                        $('#generateButton').removeAttr('disabled');
-		                                        $('#submitCheck').removeAttr('checked');
-		                                        $('#submitCheck').removeAttr('disabled');
-		                                  },
+                                        //var data = jQuery.parseJSON(response);
+                                        for(index in data){
+                                            var val = data[index];
+                                            if(typeof val.tok != 'undefined'){
+                                                var tok = val.tok;
+                                                var time = val.time;
+                                                var len = val.len;
+                                                var name = val.name;
+                                                
+                                                $('#ex_token_' + index).html(tok);
+                                                $('#ex_time_' + index).html(time);
+                                                $('#generate_button_' + index).attr('value', tok);
+                                                $('#download_button_' + index).removeAttr('disabled');
+                                                $('#report_submit_div').show();
+                                                
+                                                $('#generate_success').html('PDF Generated Successfully.');
+                                                $('#generate_success').css('display', 'block');
+                                                $('#download_button_' + index).attr('name', tok);
+                                                $('#download_button_' + index).text(name + ' PDF');
+                                            }
+                                            else{
+                                                $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
+                                                $('#generate_error').css('display', 'block');
+                                            }
+                                        }
+                                        $('#generate_throbber').css('display', 'none');
+                                        $('#generateButton').removeAttr('disabled');
+                                        $('#submitCheck').removeAttr('checked');
+                                        $('#submitCheck').removeAttr('disabled');
+                                        updateEvalReport();
+                                  },
 		                        error : function(response){
-                                              // Error
-                                              $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
-                                              $('#generate_error').css('display', 'block');
-		                                      $('#generateButton').removeAttr('disabled');
-		                                      $('#generate_throbber').css('display', 'none');
-		                                      //$('#submitCheck').removeAttr('disabled');
-		                                  }
+                                      // Error
+                                      $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
+                                      $('#generate_error').css('display', 'block');
+                                      $('#generateButton').removeAttr('disabled');
+                                      $('#generate_throbber').css('display', 'none');
+                                      //$('#submitCheck').removeAttr('disabled');
+                                }
 		                });
 		            });
 		            
@@ -119,7 +120,6 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		            
 		            function updateEvalReport(){
 		                $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&getPDF' ,function(data){
-		                    
 	                        if(data.length > 0){
 	                            var val = data[0];
 	                            if(typeof val != 'undefined'){
@@ -189,11 +189,14 @@ EOF;
         		$style1 = "disabled='disabled'";
         	}
         	  
-        	if ($sub == 1) {
-			    $subm = "Submitted";
+        	if ($tok !== false && $sub == 1) {
+			    $subm = "Generated/Submitted";
+		    }
+		    else if($tok !== false) {
+			    $subm = "Generated/Not Submitted";
 		    }
 		    else {
-			    $subm = "Not Submitted";
+		        $subm = "Not Generated/Not Submitted";
 		    }
 
 		    if($tok === false){
@@ -268,11 +271,14 @@ EOF;
         		$style1 = "disabled='disabled'";
         	}
         	  
-        	if ($sub == 1) {
-			    $subm = "Submitted";
+        	if ($tok !== false && $sub == 1) {
+			    $subm = "Generated/Submitted";
+		    }
+		    else if($tok !== false) {
+			    $subm = "Generated/Not Submitted";
 		    }
 		    else {
-			    $subm = "Not Submitted";
+		        $subm = "Not Generated/Not Submitted";
 		    }
 
 		    if($tok === false){
