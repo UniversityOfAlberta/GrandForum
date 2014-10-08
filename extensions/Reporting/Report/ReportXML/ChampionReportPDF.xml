@@ -14,8 +14,19 @@
                     <div class='logo'></div>
             ]]>
         </ReportItem>
-        <ReportItem id="report_info_foot" type="StaticReportItem">
+        <ReportItem id="report_info_head2" type="StaticReportItem">
             <![CDATA[
+                    <div class='report_info'><table class='report_info'><tr><td width='100%'></td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="my_progress_head" type="StaticReportItem">
+            <![CDATA[<td><small><table class='progress_table' cellpadding="1" frame="box" rules="all">]]>
+        </ReportItem>
+        <ReportItem id="report_progress" type="ProgressReportItem" reportType="ChampionReport">
+            <![CDATA[{$item}</table></small></td></tr>]]>
+        </ReportItem>
+        <ReportItem id="report_info_foot" type="StaticReportItem">
+            <![CDATA[</table>
                     </div>
                 </div>
                 <p style='font-size:150%;font-weight:bold;'>{$user_reversed_name}</p>
@@ -115,27 +126,5 @@
                 </p>
             ]]>
         </ReportItem>
-        <!--ReportItem id="q6_head" type="StaticReportItem">
-            <![CDATA[
-                <br />
-                <p>
-                    <h2>Question 6</h2>
-                    <p><i><small>Indicate the researchers that you have been in contact with for this project and how.</small></i></p>
-                </p>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="q6_people" type="ProjectPeopleReportItemSet" blobIndex="personId">
-            <ReportItem id="q6" height="75px" type="TextareaReportItem" blobType="BLOB_ARRAY" blobItem="CHAMP_RESEARCHERS">
-                <![CDATA[
-                <h3>{$user_name}</h3>
-                {$item}
-            ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="q6_foot" type="StaticReportItem">
-            <![CDATA[
-                </table>
-            ]]>
-        </ReportItem-->
     </ReportSection>
 </Report>

@@ -177,11 +177,11 @@ abstract class AbstractReportSection {
                 }
             }
             else if ($item instanceof TextareaReportItem){
-                if($item->getLimit() > 0){
+                //if($item->getLimit() > 0){
                     if($item->getActualNChars() == 0){
                         $nFields++;
                     }
-                }
+                //}
             }
         }
         return $nFields;

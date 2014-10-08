@@ -7,7 +7,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="report" name="Report" tooltip="" blobSection="CHAMP_REPORT" type="EditableReportSection" renderpdf="true" number="1">
+    <ReportSection id="report" name="Report" tooltip="" blobSection="CHAMP_REPORT" type="EditableReportSection" renderpdf="true">
         <Instructions>
             <![CDATA[
                 
@@ -96,32 +96,6 @@
                 </p>
             ]]>
         </ReportItem>
-        <!--
-        <ReportItem id="q6_head" type="StaticReportItem">
-            <![CDATA[
-                <br />
-                <p>
-                    <h3>Q6: Comment on the researchers that you have been in contact with for this project and how.</h3>
-                </p>
-                <table width='100%'>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="q6_people" type="ProjectPeopleReportItemSet" blobIndex="personId">
-            <ReportItem id="q6" height="80px" type="TextareaReportItem" blobType="BLOB_ARRAY" blobItem="CHAMP_RESEARCHERS">
-                <![CDATA[
-                <tr>
-                    <td style='white-space:nowrap;' valign='top' align='right'><b><a href='{$user_url}' target='_blank'>{$user_name}</a>:</b></td>
-                    <td width='100%'>{$item}</td>
-                </tr>
-            ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="q6_foot" type="StaticReportItem">
-            <![CDATA[
-                </table>
-            ]]>
-        </ReportItem>
-        -->
     </ReportSection>
     <ReportSection id="review" name="Review" tooltip="Review of on-line report content" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
@@ -144,6 +118,12 @@
                     </ol>
             ]]>
         </Instructions>
+        <ReportItem id="my_progress_head" type="StaticReportItem">
+            <![CDATA[<div style='display:none;'><h3>Completion Status</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">]]>
+        </ReportItem>
+        <ReportItem id="champ_progress_head" type="ProgressReportItem" reportType="ChampionReport">
+            <![CDATA[{$item}</table></div>]]>
+        </ReportItem>
         <ReportItem id="review" type="ReviewSubmitReportItem" />
     </ReportSection>
 </Report>

@@ -58,9 +58,7 @@ class ProgressReportItem extends StaticReportItem {
         if($limit > 0){
             $percentChars = number_format(($actualChars/max(1, $limit)*100), 0);
         }
-        else{
-            $rowspan--;
-        }
+
         $errorChars = array();
         if($nExceeding > 0){
             $rowspan++; 
