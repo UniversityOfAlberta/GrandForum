@@ -456,7 +456,7 @@ abstract class AbstractReport extends SpecialPage {
     	if(isset($check2) && count($check2) > 0){
 	        foreach($check2 as $chk){
 	            if($chk['timestamp'] > $largestDate){
-	                $return[0]['status'] = "Re-Generated/Submitted";
+	                $return[0]['status'] = "Submitted/Re-Generated";
 	            }
 	        }
 	    }
