@@ -16,7 +16,7 @@
         </ReportItem>
         <ReportItem id="report_info_head2" type="StaticReportItem">
             <![CDATA[
-                <br /><small><b>Generated:</b> {$timestamp}</small></div>   
+                </div>   
             ]]>
         </ReportItem>
         <ReportItem id="report_info_foot" type="StaticReportItem">
