@@ -56,13 +56,18 @@ class ProjectDashboardTab extends AbstractEditableTab {
                 $('select.chosen:visible').chosen();
                 $('select.chosen').each(function(i, el){
                     var prevVal = $(el).val();
-                    $('option[value=' + prevVal + ']', $('select.chosen').not(el)).prop('disabled', true);
+                    if(prevVal != ''){
+                        $('option[value=' + prevVal + ']', $('select.chosen').not(el)).prop('disabled', true);
+                    }
                     $('select.chosen').trigger('chosen:updated');
                     $(el).change(function(e, p){
                         var id = $(this).val();
-                        console.log(prevVal, id);
-                        $('option[value=' + prevVal + ']', $('select.chosen').not(this)).prop('disabled', false);
-                        $('option[value=' + id + ']', $('select.chosen').not(this)).prop('disabled', true);
+                        if(prevVal != ''){
+                            $('option[value=' + prevVal + ']', $('select.chosen').not(this)).prop('disabled', false);
+                        }
+                        if(id != ''){
+                            $('option[value=' + id + ']', $('select.chosen').not(this)).prop('disabled', true);
+                        }
                         $('select.chosen').trigger('chosen:updated');
                         prevVal = id;
                     });
