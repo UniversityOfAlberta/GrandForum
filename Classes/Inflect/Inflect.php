@@ -74,6 +74,8 @@ class Inflect
 	 * @var array
 	 */
     static $irregular = array(
+        'exceeds' => 'exceed',
+        'contains' => 'contain',
         'has'    => 'have',
         'move'   => 'moves',
         'foot'   => 'feet',
