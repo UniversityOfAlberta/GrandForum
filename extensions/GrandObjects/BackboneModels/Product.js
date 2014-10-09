@@ -13,18 +13,18 @@ Product = Backbone.Model.extend({
         this.duplicates = new ProductDuplicates();
         
         if(this.isNew()){
-            if(this.get('category') == ""){
+            /*if(this.get('category') == ""){
                 this.set("category", _.first(_.keys(productStructure.categories)), {silent: true});
             }
             this.set("type", _.first(_.keys(productStructure.categories[this.get('category')].types)), {silent:true});
-            this.set("status", _.first(_.first(_.values(productStructure.categories[this.get('category')].types)).status), {silent:true});
+            this.set("status", _.first(_.first(_.values(productStructure.categories[this.get('category')].types)).status), {silent:true});*/
         }
         
         this.on("change:category", function(){
             var type = this.get('type').split(":")[0];
-            if(productStructure.categories[this.get('category')].types[type] == undefined){
-                this.set("type", _.first(_.keys(productStructure.categories[this.get('category')].types)));
-                this.set("status", _.first(_.first(_.values(productStructure.categories[this.get('category')].types)).status));
+            if(this.get('category') != "" && productStructure.categories[this.get('category')].types[type] == undefined){
+                //this.set("type", _.first(_.keys(productStructure.categories[this.get('category')].types)));
+                //this.set("status", _.first(_.first(_.values(productStructure.categories[this.get('category')].types)).status));
             }
         });
     },
@@ -60,6 +60,9 @@ Product = Backbone.Model.extend({
     },
     
     getPossibleTypes: function(){
+        if(this.get('category') == ""){
+            return new Array();
+        }
         return _.keys(productStructure.categories[this.get('category')].types);
     },
     
@@ -69,6 +72,9 @@ Product = Backbone.Model.extend({
     
     getPossibleFields: function(){
         var type = this.get('type').split(":")[0];
+        if(type == "" || this.get('category') == ""){
+            return new Array();
+        }
         if(productStructure.categories[this.get('category')].types[type] == undefined){
             return _.first(_.values(productStructure.categories[this.get('category')].types)).data;
         }
@@ -77,6 +83,9 @@ Product = Backbone.Model.extend({
     
     getPossibleStatus: function(){
         var type = this.get('type').split(":")[0];
+        if(type == "" || this.get('category') == ""){
+            return new Array();
+        }
         if(productStructure.categories[this.get('category')].types[type] == undefined){
             return _.first(_.values(productStructure.categories[this.get('category')].types)).status;
         }

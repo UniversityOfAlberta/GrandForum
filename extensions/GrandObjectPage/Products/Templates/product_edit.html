@@ -7,23 +7,27 @@
 </div>
 <h2>Description</h2>
 <%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
-<h2><%= category %> Information</h2>
+<h2>Information</h2>
 <table id="productData">
     <tr>
         <td class="label">Category:</td>
         <td class="field">
-            <%= HTML.Select(this, 'category', {options: _.keys(this.model.getPossibleCategories())}) %>
+            <% var def = (category == "") ? ["Choose a Category..."] : []; %>
+            <%= HTML.Select(this, 'category', {options: def.concat(_.keys(this.model.getPossibleCategories()))}) %>
         </td>
     </tr>
-    <tr>
-        <td class="label">Type:</td>
-        <td class="field">
-            <%= HTML.Select(this, 'type', {options: this.model.getPossibleTypes()}) %>
-            <% if(type.split('Misc').length > 1){ %>
-                <%= HTML.MiscAutoComplete(this, 'type', {size: '30', misc: this.model.getPossibleMiscTypes()}) %>
-            <% } %>
-        </td>
-    </tr>
+    <% if(category != ""){ %>
+        <tr>
+            <td class="label">Type:</td>
+            <td class="field">
+                <% var def = (type == "") ? ["Choose a Type..."] : []; %>
+                <%= HTML.Select(this, 'type', {options: def.concat(this.model.getPossibleTypes())}) %>
+                <% if(type.split('Misc').length > 1){ %>
+                    <%= HTML.MiscAutoComplete(this, 'type', {size: '30', misc: this.model.getPossibleMiscTypes()}) %>
+                <% } %>
+            </td>
+        </tr>
+    <% } %>
     <tr>
         <td class="label">Visibility:</td>
         <td class="field">

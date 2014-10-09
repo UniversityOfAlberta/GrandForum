@@ -161,6 +161,12 @@ ProductEditView = Backbone.View.extend({
         if(this.model.get('title').trim() == ""){
             return "The Product must have a title";
         }
+        else if(this.model.get('category').trim() == ""){
+            return "The Product must have a category";
+        }
+        else if(this.model.get('type').trim() == ""){
+            return "The Product must have a type";
+        }
         return "";
     },
     
