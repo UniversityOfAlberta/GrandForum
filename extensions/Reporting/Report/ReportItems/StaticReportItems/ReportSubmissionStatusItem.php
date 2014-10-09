@@ -24,16 +24,14 @@ class ReportSubmissionStatusItem extends StaticReportItem {
         $useProject = $this->getAttr("project", "true");
         $project = null;
         if($useProject == "true"){
-            $project = $this->getReport()->project;
+            $project = Project::newFromId($this->projectId);
         }
         $report = new DummyReport($reportType, $person, $project);
-        if($report->isSubmitted()){
-        	$details = "Submitted";
+        $check = $report->getPDF();
+        if(count($check) > 0){
+            return $check[0]['status'];
         }
-        else{
-        	$details = "Not Submitted";
-        }
-        return $details;
+        return "Not Generated/Not Submitted";
 	}
 }
 

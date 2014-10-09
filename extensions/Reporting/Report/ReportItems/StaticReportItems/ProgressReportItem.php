@@ -22,7 +22,7 @@ class ProgressReportItem extends StaticReportItem {
 	    $reportType = $this->getAttr('reportType', 'HQPReport');
 	    $showCompleted = strtolower($this->getAttr('showCompleted', "true"));
         $person = Person::newFromId($this->personId);
-        $project = $this->getReport()->project;
+        $project = Project::newFromId($this->projectId);
         $report = new DummyReport($reportType, $person, $project);
         $nEditableSections = 0;
         $nComplete = 0;

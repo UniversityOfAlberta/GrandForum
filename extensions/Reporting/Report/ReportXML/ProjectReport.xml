@@ -120,12 +120,43 @@
                 <![CDATA[</table><br />]]>
             </ReportItem>
         </ReportItemSet>
+        <ReportItemSet id='subpl_head' type="ToggleHeaderReportItemSet" level="3" title="Sub-Project Progress">
+            <ReportItem id="static_pl_progress" type="StaticReportItem">
+                <![CDATA[<style>#champ_completion table tr:first-child td:first-child {display:none;}</style><table id="champ_completion" style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'><tr><th>Sub-Project</th><th>Completion Status</th><th>Actions</th></tr>]]>
+            </ReportItem>
+            <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet">
+            	<ReportItem id="pl_submission" type="ReportSubmissionStatusItem" project="true" reportType="SubProjectReport">
+                    <![CDATA[
+                        <tr><td valgin='top'><a href='{$project_url}' target='_blank'><small><b>{$project_name}</b></small></a><br /><small>({$item})</small></td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="pl_progress" type="ProgressReportItem" reportType="SubProjectReport">
+                    <![CDATA[
+                        <td style='white-space:nowrap;padding:0;'><small><table cellpadding="1" frame="void" rules="all" height="60px" width="100%">{$item}</table></small></td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="pl_pdf" type="PDFReportItem" reportType="SubProjectReport" project="true" width="110px">
+                    <![CDATA[<td valign='top' align='center'>{$item}<br />]]>
+                </ReportItem>
+                <ReportItemSet id="pl_leaders" type="ProjectLeadersReportItemSet">
+                    <ReportItem id="pl_notify" type="NotificationReportItem" title="Notify {$user_name}" url="Special:Report?report=SubProjectReport">
+                        <![CDATA[{$item}]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="pl_foot" type="StaticReportItem">
+                    <![CDATA[</td></tr>]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="progress_foot" type="StaticReportItem">
+                <![CDATA[</table><br />]]>
+            </ReportItem>
+        </ReportItemSet>
         <ReportItemSet id='champ_head' type="ToggleHeaderReportItemSet" level="3" title="Champion Progress">
             <ReportItem id="static_champ_progress" type="StaticReportItem">
                 <![CDATA[<style>#champ_completion table tr:first-child td:first-child {display:none;}</style><table id="champ_completion" style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'><tr><th>Champion</th><th>Completion Status</th><th>Actions</th></tr>]]>
             </ReportItem>
             <ReportItemSet id="project_people" type="ProjectChampionsReportItemSet">
-            	<ReportItem id="champ_submission" type="ReportSubmissionStatusItem" project="false" reportType="ChampionReport">
+            	<ReportItem id="champ_submission" type="ReportSubmissionStatusItem" project="true" reportType="ChampionReport">
                     <![CDATA[
                         <tr><td valgin='top'><a href='{$user_url}' target='_blank'><small><b>{$user_reversed_name}</b></small></a><br /><small>({$item})</small></td>
                     ]]>
@@ -388,20 +419,18 @@
         </Instructions>
         <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet">
             <ReportItemSet id="subproject_heads" type="ToggleHeaderReportItemSet" level="3" title="{$project_name} - {$project_full_name}">
-                <ReportItemSet id="leaders" type="ProjectLeadersReportItemSet">
-                    <ReportItem id="sub_project_goals" type="StaticReportItem">
-                        <![CDATA[<h3>Engagement with Receptor Community Champions</h3>{$user_subproject_champs}]]>
-                    </ReportItem>
-                    <ReportItem id="current_goals" type="ProjectGoalsReportItem" year="{$this_year}" max="5" preview="true">
-                        <![CDATA[<h3>This Year's Goals</h3>{$item}]]>
-                    </ReportItem>
-                    <ReportItem id="future_goals" type="ProjectGoalsReportItem" year="{$next_year}" max="5" preview="true">
-                        <![CDATA[<h3>New Goals for Next Year</h3><p><small><i>Each subproject may have up to 5 active goals, including those carrying forward from the past year and the newly defined ones.</i></small></p>{$item}]]>
-                    </ReportItem>
-                    <ReportItem id="sub_project_champs" type="StaticReportItem">
-                        <![CDATA[<h3>General Comments</h3>{$user_subproject_comments}]]>
-                    </ReportItem>
-                </ReportItemSet>
+                <ReportItem id="sub_project_goals" type="StaticReportItem">
+                    <![CDATA[<h3>Engagement with Receptor Community Champions</h3>{$user_subproject_champs}]]>
+                </ReportItem>
+                <ReportItem id="current_goals" type="ProjectGoalsReportItem" year="{$this_year}" max="5" preview="true">
+                    <![CDATA[<h3>This Year's Goals</h3>{$item}]]>
+                </ReportItem>
+                <ReportItem id="future_goals" type="ProjectGoalsReportItem" year="{$next_year}" max="5" preview="true">
+                    <![CDATA[<h3>New Goals for Next Year</h3><p><small><i>Each subproject may have up to 5 active goals, including those carrying forward from the past year and the newly defined ones.</i></small></p>{$item}]]>
+                </ReportItem>
+                <ReportItem id="sub_project_champs" type="StaticReportItem">
+                    <![CDATA[<h3>General Comments</h3>{$user_subproject_comments}]]>
+                </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
