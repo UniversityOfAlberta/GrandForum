@@ -19,7 +19,7 @@ class DashboardReportItem extends StaticReportItem {
             }
         }
         else{
-            $dash = $dashboard->render();
+            $dash = $dashboard->render(false, true);
         }
         $item = $this->processCData($dash);
 		$wgOut->addHTML($item);

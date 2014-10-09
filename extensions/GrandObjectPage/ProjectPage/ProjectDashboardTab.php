@@ -14,6 +14,8 @@ class ProjectDashboardTab extends AbstractEditableTab {
     function tabSelect(){
         return "_.defer(function(){
             $('select.chosen').chosen();
+            $('input[value=\"Edit Dashboard\"]').css('display', 'none');
+            $('input[value=\"Save Dashboard\"]').css('display', 'none');
         });";
     }
     
@@ -43,6 +45,10 @@ class ProjectDashboardTab extends AbstractEditableTab {
             $this->showTopProducts($this->project, $this->visibility);
         }
         $this->showDashboard($this->project, $this->visibility);
+        $this->html .= "<script type='text/javascript'>
+        _.defer(function(){
+            $('input[value=\"Edit Dashboard\"]').css('display', 'none');
+        });</script>";
         return $this->html;
     }
     
@@ -72,6 +78,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
                         prevVal = id;
                     });
                 });
+                $('input[value=\"Save Dashboard\"]').css('display', 'none');
             });
         </script>";
     }
@@ -177,7 +184,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
             $dashboard = new DashboardTable(PROJECT_PUBLIC_STRUCTURE, $project);
             if($dashboard != null){
                 $this->html .= "<h2>Dashboard</h2>";
-                $this->html .= $dashboard->render();
+                $this->html .= $dashboard->render(false, $visibility['isLead']);
             }
         }
     }

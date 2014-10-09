@@ -14,6 +14,8 @@ class PersonDashboardTab extends AbstractEditableTab {
     function tabSelect(){
         return "_.defer(function(){
             $('select.chosen').chosen();
+            $('input[value=\"Edit Dashboard\"]').css('display', 'none');
+            $('input[value=\"Save Dashboard\"]').css('display', 'none');
         });";
     }
     
@@ -44,6 +46,10 @@ class PersonDashboardTab extends AbstractEditableTab {
         }
         $this->showTopProducts($this->person, $this->visibility, $amount);
         $this->showDashboard($this->person, $this->visibility);
+        $this->html .= "<script type='text/javascript'>
+        _.defer(function(){
+            $('input[value=\"Edit Dashboard\"]').css('display', 'none');
+        });</script>";
         return $this->html;
     }
     
@@ -75,6 +81,7 @@ class PersonDashboardTab extends AbstractEditableTab {
                         prevVal = id;
                     });
                 });
+                $('input[value=\"Save Dashboard\"]').css('display', 'none');
             });
         </script>";
     }
@@ -202,7 +209,7 @@ class PersonDashboardTab extends AbstractEditableTab {
             }
             if($dashboard != null){
                 $this->html .= "<h2>Dashboard</h2>";
-                $this->html .= $dashboard->render();
+                $this->html .= $dashboard->render(false, $visibility['isMe']);
             }
             $this->html .= "<script type='text/javascript'>
                 var completedRows = $('table.dashboard td:contains((Completed))').parent();
