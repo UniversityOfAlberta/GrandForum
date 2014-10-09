@@ -188,16 +188,6 @@ EOF;
         		// No reports available.
         		$style1 = "disabled='disabled'";
         	}
-        	  
-        	if ($tok !== false && $sub == 1) {
-			    $subm = "Generated/Submitted";
-		    }
-		    else if($tok !== false) {
-			    $subm = "Generated/Not Submitted";
-		    }
-		    else {
-		        $subm = "Not Generated/Not Submitted";
-		    }
 
 		    if($tok === false){
 		    	$show_pdf = "No PDF has been generated yet";
@@ -258,10 +248,12 @@ EOF;
             $project = Project::newFromId($this->projectId);
             $report = new DummyReport($file, $person, $project);
         	$check = $report->getPDF();
+        	$subm = "Not Generated/Not Submitted";
         	if (count($check) > 0) {
         		$tok = $check[0]['token']; 	
         		$tst = $check[0]['timestamp'];
         		$sub = $check[0]['submitted'];
+        		$subm = $check[0]['status'];
         	}
         	
         	// Present some data on available reports.
@@ -270,16 +262,6 @@ EOF;
         		// No reports available.
         		$style1 = "disabled='disabled'";
         	}
-        	  
-        	if ($tok !== false && $sub == 1) {
-			    $subm = "Generated/Submitted";
-		    }
-		    else if($tok !== false) {
-			    $subm = "Generated/Not Submitted";
-		    }
-		    else {
-		        $subm = "Not Generated/Not Submitted";
-		    }
 
 		    if($tok === false){
 		    	$show_pdf = "No PDF has been generated yet";

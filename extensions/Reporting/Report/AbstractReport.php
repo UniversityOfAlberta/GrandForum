@@ -395,9 +395,13 @@ abstract class AbstractReport extends SpecialPage {
     	    }
     	    else{
     	        $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
+    	        $check2 = array();
     	        foreach($check as $c){
     	            if($c['submitted'] == 1){
     	                $foundSubmitted = true;
+    	            }
+    	            else{
+    	                $check2[] = $c;
     	            }
     	        }
             }
@@ -405,9 +409,10 @@ abstract class AbstractReport extends SpecialPage {
     	else{
     	    // First check submitted
     	    $check = $sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType, $this->year);
+    	    $check2 = $sto->list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType, $this->year);
     	    if(count($check) == 0){
     	        // If found none, then look for any generated PDF
-    	        $check = $sto->list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType, $this->year);
+    	        $check = $check2;
     	    }
     	    foreach($check as $c){
 	            if($c['generation_user_id'] == $c['user_id']){
@@ -439,12 +444,22 @@ abstract class AbstractReport extends SpecialPage {
     	    else if(!$foundSameUser){
     	        $c['status'] = "Generated/Not Submitted";
     	    }
+    	    else{
+    	        $c['status'] = "Generated/Not Submitted";
+    	    }
     	    $c['name'] = $this->name;
     	    if(strcmp($tst, $largestDate) > 0){
     	        $largestDate = $tst;
     	        $return = array($c);
     	    }
     	}
+    	if(isset($check2) && count($check2) > 0){
+	        foreach($check2 as $chk){
+	            if($chk['timestamp'] > $largestDate){
+	                $return[0]['status'] = "Re-Generated/Submitted";
+	            }
+	        }
+	    }
         return $return;
     }
     
