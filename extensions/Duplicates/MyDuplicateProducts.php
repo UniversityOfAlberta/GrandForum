@@ -37,7 +37,7 @@ class MyDuplicateProducts extends SpecialPage{
 	static function createToolboxLinks($toolbox){
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
-	    $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Duplicate Management", "$wgServer$wgScriptPath/index.php/Special:MyDuplicateProducts");
+	    $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Review Duplicates", "$wgServer$wgScriptPath/index.php/Special:MyDuplicateProducts");
 	    return true;
 	}
 }
