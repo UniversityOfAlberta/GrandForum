@@ -11,20 +11,11 @@ Product = Backbone.Model.extend({
         this.projects.url = this.urlRoot + '/' + this.get('id') + '/projects';
         
         this.duplicates = new ProductDuplicates();
-        
-        if(this.isNew()){
-            /*if(this.get('category') == ""){
-                this.set("category", _.first(_.keys(productStructure.categories)), {silent: true});
-            }
-            this.set("type", _.first(_.keys(productStructure.categories[this.get('category')].types)), {silent:true});
-            this.set("status", _.first(_.first(_.values(productStructure.categories[this.get('category')].types)).status), {silent:true});*/
-        }
-        
+              
         this.on("change:category", function(){
             var type = this.get('type').split(":")[0];
             if(this.get('category') != "" && productStructure.categories[this.get('category')].types[type] == undefined){
-                //this.set("type", _.first(_.keys(productStructure.categories[this.get('category')].types)));
-                //this.set("status", _.first(_.first(_.values(productStructure.categories[this.get('category')].types)).status));
+                this.set("type", ""); // Clear type
             }
         });
     },
