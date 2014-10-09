@@ -17,8 +17,9 @@ class ReportStorage {
     /// match, the request is denied and the state of the object is not
     /// changed.
     function select_report($tok, $strict = true) {
+        $uid = ($this->_uid == "") ? 0 : $this->_uid;
         if ($strict)
-            $ext = "user_id = {$this->_uid} AND";
+            $ext = "user_id = $uid AND";
         else
             $ext = "";
 
@@ -189,8 +190,9 @@ class ReportStorage {
     }
 
     private function load_metadata($tok = false, $strict = false) {
+        $uid = ($this->_uid == "") ? 0 : $this->_uid;
         if ($strict)
-            $ext = "user_id = {$this->_uid} AND";
+            $ext = "user_id = {$uid} AND";
         else
             $ext = "";
 
