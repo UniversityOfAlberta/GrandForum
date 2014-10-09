@@ -39,18 +39,12 @@ class ProjectNIProgressReportItem extends StaticReportItem {
         }
         
         // Budgets
-        $allocatedBudget = $project->getAllocatedBudget(REPORTING_YEAR-1);
 		$requestedBudget = $project->getRequestedBudget(REPORTING_YEAR);
         
-        $nAllocated = 0;
         $nRequested = 0;
         $nPlansForward = 0;
 		foreach($people as $p){
 		    $pers = Person::newFromId($p['person_id']);
-            $allocBudget = $allocatedBudget->copy()->select(V_PERS_NOT_NULL, array($pers->getNameForForms()));
-            if(($allocBudget->nRows() * $allocBudget->nCols()) > 0){
-                $nAllocated++;
-            }
             $reqBudget = $requestedBudget->copy()->select(V_PERS_NOT_NULL, array($pers->getNameForForms()));
             if(($reqBudget->nRows() * $reqBudget->nCols()) > 0){
                 $nRequested++;
@@ -69,9 +63,6 @@ class ProjectNIProgressReportItem extends StaticReportItem {
         }
         $rowspan = 3;
         $details .= "<tr><td style='white-space:nowrap;' valign='top' rowspan='$rowspan'><b>NI Progress</b></td><td>{$nSubmitted} of the {$nPeople} NIs ".Inflect::smart_pluralize($nSubmitted, "has")." submitted their ".Inflect::smart_pluralize($nSubmitted, "report")."\n</td></tr>";
-        if($project->getPhase() == 1){ // TODO: Change this for 2014 reporting
-            $details .= "<tr><td>{$nAllocated} of the {$nPeople} NIs ".Inflect::smart_pluralize($nAllocated, "has")." uploaded a revised budget for ".$this->getReport()->year." allocated funds\n</td></tr>";
-        }
         $details .= "<tr><td><span $error>{$nRequested} of the {$nPeople} NIs ".Inflect::smart_pluralize($nRequested, "has")." uploaded a budget request</span>\n</td></tr>";
         if($project->getPhase() == PROJECT_PHASE){
             $details .= "<tr><td>{$nPlansForward} of the {$nPeople} NIs ".Inflect::smart_pluralize($nPlansForward, "has")." not filled in their \"plans forward\" narrative for this project\n</td></tr>";

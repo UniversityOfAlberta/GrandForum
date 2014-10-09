@@ -34,12 +34,6 @@ class NIProgressReportItem extends StaticReportItem {
         $errorMsg = "";
         $rowspan = 0;
         if($reportType == "NIReport"){
-            $allocatedBudget = null;
-            $wasNILastYear = ($person->isRoleDuring(CNI, (REPORTING_YEAR-1).REPORTING_CYCLE_START_MONTH, (REPORTING_YEAR-1).REPORTING_CYCLE_END_MONTH) || 
-                              $person->isRoleDuring(PNI, (REPORTING_YEAR-1).REPORTING_CYCLE_START_MONTH, (REPORTING_YEAR-1).REPORTING_CYCLE_END_MONTH));
-            if($wasNILastYear){
-                $allocatedBudget = $person->getAllocatedBudget(REPORTING_YEAR-1);
-            }
             $budget = null;
             $rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_BUDGET, 0, 0);
             $budget_blob = new ReportBlob(BLOB_EXCEL, REPORTING_YEAR, $person->getId(), 0);
@@ -61,9 +55,6 @@ class NIProgressReportItem extends StaticReportItem {
                     $budget->errors[0][] = $error;
                 }
             }
-            if($allocatedBudget == null && $wasNILastYear){
-                $rowspan++;
-            }
             if($budget == null || $budget->isError()){
                 $rowspan++;
             }
@@ -71,24 +62,16 @@ class NIProgressReportItem extends StaticReportItem {
             if($rowspan > 0){
                 $errorMsg .= "<tr><td rowspan='$rowspan'><b>Budget</b></td>";
             }
-            if($allocatedBudget == null && $wasNILastYear){
-                $rowspan++;
-                $errorMsg .= "<td><span class='inlineError'>You have not uploaded a revised budget for your ".REPORTING_YEAR." allocated funds</span></td></tr>\n";
-            }
-            
-            $tr = "";
-            if($allocatedBudget == null && $wasNILastYear){
-                $tr = "<tr>";
-            }
+
             if($budget == null){
-                $errorMsg .= "$tr<td><span class='inlineError'>You have not uploaded a budget request</span></td></tr>\n";
+                $errorMsg .= "<td><span class='inlineError'>You have not uploaded a budget request</span></td></tr>\n";
             }
             else{
 		        if($budget->isError()){
 		            $errors = $budget->showErrorsSimple();
 		            $errors = str_replace("<br />", "</span><br /><span class='inlineError'>", $errors);
                     $errors = str_replace("<br /><span class='inlineError'></span>", "", $errors);
-                    $errorMsg .= "$tr<td><span class='inlineError'>$errors</span></td></tr>\n";
+                    $errorMsg .= "<td><span class='inlineError'>$errors</span></td></tr>\n";
                 }
             }
         }
