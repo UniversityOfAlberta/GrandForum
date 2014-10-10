@@ -112,6 +112,7 @@ class Paper extends BackboneModel{
             return array();
         }
         $me = Person::newFromWgUser();
+        $ids = array_clean($ids);
         $sql = "SELECT *
                 FROM grand_products
                 WHERE id IN (".implode(",", $ids).")

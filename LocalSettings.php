@@ -304,3 +304,19 @@ function large_json_encode($data){
     }
     return $string;
 }
+
+function array_clean(array $haystack){
+    foreach ($haystack as $key => $value) {
+        if (is_array($value)) {
+            $haystack[$key] = array_clean($value);
+        } elseif (is_string($value)) {
+            $value = trim($value);
+        }
+
+        if (!$value) {
+            unset($haystack[$key]);
+        }
+    }
+
+    return $haystack;
+}
