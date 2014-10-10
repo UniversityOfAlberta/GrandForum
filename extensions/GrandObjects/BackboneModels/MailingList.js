@@ -28,7 +28,13 @@ MailingListRule = RelationModel.extend({
     initialize: function(){
         this.on("change:type", this.changeValues);
         this.on("change:possibleValues", function(){
-            if(!_.contains(this.get('possibleValues').ids, this.get('value'))){
+            var found = false;
+            _.each(this.get('possibleValues').ids, $.proxy(function(val){
+                if(val == this.get('value')){
+                    found = true;
+                }
+            }, this));
+            if(!found){
                 this.set('value', _.first(this.get('possibleValues').ids));
             }
         });
