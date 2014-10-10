@@ -10,4 +10,4 @@ php checkMailingList.php PL
 php checkMailingList.php PL1
 php checkMailingList.php PL2
 php checkMailingList.php CHAMP2
-php checkMailingList.php LOCATION
+#php checkMailingList.php LOCATION

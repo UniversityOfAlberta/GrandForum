@@ -123,28 +123,6 @@
 	        }
 	    }
 	}
-	else if($type == "LOCATION"){
-	    $people = array_merge(Person::getAllPeople(PNI),
-	                          Person::getAllPeople(CNI),
-	                          Person::getAllPeople(AR));
-	    $array = array();
-	    foreach($people as $person){
-	        $uni = $person->getUni();
-	        foreach(MailingList::getListByUniversity($uni) as $list){
-	            if(!MailingList::isSubscribed($list, $person) && !isBlackListed($person->getEmail()) && !MailingList::hasUnsubbed($list, $person)){
-	                $array[$list][] = "{$person->getName()} - {$person->getEmail()}\n";
-	            }
-	        }
-	    }
-	    foreach($array as $list => $people){
-	        echo "== Active People not on $list ==\n";
-	        foreach($people as $person){
-	            echo $person;
-	        }
-	        echo "\n";
-	    }
-	    exit;
-	}
 	
     exec("/usr/lib/mailman/bin/list_members $mailman", $list);
     $nMissing = 0;
