@@ -1,9 +1,12 @@
 <?php
 require_once('commandLine.inc');
 
+global $wgUser;
+$wgUser = User::newFromName("Admin");
+
 $queriesSoFar = 0;
 global $wgDBname;
-$papers = Paper::getAllPapers('all', 'all', 'both');
+$papers = Paper::getAllPapers('all', 'all', 'both', false);
 $nPapers = count($papers);
 $insertSQL = "INSERT INTO `grand_product_authors`
 	          (`author`, `product_id`, `order`) VALUES\n";
