@@ -564,7 +564,7 @@ class ReportArchive extends SpecialPage {
                             }
                             $pdf = "";
                             $check = $report->getPDF();
-                            if (count($check) > 0) {
+                            if (count($check) > 0 && isset($check[0]['token'])) {
                                 $tok = $check[0]['token'];
                                 $pdf = "(<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>PDF</a>)";
                             }
