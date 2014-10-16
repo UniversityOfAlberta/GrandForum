@@ -199,7 +199,7 @@ class ReportStorage {
         // Load data from the DB.
         if ($tok === false) {
             // FIXME: token must be enforced --- no token-use must be removed.
-            $sql = "SELECT report_id, type, user_id, submitted, auto, token, timestamp, len_pdf, generation_user_id, submission_user_id, year FROM grand_pdf_report WHERE user_id = {$this->_uid} ORDER BY timestamp DESC LIMIT 1;";
+            $sql = "SELECT report_id, type, user_id, submitted, auto, token, timestamp, len_pdf, generation_user_id, submission_user_id, year FROM grand_pdf_report WHERE user_id = {$uid} ORDER BY timestamp DESC LIMIT 1;";
         }
         else {
             $sql = "SELECT report_id, type, user_id, submitted, auto, token, timestamp, len_pdf, generation_user_id, submission_user_id, year FROM grand_pdf_report WHERE {$ext} token = '{$tok}' ORDER BY timestamp DESC LIMIT 1;";

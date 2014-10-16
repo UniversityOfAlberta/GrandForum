@@ -16,6 +16,7 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
+date_default_timezone_set('America/Edmonton');
 if( defined( 'MW_INSTALL_PATH' ) ) {
 	$IP = MW_INSTALL_PATH;
 } else {

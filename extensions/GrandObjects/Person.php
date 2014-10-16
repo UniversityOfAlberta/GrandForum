@@ -3245,6 +3245,33 @@ class Person extends BackboneModel {
     }
     
     /**
+     * Returns the allocated amount that this Person received for the specified $year and $project
+     * If no Project is specified, then the total amount for that year is returned.  If the data is not in the DB
+     * Then it falls back to checking the uploaded revised budgets
+     * @param int $year The allocation year
+     * @param Project $project Which project this person received funding for
+     * @return int The amount of allocation
+     */
+    function getAllocatedAmount($year, $project=null){
+        $alloc = 0;
+        $data = DBFunctions::select(array('grand_allocation'),
+                                    array('amount'),
+                                    array('user_id' => EQ($this->getId()),
+                                          'year' => EQ($year)));
+        foreach($data as $row){
+            if($project == null || $row['project_id'] == $project->getId()){
+                $alloc += $row['amount'];
+            }
+        }
+        
+        if(count($alloc) == 0){
+            // Check if there was a revised budget uploaded for this Person
+            $this->getAllocatedBudget($year);
+        }
+        return $alloc;
+    }
+    
+    /**
      * Returns the allocated Budget for this Person for the given year
      * @param int $year The reporting year that the budget was requested
      * @return Budget The allocated Budget for this Person for the given year
