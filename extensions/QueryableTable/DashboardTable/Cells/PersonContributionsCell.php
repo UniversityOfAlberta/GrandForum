@@ -125,6 +125,7 @@ EOF;
             $partners = $contribution->getPartners();
             $projs = array();
             $parts = array();
+            $amounts = array();
             foreach($projects as $project){
                 if(!$project->isSubProject()){
                     $projs[] = "<a href='{$project->getUrl()}' target='_blank'>{$project->getName()}</a>";
