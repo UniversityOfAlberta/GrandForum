@@ -841,7 +841,7 @@ abstract class AbstractReport extends SpecialPage {
         //$sto = new ReportStorage($sto = new ReportStorage($this->person));
         $check = $this->getPDF();
         if(isset($check[0])){
-            return ($check[0]['submitted'] == 1);
+            return (isset($check[0]['submitted']) && $check[0]['submitted'] == 1);
         }
     }
     
