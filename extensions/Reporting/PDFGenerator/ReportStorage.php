@@ -370,6 +370,9 @@ class ReportStorage {
     }
     
     static function list_user_project_reports($sub_id, $user_id, $lim = 1, $special = 0, $type = RPTP_LEADER){
+        if($user_id == ""){
+            $user_id = 0;
+        }
         if($lim == 0){
             $lim = "";
         }
