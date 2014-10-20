@@ -3254,19 +3254,32 @@ class Person extends BackboneModel {
      */
     function getAllocatedAmount($year, $project=null){
         $alloc = 0;
-        $data = DBFunctions::select(array('grand_allocation'),
-                                    array('amount'),
+        $data = DBFunctions::select(array('grand_allocations'),
+                                    array('amount', 'project_id'),
                                     array('user_id' => EQ($this->getId()),
                                           'year' => EQ($year)));
-        foreach($data as $row){
-            if($project == null || $row['project_id'] == $project->getId()){
-                $alloc += $row['amount'];
+        if(count($data) > 0){
+            foreach($data as $row){
+                if($project == null || $row['project_id'] == $project->getId()){
+                    $alloc += $row['amount'];
+                }
             }
         }
-        
-        if(count($alloc) == 0){
-            // Check if there was a revised budget uploaded for this Person
-            $this->getAllocatedBudget($year);
+        else {
+            // Check if there was an allocated budget uploaded for this Person
+            $allocated = $this->getAllocatedBudget($year);
+            if($allocated != null){
+                $alloc = "";
+                if($project == null){
+                    $alloc = $allocated->copy()->rasterize()->where(COL_TOTAL)->select(ROW_TOTAL)->toString();
+                }
+                else {
+                    $alloc = $allocated->copy()->rasterize()->select(V_PROJ, array("{$project->getName()}"))->where(COL_TOTAL);
+                }
+                $alloc = str_replace("$", "", $alloc);
+                $alloc = str_replace(",", "", $alloc);
+                $alloc = intval($alloc);
+            }
         }
         return $alloc;
     }

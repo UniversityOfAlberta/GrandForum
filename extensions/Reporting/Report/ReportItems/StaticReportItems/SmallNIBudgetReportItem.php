@@ -14,16 +14,13 @@ class SmallNIBudgetReportItem extends StaticReportItem {
             $iE = $i+2;
             
             $requested = $person->getRequestedBudget($i);
-            $allocated = $person->getAllocatedBudget($i+1);
+            $allocated = $person->getAllocatedAmount($i+1);
             
             $rAmnt = "$0";
-            $aAmnt = "$0";
             if($requested != null){
                 $rAmnt = '$'.@number_format(str_replace("$", "", $requested->copy()->rasterize()->where(HEAD1, array("TOTALS%"))->select(ROW_TOTAL)->toString()), 0);
             }
-            if($allocated != null){
-                $aAmnt = '$'.@number_format(str_replace("$", "", $allocated->copy()->rasterize()->where(HEAD1, array("TOTALS%"))->select(ROW_TOTAL)->toString()), 0);
-            }
+            $aAmnt = '$'.@number_format($allocated, 0);
             
             if($rAmnt == '$0' || $rAmnt == '$'){
                 $rAmnt = "N/A";

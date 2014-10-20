@@ -20,16 +20,15 @@ class ProjectNIBudgetReportItem extends StaticReportItem {
         
         $cniBudget = $project->getRequestedBudget(REPORTING_YEAR, CNI);
         $pniBudget = $project->getRequestedBudget(REPORTING_YEAR, PNI);
-        $allocated = $project->getAllocatedBudget(REPORTING_YEAR-1);
         
-        $pniNames = $this->getNamesBudget($pniBudget);
-        $cniNames = $this->getNamesBudget($cniBudget);
+        $pniNames = $this->getNamesBudget($pniBudget, PNI);
+        $cniNames = $this->getNamesBudget($cniBudget, CNI);
         
-        $pniTotal = $this->getTotalBudget($pniBudget);
-        $cniTotal = $this->getTotalBudget($cniBudget);
+        $pniTotal = $this->getTotalBudget($pniBudget, $pniNames);
+        $cniTotal = $this->getTotalBudget($cniBudget, $cniNames);
         
-        $pniTotalAllocated = $this->getTotalAllocatedBudget($allocated, $pniNames);
-        $cniTotalAllocated = $this->getTotalAllocatedBudget($allocated, $cniNames);
+        $pniTotalAllocated = $this->getTotalAllocatedBudget($pniNames);
+        $cniTotalAllocated = $this->getTotalAllocatedBudget($cniNames);
         
         $pniSum = $pniTotal->copy()->sum();
         $cniSum = $cniTotal->copy()->sum();
@@ -44,7 +43,8 @@ class ProjectNIBudgetReportItem extends StaticReportItem {
                                 array(array("PNI Subtotal", $pniSumAllocated->xls[0][0]->value/max(1, $sumAllocated), $pniSumAllocated->xls[0][0]->value, $pniSum->xls[0][0]->value/max(1, $sum), $pniSum->xls[0][0]->value)));
         $cniFooter = new Budget(array(array(HEAD1, PERC, MONEY, PERC, MONEY)),
                                 array(array("CNI Subtotal", $cniSumAllocated->xls[0][0]->value/max(1, $sumAllocated), $cniSumAllocated->xls[0][0]->value, $cniSum->xls[0][0]->value/max(1, $sum), $cniSum->xls[0][0]->value)));
-                                
+        
+        $sumAllocated = $project->getAllocatedAmount(REPORTING_YEAR);
         $projectTotal = new Budget(array(array(HEAD1, BLANK, MONEY, PERC, MONEY)),
                                    array(array("Project Total", "", $sumAllocated, ($sum-$sumAllocated)/max(1, $sumAllocated), $sum)));
         
@@ -57,6 +57,9 @@ class ProjectNIBudgetReportItem extends StaticReportItem {
         $pniJoined = Budget::join_tables(array($pniNames, $pniPercAllocated, $pniTotalAllocated, $pniPerc, $pniTotal));
         $cniJoined = Budget::join_tables(array($cniNames, $cniPercAllocated, $cniTotalAllocated, $cniPerc, $cniTotal));
         
+        $pniJoined->where(PERC, array(".+"));
+        $cniJoined->where(PERC, array(".+"));
+        
         $joined = Budget::union_tables(array($topHeader, $pniHeader, $pniJoined, $pniFooter, $cniHeader, $cniJoined, $cniFooter, $projHeader, $projectTotal));
         foreach($joined->xls[count($joined->xls)-1] as $cell){
             $cell->style .= "font-weight: bold;";
@@ -64,36 +67,53 @@ class ProjectNIBudgetReportItem extends StaticReportItem {
         return $joined;
     }
     
-    private function getNamesBudget($budget){
-        return $budget->copy()
-                      ->transpose()
-                      ->where(V_PERS_NOT_NULL)
-                      ->select(V_PERS_NOT_NULL);
+    private function getNamesBudget($budget, $role=CNI){
+        $project = Project::newFromId($this->projectId);
+        $names = $budget->copy()
+                        ->transpose()
+                        ->where(V_PERS_NOT_NULL)
+                        ->select(V_PERS_NOT_NULL);
+        $allPeople = $project->getAllPeopleDuring($role, REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+        foreach($allPeople as $person){
+            $found = false;
+            foreach($names->xls as $rowN => $row){
+                $name = $row[0]->value;
+                if($person->getNameForForms() == $name){
+                    $found = true;
+                }
+            }
+            if(!$found){
+                $names = $names->union(new Budget(array(array(V_PERS_NOT_NULL)),
+                                                  array(array($person->getName()))));
+            }
+        }
+        return $names;
     }
 
-    private function getTotalBudget($budget){
-        return $budget->copy()
-                      ->transpose()
-                      ->select(CUBE_TOTAL)
-                      ->filter(HEAD1)
-                      ->filter(CUBE_TOTAL);
-    }
-    
-    private function getTotalAllocatedBudget($allocated, $names){
-        $toBeJoined = array();
+    private function getTotalBudget($budget, $names){
+        $project = Project::newFromId($this->projectId);
+        $total = $budget->copy()
+                        ->transpose()
+                        ->select(CUBE_TOTAL)
+                        ->filter(HEAD1)
+                        ->filter(CUBE_TOTAL);
         foreach($names->xls as $rowN => $row){
             $name = $row[0]->value;
-            $personBudget = $allocated->copy()
-                                      ->rasterize()
-                                      ->select(V_PERS_NOT_NULL, array($name))
-                                      ->where(CUBE_COL_TOTAL);
-            if($personBudget->nRows() > 0){
-                $toBeJoined[] = $personBudget;
-            }
-            else{
-                $toBeJoined[] = new Budget(array(array(MONEY)),
-                                           array(array("")));
-            }
+            $total = $total->union(new Budget(array(array(MONEY)),
+                                              array(array(""))));
+        }
+        return $total;
+    }
+    
+    private function getTotalAllocatedBudget($names){
+        $toBeJoined = array();
+        $project = Project::newFromId($this->projectId);
+        foreach($names->xls as $rowN => $row){
+            $name = $row[0]->value;
+            $person = Person::newFromNameLike($name);
+            $allocated = $person->getAllocatedAmount(REPORTING_YEAR, $project);
+            $toBeJoined[] = new Budget(array(array(MONEY)),
+                                       array(array($allocated)));
         }
         return Budget::union_tables($toBeJoined);
     }
@@ -112,7 +132,8 @@ class ProjectNIBudgetReportItem extends StaticReportItem {
     function render(){
         global $wgOut;
         $budget = $this->getBudget();
-        $item = $budget->render();
+        $item = "<small>Because of changes in roles and projects, the sum of the sub totals may not add up to the grand totals.  Projects may also receive funding which goes directly to the project, and not through NIs.  The grand totals should be treated as actual amounts, while the sub totals should be treated as approximations.</small><br />";
+        $item .= $budget->render();
         $item = $this->processCData($item);
         $wgOut->addHTML($item);
     }
@@ -120,7 +141,8 @@ class ProjectNIBudgetReportItem extends StaticReportItem {
     function renderForPDF(){
         global $wgOut;
         $budget = $this->getBudget();
-        $item = $budget->renderForPDF();
+        $item = "<small>Because of changes in roles and projects, the sum of the sub totals may not add up to the grand totals.  Projects may also receive funding which goes directly to the project, and not through NIs.  The grand totals should be treated as actual amounts, while the sub totals should be treated as approximations.</small><br />";
+        $item .= $budget->renderForPDF();
         $item = $this->processCData($item);
         $wgOut->addHTML($item);
     }

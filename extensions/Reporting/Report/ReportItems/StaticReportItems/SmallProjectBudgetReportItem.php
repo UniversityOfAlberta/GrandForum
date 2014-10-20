@@ -15,10 +15,10 @@ class SmallProjectBudgetReportItem extends StaticReportItem {
             $iE = $i+2;
             
             $requested = $project->getRequestedBudget($i);
-            $allocated = $project->getAllocatedBudget($i+1);
+            $allocated = $project->getAllocatedAmount($i+1);
             
             $rAmnt = '$'.@number_format(str_replace("$", "", $requested->copy()->rasterize()->where(CUBE_TOTAL)->select(CUBE_TOTAL)->toString()), 0);
-            $aAmnt = '$'.@number_format(str_replace("$", "", $allocated->copy()->rasterize()->where(CUBE_TOTAL)->select(CUBE_TOTAL)->toString()), 0);
+            $aAmnt = '$'.@number_format($allocated, 0);
             
             if($rAmnt == '$0' || $rAmnt == '$'){
                 $rAmnt = "N/A";

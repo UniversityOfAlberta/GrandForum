@@ -1566,6 +1566,36 @@ EOF;
         return $milestones;
     }
     
+    /**
+     * Returns the allocated amount that this Project received for the specified $year
+     * If the data is not in the DB then it falls back to checking the uploaded revised budgets
+     * @param int $year The allocation year
+     * @return int The amount of allocation
+     */
+    function getAllocatedAmount($year){
+        $alloc = 0;
+        $data = DBFunctions::select(array('grand_allocations'),
+                                    array('amount'),
+                                    array('project_id' => EQ($this->getId()),
+                                          'year' => EQ($year)));
+        if(count($data) > 0){
+            foreach($data as $row){
+                $alloc += $row['amount'];
+            }
+        }
+        else {
+            // Check if there was an allocated budget uploaded for this Project
+            $allocated = $this->getAllocatedBudget($year);
+            if($allocated != null){
+                $alloc = $allocated->copy()->rasterize()->where(CUBE_TOTAL)->select(CUBE_TOTAL)->toString();
+                $alloc = str_replace("$", "", $alloc);
+                $alloc = str_replace(",", "", $alloc);
+                $alloc = intval($alloc);
+            }
+        }
+        return $alloc;
+    }
+    
     function getAllocatedBudget($year){
         global $config;
         $projectBudget = null;
