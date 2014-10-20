@@ -3267,14 +3267,14 @@ class Person extends BackboneModel {
         }
         else {
             // Check if there was an allocated budget uploaded for this Person
-            $allocated = $this->getAllocatedBudget($year);
+            $allocated = $this->getAllocatedBudget($year-1);
             if($allocated != null){
                 $alloc = "";
                 if($project == null){
                     $alloc = $allocated->copy()->rasterize()->where(COL_TOTAL)->select(ROW_TOTAL)->toString();
                 }
                 else {
-                    $alloc = $allocated->copy()->rasterize()->select(V_PROJ, array("{$project->getName()}"))->where(COL_TOTAL);
+                    $alloc = $allocated->copy()->rasterize()->select(V_PROJ, array("{$project->getName()}"))->where(COL_TOTAL)->toString();
                 }
                 $alloc = str_replace("$", "", $alloc);
                 $alloc = str_replace(",", "", $alloc);

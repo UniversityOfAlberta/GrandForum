@@ -1585,7 +1585,7 @@ EOF;
         }
         else {
             // Check if there was an allocated budget uploaded for this Project
-            $allocated = $this->getAllocatedBudget($year);
+            $allocated = $this->getAllocatedBudget($year-1);
             if($allocated != null){
                 $alloc = $allocated->copy()->rasterize()->where(CUBE_TOTAL)->select(CUBE_TOTAL)->toString();
                 $alloc = str_replace("$", "", $alloc);
