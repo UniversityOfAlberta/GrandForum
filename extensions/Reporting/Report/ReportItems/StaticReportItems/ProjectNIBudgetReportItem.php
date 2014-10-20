@@ -132,7 +132,7 @@ class ProjectNIBudgetReportItem extends StaticReportItem {
     function render(){
         global $wgOut;
         $budget = $this->getBudget();
-        $item = "<small>Because of changes in roles and projects, the sum of the sub totals may not add up to the grand totals.  Projects may also receive funding which goes directly to the project, and not through NIs.  The grand totals should be treated as actual amounts, while the sub totals should be treated as approximations.</small><br />";
+        $item = "<small>Because of changes in roles and projects, the sum of the sub totals may not add up to the grand totals.  The grand totals should be treated as actual amounts, while the sub totals should be treated as approximations.</small><br />";
         $item .= $budget->render();
         $item = $this->processCData($item);
         $wgOut->addHTML($item);
@@ -141,7 +141,7 @@ class ProjectNIBudgetReportItem extends StaticReportItem {
     function renderForPDF(){
         global $wgOut;
         $budget = $this->getBudget();
-        $item = "<small>Because of changes in roles and projects, the sum of the sub totals may not add up to the grand totals.  Projects may also receive funding which goes directly to the project, and not through NIs.  The grand totals should be treated as actual amounts, while the sub totals should be treated as approximations.</small><br />";
+        $item = "<small>Because of changes in roles and projects, the sum of the sub totals may not add up to the grand totals.  The grand totals should be treated as actual amounts, while the sub totals should be treated as approximations.</small><br />";
         $item .= $budget->renderForPDF();
         $item = $this->processCData($item);
         $wgOut->addHTML($item);
