@@ -3949,7 +3949,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 		$formula = substr($recordData, 8);
 
 		// at this point we only store the shared formula for later use
-		$this->_sharedFormulas[$this->_baseCell] = $formula;
+		@$this->_sharedFormulas[$this->_baseCell] = $formula;
 
 	}
 
