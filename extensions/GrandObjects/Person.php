@@ -3250,10 +3250,16 @@ class Person extends BackboneModel {
      * Then it falls back to checking the uploaded revised budgets
      * @param int $year The allocation year
      * @param Project $project Which project this person received funding for
+     * @param boolean $byProject Whether or not to return an array index by project with each allocation amount
      * @return int The amount of allocation
      */
-    function getAllocatedAmount($year, $project=null){
-        $alloc = 0;
+    function getAllocatedAmount($year, $project=null, $byProject=false){
+        if($byProject){
+            $alloc = array();
+        }
+        else{
+            $alloc = 0;
+        }
         $data = DBFunctions::select(array('grand_allocations'),
                                     array('amount', 'project_id'),
                                     array('user_id' => EQ($this->getId()),
@@ -3261,7 +3267,12 @@ class Person extends BackboneModel {
         if(count($data) > 0){
             foreach($data as $row){
                 if($project == null || $row['project_id'] == $project->getId()){
-                    $alloc += $row['amount'];
+                    if($byProject){
+                        $alloc[$row['project_id']] = $row['amount'];
+                    }
+                    else{
+                        $alloc += $row['amount'];
+                    }
                 }
             }
         }
@@ -3269,16 +3280,34 @@ class Person extends BackboneModel {
             // Check if there was an allocated budget uploaded for this Person
             $allocated = $this->getAllocatedBudget($year-1);
             if($allocated != null){
-                $alloc = "";
                 if($project == null){
-                    $alloc = $allocated->copy()->rasterize()->where(COL_TOTAL)->select(ROW_TOTAL)->toString();
+                    if($byProject){
+                        $projects = $allocated->copy()->rasterize()->select(V_PROJ, array(".+"))->where(V_PROJ);
+                        
+                        
+                        foreach($projects->xls as $rowN => $row){
+                            foreach($row as $colN => $cell){
+                                $projectName = $cell->getValue();
+                                $proj = Project::newFromName($projectName);
+                                if($proj != null){
+                                    $alloc[$proj->getId()] = str_replace(",", "", 
+                                                             str_replace("$", "", $allocated->copy()->rasterize()->select(V_PROJ, array("$projectName"))->where(COL_TOTAL)->toString()));
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        $alloc = $allocated->copy()->rasterize()->where(COL_TOTAL)->select(ROW_TOTAL)->toString();
+                    }
                 }
                 else {
                     $alloc = $allocated->copy()->rasterize()->select(V_PROJ, array("{$project->getName()}"))->where(COL_TOTAL)->toString();
                 }
-                $alloc = str_replace("$", "", $alloc);
-                $alloc = str_replace(",", "", $alloc);
-                $alloc = intval($alloc);
+                if(!$byProject){
+                    $alloc = str_replace("$", "", $alloc);
+                    $alloc = str_replace(",", "", $alloc);
+                    $alloc = intval($alloc);
+                }
             }
         }
         return $alloc;

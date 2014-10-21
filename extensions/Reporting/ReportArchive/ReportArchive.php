@@ -405,6 +405,21 @@ class ReportArchive extends SpecialPage {
         else{
             $wgOut->addHTML("<b>No Archived PDFs were found.</b>");
         }
+        if(isset($usedRoles[PNI]) || isset($usedRoles[CNI])){
+            $alloc = $person->getAllocatedAmount($year, null, true);
+            if(count($alloc) > 0){
+                $wgOut->addHTML("<h3>Allocation (April 1 {$year} - March 31 ".($year + 1).")</h3>");
+                $wgOut->addHTML("<table cellpadding='1' cellspacing='0' style='margin-left:15px;'><tr><th style='min-width:100px;'>Project</th><th>Amount</th></tr>");
+                $sum = 0;
+                foreach($alloc as $projId => $amnt){
+                    $project = Project::newFromId($projId);
+                    $sum += $amnt;
+                    $wgOut->addHTML("<tr><td>{$project->getName()}</td><td align='right'>$".number_format($amnt, 0)."</td></tr>");
+                }
+                $wgOut->addHTML("<tr style='height:1px;background:#333333;'><td style='padding:0;' colspan='2'></td></tr>");
+                $wgOut->addHTML("<tr><td><b>Total:</b></td><td align='right'>$".number_format($sum, 0)."</td></tr></table>");
+            }
+        }
     }
 
     // Displays the project leader comments for the given project leader, and reporting year
