@@ -1147,6 +1147,7 @@ class EditMember extends SpecialPage{
     
     function generateProjectFormHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath;
+        $me = Person::newFromWgUser();
         $user = Person::newFromId($wgUser->getId());
         $myProjects = $user->getProjects();
         if(!isset($_GET['name'])){
@@ -1203,45 +1204,74 @@ class EditMember extends SpecialPage{
             });
         </script>");
         $wgOut->addHTML($hidden_checkboxes);
-        $wgOut->addHTML("<h2>Project Membership Dates</h2>You can change the project membership start and end dates for <b>{$person->getReversedName()}</b>.  You can change the start dates for all projects, however you can only change the end dates for projects that <b>{$person->getReversedName()}</b> has already been removed from.  The dates are in the format YYYY-MM-DD.");
+        
         $projects = $person->getProjectHistory(true);
-        $wgOut->addHTML("<table id='project_membership_dates' cellspacing='1' cellpadding='3' rules='all' frame='box'>
-            <thead><tr>
-                <th>Project</th><th>Start Date</th><th>End Date</th>
-            </tr></thead><tbody>");
-        foreach($projects as $project){
-            $proj = Project::newFromId($project['project_id']);
-            if($proj != null){
-                $start = substr($project['start_date'], 0, 10);
-                $end = substr($project['end_date'], 0, 10);
-                $start = "<input data-id='{$project['id']}' name='project_start_dates[{$project['id']}]' class='datepicker_start' type='text' value='$start' size='10' />";
-                $end = ($end != "0000-00-00") ? "<input data-id='{$project['id']}' name='project_end_dates[{$project['id']}]' class='datepicker_end' type='text' value='$end' size='10' />" : "";
-                $name = $proj->getName();
-                if($proj->isSubProject()){
-                    $name = "<span style='margin-left:15px;float:right;'><i>$name</i></span>";
+        if(!$me->isRoleAtLeast(MANAGER)){
+            // Manager can see all projects, but if not Manager then filter out some projects
+            foreach($projects as $key => $proj){
+                $project = Project::newFromId($proj['project_id']);
+                if($project->isDeleted()){
+                    unset($projects[$key]);
                 }
-                $wgOut->addHTML("<tr><td>{$name}</td><td>{$start}</td><td>{$end}</td></tr>");
+            }
+            $foundSup = false;
+            foreach($person->getSupervisors(true) as $sup){
+                if($sup->getId() == $me->getId()){
+                    $foundSup = true;
+                }
+            }
+            if(!$foundSup){
+                foreach($projects as $key => $proj){
+                    $project = Project::newFromId($proj['project_id']);
+                    if(!($me->leadershipOf($project) || 
+                        ($project->isSubProject() && $me->leadershipOf($project->getParent())))){
+                        // Access not allowed
+                        unset($projects[$key]);
+                    }
+                }
             }
         }
-        $wgOut->addHTML("</tbody></table>
-        <script type='text/javascript'>
-            $('.datepicker_start').datepicker({
-                dateFormat: 'yy-mm-dd',
-                changeMonth: true,
-                changeYear: true,
-                onClose: function(selectedDate){
-                    $('.datepicker_end[data-id=' + $(this).attr('data-id') + ']').datepicker('option', 'minDate', selectedDate);
+        if(count($projects) > 0){
+            $wgOut->addHTML("<h2>Project Membership Dates</h2>You can change the project membership start and end dates for <b>{$person->getReversedName()}</b>.  You can change the start dates for all projects, however you can only change the end dates for projects that <b>{$person->getReversedName()}</b> has already been removed from.  The dates are in the format YYYY-MM-DD.");
+            
+            $wgOut->addHTML("<table id='project_membership_dates' cellspacing='1' cellpadding='3' rules='all' frame='box'>
+                <thead><tr>
+                    <th>Project</th><th>Start Date</th><th>End Date</th>
+                </tr></thead><tbody>");
+            foreach($projects as $project){
+                $proj = Project::newFromId($project['project_id']);
+                if($proj != null){
+                    $start = substr($project['start_date'], 0, 10);
+                    $end = substr($project['end_date'], 0, 10);
+                    $start = "<input data-id='{$project['id']}' name='project_start_dates[{$project['id']}]' class='datepicker_start' type='text' value='$start' size='10' />";
+                    $end = ($end != "0000-00-00") ? "<input data-id='{$project['id']}' name='project_end_dates[{$project['id']}]' class='datepicker_end' type='text' value='$end' size='10' />" : "";
+                    $name = $proj->getName();
+                    if($proj->isSubProject()){
+                        $name = "<span style='margin-left:15px;float:right;'><i>$name</i></span>";
+                    }
+                    $wgOut->addHTML("<tr><td>{$name}</td><td>{$start}</td><td>{$end}</td></tr>");
                 }
-            });
-            $('.datepicker_end').datepicker({
-                dateFormat: 'yy-mm-dd',
-                changeMonth: true,
-                changeYear: true,
-                onClose: function(selectedDate){
-                    $('.datepicker_start[data-id=' + $(this).attr('data-id') + ']').datepicker('option', 'maxDate', selectedDate);
-                }
-            });
-        </script>");
+            }
+            $wgOut->addHTML("</tbody></table>
+            <script type='text/javascript'>
+                $('.datepicker_start').datepicker({
+                    dateFormat: 'yy-mm-dd',
+                    changeMonth: true,
+                    changeYear: true,
+                    onClose: function(selectedDate){
+                        $('.datepicker_end[data-id=' + $(this).attr('data-id') + ']').datepicker('option', 'minDate', selectedDate);
+                    }
+                });
+                $('.datepicker_end').datepicker({
+                    dateFormat: 'yy-mm-dd',
+                    changeMonth: true,
+                    changeYear: true,
+                    onClose: function(selectedDate){
+                        $('.datepicker_start[data-id=' + $(this).attr('data-id') + ']').datepicker('option', 'maxDate', selectedDate);
+                    }
+                });
+            </script>");
+        }
     }
 
     function generatePLFormHTML($wgOut){
