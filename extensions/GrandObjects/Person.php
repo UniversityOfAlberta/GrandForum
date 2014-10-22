@@ -1679,7 +1679,42 @@ class Person extends BackboneModel {
             $roles[] = new Role(array(0 => $row));
         }
         return $roles;        
-    }   
+    }
+    
+    function getProjectHistory($groupBySubs=false){
+        $projects = array();
+        $data = DBFunctions::select(array('grand_project_members'),
+                                    array('*'),
+                                    array('user_id' => EQ($this->getId())));
+        foreach($data as $row){
+            $start = $row['start_date'];
+            $end = $row['end_date'];
+            if($end == "0000-00-00 00:00:00"){
+                $end = "9999";
+            }
+            $tmpProjects[$end.$start.$row['id']] = $row;
+        }
+        ksort($tmpProjects);
+        $projects = array_reverse($tmpProjects);
+        if($groupBySubs){
+            $tmpProjects = array();
+            foreach($projects as $proj){
+                $project = Project::newFromId($proj['project_id']);
+                if($project != null && !$project->isSubProject()){
+                    $tmpProjects[] = $proj;
+                    foreach($projects as $id => $proj2){
+                        $sub = Project::newFromId($proj2['project_id']);
+                        if($sub != null && $sub->isSubProject() && $sub->getParent()->getId() == $project->getId()){
+                            $tmpProjects[] = $proj2;
+                            unset($projects[$id]);
+                        }  
+                    }
+                }
+            }
+            $projects = $tmpProjects;
+        }
+        return $projects;
+    }
     
     // Returns an array of Projects that this Person is a part of
     // If history is set to true, then all the Projects regardless of date are included

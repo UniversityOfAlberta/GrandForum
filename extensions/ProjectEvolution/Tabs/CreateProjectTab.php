@@ -242,7 +242,9 @@ EOF;
                         if($name != ""){
                             $_POST['role'] = $_POST['role'] = $_POST['acronym'];
                             $_POST['user'] = $name;
+                            $champ = Person::newFromName($name);
                             APIRequest::doAction('AddProjectMember', true);
+                            MailingList::subscribeAll($champ);
                         }
                     }
                 }

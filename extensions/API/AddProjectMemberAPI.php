@@ -59,7 +59,7 @@ class AddProjectMemberAPI extends API{
             }
             Cache::delete("project{$project->getId()}_people", true);
             $person->projects = null;
-            MailingList::subscribeAll($person);
+            //MailingList::subscribeAll($person);
             if(!$noEcho){
                 echo "{$person->getReversedName()} added to {$project->getName()}\n";
             }

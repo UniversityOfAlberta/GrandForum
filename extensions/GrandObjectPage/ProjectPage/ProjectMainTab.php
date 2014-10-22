@@ -83,7 +83,9 @@ class ProjectMainTab extends AbstractEditableTab {
                 $_POST['role'] = $this->project->getName();
                 $_POST['user'] = $champ->getName();
                 $_POST['comment'] = "Automatic Removal";
+                MailingList::unsubscribeAll($champ);
                 APIRequest::doAction('DeleteProjectMember', true);
+                MailingList::subscribeAll($champ);
             }
         }
         
@@ -93,7 +95,9 @@ class ProjectMainTab extends AbstractEditableTab {
                 if($name != ""){
                     $_POST['role'] = $this->project->getName();
                     $_POST['user'] = $name;
+                    $champ = Person::newFromName($name);
                     APIRequest::doAction('AddProjectMember', true);
+                    MailingList::subscribeAll($champ);
                 }
             }
         }

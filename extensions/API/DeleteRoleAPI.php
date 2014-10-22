@@ -29,7 +29,7 @@ class DeleteRoleAPI extends API{
                     exit;
                 }
             }
-            MailingList::unsubscribeAll($person);
+            //MailingList::unsubscribeAll($person);
             $effectiveDate = "CURRENT_TIMESTAMP";
             if(isset($_POST['effective_date']) && $_POST['effective_date'] != ""){
                 $effectiveDate = "'{$_POST['effective_date']} 00:00:00'";
@@ -62,7 +62,7 @@ class DeleteRoleAPI extends API{
             Cache::delete("personRolesDuring".$person->getId(), true);
             Person::$rolesCache = array();
             $person->roles = null;
-            MailingList::subscribeAll($person);
+            //MailingList::subscribeAll($person);
             if(!$noEcho){
                 echo "{$person->getReversedName()} deleted from $role\n";
             }

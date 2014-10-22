@@ -55,6 +55,7 @@ class AddProjectLeaderAPI extends API{
 
             if(!$person->isMemberOf($project)){
                 APIRequest::doAction('AddProjectMember', true);
+                MailingList::subscribeAll($person);
             }
 
             $sql = "INSERT INTO grand_project_leaders (`user_id`,`project_id`,`type`,`start_date`)

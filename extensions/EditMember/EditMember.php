@@ -112,6 +112,7 @@ class EditMember extends SpecialPage{
         else{
             // The Form has been entered
             $person = @Person::newFromName(str_replace(" ", ".", $_POST['name']));
+            
             $p_current = array();
             $r_current = array();
             $projects = $person->getProjects();
@@ -390,6 +391,43 @@ class EditMember extends SpecialPage{
                         $_POST['name'] = $person->getName();
                         APIRequest::doAction('AddThemeLeader', true);
                         $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a co-theme leader {$theme->getAcronym()}");
+                    }
+                }
+            }
+            
+            // Process date changes
+            if(isset($_POST['project_start_dates'])){
+                $projectHistory = $person->getProjectHistory(true);
+                foreach($_POST['project_start_dates'] as $id => $start_date){
+                    $project = array();
+                    foreach($projectHistory as $proj){
+                        if($id == $proj['id']){
+                            $project = $proj;
+                        }
+                    }
+                    if(isset($project['id'])){
+                        $proj = Project::newFromId($project['project_id']);
+                        if(isset($_POST['project_end_dates'][$id])){
+                            $end_date = $_POST['project_end_dates'][$id];
+                            if(substr($project['start_date'], 0, 10) != $start_date || 
+                               substr($project['end_date'], 0, 10) != $end_date){
+                                DBFunctions::update('grand_project_members',
+                                                    array('start_date' => $start_date,
+                                                          'end_date' => $end_date),
+                                                    array('id' => $id,
+                                                          'user_id' => $person->getId()));
+                                $wgMessage->addSuccess("Changed dates for the project <b>{$proj->getName()}</b>");
+                            }
+                        }
+                        else{
+                            if(@substr($project['start_date'], 0, 10) != $start_date){
+                                DBFunctions::update('grand_project_members',
+                                                    array('start_date' => $start_date),
+                                                    array('id' => $id,
+                                                          'user_id' => $person->getId()));
+                                $wgMessage->addSuccess("Changed dates for the project <b>{$proj->getName()}</b>");
+                            }
+                        }
                     }
                 }
             }
@@ -1165,6 +1203,45 @@ class EditMember extends SpecialPage{
             });
         </script>");
         $wgOut->addHTML($hidden_checkboxes);
+        $wgOut->addHTML("<h2>Project Membership Dates</h2>You can change the project membership start and end dates for <b>{$person->getReversedName()}</b>.  You can change the start dates for all projects, however you can only change the end dates for projects that <b>{$person->getReversedName()}</b> has already been removed from.  The dates are in the format YYYY-MM-DD.");
+        $projects = $person->getProjectHistory(true);
+        $wgOut->addHTML("<table id='project_membership_dates' cellspacing='1' cellpadding='3' rules='all' frame='box'>
+            <thead><tr>
+                <th>Project</th><th>Start Date</th><th>End Date</th>
+            </tr></thead><tbody>");
+        foreach($projects as $project){
+            $proj = Project::newFromId($project['project_id']);
+            if($proj != null){
+                $start = substr($project['start_date'], 0, 10);
+                $end = substr($project['end_date'], 0, 10);
+                $start = "<input data-id='{$project['id']}' name='project_start_dates[{$project['id']}]' class='datepicker_start' type='text' value='$start' size='10' />";
+                $end = ($end != "0000-00-00") ? "<input data-id='{$project['id']}' name='project_end_dates[{$project['id']}]' class='datepicker_end' type='text' value='$end' size='10' />" : "";
+                $name = $proj->getName();
+                if($proj->isSubProject()){
+                    $name = "<span style='margin-left:15px;float:right;'><i>$name</i></span>";
+                }
+                $wgOut->addHTML("<tr><td>{$name}</td><td>{$start}</td><td>{$end}</td></tr>");
+            }
+        }
+        $wgOut->addHTML("</tbody></table>
+        <script type='text/javascript'>
+            $('.datepicker_start').datepicker({
+                dateFormat: 'yy-mm-dd',
+                changeMonth: true,
+                changeYear: true,
+                onClose: function(selectedDate){
+                    $('.datepicker_end[data-id=' + $(this).attr('data-id') + ']').datepicker('option', 'minDate', selectedDate);
+                }
+            });
+            $('.datepicker_end').datepicker({
+                dateFormat: 'yy-mm-dd',
+                changeMonth: true,
+                changeYear: true,
+                onClose: function(selectedDate){
+                    $('.datepicker_start[data-id=' + $(this).attr('data-id') + ']').datepicker('option', 'maxDate', selectedDate);
+                }
+            });
+        </script>");
     }
 
     function generatePLFormHTML($wgOut){
@@ -1285,6 +1362,7 @@ class EditMember extends SpecialPage{
         // Admin Accepted
         $person = Person::newFromId($_POST['user']);
         //Process Project Changes
+        MailingList::subscribeAll($person);
         if($_POST['type'] == "PROJECT"){
             $unsubscribed = array();
             $comments = explode("::", $_POST['comment']);
@@ -1387,6 +1465,7 @@ class EditMember extends SpecialPage{
                                   'staff' => $user->getId(),
                                   'created' => 1),
                             array('id' => $_POST['id']));
+        MailingList::subscribeAll($person);
     }
     
     function parse($text){

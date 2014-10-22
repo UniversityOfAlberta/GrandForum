@@ -36,7 +36,7 @@ class DeleteProjectMemberAPI extends API{
                     exit;
                 }
             }
-            MailingList::unsubscribeAll($person);
+            //MailingList::unsubscribeAll($person);
             $effectiveDate = "CURRENT_TIMESTAMP";
             if(isset($_POST['effective_date']) && $_POST['effective_date'] != ""){
                 $effectiveDate = "'{$_POST['effective_date']} 00:00:00'";
@@ -77,7 +77,7 @@ class DeleteProjectMemberAPI extends API{
             }
             Cache::delete("project{$project->getId()}_people", true);
             $person->projects = null;
-            MailingList::subscribeAll($person);
+            //MailingList::subscribeAll($person);
             if(!$noEcho){
                 echo "{$person->getReversedName()} deleted from {$project->getName()}\n";
             }
