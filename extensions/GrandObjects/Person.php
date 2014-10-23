@@ -45,7 +45,6 @@ class Person extends BackboneModel {
     var $multimedia;
     var $acknowledgements;
     var $aliases = false;
-    var $budgets = array();
     var $leadershipCache = array();
     var $themesCache = array();
     var $hqpCache = array();
@@ -3355,10 +3354,6 @@ class Person extends BackboneModel {
      */
     function getAllocatedBudget($year){
         global $wgServer,$wgScriptPath;
-        $index = 's'.$year;
-        if(isset($this->budgets[$index])){
-            return unserialize($this->budgets[$index]);
-        }
         return $this->getRequestedBudget($year, RES_ALLOC_BUDGET);
     }
     
@@ -3376,9 +3371,6 @@ class Person extends BackboneModel {
         else{
             $index = 's'.$year;
         }
-        if(isset($this->budgets[$index])){
-            return unserialize($this->budgets[$index]);
-        }
         $uid = $this->id;
        
         $blob_type=BLOB_EXCEL;
@@ -3391,40 +3383,33 @@ class Person extends BackboneModel {
         $budget_blob->load($rep_addr);
         $lastChanged = $budget_blob->getLastChanged();
         $fileName = CACHE_FOLDER."personBudget{$this->id}_$index";
-        if(file_exists($fileName)){
-            $contents = unserialize(implode("", gzfile($fileName)));
+        if(Cache::exists($fileName)){
+            $contents = Cache::fetch($fileName);
             if(strcmp($contents[0], $lastChanged) == 0){
-                $this->budgets[$index] = serialize($contents[1]);
-                return unserialize($this->budgets[$index]);
+                return $contents[1];
             }
         }
         $data = $budget_blob->getData();
         if (! empty($data)) {
             if($year != 2010 && $type == RES_BUDGET){
-                $this->budgets[$index] = new Budget("XLS", REPORT2_STRUCTURE, $data);
+                $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
             }
             else if($year == 2010 && $type == RES_BUDGET){
-                $this->budgets[$index] = new Budget("CSV", REPORT_STRUCTURE, $data);
+                $budget = new Budget("CSV", REPORT_STRUCTURE, $data);
             }
             else {
                 if($type == RES_ALLOC_BUDGET && $this->isRoleDuring(CNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
-                    $this->budgets[$index] = new Budget("XLS", REPORT2_STRUCTURE, $data);
+                    $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
                 }
                 else{
-                    $this->budgets[$index] = new Budget("XLS", SUPPLEMENTAL_STRUCTURE, $data);
+                    $budget = new Budget("XLS", SUPPLEMENTAL_STRUCTURE, $data);
                 }
             }
-            if($this->budgets[$index]->nRows()*$this->budgets[$index]->nCols() > 1){
-                $this->budgets[$index]->xls[0][1]->setValue($this->getNameForForms());
+            if($budget->nRows()*$budget->nCols() > 1){
+                $budget->xls[0][1]->setValue($this->getNameForForms());
             }
-            if(is_writable(CACHE_FOLDER)){
-                $contents = array($lastChanged, $this->budgets[$index]);
-                $zp = gzopen($fileName, "w9");
-                gzwrite($zp, serialize($contents));
-                gzclose($zp);
-            }
-            $this->budgets[$index] = serialize($this->budgets[$index]);
-            return unserialize($this->budgets[$index]);
+            Cache::store($fileName, array($lastChanged, $budget), 3600*24); // Store for 24 hours
+            return $budget;
         }
         else{
             return null;
