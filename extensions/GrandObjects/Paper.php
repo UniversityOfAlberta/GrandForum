@@ -645,9 +645,12 @@ class Paper extends BackboneModel{
                 }
                 $authors[] = $person;
             }
-            return $authors;
+            //return $authors;
             $this->authorsWaiting = false;
             $this->authors = $authors;
+        }
+        if(!is_array($this->authors)){
+            return array();
         }
         return $this->authors;
     }
