@@ -1234,7 +1234,7 @@ class EditMember extends SpecialPage{
         if(count($projects) > 0){
             $wgOut->addHTML("<h2>Project Membership Dates</h2>You can change the project membership start and end dates for <b>{$person->getReversedName()}</b>.  You can change the start dates for all projects, however you can only change the end dates for projects that <b>{$person->getReversedName()}</b> has already been removed from.  The dates are in the format YYYY-MM-DD.");
             
-            $wgOut->addHTML("<table id='project_membership_dates' cellspacing='1' cellpadding='3' rules='all' frame='box'>
+            $wgOut->addHTML("<table class='dashboard' id='project_membership_dates' cellspacing='1' cellpadding='3' rules='all' frame='box'>
                 <thead><tr>
                     <th>Project</th><th>Start Date</th><th>End Date</th>
                 </tr></thead><tbody>");

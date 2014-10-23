@@ -1588,6 +1588,6 @@ input.popupBlockSearch {
 
 /* Dashboard */
 
-table.dashboard, table.dashboard tr, table.dashboard tr td {
+table.dashboard, table.dashboard tr, table.dashboard tr td, table.dashboard tr th {
     border-color: gray;
 }

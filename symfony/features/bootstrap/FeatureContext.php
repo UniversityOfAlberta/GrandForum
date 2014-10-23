@@ -35,16 +35,13 @@ use Behat\Gherkin\Node\PyStringNode,
 //
 // Require 3rd-party libraries here:
 //
-   require_once 'PHPUnit/Autoload.php';
-   require_once 'PHPUnit/Framework/Assert/Functions.php';
-//
+   require_once 'vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
 
 /**
  * Features context.
  */
 class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
 
-    static $dbJSON = array();
     static $scenarioId = 0;
     static $stepId;
     

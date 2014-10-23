@@ -5,14 +5,14 @@ Feature: EditMember
 
     Scenario: Two different requests happening at the same time, and then accepted
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
-        When I follow "Edit Member"
+        When I follow "Edit Roles"
         And I select "PNI User1" from "names"
         And I press "Next"
         And I click by css "#ProjectsTab"
         And I check "p_wpNS_Phase2Project3"
         And I check "p_wpNS_Phase2Project4"
         And I press "Submit Request"
-        And I follow "Edit Member"
+        And I follow "Edit Roles"
         And I select "PNI User1" from "names"
         And I press "Next"
         And I click by css "#ProjectsTab"
@@ -32,14 +32,14 @@ Feature: EditMember
         
     Scenario: PNI Removed from 3 projects but in two separate requests, and then accepted
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
-        When I follow "Edit Member"
+        When I follow "Edit Roles"
         And I select "PNI User1" from "names"
         And I press "Next"
         And I click by css "#ProjectsTab"
         And I uncheck "p_wpNS_Phase2Project3"
         And I uncheck "p_wpNS_Phase2Project4"
         And I press "Submit Request"
-        And I follow "Edit Member"
+        And I follow "Edit Roles"
         And I select "PNI User1" from "names"
         And I press "Next"
         And I click by css "#ProjectsTab"
@@ -59,7 +59,7 @@ Feature: EditMember
 
     Scenario: PNI Editing HQP's projects
         Given I am logged in as "PNI.User1" using password "PNI.Pass1"
-        When I follow "Edit Member"
+        When I follow "Edit Roles"
         And I select "HQP User1" from "names"
         And I press "Next"
         And I follow "ProjectsTab"
@@ -69,7 +69,7 @@ Feature: EditMember
         
     Scenario: PNI Inactivating HQP
         Given I am logged in as "PNI.User1" using password "PNI.Pass1"
-        When I follow "Edit Member"
+        When I follow "Edit Roles"
         And I select "HQP ToBeInactivated" from "names"
         And I press "Next"
         And I uncheck "role_HQP"
@@ -85,7 +85,7 @@ Feature: EditMember
         
     Scenario: Admin Adding PL (Make sure PL is also added to project, and subscribed to mailing list)
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
-        When I follow "Edit Member"
+        When I follow "Edit Roles"
         And I select "PNI User3" from "names"
         And I press "Next"
         And I follow "LeadershipTab"
@@ -100,7 +100,7 @@ Feature: EditMember
         
     Scenario: Admin Removing PL (Make sure that PL is also removed from the mailing list)
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
-        When I follow "Edit Member"
+        When I follow "Edit Roles"
         And I select "PNI User3" from "names"
         And I press "Next"
         And I follow "LeadershipTab"
@@ -111,7 +111,7 @@ Feature: EditMember
         
     Scenario: PL Editing RMC project members (Should see RMC who are also PNI, but not people who are only RMC)
         Given I am logged in as "PL.User1" using password "PL.Pass1"
-        When I follow "Edit Member"
+        When I follow "Edit Roles"
         Then I should see "RMC User1"
         But I should not see "RMC User2"
         When I select "RMC User1" from "names"
@@ -121,5 +121,5 @@ Feature: EditMember
         
     Scenario: PL Editing Champ project members
         Given I am logged in as "PL.User1" using password "PL.Pass1"
-        When I follow "Edit Member"
+        When I follow "Edit Roles"
         Then I should see "Champ User1"
