@@ -23,7 +23,7 @@
             <![CDATA[
                 <h3> Reporting on the <i>January 2014 - December 2014</i> Activities</h3>
 
-                <p>This year's reporting is similar to last year's with a few changes due to the fact that, effective April 1st 2014, GRAND has entered Phase2. The report narrative section should refer to your activities from January 2014 to December 2014 on Phase2 projects. Activities related to Phase1 projects can be reported in relevant text-boxes under Sections A-through-D in the <b><i>Report</i></b> page.</p>
+                <p>This year's reporting is similar to last year's with a few changes due to the fact that, effective April 1st 2014, activity on Phase1 projects officially ended and activity on Phase2 projects officially began. The report narrative section is expected mainly to refer to your activities from January 2014 to December 2014 on Phase2 projects, however, activities related to Phase1 projects can also be reported in relevant text-boxes under Sections A-through-D in the <b><i>Report</i></b> page.</p>
                     
                 <p>The <b><i>Completion Status</i></b> page consists of two parts:
                 <ul>
@@ -37,7 +37,6 @@
                 <ul>
                     <li>Regarding the products reported in the <b><i>Dashboard</i></b>, the degree to which their descriptions are complete is examined.</li>
                     <li>Regarding the open-ended sections of the <b><i>Report</i></b>, the number of text-boxes edited and whether or not any of them exceed the maximum number of characters allowed is examined.</li>
-                    <li>The status of your revised allocated budget is examined.</li>
                     <li>The number of your HQP that have reported (vs. the total number of your HQP) is examined.</li>
                 </ul>
 
@@ -107,7 +106,7 @@
                 <ul>
                  <li> a <i>Summary of the NI Personal Information</i>, </li>
                  <li> the <i>Top 5 Research Outcomes</i> list, and</li>
-                 <li> the <i>Productivity Dashboard</i> table.</li>
+                 <li> the <i>Productivity Overview</i> table.</li>
                 </ul>
 
                 <h3> The <i>Top 5 Research Outcomes</i> list </h3>
@@ -128,7 +127,7 @@
                  </li>
                 </ol>
                  
-                <h3>The <i>Productivity Dashboard</i> Table</h3>
+                <h3>The <i>Productivity Overview</i> Table</h3>
 
                 This table reports the aggregate numbers of all known outcomes co-produced by the Researcher (HQP or NI) organized in rows, where each row corresponds to a Project associated with the Researcher and each column corresponds to a different type of research outcome. More specifically, the table includes the following columns: 
                 <b><i>HQP, </i></b> 
@@ -151,7 +150,7 @@
                 <p> Finally, clicking on the link in any of the cells produces a listing below the Dashboard table with all the relevant details. 
                 </p>
 
-                <h4>The <i>Productivity Dashboard</i> Table Columns</h4>
+                <h4>The <i>Productivity Overview</i> Table Columns</h4>
 
                 <p>Under <b><i>HQP</i></b>, the table reports the HQP who have been listed as being supervised by the Researcher.
                 <i><br>Note: This column is not included in the HQP Dashboard.</i> 
@@ -165,7 +164,7 @@
 
                 <p>Under <b><i>Presentations</i></b>, the table reports any conference presentations, panel statements, seminars etc. given by the Researcher (associated with the Project).</p>
 
-                <p>Under <b><i>Awards</i></b>, the table reports awards bestowed to the Researcher (associated with the Project).</p>
+                <p>Under <b><i>Awards</i></b>, the table reports awards bestowed on the Researcher (associated with the Project).</p>
 
                 <p>Under <b><i>Press</i></b>, the table reports any press pieces mentioning the Researcher (associated with the Project).</p>
 
@@ -205,7 +204,7 @@
     <ReportSection id="report" name="Report" tooltip="Open-ended report narratives" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
-                <p>The intent of <b><i>Report</i></b> page is to enable each NI Report in an open-ended format on his/her activities and accomplishments during the term of the report.</p>
+                <p>The intent of <b><i>Report</i></b> page is to enable each NI to Report in an open-ended format on his/her activities and accomplishments during the term of the report.</p>
 
                 <i>NOTE: Clicking on the second-level headings of this page will cause the page to expand (contract) to show (hide) text boxes in which you can provide your information. The color of the heading indicates whether the text under this heading meets (purple) or exceeds (red) the maximum permitted number of characters.</i>
 
@@ -237,12 +236,12 @@
 
                 <p>We do not expect each researcher to contribute equally to success against each criterion, but researchers with stronger contributions in several of the criteria will receive a more positive evaluation than those without strong contributions in at least some of the criteria. As such, please give us information about your contributions as measured by these criteria if relevant and significant.</p>
 
-                <p>Note that for each of the first four of the five criteria, the text box is "split" into a number of separate fields corresponding to the Phase2 projects with which you are involved and a last field dedicated to all your Phase1 projects. This is necessary for practical purposes, in order to forward the project-specific information to the corresponding project leader. The project-specific entries will be made available to the applicable project leader for assistance in the preparation of the Project Report. However, no matter the number of projects, each of the five criterion sections will be read as a whole as part of your individual evaluation as a researcher, so please construct your responses accordingly. Please feel free to devote unequal space to the individual projects and to make sure that the overall section reads well and communicates the information you want to communicate about your activity. You can see the overall report by clicking the "Preview" link right next to each of the criterion headings.</p>
+                <p>Note that for each of the first four of the five criteria, the text box is "split" into a number of separate fields corresponding to the Phase2 projects with which you are involved and a last field dedicated to all your Phase1 projects. This division is necessary for practical purposes, in order to forward the project-specific information to the corresponding project leader. The project-specific entries will be made available to the applicable project leader for assistance in the preparation of the Project Report. However, no matter the number of projects, each of the five criterion sections will be read as a whole as part of your individual evaluation as a researcher, so please construct your responses accordingly. Please feel free to devote unequal space to the individual projects and to make sure that the overall section reads well and communicates the information you want to communicate about your activity. You can see the overall report by clicking the "Preview" link right next to each of the criterion headings.</p>
 
                 <h4>A. Excellence of the Research Program</h4>
                 <i>(Reported by Project - Overall Limit (across all projects): 1800 characters)</i>
 
-                <p>The Network's research program must be driven to address Canadian needs and problems, and is therefore expected to be multidisciplinary and multi-sectoral.<br />
+                <p>The Network's research program must be driven to address Canadian needs and problems, and it is therefore expected to be multidisciplinary and multi-sectoral.<br />
                 In this section you should describe</p>
                 <ul>
                     <li>the excellence of your research on a world scale and how it compares to leading efforts in other places;</li>
@@ -254,7 +253,7 @@
                 <h4>B. Development of Highly Qualified Personnel</h4>
                 <i>(Reported by Project - Overall Limit (across all projects): 1800 characters)</i>
 
-                <p>The training and retention of HQP is imperative to maximize the effectiveness of the Network’s contribution to the wealth, wellness and well being of Canadians. The Training Program proposed by the Network is expected to add value to the formal training initiatives already available through the academic community and should aim at helping students find employment in the Canadian economy (i.e., private sector partners, government, etc.). The multidisciplinary and multi-sectoral nature of a Network should be utilized to provide unique mentorship and training opportunities to maximize HQP retention and integration in all facets of the workforce.</p>
+                <p>The training and retention of HQP is imperative to maximize the effectiveness of the Network's contribution to the wealth, wellness and well being of Canadians. The Training Program proposed by the Network is expected to add value to the formal training initiatives already available through the academic community and should aim at helping students find employment in the Canadian economy (i.e., private sector partners, government, etc.). The multidisciplinary and multi-sectoral nature of a Network should be utilized to provide unique mentorship and training opportunities to maximize HQP retention and integration in all facets of the workforce.</p>
                 <p>Please use this space to highlight the most significant examples that demonstrate added value to the training of HQP, and comment on the "philosophy" or approach for training HQP to position them well to contribute to digital media in Canada.</p>
                 <ul>
                     <li>How did the existence of the project affect the HQP (to get better training or position them better for jobs in Canada)?</li>
@@ -268,7 +267,7 @@
 
                 <p>The Network must demonstrate that it has brought together the key individuals and organizations needed to generate and implement multifaceted solutions to the complex Canadian challenges it is designed to address.</p>
                 <p>Describe your activities networking with other GRAND researchers and projects, and researchers outside of GRAND.
-                Describe your involvement with receptor organizations, industry partners and Project Champions.</p>
+                Describe your involvement with receptor organizations, industry partners and Receptor Community Champions.</p>
                 <p>How have these connections accelerated your research or broadened its scope and applicability?</p>
                 <p>You can reference Project Members by writing "@Project Member Name" in the text box and select the member from the drop-down box appearing below the textbox.</p>
 
@@ -276,7 +275,7 @@
                 <i>(Reported by Project - Overall Limit (across all projects): 1800 characters)</i>
 
                 <p>NCE Networks and Centres are expected to generate social and economic benefits by ensuring the rapid flow of ideas and innovations from researchers to Canadian receptors. Applicants are expected to demonstrate that the appropriate activities will be undertaken and the appropriate resources allocated to maximize those benefits.</p>
-                <p>Describe the interactions with receptors, companies, Project Champions and others in which research challenges and outcomes from your work were discussed or presented.</p>
+                <p>Describe the interactions with receptors, companies, Receptor Community Champions and others in which research challenges and outcomes from your work were discussed or presented.</p>
                 <p>Describe any student internships, transfers of technology, unique publications, or other evidence of the impact of your research. How has the existence of GRAND, or GRAND personnel, influenced these activities?</p>
 
                 <h4>E. Management of the Network</h4>
@@ -289,7 +288,7 @@
                 <h4>Outlook: My Plans for 2015 in GRAND</h4>
                 <i>(Report by Phase 2 Project - Overall Limit (across all Phase 2 projects): 3600 characters)</i>
 
-                <p>In this section, you should discuss your objectives and plans of your Phase 2 projects for the upcoming year. To that end you should contact the PL or co-PL of Phase2 projects in order to get added to their projects.</p>
+                <p>In this section, you should discuss your objectives and plans for your Phase 2 projects for the upcoming year. If you are not currently listed on a project, you should contact the PL or co-PL of that project in order to get added to it.</p>
                 <p>You can reference Sub-Projects by writing "@Sub-Project Name" in the text box and select the sub-project from the drop-down box appearing below the textbox.</p>
 
                 <h3>Reflections: Other Aspects of my involvement in GRAND</h3>
