@@ -45,6 +45,7 @@ class Person extends BackboneModel {
     var $multimedia;
     var $acknowledgements;
     var $aliases = false;
+    var $budgets = array();
     var $leadershipCache = array();
     var $themesCache = array();
     var $hqpCache = array();
@@ -3389,6 +3390,14 @@ class Person extends BackboneModel {
                 return $contents[1];
             }
         }
+        if(file_exists($fileName)){
+            // Check file cache as backup
+            $contents = unserialize(implode("", gzfile($fileName)));
+            if(strcmp($contents[0], $lastChanged) == 0){
+                Cache::store($fileName, $contents);
+                return $contents[1];
+            }
+        }
         $data = $budget_blob->getData();
         if (! empty($data)) {
             if($year != 2010 && $type == RES_BUDGET){
@@ -3408,7 +3417,13 @@ class Person extends BackboneModel {
             if($budget->nRows()*$budget->nCols() > 1){
                 $budget->xls[0][1]->setValue($this->getNameForForms());
             }
-            Cache::store($fileName, array($lastChanged, $budget), 3600*24); // Store for 24 hours
+            $contents = array($lastChanged, $budget);
+            Cache::store($fileName, $contents);
+            if(is_writable(CACHE_FOLDER)){
+                $zp = gzopen($fileName, "w9");
+                gzwrite($zp, serialize($contents));
+                gzclose($zp);
+            }
             return $budget;
         }
         else{
