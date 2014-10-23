@@ -11,15 +11,15 @@
     <ReportSection id="dashboard" name="Dashboard" tooltip="Overview of this year's activity and productivity" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="true">
         <Instructions>
             <![CDATA[
-                <p>The <b><i>Dashboard</i></b> page is designed to provide an overview of a Researcher's activity, throughout the GRAND lifecycle (in the case of the <b><i>My Profile => Dashboard</i></b>) or during the current reporting year, January 1st to December 31st (in the case of the <b><i>My Reports => NI (or HQP) => Dashboard</i></b>).
+                <p>The <b><i>Dashboard</i></b> page is designed to provide an overview of a Researcher's activity, either throughout the GRAND lifecycle (in the case of the <b><i>My Profile => Dashboard</i></b>) or during the current reporting year, January 1st to December 31st (in the case of the <b><i>My Reports => HQP => Dashboard</i></b>).
         
 <p>The <b><i>HQP Dashboard</i></b> page consists of two parts:
 <ul>
  <li> <i>Summary of the HQP Personal Information</i>, and</li>
- <li> the <i>Productivity Dashboard</i> table.</li>
+ <li> the <i>Productivity Overview</i> table.</li>
 </ul>
  
-<h3>The <i>Productivity Dashboard</i> Table</h3>
+<h3>The <i>Productivity Overview</i> Table</h3>
 
 This table reports the aggregate numbers of all known outcomes co-produced by the HQP organized in rows, where each row corresponds to a Project associated with the HQP and each column corresponds to a different type of research outcome. More specifically, the table includes the following columns: 
 <b><i>Publications, </i></b>
@@ -35,12 +35,12 @@ This table reports the aggregate numbers of all known outcomes co-produced by th
 <p> In the case of the <b><i>Profile Dashboard</i></b> page, the table reports all known outcomes co-produced by the HQP. In the case of the <b><i>Report Dashboard</i></b> page, the table reports outcomes that have appeared in the current reporting year or are scheduled to appear on a date within a two-year window in the future. 
 </p>
 
-<p> Note that each row of the table is project-specific and there might be redundancy across some rows, when for example a publication is related to more than one of the Researcher's projects. The 'Total' row only reports unique entities.</p></p>
+<p> Note that each row of the table is project-specific and there might be redundancy across some rows, when for example a publication is related to more than one of the Researcher's projects.  However, the 'Total' row only reports unique entities.</p></p>
 
 <p> Finally, clicking on the link in any of the cells produces a listing below the Dashboard table with all the relevant details. 
 </p>
 
-<h4>The <i>Productivity Dashboard</i> Table Columns</h4>
+<h4>The <i>Productivity Overview</i> Table Columns</h4>
 
 <p>Under <b><i>Publications</i></b>, the table reports any publication co-authored by the Researcher (associated with the Project) including any "to appear" publications. Publications are of different types but, in principle, are documents that appear in archival venues and can be cited.</p>
 
@@ -182,7 +182,7 @@ The first section of this page requests that you record
   <li> an online approximation of what the resulting PDF document will look like. </li>
 </ul>
 
-<p>Note that at the top right of the page, a table provides an overview of the degree to which your report is complete. The following aspects of your report are inspected and critiqued.</p>
+<p>Note that, at the top right of the page, a table provides an overview of the degree to which your report is complete. The following aspects of your report are inspected and critiqued.</p>
 <ul>
     <li>Regarding the products reported in the <b><i>Dashboard</i></b>, the degree to which their descriptions are complete is examined.</li>
     <li>Regarding the open-ended sections of the <b><i>Report</i></b>, the number of text-boxes edited and whether or not any of them exceed the maximum number of characters allowed is examined.</li>
