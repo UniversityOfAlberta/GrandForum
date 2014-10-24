@@ -18,6 +18,7 @@ class ProjectNIBudgetReportItem extends StaticReportItem {
         $projHeader = new Budget(array(array(HEAD_ROW, HEAD_ROW, HEAD_ROW, HEAD_ROW, HEAD_ROW)),
                                  array(array("", "", "", "increase", "")));
         
+        $budget = $project->getRequestedBudget(REPORTING_YEAR);
         $cniBudget = $project->getRequestedBudget(REPORTING_YEAR, CNI);
         $pniBudget = $project->getRequestedBudget(REPORTING_YEAR, PNI);
         
@@ -25,6 +26,7 @@ class ProjectNIBudgetReportItem extends StaticReportItem {
         $cniNames = $this->getNamesBudget($cniBudget, CNI);
         
         $pniTotal = $this->getTotalBudget($pniBudget, $pniNames);
+        $fcniTotal = $budget->copy()->rasterize()->filter(CUBE_TOTAL)->select(READ, array("Future CNIs"))->filter(BLANK)->limit(1, 16);
         $cniTotal = $this->getTotalBudget($cniBudget, $cniNames);
         
         $pniTotalAllocated = $this->getTotalAllocatedBudget($pniNames);
@@ -32,17 +34,20 @@ class ProjectNIBudgetReportItem extends StaticReportItem {
         
         $pniSum = $pniTotal->copy()->sum();
         $cniSum = $cniTotal->copy()->sum();
+        $fcniSum = $fcniTotal->copy()->sum();
         
         $pniSumAllocated = $pniTotalAllocated->copy()->sum();
         $cniSumAllocated = $cniTotalAllocated->copy()->sum();
         
-        $sum = $pniSum->xls[0][0]->value + $cniSum->xls[0][0]->value;
+        $sum = $pniSum->xls[0][0]->value + $cniSum->xls[0][0]->value + $fcniSum->xls[0][0]->value;
         $sumAllocated = $pniSumAllocated->xls[0][0]->value + $cniSumAllocated->xls[0][0]->value;
         
         $pniFooter = new Budget(array(array(HEAD1, PERC, MONEY, PERC, MONEY)),
                                 array(array("PNI Subtotal", $pniSumAllocated->xls[0][0]->value/max(1, $sumAllocated), $pniSumAllocated->xls[0][0]->value, $pniSum->xls[0][0]->value/max(1, $sum), $pniSum->xls[0][0]->value)));
-        $cniFooter = new Budget(array(array(HEAD1, PERC, MONEY, PERC, MONEY)),
-                                array(array("CNI Subtotal", $cniSumAllocated->xls[0][0]->value/max(1, $sumAllocated), $cniSumAllocated->xls[0][0]->value, $cniSum->xls[0][0]->value/max(1, $sum), $cniSum->xls[0][0]->value)));
+        $cniFooter = new Budget(array(array(READ, PERC, MONEY, PERC, MONEY),
+                                      array(HEAD1, PERC, MONEY, PERC, MONEY)),
+                                array(array("<i>Future CNIs</i>", "", "", $fcniSum->xls[0][0]->value/max(1, $sum), $fcniSum->xls[0][0]->value),
+                                      array("CNI Subtotal", $cniSumAllocated->xls[0][0]->value/max(1, $sumAllocated), $cniSumAllocated->xls[0][0]->value, ($cniSum->xls[0][0]->value + $fcniSum->xls[0][0]->value)/max(1, $sum), $cniSum->xls[0][0]->value + $fcniSum->xls[0][0]->value)));
         
         $sumAllocated = $project->getAllocatedAmount(REPORTING_YEAR);
         $projectTotal = new Budget(array(array(HEAD1, BLANK, MONEY, PERC, MONEY)),
@@ -132,7 +137,7 @@ class ProjectNIBudgetReportItem extends StaticReportItem {
     function render(){
         global $wgOut;
         $budget = $this->getBudget();
-        $item = "<small>Because of changes in roles and projects, the sum of the sub totals may not add up to the grand totals.  The grand totals should be treated as actual amounts, while the sub totals should be treated as approximations.</small><br />";
+        $item = "<small>Because of changes in roles and projects, the sum of the subtotals may not add up to the grand totals.  The grand totals should be treated as actual amounts, while the subtotals should be treated as approximations.</small><br />";
         $item .= $budget->render();
         $item = $this->processCData($item);
         $wgOut->addHTML($item);
@@ -141,7 +146,7 @@ class ProjectNIBudgetReportItem extends StaticReportItem {
     function renderForPDF(){
         global $wgOut;
         $budget = $this->getBudget();
-        $item = "<small>Because of changes in roles and projects, the sum of the sub totals may not add up to the grand totals.  The grand totals should be treated as actual amounts, while the sub totals should be treated as approximations.</small><br />";
+        $item = "<small>Because of changes in roles and projects, the sum of the subtotals may not add up to the grand totals.  The grand totals should be treated as actual amounts, while the subtotals should be treated as approximations.</small><br />";
         $item .= $budget->renderForPDF();
         $item = $this->processCData($item);
         $wgOut->addHTML($item);

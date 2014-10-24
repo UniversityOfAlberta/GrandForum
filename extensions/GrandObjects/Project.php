@@ -1811,6 +1811,59 @@ EOF;
                 }
             }
         }
+        // Now do the Future CNIs budget
+        if($role == 'all'){
+            $rep_addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, LDR_BUD_FUTURE_CNI, 0);
+            $budget_blob = new ReportBlob(BLOB_EXCEL, $year, 0, $this->getId());
+            $budget_blob->load($rep_addr);
+            $data = $budget_blob->getData();
+            $budget = null;
+            if($data != null){
+                $budget = new Budget("XLS", FUTURE_CNI_STRUCTURE, $data);
+                if($budget->copy()->limit(0, 1)->select(READ, array("Future CNIs"))->nCols() == 0){
+                    $budget = null;
+                }
+            }
+            if($budget == null){
+                $budget = new Budget(array(array(READ),
+                                           array(SUB_MONEY),
+                                           array(MONEY),
+                                           array(MONEY),
+                                           array(MONEY),
+                                           array(MONEY),
+                                           array(SUB_MONEY),
+                                           array(MONEY),
+                                           array(MONEY),
+                                           array(MONEY),
+                                           array(MONEY),
+                                           array(MONEY),
+                                           array(SUB_MONEY),
+                                           array(MONEY),
+                                           array(MONEY),
+                                           array(MONEY),
+                                           array(COL_SUM)),
+                                     array(array("Future CNIs"),
+                                           array(0),
+                                           array(0),
+                                           array(0),
+                                           array(0),
+                                           array(0),
+                                           array(0),
+                                           array(0),
+                                           array(0),
+                                           array(0),
+                                           array(0),
+                                           array(0),
+                                           array(0),
+                                           array(0),
+                                           array(0),
+                                           array(0),
+                                           array(0)));
+            }
+            $nameBudget[] = $budget->copy()->limit(0, 1)->select(READ, array("Future CNIs"))->union(new Budget());;
+            $projectBudget[] = Budget::union_tables(array(new Budget(), $budget->copy()->select(READ, array("Future CNIs"))->limit(1, 16)));
+        }
+        // Join all budgets together now
         $nameBudget = Budget::join_tables($nameBudget)->join(Budget::union_tables(array(new Budget(), new Budget())));
         $projectBudget = Budget::join_tables($projectBudget);
         if($projectBudget != null){

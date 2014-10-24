@@ -245,6 +245,7 @@ define('LDR_MILE_REPORT', 1);
 define('LDR_BUD_ADJUSTMENT',		1);
 define('LDR_BUD_RESEARCHERREMARKS',	2);
 define('LDR_BUD_COMMENTS',		3);
+define('LDR_BUD_FUTURE_CNI',    4);
 
 define('LDR_RESACT_OVERALL',		1);
 define('LDR_RESACT_EXCELLENCE',		2);
