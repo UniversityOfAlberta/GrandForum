@@ -250,26 +250,6 @@ EOF;
         $name_normal = $person->getNameForForms();
         
         if($person->isActive() ){
-            
-            if(isExtensionEnabled('AllocatedBudgets')){
-                //Allocated Budget Upload
-                //$person->getAllocatedBudget(2012);
-                $year = 2012;
-                $uid = $person->getId();
-                $blob_type=BLOB_EXCEL;
-                $rptype = RP_RESEARCHER;
-                $section = RES_ALLOC_BUDGET;
-                $item = 0;
-                $subitem = 0;
-                $rep_addr = ReportBlob::create_address($rptype,$section,$item,$subitem);
-                $budget_blob = new ReportBlob($blob_type, ($year-1), $uid, 0);
-                $budget_blob->load($rep_addr);
-                $data = $budget_blob->getData();
-                $ni_errors['profile_errors'] = array();
-                if(is_null($data)){
-                    $ni_errors['profile_errors'][] = "No revised budget";
-                }
-            }
 
             $gender = $person->getGender();
             $nationality = $person->getNationality();
