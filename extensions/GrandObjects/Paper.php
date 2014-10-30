@@ -822,6 +822,10 @@ class Paper extends BackboneModel{
     function getVenue(){
         $venue = $this->venue;
         if( empty($venue) ){
+            $venue = ArrayUtils::get_string($this->data, 'venue');
+        }
+        
+        if( empty($venue) ){
             $venue = ArrayUtils::get_string($this->data, 'event_title');
         }
 
