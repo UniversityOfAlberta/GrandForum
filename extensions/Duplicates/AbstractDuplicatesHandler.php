@@ -24,9 +24,17 @@ abstract class AbstractDuplicatesHandler {
     abstract function handleDelete();
     
     function handleIgnore(){
-        $sql = "INSERT INTO `grand_ignored_duplicates`
-                (`id1`, `id2`, `type`) VALUES ('{$_POST['id1']}', '{$_POST['id2']}', '{$this->id}')";
-        DBFunctions::execSQL($sql, true);
+        $data = DBFunctions::select(array('grand_ignored_duplicates'),
+                                    array('*'),
+                                    array('id1' => EQ($_POST['id1']),
+                                          'id2' => EQ($_POST['id2']),
+                                          'type' => EQ($this->id)));
+        if(count($data) == 0){
+            // Make sure we didn't already insert this entry
+            $sql = "INSERT INTO `grand_ignored_duplicates`
+                    (`id1`, `id2`, `type`) VALUES ('{$_POST['id1']}', '{$_POST['id2']}', '{$this->id}')";
+            DBFunctions::execSQL($sql, true);
+        }
     }
     
     function handleGet(){

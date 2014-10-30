@@ -1,10 +1,13 @@
 DuplicatesDialogView = Backbone.View.extend({
 
+    products: null,
+
     attributes: {
         title: "Duplicates Detected"
     },
 
-    initialize: function(){
+    initialize: function(products){
+        this.products = products;
         this.template = _.template($("#duplicates_dialog_template").html());
         this.$el.dialog({
 	        autoOpen: false,
@@ -62,6 +65,10 @@ DuplicatesDialogView = Backbone.View.extend({
                 }, this));
                 firstProduct.dirty = false;
                 firstProduct.trigger("dirty");
+
+                if(this.products.indexOf(firstProduct) == -1){
+                    this.products.add(firstProduct);
+                }
                 this.next();
             }, this),
             error: $.proxy(function(){

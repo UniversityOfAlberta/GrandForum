@@ -38,8 +38,8 @@ ManageProductsView = Backbone.View.extend({
                     }, this));
                 }, this));
             }, this));
+            this.duplicatesDialog = new DuplicatesDialogView(this.products);
         }, this);
-        this.duplicatesDialog = new DuplicatesDialogView();
     },
     
     addProduct: function(){
