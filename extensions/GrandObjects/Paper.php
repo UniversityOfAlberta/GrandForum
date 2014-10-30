@@ -1373,6 +1373,10 @@ class Paper extends BackboneModel{
                                     'name' => $project->getName(),
                                     'url' => $project->getUrl());
             }
+            $data = $this->getData();
+            if(count($data) == 0){
+                $data = new stdClass();
+            }
             $json = array('id' => $this->getId(),
                           'title' => $this->getTitle(),
                           'description' => $this->getDescription(),
@@ -1381,7 +1385,7 @@ class Paper extends BackboneModel{
                           'status' => $this->getStatus(),
                           'date' => $this->getDate(),
                           'url' => $this->getUrl(),
-                          'data' => $this->getData(),
+                          'data' => $data,
                           'authors' => $authors,
                           'projects' => $projects,
                           'lastModified' => $this->lastModified,
