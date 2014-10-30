@@ -130,7 +130,9 @@ class cavendishTemplate extends QuickTemplate {
         <script type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.simplePagination.js"></script>
         <script type='text/javascript'>
         
-            $.ajaxSetup({ cache: false });
+            $.ajaxSetup({ cache: false, 
+                          headers : { "cache-control": "no-cache" } 
+                        });
         
             Backbone.emulateHTTP = true;
             Backbone.emulateJSON = true;
