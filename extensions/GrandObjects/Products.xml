@@ -35,6 +35,54 @@
 				<field label="URL" type="URL">url</field>
 			</data>
 		</Activity>
+		
+		<Activity type="Conference Attendance" status="Invited|Not Invited">
+			<data>
+				<field label="Location" type="String">location</field>
+				<field label="Organizing Body" type="String">organizing_body</field>
+				<field label="URL" type="URL">url</field>
+			</data>
+		</Activity>
+		
+		<Activity type="Student Volunteering" status="Invited|Not Invited">
+			<data>
+				<field label="Location" type="String">location</field>
+				<field label="Organizing Body" type="String">organizing_body</field>
+				<field label="URL" type="URL">url</field>
+			</data>
+		</Activity>
+		
+		<Activity type="Reviewing" status="Invited|Not Invited">
+			<data>
+				<field label="Location" type="String">location</field>
+				<field label="Organizing Body" type="String">organizing_body</field>
+				<field label="URL" type="URL">url</field>
+			</data>
+		</Activity>
+		
+		<Activity type="Ethics Application" status="Invited|Not Invited">
+			<data>
+				<field label="Location" type="String">location</field>
+				<field label="Organizing Body" type="String">organizing_body</field>
+				<field label="URL" type="URL">url</field>
+			</data>
+		</Activity>
+		
+		<Activity type="Work on Committee" status="Invited|Not Invited">
+			<data>
+				<field label="Location" type="String">location</field>
+				<field label="Organizing Body" type="String">organizing_body</field>
+				<field label="URL" type="URL">url</field>
+			</data>
+		</Activity>
+		
+		<Activity type="Misc" status="Invited|Not Invited">
+			<data>
+				<field label="Location" type="String">location</field>
+				<field label="Organizing Body" type="String">organizing_body</field>
+				<field label="URL" type="URL">url</field>
+			</data>
+		</Activity>
 
 		<!--
 		There are a number of these in DB, but not supported in UI anymore
@@ -94,12 +142,24 @@
 				<field label="URL" type="URL">url</field>
 			</data>
 		</Artifact>
+		
+		<Artifact type="Misc" status="Peer Reviewed|Not Peer Reviewed">
+			<data>
+				<field label="URL" type="URL">url</field>
+			</data>
+		</Artifact>
 	</Artifacts>	
 
 	<!-- Awards -->
 	
 	<Awards category="Award">
 		<Award type="Award">
+			<data>
+				<field label="URL" type="URL">url</field>
+			</data>
+		</Award>
+		
+		<Award type="Misc">
 			<data>
 				<field label="URL" type="URL">url</field>
 			</data>
