@@ -847,7 +847,8 @@ abstract class AbstractReport extends SpecialPage {
     
     // Renders the Report to the browser
     function render(){
-        global $wgOut, $wgServer, $wgScriptPath, $wgArticle, $wgImpersonating;
+        global $wgOut, $wgServer, $wgScriptPath, $wgArticle, $wgImpersonating, $wgMessage;
+        $wgMessage->addInfo("The reporting process has being postponed. There will be changes announced for the procedure and new guidelines and due dates will be provided. The due dates are as yet not known. They will be some time in 2015 (not in 2014).");
         FootnoteReportItem::$nFootnotes = 0;
         if($this->disabled && !$wgImpersonating){
             $wgOut->addHTML("<div id='outerReport'>This report is currently disabled until futher notice.</div>");
