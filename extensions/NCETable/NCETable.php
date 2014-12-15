@@ -54,8 +54,9 @@ class NCETable extends SpecialPage {
         
         $tabbedPage = new TabbedPage("tabs_nserc");
         
-        $tabbedPage->addTab(new NSERCRangeTab($startYear, YEAR));
-        
+        if($startYear != YEAR){
+            $tabbedPage->addTab(new NSERCRangeTab($startYear, YEAR));
+        }
         for($year = YEAR; $year >= $startYear; $year--){
             $tabbedPage->addTab(new NSERCTab($year));
         }

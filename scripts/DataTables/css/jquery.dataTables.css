@@ -30,6 +30,8 @@ table.dataTable tfoot th {
 	padding: 3px 18px 3px 10px;
 	border-top: 1px solid #AAAAAA;
 	font-weight: bold;
+	border-color: #AAAAAA;
+	border-bottom: none;
 }
 
 table.dataTable td {
