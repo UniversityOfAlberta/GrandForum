@@ -11,9 +11,8 @@ $wgSpecialPageGroups['EvaluationTable'] = 'report-reviewing';
 $wgHooks['SubLevelTabs'][] = 'EvaluationTable::createSubTabs';
 
 function runEvaluationTable($par) {
-	global $wgScriptPath, $wgOut, $wgUser, $wgTitle, $_tokusers;
-	EvaluationTable::show();
-	//$wgOut->setPageTitle("Evaluation Table 2011");
+    global $wgScriptPath, $wgOut, $wgUser, $wgTitle, $_tokusers;
+    EvaluationTable::show();
 }
 
 // Ideally these would be inside the class and be used.
@@ -23,85 +22,51 @@ $_projects;
 
 class EvaluationTable extends SpecialPage {
 
-	function __construct() {
-		wfLoadExtensionMessages('EvaluationTable');
-		SpecialPage::SpecialPage("EvaluationTable", MANAGER.'+', true, 'runEvaluationTable');
-	}
-	
-	static function show(){
-	    require_once('NSERCTab.php');
-	    require_once('NSERCRangeTab.php');
-		require_once('NSERCVariableTab.php');
-		require_once('NSERCRangeVariableTab.php');
-		require_once('RMC2014Tab.php');
-		require_once('RMC2013Tab.php');
-	    require_once('RMC2012Tab.php');
-        require_once('NSERC2012Tab.php');
+    function __construct() {
+        wfLoadExtensionMessages('EvaluationTable');
+        SpecialPage::SpecialPage("EvaluationTable", MANAGER.'+', true, 'runEvaluationTable');
+    }
+    
+    static function show(){
+        require_once('RMC2014Tab.php');
+        require_once('RMC2013Tab.php');
+        require_once('RMC2012Tab.php');
         require_once('RMC2011Tab.php');
-        require_once('NSERC2011Tab.php');
         require_once('Nominations.php');
         require_once('Productivity.php');
         require_once('ResearcherProductivity.php');
         require_once('Themes.php');
-	    global $wgOut, $wgUser, $wgServer, $wgScriptPath;
-	 
-	    $init_tab = 0;
-		if(isset($_GET['section']) && $_GET['section'] == 'NSERC'){
-			$init_tabs = array('Jan-Dec2012' => 0, 
-			                   'Apr2012-Mar2013' => 1, 
-			                   'Jan-Mar2012' => 2, 
-			                   'Apr-Dec2012' => 3, 
-			                   'Jan-Mar2013' => 4, 
-			                   '2012' => 5, 
-			                   '2011' => 6);
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+     
+        $init_tab = 0;
+        $init_tabs = array('2014' => 0,
+                           '2013' => 1, 
+                           '2012' => 2, 
+                           '2011' => 3);
 
-			if(isset($_GET['year']) && isset($init_tabs[$_GET['year']])){
-		    	$init_tab = $init_tabs[$_GET['year']];
-		    }
-		    
-		    $tabbedPage = new TabbedPage("tabs_nserc");
-		    
-		    $tabbedPage->addTab(new NSERCRangeTab(2010, 2014));
-		    $tabbedPage->addTab(new NSERCTab(2014));
-		    $tabbedPage->addTab(new NSERCTab(2013));
-
-	    	$tabbedPage->addTab(new NSERC2012Tab());
-	    	$tabbedPage->addTab(new NSERC2011Tab());
-	    	
-	        $tabbedPage->showPage($init_tab);
-    	}
-    	else{
-    		$init_tabs = array('2014' => 0,
-    		                   '2013' => 1, 
-    		                   '2012' => 2, 
-    		                   '2011' => 3);
-
-    		if(isset($_GET['year']) && isset($init_tabs[$_GET['year']])){
-		    	$init_tab = $init_tabs[$_GET['year']];
-		    }
-    		
-    		$tabbedPage = new TabbedPage("tabs_rmc");
-    		
-    		$tabbedPage->addTab(new RMC2014Tab());
-			$tabbedPage->addTab(new RMC2013Tab());
-	    	$tabbedPage->addTab(new RMC2012Tab());
-	    	$tabbedPage->addTab(new RMC2011Tab());
-		
-	        $tabbedPage->showPage($init_tab);
-    	}
-	}
-	
-	static function createSubTabs($tabs){
-	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
-	    $person = Person::newFromWgUser($wgUser);
-	    if($person->isRoleAtLeast(MANAGER)){
-	        $selected = @($wgTitle->getText() == "EvaluationTable" && $_GET['section'] == "RMC") ? "selected" : false;
-	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("RMC Meeting", "$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC", $selected);
-	        $selected = @($wgTitle->getText() == "EvaluationTable" && $_GET['section'] == "NSERC") ? "selected" : false;
-	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("NCE", "$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC", $selected);
-	    }
-	    return true;
-	}
+        if(isset($_GET['year']) && isset($init_tabs[$_GET['year']])){
+            $init_tab = $init_tabs[$_GET['year']];
+        }
+        
+        $tabbedPage = new TabbedPage("tabs_rmc");
+        
+        $tabbedPage->addTab(new RMC2014Tab());
+        $tabbedPage->addTab(new RMC2013Tab());
+        $tabbedPage->addTab(new RMC2012Tab());
+        $tabbedPage->addTab(new RMC2011Tab());
+    
+        $tabbedPage->showPage($init_tab);
+    }
+    
+    static function createSubTabs($tabs){
+        global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
+        $person = Person::newFromWgUser($wgUser);
+        if($person->isRoleAtLeast(MANAGER)){
+            $selected = @($wgTitle->getText() == "EvaluationTable") ? "selected" : false;
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("RMC Meeting", "$wgServer$wgScriptPath/index.php/Special:EvaluationTable", $selected);
+        }
+        return true;
+    }
 }
 
 ?>

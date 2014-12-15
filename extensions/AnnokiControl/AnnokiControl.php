@@ -101,6 +101,9 @@ $egAnnokiExtensions['Poll'] = array('name' => 'Poll',
 $egAnnokiExtensions['QueryableTable'] = array('name' => 'Queryable Table',
                                               'path' => "$IP/extensions/QueryableTable/QueryableTable.php");
 
+$egAnnokiExtensions['NCETable'] = array('name' => 'NCETable',
+                                        'path' => "$IP/extensions/NCETable/NCETable.php");
+
 $egAnnokiExtensions['Reporting'] = array('name' => 'Reporting',
                                          'path' => "$IP/extensions/Reporting/Reporting.php");
 

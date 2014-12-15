@@ -1,7 +1,7 @@
 <?php
 
-define("NCE_2013_START", '2012'.REPORTING_NCE_START_MONTH.' 00:00:00');
-define("NCE_2013_END", '2013'.REPORTING_NCE_END_MONTH. ' 23:59:59');
+define("NCE_2013_START", '2012'.NCE_START_MONTH.' 00:00:00');
+define("NCE_2013_END", '2013'.NCE_END_MONTH. ' 23:59:59');
 
 class NSERC2013Tab extends AbstractTab {
 

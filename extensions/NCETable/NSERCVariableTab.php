@@ -20,7 +20,7 @@ class NSERCVariableTab extends AbstractTab {
     }
     
     function generateBody(){
-        global $wgUser, $wgServer, $wgScriptPath, $wgOut;
+        global $wgUser, $wgServer, $wgScriptPath, $wgOut, $config;
         $label = $this->label;
 
         $foldscript = "
@@ -72,12 +72,12 @@ function showDiv(div_id, details_div_id){
         /*
         case 'table2':
             $wgOut->addScript($foldscript);
-            $this->html .= "<a id='Grand'></a><h2>GRAND tables</h2>";
+            $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
             //self::show_grand_table2();
             break;
             
         case 'table3':
-            $this->html .= "<a id='Grand'></a><h2>GRAND tables</h2>";
+            $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
             self::showHQPTable();
             break;
         */
@@ -87,7 +87,7 @@ function showDiv(div_id, details_div_id){
             self::showContributionsTable();
             $this->html .= "<a id='Table2.2'></a><h2>Contributions by Project</h2>";
             self::showContributionsByProjectTable();
-            $this->html .= "<a id='Grand'></a><h2>GRAND tables</h2>";
+            $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
             self::showGrandTables();
             self::showDisseminations();
             self::showArtDisseminations();
@@ -110,18 +110,18 @@ function showDiv(div_id, details_div_id){
             <tr><td>
             <div id='toctitle'><h2>Contents</h2></div>
             <ul>
-            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Grand'><span class='tocnumber'>4</span> <span class='toctext'>GRAND tables</span></a>
+            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Grand'><span class='tocnumber'>4</span> <span class='toctext'>NCE tables</span></a>
                 <ul>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.0'><span class='tocnumber'>2.1</span> <span class='toctext'>Table 2.1: Contributions</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table2.2'><span class='tocnumber'>2.2</span> <span class='toctext'>Table 2.2: Contributions by Project</span></a></li>
-                <!--<li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?summary=table3#Table3'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 3: Number of network Research Personnel paid with NCE funds or other funds, by sectors</span></a></li-->
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4'><span class='tocnumber'>4.1</span> <span class='toctext'>Table 4: Number of Graduate Students Working on Network Research</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2a'><span class='tocnumber'>4.2a</span> <span class='toctext'>Table 4.2a: HQP Breakdown by University</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2b'><span class='tocnumber'>4.2b</span> <span class='toctext'>Table 4.2b: HQP Breakdown by Project</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.3'><span class='tocnumber'>4.3</span> <span class='toctext'>Table 4.3: NI Breakdown by University</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table5'><span class='tocnumber'>4.4</span> <span class='toctext'>Table 5: Post Network employment of graduate students</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table6'><span class='tocnumber'>4.5</span> <span class='toctext'>Table 6: Dissemination of Network Research Results and Collaborations</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=NSERC&tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table7'><span class='tocnumber'>4.6</span> <span class='toctext'>Table 7: Publications list</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.0'><span class='tocnumber'>2.1</span> <span class='toctext'>Table 2.1: Contributions</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table2.2'><span class='tocnumber'>2.2</span> <span class='toctext'>Table 2.2: Contributions by Project</span></a></li>
+                <!--<li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?summary=table3#Table3'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 3: Number of network Research Personnel paid with NCE funds or other funds, by sectors</span></a></li-->
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4'><span class='tocnumber'>4.1</span> <span class='toctext'>Table 4: Number of Graduate Students Working on Network Research</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2a'><span class='tocnumber'>4.2a</span> <span class='toctext'>Table 4.2a: HQP Breakdown by University</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2b'><span class='tocnumber'>4.2b</span> <span class='toctext'>Table 4.2b: HQP Breakdown by Project</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.3'><span class='tocnumber'>4.3</span> <span class='toctext'>Table 4.3: NI Breakdown by University</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table5'><span class='tocnumber'>4.4</span> <span class='toctext'>Table 5: Post Network employment of graduate students</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table6'><span class='tocnumber'>4.5</span> <span class='toctext'>Table 6: Dissemination of Network Research Results and Collaborations</span></a></li>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table7'><span class='tocnumber'>4.6</span> <span class='toctext'>Table 7: Publications list</span></a></li>
                 </ul>
             </li>
             </ul>
@@ -961,7 +961,7 @@ EOF;
     }
 
     function getNIUniStats(){
-
+        global $config;
         $cnis = Person::getAllPeopleDuring(CNI, $this->from, $this->to);
         $pnis = Person::getAllPeopleDuring(PNI, $this->from, $this->to);
 
@@ -1030,15 +1030,16 @@ EOF;
         $universities["Unknown"] = $unknown;
 
         $details_div_id = "ni_uni_details";
-        $html =<<<EOF
+        $html = "
          <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
          <tr>
          <th>University</th>
-         <th>Researchers</th>
-         <th>GRAND effort</th>
-         </tr>
-EOF;
-        
+         <th>Researchers</th>";
+        if(isExtensionEnabled('Reporting')){
+            // Only show this if the Reporting Extension is enabled, otherwise it will always be 0
+            $html .= "<th>{$config->getValue('networkName')} effort</th>";
+        }
+        $html .= "</tr>";
 
         foreach ($universities as $uni=>$data){
             $html .=<<<EOF
@@ -1055,7 +1056,7 @@ EOF;
 
             //$total_uni = array_merge($total_uni, $hqpa);
             $num_students = count($hqpa);   
-            $student_details = Dashboard::niDetails($hqpa);
+            $student_details = Dashboard::niDetails($hqpa, $this->to);
             if($num_students > 0){
                 $html .=<<<EOF
                     <td>
@@ -1073,8 +1074,9 @@ EOF;
             else{
                 $html .= "<td>0</td>";
             }
-
-            $html .= "<td>{$distr}</td>";
+            if(isExtensionEnabled('Reporting')){
+                $html .= "<td>{$distr}</td>";
+            }
 
             //}
 

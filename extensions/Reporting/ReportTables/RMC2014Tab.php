@@ -111,21 +111,21 @@ class RMC2014Tab extends AbstractTab {
         <div id="aboveTabs"></div>
         <div id="reportTabs">
             
-            <a class="reportTab tooltip $tab1" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question1#PNI_Summary'>1.1 PNI Questions 1-9</a>
-            <a class="reportTab tooltip $tab2" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question2#CNI_Summary'>1.2 CNI Questions 1-9</a>
-            <a class="reportTab tooltip $tab3" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question3#Project_Summary'>1.3 Project Questions 1-8</a>
-            <a class="reportTab tooltip $tab4" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question4#Champion_Summary'>1.4 Champion Questions</a>
+            <a class="reportTab tooltip $tab1" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question1#PNI_Summary'>1.1 PNI Questions 1-9</a>
+            <a class="reportTab tooltip $tab2" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question2#CNI_Summary'>1.2 CNI Questions 1-9</a>
+            <a class="reportTab tooltip $tab3" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question3#Project_Summary'>1.3 Project Questions 1-8</a>
+            <a class="reportTab tooltip $tab4" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question4#Champion_Summary'>1.4 Champion Questions</a>
             
-            <a class="reportTab tooltip $tab5 marginTop" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget1#PNI_Budget_Summary'>2.1 PNI Budget Summary</a>
-            <a class="reportTab tooltip $tab6" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget2#CNI_Budget_Summary'>2.2 CNI Budget Summary</a>
-            <a class="reportTab tooltip $tab7" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget3#Project_Budget_Summary'>2.3 Project Budget Summary</span></a>
-            <a class="reportTab tooltip $tab8" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget4#Full_Budget_Summary'>2.4 Full Budget Summary</a>
+            <a class="reportTab tooltip $tab5 marginTop" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget1#PNI_Budget_Summary'>2.1 PNI Budget Summary</a>
+            <a class="reportTab tooltip $tab6" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget2#CNI_Budget_Summary'>2.2 CNI Budget Summary</a>
+            <a class="reportTab tooltip $tab7" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget3#Project_Budget_Summary'>2.3 Project Budget Summary</span></a>
+            <a class="reportTab tooltip $tab8" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget4#Full_Budget_Summary'>2.4 Full Budget Summary</a>
 
-            <a class="reportTab tooltip $tab9 marginTop" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=productivity#Project_Productivity'>3.1 Project Productivity</a>
-            <a class="reportTab tooltip $tab10" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=researcher#Researcher_Productivity'>3.2 Researcher Productivity</a>
-            <a class="reportTab tooltip $tab11" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=contributions#Uni_Contributions'>3.3 Contributions by University</a>
-            <a class="reportTab tooltip $tab12" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=distribution#Distribution'>3.4 HQP Distribution</a>
-            <a class="reportTab tooltip $tab13" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=themes#Themes'>3.5 Project Themes</a>
+            <a class="reportTab tooltip $tab9 marginTop" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=productivity#Project_Productivity'>3.1 Project Productivity</a>
+            <a class="reportTab tooltip $tab10" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=researcher#Researcher_Productivity'>3.2 Researcher Productivity</a>
+            <a class="reportTab tooltip $tab11" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=contributions#Uni_Contributions'>3.3 Contributions by University</a>
+            <a class="reportTab tooltip $tab12" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=distribution#Distribution'>3.4 HQP Distribution</a>
+            <a class="reportTab tooltip $tab13" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=themes#Themes'>3.5 Project Themes</a>
 
             <a class="reportTab tooltip marginTop" href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type=PNI'>PNI Review Results</a>
             <a class="reportTab tooltip" href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type=CNI'>CNI Review Results</a>
@@ -294,28 +294,28 @@ EOF;
             <tr><td>
             <div id='toctitle'><h2>Contents</h2></div>
             <ul>
-            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question#Q_Summary'><span class='tocnumber'>1</span> <span class='toctext'>Summary of 1-7</span></a>
+            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question#Q_Summary'><span class='tocnumber'>1</span> <span class='toctext'>Summary of 1-7</span></a>
                 <ul>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question#PNI_Summary'><span class='tocnumber'>1.1</span> <span class='toctext'>PNI Summary of Questions 1-9</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question#CNI_Summary'><span class='tocnumber'>1.2</span> <span class='toctext'>CNI Summary of Questions 1-9</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=question#Project_Summary'><span class='tocnumber'>1.3</span> <span class='toctext'>Project Summary of Questions 1-8</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question#PNI_Summary'><span class='tocnumber'>1.1</span> <span class='toctext'>PNI Summary of Questions 1-9</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question#CNI_Summary'><span class='tocnumber'>1.2</span> <span class='toctext'>CNI Summary of Questions 1-9</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question#Project_Summary'><span class='tocnumber'>1.3</span> <span class='toctext'>Project Summary of Questions 1-8</span></a></li>
                 </ul>
             </li>
-            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget#Budget_Summary'><span class='tocnumber'>2</span> <span class='toctext'>Budget Summaries</span></a>
+            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget#Budget_Summary'><span class='tocnumber'>2</span> <span class='toctext'>Budget Summaries</span></a>
                 <ul>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget#PNI_Budget_Summary'><span class='tocnumber'>2.1</span> <span class='toctext'>PNI Budget Summary</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget#CNI_Budget_Summary'><span class='tocnumber'>2.2</span> <span class='toctext'>CNI Budget Summary</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget#Project_Budget_Summary'><span class='tocnumber'>2.3</span> <span class='toctext'>Project Budget Summary</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=budget#Full_Budget_Summary'><span class='tocnumber'>2.4</span> <span class='toctext'>Full Budget Summary</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget#PNI_Budget_Summary'><span class='tocnumber'>2.1</span> <span class='toctext'>PNI Budget Summary</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget#CNI_Budget_Summary'><span class='tocnumber'>2.2</span> <span class='toctext'>CNI Budget Summary</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget#Project_Budget_Summary'><span class='tocnumber'>2.3</span> <span class='toctext'>Project Budget Summary</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget#Full_Budget_Summary'><span class='tocnumber'>2.4</span> <span class='toctext'>Full Budget Summary</span></a></li>
                 </ul>
             </li>
-            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=productivity#Other'><span class='tocnumber'>3</span> <span class='toctext'>Other</span></a>
+            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=productivity#Other'><span class='tocnumber'>3</span> <span class='toctext'>Other</span></a>
                 <ul>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=productivity#Project_Productivity'><span class='tocnumber'>3.1</span> <span class='toctext'>Project Productivity</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=researcher#Researcher_Productivity'><span class='tocnumber'>3.2</span> <span class='toctext'>Researcher Productivity</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=contributions#Uni_Contributions'><span class='tocnumber'>3.3</span> <span class='toctext'>Contributions by University</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=distribution#Distribution'><span class='tocnumber'>3.4</span> <span class='toctext'>HQP Distribution</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?section=RMC&year=2014&summary=themes#Themes'><span class='tocnumber'>3.5</span> <span class='toctext'>Project Themes</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=productivity#Project_Productivity'><span class='tocnumber'>3.1</span> <span class='toctext'>Project Productivity</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=researcher#Researcher_Productivity'><span class='tocnumber'>3.2</span> <span class='toctext'>Researcher Productivity</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=contributions#Uni_Contributions'><span class='tocnumber'>3.3</span> <span class='toctext'>Contributions by University</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=distribution#Distribution'><span class='tocnumber'>3.4</span> <span class='toctext'>HQP Distribution</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=themes#Themes'><span class='tocnumber'>3.5</span> <span class='toctext'>Project Themes</span></a></li>
                 </ul>
             </li>
             </td></tr>

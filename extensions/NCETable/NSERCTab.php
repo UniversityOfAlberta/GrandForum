@@ -28,24 +28,24 @@ class NSERCTab extends AbstractTab {
     
         $tabbedPage = new InnerTabbedPage("tabs_{$this->year}");
         
-        $int_start = $last_year.REPORTING_CYCLE_START_MONTH.' 00:00:00';
-		$int_end =   ($this_year-1).REPORTING_CYCLE_END_MONTH_ACTUAL. ' 23:59:59';
+        $int_start = $last_year.CYCLE_START_MONTH.' 00:00:00';
+		$int_end =   ($this_year-1).CYCLE_END_MONTH_ACTUAL. ' 23:59:59';
 		$tabbedPage->addTab(new NSERCVariableTab("Jan-Dec{$last_year}", $int_start, $int_end, $this->year));
 
-		$int_start = $last_year.REPORTING_NCE_START_MONTH.' 00:00:00';
-		$int_end =   $this_year.REPORTING_NCE_END_MONTH. ' 23:59:59';
+		$int_start = $last_year.NCE_START_MONTH.' 00:00:00';
+		$int_end =   $this_year.NCE_END_MONTH. ' 23:59:59';
 		$tabbedPage->addTab(new NSERCVariableTab("Apr{$last_year}-Mar{$this_year}", $int_start, $int_end, $this->year));
 
-    	$int_start = $last_year.REPORTING_CYCLE_START_MONTH.' 00:00:00';
-		$int_end =   $last_year.REPORTING_NCE_END_MONTH. ' 23:59:59';
+    	$int_start = $last_year.CYCLE_START_MONTH.' 00:00:00';
+		$int_end =   $last_year.NCE_END_MONTH. ' 23:59:59';
 		$tabbedPage->addTab(new NSERCVariableTab("Jan-Mar{$last_year}", $int_start, $int_end, $this->year));
 		
-		$int_start = $last_year.REPORTING_NCE_START_MONTH.' 00:00:00';
-		$int_end =   ($this_year-1).REPORTING_CYCLE_END_MONTH_ACTUAL. ' 23:59:59';
+		$int_start = $last_year.NCE_START_MONTH.' 00:00:00';
+		$int_end =   ($this_year-1).CYCLE_END_MONTH_ACTUAL. ' 23:59:59';
 		$tabbedPage->addTab(new NSERCVariableTab("Apr-Dec{$last_year}", $int_start, $int_end, $this->year));
 		
-		$int_start = $this_year.REPORTING_CYCLE_START_MONTH.' 00:00:00';
-		$int_end =   $this_year.REPORTING_NCE_END_MONTH. ' 23:59:59';
+		$int_start = $this_year.CYCLE_START_MONTH.' 00:00:00';
+		$int_end =   $this_year.NCE_END_MONTH. ' 23:59:59';
 		$tabbedPage->addTab(new NSERCVariableTab("Jan-Mar{$this_year}", $int_start, $int_end, $this->year));
     	
         $this->html = $tabbedPage->showPage($init_tab);

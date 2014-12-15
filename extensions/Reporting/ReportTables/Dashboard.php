@@ -111,8 +111,8 @@ EOF;
     }
     
 
-    static function niDetails($hqps){   
-        global $wgServer, $wgScriptPath;
+    static function niDetails($hqps, $year=YEAR){   
+        global $wgServer, $wgScriptPath, $config;
         $url_prefix = "$wgServer$wgScriptPath/index.php/";
         
         //Getting Report BloBS
@@ -121,7 +121,6 @@ EOF;
         $item = RES_MIL_CONTRIBUTIONS;
         $subitem = 0;
         $blob_type = BLOB_ARRAY;
-        $year = REPORTING_YEAR;
 
         $rep_addr = ReportBlob::create_address($rptype,$section,$item,$subitem);
 
@@ -156,7 +155,7 @@ EOF;
                 $html.=<<<EOF
                     <li>
                     <a target='_blank' href='{$url_prefix}{$role}:{$hqp_name}'>
-                    $hqp_name_read</a>, {$role}{$hqp_uni}{$hqp_type}, GRAND-related effort: {$grand_percent}%
+                    $hqp_name_read</a>, {$role}{$hqp_uni}{$hqp_type}, {$config->getValue('networkName')}-related effort: {$grand_percent}%
                     </li>
 EOF;
             }
@@ -278,7 +277,7 @@ EOF;
         return $contributions;     
     }
     
-	static function getPartners($project, $receiver){
+	static function getPartners($project, $receiver, $year=YEAR){
 		$contributions = Dashboard::getContributions($project, $receiver);
 		
 		$partner_arr = array();
@@ -304,7 +303,7 @@ EOF;
 		if($receiver instanceof Person){
 			$champs = array();
 			foreach($projects as $pr){
-				$champs = array_merge($champs, $pr->getAllPeopleDuring(CHAMP, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59")); //all champions on a project throughout the year
+				$champs = array_merge($champs, $pr->getAllPeopleDuring(CHAMP, $year."-01-01 00:00:00", $year."-12-31 23:59:59")); //all champions on a project throughout the year
 			}
 			
 			foreach ($champs as $champ){

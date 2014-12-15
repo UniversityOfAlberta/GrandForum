@@ -93,6 +93,7 @@
         'QueryableTable',
         'IndexTables',
         //'Reporting',
+        'NCETable',
         'EmptyEmailList',
         'GlobalSearch',
         'Impersonation',
