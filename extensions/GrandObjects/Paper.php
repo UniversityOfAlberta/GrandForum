@@ -753,6 +753,7 @@ class Paper extends BackboneModel{
     // Returns an array of Projects which this Paper is related to
     function getProjects(){
         if($this->projectsWaiting){
+            $this->projects = array();
             self::generateProductProjectsCache();
             if(isset(self::$productProjectsCache[$this->id])){
                 $data = self::$productProjectsCache[$this->id];
