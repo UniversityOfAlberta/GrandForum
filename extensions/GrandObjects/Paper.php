@@ -88,6 +88,7 @@ class Paper extends BackboneModel{
             return self::$cache[$bibtex_id];
         }
         $me = Person::newFromWgUser();
+        $bibtex_id = mysql_real_escape_string($bibtex_id);
         $sql = "SELECT *
                 FROM grand_products
                 WHERE bibtex_id = '$bibtex_id'
