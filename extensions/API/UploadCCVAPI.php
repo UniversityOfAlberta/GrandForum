@@ -12,7 +12,7 @@ class UploadCCVAPI extends API{
         
     }
     
-    function createProduct($paper, $category, $type, $ccv_id){
+    function createProduct($person, $paper, $category, $type, $ccv_id){
         $checkProduct = Product::newFromCCVId($ccv_id);
         if($checkProduct->getId() != 0){
             // Make sure that this entry was not already entered
@@ -25,7 +25,6 @@ class UploadCCVAPI extends API{
             // Make sure that a product with the same title/category/type does not already exist
             return null;
         }
-        $me = Person::newFromWgUser();
         $structure = $this->structure['categories'][$category]['types'][$type];
         $product = new Product(array());
         $product->title = str_replace("&#39;", "'", $paper['title']);
@@ -36,7 +35,12 @@ class UploadCCVAPI extends API{
         $product->data = array();
         $product->projects = array();
         $product->authors = array();
-        $product->access_id = $me->getId();
+        if(!isset($_POST['id'])){
+            $product->access_id = $person->getId();
+        }
+        else{
+            $product->access_id = 0;
+        }
         $product->ccv_id = $ccv_id;
         $authors = explode(",", $paper['authors']);
         foreach($authors as $author){
@@ -67,6 +71,12 @@ class UploadCCVAPI extends API{
 	function doAction($noEcho=false){
 	    global $wgMessage;
 	    $me = Person::newFromWgUser();
+	    if(isset($_POST['id']) && $me->isRoleAtLeast(MANAGER)){
+            $person = Person::newFromId($_POST['id']);
+        }
+        else{
+            $person = $me;
+        }
         $ccv = $_FILES['ccv'];
         if($ccv['type'] == "text/xml" && $ccv['size'] > 0){
             $this->structure = Product::structure();
@@ -76,6 +86,8 @@ class UploadCCVAPI extends API{
             $file_contents = file_get_contents($ccv['tmp_name']);
             $dom = new DOMDocument();
             $valid = $dom->loadXML($file_contents);
+            $json = array('created' => array(),
+                          'error' => array());
             if($valid){
                 $cv = new CommonCV($ccv['tmp_name']);
                 $conferencePapers = $cv->getConferencePapers();
@@ -86,7 +98,7 @@ class UploadCCVAPI extends API{
                 $createdProducts = array();
                 $errorProducts = array();
                 foreach($conferencePapers as $ccv_id => $paper){
-                    $product = $this->createProduct($paper, "Publication", "Conference Paper", $ccv_id);
+                    $product = $this->createProduct($person, $paper, "Publication", "Conference Paper", $ccv_id);
                     if($product != null){
                         $createdProducts[] = $product;
                     }
@@ -95,7 +107,7 @@ class UploadCCVAPI extends API{
                     }
                 }
                 foreach($journalPapers as $ccv_id => $paper){
-                    $product = $this->createProduct($paper, "Publication", "Journal Paper", $ccv_id);
+                    $product = $this->createProduct($person, $paper, "Publication", "Journal Paper", $ccv_id);
                     if($product != null){
                         $createdProducts[] = $product;
                     }
@@ -104,7 +116,7 @@ class UploadCCVAPI extends API{
                     }
                 }
                 foreach($bookChapters as $ccv_id => $paper){
-                    $product = $this->createProduct($paper, "Publication", "Book Chapter", $ccv_id);
+                    $product = $this->createProduct($person, $paper, "Publication", "Book Chapter", $ccv_id);
                     if($product != null){
                         $createdProducts[] = $product;
                     }
@@ -112,12 +124,20 @@ class UploadCCVAPI extends API{
                         $errorProducts[] = $paper;
                     }
                 }
+                if(isset($_POST['supervises'])){
+                    $supervises = $cv->getStudentsSupervised();
+                    $json['supervises'] = $supervises;
+                }
+                if(isset($_POST['funding'])){
+                    $funding = $cv->getFunding();
+                }
+                if(isset($_POST['info'])){
+                    $info = $cv->getPersonalInfo();
+                }
             }
             else{
                 $error = "There was an error reading the CCV file";
             }
-            $json = array('created' => array(),
-                          'error' => array());
             foreach($createdProducts as $product){
                 $json['created'][] = $product->toArray();
             }
@@ -130,6 +150,7 @@ class UploadCCVAPI extends API{
                 <head>
                     <script type='text/javascript'>
                         parent.ccvUploaded($obj, "$error");
+                        console.log($obj);
                     </script>
                 </head>
             </html>
