@@ -128,7 +128,7 @@ class ReportBlob {
 
 	function __construct($type = BLOB_NULL, $year = 0, $owner = 0, $proj = 0) {
 		$this->_type = $type;
-		$this->_year = $year;
+		$this->_year = substr($year, 0, 4); // Make sure that a full date string isn't passed
 
 		if ($owner instanceof Person)
 			$this->_owner_id = $owner->getId();

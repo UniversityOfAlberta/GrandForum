@@ -307,7 +307,7 @@ EOF;
                             </thead>
                             <tbody>";
         foreach($projects as $project){
-            if($project->getPhase() == 1){
+            //if($project->getPhase() == 1){
                 $contributions = $project->getContributions();
                 foreach($contributions as $contribution){
                     $partners = $contribution->getPartners();
@@ -342,7 +342,7 @@ EOF;
                                         <td align='right'>$".number_format($contribution->getTotal(), 2)."</td></tr>";
                     }
                 }
-            }
+            //}
         }
         $this->html .= "</tbody></table>";
     }
@@ -407,7 +407,7 @@ EOF;
         }
 
         $this->html .= "<a id='Table4.2a'></a><h3>Table 4.2a: HQP Breakdown by University</h3>" .self::getHQPUniStats();
-        $this->html .= "<a id='Table4.2b'></a><h3>Table 4.2b: HQP Breakdown by University</h3>" .self::getHQPProjStats();
+        $this->html .= "<a id='Table4.2b'></a><h3>Table 4.2b: HQP Breakdown by Project</h3>" .self::getHQPProjStats();
         $this->html .= "<a id='Table4.3'></a><h3>Table 4.3: NI Breakdown by University</h3>" .self::getNiUniStats();
         $this->html .= "<a id='Table5'></a><h3>Table 5: Post Network employment of graduate students</h3>" . self::getHQPEmployment($movedons, "all");
         $this->html .= "<h4>Canadian</h4>". self::getHQPEmployment($canadian, "canada");
@@ -849,7 +849,6 @@ EOF;
 
         //Setup the table structure
         $projects = array();
-
         $positions = array( "Undergraduate"=>"Ugrad",
                             "Masters Student"=>"Masters",
                             "PhD Student"=>"PhD",
@@ -864,13 +863,13 @@ EOF;
             $pos = $hqp->getPosition();
             $pos = (isset($positions[$pos])) ? $positions[$pos] : "Other";
             foreach($projs as $project){
-                if($project->getPhase() == 1){
+                //if($project->getPhase() == 1){
                     if(!isset($projects[$project->getName()])){
                         $projects[$project->getName()] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "PostDoc"=>array(), 
                                                              "Tech"=>array(), "Other"=>array());
                     }
                     $projects[$project->getName()][$pos][] = $hqp;
-                }
+                //}
             }
         }
 
@@ -981,8 +980,6 @@ EOF;
                 $nis[] = $n;
             }
         }
-
-
 
         //Setup the table structure
         $universities = array();
