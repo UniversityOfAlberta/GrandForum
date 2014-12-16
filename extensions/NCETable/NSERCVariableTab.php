@@ -685,7 +685,7 @@ EOF;
 EOF;
         }
         else{
-            $html .= "0";
+            $html .= "Total Students: 0";
         }
 
         $lnk_id = "lnk_thes_total";
@@ -705,7 +705,7 @@ EOF;
 EOF;
         }
         else{
-            $html .= "0";
+            $html .= "; Total Theses: 0";
         }
 
         //$html .= "; Total Thesis: {$total[1]}</td></tr>";
