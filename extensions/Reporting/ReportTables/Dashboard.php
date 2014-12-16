@@ -152,10 +152,14 @@ EOF;
 
             $role = ($h->isHQP())? "HQP" : (($h->isCNI())? "CNI" : (($h->isPNI())? "PNI" : ""));
             if($h->isActive() && $role != ""){
+                $effort = "";
+                if(isExtensionEnabled('Reporting')){
+                    $effort = ", {$config->getValue('networkName')}-related effort: {$grand_percent}%";
+                }
                 $html.=<<<EOF
                     <li>
                     <a target='_blank' href='{$url_prefix}{$role}:{$hqp_name}'>
-                    $hqp_name_read</a>, {$role}{$hqp_uni}{$hqp_type}, {$config->getValue('networkName')}-related effort: {$grand_percent}%
+                    $hqp_name_read</a>, {$role}{$hqp_uni}{$hqp_type} {$effort}
                     </li>
 EOF;
             }

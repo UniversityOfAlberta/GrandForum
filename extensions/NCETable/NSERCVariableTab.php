@@ -413,13 +413,9 @@ EOF;
         $this->html .= "<h4>Canadian</h4>". self::getHQPEmployment($canadian, "canada");
         $this->html .= "<h4>Foreign</h4>". self::getHQPEmployment($foreign, "foreign");
         $this->html .= "<h4>Unknown</h4>". self::getHQPEmployment($unknown, "unknown");
-
-        
-        
     }
 
     function getHQPStats(){
-
         $hqps = Person::getAllPeopleDuring(HQP, $this->from, $this->to);
 
         //Setup the table structure
@@ -439,7 +435,7 @@ EOF;
         }
 
         //Fill the table
-        foreach ($hqps as $hqp){
+        foreach($hqps as $hqp){
             $pos = $hqp->getUniversity();
             $pos = (isset($positions[$pos['position']]))? $pos['position'] : "Other";
             $gender = $hqp->getGender();
@@ -714,7 +710,6 @@ EOF;
         $html .= "<div class='pdf_hide details_div' id='$details_div_id' style='display: none;'></div><br />";
         
         return $html;
-
     }
 
     function getHQPUniStats(){
@@ -740,7 +735,6 @@ EOF;
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
                 $universities[$uni] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "PostDoc"=>array(), 
                                             "Tech"=>array(), "Other"=>array(), "Unknown"=>array());
-                                  
             }
 
             $pos = (isset($uniobj['position']))? $uniobj['position'] : "Unknown";
@@ -772,7 +766,6 @@ EOF;
          <th>Total</th>
          </tr>
 EOF;
-        
 
         foreach ($universities as $uni=>$data){
             $html .=<<<EOF
@@ -805,7 +798,6 @@ EOF;
                 else{
                     $html .= "<td>0</td>";
                 }
-
             }
 
             //Row Total
@@ -832,16 +824,13 @@ EOF;
                 $html .= "<td>0</td>";
             }
 
-
             $html .= "</tr>";
-
         }
             
         $html .= "</table>";
         $html .= "<div class='pdf_hide details_div' id='$details_div_id' style='display: none;'></div><br />";
         
         return $html;
-
     }
     
     function getHQPProjStats(){
@@ -956,7 +945,6 @@ EOF;
         $html .= "<div class='pdf_hide details_div' id='$details_div_id' style='display: none;'></div><br />";
         
         return $html;
-
     }
 
     function getNIUniStats(){
@@ -985,7 +973,6 @@ EOF;
         $universities = array();
         $unknown = array(array(), 0);
 
-
         //Getting Report BloBS
         $rptype = RP_RESEARCHER;
         $section = RES_MILESTONES;
@@ -1012,7 +999,6 @@ EOF;
                 $universities[$uni] = array(array(), 0);
             }
 
-
             if($uni == "Unknown"){
                 $unknown[0][] = $hqp;
                 $unknown[1] += $grand_percent;
@@ -1020,7 +1006,7 @@ EOF;
             else{
                 $universities[$uni][0][] = $hqp;
                 $universities[$uni][1] += $grand_percent;
-            }       
+            }
         }
 
         ksort($universities);
@@ -1086,7 +1072,6 @@ EOF;
         $html .= "<div class='pdf_hide details_div' id='$details_div_id' style='display: none;'></div><br />";
         
         return $html;
-
     }
 
     function getHQPEmployment($people, $type){
