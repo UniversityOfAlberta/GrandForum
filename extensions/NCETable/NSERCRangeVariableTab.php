@@ -86,7 +86,9 @@ function showDiv(div_id, details_div_id){
             self::showArtDisseminations();
             self::showActDisseminations();
             self::showPublicationList();
-            self::showProjectRequests();
+            if(isExtensionEnabled('Reporting')){
+                self::showProjectRequests();
+            }
             break;
         }
         }
@@ -99,7 +101,7 @@ function showDiv(div_id, details_div_id){
         global $wgServer, $wgScriptPath, $config;
         $label = $this->label;
 
-        $this->html .=<<<EOF
+        $this->html .= "
             <h2>Jan{$this->startYear}-Mar{$this->endYear}</h2>
             <table class='toc' summary='Contents'>
             <tr><td>
@@ -116,14 +118,15 @@ function showDiv(div_id, details_div_id){
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->startYear}-{$this->endYear}&year=tabs_{$this->startYear}-{$this->endYear}_{$label}&summary=grand#Table4.3'><span class='tocnumber'>4.3</span> <span class='toctext'>Table 4.3: NI Breakdown by University</span></a></li>
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->startYear}-{$this->endYear}&year=tabs_{$this->startYear}-{$this->endYear}_{$label}&summary=grand#Table5'><span class='tocnumber'>4.4</span> <span class='toctext'>Table 5: Post Network employment of graduate students</span></a></li>
                 <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->startYear}-{$this->endYear}&year=tabs_{$this->startYear}-{$this->endYear}_{$label}&summary=grand#Table6'><span class='tocnumber'>4.5</span> <span class='toctext'>Table 6: Dissemination of Network Research Results and Collaborations</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->startYear}-{$this->endYear}&year=tabs_{$this->startYear}-{$this->endYear}_{$label}&summary=grand#Table7'><span class='tocnumber'>4.6</span> <span class='toctext'>Table 7: Publications list</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->startYear}-{$this->endYear}&year=tabs_{$this->startYear}-{$this->endYear}_{$label}&summary=grand#Table8'><span class='tocnumber'>4.7</span> <span class='toctext'>Table 8: Project Budget Requests</span></a></li>
-                </ul>
+                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->startYear}-{$this->endYear}&year=tabs_{$this->startYear}-{$this->endYear}_{$label}&summary=grand#Table7'><span class='tocnumber'>4.6</span> <span class='toctext'>Table 7: Publications list</span></a></li>";
+                if(isExtensionEnabled('Reporting')){
+                    $this->html .= "<li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->startYear}-{$this->endYear}&year=tabs_{$this->startYear}-{$this->endYear}_{$label}&summary=grand#Table8'><span class='tocnumber'>4.7</span> <span class='toctext'>Table 8: Project Budget Requests</span></a></li>";
+                }
+                $this->html .= "</ul>
             </li>
             </ul>
             </td></tr>
-         </table>
-EOF;
+         </table>";
     }
 
     function showContributionsTable() {
