@@ -2,6 +2,16 @@
 
 class UploadCCVAPI extends API{
 
+    static $diplomaMap = array("00000000000000000000000000000071" => "Undergraduate",
+                               "00000000000000000000000000000072" => "Masters Student",
+                               "00000000000000000000000000000073" => "PhD Student",
+                               "00000000000000000000000000000074" => "PostDoc",
+                               "00000000000000000000000000000081" => "Masters Student",
+                               "00000000000000000000000000000083" => "Undergraduate",
+                               "00000000000000000000000000000084" => "Undergraduate",
+                               "00000000000000000000000000000085" => "Masters Student",
+                               "00000000000000000000000000000086" => "PhD Student");
+
     var $structure = null;
 
     function UploadCCVAPI(){
@@ -67,11 +77,94 @@ class UploadCCVAPI extends API{
             return null;
         }
     }
+    
+    function createHQP($supervisor, $hqp){
+        $names = explode(", ", $hqp['name']);
+        if(count($names) > 1){
+            $first = str_replace(" ", "", $names[1]);
+            $last = str_replace(" ", "", $names[0]);
+        }
+        else{
+            $names = explode(" ", $hqp['name']);
+            if(count($names) > 1){
+                $first = str_replace(" ", "", $names[0]);
+                $last = str_replace(" ", "", $names[1]);
+            }
+            else{
+                return false;
+            }
+        }
+        
+        $person = Person::newFromName("$first.$last");
+        $status = false;
+        if($person->getId() == 0){
+            // User Does not exist yet
+            $person->name = "{$first}.{$last}";
+            $person->realname = "{$names[1]} {$names[0]}";
+            $person->email = "";
+            $status = $person->create();
+            $person = Person::newFromName("{$first}.{$last}");
+        }
+        if($person->getId() != 0){
+            // User exists (will exist if creation was successful as well)
+            $start_date = "{$hqp['start_year']}-".str_pad($hqp['start_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
+            if(CommonCV::getCaptionFromValue($hqp['status'], "Degree Status") == "In Progress"){
+                // HQP is still active
+                $end_date = "0000-00-00 00:00:00";
+            }
+            else{
+                $end_date = "{$hqp['end_year']}-".str_pad($hqp['end_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
+            }
+            $university = Person::getDefaultUniversity();
+            $universities = Person::getAllUniversities();
+            foreach($universities as $id => $uni){
+                if($uni == $hqp['institution']){
+                    $university = $id;
+                    break;
+                }
+                if($uni == $university){
+                    $university = $id;
+                }
+            }
+            $position = Person::getDefaultPosition();
+            $positions = Person::getAllPositions();
+            foreach($positions as $id => $pos){
+                if(isset(self::$diplomaMap[$hqp['diploma']]) && $pos == self::$diplomaMap[$hqp['diploma']]){
+                    $position = $id;
+                    break;
+                }
+                if($pos == $position){
+                    $position = $id;
+                }
+            }
+            DBFunctions::insert('grand_roles',
+                                array('user_id'     => $person->getId(),
+                                      'role'        => HQP,
+                                      'start_date'  => $start_date,
+                                      'end_date'    => $end_date));
+            DBFunctions::insert('grand_relations',
+                                array('user1'       => $supervisor->getId(),
+                                      'user2'       => $person->getId(),
+                                      'type'        => 'Supervises',
+                                      'start_date'  => $start_date,
+                                      'end_date'    => $end_date));
+            DBFunctions::insert('grand_user_university',
+                                array('user_id'       => $person->getId(),
+                                      'university_id' => $university,
+                                      'department'    => "",
+                                      'position_id'   => $position,
+                                      'start_date'    => $start_date,
+                                      'end_date'      => $end_date));
+            $status = true;
+            MailingList::subscribeAll($person);
+        }
+        return $status;
+    }
 
-	function doAction($noEcho=false){
-	    global $wgMessage;
-	    $me = Person::newFromWgUser();
-	    if(isset($_POST['id']) && $me->isRoleAtLeast(MANAGER)){
+    function doAction($noEcho=false){
+        global $wgMessage;
+        $me = Person::newFromWgUser();
+        if(isset($_POST['id']) && $me->isRoleAtLeast(MANAGER)){
             $person = Person::newFromId($_POST['id']);
         }
         else{
@@ -90,43 +183,51 @@ class UploadCCVAPI extends API{
                           'error' => array());
             if($valid){
                 $cv = new CommonCV($ccv['tmp_name']);
-                $conferencePapers = $cv->getConferencePapers();
-                $journalPapers = $cv->getJournalPapers();
-                $bookChapters = $cv->getBookChapters();
-                $reviewedConferencePapers = $cv->getReviewedConferencePapers();
-                $reviewedJournalPapers = $cv->getReviewedJournalPapers();
                 $createdProducts = array();
                 $errorProducts = array();
-                foreach($conferencePapers as $ccv_id => $paper){
-                    $product = $this->createProduct($person, $paper, "Publication", "Conference Paper", $ccv_id);
-                    if($product != null){
-                        $createdProducts[] = $product;
+                if(isset($_POST['publications'])){
+                    $conferencePapers = $cv->getConferencePapers();
+                    $journalPapers = $cv->getJournalPapers();
+                    $bookChapters = $cv->getBookChapters();
+                    $reviewedConferencePapers = $cv->getReviewedConferencePapers();
+                    $reviewedJournalPapers = $cv->getReviewedJournalPapers();
+                   
+                    foreach($conferencePapers as $ccv_id => $paper){
+                        $product = $this->createProduct($person, $paper, "Publication", "Conference Paper", $ccv_id);
+                        if($product != null){
+                            $createdProducts[] = $product;
+                        }
+                        else{
+                            $errorProducts[] = $paper;
+                        }
                     }
-                    else{
-                        $errorProducts[] = $paper;
+                    foreach($journalPapers as $ccv_id => $paper){
+                        $product = $this->createProduct($person, $paper, "Publication", "Journal Paper", $ccv_id);
+                        if($product != null){
+                            $createdProducts[] = $product;
+                        }
+                        else{
+                            $errorProducts[] = $paper;
+                        }
                     }
-                }
-                foreach($journalPapers as $ccv_id => $paper){
-                    $product = $this->createProduct($person, $paper, "Publication", "Journal Paper", $ccv_id);
-                    if($product != null){
-                        $createdProducts[] = $product;
-                    }
-                    else{
-                        $errorProducts[] = $paper;
-                    }
-                }
-                foreach($bookChapters as $ccv_id => $paper){
-                    $product = $this->createProduct($person, $paper, "Publication", "Book Chapter", $ccv_id);
-                    if($product != null){
-                        $createdProducts[] = $product;
-                    }
-                    else{
-                        $errorProducts[] = $paper;
+                    foreach($bookChapters as $ccv_id => $paper){
+                        $product = $this->createProduct($person, $paper, "Publication", "Book Chapter", $ccv_id);
+                        if($product != null){
+                            $createdProducts[] = $product;
+                        }
+                        else{
+                            $errorProducts[] = $paper;
+                        }
                     }
                 }
                 if(isset($_POST['supervises'])){
                     $supervises = $cv->getStudentsSupervised();
-                    $json['supervises'] = $supervises;
+                    foreach($supervises as $hqp){
+                        $status = $this->createHQP($person, $hqp);
+                        if($status){
+                            $json['supervises'][] = $hqp;
+                        }
+                    }
                 }
                 if(isset($_POST['funding'])){
                     $funding = $cv->getFunding();
@@ -169,10 +270,10 @@ EOF;
 EOF;
             exit;
         }
-	}
-	
-	function isLoginRequired(){
-		return true;
-	}
+    }
+    
+    function isLoginRequired(){
+        return true;
+    }
 }
 ?>

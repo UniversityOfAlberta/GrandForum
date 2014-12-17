@@ -158,8 +158,10 @@ class Person extends BackboneModel {
         if($tmpPerson->getName() != ""){
             return $tmpPerson;
         }
+        $name = str_replace("*", "", $name);
         $name = str_replace(".", ".*", $name);
         $name = str_replace(" ", ".*", $name);
+        
         if(isset(Person::$cache[$name])){
             return Person::$cache[$name];
         }
@@ -358,11 +360,14 @@ class Person extends BackboneModel {
                                               'uu.position_id' => EQ(COL('p.position_id'))),
                                         array('uu.id' => 'DESC'));
             foreach($data as $row){
-                if(!isset(self::$universityCache[$row['user_id']])){
+                if(!isset(self::$universityCache[$row['user_id']]) || 
+                   self::$universityCache[$row['user_id']]['date'] <= $row['end_date'] || // Get the most recent
+                   $row['end_date'] == '0000-00-00 00:00:00'){
                     self::$universityCache[$row['user_id']] = 
                         array("university" => $row['university_name'],
                               "department" => $row['department'],
-                              "position"   => $row['position']);
+                              "position"   => $row['position'],
+                              "date"       => $row['end_date']);
                 }
             }
         }
@@ -695,12 +700,20 @@ class Person extends BackboneModel {
         global $wgRequest;
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(STAFF)){
-            $wgRequest->setVal('wpCreateaccountMail', true);
+            $wgRequest->setVal('wpCreateaccountMail', ($this->email!=""));
+            $wgRequest->setVal('wpCreateaccount', ($this->email==""));
             $wgRequest->setSessionData('wsCreateaccountToken', 'true');
             $wgRequest->setVal('wpCreateaccountToken', 'true');
             $wgRequest->setVal('wpName', $this->name);
             $wgRequest->setVal('wpEmail', $this->email);
-            $_POST['wpCreateaccountMail'] = 'true';
+            if($this->email != ""){
+                $_POST['wpCreateaccount'] = false;
+                $_POST['wpCreateaccountMail'] = true;
+            }
+            else{
+                $_POST['wpCreateaccount'] = true;
+                $_POST['wpCreateaccountMail'] = false;
+            }
             $_POST['wpCreateaccountToken'] = 'true';
             $_POST['wpName'] = $this->name;
             $_POST['wpEmail'] = $this->email;
@@ -2423,9 +2436,10 @@ class Person extends BackboneModel {
             $data = DBFunctions::execSQL($sql);
             $people = array();
             foreach($data as $row){
-                $people[] = Person::newFromId($row['user1']);
+                $person = Person::newFromId($row['user1']);
+                $people[$person->getId()] = $person;
             }
-            return $people;
+            return array_values($people);
         }
         $sql = "SELECT *
                 FROM grand_relations
@@ -2436,9 +2450,9 @@ class Person extends BackboneModel {
         $people = array();
         foreach($data as $row){
             $person = Person::newFromId($row['user1']);
-            $people[] = $person;
+            $people[$person->getId()] = $person;
         }
-        return $people;
+        return array_values($people);
     }
     
     function getSupervisorsDuring($startRange, $endRange){

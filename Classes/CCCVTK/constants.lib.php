@@ -37,6 +37,7 @@
  * lookup and get back the caption (e.g. "Assitant Professor") from the
  * value ("00000000000000000000000000000002" in that case).
  */
+global $CCV_CONST;
 $CCV_CONST["Academic Position Type"]["Consultation"] = "00000000000000000000000000000213";
 $CCV_CONST["Academic Position Type"]["Sessional"] = "00000000000000000000000000000214";
 $CCV_CONST["Academic Position Type"]["Term"] = "00000000000000000000000000000215";

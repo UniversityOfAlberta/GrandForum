@@ -8,13 +8,14 @@
     </select>
     <% if(person != null){ %>
         <h2>CCV Upload</h2>
-        <p>Upload the CCV XML File for <b><%= person.get('fullName') %></b>.  Personal Information, Products, HQP and Funding will all be imported.</p>
+        <p>Upload the CCV XML File for <b><%= person.get('fullName') %></b>.</p>
         <iframe name="fileUpload" style="display:none;"></iframe>
         <form target="fileUpload" action="<%= wgServer + wgScriptPath %>/index.php?action=api.uploadCCV" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<%= person.get('id') %>" />
-            <input type="hidden" name="supervises" value="true" />
-            <input type="hidden" name="funding" value="true" />
-            <input type="hidden" name="info" value="true" />
+            <input type="checkbox" name="publications" value="true" checked="checked" /> Import Publications<br />
+            <input type="checkbox" name="supervises" value="true" checked="checked" /> Import HQP information<br />
+            <input type="checkbox" name="funding" value="true" checked="checked" /> Import grants<br />
+            <input type="checkbox" name="info" value="true" checked="checked" /> Import personal information<br />
             <input type="file" name="ccv" />
         <form><br />
         <input id="upload" type="button" value="Upload" />

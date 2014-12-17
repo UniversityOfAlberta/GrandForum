@@ -38,8 +38,15 @@ class PersonRelationsTab extends AbstractTab {
                                 $start_date = substr($r->getStartDate(), 0, 10);
                                 $end_date = substr($r->getEndDate(), 0, 10);
                                 $end_date = ($end_date == '0000-00-00')? "Current" : $end_date;
-                                $position = $hqp->getUniversity();
+                                
+                                if($r->getEndDate() != "0000-00-00 00:00:00"){
+                                    $position = $hqp->getUniversityDuring($r->getEndDate(), $r->getEndDate());
+                                }
+                                else{
+                                    $position = $hqp->getUniversity();
+                                }
                                 $position = $position['position'];
+                                
                                 $projects = $r->getProjects();
                                 $proj_names = array();
                                 foreach($projects as $p){
@@ -50,7 +57,6 @@ class PersonRelationsTab extends AbstractTab {
                                 "<tr><td>$start_date</td><td>$end_date</td><td>$position</td><td>$proj_names</td>
                                 <td><a href='{$supervisor->getUrl()}'>{$supervisor->getLastName()}</a></td>
                                 <td><a href='{$supervisor->getUrl()}'>{$supervisor->getFirstName()}</a></td></tr>";
-                                break;
                             }
                         }
                     }
@@ -74,7 +80,12 @@ class PersonRelationsTab extends AbstractTab {
                             $start_date = substr($r->getStartDate(), 0, 10);
                             $end_date = substr($r->getEndDate(), 0, 10);
                             $end_date = ($end_date == '0000-00-00')? "Current" : $end_date;
-                            $position = $hqp->getUniversity();
+                            if($r->getEndDate() != "0000-00-00 00:00:00"){
+                                $position = $hqp->getUniversityDuring($r->getEndDate(), $r->getEndDate());
+                            }
+                            else{
+                                $position = $hqp->getUniversity();
+                            }
                             $position = $position['position'];
                             $projects = $r->getProjects();
                             $proj_names = array();

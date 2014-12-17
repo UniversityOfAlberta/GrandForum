@@ -445,14 +445,18 @@ class cavendishTemplate extends QuickTemplate {
 		            }
 		        });
 		        
-		        var animate = function (){
-		            var opac = Math.abs(1 - $("img.overlay").css('opacity'));
-		            $("img.overlay").animate({
-		                opacity: opac
-		            }, 1000, 'easeInOutQuad', animate);
+		        if($("img.overlay")[0] != undefined){
+		            var notificationOverlay = $("img.overlay")[0];
+		            var delta = 0.05;
+		            var opacity = 1;
+		            setInterval(function(){
+		                if(opacity <= 0 || opacity >= 1){
+		                    delta = -delta;
+		                }
+		                opacity += delta;
+		                notificationOverlay.style.opacity = opacity;
+		            }, 100);
 		        }
-		        
-		        animate();
 		        
 		        $("#sideToggle").click(function(e, force){
 		            $("#sideToggle").stop();

@@ -4,6 +4,7 @@ CCVImportView = Backbone.View.extend({
 
     initialize: function(options){
         this.people = new People();
+        this.people.roles = ['PNI','CNI','AR'];
         this.listenTo(this.people, "sync", $.proxy(function(){
             this.render();
         }, this));
@@ -25,8 +26,12 @@ CCVImportView = Backbone.View.extend({
                 clearAllMessages();
                 var nCreated = response.created.length;
                 var nError = response.error.length;
+                var nHQP = response.supervises.length;
                 if(nCreated > 0){
                     addSuccess("<b>" + nCreated + "</b> products were created");
+                }
+                if(response.supervises.length > 0){
+                    addSuccess("<b>" + nHQP + "</b> HQP were created");
                 }
                 if(nError > 0){
                     addInfo("<b>" + nError + "</b> products were ignored (probably duplicates)");

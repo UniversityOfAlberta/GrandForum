@@ -95,7 +95,12 @@ Person = Backbone.Model.extend({
 People = Backbone.Collection.extend({
     model: Person,
     
-    url: 'index.php?action=api.person'
+    url: function(){
+        if(this.roles == undefined){
+            return 'index.php?action=api.people';
+        }
+        return 'index.php?action=api.people/' + this.roles.join(',');
+    }
 });
 
 /**
