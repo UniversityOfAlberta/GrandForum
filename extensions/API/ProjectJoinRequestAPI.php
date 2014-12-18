@@ -43,7 +43,7 @@ class ProjectJoinRequestAPI extends API{
                                   'type'            => "PROJECT",
 		                          'created' => 0));
 		
-		$this->addMessage("User Creation Request Submitted.  Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you.");
+		$this->addMessage("Join Request Submitted.  Once an Admin sees this request, you will be accepted into the project, or if there is a problem they will email you.");
         return true;
 	}
 	
