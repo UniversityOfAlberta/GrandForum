@@ -115,7 +115,7 @@ class EditMember extends SpecialPage{
             
             $p_current = array();
             $r_current = array();
-            $projects = $person->getProjects();
+            $projects = $person->getProjects(false, true);
             $roles = $person->getRoles();
             foreach($projects as $project){
                 $p_current[] = $project->getId();
@@ -571,7 +571,7 @@ class EditMember extends SpecialPage{
             }
             else{
                 $current = array();
-                $projs = $person->getProjects($date);
+                $projs = $person->getProjects($date, true);
                 if($projs == null){
                     $projs = array();
                 }
@@ -805,7 +805,7 @@ class EditMember extends SpecialPage{
                                 <select id='names' name='name' size='10' style='width:100%'>
                                     <option id='no' disabled>Search did not match anyone</option>\n");
         foreach($allPeople as $person){
-            $projects = $person->getProjects();
+            $projects = $person->getProjects(false, true);
             $projs = array();
             foreach($projects as $project){
                 $projs[] = $project->getName();
@@ -873,7 +873,7 @@ class EditMember extends SpecialPage{
             $req_user = Person::newFromId($row['requesting_user']);
             $staff = Person::newFromId($row['staff']);
             $person = Person::newFromId($row['user']);
-            $projects = $req_user->getProjects();
+            $projects = $req_user->getProjects(false, true);
             $projs = array();
             if(count($projects) > 0){
                 foreach($projects as $project){
@@ -1149,7 +1149,7 @@ class EditMember extends SpecialPage{
         global $wgUser, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         $user = Person::newFromId($wgUser->getId());
-        $myProjects = $user->getProjects();
+        $myProjects = $user->getProjects(false, true);
         if(!isset($_GET['name'])){
             return;
         }

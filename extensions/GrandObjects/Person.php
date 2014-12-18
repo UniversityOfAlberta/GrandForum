@@ -853,7 +853,7 @@ class Person extends BackboneModel {
     
     // Returns whether this Person is a member of the given Project or not
     function isMemberOf($project){
-        $projects = $this->getProjects();
+        $projects = $this->getProjects(false, true);
         if(count($projects) > 0 && $project != null){
             foreach($projects as $project1){
                 if($project1 != null && $project->getName() == $project1->getName()){
@@ -1731,7 +1731,7 @@ class Person extends BackboneModel {
     
     // Returns an array of Projects that this Person is a part of
     // If history is set to true, then all the Projects regardless of date are included
-    function getProjects($history=false){
+    function getProjects($history=false, $allowProposed=false){
         $projects = array();
         if(($this->projects == null || $history) && $this->id != null){
             $sql = "SELECT p.name
@@ -1753,8 +1753,9 @@ class Person extends BackboneModel {
                 $project = Project::newFromHistoricName($row['name']);
                 if($project != null && $project->getName() != ""){
                     if(!isset($projectNames[$project->getName()])){
-                        if(!$project->isDeleted() || ($project->isDeleted() && $history)){
-                            // Make sure that the project is not being added twice
+                        // Make sure that the project is not being added twice
+                        if((!$project->isDeleted() || ($project->isDeleted() && $history)) && ($allowProposed || $project->getStatus() != "Proposed")){
+                            // Make sure the project is not deleted or proposed, and then add it
                             $projectNames[$project->getName()] = true;
                             $projects[] = $project;
                         }
@@ -1773,7 +1774,7 @@ class Person extends BackboneModel {
     
     // Returns an array of Projects that this Person is a part of
     // TODO: This might be slow.
-    function getProjectsDuring($start, $end){
+    function getProjectsDuring($start, $end, $allowProposed=false){
         if(isset($this->projectCache[$start.$end])){
             return $this->projectCache[$start.$end];
         }
@@ -1782,8 +1783,9 @@ class Person extends BackboneModel {
         if(count($projects) > 0){
             foreach($projects as $project){
                 $project = Project::newFromHistoricName($project->getName());
-                if((!$project->isDeleted()) || 
-                   ($project->isDeleted() && !($project->effectiveDate < $start))){
+                if(((!$project->isDeleted()) || 
+                    ($project->isDeleted() && !($project->effectiveDate < $start))) &&
+                   ($allowProposed || $project->getStatus() != "Proposed")){
                     $members = $project->getAllPeopleDuring(null, $start, $end, true);
                     foreach($members as $member){
                         if($member->getId() == $this->id){
