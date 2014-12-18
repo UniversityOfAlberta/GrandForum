@@ -1696,6 +1696,7 @@ class Person extends BackboneModel {
     
     function getProjectHistory($groupBySubs=false){
         $projects = array();
+        $tmpProjects = array();
         $data = DBFunctions::select(array('grand_project_members'),
                                     array('*'),
                                     array('user_id' => EQ($this->getId())));
