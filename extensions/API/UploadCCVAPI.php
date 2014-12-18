@@ -137,24 +137,47 @@ class UploadCCVAPI extends API{
                     $position = $id;
                 }
             }
-            DBFunctions::insert('grand_roles',
-                                array('user_id'     => $person->getId(),
-                                      'role'        => HQP,
-                                      'start_date'  => $start_date,
-                                      'end_date'    => $end_date));
-            DBFunctions::insert('grand_relations',
-                                array('user1'       => $supervisor->getId(),
-                                      'user2'       => $person->getId(),
-                                      'type'        => 'Supervises',
-                                      'start_date'  => $start_date,
-                                      'end_date'    => $end_date));
-            DBFunctions::insert('grand_user_university',
-                                array('user_id'       => $person->getId(),
-                                      'university_id' => $university,
-                                      'department'    => "",
-                                      'position_id'   => $position,
-                                      'start_date'    => $start_date,
-                                      'end_date'      => $end_date));
+            if(count(DBFunctions::select(array('grand_roles'), 
+                                         array('*'), 
+                                         array('user_id'    => EQ($person->getId()),
+                                               'role'       => EQ(HQP),
+                                               'start_date' => EQ($start_date)))) == 0){
+                // Make sure this exact entry is not already entered (allow end_date to be different)
+                DBFunctions::insert('grand_roles',
+                                    array('user_id'     => $person->getId(),
+                                          'role'        => HQP,
+                                          'start_date'  => $start_date,
+                                          'end_date'    => $end_date));
+            }
+            if(count(DBFunctions::select(array('grand_relations'),
+                                         array('*'),
+                                         array('user1'      => EQ($supervisor->getId()),
+                                               'user2'      => EQ($person->getId()),
+                                               'type'       => EQ('Supervises'),
+                                               'start_date' => EQ($start_date)))) == 0){
+                // Make sure this exact entry is not already entered (allow end_date to be different)
+                DBFunctions::insert('grand_relations',
+                                    array('user1'       => $supervisor->getId(),
+                                          'user2'       => $person->getId(),
+                                          'type'        => 'Supervises',
+                                          'start_date'  => $start_date,
+                                          'end_date'    => $end_date));
+            }
+            if(count(DBFunctions::select(array('grand_user_university'),
+                                         array('*'),
+                                         array('user_id'       => EQ($person->getId()),
+                                               'university_id' => EQ($university),
+                                               'position_id'   => EQ($position),
+                                               'start_date'    => EQ($start_date)))) == 0){
+                // Make sure this exact entry is not already entered (allow department and end_date to be different)
+                DBFunctions::insert('grand_user_university',
+                                    array('user_id'       => $person->getId(),
+                                          'university_id' => $university,
+                                          'department'    => $supervisor->getDepartment(),
+                                          'position_id'   => $position,
+                                          'start_date'    => $start_date,
+                                          'end_date'      => $end_date));
+            }
             $status = true;
             MailingList::subscribeAll($person);
         }

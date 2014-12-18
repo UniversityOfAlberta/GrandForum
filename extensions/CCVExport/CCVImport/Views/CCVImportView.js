@@ -31,7 +31,7 @@ CCVImportView = Backbone.View.extend({
                     addSuccess("<b>" + nCreated + "</b> products were created");
                 }
                 if(response.supervises.length > 0){
-                    addSuccess("<b>" + nHQP + "</b> HQP were created");
+                    addSuccess("<b>" + nHQP + "</b> HQP were created/updated");
                 }
                 if(nError > 0){
                     addInfo("<b>" + nError + "</b> products were ignored (probably duplicates)");
