@@ -24,15 +24,20 @@ CCVImportView = Backbone.View.extend({
             // Purposefully global so that iframe can access
             if(error == undefined || error == ""){
                 clearAllMessages();
+                var success = new Array();
                 var nCreated = response.created.length;
                 var nError = response.error.length;
                 var nHQP = response.supervises.length;
                 if(nCreated > 0){
-                    addSuccess("<b>" + nCreated + "</b> products were created");
+                    success.push("<b>" + nCreated + "</b> products were created");
                 }
                 if(response.supervises.length > 0){
-                    addSuccess("<b>" + nHQP + "</b> HQP were created/updated");
+                    success.push("<b>" + nHQP + "</b> HQP were created/updated");
                 }
+                if(response.info != undefined){
+                    success.push("Personal Information was updated");
+                }
+                addSuccess(success.join("<br />"));
                 if(nError > 0){
                     addInfo("<b>" + nError + "</b> products were ignored (probably duplicates)");
                 }

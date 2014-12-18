@@ -11,6 +11,10 @@ class UploadCCVAPI extends API{
                                "00000000000000000000000000000084" => "Undergraduate",
                                "00000000000000000000000000000085" => "Masters Student",
                                "00000000000000000000000000000086" => "PhD Student");
+                               
+    static $genderMap = array("00000000000000000000000000000282" => "Male",
+                              "00000000000000000000000000000283" => "Female",
+                              "00000000000000000000000000000284" => "");
 
     var $structure = null;
 
@@ -22,6 +26,15 @@ class UploadCCVAPI extends API{
         
     }
     
+    /**
+     * Creates a new Product if it doesn't already exist
+     * @param Person $person The Person creating the product
+     * @param array $paper The array containing the ccv data for the Product
+     * @param string $category The category of the new Product
+     * @param string $type The type of the new Product
+     * @param string $ccv_id The id of the Product in the ccv
+     * @return Product the new Product
+     */
     function createProduct($person, $paper, $category, $type, $ccv_id){
         $checkProduct = Product::newFromCCVId($ccv_id);
         if($checkProduct->getId() != 0){
@@ -78,6 +91,12 @@ class UploadCCVAPI extends API{
         }
     }
     
+    /**
+     * Creates or updates an HQP
+     * @param Person $supervisor The supervisor for the HQP
+     * @param array $hqp The array containing the ccv data for the HQP
+     * @return boolean Returns the status of the creation
+     */
     function createHQP($supervisor, $hqp){
         $names = explode(", ", $hqp['name']);
         if(count($names) > 1){
@@ -183,6 +202,18 @@ class UploadCCVAPI extends API{
         }
         return $status;
     }
+    
+    /**
+     * Fills in some of the personal fields from the CCV
+     * @param Person $person The Person to update
+     * @param array $info The array containing the ccv data
+     * @return boolean Returns the status of the update
+     */
+    function updatePersonalInfo($person, $info){
+        // TODO: Add support for getting university (employment) information
+        $person->gender = (isset(self::$genderMap[$info['sex']])) ? self::$genderMap[$info['sex']] : "";
+        return $person->update();
+    }
 
     function doAction($noEcho=false){
         global $wgMessage;
@@ -254,9 +285,14 @@ class UploadCCVAPI extends API{
                 }
                 if(isset($_POST['funding'])){
                     $funding = $cv->getFunding();
+                    $json['funding'] = $funding;
                 }
                 if(isset($_POST['info'])){
                     $info = $cv->getPersonalInfo();
+                    $status = $this->updatePersonalInfo($person, $info);
+                    if($status){
+                        $json['info'] = $info;
+                    }
                 }
             }
             else{
