@@ -41,6 +41,9 @@ class ProjectDashboardTab extends AbstractEditableTab {
     
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath;
+        if(!$wgUser->isLoggedIn()){
+            return;
+        }
         if(!$this->project->isSubProject()){
             $this->showTopProducts($this->project, $this->visibility);
         }

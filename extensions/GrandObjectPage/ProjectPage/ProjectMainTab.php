@@ -17,8 +17,12 @@ class ProjectMainTab extends AbstractEditableTab {
         $me = Person::newFromId($wgUser->getId());
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         
-        if(!$project->isDeleted() && !$project->isSubProject() && !$edit && !$me->isMemberOf($project)){
-            // Show a 'Join' button if this person isn't a member of the project
+        if($me->isLoggedIn() && 
+           !$project->isDeleted() && 
+           !$project->isSubProject() && 
+           !$edit && 
+           !$me->isMemberOf($project)){
+            // Show a 'Join' button if this person isn't a member of the project, but is logged in
             $this->html .= "<a class='button' onClick=\"$('#joinForm').slideDown();$(this).remove();\">Join</a>
             <script type='text/javascript'>
                 function submitJoinRequest(){
