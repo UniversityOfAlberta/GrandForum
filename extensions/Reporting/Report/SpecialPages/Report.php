@@ -49,6 +49,11 @@ class Report extends AbstractReport{
         
         // Project Leader Reports
         $leadership = $person->leadership();
+        foreach($leadership as $key => $project){
+            if($project->getName() == "Reboot"){
+                unset($leadership[$key]);
+            }
+        }
         if(count($leadership) > 0){
             $projectDone = array();
             $subs = array();
