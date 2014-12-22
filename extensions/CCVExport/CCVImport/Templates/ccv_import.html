@@ -11,11 +11,15 @@
         <p>Upload the CCV XML File for <b><%= person.get('fullName') %></b>.</p>
         <iframe name="fileUpload" style="display:none;"></iframe>
         <form target="fileUpload" action="<%= wgServer + wgScriptPath %>/index.php?action=api.uploadCCV" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="id" value="<%= person.get('id') %>" />
-            <input type="checkbox" name="publications" value="true" checked="checked" /> Import Publications<br />
-            <input type="checkbox" name="supervises" value="true" checked="checked" /> Import HQP information<br />
-            <input type="checkbox" name="funding" value="true" checked="checked" /> Import grants<br />
-            <input type="checkbox" name="info" value="true" checked="checked" /> Import personal information<br />
+            <fieldset>
+                <legend>Import Options</legend>
+                <input type="hidden" name="id" value="<%= person.get('id') %>" />
+                <input type="checkbox" name="publications" value="true" checked="checked" />Publications<br />
+                <input type="checkbox" name="supervises" value="true" checked="checked" />HQP Information<br />
+                <input type="checkbox" name="funding" value="true" checked="checked" />Grants<br />
+                <input type="checkbox" name="info" value="true" checked="checked" />Personal Information<br />
+                <input type="checkbox" name="employment" value="true" checked="checked" />Employment Information
+            </fieldset>
             <input type="file" name="ccv" />
         <form><br />
         <input id="upload" type="button" value="Upload" />

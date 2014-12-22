@@ -206,13 +206,71 @@ class UploadCCVAPI extends API{
     /**
      * Fills in some of the personal fields from the CCV
      * @param Person $person The Person to update
-     * @param array $info The array containing the ccv data
+     * @param array $info The array containing the personal info ccv data
      * @return boolean Returns the status of the update
      */
     function updatePersonalInfo($person, $info){
-        // TODO: Add support for getting university (employment) information
         $person->gender = (isset(self::$genderMap[$info['sex']])) ? self::$genderMap[$info['sex']] : "";
         return $person->update();
+    }
+    
+    /**
+     * Adds the employment information to the person's history
+     * @param Person $person The Person to update
+     * @param array $employment The array containing the employment ccv data
+     * @return boolean Returns the status of the update
+     */
+    function updateEmployment($person, $employment){
+        $universities = Person::getAllUniversities();
+        $positions = Person::getAllPositions();
+        
+        $status = true;
+        foreach($employment as $emp){
+            $start_date = $emp['start_year']."-".str_pad($emp['start_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
+            $end_date = $emp['end_year']."-".str_pad($emp['end_month'], 2, '0', STR_PAD_LEFT)."-".cal_days_in_month(CAL_GREGORIAN,$emp['end_month'],$emp['end_year'])." 00:00:00";
+            if($emp['end_year'] == "" || $emp['end_month'] == ""){
+                $end_date = "0000-00-00 00:00:00";
+            }
+            $department = $emp['department'];
+            $university = Person::getDefaultUniversity();
+            foreach($universities as $id => $uni){
+                if($uni == $emp['organization_name']){
+                    $university = $id;
+                    break;
+                }
+                if($uni == $university){
+                    $university = $id;
+                }
+            }
+            $position = Person::getDefaultPosition();
+            foreach($positions as $id => $pos){
+                if($pos == CommonCV::getCaptionFromValue($emp['rank'], "Academic Rank")){
+                    $position = $id;
+                    break;
+                }
+                if($pos == $position){
+                    $position = $id;
+                }
+            }
+            if(count(DBFunctions::select(array('grand_user_university'),
+                                         array('*'),
+                                         array('user_id'       => EQ($person->getId()),
+                                               'university_id' => EQ($university),
+                                               'department'    => EQ($department),
+                                               'position_id'   => EQ($position),
+                                               'start_date'    => EQ($start_date)))) == 0){
+                // Make sure this exact entry is not already entered (allow department and end_date to be different)
+                $status = $status && 
+                          DBFunctions::insert('grand_user_university',
+                                              array('user_id'       => $person->getId(),
+                                                    'university_id' => $university,
+                                                    'department'    => $department,
+                                                    'position_id'   => $position,
+                                                    'start_date'    => $start_date,
+                                                    'end_date'      => $end_date));
+            }
+        }
+        return $status;
     }
 
     function doAction($noEcho=false){
@@ -292,6 +350,13 @@ class UploadCCVAPI extends API{
                     $status = $this->updatePersonalInfo($person, $info);
                     if($status){
                         $json['info'] = $info;
+                    }
+                }
+                if(isset($_POST['employment'])){
+                    $employment = $cv->getEmployment();
+                    $status = $this->updateEmployment($person, $employment);
+                    if($status){
+                        $json['employment'] = $employment;
                     }
                 }
             }

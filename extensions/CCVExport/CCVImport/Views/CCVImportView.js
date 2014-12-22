@@ -27,17 +27,25 @@ CCVImportView = Backbone.View.extend({
                 var success = new Array();
                 var nCreated = response.created.length;
                 var nError = response.error.length;
-                var nHQP = response.supervises.length;
+                var nHQP = (response.supervises != undefined) ? response.supervises.length : 0;
                 if(nCreated > 0){
                     success.push("<b>" + nCreated + "</b> products were created");
                 }
-                if(response.supervises.length > 0){
+                if(nHQP > 0){
                     success.push("<b>" + nHQP + "</b> HQP were created/updated");
                 }
                 if(response.info != undefined){
                     success.push("Personal Information was updated");
                 }
-                addSuccess(success.join("<br />"));
+                if(response.employment != undefined){
+                    success.push("Employment Information was updated");
+                }
+                if(success.length > 0){
+                    addSuccess(success.join("<br />"));
+                }
+                else if (nError == 0){
+                    addWarning("Nothing was imported");
+                }
                 if(nError > 0){
                     addInfo("<b>" + nError + "</b> products were ignored (probably duplicates)");
                 }
