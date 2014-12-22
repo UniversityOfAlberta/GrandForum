@@ -120,23 +120,23 @@ class ProjectPage {
                 
                 $tabbedPage = new TabbedPage("project");
                 $tabbedPage->addTab(new ProjectMainTab($project, $visibility));
-                if(!$project->isSubProject() && $project->getPhase() > 1 && $project->getStatus() != 'proposed'){
+                if(!$project->isSubProject() && $project->getPhase() > 1 && $project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectSubprojectsTab($project, $visibility));
                 }
                 if($project->getPhase() == 1){
                     $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
                 }
-                if($project->getStatus() != 'proposed'){
+                if($project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
                 }
                 /*if(isExtensionEnabled('AllocatedBudgets') && !$project->isSubProject()){
                     $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
                 }*/
-                if($project->getStatus() != 'proposed'){
+                if($project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 }
                 $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
-                if(!$project->isSubProject() && $project->getStatus() != 'proposed'){
+                if(!$project->isSubProject() && $project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectOverviewTab($project, $visibility));
                 }
                 $tabbedPage->showPage();

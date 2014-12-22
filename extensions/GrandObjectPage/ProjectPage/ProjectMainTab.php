@@ -82,7 +82,7 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         $this->html .= "</table>";
         $this->showChallenge();
-        if($project->getStatus() != 'proposed'){
+        if($project->getStatus() != 'Proposed'){
             $this->showChampions();
         }
         $this->showPeople();
