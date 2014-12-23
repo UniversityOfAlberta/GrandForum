@@ -252,13 +252,27 @@ class UploadCCVAPI extends API{
                     $position = $id;
                 }
             }
-            if(count(DBFunctions::select(array('grand_user_university'),
-                                         array('*'),
-                                         array('user_id'       => EQ($person->getId()),
-                                               'university_id' => EQ($university),
-                                               'department'    => EQ($department),
-                                               'position_id'   => EQ($position),
-                                               'start_date'    => EQ($start_date)))) == 0){
+            $data = DBFunctions::select(array('grand_user_university'),
+                                        array('*'),
+                                        array('user_id'       => EQ($person->getId()),
+                                              'university_id' => EQ($university),
+                                              'department'    => EQ($department),
+                                              'position_id'   => EQ($position),
+                                              'end_date'      => EQ($end_date)));
+            if(count($data) > 0){
+                // This is the current university which is in the system, just update the start date
+                $status = $status && 
+                          DBFunctions::update('grand_user_university',
+                                              array('start_date' => $start_date),
+                                              array('id' => EQ($data[0]['id'])));
+            }
+            else if(count(DBFunctions::select(array('grand_user_university'),
+                                              array('*'),
+                                              array('user_id'       => EQ($person->getId()),
+                                                    'university_id' => EQ($university),
+                                                    'department'    => EQ($department),
+                                                    'position_id'   => EQ($position),
+                                                    'start_date'    => EQ($start_date)))) == 0){
                 // Make sure this exact entry is not already entered (allow department and end_date to be different)
                 $status = $status && 
                           DBFunctions::insert('grand_user_university',

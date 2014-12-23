@@ -2009,6 +2009,7 @@ class Person extends BackboneModel {
                     FROM(SELECT id, name, rev_id
                     FROM grand_contributions
                     WHERE users LIKE '%\"{$this->id}\"%'
+                    AND (access_id = '{$this->id}' OR access_id = '0')
                     GROUP BY id, name, rev_id
                     ORDER BY id ASC, rev_id DESC) a
                     GROUP BY id";

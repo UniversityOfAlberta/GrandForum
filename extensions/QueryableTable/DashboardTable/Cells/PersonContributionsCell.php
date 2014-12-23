@@ -13,7 +13,7 @@
             else{
                 if(isset($params[0])){
                     // Start
-                    $start = $params[0]
+                    $start = $params[0];
                 }
                 if(isset($params[1])){
                     // End

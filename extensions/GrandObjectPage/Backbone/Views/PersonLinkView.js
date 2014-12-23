@@ -22,17 +22,17 @@ PersonLinkView = Backbone.View.extend({
             this.$(".card").show();
             this.$(".card").css("position", "absolute")
                            .css("top", -this.$(".card").height())
-                           .css("left", -this.$(".card").width()/2 + this.$("a#personLink").width()/2);
+                           .css("left", -(25 + 6 + 1));
             this.$(".card").offset({left: Math.max(30, this.$(".card").offset().left)});
             this.$(".card").offset({left: Math.min($(window).width() - this.$(".card").width() - 32, this.$(".card").offset().left)});
-        }, this), 250);
+        }, this), 300);
     },
     
     hideCard: function(){
         clearTimeout(this.timeout);
         this.timeout = setTimeout($.proxy(function(){
             this.$(".card").hide();
-        }, this), 500);
+        }, this), 200);
     },
     
     render: function(){

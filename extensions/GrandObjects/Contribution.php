@@ -22,6 +22,7 @@ class Contribution {
     var $cash;
     var $kind;
     var $description;
+    var $access_id;
     var $start_date;
     var $end_date;
     var $date;
@@ -30,6 +31,7 @@ class Contribution {
     // Creates a Contribution from the given id
     // The most recent revision is grabbed
     static function newFromId($id){
+        $me = Person::newFromWgUser();
         $id = addslashes($id);
         if(isset(self::$cache["id$id"])){
             return self::$cache["id$id"];
@@ -37,6 +39,7 @@ class Contribution {
         $sql = "SELECT *
                 FROM grand_contributions
                 WHERE id = '$id'
+                AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).")
                 ORDER BY rev_id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
         $contribution = new Contribution($data);
@@ -45,6 +48,7 @@ class Contribution {
     }
     
     static function newFromName($name){
+        $me = Person::newFromWgUser();
         $name = str_replace("&#58;", ":", $name);
         if(isset(self::$cache["$name"])){
             return self::$cache["$name"];
@@ -53,6 +57,7 @@ class Contribution {
                 FROM grand_contributions c1, grand_contributions c2
                 WHERE c1.name = '$name'
                 AND c1.id = c2.id
+                AND (c2.access_id = '{$me->getId()}' OR c2.access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).")
                 ORDER BY c2.rev_id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
         $contribution = new Contribution($data);
@@ -62,12 +67,14 @@ class Contribution {
     
     // Creates a Contribution from the given revision id
     static function newFromRevId($id){
+        $me = Person::newFromWgUser();
         if(isset(self::$cache["rev$id"])){
             return self::$cache["rev$id"];
         }
         $sql = "SELECT *
                 FROM grand_contributions
-                WHERE rev_id = '$id'";
+                WHERE rev_id = '$id'
+                AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).")";
         $data = DBFunctions::execSQL($sql);
         $contribution = new Contribution($data);
         self::$cache["rev$id"] = &$contribution;
@@ -91,6 +98,7 @@ class Contribution {
             $this->kind = array();
             $this->unknown = array();
             $this->description = $data[0]['description'];
+            $this->access_id = $data[0]['access_id'];
             $this->start_date = $data[0]['start_date'];
             $this->end_date = $data[0]['end_date'];
             $this->date = $data[0]['change_date'];
@@ -98,8 +106,10 @@ class Contribution {
     }
     
     static function getAllContributions(){
+        $me = Person::newFromWgUser();
         $sql = "SELECT DISTINCT id
-                FROM `grand_contributions`";
+                FROM `grand_contributions`
+                AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).")";
         $data = DBFunctions::execSQL($sql);
         $contributions = array();
         foreach($data as $row){
@@ -111,12 +121,14 @@ class Contribution {
     // Searches for the given phrase in the table of publications
 	// Returns an array of publications which fit the search
 	static function search($phrase, $category='all'){
+	    $me = Person::newFromWgUser();
 	    session_write_close();
 	    $splitPhrase = explode(" ", $phrase);
 	    $sql = "SELECT id, name
                 FROM(SELECT id, name, rev_id
-                           FROM `grand_contributions`
-                           WHERE name LIKE '%' \n";
+                     FROM `grand_contributions`
+                     WHERE name LIKE '%' 
+                     AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).") \n";
 	    foreach($splitPhrase as $word){
 	        $sql .= "AND name LIKE '%$word%'\n";
 	    }
@@ -139,7 +151,8 @@ class Contribution {
         $sql = "SELECT DISTINCT id
                 FROM grand_contributions
                 WHERE $startDate <= end_date
-                AND $endDate >= start_date";
+                AND $endDate >= start_date
+                AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).") \n";
 
         if(!is_null($type) && $type != ""){
             $sql .= " AND type = '{$type}'";
@@ -510,6 +523,14 @@ class Contribution {
     // Returns the description of this Contribution
     function getDescription(){
         return $this->description;
+    }
+    
+    /**
+     * Returns the access id of this Contribution
+     * @return int The user id who has access to this Contribution
+     */
+    function getAccessId(){
+        return $this->access_id;
     }
     
     // Returns the Year of this Contribution
