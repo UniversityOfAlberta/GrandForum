@@ -374,10 +374,8 @@ class ContributionPage {
                             $wgOut->addHTML(implode(", ", $texts));
                         }
                     }
-                    if($edit || !$edit && $contribution->getDescription() != ""){
-                        $wgOut->addWikiText("== Description ==
-                                                __NOEDITSECTION__\n");
-                    }
+                    $wgOut->addWikiText("== Description ==
+                                         __NOEDITSECTION__\n");
                     if($edit){
                         $description = isset($_POST['description']) ? $_POST['description'] : $contribution->getDescription();
                         $wgOut->addHTML("<textarea style='height:175px; width:650px;' name='description'>$description</textarea>");
@@ -395,6 +393,7 @@ class ContributionPage {
                             $('input[name=start_date]').datepicker({
                                 defaultDate: '{$startDate}',
                                 changeMonth: true,
+                                changeYear: true,
                                 numberOfMonths: 1,
                                 dateFormat: 'yy-mm-dd',
                                 onClose: function(selectedDate){
@@ -404,6 +403,7 @@ class ContributionPage {
                             $('input[name=end_date]').datepicker({
                                 defaultDate: '{$endDate}',
                                 changeMonth: true,
+                                changeYear: true,
                                 numberOfMonths: 1,
                                 dateFormat: 'yy-mm-dd',
                                 onClose: function(selectedDate){
