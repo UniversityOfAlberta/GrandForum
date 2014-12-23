@@ -87,10 +87,18 @@ class ContributionPage {
                                     if($subtype[$key] == "othe" && isset($_POST["other_type$key"]) && $_POST["other_type$key"] != ""){
                                         $subtype[$key] = str_replace("'", "&#39;", $_POST["other_type$key"]);
                                     }
-                                    if($type[$key] == "cash" || $type[$key] == "caki" || $type[$key] == "none"){
+                                    if($type[$key] == "cash" || 
+                                       $type[$key] == "caki" || 
+                                       $type[$key] == "grnt" || 
+                                       $type[$key] == "char" || 
+                                       $type[$key] == "scho" || 
+                                       $type[$key] == "fell" || 
+                                       $type[$key] == "cont" || 
+                                       $type[$key] == "none"){
                                         $cash[$key] = (isset($_POST["cash"][$key])) ? $_POST["cash"][$key] : 0;
                                     }
-                                    if($type[$key] == "inki" || $type[$key] == "caki"){
+                                    if($type[$key] == "inki" || 
+                                       $type[$key] == "caki"){
                                         $kind[$key] = (isset($_POST["inKind"][$key])) ? $_POST["inKind"][$key] : 0;
                                     }
                                 }
@@ -195,7 +203,7 @@ class ContributionPage {
                                 function changeFields(el){
                                     var id = $(el).attr('id');
                                     var value = $('#' + id).val();
-                                    if(value == 'cash'){
+                                    if(value == 'cash' || value == 'grnt' || value == 'char' || value == 'scho' || value == 'fell' || value == 'cont'){
                                         $('#inkind' + id).parent().parent().css('display','none');
                                         $('#cash' + id).parent().parent().css('display','table-row');
                                         $('#cash' + id).parent().parent().children('td[align=right]').html('<b>Cash:</b>');
@@ -272,7 +280,7 @@ class ContributionPage {
                                 
                                 var nPartners = 0;
                                 function addPartner(){
-                                    $('#partners').append(\"<table id='table\" + nPartners + \"'><tbody><tr><td colspan='2'><div class='warning' style='display:none;width:700px;'></div></td></tr><tr><td style='width:120px;' align='right'><b>Partner:</b></td><td><input size='50' class='partners' type='text' name='partners[\" + nPartners + \"]' value='' /></td></tr><tr><td align='right' valign='top' style='padding-top:5px;'><b>Type:</b></td><td><select style='display:block;' id='\" + nPartners + \"' class='type' name='type[\" + nPartners + \"]'><option value='none' selected='selected'>[Select Contribution Type]</option><option value='cash'>Cash</option><option value='caki' >Cash and In-Kind</option><option value='inki' >In-Kind</option></select></td></tr><tr style='display:none;'><td align='right'><b>In-Kind:</b></td><td><input class='money' id='inkind\" + nPartners + \"' size='6' type='text' onKeyUp='stripAlphaChars(this.id)' name='inKind[\" + nPartners + \"]' value='0' />$</td></tr><tr style='display:none;'><td align='right'><b>Cash:</b></td><td><input class='money' id='cash\" + nPartners + \"' size='6' type='text' onKeyUp='stripAlphaChars(this.id)' name='cash[\" + nPartners + \"]' value='0' />$</td></tr><tr><td></td><td><a name='\" + nPartners + \"' id='delete\" + nPartners + \"' class='button'>Delete Partner</a></td></tr><tr><td colspan='2'><hr /></td></tr></tbody></table>\");
+                                    $('#partners').append(\"<table id='table\" + nPartners + \"'><tbody><tr><td colspan='2'><div class='warning' style='display:none;width:700px;'></div></td></tr><tr><td style='width:120px;' align='right'><b>Partner:</b></td><td><input size='50' class='partners' type='text' name='partners[\" + nPartners + \"]' value='' /></td></tr><tr><td align='right' valign='top' style='padding-top:5px;'><b>Type:</b></td><td><select style='display:block;' id='\" + nPartners + \"' class='type' name='type[\" + nPartners + \"]'><option value='none' selected='selected'>[Select Contribution Type]</option><option value='cash'>Cash</option><option value='caki' >Cash and In-Kind</option><option value='inki' >In-Kind</option><option value='grnt'>Grant</option><option value='char'>Research Chair</option><option value='scho'>Scholarship</option><option value='fell'>Fellowship</option><option value='cont'>Contract</option></select></td></tr><tr style='display:none;'><td align='right'><b>In-Kind:</b></td><td><input class='money' id='inkind\" + nPartners + \"' size='6' type='text' onKeyUp='stripAlphaChars(this.id)' name='inKind[\" + nPartners + \"]' value='0' />$</td></tr><tr style='display:none;'><td align='right'><b>Cash:</b></td><td><input class='money' id='cash\" + nPartners + \"' size='6' type='text' onKeyUp='stripAlphaChars(this.id)' name='cash[\" + nPartners + \"]' value='0' />$</td></tr><tr><td></td><td><a name='\" + nPartners + \"' id='delete\" + nPartners + \"' class='button'>Delete Partner</a></td></tr><tr><td colspan='2'><hr /></td></tr></tbody></table>\");
                                     $('#' + nPartners).change(function(){
                                         changeFields($(this));
                                     });
@@ -473,7 +481,12 @@ class ContributionPage {
                                     if($type == "inki"){
                                         $wgOut->addHTML("<tr><td align='right'><b>In-Kind:</b></td><td>{$kind}</td></tr>");
                                     }
-                                    else if($type == "cash"){
+                                    else if($type == "cash" || 
+                                            $type == "grnt" || 
+                                            $type == "char" || 
+                                            $type == "scho" || 
+                                            $type == "fell" || 
+                                            $type == "cont"){
                                         $wgOut->addHTML("<tr><td align='right'><b>Cash:</b></td><td>{$cash}</td></tr>");
                                     }
                                     else if($type == "caki"){
@@ -499,6 +512,11 @@ class ContributionPage {
                                 if($type == 'cash'){$selected="selected='selected'";}else{$selected="";} $wgOut->addHTML("<option value='cash' $selected>Cash</option>");
                                 if($type == 'caki'){$selected="selected='selected'";}else{$selected="";} $wgOut->addHTML("<option value='caki' $selected>Cash and In-Kind</option>");
                                 if($type == 'inki'){$selected="selected='selected'";}else{$selected="";} $wgOut->addHTML("<option value='inki' $selected>In-Kind</option>");
+                                if($type == 'grnt'){$selected="selected='selected'";}else{$selected="";} $wgOut->addHTML("<option value='grnt' $selected>Grant</option>");
+                                if($type == 'char'){$selected="selected='selected'";}else{$selected="";} $wgOut->addHTML("<option value='char' $selected>Research Chair</option>");
+                                if($type == 'scho'){$selected="selected='selected'";}else{$selected="";} $wgOut->addHTML("<option value='scho' $selected>Scholarship</option>");
+                                if($type == 'fell'){$selected="selected='selected'";}else{$selected="";} $wgOut->addHTML("<option value='fell' $selected>Fellowship</option>");
+                                if($type == 'cont'){$selected="selected='selected'";}else{$selected="";} $wgOut->addHTML("<option value='cont' $selected>Contract</option>");
                                 $wgOut->addHTML("</select></td></tr>");
                                 $wgOut->addHTML("<tr><td align='right'><b>In-Kind:</b></td><td><input class='money' id='inkind$id' size='6' type='text' onKeyUp='stripAlphaChars(this.id)' name='inKind[$id]' value='{$inkind}' />\$</td></tr>");
                                 $wgOut->addHTML("<tr><td align='right'><b>Cash:</b></td><td><input class='money' id='cash$id' size='6' type='text' onKeyUp='stripAlphaChars(this.id)' name='cash[$id]' value='{$cash}' />\$</td></tr>");

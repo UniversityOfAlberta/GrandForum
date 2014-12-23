@@ -95,7 +95,7 @@ class UploadCCVAPI extends API{
      * Creates or updates an HQP
      * @param Person $supervisor The supervisor for the HQP
      * @param array $hqp The array containing the ccv data for the HQP
-     * @return boolean Returns the status of the creation
+     * @return boolean The status of the creation
      */
     function createHQP($supervisor, $hqp){
         $names = explode(", ", $hqp['name']);
@@ -204,10 +204,62 @@ class UploadCCVAPI extends API{
     }
     
     /**
+     * Creates new contributions from the given ccv data
+     * @param Person $person The Person to update
+     * @param array $funding The array containing the funding ccv data
+     * @return boolean The status of the update
+     */
+    function updateFunding($person, $funding){
+        foreach($funding as $fund){
+            $contribution = Contribution::newFromName($fund['funding_title']);
+            if($contribution->getName() != ""){
+                // Contribution exists so update it
+                $_POST['id'] = $contribution->getId();
+                $users = array();
+                foreach($fund['co_holders'] as $holder){
+                    $holder = explode(" ", $holder);
+                    $users[] = implode(".", $holder);
+                }
+                $_POST['users'] = implode(", ", $users);
+                switch(getCaptionFromValue($funding['funding_type'], "Funding Type")){
+                    default:
+                    case "Grant":
+                        $_POST['type'] = "grnt";
+                        break;
+                    case "Research Chair":
+                        $_POST['type'] = "char";
+                        break;
+                    case "Scholarship":
+                        $_POST['type'] = "scho";
+                        break;
+                    case "Fellowship":
+                        $_POST['type'] = "fell";
+                        break;
+                    case "Contract":
+                        $_POST['type'] = "cont";
+                        break;
+                }
+                $_POST['access_id'] = $person->getId();
+                $_POST['start_date'] = $funding['start_year']."-".str_pad($funding['start_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
+                $_POST['end_date'] = $funding['end_year']."-".str_pad($funding['end_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
+                $_POST['partners'][0] = CommonCV::getCaptionFromValue($funding['funder'], "Funding Organization");
+                $_POST['cash'][0] = $funding['received_amount']; // TODO: Need to adjust for how far into funding period
+                $_POST['kind'][0] = 0;
+                //APIRequest::doAction('AddContribution', true);
+            }
+            else {
+                // Contribution doesn't exist so insert it
+                //APIRequest::doAction('AddContribution', true);
+            }
+        }
+        return true;
+    }
+    
+    /**
      * Fills in some of the personal fields from the CCV
      * @param Person $person The Person to update
      * @param array $info The array containing the personal info ccv data
-     * @return boolean Returns the status of the update
+     * @return boolean The status of the update
      */
     function updatePersonalInfo($person, $info){
         $person->gender = (isset(self::$genderMap[$info['sex']])) ? self::$genderMap[$info['sex']] : "";
@@ -218,7 +270,7 @@ class UploadCCVAPI extends API{
      * Adds the employment information to the person's history
      * @param Person $person The Person to update
      * @param array $employment The array containing the employment ccv data
-     * @return boolean Returns the status of the update
+     * @return boolean The status of the update
      */
     function updateEmployment($person, $employment){
         $universities = Person::getAllUniversities();
@@ -227,7 +279,7 @@ class UploadCCVAPI extends API{
         $status = true;
         foreach($employment as $emp){
             $start_date = $emp['start_year']."-".str_pad($emp['start_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
-            $end_date = $emp['end_year']."-".str_pad($emp['end_month'], 2, '0', STR_PAD_LEFT)."-".cal_days_in_month(CAL_GREGORIAN,$emp['end_month'],$emp['end_year'])." 00:00:00";
+            $end_date = $emp['end_year']."-".str_pad($emp['end_month'], 2, '0', STR_PAD_LEFT)."-".str_pad(cal_days_in_month(CAL_GREGORIAN, $emp['end_month'], $emp['end_year']), 2, '0', STR_PAD_LEFT)." 00:00:00";
             if($emp['end_year'] == "" || $emp['end_month'] == ""){
                 $end_date = "0000-00-00 00:00:00";
             }
@@ -357,6 +409,7 @@ class UploadCCVAPI extends API{
                 }
                 if(isset($_POST['funding'])){
                     $funding = $cv->getFunding();
+                    $status = $this->updateFunding($person, $funding);
                     $json['funding'] = $funding;
                 }
                 if(isset($_POST['info'])){

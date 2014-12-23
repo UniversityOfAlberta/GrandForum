@@ -282,7 +282,12 @@ class Contribution {
                         $this->cash[$id] = $row['cash'];
                         $this->kind[$id] = $row['kind'];
                     }
-                    else if($row['type'] == 'cash'){
+                    else if($row['type'] == 'cash' ||
+                            $row['type'] == 'grnt' ||
+                            $row['type'] == 'char' ||
+                            $row['type'] == 'scho' ||
+                            $row['type'] == 'fell' ||
+                            $row['type'] == 'cont'){
                         $this->cash[$id] = $row['cash'];
                         $this->kind[$id] = 0;
                     }
@@ -359,6 +364,18 @@ class Contribution {
                 break;
             case "inki":
                 $type="In-Kind";
+                break;
+            case "grnt":
+                $type="Grant";
+                break;
+            case "char":
+                $type="Chair";
+                break;
+            case "scho":
+                $type="Scholarship";
+                break;
+            case "cont":
+                $type="Contract";
                 break;
         }
         return $type;
@@ -448,6 +465,16 @@ class Contribution {
                 break;
             case "Cash":
             case "cash":
+            case "Grant":
+            case "grnt":
+            case "Research Chair":
+            case "char":
+            case "Scholarship":
+            case "scho":
+            case "Fellowship":
+            case "fell":
+            case "Contract":
+            case "cont":
                 if($partner != null){
                     return $this->getCashFor($partner);
                 }

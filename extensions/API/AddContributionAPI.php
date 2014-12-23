@@ -12,7 +12,7 @@ class AddContributionAPI extends API{
         $this->addPOST("partners", true, "The list of the parters involved with this contribution, separated by commas", "IBM, Intel");
         $this->addPOST("type", true, "The type of contribution this is", "cash");
         $this->addPOST("subtype", false, "The sub-type of contribution this is (This is generally only needed if the type is in-kind)", "cash");
-        $this->addPOST("inKind", true, "The amount of money was contributed In-Kind", "3000");
+        $this->addPOST("kind", true, "The amount of money was contributed In-Kind", "3000");
         $this->addPOST("cash", true, "The amount of money was contributed via Cash", "1000");
         $this->addPOST("start_date", true, "start_date that this contribution was made", "2011-04-01");
         $this->addPOST("end_date", true, "end_date that this contribution goes until", "2013-04-01");
