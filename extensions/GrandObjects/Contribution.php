@@ -22,7 +22,8 @@ class Contribution {
     var $cash;
     var $kind;
     var $description;
-    var $year;
+    var $start_date;
+    var $end_date;
     var $date;
     var $unknown;
     
@@ -90,7 +91,8 @@ class Contribution {
             $this->kind = array();
             $this->unknown = array();
             $this->description = $data[0]['description'];
-            $this->year = $data[0]['year'];
+            $this->start_date = $data[0]['start_date'];
+            $this->end_date = $data[0]['end_date'];
             $this->date = $data[0]['change_date'];
         }
     }
@@ -130,14 +132,14 @@ class Contribution {
 	    return $json;
 	}
 
-    static function getContributionsDuring($type, $startYear, $endYear=-1){
-        if($endYear == -1){
-            $endYear = $startYear;
+    static function getContributionsDuring($type, $startDate, $endDate=-1){
+        if($endDate == -1){
+            $endDate = $startDate;
         }
         $sql = "SELECT DISTINCT id
                 FROM grand_contributions
-                WHERE year >= {$startYear}
-                AND year <= {$endYear}";
+                WHERE $startDate <= end_date
+                AND $endDate >= start_date";
 
         if(!is_null($type) && $type != ""){
             $sql .= " AND type = '{$type}'";
@@ -512,10 +514,56 @@ class Contribution {
     
     // Returns the Year of this Contribution
     function getYear(){
-        return $this->year;
+        return $this->getStartYear();
     }
     
-    // Returns the Date of this Contribution
+    /**
+     * Returns the start year of this Contribution
+     * return int The start year of this Contribution
+     */
+    function getStartYear(){
+        return substr($this->getStartDate(), 0, 4);
+    }
+    
+    /**
+     * Returns the end year of this Contribution
+     * return int The end year of this Contribution
+     */
+    function getEndYear(){
+        return substr($this->getEndDate(), 0, 4);
+    }
+    
+    /**
+     * Returns the Start Date of this Contribution
+     * @return string The Start Date of this Contribution
+     */
+    function getStartDate(){
+        return $this->start_date;
+    }
+    
+    /**
+     * Returns the End Date of this Contribution
+     * @return string The End Date of this Contribution
+     */
+    function getEndDate(){
+        return $this->end_date;
+    }
+    
+    /**
+     * Returns how many years this Contribution spans
+     * @return int How many years this Contribution spans
+     */
+    function getNYears(){
+        $date1 = new DateTime($this->getStartDate());
+        $date2 = new DateTime($this->getEndDate());
+        $interval = $date1->diff($date2);
+        return $interval->y + 1;
+    }
+    
+    /**
+     * Returns the last time this Contribution was changed
+     * @return string The last time this Contribution was changed
+     */
     function getDate(){
         return $this->date;
     }

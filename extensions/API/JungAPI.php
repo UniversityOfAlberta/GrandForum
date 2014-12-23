@@ -251,7 +251,7 @@ class JungAPI extends API{
             
             $contTotal = 0;
             foreach($project->getContributions() as $contribution){
-                if($contribution->getYear() == $this->year){
+                if($contribution->getStartYear() <= $this->year && $contribution->getEndYear() >= $this->year){
                     $contTotal += $contribution->getTotal();
                 }
             }
@@ -539,7 +539,7 @@ class JungAPI extends API{
             
             $contTotal = 0;
             foreach($person->getContributions() as $contribution){
-                if($contribution->getYear() == $this->year){
+                if($contribution->getStartYear() <= $this->year && $contribution->getEndYear() >= $this->year){
                     $contTotal += $contribution->getTotal();
                 }
             }
@@ -808,7 +808,7 @@ class JungAPI extends API{
         foreach($nodes as $node){
             $contribs = $node->getContributions();
             foreach($contribs as $contrib){
-                if($contrib->getYear() == $this->year){
+                if($contrib->getStartYear() <= $this->year && $contrib->getEndYear() >= $this->year){
                     $people = $contrib->getPeople();
                     foreach($people as $person){
                         if($person instanceof Person && 

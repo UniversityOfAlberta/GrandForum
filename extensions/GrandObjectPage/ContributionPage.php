@@ -161,13 +161,20 @@ class ContributionPage {
                                 }
                                 
                                 function updateTotal(){
+                                    var start_date = new Date($('input[name=start_date]').val());
+                                    var end_date = new Date($('input[name=end_date]').val())
+
+                                    var diff = end_date.getTime() - start_date.getTime();
+                                    var years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365)) + 1;
+
                                     var sum = 0;
                                     $.each($('.money'), function(index, val){
                                         if($(val).is(':visible') && typeof $(val).val() != 'undefined' && $(val).val() != ''){
                                             sum += parseInt($(val).val());
                                         }
                                     });
-                                    $('#contributionTotal').html(sum);
+                                    $('#contributionTotalPerYear').html(sum);
+                                    $('#contributionTotal').html(sum*years);
                                 }
                                 
                                 $(document).ready(function(){
@@ -377,19 +384,45 @@ class ContributionPage {
                     else{
                         $wgOut->addWikiText($contribution->getDescription());
                     }
-                    $year = isset($_POST['year']) ? $_POST['year'] : (($contribution->getName() != "") ? $contribution->getYear() : date('Y'));
-                    $wgOut->addHTML("<table><tr><td><b>Year:</b></td><td>");
+                    $startDate = isset($_POST['start_date']) ? $_POST['start_date'] : (($contribution->getName() != "") ? substr($contribution->getStartDate(), 0, 10) : date('Y').'-04-01');
+                    $endDate = isset($_POST['end_date']) ? $_POST['end_date'] : (($contribution->getName() != "") ? substr($contribution->getEndDate(), 0, 10) : date('Y').'-04-02');
+                    $wgOut->addHTML("<table>");
                     if($edit){
-                        $wgOut->addHTML("<select name='year'>");
-                        for($i = 2010; $i <= 2025; $i++){
-                            if($year == $i){$selected="selected='selected'";}else{$selected="";} $wgOut->addHTML("<option value='$i' $selected>$i</option>");
-                        }
-                        $wgOut->addHTML("</select>");
+                        $wgOut->addHTML("<tr><td align='right'><b>Start Date:</b></td><td><input type='text' name='start_date' value='{$startDate}' readonly='readonly' /></td></tr>");
+                        $wgOut->addHTML("<tr><td align='right'><b>End Date:</b></td><td><input type='text' name='end_date' value='{$endDate}' readonly='readonly' /></td></tr>");
+                        $wgOut->addHTML("<script type='text/javascript'>
+                            $('input[name=start_date]').datepicker({
+                                defaultDate: '{$startDate}',
+                                changeMonth: true,
+                                numberOfMonths: 1,
+                                dateFormat: 'yy-mm-dd',
+                                onClose: function(selectedDate){
+                                    $('input[name=end_date]').datepicker('option', 'minDate', selectedDate);
+                                }
+                            }).change(updateTotal);
+                            $('input[name=end_date]').datepicker({
+                                defaultDate: '{$endDate}',
+                                changeMonth: true,
+                                numberOfMonths: 1,
+                                dateFormat: 'yy-mm-dd',
+                                onClose: function(selectedDate){
+                                    $('input[name=start_date]').datepicker('option', 'maxDate', selectedDate);
+                                }
+                            }).change(updateTotal);
+                        </script>");
                     }
                     else{
-                        $wgOut->addHTML("$year");
+                        $wgOut->addHTML("<tr>
+                                            <td align='right'><b>Start Date:</b></td>
+                                            <td>".time2date($startDate)."</td>
+                                         </tr>
+                                         <tr>
+                                            <td align='right'><b>End Date:</b></td>
+                                            <td>".time2date($endDate)."</td>
+                                         </tr>");
                     }
-                    $wgOut->addHTML("</td></tr></table>");
+                    $wgOut->addHTML("</table>");
+                    
                     
                     $wgOut->addWikiText("== Partners ==
                                          __NOEDITSECTION__\n");
@@ -481,13 +514,15 @@ class ContributionPage {
                         $wgOut->addHTML("<a href='javascript:addPartner();' class='button'>Add Partner</a>");
                     }
                     if(!$create){
-                        $total = $contribution->getTotal();
+                        $totalPerYear = $contribution->getTotal();
+                        $total = $totalPerYear*$contribution->getNYears();
                     }
                     else{
+                        $totalPerYear = 0;
                         $total = 0;
                     }
                     $wgOut->addHTML("<div style='background:#EEE;padding:5px;'>");
-                    $wgOut->addHTML("<h3 style='padding-top:0;'>Total: \$<span id='contributionTotal'>{$total}</span></h3>");
+                    $wgOut->addHTML("<h3 style='padding-top:0;'>Total: $<span id='contributionTotal'>{$total}</span> <small>($<span id='contributionTotalPerYear'>{$totalPerYear}</span>/year)</small></h3>");
                     $wgOut->addHTML("</div>");
                     
                     if($edit || !$edit && count($contribution->getProjects()) > 0){

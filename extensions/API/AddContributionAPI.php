@@ -13,7 +13,8 @@ class AddContributionAPI extends API{
         $this->addPOST("subtype", false, "The sub-type of contribution this is (This is generally only needed if the type is in-kind)", "cash");
         $this->addPOST("inKind", true, "The amount of money was contributed In-Kind", "3000");
         $this->addPOST("cash", true, "The amount of money was contributed via Cash", "1000");
-        $this->addPOST("year", true, "year that this contribution was made", "2011");
+        $this->addPOST("start_date", true, "start_date that this contribution was made", "2011-04-01");
+        $this->addPOST("end_date", true, "end_date that this contribution goes until", "2013-04-01");
     }
 
     function processParams($params){
@@ -51,6 +52,9 @@ class AddContributionAPI extends API{
         if(!isset($_POST['projects']) || count($_POST['projects']) == 0){
             $_POST['projects'] = array();
         }
+        if($_POST['start_date'] > $_POST['end_date']){
+            $wgMessage->addError("The start date must be before the end date.");
+        }
 		if(isset($_POST['id'])){
 		    //Updating
 		    if($_POST['title'] == ""){
@@ -58,17 +62,19 @@ class AddContributionAPI extends API{
 	            $wgMessage->addError($string);
 	            return $string;
 	        }
-		    $sql = "INSERT INTO `grand_contributions`
-                        (`id`,`name`,`users`,`description`,`year`)
-                        VALUES ('{$_POST['id']}','{$_POST['title']}','".serialize($_POST['users'])."','".str_replace("'", "&#39;", $_POST['description'])."','{$_POST['year']}')";
-            DBFunctions::execSQL($sql, true);
+	        DBFunctions::insert('grand_contributions',
+	                            array('id' => $_POST['id'],
+	                                  'name' => $_POST['title'],
+	                                  'users' => serialize($_POST['users']),
+	                                  'description' => $_POST['description'],
+	                                  'start_date' => $_POST['start_date'],
+	                                  'end_date' => $_POST['end_date']));
             Contribution::$cache = array();
             $contribution = Contribution::newFromId($_POST['id']);
             foreach($_POST['projects'] as $project){
-                $sql = "INSERT INTO `grand_contributions_projects`
-                        (`contribution_id`,`project_id`)
-                        VALUES ('{$contribution->rev_id}','{$project}')";
-                DBFunctions::execSQL($sql, true);
+                DBFunctions::insert('grand_contributions_projects',
+                                    array('contribution_id' => $contribution->rev_id,
+                                          'project_id' => $project));
             }
             
             foreach($_POST['partners'] as $key => $partner){
@@ -83,11 +89,6 @@ class AddContributionAPI extends API{
                                           'subtype' => @$_POST['subtype'][$key],
                                           'cash' => @$_POST['cash'][$key],
                                           'kind' => @$_POST['kind'][$key]));
-                                          
-                /*$sql = "INSERT INTO `grand_contributions_partners`
-                        (`contribution_id`,`partner`,`type`,`subtype`,`cash`,`kind`)
-                        VALUES ('{$contribution->rev_id}','{$value}','{$_POST['type'][$key]}','{$_POST['subtype'][$key]}','{$_POST['cash'][$key]}','{$_POST['kind'][$key]}')";
-                DBFunctions::execSQL($sql, true);*/
             }
             
             Contribution::$cache = array();
@@ -138,24 +139,27 @@ class AddContributionAPI extends API{
 	            $wgMessage->addError($string);
 	            return $string;
 	        }
-		    $sql = "SELECT `id`
-		            FROM `grand_contributions`
-		            ORDER BY id DESC LIMIT 1";
-		    $data = DBFunctions::execSQL($sql, false);
+	        $data = DBFunctions::select(array('grand_contributions'),
+	                                    array('id'),
+	                                    array(),
+	                                    array('id' => 'DESC'),
+	                                    array(1));
 		    if(count($data) > 0){
 		        $id = $data[0]['id'];
 		    }
-		    $sql = "INSERT INTO grand_contributions
-                        (`id`,`name`,`users`,`description`,`year`)
-                        VALUES ('".($id + 1)."','{$_POST['title']}','".serialize($_POST['users'])."','".str_replace("'", "&#39;", $_POST['description'])."','{$_POST['year']}')";
-            DBFunctions::execSQL($sql, true);
+		    DBFunctions::insert('grand_contributions',
+		                        array('id' => $id + 1,
+		                              'name' => $_POST['title'],
+		                              'users' => serialize($_POST['users']),
+		                              'description' => $_POST['description'],
+		                              'start_date' => $_POST['start_date'],
+		                              'end_date' => $_POST['end_date']));
             Contribution::$cache = array();
             $contribution = Contribution::newFromName($_POST['title']);
             foreach($_POST['projects'] as $project){
-                $sql = "INSERT INTO `grand_contributions_projects`
-                        (`contribution_id`,`project_id`)
-                        VALUES ('{$contribution->rev_id}','{$project}')";
-                DBFunctions::execSQL($sql, true);
+                DBFunctions::insert('grand_contributions_projects',
+                                    array('contribution_id' => $contribution->rev_id,
+                                          'project_id' => $project));
             }
             
             foreach($_POST['partners'] as $key => $partner){
@@ -163,10 +167,13 @@ class AddContributionAPI extends API{
                 if($value == ""){
                     $value = $partner['name'];
                 }
-                $sql = "INSERT INTO `grand_contributions_partners`
-                        (`contribution_id`,`partner`,`type`,`subtype`,`cash`,`kind`)
-                        VALUES ('{$contribution->rev_id}','{$value}','{$_POST['type'][$key]}','{$_POST['subtype'][$key]}','{$_POST['cash'][$key]}','{$_POST['kind'][$key]}')";
-                DBFunctions::execSQL($sql, true);
+                DBFunctions::insert('grand_contributions_partners',
+                                    array('contribuion_id' => $contribution->rev_id,
+                                          'partner' => $value,
+                                          'type' => $_POST['type'][$key],
+                                          'subtype' => $_POST['subtype'][$key],
+                                          'cash' => $_POST['cash'][$key],
+                                          'kind' => $_POST['kind'][$key]));
             }
             
             

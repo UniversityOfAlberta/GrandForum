@@ -270,7 +270,7 @@ EOF;
                 continue;
             }
             
-            if($year === false || ($year == $c->getYear())){
+            if($year === false || ($c->getStartYear() <= $year && $c->getEndYear() >= $year)){
     			$im_receiver = ($receiver instanceof Person)? $receiver->isReceiverOf($c) : true;
                 if($c->getTotal() > 0 && $im_receiver){
                     $contributions[] = $c; 
@@ -422,7 +422,7 @@ EOF;
                 continue;
             }
             
-            $con_year = $c->getYear();
+            $con_year = $c->getStartYear();
             $con_name = $c->getName();
             $con_name_wiki = $c->getWikiName();
             $con_partners = $c->getPartners();
@@ -477,7 +477,7 @@ EOF;
             }
             
             $con_type = $c->getHumanReadableType();
-            $con_year = $c->getYear();
+            $con_year = $c->getStartYear();
             $con_name = $c->getName();
             $con_name_wiki = $c->getWikiName();
             $con_partners = $c->getPartners();

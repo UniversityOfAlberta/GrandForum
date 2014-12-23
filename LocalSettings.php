@@ -321,3 +321,14 @@ function array_clean(array $haystack){
 
     return $haystack;
 }
+
+/**
+ * Returns a 'human readable' date from the given string
+ * @param string $time The time in db timestamp format 'YYYY-MM-DD hh-mm-ss'
+ * @param strin $format How to format the data (defaults to 'F j, Y')
+ * @return string The date in the format 'F j, Y'
+ */
+function time2date($time, $format='F j, Y'){
+    $strtime = strtotime($time);
+    return date($format, $strtime);
+}

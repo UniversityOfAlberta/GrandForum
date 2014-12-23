@@ -5,19 +5,19 @@
         function ProjectContributionsCell($cellType, $params, $cellValue, $rowN, $colN, $table){
             $this->label = "Contributions";
         
-            $start = "0000";
-            $end = "2100";
+            $start = "0000-00-00 00:00:00";
+            $end = "2100-00-00 00:00:00";
             if(count($params) == 1){
                 $params[2] = $params[0];
             }
             else{
                 if(isset($params[0])){
                     // Start
-                    $start = substr($params[0], 0, 4);
+                    $start = $params[0];
                 }
                 if(isset($params[1])){
                     // End
-                    $end = substr($params[1], 0, 4);
+                    $end = $params[1];
                 }
             }
             if(isset($params[2])){
@@ -28,7 +28,7 @@
                     $contributions = $project->getContributions();
                     $values = array();
                     foreach($contributions as $contribution){
-                        if($contribution->getYear() >= $start && $contribution->getYear() <= $end){
+                        if($contribution->getEndYear() >= $start && $contribution->getStartYear() <= $end){
                             $people = $contribution->getPeople();
                             foreach($people as $p){
                                 if($p instanceof Person && $p->getId() == $person->getId()){
@@ -49,7 +49,7 @@
                 $contributions = $project->getContributions();
                 $values = array();
                 foreach($contributions as $contribution){
-                    if($contribution->getYear() >= $start && $contribution->getYear() <= $end){
+                    if($contribution->getEndYear() >= $start && $contribution->getStartYear() <= $end){
                         $values['All'][""][] = $contribution->getId();
                     }
                 }
@@ -126,7 +126,7 @@ EOF;
         function detailsRowWithType($item, $type, $partner){
             global $wgServer, $wgScriptPath;
             $contribution = Contribution::newFromId($item);
-            $date = $contribution->getYear();
+            $date = $contribution->getStartYear();
             $projects = $contribution->getProjects();
             $partners = $contribution->getPartners();
             $projs = array();

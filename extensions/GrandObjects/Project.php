@@ -701,7 +701,7 @@ EOF;
     function getContributionsDuring($year){
         $contribs = array();
         foreach($this->getContributions() as $contrib){
-            if($contrib->getYear() == $year){
+            if($contrib->getStartYear() <= $year && $contrib->getEndYear() >= $year){
                 $contribs[] = $contrib;
             }
         }
