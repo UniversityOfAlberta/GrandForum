@@ -22,7 +22,7 @@ class AddContributionAPI extends API{
         $users = explode(", ", $_POST['users']);
         $_POST['users'] = array();
         foreach($users as $user){
-            $person = Person::newFromNameLike($user)->getId();
+            $person = Person::newFromNameLike($user);
             if($person != null && $person->getName() != null){
                 $_POST['users'][] = $person->getId();
             }
@@ -33,18 +33,23 @@ class AddContributionAPI extends API{
         $projects = explode(", ", $_POST['projects']);
         $_POST['projects'] = array();
         foreach($projects as $project){
-            $_POST['projects'][] = Project::newFromName($project)->getId();
+            $proj = Project::newFromName($project);
+            if($proj != null && $proj->getName() != null){
+                $_POST['projects'][] = $proj->getId();
+            }
         }
         $partners = explode(", ", $_POST['partners']);
         $_POST['partners'] = array();
         foreach($partners as $partner){
-            $_POST['partners'][] = array("name" => Partner::newFromName($partner)->getName(), "id" => Partner::newFromName($partner)->getId());
+            $part = Partner::newFromName($partner);
+            $name = ($part->getOrganization() != "") ? $part->getOrganization() : $partner;
+            $id = ($part->getOrganization() != "") ? $part->getId() : "";
+            $_POST['partners'][] = array("name" => $name, "id" => $id);
         }
     }
 
     function doAction($noEcho=false){
         global $wgRequest, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
-        $groups = $wgUser->getGroups();
         $me = Person::newFromId($wgUser->getId());
         if(!isset($_POST['partners']) || count($_POST['partners']) == 0){
             $wgMessage->addError("A partner must be provided");
@@ -80,7 +85,6 @@ class AddContributionAPI extends API{
                                     array('contribution_id' => $contribution->rev_id,
                                           'project_id' => $project));
             }
-            
             foreach($_POST['partners'] as $key => $partner){
                 $value = $partner['id'];
                 if($value == ""){
@@ -99,7 +103,6 @@ class AddContributionAPI extends API{
             $contributionAfter = Contribution::newFromName($_POST['title']);
             // Notification for new authors
             foreach($contributionAfter->getPeople() as $author){
-                
                 if($author instanceof Person){
                     if($contributionAfter->getAccessId() != $author->getId() && 
                        $contributionAfter->getAccessId() != 0){
@@ -125,12 +128,12 @@ class AddContributionAPI extends API{
             }
             // Notification for removed authors
             foreach($contribution->getPeople() as $author){
-                if($contributionAfter->getAccessId() != $author->getId() && 
-                   $contributionAfter->getAccessId() != 0){
-                    continue;
-                }
                 $found = false;
                 if($author instanceof Person){
+                    if($contributionAfter->getAccessId() != $author->getId() && 
+                       $contributionAfter->getAccessId() != 0){
+                        continue;
+                    }
                     foreach($contributionAfter->getPeople() as $author1){
                         if($author1 instanceof Person){
                             if($author->getId() == $author1->getId()){
@@ -177,7 +180,6 @@ class AddContributionAPI extends API{
                                     array('contribution_id' => $contribution->rev_id,
                                           'project_id' => $project));
             }
-            
             foreach($_POST['partners'] as $key => $partner){
                 $value = $partner['id'];
                 if($value == ""){

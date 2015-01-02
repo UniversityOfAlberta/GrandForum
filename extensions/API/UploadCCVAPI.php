@@ -212,45 +212,75 @@ class UploadCCVAPI extends API{
     function updateFunding($person, $funding){
         foreach($funding as $fund){
             $contribution = Contribution::newFromName($fund['funding_title']);
-            if($contribution->getName() != ""){
+            unset($_POST['id']);
+            if($contribution->getName() != "" && ($contribution->getAccessId() == 0 || $contribution->getAccessId() == $person->getId())){
                 // Contribution exists so update it
                 $_POST['id'] = $contribution->getId();
-                $users = array();
-                foreach($fund['co_holders'] as $holder){
-                    $holder = explode(" ", $holder);
-                    $users[] = implode(".", $holder);
-                }
-                $_POST['users'] = implode(", ", $users);
-                switch(getCaptionFromValue($funding['funding_type'], "Funding Type")){
-                    default:
-                    case "Grant":
-                        $_POST['type'] = "grnt";
-                        break;
-                    case "Research Chair":
-                        $_POST['type'] = "char";
-                        break;
-                    case "Scholarship":
-                        $_POST['type'] = "scho";
-                        break;
-                    case "Fellowship":
-                        $_POST['type'] = "fell";
-                        break;
-                    case "Contract":
-                        $_POST['type'] = "cont";
-                        break;
-                }
-                $_POST['access_id'] = $person->getId();
-                $_POST['start_date'] = $funding['start_year']."-".str_pad($funding['start_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
-                $_POST['end_date'] = $funding['end_year']."-".str_pad($funding['end_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
-                $_POST['partners'][0] = CommonCV::getCaptionFromValue($funding['funder'], "Funding Organization");
-                $_POST['cash'][0] = $funding['received_amount']; // TODO: Need to adjust for how far into funding period
-                $_POST['kind'][0] = 0;
-                //APIRequest::doAction('AddContribution', true);
+                $projects = new Collection($contribution->getProjects());
+                $_POST['projects'] = implode(", ", $projects->pluck('name'));
             }
             else {
-                // Contribution doesn't exist so insert it
-                //APIRequest::doAction('AddContribution', true);
+                $_POST['projects'] = "";
             }
+            $_POST['title'] = $fund['funding_title'];
+            $users = array();
+            $users[] = $person->getName();
+            foreach($fund['co_holders'] as $holder){
+                $name = $holder['name'];
+                if(strstr($name, ",") !== false){
+                    $names = explode(",", $name);
+                    $name = trim($names[1])." ".trim($names[0]);
+                }
+                $users[] = $name;
+            }
+            $_POST['users'] = implode(", ", $users);
+            
+            switch(CommonCV::getCaptionFromValue($fund['funding_type'], "Funding Type")){
+                default:
+                case "Grant":
+                    $_POST['type'][0] = "grnt";
+                    break;
+                case "Research Chair":
+                    $_POST['type'][0] = "char";
+                    break;
+                case "Scholarship":
+                    $_POST['type'][0] = "scho";
+                    break;
+                case "Fellowship":
+                    $_POST['type'][0] = "fell";
+                    break;
+                case "Contract":
+                    $_POST['type'][0] = "cont";
+                    break;
+            }
+            $_POST['subtype'][0] = "none";
+            $_POST['access_id'] = $person->getId();
+            $_POST['start_date'] = $fund['start_year']."-".str_pad($fund['start_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
+            $_POST['end_date'] = $fund['end_year']."-".str_pad($fund['end_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
+            
+            $_POST['partners'] = CommonCV::getCaptionFromValue($fund['funder'], "Funding Organization");
+            if($_POST['partners'] == "" || $_POST['partners'] == "?"){
+                $_POST['partners'] = $fund['otherfunder'];
+            }
+            $_POST['partners'] = str_replace(",", "&#44;", $_POST['partners']);
+            
+            // Figure out how far into the funding period we are
+            $date1 = new DateTime($_POST['start_date']);
+            $date2 = new DateTime();
+            $date3 = new DateTime($_POST['end_date']);
+            if($date2->getTimestamp() > $date3->getTimestamp()){
+                $date2 = $date3;
+            }
+            $interval = $date1->diff($date2);
+            $nYears = max(1, $interval->y + 1);
+            
+            // Adjust the amount received based on how far into the funding period
+            $_POST['cash'][0] = $fund['received_amount']/$nYears;
+            $_POST['kind'][0] = 0;
+            
+            $_POST['description'] = "";
+            AddContributionAPI::processParams(array());
+            APIRequest::doAction('AddContribution', true);
         }
         return true;
     }
@@ -410,7 +440,7 @@ class UploadCCVAPI extends API{
                 if(isset($_POST['funding'])){
                     $funding = $cv->getFunding();
                     $status = $this->updateFunding($person, $funding);
-                    $json['funding'] = $funding;
+                    $json['funding'] = array_values($funding);
                 }
                 if(isset($_POST['info'])){
                     $info = $cv->getPersonalInfo();

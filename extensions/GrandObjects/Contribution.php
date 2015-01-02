@@ -605,7 +605,7 @@ class Contribution {
         $date1 = new DateTime($this->getStartDate());
         $date2 = new DateTime($this->getEndDate());
         $interval = $date1->diff($date2);
-        return $interval->y + 1;
+        return max(1, $interval->y + 1);
     }
     
     /**
