@@ -86,7 +86,8 @@ class Message {
         }
     }
     
-    private function clearCookies(){
+    // Clears the message cookies
+    function clearCookies(){
         @setcookie('errors', serialize(array()), time()-3600);
         @setcookie('warnings', serialize(array()), time()-3600);
         @setcookie('success', serialize(array()), time()-3600);

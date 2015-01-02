@@ -207,9 +207,11 @@ class UploadCCVAPI extends API{
      * Creates new contributions from the given ccv data
      * @param Person $person The Person to update
      * @param array $funding The array containing the funding ccv data
-     * @return boolean The status of the update
+     * @return array The array of funding contributions which were successful
      */
     function updateFunding($person, $funding){
+        global $wgMessage;
+        $return = array();
         foreach($funding as $fund){
             $contribution = Contribution::newFromName($fund['funding_title']);
             unset($_POST['id']);
@@ -280,9 +282,14 @@ class UploadCCVAPI extends API{
             
             $_POST['description'] = "";
             AddContributionAPI::processParams(array());
-            APIRequest::doAction('AddContribution', true);
+            $status = APIRequest::doAction('AddContribution', true);
+            if($status == ""){
+                $return[] = $fund;
+            }
         }
-        return true;
+        // Workaround to disable the error messages on page load
+        $wgMessage->clearCookies();
+        return $return;
     }
     
     /**
@@ -439,8 +446,9 @@ class UploadCCVAPI extends API{
                 }
                 if(isset($_POST['funding'])){
                     $funding = $cv->getFunding();
-                    $status = $this->updateFunding($person, $funding);
-                    $json['funding'] = array_values($funding);
+                    $successful = $this->updateFunding($person, $funding);
+                    $json['funding'] = $successful;
+                    $json['fundingFail'] = count($funding) - count($successful);
                 }
                 if(isset($_POST['info'])){
                     $info = $cv->getPersonalInfo();
