@@ -480,7 +480,6 @@ class UploadCCVAPI extends API{
                 <head>
                     <script type='text/javascript'>
                         parent.ccvUploaded($obj, "$error");
-                        console.log($obj);
                     </script>
                 </head>
             </html>
