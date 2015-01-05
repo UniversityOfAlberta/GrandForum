@@ -382,24 +382,24 @@
                 </ReportItem>
             </ReportItemSet>
         <!-- IIe. Other Project Outcomes -->
-            <ReportItemSet id='IIe_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="E.Other Project Outcomes">
+            <ReportItemSet id='IIe_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="E. Other Project Outcomes">
                 <ReportItem id="IIe" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHEROUTCOMES" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
                     <![CDATA[{$item}]]>
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
-        <ReportItem id='III_head' type="StaticReportItem">
+        <!--ReportItem id='III_head' type="StaticReportItem">
             <![CDATA[<h2>Achievements & Plans</h2>]]>
-        </ReportItem>
+        </ReportItem-->
     <!-- IIIa. Plans for Next Year -->
-        <ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Achievements &amp; Plans">
+        <!--ReportItemSet id='IIIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Achievements &amp; Plans">
             <ReportItem id="IIIa" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
                 <![CDATA[{$item}]]>
             </ReportItem>
             <ReportItem id="IIIa_comments" type="PopupReportItem" title="See NI Comments" text="{$report_future_ni_comments}">
                 <![CDATA[{$item}]]>
             </ReportItem>
-        </ReportItemSet>
+        </ReportItemSet-->
 <!-- III. Supplemental -->
         <ReportItem id='III_head' type="StaticReportItem">
             <![CDATA[<h2>Reflections: {$project_name} and GRAND</h2>]]>

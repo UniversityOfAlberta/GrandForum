@@ -90,7 +90,7 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection type="BookmarkReportSection" name="Section 2" />
+    <!--ReportSection type="BookmarkReportSection" name="Section 2" />
     <ReportSection id="budget" name="Budget" title="Budget" subBookmark="true" blobSection="LDR_BUDGET" type="EditableReportSection" renderpdf="true">
         <ReportItem id="budget_categories" type="ProjectCategoryBudgetReportItem">
             <![CDATA[<h2>Project Budget by Category</h2>{$item}<br />]]>
@@ -101,8 +101,8 @@
         <ReportItem id="budget_just" rows="10" limit="600" blobType="BLOB_TEXT" blobItem="LDR_BUD_JUST" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[<h2>Budget Justification</h2> {$item}]]>
         </ReportItem>
-    </ReportSection>
-    <ReportSection type="BookmarkReportSection" name="Section 3" />
+    </ReportSection-->
+    <ReportSection type="BookmarkReportSection" name="Section 2" />
     <ReportSection id="report2" name="Assessment: How {$project_name} contributes towards the NCE Evaluation Criteria" title="Assessment" subBookmark="true" blobSection="LDR_RESACTIVITY" type="EditableReportSection" pagebreak="false">
     <!-- IIa. Excellence of the Research Program -->
         <ReportItem id='IIIa_head' type="StaticReportItem">
@@ -140,12 +140,12 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Achievements &amp; Plans" subBookmark="true" type="EditableReportSection" blobSection="LDR_RESACTIVITY" pagebreak="false">
+    <!--ReportSection name="Achievements &amp; Plans" subBookmark="true" type="EditableReportSection" blobSection="LDR_RESACTIVITY" pagebreak="false"-->
         <!-- IIIa. Plans for Next Year -->
-        <ReportItem id="IIIa" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
+        <!--ReportItem id="IIIa" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
     <ReportSection id="report3" name="Reflections: Other Aspects of {$project_name}'s involvement in GRAND" title="Reflections" subBookmark="true" blobSection="LDR_RESACTIVITY" type="EditableReportSection" renderpdf="true">
     <!-- IIIb. Benefits from being involved in the Network -->
         <ReportItem id='IIIb_head' type="StaticReportItem">

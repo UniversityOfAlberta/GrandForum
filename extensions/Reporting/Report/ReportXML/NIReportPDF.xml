@@ -195,9 +195,9 @@
             <![CDATA[{$item}<br /><br />]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Achievements &amp; Plans" subBookmark="true" type="EditableReportSection" blobSection="RES_RESACTIVITY" pagebreak="false">
+    <!--ReportSection name="Achievements &amp; Plans" subBookmark="true" type="EditableReportSection" blobSection="RES_RESACTIVITY" pagebreak="false"-->
         <!-- IIIa. Plans for next year -->
-        <ReportItem id='IIf_head' type="StaticReportItem">
+        <!--ReportItem id='IIf_head' type="StaticReportItem">
             <![CDATA[(Phase2 Projects Only)<br />
             ]]>
         </ReportItem>
@@ -210,7 +210,7 @@
                 </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>
-    </ReportSection>
+    </ReportSection-->
     <ReportSection name="Reflections: Other Aspects of my involvement in GRAND" title="Reflections" subBookmark="true" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
     <!-- IIIb. Benefits from being involved in the Network -->
         <ReportItem id='IIIb_head' type="StaticReportItem" private="true">
