@@ -242,7 +242,7 @@ EOF;
 
                 $project_names[] = "<a href='{$p_url}'>{$p_name}</a>";
             }
-            $date = substr($contr->geDate(), 0, 10);
+            $date = substr($contr->getDate(), 0, 10);
             $project_names = implode(', ', $project_names);
             if(!empty($total) && (!empty($people_names) || !empty($project_names))){
                 $totalTotal += $total;

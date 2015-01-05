@@ -149,10 +149,16 @@ class Contribution {
         if($endDate == -1){
             $endDate = $startDate;
         }
+        if(strlen($startDate) == 4){
+            $startDate .= "-01-01 00:00:00";
+        }
+        if(strlen($endDate) == 4){
+            $endDate .= "-12-31 00:00:00";
+        }
         $sql = "SELECT DISTINCT id
                 FROM grand_contributions
-                WHERE $startDate <= end_date
-                AND $endDate >= start_date
+                WHERE '$startDate' <= end_date
+                AND '$endDate' >= start_date
                 AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).") \n";
 
         if(!is_null($type) && $type != ""){
