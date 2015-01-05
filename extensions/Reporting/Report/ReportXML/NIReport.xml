@@ -51,7 +51,7 @@
                 </p>
             ]]>
         </Instructions>
-        <ReportItem id="my_progress_head" type="StaticReportItem" reportType="NIReport">
+        <!--ReportItem id="my_progress_head" type="StaticReportItem" reportType="NIReport">
             <![CDATA[<h3>NI Progress</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">]]>
         </ReportItem>
         <ReportItem id="ni_progress_head" type="ProgressReportItem" reportType="NIReport">
@@ -64,10 +64,10 @@
             <![CDATA[{$item}]]>
         </ReportItem>
         <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="NIReport">
-            <![CDATA[{$item}]]>
-        </ReportItem>
+            <![CDATA[{$item}</table>]]>
+        </ReportItem-->
         <ReportItem id="progress_head" type="StaticReportItem">
-            <![CDATA[</table><h3>HQP Progress</h3>]]>
+            <![CDATA[<h3>HQP Progress</h3>]]>
         </ReportItem>
         <ReportItem id="static_hqp_progress" type="StaticReportItem">
             <![CDATA[<style>#hqp_completion table tr:first-child td:first-child {display:none;}</style><table id="hqp_completion" style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'><tr><th>HQP</th><th>Completion Status</th><th>Actions</th></tr>]]>
@@ -447,11 +447,11 @@
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id='III_head' type="StaticReportItem">
+        <!--ReportItem id='III_head' type="StaticReportItem">
             <![CDATA[<h2>Outlook: My Plans for {$next_year} in GRAND</h2>]]>
-        </ReportItem>
+        </ReportItem-->
         <!-- IIf. Plans for Next Year -->
-        <ReportItemSet id='IIf_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Achievements &amp; Plans">
+        <!--ReportItemSet id='IIf_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Achievements &amp; Plans">
             <ReportItem id='IIf_head' type="StaticReportItem">
                 <![CDATA[<i>(Phase2 Projects Only)</i>]]>
             </ReportItem>
@@ -464,7 +464,7 @@
                     </ReportItemSet>
                 </ReportItemSet>
             </ReportItemSet>
-        </ReportItemSet>
+        </ReportItemSet-->
 <!-- III. Supplemental -->
         <ReportItem id='III_head' type="StaticReportItem">
             <![CDATA[<h2>Reflections: Other Aspects of my involvement in GRAND</h2>]]>
@@ -491,7 +491,7 @@
             </ReportItem>
         </ReportItemSet-->
     </ReportSection>
-    <ReportSection id="budget" name="Budget" blobSection="RES_BUDGET" tooltip="Budget request and justification" type="EditableReportSection" autosave="true" renderpdf="true" private="true">
+    <!--ReportSection id="budget" name="Budget" blobSection="RES_BUDGET" tooltip="Budget request and justification" type="EditableReportSection" autosave="true" renderpdf="true" private="true">
         <Instructions>
             <![CDATA[
                 <p>Below find a budget template, which you should download, complete with your funding request for 2015-16 and upload. As with the past year, the amounts you will be allocating to different projects should be listed in different columns.</p></p>
@@ -515,7 +515,7 @@
             <![CDATA[<h3>Budget Justification</h3> {$item}</p>]]>
         </ReportItem>
         <ReportItem id="budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="BudgetReportItem" />
-    </ReportSection>
+    </ReportSection-->
     <ReportSection id="review" name="Review" tooltip="Review of on-line report content" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
@@ -560,7 +560,7 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItem id="my_progress_head" type="StaticReportItem" reportType="NIReport">
+        <!--ReportItem id="my_progress_head" type="StaticReportItem" reportType="NIReport">
             <![CDATA[<div style='display:none;'><h3>Completion Status</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">]]>
         </ReportItem>
         <ReportItem id="ni_progress_head" type="ProgressReportItem" reportType="NIReport">
@@ -574,7 +574,7 @@
         </ReportItem>
         <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="NIReport">
             <![CDATA[{$item}</table></div>]]>
-        </ReportItem>
+        </ReportItem-->
         <ReportItem id="review" type="ReviewSubmitReportItem" />
     </ReportSection>
 </Report>

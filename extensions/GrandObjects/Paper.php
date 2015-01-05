@@ -897,7 +897,7 @@ class Paper extends BackboneModel{
         $data = $this->getData();
         $type = $this->getType();
         $title = $this->getTitle();
-        $status = ($showStatus) ? ",&nbsp;".$this->getStatus() : "";
+        $status = ($showStatus) ? "&nbsp;".$this->getStatus() : "";
         $category = $this->getCategory();
         $au = array();
         foreach($this->getAuthors() as $a){
@@ -977,20 +977,26 @@ class Paper extends BackboneModel{
         }
         $date = date("Y M", strtotime($this->getDate()));
         $type = str_replace("Misc: ", "", $type);
-        if( in_array($type, array('Book', 'Book Chapter', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
+        if(in_array($type, array('Book', 'Book Chapter', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
+            if($pg != "" || $pb != ""){
+                $vn .= ",";
+            }
             if($vn != "" || $pg != "" || $pb != ""){
                 $vn = ":&nbsp;$vn";
             }
-       		$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn},&nbsp;{$pg}&nbsp;{$pb},&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
+            if(($pg != "" || $pb != "") && ($status != "" || $peer_rev != "")){
+                $pb .= "<span class='pdfnodisplay'>,</span>";
+            }
+       		$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}&nbsp;{$pg}&nbsp;{$pb}&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
     	}
     	else{
     	    if($vn != ""){
     	        $vn = ":&nbsp;$vn";
-    	        if($status != "" || $peer_rev != ""){
-                    $vn .= "<span class='pdfnodisplay'>,</span>";
-                }
             }
-        	$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn},&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
+            if($status != "" || $peer_rev != ""){
+                $vn .= "<span class='pdfnodisplay'>,</span>";
+            }
+        	$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
         }
         return trim($citation);
     }

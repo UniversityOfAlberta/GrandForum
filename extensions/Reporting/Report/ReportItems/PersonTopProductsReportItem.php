@@ -24,11 +24,12 @@ class PersonTopProductsReportItem extends AbstractReportItem {
         foreach($products as $product){
             if($i == $max)
                 break;
+            $date = substr($product->getDate(), 0, 10);
             $year = substr($product->getDate(), 0, 4);
             if($year == "0000"){
                 $year = "";
             }
-            if($year == YEAR){
+            if($date >= YEAR.REPORTING_CYCLE_START_MONTH && $date <= (YEAR+1).REPORTING_NCE_END_MONTH){
                 $year = "<b><u>$year</u></b>";
             }
             if($lastYear != "---" && $year != $lastYear){

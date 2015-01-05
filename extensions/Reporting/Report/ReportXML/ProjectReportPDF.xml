@@ -16,7 +16,7 @@
                     <div class='report_info'><table class='report_info'><tr><td width='100%'></td>
             ]]>
         </ReportItem>
-        <ReportItem id="my_progress_head" type="StaticReportItem">
+        <!--ReportItem id="my_progress_head" type="StaticReportItem">
             <![CDATA[<td><small><table class='progress_table' cellpadding="1" frame="box" rules="all">]]>
         </ReportItem>
         <ReportItem id="report_progress" type="ProgressReportItem" reportType="ProjectReport">
@@ -33,7 +33,7 @@
         </ReportItem>
         <ReportItem id="report_pni_progress" type="ProjectNIProgressReportItem">
             <![CDATA[{$item}</table></small></td></tr>]]>
-        </ReportItem>
+        </ReportItem-->
         <ReportItem id="report_info_foot" type="StaticReportItem">
             <![CDATA[</table></div></div>]]>
         </ReportItem>
@@ -54,8 +54,11 @@
                         </td>
             ]]>
         </ReportItem>
-        <ReportItem id="small_budget" type="SmallProjectBudgetReportItem" start="{$2_years_ago}" end="{$this_year}">
+        <!--ReportItem id="small_budget" type="SmallProjectBudgetReportItem" start="{$2_years_ago}" end="{$this_year}">
             <![CDATA[<td style='white-space:nowrap;' valign='bottom'>{$item}</td></tr></table></div>]]>
+        </ReportItem-->
+        <ReportItem id="basic_info_foot" type="StaticReportItem">
+            <![CDATA[<td style='white-space:nowrap;' valign='bottom'></td></tr></table></div>]]>
         </ReportItem>
     </ReportSection>
     <ReportSection type="BookmarkReportSection" name="Section 1" />

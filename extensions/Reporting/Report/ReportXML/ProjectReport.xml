@@ -73,7 +73,7 @@
                 <p>Similarly, under the accordion heading "Champion Progress", you can find corresponding details on the degree to which the Champions have completed their comments.</p>
             ]]>
         </Instructions>
-        <ReportItem id="my_progress_head" type="ProgressReportItem" reportType="ProjectReport">
+        <!--ReportItem id="my_progress_head" type="ProgressReportItem" reportType="ProjectReport">
             <![CDATA[<h3>PL Progress</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">{$item}]]>
         </ReportItem>
         <ReportItem id="subproject_progress" type="SubProjectProgressReportItem">
@@ -90,7 +90,7 @@
         </ReportItem>
         <ReportItem id="progress_foot" type="StaticReportItem">
             <![CDATA[</table><br />]]>
-        </ReportItem>
+        </ReportItem-->>
         <ReportItemSet id='ni_head' type="ToggleHeaderReportItemSet" level="3" title="NI Progress">
             <ReportItem id="static_pni_progress" type="StaticReportItem">
                 <![CDATA[<style>#ni_completion table tr:first-child td:first-child {display:none;}</style><table id="ni_completion" style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'><tr><th>NI</th><th>Completion Status</th><th>Actions</th></tr>]]>
@@ -292,7 +292,7 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="budget" tooltip="Budget-request roll-up and justification" name="Budget" blobSection="LDR_BUDGET" type="EditableReportSection" autosave="true" renderpdf="true">
+    <!--ReportSection id="budget" tooltip="Budget-request roll-up and justification" name="Budget" blobSection="LDR_BUDGET" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
                 <p>The <b><i>Budget</i></b> page includes three elements:
@@ -323,7 +323,7 @@
         <ReportItem id="ni_budgets" type="ProjectNIBudgetReportItem">
             <![CDATA[<h2>Individual NI Budgets</h2>{$item}]]>
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
     <ReportSection id="report" tooltip="Open-ended report narratives" name="Report" blobSection="LDR_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
             <![CDATA[
@@ -499,7 +499,7 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItem id="my_progress_head" type="ProgressReportItem" reportType="ProjectReport">
+        <!--ReportItem id="my_progress_head" type="ProgressReportItem" reportType="ProjectReport">
             <![CDATA[<div style='display:none;'><h3>Completion Status</h3><table cellpadding="1" frame="box" rules="all" style="width:600px;">{$item}]]>
         </ReportItem>
         <ReportItem id="subproject_progress" type="SubProjectProgressReportItem">
@@ -513,7 +513,7 @@
         </ReportItem>
         <ReportItem id="report_pni_progress" type="ProjectNIProgressReportItem">
             <![CDATA[{$item}</table></div>]]>
-        </ReportItem>
+        </ReportItem-->
         <ReportItem id="review" type="ReviewSubmitReportItem" />
     </ReportSection>
 </Report>
