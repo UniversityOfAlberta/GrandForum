@@ -145,6 +145,7 @@ class Contribution {
 	}
 
     static function getContributionsDuring($type, $startDate, $endDate=-1){
+        $me = Person::newFromWgUser();
         if($endDate == -1){
             $endDate = $startDate;
         }
@@ -218,6 +219,9 @@ class Contribution {
             }
             $this->projects = $projects;
             $this->projectsWaiting = false;
+        }
+        if(!is_array($this->projects)){
+            return array();
         }
         return $this->projects;
     }

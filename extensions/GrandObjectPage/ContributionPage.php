@@ -317,7 +317,7 @@ class ContributionPage {
                                 $titleValue = $title;
                             }
                             $wgOut->addHTML("<form name='contribution' action='$wgServer$wgScriptPath/index.php/Contribution:New?name=".urlencode($cName)."&create' method='post'>
-                                            <input type='hidden' name='access_id' value='{$me->getId()}' />
+                                            <input type='hidden' name='access_id' value='0' />
                                             <b>Title:</b> <input size='35' type='text' name='title' value='".str_replace("'", "&#39;", $titleValue)."' />");
                         }
                         else{
