@@ -18,13 +18,13 @@ class ReportSurvey extends AbstractReport{
         $this->showInstructions = false;
     }
 
-    static function createTab($tabs){
+    static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $tabs["Surveys"] = TabUtils::createTab("Surveys");
         return true;
     }
     
-    static function createSubTabs($tabs){
+    static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $person = Person::newFromWgUser();
         if($person->isRoleAtLeast(MANAGER)){

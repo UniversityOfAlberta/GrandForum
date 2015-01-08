@@ -56,7 +56,7 @@ class MyMailingLists extends SpecialPage{
         </script>");
     }
     
-    static function createTab($tabs){
+    static function createTab(&$tabs){
         global $wgUser, $wgTitle, $wgServer, $wgScriptPath;
         if($wgUser->isLoggedIn()){
             $selected = "";

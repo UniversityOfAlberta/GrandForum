@@ -13,7 +13,7 @@
 
 # If you customize your file layout, set $IP to the directory that contains
 # the other MediaWiki files. It will be used as a base to locate files.
-error_reporting(E_ALL);
+error_reporting(E_ALL ^ E_STRICT ^ E_DEPRECATED);
 ini_set("display_errors", 1);
 
 date_default_timezone_set('America/Edmonton');

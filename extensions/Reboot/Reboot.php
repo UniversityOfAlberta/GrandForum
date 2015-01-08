@@ -2,7 +2,7 @@
 
 $wgHooks['SubLevelTabs'][] = 'createRebootSubTabs';
 
-function createRebootSubTabs($tabs){
+function createRebootSubTabs(&$tabs){
     global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle;
     if($wgUser->isLoggedIn()){
         $selected = ($wgTitle->getNsText() == "Reboot" && $wgTitle->getText() == "Main") ? "selected" : "";

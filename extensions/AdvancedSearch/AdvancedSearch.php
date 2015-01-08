@@ -21,7 +21,7 @@ class AdvancedSearch extends BackbonePage {
         return array('SearchResults','Backbone/*');
     }
 
-    static function createToolboxLinks($toolbox){
+    static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if(self::userCanExecute($me)){

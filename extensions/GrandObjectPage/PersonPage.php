@@ -196,7 +196,7 @@ class PersonPage {
         $wgOut->setPageTitle($person->getReversedName()." (".implode(", ", $roleNames).")");
     }
     
-    static function createSubTabs($tabs){
+    static function createSubTabs(&$tabs){
         global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){

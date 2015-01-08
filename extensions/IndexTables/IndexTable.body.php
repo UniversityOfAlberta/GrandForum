@@ -13,7 +13,7 @@ class IndexTable {
 
 	var $text = "";
 	
-	static function createSubTabs($tabs){
+	static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle;
         $me = Person::newFromWgUser();
         $project = Project::newFromHistoricName($wgTitle->getNSText());

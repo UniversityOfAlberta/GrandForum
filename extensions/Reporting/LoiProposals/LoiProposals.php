@@ -1295,7 +1295,7 @@ EOF;
         return $data;
     }
     
-    static function createSubTabs($tabs){
+    static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle;
         if($wgUser->isLoggedIn()){
             $selected = ($wgTitle->getText() == "LoiProposals") ? "selected" : "";

@@ -1504,7 +1504,7 @@ class EditMember extends SpecialPage{
         return $text;
     }
     
-    static function createToolboxLinks($toolbox){
+    static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(CNI)){

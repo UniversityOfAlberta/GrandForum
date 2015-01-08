@@ -268,7 +268,7 @@ class Impersonate extends SpecialPage {
 	    </form></td></tr></table>");
 	}
 	
-	static function createSubTabs($tabs){
+	static function createSubTabs(&$tabs){
 	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
 	    $person = Person::newFromWgUser($wgUser);
 	    if($person->isRoleAtLeast(MANAGER)){

@@ -586,7 +586,7 @@ class CreatePDF extends SpecialPage {
 	    $wgOut->addHTML("</table>");
 	}
     
-    static function createSubTabs($tabs){
+    static function createSubTabs(&$tabs){
         global $wgTitle, $wgUser, $wgServer, $wgScriptPath;
         if($wgTitle->getText() == "CreatePDF"){
             $current_selection = (isset($_GET['type'])) ? $_GET['type'] : "ni";

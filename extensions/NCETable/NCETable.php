@@ -71,7 +71,7 @@ class NCETable extends SpecialPage {
         $tabbedPage->showPage($init_tab);
     }
     
-    static function createSubTabs($tabs){
+    static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
         $person = Person::newFromWgUser($wgUser);
         if($person->isRoleAtLeast(MANAGER)){

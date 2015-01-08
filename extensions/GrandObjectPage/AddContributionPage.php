@@ -105,7 +105,7 @@ class AddContributionPage extends SpecialPage{
 		                 </fieldset>");
 	}
 	
-	static function createToolboxLinks($toolbox){
+	static function createToolboxLinks(&$toolbox){
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
 	    if($me->isRoleAtLeast(CNI)){

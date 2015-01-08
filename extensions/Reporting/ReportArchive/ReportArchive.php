@@ -592,13 +592,13 @@ class ReportArchive extends SpecialPage {
         }
     }
     
-    static function createTab($tabs){
+    static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $tabs["My Archive"] = TabUtils::createTab("My Archive");
         return true;
     }
     
-    static function createSubTabs($tabs){
+    static function createSubTabs(&$tabs){
         global $wgTitle, $wgUser, $wgServer, $wgScriptPath;
         if(!self::userCanExecute($wgUser)){
             return true;

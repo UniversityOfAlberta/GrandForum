@@ -50,7 +50,7 @@ class ThemeLeader extends SpecialPage{
         $wgOut->addHTML("<script type='text/javascript'>$('.tl-projects').dataTable({'iDisplayLength': 100, 'bAutoWidth':false});$('.tl-projects').show();</script>");
     }
     
-    static function createTab($tabs){
+    static function createTab(&$tabs){
         global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
         $me = Person::newFromId($wgUser->getId());
         if(!$wgUser->isLoggedIn() || !$me->isThemeLeader()){

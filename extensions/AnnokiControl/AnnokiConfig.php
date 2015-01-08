@@ -26,8 +26,7 @@ $wgJobRunRate = 1000;           //Hack to fix redirect fixer assigning fixes to 
 /** Set debugging variables **/
 $wgShowSQLErrors = true;
 $wgDebugDumpSql  = true;
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
+
 $wgShowExceptionDetails = true;
 
 /** Disable watch list e-mails **/

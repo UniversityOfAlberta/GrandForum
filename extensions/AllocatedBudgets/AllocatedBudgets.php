@@ -116,7 +116,7 @@ class AllocatedBudgets extends SpecialPage {
         return $data;
     }
     
-    static function createSubTabs($tabs){
+    static function createSubTabs(&$tabs){
         global $wgTitle, $wgUser, $wgServer, $wgScriptPath;
         if($wgTitle->getText() == "AllocatedBudgets"){
             $current_selection = (isset($_GET['year']) && is_numeric($_GET['year'])) ? $_GET['year'] : date('Y')-1;

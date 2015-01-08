@@ -39,7 +39,7 @@ class PublicVisualizations extends SpecialPage{
         $tabbedPage->showPage();
     }
     
-    static function createSubTabs($tabs){
+    static function createSubTabs(&$tabs){
 	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
         $selected = @($wgTitle->getText() == "PublicVisualizations") ? "selected" : false;
         $tabs["Main"]['subtabs'][] = TabUtils::createSubTab("Visualizations", "$wgServer$wgScriptPath/index.php/Special:PublicVisualizations", $selected);

@@ -4,7 +4,6 @@ autoload_register('GrandObjectPage/ProjectPage');
 
 $projectPage = new ProjectPage();
 $wgHooks['ArticleViewHeader'][] = array($projectPage, 'processPage');
-//$wgHooks['SkinTemplateTabs'][] = array($projectPage, 'showTabs');
 
 $wgHooks['TopLevelTabs'][] = 'ProjectPage::createTab';
 $wgHooks['SubLevelTabs'][] = 'ProjectPage::createSubTabs';
@@ -147,35 +146,7 @@ class ProjectPage {
         }
         return true;
     }
-    
-    // Adds the tabs for the user's projects
-    function showTabs($skin, &$content_actions){
-        global $wgServer, $wgScriptPath, $wgArticle, $wgUser, $wgRoles, $wgOut;
-        if($wgArticle != null){
-            $name = $wgArticle->getTitle()->getNsText();
-            $title = $wgArticle->getTitle()->getText();
-            if($name == ""){
-                $split = explode(":", $name);
-                if(count($split) > 1){
-                    $title = $split[1];
-                }
-                else{
-                    $title = "";
-                }
-                $name = $split[0];
-            }
-            $me = Person::newFromId($wgUser->getId());
-            $project = Project::newFromHistoricName(str_replace("_Talk", "", $name));
-            if($me->isMemberOf($project) || 
-               ($project != null && $me->isMemberOf($project->getParent()))){
-                for($phase=PROJECT_PHASE; $phase > 0; $phase--){
-                    self::addPhaseTabs($me, $phase, $name, $content_actions);
-                }
-            }
-        }
-        return true;
-    }
-    
+ 
     function addPhaseTabs($me, $phase, $name, &$content_actions){
         foreach($me->getProjects() as $proj){
             if($proj->isSubProject() || $proj->getPhase() != $phase){
@@ -222,12 +193,12 @@ class ProjectPage {
         }
     }
     
-    static function createTab($tabs){
+    static function createTab(&$tabs){
         $tabs["Projects"] = TabUtils::createTab("My Projects");
         return true;
     }
     
-    static function createSubTabs($tabs){
+    static function createSubTabs(&$tabs){
         global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
         $me = Person::newFromWgUser();
         $projects = $me->getProjects();

@@ -27,14 +27,14 @@ class ReportPDFs extends AbstractReport{
         return false;
     }
 
-    static function createTab($tabs){
+    static function createTab(&$tabs){
 		global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
 		$page = "ReportPDFs?report=PDFMaterials";
 		$tabs["Report PDFs"] = TabUtils::createTab("Report PDFs");
         return true;
 	}
 	
-	static function createSubTabs($tabs){
+	static function createSubTabs(&$tabs){
 	    global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
 	    if(!$wgUser->isLoggedIn() || !self::userCanExecute($wgUser)){
             return true;

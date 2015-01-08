@@ -1696,7 +1696,7 @@ function wfSuppressWarnings( $end = false ) {
 		}
 	} else {
 		if ( !$suppressCount ) {
-			$originalLevel = error_reporting( E_ALL & ~( E_WARNING | E_NOTICE ) );
+			$originalLevel = error_reporting( E_ALL & ~( E_WARNING | E_NOTICE | E_STRICT ) );
 		}
 		++$suppressCount;
 	}

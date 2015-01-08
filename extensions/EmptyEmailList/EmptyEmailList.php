@@ -41,7 +41,7 @@ class EmptyEmailList extends SpecialPage{
 	    $wgOut->addHTML("</table>");                 
 	}
 	
-	static function createSubTabs($tabs){
+	static function createSubTabs(&$tabs){
 	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
 	    $person = Person::newFromWgUser($wgUser);
 	    if($person->isRoleAtLeast(MANAGER)){

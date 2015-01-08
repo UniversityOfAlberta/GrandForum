@@ -19,7 +19,7 @@ implemented function it will call the TabUtils::createTab function.
 
 .. code:: php
     
-    function createTab($tabs) { ... }
+    function createTab(&$tabs) { ... }
     
 SubLevelTabs
 ------------
@@ -34,7 +34,7 @@ and append the subtab to one of the top level tabs
 
 .. code:: php
 
-    function createSubTabs($tabs) { ... }
+    function createSubTabs(&$tabs) { ... }
 
 ToolboxHeaders
 --------------
@@ -49,7 +49,7 @@ function.
 
 .. code:: php
 
-    function createToolboxHeader($toolbox) { ... }
+    function createToolboxHeader(&$toolbox) { ... }
 
 ToolboxLinks
 ------------
@@ -65,7 +65,7 @@ toolbox headers.
 
 .. code:: php
 
-    function createToolboxLinks($toolbox) { ... }
+    function createToolboxLinks(&$toolbox) { ... }
 
 CheckImpersonationPermissions
 -----------------------------

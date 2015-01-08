@@ -245,7 +245,7 @@ class EditRelations extends SpecialPage{
         $wgOut->addHTML("</table>");
 	}
 	
-	static function createToolboxLinks($toolbox){
+	static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(CNI)){
