@@ -237,7 +237,6 @@ function filter(data){
 function create(holder, data){
     (function (raphael) {
         $(function () {
-            
             sortData(data);
             filter(data);
         
@@ -245,7 +244,7 @@ function create(holder, data){
             var height = holder.height();
             if(typeof data.width != 'undefined' && data.width > 0){
                 width = data.width;
-                holder.height(width);
+                holder.width(width);
             }
             if(typeof data.height != 'undefined' && data.height > 0){
                 height = data.height;
@@ -297,13 +296,41 @@ $.fn.doughnut = function(data){
         var id = $(this).attr('id');
         $.get(data, function(response){
             spin();
-            $("#" + id).html('');
-            create(holder, response[0]);
+            $("#" + id).empty();
+            if(response[0].width == "100%"){
+                $("#" + id).width("100%");
+                response[0].width = $("#" + id).width();
+                response[0].height = response[0].width*0.50;
+                create(holder, response[0]);
+                $("#" + id).width("100%");
+                var maxWidth = $("#" + id).width();
+                setInterval(function(){
+                    if($("#" + id).is(":visible") && maxWidth != $("#" + id).width()){
+                        response[0].width = $("#" + id).width();
+                        response[0].height = response[0].width*0.50;
+                        $("#" + id).empty();
+                        create(holder, response[0]);
+                        $("#" + id).width("100%");
+                        maxWidth = $("#" + id).width();
+                    }
+                }, 100);
+            }
+            else{
+                create(holder, response[0]);
+            }
         });
     }
     else if(typeof data != 'string'){
         // Data is an object
         create(holder, data);
+        var maxWidth = width;
+        setInterval(function(){
+            if($("#" + id).is(":visible") && maxWidth != $("#" + id).width()){
+                maxWidth = $("#" + id).width();
+                $("#" + id).empty();
+                create(holder, data);
+            }
+        }, 100);
     }
 }
 

@@ -67,7 +67,6 @@ class Wordle extends Visualization {
     function onLoad{$this->index}(){
         $.get('{$this->url}', function(data){
             
-            
             var fill = d3.scale.ordinal()
                                .range(["#432724", 
                                        "#2f4340", 
@@ -105,7 +104,7 @@ class Wordle extends Visualization {
                     return {text: d.word, size: d.size};
                   }))
                   .timeInterval(10)
-                  .rotate(function() { return 0; })
+                  .rotate(0)
                   .font("Times")
                   .fontSize(function(d) { return d.size; })
                   .on("end", draw)
@@ -132,7 +131,9 @@ class Wordle extends Visualization {
                     .text(function(d) { return d.text; });
                   }
               }
-              doCloud();
+              if($("#vis{$this->index}").is(":visible")){
+                doCloud();
+              }
       });
   }
 </script>

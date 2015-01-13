@@ -24,6 +24,7 @@ class PersonProfileTab extends AbstractEditableTab {
         
         $extra = array();
         $extra[] = $this->showCloud($this->person, $this->visibility);
+        $extra[] = $this->showDoughnut($this->person, $this->visibility);
         if($wgUser->isLoggedIn()){
             if(isExtensionEnabled('EthicsTable')){
                 $extra[] = $this->showEthics($this->person, $this->visibility);
@@ -192,12 +193,30 @@ class PersonProfileTab extends AbstractEditableTab {
     function showTwitter($person, $visibility){
         if($person->getTwitter() != ""){
             $this->html .= <<<EOF
-                <div style='display: inline-block; width: 50%; text-align: right;'>
+                <div id='twitter' style='display: inline-block; width: 50%; text-align: right;'>
                     <div style='max-height: 225px; max-width:225px; display:inline-block; overflow: hidden;'>
                         <a class="twitter-timeline" width="300" height="300" href="https://twitter.com/{$person->getTwitter()}" data-screen-name="{$person->getTwitter()}" data-widget-id="553303321864196097">Tweets by @{$person->getTwitter()}</a>
                         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                     </div>
                 </div>
+                <script type='text/javascript'>
+                    // Adds a bit of responsiveness to the profile
+                    setInterval(function(){
+                        if($("#bodyContent").width() < 1000){
+                            $('#twitter').css('display', 'block');
+                            $('#twitter').css('width', '100%');
+                            $('#twitter div').css('width', '100%');
+                            $('#twitter div').css('max-width', '');
+                            $('#twitter iframe').css('width', '133%');
+                        }
+                        else{
+                            $('#twitter').css('display', 'inline-block');
+                            $('#twitter').css('width', '50%');
+                            $('#twitter div').css('max-width', 225);
+                            $('#twitter iframe').css('width', 300);
+                        }
+                    }, 100);
+                </script>
 EOF;
         }
     }
@@ -224,11 +243,7 @@ EOF;
         $wordle->height = 240;
         $wgOut->addScript("<script type='text/javascript'>
                                 $(document).ready(function(){
-                                    var nTimesLoadedWordle = 0;
-                                    if(nTimesLoadedWordle == 0){
-                                        onLoad{$wordle->index}();
-                                        nTimesLoadedWordle++;
-                                    }
+                                    onLoad{$wordle->index}();
                                 });
                           </script>");
         return $wordle->show();
@@ -243,6 +258,7 @@ EOF;
 	        
 	        $products = $person->getPapers("all", false, 'both', false);
 	        foreach($products as $product){
+	            $text .= $product->getTitle()."\n";
 	            $text .= $product->getDescription()."\n";
 	        }
 	        $data = Wordle::createDataFromText($text);
@@ -253,6 +269,25 @@ EOF;
         }
         return true;
 	}
+	
+	function showDoughnut($person, $visibility){
+        global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
+        $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getDoughnutData&person={$person->getId()}";
+        $doughnut = new Doughnut($dataUrl);
+        $wgOut->addScript("<script type='text/javascript'>
+                                $(document).ready(function(){
+                                    if(!$('#vis{$doughnut->index}').is(':visible')){
+                                        var interval = setInterval(function(){
+                                            if($('#vis{$doughnut->index}').is(':visible')){
+                                                $('#vis{$doughnut->index}').doughnut('{$doughnut->url}');
+                                                clearInterval(interval);
+                                            }
+                                        }, 100);
+                                    }
+                                });
+                          </script>");
+        return $doughnut->show();
+    }
 
     /*
      * Displays the profile for this user
@@ -395,7 +430,7 @@ EOF;
         if(isExtensionEnabled('CCVExport')){
             $me = Person::newFromWgUser();
             if(($person->isRole(PNI) || $person->isRole(CNI)) && $me->getId() == $person->getId()){
-                $this->html .= "<a style='margin-left:35px;' class='button' href='$wgServer$wgScriptPath/index.php/Special:CCVExport?getXML'>Download CCV</a>";
+                $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:CCVExport?getXML'>Download CCV</a>";
             }
         }
     }

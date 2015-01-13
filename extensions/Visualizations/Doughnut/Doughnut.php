@@ -29,7 +29,7 @@ class Doughnut extends Visualization {
                 }
             });
         </script>";
-        $string .= "<div style='height:300px;max-width:575px' id='vis{$this->index}'></div>";
+        $string .= "<div style='min-height:175px;max-width:575px' id='vis{$this->index}'></div>";
         return $string;
     }
 }

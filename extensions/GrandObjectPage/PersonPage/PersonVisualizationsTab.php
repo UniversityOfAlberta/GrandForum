@@ -34,8 +34,8 @@ class PersonVisualizationsTab extends AbstractTab {
             $this->html .= 
             "<div id='personVis'>
 	            <ul>
-		            <li><a href='#timeline'>Timeline</a></li>
-		            <li><a href='#chart'>Productivity Chart</a></li>";
+		            <li><a href='#timeline'>Timeline</a></li>";
+		            //<li><a href='#chart'>Productivity Chart</a></li>";
             if(isExtensionEnabled("Survey") && (($wgUser->isLoggedIn() && $this->person->getId() == $me->getId()) || $me->isRoleAtLeast(MANAGER))){
                 $this->html .= "<li><a href='#survey'>Survey Graph</a></li>";
             }
@@ -43,9 +43,9 @@ class PersonVisualizationsTab extends AbstractTab {
 	            </ul>
 	        <div id='timeline'>";
 		        $this->showTimeline($this->person, $this->visibility);
-	        $this->html .= "</div>
+	        /*$this->html .= "</div>
 	        <div id='chart'>";
-		        $this->showDoughnut($this->person, $this->visibility);
+		        $this->showDoughnut($this->person, $this->visibility);*/
 	        if(isExtensionEnabled("Survey") && (($wgUser->isLoggedIn() && $this->person->getId() == $me->getId()) || $me->isRoleAtLeast(MANAGER))){
 	            $this->html .= "</div>
 	            <div id='survey'>";
@@ -329,6 +329,7 @@ class PersonVisualizationsTab extends AbstractTab {
     static function getDoughnutData($action, $article){
 	    global $wgServer, $wgScriptPath;
 	    if($action == "getDoughnutData"){
+	        $me = Person::newFromWgUser();
 	        $array = array();
             $person = Person::newFromId($_GET['person']);
             
@@ -339,16 +340,22 @@ class PersonVisualizationsTab extends AbstractTab {
             $legend[1]['name'] = "Project";
             $legend[1]['color'] = "#82D868";
             
-            $legend[2]['name'] = "Co-authorship";
-            $legend[2]['color'] = "#6191B3";
+            $legend[2]['name'] = "University";
+            $legend[2]['color'] = "#B26060";
+            if($me->isLoggedIn()){
+                $legend[3]['name'] = "Co-authorship";
+                $legend[3]['color'] = "#6191B3";
+            }
             
             $levels = array();
             $levels[0]['labels'] = array();
             $levels[0]['values'] = array();
             
+            $products = $person->getPapers("all", false, 'grand', false);
+            
             $labelIndicies = array();
             $index = 0;
-            foreach($person->getPapers() as $paper){
+            foreach($products as $paper){
                 $date = $paper->getDate();
                 $year = substr($date, 0, 4);
                 if(!isset($labelIndicies[$year])){
@@ -361,7 +368,7 @@ class PersonVisualizationsTab extends AbstractTab {
             
             $labelIndicies = array();
             $index = 0;
-            foreach($person->getPapers() as $paper){
+            foreach($products as $paper){
                 $projects = $paper->getProjects();
                 foreach($projects as $project){
                     if(!isset($labelIndicies[$project->getName()])){
@@ -375,16 +382,32 @@ class PersonVisualizationsTab extends AbstractTab {
             
             $labelIndicies = array();
             $index = 0;
-            foreach($person->getPapers() as $paper){
-                $authors = $paper->getAuthors();
-                foreach($authors as $author){
-                    if($author->getId() != $person->getId()){
-                        if(!isset($labelIndicies[$author->getNameForForms()])){
-                            $labelIndicies[$author->getNameForForms()] = $index;
-                            $levels[2]['labels'][] = $author->getNameForForms();
-                            $index++;
+            foreach($products as $paper){
+                $unis = $paper->getUniversities();
+                foreach($unis as $uni){
+                    if(!isset($labelIndicies[$uni])){
+                        $labelIndicies[$uni] = $index;
+                        $levels[2]['labels'][] = $uni;
+                        $index++;
+                    }
+                    @$levels[2]['values'][$labelIndicies[$uni]]++;
+                }
+            }
+            
+            if($me->isLoggedIn()){
+                $labelIndicies = array();
+                $index = 0;
+                foreach($products as $paper){
+                    $authors = $paper->getAuthors();
+                    foreach($authors as $author){
+                        if($author->getId() != $person->getId()){
+                            if(!isset($labelIndicies[$author->getNameForForms()])){
+                                $labelIndicies[$author->getNameForForms()] = $index;
+                                $levels[3]['labels'][] = $author->getNameForForms();
+                                $index++;
+                            }
+                            @$levels[3]['values'][$labelIndicies[$author->getNameForForms()]]++;
                         }
-                        @$levels[2]['values'][$labelIndicies[$author->getNameForForms()]]++;
                     }
                 }
             }
@@ -394,8 +417,8 @@ class PersonVisualizationsTab extends AbstractTab {
             $array['data_type_plural'] = 'products';
             $array['sort'] = 'desc';
             $array['limit'] = '15';
-            $array['width'] = '575';
-            $array['height'] = '300';
+            $array['width'] = '100%';
+            $array['height'] = '275';
             // Data
             $array['legend'] = $legend;
             $array['levels'] = $levels;

@@ -768,6 +768,22 @@ class Paper extends BackboneModel{
         return $this->projects;
     }
     
+    /**
+     * Returns the Universities which are associated with this product
+     * @return array The Universities which are associated with this product
+     */
+    function getUniversities(){
+        $people = $this->getAuthors();
+        $unis = array();
+        foreach($people as $person){
+            $university = $person->getUniversityDuring($this->getDate(), $this->getDate());
+            if(isset($university['university']) && $university['university'] != "Unknown"){
+                $unis[$university['university']] = $university['university'];
+            }
+        }
+        return array_values($unis);
+    }
+    
     function isGrandRelated(){
         return (count($this->getProjects()) > 0);
     }
