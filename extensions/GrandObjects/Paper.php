@@ -210,9 +210,10 @@ class Paper extends BackboneModel{
      * @param string $category Specifies which category the returned papers should be of('Publication', 'Artifact' etc.)
      * @param string $grand Whether to include grand-only, non-grand-only or both
      * @param boolean $onlyPublic Whether or not to only include Papers with access_id = 0
+     * @param string $access Whether to include 'Forum' or 'Public' access
      * @return array All of the Papers
      */
-    static function getAllPapers($project='all', $category='all', $grand='grand', $onlyPublic=true){
+    static function getAllPapers($project='all', $category='all', $grand='grand', $onlyPublic=true, $access='Public'){
         $data = array();
         if(isset(self::$dataCache[$project.$category.$grand])){
             return self::$dataCache[$project.$category.$grand];
@@ -250,7 +251,7 @@ class Paper extends BackboneModel{
             else {
                 $sql .= "\nWHERE 1";
             }
-            $sql .= "\nAND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
+            $sql .= "\nAND (access = '{$access}' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
             $sql .= "\nAND p.`deleted` = '0'";
             if($category != "all"){
                 $sql .= "\nAND p.`category` = '$category'";

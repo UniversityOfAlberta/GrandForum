@@ -351,7 +351,7 @@ class PersonVisualizationsTab extends AbstractTab {
             $levels[0]['labels'] = array();
             $levels[0]['values'] = array();
             
-            $products = $person->getPapers("all", false, 'grand', false);
+            $products = $person->getPapers("all", false, 'grand');
             
             $labelIndicies = array();
             $index = 0;

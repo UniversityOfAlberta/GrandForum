@@ -2652,16 +2652,17 @@ class Person extends BackboneModel {
      * @param string $category The category of Paper to get
      * @param boolean $history Whether or not to include past publications (ie. written by past HQP)
      * @param string $grand Whether to include 'grand' 'nonGrand' or 'both' Papers
-     * @param boolean $onlyPublic Whether to include Forum or Public visible Papers
+     * @param boolean $onlyPublic Whether or not to only include Papers with access_id = 0
+     * @param string $access Whether to include 'Forum' or 'Public' access
      * @return array Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
      */ 
-    function getPapers($category="all", $history=false, $grand='grand', $onlyPublic=true){
+    function getPapers($category="all", $history=false, $grand='grand', $onlyPublic=true, $access='Forum'){
         self::generateAuthorshipCache();
         $processed = array();
         $papersArray = array();
         $papers = array();
         foreach($this->getHQP($history) as $hqp){
-            $ps = $hqp->getPapers($category, $history, $grand, $onlyPublic);
+            $ps = $hqp->getPapers($category, $history, $grand, $onlyPublic, $access);
             foreach($ps as $p){
                 if(!isset($processed[$p->getId()])){
                     $processed[$p->getId()] = true;
@@ -2680,7 +2681,7 @@ class Person extends BackboneModel {
         }
         
         if(!$onlyPublic){
-            $allPapers = Paper::getAllPapers('all', $category, $grand, $onlyPublic);
+            $allPapers = Paper::getAllPapers('all', $category, $grand, $onlyPublic, $access);
             foreach($allPapers as $paper){
                 if(!isset($processed[$paper->getId()]) &&
                    ($paper->getCreatedBy() == $this->id || 
