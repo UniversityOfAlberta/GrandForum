@@ -530,6 +530,7 @@ class Person extends BackboneModel {
      * @return array The array of People of the type $filter
      */
     static function getAllPeople($filter=null){
+        $me = Person::newFromWgUser();
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id', 'user_name'),
                                     array('deleted' => NEQ(1)),
@@ -540,7 +541,9 @@ class Person extends BackboneModel {
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
             if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter))){
-                $people[] = $person;
+                if($me->isLoggedIn() || $person->isRoleAtLeast(CNI)){
+                    $people[] = $person;
+                }
             }
         }
         return $people;
@@ -953,7 +956,13 @@ class Person extends BackboneModel {
     
     // Returns the email of this Person
     function getEmail(){
-        return $this->email;
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            return $this->email;
+        }
+        else{
+            return "";
+        }
     }
     
     // Returns the gender of this Person
@@ -980,6 +989,9 @@ class Person extends BackboneModel {
      * @return string The url of this Person's website
      */
     function getWebsite(){
+        if (preg_match("#https?://#", $this->website) === 0) {
+            $this->website = 'http://'.$this->website;
+        }
         return $this->website;
     }
     
@@ -1487,6 +1499,45 @@ class Person extends BackboneModel {
             return $roles[count($roles) - 1]->getRole();
         }
         return null;
+    }
+    
+    /**
+     * Returns a string containing the full role information
+     * @return string The full role information for this Person
+     */
+    function getRoleString(){
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(CNI)){
+            return "";
+        }
+        $roles = $this->getRoles();
+        $roleNames = array();
+        foreach($roles as $role){
+            $roleNames[] = $role->getRole();
+        }
+        $pm = $this->isProjectManager();
+        if($this->isProjectLeader() && !$pm){
+            $roleNames[] = "PL";
+        }
+        if($this->isProjectCoLeader() && !$pm){
+            $roleNames[] = "COPL";
+        }
+        if($pm){
+            $roleNames[] = "PM";
+        }
+        foreach($roleNames as $key => $role){
+            if($role == "Inactive"){
+                if($this->isProjectManager() || $this->isProjectLeader() || $this->isProjectCoLeader()){
+                    unset($roleNames[$key]);
+                    continue;
+                }
+                $lastRole = $this->getLastRole();
+                if($lastRole != null){
+                    $roleNames[$key] = "Inactive-".$lastRole->getRole();
+                }
+            }
+        }
+        return implode(", ", $roleNames);
     }
     
     // Returns an array of roles that the user is a part of
@@ -2601,7 +2652,7 @@ class Person extends BackboneModel {
      * @param string $category The category of Paper to get
      * @param boolean $history Whether or not to include past publications (ie. written by past HQP)
      * @param string $grand Whether to include 'grand' 'nonGrand' or 'both' Papers
-     * @param boolean $onlyPublic Whether to include 'grand' 'nonGrand' or 'both' Papers
+     * @param boolean $onlyPublic Whether to include Forum or Public visible Papers
      * @return array Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
      */ 
     function getPapers($category="all", $history=false, $grand='grand', $onlyPublic=true){

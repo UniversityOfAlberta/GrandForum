@@ -1,7 +1,6 @@
 <?php
 
 require_once("Tabs/AdminChordTab.php");
-require_once("Tabs/AdminMapTab.php");
 require_once("Tabs/AdminUniTreeTab.php");
 require_once("Tabs/AdminDiscTreeTab.php");
 require_once("Tabs/AdminProjTreeTab.php");

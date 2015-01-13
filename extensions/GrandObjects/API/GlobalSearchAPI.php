@@ -46,13 +46,11 @@ class GlobalSearchAPI extends RESTAPI {
                 $people = Person::getByIds($dataCollection->pluck('user_id'));
                 foreach($people as $person){
                     $continue = false;
-                    foreach($person->getRoles() as $role){
-                        if($role->getRole() == MANAGER && !$me->isRole(MANAGER)){
-                            $continue = true;
-                        }
-                        if(!$me->isLoggedIn() && $role->getRole() == HQP){
-                            $continue = true;
-                        }
+                    if($person->isRoleAtLeast(MANAGER) && !$me->isRole(MANAGER)){
+                        $continue = true;
+                    }
+                    if(!$me->isLoggedIn() && !$person->isRoleAtLeast(CNI)){
+                        $continue = true;
                     }
                     if($continue) continue;
                     similar_text(unaccentChars(str_replace(".", " ", $person->getName())), unaccentChars($origSearch), $percent);

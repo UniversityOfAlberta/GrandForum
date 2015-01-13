@@ -52,7 +52,7 @@ class Wordle extends Visualization {
         asort($data);
         $data = array_reverse($data);
         foreach($data as $word => $freq){
-            $retData[] = array('word' => $word,
+            $retData[] = array('word' => ucfirst($word),
                                'freq' => $freq);
         }
         return $retData;
@@ -60,54 +60,79 @@ class Wordle extends Visualization {
 
     function show(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $halfWidth = $this->width/2;
         $halfHeight = $this->height/2;
-        $string = "<div id='vis{$this->index}'></div>";
+        $string = "<div id='vis{$this->index}' style='height:{$this->height}px;'></div>";
         $string .= <<<EOF
 <script type='text/javascript'>
     function onLoad{$this->index}(){
         $.get('{$this->url}', function(data){
             
-            var fill = d3.scale.category20();
+            
+            var fill = d3.scale.ordinal()
+                               .range(["#432724", 
+                                       "#2f4340", 
+                                       "#566663", 
+                                       "#6c6f5e", 
+                                       "#938e73"]);
             
             var maxF = 0;
+            var minF = 100000;
             for(fId in data){
                 var f = data[fId].freq;
                 maxF = Math.max(maxF, f);
+                minF = Math.min(minF, f);
             }
             for(fId in data){
                 var f = data[fId].freq;
-                data[fId].size = 10 + (f/maxF)*90;
+                data[fId].size = 10 + (f - minF)/(maxF - minF)*75;
             }
+            
+            var maxWidth = '{$this->width}';
+            if(maxWidth == "100%"){
+                maxWidth = $("#vis{$this->index}").width();
+                setInterval(function(){
+                    if($("#vis{$this->index}").is(":visible") && maxWidth != $("#vis{$this->index}").width()){
+                        maxWidth = $("#vis{$this->index}").width();
+                        doCloud();
+                    }
+                }, 100);
+            }
+         
+            var doCloud = function(){
+                $("#vis{$this->index} svg").width(maxWidth);
+                d3.layout.cloud().size([maxWidth, {$this->height}])
+                  .words(data.map(function(d) {
+                    return {text: d.word, size: d.size};
+                  }))
+                  .timeInterval(10)
+                  .rotate(function() { return 0; })
+                  .font("Times")
+                  .fontSize(function(d) { return d.size; })
+                  .on("end", draw)
+                  .start();
 
-            d3.layout.cloud().size([{$this->width}, {$this->height}])
-              .words(data.map(function(d) {
-                return {text: d.word, size: d.size};
-              }))
-              .rotate(function() { return ~~(Math.random() * 2) * 90; })
-              .font("Impact")
-              .fontSize(function(d) { return d.size; })
-              .on("end", draw)
-              .start();
-
-          function draw(words) {
-            d3.select("#vis{$this->index}").append("svg")
-                .attr("width", {$this->width})
-                .attr("height", {$this->height})
-              .append("g")
-                .attr("transform", "translate({$halfWidth},{$halfHeight})")
-              .selectAll("text")
-                .data(words)
-              .enter().append("text")
-                .style("font-size", function(d) { return d.size + "px"; })
-                .style("font-family", "Impact")
-                .style("fill", function(d, i) { return fill(i); })
-                .attr("text-anchor", "middle")
-                .attr("transform", function(d) {
-                  return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                })
-                .text(function(d) { return d.text; });
-          }
+                function draw(words) {
+                  $("#vis{$this->index}").empty();
+                  d3.select("#vis{$this->index}").append("svg")
+                    .style("position", "absolute")
+                    .attr("width", maxWidth)
+                    .attr("height", {$this->height})
+                  .append("g")
+                    .attr("transform", "translate(" + (maxWidth/2) + ",{$halfHeight})")
+                  .selectAll("text")
+                    .data(words)
+                  .enter().append("text")
+                    .style("font-size", function(d) { return d.size + "px"; })
+                    .style("font-family", "Times")
+                    .style("fill", function(d, i) { return fill(i); })
+                    .attr("text-anchor", "middle")
+                    .attr("transform", function(d) {
+                      return "translate(" + [d.x, d.y] + ")";
+                    })
+                    .text(function(d) { return d.text; });
+                  }
+              }
+              doCloud();
       });
   }
 </script>

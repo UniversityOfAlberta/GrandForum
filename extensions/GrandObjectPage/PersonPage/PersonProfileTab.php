@@ -1,5 +1,7 @@
 <?php
 
+$wgHooks['UnknownAction'][] = 'PersonProfileTab::getPersonCloudData';
+
 class PersonProfileTab extends AbstractEditableTab {
 
     var $person;
@@ -14,26 +16,27 @@ class PersonProfileTab extends AbstractEditableTab {
     function generateBody(){
         global $wgUser;
         $this->person->getLastRole();
-        $this->html .= "<table width='100%'>";
-        $this->showPhoto($this->person, $this->visibility);
-        $this->html .= "</td><td width='35%' valign='top'>";
+        $this->html .= "<table width='100%' cellpadding='0' cellspacing='0'>";
+        $this->html .= "</td><td width='50%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
-        if($wgUser->isLoggedIn()){
-            $this->html .= "</td><td width='20%'>";
-            $this->html .= "</td><td valign='top' width='45%'>";
-            if(isExtensionEnabled('EthicsTable')){
-                $this->showEthics($this->person, $this->visibility);
-            }
-            $this->html .= "</td><td>";
-            $this->showCCV($this->person, $this->visibility);
-        }
-        else{
-            $this->html .= "</td><td width='65%'>";
-        }
-        $this->html .= "</td></tr></table>";
-        $this->html .= "<h2>Profile</h2>";
+        $this->html .= "<h2 style='margin-top:0;'>Profile</h2>";
         $this->showProfile($this->person, $this->visibility);
         
+        $extra = array();
+        $extra[] = $this->showCloud($this->person, $this->visibility);
+        if($wgUser->isLoggedIn()){
+            if(isExtensionEnabled('EthicsTable')){
+                $extra[] = $this->showEthics($this->person, $this->visibility);
+            }
+        }
+        // Delete extra widgets which have no content
+        foreach($extra as $key => $e){
+            if($e == ""){
+                unset($extra[$key]);
+            }
+        }
+        $this->html .= "</td><td valign='top' width='50%' style='padding-top:15px;padding-left:15px;'>".implode("<hr />", $extra)."</td></tr></table>";
+        $this->showCCV($this->person, $this->visibility);
         return $this->html;
     }
     
@@ -104,8 +107,8 @@ class PersonProfileTab extends AbstractEditableTab {
                         imagesavealpha($src_image, true);
                         $src_width = imagesx($src_image);
                         $src_height = imagesy($src_image);
-                        $dst_width = 50;
-                        $dst_height = 66;
+                        $dst_width = 100;
+                        $dst_height = 132;
                         $dst_image = imagecreatetruecolor($dst_width, $dst_height);
                         imagealphablending($dst_image, true);
                         
@@ -180,7 +183,23 @@ class PersonProfileTab extends AbstractEditableTab {
      */
     function showProfile($person, $visibility){
         global $wgUser;
-        $this->html .= "<p>".nl2br($person->getProfile($wgUser->isLoggedIn()))."</p>";
+        $this->html .= "<p style='text-align:justify;'>".nl2br($person->getProfile($wgUser->isLoggedIn()))."</p>";
+    }
+    
+    /**
+     * Displays the twitter widget for this user
+     */
+    function showTwitter($person, $visibility){
+        if($person->getTwitter() != ""){
+            $this->html .= <<<EOF
+                <div style='display: inline-block; width: 50%; text-align: right;'>
+                    <div style='max-height: 225px; max-width:225px; display:inline-block; overflow: hidden;'>
+                        <a class="twitter-timeline" width="300" height="300" href="https://twitter.com/{$person->getTwitter()}" data-screen-name="{$person->getTwitter()}" data-widget-id="553303321864196097">Tweets by @{$person->getTwitter()}</a>
+                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                    </div>
+                </div>
+EOF;
+        }
     }
     
     function showEditProfile($person, $visibility){
@@ -196,6 +215,44 @@ class PersonProfileTab extends AbstractEditableTab {
                             </tr>
                         </table>";
     }
+    
+    function showCloud($person, $visibility){
+        global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
+        $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getPersonCloudData&person={$person->getId()}";
+        $wordle = new Wordle($dataUrl);
+        $wordle->width = "100%";
+        $wordle->height = 240;
+        $wgOut->addScript("<script type='text/javascript'>
+                                $(document).ready(function(){
+                                    var nTimesLoadedWordle = 0;
+                                    if(nTimesLoadedWordle == 0){
+                                        onLoad{$wordle->index}();
+                                        nTimesLoadedWordle++;
+                                    }
+                                });
+                          </script>");
+        return $wordle->show();
+    }
+    
+    static function getPersonCloudData($action, $article){
+	    global $wgServer, $wgScriptPath;
+	    if($action == "getPersonCloudData"){
+	        $text = "";
+	        $person = Person::newFromId($_GET['person']);
+	        $text .= $person->getProfile()."\n";
+	        
+	        $products = $person->getPapers("all", false, 'both', false);
+	        foreach($products as $product){
+	            $text .= $product->getDescription()."\n";
+	        }
+	        $data = Wordle::createDataFromText($text);
+	        $data = array_slice($data, 0, 100);
+            header("Content-Type: application/json");
+            echo json_encode($data);
+            exit;
+        }
+        return true;
+	}
 
     /*
      * Displays the profile for this user
@@ -220,9 +277,7 @@ class PersonProfileTab extends AbstractEditableTab {
             <tr></table>";
         }
         if($person->isHQP()){
-            $this->html .=<<<EOF
-            {$ethics_str}
-EOF;
+            return $ethics_str;
         }
         else if($person->isCNI() || $person->isPNI()){
             $relations = $person->getRelations("Supervises");
@@ -251,7 +306,7 @@ EOF;
                 $button = "ethical_button_ni.jpg";
             }
 
-            $this->html .=<<<EOF
+            return "
             <style>
             span.supervisor_lbl{
                 text-align: center;
@@ -277,10 +332,9 @@ EOF;
                 <span class='supervisor_lbl highlights-text'>Supervisor</span>
             </td>
             <td style='padding-left:15px;'><h3>{$ethical_hqp} of my {$total_hqp} students have completed the TCPS2 Tutorial.</h3></td>
-            <tr></table>
-EOF;
+            <tr></table>";
         }
-
+        return "";
     }
     
     function showEditEthics($person, $visibility){
@@ -390,87 +444,19 @@ EOF;
     */
     function showContact($person, $visibility){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
-        $this->html .= "<table>";
-        if($wgUser->isLoggedIn()){
-            $this->html .= "<tr>
-                                <td align='right'><b>Email:</b></td>
-                                <td><a href=\"mailto:{$person->getEmail()}\">{$person->getEmail()}</a></td>
-                            </tr>";
-        }
-        if($visibility['isMe'] || $visibility['isSupervisor']){
-            if($person->isRoleDuring(HQP, "0000", "9999") ||
-               $person->isRoleDuring(CNI, "0000", "9999") ||
-               $person->isRoleDuring(PNI, "0000", "9999") ||
-               $person->isRoleDuring(AR, "0000", "9999")){
-                $this->html .= "<tr>
-                    <td align='right'><b>Nationality:</b></td>
-                    <td>
-                        {$person->getNationality()}
-                    </td>
-                </tr>";
-            }
-            if($person->getGender() != ""){
-                $this->html .= "<tr>
-                    <td align='right'><b>Gender:</b></td>
-                    <td>
-                        {$person->getGender()}
-                    </td>
-                </tr>";
-            }
-        }
-        if($person->isRole(CHAMP)){
-            $org = $person->getPartnerName();
-            $title = $person->getPartnerTitle();
-            $dept = $person->getPartnerDepartment();
-            if($title != ""){
-                $this->html .= "<tr>
-                                    <td align='right'><b>Title:</b></td>
-                                    <td>{$title}</td>
-                                </tr>";
-            }
-            if($org != ""){
-                $this->html .= "<tr>
-                                    <td align='right'><b>Organization:</b></td>
-                                    <td>{$org}</td>
-                                </tr>";
-            }
-            if($dept != ""){
-                $this->html .= "<tr>
-                                    <td align='right'><b>Department:</b></td>
-                                    <td>{$dept}</td>
-                                </tr>";
-            }
-        }
-        else{
-            $university = $person->getUniversity();
-            if(isset($university['university'])){
-                $this->html .= "<tr>
-                                    <td align='right'><b>Title:</b></td>
-                                    <td>{$university['position']}</td>
-                                </tr>
-                                <tr>
-                                    <td align='right'><b>University:</b></td>
-                                    <td>{$university['university']}</td>
-                                </tr>
-                                <tr>
-                                    <td align='right'><b>Department:</b></td>
-                                    <td>{$university['department']}</td>
-                                </tr>";
-            }
-        }
-        if($person->getWebsite() != ""){
-            $this->html .= "<tr>
-                                <td align='right'><b>Website:</b></td>
-                                <td><a href='{$person->getWebsite()}' target='_blank'>{$person->getWebsite()}</a></td>
-                            </tr>";
-        }
-        if($person->getTwitter() != ""){
-            $this->html .= "<tr>
-                                <td align='right'><b>Twitter:</b></td>
-                                <td><a href='http://twitter.com/{$person->getTwitter()}' target='_blank'>{$person->getTwitter()}</a></td>
-                            </tr>";
-        }
-        $this->html .= "</table>";
+        $this->html .= "<div style='white-space: nowrap;'>";
+        $this->html .= <<<EOF
+            <div id='card' style='min-height:132px;display:inline-block;vertical-align:top;width:50%;'></div>
+            <script type='text/javascript'>
+                $(document).ready(function(){    
+                    var person = new Person({$person->toJSON()});
+                    var card = new LargePersonCardView({el: $("#card"), model: person});
+                    card.render();
+                });
+            </script>
+EOF;
+        $this->showTwitter($this->person, $this->visibility);
+        $this->html .= "</div>";
     }
     
     function showEditContact($person, $visibility){

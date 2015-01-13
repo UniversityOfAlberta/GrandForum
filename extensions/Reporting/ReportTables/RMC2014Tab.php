@@ -518,6 +518,9 @@ EOF;
                                 $response .= "; ".$comm_short;
                                 $comm = implode("<br />", $comm);
                             }
+                            else{
+                                $comm = "";
+                            }
                             $cell1 = "<td width='10%'><span class='q_tip' title='{$response_orig}<br />{$comm}'><a href='#'>{$response}</a></span></td>";
                         }else{
                             $response = "";

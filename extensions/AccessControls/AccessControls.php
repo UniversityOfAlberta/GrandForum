@@ -100,7 +100,7 @@ function permissionError(){
     exit;
 }
 
-function isValidEmailAddr($addr, $result){
+function isValidEmailAddr($addr, &$result){
     $result = filter_var(unaccentChars($addr), FILTER_VALIDATE_EMAIL);
     return false;
 }

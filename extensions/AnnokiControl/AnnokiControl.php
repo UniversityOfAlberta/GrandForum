@@ -80,9 +80,6 @@ $egAnnokiExtensions['TempEd'] = array('name' => 'Template Editor',
 $egAnnokiExtensions['TextReplace'] = array('name' => 'Text Replace',
                                            'path' => "$IP/extensions/TextReplace/TextReplace.php");
 
-$egAnnokiExtensions['Twitter'] = array('name' => 'Twitter',
-                                       'path' => "$IP/extensions/Twitter/Twitter.body.php");
-
 $egAnnokiExtensions['MailingList'] = array('name' => 'MailingList',
                                            'path' => "$IP/extensions/MailingList/mailingList.body.php");
 

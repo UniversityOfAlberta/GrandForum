@@ -1,5 +1,6 @@
 <?php
 
+require_once('PersonPage/PersonProfileTab.php');
 require_once('PersonPage/PersonVisualizationsTab.php');
 autoload_register('GrandObjectPage/PersonPage');
 
@@ -194,6 +195,9 @@ class PersonPage {
             }
         }
         $wgOut->setPageTitle($person->getReversedName()." (".implode(", ", $roleNames).")");
+        $wgOut->addHTML("<script type='text/javascript'>
+            $('.custom-title').hide();
+        </script>");
     }
     
     static function createSubTabs(&$tabs){

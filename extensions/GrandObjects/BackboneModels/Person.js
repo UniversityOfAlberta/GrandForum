@@ -15,6 +15,8 @@ Person = Backbone.Model.extend({
         
         this.privateProducts = new PersonProducts();
         this.privateProducts.url = this.urlRoot + '/' + this.get('id') + '/products/private';
+        
+        this.roleString = new PersonRoleString({id: this.get('id')});
         /*
         this.bind("sync", function(model, response, options){
             clearAllMessages();
@@ -52,6 +54,13 @@ Person = Backbone.Model.extend({
         return this.roles;
     },
     
+    // Returns a simple string containing all of the roles for this Person
+    // including leader etc.
+    getRoleString: function(){
+        this.roleString.fetch();
+        return this.roleString;
+    },
+    
     getProducts: function(){
         this.products.fetch();
         return this.products;
@@ -64,6 +73,20 @@ Person = Backbone.Model.extend({
     
     isLoggedIn: function(){
         return (this.get('id') != 0);
+    },
+    
+    getUniversityString: function(){
+        var university = new Array();
+        if(this.get('position') != ''){
+            university.push(this.get('position'));
+        }
+        if(this.get('department') != ''){
+            university.push(this.get('department'));
+        }
+        if(this.get('university') != ''){
+            university.push(this.get('university'));
+        }
+        return university.join(' | ');
     },
 
     urlRoot: 'index.php?action=api.person',
@@ -230,4 +253,22 @@ PersonProducts = RangeCollection.extend({
     newModel: function(){
         return new Products();
     },
+});
+
+/**
+ * PersonRoleString Model
+ */
+PersonRoleString = Backbone.Model.extend({
+
+    initialize: function(){
+    
+    },
+
+    urlRoot: 'index.php?action=api.personRoleString',
+
+    defaults: {
+        id: "", // personId
+        roleString: ""
+    }
+
 });
