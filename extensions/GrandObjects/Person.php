@@ -944,6 +944,19 @@ class Person extends BackboneModel {
         return false;
     }
     
+    /**
+     * Returns the id of this Person.  
+     * Returns 0 if the user doesn't exist or if is an HQP and the current user is not logged in 
+     * @return int The id of this Person
+     */
+    function getId(){
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(CNI)){
+            return 0;
+        }
+        return $this->id;
+    }
+    
     // Returns the name of this Person
     function getName(){
         return $this->name;
