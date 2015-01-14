@@ -50,6 +50,9 @@ Raphael.fn.doughnut = function (name, cx, cy, data, stroke, clickable, fn, rapha
             frame.attr('cursor', 'pointer');
             labels[0].attr('cursor', 'pointer');
             labels[1].attr('cursor', 'pointer');
+            frame.unclick();
+            labels[0].unclick();
+            labels[1].unclick();
             frame.click(function(){fn(label)});
             labels[0].click(function(){fn(label)});
             labels[1].click(function(){fn(label)});
