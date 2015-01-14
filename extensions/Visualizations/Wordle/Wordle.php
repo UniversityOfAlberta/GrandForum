@@ -147,7 +147,7 @@ class Wordle extends Visualization {
                           .selectAll("text")
                           .style("cursor", "pointer")
                           .on('mouseover', function(d, i){
-                                d3.select(this).style("fill", d3.rgb(fill(i)).brighter(1));
+                              d3.select(this).style("fill", d3.rgb(fill(i)).brighter(1));
                           })
                           .on('mouseout', function(d, i){
                               d3.select(this).style("fill", fill(i));
