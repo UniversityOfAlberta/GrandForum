@@ -169,10 +169,12 @@ Raphael.fn.doughnut = function (name, cx, cy, data, stroke, clickable, fn, rapha
             frame.hide();
         });
         if(clickable){
-            p.attr("cursor", "pointer");
-            p.click(function(){
-                fn(label);
-            });
+            if(label != "Others"){
+                p.attr("cursor", "pointer");
+                p.click(function(){
+                    fn(label);
+                });
+            }
         }
         
         angle += angleplus;

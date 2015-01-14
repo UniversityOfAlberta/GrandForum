@@ -320,10 +320,9 @@ EOF;
             
             $string .= "<tr>";
             $string .= "<td>{$paper->getTitle()}<span style='display:none'>{$paper->getDescription()}</span></td>";
-            $string .= "<td>{$paper->getDate()}</td>";
+            $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
             $string .= "<td>".implode(", ", $projects)."</td>";
             $string .= "<td>".implode(", ", $paper->getUniversities())."</td>";
-
             $string .= "<td>".implode(", ", $names)."</td>";
             
             $string .= "</tr>";
