@@ -6,7 +6,7 @@ class Doughnut extends Visualization {
     
     static $a = 0;
     var $url = "";
-    var $clickable = false;
+    var $clickable = "false";
     var $fn = "";
     
     /**
@@ -17,7 +17,7 @@ class Doughnut extends Visualization {
      */
     function Doughnut($url, $clickable=false, $fn=""){
         $this->url = $url;
-        $this->clickable = $clickable;
+        $this->clickable = ($clickable) ? "true" : "false";
         $this->fn = $fn;
         self::Visualization();
     }

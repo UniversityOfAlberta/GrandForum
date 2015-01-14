@@ -14,7 +14,7 @@ class Wordle extends Visualization {
     var $url = "";
     var $width = "500";
     var $height = "500";
-    var $clickable = false;
+    var $clickable = "false";
     var $fn = "";
     
     /**
@@ -25,7 +25,7 @@ class Wordle extends Visualization {
      */
     function Wordle($url, $clickable=false, $fn=""){
         $this->url = $url;
-        $this->clickable = $clickable;
+        $this->clickable = ($clickable) ? "true" : "false";
         $this->fn = $fn;
         self::Visualization();
     }
