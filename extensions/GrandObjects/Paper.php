@@ -1350,7 +1350,9 @@ class Paper extends BackboneModel{
     }
 
     function toArray(){
-        if(Cache::exists($this->getCacheId())){
+        $me = Person::newFromWgUser();
+        if(Cache::exists($this->getCacheId()) && $me->isLoggedIn()){
+            // Only access the cache if the user is logged in
             $json = Cache::fetch($this->getCacheId());
             /* // TODO: I don't think the following is needed anymore since we do a better job
                //       at invalidating the cache whenever a change is made to the entry in the database.
@@ -1387,6 +1389,7 @@ class Paper extends BackboneModel{
         else{
             $authors = array();
             $projects = array();
+            
             foreach($this->getAuthors(true, false) as $author){
                 $authors[] = array('id' => $author->getId(),
                                    'name' => $author->getNameForForms(),
@@ -1419,7 +1422,9 @@ class Paper extends BackboneModel{
                           'access_id' => $this->getAccessId(),
                           'created_by' => $this->getCreatedBy(),
                           'access' => $this->getAccess());
-            Cache::store($this->getCacheId(), $json, 60*60);
+            if($me->isLoggedIn()){
+                Cache::store($this->getCacheId(), $json, 60*60);
+            }
             return $json;
         }
     }

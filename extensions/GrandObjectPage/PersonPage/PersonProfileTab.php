@@ -299,6 +299,7 @@ EOF;
      * visualizations which appear above it.
      */
     function showTable($person, $visibility){
+        $me = Person::newFromWgUser();
         $products = $person->getPapers("all", false, 'grand');
         $string = "<table id='personProducts' rules='all' frame='box'>
             <thead>
@@ -310,16 +311,21 @@ EOF;
         foreach($products as $paper){
             $projects = array();
             foreach($paper->getProjects() as $project){
-                $projects[] = $project->getName();
+                $projects[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
             }
 
             $names = array();
             foreach($paper->getAuthors() as $author){
-                $names[] = $author->getNameForForms();
+                if($author->getId() != 0 && $me->isLoggedIn()){
+                    $names[] = "<a href='{$author->getUrl()}'>{$author->getNameForForms()}</a>";
+                }
+                else{
+                    $names[] = $author->getNameForForms();
+                }
             }
             
             $string .= "<tr>";
-            $string .= "<td>{$paper->getTitle()}<span style='display:none'>{$paper->getDescription()}</span></td>";
+            $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}</span></td>";
             $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
             $string .= "<td>".implode(", ", $projects)."</td>";
             $string .= "<td>".implode(", ", $paper->getUniversities())."</td>";

@@ -1001,7 +1001,8 @@ class Person extends BackboneModel {
      */
     function getUrl(){
         global $wgServer, $wgScriptPath;
-        if($this->id > 0){
+        $me = Person::newFromWgUser();
+        if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(CNI))){
             return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}";
         }
         return "";
