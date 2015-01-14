@@ -40,16 +40,19 @@ class PersonDashboardTab extends AbstractEditableTab {
     }
 
     function generateBody(){
+        $me = Person::newFromWgUser();
         $amount = 3;
         if($this->person->isRoleAtLeast(CNI)){
             $amount = 5;
         }
         $this->showTopProducts($this->person, $this->visibility, $amount);
         $this->showDashboard($this->person, $this->visibility);
-        $this->html .= "<script type='text/javascript'>
-        _.defer(function(){
-            $('input[value=\"Edit Dashboard\"]').css('display', 'none');
-        });</script>";
+        if($me->isLoggedIn()){
+            $this->html .= "<script type='text/javascript'>
+            _.defer(function(){
+                $('input[value=\"Edit Dashboard\"]').css('display', 'none');
+            });</script>";
+        }
         return $this->html;
     }
     
