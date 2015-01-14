@@ -14,9 +14,19 @@ class Wordle extends Visualization {
     var $url = "";
     var $width = "500";
     var $height = "500";
+    var $clickable = false;
+    var $fn = "";
     
-    function Wordle($url){
+    /**
+     * Creates a new Wordle visualization
+     * @param string $url The data url
+     * @param boolean $clickable Whether or not the words should respond to click events (and hover events)
+     * @param string $fn The javascript code to run when a word is clicked.  A 'text' variable can be accessed for this code
+     */
+    function Wordle($url, $clickable=false, $fn=""){
         $this->url = $url;
+        $this->clickable = $clickable;
+        $this->fn = $fn;
         self::Visualization();
     }
     
@@ -66,6 +76,8 @@ class Wordle extends Visualization {
 <script type='text/javascript'>
     function onLoad{$this->index}(){
         $.get('{$this->url}', function(data){
+            
+            var clickable = {$this->clickable};
             
             var fill = d3.scale.ordinal()
                                .range(["#432724", 
@@ -120,15 +132,31 @@ class Wordle extends Visualization {
                     .attr("transform", "translate(" + (maxWidth/2) + ",{$halfHeight})")
                   .selectAll("text")
                     .data(words)
-                  .enter().append("text")
+                  .enter().append('text')
                     .style("font-size", function(d) { return d.size + "px"; })
-                    .style("font-family", "Times")
+                    .style("font-family", "Times New Roman, Times")
                     .style("fill", function(d, i) { return fill(i); })
                     .attr("text-anchor", "middle")
                     .attr("transform", function(d) {
                       return "translate(" + [d.x, d.y] + ")";
                     })
                     .text(function(d) { return d.text; });
+                    
+                    if(clickable){
+                        d3.select("#vis{$this->index}")
+                          .selectAll("text")
+                          .style("cursor", "pointer")
+                          .on('mouseover', function(d, i){
+                                d3.select(this).style("fill", d3.rgb(fill(i)).brighter(1));
+                          })
+                          .on('mouseout', function(d, i){
+                              d3.select(this).style("fill", fill(i));
+                          })
+                          .on('click', function(d){
+                              var text = d3.select(this).text();
+                              {$this->fn}
+                          });
+                      }
                   }
               }
               if($("#vis{$this->index}").is(":visible")){

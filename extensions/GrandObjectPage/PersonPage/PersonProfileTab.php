@@ -19,24 +19,28 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0'>";
         $this->html .= "</td><td width='50%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
-        $this->html .= "<h2 style='margin-top:0;'>Profile</h2>";
+        $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
         $this->showProfile($this->person, $this->visibility);
         
         $extra = array();
         $extra[] = $this->showCloud($this->person, $this->visibility);
         $extra[] = $this->showDoughnut($this->person, $this->visibility);
-        if($wgUser->isLoggedIn()){
-            if(isExtensionEnabled('EthicsTable')){
-                $extra[] = $this->showEthics($this->person, $this->visibility);
-            }
-        }
+        
         // Delete extra widgets which have no content
         foreach($extra as $key => $e){
             if($e == ""){
                 unset($extra[$key]);
             }
         }
-        $this->html .= "</td><td valign='top' width='50%' style='padding-top:15px;padding-left:15px;'>".implode("<hr />", $extra)."</td></tr></table>";
+        $this->html .= "</td><td valign='top' width='50%' style='padding-top:15px;padding-left:15px;'>".implode("<hr />", $extra)."</td></tr>";
+        
+        $this->html .= "<tr><td colspan='2'>".$this->showTable($this->person, $this->visibility)."</td></tr>";
+        if($wgUser->isLoggedIn()){
+            if(isExtensionEnabled('EthicsTable')){
+                $this->html .= "<tr><td colspan='2' align='right'><p>".$this->showEthics($this->person, $this->visibility)."</p></td></tr>";
+            }
+        }
+        $this->html .= "</table>";
         $this->showCCV($this->person, $this->visibility);
         return $this->html;
     }
@@ -238,9 +242,9 @@ EOF;
     function showCloud($person, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
         $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getPersonCloudData&person={$person->getId()}";
-        $wordle = new Wordle($dataUrl);
+        $wordle = new Wordle($dataUrl, true, '$("#personProducts_wrapper input").val(text); $("#personProducts_wrapper input").trigger("keyup")');
         $wordle->width = "100%";
-        $wordle->height = 240;
+        $wordle->height = 232;
         $wgOut->addScript("<script type='text/javascript'>
                                 $(document).ready(function(){
                                     onLoad{$wordle->index}();
@@ -256,7 +260,7 @@ EOF;
 	        $person = Person::newFromId($_GET['person']);
 	        $text .= $person->getProfile()."\n";
 	        
-	        $products = $person->getPapers("all", false, 'both', false, 'Forum');
+	        $products = $person->getPapers("all", false, 'grand', false, 'Forum');
 	        foreach($products as $product){
 	            $text .= $product->getTitle()."\n";
 	            $text .= $product->getDescription()."\n";
@@ -273,13 +277,14 @@ EOF;
 	function showDoughnut($person, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
         $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getDoughnutData&person={$person->getId()}";
-        $doughnut = new Doughnut($dataUrl);
+        $fn = '$("#personProducts_wrapper input").val(text); $("#personProducts_wrapper input").trigger("keyup")';
+        $doughnut = new Doughnut($dataUrl, true, $fn);
         $wgOut->addScript("<script type='text/javascript'>
                                 $(document).ready(function(){
                                     if(!$('#vis{$doughnut->index}').is(':visible')){
                                         var interval = setInterval(function(){
                                             if($('#vis{$doughnut->index}').is(':visible')){
-                                                $('#vis{$doughnut->index}').doughnut('{$doughnut->url}');
+                                                $('#vis{$doughnut->index}').doughnut('{$doughnut->url}', true, function(text){ {$fn} });
                                                 clearInterval(interval);
                                             }
                                         }, 100);
@@ -287,6 +292,48 @@ EOF;
                                 });
                           </script>");
         return $doughnut->show();
+    }
+    
+    /**
+     * Shows a table of this Person's products, and is filterable by the
+     * visualizations which appear above it.
+     */
+    function showTable($person, $visibility){
+        $products = $person->getPapers("all", false, 'grand');
+        $string = "<table id='personProducts' rules='all' frame='box'>
+            <thead>
+                <tr>
+                    <th>Title</th><th>Date</th><th>Projects</th><th>Universities</th><th>Authors</th>
+                </tr>
+            </thead>
+            <tbody>";
+        foreach($products as $paper){
+            $projects = array();
+            foreach($paper->getProjects() as $project){
+                $projects[] = $project->getName();
+            }
+
+            $names = array();
+            foreach($paper->getAuthors() as $author){
+                $names[] = $author->getNameForForms();
+            }
+            
+            $string .= "<tr>";
+            $string .= "<td>{$paper->getTitle()}<span style='display:none'>{$paper->getDescription()}</span></td>";
+            $string .= "<td>{$paper->getDate()}</td>";
+            $string .= "<td>".implode(", ", $projects)."</td>";
+            $string .= "<td>".implode(", ", $paper->getUniversities())."</td>";
+
+            $string .= "<td>".implode(", ", $names)."</td>";
+            
+            $string .= "</tr>";
+        }
+        $string .= "</tbody>
+            </table>
+            <script type='text/javascript'>
+                $('#personProducts').dataTable();
+            </script>";
+        return $string;
     }
 
     /*

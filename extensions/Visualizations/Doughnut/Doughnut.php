@@ -6,9 +6,19 @@ class Doughnut extends Visualization {
     
     static $a = 0;
     var $url = "";
+    var $clickable = false;
+    var $fn = "";
     
-    function Doughnut($url){
+    /**
+     * Creates a new Doughnut visualization
+     * @param string $url The data url
+     * @param boolean $clickable Whether or not the sections should respond to click events.
+     * @param string $fn The javascript code to run when a section is clicked.  A 'text' variable can be accessed for this code
+     */
+    function Doughnut($url, $clickable=false, $fn=""){
         $this->url = $url;
+        $this->clickable = $clickable;
+        $this->fn = $fn;
         self::Visualization();
     }
     
@@ -25,7 +35,7 @@ class Doughnut extends Visualization {
         $string = "<script type='text/javascript'>
             $(document).ready(function(){
                 if($('#vis{$this->index}:visible').length > 0){
-                    $('#vis{$this->index}').doughnut('{$this->url}');
+                    $('#vis{$this->index}').doughnut('{$this->url}', {$this->clickable}, function(text){ {$this->fn} });
                 }
             });
         </script>";

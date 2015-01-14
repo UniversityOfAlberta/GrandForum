@@ -5,7 +5,7 @@ var dimension;
 var lastP;
 
 var data = Array();
-Raphael.fn.doughnut = function (name, cx, cy, data, stroke, raphael) {
+Raphael.fn.doughnut = function (name, cx, cy, data, stroke, clickable, fn, raphael) {
     var paper = this,
         rad = Math.PI / 180,
         legend = data.legend,
@@ -168,6 +168,13 @@ Raphael.fn.doughnut = function (name, cx, cy, data, stroke, raphael) {
             labels.hide();
             frame.hide();
         });
+        if(clickable){
+            p.attr("cursor", "pointer");
+            p.click(function(){
+                fn(label);
+            });
+        }
+        
         angle += angleplus;
     };
     
@@ -234,7 +241,7 @@ function filter(data){
     }
 }
 
-function create(holder, data){
+function create(holder, data, clickable, fn){
     (function (raphael) {
         $(function () {
             sortData(data);
@@ -259,7 +266,7 @@ function create(holder, data){
 
             r = Raphael(holder.attr('id') + 'doughnut', width, height);
             
-            r.doughnut(holder.attr('id') + 'doughnut', dimension/2 + 10, dimension/2 + 10, data, "#000", raphael);
+            r.doughnut(holder.attr('id') + 'doughnut', dimension/2 + 10, dimension/2 + 10, data, "#000", clickable, fn, raphael);
             
             labels = r.set();
             txt = {font: '12px Helvetica, Arial, sans-serif', fill: "#fff"};
@@ -279,7 +286,7 @@ function create(holder, data){
     })(Raphael);
 }
 
-$.fn.doughnut = function(data){
+$.fn.doughnut = function(data, clickable, fn){
     var holder = this;
     var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
     if(typeof data == 'string' && pattern.test(data)){
@@ -301,7 +308,7 @@ $.fn.doughnut = function(data){
                 $("#" + id).width("100%");
                 response[0].width = $("#" + id).width();
                 response[0].height = response[0].width*0.50;
-                create(holder, response[0]);
+                create(holder, response[0], clickable, fn);
                 $("#" + id).width("100%");
                 var maxWidth = $("#" + id).width();
                 setInterval(function(){
@@ -309,14 +316,14 @@ $.fn.doughnut = function(data){
                         response[0].width = $("#" + id).width();
                         response[0].height = response[0].width*0.50;
                         $("#" + id).empty();
-                        create(holder, response[0]);
+                        create(holder, response[0], clickable, fn);
                         $("#" + id).width("100%");
                         maxWidth = $("#" + id).width();
                     }
                 }, 100);
             }
             else{
-                create(holder, response[0]);
+                create(holder, response[0], clickable, fn);
             }
         });
     }
@@ -328,7 +335,7 @@ $.fn.doughnut = function(data){
             if($("#" + id).is(":visible") && maxWidth != $("#" + id).width()){
                 maxWidth = $("#" + id).width();
                 $("#" + id).empty();
-                create(holder, data);
+                create(holder, data, clickable, fn);
             }
         }, 100);
     }
