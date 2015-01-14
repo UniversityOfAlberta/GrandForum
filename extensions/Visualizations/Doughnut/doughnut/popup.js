@@ -41,7 +41,6 @@ var tokenRegex = /\{([^\}]+)\}/g,
                 hx2: X - (x + r + gap),
                 vhy: Y - (y + r + h + r + gap),
                 "^hy": Y - (y - gap)
-                
             },
             mask = [{
                 x: x + r,

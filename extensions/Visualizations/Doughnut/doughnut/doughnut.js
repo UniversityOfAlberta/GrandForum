@@ -37,6 +37,7 @@ Raphael.fn.doughnut = function (name, cx, cy, data, stroke, clickable, fn, rapha
         var color = p.color;
         var bcolor = p.bcolor;
         var angle = p.angle;
+        var label = labels[0].attr('text');
         if(color.b == p.colorOrig.b && bcolor.b == p.bcolorOrig.b){
             color.b += 0.25;
             color.b = Math.min(1, color.b);
@@ -44,6 +45,19 @@ Raphael.fn.doughnut = function (name, cx, cy, data, stroke, clickable, fn, rapha
             bcolor.b += 0.25;
             bcolor.b = Math.min(1, bcolor.b);
             p.attr('gradient', angle + "-" + bcolor + "-" + color);
+        }
+        if(clickable && label != "Others"){
+            frame.attr('cursor', 'pointer');
+            labels[0].attr('cursor', 'pointer');
+            labels[1].attr('cursor', 'pointer');
+            frame.click(function(){fn(label)});
+            labels[0].click(function(){fn(label)});
+            labels[1].click(function(){fn(label)});
+        }
+        else{
+            frame.attr('cursor', 'default');
+            labels[0].attr('cursor', 'default');
+            labels[1].attr('cursor', 'default');
         }
     }
     
@@ -139,12 +153,12 @@ Raphael.fn.doughnut = function (name, cx, cy, data, stroke, clickable, fn, rapha
         var bcolorOrig = Raphael.getRGB(legend[l]['color']);
         bcolorOrig = Raphael.rgb2hsb(bcolorOrig.r, bcolorOrig.g, bcolorOrig.b);
         bcolorOrig.b = bcolorOrig.b/2;
-        
+
         var p = sector(cx, 
                        cy, 
                        angle, 
                        angle + angleplus,
-                       {gradient: angle + "-" + bcolor + "-" + color, stroke: stroke, "stroke-width": 0.75},
+                       {gradient: angle + "-" + bcolor + "-" + color, stroke: d3.rgb(legend[l]['color']).darker(4), "stroke-width": 1},
                        l);
         p.color = color;
         p.bcolor = bcolor;
@@ -162,7 +176,7 @@ Raphael.fn.doughnut = function (name, cx, cy, data, stroke, clickable, fn, rapha
         p.mouseover(function () {
             lastP = p;
             highlight(lastP, ms);
-            placePopUp();    
+            placePopUp();   
         }).mouseout(function () {
             unhighlight(p, ms);
             labels.hide();
