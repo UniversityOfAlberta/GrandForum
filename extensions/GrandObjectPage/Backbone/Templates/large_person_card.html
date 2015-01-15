@@ -25,7 +25,7 @@
                     <td style="color:#333333;"><%= gender %></td>
                 </tr>
             <% } %>
-            <% if(website != ""){ %>
+            <% if(website != "" && website != "http://"){ %>
                 <tr>
                     <td width="100">Website</td>
                     <td style="color:#333333;"><a href="<%= website %>" target="_blank"><%= parseUrl(website).hostname %></a></td>

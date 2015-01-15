@@ -19,9 +19,10 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0'>";
         $this->html .= "</td><td width='50%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
-        $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
-        $this->showProfile($this->person, $this->visibility);
-        
+        if($this->person->getProfile() != ""){
+            $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
+            $this->showProfile($this->person, $this->visibility);
+        }
         $extra = array();
         $extra[] = $this->showCloud($this->person, $this->visibility);
         $extra[] = $this->showDoughnut($this->person, $this->visibility);
@@ -301,43 +302,46 @@ EOF;
     function showTable($person, $visibility){
         $me = Person::newFromWgUser();
         $products = $person->getPapers("all", false, 'grand');
-        $string = "<table id='personProducts' rules='all' frame='box'>
-            <thead>
-                <tr>
-                    <th>Title</th><th>Date</th><th>Projects</th><th>Universities</th><th>Authors</th>
-                </tr>
-            </thead>
-            <tbody>";
-        foreach($products as $paper){
-            $projects = array();
-            foreach($paper->getProjects() as $project){
-                $projects[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
-            }
+        $string = "";
+        if(count($products) > 0){
+            $string = "<table id='personProducts' rules='all' frame='box'>
+                <thead>
+                    <tr>
+                        <th>Title</th><th>Date</th><th>Projects</th><th>Universities</th><th>Authors</th>
+                    </tr>
+                </thead>
+                <tbody>";
+            foreach($products as $paper){
+                $projects = array();
+                foreach($paper->getProjects() as $project){
+                    $projects[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
+                }
 
-            $names = array();
-            foreach($paper->getAuthors() as $author){
-                if($author->getId() != 0 && $me->isLoggedIn()){
-                    $names[] = "<a href='{$author->getUrl()}'>{$author->getNameForForms()}</a>";
+                $names = array();
+                foreach($paper->getAuthors() as $author){
+                    if($author->getId() != 0 && $me->isLoggedIn()){
+                        $names[] = "<a href='{$author->getUrl()}'>{$author->getNameForForms()}</a>";
+                    }
+                    else{
+                        $names[] = $author->getNameForForms();
+                    }
                 }
-                else{
-                    $names[] = $author->getNameForForms();
-                }
+                
+                $string .= "<tr>";
+                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}</span></td>";
+                $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
+                $string .= "<td>".implode(", ", $projects)."</td>";
+                $string .= "<td>".implode(", ", $paper->getUniversities())."</td>";
+                $string .= "<td>".implode(", ", $names)."</td>";
+                
+                $string .= "</tr>";
             }
-            
-            $string .= "<tr>";
-            $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}</span></td>";
-            $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
-            $string .= "<td>".implode(", ", $projects)."</td>";
-            $string .= "<td>".implode(", ", $paper->getUniversities())."</td>";
-            $string .= "<td>".implode(", ", $names)."</td>";
-            
-            $string .= "</tr>";
+            $string .= "</tbody>
+                </table>
+                <script type='text/javascript'>
+                    $('#personProducts').dataTable();
+                </script>";
         }
-        $string .= "</tbody>
-            </table>
-            <script type='text/javascript'>
-                $('#personProducts').dataTable();
-            </script>";
         return $string;
     }
 

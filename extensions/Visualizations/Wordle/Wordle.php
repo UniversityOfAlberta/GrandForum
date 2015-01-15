@@ -88,6 +88,12 @@ class Wordle extends Visualization {
             
             var maxF = 0;
             var minF = 100000;
+            if(data.length == 0){
+                $("#vis{$this->index}").next().remove();
+                $("#vis{$this->index}").next().remove();
+                $("#vis{$this->index}").remove();
+                return;
+            }
             for(fId in data){
                 var f = data[fId].freq;
                 maxF = Math.max(maxF, f);

@@ -321,28 +321,35 @@ $.fn.doughnut = function(data, clickable, fn){
         spin = spinner($(this).attr('id') + 'spinner', 40, 75, 12, 10, '#888');
         var id = $(this).attr('id');
         $.get(data, function(response){
-            spin();
-            $("#" + id).empty();
-            if(response[0].width == "100%"){
-                $("#" + id).width("100%");
-                response[0].width = $("#" + id).width();
-                response[0].height = response[0].width*0.50;
-                create(holder, response[0], clickable, fn);
-                $("#" + id).width("100%");
-                var maxWidth = $("#" + id).width();
-                setInterval(function(){
-                    if($("#" + id).is(":visible") && maxWidth != $("#" + id).width()){
-                        response[0].width = $("#" + id).width();
-                        response[0].height = response[0].width*0.50;
-                        $("#" + id).empty();
-                        create(holder, response[0], clickable, fn);
-                        $("#" + id).width("100%");
-                        maxWidth = $("#" + id).width();
-                    }
-                }, 100);
+            if(response[0].levels[0].values.length > 0){
+                spin();
+                $("#" + id).empty();
+                if(response[0].width == "100%"){
+                    $("#" + id).width("100%");
+                    response[0].width = $("#" + id).width();
+                    response[0].height = response[0].width*0.50;
+                    create(holder, response[0], clickable, fn);
+                    $("#" + id).width("100%");
+                    var maxWidth = $("#" + id).width();
+                    setInterval(function(){
+                        if($("#" + id).is(":visible") && maxWidth != $("#" + id).width()){
+                            response[0].width = $("#" + id).width();
+                            response[0].height = response[0].width*0.50;
+                            $("#" + id).empty();
+                            create(holder, response[0], clickable, fn);
+                            $("#" + id).width("100%");
+                            maxWidth = $("#" + id).width();
+                        }
+                    }, 100);
+                }
+                else{
+                    create(holder, response[0], clickable, fn);
+                }
             }
             else{
-                create(holder, response[0], clickable, fn);
+                $("#" + id).prev().remove();
+                $("#" + id).next().remove();
+                $("#" + id).remove();
             }
         });
     }
