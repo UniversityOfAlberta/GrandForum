@@ -101,7 +101,7 @@ class Wordle extends Visualization {
             }
             for(fId in data){
                 var f = data[fId].freq;
-                data[fId].size = 10 + (f - minF)/(maxF - minF)*75;
+                data[fId].size = 10 + (f - minF)/(maxF - minF)*Math.max(50, Math.min(100, ($("#vis{$this->index}").width()*0.1)));
             }
             
             var maxWidth = '{$this->width}';
@@ -110,25 +110,36 @@ class Wordle extends Visualization {
                 setInterval(function(){
                     if($("#vis{$this->index}").is(":visible") && maxWidth != $("#vis{$this->index}").width()){
                         maxWidth = $("#vis{$this->index}").width();
+                        for(fId in data){
+                            var f = data[fId].freq;
+                            data[fId].size = 10 + (f - minF)/(maxF - minF)*Math.max(50, Math.min(100, (maxWidth*0.1)));
+                        }
                         doCloud();
                     }
                 }, 100);
             }
-         
+            
+            var started = new Array();
+            var cloud = null;
             var doCloud = function(){
                 $("#vis{$this->index} svg").width(maxWidth);
-                d3.layout.cloud().size([maxWidth, {$this->height}])
+                started.push(true);
+                cloud = d3.layout.cloud().size([maxWidth, {$this->height}])
                   .words(data.map(function(d) {
                     return {text: d.word, size: d.size};
                   }))
-                  .timeInterval(Infinity)
+                  .timeInterval(1)
                   .rotate(0)
-                  .font("Times")
+                  .font("Times New Roman, Times")
                   .fontSize(function(d) { return d.size; })
                   .on("end", draw)
                   .start();
 
                 function draw(words) {
+                  started.pop();
+                  if(started.length > 0){
+                      return false;
+                  }
                   $("#vis{$this->index}").empty();
                   d3.select("#vis{$this->index}").append("svg")
                     .style("position", "absolute")

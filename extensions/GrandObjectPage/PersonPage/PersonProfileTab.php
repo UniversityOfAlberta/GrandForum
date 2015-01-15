@@ -267,7 +267,7 @@ EOF;
 	            $text .= $product->getDescription()."\n";
 	        }
 	        $data = Wordle::createDataFromText($text);
-	        $data = array_slice($data, 0, 100);
+	        $data = array_slice($data, 0, 75);
             header("Content-Type: application/json");
             echo json_encode($data);
             exit;
