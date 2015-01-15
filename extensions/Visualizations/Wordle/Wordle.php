@@ -99,6 +99,10 @@ class Wordle extends Visualization {
                 maxF = Math.max(maxF, f);
                 minF = Math.min(minF, f);
             }
+            if(maxF == minF){
+                maxF = 1;
+                minF = 0;
+            }
             for(fId in data){
                 var f = data[fId].freq;
                 data[fId].size = 10 + (f - minF)/(maxF - minF)*Math.max(50, Math.min(100, ($("#vis{$this->index}").width()*0.1)));
