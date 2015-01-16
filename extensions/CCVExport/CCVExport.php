@@ -73,8 +73,8 @@ class CCVExport extends SpecialPage {
         global $userID;
 
         $map_file = getcwd()."/extensions/GrandObjects/Products.xml";
-        $hqp_file = getcwd()."/extensions/CCVExport/HQP.xml";
-        $ccv_tmpl = getcwd()."/extensions/CCVExport/ccv_template.xml";
+        $hqp_file = getcwd()."/extensions/CCVExport/templates/HQP.xml";
+        $ccv_tmpl = getcwd()."/extensions/CCVExport/templates/ccv_template.xml";
 
         $map = simplexml_load_file($map_file);
         $hqp_map = simplexml_load_file($hqp_file);
