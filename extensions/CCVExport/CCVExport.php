@@ -2,6 +2,7 @@
 require_once("CCVImport/CCVImport.php");
 
 $dir = dirname(__FILE__) . '/';
+require_once($dir."/../../Classes/CCCVTK/constants.lib.php");
 
 $wgSpecialPages['CCVExport'] = 'CCVExport';
 $wgExtensionMessagesFiles['CCVExport'] = $dir . 'CCVExport.i18n.php';
@@ -66,18 +67,36 @@ class CCVExport extends SpecialPage {
         $wgOut->addHTML('<p><pre style="white-space:pre-wrap;">'.$xml."</pre></p>");
     }
   
-  
+    static function getLovId($cat, $val, $default){
+        global $CCV_CONST;
+        if(isset($CCV_CONST[$cat][$val])){
+            return @$CCV_CONST[$cat][$val];
+        }
+        return @$CCV_CONST[$cat][$default];
+    }
+    
+    static function getLovVal($cat, $val, $default){
+        global $CCV_CONST;
+        if(isset($CCV_CONST[$cat][$val])){
+            return $val;
+        }
+        return $default;
+    }
 
     static function exportXML(){
         global $wgOut, $wgUser;
         global $userID;
 
+        // Template Files
         $map_file = getcwd()."/extensions/GrandObjects/Products.xml";
         $hqp_file = getcwd()."/extensions/CCVExport/templates/HQP.xml";
+        $id_file =  getcwd()."/extensions/CCVExport/templates/Identification.xml";
         $ccv_tmpl = getcwd()."/extensions/CCVExport/templates/ccv_template.xml";
 
+        // Load the templates
         $map = simplexml_load_file($map_file);
         $hqp_map = simplexml_load_file($hqp_file);
+        $id_map = simplexml_load_file($id_file);
         $ccv = simplexml_load_file($ccv_tmpl);
 
         $person = Person::newFromId($userID); // Set at top in case testing
@@ -96,44 +115,38 @@ class CCVExport extends SpecialPage {
             }
         }
 
+        $res = CCVExport::mapId($person, 
+                                $id_map, 
+                                $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']/section[@id='2687e70e5d45487c93a8a02626543f64']")[0]);
+
         $counter = 0;
         foreach($prod_sorted as $type => $products){
-            #var_dump($products);
             foreach($products as $product){
-            #echo '<pre>PRODUCT'.var_dump($product).'</pre>'; // TEST DUMP
+                # CCV does not include 'Rejected' Publishing Status
+                if($product->getStatus() == 'Rejected'){
+                    continue;
+                }
 
-            ## TEST ONLY:
-            #var_dump($ccv);
-            #var_dump($ccv->section);
-            #var_dump($ccv->section->section[0]); // Supervisory Activities
-            #var_dump($ccv->section[1]); // Publications
-            #var_dump($ccv->section[1]->section); // Publications
-            #var_dump($person);
-            #echo '<pre>'.var_dump($map).'</pre>'; // TEST DUMP
-            #var_dump($map->Publications->Publication);
-            #echo '<pre>'.var_dump($product).'</pre>'; // TEST DUMP
-            #exit("<p>test exit");
-
-            # CCV does not include 'Rejected' Publishing Status
-            if($product->getStatus() == 'Rejected'){
-              continue;
-            }
-
-            $res = CCVExport::mapItem($person, $map->Publications->Publication, $product, $ccv->section[1]->section);
-
-            // if($res == 0){
-            //   echo "NOT EXPORTED========". $product->getType() ." |||| ". $product->getId() ."\n";
-            // }else{
-            //   echo ":-) EXPORTED========". $product->getType() ." |||| ". $product->getId() ."\n";
-            // }
-            $counter += $res;
-
+                $res = CCVExport::mapItem($person, 
+                                          $map->Publications->Publication, 
+                                          $product, 
+                                          $ccv->xpath("section[@id='047ec63e32fe450e943cb678339e8102']/section[@id='46e8f57e67db48b29d84dda77cf0ef51']")[0]);
+                $counter += $res;
             }
         }
 
         $rels = $person->getRelations('Supervises', true);
+        $sortedRels = array();
         foreach($rels as $rel){
-            $res = CCVExport::mapHQP($person, $hqp_map->HQP->data, $rel, $ccv->section[0]->section);
+            $sortedRels[$rel->getStartDate().$rel->getId()] = $rel;
+        }
+        ksort($sortedRels);
+        $sortedRels = array_reverse($sortedRels);
+        foreach($sortedRels as $rel){
+            $res = CCVExport::mapHQP($person, 
+                                     $hqp_map->HQP->data, 
+                                     $rel, 
+                                     $ccv->xpath("section[@id='95c29504d0aa4b51b84659cafaf2b38d']/section[@id='90cc172e54904b45948d17cba24d3f25']")[0]);
         }
 
         # Format and indent the XML
@@ -144,6 +157,63 @@ class CCVExport extends SpecialPage {
         $xml = $dom->saveXML();
 
         return $xml;
+    }
+    
+    static function mapId($person, $section, $ccv){
+        global $wgUser, $CCV_CONST;
+
+        foreach($section->field as $item){
+            $id = $item['id'];
+            $label = $item['label'];
+            $field = $ccv->addChild("field");
+            $field->addAttribute("id", $id);
+            $field->addAttribute("label", $label);
+            switch($id){
+                case "5c6f17e8a67241e19667815a9e95d9d0": // Family Name
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $field->value = $person->getLastName();
+                    break;
+                case "98ad36fee26a4d6b8953ea764f4fed04": // First Name
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $field->value = $person->getFirstName();
+                    break;
+                case "4ca83c1aaa6a42a78eac0290368e70f3": // Middle Name
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $field->value = $person->getMiddleName();
+                    break;
+                case "84e9fa08f7334db79ed5310e5f7a961b": // Previous Family Name
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $field->value = $person->getPrevLastName();
+                    break;
+                case "ee8beaea41f049d8bcfadfbfa89ac09e": // Title
+                    $title = $person->getHonorific();
+                    $value = $field->addChild("lov");
+                    $value->addAttribute("id", self::getLovId("Title", $title, ""));
+                    $field->lov = self::getLovVal("Title", $title, "");
+                    break;
+                case "0fb359a7d809457d9392bb1ca577f1b3": // Previous First Name
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $field->value = $person->getPrevFirstName();
+                    break;
+                case "3d258d8ceb174d3eb2ae1258a780d91b": // Sex
+                    $gender = $person->getGender();
+                    $value = $field->addChild("lov");
+                    $value->addAttribute("id", self::getLovId("Sex", $gender, "No Response"));
+                    $field->lov = self::getLovVal("Sex", $gender, "No Response");
+                    break;
+                case "2b72a344523c467da0c896656b5290c0": // Correspondence language
+                    $language = $person->getCorrespondenceLanguage();
+                    $value = $field->addChild("lov");
+                    $value->addAttribute("id", self::getLovId("Correspondance Language", $language, ""));
+                    $field->lov = self::getLovVal("Correspondance Language", $language, "");
+                    break;
+            }
+        }
     }
 
     static function mapHQP($person, $section, $rel, $ccv){
@@ -209,7 +279,7 @@ class CCVExport extends SpecialPage {
                 $val = $field->addChild('value');
                 $val->addAttribute('type', "String");
         
-                $hqp_name = $hqp->getNameForForms();
+                $hqp_name = $hqp->getReversedName();
                 $field->value = $hqp_name;
             }
             else if($item_name == "Student Institution"){

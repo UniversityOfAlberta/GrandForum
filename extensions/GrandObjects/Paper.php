@@ -632,6 +632,13 @@ class Paper extends BackboneModel{
                     $pdata[0]['user_id'] = "";
                     $pdata[0]['user_name'] = $author;
                     $pdata[0]['user_real_name'] = $author;
+                    $pdata[0]['first_name'] = "";
+                    $pdata[0]['middle_name'] = "";
+                    $pdata[0]['last_name'] = "";
+                    $pdata[0]['prev_first_name'] = "";
+                    $pdata[0]['prev_last_name'] = "";
+                    $pdata[0]['honorific'] = "";
+                    $pdata[0]['language'] = "";
                     $pdata[0]['user_email'] = "";
                     $pdata[0]['user_gender'] = "";
                     $pdata[0]['user_twitter'] = "";

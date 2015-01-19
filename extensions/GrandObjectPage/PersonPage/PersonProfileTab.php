@@ -504,9 +504,7 @@ EOF;
     
     function showEditPhoto($person, $visibility){
         $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='2'>";
-        if($person->getPhoto() != ""){
-            $this->html .= "<img src='{$person->getPhoto()}' alt='{$person->getName()}' />";
-        }
+        $this->html .= "<img src='{$person->getPhoto()}' alt='{$person->getName()}' />";
         $this->html .= "<div id=\"special_links\"></div>";
         $this->html .= "</td></tr>";
         $this->html .= "<tr><td style='padding-right:25px;' valign='top'><table>

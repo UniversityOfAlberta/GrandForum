@@ -28,6 +28,13 @@ class Person extends BackboneModel {
     var $publicProfile;
     var $privateProfile;
     var $realname;
+    var $firstName;
+    var $lastName;
+    var $middleName;
+    var $prevFirstName;
+    var $prevLastName;
+    var $honorific;
+    var $language;
     var $projects;
     var $university;
     var $universityDuring;
@@ -274,10 +281,25 @@ class Person extends BackboneModel {
      */
     static function generateNamesCache(){
         if(count(self::$namesCache) == 0){
-            $sql = "SELECT `user_id`,`user_name`,`user_real_name`,`user_email`,`user_twitter`,`user_website`,`user_public_profile`,`user_private_profile`,`user_nationality`,`user_gender`
-                    FROM `mw_user` u
-                    WHERE `deleted` != '1'";
-            $data = DBFunctions::execSQL($sql);
+            $data = DBFunctions::select(array('mw_user'),
+                                        array('user_id',
+                                              'user_name',
+                                              'user_real_name',
+                                              'first_name',
+                                              'middle_name',
+                                              'last_name',
+                                              'prev_first_name',
+                                              'prev_last_name',
+                                              'honorific',
+                                              'language',
+                                              'user_email',
+                                              'user_twitter',
+                                              'user_website',
+                                              'user_public_profile',
+                                              'user_private_profile',
+                                              'user_nationality',
+                                              'user_gender'),
+                                        array('deleted' => NEQ(1)));
             foreach($data as $row){
                 self::$namesCache[$row['user_name']] = $row;
                 self::$idsCache[$row['user_id']] = $row;
@@ -644,6 +666,13 @@ class Person extends BackboneModel {
             $this->id = $data[0]['user_id'];
             $this->name = $data[0]['user_name'];
             $this->realname = $data[0]['user_real_name'];
+            $this->firstName = $data[0]['first_name'];
+            $this->lastName = $data[0]['last_name'];
+            $this->middleName = $data[0]['middle_name'];
+            $this->prevFirstName = $data[0]['prev_first_name'];
+            $this->prevLastName = $data[0]['prev_last_name'];
+            $this->honorific = $data[0]['honorific'];
+            $this->language = $data[0]['language'];
             $this->email = $data[0]['user_email'];
             $this->gender = $data[0]['user_gender'];
             $this->nationality = $data[0]['user_nationality'];
@@ -761,6 +790,13 @@ class Person extends BackboneModel {
             $status = DBFunctions::update('mw_user', 
                                     array('user_name' => $this->getName(),
                                           'user_real_name' => $this->getRealName(),
+                                          'first_name' => $this->getFirstName(),
+                                          'middle_name' => $this->getMiddleName(),
+                                          'last_name' => $this->getLastName(),
+                                          'prev_first_name' => $this->getPrevFirstName(),
+                                          'prev_last_name' => $this->getPrevLastName(),
+                                          'honorific' => $this->getHonorific(),
+                                          'language' => $this->getCorrespondenceLanguage(),
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'user_gender' => $this->getGender(),
@@ -1070,14 +1106,72 @@ class Person extends BackboneModel {
         return array("first" => str_replace("&nbsp;", " ", ucfirst($firstname)), "last" => str_replace("&nbsp;", " ", ucfirst($lastname)));
     }
     
+    /**
+     * Returns the first name of this Person
+     * If the first name was explicitly set then use that, 
+     * otherwise it will parse it from the username
+     * @return String The first name of this Person
+     */
     function getFirstName(){
+        if($this->firstName != ""){
+            return $this->firstName;
+        }
         $splitName = $this->splitName();
         return $splitName['first'];
     }
     
+    /**
+     * Returns the middle name of this Person
+     * @return String The middle name of this Person
+     */
+    function getMiddleName(){
+        return $this->middleName;
+    }
+    
+    /**
+     * Returns the last name of this Person
+     * If the last name was explicitly set then use that, 
+     * otherwise it will parse it from the username
+     * @return String The last name of this Person
+     */
     function getLastName(){
+        if($this->lastName != ""){
+            return $this->lastName;
+        }
         $splitName = $this->splitName();
         return $splitName['last'];
+    }
+    
+    /**
+     * Returns the previous first name of this Person
+     * @return String The previous first name of this Person
+     */
+    function getPrevFirstName(){
+        return $this->prevFirstName;
+    }
+    
+    /**
+     * Returns the previous last name of this Person
+     * @return String The previous last name of this Person
+     */
+    function getPrevLastName(){
+        return $this->prevLastName;
+    }
+    
+    /**
+     * Returns the honorific (Dr. Mrs. etc) of this Person
+     * @return String The honorific (Dr. Mrs. etc) of this Person
+     */
+    function getHonorific(){
+        return $this->honorific;
+    }
+    
+    /**
+     * Returns the correspondence language of this Person (either 'French' or 'English')
+     * @return String The correspondence language of this Person (either 'French' or 'English')
+     */
+    function getCorrespondenceLanguage(){
+        return $this->language;
     }
     
     function getReversedName(){
