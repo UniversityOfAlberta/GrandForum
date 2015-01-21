@@ -22,6 +22,7 @@ CCVImportView = Backbone.View.extend({
         button.prop("disabled", true);
         this.$(".throbber").show();
         ccvUploaded = $.proxy(function(response, error){
+            console.log(response);
             // Purposefully global so that iframe can access
             if(error == undefined || error == ""){
                 clearAllMessages();

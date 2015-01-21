@@ -256,6 +256,7 @@ class CommonCV // {{{
    */
   public function getPersonalInfo() // {{{
   {
+    global $CCV_CONST;
     $records = array();
     $elements = $this->m_xpath->query("//section[@id='2687e70e5d45487c93a8a02626543f64']");
     if ($elements->length > 0)
@@ -269,7 +270,7 @@ class CommonCV // {{{
       $records["prev_last_name"] = $this->get_xpath("field[@id='84e9fa08f7334db79ed5310e5f7a961b']/value", $elements->item($i));
       $records["title"] = $this->get_xpath("field[@id='ee8beaea41f049d8bcfadfbfa89ac09e']/lov/@id", $elements->item($i));
       $records["sex"] = $this->get_xpath("field[@id='3d258d8ceb174d3eb2ae1258a780d91b']/lov/@id", $elements->item($i));
-      $records["language"] = $this->get_xpath("field[@id='2b72a344523c467da0c896656b5290c0']/lov/@id", $elements->item($i));
+      $records["correspondence_language"] = $this->get_xpath("field[@id='2b72a344523c467da0c896656b5290c0']/lov/@id", $elements->item($i));
       $co_holders = array();
       $co_els = $this->m_xpath->query("//section[@id='b92721f0510a4ef4b0d1cf7f5ea3f01e']");
       for ($j = 0; !is_null($co_els) && $j < $co_els->length; $j++)
@@ -288,6 +289,26 @@ class CommonCV // {{{
         $co_holders[$ch_id] = $co_holder;
       }
       $records["addresses"] = $co_holders;
+      $languages = array();
+      $lang_els = $this->m_xpath->query("//section[@id='c1f614961342429c86397e81cd6f50f5']");
+      for ($j = 0; !is_null($lang_els) && $j < $lang_els->length; $j++)
+      {
+        $language = array();
+        $l_id = $this->get_xpath("@recordId", $lang_els->item($j));
+        $language["language"] = $this->get_xpath("field[@id='ee161805b4f941e48f05e050e364e585']/lov/@id", $lang_els->item($j));
+        $read = $this->get_xpath("field[@id='a9d0f0666e5b47dcb9acb30bd5cab407']/lov/@id", $lang_els->item($j));
+        $write = $this->get_xpath("field[@id='12173f36422446479799578ba07d96c8']/lov/@id", $lang_els->item($j));
+        $speak = $this->get_xpath("field[@id='e670ac0f2c3e48a3b13d487e66ea7889']/lov/@id", $lang_els->item($j));
+        $understand = $this->get_xpath("field[@id='aa02c54f1e5b4672a0b96def14e5b02e']/lov/@id", $lang_els->item($j));
+        $peer_review = $this->get_xpath("field[@id='fc6ac63e9ec04129aec7b26e5a729920']/lov/@id", $lang_els->item($j));
+        $language["read"] = ($read == $CCV_CONST["Yes-No"]["Yes"]) ? true : false;
+        $language["write"] = ($write == $CCV_CONST["Yes-No"]["Yes"]) ? true : false;
+        $language["speak"] = ($speak == $CCV_CONST["Yes-No"]["Yes"]) ? true : false;
+        $language["understand"] = ($understand == $CCV_CONST["Yes-No"]["Yes"]) ? true : false;
+        $language["peer_review"] = ($peer_review == $CCV_CONST["Yes-No"]["Yes"]) ? true : false;
+        $languages[$l_id] = $language;
+      }
+      $records["languages"] = $languages;
     }
     
     return $records;

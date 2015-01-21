@@ -91,12 +91,14 @@ class CCVExport extends SpecialPage {
         $map_file = getcwd()."/extensions/GrandObjects/Products.xml";
         $hqp_file = getcwd()."/extensions/CCVExport/templates/HQP.xml";
         $id_file =  getcwd()."/extensions/CCVExport/templates/Identification.xml";
+        $lang_file = getcwd()."/extensions/CCVExport/templates/Language.xml";
         $ccv_tmpl = getcwd()."/extensions/CCVExport/templates/ccv_template.xml";
 
         // Load the templates
         $map = simplexml_load_file($map_file);
         $hqp_map = simplexml_load_file($hqp_file);
         $id_map = simplexml_load_file($id_file);
+        $lang_map = simplexml_load_file($lang_file);
         $ccv = simplexml_load_file($ccv_tmpl);
 
         $person = Person::newFromId($userID); // Set at top in case testing
@@ -118,6 +120,13 @@ class CCVExport extends SpecialPage {
         $res = CCVExport::mapId($person, 
                                 $id_map, 
                                 $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']/section[@id='2687e70e5d45487c93a8a02626543f64']")[0]);
+                                
+        foreach($person->getLanguages() as $language){
+            $res = CCVExport::mapLanguage($person,
+                                          $lang_map,
+                                          $language,
+                                          $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']")[0]);
+        }
 
         $counter = 0;
         foreach($prod_sorted as $type => $products){
@@ -211,6 +220,58 @@ class CCVExport extends SpecialPage {
                     $value = $field->addChild("lov");
                     $value->addAttribute("id", self::getLovId("Correspondance Language", $language, ""));
                     $field->lov = self::getLovVal("Correspondance Language", $language, "");
+                    break;
+            }
+        }
+    }
+    
+    static function mapLanguage($person, $section, $language, $ccv){
+        global $wgUser, $CCV_CONST;
+        $sect = $ccv->addChild("section");
+        $sect->addAttribute("id", $section['id']);
+        $sect->addAttribute("label", $section['label']);
+        foreach($section->field as $item){
+            $id = $item['id'];
+            $label = $item['label'];
+            $field = $sect->addChild("field");
+            $field->addAttribute("id", $id);
+            $field->addAttribute("label", $label);
+            switch($id){
+                case "ee161805b4f941e48f05e050e364e585": // Language
+                    $lang = $language->getLanguage();
+                    $lov = $field->addChild("lov");
+                    $lov->addAttribute("id", self::getLovId("Language", $lang, "English"));
+                    $field->lov = self::getLovVal("Language", $lang, "English");
+                    break;
+                case "a9d0f0666e5b47dcb9acb30bd5cab407": // Read
+                    $read = ($language->canRead()) ? "Yes" : "No";
+                    $lov = $field->addChild("lov");
+                    $lov->addAttribute("id", self::getLovId("Yes-No", $read, "Yes"));
+                    $field->lov = (self::getLovVal("Yes-No", $read, "Yes"));
+                    break;
+                case "12173f36422446479799578ba07d96c8": // Write
+                    $write = ($language->canWrite()) ? "Yes" : "No";
+                    $lov = $field->addChild("lov");
+                    $lov->addAttribute("id", self::getLovId("Yes-No", $write, "Yes"));
+                    $field->lov = (self::getLovVal("Yes-No", $write, "Yes"));
+                    break;
+                case "e670ac0f2c3e48a3b13d487e66ea7889": // Speak
+                    $speak = ($language->canSpeak()) ? "Yes" : "No";
+                    $lov = $field->addChild("lov");
+                    $lov->addAttribute("id", self::getLovId("Yes-No", $speak, "Yes"));
+                    $field->lov = (self::getLovVal("Yes-No", $speak, "Yes"));
+                    break;
+                case "aa02c54f1e5b4672a0b96def14e5b02e": // Understand
+                    $understand = ($language->canUnderstand()) ? "Yes" : "No";
+                    $lov = $field->addChild("lov");
+                    $lov->addAttribute("id", self::getLovId("Yes-No", $understand, "Yes"));
+                    $field->lov = (self::getLovVal("Yes-No", $understand, "Yes"));
+                    break;
+                case "fc6ac63e9ec04129aec7b26e5a729920": // Review
+                    $review = ($language->canReview()) ? "Yes" : "No";
+                    $lov = $field->addChild("lov");
+                    $lov->addAttribute("id", self::getLovId("Yes-No", $review, "Yes"));
+                    $field->lov = (self::getLovVal("Yes-No", $review, "Yes"));
                     break;
             }
         }

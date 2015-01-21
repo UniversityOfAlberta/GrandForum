@@ -311,12 +311,28 @@ class UploadCCVAPI extends API{
     function updatePersonalInfo($person, $info){
         $person->honorific = (isset(self::$honorificMap[$info['title']])) ? self::$honorificMap[$info['title']] : "";
         $person->gender = (isset(self::$genderMap[$info['sex']])) ? self::$genderMap[$info['sex']] : "";
-        $person->language = (isset(self::$languageMap[$info['language']])) ? self::$languageMap[$info['language']] : "";
+        $person->language = (isset(self::$languageMap[$info['correspondence_language']])) ? self::$languageMap[$info['correspondence_language']] : "";
         $person->firstName = (isset($info['first_name'])) ? $info['first_name'] : "";
         $person->lastName = (isset($info['last_name'])) ? $info['last_name'] : "";
         $person->middleName = (isset($info['middle_name'])) ? $info['middle_name'] : "";
         $person->prevFirstName = (isset($info['prev_first_name'])) ? $info['prev_first_name'] : "";
         $person->prevLastName = (isset($info['prev_last_name'])) ? $info['prev_last_name'] : "";
+        
+        DBFunctions::delete('grand_user_languages',
+                            array('user_id' => EQ($person->getId())));
+        if(isset($info['languages']) && count($info['languages']) > 0){
+            foreach($info['languages'] as $language){
+                $lang = CommonCV::getCaptionFromValue($language['language'], "Language");
+                DBFunctions::insert('grand_user_languages',
+                                    array('user_id'        => $person->getId(),
+                                          'language'       => $lang,
+                                          'can_read'       => $language['read'],
+                                          'can_write'      => $language['write'],
+                                          'can_speak'      => $language['speak'],
+                                          'can_understand' => $language['understand'],
+                                          'can_review'     => $language['peer_review']));
+            }
+        }
         
         return $person->update();
     }

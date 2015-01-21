@@ -1174,6 +1174,22 @@ class Person extends BackboneModel {
         return $this->language;
     }
     
+    /**
+     * Returns an array of UserLanguage objects that this Person knows
+     * @return array The UserLanguages that this Person knows
+     */
+    function getLanguages(){
+        $data = DBFunctions::select(array('grand_user_languages'),
+                                    array('id'),
+                                    array('user_id' => EQ($this->getId())));
+        $languages = array();
+        foreach($data as $row){
+            $language = UserLanguage::newFromId($row['id']);
+            $languages[$language->getLanguage()] = $language;
+        }
+        return $languages;
+    }
+    
     function getReversedName(){
         $first = $this->getFirstName();
         $last = $this->getLastName();
