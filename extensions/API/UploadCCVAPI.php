@@ -333,7 +333,28 @@ class UploadCCVAPI extends API{
                                           'can_review'     => $language['peer_review']));
             }
         }
-        
+        DBFunctions::delete('grand_user_addresses',
+                            array('user_id' => EQ($person->getId())));
+        if(isset($info['addresses']) && count($info['addresses']) > 0){
+            foreach($info['addresses'] as $address){
+                $addr = CommonCV::getCaptionFromValue($address['type'], "Address Type");
+                DBFunctions::insert('grand_user_addresses',
+                                    array('user_id'           => $person->getId(),
+                                          'type'              => $addr,
+                                          'line1'             => $address['line1'],
+                                          'line2'             => $address['line2'],
+                                          'line3'             => $address['line3'],
+                                          'line4'             => $address['line4'],
+                                          'line5'             => $address['line5'],
+                                          'city'              => $address['city'],
+                                          'code'              => $address['postal_code'],
+                                          'country'           => $address['location_country'],
+                                          'province'          => $address['location_subdivision'],
+                                          'start_date'        => "{$address['start_year']}-{$address['start_month']}-{$address['start_day']} 00:00:00",
+                                          'end_date'          => "{$address['end_year']}-{$address['end_month']}-{$address['end_day']} 00:00:00",
+                                          'primary_indicator' => $address['primary_indicator']));
+            }
+        }
         return $person->update();
     }
     

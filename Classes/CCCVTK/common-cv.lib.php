@@ -277,6 +277,7 @@ class CommonCV // {{{
       {
         $co_holder = array();
         $ch_id = $this->get_xpath("@recordId", $co_els->item($j));
+        $co_holder["primary_indicator"] = ($this->get_xpath("@primaryIndicator", $co_els->item($j)) == "true");
         $co_holder["type"] = $this->get_xpath("field[@id='35c302c36fe9479287206171087fb185']/lov/@id", $co_els->item($j));
         $co_holder["line1"] = $this->get_xpath("field[@id='2de0fe4994f546c695a060d68e8e03ca']/value", $co_els->item($j));
         $co_holder["line2"] = $this->get_xpath("field[@id='dafdb980e181416abc5e26c0770df662']/value", $co_els->item($j));
@@ -285,7 +286,18 @@ class CommonCV // {{{
         $co_holder["line5"] = $this->get_xpath("field[@id='5365d87b9ff145d3a8d0d4fc21af57bb']/value", $co_els->item($j));
         $co_holder["city"] = $this->get_xpath("field[@id='499d69637b4148d0a49463a2881e9d09']/value", $co_els->item($j));
         $co_holder["postal_code"] = $this->get_xpath("field[@id='a41f1e118e61482eb3cdde4aaeb783e8']/value", $co_els->item($j));
-        $co_holder["line1"] = $this->get_xpath("field[@id='2de0fe4994f546c695a060d68e8e03ca']/value", $co_els->item($j));
+        $co_holder["location_country"] = $this->get_xpath("field[@id='b1071063df03484ebec65cd1a3464438']/refTable/linkedWith[@label='Country']/@value", $co_els->item($j));
+        $co_holder["location_subdivision"] = $this->get_xpath("field[@id='b1071063df03484ebec65cd1a3464438']/refTable/linkedWith[@label='Subdivision']/@value", $co_els->item($j));
+        $date = $this->get_xpath("field[@id='b77ff4a2c49247e0af668be52704da91']/value", $co_els->item($j));
+        @list($co_holder["start_year"], $co_holder["start_month"], $co_holder["start_day"]) = explode("-", $date);
+        $date = $this->get_xpath("field[@id='4ab2497d7a0f471ebc6a50e32dd4f22d']/value", $co_els->item($j));
+        @list($co_holder["end_year"], $co_holder["end_month"], $co_holder["end_day"]) = explode("-", $date);
+        $co_holder["start_year"] = ($co_holder["start_year"] == null) ? "" : $co_holder["start_year"];
+        $co_holder["start_month"] = ($co_holder["start_month"] == null) ? "" : $co_holder["start_month"];
+        $co_holder["start_day"] = ($co_holder["start_day"] == null) ? "" : $co_holder["start_day"];
+        $co_holder["end_year"] = ($co_holder["end_year"] == null) ? "" : $co_holder["end_year"];
+        $co_holder["end_month"] = ($co_holder["end_month"] == null) ? "" : $co_holder["end_month"];
+        $co_holder["end_day"] = ($co_holder["end_day"] == null) ? "" : $co_holder["end_day"];
         $co_holders[$ch_id] = $co_holder;
       }
       $records["addresses"] = $co_holders;

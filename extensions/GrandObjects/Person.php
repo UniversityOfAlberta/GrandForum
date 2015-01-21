@@ -1190,6 +1190,22 @@ class Person extends BackboneModel {
         return $languages;
     }
     
+    /**
+     * Returns an array of Address objects that this Person is from
+     * @return array The Address objects that this Person is from
+     */
+    function getAddresses(){
+        $data = DBFunctions::select(array('grand_user_addresses'),
+                                    array('id'),
+                                    array('user_id' => EQ($this->getId())));
+        $addresses = array();
+        foreach($data as $row){
+            $address = Address::newFromId($row['id']);
+            $addresses[$address->getId()] = $address;
+        }
+        return $addresses;
+    }
+    
     function getReversedName(){
         $first = $this->getFirstName();
         $last = $this->getLastName();

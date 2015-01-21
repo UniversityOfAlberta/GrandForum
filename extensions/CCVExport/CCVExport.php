@@ -92,6 +92,7 @@ class CCVExport extends SpecialPage {
         $hqp_file = getcwd()."/extensions/CCVExport/templates/HQP.xml";
         $id_file =  getcwd()."/extensions/CCVExport/templates/Identification.xml";
         $lang_file = getcwd()."/extensions/CCVExport/templates/Language.xml";
+        $addr_file = getcwd()."/extensions/CCVExport/templates/Address.xml";
         $ccv_tmpl = getcwd()."/extensions/CCVExport/templates/ccv_template.xml";
 
         // Load the templates
@@ -99,6 +100,7 @@ class CCVExport extends SpecialPage {
         $hqp_map = simplexml_load_file($hqp_file);
         $id_map = simplexml_load_file($id_file);
         $lang_map = simplexml_load_file($lang_file);
+        $addr_map = simplexml_load_file($addr_file);
         $ccv = simplexml_load_file($ccv_tmpl);
 
         $person = Person::newFromId($userID); // Set at top in case testing
@@ -126,6 +128,13 @@ class CCVExport extends SpecialPage {
                                           $lang_map,
                                           $language,
                                           $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']")[0]);
+        }
+        
+        foreach($person->getAddresses() as $address){
+            $res = CCVExport::mapAddress($person,
+                                         $addr_map,
+                                         $address,
+                                         $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']")[0]);
         }
 
         $counter = 0;
@@ -272,6 +281,91 @@ class CCVExport extends SpecialPage {
                     $lov = $field->addChild("lov");
                     $lov->addAttribute("id", self::getLovId("Yes-No", $review, "Yes"));
                     $field->lov = (self::getLovVal("Yes-No", $review, "Yes"));
+                    break;
+            }
+        }
+    }
+    
+    static function mapAddress($person, $section, $address, $ccv){
+        global $wgUser, $CCV_CONST;
+        $sect = $ccv->addChild("section");
+        $sect->addAttribute("id", $section['id']);
+        $sect->addAttribute("label", $section['label']);
+        if($address->isPrimary()){
+            $sect->addAttribute("primaryIndicator", "true");
+        }
+        foreach($section->field as $item){
+            $id = $item['id'];
+            $label = $item['label'];
+            $field = $sect->addChild("field");
+            $field->addAttribute("id", $id);
+            $field->addAttribute("label", $label);
+            switch($id){
+                case "35c302c36fe9479287206171087fb185": // Address Type
+                    $addr = $address->getType();
+                    $lov = $field->addChild("lov");
+                    $lov->addAttribute("id", self::getLovId("Address Type", $addr, "Primary Affiliation"));
+                    $field->lov = self::getLovVal("Address Type", $addr, "Primary Affiliation");
+                    break;
+                case "2de0fe4994f546c695a060d68e8e03ca": // Address Line 1
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $field->value = $address->getLine1();
+                    break;
+                case "dafdb980e181416abc5e26c0770df662": // Address Line 2
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $field->value = $address->getLine2();
+                    break;
+                case "fc390eae1fbc45c89789f2ecbb5bed8e": // Address Line 3
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $field->value = $address->getLine3();
+                    break;
+                case "d51e2de9122744489ac2231d85995617": // Address Line 4
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $field->value = $address->getLine4();
+                    break;
+                case "5365d87b9ff145d3a8d0d4fc21af57bb": // Address Line 5
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $field->value = $address->getLine5();
+                    break;
+                case "499d69637b4148d0a49463a2881e9d09": // City
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $field->value = $address->getCity();
+                    break;
+                case "b1071063df03484ebec65cd1a3464438": // Location (Country/Subdivision)
+                    $country = $address->getCountry();
+                    $province = $address->getProvince();
+                    $table = $field->addChild("refTable");
+                    $table->addAttribute("refValueId", "00000000000000000000039564242160");
+                    $table->addAttribute("label", "Country-Subdivision");
+                    $l_country = $table->addChild("linkedWith");
+                    $l_subdivision = $table->addChild("linkedWith");
+                    $l_country->addAttribute("refOrLovId", "00000000000000000000000000002000");
+                    $l_subdivision->addAttribute("refOrLovId", "00000000000000000000000000100000");
+                    $l_country->addAttribute("value", $country);
+                    $l_subdivision->addAttribute("value", $province);
+                    break;
+                case "a41f1e118e61482eb3cdde4aaeb783e8": // Postal/Zip Code
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $field->value = $address->getPostalCode();
+                    break;
+                case "b77ff4a2c49247e0af668be52704da91": // Postal/Zip Code
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $value->addAttribute("format", "yyyy-MM-dd");
+                    $field->value = substr($address->getStartDate(), 0, 10);
+                    break;
+                case "4ab2497d7a0f471ebc6a50e32dd4f22d": // Postal/Zip Code
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "Date");
+                    $value->addAttribute("format", "yyyy-MM-dd");
+                    $field->value = substr($address->getEndDate(), 0, 10);
                     break;
             }
         }
