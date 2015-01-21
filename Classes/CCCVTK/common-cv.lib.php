@@ -206,7 +206,7 @@ class CommonCV // {{{
   } // }}}
   
   /**
-   * Parses the list of supervised students and returns (some of its) data
+   * Parses the list of funding sources and returns (some of its) data
    * as an associative array for convenience
    */
   public function getFunding() // {{{
@@ -268,9 +268,9 @@ class CommonCV // {{{
       $records["middle_name"] = $this->get_xpath("field[@id='4ca83c1aaa6a42a78eac0290368e70f3']/value", $elements->item($i));
       $records["prev_first_name"] = $this->get_xpath("field[@id='0fb359a7d809457d9392bb1ca577f1b3']/value", $elements->item($i));
       $records["prev_last_name"] = $this->get_xpath("field[@id='84e9fa08f7334db79ed5310e5f7a961b']/value", $elements->item($i));
-      $records["title"] = $this->get_xpath("field[@id='ee8beaea41f049d8bcfadfbfa89ac09e']/lov/@id", $elements->item($i));
       $records["sex"] = $this->get_xpath("field[@id='3d258d8ceb174d3eb2ae1258a780d91b']/lov/@id", $elements->item($i));
       $records["correspondence_language"] = $this->get_xpath("field[@id='2b72a344523c467da0c896656b5290c0']/lov/@id", $elements->item($i));
+      // Get Address Info
       $co_holders = array();
       $co_els = $this->m_xpath->query("//section[@id='b92721f0510a4ef4b0d1cf7f5ea3f01e']");
       for ($j = 0; !is_null($co_els) && $j < $co_els->length; $j++)
@@ -301,6 +301,7 @@ class CommonCV // {{{
         $co_holders[$ch_id] = $co_holder;
       }
       $records["addresses"] = $co_holders;
+      // Get Language Skills Info
       $languages = array();
       $lang_els = $this->m_xpath->query("//section[@id='c1f614961342429c86397e81cd6f50f5']");
       for ($j = 0; !is_null($lang_els) && $j < $lang_els->length; $j++)
@@ -321,6 +322,33 @@ class CommonCV // {{{
         $languages[$l_id] = $language;
       }
       $records["languages"] = $languages;
+      // Get Telephone Info
+      $telephone = array();
+      $phone_els = $this->m_xpath->query("//section[@id='2a3366209cf8477f82556b045188f131']");
+      for ($j = 0; !is_null($phone_els) && $j < $phone_els->length; $j++)
+      {
+        $phone = array();
+        $t_id = $this->get_xpath("@recordId", $phone_els->item($j));
+        $phone["primary_indicator"] = ($this->get_xpath("@primaryIndicator", $phone_els->item($j)) == "true");
+        $phone["type"] = $this->get_xpath("field[@id='ccef121ae875427f829024aabb39fa8c']/lov/@id", $phone_els->item($j));
+        $phone["country_code"] = $this->get_xpath("field[@id='63dedd46a5204cda8257227bbb3b6675']/value", $phone_els->item($j));
+        $phone["area_code"] = $this->get_xpath("field[@id='13cdf3a5e13643f5bc74566bf075253c']/value", $phone_els->item($j));
+        $phone["number"] = $this->get_xpath("field[@id='1ca756fe70964371a2b9f57bdf567a5d']/value", $phone_els->item($j));
+        $phone["extension"] = $this->get_xpath("field[@id='afe0657785084098bb718345280eb840']/value", $phone_els->item($j));
+        $date = $this->get_xpath("field[@id='69c67fae5d4849d08f4f9799ae0a2335']/value", $phone_els->item($j));
+        @list($phone["start_year"], $phone["start_month"], $phone["start_day"]) = explode("-", $date);
+        $date = $this->get_xpath("field[@id='a90e95e1d278467eaf1847464f09f39f']/value", $phone_els->item($j));
+        @list($phone["end_year"], $phone["end_month"], $phone["end_day"]) = explode("-", $date);
+        $phone["start_year"] = ($phone["start_year"] == null) ? "" : $phone["start_year"];
+        $phone["start_month"] = ($phone["start_month"] == null) ? "" : $phone["start_month"];
+        $phone["start_day"] = ($phone["start_day"] == null) ? "" : $phone["start_day"];
+        $phone["end_year"] = ($phone["end_year"] == null) ? "" : $phone["end_year"];
+        $phone["end_month"] = ($phone["end_month"] == null) ? "" : $phone["end_month"];
+        $phone["end_day"] = ($phone["end_day"] == null) ? "" : $phone["end_day"];
+
+        $telephone[$t_id] = $phone;
+      }
+      $records["telephone"] = $telephone;
     }
     
     return $records;

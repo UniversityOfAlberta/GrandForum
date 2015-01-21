@@ -309,7 +309,7 @@ class UploadCCVAPI extends API{
      * @return boolean The status of the update
      */
     function updatePersonalInfo($person, $info){
-        $person->honorific = (isset(self::$honorificMap[$info['title']])) ? self::$honorificMap[$info['title']] : "";
+        $person->honorific = (isset(self::$honorificMap[$info['greeting']])) ? self::$honorificMap[$info['greeting']] : "";
         $person->gender = (isset(self::$genderMap[$info['sex']])) ? self::$genderMap[$info['sex']] : "";
         $person->language = (isset(self::$languageMap[$info['correspondence_language']])) ? self::$languageMap[$info['correspondence_language']] : "";
         $person->firstName = (isset($info['first_name'])) ? $info['first_name'] : "";
@@ -353,6 +353,23 @@ class UploadCCVAPI extends API{
                                           'start_date'        => "{$address['start_year']}-{$address['start_month']}-{$address['start_day']} 00:00:00",
                                           'end_date'          => "{$address['end_year']}-{$address['end_month']}-{$address['end_day']} 00:00:00",
                                           'primary_indicator' => $address['primary_indicator']));
+            }
+        }
+        DBFunctions::delete('grand_user_telephone',
+                            array('user_id' => EQ($person->getId())));
+        if(isset($info['telephone']) && count($info['telephone']) > 0){
+            foreach($info['telephone'] as $phone){
+                $type = CommonCV::getCaptionFromValue($phone['type'], "Phone Type");
+                DBFunctions::insert('grand_user_telephone',
+                                    array('user_id'           => $person->getId(),
+                                          'type'              => $type,
+                                          'country_code'      => $phone['country_code'],
+                                          'area_code'         => $phone['area_code'],
+                                          'number'            => $phone['number'],
+                                          'extension'         => $phone['extension'],
+                                          'start_date'        => "{$phone['start_year']}-{$phone['start_month']}-{$phone['start_day']} 00:00:00",
+                                          'end_date'          => "{$phone['end_year']}-{$phone['end_month']}-{$phone['end_day']} 00:00:00",
+                                          'primary_indicator' => $phone['primary_indicator']));
             }
         }
         return $person->update();
