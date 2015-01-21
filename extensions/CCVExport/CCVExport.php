@@ -347,6 +347,8 @@ class CCVExport extends SpecialPage {
                     $l_subdivision = $table->addChild("linkedWith");
                     $l_country->addAttribute("refOrLovId", "00000000000000000000000000002000");
                     $l_subdivision->addAttribute("refOrLovId", "00000000000000000000000000100000");
+                    $l_country->addAttribute("label", "Country");
+                    $l_subdivision->addAttribute("label", "Subdivision");
                     $l_country->addAttribute("value", $country);
                     $l_subdivision->addAttribute("value", $province);
                     break;
