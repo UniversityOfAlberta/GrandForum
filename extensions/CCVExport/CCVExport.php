@@ -93,6 +93,7 @@ class CCVExport extends SpecialPage {
         $id_file =  getcwd()."/extensions/CCVExport/templates/Identification.xml";
         $lang_file = getcwd()."/extensions/CCVExport/templates/Language.xml";
         $addr_file = getcwd()."/extensions/CCVExport/templates/Address.xml";
+        $phone_file = getcwd()."/extensions/CCVExport/templates/Telephone.xml";
         $ccv_tmpl = getcwd()."/extensions/CCVExport/templates/ccv_template.xml";
 
         // Load the templates
@@ -101,6 +102,7 @@ class CCVExport extends SpecialPage {
         $id_map = simplexml_load_file($id_file);
         $lang_map = simplexml_load_file($lang_file);
         $addr_map = simplexml_load_file($addr_file);
+        $phone_map = simplexml_load_file($phone_file);
         $ccv = simplexml_load_file($ccv_tmpl);
 
         $person = Person::newFromId($userID); // Set at top in case testing
@@ -135,6 +137,13 @@ class CCVExport extends SpecialPage {
                                          $addr_map,
                                          $address,
                                          $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']")[0]);
+        }
+        
+        foreach($person->getTelephones() as $phone){
+            $res = CCVExport::mapTelephone($person,
+                                           $phone_map,
+                                           $phone,
+                                           $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']")[0]);
         }
 
         $counter = 0;
@@ -368,6 +377,63 @@ class CCVExport extends SpecialPage {
                     $value->addAttribute("type", "Date");
                     $value->addAttribute("format", "yyyy-MM-dd");
                     $field->value = substr($address->getEndDate(), 0, 10);
+                    break;
+            }
+        }
+    }
+    
+    static function mapTelephone($person, $section, $phone, $ccv){
+        global $wgUser, $CCV_CONST;
+        $sect = $ccv->addChild("section");
+        $sect->addAttribute("id", $section['id']);
+        $sect->addAttribute("label", $section['label']);
+        if($phone->isPrimary()){
+            $sect->addAttribute("primaryIndicator", "true");
+        }
+        foreach($section->field as $item){
+            $id = $item['id'];
+            $label = $item['label'];
+            $field = $sect->addChild("field");
+            $field->addAttribute("id", $id);
+            $field->addAttribute("label", $label);
+            switch($id){
+                case "ccef121ae875427f829024aabb39fa8c": // Address Type
+                    $type = $phone->getType();
+                    $lov = $field->addChild("lov");
+                    $lov->addAttribute("id", self::getLovId("Phone Type", $type, "Work"));
+                    $field->lov = self::getLovVal("Phone Type", $type, "Work");
+                    break;
+                case "63dedd46a5204cda8257227bbb3b6675": // Country Code
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $field->value = $phone->getCountryCode();
+                    break;
+                case "13cdf3a5e13643f5bc74566bf075253c": // Area Code
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $field->value = $phone->getAreaCode();
+                    break;
+                case "1ca756fe70964371a2b9f57bdf567a5d": // Telephone Number
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $field->value = $phone->getPhoneNumber();
+                    break;
+                case "afe0657785084098bb718345280eb840": // Extension
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $field->value = $phone->getExtension();
+                    break;
+                case "69c67fae5d4849d08f4f9799ae0a2335": // Start Date
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $value->addAttribute("format", "yyyy-MM-dd");
+                    $field->value = substr($phone->getStartDate(), 0, 10);
+                    break;
+                case "a90e95e1d278467eaf1847464f09f39f": // End Date
+                    $value = $field->addChild("value");
+                    $value->addAttribute("type", "String");
+                    $value->addAttribute("format", "yyyy-MM-dd");
+                    $field->value = substr($phone->getEndDate(), 0, 10);
                     break;
             }
         }

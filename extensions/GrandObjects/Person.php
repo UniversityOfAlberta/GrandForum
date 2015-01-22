@@ -1206,6 +1206,22 @@ class Person extends BackboneModel {
         return $addresses;
     }
     
+    /**
+     * Returns an array of Telephone objects that this Person has
+     * @return array The Telephone objects that this Person has
+     */
+    function getTelephones(){
+        $data = DBFunctions::select(array('grand_user_telephone'),
+                                    array('id'),
+                                    array('user_id' => EQ($this->getId())));
+        $telephones = array();
+        foreach($data as $row){
+            $phone = Telephone::newFromId($row['id']);
+            $telephones[$phone->getId()] = $phone;
+        }
+        return $telephones;
+    }
+    
     function getReversedName(){
         $first = $this->getFirstName();
         $last = $this->getLastName();
