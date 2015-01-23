@@ -121,32 +121,37 @@ class CCVExport extends SpecialPage {
             }
         }
 
+        $section = $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']/section[@id='2687e70e5d45487c93a8a02626543f64']");
         $res = CCVExport::mapId($person, 
                                 $id_map, 
-                                $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']/section[@id='2687e70e5d45487c93a8a02626543f64']")[0]);
-                                
+                                $section[0]);
+        
+        $section = $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']");                    
         foreach($person->getLanguages() as $language){
             $res = CCVExport::mapLanguage($person,
                                           $lang_map,
                                           $language,
-                                          $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']")[0]);
+                                          $section[0]);
         }
         
+        $section = $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']");
         foreach($person->getAddresses() as $address){
             $res = CCVExport::mapAddress($person,
                                          $addr_map,
                                          $address,
-                                         $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']")[0]);
+                                         $section[0]);
         }
         
+        $section = $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']");
         foreach($person->getTelephones() as $phone){
             $res = CCVExport::mapTelephone($person,
                                            $phone_map,
                                            $phone,
-                                           $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']")[0]);
+                                           $section[0]);
         }
 
         $counter = 0;
+        $section = $ccv->xpath("section[@id='047ec63e32fe450e943cb678339e8102']/section[@id='46e8f57e67db48b29d84dda77cf0ef51']");
         foreach($prod_sorted as $type => $products){
             foreach($products as $product){
                 # CCV does not include 'Rejected' Publishing Status
@@ -157,7 +162,7 @@ class CCVExport extends SpecialPage {
                 $res = CCVExport::mapItem($person, 
                                           $map->Publications->Publication, 
                                           $product, 
-                                          $ccv->xpath("section[@id='047ec63e32fe450e943cb678339e8102']/section[@id='46e8f57e67db48b29d84dda77cf0ef51']")[0]);
+                                          $section[0]);
                 $counter += $res;
             }
         }
@@ -169,11 +174,12 @@ class CCVExport extends SpecialPage {
         }
         ksort($sortedRels);
         $sortedRels = array_reverse($sortedRels);
+        $ccv->xpath("section[@id='95c29504d0aa4b51b84659cafaf2b38d']/section[@id='90cc172e54904b45948d17cba24d3f25']");
         foreach($sortedRels as $rel){
             $res = CCVExport::mapHQP($person, 
                                      $hqp_map->HQP->data, 
                                      $rel, 
-                                     $ccv->xpath("section[@id='95c29504d0aa4b51b84659cafaf2b38d']/section[@id='90cc172e54904b45948d17cba24d3f25']")[0]);
+                                     $section[0]);
         }
 
         # Format and indent the XML
