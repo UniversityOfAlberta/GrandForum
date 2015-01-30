@@ -42,6 +42,9 @@
                 In this textfield, you are expected to provide any additional information relevant to your SubProject.
             ]]>
         </Instructions>
+        <ReportItem id="sub_project_summary" width="100%" blobType="BLOB_TEXT" blobItem="SUB_SUBPROJECT_SUMMARY" type="TextareaReportItem" limit="1800" recommended="true" reportLimits="true">
+            <![CDATA[<h2>Executive Summary</h2>{$item}]]>
+        </ReportItem>
         <ReportItem id="sub_project_champs" width="100%" blobType="BLOB_TEXT" blobItem="SUB_SUBPROJECT_CHAMPS" type="AutoCompleteTextareaReportItem" limit="1200" recommended="true" set="ProjectChampionsReportItemSet" index="user_id" label="user_name" name="Champion" tooltipOptionId="Champion ID" tooltipOptionName="Champion Name" reportLimits="true">
             <![CDATA[<h2>Engagement with Receptor Community Champions</h2>{$item}]]>
         </ReportItem>

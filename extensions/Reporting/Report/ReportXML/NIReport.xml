@@ -190,7 +190,7 @@
                 </div>
             ]]>
         </ReportItem>
-        <ReportItemSet id='top_prods_head' type="ToggleHeaderReportItemSet" level="3" title="Top 5 Research Outcomes (in GRAND)">
+        <ReportItemSet id='top_prods_head' type="ToggleHeaderReportItemSet" level="3" title="Top 5 Products/Outputs (in GRAND)">
             <ReportItem id="top_prods" type="PersonTopProductsReportItem" max="5">
                 <![CDATA[<div>{$item}</div><br />]]>
             </ReportItem>

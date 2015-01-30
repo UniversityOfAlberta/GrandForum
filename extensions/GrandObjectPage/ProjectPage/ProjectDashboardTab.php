@@ -128,8 +128,8 @@ class ProjectDashboardTab extends AbstractEditableTab {
     }
     
     function showEditTopProducts($project, $visibility){
-        $this->html .= "<h2>Top Research Outcomes</h2>";
-        $this->html .= "<small>Select up to 10 research outcomes that you believe showcase the productivity of {$project->getName()} the greatest.  The order that you specify them in does not matter.  The products will be sorted in descending order by date.  These top products will be shown in the annual report.</small><br />";
+        $this->html .= "<h2>Top Products/Outputs</h2>";
+        $this->html .= "<small>Select up to 10 products/outputs that you believe showcase the productivity of {$project->getName()} the greatest.  The order that you specify them in does not matter.  The products will be sorted in descending order by date.  These top products will be shown in the annual report.</small><br />";
         $products = $project->getTopProducts();
         $i = 0;
         foreach($products as $product){
@@ -139,7 +139,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
         for($i; $i < 10; $i++){
             $this->html .= $this->selectList($project, "");
         }
-        $this->html .= "<br /><button type='submit' value='Save Dashboard' name='submit'>Save Top Research Outcomes</button>
+        $this->html .= "<br /><button type='submit' value='Save Dashboard' name='submit'>Save Products/Outputs</button>
                         <input type='submit' value='Cancel' name='submit' />";
     }
     
@@ -148,7 +148,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
         if(!$visibility['isLead'] && count($products) == 0){
             return;
         }
-        $this->html .= "<h2>Top Research Outcomes</h2>";
+        $this->html .= "<h2>Top Products/Outputs</h2>";
         $date = date('M j, Y', strtotime($project->getTopProductsLastUpdated()));
         if(count($products) > 0){
             $this->html .= "<table class='dashboard' cellspacing='1' cellpadding='3' rules='all' frame='box' style='max-width: 800px;'>
@@ -174,10 +174,10 @@ class ProjectDashboardTab extends AbstractEditableTab {
             $this->html .= "</table><i>Last updated on: $date</i><br />";
         }
         else{
-            $this->html .= "You have not entered any <i>Top Research Outcomes</i> yet<br />";
+            $this->html .= "You have not entered any <i>Top Products/Outputs</i> yet<br />";
         }
         if($this->canEdit()){
-            $this->html .= "<button type='submit' value='Edit Dashboard' name='submit'>Edit Top Research Outcomes</button>";
+            $this->html .= "<button type='submit' value='Edit Dashboard' name='submit'>Edit Top Products/Outputs</button>";
         }
     }
     

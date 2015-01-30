@@ -79,6 +79,7 @@ class ReportItemCallback {
             "user_allocated_budget" => "getUserAllocatedBudget",
             "user_project_comment" => "getUserProjectComment",
             "user_project_future" => "getUserProjectFuture",
+            "user_subproject_summary" => "getUserSubProjectSummary",
             "user_subproject_comments" => "getUserSubProjectComments",
             "user_subproject_champs" => "getUserSubProjectChamps",
             "user_mtg_music" => "getUserMTGMusic",
@@ -902,6 +903,15 @@ class ReportItemCallback {
         $blob->load($addr);
         $data = $blob->getData();
         return $data;
+    }
+    
+    function getUserSubProjectSummary(){
+        $project = Project::newFromId($this->reportItem->projectId);
+        
+        $report = new DummyReport(RP_SUBPROJECT, new Person(array()), $project, $this->reportItem->getReport()->year);
+        $item = $report->getSectionById("report")->getReportItemById("sub_project_summary");
+        
+        return $item->getHTMLForPDF();
     }
     
     function getUserSubProjectChamps(){

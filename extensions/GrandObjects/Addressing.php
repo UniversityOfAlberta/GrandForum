@@ -222,6 +222,7 @@ define('CHAMP_SHORTCOMINGS', 5);
 define('CHAMP_CASH', 6);
 define('CHAMP_RESEARCHERS', 7);
 
+define('SUB_SUBPROJECT_SUMMARY',    3);
 define('SUB_SUBPROJECT_CHAMPS',     1);
 define('SUB_SUBPROJECT_COMMENTS',   2);
 

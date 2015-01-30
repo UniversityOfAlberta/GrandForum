@@ -57,7 +57,7 @@ class ProjectTopProductsReportItem extends StaticReportItem {
         $tab = new ProjectDashboardTab($project, array('isLead' => true));
         $tab->showEditTopProducts($project, array('isMe' => true));
         
-        $html = "<div id='top_widget' style='display:none;' title='Edit Top Research Outcomes'>";
+        $html = "<div id='top_widget' style='display:none;' title='Edit Top Products/Outputs'>";
         $html .= $tab->html;
         $html .= "</div>";
         return $html;
@@ -68,7 +68,7 @@ class ProjectTopProductsReportItem extends StaticReportItem {
 		$project = Project::newFromId($this->projectId);
 		$item = $this->getTable(false);
 		$item .= $this->renderWidget();
-        $item .= "<br /><button id='edit_top' type='button'>Edit Top Research Outcomes</button>";
+        $item .= "<br /><button id='edit_top' type='button'>Edit Top Products/Outputs</button>";
         $item .= "<script type='text/javascript'>
             $('#edit_top').click(function(){
                 $(this).remove();

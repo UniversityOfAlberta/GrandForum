@@ -102,7 +102,7 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="top_products" name="Top 5 Research Outcomes (in GRAND)" subBookmark="true" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" pagebreak="true">
+    <ReportSection id="top_products" name="Top 5 Products/Outputs (in GRAND)" subBookmark="true" blobSection="SEC_NONE" type="ReportSection" renderpdf="true" pagebreak="true">
         <ReportItem id="legend" type="StaticReportItem">
             <![CDATA[
                 <div style='text-align:right;'>
@@ -122,7 +122,8 @@
         </ReportItem>
     </ReportSection-->
     <ReportSection type="BookmarkReportSection" name="Section 2" />
-    <ReportSection name="Assessment: How I contribute toward meeting the NCE Evaluation Criteria" title="Assessment" subBookmark="true" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" pagebreak="false">
+    <ReportSection name="Report Narratives" title="Assessment" subBookmark="true" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" pagebreak="true">
+    <!--ReportSection name="Assessment: How I contribute toward meeting the NCE Evaluation Criteria" title="Assessment" subBookmark="true" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" pagebreak="false"-->
     <!-- IIa. Excellence of the Research Program -->
         <!--ReportItem id='IIa_head' type="StaticReportItem">
             <![CDATA[<h2>A. Excellence of the Research Program: How my research contributes to the Network</h2>]]>
@@ -194,7 +195,7 @@
         <ReportItem id="IIe" rows="12" limit="1800" recommended="true" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETMAN" type="AutoCompleteTextareaReportItem" set="AllPeopleReportItemSet" index="user_id" label="user_name" name="Members">
             <![CDATA[{$item}<br /><br />]]>
         </ReportItem-->
-    </ReportSection>
+    <!--/ReportSection-->
     <!--ReportSection name="Achievements &amp; Plans" subBookmark="true" type="EditableReportSection" blobSection="RES_RESACTIVITY" pagebreak="false"-->
         <!-- IIIa. Plans for next year -->
         <!--ReportItem id='IIf_head' type="StaticReportItem">
@@ -211,7 +212,7 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection-->
-    <ReportSection name="Reflections: Other Aspects of my involvement in GRAND" title="Reflections" subBookmark="true" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
+    <!--ReportSection name="Reflections: Other Aspects of my involvement in GRAND" title="Reflections" subBookmark="true" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true"-->
     <!-- IIIb. Benefits from being involved in the Network -->
         <ReportItem id='IIIb_head' type="StaticReportItem" private="true">
             <![CDATA[<h2>Benefits of Networking: The value to my research program of my participation in GRAND</h2>]]>

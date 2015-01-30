@@ -58,7 +58,7 @@ class PersonTopProductsReportItem extends AbstractReportItem {
         $tab = new PersonDashboardTab($person, array('isMe' => true));
         $tab->showEditTopProducts($person, array('isMe' => true), $max);
         
-        $html = "<div id='top_widget' style='display:none;' title='Edit Top Research Outcomes'>";
+        $html = "<div id='top_widget' style='display:none;' title='Edit Top Products/Outputs'>";
         $html .= $tab->html;
         $html .= "</div>";
         return $html;
@@ -69,7 +69,7 @@ class PersonTopProductsReportItem extends AbstractReportItem {
         $person = Person::newFromId($this->personId);
         $item = $this->getTable(false);
         $item .= $this->renderWidget();
-        $item .= "<br /><button id='edit_top' type='button'>Edit Top Research Outcomes</button>";
+        $item .= "<br /><button id='edit_top' type='button'>Edit Top Products/Outputs</button>";
         $item .= "<script type='text/javascript'>
             $('#edit_top').click(function(){
                 $(this).remove();

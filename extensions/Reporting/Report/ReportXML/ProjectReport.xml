@@ -425,6 +425,9 @@
         </Instructions>
         <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet">
             <ReportItemSet id="subproject_heads" type="ToggleHeaderReportItemSet" level="3" title="{$project_name} - {$project_full_name}">
+                <ReportItem id="sub_project_summary" type="StaticReportItem">
+                    <![CDATA[<h3>Executive Summary</h3>{$user_subproject_summary}]]>
+                </ReportItem>
                 <ReportItem id="sub_project_goals" type="StaticReportItem">
                     <![CDATA[<h3>Engagement with Receptor Community Champions</h3>{$user_subproject_champs}]]>
                 </ReportItem>
