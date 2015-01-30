@@ -425,10 +425,10 @@
         </Instructions>
         <ReportItemSet id="subprojects" type="ProjectSubProjectsReportItemSet">
             <ReportItemSet id="subproject_heads" type="ToggleHeaderReportItemSet" level="3" title="{$project_name} - {$project_full_name}">
-                <!--ReportItem id="sub_project_goals" type="StaticReportItem">
+                <ReportItem id="sub_project_goals" type="StaticReportItem">
                     <![CDATA[<h3>Engagement with Receptor Community Champions</h3>{$user_subproject_champs}]]>
                 </ReportItem>
-                <ReportItem id="current_goals" type="ProjectGoalsReportItem" year="{$this_year}" max="5" preview="true">
+                <!--ReportItem id="current_goals" type="ProjectGoalsReportItem" year="{$this_year}" max="5" preview="true">
                     <![CDATA[<h3>This Year's Goals</h3>{$item}]]>
                 </ReportItem>
                 <ReportItem id="future_goals" type="ProjectGoalsReportItem" year="{$next_year}" max="5" preview="true">

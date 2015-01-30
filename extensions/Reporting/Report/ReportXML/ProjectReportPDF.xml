@@ -170,10 +170,10 @@
             <ReportItem id="sub_head" type="StaticReportItem">
                 <![CDATA[<h2>{$project_name}</h2>]]>
             </ReportItem>
-            <!--ReportItem id="sub_project_goals" type="StaticReportItem">
+            <ReportItem id="sub_project_goals" type="StaticReportItem">
                 <![CDATA[<h3>Engagement with Receptor Community Champions</h3>{$user_subproject_champs}]]>
             </ReportItem>
-            <ReportItem id="current_goals" type="ProjectGoalsReportItem" year="{$this_year}" max="5">
+            <!--ReportItem id="current_goals" type="ProjectGoalsReportItem" year="{$this_year}" max="5">
                 <![CDATA[<h3>This Year's Goals</h3>{$item}]]>
             </ReportItem>
             <ReportItem id="future_goals" type="ProjectGoalsReportItem" year="{$next_year}" max="5">
