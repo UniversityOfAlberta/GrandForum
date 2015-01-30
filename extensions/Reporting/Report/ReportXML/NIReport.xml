@@ -350,9 +350,9 @@
             </script>]]>
         </ReportItem>
 <!-- I. Executive Summary -->
-        <ReportItem id='I_head' type="StaticReportItem">
+        <!--ReportItem id='I_head' type="StaticReportItem">
             <![CDATA[<h2>Executive Summary: Overview of all of my GRAND Activity</h2>]]>
-        </ReportItem>
+        </ReportItem-->
     <!-- Ia. Overview of NI Activity -->
         <ReportItemSet id='Ia_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Overview of NI Activity">
             <ReportItem id="Ia" rows="12" width="100%" limit="3600" recommended="true" blobType="BLOB_TEXT" blobItem="RES_RESACT_OVERALL" type="TextareaReportItem">
@@ -360,9 +360,9 @@
             </ReportItem>
         </ReportItemSet>
 <!-- II. NCE Criteria -->
-        <ReportItem id='II_head' type="StaticReportItem">
+        <!--ReportItem id='II_head' type="StaticReportItem">
             <![CDATA[<h2>Assessment: How I contribute towards the NCE Evaluation Criteria</h2>]]>
-        </ReportItem>
+        </ReportItem-->
     <!-- IIa. Excellence of the Research Program -->
         <!--ReportItemSet id='IIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="A. Excellence of the Research Program: How my research contributes to the Network">
             <ReportItemSet id="OR" type="ORReportItemSet">
@@ -442,11 +442,11 @@
             </ReportItemSet>
         </ReportItemSet>
     <!-- IIe. Management of the Network -->
-        <ReportItemSet id='IIe_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Management of the Network: My role in or contribution to Network operations and governance" private="true">
+        <!--ReportItemSet id='IIe_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Management of the Network: My role in or contribution to Network operations and governance" private="true">
             <ReportItem id="IIe" rows="12" width="100%" limit="1800" recommended="true" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETMAN" type="AutoCompleteTextareaReportItem" set="AllPeopleReportItemSet" index="user_id" label="user_name" name="Members" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
                 <![CDATA[{$item}]]>
             </ReportItem>
-        </ReportItemSet>
+        </ReportItemSet-->
         <!--ReportItem id='III_head' type="StaticReportItem">
             <![CDATA[<h2>Outlook: My Plans for {$next_year} in GRAND</h2>]]>
         </ReportItem-->
@@ -466,9 +466,9 @@
             </ReportItemSet>
         </ReportItemSet-->
 <!-- III. Supplemental -->
-        <ReportItem id='III_head' type="StaticReportItem">
+        <!--ReportItem id='III_head' type="StaticReportItem">
             <![CDATA[<h2>Reflections: Other Aspects of my involvement in GRAND</h2>]]>
-        </ReportItem>
+        </ReportItem-->
     <!-- IIIb. Benefits from being involved in the Network -->
         <ReportItemSet id='IIIb_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Benefits of Networking: The value to my research program of my participation in GRAND" private="true">
             <ReportItem id="IIIb" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" blobItem="RES_RESACT_BENEF" type="TextareaReportItem">

@@ -188,12 +188,12 @@
             </ReportItemSet>
         </ReportItemSet>
     <!-- IIe. Management of the Network -->
-        <ReportItem id='IIe_head' type="StaticReportItem" private="true">
+        <!--ReportItem id='IIe_head' type="StaticReportItem" private="true">
             <![CDATA[<h2>Management of the Network: My role in or contribution to Network operations and governance</h2>]]>
         </ReportItem>
         <ReportItem id="IIe" rows="12" limit="1800" recommended="true" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETMAN" type="AutoCompleteTextareaReportItem" set="AllPeopleReportItemSet" index="user_id" label="user_name" name="Members">
             <![CDATA[{$item}<br /><br />]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
     <!--ReportSection name="Achievements &amp; Plans" subBookmark="true" type="EditableReportSection" blobSection="RES_RESACTIVITY" pagebreak="false"-->
         <!-- IIIa. Plans for next year -->

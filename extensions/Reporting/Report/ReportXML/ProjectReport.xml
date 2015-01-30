@@ -331,9 +331,9 @@
             ]]>
         </Instructions>
 <!-- I. Executive Summary -->
-        <ReportItem id='I_head' type="StaticReportItem">
+        <!--ReportItem id='I_head' type="StaticReportItem">
             <![CDATA[<h2>Executive Summary: Overview of {$project_name} Activity</h2>]]>
-        </ReportItem>
+        </ReportItem-->
     <!-- Ia. Overview of Activity -->
         <ReportItemSet id='Ia_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Overview of {$project_name} Activity">
             <ReportItem id="Ia" rows="12" width="100%" limit="3600" recommended="true" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OVERALL" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
@@ -342,9 +342,9 @@
         </ReportItemSet>
 <!-- II. NCE Criteria -->
         <ReportItemSet id='II_wrapper' type="IdentityReportItemSet">
-            <ReportItem id='II_head' type="StaticReportItem">
+            <!--ReportItem id='II_head' type="StaticReportItem">
                 <![CDATA[<h2>Assessment: How {$project_name} contributes towards the NCE Evaluation Criteria</h2>]]>
-            </ReportItem>
+            </ReportItem-->
         <!-- IIa. Excellence of the Research Program -->
             <!--ReportItemSet id='IIa_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="A. Excellence of the Research Program: How {$project_name} contributes to the Network">
                 <ReportItem id="IIa" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_EXCELLENCE" type="AutoCompleteTextareaReportItem" set="ProjectProductsReportItemSet" index="product_id" label="product_title" name="Products" tooltipOptionId="Product ID" tooltipOptionName="Product Title">
@@ -401,9 +401,9 @@
             </ReportItem>
         </ReportItemSet-->
 <!-- III. Supplemental -->
-        <ReportItem id='III_head' type="StaticReportItem">
+        <!--ReportItem id='III_head' type="StaticReportItem">
             <![CDATA[<h2>Reflections: {$project_name} and GRAND</h2>]]>
-        </ReportItem>
+        </ReportItem-->
     <!-- IIIb. Benefits from being involved in the Network -->
         <ReportItemSet id='IIIb_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Benefits of Networking: Benefits from being involved in the Network">
             <ReportItem id="IIIb" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETBENEFITS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
