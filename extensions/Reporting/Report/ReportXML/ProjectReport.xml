@@ -276,7 +276,7 @@
                 <![CDATA[<div>{$item}</div><br />]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id='top_prods_head' type="ToggleHeaderReportItemSet" level="3" title="Top 10 Research Outcomes">
+        <ReportItemSet id='top_prods_head' type="ToggleHeaderReportItemSet" level="3" title="Top 10 Products/Outputs">
             <ReportItem id="top_prods" type="ProjectTopProductsReportItem" max="10">
                 <![CDATA[<div>{$item}</div><br />]]>
             </ReportItem>

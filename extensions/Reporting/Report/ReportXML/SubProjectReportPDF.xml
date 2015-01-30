@@ -20,7 +20,7 @@
             <![CDATA[<td><small><table class='progress_table' cellpadding="1" frame="box" rules="all">]]>
         </ReportItem>
         <ReportItem id="my_progress_head" type="ProgressReportItem" reportType="SubProjectReport">
-            <![CDATA[{$item}</table></small></td></tr>]]>
+            <![CDATA[</table></small></td></tr>]]>
         </ReportItem>
         <ReportItem id="report_info_foot" type="StaticReportItem">
             <![CDATA[</table></small></td></tr></table></div></div>]]>

@@ -111,7 +111,7 @@
             ]]>
         </ReportItem>
         <ReportItem id="top_prods" type="PersonTopProductsReportItem" max="5">
-            <![CDATA[<small>The following are the cumulative top 5 research outcomes.</small>{$item}]]>
+            <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
     <!--ReportSection type="BookmarkReportSection" name="Section 2" />
