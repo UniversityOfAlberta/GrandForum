@@ -151,7 +151,7 @@
                 <![CDATA[</table><br />]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id='champ_head' type="ToggleHeaderReportItemSet" level="3" title="Champion Progress">
+        <!--ReportItemSet id='champ_head' type="ToggleHeaderReportItemSet" level="3" title="Champion Progress">
             <ReportItem id="static_champ_progress" type="StaticReportItem">
                 <![CDATA[<style>#champ_completion table tr:first-child td:first-child {display:none;}</style><table id="champ_completion" style="background:#ffffff;" cellspacing='1' cellpadding='3' frame='box' rules='all'><tr><th>Champion</th><th>Completion Status</th><th>Actions</th></tr>]]>
             </ReportItem>
@@ -176,7 +176,7 @@
             <ReportItem id="progress_foot" type="StaticReportItem">
                 <![CDATA[</table><br />]]>
             </ReportItem>
-        </ReportItemSet>
+        </ReportItemSet-->
     </ReportSection>
     <ReportSection id="dashboard" tooltip="Overview of this year's activity and productivity" name="Dashboard" blobSection="SEC_NONE" type="EditableReportSection" autosave="true" renderpdf="true">
         <Instructions>
