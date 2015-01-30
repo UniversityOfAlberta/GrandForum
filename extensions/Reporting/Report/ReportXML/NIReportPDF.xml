@@ -12,7 +12,7 @@
                     <table class='report_info'><tr><td width='100%'></td>
             ]]>
         </ReportItem>
-        <ReportItem id="my_progress_head" type="StaticReportItem" private="true">
+        <!--ReportItem id="my_progress_head" type="StaticReportItem" private="true">
             <![CDATA[<td><small><table class='progress_table' cellpadding="1" frame="box" rules="all">]]>
         </ReportItem>
         <ReportItem id="ni_progress_head" type="ProgressReportItem" reportType="NIReport" private="true">
@@ -26,7 +26,7 @@
         </ReportItem>
         <ReportItem id="dash_progress_head" type="DashboardProgressReportItem" reportType="NIReport" private="true">
             <![CDATA[{$item}</table></small></td></tr>]]>
-        </ReportItem>
+        </ReportItem-->
         <ReportItem id="report_info_foot" type="StaticReportItem">
             <![CDATA[</table></div></div>]]>
         </ReportItem>
@@ -84,9 +84,9 @@
         <ReportItem id="grand_percent" blobType="BLOB_ARRAY" blobItem="RES_MIL_CONTRIBUTIONS" type="TextReportItem" private="true">
             <![CDATA[<tr><td align='right'><b>Research Activity (%):</b></td><td>{$item}</td></tr></table>]]>
         </ReportItem>
-        <ReportItem id="small_budget" type="SmallNIBudgetReportItem" start="{$2_years_ago}" end="{$this_year}">
+        <!--ReportItem id="small_budget" type="SmallNIBudgetReportItem" start="{$2_years_ago}" end="{$this_year}">
             <![CDATA[{$item}]]>
-        </ReportItem>
+        </ReportItem-->
         <ReportItem id="basic_info" type="StaticReportItem">
             <![CDATA[
                     </td></tr>
@@ -114,17 +114,17 @@
             <![CDATA[<small>The following are the cumulative top 5 research outcomes.</small>{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection type="BookmarkReportSection" name="Section 2" />
+    <!--ReportSection type="BookmarkReportSection" name="Section 2" />
     <ReportSection name="Budget" title="Budget" blobSection="RES_BUDGET" subBookmark="true" type="EditableReportSection" autosave="true" renderpdf="true" private="true">
         <ReportItem id="budget" blobType="BLOB_EXCEL" blobItem="RES_BUD_BUDGET" type="BudgetReportItem" />
         <ReportItem id="budget_just" rows="10" limit="600" blobType="BLOB_TEXT" blobItem="RES_BUD_JUSTIF" type="TextareaReportItem">
             <![CDATA[<h3>Budget Justification</h3> {$item}]]>
         </ReportItem>
-    </ReportSection>
-    <ReportSection type="BookmarkReportSection" name="Section 3" />
+    </ReportSection-->
+    <ReportSection type="BookmarkReportSection" name="Section 2" />
     <ReportSection name="Assessment: How I contribute toward meeting the NCE Evaluation Criteria" title="Assessment" subBookmark="true" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true" pagebreak="false">
     <!-- IIa. Excellence of the Research Program -->
-        <ReportItem id='IIa_head' type="StaticReportItem">
+        <!--ReportItem id='IIa_head' type="StaticReportItem">
             <![CDATA[<h2>A. Excellence of the Research Program: How my research contributes to the Network</h2>]]>
         </ReportItem>
         <ReportItemSet id="OR" type="ORReportItemSet">
@@ -138,9 +138,9 @@
                     <![CDATA[<i>Phase 1 Projects ({$user_phase1_projects})</i><br />{$item}<br /><br />]]>
                 </ReportItem>
             </ReportItemSet>
-        </ReportItemSet>
+        </ReportItemSet-->
     <!-- IIb. Development of Highly Qualified Personnel -->
-        <ReportItem id='IIa_head' type="StaticReportItem">
+        <!--ReportItem id='IIa_head' type="StaticReportItem">
             <![CDATA[<h2>B. Development of Highly Qualified Personnel: My training strategies and achievements</h2>]]>
         </ReportItem>
         <ReportItemSet id="OR" type="ORReportItemSet">
@@ -154,9 +154,9 @@
                     <![CDATA[<i>Phase 1 Projects ({$user_phase1_projects})</i><br />{$item}<br /><br />]]>
                 </ReportItem>
             </ReportItemSet>
-        </ReportItemSet>
+        </ReportItemSet-->
     <!-- IIc. Networking and Partnerships -->
-        <ReportItem id='IIc_head' type="StaticReportItem">
+        <!--ReportItem id='IIc_head' type="StaticReportItem">
             <![CDATA[<h2>C. Networking and Partnerships: My efforts and successes in building linkages</h2>]]>
         </ReportItem>
         <ReportItemSet id="OR" type="ORReportItemSet">
@@ -170,10 +170,10 @@
                     <![CDATA[<i>Phase 1 Projects ({$user_phase1_projects})</i><br />{$item}<br /><br />]]>
                 </ReportItem>
             </ReportItemSet>
-        </ReportItemSet>
+        </ReportItemSet-->
     <!-- IId. Knowledge and Technology Exchange and Exploitation -->
         <ReportItem id='IId_head' type="StaticReportItem">
-            <![CDATA[<h2>D. Knowledge &amp; Technology Exchange &amp; Exploitation: My efforts in disseminating research to receptors</h2>]]>
+            <![CDATA[<h2>Knowledge &amp; Technology Exchange &amp; Exploitation: My efforts in disseminating research to receptors</h2>]]>
         </ReportItem>
         <ReportItemSet id="OR" type="ORReportItemSet">
             <ReportItemSet id="ProjectLimit_IId" type="LimitReportItemSet" limit="1800">
@@ -189,15 +189,15 @@
         </ReportItemSet>
     <!-- IIe. Management of the Network -->
         <ReportItem id='IIe_head' type="StaticReportItem" private="true">
-            <![CDATA[<h2>E. Management of the Network: My role in or contribution to Network operations and governance</h2>]]>
+            <![CDATA[<h2>Management of the Network: My role in or contribution to Network operations and governance</h2>]]>
         </ReportItem>
         <ReportItem id="IIe" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETMAN" type="AutoCompleteTextareaReportItem" set="AllPeopleReportItemSet" index="user_id" label="user_name" name="Members">
             <![CDATA[{$item}<br /><br />]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Achievements &amp; Plans" subBookmark="true" type="EditableReportSection" blobSection="RES_RESACTIVITY" pagebreak="false">
+    <!--ReportSection name="Achievements &amp; Plans" subBookmark="true" type="EditableReportSection" blobSection="RES_RESACTIVITY" pagebreak="false"-->
         <!-- IIIa. Plans for next year -->
-        <ReportItem id='IIf_head' type="StaticReportItem">
+        <!--ReportItem id='IIf_head' type="StaticReportItem">
             <![CDATA[(Phase2 Projects Only)<br />
             ]]>
         </ReportItem>
@@ -210,7 +210,7 @@
                 </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>
-    </ReportSection>
+    </ReportSection-->
     <ReportSection name="Reflections: Other Aspects of my involvement in GRAND" title="Reflections" subBookmark="true" blobSection="RES_RESACTIVITY" type="EditableReportSection" autosave="true" renderpdf="true">
     <!-- IIIb. Benefits from being involved in the Network -->
         <ReportItem id='IIIb_head' type="StaticReportItem" private="true">
@@ -227,7 +227,7 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection type="BookmarkReportSection" name="Section 4" />
+    <ReportSection type="BookmarkReportSection" name="Section 3" />
     <!--ReportSection name="Network Dashboard" blobSection="SEC_NONE" subBookmark="true" type="ReportSection" pagebreak="true" renderpdf="true">
         <ReportItem id="ni_dashboard" type="DashboardReportItem" structure="NI_REPORT_STRUCTURE" table="true" details="false">
             <![CDATA[<div>{$item}</div>]]>

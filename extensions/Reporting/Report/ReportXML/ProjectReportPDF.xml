@@ -16,7 +16,7 @@
                     <div class='report_info'><table class='report_info'><tr><td width='100%'></td>
             ]]>
         </ReportItem>
-        <ReportItem id="my_progress_head" type="StaticReportItem">
+        <!--ReportItem id="my_progress_head" type="StaticReportItem">
             <![CDATA[<td><small><table class='progress_table' cellpadding="1" frame="box" rules="all">]]>
         </ReportItem>
         <ReportItem id="report_progress" type="ProgressReportItem" reportType="ProjectReport">
@@ -33,7 +33,7 @@
         </ReportItem>
         <ReportItem id="report_pni_progress" type="ProjectNIProgressReportItem">
             <![CDATA[{$item}</table></small></td></tr>]]>
-        </ReportItem>
+        </ReportItem-->
         <ReportItem id="report_info_foot" type="StaticReportItem">
             <![CDATA[</table></div></div>]]>
         </ReportItem>
@@ -54,8 +54,11 @@
                         </td>
             ]]>
         </ReportItem>
-        <ReportItem id="small_budget" type="SmallProjectBudgetReportItem" start="{$2_years_ago}" end="{$this_year}">
+        <!--ReportItem id="small_budget" type="SmallProjectBudgetReportItem" start="{$2_years_ago}" end="{$this_year}">
             <![CDATA[<td style='white-space:nowrap;' valign='bottom'>{$item}</td></tr></table></div>]]>
+        </ReportItem-->
+        <ReportItem id="basic_info_foot" type="StaticReportItem">
+            <![CDATA[<td style='white-space:nowrap;' valign='bottom'></td></tr></table></div>]]>
         </ReportItem>
     </ReportSection>
     <ReportSection type="BookmarkReportSection" name="Section 1" />
@@ -82,12 +85,12 @@
             <![CDATA[<small>The following are the cumulative top 10 research outcomes as chosen by the project leader</small>{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="champions" name="Receptor Community Champions" subBookmark="true" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
+    <!--ReportSection id="champions" name="Receptor Community Champions" subBookmark="true" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
         <ReportItem id="champion_table" type="ProjectChampionsTableReportItem" submitted="false">
             <![CDATA[{$item}]]>
         </ReportItem>
-    </ReportSection>
-    <ReportSection type="BookmarkReportSection" name="Section 2" />
+    </ReportSection-->
+    <!--ReportSection type="BookmarkReportSection" name="Section 2" />
     <ReportSection id="budget" name="Budget" title="Budget" subBookmark="true" blobSection="LDR_BUDGET" type="EditableReportSection" renderpdf="true">
         <ReportItem id="budget_categories" type="ProjectCategoryBudgetReportItem">
             <![CDATA[<h2>Project Budget by Category</h2>{$item}<br />]]>
@@ -98,51 +101,51 @@
         <ReportItem id="budget_just" rows="10" limit="600" blobType="BLOB_TEXT" blobItem="LDR_BUD_JUST" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[<h2>Budget Justification</h2> {$item}]]>
         </ReportItem>
-    </ReportSection>
-    <ReportSection type="BookmarkReportSection" name="Section 3" />
+    </ReportSection-->
+    <ReportSection type="BookmarkReportSection" name="Section 2" />
     <ReportSection id="report2" name="Assessment: How {$project_name} contributes towards the NCE Evaluation Criteria" title="Assessment" subBookmark="true" blobSection="LDR_RESACTIVITY" type="EditableReportSection" pagebreak="false">
     <!-- IIa. Excellence of the Research Program -->
-        <ReportItem id='IIIa_head' type="StaticReportItem">
+        <!--ReportItem id='IIIa_head' type="StaticReportItem">
             <![CDATA[<h2>A. Excellence of the Research Program: How {$project_name} contributes to the Network</h2>]]>
         </ReportItem>
         <ReportItem id="IIIa" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_EXCELLENCE" type="AutoCompleteTextareaReportItem" set="ProjectProductsReportItemSet" index="product_id" label="product_title" name="Products" tooltipOptionId="Product ID" tooltipOptionName="Product Title">
             <![CDATA[{$item}]]>
-        </ReportItem>
+        </ReportItem-->
     <!-- IIb. Development of Highly Qualified Personnel -->
-        <ReportItem id='IIIa_head' type="StaticReportItem">
+        <!--ReportItem id='IIIa_head' type="StaticReportItem">
             <![CDATA[<h2>B. Development of Highly Qualified Personnel: {$project_name} strategies and achievements</h2>]]>
         </ReportItem>
         <ReportItem id="IIIb" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_HQPDEV" type="AutoCompleteTextareaReportItem" set="ProjectAllPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
-        </ReportItem>
+        </ReportItem-->
     <!-- IIc. Networking and Partnerships -->
-        <ReportItem id='IIIc_head' type="StaticReportItem">
+        <!--ReportItem id='IIIc_head' type="StaticReportItem">
             <![CDATA[<h2>C. Networking and Partnerships: {$project_name} successes in building linkages</h2>]]>
         </ReportItem>
         <ReportItem id="IIIc" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETWORKING" type="AutoCompleteTextareaReportItem" set="ProjectAllPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} Members" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
-        </ReportItem>
+        </ReportItem-->
     <!-- IId. Knowledge and Technology Exchange and Exploitation -->
         <ReportItem id='IIId_head' type="StaticReportItem">
-            <![CDATA[<h2>D. Knowledge &amp; Technology Exchange &amp; Exploitation: {$project_name} efforts in disseminating research to receptors</h2>]]>
+            <![CDATA[<h2>Knowledge &amp; Technology Exchange &amp; Exploitation: {$project_name} efforts in disseminating research to receptors</h2>]]>
         </ReportItem>
         <ReportItem id="IIId" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_KTEE" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     <!-- IIe. Other Project Outcomes -->
         <ReportItem id='IIIe_head' type="StaticReportItem">
-            <![CDATA[<h2>E. Other Project Outcomes</h2>]]>
+            <![CDATA[<h2>Other Project Outcomes</h2>]]>
         </ReportItem>
         <ReportItem id="IIIe" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHEROUTCOMES" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection name="Achievements &amp; Plans" subBookmark="true" type="EditableReportSection" blobSection="LDR_RESACTIVITY" pagebreak="false">
+    <!--ReportSection name="Achievements &amp; Plans" subBookmark="true" type="EditableReportSection" blobSection="LDR_RESACTIVITY" pagebreak="false"-->
         <!-- IIIa. Plans for Next Year -->
-        <ReportItem id="IIIa" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
+        <!--ReportItem id="IIIa" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NEXTPLANS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
     <ReportSection id="report3" name="Reflections: Other Aspects of {$project_name}'s involvement in GRAND" title="Reflections" subBookmark="true" blobSection="LDR_RESACTIVITY" type="EditableReportSection" renderpdf="true">
     <!-- IIIb. Benefits from being involved in the Network -->
         <ReportItem id='IIIb_head' type="StaticReportItem">
@@ -167,7 +170,7 @@
             <ReportItem id="sub_head" type="StaticReportItem">
                 <![CDATA[<h2>{$project_name}</h2>]]>
             </ReportItem>
-            <ReportItem id="sub_project_goals" type="StaticReportItem">
+            <!--ReportItem id="sub_project_goals" type="StaticReportItem">
                 <![CDATA[<h3>Engagement with Receptor Community Champions</h3>{$user_subproject_champs}]]>
             </ReportItem>
             <ReportItem id="current_goals" type="ProjectGoalsReportItem" year="{$this_year}" max="5">
@@ -175,7 +178,7 @@
             </ReportItem>
             <ReportItem id="future_goals" type="ProjectGoalsReportItem" year="{$next_year}" max="5">
                 <![CDATA[<h3>New Goals for Next Year</h3><p><small><i>Each subproject may have up to 5 active goals, including those carrying forward from the past year and the newly defined ones.</i></small></p>{$item}]]>
-            </ReportItem>
+            </ReportItem-->
             <ReportItem id="sub_project_champs" type="StaticReportItem">
                 <![CDATA[<h3>General Comments</h3>{$user_subproject_comments}]]>
             </ReportItem>
