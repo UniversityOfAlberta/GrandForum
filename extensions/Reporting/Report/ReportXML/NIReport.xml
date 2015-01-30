@@ -175,7 +175,7 @@
                 </p>
             ]]>
         </Instructions>
-        <ReportItem id="small_budget" type="SmallNIBudgetReportItem" start="{$2_years_ago}" end="{$this_year}">
+        <ReportItem id="small_budget" type="SmallNIBudgetReportItem" start="{$2_years_ago}" end="{$this_year}" private="true">
             <![CDATA[<div style='float:right;'>{$item}</div>]]>
         </ReportItem>
         <ReportItem id="basic_info" type="StaticReportItem">
