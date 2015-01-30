@@ -82,7 +82,7 @@
             ]]>
         </ReportItem>
         <ReportItem id="top_prods" type="ProjectTopProductsReportItem" max="10">
-            <![CDATA[<small>The following are the cumulative top 10 products/outputs as chosen by the project leader</small>{$item}]]>
+            <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
     <!--ReportSection id="champions" name="Receptor Community Champions" subBookmark="true" blobSection="SEC_NONE" type="ReportSection" renderpdf="true">
