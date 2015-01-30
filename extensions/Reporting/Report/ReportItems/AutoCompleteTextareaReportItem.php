@@ -128,17 +128,21 @@ class AutoCompleteTextareaReportItem extends TextareaReportItem {
 	    $limit = $this->getLimit();
 	    $nChars = $this->getActualNChars();
 	    $anchor = ($this->getAttr("anchor", "false") == "true");
+	    $recommended = $this->getAttr('recommended', false);
 	    
 	    $html = "";
 	    if($limit > 0){
 	        $class = "";
-	        if($nChars > $limit){
+	        if($nChars > $limit && $recommended){
+	            $class = "inlineWarning";
+	        }
+	        else if($nChars > $limit){
                 $class = "inlineError";
             }
             else if($nChars == 0){
                 $class = "inlineWarning";
             }
-	        $recommended = $this->getAttr('recommended', false);
+	        
 	        if($recommended){
 	            $type = "recommended";
 	        }

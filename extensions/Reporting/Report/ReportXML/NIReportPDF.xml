@@ -98,7 +98,7 @@
     <ReportSection type="BookmarkReportSection" name="Section 1" />
     <ReportSection id="executive_summary" name="Executive Summary: Overview of all of my GRAND Activity" title="Executive Summary" subBookmark="true" blobSection="RES_RESACTIVITY" type="EditableReportSection" renderpdf="true">
         <!-- Ia. Overview of NI Activity -->
-        <ReportItem id="Ia" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="RES_RESACT_OVERALL" type="TextareaReportItem">
+        <ReportItem id="Ia" rows="12" limit="3600" recommended="true" blobType="BLOB_TEXT" blobItem="RES_RESACT_OVERALL" type="TextareaReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
@@ -176,7 +176,7 @@
             <![CDATA[<h2>Knowledge &amp; Technology Exchange &amp; Exploitation: My efforts in disseminating research to receptors</h2>]]>
         </ReportItem>
         <ReportItemSet id="OR" type="ORReportItemSet">
-            <ReportItemSet id="ProjectLimit_IId" type="LimitReportItemSet" limit="1800">
+            <ReportItemSet id="ProjectLimit_IId" type="LimitReportItemSet" limit="1800" recommended="true">
                 <ReportItemSet id="projects" type="PersonProjectReportItemSet" phase="2">
                     <ReportItem id="IId" rows="12" blobType="BLOB_TEXT" blobItem="RES_RESACT_KTEE" type="TextareaReportItem">
                         <![CDATA[<i>{$project_name}:</i><br />{$item}<br /><br />]]>
@@ -191,7 +191,7 @@
         <ReportItem id='IIe_head' type="StaticReportItem" private="true">
             <![CDATA[<h2>Management of the Network: My role in or contribution to Network operations and governance</h2>]]>
         </ReportItem>
-        <ReportItem id="IIe" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETMAN" type="AutoCompleteTextareaReportItem" set="AllPeopleReportItemSet" index="user_id" label="user_name" name="Members">
+        <ReportItem id="IIe" rows="12" limit="1800" recommended="true" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETMAN" type="AutoCompleteTextareaReportItem" set="AllPeopleReportItemSet" index="user_id" label="user_name" name="Members">
             <![CDATA[{$item}<br /><br />]]>
         </ReportItem>
     </ReportSection>
@@ -216,14 +216,14 @@
         <ReportItem id='IIIb_head' type="StaticReportItem" private="true">
             <![CDATA[<h2>Benefits of Networking: The value to my research program of my participation in GRAND</h2>]]>
         </ReportItem>
-        <ReportItem id="IIIb" rows="12" limit="600" blobType="BLOB_TEXT" blobItem="RES_RESACT_BENEF" type="TextareaReportItem" private="true">
+        <ReportItem id="IIIb" rows="12" limit="600" recommended="true" blobType="BLOB_TEXT" blobItem="RES_RESACT_BENEF" type="TextareaReportItem" private="true">
             <![CDATA[{$item}]]>
         </ReportItem>
     <!-- IIIc. Additional Comments -->
         <ReportItem id='IIIc_head' type="StaticReportItem" private="true">
             <![CDATA[<h2>Additional Comments</h2>]]>
         </ReportItem>
-        <ReportItem id="IIIc" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="RES_RESACT_OTHER" type="TextareaReportItem" private="true">
+        <ReportItem id="IIIc" rows="12" limit="1800" recommended="true" blobType="BLOB_TEXT" blobItem="RES_RESACT_OTHER" type="TextareaReportItem" private="true">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>

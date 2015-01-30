@@ -64,7 +64,7 @@
     <ReportSection type="BookmarkReportSection" name="Section 1" />
     <ReportSection id="report1" name="Executive Summary: Overview of {$project_name} Activity" title="Executive Summary" subBookmark="true" blobSection="LDR_RESACTIVITY" type="EditableReportSection" renderpdf="true">
     <!-- Ia. Overview of Activity -->
-        <ReportItem id="Ia" rows="12" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OVERALL" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
+        <ReportItem id="Ia" rows="12" limit="3600" recommended="true" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OVERALL" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
@@ -129,14 +129,14 @@
         <ReportItem id='IIId_head' type="StaticReportItem">
             <![CDATA[<h2>Knowledge &amp; Technology Exchange &amp; Exploitation: {$project_name} efforts in disseminating research to receptors</h2>]]>
         </ReportItem>
-        <ReportItem id="IIId" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_KTEE" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
+        <ReportItem id="IIId" rows="12" limit="1800" recommended="true" blobType="BLOB_TEXT" blobItem="LDR_RESACT_KTEE" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     <!-- IIe. Other Project Outcomes -->
         <ReportItem id='IIIe_head' type="StaticReportItem">
             <![CDATA[<h2>Other Project Outcomes</h2>]]>
         </ReportItem>
-        <ReportItem id="IIIe" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHEROUTCOMES" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
+        <ReportItem id="IIIe" rows="12" limit="1800" recommended="true" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHEROUTCOMES" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
@@ -151,14 +151,14 @@
         <ReportItem id='IIIb_head' type="StaticReportItem">
             <![CDATA[<h2>Benefits from being involved in the Network</h2>]]>
         </ReportItem>
-        <ReportItem id="IIIb" rows="12" limit="600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETBENEFITS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
+        <ReportItem id="IIIb" rows="12" limit="600" recommended="true" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETBENEFITS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     <!-- IIIc. Additional Comments -->
         <ReportItem id='IIIc_head' type="StaticReportItem">
             <![CDATA[<h2>Additional Comments</h2>]]>
         </ReportItem>
-        <ReportItem id="IIIc" rows="12" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHER" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
+        <ReportItem id="IIIc" rows="12" limit="1800" recommended="true" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHER" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>

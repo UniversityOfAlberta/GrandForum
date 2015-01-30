@@ -110,7 +110,7 @@ class LimitReportItemSet extends ReportItemSet {
             $wgOut->addHTML("textareas.push($('textarea[name={$textarea->getPostId()}]'));
                              $('textarea[name={$textarea->getPostId()}]').height('$h');\n");
         }
-        $wgOut->addHTML("$('#div_{$this->getPostId()}').multiLimit($limit, $('#{$this->getPostId()}_chars_left'), textareas);
+        $wgOut->addHTML("$('#div_{$this->getPostId()}').multiLimit($limit, $('#{$this->getPostId()}_chars_left'), textareas, $recommended);
             $('#preview_{$this->getPostId()}').dialog({ autoOpen: false, width: '700', height: '450'});
         });
         function popup{$this->getPostId()}(){
@@ -208,7 +208,10 @@ class LimitReportItemSet extends ReportItemSet {
 	                }
 	            }
 	            $text .= $textarea->processCData($blobValue);
-	            if($length > $this->getLimit()){
+	            if($length > $this->getLimit() && $recommended){
+	                $class = "inlineWarning";
+	            }
+	            else if($length > $this->getLimit()){
 	                $class = "inlineError";
 	            }
 	            else if($length == ""){

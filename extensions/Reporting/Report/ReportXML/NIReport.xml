@@ -354,8 +354,8 @@
             <![CDATA[<h2>Executive Summary: Overview of all of my GRAND Activity</h2>]]>
         </ReportItem>
     <!-- Ia. Overview of NI Activity -->
-        <ReportItemSet id='Ia_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Overview of NI Activity">
-            <ReportItem id="Ia" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="RES_RESACT_OVERALL" type="TextareaReportItem">
+        <ReportItemSet id='Ia_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Overview of NI Activity">
+            <ReportItem id="Ia" rows="12" width="100%" limit="3600" recommended="true" blobType="BLOB_TEXT" blobItem="RES_RESACT_OVERALL" type="TextareaReportItem">
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
@@ -421,9 +421,9 @@
             </ReportItemSet>
         </ReportItemSet-->
     <!-- IId. Knowledge and Technology Exchange and Exploitation -->
-        <ReportItemSet id='IId_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Knowledge &amp; Technology Exchange &amp; Exploitation: My efforts in disseminating research to receptors">
+        <ReportItemSet id='IId_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Knowledge &amp; Technology Exchange &amp; Exploitation: My efforts in disseminating research to receptors">
             <ReportItemSet id="OR" type="ORReportItemSet">
-                <ReportItemSet id="ProjectLimit_IId" type="LimitReportItemSet" limit="1800">
+                <ReportItemSet id="ProjectLimit_IId" type="LimitReportItemSet" limit="1800" recommended="true">
                     <ReportItemSet id="projects" type="PersonProjectReportItemSet" phase="2">
                         <ReportItem id="IId" rows="12" width="100%" blobType="BLOB_TEXT" blobItem="RES_RESACT_KTEE" type="TextareaReportItem">
                             <![CDATA[<i>{$project_name}</i><br />{$item}]]>
@@ -442,8 +442,8 @@
             </ReportItemSet>
         </ReportItemSet>
     <!-- IIe. Management of the Network -->
-        <ReportItemSet id='IIe_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Management of the Network: My role in or contribution to Network operations and governance" private="true">
-            <ReportItem id="IIe" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETMAN" type="AutoCompleteTextareaReportItem" set="AllPeopleReportItemSet" index="user_id" label="user_name" name="Members" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
+        <ReportItemSet id='IIe_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Management of the Network: My role in or contribution to Network operations and governance" private="true">
+            <ReportItem id="IIe" rows="12" width="100%" limit="1800" recommended="true" blobType="BLOB_TEXT" blobItem="RES_RESACT_NETMAN" type="AutoCompleteTextareaReportItem" set="AllPeopleReportItemSet" index="user_id" label="user_name" name="Members" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
@@ -470,14 +470,14 @@
             <![CDATA[<h2>Reflections: Other Aspects of my involvement in GRAND</h2>]]>
         </ReportItem>
     <!-- IIIb. Benefits from being involved in the Network -->
-        <ReportItemSet id='IIIb_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Benefits of Networking: The value to my research program of my participation in GRAND" private="true">
-            <ReportItem id="IIIb" rows="12" width="100%" limit="600" blobType="BLOB_TEXT" blobItem="RES_RESACT_BENEF" type="TextareaReportItem">
+        <ReportItemSet id='IIIb_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Benefits of Networking: The value to my research program of my participation in GRAND" private="true">
+            <ReportItem id="IIIb" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" blobItem="RES_RESACT_BENEF" type="TextareaReportItem">
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
     <!-- IIIc. Additional Comments -->
-        <ReportItemSet id='IIIc_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Additional Comments" private="true">
-            <ReportItem id="IIIc" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="RES_RESACT_OTHER" type="TextareaReportItem">
+        <ReportItemSet id='IIIc_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Additional Comments" private="true">
+            <ReportItem id="IIIc" rows="12" width="100%" limit="1800" recommended="true" blobType="BLOB_TEXT" blobItem="RES_RESACT_OTHER" type="TextareaReportItem">
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>

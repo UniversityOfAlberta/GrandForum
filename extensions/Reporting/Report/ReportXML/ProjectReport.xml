@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Report" reportType="RP_LEADER" pdfType="RPTP_LEADER" pdfFiles="ProjectReportPDF,ProjectReportComments" personId="0" ajax="true" disabled="false">
+<Report name="Project Report" reportType="RP_LEADER" pdfType="RPTP_LEADER" pdfFiles="ProjectReportPDF" personId="0" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="status" permissions="rw" />
@@ -335,8 +335,8 @@
             <![CDATA[<h2>Executive Summary: Overview of {$project_name} Activity</h2>]]>
         </ReportItem>
     <!-- Ia. Overview of Activity -->
-        <ReportItemSet id='Ia_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Overview of {$project_name} Activity">
-            <ReportItem id="Ia" rows="12" width="100%" limit="3600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OVERALL" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
+        <ReportItemSet id='Ia_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Overview of {$project_name} Activity">
+            <ReportItem id="Ia" rows="12" width="100%" limit="3600" recommended="true" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OVERALL" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
@@ -373,8 +373,8 @@
                 </ReportItem>
             </ReportItemSet-->
         <!-- IId. Knowledge and Technology Exchange and Exploitation -->
-            <ReportItemSet id='IId_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Knowledge &amp; Technology Exchange &amp; Exploitation: {$project_name} efforts in disseminating research to receptors">
-                <ReportItem id="IId" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_KTEE" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
+            <ReportItemSet id='IId_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Knowledge &amp; Technology Exchange &amp; Exploitation: {$project_name} efforts in disseminating research to receptors">
+                <ReportItem id="IId" rows="12" width="100%" limit="1800" recommended="true" blobType="BLOB_TEXT" blobItem="LDR_RESACT_KTEE" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
                     <![CDATA[{$item}<br />]]>
                 </ReportItem>
                 <ReportItem id="IId_comments" type="PopupReportItem" title="See NI Comments" text="{$report_ktee_ni_comments}">
@@ -382,8 +382,8 @@
                 </ReportItem>
             </ReportItemSet>
         <!-- IIe. Other Project Outcomes -->
-            <ReportItemSet id='IIe_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Other Project Outcomes">
-                <ReportItem id="IIe" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHEROUTCOMES" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
+            <ReportItemSet id='IIe_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Other Project Outcomes">
+                <ReportItem id="IIe" rows="12" width="100%" limit="1800" recommended="true" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHEROUTCOMES" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
                     <![CDATA[{$item}]]>
                 </ReportItem>
             </ReportItemSet>
@@ -405,14 +405,14 @@
             <![CDATA[<h2>Reflections: {$project_name} and GRAND</h2>]]>
         </ReportItem>
     <!-- IIIb. Benefits from being involved in the Network -->
-        <ReportItemSet id='IIIb_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Benefits of Networking: Benefits from being involved in the Network">
-            <ReportItem id="IIIb" rows="12" width="100%" limit="600" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETBENEFITS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
+        <ReportItemSet id='IIIb_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Benefits of Networking: Benefits from being involved in the Network">
+            <ReportItem id="IIIb" rows="12" width="100%" limit="600" recommended="true" blobType="BLOB_TEXT" blobItem="LDR_RESACT_NETBENEFITS" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
     <!-- IIIc. Additional Comments -->
-        <ReportItemSet id='IIIc_head' type="ToggleHeaderReportItemSet" changeColor="true" level="4" title="Additional Comments">
-            <ReportItem id="IIIc" rows="12" width="100%" limit="1800" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHER" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
+        <ReportItemSet id='IIIc_head' type="ToggleHeaderReportItemSet" changeColor="false" level="4" title="Additional Comments">
+            <ReportItem id="IIIc" rows="12" width="100%" limit="1800" recommended="true" blobType="BLOB_TEXT" blobItem="LDR_RESACT_OTHER" type="AutoCompleteTextareaReportItem" set="ProjectPeopleReportItemSet" index="user_id" label="user_name" name="{$project_name} NIs" tooltipOptionId="Member ID" tooltipOptionName="Member Name">
                 <![CDATA[{$item}]]>
             </ReportItem>
         </ReportItemSet>
