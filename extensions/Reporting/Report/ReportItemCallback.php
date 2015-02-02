@@ -13,6 +13,7 @@ class ReportItemCallback {
             "project_id" => "getProjectId",
             "project_name" => "getProjectName",
             "project_full_name" => "getProjectFullName",
+            "project_parent_name" => "getParentProjectName",
             "project_url" => "getProjectUrl",
             "project_status" => "getProjectStatus",
             "project_description" => "getProjectDescription",
@@ -164,6 +165,18 @@ class ReportItemCallback {
             $project = Project::newFromId($this->reportItem->projectId);
             $project_name = $project->getFullName();
         }
+        return $project_name;
+    }
+    
+    function getParentProjectName(){
+        $project_name = "";
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $parent = $project->getParent();
+            $project_name = $parent->getName();
+        }
+        $project_name = str_replace("<", "&lt;", $project_name);
+        $project_name = str_replace(">", "&gt;", $project_name);
         return $project_name;
     }
     

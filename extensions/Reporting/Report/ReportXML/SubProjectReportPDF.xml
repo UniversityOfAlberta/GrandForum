@@ -26,7 +26,7 @@
             <![CDATA[</table></small></td></tr></table></div></div>]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="report" name="{$project_name} Report" tooltip="Comments about lead sub-projects" blobSection="SUB_SUBPROJECTS" type="EditableReportSection" reportCharLimits="false" renderpdf="true" pagebreak="false">
+    <ReportSection id="report" name="{$project_name} ({$project_parent_name}) Report" tooltip="Comments about lead sub-projects" blobSection="SUB_SUBPROJECTS" type="EditableReportSection" reportCharLimits="false" renderpdf="true" pagebreak="false">
         <ReportItem id="sub_project_summary" width="100%" blobType="BLOB_TEXT" blobItem="SUB_SUBPROJECT_SUMMARY" type="TextareaReportItem" limit="1800" recommended="true" reportLimits="true">
             <![CDATA[<h2>Executive Summary</h2>{$item}]]>
         </ReportItem>
