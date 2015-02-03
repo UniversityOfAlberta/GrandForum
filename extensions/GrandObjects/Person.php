@@ -160,8 +160,7 @@ class Person extends BackboneModel {
      * @return Person the Person that matches the name
      */
     static function newFromNameLike($name){
-        $name = str_replace("*", "", $name);
-        $name = str_replace(".", "", $name);
+        $name = Person::cleanName($name);
         self::generateNamesCache();
         $data = array();
         if(isset(self::$namesCache[$name])){
@@ -223,6 +222,15 @@ class Person extends BackboneModel {
         }
     }
     
+    static function cleanName($name){
+        $name = preg_replace("/\(.*\)/", "", $name);
+        $name = str_replace("'", "", $name);
+        $name = str_replace(".", "", $name);
+        $name = str_replace("*", "", $name);
+        $name = trim($name);
+        return $name;
+    }
+    
     /**
      * Caches the resultset of the alis table for superfast access
      */
@@ -272,6 +280,7 @@ class Person extends BackboneModel {
                 $middleName = $row['middle_name'];
                 self::$idsCache[$row['user_id']] = $row;
                 self::$namesCache[$row['user_name']] = $row;
+                self::$namesCache["$firstName $lastName"] = $row;
                 self::$namesCache["$lastName $firstName"] = $row;
                 self::$namesCache["$firstName ".substr($lastName, 0, 1)] = $row;
                 self::$namesCache["$lastName ".substr($firstName, 0, 1)] = $row;
