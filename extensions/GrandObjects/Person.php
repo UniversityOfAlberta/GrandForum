@@ -160,49 +160,14 @@ class Person extends BackboneModel {
      * @return Person the Person that matches the name
      */
     static function newFromNameLike($name){
-        global $wgSitename;
-        $tmpPerson = Person::newFromName(str_replace(" ", ".", $name));
-        if($tmpPerson->getName() != ""){
-            return $tmpPerson;
-        }
         $name = str_replace("*", "", $name);
-        $name = str_replace(".", ".*", $name);
-        $name = str_replace(" ", ".*", $name);
-        
-        if(isset(Person::$cache[$name])){
-            return Person::$cache[$name];
-        }
+        $name = str_replace(".", "", $name);
         self::generateNamesCache();
         $data = array();
-        if(function_exists('apc_exists') && apc_exists($wgSitename.'person_name'.$name)){
-            $possibleNames = unserialize(apc_fetch($wgSitename.'person_name'.$name));
+        if(isset(self::$namesCache[$name])){
+            $data = array(0 => self::$namesCache[$name]);
         }
-        else{
-            $possibleNames = @preg_grep("/.*$name.*/i", array_keys(self::$namesCache));
-            if(function_exists('apc_store')){
-                apc_store($wgSitename.'person_name'.$name, serialize($possibleNames), 60*60);
-            }
-        }
-        if(is_array($possibleNames)){
-            foreach($possibleNames as $possible){
-                if(isset(self::$namesCache[$possible])){
-                    $data[] = self::$namesCache[$possible];
-                    break;
-                }
-            }
-        }
-        $person = new Person($data);
-        if(isset(self::$cache[$person->id]) && $person->id != ""){
-            $person = self::$cache[$person->id];
-            self::$cache[$person->name] = &$person;
-            self::$cache[$name] = &$person;
-        }
-        else{
-            self::$cache[$person->id] = &$person;
-            self::$cache[$person->name] = &$person;
-            self::$cache[$name] = &$person;
-        }
-        return $person;
+        return new Person($data);
     }
 
     /**
@@ -226,8 +191,8 @@ class Person extends BackboneModel {
         else {
             self::generateAliasCache();
             $aliases = self::$aliasCache;
-            if(isset($aliases[$alias])){
-                $data = $aliases[$alias];
+            if(isset($aliases[$alias]) && isset(self::$idsCache[$aliases[$alias]])){
+                $data = self::$idsCache[$aliases[$alias]];
             }
             else{
                 $data = array();
@@ -263,15 +228,15 @@ class Person extends BackboneModel {
      */
     static function generateAliasCache(){
         if(count(self::$aliasCache) == 0){
-            $uaTable = getTableName("user_aliases");
-            $uTable = getTableName("user");
-            $sql = "SELECT ua.alias, u.user_id, u.user_name, u.user_real_name, u.user_email, u.user_twitter, u.user_website, user_public_profile, user_private_profile, user_nationality, user_gender
-                    FROM `mw_user_aliases` as ua, `mw_user` as u 
-                    WHERE ua.user_id = u.user_id
-                    AND u.deleted != '1'";
-            $data = DBFunctions::execSQL($sql);
+            self::generateNamesCache();
+            $data = DBFunctions::select(array('mw_user_aliases' => 'ua',
+                                              'mw_user' => 'u'),
+                                        array('ua.alias',
+                                              'u.user_id'),
+                                        array('ua.user_id' => EQ(COL('u.user_id')),
+                                              'u.deleted' => NEQ(1)));
             foreach($data as $row){
-                self::$aliasCache[$row['alias']] = array(0 => $row);
+                self::$aliasCache[$row['alias']] = $row['user_id'];
             }
         }
     }
@@ -301,10 +266,22 @@ class Person extends BackboneModel {
                                               'user_gender'),
                                         array('deleted' => NEQ(1)));
             foreach($data as $row){
-                self::$namesCache[$row['user_name']] = $row;
+                $exploded = explode(".", $row['user_name']);
+                $firstName = ($row['first_name'] != "") ? $row['first_name'] : @$exploded[0];
+                $lastName = ($row['last_name'] != "") ? $row['last_name'] : @$exploded[1];
+                $middleName = $row['middle_name'];
                 self::$idsCache[$row['user_id']] = $row;
+                self::$namesCache[$row['user_name']] = $row;
+                self::$namesCache["$lastName $firstName"] = $row;
+                self::$namesCache["$firstName ".substr($lastName, 0, 1)] = $row;
+                self::$namesCache["$lastName ".substr($firstName, 0, 1)] = $row;
                 if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
                     self::$namesCache[str_replace("&nbsp;", " ", $row['user_real_name'])] = $row;
+                }
+                if($middleName != ""){
+                    self::$namesCache["$firstName $middleName $lastName"] = $row;
+                    self::$namesCache["$firstName ".substr($middleName, 0, 1)." $lastName"] = $row;
+                    self::$namesCache["$lastName ".substr($firstName, 0, 1).substr($lastName, 0, 1)] = $row;
                 }
             }
         }
@@ -1541,9 +1518,14 @@ class Person extends BackboneModel {
                     ORDER BY uu.id DESC";
             $data = DBFunctions::execSQL($sql);
             if(count($data) > 0){
-                $this->universityDuring[$startRange.$endRange] = array("university" => $data[0]['university_name'],
-                                                                       "department" => $data[0]['department'],
-                                                                       "position"   => $data[0]['position']);
+                foreach($data as $row){
+                    $this->universityDuring[$startRange.$endRange] = array("university" => $row['university_name'],
+                                                                           "department" => $row['department'],
+                                                                           "position"   => $row['position']);
+                    if($row['university_name'] != "Unknown"){
+                        break;
+                    }
+                }
             }
             else{
                 $this->universityDuring[$startRange.$endRange] = null;

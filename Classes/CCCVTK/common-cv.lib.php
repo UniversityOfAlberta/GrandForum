@@ -126,7 +126,7 @@ class CommonCV // {{{
       $record["publisher"] = $this->get_xpath("field[@id='4ad593960aba4a21bf154fa8daf37f9f']/value", $elements->item($i));
       $record["volume"] = $this->get_xpath("field[@id='0a826c656ff34e579dfcbfb373771260']/value", $elements->item($i));
       $record["number"] = $this->get_xpath("field[@id='cc1d9e14945b4e8496641dbe22b3448a']/value", $elements->item($i));
-      $record["status"] = $this->get_xpath("field[@id='cf36bbd2e16c45cba9768a84ac2d6729']/lov/@id", $elements->item($i));
+      $record["status"] = $this->get_xpath("field[@id='3b56e4362d6a495aa5d22a1de5914741']/lov/@id", $elements->item($i));
       $pr = $this->get_xpath("field[@id='2089ff1a86844b6c9a10fc63469f9a9d']/lov/@id", $elements->item($i));
       if ($pr === $CCV_CONST["Yes-No"]["Yes"])
         $record["peer_reviewed"] = true;

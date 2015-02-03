@@ -29,6 +29,15 @@ function addUserWebsite($name, $website){
     APIRequest::doAction('UserWebsite', true);
 }
 
+function addUserProfile($name, $profile){
+    $_POST['user_name'] = $name;
+    $_POST['profile'] = $profile;
+    $_POST['type'] = 'public';
+    APIRequest::doAction('UserProfile', true);
+    $_POST['type'] = 'private';
+    APIRequest::doAction('UserProfile', true);
+}
+
 function addUserRole($name, $role){
     Person::$cache = array();
     Person::$namesCache = array();
@@ -78,7 +87,9 @@ do {
 if(mysqli_error($link)) {
     die(mysqli_error($link));
 }
-
+chdir("../../symfony");
+system("./bin/phinx migrate -c phinx.php");
+chdir("../maintenance/install");
 echo "done!\n";
 require_once('../commandLine.inc');
 
@@ -194,22 +205,28 @@ if(file_exists("people.csv")){
         foreach($lines as $line){
             $cells = str_getcsv($line);
             if(count($cells) > 1){
-                $lname = $cells[0];
-                $fname = $cells[1];
-                $role = $cells[2];
-                $website = $cells[3];
-                $university = $cells[4];
-                $department = $cells[5];
-                $title = $cells[6];
-                $email = $cells[7];
+                $lname = trim($cells[0]);
+                $fname = trim($cells[1]);
+                $role = trim($cells[2]);
+                $website = trim($cells[3]);
+                $university = trim($cells[4]);
+                $department = trim($cells[5]);
+                $title = trim($cells[6]);
+                $email = trim($cells[7]);
+                $profile = trim($cells[8]);
                 $username = str_replace(" ", "", str_replace("'", "", "$fname.$lname"));
                 
                 User::createNew($username, array('real_name' => "$fname $lname", 
                                                  'password' => User::crypt(mt_rand()), 
                                                  'email' => $email));
+                Person::$cache = array();
+                Person::$namesCache = array();
+                Person::$idsCache = array();
+                Person::$rolesCache = array();
                 addUserUniversity($username, $university, $department, $title);
                 addUserRole($username, $role);
                 addUserWebsite($username, $website);
+                addUserProfile($username, $profile);
             }
         }
     }

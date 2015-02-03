@@ -15,8 +15,9 @@ class UserProfileAPI extends API{
 
 	function doAction($noEcho=false){
         $person = Person::newFromName($_POST['user_name']);
+        $profile = mysql_real_escape_string($_POST['profile']);
         $sql = "UPDATE mw_user
-                SET `user_{$_POST['type']}_profile` = '{$_POST['profile']}'
+                SET `user_{$_POST['type']}_profile` = '{$profile}'
                 WHERE user_id = '{$person->getId()}'";
         DBFunctions::execSQL($sql, true);
         if(!$noEcho){

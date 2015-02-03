@@ -74,6 +74,7 @@ class UploadCCVAPI extends API{
         else{
             $product->access_id = 0;
         }
+        $product->access = "Public";
         $product->ccv_id = $ccv_id;
         $authors = explode(",", $paper['authors']);
         foreach($authors as $author){
@@ -124,12 +125,16 @@ class UploadCCVAPI extends API{
             }
         }
         
+        // Clean up username
+        $first = Person::cleanName($first);
+        $last = Person::cleanName($last);
+        
         $person = Person::newFromName("$first.$last");
         $status = false;
         if($person->getId() == 0){
             // User Does not exist yet
             $person->name = "{$first}.{$last}";
-            $person->realname = "{$names[1]} {$names[0]}";
+            $person->realname = "{$first} {$last}";
             $person->email = "";
             $status = $person->create();
             $person = Person::newFromName("{$first}.{$last}");

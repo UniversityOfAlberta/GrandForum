@@ -570,7 +570,6 @@ class Paper extends BackboneModel{
     // Returns the url of this Paper's page
     function getUrl(){
         global $wgServer, $wgScriptPath;
-        //return "{$wgServer}{$wgScriptPath}/index.php/{$this->getCategory()}:{$this->getId()}";
         return "{$wgServer}{$wgScriptPath}/index.php/Special:Products#/{$this->getCategory()}/{$this->getId()}";
     }
     
@@ -1361,36 +1360,6 @@ class Paper extends BackboneModel{
         if(Cache::exists($this->getCacheId()) && $me->isLoggedIn()){
             // Only access the cache if the user is logged in
             $json = Cache::fetch($this->getCacheId());
-            /* // TODO: I don't think the following is needed anymore since we do a better job
-               //       at invalidating the cache whenever a change is made to the entry in the database.
-               //       I think the only time that the authors won't be completely up to date is if
-               //       a new user is added to the forum, there will be a brief time when it won't
-               //       correctly identify that user, however the cron job will resync the authors every 
-               //       10 minutes or so, forcing the invalidation.
-            $authors = $json['authors'];
-            $change = false;
-            foreach($authors as $key => $author){
-                // Make sure new authors have not been added, and if so re-cache
-                if($author['id'] == 0){
-                    $person = Person::newFromName($author['name']);
-                    if($person == null || $person->getName() == ""){
-                        $person = Person::newFromNameLike($author['name']);
-                    }
-                    if($person == null || $person->getName() == ""){
-                        $person = Person::newFromAlias($author['name']);
-                    }
-                    if($person != null && $person->getName() != ""){
-                        $change = true;
-                        $authors[$key] = array('id' => $person->getId(),
-                                               'name' => $person->getNameForForms(),
-                                               'url' => $person->getUrl());
-                    }
-                }
-            }
-            $json['authors'] = $authors;
-            if($change){
-                Cache::store($this->getCacheId(), $json, 60*60);
-            }*/
             return $json;
         }
         else{
