@@ -292,7 +292,19 @@ class UploadCCVAPI extends API{
             $nYears = max(1, $interval->y + 1);
             
             // Adjust the amount received based on how far into the funding period
-            $_POST['cash'][0] = $fund['received_amount']/$nYears;
+            if($fund['received_amount'] == ""){
+                $_POST['cash'][0] = $fund['total_amount']/$nYears;
+            }
+            else{
+                if(intval($fund['received_amount']) <= 100){
+                    // Assume a percent
+                    $_POST['cash'][0] = (($fund['received_amount']/100)*$fund['total_amount'])/$nYears;
+                }
+                else{
+                    $_POST['cash'][0] = $fund['received_amount']/$nYears;
+                }
+                    
+            }
             $_POST['kind'][0] = 0;
             
             $_POST['description'] = "";
