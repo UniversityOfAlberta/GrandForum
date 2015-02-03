@@ -57,6 +57,16 @@ class Material {
         return $material;
     }
     
+    /**
+     * Returns the number of Materials there are
+     * @return integer The number of Materials there are
+     */
+    static function countByCategory(){
+        $data = DBFunctions::select(array('grand_materials'),
+                                    array('COUNT(id)' => 'count'));
+        return $data[0]['count'];
+    }
+    
     // Returns an array of all the Materials
     // If $type is specified, only those types of materials will be returned
     static function getAllMaterials($type=''){
