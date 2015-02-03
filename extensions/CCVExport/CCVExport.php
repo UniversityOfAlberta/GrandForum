@@ -2,7 +2,6 @@
 require_once("CCVImport/CCVImport.php");
 
 $dir = dirname(__FILE__) . '/';
-require_once($dir."/../../Classes/CCCVTK/constants.lib.php");
 
 $wgSpecialPages['CCVExport'] = 'CCVExport';
 $wgExtensionMessagesFiles['CCVExport'] = $dir . 'CCVExport.i18n.php';
@@ -19,7 +18,6 @@ function runCCVExport($par) {
 }
 
 class CCVExport extends SpecialPage {
-
 
     function __construct() {
         wfLoadExtensionMessages('CCVExport');
@@ -68,6 +66,7 @@ class CCVExport extends SpecialPage {
     }
   
     static function getLovId($cat, $val, $default){
+        require_once(dirname(__FILE__) . "/../../Classes/CCCVTK/constants.lib.php");
         global $CCV_CONST;
         if(isset($CCV_CONST[$cat][$val])){
             return @$CCV_CONST[$cat][$val];
@@ -76,6 +75,7 @@ class CCVExport extends SpecialPage {
     }
     
     static function getLovVal($cat, $val, $default){
+        require_once(dirname(__FILE__) . "/../../Classes/CCCVTK/constants.lib.php");
         global $CCV_CONST;
         if(isset($CCV_CONST[$cat][$val])){
             return $val;
@@ -193,7 +193,7 @@ class CCVExport extends SpecialPage {
     }
     
     static function mapId($person, $section, $ccv){
-        global $wgUser, $CCV_CONST;
+        global $wgUser;
 
         foreach($section->field as $item){
             $id = $item['id'];
@@ -250,7 +250,7 @@ class CCVExport extends SpecialPage {
     }
     
     static function mapLanguage($person, $section, $language, $ccv){
-        global $wgUser, $CCV_CONST;
+        global $wgUser;
         $sect = $ccv->addChild("section");
         $sect->addAttribute("id", $section['id']);
         $sect->addAttribute("label", $section['label']);
@@ -302,7 +302,7 @@ class CCVExport extends SpecialPage {
     }
     
     static function mapAddress($person, $section, $address, $ccv){
-        global $wgUser, $CCV_CONST;
+        global $wgUser;
         $sect = $ccv->addChild("section");
         $sect->addAttribute("id", $section['id']);
         $sect->addAttribute("label", $section['label']);
@@ -389,7 +389,7 @@ class CCVExport extends SpecialPage {
     }
     
     static function mapTelephone($person, $section, $phone, $ccv){
-        global $wgUser, $CCV_CONST;
+        global $wgUser;
         $sect = $ccv->addChild("section");
         $sect->addAttribute("id", $section['id']);
         $sect->addAttribute("label", $section['label']);
