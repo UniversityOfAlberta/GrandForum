@@ -47,6 +47,7 @@ class IndexTable {
             $selected = ($lastRole == HQP || $wgTitle->getText() == "ALL HQP" || ($wgTitle->getNSText() == HQP && !($me->isRole(HQP) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
             $peopleSubTab['dropdown'][] = TabUtils::createSubTab(HQP, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_HQP", "$selected");
         }
+        
         if(count(Person::getAllPeople(PNI)) > 0){
             $selected = ($lastRole == PNI || $wgTitle->getText() == "ALL PNI" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
             $peopleSubTab['dropdown'][] = TabUtils::createSubTab(PNI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_PNI", "$selected");
@@ -108,10 +109,12 @@ class IndexTable {
             $themes[] = $themeAcronyms[$id].' - '.$themeNames[$id];
         }
         
-        $selected = ($wgTitle->getNSText() == $config->getValue('networkName') && 
-                     ($wgTitle->getText() == "Themes" || array_search($wgTitle->getText(), $themes) !== false)) ? "selected" : "";
-        
-        $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Themes", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Themes", "$selected");
+        if(count($themes) > 0){
+            $selected = ($wgTitle->getNSText() == $config->getValue('networkName') && 
+                         ($wgTitle->getText() == "Themes" || array_search($wgTitle->getText(), $themes) !== false)) ? "selected" : "";
+            
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Themes", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Themes", "$selected");
+        }
         
         if(WikiPage::newFromTitle("{$config->getValue('networkName')}:ALL_Conferences")->exists()){
             $selected = ($wgTitle->getNSText() == "Conference" || $wgTitle->getText() == "ALL Conferences") ? "selected" : "";
