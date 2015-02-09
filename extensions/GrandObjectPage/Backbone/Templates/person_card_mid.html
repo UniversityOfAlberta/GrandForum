@@ -1,24 +1,24 @@
 <!-- <li class="pscard  odd "> -->
-	<div class="pscard-photo">
-		<a href="<%= profile_url %>"><image src="<%= profile_photo %>" height="100px" /></a>
-	</div>
 	<div class="pscard-info">
+	    <div class="pscard-photo">
+		    <a href="<%= profile_url %>"><image src="<%= profile_photo %>" height="100px" /></a>
+	    </div>
 	  	<div class="pscard-info-left">
 	  	<h3 class="pscard-name"><a href="<%= profile_url %>"><%= name %> <span id="proles"></span></a></h3>
-	  	<ul class="nobul">
-	  		<li><b>Email:</b> <%= email %></li>
-	  		<li><b>University:</b> <%= university %></li>
-	  		<li><b>Department:</b> <%= department %></li>
-	  		<li><b>Position:</b> <%= position %></li>
-	  	</ul>
+	  	<table class="nobul" cellspacing="0">
+	  		<tr><td><b>Email&nbsp;</b></td><td><%= email %></td></tr>
+	  		<tr><td><b>University&nbsp;</b></td><td><%= university %></td></tr>
+	  		<tr><td><b>Department&nbsp;</b></td><td><%= department %></td></tr>
+	  		<tr><td><b>Position&nbsp;</b></td><td><%= position %></td></tr>
+	  	</table>
 	  	</div>
 	  	<div class="pscard-info-right">
-	  	<% if (public_profile) { %>
-	  	<span class="pscard-profile_hdr">Public Profile</span>
-	  	<div class="pscard-profile">
-	  		<p><%- public_profile %></p>
-	 	</div>
-	 	<% } %>
+	      	<% if (public_profile) { %>
+	      	<span class="pscard-profile_hdr">Public Profile</span>
+	      	<div class="pscard-profile">
+	      		<p><%- public_profile %></p>
+	     	</div>
+	     	<% } %>
 	 	</div>
   	</div>
   	<div class="floatnone"></div>

@@ -11,7 +11,9 @@ ul li.pscard, ul.nobul {
   list-style-image: none;
   list-style-type: none;
 }
-
+table.nobul {
+    margin-left: 20px;
+}
 ul.nobul {
   margin-top: 0;
 }
@@ -29,21 +31,29 @@ div.pscard-photo, div.pscard-info, div.pscard-profile, div.pscard-info ul{
   float:left;
 }
 div.pscard-info{
-  width: 90%;
+  position: relative;
+  width: 100%;
 }
 div.pscard-profile {
+    
  /* width: 70%;
   padding-left:  30px;
   margin-top: -22px;*/
 }
 div.pscard-info-left{
-  float: left;
-  width: 30%;
+  display: inline-block;
+  min-width: 300px;
   text-align: left;
+  
 }
 div.pscard-info-right{
-  float: left;
-  width: 70%;
+  display: inline-block;
+  position: absolute;
+  max-height: 100px;
+  overflow-y: auto;
+  left: 380px;
+  right: 10px;
+  top: 0;
 }
 span.pscard-profile_hdr{
   display: block;
