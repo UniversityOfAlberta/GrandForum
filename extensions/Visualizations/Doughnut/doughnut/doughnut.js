@@ -5,7 +5,7 @@ var dimension;
 var lastP;
 
 var data = Array();
-Raphael.fn.doughnut = function (name, cx, cy, data, stroke, raphael) {
+Raphael.fn.doughnut = function (name, cx, cy, data, stroke, clickable, fn, raphael) {
     var paper = this,
         rad = Math.PI / 180,
         legend = data.legend,
@@ -37,6 +37,7 @@ Raphael.fn.doughnut = function (name, cx, cy, data, stroke, raphael) {
         var color = p.color;
         var bcolor = p.bcolor;
         var angle = p.angle;
+        var label = labels[0].attr('text');
         if(color.b == p.colorOrig.b && bcolor.b == p.bcolorOrig.b){
             color.b += 0.25;
             color.b = Math.min(1, color.b);
@@ -44,6 +45,22 @@ Raphael.fn.doughnut = function (name, cx, cy, data, stroke, raphael) {
             bcolor.b += 0.25;
             bcolor.b = Math.min(1, bcolor.b);
             p.attr('gradient', angle + "-" + bcolor + "-" + color);
+        }
+        if(clickable && label != "Others"){
+            frame.attr('cursor', 'pointer');
+            labels[0].attr('cursor', 'pointer');
+            labels[1].attr('cursor', 'pointer');
+            frame.unclick();
+            labels[0].unclick();
+            labels[1].unclick();
+            frame.click(function(){fn(label)});
+            labels[0].click(function(){fn(label)});
+            labels[1].click(function(){fn(label)});
+        }
+        else{
+            frame.attr('cursor', 'default');
+            labels[0].attr('cursor', 'default');
+            labels[1].attr('cursor', 'default');
         }
     }
     
@@ -139,12 +156,12 @@ Raphael.fn.doughnut = function (name, cx, cy, data, stroke, raphael) {
         var bcolorOrig = Raphael.getRGB(legend[l]['color']);
         bcolorOrig = Raphael.rgb2hsb(bcolorOrig.r, bcolorOrig.g, bcolorOrig.b);
         bcolorOrig.b = bcolorOrig.b/2;
-        
+
         var p = sector(cx, 
                        cy, 
                        angle, 
                        angle + angleplus,
-                       {gradient: angle + "-" + bcolor + "-" + color, stroke: stroke, "stroke-width": 0.75},
+                       {gradient: angle + "-" + bcolor + "-" + color, stroke: d3.rgb(legend[l]['color']).darker(4), "stroke-width": 1},
                        l);
         p.color = color;
         p.bcolor = bcolor;
@@ -162,12 +179,21 @@ Raphael.fn.doughnut = function (name, cx, cy, data, stroke, raphael) {
         p.mouseover(function () {
             lastP = p;
             highlight(lastP, ms);
-            placePopUp();    
+            placePopUp();   
         }).mouseout(function () {
             unhighlight(p, ms);
             labels.hide();
             frame.hide();
         });
+        if(clickable){
+            if(label != "Others"){
+                p.attr("cursor", "pointer");
+                p.click(function(){
+                    fn(label);
+                });
+            }
+        }
+        
         angle += angleplus;
     };
     
@@ -234,10 +260,9 @@ function filter(data){
     }
 }
 
-function create(holder, data){
+function create(holder, data, clickable, fn){
     (function (raphael) {
         $(function () {
-            
             sortData(data);
             filter(data);
         
@@ -245,7 +270,7 @@ function create(holder, data){
             var height = holder.height();
             if(typeof data.width != 'undefined' && data.width > 0){
                 width = data.width;
-                holder.height(width);
+                holder.width(width);
             }
             if(typeof data.height != 'undefined' && data.height > 0){
                 height = data.height;
@@ -260,7 +285,7 @@ function create(holder, data){
 
             r = Raphael(holder.attr('id') + 'doughnut', width, height);
             
-            r.doughnut(holder.attr('id') + 'doughnut', dimension/2 + 10, dimension/2 + 10, data, "#000", raphael);
+            r.doughnut(holder.attr('id') + 'doughnut', dimension/2 + 10, dimension/2 + 10, data, "#000", clickable, fn, raphael);
             
             labels = r.set();
             txt = {font: '12px Helvetica, Arial, sans-serif', fill: "#fff"};
@@ -280,7 +305,7 @@ function create(holder, data){
     })(Raphael);
 }
 
-$.fn.doughnut = function(data){
+$.fn.doughnut = function(data, clickable, fn){
     var holder = this;
     var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
     if(typeof data == 'string' && pattern.test(data)){
@@ -296,14 +321,49 @@ $.fn.doughnut = function(data){
         spin = spinner($(this).attr('id') + 'spinner', 40, 75, 12, 10, '#888');
         var id = $(this).attr('id');
         $.get(data, function(response){
-            spin();
-            $("#" + id).html('');
-            create(holder, response[0]);
+            if(response[0].levels[0].values.length > 0){
+                spin();
+                $("#" + id).empty();
+                if(response[0].width == "100%"){
+                    $("#" + id).width("100%");
+                    response[0].width = $("#" + id).width();
+                    response[0].height = response[0].width*0.50;
+                    create(holder, response[0], clickable, fn);
+                    $("#" + id).width("100%");
+                    var maxWidth = $("#" + id).width();
+                    setInterval(function(){
+                        if($("#" + id).is(":visible") && maxWidth != $("#" + id).width()){
+                            response[0].width = $("#" + id).width();
+                            response[0].height = response[0].width*0.50;
+                            $("#" + id).empty();
+                            create(holder, response[0], clickable, fn);
+                            $("#" + id).width("100%");
+                            maxWidth = $("#" + id).width();
+                        }
+                    }, 100);
+                }
+                else{
+                    create(holder, response[0], clickable, fn);
+                }
+            }
+            else{
+                $("#" + id).prev().remove();
+                $("#" + id).next().remove();
+                $("#" + id).remove();
+            }
         });
     }
     else if(typeof data != 'string'){
         // Data is an object
         create(holder, data);
+        var maxWidth = width;
+        setInterval(function(){
+            if($("#" + id).is(":visible") && maxWidth != $("#" + id).width()){
+                maxWidth = $("#" + id).width();
+                $("#" + id).empty();
+                create(holder, data, clickable, fn);
+            }
+        }, 100);
     }
 }
 

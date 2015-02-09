@@ -1,5 +1,6 @@
 <?php
 
+require_once('PersonPage/PersonProfileTab.php');
 require_once('PersonPage/PersonVisualizationsTab.php');
 autoload_register('GrandObjectPage/PersonPage');
 

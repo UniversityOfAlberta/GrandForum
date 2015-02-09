@@ -17,22 +17,14 @@ function initGlobalSearch($out, $skin){
 class GlobalSearch extends BackbonePage {
     
     function getTemplates(){
-        return array('Backbone/small_person_card',
-                     'Backbone/small_project_card',
-                     'Backbone/small_product_card',
-                     'Backbone/small_wiki_card',
-                     'Backbone/small_pdf_card',
+        return array('Backbone/*',
                      'global_search',
                      'global_search_results',
                      'global_search_group');
     }
     
     function getViews(){
-        return array('Backbone/SmallPersonCardView',
-                     'Backbone/SmallProjectCardView',
-                     'Backbone/SmallProductCardView',
-                     'Backbone/SmallWikiCardView',
-                     'Backbone/SmallPDFCardView',
+        return array('Backbone/*',
                      'GlobalSearchView');
     }
     

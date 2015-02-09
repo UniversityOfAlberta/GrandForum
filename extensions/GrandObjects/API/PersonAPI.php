@@ -4,8 +4,9 @@ class PersonAPI extends RESTAPI {
     
     function doGET(){
         if($this->getParam('id') != ""){
+            $me = Person::newFromWgUser();
             $person = Person::newFromId($this->getParam('id'));
-            if($person == null || $person->getName() == ""){
+            if($person == null || $person->getName() == "" || (!$me->isLoggedIn() && !$person->isRoleAtLeast(CNI))){
                 $this->throwError("This user does not exist");
             }
             return $person->toJSON();
@@ -282,5 +283,27 @@ class PersonProductAPI extends RESTAPI {
     
 }
 
+class PersonRoleStringAPI extends RESTAPI {
+
+    function doGET(){
+        $person = Person::newFromId($this->getParam('id'));
+        $json = array('id' => $person->getId(),
+                      'roleString' => $person->getRoleString());
+        return json_encode($json);
+    }
+    
+    function doPOST(){
+        return doGET();
+    }
+    
+    function doPUT(){
+        return doGET();
+    }
+    
+    function doDELETE(){
+        return doGET();
+    }
+
+}
 
 ?>
