@@ -1,15 +1,15 @@
 <!-- <li class="pscard  odd "> -->
 	<div class="pscard-photo">
-		<a href="<%- profile_url %>"><image src="<%- profile_photo %>" height="100px" /></a>
+		<a href="<%= profile_url %>"><image src="<%= profile_photo %>" height="100px" /></a>
 	</div>
 	<div class="pscard-info">
 	  	<div class="pscard-info-left">
-	  	<h3 class="pscard-name"><%- name %> <span id="proles"></span></h3>
+	  	<h3 class="pscard-name"><a href="<%= profile_url %>"><%= name %> <span id="proles"></span></a></h3>
 	  	<ul class="nobul">
-	  		<li><b>Email:</b> <%- email %></li>
-	  		<li><b>University:</b> <%- university %></li>
-	  		<li><b>Department:</b> <%- department %></li>
-	  		<li><b>Position:</b> <%- position %></li>
+	  		<li><b>Email:</b> <%= email %></li>
+	  		<li><b>University:</b> <%= university %></li>
+	  		<li><b>Department:</b> <%= department %></li>
+	  		<li><b>Position:</b> <%= position %></li>
 	  	</ul>
 	  	</div>
 	  	<div class="pscard-info-right">

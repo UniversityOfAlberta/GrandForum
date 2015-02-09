@@ -26,7 +26,8 @@ SearchView = Backbone.View.extend({
     },
     
     events: {
-        "click #search_btn": "doSearch"
+        "click #search_btn": "doSearch",
+        "keyup #t_query": "keyUp"
     },
 
     setup_pagination: function(items, current_page){
@@ -74,6 +75,12 @@ SearchView = Backbone.View.extend({
             resetSlider(that.max_products);
         });
 
+    },
+    
+    keyUp: function(e){
+        if(e.keyCode == 13){ // Enter Key
+            this.doSearch();
+        }
     },
 
     doSearch: function(){
