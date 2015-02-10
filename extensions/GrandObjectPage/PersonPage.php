@@ -195,6 +195,9 @@ class PersonPage {
             }
         }
         $wgOut->setPageTitle($person->getReversedName()." (".implode(", ", $roleNames).")");
+        $wgOut->addHTML("<script type='text/javascript'>
+            $('.custom-title').hide();
+        </script>");
     }
     
     static function createSubTabs($tabs){
