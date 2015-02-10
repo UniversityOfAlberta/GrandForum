@@ -6,8 +6,6 @@
 
 class PDF extends BackboneModel {
     
-    static $projectsCache = array();
-    
     var $id;
     var $reportId;
     var $userId;
@@ -18,6 +16,7 @@ class PDF extends BackboneModel {
     var $submitted;
     var $timestamp;
     var $project = false;
+    var $projectId = 0;
     
     /**
      * Returns a new PDF using the given report_id
@@ -25,17 +24,10 @@ class PDF extends BackboneModel {
      * @return PDF The PDF that matches the report_id
      */
     static function newFromId($id){
-        $data = DBFunctions::select(array('grand_pdf_report'),
-                                    array('report_id',
-                                          'user_id',
-                                          'generation_user_id',
-                                          'submission_user_id',
-                                          'year',
-                                          'type',
-                                          'submitted',
-                                          'timestamp',
-                                          'token'),
-                                    array('report_id' => EQ($id)));
+        $id = mysql_real_escape_string($id);
+        $data = DBFunctions::execSQL("SELECT r.report_id, r.user_id, r.generation_user_id, r.submission_user_id, r.year, r.type, r.submitted, r.timestamp, r.token, i.sub_id
+                                      FROM `grand_pdf_report` r LEFT JOIN `grand_pdf_index` i ON r.report_id = i.report_id
+                                      WHERE r.report_id = '{$id}'");
         return new PDF($data);
     }
     
@@ -45,46 +37,24 @@ class PDF extends BackboneModel {
      * @return PDF The PDF that matches the token
      */
     static function newFromToken($tok){
-        $data = DBFunctions::select(array('grand_pdf_report'),
-                                    array('report_id',
-                                          'user_id',
-                                          'generation_user_id',
-                                          'submission_user_id',
-                                          'year',
-                                          'type',
-                                          'submitted',
-                                          'timestamp',
-                                          'token'),
-                                    array('token' => EQ($tok)));
+        $tok = mysql_real_escape_string($tok);
+        $data = DBFunctions::execSQL("SELECT r.report_id, r.user_id, r.generation_user_id, r.submission_user_id, r.year, r.type, r.submitted, r.timestamp, r.token, i.sub_id
+                                      FROM `grand_pdf_report` r LEFT JOIN `grand_pdf_index` i ON r.report_id = i.report_id
+                                      WHERE r.token = '{$tok}'");
         return new PDF($data);
     }
     
     static function getAllPDFs(){
-        $data = DBFunctions::select(array('grand_pdf_report'),
-                                    array('report_id',
-                                          'user_id',
-                                          'generation_user_id',
-                                          'submission_user_id',
-                                          'year',
-                                          'type',
-                                          'submitted',
-                                          'timestamp',
-                                          'token'));
+        $data = DBFunctions::execSQL("SELECT r.report_id, r.user_id, r.generation_user_id, r.submission_user_id, r.year, r.type, r.submitted, r.timestamp, r.token, i.sub_id
+                                      FROM (SELECT MAX(r1.report_id) as report_id
+                                            FROM `grand_pdf_report` r1 LEFT JOIN `grand_pdf_index` i1 ON r1.report_id = i1.report_id
+                                            GROUP BY r1.user_id, r1.year, r1.type, i1.sub_id) t1, `grand_pdf_report` r LEFT JOIN `grand_pdf_index` i ON r.report_id = i.report_id
+                                      WHERE t1.report_id = r.report_id");
         $pdfs = array();
         foreach($data as $row){
             $pdfs[] = new PDF(array($row));
         }
         return $pdfs;
-    }
-    
-    static function generateProjectsCache(){
-        if(count(PDF::$projectsCache) == 0){
-            $data = DBFunctions::select(array('grand_pdf_index'),
-                                        array('report_id', 'sub_id'));
-            foreach($data as $row){
-                PDF::$projectsCache[$row['report_id']] = $row['sub_id'];
-            }
-        }
     }
     
     function PDF($data){
@@ -98,6 +68,7 @@ class PDF extends BackboneModel {
             $this->type = $data[0]['type'];
             $this->submitted = $data[0]['submitted'];
             $this->timestamp = $data[0]['timestamp'];
+            $this->projectId = $data[0]['sub_id'];
         }
     }
     
@@ -147,18 +118,13 @@ class PDF extends BackboneModel {
     }
     
     function getProjectId(){
-        PDF::generateProjectsCache();
-        if(isset(PDF::$projectsCache[$this->getReportId()])){
-            return PDF::$projectsCache[$this->getReportId()];
-        }
-        return "";
+        return $this->projectId;
     }
     
     function getProject(){
-        PDF::generateProjectsCache();
         if($this->project === false){
-            if(isset(PDF::$projectsCache[$this->getReportId()])){
-                $this->project = Project::newFromId(PDF::$projectsCache[$this->getReportId()]);
+            if($this->projectId != null){
+                $this->project = Project::newFromId($this->projectId);
             }
             else{
                 $this->project = null;
