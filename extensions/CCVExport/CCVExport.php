@@ -50,7 +50,7 @@ class CCVExport extends SpecialPage {
       
         $wgOut->setPageTitle("Export To CCV");
 
-        $wgOut->addHTML("<p><a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:CCVExport?getXML'>[Download XML]</a></p>");
+        $wgOut->addHTML("<p><a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:CCVExport?getXML'>Download XML</a></p>");
 
         // Display export preview
         $xml = CCVExport::exportXML();
