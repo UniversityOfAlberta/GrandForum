@@ -56,6 +56,7 @@ abstract class AbstractReport extends SpecialPage {
         $pers = Person::newFromId($sto->metadata('user_id'));
         $pers->id = $sto->metadata('user_id');
         $type = $sto->metadata('type');
+        $year = $sto->metadata('year');
         switch($type){
             case RPTP_NORMAL:
                 $type = "NIReport";
@@ -76,6 +77,9 @@ abstract class AbstractReport extends SpecialPage {
                 break;
             case RPTP_LEADER:
                 $type = "ProjectReport";
+                break;
+            case RPTP_SUBPROJECT:
+                $type = "SubProjectReport";
                 break;
             case RPTP_REVIEWER:
                 $type = "ReviewReport";
@@ -126,7 +130,7 @@ abstract class AbstractReport extends SpecialPage {
                 break;
             }
         }
-        return new DummyReport($type, $pers, $proj);
+        return new DummyReport($type, $pers, $proj, $year);
     }
     
     // Creates a new AbstractReport from the given $xmlFileName
