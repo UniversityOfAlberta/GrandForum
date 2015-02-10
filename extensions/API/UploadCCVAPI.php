@@ -86,7 +86,12 @@ class UploadCCVAPI extends API{
             if($field != ""){
                 foreach($structure['data'] as $dkey => $dfield){
                     if($dfield['ccvtk'] == $key){
-                        $product->data[$dkey] = $field;
+                        if($dkey == 'peer_reviewed'){
+                            $product->data[$dkey] = ($field) ? "Yes" : "No";
+                        }
+                        else{
+                            $product->data[$dkey] = $field;
+                        }
                         break;
                     }
                 }
@@ -563,6 +568,17 @@ class UploadCCVAPI extends API{
             }
             foreach($errorProducts as $product){
                 $json['error'][] = $product;
+            }
+            if($error == ""){
+                DBFunctions::begin();
+                DBFunctions::delete('grand_ccv',
+                                    array('user_id' => $person->getId()),
+                                    true);
+                DBFunctions::insert('grand_ccv',
+                                    array('user_id' => $person->getId(),
+                                          'ccv' => $file_contents),
+                                    true);
+                DBFunctions::commit();
             }
             $obj = json_encode($json);
             echo <<<EOF

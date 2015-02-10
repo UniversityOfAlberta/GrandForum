@@ -284,6 +284,7 @@ class Person extends BackboneModel {
                 self::$namesCache["$lastName $firstName"] = $row;
                 self::$namesCache["$firstName ".substr($lastName, 0, 1)] = $row;
                 self::$namesCache["$lastName ".substr($firstName, 0, 1)] = $row;
+                self::$namesCache[substr($firstName, 0, 1)." $lastName"] = $row;
                 if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
                     self::$namesCache[str_replace("&nbsp;", " ", $row['user_real_name'])] = $row;
                 }
@@ -3646,6 +3647,20 @@ class Person extends BackboneModel {
         else{
             return null;
         }
+    }
+    
+    /**
+     * Returns the CCV XML that belongs to this Person
+     * @return string The CCV XML that belongs to this Person
+     */
+    function getCCV(){
+        $data = DBFunctions::select(array('grand_ccv'),
+                                    array('ccv'),
+                                    array('user_id' => $this->getId()));
+        if(count($data) > 0){
+            return $data[0]['ccv'];
+        }
+        return "";
     }
 
     function isUnassignedEvaluator(){

@@ -516,44 +516,90 @@ class Paper extends BackboneModel{
         }
     }
     
-    // Returns the Id of this Paper
+    /**
+     * Returns the id of this Paper
+     * @return integer The id of this Paper
+     */
     function getId(){
         return $this->id;
     }
     
-    // Returns the category of this Paper
-    // Either: Publication or Artifact
+    /**
+     * Returns the ccv id of this Paper
+     * @return string The ccv id of this Paper
+     */
+    function getCCVId(){
+        return $this->ccv_id;
+    }
+    
+    /**
+     * Returns the bibtex id of this Paper
+     * @return string The bibtex id of this Paper
+     */
+    function getBibTexId(){
+        return $this->bibtex_id;
+    }
+    
+    /**
+     * Returns the category of this Paper
+     * @return string The category of this Paper
+     */
     function getCategory(){
         return $this->category;
     }
     
-    // Returns the abstract or description of this Paper
+    /**
+     * Returns the abstract or description of this Paper
+     * @return string The abstract or description of this Paper
+     */
     function getDescription(){
         return $this->description;
     }
-    
-    // Returns the title of this Paper
+
+    /**
+     * Returns the title of this Paper
+     * @return string The title of this Paper
+     */
     function getTitle(){
         return $this->title;
     }
-    
-    // Returns the title of this Paper
+
+    /**
+     * Returns the status of this Paper
+     * @return string The status of this Paper
+     */
     function getStatus(){
         return $this->status;
     }
     
+    /**
+     * Returns the id of the Person who has access to this Paper (0 if everyone)
+     * @return integer The id of the Person who has access to this Paper
+     */
     function getAccessId(){
         return $this->access_id;
     }
     
+    /**
+     * Returns the id of the Person who created this Paper
+     * @return integer The id of the Person who created this Paper
+     */
     function getCreatedBy(){
         return $this->created_by;
     }
     
+    /**
+     * Returns the access level of this Paper (either 'Public' or 'Forum')
+     * @return string The access level of this Paper
+     */
     function getAccess(){
         return $this->access;
     }
     
+    /**
+     * Returns whether or not this Paper is published or not
+     * @return boolean Whether or not this Paper is published or not
+     */
     function isPublished(){
         $status = $this->getStatus();
         switch ($this->getType()) {
@@ -582,17 +628,19 @@ class Paper extends BackboneModel{
         }
     }
     
-    // Returns the wiki formatted title of this Paper (The page that it resides)
-    function getWikiTitle(){
-        return str_replace("?", "%3F", $this->title);
-    }
-    
-    // Returns the url of this Paper's page
+    /**
+     * Returns the url of this Paper's page
+     * @return string The url of this Paper's page
+     */
     function getUrl(){
         global $wgServer, $wgScriptPath;
         return "{$wgServer}{$wgScriptPath}/index.php/Special:Products#/{$this->getCategory()}/{$this->getId()}";
     }
     
+    /**
+     * Returns an array of all the unique authors in the DB
+     * @return array All the unique authors in the DB
+     */
     static function getAllAuthors(){
         $data = DBFunctions::select(array("grand_product_authors"),
                                     array("author"));
@@ -606,7 +654,12 @@ class Paper extends BackboneModel{
         return $authors;
     }
     
-    // Returns an array of authors who wrote this Paper
+    /**
+     * Returns an array of authors who wrote this Paper
+     * @param boolean $evaluate Whether or not to ignore the cache
+     * @param boolean $cache Whether or not to cache the authors
+     * @return array The authors who wrote this Paper
+     */
     function getAuthors($evaluate=true, $cache=true){
         if($this->authorsWaiting && $evaluate){
             $authors = array();
@@ -683,6 +736,10 @@ class Paper extends BackboneModel{
         return $this->authors;
     }
     
+    /**
+     * Generates a cache so that when a sync is being done 
+     * it knows what the previous state was
+     */
     function generateOldSyncCache(){
         if(count(self::$oldSyncCache) == 0){
             $sql = "SELECT *
@@ -765,7 +822,11 @@ class Paper extends BackboneModel{
         }
     }
     
-    // Returns whether or not this paper belongs to the specified project
+    /**
+     * Returns whether or not this Paper belongs to the specified Project
+     * @param Project $project The project to check
+     * @return boolean Whether or not this Paper belongs to the specifed Project
+     */
     function belongsToProject($project){
         if($project == null){
             return false;
@@ -778,7 +839,10 @@ class Paper extends BackboneModel{
         return false;
     }
     
-    // Returns an array of Projects which this Paper is related to
+    /**
+     * Returns an array or Projects which this Paper is related to
+     * @return array The Projects which this Paper is related to
+     */
     function getProjects(){
         if($this->projectsWaiting){
             self::generateProductProjectsCache();
@@ -796,8 +860,8 @@ class Paper extends BackboneModel{
     }
     
     /**
-     * Returns the Universities which are associated with this product
-     * @return array The Universities which are associated with this product
+     * Returns the Universities which are associated with this Paper
+     * @return array The Universities which are associated with this Paper
      */
     function getUniversities(){
         $people = $this->getAuthors();
@@ -811,11 +875,18 @@ class Paper extends BackboneModel{
         return array_values($unis);
     }
     
+    /**
+     * Returns whether or not this Paper is related to this network (has projects)
+     * @return boolean Whether or not this Paper is related to this network
+     */
     function isGrandRelated(){
         return (count($this->getProjects()) > 0);
     }
-    
-    // Returns the date of this Paper
+
+    /**
+     * Returns the date of this Paper
+     * @return string The date of this Paper
+     */
     function getDate(){
         global $config;
         $dates = $config->getValue('projectPhaseDates');
@@ -825,7 +896,10 @@ class Paper extends BackboneModel{
         return $date;
     }
     
-    // Returns the type of this Paper
+    /**
+     * Returns the type of this Paper
+     * @return strig The type of this Paper
+     */
     function getType(){
         return $this->type;
     }
@@ -862,7 +936,10 @@ class Paper extends BackboneModel{
 	    }
 	}
     
-    // Returns the venue for this Paper
+    /**
+     * Returns the venue for this Paper (legacy stuff)
+     * @return string The venue for this Paper
+     */
     function getVenue(){
         $venue = $this->venue;
         if( empty($venue) ){
@@ -884,21 +961,31 @@ class Paper extends BackboneModel{
         if(empty($venue)){
             $venue = ArrayUtils::get_string($this->data, 'location');
         }
-
         return $venue;
     }
-    
-    // Returns the domain specific data for this Paper
+
+    /**
+     * Returns the domain specific data for this Paper
+     * @return array The domain specific data for this Paper
+     */
     function getData(){
         return $this->data;
     }
     
-    // Return the deleted flag for this Paper
+    /**
+     * Returns whether or not this Paper is deleted
+     * @return boolean Whether or not this Paper is deleted
+     */
     function isDeleted(){
         return ($this->deleted === "1");
     }
 
-    // Returns whether or not this Paper has been reported in the given year, with the reported type (must be either 'RMC' or 'NCE')
+    /**
+     * Returns whether or not this Paper has been reported in the given year
+     * @param string $year The reporting year to check
+     * @param string $reportedType The type of reporting to check (must be either 'RMC' or 'NCE')
+     * @return boolean Whether or not this Paper has been reported in the given year
+     */
     function hasBeenReported($year, $reportedType){
         if(($reportedType == 'RMC' || $reportedType == 'NCE')){
             if(!isset($this->reported[$reportedType])){
@@ -912,6 +999,11 @@ class Paper extends BackboneModel{
         return false;
     }
     
+    /**
+     * Returns the years that this Paper was reported
+     * @param string $reportedType The type of reporting to check (must be either 'RMC' or 'NCE')
+     * @return array The years that this Paper was reported
+     */
     function getReportedYears($reportedType){
         if(!isset($this->reported[$reportedType])){
             $this->reported['RMC'] = array();
@@ -1044,11 +1136,12 @@ class Paper extends BackboneModel{
         return trim($citation);
     }
 
+
     /**
-    *
-    * Checks appropriate type of paper for requred venue, pages and publisher fields. If paper falls under category that
-    * requires these fields, it checks them for completeness, otherwise returns them as complete.
-    */
+     * Checks appropriate type of paper for requred venue, pages and publisher fields. If paper falls under category that
+     * requires these fields, it checks them for completeness, otherwise returns them as complete.
+     * @return array An associative array describing the completeness of this Paper
+     */
     function getCompleteness(){
         $noVenue = $noPublisher = $noPages = false;
         $completeness = array("venue"=>true, 'pages'=>true, 'publisher'=>true);
@@ -1071,33 +1164,6 @@ class Paper extends BackboneModel{
         }
 
         return $completeness;
-    }
-
-    static function friendly_type($type) {
-        switch ($type) {
-        case 'Book':
-            return 'Book/Book chapter';
-        case 'Collection':
-        case 'Proceedings_Paper':
-            return 'Proceedings paper';
-        case 'Journal_Paper':
-            return 'Article';
-        case 'Manual':
-            return $type;
-        case 'MastersThesis_Paper':
-            return 'M.Sc. thesis';
-        case 'Misc_Paper':
-            return 'Miscellaneous';
-        case 'PHDThesis_Paper':
-            return 'Ph.D. thesis';
-        case 'Poster':
-        case 'Poster_Ref':
-            return 'Poster';
-        case 'TechReport':
-            return 'Technical report';
-        }
-
-        return '';
     }
     
     static function getPublicationTypes(){

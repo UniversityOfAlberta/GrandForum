@@ -29,8 +29,6 @@ class CCVExport extends SpecialPage {
         global $userID, $wgDBname;
       
         $userID = $wgUser->getId();
-        #$userID = 1392;  // TEST
-        #$userID = 3;     // TEST
 
         if(isset($_GET['getXML'])){
             $table_type = $_GET['getXML'];
@@ -54,14 +52,11 @@ class CCVExport extends SpecialPage {
 
         $wgOut->addHTML("<p><a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:CCVExport?getXML'>[Download XML]</a></p>");
 
-        # Display export preview
+        // Display export preview
         $xml = CCVExport::exportXML();
-        $xml = str_replace("<", "&lt;", $xml); # show tags as text
-        $xml = str_replace("\n", "<br/>", $xml); # show newlines
-        $xml = str_replace(" ", "&nbsp;", $xml); # show indents
-        #$wgOut->addHTML('<p><b>userID</b> '.$userID);    // TEST
-        #$wgOut->addHTML('<p><b>dbase</b> '.$wgDBname);   // TEST
-        # 'pre-wrap' for extra-long lines:
+        $xml = str_replace("<", "&lt;", $xml); // show tags as text
+        $xml = str_replace("\n", "<br/>", $xml); // show newlines
+        $xml = str_replace(" ", "&nbsp;", $xml); // show indents
         $wgOut->addHTML('<p><pre style="white-space:pre-wrap;">'.$xml."</pre></p>");
     }
   
@@ -82,10 +77,41 @@ class CCVExport extends SpecialPage {
         }
         return $default;
     }
+    
+    static function setAttribute($el, $attr, $val){
+        if(isset($el[$attr])){
+            $el[$attr] = $val;
+        }
+        else{
+            $el->addAttribute($attr, $val);
+        }
+    }
+    
+    static function setChild($el, $tag, $attr="", $val=""){
+        if($attr != ""){
+            $children = $el->xpath("{$tag}[@{$attr}='{$val}']");
+        }
+        else{
+            $children = $el->xpath("{$tag}");
+        }
+        if(count($children) > 0){
+            return $children[0];
+        }
+        else{
+            $field = $el->addChild($tag);
+            if($attr != ""){
+                $field->addAttribute($attr, $val);
+            }
+            return $field;
+        }
+    }
 
     static function exportXML(){
         global $wgOut, $wgUser;
         global $userID;
+        
+        $person = Person::newFromId($userID);
+        $personCCV = $person->getCCV();
 
         // Template Files
         $map_file = getcwd()."/extensions/GrandObjects/Products.xml";
@@ -94,7 +120,14 @@ class CCVExport extends SpecialPage {
         $lang_file = getcwd()."/extensions/CCVExport/templates/Language.xml";
         $addr_file = getcwd()."/extensions/CCVExport/templates/Address.xml";
         $phone_file = getcwd()."/extensions/CCVExport/templates/Telephone.xml";
-        $ccv_tmpl = getcwd()."/extensions/CCVExport/templates/ccv_template.xml";
+        
+        if($personCCV != ""){
+            $ccv = simplexml_load_string($personCCV);
+        }
+        else{
+            $ccv_tmpl = getcwd()."/extensions/CCVExport/templates/ccv_template.xml";
+            $ccv = simplexml_load_file($ccv_tmpl);
+        }
 
         // Load the templates
         $map = simplexml_load_file($map_file);
@@ -103,9 +136,6 @@ class CCVExport extends SpecialPage {
         $lang_map = simplexml_load_file($lang_file);
         $addr_map = simplexml_load_file($addr_file);
         $phone_map = simplexml_load_file($phone_file);
-        $ccv = simplexml_load_file($ccv_tmpl);
-
-        $person = Person::newFromId($userID); // Set at top in case testing
 
         $all_products = $person->getPapers("Publication", false, "both");
 
@@ -120,6 +150,8 @@ class CCVExport extends SpecialPage {
                 $prod_sorted[$t][] = $p;
             }
         }
+        
+        self::setAttribute($ccv, 'dateTimeGenerated', date('Y-m-d H:i:s'));
 
         $section = $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']/section[@id='2687e70e5d45487c93a8a02626543f64']");
         $res = CCVExport::mapId($person, 
@@ -154,7 +186,7 @@ class CCVExport extends SpecialPage {
         $section = $ccv->xpath("section[@id='047ec63e32fe450e943cb678339e8102']/section[@id='46e8f57e67db48b29d84dda77cf0ef51']");
         foreach($prod_sorted as $type => $products){
             foreach($products as $product){
-                # CCV does not include 'Rejected' Publishing Status
+                // CCV does not include 'Rejected' Publishing Status
                 if($product->getStatus() == 'Rejected'){
                     continue;
                 }
@@ -182,7 +214,7 @@ class CCVExport extends SpecialPage {
                                      $section[0]);
         }
 
-        # Format and indent the XML
+        // Format and indent the XML
         $dom = new DOMDocument ();
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
@@ -468,8 +500,6 @@ class CCVExport extends SpecialPage {
                 $lov = $field->addChild('lov');
                 $lov->addAttribute('id', '00000000000000000000000100002900');
                 $supers = $hqp->getSupervisors();
-                #echo 'SUPERS<br/>';
-                #echo '<pre>'.var_dump($supers).'</pre>'; // TEST DUMP
                 if (count($supers) > 1) 
                     $field->lov =  "Co-Supervisor";
                 else
@@ -541,10 +571,6 @@ class CCVExport extends SpecialPage {
             else if($item_name == "Study / Postdoctoral Level"){
                 $uni = $hqp->getUniversity();
                 $hqp_pos = $uni['position'];
-                #echo 'UNI POSITION<br/>';
-                #echo '<pre>'.$hqp_pos.'</pre>'; // TEST DUMP
-                #echo 'DEGREE MAP<br/>';
-                #echo '<pre>'.$degree_map.'</pre>'; // TEST DUMP
                 if(!empty($hqp_pos) && isset($degree_map[$hqp_pos])){
                     $field = $ccv_item->addChild("field");
                     $field->addAttribute('id', $item_id);
@@ -556,8 +582,8 @@ class CCVExport extends SpecialPage {
                 }
             }
             else if($item_name == "Student Degree Status"){
-                # If active  Completed 
-                # Otherwise  In Progress
+                // If active  Completed 
+                // Otherwise  In Progress
                 $hqp_pos = $hqp->getPosition();
                 if(!empty($hqp_pos) && $hqp_pos !== 'PostDoc'){
                     $status_map = array('Completed'=>"00000000000000000000000000000068",
@@ -619,7 +645,7 @@ class CCVExport extends SpecialPage {
                 }
             }
             else if($item_name == "Student Degree Expected Date"){
-                ## Not available in the Forum 
+                // Not available in the Forum 
             }
             else if($item_name == "Thesis/Project Title"){
                 $hqp_thesis = $hqp->getThesis();
@@ -638,8 +664,7 @@ class CCVExport extends SpecialPage {
                     $field = $ccv_item->addChild("field");
                     $field->addAttribute('id', $item_id);
                     $field->addAttribute('label', $item_name);
-                    #$val = $field->addChild('value');
-                    #$val->addAttribute('type', "Bilingual");
+                    
                     $bilin = $field->addChild("bilingual");
                     $bilin->addChild("english");
                     $bilin->english = $hqp_proj->getTitle(); 
@@ -665,9 +690,8 @@ class CCVExport extends SpecialPage {
         global $wgUser, $wgOut;
 
         $type = $product->getType();
+        
         $success = 0;
-        #echo 'SECTION<br/>';
-        #echo '<pre>'.var_dump($section).'</pre>'; // TEST DUMP
 
         foreach($section as $item){
             if((($type == "Masters Thesis" || $type == "PHD Thesis") 
@@ -683,65 +707,45 @@ class CCVExport extends SpecialPage {
                (($type != "Masters Thesis" && $type != "PHD Thesis") 
              && ($type == $item['type'])
              && isset($item['ccv_id']) && isset($item['ccv_name']))){ 
-                #echo 'PERSON<br/>';
-                #echo '<pre>'.var_dump($person).'</pre>'; // TEST DUMP
-                #echo 'ITEM<br/>';
-                #echo '<pre>'.var_dump($item).'</pre>';  // TEST DUMP
-                #echo 'ITEM DATA<br/>';
-                #echo '<pre>'.var_dump($item->data).'</pre>';  // TEST DUMP
-                #echo 'ITEM STATUS<br/>';
-                #echo '<pre>'.var_dump($item->statuses).'</pre>';  // TEST DUMP
-                #echo 'PRODUCT<br/>';
-                #echo '<pre>'.var_dump($product).'</pre>';  // TEST DUMP
 
-                $ccv_item = $ccv->addChild("section");
+                $ccv_el = $ccv->xpath("section[@recordId='{$product->getCCVId()}']");
+                if(count($ccv_el) > 0){
+                    $ccv_item = $ccv_el[0];
+                }
+                else{
+                    $ccv_item = $ccv->addChild("section");
+                }
                 $ccv_id = $item['ccv_id'];
                 $ccv_name = $item['ccv_name'];
 
-                $ccv_item->addAttribute('id', $ccv_id);
-                $ccv_item->addAttribute('label', $ccv_name);
+                self::setAttribute($ccv_item, 'id', $ccv_id);
+                self::setAttribute($ccv_item, 'label', $ccv_name);
 
                 // Publication Type
                 $pub_type = $item->pub_type;
                 if ((string)$pub_type->type !== ''){
-                    $field = $ccv_item->addChild("field");
-                    $field->addAttribute('id', $pub_type['ccv_id']);
-                    $field->addAttribute('label', $pub_type['ccv_name']);
-                    $type_tag = $field->addChild('lov');
-                    $type_tag->addAttribute('id', $pub_type->type['lov_id']);
+                    $field = self::setChild($ccv_item, 'field', 'id', $pub_type['ccv_id']);
+                    self::setAttribute($field, 'label', $pub_type['ccv_name']);
+                    $type_tag = self::setChild($field, 'lov', 'id', $pub_type->type['lov_id']);
                     $type_tag[0] = (string) $pub_type->type;
                 }
 
                 //Title
                 $title = $product->getTitle();
-                $field = $ccv_item->addChild("field");
-                $field->addAttribute('id', $item->title['ccv_id']);
-                $field->addAttribute('label', $item->title['ccv_name']);
-                $val = $field->addChild('value');
-                $val->addAttribute('type', "String");
+                $field = self::setChild($ccv_item, 'field', 'id', $item->title['ccv_id']);
+                self::setAttribute($field, 'label', $item->title['ccv_name']);
+                $val = self::setChild($field, 'value', 'type', 'String');
                 $field->value = $title;
 
                 //Status
                 $prod_status = $product->getStatus();
-                #echo 'PROD STATUS<br/>';
-                #echo '<pre>'.var_dump($prod_status).'</pre>';  // TEST DUMP
-                #echo 'ITEM STATUSES<br/>';
-                #echo '<pre>'.var_dump($item->statuses).'</pre>';  // TEST DUMP
                 if(isset($item->statuses)){
                     foreach($item->statuses->status as $status){
                         if ($prod_status != $status)
                             continue;
-                        #echo 'STATUS<br/>';
-                        #echo '<pre>'.var_dump($status).'</pre>';  // TEST DUMP
-                        #echo '<pre>'.var_dump($status['lov_id']).'</pre>';  // TEST DUMP
-                        #echo '<pre>'.var_dump($status['lov_name']).'</pre>';  // TEST DUMP
-                        #echo '<pre>'.(string)$status.'</pre>';  // TEST DUMP
-                        $field = $ccv_item->addChild("field");
-                        $field->addAttribute('id', $item->statuses['ccv_id']);
-                        $field->addAttribute('label', $item->statuses['ccv_name']);
-                        $status_tag = $field->addChild('lov');
-                        $status_tag->addAttribute('id', $status['lov_id']);
-                        $status_tag->addAttribute('name', $status['lov_name']);
+                        $field = self::setChild($ccv_item, 'field', 'id', $item->statuses['ccv_id']);
+                        self::setAttribute($field, 'label', $item->statuses['ccv_name']);
+                        $status_tag = self::setChild($field, 'lov', 'id', $status['lov_id']);
                         $status_tag[0] = (string) $prod_status;
                     }
                 }
@@ -750,39 +754,35 @@ class CCVExport extends SpecialPage {
                 $product_data = $product->getData();
 
                 foreach($item->data->field as $data_field){
-                    #echo 'DATA FIELD<br/>';
-                    #echo '<pre>'.var_dump($data_field).'</pre>';  // TEST DUMP
                     $key = (string) $data_field;
                     if(isset($data_field['ccv_id']) && 
                        isset($product_data[$key]) && 
                        $product_data[$key] !== '' ){
-                        #echo 'SET<br><br>';
-                        $field = $ccv_item->addChild("field");
-                        $field->addAttribute('id', $data_field['ccv_id']);
-                        $field->addAttribute('label', $data_field['ccv_name']);
-
-                        $val = $field->addChild('value');
-                        $val->addAttribute('type', "String");
-                        $field->value = $product_data[$key];
+                        $field = self::setChild($ccv_item, 'field', 'id', $data_field['ccv_id']);
+                        self::setAttribute($field, 'label', $data_field['ccv_name']);
+                        
+                        if($data_field['options'] == 'Yes|No'){
+                            $val = self::setChild($field, 'lov', 'id', self::getLovId("Yes-No", $product_data[$key], "Yes"));
+                            $field->lov = $product_data[$key];
+                        }
+                        else{
+                            $val = self::setChild($field, 'value', 'type', 'String');
+                            $field->value = $product_data[$key];
+                        }
                     }
                 }
 
-                #exit("<p>test exit"); // TEST - to interrupt after one product
-
                 //Date
-                $field = $ccv_item->addChild("field");
-                $field->addAttribute('id', $item->date['ccv_id']);
-                $field->addAttribute('label', $item->date['ccv_name']);
-                $val = $field->addChild('value');
-                $val->addAttribute('type', "YearMonth");
-                $val->addAttribute('format', "yyyy/MM");
+                $field = self::setChild($ccv_item, 'field', 'id', $item->date['ccv_id']);
+                self::setAttribute($field, 'label', $item->date['ccv_name']);
+                $val = self::setChild($field, 'value', 'type', 'YearMonth');
+                self::setAttribute($val, 'format', 'yyyy/MM');
                 $product_date = preg_split('/\-/', $product->getDate());
                 $field->value = $product_date[0].'/'.$product_date[1];
                 
                 //Authors
-                $field = $ccv_item->addChild("field");
-                $field->addAttribute('id', $item->authors['ccv_id']);
-                $field->addAttribute('label', $item->authors['ccv_name']);
+                $field = self::setChild($ccv_item, 'field', 'id', $item->authors['ccv_id']);
+                self::setAttribute($field, 'label', $item->authors['ccv_name']);
         
                 $product_authors = $product->getAuthors();
                 $auth_arr = array();
@@ -790,19 +790,16 @@ class CCVExport extends SpecialPage {
                     $auth_arr[] = $a->getNameForForms();
                 }
 
-                $val = $field->addChild('value');
-                $val->addAttribute('type', "String");
+                $val = self::setChild($field, 'value', 'type', 'String');
                 $field->value = implode(', ', $auth_arr);
 
                 //Description
                 if ($product->getDescription() !== ''){
-                    $field = $ccv_item->addChild("field");
-                    $field->addAttribute('id', $item->description['ccv_id']);
-                    $field->addAttribute('label', $item->description['ccv_name']);
-                    #$val = $field->addChild('value');
-                    #$val->addAttribute('type', "Bilingual");
-                    $bilin = $field->addChild("bilingual");
-                    $bilin->addChild("english");
+                    $field = self::setChild($ccv_item, 'field', 'id', $item->description['ccv_id']);
+                    self::setAttribute($field, 'label', $item->description['ccv_name']);
+                    
+                    $bilin = self::setChild($field, 'bilingual');
+                    self::setChild($bilin, 'english');
                     $bilin->english = substr($product->getDescription(), 0, 1000);
                 }
 

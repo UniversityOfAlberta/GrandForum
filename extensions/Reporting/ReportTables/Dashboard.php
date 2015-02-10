@@ -211,7 +211,6 @@ EOF;
     
     static function paperDetails($papers){
         global $wgServer, $wgScriptPath;
-        $url_prefix = "$wgServer$wgScriptPath/index.php/";
         
         $html = "";    
         foreach($papers as $p){
@@ -234,11 +233,10 @@ EOF;
                 $author_str = implode(',', $author_arr);
                 
                 $pap_title = $p->getTitle();
-                $pap_wiki_title = $p->getWikiTitle();
                 $pap_status = $p->getStatus();
                 $html.=<<<EOF
                     <li>
-                    <a target='_blank' href='{$url_prefix}Publication:{$p->getId()}'>
+                    <a target='_blank' href='{$p->getUrl()}'>
                     $pap_title
                     </a>$event_title; $pap_status; Authors: $author_str
                     </li>
