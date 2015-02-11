@@ -1251,7 +1251,8 @@ class Paper extends BackboneModel{
                                                 'created_by' => $me->getId(),
                                                 'access' => $this->access,
                                                 'ccv_id' => $this->ccv_id,
-                                                'bibtex_id' => $this->bibtex_id),
+                                                'bibtex_id' => $this->bibtex_id,
+                                                'date_created' => EQ(COL('CURRENT_TIMESTAMP'))),
                                           true);
             // Get the Product Id
             if($status){
