@@ -79,7 +79,7 @@ class CCVExport extends SpecialPage {
     }
     
     static function setValue($el, $value){
-        $el[0] = htmlentities($value, ENT_NOQUOTES);
+        $el[0] = htmlspecialchars($value, ENT_NOQUOTES, 'UTF-8', false);
     }
     
     static function setAttribute($el, $attr, $val){
