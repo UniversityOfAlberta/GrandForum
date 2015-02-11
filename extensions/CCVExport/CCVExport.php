@@ -230,51 +230,45 @@ class CCVExport extends SpecialPage {
         foreach($section->field as $item){
             $id = $item['id'];
             $label = $item['label'];
-            $field = $ccv->addChild("field");
-            $field->addAttribute("id", $id);
-            $field->addAttribute("label", $label);
+            $field = self::setChild($ccv, 'field', 'id', $id);
+            self::setAttribute($field, 'label', $label);
             switch($id){
                 case "5c6f17e8a67241e19667815a9e95d9d0": // Family Name
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
+                    $value = self::setChild($field, 'value', 'type', 'String');
                     $field->value = $person->getLastName();
                     break;
                 case "98ad36fee26a4d6b8953ea764f4fed04": // First Name
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
+                    $value = self::setChild($field, 'value', 'type', 'String');
                     $field->value = $person->getFirstName();
                     break;
                 case "4ca83c1aaa6a42a78eac0290368e70f3": // Middle Name
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
+                    $value = self::setChild($field, 'value', 'type', 'String');
                     $field->value = $person->getMiddleName();
                     break;
                 case "84e9fa08f7334db79ed5310e5f7a961b": // Previous Family Name
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
+                    $value = self::setChild($field, 'value', 'type', 'String');
                     $field->value = $person->getPrevLastName();
+                    break;
+                case "0fb359a7d809457d9392bb1ca577f1b3": // Previous First Name
+                    $value = self::setChild($field, 'value', 'type', 'String');
+                    $field->value = $person->getPrevFirstName();
                     break;
                 case "ee8beaea41f049d8bcfadfbfa89ac09e": // Title
                     $title = $person->getHonorific();
-                    $value = $field->addChild("lov");
-                    $value->addAttribute("id", self::getLovId("Title", $title, ""));
+                    $value = self::setChild($field, 'lov');
+                    self::setAttribute($value, 'id', self::getLovId("Title", $title, ""));
                     $field->lov = self::getLovVal("Title", $title, "");
-                    break;
-                case "0fb359a7d809457d9392bb1ca577f1b3": // Previous First Name
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
-                    $field->value = $person->getPrevFirstName();
                     break;
                 case "3d258d8ceb174d3eb2ae1258a780d91b": // Sex
                     $gender = $person->getGender();
-                    $value = $field->addChild("lov");
-                    $value->addAttribute("id", self::getLovId("Sex", $gender, "No Response"));
+                    $value = self::setChild($field, 'lov');
+                    self::setAttribute($value, 'id', self::getLovId("Sex", $gender, "No Response"));
                     $field->lov = self::getLovVal("Sex", $gender, "No Response");
                     break;
                 case "2b72a344523c467da0c896656b5290c0": // Correspondence language
                     $language = $person->getCorrespondenceLanguage();
-                    $value = $field->addChild("lov");
-                    $value->addAttribute("id", self::getLovId("Correspondance Language", $language, ""));
+                    $value = self::setChild($field, 'lov');
+                    self::setAttribute($value, 'id', self::getLovId("Correspondance Language", $language, ""));
                     $field->lov = self::getLovVal("Correspondance Language", $language, "");
                     break;
             }
@@ -283,50 +277,55 @@ class CCVExport extends SpecialPage {
     
     static function mapLanguage($person, $section, $language, $ccv){
         global $wgUser;
-        $sect = $ccv->addChild("section");
-        $sect->addAttribute("id", $section['id']);
-        $sect->addAttribute("label", $section['label']);
+        $lang = $language->getLanguage();
+        $lang_el = $ccv->xpath("section/field/lov[@id='".self::getLovId("Language", $lang, "English")."']/../..");
+        if(count($lang_el) > 0){
+            $sect = $lang_el[0];
+        }
+        else{
+            $sect = $ccv->addChild('section');
+            $sect->addAttribute('id', $section['id']);
+        }
+        self::setAttribute($sect, 'label', $section['label']);
         foreach($section->field as $item){
             $id = $item['id'];
             $label = $item['label'];
-            $field = $sect->addChild("field");
-            $field->addAttribute("id", $id);
-            $field->addAttribute("label", $label);
+            $field = self::setChild($sect, 'field', 'id', $id);
+            self::setAttribute($field, 'label', $label);
             switch($id){
                 case "ee161805b4f941e48f05e050e364e585": // Language
-                    $lang = $language->getLanguage();
-                    $lov = $field->addChild("lov");
-                    $lov->addAttribute("id", self::getLovId("Language", $lang, "English"));
+                    $lov = self::setChild($field, 'lov');
+                    self::setAttribute($lov, 'id', self::getLovId("Language", $lang, "English"));
                     $field->lov = self::getLovVal("Language", $lang, "English");
                     break;
                 case "a9d0f0666e5b47dcb9acb30bd5cab407": // Read
                     $read = ($language->canRead()) ? "Yes" : "No";
-                    $lov = $field->addChild("lov");
-                    $lov->addAttribute("id", self::getLovId("Yes-No", $read, "Yes"));
+                    $lov = self::setChild($field, 'lov');
+                    self::setAttribute($lov, 'id', self::getLovId("Yes-No", $read, "Yes"));
                     $field->lov = (self::getLovVal("Yes-No", $read, "Yes"));
                     break;
                 case "12173f36422446479799578ba07d96c8": // Write
                     $write = ($language->canWrite()) ? "Yes" : "No";
-                    $lov = $field->addChild("lov");
-                    $lov->addAttribute("id", self::getLovId("Yes-No", $write, "Yes"));
+                    $lov = self::setChild($field, 'lov');
+                    self::setAttribute($lov, 'id', self::getLovId("Yes-No", $write, "Yes"));
                     $field->lov = (self::getLovVal("Yes-No", $write, "Yes"));
                     break;
                 case "e670ac0f2c3e48a3b13d487e66ea7889": // Speak
                     $speak = ($language->canSpeak()) ? "Yes" : "No";
-                    $lov = $field->addChild("lov");
-                    $lov->addAttribute("id", self::getLovId("Yes-No", $speak, "Yes"));
+                    $lov = self::setChild($field, 'lov');
+                    self::setAttribute($lov, 'id', self::getLovId("Yes-No", $speak, "Yes"));
                     $field->lov = (self::getLovVal("Yes-No", $speak, "Yes"));
                     break;
                 case "aa02c54f1e5b4672a0b96def14e5b02e": // Understand
                     $understand = ($language->canUnderstand()) ? "Yes" : "No";
-                    $lov = $field->addChild("lov");
-                    $lov->addAttribute("id", self::getLovId("Yes-No", $understand, "Yes"));
+                    $lov = self::setChild($field, 'lov');
+                    self::setAttribute($lov, 'id', self::getLovId("Yes-No", $understand, "Yes"));
                     $field->lov = (self::getLovVal("Yes-No", $understand, "Yes"));
                     break;
                 case "fc6ac63e9ec04129aec7b26e5a729920": // Review
                     $review = ($language->canReview()) ? "Yes" : "No";
-                    $lov = $field->addChild("lov");
-                    $lov->addAttribute("id", self::getLovId("Yes-No", $review, "Yes"));
+                    $lov = self::setChild($field, 'lov');
+                    self::setAttribute($lov, 'id', self::getLovId("Yes-No", $review, "Yes"));
                     $field->lov = (self::getLovVal("Yes-No", $review, "Yes"));
                     break;
             }
@@ -708,9 +707,15 @@ class CCVExport extends SpecialPage {
              && ($type == $item['type'])
              && isset($item['ccv_id']) && isset($item['ccv_name']))){ 
 
+                $title = str_replace('"', '&quot;', $product->getTitle());
+
                 $ccv_el = $ccv->xpath("section[@recordId='{$product->getCCVId()}']");
+                $ccv_el_title = $ccv->xpath("section/field/value[.=\"{$title}\"]/../..");
                 if(count($ccv_el) > 0){
                     $ccv_item = $ccv_el[0];
+                }
+                else if(count($ccv_el_title) > 0){
+                    $ccv_item = $ccv_el_title[0];
                 }
                 else{
                     $ccv_item = $ccv->addChild("section");
