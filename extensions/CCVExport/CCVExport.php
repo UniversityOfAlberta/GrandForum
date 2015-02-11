@@ -41,7 +41,7 @@ class CCVExport extends SpecialPage {
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
             header("Content-Type: application/force-download");
             header("Content-Type: application/octet-stream");
-            header("Content-Type: application/download");;
+            header("Content-Type: application/download");
             header("Content-Disposition: attachment;filename=export.xml"); 
             header("Content-Transfer-Encoding: binary ");
             echo $xml;
@@ -76,6 +76,10 @@ class CCVExport extends SpecialPage {
             return $val;
         }
         return $default;
+    }
+    
+    static function setValue($el, $value){
+        $el[0] = htmlentities($value, ENT_NOQUOTES);
     }
     
     static function setAttribute($el, $attr, $val){
@@ -236,41 +240,41 @@ class CCVExport extends SpecialPage {
             switch($id){
                 case "5c6f17e8a67241e19667815a9e95d9d0": // Family Name
                     $value = self::setChild($field, 'value', 'type', 'String');
-                    $field->value = $person->getLastName();
+                    self::setValue($value, $person->getLastName());
                     break;
                 case "98ad36fee26a4d6b8953ea764f4fed04": // First Name
                     $value = self::setChild($field, 'value', 'type', 'String');
-                    $field->value = $person->getFirstName();
+                    self::setValue($value, $person->getFirstName());
                     break;
                 case "4ca83c1aaa6a42a78eac0290368e70f3": // Middle Name
                     $value = self::setChild($field, 'value', 'type', 'String');
-                    $field->value = $person->getMiddleName();
+                    self::setValue($value, $person->getMiddleName());
                     break;
                 case "84e9fa08f7334db79ed5310e5f7a961b": // Previous Family Name
                     $value = self::setChild($field, 'value', 'type', 'String');
-                    $field->value = $person->getPrevLastName();
+                    self::setValue($value, $person->getPrevLastName());
                     break;
                 case "0fb359a7d809457d9392bb1ca577f1b3": // Previous First Name
                     $value = self::setChild($field, 'value', 'type', 'String');
-                    $field->value = $person->getPrevFirstName();
+                    self::setValue($value, $person->getPrevFirstName());
                     break;
                 case "ee8beaea41f049d8bcfadfbfa89ac09e": // Title
                     $title = $person->getHonorific();
                     $value = self::setChild($field, 'lov');
                     self::setAttribute($value, 'id', self::getLovId("Title", $title, ""));
-                    $field->lov = self::getLovVal("Title", $title, "");
+                    self::setValue($value, self::getLovVal("Title", $title, ""));
                     break;
                 case "3d258d8ceb174d3eb2ae1258a780d91b": // Sex
                     $gender = $person->getGender();
                     $value = self::setChild($field, 'lov');
                     self::setAttribute($value, 'id', self::getLovId("Sex", $gender, "No Response"));
-                    $field->lov = self::getLovVal("Sex", $gender, "No Response");
+                    self::setValue($value, self::getLovVal("Sex", $gender, "No Response"));
                     break;
                 case "2b72a344523c467da0c896656b5290c0": // Correspondence language
                     $language = $person->getCorrespondenceLanguage();
                     $value = self::setChild($field, 'lov');
                     self::setAttribute($value, 'id', self::getLovId("Correspondance Language", $language, ""));
-                    $field->lov = self::getLovVal("Correspondance Language", $language, "");
+                    self::setValue($value, self::getLovVal("Correspondance Language", $language, ""));
                     break;
             }
         }
@@ -297,37 +301,37 @@ class CCVExport extends SpecialPage {
                 case "ee161805b4f941e48f05e050e364e585": // Language
                     $lov = self::setChild($field, 'lov');
                     self::setAttribute($lov, 'id', self::getLovId("Language", $lang, "English"));
-                    $field->lov = self::getLovVal("Language", $lang, "English");
+                    self::setValue($lov, self::getLovVal("Language", $lang, "English"));
                     break;
                 case "a9d0f0666e5b47dcb9acb30bd5cab407": // Read
                     $read = ($language->canRead()) ? "Yes" : "No";
                     $lov = self::setChild($field, 'lov');
                     self::setAttribute($lov, 'id', self::getLovId("Yes-No", $read, "Yes"));
-                    $field->lov = (self::getLovVal("Yes-No", $read, "Yes"));
+                    self::setValue($lov, self::getLovVal("Yes-No", $read, "Yes"));
                     break;
                 case "12173f36422446479799578ba07d96c8": // Write
                     $write = ($language->canWrite()) ? "Yes" : "No";
                     $lov = self::setChild($field, 'lov');
                     self::setAttribute($lov, 'id', self::getLovId("Yes-No", $write, "Yes"));
-                    $field->lov = (self::getLovVal("Yes-No", $write, "Yes"));
+                    self::setValue($lov, self::getLovVal("Yes-No", $write, "Yes"));
                     break;
                 case "e670ac0f2c3e48a3b13d487e66ea7889": // Speak
                     $speak = ($language->canSpeak()) ? "Yes" : "No";
                     $lov = self::setChild($field, 'lov');
                     self::setAttribute($lov, 'id', self::getLovId("Yes-No", $speak, "Yes"));
-                    $field->lov = (self::getLovVal("Yes-No", $speak, "Yes"));
+                    self::setValue($lov, self::getLovVal("Yes-No", $speak, "Yes"));
                     break;
                 case "aa02c54f1e5b4672a0b96def14e5b02e": // Understand
                     $understand = ($language->canUnderstand()) ? "Yes" : "No";
                     $lov = self::setChild($field, 'lov');
                     self::setAttribute($lov, 'id', self::getLovId("Yes-No", $understand, "Yes"));
-                    $field->lov = (self::getLovVal("Yes-No", $understand, "Yes"));
+                    self::setValue($lov, self::getLovVal("Yes-No", $understand, "Yes"));
                     break;
                 case "fc6ac63e9ec04129aec7b26e5a729920": // Review
                     $review = ($language->canReview()) ? "Yes" : "No";
                     $lov = self::setChild($field, 'lov');
                     self::setAttribute($lov, 'id', self::getLovId("Yes-No", $review, "Yes"));
-                    $field->lov = (self::getLovVal("Yes-No", $review, "Yes"));
+                    self::setValue($lov, self::getLovVal("Yes-No", $review, "Yes"));
                     break;
             }
         }
@@ -357,31 +361,31 @@ class CCVExport extends SpecialPage {
                 case "35c302c36fe9479287206171087fb185": // Address Type
                     $lov = self::setChild($field, 'lov');
                     self::setAttribute($lov, 'id', self::getLovId("Address Type", $addr, "Primary Affiliation"));
-                    $field->lov = self::getLovVal("Address Type", $addr, "Primary Affiliation");
+                    self::setValue($lov, self::getLovVal("Address Type", $addr, "Primary Affiliation"));
                     break;
                 case "2de0fe4994f546c695a060d68e8e03ca": // Address Line 1
                     $value = self::setChild($field, 'value', 'type', 'String');
-                    $field->value = $address->getLine1();
+                    self::setValue($value, $address->getLine1());
                     break;
                 case "dafdb980e181416abc5e26c0770df662": // Address Line 2
                     $value = self::setChild($field, 'value', 'type', 'String');
-                    $field->value = $address->getLine2();
+                    self::setValue($value, $address->getLine2());
                     break;
                 case "fc390eae1fbc45c89789f2ecbb5bed8e": // Address Line 3
                     $value = self::setChild($field, 'value', 'type', 'String');
-                    $field->value = $address->getLine3();
+                    self::setValue($value, $address->getLine3());
                     break;
                 case "d51e2de9122744489ac2231d85995617": // Address Line 4
                     $value = self::setChild($field, 'value', 'type', 'String');
-                    $field->value = $address->getLine4();
+                    self::setValue($value, $address->getLine4());
                     break;
                 case "5365d87b9ff145d3a8d0d4fc21af57bb": // Address Line 5
                     $value = self::setChild($field, 'value', 'type', 'String');
-                    $field->value = $address->getLine5();
+                    self::setValue($value, $address->getLine5());
                     break;
                 case "499d69637b4148d0a49463a2881e9d09": // City
                     $value = self::setChild($field, 'value', 'type', 'String');
-                    $field->value = $address->getCity();
+                    self::setValue($value, $address->getCity());
                     break;
                 case "b1071063df03484ebec65cd1a3464438": // Location (Country/Subdivision)
                     $country = $address->getCountry();
@@ -397,17 +401,17 @@ class CCVExport extends SpecialPage {
                     break;
                 case "a41f1e118e61482eb3cdde4aaeb783e8": // Postal/Zip Code
                     $value = self::setChild($field, 'value', 'type', 'String');
-                    $field->value = $address->getPostalCode();
+                    self::setValue($value, $address->getPostalCode());
                     break;
                 case "b77ff4a2c49247e0af668be52704da91": // Start Date
                     $value = self::setChild($field, 'value', 'type', 'Date');
                     self::setAttribute($value, 'format', 'yyyy-MM-dd');
-                    $field->value = substr($address->getStartDate(), 0, 10);
+                    self::setValue($value, substr($address->getStartDate(), 0, 10));
                     break;
                 case "4ab2497d7a0f471ebc6a50e32dd4f22d": // End Date
                     $value = self::setChild($field, 'value', 'type', 'Date');
                     self::setAttribute($value, 'format', 'yyyy-MM-dd');
-                    $field->value = substr($address->getEndDate(), 0, 10);
+                    self::setValue($value, substr($address->getEndDate(), 0, 10));
                     break;
             }
         }
@@ -437,33 +441,33 @@ class CCVExport extends SpecialPage {
                 case "ccef121ae875427f829024aabb39fa8c": // Address Type
                     $lov = self::setChild($field, 'lov');
                     self::setAttribute($lov, 'id', self::getLovId("Phone Type", $type, "Work"));
-                    $field->lov = self::getLovVal("Phone Type", $type, "Work");
+                    self::setValue($lov, self::getLovVal("Phone Type", $type, "Work"));
                     break;
                 case "63dedd46a5204cda8257227bbb3b6675": // Country Code
                     $value = self::setChild($field, 'value', 'type', 'String');
-                    $field->value = $phone->getCountryCode();
+                    self::setValue($value, $phone->getCountryCode());
                     break;
                 case "13cdf3a5e13643f5bc74566bf075253c": // Area Code
                     $value = self::setChild($field, 'value', 'type', 'String');
-                    $field->value = $phone->getAreaCode();
+                    self::setValue($value, $phone->getAreaCode());
                     break;
                 case "1ca756fe70964371a2b9f57bdf567a5d": // Telephone Number
                     $value = self::setChild($field, 'value', 'type', 'String');
-                    $field->value = $phone->getPhoneNumber();
+                    self::setValue($value, $phone->getPhoneNumber());
                     break;
                 case "afe0657785084098bb718345280eb840": // Extension
                     $value = self::setChild($field, 'value', 'type', 'String');
-                    $field->value = $phone->getExtension();
+                    self::setValue($value, $phone->getExtension());
                     break;
                 case "69c67fae5d4849d08f4f9799ae0a2335": // Start Date
                     $value = self::setChild($field, 'value', 'type', 'Date');
                     self::setAttribute($value, 'format', 'yyyy-MM-dd');
-                    $field->value = substr($phone->getStartDate(), 0, 10);
+                    self::setValue($value, substr($phone->getStartDate(), 0, 10));
                     break;
                 case "a90e95e1d278467eaf1847464f09f39f": // End Date
                     $value = self::setChild($field, 'value', 'type', 'Date');
                     self::setAttribute($value, 'format', 'yyyy-MM-dd');
-                    $field->value = substr($phone->getEndDate(), 0, 10);
+                    self::setValue($value, substr($phone->getEndDate(), 0, 10));
                     break;
             }
         }
@@ -492,10 +496,12 @@ class CCVExport extends SpecialPage {
                 $lov = $field->addChild('lov');
                 $lov->addAttribute('id', '00000000000000000000000100002900');
                 $supers = $hqp->getSupervisors();
-                if (count($supers) > 1) 
-                    $field->lov =  "Co-Supervisor";
-                else
-                    $field->lov =  "Principal Supervisor";
+                if(count($supers) > 1){
+                    self::setValue($lov, "Co-Supervisor");
+                }
+                else{
+                    self::setValue($lov, "Principal Supervisor");
+                }
             }
             else if($item_name == "Supervision Start Date"){
                 $field = $ccv_item->addChild("field");
@@ -505,7 +511,7 @@ class CCVExport extends SpecialPage {
                 $val->addAttribute('type', "YearMonth");
                 $val->addAttribute('format', "yyyy/MM");
                 $start_date = preg_split('/\-/', $rel->getStartDate());
-                $field->value = $start_date[0].'/'.$start_date[1];
+                self::setValue($val, $start_date[0].'/'.$start_date[1]);
             }
             else if($item_name == "Supervision End Date"){
                 $date = $rel->getEndDate();
@@ -519,7 +525,7 @@ class CCVExport extends SpecialPage {
                         $val = $field->addChild('value');
                         $val->addAttribute('type', "YearMonth");
                         $val->addAttribute('format', "yyyy/MM");
-                        $field->value = $date;
+                        self::setValue($val, $date);
                     }        
                 }        
             }
@@ -531,7 +537,7 @@ class CCVExport extends SpecialPage {
                 $val->addAttribute('type', "String");
         
                 $hqp_name = $hqp->getReversedName();
-                $field->value = $hqp_name;
+                self::setValue($val, $hqp_name);
             }
             else if($item_name == "Student Institution"){
                 $field = $ccv_item->addChild("field");
@@ -541,7 +547,7 @@ class CCVExport extends SpecialPage {
                 $val->addAttribute('type', "String");
         
                 $hqp_uni = $hqp->getUni();
-                $field->value = $hqp_uni;
+                self::setValue($val, $hqp_uni);
             }
             else if($item_name == "Student Canadian Residency Status"){
                 $status_map = array('Canadian'=>array("00000000000000000000000000000034","Canadian Citizen"),
@@ -557,7 +563,7 @@ class CCVExport extends SpecialPage {
                 if(!empty($hqp_status) && isset($status_map[$hqp_status])){
                     $lov_id = $status_map[$hqp_status][0];
                     $val->addAttribute('id', $lov_id);
-                    $field->lov = $status_map[$hqp_status][1];
+                    self::setValue($val, $status_map[$hqp_status][1]);
                 }
             }
             else if($item_name == "Study / Postdoctoral Level"){
@@ -570,7 +576,7 @@ class CCVExport extends SpecialPage {
                     $val = $field->addChild('lov');
                     $lov_id = $degree_map[$hqp_pos][0];
                     $val->addAttribute('id', $lov_id);
-                    $field->lov = $degree_map[$hqp_pos][1];
+                    self::setValue($val, $degree_map[$hqp_pos][1]);
                 }
             }
             else if($item_name == "Student Degree Status"){
@@ -588,10 +594,10 @@ class CCVExport extends SpecialPage {
         
                     if (!$hqp->isActive()){
                         $lov_id = $status_map['Completed'];
-                        $field->lov = "Completed";
+                        self::setValue($val, "Completed");
                     } else {
                         $lov_id = $status_map['In Progress'];
-                        $field->lov = "In Progress";
+                        self::setValue($val, "In Progress");
                     }
                     $val->addAttribute('id', $lov_id);
                 }
@@ -611,7 +617,7 @@ class CCVExport extends SpecialPage {
                             $val = $field->addChild('value');
                             $val->addAttribute('type', "YearMonth");
                             $val->addAttribute('format', "yyyy/MM");
-                            $field->value = $date;
+                            self::setValue($val, $date);
                         }        
                     }        
                 }        
@@ -631,7 +637,7 @@ class CCVExport extends SpecialPage {
                             $val = $field->addChild('value');
                             $val->addAttribute('type', "YearMonth");
                             $val->addAttribute('format', "yyyy/MM");
-                            $field->value = $date;
+                            self::setValue($val, $date);
                         }        
                     }        
                 }
@@ -647,7 +653,7 @@ class CCVExport extends SpecialPage {
                     $field->addAttribute('label', $item_name);
                     $val = $field->addChild('value');
                     $val->addAttribute('type', "String");
-                    $field->value = $hqp_thesis->getTitle(); 
+                    self::setValue($val, $hqp_thesis->getTitle());
                 } 
             }
             else if($item_name == "Project Description"){
@@ -659,7 +665,7 @@ class CCVExport extends SpecialPage {
                     
                     $bilin = $field->addChild("bilingual");
                     $bilin->addChild("english");
-                    $bilin->english = $hqp_proj->getTitle(); 
+                    self::setValue($bilin->english, $hqp_proj->getTitle());
                 } 
             }
             else if($item_name == "Present Position"){
@@ -670,7 +676,7 @@ class CCVExport extends SpecialPage {
                     $field->addAttribute('label', $item_name);
                     $val = $field->addChild('value');
                     $val->addAttribute('type', "String");
-                    $field->value = $hqp_pos;
+                    self::setValue($val, $hqp_pos);
                 }
             }
             $success = 1;
@@ -700,7 +706,7 @@ class CCVExport extends SpecialPage {
              && ($type == $item['type'])
              && isset($item['ccv_id']) && isset($item['ccv_name']))){ 
 
-                $title = str_replace('"', '&quot;', $product->getTitle());
+                $title = htmlentities($product->getTitle(), ENT_COMPAT);
 
                 $ccv_el = $ccv->xpath("section[@recordId='{$product->getCCVId()}']");
                 $ccv_el_title = $ccv->xpath("section/field/value[.=\"{$title}\"]/../..");
