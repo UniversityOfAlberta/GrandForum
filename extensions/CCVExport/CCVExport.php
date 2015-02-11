@@ -206,7 +206,8 @@ class CCVExport extends SpecialPage {
         }
         ksort($sortedRels);
         $sortedRels = array_reverse($sortedRels);
-        $ccv->xpath("section[@id='95c29504d0aa4b51b84659cafaf2b38d']/section[@id='90cc172e54904b45948d17cba24d3f25']");
+        $section = $ccv->xpath("section[@id='95c29504d0aa4b51b84659cafaf2b38d']/section[@id='90cc172e54904b45948d17cba24d3f25']");
+        unset($section[0]->section);
         foreach($sortedRels as $rel){
             $res = CCVExport::mapHQP($person, 
                                      $hqp_map->HQP->data, 
@@ -215,10 +216,10 @@ class CCVExport extends SpecialPage {
         }
 
         // Format and indent the XML
-        $dom = new DOMDocument ();
+        $dom = new DOMDocument();
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
-        $dom->loadXML ( $ccv->asXML() );
+        $dom->loadXML($ccv->asXML());
         $xml = $dom->saveXML();
 
         return $xml;
@@ -334,85 +335,78 @@ class CCVExport extends SpecialPage {
     
     static function mapAddress($person, $section, $address, $ccv){
         global $wgUser;
-        $sect = $ccv->addChild("section");
-        $sect->addAttribute("id", $section['id']);
-        $sect->addAttribute("label", $section['label']);
+        $addr = $address->getType();
+        $addr_el = $ccv->xpath("section/field/lov[@id='".self::getLovId("Address Type", $addr, "Primary Affiliation")."']/../..");
+        if(count($addr_el) > 0){
+            $sect = $addr_el[0];
+        }
+        else{
+            $sect = $ccv->addChild("section");
+            $sect->addAttribute("id", $section['id']);
+        }
+        self::setAttribute($sect, 'label', $section['label']);
         if($address->isPrimary()){
-            $sect->addAttribute("primaryIndicator", "true");
+            self::setAttribute($sect, 'primaryIndicator', 'true');
         }
         foreach($section->field as $item){
             $id = $item['id'];
             $label = $item['label'];
-            $field = $sect->addChild("field");
-            $field->addAttribute("id", $id);
-            $field->addAttribute("label", $label);
+            $field = self::setChild($sect, 'field', 'id', $id);
+            self::setAttribute($field, 'label', $label);
             switch($id){
                 case "35c302c36fe9479287206171087fb185": // Address Type
-                    $addr = $address->getType();
-                    $lov = $field->addChild("lov");
-                    $lov->addAttribute("id", self::getLovId("Address Type", $addr, "Primary Affiliation"));
+                    $lov = self::setChild($field, 'lov');
+                    self::setAttribute($lov, 'id', self::getLovId("Address Type", $addr, "Primary Affiliation"));
                     $field->lov = self::getLovVal("Address Type", $addr, "Primary Affiliation");
                     break;
                 case "2de0fe4994f546c695a060d68e8e03ca": // Address Line 1
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
+                    $value = self::setChild($field, 'value', 'type', 'String');
                     $field->value = $address->getLine1();
                     break;
                 case "dafdb980e181416abc5e26c0770df662": // Address Line 2
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
+                    $value = self::setChild($field, 'value', 'type', 'String');
                     $field->value = $address->getLine2();
                     break;
                 case "fc390eae1fbc45c89789f2ecbb5bed8e": // Address Line 3
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
+                    $value = self::setChild($field, 'value', 'type', 'String');
                     $field->value = $address->getLine3();
                     break;
                 case "d51e2de9122744489ac2231d85995617": // Address Line 4
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
+                    $value = self::setChild($field, 'value', 'type', 'String');
                     $field->value = $address->getLine4();
                     break;
                 case "5365d87b9ff145d3a8d0d4fc21af57bb": // Address Line 5
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
+                    $value = self::setChild($field, 'value', 'type', 'String');
                     $field->value = $address->getLine5();
                     break;
                 case "499d69637b4148d0a49463a2881e9d09": // City
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
+                    $value = self::setChild($field, 'value', 'type', 'String');
                     $field->value = $address->getCity();
                     break;
                 case "b1071063df03484ebec65cd1a3464438": // Location (Country/Subdivision)
                     $country = $address->getCountry();
                     $province = $address->getProvince();
-                    $table = $field->addChild("refTable");
-                    $table->addAttribute("refValueId", "00000000000000000000039564242160");
-                    $table->addAttribute("label", "Country-Subdivision");
-                    $l_country = $table->addChild("linkedWith");
-                    $l_subdivision = $table->addChild("linkedWith");
-                    $l_country->addAttribute("refOrLovId", "00000000000000000000000000002000");
-                    $l_subdivision->addAttribute("refOrLovId", "00000000000000000000000000100000");
-                    $l_country->addAttribute("label", "Country");
-                    $l_subdivision->addAttribute("label", "Subdivision");
-                    $l_country->addAttribute("value", $country);
-                    $l_subdivision->addAttribute("value", $province);
+                    $table = self::setChild($field, 'refTable', 'refValueId', '00000000000000000000039564242160');
+                    self::setAttribute($table, 'label', 'Country-Subdivision');
+                    $l_country = self::setChild($table, 'linkedWith', 'refOrLovId', '00000000000000000000000000002000');
+                    $l_subdivision = self::setChild($table, 'linkedWith', 'refOrLovId', '00000000000000000000000000100000');
+                    self::setAttribute($l_country, 'label', 'Country');
+                    self::setAttribute($l_subdivision, 'label', 'Subdivision');
+                    self::setAttribute($l_country, 'value', $country);
+                    self::setAttribute($l_subdivision, 'value', $province);
                     break;
                 case "a41f1e118e61482eb3cdde4aaeb783e8": // Postal/Zip Code
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
+                    $value = self::setChild($field, 'value', 'type', 'String');
                     $field->value = $address->getPostalCode();
                     break;
-                case "b77ff4a2c49247e0af668be52704da91": // Postal/Zip Code
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
-                    $value->addAttribute("format", "yyyy-MM-dd");
+                case "b77ff4a2c49247e0af668be52704da91": // Start Date
+                    $value = self::setChild($field, 'value', 'type', 'Date');
+                    self::setAttribute($value, 'format', 'yyyy-MM-dd');
                     $field->value = substr($address->getStartDate(), 0, 10);
                     break;
-                case "4ab2497d7a0f471ebc6a50e32dd4f22d": // Postal/Zip Code
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "Date");
-                    $value->addAttribute("format", "yyyy-MM-dd");
+                case "4ab2497d7a0f471ebc6a50e32dd4f22d": // End Date
+                    $value = self::setChild($field, 'value', 'type', 'Date');
+                    self::setAttribute($value, 'format', 'yyyy-MM-dd');
                     $field->value = substr($address->getEndDate(), 0, 10);
                     break;
             }
@@ -421,55 +415,54 @@ class CCVExport extends SpecialPage {
     
     static function mapTelephone($person, $section, $phone, $ccv){
         global $wgUser;
-        $sect = $ccv->addChild("section");
-        $sect->addAttribute("id", $section['id']);
-        $sect->addAttribute("label", $section['label']);
+        $type = $phone->getType();
+        $phone_el = $ccv->xpath("section/field/lov[@id='".self::getLovId("Phone Type", $type, "Work")."']/../..");
+        if(count($phone_el) > 0){
+            $sect = $phone_el[0];
+        }
+        else{
+            $sect = $ccv->addChild("section");
+            $sect->addAttribute("id", $section['id']);
+        }
+        self::setAttribute($sect, 'label', $section['label']);
         if($phone->isPrimary()){
-            $sect->addAttribute("primaryIndicator", "true");
+            self::setAttribute($sect, 'primaryIndicator', 'true');
         }
         foreach($section->field as $item){
             $id = $item['id'];
             $label = $item['label'];
-            $field = $sect->addChild("field");
-            $field->addAttribute("id", $id);
-            $field->addAttribute("label", $label);
+            $field = self::setChild($sect, 'field', 'id', $id);
+            self::setAttribute($field, 'label', $label);
             switch($id){
                 case "ccef121ae875427f829024aabb39fa8c": // Address Type
-                    $type = $phone->getType();
-                    $lov = $field->addChild("lov");
-                    $lov->addAttribute("id", self::getLovId("Phone Type", $type, "Work"));
+                    $lov = self::setChild($field, 'lov');
+                    self::setAttribute($lov, 'id', self::getLovId("Phone Type", $type, "Work"));
                     $field->lov = self::getLovVal("Phone Type", $type, "Work");
                     break;
                 case "63dedd46a5204cda8257227bbb3b6675": // Country Code
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
+                    $value = self::setChild($field, 'value', 'type', 'String');
                     $field->value = $phone->getCountryCode();
                     break;
                 case "13cdf3a5e13643f5bc74566bf075253c": // Area Code
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
+                    $value = self::setChild($field, 'value', 'type', 'String');
                     $field->value = $phone->getAreaCode();
                     break;
                 case "1ca756fe70964371a2b9f57bdf567a5d": // Telephone Number
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
+                    $value = self::setChild($field, 'value', 'type', 'String');
                     $field->value = $phone->getPhoneNumber();
                     break;
                 case "afe0657785084098bb718345280eb840": // Extension
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
+                    $value = self::setChild($field, 'value', 'type', 'String');
                     $field->value = $phone->getExtension();
                     break;
                 case "69c67fae5d4849d08f4f9799ae0a2335": // Start Date
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
-                    $value->addAttribute("format", "yyyy-MM-dd");
+                    $value = self::setChild($field, 'value', 'type', 'Date');
+                    self::setAttribute($value, 'format', 'yyyy-MM-dd');
                     $field->value = substr($phone->getStartDate(), 0, 10);
                     break;
                 case "a90e95e1d278467eaf1847464f09f39f": // End Date
-                    $value = $field->addChild("value");
-                    $value->addAttribute("type", "String");
-                    $value->addAttribute("format", "yyyy-MM-dd");
+                    $value = self::setChild($field, 'value', 'type', 'Date');
+                    self::setAttribute($value, 'format', 'yyyy-MM-dd');
                     $field->value = substr($phone->getEndDate(), 0, 10);
                     break;
             }
