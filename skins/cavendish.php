@@ -733,7 +733,7 @@ class cavendishTemplate extends QuickTemplate {
     <?php	// Generate additional footer links
 		    $footerlinks = array(
 			    'lastmod', 'viewcount', 'numberofwatchingusers', 'credits', 'copyright',
-			    'privacy', 'about', 'disclaimer', 'tagline',
+			    'tagline',
 		    );
 		    $validFooterLinks = array();
 		    foreach( $footerlinks as $aLink ) {
@@ -750,6 +750,7 @@ class cavendishTemplate extends QuickTemplate {
     <?php 			}
 			    }
 		    }
+		echo "<li id='f-disclaimer'><a href='{$config->getValue('networkSite')}'>{$config->getValue('networkName')} Website</a></li>\n";
 	    echo "<li id='f-disclaimer'><a href='mailto:{$config->getValue('supportEmail')}'>Support</a></li>\n";
     ?>
     </ul>Icons by <a href="http://somerandomdude.com/work/iconic/" target='_blank'>Iconic</a> & <a href="http://glyphicons.com/" target='_blank'>Glyphicons</a>.</td><td align="right" width="1%" nowrap="nowrap"><?php if($this->data['poweredbyico']) { ?><div id="f-poweredbyico"><?php $this->html('poweredbyico') ?></div><?php } ?></td></tr></table><img style='display:none;' src='<?php echo "$wgServer$wgScriptPath"; ?>/skins/Throbber.gif' alt='Throbber' />
