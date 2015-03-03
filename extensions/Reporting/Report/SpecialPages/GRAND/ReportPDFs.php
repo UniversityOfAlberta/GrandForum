@@ -11,9 +11,10 @@ $wgHooks['SubLevelTabs'][] = 'ReportPDFs::createSubTabs';
 class ReportPDFs extends AbstractReport{
     
     function ReportPDFs(){
+        global $config;
         $report = @$_GET['report'];
         
-        $this->AbstractReport(dirname(__FILE__)."/../ReportXML/$report.xml", -1, false, false);
+        $this->AbstractReport(dirname(__FILE__)."/../../ReportXML/{$config->getValue('networkName')}/$report.xml", -1, false, false);
         wfLoadExtensionMessages("ReportPDFs");
         SpecialPage::SpecialPage("ReportPDFs", null, true);
     }

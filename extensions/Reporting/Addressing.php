@@ -19,6 +19,9 @@
  * work properly (e.g.: evaluator report being split into researcher evaluation
  * and project evaluation).
  */
+/*
+ * GRAND
+ */
 define('RP_RESEARCHER',		1);
 define('RP_HQP',			2);
 define('RP_LEADER',			3);
@@ -39,7 +42,10 @@ define('RP_SUBPROJECT', 17);
 //define('RP_EVAL_RESEARCHER_REV',		9); //Revised answers
 //define('RP_EVAL_CNI_REV',		10); //Revised answers
 //define('RP_EVAL_PROJECT_REV', 11); //Revised answers
-
+/*
+ * GlycoNet
+ */
+define('RP_PROJECT_PROPOSAL',   100);
 
 /*
  * Second-level identifiers: report section.
@@ -149,6 +155,11 @@ define('MTG_MUSIC', 2);
 define('MTG_FIRST_NATIONS', 3);
 define('MTG_SOCIAL_PROBLEMS', 4);
 define('MTG_OTHER', 5);
+
+// Second level for Project Proposal
+define('PROP_DESC', 1);
+define('PROP_MILESTONES', 2);
+define('PROP_BUDGET', 3);
 
 /*
  * Third-level identifiers: question within a section.
@@ -294,6 +305,16 @@ define('ISAC_PHASE2_COMMENT', 2);
 //Third level Eval LOI => Only 2 types for each question: Y/N radio(YN) AND Comment (C)
 define('EVL_LOI_YN',	1);
 define('EVL_LOI_C',		2);
+
+define('PROP_DESC_THEME',   1);
+define('PROP_DESC_TITLE',   2);
+define('PROP_DESC_LEAD',    3);
+define('PROP_DESC_OTHER',   4);
+define('PROP_DESC_PART',    5);
+define('PROP_DESC_ENV',     6);
+define('PROP_DESC_CONFLICT',7);
+define('PROP_DESC_SUMMARY', 8);
+define('PROP_DESC_PROPOSAL',9);
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used

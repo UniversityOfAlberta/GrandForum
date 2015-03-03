@@ -12,12 +12,13 @@ $wgHooks['ToolboxLinks'][] = 'Report::createToolboxLinks';
 class Report extends AbstractReport{
     
     function Report(){
+        global $config;
         $report = @$_GET['report'];
         $topProjectOnly = false;
         if(isset($_GET['project']) && ($report == "NIReport" || $report == "HQPReport")){
             $topProjectOnly = true;
         }
-        $this->AbstractReport(dirname(__FILE__)."/../ReportXML/$report.xml", -1, false, $topProjectOnly);
+        $this->AbstractReport(dirname(__FILE__)."/../../ReportXML/{$config->getValue('networkName')}/$report.xml", -1, false, $topProjectOnly);
     }
 
     static function createTab(&$tabs){

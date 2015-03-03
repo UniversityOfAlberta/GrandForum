@@ -11,8 +11,14 @@ $wgHooks['CanUserReadPDF'][] = 'AbstractReport::canUserReadPDF';
 
 require_once("ReportConstants.php");
 require_once("ReportDashboardTableTypes.php");
-require_once("SpecialPages/Report.php");
-require_once("SpecialPages/DummyReport.php");
+require_once("SpecialPages/{$config->getValue('networkName')}/Report.php");
+require_once("SpecialPages/{$config->getValue('networkName')}/DummyReport.php");
+if(file_exists("SpecialPages/{$config->getValue('networkName')}/ReportPDFs.php")){
+    require_once("SpecialPages/{$config->getValue('networkName')}/ReportPDFs.php");
+}
+if(file_exists("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php")){
+    require_once("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php");
+}
 
 autoload_register('Reporting/Report');
 autoload_register('Reporting/Report/ReportSections');
@@ -852,7 +858,6 @@ abstract class AbstractReport extends SpecialPage {
     // Renders the Report to the browser
     function render(){
         global $wgOut, $wgServer, $wgScriptPath, $wgArticle, $wgImpersonating, $wgMessage;
-        $wgMessage->addInfo("<b style='color: #D50013'>Important Notice:</b> The reporting process has being postponed. There will be changes announced for the procedure and new guidelines and due dates will be provided. The due dates are as yet not known. They will be some time in 2015 (not in 2014).");
         FootnoteReportItem::$nFootnotes = 0;
         if($this->disabled && !$wgImpersonating){
             $wgOut->addHTML("<div id='outerReport'>This report is currently disabled until futher notice.</div>");

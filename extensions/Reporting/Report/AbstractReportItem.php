@@ -188,6 +188,11 @@ abstract class AbstractReportItem {
         if(isset($_POST[$this->getPostId()])){
             if(!isset($_POST[$this->getPostId().'_ignoreConflict']) ||
                $_POST[$this->getPostId().'_ignoreConflict'] != "true"){
+                if(isset($_POST['oldData'][$this->getPostId()]) && is_array($_POST['oldData'][$this->getPostId()])){
+                    // Don't handle arrays, but save anyways
+                    $this->setBlobValue($_POST[$this->getPostId()]);
+                    return array();
+                }
                 if(isset($_POST['oldData'][$this->getPostId()]) &&
                    trim($_POST['oldData'][$this->getPostId()]) == trim($_POST[$this->getPostId()])){
                    // Don't save, but also don't display an error

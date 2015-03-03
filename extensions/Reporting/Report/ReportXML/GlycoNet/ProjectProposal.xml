@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Project Proposal" reportType="RP_PROJECT_PROPOSAL" pdfType="RPTP_PROJECT_PROPOSAL" pdfFiles="ProjectProposalPDF" personId="0" ajax="true" disabled="false">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="COPL">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PM">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="submit" permissions="" />
+        </Role>
+        <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
+    </Permissions>
+    <ReportSection id="description" tooltip="General Information about the project" name="Project Description" blobSection="PROP_DESC" type="EditableReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+                
+            ]]>
+        </Instructions>
+        
+        <!-- Theme -->
+        <ReportItem id="theme" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="PROP_DESC_THEME" orientation="vertical" options="Diabetes/Obesity|Therapeutic proteins/Vaccines|Chronic Disease|Antimicrobials|Rare Genetic diseases">
+            <![CDATA[
+                <h3>Theme</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Project Title -->
+        <ReportItem id="title" type="TextReportItem" blobType="BLOB_TEXT" blobItem="PROP_DESC_TITLE" width="400px">
+            <![CDATA[
+                <h3>Project Title</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Lead Investigator -->
+        <ReportItem id="lead" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_LEAD" multiple="false" labels="Name|Affiliation|Phone|E-Mail">
+            <![CDATA[
+                <h3>Lead Investigators</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Other Investigators -->
+        <ReportItem id="other" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_OTHER" multiple="true" labels="Name|Affiliation|Phone|E-Mail">
+            <![CDATA[
+                <h3>Other Investigators</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+
+            ]]>
+        </Instructions>
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
+    </ReportSection>
+</Report>

@@ -10,6 +10,9 @@ define('LEADER', 1);
 define('NOTLEADER', 0);
 
 // PDF types
+/*
+ * GRAND
+ */
 define('RPTP_NORMAL', 0);
 define('RPTP_INPUT', 1);	// Not used yet.
 define('RPTP_LEADER', 2);
@@ -43,3 +46,7 @@ define('RPTP_HQP_ZIP', 102);
 define('EVTP_PERSON', 1);
 define('EVTP_PROJECT', 2);
 
+/*
+ * GlycoNet
+ */
+define('RPTP_PROJECT_PROPOSAL', 200);
