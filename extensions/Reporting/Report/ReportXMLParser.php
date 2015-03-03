@@ -124,11 +124,12 @@ class ReportXMLParser {
     
     // Parses the <Report> element of the XML
     function parseReport(){
+        global $config;
         if($this->parser->getName() == "Report"){
             $attributes = $this->parser->attributes();
             $children = $this->parser->children();
             if(isset($attributes->extends)){
-                $xmlFileName = dirname(__FILE__)."/ReportXML/{$attributes->extends}.xml";
+                $xmlFileName = dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/{$attributes->extends}.xml";
                 if(file_exists($xmlFileName) && $this->report->xmlName != $attributes->extends){
                     $this->report->setExtends("{$attributes->extends}");
                     $exploded = explode(".", $xmlFileName);
