@@ -370,7 +370,8 @@ class Person extends BackboneModel {
                                         array('uu.id' => 'DESC'));
             foreach($data as $row){
                 if(!isset(self::$universityCache[$row['user_id']]) || 
-                   self::$universityCache[$row['user_id']]['date'] <= $row['end_date'] || // Get the most recent
+                   (self::$universityCache[$row['user_id']]['date'] != '0000-00-00 00:00:00' && 
+                    self::$universityCache[$row['user_id']]['date'] <= $row['end_date']) || // Get the most recent
                    $row['end_date'] == '0000-00-00 00:00:00'){
                     self::$universityCache[$row['user_id']] = 
                         array("university" => $row['university_name'],
