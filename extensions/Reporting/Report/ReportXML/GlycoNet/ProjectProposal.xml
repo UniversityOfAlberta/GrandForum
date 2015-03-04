@@ -3,14 +3,17 @@
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="COPL">
             <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PM">
             <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="" />
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
@@ -41,7 +44,7 @@
         <!-- Lead Investigator -->
         <ReportItem id="lead" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_LEAD" multiple="false" labels="Name|Affiliation|Phone|E-Mail">
             <![CDATA[
-                <h3>Lead Investigators</h3>
+                <h3>Lead Investigator</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -52,6 +55,92 @@
                 <h3>Other Investigators</h3>
                 {$item}
             ]]>
+        </ReportItem>
+        
+        <!-- Partners involved (Companies, agencies etc) -->
+        <ReportItem id="part" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_PART" multiple="true" labels="Name|Dollars requested|Partner Dollars: Cash|Partner Dollars: In-Kind">
+            <![CDATA[
+                <h3>Partners involved (Companies, agencies etc)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Environmental Impact Question -->
+        <ReportItem id="env_q" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="PROP_DESC_ENV" orientation="horizontal" options="Yes|No">
+            <![CDATA[
+                <h3>Environmental Impact</h3>
+                Does any phase of the research described in this proposal take place outside an office or a laboratory?
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Environmental Impact Upload -->
+        <ReportItem id="env_u" type="UploadReportItem" blobType="BLOB_TEXT" blobItem="PROP_DESC_ENV_UP">
+            <![CDATA[
+                <p>
+                If Yes, please go to the NSERC web site (<a href="http://www.nserc.ca">www.nserc.ca</a>) and obtain the environmental impact form (Appendix A), complete this and submit it with your application.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Conflict of Interest Question -->
+        <ReportItem id="conflict_q" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="PROP_DESC_CONFLICT" orientation="horizontal" options="Yes|No">
+            <![CDATA[
+                <h3>Conflict of Interest</h3>
+                Do any of the researchers involved in this project stand to receive a potential personal financial gain (i.e. ownership of shares in an industrial partner, consulting fees with industry partner, etc.) from the results of the proposed research?
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Conflict of Interest Multi -->
+        <ReportItem id="conflict_which" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_CONFLICT_WHICH" multiple="true" labels="Name|Company">
+            <![CDATA[
+                <p>If Yes, please indicate which researcher and the relevant company.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Conflict of Interest Companies -->
+        <ReportItem id="conflict_comp" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_CONFLICT_COMP" multiple="true" labels="Company">
+            <![CDATA[
+                <p>Will any company benefit substantially if this grant is awarded? If so, please identify the companies below</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Project Description -->
+        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROP_DESC_SUMMARY" rich="true" height="300px">
+            <![CDATA[
+                <h2>Project Description</h2>
+                <p>Summary (maximum half page) plus graphical abstract</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Project Description -->
+        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROP_DESC_PROPOSAL" rich="true" height="500px">
+            <![CDATA[
+                <h2>Project Proposal</h2>
+                <small>Describe the science proposed using a maximum of 5 pages text. Please add additional pages to this form.  References and figures added at end are not counted in limit. <i><b>In addition</b></i> provide a maximum of 0.5 pages <i><b>each</b></i> describing commercialization potential and the training of HQP. Finally provide a set of milestones for the project broken down into quarters on the attached Excel file.</small>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+                <p>The intent of <b><i>Review</i></b> page is to provide
+                <ul>
+                  <li>an online document with all the information currently contained in the report, and </li>
+                  <li> an online approximation of what the resulting PDF document will look like. </li>
+                </ul>
+                If you are satisfied with this content, then you can proceed to the final step of the reporting workflow where you can <b><i>Submit</i></b> your report to be forwarded to the RMC.</p>
+
+                <b>Note that over-limit characters, shown in red in this online document, will not be included in the PDF document.</b>
+            ]]>
+        </Instructions>
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">

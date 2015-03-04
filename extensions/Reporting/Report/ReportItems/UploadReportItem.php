@@ -7,7 +7,7 @@ class UploadReportItem extends AbstractReportItem {
 		if(isset($_GET['downloadFile'])){
 		    $data = json_decode($this->getBlobValue());
 		    if($data != null){
-		        header("Content-disposition: attachment; filename='".addslashes($data->name)."'");
+		        header("Content-disposition: attachment; filename=\"".addslashes($data->name)."\"");
 		        echo base64_decode($data->file);
 		        exit;
 		    }
@@ -45,7 +45,7 @@ class UploadReportItem extends AbstractReportItem {
                             </script>";
 		$html .= "<div>";
 		
-		$html .= "<div id='budgetDiv'><iframe id='budgetFrame0' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm{$projectGet}{$year}'></iframe></div>";
+		$html .= "<div id='budgetDiv'><iframe id='budgetFrame0' frameborder='0' style='border-width:0;height:65px;width:100%;' scrolling='none' src='../index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm{$projectGet}{$year}'></iframe></div>";
 		$html .= "</div>";
 		
 		$item = $this->processCData($html);
@@ -58,9 +58,6 @@ class UploadReportItem extends AbstractReportItem {
 	
 	function fileUploadForm(){
 	    global $wgServer, $wgScriptPath;
-	    if(isset($_POST['upload'])){
-	        $this->save();
-	    }
 	    $projectGet = "";
 		if(isset($_GET['project'])){
 		    $projectGet = "&project={$_GET['project']}";
@@ -82,7 +79,7 @@ class UploadReportItem extends AbstractReportItem {
                     <link rel='stylesheet' href='$wgServer$wgScriptPath/skins/cavendish/cavendish.css' type='text/css' />
                     <script type='text/javascript'>
                         function load_page() {
-                            parent.alertsize($(\"body\").height()+38);
+                            parent.alertsize($(\"body > div\").height() + 10);
                         }
                     </script>
                     <style type='text/css'>
@@ -112,22 +109,18 @@ class UploadReportItem extends AbstractReportItem {
                             font-family: Verdana, sans-serif;
                         }
                     </style>";
-        if(isset($_POST['upload'])){
-            echo "<script type='text/javascript'>
-                        parent.alertreload();
-                    </script>";
-        }
         echo "</head>
               <body style='margin:0;'>
-                    <div id='bodyContent'>
-                        <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm{$projectGet}{$year}' method='post' enctype='multipart/form-data'>                      <p>
-                                <b>Max File Size:</b> {$this->getAttr('fileSize', 1)} MB
-                            </p>
+                    <div>";
+        if(isset($_POST['upload'])){
+	        $this->save();
+	    }
+        echo "          <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm{$projectGet}{$year}' method='post' enctype='multipart/form-data'>
                             <input type='file' name='file' />
-	                        <input type='submit' name='upload' value='Upload' />
+	                        <input type='submit' name='upload' value='Upload' /> <b>Max File Size:</b> {$this->getAttr('fileSize', 1)} MB
 	                    </form>";
 	    $data = $this->getBlobValue();
-	    if($data !== null){
+	    if($data !== null && $data !== ""){
 	        echo "<br /><a href='$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."{$projectGet}{$year}&downloadFile'>Download Uploaded File</a>";
 		}
 		else{
@@ -199,7 +192,6 @@ class UploadReportItem extends AbstractReportItem {
 	        unset($_POST['upload']);
 	        $this->fileUploadForm();
 	    }
-        exit;
 	    return array();
 	}
 	

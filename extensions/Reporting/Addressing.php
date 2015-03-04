@@ -306,15 +306,18 @@ define('ISAC_PHASE2_COMMENT', 2);
 define('EVL_LOI_YN',	1);
 define('EVL_LOI_C',		2);
 
-define('PROP_DESC_THEME',   1);
-define('PROP_DESC_TITLE',   2);
-define('PROP_DESC_LEAD',    3);
-define('PROP_DESC_OTHER',   4);
-define('PROP_DESC_PART',    5);
-define('PROP_DESC_ENV',     6);
-define('PROP_DESC_CONFLICT',7);
-define('PROP_DESC_SUMMARY', 8);
-define('PROP_DESC_PROPOSAL',9);
+define('PROP_DESC_THEME',           1);
+define('PROP_DESC_TITLE',           2);
+define('PROP_DESC_LEAD',            3);
+define('PROP_DESC_OTHER',           4);
+define('PROP_DESC_PART',            5);
+define('PROP_DESC_ENV',             6);
+define('PROP_DESC_ENV_UP',          7);
+define('PROP_DESC_CONFLICT',        8);
+define('PROP_DESC_CONFLICT_WHICH',  9);
+define('PROP_DESC_CONFLICT_COMP',   10);
+define('PROP_DESC_SUMMARY',         11);
+define('PROP_DESC_PROPOSAL',        12);
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used

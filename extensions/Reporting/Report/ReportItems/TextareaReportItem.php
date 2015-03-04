@@ -13,6 +13,15 @@ class TextareaReportItem extends AbstractReportItem {
                 });
 		    </script>";
 		}
+		if(strtolower($this->getAttr('rich', 'false')) == 'true'){
+		    $item .= "<script type='text/javascript'>
+		        $(document).ready(function(){
+                    $('textarea[name={$this->getPostId()}]').tinymce({
+                       theme: 'modern'
+                    });
+                });
+		    </script>";
+		}
 		$item = $this->processCData($item);
 		$wgOut->addHTML($item);
 	}
