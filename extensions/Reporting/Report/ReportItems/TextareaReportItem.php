@@ -17,7 +17,12 @@ class TextareaReportItem extends AbstractReportItem {
 		    $item .= "<script type='text/javascript'>
 		        $(document).ready(function(){
                     $('textarea[name={$this->getPostId()}]').tinymce({
-                       theme: 'modern'
+                       theme: 'modern',
+                       menubar: false,
+                       plugins: 'link image contextmenu charmap lists',
+                       toolbar: [
+                            'undo redo | bold italic underline | link image charmap | bullist numlist outdent indent | alignleft aligncenter alignright'
+                       ]
                     });
                 });
 		    </script>";
@@ -135,6 +140,23 @@ EOF;
 	        }
 	        $html .= "<span class='$class'><small>(<i>currently {$length} ".Inflect::smart_pluralize($length, "character")." out of a {$type} {$limit}</i>)</small></span>";
 	    }
+	    $dom = new SmartDOMDocument();
+        $dom->loadHTML($blobValue);
+        
+        $imgs = $dom->getElementsByTagName("img");
+        foreach($imgs as $img){
+            $img->setAttribute('width', intval($img->getAttribute('width'))*DPI_CONSTANT);
+            $img->setAttribute('height', intval($img->getAttribute('height'))*DPI_CONSTANT);
+            $style = $img->getAttribute('style');
+            preg_match("/width:\s*([0-9]*)/", $style, $styleWidth);
+            preg_match("/height:\s*([0-9]*)/", $style, $styleHeight);
+            if(isset($styleWidth[1]) && isset($styleHeight[1])){
+                $style .= "width: ".($styleWidth[1]*DPI_CONSTANT)."px !important;";
+                $style .= "height: ".($styleHeight[1]*DPI_CONSTANT)."px !important;";
+            }
+            $img->setAttribute('style', $style);
+        }
+	    $blobValue = "$dom";
 	    $html .= nl2br("<p>{$blobValue}</p>");
 	    return $html;
 	}

@@ -117,7 +117,7 @@
             ]]>
         </ReportItem>
         
-        <!-- Project Description -->
+        <!-- Project Proposal -->
         <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROP_DESC_PROPOSAL" rich="true" height="500px">
             <![CDATA[
                 <h2>Project Proposal</h2>

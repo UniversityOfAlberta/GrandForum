@@ -67,25 +67,25 @@ EOF;
         foreach($labels as $label){
             $item .= "<th>{$label}</th>";
         }
-        $item .= "<tr></th></tr>";
+        $item .= "<th></th></tr>";
         $i = 0;
         foreach($values as $i => $value){
             if($i > -1){
                 $item .= "<tr class='obj'>";
-                    foreach($indices as $index){
-                        $item .= "<td><input type='text' name='{$this->getPostId()}[$i][$index]' value='{$value[$index]}' /></td>";
-                    }
-                    if($multiple){
-                        $item .= "<td><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>";
-                    }
+                foreach($indices as $index){
+                    $item .= "<td><input type='text' name='{$this->getPostId()}[$i][$index]' value='{$value[$index]}' /></td>";
+                }
+                if($multiple){
+                    $item .= "<td><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>";
+                }
                 $item .= "</tr>";
             }
         }
         if(!$multiple && count($values) == 0){
             $item .= "<tr class='obj'>";
-                foreach($indices as $index){
-                    $item .= "<td><input type='text' name='{$this->getPostId()}[0][$index]' value='' /></td>";
-                }
+            foreach($indices as $index){
+                $item .= "<td><input type='text' name='{$this->getPostId()}[0][$index]' value='' /></td>";
+            }
             $item .= "</tr>";
         }
         
@@ -102,7 +102,38 @@ EOF;
     
     function renderForPDF(){
         global $wgOut;
-        $item = $this->processCData($this->getBlobValue());
+        $multiple = (strtolower($this->getAttr('multiple', 'false')) == 'true');
+        $labels = explode("|", $this->getAttr('labels', ''));
+        $indices = $this->getIndices($labels);
+        $values = $this->getBlobValue();
+        if($values == null){
+            $values = array();
+            $max = -1;
+        }
+        else{
+            $max = max(array_keys($values));
+        }
+        $item = "";
+        if($max > -1){
+            $item = "<table id='table_{$this->getPostId()}' cellspacing='1' cellpadding='3' style='border: none;' frame='box' rules='all' width='100%'>
+                <tr>";
+            foreach($labels as $label){
+                $item .= "<th>{$label}</th>";
+            }
+            $item .= "</tr>";
+            $i = 0;
+            foreach($values as $i => $value){
+                if($i > -1){
+                    $item .= "<tr class='obj'>";
+                    foreach($indices as $index){
+                        $item .= "<td>{$value[$index]}</td>";
+                    }
+                    $item .= "</tr>";
+                }
+            }
+            $item .= "</table><br />";
+        }
+        $item = $this->processCData($item);
         $wgOut->addHTML($item);
     }
 }
