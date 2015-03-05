@@ -55,6 +55,9 @@
     // Icon path (highlighted)
     $config->setValue("iconPathHighlighted", "skins/icons/gray_dark/");
     
+    // The font for generated PDF documents
+    $config->setValue("pdfFont", "helvetica");
+    
     // Highlight color for skin
     $config->setValue("highlightColor", "#0088FF");
     

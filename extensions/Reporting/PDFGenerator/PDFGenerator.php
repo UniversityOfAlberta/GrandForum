@@ -190,7 +190,7 @@ EOF;
 		    #pdfBody  {
 		        margin: 0.5cm 0cm;
 		        margin-bottom:1cm;
-		        font-family: helvetica !important;
+		        font-family: {$config->getValue('pdfFont')} !important;
 		        font-size: {$fontSize}px;
 		    }
 		    
@@ -239,7 +239,7 @@ EOF;
             }
 		    
 		    #pdfBody td, #pdfBody th {
-		        font-family: helvetica !important;
+		        font-family: {$config->getValue('pdfFont')} !important;
 		        background-color: #FFFFFF;
 		    }
 		    

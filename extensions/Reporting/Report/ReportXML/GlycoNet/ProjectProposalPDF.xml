@@ -59,7 +59,7 @@
         <!-- Lead Investigator -->
         <ReportItem id="lead" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_LEAD" multiple="false" labels="Name|Affiliation|Phone|E-Mail">
             <![CDATA[
-                <h4>Lead Investigator</h4>
+                <h3>Lead Investigator</h3>
                 {$item}
             ]]>
         </ReportItem>
