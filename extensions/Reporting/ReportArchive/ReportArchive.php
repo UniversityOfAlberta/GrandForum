@@ -593,8 +593,11 @@ class ReportArchive extends SpecialPage {
     }
     
     static function createTab(&$tabs){
-        global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
-        $tabs["My Archive"] = TabUtils::createTab("My Archive");
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $config;
+        $extras = $config->getValue('reportingExtras');
+        if($extras['ReportArchive']){
+            $tabs["My Archive"] = TabUtils::createTab("My Archive");
+        }
         return true;
     }
     
