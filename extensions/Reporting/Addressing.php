@@ -319,6 +319,11 @@ define('PROP_DESC_CONFLICT_COMP',   10);
 define('PROP_DESC_SUMMARY',         11);
 define('PROP_DESC_PROPOSAL',        12);
 
+define('PROP_MIL_UPLOAD',           1);
+
+define('PROP_BUD_UPLOAD',           1);
+define('PROP_BUD_JUSTIF',           2);
+
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used
  * to identify a user ID or project ID, which is the focus of the evaluation.

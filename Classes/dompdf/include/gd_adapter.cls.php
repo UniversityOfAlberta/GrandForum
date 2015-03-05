@@ -740,7 +740,7 @@ class GD_Adapter implements Canvas {
     case "jpg":
     case "jpeg":
       if ( !isset($options["quality"]) )
-        $options["quality"] = 75;
+        $options["quality"] =100;
       
       header("Content-type: image/jpeg");
       imagejpeg($dst, '', $options["quality"]);
@@ -788,7 +788,7 @@ class GD_Adapter implements Canvas {
     case "jpg":
     case "jpeg":
       if ( !isset($options["quality"]) )
-        $options["quality"] = 75;
+        $options["quality"] = 100;
       
       imagejpeg($dst, '', $options["quality"]);
       break;

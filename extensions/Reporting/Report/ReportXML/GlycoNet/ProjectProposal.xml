@@ -3,16 +3,22 @@
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="COPL">
             <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PM">
             <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="" />
         </Role>
@@ -75,7 +81,7 @@
         </ReportItem>
         
         <!-- Environmental Impact Upload -->
-        <ReportItem id="env_u" type="UploadReportItem" blobType="BLOB_TEXT" blobItem="PROP_DESC_ENV_UP">
+        <ReportItem id="env_u" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_DESC_ENV_UP">
             <![CDATA[
                 <p>
                 If Yes, please go to the NSERC web site (<a href="http://www.nserc.ca">www.nserc.ca</a>) and obtain the environmental impact form (Appendix A), complete this and submit it with your application.</p>
@@ -122,6 +128,38 @@
             <![CDATA[
                 <h2>Project Proposal</h2>
                 <small>Describe the science proposed using a maximum of 5 pages text. Please add additional pages to this form.  References and figures added at end are not counted in limit. <i><b>In addition</b></i> provide a maximum of 0.5 pages <i><b>each</b></i> describing commercialization potential and the training of HQP. Finally provide a set of milestones for the project broken down into quarters on the attached Excel file.</small>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="milestones" name="Milestones" blobSection="PROP_MILESTONES" tooltip="Project Milestones" type="EditableReportSection">
+        <Instructions>
+        
+        </Instructions>
+        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="PROP_MIL_UPLOAD">
+            <![CDATA[
+                <p>
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet%20Milestones.xls">milestone template</a> and upload it below.
+                </p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="budget" name="Budget" blobSection="PROP_BUDGET" tooltip="Project Budget" type="EditableReportSection">
+        <Instructions>
+        
+        </Instructions>
+        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="PROP_BUD_UPLOAD">
+            <![CDATA[
+                <p>
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet%20Budget%20Template.xls">budget template</a> and upload it below.
+                </p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget_justification" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROP_BUD_JUSTIF">
+            <![CDATA[
+                <h3>Budget Justification</h3>
                 {$item}
             ]]>
         </ReportItem>

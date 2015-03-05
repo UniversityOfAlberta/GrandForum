@@ -42,7 +42,7 @@ abstract class PDFGenerator {
      * @returns array Returns an array containing the final html, as well as the pdf string
      */
     function generate($name, $html, $head, $person=null, $project=null, $preview=false){
-        global $wgServer, $wgScriptPath, $wgUser;
+        global $wgServer, $wgScriptPath, $wgUser, $config;
         
         if(self::$preview){
             $preview = true;
@@ -130,11 +130,11 @@ EOF;
 		        margin-top:".(5*DPI_CONSTANT)."px;
 		    }
 		    
-		    #pdfBody .logo {
-		        background-image: url('../skins/Grand_Logo.png');
+		    /*#pdfBody .logo {
+		        background-image: url('../skins/{$config->getValue('networkName')}_Logo2.png');
 		        background-size: 100% Auto;
 		        background-repeat: no-repeat;
-		    }
+		    }*/
 		    
 		    #pdfBody .report_name {
 		        margin-top:".(17*DPI_CONSTANT)."px;
@@ -146,9 +146,9 @@ EOF;
 		        margin-right: 100px;
 		    }
 		    
-		    #pdfBody img.logo {
+		    /*#pdfBody img.logo {
 		        display: none;
-		    }
+		    }*/
 		    
 		    #pdfBody #page_header {
 		        width:100%;
@@ -173,10 +173,10 @@ EOF;
 		        page-break-after:always;
 		    }
 		    
-		    #pdfBody .logo {
-		        background-image: url('skins/Grand_Logo.png');
+		    /*#pdfBody .logo {
+		        background-image: url('skins/{$config->getValue('networkName')}_Logo2.png');
 		        background-repeat: no-repeat;
-		    }";
+		    }*/";
         }
         
 		$header .= "
@@ -403,11 +403,11 @@ EOF;
 		</style>
 		<!--[if lt IE 9]>
 		    <style type='text/css'>
-		        #pdfBody .logo {
+		        /*#pdfBody .logo {
 		            background-image: none;
-		            filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../skins/Grand_Logo.png',sizingMethod='scale');
-                    -ms-filter: \"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../skins/Grand_Logo.png', sizingMethod='scale')\";
-                }
+		            filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../skins/{$config->getValue('networkName')}_Logo.png',sizingMethod='scale');
+                    -ms-filter: \"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../skins/{$config->getValue('networkName')}_Logo.png', sizingMethod='scale')\";
+                }*/
             </style>
         <![endif]-->
 		$head

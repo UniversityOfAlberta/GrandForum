@@ -112,6 +112,7 @@ class ReportItemCallback {
             // Other
             "wgServer" => "getWgServer",
             "wgScriptPath" => "getWgScriptPath",
+            "networkName" => "getNetworkName",
             "id" => "getId",
             "name" => "getName"
         );
@@ -1143,6 +1144,11 @@ class ReportItemCallback {
     function getWgScriptPath(){
         global $wgScriptPath;
         return $wgScriptPath;
+    }
+    
+    function getNetworkName(){
+        global $config;
+        return $config->getValue('networkName');
     }
     
     function getId(){
