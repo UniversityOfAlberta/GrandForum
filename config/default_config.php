@@ -55,9 +55,6 @@
     // Icon path (highlighted)
     $config->setValue("iconPathHighlighted", "skins/icons/gray_dark/");
     
-    // The font for generated PDF documents
-    $config->setValue("pdfFont", "helvetica");
-    
     // Highlight color for skin
     $config->setValue("highlightColor", "#0088FF");
     
@@ -135,6 +132,22 @@
 
     // The dates that each phase started
     $config->setValue("projectPhaseDates", array());
+    
+    /*
+     * PDF Config
+     */
+     
+    // The font for generated PDF documents
+    $config->setValue("pdfFont", "helvetica");
+    
+    // The font for generated PDF documents
+    $config->setValue("pdfFontSize", "10");
+    
+    // The font for generated PDF documents
+    $config->setValue("pdfMargins", array('top'     => 0.75,
+                                          'right'   => 0.75,
+                                          'bottom'  => 0.50,
+                                          'left'    => 0.75));
     
     /*
      * Constants

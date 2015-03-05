@@ -32,6 +32,10 @@ abstract class PDFGenerator {
 
     static $preview = false;
     
+    static function cmToPixels($cm, $dpi=72){
+        return $cm*$dpi/2.54;
+    }
+    
     /**
      * Generates a PDF based on html input
      * @param string $name The name of the PDF File
@@ -75,6 +79,8 @@ abstract class PDFGenerator {
         ini_set("max_execution_time","500");
         ini_set("memory_limit","1024M");
         
+        $margins = $config->getValue('pdfMargins');
+        
         $previewScript = "";
         if($preview){
             $previewScript = "
@@ -96,8 +102,6 @@ abstract class PDFGenerator {
                     parent.alertsize($(\"body\").height() + 50 + 38);
                     $(\"body\").width('auto');
                 }
-                
-                
             </script>
             <script type='text/javascript'>
 		        $(document).ready(function(){
@@ -119,7 +123,7 @@ abstract class PDFGenerator {
 		<title>$name</title>
         <style type='text/css'>
 EOF;
-        $fontSize = (10*DPI_CONSTANT);
+        $fontSize = ($config->getValue('pdfFontSize')*DPI_CONSTANT);
         if($preview){
             $header .= "
             #pdfBody .pagebreak {
@@ -131,7 +135,7 @@ EOF;
 		    }
 		    
 		    /*#pdfBody .logo {
-		        background-image: url('../skins/{$config->getValue('networkName')}_Logo2.png');
+		        background-image: url('../skins/{$config->getValue('networkName')}_Logo.png');
 		        background-size: 100% Auto;
 		        background-repeat: no-repeat;
 		    }*/
@@ -174,17 +178,17 @@ EOF;
 		    }
 		    
 		    /*#pdfBody .logo {
-		        background-image: url('skins/{$config->getValue('networkName')}_Logo2.png');
+		        background-image: url('skins/{$config->getValue('networkName')}_Logo.png');
 		        background-repeat: no-repeat;
 		    }*/";
         }
         
 		$header .= "
 		    @page {
-                margin-top: 0.75cm;
-                margin-left: 0.75cm;
-                margin-right: 0.75cm;
-                margin-bottom: 0.50cm;
+                margin-top: {$margins['top']}cm;
+                margin-right: {$margins['right']}cm;
+                margin-bottom: {$margins['bottom']}cm;
+                margin-left: {$margins['left']}cm;
             }
 		
 		    #pdfBody  {
@@ -311,7 +315,7 @@ EOF;
 		        border: ".max(1, (0.5*DPI_CONSTANT))."px solid #000000;
 		        padding: ".max(1, (0.5*DPI_CONSTANT))."px ".(3*DPI_CONSTANT)."px ".(2*DPI_CONSTANT)."px ".(3*DPI_CONSTANT)."px;
 		        margin-bottom: ".(2*DPI_CONSTANT)."px;
-		        margin-top: ".(10*DPI_CONSTANT)."px;
+		        margin-top: ".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;
 		    }
 		    
 		    #pdfBody h4 {
@@ -388,7 +392,7 @@ EOF;
                 width:".(203*DPI_CONSTANT)."px;
                 height:".(68*DPI_CONSTANT)."px;
                 position:absolute;
-                margin-top: ".(10*DPI_CONSTANT)."px;
+                margin-top: ".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;
             }
             
             #pdfBody .logo_div {
@@ -426,7 +430,7 @@ EOF;
 if ( isset($pdf) ) {
 
   $font = Font_Metrics::get_font("verdana");
-  $size = 8;
+  $size = "12px";
   $size2 = 6;
   $color = array(0,0,0);
   $text_height = Font_Metrics::get_font_height($font, $size);
@@ -438,9 +442,17 @@ if ( isset($pdf) ) {
   $h = $pdf->get_height();
 
   // Draw a line along the bottom
-  $y = $h - $text_height2 - 24;
-  $pdf->line(16, $y - $text_height2, $w - 16, $y - $text_height2, $color, 0.5);
-  $pdf->line(16, 22 + $text_height, $w - 16, 22 + $text_height, $color, 0.5);
+  $y = $h - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).';
+  $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
+             '.PDFGenerator::cmToPixels($margins['top']).', 
+             $w - '.PDFGenerator::cmToPixels($margins['right']).', 
+             '.PDFGenerator::cmToPixels($margins['top']).', 
+             $color, 0.5);
+  $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
+             $h - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', 
+             $w - '.PDFGenerator::cmToPixels($margins['right']).', 
+             $h - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', 
+             $color, 0.5);
   $pdf->close_object();
   $pdf->add_object($foot, "all");
   $text = "Page {PAGE_NUM} of {PAGE_COUNT}";
@@ -450,13 +462,13 @@ if ( isset($pdf) ) {
   
   $nameWidth = Font_Metrics::get_text_width("'.$headerName.'", $font, $size);
   
-  $pdf->page_text($w - $width - 22, $y+4 - $text_height2, $text, $font, $size2, $color);
-  $pdf->page_text($w - $nameWidth - 22, 20, "'.$headerName.'", $font, $size, $color);
+  $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height, "'.$headerName.'", $font, $size, $color);
+  $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+4 - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color);
 }
 </script>';
         $dateStr = date("Y-m-d H:i:s T", time());
         if($preview){
-            echo $header."<body><div id='pdfBody'><div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".(10*DPI_CONSTANT)."px;' /><div style='position:absolute;top:0;font-size:smaller;'><i>Generated: $dateStr</i></div>$html</div></body></html>";
+            echo $header."<body><div id='pdfBody'><div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;' /><div style='position:absolute;top:0;font-size:smaller;'><i>Generated: $dateStr</i></div>$html</div></body></html>";
             return;
         }
         
@@ -466,7 +478,7 @@ if ( isset($pdf) ) {
         $html = str_replace("”", '"', $html);
         //$html = utf8_encode($html);
         $html = preg_replace('/\cP/', '', $html);
-        $finalHTML = utf8_decode($header."<body id='pdfBody'><div style='margin-top:-".($fontSize*1.6)."px;font-size:smaller;'><i>Generated: $dateStr</i></div>$pages$html</body></html>");
+        $finalHTML = utf8_decode($header."<body id='pdfBody'><div style='margin-top:-".(PDFGenerator::cmToPixels($margins['top'] - 0.5)+($fontSize*1.6))."px;font-size:smaller;'><i>Generated: $dateStr</i></div>$pages$html</body></html>");
         $dompdf->load_html($finalHTML);
         $dompdf->render();
         //$pdfStr = $dompdf->output();

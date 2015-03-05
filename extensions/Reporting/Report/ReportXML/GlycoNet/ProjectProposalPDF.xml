@@ -138,7 +138,6 @@
         <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROP_DESC_PROPOSAL" rich="true" height="500px">
             <![CDATA[
                 <h2>Project Proposal</h2>
-                <small>Describe the science proposed using a maximum of 5 pages text. Please add additional pages to this form.  References and figures added at end are not counted in limit. <i><b>In addition</b></i> provide a maximum of 0.5 pages <i><b>each</b></i> describing commercialization potential and the training of HQP. Finally provide a set of milestones for the project broken down into quarters on the attached Excel file.</small>
                 {$item}
             ]]>
         </ReportItem>
