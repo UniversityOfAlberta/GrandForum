@@ -19,9 +19,9 @@ class TextareaReportItem extends AbstractReportItem {
                     $('textarea[name={$this->getPostId()}]').tinymce({
                        theme: 'modern',
                        menubar: false,
-                       plugins: 'link image contextmenu charmap lists',
+                       plugins: 'link image contextmenu charmap lists table',
                        toolbar: [
-                            'undo redo | bold italic underline | link image charmap | bullist numlist outdent indent | alignleft aligncenter alignright'
+                            'undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright'
                        ]
                     });
                 });
@@ -104,6 +104,7 @@ EOF;
 	}
 	
 	function getHTMLForPDF(){
+	    global $config;
 	    $limit = $this->getLimit();
 	    $html = "";
 	    $blobValue = str_replace("\r", "", $this->getBlobValue());
@@ -156,8 +157,27 @@ EOF;
             }
             $img->setAttribute('style', $style);
         }
+        
+        $tables = $dom->getElementsByTagName('table');
+        $margins = $config->getValue('pdfMargins');
+        foreach($tables as $table){
+            $maxWidth = PDFGenerator::cmToPixels(21.59 - $margins['left'] - $margins['right']); // Standard Letter width - margins
+            $width = min($maxWidth, intval($table->getAttribute('width')));
+            $table->setAttribute('width', $width);
+            
+            $table->setAttribute('cellspacing', ceil(1*DPI_CONSTANT));
+            $table->setAttribute('cellpadding', ceil(3*DPI_CONSTANT));
+            $table->setAttribute('rules', 'all');
+            $table->setAttribute('frame', 'box');
+        }
+        
 	    $blobValue = "$dom";
-	    $html .= nl2br("<p>{$blobValue}</p>");
+	    if(strtolower($this->getAttr('rich', 'false')) == 'true'){
+	        $html .= "<div class='tinymce'>$blobValue</div>";
+	    }
+	    else{
+	        $html .= nl2br("<p>{$blobValue}</p>");
+	    }
 	    return $html;
 	}
 	

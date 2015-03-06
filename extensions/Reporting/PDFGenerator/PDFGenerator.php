@@ -72,6 +72,7 @@ abstract class PDFGenerator {
             }
         }
         $nInfo = max(5, $nInfo);
+        
         $html = "$dom";
         if($person == null){
             $person = Person::newFromId($wgUser->getId());
@@ -402,6 +403,19 @@ EOF;
             
             #pdfBody br {
                 font-size: 0.5em;
+            }
+            
+            #pdfBody .tinymce p {
+                margin-bottom: ".($fontSize)."px;
+            }
+            
+            #pdfBody .tinymce ol, #pdfBody .tinymce ul {
+                padding-left: ".($fontSize*2)."px;
+            }
+            
+            #pdfBody .tinymce table {
+                max-width: 100%;
+                border: none;
             }
 		    
 		</style>
