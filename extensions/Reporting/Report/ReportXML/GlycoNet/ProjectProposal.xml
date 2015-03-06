@@ -3,31 +3,40 @@
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="COPL">
             <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PM">
             <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="" />
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
-    <ReportSection id="description" tooltip="General Information about the project" name="Project Description" blobSection="PROP_DESC" type="EditableReportSection" renderpdf="false">
+    <ReportSection id="description" tooltip="General Information about the project" name="Description" blobSection="PROP_DESC" type="EditableReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
-                
+                <h3>Project Description</h3>
+                You should include:
+                <ul>
+                    <li>A completed cover page.</li>
+                    <li>A project summary (0.5 pages or less).</li>
+                    <li>A graphical abstract (0.5 pages or less).</li>
+                    <li>A proposal (5 pages, not including pictures and references)</li>
+                    <li>A section on knowledge and technology exchange and exploitation including potential commercialization (0.5 pages)</li>
+                    <li>A section on training potential (0.5 pages)</li>
+                </ul>
             ]]>
         </Instructions>
         
@@ -57,7 +66,7 @@
                               types="NI|text|text|text"
                               sizes="0|150|125|150">
             <![CDATA[
-                <h3>Lead Investigator</h3>
+                <h2>Lead Investigator</h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -71,7 +80,7 @@
                                types="NI|text|text|text"
                                sizes="0|150|125|150">
             <![CDATA[
-                <h3>Other Investigators</h3>
+                <h2>Other Investigators</h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -79,7 +88,7 @@
         <!-- Partners involved (Companies, agencies etc) -->
         <ReportItem id="part" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_PART" multiple="true" labels="Name|Dollars requested|Partner Dollars: Cash|Partner Dollars: In-Kind" types="text|text|text|text">
             <![CDATA[
-                <h3>Partners involved (Companies, agencies etc)</h3>
+                <h2>Partners involved (Companies, agencies etc)</h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -87,7 +96,7 @@
         <!-- Environmental Impact Question -->
         <ReportItem id="env_q" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="PROP_DESC_ENV" orientation="horizontal" options="Yes|No">
             <![CDATA[
-                <h3>Environmental Impact</h3>
+                <h2>Environmental Impact</h2>
                 Does any phase of the research described in this proposal take place outside an office or a laboratory?
                 {$item}
             ]]>
@@ -105,7 +114,7 @@
         <!-- Conflict of Interest Question -->
         <ReportItem id="conflict_q" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="PROP_DESC_CONFLICT" orientation="horizontal" options="Yes|No">
             <![CDATA[
-                <h3>Conflict of Interest</h3>
+                <h2>Conflict of Interest</h2>
                 Do any of the researchers involved in this project stand to receive a potential personal financial gain (i.e. ownership of shares in an industrial partner, consulting fees with industry partner, etc.) from the results of the proposed research?
                 {$item}
             ]]>
@@ -145,22 +154,46 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="milestones" name="Milestones" blobSection="PROP_MILESTONES" tooltip="Project Milestones" type="EditableReportSection">
-        <Instructions>
-        
-        </Instructions>
-        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="PROP_MIL_UPLOAD">
-            <![CDATA[
-                <p>
-                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet%20Milestones.xls">milestone template</a> and upload it below.
-                </p>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
     <ReportSection id="budget" name="Budget" blobSection="PROP_BUDGET" tooltip="Project Budget" type="EditableReportSection">
         <Instructions>
-        
+            <![CDATA[
+                <h3>Budget (provide as a single Excel file)</h3>
+                <p>The front page in the excel file is the total project budget. The other pages (labeled NPI-1, NPI-2 etc; NPI = Network Principal Investigator) are for each involved PI. The budget requested by each PI should be filled in on their respective pages, including the partner contributions that are to be directed to their laboratories. The totals will populate automatically on the first page. <b><i>The project leader is responsible for combining all of the PI budgets into a single excel file.</i></b> The first page also contains the budget for the use of the core services in the project. <b><i>The project leader should coordinate the core services budget for the project.</i></b></p>
+                <p>Guidelines:
+                    <ul>
+                        <li>The maximum salary for Graduate Students is $25,000/year and for Postdoctoral Fellows is $42,000/year.</li>
+                        <li>Undergraduate student support should be limited to co-op students and should be listed in the technician line item.</li>
+                        <li>Equipment is capped at $5,000/year/project.</li>
+                        <li>Travel
+                            <ul>
+                                <li>Conference travel is capped at $3,000/year/PI/project.</li>
+                                <li>Travel and accommodation for trainees to visit collaborating labs is encouraged and should be included in project budgets.</li>
+                                <li>Travel to the annual general meeting will be funded centrally through the Network. It should not be incorporated into project budgets.</li>
+                            </ul>
+                        </li>
+                        <li>HTS Core
+                            <ul>
+                                <li>You should work with one of the Network screening partners (CDRD, McMaster HTS lab, SPARC) to develop a budget and a plan of action (i.e., milestones). These costs should be incorporated into the project budget.</li>
+                                <li>As indicated at the theme meetings, funding for the screen itself will go to the screening partner. The development of the assay can be done either at the screening partner, or in the lab of a PI (to be determined in your discussions with the screening partner), with the funding going to the location where the work will be carried out. Please note that all projects will need to develop not only a primary screening method but also a secondary screening method for hit validation.</li>
+                            </ul>
+                        </li>
+                        <li>Glycan Screening, Glycan Synthesis and Glycan Structure Analysis Cores
+                            <ul>
+                                <li>Those of you who have an anticipated need for these core services should contact Todd Lowary (tlowary@ualberta.ca) by March 13, 2015. We will generate an estimate that can be incorporated into the budget.</li>
+                            </ul>
+                        </li>
+                        <li>All partner contributions need to be supported by a letter from the partner institution (see below).
+                            <ul>
+                                <li>Based on NCE guidelines, teaching assistantship support cannot be counted as matching. Similarly, student and PDF fellowships from CIHR, NSERC or SSHRC cannot be counted as matching. Therefore, please do not include these as a partner contribution in your budget. Research fellowships provided by universities or non-federal agencies should be listed as matching and a supporting letter documenting support is needed.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </p>
+                <h3>Budget Justification</h3>
+                <p>Please provide concise, but sufficient, justification for expenses. Benefit rates for employees should be clearly stipulated.<br />
+                <b><i>The project leader is responsible for generating a single budget justification document
+containing information from all PI groups.</i></b></p>
+            ]]>
         </Instructions>
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="PROP_BUD_UPLOAD">
             <![CDATA[
@@ -173,6 +206,28 @@
         <ReportItem id="budget_justification" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROP_BUD_JUSTIF">
             <![CDATA[
                 <h3>Budget Justification</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="milestones" name="Milestones" blobSection="PROP_MILESTONES" tooltip="Project Milestones" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <h2>Milestones (provide as a single Excel file)</h2>
+                <p>Guidelines:
+                    <ul>
+                        <li>Quarterly milestones should be provided and should contain sufficient detail that progress toward them can be clearly monitored. Progress toward stated milestones will be a significant component of evaluation for continued project funding.</li>
+                        <li>Milestones can be amended every six months and less detail is needed for work to be carried out in years two and three of the project.</li>
+                        <li>The project leader is responsible for combining all of the milestones into a single excel file.</li>
+                    </ul>
+                </p>
+            ]]>
+        </Instructions>
+        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="PROP_MIL_UPLOAD">
+            <![CDATA[
+                <p>
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet%20Milestones.xls">milestone template</a> and upload it below.
+                </p>
                 {$item}
             ]]>
         </ReportItem>

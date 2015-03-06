@@ -3,22 +3,22 @@
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="COPL">
             <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PM">
             <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="" />
         </Role>
@@ -124,7 +124,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="summary" name="Project Description" blobSection="PROP_DESC" type="EditableReportSection">
+    <ReportSection id="summary" name="Description" blobSection="PROP_DESC" type="EditableReportSection">
         <!-- Project Description -->
         <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROP_DESC_SUMMARY" rich="true" height="300px">
             <![CDATA[
@@ -132,7 +132,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="summary" name="Project Proposal" blobSection="PROP_DESC" type="EditableReportSection">
+    <ReportSection id="summary" name="Proposal" blobSection="PROP_DESC" type="EditableReportSection">
         <!-- Project Proposal -->
         <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROP_DESC_PROPOSAL" rich="true" height="500px">
             <![CDATA[
@@ -140,15 +140,15 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection blobSection="PROP_MILESTONES" type="EditableReportSection" name="Project Milestones">
-        
-    </ReportSection>
-    <ReportSection blobSection="PROP_BUDGET" type="EditableReportSection" name="Project Budget" pagebreak="false">
+    <ReportSection blobSection="PROP_BUDGET" type="EditableReportSection" name="Budget">
         <ReportItem id="budget_justification" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROP_BUD_JUSTIF">
             <![CDATA[
                 <h3>Budget Justification</h3>
                 {$item}
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection blobSection="PROP_MILESTONES" type="EditableReportSection" name="Milestones" pagebreak="false">
+        
     </ReportSection>
 </Report>
