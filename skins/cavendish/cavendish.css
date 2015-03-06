@@ -442,6 +442,7 @@ input[type=radio][disabled]:hover {
 .custom-combobox {
     position: relative;
     display: inline-block;
+    white-space: nowrap;
 }
 
 .custom-combobox-toggle, .custom-combobox-toggle:active, .custom-combobox-toggle:hover, .custom-combobox-toggle.ui-state-hover {

@@ -22,6 +22,7 @@ class MultiTextReportItem extends AbstractReportItem {
         $labels = explode("|", $this->getAttr('labels', ''));
         $types = explode("|", $this->getAttr('types', ''));
         $indices = $this->getIndices($labels);
+        $sizes = explode("|", $this->getAttr('sizes', ''));
         $values = $this->getBlobValue();
         if($values == null){
             $values = array();
@@ -50,7 +51,7 @@ EOF;
                             $item .= "\"<td><span>".$combobox->renderSelect()."</span></td>\" + \n";
                         }
                         else{
-                            $item .= "\"<td><input type='text' name='{$this->getPostId()}[\" + i + \"][$index]' value='' /></td>\" + \n";
+                            $item .= @"\"<td><input type='text' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
                         }
                     }
         $item .= <<<EOF
@@ -105,7 +106,7 @@ EOF;
                         $item .= "<td>".$combobox->render()."</td>";
                     }
                     else{
-                        $item .= "<td><input type='text' name='{$this->getPostId()}[$i][$index]' value='{$value[$index]}' /></td>";
+                        $item .= @"<td><input type='text' name='{$this->getPostId()}[$i][$index]' value='{$value[$index]}' style='width:{$sizes[$j]}px;' /></td>";
                     }
                 }
                 if($multiple){

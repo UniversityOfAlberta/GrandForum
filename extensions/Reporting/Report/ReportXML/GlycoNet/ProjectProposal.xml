@@ -48,7 +48,14 @@
         </ReportItem>
         
         <!-- Lead Investigator -->
-        <ReportItem id="lead" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_LEAD" multiple="true" max="2" labels="Name|Affiliation|Phone|E-Mail" types="NI|text|text|text">
+        <ReportItem id="lead" type="MultiTextReportItem" 
+                              blobType="BLOB_ARRAY" 
+                              blobItem="PROP_DESC_LEAD" 
+                              multiple="true" 
+                              max="2" 
+                              labels="Name|Affiliation|Phone|E-Mail" 
+                              types="NI|text|text|text"
+                              sizes="0|150|125|150">
             <![CDATA[
                 <h3>Lead Investigator</h3>
                 {$item}
@@ -56,7 +63,13 @@
         </ReportItem>
         
         <!-- Other Investigators -->
-        <ReportItem id="other" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_OTHER" multiple="true" labels="Name|Affiliation|Phone|E-Mail" types="NI|text|text|text">
+        <ReportItem id="other" type="MultiTextReportItem" 
+                               blobType="BLOB_ARRAY" 
+                               blobItem="PROP_DESC_OTHER" 
+                               multiple="true" 
+                               labels="Name|Affiliation|Phone|E-Mail" 
+                               types="NI|text|text|text"
+                               sizes="0|150|125|150">
             <![CDATA[
                 <h3>Other Investigators</h3>
                 {$item}
