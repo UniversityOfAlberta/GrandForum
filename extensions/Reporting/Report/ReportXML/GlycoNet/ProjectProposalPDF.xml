@@ -57,7 +57,7 @@
         </ReportItem>
         
         <!-- Lead Investigator -->
-        <ReportItem id="lead" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_LEAD" multiple="false" labels="Name|Affiliation|Phone|E-Mail">
+        <ReportItem id="lead" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_LEAD" multiple="true" max="2" labels="Name|Affiliation|Phone|E-Mail">
             <![CDATA[
                 <h3>Lead Investigator</h3>
                 {$item}
@@ -124,20 +124,18 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="summary" name="Description" blobSection="PROP_DESC" type="EditableReportSection">
+    <ReportSection id="summary" name="Project Description" blobSection="PROP_DESC" type="EditableReportSection">
         <!-- Project Description -->
         <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROP_DESC_SUMMARY" rich="true" height="300px">
             <![CDATA[
-                <p>Summary (maximum half page) plus graphical abstract</p>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="summary" name="Proposal" blobSection="PROP_DESC" type="EditableReportSection">
+    <ReportSection id="summary" name="Project Proposal" blobSection="PROP_DESC" type="EditableReportSection">
         <!-- Project Proposal -->
         <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROP_DESC_PROPOSAL" rich="true" height="500px">
             <![CDATA[
-                <h2>Project Proposal</h2>
                 {$item}
             ]]>
         </ReportItem>

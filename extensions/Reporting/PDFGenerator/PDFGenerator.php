@@ -193,7 +193,7 @@ EOF;
 		
 		    #pdfBody  {
 		        margin: 0.5cm 0cm;
-		        margin-bottom:1cm;
+		        margin-bottom: 0.5cm;
 		        font-family: {$config->getValue('pdfFont')} !important;
 		        font-size: {$fontSize}px;
 		    }
@@ -462,8 +462,8 @@ if ( isset($pdf) ) {
   
   $nameWidth = Font_Metrics::get_text_width("'.$headerName.'", $font, $size);
   
-  $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height, "'.$headerName.'", $font, $size, $color);
-  $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+4 - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color);
+  $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 2, "'.$headerName.'", $font, $size, $color);
+  $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color);
 }
 </script>';
         $dateStr = date("Y-m-d H:i:s T", time());

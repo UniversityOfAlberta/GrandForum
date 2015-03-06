@@ -18,6 +18,7 @@ class MultiTextReportItem extends AbstractReportItem {
     function render(){
         global $wgOut;
         $multiple = (strtolower($this->getAttr('multiple', 'false')) == 'true');
+        $maxEntries = $this->getAttr('max', 100);
         $labels = explode("|", $this->getAttr('labels', ''));
         $indices = $this->getIndices($labels);
         $values = $this->getBlobValue();
@@ -52,6 +53,12 @@ EOF;
             }
             
             function updateTable{$this->getPostId()}(){
+                if($("#table_{$this->getPostId()} tr.obj").length >= {$maxEntries}){
+                    $("#add_{$this->getPostId()}").prop('disabled', true);
+                }
+                else{
+                    $("#add_{$this->getPostId()}").prop('disabled', false);
+                }
                 if($("#table_{$this->getPostId()} tr.obj").length == 0){
                     $("#table_{$this->getPostId()}").hide();
                 }
@@ -91,7 +98,7 @@ EOF;
         
         $item .= "</table>";
         if($multiple){
-            $item .= "<button onClick='addObj{$this->getPostId()}(max{$this->getPostId()});' type='button'>+</button>";
+            $item .= "<button id='add_{$this->getPostId()}' onClick='addObj{$this->getPostId()}(max{$this->getPostId()});' type='button'>+</button>";
             $item .= "<script type='text/javascript'>
                 updateTable{$this->getPostId()}();
             </script>";
@@ -103,6 +110,7 @@ EOF;
     function renderForPDF(){
         global $wgOut;
         $multiple = (strtolower($this->getAttr('multiple', 'false')) == 'true');
+        $maxEntries = $this->getAttr('max', 100);
         $labels = explode("|", $this->getAttr('labels', ''));
         $indices = $this->getIndices($labels);
         $values = $this->getBlobValue();
@@ -122,13 +130,15 @@ EOF;
             }
             $item .= "</tr>";
             $i = 0;
+            $count = 0;
             foreach($values as $i => $value){
-                if($i > -1){
+                if($i > -1 && $count < $maxEntries){
                     $item .= "<tr class='obj'>";
                     foreach($indices as $index){
                         $item .= "<td>{$value[$index]}</td>";
                     }
                     $item .= "</tr>";
+                    $count++;
                 }
             }
             $item .= "</table><br />";
