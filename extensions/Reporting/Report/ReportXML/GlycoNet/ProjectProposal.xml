@@ -48,7 +48,7 @@
         </ReportItem>
         
         <!-- Lead Investigator -->
-        <ReportItem id="lead" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_LEAD" multiple="true" max="2" labels="Name|Affiliation|Phone|E-Mail">
+        <ReportItem id="lead" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_LEAD" multiple="true" max="2" labels="Name|Affiliation|Phone|E-Mail" types="NI|text|text|text">
             <![CDATA[
                 <h3>Lead Investigator</h3>
                 {$item}
@@ -56,7 +56,7 @@
         </ReportItem>
         
         <!-- Other Investigators -->
-        <ReportItem id="other" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_OTHER" multiple="true" labels="Name|Affiliation|Phone|E-Mail">
+        <ReportItem id="other" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_OTHER" multiple="true" labels="Name|Affiliation|Phone|E-Mail" types="NI|text|text|text">
             <![CDATA[
                 <h3>Other Investigators</h3>
                 {$item}
@@ -64,7 +64,7 @@
         </ReportItem>
         
         <!-- Partners involved (Companies, agencies etc) -->
-        <ReportItem id="part" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_PART" multiple="true" labels="Name|Dollars requested|Partner Dollars: Cash|Partner Dollars: In-Kind">
+        <ReportItem id="part" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_PART" multiple="true" labels="Name|Dollars requested|Partner Dollars: Cash|Partner Dollars: In-Kind" types="text|text|text|text">
             <![CDATA[
                 <h3>Partners involved (Companies, agencies etc)</h3>
                 {$item}
@@ -99,7 +99,7 @@
         </ReportItem>
         
         <!-- Conflict of Interest Multi -->
-        <ReportItem id="conflict_which" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_CONFLICT_WHICH" multiple="true" labels="Name|Company">
+        <ReportItem id="conflict_which" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_CONFLICT_WHICH" multiple="true" labels="Name|Company" types="NI|text">
             <![CDATA[
                 <p>If Yes, please indicate which researcher and the relevant company.</p>
                 {$item}
@@ -107,7 +107,7 @@
         </ReportItem>
         
         <!-- Conflict of Interest Companies -->
-        <ReportItem id="conflict_comp" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_CONFLICT_COMP" multiple="true" labels="Company">
+        <ReportItem id="conflict_comp" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROP_DESC_CONFLICT_COMP" multiple="true" labels="Company" types="text">
             <![CDATA[
                 <p>Will any company benefit substantially if this grant is awarded? If so, please identify the companies below</p>
                 {$item}

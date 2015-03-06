@@ -20,6 +20,7 @@ class MultiTextReportItem extends AbstractReportItem {
         $multiple = (strtolower($this->getAttr('multiple', 'false')) == 'true');
         $maxEntries = $this->getAttr('max', 100);
         $labels = explode("|", $this->getAttr('labels', ''));
+        $types = explode("|", $this->getAttr('types', ''));
         $indices = $this->getIndices($labels);
         $values = $this->getBlobValue();
         if($values == null){
@@ -37,12 +38,25 @@ class MultiTextReportItem extends AbstractReportItem {
                 $("#table_{$this->getPostId()}").append(
                     "<tr class='obj'>" +
 EOF;
-                    foreach($indices as $index){
-                        $item .= "\"<td><input type='text' name='{$this->getPostId()}[\" + i + \"][$index]' value='' /></td>\" +\n";
+                    foreach($indices as $j => $index){
+                        if(@$types[$j] == "NI"){
+                            $names = array("");
+                            $people = array_merge(Person::getAllPeople(PNI), Person::getAllPeople(CNI));
+                            foreach($people as $person){
+                                $names[$person->getNameForForms()] = $person->getNameForForms();
+                            }
+                            asort($names);
+                            $combobox = new ComboBox("{$this->getPostId()}[\" + i + \"][$index]", "Project Leader", '', $names);
+                            $item .= "\"<td><span>".$combobox->renderSelect()."</span></td>\" + \n";
+                        }
+                        else{
+                            $item .= "\"<td><input type='text' name='{$this->getPostId()}[\" + i + \"][$index]' value='' /></td>\" + \n";
+                        }
                     }
         $item .= <<<EOF
                         "<td><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>" +
                     "</tr>");
+                $("#table_{$this->getPostId()} tr.obj:last select").combobox();
                 max{$this->getPostId()}++;
                 updateTable{$this->getPostId()}();
             }
@@ -79,8 +93,20 @@ EOF;
         foreach($values as $i => $value){
             if($i > -1){
                 $item .= "<tr class='obj'>";
-                foreach($indices as $index){
-                    $item .= "<td><input type='text' name='{$this->getPostId()}[$i][$index]' value='{$value[$index]}' /></td>";
+                foreach($indices as $j => $index){
+                    if(@$types[$j] == "NI"){
+                        $names = array("");
+                        $people = array_merge(Person::getAllPeople(PNI), Person::getAllPeople(CNI));
+                        foreach($people as $person){
+                            $names[$person->getNameForForms()] = $person->getNameForForms();
+                        }
+                        asort($names);
+                        $combobox = new ComboBox("{$this->getPostId()}[$i][$index]", "Project Leader", $value[$index], $names);
+                        $item .= "<td>".$combobox->render()."</td>";
+                    }
+                    else{
+                        $item .= "<td><input type='text' name='{$this->getPostId()}[$i][$index]' value='{$value[$index]}' /></td>";
+                    }
                 }
                 if($multiple){
                     $item .= "<td><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>";
