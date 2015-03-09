@@ -176,7 +176,7 @@ class UploadCCVAPI extends API{
                     $position = $id;
                 }
             }
-            if(count(DBFunctions::select(array('grand_roles'), 
+            /*if(count(DBFunctions::select(array('grand_roles'), 
                                          array('*'), 
                                          array('user_id'    => EQ($person->getId()),
                                                'role'       => EQ(HQP),
@@ -187,7 +187,7 @@ class UploadCCVAPI extends API{
                                           'role'        => HQP,
                                           'start_date'  => $start_date,
                                           'end_date'    => $end_date));
-            }
+            }*/
             if(count(DBFunctions::select(array('grand_relations'),
                                          array('*'),
                                          array('user1'      => EQ($supervisor->getId()),
@@ -416,25 +416,54 @@ class UploadCCVAPI extends API{
             }
             $department = $emp['department'];
             $university = Person::getDefaultUniversity();
+            $uniFound = false;
             foreach($universities as $id => $uni){
                 if($uni == $emp['organization_name']){
                     $university = $id;
+                    $uniFound = true;
                     break;
                 }
                 if($uni == $university){
                     $university = $id;
                 }
             }
+            if(!$uniFound){
+                // University not Found, so add it
+                $otherId = DBFunctions::select(array('grand_provinces'),
+                                               array('id'),
+                                               array('province' => EQ('Other')));
+                $otherId = (isset($otherId[0])) ? $otherId[0]['id'] : 0;
+                DBFunctions::insert('grand_universities',
+                                    array('university_name' => $emp['organization_name'],
+                                          'province_id'     => $otherId,
+                                          '`order`'    => 10001));
+                $university = DBFunctions::select(array('grand_universities'),
+                                                  array('university_id'),
+                                                  array('university_name' => EQ($emp['organization_name'])));
+                $university = (isset($university[0])) ? $university[0]['university_id'] : Person::getDefaultUniversity();
+            }
             $position = Person::getDefaultPosition();
             $rank = ($emp['rank'] != "") ? CommonCV::getCaptionFromValue($emp['rank'], "Academic Rank") : $emp['title'];
+            $posFound = false;
             foreach($positions as $id => $pos){
                 if($pos == $rank){
                     $position = $id;
+                    $posFound = true;
                     break;
                 }
                 if($pos == $position){
                     $position = $id;
                 }
+            }
+            if(!$posFound){
+                // Position not Found, so add it
+                DBFunctions::insert('grand_positions',
+                                    array('position' => $rank,
+                                          '`order`'    => 10001));
+                $position = DBFunctions::select(array('grand_positions'),
+                                                array('position_id'),
+                                                array('position' => EQ($rank)));
+                $position = (isset($position[0])) ? $position[0]['position_id'] : Person::getDefaultPosition();
             }
             $data = DBFunctions::select(array('grand_user_university'),
                                         array('*'),

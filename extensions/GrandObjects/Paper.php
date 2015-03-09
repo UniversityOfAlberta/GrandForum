@@ -1237,6 +1237,7 @@ class Paper extends BackboneModel{
                 }
             }
             // Update products table
+            $created_by = ($this->created_by == 0) ? $me->getId : $this->created_by;
             $status = DBFunctions::insert('grand_products',
                                           array('category' => $this->category,
                                                 'description' => $this->description,
@@ -1248,7 +1249,7 @@ class Paper extends BackboneModel{
                                                 'authors' => serialize($authors),
                                                 'data' => serialize($this->data),
                                                 'access_id' => $this->access_id,
-                                                'created_by' => $me->getId(),
+                                                'created_by' => $created_by,
                                                 'access' => $this->access,
                                                 'ccv_id' => $this->ccv_id,
                                                 'bibtex_id' => $this->bibtex_id,
