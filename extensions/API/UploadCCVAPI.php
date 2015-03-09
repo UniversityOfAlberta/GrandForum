@@ -188,12 +188,12 @@ class UploadCCVAPI extends API{
                                                array('province' => EQ('Other')));
                 $otherId = (isset($otherId[0])) ? $otherId[0]['id'] : 0;
                 DBFunctions::insert('grand_universities',
-                                    array('university_name' => $emp['institution'],
+                                    array('university_name' => $hqp['institution'],
                                           'province_id'     => $otherId,
                                           '`order`'    => 10001));
                 $university = DBFunctions::select(array('grand_universities'),
                                                   array('university_id'),
-                                                  array('university_name' => EQ($emp['institution'])));
+                                                  array('university_name' => EQ($hqp['institution'])));
                 $university = (isset($university[0])) ? $university[0]['university_id'] : Person::getDefaultUniversity();
             }
             $position = Person::getDefaultPosition();
