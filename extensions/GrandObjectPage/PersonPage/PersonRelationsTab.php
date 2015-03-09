@@ -65,7 +65,7 @@ class PersonRelationsTab extends AbstractTab {
                 }
                 else{
                     $this->html .= "<table><tr>";
-                    if(count($person->getHQP()) > 0){
+                    if(count($person->getRelations("Supervises", true)) > 0){
                         $ethicsHeader = "";
                         if(isExtensionEnabled('EthicsTable')){
                             $ethicsHeader = "<th>Ethical</th>";
