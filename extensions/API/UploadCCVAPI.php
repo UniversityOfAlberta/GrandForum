@@ -170,11 +170,11 @@ class UploadCCVAPI extends API{
             }
             $university = Person::getDefaultUniversity();
             $universities = Person::getAllUniversities();
-            $universityFound = false;
+            $uniFound = false;
             foreach($universities as $id => $uni){
                 if($uni == $hqp['institution']){
                     $university = $id;
-                    $universityFound = true;
+                    $uniFound = true;
                     break;
                 }
                 if($uni == $university){
