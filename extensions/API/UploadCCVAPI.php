@@ -170,14 +170,31 @@ class UploadCCVAPI extends API{
             }
             $university = Person::getDefaultUniversity();
             $universities = Person::getAllUniversities();
+            $universityFound = false;
             foreach($universities as $id => $uni){
                 if($uni == $hqp['institution']){
                     $university = $id;
+                    $universityFound = true;
                     break;
                 }
                 if($uni == $university){
                     $university = $id;
                 }
+            }
+            if(!$uniFound){
+                // University not Found, so add it
+                $otherId = DBFunctions::select(array('grand_provinces'),
+                                               array('id'),
+                                               array('province' => EQ('Other')));
+                $otherId = (isset($otherId[0])) ? $otherId[0]['id'] : 0;
+                DBFunctions::insert('grand_universities',
+                                    array('university_name' => $emp['institution'],
+                                          'province_id'     => $otherId,
+                                          '`order`'    => 10001));
+                $university = DBFunctions::select(array('grand_universities'),
+                                                  array('university_id'),
+                                                  array('university_name' => EQ($emp['institution'])));
+                $university = (isset($university[0])) ? $university[0]['university_id'] : Person::getDefaultUniversity();
             }
             $position = Person::getDefaultPosition();
             $positions = Person::getAllPositions();
