@@ -435,11 +435,12 @@ class UploadCCVAPI extends API{
      * @return boolean The status of the update
      */
     function updateEmployment($person, $employment){
-        $universities = Person::getAllUniversities();
-        $positions = Person::getAllPositions();
-        
         $status = true;
         foreach($employment as $emp){
+            // Reload the University/Position Data
+            $universities = Person::getAllUniversities();
+            $positions = Person::getAllPositions();
+            
             $start_date = $emp['start_year']."-".str_pad($emp['start_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
             $end_date = $emp['end_year']."-".str_pad($emp['end_month'], 2, '0', STR_PAD_LEFT)."-".str_pad(cal_days_in_month(CAL_GREGORIAN, $emp['end_month'], $emp['end_year']), 2, '0', STR_PAD_LEFT)." 00:00:00";
             if($emp['end_year'] == "" || $emp['end_month'] == ""){
