@@ -2120,7 +2120,7 @@ class Person extends BackboneModel {
                     AND u1.deleted != '1'
                     AND u2.deleted != '1'";
             if(!$history){
-                $sql .= "AND start_date > end_date";
+                $sql .= "AND start_date >= end_date";
             }
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
@@ -2138,7 +2138,7 @@ class Person extends BackboneModel {
                     AND u2.deleted != '1'
                     AND type <> '".WORKS_WITH."'";
             if(!$history){
-                $sql .= "AND start_date > end_date";
+                $sql .= "AND start_date >= end_date";
             }
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
@@ -2157,7 +2157,7 @@ class Person extends BackboneModel {
                     AND u2.deleted != '1'
                     AND type = '{$type}'";
             if(!$history){
-                $sql .= "AND start_date > end_date";
+                $sql .= "AND start_date >= end_date";
             }
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
@@ -2181,7 +2181,7 @@ class Person extends BackboneModel {
                 AND u2.deleted != '1'
                 AND r.type = 'Supervises'";
         if(!$history){
-            $sql .= "AND start_date > end_date";
+            $sql .= "AND start_date >= end_date";
         }
         $data = DBFunctions::execSQL($sql);
 
