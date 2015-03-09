@@ -146,13 +146,27 @@ class UploadCCVAPI extends API{
         }
         if($person->getId() != 0){
             // User exists (will exist if creation was successful as well)
-            $start_date = "{$hqp['start_year']}-".str_pad($hqp['start_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
+            if($hqp['start_year'] == "" && $hqp['start_month'] == ""){
+                $start_date = "{$hqp['degree_start_year']}-".str_pad($hqp['degree_start_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
+            }
+            else{
+                $start_date = "{$hqp['degree_start_year']}-".str_pad($hqp['degree_start_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
+            }
             if(CommonCV::getCaptionFromValue($hqp['status'], "Degree Status") == "In Progress"){
                 // HQP is still active
                 $end_date = "0000-00-00 00:00:00";
             }
             else{
-                $end_date = "{$hqp['end_year']}-".str_pad($hqp['end_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
+                if($hqp['end_year'] == "" && $hqp['end_month'] == "" && 
+                   $hqp['degree_end_year'] == "" && $hqp['degree_end_month'] == ""){
+                    $end_date = "{$hqp['degree_expected_year']}-".str_pad($hqp['degree_expected_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
+                }
+                else if($hqp['end_year'] == "" && $hqp['end_month'] == ""){
+                    $end_date = "{$hqp['degree_end_year']}-".str_pad($hqp['degree_end_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
+                }
+                else{
+                    $end_date = "{$hqp['end_year']}-".str_pad($hqp['end_month'], 2, '0', STR_PAD_LEFT)."-01 00:00:00";
+                }
             }
             $university = Person::getDefaultUniversity();
             $universities = Person::getAllUniversities();

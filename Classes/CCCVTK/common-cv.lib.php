@@ -191,10 +191,18 @@ class CommonCV // {{{
     {
       $record = array();
       $id = $this->get_xpath("@recordId", $elements->item($i));
+      // Supervision Dates
       $date = $this->get_xpath("field[@id='19964df0a8524f2bb44d5eb53729f9cc']/value", $elements->item($i));
-      list($record["start_year"], $record["start_month"]) = explode("/", $date);
+      @list($record["start_year"], $record["start_month"]) = explode("/", $date);
       $date = $this->get_xpath("field[@id='bd3619f7970441dc83ada1d2fdbf0780']/value", $elements->item($i));
       @list($record["end_year"], $record["end_month"]) = explode("/", $date);
+      // Degree Dates
+      $date = $this->get_xpath("field[@id='3cf3d0de12f44222b941fdbf57ad51a6']/value", $elements->item($i));
+      @list($record["degree_start_year"], $record["degree_start_month"]) = explode("/", $date);
+      $date = $this->get_xpath("field[@id='ab1293e2fee8472481457d4f8493c7f1']/value", $elements->item($i));
+      @list($record["degree_expected_year"], $record["degree_expected_month"]) = explode("/", $date);
+      $date = $this->get_xpath("field[@id='8284dbdd03aa4277b7fca7662bd1758c']/value", $elements->item($i));
+      @list($record["degree_end_year"], $record["degree_end_month"]) = explode("/", $date);
       $record["name"] = $this->get_xpath("field[@id='3c504aafda28418ea439d8f92c28aef0']/value", $elements->item($i));
       $record["institution"] = $this->get_xpath("field[@id='e36ccf9a00a241dc942e608df32c8c84']/value", $elements->item($i));
       $record["diploma"] = $this->get_xpath("field[@id='5b8638e8646448dcb8edef2c21e01c87']/lov/@id", $elements->item($i));
