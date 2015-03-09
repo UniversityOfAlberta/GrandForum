@@ -181,7 +181,7 @@ class UploadCCVAPI extends API{
                     $university = $id;
                 }
             }
-            if(!$uniFound){
+            if(!$uniFound && $hqp['institution'] != ""){
                 // University not Found, so add it
                 $otherId = DBFunctions::select(array('grand_provinces'),
                                                array('id'),
@@ -459,7 +459,7 @@ class UploadCCVAPI extends API{
                     $university = $id;
                 }
             }
-            if(!$uniFound){
+            if(!$uniFound && $emp['organization_name'] != ""){
                 // University not Found, so add it
                 $otherId = DBFunctions::select(array('grand_provinces'),
                                                array('id'),
