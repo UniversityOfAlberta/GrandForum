@@ -30,9 +30,16 @@ class ProductHandler extends AbstractDuplicatesHandler {
     }
     
     function showResult($paper1, $paper2){
-        global $wgServer, $wgScriptPath, $memcache;
+        global $wgServer, $wgScriptPath;
+        $key = $paper1->getId()."_".$paper2->getId()."_similar";
         if(!$this->areIgnored($paper1->getId(), $paper2->getId())){
-            similar_text($paper1->getTitle(), $paper2->getTitle(), $percent);
+            if(Cache::exists($key)){
+                $percent = Cache::fetch($key);
+            }
+            else{
+                similar_text($paper1->getTitle(), $paper2->getTitle(), $percent);
+            }
+            Cache::store($key, $percent);
             $percent = round($percent);
             if($percent >= 85){
                 $projs1 = $paper1->getProjects();
