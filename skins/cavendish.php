@@ -555,7 +555,10 @@ class cavendishTemplate extends QuickTemplate {
 		            $("a").attr("target", "_blank");
 		            var height = $("#bodyContent").height();
 		            // Inform the parent about what iframe height should be
-		            parent.postMessage(height+5, "*");
+		            setInterval(function(){
+		                height = $("#bodyContent").height();
+		                parent.postMessage(height+5, "*");
+		            }, 100);
 		        });
 		    </script>
 		<?php } ?>
