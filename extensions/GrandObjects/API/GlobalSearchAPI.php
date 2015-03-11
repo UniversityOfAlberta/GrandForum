@@ -54,6 +54,9 @@ class GlobalSearchAPI extends RESTAPI {
                     }
                     if($continue) continue;
                     similar_text(unaccentChars(str_replace(".", " ", $person->getName())), unaccentChars($origSearch), $percent);
+                    if(!$person->isActive()){
+                        $percent -= 10;
+                    }
                     foreach($person->getProjects() as $project){
                         if($me->isMemberOf($project)){
                             $percent += 15;
