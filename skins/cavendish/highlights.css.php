@@ -5,6 +5,7 @@ header('Content-Type: text/css');
 require_once("../../config/Config.php");
 
 $hl = $config->getValue("highlightColor");
+$hc = $config->getValue("headerColor");
 $iconPath = $config->getValue("iconPath");
 $iconPathHighlighted = $config->getValue("iconPathHighlighted");
 
@@ -28,6 +29,10 @@ echo <<<EOF
 .highlights-background-hover:hover {
     background: $hl !important;
     font-color: #FFFFFF !important;
+}
+
+h1, h2, h3, h4, h5, h6, h7 {
+    color: $hc !important;
 }
 
 /* Input */

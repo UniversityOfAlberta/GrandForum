@@ -868,7 +868,16 @@ class Paper extends BackboneModel{
         $unis = array();
         foreach($people as $person){
             $universities = $person->getUniversitiesDuring($this->getDate(), $this->getDate());
-            foreach($universities as $university){
+            if(count($universities) > 0){
+                foreach($universities as $university){
+                    if(isset($university['university']) && $university['university'] != "Unknown"){
+                        $unis[$university['university']] = $university['university'];
+                    }
+                }
+            }
+            else{
+                // Get current university if the person wasn't at a university at that time
+                $university = $person->getUniversity();
                 if(isset($university['university']) && $university['university'] != "Unknown"){
                     $unis[$university['university']] = $university['university'];
                 }

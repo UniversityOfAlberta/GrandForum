@@ -535,7 +535,7 @@ EOF;
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
         $this->html .= "<div style='white-space: nowrap;'>";
         $this->html .= <<<EOF
-            <div id='card' style='min-height:132px;display:inline-block;vertical-align:top;width:50%;'></div>
+            <div id='card' style='min-height:142px;display:inline-block;vertical-align:top;width:50%;'></div>
             <script type='text/javascript'>
                 $(document).ready(function(){    
                     var person = new Person({$person->toJSON()});

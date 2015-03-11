@@ -132,7 +132,7 @@ class Wordle extends Visualization {
                   .words(data.map(function(d) {
                     return {text: d.word, size: d.size};
                   }))
-                  .timeInterval(1)
+                  .timeInterval(Infinity)
                   .rotate(0)
                   .font("Times New Roman, Times")
                   .fontSize(function(d) { return d.size; })

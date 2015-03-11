@@ -57,6 +57,10 @@ function impersonate(){
     if(!$wgUser->isLoggedIn()){
         return true;
     }
+    if(isset($_GET['embed'])){
+        $wgUser->setId(0);
+        return true;
+    }
     $exploded = explode("?", @$_SERVER["REQUEST_URI"]);
     $page = $exploded[0];
     $title = explode("/", $page);

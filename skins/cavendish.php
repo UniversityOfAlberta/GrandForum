@@ -498,6 +498,67 @@ class cavendishTemplate extends QuickTemplate {
 		        });
 		    });
 		</script>
+		<?php if(isset($_GET['embed'])){ ?>
+		    <style>
+		    
+		        html {
+		            overflow: hidden;
+		            background: #FFFFFF;
+		        }
+		        
+		        #side {
+		            display: none;
+		        }
+		        
+		        #topheader {
+		            display: none;
+		        }
+		        
+		        #outerHeader {
+		            display: none;
+		        }
+		        
+		        #footer {
+		            display: none;
+		        }
+		        
+		        body, td, th, input, h1, h2, h3, h4, div {
+		            font-family: <?php echo @$_GET['font']; ?> !important;
+		        }
+		        
+		        #mBody {
+		            padding: 0;
+		        }
+		
+		        #bodyContent {
+		            left: 0;
+		            right: 0;
+		            top:0;
+		            bottom: 0;
+		            padding: 0;
+		            border: none;
+		            box-shadow: none;
+		            margin: 0;
+		            position: relative; 
+		        }
+		        
+		        #person .ui-tabs-nav {
+		            display: none;
+		        }
+		        
+		        #bodyContent .ui-tabs-panel {
+		            padding: 0;
+		        }
+		    </style>
+		    <script type="text/javascript">
+		        $(document).ready(function(){
+		            $("a").attr("target", "_blank");
+		            var height = $("#bodyContent").height();
+		            // Inform the parent about what iframe height should be
+		            parent.postMessage(height+5, "*");
+		        });
+		    </script>
+		<?php } ?>
 	</head>
 <body <?php if($this->data['body_ondblclick']) { ?> ondblclick="<?php $this->text('body_ondblclick') ?>"<?php } ?>
 <?php if($this->data['body_onload']) { ?> onload="<?php $this->text('body_onload') ?>"<?php } ?>

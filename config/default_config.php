@@ -58,6 +58,9 @@
     // Highlight color for skin
     $config->setValue("highlightColor", "#0088FF");
     
+    // Highlight color for headers
+    $config->setValue("headerColor", "#333333");
+    
     // Global Message (ie. maintenance message)
     $config->setValue("globalMessage", "");
     
