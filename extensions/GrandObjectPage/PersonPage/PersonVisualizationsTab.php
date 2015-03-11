@@ -351,7 +351,7 @@ class PersonVisualizationsTab extends AbstractTab {
             $levels[0]['labels'] = array();
             $levels[0]['values'] = array();
             
-            $products = $person->getPapers("all", false, 'grand');
+            $products = $person->getPapers("all", false, 'both');
             
             $labelIndicies = array();
             $index = 0;
@@ -370,6 +370,14 @@ class PersonVisualizationsTab extends AbstractTab {
             $index = 0;
             foreach($products as $paper){
                 $projects = $paper->getProjects();
+                if(count($projects) == 0){
+                    if(!isset($labelIndicies["None"])){
+                        $labelIndicies["None"] = $index;
+                        $levels[1]['labels'][] = "None";
+                        $index++;
+                    }
+                    @$levels[1]['values'][$labelIndicies["None"]]++;
+                }
                 foreach($projects as $project){
                     if(!isset($labelIndicies[$project->getName()])){
                         $labelIndicies[$project->getName()] = $index;

@@ -79,10 +79,12 @@ class UserUniversityAPI extends API{
                 }
             }
             else{
+                // TODO: Need to create a way to manage previous universities since we shouldn't assume
+                //       that a change in university necessarily means that they left their previous uni.
                 $uni = $person->getUni();
                 DBFunctions::update('grand_user_university',
                                     array('end_date' => EQ(COL('CURRENT_TIMESTAMP'))),
-                                    array('id' => EQ($last_id)));
+                                    array('end_date' => EQ("0000-00-00 00:00:00")));
                 MailingList::unsubscribeAll($person);
                 //Insert New
                 DBFunctions::insert('grand_user_university',

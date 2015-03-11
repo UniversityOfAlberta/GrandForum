@@ -867,9 +867,11 @@ class Paper extends BackboneModel{
         $people = $this->getAuthors();
         $unis = array();
         foreach($people as $person){
-            $university = $person->getUniversityDuring($this->getDate(), $this->getDate());
-            if(isset($university['university']) && $university['university'] != "Unknown"){
-                $unis[$university['university']] = $university['university'];
+            $universities = $person->getUniversitiesDuring($this->getDate(), $this->getDate());
+            foreach($universities as $university){
+                if(isset($university['university']) && $university['university'] != "Unknown"){
+                    $unis[$university['university']] = $university['university'];
+                }
             }
         }
         return array_values($unis);
