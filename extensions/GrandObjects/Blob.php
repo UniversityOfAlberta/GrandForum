@@ -9,7 +9,6 @@ define('BLOB_TEXT',		1);
 define('BLOB_HTML',		2);
 define('BLOB_WIKI',		3);
 
-
 /*
  * Structured blobs.
  *
@@ -99,6 +98,7 @@ define('BLOB_RAW',		65535);
 class ReportBlob {
 
     static $cache = array();
+    static $counter = 0;
     
 	/// Blob type (TEXT, HTML, CSV, ...), as defined in the constants before
 	/// this class declaration.
@@ -124,7 +124,9 @@ class ReportBlob {
 
 	/// Last changed.
 	private $_changed;
-
+	
+	// The hash for this blob (based on time of creation, user, project etc.)
+	private $_md5;
 
 	function __construct($type = BLOB_NULL, $year = 0, $owner = 0, $proj = 0) {
 		$this->_type = $type;
@@ -150,6 +152,7 @@ class ReportBlob {
 		$this->_data_transformed = null;
 		$this->_blob_id = null;
 		$this->_changed = null;
+		$this->_md5 = null;
 	}
 
 
@@ -182,6 +185,9 @@ class ReportBlob {
 		return $this->_type;
 	}
 
+    public function getMD5(){
+        return $this->_md5;
+    }
 
 	/// Stores the blob data at the specified address.  If the address is not
 	/// known internally ($this->_address), and the argument is empty, the
@@ -274,7 +280,7 @@ class ReportBlob {
 			
 			DBFunctions::execSQL("UPDATE grand_report_blobs SET data = '{$this->_data_transformed}', " .
 				"blob_type = {$this->_type} ," .
-				"edited_by = {$impersonateId} " .
+				"edited_by = {$impersonateId}, " .
 				"WHERE blob_id = {$this->_blob_id};", true);
 	        if($wgImpersonating){
 	            $oldData = mysql_real_escape_string($res[0]['data']);
@@ -286,12 +292,14 @@ class ReportBlob {
 		}
 		else {
 			// Insert query.
+			$md5_keys = implode('_', array_values($address));
+	        $md5 = md5("{$this->_proj_id}_{$this->_owner_id}_{$md5_keys}_".time()."_".self::$counter++);
 			$insert_keys = implode(', ', array_keys($address));
 			$insert_data = implode(', ', array_values($address));
 			DBFunctions::execSQL("INSERT INTO grand_report_blobs " .
-				"(edited_by, year, user_id, proj_id, {$insert_keys}, blob_type, data) " .
+				"(edited_by, year, user_id, proj_id, {$insert_keys}, blob_type, data, md5) " .
 				"VALUES ({$impersonateId}, {$this->_year}, {$this->_owner_id}, {$this->_proj_id}, " .
-				"{$insert_data}, {$this->_type}, '{$this->_data_transformed}');", true);
+				"{$insert_data}, {$this->_type}, '{$this->_data_transformed}', '{$md5}');", true);
 			if($wgImpersonating){
 			    $res = DBFunctions::execSQL("SELECT blob_id FROM grand_report_blobs WHERE " .
 			                                "user_id = {$this->_owner_id} AND " .
@@ -320,9 +328,10 @@ class ReportBlob {
 		$this->_owner_id = $dbdata['user_id'];
 		$this->_proj_id = $dbdata['proj_id'];
 		$this->_address = self::create_address($dbdata['rp_type'], $dbdata['rp_section'],
-			$dbdata['rp_item'], $dbdata['rp_subitem']);
+			                                   $dbdata['rp_item'], $dbdata['rp_subitem']);
 		$this->_changed = $dbdata['changed'];
 		$this->_type = $dbdata['blob_type'];
+		$this->_md5 = $dbdata['md5'];
 
 		// Undo data transformations, if necessary.
 		switch ($this->_type) {
@@ -356,9 +365,9 @@ class ReportBlob {
 	/// If #address is not unique (ie, it is not specific enough to fetch a single
 	/// entry from the database), a DomainException is thrown and the internal state
 	/// of the Blob instance is unchanged.
-	public function load($address = null) {
+	public function load($address = null, $skipCache=false) {
 	    $cacheId = $this->getCacheId($address);
-	    if(Cache::exists($cacheId)){
+	    if(Cache::exists($cacheId) && !$skipCache){
 	        $this->_data = Cache::fetch($cacheId);
 	        return true;
 	    }
@@ -429,6 +438,19 @@ class ReportBlob {
 			return false;
 	}
 
+    /// Loads the complete record (data + metadata) for a given blob MD5.
+	public function loadFromMD5($id = null) {
+		if ($id == null)
+			return false;
+
+		$res = DBFunctions::execSQL("SELECT * FROM grand_report_blobs WHERE md5 = '{$id}';");
+		if (count($res) > 0)
+			// MySQL enforces unique ID.
+			return $this->populate($res[0]);
+		else
+			// No data.
+			return false;
+	}
 
 	/// Assemble a addressing array based on the arguments received.
 	public static function create_address($rptype = null, $section = null, $item = null, $subitem = null) {

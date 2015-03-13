@@ -2,25 +2,16 @@
 
 class UploadReportItem extends AbstractReportItem {
 
-	function render(){
-		global $wgOut, $wgUser, $wgServer, $wgScriptPath;
-		if(isset($_GET['downloadFile'])){
-		    $data = json_decode($this->getBlobValue());
-		    if($data != null){
-		        header("Content-disposition: attachment; filename=\"".addslashes($data->name)."\"");
-		        echo base64_decode($data->file);
-		        exit;
-		    }
-		    exit;
-		}
-		if(isset($_GET['fileUploadForm'])){
-		    $this->fileUploadForm();
-		}
-		$projectGet = "";
-		if(isset($_GET['project'])){
-		    $projectGet = "&project={$_GET['project']}";
-		}
-		$year = "";
+    function render(){
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+        if(isset($_GET['fileUploadForm'])){
+            $this->fileUploadForm();
+        }
+        $projectGet = "";
+        if(isset($_GET['project'])){
+            $projectGet = "&project={$_GET['project']}";
+        }
+        $year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
         }
@@ -43,26 +34,31 @@ class UploadReportItem extends AbstractReportItem {
                                     $('#budgetFrame' + frameId).css('max-height', pixels);
                                 }
                             </script>";
-		$html .= "<div>";
-		
-		$html .= "<div id='budgetDiv'><iframe id='budgetFrame0' frameborder='0' style='border-width:0;height:65px;width:100%;' scrolling='none' src='../index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm{$projectGet}{$year}'></iframe></div>";
-		$html .= "</div>";
-		
-		$item = $this->processCData($html);
-		$wgOut->addHTML("$item");
-	}
-	
-	function renderForPDF(){
-        // DO NOTHING
-	}
-	
-	function fileUploadForm(){
-	    global $wgServer, $wgScriptPath;
-	    $projectGet = "";
-		if(isset($_GET['project'])){
-		    $projectGet = "&project={$_GET['project']}";
-		}
-		$year = "";
+        $html .= "<div>";
+        
+        $html .= "<div id='budgetDiv'><iframe id='budgetFrame0' frameborder='0' style='border-width:0;height:65px;width:100%;' scrolling='none' src='../index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm{$projectGet}{$year}'></iframe></div>";
+        $html .= "</div>";
+        
+        $item = $this->processCData($html);
+        $wgOut->addHTML("$item");
+    }
+    
+    function renderForPDF(){
+        global $wgOut;
+        $data = $this->getBlobValue();
+        $link = $this->getDownloadLink();
+        $html = ($data !== null && $data !== "") ? "<a class='externalLink' href='{$link}'>Download</a>" : "";
+        $item = $this->processCData($html);
+        $wgOut->addHTML($item);
+    }
+    
+    function fileUploadForm(){
+        global $wgServer, $wgScriptPath;
+        $projectGet = "";
+        if(isset($_GET['project'])){
+            $projectGet = "&project={$_GET['project']}";
+        }
+        $year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
         }
@@ -97,10 +93,10 @@ class UploadReportItem extends AbstractReportItem {
                             border-radius: 0px;
                             
                             -webkit-box-shadow: none;
-	                        -moz-box-shadow: none;
-	                        box-shadow: none;
-	                        border-width:0;
-	                        padding:0;
+                            -moz-box-shadow: none;
+                            box-shadow: none;
+                            border-width:0;
+                            padding:0;
                         }
                         
                         table {
@@ -113,95 +109,95 @@ class UploadReportItem extends AbstractReportItem {
               <body style='margin:0;'>
                     <div>";
         if(isset($_POST['upload'])){
-	        $this->save();
-	    }
+            $this->save();
+        }
         echo "          <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm{$projectGet}{$year}' method='post' enctype='multipart/form-data'>
                             <input type='file' name='file' />
-	                        <input type='submit' name='upload' value='Upload' /> <b>Max File Size:</b> {$this->getAttr('fileSize', 1)} MB
-	                    </form>";
-	    $data = $this->getBlobValue();
-	    if($data !== null && $data !== ""){
-	        echo "<br /><a href='$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."{$projectGet}{$year}&downloadFile'>Download Uploaded File</a>";
-		}
-		else{
-		    echo "<div>You have not uploaded a file yet</div>";
-		}
-		echo "      </div>
-		        </body>
-		        <script type='text/javascript'>
-		            $(document).ready(function(){
-		                load_page();
-		                setTimeout(load_page, 200);
-		            });
-		        </script>
-	          </html>";
-	    exit;
-	}
-	
-	function save(){
-	    global $wgFileExtensions;
-	    if(isset($_FILES['file']) && $_FILES['file']['tmp_name'] != ""){
-	        $name = $_FILES['file']['name'];
-	        $size = $_FILES['file']['size'];
-	        list($partname, $ext) = UploadForm::splitExtensions($name);
+                            <input type='submit' name='upload' value='Upload' /> <b>Max File Size:</b> {$this->getAttr('fileSize', 1)} MB
+                        </form>";
+        $data = $this->getBlobValue();
+        if($data !== null && $data !== ""){
+            echo "<br /><a href='{$this->getDownloadLink()}'>Download Uploaded File</a>";
+        }
+        else{
+            echo "<div>You have not uploaded a file yet</div>";
+        }
+        echo "      </div>
+                </body>
+                <script type='text/javascript'>
+                    $(document).ready(function(){
+                        load_page();
+                        setTimeout(load_page, 200);
+                    });
+                </script>
+              </html>";
+        exit;
+    }
+    
+    function save(){
+        global $wgFileExtensions;
+        if(isset($_FILES['file']) && $_FILES['file']['tmp_name'] != ""){
+            $name = $_FILES['file']['name'];
+            $size = $_FILES['file']['size'];
+            list($partname, $ext) = UploadForm::splitExtensions($name);
             if(count($ext)){
                 $finalExt = $ext[count($ext) - 1];
             }
             else{
                 $finalExt = '';
             }
-	        if($this->getAttr('fileSize', 1)*1024*1024 >= $_FILES['file']['size']){
+            if($this->getAttr('fileSize', 1)*1024*1024 >= $_FILES['file']['size']){
                 $magic = MimeMagic::singleton();
-		        $mime = $magic->guessMimeType($_FILES['file']['tmp_name'], false);
+                $mime = $magic->guessMimeType($_FILES['file']['tmp_name'], false);
                 if(UploadForm::checkFileExtension($finalExt, $wgFileExtensions) &&
-	               UploadForm::verifyExtension($mime, $finalExt)){
-	                $contents = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
-	                $hash = md5($contents);
-	                $data = array('name' => $name,
-	                              'type' => $mime,
-	                              'size' => $size,
-	                              'hash' => $hash,
-	                              'file' => $contents);
-	                $this->setBlobValue(json_encode($data));
-	                echo "<div class='success'>The file was uploaded successfully.</div>";
-	                unset($_POST['upload']);
-	                $this->fileUploadForm();
-	                exit;
-	            }
-	            else if(!UploadForm::checkFileExtension($finalExt, $wgFileExtensions)){
-	                echo "<div class='error'>Uploads of the type <i>.{$finalExt}</i> are not allowed.</div>";
-	                unset($_POST['upload']);
-	                $this->fileUploadForm();
-	                exit;
-	            }
-	            else if(!UploadForm::verifyExtension($mime, $finalExt)){
-	                echo "<div class='error'>The uploaded file extension does not match its type, or it is corrupt.</div>";
-	                unset($_POST['upload']);
-	                $this->fileUploadForm();
-	                exit;
-	            }
-	        }
-	        else{
-	            echo "<div class='error'>The uploaded file is larger than the allowed size of ".($this->getAttr('fileSize', 1))."MB.</div>";
-	            unset($_POST['upload']);
-	            $this->fileUploadForm();
-	            exit;
-	        }
-	    }
-	    if(isset($_POST['upload'])){
-	        unset($_POST['upload']);
-	        $this->fileUploadForm();
-	    }
-	    return array();
-	}
-	
-	function getNFields(){
-	    return 0;
-	}
-	
-	function getNComplete(){
-	    return 0;
-	}
+                   UploadForm::verifyExtension($mime, $finalExt)){
+                    $contents = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
+                    $hash = md5($contents);
+                    $data = array('name' => $name,
+                                  'type' => $mime,
+                                  'size' => $size,
+                                  'hash' => $hash,
+                                  'file' => $contents);
+                    $this->setBlobValue(json_encode($data));
+                    echo "<div class='success'>The file was uploaded successfully.</div>";
+                    unset($_POST['upload']);
+                    $this->fileUploadForm();
+                    exit;
+                }
+                else if(!UploadForm::checkFileExtension($finalExt, $wgFileExtensions)){
+                    echo "<div class='error'>Uploads of the type <i>.{$finalExt}</i> are not allowed.</div>";
+                    unset($_POST['upload']);
+                    $this->fileUploadForm();
+                    exit;
+                }
+                else if(!UploadForm::verifyExtension($mime, $finalExt)){
+                    echo "<div class='error'>The uploaded file extension does not match its type, or it is corrupt.</div>";
+                    unset($_POST['upload']);
+                    $this->fileUploadForm();
+                    exit;
+                }
+            }
+            else{
+                echo "<div class='error'>The uploaded file is larger than the allowed size of ".($this->getAttr('fileSize', 1))."MB.</div>";
+                unset($_POST['upload']);
+                $this->fileUploadForm();
+                exit;
+            }
+        }
+        if(isset($_POST['upload'])){
+            unset($_POST['upload']);
+            $this->fileUploadForm();
+        }
+        return array();
+    }
+    
+    function getNFields(){
+        return 0;
+    }
+    
+    function getNComplete(){
+        return 0;
+    }
 }
 
 ?>

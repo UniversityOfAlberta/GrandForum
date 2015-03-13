@@ -140,7 +140,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection blobSection="PROP_BUDGET" type="EditableReportSection" name="Budget">
+    <ReportSection blobSection="PROP_BUDGET" type="EditableReportSection" name="Budget" pagebreak="false">
         <ReportItem id="budget_justification" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROP_BUD_JUSTIF">
             <![CDATA[
                 <h3>Budget Justification</h3>
@@ -148,7 +148,13 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection blobSection="PROP_MILESTONES" type="EditableReportSection" name="Milestones" pagebreak="false">
-        
+    <ReportSection blobSection="PROP_MILESTONES" type="HeaderReportSection" name="Milestones" pagebreak="false">
+        <ReportItem id="milestoneHeader" type="BookmarkReportItem" title="Milestones"></ReportItem>
+        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="PROP_MIL_UPLOAD">
+            <![CDATA[
+                <center><h1>Milestones</h1></center>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
 </Report>

@@ -10,6 +10,7 @@ class Milestone {
 
     var $id;
     var $identifier;
+    var $activity;
     var $milestone_id;
     var $parent;
     var $project;
@@ -24,6 +25,7 @@ class Milestone {
     var $editedBy;
     var $start_date;
     var $end_date;
+    var $quarters;
     var $comment;
     
     // Creates a Milestone from the given milestone_id and id
@@ -79,6 +81,7 @@ class Milestone {
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->identifier = $data['0']['identifier'];
+            $this->activity_id = $data['0']['acitivy_id'];
             $this->milestone_id = $data[0]['milestone_id'];
             $this->title = $data[0]['title'];
             if(isset($data[1])){
@@ -96,6 +99,7 @@ class Milestone {
             $this->problem = $data[0]['problem'];
             $this->description = $data[0]['description'];
             $this->assessment = $data[0]['assessment'];
+            $this->quarters = $data[0]['quarters'];
             $this->start_date = $data[0]['start_date'];
             $this->end_date = $data[0]['end_date'];
             $this->projected_end_date = $data[0]['projected_end_date'];
@@ -112,6 +116,20 @@ class Milestone {
     // Returns the identifier of this Milestone(used for when it is first created)
     function getIdentifier(){
         return $this->identifier;
+    }
+    
+    /*
+     * Returns the name of the activity for this Milestone (blank if there is no activity)
+     * @return string The name of the activity for this Milestone
+     */
+    function getActivity(){
+        $data = DBFunctions::select(array('grand_activities'),
+                                    array('name'),
+                                    array('id' => EQ($this->activity_id)));
+        if(isset($data[0])){
+            return $data[0]['name'];
+        }
+        return "";
     }
     
     // Returns the id of this Milestone
@@ -231,6 +249,20 @@ class Milestone {
     // Returns the end_date of this Milestone
     function getEndDate(){
         return $this->end_date;
+    }
+    
+    /*
+     * Returns which quarters of for each year this milestone is to take place
+     * @return array The quarters for each year
+     */
+    function getQuarters(){
+        $years = array();
+        $quarters = explode(",", $this->quarters);
+        foreach($quarters as $quarter){
+            $exp = explode(":", $quarter);
+            $years[$exp[0]][] = $exp[1];
+        }
+        return $years;
     }
     
     // Returns the start_date of the very first revision of this Milestone

@@ -56,7 +56,8 @@ abstract class PDFGenerator {
         $as = $dom->getElementsByTagName("a");
         for($i=0; $i<$as->length; $i++){
             $a = $as->item($i);
-            if($a->getAttribute('class') != 'anchor'){
+            if($a->getAttribute('class') != 'anchor' && 
+               $a->getAttribute('class') != 'externalLink'){
                 $i--;
                 DOMRemove($a);
             }

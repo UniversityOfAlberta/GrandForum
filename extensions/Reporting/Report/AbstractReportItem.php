@@ -261,6 +261,20 @@ abstract class AbstractReportItem {
         return $value;
     }
     
+    /*
+     * Returns the MD5 code for this blob
+     */
+    function getDownloadLink(){
+        global $wgServer, $wgScriptPath;
+        $report = $this->getReport();
+        $section = $this->getSection();
+        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->getReport()->person->getId(), $this->projectId);
+	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
+	    $blob->load($blob_address, true);
+	    $md5 = $blob->getMD5();
+	    return "{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}";
+    }
+    
     // Sets the Blob value for this item
     function setBlobValue($value){
         $report = $this->getReport();

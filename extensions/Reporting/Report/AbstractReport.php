@@ -4,10 +4,11 @@
  * @package Report
  * @abstract
  */
- 
+
 $wgHooks['CheckImpersonationPermissions'][] = 'AbstractReport::checkImpersonationPermissions';
 $wgHooks['ImpersonationMessage'][] = 'AbstractReport::impersonationMessage';
 $wgHooks['CanUserReadPDF'][] = 'AbstractReport::canUserReadPDF';
+$wgHooks['UnknownAction'][] = 'AbstractReport::downloadBlob';
 
 require_once("ReportConstants.php");
 require_once("ReportDashboardTableTypes.php");
@@ -1151,6 +1152,27 @@ abstract class AbstractReport extends SpecialPage {
         }
         $result = false;
         return true;
+    }
+    
+    static function downloadBlob($action){
+        $me = Person::newFromWgUser();
+        if($action == "downloadBlob" && isset($_GET['id'])){
+            if(!$me->isLoggedIn()){
+                permissionError();
+            }
+            $blob = new ReportBlob();
+		    $blob->loadFromMD5($_GET['id']);
+		    $data = $blob->getData();
+		    if($data != null){
+		        // Currently only works for UploadReportItem blobs
+		        $data = json_decode($data);
+		        header("Content-disposition: attachment; filename=\"".addslashes($data->name)."\"");
+		        echo base64_decode($data->file);
+		        exit;
+		    }
+		    exit;
+		}
+		return false;
     }
 }
 
