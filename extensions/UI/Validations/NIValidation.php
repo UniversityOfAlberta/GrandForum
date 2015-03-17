@@ -10,7 +10,10 @@ class NIValidation extends UIValidation {
         if($value == ""){
             return true;
         }
-        $person = Person::newFromNameLike($value);
+        $person = Person::newFromName($value);
+        if($person == null){
+            $person = Person::newFromNameLike($value);
+        }
         return ($person != null && $person->getName() != "" && $person->isRoleAtLeast(CNI));
     }
     
