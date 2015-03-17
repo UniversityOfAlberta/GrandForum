@@ -79,6 +79,9 @@ class Notification{
 	
 	static function generateNotifications($history=false){
 	    global $notifications, $wgUser, $wgServer, $wgScriptPath, $wgArticle, $wgTitle, $wgImpersonating;
+	    if($wgUser->getId() == 0){
+	        return false;
+	    }
         $me = Person::newFromId($wgUser->getId());
         $sql = "SELECT *
                 FROM `grand_notifications`
