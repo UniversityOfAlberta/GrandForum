@@ -1172,7 +1172,7 @@ abstract class AbstractReport extends SpecialPage {
 		    }
 		    exit;
 		}
-		return false;
+		return true;
     }
 }
 
