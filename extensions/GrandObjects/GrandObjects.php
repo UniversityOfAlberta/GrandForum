@@ -20,6 +20,7 @@ $apiRequest->addAction('Hidden','person/:id/products/:productId', new PersonProd
 $apiRequest->addAction('Hidden','personRoleString/:id', new PersonRoleStringAPI());
 $apiRequest->addAction('Hidden','people', new PeopleAPI());
 $apiRequest->addAction('Hidden','people/:role', new PeopleAPI());
+$apiRequest->addAction('Hidden','people/:role/:university', new PeopleAPI());
 // Role
 $apiRequest->addAction('Hidden','role', new RoleAPI());
 $apiRequest->addAction('Hidden','role/:id', new RoleAPI());

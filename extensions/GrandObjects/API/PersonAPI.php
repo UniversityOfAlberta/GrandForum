@@ -73,13 +73,19 @@ class PeopleAPI extends RESTAPI {
     
     function doGET(){
         if($this->getParam('role') != ""){
+            $university = "";
+            if($this->getParam('university') != ""){
+                $university = $this->getParam('university');
+            }
             $exploded = explode(",", $this->getParam('role'));
             $finalPeople = array();
             foreach($exploded as $role){
                 $role = trim($role);
                 $people = Person::getAllPeople($role);
                 foreach($people as $person){
-                    $finalPeople[$person->getId()] = $person;
+                    if($university == "" || $person->getUni() == $university){
+                        $finalPeople[$person->getId()] = $person;
+                    }
                 }
             }
             $finalPeople = new Collection(array_values($finalPeople));
