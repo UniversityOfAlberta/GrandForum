@@ -278,10 +278,10 @@ class ReportBlob {
 			// Update query.
 			$this->_blob_id = $res[0]['blob_id'];
 			
-			DBFunctions::execSQL("UPDATE grand_report_blobs SET data = '{$this->_data_transformed}', " .
+			$status = DBFunctions::execSQL("UPDATE grand_report_blobs SET data = '{$this->_data_transformed}', " .
 				"blob_type = {$this->_type} ," .
-				"edited_by = {$impersonateId}, " .
-				"WHERE blob_id = {$this->_blob_id};", true);
+				"edited_by = {$impersonateId} " .
+				"WHERE blob_id = {$this->_blob_id}", true);
 	        if($wgImpersonating){
 	            $oldData = mysql_real_escape_string($res[0]['data']);
 	            $impersonateId = $wgRealUser->getId();

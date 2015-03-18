@@ -115,22 +115,22 @@ class Budget extends QueryableTable{
         $this->xls = array();
         foreach($this->structure as $rowN => $row){
             foreach($row as $colN => $cell){
-		        if(isset($matrix[$rowN][$colN])){
-		            $params = array();
-		            $origCellValue = $matrix[$rowN][$colN];
-		            if(!is_numeric($cell)){
+                if(isset($matrix[$rowN][$colN])){
+                    $params = array();
+                    $origCellValue = $matrix[$rowN][$colN];
+                    if(!is_numeric($cell)){
                         $splitCell = explode('(', $cell);
-		                $cell = $splitCell[0];
-		                $params = explode(',', str_replace(', ', ',', str_replace(')', '', $splitCell[1])));
-		            }
-		            else if($origCellValue instanceof Cell && count($origCellValue->params) > 0){
-		                $params = $origCellValue->params;
-		            }
-		            $cellValue = $this->processCell($cell, $params, $origCellValue, $rowN, $colN);
-		            if(!($cellValue instanceof NACell)){
-		                $this->xls[$rowN][$colN] = $cellValue;
-		            }
-		        }
+                        $cell = $splitCell[0];
+                        $params = explode(',', str_replace(', ', ',', str_replace(')', '', $splitCell[1])));
+                    }
+                    else if($origCellValue instanceof Cell && count($origCellValue->params) > 0){
+                        $params = $origCellValue->params;
+                    }
+                    $cellValue = $this->processCell($cell, $params, $origCellValue, $rowN, $colN);
+                    if(!($cellValue instanceof NACell)){
+                        $this->xls[$rowN][$colN] = $cellValue;
+                    }
+                }
             }
         }
     }
@@ -140,98 +140,98 @@ class Budget extends QueryableTable{
         $dir = dirname(__FILE__);
         require_once($dir . '/../../../Classes/PHPExcel/IOFactory.php');
         // 1. Create a temporary file and write the spreadsheet data into the file,
-		// so that PHPExcel can use it.
-		$tmpn = tempnam(sys_get_temp_dir(), 'XLS');
-		if ($tmpn === false) {
-			// Failed to reserve a temporary file.
-			echo "Could not reserve temp file.";
-			return false;
-		}
-		$tmpf = fopen($tmpn, 'w');
-		if ($tmpf === false) {
-			"Could not create temp file.";
-			// TODO: log?
-			unlink($tmpn);
-			return false;
-		}
+        // so that PHPExcel can use it.
+        $tmpn = tempnam(sys_get_temp_dir(), 'XLS');
+        if ($tmpn === false) {
+            // Failed to reserve a temporary file.
+            echo "Could not reserve temp file.";
+            return false;
+        }
+        $tmpf = fopen($tmpn, 'w');
+        if ($tmpf === false) {
+            "Could not create temp file.";
+            // TODO: log?
+            unlink($tmpn);
+            return false;
+        }
 
-		if (fwrite($tmpf, $data) === false) {
-			// TODO: log?
-			// Error writing to temporary file.
-			echo "Could not write to temp file.";
-			fclose($tmpf);
-			unlink($tmpn);
-			return false;
-		}
-		fclose($tmpf);
-		
-		// 2. Instantiate the file as a PHPExcel IO object.
-		try {
-		    $newStructure = array();
-		    $objReader = PHPExcel_IOFactory::createReaderForFile($tmpn);
-		    $class = get_class($objReader);
-		    if($class != "PHPExcel_Reader_Excel5" && $class != "PHPExcel_Reader_Excel2007"){
-		        return false;
-		    }
-		    $objReader->setReadDataOnly(true);
-			$obj = $objReader->load($tmpn);
-			$obj->setActiveSheetIndex(0);
-			
-			$maxCol =$obj->getActiveSheet()->getHighestColumn();
-			$maxRow =$obj->getActiveSheet()->getHighestRow();
-			$cells = $obj->getActiveSheet()->toArray();
-			if($this->structure == null){
-			    // Create a fake structure so that it doesn't fail
-			    $this->structure = array();
-			    foreach($cells as $rowN => $row){
-			        foreach($row as $colN => $col){
-			            $this->structure[$rowN][$colN] = READ;
-			        }
-			    }
-			}
-			$rowN = 0;
-			foreach($this->structure as $row){
-			    $colN = 0;
-			    if($maxRow < $rowN + 1){
-			        break;
-			    }
-			    foreach($row as $cell){
-			        if(ord($maxCol) < $colN + 1){
-			            break;
-			        }
-			        //$newStructure[$rowN][$colN] = $this->structure[$rowN][$colN];
-			        //$origCellValue = $obj->getActiveSheet()->getCell((chr($colN + 65)).($rowN + 1))->getCalculatedValue();
-			        $origCellValue = @$cells[$rowN][$colN];
-			        $splitCell = explode("(", $cell);
-			        $params = array();
-			        $cell = $splitCell[0];
-			        if(count($splitCell) > 1){
-			            $params = explode(',', str_replace(', ', ',', str_replace(')', '', $splitCell[1])));
-			        }
-			        $origCellValue = utf8_encode($origCellValue);
+        if (fwrite($tmpf, $data) === false) {
+            // TODO: log?
+            // Error writing to temporary file.
+            echo "Could not write to temp file.";
+            fclose($tmpf);
+            unlink($tmpn);
+            return false;
+        }
+        fclose($tmpf);
+        
+        // 2. Instantiate the file as a PHPExcel IO object.
+        try {
+            $newStructure = array();
+            $objReader = PHPExcel_IOFactory::createReaderForFile($tmpn);
+            $class = get_class($objReader);
+            if($class != "PHPExcel_Reader_Excel5" && $class != "PHPExcel_Reader_Excel2007"){
+                return false;
+            }
+            $objReader->setReadDataOnly(true);
+            $obj = $objReader->load($tmpn);
+            $obj->setActiveSheetIndex(0);
+            
+            $maxCol =$obj->getActiveSheet()->getHighestColumn();
+            $maxRow =$obj->getActiveSheet()->getHighestRow();
+            $cells = $obj->getActiveSheet()->toArray();
+            if($this->structure == null){
+                // Create a fake structure so that it doesn't fail
+                $this->structure = array();
+                foreach($cells as $rowN => $row){
+                    foreach($row as $colN => $col){
+                        $this->structure[$rowN][$colN] = READ;
+                    }
+                }
+            }
+            $rowN = 0;
+            foreach($this->structure as $row){
+                $colN = 0;
+                if($maxRow < $rowN + 1){
+                    break;
+                }
+                foreach($row as $cell){
+                    if(ord($maxCol) < $colN + 1){
+                        break;
+                    }
+                    //$newStructure[$rowN][$colN] = $this->structure[$rowN][$colN];
+                    //$origCellValue = $obj->getActiveSheet()->getCell((chr($colN + 65)).($rowN + 1))->getCalculatedValue();
+                    $origCellValue = @$cells[$rowN][$colN];
+                    $splitCell = explode("(", $cell);
+                    $params = array();
+                    $cell = $splitCell[0];
+                    if(count($splitCell) > 1){
+                        $params = explode(',', str_replace(', ', ',', str_replace(')', '', $splitCell[1])));
+                    }
+                    $origCellValue = utf8_encode($origCellValue);
                     $origCellValue = utf8_decode(preg_replace('/[^\x{0000}-\x{007F}]/', ' ', $origCellValue));
                     $origCellValue = preg_replace('/\s\s+/', ' ', $origCellValue);
-			        $cellValue = $this->processCell($cell, $params, $origCellValue, $rowN, $colN);
-			        if(!($cellValue instanceof NACell)){
-			            $this->xls[$rowN][$colN] = $cellValue;
-			        }
-			        ++$colN;
-			    }
-			    ++$rowN;
-			}
-			//$this->structure = $newStructure;
-			$obj->disconnectWorksheets();
-			PHPExcel_Calculation::getInstance()->clearCalculationCache();
-			unset($objReader);
+                    $cellValue = $this->processCell($cell, $params, $origCellValue, $rowN, $colN);
+                    if(!($cellValue instanceof NACell)){
+                        $this->xls[$rowN][$colN] = $cellValue;
+                    }
+                    ++$colN;
+                }
+                ++$rowN;
+            }
+            //$this->structure = $newStructure;
+            $obj->disconnectWorksheets();
+            PHPExcel_Calculation::getInstance()->clearCalculationCache();
+            unset($objReader);
             unset($obj);
-		}
-		catch (Exception $e) {
-			// File is probably encrypted
-			$this->structure = array();
-			$this->xls = array();
-		}
-		unlink($tmpn);
-		return true;
+        }
+        catch (Exception $e) {
+            // File is probably encrypted
+            $this->structure = array();
+            $this->xls = array();
+        }
+        unlink($tmpn);
+        return true;
     }
     
     static function union_tables($tables){
@@ -351,7 +351,7 @@ class Budget extends QueryableTable{
             $tab->parentNode->removeAttribute('style');
         }
         $html = "$dom";
-	    return $html;
-	}
+        return $html;
+    }
 }
 ?>

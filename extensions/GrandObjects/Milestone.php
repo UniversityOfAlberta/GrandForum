@@ -81,7 +81,7 @@ class Milestone {
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->identifier = $data['0']['identifier'];
-            $this->activity_id = $data['0']['acitivy_id'];
+            $this->activity_id = $data['0']['activity_id'];
             $this->milestone_id = $data[0]['milestone_id'];
             $this->title = $data[0]['title'];
             if(isset($data[1])){
@@ -119,17 +119,17 @@ class Milestone {
     }
     
     /*
-     * Returns the name of the activity for this Milestone (blank if there is no activity)
-     * @return string The name of the activity for this Milestone
+     * Returns the Activity associated with this Milestone (null if there is no activity)
+     * @return Activity The Activity associated with this Milestone
      */
     function getActivity(){
         $data = DBFunctions::select(array('grand_activities'),
                                     array('name'),
                                     array('id' => EQ($this->activity_id)));
         if(isset($data[0])){
-            return $data[0]['name'];
+            return Activity::newFromId($this->activity_id);
         }
-        return "";
+        return null;
     }
     
     // Returns the id of this Milestone

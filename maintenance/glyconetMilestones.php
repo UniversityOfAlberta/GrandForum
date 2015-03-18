@@ -144,18 +144,23 @@ foreach($projects as $project){
                             break;
                     }
                 }
+                print_r($people);
                 // Insert
+                $_POST['user_name'] = $project->getLeader()->getName();
                 $_POST['project'] = $project->getName();
                 $_POST['activity'] = $activity;
                 $_POST['milestone'] = $title;
+                $_POST['title'] = $title;
+                $_POST['new_title'] = $title;
                 $_POST['problem'] = "";
                 $_POST['description'] = "";
                 $_POST['assessment'] = "";
                 $_POST['status'] = "New";
-                $_POST['people'] = implode(",", $people);
+                $_POST['people'] = $people;
                 $_POST['end_date'] = ($year+2)."-12-31 00:00:00";
+                $_POST['quarters'] = implode(",", $quarters);
                 
-                APIRequest::doAction('addProjectMilestone');
+                APIRequest::doAction('ProjectMilestone', true);
                 echo "\tMilestone added\n";
             }
         }
