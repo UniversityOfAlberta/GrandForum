@@ -434,7 +434,7 @@ EOF;
 		</head>";
 		$headerName = "";
         if($project != null){
-            $headerName = "{$project->getName()}: {$project->getFullName()}";
+            $headerName = "{$project->getName()}";
         }
         else {
             $headerName = "{$person->getReversedName()}";
