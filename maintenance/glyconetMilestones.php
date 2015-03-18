@@ -144,7 +144,6 @@ foreach($projects as $project){
                             break;
                     }
                 }
-                print_r($people);
                 // Insert
                 $_POST['user_name'] = $project->getLeader()->getName();
                 $_POST['project'] = $project->getName();
