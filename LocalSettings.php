@@ -202,7 +202,7 @@ define("ISAC", "ISAC");
 define("NCE", "NCE Rep");
 define("CNI", "CNI");
 define("PNI", "PNI");
-define("AR", "Associated Researcher");
+define("AR", "AR");
 define("LOI", "LOI Member");
 define("COPL", "Project co-Leader"); // This is a special role.
 define("PL", "Project Leader"); // This is a special role.
@@ -214,7 +214,7 @@ define("EVALUATOR", "Evaluator");
 define("BOD", "BOD");
 define("CHAMP", "Champion");
 define("GOV", "Gov");
-define("SD", "Scientific Director");
+define("SD", "SD");
 define("STAFF", "Staff");
 define("MANAGER", "Manager");
 #define("PNIA", "PNI-Admin");
