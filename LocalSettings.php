@@ -178,13 +178,12 @@ $wgVerifyMimeType = false;
 $wgAllowCopyUploads = true;
 $wgAllowTitlesInSVG = true;
 $wgMaxShellMemory = 402400;
-$key = array_search("application/zip", $wgMimeTypeBlacklist);
 $wgPasswordReminderResendTime = 0.5;
 $wgImpersonating = false;
 $wgRealUser;
 
-if($key !== false){
-	unset($wgMimeTypeBlacklist[$key]);
+if (($key = array_search('application/zip', $wgMimeTypeBlacklist)) !== false) {
+    unset($wgMimeTypeBlacklist[$key]);
 }
 
 // Whether or not to show custom deprication notices

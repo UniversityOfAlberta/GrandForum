@@ -171,7 +171,7 @@ class UploadReportItem extends AbstractReportItem {
                     exit;
                 }
                 else if(!UploadForm::verifyExtension($mime, $finalExt)){
-                    echo "<div class='error'>The uploaded file extension does not match its type, or it is corrupt.</div>";
+                    echo "<div class='error'>{$mime} : {$finalExt} The uploaded file extension does not match its type, or it is corrupt.</div>";
                     unset($_POST['upload']);
                     $this->fileUploadForm();
                     exit;
