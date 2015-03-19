@@ -211,8 +211,10 @@ define("TL", "Theme Leader"); // This is a special role.
 define("RMC", "RMC");
 define("EVALUATOR", "Evaluator");
 define("BOD", "BOD");
+define("BODC", "BOD Chair");
 define("CHAMP", "Champion");
 define("GOV", "Gov");
+define("ASD", "ASD");
 define("SD", "SD");
 define("STAFF", "Staff");
 define("MANAGER", "Manager");
@@ -239,13 +241,40 @@ $wgRoleValues = array(INACTIVE => 0,
                       RMC => 12,
                       EVALUATOR => 12,
                       BOD => 12,
+                      BODC => 13,
+                      ASD => 13,
                       SD => 13,
                       GOV => 13,
                       STAFF => 16,
                       MANAGER => 17);
                      
-$wgRoles = array(HQP, EXTERNAL, ISAC, NCE, CNI, PNI, AR, LOI, RMC, BOD, CHAMP, GOV, SD, STAFF, MANAGER);
-$wgAllRoles = array(HQP, STUDENT, EXTERNAL, ISAC, NCE, CNI, PNI, AR, LOI, COPL, PL, PM, TL, RMC, EVALUATOR, BOD, CHAMP, GOV, SD, STAFF, MANAGER);
+$wgRoleDefs = array(INACTIVE => "Inactive",
+                    HQP => "Highly Qualified Person",
+                    EXTERNAL => "External",
+                    ISAC => "ISAC",
+                    NCE => "NCE Rep",
+                    CNI => "Collaborating Network Investigator",
+                    PNI => "Principal Network Investigator",
+                    AR => "Associated Network Investigator",
+                    LOI => "LOI",
+                    CHAMP => "Champion",
+                    COPL => "Co-Project Leader",
+                    PL => "Project Leader",
+                    PM => "Project Manager",
+                    COTL => "Co-Theme Leader",
+                    TL => "Theme Leader",
+                    RMC => "Research Management Comittee",
+                    EVALUATOR => "Evaluator",
+                    BOD => "Board of Directors",
+                    BODC => "BOD Chair",
+                    ASD => "Associate Scientific Director",
+                    SD => "Scientific Director",
+                    GOV => "Government",
+                    STAFF => "Staff",
+                    MANAGER => "Manager");
+                     
+$wgRoles = array(HQP, EXTERNAL, ISAC, NCE, CNI, PNI, AR, LOI, RMC, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
+$wgAllRoles = array(HQP, STUDENT, EXTERNAL, ISAC, NCE, CNI, PNI, AR, LOI, COPL, PL, PM, TL, RMC, EVALUATOR, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
 
 // Defining Custom Namespace Constants
 define("NS_GRAND_PROJ", 122);
