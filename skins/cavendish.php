@@ -553,6 +553,7 @@ class cavendishTemplate extends QuickTemplate {
 		        }
 		    </style>
 		    <script type="text/javascript">
+		        parent.postMessage(-1, "*");
 		        $(document).ready(function(){
 		            $("a").attr("target", "_blank");
 		            var height = $("#bodyContent").height();
