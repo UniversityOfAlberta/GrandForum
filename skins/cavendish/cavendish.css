@@ -659,6 +659,10 @@ input:-webkit-autofill, textarea:-webkit-autofill {
     color: #333;
 }
 
+button.mce-close {
+    padding: 0 5px !important;
+}
+
 #product-desc h2 {
 	text-indent: -700em;
 	height: 25px;

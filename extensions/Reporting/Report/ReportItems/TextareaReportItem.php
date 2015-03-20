@@ -3,7 +3,7 @@
 class TextareaReportItem extends AbstractReportItem {
 
     function render(){
-        global $wgOut;
+        global $wgOut, $wgServer, $wgScriptPath;
         $item = $this->getHTML();
         if($this->getlimit() > 0){
             $item .= "<script type='text/javascript'>
@@ -15,15 +15,32 @@ class TextareaReportItem extends AbstractReportItem {
         }
         if(strtolower($this->getAttr('rich', 'false')) == 'true'){
             $item .= "<script type='text/javascript'>
+                if($('#tinyMCEUpload').length == 0){
+                    $('body').append(\"<iframe id='tinyMCEUpload' name='tinyMCEUpload' style='display:none'></iframe>\" +
+                                     \"<form id='tinyMCEUploadForm' action='$wgServer$wgScriptPath/index.php?action=tinyMCEUpload' target='tinyMCEUpload' method='post' enctype='multipart/form-data' style='width:0px;height:0;overflow:hidden'>\" +
+                                         \"<input name='image' type='file'>\" +
+                                     \"</form>\");
+                    $('#tinyMCEUploadForm input').change(function(){
+                        $('#tinyMCEUploadForm').ajaxSubmit({
+                            success: function(d){
+                                eval(d);
+                            }
+                        });
+                        $('#tinyMCEUploadForm input').val('');
+                    });
+                }
                 $('textarea[name={$this->getPostId()}]').tinymce({
-                   theme: 'modern',
-                   menubar: false,
-                   plugins: 'link image contextmenu charmap lists table paste',
-                   toolbar: [
+                    theme: 'modern',
+                    menubar: false,
+                    plugins: 'link image contextmenu charmap lists table paste',
+                    toolbar: [
                         'undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright'
-                   ],
-                   paste_data_images: true,
-                   invalid_elements: 'h1, h2, h3, h4, h5, h6, h7, font'
+                    ],
+                    file_browser_callback: function(field_name, url, type, win) {
+                        if(type=='image') $('#tinyMCEUploadForm input').click();
+                    },
+                    paste_data_images: true,
+                    invalid_elements: 'h1, h2, h3, h4, h5, h6, h7, font'
                 });
             </script>";
         }

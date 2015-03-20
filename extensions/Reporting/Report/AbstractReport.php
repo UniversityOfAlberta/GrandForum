@@ -9,6 +9,7 @@ $wgHooks['CheckImpersonationPermissions'][] = 'AbstractReport::checkImpersonatio
 $wgHooks['ImpersonationMessage'][] = 'AbstractReport::impersonationMessage';
 $wgHooks['CanUserReadPDF'][] = 'AbstractReport::canUserReadPDF';
 $wgHooks['UnknownAction'][] = 'AbstractReport::downloadBlob';
+$wgHooks['UnknownAction'][] = 'AbstractReport::tinyMCEUpload';
 
 require_once("ReportConstants.php");
 require_once("ReportDashboardTableTypes.php");
@@ -368,109 +369,109 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     function getLatestPDF(){
-    	$sto = new ReportStorage($this->person);
-    	if($this->project != null){
-    	    if($this->pdfAllProjects){
-    	        $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType);
-    	    }
-    	    else{
-    	        $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
+        $sto = new ReportStorage($this->person);
+        if($this->project != null){
+            if($this->pdfAllProjects){
+                $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType);
             }
-    	}
-    	else{
-    	    $check = array_merge($sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType, $this->year), 
-    	                         $sto->list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType, $this->year));
-    	}
-    	$largestDate = "0000-00-00 00:00:00";
-    	$return = array();
-    	foreach($check as $c){
-    	    $tok = $c['token'];
-    	    $sto->select_report($tok);
-    	    $year = $c['year'];
-    	    $tst = $sto->metadata('timestamp');
-    	    if(strcmp($tst, $largestDate) > 0){
-    	        $largestDate = $tst;
-    	        $return = array($c);
-    	    }
-    	}
+            else{
+                $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
+            }
+        }
+        else{
+            $check = array_merge($sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType, $this->year), 
+                                 $sto->list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType, $this->year));
+        }
+        $largestDate = "0000-00-00 00:00:00";
+        $return = array();
+        foreach($check as $c){
+            $tok = $c['token'];
+            $sto->select_report($tok);
+            $year = $c['year'];
+            $tst = $sto->metadata('timestamp');
+            if(strcmp($tst, $largestDate) > 0){
+                $largestDate = $tst;
+                $return = array($c);
+            }
+        }
         return $return;
     }
     
     function getPDF($submittedByOwner=false){
-    	$sto = new ReportStorage($this->person);
-    	$foundSameUser = false;
-    	$foundSubmitted = false;
-    	if($this->project != null){
-    	    if($this->pdfAllProjects){
-    	        $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType);
-    	    }
-    	    else{
-    	        $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
-    	        $check2 = array();
-    	        foreach($check as $c){
-    	            if($c['submitted'] == 1){
-    	                $foundSubmitted = true;
-    	            }
-    	            else{
-    	                $check2[] = $c;
-    	            }
-    	        }
+        $sto = new ReportStorage($this->person);
+        $foundSameUser = false;
+        $foundSubmitted = false;
+        if($this->project != null){
+            if($this->pdfAllProjects){
+                $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType);
             }
-    	}
-    	else{
-    	    // First check submitted
-    	    $check = $sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType, $this->year);
-    	    $check2 = $sto->list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType, $this->year);
-    	    if(count($check) == 0){
-    	        // If found none, then look for any generated PDF
-    	        $check = $check2;
-    	    }
-    	    foreach($check as $c){
-	            if($c['generation_user_id'] == $c['user_id']){
-	               $foundSameUser = true;
-	               break;
-	            }
-	        }
-    	}
-    	foreach($check as $key => $c){
-    	    if($foundSameUser && $c['generation_user_id'] != $c['user_id']){
-    	        unset($check[$key]);
-    	    }
-    	    if($foundSubmitted && $c['submitted'] != 1){
-    	        unset($check[$key]);
-    	    }
-    	}
-    	$largestDate = "0000-00-00 00:00:00";
-    	$return = array();
-    	foreach($check as $c){
-    	    $tok = $c['token'];
-    	    $sto->select_report($tok);
-    	    $tst = $sto->metadata('timestamp');
-    	    if($c['submitted'] == 1){
-    	        $c['status'] = "Generated/Submitted";
-    	    }
-    	    else if($foundSameUser){
-    	        $c['status'] = "Generated/Not Submitted";
-    	    }
-    	    else if(!$foundSameUser){
-    	        $c['status'] = "Generated/Not Submitted";
-    	    }
-    	    else{
-    	        $c['status'] = "Generated/Not Submitted";
-    	    }
-    	    $c['name'] = $this->name;
-    	    if(strcmp($tst, $largestDate) > 0){
-    	        $largestDate = $tst;
-    	        $return = array($c);
-    	    }
-    	}
-    	if(isset($check2) && count($check2) > 0){
-	        foreach($check2 as $chk){
-	            if($chk['timestamp'] > $largestDate){
-	                $return[0]['status'] = "Submitted/Re-Generated";
-	            }
-	        }
-	    }
+            else{
+                $check = $sto->list_project_reports($this->project->getId(), 0, 0, $this->pdfType, $this->year);
+                $check2 = array();
+                foreach($check as $c){
+                    if($c['submitted'] == 1){
+                        $foundSubmitted = true;
+                    }
+                    else{
+                        $check2[] = $c;
+                    }
+                }
+            }
+        }
+        else{
+            // First check submitted
+            $check = $sto->list_reports($this->person->getId(), SUBM, 0, 0, $this->pdfType, $this->year);
+            $check2 = $sto->list_reports($this->person->getId(), NOTSUBM, 0, 0, $this->pdfType, $this->year);
+            if(count($check) == 0){
+                // If found none, then look for any generated PDF
+                $check = $check2;
+            }
+            foreach($check as $c){
+                if($c['generation_user_id'] == $c['user_id']){
+                   $foundSameUser = true;
+                   break;
+                }
+            }
+        }
+        foreach($check as $key => $c){
+            if($foundSameUser && $c['generation_user_id'] != $c['user_id']){
+                unset($check[$key]);
+            }
+            if($foundSubmitted && $c['submitted'] != 1){
+                unset($check[$key]);
+            }
+        }
+        $largestDate = "0000-00-00 00:00:00";
+        $return = array();
+        foreach($check as $c){
+            $tok = $c['token'];
+            $sto->select_report($tok);
+            $tst = $sto->metadata('timestamp');
+            if($c['submitted'] == 1){
+                $c['status'] = "Generated/Submitted";
+            }
+            else if($foundSameUser){
+                $c['status'] = "Generated/Not Submitted";
+            }
+            else if(!$foundSameUser){
+                $c['status'] = "Generated/Not Submitted";
+            }
+            else{
+                $c['status'] = "Generated/Not Submitted";
+            }
+            $c['name'] = $this->name;
+            if(strcmp($tst, $largestDate) > 0){
+                $largestDate = $tst;
+                $return = array($c);
+            }
+        }
+        if(isset($check2) && count($check2) > 0){
+            foreach($check2 as $chk){
+                if($chk['timestamp'] > $largestDate){
+                    $return[0]['status'] = "Submitted/Re-Generated";
+                }
+            }
+        }
         return $return;
     }
     
@@ -812,7 +813,7 @@ abstract class AbstractReport extends SpecialPage {
                 $rid = $sto->metadata('report_id');
                 $ind->insert_report($rid, $report->project);
             }
-		    $tok = $sto->metadata('token');
+            $tok = $sto->metadata('token');
             $tst = $sto->metadata('timestamp');
             $len = $sto->metadata('pdf_len');
             $json[$pdfFile] = array('tok'=>$tok, 'time'=>$tst, 'len'=>$len, 'name'=>"{$report->name}");
@@ -962,7 +963,7 @@ abstract class AbstractReport extends SpecialPage {
                                     <td><a style='overflow: hidden;' href='javascript:saveBackup();' class='button' id='saveBackup'>Save</a></td>
                                     <td><form id='backupForm' method='post' action='{$wgTitle->getFullUrl()}{$getParams}' enctype='multipart/form-data'><input type='hidden' name='loadBackup' value='true' /><a style='overflow: hidden; position: relative;' class='button' id='downloadBackup'>Load<input class='hiddenFile' name='backup' type='file' /></a><input id='resetBackup' type='reset' style='position:absolute; left:-1000px;' /></form>
                                     <div style='display:none;' id='dialog-confirm' title='Load Report Confirmation'>
-	<p><span class='ui-icon ui-icon-alert' style='float:left; margin:0 7px 20px 0;'></span>Are you sure you want to upload the file: <p nowrap='nowrap' style='font-style:italic;white-space:nowrap;' id='fileName'></p>Uploading this file will replace the current report data with the data from the backup.  The file you should be uploading should be using the file extension <b>'.report'</b>.</p>
+    <p><span class='ui-icon ui-icon-alert' style='float:left; margin:0 7px 20px 0;'></span>Are you sure you want to upload the file: <p nowrap='nowrap' style='font-style:italic;white-space:nowrap;' id='fileName'></p>Uploading this file will replace the current report data with the data from the backup.  The file you should be uploading should be using the file extension <b>'.report'</b>.</p>
 </div></td>
                                 </tr>
                             </table></div>
@@ -1161,18 +1162,38 @@ abstract class AbstractReport extends SpecialPage {
                 permissionError();
             }
             $blob = new ReportBlob();
-		    $blob->loadFromMD5($_GET['id']);
-		    $data = $blob->getData();
-		    if($data != null){
-		        // Currently only works for UploadReportItem blobs
-		        $data = json_decode($data);
-		        header("Content-disposition: attachment; filename=\"".addslashes($data->name)."\"");
-		        echo base64_decode($data->file);
-		        exit;
-		    }
-		    exit;
-		}
-		return true;
+            $blob->loadFromMD5($_GET['id']);
+            $data = $blob->getData();
+            if($data != null){
+                // Currently only works for UploadReportItem blobs
+                $data = json_decode($data);
+                header("Content-disposition: attachment; filename=\"".addslashes($data->name)."\"");
+                echo base64_decode($data->file);
+                exit;
+            }
+            exit;
+        }
+        return true;
+    }
+    
+    static function tinyMCEUpload($action){
+        $me = Person::newFromWgUser();
+        if($action == "tinyMCEUpload"){
+            if(!$me->isLoggedIn() || 
+                $_FILES['image']['size'] >= 512*1024){
+                echo "alert('There was a problem with the uploaded file.  Make sure that it is a valid image and under 512KB.');";
+                exit;
+            }
+            $src = $_FILES['image']['tmp_name'];
+            $hash = md5($src);
+            system("convert +antialias -background transparent $src /tmp/$hash.png");
+            $png = file_get_contents("/tmp/$hash.png");
+            unlink("/tmp/$hash.png");
+            $str = "top.$('.mce-btn.mce-open').parent().find('.mce-textbox').val('data:image/png;base64,".base64_encode($png)."').closest('.mce-window').find('.mce-primary').click();";
+            echo $str;
+            exit;
+        }
+        return true;
     }
 }
 
