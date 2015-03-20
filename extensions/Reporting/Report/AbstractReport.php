@@ -284,7 +284,7 @@ abstract class AbstractReport extends SpecialPage {
                 header("Expires: ".gmdate("D, d M Y H:i:s")." GMT"); // Always expired 
                 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");// always modified 
                 header("Cache-Control: no-cache, must-revalidate");// HTTP/1.1 
-                header("Pragma: nocache");// HTTP/1.0 
+                header("Pragma: nocache");// HTTP/1.0
                 session_write_close();
                 $this->currentSection->render();
                 echo $wgOut->getHTML();
