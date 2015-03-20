@@ -18,10 +18,12 @@ class TextareaReportItem extends AbstractReportItem {
                 $('textarea[name={$this->getPostId()}]').tinymce({
                    theme: 'modern',
                    menubar: false,
-                   plugins: 'link image contextmenu charmap lists table',
+                   plugins: 'link image contextmenu charmap lists table paste',
                    toolbar: [
                         'undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright'
-                   ]
+                   ],
+                   paste_data_images: true,
+                   invalid_elements: 'h1, h2, h3, h4, h5, h6, h7, font'
                 });
             </script>";
         }
