@@ -206,4 +206,59 @@
     $config->setConst("NCE_PRODUCTION_MONTH", '-06-15');
     $config->setConst("NCE_PRODUCTION", ($config->getConst('YEAR')+1).$config->getConst('NCE_PRODUCTION_MONTH')); 
     
+    /*
+     * Roles
+     * TODO: These should probably be moved into the DB at some point
+     */
+    $config->setConst("INACTIVE",   "Inactive");
+    $config->setConst("HQP",        "HQP");
+    $config->setConst("STUDENT",    "Student");
+    $config->setConst("EXTERNAL",   "External");
+    $config->setConst("ISAC",       "ISAC");
+    $config->setConst("NCE",        "NCE Rep");
+    $config->setConst("CNI",        "CNI");
+    $config->setConst("PNI",        "PNI");
+    $config->setConst("AR",         "AR");
+    $config->setConst("LOI",        "LOI Member");
+    $config->setConst("COPL",       "Project co-Leader");
+    $config->setConst("PL",         "Project Leader");
+    $config->setConst("PM",         "Project Manager");
+    $config->setConst("COTL",       "Theme co-Leader");
+    $config->setConst("TL",         "Theme Leader");
+    $config->setConst("RMC",        "RMC");
+    $config->setConst("EVALUATOR",  "Evaluator");
+    $config->setConst("BOD",        "BOD");
+    $config->setConst("BODC",       "BOD Chair");
+    $config->setConst("CHAMP",      "Champion");
+    $config->setConst("GOV",        "Gov");
+    $config->setConst("ASD",        "ASD");
+    $config->setConst("SD",         "SD");
+    $config->setConst("STAFF",      "Staff");
+    $config->setConst("MANAGER",    "Manager");
+    
+    $config->setValue("roleDefs", array(
+        $config->getConst('INACTIVE')       => "Inactive",
+        $config->getConst('HQP')            => "Highly Qualified Person",
+        $config->getConst('EXTERNAL')       => "External",
+        $config->getConst('ISAC')           => "ISAC",
+        $config->getConst('NCE')            => "NCE Rep",
+        $config->getConst('CNI')            => "Collaborating Network Investigator",
+        $config->getConst('PNI')            => "Principal Network Investigator",
+        $config->getConst('AR')             => "Associated Network Investigator",
+        $config->getConst('LOI')            => "LOI",
+        $config->getConst('CHAMP')          => "Champion",
+        $config->getConst('COPL')           => "Co-Project Leader",
+        $config->getConst('PL')             => "Project Leader",
+        $config->getConst('PM')             => "Project Manager",
+        $config->getConst('COTL')           => "Co-Theme Leader",
+        $config->getConst('TL')             => "Theme Leader",
+        $config->getConst('RMC')            => "Research Management Comittee",
+        $config->getConst('EVALUATOR')      => "Evaluator",
+        $config->getConst('BOD')            => "Board of Directors",
+        $config->getConst('BODC')           => "BOD Chair",
+        $config->getConst('ASD')            => "Associate Scientific Director",
+        $config->getConst('SD')             => "Scientific Director",
+        $config->getConst('GOV')            => "Government",
+        $config->getConst('STAFF')          => "Staff",
+        $config->getConst('MANAGER')        => "Manager"));
 ?>

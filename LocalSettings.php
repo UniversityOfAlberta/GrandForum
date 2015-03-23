@@ -192,34 +192,6 @@ define("DEBUG", true);
 //Define the switch to prevent any editing by Users to indicate the end of reporting period.
 define("FROZEN", false);
 
-// Names of User Roles
-define("INACTIVE", "Inactive"); // This is an implied role.
-define("HQP", "HQP");
-define("STUDENT", "Student");
-define("EXTERNAL", "External");
-define("ISAC", "ISAC");
-define("NCE", "NCE Rep");
-define("CNI", "CNI");
-define("PNI", "PNI");
-define("AR", "AR");
-define("LOI", "LOI Member");
-define("COPL", "Project co-Leader"); // This is a special role.
-define("PL", "Project Leader"); // This is a special role.
-define("PM", "Project Manager"); // This is a special role.
-define("COTL", "Theme co-Leader"); // This is a special role.
-define("TL", "Theme Leader"); // This is a special role.
-define("RMC", "RMC");
-define("EVALUATOR", "Evaluator");
-define("BOD", "BOD");
-define("BODC", "BOD Chair");
-define("CHAMP", "Champion");
-define("GOV", "Gov");
-define("ASD", "ASD");
-define("SD", "SD");
-define("STAFF", "Staff");
-define("MANAGER", "Manager");
-#define("PNIA", "PNI-Admin");
-
 $wgRoleValues = array(INACTIVE => 0,
                       HQP => 1,
                       EXTERNAL => 2,
@@ -247,31 +219,6 @@ $wgRoleValues = array(INACTIVE => 0,
                       GOV => 13,
                       STAFF => 16,
                       MANAGER => 17);
-                     
-$wgRoleDefs = array(INACTIVE => "Inactive",
-                    HQP => "Highly Qualified Person",
-                    EXTERNAL => "External",
-                    ISAC => "ISAC",
-                    NCE => "NCE Rep",
-                    CNI => "Collaborating Network Investigator",
-                    PNI => "Principal Network Investigator",
-                    AR => "Associated Network Investigator",
-                    LOI => "LOI",
-                    CHAMP => "Champion",
-                    COPL => "Co-Project Leader",
-                    PL => "Project Leader",
-                    PM => "Project Manager",
-                    COTL => "Co-Theme Leader",
-                    TL => "Theme Leader",
-                    RMC => "Research Management Comittee",
-                    EVALUATOR => "Evaluator",
-                    BOD => "Board of Directors",
-                    BODC => "BOD Chair",
-                    ASD => "Associate Scientific Director",
-                    SD => "Scientific Director",
-                    GOV => "Government",
-                    STAFF => "Staff",
-                    MANAGER => "Manager");
                      
 $wgRoles = array(HQP, EXTERNAL, ISAC, NCE, CNI, PNI, AR, LOI, RMC, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
 $wgAllRoles = array(HQP, STUDENT, EXTERNAL, ISAC, NCE, CNI, PNI, AR, LOI, COPL, PL, PM, TL, RMC, EVALUATOR, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
