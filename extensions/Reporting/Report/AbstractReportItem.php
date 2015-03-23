@@ -272,7 +272,11 @@ abstract class AbstractReportItem {
 	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address, true);
 	    $md5 = $blob->getMD5();
-	    return "{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}";
+	    $mime = $this->getAttr('mimeType', '');
+	    if($mime != ""){
+	        $mime = "&mime={$mime}";
+	    }
+	    return "{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}{$mime}";
     }
     
     // Sets the Blob value for this item

@@ -1167,6 +1167,9 @@ abstract class AbstractReport extends SpecialPage {
             if($data != null){
                 // Currently only works for UploadReportItem blobs
                 $data = json_decode($data);
+                if(isset($_GET['mime'])){
+                    header("Content-Type: {$_GET['mime']}");
+                }
                 header("Content-disposition: attachment; filename=\"".addslashes($data->name)."\"");
                 echo base64_decode($data->file);
                 exit;
