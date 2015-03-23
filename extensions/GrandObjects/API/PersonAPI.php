@@ -84,10 +84,11 @@ class PeopleAPI extends RESTAPI {
                 $people = Person::getAllPeople($role);
                 foreach($people as $person){
                     if($university == "" || $person->getUni() == $university){
-                        $finalPeople[$person->getId()] = $person;
+                        $finalPeople[$person->getReversedName()] = $person;
                     }
                 }
             }
+            ksort($finalPeople);
             $finalPeople = new Collection(array_values($finalPeople));
             return $finalPeople->toJSON();
         }
