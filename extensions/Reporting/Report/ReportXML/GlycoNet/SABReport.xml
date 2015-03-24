@@ -43,7 +43,7 @@
             ]]>
         </Instructions>
         
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB">
+        <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" subType="SAB">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                 <ReportItemSet id="evaluators" type="SABReportItemSet">
                     <ReportItem id="review" type="StaticReportItem">
