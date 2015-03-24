@@ -50,7 +50,8 @@ class University extends BackboneModel {
         $data = DBFunctions::select(array('grand_universities'),
                                     array('university_id', '`order`'),
                                     array(),
-                                    array('`order`' => 'ASC'));
+                                    array('`order`' => 'ASC',
+                                          'university_name' => 'ASC'));
         $unis = array();
         foreach($data as $row){
             $unis[] = University::newFromId($row['university_id']);
