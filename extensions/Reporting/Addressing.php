@@ -325,7 +325,11 @@ define('PROP_MIL_UPLOAD',           1);
 define('PROP_BUD_UPLOAD',           1);
 define('PROP_BUD_JUSTIF',           2);
 
-define('PROP_SUP_UPLOAD',           1);
+define('PROP_SUP_UPLOAD1',           1);
+define('PROP_SUP_UPLOAD2',           2);
+define('PROP_SUP_UPLOAD3',           3);
+define('PROP_SUP_UPLOAD4',           4);
+define('PROP_SUP_UPLOAD5',           5);
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used

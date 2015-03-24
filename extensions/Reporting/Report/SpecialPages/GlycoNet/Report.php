@@ -59,6 +59,9 @@ class Report extends AbstractReport{
                 }
             }
         }
+        if($person->isRole(SAB)){
+            
+        }
         return true;
     }
     

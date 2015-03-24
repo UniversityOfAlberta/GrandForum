@@ -162,12 +162,32 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="letters" name="Partner Letters" blobSection="PROP_LETTERS" tooltip="Partner Support Letters" type="HeaderReportSection" pagebreak="false">
+    <ReportSection id="letters" name="Partner Letters" blobSection="PROP_SUPPORT" tooltip="Partner Support Letters" type="HeaderReportSection" pagebreak="false">
         <ReportItem id="lettersHeader" type="BookmarkReportItem" title="Partner Support Letters"></ReportItem>
-        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_SUP_UPLOAD" mimeType="application/pdf">
+        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_SUP_UPLOAD1" mimeType="application/pdf">
             <![CDATA[
                 <center><h1>Partner Support Letters</h1></center>
-                {$item}
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_SUP_UPLOAD2" mimeType="application/pdf">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_SUP_UPLOAD3" mimeType="application/pdf">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_SUP_UPLOAD4" mimeType="application/pdf">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_SUP_UPLOAD5" mimeType="application/pdf">
+            <![CDATA[
+                {$item}<br />
             ]]>
         </ReportItem>
     </ReportSection>

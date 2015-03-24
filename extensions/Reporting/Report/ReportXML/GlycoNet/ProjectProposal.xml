@@ -235,7 +235,7 @@ containing information from all PI groups.</i></b></p>
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="letters" name="Partner Letters" blobSection="PROP_LETTERS" tooltip="Partner Support Letters" type="EditableReportSection">
+    <ReportSection id="letters" name="Partner Letters" blobSection="PROP_SUPPORT" tooltip="Partner Support Letters" type="EditableReportSection">
         <Instructions>
             <![CDATA[
                 <h2>Partner Support Letters (provide as a separate PDF files)</h2>
@@ -249,9 +249,28 @@ containing information from all PI groups.</i></b></p>
                 </p>
             ]]>
         </Instructions>
-        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_SUP_UPLOAD" mimeType="application/pdf">
+        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_SUP_UPLOAD1" mimeType="application/pdf">
             <![CDATA[
-                Upload a single PDF containing all of the letters of support.
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_SUP_UPLOAD2" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_SUP_UPLOAD3" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_SUP_UPLOAD4" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_SUP_UPLOAD5" mimeType="application/pdf">
+            <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
