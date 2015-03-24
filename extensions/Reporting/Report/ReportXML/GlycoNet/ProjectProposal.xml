@@ -251,6 +251,7 @@ containing information from all PI groups.</i></b></p>
         </Instructions>
         <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_SUP_UPLOAD1" mimeType="application/pdf">
             <![CDATA[
+                <p>You can upload up to 5 Partner Support Letters</p>
                 {$item}
             ]]>
         </ReportItem>
