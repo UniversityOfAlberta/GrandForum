@@ -513,7 +513,7 @@ EOF;
                                 <td><input type='file' name='photo' /></td>
                             </tr>
                             <tr>
-                                <td></td><td><small><li>The image will be scaled to 50x66.</li>
+                                <td></td><td><small><li>The image will be scaled to 100x132.</li>
                                                     <li>Max file size is 5MB</li>
                                                     <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li></small></td>
                             </tr>
