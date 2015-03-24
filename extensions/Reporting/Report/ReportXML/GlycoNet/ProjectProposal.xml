@@ -5,6 +5,7 @@
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="letters" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -12,6 +13,7 @@
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="letters" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -19,6 +21,7 @@
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="letters" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="" />
         </Role>
@@ -228,6 +231,27 @@ containing information from all PI groups.</i></b></p>
                 <p>
                     Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet%20Milestones.xls">milestone template</a> and upload it below.
                 </p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="letters" name="Partner Letters" blobSection="PROP_LETTERS" tooltip="Partner Support Letters" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <h2>Partner Support Letters (provide as a separate PDF files)</h2>
+                <p>A letter must be provided supporting all partner contributions listed in the budget.<br />
+                Letters must:
+                <ul>
+                    <li>Come from a senior executive with signing authority for the contributions being committed.</li>
+                    <li>Indicate the amount, duration, and nature (cash and/or in-kind) of support for the project.</li>
+                    <li>Be on partner letterhead, be dated and signed within the past two months.</li>
+                </ul>
+                </p>
+            ]]>
+        </Instructions>
+        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_SUP_UPLOAD" mimeType="application/pdf">
+            <![CDATA[
+                Upload a single PDF containing all of the letters of support.
                 {$item}
             ]]>
         </ReportItem>

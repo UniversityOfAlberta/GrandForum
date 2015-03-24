@@ -162,4 +162,13 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="letters" name="Partner Letters" blobSection="PROP_LETTERS" tooltip="Partner Support Letters" type="HeaderReportSection" pagebreak="false">
+        <ReportItem id="lettersHeader" type="BookmarkReportItem" title="Partner Support Letters"></ReportItem>
+        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_SUP_UPLOAD" mimeType="application/pdf">
+            <![CDATA[
+                <center><h1>Partner Support Letters</h1></center>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
 </Report>

@@ -160,6 +160,7 @@ define('MTG_OTHER', 5);
 define('PROP_DESC', 1);
 define('PROP_MILESTONES', 2);
 define('PROP_BUDGET', 3);
+define('PROP_SUPPORT', 4);
 
 /*
  * Third-level identifiers: question within a section.
@@ -323,6 +324,8 @@ define('PROP_MIL_UPLOAD',           1);
 
 define('PROP_BUD_UPLOAD',           1);
 define('PROP_BUD_JUSTIF',           2);
+
+define('PROP_SUP_UPLOAD',           1);
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used
