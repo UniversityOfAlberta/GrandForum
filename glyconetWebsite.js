@@ -48,6 +48,7 @@ function initSideBar(){
             this.contentWindow.location.replace('about:blank');
         });
         jQuery(".gdl-page-content iframe").hide();
+        jQuery("img.throbber").hide(); 
         jQuery("#universities_header").hide();
         jQuery(".gdl-page-float-left").animate({'width': "660px"});
         jQuery(".gdl-page-item").animate({'width': "660px"});
@@ -58,6 +59,7 @@ function initSideBar(){
 function initTab(role, selector, tabSelector, fields){
     jQuery.get("https://forum.glyconet.ca/index.php?action=api.people/" + role, function(response){
         jQuery(selector + " > div").empty();
+        var j = 0;
         for(id in response){
             var person = response[id];
             if(person.name == 'Admin'){
@@ -77,6 +79,11 @@ function initTab(role, selector, tabSelector, fields){
                 html += "<div class='tshowcase-box-details'>" + person[field] + "</div>";
             }
             html +=    "</div></div></div>";
+            j++;
+            console.log(i % 4);
+            if(j % 4 == 0){
+                html += "<br>";
+            }
             jQuery(selector + " > div").append(html);
         }
         
@@ -113,6 +120,7 @@ function initTab(role, selector, tabSelector, fields){
                 jQuery(".gdl-page-content iframe").each(function(i, el){
                     this.contentWindow.location.replace('about:blank');
                 });
+                jQuery("img.throbber").hide(); 
                 jQuery(".gdl-page-content iframe").hide();
                 jQuery(".gdl-page-float-left").animate({'width': "660px"});
                 jQuery(".gdl-page-item").animate({'width': "660px"});
