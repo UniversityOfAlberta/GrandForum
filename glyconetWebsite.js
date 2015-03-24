@@ -135,4 +135,4 @@ jQuery(document).ready(initSideBar);
 initTab("SD,BOD Chair,ASD,Manager", "#executive-leadership", "tab-0", ['university','position']);
 initTab("PNI", "#network-investigators", "tab-1", ['university']);
 initTab("CNI", "#collaborators", "tab-2", ['university']);
-initTab("SD,Staff,Manager", "#administrative-centre", "tab-3", ['university']);
+initTab("Staff,Manager", "#administrative-centre", "tab-3", ['university', 'position']);
