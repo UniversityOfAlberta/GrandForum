@@ -519,7 +519,7 @@ EOF;
                             </tr>
                             <tr>
                                 <td align='right'><b>Website URL:</b></td>
-                                <td><input type='text' size='40' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
+                                <td><input type='text' size='30' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
                             </tr>
                             <tr>
                                 <td align='right'><b>Twitter Account:</b></td>
@@ -652,6 +652,8 @@ EOF;
             $departments = Person::getAllDepartments();
             $positionCombo = new ComboBox('title', "Title", $myPosition, $positions);
             $departmentCombo = new ComboBox('department', "Department", $university['department'], $departments);
+            $positionCombo->attr('style', 'max-width: 250px;');
+            $departmentCombo->attr('style', 'max-width: 250px;');
             $this->html .= "<tr>
                                 <td align='right'><b>Title:</b></td>
                                 <td>{$positionCombo->render()}

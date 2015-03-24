@@ -438,7 +438,8 @@ class Person extends BackboneModel {
         $data = DBFunctions::select(array('grand_positions'),
                                     array('*'),
                                     array(),
-                                    array('`order`' => 'ASC'));
+                                    array('`order`' => 'ASC',
+                                          'position' => 'ASC'));
         $positions = array();
         foreach($data as $row){
             $positions[$row['position_id']] = $row['position'];
