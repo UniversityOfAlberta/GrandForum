@@ -1005,7 +1005,11 @@ class Person extends BackboneModel {
     // Returns the gender of this Person
     // Will be either "Male" "Female" or ""
     function getGender(){
-        return $this->gender;
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            return $this->gender;
+        }
+        return "";
     }
     
     // Returns the nationality of this Person
