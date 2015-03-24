@@ -105,6 +105,9 @@ class ReportItemCallback {
             "spl_subprojects" => "getSPLSubProjects",
             // ISAC
             "isac_comment" => "getISACComment",
+            // SAB
+            "sab_strength" => "getSABStrength",
+            "sab_weakness" => "getSABWeakness",
             // Products
             "product_id" => "getProductId",
             "product_title" => "getProductTitle",
@@ -114,7 +117,8 @@ class ReportItemCallback {
             "wgScriptPath" => "getWgScriptPath",
             "networkName" => "getNetworkName",
             "id" => "getId",
-            "name" => "getName"
+            "name" => "getName",
+            "index" => "getIndex"
         );
     
     var $reportItem;
@@ -1121,6 +1125,28 @@ class ReportItemCallback {
         return "";
     }
     
+    function getSABStrength(){
+        $addr = ReportBlob::create_address(RP_SAB_REVIEW, SAB_REVIEW, SAB_REVIEW_STRENGTH, 0);
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        if($data != null){
+           return $data;
+        }
+        return "";
+    }
+    
+    function getSABWeakness(){
+        $addr = ReportBlob::create_address(RP_SAB_REVIEW, SAB_REVIEW, SAB_REVIEW_WEAKNESS, 0);
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        if($data != null){
+           return $data;
+        }
+        return "";
+    }
+    
     function getProductId(){
         $product = Paper::newFromId($this->reportItem->productId);
         return $product->getId();
@@ -1184,6 +1210,25 @@ class ReportItemCallback {
             $product = Product::newFromId($productId);
             return $product->getTitle();
         }
+    }
+    
+    function getIndex(){
+        $personId = $this->reportItem->personId;
+        $projectId = $this->reportItem->projectId;
+        $productId = $this->reportItem->productId;
+        $milestoneId = $this->reportItem->milestoneId;
+        $set = $this->reportItem->getSet();
+        $i = 1;
+        foreach($set->getData() as $item){
+            if($item['milestone_id'] == $milestoneId &&
+               $item['project_id'] == $projectId &&
+               $item['person_id'] == $personId &&
+               $item['product_id'] == $productId){
+                return $i;
+            }
+            $i++;
+        }
+        return 0;
     }
     
     function getPostId(){

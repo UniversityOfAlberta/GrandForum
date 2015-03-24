@@ -10,7 +10,7 @@ class MaterialsReportItemSet extends ReportItemSet {
         if(is_array($subs)){
             foreach($subs as $sub){
                 $tuple = self::createTuple();
-                if($type == "Project"){
+                if($type == "Project" || $type == "SAB"){
                     $tuple['project_id'] = $sub->getId();
                 }
                 else{

@@ -3741,7 +3741,9 @@ class Person extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         $subs = array();
         foreach($data as $row){
-            if($type != "Project"){
+            if($type != "Project" && 
+               $type != "SAB" && 
+               $type != "LOI"){
                 $subs[] = Person::newFromId($row['sub_id']);
             }
             else{
@@ -3763,7 +3765,7 @@ class Person extends BackboneModel {
         $subs = array();
 
         foreach($data as $row){
-            if($row['type'] == "Project"){
+            if($row['type'] == "Project" || $row['type'] == "SAB"){
                 $subs[] = Project::newFromId($row['sub_id']);
             }
             else if($row['type'] == "CNI" || $row['type'] == "PNI"){

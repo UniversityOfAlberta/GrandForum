@@ -46,6 +46,8 @@ define('RP_SUBPROJECT', 17);
  * GlycoNet
  */
 define('RP_PROJECT_PROPOSAL',   100);
+define('RP_SAB_REVIEW',         101);
+define('RP_SAB_REPORT',         102);
 
 /*
  * Second-level identifiers: report section.
@@ -161,6 +163,12 @@ define('PROP_DESC', 1);
 define('PROP_MILESTONES', 2);
 define('PROP_BUDGET', 3);
 define('PROP_SUPPORT', 4);
+
+// Second level for SAB Review
+define('SAB_REVIEW',    1);
+
+// Second level for SAB Report
+define('SAB_REPORT',    1);
 
 /*
  * Third-level identifiers: question within a section.
@@ -330,6 +338,11 @@ define('PROP_SUP_UPLOAD2',           2);
 define('PROP_SUP_UPLOAD3',           3);
 define('PROP_SUP_UPLOAD4',           4);
 define('PROP_SUP_UPLOAD5',           5);
+
+define('SAB_REVIEW_STRENGTH',        1);
+define('SAB_REVIEW_WEAKNESS',        2);
+
+define('SAB_REPORT_SUMMARY',         1);
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used

@@ -9,10 +9,6 @@ class AllProjectsReportItemSet extends ReportItemSet {
         foreach($projects as $project){
             if($phase != 0 && $project->getPhase() != $phase){
                 continue;
-            } 
-            if($project->getName() == "AD-NODE"){
-                // Special Project
-                continue;
             }
             $tuple = self::createTuple();
             $tuple['project_id'] = $project->getId();

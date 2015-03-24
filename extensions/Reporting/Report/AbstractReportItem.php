@@ -83,6 +83,14 @@ abstract class AbstractReportItem {
         return $parent;
     }
     
+    function getSet(){
+        $parent = $this->getParent();
+        while(!($parent instanceof ReportItemSet)){
+            $parent = $parent->getParent();
+        }
+        return $parent;
+    }
+    
     // Sets the Blob Type of this AbstractReportItem
     // This determines how the data should be stored, and retrieved.
     function setBlobType($type){

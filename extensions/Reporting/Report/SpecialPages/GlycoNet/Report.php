@@ -59,8 +59,13 @@ class Report extends AbstractReport{
                 }
             }
         }
-        if($person->isRole(SAB)){
-            
+        if(($person->isRole(SAB) || $person->isRole(MANAGER)) && $person->getAllEvaluates("SAB")){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABReview")) ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("SAB Review", "{$url}SABReview", $selected);
+        }
+        if(($person->isRole(SAB) || $person->isRole(MANAGER) || $person->isRole(SD))){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABReport")) ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("SAB Report", "{$url}SABReport", $selected);
         }
         return true;
     }
