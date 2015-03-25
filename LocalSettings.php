@@ -90,8 +90,8 @@ $wgScriptExtension  = ".php";
 $wgEnableEmail      = true;
 $wgEnableUserEmail  = true; # UPO
 
-$wgEmergencyContact = "support@forum";
-$wgPasswordSender = "support@forum";
+$wgEmergencyContact = $config->getValue('supportEmail');
+$wgPasswordSender = $config->getValue('siteName').' <'.$config->getValue('supportEmail').'>';
 
 $wgEnotifUserTalk = true; # UPO
 $wgEnotifWatchlist = true; # UPO
