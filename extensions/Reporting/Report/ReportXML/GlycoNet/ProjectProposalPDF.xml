@@ -24,7 +24,7 @@
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
-    <ReportSection id="status" name="Header" type="HeaderReportSection" blobSection="LDR_RESACTIVITY" pagebreak="false" renderpdf="true">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
                 <div class='logo_div' style="height:20px;">

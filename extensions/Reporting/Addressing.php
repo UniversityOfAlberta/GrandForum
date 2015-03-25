@@ -121,6 +121,18 @@ define('EVL_MANAGEMENT_COM',	15);
 define('EVL_REPORTQUALITY_COM',	16);
 define('EVL_SEENOTHERREVIEWS',	17); //flag indicating that evaluator has seen other reviews
 define('EVL_OTHERCOMMENTSAFTER',18); //Other comments after seeing other reviews
+//GlycoNet
+define('EVL_EXCELLENCE_OTHER',  19);
+define('EVL_STRATEGIC',         20);
+define('EVL_STRATEGIC_COM',     21);
+define('EVL_STRATEGIC_OTHER',   22);
+define('EVL_INTEG',             23);
+define('EVL_INTEG_COM',         24);
+define('EVL_INTEG_OTHER',       25);
+define('EVL_NETWROKING_OTHER',  26);
+define('EVL_KNOWLEDGE_OTHER',   27);
+define('EVL_HQPDEVELOPMENT_OTHER',28);
+define('EVL_REPORTQUALITY_OTHER',29);
 
 //Evaluator LOI
 define('EVL_LOI1',		1);

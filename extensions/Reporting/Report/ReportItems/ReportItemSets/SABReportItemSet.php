@@ -3,6 +3,7 @@
 class SABReportItemSet extends ReportItemSet {
     
     function getData(){
+        // Returns the array of SAB for that year
         $data = array();
         $proj = Project::newFromId($this->projectId);
         if($proj != null){

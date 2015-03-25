@@ -145,7 +145,7 @@ class ReportItemCallback {
     
     function getProjectId(){
         $project_id = 0;
-        if($this->reportItem->projectId != 0 ){
+        if($this->reportItem->projectId != 0){
             $project_id = $this->reportItem->projectId;
         }
         return $project_id;

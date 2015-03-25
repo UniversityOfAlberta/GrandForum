@@ -15,37 +15,20 @@ class DummyReport extends AbstractReport{
                 case RP_LEADER:
                     $reportType = "ProjectReport";
                     break;
-                case RP_SUBPROJECT:
-                    $reportType = "SubProjectReport";
+                case RP_PROJECT_PROPOSAL:
+                    $reportType = "ProjectProposal";
                     break;
-                case RP_CHAMP:
-                    $reportType = "ChampionReport";
+                case RP_SAB_REVIEW:
+                    $reportType = "SABReview";
                     break;
-                case RP_PROJECT_ISAC:
-                    $reportType = "ProjectISACCommentsPDF";
-                    break;
-                case RP_PROJECT_CHAMP:
-                    $reportType = "ProjectChampionsReportPDF";
-                    break;
-                case RP_REVIEW:
-                    $reportType = "ReviewReport";
+                case RP_SAB_REPORT:
+                    $reportType = "SABReport";
                     break;
                 case RP_EVAL_RESEARCHER:
-                    $reportType = "EvalResearcherReportOld";
+                    $reportType = "RMCNIReview";
                     break;
                 case RP_EVAL_PROJECT:
-                    $reportType = "EvalProjectReportOld";
-                    break;
-                case RP_SUPPLEMENTAL:
-                    $reportType = "NIReport";
-                    break;
-                case RP_EVAL_PDF:
-                    $reportType = "EvalNIPDFReport";
-                    break;
-                case RP_EVAL_CNI:
-                    break;
-                case RP_MTG:
-                    $reportType = "MindTheGap";
+                    $reportType = "RMCProjectReview";
                     break;
             }
         }
@@ -56,7 +39,12 @@ class DummyReport extends AbstractReport{
             $projectName = $project->getName();
         }
         $topProjectOnly = false;
-        if($projectName != null && ($reportType == "NIReport" || $reportType == "HQPReport" || $reportType == "NIReportPDF" || $reportType == "HQPReportPDF")){
+        if($projectName != null && ($reportType == "NIReport" || 
+                                    $reportType == "HQPReport" || 
+                                    $reportType == "NIReportPDF" || 
+                                    $reportType == "HQPReportPDF" || 
+                                    $reportType == "SABReport" ||
+                                    $reportType == "SABReportPDF")){
             $topProjectOnly = true;
         }
         $this->AbstractReport(dirname(__FILE__)."/../../ReportXML/{$config->getValue('networkName')}/$reportType.xml", $person->getId(), $projectName, $topProjectOnly, $year);

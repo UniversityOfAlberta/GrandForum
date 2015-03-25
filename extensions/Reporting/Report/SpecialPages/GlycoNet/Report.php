@@ -15,7 +15,7 @@ class Report extends AbstractReport{
         global $config;
         $report = @$_GET['report'];
         $topProjectOnly = false;
-        if(isset($_GET['project']) && ($report == "NIReport" || $report == "HQPReport")){
+        if(isset($_GET['project']) && ($report == "NIReport" || $report == "HQPReport" || $report == "SABReport")){
             $topProjectOnly = true;
         }
         $this->AbstractReport(dirname(__FILE__)."/../../ReportXML/{$config->getValue('networkName')}/$report.xml", -1, false, $topProjectOnly);
@@ -66,6 +66,10 @@ class Report extends AbstractReport{
         if(($person->isRole(SAB) || $person->isRole(MANAGER) || $person->isRole(SD))){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABReport")) ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("SAB Report", "{$url}SABReport", $selected);
+        }
+        if($person->isEvaluator()){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "RMCProjectReview")) ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("RMC Review", "{$url}RMCProjectReview", $selected);
         }
         return true;
     }

@@ -50,3 +50,4 @@ define('EVTP_PROJECT', 2);
  * GlycoNet
  */
 define('RPTP_PROJECT_PROPOSAL', 200);
+define('RPTP_SAB_REPORT', 201);

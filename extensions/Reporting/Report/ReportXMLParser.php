@@ -493,7 +493,7 @@ class ReportXMLParser {
             else{
                 $type = get_class($item);
             }
-            if(!$this->report->topProjectOnly && $this->report->project != null){
+            if($this->report->project != null){
                 $item->setProjectId($this->report->project->getId());
             }
             if(isset($attributes->id)){
