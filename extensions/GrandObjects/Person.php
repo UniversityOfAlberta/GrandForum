@@ -1566,7 +1566,7 @@ class Person extends BackboneModel {
     
     /**
      * Returns all the Universities that this Person has been a part of
-     * @return array The last University that this Person was at between the given range
+     * @return array All the Universities that this Person has been a part of
      */ 
     function getUniversities(){
         $sql = "SELECT * 

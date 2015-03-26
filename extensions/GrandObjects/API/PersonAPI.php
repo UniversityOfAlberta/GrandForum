@@ -83,8 +83,16 @@ class PeopleAPI extends RESTAPI {
                 $role = trim($role);
                 $people = Person::getAllPeople($role);
                 foreach($people as $person){
-                    if($university == "" || $person->getUni() == $university){
+                    if($university == ""){
                         $finalPeople[$person->getReversedName()] = $person;
+                    }
+                    else {
+                        foreach($person->getUniversitiesDuring(date("Y-01-01 00:00:00"), date("Y-12-31 23:59:59")) as $uni){
+                            if($uni['university'] == $university){
+                                $finalPeople[$person->getReversedName()] = $person;
+                                break;
+                            }
+                        }
                     }
                 }
             }
