@@ -291,7 +291,7 @@ class Person extends BackboneModel {
                 if($middleName != ""){
                     self::$namesCache["$firstName $middleName $lastName"] = $row;
                     self::$namesCache["$firstName ".substr($middleName, 0, 1)." $lastName"] = $row;
-                    self::$namesCache["$lastName ".substr($firstName, 0, 1).substr($lastName, 0, 1)] = $row;
+                    self::$namesCache["$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1)] = $row;
                 }
             }
         }
