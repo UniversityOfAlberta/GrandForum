@@ -129,7 +129,7 @@ define('EVL_STRATEGIC_OTHER',   22);
 define('EVL_INTEG',             23);
 define('EVL_INTEG_COM',         24);
 define('EVL_INTEG_OTHER',       25);
-define('EVL_NETWROKING_OTHER',  26);
+define('EVL_NETWORKING_OTHER',  26);
 define('EVL_KNOWLEDGE_OTHER',   27);
 define('EVL_HQPDEVELOPMENT_OTHER',28);
 define('EVL_REPORTQUALITY_OTHER',29);
