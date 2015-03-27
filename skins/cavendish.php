@@ -137,6 +137,7 @@ class cavendishTemplate extends QuickTemplate {
         <script type='text/javascript'>
         
             $.ajaxSetup({ cache: false, 
+                          data: {embed: <?php if(isset($_GET['embed']) && $_GET['embed'] != "false"){ echo "true"; } else { echo "false"; } ?>},
                           headers : { "cache-control": "no-cache" } 
                         });
         
