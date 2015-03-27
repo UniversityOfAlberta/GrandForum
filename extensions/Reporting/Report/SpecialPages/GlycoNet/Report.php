@@ -59,7 +59,7 @@ class Report extends AbstractReport{
                 }
             }
         }
-        if(($person->isRole(SAB) || $person->isRole(MANAGER)) && $person->getAllEvaluates("SAB")){
+        if($person->isRole(MANAGER) || count($person->getAllEvaluates("SAB")) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABReview")) ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("SAB Review", "{$url}SABReview", $selected);
         }
