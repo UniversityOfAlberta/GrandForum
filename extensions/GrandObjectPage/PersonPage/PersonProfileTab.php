@@ -319,7 +319,7 @@ EOF;
 
                 $names = array();
                 foreach($paper->getAuthors() as $author){
-                    if($author->getId() != 0 && $me->isLoggedIn()){
+                    if($author->getId() != 0 && $author->getUrl() != ""){
                         $names[] = "<a href='{$author->getUrl()}'>{$author->getNameForForms()}</a>";
                     }
                     else{
