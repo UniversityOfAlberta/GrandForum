@@ -1361,7 +1361,7 @@ EOF;
             $sql .= "\nAND start_date > end_date
                      AND status != 'Abandoned' AND status != 'Closed'";
         }
-        $sql .= "\nORDER BY projected_end_date";
+        $sql .= "\nORDER BY activity_id, projected_end_date";
         $data = DBFunctions::execSQL($sql);
         
         foreach($data as $row){
@@ -1399,7 +1399,7 @@ EOF;
                 FROM grand_milestones
                 WHERE project_id = '{$this->id}'
                 AND status IN ('Abandoned','Closed') 
-                ORDER BY projected_end_date";
+                ORDER BY activity_id, projected_end_date";
         
         $data = DBFunctions::execSQL($sql);
         foreach($data as $row){

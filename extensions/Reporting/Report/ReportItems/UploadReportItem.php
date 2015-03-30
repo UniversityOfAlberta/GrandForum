@@ -21,7 +21,6 @@ class UploadReportItem extends AbstractReportItem {
         
         $html = "<script type='text/javascript'>
                                 function alertsize_{$this->getId()}(pixels){
-                                    console.log($('#fileFrame{$this->getId()}'));
                                     $('#reportMain > div').stop();
                                     $('#fileFrame{$this->getId()}').height(pixels);
                                     $('#fileFrame{$this->getId()}').css('max-height', pixels);

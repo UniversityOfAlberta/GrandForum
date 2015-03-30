@@ -444,8 +444,8 @@ EOF;
 
 if ( isset($pdf) ) {
 
-  $font = Font_Metrics::get_font("verdana");
-  $size = "12px";
+  $font = Font_Metrics::get_font("Times New Roman");
+  $size = "12";
   $size2 = 6;
   $color = array(0,0,0);
   $text_height = Font_Metrics::get_font_height($font, $size);
@@ -473,9 +473,8 @@ if ( isset($pdf) ) {
   $text = "Page {PAGE_NUM} of {PAGE_COUNT}";
 
   // Center the text
+  $nameWidth = Font_Metrics::get_text_width("'.$headerName.' ", $font, $size);
   $width = Font_Metrics::get_text_width("Page 1 of 50", $font, $size2);
-  
-  $nameWidth = Font_Metrics::get_text_width("'.$headerName.'", $font, $size);
   
   $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 2, "'.$headerName.'", $font, $size, $color);
   $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color);
@@ -541,7 +540,20 @@ if ( isset($pdf) ) {
         }
         file_put_contents("/tmp/{$name}{$rand}pdfmarks", $str);
         file_put_contents("/tmp/{$name}{$rand}pdf", $dompdf->output());
-        exec("gs -q -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=\"/tmp/{$name}{$rand}withmarks\" \"/tmp/{$name}{$rand}pdf\" \"/tmp/{$name}{$rand}pdfmarks\""); // Add Bookmarks
+        exec("gs \\
+                -q \\
+                -dBATCH \\
+                -dNOPAUSE \\
+                -sDEVICE=pdfwrite \\
+                -dColorConversionStrategy=/LeaveColorUnchanged \\
+                -dDownsampleMonoImages=false \\
+                -dDownsampleGrayImages=false \\
+                -dDownsampleColorImages=false \\
+                -dAutoFilterColorImages=false \\
+                -dAutoFilterGrayImages=false \\
+                -dColorImageFilter=/FlateEncode \\
+                -dGrayImageFilter=/FlateEncode \\
+                -sOutputFile=\"/tmp/{$name}{$rand}withmarks\" \"/tmp/{$name}{$rand}pdf\" \"/tmp/{$name}{$rand}pdfmarks\""); // Add Bookmarks
         $pdfStr = file_get_contents("/tmp/{$name}{$rand}withmarks");
         unlink("/tmp/{$name}{$rand}pdfmarks");
         unlink("/tmp/{$name}{$rand}pdf");

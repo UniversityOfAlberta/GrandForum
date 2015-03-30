@@ -101,6 +101,11 @@ $(document).ready(function(){
                     return;
                 }
                 ajaxSection = $.get(href + '&showSection', function(response){
+                    _.each(tinyMCE.editors, function(e){
+                        if(e != undefined){
+                            e.destroy();
+                        }
+                    });
                     currentSectionHref = href;
                     $(that).children("img").remove();
                     $("#reportMain > div").stop();

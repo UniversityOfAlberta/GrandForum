@@ -1,6 +1,6 @@
 <?php
 
-class ProjectMilestonesTab extends AbstractEditableTab {
+class ProjectMilestonesTab extends AbstractTab {
 
     var $project;
     var $visibility;
@@ -214,13 +214,19 @@ EOF;
              });   
 EOF;
 
+        $lastActivity = "";
         foreach($milestones as $milestone){
+            $activity = $milestone->getActivity();
+            if($activity->getName() != $lastActivity){
+                $this->html .= "<h2 style='margin-left:15px;'>{$activity->getName()}</h2>";
+            }
             $key = $milestone->getMilestoneId();
             $title = $milestone->getTitle();
             $description = nl2br($milestone->getDescription());
             $assessment = nl2br($milestone->getAssessment());
             $start_date = date_parse($milestone->getVeryStartDate());
             $end_date = date_parse($milestone->getProjectedEndDate());
+            $quarters = $milestone->getQuarters();
             $status = $milestone->getStatus();
             
             $history_html = $milestone->getHistoryPopup();
@@ -246,18 +252,37 @@ EOF;
                         </tr>";
             }
             
-            $this->html .=<<<EOF
-                <fieldset>
-                <legend><b>$title</b></legend>
-                <table>
-                    <tr>
+            $time = "";
+            if(count($quarters) > 0){
+                $time = "<tr>
+                        <td align='right' valign='top'><b>Time Active:</b></td>
+                        <td>";
+                foreach($quarters as $year => $quarter){
+                    $qs = array();
+                    foreach($quarter as $q){
+                        $qs[] = "Q{$q}";
+                    }
+                    $time .= "$year: ".implode(", ", $qs)."<br />";
+                }
+                $time .= "</td>
+                    </tr>";
+            }
+            else {
+                $time = "<tr>
                         <td align='right' valign='top'><b>Start&nbsp;Date:</b></td>
                         <td>{$months[$start_date['month']]}, {$start_date['year']}</td>
                     </tr>
                     <tr>
                         <td align='right' valign='top'><b>Projected&nbsp;End&nbsp;Date:</b></td>
                         <td>{$months[$end_date['month']]}, {$end_date['year']}</td>
-                    </tr>
+                    </tr>";
+            }
+            
+            $this->html .=<<<EOF
+                <fieldset style='margin-left:30px;'>
+                <legend><b>$title</b></legend>
+                <table>
+                    $time
                     <tr>
                         <td style='vertical-align:top;' align='right'><b>Status:</b></td>
                         <td>$status</td>
@@ -277,7 +302,7 @@ EOF;
                 $history_html
                 </fieldset>
 EOF;
-  
+            $lastActivity = $activity->getName();
         }// milestones loop
         
         $this->html .= "</div>";    
@@ -334,6 +359,7 @@ EOF;
             $assessment = nl2br($milestone->getAssessment());
             $start_date = date_parse($milestone->getVeryStartDate());
             $end_date = date_parse($milestone->getProjectedEndDate());
+            $quarters = $milestone->getQuarters();
             $status = $milestone->getStatus();
             
             $history_html = $milestone->getHistoryPopup();
@@ -359,18 +385,37 @@ EOF;
                         </tr>";
             }
             
-            $this->html .=<<<EOF
-                <fieldset>
-                <legend><b>$title</b></legend>
-                <table>
-                    <tr>
+            $time = "";
+            if(count($quarters) > 0){
+                $time = "<tr>
+                        <td align='right' valign='top'><b>Time Active:</b></td>
+                        <td>";
+                foreach($quarters as $year => $quarter){
+                    $qs = array();
+                    foreach($quarter as $q){
+                        $qs[] = "Q{$q}";
+                    }
+                    $time .= "$year: ".implode(", ", $qs)."<br />";
+                }
+                $time .= "</td>
+                    </tr>";
+            }
+            else {
+                $time = "<tr>
                         <td align='right' valign='top'><b>Start&nbsp;Date:</b></td>
                         <td>{$months[$start_date['month']]}, {$start_date['year']}</td>
                     </tr>
                     <tr>
                         <td align='right' valign='top'><b>Projected&nbsp;End&nbsp;Date:</b></td>
                         <td>{$months[$end_date['month']]}, {$end_date['year']}</td>
-                    </tr>
+                    </tr>";
+            }
+            
+            $this->html .=<<<EOF
+                <fieldset>
+                <legend><b>$title</b></legend>
+                <table>
+                    $time
                     <tr>
                         <td style='vertical-align:top;' align='right' valign='top'><b>Status:</b></td>
                         <td>$status</td>
@@ -581,7 +626,7 @@ EOF;
                  $p_comment<br />
                  $lastEdit
                  </div>
-                 <hr />    
+                 <hr />
 EOF;
             }
             if($history_html != ""){

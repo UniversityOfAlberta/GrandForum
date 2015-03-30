@@ -114,7 +114,7 @@ class TextareaReportItem extends AbstractReportItem {
 EOF;
         }
         $item .= <<<EOF
-            <textarea rows='$rows' style="height:{$height};width:{$width};" 
+            <textarea id="{$this->getPostId()}" rows='$rows' style="height:{$height};width:{$width};" 
                         name="{$this->getPostId()}">$value</textarea>
 EOF;
         return $item;
@@ -166,15 +166,16 @@ EOF;
         $maxWidth = PDFGenerator::cmToPixels(21.59 - $margins['left'] - $margins['right'])*DPI_CONSTANT;
         $maxHeight = PDFGenerator::cmToPixels(27.94 - $margins['top'] - $margins['bottom'])*DPI_CONSTANT;
         foreach($imgs as $img){
+            $imgConst = DPI_CONSTANT*72/100;
             $style = $img->getAttribute('style');
             preg_match("/width:\s*([0-9]*)/", $style, $styleWidth);
             preg_match("/height:\s*([0-9]*)/", $style, $styleHeight);
             if(isset($styleWidth[1]) && isset($styleHeight[1])){
-                $widthPerc = ($styleWidth[1]*DPI_CONSTANT)/$maxWidth;
-                $heightPerc = ($styleHeight[1]*DPI_CONSTANT)/$maxHeight;
+                $widthPerc = ($styleWidth[1]*$imgConst)/$maxWidth;
+                $heightPerc = ($styleHeight[1]*$imgConst)/$maxHeight;
                 $perc = max(1.0, $widthPerc, $heightPerc);
-                $style .= "width: ".($styleWidth[1]*DPI_CONSTANT/$perc)."px !important;";
-                $style .= "height: ".($styleHeight[1]*DPI_CONSTANT/$perc)."px !important;";
+                $style .= "width: ".($styleWidth[1]*$imgConst/$perc)."px !important;";
+                $style .= "height: ".($styleHeight[1]*$imgConst/$perc)."px !important;";
             }
             $style .= "max-width: {$maxWidth}px;";
             $style .= "max-height: {$maxHeight}px;";
@@ -182,11 +183,11 @@ EOF;
             
             $attrWidth = intval($img->getAttribute('width'));
             $attrHeight = intval($img->getAttribute('height'));
-            $widthPerc = $attrWidth*DPI_CONSTANT/$maxWidth;
-            $heightPerc = $attrHeight*DPI_CONSTANT/$maxHeight;
+            $widthPerc = $attrWidth*$imgConst/$maxWidth;
+            $heightPerc = $attrHeight*$imgConst/$maxHeight;
             $perc = max(1.0, $widthPerc, $heightPerc);
-            $img->setAttribute('width', $attrWidth*DPI_CONSTANT/$perc);
-            $img->setAttribute('height', $attrHeight*DPI_CONSTANT/$perc);
+            $img->setAttribute('width', $attrWidth*$imgConst/$perc);
+            $img->setAttribute('height', $attrHeight*$imgConst/$perc);
         }
         
         $tables = $dom->getElementsByTagName('table');
