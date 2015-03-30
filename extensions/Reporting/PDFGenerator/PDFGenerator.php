@@ -444,8 +444,8 @@ EOF;
 
 if ( isset($pdf) ) {
 
-  $font = Font_Metrics::get_font("Times New Roman");
-  $size = "12";
+  $font = Font_Metrics::get_font("'.$config->getValue('pdfFont').'");
+  $size = "11";
   $size2 = 6;
   $color = array(0,0,0);
   $text_height = Font_Metrics::get_font_height($font, $size);
