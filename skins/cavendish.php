@@ -199,6 +199,7 @@ class cavendishTemplate extends QuickTemplate {
               return Backbone.View;
             })(Backbone.View);
         </script>
+        <?php echo $config->getValue("analyticsCode"); ?>
 		<script type="<?php $this->text('jsmimetype') ?>" src="<?php $this->text('stylepath' ) ?>/common/wikibits.js?<?php echo $GLOBALS['wgStyleVersion'] ?>"><!-- wikibits js --></script>
 		<!-- Head Scripts -->
 		<?php $this->html('headscripts') ?>

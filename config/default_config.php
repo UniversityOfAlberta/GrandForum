@@ -261,4 +261,7 @@
         $config->getConst('GOV')            => "Government",
         $config->getConst('STAFF')          => "Staff",
         $config->getConst('MANAGER')        => "Manager"));
+        
+    /* Other */
+    $config->setValue("analyticsCode", "");
 ?>
