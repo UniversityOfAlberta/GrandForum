@@ -14,6 +14,7 @@ class TextareaReportItem extends AbstractReportItem {
             </script>";
         }
         if(strtolower($this->getAttr('rich', 'false')) == 'true'){
+            $imgConst = DPI_CONSTANT*72/96;
             $item .= "<script type='text/javascript'>
                 if($('#tinyMCEUpload').length == 0){
                     $('body').append(\"<iframe id='tinyMCEUpload' name='tinyMCEUpload' style='display:none'></iframe>\" +
@@ -29,18 +30,32 @@ class TextareaReportItem extends AbstractReportItem {
                         $('#tinyMCEUploadForm input').val('');
                     });
                 }
-                $('textarea[name={$this->getPostId()}]').tinymce({
-                    theme: 'modern',
-                    menubar: false,
-                    plugins: 'link image contextmenu charmap lists table paste',
-                    toolbar: [
-                        'undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright'
-                    ],
-                    file_browser_callback: function(field_name, url, type, win) {
-                        if(type=='image') $('#tinyMCEUploadForm input').click();
-                    },
-                    paste_data_images: true,
-                    invalid_elements: 'h1, h2, h3, h4, h5, h6, h7, font'
+                $(document).ready(function(){
+                    $('<div class=\"small\"><b>Note:</b> Inserted images should be at least 150dpi otherwise they will either appear as small or will be distorted if their size is enlarged.</div>').insertBefore('textarea[name={$this->getPostId()}]');
+                    $('textarea[name={$this->getPostId()}]').tinymce({
+                        theme: 'modern',
+                        menubar: false,
+                        plugins: 'link image contextmenu charmap lists table paste',
+                        toolbar: [
+                            'undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright'
+                        ],
+                        file_browser_callback: function(field_name, url, type, win) {
+                            if(type=='image') $('#tinyMCEUploadForm input').click();
+                        },
+                        paste_data_images: true,
+                        invalid_elements: 'h1, h2, h3, h4, h5, h6, h7, font',
+                        imagemanager_insert_template : '<img src=\"{\$url}\" width=\"{\$custom.width}\" height=\"{\$custom.height}\" />',
+                        paste_postprocess: function(plugin, args) {
+                            var imgs = $('img', args.node);
+                            imgs.each(function(i, el){
+                                $(el).removeAttr('style');
+                                $(el).attr('width', el.naturalWidth/$imgConst);
+                                $(el).attr('height', el.naturalHeight/$imgConst);
+                                $(el).css('width', el.naturalWidth/$imgConst);
+                                $(el).css('height', el.naturalHeight/$imgConst);
+                            });
+                        }
+                    });
                 });
             </script>";
         }
@@ -166,10 +181,10 @@ EOF;
         $maxWidth = PDFGenerator::cmToPixels(21.59 - $margins['left'] - $margins['right'])*DPI_CONSTANT;
         $maxHeight = PDFGenerator::cmToPixels(27.94 - $margins['top'] - $margins['bottom'])*DPI_CONSTANT;
         foreach($imgs as $img){
-            $imgConst = DPI_CONSTANT*72/100;
+            $imgConst = DPI_CONSTANT*72/96;
             $style = $img->getAttribute('style');
-            preg_match("/width:\s*([0-9]*)/", $style, $styleWidth);
-            preg_match("/height:\s*([0-9]*)/", $style, $styleHeight);
+            preg_match("/width:\s*([0-9]*\.{0,1}[0-9]*)/", $style, $styleWidth);
+            preg_match("/height:\s*([0-9]*\.{0,1}[0-9]*)/", $style, $styleHeight);
             if(isset($styleWidth[1]) && isset($styleHeight[1])){
                 $widthPerc = ($styleWidth[1]*$imgConst)/$maxWidth;
                 $heightPerc = ($styleHeight[1]*$imgConst)/$maxHeight;
@@ -181,8 +196,8 @@ EOF;
             $style .= "max-height: {$maxHeight}px;";
             $img->setAttribute('style', $style);
             
-            $attrWidth = intval($img->getAttribute('width'));
-            $attrHeight = intval($img->getAttribute('height'));
+            $attrWidth = floatval($img->getAttribute('width'));
+            $attrHeight = floatval($img->getAttribute('height'));
             $widthPerc = $attrWidth*$imgConst/$maxWidth;
             $heightPerc = $attrHeight*$imgConst/$maxHeight;
             $perc = max(1.0, $widthPerc, $heightPerc);

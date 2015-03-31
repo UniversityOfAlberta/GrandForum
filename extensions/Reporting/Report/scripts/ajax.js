@@ -4,6 +4,14 @@ var animationEasingOut = 'easeInQuad';
 var animationEasingIn = 'easeOutExpo';
 var oldTab;
 
+// Make sure that all the editors are actually destroyed 
+// (could be remnants from the past if using the back button)
+_.each(tinyMCE.editors, function(e){
+    if(e != undefined){
+        e.destroy();
+    }
+});
+
 function revertReportAnimation(){
     if($("#reportMain").length > 0){
         var paddingHeight = parseInt($("#reportMain > div > div").css('padding-top')) + parseInt($("#reportMain > div > div").css('padding-bottom'));

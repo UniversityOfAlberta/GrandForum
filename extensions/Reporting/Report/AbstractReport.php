@@ -1190,9 +1190,15 @@ abstract class AbstractReport extends SpecialPage {
             $src = $_FILES['image']['tmp_name'];
             $hash = md5($src);
             system("convert +antialias -background transparent $src /tmp/$hash.png");
+            list($width, $height) = getimagesize("/tmp/$hash.png");
+            $imgConst = DPI_CONSTANT*72/96;
+            $width = $width/$imgConst;
+            $height = $height/$imgConst;
             $png = file_get_contents("/tmp/$hash.png");
             unlink("/tmp/$hash.png");
-            $str = "top.$('.mce-btn.mce-open').parent().find('.mce-textbox').val('data:image/png;base64,".base64_encode($png)."').closest('.mce-window').find('.mce-primary').click();";
+            $str = "top.$('input[aria-label=Width]').val($width);
+                    top.$('input[aria-label=Height]').val($height);
+                    top.$('.mce-btn.mce-open').parent().find('.mce-textbox').val('data:image/png;base64,".base64_encode($png)."').closest('.mce-window').find('.mce-primary').click();";
             echo $str;
             exit;
         }
