@@ -198,6 +198,7 @@ EOF;
 		        margin-bottom: 0.5cm;
 		        font-family: {$config->getValue('pdfFont')} !important;
 		        font-size: {$fontSize}px;
+		        text-align: justify;
 		    }
 		    
 		    /* Messages */

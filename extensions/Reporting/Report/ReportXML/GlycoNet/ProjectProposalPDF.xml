@@ -191,4 +191,58 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="ccv" name="NI CCVs" blobSection="PROP_CCV" tooltip="Partner Support Letters" type="HeaderReportSection" pagebreak="false">
+        <ReportItem id="lettersHeader" type="BookmarkReportItem" title="NI CCVs"></ReportItem>
+        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_CCV_UPLOAD1" mimeType="application/pdf">
+            <![CDATA[
+                <center><h1>NI CCVs</h1></center>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_CCV_UPLOAD2" mimeType="application/pdf">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_CCV_UPLOAD3" mimeType="application/pdf">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_CCV_UPLOAD4" mimeType="application/pdf">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_CCV_UPLOAD5" mimeType="application/pdf">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_CCV_UPLOAD6" mimeType="application/pdf">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload7" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_CCV_UPLOAD7" mimeType="application/pdf">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload8" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_CCV_UPLOAD8" mimeType="application/pdf">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload9" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_CCV_UPLOAD9" mimeType="application/pdf">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload10" type="UploadReportItem" blobType="BLOB_RAW" blobItem="PROP_CCV_UPLOAD10" mimeType="application/pdf">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
 </Report>

@@ -175,6 +175,7 @@ define('PROP_DESC', 1);
 define('PROP_MILESTONES', 2);
 define('PROP_BUDGET', 3);
 define('PROP_SUPPORT', 4);
+define('PROP_CCV',     5);
 
 // Second level for SAB Review
 define('SAB_REVIEW',    1);
@@ -350,6 +351,17 @@ define('PROP_SUP_UPLOAD2',           2);
 define('PROP_SUP_UPLOAD3',           3);
 define('PROP_SUP_UPLOAD4',           4);
 define('PROP_SUP_UPLOAD5',           5);
+
+define('PROP_CCV_UPLOAD1',           1);
+define('PROP_CCV_UPLOAD2',           2);
+define('PROP_CCV_UPLOAD3',           3);
+define('PROP_CCV_UPLOAD4',           4);
+define('PROP_CCV_UPLOAD5',           5);
+define('PROP_CCV_UPLOAD6',           6);
+define('PROP_CCV_UPLOAD7',           7);
+define('PROP_CCV_UPLOAD8',           8);
+define('PROP_CCV_UPLOAD9',           9);
+define('PROP_CCV_UPLOAD10',          10);
 
 define('SAB_REVIEW_STRENGTH',        1);
 define('SAB_REVIEW_WEAKNESS',        2);

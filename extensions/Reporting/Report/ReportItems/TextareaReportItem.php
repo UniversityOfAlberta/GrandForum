@@ -37,7 +37,7 @@ class TextareaReportItem extends AbstractReportItem {
                         menubar: false,
                         plugins: 'link image contextmenu charmap lists table paste',
                         toolbar: [
-                            'undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright'
+                            'undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
                         ],
                         file_browser_callback: function(field_name, url, type, win) {
                             if(type=='image') $('#tinyMCEUploadForm input').click();
