@@ -51,7 +51,7 @@ like this:
                 default_session: selenium2
                 selenium2:
                     browser: firefox
-                    wd_host: 'http://129.128.184.85:5555/wd/hub'
+                    wd_host: 'http://129.128.184.79:4444/wd/hub'
 
 All of the settings should be left alone, although the following may
 need to be changed:

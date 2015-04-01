@@ -1,7 +1,7 @@
 <?php
 
 require_once("../Classes/simplehtmldom/simple_html_dom.php");
-/*
+
 $pid = pcntl_fork();
 if ($pid == -1) {
      die('could not fork');
@@ -23,7 +23,7 @@ if ($pid == -1) {
      else{
         exit();
      }
-}*/
+}
 
 use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Context\TranslatedContextInterface,
