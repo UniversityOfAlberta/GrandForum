@@ -16,7 +16,7 @@ class Paper extends BackboneModel{
     var $description;
     var $title;
     var $type;
-    var $projects;
+    var $projects = array();
     var $date;
     var $venue;
     var $status;
