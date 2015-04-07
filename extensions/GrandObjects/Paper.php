@@ -235,8 +235,8 @@ class Paper extends BackboneModel{
      */
     static function getAllPapers($project='all', $category='all', $grand='grand', $onlyPublic=true, $access='Public'){
         $data = array();
-        if(isset(self::$dataCache[$project.$category.$grand])){
-            return self::$dataCache[$project.$category.$grand];
+        if(isset(self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access])){
+            return self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access];
         }
         else{
             $papers = array();
@@ -301,7 +301,7 @@ class Paper extends BackboneModel{
                     $papers[] = $paper;
                 }
             }
-            self::$dataCache[$project.$category.$grand] = $papers;
+            self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access] = $papers;
         }
         return $papers;
     }

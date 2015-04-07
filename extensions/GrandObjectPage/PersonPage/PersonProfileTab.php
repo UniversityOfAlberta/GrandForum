@@ -261,7 +261,7 @@ EOF;
 	        $person = Person::newFromId($_GET['person']);
 	        $text .= $person->getProfile()."\n";
 	        
-	        $products = $person->getPapers("all", false, 'both', false, 'Forum');
+	        $products = $person->getPapers("all", false, 'both', false, 'Public');
 	        foreach($products as $product){
 	            $text .= $product->getTitle()."\n";
 	            $text .= $product->getDescription()."\n";
@@ -301,7 +301,7 @@ EOF;
      */
     function showTable($person, $visibility){
         $me = Person::newFromWgUser();
-        $products = $person->getPapers("all", false, 'both');
+        $products = $person->getPapers("all", false, 'both', true, "Public");
         $string = "";
         if(count($products) > 0){
             $string = "<table id='personProducts' rules='all' frame='box'>

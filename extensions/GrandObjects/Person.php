@@ -2825,6 +2825,7 @@ class Person extends BackboneModel {
      * @return array Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
      */ 
     function getPapers($category="all", $history=false, $grand='grand', $onlyPublic=true, $access='Forum'){
+        $me = Person::newFromWgUser();
         self::generateAuthorshipCache();
         $processed = array();
         $papersArray = array();
@@ -2862,7 +2863,9 @@ class Person extends BackboneModel {
         
         foreach($papers as $pId){
             $paper = Paper::newFromId($pId);
-            if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category)){
+            if(($paper->getAccess() == $access || ($paper->getAccess() == 'Forum' && $me->isLoggedIn())) &&
+               !$paper->deleted && 
+               ($category == 'all' || $paper->getCategory() == $category)){
                 if($grand == 'grand' && $paper->isGrandRelated()){
                     $papersArray[] = $paper;
                 }
