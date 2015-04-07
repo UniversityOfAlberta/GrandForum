@@ -110,7 +110,7 @@ class LimitReportItemSet extends ReportItemSet {
             $wgOut->addHTML("textareas.push($('textarea[name={$textarea->getPostId()}]'));
                              $('textarea[name={$textarea->getPostId()}]').height('$h');\n");
         }
-        $wgOut->addHTML("$('#div_{$this->getPostId()}').multiLimit($limit, $('#{$this->getPostId()}_chars_left'), textareas, $recommended);
+        $wgOut->addHTML("$('#div_{$this->getPostId()}').multiLimit($limit, $('#{$this->getPostId()}_chars_left'), textareas, $rec);
             $('#preview_{$this->getPostId()}').dialog({ autoOpen: false, width: '700', height: '450'});
         });
         function popup{$this->getPostId()}(){

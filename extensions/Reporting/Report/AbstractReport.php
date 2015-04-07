@@ -260,7 +260,7 @@ abstract class AbstractReport extends SpecialPage {
             }
             if(isset($_POST['submit']) && $_POST['submit'] == "Save"){
                 $oldData = array();
-                parse_str($_POST['oldData'], $oldData);
+                parse_str(@$_POST['oldData'], $oldData);
                 $_POST['oldData'] = $oldData;
                 $json = array();
                 if($this->currentSection instanceof EditableReportSection){
