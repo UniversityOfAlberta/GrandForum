@@ -1,4 +1,8 @@
 default:
+    filters:
+        tags: ~@grand
+        tags: ~@glyconet
+        tags: ~@agewell
     formatter:
         name: pretty,Behat\Behat\Formatter\MyHtmlFormatter
         parameters:

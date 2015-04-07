@@ -1,5 +1,6 @@
 <?php
 
+require_once("../config/Config.php");
 require_once("../Classes/simplehtmldom/simple_html_dom.php");
 
 $pid = pcntl_fork();
@@ -109,7 +110,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         global $currentSession;
         // Delay the session so that it doesn't process futher while the page is still loading
         try{
-            $currentSession->getSession()->wait(25);
+            $currentSession->getSession()->wait(10);
         }
         catch(Exception $e){
             
@@ -155,7 +156,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function iTakeAScreenshot(){
         file_put_contents("screenshots/".self::$scenarioId."_".self::$stepId.".png", $this->getSession()->getDriver()->getScreenshot());
-        file_put_contents("screenshots/".self::$scenarioId."_".self::$stepId.".html", $this->getSession()->getPage()->getContent());
+        //file_put_contents("screenshots/".self::$scenarioId."_".self::$stepId.".html", $this->getSession()->getPage()->getContent());
     }
     
     /**
@@ -318,5 +319,15 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     public function pressButtonByCss($css){
         $button = $this->getSession()->getPage()->find('css', $css);
         $button->press();
+    }
+    
+    /**
+     * @override /^(?:|I )am on "(?P<page>[^"]+)"$/
+     * @override /^(?:|I )go to "(?P<page>[^"]+)"$/
+     */
+    public function visit($page){
+        global $config;
+        $page = str_replace('$networkName', $config->getValue('networkName'), $page);
+        $this->getSession()->visit($this->locatePath($page));
     }
 }

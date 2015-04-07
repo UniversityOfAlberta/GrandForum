@@ -2,6 +2,8 @@
 
 require_once('commandLine.inc');
 
+global $config;
+
 function createProject($acronym, $fullName, $status, $type, $bigbet, $phase, $effective_date, $description, $problem, $solution, $challenge="Not Specified", $parent_id=0){
     $_POST['acronym'] = $acronym;
     $_POST['fullName'] = $fullName;
@@ -67,7 +69,6 @@ system($dump);
 // Copy select table data to Test DB
 DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_universities` SELECT * FROM `{$wgDBname}`.`grand_universities`", true);
 DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_positions` SELECT * FROM `{$wgDBname}`.`grand_positions`", true);
-DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_themes` SELECT * FROM `{$wgDBname}`.`grand_themes`", true);
 DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_disciplines_map` SELECT * FROM `{$wgDBname}`.`grand_disciplines_map`", true);
 DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_partners` SELECT * FROM `{$wgDBname}`.`grand_partners`", true);
 DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`mw_page` SELECT * FROM `{$wgDBname}`.`mw_page` WHERE page_id < 10", true);
@@ -97,10 +98,18 @@ DBFunctions::execSQL("INSERT INTO wikidev_projects_rules (`type`,`project_id`,`v
 DBFunctions::execSQL("INSERT INTO wikidev_projects_rules (`type`,`project_id`,`value`) VALUES ('ROLE', 3, 'Project co-Leader')", true);
 DBFunctions::execSQL("INSERT INTO wikidev_projects_rules (`type`,`project_id`,`value`) VALUES ('ROLE', 3, 'Project Manager')", true);
 
+//Initialize Themes
+DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme1', 'Theme 1', 'Theme 1 Description')", true);
+DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme2', 'Theme 2', 'Theme 2 Description')", true);
+DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme3', 'Theme 3', 'Theme 3 Description')", true);
+DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme4', 'Theme 4', 'Theme 4 Description')", true);
+DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme5', 'Theme 5', 'Theme 5 Description')", true);
+DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme6', 'Theme 6', 'Theme 6 Description')", true);
+
 $id = 100;
 DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Cal', 'public' => '0'));
 $id += 2;
-DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'GRAND', 'public' => '1'));
+DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => $config->getValue('networkName'), 'public' => '1'));
 $id += 2;
 DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Mail', 'public' => '1'));
 $id += 2;
@@ -191,15 +200,15 @@ createProject("Phase1Project2", "Phase 1 Project 2", "Active", "Research", "No",
 createProject("Phase1Project3", "Phase 1 Project 3", "Active", "Research", "No", 1, "2010-01-01", "", "", "");
 createProject("Phase1Project4", "Phase 1 Project 4", "Active", "Research", "No", 1, "2011-01-01", "", "", "");
 createProject("Phase1Project5", "Phase 1 Project 5", "Active", "Research", "No", 1, "2012-01-01", "", "", "");
-createProject("Phase2Project1", "Phase 2 Project 1", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Big Data", 0);
+createProject("Phase2Project1", "Phase 2 Project 1", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Theme6", 0);
     createProject("Phase2Project1SubProject1", "Phase 2 Project 1 Sub Project 1", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Not Specified", Project::newFromName("Phase2Project1")->getId());
     createProject("Phase2Project1SubProject2", "Phase 2 Project 1 Sub Project 2", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Not Specified", Project::newFromName("Phase2Project1")->getId());
-createProject("Phase2Project2", "Phase 2 Project 2", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Citizenship", 0);
-createProject("Phase2Project3", "Phase 2 Project 3", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Entertainment", 0);
+createProject("Phase2Project2", "Phase 2 Project 2", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Theme1", 0);
+createProject("Phase2Project3", "Phase 2 Project 3", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Theme1", 0);
     createProject("Phase2Project3SubProject1", "Phase 2 Project 3 Sub Project 1", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Not Specified", Project::newFromName("Phase2Project3")->getId());
-createProject("Phase2Project4", "Phase 2 Project 4", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Health", 0);
-createProject("Phase2Project5", "Phase 2 Project 5", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Learning", 0);
-createProject("Phase2BigBetProject1", "Phase 2 Big Bet Project 1", "Active", "Research", "Yes", 2, "2014-04-01", "", "", "", "Sustainability", 0);
+createProject("Phase2Project4", "Phase 2 Project 4", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Theme3", 0);
+createProject("Phase2Project5", "Phase 2 Project 5", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Theme4", 0);
+createProject("Phase2BigBetProject1", "Phase 2 Big Bet Project 1", "Active", "Research", "Yes", 2, "2014-04-01", "", "", "", "Theme5", 0);
 
 addUserRole("Manager.User1", MANAGER);
 addUserRole("PL.User1", PNI);
@@ -242,7 +251,7 @@ addProjectLeader("PL.User1", "Phase2Project1");
 addProjectLeader("COPL.User1", "Phase2Project1");
 addProjectLeader("CNICOPL.User1", "Phase2Project2", 'True');
 
-addThemeLeader("TL.User1", "Entertainment", 'True');
+addThemeLeader("TL.User1", "Theme1", 'True');
 
 addRelation("PNI.User1", "HQP.User1", "Supervises");
 addRelation("PNI.User1", "HQP.User2", "Supervises");

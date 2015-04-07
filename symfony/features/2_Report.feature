@@ -1,4 +1,5 @@
-Feature: Reporting
+@grand
+Feature: GRAND Reporting
     In order to report on the forum
     As a User
     I need to be able to access the relevant reports and edit the fields in the report

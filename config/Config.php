@@ -1,6 +1,7 @@
 <?php
 
     $config = new Config();
+    $GLOBALS['config'] = $config;
 
     require_once("default_config.php");
     require_once("config.php");
