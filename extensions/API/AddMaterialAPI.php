@@ -161,16 +161,18 @@ class AddMaterialAPI extends API{
                 DBFunctions::execSQL($sql, true);
             }
         }
-        foreach($_POST['users'] as $user){
-            $person = Person::newFromNameLike($user);
-            if($person != null && $person->getName() != ""){
-                $sql = "INSERT INTO `grand_materials_people`
-                               (`material_id`,`user_id`)
-                        VALUES ('{$material->getId()}','{$person->getId()}')";
-                DBFunctions::execSQL($sql, true);
-            }
-            else{
-                $this->errors .= "User '$user' does not exist.<br />\n";
+        if(is_array($_POST['users'])){
+            foreach($_POST['users'] as $user){
+                $person = Person::newFromNameLike($user);
+                if($person != null && $person->getName() != ""){
+                    $sql = "INSERT INTO `grand_materials_people`
+                                   (`material_id`,`user_id`)
+                            VALUES ('{$material->getId()}','{$person->getId()}')";
+                    DBFunctions::execSQL($sql, true);
+                }
+                else{
+                    $this->errors .= "User '$user' does not exist.<br />\n";
+                }
             }
         }
 	}

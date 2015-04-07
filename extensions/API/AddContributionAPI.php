@@ -188,10 +188,10 @@ class AddContributionAPI extends API{
                 DBFunctions::insert('grand_contributions_partners',
                                     array('contribution_id' => $contribution->rev_id,
                                           'partner' => $value,
-                                          'type' => $_POST['type'][$key],
-                                          'subtype' => $_POST['subtype'][$key],
-                                          'cash' => $_POST['cash'][$key],
-                                          'kind' => $_POST['kind'][$key]));
+                                          'type' => @$_POST['type'][$key],
+                                          'subtype' => @$_POST['subtype'][$key],
+                                          'cash' => @$_POST['cash'][$key],
+                                          'kind' => @$_POST['kind'][$key]));
             }
             
             foreach($_POST['users'] as $author){

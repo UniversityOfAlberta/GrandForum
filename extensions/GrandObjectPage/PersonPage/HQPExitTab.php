@@ -24,7 +24,7 @@ class HQPExitTab extends AbstractEditableTab {
             $employer = $_POST['employer'];
             $city = $_POST['city'];
             $country = $_POST['country'];
-            $thesis = $_POST['thesis'];
+            $thesis = @$_POST['thesis'];
             $effective_date = $_POST['effective_date'];
             foreach($_POST['reason'] as $key => $reason){
                 if(($key == "new" && !isset($_POST['doNew'])) || 
@@ -48,12 +48,14 @@ class HQPExitTab extends AbstractEditableTab {
                     APIRequest::doAction('AddHQPThesis', true);
                 }
             }
-            foreach($_POST['delete'] as $key => $id){
-                if(is_numeric($id)){
-                    DBFunctions::delete('grand_movedOn',
-                                        array('id' => EQ($id)));
-                    DBFunctions::delete('grand_theses',
-                                        array('moved_on' => EQ($id)));
+            if(isset($_POST['delete'])){
+                foreach($_POST['delete'] as $key => $id){
+                    if(is_numeric($id)){
+                        DBFunctions::delete('grand_movedOn',
+                                            array('id' => EQ($id)));
+                        DBFunctions::delete('grand_theses',
+                                            array('moved_on' => EQ($id)));
+                    }
                 }
             }
             $wgMessage->addSuccess("The 'Moved On' information for {$this->person->getNameForForms()} has been updated");
