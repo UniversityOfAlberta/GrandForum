@@ -54,15 +54,21 @@ class Notification{
 	    $message = str_replace("'", "&#39;", $message);
 	    $url = str_replace("'", "&#39;", $url);
 	    $name = str_replace("'", "&#39;", $name);
-	    $id = "";
+	    $id = 0;
 	    if($creator != null){
 	        $id = $creator->getId();
 	    }
 	    $sql = "INSERT INTO `grand_notifications` (`creator`,`user_id`,`name`,`message`,`url`,`time`,`active`)
                 VALUES('{$id}','{$user->getId()}','$name','{$message}','{$url}',CURRENT_TIMESTAMP,'1')";
         if($mail){
+            if($id == 0){
+                $from = "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
+            }
+            else{
+                $from = "From: {$creator->getNameForForms()} <{$creator->getEmail()}>" . "\r\n";
+            }
             $headers = "Content-type: text/html\r\n"; 
-            $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
+            $headers .= $from;
             $wUser = User::newFromId($user->getId());
             mail($wUser->getEmail(), $name, nl2br($message)."<br /><br /><a href='$url'>Notification URL</a><br /><br /><a href='{$wgServer}{$wgScriptPath}'>{$config->getValue('siteName')}</a>", $headers);
         }
