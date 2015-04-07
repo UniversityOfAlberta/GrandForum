@@ -163,9 +163,13 @@ class AddContributionAPI extends API{
                 if($value == ""){
                     $value = $partner['name'];
                 }
+                $type = @$_POST['type'][$key];
+                $subtype = @$_POST['subtype'][$key];
+                $cash = @$_POST['cash'][$key];
+                $kind = @$_POST['kind'][$key];
                 $sql = "INSERT INTO `grand_contributions_partners`
                         (`contribution_id`,`partner`,`type`,`subtype`,`cash`,`kind`)
-                        VALUES ('{$contribution->rev_id}','{$value}','{$_POST['type'][$key]}','{$_POST['subtype'][$key]}','{$_POST['cash'][$key]}','{$_POST['kind'][$key]}')";
+                        VALUES ('{$contribution->rev_id}','{$value}','{$type}','{$subtype}','{$cash}','{$kind}')";
                 DBFunctions::execSQL($sql, true);
             }
             
