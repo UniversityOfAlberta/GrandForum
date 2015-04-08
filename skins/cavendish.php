@@ -666,11 +666,11 @@ class cavendishTemplate extends QuickTemplate {
                 
                 if(strstr($wgScriptPath, "staging") !== false){
                     echo "<div style='position:absolute;top:15px;left:525px;'>
-                            STAGING ($branchFull, $revIdFull), $docs</div>";
+                            STAGING ($branchFull, $revIdFull), $docs&nbsp;&nbsp;<a target='_blank' href='http://grand.cs.ualberta.ca/~dwt/behat_test/symfony/output/output.html'><img src='http://grand.cs.ualberta.ca/~dwt/behat_test/testSuiteStatus.php' /></a></div>";
                 }
                 else{
                     echo "<div style='position:absolute;top:15px;left:525px;'>
-                            DEVELOPMENT ($branchFull, $revIdFull), $docs</div>";
+                            DEVELOPMENT ($branchFull, $revIdFull), $docs&nbsp;&nbsp;<a target='_blank' href='http://grand.cs.ualberta.ca/~dwt/behat_test/symfony/output/output.html'><img src='http://grand.cs.ualberta.ca/~dwt/behat_test/testSuiteStatus.php' /></a></div>";
                 }
             }
             if($config->getValue('globalMessage') != ""){
