@@ -54,6 +54,7 @@ Feature: Products
         And I press "Edit Publication"
         And fill in "description" with "This is an edited description"
         And I press "Save Publication"
+        Then I wait "1000"
         Then I should see "This is an edited description"
         
     Scenario: Deleting a Publication

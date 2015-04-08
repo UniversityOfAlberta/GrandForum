@@ -21,3 +21,10 @@ Feature: Login
         Given I am logged in as "Fake.User" using password "wrong"
         Then I should not see "Fake User"
         And I should see "There is no user by the name of Fake.User"
+        
+    Scenario: Logging in then logging out
+        Given I am logged in as "Admin.User1" using password "Admin.Pass1"
+        When I follow "status_logout"
+        Then I should see "You are now logged out"
+        And I should not see "Admin.User1"
+        And I should see "Login"

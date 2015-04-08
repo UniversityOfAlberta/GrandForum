@@ -1,4 +1,7 @@
 Feature: Project Evolution
+    In order to change projects over time
+    As an Admin
+    I need to be able to create/evolve/end projects
 
     Scenario: Admin Creating a new Project
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
