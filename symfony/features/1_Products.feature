@@ -13,6 +13,7 @@ Feature: Products
         And I select "Proceedings Paper" from "type"
         And I click by css "#projects_Phase2Project1"
         And I press "Save Product"
+        And I wait "100"
         Then I should see "The Product has been saved sucessfully"
         
     Scenario: Viewing list of Publications
