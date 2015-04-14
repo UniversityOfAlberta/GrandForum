@@ -23,8 +23,7 @@ $_projects;
 class NCETable extends SpecialPage {
 
     function __construct() {
-        wfLoadExtensionMessages('NCETable');
-        SpecialPage::SpecialPage("NCETable", MANAGER.'+', true, 'runNCETable');
+        SpecialPage::__construct("NCETable", MANAGER.'+', true, 'runNCETable');
     }
     
     static function show(){

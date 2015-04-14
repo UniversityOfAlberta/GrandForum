@@ -1,5 +1,5 @@
 <?php
-$wgHooks['LoadAllMessages'][] = 'BackbonePage::onLoadAllMessages';
+$wgHooks['MessagesPreLoad'][] = 'BackbonePage::onLoadAllMessages';
 
 BackbonePage::$dirs['backbone'] = dirname(__FILE__);
 
@@ -11,10 +11,12 @@ abstract class BackbonePage extends SpecialPage {
     static $messages = array();
     static $dirs = array();
 
-    static function onLoadAllMessages(){
-        global $wgLang;
-        foreach(self::$messages as $key => $message){
-            $wgLang->messages[$key] = $message;
+    static function onLoadAllMessages($title, &$message){
+        global $wgLang, $wgContLang, $wgMessageCache;
+        foreach(self::$messages as $key => $msg){
+            if(strtolower($title) == $key){
+                $message = $msg;
+            }
         }
         return true;
     }
@@ -51,7 +53,7 @@ abstract class BackbonePage extends SpecialPage {
     }
     
     function BackbonePage(){
-        SpecialPage::SpecialPage(get_class($this), 'NULL', false);
+        SpecialPage::__construct(get_class($this), 'NULL', false);
     }
     
     function userCanExecute($user){

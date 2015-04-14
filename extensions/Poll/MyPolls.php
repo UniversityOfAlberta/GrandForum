@@ -8,17 +8,16 @@ $wgSpecialPageGroups['MyPolls'] = 'other-tools';
 
 
 function runMyPolls($par) {
-  MyPolls::run($par);
+  MyPolls::execute($par);
 }
 
 class MyPolls extends SpecialPage{
 
 	function MyPolls() {
-		wfLoadExtensionMessages('MyPolls');
-		SpecialPage::SpecialPage("MyPolls", HQP.'+', true, 'runMyPolls');
+		SpecialPage::__construct("MyPolls", HQP.'+', true, 'runMyPolls');
 	}
 
-	function run($par){
+	function execute($par){
 		global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgTitle;
 		$rows = DBFunctions::select(array('grand_poll_collection'),
 		                            array('collection_id'));

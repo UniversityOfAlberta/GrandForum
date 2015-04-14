@@ -13,9 +13,8 @@ class ReportSurvey extends AbstractReport{
     function ReportSurvey(){
         global $config;
         $report = @$_GET['report'];
-        $this->AbstractReport(dirname(__FILE__)."/../../ReportXML/{$config->getValue('networkName')}/$report.xml", -1, false, false);
-        wfLoadExtensionMessages("ReportSurvey");
-        SpecialPage::SpecialPage("ReportSurvey", HQP.'+', true);
+        $this->AbstractReport(dirname(__FILE__)."/../../ReportXML/{$config->getValue('networkName')}/$report.xml", -1, false, false);\
+        SpecialPage::__construct("ReportSurvey", HQP.'+', true);
         $this->showInstructions = false;
     }
 

@@ -88,7 +88,7 @@ class Paper extends BackboneModel{
             return self::$cache[$bibtex_id];
         }
         $me = Person::newFromWgUser();
-        $bibtex_id = mysql_real_escape_string($bibtex_id);
+        $bibtex_id = DBFunctions::escape($bibtex_id);
         $sql = "SELECT *
                 FROM grand_products
                 WHERE bibtex_id = '$bibtex_id'
@@ -145,9 +145,9 @@ class Paper extends BackboneModel{
     static function newFromTitle($title, $category = "%", $type = "%", $status = "%"){
         $title = str_replace("&#58;", ":", $title);
         $title = str_replace("'", "&#39;", $title);
-        $category = mysql_real_escape_string($category);
-        $type = mysql_real_escape_string($type);
-        $status = mysql_real_escape_string($status);
+        $category = DBFunctions::escape($category);
+        $type = DBFunctions::escape($type);
+        $status = DBFunctions::escape($status);
         if(isset(self::$cache[$title.$category.$type.$status])){
             return self::$cache[$title.$category.$type.$status];
         }
@@ -800,7 +800,7 @@ class Paper extends BackboneModel{
                     // Author has changed
                     $invalidate = true;
                 }
-                $name = mysql_real_escape_string($author->getName());
+                $name = DBFunctions::escape($author->getName());
                 $inserts[] = "('{$name}','{$this->getId()}','{$order}')";
             }
             $order++;

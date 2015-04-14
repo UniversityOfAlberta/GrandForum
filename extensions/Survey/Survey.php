@@ -18,8 +18,7 @@ function runSurvey($par) {
 class Survey extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('Survey');
-		SpecialPage::SpecialPage("Survey", HQP.'+', true, 'runSurvey');
+		SpecialPage::__construct("Survey", HQP.'+', true, 'runSurvey');
 	}
 	
 	static function show(){

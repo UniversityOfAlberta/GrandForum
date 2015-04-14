@@ -58,17 +58,16 @@ $resultFields = array("milestone" => $milestoneFields,
 
 
 function runSolr($par) {
-	Solr::run($par);
+	Solr::execute($par);
 }
 
 class Solr extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('Solr');
-		SpecialPage::SpecialPage('Solr', HQP.'+', true, 'runSolr');
+		SpecialPage::__construct('Solr', HQP.'+', true, 'runSolr');
 	}
 
-	function run(){
+	function execute(){
 	    global $wgUser, $wgOut, $wgServer, $wgScriptPath, 
              $sqlTables, $resultFields, $sqlPrimaryKeys;
 

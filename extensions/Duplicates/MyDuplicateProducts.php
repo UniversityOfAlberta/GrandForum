@@ -9,17 +9,16 @@ $wgSpecialPageGroups['MyDuplicateProducts'] = 'other-tools';
 $wgHooks['ToolboxLinks'][] = 'MyDuplicateProducts::createToolboxLinks';
 
 function runMyDuplicateProducts($par){
-    MyDuplicateProducts::run($par);
+    MyDuplicateProducts::execute($par);
 }
 
 class MyDuplicateProducts extends SpecialPage{
 
 	function MyDuplicateProducts() {
-		wfLoadExtensionMessages('MyDuplicateProducts');
-		SpecialPage::SpecialPage("MyDuplicateProducts", HQP.'+', true, 'runMyDuplicateProducts');
+		SpecialPage::__construct("MyDuplicateProducts", HQP.'+', true, 'runMyDuplicateProducts');
 	}
 
-	function run($par){
+	function execute($par){
 	    global $wgServer, $wgScriptPath, $wgOut, $wgUser;
 	    $me = Person::newFromId($wgUser->getId());
         $handlers = AbstractDuplicatesHandler::$handlers;

@@ -130,7 +130,7 @@ class IndexTable {
             $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Themes", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Themes", "$selected");
         }
         
-        if(WikiPage::newFromTitle("{$config->getValue('networkName')}:ALL_Conferences")->exists()){
+        if(Wiki::newFromTitle("{$config->getValue('networkName')}:ALL_Conferences")->exists()){
             $selected = ($wgTitle->getNSText() == "Conference" || $wgTitle->getText() == "ALL Conferences") ? "selected" : "";
             $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Conferences", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Conferences", "$selected");
         }
@@ -158,7 +158,6 @@ class IndexTable {
 	function generateTable($out, $parseroutput){
 		global $wgTitle, $wgOut, $wgUser, $config;
 		$me = Person::newFromId($wgUser->getId());
-		
 		if($wgTitle != null && $wgTitle->getNsText() == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){
 		    $result = true;
 		    $this->userCanExecute($wgTitle, $wgUser, "read", $result);

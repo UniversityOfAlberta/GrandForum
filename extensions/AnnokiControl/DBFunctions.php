@@ -10,7 +10,7 @@ function queryNumeric($value){
             $value = str_replace("COL### ", "", $value);
         }
         else{
-            $value = "'".mysql_real_escape_string($value)."'";
+            $value = "'".DBFunctions::escape($value)."'";
         }
     }
     return $value;
@@ -59,11 +59,11 @@ function DURING($values){
     $endKey = "";
     foreach($values as $key => $value){
         if($i == 0){
-            $start = mysql_real_escape_string($value);
+            $start = DBFunctions::escape($value);
             $startKey = $key;
         }
         else {
-            $end = mysql_real_escape_string($value);
+            $end = DBFunctions::escape($value);
             $endKey = $key;
         }
     }
@@ -78,14 +78,14 @@ function DURING($values){
 
 function IN($values){
     foreach($values as $key => $value){
-        $values[$key] = mysql_real_escape_string($value);
+        $values[$key] = DBFunctions::escape($value);
     }
     return "### IN ('".implode("','", $values)."')";
 }
 
 function NOT_IN($values){
     foreach($values as $key => $value){
-        $values[$key] = mysql_real_escape_string($value);
+        $values[$key] = DBFunctions::escape($value);
     }
     return "### NOT IN ('".implode("','", $values)."')";
 }
@@ -128,6 +128,11 @@ class DBFunctions {
 	    $supervisesImpersonee = checkSupervisesImpersonee();
 	    return (!($wgImpersonating && !$supervisesImpersonee) && (!FROZEN || $me->isRoleAtLeast(MANAGER)));
 	}
+	
+	static function escape($string){
+	    DBFunctions::initDB();
+	    return DBFunctions::$dbr->strencode($string);
+	}
     
     // Executes an sql statement.  By default a query is assumed, and processes the resultset into an array.
     // If $update is set to true, then an update is performed instead.
@@ -159,7 +164,7 @@ class DBFunctions {
 		    self::$lastResult = $result;
 	        $rows = array();
 	        if($result != null){
-	            while ($row = mysql_fetch_array($result->result, MYSQL_ASSOC)) {
+	            while ($row = mysqli_fetch_array($result->result, MYSQLI_ASSOC)) {
 		            $rows[] = $row;
 	            }
 	        }
@@ -222,8 +227,8 @@ class DBFunctions {
 	    $limitSQL = array();
 	    if(count($cols) > 0){
 	        foreach($cols as $key => $col){
-	            $key = mysql_real_escape_string($key);
-	            $col = mysql_real_escape_string($col);
+	            $key = DBFunctions::escape($key);
+	            $col = DBFunctions::escape($col);
 	            if(is_numeric($key)){
 	                $colSQL[] = "$col";
 	            }
@@ -236,8 +241,8 @@ class DBFunctions {
 	        $colSQL[] = "*";
 	    }
 	    foreach($tables as $key => $table){
-	        $key = mysql_real_escape_string($key);
-	        $table = mysql_real_escape_string($table);
+	        $key = DBFunctions::escape($key);
+	        $table = DBFunctions::escape($table);
 	        if(is_numeric($key)){
 	            $fromSQL[] = "$table";
 	        }
@@ -246,23 +251,23 @@ class DBFunctions {
 	        }
 	    }
 	    foreach($where as $key => $value){
-            $key = mysql_real_escape_string($key);
+            $key = DBFunctions::escape($key);
             if(strstr($value, "### ") !== false){
                 $value = str_replace("### ", "", $value);
                 $whereSQL[] = "{$key} {$value} ";
             }
             else{
-                $value = mysql_real_escape_string($value);
+                $value = DBFunctions::escape($value);
                 $whereSQL[] = "{$key} = '{$value}' ";
             }
         }
         foreach($order as $key => $value){
-            $key = mysql_real_escape_string($key);
-            $value = mysql_real_escape_string($value);
+            $key = DBFunctions::escape($key);
+            $value = DBFunctions::escape($value);
             $orderSQL[] = "{$key} {$value} ";
         }
         foreach($limit as $key => $value){
-            $value = mysql_real_escape_string($value);
+            $value = DBFunctions::escape($value);
             $limitSQL[] = "{$value} ";
         }
         $sql = "SELECT ".implode(", ", $colSQL)." FROM ".implode(", ", $fromSQL)." ";
@@ -299,19 +304,19 @@ class DBFunctions {
 	 * @return boolean Returns whether the insertion was successful or not
 	 */
 	static function insert($table, $values=array(), $rollback=false){
-	    $table = mysql_real_escape_string($table);
+	    $table = DBFunctions::escape($table);
 	    $sql = "INSERT INTO {$table} (";
 	    $cols = array();
 	    $vals = array();
         foreach($values as $key => $value){
-            $key = mysql_real_escape_string($key);
+            $key = DBFunctions::escape($key);
             $cols[] = "{$key}";
             if(strstr($value, "### ") !== false){
                 $value = str_replace("=", "", str_replace("### ", "", $value));
                 $vals[] = "{$value}";
             }
             else{
-                $value = mysql_real_escape_string($value);
+                $value = DBFunctions::escape($value);
                 $vals[] = "'{$value}'";
             }
         }
@@ -327,15 +332,15 @@ class DBFunctions {
 	 */
 	static function delete($table, $where=array(), $rollback=false){
 	    $whereSQL = array();
-	    $table = mysql_real_escape_string($table);
+	    $table = DBFunctions::escape($table);
 	    foreach($where as $key => $value){
-            $key = mysql_real_escape_string($key);
+            $key = DBFunctions::escape($key);
             if(strstr($value, "### ") !== false){
                 $value = str_replace("### ", "", $value);
                 $whereSQL[] = "{$key} {$value} ";
             }
             else{
-                $value = mysql_real_escape_string($value);
+                $value = DBFunctions::escape($value);
                 $whereSQL[] = "{$key} = '{$value}' ";
             }
         }
@@ -370,31 +375,31 @@ class DBFunctions {
 	 * @return boolean Returns whether or not the update was successfull
 	 */
     static function update($table, $values=array(), $where=array(), $limit=array(), $rollback=false){
-        $table = mysql_real_escape_string($table);
+        $table = DBFunctions::escape($table);
         $limitSQL = array();
         $sql = "UPDATE {$table}\nSET ";
         $sets = array();
         foreach($values as $key => $value){
-            $key = mysql_real_escape_string($key);
+            $key = DBFunctions::escape($key);
             if(strstr($value, "### ") !== false){
                 $value = str_replace("### ", "", $value);
                 $sets[] = "{$key} {$value} ";
             }
             else{
-                $value = mysql_real_escape_string($value);
+                $value = DBFunctions::escape($value);
                 $sets[] = "{$key} = '{$value}' ";
             }
         }
         $sql .= implode(",\n", $sets);
         $wheres = array();
         foreach($where as $key => $value){
-            $key = mysql_real_escape_string($key);
+            $key = DBFunctions::escape($key);
             if(strstr($value, "### ") !== false){
                 $value = str_replace("### ", "", $value);
                 $wheres[] = "{$key} {$value} ";
             }
             else{
-                $value = mysql_real_escape_string($value);
+                $value = DBFunctions::escape($value);
                 $wheres[] = "{$key} = '{$value}' ";
             }
         }
@@ -416,7 +421,7 @@ class DBFunctions {
             }
         }
         foreach($limit as $key => $value){
-            $value = mysql_real_escape_string($value);
+            $value = DBFunctions::escape($value);
             $limitSQL[] = "{$value} ";
         }
         if(count($limitSQL) > 0){
@@ -459,7 +464,7 @@ class DBFunctions {
 	 */
 	static function getNRows(){
 	    if(self::$lastResult != null && self::$lastResult->result != null){
-	        return mysql_num_rows(self::$lastResult->result);
+	        return self::$lastResult->result->num_rows;
 	    }
 	    else{
 	        return 0;

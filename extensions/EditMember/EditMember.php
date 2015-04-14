@@ -10,22 +10,21 @@ $wgSpecialPageGroups['EditMember'] = 'network-tools';
 $wgHooks['ToolboxLinks'][] = 'EditMember::createToolboxLinks';
 
 function runEditMember($par) {
-  EditMember::run($par);
+  EditMember::execute($par);
 }
 
 class EditMember extends SpecialPage{
 
     function EditMember() {
-        wfLoadExtensionMessages('EditMember');
         if(FROZEN){
-            SpecialPage::SpecialPage("EditMember", STAFF.'+', true, 'runEditMember');
+            SpecialPage::__construct("EditMember", STAFF.'+', true, 'runEditMember');
         }
         else{
-            SpecialPage::SpecialPage("EditMember", CNI.'+', true, 'runEditMember');
+            SpecialPage::__construct("EditMember", CNI.'+', true, 'runEditMember');
         }
     }
 
-    function run($par){
+    function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
         $user = Person::newFromId($wgUser->getId());
         $date = date("Y-m-d");

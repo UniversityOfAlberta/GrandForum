@@ -11,6 +11,7 @@ Feature: Login
     Scenario: Logging in as a valid user
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
         Then I should see "Admin User1"
+        And I should not see "Bad title"
     
     Scenario: Logging in using an invalid password
         Given I am logged in as "Admin.User1" using password "Hello"

@@ -10,17 +10,16 @@ $wgSpecialPageGroups['AcademiaMap'] = 'network-tools';
 $wgHooks['ToolboxLinks'][] = 'AcademiaMap::createToolboxLinks';
 
 function runAcademiaMap($par) {
-	AcademiaMap::run($par);
+	AcademiaMap::execute($par);
 }
 
 class AcademiaMap extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('AcademiaMap');
-		SpecialPage::SpecialPage("AcademiaMap", HQP.'+', true, 'runAcademiaMap');
+		SpecialPage::__construct("AcademiaMap", HQP.'+', true, 'runAcademiaMap');
 	}
 	
-	function run(){
+	function execute(){
 	    global $wgUser, $wgOut, $wgServer, $wgScriptPath;
 	    $wgOut->addHTML("<script type='text/javascript'>
 	        function updateIframeHeight(height){

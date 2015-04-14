@@ -26,7 +26,6 @@ class RecordStoryAPI extends API{
 	            if(!isset($screenshot->descriptions)){
 	                $screenshot->descriptions = array();
 	            }
-	            $img = mysql_real_escape_string($screenshot->img);
 	            $md5 = md5(json_encode($screenshot));
 	            if(!$delete){
 	                $stat = ($stat && DBFunctions::insert('grand_recorded_images',

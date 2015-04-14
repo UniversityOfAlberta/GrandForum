@@ -88,7 +88,7 @@ class AddProjectMemberAPI extends API{
                     }
                 }
             }
-            $name = mysql_real_escape_string($person->getName());
+            $name = DBFunctions::escape($person->getName());
             $sql = "SELECT `id`
 	                FROM grand_notifications
 	                WHERE user_id = '{$creator->getId()}'

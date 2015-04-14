@@ -16,17 +16,16 @@ $wgSpecialPageGroups['PublicVisualizations'] = 'network-tools';
 $wgHooks['SubLevelTabs'][] = 'PublicVisualizations::createSubTabs';
 
 function runPublicVisualizations($par) {
-  PublicVisualizations::run($par);
+  PublicVisualizations::execute($par);
 }
 
 class PublicVisualizations extends SpecialPage{
 
 	function PublicVisualizations() {
-		wfLoadExtensionMessages('PublicVisualizations');
-		SpecialPage::SpecialPage("PublicVisualizations", '', true, 'runPublicVisualizations');
+		SpecialPage::__construct("PublicVisualizations", '', true, 'runPublicVisualizations');
 	}
 
-    function run(){
+    function execute(){
         global $wgOut;
         $tabbedPage = new TabbedPage("publicVis");
         $tabbedPage->addTab(new PublicChordTab());

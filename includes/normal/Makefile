@@ -5,10 +5,10 @@
 ## when the data was generated from a previous version.
 #BASE=http://www.unicode.org/Public/UNIDATA
 
-# Explicitly using Unicode 5.1
-BASE=http://www.unicode.org/Public/5.1.0/ucd
+# Explicitly using Unicode 6.0
+BASE=http://www.unicode.org/Public/6.0.0/ucd
 
-# Can override to php-cli or php5 or whatevah
+# Can override to php-cli or php5 or whatever
 PHP=php
 #PHP=php-cli
 
@@ -16,29 +16,22 @@ PHP=php
 FETCH=wget
 #FETCH=fetch
 
-all : UtfNormalData.inc Utf8Case.php
+all : UtfNormalData.inc
 
 UtfNormalData.inc : UtfNormalGenerate.php UtfNormalUtil.php UnicodeData.txt CompositionExclusions.txt NormalizationCorrections.txt DerivedNormalizationProps.txt
 	$(PHP) UtfNormalGenerate.php
 
-Utf8Case.php : Utf8CaseGenerate.php UtfNormalUtil.php UnicodeData.txt
-	$(PHP) Utf8CaseGenerate.php
-
-test : testutf8 testclean UtfNormalTest.php UtfNormalData.inc NormalizationTest.txt
+test : testutf8 UtfNormalTest.php UtfNormalData.inc NormalizationTest.txt
 	$(PHP) UtfNormalTest.php
 
 testutf8 : Utf8Test.php UTF-8-test.txt
 	$(PHP) Utf8Test.php
-
-testclean : CleanUpTest.php
-	$(PHP) CleanUpTest.php
 
 bench : UtfNormalData.inc testdata/washington.txt testdata/berlin.txt testdata/tokyo.txt testdata/young.txt testdata/bulgakov.txt
 	$(PHP) UtfNormalBench.php
 
 icutest : UtfNormalData.inc NormalizationTest.txt
 	$(PHP) Utf8Test.php --icu
-	$(PHP) CleanUpTest.php --icu
 	$(PHP) UtfNormalTest.php --icu
 
 icubench : UtfNormalData.inc testdata/washington.txt testdata/berlin.txt testdata/tokyo.txt testdata/young.txt testdata/bulgakov.txt

@@ -1,7 +1,5 @@
 <?php
 
-//require_once("SpecialDoughnut.php");
-
 class Doughnut extends Visualization {
     
     static $a = 0;

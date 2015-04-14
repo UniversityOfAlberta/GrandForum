@@ -291,7 +291,7 @@ class LOI extends BackboneModel {
 	            AND year = '{$year}'";
 
 	    if(!is_null($type)){
-	    	$type = mysql_real_escape_string($type);
+	    	$type = DBFunctions::escape($type);
 	    	$sql .= " AND type = '{$type}'";
 	    }
 

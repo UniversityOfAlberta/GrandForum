@@ -112,7 +112,7 @@ class ProjectMilestoneAPI extends API{
             $join = "milestone_id = '{$_POST['id']}'";
         }
         else{
-            $join = "title = '".mysql_real_escape_string($_POST['title'])."'";
+            $join = "title = '".DBFunctions::escape($_POST['title'])."'";
         }
         if(!isset($_POST['problem'])){
             $_POST['problem'] = '';
@@ -188,10 +188,10 @@ class ProjectMilestoneAPI extends API{
                             AND (project_id = '{$project->getId()}'
                                  ".implode("", $projectIds)."
                                  )",
-                            mysql_real_escape_string($_POST['title']),
-                            mysql_real_escape_string($_POST['problem']), 
-                            mysql_real_escape_string($_POST['description']), 
-                            mysql_real_escape_string($_POST['assessment'])
+                            DBFunctions::escape($_POST['title']),
+                            DBFunctions::escape($_POST['problem']), 
+                            DBFunctions::escape($_POST['description']), 
+                            DBFunctions::escape($_POST['assessment'])
                             );
                                 
                     DBFunctions::execSQL($sql, true);

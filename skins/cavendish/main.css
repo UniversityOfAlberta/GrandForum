@@ -461,10 +461,10 @@ pre {
 }
 
 #catlinks {
-    border: 1px solid #aaaaaa;
+    border: 0 solid #aaaaaa;
     background-color: #f9f9f9;
-    padding: 3px 5px 3px 5px;
-    margin-top: 1em;
+    padding: 0;
+    margin-top: 0;
     clear: both;
 }
 

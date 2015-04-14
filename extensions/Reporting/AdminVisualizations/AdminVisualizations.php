@@ -15,17 +15,16 @@ $wgSpecialPageGroups['AdminVisualizations'] = 'other-tools';
 $wgHooks['SubLevelTabs'][] = 'AdminVisualizations::createSubTabs';
 
 function runAdminVisualizations($par) {
-  AdminVisualizations::run($par);
+  AdminVisualizations::execute($par);
 }
 
 class AdminVisualizations extends SpecialPage{
 
 	function AdminVisualizations() {
-		wfLoadExtensionMessages('AdminVisualizations');
-		SpecialPage::SpecialPage("AdminVisualizations", MANAGER.'+', true, 'runAdminVisualizations');
+		SpecialPage::__construct("AdminVisualizations", MANAGER.'+', true, 'runAdminVisualizations');
 	}
 
-    function run(){
+    function execute(){
         global $wgOut;
         $tabbedPage = new TabbedPage("adminVis");
         $tabbedPage->addTab(new AdminChordTab());

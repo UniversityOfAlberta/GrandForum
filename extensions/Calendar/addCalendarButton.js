@@ -20,5 +20,5 @@
           image.id = "button_calendar";
           parent.appendChild(image);
         }
-
-addOnloadHook(insertCalendarButton);
+        
+$(document).ready(insertCalendarButton);

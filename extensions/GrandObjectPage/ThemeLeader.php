@@ -8,14 +8,13 @@ $wgSpecialPageGroups['ThemeLeader'] = 'network-tools';
 $wgHooks['TopLevelTabs'][] = 'ThemeLeader::createTab';
 
 function runThemeLeader($par) {
-    ThemeLeader::run($par);
+    ThemeLeader::execute($par);
 }
 
 class ThemeLeader extends SpecialPage{
 
     function ThemeLeader() {
-        wfLoadExtensionMessages('ThemeLeader');
-        SpecialPage::SpecialPage("ThemeLeader", '', true, 'runThemeLeader');
+        SpecialPage::__construct("ThemeLeader", '', true, 'runThemeLeader');
     }
     
     function userCanExecute($user){
@@ -23,7 +22,7 @@ class ThemeLeader extends SpecialPage{
         return ($person->isThemeLeader() || $person->isRoleAtLeast(MANAGER));
     }
 
-    function run($par){
+    function execute($par){
         global $wgOut;
         $me = Person::newFromWgUser();
         $projects = Project::getAllProjects();

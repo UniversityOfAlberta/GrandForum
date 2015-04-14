@@ -8,17 +8,16 @@ $wgSpecialPageGroups['ReviewResults'] = 'network-tools';
 require_once($dir . '../../../Classes/PHPExcel/IOFactory.php');
 
 function runReviewResults($par) {
-    ReviewResults::run($par);
+    ReviewResults::execute($par);
 }
 
 class ReviewResults extends SpecialPage {
 
     function __construct() {
-        wfLoadExtensionMessages('ReviewResults');
-        SpecialPage::SpecialPage("ReviewResults", STAFF.'+', true, 'runReviewResults');
+        SpecialPage::__construct("ReviewResults", STAFF.'+', true, 'runReviewResults');
     }
     
-    function run(){
+    function execute(){
         global $wgUser, $wgOut, $wgServer, $wgScriptPath;
         $type = "PNI";
         if(!empty($_GET['type']) && $_GET['type'] == 'CNI'){
@@ -510,10 +509,10 @@ EOF;
                 $overall_score = (isset($ni_data['overall_score'])) ? $ni_data['overall_score'] : "";
                 $send_email = (isset($ni_data['send_email'])) ? 1 : 0;
                 
-                $allocated_amount = mysql_real_escape_string(floatval(str_replace(",", "", $allocated_amount)));
-                $allocated_amount2 = mysql_real_escape_string(floatval(str_replace(",", "", $allocated_amount2)));
-                $allocated_amount3 = mysql_real_escape_string(floatval(str_replace(",", "", $allocated_amount3)));
-                $overall_score = mysql_real_escape_string($overall_score);
+                $allocated_amount = DBFunctions::escape(floatval(str_replace(",", "", $allocated_amount)));
+                $allocated_amount2 = DBFunctions::escape(floatval(str_replace(",", "", $allocated_amount2)));
+                $allocated_amount3 = DBFunctions::escape(floatval(str_replace(",", "", $allocated_amount3)));
+                $overall_score = DBFunctions::escape($overall_score);
 
                 $query =<<<EOF
                 INSERT INTO grand_review_results (user_id, type, year, allocated_amount, allocated_amount2, allocated_amount3, overall_score, send_email)

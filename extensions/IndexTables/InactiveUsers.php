@@ -9,17 +9,16 @@ $wgSpecialPageGroups['InactiveUsers'] = 'other-tools';
 $wgHooks['SubLevelTabs'][] = 'InactiveUsers::createSubTabs';
 
 function runInactiveUsers($par){
-    InactiveUsers::run($par);
+    InactiveUsers::execute($par);
 }
 
 class InactiveUsers extends SpecialPage {
 
     function InactiveUsers() {
-		wfLoadExtensionMessages('InactiveUsers');
-		SpecialPage::SpecialPage("InactiveUsers", HQP.'+', true, 'runInactiveUsers');
+		SpecialPage::__construct("InactiveUsers", HQP.'+', true, 'runInactiveUsers');
 	}
 
-    function run($par){
+    function execute($par){
 		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
 		$text = "";
 		$data = Person::getAllPeople(INACTIVE);

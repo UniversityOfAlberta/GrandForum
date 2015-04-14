@@ -178,9 +178,8 @@ class UploadProtection {
     return $dbr->selectField("${egAnnokiTablePrefix}upload_permissions", 'nsName', 'upload_name=\''.$imageName."'");
   }
 
-  //TODO: At some point, if possible, this should use the second arg of mysql_real_escape_string() and get the proper encoding from the DB connection, or use Database::strencode().
   static function sanitize($input){
-    return mysql_real_escape_string($input);
+    return DBFunctions::escape($input);
   }
 
 }

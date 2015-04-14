@@ -8,17 +8,16 @@ $wgSpecialPageGroups['MyMailingLists'] = 'other-tools';
 $wgHooks['TopLevelTabs'][] = 'MyMailingLists::createTab';
 
 function runMyMailingLists($par) {
-  MyMailingLists::run($par);
+  MyMailingLists::execute($par);
 }
 
 class MyMailingLists extends SpecialPage{
 
     function MyMailingLists() {
-        wfLoadExtensionMessages('MyMailingLists');
-        SpecialPage::SpecialPage("MyMailingLists", HQP.'+', true, 'runMyMailingLists');
+        SpecialPage::__construct("MyMailingLists", HQP.'+', true, 'runMyMailingLists');
     }
 
-    function run($par){
+    function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage, $config;
         $person = Person::newFromWgUser();
         if(isset($_POST['unsub'])){

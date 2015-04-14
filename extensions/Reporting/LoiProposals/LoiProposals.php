@@ -8,17 +8,16 @@ $wgSpecialPageGroups['LoiProposals'] = 'network-tools';
 $wgHooks['SubLevelTabs'][] = 'LoiProposals::createSubTabs';
 
 function runLoiProposals($par) {
-	LoiProposals::run($par);
+	LoiProposals::execute($par);
 }
 
 class LoiProposals extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('LoiProposals');
-		SpecialPage::SpecialPage("LoiProposals", HQP.'+', true, 'runLoiProposals');
+		SpecialPage::__construct("LoiProposals", HQP.'+', true, 'runLoiProposals');
 	}
 	
-	static function run(){
+	static function execute(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 		
 	    $me = Person::newFromId($wgUser->getId());
@@ -142,7 +141,7 @@ class LoiProposals extends SpecialPage {
                 		continue;
                 	}
 
-                	$man_comments_new = mysql_real_escape_string($man_comments_new);
+                	$man_comments_new = DBFunctions::escape($man_comments_new);
                 	$sql = "UPDATE grand_loi
                         	SET manager_comments='{$man_comments_new}'
                         	WHERE id={$loi_id}";

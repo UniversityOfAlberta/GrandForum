@@ -47,8 +47,7 @@ function handleDuplicates($action, $request){
 class Duplicates extends SpecialPage{
 
 	function Duplicates() {
-		wfLoadExtensionMessages('Duplicates');
-		SpecialPage::SpecialPage("Duplicates", MANAGER.'+', true, 'Duplicates::run');
+		SpecialPage::__construct("Duplicates", MANAGER.'+', true, 'Duplicates::execute');
 	}
 	
 	function userCanExecute($user){
@@ -61,7 +60,7 @@ class Duplicates extends SpecialPage{
 	    }
 	}
 
-	function run($par){
+	function execute($par){
 	    global $wgServer, $wgScriptPath, $wgOut;
         $handlers = AbstractDuplicatesHandler::$handlers;
         $tabbedPage = new TabbedPage("duplicates");

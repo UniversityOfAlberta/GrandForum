@@ -1,6 +1,6 @@
 <?php
 
-    $config = new Config();
+    $config = new ForumConfig();
     $GLOBALS['config'] = $config;
 
     require_once("default_config.php");
@@ -8,7 +8,7 @@
     
     $config->define();
     
-    class Config {
+    class ForumConfig {
     
         var $config = array();
         var $constants = array();

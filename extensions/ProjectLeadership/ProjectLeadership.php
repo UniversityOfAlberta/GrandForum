@@ -6,17 +6,16 @@ $wgExtensionMessagesFiles['ProjectLeadership'] = $dir . 'ProjectLeadership.i18n.
 $wgSpecialPageGroups['ProjectLeadership'] = 'network-tools';
 
 function runProjectLeadership($par){
-    ProjectLeadership::run($par);
+    ProjectLeadership::execute($par);
 }
 
 class ProjectLeadership extends SpecialPage {
     
     function ProjectLeadership(){
-        wfLoadExtensionMessages('ProjectLeadership');
-		SpecialPage::SpecialPage("ProjectLeadership", STAFF.'+', true, 'runProjectLeadership');
+		SpecialPage::__construct("ProjectLeadership", STAFF.'+', true, 'runProjectLeadership');
     }    
     
-    function run(){
+    function execute(){
         global $wgOut;
         $projects = Project::getAllProjectsEver();
         $wgOut->addHTML("<table cellpadding='3' frame='box' rules='all'>

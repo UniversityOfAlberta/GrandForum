@@ -81,17 +81,16 @@ function printApproves(){
 }	
 
 function runFeatureRequestViewer($par) {
-  FeatureRequestViewer::run($par);
+  FeatureRequestViewer::execute($par);
 }
 
 class FeatureRequestViewer extends SpecialPage{
 
 	function FeatureRequestViewer() {
-		wfLoadExtensionMessages('FeatureRequestViewer');
-		SpecialPage::SpecialPage("FeatureRequestViewer", HQP.'+', true, 'runFeatureRequestViewer');
+		SpecialPage::__construct("FeatureRequestViewer", HQP.'+', true, 'runFeatureRequestViewer');
 	}
 
-	function run($par){
+	function execute($par){
 		global $wgOut, $wgUser, $wgLocalTZoffset, $wgScriptPath, $wgTitle;
 		$ugTable = getTableName("user_groups");
 		$userTable = getTableName("user");

@@ -10,7 +10,7 @@ $wgSpecialPageGroups['AcknowledgementsTable'] = 'network-tools';
 
 
 function runAcknowledgementsTable($par) {
-	AcknowledgementsTable::run($par);
+	AcknowledgementsTable::execute($par);
 }
 
 function getack($action, $article){
@@ -38,11 +38,10 @@ function getack($action, $article){
 class AcknowledgementsTable extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('AcknowledgementsTable');
-		SpecialPage::SpecialPage("AcknowledgementsTable", STAFF.'+', true, 'runAcknowledgementsTable');
+		SpecialPage::__construct("AcknowledgementsTable", STAFF.'+', true, 'runAcknowledgementsTable');
 	}
 	
-	static function run(){
+	static function execute(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 	    
 	    if(isset($_POST['submit'])){
@@ -78,7 +77,7 @@ class AcknowledgementsTable extends SpecialPage {
                 $filename = $_FILES['pdf']['tmp_name'];
                 $pdf = file_get_contents($_FILES['pdf']['tmp_name']);
                 $md5 = md5($pdf);
-                $pdf = mysql_real_escape_string($pdf);
+                $pdf = DBFunctions::escape($pdf);
                 
                 $sql = "INSERT INTO `grand_acknowledgements`
                        (`user_id`, `user_name`, `university` , `date` ,`supervisor`,  `md5`,  `pdf`)

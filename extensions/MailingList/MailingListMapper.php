@@ -6,17 +6,16 @@ $wgExtensionMessagesFiles['MailingListMapper'] = $dir . 'MailingListMapper.i18n.
 $wgSpecialPageGroups['MailingListMapper'] = 'other-tools';
 
 function runMailingListMapper($par) {
-  MailingListMapper::run($par);
+  MailingListMapper::execute($par);
 }
 
 class MailingListMapper extends SpecialPage{
 
     function MailingListMapper() {
-        wfLoadExtensionMessages('MailingListMapper');
-        SpecialPage::SpecialPage("MailingListMapper", MANAGER, true, 'runMailingListMapper');
+        SpecialPage::__construct("MailingListMapper", MANAGER, true, 'runMailingListMapper');
     }
 
-    function run($par){
+    function execute($par){
         global $wgOut;
         $lists = MailingList::listLists();
         $wgOut->addHTML("<form>");

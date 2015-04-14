@@ -7,12 +7,11 @@ $egAlwaysAllow = array();
    * Run any initialization code needed by the extension.
    */
 function initializeAccessControls(){
-  global $egAnnokiNamespaces;
+  global $egAnnokiNamespaces, $wgExtraNamespaces;
 
   createExtraTables();
   
-  require_once('AnnokiNamespaces.php');
-  $egAnnokiNamespaces = new AnnokiNamespaces();
+  $egAnnokiNamespaces->registerExtraNamespaces($wgExtraNamespaces);
 
   addMenuJavascript();
 }

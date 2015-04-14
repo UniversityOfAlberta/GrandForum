@@ -5,7 +5,7 @@ $wgExtensionMessagesFiles['CreatePoll'] = $dir . 'CreatePoll.i18n.php';
 $wgSpecialPageGroups['CreatePoll'] = 'other-tools';
 
 function runCreatePoll($par) {
-  CreatePoll::run($par);
+  CreatePoll::execute($par);
 }
 
 $FORM_TEXT = "<fieldset id='q1'>
@@ -38,11 +38,10 @@ $FORM_TEXT = "<fieldset id='q1'>
 class CreatePoll extends SpecialPage{
 
 	function CreatePoll() {
-		wfLoadExtensionMessages('CreatePoll');
-		SpecialPage::SpecialPage("CreatePoll", HQP.'+', true, 'runCreatePoll');
+		SpecialPage::__construct("CreatePoll", HQP.'+', true, 'runCreatePoll');
 	}
 
-	function run($par){
+	function execute($par){
 		global $wgOut, $wgUser, $wgScriptPath, $wgServer, $wgTitle, $wgArticle, $wgMessage;
 		if(isset($_POST['submit'])){
 			$name = $_POST['name'];

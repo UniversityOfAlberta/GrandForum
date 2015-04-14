@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Deletes a batch of pages
+ * Deletes a batch of pages.
  * Usage: php deleteBatch.php [-u <user>] [-r <reason>] [-i <interval>] [listfile]
  * where
  *	[listfile] is a file where each line contains the title of a page to be
@@ -10,89 +9,116 @@
  *	<reason> is the delete reason
  *	<interval> is the number of seconds to sleep for after each delete
  *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
  * @file
  * @ingroup Maintenance
  */
 
-$oldCwd = getcwd();
-$optionsWithArgs = array( 'u', 'r', 'i' );
-require_once( 'commandLine.inc' );
+require_once __DIR__ . '/Maintenance.php';
 
-chdir( $oldCwd );
+/**
+ * Maintenance script to delete a batch of pages.
+ *
+ * @ingroup Maintenance
+ */
+class DeleteBatch extends Maintenance {
 
-# Options processing
-
-$filename = 'php://stdin';
-$user = 'Delete page script';
-$reason = '';
-$interval = 0;
-
-if ( isset( $args[0] ) ) {
-	$filename = $args[0];
-}
-if ( isset( $options['u'] ) ) {
-	$user = $options['u'];
-}
-if ( isset( $options['r'] ) ) {
-	$reason = $options['r'];
-}
-if ( isset( $options['i'] ) ) {
-	$interval = $options['i'];
-}
-
-$wgUser = User::newFromName( $user );
-
-
-# Setup complete, now start
-
-$file = fopen( $filename, 'r' );
-if ( !$file ) {
-	print "Unable to read file, exiting\n";
-	exit;
-}
-
-$dbw = wfGetDB( DB_MASTER );
-
-for ( $linenum = 1; !feof( $file ); $linenum++ ) {
-	$line = trim( fgets( $file ) );
-	if ( $line == '' ) {
-		continue;
-	}
-	$page = Title::newFromText( $line );
-	if ( is_null( $page ) ) {
-		print "Invalid title '$line' on line $linenum\n";
-		continue;
-	}
-	if( !$page->exists() ) {
-		print "Skipping nonexistent page '$line'\n";
-		continue;
+	public function __construct() {
+		parent::__construct();
+		$this->mDescription = "Deletes a batch of pages";
+		$this->addOption( 'u', "User to perform deletion", false, true );
+		$this->addOption( 'r', "Reason to delete page", false, true );
+		$this->addOption( 'i', "Interval to sleep between deletions" );
+		$this->addArg( 'listfile', 'File with titles to delete, separated by newlines. ' .
+			'If not given, stdin will be used.', false );
 	}
 
+	public function execute() {
+		global $wgUser;
 
-	print $page->getPrefixedText();
-	$dbw->begin();
-	if( $page->getNamespace() == NS_FILE ) {
-		$art = new ImagePage( $page );
-		$img = wfFindFile( $art->mTitle );
-		if( !$img || !$img->delete( $reason ) ) {
-			print "FAILED to delete image file... ";
+		# Change to current working directory
+		$oldCwd = getcwd();
+		chdir( $oldCwd );
+
+		# Options processing
+		$username = $this->getOption( 'u', 'Delete page script' );
+		$reason = $this->getOption( 'r', '' );
+		$interval = $this->getOption( 'i', 0 );
+
+		$user = User::newFromName( $username );
+		if ( !$user ) {
+			$this->error( "Invalid username", true );
 		}
-	} else {
-		$art = new Article( $page );
-	}
-	$success = $art->doDeleteArticle( $reason );
-	$dbw->immediateCommit();
-	if ( $success ) {
-		print "\n";
-	} else {
-		print " FAILED to delete image page\n";
-	}
+		$wgUser = $user;
 
-	if ( $interval ) {
-		sleep( $interval );
+		if ( $this->hasArg() ) {
+			$file = fopen( $this->getArg(), 'r' );
+		} else {
+			$file = $this->getStdin();
+		}
+
+		# Setup
+		if ( !$file ) {
+			$this->error( "Unable to read file, exiting", true );
+		}
+
+		$dbw = wfGetDB( DB_MASTER );
+
+		# Handle each entry
+		for ( $linenum = 1; !feof( $file ); $linenum++ ) {
+			$line = trim( fgets( $file ) );
+			if ( $line == '' ) {
+				continue;
+			}
+			$title = Title::newFromText( $line );
+			if ( is_null( $title ) ) {
+				$this->output( "Invalid title '$line' on line $linenum\n" );
+				continue;
+			}
+			if ( !$title->exists() ) {
+				$this->output( "Skipping nonexistent page '$line'\n" );
+				continue;
+			}
+
+			$this->output( $title->getPrefixedText() );
+			$dbw->begin( __METHOD__ );
+			if ( $title->getNamespace() == NS_FILE ) {
+				$img = wfFindFile( $title );
+				if ( $img && $img->isLocal() && !$img->delete( $reason ) ) {
+					$this->output( " FAILED to delete associated file... " );
+				}
+			}
+			$page = WikiPage::factory( $title );
+			$error = '';
+			$success = $page->doDeleteArticle( $reason, false, 0, false, $error, $user );
+			$dbw->commit( __METHOD__ );
+			if ( $success ) {
+				$this->output( " Deleted!\n" );
+			} else {
+				$this->output( " FAILED to delete article\n" );
+			}
+
+			if ( $interval ) {
+				sleep( $interval );
+			}
+			wfWaitForSlaves();
+		}
 	}
-	wfWaitForSlaves( 5 );
 }
 
-
-
+$maintClass = "DeleteBatch";
+require_once RUN_MAINTENANCE_IF_MAIN;

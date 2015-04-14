@@ -6,18 +6,17 @@ $wgExtensionMessagesFiles['SanityChecks'] = $dir . 'SanityChecks.i18n.php';
 $wgSpecialPageGroups['SanityChecks'] = 'network-tools';
 
 function runSanityChecks($par) {
-	SanityChecks::run($par);
+	SanityChecks::execute($par);
 }
 
 
 class SanityChecks extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('SanityChecks');
-		SpecialPage::SpecialPage("SanityChecks", CNI.'+', true, 'runSanityChecks');
+		SpecialPage::__construct("SanityChecks", CNI.'+', true, 'runSanityChecks');
 	}
 	
-	static function run(){
+	static function execute(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 	    
 	    $me = Person::newFromId($wgUser->getId());

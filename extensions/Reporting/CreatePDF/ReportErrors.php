@@ -8,7 +8,7 @@ $wgExtensionMessagesFiles['ReportErrors'] = $dir . 'ReportErrors.i18n.php';
 $wgSpecialPageGroups['ReportErrors'] = 'report-reviewing';
 
 function runReportErrors($par) {
-	ReportErrors::run($par);
+	ReportErrors::exeucte($par);
 }
 
 class ReportErrors extends SpecialPage {
@@ -17,11 +17,10 @@ class ReportErrors extends SpecialPage {
                           //'project' => 'Project PDF Diff');
 
 	function __construct() {
-		wfLoadExtensionMessages('ReportErrors');
-		SpecialPage::SpecialPage("ReportErrors", STAFF.'+', true, 'runReportErrors');
+		SpecialPage::__construct("ReportErrors", STAFF.'+', true, 'runReportErrors');
 	}
 	
-	function run(){
+	function execute(){
 	    global $wgUser, $wgOut, $wgServer, $wgScriptPath;
 	    $year = (isset($_GET['reportingYear'])) ? $_GET['reportingYear'] : REPORTING_YEAR;
 	    $type = (isset($_GET['type'])) ? $_GET['type'] : 'ni';

@@ -8,17 +8,16 @@ $wgSpecialPageGroups['ReportStatsTable'] = 'network-tools';
 $wgHooks['SubLevelTabs'][] = 'ReportStatsTable::createSubTabs';
 
 function runReportStatsTable($par) {
-	ReportStatsTable::run($par);
+	ReportStatsTable::execute($par);
 }
 
 class ReportStatsTable extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('ReportStatsTable');
-		SpecialPage::SpecialPage("ReportStatsTable", STAFF.'+', true, 'runReportStatsTable');
+		SpecialPage::__construct("ReportStatsTable", STAFF.'+', true, 'runReportStatsTable');
 	}
 	
-	static function run(){
+	static function execute(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 	    
 	    $overall = array( "HQP"=>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),

@@ -6,17 +6,16 @@ $wgExtensionMessagesFiles['SpecialQueryableTable'] = $dir . 'SpecialQueryableTab
 require_once("MyQueryableTable.php");
 
 function runSpecialQueryableTable($par) {
-	SpecialQueryableTable::run($par);
+	SpecialQueryableTable::execute($par);
 }
 
 class SpecialQueryableTable extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('SpecialQueryableTable');
-		SpecialPage::SpecialPage("SpecialQueryableTable", HQP.'+', true, 'runSpecialQueryableTable');
+		SpecialPage::__construct("SpecialQueryableTable", HQP.'+', true, 'runSpecialQueryableTable');
 	}
 	
-	function run(){
+	function execute(){
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    $data = array(array("Channel1", "Channel2", "Channel3", "Channel4"),
 	                  array("Red", "Green", "Blue", "Alpha"),

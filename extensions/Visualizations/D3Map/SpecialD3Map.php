@@ -6,17 +6,16 @@ $wgExtensionMessagesFiles['SpecialD3Map'] = $dir . 'SpecialD3Map.i18n.php';
 $wgHooks['UnknownAction'][] = 'SpecialD3Map::getSpecialD3MapData';
 
 function runSpecialD3Map($par) {
-	SpecialD3Map::run($par);
+	SpecialD3Map::execute($par);
 }
 
 class SpecialD3Map extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('SpecialD3Map');
-		SpecialPage::SpecialPage("SpecialD3Map", MANAGER.'+', true, 'runSpecialD3Map');
+		SpecialPage::__construct("SpecialD3Map", MANAGER.'+', true, 'runSpecialD3Map');
 	}
 	
-	function run(){
+	function execute(){
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    $map = new D3Map("{$wgServer}{$wgScriptPath}/index.php?action=getSpecialD3MapData");
 	    $map->width = "100%";

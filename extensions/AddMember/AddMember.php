@@ -8,7 +8,7 @@ $wgSpecialPageGroups['AddMember'] = 'network-tools';
 $wgHooks['ToolboxLinks'][] = 'AddMember::createToolboxLinks';
 
 function runAddMember($par) {
-  AddMember::run($par);
+  AddMember::execute($par);
 }
 
 autoload_register('AddMember/Validations');
@@ -16,16 +16,15 @@ autoload_register('AddMember/Validations');
 class AddMember extends SpecialPage{
 
     function AddMember() {
-        wfLoadExtensionMessages('AddMember');
         if(FROZEN){
-            SpecialPage::SpecialPage("AddMember", STAFF.'+', true, 'runAddMember');
+            SpecialPage::__construct("AddMember", STAFF.'+', true, 'runAddMember');
         }
         else{
-            SpecialPage::SpecialPage("AddMember", CNI.'+', true, 'runAddMember');
+            SpecialPage::__construct("AddMember", CNI.'+', true, 'runAddMember');
         }
     }
 
-    function run($par){
+    function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
         $user = Person::newFromId($wgUser->getId());
         if(isset($_GET['action']) && $_GET['action'] == "view" && $user->isRoleAtLeast(STAFF)){

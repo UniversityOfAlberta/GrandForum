@@ -33,10 +33,11 @@ class ReportXMLParser {
         $encrypted = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $serialized, MCRYPT_MODE_ECB, $iv);
         //$encrypted = $serialized;
         $encrypted = gzcompress($encrypted, 9);
-        $sql = "INSERT INTO `grand_report_backup`
-                (`report`,`time`,`person_id`,`backup`)
-                VALUES ('".addslashes($this->report->name)."','$time','{$this->report->person->getId()}','".mysql_real_escape_string($encrypted)."')";
-        DBFunctions::execSQL($sql, true);
+        DBFunctions::insert('grand_report_backup',
+                            array('report'    => $this->report->name,
+                                  'time'      => $time,
+                                  'person_id' => $this->report->person->getId(),
+                                  'backup'    => $encrypted));
         if($download){
             header("Content-type: application/force-download");
             if($this->report->project == null){

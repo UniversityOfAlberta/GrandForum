@@ -1,11 +1,11 @@
 <?php
 
 require "Management.php";
-require "NamespaceManager.php";
+//require "NamespaceManager.php";
 require "AnnokiNamespaces.php";
 require "UserNamespaces.php";
 require "AccessControls.body.php";
-require "CustomSpecialUserRights.php";
+//require "CustomSpecialUserRights.php";
 require "ProtectableArticle.php";
 require "CustomSpecialSearch.php";
 require "ProtectedChangesList.php";
@@ -17,6 +17,7 @@ require "GrandAccess.php";
 require "UserLogin.php";
 
 /** Extension configuration **/
+$egAnnokiNamespaces = new AnnokiNamespaces();
 $egNamespaceAllowUsersWithoutNamespaces = true;
 $egNamespaceAllowPagesInMainNS = false;
 $egAnProtectUploads = true; //Setting this to false will expose all existing protected uploads (until reenabled).

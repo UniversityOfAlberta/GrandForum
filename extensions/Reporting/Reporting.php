@@ -1,6 +1,5 @@
 <?php
 
-autoload_register('Reporting/SessionData');
 $extras = $config->getValue('reportingExtras');
 require_once("Report/AbstractReport.php");
 require_once("PDFGenerator/PDFGenerator.php");

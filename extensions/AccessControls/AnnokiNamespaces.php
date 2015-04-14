@@ -14,11 +14,9 @@ class AnnokiNamespaces {
 	 * Initializes the Annoki Custom Namespaces object
 	 */
 	function AnnokiNamespaces() {
+	  global $wgNamespaces;
 	  $this->userNS = new UserNamespaces();
 	  $this->registerHooks();
-	  $this->nsManager = new NamespaceManager();
-	  SpecialPage::addPage($this->nsManager);
-	  $this->registerExtraNamespaces();
 	}
 
 	/**
@@ -31,21 +29,21 @@ class AnnokiNamespaces {
 		$wgHooks['AbortNewAccount'][] = $this->userNS;
 		$wgHooks['AddNewAccount'][] = $this->userNS;
 		$wgHooks['SpecialRecentChangesPanel'][] = $this->userNS;
+		$wgHooks['CanonicalNamespaces'][] = array($this, 'registerExtraNamespaces');
 	}
 
 /**
  * Registers the custom namespaces with mediawiki
  */
-function registerExtraNamespaces() {
-	global $wgExtraNamespaces,  $wgContentNamespaces, $wgUserNamespaces;
-	$wgExtraNamespaces = array();
+function registerExtraNamespaces(&$namespaces) {
+	global $wgContentNamespaces, $wgUserNamespaces;
 	$wgUserNamespaces = array();
 	$extraNamespaces = $this->retrieveAllExtraNamespaces();
 	foreach ($extraNamespaces as $extraNamespace) {
 		$nsId = $extraNamespace["nsId"];
 		$nsName = $extraNamespace["nsName"];
 
-		$wgExtraNamespaces[$nsId] = $nsName;
+		$namespaces[$nsId] = $nsName;
 		$wgContentNamespaces[] = $nsId;
 
 		if ($extraNamespace["nsUser"] != null) {
@@ -53,11 +51,11 @@ function registerExtraNamespaces() {
 		}
 		if (!MWNamespace::isTalk($nsId)) {
 			$talk = MWNamespace::getTalk($nsId);
-			$wgExtraNamespaces[$talk] = "{$nsName}_Talk";
-
+			$namespaces[$talk] = "{$nsName}_Talk";
 		}
 	}
 	//natcasesort($wgExtraNamespaces);
+	return true;
 }
 
 /**

@@ -140,6 +140,7 @@ $wgLanguageCode = "en";
 
 ## Default skin: you can change the default skin. Use the internal symbolic
 ## names, ie 'standard', 'nostalgia', 'cologneblue', 'monobook':
+require_once "$IP/skins/cavendish/cavendish.php";
 $wgDefaultSkin = 'cavendish';
 $wgAllowUserSkin = false;
 
@@ -306,4 +307,28 @@ function array_clean(array $haystack){
 function time2date($time, $format='F j, Y'){
     $strtime = strtotime($time);
     return date($format, $strtime);
+}
+
+/**
+ * Returns a HTML comment with the elapsed time since request.
+ * This method has no side effects.
+ * @return string
+ */
+function wfReportTimeOld() {
+	global $wgRequestTime, $wgShowHostnames;
+
+	$now = wfTime();
+	$elapsed = $now - $wgRequestTime;
+    $mem = memory_get_peak_usage(true);
+    $bytes = array(1 => 'B', 2 => 'KiB', 3 => 'MiB', 4 => 'GiB');
+    $ind = 1;
+    while ($mem > 1024 && $ind < count($bytes)) {
+	    $mem = $mem / 1024;
+	    $ind++;
+    }
+	
+
+	return $wgShowHostnames
+		? sprintf( "<!-- Served by %s in %01.3f secs (%01.1f %s used). -->", wfHostname(), $elapsed, $mem, $bytes[$ind] )
+		: sprintf( "<!-- Served in %01.3f secs (%01.1f %s used). -->", $elapsed, $mem, $bytes[$ind] );
 }

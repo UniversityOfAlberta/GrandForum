@@ -10,7 +10,7 @@ $wgHooks['UnknownAction'][] = 'MultimediaStorySearch';
 $wgHooks['ToolboxLinks'][] = 'AddMultimediaStoryPage::createToolboxLinks';
 
 function runAddMultimediaStoryPage($par){
-    AddMultimediaStoryPage::run($par);
+    AddMultimediaStoryPage::execute($par);
 }
 
 function MultimediaStorySearch($action, $request){
@@ -91,11 +91,10 @@ function generateMultimediaStoryScript($category){
 class AddMultimediaStoryPage extends SpecialPage{
 
 	function AddMultimediaStoryPage() {
-		wfLoadExtensionMessages('AddMultimediaStoryPage');
-		SpecialPage::SpecialPage("AddMultimediaStoryPage", HQP.'During+', true, 'runAddMultimediaStoryPage');
+		SpecialPage::__construct("AddMultimediaStoryPage", HQP.'During+', true, 'runAddMultimediaStoryPage');
 	}
 
-	function run($par){
+	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
 	    $wgOut->addScript(generateMultimediaStoryScript("Multimedia_Story"));
 		$wgOut->addHTML("<i>Multimedia Stories</i> are any media form which has been produced as a result of {$config->getValue('networkName')} participation.<br /><br />Enter a short title for the Story in the text field below. If there is an already existing Story with the same or similar title, it will be listed below the text field. If you see the Story in the list, then you can click on the title to edit its information, otherwise you can choose to create the Story with the name you have entered by clicking the 'Create' button.<br /><br />

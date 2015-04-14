@@ -8,22 +8,21 @@ $wgSpecialPageGroups['EditRelations'] = 'network-tools';
 $wgHooks['ToolboxLinks'][] = 'EditRelations::createToolboxLinks';
 
 function runEditRelations($par) {
-  EditRelations::run($par);
+  EditRelations::execute($par);
 }
 
 class EditRelations extends SpecialPage{
 
 	function EditRelations() {
-		wfLoadExtensionMessages('EditRelations');
 		if(FROZEN){
-		    SpecialPage::SpecialPage("EditRelations", STAFF.'+', true, 'runEditRelations');
+		    SpecialPage::__construct("EditRelations", STAFF.'+', true, 'runEditRelations');
 	    }
 	    else{
-	        SpecialPage::SpecialPage("EditRelations", CNI.'+', true, 'runEditRelations');
+	        SpecialPage::__construct("EditRelations", CNI.'+', true, 'runEditRelations');
 	    }
 	}
 
-	function run($par){
+	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
 		$wgOut->addHTML("Here you can edit all the relations relevant to your role.");
 	    $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/scripts/switcheroo.js'></script>");

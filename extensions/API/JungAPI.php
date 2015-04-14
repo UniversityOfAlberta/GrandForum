@@ -51,7 +51,7 @@ class JungAPI extends API{
     }
 
     function processParams($params){
-        $_GET['year'] = mysql_real_escape_string($_GET['year']);
+        $_GET['year'] = DBFunctions::escape($_GET['year']);
         $_GET['passcode'] = (isset($_GET['passcode'])) ? $_GET['passcode'] : "";
     }
 

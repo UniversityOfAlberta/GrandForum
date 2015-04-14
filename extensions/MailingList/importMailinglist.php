@@ -75,10 +75,10 @@ function parseMailArchive($filename, $proj_id) {
 		$userTable = getTableName("user");
 		
 		if(isset($fromAddrA[1])){
-		    $addr = mysql_real_escape_string("{$fromAddrA[0]}%{$fromAddrA[1]}");
+		    $addr = DBFunctions::escape("{$fromAddrA[0]}%{$fromAddrA[1]}");
 		}
 		else{
-		    $addr = mysql_real_escape_string($fromAddrA[0]);
+		    $addr = DBFunctions::escape($fromAddrA[0]);
 		}
 		
 		$sql = "SELECT DISTINCT u.user_name as user_name

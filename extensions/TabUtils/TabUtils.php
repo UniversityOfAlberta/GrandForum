@@ -1,6 +1,6 @@
 <?php
 
-$wgHooks['SkinTemplateContentActions'][1000] = 'TabUtils::actionTabs';
+$wgHooks['SkinTemplateNavigation::Universal'][1000] = 'TabUtils::actionTabs';
 
 class TabUtils {
 
@@ -36,17 +36,19 @@ class TabUtils {
         $tabs[$id]['subtabs'] = array();
     }
 
-    static function actionTabs(&$content_actions){
+    static function actionTabs(&$skin, &$content_actions){
         global $wgTitle, $wgServer, $wgScriptPath, $wgOut, $dropdownScript;
         $new_actions = array();
-        foreach($content_actions as $key => $action){
-            if(strstr($action['class'], 'selected') !== false && !is_numeric($key)){
-                continue;
+        foreach($content_actions as $key1 => $actions){
+            foreach($actions as $key => $action){
+                if(strstr($action['class'], 'selected') !== false && !is_numeric($key)){
+                    continue;
+                }
+                if(!is_numeric($key)){
+                    $action['class'] = 'action';
+                }
             }
-            if(!is_numeric($key)){
-                $action['class'] = 'action';
-            }
-            $new_actions[$key] = $action;
+            $new_actions[$key1][$key] = $action;
         }
         foreach(self::$customActions as $key => $action){
             $new_actions[$key] = $action;
@@ -69,19 +71,22 @@ class TabUtils {
     }
     
     static function clearTabs($skin, &$content_actions){
-        unset($content_actions['protect']);
-        unset($content_actions['watch']);
-        unset($content_actions['unwatch']);
-        unset($content_actions['create']);
-        unset($content_actions['history']);
-        unset($content_actions['delete']);
-        unset($content_actions['talk']);
-        unset($content_actions['move']);
-        unset($content_actions['edit']);
-        unset($content_actions['addsection']);
-        unset($content_actions['editTemplate']);
-        unset($content_actions['Create from template']);
-        unset($content_actions['instance list']);
+        foreach($content_actions as $key => $action){
+            unset($action['protect']);
+            unset($action['watch']);
+            unset($action['unwatch']);
+            unset($action['create']);
+            unset($action['history']);
+            unset($action['delete']);
+            unset($action['talk']);
+            unset($action['move']);
+            unset($action['edit']);
+            unset($action['addsection']);
+            unset($action['editTemplate']);
+            unset($action['Create from template']);
+            unset($action['instance list']);
+            $content_actions[$key] = $action;
+        }
         return true;
     }
     
@@ -102,7 +107,7 @@ class TabUtils {
      */
     static function clearActions(){
         global $wgHooks;
-        $wgHooks['SkinTemplateTabs'][] = 'TabUtils::clearTabs';
+        $wgHooks['SkinTemplateNavigation'][] = 'TabUtils::clearTabs';
     }
 
 }

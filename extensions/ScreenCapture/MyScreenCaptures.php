@@ -6,17 +6,16 @@ $wgExtensionMessagesFiles['MyScreenCaptures'] = $dir . 'MyScreenCaptures.i18n.ph
 $wgSpecialPageGroups['MyScreenCaptures'] = 'network-tools';
 
 function runMyScreenCaptures($par) {
-	MyScreenCaptures::run($par);
+	MyScreenCaptures::execute($par);
 }
 
 class MyScreenCaptures extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('MyScreenCaptures');
-		SpecialPage::SpecialPage("MyScreenCaptures", HQP.'+', true, 'runMyScreenCaptures');
+		SpecialPage::__construct("MyScreenCaptures", HQP.'+', true, 'runMyScreenCaptures');
 	}
 	
-	function run(){
+	function execute(){
 	    global $wgUser, $wgOut, $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
 	    $recordings = $me->getRecordings();

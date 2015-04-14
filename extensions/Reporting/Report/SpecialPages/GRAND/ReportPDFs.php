@@ -15,8 +15,7 @@ class ReportPDFs extends AbstractReport{
         $report = @$_GET['report'];
         
         $this->AbstractReport(dirname(__FILE__)."/../../ReportXML/{$config->getValue('networkName')}/$report.xml", -1, false, false);
-        wfLoadExtensionMessages("ReportPDFs");
-        SpecialPage::SpecialPage("ReportPDFs", null, true);
+        SpecialPage::__construct("ReportPDFs", null, true);
     }
     
     function userCanExecute($user){

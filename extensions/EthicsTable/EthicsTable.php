@@ -6,17 +6,16 @@ $wgExtensionMessagesFiles['EthicsTable'] = $dir . 'EthicsTable.i18n.php';
 $wgSpecialPageGroups['EthicsTable'] = 'network-tools';
 
 function runEthicsTable($par) {
-	EthicsTable::run($par);
+	EthicsTable::execute($par);
 }
 
 class EthicsTable extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('EthicsTable');
-		SpecialPage::SpecialPage("EthicsTable", HQP.'+', true, 'runEthicsTable');
+		SpecialPage::__construct("EthicsTable", HQP.'+', true, 'runEthicsTable');
 	}
 	
-	static function run(){
+	static function execute(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 	   
 	    if(isset($_GET['getTable'])){

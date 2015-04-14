@@ -3,9 +3,8 @@
 -- Unique indexes need to be handled with INSERT SELECT since just running
 -- the CREATE INDEX statement will fail if there are duplicate values.
 --
--- Ignore duplicates, several tables will have them (e.g. bug 16966) but in 
--- most cases it's harmless to discard them. We'll keep the old tables with 
--- duplicates in so that the user can recover them in case of disaster.
+-- Ignore duplicates, several tables will have them (e.g. bug 16966) but in
+-- most cases it's harmless to discard them.
 
 --------------------------------------------------------------------------------
 -- Drop temporary tables from aborted runs
@@ -29,6 +28,8 @@ DROP TABLE IF EXISTS /*_*/interwiki_tmp;
 DROP TABLE IF EXISTS /*_*/page_restrictions_tmp;
 DROP TABLE IF EXISTS /*_*/protected_titles_tmp;
 DROP TABLE IF EXISTS /*_*/page_props_tmp;
+DROP TABLE IF EXISTS /*_*/archive_tmp;
+DROP TABLE IF EXISTS /*_*/externallinks_tmp;
 
 --------------------------------------------------------------------------------
 -- Create new tables
@@ -219,7 +220,7 @@ CREATE TABLE /*_*/math_tmp (
   math_outputhash varbinary(16) NOT NULL,
   math_html_conservativeness tinyint NOT NULL,
   math_html text,
-  math_mathml text  
+  math_mathml text
 );
 
 CREATE UNIQUE INDEX /*i*/math_inputhash ON /*_*/math_tmp (math_inputhash);
@@ -236,13 +237,13 @@ CREATE UNIQUE INDEX /*i*/iw_prefix ON /*_*/interwiki_tmp (iw_prefix);
 
 
 CREATE TABLE /*_*/page_restrictions_tmp (
+  pr_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
   pr_page int NOT NULL,
   pr_type varbinary(60) NOT NULL,
   pr_level varbinary(60) NOT NULL,
   pr_cascade tinyint NOT NULL,
   pr_user int NULL,
-  pr_expiry varbinary(14) NULL,
-  pr_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT
+  pr_expiry varbinary(14) NULL
 );
 
 CREATE UNIQUE INDEX /*i*/pr_pagetype ON /*_*/page_restrictions_tmp (pr_page,pr_type);
@@ -269,6 +270,47 @@ CREATE TABLE /*_*/page_props_tmp (
 );
 CREATE UNIQUE INDEX /*i*/pp_page_propname ON /*_*/page_props_tmp (pp_page,pp_propname);
 
+--
+-- Holding area for deleted articles, which may be viewed
+-- or restored by admins through the Special:Undelete interface.
+-- The fields generally correspond to the page, revision, and text
+-- fields, with several caveats.
+-- Cannot reasonably create views on this table, due to the presence of TEXT
+-- columns.
+CREATE TABLE /*$wgDBprefix*/archive_tmp (
+   ar_id NOT NULL PRIMARY KEY clustered IDENTITY,
+   ar_namespace SMALLINT NOT NULL DEFAULT 0,
+   ar_title NVARCHAR(255) NOT NULL DEFAULT '',
+   ar_text NVARCHAR(MAX) NOT NULL,
+   ar_comment NVARCHAR(255) NOT NULL,
+   ar_user INT NULL REFERENCES /*$wgDBprefix*/[user](user_id) ON DELETE SET NULL,
+   ar_user_text NVARCHAR(255) NOT NULL,
+   ar_timestamp DATETIME NOT NULL DEFAULT GETDATE(),
+   ar_minor_edit BIT NOT NULL DEFAULT 0,
+   ar_flags NVARCHAR(255) NOT NULL,
+   ar_rev_id INT,
+   ar_text_id INT,
+   ar_deleted BIT NOT NULL DEFAULT 0,
+   ar_len INT DEFAULT NULL,
+   ar_page_id INT NULL,
+   ar_parent_id INT NULL
+);
+CREATE INDEX /*$wgDBprefix*/ar_name_title_timestamp ON /*$wgDBprefix*/archive_tmp(ar_namespace,ar_title,ar_timestamp);
+CREATE INDEX /*$wgDBprefix*/ar_usertext_timestamp ON /*$wgDBprefix*/archive_tmp(ar_user_text,ar_timestamp);
+CREATE INDEX /*$wgDBprefix*/ar_user_text    ON /*$wgDBprefix*/archive_tmp(ar_user_text);
+
+--
+-- Track links to external URLs
+-- IE >= 4 supports no more than 2083 characters in a URL
+CREATE TABLE /*$wgDBprefix*/externallinks_tmp (
+   el_id INT NOT NULL PRIMARY KEY clustered IDENTITY,
+   el_from INT NOT NULL DEFAULT '0',
+   el_to VARCHAR(2083) NOT NULL,
+   el_index VARCHAR(896) NOT NULL,
+);
+-- Maximum key length ON SQL Server is 900 bytes
+CREATE INDEX /*$wgDBprefix*/externallinks_index   ON /*$wgDBprefix*/externallinks_tmp(el_index);
+
 --------------------------------------------------------------------------------
 -- Populate the new tables using INSERT SELECT
 --------------------------------------------------------------------------------
@@ -291,47 +333,53 @@ INSERT OR IGNORE INTO /*_*/interwiki_tmp SELECT * FROM /*_*/interwiki;
 INSERT OR IGNORE INTO /*_*/page_restrictions_tmp SELECT * FROM /*_*/page_restrictions;
 INSERT OR IGNORE INTO /*_*/protected_titles_tmp SELECT * FROM /*_*/protected_titles;
 INSERT OR IGNORE INTO /*_*/page_props_tmp SELECT * FROM /*_*/page_props;
+INSERT OR IGNORE INTO /*_*/archive_tmp SELECT * FROM /*_*/archive;
+INSERT OR IGNORE INTO /*_*/externallinks_tmp SELECT * FROM /*_*/externallinks;
 
 --------------------------------------------------------------------------------
 -- Do the table renames
 --------------------------------------------------------------------------------
 
-ALTER TABLE /*_*/user RENAME TO /*_*/user_old_13;
+DROP TABLE /*_*/user;
 ALTER TABLE /*_*/user_tmp RENAME TO /*_*/user;
-ALTER TABLE /*_*/user_groups RENAME TO /*_*/user_groups_old_13;
+DROP TABLE /*_*/user_groups;
 ALTER TABLE /*_*/user_groups_tmp RENAME TO /*_*/user_groups;
-ALTER TABLE /*_*/page RENAME TO /*_*/page_old_13;
+DROP TABLE /*_*/page;
 ALTER TABLE /*_*/page_tmp RENAME TO /*_*/page;
-ALTER TABLE /*_*/revision RENAME TO /*_*/revision_old_13;
+DROP TABLE /*_*/revision;
 ALTER TABLE /*_*/revision_tmp RENAME TO /*_*/revision;
-ALTER TABLE /*_*/pagelinks RENAME TO /*_*/pagelinks_old_13;
+DROP TABLE /*_*/pagelinks;
 ALTER TABLE /*_*/pagelinks_tmp RENAME TO /*_*/pagelinks;
-ALTER TABLE /*_*/templatelinks RENAME TO /*_*/templatelinks_old_13;
+DROP TABLE /*_*/templatelinks;
 ALTER TABLE /*_*/templatelinks_tmp RENAME TO /*_*/templatelinks;
-ALTER TABLE /*_*/imagelinks RENAME TO /*_*/imagelinks_old_13;
+DROP TABLE /*_*/imagelinks;
 ALTER TABLE /*_*/imagelinks_tmp RENAME TO /*_*/imagelinks;
-ALTER TABLE /*_*/categorylinks RENAME TO /*_*/categorylinks_old_13;
+DROP TABLE /*_*/categorylinks;
 ALTER TABLE /*_*/categorylinks_tmp RENAME TO /*_*/categorylinks;
-ALTER TABLE /*_*/category RENAME TO /*_*/category_old_13;
+DROP TABLE /*_*/category;
 ALTER TABLE /*_*/category_tmp RENAME TO /*_*/category;
-ALTER TABLE /*_*/langlinks RENAME TO /*_*/langlinks_old_13;
+DROP TABLE /*_*/langlinks;
 ALTER TABLE /*_*/langlinks_tmp RENAME TO /*_*/langlinks;
-ALTER TABLE /*_*/site_stats RENAME TO /*_*/site_stats_old_13;
+DROP TABLE /*_*/site_stats;
 ALTER TABLE /*_*/site_stats_tmp RENAME TO /*_*/site_stats;
-ALTER TABLE /*_*/ipblocks RENAME TO /*_*/ipblocks_old_13;
+DROP TABLE /*_*/ipblocks;
 ALTER TABLE /*_*/ipblocks_tmp RENAME TO /*_*/ipblocks;
-ALTER TABLE /*_*/watchlist RENAME TO /*_*/watchlist_old_13;
+DROP TABLE /*_*/watchlist;
 ALTER TABLE /*_*/watchlist_tmp RENAME TO /*_*/watchlist;
-ALTER TABLE /*_*/math RENAME TO /*_*/math_old_13;
+DROP TABLE /*_*/math;
 ALTER TABLE /*_*/math_tmp RENAME TO /*_*/math;
-ALTER TABLE /*_*/interwiki RENAME TO /*_*/interwiki_old_13;
+DROP TABLE /*_*/interwiki;
 ALTER TABLE /*_*/interwiki_tmp RENAME TO /*_*/interwiki;
-ALTER TABLE /*_*/page_restrictions RENAME TO /*_*/page_restrictions_old_13;
+DROP TABLE /*_*/page_restrictions;
 ALTER TABLE /*_*/page_restrictions_tmp RENAME TO /*_*/page_restrictions;
-ALTER TABLE /*_*/protected_titles RENAME TO /*_*/protected_titles_old_13;
+DROP TABLE /*_*/protected_titles;
 ALTER TABLE /*_*/protected_titles_tmp RENAME TO /*_*/protected_titles;
-ALTER TABLE /*_*/page_props RENAME TO /*_*/page_props_old_13;
+DROP TABLE /*_*/page_props;
 ALTER TABLE /*_*/page_props_tmp RENAME TO /*_*/page_props;
+DROP TABLE /*_*/archive;
+ALTER TABLE /*_*/archive_tmp RENAME TO /*_*/archive;
+DROP TABLE /*_*/externalllinks;
+ALTER TABLE /*_*/externallinks_tmp RENAME TO /*_*/externallinks;
 
 --------------------------------------------------------------------------------
 -- Drop and create tables with unique indexes but no valuable data
@@ -407,11 +455,10 @@ CREATE INDEX /*i*/type_time ON /*_*/logging (log_type, log_timestamp);
 CREATE INDEX /*i*/user_time ON /*_*/logging (log_user, log_timestamp);
 CREATE INDEX /*i*/page_time ON /*_*/logging (log_namespace, log_title, log_timestamp);
 CREATE INDEX /*i*/times ON /*_*/logging (log_timestamp);
-CREATE INDEX /*i*/tb_page ON /*_*/trackbacks (tb_page);
 CREATE INDEX /*i*/job_cmd_namespace_title ON /*_*/job (job_cmd, job_namespace, job_title);
 CREATE INDEX /*i*/rd_ns_title ON /*_*/redirect (rd_namespace,rd_title,rd_from);
 CREATE INDEX /*i*/qcc_type ON /*_*/querycachetwo (qcc_type,qcc_value);
 CREATE INDEX /*i*/qcc_title ON /*_*/querycachetwo (qcc_type,qcc_namespace,qcc_title);
 CREATE INDEX /*i*/qcc_titletwo ON /*_*/querycachetwo (qcc_type,qcc_namespacetwo,qcc_titletwo);
 
-INSERT INTO /*_*/updatelog VALUES ('initial_indexes');
+INSERT INTO /*_*/updatelog (ul_key) VALUES ('initial_indexes');

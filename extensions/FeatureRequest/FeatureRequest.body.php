@@ -10,17 +10,16 @@ define("NS_GOV", 212);
 define("NS_FeatureRequest", 214);
 
 function runFeatureRequest($par) {
-  FeatureRequest::run($par);
+  FeatureRequest::execute($par);
 }
 
 class FeatureRequest extends SpecialPage{
 
 	function FeatureRequest() {
-		wfLoadExtensionMessages('FeatureRequest');
-		SpecialPage::SpecialPage("FeatureRequest", HQP.'+', true, 'runFeatureRequest');
+		SpecialPage::__construct("FeatureRequest", HQP.'+', true, 'runFeatureRequest');
 	}
 
-	function run($par){
+	function execute($par){
 		global $wgOut, $wgUser, $wgTitle, $wgScriptPath;
 		if(!isset($_POST['submit'])){ // Form not entered yet
 			FeatureRequest::generateFormHTML($wgOut);

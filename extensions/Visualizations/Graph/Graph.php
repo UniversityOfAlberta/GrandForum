@@ -1,7 +1,5 @@
 <?php
 
-//require_once("SpecialGraph.php");
-
 class Graph extends Visualization {
     
     static $a = 0;

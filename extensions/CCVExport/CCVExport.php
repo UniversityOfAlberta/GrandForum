@@ -14,17 +14,16 @@ $degree_map =
         'PostDoc'=>array("00000000000000000000000000000074","Post-doctorate"));
 
 function runCCVExport($par) {
-    CCVExport::run($par);
+    CCVExport::execute($par);
 }
 
 class CCVExport extends SpecialPage {
 
     function __construct() {
-        wfLoadExtensionMessages('CCVExport');
-        SpecialPage::SpecialPage("CCVExport", HQP.'+', true, 'runCCVExport');
+        SpecialPage::__construct("CCVExport", HQP.'+', true, 'runCCVExport');
     }
     
-    static function run(){
+    function execute(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
         global $userID, $wgDBname;
       

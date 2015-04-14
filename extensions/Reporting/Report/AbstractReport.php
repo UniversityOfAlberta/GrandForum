@@ -237,12 +237,10 @@ abstract class AbstractReport extends SpecialPage {
                 $this->currentSection = @$this->sections[0];
             }
             $this->currentSection->selected = true;
-            wfLoadExtensionMessages("Report");
-            SpecialPage::SpecialPage("Report", HQP.'+', false);
+            SpecialPage::__construct("Report", HQP.'+', false);
         }
         else{
-            wfLoadExtensionMessages("Report");
-            SpecialPage::SpecialPage("Report", HQP.'+', false);
+            SpecialPage::__construct("Report", HQP.'+', false);
         }
     }
     

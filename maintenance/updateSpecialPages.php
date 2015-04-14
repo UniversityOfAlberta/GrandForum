@@ -1,119 +1,166 @@
 <?php
 /**
- * Run this script periodically if you have miser mode enabled, to refresh the
- * caches
+ * Update for cached special pages.
+ * Run this script periodically if you have miser mode enabled.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
  * @ingroup Maintenance
  */
-$options = array('only','help');
 
-require_once( 'commandLine.inc' );
+require_once __DIR__ . '/Maintenance.php';
 
-require_once( "$IP/includes/SpecialPage.php" );
-require_once( "$IP/includes/QueryPage.php" );
-
-if(@$options['help']) {
-	print "usage:updateSpecialPages.php [--help] [--only=page]\n";
-	print "  --help      : this help message\n";
-	print "  --list      : list special pages names\n";
-	print "  --only=page : only update 'page'. Ex: --only=BrokenRedirects\n";
-	print "  --override  : update even pages which have had updates disabled\n";
-	wfDie();
-}
-
-$wgOut->disable();
-$dbw = wfGetDB( DB_MASTER );
-
-foreach( $wgSpecialPageCacheUpdates as $special => $call ) {
-	if( !is_callable($call) ) {
-		print "Uncallable function $call!\n";
-		continue;
-	}
-	$t1 = explode( ' ', microtime() );
-	call_user_func( $call, $dbw );
-	$t2 = explode( ' ', microtime() );
-	printf( '%-30s ', $special );
-	$elapsed = ($t2[0] - $t1[0]) + ($t2[1] - $t1[1]);
-	$hours = intval( $elapsed / 3600 );
-	$minutes = intval( $elapsed % 3600 / 60 );
-	$seconds = $elapsed - $hours * 3600 - $minutes * 60;
-	if ( $hours ) {
-		print $hours . 'h ';
-	}
-	if ( $minutes ) {
-		print $minutes . 'm ';
-	}
-	printf( "completed in %.2fs\n", $seconds );
-	# Wait for the slave to catch up
-	wfWaitForSlaves( 5 );
-}
-
-foreach( $wgQueryPages as $page ) {
-	@list( $class, $special, $limit ) = $page;
-
-	# --list : just show the name of pages
-	if( @$options['list'] ) {
-		print "$special\n";
-		continue;
+/**
+ * Maintenance script to update cached special pages.
+ *
+ * @ingroup Maintenance
+ */
+class UpdateSpecialPages extends Maintenance {
+	public function __construct() {
+		parent::__construct();
+		$this->addOption( 'list', 'List special page names' );
+		$this->addOption( 'only', 'Only update "page"; case sensitive, ' .
+			'check correct case by calling this script with --list or on ' .
+			'includes/QueryPage.php. Ex: --only=BrokenRedirects', false, true );
+		$this->addOption( 'override', 'Also update pages that have updates disabled' );
 	}
 
-	if ( !isset( $options['override'] ) && $wgDisableQueryPageUpdate && in_array( $special, $wgDisableQueryPageUpdate ) ) {
-		printf("%-30s disabled\n", $special);
-		continue;
-	}
+	public function execute() {
+		global $wgQueryCacheLimit, $wgDisableQueryPageUpdate;
 
-	$specialObj = SpecialPage::getPage( $special );
-	if ( !$specialObj ) {
-		print "No such special page: $special\n";
-		exit;
-	}
-	if ( !class_exists( $class ) ) {
-		$file = $specialObj->getFile();
-		require_once( $file );
-	}
-	$queryPage = new $class;
+		$dbw = wfGetDB( DB_MASTER );
 
-	if( !isset($options['only']) or $options['only'] == $queryPage->getName() ) {
-		printf( '%-30s ',  $special );
-		if ( $queryPage->isExpensive() ) {
-			$t1 = explode( ' ', microtime() );
-			# Do the query
-			$num = $queryPage->recache( $limit === null ? $wgQueryCacheLimit : $limit );
-			$t2 = explode( ' ', microtime() );
-			if ( $num === false ) {
-				print "FAILED: database error\n";
+		$this->doSpecialPageCacheUpdates( $dbw );
+
+		foreach ( QueryPage::getPages() as $page ) {
+			list( $class, $special ) = $page;
+			$limit = isset( $page[2] ) ? $page[2] : null;
+
+			# --list : just show the name of pages
+			if ( $this->hasOption( 'list' ) ) {
+				$this->output( "$special [QueryPage]\n" );
+				continue;
+			}
+
+			if ( !$this->hasOption( 'override' )
+				&& $wgDisableQueryPageUpdate && in_array( $special, $wgDisableQueryPageUpdate ) )
+			{
+				$this->output( sprintf( "%-30s [QueryPage] disabled\n", $special ) );
+				continue;
+			}
+
+			$specialObj = SpecialPageFactory::getPage( $special );
+			if ( !$specialObj ) {
+				$this->output( "No such special page: $special\n" );
+				exit;
+			}
+			if ( $specialObj instanceof QueryPage ) {
+				$queryPage = $specialObj;
 			} else {
-				print "got $num rows in ";
+				if ( !class_exists( $class ) ) {
+					$file = $specialObj->getFile();
+					require_once $file;
+				}
+				$queryPage = new $class;
+			}
 
-				$elapsed = ($t2[0] - $t1[0]) + ($t2[1] - $t1[1]);
+			if ( !$this->hasOption( 'only' ) || $this->getOption( 'only' ) == $queryPage->getName() ) {
+				$this->output( sprintf( '%-30s [QueryPage] ', $special ) );
+				if ( $queryPage->isExpensive() ) {
+					$t1 = explode( ' ', microtime() );
+					# Do the query
+					$num = $queryPage->recache( $limit === null ? $wgQueryCacheLimit : $limit );
+					$t2 = explode( ' ', microtime() );
+					if ( $num === false ) {
+						$this->output( "FAILED: database error\n" );
+					} else {
+						$this->output( "got $num rows in " );
+
+						$elapsed = ( $t2[0] - $t1[0] ) + ( $t2[1] - $t1[1] );
+						$hours = intval( $elapsed / 3600 );
+						$minutes = intval( $elapsed % 3600 / 60 );
+						$seconds = $elapsed - $hours * 3600 - $minutes * 60;
+						if ( $hours ) {
+							$this->output( $hours . 'h ' );
+						}
+						if ( $minutes ) {
+							$this->output( $minutes . 'm ' );
+						}
+						$this->output( sprintf( "%.2fs\n", $seconds ) );
+					}
+					# Reopen any connections that have closed
+					if ( !wfGetLB()->pingAll() ) {
+						$this->output( "\n" );
+						do {
+							$this->error( "Connection failed, reconnecting in 10 seconds..." );
+							sleep( 10 );
+						} while ( !wfGetLB()->pingAll() );
+						$this->output( "Reconnected\n\n" );
+					}
+					# Wait for the slave to catch up
+					wfWaitForSlaves();
+				} else {
+					$this->output( "cheap, skipped\n" );
+				}
+				if ( $this->hasOption( 'only' ) ) {
+					break;
+				}
+			}
+		}
+	}
+
+	public function doSpecialPageCacheUpdates( $dbw ) {
+		global $wgSpecialPageCacheUpdates;
+
+		foreach ( $wgSpecialPageCacheUpdates as $special => $call ) {
+			# --list : just show the name of pages
+			if ( $this->hasOption( 'list' ) ) {
+				$this->output( "$special [callback]\n" );
+				continue;
+			}
+
+			if ( !$this->hasOption( 'only' ) || $this->getOption( 'only' ) == $special ) {
+				if ( !is_callable( $call ) ) {
+					$this->error( "Uncallable function $call!" );
+					continue;
+				}
+				$this->output( sprintf( '%-30s [callback] ', $special ) );
+				$t1 = explode( ' ', microtime() );
+				call_user_func( $call, $dbw );
+				$t2 = explode( ' ', microtime() );
+
+				$this->output( "completed in " );
+				$elapsed = ( $t2[0] - $t1[0] ) + ( $t2[1] - $t1[1] );
 				$hours = intval( $elapsed / 3600 );
 				$minutes = intval( $elapsed % 3600 / 60 );
 				$seconds = $elapsed - $hours * 3600 - $minutes * 60;
 				if ( $hours ) {
-					print $hours . 'h ';
+					$this->output( $hours . 'h ' );
 				}
 				if ( $minutes ) {
-					print $minutes . 'm ';
+					$this->output( $minutes . 'm ' );
 				}
-				printf( "%.2fs\n", $seconds );
-		}
-		# Reopen any connections that have closed
-		if ( !wfGetLB()->pingAll())  {
-			print "\n";
-			do {
-				print "Connection failed, reconnecting in 10 seconds...\n";
-				sleep(10);
-			} while ( !wfGetLB()->pingAll() );
-			print "Reconnected\n\n";
-		} else {
-			# Commit the results
-			$dbw->immediateCommit();
-		}
-		# Wait for the slave to catch up
-		wfWaitForSlaves( 5 );
-		} else {
-			print "cheap, skipped\n";
+				$this->output( sprintf( "%.2fs\n", $seconds ) );
+				# Wait for the slave to catch up
+				wfWaitForSlaves();
+			}
 		}
 	}
 }
+
+$maintClass = "UpdateSpecialPages";
+require_once RUN_MAINTENANCE_IF_MAIN;

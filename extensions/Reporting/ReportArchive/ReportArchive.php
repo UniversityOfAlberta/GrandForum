@@ -11,14 +11,13 @@ $wgHooks['SubLevelTabs'][] = 'ReportArchive::createSubTabs';
 #require_once($dir . '../Report/ReportStorage.php');
 
 function runReportArchive($par) {
-    ReportArchive::run($par);
+    ReportArchive::execute($par);
 }
 
 class ReportArchive extends SpecialPage {
 
     function __construct() {
-        wfLoadExtensionMessages('ReportArchive');
-        SpecialPage::SpecialPage("ReportArchive", '', true, 'runReportArchive');
+        SpecialPage::__construct("ReportArchive", '', true, 'runReportArchive');
     }
     
     function userCanExecute($user){
@@ -31,7 +30,7 @@ class ReportArchive extends SpecialPage {
         return false;
     }
     
-    function run(){
+    function execute(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
         if(date('m') >= 3){
             $year = (isset($_GET['year']) && is_numeric($_GET['year'])) ? $_GET['year'] : date('Y');

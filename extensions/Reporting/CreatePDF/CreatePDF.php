@@ -10,7 +10,7 @@ $wgExtensionMessagesFiles['CreatePDF'] = $dir . 'CreatePDF.i18n.php';
 $wgSpecialPageGroups['CreatePDF'] = 'report-reviewing';
 
 function runCreatePDF($par) {
-	CreatePDF::run($par);
+	CreatePDF::execute($par);
 }
 
 class CreatePDF extends SpecialPage {
@@ -24,11 +24,10 @@ class CreatePDF extends SpecialPage {
                           'loi' => 'LOI');
 
 	function __construct() {
-		wfLoadExtensionMessages('CreatePDF');
-		SpecialPage::SpecialPage("CreatePDF", STAFF.'+', true, 'runCreatePDF');
+		SpecialPage::__construct("CreatePDF", STAFF.'+', true, 'runCreatePDF');
 	}
 	
-	function run(){
+	function execute(){
 	    global $wgUser, $wgOut, $wgServer, $wgScriptPath;
 	    $year = (isset($_GET['reportingYear'])) ? $_GET['reportingYear'] : REPORTING_YEAR;
 	    $type = (isset($_GET['type'])) ? $_GET['type'] : 'ni';

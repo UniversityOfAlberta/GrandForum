@@ -35,14 +35,13 @@ $special_evals = array(11,  // Kellogg.Booth
                        );
 
 function runReviewerConflicts($par) {
-	ReviewerConflicts::run($par);
+	ReviewerConflicts::execute($par);
 }
 
 class ReviewerConflicts extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('ReviewerConflicts');
-		SpecialPage::SpecialPage("ReviewerConflicts", null, true, 'runReviewerConflicts');
+		SpecialPage::__construct("ReviewerConflicts", null, true, 'runReviewerConflicts');
 	}
 
     function userCanExecute($user){
@@ -94,7 +93,7 @@ class ReviewerConflicts extends SpecialPage {
         return true;
     }
 	
-	static function run(){
+	static function execute(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 	    
 	    $reviewer_id = $wgUser->getId();

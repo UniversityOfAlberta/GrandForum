@@ -111,7 +111,7 @@ class MailingList extends BackboneModel {
     }
 
     static function getThreads($project_name){
-        $project_name = mysql_real_escape_string($project_name);
+        $project_name = DBFunctions::escape($project_name);
         $sql = "SELECT m.refid_header, m.project_id, MIN(date) as first_date, MAX(date) as last_date
                 FROM wikidev_projects p, wikidev_messages m
                 WHERE m.project_id = p.projectid
@@ -123,8 +123,8 @@ class MailingList extends BackboneModel {
     
     static function getMessages($project_id, $thread){
         if(!isset(self::$threadCache[$project_id][$thread])){
-            $thread = mysql_real_escape_string($thread);
-            $project_id = mysql_real_escape_string($project_id);
+            $thread = DBFunctions::escape($thread);
+            $project_id = DBFunctions::escape($project_id);
             $data = DBFunctions::select(array('wikidev_messages'),
                                         array('user_name',
                                               'author',

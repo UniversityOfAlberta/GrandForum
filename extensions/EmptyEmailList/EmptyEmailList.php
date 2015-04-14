@@ -8,17 +8,16 @@ $wgSpecialPageGroups['EmptyEmailList'] = 'other-tools';
 $wgHooks['SubLevelTabs'][] = 'EmptyEmailList::createSubTabs';
 
 function runEmptyEmailList($par) {
-  EmptyEmailList::run($par);
+  EmptyEmailList::execute($par);
 }
 
 class EmptyEmailList extends SpecialPage{
 
 	function EmptyEmailList() {
-		wfLoadExtensionMessages('EmptyEmailList');
-		SpecialPage::SpecialPage("EmptyEmailList", CNI.'+', true, 'runEmptyEmailList');
+		SpecialPage::__construct("EmptyEmailList", CNI.'+', true, 'runEmptyEmailList');
 	}
 
-	function run($par){
+	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
 	    $wgOut->addHTML("<table class='wikitable sortable' bgcolor='#aaaaaa' cellspacing='1' cellpadding='2' style='text-align:center;'>
 <tr bgcolor='#F2F2F2'><th>Last Name</th><th>First Name</th><th>Type</th><th>Email</th></tr>");

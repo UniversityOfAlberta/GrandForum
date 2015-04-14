@@ -8,8 +8,8 @@ class DeleteProjectAPI extends API{
     }
 
     function processParams($params){
-        $_POST['project'] = @mysql_real_escape_string($_POST['project']);
-        $_POST['effective_date'] = @mysql_real_escape_string($_POST['effective_date']);
+        $_POST['project'] = @DBFunctions::escape($_POST['project']);
+        $_POST['effective_date'] = @DBFunctions::escape($_POST['effective_date']);
     }
 
 	function doAction($noEcho=false){

@@ -2097,9 +2097,9 @@ class Person extends BackboneModel {
     }
     
     function getRelationsDuring($type='all', $startRange, $endRange){
-        $type = mysql_real_escape_string($type);
-        $startRange = mysql_real_escape_string($startRange);
-        $endRange = mysql_real_escape_string($endRange);
+        $type = DBFunctions::escape($type);
+        $startRange = DBFunctions::escape($startRange);
+        $endRange = DBFunctions::escape($endRange);
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user1 = '{$this->id}'\n";
@@ -3735,7 +3735,7 @@ class Person extends BackboneModel {
     }
     
     static function getAllEvaluates($type, $year = YEAR){
-        $type = mysql_real_escape_string($type);
+        $type = DBFunctions::escape($type);
         
         $sql = "SELECT DISTINCT sub_id 
                 FROM grand_eval
@@ -3757,7 +3757,7 @@ class Person extends BackboneModel {
     }
 
     function getEvaluates($type, $year = YEAR){
-        $type = mysql_real_escape_string($type);
+        $type = DBFunctions::escape($type);
         
         $sql = "SELECT *
                 FROM grand_eval

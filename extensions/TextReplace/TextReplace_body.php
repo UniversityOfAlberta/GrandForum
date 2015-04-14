@@ -4,7 +4,7 @@ class TextReplace extends SpecialPage{
   //TODO: Implement caching of lists so the database doesn't have to be queried for the entire list on every reload
   
   function TextReplace($listed = true) {
-    SpecialPage::SpecialPage("TextReplace");
+    SpecialPage::__construct("TextReplace");
     self::loadMessages();
   }
   

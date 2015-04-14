@@ -24,7 +24,7 @@ class PDF extends BackboneModel {
      * @return PDF The PDF that matches the report_id
      */
     static function newFromId($id){
-        $id = mysql_real_escape_string($id);
+        $id = DBFunctions::escape($id);
         $data = DBFunctions::execSQL("SELECT r.report_id, r.user_id, r.generation_user_id, r.submission_user_id, r.year, r.type, r.submitted, r.timestamp, r.token, i.sub_id
                                       FROM `grand_pdf_report` r LEFT JOIN `grand_pdf_index` i ON r.report_id = i.report_id
                                       WHERE r.report_id = '{$id}'");
@@ -37,7 +37,7 @@ class PDF extends BackboneModel {
      * @return PDF The PDF that matches the token
      */
     static function newFromToken($tok){
-        $tok = mysql_real_escape_string($tok);
+        $tok = DBFunctions::escape($tok);
         $data = DBFunctions::execSQL("SELECT r.report_id, r.user_id, r.generation_user_id, r.submission_user_id, r.year, r.type, r.submitted, r.timestamp, r.token, i.sub_id
                                       FROM `grand_pdf_report` r LEFT JOIN `grand_pdf_index` i ON r.report_id = i.report_id
                                       WHERE r.token = '{$tok}'");

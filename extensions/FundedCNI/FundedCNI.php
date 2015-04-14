@@ -6,18 +6,17 @@ $wgExtensionMessagesFiles['FundedCNI'] = $dir . 'FundedCNI.i18n.php';
 $wgSpecialPageGroups['FundedCNI'] = 'network-tools';
 
 function runFundedCNI($par) {
-	FundedCNI::run($par);
+	FundedCNI::execute($par);
 }
 
 
 class FundedCNI extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('FundedCNI');
-		SpecialPage::SpecialPage("FundedCNI", STAFF.'+', true, 'runFundedCNI');
+		SpecialPage::__construct("FundedCNI", STAFF.'+', true, 'runFundedCNI');
 	}
 	
-	static function run(){
+	static function execute(){
 	    global $wgOut, $wgServer, $wgScriptPath;
         
         $startYear = 2010+1;

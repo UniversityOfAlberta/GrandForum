@@ -56,9 +56,9 @@ class ReportStorage {
         $tok = md5($this->_uid . $uname . $tst . $hdata . $hpdf);
 
         $sql = "INSERT INTO grand_pdf_report (user_id, generation_user_id, year, type, special, auto, token, timestamp, len_pdf, hash_data, hash_pdf, data, html, pdf) VALUES ({$this->_uid}, {$impersonateId}, {$year}, {$type}, {$special}, {$auto}, '{$tok}', FROM_UNIXTIME({$tst}), '{$len}', '{$hdata}', '{$hpdf}', '" .
-            mysql_real_escape_string($sdata) . "', '" .
-            mysql_real_escape_string(utf8_decode($html)) . "', '" .
-            mysql_real_escape_string($pdf) . "');";
+            DBFunctions::escape($sdata) . "', '" .
+            DBFunctions::escape(utf8_decode($html)) . "', '" .
+            DBFunctions::escape($pdf) . "');";
 
         DBFunctions::execSQL($sql, true);
         DBFunctions::commit();
@@ -97,7 +97,7 @@ class ReportStorage {
     }
     
     function fetch_html($tok){
-        $tok = mysql_real_escape_string($tok);
+        $tok = DBFunctions::escape($tok);
         $sql = "SELECT html FROM grand_pdf_report WHERE token = '{$tok}';";
         $res = DBFunctions::execSQL($sql);
         if (DBFunctions::getNRows() <= 0) {
@@ -109,7 +109,7 @@ class ReportStorage {
     }
 
     function fetch_data($tok) {
-        $tok = mysql_real_escape_string($tok);
+        $tok = DBFunctions::escape($tok);
         $sql = "SELECT data FROM grand_pdf_report WHERE token = '{$tok}';";
         $res = DBFunctions::execSQL($sql);
         if (DBFunctions::getNRows() <= 0) {
@@ -124,7 +124,7 @@ class ReportStorage {
         // XXX: workaround for an odd bug where a previous token is sent.
         // Unfortunately, it does not solve the issue, which seems to be
         // due to stale client-side cache.
-        $tok = mysql_real_escape_string($tok);
+        $tok = DBFunctions::escape($tok);
         global $wgImpersonating, $wgRealUser;
         $impersonateId = $this->_uid;
         if($wgImpersonating){
@@ -160,7 +160,7 @@ class ReportStorage {
         // Unfortunately, it does not solve the issue, which seems to be
         // due to stale client-side cache.
         global $wgImpersonating, $wgRealUser;
-        $tok = mysql_real_escape_string($tok);
+        $tok = DBFunctions::escape($tok);
         $impersonateId = $this->_uid;
         if($wgImpersonating){
             $impersonateId = $wgRealUser->getId();

@@ -569,8 +569,8 @@ EOF;
             $this->warnings = true;
         }
 
-        $fname = mysql_real_escape_string($_POST['first_name']);
-        $lname = mysql_real_escape_string($_POST['last_name']);
+        $fname = DBFunctions::escape($_POST['first_name']);
+        $lname = DBFunctions::escape($_POST['last_name']);
         $d_level1a = $_POST['d_level1a'];
         $d_level1b = $_POST['d_level1b'];
         $d_level2 = $_POST['d_level2'];
@@ -604,7 +604,7 @@ EOF;
                 completed = '%s',
                 timestamp = CURRENT_TIMESTAMP
                 WHERE user_id = {$my_id}";
-        $sql = sprintf($sql, $fname, $lname, mysql_real_escape_string($disciplines), $use_forum_data, $use_survey_data, $current_tab, $completed);
+        $sql = sprintf($sql, $fname, $lname, DBFunctions::escape($disciplines), $use_forum_data, $use_survey_data, $current_tab, $completed);
         $result = DBFunctions::execSQL($sql, true);
 
         //echo $result;

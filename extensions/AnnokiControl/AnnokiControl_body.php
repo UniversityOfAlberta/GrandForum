@@ -1,18 +1,16 @@
 <?php
 
 function efRunAnnokiControl( $par ) {
-  AnnokiControl::run( $par );
+  AnnokiControl::execute( $par );
 }
  
 class AnnokiControl extends SpecialPage {
   function AnnokiControl() {
-    wfLoadExtensionMessages('AnnokiControl');
-    SpecialPage::SpecialPage("AnnokiControl", STAFF.'+', true, 'efRunAnnokiControl');
+    SpecialPage::__construct("AnnokiControl", STAFF.'+', true, 'efRunAnnokiControl');
   }
 
   function setLocalizedPageName(&$specialPageArray, $code) {
     // The localized title of the special page is among the messages of the extension:
-    wfLoadExtensionMessages('AnnokiControl');
     $text = wfMsg('AnnokiControl');
     // Convert from title in text form to DBKey and put it into the alias array:
     $title = Title::newFromText($text);
@@ -32,7 +30,7 @@ class AnnokiControl extends SpecialPage {
     return true;
   }
   
-  function run( $par ) {
+  function execute( $par ) {
     global $wgOut, $egAnnokiExtensions, $wgEmergencyContact;
     $wgOut->addWikiText("==Annoki Extension Manager==\n");
     $newHTML = "<div><table class='wikitable sortable' border=1 cellpadding=5>
