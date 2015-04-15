@@ -191,7 +191,7 @@ class Person extends BackboneModel {
             self::generateAliasCache();
             $aliases = self::$aliasCache;
             if(isset($aliases[$alias]) && isset(self::$idsCache[$aliases[$alias]])){
-                $data = self::$idsCache[$aliases[$alias]];
+                $data = array(self::$idsCache[$aliases[$alias]]);
             }
             else{
                 $data = array();
