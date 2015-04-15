@@ -763,7 +763,8 @@ class CavendishTemplate extends QuickTemplate {
 		       	    }
 		       	 }
 		       	 foreach($this->data['content_actions'] as $key => $action) {
-		       	    if($key == "nstab-special"){
+		       	    if($key == "nstab-special" || 
+		       	       $key == "varlang-watch"){
 		       	        continue;
 		       	    }
 		           ?><li
@@ -932,7 +933,8 @@ If you have forgotten your password please enter your login and ID and request a
 	            $returnTo .= str_replace(" ", "_", $_GET['title']);
 	        }
 	        else {
-	            $url = str_replace("$wgScriptPath/index.php/", "",  $wgRequest->getRequestURL());
+	            $url = str_replace("$wgScriptPath/", "", 
+	                   str_replace("index.php/", "", $wgRequest->getRequestURL()));
 	            $returnTo .= str_replace(" ", "_", $url);
 	        }
 	        $returnTo .= $getStr;

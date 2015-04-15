@@ -7,20 +7,16 @@ $wgSpecialPageGroups['AddMember'] = 'network-tools';
 
 $wgHooks['ToolboxLinks'][] = 'AddMember::createToolboxLinks';
 
-function runAddMember($par) {
-  AddMember::execute($par);
-}
-
 autoload_register('AddMember/Validations');
 
 class AddMember extends SpecialPage{
 
     function AddMember() {
         if(FROZEN){
-            SpecialPage::__construct("AddMember", STAFF.'+', true, 'runAddMember');
+            parent::__construct("AddMember", STAFF.'+', true);
         }
         else{
-            SpecialPage::__construct("AddMember", CNI.'+', true, 'runAddMember');
+            parent::__construct("AddMember", CNI.'+', true);
         }
     }
 

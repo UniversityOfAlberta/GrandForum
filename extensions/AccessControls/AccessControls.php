@@ -37,6 +37,7 @@ $wgExtensionFunctions[] = "UploadProtection::initUploadFiles";
 
 //$wgHooks['ParserAfterTidy'][] = 'showQueryCounter';
 $wgHooks['userCan'][] = 'onUserCan';
+$wgHooks['SpecialPageBeforeExecute'][] = 'onUserCanExecute';
 $wgHooks['AbortMove'][] = 'onAbortMove';
 $wgHooks['TitleMoveComplete'][] = 'onTitleMoveComplete';
 $wgHooks['FetchChangesList'][] = 'onFetchChangesList';
@@ -45,7 +46,6 @@ $wgHooks['EditFilter'][] = 'preventUnauthorizedTransclusionsOnSave';
 $wgHooks['ParserBeforeStrip'][] = 'preventUnauthorizedTransclusionOnPreview';
 $wgHooks['SkinTemplateTabs'][] = 'checkTabsPermissions';
 $wgHooks['ParserAfterTidy'][] = 'checkPublicSections';
-$wgHooks['OutputPageParserOutput'][] = 'test';
 $wgHooks['UserGetRights'][] = 'GrandAccess::setupGrandAccess';
 $wgHooks['isValidEmailAddr'][] = 'isValidEmailAddr';
 $wgHooks['UserSetCookies'][] = 'userSetCookies';

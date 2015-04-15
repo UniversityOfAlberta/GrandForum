@@ -28,7 +28,7 @@ class PersonPage {
             permissionError();
         }
         $me = Person::newFromId($wgUser->getId());
-        $nsText = str_replace("_", " ", $article->getTitle()->getNsText());
+        $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
         if(!isset($wgRoleValues[$nsText])){
             // Namespace is not a role namespace
             return true;

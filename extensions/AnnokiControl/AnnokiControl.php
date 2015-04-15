@@ -71,9 +71,6 @@ $egAnnokiExtensions['GrandObjectPage'] = array('name' => 'GrandObjectPage',
 $egAnnokiExtensions['IndexTables'] = array( 'name' => 'IndexTables',
                                             'path' => "$IP/extensions/IndexTables/IndexTable.body.php");
 
-$egAnnokiExtensions['Cal'] = array('name' => 'Calendar',
-                                   'path' => "$IP/extensions/Calendar/calendar_extension.php");
-
 $egAnnokiExtensions['TempEd'] = array('name' => 'Template Editor',
                                       'path' => "$IP/extensions/TemplateEditor/TemplateEditor.php");
 

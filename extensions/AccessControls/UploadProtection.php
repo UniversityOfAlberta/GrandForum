@@ -114,7 +114,7 @@ class UploadProtection {
 
     if ($selectedNamespace == ''){
       $dbr =& wfGetDB ( DB_SLAVE );
-      $uploadName = self::sanitize($image->mDesiredDestName); //selectField does not sanitize
+      $uploadName = self::sanitize($image->getTitle()); //selectField does not sanitize
       $selectedNamespace = $dbr->selectField("${egAnnokiTablePrefix}upload_perm_temp", 'nsName', 'upload_name=\''.$uploadName."'");
     }
 
@@ -123,9 +123,9 @@ class UploadProtection {
   
     $dbw =& wfGetDB( DB_MASTER );
     //$uploadName = self::sanitize($image->mDestName);
-    $uploadName = $image->mDestName; //replace does sanitize
+    $uploadName = $image->getTitle(); //replace does sanitize
     $dbw->replace("${egAnnokiTablePrefix}upload_permissions", array('upload_name'), array('upload_name' => $uploadName, 'nsName' => $selectedNamespace));
-    $uploadName = self::sanitize($image->mDesiredDestName); //delete does not sanitize
+    $uploadName = self::sanitize($image->getTitle()); //delete does not sanitize
     //$uploadName = $image->mDesiredDestName;
     $dbw->delete("${egAnnokiTablePrefix}upload_perm_temp", array('upload_name=\''.$uploadName."'"));
 
@@ -148,19 +148,20 @@ class UploadProtection {
 
   static function addNsInfoToImagePage($article){
     global $wgOut;
+    if($article != null){
+        $title = $article->getTitle();
+        $nsId = $title->getNamespace();
+        if ($nsId != NS_IMAGE || MWNamespace::isTalk($nsId))
+          return true;
 
-    $title = $article->getTitle();
-    $nsId = $title->getNamespace();
-    if ($nsId != NS_IMAGE || MWNamespace::isTalk($nsId))
-      return true;
+        $pageNS = self::getNsForImageTitle($title);
+        if (!$pageNS)
+          return true;
 
-    $pageNS = self::getNsForImageTitle($title);
-    if (!$pageNS)
-      return true;
+        $header = '<span style="background-color: #ffcccc;">This upload is protected, and is only accessible by members of the namespace '.$pageNS.'.</span>  To change the namespace associated with an upload, reupload the file or contact your system administrator.';
 
-    $header = '<span style="background-color: #ffcccc;">This upload is protected, and is only accessible by members of the namespace '.$pageNS.'.</span>  To change the namespace associated with an upload, reupload the file or contact your system administrator.';
-
-    $wgOut->addHTML($header);
+        $wgOut->addHTML($header);
+    }
     return true;
   }
 

@@ -64,13 +64,17 @@ class CreateUserAPI extends API{
 			}
 			$wgRequest->setSessionData('wsCreateaccountToken', 'true');
 			$wgRequest->setVal('wpCreateaccountToken', 'true');
+			$wgRequest->setVal('type', 'signup');
 			if(isset($_POST['wpPassword'])){
 				$wgRequest->setVal('wpRetype', $_POST['wpPassword']);
 			}
             $creator = self::getCreator($me);
-			$specialUserLogin = new LoginForm($wgRequest, 'signup');
+            LoginForm::setCreateaccountToken();
+            $wgRequest->setSessionData('wpCreateaccountToken', LoginForm::getCreateaccountToken());
+            $wgRequest->setVal('wpCreateaccountToken', LoginForm::getCreateaccountToken());
+			$specialUserLogin = new LoginForm($wgRequest);
 			$tmpUser = User::newFromName($_POST['wpName']);
-			if($tmpUser->getID() == 0 && ($specialUserLogin->execute() != false || $_POST['wpSendMail'] == true)){
+			if($tmpUser->getID() == 0 && ($specialUserLogin->execute('signup') != false || $_POST['wpSendMail'] == true)){
 			    Person::$cache = array();
 			    Person::$namesCache = array();
 			    Person::$aliasCache = array();

@@ -19,7 +19,7 @@
     $wgHooks['AlternateEdit'][] = 'noEdit';
     $wgHooks['UnknownAction'][] = 'noCreate';
     
-    function noEdit(&$editpage){
+    function noEdit($editpage){
         global $wgArticle;
         wfRunHooks('ArticleViewHeader', array($wgArticle, "", ""));
         return true;

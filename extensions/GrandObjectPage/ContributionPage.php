@@ -9,12 +9,12 @@ class ContributionPage {
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $types, $wgTitle, $wgMessage;
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
-            $name = $article->getTitle()->getNsText();
+            $name = ($article != null) ? $article->getTitle()->getNsText() : "";
             if(isset($_GET['name'])){
                 $title = @$_GET['name'];
             }
             else{
-                $title = $article->getTitle()->getText();
+                $title = ($article != null) ? $article->getTitle()->getText() : "";
                 if($name == ""){
                     $split = explode(":", $title);
                     if(count($split) > 1){
