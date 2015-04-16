@@ -111,7 +111,7 @@ class AnnokiHTMLUtils {
       if ($style)
 	  $selectorAttribs['style'] = $style;
 
-      $html = wfOpenElement('select', $selectorAttribs)."\n";
+      $html = Xml::openElement('select', $selectorAttribs)."\n";
 
       if ($contentsHaveIds){
 	  foreach ($contents as $id => $item)
@@ -122,7 +122,7 @@ class AnnokiHTMLUtils {
 	      $html .= Xml::option($item, $item, $item == $selectedItem)."\n";
       }
 
-      $html .= wfCloseElement('select')."\n";
+      $html .= Xml::closeElement('select')."\n";
 
       return $html;
   }

@@ -17,12 +17,12 @@ $wgAutoloadClasses['TemplateEditor'] = dirname(__FILE__) . '/TemplateEditor_body
 $editor = new TemplateEditor();
 $wgHooks['EditPage::showEditForm:initial'][] = array($editor, 'updateFromRequest');
 $wgHooks['EditPage::showEditForm:fields'][] = array($editor, 'showCustomFields');
-$wgHooks['EditFilter'][] = $editor;
+$wgHooks['EditPage::attemptSave'][] = array($editor, 'onEditFilter');
 $wgHooks['BeforePageDisplay'][] = 'TemplateEditor::addJS';
-$wgHooks['SkinTemplateTabs'][] = 'TemplateEditor::addTETabs'; //Adds template editor tab
+$wgHooks['SkinTemplateNavigation'][] = 'TemplateEditor::addTETabs'; //Adds template editor tab
 $wgHooks['EditPageBeforeEditButtons'][] = 'TemplateEditor::modifySaveButton';
 $wgHooks['UnknownAction'][] = 'TemplateEditor::efTEHandleRequest'; //Catches '&' actions sent to MediaWiki
-$wgHooks['SkinTemplateTabs'][] = 'removeEditTab'; // Removes the 'Edit' tab when viewing a Template page
+$wgHooks['SkinTemplateNavigation'][] = 'removeEditTab'; // Removes the 'Edit' tab when viewing a Template page
 
 
 //define ( "TEXTFIELD", 0 );
@@ -47,9 +47,12 @@ $wgExtensionCredits['other'][] = array(
 function removeEditTab($skin, &$content_actions){
 	global $wgTitle;
 	if($wgTitle->getNsText() == "Template" || $wgTitle->getNsText() == "Template_Talk"){
-		unset($content_actions['edit']);
-		unset($content_actions['delete']);
-		unset($content_actions['move']);
+	    foreach($content_actions as $key => $actions){
+		    unset($actions['edit']);
+		    unset($actions['delete']);
+		    unset($actions['move']);
+		    $content_actions[$key] = $actions;
+		}
 	}
 	return true;
 }				    

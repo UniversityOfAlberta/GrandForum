@@ -238,6 +238,7 @@ addUserProject("PNI.User1", "Phase2Project1");
 addUserProject("PNI.User1", "Phase2Project2");
 addUserProject("PNI.User1", "Phase2BigBetProject1");
 addUserProject("PNI.User2", "Phase2Project1");
+addUserProject("PNI.User3", "Phase2Project2");
 addUserProject("CNI.User1", "Phase2Project1");
 addUserProject("CNI.User1", "Phase2BigBetProject1");
 addUserProject("CNI.User2", "Phase2Project1");

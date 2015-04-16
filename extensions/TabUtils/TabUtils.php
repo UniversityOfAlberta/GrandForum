@@ -47,11 +47,11 @@ class TabUtils {
                 if(!is_numeric($key)){
                     $action['class'] = 'action';
                 }
+                $new_actions[$key1][$key] = $action;
             }
-            $new_actions[$key1][$key] = $action;
         }
         foreach(self::$customActions as $key => $action){
-            $new_actions[$key] = $action;
+            $new_actions['actions'][$key] = $action;
         }
         $dropdownScript = "
             $('li.action').wrapAll('<ul class=\'actions\' />');                           
@@ -66,6 +66,7 @@ class TabUtils {
                 $dropdownScript .= "createDropDown('{$content['dropdown']['name']}', '{$content['dropdown']['title']}', {$content['dropdown']['width']});";
             }
         }
+        
         $content_actions = $new_actions;
         return true;
     }
