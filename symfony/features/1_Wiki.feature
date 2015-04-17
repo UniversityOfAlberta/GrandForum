@@ -72,3 +72,8 @@ Feature: Wiki
         And I press "Save page"
         Then I should see "VAR1"
         And I should see "VAR2"
+        
+    Scenario: PNI searches for Wiki Page
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I fill in "globalSearchInput" with "Test"
+        Then I wait until I see "TestWikiPage" up to "1000"

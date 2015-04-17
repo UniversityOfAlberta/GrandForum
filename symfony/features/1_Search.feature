@@ -20,7 +20,7 @@ Feature: Search
     Scenario: PNI searches for a user with accented characters
         Given I am logged in as "PNI.User1" using password "PNI.Pass1"
         When I fill in "globalSearchInput" with "User WithAccents"
-        Then I wait until I see "Üšër WìthÁççénts" up to "1000"
+        Then I wait until I see "Üšër WìthÁççénts" up to "1500"
         
     Scenario: Guest searches for HQP
         Given I am on "index.php"

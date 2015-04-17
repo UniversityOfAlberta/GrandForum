@@ -4,7 +4,7 @@ autoload_register('API');
 global $apiRequest;
 $apiRequest = new APIRequest();
 
-$wgHooks['UnknownAction'][] = array($apiRequest, 'processRequest');
+$wgHooks['AuthPluginSetup'][1000] = array($apiRequest, 'processRequest');
 
 /**
  * @package API
@@ -14,8 +14,9 @@ class APIRequest{
     static $action;
     var $actions = array();
 
-	function processRequest($action, $article){
+	function processRequest(){
 		global $wgServer, $wgScriptPath;
+		$action = @$_GET['action'];
 		$actions = explode(".", $action, 2);
 		if($actions[0] == "api"){
 		    session_write_close();
