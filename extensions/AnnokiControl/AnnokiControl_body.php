@@ -1,21 +1,14 @@
 <?php
 
-function efRunAnnokiControl( $par ) {
-  AnnokiControl::execute( $par );
-}
+$dir = dirname(__FILE__) . '/';
+$wgSpecialPages['AnnokiControl'] = 'AnnokiControl'; # Let MediaWiki know about the special page.
+$wgExtensionMessagesFiles['AnnokiControl'] = $dir . 'AnnokiControl.i18n.php';
+$wgSpecialPageGroups['AnnokiControl'] = 'other';
  
 class AnnokiControl extends SpecialPage {
-  function AnnokiControl() {
-    SpecialPage::__construct("AnnokiControl", STAFF.'+', true, 'efRunAnnokiControl');
-  }
 
-  function setLocalizedPageName(&$specialPageArray, $code) {
-    // The localized title of the special page is among the messages of the extension:
-    $text = wfMsg('AnnokiControl');
-    // Convert from title in text form to DBKey and put it into the alias array:
-    $title = Title::newFromText($text);
-    $specialPageArray['AnnokiControl'][] = $title->getDBKey();
-    return true;
+  function AnnokiControl() {
+    SpecialPage::__construct("AnnokiControl", STAFF.'+', true);
   }
 
   // Can be used for custom CSS (if we have any) as well
@@ -32,32 +25,30 @@ class AnnokiControl extends SpecialPage {
   
   function execute( $par ) {
     global $wgOut, $egAnnokiExtensions, $wgEmergencyContact;
-    $wgOut->addWikiText("==Annoki Extension Manager==\n");
     $newHTML = "<div><table class='wikitable sortable' border=1 cellpadding=5>
-<tr><td><b>Extension</b></td><td><b>Installation Status</b></td><td><b>Extension Status</b></td><td><b>Memory Usage (MB)</b></td><td><b>Execution Time (ms)</b></td></tr>\n";
+    <thead>
+        <tr><th>Extension</th><th>Installation Status</th><th>Extension Status</th><th>Memory Usage (MB)</th><th>Execution Time (ms)</th></tr>
+    </thead>
+    <tbody>";
     $totalMem = 0;
     $totalTime = 0;
     foreach($egAnnokiExtensions as $key => $extension){
       $exist = "<td>" . (is_readable($extension['path'])?"Installed":"Not Installed") . "</td>";
 
-      $status = "<td bgcolor=";
-      if (!isExtensionEnabled($key))
-	$status .= "grey";
-      elseif (!is_readable($extension['path']))
-	$status .= "red";
-      else
-	$status .= "green";
-      
-      $status .= ">" . (isExtensionEnabled($key)?"Enabled":"Disabled") . "</td>";
+      $status = "<td>" . (isExtensionEnabled($key)?"Enabled":"Disabled") . "</td>";
       $newHTML .= "<tr><td>".$extension['name']."</td>$exist$status<td align='right'>{$extension['size']}</td><td align='right'>{$extension['time']}</td></tr>\n";
       $totalMem += $extension['size'];
       $totalTime += $extension['time'];
     }
-    $newHTML .= "<tr><td colspan='3'></td><td align='right'>{$totalMem}</td><td align='right'>{$totalTime}</td></tr>\n";
     
-    $newHTML .= "</table></div>";
-    $newHTML .= "Note: If any extensions are listed as \"Not Installed\", it is because they are not readable by AnnokiControl.  If they should be installed (ie, they are Enabled), please contact your system administrator at $wgEmergencyContact.";
-
+    $newHTML .= "</tbody></table></div>";
+    $newHTML .= "<script type='text/javascript'>
+        $('.wikitable').dataTable({
+            iDisplayLength: 100
+        });
+    </script>";
+    $newHTML .= "<b>Total Memory:</b> {$totalMem}<br />
+                 <b>Total Time:</b> {$totalTime}";
     $wgOut->addHTML($newHTML);
   }
 }

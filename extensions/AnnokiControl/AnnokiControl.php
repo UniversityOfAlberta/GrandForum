@@ -179,14 +179,9 @@ foreach($egAnnokiExtensions as $key => $extension){
     }
 }
 
-$dir = dirname(__FILE__) . '/';
- 
-$wgAutoloadClasses['AnnokiControl'] = $dir . 'AnnokiControl_body.php'; # Tell MediaWiki to load the extension body.
-$wgExtensionMessagesFiles['AnnokiControl'] = $dir . 'AnnokiControl.i18n.php';
-$wgSpecialPages['AnnokiControl'] = 'AnnokiControl'; # Let MediaWiki know about the special page.
-$wgHooks['LanguageGetSpecialPageAliases'][] = 'AnnokiControl::setLocalizedPageName'; # Add any aliases for the special page.
+require_once("AnnokiControl_body.php");
 $wgHooks['BeforePageDisplay'][] = 'AnnokiControl::addCustomJavascript';
-
+$wgHooks['SpecialPageBeforeExecute'][] = 'showSpecialPageHeader';
 $wgExtensionCredits['specialpage'][] = array(
                          'name' => 'AnnokiControl',
                          'author' =>'UofA: SERL',
@@ -218,6 +213,11 @@ function orderSpecialPages(&$aSpecialPages){
         }
     }
     $aSpecialPages = array_merge($array1, $array2);
+    return true;
+}
+
+function showSpecialPageHeader($special, $subpage){
+    $special->setHeaders();
     return true;
 }
 

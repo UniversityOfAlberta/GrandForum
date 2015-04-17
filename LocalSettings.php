@@ -107,11 +107,19 @@ $wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 $wgDBmysql5 = true;
 
 ## Shared memory settings
-$wgMainCacheType = CACHE_NONE;
+$wgMainCacheType = CACHE_ACCEL;
 $wgMemCachedServers = array();
 $wgDisableCounters = true;
 $wgJobRunRate = 0.01;
 $wgSessionsInObjectCache = true;
+$wgEnableSidebarCache = true;
+if(!file_exists($config->getValue('localizationCache'))){
+    mkdir($config->getValue('localizationCache'));
+}
+if(file_exists($config->getValue('localizationCache'))){
+    $wgCacheDirectory = $config->getValue('localizationCache');
+    $wgUseLocalMessageCache = true;
+}
 
 ## To enable image uploads, make sure the 'images' directory
 ## is writable, then set this to true:

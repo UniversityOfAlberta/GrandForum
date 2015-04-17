@@ -34,6 +34,9 @@
     // DB Password
     $config->setValue("dbPassword", "");
     
+    // Localization Cache Directory
+    $config->setValue("localizationCache", "/local/data/www-root/cache/");
+    
     // Default Mailing List Admins
     $config->setValue("listAdmins", array());
     
