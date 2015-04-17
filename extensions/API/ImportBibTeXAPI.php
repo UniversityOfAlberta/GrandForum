@@ -151,7 +151,7 @@ class ImportBibTeXAPI extends API{
                 if(!isset($product['title'])){
                     $this->addError("A publication was missing a title");
                 }
-                else if(!isset($product['authors'])){
+                else if(!isset($product['author'])){
                     $this->addError("A publication was missing an authors list");
                 }
                 else{
