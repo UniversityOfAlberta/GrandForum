@@ -850,7 +850,10 @@ class Paper extends BackboneModel{
                 $data = self::$productProjectsCache[$this->id];
                 if(is_array($data)){
                     foreach($data as $projectId){
-                        $this->projects[] = Project::newFromId($projectId);
+                        $project = Project::newFromId($projectId);
+                        if($project instanceof Project){
+                            $this->projects[] = $project;
+                        }
                     }
                 }
             }

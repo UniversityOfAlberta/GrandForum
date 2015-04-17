@@ -573,21 +573,24 @@ ManageProductsView = Backbone.View.extend({
 	                var value = $("textarea[name=bibtex]", this.bibtexDialog).val();
 	                $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: value}, $.proxy(function(response){
 	                    var data = response.data;
-	                    if(data.created != undefined){
+	                    if(!_.isUndefined(data.created)){
                             this.products.add(data.created, {silent: true});
                             this.addRows();
                         }
                         clearAllMessages();
-                        var nCreated = data.created.length;
-                        var nError = response.messages.length;
                         if(response.errors.length > 0){
                             addError(response.errors.join("<br />"));
                         }
-                        if(nCreated > 0){
-                            addSuccess("<b>" + nCreated + "</b> products were created");
-                        }
-                        if(nError > 0){
-                            addInfo("<b>" + nError + "</b> products were ignored (probably duplicates)");
+                        if(!_.isUndefined(data.created)){
+                            var nCreated = data.created.length;
+                            var nError = response.messages.length;
+                            
+                            if(nCreated > 0){
+                                addSuccess("<b>" + nCreated + "</b> products were created");
+                            }
+                            if(nError > 0){
+                                addInfo("<b>" + nError + "</b> products were ignored (probably duplicates)");
+                            }
                         }
                         button.prop("disabled", false);
                         this.bibtexDialog.dialog('close');

@@ -56,6 +56,10 @@ class ImportBibTeXAPI extends API{
             // Make sure that this entry was not already entered
             return null;
         }
+        if(!isset($paper['title']) ||
+           !isset($paper['author'])){
+            return null;  
+        }
         $checkProduct = Product::newFromTitle($paper['title']);
         if($checkProduct->getId() != 0 && 
            $checkProduct->getCategory() == $category &&
@@ -144,7 +148,15 @@ class ImportBibTeXAPI extends API{
                 $json['created'][] = $product->toArray();
             }
             foreach($errorProducts as $product){
-                $this->addMessage("Duplicate");
+                if(!isset($product['title'])){
+                    $this->addError("A publication was missing a title");
+                }
+                else if(!isset($product['author'])){
+                    $this->addError("A publication was missing an authors list");
+                }
+                else{
+                    $this->addMessage("Duplicate");
+                }
             }
             $this->data = $json;
             return $json;

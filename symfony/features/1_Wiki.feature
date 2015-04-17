@@ -53,7 +53,13 @@ Feature: Wiki
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
         When I go to "index.php/Template:NewTemplate"
         And I follow "edit this page"
-        And I fill in "wpTextbox1" with "== Testing ==\n{{{var1}}}\n\n{{{var2}}}"
+        And I fill in "wpTextbox1" with:
+        """
+        == Testing ==
+        {{{var1}}}
+        
+        {{{var2}}}
+        """
         And I press "Save page"
         
     Scenario: PNI using template editor

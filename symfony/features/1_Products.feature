@@ -68,3 +68,94 @@ Feature: Products
         Then I should see "This publication has been deleted, and will not show up anywhere else on the forum"
         When I go to "index.php/Special:Products#/Publication"
         Then I should not see "New Publication"
+        
+    Scenario: Uploading a valid BibTeX
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I follow "Manage Products"
+        And I press "Import BibTeX"
+        And I fill in "bibtex" with:
+        """
+        @inproceedings{Xing:2005:UAO:1101908.1101919,
+         author = {Xing, Zhenchang and Stroulia, Eleni and User1, PNI},
+         title = {UMLDiff: An Algorithm for Object-oriented Design Differencing},
+         booktitle = {Proceedings of the 20th IEEE/ACM International Conference on Automated Software Engineering},
+         series = {ASE '05},
+         year = {2005},
+         isbn = {1-58113-993-4},
+         location = {Long Beach, CA, USA},
+         pages = {54--65},
+         numpages = {12},
+         url = {http://doi.acm.org/10.1145/1101908.1101919},
+         doi = {10.1145/1101908.1101919},
+         acmid = {1101919},
+         publisher = {ACM},
+         address = {New York, NY, USA},
+         keywords = {design differencing, design mentoring, design understanding, structural evolution},
+        }
+        """
+        And I click "Import"
+        And I wait "500"
+        Then I should see "1 products were created"
+        
+    Scenario: Uploading a duplicate BibTeX
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I follow "Manage Products"
+        And I press "Import BibTeX"
+        And I fill in "bibtex" with:
+        """
+        @inproceedings{Xing:2005:UAO:1101908.1101919,
+         author = {Xing, Zhenchang and Stroulia, Eleni and User1, PNI},
+         title = {UMLDiff: An Algorithm for Object-oriented Design Differencing},
+         booktitle = {Proceedings of the 20th IEEE/ACM International Conference on Automated Software Engineering},
+         series = {ASE '05},
+         year = {2005},
+         isbn = {1-58113-993-4},
+         location = {Long Beach, CA, USA},
+         pages = {54--65},
+         numpages = {12},
+         url = {http://doi.acm.org/10.1145/1101908.1101919},
+         doi = {10.1145/1101908.1101919},
+         acmid = {1101919},
+         publisher = {ACM},
+         address = {New York, NY, USA},
+         keywords = {design differencing, design mentoring, design understanding, structural evolution},
+        }
+        """
+        And I click "Import"
+        And I wait "500"
+        Then I should see "1 products were ignored (probably duplicates)"
+        
+    Scenario: Uploading an invalid BibTeX
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I follow "Manage Products"
+        And I press "Import BibTeX"
+        And I fill in "bibtex" with:
+        """
+        @inproceedings{
+         booktitle = {Proceedings of the 20th IEEE/ACM International Conference on Automated Software Engineering},
+         series = {ASE '05},
+         year = {2005},
+         isbn = {1-58113-993-4},
+         location = {Long Beach, CA, USA},
+         pages = {54--65},
+         numpages = {12},
+         url = {http://doi.acm.org/10.1145/1101908.1101919},
+         doi = {10.1145/1101908.1101919},
+         acmid = {1101919},
+         publisher = {ACM},
+         address = {New York, NY, USA},
+         keywords = {design differencing, design mentoring, design understanding, structural evolution},
+        }
+        """
+        And I click "Import"
+        And I wait "500"
+        Then I should see "A publication was missing a title"
+        
+    Scenario: Uploading an empty BibTeX
+        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        When I follow "Manage Products"
+        And I press "Import BibTeX"
+        And I fill in "bibtex" with ""
+        And I click "Import"
+        And I wait "500"
+        Then I should see "No BibTeX references were found"
