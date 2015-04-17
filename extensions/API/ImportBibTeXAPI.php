@@ -57,7 +57,7 @@ class ImportBibTeXAPI extends API{
             return null;
         }
         if(!isset($paper['title']) ||
-           !isset($paper['authors'])){
+           !isset($paper['author'])){
             return null;  
         }
         $checkProduct = Product::newFromTitle($paper['title']);
