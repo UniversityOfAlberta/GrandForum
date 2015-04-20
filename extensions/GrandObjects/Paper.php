@@ -724,6 +724,10 @@ class Paper extends BackboneModel{
                         Person::$cache[$author] = $person;
                     }
                 }
+                if($person->getName() == "WikiSysop"){
+                    // Under no circumstances should WikiSysop be an author
+                    continue;
+                }
                 $authors[] = $person;
             }
             //return $authors;
