@@ -365,6 +365,7 @@ define('PROP_CCV_UPLOAD10',          10);
 
 define('SAB_REVIEW_STRENGTH',        1);
 define('SAB_REVIEW_WEAKNESS',        2);
+define('SAB_REVIEW_RANKING',         3);
 
 define('SAB_REPORT_SUMMARY',         1);
 

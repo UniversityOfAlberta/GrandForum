@@ -54,6 +54,12 @@
                             {$item}
                         ]]>
                     </ReportItem>
+                    <ReportItem id="ranking" type="RadioReportItem" orientation="vertical" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_RANKING" options="High|Medium|Low">
+                        <![CDATA[
+                            <h3>Proposal Ranking</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
                 </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>

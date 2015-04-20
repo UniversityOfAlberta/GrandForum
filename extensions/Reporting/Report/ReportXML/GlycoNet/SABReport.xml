@@ -54,6 +54,8 @@
                                 <p>{$sab_strength}</p>
                                 <h3>Project Weaknesses</h3>
                                 <p>{$sab_weakness}</p>
+                                <h3>Project Ranking</h3>
+                                <p>{$sab_ranking}</p>
                             </div>
                         ]]>
                     </ReportItem>
