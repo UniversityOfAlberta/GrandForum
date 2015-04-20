@@ -59,8 +59,8 @@ class IndexTable {
         }
         
         if(count(Person::getAllPeople(ISAC)) > 0){
-            $selected = ($lastRole == ISAC || $wgTitle->getText() == "ALL ISAC" || ($wgTitle->getNSText() == ISAC && !($me->isRole(ISAC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(ISAC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_ISAC", "$selected");
+            $selected = ($lastRole == ISAC || $wgTitle->getText() == "ALL ".ISAC || ($wgTitle->getNSText() == ISAC && !($me->isRole(ISAC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(ISAC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_".ISAC, "$selected");
         }
         
         if(count(Person::getAllPeople(EXTERNAL)) > 0){
@@ -189,7 +189,7 @@ class IndexTable {
 				    $this->generatePersonTable(CNI);
 				    break;
 				case 'ALL '.ISAC:
-			        $wgOut->setPageTitle("ISAC Members");
+			        $wgOut->setPageTitle(ISAC." Members");
 				    $this->generatePersonTable(ISAC);
 				    break;
 				case 'ALL '.EXTERNAL:

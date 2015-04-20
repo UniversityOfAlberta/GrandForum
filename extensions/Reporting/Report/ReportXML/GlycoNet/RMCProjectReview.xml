@@ -57,6 +57,9 @@
         </ReportItem>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="Project">
             <ReportItemSet id="project_materials" type="NIReviewReportItemSet" subType="Project">
+                <ReportItem id="sab_comments" type="PopupReportItem" title="See SAB Comments" text="{$report_sab_comments}">
+                    <![CDATA[{$item}<br />]]>
+                </ReportItem>
                 <ReportItem id="Q1_1" type="EvalReviewRadioReportItem" subType="Project" options="Outstanding|Very Good|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_ARRAY" blobItem="EVL_EXCELLENCE">
                     <![CDATA[
                         <h3>1. Research Excellence and Team</h3>

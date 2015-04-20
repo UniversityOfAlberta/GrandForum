@@ -52,7 +52,7 @@ class ReportItemCallback {
             "report_networking_ni_comments" => "getReportNetworkingNIComments",
             "report_ktee_ni_comments" => "getReportKTEENIComments",
             "report_future_ni_comments" => "getReportFutureNIComments",
-            
+            "report_sab_comments" => "getReportSABComments",
             "report_excellence_hqp_comments" => "getReportExcellenceHQPComments",
             "report_networking_hqp_comments" => "getReportNetworkingHQPComments",
             "report_ktee_hqp_comments" => "getReportKTEEHQPComments",
@@ -108,6 +108,7 @@ class ReportItemCallback {
             // SAB
             "sab_strength" => "getSABStrength",
             "sab_weakness" => "getSABWeakness",
+            "sab_ranking" => "getSABRanking",
             // Products
             "product_id" => "getProductId",
             "product_title" => "getProductTitle",
@@ -604,6 +605,41 @@ class ReportItemCallback {
     
     function getReportFutureNIComments(){
         return $this->getReportNIComments(RES_RESACT_NEXTPLANS);
+    }
+    
+    function getReportSABComments(){
+        $ret = "";
+        $sabs = Person::getAllPeopleDuring(ISAC, $this->reportItem->getReport()->year.'-01-01', $this->reportItem->getReport()->year.'-12-31');
+        
+        $index = 1;
+        foreach($sabs as $sab){
+            $strength = $this->getSABStrength($sab->getId());
+            $weakness = $this->getSABWeakness($sab->getId());
+            $ranking  = $this->getSABRanking($sab->getId());
+            if($strength != "" || $weakness != ""){
+                $ret .= "<h1>SAB Reviewer {$index}</h1>";
+                $ret .= "<div style='margin-left:15px;'>";
+                $ret .= "<h3>Project Strengths</h3>";
+                $ret .= "<p>$strength</p>";
+                $ret .= "<h3>Project Weaknesses</h3>";
+                $ret .= "<p>$weakness</p>";
+                $ret .= "<h3>Project Ranking</h3>";
+                $ret .= "<p>$ranking</p>";
+                $ret .= "</div>";
+                $index++;
+            }
+        }
+        $addr = ReportBlob::create_address(RP_SAB_REPORT, SAB_REPORT, SAB_REPORT_SUMMARY, 0);
+        $blob = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, 0, $this->reportItem->projectId);
+        $blob->load($addr);
+        $data = $blob->getData();
+        if($data != ""){
+            $ret .= "<h1>Summary</h1>";
+            $ret .= "<div style='margin-left:15px;'>";
+            $ret .= "<p>$data</p>";
+            $ret .= "</div>";
+        }
+        return $ret;
     }
     
     function getReportExcellenceHQPComments(){
@@ -1125,9 +1161,10 @@ class ReportItemCallback {
         return "";
     }
     
-    function getSABStrength(){
+    function getSABStrength($personId=-1){
+        $personId = ($personId != -1) ? $personId : $this->reportItem->personId;
         $addr = ReportBlob::create_address(RP_SAB_REVIEW, SAB_REVIEW, SAB_REVIEW_STRENGTH, 0);
-        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $this->reportItem->projectId);
         $result = $blb->load($addr);
         $data = $blb->getData();
         if($data != null){
@@ -1136,9 +1173,22 @@ class ReportItemCallback {
         return "";
     }
     
-    function getSABWeakness(){
+    function getSABWeakness($personId=-1){
+        $personId = ($personId != -1) ? $personId : $this->reportItem->personId;
         $addr = ReportBlob::create_address(RP_SAB_REVIEW, SAB_REVIEW, SAB_REVIEW_WEAKNESS, 0);
-        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $this->reportItem->projectId);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        if($data != null){
+           return $data;
+        }
+        return "";
+    }
+    
+    function getSABRanking($personId=-1){
+        $personId = ($personId != -1) ? $personId : $this->reportItem->personId;
+        $addr = ReportBlob::create_address(RP_SAB_REVIEW, SAB_REVIEW, SAB_REVIEW_RANKING, 0);
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $this->reportItem->projectId);
         $result = $blb->load($addr);
         $data = $blb->getData();
         if($data != null){
