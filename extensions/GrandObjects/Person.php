@@ -153,49 +153,13 @@ class Person extends BackboneModel {
      * @return Person the Person that matches the name
      */
     static function newFromNameLike($name){
-        global $wgSitename;
-        $tmpPerson = Person::newFromName(str_replace(" ", ".", $name));
-        if($tmpPerson->getName() != ""){
-            return $tmpPerson;
-        }
-        $name = str_replace("*", "", $name);
-        $name = str_replace(".", ".*", $name);
-        $name = str_replace(" ", ".*", $name);
-        
-        if(isset(Person::$cache[$name])){
-            return Person::$cache[$name];
-        }
+        $name = Person::cleanName($name);
         self::generateNamesCache();
         $data = array();
-        if(function_exists('apc_exists') && apc_exists($wgSitename.'person_name'.$name)){
-            $possibleNames = unserialize(apc_fetch($wgSitename.'person_name'.$name));
+        if(isset(self::$namesCache[$name])){
+            $data = array(0 => self::$namesCache[$name]);
         }
-        else{
-            $possibleNames = @preg_grep("/.*$name.*/i", array_keys(self::$namesCache));
-            if(function_exists('apc_store')){
-                apc_store($wgSitename.'person_name'.$name, serialize($possibleNames), 60*60);
-            }
-        }
-        if(is_array($possibleNames)){
-            foreach($possibleNames as $possible){
-                if(isset(self::$namesCache[$possible])){
-                    $data[] = self::$namesCache[$possible];
-                    break;
-                }
-            }
-        }
-        $person = new Person($data);
-        if(isset(self::$cache[$person->id]) && $person->id != ""){
-            $person = self::$cache[$person->id];
-            self::$cache[$person->name] = &$person;
-            self::$cache[$name] = &$person;
-        }
-        else{
-            self::$cache[$person->id] = &$person;
-            self::$cache[$person->name] = &$person;
-            self::$cache[$name] = &$person;
-        }
-        return $person;
+        return new Person($data);
     }
 
     /**
@@ -251,6 +215,15 @@ class Person extends BackboneModel {
         }
     }
     
+    static function cleanName($name){
+        $name = preg_replace("/\(.*\)/", "", $name);
+        $name = str_replace("'", "", $name);
+        $name = str_replace(".", "", $name);
+        $name = str_replace("*", "", $name);
+        $name = trim($name);
+        return $name;
+    }
+    
     /**
      * Caches the resultset of the alis table for superfast access
      */
@@ -279,8 +252,16 @@ class Person extends BackboneModel {
                     WHERE `deleted` != '1'";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                self::$namesCache[$row['user_name']] = $row;
+                $exploded = explode(".", $row['user_name']);
+                $firstName = @$exploded[0];
+                $lastName = @$exploded[1];
                 self::$idsCache[$row['user_id']] = $row;
+                self::$namesCache[$row['user_name']] = $row;
+                self::$namesCache["$firstName $lastName"] = $row;
+                self::$namesCache["$lastName $firstName"] = $row;
+                self::$namesCache["$firstName ".substr($lastName, 0, 1)] = $row;
+                self::$namesCache["$lastName ".substr($firstName, 0, 1)] = $row;
+                self::$namesCache[substr($firstName, 0, 1)." $lastName"] = $row;
                 if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
                     self::$namesCache[str_replace("&nbsp;", " ", $row['user_real_name'])] = $row;
                 }
