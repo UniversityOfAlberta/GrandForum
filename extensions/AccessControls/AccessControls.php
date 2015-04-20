@@ -44,7 +44,6 @@ $wgHooks['FetchChangesList'][] = 'onFetchChangesList';
 $wgHooks['UnknownAction'][] = 'listStragglers';
 $wgHooks['EditFilter'][] = 'preventUnauthorizedTransclusionsOnSave';
 $wgHooks['ParserBeforeStrip'][] = 'preventUnauthorizedTransclusionOnPreview';
-$wgHooks['SkinTemplateTabs'][] = 'checkTabsPermissions';
 $wgHooks['ParserAfterTidy'][] = 'checkPublicSections';
 $wgHooks['UserGetRights'][] = 'GrandAccess::setupGrandAccess';
 $wgHooks['isValidEmailAddr'][] = 'isValidEmailAddr';

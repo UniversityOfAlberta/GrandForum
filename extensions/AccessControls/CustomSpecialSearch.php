@@ -1,21 +1,6 @@
 <?php
 require_once("$IP/includes/specials/SpecialSearch.php");
 
-/**
- * note: This hook was removed in 1.14, so the namespace related searching functionality is done by extending SearchEngine
- * @see CustomSearchEngine.php
- */
-$wgHooks['SpecialPageExecuteBeforePage'][] = "initCustomSearch";
-
-function initCustomSearch(&$specialpage, &$parameters, &$function) {
-	if (($specialpage->getName()) != 'Search'){
-		return true;
-	}
-	//echo $function;
-	$function = "wfSpecialCustomSearch";
-	return true;
-}
-
 /*
  * this function is the same as the original wfSpecialSearch except it instantiates
  * the class CustomSpecialSearch which extends SpecialSearch

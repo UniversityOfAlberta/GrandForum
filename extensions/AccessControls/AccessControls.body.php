@@ -22,26 +22,6 @@ function addMenuJavascript() {
 	$wgOut->addScript($script);	
 }
 
-function checkTabsPermissions($skin,&$content_actions) {
-	/*
-	 * This is just for the user interface. When building the tabs mediawiki only checks $wgGroupPermissions
-	 * but does not run the userCan hook. As a result some pages will have delete/protect tabs even though
-	 * the user is not allowed to have these actions (and would get an error if they actually try to
-	 * delete or protect). This removes such tabs in order to make thing less confusing.
-	 */
-	global $wgTitle, $wgUser;
-	
-	$toCheck = array('protect', 'unprotect', 'delete');
-	
-	foreach ($toCheck as $action) {
-		if (isset($content_actions[$action]) && !onUserCan($wgTitle, $wgUser, $action, $result)) {
-			unset($content_actions[$action]);
-		}
-	}
-	
-	return true;
-}
-
 /**
  * Creates extra tables that are required by this extension, including custom page permissions, extra namespaces, and custom upload permissions.
  * TODO: this should be moved into a .sql script and should be called only once

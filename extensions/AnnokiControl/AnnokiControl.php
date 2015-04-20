@@ -74,9 +74,6 @@ $egAnnokiExtensions['IndexTables'] = array( 'name' => 'IndexTables',
 $egAnnokiExtensions['TempEd'] = array('name' => 'Template Editor',
                                       'path' => "$IP/extensions/TemplateEditor/TemplateEditor.php");
 
-$egAnnokiExtensions['TextReplace'] = array('name' => 'Text Replace',
-                                           'path' => "$IP/extensions/TextReplace/TextReplace.php");
-
 $egAnnokiExtensions['MailingList'] = array('name' => 'MailingList',
                                            'path' => "$IP/extensions/MailingList/mailingList.body.php");
 
