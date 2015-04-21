@@ -75,19 +75,19 @@
                     </ReportItemSet>
                     <ReportItem id="strength" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_STRENGTH">
                         <![CDATA[
-                            <h3>Proposal Strengths</h3>
+                            <h2>Proposal Strengths</h2>
                             {$item}
                         ]]>
                     </ReportItem>
                     <ReportItem id="weakness" type="TextareaReportItem"  blobType="BLOB_TEXT" blobItem="SAB_REVIEW_WEAKNESS">
                         <![CDATA[
-                            <h3>Proposal Weaknesses</h3>
+                            <h2>Proposal Weaknesses</h2>
                             {$item}
                         ]]>
                     </ReportItem>
                     <ReportItem id="ranking" type="RadioReportItem" orientation="vertical" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_RANKING" options="High|Medium|Low">
                         <![CDATA[
-                            <h3>Proposal Ranking</h3>
+                            <h2>Proposal Ranking</h2>
                             {$item}
                         ]]>
                     </ReportItem>
