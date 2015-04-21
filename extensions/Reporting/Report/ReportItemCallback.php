@@ -109,6 +109,7 @@ class ReportItemCallback {
             "sab_strength" => "getSABStrength",
             "sab_weakness" => "getSABWeakness",
             "sab_ranking" => "getSABRanking",
+            "sab_summary" => "getSABSummary",
             // Products
             "product_id" => "getProductId",
             "product_title" => "getProductTitle",
@@ -1189,6 +1190,17 @@ class ReportItemCallback {
         $personId = ($personId != -1) ? $personId : $this->reportItem->personId;
         $addr = ReportBlob::create_address(RP_SAB_REVIEW, SAB_REVIEW, SAB_REVIEW_RANKING, 0);
         $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $this->reportItem->projectId);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        if($data != null){
+           return $data;
+        }
+        return "";
+    }
+    
+    function getSABSummary(){
+        $addr = ReportBlob::create_address(RP_SAB_REPORT, SAB_REPORT, SAB_REPORT_SUMMARY, 0);
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, 0, $this->reportItem->projectId);
         $result = $blb->load($addr);
         $data = $blb->getData();
         if($data != null){

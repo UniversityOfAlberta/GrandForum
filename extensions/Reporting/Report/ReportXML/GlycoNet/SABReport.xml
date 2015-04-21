@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="SAB Report" reportType="RP_SAB_REPORT" pdfType="RPTP_SAB_REPORT" pdfFiles="SABReportPDF" personId="0" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SAB">
-            <SectionPermission id="materials" permissions="r" />
-            <SectionPermission id="review" permissions="r" />
-        </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SD">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
