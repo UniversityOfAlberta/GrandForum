@@ -83,8 +83,8 @@ $egAnnokiExtensions['FeatureRequest'] = array('name' => 'FeatureRequest',
 $egAnnokiExtensions['AddMember'] = array('name' => 'AddMember',
                                          'path' => "$IP/extensions/AddMember/AddMember.body.php");
 
-$egAnnokiExtensions['EditMember'] = array('name' => 'EditMember',
-                                          'path' => "$IP/extensions/EditMember/EditMember.php");
+/*$egAnnokiExtensions['EditMember'] = array('name' => 'EditMember',
+                                          'path' => "$IP/extensions/EditMember/EditMember.php");*/
 
 $egAnnokiExtensions['Poll'] = array('name' => 'Poll',
                                     'path' => "$IP/extensions/Poll/Poll.body.php");

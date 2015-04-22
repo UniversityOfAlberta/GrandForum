@@ -18,6 +18,7 @@ $apiRequest->addAction('Hidden','person/:id/products/private', new PersonProduct
 $apiRequest->addAction('Hidden','person/:id/products/:productId', new PersonProductAPI());
 $apiRequest->addAction('Hidden','personRoleString/:id', new PersonRoleStringAPI());
 $apiRequest->addAction('Hidden','people', new PeopleAPI());
+$apiRequest->addAction('Hidden','people/managed', new PeopleManagedAPI());
 $apiRequest->addAction('Hidden','people/:role', new PeopleAPI());
 $apiRequest->addAction('Hidden','people/:role/:university', new PeopleAPI());
 // Role
