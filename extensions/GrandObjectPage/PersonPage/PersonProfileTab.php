@@ -341,7 +341,9 @@ EOF;
             $string .= "</tbody>
                 </table>
                 <script type='text/javascript'>
-                    $('#personProducts').dataTable();
+                    $('#personProducts').dataTable({
+                        'order': [[ 1, 'desc' ]]
+                    });
                 </script>";
         }
         return $string;
