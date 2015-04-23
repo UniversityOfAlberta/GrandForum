@@ -4,14 +4,6 @@ require_once("Classes/removeCommonWords/removeCommonWords.php");
 
 class Wordle extends Visualization {
     
-    
-    static $commonWords = array('and', 'i', 'then', 'or', 'but', 'an', 'from', 'for', 'will', 'upon', 
-                                'some', 'well', 'long', 'more', 'less', 'form', 'them', 'span', 'most', 'least',
-                                'ones', 'being', 'first', 'last', 'year', 'those', 'when', 'where', 'you', 'uses',
-                                'than', 'have', 'real', 'while', 'much', 'been', 'university', 'professor', 'undergraduate',
-                                'masters', 'phd', 'group', 'research', 'role', 'fellow', 'fellowship', 
-                                'postdoctoral', 'postdoc', 'subsequently');
-    
     static $commonStubs = array('http', 'www');
     static $a = 0;
     var $url = "";
