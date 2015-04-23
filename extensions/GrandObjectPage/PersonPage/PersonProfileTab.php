@@ -266,6 +266,8 @@ EOF;
 	            $text .= $product->getTitle()."\n";
 	            $text .= $product->getDescription()."\n";
 	        }
+	        CommonWords::$commonWords[] = $person->getFirstName();
+	        CommonWords::$commonWords[] = $person->getLastName();
 	        $data = Wordle::createDataFromText($text);
 	        $data = array_slice($data, 0, 75);
             header("Content-Type: application/json");

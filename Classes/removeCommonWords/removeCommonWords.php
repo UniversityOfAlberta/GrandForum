@@ -67,7 +67,9 @@ class CommonWords {
 	                     'without','wonder','won\'t','would','wouldn\'t','x','y','yes','yet','you','you\'d','you\'ll',
 	                     'your','you\'re','yours','yourself','yourselves','you\'ve','z','zero','university','professor',
 	                     'undergraduate','masters','phd','group','research','role','fellow','fellowship','postdoctoral',
-	                     'postdoc','subsequently','alberta','department','tenure','including','associate','received','position');
+	                     'postdoc','subsequently','alberta','department','tenure','including','associate','received','position',
+	                     'calgary','ottawa','simon','fraser','british','columbia','saskatchewan','manitoba','toronto','ontario',
+	                     'regina','victoria','vancouver','waterloo');
 
     static function removeCommonWords($input){
 		$input = preg_replace('/\b('.implode('|',self::$commonWords).')\b/','',$input);
