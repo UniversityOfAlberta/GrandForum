@@ -6,6 +6,7 @@
 
 class Paper extends BackboneModel{
 
+    static $illegalAuthorsCache = array();
     static $oldSyncCache = array();
     static $cache = array();
     static $dataCache = array();
@@ -410,6 +411,16 @@ class Paper extends BackboneModel{
         }
     }
     
+    static function generateIllegalAuthorsCache(){
+        if(count(self::$illegalAuthorsCache) == 0){
+            $data = DBFunctions::select(array('grand_illegal_authors'),
+                                        array('author'));
+            foreach($data as $row){
+                self::$illegalAuthorsCache[$row['author']] = $row['author'];
+            }
+        }
+    }
+    
     static function generateProductProjectsCache(){
         if(count(self::$productProjectsCache) == 0){
             $data = DBFunctions::select(array('grand_product_projects'),
@@ -698,7 +709,12 @@ class Paper extends BackboneModel{
                         }
                     }
                 }
-                if($person == null || $person->getName() == null || $person->getName() == ""){
+                self::generateIllegalAuthorsCache();
+                if($person == null || 
+                   $person->getName() == null || 
+                   $person->getName() == "" || 
+                   isset(self::$illegalAuthorsCache[$person->getNameForForms()]) ||
+                   isset(self::$illegalAuthorsCache[$person->getId()])){
                     // Ok this person is not in the db, make a fake Person object
                     $pdata = array();
                     $pdata[0]['user_id'] = "";
