@@ -232,7 +232,7 @@ EOF;
     
                 confirmed += ']';
                 $('#profconnections_str').val(confirmed);
-                $('#profConForm').submit();
+                document.getElementById('profConForm').submit.click();
             }
 
 
@@ -279,7 +279,7 @@ EOF;
             <form id='profConForm' action='$wgServer$wgScriptPath/index.php/Special:Survey' method='post'>
             <input type='hidden' id='profconnections_str' name='connections' value='' />
             <input type='hidden' id='rel_warnings_str' name='warnings' value='' />
-            <input type='hidden' name='submit' value='{$this->name}' />
+            <input style='display:none;' type='submit' name='submit' value='{$this->name}' />
 EOF;
         if(!$this->isSubmitted()){
             $this->html .= '<button onclick="submitProfConnections(); return false;">Save Relationships</button>';

@@ -30,8 +30,19 @@ class ProductAPI extends RESTAPI {
             else{
                 $papers = Paper::getAllPapers('all', 'all', 'both');
             }
+            $start = 0;
+            $count = 999999999;
+            if($this->getParam('start') != "" &&
+               $this->getParam('count') != ""){
+                $start = $this->getParam('start');
+                $count = $this->getParam('count');
+            }
+            $i = 0;
             foreach($papers as $id => $paper){
-                $json[] = $paper->toArray();
+                if($i >= $start && $i < $start + $count){
+                    $json[] = $paper->toArray();
+                }
+                $i++;
             }
             return large_json_encode($json);
         }

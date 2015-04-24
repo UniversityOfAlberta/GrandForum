@@ -276,7 +276,7 @@ EOF;
             </div>
             <br />
             <form id='communicationForm' action='$wgServer$wgScriptPath/index.php/Special:Survey' method='post'>
-            <input type='hidden' name='submit' value='{$this->name}' />
+            <input style='display:none;' type='submit' name='submit' value='{$this->name}' />
             <input type='hidden' value='' name='communication_str' id='communication_str' />
             <input type='hidden' value='' name='warnings' id='com_warnings_str' />
 EOF;
@@ -651,7 +651,7 @@ EOF;
                 commun += '}]';
                 $('#communication_str').val(commun);
 
-                $('#communicationForm').submit();
+                document.getElementById('communicationForm').submit.click();
             }
 
             </script>

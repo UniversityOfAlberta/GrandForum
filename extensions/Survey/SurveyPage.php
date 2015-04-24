@@ -65,6 +65,7 @@ class SurveyPage {
         $i = 0;
         foreach($this->tabs as $tab){
             if(isset($_POST['submit']) && $_POST['submit'] == "{$tab->name}"){
+                
                 $activeTabIndex = $tab->id;
                 $active_tab = (isset($_POST['warnings']) && $_POST['warnings'] !='')? $i : $i+1;
                 
@@ -78,6 +79,7 @@ class SurveyPage {
                 else{
                     $wgMessage->addSuccess("'{$tab->title}' updated successfully.");
                 }
+                redirect("$wgServer$wgScriptPath/index.php/Special:Survey");
             }
             
             $i++;
@@ -92,7 +94,7 @@ class SurveyPage {
         $isSubmitted = self::isSubmitted();
         if($isSubmitted){
             //$wgMessage->addInfo("Your Survey has already been submitted and cannot be modified.");
-            $wgMessage->addInfo("The Survey has been closed.");
+            //$wgMessage->addInfo("The Survey has been closed.");
             //$wgOut->addHTML("<p style='font-size:16px; font-weight:bold; text-align:center; padding: 50px 0;'>Thank you for participating in NAVEL Survey. Your survey results have been successfully submitted!</p>");
             
             //return;
@@ -107,7 +109,7 @@ class SurveyPage {
         foreach($this->tabs as $tab){
             $bg = "";
             if($completed[$i] == 1){
-                $bg = "<image style='vertical-align:top;' width='15px' src='/skins/cavendish/checkmark.png' alt='Done' />";
+                $bg = "<image style='vertical-align:top;' width='15px' src='$wgServer$wgScriptPath/skins/cavendish/checkmark.png' alt='Done' />";
             }
 
             $validate = "";
@@ -160,7 +162,7 @@ EOF;
         <script type='text/javascript'>
 EOF;
         if(!$isSubmitted){
-            $custom_js .= 'window.onbeforeunload=function(){ return "Please make sure you have saved all your content before leaving the Survey!"};';
+            //$custom_js .= 'window.onbeforeunload=function(){ return "Please make sure you have saved all your content before leaving the Survey!"};';
         }
         $custom_js .=<<<EOF
             $('#loadingDiv')
@@ -193,7 +195,8 @@ EOF;
         if(!$isSubmitted){
                 $custom_js .=<<<EOF
                     select: function(event, ui) {
-                        return confirm("You will lose any unsaved content if you navigate away from this section right now. Click OK to continue or Cancel to stay on this section.");
+                        return true;
+                        //return confirm("You will lose any unsaved content if you navigate away from this section right now. Click OK to continue or Cancel to stay on this section.");
                     },
 EOF;
         }
@@ -216,7 +219,8 @@ EOF;
         if(!$isSubmitted){
             $custom_js .=<<<EOF
                 select: function(event, ui) {
-                    return confirm("You will lose any unsaved content if you navigate away from this section right now. Click OK to continue or Cancel to stay on this section.");
+                    return true;
+                    //return confirm("You will lose any unsaved content if you navigate away from this section right now. Click OK to continue or Cancel to stay on this section.");
                 },
 EOF;
         }
@@ -290,7 +294,7 @@ EOF;
         global $wgUser;
         $my_id = $wgUser->getId();
 
-        /*
+        
         $sql = "SELECT submitted FROM survey_results WHERE user_id='{$my_id}'";
         $data = DBFunctions::execSQL($sql);
 
@@ -300,8 +304,8 @@ EOF;
         else{
             return false;
         }
-        */
-        return true;
+        
+        //return true;
         
     }
 

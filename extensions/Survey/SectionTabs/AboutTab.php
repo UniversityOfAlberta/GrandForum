@@ -185,7 +185,7 @@ EOF;
         $this->html .=<<<EOF
                 <input type='hidden' id='you_warnings_str' name='warnings' value='' />
                 <input type="hidden" name="use_forum_data" value="1"  />
-                <input type="hidden" name="submit" value="{$this->name}"  />
+                <input style='display:none;' type="submit" name="submit" value="{$this->name}"  />
 EOF;
         if(!$this->isSubmitted()){
             $this->html .= '<button onclick="submitAboutYou();return false;">Save You</button>';
@@ -215,7 +215,7 @@ EOF;
                     if(error_msg != ""){
                         $('#you_warnings_str').val(error_msg);
                     }
-                    $('#aboutYouForm').submit();
+                    document.getElementById('aboutYouForm').submit.click();
                 }
 
             //$(document).ready(function() {

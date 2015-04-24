@@ -48,7 +48,7 @@ class ReviewTab extends AbstractSurveyTab {
             <input type="radio" name="receive_results" value="1" {$receive_results1} /> Yes<br />
             <input type="radio" name="receive_results" value="0" {$receive_results0} /> No<br />
             </p>
-            <input type='hidden' name='submit' value='{$this->name}' />
+            <input style='display:none;' type='submit' name='submit' value='{$this->name}' />
 EOF;
         if(!$this->isSubmitted()){
             $this->html .=<<<EOF
@@ -94,17 +94,17 @@ EOF;
                         error_msg = "Please complete the following sections before continuing: " + sections.join(', ');
                         alert(error_msg);
                         $("#submitted").val(0);
-                        $('#reviewForm').submit();
+                        document.getElementById('reviewForm').submit.click();
                         return false;
                     }
                     if (confirm("You are submitting your survey. You will not be able to edit your responses any more.")) 
                     { 
-                        $('#reviewForm').submit();
+                        document.getElementById('reviewForm').submit.click();
                     }
                 }
                 else{
                     alert("This will not submit your survey. When you finish the survey, please click 'Submit final survey'");
-                    $('#reviewForm').submit();
+                    document.getElementById('reviewForm').submit.click();
                 }
             }
             addEventTracking();

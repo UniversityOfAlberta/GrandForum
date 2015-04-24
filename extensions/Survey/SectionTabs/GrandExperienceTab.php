@@ -266,7 +266,7 @@ EOF;
             <input type='hidden' value='' name='experience_str2' id='experience_str2' />
             <input type='hidden' value='' name='warnings' id='grand_warnings_str' />
             <div>
-            <input type='hidden' name='submit' value='{$this->name}' />
+            <input style='display:none;' type='submit' name='submit' value='{$this->name}' />
 EOF;
 
         if(!$this->isSubmitted()){
@@ -381,9 +381,7 @@ EOF;
                     //alert(error_msg);
                     //return false;
                 }
-                
-                $('#grandExperienceForm').submit();
-                
+                document.getElementById('grandExperienceForm').submit.click();
             }
             addEventTracking();
             $('th[title], input[title], td[title], tr.tr_qtip[title]').qtip({position: {my: "top left", at: "center center"}});

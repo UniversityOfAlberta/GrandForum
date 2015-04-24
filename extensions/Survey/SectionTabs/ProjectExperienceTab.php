@@ -124,7 +124,7 @@ EOF;
 
 $this->html .=<<<EOF
             <form id='experienceForm' action='$wgServer$wgScriptPath/index.php/Special:Survey' method='post'>
-            <input type='hidden' name='submit' value='{$this->name}' />
+            <input style='display:none;' type='submit' name='submit' value='{$this->name}' />
             <input type='hidden' value='' name='experience_str' id='experience_str' />
             <input type='hidden' value='' name='warnings' id='proj_warnings_str' />
 EOF;
@@ -215,8 +215,7 @@ EOF;
 
                 exper += '}';
                 $('#experience_str').val(exper);
-
-                $('#experienceForm').submit();
+                document.getElementById('experienceForm').submit.click();
             }
             addEventTracking();
             $('th[title], input[title], td[title], tr.tr_qtip[title]').qtip({position: {my: "top left", at: "center center"}});
