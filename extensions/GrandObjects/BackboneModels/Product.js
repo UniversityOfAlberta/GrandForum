@@ -118,6 +118,35 @@ Products = Backbone.Collection.extend({
     
     grand: 'both',
     
+    fetch: function(options) {
+        if(_.isFunction(this.url)){
+            this.temp = [];
+            var self = this;
+
+            this.fetchChunk(0, 1000); // Fetch 1000 at a time
+        }
+        else{
+            return Backbone.Collection.prototype.fetch.call(this, options);
+        }
+    },
+    
+    fetchChunk: function(start, count){
+        var url = this.url() + '/' + start + '/' + count;
+        var self = this;
+        $.get(url, function(data) {
+            self.temp = self.temp.concat(data);
+            if(_.size(data) == count){
+                // There's probably more, so keep calling
+                self.fetchChunk(start + count, count);
+            }
+            else{
+                // Done fetching
+                self.reset(self.temp);
+                self.trigger('sync');
+            }
+        });
+    },
+    
     url: function(){
         var url = 'index.php?action=api.product/' + this.project + '/' + this.category + '/' + this.grand;
         return url;

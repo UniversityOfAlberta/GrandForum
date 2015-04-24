@@ -33,6 +33,7 @@ $apiRequest->addAction('Hidden','project/:id/products/:productId', new ProjectPr
 // Product
 $apiRequest->addAction('Hidden','product', new ProductAPI());
 $apiRequest->addAction('Hidden','product/:projectId/:category/:grand', new ProductAPI());
+$apiRequest->addAction('Hidden','product/:projectId/:category/:grand/:start/:count', new ProductAPI());
 $apiRequest->addAction('Hidden','product/:id', new ProductAPI());
 $apiRequest->addAction('Hidden','product/:id/authors', new PersonProductAPI());
 $apiRequest->addAction('Hidden','product/:id/authors/:personId', new PersonProductAPI());

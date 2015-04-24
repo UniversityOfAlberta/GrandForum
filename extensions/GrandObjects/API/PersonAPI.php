@@ -189,7 +189,7 @@ class PersonProductAPI extends RESTAPI {
             if($this->getParam(3) == "private"){
                 $onlyPublic = false;
             }
-            $products = $person->getPapers("all", true, 'both', $onlyPublic);
+            $products = $person->getPapers("all", true, 'both', $onlyPublic, 'Public');
             foreach($products as $product){
                 $array = array('productId' => $product->getId(), 
                                'personId'=> $this->getParam('id'),
