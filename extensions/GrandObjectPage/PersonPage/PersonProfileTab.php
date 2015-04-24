@@ -266,6 +266,8 @@ EOF;
 	            $text .= $product->getTitle()."\n";
 	            $text .= $product->getDescription()."\n";
 	        }
+	        CommonWords::$commonWords[] = strtolower($person->getFirstName());
+	        CommonWords::$commonWords[] = strtolower($person->getLastName());
 	        $data = Wordle::createDataFromText($text);
 	        $data = array_slice($data, 0, 75);
             header("Content-Type: application/json");
@@ -339,7 +341,9 @@ EOF;
             $string .= "</tbody>
                 </table>
                 <script type='text/javascript'>
-                    $('#personProducts').dataTable();
+                    $('#personProducts').dataTable({
+                        'order': [[ 1, 'desc' ]]
+                    });
                 </script>";
         }
         return $string;
