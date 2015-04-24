@@ -789,8 +789,6 @@ EOF;
                 FROM grand_project_leaders pl, mw_user u
                 WHERE pl.project_id = '{$this->id}'
                 AND pl.type = 'leader'
-                AND pl.user_id <> '4'
-                AND pl.user_id <> '150'
                 AND u.user_id = pl.user_id
                 AND u.deleted != '1'
                 AND (pl.end_date = '0000-00-00 00:00:00'
@@ -810,8 +808,6 @@ EOF;
                 FROM grand_project_leaders pl, mw_user u
                 WHERE pl.project_id = '{$this->id}'
                 AND pl.type = 'co-leader'
-                AND pl.user_id <> '4'
-                AND pl.user_id <> '150'
                 AND u.user_id = pl.user_id
                 AND u.deleted != '1'
                 AND (pl.end_date = '0000-00-00 00:00:00'
@@ -850,7 +846,6 @@ EOF;
         $sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
                 WHERE pl.project_id = '{$this->id}'
                 AND pl.type = 'co-leader'
-                AND pl.user_id NOT IN (4, 150)
                 AND u.user_id = pl.user_id
                 AND u.deleted != '1'
                 AND (pl.end_date = '0000-00-00 00:00:00'
@@ -881,7 +876,6 @@ EOF;
         $sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
                 WHERE pl.project_id = '{$this->id}'
                 AND pl.type = 'co-leader'
-                AND pl.user_id NOT IN (4, 150)
                 AND u.user_id = pl.user_id
                 AND u.deleted != '1'";
         $data = DBFunctions::execSQL($sql);
@@ -916,7 +910,6 @@ EOF;
         $sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
                 WHERE pl.project_id = '{$this->id}'
                 AND pl.type = 'leader'
-                AND pl.user_id NOT IN (4, 150)
                 AND u.user_id = pl.user_id
                 AND u.deleted != '1'
                 AND (pl.end_date = '0000-00-00 00:00:00'
@@ -947,7 +940,6 @@ EOF;
         $sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
                 WHERE pl.project_id = '{$this->id}'
                 AND pl.type = 'leader'
-                AND pl.user_id NOT IN (4, 150)
                 AND u.user_id = pl.user_id
                 AND u.deleted != '1'";
         $data = DBFunctions::execSQL($sql);
@@ -982,7 +974,6 @@ EOF;
         $sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
                 WHERE pl.project_id = '{$this->id}'
                 AND pl.type = 'manager'
-                AND pl.user_id NOT IN (4, 150)
                 AND u.user_id = pl.user_id
                 AND u.deleted != '1'
                 AND (pl.end_date = '0000-00-00 00:00:00'

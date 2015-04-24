@@ -55,13 +55,13 @@
                             </div>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REPORT_SUMMARY">
-                        <![CDATA[
-                            <h2>Summary Statement</h2>
-                            {$item}
-                        ]]>
-                    </ReportItem>
                 </ReportItemSet>
+                <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REPORT_SUMMARY">
+                    <![CDATA[
+                        <h2>Summary Statement</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
