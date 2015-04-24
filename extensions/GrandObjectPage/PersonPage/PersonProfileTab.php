@@ -628,6 +628,9 @@ EOF;
             $titleCombo = new ComboBox('title', "Title", $person->getPartnerTitle(), $titles);
             $orgCombo = new ComboBox('org', "Organization", $person->getPartnerName(), $organizations);
             $deptCombo = new ComboBox('department', "Department", $person->getPartnerDepartment(), $depts);
+            $orgCombo->attr('style', 'max-width: 250px;');
+            $deptCombo->attr('style', 'max-width: 250px;');
+            $titleCombo->attr('style', 'max-width: 250px;');
             $this->html .= "<tr>
                                 <td align='right'><b>Title:</b></td>
                                 <td>{$titleCombo->render()}
