@@ -713,7 +713,7 @@ class Person extends BackboneModel {
                       'position' => $position,
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $publicProfile,
-                      'url' => $this->getURL());
+                      'url' => $this->getUrl());
         return $json;
     }
     
@@ -1692,6 +1692,9 @@ class Person extends BackboneModel {
         }
         if($pm){
             $roleNames[] = "PM";
+        }
+        if($this->isThemeLeader()){
+            $roleNames[] = TL;
         }
         foreach($roleNames as $key => $role){
             if($role == "Inactive"){
