@@ -15,10 +15,9 @@ class Partner {
     
     // Creates a new Partner from the given id
     static function newFromId($id){
-        $sql = "SELECT *
-                FROM grand_partners
-                WHERE id = '$id'";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('grand_partners'),
+                                    array('*'),
+                                    array('id' => EQ($id)));
         $partner = new Partner($data);
         return $partner;
     }
@@ -26,22 +25,19 @@ class Partner {
     // Creates a new Partner from the given name.
     // Since the organization column is not unique, this may return an unexpected result.
     static function newFromName($name){
-        $name = addslashes($name);
-        $sql = "SELECT *
-                FROM grand_partners
-                WHERE organization = '$name'
-                OR REPLACE(`organization`, '.', ' ') = '$name'";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('grand_partners'),
+                                    array('*'),
+                                    array('organization' => EQ($name)));
         $partner = new Partner($data);
         return $partner;
     }
     
     // Returns an array of all Partners
     static function getAllPartners(){
-        $sql = "SELECT *
-                FROM grand_partners
-                ORDER BY organization ASC";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('grand_partners'),
+                                    array('*'),
+                                    array(),
+                                    array('organization' => 'ASC'));
         $partners = array();
         foreach($data as $row){
             $partners[] = new Partner(array($row));
