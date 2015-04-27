@@ -81,7 +81,7 @@ class ContributionPage {
                         if(isset($_POST['partners'])){
                             foreach(array_unique($_POST['partners']) as $key => $partner){
                                 if($partner != ""){
-                                    $partners[$key] = array("name" => str_replace("'", "&#39;", $partner), "id" => Partner::newFromName($partner)->getId());
+                                    $partners[$key] = array("name" => $partner, "id" => Partner::newFromName($partner)->getId());
                                     $type[$key] = (isset($_POST["type"][$key])) ? $_POST["type"][$key] : "none";
                                     $subtype[$key] = (isset($_POST["subtype$key"])) ? $_POST["subtype$key"] : "none";
                                     if($subtype[$key] == "othe" && isset($_POST["other_type$key"]) && $_POST["other_type$key"] != ""){
@@ -500,7 +500,7 @@ class ContributionPage {
                             }
                             else{
                                 $wgOut->addHTML("<tr><td colspan='2'><div class='warning' style='display:none;width:700px;'></div></td></tr>");
-                                $wgOut->addHTML("<tr><td style='width:120px;' align='right'><b>Partner:</b></td><td><input size='50' class='partners' type='text' name='partners[$id]' value='{$partner->getOrganization()}' /><td></tr>");
+                                $wgOut->addHTML("<tr><td style='width:120px;' align='right'><b>Partner:</b></td><td><input size='50' class='partners' type='text' name='partners[$id]' value='".str_replace("'", "&#39;", $partner->getOrganization())."' /><td></tr>");
                                 
                                 $type = isset($_POST['type'][$id]) ? $_POST['type'][$id] : $contribution->getTypeFor($partner);
                                 $subtype = str_replace("'", "&#39;", isset($_POST['subtype'][$id]) ? $_POST['subtype'][$id] : $contribution->getSubTypeFor($partner));
