@@ -3,6 +3,7 @@ ManagePeopleRowView = Backbone.View.extend({
     tagName: 'tr',
     parent: null,
     row: null,
+    editRoles: null,
     rolesDialog: null,
     projectsDialog: null,
     relationsDialog: null,
@@ -14,8 +15,9 @@ ManagePeopleRowView = Backbone.View.extend({
     },
     
     openRolesDialog: function(){
+        this.rolesDialog.empty();
         this.rolesDialog.dialog('open');
-        var editRoles = new ManagePeopleEditRolesView({model: this.model.roles, el: this.rolesDialog});
+        this.editRoles = new ManagePeopleEditRolesView({model: this.model.roles, el: this.rolesDialog});
     },
     
     events: {
