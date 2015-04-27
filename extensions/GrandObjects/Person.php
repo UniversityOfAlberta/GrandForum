@@ -1693,6 +1693,9 @@ class Person extends BackboneModel {
         if($pm){
             $roleNames[] = "PM";
         }
+        if($this->isThemeLeader()){
+            $roleNames[] = TL;
+        }
         foreach($roleNames as $key => $role){
             if($role == "Inactive"){
                 if($this->isProjectManager() || $this->isProjectLeader() || $this->isProjectCoLeader()){
