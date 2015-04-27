@@ -68,7 +68,7 @@
     $config->setValue("projectThemes", "Theme");
     
     // The terminology for administrative projects 
-    $config->setValue("adminProjects", "Administrative");
+    $config->setValue("adminProjects", "Admin Project");
     
     // Whether or not to allow bigBetProjects
     $config->setValue("bigBetProjects", false);
