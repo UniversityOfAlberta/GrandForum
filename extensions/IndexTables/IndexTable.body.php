@@ -322,7 +322,7 @@ class IndexTable {
             foreach($leads as $lead){
                 $leaders[] = "<a href='{$lead->getUrl()}'>{$lead->getReversedName()}</a>";
             }
-		    $leaders = implode(", ", $leadNames);
+		    $leaders = implode(", ", $leaders);
 			$this->text .= <<<EOF
 <tr>
 <td align='left'>
