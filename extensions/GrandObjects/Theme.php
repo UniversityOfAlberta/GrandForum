@@ -165,7 +165,7 @@ class Theme {
                                           "end_date" => EQ("0000-00-00 00:00:00")));
         if(count($data) > 0){
             foreach($data as $row){
-                $leader = Person::newFromId($data[0]['user_id']);
+                $leader = Person::newFromId($row['user_id']);
                 $leaders[$leader->getReversedName()] = $leader;
             }
         }

@@ -320,16 +320,16 @@ class IndexTable {
 		    $leaders = array();
 		    $leads = $theme->getLeaders();
             foreach($leads as $lead){
-                $leaders[] = "<a href='{$lead->getUrl()}'>{$lead->getReversedName()}</a>";
+                $leaders[] = "<a href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
             }
-		    $leaders = implode(", ", $leaders);
+		    $leadersString = implode(", ", $leaders);
 			$this->text .= <<<EOF
 <tr>
 <td align='left'>
 <a href='{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:{$theme->getAcronym()} - {$theme->getName()}'>{$theme->getAcronym()}</a>
 </td><td align='left'>
 {$theme->getName()}
-</td><td>{$leaders}</td></tr>
+</td><td>{$leadersString}</td></tr>
 EOF;
 		}
 		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
