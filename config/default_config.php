@@ -64,6 +64,12 @@
     // Global Message (ie. maintenance message)
     $config->setValue("globalMessage", "");
     
+    // The terminology for project themes 
+    $config->setValue("projectThemes", "Theme");
+    
+    // The terminology for administrative projects 
+    $config->setValue("adminProjects", "Administrative");
+    
     // Whether or not to allow bigBetProjects
     $config->setValue("bigBetProjects", false);
     
