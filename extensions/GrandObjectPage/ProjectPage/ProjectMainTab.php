@@ -81,7 +81,10 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()}</td></tr>";
         }
         $this->html .= "</table>";
-        $this->showChallenge();
+        if($project->getType() != "Administrative"){
+            $this->showChallenge();
+        }
+        $this->showLeaders();
         if($project->getStatus() != 'Proposed'){
             $this->showChampions();
         }
@@ -332,8 +335,8 @@ EOF;
         $this->html .= $plusMinus->render();
         $this->html .= "</td><td></td></tr></table>";
     }
-
-    function showPeople(){
+    
+    function showLeaders(){
         global $wgUser, $wgServer, $wgScriptPath;
         
         $me = Person::newFromWgUser();
@@ -344,26 +347,6 @@ EOF;
         $leaders = $project->getLeaders(true); //only get id's
         $coleaders = $project->getCoLeaders(true);
         $managers = $project->getManagers(true);
-        $pnis = $project->getAllPeople(PNI);
-        $cnis = $project->getAllPeople(CNI);
-        $ars = $project->getAllPeople(AR);
-        $hqps = $project->getAllPeople(HQP);
-        
-        $names = array("");
-        if($project->isSubProject()){
-            $people = array_merge($project->getParent()->getAllPeople(), $project->getAllPeople());
-            foreach($people as $person){
-                if($person->isRoleAtLeast(CNI)){
-                    $names[$person->getName()] = $person->getNameForForms();
-                }
-            }
-            if($project->getLeader() != null && !isset($names[$project->getLeader()->getName()])){
-                $names[$project->getLeader()->getName()] = $project->getLeader()->getNameForForms();
-            }
-            
-            asort($names);
-        }
-        
         $this->html .= "<h2><span class='mw-headline'>Leaders</span></h2>";
         $this->html .= "<table>";
         if(!empty($leaders)){
@@ -401,6 +384,36 @@ EOF;
             }    
         }
         $this->html .= "</table>";
+    }
+
+    function showPeople(){
+        global $wgUser, $wgServer, $wgScriptPath;
+        
+        $me = Person::newFromWgUser();
+        
+        $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
+        $project = $this->project;
+        
+        $pnis = $project->getAllPeople(PNI);
+        $cnis = $project->getAllPeople(CNI);
+        $ars = $project->getAllPeople(AR);
+        $hqps = $project->getAllPeople(HQP);
+        
+        $names = array("");
+        if($project->isSubProject()){
+            $people = array_merge($project->getParent()->getAllPeople(), $project->getAllPeople());
+            foreach($people as $person){
+                if($person->isRoleAtLeast(CNI)){
+                    $names[$person->getName()] = $person->getNameForForms();
+                }
+            }
+            if($project->getLeader() != null && !isset($names[$project->getLeader()->getName()])){
+                $names[$project->getLeader()->getName()] = $project->getLeader()->getNameForForms();
+            }
+            
+            asort($names);
+        }
+
         if(!$edit){
             $this->html .= "<table width='100%'><tr><td valign='top' width='50%'>";
             if($edit || !$edit && count($pnis) > 0){

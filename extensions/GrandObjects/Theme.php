@@ -153,6 +153,25 @@ class Theme {
         return $this->leader;
     }
     
+    /*
+     * Returns all of the leaders regardless of their type
+     * @return array An array of all leaders
+     */
+    function getLeaders(){
+        $leaders = array();
+        $data = DBFunctions::select(array("grand_theme_leaders"),
+                                    array("user_id"),
+                                    array("theme" => $this->getId(),
+                                          "end_date" => EQ("0000-00-00 00:00:00")));
+        if(count($data) > 0){
+            foreach($data as $row){
+                $leader = Person::newFromId($row['user_id']);
+                $leaders[$leader->getReversedName()] = $leader;
+            }
+        }
+        return $leaders;
+    }
+    
     /**
      * Returns the current co-leader of this Theme
      * @return Person the current Co-Leader of this Theme
