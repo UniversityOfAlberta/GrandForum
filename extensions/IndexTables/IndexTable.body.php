@@ -17,7 +17,8 @@ class IndexTable {
         global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle;
         $me = Person::newFromWgUser();
         $project = Project::newFromHistoricName($wgTitle->getNSText());
-        $selected = (($project != null || $wgTitle->getText() == "Projects") && $wgTitle->getNSText() != "Reboot" &&
+        $selected = ((($project != null && $project->getType() != "Administrative") || $wgTitle->getText() == "Projects") &&
+                     $wgTitle->getNSText() != "Reboot" &&
                      !($me->isMemberOf($project) || ($project != null && $me->isMemberOf($project->getParent())))) ? "selected" : "";
         $projectTab = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
         if(Project::areThereDeletedProjects()){
@@ -115,6 +116,14 @@ class IndexTable {
             $tabs['Main']['subtabs'][] = $productsSubTab;
         }
         
+        $adminProjects = array();
+        $projects = Project::getAllProjects();
+        foreach($projects as $project){
+            if($project->getType() == 'Administrative'){
+                $adminProjects[$project->getName()] = $project;
+            }
+        }
+        
         $themesColl = new Collection(Theme::getAllThemes());
         $themeAcronyms = $themesColl->pluck('getAcronym()');
         $themeNames = $themesColl->pluck('getName()');
@@ -123,11 +132,22 @@ class IndexTable {
             $themes[] = $themeAcronyms[$id].' - '.$themeNames[$id];
         }
         
+        if(count($adminProjects) > 0){
+            $project = Project::newFromHistoricName($wgTitle->getNSText());
+            $selected = ((($project != null && $project->getType() == 'Administrative') || $wgTitle->getText() == "AdminProjects")) ? "selected" : "";
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab(Inflect::pluralize($config->getValue('adminProjects')), 
+                                                                "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:AdminProjects", 
+                                                                "$selected");
+        }
+        
         if(count($themes) > 0){
             $selected = ($wgTitle->getNSText() == $config->getValue('networkName') && 
-                         ($wgTitle->getText() == "Themes" || array_search($wgTitle->getText(), $themes) !== false)) ? "selected" : "";
+                         ($wgTitle->getText() == Inflect::pluralize($config->getValue('projectThemes')) || 
+                         array_search($wgTitle->getText(), $themes) !== false)) ? "selected" : "";
             
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Themes", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Themes", "$selected");
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab(Inflect::pluralize($config->getValue('projectThemes')), 
+                                                                "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:".Inflect::pluralize($config->getValue('projectThemes')), 
+                                                                "$selected");
         }
         
         if(Wiki::newFromTitle("{$config->getValue('networkName')}:ALL_Conferences")->exists()){
@@ -222,8 +242,12 @@ class IndexTable {
 			        $wgOut->setPageTitle("Completed Projects");
 				    $this->generateProjectsTable('Ended');
 				    break;
-			    case 'Themes':
-			        $wgOut->setPageTitle("Themes");
+				case 'AdminProjects':
+			        $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
+				    $this->generateProjectsTable('Active', 'Administrative');
+				    break;
+			    case Inflect::pluralize($config->getValue('projectThemes')):
+			        $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
 				    $this->generateThemesTable();
 				    break;
 			    default:
@@ -242,10 +266,14 @@ class IndexTable {
 	 * Consists of the following columns
 	 * Acronym | Name 
 	 */
-	private function generateProjectsTable($status){
-		global $wgScriptPath, $wgServer, $wgOut, $wgUser;
+	private function generateProjectsTable($status, $type="Research"){
+		global $wgScriptPath, $wgServer, $wgOut, $wgUser, $config;
         $me = Person::newFromId($wgUser->getId());
+        $themesHeader = "";
         $idHeader = "";
+        if($type != "Administrative"){
+            $themesHeader = "<th>{$config->getValue('projectThemes')}</th>";
+        }
         if($me->isRoleAtLeast(MANAGER)){
             $idHeader = "<th>Project Id</th>";
         }
@@ -253,13 +281,16 @@ class IndexTable {
 	    $this->text .= "
             <table class='indexTable' style='display:none;' frame='box' rules='all'>
             <thead>
-            <tr><th>Acronym</th><th>Name</th>$idHeader</tr></thead><tbody>";
+            <tr><th>Acronym</th><th>Name</th>{$themesHeader}{$idHeader}</tr></thead><tbody>";
 	    foreach($data as $proj){
-	        if($proj->getStatus() == $status){
+	        if($proj->getStatus() == $status && $proj->getType() == $type){
 	            $this->text .= "
                     <tr>
                     <td align='left'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
                     <td align='left'>{$proj->getFullName()}</td>";
+                if($type != "Administrative"){
+                    $this->text .= "<td align='center'>{$proj->getChallenge()->getAcronym()}</td>";
+                }
                 if($me->isRoleAtLeast(MANAGER)){
                     $this->text .= "<td>{$proj->getId()}</td>\n";
                 }
@@ -281,7 +312,7 @@ class IndexTable {
 		global $wgScriptPath, $wgServer, $config;
 		$this->text .=
 "<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>Themes</th><th>Name</th></tr></thead><tbody>
+<thead><tr><th>{$config->getValue('projectThemes')}</th><th>Name</th></tr></thead><tbody>
 ";
         $themes = Theme::getAllThemes(PROJECT_PHASE);
 		foreach($themes as $theme){
