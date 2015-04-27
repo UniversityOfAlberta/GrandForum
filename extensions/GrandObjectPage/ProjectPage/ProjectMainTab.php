@@ -215,10 +215,10 @@ class ProjectMainTab extends AbstractEditableTab {
     }
 
     function showChallenge(){
-        global $wgServer, $wgScriptPath;
+        global $wgServer, $wgScriptPath, $config;
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         
-        $this->html .= "<h2><span class='mw-headline'>Primary Challenge</span></h2>";
+        $this->html .= "<h2><span class='mw-headline'>{$config->getValue("projectThemes")}</span></h2>";
         $challenge = $this->project->getChallenge();
         
         $challenges = Theme::getAllThemes($this->project->getPhase());
@@ -262,7 +262,7 @@ EOF;
             }
         }
 
-        $this->html .= "<h2><span class='mw-headline'>Champions</span></h2>";
+        $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize(CHAMP)."</span></h2>";
         if($edit){
             $this->showEditChampions($champions);
         }
