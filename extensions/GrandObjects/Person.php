@@ -713,7 +713,7 @@ class Person extends BackboneModel {
                       'position' => $position,
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $publicProfile,
-                      'url' => $this->getURL());
+                      'url' => $this->getUrl());
         return $json;
     }
     

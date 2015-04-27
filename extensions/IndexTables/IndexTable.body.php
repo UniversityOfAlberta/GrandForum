@@ -313,17 +313,23 @@ class IndexTable {
 		global $wgScriptPath, $wgServer, $config;
 		$this->text .=
 "<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>{$config->getValue('projectThemes')}</th><th>Name</th></tr></thead><tbody>
+<thead><tr><th>{$config->getValue('projectThemes')}</th><th>Name</th><th>Leaders</th></tr></thead><tbody>
 ";
         $themes = Theme::getAllThemes(PROJECT_PHASE);
 		foreach($themes as $theme){
+		    $leaders = array();
+		    $leads = $theme->getLeaders();
+            foreach($leads as $lead){
+                $leaders[] = "<a href='{$lead->getUrl()}'>{$lead->getReversedName()}</a>";
+            }
+		    $leaders = implode(", ", $leadNames);
 			$this->text .= <<<EOF
 <tr>
 <td align='left'>
 <a href='{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:{$theme->getAcronym()} - {$theme->getName()}'>{$theme->getAcronym()}</a>
 </td><td align='left'>
 {$theme->getName()}
-</td></tr>
+</td><td>{$leaders}</td></tr>
 EOF;
 		}
 		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
