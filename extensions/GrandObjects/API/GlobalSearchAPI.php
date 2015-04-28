@@ -46,9 +46,6 @@ class GlobalSearchAPI extends RESTAPI {
                 $people = Person::getByIds($dataCollection->pluck('user_id'));
                 foreach($people as $person){
                     $continue = false;
-                    if($person->isRoleAtLeast(MANAGER) && !$me->isRole(MANAGER)){
-                        $continue = true;
-                    }
                     if(!$me->isLoggedIn() && !$person->isRoleAtLeast(CNI)){
                         $continue = true;
                     }
