@@ -1055,13 +1055,15 @@ EOF;
             $names = $themes['names'];
             $largest = 0;
             $largestKey = 0;
-            foreach($values as $key => $value){
-                if($value > $largest){
-                    $largest = $value;
-                    $largestKey = $key;
+            if(count($values) > 0){
+                foreach($values as $key => $value){
+                    if($value > $largest){
+                        $largest = $value;
+                        $largestKey = $key;
+                    }
                 }
+                return Theme::newFromId($largestKey);
             }
-            return Theme::newFromId($largestKey);
         }
         return Theme::newFromName("Not Specified");
     } 
