@@ -32,6 +32,9 @@ class PublicProjTreeTab extends AbstractTab {
             $projs = array();
             $projects = Project::getAllProjects();
             foreach($projects as $project){
+                if($project->getType() == "Administrative"){
+                    continue;
+                }
                 $people = $project->getAllPeople();
                 $challenge = $project->getChallenge();
                 $theme = ($challenge != null) ? $challenge->getAcronym() : "Unknown";
