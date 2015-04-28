@@ -17,6 +17,10 @@
             $this->config[$key] = $value;
         }
         
+        function hasValue($key){
+            return (isset($this->config[$key]));
+        }
+        
         function getValue($key){
             return $this->config[$key];
         }
