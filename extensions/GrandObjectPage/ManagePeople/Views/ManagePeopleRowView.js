@@ -55,7 +55,7 @@ ManagePeopleRowView = Backbone.View.extend({
 	        resizable: false,
 	        draggable: false,
 	        width: 800,
-	        height: 600,
+	        position: { my: "center", at: 'center', of: window },
 	        open: function(){
 	            $("html").css("overflow", "hidden");
 	        },
@@ -116,6 +116,11 @@ ManagePeopleRowView = Backbone.View.extend({
 	            }, this)
 	        }
 	    });
+	    setInterval($.proxy(function(){
+	        this.rolesDialog.dialog("option","position","center");
+	        this.projectsDialog.dialog("option","position","center");
+	        this.relationsDialog.dialog("option","position","center");
+	    }, this), 100);
         return this.$el;
     }
     

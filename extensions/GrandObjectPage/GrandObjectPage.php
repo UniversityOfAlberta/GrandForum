@@ -13,8 +13,6 @@
     require_once("AddContributionPage.php");
     require_once("AddMultimediaStoryPage.php");
     //require_once("AddFormPage.php");
-    //require_once("EditRelations.php");
-    require_once("ThemeLeader.php");
     require_once("Products/Products.php");
     
     $wgHooks['AlternateEdit'][] = 'noEdit';

@@ -1,4 +1,4 @@
-<td><%= name %></td>
+<td><%= HTML.Select(this, 'name', {options: allowedRoles}) %></td>
 <td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %></td>
 <td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %></td>
 <td><%= HTML.TextArea(this, 'comment', {style: 'max-height: 60px; resize: none;'}) %></td>

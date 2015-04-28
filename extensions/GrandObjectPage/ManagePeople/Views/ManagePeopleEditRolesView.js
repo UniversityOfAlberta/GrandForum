@@ -18,7 +18,8 @@ ManagePeopleEditRolesView = Backbone.View.extend({
     },
     
     saveAll: function(){
-        this.roles.each($.proxy(function(role){
+        var copy = this.roles.toArray();
+        _.each(copy, $.proxy(function(role){
             if(role.get('deleted') != "true"){
                 role.save();
             }
