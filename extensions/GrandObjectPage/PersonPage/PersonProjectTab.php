@@ -13,6 +13,8 @@ class PersonProjectTab extends AbstractTab {
 
     function generateBody(){
         global $wgServer, $wgScriptPath;
+        $this->showThemes($this->person, $this->visibility);
+        $this->showProjects($this->person, $this->visibility, 'Active', 'Administrative');
         $this->showProjects($this->person, $this->visibility, 'Active');
         $this->showProjects($this->person, $this->visibility, 'Ended');
         if($this->visibility['isSupervisor']){
@@ -24,8 +26,8 @@ class PersonProjectTab extends AbstractTab {
     /*
      * Displays the list of projects for this user
      */
-    function showProjects($person, $visibility, $status='Active'){
-        global $wgOut, $wgScriptPath, $wgServer;
+    function showProjects($person, $visibility, $status='Active', $type='Research'){
+        global $wgOut, $wgScriptPath, $wgServer, $config;
         if($status == 'Active'){
             $projects = $person->getProjects();
         }
@@ -35,29 +37,99 @@ class PersonProjectTab extends AbstractTab {
         if($visibility['edit'] || (!$visibility['edit'] && count($projects) > 0)){
             $projs = array();
             foreach($projects as $project){
-			    if(!$project->isSubProject() && $project->getStatus() == $status){
+			    if(!$project->isSubProject() && 
+			        $project->getStatus() == $status &&
+			        $project->getType() == $type){
 				    $subprojs = array();
 				    foreach($project->getSubProjects() as $subproject){
 				        if($person->isMemberOf($subproject)){
-				            $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
+				            $lead = "";
+				            if($person->leadershipOf($subproject, 'leader')){
+				                $lead = " (lead)";
+				            }
+				            else if ($person->leadershipOf($subproject, 'co-leader')){
+				                $lead = " (co-lead)";
+				            }
+				            else if($person->leadershipOf($subproject, 'manager')){
+				                $lead = " (manager)";
+				            }
+				            $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>{$lead}";
 				        }
 				    }
 				    $subprojects = "";
 				    if(count($subprojs) > 0){
-				        $subprojects = "(".implode(", ", $subprojs).")";
+				        $subprojects = "<ul><li>".implode("</li><li>", $subprojs)."</li></ul>";
 				    }
-				    $projs[] = "<li><a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects</li>";
+				    $lead = "";
+		            if($person->leadershipOf($project, 'leader')){
+		                $lead = " (lead)";
+		            }
+		            else if ($person->leadershipOf($project, 'co-leader')){
+		                $lead = " (co-lead)";
+		            }
+		            else if($person->leadershipOf($project, 'manager')){
+		                $lead = " (manager)";
+		            }
+				    $projs[] = "<li><a href='{$project->getUrl()}'>{$project->getName()}</a>{$lead} $subprojects</li>";
 				}
 			}
 			if(count($projs) > 0){
-			    if($status == 'Active'){
-			        $this->html .= "<h3>Current Projects</h3>";
+			    if($type == 'Research'){
+			        if($status == 'Active'){
+			            $this->html .= "<h3>Current Projects</h3>";
+			        }
+			        else if($status == 'Ended'){
+			            $this->html .= "<h3>Completed Projects</h3>";
+			        }
 			    }
-			    else if($status == 'Ended'){
-			        $this->html .= "<h3>Completed Projects</h3>";
+			    else if($type == 'Administrative'){
+			        if($status == 'Active'){
+			            $this->html .= "<h3>{$config->getValue('adminProjects')}</h3>";
+			        }
+			    }
+			    else {
+			        if($status == 'Active'){
+			            $this->html .= "<h3>{$type} Projects</h3>";
+			        }
 			    }
 			    $this->html .= "<ul>".implode("\n", $projs)."</ul>";
 			}
+        }
+    }
+    
+    function showThemes($person, $visibility){
+        global $wgOut, $wgScriptPath, $wgServer, $config;
+        $leadThemes = $person->getLeadThemes();
+        $coLeadThemes = $person->getCoLeadThemes();
+        $projects = $person->getProjects();
+        $themes = array();
+        foreach($projects as $project){
+            if($project->getType() == "Administrative"){
+                continue;
+            }
+            $theme = $project->getChallenge();
+            $themes[$theme->getAcronym()] = $theme;
+        }
+        foreach($leadThemes as $theme){
+            $themes[$theme->getAcronym()] = $theme;
+        }
+        foreach($coLeadThemes as $theme){
+            $themes[$theme->getAcronym()] = $theme;
+        }
+        if(count($themes) > 0){
+            $themeNames = array();
+            foreach($themes as $theme){
+                $lead = "";
+                if(isset($leadThemes[$theme->getId()])){
+                    $lead = " (lead)";
+                }
+                else if(isset($coLeadThemes[$theme->getId()])){
+                    $lead = " (co-lead)";
+                }
+                $themeNames[] = "<li><a href='{$theme->getUrl()}'>{$theme->getAcronym()}</a>{$lead}</li>";
+            }
+            $this->html .= "<h3>".Inflect::pluralize($config->getValue('projectThemes'))."</h3>";
+            $this->html .= "<ul>".implode("\n", $themeNames)."</ul>";
         }
     }
 }
