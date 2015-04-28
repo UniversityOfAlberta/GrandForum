@@ -37,12 +37,8 @@ Feature: Theme Leaders
         And I should see "Visualizations"
         And I should not see "Wiki"
         
-    Scenario: TL views the "Theme Leader" page
+    Scenario: TL views the listing of their themes
         Given I am logged in as "TL.User1" using password "TL.Pass1"
-        And I follow "Theme Lead"
-        Then I should see "Phase2Project3"
-        
-    Scenario: PNI tries viewing the "Theme Leader" page
-        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
-        And I go to "index.php/Special:ThemeLeader"
-        Then I should see "Permission error"
+        And I follow "My Profile"
+        And I click "Projects"
+        Then I should see "Theme1 (co-lead)"

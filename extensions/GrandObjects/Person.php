@@ -3185,7 +3185,7 @@ class Person extends BackboneModel {
     } 
     
     // Returns true if this person is a leader or co-leader of a given project, false otherwise
-    function leadershipOf($project) {
+    function leadershipOf($project, $type=null) {
         if($project instanceof Project){
             $p = $project;
         }
@@ -3195,20 +3195,25 @@ class Person extends BackboneModel {
         if($p == null || $p->getName() == ""){
             return false;
         }
+        $extra = "";
+        if($type != null){
+            $extra = "AND l.type = '$type'";
+        }
         $data = DBFunctions::execSQL("SELECT 1
                                      FROM grand_project_leaders l, grand_project p 
                                      WHERE l.project_id = p.id
                                      AND l.user_id = '{$this->id}'
                                      AND p.name = '{$p->getName()}'
                                      AND (l.end_date = '0000-00-00 00:00:00'
-                                          OR l.end_date > CURRENT_TIMESTAMP)");
+                                          OR l.end_date > CURRENT_TIMESTAMP)
+                                     $extra");
        
         if(DBFunctions::getNRows() > 0){
             return true;
         }
         if(!$p->clear){
             foreach($p->getPreds() as $pred){
-                if($this->leadershipOf($pred)){
+                if($this->leadershipOf($pred, $type)){
                     return true;
                 }
             }
