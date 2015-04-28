@@ -37,7 +37,8 @@ class PublicChordTab extends AbstractTab {
             $people = Person::getAllPeopleDuring(null, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL);
             $projects = Project::getAllProjectsEver();
             foreach($projects as $key => $project){
-                if($project->getChallenge()->getName() == "Not Specified"){
+                if($project->getChallenge()->getName() == "Not Specified" || 
+                   $project->getType() == "Administrative"){
                     unset($projects[$key]);
                 }
             }
