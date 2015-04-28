@@ -436,6 +436,7 @@ class Paper extends BackboneModel{
      * @return array The array containing all the structure in Products.xml
      */
     static function structure(){
+        global $config;
         if(!Cache::exists("product_structure")){
             $file = file_get_contents("extensions/GrandObjects/Products.xml");
             $parser = simplexml_load_string($file);
@@ -446,6 +447,7 @@ class Paper extends BackboneModel{
                 foreach($category->children() as $type){
                     $tattrs = $type->attributes();
                     $tname = "{$tattrs->type}";
+                    $tname = str_replace('{$networkName}', $config->getValue('networkName'), $tname);
                     if(trim("{$tattrs->status}") != ""){
                         $tstatus = explode("|", "{$tattrs->status}");
                     }
@@ -461,7 +463,7 @@ class Paper extends BackboneModel{
                                 $fattrs = $field->attributes();
                                 $fid = "$field";
                                 $flabel = "{$fattrs->label}";
-                                $ftype = "{$fattrs->type}";
+                                $ftype = str_replace('{$networkName}', $config->getValue('networkName'), "{$fattrs->type}");
                                 $fccvtk = "{$fattrs->ccvtk}";
                                 $fbibtex = "{$fattrs->bibtex}";
                                 $fhidden = (strtolower("{$fattrs->hidden}") == "true");
