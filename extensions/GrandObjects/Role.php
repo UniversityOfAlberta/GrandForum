@@ -42,6 +42,7 @@ class Role extends BackboneModel {
 	
 	function toArray(){
 	    $json = array('id' => $this->getId(),
+	                  'userId' => $this->user,
 	                  'name' => $this->getRole(),
 	                  'comment' => $this->getComment(),
 	                  'startDate' => $this->getStartDate(),
@@ -50,15 +51,47 @@ class Role extends BackboneModel {
 	}
 	
 	function create(){
-	
+	    // TODO: Need to handle access control
+	    $status = DBFunctions::insert('grand_roles',
+	                                  array('user_id'    => $this->user,
+	                                        'role'       => $this->getRole(),
+	                                        'start_date' => $this->getStartDate(),
+	                                        'end_date'   => $this->getEndDate(),
+	                                        'comment'    => $this->getComment()),
+	                                  array('id' => EQ($this->getId())));
+	    if($status){
+            $data = DBFunctions::select(array('grand_roles'),
+                                        array('id'),
+                                        array('user_id' => EQ($this->user),
+                                              'role' => EQ($this->getRole())),
+                                        array('id' => 'DESC'));
+            if(count($data) > 0){
+                $id = $data[0]['id'];
+                $this->id = $id;
+            }
+        }
+	    Role::$cache = array();
+	    return $status;
 	}
 	
 	function update(){
-	
+	    // TODO: Need to handle access control
+	    $status = DBFunctions::update('grand_roles',
+	                                  array('role'       => $this->getRole(),
+	                                        'start_date' => $this->getStartDate(),
+	                                        'end_date'   => $this->getEndDate(),
+	                                        'comment'    => $this->getComment()),
+	                                  array('id' => EQ($this->getId())));
+	    Role::$cache = array();
+	    return $status;
 	}
 	
 	function delete(){
-	
+	    // TODO: Need to handle access control
+	    $status = DBFunctions::delete('grand_roles',
+	                                  array('id' => EQ($this->getId())));
+	    Role::$cache = array();
+	    return $status;
 	}
 	
 	function exists(){

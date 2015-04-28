@@ -1,12 +1,21 @@
 <table frame="box" rules="all" width="100%" cellpadding="5">
-    <tr>
-        <th width="1%">Role</th>
-        <th width="1%" style="white-space: nowrap;">Start Date</th>
-        <th width="1%" style="white-space: nowrap;">End Date</th>
-        <th>Comment</th>
-        <th width="1%">&nbsp;</th>
-    </tr>
+    <thead>
+        <tr>
+            <th width="1%">Role</th>
+            <th width="1%" style="white-space: nowrap;">Start Date</th>
+            <th width="1%" style="white-space: nowrap;">End Date</th>
+            <th>Comment</th>
+            <th width="1%">Delete?</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <td><button id="add" title="Add New Role">+</button></td>
+            <td colspan="4">&nbsp;</td>
+        </tr>
+    </tfoot>
     <tbody id="role_rows">
+        <tr></tr>
         
     </tbody>
 </table>

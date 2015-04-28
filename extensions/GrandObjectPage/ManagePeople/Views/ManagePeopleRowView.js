@@ -17,7 +17,9 @@ ManagePeopleRowView = Backbone.View.extend({
     openRolesDialog: function(){
         this.rolesDialog.empty();
         this.rolesDialog.dialog('open');
-        this.editRoles = new ManagePeopleEditRolesView({model: this.model.roles, el: this.rolesDialog});
+        this.editRoles = new ManagePeopleEditRolesView({model: this.model.roles, 
+                                                        person:this.model, 
+                                                        el: this.rolesDialog});
     },
     
     events: {
@@ -62,6 +64,7 @@ ManagePeopleRowView = Backbone.View.extend({
 	        },
 	        buttons: {
 	            "Save": $.proxy(function(e){
+	                this.editRoles.saveAll();
                     this.rolesDialog.dialog('close');
 	            }, this),
 	            "Cancel": $.proxy(function(){
