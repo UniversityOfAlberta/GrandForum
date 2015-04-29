@@ -299,7 +299,7 @@
                     ]]>
                 </ReportItem>
 
-                <ReportItem id="RI7" type="EvalReviewRadioReportItem" options="Top|Upper Middle|Lower Middle|Bottom" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_OVERALLSCORE"  subType="Project">
+                <ReportItem id="RI7" type="EvalReviewRadioReportItem" options="High Priority|Medium Priority|Low Priority" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_OVERALLSCORE"  subType="Project">
                 <![CDATA[
                 </td>
                 </tr>
