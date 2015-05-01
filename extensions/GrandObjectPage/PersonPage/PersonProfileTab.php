@@ -74,7 +74,7 @@ class PersonProfileTab extends AbstractEditableTab {
         $_POST['type'] = "private";
         $_POST['profile'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['private_profile'])));
         APIRequest::doAction('UserProfile', true);
-        if(isExtensionEnabled('EthicsTable') && $this->person->isHQP()){
+        if(isExtensionEnabled('EthicsTable') && $this->person->isRole(HQP)){
             APIRequest::doAction('UserEthics', true);
         }
         Person::$cache = array();
@@ -371,10 +371,10 @@ EOF;
             <td>&nbsp;<h3>I have not completed the TCPS2 tutorial.</h3></td>
             <tr></table>";
         }
-        if($person->isHQP()){
+        if($person->isRole(HQP)){
             return $ethics_str;
         }
-        else if($person->isCNI() || $person->isPNI()){
+        else if($person->isRole(CNI) || $person->isRole(PNI)){
             $relations = $person->getRelations("Supervises");
             $total_hqp = 0;
             $ethical_hqp = 0;
@@ -446,7 +446,7 @@ EOF;
         }
 
         $date = ($ethics['date'] == '0000-00-00')? "" : $ethics['date'];
-        if($person->isHQP()){
+        if($person->isRole(HQP)){
             $this->html .=<<<EOF
             <script>
             $(function() {

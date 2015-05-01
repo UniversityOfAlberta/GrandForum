@@ -51,7 +51,7 @@ class GrandAccess {
 	        $aRights[$i++] = "Evaluator";
 	        $aRights[$i++] = "Evaluator+";
 	    }
-	    if($me->isPNI() || $me->isCNI()){
+	    if($me->isRole(PNI) || $me->isRole(CNI)){
 	        $aRights[$i++] = "Researcher";
 	        $aRights[$i++] = "Researcher+";
 	    }

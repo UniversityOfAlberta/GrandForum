@@ -521,7 +521,7 @@ EOF;
                 $fname = $author_name[0];
                 $lname = implode(' ', array_slice($author_name, 1));
                 $author_name = $lname . ", " . $fname;
-                if(!in_array($author_name, $people) && !in_array($author_name, $past_conn) && ($author->isCNI() || $author->isPNI())){
+                if(!in_array($author_name, $people) && !in_array($author_name, $past_conn) && ($author->isRole(CNI) || $author->isRole(PNI))){
                     $people[] = $author_name;
                 }
             }

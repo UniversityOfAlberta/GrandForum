@@ -90,7 +90,7 @@ class Dashboard{
                  $hqp_type = ", ".$hqp_type;
             } 
             
-            $role = ($h->isHQP())? "HQP" : (($h->isCNI())? "CNI" : (($h->isPNI())? "PNI" : ""));
+            $role = ($h->isRole(HQP))? HQP : (($h->isRole(CNI))? CNI : (($h->isRole(PNI))? PNI : ""));
             if($h->isActive() && $role != ""){
                 $html.=<<<EOF
                     <li>
@@ -150,7 +150,7 @@ EOF;
             $grand_percent = preg_replace('/%/', '', $grand_percent);
             $grand_percent = (is_numeric($grand_percent))? $grand_percent : 0;
 
-            $role = ($h->isHQP())? "HQP" : (($h->isCNI())? "CNI" : (($h->isPNI())? "PNI" : ""));
+            $role = ($h->isRole(HQP))? HQP : (($h->isRole(CNI))? CNI : (($h->isRole(PNI))? PNI : ""));
             if($h->isActive() && $role != ""){
                 $effort = "";
                 if(isExtensionEnabled('Reporting')){

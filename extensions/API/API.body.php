@@ -163,7 +163,6 @@ class APIRequest{
 		$this->addAction('University', 'getEthicsStats', new UniversityEthicsAPI());
 		
 		// HIDDENS
-		$this->addAction('Hidden', 'getWFInfo', new WFAPI());
 		$this->addAction('Hidden', 'getJung', new JungAPI());
 		$this->addAction('Hidden', 'addRecordStory', new RecordStoryAPI());
 		$this->addAction('Hidden', 'getProjectMilestoneHistory', new ProjectMilestoneHistoryAPI());

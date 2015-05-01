@@ -234,7 +234,7 @@ class ReportArchive extends SpecialPage {
         $allHQP = $person->getHQPDuring("$year".REPORTING_PRODUCTION_MONTH, ($year+1).REPORTING_PRODUCTION_MONTH);
         $hqpProcessed = array();
         foreach($allHQP as $hqp){
-            if($isactivehqp && !$hqp->isHQP()){ //contradiction
+            if($isactivehqp && !$hqp->isRole(HQP)){ //contradiction
                 continue;
             }
             if(isset($hqpProcessed[$hqp->getId()])){ // HQP has already been processed

@@ -23,7 +23,7 @@ class ResearcherCompleteAPI extends ResearcherAPI{
 	  global $wgScriptPath, $wgServer;
 	  $xml = "<researchers>\n";
 	  foreach($people as $person){
-	    if(!$person->isHQP()){
+	    if(!$person->isRole(HQP)){
 	      $uni = $person->getUniversity();
 	      $name = $person->splitName();
 	      $xml .= "\t<researcher type=\"{$person->getType()}\" id=\"{$person->getId()}\">\n";
@@ -42,7 +42,7 @@ class ResearcherCompleteAPI extends ResearcherAPI{
 	        $xml .= "\t\t\t<project id=\"{$project->getId()}\" name=\"{$project->getName()}\" />\n";
 	      }
 	      $xml .= "\t\t</projects>\n";
-	      if($person->isHQP()){
+	      if($person->isRole(HQP)){
 	        $xml .= "\t\t<supervisors>\n";
 	        foreach($person->getCreators() as $supervisor){
 	          $xml .= "\t\t\t<supervisor>{$supervisor->getName()}</supervisor>\n";
@@ -78,7 +78,7 @@ class ResearcherCompleteAPI extends ResearcherAPI{
 	  global $wgScriptPath, $wgServer;
 	  $json = array();
 	  foreach($people as $person){
-	    if(!$person->isHQP()){
+	    if(!$person->isRole(HQP)){
 	      $name = $person->splitName();
         $projects = array();
         $publications = array();
@@ -118,7 +118,7 @@ class ResearcherCompleteAPI extends ResearcherAPI{
         if(file_exists("Photos/".str_ireplace(".", "_", $person->getName()).".jpg")){
 	        $p["photo"] = "$wgServer$wgScriptPath/Photos/".str_ireplace(".", "_", $person->getName()).".jpg";
 	      }
-        if($person->isHQP()){
+        if($person->isRole(HQP)){
           $supervisors = array();
 	        foreach($person->getCreators() as $supervisor){
 	          $supervisors[] = $supervisor->getName();

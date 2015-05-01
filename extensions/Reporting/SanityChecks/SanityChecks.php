@@ -198,7 +198,7 @@ EOF;
 	    		$niname_normal = $ni->getNameForForms();
 	    		$niname_reversed = $ni->getReversedName();
 	    		$niname_link = $ni->getUrl();
-	    		$ni_role = ($ni->isCNI())? "role:CNI" : (($ni->isPNI())? "role:PNI" : "role:Other"); 
+	    		$ni_role = ($ni->isRole(CNI))? "role:".CNI : (($ni->isRole(PNI))? "role:".PNI : "role:Other"); 
 	    		$projects = $ni->getProjectsDuring((REPORTING_YEAR+1).REPORTING_NCE_START_MONTH, (REPORTING_YEAR+2).REPORTING_NCE_END_MONTH);
 	    		$project_names = array();
 	    		foreach ($projects as $p) {
@@ -374,7 +374,7 @@ EOF;
 					$university = $s->getUni();
 					$department = $s->getDepartment();
 					$errors = array();
-					$ishqp = $s->isHQP();
+					$ishqp = $s->isRole(HQP);
 					$related = $person->relatedTo($s, 'Supervises');
 
 					//Check for Ethics tutorial completion

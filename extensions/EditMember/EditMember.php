@@ -95,7 +95,7 @@ class EditMember extends SpecialPage{
                     EditMember::generateMain();
                     return;
                 }
-                else if(!$user->isRoleAtLeast(STAFF) && ((($user->isPNI() || $user->isCNI()) && !$user->isProjectLeader() && !$user->isProjectCoLeader() && $person->isRoleAtLeast(CNI)) || // Handles regular PNI/CNI
+                else if(!$user->isRoleAtLeast(STAFF) && ((($user->isRole(PNI) || $user->isRole(CNI)) && !$user->isProjectLeader() && !$user->isProjectCoLeader() && $person->isRoleAtLeast(CNI)) || // Handles regular PNI/CNI
                         ((($user->isProjectLeader() || $user->isProjectCoLeader()) && $person->isRoleAtLeast(RMC) && !$person->isRole(PNI) && !$person->isRole(CNI) && !$person->isRole(HQP))) || // Handles PL/COPL
                         (($user->isRoleAtLeast(RMC) && $user->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF))))){ // Handles RMC-GOV
                     $wgMessage->addError("You do not have permissions to edit this user.");
@@ -649,7 +649,7 @@ class EditMember extends SpecialPage{
         $i = 0;
         $names = array();
         foreach($allPeople as $person){
-            if(!$user->isRoleAtLeast(STAFF) && ((($user->isPNI() || $user->isCNI()) && !$user->isProjectLeader() && !$user->isProjectCoLeader() && $person->isRoleAtLeast(CNI)) || // Handles regular PNI/CNI
+            if(!$user->isRoleAtLeast(STAFF) && ((($user->isRole(PNI) || $user->isRole(CNI)) && !$user->isProjectLeader() && !$user->isProjectCoLeader() && $person->isRoleAtLeast(CNI)) || // Handles regular PNI/CNI
             ((($user->isProjectLeader() || $user->isProjectCoLeader()) && $person->isRoleAtLeast(RMC) && !$person->isRole(PNI) && !$person->isRole(CNI) && !$person->isRole(HQP))) || // Handles PL/COPL
             (($user->isRoleAtLeast(RMC) && $user->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF)))  // Handles RMC-GOV
             )){ 
@@ -809,7 +809,7 @@ class EditMember extends SpecialPage{
             foreach($projects as $project){
                 $projs[] = $project->getName();
             }
-            if(!$user->isRoleAtLeast(STAFF) && ((($user->isPNI() || $user->isCNI()) && !$user->isProjectLeader() && !$user->isProjectCoLeader() && $person->isRoleAtLeast(CNI)) || // Handles regular PNI/CNI
+            if(!$user->isRoleAtLeast(STAFF) && ((($user->isRole(PNI) || $user->isRole(CNI)) && !$user->isProjectLeader() && !$user->isProjectCoLeader() && $person->isRoleAtLeast(CNI)) || // Handles regular PNI/CNI
             ((($user->isProjectLeader() || $user->isProjectCoLeader()) && $person->isRoleAtLeast(RMC) && !$person->isRole(PNI) && !$person->isRole(CNI) && !$person->isRole(HQP))) || // Handles PL/COPL
             (($user->isRoleAtLeast(RMC) && $user->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF)))  // Handles RMC-GOV
             )){
@@ -1026,7 +1026,7 @@ class EditMember extends SpecialPage{
         $wgOut->addHTML("<table><tr>
                         <td class='mw-input'>");
         $boxes = "";
-        if($person->isHQP()){
+        if($person->isRole(HQP)){
             $wgOut->addScript("<script type='text/javascript'>
                 var theses = Array();\n");
             $theses = $person->getPapers();
@@ -1101,7 +1101,7 @@ class EditMember extends SpecialPage{
                ($role != NCE || $user->isRoleAtLeast(MANAGER)) && 
                ($user->isRoleAtLeast($role) || ($role == CHAMP && $user->isRoleAtLeast(COPL)))){
                 $boxes .= "&nbsp;<input id='role_$role' type='checkbox' name='r_wpNS[]' value='".$role."' ";
-                if(($user->isPNI() || $user->isCNI()) && $role == HQP && $person->isHQP() && !$user->relatedTo($person,"Supervises") && count($person->getSupervisors()) > 0 ){
+                if(($user->isRole(PNI) || $user->isRole(CNI)) && $role == HQP && $person->isRole(HQP) && !$user->relatedTo($person,"Supervises") && count($person->getSupervisors()) > 0 ){
                     $boxes .= "checked onChange='addComment(this, true)' class='already'"; //Prevent un-check
                 }
                 else if($person->isRole($role)){

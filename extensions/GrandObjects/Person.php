@@ -2327,21 +2327,6 @@ class Person extends BackboneModel {
         }
     }
     
-    /// Returns whether this Person is a PNI or not.
-    function isPNI() {
-        return $this->isRole(PNI);
-    }
-    
-    /// Returns whether this Person is a CNI or not.
-    function isCNI() {
-        return $this->isRole(CNI);
-    }
-    
-    /// Returns whether this Person is an HQP or not.
-    function isHQP() {
-        return $this->isRole(HQP);
-    }
-    
     /**
      * Returns whether or not this person is a Student
      * @return boolean Returns whether or not his person is a Student

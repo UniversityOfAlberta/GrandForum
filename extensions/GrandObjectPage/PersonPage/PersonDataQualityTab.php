@@ -312,7 +312,7 @@ EOF;
                 $university = $s->getUni();
                 $department = $s->getDepartment();
                 $errors = array();
-                $ishqp = $s->isHQP();
+                $ishqp = $s->isRole(HQP);
                 $related = $person->relatedTo($s, 'Supervises');
 
                 if(isExtensionEnabled('EthicsTable')){

@@ -609,13 +609,13 @@ class PersonVisualizationsTab extends AbstractTab {
                 }
                 @$data['nodes']['p'.$person->getId()]['name'] .= str_replace(" ", "&nbsp;", $person->getNameForForms());
                 
-                if($person->isHQP()){
+                if($person->isRole(HQP)){
                     $data['nodes']['p'.$person->getId()]['type'] = HQP;
                 }
-                else if($person->isCNI()){
+                else if($person->isRole(CNI)){
                     $data['nodes']['p'.$person->getId()]['type'] = CNI;
                 }
-                else if($person->isPNI()){
+                else if($person->isRole(PNI)){
                     $data['nodes']['p'.$person->getId()]['type'] = PNI;
                 }
                 $description = "<img src='{$person->getPhoto()}' /><br />";

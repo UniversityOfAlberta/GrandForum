@@ -81,7 +81,7 @@ class ProjectInfoAPI extends API{
             $xml .= "\t\t</themes>\n";
             $xml .= "\t\t<researchers>\n";
             foreach($project->getAllPeople() as $person){
-                if(!$person->isHQP()){
+                if(!$person->isRole(HQP)){
                     $name = $person->splitName();
                     $uni = $person->getUniversity();
                     $xml .= "\t\t\t<researcher id=\"{$person->getId()}\" firstname=\"{$name['first']}\" lastname=\"{$name['last']}\" type=\"{$person->getType()}\" university=\"{$uni['university']}\" />\n";
@@ -102,7 +102,7 @@ class ProjectInfoAPI extends API{
 	    $coleader = $project->getCoLeader();
       $people = array();
       foreach($project->getAllPeople() as $person){
-        if(!$person->isHQP()){
+        if(!$person->isRole(HQP)){
           $name = $person->splitName();
           $people[] = array("id" => $person->getId(), 
                           "firstname" => $name['first'], 
