@@ -189,6 +189,8 @@ $wgExtensionMessagesFiles['AnnokiControl'] = $dir . 'AnnokiControl.i18n.php';
 $wgSpecialPages['AnnokiControl'] = 'AnnokiControl'; # Let MediaWiki know about the special page.
 $wgHooks['LanguageGetSpecialPageAliases'][] = 'AnnokiControl::setLocalizedPageName'; # Add any aliases for the special page.
 $wgHooks['BeforePageDisplay'][] = 'AnnokiControl::addCustomJavascript';
+$wgHooks['MessagesPreLoad'][] = 'AnnokiControl::onMessagesPreLoad';
+
 
 $wgExtensionCredits['specialpage'][] = array(
                          'name' => 'AnnokiControl',
