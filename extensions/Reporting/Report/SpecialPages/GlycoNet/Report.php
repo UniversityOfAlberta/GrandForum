@@ -34,6 +34,7 @@ class Report extends AbstractReport{
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         
         // Project Leader Reports
+        /*
         $leadership = $person->leadership();
         foreach($leadership as $key => $project){
             if($project->getName() == "Reboot"){
@@ -58,7 +59,7 @@ class Report extends AbstractReport{
                     $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab($project->getName(), "{$url}$type&project={$project->getName()}", $selected);
                 }
             }
-        }
+        }*/
         if(count($person->getEvaluates("SAB")) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABReview")) ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("SAB Review", "{$url}SABReview", $selected);

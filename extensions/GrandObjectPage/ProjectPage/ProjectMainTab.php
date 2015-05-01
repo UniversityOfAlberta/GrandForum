@@ -387,12 +387,16 @@ EOF;
     }
 
     function showPeople(){
-        global $wgUser, $wgServer, $wgScriptPath;
-        
+        global $wgUser, $wgServer, $wgScriptPath, $config;
+        $roleDefs = $config->getValue('roleDefs');
         $me = Person::newFromWgUser();
         
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
+        
+        $leaders = $project->getLeaders(true); //only get id's
+        $coleaders = $project->getCoLeaders(true);
+        $managers = $project->getManagers(true);
         
         $pnis = $project->getAllPeople(PNI);
         $cnis = $project->getAllPeople(CNI);
@@ -417,7 +421,7 @@ EOF;
         if(!$edit){
             $this->html .= "<table width='100%'><tr><td valign='top' width='50%'>";
             if($edit || !$edit && count($pnis) > 0){
-                $this->html .= "<h2><span class='mw-headline'>PNIs</span></h2>";
+                $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($roleDefs[PNI])."</span></h2>";
             }
             $this->html .= "<ul>";
             foreach($pnis as $pni){
@@ -435,7 +439,7 @@ EOF;
             
             $this->html .= "</ul>";
             if($edit || !$edit && count($cnis) > 0){
-                $this->html .= "<h2><span class='mw-headline'>CNIs</span></h2>";
+                $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($roleDefs[CNI])."</span></h2>";
             }
             $this->html .= "<ul>";
             foreach($cnis as $cni){
@@ -452,7 +456,7 @@ EOF;
             }
             $this->html .= "</ul>";
             if($edit || !$edit && count($ars) > 0){
-                $this->html .= "<h2><span class='mw-headline'>Associated Researchers</span></h2>";
+                $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($roleDefs[AR])."</span></h2>";
             }
             $this->html .= "<ul>";
             foreach($ars as $ar){
@@ -471,7 +475,7 @@ EOF;
             if($wgUser->isLoggedIn()){
                 $this->html .= "<td width='50%' valign='top'>";
                 if($edit || !$edit && count($hqps) > 0){
-                    $this->html .= "<h2><span class='mw-headline'>HQP</span></h2>";
+                    $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($roleDefs[HQP])."</span></h2>";
                 }
                 $this->html .= "<ul>";
                 foreach($hqps as $hqp){

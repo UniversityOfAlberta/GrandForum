@@ -179,6 +179,8 @@ foreach($egAnnokiExtensions as $key => $extension){
 require_once("AnnokiControl_body.php");
 $wgHooks['BeforePageDisplay'][] = 'AnnokiControl::addCustomJavascript';
 $wgHooks['SpecialPageBeforeExecute'][] = 'showSpecialPageHeader';
+$wgHooks['MessagesPreLoad'][] = 'AnnokiControl::onMessagesPreLoad';
+
 $wgExtensionCredits['specialpage'][] = array(
                          'name' => 'AnnokiControl',
                          'author' =>'UofA: SERL',
