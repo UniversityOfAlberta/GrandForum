@@ -37,7 +37,7 @@ You should log in and change your password now.';
     return true;
   }
   
-  function run( $par ) {
+  function execute( $par ) {
     global $wgOut, $egAnnokiExtensions, $wgEmergencyContact;
     $newHTML = "<div><table class='wikitable sortable' border=1 cellpadding=5>
     <thead>
