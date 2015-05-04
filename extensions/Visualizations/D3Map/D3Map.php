@@ -1,7 +1,5 @@
 <?php
 
-//require_once("SpecialD3Map.php");
-
 class D3Map extends Visualization {
     
     static $a = 0;

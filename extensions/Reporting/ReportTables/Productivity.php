@@ -140,12 +140,9 @@ class ProjectProductivity {
 		if ($this->_people === null) {
 			$this->_people = array();
 
-			$nis = $this->_project->getAllPeople(PNI);
-			$crs = $this->_project->getAllPeople(CNI);
+			$nis = $this->_project->getAllPeople(NI);
 			foreach ($nis as $ni)
 				$this->_people[$ni->getId()] = $ni;
-			foreach ($crs as $cr)
-				$this->_people[$cr->getId()] = $cr;
 
 			// Load submitted and unsubmitted reports.
 			$users = array_keys($this->_people);

@@ -41,8 +41,7 @@ class Report extends AbstractReport{
         }
         
         // NI Report
-        if($person->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
-           $person->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
+        if($person->isRoleDuring(NI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
            $person->isRoleAtLeast(MANAGER)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "NIReport")) ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("NI", "{$url}NIReport", $selected);

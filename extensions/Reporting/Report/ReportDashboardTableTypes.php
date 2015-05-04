@@ -149,7 +149,7 @@ $dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] =
     );
     
 $dashboardStructures[PROJECT_REPORT_TIME_STRUCTURE] = 
-    array(array(HEAD."(People)", HEAD."(Roles, PNI: Principle Network Investigator, CNI: Collaborating Network Investigator, PL: Project Leader, COPL: Co Project Leader, PM: Project Manager, sPL: Sub-Project Leader)", HEAD."(University &amp; Department)", HEAD."(Hours/Week)", HEAD."(Allocated:<br />".(REPORTING_YEAR)." - ".(REPORTING_YEAR+1).")", HEAD."(Requested:<br />".(REPORTING_YEAR+1)." - ".(REPORTING_YEAR+2).")"),
+    array(array(HEAD."(People)", HEAD."(Roles, NI: Network Investigator, PL: Project Leader, COPL: Co Project Leader, PM: Project Manager, sPL: Sub-Project Leader)", HEAD."(University &amp; Department)", HEAD."(Hours/Week)", HEAD."(Allocated:<br />".(REPORTING_YEAR)." - ".(REPORTING_YEAR+1).")", HEAD."(Requested:<br />".(REPORTING_YEAR+1)." - ".(REPORTING_YEAR+2).")"),
           array(HEAD.'(Total:)', 
                 STRUCT(PROJECT_ROLES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                 STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
@@ -177,7 +177,7 @@ $dashboardStructures[PROJECT_REPORT_TIME_STRUCTURE] =
     );
     
 $dashboardStructures[PROJECT_ROSTER_STRUCTURE] =
-    array(array(HEAD."(People)", HEAD."(Roles, PNI: Principle Network Investigator, CNI: Collaborating Network Investigator, PL: Project Leader, COPL: Co Project Leader, PM: Project Manager, sPL: Sub-Project Leader)", HEAD."(Affiliation)"),
+    array(array(HEAD."(People)", HEAD."(Roles, NI: Network Investigator, PL: Project Leader, COPL: Co Project Leader, PM: Project Manager, sPL: Sub-Project Leader)", HEAD."(Affiliation)"),
           array(PROJECT_HEAD),
           STRUCT(GROUP_BY, PROJECT_CHAMPIONS_ARRAY) => array(PROJECT_PEOPLE,
                                                            STRUCT(PROJECT_ROLES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
@@ -200,11 +200,7 @@ $dashboardStructures[PROJECT_NI_ROSTER_STRUCTURE] =
           //array(),
           STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array(PROJECT_PEOPLE_ROLES,
                                                            STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
-          STRUCT(GROUP_BY, PROJECT_PNI_NO_LEADERS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array(PROJECT_PEOPLE_ROLES,
-                                                           STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
-          STRUCT(GROUP_BY, PROJECT_CNI_NO_LEADERS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array(PROJECT_PEOPLE_ROLES,
-                                                           STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
-          STRUCT(GROUP_BY, PROJECT_AR_NO_LEADERS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array(PROJECT_PEOPLE_ROLES,
+          STRUCT(GROUP_BY, PROJECT_NI_NO_LEADERS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array(PROJECT_PEOPLE_ROLES,
                                                            STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END)));
 
 ?>

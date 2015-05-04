@@ -5,7 +5,7 @@ class MaterialsReportItemSet extends ReportItemSet {
     function getData(){
         $data = array();
         $person = Person::newFromId($this->personId);
-        $type = $this->getAttr('subType', 'PNI');
+        $type = $this->getAttr('subType', NI);
         $subs = $person->getEvaluates($type);
         if(is_array($subs)){
             foreach($subs as $sub){

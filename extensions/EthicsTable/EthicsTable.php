@@ -153,9 +153,7 @@ EOF;
         
         $row_count = 2;
         
-        $cnis = Person::getAllPeople(CNI);
-        $pnis = Person::getAllPeople(PNI);
-        $all_nis = array_merge($cnis, $pnis);
+        $all_nis = Person::getAllPeople(NI);
 
         $sorted_nis = array();
         foreach($all_nis as $ni){

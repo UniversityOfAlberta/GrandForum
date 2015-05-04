@@ -77,9 +77,6 @@ $egAnnokiExtensions['TempEd'] = array('name' => 'Template Editor',
 $egAnnokiExtensions['MailingList'] = array('name' => 'MailingList',
                                            'path' => "$IP/extensions/MailingList/mailingList.body.php");
 
-$egAnnokiExtensions['FeatureRequest'] = array('name' => 'FeatureRequest',
-                                              'path' => "$IP/extensions/FeatureRequest/FeatureRequest.body.php");
-
 $egAnnokiExtensions['AddMember'] = array('name' => 'AddMember',
                                          'path' => "$IP/extensions/AddMember/AddMember.body.php");
 
@@ -127,9 +124,6 @@ $egAnnokiExtensions['Acknowledgements'] = array('name' => 'Acknowledgements',
 
 $egAnnokiExtensions['AllocatedBudgets'] = array('name' => 'Allocated Budgets',
                                                 'path' => "$IP/extensions/AllocatedBudgets/AllocatedBudgets.php");
-
-$egAnnokiExtensions['FundedCNI'] = array('name' => 'Funded CNI',
-                                         'path' => "$IP/extensions/FundedCNI/FundedCNI.php");
 
 $egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
                                                 'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");

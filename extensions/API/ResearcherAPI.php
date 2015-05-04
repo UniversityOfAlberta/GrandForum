@@ -5,7 +5,7 @@ class ResearcherAPI extends API{
     function ResearcherAPI(){
         $this->addGET("name", false, "The User Name of the researcher to get.  The name must be in the format First.Last", "Eleni.Stroulia");
         $this->addGET("id", false, "The ID of the researcher to get", "3");
-        $this->addGET("type", false, "The type of user to get.", PNI);
+        $this->addGET("type", false, "The type of user to get.", NI);
         $this->addGET("format", false, "The format of the output(can either be 'xml' or 'json').  If this value is not provided, then xml is assumed", "xml");
     }
 
@@ -16,11 +16,8 @@ class ResearcherAPI extends API{
     $i = 0;
       foreach($params as $param){
         if($i != 0){
-          if(strtoupper($param) == PNI){
-            $_GET['type'] = PNI;
-          }
-          else if(strtoupper($param) == CNI){
-            $_GET['type'] = CNI;
+          if(strtoupper($param) == NI){
+            $_GET['type'] = NI;
           }
           else if(strtoupper($param) == "XML"){
             $_GET['format'] = "XML";

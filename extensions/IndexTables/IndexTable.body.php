@@ -49,14 +49,9 @@ class IndexTable {
             $peopleSubTab['dropdown'][] = TabUtils::createSubTab(HQP, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_HQP", "$selected");
         }
         
-        if(count(Person::getAllPeople(PNI)) > 0){
-            $selected = ($lastRole == PNI || $wgTitle->getText() == "ALL PNI" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(PNI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_PNI", "$selected");
-        }
-        
-        if(count(Person::getAllPeople(CNI)) > 0){
-            $selected = ($lastRole == CNI || $wgTitle->getText() == "ALL CNI" || ($wgTitle->getNSText() == CNI && !($me->isRole(CNI) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(CNI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_CNI", "$selected");
+        if(count(Person::getAllPeople(NI)) > 0){
+            $selected = ($lastRole == NI || $wgTitle->getText() == "ALL NI" || ($wgTitle->getNSText() == NI && !($me->isRole(NI) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(NI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_NI", "$selected");
         }
         
         if(count(Person::getAllPeople(ISAC)) > 0){
@@ -178,6 +173,7 @@ class IndexTable {
 	function generateTable($out, $parseroutput){
 		global $wgTitle, $wgOut, $wgUser, $config;
 		$me = Person::newFromId($wgUser->getId());
+		$roleDefs = $config->getValue('roleDefs');
 		if($wgTitle != null && $wgTitle->getNsText() == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){
 		    $result = true;
 		    $this->userCanExecute($wgTitle, $wgUser, "read", $result);
@@ -200,13 +196,9 @@ class IndexTable {
 			        $wgOut->setPageTitle("Highly Qualified Personnel");
 				    $this->generatePersonTable(HQP);
 				    break;
-			    case 'ALL '.PNI:
-			        $wgOut->setPageTitle("Principal Network Investigators");
-				    $this->generatePersonTable(PNI, 1);
-				    break;
-				case 'ALL '.CNI:
-			        $wgOut->setPageTitle("Collaborating Network Investigators");
-				    $this->generatePersonTable(CNI);
+			    case 'ALL '.NI:
+			        $wgOut->setPageTitle($roleDefs[NI]);
+				    $this->generatePersonTable(NI, 1);
 				    break;
 				case 'ALL '.ISAC:
 			        $wgOut->setPageTitle(ISAC." Members");

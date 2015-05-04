@@ -327,9 +327,6 @@ abstract class AbstractReportItem {
                 }
                 $blob->store($value, $blob_address);
 	            $blob->load($blob_address);
-	            if($this instanceof BudgetReportItem){
-	                $this->addWorksWithRelation($blob->getData(), $this->getReport()->year, false);
-	            }
 	            break;
 	        case BLOB_RAW:
 	            $blob->store(utf8_decode($value), $blob_address);

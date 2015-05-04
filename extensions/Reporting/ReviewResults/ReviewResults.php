@@ -19,10 +19,7 @@ class ReviewResults extends SpecialPage {
     
     function execute(){
         global $wgUser, $wgOut, $wgServer, $wgScriptPath;
-        $type = "PNI";
-        if(!empty($_GET['type']) && $_GET['type'] == 'CNI'){
-            $type = "CNI";
-        }
+        $type = "NI";
         else if(!empty($_GET['type']) && $_GET['type'] == 'Project'){
             $type = "Project";
         }
@@ -84,19 +81,14 @@ class ReviewResults extends SpecialPage {
             </style>
             <div id='ackTabs'>
             <ul>
-            <li><a href='#pni'>PNI</a></li>
-            <li><a href='#cni'>CNI</a></li>
+            <li><a href='#ni'>NI</a></li>
             <li><a href='#project'>Project</a></li>
             <li><a href='#loi'>LOI</a></li>
             </ul>
 EOF;
         
-        $html .= "<div id='pni' style='width: 100%; overflow: auto;'>";
-        $html .= ReviewResults::reviewResults('PNI');
-        $html .= "</div>";
-
-        $html .= "<div id='cni' style='width: 100%; overflow: auto;'>";
-        $html .= ReviewResults::reviewResults('CNI');
+        $html .= "<div id='ni' style='width: 100%; overflow: auto;'>";
+        $html .= ReviewResults::reviewResults('NI');
         $html .= "</div>";
         
         $html .= "<div id='project' style='width: 100%; overflow: auto;'>";
@@ -371,8 +363,8 @@ EOF;
     static function emailPDF($ni_id, $type){
         global $wgUser, $wgMessage;
         $recipients = array();
-        if($type == CNI || $type == PNI){
-            $subject = "GRAND NCE - RMC Feedback 2014 - PNIs and CNIs";
+        if($type == NI){
+            $subject = "GRAND NCE - RMC Feedback 2014 - NIs";
             $ni = Person::newFromId($ni_id);
             $recipients[] = $ni;
         }
@@ -398,7 +390,7 @@ The PDF contains information regarding your 2014-15 research funding
 allocation as well as specific feedback based on your report.
 
 Please note that additional information regarding the Phase 2 Process
-around projects and themes, including project funding for CNIs and the
+around projects and themes, including project funding for NIs and the
 preparation of project and theme descriptions for the renewal application,
 will be made available on the GRAND Forum under GRAND => Phase 2 =>
 Process (https://forum.grand-nce.ca/index.php/GRAND:Process) early next
@@ -553,7 +545,7 @@ EOF;
         return $data;
     }
 
-    static function generateAllFeedback($type='PNI'){
+    static function generateAllFeedback($type='NI'){
         global $wgUser;
 
         if($type == 'LOI'){
@@ -567,7 +559,7 @@ EOF;
             }
         }
         else{
-            if($type == PNI || $type == CNI){
+            if($type == NI){
                 $nis = Person::getAllEvaluates($type); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
             }
             else if($type == "Project"){
@@ -589,11 +581,11 @@ EOF;
         }
     }
 
-    static function generateFeedback($ni_id, $type="PNI"){
+    static function generateFeedback($ni_id, $type="NI"){
         global $wgOut;
 
         $wgOut->clearHTML();
-        if($type == PNI || $type == CNI){
+        if($type == NI){
             $ni = Person::newFromId($ni_id);
             $name = $ni->getNameForForms();
             $university = $ni->getUni();
@@ -606,41 +598,13 @@ EOF;
         }
         $curr_year = REPORTING_YEAR;
         $boilerplate = "";
-        if($type == "PNI"){
+        if($type == "NI"){
             $rtype = RP_EVAL_RESEARCHER;
-            $boilerplate = "<p>There were 49 prospective PNIs evaluated in this review cycle, along with an additional 11 CNIs who were proposed as project co-leaders.  Funding allocations for 2014-15 were made in four tiers:  Top Tier: $65,000; Upper Middle: $55,000; Lower Middle: $45,000; and Bottom Tier: $35,000.  Note that a researcher was not awarded more than his/her budget request, notwithstanding their funding tier.</p>
-<br />
-<p>Of the 49 prospective PNIs evaluated, 46 were funded as PNIs: 21 were Top Tier, 19 were Upper Middle, 6 were Lower Middle, and 3 were not funded as PNIs.  Of the 11 CNIs who were proposed as project co-leaders, they were evaluated across all four tiers, although they were only eligible for funding at the $45,000 and $35,000 levels.  Six were funded at the $45,000 level, four were funded at the $35,000 level, and one was awarded no funding.  Again, a researcher was not awarded more than his/her budget request, notwithstanding their funding tier.</p>
-<br />
-<p>The \"2015 Allocation\" amounts are full year allocations based on a proposed \"Phase 2\" research budget.  The \"April-December 2014 Amount\" is your actual allocation for the funding period from 01Apr2014 through 31Dec2014.  These amounts are notably lower than the \"2015 Allocation\" for two reasons: (1) they have been scaled down to fit within the Phase 1 research budget, which is less than the proposed Phase 2 research budget, and (2) they are providing funding for only a nine-month period.  If GRAND is renewed at a funding level consistent with the proposed Phase 2 research budget, then additional allocations of research funding for 01Jan2015 – 31Mar2015 are expected to be a full 25% of the 2015 Allocation indicated.</p>
-<br />
-<p>Project Leaders and co-leaders will be receiving separate feedback from the RMC regarding their projects which will also include details regarding project funding available for CNIs.</p>
-<br />
-<p>Each PNI and CNI who is a project co-leader was reviewed by at least two RMC evaluators.  The Overall Rating is based not only on the reviewer scores, but also on the discussion at the RMC meeting.  The available scores are as follows:  1) Overall Score:  Top, Upper Middle, Lower Middle, Bottom; 2) Each of the 5 NCE Evaluation Criteria and Rating for Quality of Report: Exceptional, Very Good, Satisfactory, Unsatisfactory; and 3) Confidence Level of Evaluator: Very High, High, Moderate, Low.</p>";
-        }
-        else if($type == "CNI"){
-            $rtype = RP_EVAL_CNI;
-            $boilerplate = "<p>There were 49 prospective PNIs evaluated in this review cycle, along with an additional 11 CNIs who were proposed as project co-leaders.  Funding allocations for 2014-15 were made in four tiers:  Top Tier: $65,000; Upper Middle: $55,000; Lower Middle: $45,000; and Bottom Tier: $35,000.  Note that a researcher was not awarded more than his/her budget request, notwithstanding their funding tier.</p>
-<br />
-<p>Of the 49 prospective PNIs evaluated, 46 were funded as PNIs: 21 were Top Tier, 19 were Upper Middle, 6 were Lower Middle, and 3 were not funded as PNIs.  Of the 11 CNIs who were proposed as project co-leaders, they were evaluated across all four tiers, although they were only eligible for funding at the $45,000 and $35,000 levels.  Six were funded at the $45,000 level, four were funded at the $35,000 level, and one was awarded no funding.  Again, a researcher was not awarded more than his/her budget request, notwithstanding their funding tier.</p>
-<br />
-<p>The \"2015 Allocation\" amounts are full year allocations based on a proposed \"Phase 2\" research budget.  The \"April-December 2014 Amount\" is your actual allocation for the funding period from 01Apr2014 through 31Dec2014.  These amounts are notably lower than the \"2015 Allocation\" for two reasons: (1) they have been scaled down to fit within the Phase 1 research budget, which is less than the proposed Phase 2 research budget, and (2) they are providing funding for only a nine-month period.  If GRAND is renewed at a funding level consistent with the proposed Phase 2 research budget, then additional allocations of research funding for 01Jan2015 – 31Mar2015 are expected to be a full 25% of the 2015 Allocation indicated.</p>
-<br />
-<p>Project Leaders and co-leaders will be receiving separate feedback from the RMC regarding their projects which will also include details regarding project funding available for CNIs.</p>
-<br />
-<p>Each PNI and CNI who is a project co-leader was reviewed by at least two RMC evaluators.  The Overall Rating is based not only on the reviewer scores, but also on the discussion at the RMC meeting.  The available scores are as follows:  1) Overall Score:  Top, Upper Middle, Lower Middle, Bottom; 2) Each of the 5 NCE Evaluation Criteria and Rating for Quality of Report: Exceptional, Very Good, Satisfactory, Unsatisfactory; and 3) Confidence Level of Evaluator: Very High, High, Moderate, Low.</p>";
+            $boilerplate = "";
         }
         else if($type == "Project"){
             $rtype = RP_EVAL_PROJECT;
-            $boilerplate = "<p>There were 23 projects evaluated in this review cycle.  Each project was reviewed by three RMC evaluators.  The highest scoring project received three \"Top Tier\" overall ratings, and the lowest scoring project received three \"Bottom Tier\" ratings.  However all but a few projects received at least one \"Upper Middle\" overall rating.  There were 22 standard projects and one \"alliance\" project.  Alliance projects are funded from a separate pool of funds.  Of the 22 standard projects, 19 were deemed ready to proceed as full projects, with the remaining three to proceed on a development basis with reduced funding and additional oversight.</p>
-<br />
-<p>Project Leaders and co-leaders will be receiving a separate document that provide the details of the overall funding for their project for 2014-15.</p>
-<br />
-<p>
-Each Phase 2 Project was reviewed by at least three RMC evaluators.  The International Scientific Advisory Committee (ISAC) were also given access to all of the Phase 2 Project Reports.  While the primary goal of the ISAC was to review GRAND's Phase 2 research program as a whole, in some cases comments were provided on individual projects.  For projects that received specific comments from an ISAC reviewer, those comments are also included below.
-</p>
-<br />
-<p>For the RMC reviewer scoring of projects, the available scores were as follows:  1) Overall Score:  Top, Upper Middle, Lower Middle, Bottom; 2) Each of the 4 NCE Evaluation Criteria and Rating for Quality of Report: Exceptional, Very Good, Satisfactory, Unsatisfactory; and 3) Confidence Level of Evaluator: Very High, High, Moderate, Low.</p>";
+            $boilerplate = "";
         }
 
         $query = "SELECT * FROM grand_review_results WHERE year='{$curr_year}' AND user_id='{$ni_id}' AND type = '{$type}'";
@@ -660,7 +624,7 @@ Each Phase 2 Project was reviewed by at least three RMC evaluators.  The Interna
         $allocated_amount3 = @money_format('%i', $allocated_amount3);
         
         $allocated_html = "";
-        if($type == PNI || $type == CNI){
+        if($type == NI){
             // NI Specific HTML variables
             $title = "GRAND NCE - Research Management Committee - Network Investigator Review 2014 - Feedback";
             $person_html = <<<EOF
@@ -773,7 +737,7 @@ EOF;
             $found = false;
             foreach ($sections as $sec_name => $sec_addr){
                 $ev_id = $eval->getId();
-                if($type == PNI || $type == CNI){
+                if($type == NI){
                     $score = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[0], $ni, $ev_id, $curr_year);
                     $comments = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[1], $ni, $ev_id, $curr_year);
                 }
@@ -805,7 +769,7 @@ EOF;
             $rows = array();
             foreach($evaluators as $eval){
                 $ev_id = $eval->getId();
-                if($type == PNI || $type == CNI){
+                if($type == NI){
                     $score = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[0], $ni, $ev_id, $curr_year);
                     $comments = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[1], $ni, $ev_id, $curr_year);
                 }
@@ -921,12 +885,12 @@ EOF;
         $my_id = $wgUser->getId();
         $me = Person::newFromId($wgUser->getId());
         
-        if($type != "CNI" && $type != "PNI" && $type != "Project"){
-            $type = "PNI";
+        if($type != "NI" && $type != "Project"){
+            $type = "NI";
         }
 
         $curr_year = REPORTING_YEAR;
-        if($type == PNI || $type == CNI){
+        if($type == NI){
             $nis = Person::getAllEvaluates($type); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
 
             $nis_sorted = array();
@@ -962,7 +926,7 @@ EOF;
                                   'email_sent'          => $row['email_sent']);    
         }
 
-        if($type == PNI || $type == CNI){
+        if($type == NI){
             $allocationHeadCells = <<<EOF
             <th width="15%">2014 Allocation</th>
             <th width="15%">2015 Allocation</th>
@@ -970,9 +934,8 @@ EOF;
         }
         else if($type == "Project"){
             $allocationHeadCells = <<<EOF
-            <th width="10%">2014 PNI Allocation</th>
-            <th width="10%">2014 CNI Allocation</th>
-            <th width="10%">2015 Amount</th>
+            <th width="15%">2014 NI Allocation</th>
+            <th width="15%">2015 Amount</th>
 EOF;
         }
 
@@ -1022,7 +985,7 @@ EOF;
                     $file_link = "No&nbsp;PDF&nbsp;found";
                 }
                 
-                if($type == PNI || $type == CNI){
+                if($type == NI){
                     $allocationCells = <<<EOF
                     <td><input style='width:175px;' type="text" name="ni[{$ni_id}][allocated_amount]" value="{$allocated_amount}" class="number" /></td>
                     <td><input style='width:175px;' type="text" name="ni[{$ni_id}][allocated_amount2]" value="{$allocated_amount2}" class="number" /></td>

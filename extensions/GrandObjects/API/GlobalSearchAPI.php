@@ -50,7 +50,7 @@ class GlobalSearchAPI extends RESTAPI {
                         // Don't include Admin
                         $continue = true; 
                     }
-                    if(!$me->isLoggedIn() && !$person->isRoleAtLeast(CNI)){
+                    if(!$me->isLoggedIn() && !$person->isRoleAtLeast(NI)){
                         $continue = true;
                     }
                     if($continue) continue;
@@ -186,9 +186,8 @@ class GlobalSearchAPI extends RESTAPI {
                                                'Activity',
                                                'Press',
                                                'Award',
-                                               'PNI',
+                                               'NI',
                                                'HQP',
-                                               'CNI',
                                                'Mail');
                 if(isset($results->query)){
                     foreach($results->query->pages as $page){
@@ -285,7 +284,7 @@ class GlobalSearchAPI extends RESTAPI {
                     }
                     switch($pdf->getType()){
                         case RPTP_NORMAL:
-                            $keywords = "ni pni cni individual report pdf";
+                            $keywords = "ni individual report pdf";
                             break;
                         case RPTP_HQP:
                             $keywords = "hqp individual report pdf";
@@ -294,7 +293,7 @@ class GlobalSearchAPI extends RESTAPI {
                             $keywords = "champ champion report project pdf";
                             break;
                         case RPTP_NI_COMMENTS:
-                            $keywords = "ni pni cni individual report milestone comments pdf";
+                            $keywords = "ni individual report milestone comments pdf";
                             break;
                         case RPTP_HQP_COMMENTS:
                             $keywords = "hqp individual report milestone comments pdf";

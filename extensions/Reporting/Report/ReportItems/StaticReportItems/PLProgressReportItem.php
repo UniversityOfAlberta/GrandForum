@@ -40,48 +40,32 @@ class PLProgressReportItem extends StaticReportItem {
 		$reportItemSet->setProjectId($this->projectId);
 		$reportItemSet->setMilestoneId($this->milestoneId);
 		$nis = $reportItemSet->getData();
-		$nPNIs = 0;
-		$nCNIs = 0;
-		$totalPNIs = 0;
-		$totalCNIs = 0;
+		$nNIs = 0;
+		$totalNIs = 0;
 		
 		$details = "";
 		
 		foreach($nis as $nid){
 		    $ni = Person::newFromId($nid['person_id']);
-		    if($ni->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
+		    if($ni->isRoleDuring(NI, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
 		        $comment = $this->findComments($ni);
 		        if($comment != null && $comment != ""){
-		            $totalPNIs++;
+		            $totalNIs++;
 		        }
-		        $nPNIs++;
-		    }
-		    else if($ni->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
-		        $comment = $this->findComments($ni);
-		        if($comment != null && $comment != ""){
-		            $totalCNIs++;
-		        }
-		        $nCNIs++;
+		        $nNIs++;
 		    }
 		}
 		
         $details .= "<tr><td><b>Milestones</b></td>";
         $details .= "<td>{$total} of the {$nItems} ".Inflect::smart_pluralize($nItems, "milestone")." ".Inflect::smart_pluralize($total, "has")." been cited in your milestone status overview\n</td></tr>";
         $details .= "<tr><td valign='top' style='white-space:nowrap;'><b>NI Comments</b></td>";
-        $pniComments = "{$totalPNIs} of the {$nPNIs}";
-        $cniComments = "{$totalCNIs} of the {$nCNIs}";
+        $niComments = "{$totalNIs} of the {$nNIs}";
         
-        if($totalPNIs < $nPNIs){
-            $details .= "<td><span class='inlineError'>$pniComments</span> ".Inflect::smart_pluralize($nPNIs, "PNI")."; ";
+        if($totalNIs < $nNIs){
+            $details .= "<td><span class='inlineError'>$niComments</span> ".Inflect::smart_pluralize($nNIs, "NI")."; ";
         }
         else{
-            $details .= "<td>$pniComments ".Inflect::smart_pluralize($nPNIs, "PNI")."; ";
-        }
-        if($totalCNIs < $nCNIs){
-            $details .= "<span class='inlineError'>$cniComments</span> ".Inflect::smart_pluralize($nCNIs, "CNI")."\n</td></tr>";
-        }
-        else{
-            $details .= "$cniComments ".Inflect::smart_pluralize($nCNIs, "CNI")."\n</td></tr>";
+            $details .= "<td>$niComments ".Inflect::smart_pluralize($nNIs, "NI")."; ";
         }
         return $details;
 	}

@@ -20,7 +20,7 @@ class EditMember extends SpecialPage{
             SpecialPage::__construct("EditMember", STAFF.'+', true, 'runEditMember');
         }
         else{
-            SpecialPage::__construct("EditMember", CNI.'+', true, 'runEditMember');
+            SpecialPage::__construct("EditMember", NI.'+', true, 'runEditMember');
         }
     }
 
@@ -95,8 +95,8 @@ class EditMember extends SpecialPage{
                     EditMember::generateMain();
                     return;
                 }
-                else if(!$user->isRoleAtLeast(STAFF) && ((($user->isRole(PNI) || $user->isRole(CNI)) && !$user->isProjectLeader() && !$user->isProjectCoLeader() && $person->isRoleAtLeast(CNI)) || // Handles regular PNI/CNI
-                        ((($user->isProjectLeader() || $user->isProjectCoLeader()) && $person->isRoleAtLeast(RMC) && !$person->isRole(PNI) && !$person->isRole(CNI) && !$person->isRole(HQP))) || // Handles PL/COPL
+                else if(!$user->isRoleAtLeast(STAFF) && (($user->isRole(NI) && !$user->isProjectLeader()) || // Handles regular NI
+                        (($user->isProjectLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && !$person->isRole(HQP))) || // Handles PL
                         (($user->isRoleAtLeast(RMC) && $user->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF))))){ // Handles RMC-GOV
                     $wgMessage->addError("You do not have permissions to edit this user.");
                     EditMember::generateMain();
@@ -649,8 +649,8 @@ class EditMember extends SpecialPage{
         $i = 0;
         $names = array();
         foreach($allPeople as $person){
-            if(!$user->isRoleAtLeast(STAFF) && ((($user->isRole(PNI) || $user->isRole(CNI)) && !$user->isProjectLeader() && !$user->isProjectCoLeader() && $person->isRoleAtLeast(CNI)) || // Handles regular PNI/CNI
-            ((($user->isProjectLeader() || $user->isProjectCoLeader()) && $person->isRoleAtLeast(RMC) && !$person->isRole(PNI) && !$person->isRole(CNI) && !$person->isRole(HQP))) || // Handles PL/COPL
+            if(!$user->isRoleAtLeast(STAFF) && (($user->isRole(NI) && !$user->isProjectLeader()) || // Handles regular NI
+            (($user->isProjectLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && !$person->isRole(HQP))) || // Handles PL
             (($user->isRoleAtLeast(RMC) && $user->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF)))  // Handles RMC-GOV
             )){ 
                 // User does not have permission for this person
@@ -809,8 +809,8 @@ class EditMember extends SpecialPage{
             foreach($projects as $project){
                 $projs[] = $project->getName();
             }
-            if(!$user->isRoleAtLeast(STAFF) && ((($user->isRole(PNI) || $user->isRole(CNI)) && !$user->isProjectLeader() && !$user->isProjectCoLeader() && $person->isRoleAtLeast(CNI)) || // Handles regular PNI/CNI
-            ((($user->isProjectLeader() || $user->isProjectCoLeader()) && $person->isRoleAtLeast(RMC) && !$person->isRole(PNI) && !$person->isRole(CNI) && !$person->isRole(HQP))) || // Handles PL/COPL
+            if(!$user->isRoleAtLeast(STAFF) && (($user->isRole(NI) && !$user->isProjectLeader()) || // Handles regular NI
+            (($user->isProjectLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && !$person->isRole(HQP))) || // Handles PL
             (($user->isRoleAtLeast(RMC) && $user->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF)))  // Handles RMC-GOV
             )){
                 // User does not have permission for this person
@@ -1101,7 +1101,7 @@ class EditMember extends SpecialPage{
                ($role != NCE || $user->isRoleAtLeast(MANAGER)) && 
                ($user->isRoleAtLeast($role) || ($role == CHAMP && $user->isRoleAtLeast(COPL)))){
                 $boxes .= "&nbsp;<input id='role_$role' type='checkbox' name='r_wpNS[]' value='".$role."' ";
-                if(($user->isRole(PNI) || $user->isRole(CNI)) && $role == HQP && $person->isRole(HQP) && !$user->relatedTo($person,"Supervises") && count($person->getSupervisors()) > 0 ){
+                if($user->isRole(NI) && $role == HQP && $person->isRole(HQP) && !$user->relatedTo($person,"Supervises") && count($person->getSupervisors()) > 0 ){
                     $boxes .= "checked onChange='addComment(this, true)' class='already'"; //Prevent un-check
                 }
                 else if($person->isRole($role)){
@@ -1506,7 +1506,7 @@ class EditMember extends SpecialPage{
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(CNI)){
+        if($me->isRoleAtLeast(NI)){
             $toolbox['People']['links'][1] = TabUtils::createToolboxLink("Edit Roles", "$wgServer$wgScriptPath/index.php/Special:EditMember");
         }
         return true;

@@ -552,7 +552,7 @@ class Person extends BackboneModel {
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
             if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter))){
-                if($me->isLoggedIn() || $person->isRoleAtLeast(CNI)){
+                if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
                     $people[] = $person;
                 }
             }
@@ -976,7 +976,7 @@ class Person extends BackboneModel {
      */
     function getId(){
         $me = Person::newFromWgUser();
-        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(CNI)){
+        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI)){
             return 0;
         }
         return $this->id;
@@ -1044,7 +1044,7 @@ class Person extends BackboneModel {
     function getUrl(){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(CNI))){
+        if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(NI))){
             return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}";
         }
         return "";
@@ -1393,13 +1393,13 @@ class Person extends BackboneModel {
     
     /**
      * Returns whether this Person is funded or not for the given year
-     * This is only for the CNIs that are in the `grand_funded_cni` table
+     * This is only for the NIs that are in the `grand_funded_cni` table
      * @param integer $year The year to see if the Person is funded or not
      * @return boolean Whether or not this Person is funded
      */
     function isFundedFor($year){
-        if($this->isRoleDuring(CNI, $year."-01-01", $year."-12-31")){
-            // The Person was a CNI Now check if they were actually funded
+        if($this->isRoleDuring(NI, $year."-01-01", $year."-12-31")){
+            // The Person was a NI Now check if they were actually funded
             $data = DBFunctions::select(array('grand_funded_cni'),
                                         array('*'),
                                         array('user_id' => EQ($this->getId()),
@@ -1675,7 +1675,7 @@ class Person extends BackboneModel {
      */
     function getRoleString(){
         $me = Person::newFromWgUser();
-        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(CNI)){
+        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI)){
             return "";
         }
         $roles = $this->getRoles();
@@ -3641,7 +3641,7 @@ class Person extends BackboneModel {
                 $budget = new Budget("CSV", REPORT_STRUCTURE, $data);
             }
             else {
-                if($type == RES_ALLOC_BUDGET && $this->isRoleDuring(CNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
+                if($type == RES_ALLOC_BUDGET && $this->isRoleDuring(NI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
                     $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
                 }
                 else{
@@ -3719,7 +3719,7 @@ class Person extends BackboneModel {
             if($row['type'] == "Project" || $row['type'] == "SAB"){
                 $subs[] = Project::newFromId($row['sub_id']);
             }
-            else if($row['type'] == "Researcher" || $row['type'] == "PNI" || $row['type'] == "CNI"){
+            else if($row['type'] == "Researcher" || $row['type'] == "NI"){
                 $subs[] = Person::newFromId($row['sub_id']);
             }
         }
@@ -3764,7 +3764,7 @@ class Person extends BackboneModel {
             if($row['type'] == "Project" || $row['type'] == "SAB"){
                 $subs[] = Project::newFromId($row['sub_id']);
             }
-            else if($row['type'] == "CNI" || $row['type'] == "PNI"){
+            else if($row['type'] == "NI"){
                 $subs[] = Person::newFromId($row['sub_id']);
             }
             else if($row['type'] == "LOI" || $row['type'] == "OPT_LOI"){
@@ -3774,33 +3774,16 @@ class Person extends BackboneModel {
         return $subs;
     }
 
-    function getEvaluatePNIs($year = YEAR){
+    function getEvaluateNIs($year = YEAR){
         $sql = "SELECT *
                 FROM grand_eval
                 WHERE user_id = '{$this->id}'
-                AND type = 'PNI'
+                AND type = 'NI'
                 AND year = '{$year}'";
         $data = DBFunctions::execSQL($sql);
         $subs = array();
         foreach($data as $row){
-            if($row['type'] == "PNI"){
-                $subs[] = Person::newFromId($row['sub_id']);
-            }
-        }
-        return $subs;
-    }
-    
-    // Returns the list of Evaluation Submissions for this person
-    function getEvaluateCNIs($year = YEAR){
-        $sql = "SELECT *
-                FROM grand_eval
-                WHERE user_id = '{$this->id}'
-                AND type = 'CNI'
-                AND year = '{$year}'";
-        $data = DBFunctions::execSQL($sql);
-        $subs = array();
-        foreach($data as $row){
-            if($row['type'] == "CNI"){
+            if($row['type'] == "NI"){
                 $subs[] = Person::newFromId($row['sub_id']);
             }
         }

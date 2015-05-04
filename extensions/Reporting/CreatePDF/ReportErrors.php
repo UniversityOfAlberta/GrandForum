@@ -111,13 +111,7 @@ class ReportErrors extends SpecialPage {
 	        exit;
 	    }
 	    if($type == 'ni'){
-	        foreach(Person::getAllPeopleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $person){
-	            if(array_search($person->getId(), $ids) === false){
-	                $names[] = $person->getName();
-	                $ids[] = $person->getId();
-	            }
-	        }
-	        foreach(Person::getAllPeopleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $person){
+	        foreach(Person::getAllPeopleDuring(NI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $person){
 	            if(array_search($person->getId(), $ids) === false){
 	                $names[] = $person->getName();
 	                $ids[] = $person->getId();

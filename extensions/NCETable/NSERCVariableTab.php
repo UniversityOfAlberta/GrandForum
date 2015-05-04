@@ -949,19 +949,11 @@ EOF;
 
     function getNIUniStats(){
         global $config;
-        $cnis = Person::getAllPeopleDuring(CNI, $this->from, $this->to);
-        $pnis = Person::getAllPeopleDuring(PNI, $this->from, $this->to);
+        $people = Person::getAllPeopleDuring(NI, $this->from, $this->to);
 
         $nis = array();
         $unique_ids = array();
-        foreach($cnis as $n){
-            $nid = $n->getId();
-            if(!in_array($nid, $unique_ids)){
-                $unique_ids[] = $nid;
-                $nis[] = $n;
-            }
-        }
-        foreach($pnis as $n){
+        foreach($people as $n){
             $nid = $n->getId();
             if(!in_array($nid, $unique_ids)){
                 $unique_ids[] = $nid;

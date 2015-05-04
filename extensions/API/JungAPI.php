@@ -81,11 +81,10 @@ class JungAPI extends API{
         $metas = array();
         $projects = array();
             
-        $pnis = Person::getAllPeopleDuring(PNI, $this->startDate, $this->endDate);
-        $cnis = Person::getAllPeopleDuring(CNI, $this->startDate, $this->endDate);
+        $nis = Person::getAllPeopleDuring(NI, $this->startDate, $this->endDate);
         $hqps = Person::getAllPeopleDuring(HQP, $this->startDate, $this->endDate);
-        $tmpNodes = array_merge($pnis, $cnis, $hqps);
-        $nodes = $pnis;
+        $tmpNodes = array_merge($nis, $hqps);
+        $nodes = $nis;
         foreach($tmpNodes as $p){
             $found = false;
             foreach($nodes as $node){
@@ -430,11 +429,9 @@ class JungAPI extends API{
             $tuple['nProductsWith4OrMoreUniversities'] = (string)count($nProductsWith4OrMoreUniversities);
             
             if($person->isRoleDuring(HQP, $this->year.CYCLE_START_MONTH, $this->year.CYCLE_END_MONTH_ACTUAL) &&
-               !$person->isRoleDuring(PNI, $this->year.CYCLE_START_MONTH, $this->year.CYCLE_END_MONTH_ACTUAL) &&
-               !$person->isRoleDuring(CNI, $this->year.CYCLE_START_MONTH, $this->year.CYCLE_END_MONTH_ACTUAL)){
+               !$person->isRoleDuring(NI, $this->year.CYCLE_START_MONTH, $this->year.CYCLE_END_MONTH_ACTUAL)){
                 $sups = $person->getSupervisorsDuring($this->year.CYCLE_START_MONTH, $this->year.CYCLE_END_MONTH_ACTUAL);
                 $totalSups = $person->getSupervisors(true);
-                $tuple['alwaysPNI'] = "No";
                 $tuple['alwaysNI'] = "No";
                 $tuple['role'] = "HQP";
                 $tuple['nCurrentHQP'] = "";
@@ -485,24 +482,14 @@ class JungAPI extends API{
                     $nextAllocationDelta = ($nextAllocationAmount-$allocatedAmount)/max(1, $nextAllocationAmount);
                 }
                 $tuple['role'] = "Other";
-                if($person->isRoleDuring(PNI, $this->startDate, $this->endDate)){
-                    $tuple['role'] = "PNI";
+                if($person->isRoleDuring(NI, $this->startDate, $this->endDate)){
+                    $tuple['role'] = "NI";
                 }
-                else if($person->isRoleDuring(CNI, $this->startDate, $this->endDate)){
-                    $tuple['role'] = "CNI";
-                }
-                $tuple['alwaysPNI'] = "No";
                 $tuple['alwaysNI'] = "No";
-                if($person->isRoleDuring(PNI, "2010-01-01", "2010-12-31") &&
-                   $person->isRoleDuring(PNI, "2011-01-01", "2011-12-31") &&
-                   $person->isRoleDuring(PNI, "2012-01-01", "2012-12-31") &&
-                   $person->isRoleDuring(PNI, "2013-01-01", "2013-12-31")){
-                    $tuple['alwaysPNI'] = "Yes";
-                }
-                if(($person->isRoleDuring(PNI, "2010-01-01", "2010-12-31") || $person->isRoleDuring(CNI, "2010-01-01", "2010-12-31")) &&
-                   ($person->isRoleDuring(PNI, "2011-01-01", "2011-12-31") || $person->isRoleDuring(CNI, "2011-01-01", "2011-12-31")) &&
-                   ($person->isRoleDuring(PNI, "2012-01-01", "2012-12-31") || $person->isRoleDuring(CNI, "2012-01-01", "2012-12-31")) &&
-                   ($person->isRoleDuring(PNI, "2013-01-01", "2013-12-31") || $person->isRoleDuring(CNI, "2013-01-01", "2013-12-31"))){
+                if($person->isRoleDuring(NI, "2010-01-01", "2010-12-31") &&
+                   $person->isRoleDuring(NI, "2011-01-01", "2011-12-31") &&
+                   $person->isRoleDuring(NI, "2012-01-01", "2012-12-31") &&
+                   $person->isRoleDuring(NI, "2013-01-01", "2013-12-31")){
                     $tuple['alwaysNI'] = "Yes";
                 }
                 $tuple['nCurrentHQP'] = (string)count($hqps);

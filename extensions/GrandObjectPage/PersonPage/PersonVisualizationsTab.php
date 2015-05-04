@@ -587,10 +587,8 @@ class PersonVisualizationsTab extends AbstractTab {
             
             $data = array();
             $data['legend'] = array();
-            $data['legend'][PNI] = array('color' => "#4E9B05",
-                                         'name' => PNI);
-            $data['legend'][CNI] = array('color' => "#46731D",
-                                         'name' => CNI);
+            $data['legend'][NI] = array('color' => "#4E9B05",
+                                        'name' => NI);
             $data['legend'][HQP] = array('color' => "#394D26",
                                          'name' => HQP);     
             $data['legend']["Project"] = array('color' => "#E41B05",
@@ -612,11 +610,8 @@ class PersonVisualizationsTab extends AbstractTab {
                 if($person->isRole(HQP)){
                     $data['nodes']['p'.$person->getId()]['type'] = HQP;
                 }
-                else if($person->isRole(CNI)){
-                    $data['nodes']['p'.$person->getId()]['type'] = CNI;
-                }
-                else if($person->isRole(PNI)){
-                    $data['nodes']['p'.$person->getId()]['type'] = PNI;
+                else if($person->isRole(NI)){
+                    $data['nodes']['p'.$person->getId()]['type'] = NI;
                 }
                 $description = "<img src='{$person->getPhoto()}' /><br />";
                 

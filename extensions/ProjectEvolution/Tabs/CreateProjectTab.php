@@ -101,7 +101,7 @@ EOF;
         $effectiveRow->append(new CalendarField("{$pre}_effective", "Effective Date", date("Y")."-04-01", VALIDATE_NOT_NULL));
         
         $names = array("");
-        $people = array_merge(Person::getAllPeople(PNI), Person::getAllPeople(CNI));
+        $people = Person::getAllPeople(NI);
         foreach($people as $person){
             $names[$person->getName()] = $person->getNameForForms();
         }

@@ -374,7 +374,7 @@ EOF;
         if($person->isRole(HQP)){
             return $ethics_str;
         }
-        else if($person->isRole(CNI) || $person->isRole(PNI)){
+        else if($person->isRole(NI)){
             $relations = $person->getRelations("Supervises");
             $total_hqp = 0;
             $ethical_hqp = 0;
@@ -489,7 +489,7 @@ EOF;
         global $wgUser, $wgServer, $wgScriptPath;
         if(isExtensionEnabled('CCVExport')){
             $me = Person::newFromWgUser();
-            if(($person->isRole(PNI) || $person->isRole(CNI)) && $me->getId() == $person->getId()){
+            if(($person->isRole(NI)) && $me->getId() == $person->getId()){
                 $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:CCVExport?getXML'>Download CCV</a>";
             }
         }
@@ -558,9 +558,7 @@ EOF;
         $nationality = "";
         if($visibility['isMe'] || $visibility['isSupervisor']){
             if($person->isRoleDuring(HQP, "0000", "9999") ||
-               $person->isRoleDuring(CNI, "0000", "9999") ||
-               $person->isRoleDuring(PNI, "0000", "9999") ||
-               $person->isRoleDuring(AR, "0000", "9999")){
+               $person->isRoleDuring(NI, "0000", "9999")){
                 $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
                 $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
                 $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";

@@ -30,7 +30,6 @@ define('RP_EVAL_PROJECT',	5);
 define('RP_EVAL_LOI',		9);
 define('RP_SUPPLEMENTAL',	6);
 define('RP_EVAL_PDF',		7);
-define('RP_EVAL_CNI',		8);
 define('RP_EVAL_LOI_FEED',	10);
 define('RP_REVIEW', 11);
 define('RP_MTG', 12);
@@ -40,7 +39,6 @@ define('RP_PROJECT_CHAMP', 15);
 define('RP_PROJECT_ISAC', 16);
 define('RP_SUBPROJECT', 17);
 //define('RP_EVAL_RESEARCHER_REV',		9); //Revised answers
-//define('RP_EVAL_CNI_REV',		10); //Revised answers
 //define('RP_EVAL_PROJECT_REV', 11); //Revised answers
 /*
  * GlycoNet
@@ -70,7 +68,6 @@ define('RES_PUBLICATIONS',		9);
 define('RES_ARTIFACTS',			10);
 define('RES_CONTRIBUTIONS',		11);
 define('RES_RESACTIVITY',		12);
-define('RES_BUDGET_PNIADMIN',	13);
 define('RES_ALLOC_BUDGET',      14);
 define('RES_SUBPROJECTS',		5);
 
@@ -160,7 +157,7 @@ define('SUP_OTHER',			5);
 define('SUP_BUDGET',			6);
 
 // Second level for Eval PDFs
-define('PDF_PNI',			1);
+define('PDF_NI',			1);
 define('PDF_PROJ',			2);
 
 // Second level for Mind The Gap
@@ -278,7 +275,6 @@ define('LDR_MILE_REPORT', 1);
 define('LDR_BUD_ADJUSTMENT',		1);
 define('LDR_BUD_RESEARCHERREMARKS',	2);
 define('LDR_BUD_COMMENTS',		3);
-define('LDR_BUD_FUTURE_CNI',    4);
 
 define('LDR_RESACT_OVERALL',		1);
 define('LDR_RESACT_EXCELLENCE',		2);

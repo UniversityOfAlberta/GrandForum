@@ -1079,9 +1079,7 @@ class Paper extends BackboneModel{
                         $name = "<u>{$a->getNameForForms()}</u>";
                     }
                     else if((!$a->isRoleOn(HQP, $this->getDate()) && !$a->wasLastRole(HQP)) &&
-                            (!$a->isRoleOn(PNI, $this->getDate()) && !$a->wasLastRole(PNI)) &&
-                            (!$a->isRoleOn(CNI, $this->getDate()) && !$a->wasLastRole(CNI)) &&
-                            (!$a->isRoleOn(AR, $this->getDate()) && !$a->wasLastRole(AR))){
+                            (!$a->isRoleOn(NI, $this->getDate()) && !$a->wasLastRole(NI))){
                         $name = "<i>{$a->getNameForForms()}</i>";
                     }
                     $au[] = "<a target='_blank' href='{$a->getUrl()}'><b>{$name}</b></a>";

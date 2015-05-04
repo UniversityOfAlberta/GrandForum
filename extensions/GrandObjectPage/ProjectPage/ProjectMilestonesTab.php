@@ -170,7 +170,7 @@ class ProjectMilestonesTab extends AbstractTab {
     function canEdit(){
         global $wgUser;
         $me = Person::newFromId($wgUser->getId());
-        return (!$this->project->deleted && (($this->visibility['isMember'] && $me->isRoleAtLeast(CNI)) || $me->isRoleAtLeast(MANAGER)));
+        return (!$this->project->deleted && (($this->visibility['isMember'] && $me->isRoleAtLeast(NI)) || $me->isRoleAtLeast(MANAGER)));
     }
     
     function showMilestones(){
@@ -473,7 +473,7 @@ EOF;
         $allPeople = Person::getAllPeople('all');
         $list = array();
         foreach($allPeople as $person){
-            if($person->isRoleAtLeast(CNI) && $person->isMemberOf($project)){
+            if($person->isRoleAtLeast(NI) && $person->isMemberOf($project)){
                 if(array_search($person->getNameForForms(), $personNames) === false){
                     $list[] = $person->getNameForForms();
                 }
@@ -671,7 +671,7 @@ EOF;
             $allPeople = Person::getAllPeople('all');
             $list = array();
             foreach($allPeople as $person){
-                if($person->isRoleAtLeast(CNI) && $person->isMemberOf($milestone->getProject())){
+                if($person->isRoleAtLeast(NI) && $person->isMemberOf($milestone->getProject())){
                     if(array_search($person->getNameForForms(), $personNames) === false){
                         $list[] = $person->getNameForForms();
                     }

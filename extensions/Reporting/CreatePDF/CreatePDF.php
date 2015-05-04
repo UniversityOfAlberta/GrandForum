@@ -65,10 +65,7 @@ class CreatePDF extends SpecialPage {
 	        $people = array();
 	        $me = Person::newFromId($wgUser->getId());
 	        if($type == 'ni' || $type == 'ni_comments'){
-	            foreach(Person::getAllPeopleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, ($year+1).REPORTING_CYCLE_END_MONTH) as $person){
-	                $people[] = $person;
-	            }
-	            foreach(Person::getAllPeopleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, ($year+1).REPORTING_CYCLE_END_MONTH) as $person){
+	            foreach(Person::getAllPeopleDuring(NI, $year.REPORTING_CYCLE_START_MONTH, ($year+1).REPORTING_CYCLE_END_MONTH) as $person){
 	                $people[] = $person;
 	            }
 	            $command = "zip -9 /tmp/NIReports.zip";
@@ -204,13 +201,7 @@ class CreatePDF extends SpecialPage {
 	    $names = array();
 	    $ids = array();
 	    if($type == 'ni' || $type == 'ni_comments'){
-	        foreach(Person::getAllPeopleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, ($year+1).REPORTING_CYCLE_END_MONTH) as $person){
-	            if(array_search($person->getId(), $ids) === false){
-	                $names[] = $person->getName();
-	                $ids[] = $person->getId();
-	            }
-	        }
-	        foreach(Person::getAllPeopleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, ($year+1).REPORTING_CYCLE_END_MONTH) as $person){
+	        foreach(Person::getAllPeopleDuring(NI, $year.REPORTING_CYCLE_START_MONTH, ($year+1).REPORTING_CYCLE_END_MONTH) as $person){
 	            if(array_search($person->getId(), $ids) === false){
 	                $names[] = $person->getName();
 	                $ids[] = $person->getId();

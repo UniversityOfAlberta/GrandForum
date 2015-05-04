@@ -262,9 +262,7 @@ class ReportItemCallback {
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
             foreach($project->getAllPeopleDuring(null, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59") as $ni){
-                if(!$ni->leadershipOf($project) && ($ni->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
-                                                    $ni->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
-                                                    $ni->isRoleDuring(AR, REPORTING_CYCLE_START, REPORTING_CYCLE_END))){
+                if(!$ni->leadershipOf($project) && ($ni->isRoleDuring(NI, REPORTING_CYCLE_START, REPORTING_CYCLE_END))){
                     $nis[] = "<a href='{$ni->getUrl()}' target='_blank'>{$ni->getNameForForms()}</a>";
                 }
             }
@@ -297,14 +295,14 @@ class ReportItemCallback {
             $succs = $project->getSuccs();
             $people = $project->getAllPeople();
             foreach($people as $key => $person){
-                if(!$person->isRole(PNI) && !$person->isRole(CNI)){
+                if(!$person->isRole(NI)){
                     unset($people[$key]);
                 }
             }
             foreach($succs as $succ){
                 $count = 0;
                 foreach($succ->getAllPeople() as $person){
-                    if(isset($people[$person->getId()]) && ($person->isRole(PNI) || !$person->isRole(CNI))){
+                    if(isset($people[$person->getId()]) && $person->isRole(NI)){
                         $count++;
                     }
                 }
@@ -329,14 +327,14 @@ class ReportItemCallback {
             $preds = $project->getPreds();
             $people = $project->getAllPeople();
             foreach($people as $key => $person){
-                if(!$person->isRole(PNI) && !$person->isRole(CNI)){
+                if(!$person->isRole(NI)){
                     unset($people[$key]);
                 }
             }
             foreach($preds as $pred){
                 $count = 0;
                 foreach($pred->getAllPeople() as $person){
-                    if(isset($people[$person->getId()]) && ($person->isRole(PNI) || !$person->isRole(CNI))){
+                    if(isset($people[$person->getId()]) && $person->isRole(NI)){
                         $count++;
                     }
                 }
@@ -538,8 +536,7 @@ class ReportItemCallback {
         else{
             return;
         }
-        $nis = array_merge($project->getAllPeopleDuring(PNI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59"), 
-                           $project->getAllPeopleDuring(CNI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59"));
+        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
         $ni_milestone_comments = "";
         $alreadyDone = array();
         foreach($nis as $ni){
@@ -569,8 +566,7 @@ class ReportItemCallback {
         else{
             return;
         }
-        $nis = array_merge($project->getAllPeopleDuring(PNI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59"), 
-                           $project->getAllPeopleDuring(CNI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59"));
+        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
         $ni_milestone_comments = "";
         $alreadyDone = array();
         foreach($nis as $ni){
@@ -693,8 +689,7 @@ class ReportItemCallback {
         else{
             return;
         }
-        $nis = array_merge($project->getAllPeopleDuring(PNI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59"), 
-                           $project->getAllPeopleDuring(CNI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59"));
+        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
         $ni_comments = "";
         $alreadyDone = array();
         foreach($nis as $ni){

@@ -13,7 +13,7 @@ function runSanityChecks($par) {
 class SanityChecks extends SpecialPage {
 
 	function __construct() {
-		SpecialPage::__construct("SanityChecks", CNI.'+', true, 'runSanityChecks');
+		SpecialPage::__construct("SanityChecks", NI.'+', true, 'runSanityChecks');
 	}
 	
 	static function execute(){
@@ -46,7 +46,7 @@ class SanityChecks extends SpecialPage {
                                 });
                             </script>");
 		}
-		else if($me->isRoleAtLeast(CNI)){
+		else if($me->isRoleAtLeast(NI)){
 			$wgOut->setPageTitle("Data Quality Issues");
 			SanityChecks::personalizedTable();
     	}
@@ -60,7 +60,7 @@ class SanityChecks extends SpecialPage {
     // 	if($me->isRoleAtLeast(STAFF)){
     // 		SanityChecks::niTable();
     // 	}
-    // 	else if($me->isRoleAtLeast(CNI)){
+    // 	else if($me->isRoleAtLeast(NI)){
     // 		SanityChecks::personalizedTable();
     // 	}
 
@@ -198,7 +198,7 @@ EOF;
 	    		$niname_normal = $ni->getNameForForms();
 	    		$niname_reversed = $ni->getReversedName();
 	    		$niname_link = $ni->getUrl();
-	    		$ni_role = ($ni->isRole(CNI))? "role:".CNI : (($ni->isRole(PNI))? "role:".PNI : "role:Other"); 
+	    		$ni_role = ($ni->isRole(NI))? "role:".NI : "role:Other"); 
 	    		$projects = $ni->getProjectsDuring((REPORTING_YEAR+1).REPORTING_NCE_START_MONTH, (REPORTING_YEAR+2).REPORTING_NCE_END_MONTH);
 	    		$project_names = array();
 	    		foreach ($projects as $p) {
@@ -284,9 +284,8 @@ EOF;
     static function getErrors($ni_id = null){
     	
     	if(is_null($ni_id)){
-    		$cnis = Person::getAllPeople('CNI');
-			$pnis = Person::getAllPeople('PNI');
-			$all_people = array_merge($cnis, $pnis);
+			$nis = Person::getAllPeople('NI');
+			$all_people = $nis;
 		}else{
 			$ni = Person::newFromId($ni_id);
 			$all_people = array($ni);

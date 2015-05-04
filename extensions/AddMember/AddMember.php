@@ -16,7 +16,7 @@ class AddMember extends SpecialPage{
             parent::__construct("AddMember", STAFF.'+', true);
         }
         else{
-            parent::__construct("AddMember", CNI.'+', true);
+            parent::__construct("AddMember", NI.'+', true);
         }
     }
 
@@ -296,7 +296,7 @@ class AddMember extends SpecialPage{
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(CNI)){
+        if($me->isRoleAtLeast(NI)){
             $toolbox['People']['links'][0] = TabUtils::createToolboxLink("Add Member", "$wgServer$wgScriptPath/index.php/Special:AddMember");
         }
         return true;

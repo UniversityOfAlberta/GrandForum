@@ -144,13 +144,7 @@ class BudgetReportItem extends AbstractReportItem {
 		    $budget = $this->filterCols($budget);
 		    $budget = $budget->copy()->filterCols(V_PROJ, array(""));
 		    $person = Person::newFromId($this->personId);
-		    if($person->isRoleDuring(CNI, ($this->getReport()->year+1).REPORTING_NCE_START_MONTH, ($this->getReport()->year+2).REPORTING_NCE_END_MONTH) && 
-		       !$person->isRoleDuring(PNI, ($this->getReport()->year+1).REPORTING_NCE_START_MONTH, ($this->getReport()->year+2).REPORTING_NCE_END_MONTH)){
-		        $errors = self::addWorksWithRelation($data, $this->getReport()->year, true);
-		        foreach($errors as $key => $error){
-		            $budget->errors[0][] = $error;
-		        }
-		    }
+
 		    self::checkTotals($budget, $person, $this->getReport()->year);
 		    $errors = self::checkDeletedProjects($budget, $person, $this->getReport()->year);
 		    foreach($errors as $key => $error){
@@ -212,10 +206,6 @@ class BudgetReportItem extends AbstractReportItem {
             $budget = $budget->filter(HEAD1, array("Name of network investigator submitting request:"));
             $budget = $personRow->union($budget);
         }
-        if(!($person->isRoleDuring(CNI, ($this->getReport()->year+1).REPORTING_NCE_START_MONTH, ($this->getReport()->year+2).REPORTING_NCE_END_MONTH) && 
-	         !$person->isRoleDuring(PNI, ($this->getReport()->year+1).REPORTING_NCE_START_MONTH, ($this->getReport()->year+2).REPORTING_NCE_END_MONTH))){
-	        $budget->filter(HEAD1, array("%PNI with whom I collaborate%"));
-	    }
         return $budget;
 	}
 	
@@ -246,35 +236,6 @@ class BudgetReportItem extends AbstractReportItem {
             }
         }
         $name = $budget->copy()->where(V_PERS_NOT_NULL)->select(V_PERS_NOT_NULL)->toString();
-        if($person->isRoleDuring(PNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
-            if($total > 65000){
-                $budget->xls[22][7]->error = "'\$$total' is greater than the maximum $65000 for PNIs (excluding Big-Bet Projects)";
-            }
-        }
-        else if($person->isRoleDuring(CNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH) &&
-           $person->isProjectCoLeaderDuring(($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
-            $bigbet = true;
-            foreach($person->leadershipDuring(($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH) as $project){
-                if(!$project->isBigBet()){
-                    $bigbet = false;
-                }
-            }
-            if(!$bigbet){
-                if($total > 45000){
-                    $budget->xls[22][7]->error = "'\$$total' is greater than the maximum $45000 for CNIs who are co-Leaders (excluding Big-Bet Projects)";
-                }
-            }
-            else{
-                if($total > 35000){
-                    $budget->xls[22][7]->error = "'\$$total' is greater than the maximum $35000 for CNIs (excluding Big-Bet Projects)";
-                }
-            }
-        }
-        else if($person->isRoleDuring(CNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
-            if($total > 35000){
-                $budget->xls[22][7]->error = "'\$$total' is greater than the maximum $35000 for CNIs (excluding Big-Bet Projects)";
-            }
-        }
 
         if(strstr($name, ",") !== false){
             $v_pers = Person::newFromReversedName($name);
@@ -310,94 +271,6 @@ class BudgetReportItem extends AbstractReportItem {
                     }
                     if(!$person->isMemberOfDuring($project, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
                         $budget->xls[$rowN][$colN]->error = "You are not a member of '{$project->getName()}' between ".($year+1).REPORTING_NCE_START_MONTH." and ".($year+2).REPORTING_NCE_END_MONTH;
-                    }
-                }
-            }
-        }
-        return $errors;
-	}
-	
-	static function addWorksWithRelation($data, $year, $dryRun=false){
-	    global $wgUser;
-	    $errors = array();
-	    $me = Person::newFromId($wgUser->getId());
-        $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
-        
-        // First select the projects
-        $projects = $budget->copy()->select(V_PROJ, array())->where(V_PROJ)->xls;
-        foreach($projects as $row){
-            foreach($row as $proj){
-                $project = Project::newFromName($proj->getValue());
-                if($project != null && $project->getName() != null){
-                    if($project->deleted && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
-                        continue;
-                    }
-                    if($project->getPhase() != PROJECT_PHASE){
-                        continue;
-                    }
-                    if($project->isSubProject()){
-                        continue;
-                    }
-                    // Now look for the people
-                    $people = $budget->copy()->select(V_PROJ, array($project->getName()))->where(V_PERS)->xls;
-                    $nPeople = 0;
-                    foreach($people as $row){
-                        foreach($row as $pers){
-                            $person = null;
-                            $pers = str_replace("'", "", $pers->getValue());
-                            $names = explode(',', $pers);
-                            if(count($names) > 1){
-                                $name = $names[1].' '.$names[0];
-                                $person = Person::newFromNameLike($name);
-                                if($person == null || $person->getName() == null){
-                                    try{
-                                        $person = Person::newFromAlias($name);
-                                    }
-                                    catch(Exception $e){
-
-                                    }
-                                }
-                            }
-                            if($person == null || $person->getName() == null){
-                                $person = Person::newFromNameLike($pers);
-                            }
-                            if($person == null || $person->getName() == null){
-                                try{
-                                    $person = Person::newFromAlias($pers);
-                                }
-                                catch(Exception $e){
-                                
-                                }
-                            }
-                            if(!$dryRun && $person != null && $person->getName() != null && 
-                               $person->isRoleDuring(PNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH) && 
-                               $person->isMemberOfDuring($project, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
-                                // Ok, it is safe to add this person as a relation
-                                $_POST['type'] = WORKS_WITH;
-                                $_POST['name1'] = $me->getName();
-                                $_POST['name2'] = $person->getName();
-                                $_POST['project_relations'] = $project->getName();
-                                APIRequest::doAction('AddRelation', true);
-                                $nPeople++;
-                            }
-                            else{
-                                if($dryRun){
-                                    $nPeople++;
-                                }
-                            }
-                            
-                            if($person != null && $person->getName() != null){
-                                if(!$person->isRoleDuring(PNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
-                                    $errors[] = "'{$pers}' is not a PNI";
-                                }
-                                if(!$person->isMemberOfDuring($project, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
-                                    $errors[] = "'{$pers}' is not on {$project->getName()}";
-                                }
-                            }
-                        }
-                    }
-                    if($nPeople == 0){
-                        $errors[] = "You have not specified any PNIs that you collaborate with on {$project->getName()}";
                     }
                 }
             }

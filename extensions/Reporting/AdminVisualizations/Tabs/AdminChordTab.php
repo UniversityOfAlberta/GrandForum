@@ -27,19 +27,7 @@ class AdminChordTab extends AbstractTab {
             $sortedPeople = array();
             
             foreach($people as $key => $person){
-                if(!$person->isRoleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) && !$person->isRoleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) && !$person->isRoleDuring(AR, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
-                    unset($people[$key]);
-                    continue;
-                }
-                if(isset($_GET['noPNI']) && $person->isRoleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
-                    unset($people[$key]);
-                    continue;
-                }
-                if(!isset($_GET['showCNI']) && $person->isRoleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
-                    unset($people[$key]);
-                    continue;
-                }
-                if(!isset($_GET['showAR']) && $person->isRoleDuring(AR, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
+                if(!$person->isRoleDuring(NI), $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
                     unset($people[$key]);
                     continue;
                 }
@@ -236,10 +224,7 @@ class AdminChordTab extends AbstractTab {
             }
             
             $array['filterOptions'] = array(array('name' => 'Show Co-Authorship', 'param' => 'noCoAuthorship', 'checked' => 'checked'),
-                                            array('name' => 'Show Relationships', 'param' => 'noRelations', 'checked' => 'checked'),
-                                            array('name' => 'Show PNIs', 'param' => 'noPNI', 'checked' => 'checked'),
-                                            array('name' => 'Show CNIs', 'param' => 'showCNI', 'checked' => '', 'inverted' => true),
-                                            array('name' => 'Show ARs', 'param' => 'showAR', 'checked' => '', 'inverted' => true));
+                                            array('name' => 'Show Relationships', 'param' => 'noRelations', 'checked' => 'checked'));
 
             $array['dateOptions'] = $dates;
                                       

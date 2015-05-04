@@ -98,7 +98,6 @@
         //'TextReplace',
         //'Twitter',
         'MailingList',
-        //'FeatureRequest',
         'AddMember',
         'EditMember',
         'Poll',
@@ -115,7 +114,6 @@
         'Duplicates',
         //'Acknowledgements',
         //'AllocatedBudgets',
-        'FundedCNI',
         'ProjectEvolution',
         'ProjectLeadership',
         //'ScreenCapture',
@@ -225,9 +223,10 @@
     $config->setConst("EXTERNAL",   "External");
     $config->setConst("ISAC",       "ISAC");
     $config->setConst("NCE",        "NCE Rep");
-    $config->setConst("CNI",        "CNI");
-    $config->setConst("PNI",        "PNI");
-    $config->setConst("AR",         "AR");
+    $config->setConst("NI",         "NI");
+    //$config->setConst("CNI",        "CNI");
+    //$config->setConst("PNI",        "PNI");
+    //$config->setConst("AR",         "AR");
     $config->setConst("LOI",        "LOI Member");
     $config->setConst("COPL",       "Project co-Leader");
     $config->setConst("PL",         "Project Leader");
@@ -251,9 +250,10 @@
         $config->getConst('EXTERNAL')       => "External",
         $config->getConst('ISAC')           => "ISAC",
         $config->getConst('NCE')            => "NCE Rep",
-        $config->getConst('CNI')            => "Collaborating Network Investigator",
-        $config->getConst('PNI')            => "Principal Network Investigator",
-        $config->getConst('AR')             => "Associated Network Investigator",
+        $config->getConst('NI')             => "Network Investigator",
+        //$config->getConst('CNI')            => "Collaborating Network Investigator",
+        //$config->getConst('PNI')            => "Principal Network Investigator",
+        //$config->getConst('AR')             => "Associated Network Investigator",
         $config->getConst('LOI')            => "LOI",
         $config->getConst('CHAMP')          => "Champion",
         $config->getConst('COPL')           => "Co-Project Leader",

@@ -1066,8 +1066,7 @@ abstract class AbstractReport extends SpecialPage {
             $leadership = $realPerson->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
             if(count($leadership) > 0){
                 foreach($leadership as $proj){
-                    if(($person->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
-                        $person->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END)) &&
+                    if($person->isRoleDuring(NI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) &&
                        $person->isMemberOfDuring($proj, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
                         if("$ns:$title" == "Special:Report" &&
                            @$_GET['report'] == "NIReport" &&

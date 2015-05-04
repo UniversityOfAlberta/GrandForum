@@ -349,9 +349,8 @@ class ReportArchive extends SpecialPage {
                     continue;
                 }
                 $check = array();
-                if($role->getRole() == PNI || $role->getRole() == CNI){
-                    $usedRoles[PNI] = true;
-                    $usedRoles[CNI] = true;
+                if($role->getRole() == NI){
+                    $usedRoles[NI] = true;
                     $report = new DummyReport("NIReport", $person, null, $year);
                     $check = $report->getPDF();
                 }
@@ -387,9 +386,8 @@ class ReportArchive extends SpecialPage {
                     $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst)<br />");
                 }
                 $check = array();
-                if($role->getRole() == PNI || $role->getRole() == CNI){
-                    $usedRoles[PNI] = true;
-                    $usedRoles[CNI] = true;
+                if($role->getRole() == NI){
+                    $usedRoles[NI] = true;
                     $report = new DummyReport("NIReportComments", $person, null, $year);
                     $check = $report->getPDF();
                 }
@@ -404,7 +402,7 @@ class ReportArchive extends SpecialPage {
         else{
             $wgOut->addHTML("<b>No Archived PDFs were found.</b>");
         }
-        if(isset($usedRoles[PNI]) || isset($usedRoles[CNI])){
+        if(isset($usedRoles[NI])){
             $alloc = $person->getAllocatedAmount($year, null, true);
             if(count($alloc) > 0){
                 $wgOut->addHTML("<h3>Allocation (April 1 {$year} - March 31 ".($year + 1).")</h3>");

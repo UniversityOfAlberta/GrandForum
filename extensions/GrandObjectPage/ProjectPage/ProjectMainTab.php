@@ -398,16 +398,14 @@ EOF;
         $coleaders = $project->getCoLeaders(true);
         $managers = $project->getManagers(true);
         
-        $pnis = $project->getAllPeople(PNI);
-        $cnis = $project->getAllPeople(CNI);
-        $ars = $project->getAllPeople(AR);
+        $nis = $project->getAllPeople(NI);
         $hqps = $project->getAllPeople(HQP);
         
         $names = array("");
         if($project->isSubProject()){
             $people = array_merge($project->getParent()->getAllPeople(), $project->getAllPeople());
             foreach($people as $person){
-                if($person->isRoleAtLeast(CNI)){
+                if($person->isRoleAtLeast(NI)){
                     $names[$person->getName()] = $person->getNameForForms();
                 }
             }
@@ -420,56 +418,21 @@ EOF;
 
         if(!$edit){
             $this->html .= "<table width='100%'><tr><td valign='top' width='50%'>";
-            if($edit || !$edit && count($pnis) > 0){
-                $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($roleDefs[PNI])."</span></h2>";
+            if($edit || !$edit && count($nis) > 0){
+                $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($roleDefs[NI])."</span></h2>";
             }
             $this->html .= "<ul>";
-            foreach($pnis as $pni){
-                if((!empty($leaders) && in_array($pni->getId(), $leaders)) || 
-                   (!empty($coleaders) && in_array($pni->getId(), $coleaders)) ||
-                   (!empty($managers) && in_array($pni->getId(), $managers))){
+            foreach($nis as $ni){
+                if((!empty($leaders) && in_array($ni->getId(), $leaders)) || 
+                   (!empty($coleaders) && in_array($ni->getId(), $coleaders)) ||
+                   (!empty($managers) && in_array($ni->getId(), $managers))){
                     continue;
                 }
                 $target = "";
                 if($edit){
                     $target = " target='_blank'";
                 }
-                $this->html .= "<li><a href='{$pni->getUrl()}'$target>{$pni->getReversedName()}</a></li>";
-            }
-            
-            $this->html .= "</ul>";
-            if($edit || !$edit && count($cnis) > 0){
-                $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($roleDefs[CNI])."</span></h2>";
-            }
-            $this->html .= "<ul>";
-            foreach($cnis as $cni){
-                if((!empty($leaders) && in_array($cni->getId(), $leaders)) || 
-                   (!empty($coleaders) && in_array($cni->getId(), $coleaders)) ||
-                   (!empty($managers) && in_array($cni->getId(), $managers))){
-                    continue;
-                }
-                $target = "";
-                if($edit){
-                    $target = " target='_blank'";
-                }
-                $this->html .= "<li><a href='{$cni->getUrl()}'$target>{$cni->getReversedName()}</a></li>";
-            }
-            $this->html .= "</ul>";
-            if($edit || !$edit && count($ars) > 0){
-                $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($roleDefs[AR])."</span></h2>";
-            }
-            $this->html .= "<ul>";
-            foreach($ars as $ar){
-                if((!empty($leaders) && in_array($ar->getId(), $leaders)) || 
-                   (!empty($coleaders) && in_array($ar->getId(), $coleaders)) ||
-                   (!empty($managers) && in_array($ar->getId(), $managers))){
-                    continue;
-                }
-                $target = "";
-                if($edit){
-                    $target = " target='_blank'";
-                }
-                $this->html .= "<li><a href='{$ar->getUrl()}'$target>{$ar->getReversedName()}</a></li>";
+                $this->html .= "<li><a href='{$ni->getUrl()}'$target>{$ni->getReversedName()}</a></li>";
             }
             $this->html .= "</ul></td>";
             if($wgUser->isLoggedIn()){

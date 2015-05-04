@@ -111,15 +111,13 @@ class RMC2014Tab extends AbstractTab {
         <div id="aboveTabs"></div>
         <div id="reportTabs">
             
-            <a class="reportTab tooltip $tab1" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question1#PNI_Summary'>1.1 PNI Questions 1-9</a>
-            <a class="reportTab tooltip $tab2" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question2#CNI_Summary'>1.2 CNI Questions 1-9</a>
-            <a class="reportTab tooltip $tab3" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question3#Project_Summary'>1.3 Project Questions 1-8</a>
-            <a class="reportTab tooltip $tab4" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question4#Champion_Summary'>1.4 Champion Questions</a>
+            <a class="reportTab tooltip $tab1" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question1#NI_Summary'>1.1 NI Questions 1-9</a>
+            <a class="reportTab tooltip $tab3" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question3#Project_Summary'>1.2 Project Questions 1-8</a>
+            <a class="reportTab tooltip $tab4" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question4#Champion_Summary'>1.3 Champion Questions</a>
             
-            <a class="reportTab tooltip $tab5 marginTop" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget1#PNI_Budget_Summary'>2.1 PNI Budget Summary</a>
-            <a class="reportTab tooltip $tab6" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget2#CNI_Budget_Summary'>2.2 CNI Budget Summary</a>
-            <a class="reportTab tooltip $tab7" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget3#Project_Budget_Summary'>2.3 Project Budget Summary</span></a>
-            <a class="reportTab tooltip $tab8" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget4#Full_Budget_Summary'>2.4 Full Budget Summary</a>
+            <a class="reportTab tooltip $tab5 marginTop" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget1#NI_Budget_Summary'>2.1 NI Budget Summary</a>
+            <a class="reportTab tooltip $tab7" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget3#Project_Budget_Summary'>2.2 Project Budget Summary</span></a>
+            <a class="reportTab tooltip $tab8" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget4#Full_Budget_Summary'>2.1 Full Budget Summary</a>
 
             <a class="reportTab tooltip $tab9 marginTop" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=productivity#Project_Productivity'>3.1 Project Productivity</a>
             <a class="reportTab tooltip $tab10" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=researcher#Researcher_Productivity'>3.2 Researcher Productivity</a>
@@ -127,8 +125,7 @@ class RMC2014Tab extends AbstractTab {
             <a class="reportTab tooltip $tab12" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=distribution#Distribution'>3.4 HQP Distribution</a>
             <a class="reportTab tooltip $tab13" href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=themes#Themes'>3.5 Project Themes</a>
 
-            <a class="reportTab tooltip marginTop" href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type=PNI'>PNI Review Results</a>
-            <a class="reportTab tooltip" href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type=CNI'>CNI Review Results</a>
+            <a class="reportTab tooltip marginTop" href='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type=NI'>NI Review Results</a>
         </div>
         </div>
 
@@ -144,23 +141,15 @@ EOF;
         case 'question1':
             $this->html .= "<a id='Q_Summary'></a>";
             //$this->html .= "<h2>Summary of 1-9</h2>";
-            $this->html .= "<a id='".PNI."_Summary'></a>";
-            //$this->showEvalTableFor(PNI);
-            //$this->exportEvalNIOverview(PNI);
-            $this->showEvalNIOverview(PNI);
+            $this->html .= "<a id='".NI."_Summary'></a>";
+            //$this->showEvalTableFor(NI);
+            //$this->exportEvalNIOverview(NI);
+            $this->showEvalNIOverview(NI);
 
             break;
         
-        case 'exportPNI':
-            $this->exportEvalNIOverview(PNI);
-            break;
-
-        case 'question2':
-            $this->html .= "<a id='Q_Summary'></a>";
-            //$this->html .= "<h2>Summary of 1-9</h2>";
-            $this->html .= "<a id='".CNI."_Summary'></a>";
-            //$this->showEvalTableFor(CNI);
-            $this->showEvalNIOverview(CNI);
+        case 'exportNI':
+            $this->exportEvalNIOverview(NI);
             break;
 
         case 'question3':
@@ -182,15 +171,8 @@ EOF;
         case 'budget1':
             $this->html .= "<a id='Budget_Summary'></a>";
             //$this->html .= "<h2>Budget Summaries</h2>";
-            $this->html .= "<a id='".PNI."_Budget_Summary'></a>";
-            $this->showBudgetTableFor(PNI);
-            break;
-
-        case 'budget2':
-            $this->html .= "<a id='Budget_Summary'></a>";
-            //$this->html .= "<h2>Budget Summaries</h2>";
-            $this->html .= "<a id='".CNI."_Budget_Summary'></a>";
-            $this->showBudgetTableFor(CNI);
+            $this->html .= "<a id='".NI."_Budget_Summary'></a>";
+            $this->showBudgetTableFor(NI);
             break;
 
         case 'budget3':
@@ -239,9 +221,9 @@ EOF;
             self::showThemes();
             break;
         
-        // case 'reviewresults_pni':
+        // case 'reviewresults_ni':
         //     $this->html .= "<a id='ReviewResults'></a>";
-        //     self::reviewResults('PNI');
+        //     self::reviewResults('NI');
         //     break;
         }
         }
@@ -296,17 +278,15 @@ EOF;
             <ul>
             <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question#Q_Summary'><span class='tocnumber'>1</span> <span class='toctext'>Summary of 1-7</span></a>
                 <ul>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question#PNI_Summary'><span class='tocnumber'>1.1</span> <span class='toctext'>PNI Summary of Questions 1-9</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question#CNI_Summary'><span class='tocnumber'>1.2</span> <span class='toctext'>CNI Summary of Questions 1-9</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question#Project_Summary'><span class='tocnumber'>1.3</span> <span class='toctext'>Project Summary of Questions 1-8</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question#NI_Summary'><span class='tocnumber'>1.1</span> <span class='toctext'>NI Summary of Questions 1-9</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=question#Project_Summary'><span class='tocnumber'>1.2</span> <span class='toctext'>Project Summary of Questions 1-8</span></a></li>
                 </ul>
             </li>
             <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget#Budget_Summary'><span class='tocnumber'>2</span> <span class='toctext'>Budget Summaries</span></a>
                 <ul>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget#PNI_Budget_Summary'><span class='tocnumber'>2.1</span> <span class='toctext'>PNI Budget Summary</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget#CNI_Budget_Summary'><span class='tocnumber'>2.2</span> <span class='toctext'>CNI Budget Summary</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget#Project_Budget_Summary'><span class='tocnumber'>2.3</span> <span class='toctext'>Project Budget Summary</span></a></li>
-                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget#Full_Budget_Summary'><span class='tocnumber'>2.4</span> <span class='toctext'>Full Budget Summary</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget#NI_Budget_Summary'><span class='tocnumber'>2.1</span> <span class='toctext'>NI Budget Summary</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget#Project_Budget_Summary'><span class='tocnumber'>2.2</span> <span class='toctext'>Project Budget Summary</span></a></li>
+                    <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=budget#Full_Budget_Summary'><span class='tocnumber'>2.3</span> <span class='toctext'>Full Budget Summary</span></a></li>
                 </ul>
             </li>
             <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:EvaluationTable?year=2014&summary=productivity#Other'><span class='tocnumber'>3</span> <span class='toctext'>Other</span></a>
@@ -326,12 +306,8 @@ EOF;
 
     function showEvalNIOverview($type){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript, $reporteeId, $getPerson;
-        if($type == CNI){
-            $rtype = RP_EVAL_CNI;
-        }
-        else if($type == PNI){
-            $rtype = RP_EVAL_RESEARCHER;
-        }
+
+        $rtype = RP_EVAL_RESEARCHER;
 
         $weights = array('Top'=>4, 'Upper Middle'=>3, 'Lower Middle'=>2, 'Bottom'=>1);
         $aves = array('4'=>2, '3'=>1.5, '2'=>1, '1'=>0.5);
@@ -593,12 +569,8 @@ EOF;
 
     function exportEvalNIOverview($type){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $foldscript, $reporteeId, $getPerson;
-        if($type == CNI){
-            $rtype = RP_EVAL_CNI;
-        }
-        else if($type == PNI){
-            $rtype = RP_EVAL_RESEARCHER;
-        }
+
+        $rtype = RP_EVAL_RESEARCHER;
 
         $weights = array('Top'=>4, 'Upper Middle'=>3, 'Lower Middle'=>2, 'Bottom'=>1);
         $aves = array('4'=>2, '3'=>1.5, '2'=>1, '1'=>0.5);
@@ -1232,7 +1204,7 @@ EOF;
         global $wgOut, $wgScriptPath, $wgServer, $pl_language_years;
         $this->html .= "<h3>$type Budget Summary</h3>";
         $fullBudget = array();
-        if($type == PNI || $type == CNI){
+        if($type == NI){
             $fullBudget[] = new Budget(array(array(HEAD, HEAD, HEAD, HEAD, HEAD)), array(array($type, "Allocated in 2013", "Number of Projects", "Total Request", "Project Requests")));
             foreach(Person::getAllPeopleDuring($type, "2014-04-01", "2015-03-31") as $person){
                 $budget = $person->getRequestedBudget(2013);
@@ -1338,33 +1310,21 @@ EOF;
             $this->html .= $fullBudget->render(true);
         }
         else if($type == "Full"){
-            $fullBudget = new Budget(array(array(HEAD, HEAD, HEAD)), array(array("Categories for April 1, 2014, to March 31, 2015", PNI."s", CNI."s")));
+            $fullBudget = new Budget(array(array(HEAD, HEAD, HEAD)), array(array("Categories for April 1, 2014, to March 31, 2015", NI."s")));
             
-            $pniTotals = array();
-            $cniTotals = array();
-            foreach(Person::getAllPeopleDuring(PNI, "2014-04-01", "2015-03-31") as $person){
+            $niTotals = array();
+            foreach(Person::getAllPeopleDuring(NI, "2014-04-01", "2015-03-31") as $person){
                 $budget = $person->getRequestedBudget(2013);
                 if($budget != null){
-                    $pniTotals[] = $budget->copy()->limit(8, 14)->rasterize()->select(ROW_TOTAL);
-                }
-            }
-            foreach(Person::getAllPeopleDuring(CNI, "2014-04-01", "2015-03-31") as $person){
-                $budget = $person->getRequestedBudget(2013);
-                if($budget != null){
-                    $cniTotals[] = $budget->copy()->limit(8, 14)->rasterize()->select(ROW_TOTAL);
+                    $niTotals[] = $budget->copy()->limit(8, 14)->rasterize()->select(ROW_TOTAL);
                 }
             }
             
-            @$pniTotals = Budget::join_tables($pniTotals);
-            @$cniTotals = Budget::join_tables($cniTotals);
+            @$niTotals = Budget::join_tables($niTotals);
             
-            $cubedPNI = new Budget();
-            $cubedCNI = new Budget();
-            if($pniTotals != null){
-                $cubedPNI = @$pniTotals->cube();
-            }
-            if($cniTotals != null){
-                $cubedCNI = @$cniTotals->cube();
+            $cubedNI = new Budget();
+            if($niTotals != null){
+                $cubedNI = @$niTotals->cube();
             }
             
             $categoryBudget = new Budget(array(array(HEAD2),
@@ -1396,8 +1356,7 @@ EOF;
                                                array("b) Conferences"),
                                                array("c) GRAND annual conference")));
                                             
-            $categoryBudget = @$categoryBudget->join($cubedPNI->select(CUBE_ROW_TOTAL)->filter(TOTAL))
-                                             ->join($cubedCNI->select(CUBE_ROW_TOTAL)->filter(TOTAL));
+            $categoryBudget = @$categoryBudget->join($cubedNI->select(CUBE_ROW_TOTAL)->filter(TOTAL));
                                              
             $fullBudget = $fullBudget->union($categoryBudget);
             $this->html .= $fullBudget->cube()->render(true);
@@ -1736,8 +1695,7 @@ EOF;
     function showResearcherProductivity() {
         global $wgOut;
 
-        $pnis = Person::getAllPeople(PNI);
-        $cnis = Person::getAllPeople(CNI);
+        $nis = Person::getAllPeople(NI);
 
         $chunk = "
 <table class='wikitable sortable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='1000px'>
@@ -1764,7 +1722,7 @@ EOF;
         
         $totals = array('all'=>array(), 'Undergraduate'=>array(), 'Masters Student'=>array(), 'PhD Student'=>array(), 'PostDoc'=>array(), 'Technician'=>array(), 'Other'=>array(), 'Publications'=>array(), 'Artifacts'=>array(), 'Contributions'=>array());
 
-        foreach (array($pnis, $cnis) as $groups) {
+        foreach ($nis as $groups) {
             foreach ($groups as $person) {
                 $pname = $person->getName();
                 $p_id = $person->getId();
@@ -1968,19 +1926,11 @@ EOF;
 
     function getUniContributionStats(){
 
-        $cnis = Person::getAllPeopleDuring(CNI, "2013-01-01 00:00:00", "2014-01-01 00:00:00");
-        $pnis = Person::getAllPeopleDuring(PNI, "2013-01-01 00:00:00", "2014-01-01 00:00:00");
+        $people = Person::getAllPeopleDuring(NI, "2013-01-01 00:00:00", "2014-01-01 00:00:00");
 
         $nis = array();
         $unique_ids = array();
-        foreach($cnis as $n){
-            $nid = $n->getId();
-            if(!in_array($nid, $unique_ids)){
-                $unique_ids[] = $nid;
-                $nis[] = $n;
-            }
-        }
-        foreach($pnis as $n){
+        foreach($people as $n){
             $nid = $n->getId();
             if(!in_array($nid, $unique_ids)){
                 $unique_ids[] = $nid;

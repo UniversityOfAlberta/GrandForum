@@ -48,10 +48,9 @@ class AdminUniversityMapTab extends AbstractTab {
             $start = "$year".REPORTING_CYCLE_START_MONTH;
             $end = "$year".REPORTING_CYCLE_END_MONTH_ACTUAL;
             
-            $pni = (!isset($_GET['noPNI']) || true) ? Person::getAllPeopleDuring(PNI, $start, $end) : array();
-            $cni = (isset($_GET['showCNI']) || true) ? Person::getAllPeopleDuring(CNI, $start, $end) : array();
+            $ni = (!isset($_GET['noNI']) || true) ? Person::getAllPeopleDuring(NI, $start, $end) : array();
             
-            $people = array_merge($pni, $cni);
+            $people = $ni;
             $projectUnis = array();
             foreach($people as $person){
                 $uni = $person->getUniversityDuring($start, $end);
@@ -109,10 +108,7 @@ class AdminUniversityMapTab extends AbstractTab {
             ksort($universities);
             $array['locations'] = array_values($universities);
             $array['edges'] = $edges;
-            
-            /*$array['filterOptions'] = array(array('name' => 'Show PNIs', 'param' => 'noPNI', 'checked' => 'checked'),
-                                            array('name' => 'Show CNIs', 'param' => 'showCNI', 'checked' => '', 'inverted' => true));
-            */
+
             $array['filterOptions'] = array();
             $array['dateOptions'] = $dates;
 

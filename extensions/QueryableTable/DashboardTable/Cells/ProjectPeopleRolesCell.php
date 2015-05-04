@@ -50,12 +50,8 @@ class ProjectPeopleRolesCell extends Cell{
             }*/
             foreach($person->getRoles() as $role){
                 if($role->getRole() == HQP || 
-                    $role->getRole() == PNI || 
-                    $role->getRole() == CNI){
+                    $role->getRole() == NI){
                     $values[] = $role->getRole();
-                }
-                if($role->getRole() == AR || $role->getRole() == "Associated Researcher"){
-                    $values[] = 'AR';
                 }
             }
             $this->value = "<a href='{$person->getUrl()}' target = '_blank'><b>{$person->getNameForForms()}</b></a><br />(".implode(", ", $values).")";

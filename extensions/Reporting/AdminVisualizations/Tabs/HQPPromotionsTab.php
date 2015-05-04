@@ -11,7 +11,7 @@ class HQPPromotionsTab extends AbstractTab {
     function generateBody(){
 	    global $wgServer, $wgScriptPath;
 	    $people = Person::getAllPeople();
-	    $this->html .= "The following are the timelines of HQP who have at some point been promoted to either a CNI or PNI.";
+	    $this->html .= "The following are the timelines of HQP who have at some point been promoted to an NI.";
 	    foreach($people as $person){
 	        $hqpFound = false;
 	        $niFound = false;
@@ -20,7 +20,7 @@ class HQPPromotionsTab extends AbstractTab {
 	            if($role->getRole() == HQP){
 	                $hqpFound = true;
 	            }
-	            if(($role->getRole() == CNI || $role->getRole() == PNI) && $hqpFound){
+	            if($role->getRole() == NI && $hqpFound){
 	                $niFound = true;
 	            }
 	        }
