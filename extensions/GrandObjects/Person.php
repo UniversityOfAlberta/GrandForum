@@ -9,7 +9,6 @@ class Person extends BackboneModel {
     static $cache = array();
     static $rolesCache = array();
     static $universityCache = array();
-    static $coLeaderCache = array();
     static $leaderCache = array();
     static $aliasCache = array();
     static $authorshipCache = array();
@@ -39,12 +38,10 @@ class Person extends BackboneModel {
     var $university;
     var $universityDuring;
     var $isProjectLeader;
-    var $isProjectCoLeader;
     var $groups;
     var $roles;
     var $rolesDuring;
     var $isEvaluator = array();
-    var $isProjectManager = null;
     var $relations;
     var $hqps;
     var $historyHqps;
@@ -1683,22 +1680,15 @@ class Person extends BackboneModel {
         foreach($roles as $role){
             $roleNames[] = $role->getRole();
         }
-        $pm = $this->isProjectManager();
-        if($this->isProjectLeader() && !$pm){
+        if($this->isProjectLeader()){
             $roleNames[] = "PL";
-        }
-        if($this->isProjectCoLeader() && !$pm){
-            $roleNames[] = "COPL";
-        }
-        if($pm){
-            $roleNames[] = "PM";
         }
         if($this->isThemeLeader()){
             $roleNames[] = TL;
         }
         foreach($roleNames as $key => $role){
             if($role == "Inactive"){
-                if($this->isProjectManager() || $this->isProjectLeader() || $this->isProjectCoLeader()){
+                if($this->isProjectLeader()){
                     unset($roleNames[$key]);
                     continue;
                 }
@@ -1759,27 +1749,10 @@ class Person extends BackboneModel {
     
     function getLeadershipRoles(){
         $roles = array();
-        $pm = $this->isProjectManager();
-        if($this->isProjectLeader() && !$pm){
+        if($this->isProjectLeader()){
             $roles[] = new Role(array(0 => array('id' => -1,
                                                        'user_id' => $this->id,
                                                        'role' => "PL",
-                                                       'start_date' => '0000-00-00 00:00:00',
-                                                       'end_date' => '0000-00-00 00:00:00',
-                                                       'comment' => '')));
-        }
-        if($this->isProjectCoLeader() && !$pm){
-            $roles[] = new Role(array(0 => array('id' => -1,
-                                                       'user_id' => $this->id,
-                                                       'role' => "COPL",
-                                                       'start_date' => '0000-00-00 00:00:00',
-                                                       'end_date' => '0000-00-00 00:00:00',
-                                                       'comment' => '')));
-        }
-        if($pm){
-            $roles[] = new Role(array(0 => array('id' => -1,
-                                                       'user_id' => $this->id,
-                                                       'role' => "PM",
                                                        'start_date' => '0000-00-00 00:00:00',
                                                        'end_date' => '0000-00-00 00:00:00',
                                                        'comment' => '')));
@@ -1789,27 +1762,10 @@ class Person extends BackboneModel {
     
     function getLeadershipRolesDuring($startDate=false, $endDate=false){
         $roles = array();
-        $pm = $this->isProjectManagerDuring($startDate, $endDate);
-        if($this->isProjectLeaderDuring($startDate, $endDate) && !$pm){
+        if($this->isProjectLeaderDuring($startDate, $endDate)){
             $roles[] = new Role(array(0 => array('id' => -1,
                                                        'user_id' => $this->id,
                                                        'role' => "PL",
-                                                       'start_date' => '0000-00-00 00:00:00',
-                                                       'end_date' => '0000-00-00 00:00:00',
-                                                       'comment' => '')));
-        }
-        if($this->isProjectCoLeaderDuring($startDate, $endDate) && !$pm){
-            $roles[] = new Role(array(0 => array('id' => -1,
-                                                       'user_id' => $this->id,
-                                                       'role' => "COPL",
-                                                       'start_date' => '0000-00-00 00:00:00',
-                                                       'end_date' => '0000-00-00 00:00:00',
-                                                       'comment' => '')));
-        }
-        if($pm){
-            $roles[] = new Role(array(0 => array('id' => -1,
-                                                       'user_id' => $this->id,
-                                                       'role' => "PM",
                                                        'start_date' => '0000-00-00 00:00:00',
                                                        'end_date' => '0000-00-00 00:00:00',
                                                        'comment' => '')));
@@ -2362,17 +2318,9 @@ class Person extends BackboneModel {
         else{
             return false;
         }
-        if(($role == PL || $role == 'PL') && $this->isProjectLeader() && !$this->isProjectManager()){
+        if(($role == PL || $role == 'PL') && $this->isProjectLeader()){
             $roles[] = PL;
             $roles[] = 'PL';
-        }
-        if(($role == COPL || $role == 'COPL') && $this->isProjectCoLeader() && !$this->isProjectManager()){
-            $roles[] = COPL;
-            $roles[] = 'COPL';
-        }
-        if(($role == PM || $role == 'PM') && $this->isProjectManager()){
-            $roles[] = PM;
-            $roles[] = 'PM';
         }
         if($role == EVALUATOR && $this->isEvaluator()){
             $roles[] = EVALUATOR;
@@ -2383,11 +2331,10 @@ class Person extends BackboneModel {
     function isRoleOn($role, $date){
         $roles = array();
         $role_objs = $this->getRolesOn($date);
-        if($role == PL || $role == COPL || $role == "PL" || $role == "COPL"){
+        if($role == PL || $role == "PL"){
             $project_objs = $this->leadershipOn($date);
             if(count($project_objs) > 0){
                 $roles[] = "PL";
-                $roles[] = "COPL";
             }
         }
         if(count($role_objs) > 0){
@@ -2408,11 +2355,10 @@ class Person extends BackboneModel {
     function isRoleDuring($role, $startRange, $endRange){
         $roles = array();
         $role_objs = $this->getRolesDuring($startRange, $endRange);
-        if($role == PL || $role == COPL || $role == "PL" || $role == "COPL"){
+        if($role == PL || $role == "PL"){
             $project_objs = $this->leadershipDuring($startRange, $endRange);
             if(count($project_objs) > 0){
                 $roles[] = "PL";
-                $roles[] = "COPL";
             }
         }
         if(count($role_objs) > 0){
@@ -2444,11 +2390,6 @@ class Person extends BackboneModel {
                 return true;
             }
         }
-        if($wgRoleValues[COPL] >= $wgRoleValues[$role]){
-            if($this->isProjectCoLeaderDuring($startRange, $endRange)){
-                return true;
-            }
-        }
         return false;
     }
     
@@ -2467,11 +2408,6 @@ class Person extends BackboneModel {
                 return true;
             }
         }
-        if($wgRoleValues[COPL] >= $wgRoleValues[$role]){
-            if($this->isProjectCoLeader()){
-                return true;
-            }
-        }
         return false;
     }
     
@@ -2485,11 +2421,6 @@ class Person extends BackboneModel {
         }
         if($wgRoleValues[PL] <= $wgRoleValues[$role]){
             if($this->isProjectLeader()){
-                return true;
-            }
-        }
-        if($wgRoleValues[COPL] <= $wgRoleValues[$role]){
-            if($this->isProjectCoLeader()){
                 return true;
             }
         }
@@ -3032,26 +2963,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns the date that this person became co-leader of the given Project
-     * @param Project $project The Project that this person is/was a co-leader of
-     * @return string The date that this person became a co-leader
-     */
-    function getCoLeaderStartDate($project){
-        $dates = $this->getLeaderDates($project, 'co-leader');
-        return $dates['start_date'];
-    }
-    
-    /**
-     * Returns the date that this person stopped being co-leader of the given Project
-     * @param Project $project The Project that this person is/was a co-leader of
-     * @return string The date that this person stopped being a co-leader
-     */
-    function getCoLeaderEndDate($project){
-        $dates = $this->getLeaderDates($project, 'co-leader');
-        return $dates['end_date'];
-    }
-    
-    /**
      * Returns an array containing both the start and end dates that this Person
      * was leader/co-leader of the given project
      * @param Project $project The Project that this person is/was a leader of
@@ -3243,193 +3154,11 @@ class Person extends BackboneModel {
         }
     }
     
-    // Returns true if the person is a manager of at least one project
-    function isProjectManager(){
-        if($this->isProjectManager === null){
-            $sql = "SELECT p.id
-                    FROM grand_project_leaders l, grand_project p
-                    WHERE l.type = 'manager'
-                    AND p.id = l.project_id
-                    AND l.user_id = '{$this->id}' 
-                    AND (l.end_date = '0000-00-00 00:00:00'
-                         OR l.end_date > CURRENT_TIMESTAMP)";
-            $data = DBFunctions::execSQL($sql);
-            if(count($data) > 0){
-                $this->isProjectManager = false;
-                foreach($data as $row){
-                    $project = Project::newFromId($row['id']);
-                    if($project != null && !$project->isDeleted()){
-                        $this->isProjectManager = true;
-                        break;
-                    }
-                }
-            }
-            else{
-                $this->isProjectManager = false;
-            }
-        }
-        return $this->isProjectManager;
-    }
-    
-    function isProjectManagerDuring($startRange, $endRange){
-        $sql = "SELECT p.id
-                FROM grand_project_leaders l, grand_project p
-                WHERE l.type = 'manager'
-                AND p.id = l.project_id
-                AND l.user_id = '{$this->id}' 
-                AND ( 
-                ( (l.end_date != '0000-00-00 00:00:00') AND
-                (( l.start_date BETWEEN '$startRange' AND '$endRange' ) || ( l.end_date BETWEEN '$startRange' AND '$endRange' ) || (l.start_date <= '$startRange' AND l.end_date >= '$endRange') ))
-                OR
-                ( (l.end_date = '0000-00-00 00:00:00') AND
-                ((l.start_date <= '$endRange')))
-                )";
-        $data = DBFunctions::execSQL($sql);
-        if(count($data) > 0){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    
-    function managementOf($project) {
-        if($project instanceof Project){
-            $p = $project;
-        }
-        else{
-            $p = Project::newFromHistoricName($project);
-        }
-        if($p == null || $p->getName() == ""){
-            return false;
-        }
-        $data = DBFunctions::execSQL("SELECT 1
-                                     FROM grand_project_leaders l, grand_project p 
-                                     WHERE l.project_id = p.id
-                                     AND l.user_id = '{$this->id}'
-                                     AND p.name = '{$p->getName()}' 
-                                     AND l.type = 'manager'
-                                     AND (l.end_date = '0000-00-00 00:00:00'
-                                          OR l.end_date > CURRENT_TIMESTAMP)");
-       
-        if(DBFunctions::getNRows() > 0){
-            return true;
-        }
-        if(!$p->clear){
-            foreach($p->getPreds() as $pred){
-                if($this->managementOf($pred)){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    
-    // Returns true if the person is a co-leader of at least one project
-    function isProjectCoLeader(){
-        if($this->isProjectCoLeader != null){
-            return $this->isProjectCoLeader;
-        }
-        self::generateCoLeaderCache();
-        if(isset(self::$coLeaderCache[$this->id])){
-            $this->isProjectCoLeader = true;
-        }
-        else{
-            $this->isProjectCoLeader = false;
-        }
-        return $this->isProjectCoLeader;
-    }
-    
-    function isProjectCoLeaderDuring($startRange, $endRange){
-        $sql = "SELECT p.id
-                FROM grand_project_leaders l, grand_project p
-                WHERE l.type = 'co-leader'
-                AND p.id = l.project_id
-                AND l.user_id = '{$this->id}' 
-                AND ( 
-                ( (l.end_date != '0000-00-00 00:00:00') AND
-                (( l.start_date BETWEEN '$startRange' AND '$endRange' ) || ( l.end_date BETWEEN '$startRange' AND '$endRange' ) || (l.start_date <= '$startRange' AND l.end_date >= '$endRange') ))
-                OR
-                ( (l.end_date = '0000-00-00 00:00:00') AND
-                ((l.start_date <= '$endRange')))
-                )";
-        $data = DBFunctions::execSQL($sql);
-        if(count($data) > 0){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    
     function getLeadProjects($history=false){
         $sql = "SELECT l.*
                 FROM grand_project_leaders l
                 WHERE l.user_id = '{$this->id}'
                 AND l.type = 'leader'\n";
-        if(!$history){
-            $sql .= "AND (l.end_date = '0000-00-00 00:00:00'
-                          OR l.end_date > CURRENT_TIMESTAMP)";
-        }
-        $data = DBFunctions::execSQL($sql);
-        $projects = array();
-        foreach($data as $row){
-            $project = Project::newFromId($row['project_id']);
-            $projects[$project->getName()] = $project;
-        }
-        ksort($projects);
-        $projects = array_values($projects);
-        return $projects;
-    }
-    
-    function getCoLeadProjects($history=false){
-        $sql = "SELECT *
-                FROM grand_project_leaders l
-                WHERE l.user_id = '{$this->id}'
-                AND l.type = 'co-leader'\n";
-      
-        if(!$history){
-            $sql .= "AND (l.end_date = '0000-00-00 00:00:00'
-                          OR l.end_date > CURRENT_TIMESTAMP)";
-        }
-        $data = DBFunctions::execSQL($sql);
-        $projects = array();
-        foreach($data as $row){
-            $project = Project::newFromId($row['project_id']);
-            $projects[$project->getName()] = $project;
-        }
-        ksort($projects);
-        $projects = array_values($projects);
-        return $projects;
-    }
-    
-    function getLeadAndCoLeadProjects($history=false){
-        $sql = "SELECT *
-                FROM grand_project_leaders l
-                WHERE l.user_id = '{$this->id}'
-                AND l.type IN ('leader','co-leader')\n";
-        
-        if(!$history){
-            $sql .= "AND (l.end_date = '0000-00-00 00:00:00'
-                          OR l.end_date > CURRENT_TIMESTAMP)";
-        }
-        $data = DBFunctions::execSQL($sql);
-        $projects = array();
-        foreach($data as $row){
-            $project = Project::newFromId($row['project_id']);
-            $projects[$project->getName()] = $project;
-        }
-        ksort($projects);
-        $projects = array_values($projects);
-        return $projects;
-    }
-    
-    function getManagerProjects($history=false){
-        $sql = "SELECT l.*
-                FROM grand_project_leaders l
-                WHERE l.user_id = '{$this->id}'
-                AND l.type = 'manager'\n";
-                
         if(!$history){
             $sql .= "AND (l.end_date = '0000-00-00 00:00:00'
                           OR l.end_date > CURRENT_TIMESTAMP)";

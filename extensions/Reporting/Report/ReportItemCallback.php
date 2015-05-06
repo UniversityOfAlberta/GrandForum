@@ -787,9 +787,6 @@ class ReportItemCallback {
         if($person->isProjectLeader()){
             $roles .= ", PL";
         }
-        if($person->isProjectCoLeader()){
-            $roles .= ", COPL";
-        }
         return $roles;
     }
     

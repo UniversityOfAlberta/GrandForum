@@ -337,25 +337,22 @@ EOF;
     }
     
     function showLeaders(){
-        global $wgUser, $wgServer, $wgScriptPath;
+        global $wgUser, $wgServer, $wgScriptPath, $config;
         
+        $roleDefs = $config->getValue('roleDefs');
         $me = Person::newFromWgUser();
         
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
         
         $leaders = $project->getLeaders(true); //only get id's
-        $coleaders = $project->getCoLeaders(true);
-        $managers = $project->getManagers(true);
-        $this->html .= "<h2><span class='mw-headline'>Leaders</span></h2>";
-        $this->html .= "<table>";
+        $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($roleDefs[PL])."</span></h2>";
+        $this->html .= "<ul>";
         if(!empty($leaders)){
             foreach($leaders as $leader_id){
                 $leader = Person::newFromId($leader_id);
-                $this->html .= "<tr>";
-                
                 if(!$edit || !$me->leadershipOf($project->getParent())){
-                    $this->html .= "<td align='right'><b>Leader:</b></td><td><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></td></tr>";
+                    $this->html .= "<li><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></li>";
                 }
                 else if($me->leadershipOf($project->getParent())){
                     $plRow = new FormTableRow("pl_row");
@@ -371,19 +368,7 @@ EOF;
             $plRow->append(new ComboBox("pl", "Project Leader", "", $names, VALIDATE_NI));
             $this->html .= $plRow->render();
         }
-        if(!empty($coleaders)){
-            foreach($coleaders as $leader_id){
-                $leader = Person::newFromId($leader_id);
-                $this->html .= "<tr><td align='right'><b>co-Leader:</b></td><td><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></td></tr>";
-            }    
-        }
-        if(!empty($managers)){
-            foreach($managers as $leader_id){
-                $leader = Person::newFromId($leader_id);
-                $this->html .= "<tr><td align='right'><b>Manager:</b></td><td><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></td></tr>";
-            }    
-        }
-        $this->html .= "</table>";
+        $this->html .= "</ul>";
     }
 
     function showPeople(){
@@ -395,8 +380,6 @@ EOF;
         $project = $this->project;
         
         $leaders = $project->getLeaders(true); //only get id's
-        $coleaders = $project->getCoLeaders(true);
-        $managers = $project->getManagers(true);
         
         $nis = $project->getAllPeople(NI);
         $hqps = $project->getAllPeople(HQP);
@@ -423,9 +406,7 @@ EOF;
             }
             $this->html .= "<ul>";
             foreach($nis as $ni){
-                if((!empty($leaders) && in_array($ni->getId(), $leaders)) || 
-                   (!empty($coleaders) && in_array($ni->getId(), $coleaders)) ||
-                   (!empty($managers) && in_array($ni->getId(), $managers))){
+                if(!empty($leaders) && in_array($ni->getId(), $leaders)){
                     continue;
                 }
                 $target = "";

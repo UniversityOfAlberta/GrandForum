@@ -21,33 +21,6 @@ class ProjectPeopleRolesCell extends Cell{
         if(isset($params[2])){
             $person = Person::newFromName($params[2]);
             $values = array();
-            /*$leads = $person->getLeadProjects();
-            $coLeads = $person->getCoLeadProjects();
-            foreach($leads as $lead){
-                if($lead->getId() == $table->obj->getId()){
-                    $values[] = "PL";
-                    break;
-                }
-            }
-            foreach($coLeads as $lead){
-                if($lead->getId() == $table->obj->getId()){
-                    $values[] = "COPL";
-                    break;
-                }
-            }
-            foreach($table->obj->getSubProjects() as $sub){
-                $break = false;
-                foreach($leads as $lead){
-                    if($lead->getId() == $sub->getId()){
-                        $values[] = "sPL";
-                        $break = true;
-                        break;
-                    }
-                }
-                if($break){
-                    break;
-                }
-            }*/
             foreach($person->getRoles() as $role){
                 if($role->getRole() == HQP || 
                     $role->getRole() == NI){

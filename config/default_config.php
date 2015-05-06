@@ -115,7 +115,6 @@
         //'Acknowledgements',
         //'AllocatedBudgets',
         'ProjectEvolution',
-        'ProjectLeadership',
         //'ScreenCapture',
         //'Solr',
         //'AcademiaMap',
@@ -224,13 +223,8 @@
     $config->setConst("ISAC",       "ISAC");
     $config->setConst("NCE",        "NCE Rep");
     $config->setConst("NI",         "NI");
-    //$config->setConst("CNI",        "CNI");
-    //$config->setConst("PNI",        "PNI");
-    //$config->setConst("AR",         "AR");
     $config->setConst("LOI",        "LOI Member");
-    $config->setConst("COPL",       "Project co-Leader");
     $config->setConst("PL",         "Project Leader");
-    $config->setConst("PM",         "Project Manager");
     $config->setConst("COTL",       "Theme co-Leader");
     $config->setConst("TL",         "Theme Leader");
     $config->setConst("RMC",        "RMC");
@@ -251,14 +245,9 @@
         $config->getConst('ISAC')           => "ISAC",
         $config->getConst('NCE')            => "NCE Rep",
         $config->getConst('NI')             => "Network Investigator",
-        //$config->getConst('CNI')            => "Collaborating Network Investigator",
-        //$config->getConst('PNI')            => "Principal Network Investigator",
-        //$config->getConst('AR')             => "Associated Network Investigator",
         $config->getConst('LOI')            => "LOI",
         $config->getConst('CHAMP')          => "Champion",
-        $config->getConst('COPL')           => "Co-Project Leader",
         $config->getConst('PL')             => "Project Leader",
-        $config->getConst('PM')             => "Project Manager",
         $config->getConst('COTL')           => "Co-Theme Leader",
         $config->getConst('TL')             => "Theme Leader",
         $config->getConst('RMC')            => "Research Management Comittee",

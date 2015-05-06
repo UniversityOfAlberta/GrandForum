@@ -48,9 +48,7 @@ class PersonPage {
             }
             $person = Person::newFromName($name);
             if((array_search($role, $wgRoles) !== false || $role == INACTIVE || 
-                                                           $role == PL || $role == 'PL' ||
-                                                           $role == COPL || $role == 'COPL' ||
-                                                           $role == PM || $role == 'PM') && 
+                                                           $role == PL || $role == 'PL') && 
                $person->getName() != null && 
                $person != null && $person->isRole($role)){
                 TabUtils::clearActions();
@@ -172,19 +170,12 @@ class PersonPage {
         foreach($roles as $role){
             $roleNames[] = $role->getRole();
         }
-        $pm = $person->isProjectManager();
-        if($person->isProjectLeader() && !$pm){
+        if($person->isProjectLeader()){
             $roleNames[] = "PL";
-        }
-        if($person->isProjectCoLeader() && !$pm){
-            $roleNames[] = "COPL";
-        }
-        if($pm){
-            $roleNames[] = "PM";
         }
         foreach($roleNames as $key => $role){
             if($role == "Inactive"){
-                if($person->isProjectManager() || $person->isProjectLeader() || $person->isProjectCoLeader()){
+                if($person->isProjectLeader()){
                     unset($roleNames[$key]);
                     continue;
                 }

@@ -581,8 +581,9 @@ class PersonVisualizationsTab extends AbstractTab {
 	}
 	
 	static function getGraphData($action, $article){
-	    global $wgServer, $wgScriptPath;
+	    global $wgServer, $wgScriptPath, $config;
 	    if($action == "getGraphData"){
+	        $roleDefs = $config->getValue('roleDefs');
             $person = Person::newFromId($_GET['person']);
             
             $data = array();
@@ -659,15 +660,9 @@ class PersonVisualizationsTab extends AbstractTab {
                 
                 $description = "";
                 
-                $description .= "<b>Leaders: </b>";
+                $description .= "<b>".$roleDefs[PL].": </b>";
                 $leads = array();
                 foreach($project->getLeaders() as $member){
-                    $leads[] = "<a href='{$member->getUrl()}' target='_blank'>{$member->getNameForForms()}</a>";
-                }
-                $description .= implode(", ", $leads);
-                $description .= "<br /><br /><b>co-Leaders: </b>";
-                $leads = array();
-                foreach($project->getCoLeaders() as $member){
                     $leads[] = "<a href='{$member->getUrl()}' target='_blank'>{$member->getNameForForms()}</a>";
                 }
                 $description .= implode(", ", $leads);

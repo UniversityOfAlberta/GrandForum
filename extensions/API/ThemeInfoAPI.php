@@ -60,16 +60,10 @@ class ThemeInfoAPI extends API{
             $json['fullName'] = $subProject->getFullName();
             $json['description'] = $subProject->getDescription();
             $json['leaders'] = array();
-            $json['coleaders'] = array();
             foreach($subProject->getLeaders() as $leader){
                 $json['leaders'][] = array('name' => $leader->getNameForForms(),
                                            'university' => $leader->getUni(),
                                            'url' => $leader->getUrl());
-            }
-            foreach($subProject->getCoLeaders() as $leader){
-                $json['coleaders'][] = array('name' => $leader->getNameForForms(),
-                                             'university' => $leader->getUni(),
-                                             'url' => $leader->getUrl());
             }
         }
         else if($project != null){
@@ -78,17 +72,11 @@ class ThemeInfoAPI extends API{
             $json['description'] = $project->getDescription();
             $json['theme'] = $project->getChallenge()->getAcronym();
             $json['leaders'] = array();
-            $json['coleaders'] = array();
             $json['subprojects'] = array();
             foreach($project->getLeaders() as $leader){
                 $json['leaders'][] = array('name' => $leader->getNameForForms(),
                                            'university' => $leader->getUni(),
                                            'url' => $leader->getUrl());
-            }
-            foreach($project->getCoLeaders() as $leader){
-                $json['coleaders'][] = array('name' => $leader->getNameForForms(),
-                                             'university' => $leader->getUni(),
-                                             'url' => $leader->getUrl());
             }
             foreach($project->getSubProjects() as $sub){
                 $json['subprojects'][] = array('name' => $sub->getName(),
@@ -100,19 +88,12 @@ class ThemeInfoAPI extends API{
             $json['fullName'] = $theme->getName();
             $json['description'] = $theme->getDescription();
             $json['leaders'] = array();
-            $json['coleaders'] = array();
             $json['projects'] = array();
             $leader = $theme->getLeader();
-            $coleader = $theme->getCoLeader();
             if($leader != null){
                 $json['leaders'][] = array('name' => $leader->getNameForForms(),
                                            'university' => $leader->getUni(),
                                            'url' => $leader->getUrl());
-            }
-            if($coleader != null){
-                $json['coleaders'][] = array('name' => $coleader->getNameForForms(),
-                                             'university' => $coleader->getUni(),
-                                             'url' => $coleader->getUrl());
             }
             foreach(Project::getAllProjects() as $project){
                 if($project->getChallenge()->getAcronym() == $theme->getAcronym()){
@@ -135,19 +116,12 @@ class ThemeInfoAPI extends API{
                 $data['name'] = $theme->getAcronym();
                 $data['fullName'] = $theme->getName();
                 $data['leaders'] = array();
-                $data['coleaders'] = array();
                 $data['projects'] = array();
                 $leader = $theme->getLeader();
-                $coleader = $theme->getCoLeader();
                 if($leader != null){
                     $data['leaders'][] = array('name' => $leader->getNameForForms(),
                                                'university' => $leader->getUni(),
                                                'url' => $leader->getUrl());
-                }
-                if($coleader != null){
-                    $data['coleaders'][] = array('name' => $coleader->getNameForForms(),
-                                                 'university' => $coleader->getUni(),
-                                                 'url' => $coleader->getUrl());
                 }
                 foreach(Project::getAllProjects() as $project){
                     if($project->getChallenge()->getAcronym() == $theme->getAcronym()){

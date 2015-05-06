@@ -127,9 +127,6 @@ $egAnnokiExtensions['AllocatedBudgets'] = array('name' => 'Allocated Budgets',
 
 $egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
                                                 'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");
-                                                
-$egAnnokiExtensions['ProjectLeadership'] = array('name' => 'Project Leadership',
-                                                 'path' => "$IP/extensions/ProjectLeadership/ProjectLeadership.php");
 
 $egAnnokiExtensions['ScreenCapture'] = array('name' => 'ScreenCapture',
                                              'path' => "$IP/extensions/ScreenCapture/ScreenCapture.php");

@@ -214,7 +214,7 @@ class AddMember extends SpecialPage{
                 $roleOptions[] = $role;
             }
         }
-        if($me->isRoleAtLeast(COPL)){
+        if($me->isRoleAtLeast(PL)){
             $roleOptions[] = CHAMP;
         }
         if($me->isRoleAtLeast(STAFF)){

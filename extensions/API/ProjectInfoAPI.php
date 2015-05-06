@@ -54,18 +54,12 @@ class ProjectInfoAPI extends API{
         foreach($projects as $project){
             $description = $project->getDescription();
             $leader = $project->getLeader();
-            $coleader = $project->getCoLeader();
             $xml .= "\t<project id=\"{$project->getId()}\">\n";
             $xml .= "\t\t<name>{$project->getName()}</name>\n";
             if($leader != null){
                 $uni = $leader->getUniversity();
                 $name = $leader->splitName();
                 $xml .= "\t\t<leader id=\"{$leader->getId()}\" firstname=\"{$name['first']}\" lastname=\"{$name['last']}\" type=\"{$leader->getType()}\" university=\"{$uni['university']}\" />\n";
-            }
-            if($coleader != null){
-                $uni = $coleader->getUniversity();
-                $name = $coleader->splitName();
-                $xml .= "\t\t<coleader id=\"{$coleader->getId()}\" firstname=\"{$name['first']}\" lastname=\"{$name['last']}\" type=\"{$coleader->getType()}\" university=\"{$uni['university']}\" />\n";
             }
             $xml .= "\t\t<description>\n";
             $xml .= "\t\t\t".str_replace("&", "&amp;", $description)."\n";
@@ -99,7 +93,6 @@ class ProjectInfoAPI extends API{
 	  $json = array();
 	  foreach($projects as $project){
 	    $leader = $project->getLeader();
-	    $coleader = $project->getCoLeader();
       $people = array();
       foreach($project->getAllPeople() as $person){
         if(!$person->isRole(HQP)){
@@ -123,9 +116,6 @@ class ProjectInfoAPI extends API{
                  "researchers" => $people);   
       if($leader != null){
 	      $p["leader"] = "{$leader->getName()}"; 
-	    }
-	    if($coleader != null){
-	      $p["coleader"] = "{$coleader->getName()}"; 
 	    }
       $json[] = $p;
 	  }

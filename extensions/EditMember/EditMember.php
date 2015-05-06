@@ -219,58 +219,28 @@ class EditMember extends SpecialPage{
             if($user->isRoleAtLeast(STAFF)){
                 // Project Leadership Changes
                 $pl = array();
-                $copl = array();
                 $pm = array();
                 if(isset($_POST['pl'])){
                     foreach($_POST['pl'] as $value){
                         $pl[$value] = $value;
                     }
                 }
-                if(isset($_POST['copl'])){
-                    foreach($_POST['copl'] as $value){
-                        $copl[$value] = $value;
-                    }
-                }
-                if(isset($_POST['pm'])){
-                    foreach($_POST['pm'] as $value){
-                        $pm[$value] = $value;
-                    }
-                }
             
                 $currentPL = array();
-                $currentCoPL = array();
                 // Removing Project Leaders
                 foreach($person->getLeadProjects() as $project){
-                    if(!$person->managementOf($project)){
-                        if(!isset($pl[$project->getName()])){
-                            // Remove Project Leadership
-                            $_POST['co_lead'] = 'False';
-                            $_POST['manager'] = 'False';
-                            $_POST['role'] = $project->getName();
-                            $_POST['user'] = $person->getName();
-                            $_POST['comment'] = @str_replace("'", "", $_POST["pl_comment"][$project->getName()]);
-                            $_POST['effective_date'] = @$_POST["pl_datepicker"][$project->getName()];
-                            APIRequest::doAction('DeleteProjectLeader', true);
-                            $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a project leader of {$project->getName()}");
-                        }
-                        $currentPL[$project->getName()] = $project->getName();
+                    if(!isset($pl[$project->getName()])){
+                        // Remove Project Leadership
+                        $_POST['co_lead'] = 'False';
+                        $_POST['manager'] = 'False';
+                        $_POST['role'] = $project->getName();
+                        $_POST['user'] = $person->getName();
+                        $_POST['comment'] = @str_replace("'", "", $_POST["pl_comment"][$project->getName()]);
+                        $_POST['effective_date'] = @$_POST["pl_datepicker"][$project->getName()];
+                        APIRequest::doAction('DeleteProjectLeader', true);
+                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a project leader of {$project->getName()}");
                     }
-                }
-                foreach($person->getCoLeadProjects() as $project){
-                    if(!$person->managementOf($project)){
-                        if(!isset($copl[$project->getName()])){
-                            // Remove Project co-Leadership
-                            $_POST['co_lead'] = 'True';
-                            $_POST['manager'] = 'False';
-                            $_POST['role'] = $project->getName();
-                            $_POST['user'] = $person->getName();
-                            $_POST['comment'] = @str_replace("'", "", $_POST["copl_comment"][$project->getName()]);
-                            $_POST['effective_date'] = @$_POST["copl_datepicker"][$project->getName()];
-                            APIRequest::doAction('DeleteProjectLeader', true);
-                            $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a co-project leader of {$project->getName()}");
-                        }
-                        $currentCoPL[$project->getName()] = $project->getName();
-                    }
+                    $currentPL[$project->getName()] = $project->getName();
                 }
                 
                 // Adding Project Leaders
@@ -285,64 +255,16 @@ class EditMember extends SpecialPage{
                         $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a project leader of {$project}");
                     }
                 }
-                foreach($copl as $project){
-                    if(!isset($currentCoPL[$project])){
-                        // Add Project co-Leadership
-                        $_POST['co_lead'] = 'True';
-                        $_POST['manager'] = 'False';
-                        $_POST['role'] = $project;
-                        $_POST['user'] = $person->getName();
-                        APIRequest::doAction('AddProjectLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a co-project leader of {$project}");
-                    }
-                }
-                
-                $currentPM = array();
-                // Removing Project Managers
-                foreach($person->getManagerProjects() as $project){
-                    if(!isset($pm[$project->getName()])){
-                        // Remove Project Leadership
-                        $_POST['co_lead'] = 'False';
-                        $_POST['manager'] = 'True';
-                        $_POST['role'] = $project->getName();
-                        $_POST['user'] = $person->getName();
-                        $_POST['comment'] = @str_replace("'", "", $_POST["pm_comment"][$project->getName()]);
-                        $_POST['effective_date'] = @$_POST["pm_datepicker"][$project->getName()];
-                        APIRequest::doAction('DeleteProjectLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a project manager of {$project->getName()}");
-                    }
-                    $currentPM[$project->getName()] = $project->getName();
-                }
-                
-                // Adding Project Managers
-                foreach($pm as $project){
-                    if(!isset($currentPM[$project])){
-                        // Add Project Leadership
-                        $_POST['co_lead'] = 'False';
-                        $_POST['manager'] = 'True';
-                        $_POST['role'] = $project;
-                        $_POST['user'] = $person->getName();
-                        APIRequest::doAction('AddProjectLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a project manager of {$project}");
-                    }
-                }
                 
                 // Theme Leadership Changes
                 $tl = array();
-                $cotl = array();
                 if(isset($_POST['tl'])){
                     foreach($_POST['tl'] as $value){
                         $tl[$value] = Theme::newFromId($value);
                     }
                 }
-                if(isset($_POST['cotl'])){
-                    foreach($_POST['cotl'] as $value){
-                        $cotl[$value] = Theme::newFromId($value);
-                    }
-                }
             
                 $currentTL = array();
-                $currentCoTL = array();
                 // Removing Theme Leaders
                 foreach($person->getLeadThemes() as $theme){
                     if(!isset($tl[$theme->getId()])){
@@ -357,19 +279,6 @@ class EditMember extends SpecialPage{
                     }
                     $currentTL[$theme->getId()] = $theme->getId();
                 }
-                foreach($person->getCoLeadThemes() as $theme){
-                    if(!isset($cotl[$theme->getId()])){
-                        // Remove Theme co-Leadership
-                        $_POST['co_lead'] = 'True';
-                        $_POST['theme'] = $theme->getId();
-                        $_POST['name'] = $person->getName();
-                        $_POST['comment'] = @str_replace("'", "", $_POST["cotl_comment"][$theme->getId()]);
-                        $_POST['effective_date'] = $_POST["cotl_datepicker"][$theme->getId()];
-                        APIRequest::doAction('DeleteThemeLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a co-theme leader of {$theme->getAcronym()}");
-                    }
-                    $currentCoTL[$theme->getId()] = $theme->getId();
-                }
                 
                 // Adding Theme Leaders
                 foreach($tl as $theme){
@@ -380,16 +289,6 @@ class EditMember extends SpecialPage{
                         $_POST['name'] = $person->getName();
                         APIRequest::doAction('AddThemeLeader', true);
                         $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a theme leader of {$theme->getAcronym()}");
-                    }
-                }
-                foreach($cotl as $theme){
-                    if(!isset($currentCoTL[$theme->getId()])){
-                        // Add Theme co-Leadership
-                        $_POST['co_lead'] = 'True';
-                        $_POST['theme'] = $theme->getId();
-                        $_POST['name'] = $person->getName();
-                        APIRequest::doAction('AddThemeLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a co-theme leader {$theme->getAcronym()}");
                     }
                 }
             }
@@ -985,7 +884,7 @@ class EditMember extends SpecialPage{
         EditMember::generateRoleFormHTML($wgOut);
         $wgOut->addHTML("</div>");
         
-        if(!$me->isRoleAtLeast(STAFF) && (($me->isProjectLeader() || $me->isProjectCoLeader()) && $person->isRoleAtLeast(RMC))){
+        if(!$me->isRoleAtLeast(STAFF) && ($me->isProjectLeader() && $person->isRoleAtLeast(RMC))){
             $wgOut->addHTML("<script type='text/javascript'>
                 $('#RolesTab').parent().hide();
                 $('#tabs-1').hide();
@@ -1001,9 +900,6 @@ class EditMember extends SpecialPage{
         if($me->isRoleAtLeast(STAFF)){
             $wgOut->addHTML("<div id='tabs-3'>");
                                 EditMember::generatePLFormHTML($wgOut);
-            $wgOut->addHTML("</div>
-                             <div id='tabs-4'>");
-                                EditMember::generatePMFormHTML($wgOut);
             $wgOut->addHTML("</div>
                              <div id='tabs-5'>");
                                 EditMember::generateTLFormHTML($wgOut);
@@ -1099,7 +995,7 @@ class EditMember extends SpecialPage{
         foreach($wgRoles as $role){
             if(($role != ISAC || $user->isRoleAtLeast(STAFF)) && 
                ($role != NCE || $user->isRoleAtLeast(MANAGER)) && 
-               ($user->isRoleAtLeast($role) || ($role == CHAMP && $user->isRoleAtLeast(COPL)))){
+               ($user->isRoleAtLeast($role) || ($role == CHAMP && $user->isRoleAtLeast(PL)))){
                 $boxes .= "&nbsp;<input id='role_$role' type='checkbox' name='r_wpNS[]' value='".$role."' ";
                 if($user->isRole(NI) && $role == HQP && $person->isRole(HQP) && !$user->relatedTo($person,"Supervises") && count($person->getSupervisors()) > 0 ){
                     $boxes .= "checked onChange='addComment(this, true)' class='already'"; //Prevent un-check
@@ -1283,9 +1179,7 @@ class EditMember extends SpecialPage{
         $projects = Project::getAllProjects();
         
         $leadProjects = new Collection($person->getLeadProjects());
-        $coLeadProjects = new Collection($person->getCoLeadProjects());
         $myLeadProjects = $leadProjects->pluck('name');
-        $myCoLeadProjects = $coLeadProjects->pluck('name');
 
         $wgOut->addHTML("<h2>Project Leader</h2>");
         
@@ -1294,17 +1188,6 @@ class EditMember extends SpecialPage{
         $wgOut->addHTML($projList->render());
         $wgOut->addHTML("<script type='text/javascript'>
             $('input.pl.already').change(function(){
-                addComment(this, false);
-            });
-        </script>");
-        
-        $wgOut->addHTML("<h2>Project co-Leader</h2>");
-        
-        $projList = new ProjectList("copl", "Projects", $myCoLeadProjects, $projects);
-        $projList->attr('expand', true);
-        $wgOut->addHTML($projList->render());
-        $wgOut->addHTML("<script type='text/javascript'>
-            $('input.copl.already').change(function(){
                 addComment(this, false);
             });
         </script>");
@@ -1338,51 +1221,6 @@ class EditMember extends SpecialPage{
             }
         }
         $wgOut->addHTML("</table>");
-        
-        $wgOut->addHTML("<h2>Theme Co-Leader</h2>");
-        $wgOut->addHTML("<table border='0' cellspacing='2'>");
-        $coLeadThemes = $person->getCoLeadThemes();
-        foreach($themes as $theme){
-            $themeId = $theme->getId();
-            $isLead = false;
-            foreach($coLeadThemes as $t){
-                if($t->getId() == $themeId){
-                    $isLead = true;
-                    break;
-                }
-            }
-            if($isLead){
-                $wgOut->addHTML("<tr><td style='min-width:150px;' valign='top'><input type='checkbox' name='cotl[]' value='$themeId' checked='checked' class='already' onChange='addComment(this, false);' />{$theme->getAcronym()}<div style='display:none; padding-left:30px;'><fieldset><legend>Reasoning</legend><p>Date Effective:<input type='text' class='datepicker' id='cotl_datepicker{$themeId}' name='cotl_datepicker[$themeId]' /></p>Additional Comments:<br /><textarea name='cotl_comment[$themeId]' cols='15' rows='4' style='height:auto;'></textarea></fielset></div><br /></td></tr>\n");
-            }
-            else {
-                $wgOut->addHTML("<tr><td style='min-width:150px;' valign='top'><input type='checkbox' name='cotl[]' value='$themeId' />{$theme->getAcronym()}</td></tr>\n");
-            }
-        }
-        $wgOut->addHTML("</table>");
-    }
-    
-    function generatePMFormHTML($wgOut){
-        global $wgUser, $wgServer, $wgScriptPath;
-        $user = Person::newFromId($wgUser->getId());
-        if(!isset($_GET['name'])){
-            return;
-        }
-        $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
-        $projects = Project::getAllProjects();
-        
-        $leadProjects = new Collection($person->getManagerProjects());
-        $myLeadProjects = $leadProjects->pluck('name');
-        
-        $wgOut->addHTML("<h2>Project Manager</h2>");
-        
-        $projList = new ProjectList("pm", "Projects", $myLeadProjects, $projects);
-        $projList->attr('expand', true);
-        $wgOut->addHTML($projList->render());
-        $wgOut->addHTML("<script type='text/javascript'>
-            $('input.pm.already').change(function(){
-                addComment(this, false);
-            });
-        </script>");
     }
     
     function handleAdminAccept(){

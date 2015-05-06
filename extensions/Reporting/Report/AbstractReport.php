@@ -651,8 +651,7 @@ abstract class AbstractReport extends SpecialPage {
                                 }
                             }
                         }
-                        else if($this->project != null && ($perm['perm'] == PL || $perm['perm'] == COPL || $perm['perm'] == "Leadership") && 
-                           !$me->isProjectManager()){
+                        else if($this->project != null && ($perm['perm'] == PL || $perm['perm'] == "Leadership")){
                             $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
                             if(count($project_objs) > 0){
                                 foreach($project_objs as $project){
@@ -662,7 +661,7 @@ abstract class AbstractReport extends SpecialPage {
                                 }
                             }
                         }
-                        else if($this->project != null && ($perm['perm'] == "SUB-PL" || $perm['perm'] == "SUB-COPL")){
+                        else if($this->project != null && ($perm['perm'] == "SUB-PL")){
                             $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
                             if(count($project_objs) > 0){
                                 foreach($project_objs as $project){
@@ -670,11 +669,6 @@ abstract class AbstractReport extends SpecialPage {
                                         $rResult = true;
                                     }
                                 }
-                            }
-                        }
-                        else if($this->project != null && ($perm['perm'] == PM)){
-                            if($me->isProjectManager()){
-                                $rResult = true;
                             }
                         }
                         else{

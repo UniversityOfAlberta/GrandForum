@@ -15,7 +15,6 @@ class Theme {
     var $phase;
     var $color;
     var $leader = null;
-    var $coleader = null;
     
     /**
      * Returns a new Theme from the given Id
@@ -170,24 +169,6 @@ class Theme {
             }
         }
         return $leaders;
-    }
-    
-    /**
-     * Returns the current co-leader of this Theme
-     * @return Person the current Co-Leader of this Theme
-     */
-    function getCoLeader(){
-        if($this->coleader == null){
-            $data = DBFunctions::select(array("grand_theme_leaders"),
-                                        array("user_id"),
-                                        array("theme" => $this->getId(),
-                                              "co_lead" => EQ("True"),
-                                              "end_date" => EQ("0000-00-00 00:00:00")));
-            if(count($data) > 0){
-                $this->coleader = Person::newFromId($data[0]['user_id']);
-            }
-        }
-        return $this->coleader;
     }
 
 }
