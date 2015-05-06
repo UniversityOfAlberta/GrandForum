@@ -23,16 +23,8 @@ class ReviewResults extends SpecialPage {
         else if(!empty($_GET['type']) && $_GET['type'] == 'Project'){
             $type = "Project";
         }
-        else if(!empty($_GET['type']) && $_GET['type'] == 'LOI'){
-            $type = "LOI";
-        }
         
-        if($type == 'LOI'){
-            ReviewResults::loi_routine();
-        }
-        else{
-            ReviewResults::ni_routine();
-        }
+        ReviewResults::ni_routine();
 
         $html =<<<EOF
         <script type='text/javascript'>
@@ -83,7 +75,6 @@ class ReviewResults extends SpecialPage {
             <ul>
             <li><a href='#ni'>NI</a></li>
             <li><a href='#project'>Project</a></li>
-            <li><a href='#loi'>LOI</a></li>
             </ul>
 EOF;
         
@@ -93,10 +84,6 @@ EOF;
         
         $html .= "<div id='project' style='width: 100%; overflow: auto;'>";
         $html .= ReviewResults::reviewResults('Project');
-        $html .= "</div>";
-
-        $html .= "<div id='loi' style='width: 100%; overflow: auto;'>";
-        $html .= ReviewResults::reviewLOIResults();
         $html .= "</div>";
 
         $html .=<<<EOF
@@ -142,24 +129,6 @@ EOF;
         }
 
        // ReviewResults::reviewResults($type);
-    }
-
-    static function loi_routine(){
-        global $wgUser, $wgOut, $wgServer, $wgScriptPath;
-
-        if(isset($_POST['submit'])){
-            $submit_val = $_POST['submit'];
-            //if($submit_val == "Send out Emails"){
-                ReviewResults::emailAllLOIPDFs('LOI');
-            //}
-            
-        }
-        else if(isset($_GET['generatePDF'])){
-            ReviewResults::generateAllFeedback('LOI');
-            exit;
-        }
-
-       // ReviewResults::reviewLOIResults();
     }
 
     static function emailAllPDFs($type){
@@ -212,141 +181,6 @@ EOF;
             $message .= implode("<br />", $file_fail);
             $wgMessage->addError($message);
         }
-    }
-
-    static function emailAllLOIPDFs(){
-        global $wgUser, $wgMessage;
-        $curr_year = REPORTING_YEAR;
-
-        $lois = LOI::getAssignedLOIs($curr_year);
-
-        $query = "SELECT * FROM grand_review_results WHERE year={$curr_year} AND type = 'LOI' AND user_id= %d";
-    
-        $sent_success = array();
-        $sent_fail = array();
-        $file_fail = array();
-        
-        foreach($lois as $loi){
-            $loi_id = $loi->getId();
-            $sql = sprintf($query, $loi_id);
-            $data = DBFunctions::execSQL($sql);
-            if(count($data) > 0 && $data[0]['email_sent'] == 1){
-                continue;
-            }
-
-            //if($loi_id == 2 || $loi_id == 30){
-                
-            $loi_name = $loi->getName();
-
-            $error = ReviewResults::emailLOIPDF($loi_id);
-            if($error == 0){
-                $sent_success[] = $loi_name;
-            }
-            else if($error == 1){
-                $sent_fail[] = $loi_name;
-            }
-            else if($error == 2){
-                $file_fail[] = $loi_name;
-            }
-            //}
-        }
-
-        if(!empty($sent_success)){
-            $message = "Email was sent successfully to the following:<br />";
-            $message .= implode("<br />", $sent_success);
-            $wgMessage->addSuccess($message);
-        }
-
-        if(!empty($sent_fail)){
-            $message = "There was a problem sending emails to the following:<br />";
-            $message .= implode("<br />", $sent_fail);
-            $wgMessage->addError($message);
-        }
-
-        if(!empty($file_fail)){
-            $message = "There was a problem retrieving PDFs for the following:<br />";
-            $message .= implode("<br />", $file_fail);
-            $wgMessage->addError($message);
-        }
-    }
-
-    static function emailLOIPDF($loi_id){
-        global $wgUser, $wgMessage;
-        $loi = LOI::newFromId($loi_id);
-        $loi_name = $loi->getName();
-        //$loi_email = $ni->getEmail();
-        ///$ni_name_good = $ni->getNameForForms();
-
-        $lead = $loi->getLeadEmail();
-        if(!empty($lead['email'])){
-            $lead_email = $lead['email'];
-        }
-        else{
-            $lead_email = "adrian_sheppard@gnwc.ca";
-        }
-
-        $to = $lead_email;
-
-        //$to = "dgolovan@gmail.com, adrian_sheppard@gnwc.ca";  
-        $subject = "GRAND NCE - {$loi_name} Feedback and Next Steps";
-        
-        $email_body =<<<EOF
-This message is going out to the LOI Submission project leaders and co-leaders. Attached you will find the specific feedback from the reviews of your project or subproject LOI Submission, as well as some instructions and guidance regarding the next steps in the process.
-
-Included in the attached is an initial draft of GRAND's portfolio of research projects for Phase 2. The purpose of this initial draft portfolio is to provide guidance on how each of the LOI Submissions (full projects and subprojects) might fit into the anticipated 20-25 projects that will form GRAND's Phase 2 research project portfolio.
-
-The next phase of the process will be the LOI Responses, which will be focused on filling these anticipated 20-25 project slots in the Phase 2 portfolio. More information about this next phase is included in the attached, along with your individual project feedback.  The LOI Responses template is available at http://grand-nce.ca/renewal/template-and-instructions-for-loi-responses.
-
-If you have any questions or concerns, or if you require any additional information at this time, please let me know. Thanks.
-
-Regards,
-Adrian Sheppard
-Director, Operations
-GRAND NCE
-Centre for Digital Media
-685 Great Northern Way
-Vancouver BC V5T 0C6
-EOF;
-        
-        $from = "Adrian Sheppard <adrian_sheppard@gnwc.ca>";
-        $filename = "{$loi_name}_Feedback-August2013.pdf";
-        //$file = "data/review-feedback/{$type}/{$filename}";
-        //$file_content = @file_get_contents($file);
-        $admin = Person::newFromId(4);
-        $report = new DummyReport("LOIFeedbackReportPDF", $admin, $loi);
-        $check = $report->getPDF();
-        
-        if(count($check)>0){
-            $sto = new ReportStorage($admin);
-            $file_content = $sto->fetch_pdf($check[0]['token']);
-        }
-        else{
-            $file_content = "";
-        }
-
-        $error_code = 0; //If all is good return 0;
-
-        if($file_content){
-            $success = ReviewResults::mail_attachment($file_content, $filename, $to, $from, $subject, $email_body);
-            if($success){
-                //Update the NI record that the email was sent out.
-                $curr_year = REPORTING_YEAR;
-                $query =<<<EOF
-                UPDATE grand_review_results
-                SET email_sent = 1
-                WHERE user_id = {$loi_id} AND type = 'LOI' AND year = {$curr_year}
-EOF;
-                $result = DBFunctions::execSQL($query, true);
-            }
-            else{
-                $error_code = 1; 
-            }
-        }
-        else{
-            $error_code = 2;
-        }
-
-        return $error_code;
     }
 
     static function emailPDF($ni_id, $type){
@@ -535,37 +369,24 @@ EOF;
 
     static function generateAllFeedback($type='NI'){
         global $wgUser;
-
-        if($type == 'LOI'){
-            $lois = LOI::getAssignedLOIs(REPORTING_YEAR);
-            foreach ($lois as $loi){
-                //$loi_id = $loi->getId();
-                $admin = Person::newFromId(4);
-                $report = new DummyReport("LOIFeedbackReportPDF", $admin, $loi);
-                $report->generatePDF(null, false);
-                //break;
-            }
+        if($type == NI){
+            $nis = Person::getAllEvaluates($type); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
         }
-        else{
-            if($type == NI){
-                $nis = Person::getAllEvaluates($type); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
-            }
-            else if($type == "Project"){
-                $nis = array();
-                $projects = Project::getAllProjects();
-                foreach($projects as $project){
-                    if($project->getPhase() == 2){
-                        $nis[$project->getName()] = $project;
-                    }
+        else if($type == "Project"){
+            $nis = array();
+            $projects = Project::getAllProjects();
+            foreach($projects as $project){
+                if($project->getPhase() == 2){
+                    $nis[$project->getName()] = $project;
                 }
             }
+        }
 
-            foreach ($nis as $ni) {
-                $ni_id = $ni->getId();
+        foreach ($nis as $ni) {
+            $ni_id = $ni->getId();
 
-                ReviewResults::generateFeedback($ni_id, $type);
-                echo $ni->getName() ."<br />";
-            }
+            ReviewResults::generateFeedback($ni_id, $type);
+            echo $ni->getName() ."<br />";
         }
     }
 
@@ -995,93 +816,6 @@ EOF;
             <input type='hidden' name='year' value='{$curr_year}' />
             <input type='submit' name='submit' value='Submit' />
             <input type='submit' name='submit' value='Send out Emails' />
-            </form>
-EOF;
-        return $html;
-    }
-
-    static function reviewLOIResults(){
-        global $wgOut, $wgScriptPath, $wgServer, $wgUser;
-
-        $my_id = $wgUser->getId();
-        $me = Person::newFromId($wgUser->getId());
-        
-        $type = "LOI";
-
-        $curr_year = REPORTING_YEAR;
-        $lois = LOI::getAssignedLOIs($curr_year);
-
-        $query = "SELECT * FROM grand_review_results WHERE year={$curr_year} AND type='{$type}'";
-        $data = DBFunctions::execSQL($query);
-
-        $fetched = array();
-        foreach($data as $row){
-            $id = $row['user_id'];
-            $fetched[$id] = array('email_sent'=>$row['email_sent']);    
-        }
-
-        $html =<<<EOF
-            <h3>RMC Review Results ({$type})</h3>
-            <form id="resultsForm" action='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type={$type}#loi' method='post'>
-            
-            <table width='90%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
-            <tr>
-            <th>LOI Name</th>
-            <th width="30%">Leader Name</th>
-            <th width="30%">co-Leader Name</th>
-            <th width="15%">Feedback PDF</th>
-            <th width="15%">Email</th>
-            </tr>
-EOF;
-            foreach ($lois as $loi) {
-                $loi_id = $loi->getId();
-                $loi_name = $loi->getName();
-                $filename = $loi->getName();
-                $lead = $loi->getLeadEmail();
-                if(!empty($lead['email'])){
-                    $lead_email = "<a href='mailto:".$lead['email']."'>".$lead['name']."</a>";
-                }
-                else{
-                    $lead_email = $lead['name'];
-                }
-
-                $email_sent = "Email Not Sent";
-                $email_sent_bg = "background-color: red;";
-                if(isset($fetched[$loi_id])){
-                    if(isset($fetched[$loi_id]['email_sent']) &&  $fetched[$loi_id]['email_sent'] == 1){
-                        $email_sent = "Email Sent";
-                        $email_sent_bg = "background-color: green;";
-                    }
-                }
-
-                $admin = Person::newFromId(4); //Just because I need to pass a person object
-                $report = new DummyReport("LOIFeedbackReportPDF", $admin, $loi);
-                $check = $report->getPDF();
-                if(count($check) > 0){
-                    $tok = $check[0]['token'];
-                    $downloadButton = "<a id='download{$loi_id}' target='downloadIframe' class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf=$tok'>Download</a>";
-                }
-                else{
-                    $downloadButton = "No PDF found";
-                }
-                
-                $html .=<<<EOF
-                <tr>
-                <td>{$loi_name}</td>
-                <td>{$lead_email}</td>
-                <td align="center">{$downloadButton}</td>
-                <td align="center"><span style="padding:5px; {$email_sent_bg}">{$email_sent}</span></td>
-                </tr>
-EOF;
-            }
-
-            $html .=<<<EOF
-            </table>
-            <br />
-            <input type='hidden' name='ni_type' value='{$type}' />
-            <input type='hidden' name='year' value='{$curr_year}' />
-            
-            <input type='submit' name='submit' value='Send out Emails' disabled />
             </form>
 EOF;
         return $html;

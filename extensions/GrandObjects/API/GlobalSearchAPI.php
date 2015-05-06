@@ -304,18 +304,6 @@ class GlobalSearchAPI extends RESTAPI {
                         case RPTP_LEADER_COMMENTS:
                             $keywords = "project leader report comments pdf";
                             break;
-                        case RPTP_LOI_REVIEW:
-                            $keywords = "loi project review report pdf";
-                            break;
-                        case RPTP_LOI_EVAL_REVIEW:
-                            $keywords = "loi project evaluator review report pdf";
-                            break;
-                        case RPTP_LOI_EVAL_FEEDBACK:
-                            $keywords = "loi project evaluator feedback report pdf";
-                            break;
-                        case RPTP_LOI_REV_REVIEW:
-                            $keywords = "loi project reviewer review report pdf";
-                            break;
                         case RPTP_MTG:
                             $keywords = "mind the gap mtg pdf";
                             break;

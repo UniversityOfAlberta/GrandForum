@@ -874,8 +874,7 @@ class EditMember extends SpecialPage{
                         <li><a id='ProjectsTab' href='#tabs-2'>Projects</a></li>");
         if($me->isRoleAtLeast(STAFF)){
             $wgOut->addHTML("<li><a id='LeadershipTab' href='#tabs-3'>Project Leadership</a></li>
-                             <li><a id='ManagerTab' href='#tabs-4'>Project Manager</a></li>
-                             <li><a id='ThemesTab' href='#tabs-5'>Theme Leaders</a></li>");
+                             <li><a id='ThemesTab' href='#tabs-4'>Theme Leaders</a></li>");
         }
         $wgOut->addHTML("
                     </ul>");
@@ -901,7 +900,7 @@ class EditMember extends SpecialPage{
             $wgOut->addHTML("<div id='tabs-3'>");
                                 EditMember::generatePLFormHTML($wgOut);
             $wgOut->addHTML("</div>
-                             <div id='tabs-5'>");
+                             <div id='tabs-4'>");
                                 EditMember::generateTLFormHTML($wgOut);
             $wgOut->addHTML("</div>");
         }

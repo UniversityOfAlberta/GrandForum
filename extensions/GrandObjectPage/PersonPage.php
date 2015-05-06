@@ -165,27 +165,7 @@ class PersonPage {
      */
     function showTitle($person, $visibility){
         global $wgOut;
-        $roles = $person->getRoles();
-        $roleNames = array();
-        foreach($roles as $role){
-            $roleNames[] = $role->getRole();
-        }
-        if($person->isProjectLeader()){
-            $roleNames[] = "PL";
-        }
-        foreach($roleNames as $key => $role){
-            if($role == "Inactive"){
-                if($person->isProjectLeader()){
-                    unset($roleNames[$key]);
-                    continue;
-                }
-                $lastRole = $person->getLastRole();
-                if($lastRole != null){
-                    $roleNames[$key] = "Inactive-".$lastRole->getRole();
-                }
-            }
-        }
-        $wgOut->setPageTitle($person->getReversedName()." (".implode(", ", $roleNames).")");
+        $wgOut->setPageTitle($person->getReversedName());
         $wgOut->addHTML("<script type='text/javascript'>
             $('.custom-title').hide();
         </script>");

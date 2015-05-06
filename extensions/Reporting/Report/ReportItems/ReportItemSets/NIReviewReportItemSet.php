@@ -23,11 +23,6 @@ class NIReviewReportItemSet extends ReportItemSet {
             $header = $project->getName();
             $id = $this->projectId;
 
-        }else if($type == "LOI"){
-            $loi = LOI::newFromId($this->projectId);
-            $header = $loi->getName();
-            $id = $this->projectId;
-
         }
 
         $html =<<<EOF

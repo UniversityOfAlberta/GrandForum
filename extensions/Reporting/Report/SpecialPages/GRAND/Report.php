@@ -117,22 +117,11 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "ISACReview") ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("ISAC", "{$url}ISACReview", $selected);
         }
-        if($person->isRole(ISAC) || $person->isRoleAtLeast(MANAGER) || $person->getId() == 11){ 
-            // Check if the person is ISAC, MANAGER or K.S.B, which is super ugly, but was requested last minute, so no time to do it any better
+        if($person->isRole(ISAC) || $person->isRoleAtLeast(MANAGER)){ 
+            // Check if the person is ISAC or MANAGER
             $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "ISACMaterials") ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("ISAC Reviews", "{$url}ISACMaterials", $selected);
         }
-        
-        //LOI Evaluation
-        /*
-        if($person->isRoleAtLeast(RMC)){
-            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "EvalLOIReport") ? "selected" : false;
-            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("LOI", "{$url}EvalLOIReport", $selected);
-            
-            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "EvalRevLOIReport") ? "selected" : false;
-            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Revised LOI", "{$url}EvalRevLOIReport", $selected);
-        }
-        */
         
         // Champion Report
         if($person->isRole(CHAMP)){

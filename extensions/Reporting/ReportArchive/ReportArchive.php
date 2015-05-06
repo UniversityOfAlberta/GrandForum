@@ -88,18 +88,6 @@ class ReportArchive extends SpecialPage {
                         else if($type == RPTP_HQP_ZIP){
                             $name = "HQPReports_{$tst}.zip";
                         }
-                        else if($type == RPTP_LOI_REVIEW){
-                            $report = AbstractReport::newFromToken($tok);
-                            $name = "{$report->person->getReversedName()} LOI Evaluation Report.pdf";
-                        }
-                        else if($type == RPTP_LOI_EVAL_REVIEW){
-                            $report = AbstractReport::newFromToken($tok);
-                            $loi_id = $sto->get_report_project_id();
-                            $loi = LOI::newFromId($loi_id);
-                            $loi_name = $loi->getName();
-                            
-                            $name = "{$loi_name} Evaluation Report.pdf";
-                        }
                         else{
                             $report = AbstractReport::newFromToken($tok);
                             $year = substr($tst, 0, 4);
