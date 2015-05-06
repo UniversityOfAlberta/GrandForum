@@ -1371,28 +1371,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns whether this Person is funded or not for the given year
-     * This is only for the NIs that are in the `grand_funded_cni` table
-     * @param integer $year The year to see if the Person is funded or not
-     * @return boolean Whether or not this Person is funded
-     */
-    function isFundedFor($year){
-        if($this->isRoleDuring(NI, $year."-01-01", $year."-12-31")){
-            // The Person was a NI Now check if they were actually funded
-            $data = DBFunctions::select(array('grand_funded_cni'),
-                                        array('*'),
-                                        array('user_id' => EQ($this->getId()),
-                                              'year' => EQ($year)));
-            if(count($data) > 0){
-                // This Person was funded
-                return true;
-            }
-        }
-        // This Person was not funded
-        return false;
-    }
-    
-    /**
      * Returns this Person's primary discipline from the Survey
      * @return string This Person's primary discipline from the Survey
      */

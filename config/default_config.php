@@ -225,7 +225,6 @@
     $config->setConst("NI",         "NI");
     $config->setConst("LOI",        "LOI Member");
     $config->setConst("PL",         "Project Leader");
-    $config->setConst("COTL",       "Theme co-Leader");
     $config->setConst("TL",         "Theme Leader");
     $config->setConst("RMC",        "RMC");
     $config->setConst("EVALUATOR",  "Evaluator");
@@ -248,7 +247,6 @@
         $config->getConst('LOI')            => "LOI",
         $config->getConst('CHAMP')          => "Champion",
         $config->getConst('PL')             => "Project Leader",
-        $config->getConst('COTL')           => "Co-Theme Leader",
         $config->getConst('TL')             => "Theme Leader",
         $config->getConst('RMC')            => "Research Management Comittee",
         $config->getConst('EVALUATOR')      => "Evaluator",

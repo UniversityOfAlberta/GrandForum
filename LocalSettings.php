@@ -231,21 +231,7 @@ $wgRoles = ($config->hasValue('wgRoles')) ?
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :
-    array(HQP, STUDENT, EXTERNAL, ISAC, NCE, NI, LOI, COPL, PL, PM, TL, RMC, EVALUATOR, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
-
-// Defining Custom Namespace Constants
-define("NS_GRAND_PROJ", 122);
-define("NS_GRAND_PROJ_TALK", 123);
-define("NS_GRAND_NI", 124);
-define("NS_GRAND_NI_TALK", 125);
-define("NS_GRAND_CR", 126);
-define("NS_GRAND_CR_TALK", 127);
-define("NS_STUDENT", 128);
-define("NS_STUDENT_TALK", 129);
-define("NS_STUDENT_COMM", 206);
-define("NS_PAPER", 216);    # David's: 276
-define("NS_BOOK", 218);        # David's: 278
-define("NS_POSTER", 134);
+    array(HQP, STUDENT, EXTERNAL, ISAC, NCE, NI, LOI, PL, TL, RMC, EVALUATOR, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
 
 function unaccentChars($str){
     $normalizeChars = array("'" => '',
