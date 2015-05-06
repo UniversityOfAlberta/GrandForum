@@ -605,6 +605,7 @@ EOF;
             $startRange = date("Y-01-01 00:00:00");
             $endRange = date("Y-12-31 23:59:59");
         }
+        $year = substr($endRange, 0, 4);
         $people = array();
         if(!$this->clear){
             $preds = $this->getPreds();
@@ -637,7 +638,12 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if(($filter == null || $person->isRoleDuring($filter, $startRange, $endRange)) && ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
+            if((($filter == AR && $person->isRoleDuring(NI, $startRange, $endRange) && !$person->isFundedOn($this, $year)) ||
+                ($filter == CI && $person->isRole(NI, $startRange, $endRange) && $person->isFundedOn($this, $year)) ||
+                ($filter == PL && $person->isRole(NI, $startRange, $endRange) && $person->leadershipOf($this)))){
+                $people[$person->getId()] = $person;
+            }
+            else if(($filter == null || $person->isRoleDuring($filter, $startRange, $endRange)) && ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
                 $people[$person->getId()] = $person;
             }
         }
@@ -645,6 +651,7 @@ EOF;
     }
     
     function getAllPeopleOn($filter, $date, $includeManager=false){
+        $year = substr($date, 0, 4);
         $people = array();
         if(!$this->clear){
             $preds = $this->getPreds();
@@ -665,7 +672,12 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if(($filter == null || $person->isRoleOn($filter, $date)) && ($includeManager || !$person->isRoleOn(MANAGER, $date))){
+            if((($filter == AR && $person->isRoleOn(NI, $date) && !$person->isFundedOn($this, $year)) ||
+                ($filter == CI && $person->isRoleOn(NI, $date) && $person->isFundedOn($this, $year)) ||
+                ($filter == PL && $person->isRoleOn(NI, $date) && $person->leadershipOf($this)))){
+                $people[$person->getId()] = $person;
+            }
+            else if(($filter == null || $person->isRoleOn($filter, $date)) && ($includeManager || !$person->isRoleOn(MANAGER, $date))){
                 $people[$person->getId()] = $person;
             }
         }
