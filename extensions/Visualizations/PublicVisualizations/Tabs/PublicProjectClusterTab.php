@@ -45,7 +45,6 @@ class PublicProjectClusterTab extends AbstractTab {
 	            $tFullName = $theme->getName();
 	            $tDesc = $theme->getDescription();
 	            $tleader = $theme->getLeader();
-	            $tcoleader = $theme->getCoLeader();
 	            $color = $theme->getColor();
 	            $turl = $theme->getUrl();
 	            $image = "";
@@ -78,41 +77,26 @@ class PublicProjectClusterTab extends AbstractTab {
 	                $subs = $proj->getSubProjects();
 	                $projChildren = array();
 	                $pleader = $proj->getLeader();
-	                $pcoleader = $proj->getCoLeader();
 	                foreach($subs as $sub){
 	                    $sleader = $sub->getLeader();
-	                    $scoleader = $sub->getCoLeader();
 	                    $slead = array("name" => "",
 	                                   "uni" => "");
-	                    $scolead = array("name" => "",
-	                                     "uni" => "");
 	                    if($sleader != null){
 	                        $slead['name'] = $sleader->getNameForForms();
 	                        $slead['uni'] = $sleader->getUni();
-	                    }
-	                    if($scoleader != null){
-	                        $scolead['name'] = $scoleader->getNameForForms();
-	                        $scolead['uni'] = $scoleader->getUni();
 	                    }
 	                    $projChildren[] = array("name" => $sub->getName(),
 	                                            "fullname" => $sub->getFullName(),
 	                                            "description" => $sub->getDescription(),
 	                                            "color" => $color,
 	                                            "url" => $sub->getUrl(),
-	                                            "leader" => $slead,
-	                                            "coleader" => $scolead);
+	                                            "leader" => $slead);
 	                }
 	                $plead = array("name" => "",
 	                               "uni" => "");
-	                $pcolead = array("name" => "",
-	                                 "uni" => "");
 	                if($pleader != null){
 	                    $plead['name'] = $pleader->getNameForForms();
 	                    $plead['uni'] = $pleader->getUni();
-	                }
-	                if($pcoleader != null){
-	                    $pcolead['name'] = $pcoleader->getNameForForms();
-	                    $pcolead['uni'] = $pcoleader->getUni();
 	                }
 	                $themeChildren[] = array("name" => $proj->getName(),
 	                                         "fullname" => $proj->getFullName(),
@@ -120,21 +104,14 @@ class PublicProjectClusterTab extends AbstractTab {
 	                                         "color" => $color,
 	                                         "url" => $proj->getUrl(),
 	                                         "leader" => $plead,
-	                                         "coleader" => $pcolead,
 	                                         "children" => $projChildren);
 	            }
 	            
 	            $tlead = array("name" => "",
 	                           "uni" => "");
-	            $tcolead = array("name" => "",
-	                             "uni" => "");
 	            if($tleader != null){
 	                $tlead['name'] = $tleader->getNameForForms();
 	                $tlead['uni'] = $tleader->getUni();
-	            }
-	            if($tcoleader != null){
-	                $tcolead['name'] = $tcoleader->getNameForForms();
-	                $tcolead['uni'] = $tcoleader->getUni();
 	            }
 	            if($image != ""){
 	                $image = "{$wgServer}{$wgScriptPath}/extensions/Visualizations/Cluster/images/{$image}";
@@ -146,7 +123,6 @@ class PublicProjectClusterTab extends AbstractTab {
 	                                            "url" => $turl,
 	                                            "text" => "below",
 	                                            "leader" => $tlead,
-	                                            "coleader" => $tcolead,
 	                                            "children" => $themeChildren);
 	            }
 	            else{
@@ -154,7 +130,6 @@ class PublicProjectClusterTab extends AbstractTab {
 	                                            "color" => $color,
 	                                            "url" => $turl,
 	                                            "leader" => $tlead,
-	                                            "coleader" => $tcolead,
 	                                            "children" => $themeChildren);
 	            }
 	        }

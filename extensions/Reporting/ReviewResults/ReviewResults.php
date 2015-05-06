@@ -285,18 +285,7 @@ EOF;
             $lead_email = "adrian_sheppard@gnwc.ca";
         }
 
-        $colead = $loi->getCoLeadEmail();    
-        if(!empty($colead['email'])){
-            $colead_email = $colead['email'];
-        }
-        else{
-            $colead_email = "";
-        }
-
         $to = $lead_email;
-        if(!empty($colead_email)){
-            $to .= ", ".$colead_email;
-        }
 
         //$to = "dgolovan@gmail.com, adrian_sheppard@gnwc.ca";  
         $subject = "GRAND NCE - {$loi_name} Feedback and Next Steps";
@@ -372,8 +361,7 @@ EOF;
             $subject = "GRAND NCE - RMC Feedback 2014 - Projects";
             $ni = Project::newFromId($ni_id);
             $leaders = $ni->getLeaders();
-            $coleaders = $ni->getCoLeaders();
-            $recipients = array_merge($leaders, $coleaders);
+            $recipients = $leaders;
         }
         $ni_name = $ni->getName();
         
@@ -594,7 +582,6 @@ EOF;
             $ni = Project::newFromId($ni_id);
             $name = $ni->getName();
             $leaders = $ni->getLeaders();
-            $coleaders = $ni->getCoLeaders();
         }
         $curr_year = REPORTING_YEAR;
         $boilerplate = "";
@@ -669,16 +656,11 @@ EOF;
             // Project Specific HTML variables
             $title = "GRAND NCE - Research Management Committee - Phase2 Project Review 2014 - Feedback";
             $leader_names = array();
-            $coleader_names = array();
             
             foreach($leaders as $leader){
                 $leader_names[] = $leader->getNameForForms()." ({$leader->getUni()})";
             }
-            foreach($coleaders as $leader){
-                $coleader_names[] = $leader->getNameForForms()." ({$leader->getUni()})";
-            }
             $lead_names = implode("<br />", $leader_names);
-            $colead_names = implode("<br />", $coleader_names);
             $person_html = <<<EOF
             <tr>
                 <td align='right'><strong>Project Name:</strong></td>
@@ -687,10 +669,6 @@ EOF;
             <tr>
                 <td align='right'><strong>Leader(s):</strong></td>
                 <td>{$lead_names}</td>
-            </tr>
-            <tr>
-                <td align='right'><strong>Co-Leader(s):</strong></td>
-                <td>{$colead_names}</td>
             </tr>
 EOF;
             $allocated_html = <<<EOF
@@ -1067,13 +1045,6 @@ EOF;
                     $lead_email = $lead['name'];
                 }
 
-                $colead = $loi->getCoLeadEmail();    
-                if(!empty($colead['email'])){
-                    $colead_email = "<a href='mailto:".$colead['email']."'>".$colead['name']."</a>";
-                }
-                else{
-                    $colead_email = $colead['name'];
-                }
                 $email_sent = "Email Not Sent";
                 $email_sent_bg = "background-color: red;";
                 if(isset($fetched[$loi_id])){
@@ -1098,7 +1069,6 @@ EOF;
                 <tr>
                 <td>{$loi_name}</td>
                 <td>{$lead_email}</td>
-                <td>{$colead_email}</td>
                 <td align="center">{$downloadButton}</td>
                 <td align="center"><span style="padding:5px; {$email_sent_bg}">{$email_sent}</span></td>
                 </tr>

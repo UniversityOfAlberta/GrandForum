@@ -18,7 +18,6 @@ class ReportItemCallback {
             "project_description" => "getProjectDescription",
             "project_theme" => "getProjectTheme",
             "project_leaders" => "getProjectLeaders",
-            "project_coleaders" => "getProjectCoLeaders",
             "project_problem" => "getProjectProblem",
             "project_solution" => "getProjectSolution",
             "project_nis" => "getProjectNIs",
@@ -222,21 +221,6 @@ class ReportItemCallback {
             $leads[] = "N/A";
         }
         return implode(", ", $leads);
-    }
-    
-    function getProjectCoLeaders(){
-        $coleads = array();
-        if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $coleaders = $project->getCoLeaders();
-            foreach($coleaders as $colead){
-                $coleads[] = "<a target='_blank' href='{$colead->getUrl()}'>{$colead->getNameForForms()}</a>";
-            }
-        }
-        if(count($coleads) == 0){
-            $coleads[] = "N/A";
-        }
-        return implode(", ", $coleads);
     }
     
     function getProjectProblem(){

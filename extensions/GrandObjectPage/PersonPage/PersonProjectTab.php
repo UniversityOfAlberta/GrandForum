@@ -47,12 +47,6 @@ class PersonProjectTab extends AbstractTab {
 				            if($person->leadershipOf($subproject, 'leader')){
 				                $lead = " (lead)";
 				            }
-				            else if ($person->leadershipOf($subproject, 'co-leader')){
-				                $lead = " (co-lead)";
-				            }
-				            else if($person->leadershipOf($subproject, 'manager')){
-				                $lead = " (manager)";
-				            }
 				            $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>{$lead}";
 				        }
 				    }
@@ -63,12 +57,6 @@ class PersonProjectTab extends AbstractTab {
 				    $lead = "";
 		            if($person->leadershipOf($project, 'leader')){
 		                $lead = " (lead)";
-		            }
-		            else if ($person->leadershipOf($project, 'co-leader')){
-		                $lead = " (co-lead)";
-		            }
-		            else if($person->leadershipOf($project, 'manager')){
-		                $lead = " (manager)";
 		            }
 				    $projs[] = "<li><a href='{$project->getUrl()}'>{$project->getName()}</a>{$lead} $subprojects</li>";
 				}
@@ -100,7 +88,6 @@ class PersonProjectTab extends AbstractTab {
     function showThemes($person, $visibility){
         global $wgOut, $wgScriptPath, $wgServer, $config;
         $leadThemes = $person->getLeadThemes();
-        $coLeadThemes = $person->getCoLeadThemes();
         $projects = $person->getProjects();
         $themes = array();
         foreach($projects as $project){
@@ -113,18 +100,12 @@ class PersonProjectTab extends AbstractTab {
         foreach($leadThemes as $theme){
             $themes[$theme->getAcronym()] = $theme;
         }
-        foreach($coLeadThemes as $theme){
-            $themes[$theme->getAcronym()] = $theme;
-        }
         if(count($themes) > 0){
             $themeNames = array();
             foreach($themes as $theme){
                 $lead = "";
                 if(isset($leadThemes[$theme->getId()])){
                     $lead = " (lead)";
-                }
-                else if(isset($coLeadThemes[$theme->getId()])){
-                    $lead = " (co-lead)";
                 }
                 $themeNames[] = "<li><a href='{$theme->getUrl()}'>{$theme->getAcronym()}</a>{$lead}</li>";
             }

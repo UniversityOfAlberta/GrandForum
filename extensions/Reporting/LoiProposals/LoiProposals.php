@@ -345,7 +345,6 @@ EOF;
                     <th>Type</th>
                     <th>Description</th>
                     <th>Lead</th>
-                    <th>Co-Lead</th>
                     <th>Champion</th>
                     <th>Challenges</th>
                     <!--<th>Secondary Challenge</th>-->
@@ -394,45 +393,9 @@ EOF;
 				
 			}
 
-			if($revision == 1){
-				//Co-lead name
-				$colead_arr = explode("<br />", $row['colead'], 2);
-				//echo $name . ": ". $row['colead']."<br>";
-				$colead_person = Person::newFromNameLike($colead_arr[0]);
-
-				if($colead_person->getId()){
-					$colead = "<a href='".$colead_person->getUrl()."'>".$colead_person->getNameForForms() ."</a>";
-				}
-				else{
-					$colead = $colead_arr[0];
-				}
-				if(isset($colead_arr[1])){
-					$colead .= "<br />".$colead_arr[1];
-				}
-			}
-			else{
-				$colead_arr = explode("<br />", $row['colead'], 2);
-				$colead = "";
-				foreach($colead_arr as $p){
-					$colead_person = Person::newFromNameLike($p);
-
-					if($colead_person->getId()){
-						$colead .= "<a href='".$colead_person->getUrl()."'>".$colead_person->getNameForForms() ."</a>";
-						if($colead_person->getUni()){
-							$colead .= "<br />".$colead_person->getUni();
-						}
-					}
-					else{
-						$colead .= $p;
-					}
-					$colead .= "<br /><br />";	
-				}
-			}
-
 			//Champion name
 			//$champion = $row['champion'];
 			$champion_arr = explode("<br />", $row['champion'], 2);
-			//echo $name . ": ". $row['colead']."<br>";
 			$champion_person = Person::newFromNameLike($champion_arr[0]);
 
 			if($champion_person->getId()){
@@ -478,7 +441,6 @@ EOF;
 				<td>{$type}</td>
 				<td>{$description}</td>
 				<td>{$lead}</td>
-				<td>{$colead}</td>
 				<td>{$champion}</td>
 				<td>
 				<p>
@@ -735,7 +697,6 @@ EOF;
                     <th>Type</th>
                     <th>Description</th>
                     <th>Lead</th>
-                    <th>Co-Lead</th>
                     <!--<th>Champion</th>-->
                     <th>Challenges</th>
                 </tr>
@@ -782,45 +743,9 @@ EOF;
 				
 			}
 
-			if($revision == 1){
-				//Co-lead name
-				$colead_arr = explode("<br />", $row['colead'], 2);
-				//echo $name . ": ". $row['colead']."<br>";
-				$colead_person = Person::newFromNameLike($colead_arr[0]);
-
-				if($colead_person->getId()){
-					$colead = "<a href='".$colead_person->getUrl()."'>".$colead_person->getNameForForms() ."</a>";
-				}
-				else{
-					$colead = $colead_arr[0];
-				}
-				if(isset($colead_arr[1])){
-					$colead .= "<br />".$colead_arr[1];
-				}
-			}
-			else{
-				$colead_arr = explode("<br />", $row['colead'], 2);
-				$colead = "";
-				foreach($colead_arr as $p){
-					$colead_person = Person::newFromNameLike($p);
-
-					if($colead_person->getId()){
-						$colead .= "<a href='".$colead_person->getUrl()."'>".$colead_person->getNameForForms() ."</a>";
-						if($colead_person->getUni()){
-							$colead .= "<br />".$colead_person->getUni();
-						}
-					}
-					else{
-						$colead .= $p;
-					}
-					$colead .= "<br /><br />";	
-				}
-			}
-
 			//Champion name
 			//$champion = $row['champion'];
 			$champion_arr = explode("<br />", $row['champion'], 2);
-			//echo $name . ": ". $row['colead']."<br>";
 			$champion_person = Person::newFromNameLike($champion_arr[0]);
 
 			if($champion_person->getId()){
@@ -869,7 +794,6 @@ EOF;
 				<td>{$type}</td>
 				<td>{$description}</td>
 				<td>{$lead}</td>
-				<td>{$colead}</td>
 				<!--td>{$champion}</td-->
 				<td>
 				<p>

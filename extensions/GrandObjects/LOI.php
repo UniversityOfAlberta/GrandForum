@@ -16,7 +16,6 @@ class LOI extends BackboneModel {
 	var $related_loi;
 	var $description;
 	var $lead;
-	var $colead;
 	var $champion;
 	var $primary_challenge;
 	var $secondary_challenge;
@@ -66,7 +65,6 @@ class LOI extends BackboneModel {
 			$this->related_loi = $data[0]['related_loi'];
 			$this->description = $data[0]['description'];
 			$this->lead = $data[0]['lead'];
-			$this->colead = $data[0]['colead'];
 			$this->champion = $data[0]['champion'];
 			$this->primary_challenge = $data[0]['primary_challenge'];
 			$this->secondary_challenge = $data[0]['secondary_challenge'];
@@ -177,42 +175,6 @@ class LOI extends BackboneModel {
 		//Lead name
 		$lead = array();
 		$lead_arr = explode("<br />", $this->lead, 2);
-		$lead_person = Person::newFromNameLike($lead_arr[0]);
-		if($lead_person->getId()){
-			$lead['name'] = $lead_person->getNameForForms();
-			$lead['email'] = $lead_person->getEmail();
-		}
-		else{
-			$lead['name'] = $lead_arr[0];
-			$lead['email'] = "";
-		}
-		
-
-		return $lead;
-	}
-
-	function getCoLead(){
-		$colead = "";
-		$colead_arr = explode("<br />", $this->colead, 2);
-		$colead_person = Person::newFromNameLike($colead_arr[0]);
-
-		if($colead_person->getId()){
-			$colead = "<a href='".$colead_person->getUrl()."'>".$colead_person->getNameForForms() ."</a>";
-		}
-		else{
-			$colead = $colead_arr[0];
-		}
-		if(isset($colead_arr[1])){
-			$colead .= "<br />".$colead_arr[1];
-		}
-
-		return $colead;
-	}
-
-	function getCoLeadEmail(){
-		//Lead name
-		$lead = array();
-		$lead_arr = explode("<br />", $this->colead, 2);
 		$lead_person = Person::newFromNameLike($lead_arr[0]);
 		if($lead_person->getId()){
 			$lead['name'] = $lead_person->getNameForForms();

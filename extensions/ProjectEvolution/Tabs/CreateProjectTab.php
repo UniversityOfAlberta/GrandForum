@@ -111,10 +111,6 @@ EOF;
         $plRow->append(new Label("{$pre}_pl_label", "Project Leader", "The leader of this Project.  The person should be a valid person on this project.", VALIDATE_NOTHING));
         $plRow->append(new ComboBox("{$pre}_pl", "Project Leader", "", $names, VALIDATE_NI));
         
-        $coplRow = new FormTableRow("{$pre}_copl_row");
-        $coplRow->append(new Label("{$pre}_copl_label", "Co-Project Leader", "The co-leader of this Project.  The person should be a valid person on this project.", VALIDATE_NOTHING));
-        $coplRow->append(new ComboBox("{$pre}_copl", "Co-Project Leader", "", $names, VALIDATE_NI));
-        
         $names = array("");
         $people = Person::getAllPeople(CHAMP);
         foreach($people as $person){
@@ -179,7 +175,6 @@ EOF;
         $table->append($phaseRow);
         $table->append($effectiveRow);
         $table->append($plRow);
-        $table->append($coplRow);
         $table->append($champRow);
         $table->append($descRow);
         $table->append($probRow);
@@ -213,7 +208,6 @@ EOF;
             $form->getElementById("new_phase")->setPOST("phase");
             $form->getElementById("new_effective")->setPOST("effective_date");
             $form->getElementById("new_pl")->setPOST("pl");
-            $form->getElementById("new_copl")->setPOST("copl");
             $form->getElementById("new_description")->setPOST("description");
             $form->getElementById("new_challenge")->setPOST("challenge");
             $form->getElementById("new_parent_id")->setPOST("parent_id");
@@ -228,12 +222,6 @@ EOF;
                     $_POST['co_lead'] = "False";
                     $_POST['role'] = $_POST['acronym'];
                     $_POST['user'] = $_POST['pl'];
-                    APIRequest::doAction('AddProjectLeader', true);
-                }
-                if($_POST['copl'] != ""){
-                    $_POST['co_lead'] = "True";
-                    $_POST['role'] = $_POST['acronym'];
-                    $_POST['user'] = $_POST['copl'];
                     APIRequest::doAction('AddProjectLeader', true);
                 }
                 // Adding New Champions

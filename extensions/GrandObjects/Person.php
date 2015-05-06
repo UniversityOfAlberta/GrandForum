@@ -318,24 +318,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Caches the resultset of the co leaders
-     */
-    static function generateCoLeaderCache(){
-        if(count(self::$coLeaderCache) == 0){
-            $sql = "SELECT *
-                    FROM grand_project_leaders l, grand_project p
-                    WHERE l.type = 'co-leader'
-                    AND p.id = l.project_id
-                    AND (l.end_date = '0000-00-00 00:00:00'
-                         OR l.end_date > CURRENT_TIMESTAMP)";
-            $data = DBFunctions::execSQL($sql);
-            foreach($data as $row){
-                self::$coLeaderCache[$row['user_id']][] = $row;
-            }
-        }
-    }
-    
-    /**
      * Caches the resultset of the leaders
      */
     static function generateLeaderCache(){
@@ -921,12 +903,12 @@ class Person extends BackboneModel {
     }
     
     function isThemeLeader(){
-        $themes = array_merge($this->getLeadThemes(), $this->getCoLeadThemes());
+        $themes = $this->getLeadThemes();
         return (count($themes) > 0);
     }
     
     function isThemeLeaderOf($project){
-        $themes = array_merge($this->getLeadThemes(), $this->getCoLeadThemes());
+        $themes = $this->getLeadThemes();
         $challenge = $project->getChallenge();
         foreach($themes as $theme){
             if($challenge->getId() == $theme->getId()){
@@ -3197,36 +3179,13 @@ class Person extends BackboneModel {
         return $themes;
     }
     
-    function getCoLeadThemes($history=false){
-        if(!$history && isset($this->themesCache['currentCoLead'])){
-            return $this->themesCache['currentCoLead'];
-        }
-        $sql = "SELECT *
-                FROM grand_theme_leaders
-                WHERE user_id = '{$this->id}'
-                AND co_lead = 'True'\n";
-        if(!$history){
-            $sql .= "AND (end_date = '0000-00-00 00:00:00'
-                          OR end_date > CURRENT_TIMESTAMP)";
-        }
-        $data = DBFunctions::execSQL($sql);
-        $themes = array();
-        foreach($data as $row){
-            $themes[$row['theme']] = Theme::newFromId($row['theme']);
-        }
-        if(!$history){
-            $this->themesCache['currentCoLead'] = &$themes;
-        }
-        return $themes;
-    }
-    
     /**
      * Returns an array of Projects that this Person is a Theme Leader of
      * @return array The Projects that this Person is a Theme Leader of
      */
     function getThemeProjects(){
         $projects = array();
-        $themes = array_merge($this->getLeadThemes(), $this->getCoLeadThemes());
+        $themes = $this->getLeadThemes();
         if(count($themes) > 0){
             $themeIds = array();
             foreach($themes as $theme){

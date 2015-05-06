@@ -37,28 +37,6 @@ class LOIMaterialsReportItem extends StaticReportItem {
             }
         }
 
-        if($revision == 1){
-            $colead = str_replace('<br />', ', ', $loi->getCoLead());
-        }
-        else{
-            $colead_arr = explode("<br />", $loi->colead, 2);
-            $colead = "";
-            foreach($colead_arr as $p){
-                $colead_person = Person::newFromNameLike($p);
-
-                if($colead_person->getId()){
-                    $colead .= "<a href='".$colead_person->getUrl()."'>".$colead_person->getNameForForms() ."</a>";
-                    if($colead_person->getUni()){
-                        $colead .= "<br />".$colead_person->getUni();
-                    }
-                }
-                else{
-                    $colead .= $p;
-                }
-                $colead .= "<br />";  
-            }
-        }
-
         $champ = str_replace('<br />', ', ', $loi->getChampion());
         $primary_challenge = str_replace('<br />', ', ', $loi->getPrimaryChallenge());
         $secondary_challenge = str_replace('<br />', ', ', $loi->getSecondaryChallenge());
@@ -81,7 +59,6 @@ EOF;
 
         $item .=<<<EOF
             <tr><th>Lead:</th><td>{$lead}</td></tr>
-            <tr><th valign='top'>Co-Lead:</th><td>{$colead}</td></tr>
             <tr><th>Champion:</th><td>{$champ}</td></tr>
             <tr><th>LOI PDF:</th><td>{$loi_pdf}</td></tr>
 EOF;
