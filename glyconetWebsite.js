@@ -32,7 +32,7 @@ function initSideBar(){
             jQuery(".gdl-tabs").hide();
             jQuery(".gdl-tabs-content").hide();
             jQuery("#universities").show();
-            initTab("PNI,CNI,RMC,BOD,Staff,Manager/" + university.name, "#universities", "", false);
+            initTab("NI,RMC,BOD,Staff,Manager/" + university.name, "#universities", "", false);
             jQuery(".back_button").show();
         });
         jQuery(".page-wrapper").css('min-height', jQuery(".right-sidebar-wrapper").height());

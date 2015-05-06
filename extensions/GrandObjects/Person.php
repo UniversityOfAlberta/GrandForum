@@ -14,6 +14,7 @@ class Person extends BackboneModel {
     static $authorshipCache = array();
     static $namesCache = array();
     static $idsCache = array();
+    static $allocationsCache = array();
     static $disciplineMap = array();
 
     var $user = null;
@@ -884,9 +885,27 @@ class Person extends BackboneModel {
         return false;
     }
     
+    /*
+     * Returns whether or not this Person has been funded on the given Project
+     * @param Project $project The Project that the Person has been funded
+     * @param string $year The year in which the Person has been funded
+     * @return boolean Whether or not this Person has been funded
+     */
+    function isFundedOn($project, $year){
+        if(count(self::$allocationsCache) == 0){
+            $data = DBFunctions::select(array('grand_allocations'),
+                                        array('user_id', 'project_id', 'year', 'amount'));
+            foreach($data as $row){
+                self::$allocationsCache[$row['year']][$row['user_id']][$row['project_id']] = $row['amount'];
+            }
+        }
+        return (isset(self::$allocationsCache[$year][$this->getId()][$project->getId()]) &&
+                self::$allocationsCache[$year][$this->getId()][$project->getId()] > 0);   
+    }
+    
     /**
      * Returns the amount of time that this Person has been on the specified project
-     * @param Project $project The Project that the person has been on
+     * @param Project $project The Project that the Person has been on
      * @param string $format The format for the time (Defaults to number of days)
      * @param string $now What time to compare the join date to (Defaults to now)
      * @return string The time spent on the specified project

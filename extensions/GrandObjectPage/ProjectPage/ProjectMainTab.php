@@ -378,7 +378,8 @@ EOF;
         
         $leaders = $project->getLeaders(true); //only get id's
         
-        $nis = $project->getAllPeople(NI);
+        $cis = $project->getAllPeople(CI);
+        $ars = $project->getAllPeople(AR);
         $hqps = $project->getAllPeople(HQP);
         
         $names = array("");
@@ -392,43 +393,46 @@ EOF;
             if($project->getLeader() != null && !isset($names[$project->getLeader()->getName()])){
                 $names[$project->getLeader()->getName()] = $project->getLeader()->getNameForForms();
             }
-            
             asort($names);
         }
 
         if(!$edit){
             $this->html .= "<table width='100%'><tr><td valign='top' width='50%'>";
-            if($edit || !$edit && count($nis) > 0){
-                $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($config->getValue('roleDefs', NI))."</span></h2>";
+            if(count($cis) > 0){
+                $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($config->getValue('roleDefs', CI))."</span></h2>";
             }
             $this->html .= "<ul>";
-            foreach($nis as $ni){
-                if(!empty($leaders) && in_array($ni->getId(), $leaders)){
+            foreach($cis as $ci){
+                if(!empty($leaders) && in_array($ci->getId(), $leaders)){
                     continue;
                 }
-                $target = "";
-                if($edit){
-                    $target = " target='_blank'";
+                $this->html .= "<li><a href='{$ci->getUrl()}'>{$ci->getReversedName()}</a></li>";
+            }
+            $this->html .= "</ul>";
+            if(count($ars) > 0){
+                $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($config->getValue('roleDefs', AR))."</span></h2>";
+            }
+            $this->html .= "<ul>";
+            foreach($ars as $ar){
+                if(!empty($leaders) && in_array($ar->getId(), $leaders)){
+                    continue;
                 }
-                $this->html .= "<li><a href='{$ni->getUrl()}'$target>{$ni->getReversedName()}</a></li>";
+                $this->html .= "<li><a href='{$ar->getUrl()}'>{$ar->getReversedName()}</a></li>";
             }
             $this->html .= "</ul></td>";
+            $this->html .= "<td width='50%' valign='top' colspan='2'>";
             if($wgUser->isLoggedIn()){
-                $this->html .= "<td width='50%' valign='top'>";
-                if($edit || !$edit && count($hqps) > 0){
+                if(count($hqps) > 0){
                     $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($config->getValue('roleDefs', HQP))."</span></h2>";
                 }
                 $this->html .= "<ul>";
                 foreach($hqps as $hqp){
-                    $target = ""; 
-                    if($edit){
-                        $target = " target='_blank'";
-                    }
-                    $this->html .= "<li><a href='{$hqp->getUrl()}'$target>{$hqp->getReversedName()}</a></li>";
+                    $this->html .= "<li><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></li>";
                 }
-                $this->html .= "</ul></td>";
+                $this->html .= "</ul>";
             }
-            $this->html .= "</tr></table>";
+            $this->html .= "</td></tr><tr><td valign='top' width='50%'>";
+            $this->html .= "</td></tr></table>";
         }
     }
     

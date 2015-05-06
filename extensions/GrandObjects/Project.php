@@ -556,6 +556,7 @@ EOF;
     // If $filter is included, only users of that type will be selected
     function getAllPeople($filter = null){
         $currentDate = date('Y-m-d H:i:s');
+        $year = date('Y');
         $created = $this->getCreated();
         $people = array();
         if(!$this->clear){
@@ -584,7 +585,12 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if(($filter == null || ($currentDate >= $created && $person->isRole($filter)) || $person->isRoleDuring($filter, $created, "9999")) && !$person->isRole(MANAGER)){
+            if((($filter == AR && $person->isRole(NI) && !$person->isFundedOn($this, $year)) ||
+                ($filter == CI && $person->isRole(NI) && $person->isFundedOn($this, $year)) ||
+                ($filter == PL && $person->isRole(NI) && $person->leadershipOf($this)))){
+                $people[$person->getId()] = $person;
+            }
+            else if(($filter == null || ($currentDate >= $created && $person->isRole($filter)) || $person->isRoleDuring($filter, $created, "9999")) && !$person->isRole(MANAGER)){
                 $people[$person->getId()] = $person;
             }
         }

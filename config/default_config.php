@@ -222,6 +222,8 @@
     $config->setConst("ISAC",       "ISAC");
     $config->setConst("NCE",        "NCE Rep");
     $config->setConst("NI",         "NI");
+    $config->setConst("AR",         "AR");
+    $config->setConst("CI",         "CI");
     $config->setConst("PL",         "Project Leader");
     $config->setConst("TL",         "Theme Leader");
     $config->setConst("RMC",        "RMC");
@@ -242,6 +244,8 @@
         $config->getConst('ISAC')           => "ISAC",
         $config->getConst('NCE')            => "NCE Rep",
         $config->getConst('NI')             => "Network Investigator",
+        $config->getConst('AR')             => "Affiliated Researcher",
+        $config->getConst('CI')             => "Co-Investigator",
         $config->getConst('CHAMP')          => "Champion",
         $config->getConst('PL')             => "Project Leader",
         $config->getConst('TL')             => "Theme Leader",
