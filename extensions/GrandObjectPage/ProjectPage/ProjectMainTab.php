@@ -338,15 +338,13 @@ EOF;
     
     function showLeaders(){
         global $wgUser, $wgServer, $wgScriptPath, $config;
-        
-        $roleDefs = $config->getValue('roleDefs');
         $me = Person::newFromWgUser();
         
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
         
         $leaders = $project->getLeaders(true); //only get id's
-        $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($roleDefs[PL])."</span></h2>";
+        $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($config->getValue('roleDefs', PL))."</span></h2>";
         $this->html .= "<ul>";
         if(!empty($leaders)){
             foreach($leaders as $leader_id){
@@ -373,7 +371,6 @@ EOF;
 
     function showPeople(){
         global $wgUser, $wgServer, $wgScriptPath, $config;
-        $roleDefs = $config->getValue('roleDefs');
         $me = Person::newFromWgUser();
         
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
@@ -402,7 +399,7 @@ EOF;
         if(!$edit){
             $this->html .= "<table width='100%'><tr><td valign='top' width='50%'>";
             if($edit || !$edit && count($nis) > 0){
-                $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($roleDefs[NI])."</span></h2>";
+                $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($config->getValue('roleDefs', NI))."</span></h2>";
             }
             $this->html .= "<ul>";
             foreach($nis as $ni){
@@ -419,7 +416,7 @@ EOF;
             if($wgUser->isLoggedIn()){
                 $this->html .= "<td width='50%' valign='top'>";
                 if($edit || !$edit && count($hqps) > 0){
-                    $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($roleDefs[HQP])."</span></h2>";
+                    $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($config->getValue('roleDefs', HQP))."</span></h2>";
                 }
                 $this->html .= "<ul>";
                 foreach($hqps as $hqp){

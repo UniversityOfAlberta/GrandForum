@@ -173,7 +173,6 @@ class IndexTable {
 	function generateTable($out, $parseroutput){
 		global $wgTitle, $wgOut, $wgUser, $config;
 		$me = Person::newFromId($wgUser->getId());
-		$roleDefs = $config->getValue('roleDefs');
 		if($wgTitle != null && $wgTitle->getNsText() == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){
 		    $result = true;
 		    $this->userCanExecute($wgTitle, $wgUser, "read", $result);
@@ -197,7 +196,7 @@ class IndexTable {
 				    $this->generatePersonTable(HQP);
 				    break;
 			    case 'ALL '.NI:
-			        $wgOut->setPageTitle($roleDefs[NI]);
+			        $wgOut->setPageTitle($config->getValue('roleDefs', NI));
 				    $this->generatePersonTable(NI, 1);
 				    break;
 				case 'ALL '.ISAC:
