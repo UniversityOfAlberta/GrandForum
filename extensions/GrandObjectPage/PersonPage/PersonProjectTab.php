@@ -43,22 +43,16 @@ class PersonProjectTab extends AbstractTab {
 				    $subprojs = array();
 				    foreach($project->getSubProjects() as $subproject){
 				        if($person->isMemberOf($subproject)){
-				            $lead = "";
-				            if($person->leadershipOf($subproject, 'leader')){
-				                $lead = " (lead)";
-				            }
-				            $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>{$lead}";
+				            $role = $person->getRoleOn($subproject);
+				            $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a> ({$role})";
 				        }
 				    }
 				    $subprojects = "";
 				    if(count($subprojs) > 0){
 				        $subprojects = "<ul><li>".implode("</li><li>", $subprojs)."</li></ul>";
 				    }
-				    $lead = "";
-		            if($person->leadershipOf($project, 'leader')){
-		                $lead = " (lead)";
-		            }
-				    $projs[] = "<li><a href='{$project->getUrl()}'>{$project->getName()}</a>{$lead} $subprojects</li>";
+				    $role = $person->getRoleOn($project);
+				    $projs[] = "<li><a href='{$project->getUrl()}'>{$project->getName()}</a> ({$role}) $subprojects</li>";
 				}
 			}
 			if(count($projs) > 0){

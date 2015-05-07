@@ -1726,6 +1726,30 @@ class Person extends BackboneModel {
         return $this->roles;
     }
     
+    /*
+     * Returns the role that this Person is on the given Project
+     * @param Project $project The Project to check the roles of
+     * @param integer $year The year to check
+     */
+    function getRoleOn($project, $year=null){
+        if($year == null){
+            $year = date('Y');
+        }
+        if($this->isRole(NI) && !$this->isFundedOn($project, $year) && !$this->leadershipOf($project)){
+            return AR;
+        }
+        else if($this->isRole(NI) && $this->isFundedOn($project, $year) && !$this->leadershipOf($project)){
+            return CI;
+        }
+        else if($this->isRole(NI) && $project->getType() == 'Administrative' && $this->leadershipOf($project)){
+            return PL;
+        }
+        else if($this->isRole(NI) && $this->leadershipOf($project)){
+            return PL;
+        }
+        return NI;
+    }
+    
     function getLeadershipRoles(){
         $roles = array();
         if($this->isProjectLeader()){
