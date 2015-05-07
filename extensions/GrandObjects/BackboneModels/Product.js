@@ -85,23 +85,25 @@ Product = Backbone.Model.extend({
 
     urlRoot: 'index.php?action=api.product',
     
-    defaults: {
-        id : null,
-        title: "",
-        category: "",
-        type: "",
-        description: "",
-        date: Date.format(new Date(), 'yyyy-MM-dd'),
-        url: "",
-        status: "",
-        data: {},
-        authors: new Array(),
-        projects: new Array(),
-        lastModified: "",
-        deleted: "",
-        access_id: 0,
-        created_by: 0,
-        access: "Forum"
+    defaults: function() {
+        return {
+            id : null,
+            title: "",
+            category: "",
+            type: "",
+            description: "",
+            date: Date.format(new Date(), 'yyyy-MM-dd'),
+            url: "",
+            status: "",
+            data: {},
+            authors: new Array(),
+            projects: new Array(),
+            lastModified: "",
+            deleted: "",
+            access_id: 0,
+            created_by: 0,
+            access: "Forum"
+        };
     },
 });
 
