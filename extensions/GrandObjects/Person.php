@@ -1741,32 +1741,6 @@ class Person extends BackboneModel {
         return NI;
     }
     
-    function getLeadershipRoles(){
-        $roles = array();
-        if($this->isProjectLeader()){
-            $roles[] = new Role(array(0 => array('id' => -1,
-                                                       'user_id' => $this->id,
-                                                       'role' => "PL",
-                                                       'start_date' => '0000-00-00 00:00:00',
-                                                       'end_date' => '0000-00-00 00:00:00',
-                                                       'comment' => '')));
-        }
-        return $roles;
-    }
-    
-    function getLeadershipRolesDuring($startDate=false, $endDate=false){
-        $roles = array();
-        if($this->isProjectLeaderDuring($startDate, $endDate)){
-            $roles[] = new Role(array(0 => array('id' => -1,
-                                                       'user_id' => $this->id,
-                                                       'role' => "PL",
-                                                       'start_date' => '0000-00-00 00:00:00',
-                                                       'end_date' => '0000-00-00 00:00:00',
-                                                       'comment' => '')));
-        }
-        return $roles;
-    }
-    
     // Returns the first role that this Person had, null if this Person has never had any Roles
     function getFirstRole(){
         $roles = $this->getRoles(true);
