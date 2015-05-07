@@ -145,7 +145,12 @@ class CreatePDF extends SpecialPage {
 	            $projects = Project::getAllProjects();
 	            $command = "zip -9 /tmp/ProjectReports.zip";
 	            foreach($projects as $project){
-	                $leader = $project->getLeader();
+	                $leaders = $project->getLeaders();
+	                $leader = null;
+	                if(count($leaders) > 0){
+	                    $leaders = array_values($leaders);
+	                    $leader = $leaders[0];
+	                }
 	                if($leader == null){
 	                    $leader = Person::newFromName("Admin");
 	                }

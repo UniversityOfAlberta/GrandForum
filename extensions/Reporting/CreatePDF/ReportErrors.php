@@ -311,7 +311,12 @@ class ReportErrors extends SpecialPage {
 	        }
 	        $alreadyDone[$pName] = true;
 	        $project = Project::newFromName($pName);
-	        $leader = $project->getLeader();
+	        $leaders = $project->getLeaders();
+	        $leader = null;
+            if(count($leaders) > 0){
+                $leaders = array_values($leaders);
+                $leader = $leaders[0];
+            }
 	        if($leader != null){
 	            $report = new DummyReport("ProjectReportPDF", $leader, $project);
 	            ReportErrors::tableRow($report, $project->getId(), $project->getName(), $project->getName());

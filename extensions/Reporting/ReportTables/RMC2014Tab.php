@@ -2126,14 +2126,17 @@ EOF;
                 $th = new Themes($project);
                 $pn = $project->getName();
                 $data = $th->get_metric();
-                $p_leader = $project->getLeader();
-                $leader_name = ($p_leader instanceof Person)? $p_leader->getNameForForms() : "";
+                $leader_names = array();
+                $p_leaders = $project->getLeaders();
+                foreach($p_leaders as $leader){
+                    $leader_names[] = $leader->getNameForForms();
+                }
                 
                 // Render project/leader pair.
                 $oldv = ArrayUtil::get_array($data, 'values');
                 $reps = ArrayUtil::get_array($data, 'data');
                 
-                $chunk .= "\n<tr><td align='center'>{$pn}<br /><small>{$leader_name}</small></td>";
+                $chunk .= "\n<tr><td align='center'>{$pn}<br /><small>".implode(", ", $leader_names)."</small></td>";
                 foreach (array_keys($themes) as $ind) {
                     $chunk .= "<td align='center'><b>" . $project->getTheme($ind+1) .
                         '</b> (' . ArrayUtil::get_string($oldv, $ind) . ')</td>';
