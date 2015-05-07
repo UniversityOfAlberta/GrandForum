@@ -89,8 +89,8 @@ class ThemeInfoAPI extends API{
             $json['description'] = $theme->getDescription();
             $json['leaders'] = array();
             $json['projects'] = array();
-            $leader = $theme->getLeader();
-            if($leader != null){
+            $leaders = $theme->getLeaders();
+            foreach($leaders as $leader){
                 $json['leaders'][] = array('name' => $leader->getNameForForms(),
                                            'university' => $leader->getUni(),
                                            'url' => $leader->getUrl());
@@ -117,8 +117,8 @@ class ThemeInfoAPI extends API{
                 $data['fullName'] = $theme->getName();
                 $data['leaders'] = array();
                 $data['projects'] = array();
-                $leader = $theme->getLeader();
-                if($leader != null){
+                $leaders = $theme->getLeaders();
+                foreach($leaders as $leader){
                     $data['leaders'][] = array('name' => $leader->getNameForForms(),
                                                'university' => $leader->getUni(),
                                                'url' => $leader->getUrl());

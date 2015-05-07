@@ -585,8 +585,8 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if((($filter == AR && $person->isRole(NI) && !$person->isFundedOn($this, $year)) ||
-                ($filter == CI && $person->isRole(NI) && $person->isFundedOn($this, $year)) ||
+            if((($filter == AR && $person->isRole(NI) && !$person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
+                ($filter == CI && $person->isRole(NI) && $person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
                 ($filter == PL && $person->isRole(NI) && $person->leadershipOf($this)))){
                 $people[$person->getId()] = $person;
             }
@@ -638,9 +638,9 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if((($filter == AR && $person->isRoleDuring(NI, $startRange, $endRange) && !$person->isFundedOn($this, $year)) ||
-                ($filter == CI && $person->isRole(NI, $startRange, $endRange) && $person->isFundedOn($this, $year)) ||
-                ($filter == PL && $person->isRole(NI, $startRange, $endRange) && $person->leadershipOf($this)))){
+            if((($filter == AR && $person->isRoleDuring(NI, $startRange, $endRange) && !$person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
+                ($filter == CI && $person->isRole(NI, $startRange, $endRange) && $person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
+                ($filter == PL && $person->isRole(NI, $startRange, $endRange) && $person->leadershipOf($this) && !$person->leadershipOf($this)))){
                 $people[$person->getId()] = $person;
             }
             else if(($filter == null || $person->isRoleDuring($filter, $startRange, $endRange)) && ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
@@ -672,9 +672,9 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if((($filter == AR && $person->isRoleOn(NI, $date) && !$person->isFundedOn($this, $year)) ||
-                ($filter == CI && $person->isRoleOn(NI, $date) && $person->isFundedOn($this, $year)) ||
-                ($filter == PL && $person->isRoleOn(NI, $date) && $person->leadershipOf($this)))){
+            if((($filter == AR && $person->isRoleOn(NI, $date) && !$person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
+                ($filter == CI && $person->isRoleOn(NI, $date) && $person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
+                ($filter == PL && $person->isRoleOn(NI, $date) && $person->leadershipOf($this) && !$person->leadershipOf($this)))){
                 $people[$person->getId()] = $person;
             }
             else if(($filter == null || $person->isRoleOn($filter, $date)) && ($includeManager || !$person->isRoleOn(MANAGER, $date))){
@@ -799,25 +799,6 @@ EOF;
                               'dept' => $champ->getPartnerDepartment());
         }
         return $champs;
-    }
-
-    // Returns the leader of this Project
-    function getLeader(){
-        $sql = "SELECT pl.*
-                FROM grand_project_leaders pl, mw_user u
-                WHERE pl.project_id = '{$this->id}'
-                AND pl.type = 'leader'
-                AND u.user_id = pl.user_id
-                AND u.deleted != '1'
-                AND (pl.end_date = '0000-00-00 00:00:00'
-                     OR pl.end_date > CURRENT_TIMESTAMP)";
-        $data = DBFunctions::execSQL($sql);
-        if(count($data) > 0){
-            return Person::newFromId($data[0]['user_id']);
-        }
-        else {
-            return null;
-        }
     }
 
     /// Returns an array with the leaders of the project.  By default, the
