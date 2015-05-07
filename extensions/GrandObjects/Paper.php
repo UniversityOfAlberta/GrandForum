@@ -979,23 +979,23 @@ class Paper extends BackboneModel{
     function getVenue(){
         $venue = $this->venue;
         if( empty($venue) ){
-            $venue = ArrayUtils::get_string($this->data, 'venue');
+            $venue = ArrayUtil::get_string($this->data, 'venue');
         }
         
         if( empty($venue) ){
-            $venue = ArrayUtils::get_string($this->data, 'event_title');
+            $venue = ArrayUtil::get_string($this->data, 'event_title');
         }
 
         if( empty($venue) ){
-            $venue = ArrayUtils::get_string($this->data, 'conference');
+            $venue = ArrayUtil::get_string($this->data, 'conference');
         }
 
         if( empty($venue) ){
-            $venue = ArrayUtils::get_string($this->data, 'event_location');
+            $venue = ArrayUtil::get_string($this->data, 'event_location');
         }
 
         if(empty($venue)){
-            $venue = ArrayUtils::get_string($this->data, 'location');
+            $venue = ArrayUtil::get_string($this->data, 'location');
         }
         return $venue;
     }
@@ -1100,14 +1100,14 @@ class Paper extends BackboneModel{
 
         //This is not really a venue, but this is how we want to put this into the proper citation
         if(($type == "Journal Paper" || $type == "Journal Abstract")){
-            $vn = ArrayUtils::get_string($data, 'journal_title');
+            $vn = ArrayUtil::get_string($data, 'journal_title');
             if(empty($vn)){
-                $vn = ArrayUtils::get_string($data, 'published_in');
+                $vn = ArrayUtil::get_string($data, 'published_in');
             }
         }
         if(($type == "Journal Paper")){
-            $volume = ArrayUtils::get_string($data, 'volume');
-            $number = ArrayUtils::get_string($data, 'number');
+            $volume = ArrayUtil::get_string($data, 'volume');
+            $number = ArrayUtil::get_string($data, 'number');
             if(!empty($volume)){
                 $vn .= " $volume";
             }
@@ -1116,17 +1116,17 @@ class Paper extends BackboneModel{
             }
         }
         if($type == "Book Chapter"){
-            $vn .= ArrayUtils::get_string($data, 'book_title');
+            $vn .= ArrayUtil::get_string($data, 'book_title');
         }
 
-        $pg = ArrayUtils::get_string($data, 'pages');
+        $pg = ArrayUtil::get_string($data, 'pages');
         if (strlen($pg) > 0){
             $pg = "{$pg}pp.";
         }
         else{
             $pg = "(no pages)";
         }
-        $pb = ArrayUtils::get_string($data, 'publisher', '(no publisher)');
+        $pb = ArrayUtil::get_string($data, 'publisher', '(no publisher)');
 
         $peer_rev = "";
         if($showPeerReviewed && $category == "Publication"){
@@ -1187,11 +1187,11 @@ class Paper extends BackboneModel{
         }
         
         if(in_array($this->getType(), array('Book', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
-            $pg = ArrayUtils::get_string($data, 'pages');
+            $pg = ArrayUtil::get_string($data, 'pages');
             if (!(strlen($pg) > 0)){
                 $completeness['pages'] = false;
             }
-            $pb = ArrayUtils::get_string($data, 'publisher', '(no publisher)');
+            $pb = ArrayUtil::get_string($data, 'publisher', '(no publisher)');
             if($pb == '(no publisher)'){
                 $completeness['publisher'] = false;
             }

@@ -1,7 +1,7 @@
 <?php
 
 /// An empty class providing helper methods for dealing with arrays.
-class ArrayUtils {
+class ArrayUtil {
 	// Tests whether a field #f is set in #arr, and returns it if set,
 	// #def otherwise.
 	static function get_field(&$arr, $f, $def = false) {

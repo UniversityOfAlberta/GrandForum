@@ -28,8 +28,8 @@ class RMC2014Tab extends AbstractTab {
             'distribution'=>"\$tab12 = 'selectedReportTab';", 
             'themes'=>"\$tab13 = 'selectedReportTab';",
         );
-        $summary = ArrayUtils::get_string($_GET, 'summary');
-        $url_year = ArrayUtils::get_string($_GET, 'year');
+        $summary = ArrayUtil::get_string($_GET, 'summary');
+        $url_year = ArrayUtil::get_string($_GET, 'year');
         if(!$summary){ 
             $summary = 'question1'; 
         }
@@ -313,7 +313,7 @@ EOF;
         $aves = array('4'=>2, '3'=>1.5, '2'=>1, '1'=>0.5);
 
         // Check for a download.
-        $action = ArrayUtils::get_string($_GET, 'getpdf');
+        $action = ArrayUtil::get_string($_GET, 'getpdf');
         if ($action !== "") {
             $p = Person::newFromId($wgUser->getId());
             $sto = new ReportStorage($p);
@@ -576,7 +576,7 @@ EOF;
         $aves = array('4'=>2, '3'=>1.5, '2'=>1, '1'=>0.5);
 
         // Check for a download.
-        $action = ArrayUtils::get_string($_GET, 'getpdf');
+        $action = ArrayUtil::get_string($_GET, 'getpdf');
         if ($action !== "") {
             $p = Person::newFromId($wgUser->getId());
             $sto = new ReportStorage($p);
@@ -804,7 +804,7 @@ EOF;
         $aves = array('4'=>2, '3'=>1.5, '2'=>1, '1'=>0.5);
 
         // Check for a download.
-        $action = ArrayUtils::get_string($_GET, 'getpdf');
+        $action = ArrayUtil::get_string($_GET, 'getpdf');
         if ($action !== "") {
             $p = Person::newFromId($wgUser->getId());
             $sto = new ReportStorage($p);
@@ -1072,7 +1072,7 @@ EOF;
         $aves = array('4'=>2, '3'=>1.5, '2'=>1, '1'=>0.5);
 
         // Check for a download.
-        $action = ArrayUtils::get_string($_GET, 'getpdf');
+        $action = ArrayUtil::get_string($_GET, 'getpdf');
         if ($action !== "") {
             $p = Person::newFromId($wgUser->getId());
             $sto = new ReportStorage($p);
@@ -2130,13 +2130,13 @@ EOF;
                 $leader_name = ($p_leader instanceof Person)? $p_leader->getNameForForms() : "";
                 
                 // Render project/leader pair.
-                $oldv = ArrayUtils::get_array($data, 'values');
-                $reps = ArrayUtils::get_array($data, 'data');
+                $oldv = ArrayUtil::get_array($data, 'values');
+                $reps = ArrayUtil::get_array($data, 'data');
                 
                 $chunk .= "\n<tr><td align='center'>{$pn}<br /><small>{$leader_name}</small></td>";
                 foreach (array_keys($themes) as $ind) {
                     $chunk .= "<td align='center'><b>" . $project->getTheme($ind+1) .
-                        '</b> (' . ArrayUtils::get_string($oldv, $ind) . ')</td>';
+                        '</b> (' . ArrayUtil::get_string($oldv, $ind) . ')</td>';
                 }
                 $chunk .= '</tr>';
             }

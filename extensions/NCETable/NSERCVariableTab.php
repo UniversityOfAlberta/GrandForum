@@ -67,8 +67,8 @@ function showDiv(div_id, details_div_id){
         
         $this->showContentsTable();
 
-        if(ArrayUtils::get_string($_GET, 'year') == "tabs_{$this->year}_".$label){
-        switch (ArrayUtils::get_string($_GET, 'summary')) {
+        if(ArrayUtil::get_string($_GET, 'year') == "tabs_{$this->year}_".$label){
+        switch (ArrayUtil::get_string($_GET, 'summary')) {
         /*
         case 'table2':
             $wgOut->addScript($foldscript);
@@ -1694,27 +1694,27 @@ EOF;
             $authors = $publ->getAuthors();
             $data = $publ->getData();
             $yr = substr($publ->getDate(), 0, 4);
-            $pg = ArrayUtils::get_string($data, 'pages');
+            $pg = ArrayUtil::get_string($data, 'pages');
             if (strlen($pg) > 0){
                 $pg = "{$pg}pp.";
             }
             else{
                 $pg = "(no pages)";
             }
-            $pb = ArrayUtils::get_string($data, 'publisher', '(no publisher)');
+            $pb = ArrayUtil::get_string($data, 'publisher', '(no publisher)');
 
             switch ($publ->getType()) {
                 case 'Book':
                 case 'Book Chapter':
                 case 'Collections Paper':
                 case 'Proceedings Paper':
-                    $vn = ArrayUtils::get_string($data, 'book_title', 'no venue');
+                    $vn = ArrayUtil::get_string($data, 'book_title', 'no venue');
                     $ret .= "<li>{$yr}. <i>{$title}</i>.&emsp;{$type}: {$vn}. {$pg} {$pb}\n";
                     break;
 
                 case 'Journal Paper':
                 case 'Magazine/Newspaper Article':
-                    $vn = ArrayUtils::get_string($data, 'journal_title', 'no venue');
+                    $vn = ArrayUtil::get_string($data, 'journal_title', 'no venue');
                     $ret .= "<li>{$yr}. <i>{$title}</i>.&emsp;{$type}: {$vn}. {$pg} {$pb}\n";
                     break;
 
@@ -1726,7 +1726,7 @@ EOF;
                 case 'Misc':
                 case 'Poster':
                 default:
-                    $vn = ArrayUtils::get_string($data, 'book_title', ArrayUtils::get_string($data, 'eventname', 'no venue'));
+                    $vn = ArrayUtil::get_string($data, 'book_title', ArrayUtil::get_string($data, 'eventname', 'no venue'));
                     $ret .= "<li>{$yr}. <i>{$title}</i>.&emsp;{$type}: {$vn}\n";
             }
 
@@ -1767,7 +1767,7 @@ EOF;
             $yr = substr($publ->getDate(), 0, 4);
            
             
-            //$vn = ArrayUtils::get_string($data, 'book_title', ArrayUtils::get_string($data, 'eventname', 'no venue'));
+            //$vn = ArrayUtil::get_string($data, 'book_title', ArrayUtil::get_string($data, 'eventname', 'no venue'));
             $ret .= "<li>{$yr}. <i>{$title}</i>.&emsp;\n";
             
 
@@ -1861,7 +1861,7 @@ EOF;
         $a1_details = "";
         foreach($pub_count['a1'] as $pub){
             $data = $pub->getData();
-            $issub = ArrayUtils::get_field($data, 'submitted');
+            $issub = ArrayUtil::get_field($data, 'submitted');
             if ($issub !== false){
                 $ptr = &$list_sub;
             }
@@ -1900,7 +1900,7 @@ EOF;
         $a2_details = "";
         foreach($pub_count['a2'] as $pub){
             $data = $pub->getData();
-            $issub = ArrayUtils::get_field($data, 'submitted');
+            $issub = ArrayUtil::get_field($data, 'submitted');
             if ($issub !== false){
                 $ptr = &$list_sub;
             }
@@ -1967,7 +1967,7 @@ EOF;
         $b_details = "";
         foreach($pub_count['b'] as $pub){
             $data = $pub->getData();
-            $issub = ArrayUtils::get_field($data, 'submitted');
+            $issub = ArrayUtil::get_field($data, 'submitted');
             if ($issub !== false){
                 $ptr = &$list_sub;
             }
@@ -2006,7 +2006,7 @@ EOF;
         $c_details = "";
         foreach($pub_count['c'] as $pub){
             $data = $pub->getData();
-            $issub = ArrayUtils::get_field($data, 'submitted');
+            $issub = ArrayUtil::get_field($data, 'submitted');
             if ($issub !== false){
                 $ptr = &$list_sub;
             }

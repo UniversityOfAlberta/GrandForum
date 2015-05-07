@@ -28,7 +28,6 @@ class EvaluationTable extends SpecialPage {
     
     static function show(){
         require_once('RMC2014Tab.php');
-        require_once('Nominations.php');
         require_once('Productivity.php');
         require_once('ResearcherProductivity.php');
         require_once('Themes.php');

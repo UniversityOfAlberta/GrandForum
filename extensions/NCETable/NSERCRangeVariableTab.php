@@ -60,8 +60,8 @@ function showDiv(div_id, details_div_id){
         
         $this->showContentsTable();
 
-        if(ArrayUtils::get_string($_GET, 'year') == "tabs_{$this->startYear}-{$this->endYear}_".$label){
-        switch (ArrayUtils::get_string($_GET, 'summary')) {
+        if(ArrayUtil::get_string($_GET, 'year') == "tabs_{$this->startYear}-{$this->endYear}_".$label){
+        switch (ArrayUtil::get_string($_GET, 'summary')) {
         /*
         case 'table2':
             $wgOut->addScript($foldscript);
