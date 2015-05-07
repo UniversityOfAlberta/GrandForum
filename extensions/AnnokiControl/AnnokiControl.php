@@ -137,9 +137,6 @@ $egAnnokiExtensions['AcademiaMap'] = array('name' => 'AcademiaMap',
 $egAnnokiExtensions['TravelForm'] = array('name' => 'TravelForm',
                                           'path' => "$IP/extensions/TravelForm/TravelForm.php");
 
-$egAnnokiExtensions['EthicsTable'] = array('name' => 'EthicsTable',
-                                           'path' => "$IP/extensions/EthicsTable/EthicsTable.php");
-
 $egAnnokiExtensions['AdvancedSearch'] = array('name' => 'AdvancedSearch',
                                               'path' => "$IP/extensions/AdvancedSearch/AdvancedSearch.php");
 

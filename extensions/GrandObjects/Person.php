@@ -3526,18 +3526,6 @@ class Person extends BackboneModel {
         
         return $allocation;
     }
-
-    function getEthics(){
-        $query = "SELECT * FROM grand_ethics WHERE user_id='{$this->id}'";
-        $data = DBFunctions::execSQL($query);
-        
-        $ethics = array();
-
-        $ethics['completed_tutorial'] = (isset($data[0]['completed_tutorial']))? $data[0]['completed_tutorial'] : 0;
-        $ethics['date'] = (isset($data[0]['date']))? $data[0]['date'] : '0000-00-00';
-
-        return $ethics; 
-    }
     
     /**
      * Returns whether or not this Person is the author of the given Product

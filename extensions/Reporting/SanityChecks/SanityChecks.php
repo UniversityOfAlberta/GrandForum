@@ -376,12 +376,6 @@ EOF;
 					$ishqp = $s->isRole(HQP);
 					$related = $person->relatedTo($s, 'Supervises');
 
-					//Check for Ethics tutorial completion
-					$ethics = $s->getEthics();
-					if($ethics['completed_tutorial'] == 0 && $ishqp && $related){
-						$errors[] = "Not Completed TCPS2";
-					}
-
 					//Acknowledgements
 					if($ishqp && $related){
 						$acks = $s->getAcknowledgements();

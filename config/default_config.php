@@ -119,7 +119,6 @@
         //'Solr',
         //'AcademiaMap',
         //'TravelForm',
-        //'EthicsTable',
         //'AdvancedSearch',
         'CCVExport'
     ));
