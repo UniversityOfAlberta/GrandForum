@@ -1630,15 +1630,6 @@ class Person extends BackboneModel {
     // Since a person may belong to multiple roles, this only picks one of those roles.  This method may be useful for making urls for a PersonPage
     function getType(){
         $roles = $this->getRoles();
-        if($roles == null || (count($roles) == 1 && $roles[0]->getRole() == INACTIVE)){
-            $leadershipRoles = $this->getLeadershipRoles();
-            if($roles == null){
-                $roles = $leadershipRoles;
-            }
-            else{
-                $roles = array_merge($roles, $leadershipRoles);
-            }
-        }
         if($roles != null && count($roles) > 0){
             return $roles[count($roles) - 1]->getRole();
         }
