@@ -58,7 +58,13 @@ class Project extends BackboneModel {
                  ORDER BY e.id DESC LIMIT 1)";
         $data = DBFunctions::execSQL($sql);
         if (DBFunctions::getNRows() > 0){
-            $project = new Project($data);
+            if(count($data) > 1){
+                // This project has a history
+                $project = Project::newFromHistoricId($data[0]['id']);
+            }
+            else{
+                $project = new Project($data);
+            }
             self::$cache[$project->id] = &$project;
             self::$cache[$project->name] = &$project;
             return $project;
