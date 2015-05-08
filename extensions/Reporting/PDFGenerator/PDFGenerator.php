@@ -514,7 +514,20 @@ if ( isset($pdf) ) {
         }
         file_put_contents("/tmp/{$name}{$rand}pdfmarks", $str);
         file_put_contents("/tmp/{$name}{$rand}pdf", $dompdf->output());
-        exec("gs -q -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=\"/tmp/{$name}{$rand}withmarks\" \"/tmp/{$name}{$rand}pdf\" \"/tmp/{$name}{$rand}pdfmarks\""); // Add Bookmarks
+        exec("gs \\
+                -q \\
+                -dBATCH \\
+                -dNOPAUSE \\
+                -sDEVICE=pdfwrite \\
+                -dColorConversionStrategy=/LeaveColorUnchanged \\
+                -dDownsampleMonoImages=false \\
+                -dDownsampleGrayImages=false \\
+                -dDownsampleColorImages=false \\
+                -dAutoFilterColorImages=false \\
+                -dAutoFilterGrayImages=false \\
+                -dColorImageFilter=/FlateEncode \\
+                -dGrayImageFilter=/FlateEncode \\
+                -sOutputFile=\"/tmp/{$name}{$rand}withmarks\" \"/tmp/{$name}{$rand}pdf\" \"/tmp/{$name}{$rand}pdfmarks\""); // Add Bookmarks
         $pdfStr = file_get_contents("/tmp/{$name}{$rand}withmarks");
         unlink("/tmp/{$name}{$rand}pdfmarks");
         unlink("/tmp/{$name}{$rand}pdf");
