@@ -39,10 +39,10 @@ class ReportRepo extends SpecialPage {
         ReportRepo::showProjects(REPORTING_YEAR);
         $wgOut->addHTML("</div>");
         $wgOut->addHTML("<script type='text/javascript'>
-            $('#tabs').tabs();
             $('.datatable').dataTable({'iDisplayLength': -1,
 	                                   'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]
 	                                  });
+	        $('#tabs').tabs();
         </script>");
     }
     
@@ -67,6 +67,7 @@ class ReportRepo extends SpecialPage {
                 <thead>
                     <tr>
                         <th>NI</th>
+                        <th width='1%'>Role</th>
                         <th width='1%'>Report PDF</th>
                         <th title='The report has no entries in the text fields'>Started Report?</th>
                         <th title='The Report has been updated since the initial roll-up'>Updated?</th>
@@ -84,11 +85,13 @@ class ReportRepo extends SpecialPage {
             if(isset($pdf[0])){
                 $download = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}' class='button'>Download</a>";
             }
+            $role = ($ni->isRoleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, ($year+1).REPORTING_CYCLE_END_MONTH)) ? PNI : CNI;
             $wgOut->addHTML("<tr>
                                  <td>{$ni->getReversedName()}</td>
-                                 <td>{$download}</td>
-                                 <td>{$started}</td>
-                                 <td>{$updated}</td>
+                                 <td align='center'>{$role}</td>
+                                 <td align='center'>{$download}</td>
+                                 <td align='center'>{$started}</td>
+                                 <td align='center'>{$updated}</td>
                              </tr>");
         }
         $wgOut->addHTML("</tbody>
@@ -113,6 +116,9 @@ class ReportRepo extends SpecialPage {
                 </thead>
                 <tbody>");
         foreach($projects as $project){
+            if($project->getStatus() != "Active"){
+                continue;
+            }
             $person = Person::newFromId(4);
             $report = new DummyReport("ProjectReport", $person, $project);
             $started = ($report->hasStarted()) ? "<b style='color:#008800;'>Yes</b>" : 
@@ -126,9 +132,9 @@ class ReportRepo extends SpecialPage {
             }
             $wgOut->addHTML("<tr>
                                  <td>{$project->getName()}</td>
-                                 <td>{$download}</td>
-                                 <td>{$started}</td>
-                                 <td>{$updated}</td>
+                                 <td align='center'>{$download}</td>
+                                 <td align='center'>{$started}</td>
+                                 <td align='center'>{$updated}</td>
                              </tr>");
         }
         $wgOut->addHTML("</tbody>
