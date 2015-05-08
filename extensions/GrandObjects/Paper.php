@@ -917,7 +917,7 @@ class Paper extends BackboneModel{
         $data = $this->getData();
         $type = $this->getType();
         $title = $this->getTitle();
-        $status = ($showStatus) ? ",&nbsp;".$this->getStatus() : "";
+        $status = ($showStatus) ? $this->getStatus() : "";
         $category = $this->getCategory();
         $au = array();
         foreach($this->getAuthors() as $a){
@@ -982,10 +982,10 @@ class Paper extends BackboneModel{
         $peer_rev = "";
         if($showPeerReviewed && $category == "Publication"){
             if(isset($data['peer_reviewed']) && $data['peer_reviewed'] == "Yes"){
-                $peer_rev = ",&nbsp;Peer Reviewed";
+                $peer_rev = "&nbsp;/&nbsp;Peer Reviewed";
             }
             else if(isset($data['peer_reviewed']) && $data['peer_reviewed'] == "No"){
-                $peer_rev = ",&nbsp;Not Peer Reviewed";
+                $peer_rev = "&nbsp;/&nbsp;Not Peer Reviewed";
             }
         }
 
@@ -1001,16 +1001,15 @@ class Paper extends BackboneModel{
             if($vn != "" || $pg != "" || $pb != ""){
                 $vn = ":&nbsp;$vn";
             }
-       		$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn},&nbsp;{$pg}&nbsp;{$pb},&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
+       		$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn},&nbsp;{$pg}&nbsp;{$pb}
+       		             <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
     	}
     	else{
     	    if($vn != ""){
     	        $vn = ":&nbsp;$vn";
-    	        if($status != "" || $peer_rev != ""){
-                    $vn .= "<span class='pdfnodisplay'>,</span>";
-                }
             }
-        	$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn},&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
+        	$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}
+        	             <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
         }
         return trim($citation);
     }

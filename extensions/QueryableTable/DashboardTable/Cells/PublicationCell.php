@@ -179,8 +179,7 @@ abstract class PublicationCell extends DashboardCell {
                 foreach($values as $item){
                     $details .= '<tr>'.$this->detailsRow($item)."</tr>\n";
                 }
-                $details .= "</tbody></table><br /><br />\n";
-                $details .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:ManageProducts\");' value='Manage Products' />\n";
+                $details .= "</tbody></table>";
             }
             $table .= $this->dashboardRow($type, $details);
         }
