@@ -18,6 +18,15 @@ Product = Backbone.Model.extend({
                 this.set("type", ""); // Clear type
             }
         });
+        
+        this.on("change:type", function(){
+            var status = this.get('status');
+            if(productStructure.categories[this.get('category')] !== undefined &&
+               productStructure.categories[this.get('category')].types[this.get('type')] != undefined &&
+               !_.contains(productStructure.categories[this.get('category')].types[this.get('type')].status, status)){
+                this.set('status', _.first(productStructure.categories[this.get('category')].types[this.get('type')].status));
+            }
+        });
     },
 
     getAuthors: function(){
