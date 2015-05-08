@@ -18,6 +18,7 @@ class CreatePDF extends SpecialPage {
     static $types = array('ni' => 'NI',
                           'ni_comments' => 'Project NI Comments',
                           'hqp' => 'HQP',
+                          'sub-project' => 'Sub-Project',
                           'project' => 'Project',
                           'isac_comments' => 'ISAC Project Comments',
                           'champ_comments' => 'Champion Project Comments',
@@ -40,9 +41,6 @@ class CreatePDF extends SpecialPage {
 	        }
 	        else{
 	        	$project = @Project::newFromId($_GET['project']);
-	        	if($project != null && ($project->deleted || $project->getPhase() < PROJECT_PHASE)){
-	            	$_GET['report'] = "ProjectFinalReport";
-	        	}
 	        }
 
 	        $report = new DummyReport($_GET['report'], $person, $project);
@@ -233,6 +231,15 @@ class CreatePDF extends SpecialPage {
 	        }
 	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=HQPReport&person=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
 	    }
+	    else if($type == 'sub-project'){
+	        foreach(Project::getAllProjects(true) as $project){
+	            if(array_search($project->getId(), $ids) === false && $project->isSubProject()){
+	                $names[] = $project->getName();
+	                $ids[] = $project->getId();
+	            }
+	        }
+	        $url = "$wgServer$wgScriptPath/index.php/Special:CreatePDF?report=SubProjectReport&person=4&project=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
+	    }
 	    else if($type == 'project'){
 	        foreach(Project::getAllProjects() as $project){
 	            if(array_search($project->getId(), $ids) === false){
@@ -280,6 +287,9 @@ class CreatePDF extends SpecialPage {
 	    }
 	    else if($type == 'hqp'){
 	        CreatePDF::showHQPTable($names, $ids);
+	    }
+	    else if($type == 'sub-project'){
+	        CreatePDF::showSubProjectTable($names, $ids);
 	    }
 	    else if($type == 'project'){
 	        CreatePDF::showProjectTable($names, $ids);
@@ -472,6 +482,28 @@ class CreatePDF extends SpecialPage {
                 $report->setName("HQP Report");
             }
 	        CreatePDF::tableRow($report, $person->getId(), $person->getName(), $person->getReversedName());
+	    }
+	    CreatePDF::tableFoot();
+	}
+	
+	static function showSubProjectTable($names, $ids){
+	    global $wgOut, $wgServer, $wgScriptPath;
+	    $wgOut->setPageTitle("Project Report PDFs");
+	    CreatePDF::tableHead(true);
+	    $alreadyDone = array();
+	    foreach($names as $pName){
+	        if(isset($alreadyDone[$pName])){
+	            continue;
+	        }
+	        $alreadyDone[$pName] = true;
+	        $project = Project::newFromName($pName);
+	        $leaders = array_values($project->getLeaders());
+	        if(count($leaders) == 0){
+	            $leaders[0] = Person::newFromName("Admin");
+	        }
+	            $report = new DummyReport("SubProjectReportPDF", $leaders[0], $project);
+	            CreatePDF::tableRow($report, $project->getId(), $project->getName(), $project->getName());
+	        //}
 	    }
 	    CreatePDF::tableFoot();
 	}
