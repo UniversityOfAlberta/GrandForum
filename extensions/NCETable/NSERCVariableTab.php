@@ -852,13 +852,13 @@ EOF;
             $pos = $hqp->getPosition();
             $pos = (isset($positions[$pos])) ? $positions[$pos] : "Other";
             foreach($projs as $project){
-                //if($project->getPhase() == 1){
+                if(!$project->isSubProject()){
                     if(!isset($projects[$project->getName()])){
                         $projects[$project->getName()] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "PostDoc"=>array(), 
                                                              "Tech"=>array(), "Other"=>array());
                     }
                     $projects[$project->getName()][$pos][] = $hqp;
-                //}
+                }
             }
         }
 
