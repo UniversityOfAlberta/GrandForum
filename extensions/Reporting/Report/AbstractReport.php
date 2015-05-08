@@ -613,6 +613,33 @@ abstract class AbstractReport extends SpecialPage {
         return (count($data) > 0);
     }
     
+    /*
+     * Returns whether or not the Person has updated thier report since the 
+     * last PDF was generated
+     * @return boolean Whether or not this Report has been updated
+     */
+    function hasUpdated(){
+        $personId = $this->person->getId();
+        $projectId = ($this->project != null) ? $this->project->getId() : 0;
+        $pdf = $this->getLatestPDF();
+        $data = DBFunctions::select(array('grand_report_blobs'),
+                                    array('*'),
+                                    array('user_id' => EQ($personId),
+                                          'proj_id' => EQ($projectId),
+                                          'rp_type' => EQ($this->reportType),
+                                          'year' => EQ($this->year)),
+                                    array('changed' => 'DESC'));
+        if(count($data) > 0 && 
+           count($pdf) > 0){
+            $lastChange = $data[0]['changed'];
+            $lastGenerated = $pdf[0]['timestamp'];
+            if($lastChange > $lastGenerated){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     // Checks the permissions of the Person with the required Permissions of the Report
     function checkPermissions(){
         global $wgUser;

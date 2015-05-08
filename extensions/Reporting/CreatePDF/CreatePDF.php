@@ -79,7 +79,7 @@ class CreatePDF extends SpecialPage {
                     else{
                         $report = new DummyReport("NIReportPDF", $person, null, $year);
                     }
-                    $check = $report->getPDF();
+                    $check = $report->getLatestPDF();
                     if(count($check) > 0){
                         $tok = $check[0]['token'];
                         $sto->select_report($tok);
@@ -120,10 +120,10 @@ class CreatePDF extends SpecialPage {
 	            foreach($people as $person){
                     $sto = new ReportStorage($person);
                     $report = new DummyReport("HQPReportPDF", $person, null, $year);
-                    $check = $report->getPDF();
+                    $check = $report->getLatestPDF();
                     if(count($check) == 0){
                         $report = new DummyReport("NIReportPDF", $person, null, $year);
-                        $check = $report->getPDF();
+                        $check = $report->getLatestPDF();
                         $report->setName("HQP Report");
                     }
                     if(count($check) > 0){
@@ -168,7 +168,7 @@ class CreatePDF extends SpecialPage {
 	                    else{
 	                        $report = new DummyReport("ProjectReport", $leader, $project, $year);
 	                    }
-	                    $check = $report->getPDF();
+	                    $check = $report->getLatestPDF();
 	                    if(count($check) > 0){
 	                        $tok = $check[0]['token'];
 	                        $sto->select_report($tok);
@@ -475,10 +475,10 @@ class CreatePDF extends SpecialPage {
 	        $alreadyDone[$pName] = true;
 	        $person = Person::newFromName($pName);
 	        $report = new DummyReport("HQPReport", $person);
-	        $check = $report->getPDF();
+	        $check = $report->getLatestPDF();
             if(count($check) == 0){
                 $report = new DummyReport("NIReport", $person);
-                $check = $report->getPDF();
+                $check = $report->getLatestPDF();
                 $report->setName("HQP Report");
             }
 	        CreatePDF::tableRow($report, $person->getId(), $person->getName(), $person->getReversedName());
@@ -600,7 +600,7 @@ class CreatePDF extends SpecialPage {
 	
 	static function tableRow($report, $id, $name, $displayName){
 	    global $wgOut, $wgServer, $wgScriptPath;
-	    $check = $report->getPDF();
+	    $check = $report->getLatestPDF();
 	    $tok = "";
 	    $downloadButton = "<a style='display:none;' target='downloadIframe' id='download{$id}' class='button'>Download Report PDF</a>";
 	    if(count($check) > 0){
