@@ -193,7 +193,7 @@
     </ReportSection>
     <ReportSection type="BookmarkReportSection" name="Section 4" />
     <ReportSection id="prod_dashboard" name="Productivity Overview" blobSection="SEC_NONE" type="ReportSection" subBookmark="true" renderpdf="true" pagebreak="false">
-        <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="true" details="false">
+        <ReportItem id="project_dashboard_prod" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" limit="15" table="true" details="false">
             <![CDATA[<div>{$item}</div>]]>
         </ReportItem>
         <ReportItem id="pagebreak" type="PageBreakReportItem">
