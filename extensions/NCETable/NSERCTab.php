@@ -20,7 +20,8 @@ class NSERCTab extends AbstractTab {
 		                   "tabs_{$this->year}_Apr{$last_year}-Mar{$this_year}" => 1, 
 		                   "tabs_{$this->year}_Jan-Mar{$last_year}" => 2, 
 		                   "tabs_{$this->year}_Apr-Dec{$last_year}" => 3, 
-		                   "tabs_{$this->year}_Jan-Mar{$this_year}" => 4);
+		                   "tabs_{$this->year}_Jan-Mar{$this_year}" => 4,
+		                   "tabs_{$this->year}_Jan{$last_year}-Dec{$this_year}" => 5);
 
 		if(isset($_GET['year']) && isset($init_tabs[$_GET['year']])){
 	    	$init_tab = $init_tabs[$_GET['year']];
@@ -47,6 +48,10 @@ class NSERCTab extends AbstractTab {
 		$int_start = $this_year.CYCLE_START_MONTH.' 00:00:00';
 		$int_end =   $this_year.NCE_END_MONTH. ' 23:59:59';
 		$tabbedPage->addTab(new NSERCVariableTab("Jan-Mar{$this_year}", $int_start, $int_end, $this->year));
+		
+		$int_start = $last_year.CYCLE_START_MONTH.' 00:00:00';
+		$int_end =   $this_year.CYCLE_END_MONTH. ' 23:59:59';
+		$tabbedPage->addTab(new NSERCVariableTab("Jan{$last_year}-Dec{$this_year}", $int_start, $int_end, $this->year));
     	
         $this->html = $tabbedPage->showPage($init_tab);
     }
