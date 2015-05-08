@@ -68,7 +68,8 @@ class ReportRepo extends SpecialPage {
                     <tr>
                         <th>NI</th>
                         <th width='1%'>Role</th>
-                        <th width='1%'>Report PDF</th>
+                        <th width='1%'>Report&nbsp;PDF</th>
+                        <th width='1%'>Alternate&nbsp;PDF</th>
                         <th title='The report has no entries in the text fields'>Started Report?</th>
                         <th title='The Report has been updated since the initial roll-up'>Updated?</th>
                     </tr>
@@ -82,14 +83,19 @@ class ReportRepo extends SpecialPage {
                                                  "<b>No</b>";
             $pdf = $report->getLatestPDF();
             $download = "";
+            $other = "";
             if(isset($pdf[0])){
                 $download = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}' class='button'>Download</a>";
+            }
+            if($ni->getName() == "Barry.Wellman"){
+                $other = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf=ee12eb4d2dfca4bddcff3dfba66eb064' class='button'>Download</a>";
             }
             $role = ($ni->isRoleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, ($year+1).REPORTING_CYCLE_END_MONTH)) ? PNI : CNI;
             $wgOut->addHTML("<tr>
                                  <td>{$ni->getReversedName()}</td>
                                  <td align='center'>{$role}</td>
                                  <td align='center'>{$download}</td>
+                                 <td align='center'>{$other}</td>
                                  <td align='center'>{$started}</td>
                                  <td align='center'>{$updated}</td>
                              </tr>");
@@ -109,7 +115,8 @@ class ReportRepo extends SpecialPage {
                 <thead>
                     <tr>
                         <th>Project</th>
-                        <th width='1%'>Report PDF</th>
+                        <th width='1%'>Report&nbsp;PDF</th>
+                        <th width='1%'>Alternate&nbsp;PDF</th>
                         <th title='The report has no entries in the text fields'>Started Report?</th>
                         <th title='The Report has been updated since the initial roll-up'>Updated?</th>
                     </tr>
@@ -127,12 +134,17 @@ class ReportRepo extends SpecialPage {
                                                  "<b>No</b>";
             $pdf = $report->getLatestPDF();
             $download = "";
+            $other = "";
             if(isset($pdf[0])){
                 $download = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}' class='button'>Download</a>";
+            }
+            if($project->getName() == "AD-NODE"){
+                $other = "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf=ccce364e082a29702eac40553f0527c9' class='button'>Download</a>";
             }
             $wgOut->addHTML("<tr>
                                  <td>{$project->getName()}</td>
                                  <td align='center'>{$download}</td>
+                                 <td align='center'>{$other}</td>
                                  <td align='center'>{$started}</td>
                                  <td align='center'>{$updated}</td>
                              </tr>");
