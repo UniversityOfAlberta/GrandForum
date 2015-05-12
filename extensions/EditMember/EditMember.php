@@ -95,9 +95,7 @@ class EditMember extends SpecialPage{
                     EditMember::generateMain();
                     return;
                 }
-                else if(!$user->isRoleAtLeast(STAFF) && (($user->isRole(NI) && !$user->isProjectLeader()) || // Handles regular NI
-                        (($user->isProjectLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && !$person->isRole(HQP))) || // Handles PL
-                        (($user->isRoleAtLeast(RMC) && $user->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF))))){ // Handles RMC-GOV
+                else if(!$user->isAllowedToEdit($person)){ // Handles RMC-GOV
                     $wgMessage->addError("You do not have permissions to edit this user.");
                     EditMember::generateMain();
                     return;
@@ -548,10 +546,7 @@ class EditMember extends SpecialPage{
         $i = 0;
         $names = array();
         foreach($allPeople as $person){
-            if(!$user->isRoleAtLeast(STAFF) && (($user->isRole(NI) && !$user->isProjectLeader()) || // Handles regular NI
-            (($user->isProjectLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && !$person->isRole(HQP))) || // Handles PL
-            (($user->isRoleAtLeast(RMC) && $user->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF)))  // Handles RMC-GOV
-            )){ 
+            if(!$user->isAllowedToEdit($person)){ 
                 // User does not have permission for this person
                 continue;
             }
@@ -708,10 +703,7 @@ class EditMember extends SpecialPage{
             foreach($projects as $project){
                 $projs[] = $project->getName();
             }
-            if(!$user->isRoleAtLeast(STAFF) && (($user->isRole(NI) && !$user->isProjectLeader()) || // Handles regular NI
-            (($user->isProjectLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && !$person->isRole(HQP))) || // Handles PL
-            (($user->isRoleAtLeast(RMC) && $user->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF)))  // Handles RMC-GOV
-            )){
+            if(!$user->isAllowedToEdit($person)){
                 // User does not have permission for this person
                 continue;           
             }

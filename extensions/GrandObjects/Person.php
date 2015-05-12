@@ -801,6 +801,22 @@ class Person extends BackboneModel {
         global $wgSitename;
     }
     
+    /*
+     * Returns whether or not this Person is allowed to edit the specified Person
+     * @param Person $person The Person to edit
+     * @return Person Whether or not this Person is allowd to edit the specified Person
+     */
+    function isAllowedToEdit($person){
+        if(!$this->isRoleAtLeast(STAFF) && // Handles Staff+
+           (($this->isRole(NI) && !$this->isProjectLeader() && $person->isRoleAtLeast(NI)) || // Handles regular NI
+            ($this->isProjectLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && !$person->isRole(HQP)) || // Handles PL
+            ($this->isRoleAtLeast(RMC) && $this->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF))  // Handles RMC-GOV
+           )){
+            return false;
+        }
+        return true;
+    }
+    
     // Returns the Mediawiki User object for this Person
     function getUser(){
         if($this->user == null){
