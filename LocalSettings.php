@@ -190,7 +190,8 @@ $wgVerifyMimeType = false;
 $wgAllowCopyUploads = true;
 $wgAllowTitlesInSVG = true;
 $wgMaxShellMemory = 402400;
-$wgPasswordReminderResendTime = 0.5;
+$wgPasswordReminderResendTime = 0.25;
+$wgEditPageFrameOptions = 'SAMEORIGIN';
 $wgImpersonating = false;
 $wgRealUser;
 
