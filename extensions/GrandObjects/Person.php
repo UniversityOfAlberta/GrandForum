@@ -1673,7 +1673,7 @@ class Person extends BackboneModel {
             $roleNames[] = TL;
         }
         foreach($roleNames as $key => $role){
-            if($role == "Inactive"){
+            if($role == INACTIVE){
                 if($this->isProjectLeader()){
                     unset($roleNames[$key]);
                     continue;
