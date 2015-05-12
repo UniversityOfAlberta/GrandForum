@@ -84,11 +84,9 @@ class ProjectMainTab extends AbstractEditableTab {
         if($project->getType() != "Administrative"){
             $this->showChallenge();
         }
-        $this->showLeaders();
-        if($project->getStatus() != 'Proposed'){
-            $this->showChampions();
-        }
+
         $this->showPeople();
+        $this->showChampions();
         $this->showDescription();
 
         if(!$project->isSubProject()){
@@ -143,21 +141,6 @@ class ProjectMainTab extends AbstractEditableTab {
                     APIRequest::doAction('AddProjectMember', true);
                     MailingList::subscribeAll($champ);
                 }
-            }
-        }
-        
-        if(isset($_POST['pl'])){
-            $leaderName = ($this->project->getLeader() != null) ? $this->project->getLeader()->getName() : "";
-            if($_POST['pl'] != $leaderName){
-                $_POST['role'] = $this->project->getName();
-                $_POST['user'] = $leaderName;
-                $_POST['comment'] = "Automatic Removal";
-                APIRequest::doAction('DeleteProjectLeader', true);
-                
-                $_POST['user'] = $_POST['pl'];
-                $_POST['manager'] = 'False';
-                $_POST['co_lead'] = 'False';
-                APIRequest::doAction('AddProjectLeader', true);
             }
         }
         
@@ -336,26 +319,34 @@ EOF;
         $this->html .= "</td><td></td></tr></table>";
     }
     
+    /*
     function showLeaders(){
-        global $wgUser, $wgServer, $wgScriptPath;
-        
+        global $wgUser, $wgServer, $wgScriptPath, $config;
         $me = Person::newFromWgUser();
         
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
         
         $leaders = $project->getLeaders(true); //only get id's
-        $coleaders = $project->getCoLeaders(true);
-        $managers = $project->getManagers(true);
-        $this->html .= "<h2><span class='mw-headline'>Leaders</span></h2>";
-        $this->html .= "<table>";
+        
+        $names = array("");
+        if($project->isSubProject()){
+            $people = array_merge($project->getParent()->getAllPeople(), $project->getAllPeople());
+            foreach($people as $person){
+                if($person->isRoleAtLeast(NI)){
+                    $names[$person->getName()] = $person->getNameForForms();
+                }
+            }
+            asort($names);
+        }
+        
+        $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($config->getValue('roleDefs', PL))."</span></h2>";
+        $this->html .= "<ul>";
         if(!empty($leaders)){
             foreach($leaders as $leader_id){
                 $leader = Person::newFromId($leader_id);
-                $this->html .= "<tr>";
-                
                 if(!$edit || !$me->leadershipOf($project->getParent())){
-                    $this->html .= "<td align='right'><b>Leader:</b></td><td><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></td></tr>";
+                    $this->html .= "<li><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></li>";
                 }
                 else if($me->leadershipOf($project->getParent())){
                     $plRow = new FormTableRow("pl_row");
@@ -371,124 +362,50 @@ EOF;
             $plRow->append(new ComboBox("pl", "Project Leader", "", $names, VALIDATE_NI));
             $this->html .= $plRow->render();
         }
-        if(!empty($coleaders)){
-            foreach($coleaders as $leader_id){
-                $leader = Person::newFromId($leader_id);
-                $this->html .= "<tr><td align='right'><b>co-Leader:</b></td><td><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></td></tr>";
-            }    
-        }
-        if(!empty($managers)){
-            foreach($managers as $leader_id){
-                $leader = Person::newFromId($leader_id);
-                $this->html .= "<tr><td align='right'><b>Manager:</b></td><td><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></td></tr>";
-            }    
-        }
-        $this->html .= "</table>";
-    }
+        $this->html .= "</ul>";
+    }*/
 
     function showPeople(){
         global $wgUser, $wgServer, $wgScriptPath, $config;
-        $roleDefs = $config->getValue('roleDefs');
         $me = Person::newFromWgUser();
         
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
         
-        $leaders = $project->getLeaders(true); //only get id's
-        $coleaders = $project->getCoLeaders(true);
-        $managers = $project->getManagers(true);
-        
-        $pnis = $project->getAllPeople(PNI);
-        $cnis = $project->getAllPeople(CNI);
+        $pls = $project->getAllPeople(PL);
+        $cis = $project->getAllPeople(CI);
         $ars = $project->getAllPeople(AR);
         $hqps = $project->getAllPeople(HQP);
-        
-        $names = array("");
-        if($project->isSubProject()){
-            $people = array_merge($project->getParent()->getAllPeople(), $project->getAllPeople());
-            foreach($people as $person){
-                if($person->isRoleAtLeast(CNI)){
-                    $names[$person->getName()] = $person->getNameForForms();
-                }
-            }
-            if($project->getLeader() != null && !isset($names[$project->getLeader()->getName()])){
-                $names[$project->getLeader()->getName()] = $project->getLeader()->getNameForForms();
-            }
-            
-            asort($names);
-        }
 
         if(!$edit){
             $this->html .= "<table width='100%'><tr><td valign='top' width='50%'>";
-            if($edit || !$edit && count($pnis) > 0){
-                $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($roleDefs[PNI])."</span></h2>";
-            }
-            $this->html .= "<ul>";
-            foreach($pnis as $pni){
-                if((!empty($leaders) && in_array($pni->getId(), $leaders)) || 
-                   (!empty($coleaders) && in_array($pni->getId(), $coleaders)) ||
-                   (!empty($managers) && in_array($pni->getId(), $managers))){
-                    continue;
-                }
-                $target = "";
-                if($edit){
-                    $target = " target='_blank'";
-                }
-                $this->html .= "<li><a href='{$pni->getUrl()}'$target>{$pni->getReversedName()}</a></li>";
-            }
-            
-            $this->html .= "</ul>";
-            if($edit || !$edit && count($cnis) > 0){
-                $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($roleDefs[CNI])."</span></h2>";
-            }
-            $this->html .= "<ul>";
-            foreach($cnis as $cni){
-                if((!empty($leaders) && in_array($cni->getId(), $leaders)) || 
-                   (!empty($coleaders) && in_array($cni->getId(), $coleaders)) ||
-                   (!empty($managers) && in_array($cni->getId(), $managers))){
-                    continue;
-                }
-                $target = "";
-                if($edit){
-                    $target = " target='_blank'";
-                }
-                $this->html .= "<li><a href='{$cni->getUrl()}'$target>{$cni->getReversedName()}</a></li>";
-            }
-            $this->html .= "</ul>";
-            if($edit || !$edit && count($ars) > 0){
-                $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($roleDefs[AR])."</span></h2>";
-            }
-            $this->html .= "<ul>";
-            foreach($ars as $ar){
-                if((!empty($leaders) && in_array($ar->getId(), $leaders)) || 
-                   (!empty($coleaders) && in_array($ar->getId(), $coleaders)) ||
-                   (!empty($managers) && in_array($ar->getId(), $managers))){
-                    continue;
-                }
-                $target = "";
-                if($edit){
-                    $target = " target='_blank'";
-                }
-                $this->html .= "<li><a href='{$ar->getUrl()}'$target>{$ar->getReversedName()}</a></li>";
-            }
-            $this->html .= "</ul></td>";
+            $this->showRole(PL);
+            $this->showRole(CI);
+            $this->showRole(AR);
+            $this->html .= "</td><td width='50%' valign='top'>";
             if($wgUser->isLoggedIn()){
-                $this->html .= "<td width='50%' valign='top'>";
-                if($edit || !$edit && count($hqps) > 0){
-                    $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($roleDefs[HQP])."</span></h2>";
-                }
-                $this->html .= "<ul>";
-                foreach($hqps as $hqp){
-                    $target = ""; 
-                    if($edit){
-                        $target = " target='_blank'";
-                    }
-                    $this->html .= "<li><a href='{$hqp->getUrl()}'$target>{$hqp->getReversedName()}</a></li>";
-                }
-                $this->html .= "</ul></td>";
+                $this->showRole(HQP);
             }
-            $this->html .= "</tr></table>";
+            $this->html .= "</td></tr></table>";
         }
+    }
+    
+    function showRole($role){
+        global $config;
+        $me = Person::newFromWgUser();
+        
+        $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
+        $project = $this->project;
+        
+        $people = $project->getAllPeople($role);
+        if(count($people) > 0){
+            $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($config->getValue('roleDefs', $role))."</span></h2>";
+        }
+        $this->html .= "<ul>";
+        foreach($people as $p){
+            $this->html .= "<li><a href='{$p->getUrl()}'>{$p->getReversedName()}</a></li>";
+        }
+        $this->html .= "</ul>";
     }
     
     function showDescription(){

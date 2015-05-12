@@ -6,7 +6,7 @@ class ProjectPeopleNoLeadersReportItemSet extends ReportItemSet {
         $data = array();
         $proj = Project::newFromId($this->projectId);
         if($proj != null){
-            $members = array_merge($proj->getAllPeopleDuring(PNI), $proj->getAllPeopleDuring(CNI));
+            $members = $proj->getAllPeopleDuring(NI);
             $alreadySeen = array();
             foreach($members as $m){
                 if(isset($alreadySeen[$m->getId()])){

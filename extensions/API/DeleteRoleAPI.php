@@ -19,7 +19,7 @@ class DeleteRoleAPI extends API{
 		$groups = $wgUser->getGroups();
         $me = Person::newFromId($wgUser->getId());
         $person = Person::newFromName($_POST['user']);
-		if($me->isRoleAtLeast(STAFF) || ($me->isRoleAtLeast(CNI) && $person->isRole(HQP) && $_POST['role'] == HQP)){
+		if($me->isRoleAtLeast(STAFF) || ($me->isRoleAtLeast(NI) && $person->isRole(HQP) && $_POST['role'] == HQP)){
             // Actually Add the Project Member
             $role = $_POST['role'];
             $comment = str_replace("'", "&#39;", $_POST['comment']);

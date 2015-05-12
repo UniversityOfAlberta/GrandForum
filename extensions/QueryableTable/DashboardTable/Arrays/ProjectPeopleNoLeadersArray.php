@@ -13,8 +13,8 @@
                 $people = $project->getAllPeople();
             }
             foreach($people as $person){
-                if((isset($params[1]) && isset($params[2]) && $person->isRoleDuring(PNI, $start, $end) || $person->isRole(CNI, $start, $end) || $person->isRole(AR, $start, $end)) || 
-                   ($person->isRole(PNI) || $person->isRole(CNI) || $person->isRole(AR))){
+                if((isset($params[1]) && isset($params[2]) && $person->isRoleDuring(NI, $start, $end)) || 
+                   $person->isRole(NI)){
                     if(!$person->leadershipOf($project->getName()) && !$person->isRole(CHAMP)){
                         $this->array[] = $person->getName();
                     }

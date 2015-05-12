@@ -210,19 +210,14 @@ $wgRoleValues = array(INACTIVE => 0,
                       EXTERNAL => 2,
                       ISAC => 3,
                       NCE => 4,
-                      CNI => 5,
-                      PNI => 6,
-                      AR => 7,
-                      LOI => 7,
+                      NI => 5,
+                      AR => 5,
+                      CI => 6,
                       CHAMP => 7,
-                      COPL => 8,
-                      'COPL' => 8,
                       PL => 9,
                       'PL' => 9,
-                      PM => 10,
-                      'PM' => 10,
-                      COTL => 11,
                       TL => 11,
+                      'TL' => 11,
                       RMC => 12,
                       EVALUATOR => 12,
                       BOD => 12,
@@ -235,25 +230,11 @@ $wgRoleValues = array(INACTIVE => 0,
 
 $wgRoles = ($config->hasValue('wgRoles')) ? 
     $config->getValue('wgRoles') : 
-    array(HQP, EXTERNAL, ISAC, NCE, CNI, PNI, AR, LOI, RMC, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
+    array(HQP, EXTERNAL, ISAC, NCE, NI, RMC, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :
-    array(HQP, STUDENT, EXTERNAL, ISAC, NCE, CNI, PNI, AR, LOI, COPL, PL, PM, TL, RMC, EVALUATOR, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
-
-// Defining Custom Namespace Constants
-define("NS_GRAND_PROJ", 122);
-define("NS_GRAND_PROJ_TALK", 123);
-define("NS_GRAND_NI", 124);
-define("NS_GRAND_NI_TALK", 125);
-define("NS_GRAND_CR", 126);
-define("NS_GRAND_CR_TALK", 127);
-define("NS_STUDENT", 128);
-define("NS_STUDENT_TALK", 129);
-define("NS_STUDENT_COMM", 206);
-define("NS_PAPER", 216);    # David's: 276
-define("NS_BOOK", 218);        # David's: 278
-define("NS_POSTER", 134);
+    array(HQP, STUDENT, EXTERNAL, ISAC, NCE, NI, AR, CI, PL, TL, RMC, EVALUATOR, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
 
 function unaccentChars($str){
     $normalizeChars = array("'" => '',

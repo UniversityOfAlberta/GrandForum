@@ -250,10 +250,8 @@ class Impersonate extends SpecialPage {
 	            $projs[] = $role->getRole();
 	            if($role->getRole() == HQP)
 	                $roleText = HQP;
-	            else if($role->getRole() == CNI)
-	                $roleText = CNI;
-	            else if($role->getRole() == PNI)
-	                $roleText = PNI;
+	            else if($role->getRole() == NI)
+	                $roleText = NI;
 	            else if($role->getRole() == RMC)
 	                $roleText = RMC;
 	                

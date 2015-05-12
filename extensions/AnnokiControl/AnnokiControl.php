@@ -77,9 +77,6 @@ $egAnnokiExtensions['TempEd'] = array('name' => 'Template Editor',
 $egAnnokiExtensions['MailingList'] = array('name' => 'MailingList',
                                            'path' => "$IP/extensions/MailingList/mailingList.body.php");
 
-$egAnnokiExtensions['FeatureRequest'] = array('name' => 'FeatureRequest',
-                                              'path' => "$IP/extensions/FeatureRequest/FeatureRequest.body.php");
-
 $egAnnokiExtensions['AddMember'] = array('name' => 'AddMember',
                                          'path' => "$IP/extensions/AddMember/AddMember.body.php");
 
@@ -97,9 +94,6 @@ $egAnnokiExtensions['NCETable'] = array('name' => 'NCETable',
 
 $egAnnokiExtensions['Reporting'] = array('name' => 'Reporting',
                                          'path' => "$IP/extensions/Reporting/Reporting.php");
-                                         
-$egAnnokiExtensions['Reboot'] = array('name' => 'Reboot',
-                                      'path' => "$IP/extensions/Reboot/Reboot.php");
 
 $egAnnokiExtensions['EmptyEmailList'] = array('name' => 'Empty Email List',
                                               'path' => "$IP/extensions/EmptyEmailList/EmptyEmailList.php");
@@ -128,14 +122,8 @@ $egAnnokiExtensions['Acknowledgements'] = array('name' => 'Acknowledgements',
 $egAnnokiExtensions['AllocatedBudgets'] = array('name' => 'Allocated Budgets',
                                                 'path' => "$IP/extensions/AllocatedBudgets/AllocatedBudgets.php");
 
-$egAnnokiExtensions['FundedCNI'] = array('name' => 'Funded CNI',
-                                         'path' => "$IP/extensions/FundedCNI/FundedCNI.php");
-
 $egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
                                                 'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");
-                                                
-$egAnnokiExtensions['ProjectLeadership'] = array('name' => 'Project Leadership',
-                                                 'path' => "$IP/extensions/ProjectLeadership/ProjectLeadership.php");
 
 $egAnnokiExtensions['ScreenCapture'] = array('name' => 'ScreenCapture',
                                              'path' => "$IP/extensions/ScreenCapture/ScreenCapture.php");
@@ -148,9 +136,6 @@ $egAnnokiExtensions['AcademiaMap'] = array('name' => 'AcademiaMap',
 
 $egAnnokiExtensions['TravelForm'] = array('name' => 'TravelForm',
                                           'path' => "$IP/extensions/TravelForm/TravelForm.php");
-
-$egAnnokiExtensions['EthicsTable'] = array('name' => 'EthicsTable',
-                                           'path' => "$IP/extensions/EthicsTable/EthicsTable.php");
 
 $egAnnokiExtensions['AdvancedSearch'] = array('name' => 'AdvancedSearch',
                                               'path' => "$IP/extensions/AdvancedSearch/AdvancedSearch.php");

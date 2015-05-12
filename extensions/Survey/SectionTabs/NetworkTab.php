@@ -8,7 +8,7 @@ class NetworkTab extends AbstractSurveyTab {
     function NetworkTab(){
         parent::AbstractSurveyTab("grand-network");
         $this->title = "Network";
-        $this->allpeps = array_merge(Person::getAllPeople(CNI), Person::getAllPeople(PNI));
+        $this->allpeps = Person::getAllPeople(NI);
     }
     
     function generateBody(){
@@ -484,7 +484,7 @@ EOF;
             $fname = $person_name[0];
             $lname = implode(' ', array_slice($person_name, 1));
             $person_name = $lname . ", " . $fname;
-            if(!in_array($person_name, $people) && !in_array($person_name, $past_conn) && ($user2->isRole(CNI) || $user2->isRole(PNI))){
+            if(!in_array($person_name, $people) && !in_array($person_name, $past_conn) && $user2->isRole(NI)){
                 $people[] = $person_name;
             }
         }
@@ -502,7 +502,7 @@ EOF;
                 if($person->getName() == $me->getName()){
                     continue;
                 }
-                if(!in_array($person_name, $people) && !in_array($person_name, $past_conn) && ($person->isRole(CNI) || $person->isRole(PNI))){
+                if(!in_array($person_name, $people) && !in_array($person_name, $past_conn) && $person->isRole(NI)){
                     $people[] = $person_name;
                 }
             }
@@ -521,7 +521,7 @@ EOF;
                 $fname = $author_name[0];
                 $lname = implode(' ', array_slice($author_name, 1));
                 $author_name = $lname . ", " . $fname;
-                if(!in_array($author_name, $people) && !in_array($author_name, $past_conn) && ($author->isCNI() || $author->isPNI())){
+                if(!in_array($author_name, $people) && !in_array($author_name, $past_conn) && $author->isRole(NI)){
                     $people[] = $author_name;
                 }
             }
@@ -563,7 +563,7 @@ EOF;
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
 
         $me = Person::newFromId($wgUser->getId());
-        $allPeople = $this->allpeps; //array_merge(Person::getAllPeople(CNI), Person::getAllPeople(PNI));
+        $allPeople = $this->allpeps; 
         $i = 0;
         $names = array();
         foreach($allPeople as $person){

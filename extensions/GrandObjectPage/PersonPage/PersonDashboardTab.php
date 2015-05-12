@@ -42,7 +42,7 @@ class PersonDashboardTab extends AbstractEditableTab {
     function generateBody(){
         $me = Person::newFromWgUser();
         $amount = 3;
-        if($this->person->isRoleAtLeast(CNI)){
+        if($this->person->isRoleAtLeast(NI)){
             $amount = 5;
         }
         $this->showTopProducts($this->person, $this->visibility, $amount);
@@ -58,7 +58,7 @@ class PersonDashboardTab extends AbstractEditableTab {
     
     function generateEditBody(){
         $amount = 3;
-        if($this->person->isRoleAtLeast(CNI)){
+        if($this->person->isRoleAtLeast(NI)){
             $amount = 5;
         }
         $this->showEditTopProducts($this->person, $this->visibility, $amount);
@@ -197,7 +197,7 @@ class PersonDashboardTab extends AbstractEditableTab {
         if($wgUser->isLoggedIn()){
             $dashboard = null;
             $me = Person::newFromId($wgUser->getId());
-            if($person->isRoleAtLeast(CNI) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(CNI))){
+            if($person->isRoleAtLeast(NI) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(NI))){
                 if($visibility['isMe'] || $me->isRoleAtLeast(STAFF)){
                     // Display Private Dashboard
                     $dashboard = new DashboardTable(NI_PRIVATE_PROFILE_STRUCTURE, $person);

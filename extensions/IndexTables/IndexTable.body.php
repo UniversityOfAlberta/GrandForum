@@ -17,8 +17,7 @@ class IndexTable {
         global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle;
         $me = Person::newFromWgUser();
         $project = Project::newFromHistoricName($wgTitle->getNSText());
-        $selected = ((($project != null && $project->getType() != "Administrative") || $wgTitle->getText() == "Projects") &&
-                     $wgTitle->getNSText() != "Reboot" &&
+        $selected = ((($project != null && $project->getType() != "Administrative") || $wgTitle->getText() == "Projects") && 
                      !($me->isMemberOf($project) || ($project != null && $me->isMemberOf($project->getParent())))) ? "selected" : "";
         $projectTab = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
         if(Project::areThereDeletedProjects()){
@@ -49,14 +48,9 @@ class IndexTable {
             $peopleSubTab['dropdown'][] = TabUtils::createSubTab(HQP, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_HQP", "$selected");
         }
         
-        if(count(Person::getAllPeople(PNI)) > 0){
-            $selected = ($lastRole == PNI || $wgTitle->getText() == "ALL PNI" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(PNI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_PNI", "$selected");
-        }
-        
-        if(count(Person::getAllPeople(CNI)) > 0){
-            $selected = ($lastRole == CNI || $wgTitle->getText() == "ALL CNI" || ($wgTitle->getNSText() == CNI && !($me->isRole(CNI) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(CNI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_CNI", "$selected");
+        if(count(Person::getAllPeople(NI)) > 0){
+            $selected = ($lastRole == NI || $wgTitle->getText() == "ALL NI" || ($wgTitle->getNSText() == NI && !($me->isRole(NI) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(NI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_NI", "$selected");
         }
         
         if(count(Person::getAllPeople(ISAC)) > 0){
@@ -200,13 +194,9 @@ class IndexTable {
 			        $wgOut->setPageTitle("Highly Qualified Personnel");
 				    $this->generatePersonTable(HQP);
 				    break;
-			    case 'ALL '.PNI:
-			        $wgOut->setPageTitle("Principal Network Investigators");
-				    $this->generatePersonTable(PNI, 1);
-				    break;
-				case 'ALL '.CNI:
-			        $wgOut->setPageTitle("Collaborating Network Investigators");
-				    $this->generatePersonTable(CNI);
+			    case 'ALL '.NI:
+			        $wgOut->setPageTitle($config->getValue('roleDefs', NI));
+				    $this->generatePersonTable(NI, 1);
 				    break;
 				case 'ALL '.ISAC:
 			        $wgOut->setPageTitle(ISAC." Members");

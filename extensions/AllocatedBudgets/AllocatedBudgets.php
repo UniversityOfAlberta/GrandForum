@@ -53,7 +53,7 @@ class AllocatedBudgets extends SpecialPage {
 	        $found = false;
 	        $roles = $person->getRolesDuring("{$year}-00-00", ($year+1)."-00-00");
 	        foreach($roles as $role){
-	            if($wgRoleValues[$role->getRole()] >= $wgRoleValues[CNI]){
+	            if($wgRoleValues[$role->getRole()] >= $wgRoleValues[NI]){
 	                $found = true;
 	                break;
 	            }

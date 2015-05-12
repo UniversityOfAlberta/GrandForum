@@ -134,11 +134,6 @@ class APIRequest{
 		$this->addAction('User Accounts', 'deleteUserRole', new DeleteRoleAPI());
 		$this->addAction('User Accounts', 'deleteProjectLeader', new DeleteProjectLeaderAPI());
 		$this->addAction('User Accounts', 'deleteThemeLeader', new DeleteThemeLeaderAPI());
-		$this->addAction('User Accounts', 'updateUserEthics', new UserEthicsAPI());
-
-		//GET
-		$this->addAction('User Accounts', 'getResearcherInfo', new ResearcherAPI());
-		$this->addAction('User Accounts', 'getResearcherCompleteInfo', new ResearcherCompleteAPI());
 		
 		//POST
 		$this->addAction('Contributions', 'addContribution', new AddContributionAPI());
@@ -157,14 +152,9 @@ class APIRequest{
 		$this->addAction('Projects', 'deleteProjectMember', new DeleteProjectMemberAPI());
 		$this->addAction('Projects', 'deleteProject', new DeleteProjectAPI());
 		//GET
-		$this->addAction('Projects', 'getProjectInfo', new ProjectInfoAPI());
 		$this->addAction('Themes', 'getThemeInfo', new ThemeInfoAPI());
 		
-		//GET
-		$this->addAction('University', 'getEthicsStats', new UniversityEthicsAPI());
-		
 		// HIDDENS
-		$this->addAction('Hidden', 'getWFInfo', new WFAPI());
 		$this->addAction('Hidden', 'getJung', new JungAPI());
 		$this->addAction('Hidden', 'addRecordStory', new RecordStoryAPI());
 		$this->addAction('Hidden', 'getProjectMilestoneHistory', new ProjectMilestoneHistoryAPI());

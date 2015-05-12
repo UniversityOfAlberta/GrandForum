@@ -6,52 +6,39 @@ class ProjectCategoryBudgetReportItem extends StaticReportItem {
         $project = Project::newFromId($this->projectId);
         
         $budget = $project->getRequestedBudget(REPORTING_YEAR);
-        $cniBudget = $project->getRequestedBudget(REPORTING_YEAR, CNI);
-        $pniBudget = $project->getRequestedBudget(REPORTING_YEAR, PNI);
+        $niBudget = $project->getRequestedBudget(REPORTING_YEAR, NI);
         
-        $cniTotal = $this->getTotalBudget($cniBudget);
-        $fcniTotal = $budget->copy()->rasterize()->filter(CUBE_TOTAL)->select(READ, array("Future CNIs"))->filter(BLANK)->limit(1, 16);
-        $pniTotal = $this->getTotalBudget($pniBudget);
+        $niTotal = $this->getTotalBudget($niBudget);
         
         $categories = $budget->copy()->filter(HEAD1, array("Name of network investigator submitting request:"))->filter(CUBE_TOTAL)->select(HEAD1);
         
         $toBeJoined = array($categories->copy(),
-                            $pniTotal->copy(),
-                            $cniTotal->copy(),
-                            $fcniTotal->copy());
+                            $niTotal->copy());
         
         $joined = Budget::join_tables($toBeJoined);
         $joined = $joined->cube();
         
-        $joined->xls[0][1]->value = "PNIs";
-        $joined->xls[0][2]->value = "CNIs";
-        $joined->xls[0][3] = new HeadCell(HEAD, "", "Future CNIs", "", "", "");
+        $joined->xls[0][1]->value = "NIs";
         
-        $joined->join($pniTotal->copy())
-               ->join($cniTotal->copy());
+        $joined->join($niTotal->copy());
         
         $joined->xls[0][4]->value = "Total";
-        $joined->xls[0][5]->value = "PNI %";
-        $joined->xls[0][6]->value = "CNI %";
+        $joined->xls[0][5]->value = "NI %";
         
         foreach($joined->xls as $rowN => $row){
             if(!isset($row[5]) || !isset($row[6])){
-                $percPNI = ($row[1]->value / max(1, $row[4]->value));
-                $percCNI = (($row[2]->value + $row[3]->value) / max(1, $row[4]->value));
+                $percNI = ($row[1]->value / max(1, $row[4]->value));
                 
                 $joined->structure[$rowN][5] = PERC;
                 $joined->structure[$rowN][6] = PERC;
-                $joined->xls[$rowN][5] = new PercCell("", "", $percPNI, "", "", $joined);
-                $joined->xls[$rowN][6] = new PercCell("", "", $percCNI, "", "", $joined);
+                $joined->xls[$rowN][5] = new PercCell("", "", $percNI, "", "", $joined);
             }
             else if(is_numeric($row[5]->value) || is_numeric($row[6]->value)){
-                $percPNI = ($row[1]->value / max(1, $row[4]->value));
-                $percCNI = (($row[2]->value + $row[3]->value) / max(1, $row[4]->value));
+                $percNI = ($row[1]->value / max(1, $row[4]->value));
                 
                 $joined->structure[$rowN][5] = PERC;
                 $joined->structure[$rowN][6] = PERC;
-                $joined->xls[$rowN][5] = new PercCell("", "", $percPNI, "", "", $joined);
-                $joined->xls[$rowN][6] = new PercCell("", "", $percCNI, "", "", $joined);
+                $joined->xls[$rowN][5] = new PercCell("", "", $percNI, "", "", $joined);
             }
         }
         foreach($joined->xls[1] as $cell){

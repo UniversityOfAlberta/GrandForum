@@ -4,8 +4,7 @@ class NIReportItemSet extends ReportItemSet {
 
     function getData(){
         $data = array();
-        $people = array_merge(Person::getAllPeopleDuring('PNI', REPORTING_CYCLE_START, REPORTING_CYCLE_END),
-                              Person::getAllPeopleDuring('CNI', REPORTING_CYCLE_START, REPORTING_CYCLE_END));
+        $people = Person::getAllPeopleDuring(NI, REPORTING_CYCLE_START, REPORTING_CYCLE_END);
         $finalPeople = array();
         foreach($people as $person){
             $finalPeople[$person->getName()] = $person;

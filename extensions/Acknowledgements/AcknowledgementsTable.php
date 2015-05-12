@@ -110,8 +110,7 @@ class AcknowledgementsTable extends SpecialPage {
 	            if($role->getRole() == HQP){
 	                $hqps[$person->getId()] = $person;
 	            }
-	            else if($role->getRole() == PNI || 
-	                    $role->getRole() == CNI){
+	            else if($role->getRole() == NI){
 	                $nis[$person->getId()] = $person;
 	            }
 	        }

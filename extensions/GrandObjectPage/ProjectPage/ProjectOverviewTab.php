@@ -77,50 +77,32 @@ class ProjectOverviewTab extends AbstractTab {
     }
     
     function showBudgetSummary($year, $end){
-        $fullBudget = new Budget(array(array(HEAD, HEAD, HEAD)), array(array("Categories for April 1, ".($year+1).", to March 31, ".($end+2), PNI."s", CNI."s")));
+        $fullBudget = new Budget(array(array(HEAD, HEAD, HEAD)), array(array("Categories for April 1, ".($year+1).", to March 31, ".($end+2), NI."s")));
             
-        $pniTotals = array();
-        $cniTotals = array();
+        $niTotals = array();
         for($y=$year;$y<=$end;$y++){
             $people = array();
-            foreach($this->project->getAllPeopleDuring(PNI, $y."-04-01", ($y+1)."-03-31") as $person){
+            foreach($this->project->getAllPeopleDuring(NI, $y."-04-01", ($y+1)."-03-31") as $person){
                 if(!isset($people[$person->getId()])){
                     $budget = $person->getRequestedBudget($y);
                     if($budget != null){
                         $b = $budget->copy()->rasterize()->select(V_PROJ, array($this->project->getName()))->limit(6, 16);
                         if($b->nCols() > 0 && $b->nRows() > 0){
-                            $pniTotals[] = $b;
-                            $people[$person->getId()] = true;
-                        }
-                    }
-                }
-            }
-            foreach($this->project->getAllPeopleDuring(CNI, $y."-04-01", ($y+1)."-03-31") as $person){
-                if(!isset($people[$person->getId()])){
-                    $budget = $person->getRequestedBudget($y);
-                    if($budget != null){
-                        $b = $budget->copy()->rasterize()->select(V_PROJ, array($this->project->getName()))->limit(6, 16);
-                        if($b->nCols() > 0 && $b->nRows() > 0){
-                            $cniTotals[] = $b;
+                            $niTotals[] = $b;
                             $people[$person->getId()] = true;
                         }
                     }
                 }
             }
         }
-        if(count($pniTotals) == 0 && count($cniTotals) == 0){
+        if(count($niTotals) == 0){
             return;
         }
-        @$pniTotals = Budget::join_tables($pniTotals);
-        @$cniTotals = Budget::join_tables($cniTotals);
+        @$niTotals = Budget::join_tables($niTotals);
         
-        $cubedPNI = new Budget();
-        $cubedCNI = new Budget();
-        if($pniTotals != null){
-            $cubedPNI = @$pniTotals->cube();
-        }
-        if($cniTotals != null){
-            $cubedCNI = @$cniTotals->cube();
+        $cubedNI = new Budget();
+        if($niTotals != null){
+            $cubedNI = @$niTotals->cube();
         }
         
         $categoryBudget = new Budget(array(array(HEAD1),
@@ -154,8 +136,7 @@ class ProjectOverviewTab extends AbstractTab {
                                            array("b) Conferences"),
                                            array("c) GRAND annual conference")));
                                         
-        $categoryBudget = @$categoryBudget->join($cubedPNI->select(CUBE_ROW_TOTAL)->filter(CUBE_TOTAL)->filter(HEAD, array("TOTAL")))
-                                          ->join($cubedCNI->select(CUBE_ROW_TOTAL)->filter(CUBE_TOTAL)->filter(HEAD, array("TOTAL")));
+        $categoryBudget = @$categoryBudget->join($cubedNI->select(CUBE_ROW_TOTAL)->filter(CUBE_TOTAL)->filter(HEAD, array("TOTAL")));
                                          
         $fullBudget = $fullBudget->union($categoryBudget);
         $this->html .= "<h3>Budget Summary (Requested)</h3>";
@@ -165,9 +146,7 @@ class ProjectOverviewTab extends AbstractTab {
     function showResearcherProductivity($year, $end){
         $this->html .= "<h3>Researcher Productivity</h3>";
         $people = array();
-        $tmpPeople = array_merge($this->project->getAllPeopleDuring(PNI, $year."-01-01", $end."-12-31"), 
-                                 $this->project->getAllPeopleDuring(CNI, $year."-01-01", $end."-12-31"),
-                                 $this->project->getAllPeopleDuring(AR, $year."-01-01", $end."-12-31"));
+        $tmpPeople = $this->project->getAllPeopleDuring(NI, $year."-01-01", $end."-12-31");
         foreach($tmpPeople as $person){
             $people[$person->getReversedName()] = $person;
         }

@@ -1016,23 +1016,23 @@ class Paper extends BackboneModel{
     function getVenue(){
         $venue = $this->venue;
         if( empty($venue) ){
-            $venue = ArrayUtils::get_string($this->data, 'venue');
+            $venue = ArrayUtil::get_string($this->data, 'venue');
         }
         
         if( empty($venue) ){
-            $venue = ArrayUtils::get_string($this->data, 'event_title');
+            $venue = ArrayUtil::get_string($this->data, 'event_title');
         }
 
         if( empty($venue) ){
-            $venue = ArrayUtils::get_string($this->data, 'conference');
+            $venue = ArrayUtil::get_string($this->data, 'conference');
         }
 
         if( empty($venue) ){
-            $venue = ArrayUtils::get_string($this->data, 'event_location');
+            $venue = ArrayUtil::get_string($this->data, 'event_location');
         }
 
         if(empty($venue)){
-            $venue = ArrayUtils::get_string($this->data, 'location');
+            $venue = ArrayUtil::get_string($this->data, 'location');
         }
         return $venue;
     }
@@ -1105,7 +1105,7 @@ class Paper extends BackboneModel{
         $data = $this->getData();
         $type = $this->getType();
         $title = $this->getTitle();
-        $status = ($showStatus) ? "&nbsp;".$this->getStatus() : "";
+        $status = ($showStatus) ? $this->getStatus() : "";
         $category = $this->getCategory();
         $au = array();
         foreach($this->getAuthors() as $a){
@@ -1116,9 +1116,7 @@ class Paper extends BackboneModel{
                         $name = "<u>{$a->getNameForForms()}</u>";
                     }
                     else if((!$a->isRoleOn(HQP, $this->getDate()) && !$a->wasLastRole(HQP)) &&
-                            (!$a->isRoleOn(PNI, $this->getDate()) && !$a->wasLastRole(PNI)) &&
-                            (!$a->isRoleOn(CNI, $this->getDate()) && !$a->wasLastRole(CNI)) &&
-                            (!$a->isRoleOn(AR, $this->getDate()) && !$a->wasLastRole(AR))){
+                            (!$a->isRoleOn(NI, $this->getDate()) && !$a->wasLastRole(NI))){
                         $name = "<i>{$a->getNameForForms()}</i>";
                     }
                     $au[] = "<a target='_blank' href='{$a->getUrl()}'><b>{$name}</b></a>";
@@ -1139,14 +1137,14 @@ class Paper extends BackboneModel{
 
         //This is not really a venue, but this is how we want to put this into the proper citation
         if(($type == "Journal Paper" || $type == "Journal Abstract")){
-            $vn = ArrayUtils::get_string($data, 'journal_title');
+            $vn = ArrayUtil::get_string($data, 'journal_title');
             if(empty($vn)){
-                $vn = ArrayUtils::get_string($data, 'published_in');
+                $vn = ArrayUtil::get_string($data, 'published_in');
             }
         }
         if(($type == "Journal Paper")){
-            $volume = ArrayUtils::get_string($data, 'volume');
-            $number = ArrayUtils::get_string($data, 'number');
+            $volume = ArrayUtil::get_string($data, 'volume');
+            $number = ArrayUtil::get_string($data, 'number');
             if(!empty($volume)){
                 $vn .= " $volume";
             }
@@ -1155,25 +1153,25 @@ class Paper extends BackboneModel{
             }
         }
         if($type == "Book Chapter"){
-            $vn .= ArrayUtils::get_string($data, 'book_title');
+            $vn .= ArrayUtil::get_string($data, 'book_title');
         }
 
-        $pg = ArrayUtils::get_string($data, 'pages');
+        $pg = ArrayUtil::get_string($data, 'pages');
         if (strlen($pg) > 0){
             $pg = "{$pg}pp.";
         }
         else{
             $pg = "(no pages)";
         }
-        $pb = ArrayUtils::get_string($data, 'publisher', '(no publisher)');
+        $pb = ArrayUtil::get_string($data, 'publisher', '(no publisher)');
 
         $peer_rev = "";
         if($showPeerReviewed && $category == "Publication"){
             if(isset($data['peer_reviewed']) && $data['peer_reviewed'] == "Yes"){
-                $peer_rev = ",&nbsp;Peer Reviewed";
+                $peer_rev = "&nbsp;/&nbsp;Peer Reviewed";
             }
             else if(isset($data['peer_reviewed']) && $data['peer_reviewed'] == "No"){
-                $peer_rev = ",&nbsp;Not Peer Reviewed";
+                $peer_rev = "&nbsp;/&nbsp;Not Peer Reviewed";
             }
         }
 
@@ -1185,26 +1183,19 @@ class Paper extends BackboneModel{
         }
         $date = date("Y M", strtotime($this->getDate()));
         $type = str_replace("Misc: ", "", $type);
-        if(in_array($type, array('Book', 'Book Chapter', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
-            if($pg != "" || $pb != ""){
-                $vn .= ",";
-            }
-            if($vn != "" || $pg != "" || $pb != ""){
-                $vn = ":&nbsp;$vn";
-            }
+        if( in_array($type, array('Book', 'Book Chapter', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
             if(($pg != "" || $pb != "") && ($status != "" || $peer_rev != "")){
-                $pb .= "<span class='pdfnodisplay'>,</span>";
-            }
-               $citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}&nbsp;{$pg}&nbsp;{$pb}&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
-        }
-        else{
-            if($vn != ""){
                 $vn = ":&nbsp;$vn";
             }
-            if($status != "" || $peer_rev != ""){
-                $vn .= "<span class='pdfnodisplay'>,</span>";
+       		$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn},&nbsp;{$pg}&nbsp;{$pb}
+       		             <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
+    	}
+    	else{
+    	    if($vn != ""){
+    	        $vn = ":&nbsp;$vn";
             }
-            $citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
+        	$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}
+        	             <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
         }
         return trim($citation);
     }
@@ -1226,11 +1217,11 @@ class Paper extends BackboneModel{
         }
         
         if(in_array($this->getType(), array('Book', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
-            $pg = ArrayUtils::get_string($data, 'pages');
+            $pg = ArrayUtil::get_string($data, 'pages');
             if (!(strlen($pg) > 0)){
                 $completeness['pages'] = false;
             }
-            $pb = ArrayUtils::get_string($data, 'publisher', '(no publisher)');
+            $pb = ArrayUtil::get_string($data, 'publisher', '(no publisher)');
             if($pb == '(no publisher)'){
                 $completeness['publisher'] = false;
             }

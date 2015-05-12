@@ -17,7 +17,7 @@ class AddRoleAPI extends API{
 		$groups = $wgUser->getGroups();
 		$me = Person::newFromId($wgUser->getId());
 		$person = Person::newFromName($_POST['user']);
-		if($me->isRoleAtLeast(STAFF) || ($me->isRoleAtLeast(CNI) && $person->isRole(INACTIVE) && $_POST['role'] == HQP)){
+		if($me->isRoleAtLeast(STAFF) || ($me->isRoleAtLeast(NI) && $person->isRole(INACTIVE) && $_POST['role'] == HQP)){
             // Actually Add the Role
             $role = $_POST['role'];
             if(!$noEcho){

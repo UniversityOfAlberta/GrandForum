@@ -45,19 +45,7 @@ class PublicChordTab extends AbstractTab {
             $sortedProjects = array();
             
             foreach($people as $key => $person){
-                if(!$person->isRoleDuring(CNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL) && !$person->isRoleDuring(PNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL) && !$person->isRoleDuring(AR, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL)){
-                    unset($people[$key]);
-                    continue;
-                }
-                if(isset($_GET['noPNI']) && $person->isRoleDuring(PNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL)){
-                    unset($people[$key]);
-                    continue;
-                }
-                if(!isset($_GET['showCNI']) && $person->isRoleDuring(CNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL)){
-                    unset($people[$key]);
-                    continue;
-                }
-                if(!isset($_GET['showAR']) && $person->isRoleDuring(AR, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL)){
+                if(!$person->isRoleDuring(NI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL)){
                     unset($people[$key]);
                     continue;
                 }
@@ -154,9 +142,7 @@ class PublicChordTab extends AbstractTab {
                 }
             }
             
-            $array['filterOptions'] = array(array('name' => 'Show PNI Chords', 'param' => 'noPNI', 'checked' => 'checked'),
-                                            array('name' => 'Show CNI Chords', 'param' => 'showCNI', 'checked' => 'checked', 'inverted' => true),
-                                            array('name' => 'Show AR Chords', 'param' => 'showAR', 'checked' => 'checked', 'inverted' => true));
+            $array['filterOptions'] = array();
 
             $array['dateOptions'] = $dates;
                                       

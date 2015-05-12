@@ -36,11 +36,6 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "</td><td valign='top' width='50%' style='padding-top:15px;padding-left:15px;'>".implode("<hr />", $extra)."</td></tr>";
         
         $this->html .= "<tr><td colspan='2'>".$this->showTable($this->person, $this->visibility)."</td></tr>";
-        if($wgUser->isLoggedIn()){
-            if(isExtensionEnabled('EthicsTable')){
-                $this->html .= "<tr><td colspan='2' align='right'><p>".$this->showEthics($this->person, $this->visibility)."</p></td></tr>";
-            }
-        }
         $this->html .= "</table>";
         $this->showCCV($this->person, $this->visibility);
         return $this->html;
@@ -54,9 +49,6 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "</table>";
         $this->html .= "<h2>Profile</h2>";
         $this->showEditProfile($this->person, $this->visibility);
-        if(isExtensionEnabled('EthicsTable')){
-            $this->showEditEthics($this->person, $this->visibility);
-        }
     }
     
     function canEdit(){
@@ -74,9 +66,6 @@ class PersonProfileTab extends AbstractEditableTab {
         $_POST['type'] = "private";
         $_POST['profile'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['private_profile'])));
         APIRequest::doAction('UserProfile', true);
-        if(isExtensionEnabled('EthicsTable') && $this->person->isHQP()){
-            APIRequest::doAction('UserEthics', true);
-        }
         Person::$cache = array();
         Person::$namesCache = array();
         Person::$idsCache = array();
@@ -348,140 +337,7 @@ EOF;
         }
         return $string;
     }
-
-    /*
-     * Displays the profile for this user
-     */
-    function showEthics($person, $visibility){
-        global $wgUser, $wgServer, $wgScriptPath;
-        
-        $ethics = $person->getEthics();
-        $completed_tutorial = ($ethics['completed_tutorial'])? "Yes" : "No";
-        $date = ($ethics['date'] == '0000-00-00')? "" : $ethics['date'];
-        $ethics_str = "<b>Have not completed the TCPS2 tutorial.</b>";
-        if($completed_tutorial == "Yes"){
-            $ethics_str = "<table><tr>
-            <td><img style='vertical-align:bottom;' height='66px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/ethical_button.jpg' /></td>
-            <td>&nbsp;<h3>I have completed the TCPS2 tutorial on {$date}.</h3></td>
-            <tr></table>";
-        }
-        else{
-            $ethics_str = "<table><tr>
-            <td><img style='vertical-align:bottom;' height='66px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/ethical_button_not.jpg' /></td>
-            <td>&nbsp;<h3>I have not completed the TCPS2 tutorial.</h3></td>
-            <tr></table>";
-        }
-        if($person->isHQP()){
-            return $ethics_str;
-        }
-        else if($person->isCNI() || $person->isPNI()){
-            $relations = $person->getRelations("Supervises");
-            $total_hqp = 0;
-            $ethical_hqp = 0;
-            foreach($relations as $r){
-                $hqp =  $r->getUser2();
-                $ethics = $hqp->getEthics();
-                if($ethics['completed_tutorial']){
-                    $ethical_hqp++;
-                }
-                $total_hqp++;
-            }
-            $perc = 0;
-            if($total_hqp >0 ){
-                $perc = $ethical_hqp/$total_hqp;
-            //$perc = floor($perc / 0.25)*0.25;
-            }
-            $perc = round($perc*100);
-            if($ethical_hqp == 0){
-                $perc = "";
-                $button = "ethical_button_not.jpg";
-            }
-            else{
-                $perc .= "%";
-                $button = "ethical_button_ni.jpg";
-            }
-
-            return "
-            <style>
-            span.supervisor_lbl{
-                text-align: center;
-                bottom: 0px;
-                left: 7px;
-                display: block;
-                font-size: 15px;
-                font-weight: bold;
-            }
-            span.percent_lbl{
-                text-align: center;
-                top: 3px;
-                right: 25px;
-                display: block;
-                font-size: 12px;
-                font-weight: bold;
-            }
-            </style>
-            <table><tr>
-            <td style='position:relative; padding:0;'>
-                <span class='percent_lbl highlights-text'>{$perc}</span>
-                <img style='vertical-align:bottom;' height='66px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/{$button}' />
-                <span class='supervisor_lbl highlights-text'>Supervisor</span>
-            </td>
-            <td style='padding-left:15px;'><h3>{$ethical_hqp} of my {$total_hqp} students have completed the TCPS2 Tutorial.</h3></td>
-            <tr></table>";
-        }
-        return "";
-    }
-    
-    function showEditEthics($person, $visibility){
-        global $config;
-        $ethics = $person->getEthics();
-
-        if($ethics['completed_tutorial']){
-            $completed_tutorial_y = "checked='checked'";
-            $completed_tutorial_n = "";
-        }
-        else{
-            $completed_tutorial_n = "checked='checked'";
-            $completed_tutorial_y = "";
-        }
-
-        $date = ($ethics['date'] == '0000-00-00')? "" : $ethics['date'];
-        if($person->isHQP()){
-            $this->html .=<<<EOF
-            <script>
-            $(function() {
-                $( "#datepicker" ).datepicker( { dateFormat: "yy-mm-dd" } );
-            });
-            </script>
-            <table border='0' cellpadding='5' cellspacing='0' width='70%'>
-            <tr>
-            <td>
-            <i>
-            <p>All {$config->getValue('networkName')} HQP are required to complete the TCPS2 tutorial <b>Course on Research Ethics (CORE)</b>.  This interactive online tutorial can be completed in approximately two hours and provides an essential orientation to the Tri Council Policy Statement.</p>
-            <p>Please note, the current version of the ethics module was released February 2011. If you completed a previous version (i.e. the one that HQP were asked to complete when {$config->getValue('networkName')} started), you are still required to complete the most recent version.</p>
-            </i>
-            </td>
-            </tr>
-            </table>
-            <table border='0' cellpadding='5' cellspacing='0'>
-            <tr><th align='right' style='padding-right:15px;'>I have completed the TCPS2 tutorial:<br />
-                <a target='_blank' href="http://grand-nce.ca/resource/tcps2-core">http://grand-nce.ca/resource/tcps2-core</a></th>
-                <td valign='top'>
-                    Yes <input type='radio' value='1' name='completed_tutorial' {$completed_tutorial_y} />&nbsp;&nbsp;
-                    No <input type='radio' value='0' name='completed_tutorial' {$completed_tutorial_n} />
-                </td>
-            </tr>
-            <tr>
-                <th align='right' style='padding-right:15px;'>Date: </th>
-                <td>
-                    <input id='datepicker' name='date' type='text' value='{$date}' />
-                </td>
-            </tr>
-            </table>
-EOF;
-        }
-    }
-    
+   
     /*
      * Displays the profile for this user
      */
@@ -489,7 +345,7 @@ EOF;
         global $wgUser, $wgServer, $wgScriptPath;
         if(isExtensionEnabled('CCVExport')){
             $me = Person::newFromWgUser();
-            if(($person->isRole(PNI) || $person->isRole(CNI)) && $me->getId() == $person->getId()){
+            if(($person->isRole(NI)) && $me->getId() == $person->getId()){
                 $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:CCVExport?getXML'>Download CCV</a>";
             }
         }
@@ -558,9 +414,7 @@ EOF;
         $nationality = "";
         if($visibility['isMe'] || $visibility['isSupervisor']){
             if($person->isRoleDuring(HQP, "0000", "9999") ||
-               $person->isRoleDuring(CNI, "0000", "9999") ||
-               $person->isRoleDuring(PNI, "0000", "9999") ||
-               $person->isRoleDuring(AR, "0000", "9999")){
+               $person->isRoleDuring(NI, "0000", "9999")){
                 $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
                 $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
                 $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";

@@ -29,7 +29,7 @@ class ContributionPage {
             if($name != "Contribution"){
                 return true;
             }
-            if($wgUser->isLoggedIn() && $me->isRoleAtLeast(CNI)){
+            if($wgUser->isLoggedIn() && $me->isRoleAtLeast(NI)){
                 $cName = $title;
                 $contribution = Contribution::newFromId($cName);
                 if($contribution != null && $contribution->getId() !== null && isset($_GET['create'])){
@@ -355,7 +355,7 @@ class ContributionPage {
                             foreach($allPeople as $person){
                                 if(is_array($personNames) && array_search($person->getNameForForms(), $personNames) === false &&
                                    $person->getNameForForms() != "WikiSysop" &&
-                                   $person->isRoleAtLeast(CNI)){
+                                   $person->isRoleAtLeast(NI)){
                                     $list[] = $person->getNameForForms();
                                 }
                             }
@@ -619,9 +619,9 @@ class ContributionPage {
                 $wgOut->output();
                 $wgOut->disable();
             }
-            else if(!$me->isRoleAtLeast(CNI)){
+            else if(!$me->isRoleAtLeast(NI)){
                 $wgOut->setPageTitle("Permission Error");
-                $wgOut->addHTML("You must be at least a CNI to view this page");
+                $wgOut->addHTML("You must be at least a NI to view this page");
                 $wgOut->output();
                 $wgOut->disable();
             }

@@ -27,11 +27,8 @@ define('RP_HQP',			2);
 define('RP_LEADER',			3);
 define('RP_EVAL_RESEARCHER',4);
 define('RP_EVAL_PROJECT',	5);
-define('RP_EVAL_LOI',		9);
 define('RP_SUPPLEMENTAL',	6);
 define('RP_EVAL_PDF',		7);
-define('RP_EVAL_CNI',		8);
-define('RP_EVAL_LOI_FEED',	10);
 define('RP_REVIEW', 11);
 define('RP_MTG', 12);
 define('RP_CHAMP', 13);
@@ -40,7 +37,6 @@ define('RP_PROJECT_CHAMP', 15);
 define('RP_PROJECT_ISAC', 16);
 define('RP_SUBPROJECT', 17);
 //define('RP_EVAL_RESEARCHER_REV',		9); //Revised answers
-//define('RP_EVAL_CNI_REV',		10); //Revised answers
 //define('RP_EVAL_PROJECT_REV', 11); //Revised answers
 /*
  * GlycoNet
@@ -70,7 +66,6 @@ define('RES_PUBLICATIONS',		9);
 define('RES_ARTIFACTS',			10);
 define('RES_CONTRIBUTIONS',		11);
 define('RES_RESACTIVITY',		12);
-define('RES_BUDGET_PNIADMIN',	13);
 define('RES_ALLOC_BUDGET',      14);
 define('RES_SUBPROJECTS',		5);
 
@@ -134,23 +129,6 @@ define('EVL_KNOWLEDGE_OTHER',   27);
 define('EVL_HQPDEVELOPMENT_OTHER',28);
 define('EVL_REPORTQUALITY_OTHER',29);
 
-//Evaluator LOI
-define('EVL_LOI1',		1);
-define('EVL_LOI2',		2);
-define('EVL_LOI3',		3);
-define('EVL_LOI4',		4);
-define('EVL_LOI5',		5);
-define('EVL_LOI6',		6);
-define('EVL_LOI7',		7);
-define('EVL_LOI8',		8);
-define('EVL_LOI9',		9);
-define('EVL_LOI10',		10);
-define('EVL_LOI11',		11);
-define('EVL_LOI12',		12);
-define('EVL_LOI13',		13);
-define('EVL_LOI14',		14);
-define('EVL_LOI15',		15);
-
 // Second-level identifiers for Supplemental Report.
 define('SUP_HQPS',			1);
 define('SUP_PUBLICATIONS',		2);
@@ -160,7 +138,7 @@ define('SUP_OTHER',			5);
 define('SUP_BUDGET',			6);
 
 // Second level for Eval PDFs
-define('PDF_PNI',			1);
+define('PDF_NI',			1);
 define('PDF_PROJ',			2);
 
 // Second level for Mind The Gap
@@ -278,7 +256,6 @@ define('LDR_MILE_REPORT', 1);
 define('LDR_BUD_ADJUSTMENT',		1);
 define('LDR_BUD_RESEARCHERREMARKS',	2);
 define('LDR_BUD_COMMENTS',		3);
-define('LDR_BUD_FUTURE_CNI',    4);
 
 define('LDR_RESACT_OVERALL',		1);
 define('LDR_RESACT_EXCELLENCE',		2);
@@ -323,10 +300,6 @@ define('SUP_OTH_DETAILS',		1);
 
 define('ISAC_PHASE1_COMMENT', 1);
 define('ISAC_PHASE2_COMMENT', 2);
-
-//Third level Eval LOI => Only 2 types for each question: Y/N radio(YN) AND Comment (C)
-define('EVL_LOI_YN',	1);
-define('EVL_LOI_C',		2);
 
 define('PROP_DESC_THEME',           1);
 define('PROP_DESC_TITLE',           2);

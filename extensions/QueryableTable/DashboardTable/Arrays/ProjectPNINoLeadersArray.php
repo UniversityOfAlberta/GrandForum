@@ -1,8 +1,8 @@
 <?php
 
-    class ProjectPNINoLeadersArray extends GroupByArray {
+    class ProjectNINoLeadersArray extends GroupByArray {
         
-        function ProjectPNINoLeadersArray($table, $params){
+        function ProjectNINoLeadersArray($table, $params){
             $project = $table->obj;
             if(isset($params[1]) && isset($params[2])){
                 $start = $params[1];
@@ -13,8 +13,8 @@
                 $people = $project->getAllPeople();
             }
             foreach($people as $person){
-                if((isset($params[1]) && isset($params[2]) && $person->isRoleDuring(PNI, $start, $end)) || 
-                   ($person->isRole(PNI))){
+                if((isset($params[1]) && isset($params[2]) && $person->isRoleDuring(NI, $start, $end)) || 
+                   ($person->isRole(NI))){
                     if(!$person->leadershipOf($project->getName()) && !$person->isRole(CHAMP)){
                         $this->array[] = $person->getName();
                     }

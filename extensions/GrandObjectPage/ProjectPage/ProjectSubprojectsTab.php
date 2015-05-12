@@ -35,7 +35,7 @@ class ProjectSubprojectsTab extends AbstractTab {
                     $names = array("");
                     $people = array_merge($project->getAllPeople());
                     foreach($people as $person){
-                        if($person->isRoleAtLeast(CNI)){
+                        if($person->isRoleAtLeast(NI)){
                             $names[$person->getName()] = $person->getNameForForms();
                         }
                     }

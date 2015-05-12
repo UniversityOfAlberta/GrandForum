@@ -10,7 +10,7 @@ class EvalOptAssignmentReportItem extends AbstractReportItem {
         $assign_type = $this->getAttr("assign_type", "");
         $year = REPORTING_YEAR;
         
-        if($opt_id == $reviewer_id && ($assign_type == "PNI" || $assign_type == "CNI")){
+        if($opt_id == $reviewer_id && ($assign_type == "NI")){
             $output = $this->processCData("");
 		    $wgOut->addHTML($output);
 		    return;

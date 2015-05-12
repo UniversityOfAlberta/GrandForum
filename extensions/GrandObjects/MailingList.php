@@ -196,9 +196,7 @@ class MailingList extends BackboneModel {
                                 }
                             }
                         }
-                        else if(($value == PL && $person->isProjectLeader()) ||
-                                ($value == COPL && $person->isProjectCoLeader()) ||
-                                ($value == PM && $person->isProjectManager())){
+                        else if($value == PL && $person->isProjectLeader()){
                             $leadership = $person->leadership();
                             foreach($leadership as $proj){
                                 if(count($phaseRules) > 0){

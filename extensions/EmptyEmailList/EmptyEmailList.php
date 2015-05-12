@@ -14,7 +14,7 @@ function runEmptyEmailList($par) {
 class EmptyEmailList extends SpecialPage{
 
 	function EmptyEmailList() {
-		SpecialPage::__construct("EmptyEmailList", CNI.'+', true, 'runEmptyEmailList');
+		SpecialPage::__construct("EmptyEmailList", NI.'+', true, 'runEmptyEmailList');
 	}
 
 	function execute($par){
@@ -23,7 +23,7 @@ class EmptyEmailList extends SpecialPage{
 <tr bgcolor='#F2F2F2'><th>Last Name</th><th>First Name</th><th>Type</th><th>Email</th></tr>");
         foreach(Person::getAllPeople('all') as $person){
             if(($person->getEmail() == "" || $person->getEmail() == "{$config->getValue('supportEmail')}") && 
-               ($person->isRole(HQP) || $person->isRole(PNI) || $person->isRole(CNI))){
+               ($person->isRole(HQP) || $person->isRole(NI))){
                 $names = explode(".", $person->getName());
                 $wgOut->addHTML("<tr bgcolor='#FFFFFF'>
                                     <td align='left'>

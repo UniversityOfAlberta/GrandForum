@@ -42,7 +42,7 @@ EOF;
                     foreach($indices as $j => $index){
                         if(@$types[$j] == "NI"){
                             $names = array("");
-                            $people = array_merge(Person::getAllPeople(PNI), Person::getAllPeople(CNI));
+                            $people = Person::getAllPeople(NI);
                             foreach($people as $person){
                                 $names[$person->getNameForForms()] = $person->getNameForForms();
                             }
@@ -97,7 +97,7 @@ EOF;
                 foreach($indices as $j => $index){
                     if(@$types[$j] == "NI"){
                         $names = array("");
-                        $people = array_merge(Person::getAllPeople(PNI), Person::getAllPeople(CNI));
+                        $people = Person::getAllPeople(NI);
                         foreach($people as $person){
                             $names[$person->getNameForForms()] = $person->getNameForForms();
                         }

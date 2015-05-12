@@ -42,7 +42,6 @@ $cellTypes[V_PERS_NOT_NULL] = "VPersNotNullCell";
 define('SUPPLEMENTAL_STRUCTURE', 1);
 define('REPORT_STRUCTURE', 2);
 define('REPORT2_STRUCTURE', 3);
-define('FUTURE_CNI_STRUCTURE', 4);
 
 $budgetStructures = array();
 $budgetStructures[SUPPLEMENTAL_STRUCTURE] =
@@ -97,26 +96,6 @@ $budgetStructures[REPORT2_STRUCTURE] =
           array(HEAD1,  COL_SUM,             COL_SUM,             COL_SUM,             COL_SUM,             COL_SUM,             COL_SUM,             ROW_SUM,   PERC)
     );
     
-$budgetStructures[FUTURE_CNI_STRUCTURE] =
-    array(array(HEAD1,  READ),
-          array(HEAD2,  SUB_MONEY),
-          array(HEAD3,  MONEY),
-          array(HEAD3,  MONEY),
-          array(HEAD3,  MONEY),
-          array(HEAD3,  MONEY),
-          array(HEAD2,  SUB_MONEY),
-          array(HEAD3,  MONEY),
-          array(HEAD3,  MONEY),
-          array(HEAD3,  MONEY),
-          array(HEAD2,  MONEY),
-          array(HEAD2,  MONEY),
-          array(HEAD2,  SUB_MONEY),
-          array(HEAD3,  MONEY),
-          array(HEAD3,  MONEY),
-          array(HEAD3,  MONEY),
-          array(HEAD1,  COL_SUM)
-    );
-         
 $budgetStructures[REPORT_STRUCTURE] =
     array(array(HEAD1,  V_PERS_NOT_NULL,  BLANK,  BLANK,  BLANK,  BLANK,  BLANK, BLANK,  BLANK,  BLANK),
           array(HEAD1,  V_PROJ, V_PROJ, V_PROJ, V_PROJ, V_PROJ, V_PROJ, BLANK,  BLANK,  BLANK),

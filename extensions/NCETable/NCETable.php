@@ -31,8 +31,6 @@ class NCETable extends SpecialPage {
         require_once('NSERCRangeTab.php');
         require_once('NSERCVariableTab.php');
         require_once('NSERCRangeVariableTab.php');
-        //require_once('NSERC2012Tab.php');
-        //require_once('NSERC2011Tab.php');
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $config;
      
         $init_tab = 0;
@@ -60,13 +58,6 @@ class NCETable extends SpecialPage {
             $tabbedPage->addTab(new NSERCTab($year));
         }
         
-        /* // This is the old version of the NCETables
-        $tabbedPage->addTab(new NSERCTab(2014));
-        $tabbedPage->addTab(new NSERCTab(2013));
-
-        $tabbedPage->addTab(new NSERC2012Tab());
-        $tabbedPage->addTab(new NSERC2011Tab());
-        */
         $tabbedPage->showPage($init_tab);
     }
     

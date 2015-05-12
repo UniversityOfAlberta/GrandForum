@@ -18,6 +18,15 @@ Product = Backbone.Model.extend({
                 this.set("type", ""); // Clear type
             }
         });
+        
+        this.on("change:type", function(){
+            var status = this.get('status');
+            if(productStructure.categories[this.get('category')] !== undefined &&
+               productStructure.categories[this.get('category')].types[this.get('type')] != undefined &&
+               !_.contains(productStructure.categories[this.get('category')].types[this.get('type')].status, status)){
+                this.set('status', _.first(productStructure.categories[this.get('category')].types[this.get('type')].status));
+            }
+        });
     },
 
     getAuthors: function(){
@@ -85,23 +94,25 @@ Product = Backbone.Model.extend({
 
     urlRoot: 'index.php?action=api.product',
     
-    defaults: {
-        id : null,
-        title: "",
-        category: "",
-        type: "",
-        description: "",
-        date: Date.format(new Date(), 'yyyy-MM-dd'),
-        url: "",
-        status: "",
-        data: {},
-        authors: new Array(),
-        projects: new Array(),
-        lastModified: "",
-        deleted: "",
-        access_id: 0,
-        created_by: 0,
-        access: "Forum"
+    defaults: function() {
+        return {
+            id : null,
+            title: "",
+            category: "",
+            type: "",
+            description: "",
+            date: Date.format(new Date(), 'yyyy-MM-dd'),
+            url: "",
+            status: "",
+            data: {},
+            authors: new Array(),
+            projects: new Array(),
+            lastModified: "",
+            deleted: "",
+            access_id: 0,
+            created_by: 0,
+            access: "Forum"
+        };
     },
 });
 
