@@ -660,6 +660,28 @@ class Paper extends BackboneModel{
         return $this->authors;
     }
     
+    function getAuthorNames(){
+        $authors = array();
+        $unserialized = unserialize($this->authors);
+        foreach($unserialized as &$author){
+            if($author == ""){
+                unset($author);
+                continue;
+            }
+            if(is_numeric($author)){
+                $person = Person::newFromId($author);
+                if($person == null) { continue; }
+                $authors[] = (strlen($person->getRealName()) > 0) ? $person->getRealName() : $person->getName();
+                continue;
+            } 
+            else {
+                $authors[] = $author;
+            }
+        }
+        unset($author);
+        return $authors;
+    }
+    
     function generateOldSyncCache(){
         if(count(self::$oldSyncCache) == 0){
             $sql = "SELECT *
@@ -770,6 +792,21 @@ class Paper extends BackboneModel{
             $this->projectsWaiting = false;
         }
         return $this->projects;
+    }
+    
+    // Returns an array of Projects which this Paper is related to
+    function getProjectNames(){
+        $projs = array();
+        if($this->projects != null){
+            foreach($this->projects as $key => $project){
+                if($project == null){
+                    unset($this->projects[$key]);
+                } else {
+                    $projs[] = $project->name;
+                }
+            }
+        }
+        return $projs;
     }
     
     /**
