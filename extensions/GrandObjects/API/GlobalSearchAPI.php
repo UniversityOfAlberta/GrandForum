@@ -17,15 +17,20 @@ class GlobalSearchAPI extends RESTAPI {
             case 'people':
                 $data = array();
                 $people = DBFunctions::select(array('mw_user'),
-                                              array('user_name', 'user_real_name', 'user_id'),
+                                              array('user_name', 'user_real_name', 'user_id', 'user_email'),
                                               array('deleted' => '0'));
                 foreach($people as $pRow){
                     $person = new Person(array());
                     $person->name = $pRow['user_name'];
                     $person->realname = $pRow['user_real_name'];
+                    if($me->isLoggedIn()){
+                        // Only search by email if the person is logged in
+                        $person->email = $pRow['user_email'];
+                    }
                     $realName = $person->getNameForForms();
                     $names = array_merge(explode(".", str_replace(" ", "", unaccentChars($realName))), 
                                          explode(" ", str_replace(".", "", unaccentChars($realName))));
+                    $names[] = unaccentChars($person->getEmail());
                     $found = true;
                     foreach($searchNames as $name){
                         $grepped = preg_grep("/^$name.*/", $names);
