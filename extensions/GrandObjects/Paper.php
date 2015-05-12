@@ -758,6 +758,28 @@ class Paper extends BackboneModel{
         return $this->authors;
     }
     
+    function getAuthorNames(){
+        $authors = array();
+        $unserialized = unserialize($this->authors);
+        foreach($unserialized as &$author){
+            if($author == ""){
+                unset($author);
+                continue;
+            }
+            if(is_numeric($author)){
+                $person = Person::newFromId($author);
+                if($person == null) { continue; }
+                $authors[] = (strlen($person->getRealName()) > 0) ? $person->getRealName() : $person->getName();
+                continue;
+            } 
+            else {
+                $authors[] = $author;
+            }
+        }
+        unset($author);
+        return $authors;
+    }
+    
     /**
      * Generates a cache so that when a sync is being done 
      * it knows what the previous state was
@@ -884,6 +906,21 @@ class Paper extends BackboneModel{
         return $this->projects;
     }
     
+    // Returns an array of Projects which this Paper is related to
+    function getProjectNames(){
+        $projs = array();
+        if($this->projects != null){
+            foreach($this->projects as $key => $project){
+                if($project == null){
+                    unset($this->projects[$key]);
+                } else {
+                    $projs[] = $project->name;
+                }
+            }
+        }
+        return $projs;
+    }
+    
     /**
      * Returns the Universities which are associated with this Paper
      * @return array The Universities which are associated with this Paper
@@ -941,36 +978,36 @@ class Paper extends BackboneModel{
     }
     
     /**
-	 * Returns the 'CCV' type of this Paper
-	 * @return string The 'CCV' type of this Paper
-	 * TODO: Change this to use the Products.xml once it is used
-	 */
-	function getCCVType(){
-	    switch($this->getType()){
-	        case "Aesthetic Object":
-	            return "Aesthetic Object";
-	        case "Device/Machine":
-	            return "Device/Machine";
-	        case "Open Software":
-	            return "Open Software";
-	        case "Patent":
-	            return "Patent";
-	        case "Startup Company":
-	            return "Startup Company";
-	        case "Repository":
-	            return "Repository";
-	        case "Journal Paper":
-	            return "Journals";
-	        case "Book Chapter":
-	            return "Book Chapters";
-	        case "Conference Paper":
+     * Returns the 'CCV' type of this Paper
+     * @return string The 'CCV' type of this Paper
+     * TODO: Change this to use the Products.xml once it is used
+     */
+    function getCCVType(){
+        switch($this->getType()){
+            case "Aesthetic Object":
+                return "Aesthetic Object";
+            case "Device/Machine":
+                return "Device/Machine";
+            case "Open Software":
+                return "Open Software";
+            case "Patent":
+                return "Patent";
+            case "Startup Company":
+                return "Startup Company";
+            case "Repository":
+                return "Repository";
+            case "Journal Paper":
+                return "Journals";
+            case "Book Chapter":
+                return "Book Chapters";
+            case "Conference Paper":
             case "Collections Paper":
             case "Proceedings Paper":
                 return "Conference Publications";
             default:
                 return "Other";
-	    }
-	}
+        }
+    }
     
     /**
      * Returns the venue for this Paper (legacy stuff)
@@ -1158,16 +1195,16 @@ class Paper extends BackboneModel{
             if(($pg != "" || $pb != "") && ($status != "" || $peer_rev != "")){
                 $pb .= "<span class='pdfnodisplay'>,</span>";
             }
-       		$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}&nbsp;{$pg}&nbsp;{$pb}&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
-    	}
-    	else{
-    	    if($vn != ""){
-    	        $vn = ":&nbsp;$vn";
+               $citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}&nbsp;{$pg}&nbsp;{$pb}&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
+        }
+        else{
+            if($vn != ""){
+                $vn = ":&nbsp;$vn";
             }
             if($status != "" || $peer_rev != ""){
                 $vn .= "<span class='pdfnodisplay'>,</span>";
             }
-        	$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
+            $citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
         }
         return trim($citation);
     }
