@@ -20,13 +20,19 @@ ManagePeopleEditRolesView = Backbone.View.extend({
         // Reposition the dialog when the window is resized or the dialog is resized
         setInterval($.proxy(function(){
 	        if(this.$el.width() != dims.w || this.$el.height() != dims.h){
-	            this.$el.dialog("option","position","center");
+	            this.$el.dialog("option","position", {
+                    my: "center bottom",
+                    at: "center center"
+                });
 	            dims.w = this.$el.width();
 	            dims.h = this.$el.height();
 	        }
 	    }, this), 100);
 	    $(window).resize($.proxy(function(){
-	        this.$el.dialog("option","position","center");
+	        this.$el.dialog("option","position", {
+                my: "center bottom",
+                at: "center center"
+            });
 	    }, this));
     },
     

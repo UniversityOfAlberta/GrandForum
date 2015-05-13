@@ -2101,9 +2101,7 @@ class Person extends BackboneModel {
                                     array('user_id' => EQ($this->getId())));
         foreach($data as $row){
             $person = Person::newFromId($row['managed_id']);
-            if(!$person->isDeleted()){
-                $people[$person->getReversedName()] = $person;
-            }
+            $people[$person->getReversedName()] = $person;
         }
         return $people;
     }

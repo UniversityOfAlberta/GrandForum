@@ -55,7 +55,10 @@ ManagePeopleRowView = Backbone.View.extend({
 	        resizable: false,
 	        draggable: false,
 	        width: 800,
-	        position: { my: "center", at: 'center', of: window },
+	        position: {
+                my: "center bottom",
+                at: "center center"
+            },
 	        open: function(){
 	            $("html").css("overflow", "hidden");
 	        },
@@ -79,6 +82,10 @@ ManagePeopleRowView = Backbone.View.extend({
 	        resizable: false,
 	        draggable: false,
 	        width: "500px",
+	        position: {
+                my: "center bottom",
+                at: "center center"
+            },
 	        open: function(){
 	            $("html").css("overflow", "hidden");
 	        },
@@ -101,6 +108,10 @@ ManagePeopleRowView = Backbone.View.extend({
 	        resizable: false,
 	        draggable: false,
 	        width: "500px",
+	        position: {
+                my: "center bottom",
+                at: "center center"
+            },
 	        open: function(){
 	            $("html").css("overflow", "hidden");
 	        },
@@ -116,18 +127,6 @@ ManagePeopleRowView = Backbone.View.extend({
 	            }, this)
 	        }
 	    });
-	    /*var dimRoles     = {w:0, h:0};
-	    var dimProjects  = {w:0, h:0};
-	    var dimRelations = {w:0, h:0};
-	    setInterval($.proxy(function(){
-	        if(this.rolesDialog.width() != dimRoles.w || this.rolesDialog.height() != dimRoles.h){
-	            this.rolesDialog.dialog("option","position","center");
-	            dimRoles.w = this.rolesDialog.width();
-	            dimRoles.h = this.rolesDialog.height();
-	        }
-	        this.projectsDialog.dialog("option","position","center");
-	        this.relationsDialog.dialog("option","position","center");
-	    }, this), 100);*/
         return this.$el;
     }
     

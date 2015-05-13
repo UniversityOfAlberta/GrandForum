@@ -2,9 +2,13 @@
     INSERT INSTRUCTIONS
 </p>
 <p>
-    <button id="addMemberButton">Add Member</button>
-    <button id="findMemberButton">Add Existing Member</button>
+    <button id="addNewMember" title="Creates a new member">Add New Member</button>
+    <button id="addExistingMember" title="Adds an existing member to the list below">Add Existing Member</button>
 </p>
+<div id="addExistingMemberDialog" style="display:none; overflow:visible;" title="Add Existing Member">
+    <p>Select the person you would like to show up in your table and then press "Save".</p>
+    <select id="selectExistingMember"></select>
+</div>
 <table id="listTable" frame="box" rules="all">
     <thead>
         <tr>

@@ -42,6 +42,8 @@ class PeopleManagedAPI extends RESTAPI {
             DBFunctions::insert('grand_managed_people',
                                 array('user_id' => $me->getId(),
                                       'managed_id' => $this->POST('id')));
+            return json_encode(array('user_id' => $me->getId(),
+                                     'managed_id' => $this->POST('id')));
         }
         else{
             $this->throwError("Not Logged In");

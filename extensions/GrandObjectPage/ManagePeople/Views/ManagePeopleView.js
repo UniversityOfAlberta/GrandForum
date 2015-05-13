@@ -4,6 +4,7 @@ ManagePeopleView = Backbone.View.extend({
     subViews: new Array(),
     allPeople: null,
     people: null,
+    addExistingMemberDialog: null,
 
     initialize: function(){
         this.allPeople = new People();
@@ -19,7 +20,7 @@ ManagePeopleView = Backbone.View.extend({
     
     addRows: function(){
         var searchStr = "";
-        var order = [4, 'desc'];
+        var order = [4, 'asc'];
         if(this.table != undefined){
             order = this.table.order();
             searchStr = this.table.search();
@@ -63,14 +64,58 @@ ManagePeopleView = Backbone.View.extend({
 	    this.$("#listTable_length").empty();
     },
     
+    addExistingMember: function(){
+        this.$("#selectExistingMember").empty();
+        this.addExistingMemberDialog.dialog('open');
+        this.allPeople.each(function(p){
+            this.$("#selectExistingMember").append("<option value='" + p.get('id') + "'>" + p.get('fullName') + "</option>");
+        });
+        $("#selectExistingMember").chosen();
+        this.addExistingMemberDialog.parent().css('overflow', 'visible');
+    },
+    
     events: {
-
+        "click #addExistingMember": "addExistingMember"
     },
     
     render: function(){
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();
+        this.addExistingMemberDialog = this.$("#addExistingMemberDialog").dialog({
+	        autoOpen: false,
+	        modal: true,
+	        show: 'fade',
+	        resizable: false,
+	        draggable: false,
+	        width: "500px",
+	        position: {
+                my: "center bottom",
+                at: "center center"
+            },
+	        open: function(){
+	            $("html").css("overflow", "hidden");
+	        },
+	        beforeClose: function(){
+	            $("html").css("overflow", "auto");
+	        },
+	        buttons: {
+	            "Save": $.proxy(function(e){
+	                var id = $("#selectExistingMember").val();
+	                $.post(wgServer + wgScriptPath + "/index.php?action=api.people/managed", {id: id})
+	                .done($.proxy(function(){
+	                    this.people.add(this.allPeople.findWhere({'id': id}));
+	                }, this))
+	                .fail($.proxy(function(){
+	                    addError("There was a problem adding this person");
+	                }, this));
+                    this.addExistingMemberDialog.dialog('close');
+	            }, this),
+	            "Cancel": $.proxy(function(){
+	                this.addExistingMemberDialog.dialog('close');
+	            }, this)
+	        }
+	    });
         return this.$el;
     }
 
