@@ -4,7 +4,7 @@ autoload_register('API');
 global $apiRequest;
 $apiRequest = new APIRequest();
 
-$wgHooks['AuthPluginSetup'][1000] = array($apiRequest, 'processRequest');
+$wgHooks['UnknownAction'][1000] = array($apiRequest, 'processRequest');
 
 /**
  * @package API
