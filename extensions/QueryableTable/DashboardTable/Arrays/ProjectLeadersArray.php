@@ -4,7 +4,7 @@
         
         function ProjectLeadersArray($table){
             $project = $table->obj;
-            $people = array_merge($project->getLeaders(), $project->getCoLeaders());
+            $people = $project->getLeaders();
             foreach($people as $person){
                 $this->array[] = $person->getName();
             }

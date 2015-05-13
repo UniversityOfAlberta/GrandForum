@@ -69,7 +69,6 @@ class AddProjectLeaderAPI extends API{
             Person::$idsCache = array();
             Person::$namesCache = array();
             Person::$leaderCache = array();
-            Person::$coLeaderCache = array();
             $person = Person::newFromId($person->getId());
             MailingList::subscribeAll($person);
             

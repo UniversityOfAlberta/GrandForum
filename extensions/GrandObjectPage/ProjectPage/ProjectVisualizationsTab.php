@@ -188,9 +188,7 @@ class ProjectVisualizationsTab extends AbstractTab {
                 if(strcmp($start, $end) > 0){
                     $start = $end;
                 }
-                if($person->isRoleDuring(PNI, $start, $end) ||
-                   $person->isRoleDuring(CNI, $start, $end) ||
-                   $person->isRoleDuring(AR, $start, $end)){
+                if($person->isRoleDuring(NI, $start, $end)){
                     $content = "<a href='{$person->getUrl()}' target='_blank'>View Member's Page</a>";
                     $items[] = array('content' => $person->getNameForForms(),
                                      'description' => array('title' => $person->getNameForForms(),
@@ -314,19 +312,7 @@ class ProjectVisualizationsTab extends AbstractTab {
             $people = $project->getAllPeople(null, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
             $sortedPeople = array();
             foreach($people as $key => $person){
-                if(!$person->isRoleDuring(CNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH) && !$person->isRoleDuring(PNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH) && !$person->isRoleDuring(AR, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
-                    unset($people[$key]);
-                    continue;
-                }
-                if(isset($_GET['noPNI']) && $person->isRoleDuring(PNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
-                    unset($people[$key]);
-                    continue;
-                }
-                if(isset($_GET['noCNI']) && $person->isRoleDuring(CNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
-                    unset($people[$key]);
-                    continue;
-                }
-                if(isset($_GET['noAR']) && $person->isRoleDuring(AR, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
+                if(!$person->isRoleDuring(NI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
                     unset($people[$key]);
                     continue;
                 }
@@ -358,17 +344,6 @@ class ProjectVisualizationsTab extends AbstractTab {
                     }
                     else{
                         $sortedPeople['Unknown'][] = $person;
-                    }
-                }
-                else if($_GET['sortBy'] == 'role'){
-                    if($person->isRoleDuring(PNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
-                        $sortedPeople[PNI][] = $person;
-                    }
-                    else if($person->isRoleDuring(CNI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
-                        $sortedPeople[CNI][] = $person;
-                    }
-                    else if($person->isRoleDuring(AR, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
-                        $sortedPeople[AR][] = $person;
                     }
                 }
             }
@@ -461,18 +436,14 @@ class ProjectVisualizationsTab extends AbstractTab {
             }
             
             $array['filterOptions'] = array(array('name' => 'Show Co-Authorship', 'param' => 'noCoAuthorship', 'checked' => 'checked'),
-                                      array('name' => 'Show Relationships', 'param' => 'noRelations', 'checked' => 'checked'),
-                                      array('name' => 'Show PNIs', 'param' => 'noPNI', 'checked' => 'checked'),
-                                      array('name' => 'Show CNIs', 'param' => 'noCNI', 'checked' => 'checked'),
-                                      array('name' => 'Show ARs', 'param' => 'noAR', 'checked' => 'checked'));
+                                            array('name' => 'Show Relationships', 'param' => 'noRelations', 'checked' => 'checked'));
                                       
             $array['dateOptions'] = $dates;
                                       
             $array['sortOptions'] = array(array('name' => 'Last Name', 'value' => 'name', 'checked' => 'checked'),
                                           array('name' => 'University', 'value' => 'uni', 'checked' => ''),
                                           array('name' => 'Title', 'value' => 'position', 'checked' => ''),
-                                          array('name' => 'Department', 'value' => 'dept', 'checked' => ''),
-                                          array('name' => 'Primary Role', 'value' => 'role', 'checked' => '')
+                                          array('name' => 'Department', 'value' => 'dept', 'checked' => '')
                                           );
                                       
             $array['matrix'] = $matrix;

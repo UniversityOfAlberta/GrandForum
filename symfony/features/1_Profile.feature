@@ -4,7 +4,7 @@ Feature: User Profile
     I need to be able to edit my profile
 
     Scenario: Editing University information
-        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "My Profile"
         And I press "Edit Profile"
         And I fill in "combo_title" with "Professor"
@@ -17,7 +17,7 @@ Feature: User Profile
         And I should see "Professor"
         
     Scenario: Editing University information again
-        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "My Profile"
         And I press "Edit Profile"
         And I select "University of Alberta" from "university"
@@ -31,7 +31,7 @@ Feature: User Profile
         And I should not see "Computer Science"
         
     Scenario: Editing Profile text
-        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "My Profile"
         And I press "Edit Profile"
         And I fill in "public_profile" with "My Public Profile"
@@ -40,5 +40,5 @@ Feature: User Profile
         Then I should see "'Profile' updated successfully."
         And I should see "My Private Profile"
         When I follow "status_logout"
-        And I go to "index.php/PNI:PNI.User1"
+        And I go to "index.php/NI:NI.User1"
         Then I should see "My Public Profile"

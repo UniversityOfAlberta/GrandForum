@@ -47,9 +47,7 @@ define('PROJECT_PRESENTATIONS', 1018);
 define('PROJECT_PEOPLE_ARRAY', 1125);
 define('PROJECT_LEADERS_ARRAY', 1126);
 define('PROJECT_PEOPLE_NO_LEADERS_ARRAY', 1127);
-define('PROJECT_PNI_NO_LEADERS_ARRAY', 1128);
-define('PROJECT_CNI_NO_LEADERS_ARRAY', 1129);
-define('PROJECT_AR_NO_LEADERS_ARRAY', 1130);
+define('PROJECT_NI_NO_LEADERS_ARRAY', 1128);
 define('PROJECT_CHAMPIONS_ARRAY', 1131);
 
 $cellTypes[PERSON_NAME] = "PersonNameCell";
@@ -92,9 +90,7 @@ $cellTypes[PROJECT_PEOPLE_ROLES] = "ProjectPeopleRolesCell";
 $arrayTypes[PROJECT_PEOPLE_ARRAY] = "ProjectPeopleArray";
 $arrayTypes[PROJECT_LEADERS_ARRAY] = "ProjectLeadersArray";
 $arrayTypes[PROJECT_PEOPLE_NO_LEADERS_ARRAY] = "ProjectPeopleNoLeadersArray";
-$arrayTypes[PROJECT_PNI_NO_LEADERS_ARRAY] = "ProjectPNINoLeadersArray";
-$arrayTypes[PROJECT_CNI_NO_LEADERS_ARRAY] = "ProjectCNINoLeadersArray";
-$arrayTypes[PROJECT_AR_NO_LEADERS_ARRAY] = "ProjectARNoLeadersArray";
+$arrayTypes[PROJECT_NI_NO_LEADERS_ARRAY] = "ProjectNINoLeadersArray";
 $arrayTypes[PROJECT_CHAMPIONS_ARRAY] = "ProjectChampionsArray";
 
 //DashboardTable Structures

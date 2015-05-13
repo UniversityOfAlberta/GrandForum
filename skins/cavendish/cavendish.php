@@ -868,6 +868,12 @@ class CavendishTemplate extends QuickTemplate {
 		    setcookie('sideToggled', 'out', time()-3600);
 		    $loginFailed = (isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword']));
 		    if($loginFailed){
+		        if(isset($_POST['wpName'])){
+		            $_POST['wpUsername'] = $_POST['wpName'];
+		        }
+		        else{
+		            $_POST['wpName'] = $_POST['wpUsername'];
+		        }
 		        $person = Person::newFromName($_POST['wpName']);
 		        if($person == null || $person->getName() == ""){
 		            $failMessage = "<p class='inlineError'>There is no user by the name of <b>{$_POST['wpName']}</b>.  If you are an HQP and do not have an account, please ask your supervisor to create one for you.<br />";
@@ -877,9 +883,9 @@ class CavendishTemplate extends QuickTemplate {
 		            $failMessage .= "</p>";
 		        }
 		        else if(isset($_POST['wpMailmypassword'])){
-		            $user = User::newFromName($_POST['wpName']);
+		            $user = User::newFromName($_POST['wpUsername']);
 		            $user->load();
-		            $failMessage = "<p>A new password has been sent to the e-mail address registered for \"{$_POST['wpName']}\".  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><b>NOTE: Only one password reset can be requested every half hour.</b></p>";
+		            $failMessage = "<p>A new password has been sent to the e-mail address registered for &quot;{$_POST['wpName']}&quot;.  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><b>NOTE: Only one password reset can be requested every 15 minutes.</b></p>";
 		        }
 		        else if($person->getUser()->checkTemporaryPassword($_POST['wpPassword'])){
 		            $failMessage = "";
@@ -888,14 +894,44 @@ class CavendishTemplate extends QuickTemplate {
 		        else{
 		            $failMessage = "<p>Incorrect password entered. Please try again.</p>";
 		        }
-		        $message = "<tr><td colspan='2'>$failMessage
+		        if(isset($_POST['wpMailmypassword'])){
+		            echo "<script type='text/javascript'>
+		                parent.showResetMessage(\"$failMessage\");
+		            </script>";
+		            exit;
+		        }
+		        $message = "<tr><td colspan='2'><div style='display:inline-block;' id='failMessage'>$failMessage</span>
 <p>
 You must have cookies enabled to log in to $wgSiteName.<br />
 </p>
 <p>
 Your login ID is a concatenation of your first and last names: <b>First.Last</b> (case sensitive)
 If you have forgotten your password please enter your login and ID and request a new random password to be sent to the email address associated with your Forum account.</p></td></tr>";
-		        $emailPassword = "<br /><br /><input class='dark' type='submit' name='wpMailmypassword' id='wpMailmypassword' tabindex='6' value='E-mail new password' />";
+		        $emailPassword = "
+		        
+		        <form target='resetFrame' method='post' action='$wgServer$wgScriptPath/index.php/Special:PasswordReset' style='position:relative;left:5px;'>
+		        <table>
+		            <tr>
+		                <td>
+		                    <input id='wpUsername1' type='hidden' name='wpUsername' value='' />
+		                    <input type='hidden' name='wpEmail' value='' />
+		                    <input class='dark' type='submit' name='wpMailmypassword' id='wpMailmypassword' tabindex='6' value='E-mail new password' />
+		                </td>
+		            </tr>
+		        </table>
+		        </form>
+		        <iframe name='resetFrame' id='resetFrame' src='' style='width:0;height:0;border:0;' frameborder='0' width='0' height='0'></iframe>
+		        <script type='text/javascript'>
+		            function showResetMessage(message){
+		                $('#failMessage').html(message);
+		            }
+		            $('#wpUsername1').attr('value', $('#wpName1').val());
+		            $('#wpName1').change(function(){
+		                $('#wpUsername1').attr('value', $('#wpName1').val());
+		            }).keyup(function(){
+		                $('#wpUsername1').attr('value', $('#wpName1').val());
+		            });
+		        </script>";
 		    }
 		    if($_SESSION == null || 
 		       $wgRequest->getSessionData('wsLoginToken') == "" ||
@@ -964,14 +1000,14 @@ If you have forgotten your password please enter your login and ID and request a
 	<table style='width:185px;'>
 	    $message
 		<tr class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)">
-			<td valign='middle' align='right'>Username:</td>
+			<td valign='middle' align='right' style='width:1%;'>Username:</td>
 			<td class="mw-input">
 				<input type='text' class='loginText dark' style='width:97%;' name="wpName" value="$name" id="wpName1"
 					tabindex="1" size='20' />
 			</td>
 		</tr>
 		<tr>
-			<td valign='middle' align='right'><label for='wpPassword1'>Password:</label></td>
+			<td valign='middle' align='right' style='width:1%;'><label for='wpPassword1'>Password:</label></td>
 			<td class="mw-input">
 				<input type='password' class='loginPassword dark' style='width:97%' name="wpPassword" id="wpPassword1"
 					tabindex="2" size='20' />
@@ -987,14 +1023,15 @@ If you have forgotten your password please enter your login and ID and request a
 										/> <label for="wpRemember">Remember my login on this computer</label>
 			</td>
 		</tr>
-				<tr>
-			<!--td></td-->
+	    <tr>
 			<td colspan="2" class="mw-submit">
-				<input type='submit' class='dark' name="wpLoginattempt" id="wpLoginattempt" tabindex="5" value="Log in" />$emailPassword
-							</td>
+				<input type='submit' class='dark' name="wpLoginattempt" id="wpLoginattempt" tabindex="5" value="Log in" />
+			</td>
 		</tr>
 	</table>
-<input type="hidden" name="wpLoginToken" value="$token" /></form></li>
+<input type="hidden" name="wpLoginToken" value="$token" /></form>
+$emailPassword
+</li>
 EOF;
         }
 		wfRunHooks( 'MonoBookTemplateToolboxEnd', array( &$this ) );

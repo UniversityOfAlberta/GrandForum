@@ -282,7 +282,7 @@ class ProjectMilestoneAPI extends API{
                 }
             }
         }
-        foreach(array_merge($milestone->getProject()->getLeaders(), $milestone->getProject()->getCoLeaders()) as $leader){
+        foreach($milestone->getProject()->getLeaders() as $leader){
             $skip = false;
             foreach($people as $person){
                 if($leader->getId() == $person->getId()){

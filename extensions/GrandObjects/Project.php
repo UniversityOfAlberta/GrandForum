@@ -58,7 +58,13 @@ class Project extends BackboneModel {
                  ORDER BY e.id DESC LIMIT 1)";
         $data = DBFunctions::execSQL($sql);
         if (DBFunctions::getNRows() > 0){
-            $project = new Project($data);
+            if(count($data) > 1){
+                // This project has a history
+                $project = Project::newFromHistoricId($data[0]['id']);
+            }
+            else{
+                $project = new Project($data);
+            }
             self::$cache[$project->id] = &$project;
             self::$cache[$project->name] = &$project;
             return $project;
@@ -556,6 +562,7 @@ EOF;
     // If $filter is included, only users of that type will be selected
     function getAllPeople($filter = null){
         $currentDate = date('Y-m-d H:i:s');
+        $year = date('Y');
         $created = $this->getCreated();
         $people = array();
         if(!$this->clear){
@@ -584,7 +591,12 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if(($filter == null || ($currentDate >= $created && $person->isRole($filter)) || $person->isRoleDuring($filter, $created, "9999")) && !$person->isRole(MANAGER)){
+            if((($filter == AR && $person->isRole(NI) && !$person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
+                ($filter == CI && $person->isRole(NI) && $person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
+                ($filter == PL && $person->isRole(NI) && $person->leadershipOf($this)))){
+                $people[$person->getId()] = $person;
+            }
+            else if(($filter == null || ($currentDate >= $created && $person->isRole($filter)) || $person->isRoleDuring($filter, $created, "9999")) && !$person->isRole(MANAGER)){
                 $people[$person->getId()] = $person;
             }
         }
@@ -599,6 +611,7 @@ EOF;
             $startRange = date("Y-01-01 00:00:00");
             $endRange = date("Y-12-31 23:59:59");
         }
+        $year = substr($endRange, 0, 4);
         $people = array();
         if(!$this->clear){
             $preds = $this->getPreds();
@@ -631,7 +644,12 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if(($filter == null || $person->isRoleDuring($filter, $startRange, $endRange)) && ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
+            if((($filter == AR && $person->isRoleDuring(NI, $startRange, $endRange) && !$person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
+                ($filter == CI && $person->isRole(NI, $startRange, $endRange) && $person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
+                ($filter == PL && $person->isRole(NI, $startRange, $endRange) && $person->leadershipOf($this) && !$person->leadershipOf($this)))){
+                $people[$person->getId()] = $person;
+            }
+            else if(($filter == null || $person->isRoleDuring($filter, $startRange, $endRange)) && ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
                 $people[$person->getId()] = $person;
             }
         }
@@ -639,6 +657,7 @@ EOF;
     }
     
     function getAllPeopleOn($filter, $date, $includeManager=false){
+        $year = substr($date, 0, 4);
         $people = array();
         if(!$this->clear){
             $preds = $this->getPreds();
@@ -659,7 +678,12 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if(($filter == null || $person->isRoleOn($filter, $date)) && ($includeManager || !$person->isRoleOn(MANAGER, $date))){
+            if((($filter == AR && $person->isRoleOn(NI, $date) && !$person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
+                ($filter == CI && $person->isRoleOn(NI, $date) && $person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
+                ($filter == PL && $person->isRoleOn(NI, $date) && $person->leadershipOf($this) && !$person->leadershipOf($this)))){
+                $people[$person->getId()] = $person;
+            }
+            else if(($filter == null || $person->isRoleOn($filter, $date)) && ($includeManager || !$person->isRoleOn(MANAGER, $date))){
                 $people[$person->getId()] = $person;
             }
         }
@@ -783,108 +807,6 @@ EOF;
         return $champs;
     }
 
-    // Returns the leader of this Project
-    function getLeader(){
-        $sql = "SELECT pl.*
-                FROM grand_project_leaders pl, mw_user u
-                WHERE pl.project_id = '{$this->id}'
-                AND pl.type = 'leader'
-                AND u.user_id = pl.user_id
-                AND u.deleted != '1'
-                AND (pl.end_date = '0000-00-00 00:00:00'
-                     OR pl.end_date > CURRENT_TIMESTAMP)";
-        $data = DBFunctions::execSQL($sql);
-        if(count($data) > 0){
-            return Person::newFromId($data[0]['user_id']);
-        }
-        else {
-            return null;
-        }
-    }
-    
-    // Returns the co-leader of this Project
-    function getCoLeader(){
-        $sql = "SELECT pl.*
-                FROM grand_project_leaders pl, mw_user u
-                WHERE pl.project_id = '{$this->id}'
-                AND pl.type = 'co-leader'
-                AND u.user_id = pl.user_id
-                AND u.deleted != '1'
-                AND (pl.end_date = '0000-00-00 00:00:00'
-                     OR pl.end_date > CURRENT_TIMESTAMP)";
-        $data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
-            return Person::newFromId($data[0]['user_id']);
-        }
-        else {
-            return null;
-        }
-    }
-    
-    /// Returns an array with the coleaders of the project.  By default, the
-    /// resulting array contains instances of Person.  If #onlyid is set to
-    /// true, then the resulting array contains only numerical user IDs.
-    function getCoLeaders($onlyid = false){
-        $onlyIdStr = ($onlyid) ? 'true' : 'false';
-        if(isset($this->leaderCache['coleaders'.$onlyIdStr])){
-            return $this->leaderCache['coleaders'.$onlyIdStr];
-        }
-        $ret = array();
-        if(!$this->clear){
-            $preds = $this->getPreds();
-            foreach($preds as $pred){
-                foreach($pred->getCoLeaders($onlyid) as $leader){
-                    if($onlyid){
-                        $ret[$leader] = $leader;
-                    }
-                    else{
-                        $ret[$leader->getId()] = $leader;
-                    }
-                }
-            }
-        }
-        $sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
-                WHERE pl.project_id = '{$this->id}'
-                AND pl.type = 'co-leader'
-                AND u.user_id = pl.user_id
-                AND u.deleted != '1'
-                AND (pl.end_date = '0000-00-00 00:00:00'
-                     OR pl.end_date > CURRENT_TIMESTAMP)";
-        $data = DBFunctions::execSQL($sql);
-        if ($onlyid) {
-            foreach ($data as &$row)
-                $ret[$row['user_id']] = $row['user_id'];
-        }
-        else {
-            foreach ($data as &$row)
-                $ret[$row['user_id']] = Person::newFromId($row['user_id']);
-        }
-        $this->leaderCache['coleaders'.$onlyIdStr] = $ret;
-        return $ret;
-    }
-    
-    function getCoLeadersHistory(){
-        $ret = array();
-        if(!$this->clear){
-            $preds = $this->getPreds();
-            foreach($preds as $pred){
-                foreach($pred->getCoLeadersHistory() as $leader){
-                    $ret[$leader->getId()] = $leader;
-                }
-            }
-        }
-        $sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
-                WHERE pl.project_id = '{$this->id}'
-                AND pl.type = 'co-leader'
-                AND u.user_id = pl.user_id
-                AND u.deleted != '1'";
-        $data = DBFunctions::execSQL($sql);
-        foreach ($data as &$row){
-            $ret[$row['user_id']] = Person::newFromId($row['user_id']);
-        }
-        return $ret;
-    }
-
     /// Returns an array with the leaders of the project.  By default, the
     /// resulting array contains instances of Person.  If #onlyid is set to
     /// true, then the resulting array contains only numerical user IDs.
@@ -946,48 +868,6 @@ EOF;
         foreach ($data as &$row){
             $ret[$row['user_id']] = Person::newFromId($row['user_id']);
         }
-        return $ret;
-    }
-    
-    /// Returns an array with the leaders of the project.  By default, the
-    /// resulting array contains instances of Person.  If #onlyid is set to
-    /// true, then the resulting array contains only numerical user IDs.
-    function getManagers($onlyid = false) {
-        $onlyIdStr = ($onlyid) ? 'true' : 'false';
-        if(isset($this->leaderCache['managers'.$onlyIdStr])){
-            return $this->leaderCache['managers'.$onlyIdStr];
-        }
-        $ret = array();
-        if(!$this->clear){
-            $preds = $this->getPreds();
-            foreach($preds as $pred){
-                foreach($pred->getManagers($onlyid) as $leader){
-                    if($onlyid){
-                        $ret[$leader] = $leader;
-                    }
-                    else{
-                        $ret[$leader->getId()] = $leader;
-                    }
-                }
-            }
-        }
-        $sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
-                WHERE pl.project_id = '{$this->id}'
-                AND pl.type = 'manager'
-                AND u.user_id = pl.user_id
-                AND u.deleted != '1'
-                AND (pl.end_date = '0000-00-00 00:00:00'
-                     OR pl.end_date > CURRENT_TIMESTAMP)";
-        $data = DBFunctions::execSQL($sql);
-        if ($onlyid) {
-            foreach ($data as &$row)
-                $ret[$row['user_id']] = $row['user_id'];
-        }
-        else {
-            foreach ($data as &$row)
-                $ret[$row['user_id']] = Person::newFromId($row['user_id']);
-        }
-        $this->leaderCache['managers'.$onlyIdStr] = $ret;
         return $ret;
     }
     
@@ -1605,8 +1485,7 @@ EOF;
             }
         }
         foreach($this->getAllPeopleDuring(null, ($year+1)."-00-00 00:00:00", ($year + 2)."-00-00 00:00:00") as $member){
-            if($member->isRole(PNI, ($year+1)."-00-00 00:00:00", ($year + 2)."-00-00 00:00:00") || 
-               $member->isRole(CNI, ($year+1)."-00-00 00:00:00", ($year + 2)."-00-00 00:00:00")){
+            if($member->isRole(NI, ($year+1)."-00-00 00:00:00", ($year + 2)."-00-00 00:00:00")){
                 $budget = $member->getAllocatedBudget($year);
                 if($budget != null){
                     $budget = $budget->copy();
@@ -1781,11 +1660,9 @@ EOF;
                                            array("b) Conferences"),
                                            array("c) {$config->getValue('networkName')} annual conference")));
         foreach($this->getAllPeopleDuring(null, ($year+1).NCE_START_MONTH, ($year+2).NCE_END_MONTH) as $member){
-            $isPNI = $member->isRoleDuring(PNI, ($year+1).NCE_START_MONTH, ($year+2).NCE_END_MONTH);
-            $isCNI = $member->isRoleDuring(CNI, ($year+1).NCE_START_MONTH, ($year+2).NCE_END_MONTH);
-            if(($role == PNI && $isPNI && !$isCNI) || 
-               ($role == CNI && $isCNI && !$isPNI) ||
-               ($role == 'all' && ($isPNI || $isCNI))){
+            $isNI = $member->isRoleDuring(NI, ($year+1).NCE_START_MONTH, ($year+2).NCE_END_MONTH);
+            if(($role == NI && $isNI) ||
+               ($role == 'all' && $isNI)){
                 if(isset($alreadySeen[$member->getId()])){
                     continue;
                 }
@@ -1804,58 +1681,6 @@ EOF;
                     }
                 }
             }
-        }
-        // Now do the Future CNIs budget
-        if($role == 'all'){
-            $rep_addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, LDR_BUD_FUTURE_CNI, 0);
-            $budget_blob = new ReportBlob(BLOB_EXCEL, $year, 0, $this->getId());
-            $budget_blob->load($rep_addr);
-            $data = $budget_blob->getData();
-            $budget = null;
-            if($data != null){
-                $budget = new Budget("XLS", FUTURE_CNI_STRUCTURE, $data);
-                if($budget->copy()->limit(0, 1)->select(READ, array("Future CNIs"))->nCols() == 0){
-                    $budget = null;
-                }
-            }
-            if($budget == null){
-                $budget = new Budget(array(array(READ),
-                                           array(SUB_MONEY),
-                                           array(MONEY),
-                                           array(MONEY),
-                                           array(MONEY),
-                                           array(MONEY),
-                                           array(SUB_MONEY),
-                                           array(MONEY),
-                                           array(MONEY),
-                                           array(MONEY),
-                                           array(MONEY),
-                                           array(MONEY),
-                                           array(SUB_MONEY),
-                                           array(MONEY),
-                                           array(MONEY),
-                                           array(MONEY),
-                                           array(COL_SUM)),
-                                     array(array("Future CNIs"),
-                                           array(0),
-                                           array(0),
-                                           array(0),
-                                           array(0),
-                                           array(0),
-                                           array(0),
-                                           array(0),
-                                           array(0),
-                                           array(0),
-                                           array(0),
-                                           array(0),
-                                           array(0),
-                                           array(0),
-                                           array(0),
-                                           array(0),
-                                           array(0)));
-            }
-            $nameBudget[] = $budget->copy()->limit(0, 1)->select(READ, array("Future CNIs"))->union(new Budget());;
-            $projectBudget[] = Budget::union_tables(array(new Budget(), $budget->copy()->select(READ, array("Future CNIs"))->limit(1, 16)));
         }
         // Join all budgets together now
         $nameBudget = Budget::join_tables($nameBudget)->join(Budget::union_tables(array(new Budget(), new Budget())));

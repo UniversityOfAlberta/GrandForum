@@ -11,68 +11,50 @@ class ProjectNIBudgetReportItem extends StaticReportItem {
         $topHeader->xls[0][1]->span = 2;
         $topHeader->xls[0][2]->span = 2;
         
-        $pniHeader = new Budget(array(array(HEAD_ROW, HEAD_ROW, HEAD_ROW, HEAD_ROW, HEAD_ROW)),
-                                array(array("PNI Name", "%", "$", "%", "$")));
-        $cniHeader = new Budget(array(array(HEAD_ROW, HEAD_ROW, HEAD_ROW, HEAD_ROW, HEAD_ROW)),
-                                array(array("CNI Name", "%", "$", "%", "$")));
+        $niHeader = new Budget(array(array(HEAD_ROW, HEAD_ROW, HEAD_ROW, HEAD_ROW, HEAD_ROW)),
+                               array(array("NI Name", "%", "$", "%", "$")));
         $projHeader = new Budget(array(array(HEAD_ROW, HEAD_ROW, HEAD_ROW, HEAD_ROW, HEAD_ROW)),
                                  array(array("", "", "", "increase", "")));
         
         $budget = $project->getRequestedBudget(REPORTING_YEAR);
-        $cniBudget = $project->getRequestedBudget(REPORTING_YEAR, CNI);
-        $pniBudget = $project->getRequestedBudget(REPORTING_YEAR, PNI);
+        $niBudget = $project->getRequestedBudget(REPORTING_YEAR, NI);
         
-        $pniNames = $this->getNamesBudget($pniBudget, PNI);
-        $cniNames = $this->getNamesBudget($cniBudget, CNI);
+        $niNames = $this->getNamesBudget($niBudget, NI);
         
-        $pniTotal = $this->getTotalBudget($pniBudget, $pniNames);
-        $fcniTotal = $budget->copy()->rasterize()->filter(CUBE_TOTAL)->select(READ, array("Future CNIs"))->filter(BLANK)->limit(1, 16);
-        $cniTotal = $this->getTotalBudget($cniBudget, $cniNames);
+        $niTotal = $this->getTotalBudget($niBudget, $niNames);
         
-        $pniTotalAllocated = $this->getTotalAllocatedBudget($pniNames);
-        $cniTotalAllocated = $this->getTotalAllocatedBudget($cniNames);
+        $niTotalAllocated = $this->getTotalAllocatedBudget($niNames);
         
-        $pniSum = $pniTotal->copy()->sum();
-        $cniSum = $cniTotal->copy()->sum();
-        $fcniSum = $fcniTotal->copy()->sum();
+        $niSum = $niTotal->copy()->sum();
         
-        $pniSumAllocated = $pniTotalAllocated->copy()->sum();
-        $cniSumAllocated = $cniTotalAllocated->copy()->sum();
+        $niSumAllocated = $niTotalAllocated->copy()->sum();
         
-        $sum = $pniSum->xls[0][0]->value + $cniSum->xls[0][0]->value + $fcniSum->xls[0][0]->value;
-        $sumAllocated = $pniSumAllocated->xls[0][0]->value + $cniSumAllocated->xls[0][0]->value;
+        $sum = $niSum->xls[0][0]->value;
+        $sumAllocated = $niSumAllocated->xls[0][0]->value;
         
-        $pniFooter = new Budget(array(array(HEAD1, PERC, MONEY, PERC, MONEY)),
-                                array(array("PNI Subtotal", $pniSumAllocated->xls[0][0]->value/max(1, $sumAllocated), $pniSumAllocated->xls[0][0]->value, $pniSum->xls[0][0]->value/max(1, $sum), $pniSum->xls[0][0]->value)));
-        $cniFooter = new Budget(array(array(READ, PERC, MONEY, PERC, MONEY),
-                                      array(HEAD1, PERC, MONEY, PERC, MONEY)),
-                                array(array("<i>Future CNIs</i>", "", "", $fcniSum->xls[0][0]->value/max(1, $sum), $fcniSum->xls[0][0]->value),
-                                      array("CNI Subtotal", $cniSumAllocated->xls[0][0]->value/max(1, $sumAllocated), $cniSumAllocated->xls[0][0]->value, ($cniSum->xls[0][0]->value + $fcniSum->xls[0][0]->value)/max(1, $sum), $cniSum->xls[0][0]->value + $fcniSum->xls[0][0]->value)));
+        $niFooter = new Budget(array(array(HEAD1, PERC, MONEY, PERC, MONEY)),
+                               array(array("NI Subtotal", $niSumAllocated->xls[0][0]->value/max(1, $sumAllocated), $niSumAllocated->xls[0][0]->value, $niSum->xls[0][0]->value/max(1, $sum), $niSum->xls[0][0]->value)));
         
         $sumAllocated = $project->getAllocatedAmount(REPORTING_YEAR);
         $projectTotal = new Budget(array(array(HEAD1, BLANK, MONEY, PERC, MONEY)),
                                    array(array("Project Total", "", $sumAllocated, ($sum-$sumAllocated)/max(1, $sumAllocated), $sum)));
         
-        $pniPerc = $this->getPercBudget($pniTotal, $sum);
-        $cniPerc = $this->getPercBudget($cniTotal, $sum);
+        $niPerc = $this->getPercBudget($niTotal, $sum);
         
-        $pniPercAllocated = $this->getPercBudget($pniTotalAllocated, $sumAllocated);
-        $cniPercAllocated = $this->getPercBudget($cniTotalAllocated, $sumAllocated);
+        $niPercAllocated = $this->getPercBudget($niTotalAllocated, $sumAllocated);
         
-        $pniJoined = Budget::join_tables(array($pniNames, $pniPercAllocated, $pniTotalAllocated, $pniPerc, $pniTotal));
-        $cniJoined = Budget::join_tables(array($cniNames, $cniPercAllocated, $cniTotalAllocated, $cniPerc, $cniTotal));
+        $niJoined = Budget::join_tables(array($niNames, $niPercAllocated, $niTotalAllocated, $niPerc, $niTotal));
         
-        $pniJoined->where(PERC, array(".+"));
-        $cniJoined->where(PERC, array(".+"));
+        $niJoined->where(PERC, array(".+"));
         
-        $joined = Budget::union_tables(array($topHeader, $pniHeader, $pniJoined, $pniFooter, $cniHeader, $cniJoined, $cniFooter, $projHeader, $projectTotal));
+        $joined = Budget::union_tables(array($topHeader, $niHeader, $niJoined, $niFooter, $projHeader, $projectTotal));
         foreach($joined->xls[count($joined->xls)-1] as $cell){
             $cell->style .= "font-weight: bold;";
         }
         return $joined;
     }
     
-    private function getNamesBudget($budget, $role=CNI){
+    private function getNamesBudget($budget, $role=NI){
         $project = Project::newFromId($this->projectId);
         $names = $budget->copy()
                         ->transpose()

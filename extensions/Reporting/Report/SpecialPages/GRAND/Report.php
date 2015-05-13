@@ -41,8 +41,7 @@ class Report extends AbstractReport{
         }
         
         // NI Report
-        if($person->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
-           $person->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
+        if($person->isRoleDuring(NI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
            $person->isRoleAtLeast(MANAGER)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "NIReport")) ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("NI", "{$url}NIReport", $selected);
@@ -50,11 +49,6 @@ class Report extends AbstractReport{
         
         // Project Leader Reports
         $leadership = $person->leadership();
-        foreach($leadership as $key => $project){
-            if($project->getName() == "Reboot"){
-                unset($leadership[$key]);
-            }
-        }
         if(count($leadership) > 0){
             $projectDone = array();
             $subs = array();
@@ -118,22 +112,11 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "ISACReview") ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("ISAC", "{$url}ISACReview", $selected);
         }
-        if($person->isRole(ISAC) || $person->isRoleAtLeast(MANAGER) || $person->getId() == 11){ 
-            // Check if the person is ISAC, MANAGER or K.S.B, which is super ugly, but was requested last minute, so no time to do it any better
+        if($person->isRole(ISAC) || $person->isRoleAtLeast(MANAGER)){ 
+            // Check if the person is ISAC or MANAGER
             $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "ISACMaterials") ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("ISAC Reviews", "{$url}ISACMaterials", $selected);
         }
-        
-        //LOI Evaluation
-        /*
-        if($person->isRoleAtLeast(RMC)){
-            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "EvalLOIReport") ? "selected" : false;
-            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("LOI", "{$url}EvalLOIReport", $selected);
-            
-            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "EvalRevLOIReport") ? "selected" : false;
-            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Revised LOI", "{$url}EvalRevLOIReport", $selected);
-        }
-        */
         
         // Champion Report
         if($person->isRole(CHAMP)){

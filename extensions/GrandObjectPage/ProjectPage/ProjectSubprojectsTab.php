@@ -35,7 +35,7 @@ class ProjectSubprojectsTab extends AbstractTab {
                     $names = array("");
                     $people = array_merge($project->getAllPeople());
                     foreach($people as $person){
-                        if($person->isRoleAtLeast(CNI)){
+                        if($person->isRoleAtLeast(NI)){
                             $names[$person->getName()] = $person->getNameForForms();
                         }
                     }
@@ -45,7 +45,6 @@ class ProjectSubprojectsTab extends AbstractTab {
                     
                     $create->getElementById("new_subproject_row")->remove();
                     $create->getElementById("new_subprojectdd_row")->remove();
-                    $create->getElementById("new_copl_row")->hide();
                     //$create->getElementById("new_status_row")->hide();
                     $create->getElementById("new_type_row")->hide();
                     $create->getElementById("new_phase_row")->hide();

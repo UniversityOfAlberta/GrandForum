@@ -98,7 +98,6 @@
         //'TextReplace',
         //'Twitter',
         'MailingList',
-        //'FeatureRequest',
         'AddMember',
         'EditMember',
         'Poll',
@@ -115,14 +114,11 @@
         'Duplicates',
         //'Acknowledgements',
         //'AllocatedBudgets',
-        'FundedCNI',
         'ProjectEvolution',
-        'ProjectLeadership',
         //'ScreenCapture',
         //'Solr',
         //'AcademiaMap',
         //'TravelForm',
-        //'EthicsTable',
         //'AdvancedSearch',
         'CCVExport'
     ));
@@ -133,7 +129,6 @@
                                                'ReportArchive'          => false,
                                                'ReviewerConflicts'      => false,
                                                'ReviewResults'          => false,
-                                               'LoiProposals'           => false,
                                                'SanityChecks'           => false,
                                                'AdminVisualizations'    => false));
     
@@ -225,14 +220,10 @@
     $config->setConst("EXTERNAL",   "External");
     $config->setConst("ISAC",       "ISAC");
     $config->setConst("NCE",        "NCE Rep");
-    $config->setConst("CNI",        "CNI");
-    $config->setConst("PNI",        "PNI");
+    $config->setConst("NI",         "NI");
     $config->setConst("AR",         "AR");
-    $config->setConst("LOI",        "LOI Member");
-    $config->setConst("COPL",       "Project co-Leader");
+    $config->setConst("CI",         "CI");
     $config->setConst("PL",         "Project Leader");
-    $config->setConst("PM",         "Project Manager");
-    $config->setConst("COTL",       "Theme co-Leader");
     $config->setConst("TL",         "Theme Leader");
     $config->setConst("RMC",        "RMC");
     $config->setConst("EVALUATOR",  "Evaluator");
@@ -251,15 +242,11 @@
         $config->getConst('EXTERNAL')       => "External",
         $config->getConst('ISAC')           => "ISAC",
         $config->getConst('NCE')            => "NCE Rep",
-        $config->getConst('CNI')            => "Collaborating Network Investigator",
-        $config->getConst('PNI')            => "Principal Network Investigator",
-        $config->getConst('AR')             => "Associated Network Investigator",
-        $config->getConst('LOI')            => "LOI",
+        $config->getConst('NI')             => "Network Investigator",
+        $config->getConst('AR')             => "Affiliated Researcher",
+        $config->getConst('CI')             => "Co-Investigator",
         $config->getConst('CHAMP')          => "Champion",
-        $config->getConst('COPL')           => "Co-Project Leader",
         $config->getConst('PL')             => "Project Leader",
-        $config->getConst('PM')             => "Project Manager",
-        $config->getConst('COTL')           => "Co-Theme Leader",
         $config->getConst('TL')             => "Theme Leader",
         $config->getConst('RMC')            => "Research Management Comittee",
         $config->getConst('EVALUATOR')      => "Evaluator",

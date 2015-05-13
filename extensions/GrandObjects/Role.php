@@ -116,9 +116,7 @@ class Role extends BackboneModel {
                	'Manager' => 80,
                	'Champion' => 70,
                	'RMC' => 70,
-               	'PNI' => 60,
-               	'CNI' => 50,
-               	'Associated Researcher' => 40,
+               	'NI' => 60,
                	'HQP' => 40,
                	'Staff' => 30
 		);

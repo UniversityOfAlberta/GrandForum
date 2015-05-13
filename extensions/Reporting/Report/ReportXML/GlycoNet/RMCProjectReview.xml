@@ -16,7 +16,7 @@
         </Instructions>
         <ReportItem id="project_materials_head" type="StaticReportItem">
             <![CDATA[
-            <table align="left">
+            <table>
                 <tr>
                     <th style="min-width:110px;">Project Name</th>
                     <th style="min-width:125px;">Project Proposal PDF</th>
@@ -34,9 +34,30 @@
         </ReportItemSet>
         <ReportItem id="project_materials_foot" type="StaticReportItem">
             <![CDATA[
-                </table>
+                </table><br />
             ]]>
         </ReportItem>
+        <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="All Project Proposal PDFs">
+            <ReportItem id="project_materials_head2" type="StaticReportItem">
+                <![CDATA[
+                <table>
+                    <tr>
+                        <th style="min-width:110px;">Project Name</th>
+                        <th style="min-width:125px;">Project Proposal PDF</th>
+                    </tr>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="projects" type="AllProjectsReportItemSet">
+                <ReportItem id="project_pdf" type="PDFReportItem" reportType="ProjectProposal" width="100%" project="true">
+                    <![CDATA[<tr><td>{$project_name}</td><td>{$item}</td>]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="project_materials_foot2" type="StaticReportItem">
+                <![CDATA[
+                    </table>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
 
     <!-- Project Reviews -->
@@ -299,7 +320,7 @@
                     ]]>
                 </ReportItem>
 
-                <ReportItem id="RI7" type="EvalReviewRadioReportItem" options="Top|Upper Middle|Lower Middle|Bottom" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_OVERALLSCORE"  subType="Project">
+                <ReportItem id="RI7" type="EvalReviewRadioReportItem" options="High Priority|Medium Priority|Low Priority" orientation="vertical" blobType="BLOB_ARRAY" blobItem="EVL_OVERALLSCORE"  subType="Project">
                 <![CDATA[
                 </td>
                 </tr>
@@ -310,7 +331,7 @@
                 ]]>
                 </ReportItem>
                 
-                <ReportItem id="RI9" type="EvalReviewRadioReportItem" options="Very High|High|Moderate|Low" orientation="horizontal" blobType="BLOB_ARRAY" blobItem="EVL_CONFIDENCE" subType="Project">
+                <ReportItem id="RI9" type="EvalReviewRadioReportItem" options="Very High|High|Moderate|Low" orientation="vertical" blobType="BLOB_ARRAY" blobItem="EVL_CONFIDENCE" subType="Project">
                 <![CDATA[
                 <h3>9. Confidence Level of Evaluator </h3>
                 <div style="padding-left:20px;">{$item}</div>

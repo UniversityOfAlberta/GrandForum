@@ -28,8 +28,8 @@ Feature: Project Evolution
         When I follow "Phase1Project5"
         Then I should see "Ended"
         
-    Scenario: PNI viewing their Dashboard
-        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+    Scenario: NI viewing their Dashboard
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "My Profile"
         And I click "Dashboard"
         Then I should see "Phase2Project1"

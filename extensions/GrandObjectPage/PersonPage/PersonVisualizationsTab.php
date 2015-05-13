@@ -581,16 +581,14 @@ class PersonVisualizationsTab extends AbstractTab {
 	}
 	
 	static function getGraphData($action, $article){
-	    global $wgServer, $wgScriptPath;
+	    global $wgServer, $wgScriptPath, $config;
 	    if($action == "getGraphData"){
             $person = Person::newFromId($_GET['person']);
             
             $data = array();
             $data['legend'] = array();
-            $data['legend'][PNI] = array('color' => "#4E9B05",
-                                         'name' => PNI);
-            $data['legend'][CNI] = array('color' => "#46731D",
-                                         'name' => CNI);
+            $data['legend'][NI] = array('color' => "#4E9B05",
+                                        'name' => NI);
             $data['legend'][HQP] = array('color' => "#394D26",
                                          'name' => HQP);     
             $data['legend']["Project"] = array('color' => "#E41B05",
@@ -609,14 +607,11 @@ class PersonVisualizationsTab extends AbstractTab {
                 }
                 @$data['nodes']['p'.$person->getId()]['name'] .= str_replace(" ", "&nbsp;", $person->getNameForForms());
                 
-                if($person->isHQP()){
+                if($person->isRole(HQP)){
                     $data['nodes']['p'.$person->getId()]['type'] = HQP;
                 }
-                else if($person->isCNI()){
-                    $data['nodes']['p'.$person->getId()]['type'] = CNI;
-                }
-                else if($person->isPNI()){
-                    $data['nodes']['p'.$person->getId()]['type'] = PNI;
+                else if($person->isRole(NI)){
+                    $data['nodes']['p'.$person->getId()]['type'] = NI;
                 }
                 $description = "<img src='{$person->getPhoto()}' /><br />";
                 
@@ -664,15 +659,9 @@ class PersonVisualizationsTab extends AbstractTab {
                 
                 $description = "";
                 
-                $description .= "<b>Leaders: </b>";
+                $description .= "<b>".$config->getValue('roleDefs', PL).": </b>";
                 $leads = array();
                 foreach($project->getLeaders() as $member){
-                    $leads[] = "<a href='{$member->getUrl()}' target='_blank'>{$member->getNameForForms()}</a>";
-                }
-                $description .= implode(", ", $leads);
-                $description .= "<br /><br /><b>co-Leaders: </b>";
-                $leads = array();
-                foreach($project->getCoLeaders() as $member){
                     $leads[] = "<a href='{$member->getUrl()}' target='_blank'>{$member->getNameForForms()}</a>";
                 }
                 $description .= implode(", ", $leads);

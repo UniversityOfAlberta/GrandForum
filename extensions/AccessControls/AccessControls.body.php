@@ -9,7 +9,7 @@ $egAlwaysAllow = array();
 function initializeAccessControls(){
   global $egAnnokiNamespaces, $wgExtraNamespaces;
 
-  //createExtraTables();
+  createExtraTables();
   
   $egAnnokiNamespaces->registerExtraNamespaces($wgExtraNamespaces);
 

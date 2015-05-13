@@ -21,8 +21,9 @@
             return (isset($this->config[$key]));
         }
         
-        function getValue($key){
-            return $this->config[$key];
+        function getValue($key, $subKey=null){
+            if($subKey == null) return $this->config[$key];
+            else return $this->config[$key][$subKey];
         }
         
         function setConst($key, $value){

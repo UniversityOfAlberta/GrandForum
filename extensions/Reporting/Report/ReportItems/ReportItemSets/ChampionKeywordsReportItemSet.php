@@ -13,8 +13,7 @@ class ChampionKeywordsReportItemSet extends ReportItemSet {
                 $tuple['person_id'] = 0;
                 $tuple['project_id'] = $proj->getId();
                 $data[] = $tuple;
-                $people = array_merge($proj->getAllPeopleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END), 
-                                      $proj->getAllPeopleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END));
+                $people = $proj->getAllPeopleDuring(NI, REPORTING_CYCLE_START, REPORTING_CYCLE_END);
                 foreach($people as $person){
                     if(!isset($alreadyDone[$person->getId()])){
                         $tuple = self::createTuple();

@@ -96,7 +96,7 @@ SearchResults = Backbone.Collection.extend({
 	compile_facets: function(){
 		var facets = new Array();
 
-		var roles={"BOD":90,"Manager":80,"Champion":70,"RMC":70,"PNI":60,"CNI":50,"Associated Researcher":40,"HQP":40,"Staff":30};
+		var roles={"BOD":90,"Manager":80,"Champion":70,"RMC":70,"NI":60,"HQP":40,"Staff":30};
 		var ranks={"VP Research":90,"Associate Dean of Research":85,"Associate Dean of Student Affairs":85,"Director":80,"Canada Research Chair":80,"Professor":70,"Associate Professor":60,"Assistant Professor":50,"PostDoc":40,"PhD Student":30,"Industry Associate":25,"Masters Student":20,"Technician":15,"Undergraduate":10,"Other":0,"Unknown":0,"":0};
 
 		// ROLE

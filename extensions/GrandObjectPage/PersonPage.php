@@ -48,9 +48,7 @@ class PersonPage {
             }
             $person = Person::newFromName($name);
             if((array_search($role, $wgRoles) !== false || $role == INACTIVE || 
-                                                           $role == PL || $role == 'PL' ||
-                                                           $role == COPL || $role == 'COPL' ||
-                                                           $role == PM || $role == 'PM') && 
+                                                           $role == PL || $role == 'PL') && 
                $person->getName() != null && 
                $person != null && $person->isRole($role)){
                 TabUtils::clearActions();
@@ -113,7 +111,7 @@ class PersonPage {
                 $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
                 $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
-                /*if(isExtensionEnabled('AllocatedBudgets') && $person->isRoleAtLeast(CNI) && !$person->isRole(AR)){
+                /*if(isExtensionEnabled('AllocatedBudgets') && $person->isRoleAtLeast(NI) && !$person->isRole(AR)){
                     $tabbedPage->addTab(new PersonBudgetTab($person, $visibility));
                 }*/
                 if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
@@ -167,34 +165,7 @@ class PersonPage {
      */
     function showTitle($person, $visibility){
         global $wgOut;
-        $roles = $person->getRoles();
-        $roleNames = array();
-        foreach($roles as $role){
-            $roleNames[] = $role->getRole();
-        }
-        $pm = $person->isProjectManager();
-        if($person->isProjectLeader() && !$pm){
-            $roleNames[] = "PL";
-        }
-        if($person->isProjectCoLeader() && !$pm){
-            $roleNames[] = "COPL";
-        }
-        if($pm){
-            $roleNames[] = "PM";
-        }
-        foreach($roleNames as $key => $role){
-            if($role == "Inactive"){
-                if($person->isProjectManager() || $person->isProjectLeader() || $person->isProjectCoLeader()){
-                    unset($roleNames[$key]);
-                    continue;
-                }
-                $lastRole = $person->getLastRole();
-                if($lastRole != null){
-                    $roleNames[$key] = "Inactive-".$lastRole->getRole();
-                }
-            }
-        }
-        $wgOut->setPageTitle($person->getReversedName()." (".implode(", ", $roleNames).")");
+        $wgOut->setPageTitle($person->getReversedName());
         $wgOut->addHTML("<script type='text/javascript'>
             $('.custom-title').hide();
         </script>");

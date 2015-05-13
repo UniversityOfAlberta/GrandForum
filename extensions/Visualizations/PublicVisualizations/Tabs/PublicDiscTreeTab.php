@@ -32,8 +32,7 @@ class PublicDiscTreeTab extends AbstractTab {
             $people = Person::getAllPeople();
             $unis = array();
             foreach($people as $person){
-                if($person->isRole(CNI) ||
-                   $person->isRole(PNI)){
+                if($person->isRole(NI)){
                     $disc = $person->getDiscipline();
                     @$unis[$disc][$person->getReversedName()] = 1;
                 }

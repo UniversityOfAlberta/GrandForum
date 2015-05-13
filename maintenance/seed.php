@@ -90,13 +90,9 @@ DBFunctions::initDB();
 DBFunctions::execSQL("INSERT INTO wikidev_projects (`projectid`,`mailListName`) VALUES (1, 'test-hqps')", true);
 DBFunctions::execSQL("INSERT INTO wikidev_projects (`projectid`,`mailListName`) VALUES (2, 'test-researchers')", true);
 DBFunctions::execSQL("INSERT INTO wikidev_projects (`projectid`,`mailListName`) VALUES (3, 'test-leaders')", true);
-DBFunctions::execSQL("INSERT INTO wikidev_projects_rules (`type`,`project_id`,`value`) VALUES ('ROLE', 1, 'HQP')", true);
-DBFunctions::execSQL("INSERT INTO wikidev_projects_rules (`type`,`project_id`,`value`) VALUES ('ROLE', 2, 'PNI')", true);
-DBFunctions::execSQL("INSERT INTO wikidev_projects_rules (`type`,`project_id`,`value`) VALUES ('ROLE', 2, 'CNI')", true);
-DBFunctions::execSQL("INSERT INTO wikidev_projects_rules (`type`,`project_id`,`value`) VALUES ('ROLE', 2, 'AR')", true);
-DBFunctions::execSQL("INSERT INTO wikidev_projects_rules (`type`,`project_id`,`value`) VALUES ('ROLE', 3, 'Project Leader')", true);
-DBFunctions::execSQL("INSERT INTO wikidev_projects_rules (`type`,`project_id`,`value`) VALUES ('ROLE', 3, 'Project co-Leader')", true);
-DBFunctions::execSQL("INSERT INTO wikidev_projects_rules (`type`,`project_id`,`value`) VALUES ('ROLE', 3, 'Project Manager')", true);
+DBFunctions::execSQL("INSERT INTO wikidev_projects_rules (`type`,`project_id`,`value`) VALUES ('ROLE', 1, '".HQP."')", true);
+DBFunctions::execSQL("INSERT INTO wikidev_projects_rules (`type`,`project_id`,`value`) VALUES ('ROLE', 2, '".NI."')", true);
+DBFunctions::execSQL("INSERT INTO wikidev_projects_rules (`type`,`project_id`,`value`) VALUES ('ROLE', 3, '".PL."')", true);
 
 //Initialize Themes
 DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme1', 'Theme 1', 'Theme 1 Description')", true);
@@ -162,18 +158,13 @@ User::createNew("Admin.User1", array('password' => User::crypt("Admin.Pass1"), '
 User::createNew("Manager.User1", array('password' => User::crypt("Manager.Pass1"), 'email' => "manager.user1@behat-test.com"));
 User::createNew("PL.User1", array('password' => User::crypt("PL.Pass1"), 'email' => "pl.user1@behat-test.com"));
 User::createNew("TL.User1", array('password' => User::crypt("TL.Pass1"), 'email' => "tl.user1@behat-test.com"));
-User::createNew("COPL.User1", array('password' => User::crypt("COPL.Pass1"), 'email' => "copl.user1@behat-test.com"));
 User::createNew("RMC.User1", array('password' => User::crypt("RMC.Pass1"), 'email' => "rmc.user1@behat-test.com"));
 User::createNew("RMC.User2", array('password' => User::crypt("RMC.Pass2"), 'email' => "rmc.user2@behat-test.com"));
 User::createNew("CHAMP.User1", array('password' => User::crypt("CHAMP.Pass1"), 'email' => "champ.user1@behat-test.com"));
 User::createNew("CHAMP.User2", array('password' => User::crypt("CHAMP.Pass2"), 'email' => "champ.user2@behat-test.com"));
-User::createNew("PNI.User1", array('password' => User::crypt("PNI.Pass1"), 'email' => "pni.user1@behat-test.com"));
-User::createNew("PNI.User2", array('password' => User::crypt("PNI.Pass2"), 'email' => "pni.user2@behat-test.com"));
-User::createNew("PNI.User3", array('password' => User::crypt("PNI.Pass3"), 'email' => "pni.user3@behat-test.com"));
-User::createNew("CNI.User1", array('password' => User::crypt("CNI.Pass1"), 'email' => "cni.user1@behat-test.com"));
-User::createNew("CNI.User2", array('password' => User::crypt("CNI.Pass2"), 'email' => "cni.user2@behat-test.com"));
-User::createNew("CNI.User3", array('password' => User::crypt("CNI.Pass3"), 'email' => "cni.user3@behat-test.com"));
-User::createNew("CNICOPL.User1", array('password' => User::crypt("CNICOPL.Pass1"), 'email' => "cnicopl.user1@behat-test.com"));
+User::createNew("NI.User1", array('password' => User::crypt("NI.Pass1"), 'email' => "ni.user1@behat-test.com"));
+User::createNew("NI.User2", array('password' => User::crypt("NI.Pass2"), 'email' => "ni.user2@behat-test.com"));
+User::createNew("NI.User3", array('password' => User::crypt("NI.Pass3"), 'email' => "ni.user3@behat-test.com"));
 User::createNew("HQP.User1", array('password' => User::crypt("HQP.Pass1"), 'email' => "hqp.user1@behat-test.com"));
 User::createNew("HQP.User2", array('password' => User::crypt("HQP.Pass2"), 'email' => "hqp.user2@behat-test.com"));
 User::createNew("HQP.User3", array('password' => User::crypt("HQP.Pass3"), 'email' => "hqp.user3@behat-test.com"));
@@ -211,52 +202,39 @@ createProject("Phase2Project5", "Phase 2 Project 5", "Active", "Research", "No",
 createProject("Phase2BigBetProject1", "Phase 2 Big Bet Project 1", "Active", "Research", "Yes", 2, "2014-04-01", "", "", "", "Theme5", 0);
 
 addUserRole("Manager.User1", MANAGER);
-addUserRole("PL.User1", PNI);
-addUserRole("TL.User1", PNI);
-addUserRole("COPL.User2", PNI);
+addUserRole("PL.User1", NI);
+addUserRole("TL.User1", NI);
 addUserRole("RMC.User1", RMC);
-addUserRole("RMC.User1", PNI);
+addUserRole("RMC.User1", NI);
 addUserRole("RMC.User2", RMC);
 addUserRole("CHAMP.User1", CHAMP);
 addUserRole("CHAMP.User2", CHAMP);
-addUserRole("PNI.User1", PNI);
-addUserRole("PNI.User2", PNI);
-addUserRole("PNI.User3", PNI);
-addUserRole("CNI.User1", CNI);
-addUserRole("CNI.User2", CNI);
-addUserRole("CNI.User3", CNI);
-addUserRole("CNICOPL.User1", CNI);
+addUserRole("NI.User1", NI);
+addUserRole("NI.User2", NI);
+addUserRole("NI.User3", NI);
 addUserRole("HQP.User1", HQP);
 addUserRole("HQP.User2", HQP);
 addUserRole("HQP.User3", HQP);
 addUserRole("HQP.User4", HQP);
 addUserRole("HQP.ToBeInactivated", HQP);
 
-addUserProject("PNI.User1", "Phase1Project1");
-addUserProject("PNI.User1", "Phase1Project5");
-addUserProject("PNI.User1", "Phase2Project1");
-addUserProject("PNI.User1", "Phase2Project2");
-addUserProject("PNI.User1", "Phase2BigBetProject1");
-addUserProject("PNI.User2", "Phase2Project1");
-addUserProject("PNI.User3", "Phase2Project2");
-addUserProject("CNI.User1", "Phase2Project1");
-addUserProject("CNI.User1", "Phase2BigBetProject1");
-addUserProject("CNI.User2", "Phase2Project1");
-addUserProject("CNICOPL.User1", "Phase2Project1");
-addUserProject("CNICOPL.User1", "Phase2Project2");
-addUserProject("CNICOPL.User1", "Phase2BigBetProject1");
+addUserProject("NI.User1", "Phase1Project1");
+addUserProject("NI.User1", "Phase1Project5");
+addUserProject("NI.User1", "Phase2Project1");
+addUserProject("NI.User1", "Phase2Project2");
+addUserProject("NI.User1", "Phase2BigBetProject1");
+addUserProject("NI.User2", "Phase2Project1");
+addUserProject("NI.User3", "Phase2Project2");
 addUserProject("HQP.User1", "Phase1Project1");
 addUserProject("HQP.User3", "Phase2Project1");
 
 addProjectLeader("PL.User1", "Phase2Project1");
-addProjectLeader("COPL.User1", "Phase2Project1");
-addProjectLeader("CNICOPL.User1", "Phase2Project2", 'True');
 
-addThemeLeader("TL.User1", "Theme1", 'True');
+addThemeLeader("TL.User1", "Theme1", 'False');
 
-addRelation("PNI.User1", "HQP.User1", "Supervises");
-addRelation("PNI.User1", "HQP.User2", "Supervises");
-addRelation("PNI.User1", "HQP.ToBeInactivated", "Supervises");
-addRelation("PNI.User1", "PNI.User2", "Works With");
+addRelation("NI.User1", "HQP.User1", "Supervises");
+addRelation("NI.User1", "HQP.User2", "Supervises");
+addRelation("NI.User1", "HQP.ToBeInactivated", "Supervises");
+addRelation("NI.User1", "NI.User2", "Works With");
 
 ?>

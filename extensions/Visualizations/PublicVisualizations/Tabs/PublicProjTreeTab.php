@@ -39,7 +39,7 @@ class PublicProjTreeTab extends AbstractTab {
                 $challenge = $project->getChallenge();
                 $theme = ($challenge != null) ? $challenge->getAcronym() : "Unknown";
                 foreach($people as $person){
-                    if($person->isRole(PNI) || $person->isRole(CNI)){
+                    if($person->isRole(NI)){
                         @$projs[$theme][$project->getName()][$person->getReversedName()] = 1;
                     }
                 }

@@ -38,8 +38,7 @@ class AdminUniTreeTab extends AbstractTab {
             $people = Person::getAllPeopleDuring(null, $year."-01-01", $year."-12-31");
             $unis = array();
             foreach($people as $person){
-                if($person->isRoleDuring(CNI, $year."-01-01", $year."-12-31") ||
-                   $person->isRoleDuring(PNI, $year."-01-01", $year."-12-31")){
+                if($person->isRoleDuring(NI, $year."-01-01", $year."-12-31")){
                     $uni = $person->getUniversityDuring($year."01-01", $year."12-31");
                     if($uni['university'] == ""){
                         $uni['university'] = "Unknown";

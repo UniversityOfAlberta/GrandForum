@@ -41,4 +41,4 @@ Feature: Theme Leaders
         Given I am logged in as "TL.User1" using password "TL.Pass1"
         And I follow "My Profile"
         And I click "Projects"
-        Then I should see "Theme1 (co-lead)"
+        Then I should see "Theme1 (lead)"
