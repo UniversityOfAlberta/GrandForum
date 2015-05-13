@@ -2090,6 +2090,24 @@ class Person extends BackboneModel {
         return $relations;
     }
     
+    /*
+     * Returns an array of People that this Person manages
+     * @return array The People that this Person manages
+     */
+    function getManagedPeople(){
+        $people = array();
+        $data = DBFunctions::select(array('grand_managed_people'),
+                                    array('managed_id'),
+                                    array('user_id' => EQ($this->getId())));
+        foreach($data as $row){
+            $person = Person::newFromId($row['managed_id']);
+            if(!$person->isDeleted()){
+                $people[$person->getReversedName()] = $person;
+            }
+        }
+        return $people;
+    }
+    
     // Returns an array of relations for this Person of the given type
     // If history is set to true, then all the relations regardless of date are included
     function getRelations($type='all', $history=false){

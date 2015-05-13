@@ -23,7 +23,9 @@ class PeopleManagedAPI extends RESTAPI {
                     $people[$member->getReversedName()] = $member;
                 }
             }
-            // TODO: Also need to include extra people
+            foreach($me->getManagedPeople() as $person){
+                $people[$person->getReversedName()] = $person;
+            }
             ksort($people);
             $people = new Collection(array_values($people));
             return $people->toJSON();
@@ -35,6 +37,15 @@ class PeopleManagedAPI extends RESTAPI {
     }
     
     function doPOST(){
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            DBFunctions::insert('grand_managed_people',
+                                array('user_id' => $me->getId(),
+                                      'managed_id' => $this->POST('id')));
+        }
+        else{
+            $this->throwError("Not Logged In");
+        }
         return false;
     }
     
