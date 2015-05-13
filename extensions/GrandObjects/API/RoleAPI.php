@@ -14,6 +14,11 @@ class RoleAPI extends RESTAPI {
     }
     
     function doPOST(){
+        $me = Person::newFromWgUser();
+        $allowedRoles = $me->getAllowedRoles();
+        if(!in_array($this->POST('name'), $allowedRoles)){
+            $this->throwError("You are not allowed to add this person to that role");
+        }
         $role = new Role(array());
         header('Content-Type: application/json');
         $role->user = $this->POST('userId');
@@ -30,9 +35,15 @@ class RoleAPI extends RESTAPI {
     }
     
     function doPUT(){
+        $me = Person::newFromWgUser();
+        $allowedRoles = $me->getAllowedRoles();
         $role = Role::newFromId($this->getParam('id'));
         if($role == null || $role->getRole() == ""){
             $this->throwError("This Role does not exist");
+        }
+        if(!in_array($this->POST('name'), $allowedRoles) || 
+           !in_array($role->getRole(), $allowedRoles)){
+            $this->throwError("You are not allowed to add this person to that role");
         }
         header('Content-Type: application/json');
         $role->role = $this->POST('name');
@@ -48,9 +59,14 @@ class RoleAPI extends RESTAPI {
     }
     
     function doDELETE(){
+        $me = Person::newFromWgUser();
+        $allowedRoles = $me->getAllowedRoles();
         $role = Role::newFromId($this->getParam('id'));
         if($role == null || $role->getRole() == ""){
             $this->throwError("This Role does not exist");
+        }
+        if(!in_array($role->getRole(), $allowedRoles)){
+            $this->throwError("You are not allowed to delete this role");
         }
         header('Content-Type: application/json');
         $status = $role->delete();

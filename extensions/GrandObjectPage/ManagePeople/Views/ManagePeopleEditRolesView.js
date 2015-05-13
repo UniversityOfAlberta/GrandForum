@@ -34,25 +34,27 @@ ManagePeopleEditRolesView = Backbone.View.extend({
         var copy = this.roles.toArray();
         clearAllMessages();
         _.each(copy, $.proxy(function(role){
-            if(role.get('deleted') != "true"){
-                role.save(null, {
-                    success: function(){
-                        addSuccess("Roles saved");
-                    },
-                    error: function(){
-                        addError("Roles could not be saved");
-                    }
-                });
-            }
-            else {
-                role.destroy(null, {
-                    success: function(){
-                        addSuccess("Roles saved");
-                    },
-                    error: function(){
-                        addError("Roles could not be saved");
-                    }
-                });
+            if(_.contains(allowedRoles, role.get('name'))){
+                if(role.get('deleted') != "true"){
+                    role.save(null, {
+                        success: function(){
+                            addSuccess("Roles saved");
+                        },
+                        error: function(){
+                            addError("Roles could not be saved");
+                        }
+                    });
+                }
+                else {
+                    role.destroy(null, {
+                        success: function(){
+                            addSuccess("Roles saved");
+                        },
+                        error: function(){
+                            addError("Roles could not be saved");
+                        }
+                    });
+                }
             }
         }, this));
     },
