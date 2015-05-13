@@ -1,4 +1,4 @@
-<table frame="box" rules="all" width="100%" cellpadding="5">
+<table class="wikitable" frame="box" rules="all" width="100%" cellpadding="5">
     <thead>
         <tr>
             <th width="1%">Role</th>
@@ -8,12 +8,14 @@
             <th width="1%">Delete?</th>
         </tr>
     </thead>
-    <tfoot>
-        <tr>
-            <td><button id="add" title="Add New Role">+</button></td>
-            <td colspan="4">&nbsp;</td>
-        </tr>
-    </tfoot>
+    <% if(allowedRoles.length > 0){ %>
+        <tfoot>
+            <tr>
+                <td><button id="add" title="Add New Role">+</button></td>
+                <td colspan="4">&nbsp;</td>
+            </tr>
+        </tfoot>
+    <% } %>
     <tbody id="role_rows">
         <tr></tr>
     </tbody>

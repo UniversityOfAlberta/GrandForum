@@ -15,16 +15,44 @@ ManagePeopleEditRolesView = Backbone.View.extend({
                 this.render();
             }, this));
         }, this));
+        
+        var dims = {w:0, h:0};
+        // Reposition the dialog when the window is resized or the dialog is resized
+        setInterval($.proxy(function(){
+	        if(this.$el.width() != dims.w || this.$el.height() != dims.h){
+	            this.$el.dialog("option","position","center");
+	            dims.w = this.$el.width();
+	            dims.h = this.$el.height();
+	        }
+	    }, this), 100);
+	    $(window).resize($.proxy(function(){
+	        this.$el.dialog("option","position","center");
+	    }, this));
     },
     
     saveAll: function(){
         var copy = this.roles.toArray();
+        clearAllMessages();
         _.each(copy, $.proxy(function(role){
             if(role.get('deleted') != "true"){
-                role.save();
+                role.save(null, {
+                    success: function(){
+                        addSuccess("Roles saved");
+                    },
+                    error: function(){
+                        addError("Roles could not be saved");
+                    }
+                });
             }
             else {
-                role.destroy();
+                role.destroy(null, {
+                    success: function(){
+                        addSuccess("Roles saved");
+                    },
+                    error: function(){
+                        addError("Roles could not be saved");
+                    }
+                });
             }
         }, this));
     },
@@ -69,7 +97,15 @@ ManagePeopleEditRolesRowView = Backbone.View.extend({
         this.model.delete = true;
     },
     
-    events: {},
+    // Sets the end date to infinite (0000-00-00)
+    setInfinite: function(){
+        this.$("input[name=endDate]").val('0000-00-00');
+        this.model.set('endDate', '0000-00-00');
+    },
+    
+    events: {
+        "click #infinity": "setInfinite"
+    },
     
     update: function(){
         if(this.model.get('deleted') == "true"){
