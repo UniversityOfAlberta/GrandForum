@@ -927,6 +927,7 @@ EOF;
                 $ret[$person->getReversedName()] = $person;
             }
         }
+        ksort($ret);
         $this->leaderCache['leaders'.$onlyIdStr] = $ret;
         return $ret;
     }
