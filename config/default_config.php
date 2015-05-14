@@ -70,6 +70,9 @@
     // The terminology for administrative projects 
     $config->setValue("adminProjects", "Admin Project");
     
+    // The terminology to use for "Product"
+    $config->setValue("productsTerm", "Product");
+    
     // Whether or not to allow bigBetProjects
     $config->setValue("bigBetProjects", false);
     
