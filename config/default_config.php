@@ -220,6 +220,8 @@
     $config->setConst("HQP",        "HQP");
     $config->setConst("STUDENT",    "Student");
     $config->setConst("EXTERNAL",   "External");
+    $config->setConst("IAC",        "IAC");
+    $config->setConst("CAC",        "CAC");
     $config->setConst("ISAC",       "ISAC");
     $config->setConst("NCE",        "NCE Rep");
     $config->setConst("CNI",        "CNI");
@@ -246,6 +248,8 @@
         $config->getConst('INACTIVE')       => "Inactive",
         $config->getConst('HQP')            => "Highly Qualified Person",
         $config->getConst('EXTERNAL')       => "External",
+        $config->getConst('IAC')            => "Industry Advisory Committee",
+        $config->getConst('CAC')            => "Consumer Advisory Committee",
         $config->getConst('ISAC')           => "ISAC",
         $config->getConst('NCE')            => "NCE Rep",
         $config->getConst('CNI')            => "Collaborating Network Investigator",
