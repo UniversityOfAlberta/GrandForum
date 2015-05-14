@@ -55,7 +55,7 @@ class PersonPage {
                 $supervisors = $person->getSupervisors();
                 
                 $isMe = ($person->isMe() ||
-                        $me->isRoleAtLeast(MANAGER));
+                        $me->isRoleAtLeast(STAFF));
                 $isSupervisor = false;
                 foreach($supervisors as $supervisor){
                     if($supervisor->getName() == $me->getName()){

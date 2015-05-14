@@ -141,6 +141,7 @@ function onUserCan(&$title, &$user, $action, &$result) {
  
 function onUserCan2(&$title, &$user, $action, &$result) {
   global $wgExtraNamespaces, $egAnProtectUploads, $egNamespaceAllowPagesInMainNS, $egAlwaysAllow, $wgWhitelistRead, $wgRoles, $wgGroupPermissions;
+  $person = Person::newFromId($user->getId());
   
   // Is API set?
   if(isset($_GET['action'])){
@@ -162,7 +163,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
           }
       }
   }
-  
+
   if($user->isLoggedIn() && $title->getNamespace() == NS_MAIN && $action == 'read'){
     // A logged in user should be able to read any page in the main namespace
     
@@ -179,19 +180,11 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 		return $result;
 	}
     
-	//nobody but the user who has id=1 can create pages in the main namespace
-	if ($action == 'create' && !$egNamespaceAllowPagesInMainNS && 
-	    ($title->getNamespace() == NS_MAIN || $title->getNamespace() == NS_TALK) && $user->getId() != 1) {
+	//only staff+ can create pages in the main namespace
+	if (($action == 'create' || $action == 'edit') && !$egNamespaceAllowPagesInMainNS && 
+	    ($title->getNamespace() == NS_MAIN || $title->getNamespace() == NS_TALK) && $person->isRoleAtLeast(STAFF)) {
 		$role = $title->getNsText();
 		$name = $title->getText();
-        if($role == ""){
-            $split = explode(":", $name);
-            $role = $split[0];
-        }
-		if(array_search($role, $wgRoles) === false){
-		    $result = false;
-		    return "This page does not exist and page creation in the main namespace has been disabled. Please create your page in a custom namespace.";
-		}
 		return true;
 	}
 	
