@@ -916,12 +916,16 @@ EOF;
                      OR pl.end_date > CURRENT_TIMESTAMP)";
         $data = DBFunctions::execSQL($sql);
         if ($onlyid) {
-            foreach ($data as &$row)
-                $ret[$row['user_id']] = $row['user_id'];
+            foreach ($data as &$row){
+                $person = Person::newFromId($row['user_id']);
+                $ret[$person->getReversedName()] = $row['user_id'];
+            }
         }
         else {
-            foreach ($data as &$row)
-                $ret[$row['user_id']] = Person::newFromId($row['user_id']);
+            foreach($data as &$row){
+                $person = Person::newFromId($row['user_id']);
+                $ret[$person->getReversedName()] = $person;
+            }
         }
         $this->leaderCache['leaders'.$onlyIdStr] = $ret;
         return $ret;
