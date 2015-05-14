@@ -502,7 +502,9 @@ class MessageCache {
 	 */
 	function get( $key, $useDB = true, $langcode = true, $isFullKey = false ) {
 		global $wgContLanguageCode, $wgContLang;
-
+        if(is_array($key)){
+            $key = @$key[0];
+        }
 		$lang = wfGetLangObj( $langcode );
 		$langcode = $lang->getCode();
 
