@@ -78,7 +78,7 @@ class EditableReportSection extends AbstractReportSection {
             $projectName = ": ".$this->getParent()->project->getName();
         }
         
-        $wgOut->addHTML("<div><form action='$action' method='post' name='report' enctype='multipart/form-data'$autosave>
+        $wgOut->addHTML("<div><form action='$action' autocomplete='off' method='post' name='report' enctype='multipart/form-data'$autosave>
                             <div id='reportHeader'>{$number}{$this->name}{$projectName}{$phase}<span id='reportProgress'><span style='width:{$this->getPercentComplete()}%;background-color: {$config->getValue('highlightColor')};' id='reportProgressBar'></span></span><span id='reportProgressLabel'>Progress:&nbsp;</span></div>
                              <hr />
                              <div id='reportBody'>");
