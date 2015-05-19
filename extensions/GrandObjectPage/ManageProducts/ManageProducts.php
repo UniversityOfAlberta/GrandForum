@@ -1,7 +1,7 @@
 <?php
 
 $wgHooks['ToolboxLinks'][] = 'ManageProducts::createToolboxLinks';
-BackbonePage::register('ManageProducts', 'Manage Products', 'network-tools', dirname(__FILE__));
+BackbonePage::register('ManageProducts', 'Manage '.Inflect::pluralize($config->getValue("productsTerm")), 'network-tools', dirname(__FILE__));
 
 class ManageProducts extends BackbonePage {
     
@@ -36,8 +36,9 @@ class ManageProducts extends BackbonePage {
     }
     
     static function createToolboxLinks(&$toolbox){
-	    global $wgServer, $wgScriptPath;
-	    $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Manage Products", "$wgServer$wgScriptPath/index.php/Special:ManageProducts");
+	    global $wgServer, $wgScriptPath, $config;
+	    $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Manage ".Inflect::pluralize($config->getValue("productsTerm")), 
+	                                                                  "$wgServer$wgScriptPath/index.php/Special:ManageProducts");
 	    return true;
 	}
 

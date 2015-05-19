@@ -196,6 +196,8 @@ $wgRoleValues = array(INACTIVE => 0,
                       HQP => 1,
                       EXTERNAL => 2,
                       ISAC => 3,
+                      IAC => 3,
+                      CAC => 3,
                       NCE => 4,
                       CNI => 5,
                       PNI => 6,
@@ -222,11 +224,11 @@ $wgRoleValues = array(INACTIVE => 0,
 
 $wgRoles = ($config->hasValue('wgRoles')) ? 
     $config->getValue('wgRoles') : 
-    array(HQP, EXTERNAL, ISAC, NCE, CNI, PNI, AR, LOI, RMC, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
+    array(HQP, EXTERNAL, ISAC, IAC, CAC, NCE, CNI, PNI, AR, LOI, RMC, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :
-    array(HQP, STUDENT, EXTERNAL, ISAC, NCE, CNI, PNI, AR, LOI, COPL, PL, PM, TL, RMC, EVALUATOR, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
+    array(HQP, STUDENT, EXTERNAL, ISAC, IAC, CAC, NCE, CNI, PNI, AR, LOI, COPL, PL, PM, TL, RMC, EVALUATOR, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
 
 // Defining Custom Namespace Constants
 define("NS_GRAND_PROJ", 122);

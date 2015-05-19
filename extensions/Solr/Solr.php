@@ -70,7 +70,7 @@ class Solr extends SpecialPage {
 
 	function run(){
 	    global $wgUser, $wgOut, $wgServer, $wgScriptPath, 
-             $sqlTables, $resultFields, $sqlPrimaryKeys;
+             $sqlTables, $resultFields, $sqlPrimaryKeys, $config;
 
       if(isset($_GET['type'])){
         $type = $_GET['type'];
@@ -248,7 +248,7 @@ EOF;
         <div id="results">
 
             <div id="product_results" class="results" style="display:none;">
-            <h3>Products</h3>
+            <h3>'.Inflect::pluralize($config->getValue("productsTerm")).'</h3>
             <table class="indexTable dataTable" frame="box" rules="all" id="productsTable">
             <thead>
             <tr>
