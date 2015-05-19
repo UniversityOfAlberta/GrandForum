@@ -128,11 +128,12 @@
         <ReportItem id="funding" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_FUND">
             <![CDATA[
                 <h4>Other funding obtained/applied for</h4>
-                <p>{$item}</p><br />
+                <p>{$item}</p>
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="documents" type="HeaderReportSection" name="Required Documents" blobSection="HQP_APPLICATION_DOCS" pagebreak="false">
+        <ReportItem id="appendix_bookmark" type="BookmarkReportItem" offset="1" text="Appendix"></ReportItem>
         <ReportItem id="support1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_SUPPORT1" mimeType="application/pdf" fileSize="2">
         </ReportItem>
         <ReportItem id="support2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_SUPPORT2" mimeType="application/pdf" fileSize="2">

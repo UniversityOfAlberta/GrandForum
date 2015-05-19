@@ -595,8 +595,7 @@ if ( isset($pdf) ) {
     function attachPDF($pdf){
         global $wgOut;
         $pdf = strip_tags($pdf);
-        $wgOut->addHTML("<div></div>
-                        <script type='text/php'>
+        $wgOut->addHTML("<script type='text/php'>
                             \$GLOBALS['attachedPDFs'][] = \"{$pdf}\";
                         </script>");
     }
@@ -604,14 +603,17 @@ if ( isset($pdf) ) {
     /**
      * Adds a top level bookmark to the document
      * @param string $title The title of the bookmark
+     * @param integer $pageOffset The offset of the page index (useful for pdf attachments)
      */
-    function addChapter($title){
+    function addChapter($title, $pageOffset=0){
         global $wgOut;
         $title = strip_tags($title);
-        $wgOut->addHTML("<div></div>
-                        <script type='text/php'>
+        if($pageOffset == 0){
+            $wgOut->addHTML("<div></div>");
+        }
+        $wgOut->addHTML("<script type='text/php'>
                             \$GLOBALS['chapters'][] = array('title' => \"{$title}\", 
-                                                            'page' => \$pdf->get_page_number(),
+                                                            'page' => \$pdf->get_page_number() + {$pageOffset},
                                                             'subs' => array());
                         </script>");
     }
@@ -619,14 +621,17 @@ if ( isset($pdf) ) {
     /**
      * Adds a second level Chapter bookmark to the document
      * @param string $title The title of the sub-bookmark
+     * @param integer $pageOffset The offset of the page index (useful for pdf attachments)
      */
-    function addSubChapter($title){
+    function addSubChapter($title, $pageOffset=0){
         global $wgOut;
         $title = strip_tags($title);
-        $wgOut->addHTML("<div></div>
-                        <script type='text/php'>
+        if($pageOffset == 0){
+            $wgOut->addHTML("<div></div>");
+        }
+        $wgOut->addHTML("<script type='text/php'>
                             \$GLOBALS['chapters'][count(\$GLOBALS['chapters'])-1]['subs'][] = array('title' => \"{$title}\", 
-                                                            'page' => \$pdf->get_page_number(),
+                                                            'page' => \$pdf->get_page_number() + {$pageOffset},
                                                             'subs' => array());
                         </script>");
     }
@@ -634,14 +639,17 @@ if ( isset($pdf) ) {
     /**
      * Adds a third level Chapter bookmark to the document
      * @param string $title The title of the sub-bookmark
+     * @param integer $pageOffset The offset of the page index (useful for pdf attachments)
      */
-    function addSubSubChapter($title){
+    function addSubSubChapter($title, $pageOffset=0){
         global $wgOut;
         $title = strip_tags($title);
-        $wgOut->addHTML("<div></div>
-                        <script type='text/php'>
+        if($pageOffset == 0){
+            $wgOut->addHTML("<div></div>");
+        }
+        $wgOut->addHTML("<script type='text/php'>
                             \$GLOBALS['chapters'][count(\$GLOBALS['chapters'])-1]['subs'][count(\$GLOBALS['chapters'][count(\$GLOBALS['chapters'])-1]['subs'])-1]['subs'][] = array('title' => \"{$title}\", 
-                                                            'page' => \$pdf->get_page_number(),
+                                                            'page' => \$pdf->get_page_number() + {$pageOffset},
                                                             'subs' => array());
                         </script>");
     }
