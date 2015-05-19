@@ -6,7 +6,7 @@
         </Role>
     </Permissions>
     <!-- Project Reviews -->
-    <ReportSection id="project_reviews" name="Project Reviews" tooltip="Project Reviews" blobSection="SEC_NONE" type="HeaderReportSection" private="false" pagebreak="false">
+    <ReportSection id="project_reviews" name="Project Reviews" tooltip="Project Reviews" blobSection="RMC_REVIEW" type="HeaderReportSection" private="false" pagebreak="false">
         <Instructions>
             <![CDATA[
                
@@ -27,7 +27,7 @@
                 </ReportItem>
                 <ReportItem id="Q1_1" type="EvalReviewRadioReportItem" subType="Project" options="Outstanding|Very Good|Satisfactory|Unsatisfactory" orientation="vertical" blobType="BLOB_ARRAY" blobItem="EVL_EXCELLENCE">
                     <![CDATA[
-                        <center><h1>{$project_name}</h1></center>
+                        <center><h1>{$project_name} (Score: "{$rmc_project_rank}", Confidence: "{$rmc_project_confidence}") </h1></center>
                         <h2>1. Research Excellence and Team</h2>
                         <table width="100%">
                         <tr>

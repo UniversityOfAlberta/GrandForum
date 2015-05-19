@@ -533,7 +533,7 @@ if ( isset($pdf) ) {
             $blob->loadFromMD5($pdf);
             $data = json_decode($blob->getData());
             file_put_contents("/tmp/{$pdf}", base64_decode($data->file));
-            $attached[] = "/tmp/{$pdf}";
+            $attached[] = "\"/tmp/{$pdf}\"";
         }
         $attached = implode(" ", $attached);
         foreach($GLOBALS['chapters'] as $chapter){
@@ -564,18 +564,20 @@ if ( isset($pdf) ) {
         }
         file_put_contents("/tmp/{$name}{$rand}pdfmarks", $str);
         file_put_contents("/tmp/{$name}{$rand}pdf", $dompdf->output());
+        exec("pdftk \"/tmp/{$name}{$rand}pdf\" {$attached} cat output \"/tmp/{$name}{$rand}nomarks\"");
         exec("gs \\
                 -q \\
                 -dBATCH \\
                 -dNOPAUSE \\
                 -sDEVICE=pdfwrite \\
                 -dPDFSETTINGS=/prepress \\
-                -sOutputFile=\"/tmp/{$name}{$rand}withmarks\" \"/tmp/{$name}{$rand}pdf\" \"/tmp/{$name}{$rand}pdfmarks\" {$attached}"); // Add Bookmarks
+                -sOutputFile=\"/tmp/{$name}{$rand}withmarks\" \"/tmp/{$name}{$rand}nomarks\" \"/tmp/{$name}{$rand}pdfmarks\""); // Add Bookmarks
         
         $pdfStr = file_get_contents("/tmp/{$name}{$rand}withmarks");
         unlink("/tmp/{$name}{$rand}pdfmarks");
+        unlink("/tmp/{$name}{$rand}nomarks");
         unlink("/tmp/{$name}{$rand}pdf");
-        unlink("/tmp/{$name}{$rand}withmarks");
+        //unlink("/tmp/{$name}{$rand}withmarks");
         foreach($GLOBALS['attachedPDFs'] as $pdf){
             unlink("/tmp/{$pdf}");
         }

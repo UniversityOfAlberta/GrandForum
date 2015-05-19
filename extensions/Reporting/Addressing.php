@@ -190,6 +190,9 @@ define('SAB_REVIEW',    1);
 // Second level for SAB Report
 define('SAB_REPORT',    1);
 
+// Second level for RMC Review
+define('RMC_REVIEW',    0);
+
 /*
  * Third-level identifiers: question within a section.
  *

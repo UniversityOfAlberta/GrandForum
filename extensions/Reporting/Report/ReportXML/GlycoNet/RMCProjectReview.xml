@@ -9,7 +9,7 @@
     </Permissions>
 
     <!-- Project Materials -->
-    <ReportSection id="project_materials" name="Project Materials" tooltip="Project Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
+    <ReportSection id="project_materials" name="Project Materials" tooltip="Project Materials" blobSection="RMC_REVIEW" type="ReportSection" renderpdf="false" private="true">
         <Instructions>
             <![CDATA[
                <p>You can download the Project Proposal and SAB Report PDFs for review.</p>
