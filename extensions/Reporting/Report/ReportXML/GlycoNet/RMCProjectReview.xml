@@ -137,7 +137,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="Q2_3" type="TextareaReportItem" blobItem="EVL_STRATEGIC_OTHER" blobType="BLOB_TEXT">
+                <ReportItem id="Q2_3" type="TextareaReportItem" blobItem="EVL_STRATEGIC_OTHER" blobType="BLOB_TEXT" optional="1">
                     <![CDATA[
                         </td></tr>
                         <tr>
@@ -170,7 +170,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="Q3_3" type="TextareaReportItem" blobItem="EVL_INTEG_OTHER" blobType="BLOB_TEXT">
+                <ReportItem id="Q3_3" type="TextareaReportItem" blobItem="EVL_INTEG_OTHER" blobType="BLOB_TEXT" optional="1">
                     <![CDATA[
                         </td></tr>
                         <tr>
@@ -203,7 +203,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="Q4_3" type="TextareaReportItem" blobItem="EVL_NETWORKING_OTHER" blobType="BLOB_TEXT">
+                <ReportItem id="Q4_3" type="TextareaReportItem" blobItem="EVL_NETWORKING_OTHER" blobType="BLOB_TEXT" optional="1">
                     <![CDATA[
                         </td></tr>
                         <tr>
@@ -237,7 +237,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="Q5_3" type="TextareaReportItem" blobItem="EVL_KNOWLEDGE_OTHER" blobType="BLOB_TEXT">
+                <ReportItem id="Q5_3" type="TextareaReportItem" blobItem="EVL_KNOWLEDGE_OTHER" blobType="BLOB_TEXT" optional="1">
                     <![CDATA[
                         </td></tr>
                         <tr>
@@ -271,7 +271,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="Q6_3" type="TextareaReportItem" blobItem="EVL_HQPDEVELOPMENT_OTHER" blobType="BLOB_TEXT">
+                <ReportItem id="Q6_3" type="TextareaReportItem" blobItem="EVL_HQPDEVELOPMENT_OTHER" blobType="BLOB_TEXT" optional="1">
                     <![CDATA[
                         </td></tr>
                         <tr>
@@ -305,7 +305,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="Q7_3" type="TextareaReportItem" blobItem="EVL_REPORTQUALITY_OTHER" blobType="BLOB_TEXT">
+                <ReportItem id="Q7_3" type="TextareaReportItem" blobItem="EVL_REPORTQUALITY_OTHER" blobType="BLOB_TEXT" optional="1">
                     <![CDATA[
                         </td></tr>
                         <tr>
