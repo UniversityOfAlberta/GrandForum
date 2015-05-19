@@ -51,3 +51,8 @@ define('EVTP_PROJECT', 2);
  */
 define('RPTP_PROJECT_PROPOSAL', 200);
 define('RPTP_SAB_REPORT', 201);
+
+/*
+ * AGE-WELL
+ */
+define('RPTP_HQP_APPLICATION', 300);

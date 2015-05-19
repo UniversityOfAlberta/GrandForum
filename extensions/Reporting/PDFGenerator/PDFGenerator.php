@@ -6,6 +6,7 @@ if(isset($_GET['generatePDF'])){
 require_once('PDFParams.php');
 require_once('ReportIndex.php');
 require_once('ReportStorage.php');
+$GLOBALS['attachedPDFs'] = array();
 $GLOBALS['chapters'] = array();
 $GLOBALS['footnotes'] = array();
 $GLOBALS['nFootnotes'] = 0;
@@ -415,6 +416,11 @@ EOF;
                 padding-left: ".($fontSize*2)."px;
             }
             
+            #pdfBody .externalLink {
+                color: ".$config->getValue("highlightColor").";
+                text-decoration: none;
+            }
+            
             #pdfBody .tinymce table {
                 max-width: 100%;
                 border: none;
@@ -513,6 +519,15 @@ if ( isset($pdf) ) {
      */
     function processChapters($dompdf, $name){
         $str = "";
+        $attached = array();
+        foreach($GLOBALS['attachedPDFs'] as $pdf){
+            $blob = new ReportBlob();
+            $blob->loadFromMD5($pdf);
+            $data = json_decode($blob->getData());
+            file_put_contents("/tmp/{$pdf}", base64_decode($data->file));
+            $attached[] = "/tmp/{$pdf}";
+        }
+        $attached = implode(" ", $attached);
         foreach($GLOBALS['chapters'] as $chapter){
             if(count($chapter['subs']) > 0){
                 $str .= "[/Count ".count($chapter['subs'])." /Title ({$chapter['title']}) /Page {$chapter['page']} /OUT pdfmark\n";
@@ -546,23 +561,34 @@ if ( isset($pdf) ) {
                 -dBATCH \\
                 -dNOPAUSE \\
                 -sDEVICE=pdfwrite \\
-                -dColorConversionStrategy=/LeaveColorUnchanged \\
-                -dDownsampleMonoImages=false \\
-                -dDownsampleGrayImages=false \\
-                -dDownsampleColorImages=false \\
-                -dAutoFilterColorImages=false \\
-                -dAutoFilterGrayImages=false \\
-                -dColorImageFilter=/FlateEncode \\
-                -dGrayImageFilter=/FlateEncode \\
-                -sOutputFile=\"/tmp/{$name}{$rand}withmarks\" \"/tmp/{$name}{$rand}pdf\" \"/tmp/{$name}{$rand}pdfmarks\""); // Add Bookmarks
+                -dPDFSETTINGS=/prepress \\
+                -sOutputFile=\"/tmp/{$name}{$rand}withmarks\" \"/tmp/{$name}{$rand}pdf\" \"/tmp/{$name}{$rand}pdfmarks\" {$attached}"); // Add Bookmarks
+        
         $pdfStr = file_get_contents("/tmp/{$name}{$rand}withmarks");
         unlink("/tmp/{$name}{$rand}pdfmarks");
         unlink("/tmp/{$name}{$rand}pdf");
         unlink("/tmp/{$name}{$rand}withmarks");
+        foreach($GLOBALS['attachedPDFs'] as $pdf){
+            unlink("/tmp/{$pdf}");
+        }
         $GLOBALS['chapters'] = array();
         $GLOBALS['nFootnotes'] = 0;
         $GLOBALS['section'] = 0;
+        $GLOBALS['attachedPDFs'] = array();
         return $pdfStr;
+    }
+    
+    /*
+     * Adds a pdf to the end of the PDF
+     * @param string $pdf The id of the pdf
+     */
+    function attachPDF($pdf){
+        global $wgOut;
+        $pdf = strip_tags($pdf);
+        $wgOut->addHTML("<div></div>
+                        <script type='text/php'>
+                            \$GLOBALS['attachedPDFs'][] = \"{$pdf}\";
+                        </script>");
     }
     
     /**
