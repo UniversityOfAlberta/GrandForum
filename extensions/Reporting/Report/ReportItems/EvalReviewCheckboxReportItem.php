@@ -127,8 +127,11 @@ EOF;
 	
 	function renderForPDF(){
 	    global $wgOut;
-	    $item = $this->processCData($this->getBlobValue());
-		$wgOut->addHTML($item);
+	    $value = $this->getBlobValue();
+	    if($value != null){
+	        $item = $this->processCData($value);
+		    $wgOut->addHTML("<p><i>".$item."</i></p>");
+		}
 	}
     
     // Checkboxes are optional so they don't count

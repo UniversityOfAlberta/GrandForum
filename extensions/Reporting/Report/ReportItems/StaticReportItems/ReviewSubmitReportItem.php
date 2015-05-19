@@ -215,7 +215,7 @@ EOF;
          <li>If you need to make a correction to your $reportname PDF that is already submitted, you can generate and submit again.</li>
          <li>If the status of the report is \"Not-Submitted\", a PDF document will be compiled with the current report data and forwarded to the RMC for evaluation. 
          <li>If, on the other hand, the status is \"Submitted\", the last submitted PDF will be used for evaluation, even if subsequent edits have been made and newer PDF documents have been regenerated.
-         <li>If you encounter any issues, please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a></li>
+         <li>If you encounter any issues, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a></li>
          </ul></p>\n
          <div id='report_submit_div' style=''>
             <p>

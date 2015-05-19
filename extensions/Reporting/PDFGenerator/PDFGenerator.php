@@ -164,6 +164,10 @@ EOF;
 		        font-size:smaller;
 		    }
 		    
+		    #pdfBody .belowLine {
+		        margin-bottom:".(15*DPI_CONSTANT)."px;
+		    }
+		    
 		    #pdfBody {
 		        margin: ".(20*DPI_CONSTANT)."px ".(20*DPI_CONSTANT)."px !important;
 		        position: relative;
@@ -183,7 +187,11 @@ EOF;
 		    /*#pdfBody .logo {
 		        background-image: url('skins/{$config->getValue('networkName')}_Logo.png');
 		        background-repeat: no-repeat;
-		    }*/";
+		    }*/
+		    
+		    #pdfBody .belowLine {
+		        display: none;
+		    }";
         }
         
 		$header .= "
@@ -489,7 +497,7 @@ if ( isset($pdf) ) {
 </script>';
         $dateStr = date("Y-m-d H:i:s T", time());
         if($preview){
-            echo $header."<body><div id='pdfBody'><div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;' /><div style='position:absolute;top:0;font-size:smaller;'><i>Generated: $dateStr</i></div>$html</div></body></html>";
+            echo $header."<body><div id='pdfBody'><div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;' /><div style='position:absolute;top:0;font-size:smaller;'><i>Generated: $dateStr</i></div><div class='belowLine'></div>$html</div></body></html>";
             return;
         }
         
