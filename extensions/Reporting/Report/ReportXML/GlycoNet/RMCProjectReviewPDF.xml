@@ -34,7 +34,7 @@
                             <td><b>Rating</b></td><td><b>Qualifiers</b></td>
                         </tr>
                         <tr>
-                        <td width="23%" style="vertical-align:top;">{$item}</td>
+                        <td width="23%" style="vertical-align:top;">{$item}<br /><br /></td>
                         <td style="vertical-align:top;">
                     ]]>
                 </ReportItem>
@@ -68,7 +68,7 @@
                             <td><b>Rating</b></td><td><b>Qualifiers</b></td>
                         </tr>
                         <tr>
-                        <td width="23%" style="vertical-align:top;">{$item}</td>
+                        <td width="23%" style="vertical-align:top;">{$item}<br /><br /></td>
                         <td style="vertical-align:top;">
                     ]]>
                 </ReportItem>
@@ -102,7 +102,7 @@
                             <td><b>Rating</b></td><td><b>Qualifiers</b></td>
                         </tr>
                         <tr>
-                        <td width="23%" style="vertical-align:top;">{$item}</td>
+                        <td width="23%" style="vertical-align:top;">{$item}<br /><br /></td>
                         <td style="vertical-align:top;">
                     ]]>
                 </ReportItem>
@@ -136,7 +136,7 @@
                             <td><b>Rating</b></td><td><b>Qualifiers</b></td>
                         </tr>
                         <tr>
-                        <td width="23%" style="vertical-align:top;">{$item}</td>
+                        <td width="23%" style="vertical-align:top;">{$item}<br /><br /></td>
                         <td style="vertical-align:top;">
                     ]]>
                 </ReportItem>
@@ -170,7 +170,7 @@
                             <td><b>Rating</b></td><td><b>Qualifiers</b></td>
                         </tr>
                         <tr>
-                        <td width="23%" style="vertical-align:top;">{$item}</td>
+                        <td width="23%" style="vertical-align:top;">{$item}<br /><br /></td>
                         <td style="vertical-align:top;">
                     ]]>
                 </ReportItem>
@@ -204,7 +204,7 @@
                             <td><b>Rating</b></td><td><b>Qualifiers</b></td>
                         </tr>
                         <tr>
-                        <td width="23%" style="vertical-align:top;">{$item}</td>
+                        <td width="23%" style="vertical-align:top;">{$item}<br /><br /></td>
                         <td style="vertical-align:top;">
                     ]]>
                 </ReportItem>
@@ -238,7 +238,7 @@
                             <td><b>Rating</b></td><td><b>Qualifiers</b></td>
                         </tr>
                         <tr>
-                        <td width="23%" style="vertical-align:top;">{$item}</td>
+                        <td width="23%" style="vertical-align:top;">{$item}<br /><br /></td>
                         <td style="vertical-align:top;">
                     ]]>
                 </ReportItem>
