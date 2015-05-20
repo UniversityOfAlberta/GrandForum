@@ -13,7 +13,12 @@ class HQPRegister extends SpecialPage{
 
     function HQPRegister() {
         wfLoadExtensionMessages('HQPRegister');
-        SpecialPage::SpecialPage("HQPRegister", '', true, 'runHQPRegister');
+        SpecialPage::SpecialPage("HQPRegister", null, false, 'runHQPRegister');
+    }
+    
+    function userCanExecute($user){
+        $person = Person::newFromUser($user);
+        return !$person->isLoggedIn();
     }
 
     function run($par){
