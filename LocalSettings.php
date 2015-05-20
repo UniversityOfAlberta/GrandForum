@@ -196,7 +196,8 @@ define("DEBUG", true);
 //Define the switch to prevent any editing by Users to indicate the end of reporting period.
 define("FROZEN", false);
 
-$wgRoleValues = array(INACTIVE => 0,
+$wgRoleValues = array(HQP_CANDIDATE => -1,
+                      INACTIVE => 0,
                       HQP => 1,
                       EXTERNAL => 2,
                       ISAC => 3,
@@ -232,7 +233,7 @@ $wgRoles = ($config->hasValue('wgRoles')) ?
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :
-    array(HQP, STUDENT, EXTERNAL, ISAC, IAC, CAC, NCE, CNI, PNI, AR, LOI, COPL, PL, PM, TL, RMC, EVALUATOR, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
+    array(HQP_CANDIDATE, HQP, STUDENT, EXTERNAL, ISAC, IAC, CAC, NCE, CNI, PNI, AR, LOI, COPL, PL, PM, TL, RMC, EVALUATOR, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
 
 // Defining Custom Namespace Constants
 define("NS_GRAND_PROJ", 122);

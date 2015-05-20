@@ -47,7 +47,8 @@ class PersonPage {
                 $role = $split[0];
             }
             $person = Person::newFromName($name);
-            if((array_search($role, $wgRoles) !== false || $role == INACTIVE || 
+            if((array_search($role, $wgRoles) !== false || $role == HQP_CANDIDATE ||
+                                                           $role == INACTIVE || 
                                                            $role == PL || $role == 'PL' ||
                                                            $role == COPL || $role == 'COPL' ||
                                                            $role == PM || $role == 'PM') && 

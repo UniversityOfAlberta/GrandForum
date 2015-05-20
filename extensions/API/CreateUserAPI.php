@@ -37,7 +37,7 @@ class CreateUserAPI extends API{
 			$_POST['wpUserType'][] = $role;
 		}
 		// Finished manditory checks
-		if($me->isRoleAtLeast(STAFF)){
+		if($me->isRoleAtLeast(STAFF) || $oldWPType == HQP_CANDIDATE){
 		    // First check to see if the user already exists
 		    $person = Person::newFromName($_POST['wpName']);
 		    if($person != null && $person->getName() != ""){
@@ -50,9 +50,11 @@ class CreateUserAPI extends API{
 				    return $message;
 				}
 		    }
+		    $wgRequest->setVal('wpName', $_POST['wpName']);
 			// Actually create a new user
 			if(isset($_POST['wpSendMail'])){
 				if($_POST['wpSendMail'] === "true"){
+				    $wgRequest->setVal('wpEmail', $_POST['wpEmail']);
 					$wgRequest->setVal('wpCreateaccountMail', true);
 				}
 				else {
@@ -116,7 +118,7 @@ class CreateUserAPI extends API{
 				    $wgMessage->addError($message);
 				    return $message;
 				}
-			}	
+		    }
 		}
 		else {
 		    if($doEcho){
