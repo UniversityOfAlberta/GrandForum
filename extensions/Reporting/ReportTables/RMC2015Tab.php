@@ -114,8 +114,6 @@ EOF;
             <th style='background: #EEEEEE; padding:0px;'>
                 <span class='tableHeader' style="width: 14.978%;">Evaluator</span>
                 <span class='tableHeader' style="width: 8.5%;">&nbsp;</span>
-                <span class='tableHeader' style="width: 8.5%;">Q8</span>
-                <span class='tableHeader' style="width: 8.5%;">Q9</span>
                 <span class='tableHeader' style="width: 8.5%;">Q1</span>
                 <span class='tableHeader' style="width: 8.5%;">Q2</span>
                 <span class='tableHeader' style="width: 8.5%;">Q3</span>
@@ -123,15 +121,17 @@ EOF;
                 <span class='tableHeader' style="width: 8.5%;">Q5</span>
                 <span class='tableHeader' style="width: 8.5%;">Q6</span>
                 <span class='tableHeader' style="width: 8.5%;">Q7</span>
+                <span class='tableHeader' style="width: 8.5%;">Q8</span>
+                <span class='tableHeader' style="width: 8.5%;">Q9</span>
             </th>
         </tr>
         </thead>
         <tbody>
 EOF;
 
-        $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_STRATEGIC, EVL_INTEG, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_HQPDEVELOPMENT, EVL_REPORTQUALITY);
-        $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_STRATEGIC_COM, EVL_INTEG_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_HQPDEVELOPMENT_COM, EVL_REPORTQUALITY_COM);
-        $other_comments = array(0,0, EVL_EXCELLENCE_OTHER, EVL_STRATEGIC_OTHER, EVL_INTEG_OTHER, EVL_NETWORKING_OTHER, EVL_KNOWLEDGE_OTHER, EVL_HQPDEVELOPMENT_OTHER, EVL_REPORTQUALITY_OTHER);
+        $radio_questions = array(EVL_EXCELLENCE, EVL_STRATEGIC, EVL_INTEG, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_HQPDEVELOPMENT, EVL_REPORTQUALITY, EVL_OVERALLSCORE, EVL_CONFIDENCE);
+        $stock_comments = array(EVL_EXCELLENCE_COM, EVL_STRATEGIC_COM, EVL_INTEG_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_HQPDEVELOPMENT_COM, EVL_REPORTQUALITY_COM, 0, 0);
+        $other_comments = array(EVL_EXCELLENCE_OTHER, EVL_STRATEGIC_OTHER, EVL_INTEG_OTHER, EVL_NETWORKING_OTHER, EVL_KNOWLEDGE_OTHER, EVL_HQPDEVELOPMENT_OTHER, EVL_REPORTQUALITY_OTHER, 0, 0);
 
         $projects = Person::getAllEvaluates($type, 2015);
         $sorted_projects = array();
@@ -184,7 +184,7 @@ EOF;
                         $comm2 = "";
                         $comm_short2 = array();
 
-                        if($i>1){
+                        if(isset($other_comments[$i]) && $other_comments[$i] != 0){
                             $comment = nl2br(RMC2015Tab::getData(BLOB_TEXT, $rtype, $other_comments[$i], $ni, $eval_id, 2015, $ni_id));
                             $comm = RMC2015Tab::getData(BLOB_ARRAY, $rtype, $stock_comments[$i], $ni, $eval_id, 2015, $ni_id);
                             //$comm = @$comm[$rev]; 
@@ -215,7 +215,7 @@ EOF;
                         $response_rev = $response2 = (isset($response['revised']))? $response['revised'] : "";
                         $diff = strcmp($response_orig, $response_rev);
                         $diff2 = array();
-                        if($i>1){
+                        if(isset($other_comments[$i]) && $other_comments[$i] != 0){
                             $diff2 = array_merge(array_diff(array_filter($comm), array_filter($comm2)), 
                                                  array_diff(array_filter($comm2), array_filter($comm)));
                         }
@@ -234,8 +234,9 @@ EOF;
                             }
                             if($comment != ""){
                                 $comments = "<br /><div title='Other Comments' id='{$ni_id}_{$eval_id}_{$i}' style='display:none;'>$comment</div>";
+                                $response = "<b>$response</b>";
                             }
-                            $cell1 = "<td width='10%'><span class='q_tip' title='<b>{$response_orig}</b><ul>{$comm}</ul>'><a style='cursor:pointer;' onClick='$(\"#{$ni_id}_{$eval_id}_{$i}\").dialog({width:\"600px\"});'>{$response}</a></span>{$comments}</td>";
+                            $cell1 = "<td width='10%'><span class='q_tip' title='<b>{$response_orig}</b><ul>{$comm}</ul>'><a style='cursor:pointer;' onClick='$(\"#{$ni_id}_{$eval_id}_{$i}\").dialog({width:\"600px\"});'><b>{$response}</a></span>{$comments}</td>";
                         }else{
                             $response = "";
                             $cell1 = "<td width='10%'>{$response}</td>";
@@ -247,6 +248,9 @@ EOF;
                                 $comm2 = "<li>".implode("</li><li>", $comm2)."</li>";
                             }else{
                                 $comm2 = "";
+                            }
+                            if($comment != ""){
+                                $response2 = "<b>$response2</b>";
                             }
                             $cell2 = "<td width='10%'><span class='q_tip' title='<b>{$response_rev}</b><ul>{$comm2}</ul>'><a style='cursor:pointer;' onClick='$(\"#{$ni_id}_{$eval_id}_{$i}\").dialog({width:\"600px\"});'>{$response2}</a></span></td>";
                         }else{

@@ -32,9 +32,9 @@ class GlycoNetEvalOverviewReportItem extends AbstractReportItem {
         $subs = $person->getEvaluateProjects();
         $report_url = "RMCProjectReview";
         $section_url = "Overview";
-        $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_STRATEGIC, EVL_INTEG, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_HQPDEVELOPMENT, EVL_REPORTQUALITY);
-        $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_STRATEGIC_COM, EVL_INTEG_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_HQPDEVELOPMENT_COM, EVL_REPORTQUALITY_COM);
-        $other_comments = array(0,0, EVL_EXCELLENCE_OTHER, EVL_STRATEGIC_OTHER, EVL_INTEG_OTHER, EVL_NETWORKING_OTHER, EVL_KNOWLEDGE_OTHER, EVL_HQPDEVELOPMENT_OTHER, EVL_REPORTQUALITY_OTHER);
+        $radio_questions = array(EVL_EXCELLENCE, EVL_STRATEGIC, EVL_INTEG, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_HQPDEVELOPMENT, EVL_REPORTQUALITY, EVL_OVERALLSCORE, EVL_CONFIDENCE);
+        $stock_comments = array(EVL_EXCELLENCE_COM, EVL_STRATEGIC_COM, EVL_INTEG_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_HQPDEVELOPMENT_COM, EVL_REPORTQUALITY_COM, 0, 0);
+        $other_comments = array(EVL_EXCELLENCE_OTHER, EVL_STRATEGIC_OTHER, EVL_INTEG_OTHER, EVL_NETWORKING_OTHER, EVL_KNOWLEDGE_OTHER, EVL_HQPDEVELOPMENT_OTHER, EVL_REPORTQUALITY_OTHER, 0, 0);
         
         $jscript =<<<EOF
             <style type='text/css'>
@@ -106,15 +106,15 @@ EOF;
             <tr>
             <th width="15%" align="left">Project Name</th>
             <th width="5%"></th>
-            <th width="10%" title="Overall Score">Q8</th>
-            <th width="10%" title="Confidence Level of Evaluator ">Q9</th>
-            <th style="border-left: 5px double {$config->getValue('highlightColor')};" title="Excellence of the Research Program">Q1</th>
+            <th title="Excellence of the Research Program">Q1</th>
             <th title="Alignment with GlycoNet Strategic Plan">Q2</th>
             <th title="Interdisciplinarity and Integration">Q3</th>
             <th title="Networking and Partnerships">Q4</th>
             <th title="Knowledge and Technology Exchange and Exploitation">Q5</th>
             <th title="Development of HQP">Q6</th>
             <th title="Rating for Quality of Report">Q7</th>
+            <th title="Overall Score">Q8</th>
+            <th title="Confidence Level of Evaluator ">Q9</th>
             </tr>
 EOF;
         }
@@ -163,7 +163,7 @@ EOF;
                     $comm2 = "";
                     $comm_short2 = array();
 
-                    if($i>1){
+                    if(isset($other_comments[$i]) && $other_comments[$i] != 0){
                         $comment = nl2br($this->blobValue(BLOB_TEXT, $ev_id, $other_comments[$i], $sub_id));
                         $comm = $this->blobValue(BLOB_ARRAY, $ev_id, $stock_comments[$i], $sub_id);
                         $comm2 = (isset($comm['revised']))? $comm['revised'] : array();
@@ -193,17 +193,12 @@ EOF;
                     $response_rev = $response2 = (isset($response['revised']))? $response['revised'] : "";
                     $diff = strcmp($response_orig, $response_rev);
                     $diff2 = array();
-                    if($i>1){
+                    if(isset($other_comments[$i]) && $other_comments[$i] != 0){
                         $diff2 = array_merge(array_diff(array_filter($comm), array_filter($comm2)), 
                                              array_diff(array_filter($comm2), array_filter($comm)));
                     }
                     
                     $response = $response_orig;
-                    
-                    $double_border = '';
-                    if($i==2){
-                        $double_border = " style='border-left: 5px double {$config->getValue('highlightColor')};'";
-                    }
                     
                     if($response_orig){
                         $response = substr($response, 0, 1);
@@ -216,11 +211,12 @@ EOF;
                         }
                         if($comment != ""){
                             $comments = "<div title='Other Comments' id='{$sub_id}_{$ev_id}_{$i}' style='display:none;' class='comment_dialog'>$comment</div>";
+                            $response = "<b>$response</b>";
                         }
-                        $sub_row .= "<td{$double_border}><span class='q8_tip' title='<b>{$response_orig}</b><ul>{$comm}</ul>'><a style='cursor:pointer;' onClick='$(\"#{$sub_id}_{$ev_id}_{$i}\").dialog({width:\"600px\"}).addClass(\"opened_comment_dialog\");'>{$response}</a></span>{$comments}</td>";
+                        $sub_row .= "<td><span class='q8_tip' title='<b>{$response_orig}</b><ul>{$comm}</ul>'><a style='cursor:pointer;' onClick='$(\"#{$sub_id}_{$ev_id}_{$i}\").dialog({width:\"600px\"}).addClass(\"opened_comment_dialog\");'>{$response}</a></span>{$comments}</td>";
                     }else{
                         $response = "";
-                        $sub_row .= "<td{$double_border}>{$response}</td>";
+                        $sub_row .= "<td>{$response}</td>";
                         if($wgUser->getId() == $ev_id){
                             $incomplete = true;
                         }
@@ -235,10 +231,13 @@ EOF;
                         else{
                             $comm2 = "";
                         }
-                        $sub_row2 .= "<td{$double_border}><span class='q8_tip' title='<b>{$response_rev}</b><ul>{$comm2}</ul>'><a style='cursor:pointer;' onClick='$(\"#{$sub_id}_{$ev_id}_{$i}\").dialog({width:\"600px\"}).addClass(\"opened_comment_dialog\");;'>{$response2}</a></span></td>";
+                        if($comment != ""){
+                            $response2 = "<b>$response2</b>";
+                        }
+                        $sub_row2 .= "<td><span class='q8_tip' title='<b>{$response_rev}</b><ul>{$comm2}</ul>'><a style='cursor:pointer;' onClick='$(\"#{$sub_id}_{$ev_id}_{$i}\").dialog({width:\"600px\"}).addClass(\"opened_comment_dialog\");'>{$response2}</a></span></td>";
                     }else{
                         $response2 = "";
-                        $sub_row2 .= "<td{$double_border}>{$response2}</td>";
+                        $sub_row2 .= "<td>{$response2}</td>";
                     }
                     
                     $i++;
@@ -264,15 +263,15 @@ EOF;
                 <tr>
                 <th width="15%" align='left'>Evaluator Name</th>
                 <th width="5%"></th>
-                <th width="10%">Q8</th>
-                <th width="10%">Q9</th>
-                <th style="border-left: 5px double {$config->getValue('highlightColor')};">Q1</th>
+                <th>Q1</th>
                 <th>Q2</th>
                 <th>Q3</th>
                 <th>Q4</th>
                 <th>Q5</th>
                 <th>Q6</th>
                 <th>Q7</th>
+                <th>Q8</th>
+                <th>Q9</th>
                 </tr>
             </thead>
 EOF;
@@ -337,8 +336,8 @@ EOF;
         $questions = array();
         if($type == "Project"){
             $subs = $person->getEvaluateProjects();
-            $questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_STRATEGIC, EVL_INTEG, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_HQPDEVELOPMENT, EVL_REPORTQUALITY);
-            $questions2 = array(EVL_EXCELLENCE_COM, EVL_STRATEGIC_COM, EVL_INTEG_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_HQPDEVELOPMENT_COM, EVL_REPORTQUALITY_COM);
+            $questions = array(EVL_EXCELLENCE, EVL_STRATEGIC, EVL_INTEG, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_HQPDEVELOPMENT, EVL_REPORTQUALITY, EVL_OVERALLSCORE, EVL_CONFIDENCE);
+            $questions2 = array(EVL_INTEG_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_HQPDEVELOPMENT_COM, EVL_REPORTQUALITY_COM, EVL_EXCELLENCE_COM, EVL_STRATEGIC_COM);
             $project_id = $reportSubItem;
         }
 
