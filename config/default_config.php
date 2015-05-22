@@ -220,7 +220,6 @@
      * Roles
      * TODO: These should probably be moved into the DB at some point
      */
-    $config->setConst("HQP_CANDIDATE", "HQP-Candidate");
     $config->setConst("INACTIVE",   "Inactive");
     $config->setConst("HQP",        "HQP");
     $config->setConst("STUDENT",    "Student");
@@ -250,7 +249,6 @@
     $config->setConst("MANAGER",    "Manager");
     
     $config->setValue("roleDefs", array(
-        $config->getConst('HQP_CANDIDATE')  => "HQP Candidate",
         $config->getConst('INACTIVE')       => "Inactive",
         $config->getConst('HQP')            => "Highly Qualified Person",
         $config->getConst('EXTERNAL')       => "External",

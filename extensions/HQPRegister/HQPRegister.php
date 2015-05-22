@@ -5,11 +5,25 @@ $wgSpecialPages['HQPRegister'] = 'HQPRegister'; # Let MediaWiki know about the s
 $wgExtensionMessagesFiles['HQPRegister'] = $dir . 'HQPRegister.i18n.php';
 $wgSpecialPageGroups['HQPRegister'] = 'network-tools';
 
+$wgHooks['OutputPageParserOutput'][] = 'HQPRegister::onOutputPageParserOutput';
+
 function runHQPRegister($par) {
     HQPRegister::run($par);
 }
 
 class HQPRegister extends SpecialPage{
+
+    static function onOutputPageParserOutput(&$out, $parseroutput){
+        global $wgServer, $wgScriptPath, $config;
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            $out->addHTML("<p><i>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>register</a> and then fill out the HQP Application form.</i></p>");
+        }
+        else if($me->isRole(HQP.'-Candidate')){
+            $out->addHTML("<p><i>To apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Report?report=HQPApplication'>HQP Application form</a>.</i></p>");
+        }
+        return true;
+    }
 
     function HQPRegister() {
         wfLoadExtensionMessages('HQPRegister');
@@ -79,6 +93,7 @@ class HQPRegister extends SpecialPage{
     }
     
     function handleSubmit($wgOut){
+        global $wgServer, $wgScriptPath, $wgMessage;
         $form = self::createForm();
         $status = $form->validate();
         if($status){
@@ -90,12 +105,15 @@ class HQPRegister extends SpecialPage{
             $_POST['wpLastName'] = ucfirst($_POST['wpLastName']);
             $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
             $_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
-            $_POST['wpUserType'] = HQP_CANDIDATE;
+            $_POST['wpUserType'] = HQP;
             $_POST['wpSendMail'] = "true";
+            $_POST['candidate'] = "1";
             
             $result = APIRequest::doAction('CreateUser', false);
             if($result){
                 $form->reset();
+                $wgMessage->addSuccess("A randomly generated password for <b>{$_POST['wpName']}</b> has been sent to <b>{$_POST['wpEmail']}</b>");
+                redirect("$wgServer$wgScriptPath");
             }
         }
         HQPRegister::generateFormHTML($wgOut);
