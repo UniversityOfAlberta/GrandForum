@@ -236,7 +236,7 @@ EOF;
                                 $comments = "<br /><div title='Other Comments' id='{$ni_id}_{$eval_id}_{$i}' style='display:none;'>$comment</div>";
                                 $response = "<b>$response</b>";
                             }
-                            $cell1 = "<td width='10%'><span class='q_tip' title='<b>{$response_orig}</b><ul>{$comm}</ul>'><a style='cursor:pointer;' onClick='$(\"#{$ni_id}_{$eval_id}_{$i}\").dialog({width:\"600px\"});'><b>{$response}</a></span>{$comments}</td>";
+                            $cell1 = "<td width='10%'><span class='q_tip' title='<b>{$response_orig}</b><ul>{$comm}</ul>'><a style='cursor:pointer;' onClick='$(\"#{$ni_id}_{$eval_id}_{$i}\").dialog({width:\"600px\"});'>{$response}</a></span>{$comments}</td>";
                         }else{
                             $response = "";
                             $cell1 = "<td width='10%'>{$response}</td>";
