@@ -29,7 +29,7 @@ class EvaluationTable extends SpecialPage {
     
     function userCanExecute($user){
         $person = Person::newFromWgUser();
-        return ($person->isRoleAtLeast(MANAGER) || $person->isRole(SD));
+        return ($person->isRoleAtLeast(STAFF) || $person->isRole(SD));
     }
     
     static function show(){
