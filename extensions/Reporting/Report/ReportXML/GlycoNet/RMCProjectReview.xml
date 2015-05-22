@@ -4,6 +4,7 @@
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
             <SectionPermission id="project_materials" permissions="rw" />
             <SectionPermission id="project_reviews" permissions="rw" />
+            <SectionPermission id="overview" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
@@ -340,6 +341,23 @@
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="overview" name="Overview" tooltip="Overview of Evaluations" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+        <Instructions>
+            <![CDATA[
+               <p>This table allows for an easy comparison of the scores you have given in your reviews. Additionally, once reviews have been submitted, this is also where you will have an opportunity to compare your reviews with those of other evaluators who have reviewed the same Project.</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="overview" type="GlycoNetEvalOverviewReportItem" subType="Project">
+            <![CDATA[
+            <style type="text/css">
+                a#PNIOverview, a#CNIOverview, a#ProjectOverview{
+                    margin-bottom: 15px;
+                }
+            </style>
+            {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation of the Review" name="Generate PDF" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>

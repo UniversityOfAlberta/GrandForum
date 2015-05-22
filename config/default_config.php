@@ -101,6 +101,7 @@
         //'FeatureRequest',
         'AddMember',
         'EditMember',
+        'HQPRegister',
         'Poll',
         'QueryableTable',
         'IndexTables',

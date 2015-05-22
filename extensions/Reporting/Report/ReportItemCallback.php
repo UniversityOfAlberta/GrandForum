@@ -1217,8 +1217,13 @@ class ReportItemCallback {
         $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
         $result = $blb->load($addr);
         $data = $blb->getData();
-        if($data != null && isset($data['original'])){
-           return $data['original'];
+        if($data != null){
+            if(isset($data['original'])){
+                return $data['original'];
+            }
+            else if(isset($data['revised'])){
+                return $data['revised'];
+            }
         }
         return "";
     }
@@ -1228,8 +1233,13 @@ class ReportItemCallback {
         $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
         $result = $blb->load($addr);
         $data = $blb->getData();
-        if($data != null && isset($data['original'])){
-           return $data['original'];
+        if($data != null){
+            if(isset($data['original'])){
+                return $data['original'];
+            }
+            else if(isset($data['revised'])){
+                return $data['revised'];
+            }
         }
         return "";
     }

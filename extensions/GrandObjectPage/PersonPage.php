@@ -52,7 +52,7 @@ class PersonPage {
                                                            $role == COPL || $role == 'COPL' ||
                                                            $role == PM || $role == 'PM') && 
                $person->getName() != null && 
-               $person != null && $person->isRole($role)){
+               $person != null && ($person->isRole($role) || $person->isRole($role."-Candidate"))){
                 TabUtils::clearActions();
                 $supervisors = $person->getSupervisors();
                 
