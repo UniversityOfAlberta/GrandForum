@@ -24,7 +24,12 @@ class EvaluationTable extends SpecialPage {
 
     function __construct() {
         wfLoadExtensionMessages('EvaluationTable');
-        SpecialPage::SpecialPage("EvaluationTable", MANAGER.'+', true, 'runEvaluationTable');
+        SpecialPage::SpecialPage("EvaluationTable", null, false, 'runEvaluationTable');
+    }
+    
+    function userCanExecute($user){
+        $person = Person::newFromWgUser();
+        return ($person->isRoleAtLeast(MANAGER) || $person->isRole(SD));
     }
     
     static function show(){
@@ -59,8 +64,7 @@ class EvaluationTable extends SpecialPage {
     
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
-        $person = Person::newFromWgUser($wgUser);
-        if($person->isRoleAtLeast(MANAGER)){
+        if(EvaluationTable::userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "EvaluationTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("RMC Meeting", "$wgServer$wgScriptPath/index.php/Special:EvaluationTable", $selected);
         }
