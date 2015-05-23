@@ -13,6 +13,7 @@
 
 # If you customize your file layout, set $IP to the directory that contains
 # the other MediaWiki files. It will be used as a base to locate files.
+session_start();
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 

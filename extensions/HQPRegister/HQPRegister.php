@@ -66,9 +66,13 @@ class HQPRegister extends SpecialPage{
         
         $emailLabel = new Label("email_label", "Email", "The email address of the user", VALIDATE_NOT_NULL);
         $emailField = new EmailField("email_field", "Email", "", VALIDATE_NOT_NULL);
-        $emailField->registerValidation(new UniqueEmailValidation(VALIDATION_POSITIVE, VALIDATION_WARNING));
         $emailRow = new FormTableRow("email_row");
         $emailRow->append($emailLabel)->append($emailField);
+        
+        $captchaLabel = new Label("captcha_label", "Enter Code", "Enter the code you see in the image", VALIDATE_NOT_NULL);
+        $captchaField = new Captcha("captcha_field", "Captcha", "", VALIDATE_NOT_NULL);
+        $captchaRow = new FormTableRow("captcha_row");
+        $captchaRow->append($captchaLabel)->append($captchaField);
         
         $submitCell = new EmptyElement();
         $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
@@ -78,6 +82,7 @@ class HQPRegister extends SpecialPage{
         $formTable->append($firstNameRow)
                   ->append($lastNameRow)
                   ->append($emailRow)
+                  ->append($captchaRow)
                   ->append($submitRow);
         
         $formContainer->append($formTable);
