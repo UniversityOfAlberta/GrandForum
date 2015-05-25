@@ -291,6 +291,7 @@ class AddMember extends SpecialPage{
         
         $form = self::createForm();
         $wgOut->addHTML($form->render());
+        $wgOut->addHTML("</form>");
     }
     
     static function createToolboxLinks(&$toolbox){

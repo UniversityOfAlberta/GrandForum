@@ -42,6 +42,7 @@ class Person extends BackboneModel {
     var $groups;
     var $roles;
     var $rolesDuring;
+    var $candidate;
     var $isEvaluator = array();
     var $relations;
     var $hqps;
@@ -269,7 +270,8 @@ class Person extends BackboneModel {
                                               'user_public_profile',
                                               'user_private_profile',
                                               'user_nationality',
-                                              'user_gender'),
+                                              'user_gender',
+                                              'candidate'),
                                         array('deleted' => NEQ(1)));
             foreach($data as $row){
                 $exploded = explode(".", $row['user_name']);
@@ -501,7 +503,8 @@ class Person extends BackboneModel {
     static function getAllStaff(){
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id', 'user_name'),
-                                    array('deleted' => NEQ(1)),
+                                    array('deleted' => NEQ(1),
+                                          'candidate' => NEQ(1)),
                                     array('user_name' => 'ASC'));
         $people = array();
         foreach($data as $row){
@@ -524,7 +527,8 @@ class Person extends BackboneModel {
         $me = Person::newFromWgUser();
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id', 'user_name'),
-                                    array('deleted' => NEQ(1)),
+                                    array('deleted' => NEQ(1),
+                                          'candidate' => NEQ(1)),
                                     array('user_name' => 'ASC'));
         $people = array();
         foreach($data as $row){
@@ -550,7 +554,8 @@ class Person extends BackboneModel {
     static function getAllPeopleDuring($filter=null, $startRange, $endRange){
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id', 'user_name'),
-                                    array('deleted' => NEQ(1)),
+                                    array('deleted' => NEQ(1),
+                                          'candidate' => NEQ(1)),
                                     array('user_name' => 'ASC'));
         $people = array();
         foreach($data as $row){
@@ -573,7 +578,8 @@ class Person extends BackboneModel {
     static function getAllPeopleOn($filter=null, $date){
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id', 'user_name'),
-                                    array('deleted' => NEQ(1)),
+                                    array('deleted' => NEQ(1),
+                                          'candidate' => NEQ(1)),
                                     array('user_name' => 'ASC'));
         $people = array();
         foreach($data as $row){
@@ -652,6 +658,7 @@ class Person extends BackboneModel {
             $this->privateProfile = $data[0]['user_private_profile'];
             $this->hqps = null;
             $this->historyHqps = null;
+            $this->candidate = $data[0]['candidate'];
         }
     }
     
@@ -2256,6 +2263,10 @@ class Person extends BackboneModel {
         return $this->acknowledgements;
     }
     
+    function isCandidate(){
+        return $this->candidate;
+    }
+    
     function isActive(){
         $roles = $this->getRoles();
         if(count($roles) > 0){
@@ -2309,6 +2320,11 @@ class Person extends BackboneModel {
         if($role == EVALUATOR && $this->isEvaluator()){
             $roles[] = EVALUATOR;
         }
+        if($this->isCandidate()){
+            foreach($roles as $key => $r){
+                $roles[$key] = $r."-Candidate";
+            }    
+        }
         return (array_search($role, $roles) !== false);
     }
     
@@ -2331,6 +2347,11 @@ class Person extends BackboneModel {
         }
         if(count($roles) == 0){
             return false;
+        }
+        if($this->isCandidate()){
+            foreach($roles as $key => $r){
+                $roles[$key] = $r."-Candidate";
+            }    
         }
         return (array_search($role, $roles) !== false);
     }
@@ -2356,11 +2377,19 @@ class Person extends BackboneModel {
         if(count($roles) == 0){
             return false;
         }
+        if($this->isCandidate()){
+            foreach($roles as $key => $r){
+                $roles[$key] = $r."-Candidate";
+            }    
+        }
         return (array_search($role, $roles) !== false);
     }
     
     function isRoleAtLeastDuring($role, $startRange, $endRange){
         global $wgRoleValues;
+        if($this->isCandidate()){
+            return false;
+        }
         $roles = $this->getRolesDuring($startRange, $endRange);
         if($roles != null){
             foreach($roles as $r){
@@ -2380,6 +2409,9 @@ class Person extends BackboneModel {
     // Returns whether or not the Person has a role of at least the given role
     function isRoleAtLeast($role){
         global $wgRoleValues;
+        if($this->isCandidate()){
+            return false;
+        }
         if($this->getRoles() != null){
             foreach($this->getRoles() as $r){
                 if($r->getRole() != "" && $wgRoleValues[$r->getRole()] >= $wgRoleValues[$role]){
@@ -2398,6 +2430,9 @@ class Person extends BackboneModel {
     // Returns whether or not the Person has a role of at most the given role
     function isRoleAtMost($role){
         global $wgRoleValues;
+        if($this->isCandidate()){
+            return true;
+        }
         foreach($this->getRoles() as $r){
             if($r->getRole() != "" && $wgRoleValues[$r->getRole()] <= $wgRoleValues[$role]){
                 return true;

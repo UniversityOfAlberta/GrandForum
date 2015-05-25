@@ -10,6 +10,7 @@ class CreateUserAPI extends API{
         $this->addPOST("wpUserType",true,"The User Roles, must be in the form \"Role1, Role2, ...\"","HQP, RMC");
         $this->addPOST("wpNS",false,"The list of projects that the user is a part of.  Must be in the form \"Project1, Project2, ...\"","MEOW, NAVEL");
         $this->addPOST("wpSendMail",false,"Whether or not to send an email to the user or not.  This value should be either 'true' or 'false'.  If this parameter is not included, it is assumed that not email should be sent","true");
+        $this->addPOST("candidate",false,"Whether or not to make this user a candidate", "1");
         $this->addPOST("id",false,"The id of the creation request(You probably should not touch this parameter unless you know exactly what you are doing)", "15");
     }
 
@@ -37,7 +38,8 @@ class CreateUserAPI extends API{
 			$_POST['wpUserType'][] = $role;
 		}
 		// Finished manditory checks
-		if($me->isRoleAtLeast(STAFF)){
+		$_POST['candidate'] = isset($_POST['candidate']) ? $_POST['candidate'] : "0";
+		if($me->isRoleAtLeast(STAFF) || $_POST['candidate'] == "1"){
 		    // First check to see if the user already exists
 		    $person = Person::newFromName($_POST['wpName']);
 		    if($person != null && $person->getName() != ""){
@@ -50,9 +52,11 @@ class CreateUserAPI extends API{
 				    return $message;
 				}
 		    }
+		    $wgRequest->setVal('wpName', $_POST['wpName']);
 			// Actually create a new user
 			if(isset($_POST['wpSendMail'])){
 				if($_POST['wpSendMail'] === "true"){
+				    $wgRequest->setVal('wpEmail', $_POST['wpEmail']);
 					$wgRequest->setVal('wpCreateaccountMail', true);
 				}
 				else {
@@ -80,6 +84,7 @@ class CreateUserAPI extends API{
 			    Person::$aliasCache = array();
 			    Person::$idsCache = array();
 			    $person = Person::newFromName($_POST['wpName']);
+			    
 			    if($person != null && $person->getName() != null){
 			        $defaultUni = Person::getDefaultUniversity();
 			        $unis = array_flip(Person::getAllUniversities());
@@ -89,6 +94,9 @@ class CreateUserAPI extends API{
 			                            array('user_id' => $person->getId(),
 			                                  'university_id' => $unis[$defaultUni],
 			                                  'position_id' => $poss[$defaultPos]));
+		            DBFunctions::update('mw_user',
+		                                array('candidate' => 1),
+		                                array('user_id' => EQ($person->id)));
 			        Notification::addNotification("", $creator, "User Created", "A new user has been added to the forum: {$person->getReversedName()}", "{$person->getUrl()}");
 			        $data = DBFunctions::select(array('grand_notifications'),
 			                                    array('id'),
@@ -102,6 +110,7 @@ class CreateUserAPI extends API{
 			            Notification::deactivateNotification($data[0]['id']);
 			        }
 			    }
+			    DBFunctions::commit();
 			    if($doEcho){
 				    echo "User created successfully.\n";
 				}
@@ -120,7 +129,7 @@ class CreateUserAPI extends API{
 				    $wgMessage->addError($message);
 				    return $message;
 				}
-			}	
+		    }
 		}
 		else {
 		    if($doEcho){

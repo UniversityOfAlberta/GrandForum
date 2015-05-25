@@ -109,6 +109,9 @@ class ReportItemCallback {
             "sab_weakness" => "getSABWeakness",
             "sab_ranking" => "getSABRanking",
             "sab_summary" => "getSABSummary",
+            // RMC
+            "rmc_project_rank" => "getRMCProjectRank",
+            "rmc_project_confidence" => "getRMCProjectConfidence", 
             // Products
             "product_id" => "getProductId",
             "product_title" => "getProductTitle",
@@ -1181,6 +1184,38 @@ class ReportItemCallback {
         $data = $blb->getData();
         if($data != null){
            return $data;
+        }
+        return "";
+    }
+    
+    function getRMCProjectRank(){
+        $addr = ReportBlob::create_address(RP_EVAL_PROJECT, RMC_REVIEW, EVL_OVERALLSCORE, 0);
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        if($data != null){
+            if(isset($data['original'])){
+                return $data['original'];
+            }
+            else if(isset($data['revised'])){
+                return $data['revised'];
+            }
+        }
+        return "";
+    }
+    
+    function getRMCProjectConfidence(){
+        $addr = ReportBlob::create_address(RP_EVAL_PROJECT, RMC_REVIEW, EVL_CONFIDENCE, 0);
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        if($data != null){
+            if(isset($data['original'])){
+                return $data['original'];
+            }
+            else if(isset($data['revised'])){
+                return $data['revised'];
+            }
         }
         return "";
     }

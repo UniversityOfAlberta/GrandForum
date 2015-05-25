@@ -31,6 +31,7 @@ $wgGroupPermissions['user']['delete'] = true;
 $wgGroupPermissions['user']['browsearchive'] = true;
 $wgGroupPermissions['user']['undelete'] = true;
 $wgGroupPermissions['user']['deletedhistory'] = true;
+$wgGroupPermissions['*']['createaccount'] = true;
 
 $wgExtensionFunctions[] = "initializeAccessControls";
 $wgExtensionFunctions[] = "UploadProtection::initUploadFiles";

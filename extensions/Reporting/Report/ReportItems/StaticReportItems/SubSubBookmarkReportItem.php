@@ -10,7 +10,8 @@ class SubSubBookmarkReportItem extends StaticReportItem {
 	function renderForPDF(){
 	    global $wgOut;
         $text = $this->getAttr('text', $this->getAttr("title"));
-		PDFGenerator::addSubSubChapter($text);
+        $pageOffset = $this->getAttr('offset', 0);
+		PDFGenerator::addSubSubChapter($text, $pageOffset);
 		$wgOut->addHTML($this->processCData(""));
 	}
 }

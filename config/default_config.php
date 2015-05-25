@@ -103,6 +103,7 @@
         'MailingList',
         'AddMember',
         'EditMember',
+        'HQPRegister',
         'Poll',
         'QueryableTable',
         'IndexTables',

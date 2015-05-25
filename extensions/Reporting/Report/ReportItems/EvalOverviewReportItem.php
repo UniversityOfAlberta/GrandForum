@@ -402,7 +402,6 @@ EOF;
         return $blob_data;
     }
 
-
     function setSeenOverview($reportSubItem = null){
         global $wgUser, $wgImpersonating;
         if($wgImpersonating || is_null($reportSubItem)){

@@ -6,6 +6,7 @@ if(isset($_GET['generatePDF'])){
 require_once('PDFParams.php');
 require_once('ReportIndex.php');
 require_once('ReportStorage.php');
+$GLOBALS['attachedPDFs'] = array();
 $GLOBALS['chapters'] = array();
 $GLOBALS['footnotes'] = array();
 $GLOBALS['nFootnotes'] = 0;
@@ -163,6 +164,10 @@ EOF;
 		        font-size:smaller;
 		    }
 		    
+		    #pdfBody .belowLine {
+		        margin-bottom:".(15*DPI_CONSTANT)."px;
+		    }
+		    
 		    #pdfBody {
 		        margin: ".(20*DPI_CONSTANT)."px ".(20*DPI_CONSTANT)."px !important;
 		        position: relative;
@@ -182,7 +187,11 @@ EOF;
 		    /*#pdfBody .logo {
 		        background-image: url('skins/{$config->getValue('networkName')}_Logo.png');
 		        background-repeat: no-repeat;
-		    }*/";
+		    }*/
+		    
+		    #pdfBody .belowLine {
+		        display: none;
+		    }";
         }
         
 		$header .= "
@@ -415,6 +424,11 @@ EOF;
                 padding-left: ".($fontSize*2)."px;
             }
             
+            #pdfBody .externalLink {
+                color: ".$config->getValue("highlightColor").";
+                text-decoration: none;
+            }
+            
             #pdfBody .tinymce table {
                 max-width: 100%;
                 border: none;
@@ -483,7 +497,7 @@ if ( isset($pdf) ) {
 </script>';
         $dateStr = date("Y-m-d H:i:s T", time());
         if($preview){
-            echo $header."<body><div id='pdfBody'><div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;' /><div style='position:absolute;top:0;font-size:smaller;'><i>Generated: $dateStr</i></div>$html</div></body></html>";
+            echo $header."<body><div id='pdfBody'><div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;' /><div style='position:absolute;top:0;font-size:smaller;'><i>Generated: $dateStr</i></div><div class='belowLine'></div>$html</div></body></html>";
             return;
         }
         
@@ -513,6 +527,15 @@ if ( isset($pdf) ) {
      */
     function processChapters($dompdf, $name){
         $str = "";
+        $attached = array();
+        foreach($GLOBALS['attachedPDFs'] as $pdf){
+            $blob = new ReportBlob();
+            $blob->loadFromMD5($pdf);
+            $data = json_decode($blob->getData());
+            file_put_contents("/tmp/{$pdf}", base64_decode($data->file));
+            $attached[] = "\"/tmp/{$pdf}\"";
+        }
+        $attached = implode(" ", $attached);
         foreach($GLOBALS['chapters'] as $chapter){
             if(count($chapter['subs']) > 0){
                 $str .= "[/Count ".count($chapter['subs'])." /Title ({$chapter['title']}) /Page {$chapter['page']} /OUT pdfmark\n";
@@ -541,41 +564,56 @@ if ( isset($pdf) ) {
         }
         file_put_contents("/tmp/{$name}{$rand}pdfmarks", $str);
         file_put_contents("/tmp/{$name}{$rand}pdf", $dompdf->output());
+        exec("pdftk \"/tmp/{$name}{$rand}pdf\" {$attached} cat output \"/tmp/{$name}{$rand}nomarks\"");
         exec("gs \\
                 -q \\
                 -dBATCH \\
                 -dNOPAUSE \\
                 -sDEVICE=pdfwrite \\
-                -dColorConversionStrategy=/LeaveColorUnchanged \\
-                -dDownsampleMonoImages=false \\
-                -dDownsampleGrayImages=false \\
-                -dDownsampleColorImages=false \\
-                -dAutoFilterColorImages=false \\
-                -dAutoFilterGrayImages=false \\
-                -dColorImageFilter=/FlateEncode \\
-                -dGrayImageFilter=/FlateEncode \\
-                -sOutputFile=\"/tmp/{$name}{$rand}withmarks\" \"/tmp/{$name}{$rand}pdf\" \"/tmp/{$name}{$rand}pdfmarks\""); // Add Bookmarks
+                -dPDFSETTINGS=/prepress \\
+                -sOutputFile=\"/tmp/{$name}{$rand}withmarks\" \"/tmp/{$name}{$rand}nomarks\" \"/tmp/{$name}{$rand}pdfmarks\""); // Add Bookmarks
+        
         $pdfStr = file_get_contents("/tmp/{$name}{$rand}withmarks");
         unlink("/tmp/{$name}{$rand}pdfmarks");
+        unlink("/tmp/{$name}{$rand}nomarks");
         unlink("/tmp/{$name}{$rand}pdf");
-        unlink("/tmp/{$name}{$rand}withmarks");
+        //unlink("/tmp/{$name}{$rand}withmarks");
+        foreach($GLOBALS['attachedPDFs'] as $pdf){
+            unlink("/tmp/{$pdf}");
+        }
         $GLOBALS['chapters'] = array();
         $GLOBALS['nFootnotes'] = 0;
         $GLOBALS['section'] = 0;
+        $GLOBALS['attachedPDFs'] = array();
         return $pdfStr;
+    }
+    
+    /*
+     * Adds a pdf to the end of the PDF
+     * @param string $pdf The id of the pdf
+     */
+    function attachPDF($pdf){
+        global $wgOut;
+        $pdf = strip_tags($pdf);
+        $wgOut->addHTML("<script type='text/php'>
+                            \$GLOBALS['attachedPDFs'][] = \"{$pdf}\";
+                        </script>");
     }
     
     /**
      * Adds a top level bookmark to the document
      * @param string $title The title of the bookmark
+     * @param integer $pageOffset The offset of the page index (useful for pdf attachments)
      */
-    function addChapter($title){
+    function addChapter($title, $pageOffset=0){
         global $wgOut;
         $title = strip_tags($title);
-        $wgOut->addHTML("<div></div>
-                        <script type='text/php'>
+        if($pageOffset == 0){
+            $wgOut->addHTML("<div></div>");
+        }
+        $wgOut->addHTML("<script type='text/php'>
                             \$GLOBALS['chapters'][] = array('title' => \"{$title}\", 
-                                                            'page' => \$pdf->get_page_number(),
+                                                            'page' => \$pdf->get_page_number() + {$pageOffset},
                                                             'subs' => array());
                         </script>");
     }
@@ -583,14 +621,17 @@ if ( isset($pdf) ) {
     /**
      * Adds a second level Chapter bookmark to the document
      * @param string $title The title of the sub-bookmark
+     * @param integer $pageOffset The offset of the page index (useful for pdf attachments)
      */
-    function addSubChapter($title){
+    function addSubChapter($title, $pageOffset=0){
         global $wgOut;
         $title = strip_tags($title);
-        $wgOut->addHTML("<div></div>
-                        <script type='text/php'>
+        if($pageOffset == 0){
+            $wgOut->addHTML("<div></div>");
+        }
+        $wgOut->addHTML("<script type='text/php'>
                             \$GLOBALS['chapters'][count(\$GLOBALS['chapters'])-1]['subs'][] = array('title' => \"{$title}\", 
-                                                            'page' => \$pdf->get_page_number(),
+                                                            'page' => \$pdf->get_page_number() + {$pageOffset},
                                                             'subs' => array());
                         </script>");
     }
@@ -598,14 +639,17 @@ if ( isset($pdf) ) {
     /**
      * Adds a third level Chapter bookmark to the document
      * @param string $title The title of the sub-bookmark
+     * @param integer $pageOffset The offset of the page index (useful for pdf attachments)
      */
-    function addSubSubChapter($title){
+    function addSubSubChapter($title, $pageOffset=0){
         global $wgOut;
         $title = strip_tags($title);
-        $wgOut->addHTML("<div></div>
-                        <script type='text/php'>
+        if($pageOffset == 0){
+            $wgOut->addHTML("<div></div>");
+        }
+        $wgOut->addHTML("<script type='text/php'>
                             \$GLOBALS['chapters'][count(\$GLOBALS['chapters'])-1]['subs'][count(\$GLOBALS['chapters'][count(\$GLOBALS['chapters'])-1]['subs'])-1]['subs'][] = array('title' => \"{$title}\", 
-                                                            'page' => \$pdf->get_page_number(),
+                                                            'page' => \$pdf->get_page_number() + {$pageOffset},
                                                             'subs' => array());
                         </script>");
     }

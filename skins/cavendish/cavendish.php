@@ -844,6 +844,9 @@ class CavendishTemplate extends QuickTemplate {
         $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader("Other");
         
 		if($wgUser->isLoggedIn()){
+		    if(isset($_GET['returnto'])){
+		        redirect("$wgServer$wgScriptPath/index.php/{$_GET['returnto']}");
+		    }
 		    wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
 	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
 	        $GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");

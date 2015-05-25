@@ -82,6 +82,9 @@ $egAnnokiExtensions['AddMember'] = array('name' => 'AddMember',
 
 $egAnnokiExtensions['EditMember'] = array('name' => 'EditMember',
                                           'path' => "$IP/extensions/EditMember/EditMember.php");
+                                          
+$egAnnokiExtensions['HQPRegister'] = array('name' => 'HQPRegister',
+                                          'path' => "$IP/extensions/HQPRegister/HQPRegister.php");
 
 $egAnnokiExtensions['Poll'] = array('name' => 'Poll',
                                     'path' => "$IP/extensions/Poll/Poll.body.php");

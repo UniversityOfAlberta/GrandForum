@@ -39,6 +39,7 @@ class EvalReviewRadioReportItem extends RadioReportItem {
         
     }
     function getBlobValue(){
+        $this->getSeenOverview();
         $report = $this->getReport();
         $section = $this->getSection();
         $blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->getReport()->person->getId(), $this->projectId);
@@ -75,7 +76,7 @@ class EvalReviewRadioReportItem extends RadioReportItem {
             $seeonotherreviews = $blob->getData();
 
             //If the reviewer has seen the overview, use the second address.
-            if($seeonotherreviews){
+            if($seeonotherreviews == "Yes"){
                 $this->seenOverview = 1;
             }
         }

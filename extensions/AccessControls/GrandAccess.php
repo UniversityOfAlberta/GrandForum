@@ -61,8 +61,10 @@ class GrandAccess {
 	        }
 	    }
 	    foreach($me->getRolesDuring(CYCLE_START, CYCLE_END) as $role){
-	        $aRights[$i++] = $role->getRole().'During';
-	        $aRights[$i++] = $role->getRole().'During+';
+	        if(!$me->isCandidate()){
+	            $aRights[$i++] = $role->getRole().'During';
+	            $aRights[$i++] = $role->getRole().'During+';
+	        }
 	    }
 	    if(count($me->getRoles()) > 0){
 	        foreach($me->getRoles() as $role){
