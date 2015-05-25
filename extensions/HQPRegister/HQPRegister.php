@@ -21,7 +21,7 @@ class HQPRegister extends SpecialPage{
             if(!$me->isLoggedIn()){
                 $parseroutput->mText .= "<h2>HQP Registration</h2><p>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>register</a> and then fill out the HQP Application form.</p>";
             }
-            else if($me->isRole(HQP.'-Candidate')){
+            else if($me->isRole(HQP.'-Candidate') || $me->isRole(HQP)){
                 $parseroutput->mText .= "<h2>HQP Application</h2><p>To apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Report?report=HQPApplication'>HQP Application form</a>.</p>";
             }
         }
@@ -29,8 +29,7 @@ class HQPRegister extends SpecialPage{
     }
 
     function HQPRegister() {
-        wfLoadExtensionMessages('HQPRegister');
-        SpecialPage::SpecialPage("HQPRegister", null, false, 'runHQPRegister');
+        SpecialPage::__construct("HQPRegister", null, false, 'runHQPRegister');
     }
     
     function userCanExecute($user){
@@ -60,7 +59,6 @@ class HQPRegister extends SpecialPage{
         
         $lastNameLabel = new Label("last_name_label", "Last Name", "The last name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
         $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOT_NULL);
-        $lastNameField->registerValidation(new SimilarUserValidation(VALIDATION_POSITIVE, VALIDATION_WARNING));
         $lastNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
         $lastNameRow = new FormTableRow("last_name_row");
         $lastNameRow->append($lastNameLabel)->append($lastNameField->attr('size', 20));

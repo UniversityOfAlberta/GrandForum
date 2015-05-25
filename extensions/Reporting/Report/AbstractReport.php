@@ -233,10 +233,10 @@ abstract class AbstractReport extends SpecialPage {
                 $this->currentSection = @$this->sections[0];
             }
             $this->currentSection->selected = true;
-            SpecialPage::__construct("Report", HQP.'+', false);
+            SpecialPage::__construct("Report", '', false);
         }
         else{
-            SpecialPage::__construct("Report", HQP.'+', false);
+            SpecialPage::__construct("Report", '', false);
         }
     }
     

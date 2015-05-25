@@ -38,6 +38,7 @@ class Project extends BackboneModel {
      * @return Project The Project with the given id
      */
     static function newFromId($id){
+        $me = Person::newFromWgUser();
         if(isset(self::$cache[$id])){
             return self::$cache[$id];
         }
@@ -62,8 +63,11 @@ class Project extends BackboneModel {
                 // This project has a history
                 $project = Project::newFromHistoricId($data[0]['id']);
             }
-            else{
+            else if($me->isLoggedIn() || $data[0]['status'] != 'Proposed'){
                 $project = new Project($data);
+            }
+            else{
+                return null;
             }
             self::$cache[$project->id] = &$project;
             self::$cache[$project->name] = &$project;
@@ -115,6 +119,12 @@ class Project extends BackboneModel {
                 self::$cache[$name] = &$project;
                 return $project;
             }
+            else if($me->isLoggedIn() || $data[0]['status'] != 'Proposed'){
+                $project = new Project($data);
+            }
+            else{
+                return null;
+            }
             $project = new Project($data);
             //self::$cache[$project->id] = &$project;
             //self::$cache[$project->name] = &$project;
@@ -131,6 +141,7 @@ class Project extends BackboneModel {
      * @return Project The Project with the given historic id
      */
     static function newFromHistoricId($id, $evolutionId=null){
+        $me = Person::newFromWgUser();
         if(isset(self::$cache[$id.'_'.$evolutionId])){
             return self::$cache[$id.'_'.$evolutionId];
         }
@@ -143,7 +154,7 @@ class Project extends BackboneModel {
                 $sqlExtra
                 ORDER BY e.id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
-        if (DBFunctions::getNRows() > 0){
+        if (DBFunctions::getNRows() > 0 && ($me->isLoggedIn() || $data[0]['status'] != 'Proposed')){
             $project = new Project($data);
             $project->evolutionId = $evolutionId;
             self::$cache[$id.'_'.$evolutionId] = $project;
@@ -157,6 +168,7 @@ class Project extends BackboneModel {
      * @return Project The Project with the given historic name
      */
     static function newFromHistoricName($name){
+        $me = Person::newFromWgUser();
         if(isset(self::$cache['h_'.$name])){
             return self::$cache['h_'.$name];
         }
@@ -167,7 +179,7 @@ class Project extends BackboneModel {
                 AND s.evolution_id = e.id
                 ORDER BY e.id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
-        if (DBFunctions::getNRows() > 0){
+        if (DBFunctions::getNRows() > 0 && ($me->isLoggedIn() || $data[0]['status'] != 'Proposed')){
             $project = new Project($data);
             self::$cache['h_'.$name] = &$project;
             return $project;
@@ -180,6 +192,7 @@ class Project extends BackboneModel {
      * @return array An array of Projects
      */
     static function getAllProjects($subProjects=false){
+        $me = Person::newFromWgUser();
         if($subProjects == false){
             $subProjects = EQ(0);
         }
@@ -194,7 +207,7 @@ class Project extends BackboneModel {
         foreach($data as $row){
             $project = Project::newFromId($row['id']);
             if($project != null && $project->getName() != ""){
-                if(!isset($projects[$project->name]) && !$project->isDeleted()){
+                if(!isset($projects[$project->name]) && !$project->isDeleted() && ($me->isLoggedIn() || $project->getStatus() != 'Proposed')){
                     $projects[$project->getName()] = $project;
                 }
             }
@@ -205,6 +218,7 @@ class Project extends BackboneModel {
     }
     
     static function getAllProjectsDuring($startDate, $endDate, $subProjects=false){
+        $me = Person::newFromWgUser();
         if($subProjects == false){
             $subProjects = EQ(0);
         }
@@ -224,7 +238,7 @@ class Project extends BackboneModel {
                         substr($project->effectiveDate, 0, 10) >= $endDate || 
                         (substr($project->effectiveDate, 0, 10) <= $endDate && substr($project->effectiveDate, 0, 10) >= $startDate)) ||
                        !$project->deleted){
-                        if(substr($project->getCreated(), 0, 10) <= $endDate){
+                        if(substr($project->getCreated(), 0, 10) <= $endDate && ($me->isLoggedIn() || $project->getStatus() != 'Proposed')){
                             $projects[$project->getName()] = $project;
                         }
                     }
@@ -238,6 +252,7 @@ class Project extends BackboneModel {
     
     // Same as getAllProjects, but will also return deleted projects
     static function getAllProjectsEver($subProjects=false){
+        $me = Person::newFromWgUser();
         if($subProjects == false){
             $subProjects = EQ(0);
         }
@@ -252,7 +267,7 @@ class Project extends BackboneModel {
         foreach($data as $row){
             $project = Project::newFromHistoricName($row['name']);
             if($project != null && $project->getName() != ""){
-                if(!isset($projects[$project->name])){
+                if(!isset($projects[$project->name]) && ($me->isLoggedIn() || $project->getStatus() != 'Proposed')){
                     $projects[$project->getName()] = $project;
                 }
             }
