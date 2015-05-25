@@ -240,6 +240,7 @@ class CavendishTemplate extends QuickTemplate {
 		    iconPath = "<?php echo $config->getValue('iconPath'); ?>";
 		    iconPathHighlighted = "<?php echo $config->getValue('iconPathHighlighted'); ?>";
 		    highlightColor = "<?php echo $config->getValue('highlightColor'); ?>";
+		    productsTerm = "<?php echo $config->getValue('productsTerm'); ?>";
 		
 		    function isExtensionEnabled(ext){
 		        return (extensions.indexOf(ext) != -1);
@@ -840,7 +841,7 @@ class CavendishTemplate extends QuickTemplate {
 	    $GLOBALS['toolbox'] = array();
         
         $GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader("People");
-        $GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader("Products");
+        $GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader(Inflect::pluralize($config->getValue('productsTerm')));
         $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader("Other");
         
 		if($wgUser->isLoggedIn()){

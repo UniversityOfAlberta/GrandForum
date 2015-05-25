@@ -80,7 +80,7 @@ class DashboardTable extends QueryableTable{
     
     // Renders the QueryableTable as an html table.  Cells are formatted based on their type
     function render($sortable=false, $showManageProducts=false){
-        global $wgServer, $wgScriptPath;
+        global $wgServer, $wgScriptPath, $config;
         $ret = array();
         $sort = "";
         if($sortable){
@@ -137,7 +137,7 @@ class DashboardTable extends QueryableTable{
         $ret[] = "</table></div>\n";
         $ret[] = "<div id='{$this->id}details_div' style='display:none;border:1px solid #ccc;margin-top:10px;margin-bottom:10px;max-width:878px;padding:10px;position:relative;'></div>\n";
         if($showManageProducts){
-            $ret[] = "<a class='button' target='_blank' href='$wgServer$wgScriptPath/index.php/Special:ManageProducts'>Manage Products</a><br />\n";
+            $ret[] = "<a class='button' target='_blank' href='$wgServer$wgScriptPath/index.php/Special:ManageProducts'>Manage ".Inflect::pluralize($config->getValue('productsTerm'))."</a><br />\n";
         }
         return implode("", $ret);
 	}

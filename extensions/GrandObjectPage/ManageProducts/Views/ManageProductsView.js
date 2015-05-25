@@ -49,7 +49,7 @@ ManageProductsView = Backbone.View.extend({
         this.editDialog.dialog({
             height: $(window).height()*0.75, 
             width: 800,
-            title: "Create Product"
+            title: "Create " + productsTerm
         });
         this.editDialog.dialog('open');
     },
@@ -343,7 +343,7 @@ ManageProductsView = Backbone.View.extend({
 	            $("html").css("overflow", "auto");
 	        }, this),
 	        buttons: {
-                "Save Product": $.proxy(function(){
+                "Save": $.proxy(function(){
                     var validation = this.editDialog.view.validate();
                     if(validation != ""){
                         clearAllMessages("#dialogMessages");

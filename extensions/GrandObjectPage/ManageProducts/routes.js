@@ -27,7 +27,7 @@ PageRouter = Backbone.Router.extend({
 var pageRouter = new PageRouter;
 
 pageRouter.on('route:defaultRoute', function (actions) {
-    main.set('title', 'Product Management');
+    main.set('title', productsTerm + ' Management');
     this.closeCurrentView();
     var products = me.getPrivateProducts();
     this.currentView = new ManageProductsView({el: $("#currentView"), model: products});

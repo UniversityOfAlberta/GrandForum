@@ -131,8 +131,9 @@ class PersonDashboardTab extends AbstractEditableTab {
     }
     
     function showEditTopProducts($person, $visibility, $max=5){
+        global $config;
         $this->html .= "<h2>Top Research Outcomes</h2>";
-        $this->html .= "<small>Select up to {$max} research outcomes that you believe showcase your productivity the greatest.  The order that you specify them in does not matter.  The products will be sorted in descending order by date.  These top products will be shown in your annual report.</small><br />";
+        $this->html .= "<small>Select up to {$max} research outcomes that you believe showcase your productivity the greatest.  The order that you specify them in does not matter.  The ".strtolower(Inflect::pluralize($config->getValue('productsTerm')))." will be sorted in descending order by date.  These top ".strtolower(Inflect::pluralize($config->getValue('productsTerm')))." will be shown in your annual report.</small><br />";
         $products = $person->getTopProducts();
         $i = 0;
         foreach($products as $product){
@@ -150,6 +151,7 @@ class PersonDashboardTab extends AbstractEditableTab {
     }
     
     function showTopProducts($person, $visibility, $max=5){
+        global $config;
         $products = $person->getTopProducts();
         if(!$visibility['isMe'] && count($products) == 0){
             return;
@@ -161,7 +163,7 @@ class PersonDashboardTab extends AbstractEditableTab {
                                 <tr>
                                     <td align='center'><b>Year</b></td>
                                     <td align='center'><b>Category</b></td>
-                                    <td align='center'><b>Product</b></td>
+                                    <td align='center'><b>".$config->getValue('productsTerm')."</b></td>
                                 </th>";
             $i = 0;
             foreach($products as $product){
