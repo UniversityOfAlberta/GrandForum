@@ -125,7 +125,7 @@ ManageProductsViewRow = Backbone.View.extend({
         this.parent.editDialog.dialog({
             height: $(window).height()*0.75, 
             width: 800,
-            title: "Edit Product"
+            title: "Edit " + productsTerm
         });
         this.parent.editDialog.dialog('open');
     },

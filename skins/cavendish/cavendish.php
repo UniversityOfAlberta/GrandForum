@@ -850,7 +850,8 @@ class CavendishTemplate extends QuickTemplate {
 		    }
 		    wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
 	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
-	        $GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
+	        $GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
+	        $GLOBALS['toolbox']['Other']['links'][1001] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
 	        global $toolbox;
 	        $i = 0;
 	        foreach($toolbox as $key => $header){

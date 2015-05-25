@@ -410,7 +410,7 @@ ProductResultsView = ResultsView.extend({
     },
     
     render: function(){
-        this.$el.html(this.template({group: "Products"}));
+        this.$el.html(this.template({group: productsTerm.pluralize()}));
     }
 });
 

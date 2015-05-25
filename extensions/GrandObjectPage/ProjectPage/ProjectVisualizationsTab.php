@@ -165,6 +165,7 @@ class ProjectVisualizationsTab extends AbstractTab {
     }
     
     static function getProjectTimelineData($action, $article){
+        global $config;
         if($action == "getProjectTimelineData" && isset($_GET['project'])){
             global $wgServer, $wgScriptPath;
             header("Content-Type: application/json");
@@ -177,7 +178,7 @@ class ProjectVisualizationsTab extends AbstractTab {
                                   'content' => 'Members (NI)',
                                   'className' => 'visRed'),
                             array('id' => 'products',
-                                  'content' => 'Products',
+                                  'content' => Inflect::pluralize($config->getValue('productsTerm')),
                                   'className' => 'visOrange'));
             foreach($project->getAllPeopleDuring(null, '0000-00-00 00:00:00', '2100-00-00 00:00:00') as $person){
                 $start = substr($project->getJoinDate($person), 0, 10);
@@ -205,7 +206,7 @@ class ProjectVisualizationsTab extends AbstractTab {
                     continue;
                 }
                 $start = $paper->getDate();
-                $content = "<a href='{$paper->getUrl()}' target='_blank'>View Product's Page</a>";
+                $content = "<a href='{$paper->getUrl()}' target='_blank'>View ".$config->getValue('productsTerm')."'s Page</a>";
                 $items[] = array('content' => $paper->getTitle(),
                                  'description' => array('title' => $paper->getTitle(),
                                                         'text' => $content),
