@@ -15,13 +15,14 @@ class HQPRegister extends SpecialPage{
 
     static function onOutputPageParserOutput(&$out, $parseroutput){
         global $wgServer, $wgScriptPath, $config, $wgTitle;
+        
         $me = Person::newFromWgUser();
         if($wgTitle->getText() == "Main Page" && $wgTitle->getNsText() == ""){ // Only show on Main Page
             if(!$me->isLoggedIn()){
-                $out->addHTML("<p><i>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>register</a> and then fill out the HQP Application form.</i></p>");
+                $parseroutput->mText .= "<h2>HQP Registration</h2><p>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>register</a> and then fill out the HQP Application form.</p>";
             }
             else if($me->isRole(HQP.'-Candidate')){
-                $out->addHTML("<p><i>To apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Report?report=HQPApplication'>HQP Application form</a>.</i></p>");
+                $parseroutput->mText .= "<h2>HQP Application</h2><p>To apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Report?report=HQPApplication'>HQP Application form</a>.</p>";
             }
         }
         return true;

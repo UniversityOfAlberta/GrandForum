@@ -100,9 +100,9 @@ Funding Commences: September 1, 2015<br />
                 <table>
             ]]>
         </ReportItem>
-        <ReportItem id="name" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_NAME" width="180px">
+        <ReportItem id="name" type="StaticReportItem">
             <![CDATA[
-                <tr><td align='right'><b>Applicant Name:</b></td><td>{$item}</td></tr>
+                <tr><td align='right'><b>Applicant Name:</b></td><td>{$user_name}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="uni" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_UNI" width="180px">

@@ -18,10 +18,10 @@
     </ReportSection>
     <ReportSection type="BookmarkReportSection" name="AGE-WELL Graduate Student and Postdoctoral Awards in Technology and Aging" />
     <ReportSection id="application" name="Application" blobSection="HQP_APPLICATION_FORM" type="HeaderReportSection" pagebreak="false">
-        <ReportItem id="name" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_NAME">
+        <ReportItem id="name" type="StaticReportItem">
             <![CDATA[
                 <h4>Applicant Name</h4>
-                <p>{$item}</p><br />
+                <p>{$user_name}</p><br />
             ]]>
         </ReportItem>
         <ReportItem id="uni" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_UNI">
