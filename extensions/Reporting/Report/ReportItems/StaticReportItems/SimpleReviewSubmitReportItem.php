@@ -85,9 +85,6 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		$gmt_date = date('P');
 		$temp_html =<<<EOF
 		<p><table cellspacing='5'>
-        <tr>
-        	<th align='left'><span style="font-size:8pt; font-family:monospace;">Identifier</span><br />Generated (GMT {$gmt_date})</th>
-        </tr>
 EOF;
 
 		$wgOut->addHTML($temp_html);
@@ -120,9 +117,6 @@ EOF;
 
 		    $subm_table_row =<<<EOF
 		    <tr>
-		    <td>
-		    	<span style="font-size:8pt; font-family: monospace;" id='ex_token_{$file}'>{$tok}</span>
-		    	<span id='ex_time_{$file}'>{$show_pdf}</span></td>
             <td>
             	<button id='download_button_{$file}' name='{$tok}' onClick='clickButton(this)' {$style1}>{$report->name} PDF</button>
             </td>

@@ -10,6 +10,9 @@ class MultiTextReportItem extends AbstractReportItem {
             $index = str_replace(" ", "", $index);
             $index = str_replace(".", "", $index);
             $index = str_replace("'", "", $index);
+            if($index == ""){
+                $index = "_";
+            }
             $indices[] = $index;
         }
         return $indices;
@@ -84,12 +87,14 @@ EOF;
         </script>
         <input type='hidden' name='{$this->getPostId()}[-1]' value='' />
 EOF;
-        $item .= "<table id='table_{$this->getPostId()}'>
-            <tr>";
-        foreach($labels as $label){
-            $item .= "<th>{$label}</th>";
+        $item .= "<table id='table_{$this->getPostId()}' cellpadding='0' cellspacing='0'>";
+        if(count($labels) > 0 && $labels[0] != ""){
+            $item .= "<tr>";
+            foreach($labels as $label){
+                $item .= "<th>{$label}</th>";
+            }
+            $item .= "<th></th></tr>";
         }
-        $item .= "<th></th></tr>";
         $i = 0;
         foreach($values as $i => $value){
             if($i > -1){
@@ -150,12 +155,17 @@ EOF;
         }
         $item = "";
         if($max > -1){
-            $item = "<table id='table_{$this->getPostId()}' cellspacing='1' cellpadding='3' style='border: none;' frame='box' rules='all' width='100%'>
-                <tr>";
-            foreach($labels as $label){
-                $item .= "<th>{$label}</th>";
+            if(count($labels) > 0 && $labels[0] != ""){
+                $item = "<table id='table_{$this->getPostId()}' cellspacing='1' cellpadding='3' style='border: none;' frame='box' rules='all' width='100%'>";
+                $item .= " <tr>";
+                foreach($labels as $label){
+                    $item .= "<th>{$label}</th>";
+                }
+                $item .= "</tr>";
             }
-            $item .= "</tr>";
+            else{
+                $item = "<table>";
+            }
             $i = 0;
             $count = 0;
             foreach($values as $i => $value){

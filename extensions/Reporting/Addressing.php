@@ -48,6 +48,10 @@ define('RP_SUBPROJECT', 17);
 define('RP_PROJECT_PROPOSAL',   100);
 define('RP_SAB_REVIEW',         101);
 define('RP_SAB_REPORT',         102);
+/*
+ * AGE-WELLL
+ */
+define('RP_HQP_APPLICATION',    200);
 
 /*
  * Second-level identifiers: report section.
@@ -83,6 +87,9 @@ define('HQP_PEOPLE_INTERACT',		4);
 define('HQP_PROJECT_INTERACT',		5);
 define('HQP_IMPACT',			6);
 define('HQP_RESACTIVITY',		7);
+
+define('HQP_APPLICATION_FORM',  1);
+define('HQP_APPLICATION_DOCS',  2);
 
 define('LDR_SUMMARY',			1);
 define('LDR_MILESTONESTATUS',		2);
@@ -183,6 +190,9 @@ define('SAB_REVIEW',    1);
 // Second level for SAB Report
 define('SAB_REPORT',    1);
 
+// Second level for RMC Review
+define('RMC_REVIEW',    0);
+
 /*
  * Third-level identifiers: question within a section.
  *
@@ -247,6 +257,36 @@ define('HQP_RESACT_NOTAPPLICABLE',  6);
 define('HQP_RESACT_PRIMCRITERIA',   7);
 define('HQP_RESACT_SECCRITERIA',    8);
 
+/*
+ * AGE-WELL HQP Application second level
+ */
+define('HQP_APPLICATION_NAME',      1);
+define('HQP_APPLICATION_UNI',       2);
+define('HQP_APPLICATION_SUP',       3);
+define('HQP_APPLICATION_LVL',       4);
+define('HQP_APPLICATION_LVL_OTH',   5);
+define('HQP_APPLICATION_PROJ',      6);
+define('HQP_APPLICATION_KEYWORDS',  7);
+define('HQP_APPLICATION_RESEARCH',  8);
+define('HQP_APPLICATION_TRAIN',     9);
+define('HQP_APPLICATION_BIO',       10);
+define('HQP_APPLICATION_OBJ',       11);
+define('HQP_APPLICATION_GOALS',     12);
+define('HQP_APPLICATION_ALIGN',     13);
+define('HQP_APPLICATION_COMM',      14);
+define('HQP_APPLICATION_IND',       15);
+define('HQP_APPLICATION_INN',       16);
+define('HQP_APPLICATION_BOUNDARY',  17);
+define('HQP_APPLICATION_FUND',      18);
+
+define('HQP_APPLICATION_SUPPORT1',  1);
+define('HQP_APPLICATION_SUPPORT2',  2);
+define('HQP_APPLICATION_ADMISSION', 3);
+define('HQP_APPLICATION_EVIDENCE',  4);
+define('HQP_APPLICATION_TRANS1',    5);
+define('HQP_APPLICATION_TRANS2',    6);
+define('HQP_APPLICATION_CV',        7);
+
 define('CHAMP_REPRESENT', 1);
 define('CHAMP_ACTIVITY', 2);
 define('CHAMP_ORG', 3);
@@ -262,7 +302,6 @@ define('ISAC_PHASE2', 1);
 
 // No third-level identifiers for interactions with people (HQP_PEOPLE_INTERACT),
 // projects (HQP_PROJECT_INTERACT), or impact (HQP_IMPACT).
-
 
 // Third-level identifiers for Leader report.
 define('LDR_MLT_BALANCE',		1);

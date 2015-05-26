@@ -24,7 +24,7 @@ class ReportArchive extends SpecialPage {
     function userCanExecute($user){
         if($user->isLoggedIn()){
             $person = Person::newFromWgUser();
-            if($person->isRoleAtLeast(INACTIVE)){
+            if($person->isLoggedIn()){
                 return true;
             }
         }

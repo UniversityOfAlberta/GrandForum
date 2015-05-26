@@ -12,6 +12,7 @@ class RadioReportItem extends AbstractReportItem {
 		    if($value == $option){
 		        $checked = "checked='checked'";
 		    }
+		    $option = str_replace("'", "&#39;", $option);
 		    $items[] = "<input type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;{$option}";
 		}
 
@@ -45,7 +46,7 @@ class RadioReportItem extends AbstractReportItem {
 	    	$val = "N/A";
 	    }
 
-	    $item = $this->processCData("<p><i>{$val}</i></p>");
+	    $item = $this->processCData("<i>{$val}</i>");
 		$wgOut->addHTML($item);
 	}
 }
