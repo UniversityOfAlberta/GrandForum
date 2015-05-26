@@ -58,6 +58,16 @@ class IndexTable {
             $peopleSubTab['dropdown'][] = TabUtils::createSubTab(ISAC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_".ISAC, "$selected");
         }
         
+        if(count(Person::getAllPeople(CAC)) > 0){
+            $selected = ($lastRole == CAC || $wgTitle->getText() == "ALL ".CAC || ($wgTitle->getNSText() == CAC && !($me->isRole(CAC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(CAC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_".CAC, "$selected");
+        }
+        
+        if(count(Person::getAllPeople(IAC)) > 0){
+            $selected = ($lastRole == IAC || $wgTitle->getText() == "ALL ".IAC || ($wgTitle->getNSText() == IAC && !($me->isRole(IAC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(IAC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_".IAC, "$selected");
+        }
+        
         if(count(Person::getAllPeople(EXTERNAL)) > 0){
             $selected = ($lastRole == EXTERNAL || $wgTitle->getText() == "ALL External" || ($wgTitle->getNSText() == EXTERNAL && !($me->isRole(EXTERNAL) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
             $peopleSubTab['dropdown'][] = TabUtils::createSubTab(EXTERNAL, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_External", "$selected");
@@ -199,7 +209,15 @@ class IndexTable {
 				    $this->generatePersonTable(NI, 1);
 				    break;
 				case 'ALL '.ISAC:
-			        $wgOut->setPageTitle(ISAC." Members");
+			        $wgOut->setPageTitle($config->getValue('roleDefs', ISAC));
+				    $this->generatePersonTable(ISAC);
+				    break;
+				case 'ALL '.IAC:
+			        $wgOut->setPageTitle($config->getValue('roleDefs', IAC));
+				    $this->generatePersonTable(ISAC);
+				    break;
+				case 'ALL '.CAC:
+			        $wgOut->setPageTitle($config->getValue('roleDefs', CAC));
 				    $this->generatePersonTable(ISAC);
 				    break;
 				case 'ALL '.EXTERNAL:
@@ -211,7 +229,7 @@ class IndexTable {
 				    $this->generatePersonTable(NCE);
 				    break;
 				case 'ALL '.RMC:
-			        $wgOut->setPageTitle("Research Management Committee");
+			        $wgOut->setPageTitle($config->getValue('roleDefs', RMC));
 				    $this->generateRMCTable();
 				    break;
 				case 'Multimedia Stories':
@@ -302,23 +320,29 @@ class IndexTable {
 		global $wgScriptPath, $wgServer, $config;
 		$this->text .=
 "<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>{$config->getValue('projectThemes')}</th><th>Name</th><th>Leaders</th></tr></thead><tbody>
+<thead><tr><th>{$config->getValue('projectThemes')}</th><th>Name</th><th>Leaders</th><th>Coordinators</th></tr></thead><tbody>
 ";
         $themes = Theme::getAllThemes(PROJECT_PHASE);
 		foreach($themes as $theme){
 		    $leaders = array();
+		    $coordinators = array();
 		    $leads = $theme->getLeaders();
+		    $coords = $theme->getCoordinators();
             foreach($leads as $lead){
                 $leaders[] = "<a href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
             }
+            foreach($coords as $coord){
+                $coordinators[] = "<a href='{$coord->getUrl()}'>{$coord->getNameForForms()}</a>";
+            }
 		    $leadersString = implode(", ", $leaders);
+		    $coordsString = implode(", ", $coordinators);
 			$this->text .= <<<EOF
 <tr>
 <td align='left'>
 <a href='{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:{$theme->getAcronym()} - {$theme->getName()}'>{$theme->getAcronym()}</a>
 </td><td align='left'>
 {$theme->getName()}
-</td><td>{$leadersString}</td></tr>
+</td><td>{$leadersString}</td><td>{$coordsString}</td></tr>
 EOF;
 		}
 		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
