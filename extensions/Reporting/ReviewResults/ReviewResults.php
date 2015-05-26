@@ -20,7 +20,7 @@ class ReviewResults extends SpecialPage {
     function execute(){
         global $wgUser, $wgOut, $wgServer, $wgScriptPath;
         $type = "NI";
-        else if(!empty($_GET['type']) && $_GET['type'] == 'Project'){
+        if(!empty($_GET['type']) && $_GET['type'] == 'Project'){
             $type = "Project";
         }
         
