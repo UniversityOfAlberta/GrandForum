@@ -28,6 +28,13 @@ if( defined( 'MW_INSTALL_PATH' ) ) {
 	$IP = dirname( __FILE__ );
 }
 
+if(file_exists("$IP/test.tmp")){
+    define("TESTING", true);
+}
+else{
+    define("TESTING", false);
+}
+
 $path = array( $IP, "$IP/includes", "$IP/languages" );
 set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_include_path() );
 
@@ -63,12 +70,8 @@ $wgListAdminPassword    = $config->getValue("listAdminPassword");
 
 $wgFavicon          = "$wgServer$wgScriptPath/favicon.ico";
 
-if(file_exists("$IP/test.tmp")){
+if(TESTING){
     $wgDBname = $wgTestDBname;
-    define("TESTING", true);
-}
-else{
-    define("TESTING", false);
 }
 
 # If PHP's memory limit is very low, some operations may fail.
@@ -118,7 +121,8 @@ $wgDisableCounters = true;
 $wgJobRunRate = 0.01;
 $wgSessionsInObjectCache = true;
 $wgEnableSidebarCache = true;
-if(!file_exists($config->getValue('localizationCache'))){
+if(!file_exists($config->getValue('localizationCache')) && 
+   is_writable($config->getValue('localizationCache'))){
     mkdir($config->getValue('localizationCache'));
 }
 if(file_exists($config->getValue('localizationCache'))){

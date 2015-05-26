@@ -83,6 +83,7 @@ class Project extends BackboneModel {
      * @return Project The Project with the given name
      */
     static function newFromName($name){
+        $me = Person::newFromWgUser();
         if(isset(self::$cache[$name])){
             return self::$cache[$name];
         }
