@@ -54,6 +54,7 @@ class Person extends BackboneModel {
     var $budgets = array();
     var $leadershipCache = array();
     var $themesCache = array();
+    var $coordCache = array();
     var $hqpCache = array();
     var $projectCache = array();
     var $evaluateCache = array();
@@ -949,8 +950,24 @@ class Person extends BackboneModel {
         return (count($themes) > 0);
     }
     
+    function isThemeCoordinator(){
+        $themes = $this->getCoordThemes();
+        return (count($themes) > 0);
+    }
+    
     function isThemeLeaderOf($project){
         $themes = $this->getLeadThemes();
+        $challenge = $project->getChallenge();
+        foreach($themes as $theme){
+            if($challenge->getId() == $theme->getId()){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    function isThemeCoordinatorOf($project){
+        $themes = $this->getCoordThemes();
         $challenge = $project->getChallenge();
         foreach($themes as $theme){
             if($challenge->getId() == $theme->getId()){
@@ -3200,7 +3217,8 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_theme_leaders
                 WHERE user_id = '{$this->id}'
-                AND co_lead = 'False'\n";
+                AND co_lead = 'False'
+                AND coordinator = 'False'\n";
         if(!$history){
             $sql .= "AND (end_date = '0000-00-00 00:00:00'
                           OR end_date > CURRENT_TIMESTAMP)";
@@ -3216,13 +3234,36 @@ class Person extends BackboneModel {
         return $themes;
     }
     
+    function getCoordThemes($history=false){
+        if(!$history && isset($this->coordCache['currentLead'])){
+            return $this->coordCache['currentLead'];
+        }
+        $sql = "SELECT *
+                FROM grand_theme_leaders
+                WHERE user_id = '{$this->id}'
+                AND coordinator = 'True'\n";
+        if(!$history){
+            $sql .= "AND (end_date = '0000-00-00 00:00:00'
+                          OR end_date > CURRENT_TIMESTAMP)";
+        }
+        $data = DBFunctions::execSQL($sql);
+        $themes = array();
+        foreach($data as $row){
+            $themes[$row['theme']] = Theme::newFromId($row['theme']);
+        }
+        if(!$history){
+            $this->coordCache['currentLead'] = &$themes;
+        }
+        return $themes;
+    }
+    
     /**
      * Returns an array of Projects that this Person is a Theme Leader of
      * @return array The Projects that this Person is a Theme Leader of
      */
     function getThemeProjects(){
         $projects = array();
-        $themes = $this->getLeadThemes();
+        $themes = array_merge($this->getLeadThemes(), $this->getCoordThemes());
         if(count($themes) > 0){
             $themeIds = array();
             foreach($themes as $theme){

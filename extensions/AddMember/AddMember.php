@@ -181,7 +181,7 @@ class AddMember extends SpecialPage{
     }
     
     function createForm(){
-        global $wgRoles, $wgUser;
+        global $wgRoles, $wgUser, $config;
         $me = Person::newFromUser($wgUser);
         $formContainer = new FormContainer("form_container");
         $formTable = new FormTable("form_table");
@@ -210,18 +210,36 @@ class AddMember extends SpecialPage{
         }
         $roleOptions = array();
         foreach($wgRoles as $role){
-            if($me->isRoleAtLeast($role) && $role != CHAMP && $role != ISAC && $role != NCE){
-                $roleOptions[] = $role;
+            if($me->isRoleAtLeast($role) && $role != CHAMP && 
+                                            $role != ISAC && 
+                                            $role != IAC && 
+                                            $role != CAC && 
+                                            $role != NCE &&
+                                            $role != RMC){
+                $roleOptions[$config->getValue('roleDefs', $role)] = $role;
             }
         }
         if($me->isRoleAtLeast(PL)){
-            $roleOptions[] = CHAMP;
+            $roleOptions[$config->getValue('roleDefs', CHAMP)] = CHAMP;
         }
         if($me->isRoleAtLeast(STAFF)){
-            $roleOptions[] = ISAC;
+            if(in_array(ISAC, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', ISAC)] = ISAC;
+            }
+            if(in_array(IAC, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', IAC)] = IAC;
+            }
+            if(in_array(CAC, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', CAC)] = CAC;
+            }
+            if(in_array(RMC, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', RMC)] = RMC;
+            }
         }
         if($me->isRoleAtLeast(MANAGER)){
-            $roleOptions[] = NCE;
+            if(in_array(NCE, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', NCE)] = NCE;
+            }
         }
         $rolesLabel = new Label("role_label", "Roles", "The roles the new user should belong to", $roleValidations);
         $rolesField = new VerticalCheckBox("role_field", "Roles", array(), $roleOptions, $roleValidations);

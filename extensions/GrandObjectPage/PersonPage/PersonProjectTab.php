@@ -82,6 +82,7 @@ class PersonProjectTab extends AbstractTab {
     function showThemes($person, $visibility){
         global $wgOut, $wgScriptPath, $wgServer, $config;
         $leadThemes = $person->getLeadThemes();
+        $coordThemes = $person->getCoordThemes();
         $projects = $person->getProjects();
         $themes = array();
         foreach($projects as $project){
@@ -94,12 +95,18 @@ class PersonProjectTab extends AbstractTab {
         foreach($leadThemes as $theme){
             $themes[$theme->getAcronym()] = $theme;
         }
+        foreach($coordThemes as $theme){
+            $themes[$theme->getAcronym()] = $theme;
+        }
         if(count($themes) > 0){
             $themeNames = array();
             foreach($themes as $theme){
                 $lead = "";
                 if(isset($leadThemes[$theme->getId()])){
                     $lead = " (lead)";
+                }
+                else if(isset($coordThemes[$theme->getId()])){
+                    $lead = " (coord)";
                 }
                 $themeNames[] = "<li><a href='{$theme->getUrl()}'>{$theme->getAcronym()}</a>{$lead}</li>";
             }

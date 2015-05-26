@@ -8,7 +8,11 @@ class HorizontalCheckBox extends CheckBox {
     
     function render(){
         $html = "";
-        foreach($this->options as $option){
+        foreach($this->options as $key => $option){
+            $label = $option;
+            if(!is_numeric($key)){
+                $label = $key;
+            }
             $checked = "";
             if(count($this->value) > 0){
                 foreach($this->value as $value){
@@ -18,7 +22,7 @@ class HorizontalCheckBox extends CheckBox {
                     }
                 }
             }
-            $html .= "<input type='checkbox' {$this->renderAttr()} name='{$this->id}[]' value='{$option}' $checked/>{$option}&nbsp;&nbsp;&nbsp;&nbsp;";
+            $html .= "<input type='checkbox' {$this->renderAttr()} name='{$this->id}[]' value='{$option}' $checked/>{$label}&nbsp;&nbsp;&nbsp;&nbsp;";
         }
         return $html;
     }
