@@ -16,6 +16,7 @@ class ProjectPage {
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
             $name = str_replace("_Talk", "", $article->getTitle()->getNsText());
+            $name = str_replace("_", " ", $name);
             $title = $article->getTitle()->getText();
             $project = Project::newFromHistoricName($name);
             
