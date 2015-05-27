@@ -21,7 +21,7 @@ class PersonPage {
     }
 
     function processPage($article, $outputDone, $pcache){
-        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues;
+        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config;
         $result = true;
         $this->userCanExecute($wgTitle, $wgUser, "read", $result);
         if(!$result){
@@ -108,6 +108,9 @@ class PersonPage {
                 
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
                 $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
+                if($config->getValue('networkName') == 'AGE-WELL'){
+                    $tabbedPage->addTab(new HQPProjectTab($person, $visibility));
+                }
                 $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
                 $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
