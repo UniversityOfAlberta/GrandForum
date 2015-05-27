@@ -1,5 +1,5 @@
 <?php
-
+define('TESTING', true);
 require_once("../config/Config.php");
 require_once("../Classes/simplehtmldom/simple_html_dom.php");
 
@@ -91,7 +91,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     public static function prepare($event){
         global $currentSession;
         // Create test database
-        system("php ../maintenance/seed.php &> /dev/null");
+        system("php ../maintenance/seed.php &> /home/dwt/seed.txt");
         system("rm -f screenshots/*");
         $fp = fopen("../test.tmp", 'w');
         fwrite($fp, "This file should delete it's self once the test suite is done running.\nDo not delete this file until then.");
@@ -327,14 +327,5 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $button = $this->getSession()->getPage()->find('css', $css);
         $button->press();
     }
-    
-    /**
-     * @override /^(?:|I )am on "(?P<page>[^"]+)"$/
-     * @override /^(?:|I )go to "(?P<page>[^"]+)"$/
-     */
-    public function visit($page){
-        global $config;
-        $page = str_replace('$networkName', $config->getValue('networkName'), $page);
-        $this->getSession()->visit($this->locatePath($page));
-    }
+
 }

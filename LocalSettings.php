@@ -28,11 +28,13 @@ if( defined( 'MW_INSTALL_PATH' ) ) {
 	$IP = dirname( __FILE__ );
 }
 
-if(file_exists("$IP/test.tmp")){
-    define("TESTING", true);
-}
-else{
-    define("TESTING", false);
+if(!defined('TESTING')){
+    if(file_exists("$IP/test.tmp")){
+        define("TESTING", true);
+    }
+    else{
+        define("TESTING", false);
+    }
 }
 
 $path = array( $IP, "$IP/includes", "$IP/languages" );
@@ -70,7 +72,7 @@ $wgListAdminPassword    = $config->getValue("listAdminPassword");
 
 $wgFavicon          = "$wgServer$wgScriptPath/favicon.ico";
 
-if(TESTING){
+if(TESTING && !defined('INIT_TESTING')){
     $wgDBname = $wgTestDBname;
 }
 
@@ -121,13 +123,15 @@ $wgDisableCounters = true;
 $wgJobRunRate = 0.01;
 $wgSessionsInObjectCache = true;
 $wgEnableSidebarCache = true;
-if(!file_exists($config->getValue('localizationCache')) && 
-   is_writable($config->getValue('localizationCache'))){
-    mkdir($config->getValue('localizationCache'));
-}
-if(file_exists($config->getValue('localizationCache'))){
-    $wgCacheDirectory = $config->getValue('localizationCache');
-    $wgUseLocalMessageCache = true;
+if($config->getValue('localizationCache') != ""){
+    if(!file_exists($config->getValue('localizationCache')) && 
+       is_writable($config->getValue('localizationCache'))){
+        mkdir($config->getValue('localizationCache'));
+    }
+    if(file_exists($config->getValue('localizationCache'))){
+        $wgCacheDirectory = $config->getValue('localizationCache');
+        $wgUseLocalMessageCache = true;
+    }
 }
 
 ## To enable image uploads, make sure the 'images' directory

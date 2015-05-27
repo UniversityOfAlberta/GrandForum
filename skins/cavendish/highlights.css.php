@@ -1,7 +1,12 @@
 <?php
 
 header('Content-Type: text/css');
-
+if(file_exists("../../test.tmp")){
+    define("TESTING", true);
+}
+else{
+    define("TESTING", false);
+}
 require_once("../../config/Config.php");
 
 $hl = $config->getValue("highlightColor");

@@ -35,7 +35,7 @@
     $config->setValue("dbPassword", "");
     
     // Localization Cache Directory
-    $config->setValue("localizationCache", "/local/data/www-root/cache/");
+    $config->setValue("localizationCache", "");
     
     // Default Mailing List Admins
     $config->setValue("listAdmins", array());
@@ -59,7 +59,7 @@
     $config->setValue("iconPathHighlighted", "skins/icons/gray_dark/");
     
     // Highlight color for skin
-    $config->setValue("highlightColor", "#0088FF");
+    $config->setValue("highlightColor", "#555555");
     
     // Highlight color for headers
     $config->setValue("headerColor", "#333333");
@@ -103,7 +103,7 @@
         'MailingList',
         'AddMember',
         'EditMember',
-        'HQPRegister',
+        //'HQPRegister',
         'Poll',
         'QueryableTable',
         'IndexTables',
@@ -141,8 +141,8 @@
     // Options: twitter, linkedin, flickr, youtube
     $config->setValue("socialLinks", array());
 
-    // The dates that each phase started
-    $config->setValue("projectPhaseDates", array());
+    $config->setValue("projectPhaseDates", array(1 => "2015-03-31 00:00:00",
+                                                 2 => "2015-04-01 00:00:00"));
     
     /*
      * PDF Config

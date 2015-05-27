@@ -1,7 +1,8 @@
 <?php
 
+define('INIT_TESTING', true);
+define('TESTING', true);
 require_once('commandLine.inc');
-
 global $config;
 
 function createProject($acronym, $fullName, $status, $type, $bigbet, $phase, $effective_date, $description, $problem, $solution, $challenge="Not Specified", $parent_id=0){
@@ -59,21 +60,21 @@ function addRelation($name1, $name2, $type){
 global $wgTestDBname, $wgDBname, $wgRoles, $wgUser;
 
 // Drop Test DB
-$drop = "echo 'DROP DATABASE IF EXISTS {$wgTestDBname}; CREATE DATABASE {$wgTestDBname};' | mysql -u {$wgDBuser} -p{$wgDBpassword}";
+$drop = "echo 'DROP DATABASE IF EXISTS {$config->getValue('dbTestName')}; CREATE DATABASE {$config->getValue('dbTestName')};' | mysql -u {$wgDBuser} -p{$wgDBpassword}";
 system($drop);
 
 // Create Test DB Structure
-$dump = "mysqldump --no-data -u {$wgDBuser} -p{$wgDBpassword} {$wgDBname} -d --single-transaction | sed 's/ AUTO_INCREMENT=[0-9]*\b//' | mysql -u {$wgDBuser} -p{$wgDBpassword} {$wgTestDBname}";
+$dump = "mysqldump --no-data -u {$wgDBuser} -p{$wgDBpassword} {$config->getValue('dbName')} -d --single-transaction | sed 's/ AUTO_INCREMENT=[0-9]*\b//' | mysql -u {$wgDBuser} -p{$wgDBpassword} {$config->getValue('dbTestName')}";
 system($dump);
 
 // Copy select table data to Test DB
-DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_universities` SELECT * FROM `{$wgDBname}`.`grand_universities`", true);
-DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_positions` SELECT * FROM `{$wgDBname}`.`grand_positions`", true);
-DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_disciplines_map` SELECT * FROM `{$wgDBname}`.`grand_disciplines_map`", true);
-DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`grand_partners` SELECT * FROM `{$wgDBname}`.`grand_partners`", true);
-DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`mw_page` SELECT * FROM `{$wgDBname}`.`mw_page` WHERE page_id < 10", true);
-DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`mw_revision` SELECT * FROM `{$wgDBname}`.`mw_revision` WHERE rev_page < 10", true);
-DBFunctions::execSQL("INSERT INTO `{$wgTestDBname}`.`mw_text` SELECT * FROM `{$wgDBname}`.`mw_text` WHERE old_id IN (SELECT rev_text_id FROM `{$wgTestDBname}`.`mw_revision`)", true);
+DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_universities` SELECT * FROM `{$config->getValue('dbName')}`.`grand_universities`", true);
+DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_positions` SELECT * FROM `{$config->getValue('dbName')}`.`grand_positions`", true);
+DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_disciplines_map` SELECT * FROM `{$config->getValue('dbName')}`.`grand_disciplines_map`", true);
+DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`grand_partners` SELECT * FROM `{$config->getValue('dbName')}`.`grand_partners`", true);
+DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`mw_page` SELECT * FROM `{$config->getValue('dbName')}`.`mw_page` WHERE page_id < 10", true);
+DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`mw_revision` SELECT * FROM `{$config->getValue('dbName')}`.`mw_revision` WHERE rev_page < 10", true);
+DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`mw_text` SELECT * FROM `{$config->getValue('dbName')}`.`mw_text` WHERE old_id IN (SELECT rev_text_id FROM `{$config->getValue('dbTestName')}`.`mw_revision`)", true);
 
 // Start populating custom data
 $wgDBname = $wgTestDBname;
