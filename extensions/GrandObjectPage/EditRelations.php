@@ -174,8 +174,10 @@ class EditRelations extends SpecialPage{
 	    }
 	    $allHQP = Person::getAllPeople(HQP);
 	    foreach($allHQP as $hqp){
-	        if(array_search($hqp->getNameForForms(), $names) === false){
-	            $list[] = $hqp->getNameForForms();
+	        if($person->getId() != $hqp->getId()){
+	            if(array_search($hqp->getNameForForms(), $names) === false){
+	                $list[] = $hqp->getNameForForms();
+	            }
 	        }
 	    }
         $wgOut->addHTML("<div class='switcheroo noCustom' name='HQP' id='hqps'>
@@ -193,9 +195,11 @@ class EditRelations extends SpecialPage{
 	        $names[] = $relation->getUser2()->getNameForForms();
 	    }
 	    $all = Person::getAllPeople();
-	    foreach($all as $person){
-	        if(array_search($person->getNameForForms(), $names) === false){
-	            $list[] = $person->getNameForForms();
+	    foreach($all as $p){
+	        if($person->getId() != $p->getId()){
+	            if(array_search($p->getNameForForms(), $names) === false){
+	                $list[] = $p->getNameForForms();
+	            }
 	        }
 	    }
         $wgOut->addHTML("<div class='switcheroo noCustom' name='CoWorker' id='coworkers'>
