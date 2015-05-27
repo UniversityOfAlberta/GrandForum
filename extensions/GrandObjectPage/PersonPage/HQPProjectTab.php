@@ -6,7 +6,7 @@ class HQPProjectTab extends AbstractEditableTab {
     var $visibility;
 
     function HQPProjectTab($person, $visibility){
-        parent::AbstractEditableTab("HQP Project");
+        parent::AbstractEditableTab("HQP CRP");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -160,7 +160,7 @@ class HQPProjectTab extends AbstractEditableTab {
         $this->saveBlobValue(HQP_APPLICATION_ALIGN,      $_POST['align']);
         $this->saveBlobValue(HQP_APPLICATION_BOUNDARY,   $_POST['boundary']);
         
-        header("Location: {$this->person->getUrl()}?tab=hqp-project");
+        header("Location: {$this->person->getUrl()}?tab=hqp-crp");
         exit;
     }
     

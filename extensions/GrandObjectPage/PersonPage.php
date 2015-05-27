@@ -108,7 +108,7 @@ class PersonPage {
                 
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
                 $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
-                if($config->getValue('networkName') == 'AGE-WELL'){
+                if($config->getValue('networkName') == 'AGE-WELL' && $person->isRole(HQP)){
                     $tabbedPage->addTab(new HQPProjectTab($person, $visibility));
                 }
                 $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
