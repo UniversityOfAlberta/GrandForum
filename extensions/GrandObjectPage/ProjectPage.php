@@ -15,9 +15,11 @@ class ProjectPage {
         
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
-            
+
             $name = ($article != null) ? str_replace("_Talk", "", $article->getTitle()->getNsText()) : "";
+            $name = str_replace("_", " ", $name);
             $title = ($article != null) ? $article->getTitle()->getText() : "";
+
             $project = Project::newFromHistoricName($name);
             
             $wgOut->addScript("<script type='text/javascript'>
