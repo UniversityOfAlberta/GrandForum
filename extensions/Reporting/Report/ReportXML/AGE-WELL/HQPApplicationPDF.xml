@@ -67,77 +67,77 @@
         <ReportItem id="research" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_RESEARCH">
             <![CDATA[
                 <h4>Statement of research focus</h4>
-                <p>{$item}</p><br />
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="biography_bookmark" type="SubBookmarkReportItem" text="Biography and career goals"></ReportItem>
         <ReportItem id="biography" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_BIO">
             <![CDATA[
                 <h4>Biography and career goals</h4>
-                <p>{$item}</p><br />
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="objectives_bookmark" type="SubBookmarkReportItem" text="Research objectives/aims"></ReportItem>
         <ReportItem id="objectives" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_OBJ">
             <![CDATA[
                 <h4>Research objectives/aims</h4>
-                <p>{$item}</p><br />
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="goals_bookmark" type="SubBookmarkReportItem" text="Project goals"></ReportItem>
         <ReportItem id="goals" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_GOALS">
             <![CDATA[
                 <h4>How will you achieve your project goals?</h4>
-                <p>{$item}</p><br />
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="alignment_bookmark" type="SubBookmarkReportItem" text="Alignment to the mission"></ReportItem>
         <ReportItem id="alignment" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_ALIGN">
             <![CDATA[
                 <h4>Alignment to the mission and goals of AGE-WELL</h4>
-                <p>{$item}</p><br />
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="commercialization_bookmark" type="SubBookmarkReportItem" text="Potential for commercialization"></ReportItem>
         <ReportItem id="commercialization" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_COMM">
             <![CDATA[
                 <h4>Potential for commercialization and/or knowledge mobilization</h4>
-                <p>{$item}</p><br />
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="industry_bookmark" type="SubBookmarkReportItem" text="Industry and/or community partners"></ReportItem>
         <ReportItem id="industry" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_IND">
             <![CDATA[
                 <h4>Industry and/or community partners (if applicable)</h4>
-                <p>{$item}</p><br />
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="innovation_bookmark" type="SubBookmarkReportItem" text="Potential for innovation"></ReportItem>
         <ReportItem id="innovation" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_INN">
             <![CDATA[
                 <h4>Potential for innovation</h4>
-                <p>{$item}</p><br />
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="boundary_bookmark" type="SubBookmarkReportItem" text="Disciplinary boundaries"></ReportItem>
         <ReportItem id="boundary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_BOUNDARY">
             <![CDATA[
                 <h4>In what ways will your project go beyond conventional disciplinary boundaries?</h4>
-                <p>{$item}</p><br />
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="training_bookmark" type="SubBookmarkReportItem" text="Training context"></ReportItem>
         <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_TRAIN">
             <![CDATA[
                 <h4>Training context</h4>
-                <p>{$item}</p><br />
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="funding_bookmark" type="SubBookmarkReportItem" text="Other funding"></ReportItem>
         <ReportItem id="funding" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_FUND">
             <![CDATA[
                 <h4>Other funding obtained/applied for</h4>
-                <p>{$item}</p>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
