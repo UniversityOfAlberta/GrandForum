@@ -851,7 +851,12 @@ class CavendishTemplate extends QuickTemplate {
 		    wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
 	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
 	        $GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
-	        $GLOBALS['toolbox']['Other']['links'][1001] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
+	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "AGE-WELL"){ 
+	            // It might be worth creating an extension for this if there are more network specific customizations like this
+	            $GLOBALS['toolbox']['Other']['links'][1001] = TabUtils::createToolboxLink("AGE-WELL Seminars", "$wgServer$wgScriptPath/index.php/AGE-WELL_Seminars");
+	            $GLOBALS['toolbox']['Other']['links'][1002] = TabUtils::createToolboxLink("Network Resources", "$wgServer$wgScriptPath/index.php/Network_Resources");
+	        }
+	        $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
 	        global $toolbox;
 	        $i = 0;
 	        foreach($toolbox as $key => $header){

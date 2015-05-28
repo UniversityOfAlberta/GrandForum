@@ -185,10 +185,15 @@ function getTableName($baseName) {
 
 $wgHooks['SpecialPage_initList'][] = 'orderSpecialPages';
 function orderSpecialPages(&$aSpecialPages){
+    $me = Person::newFromWgUser();
     $array1 = array();
     $array2 = array();
     $skip = false;
     foreach($aSpecialPages as $key => $page){
+        if(!$me->isRoleAtLeast(STAFF) && $key == "Log"){
+            unset($aSpecialPages[$key]);
+            continue;
+        }
         if($skip == true){
             $array1[$key] = $page;
         }
