@@ -6,11 +6,6 @@
             <SectionPermission id="application2" permissions="rw" />
             <SectionPermission id="documents" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP">
-            <SectionPermission id="application" permissions="rw" />
-            <SectionPermission id="application2" permissions="rw" />
-            <SectionPermission id="documents" permissions="rw" />
-        </Role>
     </Permissions>
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">

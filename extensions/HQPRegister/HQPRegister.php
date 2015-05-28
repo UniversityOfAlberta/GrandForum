@@ -21,7 +21,7 @@ class HQPRegister extends SpecialPage{
             if(!$me->isLoggedIn()){
                 $parseroutput->mText .= "<h2>HQP Registration</h2><p>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>register</a> and then fill out the HQP Application form.</p>";
             }
-            else if($me->isRole(HQP.'-Candidate') || $me->isRole(HQP)){
+            else if($me->isRole(HQP.'-Candidate')){
                 $parseroutput->mText .= "<h2>HQP Application</h2><p>To apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Report?report=HQPApplication'>HQP Application form</a>.</p>";
             }
         }
