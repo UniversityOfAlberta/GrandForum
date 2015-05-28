@@ -190,7 +190,14 @@ function orderSpecialPages(&$aSpecialPages){
     $array2 = array();
     $skip = false;
     foreach($aSpecialPages as $key => $page){
-        if(!$me->isRoleAtLeast(STAFF) && $key == "Log"){
+        //echo "$key\n";
+        if(!$me->isRoleAtLeast(STAFF) && 
+            ($key == "Log" || $key == "Listusers" ||
+             $key == "Listgrouprights" || $key == "Contributions" ||
+             $key == "BlockList" || $key == "Activeusers" || 
+             $key == "Allmessages" || $key == "Statistics" ||
+             $key == "Version" || $key == "Recentchanges" ||
+             $key == "Recentchangeslinked" || $key == "Tags")){
             unset($aSpecialPages[$key]);
             continue;
         }
