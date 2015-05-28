@@ -199,7 +199,7 @@ class Material {
     // Returns the URL to link to this Material
     function getUrl(){
         global $wgServer, $wgScriptPath;
-        return "{$wgServer}{$wgScriptPath}/index.php/Multimedia_Story:{$this->getId()}";
+        return "{$wgServer}{$wgScriptPath}/index.php/Multimedia:{$this->getId()}";
     }
     
     // Generates some html based on what type the Material is

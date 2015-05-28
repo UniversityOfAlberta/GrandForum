@@ -94,7 +94,7 @@ class IndexTable {
                          $wgTitle->getNsText() == "Activity" ||
                          $wgTitle->getNsText() == "Press" ||
                          $wgTitle->getNsText() == "Award" ||
-                         $wgTitle->getNsText() == "Multimedia_Story") ? "selected" : "";
+                         $wgTitle->getNsText() == "Multimedia") ? "selected" : "";
             $productsSubTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue("productsTerm")));
             if(Product::countByCategory('Publication') > 0){
                 $productsSubTab['dropdown'][] = TabUtils::createSubTab("Publications", "$wgServer$wgScriptPath/index.php/Special:Products#/Publication", "$selected");
