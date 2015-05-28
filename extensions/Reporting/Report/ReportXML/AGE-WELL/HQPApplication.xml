@@ -114,7 +114,12 @@ Funding Commences: September 1, 2015<br />
         </ReportItem>
         <ReportItem id="uni" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_UNI" width="180px">
             <![CDATA[
-                <tr><td align='right'><b>University/Program:</b></td><td>{$item}</td></tr>
+                <tr><td align='right'><b>University:</b></td><td>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="prog" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_PROGRAM" width="180px">
+            <![CDATA[
+                <tr><td align='right'><b>Program:</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="supervisor" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_SUP" width="180px">
@@ -142,7 +147,7 @@ Funding Commences: September 1, 2015<br />
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="research" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_RESEARCH" height="300px">
+        <ReportItem id="research" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_RESEARCH" limit="2500" recommended="true">
             <![CDATA[
                 <h2>Statement of research focus (1/2 page)</h2>
                     <div style="font-size:smaller;">
@@ -164,7 +169,7 @@ Funding Commences: September 1, 2015<br />
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="biography" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_BIO" height="300px">
+        <ReportItem id="biography" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_BIO" limit="2500" recommended="true">
             <![CDATA[
                 <h2>Biography and career goals (1/2 page)</h2>
                     <div style="font-size:smaller;">
@@ -178,7 +183,7 @@ Funding Commences: September 1, 2015<br />
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="objectives" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_OBJ" height="300px">
+        <ReportItem id="objectives" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_OBJ" limit="2500" recommended="true">
             <![CDATA[
                 <h2>Research objectives/aims (1/2 page)</h2>
                     <div style="font-size:smaller;">
@@ -192,7 +197,7 @@ Funding Commences: September 1, 2015<br />
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="goals" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_GOALS" height="300px">
+        <ReportItem id="goals" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_GOALS" limit="2500" recommended="true">
             <![CDATA[
                 <h2>How will you achieve your project goals? (1/2 page)</h2>
                     <div style="font-size:smaller;">
@@ -207,7 +212,7 @@ Funding Commences: September 1, 2015<br />
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="align" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_ALIGN" height="300px">
+        <ReportItem id="align" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_ALIGN" limit="2500" recommended="true">
             <![CDATA[
                 <h2>Alignment to the mission and goals of AGE-WELL (1/2 page)</h2>
                     <div style="font-size:smaller;">
@@ -217,7 +222,7 @@ Funding Commences: September 1, 2015<br />
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="commercialization" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_COMM" height="300px">
+        <ReportItem id="commercialization" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_COMM" limit="2500" recommended="true">
             <![CDATA[
                 <h2>Potential for commercialization and/or knowledge mobilization (1/2 page)</h2>
                     <div style="font-size:smaller;">
@@ -233,7 +238,7 @@ Funding Commences: September 1, 2015<br />
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="industry" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_IND" height="300px">
+        <ReportItem id="industry" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_IND" limit="2500" recommended="true">
             <![CDATA[
                 <h2>Industry and/or community partners (if applicable) (1/2 page)</h2>
                     <div style="font-size:smaller;">
@@ -246,7 +251,7 @@ Funding Commences: September 1, 2015<br />
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="innovation" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_INN" height="300px">
+        <ReportItem id="innovation" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_INN" limit="2500" recommended="true">
             <![CDATA[
                 <h2>Potential for innovation (1/2 page)</h2>
                     <div style="font-size:smaller;">
@@ -275,7 +280,7 @@ Funding Commences: September 1, 2015<br />
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="boundary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_BOUNDARY" height="300px">
+        <ReportItem id="boundary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_BOUNDARY" limit="2500" recommended="true">
             <![CDATA[
                 <h2>In what ways will your project go beyond conventional disciplinary boundaries? (1/2 page)</h2>
                     <div style="font-size:smaller;">

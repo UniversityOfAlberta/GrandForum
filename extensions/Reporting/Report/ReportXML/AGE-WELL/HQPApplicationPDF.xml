@@ -3,10 +3,12 @@
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP-Candidate">
             <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="application2" permissions="rw" />
             <SectionPermission id="documents" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP">
             <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="application2" permissions="rw" />
             <SectionPermission id="documents" permissions="rw" />
         </Role>
     </Permissions>
@@ -21,7 +23,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection type="BookmarkReportSection" name="AGE-WELL Graduate Student and Postdoctoral Awards in Technology and Aging" />
-    <ReportSection id="application" name="Application" blobSection="HQP_APPLICATION_FORM" type="HeaderReportSection" pagebreak="false">
+    <ReportSection id="application" name="Application" blobSection="HQP_APPLICATION_FORM" type="HeaderReportSection" pagebreak="true">
         <ReportItem id="name" type="StaticReportItem">
             <![CDATA[
                 <h4>Applicant Name</h4>
@@ -30,7 +32,13 @@
         </ReportItem>
         <ReportItem id="uni" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_UNI">
             <![CDATA[
-                <h4>University/Program</h4>
+                <h4>University</h4>
+                <p>{$item}</p><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="prog" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_PROGRAM">
+            <![CDATA[
+                <h4>Program</h4>
                 <p>{$item}</p><br />
             ]]>
         </ReportItem>
@@ -58,6 +66,8 @@
                 <p>{$item}</p><br />
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="application2" name="Application" blobSection="HQP_APPLICATION_FORM" type="HeaderReportSection" pagebreak="false">
         <ReportItem id="research_bookmark" type="SubBookmarkReportItem" text="Statement of research focus"></ReportItem>
         <ReportItem id="research" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_RESEARCH">
             <![CDATA[
