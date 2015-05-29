@@ -536,8 +536,10 @@ if ( isset($pdf) ) {
             $blob = new ReportBlob();
             $blob->loadFromMD5($pdf);
             $data = json_decode($blob->getData());
-            file_put_contents("/tmp/{$pdf}", base64_decode($data->file));
-            $attached[] = "\"/tmp/{$pdf}\"";
+            if($data != null){
+                file_put_contents("/tmp/{$pdf}", base64_decode($data->file));
+                $attached[] = "\"/tmp/{$pdf}\"";
+            }
         }
         $attached = implode(" ", $attached);
         foreach($GLOBALS['chapters'] as $chapter){
@@ -581,9 +583,11 @@ if ( isset($pdf) ) {
         unlink("/tmp/{$name}{$rand}pdfmarks");
         unlink("/tmp/{$name}{$rand}nomarks");
         unlink("/tmp/{$name}{$rand}pdf");
-        //unlink("/tmp/{$name}{$rand}withmarks");
+        unlink("/tmp/{$name}{$rand}withmarks");
         foreach($GLOBALS['attachedPDFs'] as $pdf){
-            unlink("/tmp/{$pdf}");
+            if(file_exists("/tmp/{$pdf}")){
+                unlink("/tmp/{$pdf}");
+            }
         }
         $GLOBALS['chapters'] = array();
         $GLOBALS['nFootnotes'] = 0;
