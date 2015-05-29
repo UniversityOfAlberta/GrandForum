@@ -907,7 +907,7 @@ EOF;
              !$me->leadershipOf($this)) ||
             (!$this->isSubProject() &&
              !$me->isThemeLeaderOf($this) &&
-             !$me->leadershipOf($this->getParent())))){
+             !$me->leadershipOf($this)))){
             return false;
         }
         return true;
