@@ -121,7 +121,6 @@
         'ProjectEvolution',
         //'ScreenCapture',
         //'Solr',
-        //'AcademiaMap',
         //'TravelForm',
         //'AdvancedSearch',
         'CCVExport'
