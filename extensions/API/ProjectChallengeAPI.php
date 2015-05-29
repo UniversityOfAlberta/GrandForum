@@ -12,25 +12,22 @@ class ProjectChallengeAPI extends API{
     }
 
     function doAction($noEcho=false){
-        $project = Project::newFromName($_POST['project']);
-        if(!$noEcho){
-            if($project == null || $project->getName() == null){
-                echo "A valid project must be provided\n";
-                exit;
-            }
-            $person = Person::newFromName($_POST['user_name']);
-            $isLead = false;
-            foreach($me->getLeadProjects() as $p){
-                if($p->getId() == $project->getId()){
-                    $isLead = true;
-                    break;
-                }
-            }
-            if(!$isLead){
-                echo "You must be logged in as a project leader\n";
-                exit;
-            }
+        $me = Person::newFromWgUser();
+		$project = Project::newFromName($_POST['project']);
+		$error = "";
+		if($project == null || $project->getName() == null){
+	        $error = "A valid project must be provided";
+	    }
+        if(!$project->userCanEdit()){
+            $error = "You must be logged in as a project leader";
         }
+		if(!$noEcho && $error != ""){
+		    echo "$error\n";
+		    exit;
+		}
+		if($error != ""){
+		    return $error;
+		}
         
         if(isset($_POST['challenge_id'])){
             $challenge_id = $_POST['challenge_id'];

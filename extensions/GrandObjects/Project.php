@@ -892,6 +892,25 @@ EOF;
         return $ret;
     }
     
+    /*
+     * Returns whether or not the logged in user can edit this project
+     * @return boolean Whether or not the logged in user can edit this project
+     */
+    function userCanEdit(){
+        $me = Person::newFromWgUser();
+        if(!$me->isRoleAtLeast(STAFF) && 
+           !$me->isRole(CF) &&
+           (($this->isSubProject() &&
+             !$me->isThemeLeaderOf($this->getParent()) && 
+             !$me->leadershipOf($this->getParent())) ||
+            (!$this->isSubProject() &&
+             !$me->isThemeLeaderOf($this) &&
+             !$me->leadershipOf($this->getParent())))){
+            return false;
+        }
+        return true;
+    }
+    
     // Returns the theme percentage of this project of the given theme index $i
     // OLD: Only used for phase1 projects, should be refactored somehow
     function getTheme($i, $history=false){

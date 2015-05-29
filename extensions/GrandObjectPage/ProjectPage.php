@@ -55,6 +55,7 @@ class ProjectPage {
                         !$me->isMemberOf($project) && 
                         !$me->isRoleAtLeast(STAFF) && 
                         !$me->isThemeLeaderOf($project) && 
+                        !$me->isRole(CF) && 
                         !($project->isSubProject() && $me->isThemeLeaderOf($project->getParent()))){
                     TabUtils::clearActions();
                     $wgOut->clearHTML();
@@ -66,7 +67,7 @@ class ProjectPage {
             }
             $isLead = false;
             if($project != null){
-                if($me->isRoleAtLeast(STAFF)){
+                if($me->isRoleAtLeast(STAFF) || $me->isRole(CF)){
                     $isLead = true;
                 }
                 if(!$isLead){

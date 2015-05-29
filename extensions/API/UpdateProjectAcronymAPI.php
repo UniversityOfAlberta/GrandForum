@@ -14,19 +14,30 @@ class UpdateProjectAcronymAPI extends API{
 
 	function doAction($noEcho=false){
 	    global $wgUser, $wgMessage;
-	    $me = Person::newFromUser($wgUser);
 	    $_POST['new_acronym'] = str_replace(" ", "-", $_POST['new_acronym']);
 	    $project = Project::newFromName($_POST['old_acronym']);
 	    $newProj = Project::newFromName($_POST['new_acronym']);
+	    $me = Person::newFromWgUser();
+		$error = "";
+		if($project == null || $project->getName() == null){
+	        $error = "A valid project must be provided";
+	    }
+        if(!$project->userCanEdit()){
+            $error = "You must be logged in as a project leader";
+        }
+		if(!$noEcho && $error != ""){
+		    echo "$error\n";
+		    exit;
+		}
+		if($error != ""){
+		    return $error;
+		}
+	    
 	    if(!preg_match("/^[0-9À-Ÿa-zA-Z\-]+$/", $_POST['new_acronym'])){
 	        $wgMessage->addError("The project acronym cannot contain any special characters");
 	        return false;
 	    }
 	    if($project == null){
-	        return false;
-	    }
-	    $parentProj = $project->getParent();
-	    if(!$me->isRoleAtLeast(STAFF) && !($me->leadershipOf($parentProj) || $me->leadershipOf($project))){
 	        return false;
 	    }
 		

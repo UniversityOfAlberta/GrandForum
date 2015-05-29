@@ -36,7 +36,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
     }
     
     function canEdit(){
-        return ($this->visibility['isLead'] && !$this->project->isSubProject());
+        return ($this->project->userCanEdit() && !$this->project->isSubProject());
     }
     
     function generateBody(){

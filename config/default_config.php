@@ -234,6 +234,7 @@
     $config->setConst("TC",         "Theme Coordinator");
     $config->setConst("RMC",        "RMC");
     $config->setConst("EVALUATOR",  "Evaluator");
+    $config->setConst("CF",         "CF");
     $config->setConst("BOD",        "BOD");
     $config->setConst("BODC",       "BOD Chair");
     $config->setConst("CHAMP",      "Champion");
@@ -260,6 +261,7 @@
         $config->getConst('TC')             => "Work Package Coordinator",
         $config->getConst('RMC')            => "Research Management Comittee",
         $config->getConst('EVALUATOR')      => "Evaluator",
+        $config->getConst('CF')             => "Core Facillity",
         $config->getConst('BOD')            => "Board of Directors",
         $config->getConst('BODC')           => "Board of Directors Chair",
         $config->getConst('ASD')            => "Associate Scientific Director",

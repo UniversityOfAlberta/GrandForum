@@ -108,10 +108,13 @@ class ProjectMainTab extends AbstractEditableTab {
            $_POST['problem'] != $this->project->getProblem() ||
            $_POST['solution'] != $this->project->getSolution() ||
            $_POST['fullName'] != $this->project->getFullName()){
-            APIRequest::doAction('ProjectDescription', true);
+            $error = APIRequest::doAction('ProjectDescription', true);
+            if($error != ""){
+                return $error;
+            }
             Project::$cache = array();
             $this->project = Project::newFromId($this->project->getId());
-            $wgOut->setPageTitle($this->project->getFullName()." (Phase ".$this->project->getPhase().")");
+            $wgOut->setPageTitle($this->project->getFullName());
         }
 
         if(isset($_POST['challenge_id'])){
@@ -161,7 +164,7 @@ class ProjectMainTab extends AbstractEditableTab {
     }
     
     function canEdit(){
-        return $this->visibility['isLead'];
+        return $this->project->userCanEdit();
     }
     
     function showThemes(){
