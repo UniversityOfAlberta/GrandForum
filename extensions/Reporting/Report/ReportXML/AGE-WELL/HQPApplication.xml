@@ -309,7 +309,7 @@ Funding Commences: September 1, 2015<br />
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="documents" type="EditableReportSection" tooltip="Required Documents" name="Documents" blobSection="HQP_APPLICATION_DOCS">
+    <ReportSection id="documents" type="ReportSection" tooltip="Required Documents" name="Documents" blobSection="HQP_APPLICATION_DOCS">
         <Instructions>
             <![CDATA[
                 <ol>
