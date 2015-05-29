@@ -902,7 +902,9 @@ EOF;
            !$me->isRole(CF) &&
            (($this->isSubProject() &&
              !$me->isThemeLeaderOf($this->getParent()) && 
-             !$me->leadershipOf($this->getParent())) ||
+             !$me->leadershipOf($this->getParent()) &&
+             !$me->isThemeLeaderOf($this) &&
+             !$me->leadershipOf($this)) ||
             (!$this->isSubProject() &&
              !$me->isThemeLeaderOf($this) &&
              !$me->leadershipOf($this->getParent())))){

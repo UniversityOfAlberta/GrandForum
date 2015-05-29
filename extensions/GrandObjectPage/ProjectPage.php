@@ -67,27 +67,7 @@ class ProjectPage {
             }
             $isLead = false;
             if($project != null){
-                if($me->isRoleAtLeast(STAFF) || $me->isRole(CF)){
-                    $isLead = true;
-                }
-                if(!$isLead){
-                    if($project->isDeleted()){
-                        $leadership = $me->leadershipOn($project->getDeleted());
-                        foreach($leadership as $proj){
-                            if($proj->getName() == $project->getName()){
-                                $isLead = true;
-                                break;
-                            }
-                        }
-                    }
-                    else{
-                        $isLead = $me->leadershipOf($project->getName());
-                        $parent = $project->getParent();
-                        if($parent != null){
-                            $isLead = ($isLead || $me->leadershipOf($parent));
-                        }
-                    }
-                }
+                $isLead = $project->userCanEdit();
             }
             
             $isMember = $me->isMemberOf($project);
