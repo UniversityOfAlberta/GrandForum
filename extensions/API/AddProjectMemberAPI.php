@@ -17,7 +17,7 @@ class AddProjectMemberAPI extends API{
 		global $wgRequest, $wgUser, $wgServer, $wgScriptPath;
 		$groups = $wgUser->getGroups();
         $me = Person::newFromWgUser();
-		$project = Project::newFromName($_POST['project']);
+		$project = Project::newFromName($_POST['role']);
 		$error = "";
 		if($project == null || $project->getName() == null){
 	        $error = "A valid project must be provided";
