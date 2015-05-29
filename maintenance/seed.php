@@ -176,7 +176,7 @@ User::createNew("HQP.ToBeInactivated", array('password' => User::crypt("HQP.ToBe
 
 DBFunctions::insert('grand_roles',
                     array('user_id' => 1,
-                          'role' => 'Staff',
+                          'role' => 'Admin',
                           'start_date' => '0000-00-00 00:00:00',
                           'end_date' => '0000-00-00 00:00:00'));
 DBFunctions::insert('mw_user_groups',

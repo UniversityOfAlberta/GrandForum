@@ -724,7 +724,7 @@ abstract class AbstractReport extends SpecialPage {
     function getSectionPermissions($section){
         global $wgUser;
         $me = Person::newFromId($wgUser->getId());
-        if($me->isRole(MANAGER)){
+        if($me->isRoleAtLeast(MANAGER)){
             return array('r' => true, 'w' => true);
         }
         $found = false;

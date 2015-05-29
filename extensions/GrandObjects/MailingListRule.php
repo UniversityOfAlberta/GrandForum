@@ -52,7 +52,7 @@ class MailingListRule extends BackboneModel {
     
     function create(){
         $me = Person::newFromWgUser();
-        if($me->isRole(MANAGER)){
+        if($me->isRoleAtLeast(MANAGER)){
             DBFunctions::begin();
             $status = DBFunctions::insert('wikidev_projects_rules',
                                           array('type' => $this->type,
@@ -76,7 +76,7 @@ class MailingListRule extends BackboneModel {
     
     function update(){
         $me = Person::newFromWgUser();
-        if($me->isRole(MANAGER)){
+        if($me->isRoleAtLeast(MANAGER)){
            $status = DBFunctions::update('wikidev_projects_rules',
                                          array('type' => $this->type,
                                                'project_id' => $this->listId,
@@ -89,7 +89,7 @@ class MailingListRule extends BackboneModel {
     
     function delete(){
         $me = Person::newFromWgUser();
-        if($me->isRole(MANAGER)){
+        if($me->isRoleAtLeast(MANAGER)){
            $status = DBFunctions::delete('wikidev_projects_rules',
                                          array('id' => EQ($this->id)));
             return $status;

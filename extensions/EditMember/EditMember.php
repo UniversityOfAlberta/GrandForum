@@ -1025,10 +1025,11 @@ class EditMember extends SpecialPage{
         }
         foreach($wgRoles as $role){
             if(($role != ISAC || $user->isRoleAtLeast(STAFF)) &&
-               ($role != IAC || $user->isRoleAtLeast(IAC)) &&
-               ($role != CAC || $user->isRoleAtLeast(CAC)) &&
-               ($role != RMC || $user->isRoleAtLeast(RMC)) && 
-               ($role != NCE || $user->isRoleAtLeast(MANAGER)) && 
+               ($role != IAC  || $user->isRoleAtLeast(IAC)) &&
+               ($role != CAC  || $user->isRoleAtLeast(CAC)) &&
+               ($role != RMC  || $user->isRoleAtLeast(RMC)) && 
+               ($role != CF   || $user->isRoleAtLeast(MANAGER)) &&
+               ($role != NCE  || $user->isRoleAtLeast(MANAGER)) && 
                ($user->isRoleAtLeast($role) || ($role == CHAMP && $user->isRoleAtLeast(PL)))){
                 $boxes .= "&nbsp;<input id='role_$role' type='checkbox' name='r_wpNS[]' value='".$role."' ";
                 if($user->isRole(NI) && $role == HQP && $person->isRole(HQP) && !$user->relatedTo($person,"Supervises") && count($person->getSupervisors()) > 0 ){

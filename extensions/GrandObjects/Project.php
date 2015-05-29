@@ -612,7 +612,7 @@ EOF;
                 ($filter == PL && $person->isRole(NI) && $person->leadershipOf($this)))){
                 $people[$person->getId()] = $person;
             }
-            else if(($filter == null || ($currentDate >= $created && $person->isRole($filter)) || $person->isRoleDuring($filter, $created, "9999")) && !$person->isRole(MANAGER)){
+            else if(($filter == null || ($currentDate >= $created && $person->isRole($filter)) || $person->isRoleDuring($filter, $created, "9999")) && !$person->isRole(ADMIN)){
                 $people[$person->getId()] = $person;
             }
         }

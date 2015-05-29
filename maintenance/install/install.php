@@ -142,7 +142,7 @@ if($wgUser->getID() == 0){
                                    'email' => $email));
     DBFunctions::insert('grand_roles',
                         array('user_id' => 1,
-                              'role' => 'Manager',
+                              'role' => 'Admin',
                               'start_date' => date('Y-m-d'),
                               'end_date' => '0000-00-00 00:00:00'));
     DBFunctions::insert('mw_user_groups',

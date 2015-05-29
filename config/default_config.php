@@ -243,6 +243,7 @@
     $config->setConst("SD",         "SD");
     $config->setConst("STAFF",      "Staff");
     $config->setConst("MANAGER",    "Manager");
+    $config->setConst("ADMIN",    "Admin");
     
     $config->setValue("roleDefs", array(
         $config->getConst('INACTIVE')       => "Inactive",
@@ -268,7 +269,8 @@
         $config->getConst('SD')             => "Scientific Director",
         $config->getConst('GOV')            => "Government Rep",
         $config->getConst('STAFF')          => "Staff",
-        $config->getConst('MANAGER')        => "Manager"));
+        $config->getConst('MANAGER')        => "Manager",
+        $config->getConst('ADMIN')          => "Admin"));
         
     /* Other */
     $config->setValue("analyticsCode", "");
