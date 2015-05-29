@@ -120,7 +120,7 @@ Funding Commences: September 1, 2015<br />
                 <tr><td align='right'><b>Supervisor Name:</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="level" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_LVL" orientation="vertical" options="Master's (up to $10,000)|PhD (up to $15,000)|Post-doctoral Award (up to $35,000)">
+        <ReportItem id="level" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_LVL" orientation="vertical" options="Master's ($14,000, 1 year award)|PhD ($18,000, 2 year award)|Post-doctoral Award ($40,000, 1 year award)">
             <![CDATA[
                 <tr><td align='right' valign='top' style='padding-top:5px;'><b>Funding Category:</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>

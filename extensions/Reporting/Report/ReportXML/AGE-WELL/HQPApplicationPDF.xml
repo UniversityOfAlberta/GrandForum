@@ -43,7 +43,7 @@
                 <p>{$item}</p><br />
             ]]>
         </ReportItem>
-        <ReportItem id="level" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_LVL" orientation="vertical" options="Master's (up to $10,000)|PhD (up to $15,000)|Post-doctoral Award (up to $35,000)">
+        <ReportItem id="level" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_LVL" orientation="vertical" options="Master's ($14,000, 1 year award)|PhD ($18,000, 2 year award)|Post-doctoral Award ($40,000, 1 year award)">
             <![CDATA[
                 <h4>Funding Category</h4>
                 <p>{$item}</p><br />
