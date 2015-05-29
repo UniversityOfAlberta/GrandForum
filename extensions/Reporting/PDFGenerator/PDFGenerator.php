@@ -495,8 +495,8 @@ if ( isset($pdf) ) {
   $nameWidth = Font_Metrics::get_text_width("'.$headerName.' ", $font, $size);
   $width = Font_Metrics::get_text_width("Page 1 of 50", $font, $size2);
   
-  $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 2, "'.$headerName.'", $font, $size, $color);
-  $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color);
+  $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 1, "'.$headerName.'", $font, $size, $color, 0.01);
+  $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color, 0.01);
 }
 </script>';
         $dateStr = date("Y-m-d H:i:s T", time());
