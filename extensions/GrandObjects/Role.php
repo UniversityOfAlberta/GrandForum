@@ -51,7 +51,6 @@ class Role extends BackboneModel {
 	}
 	
 	function create(){
-	    // TODO: Need to handle access control
 	    $status = DBFunctions::insert('grand_roles',
 	                                  array('user_id'    => $this->user,
 	                                        'role'       => $this->getRole(),
@@ -75,7 +74,6 @@ class Role extends BackboneModel {
 	}
 	
 	function update(){
-	    // TODO: Need to handle access control
 	    $status = DBFunctions::update('grand_roles',
 	                                  array('role'       => $this->getRole(),
 	                                        'start_date' => $this->getStartDate(),
@@ -87,7 +85,6 @@ class Role extends BackboneModel {
 	}
 	
 	function delete(){
-	    // TODO: Need to handle access control
 	    $status = DBFunctions::delete('grand_roles',
 	                                  array('id' => EQ($this->getId())));
 	    Role::$cache = array();
@@ -132,6 +129,11 @@ class Role extends BackboneModel {
 	// Returns the Person who this Role belongs to
 	function getUser(){
 	    return Person::newFromId($this->user);
+	}
+	
+	// Alias for getUser()
+	function getPerson(){
+	    return $this->getUser();
 	}
 	
 	// Returns the name of this Role
