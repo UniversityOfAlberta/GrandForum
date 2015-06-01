@@ -10,14 +10,14 @@
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
-                <div style="margin-top:20px;"><h4 style='font-size:1.5em;'>AGE-WELL Graduate Student and Postdoctoral Awards in Technology and Aging</h4></div>
+                <div style="margin-top:20px;"><h4 style='font-size:1.5em;'>NETWORK Graduate Student and Postdoctoral Awards in Technology and Aging</h4></div>
                 <div class='logo_div' style="height:20px;margin-top:30px;">
                     <img class='logo' style="position:static; float:right;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 </div>
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection type="BookmarkReportSection" name="AGE-WELL Graduate Student and Postdoctoral Awards in Technology and Aging" />
+    <ReportSection type="BookmarkReportSection" name="NETWORK Graduate Student and Postdoctoral Awards in Technology and Aging" />
     <ReportSection id="application" name="Application" blobSection="HQP_APPLICATION_FORM" type="HeaderReportSection" pagebreak="true">
         <ReportItem id="name" type="StaticReportItem">
             <![CDATA[
@@ -94,7 +94,7 @@
         <ReportItem id="alignment_bookmark" type="SubBookmarkReportItem" text="Alignment to the mission"></ReportItem>
         <ReportItem id="alignment" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_ALIGN">
             <![CDATA[
-                <h4>Alignment to the mission and goals of AGE-WELL</h4>
+                <h4>Alignment to the mission and goals of NETWORK</h4>
                 {$item}<br />
             ]]>
         </ReportItem>
